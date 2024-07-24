@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
 	boolean,
 	index,
@@ -141,6 +141,9 @@ export const authUserCompanies = pgTable(
 			.notNull()
 			.default("ACCOUNTANT"),
 		isDefault: boolean("is_default").notNull().default(false),
+		membershipStatus: varchar("membership_status", { length: 20 })
+			.notNull()
+			.default("active"),
 		createdAt: timestamp("created_at").notNull().defaultNow(),
 		updatedAt: timestamp("updated_at").notNull().defaultNow(),
 	},
@@ -152,6 +155,49 @@ export const authUserCompanies = pgTable(
 		userCompanyUniqueIdx: uniqueIndex(
 			"auth_user_companies_user_company_uidx",
 		).on(table.userId, table.companyId),
+	}),
+);
+
+// ============================================================
+// Invitations
+// ============================================================
+
+/**
+ * authInvitations table.
+ *
+ * Tracks email-based invitations for users to join a company.
+ * Token-based: invited users receive a UUID link to accept/reject.
+ *
+ * @example
+ * ```ts
+ * console.log(authInvitations);
+ * ```
+ */
+export const authInvitations = pgTable(
+	"auth_invitations",
+	{
+		id: text("id").primaryKey(),
+		companyId: uuid("company_id").notNull(),
+		inviterUserId: text("inviter_user_id")
+			.notNull()
+			.references(() => authUsers.id, { onDelete: "cascade" }),
+		inviteeEmail: text("invitee_email").notNull(),
+		role: varchar("role", { length: 50 }).notNull(),
+		token: text("token").notNull().unique(),
+		status: varchar("status", { length: 20 }).notNull().default("pending"),
+		expiresAt: timestamp("expires_at").notNull(),
+		createdAt: timestamp("created_at").notNull().defaultNow(),
+		updatedAt: timestamp("updated_at").notNull().defaultNow(),
+	},
+	(table) => ({
+		companyStatusIdx: index("idx_auth_invitations_company_status").on(
+			table.companyId,
+			table.status,
+		),
+		tokenIdx: index("idx_auth_invitations_token").on(table.token),
+		pendingEmailUidx: uniqueIndex("idx_auth_invitations_pending_email")
+			.on(table.companyId, table.inviteeEmail)
+			.where(sql`${table.status} = 'pending'`),
 	}),
 );
 
@@ -169,6 +215,7 @@ export const authUsersRelations = relations(authUsers, ({ many }) => ({
 	sessions: many(authSessions),
 	accounts: many(authAccounts),
 	companies: many(authUserCompanies),
+	sentInvitations: many(authInvitations),
 }));
 
 /**
@@ -229,6 +276,24 @@ export const authUserCompaniesRelations = relations(
 	({ one }) => ({
 		user: one(authUsers, {
 			fields: [authUserCompanies.userId],
+			references: [authUsers.id],
+		}),
+	}),
+);
+
+/**
+ * authInvitationsRelations const.
+ *
+ * @example
+ * ```ts
+ * console.log(authInvitationsRelations);
+ * ```
+ */
+export const authInvitationsRelations = relations(
+	authInvitations,
+	({ one }) => ({
+		inviter: one(authUsers, {
+			fields: [authInvitations.inviterUserId],
 			references: [authUsers.id],
 		}),
 	}),

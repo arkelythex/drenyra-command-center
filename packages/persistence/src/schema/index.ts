@@ -130,6 +130,8 @@ export {
 	authAccountsRelations,
 	authAuditLogs,
 	authAuditLogsRelations,
+	authInvitations,
+	authInvitationsRelations,
 	authSessions,
 	authSessionsRelations,
 	authUserCompanies,
