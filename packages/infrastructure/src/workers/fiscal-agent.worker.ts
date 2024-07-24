@@ -9,6 +9,7 @@ import { type Job, Worker } from "bullmq";
 import { loggers } from "../logger";
 import type { FiscalAgentJobData } from "../queues/fiscal-agent.queue";
 import { getRedisConnection, isRedisConfigured } from "../queues/redis";
+import { validateWorkerScope } from "./scope-validator";
 
 const FISCAL_AGENT_QUEUE = "fiscal-agent";
 const logger = loggers.worker;
@@ -18,6 +19,9 @@ let workerInstance: Worker | null = null;
 const useCase = new FiscalNightlyRunUseCase();
 
 async function processJob(job: Job<FiscalAgentJobData>): Promise<void> {
+	// Perimeter security: validate scope before any business logic
+	validateWorkerScope(job.data as unknown as Record<string, unknown>, "fiscal");
+
 	logger.info(
 		{ jobId: job.id, orgId: job.data.organizationId },
 		"Processing fiscal agent job",

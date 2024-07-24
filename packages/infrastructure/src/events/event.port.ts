@@ -211,6 +211,12 @@ export interface SubscriptionOptions {
 	maxDeliveries?: number; // Max retry attempts
 	backoff?: number[]; // Backoff intervals in ms
 	filter?: (event: DomainEvent) => boolean;
+	/**
+	 * Tenant isolation: only receive events published with this organizationId.
+	 * When set, events without matching organizationId are silently dropped.
+	 * When not set (undefined), all events are delivered (backward compatible).
+	 */
+	organizationId?: string;
 }
 
 /**

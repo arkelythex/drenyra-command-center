@@ -41,6 +41,7 @@ export interface EmailJobData {
 export interface ReportJobData {
 	reportType: "balance" | "income" | "ledger" | "trial_balance";
 	organizationId: string;
+	companyId: string;
 	dateFrom: string;
 	dateTo: string;
 	format: "pdf" | "excel" | "csv";

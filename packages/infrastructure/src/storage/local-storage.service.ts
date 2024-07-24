@@ -1,5 +1,6 @@
 import type {
 	IStorageService,
+	TenantScope,
 	UploadOptions,
 } from "@drenyra/application/ports/storage.port";
 import { StorageError } from "@drenyra/shared/errors";
@@ -75,9 +76,19 @@ export class LocalStorageService implements IStorageService {
 		}
 	}
 
-	async getSignedUrl(fileUrl: string, _expiresIn?: number): Promise<string> {
-		// En almacenamiento local, devolvemos la misma URL
-		// Los archivos en /public son públicos por defecto en Next.js
+	async getSignedUrl(
+		fileUrl: string,
+		_expiresIn?: number,
+		scope?: TenantScope,
+	): Promise<string> {
+		// Tenant isolation: embed org+company in path for local storage.
+		if (scope) {
+			const urlObj = new URL(fileUrl);
+			urlObj.pathname = `/${scope.organizationId}/${scope.companyId}${urlObj.pathname}`;
+			return urlObj.toString();
+		}
+
+		// In local storage, files in /public are public by default for Next.js
 		return fileUrl;
 	}
 }

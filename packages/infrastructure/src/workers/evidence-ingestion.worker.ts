@@ -1,6 +1,7 @@
 import { Evidence } from "@drenyra/domain";
 import type { EvidenceRepository } from "@drenyra/domain/repositories/evidence.repository";
 import type { EvidenceClassifierAgent } from "../ai/evidence-classifier";
+import { validateWorkerScope } from "./scope-validator";
 
 export interface DocumentIngestionEvent {
 	documentId: string;
@@ -28,6 +29,9 @@ export class EvidenceIngestionWorker {
 	) {}
 
 	async processEvent(event: DocumentIngestionEvent): Promise<IngestionResult> {
+		// Perimeter security: validate scope before any business logic
+		validateWorkerScope(event as unknown as Record<string, unknown>, "tenant");
+
 		const timestamp = new Date();
 
 		const evidence = Evidence.create({

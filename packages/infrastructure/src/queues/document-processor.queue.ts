@@ -19,6 +19,7 @@ import { getRedisConnection, isRedisConfigured } from "./redis";
  * ```
  */
 export interface DocumentJobData {
+	organizationId: string;
 	companyId: string;
 	documentId: string;
 	fileUrl: string;

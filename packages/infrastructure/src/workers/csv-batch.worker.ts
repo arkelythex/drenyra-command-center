@@ -9,6 +9,7 @@ import type {
 	CsvBatchResult,
 } from "../queues/csv-batch.queue";
 import { getRedisConnection, isRedisConfigured } from "../queues/redis";
+import { validateWorkerScope } from "./scope-validator";
 
 const CSV_BATCH_QUEUE = "csv-batch-agent";
 const logger = loggers.worker;
@@ -16,6 +17,12 @@ const logger = loggers.worker;
 async function processBatch(
 	job: Job<CsvBatchJobData>,
 ): Promise<CsvBatchResult> {
+	// Perimeter security: validate scope before any business logic
+	validateWorkerScope(
+		{ organizationId: String(job.data.orgId), companyId: job.data.companyId },
+		"tenant",
+	);
+
 	const results: CsvBatchResult["results"] = [];
 
 	for (const row of job.data.rows) {

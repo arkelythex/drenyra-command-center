@@ -7,6 +7,7 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import type {
 	IStorageService,
+	TenantScope,
 	UploadOptions,
 } from "@drenyra/application/ports/storage.port";
 import { StorageError } from "@drenyra/shared/errors";
@@ -96,9 +97,20 @@ export class R2StorageService implements IStorageService {
 		}
 	}
 
-	async getSignedUrl(fileUrl: string, expiresIn = 3600): Promise<string> {
+	async getSignedUrl(
+		fileUrl: string,
+		expiresIn = 3600,
+		scope?: TenantScope,
+	): Promise<string> {
 		try {
-			const key = this.extractKeyFromUrl(fileUrl);
+			let key = this.extractKeyFromUrl(fileUrl);
+
+			// Tenant isolation: scope-bound signed URLs include org+company in key path.
+			// A signed URL for tenant A cannot access tenant B's files because
+			// the S3 presigned signature is bound to the full key path.
+			if (scope) {
+				key = `${scope.organizationId}/${scope.companyId}/${key}`;
+			}
 
 			const command = new GetObjectCommand({
 				Bucket: this.bucketName,

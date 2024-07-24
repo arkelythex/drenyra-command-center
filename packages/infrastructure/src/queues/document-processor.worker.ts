@@ -20,6 +20,7 @@ import type {
 	DocumentJobResult,
 } from "./document-processor.queue";
 import { getRedisConnection, isRedisConfigured } from "./redis";
+import { validateWorkerScope } from "../workers/scope-validator";
 
 let worker: Worker<DocumentJobData, DocumentJobResult> | null = null;
 
@@ -52,6 +53,7 @@ function isSafeRemoteUrl(value: string): boolean {
 }
 
 const documentFetchSchema = z.object({
+	organizationId: z.string().min(1),
 	companyId: z.string().min(1),
 	documentId: z.string().min(1),
 	fileUrl: z.string().url().refine(isSafeRemoteUrl, {
@@ -68,8 +70,14 @@ async function processDocument(
 	job: Job<DocumentJobData>,
 ): Promise<DocumentJobResult> {
 	const startTime = Date.now();
-	const { companyId, documentId, fileUrl, fileType, fileName } =
+	const { organizationId, companyId, documentId, fileUrl, fileType, fileName } =
 		documentFetchSchema.parse(job.data);
+
+	// Perimeter security: validate scope before any business logic
+	validateWorkerScope(
+		{ organizationId, companyId },
+		"tenant",
+	);
 
 	loggers.worker.info("Processing document", { documentId, fileType });
 

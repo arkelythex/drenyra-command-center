@@ -380,6 +380,13 @@ export async function addEmailJob(
 export async function addReportJob(
 	data: ReportJobData,
 ): Promise<Job<ReportJobData>> {
+	// Perimeter security: validate tenant scope before queuing
+	if (!data.organizationId || !data.companyId) {
+		throw new Error(
+			"Report job requires organizationId and companyId for tenant isolation",
+		);
+	}
+
 	return reportQueue.add("generate", data, {
 		jobId: `report-${data.reportType}-${data.organizationId}-${Date.now()}`,
 	});
