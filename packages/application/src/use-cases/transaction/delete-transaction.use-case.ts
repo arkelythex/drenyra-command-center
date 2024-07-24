@@ -76,10 +76,14 @@ export class DeleteTransactionUseCase {
 				};
 			}
 
-			// Fetch existing transaction
+			// Fetch existing transaction with tenant scope
+			const scope: TenantScope = {
+				organizationId: String(organizationId),
+				companyId: input.companyId ?? "",
+			};
 			const existing = await this.transactionRepository.findById(
+				scope,
 				id,
-				organizationId,
 			);
 
 			if (!existing) {

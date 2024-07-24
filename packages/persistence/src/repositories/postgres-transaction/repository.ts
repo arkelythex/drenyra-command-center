@@ -5,6 +5,7 @@ import type {
 	TransactionFilters,
 	TransactionRepository,
 } from "@drenyra/domain/repositories/transaction.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import {
 	and,
@@ -76,7 +77,7 @@ export class PostgresTransactionRepository implements TransactionRepository {
 		transaction: Transaction,
 		organizationId: number,
 	): Promise<void> {
-		const existing = await this.findById(transaction.id, organizationId);
+		const existing = await this._findByIdLegacy(transaction.id, organizationId);
 
 		if (!existing) {
 			throw new Error(`Transacción ${transaction.id} no encontrada`);
@@ -122,7 +123,7 @@ export class PostgresTransactionRepository implements TransactionRepository {
 	}
 
 	async delete(id: string, organizationId: number): Promise<void> {
-		const existing = await this.findById(id, organizationId);
+		const existing = await this._findByIdLegacy(id, organizationId);
 
 		if (!existing) {
 			throw new Error(`Transacción ${id} no encontrada`);
@@ -145,6 +146,34 @@ export class PostgresTransactionRepository implements TransactionRepository {
 	}
 
 	async findById(
+		scope: TenantScope,
+		id: string,
+	): Promise<Transaction | null> {
+		// Resolve companyId from scope or fallback to organizationId resolution
+		let companyId = scope.companyId;
+		if (!companyId) {
+			companyId = await resolveCompanyIdFromOrganization(
+				Number.parseInt(scope.organizationId, 10),
+			);
+		}
+
+		const rows = await db
+			.select()
+			.from(transactions)
+			.where(
+				and(
+					eq(transactions.id, toStableUuid(id)),
+					eq(transactions.companyId, companyId),
+				),
+			)
+			.limit(1);
+
+		if (rows.length === 0) return null;
+
+		return this.mapToDomain(rows[0]);
+	}
+
+	async _findByIdLegacy(
 		id: string,
 		organizationId: number,
 	): Promise<Transaction | null> {

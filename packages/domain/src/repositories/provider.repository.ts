@@ -99,7 +99,12 @@ export interface ProviderRepository {
 	save(data: CreateProviderDTO): Promise<Provider>;
 	update(id: string, data: UpdateProviderDTO): Promise<Provider>;
 	delete(id: string): Promise<void>;
-	findById(id: string): Promise<Provider | null>;
+
+	/**
+	 * Find a provider by ID within the given tenant scope.
+	 * Enforces tenant isolation by filtering on companyId from the scope.
+	 */
+	findById(scope: import("../scope").TenantScope, id: string): Promise<Provider | null>;
 	findAll(
 		organizationId: number,
 		filters?: ProviderFilters,

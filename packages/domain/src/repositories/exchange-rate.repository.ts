@@ -6,10 +6,16 @@
  */
 
 import type { ExchangeRate } from "../accounting/exchange-rate";
+import type { TenantScope } from "../scope";
 
 export interface ExchangeRateRepository {
 	save(rate: ExchangeRate, companyId: string): Promise<void>;
-	findById(id: string): Promise<ExchangeRate | null>;
+
+	/**
+	 * Find an exchange rate by ID within the given tenant scope.
+	 * Enforces tenant isolation by filtering on companyId from the scope.
+	 */
+	findById(scope: TenantScope, id: string): Promise<ExchangeRate | null>;
 	findByDateAndCurrency(
 		companyId: string,
 		date: Date,

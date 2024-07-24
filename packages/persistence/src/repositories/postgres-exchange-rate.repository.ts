@@ -6,6 +6,7 @@
 
 import { ExchangeRate } from "@drenyra/domain/accounting/exchange-rate";
 import type { ExchangeRateRepository } from "@drenyra/domain/repositories/exchange-rate.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { db } from "@drenyra/persistence/client";
 import { exchangeRates } from "@drenyra/persistence/schema";
 import { randomUUID } from "crypto";
@@ -39,16 +40,26 @@ export class PostgresExchangeRateRepository implements ExchangeRateRepository {
 		});
 	}
 
-	async findById(id: string): Promise<ExchangeRate | null> {
+	async findById(
+		scope: TenantScope,
+		id: string,
+	): Promise<ExchangeRate | null> {
 		const result = await db
 			.select()
 			.from(exchangeRates)
-			.where(eq(exchangeRates.id, id))
+			.where(
+				and(
+					eq(exchangeRates.id, id),
+					eq(exchangeRates.companyId, scope.companyId),
+				),
+			)
 			.limit(1);
 
 		if (!result[0]) return null;
 		return this.mapToDomain(result[0]);
 	}
+
+
 
 	async findByDateAndCurrency(
 		companyId: string,

@@ -106,7 +106,12 @@ export interface ClientRepository {
 	save(data: CreateClientDTO): Promise<Client>;
 	update(id: string, data: UpdateClientDTO): Promise<Client>;
 	delete(id: string): Promise<void>;
-	findById(id: string): Promise<Client | null>;
+
+	/**
+	 * Find a client by ID within the given tenant scope.
+	 * Enforces tenant isolation by filtering on companyId from the scope.
+	 */
+	findById(scope: import("../scope").TenantScope, id: string): Promise<Client | null>;
 	findAll(organizationId: number, filters?: ClientFilters): Promise<Client[]>;
 	count(organizationId: number, filters?: ClientFilters): Promise<number>;
 	findByDocumentNumber(

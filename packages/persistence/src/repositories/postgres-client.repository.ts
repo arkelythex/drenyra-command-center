@@ -16,6 +16,7 @@ import type {
 	CreateClientDTO,
 	UpdateClientDTO,
 } from "@drenyra/domain/repositories/client.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { randomUUID } from "crypto";
 import { and, eq, ilike, like, sql } from "drizzle-orm";
 import { db } from "../client";
@@ -127,16 +128,36 @@ export class PostgresClientRepository implements ClientRepository {
 		await db.delete(businessPartners).where(eq(businessPartners.id, id));
 	}
 
-	async findById(id: string): Promise<Client | null> {
-		const context = await this.findClientContext(id);
-		if (!context) return null;
+	async findById(
+		scope: TenantScope,
+		id: string,
+	): Promise<Client | null> {
+		const rows = await db
+			.select({ partner: businessPartners, profile: customerProfiles })
+			.from(customerProfiles)
+			.innerJoin(businessPartners, eq(customerProfiles.id, businessPartners.id))
+			.where(
+				and(
+					eq(businessPartners.id, id),
+					eq(businessPartners.companyId, scope.companyId),
+				),
+			)
+			.limit(1);
+
+		if (rows.length === 0) return null;
+
+		const organizationId = await resolveOrganizationIdFromCompany(
+			rows[0].partner.companyId,
+		);
 
 		return this.mapToClient(
-			context.partner,
-			context.profile,
-			context.organizationId,
+			rows[0].partner,
+			rows[0].profile,
+			organizationId,
 		);
 	}
+
+
 
 	async findAll(
 		organizationId: number,

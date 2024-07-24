@@ -67,10 +67,14 @@ export class GetTransactionUseCase {
 				};
 			}
 
-			// Fetch transaction
+			// Fetch transaction with tenant scope
+			const scope: TenantScope = {
+				organizationId: String(organizationId),
+				companyId: input.companyId ?? "",
+			};
 			const transaction = await this.transactionRepository.findById(
+				scope,
 				id,
-				organizationId,
 			);
 
 			if (!transaction) {

@@ -16,6 +16,7 @@ import type {
 	ProviderRepository,
 	UpdateProviderDTO,
 } from "@drenyra/domain/repositories/provider.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { randomUUID } from "crypto";
 import { and, eq, ilike, like, sql } from "drizzle-orm";
 import { db } from "../client";
@@ -119,16 +120,36 @@ export class PostgresProviderRepository implements ProviderRepository {
 		await db.delete(businessPartners).where(eq(businessPartners.id, id));
 	}
 
-	async findById(id: string): Promise<Provider | null> {
-		const context = await this.findProviderContext(id);
-		if (!context) return null;
+	async findById(
+		scope: TenantScope,
+		id: string,
+	): Promise<Provider | null> {
+		const rows = await db
+			.select({ partner: businessPartners, profile: vendorProfiles })
+			.from(vendorProfiles)
+			.innerJoin(businessPartners, eq(vendorProfiles.id, businessPartners.id))
+			.where(
+				and(
+					eq(businessPartners.id, id),
+					eq(businessPartners.companyId, scope.companyId),
+				),
+			)
+			.limit(1);
+
+		if (rows.length === 0) return null;
+
+		const organizationId = await resolveOrganizationIdFromCompany(
+			rows[0].partner.companyId,
+		);
 
 		return this.mapToProvider(
-			context.partner,
-			context.profile,
-			context.organizationId,
+			rows[0].partner,
+			rows[0].profile,
+			organizationId,
 		);
 	}
+
+
 
 	async findAll(
 		organizationId: number,

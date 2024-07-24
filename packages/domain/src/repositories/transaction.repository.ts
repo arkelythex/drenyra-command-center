@@ -104,12 +104,18 @@ export interface TransactionRepository {
 	delete(id: string, organizationId: number): Promise<void>;
 
 	/**
-	 * Busca una transacción por su ID.
+	 * Busca una transacción por su ID dentro del tenant scope.
+	 * Enforces tenant isolation by filtering on companyId from the scope.
+	 * @param scope - TenantScope con organizationId y companyId.
 	 * @param id - El ID de la transacción.
-	 * @param organizationId - ID de la organización.
 	 * @returns La entidad transacción si existe, o null si no.
 	 */
-	findById(id: string, organizationId: number): Promise<Transaction | null>;
+	findById(scope: import("../scope").TenantScope, id: string): Promise<Transaction | null>;
+
+	/**
+	 * @deprecated Use findById(scope, id) instead.
+	 */
+	_findByIdLegacy(id: string, organizationId: number): Promise<Transaction | null>;
 
 	/**
 	 * Busca una transacción por su número de referencia.
