@@ -6,10 +6,16 @@
  */
 
 import type { AccountingPeriod } from "../accounting/accounting-period";
+import type { TenantScope } from "../scope";
 
 export interface AccountingPeriodRepository {
 	save(period: AccountingPeriod, companyId: string): Promise<void>;
-	findById(id: string): Promise<AccountingPeriod | null>;
+
+	/**
+	 * Find an accounting period by ID within the given tenant scope.
+	 * Enforces tenant isolation by filtering on companyId from the scope.
+	 */
+	findById(scope: TenantScope, id: string): Promise<AccountingPeriod | null>;
 	findByCompanyAndPeriod(
 		companyId: string,
 		year: number,

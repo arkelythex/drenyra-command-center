@@ -6,6 +6,7 @@
 
 import { AccountingPeriod } from "@drenyra/domain/accounting/accounting-period";
 import type { AccountingPeriodRepository } from "@drenyra/domain/repositories/accounting-period.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { db } from "@drenyra/persistence/client";
 import { accountingPeriods } from "@drenyra/persistence/schema";
 import { randomUUID } from "crypto";
@@ -26,16 +27,26 @@ export class PostgresAccountingPeriodRepository
 		});
 	}
 
-	async findById(id: string): Promise<AccountingPeriod | null> {
+	async findById(
+		scope: TenantScope,
+		id: string,
+	): Promise<AccountingPeriod | null> {
 		const result = await db
 			.select()
 			.from(accountingPeriods)
-			.where(eq(accountingPeriods.id, id))
+			.where(
+				and(
+					eq(accountingPeriods.id, id),
+					eq(accountingPeriods.companyId, scope.companyId),
+				),
+			)
 			.limit(1);
 
 		if (!result[0]) return null;
 		return this.mapToDomain(result[0]);
 	}
+
+
 
 	async findByCompanyAndPeriod(
 		companyId: string,

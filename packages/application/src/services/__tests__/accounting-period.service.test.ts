@@ -7,6 +7,7 @@ import {
 	InvalidAccountingPeriodError,
 } from "@drenyra/domain/accounting/accounting-period";
 import type { AccountingPeriodRepository } from "@drenyra/domain/repositories/accounting-period.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import { AccountingPeriodService } from "../accounting-period.service";
 
@@ -15,6 +16,10 @@ describe("AccountingPeriodService", () => {
 	let mockRepo: { [K in keyof AccountingPeriodRepository]: Mock };
 
 	const mockCompanyId = "550e8400-e29b-41d4-a716-446655440000";
+	const mockScope: TenantScope = {
+		organizationId: "org-test-001",
+		companyId: mockCompanyId,
+	};
 
 	beforeEach(() => {
 		mockRepo = {
@@ -78,7 +83,7 @@ describe("AccountingPeriodService", () => {
 			const openPeriod = AccountingPeriod.create(2025, 1, "abierto");
 			mockRepo.findById.mockResolvedValue(openPeriod);
 
-			const closed = await service.closePeriod("test-id", "parcial");
+			const closed = await service.closePeriod(mockScope, "test-id", "parcial");
 
 			expect(closed.status).toBe("cerrado_parcial");
 			expect(mockRepo.save).toHaveBeenCalledTimes(1);
@@ -88,7 +93,7 @@ describe("AccountingPeriodService", () => {
 			const openPeriod = AccountingPeriod.create(2025, 1, "abierto");
 			mockRepo.findById.mockResolvedValue(openPeriod);
 
-			const closed = await service.closePeriod("test-id", "final");
+			const closed = await service.closePeriod(mockScope, "test-id", "final");
 
 			expect(closed.status).toBe("cerrado_final");
 			expect(mockRepo.save).toHaveBeenCalledTimes(1);
@@ -98,12 +103,12 @@ describe("AccountingPeriodService", () => {
 			mockRepo.findById.mockResolvedValue(null);
 
 			await expect(
-				service.closePeriod("non-existent", "final"),
+				service.closePeriod(mockScope, "non-existent", "final"),
 			).rejects.toThrow("not found");
 		});
 
 		it("should throw for empty period ID", async () => {
-			await expect(service.closePeriod("", "final")).rejects.toThrow(
+			await expect(service.closePeriod(mockScope, "", "final")).rejects.toThrow(
 				"Period ID is required",
 			);
 		});
@@ -113,7 +118,7 @@ describe("AccountingPeriodService", () => {
 			mockRepo.findById.mockResolvedValue(auditedPeriod);
 
 			await expect(
-				service.closePeriod("audited-id", "final"),
+				service.closePeriod(mockScope, "audited-id", "final"),
 			).rejects.toThrow();
 		});
 	});

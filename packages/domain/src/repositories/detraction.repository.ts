@@ -6,10 +6,16 @@
  */
 
 import type { Detraccion, DetraccionStatus } from "../accounting/detraccion";
+import type { TenantScope } from "../scope";
 
 export interface DetractionRepository {
 	save(detraction: Detraccion, companyId: string): Promise<void>;
-	findById(id: string): Promise<Detraccion | null>;
+
+	/**
+	 * Find a detraction by ID within the given tenant scope.
+	 * Enforces tenant isolation by filtering on companyId from the scope.
+	 */
+	findById(scope: TenantScope, id: string): Promise<Detraccion | null>;
 	findByReference(
 		referenceType: string,
 		referenceId: string,

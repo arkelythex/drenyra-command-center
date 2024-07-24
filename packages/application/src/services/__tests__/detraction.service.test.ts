@@ -7,6 +7,7 @@ import {
 	InvalidDetraccionError,
 } from "@drenyra/domain/accounting/detraccion";
 import type { DetractionRepository } from "@drenyra/domain/repositories/detraction.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
@@ -21,6 +22,10 @@ describe("DetractionService", () => {
 
 	const mockCompanyId = "aa0e8400-e29b-41d4-a716-44665544000a";
 	const mockDetractionId = "bb0e8400-e29b-41d4-a716-44665544000b";
+	const mockScope: TenantScope = {
+		organizationId: "org-test-001",
+		companyId: mockCompanyId,
+	};
 
 	function createValidDTO(
 		overrides: Partial<RegisterDetractionDTO> = {},
@@ -145,6 +150,7 @@ describe("DetractionService", () => {
 			};
 
 			const updated = await service.recordDeposit(
+				mockScope,
 				mockDetractionId,
 				depositInfo,
 			);
@@ -157,13 +163,13 @@ describe("DetractionService", () => {
 			mockRepo.findById.mockResolvedValue(null);
 
 			await expect(
-				service.recordDeposit("non-existent", {} as DepositInfo),
+				service.recordDeposit(mockScope, "non-existent", {} as DepositInfo),
 			).rejects.toThrow(InvalidDetraccionError);
 		});
 
 		it("should throw for empty detraction ID", async () => {
 			await expect(
-				service.recordDeposit("", {} as DepositInfo),
+				service.recordDeposit(mockScope, "", {} as DepositInfo),
 			).rejects.toThrow(InvalidDetraccionError);
 		});
 
@@ -177,7 +183,7 @@ describe("DetractionService", () => {
 			);
 			mockRepo.findById.mockResolvedValue(detraction);
 
-			await service.recordDeposit(mockDetractionId, {} as DepositInfo);
+			await service.recordDeposit(mockScope, mockDetractionId, {} as DepositInfo);
 			// Can't deposit again — domain entity is immutable but the mock
 			// returns the original "pendiente" entity each time.
 			// The transition guard within the domain entity handles this.
@@ -193,7 +199,7 @@ describe("DetractionService", () => {
 			// Since the domain entity is still "pendiente", it will allow the transition.
 			// This test verifies the domain allows the state transition.
 			await expect(
-				service.recordDeposit(mockDetractionId, depositInfo),
+				service.recordDeposit(mockScope, mockDetractionId, depositInfo),
 			).resolves.toBeDefined();
 		});
 	});

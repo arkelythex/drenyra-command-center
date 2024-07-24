@@ -9,6 +9,7 @@ import {
 	InvalidDetraccionError,
 } from "@drenyra/domain/accounting/detraccion";
 import type { DetractionRepository } from "@drenyra/domain/repositories/detraction.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import type { Currency } from "@drenyra/domain/types/currency";
 import { Money } from "@drenyra/domain/value-objects/Money";
 
@@ -91,6 +92,7 @@ export class DetractionService {
 	 * @throws InvalidDetraccionError when the detraction does not exist or cannot transition.
 	 */
 	async recordDeposit(
+		scope: TenantScope,
 		detractionId: string,
 		_depositInfo: DepositInfo,
 	): Promise<Detraccion> {
@@ -98,7 +100,7 @@ export class DetractionService {
 			throw new InvalidDetraccionError("id", "Detraction ID is required");
 		}
 
-		const detraction = await this.detractionRepo.findById(detractionId);
+		const detraction = await this.detractionRepo.findById(scope, detractionId);
 		if (!detraction) {
 			throw new InvalidDetraccionError(
 				"id",

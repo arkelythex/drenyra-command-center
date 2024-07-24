@@ -4,6 +4,7 @@
 
 import { CPELog, InvalidCPELogError } from "@drenyra/domain/accounting/cpe-log";
 import type { CpeLogRepository } from "@drenyra/domain/repositories/cpe-log.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
 	CpeTrackingService,
@@ -17,6 +18,10 @@ describe("CpeTrackingService", () => {
 	const mockCompanyId = "770e8400-e29b-41d4-a716-446655440002";
 	const mockInvoiceId = "880e8400-e29b-41d4-a716-446655440003";
 	const mockCpeLogId = "990e8400-e29b-41d4-a716-446655440004";
+	const mockScope: TenantScope = {
+		organizationId: "org-test-001",
+		companyId: mockCompanyId,
+	};
 
 	beforeEach(() => {
 		mockRepo = {
@@ -79,8 +84,8 @@ describe("CpeTrackingService", () => {
 			mockRepo.findById.mockResolvedValue(cpeLog);
 
 			const updated = await service.submitCPE(
+				mockScope,
 				mockCpeLogId,
-				mockCompanyId,
 				"TICKET-001",
 				"abc123hash",
 			);
@@ -100,7 +105,7 @@ describe("CpeTrackingService", () => {
 			mockRepo.findById.mockResolvedValue(null);
 
 			await expect(
-				service.submitCPE("non-existent", mockCompanyId, "TICKET", "hash"),
+				service.submitCPE(mockScope, "non-existent", "TICKET", "hash"),
 			).rejects.toThrow(InvalidCPELogError);
 		});
 
@@ -109,7 +114,7 @@ describe("CpeTrackingService", () => {
 			mockRepo.findById.mockResolvedValue(cpeLog);
 
 			await expect(
-				service.submitCPE(mockCpeLogId, mockCompanyId, "", "hash"),
+				service.submitCPE(mockScope, mockCpeLogId, "", "hash"),
 			).rejects.toThrow(InvalidCPELogError);
 		});
 
@@ -120,8 +125,8 @@ describe("CpeTrackingService", () => {
 
 			// First submission works
 			await service.submitCPE(
+				mockScope,
 				mockCpeLogId,
-				mockCompanyId,
 				"TICKET-001",
 				"hash1",
 			);
@@ -137,7 +142,7 @@ describe("CpeTrackingService", () => {
 			// This test verifies the domain accepts the transition.
 			// For the actual guard, a submitted entity would need to be loaded.
 			await expect(
-				service.submitCPE(mockCpeLogId, mockCompanyId, "TICKET-002", "hash2"),
+				service.submitCPE(mockScope, mockCpeLogId, "TICKET-002", "hash2"),
 			).resolves.toBeDefined();
 		});
 	});

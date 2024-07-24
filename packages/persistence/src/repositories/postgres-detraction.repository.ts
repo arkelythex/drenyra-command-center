@@ -9,6 +9,7 @@ import {
 	type DetraccionStatus,
 } from "@drenyra/domain/accounting/detraccion";
 import type { DetractionRepository } from "@drenyra/domain/repositories/detraction.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { db } from "@drenyra/persistence/client";
 import { detractions } from "@drenyra/persistence/schema";
 import { and, between, eq, sql } from "drizzle-orm";
@@ -26,16 +27,26 @@ export class PostgresDetractionRepository implements DetractionRepository {
 		});
 	}
 
-	async findById(id: string): Promise<Detraccion | null> {
+	async findById(
+		scope: TenantScope,
+		id: string,
+	): Promise<Detraccion | null> {
 		const result = await db
 			.select()
 			.from(detractions)
-			.where(eq(detractions.id, id))
+			.where(
+				and(
+					eq(detractions.id, id),
+					eq(detractions.companyId, scope.companyId),
+				),
+			)
 			.limit(1);
 
 		if (!result[0]) return null;
 		return this.mapToDomain(result[0]);
 	}
+
+
 
 	async findByReference(
 		referenceType: string,

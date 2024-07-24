@@ -9,6 +9,7 @@ import {
 	InvalidAccountingPeriodError,
 } from "@drenyra/domain/accounting/accounting-period";
 import type { AccountingPeriodRepository } from "@drenyra/domain/repositories/accounting-period.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 
 export interface OpenPeriodDTO {
 	companyId: string;
@@ -70,6 +71,7 @@ export class AccountingPeriodService {
 	 * Validates the state transition via the domain entity.
 	 */
 	async closePeriod(
+		scope: TenantScope,
 		periodId: string,
 		type: "parcial" | "final",
 	): Promise<AccountingPeriod> {
@@ -77,7 +79,7 @@ export class AccountingPeriodService {
 			throw new Error("Period ID is required");
 		}
 
-		const period = await this.periodRepo.findById(periodId);
+		const period = await this.periodRepo.findById(scope, periodId);
 		if (!period) {
 			throw new Error(`Accounting period not found: ${periodId}`);
 		}

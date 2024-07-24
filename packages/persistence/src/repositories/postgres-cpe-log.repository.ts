@@ -6,6 +6,7 @@
 
 import { CPELog, type SunatStatus } from "@drenyra/domain/accounting/cpe-log";
 import type { CpeLogRepository } from "@drenyra/domain/repositories/cpe-log.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { db } from "@drenyra/persistence/client";
 import { cpeLog } from "@drenyra/persistence/schema";
 import { and, between, eq, sql } from "drizzle-orm";
@@ -40,16 +41,23 @@ export class PostgresCpeLogRepository implements CpeLogRepository {
 		});
 	}
 
-	async findById(id: string): Promise<CPELog | null> {
+	async findById(
+		scope: TenantScope,
+		id: string,
+	): Promise<CPELog | null> {
 		const result = await db
 			.select()
 			.from(cpeLog)
-			.where(eq(cpeLog.id, id))
+			.where(
+				and(eq(cpeLog.id, id), eq(cpeLog.companyId, scope.companyId)),
+			)
 			.limit(1);
 
 		if (!result[0]) return null;
 		return this.mapToDomain(result[0]);
 	}
+
+
 
 	async findByInvoiceId(invoiceId: string): Promise<CPELog | null> {
 		const result = await db

@@ -10,6 +10,7 @@ import {
 	type SunatStatus,
 } from "@drenyra/domain/accounting/cpe-log";
 import type { CpeLogRepository } from "@drenyra/domain/repositories/cpe-log.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 
 export interface RegisterCPEDTO {
 	id: string;
@@ -48,13 +49,13 @@ export class CpeTrackingService {
 	 * When ticket is provided, it transitions to "enviado".
 	 */
 	async submitCPE(
+		scope: TenantScope,
 		id: string,
-		_companyId: string,
 		ticket: string,
 		hashValue: string,
 		hashAlgorithm?: string,
 	): Promise<CPELog> {
-		const log = await this.cpeLogRepo.findById(id);
+		const log = await this.cpeLogRepo.findById(scope, id);
 		if (!log) {
 			throw new InvalidCPELogError("id", `CPE log not found: ${id}`);
 		}

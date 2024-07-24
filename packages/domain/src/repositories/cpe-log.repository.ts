@@ -6,10 +6,16 @@
  */
 
 import type { CPELog, SunatStatus } from "../accounting/cpe-log";
+import type { TenantScope } from "../scope";
 
 export interface CpeLogRepository {
 	save(log: CPELog, companyId: string): Promise<void>;
-	findById(id: string): Promise<CPELog | null>;
+
+	/**
+	 * Find a CPE log by ID within the given tenant scope.
+	 * Enforces tenant isolation by filtering on companyId from the scope.
+	 */
+	findById(scope: TenantScope, id: string): Promise<CPELog | null>;
 	findByInvoiceId(invoiceId: string): Promise<CPELog | null>;
 	findByCompanyAndPeriod(
 		companyId: string,
