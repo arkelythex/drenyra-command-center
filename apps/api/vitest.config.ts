@@ -121,6 +121,14 @@ export default defineConfig({
 				replacement: path.resolve(__dirname, "../../packages/domain/src"),
 			},
 			{
+				find: "@drenyra/shared",
+				replacement: path.resolve(__dirname, "../../packages/shared/src"),
+			},
+			{
+				find: "@drenyra/persistence",
+				replacement: path.resolve(__dirname, "../../packages/persistence/src"),
+			},
+			{
 				find: "@drenyra/infrastructure",
 				replacement: path.resolve(
 					__dirname,

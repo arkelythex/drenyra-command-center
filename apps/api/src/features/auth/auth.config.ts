@@ -9,6 +9,8 @@ import { type BetterAuthOptions, betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { customSession } from "better-auth/plugins/custom-session";
 import { enrichSessionUserWithCompanyContext } from "./handlers/session-company-context";
+import { oauthAuditHooks } from "./lib/oauth-audit-hooks";
+import { resolveSocialProvidersFromEnv } from "./lib/resolve-social-providers";
 import { resolveTrustedOriginsFromEnv } from "./lib/auth-trusted-origins";
 
 /**
@@ -73,6 +75,8 @@ const authOptions = {
 	emailAndPassword: {
 		enabled: true,
 	},
+	socialProviders: resolveSocialProvidersFromEnv(),
+	databaseHooks: oauthAuditHooks,
 	baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
 	trustedOrigins: resolveTrustedOriginsFromEnv(
 		process.env.BETTER_AUTH_TRUSTED_ORIGINS,
