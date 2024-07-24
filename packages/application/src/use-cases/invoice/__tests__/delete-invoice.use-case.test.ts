@@ -10,7 +10,9 @@ describe("DeleteInvoiceUseCase", () => {
 	beforeEach(() => {
 		mockRepository = {
 			save: vi.fn(),
+			saveForOrganization: vi.fn(),
 			update: vi.fn(),
+			updateForOrganization: vi.fn(),
 			delete: vi.fn(),
 			findById: vi.fn(),
 			findAll: vi.fn(),
@@ -30,7 +32,10 @@ describe("DeleteInvoiceUseCase", () => {
 			await useCase.execute({ id: TEST_IDS.INVOICE_1 });
 
 			// Assert
-			expect(mockRepository.findById).toHaveBeenCalledWith(TEST_IDS.INVOICE_1);
+			expect(mockRepository.findById).toHaveBeenCalledWith(
+				{ organizationId: "", companyId: "" },
+				TEST_IDS.INVOICE_1,
+			);
 			expect(mockRepository.delete).toHaveBeenCalledWith(TEST_IDS.INVOICE_1);
 		});
 

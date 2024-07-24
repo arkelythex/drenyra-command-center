@@ -1,5 +1,6 @@
 import { Invoice, type InvoiceItem } from "@drenyra/domain/entities/Invoice";
 import type { InvoiceRepository } from "@drenyra/domain/repositories/invoice.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { TaxCalculator } from "@drenyra/domain/services/TaxCalculator";
 import { DNI } from "@drenyra/domain/value-objects/DNI";
 import { DocumentSeries } from "@drenyra/domain/value-objects/DocumentSeries";
@@ -27,7 +28,15 @@ export class UpdateInvoiceUseCase {
 	async execute(input: UpdateInvoiceDTO): Promise<void> {
 		const validatedInput = UpdateInvoiceSchema.parse(input);
 
+		const scope: TenantScope = {
+			organizationId: validatedInput.organizationId
+				? String(validatedInput.organizationId)
+				: "",
+			companyId: validatedInput.companyId ?? "",
+		};
+
 		const existingInvoice = await this.invoiceRepository.findById(
+			scope,
 			validatedInput.id,
 		);
 

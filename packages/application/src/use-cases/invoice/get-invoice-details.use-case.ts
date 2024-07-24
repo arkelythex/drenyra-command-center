@@ -1,5 +1,6 @@
 import type { Invoice } from "@drenyra/domain/entities/Invoice";
 import type { InvoiceRepository } from "@drenyra/domain/repositories/invoice.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 
 /**
  * Get Invoice Details Use Case
@@ -15,8 +16,8 @@ import type { InvoiceRepository } from "@drenyra/domain/repositories/invoice.rep
 export class GetInvoiceDetailsUseCase {
 	constructor(private readonly invoiceRepository: InvoiceRepository) {}
 
-	async execute(invoiceId: string): Promise<Invoice> {
-		const invoice = await this.invoiceRepository.findById(invoiceId);
+	async execute(scope: TenantScope, invoiceId: string): Promise<Invoice> {
+		const invoice = await this.invoiceRepository.findById(scope, invoiceId);
 
 		if (!invoice) {
 			throw new Error(`Invoice with ID ${invoiceId} not found`);

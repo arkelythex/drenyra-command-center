@@ -15,7 +15,9 @@ describe("GetInvoiceDetailsUseCase", () => {
 
 		mockRepository = {
 			save: vi.fn(),
+			saveForOrganization: vi.fn(),
 			update: vi.fn(),
+			updateForOrganization: vi.fn(),
 			delete: vi.fn(),
 			findById: vi.fn().mockResolvedValue(sampleInvoice),
 			findAll: vi.fn(),
@@ -25,12 +27,17 @@ describe("GetInvoiceDetailsUseCase", () => {
 		useCase = new GetInvoiceDetailsUseCase(mockRepository);
 	});
 
+	const testScope = {
+		organizationId: "org-1",
+		companyId: "company-1",
+	};
+
 	it("should return invoice when it exists", async () => {
 		// Act
-		const result = await useCase.execute(TEST_IDS.INVOICE_1);
+		const result = await useCase.execute(testScope, TEST_IDS.INVOICE_1);
 
 		// Assert
-		expect(mockRepository.findById).toHaveBeenCalledWith(TEST_IDS.INVOICE_1);
+		expect(mockRepository.findById).toHaveBeenCalledWith(testScope, TEST_IDS.INVOICE_1);
 		expect(result).toBe(sampleInvoice);
 		expect(result.id).toBe(TEST_IDS.INVOICE_1);
 	});
@@ -40,7 +47,7 @@ describe("GetInvoiceDetailsUseCase", () => {
 		mockRepository.findById = vi.fn().mockResolvedValue(null);
 
 		// Act & Assert
-		await expect(useCase.execute(TEST_IDS.NON_EXISTENT)).rejects.toThrow(
+		await expect(useCase.execute(testScope, TEST_IDS.NON_EXISTENT)).rejects.toThrow(
 			"not found",
 		);
 	});
@@ -50,7 +57,7 @@ describe("GetInvoiceDetailsUseCase", () => {
 		mockRepository.findById = vi.fn().mockResolvedValue(null);
 
 		// Act & Assert
-		await expect(useCase.execute("any-id-format")).rejects.toThrow("not found");
+		await expect(useCase.execute(testScope, "any-id-format")).rejects.toThrow("not found");
 	});
 });
 
@@ -78,7 +85,9 @@ describe("ListInvoicesUseCase", () => {
 
 		mockRepository = {
 			save: vi.fn(),
+			saveForOrganization: vi.fn(),
 			update: vi.fn(),
+			updateForOrganization: vi.fn(),
 			delete: vi.fn(),
 			findById: vi.fn(),
 			findAll: vi.fn().mockResolvedValue(sampleInvoices),

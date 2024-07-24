@@ -10,6 +10,7 @@
 export interface UpdateInvoiceDTO {
 	id: string;
 	organizationId?: number;
+	companyId?: string;
 	series?: string;
 	number?: number;
 	dueDate?: Date;

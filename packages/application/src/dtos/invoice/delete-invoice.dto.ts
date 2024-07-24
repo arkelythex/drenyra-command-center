@@ -9,5 +9,7 @@
  */
 export interface DeleteInvoiceDTO {
 	id: string;
+	organizationId?: string;
+	companyId?: string;
 	reason?: string; // Optional reason for audit trail
 }

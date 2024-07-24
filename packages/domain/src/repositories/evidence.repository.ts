@@ -22,7 +22,10 @@ export interface EvidenceRepository {
 
 	deleteForOrganization(id: string, organizationId: number): Promise<void>;
 
-	findById(id: string): Promise<Evidence | null>;
+	findById(
+		scope: import("../scope").TenantScope,
+		id: string,
+	): Promise<Evidence | null>;
 
 	findForOrganization(
 		id: string,

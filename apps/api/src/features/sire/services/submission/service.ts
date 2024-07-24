@@ -1,5 +1,6 @@
 import { randomBytes } from "node:crypto";
 import { sireSubmissionRepository } from "@drenyra/persistence/repositories/sire-submission.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { createLogger } from "../../../../lib/logger";
 import {
 	type SireSubmissionResult,
@@ -125,10 +126,10 @@ export const submitWithAudit = async (
 ): Promise<SireSubmissionResult> => {
 	const idempotencyKey = buildIdempotencyKey(input);
 
+	const scope: TenantScope = { organizationId: "", companyId: input.companyId };
+
 	const existingSubmission =
-		await sireSubmissionRepository.findByIdempotencyKey(idempotencyKey, {
-			companyId: input.companyId,
-		});
+		await sireSubmissionRepository.findByIdempotencyKey(scope, idempotencyKey);
 
 	if (existingSubmission) {
 		logger.info(
@@ -247,7 +248,7 @@ export const submitWithAudit = async (
 		);
 
 		if (auditRecord) {
-			await sireSubmissionRepository.update(auditRecord.id, {
+			await sireSubmissionRepository.update(scope, auditRecord.id, {
 				status:
 					result.status === "ACCEPTED" || result.status === "SIMULATED"
 						? "ACCEPTED"
@@ -305,7 +306,7 @@ export const submitWithAudit = async (
 			const nextRetryMinutes = 2 ** attemptNumber;
 			const nextRetryAt = new Date(Date.now() + nextRetryMinutes * 60 * 1000);
 
-			await sireSubmissionRepository.update(auditRecord.id, {
+			await sireSubmissionRepository.update(scope, auditRecord.id, {
 				status: "FAILED",
 				sunatMessage: errorMessage,
 				errors: {
@@ -349,9 +350,11 @@ export const logBlockedSubmissionAttempt = async (
 	const idempotencyKey = buildIdempotencyKey(input);
 	const provider = resolveProvider();
 
+	const blockedScope: TenantScope = { organizationId: "", companyId: input.companyId };
+
 	let submission = await sireSubmissionRepository.findByIdempotencyKey(
+		blockedScope,
 		idempotencyKey,
-		{ companyId: input.companyId },
 	);
 
 	if (!submission) {
@@ -370,7 +373,7 @@ export const logBlockedSubmissionAttempt = async (
 		});
 	}
 
-	await sireSubmissionRepository.update(submission.id, {
+	await sireSubmissionRepository.update(blockedScope, submission.id, {
 		status: "BLOCKED_POLICY",
 		sunatMessage: message,
 		errors: {

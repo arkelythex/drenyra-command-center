@@ -48,12 +48,9 @@ export interface InvoiceRepository {
 	save(invoice: Invoice): Promise<void>;
 
 	/**
-	 * Tenant-aware write path for repositories backed by multi-tenant storage.
-	 *
-	 * This is additive and optional so legacy implementations can coexist while
-	 * newer adapters migrate to explicit tenant context.
+	 * Tenant-aware write path. REQUIRED for multi-tenant storage.
 	 */
-	saveForOrganization?(invoice: Invoice, organizationId: number): Promise<void>;
+	saveForOrganization(invoice: Invoice, organizationId: number): Promise<void>;
 
 	/**
 	 * Actualiza una factura existente en el repositorio.
@@ -62,9 +59,9 @@ export interface InvoiceRepository {
 	update(invoice: Invoice): Promise<void>;
 
 	/**
-	 * Tenant-aware update path for repositories backed by multi-tenant storage.
+	 * Tenant-aware update path. REQUIRED for multi-tenant storage.
 	 */
-	updateForOrganization?(
+	updateForOrganization(
 		invoice: Invoice,
 		organizationId: number,
 	): Promise<void>;
@@ -76,11 +73,15 @@ export interface InvoiceRepository {
 	delete(id: string): Promise<void>;
 
 	/**
-	 * Busca una factura por su ID.
+	 * Busca una factura por su ID, scoped al tenant.
+	 * @param scope - Tenant scope con companyId.
 	 * @param id - El ID de la factura.
 	 * @returns La entidad factura si existe, o null si no.
 	 */
-	findById(id: string): Promise<Invoice | null>;
+	findById(
+		scope: import("../scope").TenantScope,
+		id: string,
+	): Promise<Invoice | null>;
 
 	/**
 	 * Busca todas las facturas que coincidan con los filtros proporcionados.

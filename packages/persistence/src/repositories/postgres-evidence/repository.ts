@@ -3,6 +3,7 @@ import type {
 	EvidenceFilters,
 	EvidenceRepository,
 } from "@drenyra/domain/repositories/evidence.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { and, eq, gte, lte, type SQL } from "drizzle-orm";
 import { db } from "../../client";
 import { evidence } from "../../schema/evidence.schema";
@@ -116,11 +117,13 @@ export class PostgresEvidenceRepository implements EvidenceRepository {
 			);
 	}
 
-	async findById(id: string): Promise<Evidence | null> {
+	async findById(scope: TenantScope, id: string): Promise<Evidence | null> {
 		const rows = await db
 			.select()
 			.from(evidence)
-			.where(eq(evidence.id, id))
+			.where(
+				and(eq(evidence.id, id), eq(evidence.companyId, scope.companyId)),
+			)
 			.limit(1);
 
 		if (rows.length === 0) {

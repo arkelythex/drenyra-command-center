@@ -24,6 +24,7 @@
 
 import { randomBytes } from "node:crypto";
 import { sireSubmissionRepository } from "@drenyra/persistence/repositories/sire-submission.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { createLogger } from "../../../lib/logger";
 import {
 	type SireSubmissionResult,
@@ -173,12 +174,11 @@ export const submitWithAudit = async (
 ): Promise<SireSubmissionResult> => {
 	// Generate idempotency key if not provided
 	const idempotencyKey = buildIdempotencyKey(input);
+	const scope: TenantScope = { organizationId: "", companyId: input.companyId };
 
 	// Check for existing submission (idempotency)
 	const existingSubmission =
-		await sireSubmissionRepository.findByIdempotencyKey(idempotencyKey, {
-			companyId: input.companyId,
-		});
+		await sireSubmissionRepository.findByIdempotencyKey(scope, idempotencyKey);
 
 	if (existingSubmission) {
 		logger.info(
@@ -304,6 +304,7 @@ export const submitWithAudit = async (
 		// Update audit trail with successful result
 		if (auditRecord) {
 			await sireSubmissionRepository.update(
+				scope,
 				auditRecord.id,
 				{
 					status:
@@ -330,7 +331,6 @@ export const submitWithAudit = async (
 					submittedAt: new Date(result.submittedAt),
 					processedAt: new Date(),
 				},
-				{ companyId: input.companyId },
 			);
 
 			logger.info(
@@ -368,6 +368,7 @@ export const submitWithAudit = async (
 			const nextRetryAt = new Date(Date.now() + nextRetryMinutes * 60 * 1000);
 
 			await sireSubmissionRepository.update(
+				scope,
 				auditRecord.id,
 				{
 					status: "FAILED",
@@ -389,7 +390,6 @@ export const submitWithAudit = async (
 					processedAt: new Date(),
 					nextRetryAt,
 				},
-				{ companyId: input.companyId },
 			);
 
 			logger.warn(
@@ -429,10 +429,11 @@ export const logBlockedSubmissionAttempt = async (
 ): Promise<void> => {
 	const idempotencyKey = buildIdempotencyKey(input);
 	const provider = resolveProvider();
+	const blockedScope: TenantScope = { organizationId: "", companyId: input.companyId };
 
 	let submission = await sireSubmissionRepository.findByIdempotencyKey(
+		blockedScope,
 		idempotencyKey,
-		{ companyId: input.companyId },
 	);
 
 	if (!submission) {
@@ -452,6 +453,7 @@ export const logBlockedSubmissionAttempt = async (
 	}
 
 	await sireSubmissionRepository.update(
+		blockedScope,
 		submission.id,
 		{
 			status: "BLOCKED_POLICY",
@@ -462,6 +464,5 @@ export const logBlockedSubmissionAttempt = async (
 			},
 			processedAt: new Date(),
 		},
-		{ companyId: input.companyId },
 	);
 };

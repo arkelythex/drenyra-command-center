@@ -14,6 +14,7 @@
  */
 
 import { and, count, desc, eq, gte, sql } from "drizzle-orm";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { db } from "../client";
 import { sireSubmissions } from "../schema";
 
@@ -52,16 +53,9 @@ export interface UpdateSubmissionInput {
 }
 
 /**
- * Wave 3A: Canonical scope used for all tenant-owned repository methods.
- */
-export interface SireScope {
-	companyId: string;
-}
-
-/**
  * SireSubmissionRepository class.
  *
- * Wave 3A: All tenant-owned methods now require an explicit `SireScope`.
+ * Wave 4: Tenant-owned methods use TenantScope (scope-first).
  * Methods that do not need scope (e.g. internal retry queries, admin operations)
  * accept an optional scope parameter and skip filtering when omitted.
  */
@@ -94,13 +88,13 @@ export class SireSubmissionRepository {
 	/**
 	 * Find submission by idempotency key, scoped by company.
 	 *
-	 * Wave 3A: Scope-first — companyId filter prevents cross-tenant
-	 * idempotency key leak. The caller must always provide scope.
+	 * Wave 4: Scope-first signature — TenantScope is now the first parameter,
+	 * making scope mandatory and consistent with other Wave 3/4 repositories.
 	 *
 	 * After migration 0026 (UNIQUE(idempotency_key) → UNIQUE(company_id, idempotency_key)),
 	 * different tenants can reuse the same idempotency key without collision.
 	 */
-	async findByIdempotencyKey(idempotencyKey: string, scope: SireScope) {
+	async findByIdempotencyKey(scope: TenantScope, idempotencyKey: string) {
 		const result = await db
 			.select()
 			.from(sireSubmissions)
@@ -117,20 +111,26 @@ export class SireSubmissionRepository {
 
 	/**
 	 * Update submission, scoped by company.
-	 * Wave 3A: companyId filter prevents cross-tenant mutation.
+	 * Wave 4: Scope mandatory and first parameter. companyId filter prevents
+	 * cross-tenant mutation.
 	 */
-	async update(id: string, input: UpdateSubmissionInput, scope?: SireScope) {
-		const conditions = [eq(sireSubmissions.id, id)];
-		if (scope) {
-			conditions.push(eq(sireSubmissions.companyId, scope.companyId));
-		}
+	async update(
+		scope: TenantScope,
+		id: string,
+		input: UpdateSubmissionInput,
+	) {
 		const result = await db
 			.update(sireSubmissions)
 			.set({
 				...input,
 				updatedAt: new Date(),
 			})
-			.where(and(...conditions))
+			.where(
+				and(
+					eq(sireSubmissions.id, id),
+					eq(sireSubmissions.companyId, scope.companyId),
+				),
+			)
 			.returning();
 
 		return result[0];

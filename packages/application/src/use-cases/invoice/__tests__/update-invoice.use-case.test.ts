@@ -34,7 +34,10 @@ describe("UpdateInvoiceUseCase", () => {
 			await useCase.execute(updates);
 
 			// Assert
-			expect(mockRepository.findById).toHaveBeenCalledWith(TEST_IDS.INVOICE_1);
+			expect(mockRepository.findById).toHaveBeenCalledWith(
+				{ organizationId: "", companyId: "" },
+				TEST_IDS.INVOICE_1,
+			);
 			expect(mockRepository.update).toHaveBeenCalled();
 		});
 

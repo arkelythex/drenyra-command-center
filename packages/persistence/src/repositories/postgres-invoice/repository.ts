@@ -3,6 +3,7 @@ import type {
 	InvoiceFilters,
 	InvoiceRepository,
 } from "@drenyra/domain/repositories/invoice.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { DNI } from "@drenyra/domain/value-objects/DNI";
 import { DocumentSeries } from "@drenyra/domain/value-objects/DocumentSeries";
 import { Money } from "@drenyra/domain/value-objects/Money";
@@ -77,8 +78,8 @@ export class PostgresInvoiceRepository implements InvoiceRepository {
 		await this.upsertToModularStore(invoice, organizationId);
 	}
 
-	async findById(id: string): Promise<Invoice | null> {
-		const modular = await this.findModularById(id);
+	async findById(scope: TenantScope, id: string): Promise<Invoice | null> {
+		const modular = await this.findModularById(id, scope.companyId);
 		if (!modular) {
 			return null;
 		}
@@ -255,13 +256,20 @@ export class PostgresInvoiceRepository implements InvoiceRepository {
 
 	private async findModularById(
 		id: string,
+		companyId?: string,
 	): Promise<ModularInvoiceWithRelations | null> {
 		const persistedId = toStableUuid(id);
+		const conditions: SQL<unknown>[] = [eq(invoices.id, persistedId)];
+
+		if (companyId) {
+			conditions.push(eq(invoices.companyId, companyId));
+		}
+
 		const rows = await db
 			.select({ invoice: invoices, customer: businessPartners })
 			.from(invoices)
 			.innerJoin(businessPartners, eq(invoices.customerId, businessPartners.id))
-			.where(eq(invoices.id, persistedId))
+			.where(and(...conditions))
 			.limit(1);
 
 		if (rows.length === 0) {

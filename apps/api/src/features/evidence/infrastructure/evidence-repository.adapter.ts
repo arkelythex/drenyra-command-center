@@ -1,6 +1,7 @@
 import { Evidence } from "@drenyra/domain";
 import type { EvidenceFilters } from "@drenyra/domain/entities/evidence/types";
 import type { EvidenceRepository } from "@drenyra/domain/repositories/evidence.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { db } from "@drenyra/persistence/client";
 import { and, desc, eq, gte, lte } from "@drenyra/persistence/query";
 import { evidence } from "@drenyra/persistence/schema";
@@ -112,9 +113,12 @@ export const evidenceRepository: EvidenceRepository = {
 		await db.delete(evidence).where(eq(evidence.id, id));
 	},
 
-	async findById(id: string): Promise<Evidence | null> {
+	async findById(scope: TenantScope, id: string): Promise<Evidence | null> {
 		const row = await db.query.evidence.findFirst({
-			where: eq(evidence.id, id),
+			where: and(
+				eq(evidence.id, id),
+				eq(evidence.companyId, scope.companyId),
+			),
 		});
 		return row ? toDomain(row) : null;
 	},

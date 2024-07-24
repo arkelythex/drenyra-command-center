@@ -1,4 +1,5 @@
 import type { InvoiceRepository } from "@drenyra/domain/repositories/invoice.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { BusinessRuleError, NotFoundError } from "@drenyra/shared/errors";
 import type { DeleteInvoiceDTO } from "../../dtos/invoice/delete-invoice.dto";
 import { DeleteInvoiceSchema } from "../../validators/invoice/invoice.validators";
@@ -18,7 +19,12 @@ export class DeleteInvoiceUseCase {
 	async execute(input: DeleteInvoiceDTO): Promise<void> {
 		const validatedInput = DeleteInvoiceSchema.parse(input);
 
-		const invoice = await this.invoiceRepository.findById(validatedInput.id);
+		const scope: TenantScope = {
+			organizationId: validatedInput.organizationId ?? "",
+			companyId: validatedInput.companyId ?? "",
+		};
+
+		const invoice = await this.invoiceRepository.findById(scope, validatedInput.id);
 
 		if (!invoice) {
 			throw new NotFoundError("Invoice", validatedInput.id);

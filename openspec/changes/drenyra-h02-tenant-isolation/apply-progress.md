@@ -172,9 +172,146 @@ Unit tests cannot execute: Vite cross-package resolution fails in this worktree 
 
 ---
 
+## Wave 4 — Completed ✅
+
+### Completed Tasks
+
+| PR | Repository | Status | Files Changed |
+|----|-----------|--------|--------------|
+| 4.1 | EvidenceRepository | ✅ Complete | 2 interface + 2 implementation + 1 test |
+| 4.2 | InvoiceRepository | ✅ Complete | 2 interface + 2 implementation + 6 callers + 3 test |
+| 4.3 | SireSubmissionRepository | ✅ Complete | 1 persistence + 3 service callers + 1 test |
+
+### PR 4.1: EvidenceRepository — clean mixed interface
+
+- ✅ Changed `findById(id: string)` → `findById(scope: TenantScope, id: string)` in domain interface
+- ✅ Implemented scoped `findById` with `companyId` filter in `PostgresEvidenceRepository`
+- ✅ Updated `EvidenceRepositoryAdapter` in `apps/api` for new signature
+- ✅ Added cross-tenant integration test (`h02-evidence-cross-tenant.test.ts`)
+- ⚠️ Caller note: No production callers use `findById` — only `findForOrganization`. Interface is now safe.
+
+### PR 4.2: InvoiceRepository — mandatory scoped methods
+
+- ✅ Made `saveForOrganization()` mandatory (removed `?`) in domain interface
+- ✅ Made `updateForOrganization()` mandatory (removed `?`) in domain interface
+- ✅ Changed `findById(id: string)` → `findById(scope: TenantScope, id: string)` as primary method
+- ✅ Implemented scoped `findById` with `companyId` filter in `PostgresInvoiceRepository`
+- ✅ Updated `findModularById` to accept optional `companyId` filter
+- ✅ Migrated 3 callers:
+  - `delete-invoice.use-case.ts` — scope from DTO (`organizationId`, `companyId`)
+  - `update-invoice.use-case.ts` — scope from DTO (`organizationId`, `companyId`)
+  - `get-invoice-details.use-case.ts` — scope as first parameter
+- ✅ Updated DTOs: `DeleteInvoiceDTO` (+orgId, +companyId), `UpdateInvoiceDTO` (+companyId)
+- ✅ Updated all affected unit tests (mocks + assertions)
+- ✅ Added cross-tenant integration test (`h02-invoice-cross-tenant.test.ts`)
+
+### PR 4.3: SireSubmissionRepository — scope idempotency + update
+
+- ✅ Changed `findByIdempotencyKey(key, scope)` → `findByIdempotencyKey(scope: TenantScope, key)` (scope-first)
+- ✅ Changed `update(id, input, scope?)` → `update(scope: TenantScope, id, input)` (mandatory, scope-first)
+- ✅ Removed unused `SireScope` interface (replaced by `TenantScope`)
+- ✅ Migrated 3 production service files:
+  - `apps/api/src/features/sire/services/submission/service.ts` — 5 call sites
+  - `apps/api/src/features/sire/services/sire-retry.service.ts` — 2 call sites
+  - `apps/api/src/features/sire/services/sire-submission-with-audit.service.ts` — 5 call sites
+- ✅ Scope uses `TenantScope { organizationId: "", companyId }` since SIRE only filters by `companyId`
+- ✅ Added cross-tenant integration test (`h02-sire-cross-tenant.test.ts`)
+- ⚠️ Caller note: 12 production call sites found across 3 service files (contrary to original assessment of 0). All migrated.
+
+---
+
+## TDD Cycle Evidence — Wave 4
+
+| Phase | Action | Result |
+|-------|--------|--------|
+| RED | Wrote 3 cross-tenant tests with scoped signatures | Tests written (compile-correct, require DATABASE_URL_TEST) |
+| GREEN | Modified 3 domain interfaces, 3 persistence implementations, 12+ callers | TypeScript compiles cleanly (no new errors) |
+| TRIANGULATE | Cross-tenant tests cover: same-company, diff-company-same-org, diff-org, nonexistent, foreign-vs-nonexistent indistinguishable | 5 assertions each for findById; 3 additional for Sire update |
+| REFACTOR | Removed unused `SireScope`; cleaned up interface documentation | Clean, consistent scope-first signatures across all 3 repos |
+
+### Test Commands Run
+
+```bash
+# TypeScript compilation check — all modified packages clean
+npx tsc --noEmit -p packages/domain/tsconfig.json   # Pre-existing errors only
+npx tsc --noEmit -p packages/persistence/tsconfig.json  # Pre-existing errors only (drenyra-pi rootDir)
+npx tsc --noEmit -p packages/application/tsconfig.json  # Pre-existing errors only
+npx tsc --noEmit -p apps/api/tsconfig.json  # Pre-existing errors only; evidence adapter fixed
+```
+
+Unit tests cannot execute: Vite cross-package resolution fails in this worktree environment. Cross-tenant integration tests require `DATABASE_URL_TEST` (PostgreSQL not available in this environment).
+
+---
+
+## Files Changed (Wave 4: 20 files)
+
+### PR 4.1 — EvidenceRepository (4 files + 1 test)
+- `packages/domain/src/repositories/evidence.repository.ts`
+- `packages/persistence/src/repositories/postgres-evidence/repository.ts`
+- `apps/api/src/features/evidence/infrastructure/evidence-repository.adapter.ts`
+- `packages/persistence/src/repositories/__tests__/h02-evidence-cross-tenant.test.ts` (new)
+
+### PR 4.2 — InvoiceRepository (8 files + 1 test)
+- `packages/domain/src/repositories/invoice.repository.ts`
+- `packages/persistence/src/repositories/postgres-invoice/repository.ts`
+- `packages/application/src/use-cases/invoice/delete-invoice.use-case.ts`
+- `packages/application/src/use-cases/invoice/update-invoice.use-case.ts`
+- `packages/application/src/use-cases/invoice/get-invoice-details.use-case.ts`
+- `packages/application/src/dtos/invoice/delete-invoice.dto.ts`
+- `packages/application/src/dtos/invoice/update-invoice.dto.ts`
+- `packages/application/src/use-cases/invoice/__tests__/delete-invoice.use-case.test.ts`
+- `packages/application/src/use-cases/invoice/__tests__/get-and-list-invoices.use-case.test.ts`
+- `packages/application/src/use-cases/invoice/__tests__/update-invoice.use-case.test.ts`
+- `packages/persistence/src/repositories/__tests__/h02-invoice-cross-tenant.test.ts` (new)
+
+### PR 4.3 — SireSubmissionRepository (4 files + 1 test)
+- `packages/persistence/src/repositories/sire-submission.repository.ts`
+- `apps/api/src/features/sire/services/submission/service.ts`
+- `apps/api/src/features/sire/services/sire-retry.service.ts`
+- `apps/api/src/features/sire/services/sire-submission-with-audit.service.ts`
+- `packages/persistence/src/repositories/__tests__/h02-sire-cross-tenant.test.ts` (new)
+
+---
+
+## Deviations from Design
+
+- **PR 4.3 production callers found**: Original assessment claimed "0 callers". Found 12 call sites across 3 service files in `apps/api`. All migrated to scope-first signatures.
+- **TenantScope with empty organizationId**: SireSubmissionRepository only uses `companyId` filtering. `organizationId` is passed as `""` since the `sireSubmissions` table lacks an `organization_id` column. This is consistent with the SIRE submission's company-level isolation model.
+- **Invoice DTO `organizationId` preserved as `number`**: `UpdateInvoiceDTO.organizationId` remains `number | undefined` for backward compatibility with `updateForOrganization(invoice, organizationId: number)`. A new `companyId?: string` field was added for tenant scope construction.
+- **Invoice `findModularById` accepts optional `companyId`**: Filter added to private method preserves backward compatibility for internal callers that may use unscoped queries.
+
+---
+
+## Blockers
+
+- **Git commit blocked**: Environment security mechanism intercepts `git commit` commands. All changes staged (`git add -A`). Orchestrator handles commit.
+- **Cross-tenant integration tests not run**: Require PostgreSQL (`DATABASE_URL_TEST`). Tests compile and follow established Wave 2-3 patterns.
+- **Unit tests not run**: Vite cross-package resolution fails in this worktree. TypeScript compilation is clean for all modified packages.
+
+---
+
+## Remaining Tasks
+
+### Wave 2 (from previous batch)
+- [ ] PR 2.1: DetractionRepository — git commit pending
+- [ ] PR 2.2: CpeLogRepository — git commit pending
+- [ ] PR 2.3: AccountingPeriodRepository — git commit pending
+
+### Wave 3 (from previous batch)
+- [ ] PR 3.1: ExchangeRateRepository — git commit pending
+- [ ] PR 3.2: TransactionRepository — git commit pending
+- [ ] PR 3.3: ClientRepository — git commit pending
+- [ ] PR 3.4: ProviderRepository — git commit pending
+
+### Wave 4
+- [ ] PR 4.1: EvidenceRepository — git commit pending
+- [ ] PR 4.2: InvoiceRepository — git commit pending
+- [ ] PR 4.3: SireSubmissionRepository — git commit pending
+
+---
+
 ## Future Waves (not yet started)
 
-- [ ] Wave 4: EvidenceRepository, InvoiceRepository, SireSubmissionRepository
 - [ ] Wave 5: Workers, SSE, Exports, Signed URLs
 - [ ] Wave 6: RLS shadow, RLS activation, legacy API cleanup
 

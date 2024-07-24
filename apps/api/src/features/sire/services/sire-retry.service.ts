@@ -20,6 +20,7 @@
  */
 
 import { sireSubmissionRepository } from "@drenyra/persistence/repositories/sire-submission.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { createLogger } from "../../../lib/logger";
 import { SireSubmissionService } from "../sire-submission.service";
 
@@ -128,7 +129,8 @@ export class SireRetryService {
 				});
 
 				// Update submission with retry result
-				await sireSubmissionRepository.update(submission.id, {
+				const retryScope: TenantScope = { organizationId: "", companyId: submission.companyId };
+				await sireSubmissionRepository.update(retryScope, submission.id, {
 					status:
 						retryResult.status === "ACCEPTED" ||
 						retryResult.status === "SIMULATED"
@@ -175,7 +177,8 @@ export class SireRetryService {
 				const nextRetryMinutes = 2 ** ((submission.attemptNumber ?? 1) + 1); // Exponential backoff
 				const nextRetryAt = new Date(Date.now() + nextRetryMinutes * 60 * 1000);
 
-				await sireSubmissionRepository.update(submission.id, {
+				const failedScope: TenantScope = { organizationId: "", companyId: submission.companyId };
+				await sireSubmissionRepository.update(failedScope, submission.id, {
 					status: "FAILED",
 					sunatMessage: errorMessage,
 					nextRetryAt,
