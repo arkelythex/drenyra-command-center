@@ -9,6 +9,13 @@ import {
 	getErrorMessage,
 	updateClient,
 } from "./firm.controller";
+import {
+	createOrganization,
+	reactivateOrganization,
+	suspendOrganization,
+	updateClientSettings,
+	validateSettings,
+} from "../organization-lifecycle/application/organization-lifecycle.controller";
 
 const ClientStatus = t.Union([
 	t.Literal("ACTIVE"),
@@ -117,20 +124,35 @@ export const firmRoutes = new Elysia({ prefix: "/api/firm" })
 				return fail("Tenant context required", "TENANT_REQUIRED");
 			}
 
+			// Settings body is required for PATCH — formalized per spec
+			if (!body.settings || Object.keys(body.settings).length === 0) {
+				set.status = 400;
+				return fail("Settings object is required", "SETTINGS_REQUIRED");
+			}
+
+			const validation = validateSettings(body.settings as Record<string, unknown>);
+			if (!validation.valid) {
+				set.status = 400;
+				return fail(validation.error, "INVALID_SETTINGS");
+			}
+
 			try {
-				return ok(
-					await updateClient(firmTenant.organizationId, id, {
-						settings: body.settings,
-					}),
+				const result = await updateClientSettings(
+					firmTenant,
+					id,
+					validation.data,
 				);
-			} catch (error) {
-				const message = getErrorMessage(error);
-				if (message === "Client not found") {
-					set.status = 404;
-					return fail(message, "CLIENT_NOT_FOUND");
+				if (!result.success) {
+					const err = result;
+					if (err.code === "CLIENT_NOT_FOUND") set.status = 404;
+					else if (err.code === "TENANT_SCOPE_VIOLATION") set.status = 403;
+					else set.status = 500;
+					return err;
 				}
+				return result;
+			} catch (error) {
 				set.status = 500;
-				return fail(message, "CLIENT_UPDATE_ERROR");
+				return fail(getErrorMessage(error), "CLIENT_UPDATE_ERROR");
 			}
 		},
 		{
@@ -141,7 +163,122 @@ export const firmRoutes = new Elysia({ prefix: "/api/firm" })
 			detail: {
 				tags: ["Firm"],
 				summary: "Update client settings",
-				description: "Update organization settings (not name/RUC).",
+				description: "Update organization settings (not name/RUC). Only known settings keys accepted.",
+			},
+		},
+	)
+	// ─── Organization Lifecycle Routes ────────────────────────────
+	.post(
+		"/clients",
+		async ({ firmTenant, body, set }) => {
+			if (!firmTenant?.organizationId) {
+				set.status = 403;
+				return fail("Tenant context required", "TENANT_REQUIRED");
+			}
+
+			try {
+				const result = await createOrganization(firmTenant, {
+					name: body.name,
+					ruc: body.ruc,
+					slug: body.slug,
+					settings: body.settings as Record<string, unknown> | undefined,
+				});
+				if (!result.success) {
+					const err = result;
+					if (err.code === "RUC_ALREADY_EXISTS" || err.code === "SLUG_ALREADY_EXISTS") set.status = 409;
+					else if (err.code === "TENANT_SCOPE_VIOLATION") set.status = 403;
+					else set.status = 400;
+					return err;
+				}
+				set.status = 201;
+				return result;
+			} catch (error) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "INTERNAL_ERROR");
+			}
+		},
+		{
+			body: t.Object({
+				name: t.String(),
+				ruc: t.String(),
+				slug: t.String(),
+				settings: t.Optional(t.Record(t.String(), t.Unknown())),
+			}),
+			detail: {
+				tags: ["Firm"],
+				summary: "Create organization client",
+				description: "Create a new organization under the firm's tenant scope.",
+			},
+		},
+	)
+	.post(
+		"/clients/:id/suspend",
+		async ({ firmTenant, params: { id }, body, set }) => {
+			if (!firmTenant?.organizationId) {
+				set.status = 403;
+				return fail("Tenant context required", "TENANT_REQUIRED");
+			}
+
+			try {
+				const result = await suspendOrganization(firmTenant, id, {
+					reason: body.reason,
+				});
+				if (!result.success) {
+					const err = result;
+					if (err.code === "CLIENT_NOT_FOUND") set.status = 404;
+					else if (err.code === "TENANT_SCOPE_VIOLATION") set.status = 403;
+					else if (err.code === "INVALID_TRANSITION") set.status = 409;
+					else set.status = 500;
+					return err;
+				}
+				return result;
+			} catch (error) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "INTERNAL_ERROR");
+			}
+		},
+		{
+			params: t.Object({ id: t.String() }),
+			body: t.Object({
+				reason: t.Optional(t.String()),
+			}),
+			detail: {
+				tags: ["Firm"],
+				summary: "Suspend organization",
+				description: "Suspend an active organization under the firm's tenant scope.",
+			},
+		},
+	)
+	.post(
+		"/clients/:id/reactivate",
+		async ({ firmTenant, params: { id }, set }) => {
+			if (!firmTenant?.organizationId) {
+				set.status = 403;
+				return fail("Tenant context required", "TENANT_REQUIRED");
+			}
+
+			try {
+				const result = await reactivateOrganization(firmTenant, id);
+				if (!result.success) {
+					const err = result;
+					if (err.code === "CLIENT_NOT_FOUND") set.status = 404;
+					else if (err.code === "TENANT_SCOPE_VIOLATION") set.status = 403;
+					else if (err.code === "INVALID_TRANSITION") set.status = 409;
+					else set.status = 500;
+					return err;
+				}
+				return result;
+			} catch (error) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "INTERNAL_ERROR");
+			}
+		},
+		{
+			params: t.Object({ id: t.String() }),
+			detail: {
+				tags: ["Firm"],
+				summary: "Reactivate organization",
+				description: "Reactivate a suspended organization under the firm's tenant scope.",
 			},
 		},
 	)
