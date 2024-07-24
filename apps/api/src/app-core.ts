@@ -16,6 +16,7 @@ import { aiControlPlaneModule } from "./features/ai-swarm/control-plane";
 import { aiWorkersRoutes } from "./features/ai-swarm/workers";
 import { apiMarketplaceModule } from "./features/api-marketplace";
 import { authRoutes } from "./features/auth/auth.routes";
+import { invitationRoutes } from "./features/auth/invitations";
 import { automationStudioRoutes } from "./features/automation-studio";
 import { automationsRoutes } from "./features/automations";
 import { bankingRoutes } from "./features/banking";
@@ -338,6 +339,7 @@ const baseApp = new Elysia()
 	.use(frontendTelemetryModule)
 	.use(ledgerMvpEnabled ? ledgerMvpModule : new Elysia())
 	.use(authRoutes)
+	.use(invitationRoutes)
 	.use(aiWorkersRoutes)
 	.use(bankingRoutes)
 	.use(bankingProvidersRoutes)

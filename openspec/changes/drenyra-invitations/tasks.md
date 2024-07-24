@@ -85,44 +85,44 @@ PR 2 depends on PR 1 (schema + domain must exist). All handler logic + Elysia ro
 
 ### Phase 2A: RED — Handler Unit Tests (mocked DB, write FIRST)
 
-- [ ] Write unit tests for `createInvitation` handler: success (201), OWNER role rejected (422), self-invite rejected (422), already-member rejected (409), no-permission VIEWER (403), duplicate pending idempotent (200), email normalization applied, invalid role rejected (422), organization scoping from auth context. File: `apps/api/src/features/auth/invitations/__tests__/handlers/create-invitation.test.ts` <!-- sdd-owner: implementation -->
-- [ ] Write unit tests for `acceptInvitation` handler: success (200 + membership created), token not found (404), expired token (410 + lazy expiry), already accepted (409), already rejected (409), email mismatch (403), email case-insensitive match, unauthenticated (401), cross-org access blocked (404). File: `apps/api/src/features/auth/invitations/__tests__/handlers/accept-invitation.test.ts` <!-- sdd-owner: implementation -->
-- [ ] Write unit tests for `rejectInvitation` handler: success (200), expired (410), already accepted (409), email mismatch (403). File: `apps/api/src/features/auth/invitations/__tests__/handlers/reject-invitation.test.ts` <!-- sdd-owner: implementation -->
-- [ ] Write unit tests for `cancelInvitation` handler: success on pending (200), non-pending rejected (409), no permission (403), cross-company returns 404. File: `apps/api/src/features/auth/invitations/__tests__/handlers/cancel-invitation.test.ts` <!-- sdd-owner: implementation -->
-- [ ] Write unit tests for `listInvitations` handler: empty list (200), pending only filtered, tokens excluded from response, VIEWER forbidden (403), status filter param. File: `apps/api/src/features/auth/invitations/__tests__/handlers/list-invitations.test.ts` <!-- sdd-owner: implementation -->
-- [ ] Run handler tests — confirm ALL FAIL (RED phase). <!-- sdd-owner: implementation -->
+- [x] Write unit tests for `createInvitation` handler: success (201), OWNER role rejected (422), self-invite rejected (422), already-member rejected (409), no-permission VIEWER (403), duplicate pending idempotent (200), email normalization applied, invalid role rejected (422), organization scoping from auth context. File: `apps/api/src/features/auth/invitations/__tests__/handlers/create-invitation.test.ts` <!-- sdd-owner: implementation -->
+- [x] Write unit tests for `acceptInvitation` handler: success (200 + membership created), token not found (404), expired token (410 + lazy expiry), already accepted (409), already rejected (409), email mismatch (403), email case-insensitive match, unauthenticated (401), cross-org access blocked (404). File: `apps/api/src/features/auth/invitations/__tests__/handlers/accept-invitation.test.ts` <!-- sdd-owner: implementation -->
+- [x] Write unit tests for `rejectInvitation` handler: success (200), expired (410), already accepted (409), email mismatch (403). File: `apps/api/src/features/auth/invitations/__tests__/handlers/reject-invitation.test.ts` <!-- sdd-owner: implementation -->
+- [x] Write unit tests for `cancelInvitation` handler: success on pending (200), non-pending rejected (409), no permission (403), cross-company returns 404. File: `apps/api/src/features/auth/invitations/__tests__/handlers/cancel-invitation.test.ts` <!-- sdd-owner: implementation -->
+- [x] Write unit tests for `listInvitations` handler: empty list (200), pending only filtered, tokens excluded from response, VIEWER forbidden (403), status filter param. File: `apps/api/src/features/auth/invitations/__tests__/handlers/list-invitations.test.ts` <!-- sdd-owner: implementation -->
+- [x] Run handler tests — confirm ALL FAIL (RED phase). <!-- sdd-owner: implementation -->
 
 ### Phase 2B: GREEN — Handler Implementation
 
-- [ ] Implement `createInvitation` handler. File: `apps/api/src/features/auth/invitations/application/commands/create-invitation.command.ts`. Follow existing pattern: import from `../../handlers/...`. Logic: resolve session identity, validate `user:invite` permission, normalize email, validate role (not OWNER, valid MembershipRole), check not self-invite, check not existing member, check idempotency (existing pending), generate token via `crypto.randomUUID()`, compute `expiresAt` (+7 days), insert into `authInvitations`, return `ok({ invitation })`. <!-- sdd-owner: implementation -->
-- [ ] Implement `acceptInvitation` handler. File: `apps/api/src/features/auth/invitations/application/commands/accept-invitation.command.ts`. Logic: resolve session, find invitation by token, unified `INVITATION_NOT_FOUND` error for invalid/expired/rejected/accepted tokens, lazy-expire on expired access, validate email match (case-insensitive), check not already member, transaction: INSERT `authUserCompanies` (id=`${userId}:${companyId}`, `membershipRole`=invitation.role, `isDefault=false`, `membershipStatus=active`) + UPDATE invitation status to `accepted`. Use `onConflictDoNothing()` for idempotency. <!-- sdd-owner: implementation -->
-- [ ] Implement `rejectInvitation` handler. File: `apps/api/src/features/auth/invitations/application/commands/reject-invitation.command.ts`. Logic: resolve session, find invitation, validate pending + not expired, validate email match, UPDATE status to `rejected`. <!-- sdd-owner: implementation -->
-- [ ] Implement `cancelInvitation` handler. File: `apps/api/src/features/auth/invitations/application/commands/cancel-invitation.command.ts`. Logic: resolve session, validate `user:invite` permission, find invitation by id + companyId, validate status is `pending` (409 otherwise), UPDATE status to `revoked`. Cross-company access returns 404 (do not leak existence). <!-- sdd-owner: implementation -->
-- [ ] Implement `listInvitations` handler. File: `apps/api/src/features/auth/invitations/application/queries/list-invitations.query.ts`. Logic: resolve session, validate `user:invite`, query `authInvitations` where `companyId` + `status = 'pending'` (or query param), exclude `token` from response, return `ok({ invitations })`. <!-- sdd-owner: implementation -->
-- [ ] Run handler unit tests — confirm ALL PASS (GREEN phase). <!-- sdd-owner: implementation -->
+- [x] Implement `createInvitation` handler. File: `apps/api/src/features/auth/invitations/application/commands/create-invitation.command.ts`. Follow existing pattern: import from `../../handlers/...`. Logic: resolve session identity, validate `user:invite` permission, normalize email, validate role (not OWNER, valid MembershipRole), check not self-invite, check not existing member, check idempotency (existing pending), generate token via `crypto.randomUUID()`, compute `expiresAt` (+7 days), insert into `authInvitations`, return `ok({ invitation })`. <!-- sdd-owner: implementation -->
+- [x] Implement `acceptInvitation` handler. File: `apps/api/src/features/auth/invitations/application/commands/accept-invitation.command.ts`. Logic: resolve session, find invitation by token, unified `INVITATION_NOT_FOUND` error for invalid/expired/rejected/accepted tokens, lazy-expire on expired access, validate email match (case-insensitive), check not already member, transaction: INSERT `authUserCompanies` (id=`${userId}:${companyId}`, `membershipRole`=invitation.role, `isDefault=false`, `membershipStatus=active`) + UPDATE invitation status to `accepted`. Use `onConflictDoNothing()` for idempotency. <!-- sdd-owner: implementation -->
+- [x] Implement `rejectInvitation` handler. File: `apps/api/src/features/auth/invitations/application/commands/reject-invitation.command.ts`. Logic: resolve session, find invitation, validate pending + not expired, validate email match, UPDATE status to `rejected`. <!-- sdd-owner: implementation -->
+- [x] Implement `cancelInvitation` handler. File: `apps/api/src/features/auth/invitations/application/commands/cancel-invitation.command.ts`. Logic: resolve session, validate `user:invite` permission, find invitation by id + companyId, validate status is `pending` (409 otherwise), UPDATE status to `cancelled`. Cross-company access returns 404 (do not leak existence). <!-- sdd-owner: implementation -->
+- [x] Implement `listInvitations` handler. File: `apps/api/src/features/auth/invitations/application/queries/list-invitations.query.ts`. Logic: resolve session, validate `user:invite`, query `authInvitations` where `companyId` + `status = 'pending'` (or query param), exclude `token` from response, return `ok({ invitations })`. <!-- sdd-owner: implementation -->
+- [x] Run handler unit tests — confirm ALL PASS (GREEN phase). <!-- sdd-owner: implementation -->
 
 ### Phase 2C: Routes + Barrel
 
-- [ ] Create `apps/api/src/features/auth/invitations/invitations.routes.ts` with Elysia + TypeBox route definitions. Follow `auth.routes.ts` pattern: separate handler function per route, TypeBox schemas for body/params, `prefix: "/api"`. Routes: `POST /companies/:companyId/invitations`, `GET /companies/:companyId/invitations`, `DELETE /companies/:companyId/invitations/:id`, `POST /invitations/:token/accept`, `POST /invitations/:token/reject`. <!-- sdd-owner: implementation -->
-- [ ] Create `apps/api/src/features/auth/invitations/index.ts` barrel export: re-export `invitationRoutes` and domain types. <!-- sdd-owner: implementation -->
-- [ ] Register invitation routes in the main API app (likely `apps/api/src/index.ts` or equivalent entry point) via `.use(invitationRoutes)`. <!-- sdd-owner: implementation -->
-- [ ] Run handler unit tests — confirm routes don't break handler contracts. <!-- sdd-owner: implementation -->
+- [x] Create `apps/api/src/features/auth/invitations/invitations.routes.ts` with Elysia + TypeBox route definitions. Follow `auth.routes.ts` pattern: separate handler function per route, TypeBox schemas for body/params, `prefix: "/api"`. Routes: `POST /companies/:companyId/invitations`, `GET /companies/:companyId/invitations`, `DELETE /companies/:companyId/invitations/:id`, `POST /invitations/:token/accept`, `POST /invitations/:token/reject`. <!-- sdd-owner: implementation -->
+- [x] Create `apps/api/src/features/auth/invitations/index.ts` barrel export: re-export `invitationRoutes` and domain types. <!-- sdd-owner: implementation -->
+- [x] Register invitation routes in the main API app (`apps/api/src/app-core.ts`) via `.use(invitationRoutes)`. <!-- sdd-owner: implementation -->
+- [x] Run handler unit tests — confirm routes don't break handler contracts. <!-- sdd-owner: implementation -->
 
 ### Phase 2D: TRIANGULATE — Handler Edge Cases
 
-- [ ] Write/run test: create invitation with whitespace-padded email → stored normalized. <!-- sdd-owner: implementation -->
-- [ ] Write/run test: accept with a token that belongs to a different organization → 404 (no leak). <!-- sdd-owner: implementation -->
-- [ ] Write/run test: cancel invitation that belongs to different company (same org) → 404 (no leak). <!-- sdd-owner: implementation -->
-- [ ] Write/run test: accept after inviter's membership was revoked → still succeeds (inviter independence). <!-- sdd-owner: implementation -->
-- [ ] Write/run test: expired token and non-existent token return identical error shape (status code, error code, body structure). <!-- sdd-owner: implementation -->
-- [ ] Write/run test: accept → re-accept same token by same user → 409 `INVITATION_ALREADY_ACCEPTED`. <!-- sdd-owner: implementation -->
+- [x] Write/run test: create invitation with whitespace-padded email → stored normalized. <!-- sdd-owner: implementation -->
+- [x] Write/run test: accept with a token that belongs to a different organization → 404 (no leak). <!-- sdd-owner: implementation -->
+- [x] Write/run test: cancel invitation that belongs to different company (same org) → 404 (no leak). <!-- sdd-owner: implementation -->
+- [x] Write/run test: accept after inviter's membership was revoked → still succeeds (inviter independence). <!-- sdd-owner: implementation -->
+- [x] Write/run test: expired token and non-existent token return identical error shape (status code, error code, body structure). <!-- sdd-owner: implementation -->
+- [x] Write/run test: accept → re-accept same token by same user → 409 `INVITATION_ALREADY_ACCEPTED`. <!-- sdd-owner: implementation -->
 
 ### Phase 2E: REFACTOR — Handler Cleanup
 
-- [ ] Extract shared `hasInvitePermission(userId, companyId)` helper if duplicated across create/cancel/list handlers. <!-- sdd-owner: implementation -->
-- [ ] Extract shared `findInvitationByToken(token)` helper if duplicated across accept/reject handlers. <!-- sdd-owner: implementation -->
-- [ ] Verify all error responses use `fail()` from `shared/api-response.ts` with consistent shape. <!-- sdd-owner: implementation -->
-- [ ] Run full handler test suite — confirm all still green. <!-- sdd-owner: implementation -->
+- [x] Extract shared `hasInvitePermission(userId, companyId)` helper if duplicated across create/cancel/list handlers. <!-- sdd-owner: implementation -->
+- [x] Extract shared `findInvitationByToken(token)` helper if duplicated across accept/reject handlers. <!-- sdd-owner: implementation -->
+- [x] Verify all error responses use `fail()` from `shared/api-response.ts` with consistent shape. <!-- sdd-owner: implementation -->
+- [x] Run full handler test suite — confirm all still green. <!-- sdd-owner: implementation -->
 
 ### PR 2 Bounded Review (parent)
 
