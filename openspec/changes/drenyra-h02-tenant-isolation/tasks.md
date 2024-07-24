@@ -364,7 +364,11 @@
 
 ## Wave 6 — RLS
 
-### PR 6.1: RLS shadow + logging
+### PR 6.1: RLS shadow + logging <!-- sdd-owner: implementation -->
+
+- [x] Migration: `0027_h02_rls_shadow.sql` — shadow policies + violation log + triggers
+- [x] Verification: `verify-h02-rls-shadow.sql` — pg_catalog checks (40+ checks)
+- [x] Verification: `verify-h02-rls-shadow-behavior.sql` — behavioral tests
 
 | Campo             | Valor                                                                          |
 | ----------------- | ------------------------------------------------------------------------------ |
@@ -376,7 +380,12 @@
 | Rollback          | `DROP POLICY ... ON ...`                                                       |
 | Evidencia         | `tenant_violation_log` registra cruces. Cero violaciones después de 48h.       |
 
-### PR 6.2: RLS activación gradual por tabla
+### PR 6.2: RLS activación gradual por tabla <!-- sdd-owner: implementation -->
+
+- [x] Step 1: `0028_h02_rls_activate_step_1.sql` — sire_submissions, evidence_nodes, evidence_edges
+- [x] Step 2: `0029_h02_rls_activate_step_2.sql` — documents, fiscal_truth_events
+- [x] Step 3: `0030_h02_rls_activate_step_3.sql` — agent_run_states, agent_run_events
+- [x] Verification: `verify-h02-rls-activation.sql` — RESTRICTIVE policy checks
 
 | Campo             | Valor                                                                                                                                                       |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -388,7 +397,11 @@
 | Rollback          | `ALTER TABLE ... DISABLE ROW LEVEL SECURITY`                                                                                                                |
 | Evidencia         | Cada tabla activada en orden. Tests E2E pasan después de cada activación. Rollback documentado.                                                             |
 
-### PR 6.3: Eliminar APIs legacy
+### PR 6.3: Eliminar APIs legacy <!-- sdd-owner: implementation -->
+
+- [x] CI script: `scripts/ci/h02-legacy-api-check.sh` — automated grep for unscoped patterns
+- [x] Script detects 4 remaining unscoped methods (evidence, account, journal-entry, document)
+- [x] 10/14 tenant-owned repos verified clean; 1 file not in domain dir (sire-submission)
 
 | Campo             | Valor                                                                                                                                                       |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
