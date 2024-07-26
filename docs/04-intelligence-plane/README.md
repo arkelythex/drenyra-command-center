@@ -2,97 +2,53 @@
 
 **Última actualización:** 2026-07-27
 **FEOS Plano:** 3 de 8 — Inteligencia
-**Propósito:** Pi Runtime, agents, skills, model routing, memory, context
-**Principio:** Pi SDK + Gentle-AI — agentes especializados con contratos, no un superagente monolítico
+**Propósito:** convertir modelos y automatizaciones en especialistas financieros gobernados por contratos.
 
 ---
 
-## Filosofía
+## Qué es
 
-Drenyra no construye un "superagente contador" monolítico. Construye una **organización digital especializada** donde cada agente tiene:
+El Intelligence Plane es el runtime que organiza agentes, skills, modelos, memoria y herramientas para asistir operaciones financieras. Usa Pi como base de runtime: sesiones, streaming, proveedores y herramientas; Drenyra añade roles de dominio, límites de capacidad, routing por riesgo y proyección profesional de eventos.
 
-- Rol y alcance definidos
-- Tools permitidas y prohibidas
-- Modelo y presupuesto específicos
-- Outputs con schema estricto
-- Puertas de aprobación según riesgo
+Drenyra no construye un “superagente contador”. Construye una **organización digital de especialistas**. El Conductor interpreta un objetivo de workspace y compone trabajo; especialistas de ingestión, clasificación, ledger, conciliación, impuestos, tesorería, cierre, reporting, riesgo y auditoría producen resultados delimitados. Un agente no obtiene autoridad porque sea capaz de proponer una respuesta.
 
-### Traducción del stack de ingeniería
+## Qué no es
 
-| Ingeniería | Drenyra                             |
-| ---------- | ----------------------------------- |
-| Pi SDK     | Agent Runtime                       |
-| Gentle-AI  | SDD + Receipts fiscales             |
-| OpenCode   | Financial Workspace modes           |
-| Skills     | Procedimientos fiscales ejecutables |
-| Codex      | Multi-agent orchestration           |
+No es la fuente de verdad financiera ni el motor de aprobación. Los modelos pueden extraer, clasificar, explicar y proponer; el [Financial Plane](../07-financial-plane/README.md) valida el dominio, el [Trust Plane](../05-trust-plane/README.md) controla la autoridad y [Execution](../06-execution-plane/README.md) realiza el trabajo durable. La IA nunca llama un sistema externo con texto libre.
 
-### Herramientas por nivel de riesgo
+## Agentes, skills y routing
 
-| Nivel | Output     | Schema      | Validación                   |
-| ----- | ---------- | ----------- | ---------------------------- |
-| R0    | Flexible   | Opcional    | Ninguna                      |
-| R1    | Structured | Preferido   | Revisión por excepción       |
-| R2    | Strict     | Obligatorio | Validación determinista      |
-| R3    | Strict     | Obligatorio | Validación + aprobación dual |
+Cada agente declara rol, input permitido, tools, límites de contexto, output esperado, presupuesto y políticas de escalamiento. Las **skills** son procedimientos fiscales ejecutables y versionados —por ejemplo, `reconcile-bank`, `classify-cpe` o `review-sire`— con contratos, permisos y pruebas. Una skill puede evolucionar; una ejecución siempre referencia la versión que utilizó.
 
----
+El model routing selecciona proveedor y capacidad según tarea, riesgo, costo y contrato requerido. Un modelo económico puede resumir una excepción R0; una clasificación que alimenta un asiento requiere R2 y un modelo con structured output verificable; una operación R3 exige controles adicionales y posiblemente revisión independiente. La detección de capacidades ocurre antes de asignar trabajo: soporte de tool calling restringido, JSON Schema, streaming, contexto, proveedor disponible y política de datos. Si el modelo no satisface el contrato, se enruta a otro o se degrada a una ruta humana; no se relaja el contrato.
 
-## Agentes
+## Contratos de herramientas R0–R3
 
-### Drenyra Conductor (Orquestador)
+| Nivel | Contrato |
+| --- | --- |
+| R0 | salida flexible para ayuda no material |
+| R1 | estructura preferida, revisión por excepción |
+| R2 | JSON Schema obligatorio y validación determinista |
+| R3 | schema estricto, validación determinista, autoridad reforzada y control dual cuando aplique |
 
-No contabiliza directamente. Su función es interpretar el objetivo, componer el workflow, asignar agentes, controlar contexto y solicitar aprobaciones.
+Una tool R2 para proponer clasificación recibe IDs, importe, moneda y evidencia; devuelve un schema validado, no una instrucción narrativa. Las tools R3 exigen además candidate y approval token emitidos por Trust. El runtime aplica deny-by-default a herramientas no declaradas.
 
-### Agentes fundamentales
+## Memoria y eventos
 
-| Agente                | Función                                        |
-| --------------------- | ---------------------------------------------- |
-| Ingestion Agent       | Ingesta y normalización de documentos          |
-| Document Intelligence | Extracción, verificación, confianza            |
-| Classification        | Propuesta de cuenta, centro de costo, impuesto |
-| Ledger Agent          | Posteo de asientos, ledger inmutable           |
-| Reconciliation        | Conciliación banco/ledger/SIRE                 |
-| Tax Agent             | Cálculos fiscales deterministas                |
-| Payroll Agent         | Nómina y obligaciones laborales                |
-| Treasury Agent        | Tesorería y flujo de caja                      |
-| Close Agent           | Workflow de cierre mensual                     |
-| Reporting Agent       | Generación de reportes y estados               |
-| Risk Agent            | Detección de anomalías y riesgo                |
-| Audit Agent           | Auditoría continua                             |
-| Independent Reviewer  | Revisión independiente (otro modelo)           |
+La memoria se separa por propósito: normativa (reglas vigentes), organizacional (políticas y aprobadores), operacional (incidencias) y episódica (intentos y resultados). El aislamiento por tenant, compañía, período y retención es obligatorio. La memoria ayuda a recuperar contexto, pero nunca reemplaza evidencia versionada ni autoriza una acción.
 
----
+Pi transmite eventos en streaming; Drenyra los proyecta a objetos profesionales correlacionados con workspace y workflow: `tool_started` se vuelve actividad, `tool_progress` progreso, una anomalía un Finding y una propuesta un Proposed Entry. La UI no debe exponer una cascada de tokens como si fuese una auditoría. [Experience](../02-experience-plane/README.md) muestra la proyección y [Trust](../05-trust-plane/README.md) conserva el lineage relevante.
 
-## Memoria
+## Ejemplo operativo
 
-Drenyra separa cuatro tipos de memoria (nunca mezclar indiscriminadamente):
+Al cargar una factura, Ingestion normaliza el archivo y Document Intelligence extrae campos. Classification propone cuenta, impuesto y confianza bajo R2. Si el monto supera materialidad, el agente crea un Change Set en [Workspace](../03-workspace-plane/README.md), no un asiento final. Ledger valida invariantes; Trust congela el candidato y solicita aprobación. El Conductor puede explicar el progreso, pero no salta ninguna puerta.
 
-1. **Normativa** — normas vigentes por país/periodo
-2. **Organizacional** — políticas contables, materialidad, aprobadores
-3. **Operacional** — incidencias, patrones, excepciones
-4. **Episódica** — qué intentó el agente, qué falló, qué resultó
+## Relación con los demás planos
 
----
+- [Workspace](../03-workspace-plane/README.md) entrega scope, estado y objetivos a los especialistas.
+- [Trust](../05-trust-plane/README.md) gobierna candidate, aprobación, policy y receipts.
+- [Execution](../06-execution-plane/README.md) da retries, señales, recuperación y correlación durable.
+- [Integration](../08-integration-plane/README.md) expone conectores sólo mediante tools tipadas.
+- [Country](../09-country-plane/README.md) aporta reglas y vocabulario que los agentes deben tratar como contexto versionado.
 
-## Documentos planificados
-
-Los siguientes documentos están identificados pero aún no han sido creados. Se generarán como parte de los SDDs del [programa FEOS](../01-foundation/feos-program.md):
-
-- `agent-architecture.md` — Organización de agentes, roles, orquestación
-- `agent-capability-matrix.md` — Tools por agente, deny-by-default
-- `model-routing.md` — Selección de modelo por tarea y riesgo
-- `skills-registry.md` — Skills fiscales, ciclo de vida
-- `memory-design.md` — Cuatro tipos de memoria, aislamiento
-- `r0-r3-contracts.md` — Strict tool contracts por nivel de riesgo
-
----
-
-## Relación con otros planos
-
-| Plano                                                 | Relación                                 |
-| ----------------------------------------------------- | ---------------------------------------- |
-| [02 — Experience](../02-experience-plane/README.md)   | Agentes se proyectan como Activity en UI |
-| [05 — Trust](../05-trust-plane/README.md)             | Agentes requieren approval gates         |
-| [06 — Execution](../06-execution-plane/README.md)     | Workflows durables ejecutan agentes      |
-| [08 — Integration](../08-integration-plane/README.md) | Tools tipadas para conectores externos   |
+La inteligencia útil en Drenyra es capacidad acotada, observable y verificable; no autonomía ilimitada.

@@ -9,6 +9,7 @@ import { documentsModule } from "./features/documents";
 import { electronicInvoicingModule } from "./features/electronic-invoicing";
 import { governanceAuditModule } from "./features/governance-audit";
 import { inboxModule } from "./features/inbox";
+import { feosModule } from "./features/feos";
 import { intelligenceModule } from "./features/intelligence/api/routes";
 import { interCompanyRoutes } from "./features/inter-company";
 import { inventoryModule } from "./features/inventory";
@@ -52,6 +53,7 @@ export const apiModules = new Elysia({ name: "api-modules" })
 	.use(sireModule)
 	.use(taxationModule)
 	.use(transactionsRoutes)
+	.use(feosModule)
 	.use(intelligenceModule)
 	.use(roiRoutes);
 

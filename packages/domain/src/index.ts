@@ -24,6 +24,8 @@ export * from "./fiscal-ontology";
 export * from "./fiscal-truth";
 export * from "./services";
 export * from "./workbench";
+// --- FEOS CORE (Financial Engineering OS) ---
+export * from "./feos";
 export type {
 	CountryCode,
 	TaxIdentifier,

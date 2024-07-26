@@ -2,91 +2,56 @@
 
 **Última actualización:** 2026-07-27
 **FEOS Plano:** 7 de 8 — Integración
-**Propósito:** DFP (Drenyra Financial Protocol), SUNAT, banks, ERPs, authorities
-**Principio:** Adopt before build — compose before customize
+**Propósito:** conectar sistemas externos mediante contratos financieros homogéneos, verificables y recuperables.
 
 ---
 
-## Filosofía
+## Qué es
 
-Drenyra no construye conectores desde cero. Adopta, compone y extiende.
+El Integration Plane define cómo Drenyra se relaciona con SUNAT y otras autoridades, bancos, ERPs, fuentes de documentos, gateways de pago, proveedores de nómina y registros externos. Su identidad es DFP, el **Drenyra Financial Protocol**: una abstracción de dominio que ofrece capacidades consistentes aunque por debajo use APIs, archivos, colas, OCR o adaptadores específicos.
 
-### DFP — Drenyra Financial Protocol
+DFP evita que la topología del proveedor se filtre al dominio. El Financial Plane pide “obtener estado de comprobante”, “enviar registro fiscal” o “conciliar transacciones”; el conector traduce esa intención tipada al protocolo de SUNAT, un banco o un ERP. Cada llamada conserva compañía, jurisdicción, credenciales autorizadas, correlación, candidate y receipt cuando corresponda.
 
-MCP no debe exponerse directamente como la identidad estratégica del producto. Drenyra construye una abstracción propia:
+## Qué no es
 
-> **DFP: Drenyra Financial Protocol**
-
-Internamente puede usar MCP, APIs, colas y adaptadores. Externamente ofrece una interfaz financiera homogénea.
-
-```
-DFP Connectors
-├── Tax Authorities
-│   ├── SUNAT (Perú)
-│   ├── DIAN (Colombia)
-│   ├── SAT (México)
-│   ├── SII (Chile)
-│   └── SRI (Ecuador)
-├── Banking
-├── Electronic Invoicing
-├── Payroll
-├── ERP connectors
-├── Payment gateways
-├── Document storage
-└── Government registries
-```
-
-### Strict tool contracts
-
-Cada herramienta tiene contratos estrictos. La IA nunca envía texto libre a sistemas externos:
-
-```typescript
-// ✅ Correcto
-submitFiscalRecord({
-  jurisdiction: 'PE',
-  companyId: 'cmp_...',
-  fiscalPeriodId: 'period_...',
-  recordType: 'RVIE' | 'RCE',
-  candidateReceipt: 'receipt_...',
-  approvalToken: 'token_...',
-})
-
-// ❌ Incorrecto
-submitToSunat(rawTextFromModel)
-```
-
----
+No es una colección de scripts ad hoc, SDKs expuestos directamente a agentes ni una excusa para enviar texto libre a un sistema externo. Un conector no decide impuestos, aprueba pagos ni interpreta una respuesta ambigua como éxito. Los contratos de [Intelligence](../04-intelligence-plane/README.md), las gates de [Trust](../05-trust-plane/README.md) y la durabilidad de [Execution](../06-execution-plane/README.md) se mantienen al otro lado de la frontera.
 
 ## Adopt before build
 
-| Problema          | Adoptar                | Drenyra construye     |
-| ----------------- | ---------------------- | --------------------- |
-| Durable workflows | Temporal               | Workflows contables   |
-| Event streaming   | NATS JetStream         | Eventos de dominio    |
-| Object storage    | S3-compatible          | Evidence graph        |
-| Auth/Identity     | IdP probado            | Tenant/role semantics |
-| Secrets           | Vault/KMS              | Credential policy     |
-| OCR/Extraction    | Proveedores existentes | Verificación fiscal   |
+Drenyra adopta infraestructura probada antes de construir equivalentes propios: motores de workflow, almacenamiento de objetos, identity providers, KMS/Vault, streaming, OCR y SDKs bancarios. Construye sobre ellos la semántica diferenciadora: DFP, mapeos financieros, evidencia, políticas, conformance y operación multi-tenant. Este criterio reduce superficie de fallo y permite concentrar el esfuerzo en lo que requiere conocimiento fiscal.
 
----
+Por ejemplo, puede adoptar un proveedor de extracción documental, pero Drenyra debe construir la verificación de RUC, reglas de consistencia fiscal, mapping contable y lineage de evidencia. Puede adoptar un gateway de pagos, pero conserva su propia idempotencia, aprobación y conciliación.
 
-## Documentos planificados
+## Connector Conformance Framework
 
-Los siguientes documentos están identificados pero aún no han sido creados. Se generarán como parte de los SDDs del [programa FEOS](../01-foundation/feos-program.md):
+Todo conector implementa un contrato versionado y una suite de conformidad. El framework exige:
 
-- `dfp-protocol.md` — Drenyra Financial Protocol, contratos
-- `sunat-connector.md` — SOL, RVIE, RCE, CDR, OSE
-- `bank-connectors.md` — Belvo/Plaid, bancos peruanos
-- `connector-framework.md` — Conformance, testing, versionado
-- `erp-connectors.md` — Integración con sistemas legacy
+- capacidades declaradas y schemas de request/response;
+- autenticación y credenciales aisladas por tenant;
+- idempotency, correlación y propagación de fencing cuando la operación es material;
+- timeouts, retry classes, circuit breaker y manejo explícito de respuestas parciales;
+- normalización de errores a un vocabulario DFP;
+- eventos y observabilidad por llamada, sin filtrar secretos;
+- fixtures sandbox, pruebas de compatibilidad y versionado de cambios.
 
----
+Un conector que no puede confirmar una presentación devuelve un resultado que permite `unknown`; no inventa `completed`. Los cambios incompatibles se versionan y se prueban antes de adoptar una API de proveedor nueva.
 
-## Relación con otros planos
+## Ejemplo práctico
 
-| Plano                                                   | Relación                             |
-| ------------------------------------------------------- | ------------------------------------ |
-| [04 — Intelligence](../04-intelligence-plane/README.md) | Tools tipadas para agentes           |
-| [05 — Trust](../05-trust-plane/README.md)               | Conectores requieren approval tokens |
-| [06 — Execution](../06-execution-plane/README.md)       | Llamadas externas con fencing        |
-| [09 — Country](../09-country-plane/README.md)           | Conectores varían por país           |
+Para presentar un registro en SUNAT, un workflow recibe un candidate aprobado y usa una tool R3 tipada: jurisdicción, compañía, período, tipo de registro, candidate receipt y approval token. El conector valida capability y credenciales, transforma el request al formato de la autoridad y registra la correlación externa. Si la red falla después del envío, Execution marca `unknown` y consulta el estado antes de repetir. El receipt final conserva request hash, respuesta normalizada, versión del conector y evidencia de confirmación.
+
+Para un banco, la misma disciplina permite importar movimientos, normalizarlos y exponerlos a conciliación sin asumir que dos proveedores comparten identificadores o fechas. El [Financial Plane](../07-financial-plane/README.md) consume el modelo normalizado; no conoce los detalles del API bancario.
+
+## Country Packs e integración
+
+La variación regional no convierte cada conector en una bifurcación de plataforma. El [Country Plane](../09-country-plane/README.md) declara autoridades, documentos, calendarios y reglas de cada jurisdicción; Integration resuelve los adaptadores compatibles. Un pack de Perú puede requerir SUNAT, SIRE y CPE; uno de Colombia DIAN y sus documentos electrónicos, pero ambos implementan capacidades DFP compartidas cuando su semántica lo permite.
+
+## Relación con los demás planos
+
+- [Workspace](../03-workspace-plane/README.md) fija el scope de compañía, período y objetivo de cada llamada.
+- [Intelligence](../04-intelligence-plane/README.md) accede a conectores sólo por tools autorizadas y schemas.
+- [Trust](../05-trust-plane/README.md) enlaza aprobaciones y receipts a efectos externos.
+- [Execution](../06-execution-plane/README.md) garantiza reintentos, fences y reconciliación.
+- [Financial](../07-financial-plane/README.md) recibe hechos normalizados y resultados confirmados.
+
+Una integración conforme no es sólo una conexión exitosa: es una frontera que conserva significado, autoridad y evidencia incluso cuando el proveedor falla.

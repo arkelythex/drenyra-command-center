@@ -12,7 +12,9 @@
     "typecheck": "bash ../../scripts/tsc7.sh --noEmit",
     "test": "vitest run"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@drenyra/domain": "workspace:*"
+  },
   "devDependencies": {
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"

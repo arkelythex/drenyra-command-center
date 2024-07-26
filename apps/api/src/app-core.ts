@@ -39,6 +39,7 @@ import {
 	fiscalCommandCenterModule,
 	fiscalTruthModule,
 } from "./features/fiscal";
+import { feosModule } from "./features/feos";
 import { fiscalAgentRoutes } from "./features/fiscal-agent/routes";
 import { frontendTelemetryModule } from "./features/frontend-telemetry";
 import { healthModule } from "./features/health";
@@ -319,6 +320,11 @@ const baseApp = new Elysia()
 							"Prioritized review queue for accounting diff approval workflow",
 					},
 					{
+						name: "FEOS",
+						description:
+							"Financial Engineering OS: workspace management, tool contracts, agent events, attention rollups, evidence root and receipt protocol",
+					},
+					{
 						name: "Threads",
 						description:
 							"Thread system — accounting work sessions with tasks, agents, and evidence",
@@ -387,7 +393,8 @@ const baseApp = new Elysia()
 	.use(automationsRoutes)
 	.use(evidenceV2Routes)
 	.use(threadRoutes)
-	.use(fiscalAgentRoutes);
+	.use(fiscalAgentRoutes)
+	.use(feosModule);
 
 /** Public contract for Eden Treaty clients — use `baseApp` so OTEL/listen do not narrow inference. */
 export type App = typeof baseApp;

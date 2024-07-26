@@ -63,3 +63,19 @@ export {
 	forecastReviewWorkload,
 	getWorkflowInstructions,
 } from "./work-routing";
+
+// --- FEOS Integration ---
+export type {
+	ApprovalRequest,
+	EventHandler,
+	EventSubscription,
+	ToolRouteAction,
+	ToolRouteContext,
+} from "./feos";
+export {
+	AgentEventBus,
+	AgentEventFactory,
+	requiresApproval,
+	requiresRouting,
+	routeToolCall,
+} from "./feos";

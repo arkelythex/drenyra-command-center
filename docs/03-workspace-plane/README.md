@@ -2,113 +2,57 @@
 
 **Última actualización:** 2026-07-27
 **FEOS Plano:** 2 de 8 — Workspace
-**Propósito:** Portfolio, companies, periods, change sets, estado operacional
-**Principio:** Herdr — workspaces persistentes, composición, rollups semánticos
+**Propósito:** dar un alcance operativo, persistente y composable a todo trabajo financiero.
 
 ---
 
-## Filosofía
+## Qué es
 
-Así como Herdr resuelve la supervisión de múltiples proyectos y agentes, Drenyra debe hacer lo mismo con empresas.
+El Workspace Plane define el modelo universal con el que Drenyra organiza trabajo financiero: **Organización → Portfolio → Compañía → Período → Workspace**. Esta jerarquía permite que la misma plataforma atienda una empresa o miles sin cambiar el significado de una tarea, su evidencia ni su responsabilidad.
 
-```
-Portfolio
-├── Empresa A   READY
-├── Empresa B   WORKING
-├── Empresa C   BLOCKED
-├── Empresa D   APPROVAL REQUIRED
-└── Empresa E   UNKNOWN
-```
+Un workspace es una unidad de trabajo con alcance explícito: compañía, período, objetivo, participantes, estado, artefactos y workflows vinculados. “Cerrar junio de Compañía A”, “revisar RVIE” y “conciliar el Banco X” son workspaces distintos, aunque compartan compañía y período. El modelo evita que un agente, una persona o una automatización opere sobre un contexto implícito.
 
-`UNKNOWN` nunca significa éxito.
+Herdr inspira dos propiedades: **persistencia** y **composición**. Un workspace recuerda sus panes, contexto, actividad y decisiones entre sesiones; también puede componerse con otros workspaces y rollups, sin fusionar su evidencia ni borrar sus límites de autoridad.
 
-### Rollup operacional
+## Qué no es
 
-Un problema profundo se propaga hacia arriba:
+No es una carpeta libre de documentos ni una simple vista de UI. Tampoco es un ledger: los hechos contables pertenecen al [Financial Plane](../07-financial-plane/README.md). El Workspace Plane da contexto y coordinación; Trust decide si una propuesta puede aprobarse y Execution garantiza que el trabajo se complete de forma durable.
 
-```
-Comprobante inválido
-→ bloquea conciliación
-→ bloquea cierre
-→ bloquea empresa
-→ afecta portfolio
-→ aparece en Attention
-```
+## Estados operacionales canónicos
 
-### Estados canónicos
+Todo objeto operativo se expresa con un vocabulario común:
 
-| Estado             | Significado                                    |
-| ------------------ | ---------------------------------------------- |
-| `QUEUED`           | En cola para procesar                          |
-| `WORKING`          | Agente trabajando activamente                  |
-| `VERIFYING`        | Validación en curso                            |
-| `WAITING_INPUT`    | Esperando datos del usuario                    |
-| `WAITING_EVIDENCE` | Esperando evidencia externa                    |
-| `WAITING_APPROVAL` | Puerta de aprobación humana                    |
-| `BLOCKED`          | Impedimento que requiere intervención          |
-| `COMPLETED`        | Procesado exitosamente                         |
-| `FAILED`           | Error no recuperable                           |
-| `UNKNOWN`          | Estado indeterminado — requiere reconciliación |
+| Estado | Significado |
+| --- | --- |
+| `queued` | admitido y esperando capacidad o dependencia previa |
+| `working` | ejecución o investigación activa |
+| `verifying` | validación determinista o revisión en curso |
+| `waiting` | espera datos, evidencia, autoridad o una señal externa |
+| `blocked` | existe un impedimento accionable que requiere intervención |
+| `completed` | resultado confirmado y cerrado para ese objetivo |
+| `failed` | terminó con error no recuperable o requiere reinicio controlado |
+| `unknown` | no se puede afirmar el resultado; requiere reconciliación |
 
----
+Las causas refinan el estado sin crear taxonomías incompatibles: `waiting:approval`, `waiting:evidence` o `blocked:period_locked`. `unknown` nunca se convierte en `completed` por timeout o reintento; se conserva hasta que [Execution](../06-execution-plane/README.md) reconcilie el hecho externo.
 
-## Conceptos clave
+## Lifecycle y Change Sets
 
-### Financial Workspace
+Un workspace nace cuando se fija su scope y objetivo. Pasa por preparación, trabajo, verificación y cierre; puede pausar por espera, bloquearse o entrar en reconciliación. Al completarse retiene su timeline, evidencias y receipts como registro operativo. Reabrir un período o iniciar una rectificatoria crea un nuevo objetivo y referencias explícitas, no reescribe silenciosamente el anterior.
 
-Un workspace es el equivalente financiero de un proyecto/repositorio:
+Los **Change Sets** aíslan propuestas financieras como un branch de Git: un escenario de provisión, un ajuste de auditoría o una rectificatoria se trabaja sin modificar el estado publicado. Cada Change Set contiene su base, cambios propuestos, financial diff, evidencia y candidato de aprobación. Sólo un flujo autorizado puede integrarlo o producir asientos compensatorios; “merge” no significa editar directamente el ledger.
 
-- **Scope**: Empresa + periodo + objetivo
-- **Estado**: Workflow states con rollup
-- **Agentes**: Skills asignados ejecutando
-- **Change Sets**: Propuestas aisladas
-- **Evidence**: Receipts vinculados
+## Portfolio Attention Rollups
 
-### Portfolio
+Un portfolio agrega compañías y workspaces mediante semántica, no sólo conteo. Su Attention Inbox ordena trabajo por riesgo, materialidad, deadline e impacto downstream. Un comprobante inválido puede bloquear una conciliación, que bloquea un cierre y eleva la atención de la compañía; el rollup muestra la causa raíz y evita que un gerente vea únicamente un semáforo rojo.
 
-Maneja 1, 10, 100 o 10,000 empresas mediante la misma jerarquía.
+Ejemplo: un estudio gestiona 200 empresas. Diez cierres están `working`, tres esperan aprobación y una empresa está `blocked` porque falta evidencia de una transacción material antes de SUNAT. El portfolio la prioriza por vencimiento e impacto, mientras cada equipo conserva el workspace específico donde puede resolverla.
 
-```
-Portfolio
-├── Company A (RUC: 20512345671)
-│   ├── Period 2026-06
-│   │   ├── Close workspace
-│   │   ├── SIRE workspace
-│   │   └── Reconciliation workspace
-│   └── Period 2026-07
-│       └── ...
-├── Company B
-└── ...
-```
+## Relación con los demás planos
 
-### Change Set
+- [Experience](../02-experience-plane/README.md) presenta Explorer, panes y Attention Inbox sobre este modelo.
+- [Intelligence](../04-intelligence-plane/README.md) asigna especialistas y skills dentro de un scope explícito.
+- [Trust](../05-trust-plane/README.md) vincula Change Sets y propuestas a evidencia, política y aprobaciones exactas.
+- [Execution](../06-execution-plane/README.md) implementa el lifecycle durable y reporta estados reales.
+- [Financial](../07-financial-plane/README.md) aporta el ledger, períodos y diffs; [Country](../09-country-plane/README.md) aporta calendarios y vocabulario locales.
 
-Propuesta aislada como un branch de Git:
-
-- Escenario fiscal (qué pasaría si ajustamos X)
-- Borrador de cierre
-- Propuesta de rectificatoria
-- Ajuste de auditoría
-
----
-
-## Documentos planificados
-
-Los siguientes documentos están identificados pero aún no han sido creados. Se generarán como parte de los SDDs del [programa FEOS](../01-foundation/feos-program.md):
-
-- `financial-workspace.md` — Workspace model, lifecycle, scope
-- `portfolio-management.md` — Multi-company, rollups, dashboards
-- `change-sets.md` — Aislamiento, diff, merge de propuestas
-- `attention-system.md` — Priorización, notificaciones, escalamiento
-- `period-lifecycle.md` — Apertura, cierre, locking de periodos
-
----
-
-## Relación con otros planos
-
-| Plano                                                   | Relación                               |
-| ------------------------------------------------------- | -------------------------------------- |
-| [02 — Experience](../02-experience-plane/README.md)     | El Explorer proyecta el portfolio      |
-| [04 — Intelligence](../04-intelligence-plane/README.md) | Agentes operan dentro de workspaces    |
-| [05 — Trust](../05-trust-plane/README.md)               | Cada cambio genera evidence y receipts |
-| [06 — Execution](../06-execution-plane/README.md)       | Workspaces ejecutan workflows durables |
+La jerarquía de workspace es el contrato que permite que la automatización escale sin perder la pregunta esencial: qué compañía, qué período, qué objetivo y bajo qué estado se está operando.
