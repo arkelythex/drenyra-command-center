@@ -169,3 +169,53 @@ export {
   computeSeverity,
   isValidDiffTransition,
 } from "./diff";
+
+// Skills & Automation (FEOS-011)
+export type {
+  AutomationProps,
+  AutomationStatus,
+  AutomationStore,
+  AutomationTrigger,
+  AutomationTriggerType,
+  SkillExecutionMode,
+  SkillFilter,
+  SkillRegistryEntry,
+  SkillsRegistry,
+} from "./skills-registry";
+export {
+  Automation,
+} from "./skills-registry";
+
+// Model Routing (FEOS-012)
+export type {
+  AIProvider,
+  CostBudget,
+  CostEntry,
+  ModelCapabilities,
+  ModelEntry,
+  ModelPricing,
+  ModelTier,
+  RoutingDecision,
+} from "./model-routing";
+export {
+  DRENYRA_MODEL_REGISTRY,
+  ModelRouter,
+} from "./model-routing";
+
+// Degraded Operations (FEOS-017)
+export type {
+  CapabilityStatus,
+  CircuitBreakerConfig,
+  CircuitBreakerState,
+  CircuitState,
+  DegradedModeConfig,
+  DegradedModeStore,
+  ServiceHealth,
+  ServiceStatus,
+  UnknownStateResolution,
+} from "./degraded";
+export {
+  DEFAULT_CIRCUIT_BREAKER,
+  CircuitBreaker,
+  generateRecoveryPlan,
+} from "./degraded";
