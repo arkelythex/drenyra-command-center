@@ -133,3 +133,39 @@ export {
   generateAttentionItems,
   sortAttentionItems,
 } from "./attention";
+
+// Approval (FEOS-008)
+export type {
+  ApprovalFilter,
+  ApprovalPolicy,
+  ApprovalRequestProps,
+  ApprovalStatus,
+  ApprovalStep,
+  PolicyRuleType,
+} from "./approval";
+export {
+  APPROVAL_STATUS,
+  ApprovalRequest,
+  DRENYRA_DEFAULT_POLICIES,
+  evaluatePolicies,
+} from "./approval";
+
+// Financial Diff (FEOS-009)
+export type {
+  DiffCategory,
+  DiffChange,
+  DiffFilter,
+  DiffReview,
+  DiffRiskFactor,
+  DiffRiskScore,
+  DiffSeverity,
+  DiffStatus,
+  FinancialDiffProps,
+  FinancialImpact,
+} from "./diff";
+export {
+  FinancialDiff,
+  computeDiffRiskScore,
+  computeSeverity,
+  isValidDiffTransition,
+} from "./diff";
