@@ -219,3 +219,107 @@ export {
   CircuitBreaker,
   generateRecoveryPlan,
 } from "./degraded";
+
+// Pane Runtime (FEOS-002)
+export type {
+  DensityMode,
+  LayoutProps,
+  PaneConfig,
+  PanePosition,
+  PaneType,
+} from "./pane-runtime";
+export {
+  DENSITY_MODE,
+  PANE_POSITION,
+  PANE_TYPE,
+  Layout,
+  defaultPanes,
+  layoutTemplates,
+} from "./pane-runtime";
+
+// Change Set (FEOS-004)
+export type {
+  ChangeEntry,
+  ChangeEntryType,
+  ChangeSetProps,
+  ChangeSetStatus,
+} from "./change-set";
+export {
+  CHANGE_SET_STATUS,
+  ChangeSet,
+  isValidCSTransition,
+} from "./change-set";
+
+// Candidate Review (FEOS-005)
+export type {
+  CandidateProps,
+  CandidateReview,
+  CandidateStatus,
+} from "./candidate-review";
+export {
+  ExactCandidate,
+  computeCandidateHash,
+} from "./candidate-review";
+
+// Mobile Supervision (FEOS-013)
+export type {
+  MobileApprovalAction,
+  MobileCompanySummary,
+  MobileNotification,
+  NotificationPriority,
+  SupervisorDashboard,
+} from "./mobile-supervision";
+export {
+  MobileSupervision,
+} from "./mobile-supervision";
+
+// Country Runtime (FEOS-014)
+export type {
+  CountryPackDef,
+  FiscalPeriod,
+  TaxDeadline,
+  TaxRule,
+} from "./country-runtime";
+export {
+  CountryRuntime,
+  DRENYRA_COUNTRY_PACKS,
+  PERU_TAX_RULES,
+  COLOMBIA_TAX_RULES,
+} from "./country-runtime";
+
+// Connector Framework (FEOS-015)
+export type {
+  ConnectorAuthType,
+  ConnectorCategory,
+  ConnectorContract,
+  ConnectorHealth,
+  ConnectorOperation,
+  ConnectorStatus,
+} from "./connector-framework";
+export {
+  ConnectorRegistry,
+  DRENYRA_CONNECTORS,
+} from "./connector-framework";
+
+// Performance Budget (FEOS-016)
+export type {
+  BudgetCategory,
+  PerfBudget,
+  PerfMeasurement,
+} from "./performance-budget";
+export {
+  DRENYRA_PERF_BUDGETS,
+  PerfBudgetTracker,
+} from "./performance-budget";
+
+// Product Telemetry (FEOS-018)
+export type {
+  CostMetric,
+  TelemetryCategory,
+  TelemetryEvent,
+  UsageMetric,
+} from "./product-telemetry";
+export {
+  TelemetryStore,
+  emptyCostMetrics,
+} from "./product-telemetry";
