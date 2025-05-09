@@ -13,6 +13,9 @@
   },
   "exports": {
     ".": "./src/index.ts",
+    "./failure": "./src/failure/index.ts",
+    "./metrics": "./src/metrics/index.ts",
+    "./logger": "./src/logger/index.ts",
     "./client": "./src/client.ts",
     "./query": "./src/query.ts",
     "./schema": "./src/schema/index.ts",

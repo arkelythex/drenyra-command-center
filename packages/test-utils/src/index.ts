@@ -22,3 +22,4 @@ export * from "./fixtures";
 export * from "./helpers";
 export * from "./mocks";
 export * from "./tenant";
+export * from "./failure";

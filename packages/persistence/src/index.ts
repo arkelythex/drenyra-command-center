@@ -34,3 +34,21 @@ export { PostgresTransactionRepository } from "./repositories/postgres-transacti
 export { SireSubmissionRepository } from "./repositories/sire-submission.repository";
 export * from "./schema";
 export { batchQuery, UnitOfWork, withTransaction } from "./unit-of-work";
+export {
+	type FailureStage,
+	type FailureContext,
+	type FailureProbe,
+	NoopFailureProbe,
+} from "./failure";
+
+export {
+	type JobMetricLabels,
+	type RepairMetricLabels,
+	type JobExecutionMetrics,
+	NoopJobExecutionMetrics,
+} from "./metrics";
+export {
+	type JobLogContext,
+	type StructuredLogger,
+	NoopLogger,
+} from "./logger";

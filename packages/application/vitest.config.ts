@@ -5,8 +5,6 @@ export default defineConfig({
 		globals: true,
 		include: ["src/**/*.{test,spec}.{js,ts}"],
 		pool: "forks",
-	},	},
-
 		coverage: {
 			provider: "v8",
 			reporter: ["text", "json", "html"],
@@ -21,5 +19,7 @@ export default defineConfig({
 				},
 			},
 		},
-
+		// Integration tests need real DB — only run when DATABASE_URL_TEST is set
+		exclude: ["src/**/*.integration.test.ts", "src/**/*.integration.spec.ts"],
+	},
 });

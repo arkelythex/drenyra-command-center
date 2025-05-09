@@ -14,13 +14,15 @@
     "./database": "./src/database/index.ts",
     "./tenant": "./src/tenant/index.ts",
     "./api": "./src/api/index.ts",
-    "./e2e": "./src/e2e/index.ts"
+    "./e2e": "./src/e2e/index.ts",
+    "./failure": "./src/failure/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@drenyra/domain": "workspace:*"
+    "@drenyra/domain": "workspace:*",
+    "@drenyra/persistence": "workspace:*"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
