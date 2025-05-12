@@ -450,14 +450,25 @@ export class PostgresJobExecutionRepository implements JobExecutionRepository {
 			return { kind: "fencing-rejected" };
 		}
 
-		// Step 1: Pre-generate new execution ID and mark old as SUPERSEDED.
-		// Marking SUPERSEDED first frees the identity for the new INSERT.
+		// Step 1: Pre-generate new execution ID.
 		const newId = input.newExecutionId || randomUUID();
 
+		// Step 2: INSERT new execution FIRST so the FK from the old row
+		// (superseded_by_id -> job_executions.id) has a valid target.
+		const [newRow] = await tx.execute(
+			buildReplaceInsertSqlWithId(input.newInput, currentGen + 1, newId),
+		);
+
+		if (!newRow) {
+			throw new Error("Replace: failed to insert new execution");
+		}
+		const newRowId = (newRow as Record<string, unknown>).id as string;
+
+		// Step 3: Mark old execution as SUPERSEDED pointing to the new row.
 		const superseded = await tx.execute(sql`
 			UPDATE job_executions
 			SET status = 'SUPERSEDED'::job_execution_status,
-				superseded_by_id = ${newId}::uuid,
+				superseded_by_id = ${newRowId}::uuid,
 				cancel_requested_at = NOW(),
 				execution_token = NULL,
 				lease_started_at = NULL,
@@ -468,25 +479,15 @@ export class PostgresJobExecutionRepository implements JobExecutionRepository {
 		`);
 
 		if (superseded.length !== 1) {
-			return { kind: "fencing-rejected" };
+			// New row was inserted but old row couldn't be superseded.
+			// This is an invariant violation — the old row should always be
+			// in a supersedable state since we validated it exists and is
+			// either RUNNING (with matching token) or a terminal state.
+			throw new Error("Replace: failed to supersede previous execution");
 		}
 
-		// Step 2: INSERT new execution with the pre-generated ID.
-		const [newRow] = await tx.execute(
-			buildReplaceInsertSqlWithId(input.newInput, currentGen + 1, newId),
-		);
-
-		if (!newRow) {
-			throw new Error("Replace: failed to insert new execution");
-		}
-
-		// Step 3: Outbox for new execution.
-		await tx.execute(
-			buildOutboxInsertSql(
-				(newRow as Record<string, unknown>).id as string,
-				input.newInput,
-			),
-		);
+		// Step 4: Outbox for new execution.
+		await tx.execute(buildOutboxInsertSql(newRowId, input.newInput));
 
 		return {
 			kind: "replaced",

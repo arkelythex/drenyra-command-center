@@ -317,7 +317,7 @@ runIfDb("T17 — heartbeat tolera fallo transitorio, aborta por umbral", () => {
 				SET lease_expires_at = NOW() + interval '1 minute'
 				WHERE id = ${execId}::uuid
 					AND status = 'RUNNING'::job_execution_status
-					AND execution_token = 'incorrect-token'::uuid
+					AND execution_token = '00000000-0000-0000-0000-000000000000'::uuid
 					AND generation = 1
 				RETURNING id
 			`);
