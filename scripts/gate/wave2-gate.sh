@@ -75,7 +75,14 @@ MIGRATIONS=(
 FRESH_OK=0
 for m in "${MIGRATIONS[@]}"; do
 	FILE="$MIGRATIONS_DIR/$m.sql"
-	if [ -f "$FILE" ] && psql "$DATABASE_URL_TEST" -1 -f "$FILE" &>/dev/null; then
+	# 0024 contains ALTER TYPE ... ADD VALUE which cannot run inside a
+	# transaction block in PostgreSQL 16. Apply without -1 for that file.
+	if grep -q "ALTER TYPE.*ADD VALUE" "$FILE" 2>/dev/null; then
+		TX_FLAG=""
+	else
+		TX_FLAG="-1"
+	fi
+	if [ -f "$FILE" ] && psql "$DATABASE_URL_TEST" $TX_FLAG -f "$FILE" &>/dev/null; then
 		echo "  ✓ $m"
 		FRESH_OK=$((FRESH_OK + 1))
 	else

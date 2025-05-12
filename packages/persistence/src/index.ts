@@ -34,6 +34,14 @@ export { PostgresTransactionRepository } from "./repositories/postgres-transacti
 export { SireSubmissionRepository } from "./repositories/sire-submission.repository";
 export * from "./schema";
 export { batchQuery, UnitOfWork, withTransaction } from "./unit-of-work";
+export { PostgresIdempotencyRepository } from "./repositories/postgres-idempotency.repository";
+export type {
+	IdempotencyRepository,
+	AcquireDecision,
+	AcquireInput,
+	OwnershipToken,
+	TxClient,
+} from "./repositories/idempotency.types";
 export {
 	type FailureStage,
 	type FailureContext,

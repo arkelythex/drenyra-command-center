@@ -149,14 +149,25 @@ describe("DeterministicFailureHarness — crash", () => {
 	it("crash es distinguible de errores operativos normales", async () => {
 		const harness = new DeterministicFailureHarness();
 
-		harness.inject("sim-crash", { kind: "crash" });
+		// Ambos failpoints apuntan al mismo stage; solo el crash tiene filter
+		// que lo restringe a un contexto específico. Así, al hacer hit sin ese
+		// contexto, solo el throw se activa.
+		harness.inject(
+			"sim-crash",
+			{ kind: "crash" },
+			{
+				filter: (ctx) => ctx.executionId === "crash-scenario",
+			},
+		);
 		harness.inject("sim-throw", {
 			kind: "throw",
 			error: new Error("DB_CONNECTION_LOST"),
 		});
 
+		// Pasar contexto vacío: el filter del crash chequea executionId === "crash-scenario"
+		// y al ser undefined el filter salta el failpoint de crash.
 		try {
-			await harness.hit("outbox.after-claim");
+			await harness.hit("outbox.after-queue-add", {});
 			expect.unreachable("Expected error");
 		} catch (err) {
 			expect(err).not.toBeInstanceOf(SimulatedProcessCrash);
@@ -175,10 +186,15 @@ describe("DeterministicFailureHarness — block", () => {
 		const barrier = new AsyncBarrier(2);
 		const results: string[] = [];
 
-		harness.inject("wait-at-barrier", {
-			kind: "block",
-			barrier,
-		});
+		// maxActivations: 2 porque dos actores golpean el mismo failpoint
+		harness.inject(
+			"wait-at-barrier",
+			{
+				kind: "block",
+				barrier,
+			},
+			{ maxActivations: 2 },
+		);
 
 		// Actor 1: llega a la barrera
 		const actor1Promise = harness.hit("outbox.after-queue-add").then(() => {

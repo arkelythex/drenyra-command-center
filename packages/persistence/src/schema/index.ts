@@ -575,3 +575,17 @@ export {
 	type NewKbDocument,
 	type NewKbQuery,
 } from "./rag-enterprise.schema";
+
+// --- W2-04: IDEMPOTENCY ---
+export {
+	idempotencyRecords,
+	type IdempotencyRecord,
+	type NewIdempotencyRecord,
+} from "./idempotency.schema";
+
+// --- W2-04B: EXTERNAL REFERENCES ---
+export {
+	externalReferences,
+	externalReferencesRelations,
+	type ExternalReferenceSource,
+} from "./external-references.schema";
