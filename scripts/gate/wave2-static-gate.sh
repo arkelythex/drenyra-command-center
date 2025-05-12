@@ -211,6 +211,29 @@ else
 fi
 
 # ═══════════════════════════════════════════════════════════════════════════════
+# G11 — No string IDs en tests de integración PostgreSQL
+# ═══════════════════════════════════════════════════════════════════════════════
+echo "  G11: No string IDs en tests PostgreSQL..."
+G11_FAIL=0
+for f in packages/persistence/src/repositories/__tests__/postgres-idempotency-repository.test.ts \
+         packages/persistence/src/repositories/__tests__/idempotency-e2e.test.ts \
+         packages/persistence/src/repositories/__tests__/job-executions.integration.test.ts \
+         packages/persistence/src/repositories/__tests__/job-executions-w2-06c.integration.test.ts \
+         packages/persistence/src/repositories/__tests__/job-executions-w2-06d.integration.test.ts \
+         packages/persistence/src/repositories/__tests__/wave2/scenarios/*.integration.test.ts; do
+  if [ -f "$f" ]; then
+    F_ID=$(grep -n 'organization_id\|company_id\|org.*Id\|company.*Id' "$f" 2>/dev/null | grep '"test-[a-z]' | head -3 || true)
+    if [ -n "$F_ID" ]; then
+      fail "Non-UUID string in $f:\n$F_ID"
+      G11_FAIL=1
+    fi
+  fi
+done
+if [ "$G11_FAIL" -eq 0 ]; then
+  pass "All test IDs use valid UUID format"
+fi
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # B1 — Baseline: Reportar deuda técnica preexistente
 # ═══════════════════════════════════════════════════════════════════════════════
 header "Baseline — Technical Debt (pre-W2, not regressive)"

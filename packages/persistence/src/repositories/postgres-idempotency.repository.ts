@@ -256,6 +256,9 @@ export class PostgresIdempotencyRepository implements IdempotencyRepository {
 		}
 
 		// Stale: generate new token, compare-and-swap on locked_at
+		// Use numeric comparison via EXTRACT to avoid JS Date → PG timestamptz
+		// microsecond precision loss.
+		const lockedAtEpoch = (record.lockedAt as Date).getTime();
 		const updated = await tx.execute(
 			sql`
 				UPDATE idempotency_records
@@ -266,8 +269,8 @@ export class PostgresIdempotencyRepository implements IdempotencyRepository {
 					updated_at = NOW()
 				WHERE id = ${record.id}
 					AND status = 'PROCESSING'
-					AND locked_at = ${record.lockedAt}
-				RETURNING id, attempt_count, processing_token
+			AND floor(EXTRACT(EPOCH FROM locked_at) * 1000) = ${lockedAtEpoch}
+			RETURNING id, attempt_count, processing_token
 			`,
 		);
 

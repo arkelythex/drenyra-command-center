@@ -18,9 +18,12 @@ import type {
 
 const runIfDb = describe;
 
-const ORG_A = "test-org-a";
-const C_A1 = "00000000-0000-0000-0000-0000000000a1";
-const C_A2 = "00000000-0000-0000-0000-0000000000a2";
+// ─── Deterministic UUIDs for multi-tenant isolation tests ─────────────────
+// Pattern: 00000000-0000-4000-8xxx-xxxxxxxxxxxx
+const ORG_A = "00000000-0000-4000-8000-000000000001";
+const ORG_B = "00000000-0000-4000-8000-000000000002";
+const C_A1 = "00000000-0000-4000-8000-000000000101";
+const C_A2 = "00000000-0000-4000-8000-000000000102";
 const OP = "test.op:v1";
 const KEY = "test-idempotency-key-001";
 const HASH_A = "a".repeat(64);
@@ -303,7 +306,7 @@ runIfDb("PostgresIdempotencyRepository", () => {
 			const dB = mustAcquire(
 				await repo.acquire(
 					tx,
-					{ ...BASE_INPUT, organizationId: "test-org-b" },
+					{ ...BASE_INPUT, organizationId: ORG_B },
 					TIMEOUT_MS,
 				),
 			);
