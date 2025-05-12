@@ -68,7 +68,9 @@ MIGRATIONS=(
 	0008_melodic_tusk 0009_early_secret_warriors 0010_tidy_thena
 	0011_fiscal_audit_ledger_hash_chain 0012_agent_run_persistence
 	0013_ai_tool_permissions 0014_agent_run_inputs 0015_batch_runs
-	0016_batch_cancelled 0018_error_recovery 0022_job_executions
+	0016_batch_cancelled 0018_error_recovery
+	0019_idempotency_records 0020_natural_uniqueness_constraints
+	0021_inbox_messages 0022_job_executions
 	0023_job_outbox_relay_fields 0024_job_unknown_state
 )
 
