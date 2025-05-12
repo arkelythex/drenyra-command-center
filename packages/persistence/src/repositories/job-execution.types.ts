@@ -134,6 +134,12 @@ export interface JobExecution {
 	supersededById: string | null;
 	inputHash: string;
 	createdAt: Date;
+	/** State transition timestamps from DB columns */
+	enqueuedAt: Date | null;
+	startedAt: Date | null;
+	completedAt: Date | null;
+	failedAt: Date | null;
+	cancelledAt: Date | null;
 }
 
 export type CreateJobResult =

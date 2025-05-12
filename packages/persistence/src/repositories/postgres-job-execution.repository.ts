@@ -47,6 +47,11 @@ function rowToExecution(row: Record<string, unknown>): JobExecution {
 		supersededById: (row.superseded_by_id as string) ?? null,
 		inputHash: row.input_hash as string,
 		createdAt: row.created_at as Date,
+		enqueuedAt: (row.enqueued_at as Date) ?? null,
+		startedAt: (row.started_at as Date) ?? null,
+		completedAt: (row.completed_at as Date) ?? null,
+		failedAt: (row.failed_at as Date) ?? null,
+		cancelledAt: (row.cancelled_at as Date) ?? null,
 	};
 }
 
@@ -501,7 +506,10 @@ export class PostgresJobExecutionRepository implements JobExecutionRepository {
 
 		// Step 3: Outbox for new execution.
 		await tx.execute(
-			buildOutboxInsertSql((newRow as Record<string, unknown>).id as string, input.newInput),
+			buildOutboxInsertSql(
+				(newRow as Record<string, unknown>).id as string,
+				input.newInput,
+			),
 		);
 
 		return {

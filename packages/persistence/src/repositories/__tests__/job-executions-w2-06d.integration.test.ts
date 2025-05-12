@@ -86,6 +86,9 @@ runIfDb("T14 — crash después de queue.add, antes de PG commit", () => {
 				},
 			);
 
+			// Crea savepoint para aislar relay1 del relay2
+			await tx.execute(sql`SAVEPOINT w2d_t14_savepoint`);
+
 			const relay1 = new OutboxRelay(
 				{ queue: q1 as never },
 				{ failureProbe: h1 },
@@ -95,6 +98,9 @@ runIfDb("T14 — crash después de queue.add, antes de PG commit", () => {
 			await expect(relay1.runCycle(tx as never)).rejects.toThrow(
 				SimulatedProcessCrash,
 			);
+
+			// Rollback relay1's CLAIMED update so relay2 sees PENDING
+			await tx.execute(sql`ROLLBACK TO w2d_t14_savepoint`);
 
 			// ── Verificar lo que NO ocurrió ──
 			// PG no se actualizó — ni execution ni outbox
@@ -252,6 +258,7 @@ runIfDb("T16 — lease perdido antes de complete", () => {
 				SET status = 'FAILED'::job_execution_status,
 					failure_class = 'RETRYABLE'::job_failure_class,
 					failure_code = 'RECOVERED',
+					failed_at = NOW(),
 					execution_token = NULL,
 					lease_started_at = NULL,
 					lease_expires_at = NULL
@@ -333,6 +340,7 @@ runIfDb("T17 — heartbeat tolera fallo transitorio, aborta por umbral", () => {
 				SET status = 'FAILED'::job_execution_status,
 					failure_class = 'RETRYABLE'::job_failure_class,
 					failure_code = 'LEASE_EXPIRED',
+					failed_at = NOW(),
 					execution_token = NULL,
 					lease_started_at = NULL,
 					lease_expires_at = NULL
