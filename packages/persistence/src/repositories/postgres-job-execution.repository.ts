@@ -450,25 +450,15 @@ export class PostgresJobExecutionRepository implements JobExecutionRepository {
 			return { kind: "fencing-rejected" };
 		}
 
-		// Step 1: Pre-generate new execution ID.
+		// Pre-generate new execution ID.
 		const newId = input.newExecutionId || randomUUID();
+		const newGen = currentGen + 1;
 
-		// Step 2: INSERT new execution FIRST so the FK from the old row
-		// (superseded_by_id -> job_executions.id) has a valid target.
-		const [newRow] = await tx.execute(
-			buildReplaceInsertSqlWithId(input.newInput, currentGen + 1, newId),
-		);
-
-		if (!newRow) {
-			throw new Error("Replace: failed to insert new execution");
-		}
-		const newRowId = (newRow as Record<string, unknown>).id as string;
-
-		// Step 3: Mark old execution as SUPERSEDED pointing to the new row.
+		// Step 1: Mark old as SUPERSEDED (FK is DEFERRED — checked at tx commit).
 		const superseded = await tx.execute(sql`
 			UPDATE job_executions
 			SET status = 'SUPERSEDED'::job_execution_status,
-				superseded_by_id = ${newRowId}::uuid,
+				superseded_by_id = ${newId}::uuid,
 				cancel_requested_at = NOW(),
 				execution_token = NULL,
 				lease_started_at = NULL,
@@ -479,15 +469,40 @@ export class PostgresJobExecutionRepository implements JobExecutionRepository {
 		`);
 
 		if (superseded.length !== 1) {
-			// New row was inserted but old row couldn't be superseded.
-			// This is an invariant violation — the old row should always be
-			// in a supersedable state since we validated it exists and is
-			// either RUNNING (with matching token) or a terminal state.
-			throw new Error("Replace: failed to supersede previous execution");
+			return { kind: "fencing-rejected" };
 		}
 
-		// Step 4: Outbox for new execution.
-		await tx.execute(buildOutboxInsertSql(newRowId, input.newInput));
+		// Step 2: INSERT new execution.
+		const [newRow] = await tx.execute(sql`
+			INSERT INTO job_executions (
+				id, organization_id, company_id,
+				queue_name, job_type, logical_key, execution_window,
+				uniqueness_policy, generation, status,
+				input_hash
+			) VALUES (
+				${newId}::uuid,
+				${input.newInput.organizationId}::uuid,
+				${input.newInput.companyId ?? null}::uuid,
+				${input.newInput.queueName},
+				${input.newInput.jobType},
+				${input.newInput.logicalKey},
+				${input.newInput.executionWindow ?? null},
+				${input.newInput.uniquenessPolicy}::job_uniqueness_policy,
+				${newGen},
+				'PENDING'::job_execution_status,
+				${input.newInput.inputHash}
+			)
+			RETURNING *
+		`);
+
+		if (!newRow) {
+			throw new Error("Replace: failed to insert new execution");
+		}
+
+		// Step 3: Outbox for new execution.
+		await tx.execute(
+			buildOutboxInsertSql((newRow as Record<string, unknown>).id as string, input.newInput),
+		);
 
 		return {
 			kind: "replaced",
@@ -709,37 +724,6 @@ function buildInsertSql(input: CreateJobInput) {
 			${windowValue},
 			${input.uniquenessPolicy}::job_uniqueness_policy,
 			1,
-			'PENDING'::job_execution_status,
-			${input.inputHash}
-		)
-		RETURNING *
-	`;
-}
-
-function buildReplaceInsertSqlWithId(
-	input: CreateJobInput,
-	generation: number,
-	id: string,
-) {
-	const companyId = input.companyId ? sql`${input.companyId}::uuid` : sql`NULL`;
-	const windowValue = input.executionWindow ?? null;
-
-	return sql`
-		INSERT INTO job_executions (
-			id, organization_id, company_id,
-			queue_name, job_type, logical_key, execution_window,
-			uniqueness_policy, generation, status,
-			input_hash
-		) VALUES (
-			${id}::uuid,
-			${input.organizationId}::uuid,
-			${companyId},
-			${input.queueName},
-			${input.jobType},
-			${input.logicalKey},
-			${windowValue},
-			${input.uniquenessPolicy}::job_uniqueness_policy,
-			${generation},
 			'PENDING'::job_execution_status,
 			${input.inputHash}
 		)

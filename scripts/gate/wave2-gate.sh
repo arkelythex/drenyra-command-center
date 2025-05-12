@@ -72,6 +72,7 @@ MIGRATIONS=(
 	0019_idempotency_records 0020_natural_uniqueness_constraints
 	0021_inbox_messages 0022_job_executions
 	0023_job_outbox_relay_fields 0024_job_unknown_state
+	0025_deferred_superseded_fk
 )
 
 FRESH_OK=0
