@@ -2,7 +2,7 @@
  * C2 — Idempotency keys distintas, misma clave natural
  *
  * Dos requests con distinta idempotency key pero mismos
- * (company_id, vendor_id, bill_number).
+ * (company_id, customer_id, invoice_number).
  *
  * Resultado:
  *   1 invoice
@@ -42,10 +42,10 @@ runIfDb("C2 — Keys distintas, misma clave natural", () => {
 			`);
 
 			await tx.execute(sql`
-				INSERT INTO invoices (id, company_id, vendor_id, bill_number, amount, currency, status, issued_at, created_at, updated_at)
+				INSERT INTO invoices (id, company_id, customer_id, invoice_number, total_amount, currency, status, issue_date, created_at, updated_at)
 				VALUES (
 					gen_random_uuid(), ${f.invoiceA.companyId}::uuid,
-					${f.invoiceA.vendorId}::uuid, ${f.invoiceA.billNumber},
+					${f.invoiceA.customerId}::uuid, ${f.invoiceA.invoiceNumber},
 					${f.invoiceA.amount}, ${f.invoiceA.currency},
 					'issued', NOW(), NOW(), NOW()
 				)
@@ -70,10 +70,10 @@ runIfDb("C2 — Keys distintas, misma clave natural", () => {
 			// Intentar insert invoice — unique constraint violado
 			try {
 				await tx.execute(sql`
-					INSERT INTO invoices (id, company_id, vendor_id, bill_number, amount, currency, status, issued_at, created_at, updated_at)
+					INSERT INTO invoices (id, company_id, customer_id, invoice_number, total_amount, currency, status, issue_date, created_at, updated_at)
 					VALUES (
 						gen_random_uuid(), ${f.invoiceACollision.companyId}::uuid,
-						${f.invoiceACollision.vendorId}::uuid, ${f.invoiceACollision.billNumber},
+						${f.invoiceACollision.customerId}::uuid, ${f.invoiceACollision.invoiceNumber},
 						${f.invoiceACollision.amount}, ${f.invoiceACollision.currency},
 						'issued', NOW(), NOW(), NOW()
 					)
@@ -97,7 +97,7 @@ runIfDb("C2 — Keys distintas, misma clave natural", () => {
 
 			const invCount = await reader.countInvoices(
 				t.tenantA.companyId,
-				f.invoiceA.billNumber,
+				f.invoiceA.invoiceNumber,
 			);
 			const idemAStatus = await reader.readIdempotencyStatus(
 				f.idempotency.keyA.key,

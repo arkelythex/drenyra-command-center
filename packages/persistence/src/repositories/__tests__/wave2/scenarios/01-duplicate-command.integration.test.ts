@@ -46,10 +46,10 @@ runIfDb("C1 — Comando duplicado (misma idempotency key)", () => {
 
 			// Step 2: INSERT invoice (efecto de dominio)
 			await tx.execute(sql`
-				INSERT INTO invoices (id, company_id, vendor_id, bill_number, amount, currency, status, issued_at, created_at, updated_at)
+				INSERT INTO invoices (id, company_id, customer_id, invoice_number, total_amount, currency, status, issue_date, created_at, updated_at)
 				VALUES (
 					gen_random_uuid(), ${invoice.companyId}::uuid,
-					${invoice.vendorId}::uuid, ${invoice.billNumber},
+					${invoice.customerId}::uuid, ${invoice.invoiceNumber},
 					${invoice.amount}, ${invoice.currency}, 'issued', NOW(), NOW(), NOW()
 				)
 				ON CONFLICT DO NOTHING
@@ -58,7 +58,7 @@ runIfDb("C1 — Comando duplicado (misma idempotency key)", () => {
 			// Verificación
 			const invCount = await reader.countInvoices(
 				invoice.companyId,
-				invoice.billNumber,
+				invoice.invoiceNumber,
 			);
 			return { invCount };
 		});
@@ -74,7 +74,7 @@ runIfDb("C1 — Comando duplicado (misma idempotency key)", () => {
 					kind: "replay",
 					invCount: await reader.countInvoices(
 						invoice.companyId,
-						invoice.billNumber,
+						invoice.invoiceNumber,
 					),
 				};
 			}
@@ -91,7 +91,7 @@ runIfDb("C1 — Comando duplicado (misma idempotency key)", () => {
 			const reader = new TableStateReader(tx);
 			const totalInv = await reader.countInvoices(
 				invoice.companyId,
-				invoice.billNumber,
+				invoice.invoiceNumber,
 			);
 			const idemCount = await reader.countIdempotencyRecords(idemKey);
 			const idemStatus = await reader.readIdempotencyStatus(idemKey);

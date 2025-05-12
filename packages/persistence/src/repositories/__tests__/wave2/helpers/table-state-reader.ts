@@ -48,8 +48,8 @@ export interface JobOutboxSnapshot {
 export interface InvoiceSnapshot {
 	id: string;
 	companyId: string;
-	vendorId: string;
-	billNumber: string;
+	customerId: string;
+	invoiceNumber: string;
 	amount: number;
 }
 
@@ -70,11 +70,11 @@ export class TableStateReader {
 
 	async countInvoices(
 		companyId?: string,
-		billNumber?: string,
+		invoiceNumber?: string,
 	): Promise<number> {
 		const conditions = [];
 		if (companyId) conditions.push(sql`company_id = ${companyId}::uuid`);
-		if (billNumber) conditions.push(sql`bill_number = ${billNumber}`);
+		if (invoiceNumber) conditions.push(sql`invoice_number = ${invoiceNumber}`);
 		const where =
 			conditions.length > 0
 				? sql`WHERE ${sql.join(conditions, sql` AND `)}`

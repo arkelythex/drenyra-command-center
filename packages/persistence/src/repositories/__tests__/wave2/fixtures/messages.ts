@@ -38,9 +38,9 @@ export function createMessageFixture(
 	overrides?: Partial<MessagesFixture>,
 ): MessagesFixture {
 	const payload = {
-		invoiceId: `inv-${invoice.billNumber.replace(/\D/g, "")}`,
+		invoiceId: `inv-${invoice.invoiceNumber.replace(/\D/g, "")}`,
 		companyId: invoice.companyId,
-		billNumber: invoice.billNumber,
+		billNumber: invoice.invoiceNumber,
 		amount: invoice.amount,
 	};
 
@@ -61,7 +61,7 @@ export function createMessageFixture(
 			messageId: "msg-sunat-trigger-001",
 			messageType: "job.sunat.submit",
 			payload: {
-				invoiceId: `inv-${invoice.billNumber.replace(/\D/g, "")}`,
+				invoiceId: `inv-${invoice.invoiceNumber.replace(/\D/g, "")}`,
 				companyId: invoice.companyId,
 			},
 			payloadHash: "sunat-trigger-001",

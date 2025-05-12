@@ -56,7 +56,7 @@ export function createJobFixture(
 	invoice: FiscalOperationFixture,
 	overrides?: Partial<JobsFixture>,
 ): JobsFixture {
-	const invoiceId = `inv-${invoice.billNumber.replace(/\D/g, "")}`;
+	const invoiceId = `inv-${invoice.invoiceNumber.replace(/\D/g, "")}`;
 	const sunatPayload = { invoiceId, companyId: invoice.companyId };
 	const sunatHash = sha256(JSON.stringify(sunatPayload));
 

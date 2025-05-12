@@ -2,9 +2,9 @@
  * Fiscal operations fixtures — deterministas, inmutables.
  *
  * Proporciona pares preparados para:
- *   - misma clave natural (company_id, vendor_id, bill_number)
+ *   - misma clave natural (company_id, customer_id, invoice_number)
  *   - misma clave natural entre compañías (no colisiona)
- *   - invoices con distintos bill_numbers, vendors, montos
+ *   - invoices con distintos invoice_numbers, vendors, montos
  *   - idempotency keys para escenarios de duplicación y conflicto
  */
 
@@ -12,8 +12,8 @@ import type { TenantScope } from "./tenants";
 
 export interface FiscalOperationFixture {
 	companyId: string;
-	vendorId: string;
-	billNumber: string;
+	customerId: string;
+	invoiceNumber: string;
 	amount: number;
 	taxId: string;
 	currency: string;
@@ -51,8 +51,8 @@ export function createFiscalOperationFixture(
 	const base: FiscalOperationsFixture = {
 		invoiceA: {
 			companyId: tenantA.companyId,
-			vendorId: "00000000-0000-4000-a000-000000000100",
-			billNumber: "F001-00001234",
+			customerId: "00000000-0000-4000-a000-000000000100",
+			invoiceNumber: "F001-00001234",
 			amount: 1180.0,
 			taxId: "20100000001",
 			currency: "PEN",
@@ -60,8 +60,8 @@ export function createFiscalOperationFixture(
 		},
 		invoiceACollision: {
 			companyId: tenantA.companyId,
-			vendorId: "00000000-0000-4000-a000-000000000100",
-			billNumber: "F001-00001234",
+			customerId: "00000000-0000-4000-a000-000000000100",
+			invoiceNumber: "F001-00001234",
 			amount: 1180.0,
 			taxId: "20100000001",
 			currency: "PEN",
@@ -69,8 +69,8 @@ export function createFiscalOperationFixture(
 		},
 		invoiceBSameNaturalKey: {
 			companyId: tenantB.companyId,
-			vendorId: "00000000-0000-4000-a000-000000000100",
-			billNumber: "F001-00001234",
+			customerId: "00000000-0000-4000-a000-000000000100",
+			invoiceNumber: "F001-00001234",
 			amount: 1180.0,
 			taxId: "20100000001",
 			currency: "PEN",
@@ -78,8 +78,8 @@ export function createFiscalOperationFixture(
 		},
 		invoiceC: {
 			companyId: tenantA.companyId,
-			vendorId: "00000000-0000-4000-a000-000000000200",
-			billNumber: "B001-00005678",
+			customerId: "00000000-0000-4000-a000-000000000200",
+			invoiceNumber: "B001-00005678",
 			amount: 590.0,
 			taxId: "20300000003",
 			currency: "PEN",

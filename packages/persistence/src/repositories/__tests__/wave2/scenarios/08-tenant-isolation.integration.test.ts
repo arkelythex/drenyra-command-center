@@ -1,7 +1,7 @@
 /**
  * D5 — Aislamiento transversal (escenario 8)
  *
- * Mismos IDs entre tenants: idempotency_key, logical_key, message_id, bill_number.
+ * Mismos IDs entre tenants: idempotency_key, logical_key, message_id, invoice_number.
  *
  * Asserts:
  *   - cada tenant crea sus propios efectos
@@ -118,21 +118,21 @@ runIfDb("D5 — Aislamiento transversal", () => {
 		}
 	});
 
-	it("mismo bill_number entre compañías → invoices independientes", async () => {
+	it("mismo invoice_number entre compañías → invoices independientes", async () => {
 		const t = createTenantFixture();
 
 		await withTransaction(async (tx) => {
 			// Invoice A en tenant A
 			await tx.execute(sql`
-				INSERT INTO invoices (id, company_id, vendor_id, bill_number, amount, currency, status, issued_at, created_at, updated_at)
+				INSERT INTO invoices (id, company_id, customer_id, invoice_number, total_amount, currency, status, issue_date, created_at, updated_at)
 				VALUES (gen_random_uuid(), ${t.tenantA.companyId}::uuid,
 					'00000000-0000-4000-a000-000000000100'::uuid, 'F001-99999',
 					1000, 'PEN', 'issued', NOW(), NOW(), NOW())
 			`);
 
-			// Invoice con mismo bill_number en tenant B
+			// Invoice con mismo invoice_number en tenant B
 			await tx.execute(sql`
-				INSERT INTO invoices (id, company_id, vendor_id, bill_number, amount, currency, status, issued_at, created_at, updated_at)
+				INSERT INTO invoices (id, company_id, customer_id, invoice_number, total_amount, currency, status, issue_date, created_at, updated_at)
 				VALUES (gen_random_uuid(), ${t.tenantB.companyId}::uuid,
 					'00000000-0000-4000-a000-000000000100'::uuid, 'F001-99999',
 					2000, 'PEN', 'issued', NOW(), NOW(), NOW())
@@ -140,7 +140,7 @@ runIfDb("D5 — Aislamiento transversal", () => {
 
 			const reader = new TableStateReader(tx);
 			const total = await reader.countInvoices(undefined, "F001-99999");
-			expect(total, "2 invoices con mismo bill_number (tenant aislado)").toBe(
+			expect(total, "2 invoices con mismo invoice_number (tenant aislado)").toBe(
 				2,
 			);
 		});

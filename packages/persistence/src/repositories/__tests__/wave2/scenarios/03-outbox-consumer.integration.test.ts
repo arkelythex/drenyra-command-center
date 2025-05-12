@@ -30,10 +30,10 @@ runIfDb("C3 — Outbox → consumer con redelivery concurrente", () => {
 		// ── Frontera 1: domain effect + outbox event ──
 		await withTransaction(async (tx) => {
 			await tx.execute(sql`
-				INSERT INTO invoices (id, company_id, vendor_id, bill_number, amount, currency, status, issued_at, created_at, updated_at)
+				INSERT INTO invoices (id, company_id, customer_id, invoice_number, total_amount, currency, status, issue_date, created_at, updated_at)
 				VALUES (
 					gen_random_uuid(), ${f.invoiceA.companyId}::uuid,
-					${f.invoiceA.vendorId}::uuid, ${f.invoiceA.billNumber},
+					${f.invoiceA.customerId}::uuid, ${f.invoiceA.invoiceNumber},
 					${f.invoiceA.amount}, ${f.invoiceA.currency},
 					'issued', NOW(), NOW(), NOW()
 				)
@@ -74,7 +74,7 @@ runIfDb("C3 — Outbox → consumer con redelivery concurrente", () => {
 			// Verificar 1 invoice (efecto downstream)
 			const invCount = await reader.countInvoices(
 				f.invoiceA.companyId,
-				f.invoiceA.billNumber,
+				f.invoiceA.invoiceNumber,
 			);
 			expect(invCount, "Exactamente 1 invoice").toBe(1);
 		});
