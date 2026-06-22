@@ -176,11 +176,11 @@
     "better-auth": "^1.6.19",
     "drizzle-orm": "^0.45.2",
     "fast-uri": "4.0.0",
-    "minimatch": "9.0.5",
-    "path-to-regexp": "8.4.0",
-    "picomatch": "2.3.2",
-    "undici": "7.7.0",
-    "ws": "8.20.1",
+    "minimatch": "10.2.5",
+    "path-to-regexp": "8.4.2",
+    "picomatch": "4.0.4",
+    "undici": "8.5.0",
+    "ws": "8.21.0",
     "zod": "^4.4.3"
   },
   "overrides": {
