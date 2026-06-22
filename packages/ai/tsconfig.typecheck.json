@@ -1,0 +1,29 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true,
+    "rootDir": "../..",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
+  "include": [
+    "src/index.ts",
+    "src/model-registry.ts",
+    "src/openrouter.ts",
+    "src/provider.ts",
+    "src/sunat-corpus.ts",
+    "src/tool-bridge.ts",
+    "src/services/**/*.ts",
+    "src/agents/**/*.ts",
+    "src/session/**/*.ts",
+    "src/control-plane/**/*.ts",
+    "src/context-monitor/**/*.ts",
+    "src/gateway/**/*.ts",
+    "src/services/error-recovery/**/*.ts",
+    "__tests__/services/error-recovery/**/*.ts"
+  ],
+  "exclude": ["dist", "**/dist/**"]
+}

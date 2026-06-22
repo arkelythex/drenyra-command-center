@@ -1,0 +1,60 @@
+name: Quality Gate — Fiscal Boundary Check
+description: Verify fiscal domain rules for changed files
+
+runs:
+  using: composite
+  steps:
+    - name: Check fiscal boundary rules
+      shell: bash
+      run: |
+        echo "🔍 Checking fiscal boundary compliance..."
+        VIOLATIONS=0
+
+        # Rule 1: Money amounts must use Money type, not raw numbers
+        # NOTE: Broad regex catches too many legitimate numeric fields in domain.
+        # We only flag explicit monetary patterns (Cents, baseAmount, igvAmount, etc.)
+        # that should use Money type.
+        echo "  Rule 1: Money amounts must use Money type..."
+        FLOAT_MONEY=$(grep -rnE '(subtotal|igvAmount|expectedIgv|totalAmount|baseAmount)\s*:\s*number' \
+          packages/domain/src/ --include='*.ts' --include='*.tsx' \
+          --exclude-dir=__tests__ \
+          --exclude-dir=entities \
+          --exclude-dir=repositories \
+          --exclude-dir=events \
+          --exclude='*.test.ts' --exclude='*.spec.ts' \
+          --exclude='invoice-igv.ts' 2>/dev/null || true)
+        if [[ -n "$FLOAT_MONEY" ]]; then
+          echo "  ❌ Raw number types found in money domain:"
+          echo "$FLOAT_MONEY"
+          VIOLATIONS=$((VIOLATIONS + 1))
+        fi
+
+        # Rule 2: SUNAT fiscal logic must be in domain/infrastructure, not raw API
+        # WARNING: This is a Peruvian fiscal system. SUNAT references are LEGITIMATE
+        # throughout the API layer (features/sunat/, features/sire/, features/ai-swarm/).
+        # This rule only catches IGV/SPOT fiscal CALCULATION logic, not references.
+        echo "  Rule 2: Fiscal CALCULATION logic must not be duplicated in API..."
+        FISCAL_CALC_API=$(grep -rnE 'igvRate\s*=\s*0\.18|1\.18\)|igvRate.*0\.18' apps/api/src/ --include='*.ts' 2>/dev/null | grep -v '__tests__/' | grep -v '@arkelythex/domain' | grep -v '\.test\.\|\.spec\.' | grep -v 'apps/api/src/services/sunat/' | grep -v 'apps/api/src/features/ai-swarm/rules/' | grep -v 'apps/api/src/features/sunat/' || true)
+        if [[ -n "$FISCAL_CALC_API" ]]; then
+          echo "  ❌ IGV rate/calc duplicates found in API layer (should be in domain):"
+          echo "$FISCAL_CALC_API"
+          VIOLATIONS=$((VIOLATIONS + 1))
+        fi
+
+        # Rule 3: RUC/DNI validation must be in domain
+        echo "  Rule 3: RUC/DNI validation must be in domain..."
+        RUC_IN_WEB=$(grep -rnE 'validarRuc|validateRuc|rucChecksum' apps/web/src/ --include='*.ts' --include='*.tsx' 2>/dev/null | grep -v '@arkelythex/shared' | grep -v 'signup-ruc-validation.ts' || true)
+        if [[ -n "$RUC_IN_WEB" ]]; then
+          echo "  ❌ RUC validation found outside domain layer:"
+          echo "$RUC_IN_WEB"
+          VIOLATIONS=$((VIOLATIONS + 1))
+        fi
+
+        if [[ $VIOLATIONS -gt 0 ]]; then
+          echo ""
+          echo "❌ Fiscal boundary QUALITY GATE FAILED: $VIOLATIONS violation(s) detected."
+          echo "   See AGENTS.md and architecture docs for domain boundary rules."
+          exit 1
+        fi
+
+        echo "✅ Fiscal boundary checks complete — no violations."

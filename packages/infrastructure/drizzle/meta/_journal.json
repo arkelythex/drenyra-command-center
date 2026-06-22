@@ -1,0 +1,132 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1772889310074,
+      "tag": "0000_canonical_baseline",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775007252659,
+      "tag": "0001_cool_lady_ursula",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1777566910054,
+      "tag": "0002_lying_satana",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1777567436172,
+      "tag": "0003_warm_forgotten_one",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1778188466306,
+      "tag": "0004_amazing_juggernaut",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1779042251826,
+      "tag": "0005_violet_overlord",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1779152096604,
+      "tag": "0006_drenyra_command_center",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1780194008268,
+      "tag": "0007_loose_squirrel_girl",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1780197394402,
+      "tag": "0008_melodic_tusk",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1780361285881,
+      "tag": "0009_early_secret_warriors",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1780984971471,
+      "tag": "0010_tidy_thena",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1780984900000,
+      "tag": "0011_fiscal_audit_ledger_hash_chain",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1790000000000,
+      "tag": "0012_agent_run_persistence",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1781641607310,
+      "tag": "0013_ai_tool_permissions",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1781900000000,
+      "tag": "0014_agent_run_inputs",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1790200000000,
+      "tag": "0015_batch_runs",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1790300000000,
+      "tag": "0016_batch_cancelled",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1790500000000,
+      "tag": "0018_error_recovery",
+      "breakpoints": true
+    }
+  ]
+}

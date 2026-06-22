@@ -1,0 +1,46 @@
+{
+  "name": "@arkelythex/landing",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "eslint .",
+    "start": "next start",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "docs:search:pagefind-note": "bun -e \"console.log(['Pagefind (full-text): tras generar HTML est\\u00e1tico, ejecut\\u00e1 bunx pagefind --site <carpeta>.','Con App Router sin export est\\u00e1tico, evaluar @pagefind/cli en postbuild o mantener el \\u00edndice en lib/data (getDocsSearchIndex).'].join('\\n'))\"",
+    "quality:perf": "bun run build",
+    "perf:lighthouse": "echo \"Arranca la landing (bun run dev) y en otra terminal ejecuta: bunx lighthouse http://127.0.0.1:3000 --only-categories=performance,accessibility,best-practices,seo --preset=desktop --chrome-flags='--headless=new --no-sandbox' --quiet\""
+  },
+  "dependencies": {
+    "@arkelythex/drenyra-core": "workspace:*",
+    "@arkelythex/ui": "workspace:*",
+    "@vercel/analytics": "latest",
+    "framer-motion": "^12.27.3",
+    "lucide-react": "1.20.0",
+    "next": "^16.2.9",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "tailwind-merge": "^3.5.0",
+    "web-vitals": "^5.2.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/postcss": "^4.1.9",
+    "@testing-library/react": "^16.0.0",
+    "@types/node": "^25",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "happy-dom": "^20.9.0",
+    "postcss": "^8.5",
+    "tailwindcss": "^4.1.9",
+    "tw-animate-css": "1.4.0",
+    "typescript": "^6",
+    "typescript-eslint": "^8.59.0",
+    "vitest": "^4.1.7"
+  }
+}

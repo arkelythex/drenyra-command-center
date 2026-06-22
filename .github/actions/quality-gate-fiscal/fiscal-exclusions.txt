@@ -1,0 +1,29 @@
+*.test.ts
+*.spec.ts
+*__tests__*
+# Value Objects — use number for cents internally (Money.fromCents)
+*value-objects/Money.ts
+*value-objects/PromptVersion.ts
+*errors/InvalidAmountError.ts
+# Fiscal architecture — non-money numeric fields (counts, indices, confidence)
+*expediente-fiscal.ts
+*fiscal-pipeline.ts
+*fiscal-truth/types.ts
+*accounting-period.ts
+*exchange-rate.ts
+*entities/*
+*repositories/*
+# Event types — value objects with numeric fields
+*events/*
+# Drenyra/MCP types — non-money numeric
+*drenyra/types.ts
+*platform/mcp.ts
+*fiscal-memory/fiscal-memory.types.ts
+# Tax calculator services — use number for rates/calculations
+*services/TaxCalculator.ts
+*services/igv-calculator.ts
+*services/tax-calculator/*
+*accounting/detraccion/*
+*accounting/detraccion.ts
+# New fiscal module
+*fiscal/invoice-igv.ts

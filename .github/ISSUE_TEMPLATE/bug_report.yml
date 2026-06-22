@@ -1,0 +1,138 @@
+name: "Reporte de Bug / Bug Report"
+description: "Reportá un error para ayudarnos a mejorar"
+title: "fix(scope): "
+labels: ["bug", "status:needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Gracias por reportar un bug 🐛
+
+        Antes de continuar:
+        - Revisá si ya existe un issue abierto para este mismo bug
+        - Incluí todos los detalles posibles para reproducirlo
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: "Pre-flight Checks"
+      options:
+        - label: "Busqué issues existentes y esto no es un duplicado"
+          required: true
+        - label: "Entiendo que este issue necesita status:approved antes de abrir un PR"
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Bug Description"
+      description: "Descripción clara y concisa del bug"
+      placeholder: "Cuando hago X, ocurre Y en vez de Z..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to Reproduce"
+      description: "Pasos numerados para reproducir el bug"
+      placeholder: |
+        1. Ir a '...'
+        2. Hacer clic en '...'
+        3. Scrollear hasta '...'
+        4. Ver el error
+      value: "1.\n2.\n3.\n"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected Behavior"
+      description: "¿Qué debería haber pasado?"
+      placeholder: "El sistema debería..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Actual Behavior"
+      description: "¿Qué pasó en vez? Incluí errores/logs si aplica"
+      placeholder: "Aparece el error: ..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: "Operating System"
+      multiple: false
+      options:
+        - macOS
+        - Linux (Ubuntu/Debian)
+        - Linux (Arch)
+        - Linux (Fedora)
+        - Linux (Other)
+        - Windows
+        - WSL
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: agent
+    attributes:
+      label: "Agent / Client"
+      multiple: false
+      options:
+        - OpenCode
+        - Claude Code
+        - Gemini CLI
+        - Cursor
+        - Windsurf
+        - Codex
+        - GitHub CLI
+        - Browser (Web App)
+        - API Direct
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: shell
+    attributes:
+      label: "Shell"
+      multiple: false
+      options:
+        - bash
+        - zsh
+        - fish
+        - PowerShell
+        - Other / N/A
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Relevant Logs / Output"
+      description: "Copiá y pegá cualquier log relevante (se formateará automáticamente)"
+      render: shell
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Additional Context"
+      description: "Screenshots, workarounds, información extra (opcional)"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ⚠️ **ARKELYTHEX** builds Drenyra, la Infraestructura Nacional de Inteligencia Fiscal.
+        No romper correctitud fiscal, tenant isolation, o trazabilidad de auditoría.

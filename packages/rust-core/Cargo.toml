@@ -1,0 +1,29 @@
+[package]
+name = "arkelythex-rust-core"
+version = "0.1.0"
+edition = "2021"
+description = "Rust hot-path fiscal primitives for ARKELYTHEX; TypeScript remains the source of truth until WASM parity is complete."
+license = "UNLICENSED"
+publish = false
+
+[lib]
+name = "arkelythex_rust_core"
+path = "src/lib.rs"
+crate-type = ["rlib", "cdylib"]
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[lints.clippy]
+all = "warn"
+pedantic = "warn"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+strip = "symbols"
+
+[profile.dev]
+strip = "symbols"

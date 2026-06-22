@@ -1,0 +1,89 @@
+name: "Solicitud de funcionalidad / Feature Request"
+description: "Sugerí una idea o mejora para ARKELYTHEX"
+title: "feat(scope): "
+labels: ["enhancement", "status:needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Gracias por contribuir a ARKELYTHEX 🚀
+
+        Antes de continuar:
+        - Revisá si ya existe un issue similar abierto
+        - Las funcionalidades nuevas pasan por el flujo SDD: propuesta → specs → diseño → tareas → implementación
+        - Este issue necesita `status:approved` antes de abrir un PR
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: "Pre-flight Checks"
+      options:
+        - label: "Busqué issues existentes y esto no es un duplicado"
+          required: true
+        - label: "Entiendo que este issue necesita status:approved antes de abrir un PR"
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problem Description"
+      description: "¿Qué problema resuelve esta funcionalidad? Describí el pain point."
+      placeholder: "Como {rol}, necesito {funcionalidad} para {beneficio}..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: "Proposed Solution"
+      description: "¿Cómo debería funcionar desde la perspectiva del usuario?"
+      placeholder: "Cuando hago X, el sistema debería Y..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: "Affected Area"
+      description: "¿Qué área impacta este cambio?"
+      multiple: false
+      options:
+        - API (Elysia)
+        - Web App (React)
+        - Landing (Next.js)
+        - Data Engine (Python)
+        - CLI (Go)
+        - Domain / Packages
+        - Agent Swarm
+        - Documentation
+        - CI / Workflows
+        - Infrastructure / Ops
+        - SUNAT / Fiscal / Compliance
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives Considered"
+      description: "Otras approaches que consideraste (opcional)"
+      placeholder: "Pensé en X pero descarté porque Y..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Additional Context"
+      description: "Mockups, ejemplos, referencias, links (opcional)"
+      placeholder: "Link a diseño, screenshot, doc relacionada..."
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ⚠️ **ARKELYTHEX** builds Drenyra, la Infraestructura Nacional de Inteligencia Fiscal.
+        No romper correctitud fiscal, tenant isolation, o trazabilidad de auditoría.

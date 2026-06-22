@@ -1,0 +1,89 @@
+# =============================================================================
+# ARKELYTHEX — Reusable Bun Setup Composite Action
+# =============================================================================
+# Encapsulates the common 4-step setup used by every CI job:
+#   1. Checkout code
+#   2. Verify Bun runtime is available
+#   3. Verify self-hosted runner native dependencies (optional)
+#   4. Install project dependencies (frozen lockfile)
+#
+# Usage:
+#   jobs:
+#     example:
+#       runs-on: [self-hosted, linux, x64]
+#       steps:
+#         - uses: ./.github/actions/setup-bun
+#         - name: Job-specific steps
+#           run: ...
+#
+#   For non-self-hosted runners (ubuntu-latest), set verify-native-deps: false
+#   to skip the native dependency check:
+#     steps:
+#       - uses: ./.github/actions/setup-bun
+#         with:
+#           verify-native-deps: false
+# =============================================================================
+
+name: "Setup Bun"
+description: "Checkout, verify Bun runtime and native deps, install frozen dependencies"
+
+branding:
+  icon: "terminal"
+  color: "black"
+
+inputs:
+  verify-native-deps:
+    description: "Whether to verify self-hosted runner native dependencies"
+    required: false
+    default: "true"
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: Ensure git-lfs binary available
+      shell: bash
+      run: |
+        if ! command -v git-lfs &>/dev/null; then
+          mkdir -p ~/.local/bin
+          curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
+          cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
+          chmod +x ~/.local/bin/git-lfs
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+        fi
+    - name: Checkout code
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+        lfs: false
+    - name: Remove broken husky hooks
+      shell: bash
+      run: |
+        rm -rf .git/hooks .husky/_/
+
+    - name: Verify Bun runtime
+      shell: bash
+      run: |
+        command -v bun
+        bun --version
+
+    - name: Verify self-hosted native deps
+      shell: bash
+      if: inputs.verify-native-deps == 'true'
+      run: bash scripts/ci/verify-self-hosted-runner-host.sh native-deps
+
+    - name: Cache Bun dependencies
+      uses: actions/cache@v5
+      with:
+        path: |
+          ~/.bun/install/cache
+          node_modules
+          apps/*/node_modules
+          packages/*/node_modules
+        key: bun-${{ runner.os }}-${{ hashFiles('**/bun.lock') }}
+        restore-keys: |
+          bun-${{ runner.os }}-
+
+    - name: Install dependencies
+      shell: bash
+      run: bun install --frozen-lockfile

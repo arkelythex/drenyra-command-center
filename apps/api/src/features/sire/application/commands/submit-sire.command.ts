@@ -1,0 +1,78 @@
+import { createLogger } from "../../../../lib/logger";
+import { fail, getErrorMessage, ok } from "../../../shared/api-response";
+import { enforceGovernancePolicy } from "../../../shared/governance";
+import {
+	logBlockedSubmissionAttempt,
+	submitWithAudit,
+} from "../../services/sire-submission-with-audit.service";
+
+const logger = createLogger({ module: "sire/submit-command" });
+
+export async function submitSire(body: any, set: any) {
+	const governance = await enforceGovernancePolicy({
+		action: "sire_submit",
+		priority: body.dryRun ? "medium" : "high",
+		governance: body.governance,
+		fallbackObjective: `sire_submission_${body.ledgerType}`,
+		set,
+		onBlocked: async (decision: any) => {
+			try {
+				await logBlockedSubmissionAttempt(
+					body,
+					decision.trace,
+					decision.message ?? "Execution blocked by autonomy policy",
+				);
+			} catch (auditError: unknown) {
+				logger.warn(
+					{
+						auditError,
+						companyId: body.companyId,
+						dryRun: body.dryRun,
+						ledgerType: body.ledgerType,
+						period: body.period,
+					},
+					"Failed to persist blocked SIRE submission trace",
+				);
+			}
+		},
+	});
+
+	if (!governance.allowed) {
+		return governance.response;
+	}
+
+	try {
+		const result = await submitWithAudit(body, {
+			governanceTrace: governance.trace,
+		});
+		set.status = 202;
+		return ok({
+			...result,
+			governance: governance.trace,
+		});
+	} catch (error: unknown) {
+		const message = getErrorMessage(error, "SIRE submission failed");
+		const normalized = message.toLowerCase();
+
+		if (normalized.includes("rate limit")) {
+			return fail(message, "SIRE_RATE_LIMIT_EXCEEDED");
+		}
+
+		if (normalized.includes("invalid") || normalized.includes("required")) {
+			set.status = 400;
+		} else if (
+			normalized.includes("401") ||
+			normalized.includes("403") ||
+			normalized.includes("unauthorized") ||
+			normalized.includes("forbidden")
+		) {
+			set.status = 401;
+		} else if (normalized.includes("timeout")) {
+			set.status = 504;
+		} else {
+			set.status = 502;
+		}
+
+		return fail(message, "SIRE_SUBMISSION_ERROR");
+	}
+}

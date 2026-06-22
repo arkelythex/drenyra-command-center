@@ -1,0 +1,12 @@
+export { FinanceWorkspacePage } from "./pages/FinanceWorkspacePage";
+export { OperationsWorkspacePage } from "./pages/OperationsWorkspacePage";
+export { ComplianceWorkspacePage } from "./pages/ComplianceWorkspacePage";
+export { SystemAdminWorkspacePage } from "./pages/SystemAdminWorkspacePage";
+export { AgentWorkspaceLayout } from "./components/AgentWorkspaceLayout";
+export { AgentChatPanel } from "./components/AgentChatPanel";
+export { useDrenyraChat } from "./hooks/useDrenyraChat";
+export { useDrenyraApprovals } from "./hooks/useDrenyraApprovals";
+export { usePersistedChat } from "./hooks/usePersistedChat";
+export { drenyraApi, type DrenyraApproval } from "./api/drenyra.api";
+export { FloatingDrenyraWidget } from "./components/FloatingDrenyraWidget";
+export { usePendingApprovalCount } from "./hooks/usePendingApprovalCount";

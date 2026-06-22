@@ -1,0 +1,40 @@
+{
+  "name": "@arkelythex/domain",
+  "version": "1.0.0",
+  "description": "Domain layer - entities, value objects, and domain logic",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./entities/*": "./src/entities/*.ts",
+    "./value-objects/*": "./src/value-objects/*.ts",
+    "./repositories/*": "./src/repositories/*.ts",
+    "./errors/*": "./src/errors/*.ts",
+    "./events/*": "./src/events/*.ts",
+    "./services/*": "./src/services/*.ts",
+    "./fiscal-ontology": "./src/fiscal-ontology/index.ts",
+    "./fiscal-agentic-ledger": "./src/fiscal-agentic-ledger/index.ts",
+    "./drenyra": "./src/drenyra/index.ts",
+    "./drenyra/types": "./src/drenyra/types.ts",
+    "./drenyra/capabilities": "./src/drenyra/capabilities.ts",
+    "./drenyra/capability-types": "./src/drenyra/capability-types.ts",
+    "./agents": "./src/agents/index.ts",
+    "./types/*": "./src/types/*.ts",
+    "./types/product-surfaces": "./src/types/product-surfaces.ts",
+    "./types/product-surface-registry": "./src/types/product-surface-registry.ts",
+    "./accounting/*": "./src/accounting/*.ts",
+    "./roi/*": "./src/roi/*.ts",
+    "./fiscal-memory": "./src/fiscal-memory/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7",
+    "@arkelythex/drenyra-core": "workspace:*"
+  }
+}

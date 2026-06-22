@@ -1,0 +1,1 @@
+export { CierreMensualPage } from "./CierreMensualPage";

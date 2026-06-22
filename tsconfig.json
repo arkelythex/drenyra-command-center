@@ -1,0 +1,114 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": false,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "removeComments": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@arkelythex/domain": ["./packages/domain/src/index.ts"],
+      "@arkelythex/domain/*": ["./packages/domain/src/*"],
+      "@arkelythex/application": ["./packages/application/src/index.ts"],
+      "@arkelythex/application/*": ["./packages/application/src/*"],
+      "@arkelythex/application-civic": [
+        "./packages/application/civic/src/index.ts"
+      ],
+      "@arkelythex/application-civic/*": ["./packages/application/civic/src/*"],
+      "@arkelythex/domain-civic": ["./packages/domain/civic/src/index.ts"],
+      "@arkelythex/domain-civic/*": ["./packages/domain/civic/src/*"],
+      "@arkelythex/ai": ["./packages/ai/src/index.ts"],
+      "@arkelythex/ai/provider": ["./packages/ai/src/provider.ts"],
+      "@arkelythex/ai/services/ai-cost": [
+        "./packages/ai/src/services/ai-cost.ts"
+      ],
+      "@arkelythex/ai/services/sunat-knowledge": [
+        "./packages/ai/src/services/sunat-knowledge.ts"
+      ],
+      "@arkelythex/ai/services/swarm-consensus": [
+        "./packages/ai/src/services/swarm-consensus.ts"
+      ],
+      "@arkelythex/ai/services/swarm-consensus/consensus-engine": [
+        "./packages/ai/src/services/swarm-consensus-engine.ts"
+      ],
+      "@arkelythex/ai/services/swarm-consensus/types": [
+        "./packages/ai/src/services/swarm-consensus-types.ts"
+      ],
+      "@arkelythex/ai/*": ["./packages/ai/src/*"],
+      "@arkelythex/infrastructure": ["./packages/infrastructure/src/index.ts"],
+      "@arkelythex/infrastructure/*": ["./packages/infrastructure/src/*"],
+      "@arkelythex/persistence": ["./packages/persistence/src/index.ts"],
+      "@arkelythex/persistence/*": ["./packages/persistence/src/*"],
+      "@arkelythex/shared": ["./packages/shared/src/index.ts"],
+      "@arkelythex/shared/*": ["./packages/shared/src/*"],
+      "@arkelythex/agent-swarm": ["./packages/agent-swarm/src/index.ts"],
+      "@arkelythex/agent-swarm/*": ["./packages/agent-swarm/src/*"],
+      "@arkelythex/agent-memory": ["./packages/agent-memory/src/index.ts"],
+      "@arkelythex/agent-memory/*": ["./packages/agent-memory/src/*"],
+      "@arkelythex/drenyra-core": ["./packages/drenyra-core/src/index.ts"],
+      "@arkelythex/platform-core": ["./packages/platform-core/src/index.ts"],
+      "@arkelythex/platform-core/*": ["./packages/platform-core/src/*"],
+      "@/*": ["./apps/web/src/*"],
+      "@/components/*": ["./apps/web/src/components/*"],
+      "@/lib/*": ["./apps/web/src/lib/*"],
+      "@/hooks/*": ["./apps/web/src/hooks/*"],
+      "@/context/*": ["./apps/web/src/context/*"],
+      "@/store/*": ["./apps/web/src/store/*"]
+    }
+  },
+  "include": ["apps/**/*", "packages/**/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/dist/**",
+    "**/build/**",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/coverage/**/*",
+    "**/*.d.ts",
+    "**/playwright-report/**/*",
+    "**/test-results/**/*",
+    "**/.turbo/**/*",
+    "**/.cache/**/*",
+    "**/*.config.d.ts",
+    "**/*.timestamp_*.js",
+    "**/*.timestamp_*.d.ts"
+  ],
+  "references": [
+    { "path": "./packages/domain" },
+    { "path": "./packages/domain/civic" },
+    { "path": "./packages/application" },
+    { "path": "./packages/persistence" },
+    { "path": "./packages/ai" },
+    { "path": "./packages/infrastructure" },
+    { "path": "./packages/shared" },
+    { "path": "./packages/agent-memory" },
+    { "path": "./packages/agent-swarm" },
+    { "path": "./packages/platform-core" },
+    { "path": "./packages/drenyra-core" },
+    { "path": "./apps/api" },
+    { "path": "./apps/web" }
+  ]
+}

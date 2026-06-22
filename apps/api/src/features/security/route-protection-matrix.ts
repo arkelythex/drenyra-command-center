@@ -1,0 +1,591 @@
+/**
+ * RouteAuthMode type.
+ *
+ * @example
+ * ```ts
+ * const value: RouteAuthMode = {} as RouteAuthMode;
+ * console.log(value);
+ * ```
+ */
+export type RouteAuthMode =
+	| "public"
+	| "session"
+	| "bearer-tenant"
+	| "signed-machine"
+	| "ai-surface"
+	| "legacy-header-fallback";
+
+/**
+ * RouteTenantSource type.
+ *
+ * @example
+ * ```ts
+ * const value: RouteTenantSource = {} as RouteTenantSource;
+ * console.log(value);
+ * ```
+ */
+export type RouteTenantSource =
+	| "none"
+	| "x-company-id"
+	| "x-organization-id"
+	| "session"
+	| "machine-scope"
+	| "mixed";
+
+/**
+ * RouteSchemaSystem type.
+ *
+ * @example
+ * ```ts
+ * const value: RouteSchemaSystem = {} as RouteSchemaSystem;
+ * console.log(value);
+ * ```
+ */
+export type RouteSchemaSystem = "typebox" | "zod" | "mixed" | "none";
+
+/**
+ * RouteEnvelopeStyle type.
+ *
+ * @example
+ * ```ts
+ * const value: RouteEnvelopeStyle = {} as RouteEnvelopeStyle;
+ * console.log(value);
+ * ```
+ */
+export type RouteEnvelopeStyle =
+	| "canonical"
+	| "custom"
+	| "plain-json"
+	| "mixed";
+
+/**
+ * RouteRateLimitStatus type.
+ *
+ * @example
+ * ```ts
+ * const value: RouteRateLimitStatus = {} as RouteRateLimitStatus;
+ * console.log(value);
+ * ```
+ */
+export type RouteRateLimitStatus =
+	| "documented"
+	| "implemented"
+	| "missing"
+	| "unknown";
+
+/**
+ * RouteProtectionMatrixRow interface.
+ *
+ * @example
+ * ```ts
+ * const value: RouteProtectionMatrixRow = {} as RouteProtectionMatrixRow;
+ * console.log(value);
+ * ```
+ */
+export interface RouteProtectionMatrixRow {
+	readonly id: string;
+	readonly surface: string;
+	readonly appCoreExportName: string;
+	readonly prefix: string;
+	readonly mounted: true;
+	readonly authMode: RouteAuthMode;
+	readonly tenantSource: RouteTenantSource;
+	readonly schemaSystem: RouteSchemaSystem;
+	readonly envelope: RouteEnvelopeStyle;
+	readonly rateLimit: RouteRateLimitStatus;
+	readonly notes: string;
+}
+
+/**
+ * PUBLIC_ROUTE_SURFACE_IDS const.
+ *
+ * @example
+ * ```ts
+ * console.log(PUBLIC_ROUTE_SURFACE_IDS);
+ * ```
+ */
+export const PUBLIC_ROUTE_SURFACE_IDS = ["health"] as const;
+
+/**
+ * APP_CORE_MOUNTED_SURFACE_EXPORTS const.
+ *
+ * @example
+ * ```ts
+ * console.log(APP_CORE_MOUNTED_SURFACE_EXPORTS);
+ * ```
+ */
+export const APP_CORE_MOUNTED_SURFACE_EXPORTS = [
+	"agenticLedgerModule",
+	"aiControlPlaneModule",
+	"aiRagModule",
+	"aiSwarmRoutes",
+	"aiWorkersRoutes",
+	"authRoutes",
+	"bankingProvidersRoutes",
+	"bankingRoutes",
+	"billRoutes",
+	"cashflowRoutes",
+	"civicModule",
+	"cognitiveStreamRoute",
+	"companySettingsRoute",
+	"contextControlPlaneRoute",
+	"customerRoutes",
+	"dashboardModule",
+	"detractionsModule",
+	"drenyraModule",
+	"fiscalCommandCenterModule",
+	"fiscalTruthModule",
+	"frontendTelemetryModule",
+	"healthModule",
+	"invoiceRoutes",
+	"journalEntryRoutes",
+	"ledgerMvpModule",
+	"llmGatewayModule",
+	"platformMcpModule",
+	"pseComplianceRoutes",
+	"sireAuditRoute",
+	"sunatApiModule",
+	"vendorRoutes",
+] as const;
+
+/**
+ * ROUTE_PROTECTION_MATRIX const.
+ *
+ * @example
+ * ```ts
+ * console.log(ROUTE_PROTECTION_MATRIX);
+ * ```
+ */
+export const ROUTE_PROTECTION_MATRIX = [
+	{
+		id: "agentic-ledger",
+		surface: "Agentic Ledger",
+		appCoreExportName: "agenticLedgerModule",
+		prefix: "/api/agentic-ledger",
+		mounted: true,
+		authMode: "ai-surface",
+		tenantSource: "x-organization-id",
+		schemaSystem: "typebox",
+		envelope: "custom",
+		rateLimit: "missing",
+		notes:
+			"AI/data ingestion surface; policy should be aligned with Agentic Fiscal Ledger work.",
+	},
+	{
+		id: "ai-control-plane",
+		surface: "AI Control Plane",
+		appCoreExportName: "aiControlPlaneModule",
+		prefix: "/api/v1/ai/control-plane",
+		mounted: true,
+		authMode: "ai-surface",
+		tenantSource: "x-organization-id",
+		schemaSystem: "typebox",
+		envelope: "custom",
+		rateLimit: "missing",
+		notes:
+			"AI policy/control surface; newly added — needs tenant hardening.",
+	},
+	{
+		id: "ai-rag",
+		surface: "AI RAG",
+		appCoreExportName: "aiRagModule",
+		prefix: "/api/v1/ai/rag",
+		mounted: true,
+		authMode: "ai-surface",
+		tenantSource: "x-organization-id",
+		schemaSystem: "typebox",
+		envelope: "mixed",
+		rateLimit: "documented",
+		notes:
+			"RAG route module uses AI-surface authorization expectations. Knowledge base routes mounted at /api/v1/ai/rag/knowledge/.",
+	},
+	{
+		id: "ai-swarm",
+		surface: "AI Swarm",
+		appCoreExportName: "aiSwarmRoutes",
+		prefix: "/api/ai-swarm",
+		mounted: true,
+		authMode: "ai-surface",
+		tenantSource: "x-organization-id",
+		schemaSystem: "mixed",
+		envelope: "mixed",
+		rateLimit: "missing",
+		notes:
+			"Main swarm route aggregate; multiple subroutes perform authz checks locally.",
+	},
+	{
+		id: "ai-workers",
+		surface: "AI Workers",
+		appCoreExportName: "aiWorkersRoutes",
+		prefix: "/api/ai-workers",
+		mounted: true,
+		authMode: "ai-surface",
+		tenantSource: "x-organization-id",
+		schemaSystem: "typebox",
+		envelope: "custom",
+		rateLimit: "documented",
+		notes:
+			"Async AI job control surface; verify auth helper per endpoint before fail-closed changes.",
+	},
+	{
+		id: "auth",
+		surface: "Auth",
+		appCoreExportName: "authRoutes",
+		prefix: "/api/auth",
+		mounted: true,
+		authMode: "session",
+		tenantSource: "session",
+		schemaSystem: "typebox",
+		envelope: "mixed",
+		rateLimit: "missing",
+		notes:
+			"Better Auth/session entrypoint; login/register paths are intentionally pre-session.",
+	},
+	{
+		id: "banking",
+		surface: "Banking",
+		appCoreExportName: "bankingRoutes",
+		prefix: "/api/banking",
+		mounted: true,
+		authMode: "legacy-header-fallback",
+		tenantSource: "x-company-id",
+		schemaSystem: "typebox",
+		envelope: "mixed",
+		rateLimit: "documented",
+		notes:
+			"Banking route suite is tenant-scoped; several endpoints still rely on route-level header checks.",
+	},
+	{
+		id: "banking-providers",
+		surface: "Banking Providers",
+		appCoreExportName: "bankingProvidersRoutes",
+		prefix: "/api/banking-providers",
+		mounted: true,
+		authMode: "legacy-header-fallback",
+		tenantSource: "x-company-id",
+		schemaSystem: "typebox",
+		envelope: "custom",
+		rateLimit: "missing",
+		notes:
+			"Prometeo/provider control surface; needs explicit tenant auth hardening before expansion.",
+	},
+	{
+		id: "bills",
+		surface: "Bills",
+		appCoreExportName: "billRoutes",
+		prefix: "/api/bills",
+		mounted: true,
+		authMode: "legacy-header-fallback",
+		tenantSource: "x-company-id",
+		schemaSystem: "typebox",
+		envelope: "mixed",
+		rateLimit: "documented",
+		notes:
+			"AP routes use TypeBox and service-level scoping; envelope consistency remains mixed.",
+	},
+	{
+		id: "cashflow",
+		surface: "Cashflow",
+		appCoreExportName: "cashflowRoutes",
+		prefix: "/api/cashflow",
+		mounted: true,
+		authMode: "legacy-header-fallback",
+		tenantSource: "x-company-id",
+		schemaSystem: "typebox",
+		envelope: "custom",
+		rateLimit: "documented",
+		notes:
+			"Forecasting/simulation route; tenant policy should align with banking and reports.",
+	},
+	{
+		id: "company-settings",
+		surface: "Company Settings",
+		appCoreExportName: "companySettingsRoute",
+		prefix: "/api/company-settings",
+		mounted: true,
+		authMode: "legacy-header-fallback",
+		tenantSource: "x-company-id",
+		schemaSystem: "typebox",
+		envelope: "canonical",
+		rateLimit: "missing",
+		notes:
+			"Company settings surface; newly added.",
+	},
+	{
+		id: "context-control-plane",
+		surface: "Context Control Plane",
+		appCoreExportName: "contextControlPlaneRoute",
+		prefix: "/api/ai-swarm",
+		mounted: true,
+		authMode: "ai-surface",
+		tenantSource: "x-organization-id",
+		schemaSystem: "typebox",
+		envelope: "canonical",
+		rateLimit: "missing",
+		notes:
+			"Mounted as separate AI swarm control route; verify duplicate-prefix policy before refactor.",
+	},
+	{
+		id: "customers",
+		surface: "Customers",
+		appCoreExportName: "customerRoutes",
+		prefix: "/api/customers",
+		mounted: true,
+		authMode: "legacy-header-fallback",
+		tenantSource: "x-company-id",
+		schemaSystem: "typebox",
+		envelope: "mixed",
+		rateLimit: "documented",
+		notes:
+			"CxC catalog surface; tenant enforcement is route/service scoped.",
+	},
+	{
+		id: "dashboard",
+		surface: "Dashboard",
+		appCoreExportName: "dashboardModule",
+		prefix: "/api/dashboard",
+		mounted: true,
+		authMode: "legacy-header-fallback",
+		tenantSource: "x-company-id",
+		schemaSystem: "typebox",
+		envelope: "mixed",
+		rateLimit: "documented",
+		notes:
+			"Operational dashboard; should align with analytics tenant policy.",
+	},
+	{
+		id: "drenyra",
+		surface: "Drenyra",
+		appCoreExportName: "drenyraModule",
+		prefix: "/api/drenyra",
+		mounted: true,
+		authMode: "ai-surface",
+		tenantSource: "x-organization-id",
+		schemaSystem: "typebox",
+		envelope: "mixed",
+		rateLimit: "missing",
+		notes:
+			"Drenyra workspace/agent surface; new module.",
+	},
+
+	{
+		id: "civic",
+		surface: "Civic",
+		appCoreExportName: "civicModule",
+		prefix: "/api/civic",
+		mounted: true,
+		authMode: "bearer-tenant",
+		tenantSource: "x-company-id",
+		schemaSystem: "zod",
+		envelope: "canonical",
+		rateLimit: "missing",
+		notes: "Electoral validation, fraud detection, and civic data API.",
+	},
+	{
+		id: "cognitive-stream",
+		surface: "Cognitive Stream",
+		appCoreExportName: "cognitiveStreamRoute",
+		prefix: "/api/v1/ai/stream",
+		mounted: true,
+		authMode: "ai-surface",
+		tenantSource: "x-organization-id",
+		schemaSystem: "typebox",
+		envelope: "custom",
+		rateLimit: "missing",
+		notes: "WebSocket/SSE streaming surface for AI cognitive responses.",
+	},
+	{
+		id: "detractions",
+		surface: "Detractions",
+		appCoreExportName: "detractionsModule",
+		prefix: "/api/detractions",
+		mounted: true,
+		authMode: "bearer-tenant",
+		tenantSource: "x-company-id",
+		schemaSystem: "zod",
+		envelope: "canonical",
+		rateLimit: "missing",
+		notes: "SUNAT detracciones SPOT management and validation.",
+	},
+	{
+		id: "journal-entries",
+		surface: "Journal Entries",
+		appCoreExportName: "journalEntryRoutes",
+		prefix: "/api/journal-entries",
+		mounted: true,
+		authMode: "bearer-tenant",
+		tenantSource: "x-company-id",
+		schemaSystem: "zod",
+		envelope: "canonical",
+		rateLimit: "missing",
+		notes: "Accounting journal entries for fiscal period tracking.",
+	},
+	{
+		id: "fiscal-command-center",
+		surface: "Fiscal Command Center",
+		appCoreExportName: "fiscalCommandCenterModule",
+		prefix: "/api/fiscal/command-center",
+		mounted: true,
+		authMode: "bearer-tenant",
+		tenantSource: "x-company-id",
+		schemaSystem: "typebox",
+		envelope: "canonical",
+		rateLimit: "missing",
+		notes:
+			"Fiscal command center for agentic fiscal operations; company-scoped.",
+	},
+	{
+		id: "fiscal-truth",
+		surface: "Fiscal Truth",
+		appCoreExportName: "fiscalTruthModule",
+		prefix: "/api/fiscal/truth",
+		mounted: true,
+		authMode: "bearer-tenant",
+		tenantSource: "x-company-id",
+		schemaSystem: "typebox",
+		envelope: "canonical",
+		rateLimit: "missing",
+		notes:
+			"Fiscal truth engine surface; deterministic validation and evidence graph.",
+	},
+	{
+		id: "frontend-telemetry",
+		surface: "Frontend Telemetry",
+		appCoreExportName: "frontendTelemetryModule",
+		prefix: "/api/telemetry",
+		mounted: true,
+		authMode: "signed-machine",
+		tenantSource: "machine-scope",
+		schemaSystem: "typebox",
+		envelope: "canonical",
+		rateLimit: "documented",
+		notes:
+			"Uses monitoring access validation rather than tenant session auth.",
+	},
+	{
+		id: "health",
+		surface: "Health",
+		appCoreExportName: "healthModule",
+		prefix: "/health",
+		mounted: true,
+		authMode: "public",
+		tenantSource: "none",
+		schemaSystem: "none",
+		envelope: "plain-json",
+		rateLimit: "missing",
+		notes:
+			"Public liveness/readiness/doctor surface; documented public exception.",
+	},
+	{
+		id: "invoices",
+		surface: "Invoices",
+		appCoreExportName: "invoiceRoutes",
+		prefix: "/api/invoices",
+		mounted: true,
+		authMode: "legacy-header-fallback",
+		tenantSource: "x-company-id",
+		schemaSystem: "typebox",
+		envelope: "canonical",
+		rateLimit: "documented",
+		notes:
+			"Invoice routes have scoped route tests for X-Company-Id enforcement.",
+	},
+	{
+		id: "ledger-mvp",
+		surface: "Ledger MVP",
+		appCoreExportName: "ledgerMvpModule",
+		prefix: "/ledger-mvp",
+		mounted: true,
+		authMode: "legacy-header-fallback",
+		tenantSource: "mixed",
+		schemaSystem: "zod",
+		envelope: "canonical",
+		rateLimit: "implemented",
+		notes:
+			"Conditionally mounted; uses standardRateLimit and explicit scope checks.",
+	},
+	{
+		id: "llm-gateway",
+		surface: "LLM Gateway",
+		appCoreExportName: "llmGatewayModule",
+		prefix: "/api/v1",
+		mounted: true,
+		authMode: "ai-surface",
+		tenantSource: "x-organization-id",
+		schemaSystem: "typebox",
+		envelope: "mixed",
+		rateLimit: "documented",
+		notes:
+			"AI provider gateway; uses organization-scoped AI surface policy per docs.",
+	},
+	{
+		id: "platform-mcp",
+		surface: "Platform MCP",
+		appCoreExportName: "platformMcpModule",
+		prefix: "/api/platform/mcp",
+		mounted: true,
+		authMode: "ai-surface",
+		tenantSource: "x-organization-id",
+		schemaSystem: "typebox",
+		envelope: "custom",
+		rateLimit: "missing",
+		notes:
+			"Model Context Protocol surface for AI tools integration; new module.",
+	},
+	{
+		id: "pse-compliance",
+		surface: "PSE Compliance",
+		appCoreExportName: "pseComplianceRoutes",
+		prefix: "/api/pse-compliance",
+		mounted: true,
+		authMode: "legacy-header-fallback",
+		tenantSource: "x-company-id",
+		schemaSystem: "zod",
+		envelope: "mixed",
+		rateLimit: "documented",
+		notes:
+			"PSE proactive validation route; should adopt fail-closed tenant guard in Wave 3.",
+	},
+	{
+		id: "sire-audit",
+		surface: "SIRE Audit",
+		appCoreExportName: "sireAuditRoute",
+		prefix: "/api/ai-swarm",
+		mounted: true,
+		authMode: "ai-surface",
+		tenantSource: "x-organization-id",
+		schemaSystem: "typebox",
+		envelope: "custom",
+		rateLimit: "missing",
+		notes:
+			"Mounted as separate AI swarm SIRE audit route.",
+	},
+	{
+		id: "sunat-api",
+		surface: "SUNAT API",
+		appCoreExportName: "sunatApiModule",
+		prefix: "/api/sunat/api",
+		mounted: true,
+		authMode: "bearer-tenant",
+		tenantSource: "x-company-id",
+		schemaSystem: "typebox",
+		envelope: "custom",
+		rateLimit: "missing",
+		notes:
+			"SUNAT direct API surface; company-scoped tax integration.",
+	},
+	{
+		id: "vendors",
+		surface: "Vendors",
+		appCoreExportName: "vendorRoutes",
+		prefix: "/api/vendors",
+		mounted: true,
+		authMode: "legacy-header-fallback",
+		tenantSource: "x-company-id",
+		schemaSystem: "typebox",
+		envelope: "mixed",
+		rateLimit: "documented",
+		notes:
+			"Supplier catalog surface; tenant policy should be centralized in later wave.",
+	},
+] as const satisfies readonly RouteProtectionMatrixRow[];

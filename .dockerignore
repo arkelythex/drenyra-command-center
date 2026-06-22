@@ -1,0 +1,72 @@
+# ─────────────────────────────────────────────
+# ARKELYTHEX — Docker Build Context Ignore
+# ─────────────────────────────────────────────
+# Every entry here speeds up docker build by
+# reducing the context sent to the daemon.
+
+# ── Dependencies ──────────────────────────────
+node_modules
+**/node_modules
+
+# ── VCS and editor ────────────────────────────
+.git
+.gitignore
+.gitattributes
+.vscode
+.idea
+*.swp
+*.swo
+
+# ── Heavy local directories ───────────────────
+worktrees/          # Git worktrees — massive, never needed in builds
+archive/
+backups/
+tmp/
+
+# ── Build artifacts and caches ────────────────
+**/dist
+**/build
+**/.next
+**/.turbo
+**/.cache
+**/.pytest_cache
+**/.ruff_cache
+**/.mypy_cache
+**/.venv
+**/venv
+**/coverage
+**/.DS_Store
+**/*.tsbuildinfo
+
+# ── Runtime and logs ──────────────────────────
+**/*.log
+.logs
+
+# ── Documentation (not needed at runtime) ─────
+docs/
+docs-original-backup/
+_deprecated
+
+# ── CI / Testing ──────────────────────────────
+contracts/
+e2e/
+test/
+tests/
+**/__tests__/
+**/__snapshots__/
+**/__mocks__/
+
+# ── Local tooling state ───────────────────────
+.codex
+.claude
+.context
+.agents
+.opencode
+
+# ── Env files ─────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Scripts and CI ───────────────────────────
+scripts/             # Dev helpers, not needed in images

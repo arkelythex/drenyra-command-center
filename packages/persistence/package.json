@@ -1,0 +1,54 @@
+{
+  "name": "@arkelythex/persistence",
+  "version": "0.1.0",
+  "description": "Database persistence layer — Drizzle ORM schemas, repositories, and query helpers",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "sideEffects": false,
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.typecheck.json",
+    "test": "vitest run"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./query": "./src/query.ts",
+    "./schema": "./src/schema/index.ts",
+    "./unit-of-work": "./src/unit-of-work.ts",
+    "./repositories/postgres-drenyra.repository": "./src/repositories/postgres-drenyra.repository.ts",
+    "./repositories/postgres-platform-mcp-audit.repository": "./src/repositories/postgres-platform-mcp-audit.repository.ts",
+    "./repositories/postgres-evidence-graph.repository": "./src/repositories/postgres-evidence-graph.repository.ts",
+    "./repositories/postgres-fiscal-truth.repository": "./src/repositories/postgres-fiscal-truth.repository.ts",
+    "./repositories/postgres-replay.repository": "./src/repositories/postgres-replay.repository.ts",
+    "./repositories/sire-submission.repository": "./src/repositories/sire-submission.repository.ts",
+    "./repositories/document.repository": "./src/repositories/document.repository.ts",
+    "./repositories/postgres-provider.repository": "./src/repositories/postgres-provider.repository.ts",
+    "./repositories/postgres-client.repository": "./src/repositories/postgres-client.repository.ts",
+    "./repositories/postgres-invoice.repository": "./src/repositories/postgres-invoice.repository.ts",
+    "./repositories/postgres-transaction.repository": "./src/repositories/postgres-transaction.repository.ts",
+    "./repositories/postgres-account.repository": "./src/repositories/postgres-account.repository.ts",
+    "./repositories/postgres-bank-account.repository": "./src/repositories/postgres-bank-account.repository.ts",
+    "./repositories/postgres-bank-reconciliation.repository": "./src/repositories/postgres-bank-reconciliation.repository.ts",
+    "./repositories/postgres-bank-transaction.repository": "./src/repositories/postgres-bank-transaction.repository.ts",
+    "./repositories/postgres-ai-settings.repository": "./src/repositories/postgres-ai-settings.repository.ts",
+    "./repositories/postgres-journal-entry.repository": "./src/repositories/postgres-journal-entry.repository.ts",
+    "./repositories/postgres-election.repository": "./src/repositories/postgres-election.repository.ts",
+    "./repositories/postgres-electoral-act.repository": "./src/repositories/postgres-electoral-act.repository.ts",
+    "./repositories/postgres-audit-trail.repository": "./src/repositories/postgres-audit-trail.repository.ts",
+    "./repositories/postgres-fraud-indicator.repository": "./src/repositories/postgres-fraud-indicator.repository.ts"
+  },
+  "dependencies": {
+    "@arkelythex/application": "workspace:*",
+    "@arkelythex/application-civic": "workspace:*",
+    "@arkelythex/domain": "workspace:*",
+    "@arkelythex/domain-civic": "workspace:*",
+    "@arkelythex/shared": "workspace:*",
+    "drizzle-orm": "^0.45.1",
+    "postgres": "^3.4.8",
+    "uuid": "^14.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}

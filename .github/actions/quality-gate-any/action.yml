@@ -1,0 +1,51 @@
+name: Quality Gate — Any Detection
+description: Fail if new `any` types are introduced
+
+runs:
+  using: composite
+  steps:
+    - name: Determine diff target
+      shell: bash
+      id: diff-target
+      run: |
+        if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+          echo "target=origin/${{ github.base_ref }}" >> "$GITHUB_OUTPUT"
+        elif [[ "${{ github.event.before }}" =~ ^0+$ ]]; then
+          echo "target=HEAD~1" >> "$GITHUB_OUTPUT"
+        else
+          echo "target=${{ github.event.before }}" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Check for new `any` types in changed lines
+      shell: bash
+      run: |
+        TARGET="${{ steps.diff-target.outputs.target }}"
+
+        if [[ "${{ github.event_name }}" != "pull_request" ]]; then
+          git fetch origin "$TARGET" --depth=1 2>/dev/null || true
+        fi
+
+        # Get added/changed lines (unified diff lines starting with +)
+        DIFF=$(git diff "$TARGET"...HEAD -- '*.ts' '*.tsx' 2>/dev/null || git diff "$TARGET"..HEAD -- '*.ts' '*.tsx' 2>/dev/null)
+
+        if [[ -z "$DIFF" ]]; then
+          echo "✅ No TypeScript changes detected — skipping any-detection"
+          exit 0
+        fi
+
+        # Extract added lines (starting with + but not +++), strip comments, check for `any`
+        VIOLATIONS=$(echo "$DIFF" | grep '^\+[^+]' | \
+          sed 's|//.*||' | \
+          grep -nE '\bany\b' || true)
+
+        if [[ -z "$VIOLATIONS" ]]; then
+          echo "✅ No new \`any\` types detected in changed lines."
+          exit 0
+        fi
+
+        echo "❌ New \`any\` types detected in changed lines:"
+        echo "$VIOLATIONS"
+        echo ""
+        echo "   Use precise types or \`unknown\` instead of \`any\`."
+        echo "   See AGENTS.md — 'Do not use any' rule."
+        exit 1

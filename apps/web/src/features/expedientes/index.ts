@@ -1,0 +1,1 @@
+export { ExpedientesPage } from "./ExpedientesPage";

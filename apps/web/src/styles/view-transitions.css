@@ -1,0 +1,3 @@
+/* View transitions were disabled to avoid cross-browser parser warnings in
+   engines that still treat the API as experimental in 2026. Re-enable only
+   behind a stricter compatibility gate. */

@@ -1,0 +1,26 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true,
+    "rootDir": "../..",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
+  "include": [
+    "src/logger.ts",
+    "src/agents/**/*.ts",
+    "src/ai/**/*.ts"
+  ],
+  "exclude": [
+    "dist",
+    "**/dist/**",
+    "**/__tests__/**",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "src/agents/examples/**",
+    "src/agents/orchestrator/workflow.orchestrator.ts"
+  ]
+}

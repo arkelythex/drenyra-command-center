@@ -1,0 +1,36 @@
+{
+  "accepted": {
+    "success": true,
+    "estado": "ACEPTADO",
+    "mensaje": "CDR replay: comprobante aceptado",
+    "codigoRespuesta": "0"
+  },
+  "observed": {
+    "success": true,
+    "estado": "OBSERVADO",
+    "mensaje": "CDR replay: comprobante con observaciones",
+    "codigoRespuesta": "0101",
+    "observaciones": [
+      "Monto total difiere del calculado por SUNAT",
+      "Revisar consistencia de tributos antes de enviar"
+    ]
+  },
+  "rejected": {
+    "success": false,
+    "estado": "RECHAZADO",
+    "mensaje": "CDR replay: RUC no válido",
+    "codigoRespuesta": "2320"
+  },
+  "annulled": {
+    "success": true,
+    "estado": "ANULADO",
+    "mensaje": "CDR replay: comprobante anulado",
+    "codigoRespuesta": "0"
+  },
+  "missing": {
+    "success": false,
+    "estado": "NO_EXISTE",
+    "mensaje": "CDR replay: comprobante no encontrado en SUNAT",
+    "codigoRespuesta": "4040"
+  }
+}

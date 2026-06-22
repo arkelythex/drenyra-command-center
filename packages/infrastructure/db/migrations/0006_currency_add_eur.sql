@@ -1,0 +1,2 @@
+ALTER TYPE "public"."currency" ADD VALUE 'EUR';
+

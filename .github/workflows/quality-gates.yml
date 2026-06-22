@@ -1,0 +1,93 @@
+name: Quality Gates
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: quality-gates-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+# Post-merge quality safety net.
+# The PR checks in ci.yml cover the same ground. This workflow catches
+# anything that slips through direct-to-main pushes or admin merges.
+#
+# NOTE: Most checks are consolidated in ci.yml (PR + push to main).
+# This workflow only runs unique post-merge safety checks.
+
+jobs:
+  lint-check:
+    name: Lint Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: oven-sh/setup-bun@v2
+
+      - uses: ./.github/actions/setup-bun
+        with:
+          verify-native-deps: false
+
+      - name: Run ESLint with strict mode
+        run: bun run lint
+
+      - name: Run Biome check on all supported files
+        run: bunx --package @biomejs/biome@2.3.11 biome check .
+
+  security-check:
+    name: Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: oven-sh/setup-bun@v2
+
+      - uses: ./.github/actions/setup-bun
+        with:
+          verify-native-deps: false
+
+      - name: Dependency vulnerability audit
+        run: bun run security:audit
+
+  coverage-check:
+    name: Coverage Thresholds
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: oven-sh/setup-bun@v2
+
+      - uses: ./.github/actions/setup-bun
+        with:
+          verify-native-deps: false
+
+      - name: Run tests with coverage enforcement
+        env:
+          VITEST_MAX_WORKERS: "1"
+        run: |
+          bun run --filter @arkelythex/domain test -- --coverage
+          bun run --filter @arkelythex/api test:run -- --coverage
+          bun run --filter @arkelythex/web test -- --coverage
+
+  fiscal-boundaries:
+    name: Fiscal Boundary Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: oven-sh/setup-bun@v2
+
+      - uses: ./.github/actions/setup-bun
+        with:
+          verify-native-deps: false
+
+      - name: Check fiscal boundaries
+        uses: ./.github/actions/quality-gate-fiscal

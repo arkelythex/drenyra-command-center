@@ -1,0 +1,58 @@
+# ARKELYTHEX — Infraestructura Nacional de Inteligencia Fiscal
+# AI-Optimized Documentation Index (llms.txt standard)
+# Last Updated: 2026-06-06
+
+## 🧠 Start Here
+> /AGENTS.md - Canonical engineering rules for AI agents
+> /docs/01-architecture/arkelythex-fiscal-sovereignty-platform.md - System architecture overview
+> /docs/meta/context/stack.yaml - Technology stack Source of Truth
+> /docs/concepts/architecture.md - High-level system map & patterns
+
+## 🏛️ Fiscal Domain
+> /packages/domain/README.md - Domain layer: entities, value objects, events
+> /packages/domain/src/fiscal-truth/ - Fiscal Truth engine (core business logic)
+> /packages/domain/src/sunat/ - SUNAT compliance, RUC, IGV, UBL 2.1
+> /packages/domain/src/money/ - Money value-object (no floats for currency)
+> /packages/drenyra-core/ - Drenyra product core: invoicing, retention, credit notes
+
+## 🤖 AI & Agents
+> /packages/ai/README.md - AI gateway, routing, OpenRouter integration
+> /packages/agent-swarm/README.md - Swarm agent system architecture
+> /packages/agent-memory/README.md - Persistent memory and context management
+> /packages/arkelythex-harness/ - AI agent harness runtime
+
+## 🖥️ Applications
+> /apps/api/MAP.md - API (Bun + ElysiaJS) architecture map
+> /apps/web/MAP.md - Web app (React 19 + TanStack Router) architecture map
+> /apps/landing/README.md - Marketing landing page (Next.js)
+> /apps/data-engine/README.md - Data engine (Python + FastAPI + Polars)
+> /apps/drenyra-cli/README.md - CLI (Go)
+
+## 🗺️ Navigation
+> /CODEX-MAP.md - Full repository navigation map
+> /.codebase/index.yml - Machine-readable package/app metadata
+> /docs/05-development/ - Development guides, setup, conventions
+
+## ⚙️ Technical Reference
+> /docs/01-architecture/TECHNICAL-SPECIFICATION.md - Complete technical spec
+> /docs/04-api/ - API reference documentation
+> /docs/07-security/ - Security model and architecture
+> /docs/reference/coding-standards.md - Coding standards
+> /docs/02-adr/ - Architecture Decision Records (28 ADRs)
+
+## 📐 Design System
+> /apps/web/DESIGN.md - Glass & Steel design system
+> /apps/web/src/lib/utils/ - Design tokens and utilities
+> /docs/design/ - Design docs: visual identity, color system, mascot
+
+## 💼 Business Context
+> /docs/business/ - Business docs, investor deck, competitive analysis
+> /docs/tesis/ - Academic thesis documents
+> /docs/06-organization/ - Organizational methodologies and principles
+
+---
+# Retrieval Hints:
+# 1. ALWAYS check `/AGENTS.md` before making engineering decisions
+# 2. All fiscal/money logic MUST use domain value objects, not raw numbers
+# 3. SUNAT compliance is a safety requirement — see domain/sunat/
+# 4. The repo is a monorepo with 5 apps + 13 packages, managed by Turborepo + Bun

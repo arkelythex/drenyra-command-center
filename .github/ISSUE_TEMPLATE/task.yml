@@ -1,0 +1,104 @@
+name: "Tarea / Task"
+description: "Creá una tarea de cambio organizacional o técnico"
+title: "chore(scope): "
+labels: ["task", "status:needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Nueva tarea 📋
+
+        Las tareas son cambios que no son estrictamente bugs ni features.
+        Pueden ser refactors, documentación, tooling, configuraciones, etc.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: "Pre-flight Checks"
+      options:
+        - label: "Busqué issues existentes y esto no es un duplicado"
+          required: true
+        - label: "Entiendo que este issue necesita status:approved antes de abrir un PR"
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Task Description"
+      description: "¿Qué hay que hacer y por qué?"
+      placeholder: "Necesitamos X porque Y..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: "Acceptance Criteria"
+      description: "¿Cómo sabemos que esta tarea está completa?"
+      placeholder: |
+        - [ ] Criterio 1
+        - [ ] Criterio 2
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: "Affected Area"
+      multiple: false
+      options:
+        - API (Elysia)
+        - Web App (React)
+        - Landing (Next.js)
+        - Data Engine (Python)
+        - CLI (Go)
+        - Domain / Packages
+        - Agent Swarm
+        - Documentation
+        - CI / Workflows
+        - Infrastructure / Ops
+        - SUNAT / Fiscal / Compliance
+        - SDD / OpenSpec
+        - Repo / Tooling
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: size
+    attributes:
+      label: "Estimated Size"
+      description: "¿Qué tan grande es este cambio?"
+      multiple: false
+      options:
+        - XS (< 50 lines, 1 file)
+        - S (50-150 lines, 1-2 files)
+        - M (150-400 lines, 2-5 files)
+        - L (400-800 lines, 5+ files) — may need chained PR
+        - XL (800+ lines) — needs chained PRs
+    validations:
+      required: false
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: "Dependencies"
+      description: "¿Esta tarea depende de algo? (issues, PRs, decisiones)"
+      placeholder: "Depende de #123..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Additional Notes"
+      description: "Contexto extra, referencias a ADRs, docs relevantes"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ⚠️ **ARKELYTHEX** builds Drenyra, la Infraestructura Nacional de Inteligencia Fiscal.
+        No romper correctitud fiscal, tenant isolation, o trazabilidad de auditoría.

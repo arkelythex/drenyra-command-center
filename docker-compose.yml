@@ -1,0 +1,192 @@
+services:
+  # 1. Database (The Vault)
+  postgres:
+    image: postgres:16-alpine
+    container_name: arkelythex-db
+    environment:
+      POSTGRES_USER: ${DB_USER:-user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-arkelythex}
+    ports:
+      - "5436:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - arkelythex-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d arkelythex"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Message Broker (The Nervous System - NATS)
+  nats:
+    image: nats:2.10-alpine
+    container_name: arkelythex-nats
+    ports:
+      - "4222:4222" # Client connections
+      - "8222:8222" # HTTP monitoring
+    command: "--js -m 8222" # JetStream enabled
+    networks:
+      - arkelythex-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8222/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.123.0
+    container_name: arkelythex-otel
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    volumes:
+      - ./ops/otel/collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
+    ports:
+      - "4318:4318"
+      - "13133:13133"
+    networks:
+      - arkelythex-network
+    healthcheck:
+      test: ["CMD", "/otelcol-contrib", "--version"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  # 3. Redis (BullMQ queues + cache)
+  redis:
+    image: redis:7-alpine
+    container_name: arkelythex-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - arkelythex-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  # 4. MinIO (S3-compatible local storage)
+  minio:
+    image: minio/minio:latest
+    container_name: arkelythex-minio
+    ports:
+      - "9000:9000"   # API
+      - "9001:9001"   # Console
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-minioadmin}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-minioadmin}
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - arkelythex-network
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  # 6. Ollama (Self-hosted LLM - optional, enable with: docker compose --profile ai up -d)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: arkelythex-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - arkelythex-network
+    profiles:
+      - ai
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # 5. Data Engine (The Muscle - Rust/Python)
+  data-engine:
+    build:
+      context: ./apps/data-engine
+      dockerfile: Dockerfile
+    container_name: arkelythex-data-engine
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - WORKERS=2
+      - NATS_URL=nats://nats:4222
+    networks:
+      - arkelythex-network
+    depends_on:
+      nats:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # 4. API Core (The Brain - Bun/Elysia)
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: arkelythex-api
+    ports:
+      - "${API_PORT:-3000}:3000"
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres:5432/arkelythex
+      - DATA_ENGINE_URL=http://data-engine:8000
+      - BETTER_AUTH_URL=http://localhost:${API_PORT:-3000}
+      - NATS_URL=nats://nats:4222
+      - ARKELYTHEX_BACKUP_DIR=/app/backups/postgres
+      - ARKELYTHEX_ENABLE_OTEL=true
+      - OTEL_SERVICE_NAME=arkelythex-api
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318/v1/traces
+    volumes:
+      - ./backups/postgres:/app/backups/postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+      data-engine:
+        condition: service_healthy
+      otel-collector:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - arkelythex-network
+
+  # 4. Web (The Face - React)
+  # In development, you usually run this on host, but this is for full preview
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: arkelythex-web
+    ports:
+      - "5173:80" # Nginx/Preview port
+    environment:
+      - VITE_API_URL=http://localhost:${API_PORT:-3000}
+    depends_on:
+      - api
+    networks:
+      - arkelythex-network
+
+networks:
+  arkelythex-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+  ollama_data:

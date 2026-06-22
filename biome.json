@@ -1,0 +1,196 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.11/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!.gemini",
+      "!.next",
+      "!node_modules",
+      "!dist",
+      "!build",
+      "!.vercel",
+      "!coverage",
+      "!*.config.js",
+      "!*.config.mjs",
+      "!drizzle",
+      "!src/lib/db/migrations",
+      "!templates",
+      "!docs"
+    ]
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedVariables": "warn",
+        "noUnusedImports": "warn",
+        "useExhaustiveDependencies": "off",
+        "useHookAtTopLevel": "error"
+      },
+      "style": {
+        "useConst": "warn",
+        "useTemplate": "warn",
+        "noNegationElse": "off",
+        "useBlockStatements": "off",
+        "noParameterAssign": "warn",
+        "noNonNullAssertion": "warn",
+        "useCollapsedElseIf": "warn",
+        "useSingleVarDeclarator": "warn"
+      },
+      "complexity": {
+        "noExcessiveCognitiveComplexity": {
+          "level": "warn",
+          "options": {
+            "maxAllowedComplexity": 15
+          }
+        },
+        "noForEach": "off",
+        "useLiteralKeys": "warn",
+        "useOptionalChain": "warn"
+      },
+      "performance": {
+        "noAccumulatingSpread": "warn",
+        "noDelete": "warn"
+      },
+      "suspicious": {
+        "noConsole": {
+          "level": "warn",
+          "options": {
+            "allow": ["warn", "error", "info"]
+          }
+        },
+        "noExplicitAny": "warn",
+        "noArrayIndexKey": "warn",
+        "noDoubleEquals": "warn",
+        "noDebugger": "error",
+        "noEmptyBlockStatements": "warn",
+        "noGlobalIsFinite": "error",
+        "noGlobalIsNan": "error",
+        "noImplicitAnyLet": "error"
+      },
+      "a11y": {
+        "noAccessKey": "warn",
+        "noAriaHiddenOnFocusable": "warn",
+        "noAutofocus": "off",
+        "noDistractingElements": "warn",
+        "noHeaderScope": "warn",
+        "noNoninteractiveElementToInteractiveRole": "warn",
+        "noNoninteractiveTabindex": "warn",
+        "noPositiveTabindex": "warn",
+        "noRedundantAlt": "warn",
+        "noRedundantRoles": "warn",
+        "useFocusableInteractive": "warn",
+        "useValidAnchor": "warn"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "warn",
+        "noDangerouslySetInnerHtmlWithChildren": "error"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "jsxQuoteStyle": "double",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
+      "quoteProperties": "asNeeded"
+    },
+    "globals": ["React", "NodeJS", "JSX"]
+  },
+  "json": {
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineWidth": 100,
+      "trailingCommas": "none"
+    },
+    "parser": {
+      "allowComments": true,
+      "allowTrailingCommas": false
+    }
+  },
+  "css": {
+    "parser": {
+      "cssModules": true,
+      "allowWrongLineComments": true
+    },
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineWidth": 100,
+      "quoteStyle": "double"
+    }
+  },
+  "overrides": [
+    {
+      "includes": [
+        "**/actions/**/*.ts",
+        "**/api/**/*.ts",
+        "**/lib/services/**/*.ts",
+        "**/infrastructure/**/*.ts"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": [
+        "**/*.test.{ts,tsx}",
+        "**/*.spec.{ts,tsx}",
+        "**/tests/**/*.{ts,tsx}",
+        "**/__tests__/**/*.{ts,tsx}"
+      ],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": "off",
+            "noExplicitAny": "off"
+          },
+          "complexity": {
+            "noExcessiveCognitiveComplexity": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["*.config.{js,ts,mjs,cjs}", "scripts/**/*.{js,ts}", "*.d.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": "off"
+          },
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/app/**/*.{ts,tsx}", "src/components/**/*.{ts,tsx}"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    }
+  ]
+}

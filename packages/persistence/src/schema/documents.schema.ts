@@ -1,0 +1,44 @@
+import {
+	integer,
+	jsonb,
+	pgTable,
+	text,
+	timestamp,
+	uuid,
+	varchar,
+} from "drizzle-orm/pg-core";
+
+/**
+ * Canonical documents table for the IDP pipeline.
+ *
+ * `companyId` is the active tenant key.
+ * `organizationId` remains only as a transition column while older rows are
+ * backfilled and compatibility fallbacks are still active.
+ * @example
+ * ```ts
+ * console.log(documents);
+ * ```
+ */
+
+export const documents = pgTable("documents", {
+	id: text("id").primaryKey(),
+	organizationId: integer("organization_id"),
+	companyId: uuid("company_id"),
+	clientId: text("client_id"),
+	clientName: varchar("client_name", { length: 255 }).notNull(),
+	fileName: varchar("file_name", { length: 255 }).notNull(),
+	fileUrl: text("file_url").notNull(),
+	fileType: varchar("file_type", { length: 20 }).notNull(),
+	fileSize: integer("file_size").notNull(),
+	status: varchar("status", { length: 30 }).notNull().default("UPLOADED"),
+	confidenceLevel: varchar("confidence_level", { length: 10 }),
+	extractedData: jsonb("extracted_data"),
+	validatedBy: text("validated_by"),
+	validatedAt: timestamp("validated_at"),
+	validationNotes: text("validation_notes"),
+	accountingEntryId: text("accounting_entry_id"),
+	uploadedAt: timestamp("uploaded_at").defaultNow().notNull(),
+	processedAt: timestamp("processed_at"),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});

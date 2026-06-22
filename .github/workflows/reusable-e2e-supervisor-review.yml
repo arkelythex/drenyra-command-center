@@ -1,0 +1,71 @@
+# Reusable: Multi‑feature Playwright suite (Chromium, webServer desde playwright.config).
+# Llamado desde ci.yml y ci-optimized.yml para evitar duplicar pasos.
+name: Reusable E2E — Full suite
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    name: E2E — Full Playwright suite
+    runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 15
+
+    steps:
+      - name: Install git-lfs
+        run: |
+          mkdir -p ~/.local/bin
+          curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
+          cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
+          ~/.local/bin/git-lfs install --skip-repo --force
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          lfs: true
+
+      - name: Verify Bun runtime
+        run: |
+          command -v bun
+          bun --version
+
+      - name: Verify self-hosted native deps
+        run: bash scripts/ci/verify-self-hosted-runner-host.sh native-deps
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Install Playwright Chromium browser
+        run: bunx playwright install chromium
+
+      - name: Reserve E2E port
+        run: |
+          PORT="$(python3 - <<'PY'
+          import socket
+
+          with socket.socket() as s:
+              s.bind(("127.0.0.1", 0))
+              print(s.getsockname()[1])
+          PY
+          )"
+          echo "PORT=${PORT}" >> "${GITHUB_ENV}"
+          echo "BASE_URL=http://127.0.0.1:${PORT}" >> "${GITHUB_ENV}"
+          echo "Reserved supervisor E2E port ${PORT}"
+
+      - name: Run full E2E suite
+        env:
+          CI: "true"
+        run: |
+          bunx playwright test e2e/ --project=chromium
+
+      - name: Upload Playwright report (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-supervisor-review-artifacts
+          path: test-results/
+          if-no-files-found: warn
+          retention-days: 7

@@ -1,0 +1,63 @@
+name: Release Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version bump type (patch, minor, major)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      dry_run:
+        description: 'Dry run (no actual release)'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: [self-hosted, linux, x64]
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: ./.github/actions/setup-bun
+
+      - name: Run quality gates
+        run: |
+          bun run lint
+          bun run typecheck:build:domain-core
+          bun run --filter @arkelythex/domain test
+          bun run quality:max-lines
+          bun run architecture:check-boundaries
+
+      - name: Dry run notice
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: |
+          echo "### 🏗️ DRY RUN — No release created" >> $GITHUB_STEP_SUMMARY
+          echo "Quality gates passed for version bump: ${{ github.event.inputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "Run again with dry_run=false to create the actual release." >> $GITHUB_STEP_SUMMARY
+
+      - name: Bump version and create tag
+        if: ${{ github.event.inputs.dry_run == 'false' }}
+        id: bump
+        run: |
+          git config user.name "Arkelythex Bot"
+          git config user.email "bot@arkelythex.com"
+          NEW_VERSION=$(npm version "${{ github.event.inputs.version }}" -m "chore(release): bump to %s [skip ci]")
+          echo "version=${NEW_VERSION#v}" >> "$GITHUB_OUTPUT"
+          git push --follow-tags
+
+      - name: Create GitHub Release
+        if: ${{ github.event.inputs.dry_run == 'false' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.bump.outputs.version }}
+          generate_release_notes: true
+          draft: true

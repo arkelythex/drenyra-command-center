@@ -1,0 +1,7 @@
+/**
+ * Domain Services Index
+ *
+ * Domain services for complex business operations
+ */
+
+export * from "./TaxCalculator";

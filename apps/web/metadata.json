@@ -1,0 +1,5 @@
+{
+  "name": "Drenyra Fiscal Intelligence",
+  "description": "AI-powered fiscal intelligence command center for real-time financial insights, SUNAT compliance, and intelligent automation.",
+  "requestFramePermissions": ["microphone"]
+}

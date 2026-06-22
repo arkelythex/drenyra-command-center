@@ -1,0 +1,48 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "noEmit": true,
+    "rootDir": "../..",
+    "types": ["vite/client", "react", "react-dom"],
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "skipLibCheck": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/context/*": ["./src/context/*"],
+      "@/store/*": ["./src/store/*"],
+      "@arkelythex/api/contract": ["../../apps/api/src/contract.ts"],
+      "@arkelythex/agent-memory": ["../../packages/agent-memory/src/index.ts"],
+      "@arkelythex/agent-memory/*": ["../../packages/agent-memory/src/*"],
+      "@arkelythex/agent-swarm": ["../../packages/agent-swarm/src/index.ts"],
+      "@arkelythex/agent-swarm/*": ["../../packages/agent-swarm/src/*"],
+      "@arkelythex/ai": ["../../packages/ai/src/index.ts"],
+      "@arkelythex/ai/*": ["../../packages/ai/src/*"],
+      "@arkelythex/application": ["../../packages/application/src/index.ts"],
+      "@arkelythex/application/*": ["../../packages/application/src/*"],
+      "@arkelythex/domain": ["../../packages/domain/src/index.ts"],
+      "@arkelythex/domain/*": ["../../packages/domain/src/*"],
+      "@arkelythex/infrastructure": ["../../packages/infrastructure/src/index.ts"],
+      "@arkelythex/infrastructure/*": ["../../packages/infrastructure/src/*"],
+      "@arkelythex/shared": ["../../packages/shared/src/index.ts"],
+      "@arkelythex/shared/*": ["../../packages/shared/src/*"]
+    }
+  },
+  "include": ["src", "src/vite-env.d.ts"],
+  "exclude": [
+    "**/__tests__/**",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "src/**/*.stories.tsx"
+  ]
+}

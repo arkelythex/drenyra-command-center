@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "rootDir": "../..",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "types": ["node"],
+    "noEmit": true
+  },
+  "include": ["src/client.ts", "src/query.ts", "src/schema/**/*", "src/unit-of-work.ts"]
+}

@@ -1,0 +1,29 @@
+export interface MockCpeRow {
+	id: string;
+	document: string;
+	provider: string;
+	amount: number;
+	date: string;
+	status: "ACEPTADO" | "PENDIENTE" | "RECHAZADO";
+	hasCDR: boolean;
+	detraction: boolean;
+	sunatCode?: string;
+}
+
+export const MOCK_CPES: readonly MockCpeRow[] = [
+	{ id: "c1", document: "F001-000456", provider: "AWS PERU", amount: 4500, date: "2025-08-15", status: "ACEPTADO", hasCDR: true, detraction: true },
+	{ id: "c2", document: "F005-001289", provider: "MUEBLES EXPRESS", amount: 1250, date: "2025-08-14", status: "PENDIENTE", hasCDR: false, detraction: false, sunatCode: "0101" },
+	{ id: "c3", document: "B002-000087", provider: "SERVICIOS LOGISTICOS", amount: 850, date: "2025-08-12", status: "RECHAZADO", hasCDR: true, detraction: false, sunatCode: "2320" },
+	{ id: "c4", document: "F001-000567", provider: "MICROSOFT PERU", amount: 3200, date: "2025-08-13", status: "ACEPTADO", hasCDR: true, detraction: false },
+	{ id: "c5", document: "F003-001456", provider: "ORACLE CLOUD", amount: 6800, date: "2025-08-11", status: "ACEPTADO", hasCDR: true, detraction: true },
+	{ id: "c6", document: "B001-000123", provider: "GOOGLE CLOUD", amount: 2400, date: "2025-08-10", status: "PENDIENTE", hasCDR: false, detraction: false, sunatCode: "4040" },
+	{ id: "c7", document: "F002-000789", provider: "TELEFONICA PERU", amount: 1850, date: "2025-08-09", status: "ACEPTADO", hasCDR: true, detraction: false },
+	{ id: "c8", document: "B003-000456", provider: "ENEL DISTRIBUCION", amount: 1250, date: "2025-08-08", status: "RECHAZADO", hasCDR: false, detraction: false, sunatCode: "0" },
+	{ id: "c9", document: "F001-000890", provider: "AMAZON WEB SERVICES", amount: 5200, date: "2025-08-07", status: "ACEPTADO", hasCDR: true, detraction: true },
+	{ id: "c10", document: "F004-001234", provider: "ZOOM VIDEO", amount: 1560, date: "2025-08-06", status: "PENDIENTE", hasCDR: true, detraction: false },
+	{ id: "c11", document: "B002-000567", provider: "SLACK TECHNOLOGIES", amount: 890, date: "2025-08-05", status: "ACEPTADO", hasCDR: true, detraction: false },
+	{ id: "c12", document: "F003-001567", provider: "ADOBE CREATIVE", amount: 2400, date: "2025-08-04", status: "RECHAZADO", hasCDR: false, detraction: false, sunatCode: "2320" },
+	{ id: "c13", document: "F001-001001", provider: "MICROSOFT OFFICE", amount: 1800, date: "2025-08-03", status: "ACEPTADO", hasCDR: true, detraction: false },
+	{ id: "c14", document: "B001-000789", provider: "GITLAB INC", amount: 960, date: "2025-08-02", status: "PENDIENTE", hasCDR: true, detraction: false, sunatCode: "0101" },
+	{ id: "c15", document: "F002-001234", provider: "DIGITALOCEAN", amount: 3400, date: "2025-08-01", status: "ACEPTADO", hasCDR: true, detraction: true },
+];

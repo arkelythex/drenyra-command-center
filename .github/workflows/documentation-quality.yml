@@ -1,0 +1,279 @@
+name: Documentation Quality
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  jsdoc-coverage:
+    name: JSDoc Coverage Check (Delta)
+    runs-on: [self-hosted, linux, x64]
+
+    steps:
+      - name: Ensure git-lfs binary available
+        run: |
+          if ! command -v git-lfs &>/dev/null; then
+            mkdir -p ~/.local/bin
+            curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
+            cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
+            chmod +x ~/.local/bin/git-lfs
+            echo "$HOME/.local/bin" >> $GITHUB_PATH
+          fi
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Remove broken husky hooks
+        run: rm -rf .git/hooks .husky/_/
+      - name: Verify Bun runtime
+        run: |
+          command -v bun
+          bun --version
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Verify ripgrep, fd, and bc availability
+        run: |
+          missing_tools=()
+          command -v rg >/dev/null 2>&1 || missing_tools+=(ripgrep)
+          if ! command -v fd >/dev/null 2>&1 && ! command -v fdfind >/dev/null 2>&1; then
+            missing_tools+=(fd-find)
+          fi
+          command -v bc >/dev/null 2>&1 || missing_tools+=(bc)
+
+          if [ "${#missing_tools[@]}" -gt 0 ]; then
+            if sudo -n true >/dev/null 2>&1; then
+              sudo apt-get update
+              sudo apt-get install -y "${missing_tools[@]}"
+            else
+              echo "Missing required tools: ${missing_tools[*]}"
+              echo "Install them on the self-hosted runner host before rerunning this workflow."
+              exit 1
+            fi
+          fi
+
+      - name: Run JSDoc Coverage Check
+        id: coverage
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          chmod +x ./scripts/check-jsdoc-coverage.sh
+          CHANGED_TS_FILE_LIST="changed-jsdoc-targets.txt"
+          : > "$CHANGED_TS_FILE_LIST"
+
+          if [ "${EVENT_NAME}" = "pull_request" ]; then
+            git diff --name-only "${BASE_SHA}" "${HEAD_SHA}" > changed-files.txt
+          else
+            if [ -z "${BASE_SHA}" ] || [ "${BASE_SHA}" = "0000000000000000000000000000000000000000" ]; then
+              git diff-tree --no-commit-id --name-only -r "${HEAD_SHA}" > changed-files.txt
+            else
+              git diff --name-only "${BASE_SHA}" "${HEAD_SHA}" > changed-files.txt
+            fi
+          fi
+
+          rg -N "^(apps/api/src/features/|packages/domain/src/|packages/application/src/).+\\.ts$" changed-files.txt \
+            | rg -v "(\\.test\\.ts$|\\.spec\\.ts$|/__tests__/)" \
+            > "$CHANGED_TS_FILE_LIST" || true
+
+          CHANGED_TARGETS=$(wc -l < "$CHANGED_TS_FILE_LIST" | tr -d ' ')
+          echo "changed_targets=${CHANGED_TARGETS}" >> "$GITHUB_OUTPUT"
+
+          if [ "${CHANGED_TARGETS}" -eq 0 ]; then
+            {
+              printf '%s\n' '📊 JSDoc Coverage Report - ARKELYTHEX'
+              printf '%s\n' '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
+              printf '%s\n' ''
+              printf '%s\n' '📈 Overall Coverage: 100.0%'
+              printf '%s\n' '   Scope: No JSDoc-governed TypeScript files changed in this event.'
+              printf '%s\n' ''
+              printf '%s\n' '✅ Check passed (no relevant TS changes).'
+            } > coverage-report.txt
+          else
+            NO_COLOR=1 ./scripts/check-jsdoc-coverage.sh --files-from "$CHANGED_TS_FILE_LIST" > coverage-report.txt
+          fi
+
+          cat coverage-report.txt
+
+          # Extract coverage percentage
+          COVERAGE=$(grep "Overall Coverage:" coverage-report.txt | awk '{print $4}' | sed 's/%//')
+          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+
+          # Check if coverage is acceptable
+          if (( $(echo "$COVERAGE < 60" | bc -l) )); then
+            echo "❌ JSDoc coverage in changed files is below 60%: $COVERAGE%"
+            exit 1
+          elif (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "⚠️  JSDoc coverage in changed files is $COVERAGE% (target: 80%)"
+          else
+            echo "✅ JSDoc coverage in changed files is excellent: $COVERAGE%"
+          fi
+
+      - name: Comment PR with Coverage
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const coverage = '${{ steps.coverage.outputs.coverage }}';
+            const fs = require('fs');
+            const report = fs.readFileSync('coverage-report.txt', 'utf8');
+
+            const emoji = coverage >= 80 ? '✅' : coverage >= 60 ? '⚠️' : '❌';
+            const changedTargets = '${{ steps.coverage.outputs.changed_targets }}';
+            const status = coverage >= 80 ? 'Excellent!' : coverage >= 60 ? 'Good (aim for 80%)' : 'Below target';
+
+            const body = [
+              `## ${emoji} JSDoc Coverage Report`,
+              '',
+              `**Coverage (changed files)**: ${coverage}% - ${status}`,
+              `**Changed TS files in scope**: ${changedTargets}`,
+              '',
+              '<details>',
+              '<summary>Full Report</summary>',
+              '',
+              '```',
+              report,
+              '```',
+              '',
+              '</details>',
+              '',
+              '**Thresholds:**',
+              '- ✅ 80%+: Enterprise-grade (excellent)',
+              '- ⚠️  60-80%: Good (aim higher)',
+              '- ❌ <60%: Below minimum (blocks PR)',
+              '',
+              '**Policy**: Incremental quality gate on modified files to avoid legacy-debt false negatives.',
+              '**Gold Standard**: See `apps/api/src/features/auth/` for reference.',
+            ].join('\n');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+      - name: Upload Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: jsdoc-coverage-report
+          path: coverage-report.txt
+          retention-days: 30
+
+  documentation-lint:
+    name: Documentation Linting
+    runs-on: [self-hosted, linux, x64]
+
+    steps:
+      - name: Ensure git-lfs binary available
+        run: |
+          if ! command -v git-lfs &>/dev/null; then
+            mkdir -p ~/.local/bin
+            curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
+            cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
+            chmod +x ~/.local/bin/git-lfs
+            echo "$HOME/.local/bin" >> $GITHUB_PATH
+          fi
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          lfs: false
+      - name: Remove broken husky hooks
+        run: rm -rf .git/hooks .husky/_/
+
+      - name: Verify Bun runtime
+        run: |
+          command -v bun
+          bun --version
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check README links
+        run: |
+          echo "📝 Checking README links..."
+          # Check that critical docs exist
+          test -f docs/README.md || { echo "❌ docs/README.md missing"; exit 1; }
+          test -f docs/meta/documentation-audit-2026.md || { echo "❌ audit report missing"; exit 1; }
+          test -f CHANGELOG.md || { echo "❌ CHANGELOG.md missing"; exit 1; }
+          echo "✅ All critical documentation files exist"
+
+      - name: Check Mermaid Syntax
+        run: |
+          echo "🔍 Checking Mermaid diagrams..."
+          # Simple check for mermaid blocks
+          MERMAID_COUNT=$(grep -r '```mermaid' docs/ apps/api/src/features/ | wc -l)
+          echo "Found $MERMAID_COUNT Mermaid diagrams"
+          if [ "$MERMAID_COUNT" -lt 15 ]; then
+            echo "⚠️  Warning: Expected at least 15 Mermaid diagrams, found $MERMAID_COUNT"
+          else
+            echo "✅ Mermaid diagrams count looks good"
+          fi
+
+      - name: Check Feature READMEs
+        run: |
+          echo "📚 Checking feature READMEs..."
+          MISSING_READMES=0
+          for dir in apps/api/src/features/*/; do
+            if [ ! -f "${dir}README.md" ]; then
+              echo "⚠️  Missing README in ${dir}"
+              MISSING_READMES=$((MISSING_READMES + 1))
+            fi
+          done
+
+          if [ $MISSING_READMES -gt 0 ]; then
+            echo "⚠️  Warning: $MISSING_READMES features missing READMEs"
+          else
+            echo "✅ All features have READMEs"
+          fi
+
+      - name: Check PMO canonical metadata
+        run: bun run docs:check-pmo-canon
+
+      - name: Check docs index coherence
+        run: bun run docs:check-index-coherence
+
+  check-stale:
+    name: Check Stale Documentation
+    runs-on: [self-hosted, linux, x64]
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Ensure git-lfs binary available
+        run: |
+          if ! command -v git-lfs &>/dev/null; then
+            mkdir -p ~/.local/bin
+            curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
+            cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
+            chmod +x ~/.local/bin/git-lfs
+            echo "$HOME/.local/bin" >> $GITHUB_PATH
+          fi
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Remove broken husky hooks
+        run: rm -rf .git/hooks .husky/_/
+      - name: Verify Bun runtime
+        run: |
+          command -v bun
+          bun --version
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check for stale documentation
+        run: bun run docs:check-stale

@@ -1,0 +1,222 @@
+/* =============================================================
+   ARKELYTHEX COLOR TOKENS — GENERATED FILE
+   Source: apps/web/src/lib/design-tokens/tokens.dtcg.json
+   DO NOT EDIT — run: bun tokens:generate
+   Generated: 2026-06-20
+   ============================================================= */
+
+@theme {
+  /* ─── Primitive palette ─────────────────────────────────── */
+  --color-primitive-onyx-0: #100f0d;
+  --color-primitive-onyx-1: #181512;
+  --color-primitive-onyx-2: #201b16;
+  --color-primitive-onyx-3: #2b231b;
+  --color-primitive-black-0: #100f0d;
+  --color-primitive-black-1: #181512;
+  --color-primitive-black-2: #201b16;
+  --color-primitive-surface-1: #201b16;
+  --color-primitive-surface-2: #2b231b;
+  --color-primitive-surface-3: #392e21;
+  --color-primitive-stroke-1: #3d3028;
+  --color-primitive-stroke-2: #453529;
+  --color-primitive-stroke-3: #756052;
+  --color-primitive-white: #e8dfd0;
+  --color-primitive-gray-300: #c7b9aa;
+  --color-primitive-gray-400: #938274;
+  --color-primitive-gray-600: #756052;
+  --color-primitive-gray-700: #5a4a3a;
+  --color-primitive-blue-200: oklch(0.85 0.12 60);
+  --color-primitive-blue-300: oklch(0.78 0.14 55);
+  --color-primitive-blue-400: oklch(0.70 0.16 50);
+  --color-primitive-blue-500: #d99555;
+  --color-primitive-blue-600: oklch(0.50 0.18 45);
+  --color-primitive-green-400: oklch(0.75 0.20 150);
+  --color-primitive-green-500: oklch(0.65 0.22 150);
+  --color-primitive-green-600: oklch(0.55 0.22 150);
+  --color-primitive-amber-400: oklch(0.85 0.20 80);
+  --color-primitive-amber-500: oklch(0.75 0.22 80);
+  --color-primitive-red-400: oklch(0.65 0.25 25);
+  --color-primitive-red-500: oklch(0.55 0.25 25);
+
+  /* ─── Semantic backgrounds ──────────────────────────────── */
+  --color-bg-0: #100f0d;
+  --color-bg-1: #181512;
+  --color-bg-2: #201b16;
+
+  /* ─── Semantic surfaces ─────────────────────────────────── */
+  --color-surface-1: #201b16;
+  --color-surface-2: #2b231b;
+  --color-surface-3: #392e21;
+
+  /* ─── Semantic strokes ──────────────────────────────────── */
+  --color-stroke-1: #3d3028;
+  --color-stroke-2: #453529;
+  --color-stroke-3: #756052;
+
+  /* ─── Semantic text ─────────────────────────────────────── */
+  --color-text-primary: #e8dfd0;
+  --color-text-secondary: #938274;
+  --color-text-muted: #756052;
+  --color-text-disabled: #5a4a3a;
+  --color-text-inverse: #080808;
+
+  /* ─── Semantic accents ──────────────────────────────────── */
+  --color-blue-base: #d99555;
+  --color-blue-hover: oklch(0.70 0.16 50);
+  --color-blue-active: oklch(0.50 0.18 45);
+  --color-green-base: oklch(0.65 0.22 150);
+  --color-green-hover: oklch(0.75 0.20 150);
+  --color-green-active: oklch(0.55 0.22 150);
+  --color-steel-base: oklch(0.78 0.14 55);
+  --color-steel-hover: oklch(0.85 0.12 60);
+  --color-steel-active: oklch(0.70 0.16 50);
+  --color-green: var(--color-green-base);
+  --color-blue: var(--color-blue-base);
+  --color-steel: var(--color-steel-base);
+
+  /* ─── Semantic AI ───────────────────────────────────────── */
+  --color-ai-primary: oklch(0.70 0.16 50);
+  --color-ai-secondary: oklch(0.50 0.18 45);
+  --color-ai-halo: color-mix(in oklch, #d99555 22%, transparent);
+  --color-ai-halo-cyan: color-mix(in oklch, #d99555 18%, transparent);
+  --color-ai-halo-steel: color-mix(in oklch, oklch(0.78 0.14 55) 16%, transparent);
+
+  /* ─── State colors ──────────────────────────────────────── */
+  --color-success: oklch(0.65 0.22 150);
+  --color-warning: oklch(0.75 0.22 80);
+  --color-danger: oklch(0.55 0.25 25);
+  --color-info: #d99555;
+  --color-brand: #d99555;
+  --color-sunat-success: oklch(0.65 0.22 150);
+  --color-sunat-warning: oklch(0.75 0.22 80);
+  --color-sunat-danger: oklch(0.55 0.25 25);
+
+  /* ─── Shadow glows ──────────────────────────────────────── */
+  --shadow-glow-blue: 0 0 16px color-mix(in oklch, #d99555 22%, transparent), 0 0 34px color-mix(in oklch, #d99555 12%, transparent);
+  --shadow-glow-ai: 0 0 12px color-mix(in oklch, #d99555 18%, transparent), 0 0 24px color-mix(in oklch, #d99555 9%, transparent);
+  --shadow-glow: 0 0 0 1px color-mix(in oklch, #d99555 16%, transparent), 0 0 24px color-mix(in oklch, #d99555 8%, transparent);
+
+  /* ─── Glass ─────────────────────────────────────────────── */
+  --glass-surface: rgba(32, 27, 22, 0.72);
+}
+
+@layer base {
+  :root,
+  .dark {
+    /* ─── Backgrounds ──────────────────────────────────────── */
+    --bg-primary: #100f0d;
+    --bg-secondary: #181512;
+    --bg-tertiary: #201b16;
+    --bg-elevated: #201b16;
+
+    --surface-1: #201b16;
+    --surface-2: #2b231b;
+    --surface-3: #392e21;
+    --surface-hover: color-mix(in oklch, #2b231b 80%, white);
+    --surface-active: color-mix(in oklch, #392e21 80%, white);
+
+    --border-subtle: #3d3028;
+    --border-default: #453529;
+    --border-prominent: #756052;
+
+    /* ─── Text ─────────────────────────────────────────────── */
+    --text-primary: #e8dfd0;
+    --text-secondary: #938274;
+    --text-tertiary: #756052;
+    --text-disabled: #5a4a3a;
+
+    /* ─── Primary / Accent ─────────────────────────────────── */
+    --primary: #e8dfd0;
+    --primary-foreground: #100f0d;
+    --primary-muted: #c7b9aa;
+    --accent: #d99555;
+    --accent-muted: color-mix(in oklch, #d99555 16%, transparent);
+
+    /* ─── State ────────────────────────────────────────────── */
+    --success: oklch(0.65 0.22 150);
+    --warning: oklch(0.75 0.22 80);
+    --danger: oklch(0.55 0.25 25);
+    --info: #d99555;
+
+    /* ─── Legacy HSL mappings (shadcn/ui compat) ───────────── */
+    --background: #100f0d;
+    --foreground: #e8dfd0;
+    --card: #201b16;
+    --card-foreground: #e8dfd0;
+    --popover: #201b16;
+    --popover-foreground: #e8dfd0;
+    --secondary: #2b231b;
+    --secondary-foreground: #e8dfd0;
+    --muted: #2b231b;
+    --muted-foreground: #756052;
+    --accent-foreground: #e8dfd0;
+    --destructive: oklch(0.55 0.25 25);
+    --destructive-foreground: #e8dfd0;
+    --border: #453529;
+    --input: #453529;
+    --ring: #d99555;
+    --radius: 0.5rem;
+
+    /* ─── Color tokens (duplicate for direct CSS var access) ── */
+    --color-bg-0: #100f0d;
+    --color-bg-1: #181512;
+    --color-bg-2: #201b16;
+    --color-surface-1: #201b16;
+    --color-surface-2: #2b231b;
+    --color-surface-3: #392e21;
+    --color-stroke-1: #3d3028;
+    --color-stroke-2: #453529;
+    --color-stroke-3: #756052;
+    --color-text-primary: #e8dfd0;
+    --color-text-secondary: #938274;
+    --color-text-muted: #756052;
+    --color-text-disabled: #5a4a3a;
+    --color-success: oklch(0.65 0.22 150);
+    --color-warning: oklch(0.75 0.22 80);
+    --color-danger: oklch(0.55 0.25 25);
+    --color-info: #d99555;
+    --color-ai-primary: oklch(0.70 0.16 50);
+    --color-ai-secondary: oklch(0.50 0.18 45);
+
+    /* ─── App HSL vars ─────────────────────────────────────── */
+    --app-bg: #100f0d;
+    --app-surface: #201b16;
+    --app-surface-muted: #2b231b;
+    --app-surface-elevated: #392e21;
+    --app-border: #3d3028;
+    --app-border-strong: #453529;
+    --app-text-secondary: #938274;
+    --app-text-muted: #756052;
+
+    /* ─── Premium aliases (backward compat) ────────────────── */
+    --premium-bg-0: var(--color-bg-0);
+    --premium-bg-1: var(--color-bg-1);
+    --premium-bg-2: var(--color-bg-2);
+    --premium-text-primary: var(--color-text-primary);
+    --premium-text-secondary: var(--color-text-secondary);
+    --premium-text-muted: var(--color-text-muted);
+    --premium-action-cyan: oklch(0.70 0.16 50);
+    --premium-action-blue: #d99555;
+    --premium-success: oklch(0.65 0.22 150);
+    --premium-warning: oklch(0.75 0.22 80);
+    --premium-danger: oklch(0.55 0.25 25);
+    --premium-info: oklch(0.70 0.16 50);
+
+    /* ─── Glass ────────────────────────────────────────────── */
+    --glass-surface: rgba(32, 27, 22, 0.72);
+    --glass-border: color-mix(in oklch, white 7%, transparent);
+    --glass-highlight: color-mix(in oklch, white 2.5%, transparent);
+    --glass-brilliance: linear-gradient(180deg, color-mix(in oklch, white 5.5%, transparent) 0%, color-mix(in oklch, white 1.2%, transparent) 48%, color-mix(in oklch, black 28%, transparent) 100%);
+    --overlay-backdrop: color-mix(in oklch, black 88%, transparent);
+    --scrim-color: var(--color-bg-0);
+    --app-shell-gradient:
+      radial-gradient(circle at 18% 12%, color-mix(in oklch, #d99555 6%, transparent), transparent 18%),
+      radial-gradient(circle at 82% 10%, color-mix(in oklch, #d99555 3.8%, transparent), transparent 14%),
+      linear-gradient(180deg, #100f0d 0%, #181512 100%);
+
+    /* ─── Premium surfaces ─────────────────────────────────── */
+    --premium-surface-1: linear-gradient(180deg, color-mix(in oklch, #2b231b 94%, transparent) 0%, color-mix(in oklch, #201b16 96%, transparent) 100%);
+    --premium-surface-2: color-mix(in oklch, #201b16 90%, transparent);
+    --premium-surface-3: color-mix(in oklch, #2b231b 88%, transparent);
+  }
+}

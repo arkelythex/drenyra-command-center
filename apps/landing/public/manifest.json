@@ -1,0 +1,25 @@
+{
+  "name": "Arkelythex | Infraestructura Fiscal de Élite para Perú",
+  "short_name": "Arkelythex",
+  "description": "Arkelythex pre-valida facturación electrónica, SIRE e inconsistencias tributarias para estudios contables que no pueden permitirse declarar a ciegas.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#0A0A0A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/brand/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/brand/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["business", "finance", "productivity"],
+  "lang": "es-PE"
+}

@@ -1,0 +1,29 @@
+/**
+ * Domain Repository Interfaces Index
+ *
+ * Repository interfaces (ports) for dependency inversion.
+ *
+ * Import directly from specific files for full type access.
+ */
+
+export type { AccountRepository } from "./account.repository";
+export type { AISettingsRepository } from "./ai-settings.repository";
+export type { BankAccountRepository } from "./bank-account.repository";
+export type { BankReconciliationRepository } from "./bank-reconciliation.repository";
+export type { BankTransactionRepository } from "./bank-transaction.repository";
+export type { ClientRepository } from "./client.repository";
+export type { DocumentRepository } from "./document.repository";
+export type { InvoiceRepository } from "./invoice.repository";
+export type { JournalEntryRepository } from "./journal-entry.repository";
+export type { ProviderRepository } from "./provider.repository";
+export type {
+	PaginatedResult,
+	PaginationOptions,
+	TransactionRepository,
+} from "./transaction.repository";
+export type { AccountingPeriodRepository } from "./accounting-period.repository";
+export type { ExchangeRateRepository } from "./exchange-rate.repository";
+export type { CpeLogRepository } from "./cpe-log.repository";
+export type { DetractionRepository } from "./detraction.repository";
+
+export type { FiscalMemoryRepository } from "./fiscal-memory.repository";

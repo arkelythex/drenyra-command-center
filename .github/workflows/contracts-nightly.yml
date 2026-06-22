@@ -1,0 +1,176 @@
+name: Data Engine Contract Tests
+
+on:
+  schedule:
+    - cron: "0 6 * * 1-5"
+  workflow_dispatch:
+
+concurrency:
+  group: contracts-nightly-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    name: Run TS-Python contract tests
+    runs-on: [self-hosted, linux, x64]
+
+    steps:
+      - name: Install git-lfs
+        run: |
+          mkdir -p ~/.local/bin
+          curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
+          cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
+          ~/.local/bin/git-lfs install --skip-repo --force
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          lfs: true
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Install workspace dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Start data-engine and run contract tests
+        env:
+          DATA_ENGINE_URL: http://127.0.0.1:8000
+          REQUIRE_DATA_ENGINE_CONTRACTS: "1"
+          DATA_ENGINE_CONTRACT_SCOPE: full
+          DATA_ENGINE_CONTRACT_REPORT_PATH: tmp/contracts/data-engine-contract-report.json
+          DATA_ENGINE_LOG_PATH: /tmp/data-engine.log
+        run: ./scripts/ci/run-data-engine-contracts.sh full
+
+      - name: Upload contract artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: data-engine-contract-artifacts
+          path: |
+            apps/api/tmp/contracts/data-engine-contract-report.json
+            /tmp/data-engine.log
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Build contract summary
+        if: always()
+        env:
+          REPORT_PATH: apps/api/tmp/contracts/data-engine-contract-report.json
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          report_path = Path(os.environ["REPORT_PATH"])
+          summary = "report_missing"
+          details = "contract report file not found"
+
+          if report_path.exists():
+            payload = json.loads(report_path.read_text(encoding="utf-8"))
+            endpoints = payload.get("endpoints", {})
+            pass_count = sum(1 for item in endpoints.values() if item.get("status") == "pass")
+            skip_count = sum(1 for item in endpoints.values() if item.get("status") == "skip")
+            fail_items = [
+              (name, (entry.get("note") or "no detail"))
+              for name, entry in endpoints.items()
+              if entry.get("status") == "fail"
+            ]
+            fail_count = len(fail_items)
+            summary = f"pass={pass_count}, skip={skip_count}, fail={fail_count}"
+            if fail_items:
+              details = " | ".join(
+                f"{name}: {note[:180]}" for name, note in fail_items[:5]
+              )
+            else:
+              details = "no failing endpoints in report"
+
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as env_file:
+            env_file.write(f"CONTRACT_SUMMARY={summary}\n")
+            env_file.write(f"CONTRACT_FAILURE_DETAILS={details}\n")
+
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary_file:
+            summary_file.write("## Data Engine Contract Summary\n\n")
+            summary_file.write(f"- {summary}\n")
+            summary_file.write(f"- Details: {details}\n")
+            summary_file.write(f"- Report path: `{report_path}`\n")
+          PY
+
+      - name: Notify Slack on failure
+        if: failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          CONTRACT_SUMMARY: ${{ env.CONTRACT_SUMMARY }}
+          CONTRACT_FAILURE_DETAILS: ${{ env.CONTRACT_FAILURE_DETAILS }}
+        run: |
+          if [ -z "${SLACK_WEBHOOK_URL}" ]; then
+            echo "Slack webhook not configured; skipping notification."
+            exit 0
+          fi
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          text = (
+            f"❌ Data Engine contract tests failed in {os.environ['GITHUB_REPOSITORY']}\n"
+            f"Summary: {os.environ.get('CONTRACT_SUMMARY', 'n/a')}\n"
+            f"Details: {os.environ.get('CONTRACT_FAILURE_DETAILS', 'n/a')}\n"
+            f"Run: {os.environ['RUN_URL']}"
+          )
+          payload = json.dumps({"text": text}).encode("utf-8")
+          request = urllib.request.Request(
+            os.environ["SLACK_WEBHOOK_URL"],
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+          )
+          with urllib.request.urlopen(request, timeout=10):
+            pass
+          PY
+
+      - name: Notify Teams on failure
+        if: failure()
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          CONTRACT_SUMMARY: ${{ env.CONTRACT_SUMMARY }}
+          CONTRACT_FAILURE_DETAILS: ${{ env.CONTRACT_FAILURE_DETAILS }}
+        run: |
+          if [ -z "${TEAMS_WEBHOOK_URL}" ]; then
+            echo "Teams webhook not configured; skipping notification."
+            exit 0
+          fi
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          text = (
+            f"❌ Data Engine contract tests failed in {os.environ['GITHUB_REPOSITORY']}\n"
+            f"Summary: {os.environ.get('CONTRACT_SUMMARY', 'n/a')}\n"
+            f"Details: {os.environ.get('CONTRACT_FAILURE_DETAILS', 'n/a')}\n"
+            f"Run: {os.environ['RUN_URL']}"
+          )
+          payload = json.dumps({"text": text}).encode("utf-8")
+          request = urllib.request.Request(
+            os.environ["TEAMS_WEBHOOK_URL"],
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+          )
+          with urllib.request.urlopen(request, timeout=10):
+            pass
+          PY

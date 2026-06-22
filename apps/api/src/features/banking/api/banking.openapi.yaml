@@ -1,0 +1,604 @@
+openapi: 3.1.0
+info:
+  title: ARKELYTHEX Banking API
+  version: 2026.1.0
+  description: Bank account management and transaction reconciliation
+  contact:
+    name: ARKELYTHEX Team
+    email: dev@arkalythix.pe
+
+servers:
+  - url: http://localhost:3000/api
+    description: Development
+  - url: https://api.arkelythexfounders.com/api
+    description: Production
+
+tags:
+  - name: Accounts
+    description: Bank account management
+  - name: Transactions
+    description: Transaction operations
+  - name: Reconciliation
+    description: Auto and manual reconciliation
+
+paths:
+  /banking/accounts:
+    get:
+      tags: [Accounts]
+      summary: List bank accounts
+      operationId: listAccounts
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: currency
+          in: query
+          schema:
+            type: string
+            enum: [PEN, USD]
+        - name: isActive
+          in: query
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: List of accounts
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BankAccount'
+                  meta:
+                    $ref: '#/components/schemas/ListMeta'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags: [Accounts]
+      summary: Create bank account
+      operationId: createAccount
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAccountDTO'
+      responses:
+        '201':
+          description: Account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankAccount'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /banking/accounts/{id}:
+    get:
+      tags: [Accounts]
+      summary: Get account by ID
+      operationId: getAccount
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        '200':
+          description: Account details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankAccount'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags: [Accounts]
+      summary: Delete account (soft delete)
+      operationId: deleteAccount
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+      responses:
+        '204':
+          description: Account deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /banking/accounts/{id}/transactions:
+    get:
+      tags: [Transactions]
+      summary: List transactions for account
+      operationId: listTransactions
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AccountId'
+        - name: startDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: type
+          in: query
+          schema:
+            $ref: '#/components/schemas/TransactionType'
+        - name: isReconciled
+          in: query
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of transactions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BankTransaction'
+                  meta:
+                    allOf:
+                      - $ref: '#/components/schemas/ListMeta'
+                      - type: object
+                        properties:
+                          unreconciledCount:
+                            type: integer
+
+  /banking/transactions:
+    post:
+      tags: [Transactions]
+      summary: Create transaction
+      operationId: createTransaction
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransactionDTO'
+      responses:
+        '201':
+          description: Transaction created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankTransaction'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /banking/transactions/{id}/reconcile:
+    post:
+      tags: [Reconciliation]
+      summary: Manually reconcile transaction
+      operationId: reconcileTransaction
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                documentId:
+                  type: string
+                  format: uuid
+                documentType:
+                  type: string
+                  enum: [INVOICE, BILL]
+      responses:
+        '200':
+          description: Transaction reconciled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankTransaction'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          description: Already reconciled
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /banking/auto-reconcile:
+    post:
+      tags: [Reconciliation]
+      summary: Run auto-reconciliation
+      operationId: autoReconcile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [accountId]
+              properties:
+                accountId:
+                  type: string
+                  format: uuid
+      responses:
+        '200':
+          description: Reconciliation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReconciliationResult'
+
+  /banking/import:
+    post:
+      tags: [Transactions]
+      summary: Import transactions from CSV
+      operationId: importTransactions
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [accountId, file]
+              properties:
+                accountId:
+                  type: string
+                  format: uuid
+                file:
+                  type: string
+                  format: binary
+                format:
+                  type: string
+                  enum: [BCP, BBVA, INTERBANK, SCOTIABANK, GENERIC]
+                  default: GENERIC
+      responses:
+        '200':
+          description: Import result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResult'
+
+  /banking/summary:
+    get:
+      tags: [Accounts]
+      summary: Get banking summary
+      operationId: getSummary
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Banking summary
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BankingSummary'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    AccountId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    BankAccount:
+      type: object
+      required:
+        - id
+        - companyId
+        - accountName
+        - accountNumber
+        - accountType
+        - bankName
+        - currency
+        - currentBalance
+        - isActive
+        - isDefault
+      properties:
+        id:
+          type: string
+          format: uuid
+        companyId:
+          type: string
+          format: uuid
+        accountName:
+          type: string
+          minLength: 3
+          maxLength: 100
+        accountNumber:
+          type: string
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+        bankName:
+          type: string
+        bankCode:
+          type: string
+        currency:
+          type: string
+          enum: [PEN, USD]
+        currentBalance:
+          type: string
+          description: Decimal as string for precision
+        availableBalance:
+          type: string
+        isActive:
+          type: boolean
+        isDefault:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    BankTransaction:
+      type: object
+      required:
+        - id
+        - accountId
+        - transactionDate
+        - description
+        - type
+        - amount
+        - isReconciled
+      properties:
+        id:
+          type: string
+          format: uuid
+        accountId:
+          type: string
+          format: uuid
+        transactionDate:
+          type: string
+          format: date
+        description:
+          type: string
+        reference:
+          type: string
+        type:
+          $ref: '#/components/schemas/TransactionType'
+        amount:
+          type: string
+        balance:
+          type: string
+        category:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        isReconciled:
+          type: boolean
+        reconciledAt:
+          type: string
+          format: date-time
+        invoiceId:
+          type: string
+          format: uuid
+        billId:
+          type: string
+          format: uuid
+
+    CreateAccountDTO:
+      type: object
+      required:
+        - accountName
+        - accountNumber
+        - accountType
+        - bankName
+      properties:
+        accountName:
+          type: string
+          minLength: 3
+          maxLength: 100
+        accountNumber:
+          type: string
+          minLength: 10
+          maxLength: 30
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+        bankName:
+          type: string
+          minLength: 2
+          maxLength: 50
+        bankCode:
+          type: string
+        currency:
+          type: string
+          enum: [PEN, USD]
+          default: PEN
+        currentBalance:
+          type: number
+          minimum: 0
+
+    CreateTransactionDTO:
+      type: object
+      required:
+        - accountId
+        - transactionDate
+        - description
+        - type
+        - amount
+      properties:
+        accountId:
+          type: string
+          format: uuid
+        transactionDate:
+          type: string
+          format: date
+        description:
+          type: string
+        reference:
+          type: string
+        type:
+          $ref: '#/components/schemas/TransactionType'
+        amount:
+          type: number
+          minimum: 0.01
+        category:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+
+    AccountType:
+      type: string
+      enum: [CHECKING, SAVINGS, CREDIT]
+
+    TransactionType:
+      type: string
+      enum: [CREDIT, DEBIT]
+
+    MatchCriteria:
+      type: string
+      enum: [REFERENCE, AMOUNT_DATE, AMOUNT_ENTITY, PARTIAL]
+
+    ReconciliationResult:
+      type: object
+      properties:
+        reconciledCount:
+          type: integer
+        totalProcessed:
+          type: integer
+        matches:
+          type: array
+          items:
+            type: object
+            properties:
+              transactionId:
+                type: string
+                format: uuid
+              documentId:
+                type: string
+                format: uuid
+              documentType:
+                type: string
+                enum: [INVOICE, BILL]
+              matchScore:
+                type: integer
+                minimum: 0
+                maximum: 100
+              matchCriteria:
+                $ref: '#/components/schemas/MatchCriteria'
+        unmatched:
+          type: integer
+
+    ImportResult:
+      type: object
+      properties:
+        imported:
+          type: integer
+        skipped:
+          type: integer
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              row:
+                type: integer
+              error:
+                type: string
+
+    BankingSummary:
+      type: object
+      properties:
+        totalAccounts:
+          type: integer
+        totalBalancePEN:
+          type: string
+        totalBalanceUSD:
+          type: string
+        unreconciledTransactions:
+          type: integer
+        lastReconciliation:
+          type: string
+          format: date-time
+
+    ListMeta:
+      type: object
+      properties:
+        total:
+          type: integer
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

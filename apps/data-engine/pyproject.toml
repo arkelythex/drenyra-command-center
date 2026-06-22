@@ -1,0 +1,60 @@
+[project]
+name = "arkelythex-data-engine"
+version = "0.1.0"
+description = "High-performance Financial Data Processing Engine (Polars + Rust Stack)"
+authors = [{name = "Arkelythex Team", email = "dev@arkalythix.com"}]
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.29.0",
+    "polars>=0.20.0",
+    "pydantic>=2.6.0",
+    "pydantic-settings>=2.2.0",
+    "python-multipart>=0.0.9",
+    "orjson>=3.9.15", # Faster JSON parsing (Rust)
+    # ML/Analytics (optional)
+    "scikit-learn>=1.4.0", # For cashflow forecasting
+    "numpy>=1.26.0", # Numerical operations
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.3.0",
+    "pytest>=8.0.0",
+    "black>=24.0.0", # Optional if using Ruff formatter
+]
+ocr = [
+    "paddleocr>=3.0.0",
+    "PyMuPDF>=1.24.0",
+    "opencv-python-headless>=4.9.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+# --- RUFF CONFIGURATION (The Rust Linter) ---
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

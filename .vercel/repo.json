@@ -1,0 +1,11 @@
+{
+  "remoteName": "origin",
+  "projects": [
+    {
+      "id": "prj_jF9q0Xo1it0owUyGE8G940vsmASK",
+      "name": "arkelythex-landing",
+      "directory": "apps/landing",
+      "orgId": "team_7tuduYxh87MqMWPSLGzGItua"
+    }
+  ]
+}

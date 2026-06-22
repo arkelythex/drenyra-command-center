@@ -1,0 +1,7 @@
+{
+  "name": "@arkelythex/seeders",
+  "scripts": {
+    "seed": "bun run packages/infrastructure/db/seeders/index.ts",
+    "seed:reset": "bun run drizzle-kit drop && bun run drizzle-kit push && bun run seed"
+  }
+}

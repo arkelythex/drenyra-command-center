@@ -1,0 +1,1 @@
+export { InvoiceRepository } from "./repository";

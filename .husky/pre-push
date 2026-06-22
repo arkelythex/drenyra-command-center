@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ "${ARKALYTHIX_GGA_PRE_PUSH:-0}" != "1" ]]; then
+  exit 0
+fi
+
+UPSTREAM="$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null || true)"
+
+if [[ -n "${UPSTREAM}" ]]; then
+  scripts/ai/review.sh --range "${UPSTREAM}...HEAD"
+else
+  scripts/ai/review.sh
+fi

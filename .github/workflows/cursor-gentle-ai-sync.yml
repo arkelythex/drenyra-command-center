@@ -1,0 +1,57 @@
+# Optional: re-vendor `.cursor/agents/`, `.cursor/skills/`, `sdd-orchestrator` from gentle-ai main.
+# Does not run by default in all orgs: enable the schedule or use workflow_dispatch.
+# Requires default GITHUB_TOKEN with contents + pull-requests write (contents: read is enough for checkout;
+#   create-pull-request needs to push a branch and open PR).
+name: Cursor Gentle AI sync (optional)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 1 * *" # 1st of month, 06:00 UTC
+
+concurrency:
+  group: cursor-gentle-ai-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Run upstream sync script
+        run: bash scripts/cursor/sync-from-gentle-ai-upstream.sh
+        env:
+          GENTLE_AI_GIT_REF: main
+
+      - name: Detect changes
+        id: diff
+        run: |
+          if git diff --quiet -- .cursor/; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No changes under .cursor/ after sync."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff --stat .cursor/ || true
+          fi
+
+      - name: Create pull request
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          commit-message: "chore(cursor): sync agents and skills from gentle-ai upstream"
+          branch: chore/cursor-gentle-ai-sync
+          delete-branch: true
+          title: "chore(cursor): sync .cursor/ from gentle-ai upstream"
+          body: |
+            Automated run of `scripts/cursor/sync-from-gentle-ai-upstream.sh` (`GENTLE_AI_GIT_REF=main`).
+
+            **Review the diff** before merge; upstream may change SDD agent text or skills.
+
+            See [.cursor/README.md](https://github.com/${{ github.repository }}/blob/main/.cursor/README.md#sync-from-gentle-ai-upstream).

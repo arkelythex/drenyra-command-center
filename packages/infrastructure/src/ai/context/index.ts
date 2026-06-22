@@ -1,0 +1,10 @@
+/**
+ * AI Context Module - Barrel Export
+ */
+
+export {
+	EXPENSE_CLASSIFICATION_CONTEXT,
+	FUNCTION_CALLING_INSTRUCTIONS,
+	GEMINI_SYSTEM_INSTRUCTION,
+	PCGE_FULL_CONTEXT,
+} from "./pcge-context";

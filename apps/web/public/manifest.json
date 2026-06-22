@@ -1,0 +1,20 @@
+{
+  "name": "Drenyra | Infraestructura Nacional de Inteligencia Fiscal",
+  "short_name": "Drenyra",
+  "description": "Plataforma de inteligencia fiscal para estudios contables peruanos. Automatiza SUNAT, SIRE, detracciones y más.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f12",
+  "theme_color": "#0f0f12",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "finance", "productivity"],
+  "lang": "es-PE"
+}

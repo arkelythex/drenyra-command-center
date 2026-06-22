@@ -1,0 +1,37 @@
+import { cn } from "@/lib/utils";
+import type { SidebarProps } from "./Sidebar.types";
+import { SidebarToggle } from "./components/SidebarToggle";
+import { SidebarSearch } from "./components/SidebarSearch";
+import { SidebarCaseList } from "./components/SidebarCaseList";
+import { SidebarNavItems } from "./components/SidebarNavItems";
+import { SidebarFooter } from "./components/SidebarFooter";
+
+export function Sidebar({ isCollapsed, onToggle, onNavigate }: SidebarProps) {
+	return (
+		<aside
+			className={cn(
+				"relative flex h-full flex-col bg-[var(--surface-1)] border-r border-[var(--border-subtle)] transition-[width] duration-300 ease-in-out",
+				isCollapsed ? "w-[64px]" : "w-[260px]",
+			)}
+		>
+			<SidebarToggle isCollapsed={isCollapsed} onToggle={onToggle} />
+
+			<nav
+				id="sidebar-navigation"
+				className="flex-1 overflow-y-auto scrollbar-none px-3 pt-3 space-y-4"
+				aria-label="Navegación lateral"
+			>
+				<SidebarSearch isCollapsed={isCollapsed} />
+				<SidebarCaseList isCollapsed={isCollapsed} onNavigate={onNavigate} />
+
+				{!isCollapsed && (
+					<div className="border-t border-[var(--border-subtle)]" />
+				)}
+
+				<SidebarNavItems isCollapsed={isCollapsed} onNavigate={onNavigate} />
+			</nav>
+
+			<SidebarFooter isCollapsed={isCollapsed} onNavigate={onNavigate} />
+		</aside>
+	);
+}

@@ -1,0 +1,33 @@
+# ARKELYTHEX Bun configuration
+# https://bun.sh/docs/runtime/bunfig
+
+# Disable telemetry
+telemetry = false
+
+[install]
+# CI reproducibility — exact versions only
+# frozenLockfile = true  # uncomment for CI — temporarily disabled to add deps
+
+# Install platform optional deps required by native toolchain packages such as Rollup.
+optional = true
+
+# Supply chain protection: reject packages published < 3 days ago
+minimumReleaseAge = 259200
+
+# Explicit registry to prevent registry confusion attacks
+registry = "https://registry.npmjs.org"
+
+# Isolated linker prevents phantom dependencies (pnpm-like)
+linker = "hoisted"
+
+[install.lockfile]
+save = "exact"
+
+[test]
+# Common test root for the monorepo
+timeout = 30000
+coverage = false  # Enable per-package as needed
+
+[run]
+# Don't auto-install packages when running scripts
+autoInstall = false
