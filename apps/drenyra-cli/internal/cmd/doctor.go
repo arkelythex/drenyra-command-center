@@ -28,22 +28,22 @@ var doctorCmd = &cobra.Command{
 
 		globalPath, _ := config.GlobalPath()
 		if _, err := os.Stat(globalPath); err != nil {
-			checks = append(checks, tui.DoctorCheck{false, "config", globalPath + " (run: drenyra init)"})
+			checks = append(checks, tui.DoctorCheck{OK: false, Label: "config", Detail: globalPath + " (run: drenyra init)"})
 			allOK = false
 		} else {
-			checks = append(checks, tui.DoctorCheck{true, "config", globalPath})
+			checks = append(checks, tui.DoctorCheck{OK: true, Label: "config", Detail: globalPath})
 		}
 
-		checks = append(checks, tui.DoctorCheck{true, "harness API", cfg.Harness.API})
+		checks = append(checks, tui.DoctorCheck{OK: true, Label: "harness API", Detail: cfg.Harness.API})
 		fiscalCtx := audit.FiscalFromConfig(cfg)
 		fiscalValid := true
 		if err := audit.ValidateFiscal(fiscalCtx); err != nil {
-			checks = append(checks, tui.DoctorCheck{false, "fiscal context", err.Error()})
-			checks = append(checks, tui.DoctorCheck{false, "harness ping", "skipped until fiscal context is valid"})
+			checks = append(checks, tui.DoctorCheck{OK: false, Label: "fiscal context", Detail: err.Error()})
+			checks = append(checks, tui.DoctorCheck{OK: false, Label: "harness ping", Detail: "skipped until fiscal context is valid"})
 			allOK = false
 			fiscalValid = false
 		} else {
-			checks = append(checks, tui.DoctorCheck{true, "fiscal context", cfg.Fiscal.CompanyRUC + " · " + cfg.Fiscal.Period + " · org " + cfg.Fiscal.OrganizationID})
+			checks = append(checks, tui.DoctorCheck{OK: true, Label: "fiscal context", Detail: cfg.Fiscal.CompanyRUC + " · " + cfg.Fiscal.Period + " · org " + cfg.Fiscal.OrganizationID})
 		}
 
 		var pingErr error
@@ -59,15 +59,15 @@ var doctorCmd = &cobra.Command{
 			tui.ClearLine()
 
 			if pingErr != nil {
-				checks = append(checks, tui.DoctorCheck{false, "harness ping", pingErr.Error()})
+				checks = append(checks, tui.DoctorCheck{OK: false, Label: "harness ping", Detail: pingErr.Error()})
 				allOK = false
 			} else {
-				checks = append(checks, tui.DoctorCheck{true, "harness ping", "ok"})
+				checks = append(checks, tui.DoctorCheck{OK: true, Label: "harness ping", Detail: "ok"})
 			}
 		}
 
 		if err := memory.EnsureDefaults(); err != nil {
-			checks = append(checks, tui.DoctorCheck{false, "memory", err.Error()})
+			checks = append(checks, tui.DoctorCheck{OK: false, Label: "memory", Detail: err.Error()})
 			allOK = false
 		} else {
 			snap, _ := memory.LoadSnapshot()
@@ -75,11 +75,11 @@ var doctorCmd = &cobra.Command{
 			if snap.NeedsConsolidation() {
 				detail += " — run: drenyra memory edit"
 			}
-			checks = append(checks, tui.DoctorCheck{true, "memory", detail})
+			checks = append(checks, tui.DoctorCheck{OK: true, Label: "memory", Detail: detail})
 		}
 
 		if last, err := history.Last(); err == nil && last != nil {
-			checks = append(checks, tui.DoctorCheck{true, "last run", last.Task})
+			checks = append(checks, tui.DoctorCheck{OK: true, Label: "last run", Detail: last.Task})
 		}
 
 		tui.RenderDoctor(checks, allOK)
