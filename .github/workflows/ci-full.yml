@@ -1,0 +1,482 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
+  pull_request:
+    branches: [main, develop]
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
+
+# Canonical PR workflow identity for protected branches.
+concurrency:
+  group: ci-cd-pipeline-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+permissions:
+  contents: read
+  pull-requests: write
+  packages: read
+
+jobs:
+  # Job 1: Lint & Type Check
+  lint-and-typecheck:
+    name: Lint & Type Check
+    runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 20
+    
+    steps:
+      - uses: ./.github/actions/setup-bun
+        
+      - name: Run ESLint
+        run: bun run lint
+
+      - name: Run ESLint design-tokens plugin (money formatting, brand colors, typography)
+        run: bun run lint:design-tokens
+
+      - name: Run Biome check
+        run: |
+          # Biome v2.3.11 — matches biome.json schema version.
+          # ESLint handles design token rules; Biome checks changed supported files
+          # only until the repository-wide formatting baseline is cleaned up.
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            git fetch origin "${{ github.base_ref }}" --depth=1
+            BASE_REF="origin/${{ github.base_ref }}"
+          else
+            BASE_REF="${{ github.event.before }}"
+            if [[ -z "${BASE_REF}" || "${BASE_REF}" =~ ^0+$ ]]; then
+              echo "No previous commit available for this push; skipping changed-file Biome baseline"
+              exit 0
+            fi
+            git fetch origin "${BASE_REF}" --depth=1 || true
+            if ! git rev-parse --verify "${BASE_REF}^{commit}" >/dev/null 2>&1; then
+              echo "Could not resolve previous commit ${BASE_REF}; skipping changed-file Biome baseline"
+              exit 0
+            fi
+          fi
+
+          mapfile -t BIOME_FILES < <(
+            git diff --name-only --diff-filter=ACMRT "${BASE_REF}"...HEAD -- \
+              '*.js' '*.jsx' '*.ts' '*.tsx' '*.json' '*.jsonc' '*.css' \
+              | grep -v '^docs/' || true
+          )
+
+          if [[ "${#BIOME_FILES[@]}" -eq 0 ]]; then
+            echo "✅ No Biome-supported changed files"
+            exit 0
+          fi
+
+          bunx --package @biomejs/biome@2.3.11 biome check "${BIOME_FILES[@]}"
+
+      - name: Quality Gate — No new \`any\` types
+        uses: ./.github/actions/quality-gate-any
+
+      - name: Run TypeScript compiler
+        run: bun run typecheck
+
+      - name: Verify API features covered by tsconfig.check
+        run: bun run architecture:check-tsconfig-features
+
+      - name: Enforce workspace package boundaries
+        run: bun run architecture:check-boundaries
+
+      - name: Enforce framework isolation (core/domain)
+        run: bun run architecture:check-framework-isolation
+
+      - name: Enforce Bun/Elysia/TanStack stack alignment
+        run: bun run architecture:check-stack
+
+      - name: Enforce product surface registry
+        run: bun run architecture:check-product-surfaces
+
+      - name: Enforce baseline exception policy
+        if: github.event_name == 'pull_request'
+        env:
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          git fetch origin "${BASE_REF}" --depth=1
+          bun run architecture:check-policy --base-ref="origin/${BASE_REF}"
+
+      - name: Check docs internal links
+        run: bun run docs:check-links
+
+      - name: Check for unused dependencies
+        run: bun run ci:depcheck
+        
+      - name: Check for legacy fetch() calls
+        run: |
+          if grep -r "fetch('http://localhost:3000" apps/web/src/features; then
+            echo "❌ ERROR: Legacy fetch() calls found!"
+            echo "Please use Eden Treaty API client instead."
+            exit 1
+          fi
+          echo "✅ No legacy fetch() calls found"
+
+  # Job 2: Unit Tests (all workspace packages + coverage + JUnit report)
+  test:
+    name: Unit Tests
+    runs-on: [self-hosted, linux, x64]
+    
+    steps:
+      - uses: ./.github/actions/setup-bun
+        
+      - name: Run tests with coverage
+        env:
+          VITEST_MAX_WORKERS: "1"
+          DATA_ENGINE_CONTRACT_SCOPE: smoke
+        run: |
+          bun run --filter @arkelythex/api test:run -- --coverage --reporter=default --reporter=junit --outputFile.junit=./junit.xml
+          bun run --filter @arkelythex/web test -- --run --coverage --reporter=default --reporter=junit --outputFile.junit=./junit.xml
+          bun run --filter @arkelythex/agent-swarm test -- --coverage --reporter=default --reporter=junit --outputFile.junit=./junit.xml
+          bun run --filter @arkelythex/domain test -- --coverage --reporter=default --reporter=junit --outputFile.junit=./junit.xml
+          bun run --filter @arkelythex/shared test -- --coverage --reporter=default --reporter=junit --outputFile.junit=./junit.xml
+          bun run --filter @arkelythex/infrastructure test -- --coverage
+          bun run --filter @arkelythex/application test -- --coverage --reporter=default --reporter=junit --outputFile.junit=./junit.xml
+          bun run --filter @arkelythex/persistence test -- --coverage
+          bun run --filter @arkelythex/ai test -- --coverage --reporter=default --reporter=junit --outputFile.junit=./junit.xml
+          bun run --filter @arkelythex/drenyra-core test -- --coverage --reporter=default --reporter=junit --outputFile.junit=./junit.xml
+          bun run --filter @arkelythex/agent-memory test -- --coverage --reporter=default --reporter=junit --outputFile.junit=./junit.xml
+          bun run --filter @arkelythex/landing test -- --run --coverage --reporter=default --reporter=junit --outputFile.junit=./junit.xml
+
+      - name: Publish test results
+        if: always()
+        uses: dorny/test-reporter@v2
+        with:
+          name: "Test Results"
+          path: "**/junit.xml"
+          reporter: "github-check"
+          fail-on-error: "false"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-report
+          path: |
+            apps/api/coverage/
+            apps/web/coverage/
+            packages/domain/coverage/
+            packages/application/coverage/
+            packages/persistence/coverage/
+            packages/shared/coverage/
+            packages/infrastructure/coverage/
+            packages/ai/coverage/
+            packages/agent-memory/coverage/
+            apps/landing/coverage/
+            packages/drenyra-core/coverage/
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Coverage Summary
+        if: always()
+        run: |
+          echo "## 📊 Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          for dir in apps/api apps/web packages/domain packages/application packages/persistence packages/shared packages/infrastructure packages/ai packages/agent-memory packages/drenyra-core; do
+            if [ -f "${dir}/coverage/coverage-summary.json" ]; then
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "### ${dir} Coverage" >> $GITHUB_STEP_SUMMARY
+              echo '```json' >> $GITHUB_STEP_SUMMARY
+              cat "${dir}/coverage/coverage-summary.json" | head -20 >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+  # Job 3: Build Check
+  build:
+    name: Build Check
+    runs-on: [self-hosted, linux, x64]
+    
+    steps:
+      - uses: ./.github/actions/setup-bun
+
+      - name: Build Web (Turborepo)
+        run: bunx turbo run build --filter=@arkelythex/web
+
+      - name: Check bundle size budget
+        run: bun run --filter @arkelythex/web check:bundle
+
+  # Job 4: Security Audit
+  security:
+    name: Security Audit
+    runs-on: [self-hosted, linux, x64]
+    
+    steps:
+      - uses: ./.github/actions/setup-bun
+
+      - name: Run security audit
+        run: bun run security:audit
+
+  # Job 4b: Gitleaks Secret Scanning
+  gitleaks:
+    name: Gitleaks Secret Scanning
+    runs-on: [self-hosted, linux, x64]
+    
+    steps:
+      - name: Install git-lfs
+        run: |
+          mkdir -p ~/.local/bin
+          curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
+          cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
+          ~/.local/bin/git-lfs install --skip-repo --force
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Clear stale Gitleaks installer temp file
+        run: |
+          if [[ -f /tmp/gitleaks.tmp || -L /tmp/gitleaks.tmp ]]; then
+            unlink /tmp/gitleaks.tmp
+          fi
+
+      - name: Verify Docker for Gitleaks
+        run: bash scripts/ci/verify-self-hosted-runner-host.sh docker
+
+      - name: Run Gitleaks
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            GITLEAKS_LOG_OPTS="${PR_BASE_SHA}..HEAD"
+          elif [[ -n "${PUSH_BEFORE_SHA}" && ! "${PUSH_BEFORE_SHA}" =~ ^0+$ ]]; then
+            GITLEAKS_LOG_OPTS="${PUSH_BEFORE_SHA}..HEAD"
+          else
+            GITLEAKS_LOG_OPTS="HEAD"
+          fi
+          echo "Scanning Gitleaks git range: ${GITLEAKS_LOG_OPTS}"
+          docker run --rm \
+            -v "${PWD}:/repo" \
+            ghcr.io/gitleaks/gitleaks:v8.24.3 \
+            detect --source=/repo --log-opts="${GITLEAKS_LOG_OPTS}" --redact --no-banner --verbose
+
+  # Job 5: Database Migration Check
+  migration-check:
+    name: Database Migration Check
+    runs-on: [self-hosted, linux, x64]
+    
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: arkelythex_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432
+    
+    steps:
+      - uses: ./.github/actions/setup-bun
+        
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/arkelythex_test
+        run: |
+          docker exec "${{ job.services.postgres.id }}" psql -U postgres -d arkelythex_test -c "CREATE EXTENSION IF NOT EXISTS vector;"
+          bun run --filter @arkelythex/infrastructure db:push
+
+  # Job 6: DB Integration Tests (required on PR)
+  db-integration-tests:
+    name: DB Integration Tests
+    runs-on: [self-hosted, linux, x64]
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: arkelythex_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432
+
+    steps:
+      - uses: ./.github/actions/setup-bun
+
+      - name: Run migrations
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/arkelythex_test
+        run: |
+          docker exec "${{ job.services.postgres.id }}" psql -U postgres -d arkelythex_test -c "CREATE EXTENSION IF NOT EXISTS vector;"
+          bun run --filter @arkelythex/infrastructure db:push
+
+      - name: Run DB integration tests
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/arkelythex_test
+          BETTER_AUTH_SECRET: ci-better-auth-secret-min-32-chars-arkelythex
+          BETTER_AUTH_URL: http://localhost
+          BETTER_AUTH_TRUSTED_ORIGINS: http://localhost,http://localhost:3000,http://127.0.0.1
+          VITEST_MAX_WORKERS: "1"
+        run: bun run --filter @arkelythex/api test:db
+
+  # Job 7: TS-Python Contract Smoke (required on PR)
+  contracts-smoke:
+    name: Contracts Smoke (TS-Python)
+    runs-on: [self-hosted, linux, x64]
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - uses: ./.github/actions/setup-bun
+
+      - name: Install uv
+        run: |
+          python --version
+          python -m venv .venv-ci
+          .venv-ci/bin/python -m pip install uv
+          echo "${PWD}/.venv-ci/bin" >> "${GITHUB_PATH}"
+
+      - name: Verify Python contract runtime
+        run: |
+          uv --version
+          uv run --project apps/data-engine python --version
+
+      - name: Run contract smoke tests
+        env:
+          DATA_ENGINE_URL: http://127.0.0.1:8000
+          REQUIRE_DATA_ENGINE_CONTRACTS: "1"
+          DATA_ENGINE_CONTRACT_SCOPE: smoke
+          DATA_ENGINE_CONTRACT_REPORT_PATH: tmp/contracts/data-engine-contract-report.smoke.json
+          DATA_ENGINE_LOG_PATH: /tmp/data-engine-smoke.log
+        run: ./scripts/ci/run-data-engine-contracts.sh smoke
+
+      - name: Upload contract smoke artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: data-engine-contract-smoke-artifacts
+          path: |
+            apps/api/tmp/contracts/data-engine-contract-report.smoke.json
+            /tmp/data-engine-smoke.log
+          if-no-files-found: warn
+          retention-days: 7
+
+  # Job 8: Prometeo Sandbox Smoke Test (optional secret-gated)
+  prometeo-sandbox-smoke:
+    name: Prometeo Sandbox Smoke
+    runs-on: [self-hosted, linux, x64]
+
+    steps:
+      - uses: ./.github/actions/setup-bun
+
+      - name: Run Prometeo sandbox smoke test (skip when secret missing)
+        env:
+          PROMETEO_API_KEY: ${{ secrets.PROMETEO_API_KEY_SANDBOX }}
+          PROMETEO_ENV: sandbox
+          RUN_PROMETEO_SANDBOX_TESTS: "1"
+          RUN_PROMETEO_SANDBOX_CORP_TESTS: ${{ vars.RUN_PROMETEO_SANDBOX_CORP_TESTS }}
+          PROMETEO_SANDBOX_PROVIDER: ${{ vars.PROMETEO_SANDBOX_PROVIDER }}
+          PROMETEO_SANDBOX_PROVIDER_CANDIDATES: ${{ vars.PROMETEO_SANDBOX_PROVIDER_CANDIDATES }}
+          PROMETEO_SANDBOX_CORP_PROVIDER_CANDIDATES: ${{ vars.PROMETEO_SANDBOX_CORP_PROVIDER_CANDIDATES }}
+          PROMETEO_SANDBOX_USERNAME: ${{ secrets.PROMETEO_SANDBOX_USERNAME }}
+          PROMETEO_SANDBOX_PASSWORD: ${{ secrets.PROMETEO_SANDBOX_PASSWORD }}
+          PROMETEO_SANDBOX_CORP_USERNAME: ${{ secrets.PROMETEO_SANDBOX_CORP_USERNAME }}
+          PROMETEO_SANDBOX_CORP_PASSWORD: ${{ secrets.PROMETEO_SANDBOX_CORP_PASSWORD }}
+          PROMETEO_SANDBOX_DOCUMENT_TYPE: ${{ vars.PROMETEO_SANDBOX_DOCUMENT_TYPE }}
+          PROMETEO_SANDBOX_DOCUMENT_NUMBER: ${{ secrets.PROMETEO_SANDBOX_DOCUMENT_NUMBER }}
+          PROMETEO_SANDBOX_CORP_DOCUMENT_TYPE: ${{ vars.PROMETEO_SANDBOX_CORP_DOCUMENT_TYPE }}
+          PROMETEO_SANDBOX_CORP_DOCUMENT_NUMBER: ${{ secrets.PROMETEO_SANDBOX_CORP_DOCUMENT_NUMBER }}
+          PROMETEO_SANDBOX_OTP_TOKEN: ${{ secrets.PROMETEO_SANDBOX_OTP_TOKEN }}
+          PROMETEO_SANDBOX_CORP_OTP_TOKEN: ${{ secrets.PROMETEO_SANDBOX_CORP_OTP_TOKEN }}
+        run: |
+          if [ -z "${PROMETEO_API_KEY}" ]; then
+            echo "⏭️  Skipping Prometeo sandbox smoke (missing secret PROMETEO_API_KEY_SANDBOX)"
+            exit 0
+          fi
+          if [[ "${PROMETEO_API_KEY}" == "your_sandbox_key" ]] || \
+             [[ "${PROMETEO_API_KEY}" == "changeme" ]] || \
+             [[ "${PROMETEO_API_KEY}" == "replace_me" ]] || \
+             [[ "${PROMETEO_API_KEY}" == your_* ]]; then
+            echo "⏭️  Skipping Prometeo sandbox smoke (placeholder API key detected)"
+            exit 0
+          fi
+          if [ -z "${PROMETEO_SANDBOX_USERNAME}" ] || [ -z "${PROMETEO_SANDBOX_PASSWORD}" ]; then
+            echo "⏭️  Skipping Prometeo sandbox smoke (missing PROMETEO_SANDBOX_USERNAME/PROMETEO_SANDBOX_PASSWORD)"
+            exit 0
+          fi
+          bun run --filter @arkelythex/api test:sandbox:prometeo
+
+  # Job 8b: Critical features E2E (workflow reutilizable + caché de browsers)
+  e2e-supervisor-review:
+    uses: ./.github/workflows/reusable-e2e-supervisor-review.yml
+    secrets: inherit
+
+  # Job 8c: Accessibility Smoke Tests (axe-core WCAG 2.1 AA)
+  a11y-check:
+    name: Accessibility
+    runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 10
+    steps:
+      - uses: ./.github/actions/setup-bun
+      - name: Install Playwright Chromium
+        run: bunx playwright install chromium --with-deps 2>/dev/null || true
+      - name: Run axe-core E2E accessibility smoke tests
+        run: bunx playwright test e2e/accessibility/smoke-a11y.spec.ts --project=chromium --reporter=list
+
+  # Job 8d: E2E Smoke Tests (quick — @smoke tagged only)
+  e2e-smoke:
+    name: E2E Smoke Tests
+    runs-on: [self-hosted, linux, x64]
+    timeout-minutes: 15
+    steps:
+      - uses: ./.github/actions/setup-bun
+      - name: Install Playwright Chromium
+        run: bunx playwright install chromium --with-deps 2>/dev/null || true
+      - name: Run E2E smoke tests
+        run: bunx playwright test --grep "@smoke" --project=chromium --reporter=list
+
+  # Job 9: Package Staleness Check
+  package-staleness:
+    name: Package Staleness Check
+    runs-on: [self-hosted, linux, x64]
+    
+    steps:
+      - uses: ./.github/actions/setup-bun
+
+      - name: Check package staleness
+        run: bash scripts/ci/check-package-staleness.sh
+
+  # Job 10: Status Check (Required for merge)
+  all-checks-passed:
+    name: All Checks Passed
+    runs-on: [self-hosted, linux, x64]
+    needs: [lint-and-typecheck, test, build, security, gitleaks, migration-check, db-integration-tests, contracts-smoke, prometeo-sandbox-smoke, e2e-supervisor-review, a11y-check, e2e-smoke, package-staleness]
+    if: always()
+    
+    steps:
+      - name: Check all jobs
+        run: |
+          if [[ "${{ needs.lint-and-typecheck.result }}" != "success" ]] || \
+             [[ "${{ needs.test.result }}" != "success" ]] || \
+             [[ "${{ needs.build.result }}" != "success" ]] || \
+             [[ "${{ needs.security.result }}" != "success" ]] || \
+             [[ "${{ needs.gitleaks.result }}" != "success" ]] || \
+             [[ "${{ needs.migration-check.result }}" != "success" ]] || \
+             [[ "${{ needs.db-integration-tests.result }}" != "success" ]] || \
+             ([[ "${{ needs.contracts-smoke.result }}" != "success" ]] && [[ "${{ needs.contracts-smoke.result }}" != "skipped" ]]) || \
+             [[ "${{ needs.prometeo-sandbox-smoke.result }}" != "success" ]] || \
+             [[ "${{ needs.e2e-supervisor-review.result }}" != "success" ]] || \
+             [[ "${{ needs.a11y-check.result }}" != "success" ]] || \
+             [[ "${{ needs.e2e-smoke.result }}" != "success" ]] || \
+             [[ "${{ needs.package-staleness.result }}" != "success" ]]; then
+            echo "❌ One or more checks failed"
+            exit 1
+          fi
+          echo "✅ All checks passed!"

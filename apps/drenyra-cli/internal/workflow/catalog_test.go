@@ -7,8 +7,8 @@ import (
 
 func TestListSorted(t *testing.T) {
 	workflows := List()
-	if len(workflows) != 4 {
-		t.Fatalf("expected 4 workflows, got %d", len(workflows))
+	if len(workflows) != 8 {
+		t.Fatalf("expected 8 workflows, got %d", len(workflows))
 	}
 
 	ids := make([]string, 0, len(workflows))
@@ -16,7 +16,16 @@ func TestListSorted(t *testing.T) {
 		ids = append(ids, workflow.ID)
 	}
 
-	expected := []string{"architecture-check", "bugfix-tdd", "pre-pr", "review-sunat"}
+	expected := []string{
+		"analyze-invoice",
+		"architecture-check",
+		"bugfix-tdd",
+		"explain-risk",
+		"pre-pr",
+		"prepare-evidence",
+		"propose-ledger-entry",
+		"review-sunat",
+	}
 	for i, want := range expected {
 		if ids[i] != want {
 			t.Fatalf("workflow[%d] = %q, want %q", i, ids[i], want)
