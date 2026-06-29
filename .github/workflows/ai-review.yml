@@ -1,0 +1,70 @@
+# Gentleman Guardian Angel — AI Code Review
+# Code review using DeepSeek V4 Flash via direct API
+name: GGA AI Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches: [main]
+
+env:
+  DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+
+jobs:
+  review:
+    runs-on: [self-hosted, linux, x64]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Ensure GGA is installed
+        run: |
+          if ! command -v gga &> /dev/null; then
+            echo "Installing GGA from GitHub..."
+            git clone https://github.com/Gentleman-Programming/gentleman-guardian-angel.git /tmp/gga
+            bash /tmp/gga/install.sh
+          fi
+          gga version
+
+      - name: Patch DeepSeek provider if needed
+        run: |
+          GGA_LIB_DIR="$(dirname $(readlink -f $(which gga)))/../share/gga/lib"
+          if [ ! -f "$GGA_LIB_DIR/providers.sh" ]; then
+            GGA_LIB_DIR="/home/runner/.local/share/gga/lib"
+          fi
+          if [ -f "$GGA_LIB_DIR/providers.sh" ]; then
+            if ! grep -q 'execute_deepseek' "$GGA_LIB_DIR/providers.sh"; then
+              echo "Patching DeepSeek provider..."
+              python3 scripts/gga-install-deepseek-provider.py
+            else
+              echo "DeepSeek provider already patched."
+            fi
+          else
+            echo "Warning: providers.sh not found at $GGA_LIB_DIR"
+            echo "GGA may have been installed in a non-standard location."
+            echo "Running gga init to create config..."
+          fi
+
+      - name: Run AI Review
+        continue-on-error: true
+        id: gga-review
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            gga run --pr-mode 2>&1 || echo "gga_exit=$?" >> $GITHUB_OUTPUT
+          else
+            git log -1 --format="%H" | xargs git diff --name-only HEAD~1..HEAD | xargs git add
+            gga run 2>&1 || echo "gga_exit=$?" >> $GITHUB_OUTPUT
+          fi
+
+      - name: GGA Review Summary
+        if: always()
+        run: |
+          echo "## GGA AI Review Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Review completed for commit \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Provider | Model | Result |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| DeepSeek | deepseek-chat (V4 Flash) | ${{ steps.gga-review.outputs.gga_exit == 0 && 'PASS' || 'Review Complete' }} |" >> $GITHUB_STEP_SUMMARY

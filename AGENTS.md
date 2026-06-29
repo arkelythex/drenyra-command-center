@@ -183,3 +183,62 @@ Include:
 4. Results
 5. Remaining risks
 6. Suggested next step
+
+---
+
+## GGA AI Code Review
+
+This project uses **Gentleman Guardian Angel (GGA)** for automated AI code review on every PR and push to `main`.
+
+### Configuration
+
+- Config file: `.gga` (project root)
+- Provider: `deepseek:deepseek-chat` (DeepSeek V4 Flash)
+- Rules file: `AGENTS.md` (this file — the coding standards above are used as review rules)
+
+### CI Workflow
+
+The workflow is at `.github/workflows/ai-review.yml`:
+- Triggers on PRs (opened/synchronize) and pushes to `main`
+- Installs GGA from GitHub
+- Patches the DeepSeek provider if needed
+- Runs `gga run` on changed files
+- Posts a summary as a PR check
+
+### Local Usage
+
+```bash
+# Stage files and run review
+git add <files>
+gga run
+
+# Or review all staged changes
+gga run --no-cache
+```
+
+### Pre-commit Hook
+
+GGA installs a pre-commit hook that reviews code before each commit. To (re)install:
+
+```bash
+gga install
+```
+
+### Provider
+
+Uses DeepSeek V4 Flash (`deepseek-chat`) via direct API at `api.deepseek.com/v1/chat/completions`.
+
+Requires `DEEPSEEK_API_KEY` environment variable.
+
+### Review Rules
+
+The rules in this `AGENTS.md` file (Non-negotiables, Architecture Rules, Security Rules, Testing Rules, Code Review Gate) are used by GGA as the review checklist. Any violation causes the review to flag the change.
+
+### Verification
+
+To verify GGA is working:
+
+```bash
+gga version
+gga config
+```
