@@ -1,31 +1,42 @@
 # DRENYRA — Command Center for ARKELYTHEX Fiscal Infrastructure
 
-> **Drenyra es el centro de comando operativo de ARKELYTHEX.** Donde agentes de AI preparan, revisan y explican trabajo contable — siempre bajo supervisión humana, evidencia versionada y approval gates.
+> Drenyra es el centro de comando operativo de ARKELYTHEX. Donde agentes de AI preparan, revisan y explican trabajo contable — siempre bajo supervisión humana, evidencia versionada y approval gates.
 
-La documentación sigue la **Gentleman Philosophy**: lead with the answer, progressive disclosure. Empecemos.
-
----
-
-## ¿Qué es Drenyra?
-
-Drenyra es la interfaz visible de la Infraestructura Nacional de Inteligencia Fiscal de ARKELYTHEX. Traduce compliance fiscal (SUNAT, SIRE, IGV, retenciones, detracciones) en un **sistema operativo** para estudios contables y empresas multi-RUC.
-
-No es otro dashboard contable. Es un **command center** donde:
-
-- **AI agents** preparan, revisan y explican trabajo contable
-- **Humanos** aprueban cada decisión fiscal antes de ejecutarse
-- **Evidencia** queda versionada, trazable y auditable de punta a punta
-- **Workflows** conectan spreadsheets, PDFs, XML-UBl, SUNAT, y bancos en un solo lugar
-
-### Lo que permite
-
-- **Fiscal intelligence evidence-first** — anomalías, trails de origen y explicaciones de riesgo antes de acciones materiales.
-- **Visibilidad operativa continua** — cash-flow, close, conciliación y compliance en tiempo real.
-- **Trabajo agentico con approval gates** — agentes preparan, humanos deciden, el sistema deja evidencia.
+**Drenyra is the flagship product and operational command center of the ARKELYTHEX ecosystem.** It translates fiscal compliance (SUNAT, SIRE, IGV, retenciones, detracciones) into a unified operating system for accounting firms and multi-RUC enterprises across Peru and Latin America.
 
 ---
 
-## Componentes
+## Quickstart
+
+```bash
+bun install --frozen-lockfile
+cp .env.example .env
+bun run dev:stack
+bun run db:push
+bun run dev:check
+```
+
+**Servicios esperados:**
+
+| Servicio | URL |
+|----------|-----|
+| Web (dashboard) | `http://localhost:5173` |
+| API | `http://localhost:3000` |
+| Swagger | `http://localhost:3000/swagger` |
+| Data Engine | `http://localhost:8000/health` |
+
+**CLI:**
+
+```bash
+cd apps/drenyra-cli
+go run cmd/drenyra/main.go
+```
+
+---
+
+## Architecture
+
+Drenyra is a multi-app monorepo extracted from the ARKELYTHEX monorepo as a standalone project. It follows Clean Architecture with CQRS, vertical slices, and evidence-first AI agent orchestration.
 
 ```
 arkelythex/drenyra/
@@ -50,38 +61,10 @@ arkelythex/drenyra/
 
 ---
 
-## Quickstart
+## Tech Stack
 
-```bash
-bun install --frozen-lockfile        # Instalar dependencias
-cp .env.example .env                  # Configurar entorno
-bun run dev:stack                     # Iniciar servicios
-bun run db:push                       # Sincronizar DB
-bun run dev:check                     # Verificar todo funciona
-```
-
-**Servicios esperados:**
-
-| Servicio | URL |
-|----------|-----|
-| Web (dashboard) | `http://localhost:5173` |
-| API | `http://localhost:3000` |
-| Swagger | `http://localhost:3000/swagger` |
-| Data Engine | `http://localhost:8000/health` |
-
-**CLI:**
-
-```bash
-cd apps/drenyra-cli
-go run cmd/drenyra/main.go
-```
-
----
-
-## Stack Tecnológico (2026)
-
-| Capa | Tecnología | Propósito |
-|------|-----------|-----------|
+| Layer | Tech | Purpose |
+|-------|------|---------|
 | Frontend | React 19 + Vite + TanStack Router | Drenyra SPA command center |
 | API | Bun + Elysia + Swagger | Vertical slices, CQRS, Eden Treaty |
 | Data Engine | FastAPI + Polars | Procesamiento analítico high-throughput |
@@ -94,12 +77,44 @@ go run cmd/drenyra/main.go
 
 ---
 
-## Filosofía
+## What Drenyra Enables
+
+- **Fiscal Intelligence, Evidence-First** — Anomalies, origin trails, and risk explanations surface before any material action is taken. Every decision anchors to versioned evidence.
+- **Continuous Operational Visibility** — Cash-flow, close, reconciliation, and compliance status converge in a single command center. No more chasing spreadsheets across period end.
+- **Agentic Work with Approval Gates** — AI agents draft, prepare, and flag work for review. Humans approve fiscal and accounting decisions. The audit trail captures every interaction.
+- **Multi-RUC, Multi-Tenant** — Built from day one for accounting firms managing multiple clients, each with distinct RUCs, regimes, and compliance obligations.
+
+---
+
+## Philosophy
 
 Drenyra está construido sobre la tesis de **evidence-first AI**: los agentes proponen, el sistema valida, el contador aprueba, y Drenyra deja evidencia. No hay decisión fiscal sin supervisión humana, no hay operación sin rastro de auditoría.
 
 Este repo contiene TODO Drenyra — desde la web app hasta el CLI, pasando por la API, la orquestación de agentes, y la infraestructura de persistencia. Extraído del monorepo ARKELYTHEX como proyecto standalone.
 
+---
+
+## Project Status
+
+**Status:** Active
+**Version:** 1.0
+
+---
+
+## Relationship to ARKELYTHEX
+
+This is the flagship product of the [ARKELYTHEX ecosystem](../arkelythex/sdd/ecosystem-readme-sdd/00-README.md). Drenyra is to fiscal operations what Codex is to software development — a structured, inspectable workspace where complex work gets done through human-AI collaboration.
+
 > **Built by DreamCoder. From Peru. For Latin America.**
->
-> [ARKELYTHEX](https://github.com/arkelythex) · [DreamCoder](https://github.com/Dreamcoder08)
+
+---
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
+
+---
+
+## SDD
+
+Documentation is maintained in the [SDD Maestro](../arkelythex/sdd/ecosystem-readme-sdd/00-README.md). Edit the SDD first, then propagate.
