@@ -1,8 +1,15 @@
-# DRENYRA — Command Center for ARKELYTHEX Fiscal Infrastructure
+# DRENYRA — Codex + Digits
 
-> Drenyra es el centro de comando operativo de ARKELYTHEX. Donde agentes de AI preparan, revisan y explican trabajo contable — siempre bajo supervisión humana, evidencia versionada y approval gates.
+> Drenyra es el producto flagship de ARKELYTHEX. **Codex** es el motor fiscal determinista. **Digits** es la experiencia de usuario. Juntos forman el sistema de inteligencia fiscal-operativa para Perú y LATAM.
 
-**Drenyra is the flagship product and operational command center of the ARKELYTHEX ecosystem.** It translates fiscal compliance (SUNAT, SIRE, IGV, retenciones, detracciones) into a unified operating system for accounting firms and multi-RUC enterprises across Peru and Latin America.
+---
+
+## ADN: Codex + Digits
+
+| Layer | Qué es | Stack |
+|-------|--------|-------|
+| **Codex** | Motor de reglas fiscales deterministas — SUNAT, RUC, IGV, SIRE, CDR, detracciones, PLE. Lógica testable, replayable, 100% cubierta. | TypeScript strict, Bun + Elysia, PostgreSQL + Drizzle, Go (evidence graph) |
+| **Digits** | Experiencia de usuario — web SPA para el día a día + CLI para operaciones avanzadas. Cash-flow, close, conciliación, compliance en una interfaz. | React 19 + Vite + TanStack Router (web), Go + Bubbletea (CLI) |
 
 ---
 
@@ -20,8 +27,8 @@ bun run dev:check
 
 | Servicio | URL |
 |----------|-----|
-| Web (dashboard) | `http://localhost:5173` |
-| API | `http://localhost:3000` |
+| Web (Digits dashboard) | `http://localhost:5173` |
+| API (Codex engine) | `http://localhost:3000` |
 | Swagger | `http://localhost:3000/swagger` |
 | Data Engine | `http://localhost:8000/health` |
 
@@ -77,12 +84,12 @@ arkelythex/drenyra/
 
 ---
 
-## What Drenyra Enables
+## What Drenyra Does
 
-- **Fiscal Intelligence, Evidence-First** — Anomalies, origin trails, and risk explanations surface before any material action is taken. Every decision anchors to versioned evidence.
-- **Continuous Operational Visibility** — Cash-flow, close, reconciliation, and compliance status converge in a single command center. No more chasing spreadsheets across period end.
-- **Agentic Work with Approval Gates** — AI agents draft, prepare, and flag work for review. Humans approve fiscal and accounting decisions. The audit trail captures every interaction.
-- **Multi-RUC, Multi-Tenant** — Built from day one for accounting firms managing multiple clients, each with distinct RUCs, regimes, and compliance obligations.
+- **Codex: Deterministic Fiscal Engine** — SUNAT rules (RUC, IGV, SIRE, CDR, detracciones, PLE) translated into testable, replayable logic. Every output with a complete evidence trail: `source → normalized → validated → proposed → approved → promoted`.
+- **Digits: Unified Accounting Experience** — Web SPA (React 19) for daily operations + CLI (Go + Bubbletea) for advanced TUI. Cash-flow, close, reconciliation, and compliance in a single interface.
+- **Agentic Work with Approval Gates** — AI agents draft, prepare, and flag work. Humans approve fiscal and accounting decisions. Every interaction captured in the audit trail.
+- **Multi-RUC, Multi-Tenant** — Built from day one for accounting firms managing multiple clients with distinct RUCs, regimes, and obligations.
 
 ---
 
@@ -103,7 +110,7 @@ Este repo contiene TODO Drenyra — desde la web app hasta el CLI, pasando por l
 
 ## Relationship to ARKELYTHEX
 
-This is the flagship product of the [ARKELYTHEX ecosystem](../arkelythex/sdd/ecosystem-readme-sdd/00-README.md). Drenyra is to fiscal operations what Codex is to software development — a structured, inspectable workspace where complex work gets done through human-AI collaboration.
+This is the flagship product of the [ARKELYTHEX ecosystem](../arkelythex/sdd/ecosystem-readme-sdd/00-README.md). Drenyra es a la contabilidad peruana lo que Codex es al desarrollo de software. Codex + Digits: un motor fiscal determinista con una experiencia humana primero.
 
 > **Built by DreamCoder. From Peru. For Latin America.**
 
