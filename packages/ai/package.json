@@ -44,7 +44,7 @@
     "@arkelythex/persistence": "workspace:*",
     "@arkelythex/shared": "workspace:*",
     "@google/generative-ai": "^0.24.1",
-    "ai": "^6.0.206"
+    "ai": "^7.0.4"
   },
   "devDependencies": {
     "typescript": "^6.0.3",
