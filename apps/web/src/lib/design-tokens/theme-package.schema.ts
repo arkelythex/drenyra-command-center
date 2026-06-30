@@ -11,6 +11,7 @@ const SENSITIVE_KEY_PARTS = [
 ] as const;
 
 export const ACCENT_PRESETS = [
+	"voltage",
 	"ember",
 	"cocoa",
 	"terracotta",
@@ -162,5 +163,5 @@ export const THEME_TOKEN_CSS_VARIABLES = {
 
 export type ThemeTokenName = keyof typeof THEME_TOKEN_CSS_VARIABLES;
 export function isAllowedThemeTokenName(key: string): key is ThemeTokenName {
-	return Object.prototype.hasOwnProperty.call(THEME_TOKEN_CSS_VARIABLES, key);
+	return Object.hasOwn(THEME_TOKEN_CSS_VARIABLES, key);
 }

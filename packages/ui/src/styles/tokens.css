@@ -1,127 +1,60 @@
 /**
- * Arkelythex Design Tokens
- *
- * CSS custom properties for the Arkelythex design system.
- * These tokens define the visual language of the brand.
- *
- * @example
- * ```css
- * .my-component {
- *   background-color: var(--color-primary);
- *   color: var(--color-text-primary);
- * }
- * ```
+ * Arkelythex / Drenyra Fiscal Editorial Tokens
+ * Synced from apps/web/src/lib/design-tokens/tokens.dtcg.json v3.0.0
  */
 
 :root {
-  /* ================================================================
-     BRAND COLORS
-     Primary copper and amber/lúcuma from Arkelythex brand palette
-     ================================================================ */
+  --color-primary: #f54e00;
+  --color-primary-rgb: 245, 78, 0;
+  --color-primary-hover: #ff6a1a;
+  --color-primary-active: #d94400;
 
-  --color-primary: #B97A45;
-  --color-primary-rgb: 185, 122, 69;
-  --color-primary-hover: #A66A39;
-  --color-primary-active: #8F5A2E;
+  --color-accent: #f54e00;
+  --color-accent-rgb: 245, 78, 0;
+  --color-accent-hover: #ff6a1a;
+  --color-accent-active: #d94400;
 
-  --color-accent: #E7C97A;
-  --color-accent-rgb: 231, 201, 122;
-  --color-accent-hover: #D4B86A;
-  --color-accent-active: #C1A75A;
+  --color-accent-secondary: #c45c2a;
+  --color-accent-secondary-rgb: 196, 92, 42;
+  --color-accent-secondary-hover: #d66a34;
+  --color-accent-secondary-active: #b04e22;
 
-  --color-accent-secondary: #EFE4D7;
-  --color-accent-secondary-rgb: 239, 228, 215;
-  --color-accent-secondary-hover: #E0D4C6;
-  --color-accent-secondary-active: #D1C4B5;
+  --color-surface-1: #242422;
+  --color-surface-2: #2e2e2b;
+  --color-surface-3: #3a3a36;
+  --color-surface-4: #454542;
 
-  /* ================================================================
-     SURFACE COLORS
-     Dark cocoa-based surfaces for Arkelythex's fintech dark theme
-     ================================================================ */
-
-  --color-surface-1: #0E0A08;
-  --color-surface-2: #1A1410;
-  --color-surface-3: #2A2018;
-  --color-surface-4: #3A3028;
-
-  /* ================================================================
-     SEMANTIC COLORS
-     Status colors for feedback and state indication
-     ================================================================ */
-
-  --color-success: #7F9A74;
+  --color-success: oklch(0.65 0.22 150);
   --color-success-rgb: 127, 154, 116;
-  --color-success-hover: #6E8A63;
-  --color-success-active: #5D7A52;
+  --color-info: #c45c2a;
+  --color-warning: oklch(0.75 0.22 80);
+  --color-danger: oklch(0.55 0.25 25);
 
-  --color-info: #C59442;
-  --color-info-rgb: 197, 148, 66;
-  --color-info-hover: #B48432;
-  --color-info-active: #A37422;
+  --color-text-primary: #e8e6e0;
+  --color-text-secondary: #9a9890;
+  --color-text-muted: #6f6d66;
+  --color-text-disabled: #54524c;
 
-  --color-warning: #C59442;
-  --color-warning-rgb: 197, 148, 66;
-  --color-warning-hover: #B48432;
-  --color-warning-active: #A37422;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.14);
+  --color-border-subtle: rgba(255, 255, 255, 0.05);
 
-  --color-danger: #B76353;
-  --color-danger-rgb: 183, 99, 83;
-  --color-danger-hover: #A65343;
-  --color-danger-active: #954333;
-
-  /* ================================================================
-     TEXT COLORS
-     Typography hierarchy for optimal readability
-     ================================================================ */
-
-  --color-text-primary: #F7F1E8;
-  --color-text-secondary: #D4C4B0;
-  --color-text-muted: #8A7D6B;
-  --color-text-disabled: #5A4D3B;
-
-  /* ================================================================
-     BORDER COLORS
-     Subtle borders using brand-aware transparency
-     ================================================================ */
-
-  --color-border: rgba(74, 57, 46, 0.3);
-  --color-border-rgb: 74, 57, 46;
-  --color-border-strong: rgba(74, 57, 46, 0.6);
-  --color-border-subtle: rgba(74, 57, 46, 0.15);
-
-  /* ================================================================
-     RADIUS TOKENS
-     Consistent border radius across components
-     ================================================================ */
-
-  --radius-sm: 0.25rem;
+  --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-full: 9999px;
+  --radius-xl: 0.75rem;
 
-  /* ================================================================
-     SHADOW TOKENS
-     Elevation system with brand-aware shadows
-     ================================================================ */
+  --shadow-primary: 0 1px 2px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
-
-  --shadow-primary: 0 4px 14px rgba(var(--color-primary-rgb), 0.25);
-  --shadow-accent: 0 4px 14px rgba(var(--color-accent-rgb), 0.25);
-  --shadow-success: 0 4px 14px rgba(var(--color-success-rgb), 0.25);
-  --shadow-danger: 0 4px 14px rgba(var(--color-danger-rgb), 0.25);
-
-  /* ================================================================
-     GLASS MORPHISM
-     Frosted glass effects for premium UI
-     ================================================================ */
-
-  --glass-bg: rgba(26, 20, 16, 0.8);
-  --glass-border: rgba(239, 228, 215, 0.1);
-  --glass-blur: blur(12px);
+.light {
+  --color-surface-1: #ffffff;
+  --color-surface-2: #efeee8;
+  --color-surface-3: #e5e4de;
+  --color-text-primary: #26251e;
+  --color-text-secondary: #5c5b54;
+  --color-text-muted: #8a8980;
+  --color-border: rgba(38, 37, 30, 0.12);
+  --color-border-subtle: rgba(38, 37, 30, 0.08);
 }

@@ -1,0 +1,19 @@
+change_id: drenyra-fiscal-editorial-v3
+status: verify
+phase: archive-ready
+branch: codex/drenyra-fiscal-editorial-v3
+worktree: ~/Documents/PROYECTOS/arkelythex/worktrees/drenyra/drenyra-fiscal-editorial-v3
+delivery_strategy: auto-chain
+created_at: 2026-06-30
+updated_at: 2026-06-30
+capabilities:
+  - design-tokens-core
+  - design-md-contract
+  - packages-ui-parity
+  - fiscal-editorial-shell
+  - primitives-v3
+  - agent-command-surfaces
+  - complexity-density-modes
+  - openpencil-hub
+  - landing-parity
+  - lint-enforcement

@@ -18,7 +18,9 @@ describe("design tokens contract", () => {
 	it("defines primitive, semantic, and legacy alias tiers in generated CSS", () => {
 		const css = readTokensCss();
 
+		expect(css).toContain("--color-primitive-espresso-0");
 		expect(css).toContain("--color-primitive-onyx-0");
+		expect(css).toContain("--color-voltage-base");
 		expect(css).toContain("--color-bg-0");
 		expect(css).toContain("--color-surface-1");
 		expect(css).toContain("--text-primary");

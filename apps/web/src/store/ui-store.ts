@@ -31,7 +31,7 @@ export type ComplexityLevel = "basic" | "advanced" | "expert";
 
 export type SwarmMode = "auto" | "ledger" | "sire" | "analysis";
 
-export type RightPanelTab = 'diff' | 'artifact' | 'details' | 'reports' | 'kpi';
+export type RightPanelTab = "diff" | "artifact" | "details" | "reports" | "kpi";
 
 interface UIState {
 	themePreference: ThemePreference;
@@ -64,7 +64,7 @@ export const useUIStore = create<UIState>()(
 		(set, get) => ({
 			themePreference: "mono-dark",
 			customThemePackage: null,
-			accentPreference: "ember",
+			accentPreference: "voltage",
 			densityPreference: "normal",
 			complexityLevel: "advanced",
 			isSidebarOpen: true,
@@ -160,7 +160,8 @@ export const useUIStore = create<UIState>()(
 						state.themePreference ?? state.uxMode,
 					),
 					accentPreference: state.accentPreference ?? ("ember" as AccentPreset),
-					densityPreference: state.densityPreference ?? ("normal" as DensityLevel),
+					densityPreference:
+						state.densityPreference ?? ("normal" as DensityLevel),
 					complexityLevel: state.complexityLevel ?? "advanced",
 					isSidebarOpen: state.isSidebarOpen ?? true,
 					isRightRailOpen: state.isRightRailOpen ?? false,
