@@ -1,0 +1,12 @@
+{
+  "result": {
+    "base_imponible": 1000,
+    "igv": 180,
+    "total": 1180,
+    "currency": "PEN"
+  },
+  "norma_aplicada": "TUO IGV Art. 6 — tasa 18%",
+  "version_tabla": "igv-rates-2024-v1",
+  "deterministic": true,
+  "source": "packages/domain/src/services/tax-calculator/calculator.ts"
+}

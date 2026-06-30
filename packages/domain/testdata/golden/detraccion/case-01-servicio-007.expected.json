@@ -1,0 +1,14 @@
+{
+  "result": {
+    "base_imponible": 1000,
+    "detraccion": 100,
+    "total": 1000,
+    "serviceCode": "007",
+    "rate": 0.1,
+    "currency": "PEN"
+  },
+  "norma_aplicada": "R.S. 183-2004/SUNAT — Sistema de Pago de Obligaciones Tributarias (SPOT)",
+  "version_tabla": "detraccion-spot-anexo-2024-v1",
+  "deterministic": true,
+  "source": "packages/domain/src/services/tax-calculator/calculator.ts"
+}
