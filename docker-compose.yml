@@ -181,6 +181,27 @@ services:
     networks:
       - arkelythex-network
 
+  # 7. Drenyra Engram (phase gate evidence sidecar — Go)
+  drenyra-engram:
+    build:
+      context: ./packages/drenyra-engram
+      dockerfile: Dockerfile
+    container_name: arkelythex-engram
+    ports:
+      - "8733:8733"
+    environment:
+      - PORT=8733
+      - DB_PATH=/data/engram.db
+    volumes:
+      - engram_data:/data
+    networks:
+      - arkelythex-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8733/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
 networks:
   arkelythex-network:
     driver: bridge
@@ -190,3 +211,4 @@ volumes:
   redis_data:
   minio_data:
   ollama_data:
+  engram_data:
