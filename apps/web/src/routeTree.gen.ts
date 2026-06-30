@@ -123,6 +123,7 @@ import { Route as VendorsRouteImport } from "./routes/vendors";
 import { Route as VerifyEmailRouteImport } from "./routes/verify-email";
 import { Route as WorkspaceComplianceRouteImport } from "./routes/workspace/compliance";
 import { Route as WorkspaceFinanceRouteImport } from "./routes/workspace/finance";
+import { Route as WorkspaceIndexRouteImport } from "./routes/workspace/index";
 import { Route as WorkspaceOperationsRouteImport } from "./routes/workspace/operations";
 import { Route as WorkspaceSystemAdminRouteImport } from "./routes/workspace/system-admin";
 
@@ -379,6 +380,11 @@ const ApprovalsRoute = ApprovalsRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
 	id: "/",
 	path: "/",
+	getParentRoute: () => rootRouteImport,
+} as any);
+const WorkspaceIndexRoute = WorkspaceIndexRouteImport.update({
+	id: "/workspace/",
+	path: "/workspace/",
 	getParentRoute: () => rootRouteImport,
 } as any);
 const SettingsIndexRoute = SettingsIndexRouteImport.update({
@@ -835,6 +841,7 @@ export interface FileRoutesByFullPath {
 	"/configuracion/": typeof ConfiguracionIndexRoute;
 	"/drenyra/": typeof DrenyraIndexRoute;
 	"/settings/": typeof SettingsIndexRoute;
+	"/workspace/": typeof WorkspaceIndexRoute;
 	"/operaciones/economic-groups/$groupId": typeof OperacionesEconomicGroupsGroupIdRoute;
 }
 export interface FileRoutesByTo {
@@ -950,6 +957,7 @@ export interface FileRoutesByTo {
 	"/configuracion": typeof ConfiguracionIndexRoute;
 	"/drenyra": typeof DrenyraIndexRoute;
 	"/settings": typeof SettingsIndexRoute;
+	"/workspace": typeof WorkspaceIndexRoute;
 	"/operaciones/economic-groups/$groupId": typeof OperacionesEconomicGroupsGroupIdRoute;
 }
 export interface FileRoutesById {
@@ -1069,6 +1077,7 @@ export interface FileRoutesById {
 	"/configuracion/": typeof ConfiguracionIndexRoute;
 	"/drenyra/": typeof DrenyraIndexRoute;
 	"/settings/": typeof SettingsIndexRoute;
+	"/workspace/": typeof WorkspaceIndexRoute;
 	"/operaciones/economic-groups/$groupId": typeof OperacionesEconomicGroupsGroupIdRoute;
 }
 export interface FileRouteTypes {
@@ -1189,6 +1198,7 @@ export interface FileRouteTypes {
 		| "/configuracion/"
 		| "/drenyra/"
 		| "/settings/"
+		| "/workspace/"
 		| "/operaciones/economic-groups/$groupId";
 	fileRoutesByTo: FileRoutesByTo;
 	to:
@@ -1304,6 +1314,7 @@ export interface FileRouteTypes {
 		| "/configuracion"
 		| "/drenyra"
 		| "/settings"
+		| "/workspace"
 		| "/operaciones/economic-groups/$groupId";
 	id:
 		| "__root__"
@@ -1422,6 +1433,7 @@ export interface FileRouteTypes {
 		| "/configuracion/"
 		| "/drenyra/"
 		| "/settings/"
+		| "/workspace/"
 		| "/operaciones/economic-groups/$groupId";
 	fileRoutesById: FileRoutesById;
 }
@@ -1511,6 +1523,7 @@ export interface RootRouteChildren {
 	WorkspaceFinanceRoute: typeof WorkspaceFinanceRoute;
 	WorkspaceOperationsRoute: typeof WorkspaceOperationsRoute;
 	WorkspaceSystemAdminRoute: typeof WorkspaceSystemAdminRoute;
+	WorkspaceIndexRoute: typeof WorkspaceIndexRoute;
 	OperacionesEconomicGroupsGroupIdRoute: typeof OperacionesEconomicGroupsGroupIdRoute;
 }
 
@@ -1871,6 +1884,13 @@ declare module "@tanstack/react-router" {
 			path: "/";
 			fullPath: "/";
 			preLoaderRoute: typeof IndexRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/workspace/": {
+			id: "/workspace/";
+			path: "/workspace";
+			fullPath: "/workspace/";
+			preLoaderRoute: typeof WorkspaceIndexRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
 		"/settings/": {
@@ -2516,6 +2536,7 @@ const rootRouteChildren: RootRouteChildren = {
 	WorkspaceFinanceRoute: WorkspaceFinanceRoute,
 	WorkspaceOperationsRoute: WorkspaceOperationsRoute,
 	WorkspaceSystemAdminRoute: WorkspaceSystemAdminRoute,
+	WorkspaceIndexRoute: WorkspaceIndexRoute,
 	OperacionesEconomicGroupsGroupIdRoute: OperacionesEconomicGroupsGroupIdRoute,
 };
 export const routeTree = rootRouteImport

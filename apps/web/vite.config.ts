@@ -1,13 +1,14 @@
+import { federation } from "@module-federation/vite";
 import tailwindcss from "@tailwindcss/vite";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import {
 	createApiDevServerPlugin,
 	createApiProxyConfig,
 } from "./vite.dev-api-proxy";
-import { visualizer } from "rollup-plugin-visualizer";
 import { cspPlugin } from "./vite-plugins/csp";
 
 const enableReactCompiler =
@@ -55,7 +56,10 @@ export default defineConfig({
 			"@/hooks": path.resolve(__dirname, "./src/hooks"),
 			"@/context": path.resolve(__dirname, "./src/context"),
 			"@/store": path.resolve(__dirname, "./src/store"),
-			"@arkelythex/shared": path.resolve(__dirname, "../../packages/shared/src"),
+			"@arkelythex/shared": path.resolve(
+				__dirname,
+				"../../packages/shared/src",
+			),
 		},
 	},
 	plugins: [
@@ -76,6 +80,28 @@ export default defineConfig({
 				: undefined,
 		),
 		tailwindcss(),
+		...(process.env.NODE_ENV === "production"
+			? [
+					federation({
+						name: "drenyra",
+						filename: "remoteEntry.js",
+						exposes: { "./App": "./src/remote-entry.tsx" },
+						shared: {
+							react: { singleton: true, requiredVersion: "^19.2.4" },
+							"react-dom": { singleton: true, requiredVersion: "^19.2.4" },
+							zustand: { singleton: true, requiredVersion: "^5.0.0" },
+							"@tanstack/react-router": {
+								singleton: true,
+								requiredVersion: "^1.103.0",
+							},
+							"@tanstack/react-query": {
+								singleton: true,
+								requiredVersion: "^5.0.0",
+							},
+						},
+					}),
+				]
+			: []),
 		cspPlugin(),
 		...(process.env.ANALYZE === "1"
 			? [
@@ -90,13 +116,13 @@ export default defineConfig({
 	],
 	server: {
 		host: process.env.WEB_HOST || "0.0.0.0",
-		port: Number(process.env.WEB_PORT || 5173),
+		port: Number(process.env.WEB_PORT || 5174),
 		strictPort: true,
 		warmup: {
 			clientFiles: [
 				"./src/client.tsx",
 				"./src/routes/login.tsx",
-				"./src/features/auth/components/LoginForm.tsx",
+				"./src/features/auth/components/LoginForm/LoginForm.tsx",
 				"./src/features/auth/components/AuthLayout.tsx",
 				"./src/routes/index.tsx",
 			],
@@ -108,7 +134,12 @@ export default defineConfig({
 	optimizeDeps: {
 		// Pre-bundle lazily loaded deps to avoid transient 504/chunk-miss issues in dev.
 		include: ["@tanstack/react-query-devtools"],
-		exclude: ["@arkelythex/infrastructure"],
+		exclude: [
+			"@arkelythex/infrastructure",
+			...(process.env.NODE_ENV === "production"
+				? ["@module-federation/vite"]
+				: []),
+		],
 	},
 	build: {
 		rollupOptions: {
