@@ -30,13 +30,12 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { GlassCard } from "@/components/ui/glass-card";
 import { Input } from "@/components/ui/input";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
-	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
@@ -131,15 +130,15 @@ export function ComponentsSection() {
 						</CardFooter>
 					</Card>
 
-					<GlassCard className="p-5">
+					<SurfacePanel padding="md" className="p-5">
 						<h3 className="font-semibold text-[var(--text-primary)] mb-2">
-							Glass Card
+							Surface Panel
 						</h3>
 						<p className="text-sm text-[var(--text-secondary)]">
-							Glass cards use backdrop-blur and semi-transparent backgrounds for
-							a frosted glass effect that reveals the background behind them.
+							Flat editorial surfaces use hairline borders and solid backgrounds
+							— no decorative blur (Fiscal Editorial v3).
 						</p>
-					</GlassCard>
+					</SurfacePanel>
 				</div>
 			</div>
 
