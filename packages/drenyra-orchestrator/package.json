@@ -15,6 +15,7 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:sire-bench": "vitest run testdata/sire-bench/sire-bench-gates.test.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

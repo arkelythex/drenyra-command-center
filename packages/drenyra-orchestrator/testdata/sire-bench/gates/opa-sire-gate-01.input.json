@@ -1,0 +1,13 @@
+{
+  "id": "opa-sire-gate-01",
+  "description": "sire:* actions always require human gate per drenyra-approval.rego",
+  "opaInput": {
+    "action": "sire:file",
+    "confidence": 0.99,
+    "phase": "declaracion"
+  },
+  "expected": {
+    "decision": "gate",
+    "reasonContains": "SIRE"
+  }
+}
