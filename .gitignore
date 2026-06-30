@@ -26,3 +26,5 @@ lighthouse-*.json
 .venv/
 __pycache__/
 *.pyc
+test-results/
+apps/web/.mf/
