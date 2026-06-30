@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "processed_rows": 2,
+  "validation_issues": [
+    {
+      "type": "invalid_ruc",
+      "count": 1
+    }
+  ],
+  "norma_aplicada": "SUNAT SIRE — Libro Electrónico de Compras",
+  "version_tabla": "sire-compras-format-2024-v1",
+  "deterministic": true,
+  "source": "apps/data-engine/src/services/sire_processor.py"
+}

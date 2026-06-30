@@ -3,15 +3,22 @@ SIRE (Sistema Integrado de Registros Electrónicos) Processor
 Processes SUNAT SIRE files (purchases/sales) using Polars for high performance
 """
 
-import polars as pl
-from typing import Dict, Any
 import io
+from typing import Any
+
+import polars as pl
 
 
 class SireProcessor:
     """
     Processes SUNAT SIRE files (Compras/Ventas) with Polars
     """
+
+    SIRE_COMPRAS_NORMA = "SUNAT SIRE — Libro Electrónico de Compras"
+    SIRE_VENTAS_NORMA = "SUNAT SIRE — Libro Electrónico de Ventas"
+    SIRE_COMPRAS_TABLE_VERSION = "sire-compras-format-2024-v1"
+    SIRE_VENTAS_TABLE_VERSION = "sire-ventas-format-2024-v1"
+    SOURCE = "apps/data-engine/src/services/sire_processor.py"
 
     # SIRE CSV Standard columns (SUNAT format)
     SIRE_COMPRAS_COLUMNS = [
@@ -57,7 +64,7 @@ class SireProcessor:
     ]
 
     @staticmethod
-    def process_sire_compras(file_content: bytes) -> Dict[str, Any]:
+    def process_sire_compras(file_content: bytes) -> dict[str, Any]:
         """
         Process SIRE Compras (Purchases) file
 
@@ -164,6 +171,10 @@ class SireProcessor:
                 "top_providers": by_provider.to_dicts(),
                 "monthly_breakdown": by_month.to_dicts(),
                 "validation_issues": issues,
+                "norma_aplicada": SireProcessor.SIRE_COMPRAS_NORMA,
+                "version_tabla": SireProcessor.SIRE_COMPRAS_TABLE_VERSION,
+                "deterministic": True,
+                "source": SireProcessor.SOURCE,
             }
 
         except Exception as e:
@@ -174,7 +185,7 @@ class SireProcessor:
             }
 
     @staticmethod
-    def process_sire_ventas(file_content: bytes) -> Dict[str, Any]:
+    def process_sire_ventas(file_content: bytes) -> dict[str, Any]:
         """
         Process SIRE Ventas (Sales) file
 
@@ -248,6 +259,10 @@ class SireProcessor:
                 },
                 "top_customers": by_customer.to_dicts(),
                 "by_document_type": by_doc_type.to_dicts(),
+                "norma_aplicada": SireProcessor.SIRE_VENTAS_NORMA,
+                "version_tabla": SireProcessor.SIRE_VENTAS_TABLE_VERSION,
+                "deterministic": True,
+                "source": SireProcessor.SOURCE,
             }
 
         except Exception as e:

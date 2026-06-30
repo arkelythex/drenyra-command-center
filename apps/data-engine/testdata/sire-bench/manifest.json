@@ -1,0 +1,34 @@
+{
+  "version": "1.0.0",
+  "description": "SIRE-bench — golden regression cases for deterministic fiscal processing",
+  "cases": [
+    {
+      "id": "sire-compras-01",
+      "tier": "A",
+      "processor": "process_sire_compras",
+      "input": "compras/case-01-normal.csv",
+      "expected": "compras/case-01-normal.expected.json"
+    },
+    {
+      "id": "sire-compras-02",
+      "tier": "A",
+      "processor": "process_sire_compras",
+      "input": "edge-cases/case-02-missing-igv.csv",
+      "expected": "edge-cases/case-02-missing-igv.expected.json"
+    },
+    {
+      "id": "sire-compras-03",
+      "tier": "A",
+      "processor": "process_sire_compras",
+      "input": "edge-cases/case-03-invalid-ruc.csv",
+      "expected": "edge-cases/case-03-invalid-ruc.expected.json"
+    },
+    {
+      "id": "sire-ventas-01",
+      "tier": "A",
+      "processor": "process_sire_ventas",
+      "input": "ventas/case-01-multiple-doc-types.csv",
+      "expected": "ventas/case-01-multiple-doc-types.expected.json"
+    }
+  ]
+}
