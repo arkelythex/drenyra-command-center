@@ -10,6 +10,8 @@
   ],
   "scripts": {
     "dev": "./scripts/dev/dev-host.sh",
+    "dev:api": "bun run --filter @arkelythex/api dev",
+    "dev:web": "WEB_PORT=${WEB_PORT:-5174} bun run --filter @arkelythex/web dev",
     "landing:dev": "bun run --filter @arkelythex/landing dev",
     "landing:build": "bun run --filter @arkelythex/landing build",
     "landing:start": "bun run --filter @arkelythex/landing start",
