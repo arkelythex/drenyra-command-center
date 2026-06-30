@@ -143,6 +143,8 @@ services:
     environment:
       - DATABASE_URL=postgres://user:password@postgres:5432/arkelythex
       - DATA_ENGINE_URL=http://data-engine:8000
+      - DRENYRA_ENGRAM_URL=http://drenyra-engram:8733
+      - DRENYRA_ENGRAM_ENABLED=true
       - BETTER_AUTH_URL=http://localhost:${API_PORT:-3000}
       - NATS_URL=nats://nats:4222
       - ARKELYTHEX_BACKUP_DIR=/app/backups/postgres
@@ -161,6 +163,8 @@ services:
       otel-collector:
         condition: service_healthy
       redis:
+        condition: service_healthy
+      drenyra-engram:
         condition: service_healthy
     networks:
       - arkelythex-network
@@ -181,6 +185,27 @@ services:
     networks:
       - arkelythex-network
 
+  # 7. Drenyra Engram (phase gate evidence sidecar — Go)
+  drenyra-engram:
+    build:
+      context: ./packages/drenyra-engram
+      dockerfile: Dockerfile
+    container_name: arkelythex-engram
+    ports:
+      - "8733:8733"
+    environment:
+      - PORT=8733
+      - DB_PATH=/data/engram.db
+    volumes:
+      - engram_data:/data
+    networks:
+      - arkelythex-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8733/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
 networks:
   arkelythex-network:
     driver: bridge
@@ -190,3 +215,4 @@ volumes:
   redis_data:
   minio_data:
   ollama_data:
+  engram_data:

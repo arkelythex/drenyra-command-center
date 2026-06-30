@@ -1,5 +1,10 @@
 // ─── Drenyra Phase Layer — Public API ──────────────────────────────
 
+export {
+	createEngramGateEvidenceRecorder,
+	createEngramGateEvidenceRecorderFromEnv,
+	EngramHttpClient,
+} from "../engram/engram-client";
 // Auto-Advance Engine
 export {
 	AutoAdvanceEngine,
