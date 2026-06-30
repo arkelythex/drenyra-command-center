@@ -1,0 +1,31 @@
+{
+  "status": "success",
+  "processed_rows": 4,
+  "summary": {
+    "total_sales": 13570.0,
+    "total_igv": 2070.0,
+    "total_base": 11500.0,
+    "invoice_count": 4
+  },
+  "by_document_type": [
+    {
+      "tipo_comprobante": "07",
+      "total": 9440.0,
+      "count": 1
+    },
+    {
+      "tipo_comprobante": "01",
+      "total": 3540.0,
+      "count": 2
+    },
+    {
+      "tipo_comprobante": "03",
+      "total": 590.0,
+      "count": 1
+    }
+  ],
+  "norma_aplicada": "SUNAT SIRE — Libro Electrónico de Ventas",
+  "version_tabla": "sire-ventas-format-2024-v1",
+  "deterministic": true,
+  "source": "apps/data-engine/src/services/sire_processor.py"
+}

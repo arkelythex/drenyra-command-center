@@ -1,13 +1,14 @@
-import { and, eq, isNull } from "drizzle-orm";
 import type {
+	EvidenceAggregateQuery,
 	EvidenceEdge,
 	EvidenceGraphRepository,
 	EvidenceNode,
 	FiscalTruthScope,
 } from "@arkelythex/domain";
-import type { DbTransaction } from "../unit-of-work";
+import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { db } from "../client";
 import { evidenceEdges, evidenceNodes } from "../schema/fiscal-truth.schema";
+import type { DbTransaction } from "../unit-of-work";
 
 function toOrganizationId(value: number | null): string | null {
 	if (value === null || Number.isNaN(value)) {
@@ -169,9 +170,7 @@ export class PostgresEvidenceGraphRepository
 		const rows = await this.client
 			.select()
 			.from(evidenceEdges)
-			.where(
-				and(eq(evidenceEdges.fromNodeId, nodeId), edgeScopeFilter(scope)),
-			);
+			.where(and(eq(evidenceEdges.fromNodeId, nodeId), edgeScopeFilter(scope)));
 
 		return rows.map(mapEdge);
 	}
@@ -183,10 +182,47 @@ export class PostgresEvidenceGraphRepository
 		const rows = await this.client
 			.select()
 			.from(evidenceEdges)
-			.where(
-				and(eq(evidenceEdges.toNodeId, nodeId), edgeScopeFilter(scope)),
-			);
+			.where(and(eq(evidenceEdges.toNodeId, nodeId), edgeScopeFilter(scope)));
 
 		return rows.map(mapEdge);
+	}
+
+	async listNodesByAggregateType(
+		query: EvidenceAggregateQuery,
+	): Promise<EvidenceNode[]> {
+		const conditions = [
+			sql`${evidenceNodes.metadata}->>'aggregateType' = ${query.aggregateType}`,
+		];
+
+		if (query.companyId) {
+			conditions.push(eq(evidenceNodes.companyId, query.companyId));
+		}
+		if (query.companyRuc) {
+			conditions.push(eq(evidenceNodes.companyRuc, query.companyRuc));
+		}
+		if (query.period) {
+			conditions.push(eq(evidenceNodes.period, query.period));
+		}
+		if (query.countryCode) {
+			conditions.push(eq(evidenceNodes.countryCode, query.countryCode));
+		}
+		if (query.organizationId !== undefined) {
+			if (query.organizationId === null) {
+				conditions.push(isNull(evidenceNodes.organizationId));
+			} else {
+				conditions.push(
+					eq(evidenceNodes.organizationId, String(query.organizationId)),
+				);
+			}
+		}
+
+		const rows = await this.client
+			.select()
+			.from(evidenceNodes)
+			.where(and(...conditions))
+			.orderBy(desc(evidenceNodes.createdAt))
+			.limit(query.limit ?? 200);
+
+		return rows.map(mapNode);
 	}
 }

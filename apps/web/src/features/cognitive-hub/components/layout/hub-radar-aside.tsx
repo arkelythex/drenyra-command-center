@@ -1,16 +1,17 @@
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "@tanstack/react-router";
+import { AnimatePresence, motion } from "framer-motion";
 import {
 	Calculator,
+	ChevronRight,
 	Clock3,
 	FileSearch,
-	ShieldCheck,
-	ChevronRight,
 	PanelLeftClose,
 	PanelLeftOpen,
+	ShieldCheck,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import React from "react";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { cn } from "@/lib/utils";
 
 interface HubRadarAsideProps {
 	onAction: (command: string) => void;
@@ -28,6 +29,7 @@ export const HubRadarAside = ({ onAction }: HubRadarAsideProps) => {
 		>
 			{/* Toggle Button - Now on the left side */}
 			<button
+				type="button"
 				onClick={() => setIsCollapsed(!isCollapsed)}
 				className="absolute left-4 top-6 z-20 flex h-8 w-8 items-center justify-center rounded-lg text-muted hover:bg-white/5 hover:text-primary transition-colors"
 				aria-label={isCollapsed ? "Expandir radar" : "Colapsar radar"}
@@ -104,13 +106,14 @@ export const HubRadarAside = ({ onAction }: HubRadarAsideProps) => {
 								Discrepancias
 							</p>
 							<div className="space-y-2">
-								<RadarSmallCard
-									icon={FileSearch}
-									title="SIRE"
-									count={3}
-									tone="warning"
-									onClick={() => onAction("Revisar SIRE")}
-								/>
+								<Link to="/cumplimiento/sire-diff" className="block">
+									<RadarSmallCard
+										icon={FileSearch}
+										title="SIRE"
+										count={3}
+										tone="warning"
+									/>
+								</Link>
 								<RadarSmallCard
 									icon={ShieldCheck}
 									title="CPE"
@@ -147,30 +150,26 @@ export const HubRadarAside = ({ onAction }: HubRadarAsideProps) => {
 						className="flex flex-col items-center gap-8 py-20 h-full"
 					>
 						<div className="flex flex-col gap-6">
-							<div
+							<button
+								type="button"
 								className="flex flex-col items-center gap-1 group cursor-pointer"
 								onClick={() => setIsCollapsed(false)}
-								role="button"
-								tabIndex={0}
-								onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsCollapsed(false); } }}
 							>
 								<div className="h-1.5 w-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
 								<span className="text-xs font-black text-primary group-hover:text-[var(--accent)] transition-colors">
 									742
 								</span>
-							</div>
-							<div
+							</button>
+							<button
+								type="button"
 								className="flex flex-col items-center gap-1 group cursor-pointer"
 								onClick={() => setIsCollapsed(false)}
-								role="button"
-								tabIndex={0}
-								onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsCollapsed(false); } }}
 							>
 								<div className="h-1.5 w-1.5 rounded-full bg-success shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
 								<span className="text-xs font-black text-primary group-hover:text-[var(--accent)] transition-colors">
 									68%
 								</span>
-							</div>
+							</button>
 						</div>
 						<div className="flex flex-col gap-4 border-t border-border/40 pt-8">
 							<FileSearch
@@ -200,14 +199,20 @@ export const HubRadarAside = ({ onAction }: HubRadarAsideProps) => {
 };
 
 interface RadarSmallCardProps {
-  icon: React.ComponentType<{ className?: string; size?: number }>;
-  title: string;
-  count: string | number;
-  tone: "warning" | "danger" | "info";
-  onClick: () => void;
+	icon: React.ComponentType<{ className?: string; size?: number }>;
+	title: string;
+	count: string | number;
+	tone: "warning" | "danger" | "info";
+	onClick?: () => void;
 }
 
-function RadarSmallCard({ icon: Icon, title, count, tone, onClick }: RadarSmallCardProps) {
+function RadarSmallCard({
+	icon: Icon,
+	title,
+	count,
+	tone,
+	onClick,
+}: RadarSmallCardProps) {
 	const toneColors = {
 		warning: "text-amber-500",
 		danger: "text-red-500",
@@ -216,6 +221,7 @@ function RadarSmallCard({ icon: Icon, title, count, tone, onClick }: RadarSmallC
 
 	return (
 		<button
+			type="button"
 			onClick={onClick}
 			className="group flex w-full items-center justify-between rounded-xl border border-transparent p-2 transition-all hover:bg-white/5 hover:border-border/40"
 		>

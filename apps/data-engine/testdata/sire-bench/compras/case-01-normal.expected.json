@@ -1,0 +1,15 @@
+{
+  "status": "success",
+  "processed_rows": 3,
+  "summary": {
+    "total_purchases": 4720.0,
+    "total_igv": 720.0,
+    "total_base": 4000.0,
+    "invoice_count": 3
+  },
+  "validation_issues": [],
+  "norma_aplicada": "SUNAT SIRE — Libro Electrónico de Compras",
+  "version_tabla": "sire-compras-format-2024-v1",
+  "deterministic": true,
+  "source": "apps/data-engine/src/services/sire_processor.py"
+}

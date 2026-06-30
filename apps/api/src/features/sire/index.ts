@@ -1,10 +1,12 @@
-import { Elysia } from 'elysia';
-import { companyScopeGuard } from '../../shared/plugins/company-scope-guard';
-import { enforceSireRateLimit } from './middleware/rate-limit.middleware';
-import { enforceSireAuth } from './middleware/sire-auth.middleware';
-import { analyzeSireRoute } from './routes/analyze.route';
-import { sireReportingRoutes } from './routes/reporting.route';
-import { submitSireRoute } from './routes/submit.route';
+import { Elysia } from "elysia";
+import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
+import { enforceSireRateLimit } from "./middleware/rate-limit.middleware";
+import { enforceSireAuth } from "./middleware/sire-auth.middleware";
+import { analyzeSireRoute } from "./routes/analyze.route";
+import { sireDiffRoute } from "./routes/diff.route";
+import { sireDiffCommitRoute } from "./routes/diff-commit.route";
+import { sireReportingRoutes } from "./routes/reporting.route";
+import { submitSireRoute } from "./routes/submit.route";
 
 /**
  * SIRE Elysia module (Sistema Integrado de Registros Electrónicos).
@@ -53,10 +55,10 @@ import { submitSireRoute } from './routes/submit.route';
  */
 /** Minimal context shape accepted by both SIRE middleware functions */
 type SireMiddlewareContext = {
-  body: unknown;
-  query: unknown;
-  request: Request;
-  set: { status: number; headers: Record<string, string> };
+	body: unknown;
+	query: unknown;
+	request: Request;
+	set: { status: number; headers: Record<string, string> };
 };
 /**
  * SIRE Elysia module — exposes all SIRE endpoints under `/sire`.
@@ -67,14 +69,16 @@ type SireMiddlewareContext = {
  * app.use(sireModule);
  * ```
  */
-export const sireModule = new Elysia({ prefix: '/api/sire' })
-  .use(companyScopeGuard())
-  .onBeforeHandle((context) => {
-    return enforceSireAuth(context as unknown as SireMiddlewareContext);
-  })
-  .onBeforeHandle((context) => {
-    return enforceSireRateLimit(context as unknown as SireMiddlewareContext);
-  })
-  .use(analyzeSireRoute)
-  .use(submitSireRoute)
-  .use(sireReportingRoutes);
+export const sireModule = new Elysia({ prefix: "/api/sire" })
+	.use(companyScopeGuard())
+	.onBeforeHandle((context) => {
+		return enforceSireAuth(context as unknown as SireMiddlewareContext);
+	})
+	.onBeforeHandle((context) => {
+		return enforceSireRateLimit(context as unknown as SireMiddlewareContext);
+	})
+	.use(analyzeSireRoute)
+	.use(sireDiffRoute)
+	.use(sireDiffCommitRoute)
+	.use(submitSireRoute)
+	.use(sireReportingRoutes);

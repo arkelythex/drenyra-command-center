@@ -29,7 +29,8 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:sire-bench": "vitest run testdata/golden/golden-bench.test.ts"
   },
   "dependencies": {},
   "devDependencies": {

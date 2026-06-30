@@ -38,6 +38,7 @@ import { Route as ConfiguracionProfileRouteImport } from "./routes/configuracion
 import { Route as ConfiguracionSecurityRouteImport } from "./routes/configuracion/security";
 import { Route as ConfiguracionToolPermissionsRouteImport } from "./routes/configuracion/tool-permissions";
 import { Route as ConnectionsRouteImport } from "./routes/connections";
+import { Route as ContabilidadAccountingPrRouteImport } from "./routes/contabilidad/accounting-pr";
 import { Route as ContabilidadAssetsRouteImport } from "./routes/contabilidad/assets";
 import { Route as ContabilidadCierreMensualRouteImport } from "./routes/contabilidad/cierre-mensual";
 import { Route as ContabilidadFinancialsRouteImport } from "./routes/contabilidad/financials";
@@ -49,6 +50,7 @@ import { Route as CumplimientoAuditRouteImport } from "./routes/cumplimiento/aud
 import { Route as CumplimientoComplianceRouteImport } from "./routes/cumplimiento/compliance";
 import { Route as CumplimientoExpedientesRouteImport } from "./routes/cumplimiento/expedientes";
 import { Route as CumplimientoReviewRouteImport } from "./routes/cumplimiento/review";
+import { Route as CumplimientoSireDiffRouteImport } from "./routes/cumplimiento/sire-diff";
 import { Route as CumplimientoSunatDashboardRouteImport } from "./routes/cumplimiento/sunat-dashboard";
 import { Route as CumplimientoTaxationRouteImport } from "./routes/cumplimiento/taxation";
 import { Route as CustomersRouteImport } from "./routes/customers";
@@ -58,6 +60,7 @@ import { Route as DocumentsRouteImport } from "./routes/documents";
 import { Route as DrenyraRouteImport } from "./routes/drenyra";
 import { Route as DrenyraThreadIdRouteImport } from "./routes/drenyra/$threadId";
 import { Route as DrenyraAutomatizacionesRouteImport } from "./routes/drenyra/automatizaciones";
+import { Route as DrenyraControlTowerRouteImport } from "./routes/drenyra/control-tower";
 import { Route as DrenyraHerramientasRouteImport } from "./routes/drenyra/herramientas";
 import { Route as DrenyraHubRouteImport } from "./routes/drenyra/hub";
 import { Route as DrenyraIndexRouteImport } from "./routes/drenyra/index";
@@ -123,6 +126,7 @@ import { Route as VendorsRouteImport } from "./routes/vendors";
 import { Route as VerifyEmailRouteImport } from "./routes/verify-email";
 import { Route as WorkspaceComplianceRouteImport } from "./routes/workspace/compliance";
 import { Route as WorkspaceFinanceRouteImport } from "./routes/workspace/finance";
+import { Route as WorkspaceIndexRouteImport } from "./routes/workspace/index";
 import { Route as WorkspaceOperationsRouteImport } from "./routes/workspace/operations";
 import { Route as WorkspaceSystemAdminRouteImport } from "./routes/workspace/system-admin";
 
@@ -381,6 +385,11 @@ const IndexRoute = IndexRouteImport.update({
 	path: "/",
 	getParentRoute: () => rootRouteImport,
 } as any);
+const WorkspaceIndexRoute = WorkspaceIndexRouteImport.update({
+	id: "/workspace/",
+	path: "/workspace/",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const SettingsIndexRoute = SettingsIndexRouteImport.update({
 	id: "/",
 	path: "/",
@@ -562,6 +571,11 @@ const DrenyraHerramientasRoute = DrenyraHerramientasRouteImport.update({
 	path: "/herramientas",
 	getParentRoute: () => DrenyraRoute,
 } as any);
+const DrenyraControlTowerRoute = DrenyraControlTowerRouteImport.update({
+	id: "/control-tower",
+	path: "/control-tower",
+	getParentRoute: () => DrenyraRoute,
+} as any);
 const DrenyraAutomatizacionesRoute = DrenyraAutomatizacionesRouteImport.update({
 	id: "/automatizaciones",
 	path: "/automatizaciones",
@@ -583,6 +597,11 @@ const CumplimientoSunatDashboardRoute =
 		path: "/cumplimiento/sunat-dashboard",
 		getParentRoute: () => rootRouteImport,
 	} as any);
+const CumplimientoSireDiffRoute = CumplimientoSireDiffRouteImport.update({
+	id: "/cumplimiento/sire-diff",
+	path: "/cumplimiento/sire-diff",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const CumplimientoReviewRoute = CumplimientoReviewRouteImport.update({
 	id: "/cumplimiento/review",
 	path: "/cumplimiento/review",
@@ -634,6 +653,12 @@ const ContabilidadAssetsRoute = ContabilidadAssetsRouteImport.update({
 	path: "/contabilidad/assets",
 	getParentRoute: () => rootRouteImport,
 } as any);
+const ContabilidadAccountingPrRoute =
+	ContabilidadAccountingPrRouteImport.update({
+		id: "/contabilidad/accounting-pr",
+		path: "/contabilidad/accounting-pr",
+		getParentRoute: () => rootRouteImport,
+	} as any);
 const ConfiguracionToolPermissionsRoute =
 	ConfiguracionToolPermissionsRouteImport.update({
 		id: "/tool-permissions",
@@ -785,6 +810,7 @@ export interface FileRoutesByFullPath {
 	"/configuracion/profile": typeof ConfiguracionProfileRoute;
 	"/configuracion/security": typeof ConfiguracionSecurityRoute;
 	"/configuracion/tool-permissions": typeof ConfiguracionToolPermissionsRoute;
+	"/contabilidad/accounting-pr": typeof ContabilidadAccountingPrRoute;
 	"/contabilidad/assets": typeof ContabilidadAssetsRoute;
 	"/contabilidad/cierre-mensual": typeof ContabilidadCierreMensualRoute;
 	"/contabilidad/financials": typeof ContabilidadFinancialsRoute;
@@ -795,10 +821,12 @@ export interface FileRoutesByFullPath {
 	"/cumplimiento/compliance": typeof CumplimientoComplianceRoute;
 	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
 	"/cumplimiento/review": typeof CumplimientoReviewRoute;
+	"/cumplimiento/sire-diff": typeof CumplimientoSireDiffRoute;
 	"/cumplimiento/sunat-dashboard": typeof CumplimientoSunatDashboardRoute;
 	"/cumplimiento/taxation": typeof CumplimientoTaxationRoute;
 	"/drenyra/$threadId": typeof DrenyraThreadIdRoute;
 	"/drenyra/automatizaciones": typeof DrenyraAutomatizacionesRoute;
+	"/drenyra/control-tower": typeof DrenyraControlTowerRoute;
 	"/drenyra/herramientas": typeof DrenyraHerramientasRoute;
 	"/drenyra/hub": typeof DrenyraHubRoute;
 	"/drenyra/observability": typeof DrenyraObservabilityRoute;
@@ -835,6 +863,7 @@ export interface FileRoutesByFullPath {
 	"/configuracion/": typeof ConfiguracionIndexRoute;
 	"/drenyra/": typeof DrenyraIndexRoute;
 	"/settings/": typeof SettingsIndexRoute;
+	"/workspace/": typeof WorkspaceIndexRoute;
 	"/operaciones/economic-groups/$groupId": typeof OperacionesEconomicGroupsGroupIdRoute;
 }
 export interface FileRoutesByTo {
@@ -900,6 +929,7 @@ export interface FileRoutesByTo {
 	"/configuracion/profile": typeof ConfiguracionProfileRoute;
 	"/configuracion/security": typeof ConfiguracionSecurityRoute;
 	"/configuracion/tool-permissions": typeof ConfiguracionToolPermissionsRoute;
+	"/contabilidad/accounting-pr": typeof ContabilidadAccountingPrRoute;
 	"/contabilidad/assets": typeof ContabilidadAssetsRoute;
 	"/contabilidad/cierre-mensual": typeof ContabilidadCierreMensualRoute;
 	"/contabilidad/financials": typeof ContabilidadFinancialsRoute;
@@ -910,10 +940,12 @@ export interface FileRoutesByTo {
 	"/cumplimiento/compliance": typeof CumplimientoComplianceRoute;
 	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
 	"/cumplimiento/review": typeof CumplimientoReviewRoute;
+	"/cumplimiento/sire-diff": typeof CumplimientoSireDiffRoute;
 	"/cumplimiento/sunat-dashboard": typeof CumplimientoSunatDashboardRoute;
 	"/cumplimiento/taxation": typeof CumplimientoTaxationRoute;
 	"/drenyra/$threadId": typeof DrenyraThreadIdRoute;
 	"/drenyra/automatizaciones": typeof DrenyraAutomatizacionesRoute;
+	"/drenyra/control-tower": typeof DrenyraControlTowerRoute;
 	"/drenyra/herramientas": typeof DrenyraHerramientasRoute;
 	"/drenyra/hub": typeof DrenyraHubRoute;
 	"/drenyra/observability": typeof DrenyraObservabilityRoute;
@@ -950,6 +982,7 @@ export interface FileRoutesByTo {
 	"/configuracion": typeof ConfiguracionIndexRoute;
 	"/drenyra": typeof DrenyraIndexRoute;
 	"/settings": typeof SettingsIndexRoute;
+	"/workspace": typeof WorkspaceIndexRoute;
 	"/operaciones/economic-groups/$groupId": typeof OperacionesEconomicGroupsGroupIdRoute;
 }
 export interface FileRoutesById {
@@ -1019,6 +1052,7 @@ export interface FileRoutesById {
 	"/configuracion/profile": typeof ConfiguracionProfileRoute;
 	"/configuracion/security": typeof ConfiguracionSecurityRoute;
 	"/configuracion/tool-permissions": typeof ConfiguracionToolPermissionsRoute;
+	"/contabilidad/accounting-pr": typeof ContabilidadAccountingPrRoute;
 	"/contabilidad/assets": typeof ContabilidadAssetsRoute;
 	"/contabilidad/cierre-mensual": typeof ContabilidadCierreMensualRoute;
 	"/contabilidad/financials": typeof ContabilidadFinancialsRoute;
@@ -1029,10 +1063,12 @@ export interface FileRoutesById {
 	"/cumplimiento/compliance": typeof CumplimientoComplianceRoute;
 	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
 	"/cumplimiento/review": typeof CumplimientoReviewRoute;
+	"/cumplimiento/sire-diff": typeof CumplimientoSireDiffRoute;
 	"/cumplimiento/sunat-dashboard": typeof CumplimientoSunatDashboardRoute;
 	"/cumplimiento/taxation": typeof CumplimientoTaxationRoute;
 	"/drenyra/$threadId": typeof DrenyraThreadIdRoute;
 	"/drenyra/automatizaciones": typeof DrenyraAutomatizacionesRoute;
+	"/drenyra/control-tower": typeof DrenyraControlTowerRoute;
 	"/drenyra/herramientas": typeof DrenyraHerramientasRoute;
 	"/drenyra/hub": typeof DrenyraHubRoute;
 	"/drenyra/observability": typeof DrenyraObservabilityRoute;
@@ -1069,6 +1105,7 @@ export interface FileRoutesById {
 	"/configuracion/": typeof ConfiguracionIndexRoute;
 	"/drenyra/": typeof DrenyraIndexRoute;
 	"/settings/": typeof SettingsIndexRoute;
+	"/workspace/": typeof WorkspaceIndexRoute;
 	"/operaciones/economic-groups/$groupId": typeof OperacionesEconomicGroupsGroupIdRoute;
 }
 export interface FileRouteTypes {
@@ -1139,6 +1176,7 @@ export interface FileRouteTypes {
 		| "/configuracion/profile"
 		| "/configuracion/security"
 		| "/configuracion/tool-permissions"
+		| "/contabilidad/accounting-pr"
 		| "/contabilidad/assets"
 		| "/contabilidad/cierre-mensual"
 		| "/contabilidad/financials"
@@ -1149,10 +1187,12 @@ export interface FileRouteTypes {
 		| "/cumplimiento/compliance"
 		| "/cumplimiento/expedientes"
 		| "/cumplimiento/review"
+		| "/cumplimiento/sire-diff"
 		| "/cumplimiento/sunat-dashboard"
 		| "/cumplimiento/taxation"
 		| "/drenyra/$threadId"
 		| "/drenyra/automatizaciones"
+		| "/drenyra/control-tower"
 		| "/drenyra/herramientas"
 		| "/drenyra/hub"
 		| "/drenyra/observability"
@@ -1189,6 +1229,7 @@ export interface FileRouteTypes {
 		| "/configuracion/"
 		| "/drenyra/"
 		| "/settings/"
+		| "/workspace/"
 		| "/operaciones/economic-groups/$groupId";
 	fileRoutesByTo: FileRoutesByTo;
 	to:
@@ -1254,6 +1295,7 @@ export interface FileRouteTypes {
 		| "/configuracion/profile"
 		| "/configuracion/security"
 		| "/configuracion/tool-permissions"
+		| "/contabilidad/accounting-pr"
 		| "/contabilidad/assets"
 		| "/contabilidad/cierre-mensual"
 		| "/contabilidad/financials"
@@ -1264,10 +1306,12 @@ export interface FileRouteTypes {
 		| "/cumplimiento/compliance"
 		| "/cumplimiento/expedientes"
 		| "/cumplimiento/review"
+		| "/cumplimiento/sire-diff"
 		| "/cumplimiento/sunat-dashboard"
 		| "/cumplimiento/taxation"
 		| "/drenyra/$threadId"
 		| "/drenyra/automatizaciones"
+		| "/drenyra/control-tower"
 		| "/drenyra/herramientas"
 		| "/drenyra/hub"
 		| "/drenyra/observability"
@@ -1304,6 +1348,7 @@ export interface FileRouteTypes {
 		| "/configuracion"
 		| "/drenyra"
 		| "/settings"
+		| "/workspace"
 		| "/operaciones/economic-groups/$groupId";
 	id:
 		| "__root__"
@@ -1372,6 +1417,7 @@ export interface FileRouteTypes {
 		| "/configuracion/profile"
 		| "/configuracion/security"
 		| "/configuracion/tool-permissions"
+		| "/contabilidad/accounting-pr"
 		| "/contabilidad/assets"
 		| "/contabilidad/cierre-mensual"
 		| "/contabilidad/financials"
@@ -1382,10 +1428,12 @@ export interface FileRouteTypes {
 		| "/cumplimiento/compliance"
 		| "/cumplimiento/expedientes"
 		| "/cumplimiento/review"
+		| "/cumplimiento/sire-diff"
 		| "/cumplimiento/sunat-dashboard"
 		| "/cumplimiento/taxation"
 		| "/drenyra/$threadId"
 		| "/drenyra/automatizaciones"
+		| "/drenyra/control-tower"
 		| "/drenyra/herramientas"
 		| "/drenyra/hub"
 		| "/drenyra/observability"
@@ -1422,6 +1470,7 @@ export interface FileRouteTypes {
 		| "/configuracion/"
 		| "/drenyra/"
 		| "/settings/"
+		| "/workspace/"
 		| "/operaciones/economic-groups/$groupId";
 	fileRoutesById: FileRoutesById;
 }
@@ -1477,6 +1526,7 @@ export interface RootRouteChildren {
 	TaxationRoute: typeof TaxationRoute;
 	VendorsRoute: typeof VendorsRoute;
 	VerifyEmailRoute: typeof VerifyEmailRoute;
+	ContabilidadAccountingPrRoute: typeof ContabilidadAccountingPrRoute;
 	ContabilidadAssetsRoute: typeof ContabilidadAssetsRoute;
 	ContabilidadCierreMensualRoute: typeof ContabilidadCierreMensualRoute;
 	ContabilidadFinancialsRoute: typeof ContabilidadFinancialsRoute;
@@ -1487,6 +1537,7 @@ export interface RootRouteChildren {
 	CumplimientoComplianceRoute: typeof CumplimientoComplianceRoute;
 	CumplimientoExpedientesRoute: typeof CumplimientoExpedientesRoute;
 	CumplimientoReviewRoute: typeof CumplimientoReviewRoute;
+	CumplimientoSireDiffRoute: typeof CumplimientoSireDiffRoute;
 	CumplimientoSunatDashboardRoute: typeof CumplimientoSunatDashboardRoute;
 	CumplimientoTaxationRoute: typeof CumplimientoTaxationRoute;
 	EconomicGroupsGroupIdRoute: typeof EconomicGroupsGroupIdRoute;
@@ -1511,6 +1562,7 @@ export interface RootRouteChildren {
 	WorkspaceFinanceRoute: typeof WorkspaceFinanceRoute;
 	WorkspaceOperationsRoute: typeof WorkspaceOperationsRoute;
 	WorkspaceSystemAdminRoute: typeof WorkspaceSystemAdminRoute;
+	WorkspaceIndexRoute: typeof WorkspaceIndexRoute;
 	OperacionesEconomicGroupsGroupIdRoute: typeof OperacionesEconomicGroupsGroupIdRoute;
 }
 
@@ -1873,6 +1925,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof IndexRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		"/workspace/": {
+			id: "/workspace/";
+			path: "/workspace";
+			fullPath: "/workspace/";
+			preLoaderRoute: typeof WorkspaceIndexRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
 		"/settings/": {
 			id: "/settings/";
 			path: "/";
@@ -2125,6 +2184,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof DrenyraHerramientasRouteImport;
 			parentRoute: typeof DrenyraRoute;
 		};
+		"/drenyra/control-tower": {
+			id: "/drenyra/control-tower";
+			path: "/control-tower";
+			fullPath: "/drenyra/control-tower";
+			preLoaderRoute: typeof DrenyraControlTowerRouteImport;
+			parentRoute: typeof DrenyraRoute;
+		};
 		"/drenyra/automatizaciones": {
 			id: "/drenyra/automatizaciones";
 			path: "/automatizaciones";
@@ -2151,6 +2217,13 @@ declare module "@tanstack/react-router" {
 			path: "/cumplimiento/sunat-dashboard";
 			fullPath: "/cumplimiento/sunat-dashboard";
 			preLoaderRoute: typeof CumplimientoSunatDashboardRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/cumplimiento/sire-diff": {
+			id: "/cumplimiento/sire-diff";
+			path: "/cumplimiento/sire-diff";
+			fullPath: "/cumplimiento/sire-diff";
+			preLoaderRoute: typeof CumplimientoSireDiffRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
 		"/cumplimiento/review": {
@@ -2221,6 +2294,13 @@ declare module "@tanstack/react-router" {
 			path: "/contabilidad/assets";
 			fullPath: "/contabilidad/assets";
 			preLoaderRoute: typeof ContabilidadAssetsRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/contabilidad/accounting-pr": {
+			id: "/contabilidad/accounting-pr";
+			path: "/contabilidad/accounting-pr";
+			fullPath: "/contabilidad/accounting-pr";
+			preLoaderRoute: typeof ContabilidadAccountingPrRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
 		"/configuracion/tool-permissions": {
@@ -2374,6 +2454,7 @@ const ConfiguracionRouteWithChildren = ConfiguracionRoute._addFileChildren(
 interface DrenyraRouteChildren {
 	DrenyraThreadIdRoute: typeof DrenyraThreadIdRoute;
 	DrenyraAutomatizacionesRoute: typeof DrenyraAutomatizacionesRoute;
+	DrenyraControlTowerRoute: typeof DrenyraControlTowerRoute;
 	DrenyraHerramientasRoute: typeof DrenyraHerramientasRoute;
 	DrenyraHubRoute: typeof DrenyraHubRoute;
 	DrenyraObservabilityRoute: typeof DrenyraObservabilityRoute;
@@ -2384,6 +2465,7 @@ interface DrenyraRouteChildren {
 const DrenyraRouteChildren: DrenyraRouteChildren = {
 	DrenyraThreadIdRoute: DrenyraThreadIdRoute,
 	DrenyraAutomatizacionesRoute: DrenyraAutomatizacionesRoute,
+	DrenyraControlTowerRoute: DrenyraControlTowerRoute,
 	DrenyraHerramientasRoute: DrenyraHerramientasRoute,
 	DrenyraHubRoute: DrenyraHubRoute,
 	DrenyraObservabilityRoute: DrenyraObservabilityRoute,
@@ -2482,6 +2564,7 @@ const rootRouteChildren: RootRouteChildren = {
 	TaxationRoute: TaxationRoute,
 	VendorsRoute: VendorsRoute,
 	VerifyEmailRoute: VerifyEmailRoute,
+	ContabilidadAccountingPrRoute: ContabilidadAccountingPrRoute,
 	ContabilidadAssetsRoute: ContabilidadAssetsRoute,
 	ContabilidadCierreMensualRoute: ContabilidadCierreMensualRoute,
 	ContabilidadFinancialsRoute: ContabilidadFinancialsRoute,
@@ -2492,6 +2575,7 @@ const rootRouteChildren: RootRouteChildren = {
 	CumplimientoComplianceRoute: CumplimientoComplianceRoute,
 	CumplimientoExpedientesRoute: CumplimientoExpedientesRoute,
 	CumplimientoReviewRoute: CumplimientoReviewRoute,
+	CumplimientoSireDiffRoute: CumplimientoSireDiffRoute,
 	CumplimientoSunatDashboardRoute: CumplimientoSunatDashboardRoute,
 	CumplimientoTaxationRoute: CumplimientoTaxationRoute,
 	EconomicGroupsGroupIdRoute: EconomicGroupsGroupIdRoute,
@@ -2516,6 +2600,7 @@ const rootRouteChildren: RootRouteChildren = {
 	WorkspaceFinanceRoute: WorkspaceFinanceRoute,
 	WorkspaceOperationsRoute: WorkspaceOperationsRoute,
 	WorkspaceSystemAdminRoute: WorkspaceSystemAdminRoute,
+	WorkspaceIndexRoute: WorkspaceIndexRoute,
 	OperacionesEconomicGroupsGroupIdRoute: OperacionesEconomicGroupsGroupIdRoute,
 };
 export const routeTree = rootRouteImport

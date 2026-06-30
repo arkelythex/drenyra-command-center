@@ -1,6 +1,16 @@
 import { Money } from "../../value-objects/Money";
-import type { TaxCalculationResult } from "./types";
+import {
+	DETRACCION_NORMA_APLICADA,
+	DETRACCION_VERSION_TABLA,
+	IGV_NORMA_APLICADA,
+	IGV_VERSION_TABLA,
+	PERCEPCION_NORMA_APLICADA,
+	PERCEPCION_VERSION_TABLA,
+	RETENCION_NORMA_APLICADA,
+	RETENCION_VERSION_TABLA,
+} from "./audit-metadata";
 import { DETRACCION_RATES, PERCEPCION_RATES } from "./rates";
+import type { TaxCalculationResult } from "./types";
 import { shouldApplyDetraccion } from "./validator";
 
 const IGV_RATE = 0.18;
@@ -16,10 +26,14 @@ export function calculateIGV(baseAmount: Money): TaxCalculationResult {
 		totalAmount,
 		taxRate: IGV_RATE,
 		taxType: "IGV",
+		normaAplicada: IGV_NORMA_APLICADA,
+		versionTabla: IGV_VERSION_TABLA,
 	};
 }
 
-export function calculateBaseFromTotal(totalAmount: Money): TaxCalculationResult {
+export function calculateBaseFromTotal(
+	totalAmount: Money,
+): TaxCalculationResult {
 	const baseAmount = totalAmount.divide(1 + IGV_RATE);
 	const taxAmount = totalAmount.subtract(baseAmount);
 
@@ -29,6 +43,8 @@ export function calculateBaseFromTotal(totalAmount: Money): TaxCalculationResult
 		totalAmount,
 		taxRate: IGV_RATE,
 		taxType: "IGV",
+		normaAplicada: IGV_NORMA_APLICADA,
+		versionTabla: IGV_VERSION_TABLA,
 	};
 }
 
@@ -52,6 +68,8 @@ export function calculateDetraccion(
 		totalAmount,
 		taxRate: detraccionRate.rate,
 		taxType: "DETRACCION",
+		normaAplicada: DETRACCION_NORMA_APLICADA,
+		versionTabla: DETRACCION_VERSION_TABLA,
 	};
 }
 
@@ -64,6 +82,8 @@ export function calculateRetencion(baseAmount: Money): TaxCalculationResult {
 		totalAmount: baseAmount,
 		taxRate: RETENCION_RATE,
 		taxType: "RETENCION",
+		normaAplicada: RETENCION_NORMA_APLICADA,
+		versionTabla: RETENCION_VERSION_TABLA,
 	};
 }
 
@@ -87,6 +107,8 @@ export function calculatePercepcion(
 		totalAmount: totalAmount.add(taxAmount),
 		taxRate: rate.rate,
 		taxType: "PERCEPCION",
+		normaAplicada: PERCEPCION_NORMA_APLICADA,
+		versionTabla: PERCEPCION_VERSION_TABLA,
 	};
 }
 
@@ -122,14 +144,8 @@ export function calculateInvoiceBreakdown(params: {
 	const total = baseAmount.add(igv);
 
 	let detraccion: Money | undefined;
-	if (
-		detraccionCode &&
-		shouldApplyDetraccion(total, detraccionCode)
-	) {
-		const detraccionCalc = calculateDetraccion(
-			total,
-			detraccionCode,
-		);
+	if (detraccionCode && shouldApplyDetraccion(total, detraccionCode)) {
+		const detraccionCalc = calculateDetraccion(total, detraccionCode);
 		detraccion = detraccionCalc.taxAmount;
 	}
 

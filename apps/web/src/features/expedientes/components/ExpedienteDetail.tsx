@@ -1,11 +1,11 @@
-import { Clock, CheckCircle2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import type { ExpedienteFiscal } from "@arkelythex/domain";
-import {
-	EXPEDIENTE_KIND_LABELS,
-} from "@arkelythex/domain";
+import { EXPEDIENTE_KIND_LABELS } from "@arkelythex/domain";
+import { Link } from "@tanstack/react-router";
+import { ArrowRightLeft, CheckCircle2, Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useFiscalInspector } from "@/context/FiscalInspectorContext";
+import { buildSireDiffHref } from "@/features/sire/buildExpedienteEvidenceHref";
+import { cn } from "@/lib/utils";
 
 interface DetailBadgeProps {
 	label: string;
@@ -58,10 +58,7 @@ export function ExpedienteDetail({ expediente: exp }: ExpedienteDetailProps) {
 			</div>
 
 			<div className="grid grid-cols-2 gap-3">
-				<DetailBadge
-					label="Documentos"
-					value={String(exp.totalDocuments)}
-				/>
+				<DetailBadge label="Documentos" value={String(exp.totalDocuments)} />
 				<DetailBadge
 					label="Pendientes"
 					value={String(exp.pendingActions)}
@@ -96,6 +93,16 @@ export function ExpedienteDetail({ expediente: exp }: ExpedienteDetailProps) {
 				</div>
 			)}
 
+			{(exp.kind === "SIRE_VENTAS" || exp.kind === "SIRE_COMPRAS") && (
+				<Link
+					to={buildSireDiffHref({ period: exp.periodo })}
+					className="inline-flex h-8 items-center gap-1 rounded-lg border border-[var(--border-subtle)] px-3 text-2xs font-bold text-[var(--text-secondary)] hover:bg-[var(--surface-2)]"
+				>
+					<ArrowRightLeft size={12} />
+					Open SIRE Diff
+				</Link>
+			)}
+
 			<div className="flex gap-2 pt-2">
 				<Button
 					size="sm"
@@ -120,11 +127,7 @@ export function ExpedienteDetail({ expediente: exp }: ExpedienteDetailProps) {
 				>
 					Inspeccionar
 				</Button>
-				<Button
-					variant="outline"
-					size="sm"
-					className="h-8 text-2xs font-bold"
-				>
+				<Button variant="outline" size="sm" className="h-8 text-2xs font-bold">
 					Abrir
 				</Button>
 			</div>

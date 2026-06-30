@@ -1,0 +1,26 @@
+# Fiscal confidence gates — shared config for TS orchestrator and Python data-engine.
+# Calibrate thresholds using SIRE-bench results; do not tune without bench evidence.
+
+phases:
+  captura:
+    confidence_min: 0.90
+    auto_advance: false
+  clasificacion:
+    confidence_min: 0.75
+    auto_advance: true
+    amount_gate_pen: 50000
+  conciliacion:
+    confidence_min: 0.70
+    auto_advance: true
+    variance_max_pen: 10000
+  cierre:
+    confidence_min: 0.85
+    auto_advance: false
+    human_required: true
+  declaracion:
+    confidence_min: 0.95
+    auto_advance: false
+    opa_action: "sire:*"
+  auditoria:
+    confidence_min: 0.85
+    auto_advance: true

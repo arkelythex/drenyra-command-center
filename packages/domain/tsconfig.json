@@ -5,8 +5,6 @@
     "outDir": "./dist",
     "types": ["node"]
   },
-  "include": ["src"],
-  "references": [
-    { "path": "../drenyra-core" }
-  ]
+  "include": ["src", "testdata"],
+  "references": [{ "path": "../drenyra-core" }]
 }

@@ -1,4 +1,4 @@
-import { Elysia } from "elysia";
+import { Elysia, t } from "elysia";
 import { fail, getErrorMessage, ok } from "../../shared/api-response";
 import { getExpenses } from "../application/queries/get-expenses.query";
 import { getFiscalIndicators } from "../application/queries/get-fiscal-indicators.query";
@@ -159,6 +159,35 @@ export const dashboardRoutes = new Elysia({ prefix: "/api/dashboard" })
 			detail: {
 				tags: ["Dashboard"],
 				summary: "Income analytics (Ingresos tab)",
+			},
+		},
+	)
+	.get(
+		"/control-tower",
+		async ({ query, set }) => {
+			try {
+				const { ControlTowerService } = await import(
+					"../application/services/control-tower.service"
+				);
+				return ok(
+					await ControlTowerService.getPortfolio({
+						ownerCompanyId: query.companyId,
+						period: query.period,
+					}),
+				);
+			} catch (error) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "CONTROL_TOWER_ERROR");
+			}
+		},
+		{
+			query: t.Object({
+				companyId: t.String({ minLength: 1 }),
+				period: t.Optional(t.String()),
+			}),
+			detail: {
+				tags: ["Dashboard"],
+				summary: "Multi-RUC control tower portfolio view",
 			},
 		},
 	);

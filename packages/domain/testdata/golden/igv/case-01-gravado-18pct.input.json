@@ -1,0 +1,6 @@
+{
+  "id": "igv-01",
+  "operation": "calculateIGV",
+  "amountCents": 100000,
+  "currency": "PEN"
+}

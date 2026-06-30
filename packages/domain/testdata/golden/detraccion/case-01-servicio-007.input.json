@@ -1,0 +1,7 @@
+{
+  "id": "det-01",
+  "operation": "calculateDetraccion",
+  "amountCents": 100000,
+  "currency": "PEN",
+  "serviceCode": "007"
+}

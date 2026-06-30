@@ -143,6 +143,8 @@ services:
     environment:
       - DATABASE_URL=postgres://user:password@postgres:5432/arkelythex
       - DATA_ENGINE_URL=http://data-engine:8000
+      - DRENYRA_ENGRAM_URL=http://drenyra-engram:8733
+      - DRENYRA_ENGRAM_ENABLED=true
       - BETTER_AUTH_URL=http://localhost:${API_PORT:-3000}
       - NATS_URL=nats://nats:4222
       - ARKELYTHEX_BACKUP_DIR=/app/backups/postgres
@@ -161,6 +163,8 @@ services:
       otel-collector:
         condition: service_healthy
       redis:
+        condition: service_healthy
+      drenyra-engram:
         condition: service_healthy
     networks:
       - arkelythex-network

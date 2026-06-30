@@ -13,6 +13,7 @@ export const ARTIFACT_TYPES = {
 export type ArtifactType = (typeof ARTIFACT_TYPES)[keyof typeof ARTIFACT_TYPES];
 export type ArtifactStatus = "PREVIEW" | "COMMITTED" | "ROLLED_BACK" | "ERROR";
 export type ArtifactSource = "SUNAT" | "INTERNAL" | "BANK" | "AI_DERIVED";
+
 import type { Currency as CurrencyCode } from "@arkelythex/domain";
 export type ArtifactRiskLevel = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
@@ -103,6 +104,7 @@ export interface SireDiffRow {
 	difference: number;
 	localRecord?: SireDocumentRecord;
 	sunatRecord?: SireDocumentRecord;
+	cpeRecord?: SireDocumentRecord;
 	resolution?: "ACCEPTED_SUNAT" | "KEPT_LOCAL" | "PENDING";
 }
 
@@ -120,6 +122,10 @@ export interface SireDiffArtifactData {
 	currency: CurrencyCode;
 	summary: SireDiffSummary;
 	rows: SireDiffRow[];
+	sunatSource?: "upload" | "unavailable";
+	sunatMessage?: string;
+	submitBlocked?: boolean;
+	submitBlockReason?: string;
 }
 
 export type SireDiffArtifact = Artifact<

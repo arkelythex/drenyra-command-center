@@ -2,6 +2,10 @@ import { Elysia } from "elysia";
 import { companyScopeGuard } from "../../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../../shared/api-response";
 import { resolveOrganizationId } from "../application/_helpers";
+import {
+	approveJournalEntryProposal,
+	rejectJournalEntryProposal,
+} from "../application/commands/approve-reject-proposal";
 import { createJournalEntry } from "../application/commands/create-journal-entry";
 import { deleteJournalEntry } from "../application/commands/delete-journal-entry";
 import { updateJournalEntry } from "../application/commands/update-journal-entry";
@@ -255,6 +259,68 @@ export const journalEntryRoutes = new Elysia({
 			detail: {
 				tags: ["Journal Entries"],
 				summary: "Declarar asiento (mayorizado → declarado)",
+			},
+		},
+	)
+	// ---- APPROVE PROPOSAL (PR flow) ----
+	.post(
+		"/:id/approve",
+		async ({ params, companyContext, set }) => {
+			try {
+				const entry = await approveJournalEntryProposal(
+					params.id,
+					companyContext?.userId ?? "system",
+				);
+				return ok(entry);
+			} catch (error) {
+				const message = getErrorMessage(error);
+				if (
+					message.includes("Solo se pueden mayorizar") ||
+					message.includes("no encontrado")
+				) {
+					set.status = 400;
+					return fail(message, "VALIDATION_ERROR");
+				}
+				set.status = 500;
+				return fail(message, "INTERNAL_ERROR");
+			}
+		},
+		{
+			params: JournalEntryParams,
+			detail: {
+				tags: ["Journal Entries"],
+				summary: "Approve ledger PR proposal and post (mayorizar)",
+			},
+		},
+	)
+	// ---- REJECT PROPOSAL (PR flow) ----
+	.post(
+		"/:id/reject",
+		async ({ params, companyContext, set }) => {
+			try {
+				const result = await rejectJournalEntryProposal(
+					params.id,
+					companyContext?.userId ?? "system",
+				);
+				return ok(result);
+			} catch (error) {
+				const message = getErrorMessage(error);
+				if (
+					message.includes("Solo se pueden rechazar") ||
+					message.includes("no encontrado")
+				) {
+					set.status = 400;
+					return fail(message, "VALIDATION_ERROR");
+				}
+				set.status = 500;
+				return fail(message, "INTERNAL_ERROR");
+			}
+		},
+		{
+			params: JournalEntryParams,
+			detail: {
+				tags: ["Journal Entries"],
+				summary: "Reject ledger PR proposal",
 			},
 		},
 	);

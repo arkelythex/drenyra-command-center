@@ -24,6 +24,7 @@ import { customerRoutes } from "./features/customers";
 import { dashboardModule } from "./features/dashboard";
 import { detractionsModule } from "./features/detractions";
 import { drenyraModule } from "./features/drenyra/drenyra.routes";
+import { expedientesModule } from "./features/expedientes";
 import {
 	fiscalCommandCenterModule,
 	fiscalTruthModule,
@@ -245,6 +246,7 @@ const baseApp = new Elysia()
 	.use(platformMcpModule)
 	.use(companySettingsRoute)
 	.use(journalEntryRoutes)
+	.use(expedientesModule)
 	.use(detractionsModule)
 	.use(drenyraModule)
 	.use(civicModule)

@@ -1,0 +1,22 @@
+{
+  "name": "@arkelythex/application-civic",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Arkelythex Civic application layer — CQRS commands, queries, handlers, and DTOs for election validation and fraud detection",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@arkelythex/domain-civic": "workspace:*",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.0",
+    "vitest": "^4.0.0"
+  }
+}

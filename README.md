@@ -27,7 +27,7 @@ bun run dev:check
 
 | Servicio | URL |
 |----------|-----|
-| Web (Digits dashboard) | `http://localhost:5173` |
+| Web (Digits / Command Center) | `http://localhost:5174` |
 | API (Codex engine) | `http://localhost:3000` |
 | Swagger | `http://localhost:3000/swagger` |
 | Data Engine | `http://localhost:8000/health` |
@@ -119,6 +119,15 @@ This is the flagship product of the [ARKELYTHEX ecosystem](../arkelythex/sdd/eco
 ## License
 
 MIT — see [LICENSE](./LICENSE).
+
+---
+
+## Platform integration
+
+This repo is the **canonical fiscal product**. The Arkelythex platform shell loads it via Module Federation in production.
+
+- [docs/canon/product-topology.md](./docs/canon/product-topology.md)
+- Cross-repo workflow: [Arkelythex docs/cross-repo/drenyra-connection.md](https://github.com/arkelythex/Arkelythex/blob/main/docs/cross-repo/drenyra-connection.md)
 
 ---
 

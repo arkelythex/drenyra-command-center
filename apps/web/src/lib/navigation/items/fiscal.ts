@@ -1,13 +1,25 @@
 import {
+	ArrowRightLeft,
 	Calculator,
 	ClipboardCheck,
 	FolderOpen,
-	ShieldCheck,
 	Scale,
+	ShieldCheck,
 } from "lucide-react";
 import type { NavigationItem } from "../types";
 
 export const FISCAL_ITEMS: readonly NavigationItem[] = [
+	{
+		id: "sire-diff",
+		section: "compliance",
+		label: "SIRE Diff",
+		description: "Three-way diff: SUNAT vs ledger vs CPE",
+		to: "/cumplimiento/sire-diff" as NavigationItem["to"],
+		icon: ArrowRightLeft,
+		keywords: ["sire", "diff", "conciliacion", "rvie", "rce", "sunat", "cpe"],
+		showInSidebar: false,
+		moduleGroup: "compliance",
+	},
 	{
 		id: "expedientes",
 		section: "compliance",

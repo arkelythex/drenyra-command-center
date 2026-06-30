@@ -1,0 +1,4 @@
+periodo|correlativo|fecha_emision|fecha_vcto_pago|tipo_comprobante|serie|numero|tipo_doc_proveedor|num_doc_proveedor|razon_social_proveedor|base_imponible|igv|total|moneda|tipo_cambio|referencia_fecha|referencia_tipo|referencia_serie|referencia_numero|estado
+202501|0001|20250115|20250215|01|F001|0001|6|20123456789|PROVEEDOR UNO SAC|1000.00|180.00|1180.00|PEN|1.00||||1
+202501|0002|20250120|20250220|01|F001|0002|6|20987654321|PROVEEDOR DOS SA|2500.00|450.00|2950.00|PEN|1.00||||1
+202501|0003|20250125|20250225|01|F001|0003|6|20123456789|PROVEEDOR UNO SAC|500.00|90.00|590.00|PEN|1.00||||1
