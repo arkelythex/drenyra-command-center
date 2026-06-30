@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ExpedienteCard } from "./components/ExpedienteCard";
 import { ExpedienteDetail } from "./components/ExpedienteDetail";
 import { ExpedienteFilters } from "./components/ExpedienteFilters";
-import { MOCK_EXPEDIENTES } from "./ExpedientesPage.data";
+import { useExpedientes } from "./hooks/useExpedientes";
 
 export function ExpedientesPage() {
 	const [searchQuery, setSearchQuery] = useState("");
@@ -14,9 +14,17 @@ export function ExpedientesPage() {
 	const [selectedExpediente, setSelectedExpediente] =
 		useState<ExpedienteFiscal | null>(null);
 
+	const {
+		data: expedientes = [],
+		isLoading,
+		isError,
+	} = useExpedientes({
+		kind: selectedKind === "ALL" ? undefined : selectedKind,
+	});
+
 	const normalized = searchQuery.trim().toLowerCase();
 
-	const filtered = MOCK_EXPEDIENTES.filter((e) => {
+	const filtered = expedientes.filter((e) => {
 		const matchesSearch =
 			!normalized ||
 			e.titulo.toLowerCase().includes(normalized) ||
@@ -59,7 +67,15 @@ export function ExpedientesPage() {
 					<div className="grid gap-6 lg:grid-cols-[1fr_420px]">
 						{/* Expediente List */}
 						<div className="space-y-2">
-							{filtered.length === 0 ? (
+							{isLoading ? (
+								<div className="rounded-2xl border border-[var(--border-subtle)] py-12 text-center text-xs text-[var(--text-tertiary)]">
+									Cargando expedientes…
+								</div>
+							) : isError ? (
+								<div className="rounded-2xl border border-[var(--border-subtle)] py-12 text-center text-xs text-[var(--color-danger)]">
+									No se pudieron cargar los expedientes.
+								</div>
+							) : filtered.length === 0 ? (
 								<div className="rounded-2xl border border-[var(--border-subtle)] py-12 text-center">
 									<FolderOpen
 										size={32}
