@@ -15,10 +15,16 @@ export interface ControlTowerCompanyRow {
 	period: string;
 }
 
+export interface BuzonSolSnapshot {
+	status: "UNAVAILABLE" | "AUTH_READY" | "SYNC_PENDING";
+	message: string;
+	checkedAt: string;
+}
+
 export interface ControlTowerPortfolio {
 	period: string;
 	companies: ControlTowerCompanyRow[];
-	buzonSol: { status: "STUB"; message: string };
+	buzonSol: BuzonSolSnapshot;
 }
 
 async function fetchControlTower(

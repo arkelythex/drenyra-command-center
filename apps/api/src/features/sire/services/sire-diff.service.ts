@@ -4,6 +4,7 @@ import { db } from "@arkelythex/persistence/client";
 import { and, eq, gte, lte } from "@arkelythex/persistence/query";
 import { bills, invoices } from "@arkelythex/persistence/schema";
 import { SireService } from "../sire.service";
+import { SirePersistedProposalService } from "./sire-persisted-proposal.service";
 
 export type SireDiffStatus =
 	| "MATCH"
@@ -33,6 +34,9 @@ export interface SireDiffRow {
 	resolution?: "ACCEPTED_SUNAT" | "KEPT_LOCAL" | "PENDING";
 }
 
+/** How row-level SUNAT data was sourced for the diff. */
+export type SireDiffSunatSource = "upload" | "persisted" | "unavailable";
+
 export interface SireDiffArtifactPayload {
 	period: string;
 	currency: Currency;
@@ -45,8 +49,11 @@ export interface SireDiffArtifactPayload {
 		totalDifference: number;
 	};
 	rows: SireDiffRow[];
-	approvable: true;
-	submitBlocked: true;
+	sunatSource: SireDiffSunatSource;
+	sunatMessage?: string;
+	approvable: boolean;
+	submitBlocked: boolean;
+	submitBlockReason?: string;
 }
 
 interface NormalizedRecord {
@@ -158,7 +165,10 @@ function normalizeFromAnalyzeResult(
 	});
 }
 
-function buildDiffRows(input: {
+/**
+ * Builds three-way diff rows from normalized local, SUNAT, and optional CPE records.
+ */
+export function buildDiffRows(input: {
 	local: NormalizedRecord[];
 	sunat: NormalizedRecord[];
 	cpe: NormalizedRecord[];
@@ -230,7 +240,12 @@ function buildDiffRows(input: {
 	});
 }
 
-function buildSummary(rows: SireDiffRow[]): SireDiffArtifactPayload["summary"] {
+/**
+ * Aggregates diff row statuses into summary counters for the artifact payload.
+ */
+export function buildSummary(
+	rows: SireDiffRow[],
+): SireDiffArtifactPayload["summary"] {
 	const matched = rows.filter((row) => row.status === "MATCH").length;
 	const mismatched = rows.filter((row) => row.status === "MISMATCH").length;
 	const missingOnLedger = rows.filter(
@@ -254,7 +269,184 @@ function buildSummary(rows: SireDiffRow[]): SireDiffArtifactPayload["summary"] {
 	};
 }
 
+/**
+ * Determines whether SUNAT submission must stay blocked for this diff artifact.
+ */
+export function computeSubmitBlocked(input: {
+	summary: SireDiffArtifactPayload["summary"];
+	sunatSource: SireDiffSunatSource;
+}): { submitBlocked: boolean; submitBlockReason?: string } {
+	if (input.sunatSource === "unavailable") {
+		return {
+			submitBlocked: true,
+			submitBlockReason:
+				"Row-level SUNAT proposal data is unavailable. Upload the SIRE file and resolve discrepancies before submit.",
+		};
+	}
+
+	if (input.summary.critical > 0) {
+		return {
+			submitBlocked: true,
+			submitBlockReason: `${input.summary.critical} critical discrepancy(ies) require accountant review before SUNAT submit.`,
+		};
+	}
+
+	return { submitBlocked: false };
+}
+
+export type SireDiffRowDecision = "ACCEPT_SUNAT" | "KEEP_LOCAL" | "PENDING";
+
+export interface SireDiffCommitRow {
+	rowId: string;
+	status: SireDiffStatus;
+	decision: SireDiffRowDecision;
+	localRecord?: SireDocumentRecord;
+	sunatRecord?: SireDocumentRecord;
+}
+
+export interface SireDiffCommitInput {
+	companyId: string;
+	period: string;
+	artifactId: string;
+	traceId: string;
+	sunatSource: SireDiffSunatSource;
+	summary: SireDiffArtifactPayload["summary"];
+	rows: SireDiffCommitRow[];
+	actorUserId: string;
+}
+
+export interface SireDiffCommitResult {
+	committed: true;
+	eventId: string;
+	storedAt: string;
+	submitBlocked: boolean;
+	submitBlockReason?: string;
+	ledgerMutation?: {
+		updatedInvoices: number;
+		updatedBills: number;
+		createdInvoices: number;
+		createdBills: number;
+	};
+}
+
+/**
+ * Validates accountant resolutions before persisting a SIRE diff commit.
+ */
+export function validateDiffCommit(input: {
+	sunatSource: SireDiffSunatSource;
+	rows: SireDiffCommitRow[];
+}):
+	| { ok: true }
+	| { ok: false; reason: string; code: "SIRE_DIFF_COMMIT_BLOCKED" } {
+	if (input.sunatSource === "unavailable") {
+		return {
+			ok: false,
+			reason:
+				"Cannot commit resolutions without row-level SUNAT proposal data. Upload the SIRE file first.",
+			code: "SIRE_DIFF_COMMIT_BLOCKED",
+		};
+	}
+
+	const unresolved = input.rows.filter(
+		(row) => row.status !== "MATCH" && row.decision === "PENDING",
+	);
+	if (unresolved.length > 0) {
+		return {
+			ok: false,
+			reason: `${unresolved.length} critical row(s) still pending accountant decision.`,
+			code: "SIRE_DIFF_COMMIT_BLOCKED",
+		};
+	}
+
+	return { ok: true };
+}
+
+/**
+ * Computes submit gate after accountant resolutions are committed.
+ */
+export function computeSubmitBlockedAfterCommit(input: {
+	sunatSource: SireDiffSunatSource;
+	rows: SireDiffCommitRow[];
+}): { submitBlocked: boolean; submitBlockReason?: string } {
+	if (input.sunatSource === "unavailable") {
+		return {
+			submitBlocked: true,
+			submitBlockReason:
+				"Row-level SUNAT proposal data is unavailable. Upload the SIRE file before submit.",
+		};
+	}
+
+	const unresolved = input.rows.filter(
+		(row) => row.status !== "MATCH" && row.decision === "PENDING",
+	);
+	if (unresolved.length > 0) {
+		return {
+			submitBlocked: true,
+			submitBlockReason: `${unresolved.length} row decision(s) still pending.`,
+		};
+	}
+
+	return { submitBlocked: false };
+}
+
+/**
+ * Resolves row-level SUNAT records for the diff.
+ *
+ * Order: uploaded file → persisted submission proposal → unavailable (never copy local ledger).
+ */
+async function resolveSunatRecords(input: {
+	companyId: string;
+	period: string;
+	sireFile?: File;
+}): Promise<{
+	sunat: NormalizedRecord[];
+	sunatSource: SireDiffSunatSource;
+	sunatMessage?: string;
+}> {
+	if (input.sireFile) {
+		const analyzed = await SireService.analyzeMassive(
+			input.companyId,
+			input.sireFile,
+		);
+		return {
+			sunat: normalizeFromAnalyzeResult(analyzed as Record<string, unknown>),
+			sunatSource: "upload",
+		};
+	}
+
+	const persisted = await SirePersistedProposalService.loadPersistedRecords({
+		companyId: input.companyId,
+		period: input.period,
+	});
+	if (persisted) {
+		return {
+			sunat: persisted.records.map((record) => ({
+				key: recordKey(record.series, record.number),
+				record,
+			})),
+			sunatSource: "persisted",
+		};
+	}
+
+	const live = await SireService.getSunatLiveSummary({
+		companyId: input.companyId,
+		period: input.period,
+	});
+
+	const sunatMessage =
+		live.status === "available"
+			? "SUNAT API is reachable but exposes aggregate totals only, not row-level proposal data. Upload the SIRE proposal file to run an honest three-way diff."
+			: `SUNAT proposal unavailable (${live.reason}): ${live.message} Upload the SIRE proposal file to compare row-by-row.`;
+
+	return {
+		sunat: [],
+		sunatSource: "unavailable",
+		sunatMessage,
+	};
+}
+
 export class SireDiffService {
+	/** Builds a three-way diff artifact: local ledger vs SUNAT proposal vs optional CPE. */
 	static async buildThreeWayDiff(input: {
 		companyId: string;
 		period: string;
@@ -264,31 +456,11 @@ export class SireDiffService {
 		const { year, month } = parsePeriod(input.period);
 
 		const local = await loadInternalRecords(input.companyId, year, month);
-
-		let sunat: NormalizedRecord[] = [];
-		if (input.sireFile) {
-			const analyzed = await SireService.analyzeMassive(
-				input.companyId,
-				input.sireFile,
-			);
-			sunat = normalizeFromAnalyzeResult(analyzed as Record<string, unknown>);
-		} else {
-			const live = await SireService.getSunatLiveSummary({
-				companyId: input.companyId,
-				period: input.period,
-			});
-			if (live.status === "available") {
-				sunat = local.map((entry) => ({
-					key: entry.key,
-					record: { ...entry.record },
-				}));
-			} else {
-				sunat = local.map((entry) => ({
-					key: entry.key,
-					record: { ...entry.record },
-				}));
-			}
-		}
+		const { sunat, sunatSource, sunatMessage } = await resolveSunatRecords({
+			companyId: input.companyId,
+			period: input.period,
+			sireFile: input.sireFile,
+		});
 
 		let cpe: NormalizedRecord[] = [];
 		if (input.cpeFile) {
@@ -300,14 +472,22 @@ export class SireDiffService {
 		}
 
 		const rows = buildDiffRows({ local, sunat, cpe });
+		const summary = buildSummary(rows);
+		const { submitBlocked, submitBlockReason } = computeSubmitBlocked({
+			summary,
+			sunatSource,
+		});
 
 		return {
 			period: input.period,
 			currency: "PEN",
-			summary: buildSummary(rows),
+			summary,
 			rows,
-			approvable: true,
-			submitBlocked: true,
+			sunatSource,
+			sunatMessage,
+			approvable: !submitBlocked,
+			submitBlocked,
+			submitBlockReason,
 		};
 	}
 }

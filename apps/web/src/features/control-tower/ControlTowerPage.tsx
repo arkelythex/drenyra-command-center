@@ -52,6 +52,9 @@ export function ControlTowerPage() {
 					<div>
 						<p className="text-xs font-semibold text-[var(--text-secondary)]">
 							Buzón SOL
+							<span className="ml-2 rounded-md border border-[var(--border-subtle)] px-1.5 py-0.5 text-3xs uppercase tracking-wider text-[var(--text-tertiary)]">
+								{data.buzonSol.status}
+							</span>
 						</p>
 						<p className="text-2xs text-[var(--text-tertiary)]">
 							{data.buzonSol.message}

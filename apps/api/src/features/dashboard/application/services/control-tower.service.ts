@@ -3,7 +3,17 @@ import { and, eq, inArray, sql } from "@arkelythex/persistence/query";
 import { companies, documents } from "@arkelythex/persistence/schema";
 import { expedienteService } from "../../../expedientes/application/expediente.service";
 import { resolveOrganizationId } from "../../../journal-entries/application/_helpers";
+import { buildSireConfig } from "../../../sire/services/sire-config.service";
+import { resolveTenantSunatContext } from "../../../sire/services/tenant-sunat-context.service";
 import { FiscalIndicatorsService } from "./fiscal-indicators.service";
+
+export type BuzonSolStatus = "UNAVAILABLE" | "AUTH_READY" | "SYNC_PENDING";
+
+export interface BuzonSolSnapshot {
+	status: BuzonSolStatus;
+	message: string;
+	checkedAt: string;
+}
 
 export interface ControlTowerCompanyRow {
 	companyId: string;
@@ -21,7 +31,7 @@ export interface ControlTowerCompanyRow {
 export interface ControlTowerPortfolio {
 	period: string;
 	companies: ControlTowerCompanyRow[];
-	buzonSol: { status: "STUB"; message: string };
+	buzonSol: BuzonSolSnapshot;
 }
 
 function currentPeriod(): string {
@@ -41,6 +51,47 @@ function computeHealthScore(input: {
 	if (input.globalRiskLevel === "HIGH") score -= 20;
 	if (input.globalRiskLevel === "MEDIUM") score -= 10;
 	return Math.max(0, Math.min(100, score));
+}
+
+/**
+ * Best-effort Buzón SOL readiness probe — checks tenant SUNAT auth without running the scraper.
+ */
+async function resolveBuzonSolStatus(
+	companyId: string,
+): Promise<BuzonSolSnapshot> {
+	const checkedAt = new Date().toISOString();
+	const config = buildSireConfig();
+
+	if (config.mode !== "api") {
+		return {
+			status: "UNAVAILABLE",
+			checkedAt,
+			message:
+				"SIRE_SUBMISSION_MODE is not api — configure SUNAT API mode to enable Buzón SOL sync.",
+		};
+	}
+
+	try {
+		await resolveTenantSunatContext({
+			companyId,
+			scope: "sire.live-summary",
+			deprecatedEnvRuc: config.deprecatedCompanyRuc,
+		});
+	} catch {
+		return {
+			status: "UNAVAILABLE",
+			checkedAt,
+			message:
+				"SUNAT SOL credentials missing or invalid for active tenant. Configure credentials to sync Buzón SOL.",
+		};
+	}
+
+	return {
+		status: "SYNC_PENDING",
+		checkedAt,
+		message:
+			"SUNAT credentials verified. Buzón SOL scraper sync is queued — automated inbox fetch not yet enabled in this environment.",
+	};
 }
 
 export class ControlTowerService {
@@ -185,10 +236,7 @@ export class ControlTowerService {
 			companies: portfolioCompanies.sort(
 				(a, b) => a.healthScore - b.healthScore,
 			),
-			buzonSol: {
-				status: "STUB",
-				message: "Buzón SOL integration pending — placeholder only.",
-			},
+			buzonSol: await resolveBuzonSolStatus(input.ownerCompanyId),
 		};
 	}
 }

@@ -50,6 +50,7 @@ import { Route as CumplimientoAuditRouteImport } from "./routes/cumplimiento/aud
 import { Route as CumplimientoComplianceRouteImport } from "./routes/cumplimiento/compliance";
 import { Route as CumplimientoExpedientesRouteImport } from "./routes/cumplimiento/expedientes";
 import { Route as CumplimientoReviewRouteImport } from "./routes/cumplimiento/review";
+import { Route as CumplimientoSireDiffRouteImport } from "./routes/cumplimiento/sire-diff";
 import { Route as CumplimientoSunatDashboardRouteImport } from "./routes/cumplimiento/sunat-dashboard";
 import { Route as CumplimientoTaxationRouteImport } from "./routes/cumplimiento/taxation";
 import { Route as CustomersRouteImport } from "./routes/customers";
@@ -596,6 +597,11 @@ const CumplimientoSunatDashboardRoute =
 		path: "/cumplimiento/sunat-dashboard",
 		getParentRoute: () => rootRouteImport,
 	} as any);
+const CumplimientoSireDiffRoute = CumplimientoSireDiffRouteImport.update({
+	id: "/cumplimiento/sire-diff",
+	path: "/cumplimiento/sire-diff",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const CumplimientoReviewRoute = CumplimientoReviewRouteImport.update({
 	id: "/cumplimiento/review",
 	path: "/cumplimiento/review",
@@ -815,6 +821,7 @@ export interface FileRoutesByFullPath {
 	"/cumplimiento/compliance": typeof CumplimientoComplianceRoute;
 	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
 	"/cumplimiento/review": typeof CumplimientoReviewRoute;
+	"/cumplimiento/sire-diff": typeof CumplimientoSireDiffRoute;
 	"/cumplimiento/sunat-dashboard": typeof CumplimientoSunatDashboardRoute;
 	"/cumplimiento/taxation": typeof CumplimientoTaxationRoute;
 	"/drenyra/$threadId": typeof DrenyraThreadIdRoute;
@@ -933,6 +940,7 @@ export interface FileRoutesByTo {
 	"/cumplimiento/compliance": typeof CumplimientoComplianceRoute;
 	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
 	"/cumplimiento/review": typeof CumplimientoReviewRoute;
+	"/cumplimiento/sire-diff": typeof CumplimientoSireDiffRoute;
 	"/cumplimiento/sunat-dashboard": typeof CumplimientoSunatDashboardRoute;
 	"/cumplimiento/taxation": typeof CumplimientoTaxationRoute;
 	"/drenyra/$threadId": typeof DrenyraThreadIdRoute;
@@ -1055,6 +1063,7 @@ export interface FileRoutesById {
 	"/cumplimiento/compliance": typeof CumplimientoComplianceRoute;
 	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
 	"/cumplimiento/review": typeof CumplimientoReviewRoute;
+	"/cumplimiento/sire-diff": typeof CumplimientoSireDiffRoute;
 	"/cumplimiento/sunat-dashboard": typeof CumplimientoSunatDashboardRoute;
 	"/cumplimiento/taxation": typeof CumplimientoTaxationRoute;
 	"/drenyra/$threadId": typeof DrenyraThreadIdRoute;
@@ -1178,6 +1187,7 @@ export interface FileRouteTypes {
 		| "/cumplimiento/compliance"
 		| "/cumplimiento/expedientes"
 		| "/cumplimiento/review"
+		| "/cumplimiento/sire-diff"
 		| "/cumplimiento/sunat-dashboard"
 		| "/cumplimiento/taxation"
 		| "/drenyra/$threadId"
@@ -1296,6 +1306,7 @@ export interface FileRouteTypes {
 		| "/cumplimiento/compliance"
 		| "/cumplimiento/expedientes"
 		| "/cumplimiento/review"
+		| "/cumplimiento/sire-diff"
 		| "/cumplimiento/sunat-dashboard"
 		| "/cumplimiento/taxation"
 		| "/drenyra/$threadId"
@@ -1417,6 +1428,7 @@ export interface FileRouteTypes {
 		| "/cumplimiento/compliance"
 		| "/cumplimiento/expedientes"
 		| "/cumplimiento/review"
+		| "/cumplimiento/sire-diff"
 		| "/cumplimiento/sunat-dashboard"
 		| "/cumplimiento/taxation"
 		| "/drenyra/$threadId"
@@ -1525,6 +1537,7 @@ export interface RootRouteChildren {
 	CumplimientoComplianceRoute: typeof CumplimientoComplianceRoute;
 	CumplimientoExpedientesRoute: typeof CumplimientoExpedientesRoute;
 	CumplimientoReviewRoute: typeof CumplimientoReviewRoute;
+	CumplimientoSireDiffRoute: typeof CumplimientoSireDiffRoute;
 	CumplimientoSunatDashboardRoute: typeof CumplimientoSunatDashboardRoute;
 	CumplimientoTaxationRoute: typeof CumplimientoTaxationRoute;
 	EconomicGroupsGroupIdRoute: typeof EconomicGroupsGroupIdRoute;
@@ -2206,6 +2219,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof CumplimientoSunatDashboardRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		"/cumplimiento/sire-diff": {
+			id: "/cumplimiento/sire-diff";
+			path: "/cumplimiento/sire-diff";
+			fullPath: "/cumplimiento/sire-diff";
+			preLoaderRoute: typeof CumplimientoSireDiffRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
 		"/cumplimiento/review": {
 			id: "/cumplimiento/review";
 			path: "/cumplimiento/review";
@@ -2555,6 +2575,7 @@ const rootRouteChildren: RootRouteChildren = {
 	CumplimientoComplianceRoute: CumplimientoComplianceRoute,
 	CumplimientoExpedientesRoute: CumplimientoExpedientesRoute,
 	CumplimientoReviewRoute: CumplimientoReviewRoute,
+	CumplimientoSireDiffRoute: CumplimientoSireDiffRoute,
 	CumplimientoSunatDashboardRoute: CumplimientoSunatDashboardRoute,
 	CumplimientoTaxationRoute: CumplimientoTaxationRoute,
 	EconomicGroupsGroupIdRoute: EconomicGroupsGroupIdRoute,

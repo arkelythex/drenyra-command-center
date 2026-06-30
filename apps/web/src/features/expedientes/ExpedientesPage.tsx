@@ -1,18 +1,28 @@
 import type { ExpedienteFiscal, ExpedienteKind } from "@arkelythex/domain";
 import { FolderOpen } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Route } from "@/routes/cumplimiento/expedientes";
 import { ExpedienteCard } from "./components/ExpedienteCard";
 import { ExpedienteDetail } from "./components/ExpedienteDetail";
 import { ExpedienteFilters } from "./components/ExpedienteFilters";
 import { useExpedientes } from "./hooks/useExpedientes";
 
 export function ExpedientesPage() {
-	const [searchQuery, setSearchQuery] = useState("");
+	const { periodo, kind: kindFromSearch, q } = Route.useSearch();
+	const [searchQuery, setSearchQuery] = useState(q ?? "");
 	const [selectedKind, setSelectedKind] = useState<ExpedienteKind | "ALL">(
-		"ALL",
+		kindFromSearch ?? "ALL",
 	);
 	const [selectedExpediente, setSelectedExpediente] =
 		useState<ExpedienteFiscal | null>(null);
+
+	useEffect(() => {
+		if (q) setSearchQuery(q);
+	}, [q]);
+
+	useEffect(() => {
+		if (kindFromSearch) setSelectedKind(kindFromSearch);
+	}, [kindFromSearch]);
 
 	const {
 		data: expedientes = [],
@@ -20,6 +30,7 @@ export function ExpedientesPage() {
 		isError,
 	} = useExpedientes({
 		kind: selectedKind === "ALL" ? undefined : selectedKind,
+		periodo,
 	});
 
 	const normalized = searchQuery.trim().toLowerCase();
@@ -52,6 +63,11 @@ export function ExpedientesPage() {
 						<p className="text-xs text-[var(--text-tertiary)] max-w-2xl">
 							Dossiers verificables que agrupan documentos, evidencia, análisis
 							de agentes y aprobaciones por período fiscal.
+							{periodo ? (
+								<span className="ml-1 font-semibold text-[var(--text-secondary)]">
+									Filtro activo: {periodo}
+								</span>
+							) : null}
 						</p>
 					</header>
 

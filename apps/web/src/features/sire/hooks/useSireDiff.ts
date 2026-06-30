@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import type { SireDiffArtifactData } from "@/features/artifacts/types/artifact.types";
 import { extractOkData } from "@/lib/api-helpers";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import type { SireDiffApiPayload } from "../mapSireDiffResponseToArtifact";
 
 export function useSireDiffMutation() {
 	const { companyContext } = useActiveCompanyContext();
@@ -31,9 +31,9 @@ export function useSireDiffMutation() {
 			return extractOkData(
 				await response.json(),
 				"Failed to build SIRE diff",
-			) as SireDiffArtifactData & {
-				approvable: true;
-				submitBlocked: true;
+			) as SireDiffApiPayload & {
+				approvable: boolean;
+				submitBlocked: boolean;
 			};
 		},
 	});

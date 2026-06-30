@@ -31,7 +31,7 @@ export const sireDiffRoute = new Elysia().post(
 			tags: ["SIRE"],
 			summary: "Three-way SIRE diff (SUNAT vs ledger vs CPE)",
 			description:
-				"Builds diff artifact for review/approve only. submit_sunat_sire remains blocked by capability matrix.",
+				"Builds diff artifact for accountant review. submitBlocked when SUNAT rows unavailable or critical discrepancies remain.",
 		},
 	},
 );

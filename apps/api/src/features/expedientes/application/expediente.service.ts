@@ -13,10 +13,12 @@ import {
 } from "@arkelythex/domain";
 import { eq } from "drizzle-orm";
 import { db, schema } from "../../../lib/db";
+import { hasSireDiffCommitAuditForPeriod } from "../../sire/services/sire-diff-commit-audit.service";
 import {
 	type ExpedienteEvidenceRepository,
 	expedienteEvidenceRepository,
 } from "../infrastructure/expediente-evidence.repository";
+import { applySireDiffCommitChecklistGate } from "./cierre-sire-diff-gate";
 
 export interface ExpedienteListFilters {
 	companyId: string;
@@ -161,7 +163,9 @@ export class ExpedienteService {
 		});
 
 		const existing = await this.repository.getCierreMensual(scope);
-		if (existing) return existing;
+		if (existing) {
+			return this.syncCierreWithSireDiffAudit(existing, scope, input.companyId);
+		}
 
 		const companyName = await this.resolveCompanyName(input.companyId);
 		let expediente = (
@@ -208,7 +212,34 @@ export class ExpedienteService {
 			globalRiskLevel: "MEDIUM",
 		};
 
-		return this.repository.saveCierreMensual(cierre, scope, defaultTrace());
+		const saved = await this.repository.saveCierreMensual(
+			cierre,
+			scope,
+			defaultTrace(),
+		);
+		return this.syncCierreWithSireDiffAudit(saved, scope, input.companyId);
+	}
+
+	private async syncCierreWithSireDiffAudit(
+		cierre: CierreMensual,
+		scope: FiscalTruthScope,
+		companyId: string,
+	): Promise<CierreMensual> {
+		const hasAudit = await hasSireDiffCommitAuditForPeriod({
+			companyId,
+			period: cierre.periodo,
+		});
+		const synced = applySireDiffCommitChecklistGate(cierre, hasAudit);
+		if (synced === cierre) {
+			return cierre;
+		}
+		return (
+			(await this.repository.saveCierreMensual(
+				synced,
+				scope,
+				defaultTrace(),
+			)) ?? cierre
+		);
 	}
 
 	async updateCierreChecklist(input: {

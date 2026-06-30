@@ -1,4 +1,4 @@
-import { Gauge, Zap, Puzzle, BarChart3 } from "lucide-react";
+import { BarChart3, Building2, Gauge, Puzzle, Zap } from "lucide-react";
 import type { NavItem } from "./Sidebar.types";
 
 export const SIDEBAR_NAV_ITEMS: NavItem[] = [
@@ -6,6 +6,7 @@ export const SIDEBAR_NAV_ITEMS: NavItem[] = [
 	{ icon: Gauge, label: "Automatizaciones", to: "/drenyra/automatizaciones" },
 	{ icon: Zap, label: "Skills", to: "/drenyra/skills" },
 	{ icon: BarChart3, label: "Observabilidad", to: "/drenyra/observability" },
+	{ icon: Building2, label: "Control Tower", to: "/drenyra/control-tower" },
 ];
 
 export const STATUS_STYLES: Record<string, string> = {

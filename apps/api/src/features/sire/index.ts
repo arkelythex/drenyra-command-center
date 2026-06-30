@@ -4,6 +4,7 @@ import { enforceSireRateLimit } from "./middleware/rate-limit.middleware";
 import { enforceSireAuth } from "./middleware/sire-auth.middleware";
 import { analyzeSireRoute } from "./routes/analyze.route";
 import { sireDiffRoute } from "./routes/diff.route";
+import { sireDiffCommitRoute } from "./routes/diff-commit.route";
 import { sireReportingRoutes } from "./routes/reporting.route";
 import { submitSireRoute } from "./routes/submit.route";
 
@@ -78,5 +79,6 @@ export const sireModule = new Elysia({ prefix: "/api/sire" })
 	})
 	.use(analyzeSireRoute)
 	.use(sireDiffRoute)
+	.use(sireDiffCommitRoute)
 	.use(submitSireRoute)
 	.use(sireReportingRoutes);
