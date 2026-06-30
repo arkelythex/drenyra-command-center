@@ -1,7 +1,8 @@
-import { and, eq, inArray, sql } from "drizzle-orm";
-import { db, schema } from "../../../lib/db";
-import { expedienteService } from "../../expedientes/application/expediente.service";
-import { resolveOrganizationId } from "../../journal-entries/application/_helpers";
+import { db } from "@arkelythex/persistence/client";
+import { and, eq, inArray, sql } from "@arkelythex/persistence/query";
+import { companies, documents } from "@arkelythex/persistence/schema";
+import { expedienteService } from "../../../expedientes/application/expediente.service";
+import { resolveOrganizationId } from "../../../journal-entries/application/_helpers";
 import { FiscalIndicatorsService } from "./fiscal-indicators.service";
 
 export interface ControlTowerCompanyRow {
@@ -50,11 +51,11 @@ export class ControlTowerService {
 		const period = input.period ?? currentPeriod();
 		const owner = await db
 			.select({
-				ownerId: schema.companies.ownerId,
-				economicGroupId: schema.companies.economicGroupId,
+				ownerId: companies.ownerId,
+				economicGroupId: companies.economicGroupId,
 			})
-			.from(schema.companies)
-			.where(eq(schema.companies.id, input.ownerCompanyId))
+			.from(companies)
+			.where(eq(companies.id, input.ownerCompanyId))
 			.limit(1);
 
 		const ownerId = owner[0]?.ownerId;
@@ -63,30 +64,27 @@ export class ControlTowerService {
 		const companyRows = economicGroupId
 			? await db
 					.select({
-						id: schema.companies.id,
-						ruc: schema.companies.ruc,
-						businessName: schema.companies.businessName,
+						id: companies.id,
+						ruc: companies.ruc,
+						businessName: companies.businessName,
 					})
-					.from(schema.companies)
+					.from(companies)
 					.where(
 						and(
-							eq(schema.companies.economicGroupId, economicGroupId),
-							eq(schema.companies.isActive, true),
+							eq(companies.economicGroupId, economicGroupId),
+							eq(companies.isActive, true),
 						),
 					)
 			: ownerId
 				? await db
 						.select({
-							id: schema.companies.id,
-							ruc: schema.companies.ruc,
-							businessName: schema.companies.businessName,
+							id: companies.id,
+							ruc: companies.ruc,
+							businessName: companies.businessName,
 						})
-						.from(schema.companies)
+						.from(companies)
 						.where(
-							and(
-								eq(schema.companies.ownerId, ownerId),
-								eq(schema.companies.isActive, true),
-							),
+							and(eq(companies.ownerId, ownerId), eq(companies.isActive, true)),
 						)
 				: [];
 
@@ -109,14 +107,14 @@ export class ControlTowerService {
 			companyIds.length > 0
 				? await db
 						.select({
-							companyId: schema.documents.companyId,
+							companyId: documents.companyId,
 							count: sql<number>`COUNT(*)`,
 						})
-						.from(schema.documents)
+						.from(documents)
 						.where(
 							and(
-								inArray(schema.documents.companyId, companyIds),
-								inArray(schema.documents.status, [
+								inArray(documents.companyId, companyIds),
+								inArray(documents.status, [
 									"por_procesar",
 									"procesando",
 									"revision_humana",
@@ -124,14 +122,14 @@ export class ControlTowerService {
 								]),
 							),
 						)
-						.groupBy(schema.documents.companyId)
+						.groupBy(documents.companyId)
 				: [];
 
 		const pendingDocMap = new Map(
 			pendingDocCounts.map((row) => [row.companyId, Number(row.count) || 0]),
 		);
 
-		const companies: ControlTowerCompanyRow[] = [];
+		const portfolioCompanies: ControlTowerCompanyRow[] = [];
 		for (const company of companyRows) {
 			let organizationId: number | null = null;
 			try {
@@ -164,7 +162,7 @@ export class ControlTowerService {
 
 			const pendingDocuments = pendingDocMap.get(company.id) ?? 0;
 
-			companies.push({
+			portfolioCompanies.push({
 				companyId: company.id,
 				ruc: company.ruc,
 				businessName: company.businessName,
@@ -184,7 +182,9 @@ export class ControlTowerService {
 
 		return {
 			period,
-			companies: companies.sort((a, b) => a.healthScore - b.healthScore),
+			companies: portfolioCompanies.sort(
+				(a, b) => a.healthScore - b.healthScore,
+			),
 			buzonSol: {
 				status: "STUB",
 				message: "Buzón SOL integration pending — placeholder only.",
