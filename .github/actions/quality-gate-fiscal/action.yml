@@ -50,6 +50,15 @@ runs:
           VIOLATIONS=$((VIOLATIONS + 1))
         fi
 
+        # Rule 4: LLM fiscal tools must delegate to @arkelythex/domain (no inline IGV math)
+        echo "  Rule 4: packages/ai must not duplicate IGV/detracción calculations..."
+        AI_INLINE_IGV=$(grep -rnE '0\.18|/ 1\.18|\* 0\.18' packages/ai/src/ai/tools/ --include='*.ts' 2>/dev/null | grep -v '@arkelythex/domain' || true)
+        if [[ -n "$AI_INLINE_IGV" ]]; then
+          echo "  ❌ Inline IGV math found in packages/ai (must use @arkelythex/domain):"
+          echo "$AI_INLINE_IGV"
+          VIOLATIONS=$((VIOLATIONS + 1))
+        fi
+
         if [[ $VIOLATIONS -gt 0 ]]; then
           echo ""
           echo "❌ Fiscal boundary QUALITY GATE FAILED: $VIOLATIONS violation(s) detected."
@@ -58,3 +67,7 @@ runs:
         fi
 
         echo "✅ Fiscal boundary checks complete — no violations."
+
+    - name: Run SIRE-bench golden regression
+      shell: bash
+      run: bun run test:sire-bench
