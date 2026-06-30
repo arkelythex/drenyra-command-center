@@ -1,3 +1,5 @@
+import { expedienteService } from "../../expedientes/application/expediente.service";
+import { resolveOrganizationId } from "../../journal-entries/application/_helpers";
 import { batchUploadDocuments } from "../application/commands/batch-upload-documents";
 import { uploadDocument } from "../application/commands/upload-document";
 import { documentStore } from "../documents.repository";
@@ -98,9 +100,35 @@ export function createUploadHandlers(deps: Partial<UploadHandlersDeps> = {}) {
 				queueOcrJob: resolvedDeps.queueOcrJob,
 			});
 
+			let expedienteLink: { expedienteId: string; linked: boolean } | undefined;
+			if (body.expedienteId && body.companyRuc && body.fiscalPeriod) {
+				try {
+					const organizationId = await resolveOrganizationId(
+						access.access.tenantScope.companyId,
+					);
+					const scope = expedienteService.toScope({
+						companyId: access.access.tenantScope.companyId,
+						companyRuc: body.companyRuc,
+						organizationId,
+						period: body.fiscalPeriod,
+					});
+					await expedienteService.linkDocument({
+						expedienteId: body.expedienteId,
+						documentId: result.id,
+						scope,
+					});
+					expedienteLink = { expedienteId: body.expedienteId, linked: true };
+				} catch {
+					expedienteLink = { expedienteId: body.expedienteId, linked: false };
+				}
+			}
+
 			return {
 				success: true,
-				data: result,
+				data: {
+					...result,
+					...(expedienteLink ? { expedienteLink } : {}),
+				},
 			};
 		} catch (error: unknown) {
 			// Map known validation errors from the CQRS function

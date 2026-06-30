@@ -10,12 +10,24 @@ export const uploadBodySchema = z.union([
 		organizationId: z.coerce.number().min(1).optional(),
 		companyId: z.string().min(1).optional(),
 		type: DocumentTypeEnum.optional(),
+		expedienteId: z.string().min(1).optional(),
+		companyRuc: z.string().min(11).max(11).optional(),
+		fiscalPeriod: z
+			.string()
+			.regex(/^\d{4}-(0[1-9]|1[0-2])$/)
+			.optional(),
 	}),
 	z.object({
 		file: z.instanceof(File),
 		organizationId: z.coerce.number().min(1).optional(),
 		companyId: z.string().min(1).optional(),
 		type: DocumentTypeEnum.optional(),
+		expedienteId: z.string().min(1).optional(),
+		companyRuc: z.string().min(11).max(11).optional(),
+		fiscalPeriod: z
+			.string()
+			.regex(/^\d{4}-(0[1-9]|1[0-2])$/)
+			.optional(),
 	}),
 ]);
 

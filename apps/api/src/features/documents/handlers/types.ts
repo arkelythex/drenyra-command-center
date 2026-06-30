@@ -23,6 +23,9 @@ export interface UploadDocumentBody {
 	organizationId?: number;
 	companyId?: string;
 	type?: "invoice" | "receipt" | "contract" | "other";
+	expedienteId?: string;
+	companyRuc?: string;
+	fiscalPeriod?: string;
 }
 
 /**
