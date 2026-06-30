@@ -8,6 +8,10 @@ export interface TaxCalculationResult {
 	totalAmount: Money;
 	taxRate: number;
 	taxType: TaxType;
+	/** SUNAT norm reference for audit trail */
+	normaAplicada: string;
+	/** Versioned rate table identifier */
+	versionTabla: string;
 }
 
 export interface DetraccionRate {
