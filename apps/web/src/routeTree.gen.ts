@@ -38,6 +38,7 @@ import { Route as ConfiguracionProfileRouteImport } from "./routes/configuracion
 import { Route as ConfiguracionSecurityRouteImport } from "./routes/configuracion/security";
 import { Route as ConfiguracionToolPermissionsRouteImport } from "./routes/configuracion/tool-permissions";
 import { Route as ConnectionsRouteImport } from "./routes/connections";
+import { Route as ContabilidadAccountingPrRouteImport } from "./routes/contabilidad/accounting-pr";
 import { Route as ContabilidadAssetsRouteImport } from "./routes/contabilidad/assets";
 import { Route as ContabilidadCierreMensualRouteImport } from "./routes/contabilidad/cierre-mensual";
 import { Route as ContabilidadFinancialsRouteImport } from "./routes/contabilidad/financials";
@@ -58,6 +59,7 @@ import { Route as DocumentsRouteImport } from "./routes/documents";
 import { Route as DrenyraRouteImport } from "./routes/drenyra";
 import { Route as DrenyraThreadIdRouteImport } from "./routes/drenyra/$threadId";
 import { Route as DrenyraAutomatizacionesRouteImport } from "./routes/drenyra/automatizaciones";
+import { Route as DrenyraControlTowerRouteImport } from "./routes/drenyra/control-tower";
 import { Route as DrenyraHerramientasRouteImport } from "./routes/drenyra/herramientas";
 import { Route as DrenyraHubRouteImport } from "./routes/drenyra/hub";
 import { Route as DrenyraIndexRouteImport } from "./routes/drenyra/index";
@@ -568,6 +570,11 @@ const DrenyraHerramientasRoute = DrenyraHerramientasRouteImport.update({
 	path: "/herramientas",
 	getParentRoute: () => DrenyraRoute,
 } as any);
+const DrenyraControlTowerRoute = DrenyraControlTowerRouteImport.update({
+	id: "/control-tower",
+	path: "/control-tower",
+	getParentRoute: () => DrenyraRoute,
+} as any);
 const DrenyraAutomatizacionesRoute = DrenyraAutomatizacionesRouteImport.update({
 	id: "/automatizaciones",
 	path: "/automatizaciones",
@@ -640,6 +647,12 @@ const ContabilidadAssetsRoute = ContabilidadAssetsRouteImport.update({
 	path: "/contabilidad/assets",
 	getParentRoute: () => rootRouteImport,
 } as any);
+const ContabilidadAccountingPrRoute =
+	ContabilidadAccountingPrRouteImport.update({
+		id: "/contabilidad/accounting-pr",
+		path: "/contabilidad/accounting-pr",
+		getParentRoute: () => rootRouteImport,
+	} as any);
 const ConfiguracionToolPermissionsRoute =
 	ConfiguracionToolPermissionsRouteImport.update({
 		id: "/tool-permissions",
@@ -791,6 +804,7 @@ export interface FileRoutesByFullPath {
 	"/configuracion/profile": typeof ConfiguracionProfileRoute;
 	"/configuracion/security": typeof ConfiguracionSecurityRoute;
 	"/configuracion/tool-permissions": typeof ConfiguracionToolPermissionsRoute;
+	"/contabilidad/accounting-pr": typeof ContabilidadAccountingPrRoute;
 	"/contabilidad/assets": typeof ContabilidadAssetsRoute;
 	"/contabilidad/cierre-mensual": typeof ContabilidadCierreMensualRoute;
 	"/contabilidad/financials": typeof ContabilidadFinancialsRoute;
@@ -805,6 +819,7 @@ export interface FileRoutesByFullPath {
 	"/cumplimiento/taxation": typeof CumplimientoTaxationRoute;
 	"/drenyra/$threadId": typeof DrenyraThreadIdRoute;
 	"/drenyra/automatizaciones": typeof DrenyraAutomatizacionesRoute;
+	"/drenyra/control-tower": typeof DrenyraControlTowerRoute;
 	"/drenyra/herramientas": typeof DrenyraHerramientasRoute;
 	"/drenyra/hub": typeof DrenyraHubRoute;
 	"/drenyra/observability": typeof DrenyraObservabilityRoute;
@@ -907,6 +922,7 @@ export interface FileRoutesByTo {
 	"/configuracion/profile": typeof ConfiguracionProfileRoute;
 	"/configuracion/security": typeof ConfiguracionSecurityRoute;
 	"/configuracion/tool-permissions": typeof ConfiguracionToolPermissionsRoute;
+	"/contabilidad/accounting-pr": typeof ContabilidadAccountingPrRoute;
 	"/contabilidad/assets": typeof ContabilidadAssetsRoute;
 	"/contabilidad/cierre-mensual": typeof ContabilidadCierreMensualRoute;
 	"/contabilidad/financials": typeof ContabilidadFinancialsRoute;
@@ -921,6 +937,7 @@ export interface FileRoutesByTo {
 	"/cumplimiento/taxation": typeof CumplimientoTaxationRoute;
 	"/drenyra/$threadId": typeof DrenyraThreadIdRoute;
 	"/drenyra/automatizaciones": typeof DrenyraAutomatizacionesRoute;
+	"/drenyra/control-tower": typeof DrenyraControlTowerRoute;
 	"/drenyra/herramientas": typeof DrenyraHerramientasRoute;
 	"/drenyra/hub": typeof DrenyraHubRoute;
 	"/drenyra/observability": typeof DrenyraObservabilityRoute;
@@ -1027,6 +1044,7 @@ export interface FileRoutesById {
 	"/configuracion/profile": typeof ConfiguracionProfileRoute;
 	"/configuracion/security": typeof ConfiguracionSecurityRoute;
 	"/configuracion/tool-permissions": typeof ConfiguracionToolPermissionsRoute;
+	"/contabilidad/accounting-pr": typeof ContabilidadAccountingPrRoute;
 	"/contabilidad/assets": typeof ContabilidadAssetsRoute;
 	"/contabilidad/cierre-mensual": typeof ContabilidadCierreMensualRoute;
 	"/contabilidad/financials": typeof ContabilidadFinancialsRoute;
@@ -1041,6 +1059,7 @@ export interface FileRoutesById {
 	"/cumplimiento/taxation": typeof CumplimientoTaxationRoute;
 	"/drenyra/$threadId": typeof DrenyraThreadIdRoute;
 	"/drenyra/automatizaciones": typeof DrenyraAutomatizacionesRoute;
+	"/drenyra/control-tower": typeof DrenyraControlTowerRoute;
 	"/drenyra/herramientas": typeof DrenyraHerramientasRoute;
 	"/drenyra/hub": typeof DrenyraHubRoute;
 	"/drenyra/observability": typeof DrenyraObservabilityRoute;
@@ -1148,6 +1167,7 @@ export interface FileRouteTypes {
 		| "/configuracion/profile"
 		| "/configuracion/security"
 		| "/configuracion/tool-permissions"
+		| "/contabilidad/accounting-pr"
 		| "/contabilidad/assets"
 		| "/contabilidad/cierre-mensual"
 		| "/contabilidad/financials"
@@ -1162,6 +1182,7 @@ export interface FileRouteTypes {
 		| "/cumplimiento/taxation"
 		| "/drenyra/$threadId"
 		| "/drenyra/automatizaciones"
+		| "/drenyra/control-tower"
 		| "/drenyra/herramientas"
 		| "/drenyra/hub"
 		| "/drenyra/observability"
@@ -1264,6 +1285,7 @@ export interface FileRouteTypes {
 		| "/configuracion/profile"
 		| "/configuracion/security"
 		| "/configuracion/tool-permissions"
+		| "/contabilidad/accounting-pr"
 		| "/contabilidad/assets"
 		| "/contabilidad/cierre-mensual"
 		| "/contabilidad/financials"
@@ -1278,6 +1300,7 @@ export interface FileRouteTypes {
 		| "/cumplimiento/taxation"
 		| "/drenyra/$threadId"
 		| "/drenyra/automatizaciones"
+		| "/drenyra/control-tower"
 		| "/drenyra/herramientas"
 		| "/drenyra/hub"
 		| "/drenyra/observability"
@@ -1383,6 +1406,7 @@ export interface FileRouteTypes {
 		| "/configuracion/profile"
 		| "/configuracion/security"
 		| "/configuracion/tool-permissions"
+		| "/contabilidad/accounting-pr"
 		| "/contabilidad/assets"
 		| "/contabilidad/cierre-mensual"
 		| "/contabilidad/financials"
@@ -1397,6 +1421,7 @@ export interface FileRouteTypes {
 		| "/cumplimiento/taxation"
 		| "/drenyra/$threadId"
 		| "/drenyra/automatizaciones"
+		| "/drenyra/control-tower"
 		| "/drenyra/herramientas"
 		| "/drenyra/hub"
 		| "/drenyra/observability"
@@ -1489,6 +1514,7 @@ export interface RootRouteChildren {
 	TaxationRoute: typeof TaxationRoute;
 	VendorsRoute: typeof VendorsRoute;
 	VerifyEmailRoute: typeof VerifyEmailRoute;
+	ContabilidadAccountingPrRoute: typeof ContabilidadAccountingPrRoute;
 	ContabilidadAssetsRoute: typeof ContabilidadAssetsRoute;
 	ContabilidadCierreMensualRoute: typeof ContabilidadCierreMensualRoute;
 	ContabilidadFinancialsRoute: typeof ContabilidadFinancialsRoute;
@@ -2145,6 +2171,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof DrenyraHerramientasRouteImport;
 			parentRoute: typeof DrenyraRoute;
 		};
+		"/drenyra/control-tower": {
+			id: "/drenyra/control-tower";
+			path: "/control-tower";
+			fullPath: "/drenyra/control-tower";
+			preLoaderRoute: typeof DrenyraControlTowerRouteImport;
+			parentRoute: typeof DrenyraRoute;
+		};
 		"/drenyra/automatizaciones": {
 			id: "/drenyra/automatizaciones";
 			path: "/automatizaciones";
@@ -2241,6 +2274,13 @@ declare module "@tanstack/react-router" {
 			path: "/contabilidad/assets";
 			fullPath: "/contabilidad/assets";
 			preLoaderRoute: typeof ContabilidadAssetsRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/contabilidad/accounting-pr": {
+			id: "/contabilidad/accounting-pr";
+			path: "/contabilidad/accounting-pr";
+			fullPath: "/contabilidad/accounting-pr";
+			preLoaderRoute: typeof ContabilidadAccountingPrRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
 		"/configuracion/tool-permissions": {
@@ -2394,6 +2434,7 @@ const ConfiguracionRouteWithChildren = ConfiguracionRoute._addFileChildren(
 interface DrenyraRouteChildren {
 	DrenyraThreadIdRoute: typeof DrenyraThreadIdRoute;
 	DrenyraAutomatizacionesRoute: typeof DrenyraAutomatizacionesRoute;
+	DrenyraControlTowerRoute: typeof DrenyraControlTowerRoute;
 	DrenyraHerramientasRoute: typeof DrenyraHerramientasRoute;
 	DrenyraHubRoute: typeof DrenyraHubRoute;
 	DrenyraObservabilityRoute: typeof DrenyraObservabilityRoute;
@@ -2404,6 +2445,7 @@ interface DrenyraRouteChildren {
 const DrenyraRouteChildren: DrenyraRouteChildren = {
 	DrenyraThreadIdRoute: DrenyraThreadIdRoute,
 	DrenyraAutomatizacionesRoute: DrenyraAutomatizacionesRoute,
+	DrenyraControlTowerRoute: DrenyraControlTowerRoute,
 	DrenyraHerramientasRoute: DrenyraHerramientasRoute,
 	DrenyraHubRoute: DrenyraHubRoute,
 	DrenyraObservabilityRoute: DrenyraObservabilityRoute,
@@ -2502,6 +2544,7 @@ const rootRouteChildren: RootRouteChildren = {
 	TaxationRoute: TaxationRoute,
 	VendorsRoute: VendorsRoute,
 	VerifyEmailRoute: VerifyEmailRoute,
+	ContabilidadAccountingPrRoute: ContabilidadAccountingPrRoute,
 	ContabilidadAssetsRoute: ContabilidadAssetsRoute,
 	ContabilidadCierreMensualRoute: ContabilidadCierreMensualRoute,
 	ContabilidadFinancialsRoute: ContabilidadFinancialsRoute,
