@@ -105,9 +105,32 @@ export {
 	getOpenRouterTierConfig,
 	OPENROUTER_MODEL_TIERS,
 } from "./model-registry";
-
+export { AnthropicAdapter } from "./model-router/anthropic-adapter";
+export type { FallbackConfig } from "./model-router/fallback-executor";
+export { FallbackExecutor } from "./model-router/fallback-executor";
+export { OpenAIAdapter } from "./model-router/openai-adapter";
+export { OpenRouterAdapter } from "./model-router/openrouter-adapter";
+export type {
+	ProviderAdapter,
+	ProviderAdapterFactory,
+	ProviderHealth,
+	ProviderRequest,
+	ProviderResponse,
+} from "./model-router/provider-adapter.types";
+export type {
+	QualityGate,
+	QualityGateResult,
+} from "./model-router/quality-gates";
+export {
+	CostCapEnforcer,
+	ReputationGate,
+	ResponseValidator,
+	runQualityGates,
+} from "./model-router/quality-gates";
 // Model Router
 export { ModelRegistryService } from "./model-router/registry";
+export type { RouterOptions } from "./model-router/router";
+export { AdaptiveRouter } from "./model-router/router";
 export type {
 	CapabilityScore,
 	RouterConfig,
