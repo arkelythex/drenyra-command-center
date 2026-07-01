@@ -108,7 +108,7 @@ export const FiscalHealthWidget: React.FC = () => {
 				</svg>
 
 				{/* Central Glass Disc */}
-				<div className="absolute inset-[3.3rem] rounded-full border border-border/30 bg-card/80 shadow-[inset_0_2px_12px_rgba(255,255,255,0.05),inset_0_-8px_18px_rgba(0,0,0,0.35)] backdrop-blur-md" />
+				<div className="absolute inset-[3.3rem] rounded-full border border-border/30 bg-[var(--surface-2)] shadow-[inset_0_2px_12px_rgba(255,255,255,0.05),inset_0_-8px_18px_rgba(0,0,0,0.35)]" />
 
 				<div className="absolute inset-0 flex flex-col items-center justify-center">
 					<div className="flex items-baseline gap-1">
@@ -131,7 +131,7 @@ export const FiscalHealthWidget: React.FC = () => {
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ delay: 0.5 }}
 						className={cn(
-							"mt-3 rounded-full border px-5 py-1.5 backdrop-blur-sm",
+							"mt-3 rounded-full border px-5 py-1.5",
 							isOptimal
 								? "border-success-subtle bg-success-subtle"
 								: "border-danger-subtle bg-danger-subtle",

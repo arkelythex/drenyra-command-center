@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { DiffViewerV3 } from "@/components/agentic/DiffViewerV3";
 import { FiscalEditorialShell } from "@/components/layout/FiscalEditorialShell";
+import { LEGIBILITY } from "@/lib/legibility";
 import { SurfacePanel } from "../SurfacePanel";
 
 describe("Fiscal Editorial components", () => {
@@ -29,5 +30,16 @@ describe("Fiscal Editorial components", () => {
 		);
 		expect(screen.getByText("Test diff")).toBeInTheDocument();
 		expect(screen.getByText("line added")).toBeInTheDocument();
+	});
+
+	it("LEGIBILITY patterns avoid decorative backdrop-blur", () => {
+		const values = [
+			...Object.values(LEGIBILITY.scrim),
+			...Object.values(LEGIBILITY.glassScrim),
+			...Object.values(LEGIBILITY.patterns),
+		];
+		for (const value of values) {
+			expect(value).not.toMatch(/backdrop-blur/);
+		}
 	});
 });

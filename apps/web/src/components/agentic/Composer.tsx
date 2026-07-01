@@ -181,7 +181,7 @@ export function Composer({
 		<section
 			className={cn(
 				"relative border-t border-[var(--border-subtle)]",
-				"bg-[var(--surface-1)]/80 backdrop-blur-sm",
+				"bg-[var(--surface-1)]",
 				"p-4",
 				"focus-within:border-t-[var(--color-primary)]/20",
 				"transition-all duration-200",
