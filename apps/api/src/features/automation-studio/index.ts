@@ -1,0 +1,1 @@
+export { automationStudioRoutes } from "./routes";

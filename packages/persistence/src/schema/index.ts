@@ -138,6 +138,23 @@ export {
 	authUsersRelations,
 	authVerifications,
 } from "./auth.schema";
+// --- AUTOMATION STUDIO ---
+export {
+	type ActionType,
+	automationExecutions,
+	automationExecutionsRelations,
+	automationSteps,
+	automationStepsRelations,
+	automationWorkflows,
+	automationWorkflowsRelations,
+	type ExecutionStatus,
+	type LastRunStatus,
+	type StepStatus,
+	type StepType,
+	type TriggerType,
+	type WorkflowCategory,
+	type WorkflowStatus,
+} from "./automation-studio.schema";
 export {
 	type AiCostEvent,
 	type AnomalyAlert,

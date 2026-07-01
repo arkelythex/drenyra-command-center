@@ -16,6 +16,7 @@ import { aiWorkersRoutes } from "./features/ai-swarm/workers";
 import { aiToolPermissionsModule } from "./features/ai-tool-permissions";
 import { apiMarketplaceModule } from "./features/api-marketplace";
 import { authRoutes } from "./features/auth/auth.routes";
+import { automationStudioRoutes } from "./features/automation-studio";
 import { bankingRoutes } from "./features/banking";
 import { bankingProvidersRoutes } from "./features/banking-providers/api/routes";
 import { billRoutes, invoiceRoutes } from "./features/billing";
@@ -254,6 +255,7 @@ const baseApp = new Elysia()
 	.use(apiMarketplaceModule)
 	.use(aiControlPlaneModule)
 	.use(accountingPrRoutes)
+	.use(automationStudioRoutes)
 	.use(agenticLedgerModule)
 	.use(aiSwarmRoutes)
 	.use(cognitiveStreamRoute)

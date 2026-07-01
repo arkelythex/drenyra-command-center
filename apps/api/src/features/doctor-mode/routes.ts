@@ -1,10 +1,6 @@
 import { db } from "@arkelythex/persistence/client";
 import { sql } from "@arkelythex/persistence/query";
-import {
-	checkHistory,
-	type SystemCheck,
-	systemChecks,
-} from "@arkelythex/persistence/schema";
+import { checkHistory, systemChecks } from "@arkelythex/persistence/schema";
 import { sql as drizzleSql, eq } from "drizzle-orm";
 import { Elysia, t } from "elysia";
 import { createLogger } from "../../lib/logger";
@@ -174,12 +170,13 @@ async function persistCheckResult(
 			.where(eq(systemChecks.name, checkName))
 			.limit(1);
 
+		const now = new Date();
 		const data = {
 			status: result.status,
-			lastRunAt: new Date().toISOString(),
+			lastRunAt: now,
 			lastDuration: result.duration,
 			lastError: result.error ?? null,
-			updatedAt: new Date().toISOString(),
+			updatedAt: now,
 		};
 
 		let checkId: string;
@@ -194,8 +191,12 @@ async function persistCheckResult(
 				.insert(systemChecks)
 				.values({
 					name: checkName,
-					category: category as SystemCheck["category"],
-					...data,
+					category: category as (typeof CHECK_CATEGORIES)[number],
+					status: data.status,
+					lastRunAt: data.lastRunAt,
+					lastDuration: data.lastDuration,
+					lastError: data.lastError,
+					updatedAt: data.updatedAt,
 				})
 				.returning({ id: systemChecks.id });
 			checkId = inserted[0].id;
@@ -354,11 +355,14 @@ export const doctorModeModule = new Elysia({ prefix: "/api/v1/doctor" })
 					else if (check.status === "down") aggregate.down++;
 					else aggregate.unknown++;
 
-					if (
-						check.lastRunAt &&
-						(!aggregate.lastFullRun || check.lastRunAt > aggregate.lastFullRun)
-					) {
-						aggregate.lastFullRun = check.lastRunAt.toISOString();
+					if (check.lastRunAt) {
+						const runAtStr =
+							check.lastRunAt instanceof Date
+								? check.lastRunAt.toISOString()
+								: String(check.lastRunAt);
+						if (!aggregate.lastFullRun || runAtStr > aggregate.lastFullRun) {
+							aggregate.lastFullRun = runAtStr;
+						}
 					}
 				}
 

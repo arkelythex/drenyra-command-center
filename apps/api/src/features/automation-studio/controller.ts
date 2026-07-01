@@ -1,10 +1,10 @@
+import { and, desc, eq, sql } from "@arkelythex/persistence/query";
 import {
 	automationExecutions,
 	automationSteps,
 	automationWorkflows,
 } from "@arkelythex/persistence/schema/automation-studio.schema";
-import { and, desc, eq, gte, sql } from "drizzle-orm";
-import type { NodePgDatabase } from "drizzle-orm/node-postgres";
+import { db } from "../../lib/db";
 import type {
 	CreateStepBody,
 	CreateWorkflowBody,
@@ -20,458 +20,443 @@ import type {
 const SEVEN_DAYS_AGO = () =>
 	new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
 
-type Db = NodePgDatabase;
+// --- Workflows ---
 
-export function createWorkflowController(db: Db) {
-	// --- Workflows ---
+export async function listWorkflows(
+	companyId: string,
+	status?: string,
+	category?: string,
+): Promise<{ data: WorkflowResponse[]; total: number }> {
+	const conditions = [eq(automationWorkflows.companyId, companyId)];
+	if (status) conditions.push(eq(automationWorkflows.status, status));
+	if (category) conditions.push(eq(automationWorkflows.category, category));
 
-	async function listWorkflows(
-		companyId: string,
-		status?: string,
-		category?: string,
-	): Promise<{ data: WorkflowResponse[]; total: number }> {
-		const conditions = [eq(automationWorkflows.companyId, companyId)];
-		if (status) conditions.push(eq(automationWorkflows.status, status));
-		if (category) conditions.push(eq(automationWorkflows.category, category));
+	const rows = await db
+		.select()
+		.from(automationWorkflows)
+		.where(and(...conditions))
+		.orderBy(desc(automationWorkflows.updatedAt));
 
-		const rows = await db
-			.select()
-			.from(automationWorkflows)
-			.where(and(...conditions))
-			.orderBy(desc(automationWorkflows.updatedAt));
+	const data = await Promise.all(rows.map((r) => enrichWorkflowWithSteps(r)));
+	return { data, total: data.length };
+}
 
-		const data = await Promise.all(
-			rows.map((r) => enrichWorkflowWithSteps(r, db)),
+export async function getWorkflow(
+	id: string,
+): Promise<WorkflowResponse | null> {
+	const row = await db
+		.select()
+		.from(automationWorkflows)
+		.where(eq(automationWorkflows.id, id))
+		.limit(1);
+
+	if (row.length === 0) return null;
+	return enrichWorkflowWithSteps(row[0]);
+}
+
+export async function createWorkflow(
+	companyId: string,
+	body: CreateWorkflowBody,
+): Promise<WorkflowResponse> {
+	const [row] = await db
+		.insert(automationWorkflows)
+		.values({
+			companyId,
+			name: body.name,
+			description: body.description,
+			category: body.category,
+			triggerType: body.triggerType,
+			triggerConfig: body.triggerConfig,
+		})
+		.returning();
+
+	return enrichWorkflowWithSteps(row);
+}
+
+export async function updateWorkflow(
+	id: string,
+	body: UpdateWorkflowBody,
+): Promise<WorkflowResponse | null> {
+	const [row] = await db
+		.update(automationWorkflows)
+		.set({
+			...body,
+			updatedAt: new Date().toISOString() as unknown as Date,
+		})
+		.where(eq(automationWorkflows.id, id))
+		.returning();
+
+	if (!row) return null;
+	return enrichWorkflowWithSteps(row);
+}
+
+export async function deleteWorkflow(id: string): Promise<boolean> {
+	const [row] = await db
+		.delete(automationWorkflows)
+		.where(eq(automationWorkflows.id, id))
+		.returning({ id: automationWorkflows.id });
+
+	return !!row;
+}
+
+export async function activateWorkflow(
+	id: string,
+): Promise<WorkflowResponse | null> {
+	const [row] = await db
+		.update(automationWorkflows)
+		.set({
+			status: "active",
+			updatedAt: new Date().toISOString() as unknown as Date,
+		})
+		.where(eq(automationWorkflows.id, id))
+		.returning();
+
+	if (!row) return null;
+	return enrichWorkflowWithSteps(row);
+}
+
+export async function pauseWorkflow(
+	id: string,
+): Promise<WorkflowResponse | null> {
+	const [row] = await db
+		.update(automationWorkflows)
+		.set({
+			status: "paused",
+			updatedAt: new Date().toISOString() as unknown as Date,
+		})
+		.where(eq(automationWorkflows.id, id))
+		.returning();
+
+	if (!row) return null;
+	return enrichWorkflowWithSteps(row);
+}
+
+export async function duplicateWorkflow(
+	companyId: string,
+	id: string,
+): Promise<WorkflowResponse | null> {
+	const original = await db
+		.select()
+		.from(automationWorkflows)
+		.where(eq(automationWorkflows.id, id))
+		.limit(1);
+
+	if (original.length === 0) return null;
+
+	const src = original[0];
+
+	const [newWf] = await db
+		.insert(automationWorkflows)
+		.values({
+			companyId,
+			name: `${src.name} (copia)`,
+			description: src.description,
+			category: src.category,
+			triggerType: src.triggerType,
+			triggerConfig: src.triggerConfig,
+		})
+		.returning();
+
+	const steps = await db
+		.select()
+		.from(automationSteps)
+		.where(eq(automationSteps.workflowId, id))
+		.orderBy(automationSteps.stepOrder);
+
+	if (steps.length > 0) {
+		await db.insert(automationSteps).values(
+			steps.map((s) => ({
+				workflowId: newWf.id,
+				stepOrder: s.stepOrder,
+				stepType: s.stepType,
+				actionType: s.actionType,
+				config: s.config,
+				status: s.status,
+			})),
 		);
-		return { data, total: data.length };
 	}
 
-	async function getWorkflow(id: string): Promise<WorkflowResponse | null> {
-		const row = await db
-			.select()
-			.from(automationWorkflows)
-			.where(eq(automationWorkflows.id, id))
-			.limit(1);
+	return getWorkflow(newWf.id);
+}
 
-		if (row.length === 0) return null;
-		return enrichWorkflowWithSteps(row[0], db);
-	}
+export async function testWorkflow(
+	id: string,
+): Promise<{ executionId: string }> {
+	const wf = await getWorkflow(id);
+	if (!wf) throw new Error("Workflow not found");
 
-	async function createWorkflow(
-		companyId: string,
-		body: CreateWorkflowBody,
-	): Promise<WorkflowResponse> {
-		const [row] = await db
-			.insert(automationWorkflows)
-			.values({
-				companyId,
-				name: body.name,
-				description: body.description,
-				category: body.category,
-				triggerType: body.triggerType,
-				triggerConfig: body.triggerConfig,
-			})
-			.returning();
+	const [exec] = await db
+		.insert(automationExecutions)
+		.values({
+			workflowId: id,
+			triggeredBy: "test",
+			status: "running",
+			log: `[${new Date().toISOString()}] Test run started for workflow "${wf.name}"\n`,
+		})
+		.returning();
 
-		return enrichWorkflowWithSteps(row, db);
-	}
+	const logLines: string[] = [];
+	logLines.push(
+		`[${new Date().toISOString()}] Executing ${(wf.steps ?? []).length} steps...`,
+	);
 
-	async function updateWorkflow(
-		id: string,
-		body: UpdateWorkflowBody,
-	): Promise<WorkflowResponse | null> {
-		const [row] = await db
-			.update(automationWorkflows)
-			.set({
-				...body,
-				updatedAt: new Date().toISOString() as unknown as Date,
-			})
-			.where(eq(automationWorkflows.id, id))
-			.returning();
+	let execStatus: "running" | "success" | "partial" | "failed" = "success";
 
-		if (!row) return null;
-		return enrichWorkflowWithSteps(row, db);
-	}
-
-	async function deleteWorkflow(id: string): Promise<boolean> {
-		const [row] = await db
-			.delete(automationWorkflows)
-			.where(eq(automationWorkflows.id, id))
-			.returning({ id: automationWorkflows.id });
-
-		return !!row;
-	}
-
-	async function activateWorkflow(
-		id: string,
-	): Promise<WorkflowResponse | null> {
-		const [row] = await db
-			.update(automationWorkflows)
-			.set({
-				status: "active",
-				updatedAt: new Date().toISOString() as unknown as Date,
-			})
-			.where(eq(automationWorkflows.id, id))
-			.returning();
-
-		if (!row) return null;
-		return enrichWorkflowWithSteps(row, db);
-	}
-
-	async function pauseWorkflow(id: string): Promise<WorkflowResponse | null> {
-		const [row] = await db
-			.update(automationWorkflows)
-			.set({
-				status: "paused",
-				updatedAt: new Date().toISOString() as unknown as Date,
-			})
-			.where(eq(automationWorkflows.id, id))
-			.returning();
-
-		if (!row) return null;
-		return enrichWorkflowWithSteps(row, db);
-	}
-
-	async function duplicateWorkflow(
-		companyId: string,
-		id: string,
-	): Promise<WorkflowResponse | null> {
-		const original = await db
-			.select()
-			.from(automationWorkflows)
-			.where(eq(automationWorkflows.id, id))
-			.limit(1);
-
-		if (original.length === 0) return null;
-
-		const src = original[0];
-
-		const [newWf] = await db
-			.insert(automationWorkflows)
-			.values({
-				companyId,
-				name: `${src.name} (copia)`,
-				description: src.description,
-				category: src.category,
-				triggerType: src.triggerType,
-				triggerConfig: src.triggerConfig,
-			})
-			.returning();
-
-		const steps = await db
-			.select()
-			.from(automationSteps)
-			.where(eq(automationSteps.workflowId, id))
-			.orderBy(automationSteps.stepOrder);
-
-		if (steps.length > 0) {
-			await db.insert(automationSteps).values(
-				steps.map((s) => ({
-					workflowId: newWf.id,
-					stepOrder: s.stepOrder,
-					stepType: s.stepType,
-					actionType: s.actionType,
-					config: s.config,
-					status: s.status,
-				})),
-			);
-		}
-
-		return getWorkflow(newWf.id);
-	}
-
-	async function testWorkflow(id: string): Promise<{ executionId: string }> {
-		const wf = await getWorkflow(id);
-		if (!wf) throw new Error("Workflow not found");
-
-		const [exec] = await db
-			.insert(automationExecutions)
-			.values({
-				workflowId: id,
-				triggeredBy: "test",
-				status: "running",
-				log: `[${new Date().toISOString()}] Test run started for workflow "${wf.name}"\n`,
-			})
-			.returning();
-
-		const logLines: string[] = [];
+	for (const step of wf.steps ?? []) {
 		logLines.push(
-			`[${new Date().toISOString()}] Executing ${(wf.steps ?? []).length} steps...`,
+			`[${new Date().toISOString()}] Step ${step.stepOrder}: ${step.actionType} (${step.stepType})`,
 		);
-
-		let execStatus: "running" | "success" | "partial" | "failed" = "success";
-
-		for (const step of wf.steps ?? []) {
-			logLines.push(
-				`[${new Date().toISOString()}] Step ${step.stepOrder}: ${step.actionType} (${step.stepType})`,
-			);
-
-			await db
-				.update(automationExecutions)
-				.set({ stepId: step.id })
-				.where(eq(automationExecutions.id, exec.id));
-
-			try {
-				const result = await executeAction(step.actionType, step.config);
-				if (result.ok) {
-					logLines.push(`[${new Date().toISOString()}]   ✓ ${result.message}`);
-				} else {
-					logLines.push(`[${new Date().toISOString()}]   ⚠ ${result.message}`);
-					execStatus = "partial";
-				}
-			} catch (err) {
-				logLines.push(
-					`[${new Date().toISOString()}]   ✗ Error: ${err instanceof Error ? err.message : String(err)}`,
-				);
-				execStatus = "failed";
-				break;
-			}
-		}
-
-		const completedAt = new Date().toISOString();
-		const log = logLines.join("\n");
-		logLines.push(`[${completedAt}] Test run ${execStatus}`);
 
 		await db
 			.update(automationExecutions)
-			.set({
-				status: execStatus,
-				completedAt: completedAt as unknown as Date,
-				log: logLines.join("\n"),
-				resultSummary:
-					execStatus === "success"
-						? `Todos los ${(wf.steps ?? []).length} pasos completados exitosamente`
-						: `Completado con estado: ${execStatus}`,
-			})
+			.set({ stepId: step.id })
 			.where(eq(automationExecutions.id, exec.id));
 
-		return { executionId: exec.id };
+		try {
+			const result = await executeAction(step.actionType, step.config);
+			if (result.ok) {
+				logLines.push(`[${new Date().toISOString()}]   ✓ ${result.message}`);
+			} else {
+				logLines.push(`[${new Date().toISOString()}]   ⚠ ${result.message}`);
+				execStatus = "partial";
+			}
+		} catch (err) {
+			logLines.push(
+				`[${new Date().toISOString()}]   ✗ Error: ${err instanceof Error ? err.message : String(err)}`,
+			);
+			execStatus = "failed";
+			break;
+		}
 	}
 
-	// --- Steps ---
+	const completedAt = new Date().toISOString();
+	const log = logLines.join("\n");
+	logLines.push(`[${completedAt}] Test run ${execStatus}`);
 
-	async function listSteps(
-		workflowId: string,
-	): Promise<{ data: StepResponse[] }> {
-		const rows = await db
-			.select()
-			.from(automationSteps)
-			.where(eq(automationSteps.workflowId, workflowId))
-			.orderBy(automationSteps.stepOrder);
+	await db
+		.update(automationExecutions)
+		.set({
+			status: execStatus,
+			completedAt: completedAt as unknown as Date,
+			log: logLines.join("\n"),
+			resultSummary:
+				execStatus === "success"
+					? `Todos los ${(wf.steps ?? []).length} pasos completados exitosamente`
+					: `Completado con estado: ${execStatus}`,
+		})
+		.where(eq(automationExecutions.id, exec.id));
 
-		return { data: rows.map(mapStep) };
-	}
+	return { executionId: exec.id };
+}
 
-	async function getStep(id: string): Promise<StepResponse | null> {
-		const [row] = await db
-			.select()
-			.from(automationSteps)
-			.where(eq(automationSteps.id, id))
-			.limit(1);
+// --- Steps ---
 
-		return row ? mapStep(row) : null;
-	}
+export async function listSteps(
+	workflowId: string,
+): Promise<{ data: StepResponse[] }> {
+	const rows = await db
+		.select()
+		.from(automationSteps)
+		.where(eq(automationSteps.workflowId, workflowId))
+		.orderBy(automationSteps.stepOrder);
 
-	async function createStep(
-		body: CreateStepBody,
-	): Promise<StepResponse | null> {
-		const [row] = await db
-			.insert(automationSteps)
-			.values({
-				workflowId: body.workflowId,
-				stepOrder: body.stepOrder,
-				stepType: body.stepType,
-				actionType: body.actionType,
-				config: body.config,
-			})
-			.returning();
+	return { data: rows.map(mapStep) };
+}
 
-		return row ? mapStep(row) : null;
-	}
+export async function getStep(id: string): Promise<StepResponse | null> {
+	const [row] = await db
+		.select()
+		.from(automationSteps)
+		.where(eq(automationSteps.id, id))
+		.limit(1);
 
-	async function updateStep(
-		id: string,
-		body: UpdateStepBody,
-	): Promise<StepResponse | null> {
+	return row ? mapStep(row) : null;
+}
+
+export async function createStep(
+	body: CreateStepBody,
+): Promise<StepResponse | null> {
+	const [row] = await db
+		.insert(automationSteps)
+		.values({
+			workflowId: body.workflowId,
+			stepOrder: body.stepOrder,
+			stepType: body.stepType,
+			actionType: body.actionType,
+			config: body.config,
+		})
+		.returning();
+
+	return row ? mapStep(row) : null;
+}
+
+export async function updateStep(
+	id: string,
+	body: UpdateStepBody,
+): Promise<StepResponse | null> {
+	const [row] = await db
+		.update(automationSteps)
+		.set(body)
+		.where(eq(automationSteps.id, id))
+		.returning();
+
+	return row ? mapStep(row) : null;
+}
+
+export async function deleteStep(id: string): Promise<boolean> {
+	const [row] = await db
+		.delete(automationSteps)
+		.where(eq(automationSteps.id, id))
+		.returning({ id: automationSteps.id });
+
+	return !!row;
+}
+
+export async function reorderSteps(
+	body: ReorderStepsBody,
+): Promise<StepResponse[]> {
+	const rows: StepResponse[] = [];
+
+	for (let i = 0; i < body.stepIds.length; i++) {
 		const [row] = await db
 			.update(automationSteps)
-			.set(body)
-			.where(eq(automationSteps.id, id))
+			.set({ stepOrder: i })
+			.where(
+				and(
+					eq(automationSteps.id, body.stepIds[i]),
+					eq(automationSteps.workflowId, body.workflowId),
+				),
+			)
 			.returning();
 
-		return row ? mapStep(row) : null;
+		if (row) rows.push(mapStep(row));
 	}
 
-	async function deleteStep(id: string): Promise<boolean> {
-		const [row] = await db
-			.delete(automationSteps)
-			.where(eq(automationSteps.id, id))
-			.returning({ id: automationSteps.id });
+	return rows.sort((a, b) => a.stepOrder - b.stepOrder);
+}
 
-		return !!row;
-	}
+// --- Executions ---
 
-	async function reorderSteps(body: ReorderStepsBody): Promise<StepResponse[]> {
-		const rows: StepResponse[] = [];
+export async function listExecutions(
+	workflowId: string,
+): Promise<{ data: ExecutionResponse[] }> {
+	const rows = await db
+		.select()
+		.from(automationExecutions)
+		.where(eq(automationExecutions.workflowId, workflowId))
+		.orderBy(desc(automationExecutions.startedAt));
 
-		for (let i = 0; i < body.stepIds.length; i++) {
-			const [row] = await db
-				.update(automationSteps)
-				.set({ stepOrder: i })
-				.where(
-					and(
-						eq(automationSteps.id, body.stepIds[i]),
-						eq(automationSteps.workflowId, body.workflowId),
-					),
-				)
-				.returning();
+	return { data: rows.map(mapExecution) };
+}
 
-			if (row) rows.push(mapStep(row));
-		}
+export async function getExecution(
+	id: string,
+): Promise<ExecutionResponse | null> {
+	const [row] = await db
+		.select()
+		.from(automationExecutions)
+		.where(eq(automationExecutions.id, id))
+		.limit(1);
 
-		return rows.sort((a, b) => a.stepOrder - b.stepOrder);
-	}
+	return row ? mapExecution(row) : null;
+}
 
-	// --- Executions ---
+// --- Dashboard ---
 
-	async function listExecutions(
-		workflowId: string,
-	): Promise<{ data: ExecutionResponse[] }> {
-		const rows = await db
-			.select()
-			.from(automationExecutions)
-			.where(eq(automationExecutions.workflowId, workflowId))
-			.orderBy(desc(automationExecutions.startedAt));
+export async function getDashboardStats(
+	companyId: string,
+): Promise<DashboardStatsResponse> {
+	const [activeCount] = await db
+		.select({ count: sql<number>`count(*)` })
+		.from(automationWorkflows)
+		.where(
+			and(
+				eq(automationWorkflows.companyId, companyId),
+				eq(automationWorkflows.status, "active"),
+			),
+		);
 
-		return { data: rows.map(mapExecution) };
-	}
+	const [totalRuns] = await db
+		.select({ count: sql<number>`coalesce(sum(run_count), 0)` })
+		.from(automationWorkflows)
+		.where(eq(automationWorkflows.companyId, companyId));
 
-	async function getExecution(id: string): Promise<ExecutionResponse | null> {
-		const [row] = await db
-			.select()
-			.from(automationExecutions)
-			.where(eq(automationExecutions.id, id))
-			.limit(1);
-
-		return row ? mapExecution(row) : null;
-	}
-
-	// --- Dashboard ---
-
-	async function getDashboardStats(
-		companyId: string,
-	): Promise<DashboardStatsResponse> {
-		const [activeCount] = await db
-			.select({ count: sql<number>`count(*)` })
-			.from(automationWorkflows)
-			.where(
-				and(
-					eq(automationWorkflows.companyId, companyId),
-					eq(automationWorkflows.status, "active"),
-				),
-			);
-
-		const [totalRuns] = await db
-			.select({ count: sql<number>`coalesce(sum(run_count), 0)` })
-			.from(automationWorkflows)
-			.where(eq(automationWorkflows.companyId, companyId));
-
-		const [successRows] = await db
-			.select({ count: sql<number>`count(*)` })
-			.from(automationExecutions)
-			.where(
-				and(
-					eq(automationExecutions.status, "success"),
-					sql`workflow_id IN (SELECT id FROM automation_workflows WHERE company_id = ${companyId})`,
-				),
-			);
-
-		const [totalExecRows] = await db
-			.select({ count: sql<number>`count(*)` })
-			.from(automationExecutions)
-			.where(
+	const [successRows] = await db
+		.select({ count: sql<number>`count(*)` })
+		.from(automationExecutions)
+		.where(
+			and(
+				eq(automationExecutions.status, "success"),
 				sql`workflow_id IN (SELECT id FROM automation_workflows WHERE company_id = ${companyId})`,
-			);
+			),
+		);
 
-		const totalExecs = Number(totalExecRows.count);
-		const successRate =
-			totalExecs > 0
-				? Math.round((Number(successRows.count) / totalExecs) * 100)
-				: 0;
+	const [totalExecRows] = await db
+		.select({ count: sql<number>`count(*)` })
+		.from(automationExecutions)
+		.where(
+			sql`workflow_id IN (SELECT id FROM automation_workflows WHERE company_id = ${companyId})`,
+		);
 
-		const recent = await db
-			.select()
-			.from(automationExecutions)
-			.where(
-				sql`workflow_id IN (SELECT id FROM automation_workflows WHERE company_id = ${companyId})`,
-			)
-			.orderBy(desc(automationExecutions.startedAt))
-			.limit(5);
+	const totalExecs = Number(totalExecRows.count);
+	const successRate =
+		totalExecs > 0
+			? Math.round((Number(successRows.count) / totalExecs) * 100)
+			: 0;
 
-		const catRows = await db
-			.select({
-				category: automationWorkflows.category,
-				count: sql<number>`count(*)`,
-			})
-			.from(automationWorkflows)
-			.where(eq(automationWorkflows.companyId, companyId))
-			.groupBy(automationWorkflows.category);
+	const recent = await db
+		.select()
+		.from(automationExecutions)
+		.where(
+			sql`workflow_id IN (SELECT id FROM automation_workflows WHERE company_id = ${companyId})`,
+		)
+		.orderBy(desc(automationExecutions.startedAt))
+		.limit(5);
 
-		const workflowsByCategory: Record<string, number> = {};
-		for (const r of catRows) {
-			workflowsByCategory[r.category] = Number(r.count);
-		}
+	const catRows = await db
+		.select({
+			category: automationWorkflows.category,
+			count: sql<number>`count(*)`,
+		})
+		.from(automationWorkflows)
+		.where(eq(automationWorkflows.companyId, companyId))
+		.groupBy(automationWorkflows.category);
 
-		const weekAgo = SEVEN_DAYS_AGO();
-		const dayRows = await db
-			.select({
-				date: sql<string>`DATE(started_at)`,
-				count: sql<number>`count(*)`,
-			})
-			.from(automationExecutions)
-			.where(
-				and(
-					sql`started_at >= ${weekAgo}::timestamp`,
-					sql`workflow_id IN (SELECT id FROM automation_workflows WHERE company_id = ${companyId})`,
-				),
-			)
-			.groupBy(sql`DATE(started_at)`)
-			.orderBy(sql`DATE(started_at)`);
-
-		return {
-			activeWorkflows: Number(activeCount.count),
-			totalRuns: Number(totalRuns.count),
-			successRate,
-			recentExecutions: recent.map(mapExecution),
-			workflowsByCategory,
-			runsByDay: dayRows.map((r) => ({
-				date: r.date,
-				count: Number(r.count),
-			})),
-		};
+	const workflowsByCategory: Record<string, number> = {};
+	for (const r of catRows) {
+		workflowsByCategory[r.category] = Number(r.count);
 	}
+
+	const weekAgo = SEVEN_DAYS_AGO();
+	const dayRows = await db
+		.select({
+			date: sql<string>`DATE(started_at)`,
+			count: sql<number>`count(*)`,
+		})
+		.from(automationExecutions)
+		.where(
+			and(
+				sql`started_at >= ${weekAgo}::timestamp`,
+				sql`workflow_id IN (SELECT id FROM automation_workflows WHERE company_id = ${companyId})`,
+			),
+		)
+		.groupBy(sql`DATE(started_at)`)
+		.orderBy(sql`DATE(started_at)`);
 
 	return {
-		listWorkflows,
-		getWorkflow,
-		createWorkflow,
-		updateWorkflow,
-		deleteWorkflow,
-		activateWorkflow,
-		pauseWorkflow,
-		duplicateWorkflow,
-		testWorkflow,
-		listSteps,
-		getStep,
-		createStep,
-		updateStep,
-		deleteStep,
-		reorderSteps,
-		listExecutions,
-		getExecution,
-		getDashboardStats,
+		activeWorkflows: Number(activeCount.count),
+		totalRuns: Number(totalRuns.count),
+		successRate,
+		recentExecutions: recent.map(mapExecution),
+		workflowsByCategory,
+		runsByDay: dayRows.map((r) => ({
+			date: r.date,
+			count: Number(r.count),
+		})),
 	};
 }
+
+// --- Internal helpers ---
 
 async function executeAction(
 	actionType: string,
@@ -511,7 +496,6 @@ async function executeAction(
 
 async function enrichWorkflowWithSteps(
 	row: typeof automationWorkflows.$inferSelect,
-	db: Db,
 ): Promise<WorkflowResponse> {
 	const steps = await db
 		.select()

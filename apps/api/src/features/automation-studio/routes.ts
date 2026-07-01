@@ -1,25 +1,15 @@
 import { Elysia, t } from "elysia";
-import { db } from "../../lib/db";
 import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
-import { createWorkflowController } from "./controller";
+import * as controller from "./controller";
 
-const WorkflowSchema = t.Object({
-	id: t.String(),
-	companyId: t.String(),
-	name: t.String(),
-	description: t.Optional(t.String()),
-	category: t.String(),
-	triggerType: t.String(),
-	triggerConfig: t.Any(),
-	status: t.String(),
-	lastRunAt: t.Optional(t.String()),
-	lastRunStatus: t.Optional(t.String()),
-	runCount: t.Number(),
-	errorCount: t.Number(),
-	steps: t.Optional(t.Array(t.Any())),
-	createdAt: t.String(),
-	updatedAt: t.String(),
+const IdParams = t.Object({
+	id: t.String({ minLength: 1 }),
+});
+
+const ExecIdParams = t.Object({
+	id: t.String({ minLength: 1 }),
+	execId: t.String({ minLength: 1 }),
 });
 
 const CWorkflowBody = t.Object({
@@ -36,26 +26,6 @@ const UWorkflowBody = t.Object({
 	category: t.Optional(t.String()),
 	triggerType: t.Optional(t.String()),
 	triggerConfig: t.Optional(t.Any()),
-});
-
-const IdParams = t.Object({
-	id: t.String({ minLength: 1 }),
-});
-
-const ExecIdParams = t.Object({
-	id: t.String({ minLength: 1 }),
-	execId: t.String({ minLength: 1 }),
-});
-
-const StepSchema = t.Object({
-	id: t.String(),
-	workflowId: t.String(),
-	stepOrder: t.Number(),
-	stepType: t.String(),
-	actionType: t.String(),
-	config: t.Any(),
-	status: t.String(),
-	createdAt: t.String(),
 });
 
 const CStepBody = t.Object({
@@ -84,7 +54,9 @@ const ListWfQuery = t.Object({
 	category: t.Optional(t.String()),
 });
 
-const controller = createWorkflowController(db as never);
+const StepsListQuery = t.Object({
+	workflowId: t.String({ minLength: 1 }),
+});
 
 export const automationStudioRoutes = new Elysia({
 	prefix: "/api/v1/automation",
@@ -395,12 +367,7 @@ export const automationStudioRoutes = new Elysia({
 		"/steps",
 		async ({ query, set }) => {
 			try {
-				const workflowId = (query as Record<string, string>).workflowId;
-				if (!workflowId) {
-					set.status = 400;
-					return fail("workflowId es requerido", "VALIDATION_ERROR");
-				}
-				const result = await controller.listSteps(workflowId);
+				const result = await controller.listSteps(query.workflowId);
 				return ok(result);
 			} catch (error) {
 				set.status = 500;
@@ -408,9 +375,10 @@ export const automationStudioRoutes = new Elysia({
 			}
 		},
 		{
+			query: StepsListQuery,
 			detail: {
 				tags: ["Automation Studio"],
-				summary: "List steps (use ?workflowId=) ",
+				summary: "List steps for a workflow",
 			},
 		},
 	)
