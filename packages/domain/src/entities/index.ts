@@ -21,7 +21,49 @@ export {
 	type ReconciliationStatus,
 } from "./BankReconciliation";
 export { BankTransaction, type BankTransactionProps } from "./BankTransaction";
+export {
+	CreditNote,
+	type CreditNotePrimitiveData,
+	type CreditNoteProps,
+	type CreditNoteStatus,
+	type CreditNoteType,
+} from "./CreditNote";
+export type {
+	CaseIdentity,
+	CaseProjection,
+	CaseRepository,
+	CaseStatus,
+	ClinicalProjection,
+	CrossDomainQuery,
+	CrossDomainResponse,
+	DomainKey,
+	FiscalProjection,
+	LegalProjection,
+	ProjectionMetadata,
+} from "./case";
+// Case entity — Multi-domain collaboration
+export {
+	Case,
+	CaseCrossDomainQuery,
+	CaseId,
+	CaseProjectionAttached,
+	CaseProjectionUpdated,
+} from "./case";
+export {
+	DebitNote,
+	type DebitNotePrimitiveData,
+	type DebitNoteProps,
+	type DebitNoteStatus,
+} from "./DebitNote";
 export { Document, type DocumentProps } from "./Document";
+// Evidence entity
+export {
+	Evidence,
+	type EvidenceProps,
+	type EvidenceSource,
+	type EvidenceStatus,
+	type EvidenceType,
+} from "./evidence";
 export { Invoice, type InvoiceProps, type InvoiceStatus } from "./Invoice";
 export {
 	JournalEntry,
@@ -29,27 +71,3 @@ export {
 	type JournalEntryStatus,
 } from "./JournalEntry";
 export { Transaction, type TransactionProps } from "./Transaction";
-export { CreditNote, type CreditNoteProps, type CreditNoteStatus, type CreditNoteType, type CreditNotePrimitiveData } from "./CreditNote";
-export { DebitNote, type DebitNoteProps, type DebitNoteStatus, type DebitNotePrimitiveData } from "./DebitNote";
-
-// Case entity — Multi-domain collaboration
-export {
-  Case,
-  CaseId,
-  CaseProjectionAttached,
-  CaseProjectionUpdated,
-  CaseCrossDomainQuery,
-} from "./case";
-export type {
-  CaseIdentity,
-  CaseStatus,
-  DomainKey,
-  CaseProjection,
-  ProjectionMetadata,
-  FiscalProjection,
-  LegalProjection,
-  ClinicalProjection,
-  CaseRepository,
-  CrossDomainQuery,
-  CrossDomainResponse,
-} from "./case";
