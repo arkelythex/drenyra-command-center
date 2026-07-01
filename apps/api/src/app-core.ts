@@ -34,6 +34,7 @@ import {
 import { frontendTelemetryModule } from "./features/frontend-telemetry";
 import { healthModule } from "./features/health";
 import { journalEntryRoutes } from "./features/journal-entries";
+import { judgmentDayRoutes } from "./features/judgment-day";
 import { ledgerMvpModule } from "./features/ledger-mvp";
 import {
 	isLedgerMvpEnabled,
@@ -235,6 +236,7 @@ const baseApp = new Elysia()
 	.use(invoiceRoutes)
 	.use(billRoutes)
 	.use(vendorRoutes)
+	.use(judgmentDayRoutes)
 	.use(fiscalTruthModule)
 	.use(fiscalCommandCenterModule)
 	.use(dashboardModule)

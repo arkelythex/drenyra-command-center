@@ -173,6 +173,21 @@ export {
 	customerProfiles,
 	vendorProfiles,
 } from "./business-partners.schema";
+// --- ANALYTICS DASHBOARDS ---
+export {
+	analyticsDashboards,
+	analyticsDashboardsRelations,
+	analyticsReports,
+	analyticsReportsRelations,
+	analyticsWidgets,
+	analyticsWidgetsRelations,
+	type ReportStatus,
+	type ReportType,
+	reportStatusEnum,
+	reportTypeEnum,
+	type WidgetType,
+	widgetTypeEnum,
+} from "./cfo-analytics.schema";
 // --- CHAT ---
 export {
 	chatSessions,
@@ -441,3 +456,21 @@ export {
 	type NewFiscalMemoryRevisionRow,
 	type NewFiscalMemoryRow,
 } from "./fiscal-memory.schema";
+
+// --- JUDGMENT DAY ---
+export {
+	type AuditReviewStatus,
+	auditFindings,
+	auditFindingsRelations,
+	auditReviewStatuses,
+	auditReviews,
+	auditReviewsRelations,
+	auditRules,
+	auditRulesRelations,
+	type FindingCategory,
+	type FindingSeverity,
+	type FindingStatus,
+	findingCategories,
+	findingSeverities,
+	findingStatuses,
+} from "./judgment-day.schema";

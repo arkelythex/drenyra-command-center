@@ -1,6 +1,7 @@
 import { Elysia } from "elysia";
 import { aiToolPermissionsModule } from "./features/ai-tool-permissions";
 import { analyticsModule } from "./features/analytics";
+import { cfoAnalyticsModule } from "./features/cfo-analytics";
 import { complianceModule } from "./features/compliance";
 import { contextModule } from "./features/context";
 import { cpeValidatorRoutes } from "./features/cpe-validator";
@@ -9,13 +10,13 @@ import { electronicInvoicingModule } from "./features/electronic-invoicing";
 import { governanceAuditModule } from "./features/governance-audit";
 import { inboxModule } from "./features/inbox";
 import { intelligenceModule } from "./features/intelligence/api/routes";
-import { roiRoutes } from "./features/roi/api/routes";
 import { interCompanyRoutes } from "./features/inter-company";
 import { inventoryModule } from "./features/inventory";
 import { ledgerModule } from "./features/ledger";
 import { productsModule } from "./features/products";
 import { reconciliationsModule } from "./features/reconciliations";
 import { reportsModule } from "./features/reports";
+import { roiRoutes } from "./features/roi/api/routes";
 import { sireModule } from "./features/sire";
 import { taxationModule } from "./features/taxation";
 import { transactionsRoutes } from "./features/transactions";
@@ -33,6 +34,7 @@ import { transactionsRoutes } from "./features/transactions";
  */
 export const apiModules = new Elysia({ name: "api-modules" })
 	.use(analyticsModule)
+	.use(cfoAnalyticsModule)
 	.use(complianceModule)
 	.use(contextModule)
 	.use(cpeValidatorRoutes)

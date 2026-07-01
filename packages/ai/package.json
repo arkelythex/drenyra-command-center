@@ -31,6 +31,7 @@
     "./session": "./src/session/index.ts",
     "./tools/ai-sdk": "./src/ai/tools/index.ts",
     "./agents/tool-loop": "./src/ai/agents/tool-loop-agent.ts",
+    "./agents/judgment-day": "./src/agents/judgment-day/index.ts",
     "./streaming/agent-ui": "./src/ai/streaming/agent-ui-stream.ts"
   },
   "scripts": {

@@ -96,6 +96,23 @@ export {
 	type JournalEntryProps,
 	type JournalEntryStatus,
 } from "./JournalEntry";
+// Judgment Day — adversarial audit types
+export type {
+	AuditFinding,
+	AuditFindingProps,
+	AuditReview,
+	AuditReviewProps,
+	AuditReviewStatus,
+	AuditRule,
+	AuditRuleProps,
+	AuditTargetType,
+	FindingCategory,
+	FindingSeverity,
+	FindingStatus,
+	JudgmentDayDashboard,
+	JudgmentDayResult,
+	RiskScoreInput,
+} from "./judgment-day";
 // Organization (firm) entity
 export {
 	type CompanySummaryDTO,
