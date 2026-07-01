@@ -3,6 +3,31 @@ import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import * as controller from "./controller";
 
+const WorkflowCategoryEnum = t.UnionEnum([
+	"alerts",
+	"reconciliation",
+	"reporting",
+	"compliance",
+	"notifications",
+	"other",
+]);
+
+const TriggerTypeEnum = t.UnionEnum(["schedule", "event", "hook", "webhook"]);
+
+const StepTypeEnum = t.UnionEnum(["condition", "action", "wait", "loop"]);
+
+const ActionTypeEnum = t.UnionEnum([
+	"send_notification",
+	"create_report",
+	"post_journal",
+	"check_sire",
+	"update_evidence",
+	"flag_for_review",
+	"call_webhook",
+]);
+
+const StepStatusEnum = t.UnionEnum(["active", "paused"]);
+
 const IdParams = t.Object({
 	id: t.String({ minLength: 1 }),
 });
@@ -15,33 +40,33 @@ const ExecIdParams = t.Object({
 const CWorkflowBody = t.Object({
 	name: t.String({ minLength: 1 }),
 	description: t.Optional(t.String()),
-	category: t.String(),
-	triggerType: t.String(),
+	category: WorkflowCategoryEnum,
+	triggerType: TriggerTypeEnum,
 	triggerConfig: t.Any(),
 });
 
 const UWorkflowBody = t.Object({
 	name: t.Optional(t.String({ minLength: 1 })),
 	description: t.Optional(t.String()),
-	category: t.Optional(t.String()),
-	triggerType: t.Optional(t.String()),
+	category: t.Optional(WorkflowCategoryEnum),
+	triggerType: t.Optional(TriggerTypeEnum),
 	triggerConfig: t.Optional(t.Any()),
 });
 
 const CStepBody = t.Object({
 	workflowId: t.String({ minLength: 1 }),
 	stepOrder: t.Number(),
-	stepType: t.String(),
-	actionType: t.String(),
+	stepType: StepTypeEnum,
+	actionType: ActionTypeEnum,
 	config: t.Any(),
 });
 
 const UStepBody = t.Object({
 	stepOrder: t.Optional(t.Number()),
-	stepType: t.Optional(t.String()),
-	actionType: t.Optional(t.String()),
+	stepType: t.Optional(StepTypeEnum),
+	actionType: t.Optional(ActionTypeEnum),
 	config: t.Optional(t.Any()),
-	status: t.Optional(t.String()),
+	status: t.Optional(StepStatusEnum),
 });
 
 const ReorderBody = t.Object({

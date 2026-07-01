@@ -28,8 +28,20 @@ export async function listWorkflows(
 	category?: string,
 ): Promise<{ data: WorkflowResponse[]; total: number }> {
 	const conditions = [eq(automationWorkflows.companyId, companyId)];
-	if (status) conditions.push(eq(automationWorkflows.status, status));
-	if (category) conditions.push(eq(automationWorkflows.category, category));
+	if (status)
+		conditions.push(
+			eq(
+				automationWorkflows.status,
+				status as (typeof automationWorkflows.$inferSelect)["status"],
+			),
+		);
+	if (category)
+		conditions.push(
+			eq(
+				automationWorkflows.category,
+				category as (typeof automationWorkflows.$inferSelect)["category"],
+			),
+		);
 
 	const rows = await db
 		.select()
