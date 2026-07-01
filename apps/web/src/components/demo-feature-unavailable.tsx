@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { LockKeyhole, ArrowLeft } from "lucide-react";
+import { ArrowLeft, LockKeyhole } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface DemoFeatureUnavailableProps {
@@ -13,7 +13,7 @@ export function DemoFeatureUnavailable({
 }: DemoFeatureUnavailableProps) {
 	return (
 		<div className="min-h-screen bg-background flex items-center justify-center px-6">
-			<div className="w-full max-w-xl rounded-3xl border border-border/50 bg-card/80 p-10 shadow-xl backdrop-blur-md">
+			<div className="w-full max-w-xl rounded-3xl border border-border/50 bg-card/80 p-10 shadow-xl ">
 				<div className="flex items-center gap-4">
 					<div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/12 text-amber-500">
 						<LockKeyhole size={22} />

@@ -103,7 +103,7 @@ function Select({
 			</select>
 			{options.find((o) => o.value === value)?.description && (
 				<p className="mt-1 text-2xs text-[var(--text-tertiary)]">
-					{options.find((o) => o.value === value)!.description}
+					{options.find((o) => o.value === value)?.description}
 				</p>
 			)}
 		</div>
@@ -143,7 +143,7 @@ export function AgentConfigPanel({
 	return (
 		<aside
 			className={cn(
-				"absolute right-0 top-0 z-40 h-full w-80 border-l border-[var(--border-subtle)] bg-[var(--surface-1)]/98 backdrop-blur-xl transition-all duration-300 ease-in-out",
+				"absolute right-0 top-0 z-40 h-full w-80 border-l border-[var(--border-subtle)] bg-[var(--surface-1)]/98  transition-all duration-300 ease-in-out",
 				isOpen
 					? "translate-x-0 opacity-100"
 					: "translate-x-full opacity-0 pointer-events-none",
@@ -204,9 +204,9 @@ export function AgentConfigPanel({
 								{/* Temperature slider */}
 								<div>
 									<div className="mb-2 flex items-center justify-between">
-										<label className="text-xs font-medium text-[var(--text-secondary)]">
+										<span className="text-xs font-medium text-[var(--text-secondary)]">
 											Temperatura
-										</label>
+										</span>
 										<span className="font-mono text-xs font-semibold tabular-nums text-[var(--text-primary)]">
 											{temperaturePercent}%
 										</span>

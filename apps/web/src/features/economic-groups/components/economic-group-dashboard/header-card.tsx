@@ -19,7 +19,7 @@ export function GroupHeaderCard({
 	onOpenSidebar,
 }: GroupHeaderCardProps) {
 	return (
-		<div className="backdrop-blur-xl bg-card/80 border border-border rounded-2xl p-8">
+		<div className=" bg-card/80 border border-border rounded-2xl p-8">
 			<div className="flex items-start justify-between">
 				<Button
 					onClick={onOpenSidebar}
@@ -34,21 +34,29 @@ export function GroupHeaderCard({
 					<h1 className="text-3xl font-black uppercase tracking-wider text-foreground">
 						{groupName}
 					</h1>
-					<p className="text-muted-foreground text-sm mt-2 font-mono">Codigo: {groupCode}</p>
+					<p className="text-muted-foreground text-sm mt-2 font-mono">
+						Codigo: {groupCode}
+					</p>
 					<div className="mt-4 flex items-center gap-4">
 						<div className="flex items-center gap-2">
 							<Zap className="h-5 w-5 text-primary" />
-							<span className="text-sm font-bold text-foreground">{subscriptionTier}</span>
+							<span className="text-sm font-bold text-foreground">
+								{subscriptionTier}
+							</span>
 						</div>
 						<div className="flex items-center gap-2">
 							<Building2 className="h-5 w-5 text-muted-foreground" />
-							<span className="text-sm font-bold text-foreground">{companiesCount} RUCs</span>
+							<span className="text-sm font-bold text-foreground">
+								{companiesCount} RUCs
+							</span>
 						</div>
 					</div>
 				</div>
 
 				<div className="text-right">
-					<p className="text-xs text-muted-foreground uppercase tracking-wider">Tarifa Mensual</p>
+					<p className="text-xs text-muted-foreground uppercase tracking-wider">
+						Tarifa Mensual
+					</p>
 					<p className="text-4xl font-mono font-bold text-primary mt-1">
 						S/ {parseFloat(monthlyFee).toFixed(2)}
 					</p>

@@ -1,8 +1,9 @@
 /**
  * TourTooltip — Step card with header, content, progress dots, and nav buttons
  */
-import type { CSSProperties } from "react";
+
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import type { CSSProperties } from "react";
 import type { TourStep } from "../OnboardingTour.types";
 
 interface TourTooltipProps {
@@ -44,13 +45,14 @@ export function TourTooltip({
 					: `${tooltipStyle.transform || "none"} translateY(6px)`,
 			}}
 		>
-			<div className="w-[320px] max-w-[calc(100vw-32px)] rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] shadow-2xl backdrop-blur-xl overflow-hidden">
+			<div className="w-[320px] max-w-[calc(100vw-32px)] rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] shadow-2xl  overflow-hidden">
 				{/* Header */}
 				<div className="flex items-start justify-between px-4 pt-4 pb-2">
 					<span className="inline-flex items-center justify-center rounded-full bg-[var(--color-info)]/10 px-2.5 py-0.5 text-xs font-semibold text-[var(--color-info)]">
 						{step + 1}/{totalSteps}
 					</span>
 					<button
+						type="button"
 						onClick={onSkip}
 						className="rounded-md p-1 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-2)] transition-colors"
 						aria-label="Saltar tour"
@@ -92,6 +94,7 @@ export function TourTooltip({
 					<div className="flex items-center gap-1.5">
 						{!isFirst && (
 							<button
+								type="button"
 								onClick={onPrev}
 								className="inline-flex items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] px-2.5 py-1.5 text-xs font-medium text-[var(--text-primary)] transition-colors hover:bg-[var(--surface-3)]"
 							>
@@ -101,6 +104,7 @@ export function TourTooltip({
 						)}
 
 						<button
+							type="button"
 							onClick={onNext}
 							className="inline-flex items-center justify-center rounded-lg bg-[var(--color-info)] px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[var(--color-info)]/90"
 						>

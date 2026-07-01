@@ -1,15 +1,15 @@
 import { CheckCircle2, Timer } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { tokensToClasses } from "@/lib/design-tokens";
 import { captureError } from "@/lib/monitoring";
 import { cn } from "@/lib/utils";
 import { ConversationBubble } from "./conversation-bubble";
 import { DemoMetricChip } from "./demo-metric-chip";
 import type {
-  ConversationStep,
-  DemoId,
-  DemoOutcome,
+	ConversationStep,
+	DemoId,
+	DemoOutcome,
 } from "./demo-showcase.types";
-import { tokensToClasses } from "@/lib/design-tokens";
 
 interface DemoPlayerProps {
 	demoId: DemoId;
@@ -166,8 +166,13 @@ export const DemoPlayer = ({ demoId, onClose }: DemoPlayerProps) => {
 	}, [demoId, handleEvent]);
 
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 p-4 backdrop-blur-md">
-			<div className={cn(tokensToClasses.borderRadius('card'), "flex h-[80vh] w-full max-w-2xl flex-col overflow-hidden border border-border/40 bg-background shadow-xl")}>
+		<div className="fixed inset-0 z-50 flex items-center justify-center ui-overlay p-4">
+			<div
+				className={cn(
+					tokensToClasses.borderRadius("card"),
+					"flex h-[80vh] w-full max-w-2xl flex-col overflow-hidden border border-border/40 bg-background shadow-xl",
+				)}
+			>
 				<div className="flex items-center justify-between border-b border-border/20 bg-foreground/[0.02] px-6 py-4">
 					<div className="flex items-center gap-3">
 						<div className="h-2 w-2 motion-safe:animate-pulse rounded-full bg-[var(--premium-success)]" />
@@ -185,6 +190,7 @@ export const DemoPlayer = ({ demoId, onClose }: DemoPlayerProps) => {
 						</div>
 
 						<button
+							type="button"
 							onClick={onClose}
 							className="rounded-lg border border-border/20 bg-foreground/5 px-3 py-1.5 text-2xs font-black uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
 						>
@@ -232,10 +238,7 @@ export const DemoPlayer = ({ demoId, onClose }: DemoPlayerProps) => {
 
 						<div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
 							{outcome.metrics.map((metric, index) => (
-								<DemoMetricChip
-									key={`${metric.label}-${index}`}
-									{...metric}
-								/>
+								<DemoMetricChip key={`${metric.label}-${index}`} {...metric} />
 							))}
 						</div>
 

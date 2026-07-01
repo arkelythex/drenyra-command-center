@@ -16,28 +16,18 @@
  * @since Jun 2026
  */
 
+import { AlertTriangle, Check, Loader2, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useTranslation } from "../i18n/i18n";
-import {
-	AlertTriangle,
-	Check,
-	Loader2,
-	X,
-} from "lucide-react";
-import type { DensityMode } from "./ArtifactCollapsible";
-import { VirtualizedMessageList } from "./VirtualizedMessageList";
-import { extractArtifacts, stripArtifacts } from "@/features/cognitive-hub/logic/artifact-extractor";
-import {
-	parseSimulationIntent,
-	generateSimulationArtifact,
-	generateSimulationSummary,
-} from "../logic/SimulationEngine";
-import { useCognitiveStream } from "@/features/cognitive-hub/hooks/useCognitiveStream";
-import type { CognitiveMessage, HubArtifact } from "@/features/cognitive-hub/types/hub.types";
 import { Button } from "@/components/ui/button";
-import { EvidenceAttachmentForm } from "./EvidenceAttachmentForm";
-import { FiscalCaseCreationForm } from "./FiscalCaseCreationForm";
-import { useChatHistory } from "../hooks/useChatHistory";
+import { useCognitiveStream } from "@/features/cognitive-hub/hooks/useCognitiveStream";
+import {
+	extractArtifacts,
+	stripArtifacts,
+} from "@/features/cognitive-hub/logic/artifact-extractor";
+import type {
+	CognitiveMessage,
+	HubArtifact,
+} from "@/features/cognitive-hub/types/hub.types";
 import type {
 	AddEvidenceRequest,
 	CreateFiscalCaseRequest,
@@ -46,11 +36,21 @@ import type {
 	FiscalCaseDetails,
 	FiscalCaseStatus,
 } from "../api/drenyra-command-center.api";
-
+import { useChatHistory } from "../hooks/useChatHistory";
+import { useTranslation } from "../i18n/i18n";
+import {
+	generateSimulationArtifact,
+	generateSimulationSummary,
+	parseSimulationIntent,
+} from "../logic/SimulationEngine";
+import type { DensityMode } from "./ArtifactCollapsible";
+import { CommandCenterChatCaseDetails } from "./CommandCenterChatCaseDetails";
+import { CommandCenterChatEmptyState } from "./CommandCenterChatEmptyState";
 import { CommandCenterChatHeader } from "./CommandCenterChatHeader";
 import { CommandCenterChatInput } from "./CommandCenterChatInput";
-import { CommandCenterChatEmptyState } from "./CommandCenterChatEmptyState";
-import { CommandCenterChatCaseDetails } from "./CommandCenterChatCaseDetails";
+import { EvidenceAttachmentForm } from "./EvidenceAttachmentForm";
+import { FiscalCaseCreationForm } from "./FiscalCaseCreationForm";
+import { VirtualizedMessageList } from "./VirtualizedMessageList";
 
 // ── Props ────────────────────────────────────────────────────────────────────
 
@@ -95,14 +95,17 @@ export function CommandCenterChat({
 	onRequestApproval,
 	onSelectedAgentChange,
 }: CommandCenterChatProps) {
-	const { messages, appendMessage, updateMessage, clearHistory } = useChatHistory(companyId);
+	const { messages, appendMessage, updateMessage, clearHistory } =
+		useChatHistory(companyId);
 	const { t } = useTranslation();
 	const [input, setInput] = useState("");
 	const [showEvidenceForm, setShowEvidenceForm] = useState(false);
 	const [showNewCaseForm, setShowNewCaseForm] = useState(false);
 	const [showDetails, setShowDetails] = useState(false);
 	const [densityMode, setDensityMode] = useState<DensityMode>("detail");
-	const [pinnedArtifactIds, setPinnedArtifactIds] = useState<Set<string>>(new Set());
+	const [pinnedArtifactIds, setPinnedArtifactIds] = useState<Set<string>>(
+		new Set(),
+	);
 	const [activeThreadId, setActiveThreadId] = useState("main");
 	const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 	const [isDragOver, setIsDragOver] = useState(false);
@@ -119,7 +122,7 @@ export function CommandCenterChat({
 	// ── Derived state ──
 
 	const activeCase = selectedCaseId
-		? cases.find((c) => c.id === selectedCaseId) ?? null
+		? (cases.find((c) => c.id === selectedCaseId) ?? null)
 		: null;
 
 	// ── Thread management ──
@@ -127,201 +130,232 @@ export function CommandCenterChat({
 	const THREAD_KEY = "drenyra:threads:";
 	const THREAD_MAIN_KEY = "drenyra:thread:active";
 
-	const handleCreateThread = useCallback((name: string) => {
-		if (!name || name === "main") {
-			setActiveThreadId("main");
-			return;
-		}
-		const threadId = crypto.randomUUID();
-		const threads = JSON.parse(localStorage.getItem(THREAD_KEY + companyId) || "{}");
-		threads[threadId] = { id: threadId, name, createdAt: Date.now() };
-		localStorage.setItem(THREAD_KEY + companyId, JSON.stringify(threads));
-		localStorage.setItem(THREAD_MAIN_KEY + companyId, threadId);
-		setActiveThreadId(threadId);
-	}, [companyId]);
+	const handleCreateThread = useCallback(
+		(name: string) => {
+			if (!name || name === "main") {
+				setActiveThreadId("main");
+				return;
+			}
+			const threadId = crypto.randomUUID();
+			const threads = JSON.parse(
+				localStorage.getItem(THREAD_KEY + companyId) || "{}",
+			);
+			threads[threadId] = { id: threadId, name, createdAt: Date.now() };
+			localStorage.setItem(THREAD_KEY + companyId, JSON.stringify(threads));
+			localStorage.setItem(THREAD_MAIN_KEY + companyId, threadId);
+			setActiveThreadId(threadId);
+		},
+		[companyId],
+	);
 
 	// ── Command parser & dispatch ──
 
-	const handleCommand = useCallback((content: string) => {
-		const cmdMatch = content.match(/^\/(\w+)\s*(.*)/);
-		if (cmdMatch) {
-			const cmd = cmdMatch[1].toLowerCase();
-			const rest = cmdMatch[2];
+	const handleCommand = useCallback(
+		(content: string) => {
+			const cmdMatch = content.match(/^\/(\w+)\s*(.*)/);
+			if (cmdMatch) {
+				const cmd = cmdMatch[1].toLowerCase();
+				const rest = cmdMatch[2];
 
-			switch (cmd) {
-				case "compacto":
-				case "compact":
-					setDensityMode("compact");
-					return true;
-				case "detalle":
-				case "detail":
-					setDensityMode("detail");
-					return true;
-				case "solo-numeros":
-				case "numbers":
-				case "numeros":
-					setDensityMode("numbers-only");
-					return true;
-				case "rama":
-				case "branch":
-				case "thread":
-					handleCreateThread(rest);
-					return true;
-				case "help":
-				case "ayuda":
-					appendMessage({
-						id: crypto.randomUUID(),
-						role: "assistant",
-						content: "Comandos disponibles:\n\n`/compacto` — Modo compacto\n`/detalle` — Modo detalle\n`/solo-numeros` — Solo números\n`/rama <nombre>` — Crear rama conversacional\n`/rama main` — Volver a rama principal\n`/simular <consulta>` — Simulación predictiva\n`/clear` — Limpiar historial\n`/help` — Esta ayuda",
-						timestamp: new Date(),
-					});
-					return true;
-				case "clear":
-					clearHistory();
-					return true;
-				case "simular":
-				case "simulate":
-					if (!rest) {
+				switch (cmd) {
+					case "compacto":
+					case "compact":
+						setDensityMode("compact");
+						return true;
+					case "detalle":
+					case "detail":
+						setDensityMode("detail");
+						return true;
+					case "solo-numeros":
+					case "numbers":
+					case "numeros":
+						setDensityMode("numbers-only");
+						return true;
+					case "rama":
+					case "branch":
+					case "thread":
+						handleCreateThread(rest);
+						return true;
+					case "help":
+					case "ayuda":
 						appendMessage({
 							id: crypto.randomUUID(),
 							role: "assistant",
-							content: "Usá `/simular <consulta>`. Ej: `/simular incremento de 10% en ventas`",
+							content:
+								"Comandos disponibles:\n\n`/compacto` — Modo compacto\n`/detalle` — Modo detalle\n`/solo-numeros` — Solo números\n`/rama <nombre>` — Crear rama conversacional\n`/rama main` — Volver a rama principal\n`/simular <consulta>` — Simulación predictiva\n`/clear` — Limpiar historial\n`/help` — Esta ayuda",
 							timestamp: new Date(),
 						});
 						return true;
-					}
-					runSimulation(rest);
-					return true;
-				default:
-					return false;
+					case "clear":
+						clearHistory();
+						return true;
+					case "simular":
+					case "simulate":
+						if (!rest) {
+							appendMessage({
+								id: crypto.randomUUID(),
+								role: "assistant",
+								content:
+									"Usá `/simular <consulta>`. Ej: `/simular incremento de 10% en ventas`",
+								timestamp: new Date(),
+							});
+							return true;
+						}
+						runSimulation(rest);
+						return true;
+					default:
+						return false;
+				}
 			}
-		}
-		return false;
-	}, [appendMessage, clearHistory, handleCreateThread]);
+			return false;
+		},
+		[appendMessage, clearHistory, handleCreateThread],
+	);
 
 	// ── Simulation: detect intent + generate artifact locally ──
 
-	const runSimulation = useCallback((query: string) => {
-		const simParam = parseSimulationIntent(query);
-		if (!simParam) {
+	const runSimulation = useCallback(
+		(query: string) => {
+			const simParam = parseSimulationIntent(query);
+			if (!simParam) {
+				appendMessage({
+					id: crypto.randomUUID(),
+					role: "assistant",
+					content:
+						"No pude detectar un escenario de simulación. Probá con:\n- `/simular aumento de 10% en salarios`\n- `¿Qué pasa si subimos las ventas 15%?`\n- `Simulá reducción de 8% en gastos`",
+					timestamp: new Date(),
+				});
+				return;
+			}
+
+			const artifact = generateSimulationArtifact(simParam);
+			const summary = generateSimulationSummary(simParam);
+
 			appendMessage({
 				id: crypto.randomUUID(),
 				role: "assistant",
-				content: "No pude detectar un escenario de simulación. Probá con:\n- `/simular aumento de 10% en salarios`\n- `¿Qué pasa si subimos las ventas 15%?`\n- `Simulá reducción de 8% en gastos`",
+				content: summary,
 				timestamp: new Date(),
+				artifacts: [artifact],
 			});
-			return;
-		}
 
-		const artifact = generateSimulationArtifact(simParam);
-		const summary = generateSimulationSummary(simParam);
+			onContextChange?.({ isStreaming: false, lastArtifact: artifact });
+		},
+		[appendMessage, onContextChange],
+	);
 
-		appendMessage({
-			id: crypto.randomUUID(),
-			role: "assistant",
-			content: summary,
-			timestamp: new Date(),
-			artifacts: [artifact],
-		});
+	const sendMessage = useCallback(
+		async (overrideContent?: string) => {
+			const content = (overrideContent ?? input).trim();
 
-		onContextChange?.({ isStreaming: false, lastArtifact: artifact });
-	}, [appendMessage, onContextChange]);
-
-	const sendMessage = useCallback(async (overrideContent?: string) => {
-		const content = (overrideContent ?? input).trim();
-
-		if (selectedFiles.length === 0 && handleCommand(content)) {
-			if (!overrideContent) setInput("");
-			return;
-		}
-
-		if (!content || isStreaming) return;
-		if (!overrideContent) setInput("");
-
-		// Detect simulation intent (skip if files are attached)
-		if (selectedFiles.length === 0) {
-			const simParam = parseSimulationIntent(content);
-			if (simParam) {
-				const userMessage: CognitiveMessage = {
-					id: crypto.randomUUID(),
-					role: "user",
-					content,
-					timestamp: new Date(),
-				};
-				appendMessage(userMessage);
-				runSimulation(content);
+			if (selectedFiles.length === 0 && handleCommand(content)) {
+				if (!overrideContent) setInput("");
 				return;
 			}
-		}
 
-		// Upload files as evidence if case is selected
-		if (selectedFiles.length > 0 && selectedCaseId && onAddEvidence) {
-			for (const file of selectedFiles) {
-				onAddEvidence({
-					type: "DOCUMENT",
-					title: file.name,
-					summary: `Archivo adjunto: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`,
-					source: "Command Center Chat",
-					sourceRef: file.name,
-				});
-			}
-		}
+			if (!content || isStreaming) return;
+			if (!overrideContent) setInput("");
 
-		// Show attached files in context
-		const fileContext = selectedFiles.length > 0
-			? `\n\n---\n📎 Archivos adjuntos (${selectedFiles.length}):\n${selectedFiles.map((f) => `  - ${f.name}`).join("\n")}`
-			: "";
-
-		const contentWithContext = content + fileContext;
-
-		const userMessage: CognitiveMessage = {
-			id: crypto.randomUUID(),
-			role: "user",
-			content: contentWithContext,
-			timestamp: new Date(),
-		};
-		appendMessage(userMessage);
-
-		// Notificar al panel derecho: streaming en progreso
-		onContextChange?.({ isStreaming: true });
-
-		let fullResponse = "";
-		const assistantId = crypto.randomUUID();
-		appendMessage({
-			id: assistantId,
-			role: "assistant",
-			content: "",
-			timestamp: new Date(),
-			artifacts: [],
-		});
-
-		const messageHistory = [...messages, userMessage].map((m) => ({
-			role: m.role,
-			content: m.content,
-		}));
-
-		await streamMessage(messageHistory, "fast", (event) => {
-			if (event.type === "token") {
-				fullResponse += event.content;
-				updateMessage(assistantId, { content: fullResponse });
+			// Detect simulation intent (skip if files are attached)
+			if (selectedFiles.length === 0) {
+				const simParam = parseSimulationIntent(content);
+				if (simParam) {
+					const userMessage: CognitiveMessage = {
+						id: crypto.randomUUID(),
+						role: "user",
+						content,
+						timestamp: new Date(),
+					};
+					appendMessage(userMessage);
+					runSimulation(content);
+					return;
+				}
 			}
 
-			if (event.type === "done") {
-				const artifacts = extractArtifacts(fullResponse);
-				const cleanContent = stripArtifacts(fullResponse);
-				updateMessage(assistantId, { content: cleanContent, artifacts });
-
-				// Notificar al panel derecho con el último artifact
-				const lastArtifact = artifacts.length > 0 ? artifacts[artifacts.length - 1] : null;
-				onContextChange?.({ isStreaming: false, lastArtifact });
+			// Upload files as evidence if case is selected
+			if (selectedFiles.length > 0 && selectedCaseId && onAddEvidence) {
+				for (const file of selectedFiles) {
+					onAddEvidence({
+						type: "DOCUMENT",
+						title: file.name,
+						summary: `Archivo adjunto: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`,
+						source: "Command Center Chat",
+						sourceRef: file.name,
+					});
+				}
 			}
-		});
 
-		setSelectedFiles([]);
+			// Show attached files in context
+			const fileContext =
+				selectedFiles.length > 0
+					? `\n\n---\n📎 Archivos adjuntos (${selectedFiles.length}):\n${selectedFiles.map((f) => `  - ${f.name}`).join("\n")}`
+					: "";
 
-		// Streaming finalizó sin artifacts
-		onContextChange?.({ isStreaming: false });
-	}, [input, messages, isStreaming, streamMessage, appendMessage, updateMessage, onContextChange, handleCommand, selectedFiles, selectedCaseId, onAddEvidence]);
+			const contentWithContext = content + fileContext;
+
+			const userMessage: CognitiveMessage = {
+				id: crypto.randomUUID(),
+				role: "user",
+				content: contentWithContext,
+				timestamp: new Date(),
+			};
+			appendMessage(userMessage);
+
+			// Notificar al panel derecho: streaming en progreso
+			onContextChange?.({ isStreaming: true });
+
+			let fullResponse = "";
+			const assistantId = crypto.randomUUID();
+			appendMessage({
+				id: assistantId,
+				role: "assistant",
+				content: "",
+				timestamp: new Date(),
+				artifacts: [],
+			});
+
+			const messageHistory = [...messages, userMessage].map((m) => ({
+				role: m.role,
+				content: m.content,
+			}));
+
+			await streamMessage(messageHistory, "fast", (event) => {
+				if (event.type === "token") {
+					fullResponse += event.content;
+					updateMessage(assistantId, { content: fullResponse });
+				}
+
+				if (event.type === "done") {
+					const artifacts = extractArtifacts(fullResponse);
+					const cleanContent = stripArtifacts(fullResponse);
+					updateMessage(assistantId, { content: cleanContent, artifacts });
+
+					// Notificar al panel derecho con el último artifact
+					const lastArtifact =
+						artifacts.length > 0 ? artifacts[artifacts.length - 1] : null;
+					onContextChange?.({ isStreaming: false, lastArtifact });
+				}
+			});
+
+			setSelectedFiles([]);
+
+			// Streaming finalizó sin artifacts
+			onContextChange?.({ isStreaming: false });
+		},
+		[
+			input,
+			messages,
+			isStreaming,
+			streamMessage,
+			appendMessage,
+			updateMessage,
+			onContextChange,
+			handleCommand,
+			selectedFiles,
+			selectedCaseId,
+			onAddEvidence,
+		],
+	);
 
 	// ── Approval handlers ──
 
@@ -337,11 +371,14 @@ export function CommandCenterChat({
 		});
 	}, [pendingApproval, submitApprovalDecision]);
 
-	const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-		const files = Array.from(e.target.files ?? []);
-		setSelectedFiles((prev) => [...prev, ...files]);
-		e.target.value = "";
-	}, []);
+	const handleFileSelect = useCallback(
+		(e: React.ChangeEvent<HTMLInputElement>) => {
+			const files = Array.from(e.target.files ?? []);
+			setSelectedFiles((prev) => [...prev, ...files]);
+			e.target.value = "";
+		},
+		[],
+	);
 
 	const handleRemoveFile = (index: number) => {
 		setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
@@ -356,7 +393,10 @@ export function CommandCenterChat({
 	const handleDragLeave = (e: React.DragEvent) => {
 		e.preventDefault();
 		e.stopPropagation();
-		if (e.currentTarget === e.target || !e.currentTarget.contains(e.relatedTarget as Node)) {
+		if (
+			e.currentTarget === e.target ||
+			!e.currentTarget.contains(e.relatedTarget as Node)
+		) {
 			setIsDragOver(false);
 		}
 	};
@@ -477,7 +517,9 @@ export function CommandCenterChat({
 	// ── Custom event listeners ──
 
 	useEffect(() => {
-		const handleClear = () => { handleCommand("/clear"); };
+		const handleClear = () => {
+			handleCommand("/clear");
+		};
 		const handleDensity = (e: Event) => {
 			const mode = (e as CustomEvent).detail as DensityMode;
 			setDensityMode(mode);
@@ -512,7 +554,6 @@ export function CommandCenterChat({
 
 	return (
 		<section
-			role="region"
 			aria-label="Centro de Comandos — Chat con agente fiscal"
 			className="flex min-h-[600px] flex-col rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-2)] overflow-hidden"
 		>
@@ -538,13 +579,17 @@ export function CommandCenterChat({
 			{/* ═══════════════════════════════════════════════════════════════
 			     SCROLLABLE CONTENT AREA — Virtualized Message List
 			     ═══════════════════════════════════════════════════════════════ */}
-			<div
+			<section
 				className="relative flex-1 overflow-hidden flex flex-col"
+				aria-label="Zona de adjuntos del chat"
 				onDragOver={handleDragOver}
 				onDragLeave={handleDragLeave}
 				onDrop={handleDrop}
 			>
-				{messages.length === 0 && !isStreaming && !showEvidenceForm && !showNewCaseForm ? (
+				{messages.length === 0 &&
+				!isStreaming &&
+				!showEvidenceForm &&
+				!showNewCaseForm ? (
 					<CommandCenterChatEmptyState sendMessage={sendMessage} />
 				) : (
 					/* ── Content: forms + virtualized messages + footer ── */
@@ -586,23 +631,31 @@ export function CommandCenterChat({
 							<div className="shrink-0 space-y-4 px-4 lg:px-6 pb-4">
 								{/* ── Approval UI ── */}
 								{pendingApproval && (
-									<div className="rounded-xl border border-[var(--color-warning)]/30 bg-[var(--color-warning)]/10 p-4" role="status" aria-live="polite" aria-atomic="true">
+									<div
+										className="rounded-xl border border-[var(--color-warning)]/30 bg-[var(--color-warning)]/10 p-4"
+										role="status"
+										aria-live="polite"
+										aria-atomic="true"
+									>
 										<div className="flex items-center gap-2">
 											<AlertTriangle
 												size={16}
 												className="text-[var(--color-warning)]"
 												aria-hidden="true"
 											/>
-											<p className="text-sm font-bold">{t("chat.approval.title")}</p>
+											<p className="text-sm font-bold">
+												{t("chat.approval.title")}
+											</p>
 										</div>
 										<p className="mt-1 text-xs text-[var(--text-secondary)] font-mono">
 											{pendingApproval.name}
 										</p>
-										{pendingApproval.args !== undefined && pendingApproval.args !== null && (
-											<pre className="mt-2 overflow-x-auto rounded-lg bg-[var(--surface-2)] p-2 text-2xs text-[var(--text-tertiary)]">
-												{JSON.stringify(pendingApproval.args, null, 2)}
-											</pre>
-										)}
+										{pendingApproval.args !== undefined &&
+											pendingApproval.args !== null && (
+												<pre className="mt-2 overflow-x-auto rounded-lg bg-[var(--surface-2)] p-2 text-2xs text-[var(--text-tertiary)]">
+													{JSON.stringify(pendingApproval.args, null, 2)}
+												</pre>
+											)}
 										<div className="mt-3 flex gap-2">
 											<Button
 												size="sm"
@@ -627,8 +680,16 @@ export function CommandCenterChat({
 
 								{/* ── Streaming indicator ── */}
 								{isStreaming && !pendingApproval && (
-									<div className="flex items-center gap-2 px-1 text-xs text-[var(--text-tertiary)]" role="status" aria-live="polite">
-										<Loader2 size={14} className="animate-spin" aria-hidden="true" />
+									<div
+										className="flex items-center gap-2 px-1 text-xs text-[var(--text-tertiary)]"
+										role="status"
+										aria-live="polite"
+									>
+										<Loader2
+											size={14}
+											className="animate-spin"
+											aria-hidden="true"
+										/>
 										{t("chat.streaming")}
 									</div>
 								)}
@@ -651,13 +712,19 @@ export function CommandCenterChat({
 
 				{/* ── Drag overlay ── */}
 				{isDragOver && (
-					<div className="absolute inset-0 z-50 flex items-center justify-center bg-[var(--surface-1)]/90 backdrop-blur-xl" role="status" aria-live="polite">
+					<div
+						className="absolute inset-0 z-50 flex items-center justify-center bg-[var(--surface-1)]/90 "
+						role="status"
+						aria-live="polite"
+					>
 						<div className="rounded-2xl border-2 border-dashed border-[var(--color-info)]/40 p-12 text-center">
-							<p className="text-lg font-bold text-[var(--text-primary)]">Soltá archivos aquí</p>
+							<p className="text-lg font-bold text-[var(--text-primary)]">
+								Soltá archivos aquí
+							</p>
 						</div>
 					</div>
 				)}
-			</div>
+			</section>
 
 			<CommandCenterChatInput
 				input={input}

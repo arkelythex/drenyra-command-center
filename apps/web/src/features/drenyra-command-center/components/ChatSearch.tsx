@@ -7,8 +7,8 @@
  * @since Jun 2026
  */
 
-import { Fragment, useEffect, useMemo, useRef } from "react";
 import { Bot, Search, User, X } from "lucide-react";
+import { Fragment, useEffect, useMemo, useRef } from "react";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -92,7 +92,11 @@ export function ChatSearch({
 						</span>
 						<div className="min-w-0 flex-1">
 							<p className="text-xs font-semibold text-[var(--text-primary)]">
-								{result.role === "assistant" ? "Assistant" : result.role === "system" ? "Sistema" : "User"}
+								{result.role === "assistant"
+									? "Assistant"
+									: result.role === "system"
+										? "Sistema"
+										: "User"}
 							</p>
 							<p className="mt-0.5 line-clamp-2 text-2xs text-[var(--text-tertiary)] leading-relaxed">
 								{segments.map((seg, i) =>
@@ -116,7 +120,7 @@ export function ChatSearch({
 	);
 
 	return (
-		<section className="w-80 rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/95 shadow-lg backdrop-blur-xl">
+		<section className="w-80 rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/95 shadow-lg ">
 			<div className="relative">
 				<Search
 					size={18}

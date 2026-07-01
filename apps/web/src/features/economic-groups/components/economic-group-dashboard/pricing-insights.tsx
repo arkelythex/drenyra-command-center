@@ -21,11 +21,13 @@ export function PricingInsights({
 }: PricingInsightProps) {
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-			<div className="backdrop-blur-xl bg-surface-2 border border-stroke-2 rounded-2xl p-6">
+			<div className=" bg-surface-2 border border-stroke-2 rounded-2xl p-6">
 				<div className="flex items-center gap-3">
 					<TrendingDown className="h-10 w-10 text-info" />
 					<div>
-						<h3 className="text-sm font-black text-info uppercase tracking-wider">Ahorro Mensual</h3>
+						<h3 className="text-sm font-black text-info uppercase tracking-wider">
+							Ahorro Mensual
+						</h3>
 						<p className="text-4xl font-mono font-bold text-foreground mt-1">
 							S/ {savings.vsConcar.toFixed(2)}
 						</p>
@@ -36,7 +38,7 @@ export function PricingInsights({
 				</div>
 			</div>
 
-			<div className="backdrop-blur-xl bg-card/80 border border-border rounded-2xl p-6">
+			<div className=" bg-card/80 border border-border rounded-2xl p-6">
 				<h3 className="text-xs font-black uppercase tracking-wider text-muted-foreground mb-4">
 					Comparacion de Precios ({companiesCount} RUCs)
 				</h3>
