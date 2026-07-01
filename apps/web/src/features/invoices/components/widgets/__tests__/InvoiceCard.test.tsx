@@ -60,8 +60,8 @@ vi.mock("@/hooks/useHaptics", () => ({
 	}),
 }));
 
-vi.mock("@/components/ui/liquid-glass", () => ({
-	LiquidGlassCard: ({ children }: { children: ReactNode }) => (
+vi.mock("@/components/ui/SurfacePanel", () => ({
+	SurfacePanel: ({ children }: { children: ReactNode }) => (
 		<div>{children}</div>
 	),
 }));
@@ -79,11 +79,9 @@ vi.mock("@/features/invoices/components/SendEmailModal", () => ({
 }));
 
 vi.mock("@/features/invoices/components/PDFPreviewModal", () => ({
-	PDFPreviewModal: ({
-		invoiceNumber,
-	}: {
-		invoiceNumber: string;
-	}) => <div data-testid="pdf-preview-modal-mock">{invoiceNumber}</div>,
+	PDFPreviewModal: ({ invoiceNumber }: { invoiceNumber: string }) => (
+		<div data-testid="pdf-preview-modal-mock">{invoiceNumber}</div>
+	),
 }));
 
 import { InvoiceCard } from "../InvoiceCard";
@@ -190,10 +188,12 @@ describe("InvoiceCard", () => {
 			button: 0,
 			ctrlKey: false,
 		});
-		fireEvent.click(await screen.findByRole("menuitem", { name: /vista previa pdf/i }));
-
-		expect(await screen.findByTestId("pdf-preview-modal-mock")).toHaveTextContent(
-			"F001-00000002",
+		fireEvent.click(
+			await screen.findByRole("menuitem", { name: /vista previa pdf/i }),
 		);
+
+		expect(
+			await screen.findByTestId("pdf-preview-modal-mock"),
+		).toHaveTextContent("F001-00000002");
 	});
 });

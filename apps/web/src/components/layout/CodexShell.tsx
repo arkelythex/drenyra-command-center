@@ -85,7 +85,7 @@ export function CodexShell(_props: CodexShellProps) {
 						<button
 							type="button"
 							onClick={toggleSidebar}
-							className="flex items-center gap-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)]/90 px-2.5 py-1.5 text-xs font-medium text-[var(--text-secondary)] shadow-sm backdrop-blur-sm transition-colors hover:text-[var(--text-primary)]"
+							className="flex items-center gap-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)] px-2.5 py-1.5 text-xs font-medium text-[var(--text-secondary)] shadow-sm transition-colors hover:text-[var(--text-primary)]"
 							aria-label="Toggle sidebar"
 						>
 							<PanelLeft size={14} />
@@ -94,7 +94,7 @@ export function CodexShell(_props: CodexShellProps) {
 						<button
 							type="button"
 							onClick={toggleRightPanel}
-							className="flex items-center gap-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)]/90 px-2.5 py-1.5 text-xs font-medium text-[var(--text-secondary)] shadow-sm backdrop-blur-sm transition-colors hover:text-[var(--text-primary)]"
+							className="flex items-center gap-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)] px-2.5 py-1.5 text-xs font-medium text-[var(--text-secondary)] shadow-sm transition-colors hover:text-[var(--text-primary)]"
 							aria-label="Toggle right panel"
 						>
 							<Eye size={14} />
@@ -103,7 +103,7 @@ export function CodexShell(_props: CodexShellProps) {
 						<button
 							type="button"
 							onClick={() => setMissionSidebarOpen(!missionSidebarOpen)}
-							className="flex items-center gap-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)]/90 px-2.5 py-1.5 text-xs font-medium text-[var(--text-secondary)] shadow-sm backdrop-blur-sm transition-colors hover:text-[var(--color-primary)]"
+							className="flex items-center gap-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)] px-2.5 py-1.5 text-xs font-medium text-[var(--text-secondary)] shadow-sm transition-colors hover:text-[var(--color-primary)]"
 							aria-label="Toggle missions"
 						>
 							<Rocket size={14} />
@@ -116,7 +116,7 @@ export function CodexShell(_props: CodexShellProps) {
 						type="button"
 						onClick={() => setMissionSidebarOpen(!missionSidebarOpen)}
 						className={cn(
-							"fixed bottom-20 right-4 z-50 flex items-center gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/90 px-3 py-2.5 text-xs font-medium text-[var(--text-secondary)] shadow-lg backdrop-blur-sm transition-colors hover:border-[var(--color-primary)]/30 hover:text-[var(--color-primary)]",
+							"fixed bottom-20 right-4 z-50 flex items-center gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] px-3 py-2.5 text-xs font-medium text-[var(--text-secondary)] shadow-lg transition-colors hover:border-[var(--color-primary)]/30 hover:text-[var(--color-primary)]",
 							"max-lg:hidden",
 						)}
 						aria-label="Toggle missions"

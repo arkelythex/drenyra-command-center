@@ -1,10 +1,10 @@
 import { expect, test } from "@playwright/test";
 
 /**
- * Visual regression stubs — Fiscal Editorial v3.
- * Capture baselines when dev server + auth fixture available.
+ * Visual regression — Fiscal Editorial v3.
+ * Baseline capture: run locally with auth fixture (`E2E_AUTH_READY=1`).
  */
-test.describe("Fiscal Editorial visual smoke", () => {
+test.describe("Fiscal Editorial visual smoke @design-system", () => {
 	test.skip("dashboard shell uses fiscal-editorial data attribute", async ({
 		page,
 	}) => {
@@ -14,10 +14,24 @@ test.describe("Fiscal Editorial visual smoke", () => {
 		).toBeVisible();
 	});
 
-	test.skip("sire-diff page renders diff viewer", async ({ page }) => {
+	test.skip("sire-diff page renders diff viewer (requires sire-diff route)", async ({
+		page,
+	}) => {
 		await page.goto("/cumplimiento/sire-diff");
 		await expect(
 			page.locator("[data-component='diff-viewer-v3']"),
 		).toBeVisible();
+	});
+
+	test("tokens CSS exposes fiscal editorial surface variables", async ({
+		page,
+	}) => {
+		await page.goto("/");
+		const background = await page.evaluate(() =>
+			getComputedStyle(document.documentElement).getPropertyValue(
+				"--background",
+			),
+		);
+		expect(background.trim().length).toBeGreaterThan(0);
 	});
 });

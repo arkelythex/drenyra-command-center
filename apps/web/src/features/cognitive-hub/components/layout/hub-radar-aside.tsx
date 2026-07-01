@@ -25,7 +25,7 @@ export const HubRadarAside = ({ onAction }: HubRadarAsideProps) => {
 		<motion.aside
 			initial={false}
 			animate={{ width: isCollapsed ? 64 : 320 }}
-			className="relative hidden shrink-0 flex-col border-l border-border/40 bg-white/80 backdrop-blur-2xl lg:flex overflow-hidden transition-all duration-300 ease-in-out shadow-[-10px_0_30px_rgba(0,0,0,0.02)]"
+			className="relative hidden shrink-0 flex-col border-l border-[var(--border-subtle)] bg-[var(--surface-1)] lg:flex overflow-hidden transition-all duration-300 ease-in-out shadow-[-10px_0_30px_rgba(0,0,0,0.02)]"
 		>
 			{/* Toggle Button - Now on the left side */}
 			<button
