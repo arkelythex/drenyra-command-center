@@ -14,6 +14,7 @@ import { sireAuditRoute } from "./features/ai-swarm/api/sire-audit.route";
 import { aiControlPlaneModule } from "./features/ai-swarm/control-plane";
 import { aiWorkersRoutes } from "./features/ai-swarm/workers";
 import { aiToolPermissionsModule } from "./features/ai-tool-permissions";
+import { apiMarketplaceModule } from "./features/api-marketplace";
 import { authRoutes } from "./features/auth/auth.routes";
 import { bankingRoutes } from "./features/banking";
 import { bankingProvidersRoutes } from "./features/banking-providers/api/routes";
@@ -46,6 +47,7 @@ import { llmGatewayModule } from "./features/llm-gateway/module";
 import { monthlyCloseModule } from "./features/monthly-close";
 import { platformMcpModule } from "./features/platform";
 import { pseComplianceRoutes } from "./features/pse-compliance";
+import { ragEnterpriseRoutes } from "./features/rag-enterprise";
 import { sireComparisonModule } from "./features/sire-comparison";
 import { sunatApiModule } from "./features/sunat";
 import { vendorRoutes } from "./features/vendors";
@@ -219,6 +221,11 @@ const baseApp = new Elysia()
 						description:
 							"Fiscal intelligence: anomaly detection, cashflow analysis, compliance checks, supplier analysis, document classification",
 					},
+					{
+						name: "RAG Enterprise",
+						description:
+							"Enterprise knowledge base with document management and semantic search",
+					},
 				],
 			},
 		}),
@@ -244,6 +251,7 @@ const baseApp = new Elysia()
 	.use(dashboardModule)
 	.use(llmGatewayModule)
 	.use(aiRagModule)
+	.use(apiMarketplaceModule)
 	.use(aiControlPlaneModule)
 	.use(accountingPrRoutes)
 	.use(agenticLedgerModule)
@@ -264,7 +272,8 @@ const baseApp = new Elysia()
 	.use(civicModule)
 	.use(clientCommsModule)
 	.use(sunatApiModule)
-	.use(sireComparisonModule);
+	.use(sireComparisonModule)
+	.use(ragEnterpriseRoutes);
 
 /** Public contract for Eden Treaty clients — use `baseApp` so OTEL/listen do not narrow inference. */
 export type App = typeof baseApp;
