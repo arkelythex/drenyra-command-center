@@ -109,6 +109,22 @@ export {
 	workerTaskPriorityEnum,
 	workerTaskStatusEnum,
 } from "./ai-worker-queues.schema";
+// --- API MARKETPLACE ---
+export {
+	type ConnectionStatus,
+	connectionStatusEnum,
+	type IntegrationCategory,
+	type IntegrationConfigSchema,
+	type IntegrationProvider,
+	integrationCategoryEnum,
+	integrationConnections,
+	integrationConnectionsRelations,
+	integrationProviderEnum,
+	integrationWebhooks,
+	integrationWebhooksRelations,
+	marketplaceIntegrations,
+	marketplaceIntegrationsRelations,
+} from "./api-marketplace.schema";
 export {
 	authAccounts,
 	authAccountsRelations,
@@ -210,6 +226,15 @@ export {
 	sessions,
 	users,
 } from "./core.schema";
+// --- DOCTOR MODE ---
+export {
+	type CheckHistoryEntry,
+	checkHistory,
+	type NewCheckHistoryEntry,
+	type NewSystemCheck,
+	type SystemCheck,
+	systemChecks,
+} from "./doctor-mode.schema";
 export { documents } from "./documents.schema";
 export {
 	drenyraAgentRuns,
@@ -480,3 +505,23 @@ export {
 	findingSeverities,
 	findingStatuses,
 } from "./judgment-day.schema";
+
+// --- RAG ENTERPRISE ---
+export {
+	type KbChunk,
+	type KbCollection,
+	type KbDocument,
+	type KbQuery,
+	kbChunks,
+	kbChunksRelations,
+	kbCollections,
+	kbCollectionsRelations,
+	kbDocuments,
+	kbDocumentsRelations,
+	kbQueries,
+	kbQueriesRelations,
+	type NewKbChunk,
+	type NewKbCollection,
+	type NewKbDocument,
+	type NewKbQuery,
+} from "./rag-enterprise.schema";

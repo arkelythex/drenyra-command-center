@@ -25,6 +25,7 @@ import { companySettingsRoute } from "./features/company/api/settings.route";
 import { customerRoutes } from "./features/customers";
 import { dashboardModule } from "./features/dashboard";
 import { detractionsModule } from "./features/detractions";
+import { doctorModeModule } from "./features/doctor-mode";
 import { drenyraModule } from "./features/drenyra/drenyra.routes";
 import { expedientesModule } from "./features/expedientes";
 import { firmRoutes } from "./features/firm";
@@ -259,6 +260,7 @@ const baseApp = new Elysia()
 	.use(detractionsModule)
 	.use(monthlyCloseModule)
 	.use(drenyraModule)
+	.use(doctorModeModule)
 	.use(civicModule)
 	.use(clientCommsModule)
 	.use(sunatApiModule)
