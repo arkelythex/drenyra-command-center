@@ -195,6 +195,12 @@ export {
 	messages,
 	messagesRelations,
 } from "./chat.schema";
+// --- CLIENT COMMS ---
+export {
+	commAutomations,
+	commHistory,
+	commTemplates,
+} from "./client-comms.schema";
 // --- CORE ---
 export {
 	accountingJobRuns,

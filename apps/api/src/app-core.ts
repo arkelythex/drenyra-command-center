@@ -20,6 +20,7 @@ import { bankingProvidersRoutes } from "./features/banking-providers/api/routes"
 import { billRoutes, invoiceRoutes } from "./features/billing";
 import { cashflowRoutes } from "./features/cashflow/api/routes";
 import { civicModule } from "./features/civic";
+import { clientCommsModule } from "./features/client-comms";
 import { companySettingsRoute } from "./features/company/api/settings.route";
 import { customerRoutes } from "./features/customers";
 import { dashboardModule } from "./features/dashboard";
@@ -259,6 +260,7 @@ const baseApp = new Elysia()
 	.use(monthlyCloseModule)
 	.use(drenyraModule)
 	.use(civicModule)
+	.use(clientCommsModule)
 	.use(sunatApiModule)
 	.use(sireComparisonModule);
 
