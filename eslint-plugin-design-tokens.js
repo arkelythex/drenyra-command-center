@@ -5,7 +5,13 @@
 const OFF_BRAND_COLOR_PATTERN =
 	/\b(?:text|bg|border|ring|fill|stroke)-(?:blue|indigo|violet|purple|pink|rose|sky|cyan|teal|emerald|lime|fuchsia)-\d{2,3}\b/;
 
-const DECORATIVE_BLUR_PATTERN = /\bbackdrop-blur-(?:glass|md|lg|xl|2xl|3xl)\b/;
+const DECORATIVE_BLUR_PATTERN =
+	/\bbackdrop-blur-(?:glass|sm|md|lg|xl|2xl|3xl)\b/;
+
+const DEPRECATED_GLASS_IMPORTS = new Set([
+	"@/components/ui/glass-card",
+	"@/components/ui/liquid-glass",
+]);
 
 /** @type {import('eslint').ESLint.Plugin} */
 const plugin = {
@@ -59,6 +65,41 @@ const plugin = {
 								node,
 								message:
 									"Decorative backdrop-blur is deprecated — use SurfacePanel / flat editorial surfaces.",
+							});
+						}
+					},
+					TemplateElement(node) {
+						if (DECORATIVE_BLUR_PATTERN.test(node.value.raw)) {
+							context.report({
+								node,
+								message:
+									"Decorative backdrop-blur is deprecated — use SurfacePanel / flat editorial surfaces.",
+							});
+						}
+					},
+				};
+			},
+		},
+		"no-deprecated-glass-surface": {
+			meta: {
+				type: "problem",
+				docs: {
+					description:
+						"Disallow imports of deprecated GlassCard / LiquidGlass shims in feature code",
+				},
+			},
+			create(context) {
+				return {
+					ImportDeclaration(node) {
+						const source = node.source.value;
+						if (
+							typeof source === "string" &&
+							DEPRECATED_GLASS_IMPORTS.has(source)
+						) {
+							context.report({
+								node,
+								message:
+									"GlassCard/LiquidGlass are deprecated — use SurfacePanel from @/components/ui/SurfacePanel.",
 							});
 						}
 					},

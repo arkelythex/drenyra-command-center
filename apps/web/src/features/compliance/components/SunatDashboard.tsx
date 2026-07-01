@@ -25,13 +25,13 @@ import {
 	MOCK_SIRE_PERIODS,
 	MOCK_TAX_CALENDAR,
 } from "./SunatDashboard.data";
-import { SunatDashboardSkeleton } from "./SunatDashboardSkeleton";
 import type {
 	CalendarType,
 	NotificationType,
 	RucStatus,
 	SireValidationStatus,
 } from "./SunatDashboard.types";
+import { SunatDashboardSkeleton } from "./SunatDashboardSkeleton";
 
 // ─── Style Maps ─────────────────────────────────────────────────────────────
 
@@ -167,7 +167,7 @@ export function SunatDashboard() {
 				<div className="mb-4">
 					<SectionHeader icon={Building2} title="Estado del RUC" />
 				</div>
-				<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 p-6 backdrop-blur-sm">
+				<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-6">
 					<div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
 						<div className="space-y-3">
 							<div className="flex items-center gap-4">
@@ -216,7 +216,7 @@ export function SunatDashboard() {
 							<div
 								key={period.periodo}
 								className={cn(
-									"group rounded-xl border bg-[var(--surface-1)]/80 p-5 backdrop-blur-sm transition-all hover:shadow-sm",
+									"group rounded-xl border bg-[var(--surface-1)] p-5 transition-all hover:shadow-sm",
 									period.estado === "VALIDADO" &&
 										"border-[var(--color-success)]/20 hover:border-[var(--color-success)]/40",
 									period.estado === "PENDIENTE" &&
@@ -232,7 +232,8 @@ export function SunatDashboard() {
 									<Icon
 										size={16}
 										className={cn(
-											period.estado === "VALIDADO" && "text-[var(--color-success)]",
+											period.estado === "VALIDADO" &&
+												"text-[var(--color-success)]",
 											period.estado === "PENDIENTE" &&
 												"text-[var(--color-warning)]",
 											period.estado === "OBSERVADO" &&
@@ -257,7 +258,7 @@ export function SunatDashboard() {
 					<div className="mb-4">
 						<SectionHeader icon={Calendar} title="Calendario Tributario" />
 					</div>
-					<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 backdrop-blur-sm">
+					<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]">
 						{MOCK_TAX_CALENDAR.map((item, index) => (
 							<div
 								key={item.obligacion}
@@ -307,7 +308,10 @@ export function SunatDashboard() {
 						))}
 						{MOCK_TAX_CALENDAR.length === 0 && (
 							<div className="flex flex-col items-center justify-center py-12 text-center">
-								<Calendar size={32} className="mb-3 text-[var(--text-tertiary)]/50" />
+								<Calendar
+									size={32}
+									className="mb-3 text-[var(--text-tertiary)]/50"
+								/>
 								<p className="text-sm font-medium text-[var(--text-tertiary)]">
 									No hay vencimientos próximos
 								</p>
@@ -321,7 +325,7 @@ export function SunatDashboard() {
 					<div className="mb-4">
 						<SectionHeader icon={Bell} title="Notificaciones" />
 					</div>
-					<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 backdrop-blur-sm">
+					<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]">
 						{MOCK_NOTIFICATIONS.map((note) => {
 							const Icon = NOTIFICATION_ICONS[note.tipo];
 							return (
@@ -376,7 +380,10 @@ export function SunatDashboard() {
 						})}
 						{MOCK_NOTIFICATIONS.length === 0 && (
 							<div className="flex flex-col items-center justify-center py-12 text-center">
-								<Bell size={32} className="mb-3 text-[var(--text-tertiary)]/50" />
+								<Bell
+									size={32}
+									className="mb-3 text-[var(--text-tertiary)]/50"
+								/>
 								<p className="text-sm font-medium text-[var(--text-tertiary)]">
 									Sin notificaciones
 								</p>
