@@ -13,7 +13,7 @@ export {
 	modelOpus,
 	modelReasoning,
 } from "./models";
-export type { OCROptions, OCRResponse } from "./ocr";
+export type { OCROptions, OCRResponse, OcrPipelineConfig } from "./ocr";
 // OCR Service
 export {
 	batchExtractInvoices,
@@ -21,7 +21,6 @@ export {
 	extractInvoiceData,
 	OcrPipeline,
 } from "./ocr";
-export type { OcrPipelineConfig } from "./ocr";
 // Prompts
 export {
 	ANTIGRAVITY_PROMPT,
@@ -87,32 +86,41 @@ export {
 // OPENROUTER STREAMING + TOOL CALLING (2026)
 // ============================================
 
+// Accounting Classifier
+export type {
+	ClassificationInput,
+	ClassificationResult,
+} from "./accounting-classifier";
+export {
+	ClassificationSchema,
+	classifyExpense,
+	quickClassify,
+	suggestPurchaseEntry,
+} from "./accounting-classifier";
 // OpenRouter Model Tiers (Future-Proof)
 export type { OpenRouterModelTier } from "./model-registry";
 export {
-	OPENROUTER_MODEL_TIERS,
-	getOpenRouterModelForTier,
 	getOpenRouterFallbackChain,
+	getOpenRouterModelForTier,
 	getOpenRouterTierConfig,
+	OPENROUTER_MODEL_TIERS,
 } from "./model-registry";
 
+// Model Router
+export { ModelRegistryService } from "./model-router/registry";
+export type {
+	CapabilityScore,
+	RouterConfig,
+	RoutingRequest,
+} from "./model-router/types";
 // Tool Bridge (Zod → OpenRouter)
 export type {
-  ToolStreamEvent,
-  ToolApprovalRequest,
-  PermissionEffect,
-  PermissionCheckFn,
+	PermissionCheckFn,
+	PermissionEffect,
+	ToolApprovalRequest,
+	ToolStreamEvent,
 } from "./tool-bridge";
 export {
 	getOpenRouterTools,
 	streamWithToolExecution,
 } from "./tool-bridge";
-
-// Accounting Classifier
-export type { ClassificationInput, ClassificationResult } from "./accounting-classifier";
-export {
-	ClassificationSchema,
-	classifyExpense,
-	suggestPurchaseEntry,
-	quickClassify,
-} from "./accounting-classifier";

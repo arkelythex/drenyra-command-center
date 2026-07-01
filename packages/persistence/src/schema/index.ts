@@ -25,42 +25,37 @@
  * - auxiliary.schema.ts — AI cost events, anomaly alerts, SUNAT knowledge (external file)
  */
 
+// --- ACCOUNTING ---
 export {
-	aiLatencyEvents,
-	type AiLatencyEvent,
-	type NewAiLatencyEvent,
-} from "./ai-latency.schema";
-export { userAISettings, type NewUserAISettings, type UserAISettings } from "./ai-settings.schema";
+	accountingPeriods,
+	accountingPeriodsRelations,
+	cpeLog,
+	cpeLogRelations,
+	detractions,
+	detractionsRelations,
+	exchangeRates,
+	exchangeRatesRelations,
+	journalEntries,
+	journalEntriesRelations,
+	journalEntryLines,
+	journalEntryLinesRelations,
+	pcgeAccounts,
+	pcgeAccountsRelations,
+} from "./accounting.schema";
 // --- AI AGENT RUN ---
 export {
-	agentRunEvents,
-	agentRunStates,
 	type AgentRunEvent,
 	type AgentRunState,
+	agentRunEvents,
+	agentRunStates,
 	type NewAgentRunEvent,
 	type NewAgentRunState,
 } from "./agent-run.schema";
 export {
-	agentRunInputs,
 	type AgentRunInput,
+	agentRunInputs,
 	type NewAgentRunInput,
 } from "./agent-run-inputs.schema";
-// --- AI CONTROL PLANE ---
-export {
-	aiAgents,
-	aiToolPermissions,
-	aiTools,
-	aiTraceEvidence,
-	type AiAgent,
-	type AiTool,
-	type AiToolPermission,
-	type AiTraceEvidence,
-	type NewAiAgent,
-	type NewAiToolPermission,
-	type NewAiTool,
-	type NewAiTraceEvidence,
-} from "./ai-control-plane.schema";
-
 // --- EXTERNAL SCHEMA FILES ---
 export {
 	type AgentTask,
@@ -70,6 +65,31 @@ export {
 	agentTasksRelations,
 	type NewAgentTask,
 } from "./agent-tasks.schema";
+// --- AI CONTROL PLANE ---
+export {
+	type AiAgent,
+	type AiTool,
+	type AiToolPermission,
+	type AiTraceEvidence,
+	aiAgents,
+	aiToolPermissions,
+	aiTools,
+	aiTraceEvidence,
+	type NewAiAgent,
+	type NewAiTool,
+	type NewAiToolPermission,
+	type NewAiTraceEvidence,
+} from "./ai-control-plane.schema";
+export {
+	type AiLatencyEvent,
+	aiLatencyEvents,
+	type NewAiLatencyEvent,
+} from "./ai-latency.schema";
+export {
+	type NewUserAISettings,
+	type UserAISettings,
+	userAISettings,
+} from "./ai-settings.schema";
 export type {
 	AIWorkerTask,
 	NewAIWorkerTask,
@@ -106,23 +126,6 @@ export {
 	type SunatKnowledgeChunk,
 	sunatKnowledgeChunks,
 } from "./auxiliary.schema";
-// --- ACCOUNTING ---
-export {
-	accountingPeriods,
-	accountingPeriodsRelations,
-	cpeLog,
-	cpeLogRelations,
-	detractions,
-	detractionsRelations,
-	exchangeRates,
-	exchangeRatesRelations,
-	journalEntries,
-	journalEntriesRelations,
-	journalEntryLines,
-	journalEntryLinesRelations,
-	pcgeAccounts,
-	pcgeAccountsRelations,
-} from "./accounting.schema";
 export {
 	bankAccounts,
 	bankAccountsRelations,
@@ -146,6 +149,15 @@ export {
 	transactionReconciliationMatches,
 	transactionReconciliationMatchesRelations,
 } from "./banking-reconciliation-matches.schema";
+// --- AGENT BATCH RUNS ---
+export {
+	type BatchRun,
+	type BatchRunItem,
+	batchRunItems,
+	batchRuns,
+	type NewBatchRun,
+	type NewBatchRunItem,
+} from "./batch-run.schema";
 // --- BUSINESS PARTNERS ---
 export {
 	businessPartners,
@@ -169,6 +181,13 @@ export {
 } from "./core.schema";
 export { documents } from "./documents.schema";
 export {
+	drenyraAgentRuns,
+	drenyraApprovalRequests,
+	drenyraAuditEvents,
+	drenyraEvidenceItems,
+	drenyraFiscalCases,
+} from "./drenyra-command-center.schema";
+export {
 	economicGroups,
 	economicGroupsRelations,
 	firmModelLearnings,
@@ -189,6 +208,14 @@ export {
 	transactionTypeEnum,
 } from "./enums";
 export {
+	evidenceEdges,
+	evidenceEdgesRelations,
+	evidenceNodes,
+	fiscalReplayCheckpoints,
+	fiscalTruthEvents,
+	fiscalTruthEventsRelations,
+} from "./fiscal-truth.schema";
+export {
 	inventory,
 	inventoryMovements,
 	inventoryMovementsRelations,
@@ -208,46 +235,25 @@ export {
 	payments,
 	paymentsRelations,
 } from "./invoicing.schema";
+// --- MODEL ROUTER ---
 export {
-	evidenceEdges,
-	evidenceEdgesRelations,
-	evidenceNodes,
-	fiscalReplayCheckpoints,
-	fiscalTruthEvents,
-	fiscalTruthEventsRelations,
-} from "./fiscal-truth.schema";
-
-// --- AGENT BATCH RUNS ---
-export {
-	batchRunItems,
-	batchRuns,
-	type BatchRun,
-	type BatchRunItem,
-	type NewBatchRun,
-	type NewBatchRunItem,
-} from "./batch-run.schema";
-
-export {
-	drenyraAgentRuns,
-	drenyraApprovalRequests,
-	drenyraAuditEvents,
-	drenyraEvidenceItems,
-	drenyraFiscalCases,
-} from "./drenyra-command-center.schema";
+	capabilityRoutingRules,
+	modelRegistrations,
+	routingAuditLog,
+	routingAuditLogRelations,
+} from "./model-router.schema";
 export { platformMcpAuditEvents } from "./platform-mcp.schema";
-
+// --- PRODUCTS ---
+export {
+	products,
+	productsRelations,
+} from "./products.schema";
 // --- SECURITY ---
 export {
 	accessLogs,
 	failedLoginAttempts,
 	promptGuardAudit,
 } from "./security.schema";
-
-// --- PRODUCTS ---
-export {
-	products,
-	productsRelations,
-} from "./products.schema";
 export {
 	sireJobs,
 	sireJobsRelations,
@@ -367,20 +373,20 @@ export const customerProfilesRelations = relations(
 
 // --- ERROR RECOVERY ---
 export {
-	circuitBreakerStates,
-	failedAgentItems,
 	type CircuitBreakerState,
+	circuitBreakerStates,
 	type FailedAgentItem,
+	failedAgentItems,
 	type NewCircuitBreakerState,
 	type NewFailedAgentItem,
 } from "./error-recovery.schema";
 
 // --- FISCAL MEMORY ---
 export {
-	fiscalMemories,
-	fiscalMemoryRevisions,
 	type FiscalMemoryRevisionRow,
 	type FiscalMemoryRow,
+	fiscalMemories,
+	fiscalMemoryRevisions,
 	type NewFiscalMemoryRevisionRow,
 	type NewFiscalMemoryRow,
 } from "./fiscal-memory.schema";
