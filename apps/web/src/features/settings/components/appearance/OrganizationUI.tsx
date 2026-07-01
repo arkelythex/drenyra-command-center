@@ -1,4 +1,4 @@
-import { Building2, ShieldCheck, Mail, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Building2, Mail, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const OrganizationIdentity = ({
@@ -9,7 +9,7 @@ export const OrganizationIdentity = ({
 	ruc: string;
 }) => {
 	return (
-		<div className="relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface-low)]/50 p-8 backdrop-blur-3xl">
+		<div className="relative overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-8">
 			{/* Decorative Entity Icon */}
 			<div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[var(--accent)]/5 blur-2xl" />
 
@@ -104,7 +104,10 @@ export const MemberCard = ({ name, email, role }: MemberCardProps) => {
 				>
 					{role}
 				</div>
-				<button className="flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface-high)] text-[var(--ink-tertiary)] opacity-0 transition-all group-hover:opacity-100 hover:text-[var(--accent)] hover:border-[var(--accent)]/30">
+				<button
+					type="button"
+					className="flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface-high)] text-[var(--ink-tertiary)] opacity-0 transition-all group-hover:opacity-100 hover:text-[var(--accent)] hover:border-[var(--accent)]/30"
+				>
 					<ArrowUpRight size={14} />
 				</button>
 			</div>

@@ -27,12 +27,7 @@ import { cn, formatDate, n } from "@/lib/utils";
 import { KpiCard, KpiCardSkeleton } from "./KpiCard";
 import { ObligationStatusBadge } from "./ObligationStatusBadge";
 import { DEMO_INVOICES, PERIODS, TAX_OBLIGATIONS } from "./SunatDashboard.data";
-import type {
-	Period,
-	SortDir,
-	SortKey,
-	SunatInvoice,
-} from "./SunatDashboard.types";
+import type { Period, SortDir, SortKey } from "./SunatDashboard.types";
 import { sortInvoices } from "./SunatDashboard.types";
 import { TableSkeleton } from "./TableSkeleton";
 
@@ -91,7 +86,7 @@ export function SunatDashboard() {
 	if (error) {
 		return (
 			<div className="mx-auto max-w-7xl px-6 py-8">
-				<div className="flex flex-col items-center justify-center rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/60 p-16 backdrop-blur-sm">
+				<div className="flex flex-col items-center justify-center rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-16">
 					<AlertCircle
 						size={48}
 						className="mb-4 text-[var(--premium-danger)]"
@@ -131,7 +126,7 @@ export function SunatDashboard() {
 					<button
 						type="button"
 						onClick={() => setPeriodOpen((o) => !o)}
-						className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 px-4 py-2 text-sm font-medium text-[var(--text-primary)] backdrop-blur-sm transition-colors hover:bg-[var(--surface-2)]"
+						className="inline-flex items-center gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)] px-4 py-2 text-sm font-medium text-[var(--text-primary)] transition-colors hover:bg-[var(--surface-2)]"
 						aria-expanded={periodOpen}
 						aria-haspopup="listbox"
 					>
@@ -149,6 +144,7 @@ export function SunatDashboard() {
 					{periodOpen && (
 						<>
 							{/* Backdrop to close */}
+							{/* biome-ignore lint/a11y/noStaticElementInteractions: dismiss overlay */}
 							<div
 								className="fixed inset-0 z-10"
 								onClick={() => setPeriodOpen(false)}
@@ -162,7 +158,7 @@ export function SunatDashboard() {
 								}}
 							/>
 							<div
-								className="absolute right-0 z-20 mt-2 w-44 overflow-hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/95 backdrop-blur-xl shadow-lg"
+								className="absolute right-0 z-20 mt-2 w-44 overflow-hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-2)] shadow-lg"
 								role="listbox"
 								aria-label="Seleccionar periodo"
 							>
@@ -235,7 +231,7 @@ export function SunatDashboard() {
 			<div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
 				{/* ── Left Column: Invoices Table ────────────────────────── */}
 				<div className="lg:col-span-2">
-					<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 backdrop-blur-sm overflow-hidden">
+					<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] overflow-hidden">
 						<div className="border-b border-[var(--border-subtle)] px-6 py-4">
 							<h2 className="text-sm font-semibold text-[var(--text-primary)]">
 								Comprobantes por estado SUNAT
@@ -349,7 +345,7 @@ export function SunatDashboard() {
 				{/* ── Right Column ────────────────────────────────────────── */}
 				<div className="flex flex-col gap-6">
 					{/* Tax Calendar */}
-					<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 backdrop-blur-sm">
+					<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]">
 						<div className="border-b border-[var(--border-subtle)] px-5 py-4">
 							<div className="flex items-center gap-2">
 								<Calendar
@@ -365,7 +361,8 @@ export function SunatDashboard() {
 
 						{isLoading ? (
 							<div className="space-y-3 p-5">
-								{Array.from({ length: 4 }).map((_, i) => (
+								{Array.from({ length: 4 }, (_, i) => (
+									// biome-ignore lint/suspicious/noArrayIndexKey: static loading skeleton
 									<div key={i} className="space-y-2">
 										<div className="h-3 w-40 animate-pulse rounded bg-[var(--surface-2)]" />
 										<div className="h-3 w-24 animate-pulse rounded bg-[var(--surface-2)]" />
@@ -395,7 +392,7 @@ export function SunatDashboard() {
 					</div>
 
 					{/* SUNAT Summary */}
-					<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 backdrop-blur-sm">
+					<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]">
 						<div className="border-b border-[var(--border-subtle)] px-5 py-4">
 							<div className="flex items-center gap-2">
 								<Building2
@@ -411,7 +408,8 @@ export function SunatDashboard() {
 
 						{isLoading ? (
 							<div className="space-y-3 p-5">
-								{Array.from({ length: 5 }).map((_, i) => (
+								{Array.from({ length: 5 }, (_, i) => (
+									// biome-ignore lint/suspicious/noArrayIndexKey: static loading skeleton
 									<div key={i} className="flex items-center justify-between">
 										<div className="h-3 w-24 animate-pulse rounded bg-[var(--surface-2)]" />
 										<div className="h-3 w-28 animate-pulse rounded bg-[var(--surface-2)]" />
