@@ -83,8 +83,14 @@ export {
 	type JournalEntryStatus,
 } from "./JournalEntry";
 export {
+	type CompanySummaryDTO,
+	type FirmAlertDTO,
+	type FirmDashboardDTO,
+	type FirmMetrics,
 	Organization,
+	type OrganizationPrimitiveData,
 	type OrganizationProps,
+	type OrganizationSettings,
 	type OrganizationStatus,
 } from "./organization";
 export { Transaction, type TransactionProps } from "./Transaction";
