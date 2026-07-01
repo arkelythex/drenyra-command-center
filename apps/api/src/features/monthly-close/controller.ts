@@ -115,4 +115,8 @@ export class MonthlyCloseController {
 	async getDashboard(companyId: string, period: string) {
 		return this.repo.getDashboard(companyId, period);
 	}
+
+	async getPeriods(companyId: string) {
+		return this.repo.count(companyId);
+	}
 }

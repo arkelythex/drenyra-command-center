@@ -40,6 +40,7 @@ import {
 	validateLedgerMvpStartupPolicy,
 } from "./features/ledger-mvp/ledger-mvp-rollout.service";
 import { llmGatewayModule } from "./features/llm-gateway/module";
+import { monthlyCloseModule } from "./features/monthly-close";
 import { platformMcpModule } from "./features/platform";
 import { pseComplianceRoutes } from "./features/pse-compliance";
 import { sireComparisonModule } from "./features/sire-comparison";
@@ -253,6 +254,7 @@ const baseApp = new Elysia()
 	.use(journalEntryRoutes)
 	.use(expedientesModule)
 	.use(detractionsModule)
+	.use(monthlyCloseModule)
 	.use(drenyraModule)
 	.use(civicModule)
 	.use(sunatApiModule)

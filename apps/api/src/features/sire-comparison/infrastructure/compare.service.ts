@@ -178,10 +178,12 @@ export class SireComparisonService {
 		resolvedDiscrepancies.set(id, updated);
 
 		if (action === "ACCEPT_SUNAT") {
-			const row = comparisonResults
-				.entries()
-				.find(([, data]) => data.rows.some((r) => r.id === id))?.[1]
-				?.rows.find((r) => r.id === id);
+			const resultsArray = Array.from(comparisonResults.entries());
+			const foundEntry = resultsArray.find(
+				([, data]: [string, { rows: SireDiffRow[]; generatedAt: string }]) =>
+					data.rows.some((r: SireDiffRow) => r.id === id),
+			);
+			const row = foundEntry?.[1]?.rows.find((r: SireDiffRow) => r.id === id);
 
 			if (row?.sunatRecord) {
 				await SireDiffLedgerService.applyResolutions({

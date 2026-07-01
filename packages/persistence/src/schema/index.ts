@@ -279,14 +279,19 @@ export {
 	type ChecklistCategory,
 	type CloseItemStatus,
 	type CloseStatus,
+	checklistCategoryEnum,
 	closeChecklistItems,
 	closeChecklistItemsRelations,
 	closeChecklists,
 	closeChecklistsRelations,
 	closeGates,
 	closeGatesRelations,
+	closeItemStatusEnum,
+	closeStatusEnum,
 	type GateStatus,
 	type GateType,
+	gateStatusEnum,
+	gateTypeEnum,
 } from "./monthly-close.schema";
 export { platformMcpAuditEvents } from "./platform-mcp.schema";
 // --- PRODUCTS ---

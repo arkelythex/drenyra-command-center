@@ -25,6 +25,7 @@
     "./repositories/document.repository": "./src/repositories/document.repository.ts",
     "./repositories/postgres-provider.repository": "./src/repositories/postgres-provider.repository.ts",
     "./repositories/postgres-client.repository": "./src/repositories/postgres-client.repository.ts",
+    "./repositories/postgres-close-checklist.repository": "./src/repositories/postgres-close-checklist.repository.ts",
     "./repositories/postgres-invoice.repository": "./src/repositories/postgres-invoice.repository.ts",
     "./repositories/postgres-transaction.repository": "./src/repositories/postgres-transaction.repository.ts",
     "./repositories/postgres-account.repository": "./src/repositories/postgres-account.repository.ts",

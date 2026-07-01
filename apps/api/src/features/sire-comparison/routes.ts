@@ -1,13 +1,7 @@
 import { Elysia, t } from "elysia";
 import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
-import { fail } from "../shared/api-response";
-import {
-	getComparison,
-	getComparisonReport,
-	getDashboard,
-	getDiscrepancies,
-	resolveDiscrepancy,
-} from "./controller";
+import { fail, getErrorMessage, ok } from "../shared/api-response";
+import { SireComparisonService } from "./infrastructure/compare.service";
 
 export const sireComparisonRoutes = new Elysia({
 	prefix: "/api/sire/comparison",
@@ -22,7 +16,17 @@ export const sireComparisonRoutes = new Elysia({
 				set.status = 403;
 				return fail("Company scope mismatch", "COMPANY_SCOPE_MISMATCH");
 			}
-			return getComparison(query.companyId, params.period, set);
+
+			try {
+				const result = await SireComparisonService.getComparison(
+					query.companyId,
+					params.period,
+				);
+				return ok(result);
+			} catch (error) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "SIRE_COMPARISON_ERROR");
+			}
 		},
 		{
 			params: t.Object({
@@ -46,13 +50,19 @@ export const sireComparisonRoutes = new Elysia({
 				set.status = 403;
 				return fail("Company scope mismatch", "COMPANY_SCOPE_MISMATCH");
 			}
-			return getDiscrepancies(
-				query.companyId,
-				params.period,
-				set,
-				query.type,
-				query.status,
-			);
+
+			try {
+				const discrepancies = await SireComparisonService.getDiscrepancies(
+					query.companyId,
+					params.period,
+					query.type,
+					query.status,
+				);
+				return ok(discrepancies);
+			} catch (error) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "SIRE_DISCREPANCIES_ERROR");
+			}
 		},
 		{
 			params: t.Object({
@@ -88,7 +98,22 @@ export const sireComparisonRoutes = new Elysia({
 	.patch(
 		"/discrepancies/:id/resolve",
 		async ({ params, body, set }) => {
-			return resolveDiscrepancy(params.id, body.action, set, body.notes);
+			try {
+				const result = await SireComparisonService.resolveDiscrepancy(
+					params.id,
+					body.action,
+					body.notes,
+				);
+				return ok(result);
+			} catch (error) {
+				const message = getErrorMessage(error);
+				if (message.includes("not found")) {
+					set.status = 404;
+					return fail(message, "DISCREPANCY_NOT_FOUND");
+				}
+				set.status = 500;
+				return fail(message, "SIRE_RESOLVE_ERROR");
+			}
 		},
 		{
 			params: t.Object({ id: t.String({ minLength: 1 }) }),
@@ -118,7 +143,17 @@ export const sireComparisonRoutes = new Elysia({
 				set.status = 403;
 				return fail("Company scope mismatch", "COMPANY_SCOPE_MISMATCH");
 			}
-			return getComparisonReport(query.companyId, params.period, set);
+
+			try {
+				const result = await SireComparisonService.getReport(
+					query.companyId,
+					params.period,
+				);
+				return ok(result);
+			} catch (error) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "SIRE_REPORT_ERROR");
+			}
 		},
 		{
 			params: t.Object({
@@ -142,7 +177,16 @@ export const sireComparisonRoutes = new Elysia({
 				set.status = 403;
 				return fail("Company scope mismatch", "COMPANY_SCOPE_MISMATCH");
 			}
-			return getDashboard(query.companyId, set);
+
+			try {
+				const result = await SireComparisonService.getDashboard(
+					query.companyId,
+				);
+				return ok(result);
+			} catch (error) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "SIRE_DASHBOARD_ERROR");
+			}
 		},
 		{
 			query: t.Object({ companyId: t.String({ minLength: 1 }) }),

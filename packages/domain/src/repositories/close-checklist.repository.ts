@@ -1,10 +1,35 @@
-export type {
-	ChecklistCategory,
-	CloseItemStatus,
-	CloseStatus,
-	GateStatus,
-	GateType,
-} from "@arkelythex/persistence/schema/monthly-close.schema";
+export type CloseStatus =
+	| "PENDING"
+	| "IN_PROGRESS"
+	| "COMPLETED"
+	| "VERIFIED"
+	| "LOCKED";
+
+export type CloseItemStatus =
+	| "PENDING"
+	| "IN_PROGRESS"
+	| "COMPLETED"
+	| "WAIVED";
+
+export type ChecklistCategory =
+	| "bank_reconciliation"
+	| "depreciation"
+	| "tax_provision"
+	| "accrual"
+	| "deferral"
+	| "inventory"
+	| "intercompany"
+	| "other";
+
+export type GateType =
+	| "open_prs"
+	| "unverified_evidence"
+	| "bank_not_reconciled"
+	| "missing_depreciation"
+	| "pending_tax"
+	| "prior_period_unlocked";
+
+export type GateStatus = "OPEN" | "PASSED" | "FAILED" | "WAIVED";
 
 export interface CloseChecklistRecord {
 	id: string;

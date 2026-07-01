@@ -7,6 +7,7 @@ import {
 	pgTable,
 	text,
 	timestamp,
+	uniqueIndex,
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
@@ -76,11 +77,9 @@ export const closeChecklists = pgTable(
 		updatedAt: timestamp("updated_at").defaultNow().notNull(),
 	},
 	(table) => ({
-		companyPeriodNameIdx: index("close_checklists_company_period_name_idx").on(
-			table.companyId,
-			table.period,
-			table.name,
-		),
+		companyPeriodNameIdx: uniqueIndex(
+			"close_checklists_company_period_name_unq",
+		).on(table.companyId, table.period, table.name),
 		companyPeriodIdx: index("close_checklists_company_period_idx").on(
 			table.companyId,
 			table.period,
@@ -152,7 +151,7 @@ export const closeGates = pgTable(
 		updatedAt: timestamp("updated_at").defaultNow().notNull(),
 	},
 	(table) => ({
-		companyPeriodGateIdx: index("close_gates_company_period_gate_idx").on(
+		companyPeriodGateIdx: uniqueIndex("close_gates_company_period_gate_unq").on(
 			table.companyId,
 			table.period,
 			table.gateType,
