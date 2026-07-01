@@ -26,7 +26,7 @@ const TONE_STYLES: Record<KpiCardProps["tone"], string> = {
 
 export function KpiCard({ icon: Icon, label, value, tone }: KpiCardProps) {
 	return (
-		<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 p-5 backdrop-blur-sm transition-all hover:border-[var(--border-default)]">
+		<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-5 transition-all hover:border-[var(--border-default)]">
 			<div className="mb-3 flex items-center justify-between">
 				<p className="text-xs font-medium tracking-wide text-[var(--text-secondary)]">
 					{label}
@@ -49,7 +49,7 @@ export function KpiCard({ icon: Icon, label, value, tone }: KpiCardProps) {
 
 export function KpiCardSkeleton() {
 	return (
-		<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 p-5 backdrop-blur-sm">
+		<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-5">
 			<div className="mb-3 flex items-center justify-between">
 				<div className="h-3 w-24 animate-pulse rounded bg-[var(--surface-2)]" />
 				<div className="h-8 w-8 animate-pulse rounded-lg bg-[var(--surface-2)]" />

@@ -20,7 +20,7 @@ export const SettingsSection = ({
 			variant="muted"
 			padding="lg"
 			className={cn(
-				"group relative overflow-hidden border-[var(--border-subtle)] bg-[var(--surface-1)]/50 backdrop-blur-sm transition-all duration-300",
+				"group relative overflow-hidden border-[var(--border-subtle)] bg-[var(--surface-1)] transition-all duration-300",
 				className,
 			)}
 		>
