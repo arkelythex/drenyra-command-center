@@ -1,9 +1,9 @@
-import { CreditCard, Download, Zap, TrendingUp } from "lucide-react";
-import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import { CreditCard, Download, TrendingUp, Zap } from "lucide-react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { SettingsShell } from "./SettingsShell";
-import { SettingsSection } from "./SettingsPrimitives";
+import { SurfaceCard } from "@/components/ui/SurfaceCard";
 import { SettingsButton } from "./appearance/SettingsUI";
+import { SettingsSection } from "./SettingsPrimitives";
+import { SettingsShell } from "./SettingsShell";
 
 const INVOICES = [
 	{
@@ -45,7 +45,7 @@ export const BillingSettings = () => {
 					<SurfaceCard
 						variant="muted"
 						padding="lg"
-						className="group relative overflow-hidden rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)]/50 backdrop-blur-3xl transition-all hover:bg-[var(--surface-2)]/80"
+						className="group relative overflow-hidden rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)] transition-all hover:bg-[var(--surface-2)]"
 					>
 						<div className="mb-4 flex items-center gap-2">
 							<Zap size={14} className="text-[var(--accent)]" />
@@ -64,7 +64,7 @@ export const BillingSettings = () => {
 					<SurfaceCard
 						variant="muted"
 						padding="lg"
-						className="group relative overflow-hidden rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)]/50 backdrop-blur-3xl transition-all hover:bg-[var(--surface-2)]/80"
+						className="group relative overflow-hidden rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)] transition-all hover:bg-[var(--surface-2)]"
 					>
 						<div className="mb-4 flex items-center gap-2">
 							<TrendingUp size={14} className="text-[var(--accent)]" />
@@ -86,7 +86,7 @@ export const BillingSettings = () => {
 					<SurfaceCard
 						variant="muted"
 						padding="lg"
-						className="group relative overflow-hidden rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)]/50 backdrop-blur-3xl transition-all hover:bg-[var(--surface-2)]/80"
+						className="group relative overflow-hidden rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)] transition-all hover:bg-[var(--surface-2)]"
 					>
 						<div className="mb-4 flex items-center gap-2 text-[var(--text-tertiary)]">
 							<CreditCard size={14} />
