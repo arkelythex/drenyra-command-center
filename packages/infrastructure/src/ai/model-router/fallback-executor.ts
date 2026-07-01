@@ -86,6 +86,7 @@ export class FallbackExecutor {
 					success: true,
 					fallbackAttempted: i > 0,
 					attemptNumber,
+					responseContent: response.content,
 					timestamp: new Date(),
 				};
 

@@ -73,6 +73,7 @@ export interface RoutingResult {
 	fallbackAttempted?: boolean;
 	attemptNumber: number;
 	errorMessage?: string;
+	responseContent?: string;
 	timestamp: Date;
 }
 

@@ -10,24 +10,26 @@
  * - Maintain audit trail of all decisions
  */
 
-import { randomUUID } from 'crypto';
+import { randomUUID } from "node:crypto";
+import { loggers } from "../../../logger";
+import type { GeminiMultiAdapter, RouterAdapter } from "../../adapters";
 import type {
-  BaseAgent,
-  ArbitratorInput,
-  ArbitrationDecision,
-  InvoiceData,
-} from './types';
-import { GeminiMultiAdapter } from '../../adapters';
-import { loggers } from '../../../logger';
+	ArbitrationDecision,
+	ArbitratorInput,
+	BaseAgent,
+	InvoiceData,
+} from "./types";
 
 export class ArbitratorAgent implements BaseAgent {
-  id: string;
-  role = 'arbitrator' as const;
-  status: 'idle' | 'processing' | 'completed' | 'error' = 'idle';
+	id: string;
+	role = "arbitrator" as const;
+	status: "idle" | "processing" | "completed" | "error" = "idle";
 
-  private gemini: GeminiMultiAdapter;
+	private gemini: GeminiMultiAdapter;
+	private routerAdapter?: RouterAdapter;
 
-  private readonly SYSTEM_PROMPT = `Eres un árbitro experto en facturación electrónica SUNAT con autoridad final en resolución de conflictos.
+	private readonly SYSTEM_PROMPT =
+		`Eres un árbitro experto en facturación electrónica SUNAT con autoridad final en resolución de conflictos.
 
 Tu rol es recibir análisis de 3 agentes especializados y tomar la decisión final cuando hay discrepancias:
 
@@ -86,160 +88,180 @@ Responde SOLO en JSON:
   "confidence": 0.95
 }`;
 
-  constructor(gemini: GeminiMultiAdapter) {
-    this.id = `arbitrator-${randomUUID()}`;
-    this.gemini = gemini;
-  }
+	constructor(gemini: GeminiMultiAdapter, routerAdapter?: RouterAdapter) {
+		this.id = `arbitrator-${randomUUID()}`;
+		this.gemini = gemini;
+		this.routerAdapter = routerAdapter;
+	}
 
-  async process(input: ArbitratorInput): Promise<ArbitrationDecision> {
-    this.status = 'processing';
-    const startTime = Date.now();
+	async process(input: ArbitratorInput): Promise<ArbitrationDecision> {
+		this.status = "processing";
+		const startTime = Date.now();
 
-    try {
-      loggers.ai.info('Arbitrator agent processing', { conflicts: input.conflicts.length });
+		try {
+			loggers.ai.info("Arbitrator agent processing", {
+				conflicts: input.conflicts.length,
+			});
 
-      if (input.conflicts.length === 0) {
-        return this.autoApprove(input, startTime);
-      }
+			if (input.conflicts.length === 0) {
+				return this.autoApprove(input, startTime);
+			}
 
-      const prompt = this.buildPrompt(input);
+			const prompt = this.buildPrompt(input);
 
-      const response = await this.gemini.generate({
-        text: prompt,
-        systemInstruction: this.SYSTEM_PROMPT,
-      });
+			let response: import("../../types").AIResponse;
+			if (this.routerAdapter) {
+				response = await this.routerAdapter.callModel(prompt, {
+					capability: "ANALYSIS",
+					systemPrompt: this.SYSTEM_PROMPT,
+				});
+			} else {
+				response = await this.gemini.generate({
+					text: prompt,
+					systemInstruction: this.SYSTEM_PROMPT,
+				});
+			}
 
-      const parsed = this.parseResponse(response.content);
+			const parsed = this.parseResponse(response.content);
 
-      const result: ArbitrationDecision = {
-        ...parsed,
-        arbitrationLog: {
-          ...parsed.arbitrationLog,
-          timestamp: new Date(),
-          arbitratorModel: this.gemini.getInstanceId(),
-        },
-        processingTime: Date.now() - startTime,
-      };
+			const result: ArbitrationDecision = {
+				...parsed,
+				arbitrationLog: {
+					...parsed.arbitrationLog,
+					timestamp: new Date(),
+					arbitratorModel: this.gemini.getInstanceId(),
+				},
+				processingTime: Date.now() - startTime,
+			};
 
-      this.status = 'completed';
-      loggers.ai.info('Arbitrator agent completed', {
-        decision: result.decision,
-        confidence: result.confidence,
-        processingTime: result.processingTime,
-      });
+			this.status = "completed";
+			loggers.ai.info("Arbitrator agent completed", {
+				decision: result.decision,
+				confidence: result.confidence,
+				processingTime: result.processingTime,
+			});
 
-      return result;
-    } catch (error) {
-      this.status = 'error';
-      loggers.ai.error('Arbitrator agent failed', { error: error instanceof Error ? error.message : String(error) });
-      throw error;
-    }
-  }
+			return result;
+		} catch (error) {
+			this.status = "error";
+			loggers.ai.error("Arbitrator agent failed", {
+				error: error instanceof Error ? error.message : String(error),
+			});
+			throw error;
+		}
+	}
 
-  private autoApprove(input: ArbitratorInput, startTime: number): ArbitrationDecision {
-    loggers.ai.info('Arbitrator auto-approve path');
+	private autoApprove(
+		input: ArbitratorInput,
+		startTime: number,
+	): ArbitrationDecision {
+		loggers.ai.info("Arbitrator auto-approve path");
 
-    const readerPayload =
-      input.readerOutput ?? input.reader ?? null;
-    const validatorPayload =
-      input.validatorOutput ?? input.validator ?? null;
+		const readerPayload = input.readerOutput ?? input.reader ?? null;
+		const validatorPayload = input.validatorOutput ?? input.validator ?? null;
 
-    if (!readerPayload) {
-      throw new Error('Arbitrator requires reader data for auto-approve path');
-    }
+		if (!readerPayload) {
+			throw new Error("Arbitrator requires reader data for auto-approve path");
+		}
 
-    const finalData = validatorPayload?.isCompliant
-      ? this.extractInvoiceData(readerPayload.extractedData)
-      : readerPayload.extractedData;
+		const finalData = validatorPayload?.isCompliant
+			? this.extractInvoiceData(readerPayload.extractedData)
+			: readerPayload.extractedData;
 
-    return {
-      decision: 'APPROVED',
-      finalData,
-      arbitrationLog: {
-        conflicts: [],
-        resolutions: [],
-        timestamp: new Date(),
-        arbitratorModel: 'auto-approve',
-      },
-      confidence: 1.0,
-      processingTime: Date.now() - startTime,
-    };
-  }
+		return {
+			decision: "APPROVED",
+			finalData,
+			arbitrationLog: {
+				conflicts: [],
+				resolutions: [],
+				timestamp: new Date(),
+				arbitratorModel: "auto-approve",
+			},
+			confidence: 1.0,
+			processingTime: Date.now() - startTime,
+		};
+	}
 
-  private buildPrompt(input: ArbitratorInput): string {
-    const readerPayload = input.readerOutput ?? input.reader;
-    const parserPayload = input.parserOutput ?? input.parser;
-    const validatorPayload = input.validatorOutput ?? input.validator;
+	private buildPrompt(input: ArbitratorInput): string {
+		const readerPayload = input.readerOutput ?? input.reader;
+		const parserPayload = input.parserOutput ?? input.parser;
+		const validatorPayload = input.validatorOutput ?? input.validator;
 
-    if (!readerPayload || !parserPayload || !validatorPayload) {
-      throw new Error('Arbitration requires reader, parser, and validator payloads');
-    }
+		if (!readerPayload || !parserPayload || !validatorPayload) {
+			throw new Error(
+				"Arbitration requires reader, parser, and validator payloads",
+			);
+		}
 
-    let prompt = `# MULTI-AGENT DEBATE - RESOLUCIÓN DE CONFLICTOS\n\n`;
+		let prompt = `# MULTI-AGENT DEBATE - RESOLUCIÓN DE CONFLICTOS\n\n`;
 
-    prompt += `## CONFLICTOS DETECTADOS (${input.conflicts.length})\n\n`;
-    prompt += `\`\`\`json\n${JSON.stringify(input.conflicts, null, 2)}\n\`\`\`\n\n`;
+		prompt += `## CONFLICTOS DETECTADOS (${input.conflicts.length})\n\n`;
+		prompt += `\`\`\`json\n${JSON.stringify(input.conflicts, null, 2)}\n\`\`\`\n\n`;
 
-    prompt += `## ANÁLISIS DEL READER AGENT\n`;
-    prompt += `Confianza: ${readerPayload.confidence}\n`;
-    prompt += `Flags: ${readerPayload.flags.join(', ') || 'ninguno'}\n`;
-    prompt += `Datos extraídos:\n\`\`\`json\n${JSON.stringify(readerPayload.extractedData, null, 2)}\n\`\`\`\n\n`;
+		prompt += `## ANÁLISIS DEL READER AGENT\n`;
+		prompt += `Confianza: ${readerPayload.confidence}\n`;
+		prompt += `Flags: ${readerPayload.flags.join(", ") || "ninguno"}\n`;
+		prompt += `Datos extraídos:\n\`\`\`json\n${JSON.stringify(readerPayload.extractedData, null, 2)}\n\`\`\`\n\n`;
 
-    prompt += `## ANÁLISIS DEL PARSER AGENT\n`;
-    prompt += `Esquema: ${parserPayload.schemaVersion}\n`;
-    prompt += `Discrepancias: ${parserPayload.discrepancies.length}\n`;
-    prompt += `Necesita migración: ${parserPayload.needsMigration ? 'Sí' : 'No'}\n`;
-    prompt += `Datos parseados:\n\`\`\`json\n${JSON.stringify(parserPayload.parsedData, null, 2)}\n\`\`\`\n\n`;
+		prompt += `## ANÁLISIS DEL PARSER AGENT\n`;
+		prompt += `Esquema: ${parserPayload.schemaVersion}\n`;
+		prompt += `Discrepancias: ${parserPayload.discrepancies.length}\n`;
+		prompt += `Necesita migración: ${parserPayload.needsMigration ? "Sí" : "No"}\n`;
+		prompt += `Datos parseados:\n\`\`\`json\n${JSON.stringify(parserPayload.parsedData, null, 2)}\n\`\`\`\n\n`;
 
-    prompt += `## ANÁLISIS DEL VALIDATOR AGENT\n`;
-    prompt += `Cumplimiento: ${validatorPayload.isCompliant ? 'SÍ' : 'NO'}\n`;
-    prompt += `Violaciones: ${validatorPayload.violations.length}\n`;
-    if (validatorPayload.violations.length > 0) {
-      prompt += `Detalle de violaciones:\n\`\`\`json\n${JSON.stringify(validatorPayload.violations, null, 2)}\n\`\`\`\n`;
-    }
-    prompt += `\n`;
+		prompt += `## ANÁLISIS DEL VALIDATOR AGENT\n`;
+		prompt += `Cumplimiento: ${validatorPayload.isCompliant ? "SÍ" : "NO"}\n`;
+		prompt += `Violaciones: ${validatorPayload.violations.length}\n`;
+		if (validatorPayload.violations.length > 0) {
+			prompt += `Detalle de violaciones:\n\`\`\`json\n${JSON.stringify(validatorPayload.violations, null, 2)}\n\`\`\`\n`;
+		}
+		prompt += `\n`;
 
-    prompt += `## TU TAREA\n`;
-    prompt += `Analiza los 3 análisis, resuelve cada conflicto con razonamiento claro, y toma una decisión final.\n`;
-    prompt += `Recuerda: APPROVED, REJECTED, o MANUAL_REVIEW.\n`;
+		prompt += `## TU TAREA\n`;
+		prompt += `Analiza los 3 análisis, resuelve cada conflicto con razonamiento claro, y toma una decisión final.\n`;
+		prompt += `Recuerda: APPROVED, REJECTED, o MANUAL_REVIEW.\n`;
 
-    return prompt;
-  }
+		return prompt;
+	}
 
-  private parseResponse(response: string): Omit<ArbitrationDecision, 'processingTime'> {
-    try {
-      let cleaned = response.trim();
-      if (cleaned.startsWith('```json')) {
-        cleaned = cleaned.replace(/```json\s*/, '').replace(/```\s*$/, '');
-      } else if (cleaned.startsWith('```')) {
-        cleaned = cleaned.replace(/```\s*/, '').replace(/```\s*$/, '');
-      }
+	private parseResponse(
+		response: string,
+	): Omit<ArbitrationDecision, "processingTime"> {
+		try {
+			let cleaned = response.trim();
+			if (cleaned.startsWith("```json")) {
+				cleaned = cleaned.replace(/```json\s*/, "").replace(/```\s*$/, "");
+			} else if (cleaned.startsWith("```")) {
+				cleaned = cleaned.replace(/```\s*/, "").replace(/```\s*$/, "");
+			}
 
-      const parsed = JSON.parse(cleaned);
+			const parsed = JSON.parse(cleaned);
 
-      if (parsed.finalData?.issueDate) {
-        parsed.finalData.issueDate = new Date(parsed.finalData.issueDate);
-      }
-      if (parsed.finalData?.dueDate) {
-        parsed.finalData.dueDate = new Date(parsed.finalData.dueDate);
-      }
+			if (parsed.finalData?.issueDate) {
+				parsed.finalData.issueDate = new Date(parsed.finalData.issueDate);
+			}
+			if (parsed.finalData?.dueDate) {
+				parsed.finalData.dueDate = new Date(parsed.finalData.dueDate);
+			}
 
-      return parsed;
-    } catch (error) {
-      loggers.ai.error('Arbitrator failed to parse response');
-      throw new Error(`Failed to parse AI response: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  }
+			return parsed;
+		} catch (error) {
+			loggers.ai.error("Arbitrator failed to parse response");
+			throw new Error(
+				`Failed to parse AI response: ${error instanceof Error ? error.message : "Unknown error"}`,
+			);
+		}
+	}
 
-  private extractInvoiceData(extracted: InvoiceData): InvoiceData {
-    return extracted;
-  }
+	private extractInvoiceData(extracted: InvoiceData): InvoiceData {
+		return extracted;
+	}
 
-  getInfo(): { id: string; role: string; status: string } {
-    return {
-      id: this.id,
-      role: this.role,
-      status: this.status,
-    };
-  }
+	getInfo(): { id: string; role: string; status: string } {
+		return {
+			id: this.id,
+			role: this.role,
+			status: this.status,
+		};
+	}
 }
