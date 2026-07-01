@@ -1,6 +1,6 @@
 # Verify Report — Drenyra Fiscal Editorial v3
 
-**Última actualización:** 2026-06-30  
+**Última actualización:** 2026-07-01  
 **Change ID:** `drenyra-fiscal-editorial-v3`
 
 ## Spec compliance
@@ -29,7 +29,7 @@
 | 5 | #18 | `feat/fiscal-editorial-v3-rollout-codemod-blur` | Codemod + bulk blur removal |
 | 6 | #19 | `feat/fiscal-editorial-v3-rollout-verify` | SURFACE_EFFECTS, ESLint all-features, verify |
 
-**Merge order:** #12 → #15 → #16 → #17 → #18 → #19  
+**Merge order:** **Merged 2026-07-01:** #12, #20, #21, #22, #23, #24 (replacements after stack rebase)  
 **Closes:** #14
 
 ## Quality scorecard (post-apply)
