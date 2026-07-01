@@ -109,6 +109,12 @@ export const semanticTokens = {
 		modal: "bg-surface-3",
 		glass: "glass-card",
 		glassPanel: "glass-panel",
+		/** Fiscal Editorial v3 — flat surfaces without decorative blur */
+		editorialPanel:
+			"rounded-[var(--radius-lg)] border border-[var(--border-subtle)] bg-[var(--surface-1)] shadow-[var(--shadow-1)]",
+		editorialElevated:
+			"rounded-[var(--radius-lg)] border border-[var(--border-default)] bg-[var(--surface-2)] shadow-[var(--shadow-2)]",
+		editorialOverlay: "ui-overlay",
 	},
 
 	text: {
@@ -161,7 +167,10 @@ export type SurfaceVariant =
 	| "overlay"
 	| "modal"
 	| "glass"
-	| "glassPanel";
+	| "glassPanel"
+	| "editorialPanel"
+	| "editorialElevated"
+	| "editorialOverlay";
 
 export const getStatusTokens = (variant: StatusVariant) =>
 	semanticTokens.status[variant];

@@ -83,6 +83,12 @@ export default tseslint.config(
 		},
 	},
 	{
+		files: ["src/features/**/*.{ts,tsx}"],
+		rules: {
+			"design-tokens/no-hardcoded-design-values": "error",
+		},
+	},
+	{
 		files: [
 			"src/components/ui/glass-card.tsx",
 			"src/components/ui/liquid-glass.tsx",

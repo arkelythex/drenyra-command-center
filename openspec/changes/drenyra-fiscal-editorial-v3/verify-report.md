@@ -15,20 +15,35 @@
 | DiffViewerV3 + ArtifactSidebar | Pass | Agent components + SIRE diff + RightPanel |
 | WCAG AA dark/light | Pass | `fiscal-editorial-contrast.test.ts` |
 | Operations-first layout | Pass | Three-zone shell unchanged |
+| Codemod blur removal | Pass | `scripts/codemod/fiscal-editorial-remove-blur.ts`; ~74 files |
+| ESLint blur guard (features) | Pass | `apps/web/eslint.config.js` — error on decorative blur |
+
+## PR merge chain
+
+| Order | PR | Branch | Scope |
+|-------|-----|--------|-------|
+| 1 | #12 | `codex/drenyra-fiscal-editorial-v3` | Foundation: tokens, shell, SurfacePanel |
+| 2 | #15 | `feat/fiscal-editorial-v3-rollout-invoices-products` | Invoices, products, entities |
+| 3 | #16 | `feat/fiscal-editorial-v3-rollout-compliance-reports` | Compliance, reports, ESLint tighten |
+| 4 | #17 | `feat/fiscal-editorial-v3-rollout-agentic-visual` | Agentic surfaces + visual tests |
+| 5 | #18 | `feat/fiscal-editorial-v3-rollout-codemod-blur` | Codemod + bulk blur removal |
+| 6 | #19 | `feat/fiscal-editorial-v3-rollout-verify` | SURFACE_EFFECTS, ESLint all-features, verify |
+
+**Merge order:** #12 → #15 → #16 → #17 → #18 → #19  
+**Closes:** #14
 
 ## Quality scorecard (post-apply)
 
 | Dimension | Before | After |
 |-----------|--------|-------|
-| Token consistency | 2/10 | 8/10 |
+| Token consistency | 2/10 | 9/10 |
 | Visual hierarchy | 5/10 | 8/10 |
-| Fiscal data legibility | 6/10 | 8/10 |
+| Fiscal data legibility | 6/10 | 9/10 |
 | Agent/evidence UX | 7/10 | 8/10 |
-| Anti-AI-slop score | 4/10 | 8/10 |
+| Anti-AI-slop score | 4/10 | 9/10 |
 
 ## Remaining follow-ups
 
-- Full codemod across 340+ files (phase 11 incremental)
 - OpenPencil `.pen` when tool installed
 - Landing token parity (capability deferred)
 - Manual screenshot baseline capture
