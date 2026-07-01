@@ -1,4 +1,4 @@
-import { AlertCircle, Filter, Mail } from "lucide-react";
+import { Filter, Mail } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn, n } from "@/lib/utils";
 
@@ -77,7 +77,10 @@ export const InvoicesAgingTab = () => {
 							Análisis de recuperación de capital
 						</p>
 					</div>
-					<button className="flex items-center gap-2 rounded-xl border border-border bg-muted px-4 py-2 text-label font-black uppercase tracking-widest transition-[background-color,color,transform] duration-200 hover:bg-foreground hover:text-background active:scale-95">
+					<button
+						type="button"
+						className="flex items-center gap-2 rounded-xl border border-border bg-muted px-4 py-2 text-label font-black uppercase tracking-widest transition-[background-color,color,transform] duration-200 hover:bg-foreground hover:text-background active:scale-95"
+					>
 						<Filter size={14} /> Segmentación
 					</button>
 				</div>
@@ -107,9 +110,9 @@ export const InvoicesAgingTab = () => {
 							</tr>
 						</thead>
 						<tbody className="divide-y divide-border/20">
-							{MOCK_AGING_DATA.map((row, i) => (
+							{MOCK_AGING_DATA.map((row) => (
 								<tr
-									key={i}
+									key={row.customer}
 									className="group cursor-default transition-colors duration-200 hover:bg-muted/20"
 								>
 									<td className="px-8 py-6">
@@ -150,7 +153,7 @@ export const InvoicesAgingTab = () => {
 			</Card>
 
 			{/* Action Center Monochrome (Dark Mode Corrected & Monochrome Depth) */}
-			<div className="flex items-start gap-6 rounded-xl border border-border/20 bg-muted/10 p-8 shadow-lg backdrop-blur-sm">
+			<div className="flex items-start gap-6 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-8 shadow-lg">
 				<Mail
 					size={28}
 					strokeWidth={2.5}
@@ -167,7 +170,10 @@ export const InvoicesAgingTab = () => {
 						recordatorios formales o iniciar gestión de cobranza prejudicial.
 					</p>
 				</div>
-				<button className="ml-auto h-12 rounded-xl border border-foreground/20 bg-foreground/10 px-8 text-label font-black uppercase tracking-widest text-foreground shadow-sm transition-[background-color,transform,box-shadow] duration-200 hover:bg-foreground/20 hover:shadow-md active:scale-95">
+				<button
+					type="button"
+					className="ml-auto h-12 rounded-xl border border-foreground/20 bg-foreground/10 px-8 text-label font-black uppercase tracking-widest text-foreground shadow-sm transition-[background-color,transform,box-shadow] duration-200 hover:bg-foreground/20 hover:shadow-md active:scale-95"
+				>
 					Enviar Recordatorios
 				</button>
 			</div>

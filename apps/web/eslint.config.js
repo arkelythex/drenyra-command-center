@@ -69,6 +69,13 @@ export default tseslint.config(
 			"src/features/reports/**/*.{ts,tsx}",
 			"src/features/settings/**/*.{ts,tsx}",
 			"src/features/sunat/**/*.{ts,tsx}",
+			"src/features/invoices/**/*.{ts,tsx}",
+			"src/features/dashboard/**/*.{ts,tsx}",
+			"src/features/onboarding/**/*.{ts,tsx}",
+			"src/features/cognitive-hub/**/*.{ts,tsx}",
+			"src/components/agentic/**/*.{ts,tsx}",
+			"src/components/layout/**/*.{ts,tsx}",
+			"src/lib/legibility.ts",
 		],
 		rules: {
 			"design-tokens/no-hardcoded-design-values": "error",
