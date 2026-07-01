@@ -3,7 +3,7 @@ import { CheckCircle2, FileText, Sparkles, Upload } from "lucide-react";
 import { Text } from "@/components/atoms/text";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { LiquidGlassCard } from "@/components/ui/liquid-glass";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 import { cn, n } from "@/lib/utils";
 import { dashboardRecentDocumentsQueryOptions } from "../../dashboard.query-options";
@@ -18,7 +18,7 @@ export const ProcessedDocumentsWidget = () => {
 	);
 
 	return (
-		<LiquidGlassCard className="p-6">
+		<SurfacePanel padding="lg">
 			<div className="relative z-10 mb-7 flex flex-col justify-between gap-4 md:flex-row md:items-center">
 				<div className="flex items-center gap-5">
 					<div className="flex h-12 w-12 items-center justify-center rounded-xl border border-info-subtle bg-info-subtle shadow-sm">
@@ -164,6 +164,6 @@ export const ProcessedDocumentsWidget = () => {
 					))}
 				</div>
 			)}
-		</LiquidGlassCard>
+		</SurfacePanel>
 	);
 };

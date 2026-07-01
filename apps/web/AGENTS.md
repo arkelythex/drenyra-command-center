@@ -96,19 +96,18 @@ apps/web/src/
 - **Money** — never use raw numbers/floats. Use `n()` from design system or domain `Money` value object.
 - **Imports** — barrel files at feature/component index. Path aliases via `@/` → `src/`.
 
-## 6. Design System (Glass & Steel)
+## 6. Design System (Fiscal Editorial v3)
 
-Dark-mode enterprise theme. Tokens at `src/lib/design-tokens/tokens.dtcg.json`.
+Editorial command-center theme (Cursor 3–inspired). Tokens at `src/lib/design-tokens/tokens.dtcg.json` v3.0.0.
 
-- `--text-*` semantic tokens for typography (heading, body, caption, code).
-- `--glass-*` for glassmorphism (bg, border, blur, shine).
-- `--surface-*` for surface elevations (card, dialog, navbar).
-- `--accent-*` for interactive accents (primary, danger, warning, success).
-- `n()` helper for money formatting in `src/lib/utils.ts`.
-- Complexity modes: `simple` / `advanced` / `expert` toggle via UXModeToggle.
+- `--color-voltage-*` / `--accent` — primary CTA accent `#f54e00` (≤5% pixels)
+- `--color-fiscal-*` — SUNAT/compliance secondary `#c45c2a`
+- `--surface-*`, `--text-*` — flat editorial surfaces (no decorative glass)
+- `SurfacePanel` — canonical card surface (replaces GlassCard)
+- `FiscalEditorialShell` — unified shell (`operational` | `command-center`)
+- Complexity modes: `basic` / `advanced` / `expert` via UXModeToggle
 
-Component library pattern: shadcn `cva()` variants → composed in feature components.
-Layout: glass sidebar (expandable) + top bar + content area + optional right rail.
+See `apps/web/DESIGN.md` and `docs/design/design-influences-2026.md`.
 
 ## 7. Routing
 

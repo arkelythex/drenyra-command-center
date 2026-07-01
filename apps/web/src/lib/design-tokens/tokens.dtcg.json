@@ -1,242 +1,193 @@
 {
   "$schema": "https://tr.designtokens.org/format/",
   "$metadata": {
-    "name": "ARKELYTHEX Design Tokens",
-    "version": "2.0.0",
-    "description": "W3C DTCG format — 3-tier hierarchy: primitive → semantic → component",
-    "palette": "Dreamcoder Ember Noir + Dreamcoder Light dual palette",
+    "name": "Drenyra Fiscal Editorial Tokens",
+    "version": "3.0.0",
+    "description": "W3C DTCG — Fiscal Editorial rebrand (Cursor-inspired editorial + fiscal compliance)",
+    "palette": "Fiscal Editorial — espresso canvas, voltage accent",
     "generator": "scripts/generate-tokens.ts",
-    "updatedAt": "2026-06-20"
+    "updatedAt": "2026-06-30"
   },
 
   "primitive": {
-    "$description": "Tier 1: Raw values. Never use directly in components. Dreamcoder Ember Noir warm espresso palette.",
+    "$description": "Tier 1: Raw values. Prefer semantic tokens in components.",
+
+    "espresso-0": {
+      "$type": "color",
+      "$value": "#161614",
+      "$description": "Dark canvas (Fiscal Editorial)"
+    },
+    "espresso-1": {
+      "$type": "color",
+      "$value": "#1c1c1a",
+      "$description": "Raised dark background"
+    },
+    "espresso-2": { "$type": "color", "$value": "#242422", "$description": "Card surface dark" },
+    "espresso-3": { "$type": "color", "$value": "#2e2e2b", "$description": "Elevated hover dark" },
 
     "onyx-0": {
       "$type": "color",
-      "$value": "#100f0d",
-      "$description": "Deepest Ember Noir dark canvas"
+      "$value": "{primitive.espresso-0}",
+      "$description": "Legacy alias"
     },
-    "onyx-1": { "$type": "color", "$value": "#181512", "$description": "Base Ember Noir dark content background" },
-    "onyx-2": { "$type": "color", "$value": "#201b16", "$description": "Secondary Ember Noir dark elevated surface" },
-    "onyx-3": { "$type": "color", "$value": "#2b231b", "$description": "Elevated Ember Noir dark hover surface" },
-
-    "black-0": {
+    "onyx-1": {
       "$type": "color",
-      "$value": "{primitive.onyx-0}",
-      "$description": "Deepest background (alias for onyx-0)"
+      "$value": "{primitive.espresso-1}",
+      "$description": "Legacy alias"
     },
-    "black-1": {
+    "onyx-2": {
       "$type": "color",
-      "$value": "{primitive.onyx-1}",
-      "$description": "Base background (alias for onyx-1)"
+      "$value": "{primitive.espresso-2}",
+      "$description": "Legacy alias"
     },
-    "black-2": {
+    "onyx-3": {
       "$type": "color",
-      "$value": "{primitive.onyx-2}",
-      "$description": "Elevated background (alias for onyx-2)"
+      "$value": "{primitive.espresso-3}",
+      "$description": "Legacy alias"
     },
 
-    "surface-1": { "$type": "color", "$value": "#201b16", "$description": "Ember Noir dark card surface" },
-    "surface-2": { "$type": "color", "$value": "#2b231b", "$description": "Elevated card" },
-    "surface-3": { "$type": "color", "$value": "#392e21", "$description": "Highest elevation" },
+    "black-0": { "$type": "color", "$value": "{primitive.espresso-0}" },
+    "black-1": { "$type": "color", "$value": "{primitive.espresso-1}" },
+    "black-2": { "$type": "color", "$value": "{primitive.espresso-2}" },
 
-    "stroke-1": { "$type": "color", "$value": "#3d3028", "$description": "Subtle Ember Noir border" },
-    "stroke-2": { "$type": "color", "$value": "#453529", "$description": "Default border" },
-    "stroke-3": { "$type": "color", "$value": "#756052", "$description": "Prominent border" },
+    "cream-0": { "$type": "color", "$value": "#f7f7f4", "$description": "Light editorial canvas" },
+    "cream-1": { "$type": "color", "$value": "#efeee8", "$description": "Light raised surface" },
 
-    "white": { "$type": "color", "$value": "#e8dfd0" },
-    "gray-300": { "$type": "color", "$value": "#c7b9aa" },
-    "gray-400": { "$type": "color", "$value": "#938274", "$description": "Secondary text on dark" },
-    "gray-600": { "$type": "color", "$value": "#756052", "$description": "Muted text on dark surfaces" },
-    "gray-700": { "$type": "color", "$value": "#5a4a3a", "$description": "Inactive / disabled" },
+    "surface-1": { "$type": "color", "$value": "#242422" },
+    "surface-2": { "$type": "color", "$value": "#2e2e2b" },
+    "surface-3": { "$type": "color", "$value": "#3a3a36" },
 
-    "blue-200": { "$type": "color", "$value": "oklch(0.85 0.12 60)", "$description": "Score ring start" },
+    "stroke-1": { "$type": "color", "$value": "#333330", "$description": "Hairline border dark" },
+    "stroke-2": { "$type": "color", "$value": "#3d3d39", "$description": "Default border dark" },
+    "stroke-3": { "$type": "color", "$value": "#52524e", "$description": "Prominent border dark" },
+
+    "white": { "$type": "color", "$value": "#e8e6e0", "$description": "Primary ink on dark" },
+    "gray-300": { "$type": "color", "$value": "#c9c7c0" },
+    "gray-400": { "$type": "color", "$value": "#9a9890", "$description": "Secondary text dark" },
+    "gray-600": { "$type": "color", "$value": "#6f6d66", "$description": "Muted text dark" },
+    "gray-700": { "$type": "color", "$value": "#54524c", "$description": "Disabled text dark" },
+
+    "voltage-400": { "$type": "color", "$value": "#ff6a1a", "$description": "Voltage hover" },
+    "voltage-500": {
+      "$type": "color",
+      "$value": "#f54e00",
+      "$description": "Primary voltage accent (Cursor-adapted)"
+    },
+    "voltage-600": { "$type": "color", "$value": "#d94400", "$description": "Voltage active" },
+
+    "fiscal-500": {
+      "$type": "color",
+      "$value": "#c45c2a",
+      "$description": "SUNAT/compliance secondary accent"
+    },
+
+    "blue-200": {
+      "$type": "color",
+      "$value": "{primitive.voltage-400}",
+      "$description": "Legacy alias → voltage"
+    },
     "blue-300": {
       "$type": "color",
-      "$value": "oklch(0.78 0.14 55)",
-      "$description": "Light accent / info-muted"
+      "$value": "#ffb899",
+      "$description": "Agent timeline pastel peach"
     },
-    "blue-400": { "$type": "color", "$value": "oklch(0.70 0.16 50)", "$description": "Score ring mid" },
-    "blue-500": { "$type": "color", "$value": "#d99555", "$description": "Primary Ember Noir warm accent" },
-    "blue-600": { "$type": "color", "$value": "oklch(0.50 0.18 45)", "$description": "Blue active state" },
-
-    "green-400": { "$type": "color", "$value": "oklch(0.75 0.20 150)", "$description": "Green hover" },
-    "green-500": {
+    "blue-400": { "$type": "color", "$value": "{primitive.voltage-400}" },
+    "blue-500": {
       "$type": "color",
-      "$value": "oklch(0.65 0.22 150)",
-      "$description": "Success / positive metric"
+      "$value": "{primitive.voltage-500}",
+      "$description": "Legacy alias → voltage"
     },
-    "green-600": { "$type": "color", "$value": "oklch(0.55 0.22 150)", "$description": "Green active state" },
+    "blue-600": { "$type": "color", "$value": "{primitive.voltage-600}" },
 
-    "amber-400": { "$type": "color", "$value": "oklch(0.85 0.20 80)", "$description": "Warning" },
-    "amber-500": {
-      "$type": "color",
-      "$value": "oklch(0.75 0.22 80)",
-      "$description": "Authority gold - premium accent"
-    },
-    "red-400": { "$type": "color", "$value": "oklch(0.65 0.25 25)", "$description": "Danger / Critical" },
-    "red-500": { "$type": "color", "$value": "oklch(0.55 0.25 25)", "$description": "Danger solid" }
+    "green-400": { "$type": "color", "$value": "oklch(0.75 0.20 150)" },
+    "green-500": { "$type": "color", "$value": "oklch(0.65 0.22 150)" },
+    "green-600": { "$type": "color", "$value": "oklch(0.55 0.22 150)" },
+
+    "amber-400": { "$type": "color", "$value": "oklch(0.85 0.20 80)" },
+    "amber-500": { "$type": "color", "$value": "oklch(0.75 0.22 80)" },
+    "red-400": { "$type": "color", "$value": "oklch(0.65 0.25 25)" },
+    "red-500": { "$type": "color", "$value": "oklch(0.55 0.25 25)" }
   },
 
   "semantic": {
-    "$description": "Tier 2: Meaning over value. Reference primitives.",
-
     "bg": {
-      "base": {
-        "$type": "color",
-        "$value": "{primitive.black-0}",
-        "$description": "App shell background"
-      },
-      "raised": {
-        "$type": "color",
-        "$value": "{primitive.black-1}",
-        "$description": "Raised background layer"
-      },
-      "elevated": {
-        "$type": "color",
-        "$value": "{primitive.black-2}",
-        "$description": "Elevated layer (tooltips, etc)"
-      }
+      "base": { "$type": "color", "$value": "{primitive.espresso-0}" },
+      "raised": { "$type": "color", "$value": "{primitive.espresso-1}" },
+      "elevated": { "$type": "color", "$value": "{primitive.espresso-2}" }
     },
-
     "surface": {
-      "1": {
-        "$type": "color",
-        "$value": "{primitive.surface-1}",
-        "$description": "Primary card surface"
-      },
-      "2": {
-        "$type": "color",
-        "$value": "{primitive.surface-2}",
-        "$description": "Secondary card / hover target"
-      },
-      "3": {
-        "$type": "color",
-        "$value": "{primitive.surface-3}",
-        "$description": "Highest surface (dropdown, badge)"
-      }
+      "1": { "$type": "color", "$value": "{primitive.surface-1}" },
+      "2": { "$type": "color", "$value": "{primitive.surface-2}" },
+      "3": { "$type": "color", "$value": "{primitive.surface-3}" }
     },
-
     "stroke": {
-      "1": {
+      "1": { "$type": "color", "$value": "{primitive.stroke-1}" },
+      "2": { "$type": "color", "$value": "{primitive.stroke-2}" },
+      "3": { "$type": "color", "$value": "{primitive.stroke-3}" }
+    },
+    "text": {
+      "primary": { "$type": "color", "$value": "{primitive.white}" },
+      "secondary": { "$type": "color", "$value": "{primitive.gray-400}" },
+      "muted": { "$type": "color", "$value": "{primitive.gray-600}" },
+      "disabled": { "$type": "color", "$value": "{primitive.gray-700}" },
+      "inverse": {
         "$type": "color",
-        "$value": "{primitive.stroke-1}",
-        "$description": "Subtle dividers, inactive borders"
-      },
-      "2": {
-        "$type": "color",
-        "$value": "{primitive.stroke-2}",
-        "$description": "Default borders"
-      },
-      "3": {
-        "$type": "color",
-        "$value": "{primitive.stroke-3}",
-        "$description": "Prominent / hover borders"
+        "$value": "#26251e",
+        "$description": "Espresso ink on light canvas"
       }
     },
-
-    "text": {
-      "primary": {
-        "$type": "color",
-        "$value": "{primitive.white}",
-        "$description": "Headings, key values"
-      },
-      "secondary": {
-        "$type": "color",
-        "$value": "{primitive.gray-400}",
-        "$description": "Labels, descriptions"
-      },
-      "muted": {
-        "$type": "color",
-        "$value": "{primitive.gray-600}",
-        "$description": "Metadata, timestamps"
-      },
-      "disabled": {
-        "$type": "color",
-        "$value": "{primitive.gray-700}",
-        "$description": "Inactive / disabled"
-      },
-      "inverse": { "$type": "color", "$value": "#080808", "$description": "Dark text on light bg" }
-    },
-
     "accent": {
+      "voltage": {
+        "light": { "$type": "color", "$value": "{primitive.voltage-400}" },
+        "base": { "$type": "color", "$value": "{primitive.voltage-500}" },
+        "hover": { "$type": "color", "$value": "{primitive.voltage-400}" },
+        "active": { "$type": "color", "$value": "{primitive.voltage-600}" }
+      },
+      "fiscal": {
+        "base": { "$type": "color", "$value": "{primitive.fiscal-500}" }
+      },
       "blue": {
-        "light":  { "$type": "color", "$value": "{primitive.blue-300}", "$description": "AI halos, info-muted" },
-        "base":   { "$type": "color", "$value": "{primitive.blue-500}", "$description": "Primary interactive blue" },
-        "hover":  { "$type": "color", "$value": "{primitive.blue-400}", "$description": "Blue hover state" },
-        "active": { "$type": "color", "$value": "{primitive.blue-600}", "$description": "Blue pressed state" }
+        "light": { "$type": "color", "$value": "{semantic.accent.voltage.hover}" },
+        "base": { "$type": "color", "$value": "{semantic.accent.voltage.base}" },
+        "hover": { "$type": "color", "$value": "{semantic.accent.voltage.hover}" },
+        "active": { "$type": "color", "$value": "{semantic.accent.voltage.active}" }
       },
       "green": {
-        "base":   { "$type": "color", "$value": "{primitive.green-500}", "$description": "Positive metrics, SIRE success" },
-        "hover":  { "$type": "color", "$value": "{primitive.green-400}", "$description": "Green hover" },
-        "active": { "$type": "color", "$value": "{primitive.green-600}", "$description": "Green pressed" }
+        "base": { "$type": "color", "$value": "{primitive.green-500}" },
+        "hover": { "$type": "color", "$value": "{primitive.green-400}" },
+        "active": { "$type": "color", "$value": "{primitive.green-600}" }
       },
       "gold": {
-        "base":   { "$type": "color", "$value": "{primitive.amber-500}", "$description": "Authority - premium/enterprise accent" },
-        "light":  { "$type": "color", "$value": "{primitive.amber-400}", "$description": "Gold hover/highlight" }
+        "base": { "$type": "color", "$value": "{primitive.amber-500}" },
+        "light": { "$type": "color", "$value": "{primitive.amber-400}" }
       }
     },
-
     "state": {
-      "success": {
-        "$type": "color",
-        "$value": "{primitive.green-500}",
-        "$description": "SUNAT valid, positive deviation"
-      },
-      "warning": {
-        "$type": "color",
-        "$value": "{primitive.amber-500}",
-        "$description": "Needs review, exposure to risk"
-      },
-      "danger": {
-        "$type": "color",
-        "$value": "{primitive.red-500}",
-        "$description": "SUNAT error, DEFCON 1, critical block"
-      },
-      "info": {
-        "$type": "color",
-        "$value": "{primitive.blue-500}",
-        "$description": "System state, operational normal"
-      }
+      "success": { "$type": "color", "$value": "{primitive.green-500}" },
+      "warning": { "$type": "color", "$value": "{primitive.amber-500}" },
+      "danger": { "$type": "color", "$value": "{primitive.red-500}" },
+      "info": { "$type": "color", "$value": "{primitive.fiscal-500}" }
     },
-
     "ai": {
-      "primary": {
-        "$type": "color",
-        "$value": "{primitive.blue-400}",
-        "$description": "AI model highlight"
-      },
-      "secondary": {
-        "$type": "color",
-        "$value": "{primitive.blue-600}",
-        "$description": "AI interactive accent"
-      },
-      "halo": {
-        "$type": "color",
-        "$value": "rgba(59, 130, 246, 0.22)",
-        "$description": "AI glow effect"
-      },
-      "haloCyan": { "$type": "color", "$value": "rgba(59, 130, 246, 0.18)" },
-      "haloSteel": { "$type": "color", "$value": "rgba(147, 197, 253, 0.16)" }
+      "primary": { "$type": "color", "$value": "{primitive.voltage-400}" },
+      "secondary": { "$type": "color", "$value": "{primitive.voltage-600}" },
+      "halo": { "$type": "color", "$value": "color-mix(in oklch, #f54e00 18%, transparent)" },
+      "haloCyan": { "$type": "color", "$value": "color-mix(in oklch, #7eb8ff 16%, transparent)" },
+      "haloSteel": { "$type": "color", "$value": "color-mix(in oklch, #b8a8ff 14%, transparent)" }
     }
   },
 
   "component": {
-    "$description": "Tier 3: Component-specific tokens. Reference semantics.",
-
     "score-ring": {
-      "$description": "Fiscal health / compliance score ring gradient",
       "from": { "$type": "color", "$value": "{primitive.amber-400}" },
-      "mid": { "$type": "color", "$value": "{primitive.amber-500}" },
-      "to": { "$type": "color", "$value": "{primitive.blue-500}" }
+      "mid": { "$type": "color", "$value": "{primitive.fiscal-500}" },
+      "to": { "$type": "color", "$value": "{primitive.voltage-500}" }
     },
-
     "button": {
       "primary": {
-        "bg": { "$type": "color", "$value": "{semantic.accent.blue.base}" },
-        "fg": { "$type": "color", "$value": "{semantic.text.primary}" },
-        "border": { "$type": "color", "$value": "{semantic.accent.blue.hover}" }
+        "bg": { "$type": "color", "$value": "{semantic.accent.voltage.base}" },
+        "fg": { "$type": "color", "$value": "#ffffff" },
+        "border": { "$type": "color", "$value": "{semantic.accent.voltage.active}" }
       },
       "secondary": {
         "bg": { "$type": "color", "$value": "{semantic.surface.2}" },
@@ -244,18 +195,25 @@
         "border": { "$type": "color", "$value": "{semantic.stroke.2}" }
       }
     },
-
     "chip": {
-      "success": { "$type": "color", "$value": "rgba(76, 175, 80, 0.14)" },
-      "warning": { "$type": "color", "$value": "rgba(231, 180, 95, 0.14)" },
-      "danger": { "$type": "color", "$value": "rgba(229, 111, 111, 0.14)" },
-      "info": { "$type": "color", "$value": "rgba(217, 149, 85, 0.14)" }
+      "success": {
+        "$type": "color",
+        "$value": "color-mix(in oklch, oklch(0.65 0.22 150) 14%, transparent)"
+      },
+      "warning": {
+        "$type": "color",
+        "$value": "color-mix(in oklch, oklch(0.75 0.22 80) 14%, transparent)"
+      },
+      "danger": {
+        "$type": "color",
+        "$value": "color-mix(in oklch, oklch(0.55 0.25 25) 14%, transparent)"
+      },
+      "info": { "$type": "color", "$value": "color-mix(in oklch, #c45c2a 14%, transparent)" }
     },
-
-    "glass": {
-      "surface": { "$type": "color", "$value": "rgba(32, 27, 22, 0.72)" },
-      "border": { "$type": "color", "$value": "#3d3028" },
-      "highlight": { "$type": "color", "$value": "rgba(232, 223, 208, 0.04)" }
+    "editorial": {
+      "surface": { "$type": "color", "$value": "{semantic.surface.1}" },
+      "border": { "$type": "color", "$value": "{semantic.stroke.1}" },
+      "highlight": { "$type": "color", "$value": "color-mix(in oklch, white 3%, transparent)" }
     }
   }
 }

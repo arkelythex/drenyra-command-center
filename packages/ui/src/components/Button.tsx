@@ -51,7 +51,7 @@ export function Button({
 	...props
 }: ButtonProps) {
 	const baseStyles =
-		"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[var(--radius-md)] text-sm font-semibold tracking-[0.01em] select-none transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface-1)] disabled:pointer-events-none disabled:opacity-50";
+		"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[8px] text-sm font-medium tracking-normal select-none transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-surface-1)] disabled:pointer-events-none disabled:opacity-50";
 
 	const variantStyles: Record<ButtonVariant, string> = {
 		default: [
@@ -62,11 +62,9 @@ export function Button({
 		].join(" "),
 		primary: [
 			"bg-[var(--color-primary)]",
-			"text-[var(--color-accent-secondary)]",
+			"text-white",
 			"border border-transparent",
-			"shadow-[var(--shadow-primary)]",
 			"hover:bg-[var(--color-primary-hover)]",
-			"hover:shadow-[var(--shadow-lg)]",
 		].join(" "),
 		secondary: [
 			"bg-[var(--color-surface-2)]",
