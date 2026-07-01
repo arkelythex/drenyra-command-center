@@ -5,11 +5,14 @@
  * FraudIndicators are stored as JSONB within the civic_cases row.
  */
 
-import { eq } from "drizzle-orm";
 import type { CivicCaseRepository } from "@arkelythex/domain-civic";
-import { CivicCase, CivicCaseStatus, FraudIndicator } from "@arkelythex/domain-civic";
+import {
+	CivicCase,
+	type CivicCaseStatus,
+	FraudIndicator,
+} from "@arkelythex/domain-civic";
+import { eq } from "drizzle-orm";
 import { db } from "../client";
-// @ts-expect-error — TODO: civicCases table not yet defined in civic.schema
 import { civicCases } from "../schema/civic.schema";
 
 interface FraudIndicatorRow {
@@ -25,15 +28,14 @@ function toDomain(row: typeof civicCases.$inferSelect): CivicCase {
 		id: row.id,
 		name: row.name,
 		electionIds: row.electionIds ?? [],
-		fraudIndicators: (row.fraudIndicators ?? []).map(
-			(f: FraudIndicatorRow) =>
-				FraudIndicator.create({
-					type: f.type as never,
-					severity: f.severity as never,
-					description: f.description,
-					evidence: f.evidence,
-					detectedAt: new Date(f.detectedAt),
-				}),
+		fraudIndicators: (row.fraudIndicators ?? []).map((f: FraudIndicatorRow) =>
+			FraudIndicator.create({
+				type: f.type as never,
+				severity: f.severity as never,
+				description: f.description,
+				evidence: f.evidence,
+				detectedAt: new Date(f.detectedAt),
+			}),
 		),
 		timeline: row.timeline ?? [],
 		status: row.status as CivicCaseStatus,
