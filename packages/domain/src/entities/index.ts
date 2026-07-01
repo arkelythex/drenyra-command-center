@@ -82,4 +82,9 @@ export {
 	type JournalEntryProps,
 	type JournalEntryStatus,
 } from "./JournalEntry";
+export {
+	Organization,
+	type OrganizationProps,
+	type OrganizationStatus,
+} from "./organization";
 export { Transaction, type TransactionProps } from "./Transaction";
