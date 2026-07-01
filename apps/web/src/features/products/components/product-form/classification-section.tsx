@@ -7,7 +7,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { LiquidGlass } from "@/components/ui/liquid-glass";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import { LEGIBILITY } from "@/lib/legibility";
 import { cn } from "@/lib/utils";
 import {
@@ -31,7 +31,7 @@ export function ProductFormClassificationSection({
 	onFieldFocus,
 }: ProductFormClassificationSectionProps) {
 	return (
-		<LiquidGlass intensity="light" className="p-6 space-y-4">
+		<SurfacePanel padding="lg" className="space-y-4">
 			<div className="grid grid-cols-2 gap-4">
 				<FormField
 					control={form.control}
@@ -71,6 +71,6 @@ export function ProductFormClassificationSection({
 					)}
 				/>
 			</div>
-		</LiquidGlass>
+		</SurfacePanel>
 	);
 }

@@ -7,7 +7,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { LiquidGlass } from "@/components/ui/liquid-glass";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import { LEGIBILITY } from "@/lib/legibility";
 import { cn } from "@/lib/utils";
 import type {
@@ -31,7 +31,7 @@ export const ProductFormStockSection = ({
 	form,
 	onFieldFocus,
 }: ProductFormStockSectionProps) => (
-	<LiquidGlass intensity="light" className="space-y-4 p-6">
+	<SurfacePanel padding="lg" className="space-y-4">
 		<div className="grid grid-cols-3 gap-4">
 			<FormField
 				control={form.control}
@@ -96,5 +96,5 @@ export const ProductFormStockSection = ({
 				)}
 			/>
 		</div>
-	</LiquidGlass>
+	</SurfacePanel>
 );

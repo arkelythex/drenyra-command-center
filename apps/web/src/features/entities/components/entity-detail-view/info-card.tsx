@@ -1,6 +1,6 @@
 import { ExternalLink, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { LiquidGlass } from "@/components/ui/liquid-glass";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 
 interface EntityInfoCardProps {
 	onOpenRucSheet: () => void;
@@ -8,7 +8,7 @@ interface EntityInfoCardProps {
 
 export function EntityInfoCard({ onOpenRucSheet }: EntityInfoCardProps) {
 	return (
-		<LiquidGlass intensity="light" className="p-8 space-y-8 border-border/50">
+		<SurfacePanel padding="lg" className="space-y-8">
 			<h3 className="text-label font-black text-muted-foreground uppercase tracking-[0.25em]">
 				Informacion Registrada
 			</h3>
@@ -36,7 +36,9 @@ export function EntityInfoCard({ onOpenRucSheet }: EntityInfoCardProps) {
 						<p className="text-xs font-black text-muted-foreground uppercase tracking-widest opacity-50 mb-1">
 							Contacto
 						</p>
-						<p className="text-xs font-bold text-foreground opacity-90">+51 999 888 777</p>
+						<p className="text-xs font-bold text-foreground opacity-90">
+							+51 999 888 777
+						</p>
 					</div>
 				</div>
 
@@ -68,6 +70,6 @@ export function EntityInfoCard({ onOpenRucSheet }: EntityInfoCardProps) {
 					/>
 				</Button>
 			</div>
-		</LiquidGlass>
+		</SurfacePanel>
 	);
 }
