@@ -1,7 +1,12 @@
 /**
- * Core schema: users, companies, sessions, accounting job runs.
+ * Core schema: users, companies, sessions, organizations, accounting job runs.
  * These are the foundational tables that other schemas reference.
  */
+
+import type {
+	OrganizationSettings,
+	OrganizationStatus,
+} from "@arkelythex/domain/entities/organization";
 import {
 	boolean,
 	index,
@@ -15,12 +20,61 @@ import {
 } from "drizzle-orm/pg-core";
 import { accountingJobRunStatusEnum } from "./enums";
 
-// --- ORGANIZATIONS (legacy compat) ---
-export const organizations = pgTable("organizations", {
-	id: integer("id").primaryKey(),
-	ruc: varchar("ruc", { length: 11 }).notNull(),
-	businessName: text("business_name").notNull(),
-});
+// --- ORGANIZATIONS ---
+export const organizations = pgTable(
+	"organizations",
+	{
+		id: integer("id").primaryKey(),
+		name: varchar("name", { length: 255 }).notNull(),
+		ruc: varchar("ruc", { length: 11 }).notNull().unique(),
+		slug: varchar("slug", { length: 255 }).notNull().unique(),
+		status: varchar("status", { length: 20 })
+			.$type<OrganizationStatus>()
+			.default("ACTIVE")
+			.notNull(),
+		healthScore: integer("health_score").default(0),
+		settings: jsonb("settings")
+			.$type<OrganizationSettings>()
+			.default({})
+			.notNull(),
+		businessName: text("business_name"),
+		isActive: boolean("is_active").default(true),
+		createdAt: timestamp("created_at").defaultNow().notNull(),
+		updatedAt: timestamp("updated_at").defaultNow().notNull(),
+	},
+	(table) => ({
+		slugIdx: index("organizations_slug_idx").on(table.slug),
+		rucIdx: index("organizations_ruc_idx").on(table.ruc),
+		statusIdx: index("organizations_status_idx").on(table.status),
+	}),
+);
+
+// --- ORGANIZATION METRICS ---
+export const organizationMetrics = pgTable(
+	"organization_metrics",
+	{
+		id: uuid("id").primaryKey().defaultRandom(),
+		organizationId: integer("organization_id")
+			.notNull()
+			.references(() => organizations.id),
+		periodStart: timestamp("period_start").notNull(),
+		periodEnd: timestamp("period_end").notNull(),
+		totalCompanies: integer("total_companies").default(0).notNull(),
+		activeCompanies: integer("active_companies").default(0).notNull(),
+		pendingReconciliations: integer("pending_reconciliations")
+			.default(0)
+			.notNull(),
+		overdueDocuments: integer("overdue_documents").default(0).notNull(),
+		healthPercentage: integer("health_percentage").default(0).notNull(),
+		computedAt: timestamp("computed_at").defaultNow().notNull(),
+	},
+	(table) => ({
+		orgPeriodIdx: index("org_metrics_org_period_idx").on(
+			table.organizationId,
+			table.periodStart,
+		),
+	}),
+);
 
 // --- USERS ---
 export const users = pgTable("users", {
@@ -57,10 +111,14 @@ export const companies = pgTable("companies", {
 
 	// Settings / Preferences
 	settingsLanguage: varchar("settings_language", { length: 10 }).default("es"),
-	settingsTimezone: varchar("settings_timezone", { length: 50 }).default("America/Lima"),
+	settingsTimezone: varchar("settings_timezone", { length: 50 }).default(
+		"America/Lima",
+	),
 	settingsCurrency: varchar("settings_currency", { length: 3 }).default("PEN"),
 	settingsAutoClosePeriod: boolean("settings_auto_close_period").default(true),
-	settingsShowAmountsInWords: boolean("settings_show_amounts_in_words").default(false),
+	settingsShowAmountsInWords: boolean("settings_show_amounts_in_words").default(
+		false,
+	),
 
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),

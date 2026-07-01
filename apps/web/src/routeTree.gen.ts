@@ -75,6 +75,10 @@ import { Route as FacturacionCreditNotesRouteImport } from "./routes/facturacion
 import { Route as FacturacionDebitNotesRouteImport } from "./routes/facturacion/debit-notes";
 import { Route as FacturacionInvoicesRouteImport } from "./routes/facturacion/invoices";
 import { Route as FinancialsRouteImport } from "./routes/financials";
+import { Route as FirmRouteImport } from "./routes/firm";
+import { Route as FirmClientsRouteImport } from "./routes/firm/clients";
+import { Route as FirmClientsIdRouteImport } from "./routes/firm/clients.$id";
+import { Route as FirmIndexRouteImport } from "./routes/firm/index";
 import { Route as ForgotPasswordRouteImport } from "./routes/forgot-password";
 import { Route as InboxRouteImport } from "./routes/inbox";
 import { Route as IndexRouteImport } from "./routes/index";
@@ -267,6 +271,11 @@ const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
 	path: "/forgot-password",
 	getParentRoute: () => rootRouteImport,
 } as any);
+const FirmRoute = FirmRouteImport.update({
+	id: "/firm",
+	path: "/firm",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const FinancialsRoute = FinancialsRouteImport.update({
 	id: "/financials",
 	path: "/financials",
@@ -401,6 +410,11 @@ const SettingsIndexRoute = SettingsIndexRouteImport.update({
 	id: "/",
 	path: "/",
 	getParentRoute: () => SettingsRoute,
+} as any);
+const FirmIndexRoute = FirmIndexRouteImport.update({
+	id: "/",
+	path: "/",
+	getParentRoute: () => FirmRoute,
 } as any);
 const DrenyraIndexRoute = DrenyraIndexRouteImport.update({
 	id: "/",
@@ -537,6 +551,11 @@ const OnboardingDemosRoute = OnboardingDemosRouteImport.update({
 	id: "/demos",
 	path: "/demos",
 	getParentRoute: () => OnboardingRoute,
+} as any);
+const FirmClientsRoute = FirmClientsRouteImport.update({
+	id: "/clients",
+	path: "/clients",
+	getParentRoute: () => FirmRoute,
 } as any);
 const FacturacionInvoicesRoute = FacturacionInvoicesRouteImport.update({
 	id: "/facturacion/invoices",
@@ -755,6 +774,11 @@ const OperacionesEconomicGroupsGroupIdRoute =
 		path: "/operaciones/economic-groups/$groupId",
 		getParentRoute: () => rootRouteImport,
 	} as any);
+const FirmClientsIdRoute = FirmClientsIdRouteImport.update({
+	id: "/$id",
+	path: "/$id",
+	getParentRoute: () => FirmClientsRoute,
+} as any);
 
 export interface FileRoutesByFullPath {
 	"/": typeof IndexRoute;
@@ -782,6 +806,7 @@ export interface FileRoutesByFullPath {
 	"/evidence": typeof EvidenceRouteWithChildren;
 	"/expedientes": typeof ExpedientesRoute;
 	"/financials": typeof FinancialsRoute;
+	"/firm": typeof FirmRouteWithChildren;
 	"/forgot-password": typeof ForgotPasswordRoute;
 	"/inbox": typeof InboxRoute;
 	"/inteligencia": typeof InteligenciaRoute;
@@ -849,6 +874,7 @@ export interface FileRoutesByFullPath {
 	"/facturacion/credit-notes": typeof FacturacionCreditNotesRoute;
 	"/facturacion/debit-notes": typeof FacturacionDebitNotesRoute;
 	"/facturacion/invoices": typeof FacturacionInvoicesRoute;
+	"/firm/clients": typeof FirmClientsRouteWithChildren;
 	"/onboarding/demos": typeof OnboardingDemosRoute;
 	"/operaciones/customers": typeof OperacionesCustomersRoute;
 	"/operaciones/documents": typeof OperacionesDocumentsRoute;
@@ -876,8 +902,10 @@ export interface FileRoutesByFullPath {
 	"/workspace/system-admin": typeof WorkspaceSystemAdminRoute;
 	"/configuracion/": typeof ConfiguracionIndexRoute;
 	"/drenyra/": typeof DrenyraIndexRoute;
+	"/firm/": typeof FirmIndexRoute;
 	"/settings/": typeof SettingsIndexRoute;
 	"/workspace/": typeof WorkspaceIndexRoute;
+	"/firm/clients/$id": typeof FirmClientsIdRoute;
 	"/operaciones/economic-groups/$groupId": typeof OperacionesEconomicGroupsGroupIdRoute;
 }
 export interface FileRoutesByTo {
@@ -970,6 +998,7 @@ export interface FileRoutesByTo {
 	"/facturacion/credit-notes": typeof FacturacionCreditNotesRoute;
 	"/facturacion/debit-notes": typeof FacturacionDebitNotesRoute;
 	"/facturacion/invoices": typeof FacturacionInvoicesRoute;
+	"/firm/clients": typeof FirmClientsRouteWithChildren;
 	"/onboarding/demos": typeof OnboardingDemosRoute;
 	"/operaciones/customers": typeof OperacionesCustomersRoute;
 	"/operaciones/documents": typeof OperacionesDocumentsRoute;
@@ -997,8 +1026,10 @@ export interface FileRoutesByTo {
 	"/workspace/system-admin": typeof WorkspaceSystemAdminRoute;
 	"/configuracion": typeof ConfiguracionIndexRoute;
 	"/drenyra": typeof DrenyraIndexRoute;
+	"/firm": typeof FirmIndexRoute;
 	"/settings": typeof SettingsIndexRoute;
 	"/workspace": typeof WorkspaceIndexRoute;
+	"/firm/clients/$id": typeof FirmClientsIdRoute;
 	"/operaciones/economic-groups/$groupId": typeof OperacionesEconomicGroupsGroupIdRoute;
 }
 export interface FileRoutesById {
@@ -1028,6 +1059,7 @@ export interface FileRoutesById {
 	"/evidence": typeof EvidenceRouteWithChildren;
 	"/expedientes": typeof ExpedientesRoute;
 	"/financials": typeof FinancialsRoute;
+	"/firm": typeof FirmRouteWithChildren;
 	"/forgot-password": typeof ForgotPasswordRoute;
 	"/inbox": typeof InboxRoute;
 	"/inteligencia": typeof InteligenciaRoute;
@@ -1095,6 +1127,7 @@ export interface FileRoutesById {
 	"/facturacion/credit-notes": typeof FacturacionCreditNotesRoute;
 	"/facturacion/debit-notes": typeof FacturacionDebitNotesRoute;
 	"/facturacion/invoices": typeof FacturacionInvoicesRoute;
+	"/firm/clients": typeof FirmClientsRouteWithChildren;
 	"/onboarding/demos": typeof OnboardingDemosRoute;
 	"/operaciones/customers": typeof OperacionesCustomersRoute;
 	"/operaciones/documents": typeof OperacionesDocumentsRoute;
@@ -1122,8 +1155,10 @@ export interface FileRoutesById {
 	"/workspace/system-admin": typeof WorkspaceSystemAdminRoute;
 	"/configuracion/": typeof ConfiguracionIndexRoute;
 	"/drenyra/": typeof DrenyraIndexRoute;
+	"/firm/": typeof FirmIndexRoute;
 	"/settings/": typeof SettingsIndexRoute;
 	"/workspace/": typeof WorkspaceIndexRoute;
+	"/firm/clients/$id": typeof FirmClientsIdRoute;
 	"/operaciones/economic-groups/$groupId": typeof OperacionesEconomicGroupsGroupIdRoute;
 }
 export interface FileRouteTypes {
@@ -1154,6 +1189,7 @@ export interface FileRouteTypes {
 		| "/evidence"
 		| "/expedientes"
 		| "/financials"
+		| "/firm"
 		| "/forgot-password"
 		| "/inbox"
 		| "/inteligencia"
@@ -1221,6 +1257,7 @@ export interface FileRouteTypes {
 		| "/facturacion/credit-notes"
 		| "/facturacion/debit-notes"
 		| "/facturacion/invoices"
+		| "/firm/clients"
 		| "/onboarding/demos"
 		| "/operaciones/customers"
 		| "/operaciones/documents"
@@ -1248,8 +1285,10 @@ export interface FileRouteTypes {
 		| "/workspace/system-admin"
 		| "/configuracion/"
 		| "/drenyra/"
+		| "/firm/"
 		| "/settings/"
 		| "/workspace/"
+		| "/firm/clients/$id"
 		| "/operaciones/economic-groups/$groupId";
 	fileRoutesByTo: FileRoutesByTo;
 	to:
@@ -1342,6 +1381,7 @@ export interface FileRouteTypes {
 		| "/facturacion/credit-notes"
 		| "/facturacion/debit-notes"
 		| "/facturacion/invoices"
+		| "/firm/clients"
 		| "/onboarding/demos"
 		| "/operaciones/customers"
 		| "/operaciones/documents"
@@ -1369,8 +1409,10 @@ export interface FileRouteTypes {
 		| "/workspace/system-admin"
 		| "/configuracion"
 		| "/drenyra"
+		| "/firm"
 		| "/settings"
 		| "/workspace"
+		| "/firm/clients/$id"
 		| "/operaciones/economic-groups/$groupId";
 	id:
 		| "__root__"
@@ -1399,6 +1441,7 @@ export interface FileRouteTypes {
 		| "/evidence"
 		| "/expedientes"
 		| "/financials"
+		| "/firm"
 		| "/forgot-password"
 		| "/inbox"
 		| "/inteligencia"
@@ -1466,6 +1509,7 @@ export interface FileRouteTypes {
 		| "/facturacion/credit-notes"
 		| "/facturacion/debit-notes"
 		| "/facturacion/invoices"
+		| "/firm/clients"
 		| "/onboarding/demos"
 		| "/operaciones/customers"
 		| "/operaciones/documents"
@@ -1493,8 +1537,10 @@ export interface FileRouteTypes {
 		| "/workspace/system-admin"
 		| "/configuracion/"
 		| "/drenyra/"
+		| "/firm/"
 		| "/settings/"
 		| "/workspace/"
+		| "/firm/clients/$id"
 		| "/operaciones/economic-groups/$groupId";
 	fileRoutesById: FileRoutesById;
 }
@@ -1524,6 +1570,7 @@ export interface RootRouteChildren {
 	EvidenceRoute: typeof EvidenceRouteWithChildren;
 	ExpedientesRoute: typeof ExpedientesRoute;
 	FinancialsRoute: typeof FinancialsRoute;
+	FirmRoute: typeof FirmRouteWithChildren;
 	ForgotPasswordRoute: typeof ForgotPasswordRoute;
 	InboxRoute: typeof InboxRoute;
 	InteligenciaRoute: typeof InteligenciaRoute;
@@ -1782,6 +1829,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof ForgotPasswordRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		"/firm": {
+			id: "/firm";
+			path: "/firm";
+			fullPath: "/firm";
+			preLoaderRoute: typeof FirmRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
 		"/financials": {
 			id: "/financials";
 			path: "/financials";
@@ -1971,6 +2025,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof SettingsIndexRouteImport;
 			parentRoute: typeof SettingsRoute;
 		};
+		"/firm/": {
+			id: "/firm/";
+			path: "/";
+			fullPath: "/firm/";
+			preLoaderRoute: typeof FirmIndexRouteImport;
+			parentRoute: typeof FirmRoute;
+		};
 		"/drenyra/": {
 			id: "/drenyra/";
 			path: "/";
@@ -2159,6 +2220,13 @@ declare module "@tanstack/react-router" {
 			fullPath: "/onboarding/demos";
 			preLoaderRoute: typeof OnboardingDemosRouteImport;
 			parentRoute: typeof OnboardingRoute;
+		};
+		"/firm/clients": {
+			id: "/firm/clients";
+			path: "/clients";
+			fullPath: "/firm/clients";
+			preLoaderRoute: typeof FirmClientsRouteImport;
+			parentRoute: typeof FirmRoute;
 		};
 		"/facturacion/invoices": {
 			id: "/facturacion/invoices";
@@ -2447,6 +2515,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof OperacionesEconomicGroupsGroupIdRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		"/firm/clients/$id": {
+			id: "/firm/clients/$id";
+			path: "/$id";
+			fullPath: "/firm/clients/$id";
+			preLoaderRoute: typeof FirmClientsIdRouteImport;
+			parentRoute: typeof FirmClientsRoute;
+		};
 	}
 }
 
@@ -2527,6 +2602,30 @@ const EvidenceRouteWithChildren = EvidenceRoute._addFileChildren(
 	EvidenceRouteChildren,
 );
 
+interface FirmClientsRouteChildren {
+	FirmClientsIdRoute: typeof FirmClientsIdRoute;
+}
+
+const FirmClientsRouteChildren: FirmClientsRouteChildren = {
+	FirmClientsIdRoute: FirmClientsIdRoute,
+};
+
+const FirmClientsRouteWithChildren = FirmClientsRoute._addFileChildren(
+	FirmClientsRouteChildren,
+);
+
+interface FirmRouteChildren {
+	FirmClientsRoute: typeof FirmClientsRouteWithChildren;
+	FirmIndexRoute: typeof FirmIndexRoute;
+}
+
+const FirmRouteChildren: FirmRouteChildren = {
+	FirmClientsRoute: FirmClientsRouteWithChildren,
+	FirmIndexRoute: FirmIndexRoute,
+};
+
+const FirmRouteWithChildren = FirmRoute._addFileChildren(FirmRouteChildren);
+
 interface OnboardingRouteChildren {
 	OnboardingDemosRoute: typeof OnboardingDemosRoute;
 }
@@ -2589,6 +2688,7 @@ const rootRouteChildren: RootRouteChildren = {
 	EvidenceRoute: EvidenceRouteWithChildren,
 	ExpedientesRoute: ExpedientesRoute,
 	FinancialsRoute: FinancialsRoute,
+	FirmRoute: FirmRouteWithChildren,
 	ForgotPasswordRoute: ForgotPasswordRoute,
 	InboxRoute: InboxRoute,
 	InteligenciaRoute: InteligenciaRoute,

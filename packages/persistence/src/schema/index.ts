@@ -175,6 +175,7 @@ export {
 export {
 	accountingJobRuns,
 	companies,
+	organizationMetrics,
 	organizations,
 	sessions,
 	users,
@@ -217,6 +218,14 @@ export {
 	evidenceStatusEnum,
 	evidenceTypeEnum,
 } from "./evidence.schema";
+export {
+	evidenceEdges,
+	evidenceEdgesRelations,
+	evidenceNodes,
+	fiscalReplayCheckpoints,
+	fiscalTruthEvents,
+	fiscalTruthEventsRelations,
+} from "./fiscal-truth.schema";
 export {
 	evidenceEdges,
 	evidenceEdgesRelations,

@@ -1,0 +1,12 @@
+phase: archived
+completed_at: "2026-07-01"
+artifacts:
+  proposal: proposal.md
+  specs: specs/
+  design: design.md
+  tasks: tasks.md
+  verify: verify-report.md
+delivery:
+  pr1_branch: change/evidence-vault/pr1-domain
+  pr2_branch: change/evidence-vault/pr2-application
+  pr3_branch: change/evidence-vault/pr3-api-web

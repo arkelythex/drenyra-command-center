@@ -25,6 +25,7 @@ import { dashboardModule } from "./features/dashboard";
 import { detractionsModule } from "./features/detractions";
 import { drenyraModule } from "./features/drenyra/drenyra.routes";
 import { expedientesModule } from "./features/expedientes";
+import { firmRoutes } from "./features/firm";
 import {
 	fiscalCommandCenterModule,
 	fiscalTruthModule,
@@ -220,6 +221,7 @@ const baseApp = new Elysia()
 	.use(apiModules)
 	.use(backwardCompatRedirects)
 	.use(healthModule)
+	.use(firmRoutes)
 	.use(frontendTelemetryModule)
 	.use(ledgerMvpEnabled ? ledgerMvpModule : new Elysia())
 	.use(authRoutes)

@@ -1,0 +1,1 @@
+export { ControlTowerPostgresRepository } from "./repository";

@@ -1,6 +1,7 @@
 export { client, db } from "./client";
 export { PostgresReportDataSource } from "./PostgresReportDataSource";
 export * from "./query";
+export { ControlTowerPostgresRepository } from "./repositories/control-tower";
 export { DocumentRepositoryImpl } from "./repositories/document.repository";
 export { PostgresAccountRepository } from "./repositories/postgres-account.repository";
 export { PostgresAccountingPeriodRepository } from "./repositories/postgres-accounting-period.repository";
@@ -24,6 +25,7 @@ export { PostgresFiscalTruthRepository } from "./repositories/postgres-fiscal-tr
 export { PostgresFraudIndicatorRepository } from "./repositories/postgres-fraud-indicator.repository";
 export { PostgresInvoiceRepository } from "./repositories/postgres-invoice";
 export { PostgresJournalEntryRepository } from "./repositories/postgres-journal-entry.repository";
+export { PostgresOrganizationRepository } from "./repositories/postgres-organization";
 export { PostgresPlatformMcpAuditSink } from "./repositories/postgres-platform-mcp-audit.repository";
 export { PostgresProviderRepository } from "./repositories/postgres-provider.repository";
 export { PostgresReplayRepository } from "./repositories/postgres-replay.repository";

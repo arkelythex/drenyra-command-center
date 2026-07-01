@@ -1,0 +1,15 @@
+phase: archived
+completed_at: "2026-07-01"
+artifacts:
+  proposal: null
+  specs: null
+  design: null
+  tasks: null
+  verify: verify-report.md
+delivery:
+  pr1_branch: change/control-tower/pr1-domain
+  pr2_branch: change/control-tower/pr2-api
+  pr3_branch: change/control-tower/pr3-web
+notes: >
+  Change was implemented without formal SDD artifacts (proposal/specs/design/tasks).
+  Archive records the delivery branches and verification outcome.

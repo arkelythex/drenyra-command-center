@@ -49,6 +49,15 @@ export {
 	CaseProjectionAttached,
 	CaseProjectionUpdated,
 } from "./case";
+// Control Tower entities
+export { AgentRun, ApprovalRequest, AuditEvent, EvidenceItem, FiscalCase } from "./control-tower";
+export type {
+	AgentRunPrimitiveData, AgentRunProps,
+	ApprovalRequestPrimitiveData, ApprovalRequestProps,
+	AuditEventPrimitiveData, AuditEventProps,
+	EvidenceItemPrimitiveData, EvidenceItemProps,
+	FiscalCasePrimitiveData, FiscalCaseProps,
+} from "./control-tower";
 export {
 	DebitNote,
 	type DebitNotePrimitiveData,
@@ -70,4 +79,16 @@ export {
 	type JournalEntryProps,
 	type JournalEntryStatus,
 } from "./JournalEntry";
+// Organization (firm) entity
+export {
+	Organization,
+	type OrganizationPrimitiveData,
+	type OrganizationProps,
+	type OrganizationSettings,
+	type OrganizationStatus,
+	type FirmMetrics,
+	type FirmDashboardDTO,
+	type FirmAlertDTO,
+	type CompanySummaryDTO,
+} from "./organization";
 export { Transaction, type TransactionProps } from "./Transaction";
