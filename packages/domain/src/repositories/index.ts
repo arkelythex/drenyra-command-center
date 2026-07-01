@@ -25,7 +25,12 @@ export type { ExchangeRateRepository } from "./exchange-rate.repository";
 export type { FiscalMemoryRepository } from "./fiscal-memory.repository";
 export type { InvoiceRepository } from "./invoice.repository";
 export type { JournalEntryRepository } from "./journal-entry.repository";
+export type {
+	OrganizationFilters,
+	OrganizationRepository,
+} from "./organization.repository";
 export type { ProviderRepository } from "./provider.repository";
+export type { TenantScopedRepository } from "./tenant-scoped.repository";
 export type {
 	PaginatedResult,
 	PaginationOptions,
