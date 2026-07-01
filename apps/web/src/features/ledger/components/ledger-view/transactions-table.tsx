@@ -1,6 +1,6 @@
 import { FileCheck, FileText } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import type { LedgerTransaction } from "./ledger-data";
 
 interface LedgerTransactionsTableProps {
@@ -18,16 +18,29 @@ export function LedgerTransactionsTable({
 				<table className="w-full text-left border-collapse min-w-[1000px]">
 					<thead>
 						<tr className="border-b border-border/50 bg-muted/20">
-							<th className="px-8 py-5 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground w-48">Fecha / Voucher</th>
-							<th className="px-6 py-5 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground">Glosa Operativa</th>
-							<th className="px-6 py-5 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground text-center w-32">Ref. Doc</th>
-							<th className="px-8 py-5 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground text-right w-40">Debe</th>
-							<th className="px-8 py-5 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground text-right w-40">Haber</th>
+							<th className="px-8 py-5 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground w-48">
+								Fecha / Voucher
+							</th>
+							<th className="px-6 py-5 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground">
+								Glosa Operativa
+							</th>
+							<th className="px-6 py-5 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground text-center w-32">
+								Ref. Doc
+							</th>
+							<th className="px-8 py-5 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground text-right w-40">
+								Debe
+							</th>
+							<th className="px-8 py-5 text-xs font-black uppercase tracking-[0.15em] text-muted-foreground text-right w-40">
+								Haber
+							</th>
 						</tr>
 					</thead>
 					<tbody className="divide-y divide-border/30">
 						{transactions.map((transaction) => (
-							<tr key={transaction.id} className="group hover:bg-info-subtle transition-colors duration-300">
+							<tr
+								key={transaction.id}
+								className="group hover:bg-info-subtle transition-colors duration-300"
+							>
 								<td className="px-8 py-5 align-top">
 									<div className="flex flex-col gap-1">
 										<span className="text-label font-black font-mono text-foreground tracking-tight">
@@ -57,7 +70,7 @@ export function LedgerTransactionsTable({
 									</div>
 								</td>
 								<td className="px-6 py-5 align-top text-center">
-									<div className="inline-flex items-center gap-1 rounded-lg border border-border/60 bg-background/50 px-2.5 py-1 text-label font-bold uppercase text-muted-foreground shadow-sm backdrop-blur-sm transition-[background-color,border-color,box-shadow,color] duration-200 group-hover:border-info-subtle group-hover:shadow-md">
+									<div className="inline-flex items-center gap-1 rounded-lg border border-border/60 bg-background/50 px-2.5 py-1 text-label font-bold uppercase text-muted-foreground shadow-sm  transition-[background-color,border-color,box-shadow,color] duration-200 group-hover:border-info-subtle group-hover:shadow-md">
 										<FileText size={10} className="opacity-50" />
 										{transaction.doc}
 									</div>
@@ -66,7 +79,9 @@ export function LedgerTransactionsTable({
 									<span
 										className={cn(
 											"font-mono font-black text-sm tracking-tighter tabular-nums block py-1 px-2 rounded-lg transition-colors",
-											transaction.debe > 0 ? "text-foreground bg-muted/50" : "text-muted-foreground/30",
+											transaction.debe > 0
+												? "text-foreground bg-muted/50"
+												: "text-muted-foreground/30",
 										)}
 									>
 										{formatMoney(transaction.debe)}
@@ -76,7 +91,9 @@ export function LedgerTransactionsTable({
 									<span
 										className={cn(
 											"font-mono font-black text-sm tracking-tighter tabular-nums block py-1 px-2 rounded-lg transition-colors",
-											transaction.haber > 0 ? "text-foreground bg-muted/50" : "text-muted-foreground/30",
+											transaction.haber > 0
+												? "text-foreground bg-muted/50"
+												: "text-muted-foreground/30",
 										)}
 									>
 										{formatMoney(transaction.haber)}

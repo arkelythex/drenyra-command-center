@@ -1,7 +1,7 @@
 import { ArrowLeft, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { LEGIBILITY } from "@/lib/legibility";
+import { cn } from "@/lib/utils";
 import type { Entity } from "../../types/entity.types";
 
 interface EntityDetailHeaderProps {
@@ -18,7 +18,7 @@ export function EntityDetailHeader({
 	onRefreshSunat,
 }: EntityDetailHeaderProps) {
 	return (
-		<div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/50 bg-background/80 px-8 py-6 backdrop-blur-md">
+		<div className="sticky top-0 z-10 flex items-center justify-between border-b border-border/50 bg-background/80 px-8 py-6 ">
 			<div className="flex items-center gap-6">
 				<Button
 					variant="ghost"

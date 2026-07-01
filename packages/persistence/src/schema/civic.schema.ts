@@ -75,10 +75,7 @@ export const auditTrails = pgTable("civic_audit_trails", {
 	action: varchar("action", { length: 100 }).notNull(),
 	actor: varchar("actor", { length: 255 }).notNull(),
 	timestamp: timestamp("timestamp").notNull(),
-	evidence: jsonb("evidence")
-		.$type<string[]>()
-		.notNull()
-		.default([]),
+	evidence: jsonb("evidence").$type<string[]>().notNull().default([]),
 	metadata: jsonb("metadata")
 		.$type<Record<string, unknown>>()
 		.notNull()
@@ -95,11 +92,33 @@ export const fraudIndicators = pgTable("civic_fraud_indicators", {
 	type: varchar("type", { length: 50 }).notNull(),
 	severity: varchar("severity", { length: 20 }).notNull(),
 	description: text("description").notNull(),
-	evidence: jsonb("evidence")
-		.$type<string[]>()
+	evidence: jsonb("evidence").$type<string[]>().notNull().default([]),
+	detectedAt: timestamp("detected_at").notNull(),
+});
+
+// ─── Civic Cases ──────────────────────────────────────────────────
+
+export const civicCases = pgTable("civic_cases", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	name: varchar("name", { length: 255 }).notNull(),
+	electionIds: jsonb("election_ids").$type<string[]>().notNull().default([]),
+	fraudIndicators: jsonb("fraud_indicators")
+		.$type<
+			Array<{
+				type: string;
+				severity: string;
+				description: string;
+				evidence: string[];
+				detectedAt: string;
+			}>
+		>()
 		.notNull()
 		.default([]),
-	detectedAt: timestamp("detected_at").notNull(),
+	timeline: jsonb("timeline").$type<string[]>().notNull().default([]),
+	status: varchar("status", { length: 30 }).notNull().default("DRAFT"),
+	escalationReason: varchar("escalation_reason", { length: 500 }),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 // ─── Relations ────────────────────────────────────────────────────

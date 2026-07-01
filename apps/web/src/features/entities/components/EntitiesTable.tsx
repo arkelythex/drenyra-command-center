@@ -1,9 +1,9 @@
 import type { FC } from "react";
-import type { Entity } from "../types/entity.types";
 import { useEntitiesMetrics } from "../hooks/use-entities-metrics";
+import type { Entity } from "../types/entity.types";
+import { EntitiesList } from "./entities-table/entities-list";
 import { EntitiesGovernanceStrip } from "./entities-table/governance-strip";
 import { EntitiesTableHeader } from "./entities-table/header";
-import { EntitiesList } from "./entities-table/entities-list";
 
 interface EntitiesTableProps {
 	entities: Entity[];
@@ -22,7 +22,7 @@ export const EntitiesTable: FC<EntitiesTableProps> = ({
 		useEntitiesMetrics(entities);
 
 	return (
-		<div className="flex flex-col h-full bg-background/50 overflow-hidden font-sans text-foreground backdrop-blur-sm">
+		<div className="flex flex-col h-full bg-background/50 overflow-hidden font-sans text-foreground ">
 			<EntitiesTableHeader search={search} onSearch={onSearch} />
 
 			<EntitiesGovernanceStrip

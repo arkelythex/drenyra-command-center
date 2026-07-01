@@ -22,7 +22,7 @@ export function CashflowWidget({ data, isLoading }: CashflowWidgetProps) {
 
 	if (!data) {
 		return (
-			<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 backdrop-blur-sm p-6">
+			<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80  p-6">
 				<EmptyState />
 			</div>
 		);
@@ -56,7 +56,7 @@ export function CashflowWidget({ data, isLoading }: CashflowWidgetProps) {
 	];
 
 	return (
-		<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 backdrop-blur-sm p-6">
+		<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80  p-6">
 			<div className="flex items-center justify-between mb-5">
 				<div className="flex items-center gap-3">
 					<div className="p-2 rounded-lg bg-[var(--color-primary)]/10">

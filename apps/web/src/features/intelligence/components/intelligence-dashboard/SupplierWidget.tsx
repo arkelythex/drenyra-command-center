@@ -20,14 +20,14 @@ export function SupplierWidget({ data, isLoading }: SupplierWidgetProps) {
 
 	if (!data) {
 		return (
-			<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 backdrop-blur-sm p-6">
+			<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80  p-6">
 				<EmptyState />
 			</div>
 		);
 	}
 
 	return (
-		<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 backdrop-blur-sm p-6">
+		<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80  p-6">
 			<div className="flex items-center justify-between mb-5">
 				<div className="flex items-center gap-3">
 					<div className="p-2 rounded-lg bg-[var(--color-info)]/10">

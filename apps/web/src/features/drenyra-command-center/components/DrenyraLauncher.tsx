@@ -117,7 +117,7 @@ export function DrenyraLauncher({
 		<div className="mx-auto flex min-h-screen max-w-4xl flex-col px-6 py-16">
 			{/* Header / Brand */}
 			<div className="mb-12 flex flex-col items-center gap-4">
-				<div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--surface-1)]/80 backdrop-blur-xl border border-[var(--border-subtle)]">
+				<div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--surface-1)]/80  border border-[var(--border-subtle)]">
 					<BrainCircuit className="h-8 w-8 text-[var(--color-primary)]" />
 				</div>
 				<h1 className="text-[var(--text-display-sm)] font-black tracking-tight text-[var(--text-primary)] leading-none max-sm:text-[var(--text-3xl)]">
@@ -155,7 +155,7 @@ export function DrenyraLauncher({
 							key={action.id}
 							type="button"
 							onClick={() => onNavigate(action.destination)}
-							className="group flex items-start gap-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 backdrop-blur-sm p-5 text-left transition-all hover:border-[var(--border-default)] hover:bg-[var(--surface-1)]"
+							className="group flex items-start gap-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80  p-5 text-left transition-all hover:border-[var(--border-default)] hover:bg-[var(--surface-1)]"
 						>
 							<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-2)]">
 								<action.icon className="h-5 w-5 text-[var(--text-primary)]" />
@@ -188,7 +188,7 @@ export function DrenyraLauncher({
 							key={c.id}
 							type="button"
 							onClick={() => onOpenCase(c.id)}
-							className="group flex flex-col gap-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 backdrop-blur-sm p-4 text-left transition-all hover:border-[var(--border-default)]"
+							className="group flex flex-col gap-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80  p-4 text-left transition-all hover:border-[var(--border-default)]"
 						>
 							<div className="flex items-center justify-between gap-2">
 								<StatusBadge status={c.status} />

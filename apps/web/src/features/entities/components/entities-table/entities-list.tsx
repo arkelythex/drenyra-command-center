@@ -1,5 +1,11 @@
-import { Building, ChevronRight, ShieldAlert, ShieldCheck, Users } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+	Building,
+	ChevronRight,
+	ShieldAlert,
+	ShieldCheck,
+	Users,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { Entity } from "../../types/entity.types";
@@ -28,7 +34,7 @@ export function EntitiesList({ entities, onSelect }: EntitiesListProps) {
 							onClick={() => onSelect(entity.id)}
 							className="group"
 						>
-							<div className="relative flex cursor-pointer flex-col items-start gap-8 overflow-hidden rounded-3xl border border-border bg-card/80 p-6 shadow-xl backdrop-blur-md transition-[background-color,border-color,box-shadow,transform] duration-300 hover:border-primary/20 hover:bg-card hover:shadow-lg active:scale-[0.99] md:flex-row md:items-center sm:p-8">
+							<div className="relative flex cursor-pointer flex-col items-start gap-8 overflow-hidden rounded-3xl border border-border bg-card/80 p-6 shadow-xl  transition-[background-color,border-color,box-shadow,transform] duration-300 hover:border-primary/20 hover:bg-card hover:shadow-lg active:scale-[0.99] md:flex-row md:items-center sm:p-8">
 								<div className="flex items-center gap-6 w-full md:w-[35%] shrink-0">
 									<div
 										className={cn(
@@ -48,13 +54,19 @@ export function EntitiesList({ entities, onSelect }: EntitiesListProps) {
 											<h3 className="font-black text-foreground truncate text-lg tracking-tighter uppercase leading-none group-hover:text-primary transition-colors">
 												{entity.legalName}
 											</h3>
-											<Badge variant={entity.status === "ACTIVO" ? "success" : "danger"}>
+											<Badge
+												variant={
+													entity.status === "ACTIVO" ? "success" : "danger"
+												}
+											>
 												{entity.status}
 											</Badge>
 										</div>
 										<div className="flex items-center gap-3 text-xs">
 											<div className="flex items-center gap-2 px-2 py-0.5 rounded-md bg-muted/60 border border-border shadow-inner">
-												<span className="text-3xs font-black text-muted-foreground uppercase opacity-40">RUC</span>
+												<span className="text-3xs font-black text-muted-foreground uppercase opacity-40">
+													RUC
+												</span>
 												<span className="font-mono text-foreground font-black tracking-widest tabular-nums">
 													{entity.taxId}
 												</span>
@@ -159,7 +171,8 @@ export function EntitiesList({ entities, onSelect }: EntitiesListProps) {
 							Sin Entidades
 						</h2>
 						<p className="text-label font-bold text-muted-foreground/60 uppercase tracking-widest max-w-xs text-center leading-relaxed px-8">
-							No se detectaron registros en el directorio central bajo los parametros de filtrado actuales.
+							No se detectaron registros en el directorio central bajo los
+							parametros de filtrado actuales.
 						</p>
 					</div>
 				)}

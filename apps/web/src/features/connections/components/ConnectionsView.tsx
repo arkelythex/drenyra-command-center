@@ -1,21 +1,21 @@
 import {
-	Search,
-	Globe,
-	Zap,
-	RefreshCw,
-	Plus,
-	Link2,
-	CheckCircle2,
-	Sparkles,
 	Blocks,
+	CheckCircle2,
+	Globe,
+	Link2,
+	Plus,
+	RefreshCw,
+	Search,
+	Sparkles,
+	Zap,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SettingsShell } from "@/features/settings/components/SettingsShell";
+import { cn } from "@/lib/utils";
 import { useConnections } from "../hooks/useConnections";
+import { useOseReadiness } from "../hooks/useOseReadiness";
 import { IntegrationCard } from "./IntegrationCard";
 import { OseReadinessCard } from "./OseReadinessCard";
-import { useOseReadiness } from "../hooks/useOseReadiness";
 
 export const ConnectionsView = () => {
 	const {
@@ -51,6 +51,7 @@ export const ConnectionsView = () => {
 								const isActive = activeView === v.id;
 								return (
 									<button
+										type="button"
 										key={v.id}
 										onClick={() => setActiveView(v.id)}
 										className={cn(
@@ -107,7 +108,7 @@ export const ConnectionsView = () => {
 							return (
 								<div
 									key={metric.label}
-									className="rounded-2xl border border-[var(--color-stroke-1)] bg-[var(--color-surface-2)]/50 p-4 flex items-center gap-3 backdrop-blur-sm"
+									className="rounded-2xl border border-[var(--color-stroke-1)] bg-[var(--color-surface-2)]/50 p-4 flex items-center gap-3 "
 								>
 									<span
 										className={cn("rounded-xl p-2.5", metric.bg, metric.color)}
@@ -200,7 +201,7 @@ export const ConnectionsView = () => {
 							Estado de sincronización en tiempo real con servicios externos.
 						</p>
 					</div>
-					<div className="rounded-2xl border border-[var(--color-stroke-1)] bg-[var(--color-surface-2)]/50 p-5 backdrop-blur-sm">
+					<div className="rounded-2xl border border-[var(--color-stroke-1)] bg-[var(--color-surface-2)]/50 p-5 ">
 						<div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 							<div className="flex items-start gap-3">
 								<span className="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--color-surface-3)] text-[var(--color-text-secondary)]">

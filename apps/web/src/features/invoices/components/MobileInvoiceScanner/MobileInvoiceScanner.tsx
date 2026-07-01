@@ -50,7 +50,9 @@ export const MobileInvoiceScanner: React.FC<MobileInvoiceScannerProps> = ({
 
 	const stopCamera = useCallback(() => {
 		if (streamRef.current) {
-			streamRef.current.getTracks().forEach((track) => track.stop());
+			for (const track of streamRef.current.getTracks()) {
+				track.stop();
+			}
 			streamRef.current = null;
 		}
 
@@ -203,7 +205,7 @@ export const MobileInvoiceScanner: React.FC<MobileInvoiceScannerProps> = ({
 
 	return (
 		<div className="relative flex h-full flex-col overflow-hidden bg-background text-foreground">
-			<div className="z-10 flex items-center justify-between border-b border-border/60 bg-background/90 p-4 backdrop-blur-sm">
+			<div className="z-10 flex items-center justify-between border-b border-border/60 bg-background/90 p-4 ">
 				<h2 className="text-lg font-semibold">Escanear Factura</h2>
 				{onClose ? (
 					<Button
@@ -267,7 +269,7 @@ export const MobileInvoiceScanner: React.FC<MobileInvoiceScannerProps> = ({
 
 			<canvas ref={canvasRef} className="hidden" />
 
-			<div className="absolute left-4 top-4 hidden max-w-xs rounded-lg border border-border/60 bg-background/85 p-3 text-sm text-foreground shadow-lg backdrop-blur-sm md:block">
+			<div className="absolute left-4 top-4 hidden max-w-xs rounded-lg border border-border/60 bg-background/85 p-3 text-sm text-foreground shadow-lg  md:block">
 				<p className="mb-1 font-semibold">Instrucciones:</p>
 				<ul className="space-y-1 text-xs">
 					<li>• Enfoca la factura en el recuadro</li>

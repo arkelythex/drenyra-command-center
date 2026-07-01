@@ -46,12 +46,11 @@ export function NotificationSidebar({
 	return (
 		<>
 			{/* Backdrop */}
-			<div
-				className="fixed inset-0 z-[115] bg-black/20 backdrop-blur-sm lg:bg-black/10"
+			<button
+				type="button"
+				aria-label="Cerrar panel de notificaciones"
+				className="fixed inset-0 z-[115] bg-black/20 lg:bg-black/10"
 				onClick={onClose}
-				role="presentation"
-				tabIndex={-1}
-				onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClose(); } }}
 			/>
 
 			{/* Panel */}
