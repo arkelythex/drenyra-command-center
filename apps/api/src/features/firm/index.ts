@@ -1,0 +1,1 @@
+export { firmRoutes } from "./routes";
