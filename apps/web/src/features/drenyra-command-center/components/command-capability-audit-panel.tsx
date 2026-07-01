@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import {
-	listCommandAuditEvents,
 	type CommandAuditEventType,
 	type CommandAuditFilter,
+	listCommandAuditEvents,
 } from "../api/drenyra-command-audit.api";
 
 const commandAuditKeys = {
@@ -28,7 +28,7 @@ export function CommandCapabilityAuditPanel() {
 	const events = auditQuery.data ?? [];
 
 	return (
-		<section className="rounded-2xl border border-white/10 bg-slate-950/50 p-3 shadow-xl shadow-black/20 backdrop-blur-xl">
+		<section className="rounded-2xl border border-white/10 bg-slate-950/50 p-3 shadow-xl shadow-black/20 ">
 			<div className="flex items-start justify-between gap-3">
 				<div>
 					<h4 className="text-2xs font-bold uppercase tracking-widest text-[var(--color-info)]">

@@ -37,7 +37,8 @@ export const CustomerSelector = ({
 				setCustomers(
 					customerList.map((customer) => ({
 						id: customer.id,
-						legalName: customer.legalName ?? customer.tradeName ?? customer.name ?? "",
+						legalName:
+							customer.legalName ?? customer.tradeName ?? customer.name ?? "",
 						taxId: customer.taxId,
 					})),
 				);
@@ -87,7 +88,7 @@ export const CustomerSelector = ({
 						setIsOpen(true);
 					}}
 					onFocus={() => setIsOpen(true)}
-					className="relative h-12 rounded-xl border border-border/60 bg-card/70 pl-11 font-mono text-xs font-bold text-foreground shadow-sm backdrop-blur-sm transition-[background-color,border-color,box-shadow,color] placeholder:text-muted-foreground/70"
+					className="relative h-12 rounded-xl border border-border/60 bg-card/70 pl-11 font-mono text-xs font-bold text-foreground shadow-sm  transition-[background-color,border-color,box-shadow,color] placeholder:text-muted-foreground/70"
 				/>
 				{selectedCustomer && (
 					<div className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-lg border border-[rgba(var(--premium-info-rgb),0.20)] bg-[rgba(var(--premium-info-rgb),0.10)] px-2 py-1 text-xs font-black uppercase tracking-widest text-[var(--premium-action-cyan)]">
@@ -98,7 +99,7 @@ export const CustomerSelector = ({
 
 			{isOpen && query && !selectedCustomer && (
 				<div
-					className="absolute mt-2 max-h-80 w-full overflow-y-auto rounded-2xl border border-border/40 bg-card/95 shadow-xl backdrop-blur-md animate-in fade-in zoom-in duration-200"
+					className="absolute mt-2 max-h-80 w-full overflow-y-auto rounded-2xl border border-border/40 bg-card/95 shadow-xl  animate-in fade-in zoom-in duration-200"
 					style={{ zIndex: zIndex.modal }}
 				>
 					<div className="sticky top-0 bg-muted/30 px-4 py-2 text-xs font-black uppercase tracking-widest text-muted-foreground/60 border-b border-border/20">
@@ -107,6 +108,7 @@ export const CustomerSelector = ({
 					{filtered.length > 0 ? (
 						filtered.map((c) => (
 							<button
+								type="button"
 								key={c.id}
 								className="w-full px-5 py-4 text-left hover:bg-[rgba(var(--premium-info-rgb),0.05)] border-b border-border/20 last:border-0 transition-colors group/item"
 								onClick={() => {

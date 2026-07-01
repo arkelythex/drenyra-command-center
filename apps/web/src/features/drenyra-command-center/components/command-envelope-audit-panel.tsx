@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import {
-	listCommandEnvelopeAudit,
 	type CommandEnvelopeAuditDecision,
+	listCommandEnvelopeAudit,
 } from "../api/drenyra-command-envelope-audit.api";
 
 const decisionOptions = [
@@ -18,8 +18,7 @@ function decisionTone(eventType: string): string {
 }
 
 export function CommandEnvelopeAuditPanel() {
-	const [decision, setDecision] =
-		useState<CommandEnvelopeAuditDecision>("all");
+	const [decision, setDecision] = useState<CommandEnvelopeAuditDecision>("all");
 	const auditQuery = useQuery({
 		queryKey: ["drenyra", "command-envelope-audit", decision],
 		queryFn: () => listCommandEnvelopeAudit({ decision, limit: 8 }),
@@ -27,7 +26,7 @@ export function CommandEnvelopeAuditPanel() {
 	const events = auditQuery.data?.events ?? [];
 
 	return (
-		<section className="mt-5 rounded-2xl border border-white/10 bg-slate-950/50 p-4 shadow-2xl shadow-black/20 backdrop-blur-xl">
+		<section className="mt-5 rounded-2xl border border-white/10 bg-slate-950/50 p-4 shadow-2xl shadow-black/20 ">
 			<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<div>
 					<p className="text-2xs font-bold uppercase tracking-[0.22em] text-cyan-200/80">

@@ -15,8 +15,8 @@ export const ScannerResultCard = ({
 	onRetry,
 	onConfirm,
 }: ScannerResultCardProps) => (
-	<div className="absolute inset-0 flex items-center justify-center bg-background/70 p-6 backdrop-blur-sm">
-		<Card className="w-full max-w-md border-border/60 bg-card/95 p-6 text-foreground shadow-xl backdrop-blur-sm">
+	<div className="absolute inset-0 flex items-center justify-center ui-overlay p-6">
+		<Card className="w-full max-w-md border-border/60 bg-card/95 p-6 text-foreground shadow-xl ">
 			<div className="mb-4 flex items-center gap-2">
 				<CheckCircle className="h-6 w-6 text-[var(--text-success)]" />
 				<h3 className="text-lg font-semibold">Factura Escaneada</h3>

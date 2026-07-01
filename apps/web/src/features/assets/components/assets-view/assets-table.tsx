@@ -1,5 +1,11 @@
-import React from 'react';
-import { BrainCircuit, CheckCircle2, MapPin, MoreVertical, Search } from "lucide-react";
+import {
+	BrainCircuit,
+	CheckCircle2,
+	MapPin,
+	MoreVertical,
+	Search,
+} from "lucide-react";
+import type React from "react";
 import { Button } from "@/components/ui/button";
 import { cn, n } from "@/lib/utils";
 import type { AssetItem } from "./assets-data";
@@ -16,8 +22,17 @@ function StatusBadge({ status }: { status: AssetItem["status"] }) {
 	}[status];
 
 	return (
-		<span className={cn("status-badge px-2 py-0.5 text-3xs font-black uppercase", styles)}>
-			{status === "active" ? "Operativo" : status === "maintenance" ? "En Taller" : status}
+		<span
+			className={cn(
+				"status-badge px-2 py-0.5 text-3xs font-black uppercase",
+				styles,
+			)}
+		>
+			{status === "active"
+				? "Operativo"
+				: status === "maintenance"
+					? "En Taller"
+					: status}
 		</span>
 	);
 }
@@ -32,7 +47,7 @@ function Th({
 	return (
 		<th
 			className={cn(
-				"px-4 py-3 text-3xs font-black text-muted-foreground uppercase tracking-widest bg-muted/30 border-b border-border/50 backdrop-blur-sm",
+				"px-4 py-3 text-3xs font-black text-muted-foreground uppercase tracking-widest bg-muted/30 border-b border-border/50 ",
 				className,
 			)}
 		>
@@ -44,7 +59,7 @@ function Th({
 export function AssetsTable({ assets }: AssetsTableProps) {
 	return (
 		<div className="flex-1 px-4 sm:px-8 pb-8 overflow-hidden flex flex-col">
-			<div className="rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm flex-1 flex flex-col shadow-sm overflow-hidden">
+			<div className="rounded-2xl border border-border/50 bg-card/50  flex-1 flex flex-col shadow-sm overflow-hidden">
 				<div className="p-4 border-b border-border/50 flex flex-col sm:flex-row items-center gap-4 bg-muted/20">
 					<div className="relative flex-1 w-full max-w-sm group">
 						<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground group-focus-within:text-foreground transition-colors" />
@@ -76,15 +91,22 @@ export function AssetsTable({ assets }: AssetsTableProps) {
 						</thead>
 						<tbody className="divide-y divide-border/30">
 							{assets.map((asset) => (
-								<tr key={asset.id} className="group hover:bg-muted/30 transition-colors">
+								<tr
+									key={asset.id}
+									className="group hover:bg-muted/30 transition-colors"
+								>
 									<td className="p-4">
 										<div className="flex items-center gap-3">
 											<div className="h-10 w-10 rounded-lg bg-foreground/10 text-foreground flex items-center justify-center font-black text-xs border border-foreground/20">
 												AK
 											</div>
 											<div>
-												<p className="text-sm font-bold text-foreground">{asset.name}</p>
-												<p className="text-label font-mono text-muted-foreground tracking-wider">{asset.id}</p>
+												<p className="text-sm font-bold text-foreground">
+													{asset.name}
+												</p>
+												<p className="text-label font-mono text-muted-foreground tracking-wider">
+													{asset.id}
+												</p>
 											</div>
 										</div>
 									</td>
@@ -155,8 +177,16 @@ export function AssetsTable({ assets }: AssetsTableProps) {
 										</div>
 									</td>
 									<td className="p-4 text-right">
-										<Button variant="ghost" size="icon" aria-label="Más opciones" className="h-8 w-8 hover:bg-background/80">
-											<MoreVertical size={14} className="text-muted-foreground" />
+										<Button
+											variant="ghost"
+											size="icon"
+											aria-label="Más opciones"
+											className="h-8 w-8 hover:bg-background/80"
+										>
+											<MoreVertical
+												size={14}
+												className="text-muted-foreground"
+											/>
 										</Button>
 									</td>
 								</tr>

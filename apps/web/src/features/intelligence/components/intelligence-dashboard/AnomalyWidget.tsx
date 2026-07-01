@@ -17,7 +17,7 @@ export function AnomalyWidget({ items, isLoading }: AnomalyWidgetProps) {
 	const hasIssues = items.length > 0;
 
 	return (
-		<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80 backdrop-blur-sm p-6">
+		<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/80  p-6">
 			<div className="flex items-center justify-between mb-5">
 				<div className="flex items-center gap-3">
 					<div

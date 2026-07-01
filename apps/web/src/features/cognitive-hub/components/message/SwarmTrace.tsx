@@ -29,7 +29,7 @@ export function SwarmTrace({ steps, className }: SwarmTraceProps) {
 	return (
 		<div
 			className={cn(
-				"relative overflow-hidden rounded-xl border border-border/70 bg-card/90 p-4 shadow-xl backdrop-blur-md sm:p-6",
+				"relative overflow-hidden rounded-xl border border-border/70 bg-card/90 p-4 shadow-xl  sm:p-6",
 				className,
 			)}
 		>
@@ -68,7 +68,8 @@ export function SwarmTrace({ steps, className }: SwarmTraceProps) {
 
 function ProgressLine({ steps }: { steps: TraceStep[] }) {
 	const completedCount = steps.filter((s) => s.status === "completed").length;
-	const progress = steps.length > 1 ? (completedCount / (steps.length - 1)) * 100 : 0;
+	const progress =
+		steps.length > 1 ? (completedCount / (steps.length - 1)) * 100 : 0;
 
 	return (
 		<motion.div
@@ -82,9 +83,19 @@ function ProgressLine({ steps }: { steps: TraceStep[] }) {
 
 function TraceNode({ step, index }: { step: TraceStep; index: number }) {
 	const { status } = step;
-	const isReviewing = step.message.toLowerCase().includes('validando') || step.message.toLowerCase().includes('revisando');
+	const isReviewing =
+		step.message.toLowerCase().includes("validando") ||
+		step.message.toLowerCase().includes("revisando");
 
-	const nodeConfig: Record<string, { icon: typeof Check; className: string; size: number; labelClassName: string }> = {
+	const nodeConfig: Record<
+		string,
+		{
+			icon: typeof Check;
+			className: string;
+			size: number;
+			labelClassName: string;
+		}
+	> = {
 		completed: {
 			icon: Check,
 			className: "bg-success-subtle border-success/30 text-success",
@@ -95,7 +106,7 @@ function TraceNode({ step, index }: { step: TraceStep; index: number }) {
 			icon: isReviewing ? ShieldCheck : Loader2,
 			className: cn(
 				"bg-info-subtle border-info/30 text-info",
-				!isReviewing && "animate-spin"
+				!isReviewing && "animate-spin",
 			),
 			size: 12,
 			labelClassName: "text-foreground",
@@ -136,13 +147,20 @@ function TraceNode({ step, index }: { step: TraceStep; index: number }) {
 			transition={{ delay: index * 0.12 }}
 			className="flex flex-col items-center gap-2 sm:gap-4"
 		>
-			<div className={cn("flex h-8 w-8 items-center justify-center rounded-lg border transition-[background-color,border-color,color,box-shadow,transform] duration-300 sm:h-12 sm:w-12 sm:rounded-xl", config.className)}>
+			<div
+				className={cn(
+					"flex h-8 w-8 items-center justify-center rounded-lg border transition-[background-color,border-color,color,box-shadow,transform] duration-300 sm:h-12 sm:w-12 sm:rounded-xl",
+					config.className,
+				)}
+			>
 				<Icon size={config.size} strokeWidth={3} className="sm:w-4 sm:h-4" />
 			</div>
-			<span className={cn(
-				"text-[8px] sm:text-2xs font-black uppercase tracking-wider sm:tracking-[0.16em] transition-colors",
-				config.labelClassName
-			)}>
+			<span
+				className={cn(
+					"text-[8px] sm:text-2xs font-black uppercase tracking-wider sm:tracking-[0.16em] transition-colors",
+					config.labelClassName,
+				)}
+			>
 				{step.agentName}
 			</span>
 		</motion.div>
@@ -152,24 +170,36 @@ function TraceNode({ step, index }: { step: TraceStep; index: number }) {
 function TraceMessage({ step }: { step: TraceStep }) {
 	return (
 		<div className="group/item flex items-start gap-3 text-2xs sm:gap-4 sm:text-[12px]">
-			<div className={cn(
-				"mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full transition-[background-color,box-shadow,opacity] duration-200 sm:h-2 sm:w-2",
-				step.status === "completed" ? "bg-success shadow-success-glow" :
-				step.status === "active" || step.status === "running" ? "bg-info animate-pulse" : 
-				step.status === "failed" ? "bg-danger" : "bg-muted-foreground/60"
-			)} />
+			<div
+				className={cn(
+					"mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full transition-[background-color,box-shadow,opacity] duration-200 sm:h-2 sm:w-2",
+					step.status === "completed"
+						? "bg-success shadow-success-glow"
+						: step.status === "active" || step.status === "running"
+							? "bg-info animate-pulse"
+							: step.status === "failed"
+								? "bg-danger"
+								: "bg-muted-foreground/60",
+				)}
+			/>
 			<div className="flex-1 min-w-0">
-				<span className={cn(
-					"font-black uppercase tracking-widest",
-					step.status === "completed" || step.status === "active" || step.status === "running"
-						? "text-foreground"
-						: step.status === "failed"
-							? "text-danger"
-							: "text-muted-foreground"
-				)}>
+				<span
+					className={cn(
+						"font-black uppercase tracking-widest",
+						step.status === "completed" ||
+							step.status === "active" ||
+							step.status === "running"
+							? "text-foreground"
+							: step.status === "failed"
+								? "text-danger"
+								: "text-muted-foreground",
+					)}
+				>
 					{step.agentName}
 				</span>
-				<span className="ml-2 font-medium text-muted-foreground antialiased sm:ml-3">{step.message}</span>
+				<span className="ml-2 font-medium text-muted-foreground antialiased sm:ml-3">
+					{step.message}
+				</span>
 			</div>
 			<span className="font-mono text-[8px] tabular-nums text-muted-foreground/70 sm:text-2xs">
 				{step.timestamp}

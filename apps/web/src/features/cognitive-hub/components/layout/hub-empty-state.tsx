@@ -1,22 +1,10 @@
-import {
-	BarChart3,
-	Calculator,
-	Clock3,
-	FileSearch,
-	ShieldCheck,
-} from "lucide-react";
 import { DRENYRA_SUBAGENTS } from "@arkelythex/drenyra-core";
-import { cn } from "@/lib/utils";
+import { BarChart3, Calculator, FileSearch, ShieldCheck } from "lucide-react";
 import { getUserDisplayName } from "@/lib/api";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { cn } from "@/lib/utils";
 import { useAccountingJobRuns } from "../../hooks/useAccountingJobRuns";
 import { useAccountingJobsCatalog } from "../../hooks/useAccountingJobsCatalog";
-import { AgenticStatusPanel } from "../AgenticStatusPanel";
-import { DiscrepancyComposer } from "../anomaly/DiscrepancyComposer";
-import { ResolvedEventsAccordion } from "../events/ResolvedEventsAccordion";
-import { RESOLVED_HUB_EVENTS } from "../hub-events.constants";
-import { ControlPlaneView } from "../views/ControlPlaneView";
-import { DecisionGateCard } from "./hub-empty-state/decision-gate-card";
 import type { HubEmptyStateProps } from "./hub-empty-state/hub-empty-state.types";
 import { L1RiskCard } from "./hub-empty-state/l1-risk-card";
 import { OperationalContext } from "./hub-empty-state/operational-context";
@@ -39,23 +27,23 @@ export const HubEmptyState = ({
 	onSelectResolvedEvent,
 	onRunQuickAction,
 }: HubEmptyStateProps) => {
-	const firstName = getUserDisplayName().split(/\s+/)[0] ?? "Operaciones";
+	const _firstName = getUserDisplayName().split(/\s+/)[0] ?? "Operaciones";
 	const { companyContext } = useActiveCompanyContext();
 	const { runs } = useAccountingJobRuns(10);
 	const { data: accountingJobsCatalog } = useAccountingJobsCatalog(
 		companyContext.countryCode,
 	);
-	const representativeRun =
+	const _representativeRun =
 		runs.find((run) => run.controlPlane?.representativePath) ?? null;
 	const currentHour = new Date().getHours();
-	const greeting =
+	const _greeting =
 		currentHour < 12
 			? "Buenos días"
 			: currentHour < 19
 				? "Buenas tardes"
 				: "Buenas noches";
 
-	const ABSTRACTED_TOOLS = [
+	const _ABSTRACTED_TOOLS = [
 		{
 			id: "audit",
 			label: "Auditoría",
@@ -87,14 +75,23 @@ export const HubEmptyState = ({
 	];
 
 	const runsAwaiting = runs.filter((r) => r.status === "AWAITING_APPROVAL");
-	const runsBackground = runs.filter(
+	const _runsBackground = runs.filter(
 		(r) => r.status === "RUNNING" || r.status === "QUEUED",
 	);
 	const hasSupervisionTasks =
 		runsAwaiting.length > 0 || discrepancyScenario !== null;
-	const drenyraSubagents = DRENYRA_SUBAGENTS.map(
+	const _drenyraSubagents = DRENYRA_SUBAGENTS.map(
 		(a) => a.name,
-	) as unknown as readonly ["Eviden", "Vigila", "Traza", "Regula", "Revela", "Funde", "Reporta", "Archiva"];
+	) as unknown as readonly [
+		"Eviden",
+		"Vigila",
+		"Traza",
+		"Regula",
+		"Revela",
+		"Funde",
+		"Reporta",
+		"Archiva",
+	];
 
 	return (
 		<div className="mx-auto flex w-full max-w-4xl flex-col items-center justify-center space-y-12 py-12 text-center @container">
@@ -111,7 +108,7 @@ export const HubEmptyState = ({
 			</div>
 
 			{/* Status Banner: Mantenemos el aviso de infraestructura pero más compacto */}
-			<div className="w-full max-w-2xl overflow-hidden rounded-3xl border border-white/5 bg-white/[0.02] shadow-sm backdrop-blur-md">
+			<div className="w-full max-w-2xl overflow-hidden rounded-3xl border border-white/5 bg-white/[0.02] shadow-sm ">
 				<div className="flex items-center justify-between px-6 py-4 text-left">
 					<div className="flex items-center gap-4">
 						<div className="flex h-10 w-10 items-center justify-center rounded-full bg-success-subtle text-success">
@@ -126,7 +123,10 @@ export const HubEmptyState = ({
 							</p>
 						</div>
 					</div>
-					<button className="rounded-lg bg-primary px-4 py-2 text-xs font-black uppercase tracking-widest text-primary-foreground hover:bg-primary/90 transition-transform active:scale-95">
+					<button
+						type="button"
+						className="rounded-lg bg-primary px-4 py-2 text-xs font-black uppercase tracking-widest text-primary-foreground hover:bg-primary/90 transition-transform active:scale-95"
+					>
 						Status
 					</button>
 				</div>
@@ -160,7 +160,7 @@ interface OperationalAlertCardProps {
 	onClick: () => void;
 }
 
-function OperationalAlertCard({
+function _OperationalAlertCard({
 	icon: Icon,
 	title,
 	count,
@@ -176,6 +176,7 @@ function OperationalAlertCard({
 
 	return (
 		<button
+			type="button"
 			onClick={onClick}
 			className="group flex flex-col gap-4 rounded-[28px] border border-[var(--border-subtle)] bg-[var(--surface-1)] p-6 text-left transition-all hover:border-[var(--border-prominent)] hover:shadow-lg"
 		>

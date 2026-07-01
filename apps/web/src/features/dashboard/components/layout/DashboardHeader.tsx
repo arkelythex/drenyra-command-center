@@ -1,18 +1,18 @@
 import { ChevronLeft, ChevronRight, UserPlus } from "lucide-react";
+import { Text } from "@/components/atoms/text";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 } from "@/components/ui/select";
-import { getMonthName } from "@/lib/date-utils";
-import { DashboardTab } from "../DashboardView";
 import { useHaptics } from "@/hooks/useHaptics";
-import { Text } from "@/components/atoms/text";
-import { DashboardTenantCard } from "./DashboardTenantCard";
+import { getMonthName } from "@/lib/date-utils";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { cn } from "@/lib/utils";
+import type { DashboardTab } from "../DashboardView";
+import { DashboardTenantCard } from "./DashboardTenantCard";
 
 interface DashboardHeaderProps {
 	activeTab: DashboardTab;
@@ -72,13 +72,13 @@ export const DashboardHeader = ({
 				{/* --- DASHBOARD TABS --- */}
 				<nav
 					aria-label="Navegación del dashboard"
-					role="tablist"
 					className="relative flex items-center gap-1 rounded-xl border border-border/70 bg-[var(--surface-1)] p-1 shadow-[var(--shadow-sm)]"
 				>
 					{DASHBOARD_TABS.map((tab) => {
 						const isActive = activeTab === tab.id;
 						return (
 							<button
+								type="button"
 								key={tab.id}
 								onClick={() => handleTabChange(tab.id)}
 								className={cn(
@@ -130,7 +130,7 @@ export const DashboardHeader = ({
 								</Text>
 							</div>
 						</SelectTrigger>
-						<SelectContent className="rounded-xl border-border/70 bg-[var(--surface-1)]/96 p-2 backdrop-blur-xl">
+						<SelectContent className="rounded-xl border-border/70 bg-[var(--surface-1)]/96 p-2 ">
 							{availableMonths.map((month) => (
 								<SelectItem
 									key={month.index}

@@ -42,7 +42,7 @@ export function MetricCard({ metric }: { metric: DashboardMetric }) {
 
 	return (
 		<div
-			className={`rounded-xl border ${style.border} ${style.bg}/60 backdrop-blur-sm p-5 transition-all hover:shadow-sm`}
+			className={`rounded-xl border ${style.border} ${style.bg}/60  p-5 transition-all hover:shadow-sm`}
 		>
 			<div className="flex items-start justify-between">
 				<div className="space-y-1">
