@@ -3,6 +3,11 @@ export { PostgresReportDataSource } from "./PostgresReportDataSource";
 export * from "./query";
 export { ControlTowerPostgresRepository } from "./repositories/control-tower";
 export { DocumentRepositoryImpl } from "./repositories/document.repository";
+export {
+	PostgresCapabilityRoutingRuleRepository,
+	PostgresModelRegistrationRepository,
+	PostgresRoutingAuditLogRepository,
+} from "./repositories/model-router";
 export { PostgresAccountRepository } from "./repositories/postgres-account.repository";
 export { PostgresAccountingPeriodRepository } from "./repositories/postgres-accounting-period.repository";
 export { PostgresAISettingsRepository } from "./repositories/postgres-ai-settings.repository";

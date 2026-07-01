@@ -235,6 +235,14 @@ export {
 	fiscalTruthEventsRelations,
 } from "./fiscal-truth.schema";
 export {
+	evidenceEdges,
+	evidenceEdgesRelations,
+	evidenceNodes,
+	fiscalReplayCheckpoints,
+	fiscalTruthEvents,
+	fiscalTruthEventsRelations,
+} from "./fiscal-truth.schema";
+export {
 	inventory,
 	inventoryMovements,
 	inventoryMovementsRelations,
@@ -254,6 +262,13 @@ export {
 	payments,
 	paymentsRelations,
 } from "./invoicing.schema";
+// --- MODEL ROUTER ---
+export {
+	capabilityRoutingRules,
+	modelRegistrations,
+	routingAuditLog,
+	routingAuditLogRelations,
+} from "./model-router.schema";
 export { platformMcpAuditEvents } from "./platform-mcp.schema";
 // --- PRODUCTS ---
 export {

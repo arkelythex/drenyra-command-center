@@ -24,6 +24,8 @@
     "./types/*": "./src/types/*.ts",
     "./types/product-surfaces": "./src/types/product-surfaces.ts",
     "./types/product-surface-registry": "./src/types/product-surface-registry.ts",
+    "./ai": "./src/ai/index.ts",
+    "./ai/model-router/types": "./src/ai/model-router/types.ts",
     "./accounting/*": "./src/accounting/*.ts",
     "./roi/*": "./src/roi/*.ts",
     "./fiscal-memory": "./src/fiscal-memory/index.ts"

@@ -30,6 +30,14 @@ export type {
 	OrganizationFilters,
 	OrganizationRepository,
 } from "./organization.repository";
+// --- MODEL ROUTER ---
+export type {
+	CapabilityRoutingRuleRepository,
+	CapabilityScoringParams,
+	ModelFilters,
+	ModelRegistrationRepository,
+	RoutingAuditLogRepository,
+} from "./model-registration.repository";
 export type { ProviderRepository } from "./provider.repository";
 export type { TenantScopedRepository } from "./tenant-scoped.repository";
 export type {

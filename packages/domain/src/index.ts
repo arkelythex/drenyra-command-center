@@ -7,34 +7,33 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
+
+// --- ACCOUNTING ---
+export * from "./accounting";
+// --- AI ---
+export * from "./ai";
+export * from "./audit-ledger";
+export * from "./entities";
 export * from "./errors";
 export * from "./events";
-export * from "./services";
-export { DNI } from "./value-objects/DNI";
-export { DocumentSeries } from "./value-objects/DocumentSeries";
-export { type Currency, Money } from "./value-objects/Money";
-export { RUC } from "./value-objects/RUC";
-export * from "./fiscal-truth";
-export * from "./fiscal-ontology";
+export * from "./fiscal";
 export * from "./fiscal-agentic-ledger";
+export * from "./fiscal-memory";
+export * from "./fiscal-ontology";
+export * from "./fiscal-truth";
+export * from "./platform/mcp";
+export * from "./roi";
+export * from "./services";
+export {
+	ARKELYTHEX_PRODUCT_SURFACES,
+	getArkelythexProductSurface,
+} from "./types/product-surface-registry";
 export type {
 	ArkelythexProductSurface,
 	ArkelythexSurfaceId,
 	ArkelythexSurfaceModuleRef,
 } from "./types/product-surfaces";
-export {
-	ARKELYTHEX_PRODUCT_SURFACES,
-	getArkelythexProductSurface,
-} from "./types/product-surface-registry";
-export * from "./platform/mcp";
-
-// --- ACCOUNTING ---
-export * from "./accounting";
-
-export * from "./fiscal";
-export * from "./fiscal-memory";
-export * from "./roi";
-
-export * from "./audit-ledger";
-
-export * from "./entities";
+export { DNI } from "./value-objects/DNI";
+export { DocumentSeries } from "./value-objects/DocumentSeries";
+export { type Currency, Money } from "./value-objects/Money";
+export { RUC } from "./value-objects/RUC";

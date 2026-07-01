@@ -2590,6 +2590,7 @@ const DrenyraRouteChildren: DrenyraRouteChildren = {
 const DrenyraRouteWithChildren =
 	DrenyraRoute._addFileChildren(DrenyraRouteChildren);
 
+<<<<<<< HEAD
 interface EvidenceRouteChildren {
 	EvidenceIdRoute: typeof EvidenceIdRoute;
 }
@@ -2602,6 +2603,8 @@ const EvidenceRouteWithChildren = EvidenceRoute._addFileChildren(
 	EvidenceRouteChildren,
 );
 
+=======
+>>>>>>> feature/drenyra-model-router
 interface FirmClientsRouteChildren {
 	FirmClientsIdRoute: typeof FirmClientsIdRoute;
 }
