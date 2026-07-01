@@ -4,51 +4,65 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateApiEnv } from "./api-env.schema";
 
-function parseEnvFile(text: string): Record<string, string> {
-  const out: Record<string, string> = {};
+function stripInlineComment(value: string): string {
+	const hashIndex = value.indexOf("#");
+	if (hashIndex === -1) return value.trim();
+	return value.slice(0, hashIndex).trim();
+}
 
-  for (const rawLine of text.split(/\r?\n/)) {
-    const line = rawLine.trim();
-    if (!line || line.startsWith("#")) continue;
+export function parseEnvFile(text: string): Record<string, string> {
+	const out: Record<string, string> = {};
 
-    const idx = line.indexOf("=");
-    if (idx <= 0) continue;
+	for (const rawLine of text.split(/\r?\n/)) {
+		const line = rawLine.trim();
+		if (!line || line.startsWith("#")) continue;
 
-    const key = line.slice(0, idx).trim();
-    let value = line.slice(idx + 1).trim();
+		const idx = line.indexOf("=");
+		if (idx <= 0) continue;
 
-    if (
-      (value.startsWith('"') && value.endsWith('"')) ||
-      (value.startsWith("'") && value.endsWith("'"))
-    ) {
-      value = value.slice(1, -1);
-    }
+		const key = line.slice(0, idx).trim();
+		let value = line.slice(idx + 1).trim();
 
-    out[key] = value;
-  }
+		if (
+			(value.startsWith('"') && value.endsWith('"')) ||
+			(value.startsWith("'") && value.endsWith("'"))
+		) {
+			value = value.slice(1, -1);
+		} else {
+			value = stripInlineComment(value);
+		}
 
-  return out;
+		out[key] = value;
+	}
+
+	return out;
 }
 
 /**
- * Load `apps/api/.env` and `apps/api/.env.local` regardless of current working directory,
+ * Load repo root and `apps/api` env files regardless of current working directory,
  * then validate critical environment variables at startup.
  */
 export async function loadApiEnv(): Promise<void> {
-  const srcDir = dirname(fileURLToPath(import.meta.url));
-  const apiRoot = resolve(srcDir, "..", "..");
+	const srcDir = dirname(fileURLToPath(import.meta.url));
+	const apiRoot = resolve(srcDir, "..", "..");
+	const repoRoot = resolve(apiRoot, "..", "..");
 
-  const candidates = [resolve(apiRoot, ".env"), resolve(apiRoot, ".env.local")];
+	const candidates = [
+		resolve(repoRoot, ".env"),
+		resolve(repoRoot, ".env.local"),
+		resolve(apiRoot, ".env"),
+		resolve(apiRoot, ".env.local"),
+	];
 
-  for (const envPath of candidates) {
-    if (!existsSync(envPath)) continue;
-    const text = await readFile(envPath, "utf8");
-    const parsed = parseEnvFile(text);
+	for (const envPath of candidates) {
+		if (!existsSync(envPath)) continue;
+		const text = await readFile(envPath, "utf8");
+		const parsed = parseEnvFile(text);
 
-    for (const [k, v] of Object.entries(parsed)) {
-      if (process.env[k] === undefined) process.env[k] = v;
-    }
-  }
+		for (const [k, v] of Object.entries(parsed)) {
+			if (process.env[k] === undefined) process.env[k] = v;
+		}
+	}
 
-  validateApiEnv();
+	validateApiEnv();
 }
