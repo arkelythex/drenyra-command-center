@@ -1,0 +1,1 @@
+export { accountingPrRoutes } from "./routes";

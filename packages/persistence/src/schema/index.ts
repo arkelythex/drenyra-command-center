@@ -42,6 +42,15 @@ export {
 	pcgeAccounts,
 	pcgeAccountsRelations,
 } from "./accounting.schema";
+// --- ACCOUNTING PRs ---
+export {
+	type AccountingPrStatus,
+	accountingPrs,
+	accountingPrsRelations,
+	type PrSignature,
+	prApprovals,
+	prApprovalsRelations,
+} from "./accounting-pr.schema";
 // --- AI AGENT RUN ---
 export {
 	type AgentRunEvent,
@@ -220,26 +229,22 @@ export {
 } from "./evidence.schema";
 export {
 	evidenceEdges,
-	evidenceEdgesRelations,
-	evidenceNodes,
-	fiscalReplayCheckpoints,
-	fiscalTruthEvents,
-	fiscalTruthEventsRelations,
-} from "./fiscal-truth.schema";
-export {
+	evidenceEdges,
 	evidenceEdges,
 	evidenceEdgesRelations,
-	evidenceNodes,
-	fiscalReplayCheckpoints,
-	fiscalTruthEvents,
-	fiscalTruthEventsRelations,
-} from "./fiscal-truth.schema";
-export {
-	evidenceEdges,
+	evidenceEdgesRelations,
 	evidenceEdgesRelations,
 	evidenceNodes,
+	evidenceNodes,
+	evidenceNodes,
+	fiscalReplayCheckpoints,
+	fiscalReplayCheckpoints,
 	fiscalReplayCheckpoints,
 	fiscalTruthEvents,
+	fiscalTruthEvents,
+	fiscalTruthEvents,
+	fiscalTruthEventsRelations,
+	fiscalTruthEventsRelations,
 	fiscalTruthEventsRelations,
 } from "./fiscal-truth.schema";
 export {
@@ -269,6 +274,20 @@ export {
 	routingAuditLog,
 	routingAuditLogRelations,
 } from "./model-router.schema";
+// --- MONTHLY CLOSE ---
+export {
+	type ChecklistCategory,
+	type CloseItemStatus,
+	type CloseStatus,
+	closeChecklistItems,
+	closeChecklistItemsRelations,
+	closeChecklists,
+	closeChecklistsRelations,
+	closeGates,
+	closeGatesRelations,
+	type GateStatus,
+	type GateType,
+} from "./monthly-close.schema";
 export { platformMcpAuditEvents } from "./platform-mcp.schema";
 // --- PRODUCTS ---
 export {

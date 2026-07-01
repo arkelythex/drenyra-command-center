@@ -11,6 +11,12 @@
 export { Account, type AccountProps, type AccountType } from "./Account";
 export { AISettings, type AISettingsProps } from "./AISettings";
 export {
+	AccountingPr,
+	type AccountingPrProps,
+	type AccountingPrStatus,
+	type PrSignature,
+} from "./accounting-pr";
+export {
 	BankAccount,
 	type BankAccountProps,
 	type BankAccountType,
@@ -49,14 +55,25 @@ export {
 	CaseProjectionAttached,
 	CaseProjectionUpdated,
 } from "./case";
-// Control Tower entities
-export { AgentRun, ApprovalRequest, AuditEvent, EvidenceItem, FiscalCase } from "./control-tower";
 export type {
-	AgentRunPrimitiveData, AgentRunProps,
-	ApprovalRequestPrimitiveData, ApprovalRequestProps,
-	AuditEventPrimitiveData, AuditEventProps,
-	EvidenceItemPrimitiveData, EvidenceItemProps,
-	FiscalCasePrimitiveData, FiscalCaseProps,
+	AgentRunPrimitiveData,
+	AgentRunProps,
+	ApprovalRequestPrimitiveData,
+	ApprovalRequestProps,
+	AuditEventPrimitiveData,
+	AuditEventProps,
+	EvidenceItemPrimitiveData,
+	EvidenceItemProps,
+	FiscalCasePrimitiveData,
+	FiscalCaseProps,
+} from "./control-tower";
+// Control Tower entities
+export {
+	AgentRun,
+	ApprovalRequest,
+	AuditEvent,
+	EvidenceItem,
+	FiscalCase,
 } from "./control-tower";
 export {
 	DebitNote,
@@ -81,14 +98,14 @@ export {
 } from "./JournalEntry";
 // Organization (firm) entity
 export {
+	type CompanySummaryDTO,
+	type FirmAlertDTO,
+	type FirmDashboardDTO,
+	type FirmMetrics,
 	Organization,
 	type OrganizationPrimitiveData,
 	type OrganizationProps,
 	type OrganizationSettings,
 	type OrganizationStatus,
-	type FirmMetrics,
-	type FirmDashboardDTO,
-	type FirmAlertDTO,
-	type CompanySummaryDTO,
 } from "./organization";
 export { Transaction, type TransactionProps } from "./Transaction";

@@ -4,6 +4,7 @@ import { Elysia } from "elysia";
 import { helmet } from "elysia-helmet";
 import { apiModules, backwardCompatRedirects } from "./api-module-surface";
 import { resolveCorsOrigins } from "./config/cors";
+import { accountingPrRoutes } from "./features/accounting-prs";
 import { agenticLedgerModule } from "./features/agentic-ledger";
 import { aiRagModule } from "./features/ai-rag";
 import { cognitiveStreamRoute } from "./features/ai-swarm/api/cognitive-stream.route";
@@ -41,6 +42,7 @@ import {
 import { llmGatewayModule } from "./features/llm-gateway/module";
 import { platformMcpModule } from "./features/platform";
 import { pseComplianceRoutes } from "./features/pse-compliance";
+import { sireComparisonModule } from "./features/sire-comparison";
 import { sunatApiModule } from "./features/sunat";
 import { vendorRoutes } from "./features/vendors";
 import { createLogger } from "./lib/logger";
@@ -238,6 +240,7 @@ const baseApp = new Elysia()
 	.use(llmGatewayModule)
 	.use(aiRagModule)
 	.use(aiControlPlaneModule)
+	.use(accountingPrRoutes)
 	.use(agenticLedgerModule)
 	.use(aiSwarmRoutes)
 	.use(cognitiveStreamRoute)
@@ -252,7 +255,8 @@ const baseApp = new Elysia()
 	.use(detractionsModule)
 	.use(drenyraModule)
 	.use(civicModule)
-	.use(sunatApiModule);
+	.use(sunatApiModule)
+	.use(sireComparisonModule);
 
 /** Public contract for Eden Treaty clients — use `baseApp` so OTEL/listen do not narrow inference. */
 export type App = typeof baseApp;

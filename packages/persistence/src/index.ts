@@ -17,6 +17,7 @@ export { PostgresBankReconciliationRepository } from "./repositories/postgres-ba
 export { PostgresBankTransactionRepository } from "./repositories/postgres-bank-transaction.repository";
 export { PostgresCivicCaseRepository } from "./repositories/postgres-civic-case.repository";
 export { PostgresClientRepository } from "./repositories/postgres-client.repository";
+export { PostgresCloseChecklistRepository } from "./repositories/postgres-close-checklist.repository";
 export { PostgresCpeLogRepository } from "./repositories/postgres-cpe-log.repository";
 export { PostgresDetractionRepository } from "./repositories/postgres-detraction.repository";
 export { PostgresDrenyraRepository } from "./repositories/postgres-drenyra";
