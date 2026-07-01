@@ -68,6 +68,8 @@ import { Route as DrenyraObservabilityRouteImport } from "./routes/drenyra/obser
 import { Route as DrenyraSkillsRouteImport } from "./routes/drenyra/skills";
 import { Route as EconomicGroupsGroupIdRouteImport } from "./routes/economic-groups.$groupId";
 import { Route as EntitiesRouteImport } from "./routes/entities";
+import { Route as EvidenceRouteImport } from "./routes/evidence";
+import { Route as EvidenceIdRouteImport } from "./routes/evidence/$id";
 import { Route as ExpedientesRouteImport } from "./routes/expedientes";
 import { Route as FacturacionCreditNotesRouteImport } from "./routes/facturacion/credit-notes";
 import { Route as FacturacionDebitNotesRouteImport } from "./routes/facturacion/debit-notes";
@@ -273,6 +275,11 @@ const FinancialsRoute = FinancialsRouteImport.update({
 const ExpedientesRoute = ExpedientesRouteImport.update({
 	id: "/expedientes",
 	path: "/expedientes",
+	getParentRoute: () => rootRouteImport,
+} as any);
+const EvidenceRoute = EvidenceRouteImport.update({
+	id: "/evidence",
+	path: "/evidence",
 	getParentRoute: () => rootRouteImport,
 } as any);
 const EntitiesRoute = EntitiesRouteImport.update({
@@ -546,6 +553,11 @@ const FacturacionCreditNotesRoute = FacturacionCreditNotesRouteImport.update({
 	path: "/facturacion/credit-notes",
 	getParentRoute: () => rootRouteImport,
 } as any);
+const EvidenceIdRoute = EvidenceIdRouteImport.update({
+	id: "/$id",
+	path: "/$id",
+	getParentRoute: () => EvidenceRoute,
+} as any);
 const EconomicGroupsGroupIdRoute = EconomicGroupsGroupIdRouteImport.update({
 	id: "/economic-groups/$groupId",
 	path: "/economic-groups/$groupId",
@@ -767,6 +779,7 @@ export interface FileRoutesByFullPath {
 	"/documents": typeof DocumentsRoute;
 	"/drenyra": typeof DrenyraRouteWithChildren;
 	"/entities": typeof EntitiesRoute;
+	"/evidence": typeof EvidenceRouteWithChildren;
 	"/expedientes": typeof ExpedientesRoute;
 	"/financials": typeof FinancialsRoute;
 	"/forgot-password": typeof ForgotPasswordRoute;
@@ -832,6 +845,7 @@ export interface FileRoutesByFullPath {
 	"/drenyra/observability": typeof DrenyraObservabilityRoute;
 	"/drenyra/skills": typeof DrenyraSkillsRoute;
 	"/economic-groups/$groupId": typeof EconomicGroupsGroupIdRoute;
+	"/evidence/$id": typeof EvidenceIdRoute;
 	"/facturacion/credit-notes": typeof FacturacionCreditNotesRoute;
 	"/facturacion/debit-notes": typeof FacturacionDebitNotesRoute;
 	"/facturacion/invoices": typeof FacturacionInvoicesRoute;
@@ -887,6 +901,7 @@ export interface FileRoutesByTo {
 	"/debit-notes": typeof DebitNotesRoute;
 	"/documents": typeof DocumentsRoute;
 	"/entities": typeof EntitiesRoute;
+	"/evidence": typeof EvidenceRouteWithChildren;
 	"/expedientes": typeof ExpedientesRoute;
 	"/financials": typeof FinancialsRoute;
 	"/forgot-password": typeof ForgotPasswordRoute;
@@ -951,6 +966,7 @@ export interface FileRoutesByTo {
 	"/drenyra/observability": typeof DrenyraObservabilityRoute;
 	"/drenyra/skills": typeof DrenyraSkillsRoute;
 	"/economic-groups/$groupId": typeof EconomicGroupsGroupIdRoute;
+	"/evidence/$id": typeof EvidenceIdRoute;
 	"/facturacion/credit-notes": typeof FacturacionCreditNotesRoute;
 	"/facturacion/debit-notes": typeof FacturacionDebitNotesRoute;
 	"/facturacion/invoices": typeof FacturacionInvoicesRoute;
@@ -1009,6 +1025,7 @@ export interface FileRoutesById {
 	"/documents": typeof DocumentsRoute;
 	"/drenyra": typeof DrenyraRouteWithChildren;
 	"/entities": typeof EntitiesRoute;
+	"/evidence": typeof EvidenceRouteWithChildren;
 	"/expedientes": typeof ExpedientesRoute;
 	"/financials": typeof FinancialsRoute;
 	"/forgot-password": typeof ForgotPasswordRoute;
@@ -1074,6 +1091,7 @@ export interface FileRoutesById {
 	"/drenyra/observability": typeof DrenyraObservabilityRoute;
 	"/drenyra/skills": typeof DrenyraSkillsRoute;
 	"/economic-groups/$groupId": typeof EconomicGroupsGroupIdRoute;
+	"/evidence/$id": typeof EvidenceIdRoute;
 	"/facturacion/credit-notes": typeof FacturacionCreditNotesRoute;
 	"/facturacion/debit-notes": typeof FacturacionDebitNotesRoute;
 	"/facturacion/invoices": typeof FacturacionInvoicesRoute;
@@ -1133,6 +1151,7 @@ export interface FileRouteTypes {
 		| "/documents"
 		| "/drenyra"
 		| "/entities"
+		| "/evidence"
 		| "/expedientes"
 		| "/financials"
 		| "/forgot-password"
@@ -1198,6 +1217,7 @@ export interface FileRouteTypes {
 		| "/drenyra/observability"
 		| "/drenyra/skills"
 		| "/economic-groups/$groupId"
+		| "/evidence/$id"
 		| "/facturacion/credit-notes"
 		| "/facturacion/debit-notes"
 		| "/facturacion/invoices"
@@ -1253,6 +1273,7 @@ export interface FileRouteTypes {
 		| "/debit-notes"
 		| "/documents"
 		| "/entities"
+		| "/evidence"
 		| "/expedientes"
 		| "/financials"
 		| "/forgot-password"
@@ -1317,6 +1338,7 @@ export interface FileRouteTypes {
 		| "/drenyra/observability"
 		| "/drenyra/skills"
 		| "/economic-groups/$groupId"
+		| "/evidence/$id"
 		| "/facturacion/credit-notes"
 		| "/facturacion/debit-notes"
 		| "/facturacion/invoices"
@@ -1374,6 +1396,7 @@ export interface FileRouteTypes {
 		| "/documents"
 		| "/drenyra"
 		| "/entities"
+		| "/evidence"
 		| "/expedientes"
 		| "/financials"
 		| "/forgot-password"
@@ -1439,6 +1462,7 @@ export interface FileRouteTypes {
 		| "/drenyra/observability"
 		| "/drenyra/skills"
 		| "/economic-groups/$groupId"
+		| "/evidence/$id"
 		| "/facturacion/credit-notes"
 		| "/facturacion/debit-notes"
 		| "/facturacion/invoices"
@@ -1497,6 +1521,7 @@ export interface RootRouteChildren {
 	DocumentsRoute: typeof DocumentsRoute;
 	DrenyraRoute: typeof DrenyraRouteWithChildren;
 	EntitiesRoute: typeof EntitiesRoute;
+	EvidenceRoute: typeof EvidenceRouteWithChildren;
 	ExpedientesRoute: typeof ExpedientesRoute;
 	FinancialsRoute: typeof FinancialsRoute;
 	ForgotPasswordRoute: typeof ForgotPasswordRoute;
@@ -1769,6 +1794,13 @@ declare module "@tanstack/react-router" {
 			path: "/expedientes";
 			fullPath: "/expedientes";
 			preLoaderRoute: typeof ExpedientesRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/evidence": {
+			id: "/evidence";
+			path: "/evidence";
+			fullPath: "/evidence";
+			preLoaderRoute: typeof EvidenceRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
 		"/entities": {
@@ -2149,6 +2181,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof FacturacionCreditNotesRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		"/evidence/$id": {
+			id: "/evidence/$id";
+			path: "/$id";
+			fullPath: "/evidence/$id";
+			preLoaderRoute: typeof EvidenceIdRouteImport;
+			parentRoute: typeof EvidenceRoute;
+		};
 		"/economic-groups/$groupId": {
 			id: "/economic-groups/$groupId";
 			path: "/economic-groups/$groupId";
@@ -2476,6 +2515,18 @@ const DrenyraRouteChildren: DrenyraRouteChildren = {
 const DrenyraRouteWithChildren =
 	DrenyraRoute._addFileChildren(DrenyraRouteChildren);
 
+interface EvidenceRouteChildren {
+	EvidenceIdRoute: typeof EvidenceIdRoute;
+}
+
+const EvidenceRouteChildren: EvidenceRouteChildren = {
+	EvidenceIdRoute: EvidenceIdRoute,
+};
+
+const EvidenceRouteWithChildren = EvidenceRoute._addFileChildren(
+	EvidenceRouteChildren,
+);
+
 interface OnboardingRouteChildren {
 	OnboardingDemosRoute: typeof OnboardingDemosRoute;
 }
@@ -2535,6 +2586,7 @@ const rootRouteChildren: RootRouteChildren = {
 	DocumentsRoute: DocumentsRoute,
 	DrenyraRoute: DrenyraRouteWithChildren,
 	EntitiesRoute: EntitiesRoute,
+	EvidenceRoute: EvidenceRouteWithChildren,
 	ExpedientesRoute: ExpedientesRoute,
 	FinancialsRoute: FinancialsRoute,
 	ForgotPasswordRoute: ForgotPasswordRoute,
