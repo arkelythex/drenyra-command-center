@@ -1,6 +1,6 @@
 import { Money } from "@arkelythex/domain";
 import { db } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte, sql } from "@arkelythex/persistence/query";
+import { and, desc, eq, gte, lte, sql } from "@arkelythex/persistence/query";
 import {
 	analyticsDashboards,
 	analyticsWidgets,
@@ -34,25 +34,18 @@ export class DashboardService {
 		const yearStart = new Date(now.getFullYear(), 0, 1);
 		const yearEnd = new Date(now.getFullYear(), 11, 31);
 
-		const aggregateAmount = async (
-			statusFilter: string | string[],
-			dateStart?: Date,
-			dateEnd?: Date,
+		const sumByStatusAndRange = async (
+			status: string,
+			start?: Date,
+			end?: Date,
 		) => {
-			const conditions: any[] = [
+			const conditions = [
 				eq(invoices.companyId, companyId),
 				eq(invoices.currency, cur),
+				eq(invoices.status, status as any),
 			];
-
-			if (Array.isArray(statusFilter)) {
-				const quoted = statusFilter.map((s) => `'${s}'`).join(", ");
-				conditions.push(sql(`"invoices"."status" IN (${quoted})`));
-			} else {
-				conditions.push(eq(invoices.status, statusFilter));
-			}
-
-			if (dateStart) conditions.push(gte(invoices.issueDate, dateStart));
-			if (dateEnd) conditions.push(lte(invoices.issueDate, dateEnd));
+			if (start) conditions.push(gte(invoices.issueDate, start));
+			if (end) conditions.push(lte(invoices.issueDate, end));
 
 			const result = await db
 				.select({
@@ -60,46 +53,48 @@ export class DashboardService {
 				})
 				.from(invoices)
 				.where(and(...conditions));
-
 			return Money.fromAmount(Number(result[0]?.total || "0"), cur);
 		};
 
-		const countStatus = async (statusFilter: string) => {
+		const sumReceivable = async () => {
 			const result = await db
-				.select({ count: sql<number>`COUNT(*)` })
+				.select({
+					total: sql<string>`COALESCE(SUM(CAST(${invoices.totalAmount} AS DECIMAL)), 0)`,
+				})
 				.from(invoices)
 				.where(
 					and(
 						eq(invoices.companyId, companyId),
-						eq(invoices.status, statusFilter),
+						eq(invoices.currency, cur),
+						sql`${invoices.status} IN ('SENT', 'OVERDUE')`,
 					),
 				);
-			return result[0]?.count || 0;
+			return Money.fromAmount(Number(result[0]?.total || "0"), cur);
 		};
 
-		const totalRevenue = await aggregateAmount("PAID");
-		const monthlyRevenue = await aggregateAmount("PAID", monthStart, monthEnd);
-		const quarterlyRevenue = await aggregateAmount(
-			"PAID",
-			quarterStart,
-			quarterEnd,
-		);
-		const yearlyRevenue = await aggregateAmount("PAID", yearStart, yearEnd);
+		const [
+			totalRevenue,
+			monthlyRevenue,
+			quarterlyRevenue,
+			yearlyRevenue,
+			prevMonthRevenue,
+			accountsReceivable,
+		] = await Promise.all([
+			sumByStatusAndRange("PAID"),
+			sumByStatusAndRange("PAID", monthStart, monthEnd),
+			sumByStatusAndRange("PAID", quarterStart, quarterEnd),
+			sumByStatusAndRange("PAID", yearStart, yearEnd),
+			sumByStatusAndRange(
+				"PAID",
+				new Date(now.getFullYear(), now.getMonth() - 1, 1),
+				new Date(now.getFullYear(), now.getMonth(), 0),
+			),
+			sumReceivable(),
+		]);
 
-		const totalExpenses = await aggregateAmount("PAID");
-		const monthlyExpenses = await aggregateAmount("PAID", monthStart, monthEnd);
-
-		const accountsReceivable = await aggregateAmount(["SENT", "OVERDUE"]);
+		const totalExpenses = totalRevenue;
+		const monthlyExpenses = monthlyRevenue;
 		const accountsPayable = Money.zero(cur);
-
-		const prevMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-		const prevMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
-		const prevMonthRevenue = await aggregateAmount(
-			"PAID",
-			prevMonthStart,
-			prevMonthEnd,
-		);
-
 		const revenueGrowth = prevMonthRevenue.isZero()
 			? 0
 			: ((monthlyRevenue.toNumber() - prevMonthRevenue.toNumber()) /
@@ -115,7 +110,7 @@ export class DashboardService {
 			.where(
 				and(
 					eq(invoices.companyId, companyId),
-					eq(invoices.status, "PAID"),
+					eq(invoices.status, "PAID" as any),
 					eq(invoices.currency, cur),
 					gte(
 						invoices.issueDate,
@@ -126,39 +121,24 @@ export class DashboardService {
 			.groupBy(sql`TO_CHAR(${invoices.issueDate}, 'YYYY-MM')`)
 			.orderBy(sql`TO_CHAR(${invoices.issueDate}, 'YYYY-MM')`);
 
-		const expenseTrendResults = await db
-			.select({
-				month: sql<string>`TO_CHAR(${invoices.issueDate}, 'YYYY-MM')`,
-				total: sql<string>`COALESCE(SUM(CAST(${invoices.totalAmount} AS DECIMAL)), 0)`,
-			})
+		const profitMargin = totalRevenue.isZero() ? 0 : 100;
+		const prevMonthProfit = prevMonthRevenue;
+		const profitGrowth = prevMonthProfit.isZero()
+			? 0
+			: ((monthlyRevenue.toNumber() - prevMonthProfit.toNumber()) /
+					prevMonthProfit.toNumber()) *
+				100;
+
+		const churnedResult = await db
+			.select({ count: sql<number>`COUNT(*)` })
 			.from(invoices)
 			.where(
 				and(
 					eq(invoices.companyId, companyId),
-					eq(invoices.status, "PAID"),
-					eq(invoices.currency, cur),
-					gte(
-						invoices.issueDate,
-						new Date(now.getFullYear() - 1, now.getMonth(), 1),
-					),
+					eq(invoices.status, "CANCELLED" as any),
 				),
-			)
-			.groupBy(sql`TO_CHAR(${invoices.issueDate}, 'YYYY-MM')`)
-			.orderBy(sql`TO_CHAR(${invoices.issueDate}, 'YYYY-MM')`);
-
-		const netProfit = totalRevenue;
-		const profitMargin = totalRevenue.isZero()
-			? 0
-			: (netProfit.toNumber() / totalRevenue.toNumber()) * 100;
-
-		const prevMonthProfit = prevMonthRevenue;
-		const profitGrowth = prevMonthProfit.isZero()
-			? 0
-			: ((netProfit.toNumber() - prevMonthProfit.toNumber()) /
-					prevMonthProfit.toNumber()) *
-				100;
-
-		const churned = await countStatus("CANCELLED");
+			);
+		const churned = churnedResult[0]?.count || 0;
 
 		return {
 			revenue: {
@@ -176,14 +156,14 @@ export class DashboardService {
 				totalExpenses: toMoneyValue(totalExpenses),
 				monthlyExpenses: toMoneyValue(monthlyExpenses),
 				expensesByCategory: [],
-				expenseTrend: expenseTrendResults.map((r) => ({
+				expenseTrend: revenueByMonthResults.map((r) => ({
 					month: r.month,
 					amount: toMoneyValue(Money.fromAmount(Number(r.total || "0"), cur)),
 				})),
 			},
 			profit: {
-				grossProfit: toMoneyValue(netProfit),
-				netProfit: toMoneyValue(netProfit),
+				grossProfit: toMoneyValue(monthlyRevenue),
+				netProfit: toMoneyValue(monthlyRevenue),
 				profitMargin,
 				profitTrend: revenueByMonthResults.map((r) => ({
 					month: r.month,
@@ -192,14 +172,8 @@ export class DashboardService {
 				monthOverMonthGrowth: profitGrowth,
 			},
 			liquidity: {
-				currentRatio: totalRevenue.isZero()
-					? 1
-					: totalRevenue.toNumber() /
-						(totalExpenses.isZero() ? 1 : totalExpenses.toNumber()),
-				quickRatio: totalRevenue.isZero()
-					? 1
-					: totalRevenue.toNumber() /
-						(totalExpenses.isZero() ? 1 : totalExpenses.toNumber()),
+				currentRatio: 1,
+				quickRatio: 1,
 				cashAndEquivalents: toMoneyValue(totalRevenue),
 				accountsReceivable: toMoneyValue(accountsReceivable),
 				accountsPayable: toMoneyValue(accountsPayable),
@@ -246,7 +220,7 @@ export class DashboardService {
 			.select()
 			.from(analyticsDashboards)
 			.where(eq(analyticsDashboards.companyId, companyId))
-			.orderBy(analyticsDashboards.updatedAt)
+			.orderBy(desc(analyticsDashboards.updatedAt))
 			.limit(1);
 
 		if (dashboards.length === 0) return null;
