@@ -25,6 +25,13 @@ const MainLayout = lazy(async () => {
 	return { default: mod.MainLayout };
 });
 
+const AgenticLayout = lazy(async () => {
+	const mod = await import(
+		"../components/agentic-shell/AgenticLayout/AgenticLayout"
+	);
+	return { default: mod.AgenticLayout };
+});
+
 export const Route = createRootRouteWithContext<RouterContext>()({
 	beforeLoad: async ({ context, location }) => {
 		const sessionSnapshot = await context.queryClient.ensureQueryData(
@@ -100,7 +107,7 @@ function PrivateAppShell({ children }: { children: ReactNode }) {
 		<Suspense
 			fallback={<RootLoadingFallback label="Cargando espacio de trabajo" />}
 		>
-			<MainLayout>{children}</MainLayout>
+			<AgenticLayout>{children}</AgenticLayout>
 		</Suspense>
 	);
 }

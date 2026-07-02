@@ -33,17 +33,11 @@
     "./repositories/postgres-bank-reconciliation.repository": "./src/repositories/postgres-bank-reconciliation.repository.ts",
     "./repositories/postgres-bank-transaction.repository": "./src/repositories/postgres-bank-transaction.repository.ts",
     "./repositories/postgres-ai-settings.repository": "./src/repositories/postgres-ai-settings.repository.ts",
-    "./repositories/postgres-journal-entry.repository": "./src/repositories/postgres-journal-entry.repository.ts",
-    "./repositories/postgres-election.repository": "./src/repositories/postgres-election.repository.ts",
-    "./repositories/postgres-electoral-act.repository": "./src/repositories/postgres-electoral-act.repository.ts",
-    "./repositories/postgres-audit-trail.repository": "./src/repositories/postgres-audit-trail.repository.ts",
-    "./repositories/postgres-fraud-indicator.repository": "./src/repositories/postgres-fraud-indicator.repository.ts"
+    "./repositories/postgres-journal-entry.repository": "./src/repositories/postgres-journal-entry.repository.ts"
   },
   "dependencies": {
     "@arkelythex/application": "workspace:*",
-    "@arkelythex/application-civic": "workspace:*",
     "@arkelythex/domain": "workspace:*",
-    "@arkelythex/domain-civic": "workspace:*",
     "@arkelythex/shared": "workspace:*",
     "drizzle-orm": "^0.45.1",
     "postgres": "^3.4.8",

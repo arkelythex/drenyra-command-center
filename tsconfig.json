@@ -33,23 +33,12 @@
       "@arkelythex/domain/*": ["./packages/domain/src/*"],
       "@arkelythex/application": ["./packages/application/src/index.ts"],
       "@arkelythex/application/*": ["./packages/application/src/*"],
-      "@arkelythex/application-civic": [
-        "./packages/application/civic/src/index.ts"
-      ],
-      "@arkelythex/application-civic/*": ["./packages/application/civic/src/*"],
-      "@arkelythex/domain-civic": ["./packages/domain/civic/src/index.ts"],
-      "@arkelythex/domain-civic/*": ["./packages/domain/civic/src/*"],
+
       "@arkelythex/ai": ["./packages/ai/src/index.ts"],
       "@arkelythex/ai/provider": ["./packages/ai/src/provider.ts"],
-      "@arkelythex/ai/services/ai-cost": [
-        "./packages/ai/src/services/ai-cost.ts"
-      ],
-      "@arkelythex/ai/services/sunat-knowledge": [
-        "./packages/ai/src/services/sunat-knowledge.ts"
-      ],
-      "@arkelythex/ai/services/swarm-consensus": [
-        "./packages/ai/src/services/swarm-consensus.ts"
-      ],
+      "@arkelythex/ai/services/ai-cost": ["./packages/ai/src/services/ai-cost.ts"],
+      "@arkelythex/ai/services/sunat-knowledge": ["./packages/ai/src/services/sunat-knowledge.ts"],
+      "@arkelythex/ai/services/swarm-consensus": ["./packages/ai/src/services/swarm-consensus.ts"],
       "@arkelythex/ai/services/swarm-consensus/consensus-engine": [
         "./packages/ai/src/services/swarm-consensus-engine.ts"
       ],
@@ -98,7 +87,7 @@
   ],
   "references": [
     { "path": "./packages/domain" },
-    { "path": "./packages/domain/civic" },
+
     { "path": "./packages/application" },
     { "path": "./packages/persistence" },
     { "path": "./packages/ai" },

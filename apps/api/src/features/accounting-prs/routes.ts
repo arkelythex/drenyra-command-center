@@ -1,6 +1,7 @@
 import { Elysia, t } from "elysia";
 import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
+import { accountingPrController } from "./controller";
 
 // ---------------------------------------------------------------------------
 // Schemas
@@ -55,44 +56,6 @@ const FromEntriesBody = t.Object({
 });
 
 // ---------------------------------------------------------------------------
-// In-memory store (simple approach — replace with Postgres adapter later)
-// ---------------------------------------------------------------------------
-
-interface PrRecord {
-	id: string;
-	companyId: string;
-	prNumber: number;
-	title: string;
-	description?: string;
-	status: string;
-	entries: string[];
-	evidenceIds: string[];
-	totalDebitCents: number;
-	totalCreditCents: number;
-	reviewerId?: string;
-	reviewedAt?: string;
-	reviewComment?: string;
-	approveSignerIds: string[];
-	approveSignatures: Array<{
-		signerId: string;
-		signedAt: string;
-		comment?: string;
-	}>;
-	createdById?: string;
-	createdAt: string;
-	updatedAt: string;
-}
-
-const prStore: Map<string, PrRecord> = new Map();
-const companyPrCounters: Map<string, number> = new Map();
-
-function nextPrNumber(companyId: string): number {
-	const next = (companyPrCounters.get(companyId) ?? 0) + 1;
-	companyPrCounters.set(companyId, next);
-	return next;
-}
-
-// ---------------------------------------------------------------------------
 // Routes
 // ---------------------------------------------------------------------------
 
@@ -113,30 +76,12 @@ export const accountingPrRoutes = new Elysia({
 					return fail("No autorizado", "UNAUTHORIZED");
 				}
 
-				// Build totals from entryIds (in real impl, fetch from DB)
-				const totalDebitCents = 0;
-				const totalCreditCents = 0;
-
-				const now = new Date().toISOString();
-				const record: PrRecord = {
-					id: crypto.randomUUID(),
+				const record = await accountingPrController.createFromEntries(
 					companyId,
-					prNumber: nextPrNumber(companyId),
-					title: body.title,
-					description: body.description,
-					status: "DRAFT",
-					entries: body.entryIds,
-					evidenceIds: [],
-					totalDebitCents,
-					totalCreditCents,
-					approveSignerIds: [],
-					approveSignatures: [],
-					createdById: companyContext.userId,
-					createdAt: now,
-					updatedAt: now,
-				};
+					companyContext.userId,
+					body,
+				);
 
-				prStore.set(record.id, record);
 				set.status = 201;
 				return ok(record);
 			} catch (error) {
@@ -164,26 +109,12 @@ export const accountingPrRoutes = new Elysia({
 					return fail("No autorizado", "UNAUTHORIZED");
 				}
 
-				const now = new Date().toISOString();
-				const record: PrRecord = {
-					id: crypto.randomUUID(),
+				const record = await accountingPrController.create(
 					companyId,
-					prNumber: nextPrNumber(companyId),
-					title: body.title,
-					description: body.description,
-					status: "DRAFT",
-					entries: body.entries,
-					evidenceIds: body.evidenceIds ?? [],
-					totalDebitCents: body.totalDebitCents,
-					totalCreditCents: body.totalCreditCents,
-					approveSignerIds: [],
-					approveSignatures: [],
-					createdById: companyContext.userId,
-					createdAt: now,
-					updatedAt: now,
-				};
+					companyContext.userId,
+					body,
+				);
 
-				prStore.set(record.id, record);
 				set.status = 201;
 				return ok(record);
 			} catch (error) {
@@ -211,31 +142,8 @@ export const accountingPrRoutes = new Elysia({
 					return fail("No autorizado", "UNAUTHORIZED");
 				}
 
-				let records = Array.from(prStore.values()).filter(
-					(r) => r.companyId === companyId,
-				);
-
-				if (query.status) {
-					records = records.filter((r) => r.status === query.status);
-				}
-				if (query.reviewerId) {
-					records = records.filter((r) => r.reviewerId === query.reviewerId);
-				}
-
-				const limit = query.limit ? parseInt(query.limit, 10) : 50;
-				const offset = query.offset ? parseInt(query.offset, 10) : 0;
-
-				records.sort(
-					(a, b) =>
-						new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-				);
-
-				return ok({
-					data: records.slice(offset, offset + limit),
-					total: records.length,
-					limit,
-					offset,
-				});
+				const result = await accountingPrController.list(companyId, query);
+				return ok(result);
 			} catch (error) {
 				set.status = 500;
 				return fail(getErrorMessage(error), "INTERNAL_ERROR");
@@ -253,9 +161,9 @@ export const accountingPrRoutes = new Elysia({
 	// ---- GET BY ID ----
 	.get(
 		"/:id",
-		async ({ params, companyContext, set }) => {
+		async ({ params, set }) => {
 			try {
-				const record = prStore.get(params.id);
+				const record = await accountingPrController.getById(params.id);
 				if (!record) {
 					set.status = 404;
 					return fail("PR no encontrada", "NOT_FOUND");
@@ -281,41 +189,33 @@ export const accountingPrRoutes = new Elysia({
 		"/:id",
 		async ({ params, body, companyContext, set }) => {
 			try {
-				const record = prStore.get(params.id);
-				if (!record) {
-					set.status = 404;
-					return fail("PR no encontrada", "NOT_FOUND");
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
 				}
 
-				if (record.status !== "DRAFT") {
-					set.status = 400;
-					return fail(
-						"Solo se pueden editar PRs en borrador",
-						"VALIDATION_ERROR",
+				try {
+					const record = await accountingPrController.update(
+						params.id,
+						companyId,
+						body,
 					);
+					if (!record) {
+						set.status = 404;
+						return fail("PR no encontrada", "NOT_FOUND");
+					}
+					return ok(record);
+				} catch (err) {
+					if (
+						err instanceof Error &&
+						err.message.includes("Solo se pueden editar")
+					) {
+						set.status = 400;
+						return fail(err.message, "VALIDATION_ERROR");
+					}
+					throw err;
 				}
-
-				const updated: PrRecord = {
-					...record,
-					...(body.title !== undefined && { title: body.title }),
-					...(body.description !== undefined && {
-						description: body.description,
-					}),
-					...(body.entries !== undefined && { entries: body.entries }),
-					...(body.evidenceIds !== undefined && {
-						evidenceIds: body.evidenceIds,
-					}),
-					...(body.totalDebitCents !== undefined && {
-						totalDebitCents: body.totalDebitCents,
-					}),
-					...(body.totalCreditCents !== undefined && {
-						totalCreditCents: body.totalCreditCents,
-					}),
-					updatedAt: new Date().toISOString(),
-				};
-
-				prStore.set(params.id, updated);
-				return ok(updated);
 			} catch (error) {
 				set.status = 500;
 				return fail(getErrorMessage(error), "INTERNAL_ERROR");
@@ -336,28 +236,21 @@ export const accountingPrRoutes = new Elysia({
 		"/:id/submit",
 		async ({ params, companyContext, set }) => {
 			try {
-				const record = prStore.get(params.id);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+
+				const record = await accountingPrController.submit(
+					params.id,
+					companyId,
+				);
 				if (!record) {
 					set.status = 404;
 					return fail("PR no encontrada", "NOT_FOUND");
 				}
-
-				if (record.status !== "DRAFT") {
-					set.status = 400;
-					return fail(
-						"Solo se pueden enviar a revisión PRs en borrador",
-						"VALIDATION_ERROR",
-					);
-				}
-
-				const updated: PrRecord = {
-					...record,
-					status: "PENDING_REVIEW",
-					updatedAt: new Date().toISOString(),
-				};
-
-				prStore.set(params.id, updated);
-				return ok(updated);
+				return ok(record);
 			} catch (error) {
 				set.status = 500;
 				return fail(getErrorMessage(error), "INTERNAL_ERROR");
@@ -377,41 +270,36 @@ export const accountingPrRoutes = new Elysia({
 		"/:id/approve",
 		async ({ params, body, companyContext, set }) => {
 			try {
-				const record = prStore.get(params.id);
-				if (!record) {
-					set.status = 404;
-					return fail("PR no encontrada", "NOT_FOUND");
-				}
-
-				if (record.status !== "PENDING_REVIEW") {
-					set.status = 400;
-					return fail(
-						"Solo se pueden aprobar PRs en revisión",
-						"VALIDATION_ERROR",
-					);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
 				}
 
 				const signerId = companyContext?.userId ?? "system";
-				const signature = {
-					signerId,
-					signedAt: new Date().toISOString(),
-					comment: body.comment,
-				};
 
-				const updated: PrRecord = {
-					...record,
-					status: "APPROVED",
-					reviewedAt: new Date().toISOString(),
-					reviewComment: body.comment ?? record.reviewComment,
-					approveSignerIds: [
-						...new Set([...record.approveSignerIds, signerId]),
-					],
-					approveSignatures: [...record.approveSignatures, signature],
-					updatedAt: new Date().toISOString(),
-				};
-
-				prStore.set(params.id, updated);
-				return ok(updated);
+				try {
+					const record = await accountingPrController.approve(
+						params.id,
+						companyId,
+						signerId,
+						body.comment,
+					);
+					if (!record) {
+						set.status = 404;
+						return fail("PR no encontrada", "NOT_FOUND");
+					}
+					return ok(record);
+				} catch (err) {
+					if (
+						err instanceof Error &&
+						err.message.includes("Solo se pueden aprobar")
+					) {
+						set.status = 400;
+						return fail(err.message, "VALIDATION_ERROR");
+					}
+					throw err;
+				}
 			} catch (error) {
 				set.status = 500;
 				return fail(getErrorMessage(error), "INTERNAL_ERROR");
@@ -432,30 +320,22 @@ export const accountingPrRoutes = new Elysia({
 		"/:id/reject",
 		async ({ params, body, companyContext, set }) => {
 			try {
-				const record = prStore.get(params.id);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+
+				const record = await accountingPrController.reject(
+					params.id,
+					companyId,
+					body.reason,
+				);
 				if (!record) {
 					set.status = 404;
 					return fail("PR no encontrada", "NOT_FOUND");
 				}
-
-				if (record.status !== "PENDING_REVIEW") {
-					set.status = 400;
-					return fail(
-						"Solo se pueden rechazar PRs en revisión",
-						"VALIDATION_ERROR",
-					);
-				}
-
-				const updated: PrRecord = {
-					...record,
-					status: "REJECTED",
-					reviewComment: body.reason,
-					reviewedAt: new Date().toISOString(),
-					updatedAt: new Date().toISOString(),
-				};
-
-				prStore.set(params.id, updated);
-				return ok(updated);
+				return ok(record);
 			} catch (error) {
 				set.status = 500;
 				return fail(getErrorMessage(error), "INTERNAL_ERROR");
@@ -476,37 +356,34 @@ export const accountingPrRoutes = new Elysia({
 		"/:id/approve-multi",
 		async ({ params, body, companyContext, set }) => {
 			try {
-				const record = prStore.get(params.id);
-				if (!record) {
-					set.status = 404;
-					return fail("PR no encontrada", "NOT_FOUND");
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
 				}
 
-				if (record.status !== "PENDING_REVIEW") {
-					set.status = 400;
-					return fail(
-						"Solo se pueden firmar PRs en revisión",
-						"VALIDATION_ERROR",
+				try {
+					const record = await accountingPrController.addSignature(
+						params.id,
+						companyId,
+						body.signerId,
+						body.comment,
 					);
+					if (!record) {
+						set.status = 404;
+						return fail("PR no encontrada", "NOT_FOUND");
+					}
+					return ok(record);
+				} catch (err) {
+					if (
+						err instanceof Error &&
+						err.message.includes("Solo se pueden firmar")
+					) {
+						set.status = 400;
+						return fail(err.message, "VALIDATION_ERROR");
+					}
+					throw err;
 				}
-
-				const signature = {
-					signerId: body.signerId,
-					signedAt: new Date().toISOString(),
-					comment: body.comment,
-				};
-
-				const updated: PrRecord = {
-					...record,
-					approveSignerIds: [
-						...new Set([...record.approveSignerIds, body.signerId]),
-					],
-					approveSignatures: [...record.approveSignatures, signature],
-					updatedAt: new Date().toISOString(),
-				};
-
-				prStore.set(params.id, updated);
-				return ok(updated);
 			} catch (error) {
 				set.status = 500;
 				return fail(getErrorMessage(error), "INTERNAL_ERROR");
@@ -527,28 +404,18 @@ export const accountingPrRoutes = new Elysia({
 		"/:id/post",
 		async ({ params, companyContext, set }) => {
 			try {
-				const record = prStore.get(params.id);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+
+				const record = await accountingPrController.post(params.id, companyId);
 				if (!record) {
 					set.status = 404;
 					return fail("PR no encontrada", "NOT_FOUND");
 				}
-
-				if (record.status !== "APPROVED") {
-					set.status = 400;
-					return fail(
-						"Solo se pueden contabilizar PRs aprobadas",
-						"VALIDATION_ERROR",
-					);
-				}
-
-				const updated: PrRecord = {
-					...record,
-					status: "POSTED",
-					updatedAt: new Date().toISOString(),
-				};
-
-				prStore.set(params.id, updated);
-				return ok(updated);
+				return ok(record);
 			} catch (error) {
 				set.status = 500;
 				return fail(getErrorMessage(error), "INTERNAL_ERROR");

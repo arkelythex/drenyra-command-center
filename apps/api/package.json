@@ -35,8 +35,6 @@
     "@arkelythex/drenyra-core": "workspace:*",
     "@arkelythex/drenyra-orchestrator": "workspace:*",
     "@arkelythex/harness": "workspace:*",
-    "@arkelythex/domain-civic": "workspace:*",
-    "@arkelythex/application-civic": "workspace:*",
     "@arkelythex/infrastructure": "workspace:*",
     "@arkelythex/platform-core": "workspace:*",
     "@arkelythex/shared": "workspace:*",

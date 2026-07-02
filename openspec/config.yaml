@@ -1,0 +1,70 @@
+# OpenSpec Configuration — ARKELYTHEX Drenyra
+# Creado: 2026-07-02
+# Modo: agentic-first transformation (10 SDD plans: 6 frontend + 4 backend)
+
+version: '1.0'
+project: '@arkelythex/main'
+
+# SDD session preflight choices (2026-07-02)
+execution_mode: interactive
+artifact_store: both # openspec + engram cuando disponible
+chained_pr_strategy: auto-forecast
+review_budget: 400 # líneas máximas por PR individual
+
+# Estrategia general
+strategy: dual-track # Frontend agentic UX + Backend production readiness
+migration: replace-total # Reemplazo completo de navegación SaaS → agentic
+
+# Equipo / autores
+authors:
+  - el-gentleman
+  - equipo-frontend
+
+# Monorepo workspace
+workspace:
+  root: /home/dreamcoder08/Documents/PROYECTOS/Drenyra
+  apps:
+    - apps/web # React SPA
+    - apps/api # Elysia API
+    - apps/data-engine # Python + Polars
+    - apps/drenyra-cli # Go CLI
+    - apps/landing # Next.js
+  packages:
+    - packages/domain
+    - packages/application
+    - packages/persistence
+    - packages/infrastructure
+    - packages/ai
+    - packages/drenyra-orchestrator
+    - packages/ui
+    - packages/shared
+    - packages/drenyra-core
+    - packages/drenyra-engram
+
+# Backend plans
+plans:
+  backend:
+    B1:
+      name: API Contracts & Type Safety
+      dir: openspec/changes/drenyra-api-contracts
+      prs: 3
+      est_lines: 850
+      status: proposal
+    B2:
+      name: Data Integrity & Quality
+      dir: openspec/changes/drenyra-data-integrity
+      prs: 4
+      est_lines: 1100
+      status: proposal
+    B3:
+      name: Observability & Operations
+      dir: openspec/changes/drenyra-observability
+      prs: 3
+      est_lines: 600
+      status: proposal
+    B4:
+      name: Security & Deployment
+      dir: openspec/changes/drenyra-security-deploy
+      prs: 3
+      est_lines: 750
+      status: proposal

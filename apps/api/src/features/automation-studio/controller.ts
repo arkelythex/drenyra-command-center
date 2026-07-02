@@ -4,6 +4,7 @@ import {
 	automationSteps,
 	automationWorkflows,
 } from "@arkelythex/persistence/schema/automation-studio.schema";
+import type { ActionType } from "@arkelythex/persistence/schema/automation-studio.schema";
 import { db } from "../../lib/db";
 import type {
 	CreateStepBody,
@@ -242,7 +243,6 @@ export async function testWorkflow(
 	}
 
 	const completedAt = new Date().toISOString();
-	const log = logLines.join("\n");
 	logLines.push(`[${completedAt}] Test run ${execStatus}`);
 
 	await db
@@ -471,7 +471,7 @@ export async function getDashboardStats(
 // --- Internal helpers ---
 
 async function executeAction(
-	actionType: string,
+	actionType: ActionType,
 	_config: Record<string, unknown>,
 ): Promise<{ ok: boolean; message: string }> {
 	switch (actionType) {
@@ -499,10 +499,7 @@ async function executeAction(
 				message: "call_webhook requiere configuración de webhook",
 			};
 		default:
-			return {
-				ok: false,
-				message: `Tipo de acción no soportado: ${actionType}`,
-			};
+			return actionType satisfies never;
 	}
 }
 

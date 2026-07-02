@@ -1,0 +1,13 @@
+status: proposal
+created: 2026-07-02
+updated: 2026-07-02
+author: el-gentleman
+execution_mode: auto-chain
+pr_count: 3
+estimated_lines: 850
+blocked_by: []
+blocks: []
+risks:
+  - Response envelope change may break legacy clients
+  - Some features export types from Drizzle schemas — need DTO separation
+  - Frontend may import types from non-canonical paths — audit before moving

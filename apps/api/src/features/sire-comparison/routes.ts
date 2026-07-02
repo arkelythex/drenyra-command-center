@@ -34,7 +34,7 @@ export const sireComparisonRoutes = new Elysia({
 			}),
 			query: t.Object({ companyId: t.String({ minLength: 1 }) }),
 			detail: {
-				tags: ["SIRE"],
+				tags: ["SIRE Comparison"],
 				summary: "SIRE comparison summary for a period",
 				description:
 					"Returns comparison summary with match percentage and discrepancy counts.",
@@ -88,7 +88,7 @@ export const sireComparisonRoutes = new Elysia({
 				),
 			}),
 			detail: {
-				tags: ["SIRE"],
+				tags: ["SIRE Comparison"],
 				summary: "List discrepancies for a period",
 				description:
 					"Filtered list of discrepancies by type and/or resolution status.",
@@ -97,10 +97,20 @@ export const sireComparisonRoutes = new Elysia({
 	)
 	.patch(
 		"/discrepancies/:id/resolve",
-		async ({ params, body, set }) => {
+		async ({ params, body, query, set, companyContext }) => {
 			try {
+				const companyId =
+					query.companyId ??
+					(companyContext as { companyId: string } | undefined)?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+
 				const result = await SireComparisonService.resolveDiscrepancy(
 					params.id,
+					companyId,
+					query.period ?? "",
 					body.action,
 					body.notes,
 				);
@@ -117,6 +127,10 @@ export const sireComparisonRoutes = new Elysia({
 		},
 		{
 			params: t.Object({ id: t.String({ minLength: 1 }) }),
+			query: t.Object({
+				companyId: t.Optional(t.String({ minLength: 1 })),
+				period: t.Optional(t.String({ pattern: "^\\d{4}-(0[1-9]|1[0-2])$" })),
+			}),
 			body: t.Object({
 				action: t.Union([
 					t.Literal("ACCEPT_SUNAT"),
@@ -127,7 +141,7 @@ export const sireComparisonRoutes = new Elysia({
 				notes: t.Optional(t.String()),
 			}),
 			detail: {
-				tags: ["SIRE"],
+				tags: ["SIRE Comparison"],
 				summary: "Resolve a discrepancy",
 				description:
 					"Accept SUNAT/local, flag for review, or mark as manual fix.",
@@ -161,7 +175,7 @@ export const sireComparisonRoutes = new Elysia({
 			}),
 			query: t.Object({ companyId: t.String({ minLength: 1 }) }),
 			detail: {
-				tags: ["SIRE"],
+				tags: ["SIRE Comparison"],
 				summary: "Generate full comparison report",
 				description:
 					"Returns a structured report with summary, all discrepancies, and metadata.",
@@ -191,7 +205,7 @@ export const sireComparisonRoutes = new Elysia({
 		{
 			query: t.Object({ companyId: t.String({ minLength: 1 }) }),
 			detail: {
-				tags: ["SIRE"],
+				tags: ["SIRE Comparison"],
 				summary: "Multi-period comparison dashboard",
 				description:
 					"Shows trend data across last 6 periods with overall match percentage.",
