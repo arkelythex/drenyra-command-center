@@ -1,5 +1,5 @@
 import type { AuditEventType } from "@arkelythex/domain/drenyra";
-import type {
+import {
 	AgentRun,
 	ApprovalRequest,
 	AuditEvent,

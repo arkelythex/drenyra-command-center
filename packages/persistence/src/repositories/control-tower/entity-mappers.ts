@@ -16,7 +16,7 @@ import type {
 export function fiscalCaseEntityToRow(
 	entity: FiscalCase,
 ): typeof drenyraFiscalCases.$inferInsert {
-	const json = entity.toJSON();
+	const json = entity.toJSON() as Record<string, unknown>;
 	return {
 		id: json.id as string,
 		companyId: (json.scope as Record<string, unknown>).companyId as string,
@@ -37,13 +37,13 @@ export function fiscalCaseEntityToRow(
 		createdAt: new Date(json.createdAt as string),
 		updatedAt: new Date(json.updatedAt as string),
 		metadata: json.metadata as Record<string, unknown>,
-	};
+	} as unknown as typeof drenyraFiscalCases.$inferInsert;
 }
 
 export function evidenceItemEntityToRow(
 	entity: EvidenceItem,
 ): typeof drenyraEvidenceItems.$inferInsert {
-	const json = entity.toJSON();
+	const json = entity.toJSON() as Record<string, unknown>;
 	return {
 		id: json.id as string,
 		caseId: json.caseId as string,
@@ -63,13 +63,13 @@ export function evidenceItemEntityToRow(
 		addedBy: json.addedBy as string,
 		createdAt: new Date(json.createdAt as string),
 		metadata: json.metadata as Record<string, unknown>,
-	};
+	} as unknown as typeof drenyraEvidenceItems.$inferInsert;
 }
 
 export function agentRunEntityToRow(
 	entity: AgentRun,
 ): typeof drenyraAgentRuns.$inferInsert {
-	const json = entity.toJSON();
+	const json = entity.toJSON() as Record<string, unknown>;
 	return {
 		id: json.id as string,
 		caseId: json.caseId as string,
@@ -89,13 +89,13 @@ export function agentRunEntityToRow(
 			: undefined,
 		output: json.output as Record<string, unknown> | undefined,
 		metadata: json.metadata as Record<string, unknown>,
-	};
+	} as unknown as typeof drenyraAgentRuns.$inferInsert;
 }
 
 export function approvalRequestEntityToRow(
 	entity: ApprovalRequest,
 ): typeof drenyraApprovalRequests.$inferInsert {
-	const json = entity.toJSON();
+	const json = entity.toJSON() as Record<string, unknown>;
 	return {
 		id: json.id as string,
 		caseId: json.caseId as string,
@@ -117,13 +117,13 @@ export function approvalRequestEntityToRow(
 		decisionReason: json.decisionReason as string | undefined,
 		diff: json.diff as Record<string, unknown>,
 		metadata: json.metadata as Record<string, unknown>,
-	};
+	} as unknown as typeof drenyraApprovalRequests.$inferInsert;
 }
 
 export function auditEventEntityToRow(
 	entity: AuditEvent,
 ): typeof drenyraAuditEvents.$inferInsert {
-	const json = entity.toJSON();
+	const json = entity.toJSON() as Record<string, unknown>;
 	return {
 		id: json.id as string,
 		caseId: json.caseId as string | undefined,
@@ -139,5 +139,5 @@ export function auditEventEntityToRow(
 		message: json.message as string,
 		occurredAt: new Date(json.occurredAt as string),
 		metadata: json.metadata as Record<string, unknown>,
-	};
+	} as unknown as typeof drenyraAuditEvents.$inferInsert;
 }

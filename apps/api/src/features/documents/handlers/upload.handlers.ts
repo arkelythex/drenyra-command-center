@@ -102,24 +102,26 @@ export function createUploadHandlers(deps: Partial<UploadHandlersDeps> = {}) {
 
 			let expedienteLink: { expedienteId: string; linked: boolean } | undefined;
 			if (body.expedienteId && body.companyRuc && body.fiscalPeriod) {
+				const expedienteId = body.expedienteId!;
 				try {
-					const organizationId = await resolveOrganizationId(
-						access.access.tenantScope.companyId,
-					);
+					const companyId = access.access.tenantScope.companyId!;
+					const companyRuc = body.companyRuc!;
+					const fiscalPeriod = body.fiscalPeriod!;
+					const organizationId = await resolveOrganizationId(companyId);
 					const scope = expedienteService.toScope({
-						companyId: access.access.tenantScope.companyId,
-						companyRuc: body.companyRuc,
+						companyId,
+						companyRuc,
 						organizationId,
-						period: body.fiscalPeriod,
+						period: fiscalPeriod,
 					});
 					await expedienteService.linkDocument({
-						expedienteId: body.expedienteId,
+						expedienteId,
 						documentId: result.id,
 						scope,
 					});
-					expedienteLink = { expedienteId: body.expedienteId, linked: true };
+					expedienteLink = { expedienteId, linked: true };
 				} catch {
-					expedienteLink = { expedienteId: body.expedienteId, linked: false };
+					expedienteLink = { expedienteId, linked: false };
 				}
 			}
 

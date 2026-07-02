@@ -141,6 +141,7 @@ export {
 // --- AUTOMATION STUDIO ---
 export {
 	type ActionType,
+	actionTypeEnum,
 	automationExecutions,
 	automationExecutionsRelations,
 	automationSteps,
@@ -292,22 +293,10 @@ export {
 } from "./evidence.schema";
 export {
 	evidenceEdges,
-	evidenceEdges,
-	evidenceEdges,
-	evidenceEdgesRelations,
-	evidenceEdgesRelations,
 	evidenceEdgesRelations,
 	evidenceNodes,
-	evidenceNodes,
-	evidenceNodes,
-	fiscalReplayCheckpoints,
-	fiscalReplayCheckpoints,
 	fiscalReplayCheckpoints,
 	fiscalTruthEvents,
-	fiscalTruthEvents,
-	fiscalTruthEvents,
-	fiscalTruthEventsRelations,
-	fiscalTruthEventsRelations,
 	fiscalTruthEventsRelations,
 } from "./fiscal-truth.schema";
 export {

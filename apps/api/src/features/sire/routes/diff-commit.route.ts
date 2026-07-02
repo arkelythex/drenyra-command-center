@@ -1,5 +1,4 @@
 import { Elysia, t } from "elysia";
-import type { CompanyContext } from "../../../shared/plugins/company-scope-guard";
 import { fail, getErrorMessage, ok } from "../../shared/api-response";
 import { SireDiffCommitService } from "../services/sire-diff-commit.service";
 
@@ -33,55 +32,9 @@ const commitRowSchema = t.Object({
 
 export const sireDiffCommitRoute = new Elysia().post(
 	"/diff/commit",
-	async ({
-		body,
-		query,
-		set,
-		companyContext,
-	}: {
-		body: {
-			period: string;
-			artifactId: string;
-			traceId: string;
-			sunatSource: "upload" | "persisted" | "unavailable";
-			summary: {
-				matched: number;
-				mismatched: number;
-				missingOnLedger: number;
-				missingOnSunat: number;
-				critical: number;
-				totalDifference: number;
-			};
-			rows: Array<{
-				rowId: string;
-				status: "MATCH" | "MISMATCH" | "MISSING_LOCAL" | "MISSING_SUNAT";
-				decision: "ACCEPT_SUNAT" | "KEEP_LOCAL" | "PENDING";
-				localRecord?: {
-					documentType: string;
-					series: string;
-					number: string;
-					issueDate: string;
-					total: number;
-					currency: "PEN" | "USD";
-					ruc?: string;
-					reasonSocial?: string;
-				};
-				sunatRecord?: {
-					documentType: string;
-					series: string;
-					number: string;
-					issueDate: string;
-					total: number;
-					currency: "PEN" | "USD";
-					ruc?: string;
-					reasonSocial?: string;
-				};
-			}>;
-		};
-		query: { companyId: string };
-		set: { status: number };
-		companyContext: CompanyContext;
-	}) => {
+	// biome-ignore lint/suspicious/noExplicitAny: <Elysia does not propagate derive types through nested .use()>
+	async (ctx: any) => {
+		const { body, query, set, companyContext } = ctx;
 		if (query.companyId !== companyContext.companyId) {
 			set.status = 403;
 			return fail("Company scope mismatch", "COMPANY_SCOPE_MISMATCH");
