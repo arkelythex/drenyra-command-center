@@ -9,3 +9,7 @@ export type {
 	CompanyScopeGuardOptions,
 } from "./plugins/company-scope-guard";
 export { companyScopeGuard } from "./plugins/company-scope-guard";
+
+// --- Error Codes ---
+export { ThreadErrorCodes } from "./error-codes";
+export type { ThreadErrorCode } from "./error-codes";
