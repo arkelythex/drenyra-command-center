@@ -13,6 +13,8 @@ export * from "./accounting";
 // --- AI ---
 export * from "./ai";
 export * from "./audit-ledger";
+// --- FISCAL SEAMS (Phase 1) ---
+export * from "./country-pack";
 export * from "./entities";
 export * from "./errors";
 export * from "./events";
@@ -33,6 +35,11 @@ export type {
 	ArkelythexSurfaceId,
 	ArkelythexSurfaceModuleRef,
 } from "./types/product-surfaces";
+export type {
+	CountryCode,
+	TaxIdentifier,
+	TaxIdentifierType,
+} from "./types/tax-identifier";
 export { DNI } from "./value-objects/DNI";
 export { DocumentSeries } from "./value-objects/DocumentSeries";
 export { type Currency, Money } from "./value-objects/Money";

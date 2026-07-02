@@ -9,6 +9,7 @@
  */
 
 import { InvalidDNIError } from "../errors/InvalidDNIError";
+import type { TaxIdentifier } from "../types/tax-identifier";
 
 /**
  * DNI (Documento Nacional de Identidad) value object.
@@ -21,8 +22,11 @@ import { InvalidDNIError } from "../errors/InvalidDNIError";
  * dni.format(); // "12 345 678"
  * ```
  */
-export class DNI {
-	private constructor(private readonly value: string) {
+export class DNI implements TaxIdentifier {
+	readonly countryCode = "PE" as const;
+	readonly type = "DNI" as const;
+
+	private constructor(readonly value: string) {
 		Object.freeze(this);
 	}
 
@@ -76,7 +80,7 @@ export class DNI {
 	/**
 	 * Check equality with another DNI
 	 */
-	equals(other: DNI | null | undefined): boolean {
+	equals(other: TaxIdentifier | null | undefined): boolean {
 		if (!other) {
 			return false;
 		}
@@ -84,10 +88,21 @@ export class DNI {
 	}
 
 	/**
+	 * Validate the DNI format.
+	 */
+	validate(): boolean {
+		return DNI.isValid(this.value);
+	}
+
+	/**
 	 * Serialize to JSON
 	 */
-	toJSON(): { value: string } {
-		return { value: this.value };
+	toJSON(): Record<string, unknown> {
+		return {
+			value: this.value,
+			countryCode: this.countryCode,
+			type: this.type,
+		};
 	}
 
 	/**

@@ -5,3 +5,4 @@
  */
 
 export * from "./TaxCalculator";
+export * from "./tax-regime";

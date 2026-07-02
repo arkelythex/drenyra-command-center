@@ -21,6 +21,7 @@
  */
 
 import { InvalidRUCError } from "../errors/InvalidRUCError";
+import type { TaxIdentifier } from "../types/tax-identifier";
 
 /**
  * Clase inmutable que encapsula un RUC válido.
@@ -33,7 +34,10 @@ import { InvalidRUCError } from "../errors/InvalidRUCError";
  * ruc.isCompany(); // true
  * ```
  */
-export class RUC {
+export class RUC implements TaxIdentifier {
+	readonly countryCode = "PE" as const;
+	readonly type = "RUC" as const;
+
 	private static readonly CHECKSUM_WEIGHTS = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
 	private static readonly ALLOWED_PREFIXES = ["10", "15", "16", "17", "20"];
 
@@ -142,9 +146,27 @@ export class RUC {
 	 *
 	 * @param other - Otro objeto RUC a comparar.
 	 */
-	equals(other: RUC | null | undefined): boolean {
+	equals(other: TaxIdentifier | null | undefined): boolean {
 		if (!other) return false;
 		return this.value === other.value;
+	}
+
+	/**
+	 * Validate the RUC value (delegates to static isValid).
+	 */
+	validate(): boolean {
+		return RUC.isValid(this.value);
+	}
+
+	/**
+	 * Serialize to JSON.
+	 */
+	toJSON(): Record<string, unknown> {
+		return {
+			value: this.value,
+			countryCode: this.countryCode,
+			type: this.type,
+		};
 	}
 
 	/**
