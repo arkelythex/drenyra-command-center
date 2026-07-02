@@ -125,4 +125,22 @@ export {
 	type OrganizationSettings,
 	type OrganizationStatus,
 } from "./organization";
+// Thread entity
+export {
+	assertThreadCanActivate,
+	assertThreadCanSubmitForReview,
+	assertThreadNotClosed,
+	assertValidDate,
+	assertValidThreadProps,
+	assertValidTransition,
+	Thread,
+	type AgentRole,
+	type TaskStatus,
+	type ThreadAgentAssignmentProps,
+	type ThreadEnvironment,
+	type ThreadPriority,
+	type ThreadProps,
+	type ThreadStatus,
+	type ThreadTaskProps,
+} from "./thread";
 export { Transaction, type TransactionProps } from "./Transaction";
