@@ -49,6 +49,7 @@ import { platformMcpModule } from "./features/platform";
 import { pseComplianceRoutes } from "./features/pse-compliance";
 import { ragEnterpriseRoutes } from "./features/rag-enterprise";
 import { sireComparisonModule } from "./features/sire-comparison";
+import { threadRoutes } from "./features/threads";
 import { sunatApiModule } from "./features/sunat";
 import { vendorRoutes } from "./features/vendors";
 import { createLogger } from "./lib/logger";
@@ -227,7 +228,6 @@ const baseApp = new Elysia()
 						description:
 							"Enterprise knowledge base with document management and semantic search",
 					},
-
 					// ─── Phases 2-4 Feature Tags ───────────────────────────
 					{
 						name: "Accounting PRs",
@@ -284,6 +284,11 @@ const baseApp = new Elysia()
 						description:
 							"Compliance tracking, fiscal obligations roadmap, accounting job automation, and obligation execution",
 					},
+					{
+						name: "Threads",
+						description:
+							"Thread system — accounting work sessions with tasks, agents, and evidence",
+					},
 				],
 			},
 		}),
@@ -333,7 +338,8 @@ const baseApp = new Elysia()
 	.use(clientCommsModule)
 	.use(sunatApiModule)
 	.use(sireComparisonModule)
-	.use(ragEnterpriseRoutes);
+	.use(ragEnterpriseRoutes)
+	.use(threadRoutes);
 
 /** Public contract for Eden Treaty clients — use `baseApp` so OTEL/listen do not narrow inference. */
 export type App = typeof baseApp;

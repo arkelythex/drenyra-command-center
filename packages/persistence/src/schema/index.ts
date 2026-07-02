@@ -372,6 +372,34 @@ export {
 	taxRuleVersions,
 	taxRuleVersionsRelations,
 } from "./taxation.schema";
+// --- THREADS ---
+export {
+	type ThreadEnvironment,
+	threadEnvironments,
+	type ThreadPriority,
+	threadPriorities,
+	type ThreadStatus,
+	threadStatuses,
+	threads,
+	threadsRelations,
+} from "./threads.schema";
+export {
+	type ThreadTaskStatus,
+	threadTaskStatuses,
+	threadTasks,
+	threadTasksRelations,
+} from "./thread-tasks.schema";
+export {
+	type ThreadAgentRole,
+	threadAgentRoles,
+	threadAgents,
+	threadAgentsRelations,
+} from "./thread-agents.schema";
+export {
+	threadEvidence,
+	threadEvidenceRelations,
+} from "./thread-evidence.schema";
+
 // --- TELEMETRY ---
 export { frontendTelemetryEvents } from "./telemetry.schema";
 // --- TRANSACTIONS ---
