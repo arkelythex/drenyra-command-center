@@ -13,7 +13,6 @@ import { aiSwarmRoutes } from "./features/ai-swarm/api/routes";
 import { sireAuditRoute } from "./features/ai-swarm/api/sire-audit.route";
 import { aiControlPlaneModule } from "./features/ai-swarm/control-plane";
 import { aiWorkersRoutes } from "./features/ai-swarm/workers";
-import { aiToolPermissionsModule } from "./features/ai-tool-permissions";
 import { apiMarketplaceModule } from "./features/api-marketplace";
 import { authRoutes } from "./features/auth/auth.routes";
 import { automationStudioRoutes } from "./features/automation-studio";
@@ -21,7 +20,7 @@ import { bankingRoutes } from "./features/banking";
 import { bankingProvidersRoutes } from "./features/banking-providers/api/routes";
 import { billRoutes, invoiceRoutes } from "./features/billing";
 import { cashflowRoutes } from "./features/cashflow/api/routes";
-import { civicModule } from "./features/civic";
+
 import { clientCommsModule } from "./features/client-comms";
 import { companySettingsRoute } from "./features/company/api/settings.route";
 import { customerRoutes } from "./features/customers";
@@ -54,6 +53,7 @@ import { sunatApiModule } from "./features/sunat";
 import { vendorRoutes } from "./features/vendors";
 import { createLogger } from "./lib/logger";
 import { metricsMiddleware } from "./middleware/metrics.middleware";
+import { globalErrorHandler, requestLogger } from "./shared/plugins";
 import { CANONICAL_SWAGGER_PATH } from "./swagger-docs-routes";
 
 const logger = createLogger({ module: "app-core" });
@@ -182,6 +182,11 @@ const baseApp = new Elysia()
 						description: "SIRE reporting, validation, and audit workflow",
 					},
 					{
+						name: "SIRE Comparison",
+						description:
+							"Multi-period SIRE reconciliation: discrepancy detection, resolution, and comparison reports",
+					},
+					{
 						name: "SUNAT Knowledge",
 						description: "RAG pipeline for SUNAT legal norms search",
 					},
@@ -213,11 +218,6 @@ const baseApp = new Elysia()
 						description: "Frontend telemetry capture and monitoring",
 					},
 					{
-						name: "Civic",
-						description:
-							"Electoral validation, fraud detection, and civic data",
-					},
-					{
 						name: "Intelligence",
 						description:
 							"Fiscal intelligence: anomaly detection, cashflow analysis, compliance checks, supplier analysis, document classification",
@@ -227,11 +227,70 @@ const baseApp = new Elysia()
 						description:
 							"Enterprise knowledge base with document management and semantic search",
 					},
+
+					// ─── Phases 2-4 Feature Tags ───────────────────────────
+					{
+						name: "Accounting PRs",
+						description:
+							"Accounting pull request workflow: create, review, approve, and post journal entry adjustments",
+					},
+					{
+						name: "Monthly Close",
+						description:
+							"Monthly closing checklists, gates, and period-end workflow",
+					},
+					{
+						name: "CFO Analytics",
+						description:
+							"CFO dashboard KPIs: revenue, expenses, profitability, liquidity, tax compliance",
+					},
+					{
+						name: "Client Comms",
+						description:
+							"Client communication templates, automation, and delivery tracking",
+					},
+					{
+						name: "Judgment Day",
+						description:
+							"AI-powered fiscal audit reviews, findings, and rule-based compliance scoring",
+					},
+					{
+						name: "Doctor",
+						description:
+							"System diagnostic checks, health dashboards, and operational runbooks",
+					},
+					{
+						name: "API Marketplace",
+						description:
+							"External API integrations marketplace for third-party service connections",
+					},
+					{
+						name: "Automation Studio",
+						description:
+							"Workflow automation engine: triggers, steps, executions, and dashboards",
+					},
+					{
+						name: "Evidence",
+						description:
+							"Evidence management: upload, classify, validate, and link to fiscal entities",
+					},
+					{
+						name: "Firm",
+						description:
+							"Firm dashboard: multi-company overview, user management, and firm-level settings",
+					},
+					{
+						name: "Compliance",
+						description:
+							"Compliance tracking, fiscal obligations roadmap, accounting job automation, and obligation execution",
+					},
 				],
 			},
 		}),
 	)
+	.use(requestLogger)
 	.use(metricsMiddleware)
+	.use(globalErrorHandler)
 	.use(apiModules)
 	.use(backwardCompatRedirects)
 	.use(healthModule)
@@ -271,7 +330,6 @@ const baseApp = new Elysia()
 	.use(monthlyCloseModule)
 	.use(drenyraModule)
 	.use(doctorModeModule)
-	.use(civicModule)
 	.use(clientCommsModule)
 	.use(sunatApiModule)
 	.use(sireComparisonModule)
