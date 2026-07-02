@@ -14,15 +14,23 @@
 
 import { randomUUID } from "node:crypto";
 import { Elysia, t } from "elysia";
-import { encryptJsonValue, isAes256Configured } from "../../security/aes-256.service";
 import { logSecurityAccess } from "../../security/access-log.service";
+import {
+	encryptJsonValue,
+	isAes256Configured,
+} from "../../security/aes-256.service";
 import { authorizeOperation } from "../../security/rbac-guard";
 import {
 	runSireAuditWorkflow,
 	SireAuditInputSchema,
 } from "../workflows/sire-audit.workflow";
 
-const LIVE_SUBMISSION_ROLES = new Set(["owner", "admin", "superadmin", "senior"]);
+const LIVE_SUBMISSION_ROLES = new Set([
+	"owner",
+	"admin",
+	"superadmin",
+	"senior",
+]);
 
 function parseOptionalOrgId(value: string | undefined): number | undefined {
 	if (!value) return undefined;
@@ -77,21 +85,9 @@ const SireAuditQuerySchema = t.Object({
  * console.log(sireAuditRoute);
  * ```
  */
-export const sireAuditRoute = new Elysia({ prefix: "/api/ai-swarm" })
-	.onError(({ code, set }) => {
-		if (code === "VALIDATION") {
-			set.status = 422;
-			return {
-				success: false,
-				error: "Invalid ai-swarm request",
-				code: "VALIDATION_ERROR",
-			};
-		}
-		return;
-	})
-	.get(
-		"/sire-audit-stream",
-		async ({ query, request, set, headers }) => {
+export const sireAuditRoute = new Elysia({ prefix: "/api/ai-swarm" }).get(
+	"/sire-audit-stream",
+	async ({ query, request, set, headers }) => {
 		const headersMap = headers as Record<string, unknown>;
 		const dryRun = parseOptionalBoolean(query.dryRun) ?? true;
 		const encryptEvents =
@@ -128,7 +124,8 @@ export const sireAuditRoute = new Elysia({ prefix: "/api/ai-swarm" })
 			});
 			return {
 				success: false,
-				error: "Encryption requested but ARKELYTHEX_AES256_KEY is not configured.",
+				error:
+					"Encryption requested but ARKELYTHEX_AES256_KEY is not configured.",
 				code: "ENCRYPTION_KEY_MISSING",
 			};
 		}
@@ -218,7 +215,10 @@ export const sireAuditRoute = new Elysia({ prefix: "/api/ai-swarm" })
 				userId: authz.actor.authUserId,
 				ipAddress: readHeader(headersMap, "x-forwarded-for"),
 				userAgent: readHeader(headersMap, "user-agent"),
-				details: { code: "INVALID_PARAMETERS", issues: parseResult.error.issues },
+				details: {
+					code: "INVALID_PARAMETERS",
+					issues: parseResult.error.issues,
+				},
 			});
 			return {
 				error: "Invalid audit parameters",
@@ -286,14 +286,14 @@ export const sireAuditRoute = new Elysia({ prefix: "/api/ai-swarm" })
 		set.headers["X-Accel-Buffering"] = "no";
 
 		return new Response(stream);
+	},
+	{
+		query: SireAuditQuerySchema,
+		detail: {
+			tags: ["SIRE"],
+			summary: "Auditoría SIRE completa (SSE streaming)",
+			description:
+				"Long-running audit con 3 subagentes paralelos (IGV, RCE, Detraction). Emite eventos SSE durante la auditoría.",
 		},
-		{
-			query: SireAuditQuerySchema,
-			detail: {
-				tags: ["SIRE"],
-				summary: "Auditoría SIRE completa (SSE streaming)",
-				description:
-					"Long-running audit con 3 subagentes paralelos (IGV, RCE, Detraction). Emite eventos SSE durante la auditoría.",
-			},
-		},
-	);
+	},
+);

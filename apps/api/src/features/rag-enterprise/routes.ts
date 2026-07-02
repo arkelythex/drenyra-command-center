@@ -19,7 +19,7 @@ import {
 	sql,
 } from "drizzle-orm";
 import { Elysia, t } from "elysia";
-import { fail, getErrorMessage, ok } from "../shared/api-response";
+import { fail, ok } from "../shared/api-response";
 
 const DEFAULT_TOP_K = 10;
 const DEFAULT_MIN_SCORE = 0.1;
@@ -149,17 +149,6 @@ function resolveContext(headers: Record<string, string | undefined>): Ctx {
 export const ragEnterpriseRoutes = new Elysia({
 	prefix: "/api/v1/rag",
 	name: "rag-enterprise",
-}).onError(({ code, error, set }) => {
-	if (code === "VALIDATION") {
-		set.status = 422;
-		return fail("Invalid request parameters", "VALIDATION_ERROR");
-	}
-	if (code === "NOT_FOUND") {
-		set.status = 404;
-		return fail("Resource not found", "NOT_FOUND");
-	}
-	set.status = 500;
-	return fail(getErrorMessage(error), "INTERNAL_ERROR");
 });
 
 // ─── COLLECTIONS ────────────────────────────────────────────────

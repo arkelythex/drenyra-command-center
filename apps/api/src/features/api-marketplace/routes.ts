@@ -28,13 +28,6 @@ import {
 export const apiMarketplaceRoutes = new Elysia({
 	prefix: "/api/v1/marketplace",
 })
-	.onError(({ code, set }) => {
-		if (code === "VALIDATION") {
-			set.status = 422;
-			return fail("Invalid marketplace request", "VALIDATION_ERROR");
-		}
-		return;
-	})
 
 	.get(
 		"/",

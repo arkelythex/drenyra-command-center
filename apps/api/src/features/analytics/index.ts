@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
-import { fail, getErrorMessage } from "../shared/api-response";
+
 import {
 	AnalyticsQuerySchema,
 	OperationalQuerySchema,
@@ -84,15 +84,6 @@ export {
  */
 export const analyticsModule = new Elysia({ prefix: "/api/analytics" })
 	.use(companyScopeGuard())
-	.onError(({ code, error, set }) => {
-		if (code === "VALIDATION") {
-			set.status = 422;
-			return fail("Invalid analytics query parameters", "VALIDATION_ERROR");
-		}
-
-		set.status = 500;
-		return fail(getErrorMessage(error), "INTERNAL_ERROR");
-	})
 	/**
 	 * GET /analytics/dashboard - Complete dashboard with all KPIs.
 	 *

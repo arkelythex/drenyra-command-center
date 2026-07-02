@@ -34,14 +34,6 @@ async function authorizeRead(
 }
 
 export const contextControlPlaneRoute = new Elysia({ prefix: "/api/ai-swarm" })
-	.onError(({ code, set }) => {
-		if (code === "VALIDATION") {
-			set.status = 422;
-			return fail("Invalid context-control-plane request", "VALIDATION_ERROR");
-		}
-
-		return;
-	})
 	.get(
 		"/context-control-plane/registry",
 		async ({ query, headers, set }) => {

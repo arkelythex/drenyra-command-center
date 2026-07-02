@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
-import { fail, getErrorMessage, ok } from "../shared/api-response";
+import { fail, ok } from "../shared/api-response";
 import {
 	CfoDateRangeQuerySchema,
 	CfoPeriodQuerySchema,
@@ -33,15 +33,6 @@ export { TaxAnalyticsService } from "./services/tax-analytics.service";
 
 export const cfoAnalyticsModule = new Elysia({ prefix: "/api/cfo" })
 	.use(companyScopeGuard())
-	.onError(({ code, error, set }) => {
-		if (code === "VALIDATION") {
-			set.status = 422;
-			return fail("Invalid CFO analytics parameters", "VALIDATION_ERROR");
-		}
-
-		set.status = 500;
-		return fail(getErrorMessage(error), "INTERNAL_ERROR");
-	})
 
 	.get(
 		"/dashboard",

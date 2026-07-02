@@ -66,13 +66,6 @@ function serializeBillDto(dto: BillDTO) {
  */
 export const billRoutes = new Elysia({ prefix: "/api/bills" })
 	.use(companyScopeGuard({ allowHeaderFallback: true }))
-	.onError(({ code, set }) => {
-		if (code === "VALIDATION") {
-			set.status = 422;
-			return fail("Invalid bill request", "VALIDATION_ERROR");
-		}
-		return;
-	})
 	// POST /api/bills - Create bill
 	.post(
 		"/",
