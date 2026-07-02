@@ -24,12 +24,11 @@ import type { z } from "zod";
  * ```
  */
 export type SkillCategory =
-	| "sunat"    // SIRE, IGV, facturación, detracciones
-	| "pcge"     // Plan Contable General Empresarial
-	| "banking"  // Conciliación bancaria, detracciones Banco de la Nación
-	| "audit"    // Auditoría adversarial, trazabilidad
-	| "ocr"      // Extracción de documentos
-	| "civic";   // Validación electoral, detección de fraude, resultados
+	| "sunat" // SIRE, IGV, facturación, detracciones
+	| "pcge" // Plan Contable General Empresarial
+	| "banking" // Conciliación bancaria, detracciones Banco de la Nación
+	| "audit" // Auditoría adversarial, trazabilidad
+	| "ocr"; // Extracción de documentos
 
 /**
  * SkillMetadata interface.

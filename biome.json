@@ -21,9 +21,7 @@
       "!drizzle",
       "!src/lib/db/migrations",
       "!templates",
-      "!docs",
-      "!packages/domain/civic",
-      "!packages/application/civic"
+      "!docs"
     ]
   },
   "linter": {

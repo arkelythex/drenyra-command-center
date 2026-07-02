@@ -51,12 +51,7 @@ export {
 } from "./adapters/document-processing.adapter";
 // AI (minimal surface used by the API)
 export { createAIProvider } from "./ai/ai-provider.factory";
-export type { DigitalPublicPeruProxyConfig } from "./civic/digital-public-peru.proxy";
-// Civic
-export {
-	createDigitalPublicPeruProxy,
-	getDefaultDigitalPublicPeruProxy,
-} from "./civic/digital-public-peru.proxy";
+
 export { seedDatabase } from "./db/seed";
 // Logger
 export { logger, loggers } from "./logger";

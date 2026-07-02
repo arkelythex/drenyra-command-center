@@ -125,7 +125,7 @@ export const APP_CORE_MOUNTED_SURFACE_EXPORTS = [
 	"bankingRoutes",
 	"billRoutes",
 	"cashflowRoutes",
-	"civicModule",
+
 	"cognitiveStreamRoute",
 	"companySettingsRoute",
 	"contextControlPlaneRoute",
@@ -182,8 +182,7 @@ export const ROUTE_PROTECTION_MATRIX = [
 		schemaSystem: "typebox",
 		envelope: "custom",
 		rateLimit: "missing",
-		notes:
-			"AI policy/control surface; newly added — needs tenant hardening.",
+		notes: "AI policy/control surface; newly added — needs tenant hardening.",
 	},
 	{
 		id: "ai-rag",
@@ -308,8 +307,7 @@ export const ROUTE_PROTECTION_MATRIX = [
 		schemaSystem: "typebox",
 		envelope: "canonical",
 		rateLimit: "missing",
-		notes:
-			"Company settings surface; newly added.",
+		notes: "Company settings surface; newly added.",
 	},
 	{
 		id: "context-control-plane",
@@ -336,8 +334,7 @@ export const ROUTE_PROTECTION_MATRIX = [
 		schemaSystem: "typebox",
 		envelope: "mixed",
 		rateLimit: "documented",
-		notes:
-			"CxC catalog surface; tenant enforcement is route/service scoped.",
+		notes: "CxC catalog surface; tenant enforcement is route/service scoped.",
 	},
 	{
 		id: "dashboard",
@@ -350,8 +347,7 @@ export const ROUTE_PROTECTION_MATRIX = [
 		schemaSystem: "typebox",
 		envelope: "mixed",
 		rateLimit: "documented",
-		notes:
-			"Operational dashboard; should align with analytics tenant policy.",
+		notes: "Operational dashboard; should align with analytics tenant policy.",
 	},
 	{
 		id: "drenyra",
@@ -364,23 +360,9 @@ export const ROUTE_PROTECTION_MATRIX = [
 		schemaSystem: "typebox",
 		envelope: "mixed",
 		rateLimit: "missing",
-		notes:
-			"Drenyra workspace/agent surface; new module.",
+		notes: "Drenyra workspace/agent surface; new module.",
 	},
 
-	{
-		id: "civic",
-		surface: "Civic",
-		appCoreExportName: "civicModule",
-		prefix: "/api/civic",
-		mounted: true,
-		authMode: "bearer-tenant",
-		tenantSource: "x-company-id",
-		schemaSystem: "zod",
-		envelope: "canonical",
-		rateLimit: "missing",
-		notes: "Electoral validation, fraud detection, and civic data API.",
-	},
 	{
 		id: "cognitive-stream",
 		surface: "Cognitive Stream",
@@ -459,8 +441,7 @@ export const ROUTE_PROTECTION_MATRIX = [
 		schemaSystem: "typebox",
 		envelope: "canonical",
 		rateLimit: "documented",
-		notes:
-			"Uses monitoring access validation rather than tenant session auth.",
+		notes: "Uses monitoring access validation rather than tenant session auth.",
 	},
 	{
 		id: "health",
@@ -557,8 +538,7 @@ export const ROUTE_PROTECTION_MATRIX = [
 		schemaSystem: "typebox",
 		envelope: "custom",
 		rateLimit: "missing",
-		notes:
-			"Mounted as separate AI swarm SIRE audit route.",
+		notes: "Mounted as separate AI swarm SIRE audit route.",
 	},
 	{
 		id: "sunat-api",
@@ -571,8 +551,7 @@ export const ROUTE_PROTECTION_MATRIX = [
 		schemaSystem: "typebox",
 		envelope: "custom",
 		rateLimit: "missing",
-		notes:
-			"SUNAT direct API surface; company-scoped tax integration.",
+		notes: "SUNAT direct API surface; company-scoped tax integration.",
 	},
 	{
 		id: "vendors",
