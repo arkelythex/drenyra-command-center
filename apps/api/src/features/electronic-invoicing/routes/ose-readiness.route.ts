@@ -1,10 +1,14 @@
 import { Elysia } from "elysia";
+import { getTaxAuthority } from "../../../lib/tax-authority-provider";
 import { OSEService } from "../../../services/ose.service";
 import { oseConfigValidator } from "../../../services/ose";
 import { ok } from "../../shared/api-response";
 
 /**
  * electronicInvoicingOseReadinessRoute const.
+ *
+ * Uses TaxAuthorityPort.checkConnectivity() for provider status,
+ * while keeping OSE-specific config validation for backward compat.
  *
  * @example
  * ```ts
@@ -16,7 +20,19 @@ export const electronicInvoicingOseReadinessRoute = new Elysia().get(
 	async () => {
 		const config = OSEService.getConfig();
 		const configValidation = oseConfigValidator.validate(config);
-		const providerStatus = await OSEService.checkStatus();
+
+		// Use TaxAuthorityPort for provider connectivity
+		let providerStatus: { online: boolean; message: string } = {
+			online: false,
+			message: "Could not check connectivity",
+		};
+		try {
+			const adapter = await getTaxAuthority(0); // org-agnostic check
+			providerStatus = await adapter.checkConnectivity();
+		} catch {
+			// Fall back to legacy OSEService check if adapter fails
+			providerStatus = await OSEService.checkStatus();
+		}
 		const effectiveProvider =
 			config.simulationMode === true ? "simulation" : config.provider;
 

@@ -43,7 +43,8 @@
     "src/services/python-ocr/**/*.ts",
     "src/services/sunat-knowledge.ts",
     "src/services/swarm-consensus/**/*.ts",
-    "src/xml/**/*.ts",
+    "src/tax-authority/**/*.ts",
+		"src/xml/**/*.ts",
     "src/xsd/**/*.ts"
   ],
   "exclude": ["dist", "**/dist/**", "**/__tests__/**", "**/*.test.ts", "**/*.spec.ts"]

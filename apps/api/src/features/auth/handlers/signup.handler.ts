@@ -1,4 +1,5 @@
 import { Context } from "elysia";
+import { getTaxAuthority } from "../../../lib/tax-authority-provider";
 import { SunatService } from "../../../services/sunat.service";
 import { db } from "@arkelythex/persistence/client";
 import { authAuditLogs, authUsers } from "@arkelythex/persistence/schema";
@@ -158,21 +159,22 @@ export async function handleSignup(
 			});
 		}
 
-		// 2. Validate RUC with SUNAT (async)
+		// 2. Validate RUC with SUNAT via TaxAuthorityPort
 		try {
-			const rucValidation = await SunatService.validateRucOnline(ruc);
+			const adapter = await getTaxAuthority(0);
+			const taxIdInfo = await adapter.consultTaxId(ruc);
 
-			if (!rucValidation.valid) {
+			if (taxIdInfo.status !== "ACTIVE") {
 				set.status = 400;
 				return fail(
-					rucValidation.message || "RUC no válido en SUNAT",
+					`RUC ${ruc} no está activo en SUNAT (estado: ${taxIdInfo.status})`,
 					"RUC_SUNAT_INVALID",
-					{ field: "ruc", details: rucValidation },
+					{ field: "ruc", details: { status: taxIdInfo.status } },
 				);
 			}
 
 			logger.info(
-				{ ...eventContext, razonSocial: rucValidation.razonSocial ?? null },
+				{ ...eventContext, razonSocial: taxIdInfo.legalName },
 				"RUC validated during signup",
 			);
 		} catch (error) {

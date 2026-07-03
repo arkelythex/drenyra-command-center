@@ -51,6 +51,16 @@ export const taxTypeEnum = pgEnum("tax_type", [
 	"INAFECTO",
 ]);
 
+/** Generic fiscal lifecycle status (country-agnostic) */
+export const fiscalStatusEnum = pgEnum("fiscal_status", [
+	"DRAFT",
+	"PENDING_REVIEW",
+	"SUBMITTED",
+	"ACCEPTED",
+	"REJECTED",
+	"CANCELLED",
+]);
+
 /** AI accounting job run status */
 export const accountingJobRunStatusEnum = pgEnum("accounting_job_run_status", [
 	"QUEUED",

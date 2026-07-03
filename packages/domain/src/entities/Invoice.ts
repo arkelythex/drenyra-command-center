@@ -20,10 +20,12 @@ import { DNI } from "../value-objects/DNI";
 import { DocumentSeries } from "../value-objects/DocumentSeries";
 import { Money } from "../value-objects/Money";
 import { RUC } from "../value-objects/RUC";
+import type { TaxIdentifier } from "../types/tax-identifier";
 
 /**
- * Estados posibles de una factura.
+ * Estados posibles de una factura (legacy, Perú-centric).
  *
+ * @deprecated Use {@link FiscalStatus} for country-agnostic fiscal lifecycle.
  * @example
  * ```ts
  * const s: InvoiceStatus = "DRAFT";
@@ -38,6 +40,23 @@ export type InvoiceStatus =
 	| "CANCELLED"; // Anulado
 
 /**
+ * Generic fiscal lifecycle status — country-agnostic.
+ * Covers the common lifecycle across LATAM tax authorities.
+ *
+ * @example
+ * ```ts
+ * const fs: FiscalStatus = "DRAFT";
+ * ```
+ */
+export type FiscalStatus =
+	| "DRAFT"
+	| "PENDING_REVIEW"
+	| "SUBMITTED"
+	| "ACCEPTED"
+	| "REJECTED"
+	| "CANCELLED";
+
+/**
  * Monedas soportadas.
  *
  * @example
@@ -50,6 +69,11 @@ export type Currency = import("../types/currency").Currency;
 /**
  * Propiedades de la entidad Factura.
  *
+ * Generic lifecycle fields (`buyerTaxId`, `taxAmount`, `fiscalStatus`)
+ * coexist with legacy Peru-specific fields for backward compatibility.
+ * New consumers SHOULD use the generic fields; old consumers continue
+ * to work with `clientRUC`/`clientDNI`, `igvAmount`, and InvoiceStatus.
+ *
  * @example
  * ```ts
  * const props: InvoiceProps = {
@@ -58,10 +82,13 @@ export type Currency = import("../types/currency").Currency;
  *   number: 1,
  *   issueDate: new Date(),
  *   clientName: "Cliente",
+ *   buyerTaxId: RUC.create("20546296564"), // generic (preferred)
  *   baseAmount: Money.fromAmount(100, "PEN"),
  *   igvAmount: Money.fromAmount(18, "PEN"),
+ *   taxAmount: Money.fromAmount(18, "PEN"),  // generic (preferred)
  *   totalAmount: Money.fromAmount(118, "PEN"),
  *   status: "DRAFT",
+ *   fiscalStatus: "DRAFT",                   // generic (preferred)
  *   items: [],
  *   createdAt: new Date(),
  *   updatedAt: new Date(),
@@ -75,17 +102,40 @@ export interface InvoiceProps {
 	issueDate: Date;
 	dueDate?: Date;
 	clientName: string;
+
+	// ── Generic buyer tax ID (country-agnostic) ──
+	/** Generic buyer tax identifier. Preferred over clientRUC/clientDNI. */
+	buyerTaxId?: TaxIdentifier;
+	/** @deprecated Use buyerTaxId instead. */
 	clientRUC?: RUC;
+	/** @deprecated Use buyerTaxId instead. */
 	clientDNI?: DNI;
+
 	clientAddress?: string;
 	baseAmount: Money;
+
+	// ── Generic tax amount (IGV in PE, IVA in MX/AR, VAT in CL) ──
+	/** Generic tax amount. Preferred over igvAmount. */
+	taxAmount?: Money;
+	/** @deprecated Use taxAmount instead. */
 	igvAmount: Money;
+
 	totalAmount: Money;
+
+	/** @deprecated Use fiscalStatus instead. */
 	status: InvoiceStatus;
+	/** Generic fiscal lifecycle status. Preferred over status. */
+	fiscalStatus?: FiscalStatus;
+
 	items: InvoiceItem[];
 	notes?: string;
+
+	// ── Legacy SUNAT fields ──
+	/** @deprecated Will be abstracted behind TaxAuthorityPort. */
 	sunatResponseCode?: string;
+	/** @deprecated Will be abstracted behind TaxAuthorityPort. */
 	sentToSunatAt?: Date;
+
 	createdAt: Date;
 	updatedAt: Date;
 }
@@ -121,7 +171,13 @@ export interface InvoiceItem {
  *
  * @example
  * ```ts
- * const data: InvoicePrimitiveData = { id: "inv_1", series: "F001", number: 1, issueDate: new Date(), clientName: "Cliente", baseAmount: 10000, igvAmount: 1800, totalAmount: 11800, currency: "PEN", status: "DRAFT" };
+ * const data: InvoicePrimitiveData = {
+ *   id: "inv_1", series: "F001", number: 1, issueDate: new Date(),
+ *   clientName: "Cliente", buyerTaxId: "20546296564", buyerTaxType: "RUC",
+ *   baseAmount: 10000, igvAmount: 1800, taxAmount: 1800,
+ *   totalAmount: 11800, currency: "PEN", status: "DRAFT",
+ *   fiscalStatus: "DRAFT",
+ * };
  * ```
  */
 export interface InvoicePrimitiveData {
@@ -131,14 +187,29 @@ export interface InvoicePrimitiveData {
 	issueDate: string | Date;
 	dueDate?: string | Date;
 	clientName: string;
+
+	// ── Generic buyer tax ID ──
+	buyerTaxId?: string;
+	buyerTaxType?: string;
+	/** @deprecated Use buyerTaxId instead. */
 	clientRUC?: string;
+	/** @deprecated Use buyerTaxId instead. */
 	clientDNI?: string;
+
 	clientAddress?: string;
 	baseAmount: number;
 	igvAmount: number;
+
+	// ── Generic tax amount ──
+	/** Generic tax amount in cents. Preferred over igvAmount. */
+	taxAmount?: number;
+
 	totalAmount: number;
 	currency: string;
 	status: string;
+	/** Generic fiscal lifecycle status. Preferred over status. */
+	fiscalStatus?: string;
+
 	items?: Array<{
 		id: string;
 		description: string;
@@ -149,8 +220,13 @@ export interface InvoicePrimitiveData {
 		total: number;
 	}>;
 	notes?: string;
+
+	// ── Legacy SUNAT fields ──
+	/** @deprecated Will be abstracted behind TaxAuthorityPort. */
 	sunatResponseCode?: string;
+	/** @deprecated Will be abstracted behind TaxAuthorityPort. */
 	sentToSunatAt?: string | Date;
+
 	createdAt?: string | Date;
 	updatedAt?: string | Date;
 }
@@ -188,6 +264,20 @@ export class Invoice {
 	static fromPrimitives(plainData: InvoicePrimitiveData): Invoice {
 		const currency = plainData.currency as Currency;
 
+		// Resolve buyer tax ID: prefer buyerTaxId, fall back to clientRUC/clientDNI
+		let buyerTaxId: TaxIdentifier | undefined;
+		if (plainData.buyerTaxId && plainData.buyerTaxType) {
+			if (plainData.buyerTaxType === "RUC") {
+				buyerTaxId = RUC.create(plainData.buyerTaxId);
+			} else if (plainData.buyerTaxType === "DNI") {
+				buyerTaxId = DNI.create(plainData.buyerTaxId);
+			}
+		} else if (plainData.clientRUC) {
+			buyerTaxId = RUC.create(plainData.clientRUC);
+		} else if (plainData.clientDNI) {
+			buyerTaxId = DNI.create(plainData.clientDNI);
+		}
+
 		const props: InvoiceProps = {
 			id: plainData.id,
 			series: DocumentSeries.create(plainData.series),
@@ -195,6 +285,7 @@ export class Invoice {
 			issueDate: new Date(plainData.issueDate),
 			dueDate: plainData.dueDate ? new Date(plainData.dueDate) : undefined,
 			clientName: plainData.clientName,
+			buyerTaxId,
 			clientRUC: plainData.clientRUC
 				? RUC.create(plainData.clientRUC)
 				: undefined,
@@ -203,9 +294,13 @@ export class Invoice {
 				: undefined,
 			clientAddress: plainData.clientAddress,
 			baseAmount: Money.fromCents(plainData.baseAmount, currency),
+			taxAmount: plainData.taxAmount != null
+				? Money.fromCents(plainData.taxAmount, currency)
+				: Money.fromCents(plainData.igvAmount, currency),
 			igvAmount: Money.fromCents(plainData.igvAmount, currency),
 			totalAmount: Money.fromCents(plainData.totalAmount, currency),
 			status: plainData.status as InvoiceStatus,
+			fiscalStatus: (plainData.fiscalStatus ?? plainData.status) as FiscalStatus,
 			items: (plainData.items || []).map((item) => ({
 				id: item.id,
 				description: item.description,
@@ -306,63 +401,79 @@ export class Invoice {
 	 * @param sunatResponseCode - Código de respuesta recibido de SUNAT.
 	 * @returns Una nueva instancia de Invoice con el estado actualizado.
 	 */
-	markAsSent(sunatResponseCode: string): Invoice {
-		if (this.props.status !== "PENDING") {
+	// ── Generic lifecycle transitions ──
+
+	/**
+	 * Mark as submitted (sent to tax authority).
+	 * Updates both legacy status and generic fiscalStatus.
+	 */
+	markAsSent(authorityResponseCode?: string): Invoice {
+		const currentStatus = this.props.fiscalStatus ?? this.props.status;
+		if (currentStatus !== "PENDING_REVIEW" && this.props.status !== "PENDING") {
 			throw new Error("Solo se pueden enviar facturas en estado PENDING");
 		}
 
 		return new Invoice({
 			...this.props,
 			status: "SENT",
-			sunatResponseCode,
+			fiscalStatus: "SUBMITTED",
+			sunatResponseCode: authorityResponseCode,
 			sentToSunatAt: new Date(),
 			updatedAt: new Date(),
 		});
 	}
 
 	/**
-	 * Marca la factura como aceptada por SUNAT.
-	 *
-	 * @returns Una nueva instancia de Invoice con el estado actualizado.
+	 * Mark as accepted by the tax authority.
+	 * Updates both legacy status and generic fiscalStatus.
 	 */
 	markAsAccepted(): Invoice {
-		if (this.props.status !== "SENT") {
+		const currentStatus = this.props.fiscalStatus ?? this.props.status;
+		if (currentStatus !== "SUBMITTED" && this.props.status !== "SENT") {
 			throw new Error("Solo se pueden aceptar facturas en estado SENT");
 		}
 
 		return new Invoice({
 			...this.props,
 			status: "ACCEPTED",
+			fiscalStatus: "ACCEPTED",
 			updatedAt: new Date(),
 		});
 	}
 
 	/**
-	 * Marca la factura como rechazada por SUNAT.
+	 * Mark as rejected by the tax authority.
+	 * Updates both legacy status and generic fiscalStatus.
 	 *
 	 * @param reason - Razón del rechazo.
-	 * @returns Una nueva instancia de Invoice con el estado actualizado y la nota de rechazo.
 	 */
 	markAsRejected(reason: string): Invoice {
-		if (this.props.status !== "SENT") {
+		const currentStatus = this.props.fiscalStatus ?? this.props.status;
+		if (currentStatus !== "SUBMITTED" && this.props.status !== "SENT") {
 			throw new Error("Solo se pueden rechazar facturas en estado SENT");
 		}
 
 		return new Invoice({
 			...this.props,
 			status: "REJECTED",
+			fiscalStatus: "REJECTED",
 			notes: reason,
 			updatedAt: new Date(),
 		});
 	}
 
 	/**
-	 * Anula la factura (solo si no ha sido enviada a SUNAT).
-	 *
-	 * @returns Una nueva instancia de Invoice con estado CANCELLED.
+	 * Anula la factura.
+	 * Updates both legacy status and generic fiscalStatus.
 	 */
 	cancel(): Invoice {
-		if (this.props.status === "SENT" || this.props.status === "ACCEPTED") {
+		const currentStatus = this.props.fiscalStatus ?? this.props.status;
+		if (
+			currentStatus === "SUBMITTED" ||
+			currentStatus === "ACCEPTED" ||
+			this.props.status === "SENT" ||
+			this.props.status === "ACCEPTED"
+		) {
 			throw new Error(
 				"No se pueden cancelar facturas enviadas a SUNAT. Use Nota de Crédito.",
 			);
@@ -371,6 +482,7 @@ export class Invoice {
 		return new Invoice({
 			...this.props,
 			status: "CANCELLED",
+			fiscalStatus: "CANCELLED",
 			updatedAt: new Date(),
 		});
 	}
@@ -378,22 +490,22 @@ export class Invoice {
 	/**
 	 * Verifica si la factura puede ser modificada.
 	 *
-	 * @returns `true` si está en borrador o pendiente, `false` de lo contrario.
+	 * @returns `true` si está en borrador o pendiente/review, `false` de lo contrario.
 	 */
 	canBeModified(): boolean {
-		return this.props.status === "DRAFT" || this.props.status === "PENDING";
+		const s = this.props.fiscalStatus ?? this.props.status;
+		return s === "DRAFT" || s === "PENDING_REVIEW" || this.props.status === "PENDING";
 	}
 
 	/**
 	 * Verifica si la factura está vencida.
-	 *
-	 * @returns `true` si la fecha de vencimiento ya pasó y no está anulada.
 	 */
 	isOverdue(): boolean {
 		if (!this.props.dueDate) {
 			return false;
 		}
-		return this.props.dueDate < new Date() && this.props.status !== "CANCELLED";
+		const s = this.props.fiscalStatus ?? this.props.status;
+		return this.props.dueDate < new Date() && s !== "CANCELLED";
 	}
 
 	/**
@@ -409,7 +521,7 @@ export class Invoice {
 		return this.props.id === other.props.id;
 	}
 
-	// Getters
+	// ── Getters (legacy) ──
 	get id(): string {
 		return this.props.id;
 	}
@@ -434,10 +546,12 @@ export class Invoice {
 		return this.props.clientName;
 	}
 
+	/** @deprecated Use buyerTaxId instead. */
 	get clientRUC(): RUC | undefined {
 		return this.props.clientRUC;
 	}
 
+	/** @deprecated Use buyerTaxId instead. */
 	get clientDNI(): DNI | undefined {
 		return this.props.clientDNI;
 	}
@@ -450,6 +564,7 @@ export class Invoice {
 		return this.props.baseAmount;
 	}
 
+	/** @deprecated Use taxAmount instead. */
 	get igvAmount(): Money {
 		return this.props.igvAmount;
 	}
@@ -458,6 +573,7 @@ export class Invoice {
 		return this.props.totalAmount;
 	}
 
+	/** @deprecated Use fiscalStatus instead. */
 	get status(): InvoiceStatus {
 		return this.props.status;
 	}
@@ -474,16 +590,44 @@ export class Invoice {
 		return this.props.createdAt;
 	}
 
+	/** @deprecated Will be abstracted behind TaxAuthorityPort. */
 	get sentToSunatAt(): Date | undefined {
 		return this.props.sentToSunatAt;
 	}
 
+	/** @deprecated Will be abstracted behind TaxAuthorityPort. */
 	get sunatResponseCode(): string | undefined {
 		return this.props.sunatResponseCode;
 	}
 
 	get updatedAt(): Date {
 		return this.props.updatedAt;
+	}
+
+	// ── Getters (generic) ──
+
+	/**
+	 * Generic buyer tax identifier (RUC in PE, RFC in MX, CUIT in AR, etc.).
+	 * Preferred over `clientRUC` / `clientDNI`.
+	 */
+	get buyerTaxId(): TaxIdentifier | undefined {
+		return this.props.buyerTaxId;
+	}
+
+	/**
+	 * Generic tax amount (IGV in PE, IVA in MX/AR, VAT in CL).
+	 * Preferred over `igvAmount`.
+	 */
+	get taxAmount(): Money | undefined {
+		return this.props.taxAmount;
+	}
+
+	/**
+	 * Generic fiscal lifecycle status.
+	 * Preferred over `status`.
+	 */
+	get fiscalStatus(): FiscalStatus | undefined {
+		return this.props.fiscalStatus;
 	}
 
 	/**
@@ -499,6 +643,12 @@ export class Invoice {
 			issueDate: this.props.issueDate.toISOString(),
 			dueDate: this.props.dueDate?.toISOString(),
 			clientName: this.props.clientName,
+			// Generic fields
+			buyerTaxId: this.props.buyerTaxId?.toString(),
+			buyerTaxType: this.props.buyerTaxId?.type,
+			taxAmount: this.props.taxAmount?.toJSON(),
+			fiscalStatus: this.props.fiscalStatus,
+			// Legacy fields
 			clientRUC: this.props.clientRUC?.toString(),
 			clientDNI: this.props.clientDNI?.toString(),
 			clientAddress: this.props.clientAddress,
