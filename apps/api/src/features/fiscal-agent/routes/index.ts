@@ -5,7 +5,9 @@
 import { Elysia } from "elysia";
 import { fiscalAgentReportRoute } from "./report.route";
 import { fiscalAgentCorrectionRoute } from "./correction.route";
+import { fiscalAgentHealthRoute } from "./health.route";
 
 export const fiscalAgentRoutes = new Elysia()
 	.use(fiscalAgentReportRoute)
-	.use(fiscalAgentCorrectionRoute);
+	.use(fiscalAgentCorrectionRoute)
+	.use(fiscalAgentHealthRoute);
