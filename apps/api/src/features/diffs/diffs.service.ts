@@ -1,6 +1,17 @@
-import { AccountingDiff, createDiffId, type DiffType } from "@arkelythex/domain";
+import {
+	AccountingDiff,
+	createDiffId,
+	type DiffType,
+} from "@arkelythex/domain";
 import { AppError } from "../../lib/errors";
-import type { DiffDTO, DiffDetailDTO, DiffImpactDTO, DiffChangeDTO, ReviewQueueItemDTO, ReviewQueueStatsDTO } from "./diffs.types";
+import type {
+	DiffDTO,
+	DiffDetailDTO,
+	DiffImpactDTO,
+	DiffChangeDTO,
+	ReviewQueueItemDTO,
+	ReviewQueueStatsDTO,
+} from "./diffs.types";
 
 const ERROR_PREFIX = "DIFF";
 
@@ -25,7 +36,15 @@ class InMemoryStore {
 		createdAt: string;
 	}> = [];
 
-	private decisions: Map<string, Array<{ action: string; comment?: string; reviewerId: string; timestamp: string }>> = new Map();
+	private decisions: Map<
+		string,
+		Array<{
+			action: string;
+			comment?: string;
+			reviewerId: string;
+			timestamp: string;
+		}>
+	> = new Map();
 
 	add(diff: AccountingDiff): void {
 		this.diffs.push(diff);
@@ -34,7 +53,14 @@ class InMemoryStore {
 			diffId: diff.id,
 			title: diff.title,
 			type: diff.type,
-			priority: diff.impact.riskScore > 70 ? "critical" : diff.impact.riskScore > 50 ? "high" : diff.impact.riskScore > 30 ? "medium" : "low",
+			priority:
+				diff.impact.riskScore > 70
+					? "critical"
+					: diff.impact.riskScore > 50
+						? "high"
+						: diff.impact.riskScore > 30
+							? "medium"
+							: "low",
 			status: "pending",
 			clientName: "Empresa SAC",
 			period: "2026-06",
@@ -100,56 +126,95 @@ const demoDiff = AccountingDiff.create({
 	title: "Registro de compra F001-2841 — IGV crédito fiscal",
 	description: "Propuesta de asiento contable para factura no registrada",
 	changes: [
-		{ field: "Cuenta débito", before: "N/A (no registrado)", after: "60 Compras - S/ 1,000.00" },
-		{ field: "IGV", before: "N/A (no reconocido)", after: "4011 IGV - S/ 180.00" },
-		{ field: "Cuenta crédito", before: "N/A (sin pasivo)", after: "42 Proveedores - S/ 1,180.00" },
+		{
+			field: "Cuenta débito",
+			before: "N/A (no registrado)",
+			after: "60 Compras - S/ 1,000.00",
+		},
+		{
+			field: "IGV",
+			before: "N/A (no reconocido)",
+			after: "4011 IGV - S/ 180.00",
+		},
+		{
+			field: "Cuenta crédito",
+			before: "N/A (sin pasivo)",
+			after: "42 Proveedores - S/ 1,180.00",
+		},
 	],
-	impact: { taxImpact: { amount: 180, currency: "PEN", concept: "IGV crédito fiscal" }, riskScore: 25, confidence: 92 },
+	impact: {
+		taxImpact: { amount: 180, currency: "PEN", concept: "IGV crédito fiscal" },
+		riskScore: 25,
+		confidence: 92,
+	},
 	createdBy: "sire-agent",
 	evidenceIds: ["xml-001", "pdf-001", "cdr-001"],
 });
 store.add(demoDiff);
 
 export class DiffsService {
-	listDiffs(_companyId: string | undefined, filters?: { status?: string; type?: string; priority?: string }): { data: DiffDTO[]; total: number } {
+	listDiffs(
+		_companyId: string | undefined,
+		filters?: { status?: string; type?: string; priority?: string },
+	): { data: DiffDTO[]; total: number } {
 		let items = store.getAll().map((d) => this.toDTO(d));
-		if (filters?.status) items = items.filter((i) => i.status === filters.status);
+		if (filters?.status)
+			items = items.filter((i) => i.status === filters.status);
 		if (filters?.type) items = items.filter((i) => i.type === filters.type);
-		if (filters?.priority) items = items.filter((i) => i.priority === filters.priority);
+		if (filters?.priority)
+			items = items.filter((i) => i.priority === filters.priority);
 		return { data: items, total: items.length };
 	}
 
 	getDiff(_companyId: string | undefined, id: string): DiffDetailDTO {
 		const diff = store.getById(id);
-		if (!diff) throw new AppError(404, ErrorCodes.NOT_FOUND, `Diff not found: ${id}`);
+		if (!diff)
+			throw new AppError(404, ErrorCodes.NOT_FOUND, `Diff not found: ${id}`);
 		return this.toDetailDTO(diff);
 	}
 
-	approveDiff(_companyId: string | undefined, id: string): { success: boolean } {
+	approveDiff(
+		_companyId: string | undefined,
+		id: string,
+	): { success: boolean } {
 		const diff = store.getById(id);
-		if (!diff) throw new AppError(404, ErrorCodes.NOT_FOUND, `Diff not found: ${id}`);
+		if (!diff)
+			throw new AppError(404, ErrorCodes.NOT_FOUND, `Diff not found: ${id}`);
 		const updated = diff.approve("current-user");
 		store.update(id, updated);
 		return { success: true };
 	}
 
-	rejectDiff(_companyId: string | undefined, id: string, reason: string): { success: boolean } {
+	rejectDiff(
+		_companyId: string | undefined,
+		id: string,
+		reason: string,
+	): { success: boolean } {
 		const diff = store.getById(id);
-		if (!diff) throw new AppError(404, ErrorCodes.NOT_FOUND, `Diff not found: ${id}`);
+		if (!diff)
+			throw new AppError(404, ErrorCodes.NOT_FOUND, `Diff not found: ${id}`);
 		const updated = diff.reject("current-user", reason);
 		store.update(id, updated);
 		return { success: true };
 	}
 
-	requestInfo(_companyId: string | undefined, id: string, question: string): { success: boolean } {
+	requestInfo(
+		_companyId: string | undefined,
+		id: string,
+		question: string,
+	): { success: boolean } {
 		const diff = store.getById(id);
-		if (!diff) throw new AppError(404, ErrorCodes.NOT_FOUND, `Diff not found: ${id}`);
+		if (!diff)
+			throw new AppError(404, ErrorCodes.NOT_FOUND, `Diff not found: ${id}`);
 		const updated = diff.requestInfo(question);
 		store.update(id, updated);
 		return { success: true };
 	}
 
-	listQueue(_companyId: string | undefined, _filters?: Record<string, string>): { data: ReviewQueueItemDTO[] } {
+	listQueue(
+		_companyId: string | undefined,
+		_filters?: Record<string, string>,
+	): { data: ReviewQueueItemDTO[] } {
 		const items = store.getQueue().sort((a, b) => {
 			const order = { critical: 0, high: 1, medium: 2, low: 3 };
 			return (order[a.priority] ?? 99) - (order[b.priority] ?? 99);
@@ -161,7 +226,10 @@ export class DiffsService {
 		return store.getStats();
 	}
 
-	batchApprove(_companyId: string | undefined, ids: string[]): { approved: number; failed: number } {
+	batchApprove(
+		_companyId: string | undefined,
+		ids: string[],
+	): { approved: number; failed: number } {
 		let approved = 0;
 		let failed = 0;
 		for (const id of ids) {
