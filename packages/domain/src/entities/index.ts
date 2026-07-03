@@ -159,3 +159,15 @@ export type {
 	QueuePriority,
 	QueueStatus,
 } from "./review";
+// Skill entities
+export { Skill, SkillInstallation, createSkillId, skillIdFromString } from "./skill";
+export type {
+	SkillId,
+	SkillProps,
+	SkillCapability,
+	SkillCategory,
+	SkillStatus,
+	InstallationStatus,
+	SkillInstallationProps,
+} from "./skill";
+export { SKILL_CATEGORIES, SKILL_CATEGORY_LABELS, SKILL_STATUSES, INSTALLATION_STATUSES } from "./skill";

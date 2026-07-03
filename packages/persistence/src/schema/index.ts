@@ -156,6 +156,18 @@ export {
 	type WorkflowCategory,
 	type WorkflowStatus,
 } from "./automation-studio.schema";
+// --- SKILLS ---
+export {
+	skills,
+	skillsRelations,
+	skillCapabilities,
+	skillCapabilitiesRelations,
+	companySkills,
+	companySkillsRelations,
+	type SkillCategory,
+	type SkillStatus,
+	type InstallationStatus,
+} from "./skills.schema";
 export {
 	type AiCostEvent,
 	type AnomalyAlert,
