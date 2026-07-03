@@ -31,18 +31,19 @@ export async function approveDiff(id: string) {
 
 export async function rejectDiff(id: string, reason: string) {
 	return unwrap(
-		api.api.diffs({ id }).reject.post(
-			{ reason },
-			{ headers: getGovernanceAuditHeaders() },
-		),
+		api.api
+			.diffs({ id })
+			.reject.post({ reason }, { headers: getGovernanceAuditHeaders() }),
 	) as Promise<{ success: boolean }>;
 }
 
 export async function requestDiffInfo(id: string, question: string) {
 	return unwrap(
-		api.api.diffs({ id })["request-info"].post(
-			{ question },
-			{ headers: getGovernanceAuditHeaders() },
-		),
+		api.api
+			.diffs({ id })
+			["request-info"].post(
+				{ question },
+				{ headers: getGovernanceAuditHeaders() },
+			),
 	) as Promise<{ success: boolean }>;
 }

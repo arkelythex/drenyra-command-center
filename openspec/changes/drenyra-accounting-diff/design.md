@@ -125,8 +125,8 @@ El AccountingDiffView puede mostrar el diff en el RightInspector en lugar de pá
 
 **Estrategia:** auto-chain — 3 PRs
 
-| PR | Scope | Archivos | Líneas |
-|----|-------|----------|--------|
-| PR1 | Domain entities + persistence schemas + API endpoints + tests | ~14 | ~450 |
-| PR2 | Frontend diffs: AccountingDiffView + DiffProposalCard + DiffImpactPanel + DiffEvidencePanel + DiffActionBar | ~10 | ~400 |
-| PR3 | Frontend review-queue: ReviewQueuePage + ReviewQueueItem + filters + batch approve + timeline | ~8 | ~350 |
+| PR  | Scope                                                                                                       | Archivos | Líneas |
+| --- | ----------------------------------------------------------------------------------------------------------- | -------- | ------ |
+| PR1 | Domain entities + persistence schemas + API endpoints + tests                                               | ~14      | ~450   |
+| PR2 | Frontend diffs: AccountingDiffView + DiffProposalCard + DiffImpactPanel + DiffEvidencePanel + DiffActionBar | ~10      | ~400   |
+| PR3 | Frontend review-queue: ReviewQueuePage + ReviewQueueItem + filters + batch approve + timeline               | ~8       | ~350   |

@@ -151,7 +151,12 @@ export class AgentsService {
 
 		const riskValue = session.metadata.risk;
 		const riskLevel = typeof riskValue === "string" ? riskValue : undefined;
-		const risk: AgentSessionStatusDTO["risk"] = ["low", "medium", "high", "critical"].includes(riskLevel ?? "")
+		const risk: AgentSessionStatusDTO["risk"] = [
+			"low",
+			"medium",
+			"high",
+			"critical",
+		].includes(riskLevel ?? "")
 			? (riskLevel as AgentSessionStatusDTO["risk"])
 			: "low";
 
@@ -252,7 +257,10 @@ export class AgentsService {
 	/**
 	 * Get a single session by ID.
 	 */
-	getSession(_companyId: string | undefined, id: string): AgentSessionStatusDTO | null {
+	getSession(
+		_companyId: string | undefined,
+		id: string,
+	): AgentSessionStatusDTO | null {
 		const session = this.getSessionOrThrow(id);
 		return this.toDTO(session);
 	}
@@ -260,7 +268,10 @@ export class AgentsService {
 	/**
 	 * Get the timeline (steps) for a session.
 	 */
-	getTimeline(_companyId: string | undefined, id: string): AgentStepDTO[] | null {
+	getTimeline(
+		_companyId: string | undefined,
+		id: string,
+	): AgentStepDTO[] | null {
 		const session = this.getSessionOrThrow(id);
 		return session.steps.map(toStepDTO);
 	}
@@ -271,7 +282,10 @@ export class AgentsService {
 	 * The orchestrator SessionManager does not have a native pause/resume
 	 * concept, so we track it via metadata.
 	 */
-	pauseSession(_companyId: string | undefined, id: string): AgentSessionStatusDTO {
+	pauseSession(
+		_companyId: string | undefined,
+		id: string,
+	): AgentSessionStatusDTO {
 		const session = this.getSessionOrThrow(id);
 
 		if (session.status !== "active") {
@@ -297,7 +311,10 @@ export class AgentsService {
 	/**
 	 * Resume a paused session.
 	 */
-	resumeSession(_companyId: string | undefined, id: string): AgentSessionStatusDTO {
+	resumeSession(
+		_companyId: string | undefined,
+		id: string,
+	): AgentSessionStatusDTO {
 		const session = this.getSessionOrThrow(id);
 
 		const internalStatus = session.metadata.internalStatus as
@@ -325,7 +342,10 @@ export class AgentsService {
 	/**
 	 * Cancel a session (mark as failed with a cancellation note).
 	 */
-	cancelSession(_companyId: string | undefined, id: string): AgentSessionStatusDTO {
+	cancelSession(
+		_companyId: string | undefined,
+		id: string,
+	): AgentSessionStatusDTO {
 		const session = this.getSessionOrThrow(id);
 
 		if (session.status !== "active") {

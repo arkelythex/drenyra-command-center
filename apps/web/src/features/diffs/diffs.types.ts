@@ -1,4 +1,10 @@
-export type DiffType = "journalEntry" | "journalModify" | "taxImpact" | "reconciliation" | "compliance" | "risk";
+export type DiffType =
+	| "journalEntry"
+	| "journalModify"
+	| "taxImpact"
+	| "reconciliation"
+	| "compliance"
+	| "risk";
 export type DiffStatus = "pending" | "approved" | "rejected" | "info_requested";
 export type QueuePriority = "critical" | "high" | "medium" | "low";
 
@@ -34,7 +40,12 @@ export interface DiffDetailDTO extends DiffDTO {
 	reviewerId?: string;
 	rejectionReason?: string;
 	pendingQuestion?: string;
-	decisions: Array<{ action: string; comment?: string; reviewerId: string; timestamp: string }>;
+	decisions: Array<{
+		action: string;
+		comment?: string;
+		reviewerId: string;
+		timestamp: string;
+	}>;
 }
 
 export interface DiffFilters {

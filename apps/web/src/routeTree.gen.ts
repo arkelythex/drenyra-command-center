@@ -65,8 +65,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkspaceIndexRouteImport } from './routes/workspace/index'
 import { Route as ThreadsIndexRouteImport } from './routes/threads/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
+import { Route as ReviewQueueIndexRouteImport } from './routes/review-queue/index'
 import { Route as FirmIndexRouteImport } from './routes/firm/index'
 import { Route as DrenyraIndexRouteImport } from './routes/drenyra/index'
+import { Route as DiffsIndexRouteImport } from './routes/diffs/index'
 import { Route as ConfiguracionIndexRouteImport } from './routes/configuracion/index'
 import { Route as AgentsIndexRouteImport } from './routes/agents/index'
 import { Route as WorkspaceSystemAdminRouteImport } from './routes/workspace/system-admin'
@@ -420,6 +422,11 @@ const SettingsIndexRoute = SettingsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SettingsRoute,
 } as any)
+const ReviewQueueIndexRoute = ReviewQueueIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ReviewQueueRoute,
+} as any)
 const FirmIndexRoute = FirmIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -429,6 +436,11 @@ const DrenyraIndexRoute = DrenyraIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DrenyraRoute,
+} as any)
+const DiffsIndexRoute = DiffsIndexRouteImport.update({
+  id: '/diffs/',
+  path: '/diffs/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ConfiguracionIndexRoute = ConfiguracionIndexRouteImport.update({
   id: '/',
@@ -851,7 +863,7 @@ export interface FileRoutesByFullPath {
   '/reports': typeof ReportsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/review': typeof ReviewRoute
-  '/review-queue': typeof ReviewQueueRoute
+  '/review-queue': typeof ReviewQueueRouteWithChildren
   '/scanner': typeof ScannerRoute
   '/settings': typeof SettingsRouteWithChildren
   '/signup': typeof SignupRoute
@@ -928,8 +940,10 @@ export interface FileRoutesByFullPath {
   '/workspace/system-admin': typeof WorkspaceSystemAdminRoute
   '/agents/': typeof AgentsIndexRoute
   '/configuracion/': typeof ConfiguracionIndexRoute
+  '/diffs/': typeof DiffsIndexRoute
   '/drenyra/': typeof DrenyraIndexRoute
   '/firm/': typeof FirmIndexRoute
+  '/review-queue/': typeof ReviewQueueIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/threads/': typeof ThreadsIndexRoute
   '/workspace/': typeof WorkspaceIndexRoute
@@ -980,7 +994,6 @@ export interface FileRoutesByTo {
   '/reports': typeof ReportsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/review': typeof ReviewRoute
-  '/review-queue': typeof ReviewQueueRoute
   '/scanner': typeof ScannerRoute
   '/signup': typeof SignupRoute
   '/taxation': typeof TaxationRoute
@@ -1056,8 +1069,10 @@ export interface FileRoutesByTo {
   '/workspace/system-admin': typeof WorkspaceSystemAdminRoute
   '/agents': typeof AgentsIndexRoute
   '/configuracion': typeof ConfiguracionIndexRoute
+  '/diffs': typeof DiffsIndexRoute
   '/drenyra': typeof DrenyraIndexRoute
   '/firm': typeof FirmIndexRoute
+  '/review-queue': typeof ReviewQueueIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/threads': typeof ThreadsIndexRoute
   '/workspace': typeof WorkspaceIndexRoute
@@ -1112,7 +1127,7 @@ export interface FileRoutesById {
   '/reports': typeof ReportsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/review': typeof ReviewRoute
-  '/review-queue': typeof ReviewQueueRoute
+  '/review-queue': typeof ReviewQueueRouteWithChildren
   '/scanner': typeof ScannerRoute
   '/settings': typeof SettingsRouteWithChildren
   '/signup': typeof SignupRoute
@@ -1189,8 +1204,10 @@ export interface FileRoutesById {
   '/workspace/system-admin': typeof WorkspaceSystemAdminRoute
   '/agents/': typeof AgentsIndexRoute
   '/configuracion/': typeof ConfiguracionIndexRoute
+  '/diffs/': typeof DiffsIndexRoute
   '/drenyra/': typeof DrenyraIndexRoute
   '/firm/': typeof FirmIndexRoute
+  '/review-queue/': typeof ReviewQueueIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/threads/': typeof ThreadsIndexRoute
   '/workspace/': typeof WorkspaceIndexRoute
@@ -1323,8 +1340,10 @@ export interface FileRouteTypes {
     | '/workspace/system-admin'
     | '/agents/'
     | '/configuracion/'
+    | '/diffs/'
     | '/drenyra/'
     | '/firm/'
+    | '/review-queue/'
     | '/settings/'
     | '/threads/'
     | '/workspace/'
@@ -1375,7 +1394,6 @@ export interface FileRouteTypes {
     | '/reports'
     | '/reset-password'
     | '/review'
-    | '/review-queue'
     | '/scanner'
     | '/signup'
     | '/taxation'
@@ -1451,8 +1469,10 @@ export interface FileRouteTypes {
     | '/workspace/system-admin'
     | '/agents'
     | '/configuracion'
+    | '/diffs'
     | '/drenyra'
     | '/firm'
+    | '/review-queue'
     | '/settings'
     | '/threads'
     | '/workspace'
@@ -1583,8 +1603,10 @@ export interface FileRouteTypes {
     | '/workspace/system-admin'
     | '/agents/'
     | '/configuracion/'
+    | '/diffs/'
     | '/drenyra/'
     | '/firm/'
+    | '/review-queue/'
     | '/settings/'
     | '/threads/'
     | '/workspace/'
@@ -1639,7 +1661,7 @@ export interface RootRouteChildren {
   ReportsRoute: typeof ReportsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ReviewRoute: typeof ReviewRoute
-  ReviewQueueRoute: typeof ReviewQueueRoute
+  ReviewQueueRoute: typeof ReviewQueueRouteWithChildren
   ScannerRoute: typeof ScannerRoute
   SettingsRoute: typeof SettingsRouteWithChildren
   SignupRoute: typeof SignupRoute
@@ -1685,6 +1707,7 @@ export interface RootRouteChildren {
   WorkspaceOperationsRoute: typeof WorkspaceOperationsRoute
   WorkspaceSystemAdminRoute: typeof WorkspaceSystemAdminRoute
   AgentsIndexRoute: typeof AgentsIndexRoute
+  DiffsIndexRoute: typeof DiffsIndexRoute
   ThreadsIndexRoute: typeof ThreadsIndexRoute
   WorkspaceIndexRoute: typeof WorkspaceIndexRoute
   OperacionesEconomicGroupsGroupIdRoute: typeof OperacionesEconomicGroupsGroupIdRoute
@@ -2084,6 +2107,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsIndexRouteImport
       parentRoute: typeof SettingsRoute
     }
+    '/review-queue/': {
+      id: '/review-queue/'
+      path: '/'
+      fullPath: '/review-queue/'
+      preLoaderRoute: typeof ReviewQueueIndexRouteImport
+      parentRoute: typeof ReviewQueueRoute
+    }
     '/firm/': {
       id: '/firm/'
       path: '/'
@@ -2097,6 +2127,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/drenyra/'
       preLoaderRoute: typeof DrenyraIndexRouteImport
       parentRoute: typeof DrenyraRoute
+    }
+    '/diffs/': {
+      id: '/diffs/'
+      path: '/diffs'
+      fullPath: '/diffs/'
+      preLoaderRoute: typeof DiffsIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/configuracion/': {
       id: '/configuracion/'
@@ -2718,6 +2755,18 @@ const OnboardingRouteWithChildren = OnboardingRoute._addFileChildren(
   OnboardingRouteChildren,
 )
 
+interface ReviewQueueRouteChildren {
+  ReviewQueueIndexRoute: typeof ReviewQueueIndexRoute
+}
+
+const ReviewQueueRouteChildren: ReviewQueueRouteChildren = {
+  ReviewQueueIndexRoute: ReviewQueueIndexRoute,
+}
+
+const ReviewQueueRouteWithChildren = ReviewQueueRoute._addFileChildren(
+  ReviewQueueRouteChildren,
+)
+
 interface SettingsRouteChildren {
   SettingsAppearanceRoute: typeof SettingsAppearanceRoute
   SettingsBillingRoute: typeof SettingsBillingRoute
@@ -2789,7 +2838,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReportsRoute: ReportsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ReviewRoute: ReviewRoute,
-  ReviewQueueRoute: ReviewQueueRoute,
+  ReviewQueueRoute: ReviewQueueRouteWithChildren,
   ScannerRoute: ScannerRoute,
   SettingsRoute: SettingsRouteWithChildren,
   SignupRoute: SignupRoute,
@@ -2835,6 +2884,7 @@ const rootRouteChildren: RootRouteChildren = {
   WorkspaceOperationsRoute: WorkspaceOperationsRoute,
   WorkspaceSystemAdminRoute: WorkspaceSystemAdminRoute,
   AgentsIndexRoute: AgentsIndexRoute,
+  DiffsIndexRoute: DiffsIndexRoute,
   ThreadsIndexRoute: ThreadsIndexRoute,
   WorkspaceIndexRoute: WorkspaceIndexRoute,
   OperacionesEconomicGroupsGroupIdRoute: OperacionesEconomicGroupsGroupIdRoute,

@@ -16,7 +16,10 @@ const DIFF_STATUS_CONFIG: Record<string, { color: string; label: string }> = {
 	pending: { color: "text-[var(--color-warning)]", label: "Pendiente" },
 	approved: { color: "text-[var(--color-success)]", label: "Aprobado" },
 	rejected: { color: "text-[var(--color-danger)]", label: "Rechazado" },
-	info_requested: { color: "text-[var(--color-warning)]", label: "Info requerida" },
+	info_requested: {
+		color: "text-[var(--color-warning)]",
+		label: "Info requerida",
+	},
 };
 
 export function AccountingDiffView() {
@@ -79,8 +82,13 @@ function DiffContent({ diff }: { diff: DiffDetailDTO }) {
 						Antes
 					</h3>
 					{diff.changes.map((change, i) => (
-						<div key={i} className="mb-2 rounded-lg bg-white/50 p-2 text-sm text-[var(--text-secondary)] line-through">
-							<div className="text-xs text-[var(--text-tertiary)]">{change.field}</div>
+						<div
+							key={i}
+							className="mb-2 rounded-lg bg-white/50 p-2 text-sm text-[var(--text-secondary)] line-through"
+						>
+							<div className="text-xs text-[var(--text-tertiary)]">
+								{change.field}
+							</div>
 							<div>{String(change.before)}</div>
 						</div>
 					))}
@@ -90,8 +98,13 @@ function DiffContent({ diff }: { diff: DiffDetailDTO }) {
 						Después
 					</h3>
 					{diff.changes.map((change, i) => (
-						<div key={i} className="mb-2 rounded-lg bg-white/50 p-2 text-sm text-[var(--text-primary)]">
-							<div className="text-xs text-[var(--text-tertiary)]">{change.field}</div>
+						<div
+							key={i}
+							className="mb-2 rounded-lg bg-white/50 p-2 text-sm text-[var(--text-primary)]"
+						>
+							<div className="text-xs text-[var(--text-tertiary)]">
+								{change.field}
+							</div>
 							<div>{String(change.after)}</div>
 						</div>
 					))}
@@ -106,7 +119,9 @@ function DiffContent({ diff }: { diff: DiffDetailDTO }) {
 					</h3>
 					{diff.impact.taxImpact && (
 						<div className="mb-2 text-sm">
-							<span className="text-[var(--text-secondary)]">{diff.impact.taxImpact.concept}: </span>
+							<span className="text-[var(--text-secondary)]">
+								{diff.impact.taxImpact.concept}:{" "}
+							</span>
 							<span className="font-medium text-[var(--text-primary)]">
 								{diff.impact.taxImpact.currency === "PEN" ? "S/" : "$"}
 								{diff.impact.taxImpact.amount.toLocaleString()}
@@ -114,8 +129,12 @@ function DiffContent({ diff }: { diff: DiffDetailDTO }) {
 						</div>
 					)}
 					<div className="flex gap-4 text-sm">
-						<span className="text-[var(--text-secondary)]">Riesgo: {diff.impact.riskScore}%</span>
-						<span className="text-[var(--text-secondary)]">Confianza: {diff.impact.confidence}%</span>
+						<span className="text-[var(--text-secondary)]">
+							Riesgo: {diff.impact.riskScore}%
+						</span>
+						<span className="text-[var(--text-secondary)]">
+							Confianza: {diff.impact.confidence}%
+						</span>
 					</div>
 				</div>
 			)}
@@ -128,7 +147,10 @@ function DiffContent({ diff }: { diff: DiffDetailDTO }) {
 					</h3>
 					<div className="flex flex-wrap gap-2">
 						{diff.evidenceIds.map((id) => (
-							<span key={id} className="rounded-lg bg-[var(--surface-1)] px-2.5 py-1 text-xs text-[var(--text-secondary)]">
+							<span
+								key={id}
+								className="rounded-lg bg-[var(--surface-1)] px-2.5 py-1 text-xs text-[var(--text-secondary)]"
+							>
 								{id}
 							</span>
 						))}
@@ -144,10 +166,16 @@ function DiffContent({ diff }: { diff: DiffDetailDTO }) {
 					</h3>
 					{diff.decisions.map((d, i) => (
 						<div key={i} className="mb-2 text-sm">
-							<span className="font-medium text-[var(--text-primary)]">{d.action}</span>
+							<span className="font-medium text-[var(--text-primary)]">
+								{d.action}
+							</span>
 							<span className="mx-1 text-[var(--text-tertiary)]">·</span>
-							<span className="text-[var(--text-secondary)]">{d.reviewerId}</span>
-							{d.comment && <p className="text-[var(--text-tertiary)]">{d.comment}</p>}
+							<span className="text-[var(--text-secondary)]">
+								{d.reviewerId}
+							</span>
+							{d.comment && (
+								<p className="text-[var(--text-tertiary)]">{d.comment}</p>
+							)}
 						</div>
 					))}
 				</div>

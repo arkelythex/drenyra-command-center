@@ -2,15 +2,27 @@ import { useQuery } from "@tanstack/react-query";
 import { listQueue, getQueueStats } from "./review-queue.api";
 import type { ReviewQueueItemDTO } from "./review-queue.types";
 
-const PRIORITY_ORDER: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
-const PRIORITY_LABELS: Record<string, string> = { critical: "CRÍTICA", high: "ALTA", medium: "MEDIA", low: "BAJA" };
+const PRIORITY_ORDER: Record<string, number> = {
+	critical: 0,
+	high: 1,
+	medium: 2,
+	low: 3,
+};
+const PRIORITY_LABELS: Record<string, string> = {
+	critical: "CRÍTICA",
+	high: "ALTA",
+	medium: "MEDIA",
+	low: "BAJA",
+};
 
 function ReviewQueueItem({ item }: { item: ReviewQueueItemDTO }) {
 	return (
 		<div className="flex items-start gap-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-4 transition-colors hover:border-[var(--color-primary)]/30">
 			<div className="flex-1 min-w-0">
 				<div className="mb-1 flex items-center gap-2">
-					<span className="text-sm font-medium text-[var(--text-primary)] truncate">{item.title}</span>
+					<span className="text-sm font-medium text-[var(--text-primary)] truncate">
+						{item.title}
+					</span>
 					{item.riskScore > 70 && (
 						<span className="shrink-0 rounded-full bg-[var(--color-danger)]/10 px-2 py-0.5 text-[10px] font-medium text-[var(--color-danger)]">
 							{item.riskScore}% riesgo
@@ -59,7 +71,9 @@ export function ReviewQueuePage() {
 		<div className="flex h-full flex-col overflow-auto p-4 sm:p-6 lg:p-8">
 			{/* Header + Stats */}
 			<div className="mb-6">
-				<h1 className="text-xl font-bold text-[var(--text-primary)]">Cola de Revisión</h1>
+				<h1 className="text-xl font-bold text-[var(--text-primary)]">
+					Cola de Revisión
+				</h1>
 				{stats && (
 					<div className="mt-3 flex gap-3 text-xs">
 						<span className="rounded-lg bg-[var(--surface-2)] px-2.5 py-1 text-[var(--text-secondary)]">
