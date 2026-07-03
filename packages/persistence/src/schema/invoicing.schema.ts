@@ -19,6 +19,7 @@ import { businessPartners } from "./business-partners.schema";
 import { companies } from "./core.schema";
 import {
 	currencyEnum,
+	fiscalStatusEnum,
 	invoiceStatusEnum,
 	sunatStatusEnum,
 	taxTypeEnum,
@@ -38,6 +39,10 @@ export const invoices = pgTable(
 			.notNull(),
 
 		invoiceNumber: varchar("invoice_number", { length: 50 }).notNull(),
+
+		// Generic buyer tax ID (country-agnostic)
+		buyerTaxId: varchar("buyer_tax_id", { length: 20 }),
+		buyerTaxType: varchar("buyer_tax_type", { length: 10 }),
 		series: varchar("series", { length: 10 }).notNull(),
 		correlative: integer("correlative").notNull(),
 
@@ -51,9 +56,17 @@ export const invoices = pgTable(
 
 		subtotal: decimal("subtotal", { precision: 12, scale: 2 }).notNull(),
 		igvAmount: decimal("igv_amount", { precision: 12, scale: 2 }).notNull(),
+
+		// Generic tax amount (IGV in PE, IVA in MX/AR, VAT in CL)
+		taxAmount: decimal("tax_amount", { precision: 12, scale: 2 }),
+
 		totalAmount: decimal("total_amount", { precision: 12, scale: 2 }).notNull(),
 
 		status: invoiceStatusEnum("status").default("DRAFT").notNull(),
+
+		// Generic fiscal lifecycle status
+		fiscalStatus: fiscalStatusEnum("fiscal_status").default("DRAFT"),
+
 		sunatStatus: sunatStatusEnum("sunat_status").default("DRAFT"),
 
 		paidAmount: decimal("paid_amount", { precision: 12, scale: 2 })

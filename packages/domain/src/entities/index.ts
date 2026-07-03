@@ -90,7 +90,12 @@ export {
 	type EvidenceStatus,
 	type EvidenceType,
 } from "./evidence";
-export { Invoice, type InvoiceProps, type InvoiceStatus } from "./Invoice";
+export {
+	Invoice,
+	type FiscalStatus,
+	type InvoiceProps,
+	type InvoiceStatus,
+} from "./Invoice";
 export {
 	JournalEntry,
 	type JournalEntryProps,

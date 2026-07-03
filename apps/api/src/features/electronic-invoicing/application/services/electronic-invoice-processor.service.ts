@@ -9,7 +9,7 @@
 
 import { CPE_COMPLIANCE_INCIDENT_RUNBOOK } from "../../../../lib/compliance-runbooks";
 import { createLogger } from "../../../../lib/logger";
-import { OSEService } from "../../../../services/ose.service";
+import { getTaxAuthority } from "../../../../lib/tax-authority-provider";
 import { signXml, loadCertificateFromPfx } from "../../../../features/sunat";
 import type {
 	ElectronicInvoiceData,
@@ -121,20 +121,24 @@ export class ElectronicInvoiceProcessorService {
 
 			logger.info(
 				{ transactionId: data.transactionId },
-				"Submitting invoice to OSE",
+				"Submitting invoice to tax authority",
 			);
-			const oseResult = await OSEService.sendInvoice({
+			const taxAuthority = await getTaxAuthority(data.companyId, "PE");
+			const submissionResult = await taxAuthority.sendInvoice({
 				xmlContent: signedXML,
 				invoiceNumber: data.invoiceNumber,
 				invoiceType: data.invoiceType,
+				countryCode: "PE" as const,
+				issuerTaxId: "", // Resolved from company data in a future iteration
 			});
+			const oseResult = mapSubmissionToOseResult(submissionResult);
 			await CpeLifecycleService.appendEvent(data.transactionId, {
 				stage: "OSE_SUBMISSION",
 				status: oseResult.success ? "SENT" : "ERROR",
 				source: "SYSTEM",
 				message: oseResult.success
-					? "Comprobante enviado a OSE para procesamiento SUNAT"
-					: (oseResult.error ?? "No se pudo enviar comprobante a OSE"),
+					? "Comprobante enviado para procesamiento"
+					: (oseResult.error ?? "No se pudo enviar comprobante"),
 			});
 
 			const result = await CdrProcessorService.processResponse(
@@ -203,4 +207,39 @@ export class ElectronicInvoiceProcessorService {
 			};
 		}
 	}
+}
+
+/**
+ * Map TaxAuthorityPort.InvoiceSubmissionResult to the expected OSE result format
+ * used by CdrProcessorService.
+ */
+function mapSubmissionToOseResult(
+	result: import("@arkelythex/application/ports/tax-authority.types").InvoiceSubmissionResult,
+): {
+	success: boolean;
+	cdrContent?: string;
+	cdrStatus?: "ACEPTADO" | "RECHAZADO" | "OBSERVADO";
+	cdrMessage?: string;
+	sunatCode?: string;
+	sunatDescription?: string;
+	error?: string;
+} {
+	const cdrStatusMap: Record<
+		string,
+		"ACEPTADO" | "RECHAZADO" | "OBSERVADO" | undefined
+	> = {
+		ACCEPTED: "ACEPTADO",
+		REJECTED: "RECHAZADO",
+		OBSERVED: "OBSERVADO",
+	};
+
+	return {
+		success: result.success,
+		cdrContent: result.cdr?.rawContent,
+		cdrStatus: result.cdr ? cdrStatusMap[result.cdr.status] : undefined,
+		cdrMessage: result.cdr?.message,
+		sunatCode: result.authorityCode,
+		sunatDescription: result.authorityDescription,
+		error: result.error,
+	};
 }

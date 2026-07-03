@@ -17,6 +17,7 @@ import { Money, type Currency } from "@arkelythex/domain/value-objects/Money";
 import { RUC } from "@arkelythex/domain/value-objects/RUC";
 import { DNI } from "@arkelythex/domain/value-objects/DNI";
 import { DocumentSeries } from "@arkelythex/domain/value-objects/DocumentSeries";
+import type { TaxIdentifier } from "@arkelythex/domain";
 import { BaseBuilder } from "./base.builder";
 
 const DEFAULT_INVOICE_ID = "inv_test_001";
@@ -27,32 +28,38 @@ const DEFAULT_NUMBER = 1;
 const DEFAULT_CURRENCY: Currency = "PEN";
 
 export class InvoiceBuilder extends BaseBuilder<InvoiceProps, Invoice> {
-	private itemCount = 0;
+private itemCount = 0;
 
-	constructor() {
-		const yesterday = new Date();
-		yesterday.setDate(yesterday.getDate() - 1);
+constructor() {
+const yesterday = new Date();
+yesterday.setDate(yesterday.getDate() - 1);
 
-		const baseAmount = Money.fromAmount(1000, DEFAULT_CURRENCY);
-		const igvAmount = baseAmount.multiply(0.18);
-		const totalAmount = baseAmount.add(igvAmount);
+const baseAmount = Money.fromAmount(1000, DEFAULT_CURRENCY);
+const igvAmount = baseAmount.multiply(0.18);
+const taxAmount = igvAmount; // Same as IGV in PE (generic field)
+const totalAmount = baseAmount.add(igvAmount);
 
-		super({
-			id: DEFAULT_INVOICE_ID,
-			series: DocumentSeries.create(DEFAULT_SERIES),
-			number: DEFAULT_NUMBER,
-			issueDate: yesterday,
-			clientName: DEFAULT_CLIENT_NAME,
-			clientRUC: RUC.create(DEFAULT_RUC),
-			baseAmount,
-			igvAmount,
-			totalAmount,
-			status: "DRAFT",
-			items: [],
-			createdAt: yesterday,
-			updatedAt: yesterday,
-		});
-	}
+const buyerRuc = RUC.create(DEFAULT_RUC);
+
+super({
+id: DEFAULT_INVOICE_ID,
+series: DocumentSeries.create(DEFAULT_SERIES),
+number: DEFAULT_NUMBER,
+issueDate: yesterday,
+clientName: DEFAULT_CLIENT_NAME,
+buyerTaxId: buyerRuc,
+clientRUC: buyerRuc,
+baseAmount,
+taxAmount,
+igvAmount,
+totalAmount,
+status: "DRAFT",
+fiscalStatus: "DRAFT",
+items: [],
+createdAt: yesterday,
+updatedAt: yesterday,
+});
+}
 
 	/**
 	 * Set a custom invoice ID.
@@ -62,17 +69,35 @@ export class InvoiceBuilder extends BaseBuilder<InvoiceProps, Invoice> {
 	}
 
 	/**
-	 * Set the client RUC. For facturas (series F), this is mandatory.
+	 * Set the buyer tax ID (generic, country-agnostic).
+	 * Also sets clientRUC/clientDNI for backward compatibility.
 	 */
-	withClientRUC(ruc: string): this {
-		return this.set({ clientRUC: RUC.create(ruc) });
+	withBuyerTaxId(taxId: TaxIdentifier): this {
+		const updates: Partial<InvoiceProps> = { buyerTaxId: taxId };
+
+		if (taxId.type === "RUC") {
+			updates.clientRUC = taxId as unknown as RUC;
+		} else if (taxId.type === "DNI") {
+			updates.clientDNI = taxId as unknown as DNI;
+		}
+
+		return this.set(updates);
 	}
 
 	/**
-	 * Set the client DNI.
+	 * Set the client RUC. Also sets buyerTaxId for forward compatibility.
+	 */
+	withClientRUC(ruc: string): this {
+		const rucObj = RUC.create(ruc);
+		return this.set({ clientRUC: rucObj, buyerTaxId: rucObj });
+	}
+
+	/**
+	 * Set the client DNI. Also sets buyerTaxId for forward compatibility.
 	 */
 	withClientDNI(dni: string): this {
-		return this.set({ clientDNI: DNI.create(dni) });
+		const dniObj = DNI.create(dni);
+		return this.set({ clientDNI: dniObj, buyerTaxId: dniObj });
 	}
 
 	/**
@@ -111,21 +136,51 @@ export class InvoiceBuilder extends BaseBuilder<InvoiceProps, Invoice> {
 	}
 
 	/**
-	 * Set the invoice status.
+	 * Set the invoice status. Also sets fiscalStatus for forward compatibility.
 	 */
 	withStatus(status: InvoiceProps["status"]): this {
-		return this.set({ status });
+		const fiscalStatusMap: Record<string, InvoiceProps["fiscalStatus"]> = {
+			DRAFT: "DRAFT",
+			PENDING: "PENDING_REVIEW",
+			SENT: "SUBMITTED",
+			ACCEPTED: "ACCEPTED",
+			REJECTED: "REJECTED",
+			CANCELLED: "CANCELLED",
+		};
+		return this.set({
+			status,
+			fiscalStatus: fiscalStatusMap[status] ?? "DRAFT",
+		});
+	}
+
+	/**
+	 * Set the generic fiscal lifecycle status.
+	 */
+	withFiscalStatus(fiscalStatus: NonNullable<InvoiceProps["fiscalStatus"]>): this {
+		return this.set({ fiscalStatus });
 	}
 
 	/**
 	 * Set the base amount (subtotal before IGV).
-	 * Automatically recalculates IGV and total.
+	 * Automatically recalculates IGV/tax and total.
 	 */
 	withBaseAmount(amount: number, currency: Currency = DEFAULT_CURRENCY): this {
 		const baseAmount = Money.fromAmount(amount, currency);
 		const igvAmount = baseAmount.multiply(0.18);
 		const totalAmount = baseAmount.add(igvAmount);
-		return this.set({ baseAmount, igvAmount, totalAmount });
+		return this.set({
+			baseAmount,
+			igvAmount,
+			taxAmount: igvAmount,
+			totalAmount,
+		});
+	}
+
+	/**
+	 * Set the generic tax amount (IGV in PE, IVA in MX/AR, VAT in CL).
+	 */
+	withTaxAmount(amount: Money): this {
+		return this.set({ taxAmount: amount });
 	}
 
 	/**

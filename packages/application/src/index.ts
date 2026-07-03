@@ -10,9 +10,10 @@ export * from "./dtos/ai-control-plane/contracts.dto";
 export * from "./ports/storage.port";
 export * from "./ports/ai-provider.port";
 export * from "./ports/document-processing.port";
+export * from "./ports/tax-authority.port";
+export * from "./ports/tax-authority.types";
 
 // ─── Services ──────────────────────────────────────────────────────
-export * from "./services/FinancialReportsService";
 export * from "./services/fiscal-memory.service";
 export * from "./services/recurring-error.service";
 
