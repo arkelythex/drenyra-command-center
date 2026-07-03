@@ -303,6 +303,11 @@ export {
 	evidenceStatusEnum,
 	evidenceTypeEnum,
 } from "./evidence.schema";
+// --- EVIDENCE LINKS ---
+export {
+	evidenceLinks,
+	evidenceLinksRelations,
+} from "./evidence-links.schema";
 export {
 	evidenceEdges,
 	evidenceEdgesRelations,
