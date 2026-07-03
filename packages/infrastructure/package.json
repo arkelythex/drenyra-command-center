@@ -59,6 +59,7 @@
     "./services/sunat-knowledge/sunat-knowledge.types": "./src/services/sunat-knowledge/sunat-knowledge.types.ts",
     "./tax-authority": "./src/tax-authority/index.ts",
 		"./tax-authority/sunat-tax-authority.adapter": "./src/tax-authority/sunat-tax-authority.adapter.ts",
+		"./reconciliation": "./src/reconciliation/index.ts",
 		"./services/swarm-consensus": "./src/services/swarm-consensus/index.ts",
     "./services/swarm-consensus/consensus-engine": "./src/services/swarm-consensus/consensus-engine.ts",
     "./services/swarm-consensus/types": "./src/services/swarm-consensus/types.ts",
