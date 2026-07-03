@@ -10,6 +10,8 @@ import {
 	Download,
 	FileText,
 	Search,
+	Play,
+	AlertCircle,
 } from "lucide-react";
 import type { PaletteCommand, CommandCategory } from "./CommandPalette.types";
 
@@ -127,8 +129,37 @@ export const COMMAND_PALETTE_COMMANDS: PaletteCommand[] = [
 
 	// ─── AGENTS ───
 	{
+		id: "agent-nightly-run",
+		label: "Fiscal Agent — Ejecutar nightly run",
+		description: "Ejecutar pipeline nocturno de categorización y reconciliación",
+		icon: Play,
+		category: "agent",
+		action: () => {
+			fetch("/api/fiscal-agent/run", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					organizationId: 1,
+					companyId: "default",
+					period: new Date().toISOString().slice(0, 7).replace("-", ""),
+					countryCode: "PE",
+				}),
+			});
+		},
+		keywords: ["fiscal", "nightly", "run", "agente", "pipeline"],
+	},
+	{
+		id: "agent-health",
+		label: "Fiscal Health — Ver score actual",
+		description: "Mostrar salud fiscal y excepciones activas",
+		icon: AlertCircle,
+		category: "agent",
+		action: () => {},
+		keywords: ["health", "salud", "fiscal", "score", "riesgo"],
+	},
+	{
 		id: "agent-sire",
-		label: "SIRE Agent — Andrés Capital SAC",
+		label: "SIRE Agent — Validar compras",
 		description: "Validar SIRE compras del periodo activo",
 		icon: Search,
 		category: "agent",
@@ -136,22 +167,13 @@ export const COMMAND_PALETTE_COMMANDS: PaletteCommand[] = [
 		keywords: ["sire", "agente", "compras", "validar"],
 	},
 	{
-		id: "agent-reconcile",
-		label: "Reconciliation Agent — Nova SAC",
-		description: "Conciliar movimientos bancarios",
-		icon: Search,
+		id: "agent-anomalies",
+		label: "Anomaly Detector — Revisar anomalías",
+		description: "Detectar IGV anómalo, duplicación de vendors, montos circulares",
+		icon: AlertCircle,
 		category: "agent",
 		action: () => {},
-		keywords: ["reconcile", "conciliar", "banco"],
-	},
-	{
-		id: "agent-risk",
-		label: "Tax Risk Agent — Luna EIRL",
-		description: "Revisar riesgos fiscales",
-		icon: Search,
-		category: "agent",
-		action: () => {},
-		keywords: ["risk", "riesgo", "fiscal", "auditoria"],
+		keywords: ["anomaly", "anomalía", "igv", "duplicado", "detectar"],
 	},
 ];
 

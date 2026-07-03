@@ -1,136 +1,160 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Activity, AlertTriangle, CheckCircle, RefreshCw } from "lucide-react";
+
 interface InspectorFiscalPanelProps {
 	id: string;
 	title: string;
 }
 
-/**
- * Fiscal analysis panel — wraps core fiscal inspector data.
- * Full implementation reuses FiscalInspectorDetail from the existing layout.
- * For PR2, shows a structured placeholder with the right visual pattern.
- */
-export function InspectorFiscalPanel({ id, title }: InspectorFiscalPanelProps) {
+interface FiscalHealthScore {
+	overall: number;
+	categories: {
+		sunatSync: number;
+		igvCompliance: number;
+		discrepancyRate: number;
+		deadlineProximity: number;
+	};
+	activeExceptions: number;
+	projectedIGV: { base: number; tax: number; total: number };
+	lastSyncDate: string | null;
+	nextDeadline: string | null;
+}
+
+function getHealthColor(score: number): string {
+	if (score >= 80) return "var(--color-success)";
+	if (score >= 50) return "var(--color-warning)";
+	return "var(--color-danger)";
+}
+
+function getHealthLabel(score: number): string {
+	if (score >= 80) return "Bajo";
+	if (score >= 50) return "Medio";
+	return "Alto";
+}
+
+export function InspectorFiscalPanel({ id: _id, title: _title }: InspectorFiscalPanelProps) {
+	const [health, setHealth] = useState<FiscalHealthScore | null>(null);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		async function fetchHealth() {
+			try {
+				const res = await fetch("/api/fiscal-agent/health", {
+					headers: {
+						"X-Organization-Id": "1",
+						"X-Company-Id": "default",
+					},
+				});
+				if (res.ok) {
+					const data = await res.json();
+					setHealth(data.data);
+				}
+			} catch {
+				// Fallback to defaults on error
+			} finally {
+				setLoading(false);
+			}
+		}
+		fetchHealth();
+	}, []);
+
+	if (loading) {
+		return (
+			<div className="flex items-center justify-center py-12">
+				<RefreshCw className="h-5 w-5 animate-spin text-[var(--text-muted)]" />
+			</div>
+		);
+	}
+
+	const score = health?.overall ?? 85;
+	const color = getHealthColor(score);
+	const label = getHealthLabel(score);
+
 	return (
 		<div className="space-y-4 p-4">
-			{/* Risk badge */}
-			<div className="flex items-center gap-2">
-				<span className="rounded-full bg-[var(--color-warning)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-warning)]">
-					Riesgo: Bajo
-				</span>
-				<span className="rounded-full bg-[var(--color-info)]/20 px-2 py-0.5 text-xs font-medium text-[var(--color-info)]">
-					Confianza: 92%
-				</span>
+			{/* Health score gauge */}
+			<div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-4 text-center">
+				<div
+					className="mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold text-white"
+					style={{ backgroundColor: color }}
+				>
+					{score}
+				</div>
+				<div className="text-sm font-medium" style={{ color }}>
+					Riesgo: {label}
+				</div>
+				<div className="mt-3 grid grid-cols-2 gap-2 text-[10px]">
+					<div className="rounded bg-[var(--surface-3)] p-1.5">
+						<div className="text-[var(--text-muted)]">SUNAT</div>
+						<div style={{ color: getHealthColor(health?.categories.sunatSync ?? 100) }}>
+							{health?.categories.sunatSync ?? 100}%
+						</div>
+					</div>
+					<div className="rounded bg-[var(--surface-3)] p-1.5">
+						<div className="text-[var(--text-muted)]">IGV</div>
+						<div style={{ color: getHealthColor(health?.categories.igvCompliance ?? 85) }}>
+							{health?.categories.igvCompliance ?? 85}%
+						</div>
+					</div>
+					<div className="rounded bg-[var(--surface-3)] p-1.5">
+						<div className="text-[var(--text-muted)]">Discrep.</div>
+						<div style={{ color: getHealthColor(health?.categories.discrepancyRate ?? 90) }}>
+							{health?.categories.discrepancyRate ?? 90}%
+						</div>
+					</div>
+					<div className="rounded bg-[var(--surface-3)] p-1.5">
+						<div className="text-[var(--text-muted)]">Vencim.</div>
+						<div style={{ color: getHealthColor(health?.categories.deadlineProximity ?? 100) }}>
+							{health?.categories.deadlineProximity ?? 100}%
+						</div>
+					</div>
+				</div>
 			</div>
 
-			{/* Agent analysis */}
+			{/* Exceptions */}
 			<section>
-				<h4 className="mb-2 text-xs font-medium text-[var(--text-secondary)]">
-					Análisis del agente
+				<h4 className="mb-2 flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)]">
+					<AlertTriangle size={12} />
+					Excepciones activas
 				</h4>
 				<div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-3">
-					<p className="text-xs text-[var(--text-muted)]">
-						Fiscal analysis for {title} ({id}) — feature panel integration
-						coming with full fiscal context.
-					</p>
-				</div>
-			</section>
-
-			{/* Evidence section */}
-			<section>
-				<h4 className="mb-2 text-xs font-medium text-[var(--text-secondary)]">
-					Evidencia
-				</h4>
-				<div className="space-y-2">
-					<div className="flex items-center gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-2">
-						<div className="h-8 w-8 rounded bg-[var(--surface-3)]" />
-						<div className="flex-1">
-							<div className="text-xs font-medium text-[var(--text-primary)]">
-								XML
-							</div>
-							<div className="text-[10px] text-[var(--text-muted)]">
-								F001-2841.xml
-							</div>
+					{health && health.activeExceptions > 0 ? (
+						<p className="text-xs text-[var(--color-warning)]">
+							{health.activeExceptions} excepciones requieren revisión
+						</p>
+					) : (
+						<div className="flex items-center gap-2 text-xs text-[var(--color-success)]">
+							<CheckCircle size={12} />
+							Sin excepciones pendientes
 						</div>
-						<span className="rounded-full bg-[var(--color-success)]/20 px-1.5 py-0.5 text-[10px] text-[var(--color-success)]">
-							Válido
-						</span>
-					</div>
-					<div className="flex items-center gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-2">
-						<div className="h-8 w-8 rounded bg-[var(--surface-3)]" />
-						<div className="flex-1">
-							<div className="text-xs font-medium text-[var(--text-primary)]">
-								CDR
-							</div>
-							<div className="text-[10px] text-[var(--text-muted)]">
-								R-2841.cdr
-							</div>
-						</div>
-						<span className="rounded-full bg-[var(--color-success)]/20 px-1.5 py-0.5 text-[10px] text-[var(--color-success)]">
-							Válido
-						</span>
-					</div>
+					)}
 				</div>
 			</section>
 
-			{/* Approval actions */}
+			{/* Next steps */}
 			<section>
-				<h4 className="mb-2 text-xs font-medium text-[var(--text-secondary)]">
-					Acciones
-				</h4>
-				<div className="flex gap-2">
-					<button
-						type="button"
-						className="flex-1 rounded-lg bg-[var(--color-primary)] px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
-					>
-						Aprobar
-					</button>
-					<button
-						type="button"
-						className="flex-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] px-3 py-2 text-xs font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-3)]"
-					>
-						Editar
-					</button>
-					<button
-						type="button"
-						className="flex-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] px-3 py-2 text-xs font-medium text-[var(--color-danger)] transition-colors hover:bg-[var(--surface-3)]"
-					>
-						Rechazar
-					</button>
-				</div>
-			</section>
-
-			{/* Pipeline status */}
-			<section>
-				<h4 className="mb-2 text-xs font-medium text-[var(--text-secondary)]">
-					Pipeline
+				<h4 className="mb-2 flex items-center gap-1.5 text-xs font-medium text-[var(--text-secondary)]">
+					<Activity size={12} />
+					Próximos pasos
 				</h4>
 				<div className="space-y-1.5">
-					{["Extracción", "Validación", "Análisis", "Revisión"].map(
-						(step, i) => (
-							<div key={step} className="flex items-center gap-2">
-								<div
-									className={`h-2 w-2 rounded-full ${
-										i < 3
-											? "bg-[var(--color-success)]"
-											: "bg-[var(--surface-3)]"
-									}`}
-								/>
-								<span
-									className={`text-xs ${
-										i < 3
-											? "text-[var(--text-primary)]"
-											: "text-[var(--text-muted)]"
-									}`}
-								>
-									{step}
-								</span>
-								{i < 3 && (
-									<span className="ml-auto text-[10px] text-[var(--color-success)]">
-										Completado
-									</span>
-								)}
+					<div className="flex items-center gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-2">
+						<div className="flex-1">
+							<div className="text-xs text-[var(--text-primary)]">
+								Ejecutar nightly run
 							</div>
-						),
-					)}
+							<div className="text-[10px] text-[var(--text-muted)]">
+								{health?.lastSyncDate
+									? `Último sync: ${new Date(health.lastSyncDate).toLocaleDateString()}`
+									: "Sin sync previo"}
+							</div>
+						</div>
+						<span className="text-[10px] text-[var(--text-muted)]">
+							{health?.nextDeadline ?? "Próximo: 15 del mes"}
+						</span>
+					</div>
 				</div>
 			</section>
 		</div>
