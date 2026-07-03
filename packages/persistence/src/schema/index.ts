@@ -156,6 +156,18 @@ export {
 	type WorkflowCategory,
 	type WorkflowStatus,
 } from "./automation-studio.schema";
+// --- SKILLS ---
+export {
+	skills,
+	skillsRelations,
+	skillCapabilities,
+	skillCapabilitiesRelations,
+	companySkills,
+	companySkillsRelations,
+	type SkillCategory,
+	type SkillStatus,
+	type InstallationStatus,
+} from "./skills.schema";
 export {
 	type AiCostEvent,
 	type AnomalyAlert,
@@ -291,6 +303,11 @@ export {
 	evidenceStatusEnum,
 	evidenceTypeEnum,
 } from "./evidence.schema";
+// --- EVIDENCE LINKS ---
+export {
+	evidenceLinks,
+	evidenceLinksRelations,
+} from "./evidence-links.schema";
 export {
 	evidenceEdges,
 	evidenceEdgesRelations,
@@ -372,6 +389,34 @@ export {
 	taxRuleVersions,
 	taxRuleVersionsRelations,
 } from "./taxation.schema";
+// --- THREADS ---
+export {
+	type ThreadEnvironment,
+	threadEnvironments,
+	type ThreadPriority,
+	threadPriorities,
+	type ThreadStatus,
+	threadStatuses,
+	threads,
+	threadsRelations,
+} from "./threads.schema";
+export {
+	type ThreadTaskStatus,
+	threadTaskStatuses,
+	threadTasks,
+	threadTasksRelations,
+} from "./thread-tasks.schema";
+export {
+	type ThreadAgentRole,
+	threadAgentRoles,
+	threadAgents,
+	threadAgentsRelations,
+} from "./thread-agents.schema";
+export {
+	threadEvidence,
+	threadEvidenceRelations,
+} from "./thread-evidence.schema";
+
 // --- TELEMETRY ---
 export { frontendTelemetryEvents } from "./telemetry.schema";
 // --- TRANSACTIONS ---

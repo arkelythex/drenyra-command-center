@@ -1,4 +1,4 @@
-import type { SireDocumentRecord } from "../sire/services/sire-diff.service";
+import type { SireDocumentRecord } from "../sire";
 
 export type DiscrepancyType =
 	| "SUNAT_ONLY"

@@ -14,7 +14,9 @@ import { sireAuditRoute } from "./features/ai-swarm/api/sire-audit.route";
 import { aiControlPlaneModule } from "./features/ai-swarm/control-plane";
 import { aiWorkersRoutes } from "./features/ai-swarm/workers";
 import { apiMarketplaceModule } from "./features/api-marketplace";
-import { authRoutes } from "./features/auth/auth.routes";
+import { skillsRoutes } from "./features/skills";
+import { automationsRoutes } from "./features/automations";
+import { evidenceV2Routes } from "./features/evidence-v2";
 import { automationStudioRoutes } from "./features/automation-studio";
 import { bankingRoutes } from "./features/banking";
 import { bankingProvidersRoutes } from "./features/banking-providers/api/routes";
@@ -49,6 +51,9 @@ import { platformMcpModule } from "./features/platform";
 import { pseComplianceRoutes } from "./features/pse-compliance";
 import { ragEnterpriseRoutes } from "./features/rag-enterprise";
 import { sireComparisonModule } from "./features/sire-comparison";
+import { agentsRoutes } from "./features/agents";
+import { diffsRoutes, reviewQueueRoutes } from "./features/diffs";
+import { threadRoutes } from "./features/threads";
 import { sunatApiModule } from "./features/sunat";
 import { vendorRoutes } from "./features/vendors";
 import { createLogger } from "./lib/logger";
@@ -227,7 +232,6 @@ const baseApp = new Elysia()
 						description:
 							"Enterprise knowledge base with document management and semantic search",
 					},
-
 					// ─── Phases 2-4 Feature Tags ───────────────────────────
 					{
 						name: "Accounting PRs",
@@ -284,6 +288,26 @@ const baseApp = new Elysia()
 						description:
 							"Compliance tracking, fiscal obligations roadmap, accounting job automation, and obligation execution",
 					},
+					{
+						name: "Agents",
+						description:
+							"Agent sessions: monitor, pause, resume, and cancel AI agent workflows",
+					},
+					{
+						name: "Diffs",
+						description:
+							"Accounting diffs: Before/After changes proposed by agents for review and approval",
+					},
+					{
+						name: "Review Queue",
+						description:
+							"Prioritized review queue for accounting diff approval workflow",
+					},
+					{
+						name: "Threads",
+						description:
+							"Thread system — accounting work sessions with tasks, agents, and evidence",
+					},
 				],
 			},
 		}),
@@ -333,7 +357,14 @@ const baseApp = new Elysia()
 	.use(clientCommsModule)
 	.use(sunatApiModule)
 	.use(sireComparisonModule)
-	.use(ragEnterpriseRoutes);
+	.use(ragEnterpriseRoutes)
+	.use(agentsRoutes)
+	.use(diffsRoutes)
+	.use(reviewQueueRoutes)
+	.use(skillsRoutes)
+	.use(automationsRoutes)
+	.use(evidenceV2Routes)
+	.use(threadRoutes);
 
 /** Public contract for Eden Treaty clients — use `baseApp` so OTEL/listen do not narrow inference. */
 export type App = typeof baseApp;

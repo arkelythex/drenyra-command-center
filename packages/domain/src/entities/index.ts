@@ -130,4 +130,49 @@ export {
 	type OrganizationSettings,
 	type OrganizationStatus,
 } from "./organization";
+// Thread entity
+export {
+	assertThreadCanActivate,
+	assertThreadCanSubmitForReview,
+	assertThreadNotClosed,
+	assertValidDate,
+	assertValidThreadProps,
+	assertValidTransition,
+	Thread,
+	type AgentRole,
+	type TaskStatus,
+	type ThreadAgentAssignmentProps,
+	type ThreadEnvironment,
+	type ThreadPriority,
+	type ThreadProps,
+	type ThreadStatus,
+	type ThreadTaskProps,
+} from "./thread";
 export { Transaction, type TransactionProps } from "./Transaction";
+export { AccountingDiff, createDiffId } from "./diff";
+export type {
+	DiffId,
+	DiffType,
+	DiffStatus,
+	DiffChange,
+	DiffImpact,
+	AccountingDiffProps,
+} from "./diff";
+export type {
+	ReviewQueueItem,
+	ReviewDecision,
+	QueuePriority,
+	QueueStatus,
+} from "./review";
+// Skill entities
+export { Skill, SkillInstallation, createSkillId, skillIdFromString } from "./skill";
+export type {
+	SkillId,
+	SkillProps,
+	SkillCapability,
+	SkillCategory,
+	SkillStatus,
+	InstallationStatus,
+	SkillInstallationProps,
+} from "./skill";
+export { SKILL_CATEGORIES, SKILL_CATEGORY_LABELS, SKILL_STATUSES, INSTALLATION_STATUSES } from "./skill";

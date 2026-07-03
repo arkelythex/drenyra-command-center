@@ -28,3 +28,7 @@ __pycache__/
 *.pyc
 test-results/
 apps/web/.mf/
+# Local Pi runtime state
+.atl/
+.pi/
+.pi-subagents/

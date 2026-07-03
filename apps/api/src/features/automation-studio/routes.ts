@@ -16,15 +16,9 @@ const TriggerTypeEnum = t.UnionEnum(["schedule", "event", "hook", "webhook"]);
 
 const StepTypeEnum = t.UnionEnum(["condition", "action", "wait", "loop"]);
 
-const ActionTypeEnum = t.UnionEnum([
-	"send_notification",
-	"create_report",
-	"post_journal",
-	"check_sire",
-	"update_evidence",
-	"flag_for_review",
-	"call_webhook",
-]);
+import { actionTypeEnum } from "@arkelythex/persistence/schema";
+
+const ActionTypeEnum = t.UnionEnum(actionTypeEnum);
 
 const StepStatusEnum = t.UnionEnum(["active", "paused"]);
 

@@ -4,17 +4,13 @@
   "packageManager": "bun@1.3.11",
   "workspaces": [
     "apps/*",
-    "packages/*",
-    "packages/domain/civic",
-    "packages/application/civic"
+    "packages/*"
   ],
   "scripts": {
     "dev": "./scripts/dev/dev-host.sh",
     "dev:api": "bun run --filter @arkelythex/api dev",
     "dev:web": "WEB_PORT=${WEB_PORT:-5174} bun run --filter @arkelythex/web dev",
-    "landing:dev": "bun run --filter @arkelythex/landing dev",
-    "landing:build": "bun run --filter @arkelythex/landing build",
-    "landing:start": "bun run --filter @arkelythex/landing start",
+
     "db:push": "./scripts/dev/run-infra-db.sh db:push",
     "db:check": "./scripts/dev/run-infra-db.sh db:check",
     "db:generate": "./scripts/dev/run-infra-db.sh db:generate",
@@ -145,8 +141,7 @@
     "design:export:tailwind": "bunx @google/design.md export --format tailwind DESIGN.md",
     "design:lint:root": "bunx @google/design.md lint DESIGN.md",
     "design:lint:web": "bunx @google/design.md lint apps/web/DESIGN.md",
-    "design:lint:landing": "bunx @google/design.md lint apps/landing/DESIGN.md",
-    "design:lint:all": "bun run design:lint:root && bun run design:lint:web && bun run design:lint:landing && bun run design:lint:api && bun run design:lint:data-engine",
+    "design:lint:all": "bun run design:lint:root && bun run design:lint:web && bun run design:lint:api && bun run design:lint:data-engine",
     "design:lint:api": "bunx @google/design.md lint apps/api/DESIGN.md",
     "design:lint:data-engine": "bunx @google/design.md lint apps/data-engine/DESIGN.md",
     "ai:nightly-report": "bun scripts/ai/nightly-ops-report.ts",

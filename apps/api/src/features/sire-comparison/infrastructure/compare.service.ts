@@ -1,11 +1,9 @@
-import { randomUUID } from "node:crypto";
 import {
-	buildDiffRows,
 	buildSummary,
 	type SireDiffRow,
 	SireDiffService,
-} from "../../sire/services/sire-diff.service";
-import { SireDiffLedgerService } from "../../sire/services/sire-diff-ledger.service";
+	SireDiffLedgerService,
+} from "../../sire";
 import type {
 	ComparisonSummary,
 	DashboardPeriodStat,
@@ -136,6 +134,8 @@ export class SireComparisonService {
 
 	static async resolveDiscrepancy(
 		id: string,
+		companyId: string,
+		period: string,
 		action: ReconciliationAction,
 		notes?: string,
 	): Promise<DiscrepancyDTO> {
@@ -183,12 +183,14 @@ export class SireComparisonService {
 				([, data]: [string, { rows: SireDiffRow[]; generatedAt: string }]) =>
 					data.rows.some((r: SireDiffRow) => r.id === id),
 			);
+			const key = foundEntry?.[0];
 			const row = foundEntry?.[1]?.rows.find((r: SireDiffRow) => r.id === id);
+			const actualPeriod = key?.split(":")[1] ?? period;
 
-			if (row?.sunatRecord) {
+			if (row?.sunatRecord && companyId) {
 				await SireDiffLedgerService.applyResolutions({
-					companyId: "",
-					period: "",
+					companyId,
+					period: actualPeriod,
 					rows: [
 						{
 							rowId: row.id,
