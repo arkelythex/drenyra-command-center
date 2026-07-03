@@ -54,6 +54,7 @@ import { sireComparisonModule } from "./features/sire-comparison";
 import { agentsRoutes } from "./features/agents";
 import { diffsRoutes, reviewQueueRoutes } from "./features/diffs";
 import { threadRoutes } from "./features/threads";
+import { fiscalAgentRoutes } from "./features/fiscal-agent/routes";
 import { sunatApiModule } from "./features/sunat";
 import { vendorRoutes } from "./features/vendors";
 import { createLogger } from "./lib/logger";
@@ -276,6 +277,11 @@ const baseApp = new Elysia()
 					{
 						name: "Evidence",
 						description:
+					{
+						name: "Fiscal Agent",
+						description:
+							"24/7 autonomous fiscal agent: nightly categorization, SUNAT reconciliation, exceptions",
+					},
 							"Evidence management: upload, classify, validate, and link to fiscal entities",
 					},
 					{
@@ -364,7 +370,8 @@ const baseApp = new Elysia()
 	.use(skillsRoutes)
 	.use(automationsRoutes)
 	.use(evidenceV2Routes)
-	.use(threadRoutes);
+	.use(threadRoutes)
+	.use(fiscalAgentRoutes);
 
 /** Public contract for Eden Treaty clients — use `baseApp` so OTEL/listen do not narrow inference. */
 export type App = typeof baseApp;
