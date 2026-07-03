@@ -1,7 +1,11 @@
 import { useState, useMemo, useCallback } from "react";
 import { Search, FileText, CheckCircle2, Loader2 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import { useEvidenceList, useValidateEvidence, useBatchValidate } from "../hooks/useEvidence";
+import {
+	useEvidenceList,
+	useValidateEvidence,
+	useBatchValidate,
+} from "../hooks/useEvidence";
 import type { EvidenceSearchFilters } from "../api";
 
 const STATUS_BADGE: Record<string, { label: string; color: string }> = {
@@ -48,8 +52,10 @@ export function EvidenceVaultPage() {
 	const filtered = useMemo(
 		() =>
 			items.filter((item) => {
-				const matchesType = filterType === "ALL" || item.evidenceType === filterType;
-				const matchesStatus = filterStatus === "ALL" || item.status === filterStatus;
+				const matchesType =
+					filterType === "ALL" || item.evidenceType === filterType;
+				const matchesStatus =
+					filterStatus === "ALL" || item.status === filterStatus;
 				const matchesSearch =
 					!searchText ||
 					item.filename.toLowerCase().includes(searchText.toLowerCase());
@@ -152,7 +158,9 @@ export function EvidenceVaultPage() {
 					>
 						<option value="ALL">Todos los tipos</option>
 						{Object.entries(TYPE_LABELS).map(([key, label]) => (
-							<option key={key} value={key}>{label}</option>
+							<option key={key} value={key}>
+								{label}
+							</option>
 						))}
 					</select>
 
@@ -164,7 +172,9 @@ export function EvidenceVaultPage() {
 					>
 						<option value="ALL">Todos los estados</option>
 						{Object.entries(STATUS_BADGE).map(([key, val]) => (
-							<option key={key} value={key}>{val.label}</option>
+							<option key={key} value={key}>
+								{val.label}
+							</option>
 						))}
 					</select>
 				</div>
@@ -175,11 +185,17 @@ export function EvidenceVaultPage() {
 				<div className="mx-auto max-w-6xl">
 					{isLoading ? (
 						<div className="flex items-center justify-center py-16">
-							<Loader2 size={20} className="animate-spin text-[var(--text-muted)]" />
+							<Loader2
+								size={20}
+								className="animate-spin text-[var(--text-muted)]"
+							/>
 						</div>
 					) : filtered.length === 0 ? (
 						<div className="rounded-2xl border border-dashed border-[var(--border-subtle)] px-8 py-16 text-center">
-							<FileText size={32} className="mx-auto mb-3 text-[var(--text-muted)]" />
+							<FileText
+								size={32}
+								className="mx-auto mb-3 text-[var(--text-muted)]"
+							/>
 							<p className="text-sm font-medium text-[var(--text-primary)]">
 								No se encontraron documentos
 							</p>
@@ -202,22 +218,40 @@ export function EvidenceVaultPage() {
 														setSelectedIds(new Set(filtered.map((i) => i.id)));
 													}
 												}}
-												checked={selectedIds.size === filtered.length && filtered.length > 0}
+												checked={
+													selectedIds.size === filtered.length &&
+													filtered.length > 0
+												}
 												className="rounded"
 											/>
 										</th>
-										<th className="text-left px-3 py-3 text-2xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Archivo</th>
-										<th className="text-left px-3 py-3 text-2xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Tipo</th>
-										<th className="text-left px-3 py-3 text-2xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Fuente</th>
-										<th className="text-left px-3 py-3 text-2xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Estado</th>
-										<th className="text-left px-3 py-3 text-2xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Tamaño</th>
-										<th className="text-left px-3 py-3 text-2xs font-bold uppercase tracking-wider text-[var(--text-muted)]">Fecha</th>
+										<th className="text-left px-3 py-3 text-2xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
+											Archivo
+										</th>
+										<th className="text-left px-3 py-3 text-2xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
+											Tipo
+										</th>
+										<th className="text-left px-3 py-3 text-2xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
+											Fuente
+										</th>
+										<th className="text-left px-3 py-3 text-2xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
+											Estado
+										</th>
+										<th className="text-left px-3 py-3 text-2xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
+											Tamaño
+										</th>
+										<th className="text-left px-3 py-3 text-2xs font-bold uppercase tracking-wider text-[var(--text-muted)]">
+											Fecha
+										</th>
 										<th className="w-20 px-3 py-3" />
 									</tr>
 								</thead>
 								<tbody>
 									{filtered.map((item) => (
-										<tr key={item.id} className="border-b border-[var(--border-subtle)] last:border-b-0 hover:bg-[var(--surface-2)] transition-colors">
+										<tr
+											key={item.id}
+											className="border-b border-[var(--border-subtle)] last:border-b-0 hover:bg-[var(--surface-2)] transition-colors"
+										>
 											<td className="px-3 py-3">
 												<input
 													type="checkbox"
@@ -248,7 +282,9 @@ export function EvidenceVaultPage() {
 													className="inline-block rounded-full px-2 py-0.5 text-2xs font-bold"
 													style={{
 														backgroundColor: `${STATUS_BADGE[item.status]?.color ?? "var(--color-warning)"}20`,
-														color: STATUS_BADGE[item.status]?.color ?? "var(--color-warning)",
+														color:
+															STATUS_BADGE[item.status]?.color ??
+															"var(--color-warning)",
 													}}
 												>
 													{STATUS_BADGE[item.status]?.label ?? item.status}

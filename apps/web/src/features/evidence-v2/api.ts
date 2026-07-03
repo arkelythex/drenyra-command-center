@@ -68,17 +68,17 @@ export async function searchEvidence(
 export async function getEvidenceDetail(
 	id: string,
 ): Promise<{ data: EvidenceDetailDTO }> {
-	return unwrap(
-		api.api["evidence-v2"]({ id }).get(),
-	) as Promise<{ data: EvidenceDetailDTO }>;
+	return unwrap(api.api["evidence-v2"]({ id }).get()) as Promise<{
+		data: EvidenceDetailDTO;
+	}>;
 }
 
 export async function validateEvidence(
 	id: string,
 ): Promise<{ data: { id: string; validated: boolean } }> {
-	return unwrap(
-		api.api["evidence-v2"]({ id }).validate.post(),
-	) as Promise<{ data: { id: string; validated: boolean } }>;
+	return unwrap(api.api["evidence-v2"]({ id }).validate.post()) as Promise<{
+		data: { id: string; validated: boolean };
+	}>;
 }
 
 export async function batchValidate(
@@ -95,17 +95,17 @@ export async function linkEvidence(body: {
 	entityId: string;
 	relationship?: string;
 }): Promise<{ data: EvidenceLinkDTO }> {
-	return unwrap(
-		api.api["evidence-v2"].link.post(body),
-	) as Promise<{ data: EvidenceLinkDTO }>;
+	return unwrap(api.api["evidence-v2"].link.post(body)) as Promise<{
+		data: EvidenceLinkDTO;
+	}>;
 }
 
 export async function unlinkEvidence(
 	linkId: string,
 ): Promise<{ data: { unlinked: boolean } }> {
-	return unwrap(
-		api.api["evidence-v2"].unlink.post({ linkId }),
-	) as Promise<{ data: { unlinked: boolean } }>;
+	return unwrap(api.api["evidence-v2"].unlink.post({ linkId })) as Promise<{
+		data: { unlinked: boolean };
+	}>;
 }
 
 export async function getLineage(
