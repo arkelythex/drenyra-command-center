@@ -49,7 +49,7 @@ export default defineConfig({
 			// Fiscal-truth tests need real Postgres via UnitOfWork.execute
 			"**/fiscal/truth/__tests__/**",
 			// Civic uses bun:test (not compatible with vitest runner)
-			"**
+			"**/civic/**",
 			// AI-swarm DB integration tests (require RUN_DB_TESTS=1)
 			"**/ai-swarm/__tests__/integration/tool-permissions-db.integration.test.ts",
 			// Drenyra pre-existing failures (swarm pipeline timing, approval tenant guards)
@@ -118,10 +118,7 @@ export default defineConfig({
 			},
 			{
 				find: "@arkelythex/domain",
-				replacement: path.resolve(
-					__dirname,
-					"../../packages/domain/src",
-				),
+				replacement: path.resolve(__dirname, "../../packages/domain/src"),
 			},
 			{
 				find: "@arkelythex/infrastructure",

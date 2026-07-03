@@ -68,10 +68,12 @@ import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as FirmIndexRouteImport } from './routes/firm/index'
 import { Route as DrenyraIndexRouteImport } from './routes/drenyra/index'
 import { Route as ConfiguracionIndexRouteImport } from './routes/configuracion/index'
+import { Route as AgentsIndexRouteImport } from './routes/agents/index'
 import { Route as WorkspaceSystemAdminRouteImport } from './routes/workspace/system-admin'
 import { Route as WorkspaceOperationsRouteImport } from './routes/workspace/operations'
 import { Route as WorkspaceFinanceRouteImport } from './routes/workspace/finance'
 import { Route as WorkspaceComplianceRouteImport } from './routes/workspace/compliance'
+import { Route as ThreadsNewRouteImport } from './routes/threads/new'
 import { Route as ThreadsThreadIdRouteImport } from './routes/threads/$threadId'
 import { Route as TesoreriaReconciliationsRouteImport } from './routes/tesoreria/reconciliations'
 import { Route as TesoreriaCashflowRouteImport } from './routes/tesoreria/cashflow'
@@ -433,6 +435,11 @@ const ConfiguracionIndexRoute = ConfiguracionIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ConfiguracionRoute,
 } as any)
+const AgentsIndexRoute = AgentsIndexRouteImport.update({
+  id: '/agents/',
+  path: '/agents/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkspaceSystemAdminRoute = WorkspaceSystemAdminRouteImport.update({
   id: '/workspace/system-admin',
   path: '/workspace/system-admin',
@@ -451,6 +458,11 @@ const WorkspaceFinanceRoute = WorkspaceFinanceRouteImport.update({
 const WorkspaceComplianceRoute = WorkspaceComplianceRouteImport.update({
   id: '/workspace/compliance',
   path: '/workspace/compliance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThreadsNewRoute = ThreadsNewRouteImport.update({
+  id: '/threads/new',
+  path: '/threads/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ThreadsThreadIdRoute = ThreadsThreadIdRouteImport.update({
@@ -909,10 +921,12 @@ export interface FileRoutesByFullPath {
   '/tesoreria/cashflow': typeof TesoreriaCashflowRoute
   '/tesoreria/reconciliations': typeof TesoreriaReconciliationsRoute
   '/threads/$threadId': typeof ThreadsThreadIdRoute
+  '/threads/new': typeof ThreadsNewRoute
   '/workspace/compliance': typeof WorkspaceComplianceRoute
   '/workspace/finance': typeof WorkspaceFinanceRoute
   '/workspace/operations': typeof WorkspaceOperationsRoute
   '/workspace/system-admin': typeof WorkspaceSystemAdminRoute
+  '/agents/': typeof AgentsIndexRoute
   '/configuracion/': typeof ConfiguracionIndexRoute
   '/drenyra/': typeof DrenyraIndexRoute
   '/firm/': typeof FirmIndexRoute
@@ -1035,10 +1049,12 @@ export interface FileRoutesByTo {
   '/tesoreria/cashflow': typeof TesoreriaCashflowRoute
   '/tesoreria/reconciliations': typeof TesoreriaReconciliationsRoute
   '/threads/$threadId': typeof ThreadsThreadIdRoute
+  '/threads/new': typeof ThreadsNewRoute
   '/workspace/compliance': typeof WorkspaceComplianceRoute
   '/workspace/finance': typeof WorkspaceFinanceRoute
   '/workspace/operations': typeof WorkspaceOperationsRoute
   '/workspace/system-admin': typeof WorkspaceSystemAdminRoute
+  '/agents': typeof AgentsIndexRoute
   '/configuracion': typeof ConfiguracionIndexRoute
   '/drenyra': typeof DrenyraIndexRoute
   '/firm': typeof FirmIndexRoute
@@ -1166,10 +1182,12 @@ export interface FileRoutesById {
   '/tesoreria/cashflow': typeof TesoreriaCashflowRoute
   '/tesoreria/reconciliations': typeof TesoreriaReconciliationsRoute
   '/threads/$threadId': typeof ThreadsThreadIdRoute
+  '/threads/new': typeof ThreadsNewRoute
   '/workspace/compliance': typeof WorkspaceComplianceRoute
   '/workspace/finance': typeof WorkspaceFinanceRoute
   '/workspace/operations': typeof WorkspaceOperationsRoute
   '/workspace/system-admin': typeof WorkspaceSystemAdminRoute
+  '/agents/': typeof AgentsIndexRoute
   '/configuracion/': typeof ConfiguracionIndexRoute
   '/drenyra/': typeof DrenyraIndexRoute
   '/firm/': typeof FirmIndexRoute
@@ -1298,10 +1316,12 @@ export interface FileRouteTypes {
     | '/tesoreria/cashflow'
     | '/tesoreria/reconciliations'
     | '/threads/$threadId'
+    | '/threads/new'
     | '/workspace/compliance'
     | '/workspace/finance'
     | '/workspace/operations'
     | '/workspace/system-admin'
+    | '/agents/'
     | '/configuracion/'
     | '/drenyra/'
     | '/firm/'
@@ -1424,10 +1444,12 @@ export interface FileRouteTypes {
     | '/tesoreria/cashflow'
     | '/tesoreria/reconciliations'
     | '/threads/$threadId'
+    | '/threads/new'
     | '/workspace/compliance'
     | '/workspace/finance'
     | '/workspace/operations'
     | '/workspace/system-admin'
+    | '/agents'
     | '/configuracion'
     | '/drenyra'
     | '/firm'
@@ -1554,10 +1576,12 @@ export interface FileRouteTypes {
     | '/tesoreria/cashflow'
     | '/tesoreria/reconciliations'
     | '/threads/$threadId'
+    | '/threads/new'
     | '/workspace/compliance'
     | '/workspace/finance'
     | '/workspace/operations'
     | '/workspace/system-admin'
+    | '/agents/'
     | '/configuracion/'
     | '/drenyra/'
     | '/firm/'
@@ -1655,10 +1679,12 @@ export interface RootRouteChildren {
   TesoreriaCashflowRoute: typeof TesoreriaCashflowRoute
   TesoreriaReconciliationsRoute: typeof TesoreriaReconciliationsRoute
   ThreadsThreadIdRoute: typeof ThreadsThreadIdRoute
+  ThreadsNewRoute: typeof ThreadsNewRoute
   WorkspaceComplianceRoute: typeof WorkspaceComplianceRoute
   WorkspaceFinanceRoute: typeof WorkspaceFinanceRoute
   WorkspaceOperationsRoute: typeof WorkspaceOperationsRoute
   WorkspaceSystemAdminRoute: typeof WorkspaceSystemAdminRoute
+  AgentsIndexRoute: typeof AgentsIndexRoute
   ThreadsIndexRoute: typeof ThreadsIndexRoute
   WorkspaceIndexRoute: typeof WorkspaceIndexRoute
   OperacionesEconomicGroupsGroupIdRoute: typeof OperacionesEconomicGroupsGroupIdRoute
@@ -2079,6 +2105,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConfiguracionIndexRouteImport
       parentRoute: typeof ConfiguracionRoute
     }
+    '/agents/': {
+      id: '/agents/'
+      path: '/agents'
+      fullPath: '/agents/'
+      preLoaderRoute: typeof AgentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/workspace/system-admin': {
       id: '/workspace/system-admin'
       path: '/workspace/system-admin'
@@ -2105,6 +2138,13 @@ declare module '@tanstack/react-router' {
       path: '/workspace/compliance'
       fullPath: '/workspace/compliance'
       preLoaderRoute: typeof WorkspaceComplianceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/threads/new': {
+      id: '/threads/new'
+      path: '/threads/new'
+      fullPath: '/threads/new'
+      preLoaderRoute: typeof ThreadsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/threads/$threadId': {
@@ -2789,10 +2829,12 @@ const rootRouteChildren: RootRouteChildren = {
   TesoreriaCashflowRoute: TesoreriaCashflowRoute,
   TesoreriaReconciliationsRoute: TesoreriaReconciliationsRoute,
   ThreadsThreadIdRoute: ThreadsThreadIdRoute,
+  ThreadsNewRoute: ThreadsNewRoute,
   WorkspaceComplianceRoute: WorkspaceComplianceRoute,
   WorkspaceFinanceRoute: WorkspaceFinanceRoute,
   WorkspaceOperationsRoute: WorkspaceOperationsRoute,
   WorkspaceSystemAdminRoute: WorkspaceSystemAdminRoute,
+  AgentsIndexRoute: AgentsIndexRoute,
   ThreadsIndexRoute: ThreadsIndexRoute,
   WorkspaceIndexRoute: WorkspaceIndexRoute,
   OperacionesEconomicGroupsGroupIdRoute: OperacionesEconomicGroupsGroupIdRoute,

@@ -49,6 +49,7 @@ import { platformMcpModule } from "./features/platform";
 import { pseComplianceRoutes } from "./features/pse-compliance";
 import { ragEnterpriseRoutes } from "./features/rag-enterprise";
 import { sireComparisonModule } from "./features/sire-comparison";
+import { agentsRoutes } from "./features/agents";
 import { threadRoutes } from "./features/threads";
 import { sunatApiModule } from "./features/sunat";
 import { vendorRoutes } from "./features/vendors";
@@ -285,6 +286,11 @@ const baseApp = new Elysia()
 							"Compliance tracking, fiscal obligations roadmap, accounting job automation, and obligation execution",
 					},
 					{
+						name: "Agents",
+						description:
+							"Agent sessions: monitor, pause, resume, and cancel AI agent workflows",
+					},
+					{
 						name: "Threads",
 						description:
 							"Thread system — accounting work sessions with tasks, agents, and evidence",
@@ -339,6 +345,7 @@ const baseApp = new Elysia()
 	.use(sunatApiModule)
 	.use(sireComparisonModule)
 	.use(ragEnterpriseRoutes)
+	.use(agentsRoutes)
 	.use(threadRoutes);
 
 /** Public contract for Eden Treaty clients — use `baseApp` so OTEL/listen do not narrow inference. */
