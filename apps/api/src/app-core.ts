@@ -50,6 +50,7 @@ import { pseComplianceRoutes } from "./features/pse-compliance";
 import { ragEnterpriseRoutes } from "./features/rag-enterprise";
 import { sireComparisonModule } from "./features/sire-comparison";
 import { agentsRoutes } from "./features/agents";
+import { diffsRoutes, reviewQueueRoutes } from "./features/diffs";
 import { threadRoutes } from "./features/threads";
 import { sunatApiModule } from "./features/sunat";
 import { vendorRoutes } from "./features/vendors";
@@ -291,6 +292,16 @@ const baseApp = new Elysia()
 							"Agent sessions: monitor, pause, resume, and cancel AI agent workflows",
 					},
 					{
+						name: "Diffs",
+						description:
+							"Accounting diffs: Before/After changes proposed by agents for review and approval",
+					},
+					{
+						name: "Review Queue",
+						description:
+							"Prioritized review queue for accounting diff approval workflow",
+					},
+					{
 						name: "Threads",
 						description:
 							"Thread system — accounting work sessions with tasks, agents, and evidence",
@@ -346,6 +357,8 @@ const baseApp = new Elysia()
 	.use(sireComparisonModule)
 	.use(ragEnterpriseRoutes)
 	.use(agentsRoutes)
+	.use(diffsRoutes)
+	.use(reviewQueueRoutes)
 	.use(threadRoutes);
 
 /** Public contract for Eden Treaty clients — use `baseApp` so OTEL/listen do not narrow inference. */

@@ -144,3 +144,18 @@ export {
 	type ThreadTaskProps,
 } from "./thread";
 export { Transaction, type TransactionProps } from "./Transaction";
+export { AccountingDiff, createDiffId } from "./diff";
+export type {
+	DiffId,
+	DiffType,
+	DiffStatus,
+	DiffChange,
+	DiffImpact,
+	AccountingDiffProps,
+} from "./diff";
+export type {
+	ReviewQueueItem,
+	ReviewDecision,
+	QueuePriority,
+	QueueStatus,
+} from "./review";
