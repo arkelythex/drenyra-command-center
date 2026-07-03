@@ -11,7 +11,6 @@ export * from "./ports/storage.port";
 export * from "./ports/ai-provider.port";
 export * from "./ports/document-processing.port";
 export * from "./ports/tax-authority.port";
-export * from "./ports/tax-authority.types";
 
 // ─── Services ──────────────────────────────────────────────────────
 export * from "./services/fiscal-memory.service";
@@ -33,3 +32,10 @@ export * from "./features/judgment-day";
 export * from "./features/monthly-close";
 export * from "./features/rag-enterprise";
 export * from "./features/sire-comparison";
+
+// ─── Use Cases ───────────────────────────────────────────────────────
+export * from "./use-cases/fiscal-agent/types";
+export {
+	FiscalNightlyRunUseCase,
+	CorrectionUseCase,
+} from "./use-cases/fiscal-agent/fiscal-nightly-run.use-case";
