@@ -16,6 +16,7 @@ import { aiWorkersRoutes } from "./features/ai-swarm/workers";
 import { apiMarketplaceModule } from "./features/api-marketplace";
 import { skillsRoutes } from "./features/skills";
 import { automationsRoutes } from "./features/automations";
+import { evidenceV2Routes } from "./features/evidence-v2";
 import { automationStudioRoutes } from "./features/automation-studio";
 import { bankingRoutes } from "./features/banking";
 import { bankingProvidersRoutes } from "./features/banking-providers/api/routes";
@@ -362,6 +363,7 @@ const baseApp = new Elysia()
 	.use(reviewQueueRoutes)
 	.use(skillsRoutes)
 	.use(automationsRoutes)
+	.use(evidenceV2Routes)
 	.use(threadRoutes);
 
 /** Public contract for Eden Treaty clients — use `baseApp` so OTEL/listen do not narrow inference. */
