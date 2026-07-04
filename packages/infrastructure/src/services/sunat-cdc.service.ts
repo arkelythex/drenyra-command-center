@@ -5,19 +5,29 @@
  */
 
 export interface SunatCdcEvent {
-	type: "TICKET_UPDATE" | "CDR_RECEIVED" | "DISCREPANCY_DETECTED" | "SCHEDULED_REFRESH";
+	type:
+		| "TICKET_UPDATE"
+		| "CDR_RECEIVED"
+		| "DISCREPANCY_DETECTED"
+		| "SCHEDULED_REFRESH";
 	timestamp: Date;
 	orgId: number;
 	payload: Record<string, unknown>;
 }
 
 export class SunatCdcService {
-	private handlers = new Map<SunatCdcEvent["type"], Array<(event: SunatCdcEvent) => Promise<void>>>();
+	private handlers = new Map<
+		SunatCdcEvent["type"],
+		Array<(event: SunatCdcEvent) => Promise<void>>
+	>();
 
 	/**
 	 * Register a handler for a CDC event type.
 	 */
-	on(type: SunatCdcEvent["type"], handler: (event: SunatCdcEvent) => Promise<void>): void {
+	on(
+		type: SunatCdcEvent["type"],
+		handler: (event: SunatCdcEvent) => Promise<void>,
+	): void {
 		if (!this.handlers.has(type)) this.handlers.set(type, []);
 		this.handlers.get(type)!.push(handler);
 	}

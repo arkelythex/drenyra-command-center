@@ -59,14 +59,19 @@ export class FiscalHealthService {
 
 		const overall = Math.round(
 			sunatSync * 0.3 +
-			igvCompliance * 0.3 +
-			discrepancyRate * 0.25 +
-			deadlineProximity * 0.15,
+				igvCompliance * 0.3 +
+				discrepancyRate * 0.25 +
+				deadlineProximity * 0.15,
 		);
 
 		return {
 			overall,
-			categories: { sunatSync, igvCompliance, discrepancyRate, deadlineProximity },
+			categories: {
+				sunatSync,
+				igvCompliance,
+				discrepancyRate,
+				deadlineProximity,
+			},
 			activeExceptions: 0,
 			projectedIGV: { base: 0, tax: 0, total: 0 },
 			lastSyncDate,

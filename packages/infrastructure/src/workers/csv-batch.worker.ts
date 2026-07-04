@@ -4,13 +4,18 @@
 
 import { Job, Worker } from "bullmq";
 import { getRedisConnection, isRedisConfigured } from "../queues/redis";
-import type { CsvBatchJobData, CsvBatchResult } from "../queues/csv-batch.queue";
+import type {
+	CsvBatchJobData,
+	CsvBatchResult,
+} from "../queues/csv-batch.queue";
 import { loggers } from "../logger";
 
 const CSV_BATCH_QUEUE = "csv-batch-agent";
 const logger = loggers.worker;
 
-async function processBatch(job: Job<CsvBatchJobData>): Promise<CsvBatchResult> {
+async function processBatch(
+	job: Job<CsvBatchJobData>,
+): Promise<CsvBatchResult> {
 	const results: CsvBatchResult["results"] = [];
 
 	for (const row of job.data.rows) {
@@ -44,14 +49,26 @@ async function processBatch(job: Job<CsvBatchJobData>): Promise<CsvBatchResult> 
 	};
 }
 
-async function categorizeTransaction(row: CsvBatchJobData["rows"][number]): Promise<string> {
+async function categorizeTransaction(
+	row: CsvBatchJobData["rows"][number],
+): Promise<string> {
 	// TODO: Integrate with PCGE agent for AI categorization
 	// For now, rule-based fallback
 	const desc = (row.description ?? "").toLowerCase();
 	if (desc.includes("consultor") || desc.includes("servicio")) return "7011.11";
-	if (desc.includes("compra") || desc.includes("útil") || desc.includes("oficina")) return "6011.11";
+	if (
+		desc.includes("compra") ||
+		desc.includes("útil") ||
+		desc.includes("oficina")
+	)
+		return "6011.11";
 	if (desc.includes("planilla") || desc.includes("sueldo")) return "6211.11";
-	if (desc.includes("luz") || desc.includes("agua") || desc.includes("teléfono")) return "6311.11";
+	if (
+		desc.includes("luz") ||
+		desc.includes("agua") ||
+		desc.includes("teléfono")
+	)
+		return "6311.11";
 	return "7099.99";
 }
 
@@ -78,7 +95,10 @@ export function startCsvBatchWorker(): Worker | null {
 		logger.info({ jobId: job.id }, "CSV batch job completed");
 	});
 	worker.on("failed", (job, err) => {
-		logger.error({ jobId: job?.id, error: err.message }, "CSV batch job failed");
+		logger.error(
+			{ jobId: job?.id, error: err.message },
+			"CSV batch job failed",
+		);
 	});
 
 	return worker;

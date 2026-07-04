@@ -45,6 +45,7 @@
     "src/services/swarm-consensus/**/*.ts",
     "src/tax-authority/**/*.ts",
 		"src/xml/**/*.ts",
+		"../domain/src/services/pcge-catalog.ts",
     "src/xsd/**/*.ts"
   ],
   "exclude": ["dist", "**/dist/**", "**/__tests__/**", "**/*.test.ts", "**/*.spec.ts"]

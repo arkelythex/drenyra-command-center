@@ -9,7 +9,12 @@
 import type { FiscalNightlyRunReport } from "@arkelythex/application/use-cases/fiscal-agent/types";
 
 export interface EvidenceLink {
-	sourceType: "TRANSACTION" | "CATEGORIZATION" | "CORRECTION" | "DISCREPANCY" | "REPORT";
+	sourceType:
+		| "TRANSACTION"
+		| "CATEGORIZATION"
+		| "CORRECTION"
+		| "DISCREPANCY"
+		| "REPORT";
 	sourceId: string;
 	evidenceId: string;
 	relationship: "DERIVED_FROM" | "SUPPORTS" | "CORRECTS" | "REFERENCES";
@@ -55,7 +60,8 @@ export class EvidenceAutoLinker {
 		return {
 			sourceType: "CORRECTION",
 			sourceId: params.transactionId,
-			evidenceId: params.originalEvidenceId ?? `${params.transactionId}-correction`,
+			evidenceId:
+				params.originalEvidenceId ?? `${params.transactionId}-correction`,
 			relationship: "CORRECTS",
 			confidence: 1.0,
 		};
@@ -78,13 +84,15 @@ export class EvidenceAutoLinker {
 				confidence: 0.95,
 			},
 			...(params.sunatEvidenceId
-				? [{
-						sourceType: "DISCREPANCY",
-						sourceId: params.documentKey,
-						evidenceId: params.sunatEvidenceId,
-						relationship: "REFERENCES",
-						confidence: 0.9,
-					} as EvidenceLink]
+				? [
+						{
+							sourceType: "DISCREPANCY",
+							sourceId: params.documentKey,
+							evidenceId: params.sunatEvidenceId,
+							relationship: "REFERENCES",
+							confidence: 0.9,
+						} as EvidenceLink,
+					]
 				: []),
 		];
 	}

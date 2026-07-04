@@ -38,7 +38,9 @@ export class AnomalyDetector {
 	/**
 	 * Run all anomaly checks on a set of transactions.
 	 */
-	async detectAll(transactions: TransactionForAnomalyCheck[]): Promise<Anomaly[]> {
+	async detectAll(
+		transactions: TransactionForAnomalyCheck[],
+	): Promise<Anomaly[]> {
 		const anomalies: Anomaly[] = [
 			...this.checkIgvRates(transactions),
 			...this.checkVendorDuplication(transactions),
@@ -52,10 +54,16 @@ export class AnomalyDetector {
 	 */
 	private checkIgvRates(transactions: TransactionForAnomalyCheck[]): Anomaly[] {
 		return transactions
-			.filter((tx) => tx.igvRate != null && Math.abs(tx.igvRate - IGV_STANDARD_RATE) > IGV_TOLERANCE)
+			.filter(
+				(tx) =>
+					tx.igvRate != null &&
+					Math.abs(tx.igvRate - IGV_STANDARD_RATE) > IGV_TOLERANCE,
+			)
 			.map((tx) => ({
 				type: "IGV_RATE_ANOMALY" as const,
-				severity: (Math.abs(tx.igvRate! - IGV_STANDARD_RATE) > 0.1 ? "HIGH" : "MEDIUM") as "HIGH" | "MEDIUM",
+				severity: (Math.abs(tx.igvRate! - IGV_STANDARD_RATE) > 0.1
+					? "HIGH"
+					: "MEDIUM") as "HIGH" | "MEDIUM",
 				transactionId: tx.id,
 				description: `Non-standard IGV rate: ${(tx.igvRate! * 100).toFixed(1)}% (expected ${(IGV_STANDARD_RATE * 100).toFixed(0)}%)`,
 				details: { actualRate: tx.igvRate, expectedRate: IGV_STANDARD_RATE },
@@ -65,7 +73,9 @@ export class AnomalyDetector {
 	/**
 	 * Check for vendors sharing the same tax ID with different names.
 	 */
-	private checkVendorDuplication(transactions: TransactionForAnomalyCheck[]): Anomaly[] {
+	private checkVendorDuplication(
+		transactions: TransactionForAnomalyCheck[],
+	): Anomaly[] {
 		const byTaxId = new Map<string, Set<string>>();
 		for (const tx of transactions) {
 			if (!tx.vendorTaxId) continue;
@@ -91,7 +101,9 @@ export class AnomalyDetector {
 	/**
 	 * Check for suspicious circular amounts (same vendor, same amount, multiple dates).
 	 */
-	private checkCircularAmounts(transactions: TransactionForAnomalyCheck[]): Anomaly[] {
+	private checkCircularAmounts(
+		transactions: TransactionForAnomalyCheck[],
+	): Anomaly[] {
 		const byVendorAmount = new Map<string, TransactionForAnomalyCheck[]>();
 		for (const tx of transactions) {
 			if (!tx.vendorName) continue;
@@ -107,7 +119,10 @@ export class AnomalyDetector {
 				severity: (txs.length >= 5 ? "HIGH" : "MEDIUM") as "HIGH" | "MEDIUM",
 				transactionId: txs[0]!.id,
 				description: `${txs.length} transactions with same vendor and amount: ${key}`,
-				details: { count: txs.length, dates: txs.map((t) => t.date.toISOString().split("T")[0]) },
+				details: {
+					count: txs.length,
+					dates: txs.map((t) => t.date.toISOString().split("T")[0]),
+				},
 			}));
 	}
 }

@@ -27,7 +27,11 @@ export class OrgMemoryStore {
 	private memory = new Map<string, OrgMemoryEntry[]>();
 	private vendorMemory = new Map<string, VendorLearning[]>();
 
-	async savePreference(orgId: number, key: string, value: unknown): Promise<void> {
+	async savePreference(
+		orgId: number,
+		key: string,
+		value: unknown,
+	): Promise<void> {
 		const orgKey = `${orgId}`;
 		if (!this.memory.has(orgKey)) this.memory.set(orgKey, []);
 		const entries = this.memory.get(orgKey)!;
@@ -37,7 +41,13 @@ export class OrgMemoryStore {
 			existing.value = value;
 			existing.updatedAt = new Date();
 		} else {
-			entries.push({ orgId, key, value, createdAt: new Date(), updatedAt: new Date() });
+			entries.push({
+				orgId,
+				key,
+				value,
+				createdAt: new Date(),
+				updatedAt: new Date(),
+			});
 		}
 	}
 
@@ -46,11 +56,19 @@ export class OrgMemoryStore {
 		return entry?.value as T | undefined;
 	}
 
-	async getVendorPattern(orgId: number, taxId: string): Promise<VendorLearning | undefined> {
-		return this.vendorMemory.get(`${orgId}`)?.find((v) => v.vendorTaxId === taxId);
+	async getVendorPattern(
+		orgId: number,
+		taxId: string,
+	): Promise<VendorLearning | undefined> {
+		return this.vendorMemory
+			.get(`${orgId}`)
+			?.find((v) => v.vendorTaxId === taxId);
 	}
 
-	async recordVendorMatch(orgId: number, vendor: Omit<VendorLearning, "orgId">): Promise<void> {
+	async recordVendorMatch(
+		orgId: number,
+		vendor: Omit<VendorLearning, "orgId">,
+	): Promise<void> {
 		const orgKey = `${orgId}`;
 		if (!this.vendorMemory.has(orgKey)) this.vendorMemory.set(orgKey, []);
 		const vendors = this.vendorMemory.get(orgKey)!;
@@ -60,7 +78,12 @@ export class OrgMemoryStore {
 			existing.matchCount++;
 			existing.approvalRate = vendor.approvalRate;
 			existing.lastMatchedAt = new Date();
-			existing.descriptionPatterns = [...new Set([...existing.descriptionPatterns, ...vendor.descriptionPatterns])].slice(0, 20);
+			existing.descriptionPatterns = [
+				...new Set([
+					...existing.descriptionPatterns,
+					...vendor.descriptionPatterns,
+				]),
+			].slice(0, 20);
 		} else {
 			vendors.push({ orgId, ...vendor });
 		}

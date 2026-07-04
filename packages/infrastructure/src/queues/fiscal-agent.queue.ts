@@ -44,7 +44,11 @@ export function getFiscalAgentQueueEvents(): QueueEvents | null {
 	return queueEventsInstance;
 }
 
-export async function scheduleNightlyRun(orgId: number, companyId: string, pattern = "0 2 * * *"): Promise<void> {
+export async function scheduleNightlyRun(
+	orgId: number,
+	companyId: string,
+	pattern = "0 2 * * *",
+): Promise<void> {
 	const queue = getFiscalAgentQueue();
 	if (!queue) return;
 
@@ -63,7 +67,9 @@ export async function scheduleNightlyRun(orgId: number, companyId: string, patte
 	);
 }
 
-export async function triggerManualRun(data: FiscalAgentJobData): Promise<string | null> {
+export async function triggerManualRun(
+	data: FiscalAgentJobData,
+): Promise<string | null> {
 	const queue = getFiscalAgentQueue();
 	if (!queue) return null;
 

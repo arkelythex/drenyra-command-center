@@ -1,7 +1,9 @@
 /**
  * Categorizer Step — Classify transactions using PCGE chart of accounts.
+ * Uses real PCGE catalog with keyword matching. Scalable: add ML later.
  */
 
+import { findBestAccount } from "@arkelythex/domain/services/pcge-catalog";
 import type {
 	CategorizeOutput,
 	FiscalAgentStep,
@@ -16,17 +18,25 @@ export class CategorizerStep implements FiscalAgentStep<ProcessableTransaction[]
 
 	async execute(
 		transactions: ProcessableTransaction[],
-		context: FiscalAgentStepContext,
+		_context: FiscalAgentStepContext,
 	): Promise<StepResult<CategorizeOutput>> {
 		const startedAt = new Date();
 		const errors: StepResult<CategorizeOutput>["errors"] = [];
-		const warnings: string[] = [];
 		const categorizations: TransactionCategorization[] = [];
 
 		for (const tx of transactions) {
 			try {
-				const result = await this.categorizeOne(tx, context);
-				categorizations.push(result);
+				const { account, confidence } = findBestAccount(
+					tx.description,
+					tx.vendorName,
+				);
+				categorizations.push({
+					transactionId: tx.id,
+					suggestedAccount: account.code,
+					suggestedAccountName: account.name,
+					confidence: confidence / 100,
+					isException: confidence < 50,
+				});
 			} catch (err) {
 				errors.push({
 					code: "CATEGORIZE_FAILED",
@@ -42,30 +52,13 @@ export class CategorizerStep implements FiscalAgentStep<ProcessableTransaction[]
 			success: errors.length === 0,
 			data: { categorizations },
 			errors,
-			warnings,
+			warnings: [],
 			metrics: {
 				startedAt,
 				completedAt,
 				itemsProcessed: transactions.length,
 				itemsFailed: errors.length,
 			},
-		};
-	}
-
-	private async categorizeOne(
-		tx: ProcessableTransaction,
-		_context: FiscalAgentStepContext,
-	): Promise<TransactionCategorization> {
-		// TODO: Integrate with PCGE agent for AI-powered categorization
-		// Use: vendor-name → account mapping from corrections history
-		// Use: description pattern matching
-		const isException = false;
-		return {
-			transactionId: tx.id,
-			suggestedAccount: "7011.11",
-			suggestedAccountName: "Servicios",
-			confidence: 0.95,
-			isException,
 		};
 	}
 }

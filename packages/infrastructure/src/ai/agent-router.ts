@@ -15,11 +15,11 @@ export type DelegationMode = "disabled" | "explicit-request-only" | "proactive";
 
 export interface AgentRouteConfig {
 	task: string;
-	modelTier: string;            // "flash" | "reasoning" | "opus"
+	modelTier: string; // "flash" | "reasoning" | "opus"
 	delegation: DelegationMode;
 	maxTokens: number;
-	tokenBudget: number;          // Rollout token budget per run
-	providerPreference: string;   // "google" | "anthropic" | "openai"
+	tokenBudget: number; // Rollout token budget per run
+	providerPreference: string; // "google" | "anthropic" | "openai"
 	description: string;
 }
 
@@ -46,7 +46,8 @@ export const FISCAL_AGENT_ROUTES: AgentRouteConfig[] = [
 		maxTokens: 8_192,
 		tokenBudget: 25_000,
 		providerPreference: "anthropic",
-		description: "PCGE classification with learned patterns — can delegate to sub-agents for large batches",
+		description:
+			"PCGE classification with learned patterns — can delegate to sub-agents for large batches",
 	},
 	{
 		task: "tax_calculation",
@@ -55,7 +56,8 @@ export const FISCAL_AGENT_ROUTES: AgentRouteConfig[] = [
 		maxTokens: 2_048,
 		tokenBudget: 5_000,
 		providerPreference: "google",
-		description: "IGV/detracción calculation — deterministic rules, no AI needed",
+		description:
+			"IGV/detracción calculation — deterministic rules, no AI needed",
 	},
 	{
 		task: "sunat_reconciliation",
@@ -64,7 +66,8 @@ export const FISCAL_AGENT_ROUTES: AgentRouteConfig[] = [
 		maxTokens: 8_192,
 		tokenBudget: 20_000,
 		providerPreference: "anthropic",
-		description: "Compare local vs SUNAT data — reasoning required, but delegation only on explicit request",
+		description:
+			"Compare local vs SUNAT data — reasoning required, but delegation only on explicit request",
 	},
 	{
 		task: "anomaly_detection",
@@ -73,7 +76,8 @@ export const FISCAL_AGENT_ROUTES: AgentRouteConfig[] = [
 		maxTokens: 16_384,
 		tokenBudget: 50_000,
 		providerPreference: "anthropic",
-		description: "Find unusual patterns — highest reasoning tier, controlled delegation",
+		description:
+			"Find unusual patterns — highest reasoning tier, controlled delegation",
 	},
 	{
 		task: "report_generation",
@@ -130,6 +134,8 @@ export function getPipelineTokenBudget(): number {
 /**
  * Filter routes by delegation mode.
  */
-export function getRoutesByDelegation(mode: DelegationMode): AgentRouteConfig[] {
+export function getRoutesByDelegation(
+	mode: DelegationMode,
+): AgentRouteConfig[] {
 	return FISCAL_AGENT_ROUTES.filter((r) => r.delegation === mode);
 }
