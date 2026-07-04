@@ -123,7 +123,7 @@ export class ElectronicInvoiceProcessorService {
 				{ transactionId: data.transactionId },
 				"Submitting invoice to tax authority",
 			);
-			const taxAuthority = await getTaxAuthority(data.companyId, "PE");
+			const taxAuthority = await getTaxAuthority(Number(data.companyId), "PE");
 			const submissionResult = await taxAuthority.sendInvoice({
 				xmlContent: signedXML,
 				invoiceNumber: data.invoiceNumber,
