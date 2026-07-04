@@ -32,3 +32,6 @@ apps/web/.mf/
 .atl/
 .pi/
 .pi-subagents/
+
+# Bun cache (never commit)
+~/.bun/
