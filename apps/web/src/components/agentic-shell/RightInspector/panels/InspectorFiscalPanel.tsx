@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Activity, AlertTriangle, CheckCircle, RefreshCw } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface InspectorFiscalPanelProps {
 	id: string;
@@ -34,7 +34,10 @@ function getHealthLabel(score: number): string {
 	return "Alto";
 }
 
-export function InspectorFiscalPanel({ id: _id, title: _title }: InspectorFiscalPanelProps) {
+export function InspectorFiscalPanel({
+	id: _id,
+	title: _title,
+}: InspectorFiscalPanelProps) {
 	const [health, setHealth] = useState<FiscalHealthScore | null>(null);
 	const [loading, setLoading] = useState(true);
 
@@ -88,25 +91,43 @@ export function InspectorFiscalPanel({ id: _id, title: _title }: InspectorFiscal
 				<div className="mt-3 grid grid-cols-2 gap-2 text-[10px]">
 					<div className="rounded bg-[var(--surface-3)] p-1.5">
 						<div className="text-[var(--text-muted)]">SUNAT</div>
-						<div style={{ color: getHealthColor(health?.categories.sunatSync ?? 100) }}>
+						<div
+							style={{
+								color: getHealthColor(health?.categories.sunatSync ?? 100),
+							}}
+						>
 							{health?.categories.sunatSync ?? 100}%
 						</div>
 					</div>
 					<div className="rounded bg-[var(--surface-3)] p-1.5">
 						<div className="text-[var(--text-muted)]">IGV</div>
-						<div style={{ color: getHealthColor(health?.categories.igvCompliance ?? 85) }}>
+						<div
+							style={{
+								color: getHealthColor(health?.categories.igvCompliance ?? 85),
+							}}
+						>
 							{health?.categories.igvCompliance ?? 85}%
 						</div>
 					</div>
 					<div className="rounded bg-[var(--surface-3)] p-1.5">
 						<div className="text-[var(--text-muted)]">Discrep.</div>
-						<div style={{ color: getHealthColor(health?.categories.discrepancyRate ?? 90) }}>
+						<div
+							style={{
+								color: getHealthColor(health?.categories.discrepancyRate ?? 90),
+							}}
+						>
 							{health?.categories.discrepancyRate ?? 90}%
 						</div>
 					</div>
 					<div className="rounded bg-[var(--surface-3)] p-1.5">
 						<div className="text-[var(--text-muted)]">Vencim.</div>
-						<div style={{ color: getHealthColor(health?.categories.deadlineProximity ?? 100) }}>
+						<div
+							style={{
+								color: getHealthColor(
+									health?.categories.deadlineProximity ?? 100,
+								),
+							}}
+						>
 							{health?.categories.deadlineProximity ?? 100}%
 						</div>
 					</div>

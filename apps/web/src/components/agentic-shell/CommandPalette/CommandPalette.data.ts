@@ -1,19 +1,19 @@
 import {
-	PlusCircle,
+	AlertCircle,
 	ClipboardCheck,
 	Cpu,
-	Timer,
-	Puzzle,
-	FileSearch,
-	Settings,
-	Upload,
 	Download,
+	FileSearch,
 	FileText,
-	Search,
 	Play,
-	AlertCircle,
+	PlusCircle,
+	Puzzle,
+	Search,
+	Settings,
+	Timer,
+	Upload,
 } from "lucide-react";
-import type { PaletteCommand, CommandCategory } from "./CommandPalette.types";
+import type { CommandCategory, PaletteCommand } from "./CommandPalette.types";
 
 export const COMMAND_PALETTE_COMMANDS: PaletteCommand[] = [
 	// ─── NAVIGATION ───
@@ -131,7 +131,8 @@ export const COMMAND_PALETTE_COMMANDS: PaletteCommand[] = [
 	{
 		id: "agent-nightly-run",
 		label: "Fiscal Agent — Ejecutar nightly run",
-		description: "Ejecutar pipeline nocturno de categorización y reconciliación",
+		description:
+			"Ejecutar pipeline nocturno de categorización y reconciliación",
 		icon: Play,
 		category: "agent",
 		action: () => {
@@ -169,7 +170,8 @@ export const COMMAND_PALETTE_COMMANDS: PaletteCommand[] = [
 	{
 		id: "agent-anomalies",
 		label: "Anomaly Detector — Revisar anomalías",
-		description: "Detectar IGV anómalo, duplicación de vendors, montos circulares",
+		description:
+			"Detectar IGV anómalo, duplicación de vendors, montos circulares",
 		icon: AlertCircle,
 		category: "agent",
 		action: () => {},
