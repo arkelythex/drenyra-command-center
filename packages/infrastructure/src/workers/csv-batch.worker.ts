@@ -3,12 +3,12 @@
  */
 
 import { Job, Worker } from "bullmq";
-import { getRedisConnection, isRedisConfigured } from "./redis";
+import { getRedisConnection, isRedisConfigured } from "../queues/redis";
 import type { CsvBatchJobData, CsvBatchResult } from "../queues/csv-batch.queue";
 import { loggers } from "../logger";
 
 const CSV_BATCH_QUEUE = "csv-batch-agent";
-const logger = loggers.module("CsvBatchWorker");
+const logger = loggers.worker;
 
 async function processBatch(job: Job<CsvBatchJobData>): Promise<CsvBatchResult> {
 	const results: CsvBatchResult["results"] = [];

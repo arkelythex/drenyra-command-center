@@ -16,6 +16,7 @@ import { aiWorkersRoutes } from "./features/ai-swarm/workers";
 import { apiMarketplaceModule } from "./features/api-marketplace";
 import { skillsRoutes } from "./features/skills";
 import { automationsRoutes } from "./features/automations";
+import { authRoutes } from "./features/auth/auth.routes";
 import { evidenceV2Routes } from "./features/evidence-v2";
 import { automationStudioRoutes } from "./features/automation-studio";
 import { bankingRoutes } from "./features/banking";
