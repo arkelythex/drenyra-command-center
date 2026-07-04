@@ -135,7 +135,7 @@ export const COMMAND_PALETTE_COMMANDS: PaletteCommand[] = [
 		icon: Play,
 		category: "agent",
 		action: () => {
-			fetch("/fiscal-agent/run", {
+			fetch("/api/fiscal-agent/run", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({

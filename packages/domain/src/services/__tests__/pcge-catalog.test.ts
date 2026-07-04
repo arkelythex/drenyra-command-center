@@ -7,7 +7,10 @@ describe("PCGE Catalog", () => {
 	});
 
 	it("categorizes service invoices correctly", () => {
-		const result = findBestAccount("Servicio de consultoría mensual", "Proveedor SAC");
+		const result = findBestAccount(
+			"Servicio de consultoría mensual",
+			"Proveedor SAC",
+		);
 		expect(result.account.code).toBe("7011.11");
 		expect(result.confidence).toBeGreaterThanOrEqual(10);
 	});
@@ -23,7 +26,10 @@ describe("PCGE Catalog", () => {
 	});
 
 	it("categorizes purchases correctly", () => {
-		const result = findBestAccount("Compra de útiles de oficina", "Papelería SAC");
+		const result = findBestAccount(
+			"Compra de útiles de oficina",
+			"Papelería SAC",
+		);
 		expect(result.account.code).toBe("6011.11");
 	});
 

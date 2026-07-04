@@ -13,7 +13,9 @@ import type {
 	TransactionCategorization,
 } from "@arkelythex/application/use-cases/fiscal-agent/types";
 
-export class CategorizerStep implements FiscalAgentStep<ProcessableTransaction[], CategorizeOutput> {
+export class CategorizerStep
+	implements FiscalAgentStep<ProcessableTransaction[], CategorizeOutput>
+{
 	readonly name = "categorize";
 
 	async execute(

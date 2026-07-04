@@ -41,7 +41,7 @@ export function InspectorFiscalPanel({ id: _id, title: _title }: InspectorFiscal
 	useEffect(() => {
 		async function fetchHealth() {
 			try {
-				const res = await fetch("/fiscal-agent/health", {
+				const res = await fetch("/api/fiscal-agent/health", {
 					headers: {
 						"X-Organization-Id": "1",
 						"X-Company-Id": "default",
