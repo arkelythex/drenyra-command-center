@@ -51,7 +51,7 @@ export function startFiscalAgentWorker(): Worker | null {
 			await processJob(job);
 		},
 		{
-			connection: getRedisConnection(),
+			connection: getRedisConnection() as never,
 			concurrency: 3,
 			lockDuration: 300_000, // 5 min
 		},

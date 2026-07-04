@@ -50,7 +50,7 @@ export function getCsvBatchQueue(): Queue | null {
 	if (!isRedisConfigured()) return null;
 	if (!queue) {
 		queue = new Queue(CSV_BATCH_QUEUE, {
-			connection: getRedisConnection(),
+			connection: getRedisConnection() as never,
 			defaultJobOptions: {
 				attempts: 3,
 				backoff: { type: "exponential", delay: 2000 },

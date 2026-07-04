@@ -69,7 +69,7 @@ export function startCsvBatchWorker(): Worker | null {
 	if (worker) return worker;
 
 	worker = new Worker<CsvBatchJobData>(CSV_BATCH_QUEUE, processBatch, {
-		connection: getRedisConnection(),
+		connection: getRedisConnection() as never,
 		concurrency: 10,
 		lockDuration: 300_000,
 	});
