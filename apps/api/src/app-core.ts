@@ -277,12 +277,12 @@ const baseApp = new Elysia()
 					{
 						name: "Evidence",
 						description:
+							"Evidence management: upload, classify, validate, and link to fiscal entities",
+					},
 					{
 						name: "Fiscal Agent",
 						description:
 							"24/7 autonomous fiscal agent: nightly categorization, SUNAT reconciliation, exceptions",
-					},
-							"Evidence management: upload, classify, validate, and link to fiscal entities",
 					},
 					{
 						name: "Firm",

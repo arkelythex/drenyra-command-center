@@ -22,7 +22,7 @@ export function getFiscalAgentQueue(): Queue | null {
 	if (!isRedisConfigured()) return null;
 	if (!queueInstance) {
 		queueInstance = new Queue(FISCAL_AGENT_QUEUE, {
-			connection: getRedisConnection(),
+			connection: getRedisConnection() as never,
 			defaultJobOptions: {
 				attempts: 3,
 				backoff: { type: "exponential", delay: 2000 },
@@ -38,7 +38,7 @@ export function getFiscalAgentQueueEvents(): QueueEvents | null {
 	if (!isRedisConfigured()) return null;
 	if (!queueEventsInstance) {
 		queueEventsInstance = new QueueEvents(FISCAL_AGENT_QUEUE, {
-			connection: getRedisConnection(),
+			connection: getRedisConnection() as never,
 		});
 	}
 	return queueEventsInstance;
