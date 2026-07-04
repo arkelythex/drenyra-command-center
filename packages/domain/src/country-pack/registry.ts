@@ -1,11 +1,15 @@
 import type { CountryCode } from "../types/tax-identifier";
 import { peruCountryPack } from "./peru";
 import { mexicoCountryPack } from "./mexico";
+import { chileCountryPack } from "./chile";
+import { colombiaCountryPack } from "./colombia";
 import type { CountryPack } from "./types";
 
 const packs: Partial<Record<CountryCode, CountryPack>> = {
 	PE: peruCountryPack,
 	MX: mexicoCountryPack,
+	CL: chileCountryPack,
+	CO: colombiaCountryPack,
 };
 
 export function getCountryPack(code: CountryCode): CountryPack {
