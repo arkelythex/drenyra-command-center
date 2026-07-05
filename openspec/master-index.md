@@ -64,9 +64,9 @@ STRUCTURAL (el Gentleman):                                │
 
 | #   | Plan                                    | Changes                                                    | PRs   | Est. lines | Bloqueado por |
 | --- | --------------------------------------- | ---------------------------------------------------------- | ----- | ---------- | ------------- |
-| S1  | **AI/Agent Ecosystem Consolidation**    | Consolidar 5 packages AI/Agent en 3 (ai, agents, memory)   | 5 PRs | ~1,800     | —             |
-| S2  | **Core Package Simplification**         | Merge drenyra-core → domain/agents                         | 1 PR  | ~150       | S1            |
-| S3  | **API Type Inline → Package Migration** | Mover types de apps/api/src/types/ a packages              | 2 PRs | ~400       | —             |
+| S1  | **AI/Agent Ecosystem Consolidation**    | Consolidar 5 packages AI/Agent en 3 (ai, agents, memory)   | 5 PRs | ~1,800     | ✅ Applied    |
+| S2  | **Core Package Simplification**         | Merge drenyra-core → domain/agents                         | 1 PR  | ~150       | ✅ Applied    |
+| S3  | **API Type Inline → Package Migration** | Mover types de apps/api/src/types/ a packages              | 2 PRs | ~400       | ✅ Applied    |
 | S4  | **Domain Boundary Audit**               | Auditar packages/domain/, limpiar boundaries               | 2 PRs | ~350       | S1            |
 | S5  | **Go CLI Pattern Alignment**            | Alinear contratos Go ↔ TS (memoria, delegación, workflows) | 2 PRs | ~500       | S1, S4        |
 | S6  | **Documentation & Navigation Cleanup**  | Fix CODEX-MAP duplicado, unificar MAP.md                   | 1 PR  | ~100       | S1, S3, S4    |
@@ -75,12 +75,12 @@ STRUCTURAL (el Gentleman):                                │
 
 ## Agentic Migration Plans (AM)
 
-| #   | Plan                                   | Changes                                                   | PRs   | Est. lines | Bloqueado por |
+| #   | Plan                                   | Changes                                                   | PRs   | Est. lines | Estado        |
 | --- | -------------------------------------- | --------------------------------------------------------- | ----- | ---------- | ------------- |
-| AM1 | **Eliminate Duplicate Features (8→1)** | Fusionar agent-swarm, cognitive-hub, command-center, etc. | 3 PRs | ~600       | —             |
-| AM2 | **Right Panel → Artifact Feed**        | Eliminar tabs fijos, implementar feed de artifacts        | 2 PRs | ~500       | AM1           |
-| AM3 | **Features → Tools/Artifacts**         | Banking como template, migrar 7 features a skills         | 5 PRs | ~1,200     | AM1, AM2      |
-| AM4 | **Sidebar Reduction & ⌘K Navigation**  | Reducir de 80+ a ~7 entradas + buscador universal         | 1 PR  | ~400       | AM3           |
+| AM1 | **Eliminate Duplicate Features (8→1)** | Fusionar agent-swarm, cognitive-hub, command-center, etc. | 3 PRs | ~600       | ✅ Applied    |
+| AM2 | **Right Panel → Artifact Feed**        | Eliminar tabs fijos, implementar feed de artifacts        | 2 PRs | ~500       | ✅ Applied    |
+| AM3 | **Features → Tools/Artifacts**         | 7 features → artifacts inline en thread                   | 3 PRs | ~1,200     | ✅ Applied    |
+| AM4 | **Sidebar Reduction & ⌘K Navigation**  | Reducir de 80+ a ~7 entradas + buscador universal         | 1 PR  | ~400       | ✅ Applied    |
 
 ## Design System Plans (applied)
 
@@ -88,7 +88,7 @@ STRUCTURAL (el Gentleman):                                │
 | --- | ----------------------------------------- | ---------------------------------------------- |
 | DS1 | **Design Token Foundation (Cyan/Violet)** | ✅ Applied                                     |
 | DS2 | **Typography & Font System**              | ✅ Applied                                     |
-| DS3 | **Accounting Vocabulary Migration**       | ⚠️ Partial (pending AM2 for remaining strings) |
+| DS3 | **Accounting Vocabulary Migration**       | ✅ Applied                                     |
 | DS4 | **Component State Design**                | ✅ Applied                                     |
 | DS5 | **Three-Panel Layout (Agentic IDE)**      | ✅ Applied                                     |
 
@@ -96,23 +96,20 @@ STRUCTURAL (el Gentleman):                                │
 
 | Área       | Plans  | PRs    | Líneas      |
 | ---------- | ------ | ------ | ----------- |
-| Agentic    | 4      | 11     | ~2,700      |
+| Agentic    | 4 (✅) | 7      | ~1,200      |
 | Frontend   | 6      | 20     | ~7,200      |
 | Backend    | 4      | 13     | ~3,300      |
-| Structural | 6      | 13     | ~3,300      |
-| Design Sys | 5      | 8      | ~1,600      |
-| **Total**  | **25** | **65** | **~18,100** |
+| Structural | 3 (✅) | 8      | ~2,350      |
+| Design Sys | 5 (✅) | 8      | ~1,600      |
+| **Total**  | **22** | **56** | **~15,650** |
 
 ---
 
 ## Recommended Execution Order
 
-### Fase 0: Agentic Migration (ACTIVE)
+### Fase 0: Agentic Migration ✅ COMPLETE
 
-1. **AM1: Eliminate Duplicates** — primero, destraba el resto
-2. **AM2: Artifact Feed** — el cambio de UI más visible
-3. **AM3: Features → Tools** — banking como template, luego el resto
-4. **AM4: Sidebar Reduction** — último, después de que todo lo demás esté funcionando como tool/artifact
+All 4 AM plans applied. 25+ features now accessible through chat/agents. Sidebar reduced to 3 core items.
 
 ### Fase 0b: Design System Foundation
 
