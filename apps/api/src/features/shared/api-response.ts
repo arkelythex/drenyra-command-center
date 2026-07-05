@@ -11,9 +11,18 @@ import type { RunbookReference } from "../../lib/compliance-runbooks";
  * @typeParam T - Generic type parameter for ApiSuccess.
  */
 
+export interface ApiSuccessMeta {
+	total?: number;
+	limit?: number;
+	offset?: number;
+	cursor?: string;
+}
+
 export interface ApiSuccess<T> {
 	success: true;
 	data: T;
+	/** Pagination and query metadata — present on list endpoints */
+	meta?: ApiSuccessMeta;
 }
 
 /**
@@ -38,6 +47,7 @@ export interface ApiFailure {
  * ok operation.
  *
  * @param data - Input for data.
+ * @param meta - Optional pagination/query metadata.
  * @returns Result of ok.
  * @example
  * ```ts
@@ -47,8 +57,8 @@ export interface ApiFailure {
  * @typeParam T - Generic type parameter for ok.
  */
 
-export function ok<T>(data: T): ApiSuccess<T> {
-	return { success: true, data };
+export function ok<T>(data: T, meta?: ApiSuccessMeta): ApiSuccess<T> {
+	return meta ? { success: true, data, meta } : { success: true, data };
 }
 
 /**

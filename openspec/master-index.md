@@ -67,7 +67,7 @@ STRUCTURAL (el Gentleman):                                │
 | S1  | **AI/Agent Ecosystem Consolidation**    | Consolidar 5 packages AI/Agent en 3 (ai, agents, memory)   | 5 PRs | ~1,800     | ✅ Applied    |
 | S2  | **Core Package Simplification**         | Merge drenyra-core → domain/agents                         | 1 PR  | ~150       | ✅ Applied    |
 | S3  | **API Type Inline → Package Migration** | Mover types de apps/api/src/types/ a packages              | 2 PRs | ~400       | ✅ Applied    |
-| S4  | **Domain Boundary Audit**               | Auditar packages/domain/, limpiar boundaries               | 2 PRs | ~350       | S1            |
+| S4  | **Domain Boundary Audit**               | Auditar packages/domain/, limpiar boundaries               | 1 PR  | ~115       | ✅ Applied     |
 | S5  | **Go CLI Pattern Alignment**            | Alinear contratos Go ↔ TS (memoria, delegación, workflows) | 2 PRs | ~500       | S1, S4        |
 | S6  | **Documentation & Navigation Cleanup**  | Fix CODEX-MAP duplicado, unificar MAP.md                   | 1 PR  | ~100       | S1, S3, S4    |
 
