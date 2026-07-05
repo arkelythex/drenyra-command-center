@@ -77,7 +77,6 @@ import { Route as WorkspaceSystemAdminRouteImport } from './routes/workspace/sys
 import { Route as WorkspaceOperationsRouteImport } from './routes/workspace/operations'
 import { Route as WorkspaceFinanceRouteImport } from './routes/workspace/finance'
 import { Route as WorkspaceComplianceRouteImport } from './routes/workspace/compliance'
-import { Route as ThreadsNewRouteImport } from './routes/threads/new'
 import { Route as ThreadsThreadIdRouteImport } from './routes/threads/$threadId'
 import { Route as TesoreriaReconciliationsRouteImport } from './routes/tesoreria/reconciliations'
 import { Route as TesoreriaCashflowRouteImport } from './routes/tesoreria/cashflow'
@@ -482,11 +481,6 @@ const WorkspaceFinanceRoute = WorkspaceFinanceRouteImport.update({
 const WorkspaceComplianceRoute = WorkspaceComplianceRouteImport.update({
   id: '/workspace/compliance',
   path: '/workspace/compliance',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ThreadsNewRoute = ThreadsNewRouteImport.update({
-  id: '/threads/new',
-  path: '/threads/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ThreadsThreadIdRoute = ThreadsThreadIdRouteImport.update({
@@ -947,7 +941,6 @@ export interface FileRoutesByFullPath {
   '/tesoreria/cashflow': typeof TesoreriaCashflowRoute
   '/tesoreria/reconciliations': typeof TesoreriaReconciliationsRoute
   '/threads/$threadId': typeof ThreadsThreadIdRoute
-  '/threads/new': typeof ThreadsNewRoute
   '/workspace/compliance': typeof WorkspaceComplianceRoute
   '/workspace/finance': typeof WorkspaceFinanceRoute
   '/workspace/operations': typeof WorkspaceOperationsRoute
@@ -1078,7 +1071,6 @@ export interface FileRoutesByTo {
   '/tesoreria/cashflow': typeof TesoreriaCashflowRoute
   '/tesoreria/reconciliations': typeof TesoreriaReconciliationsRoute
   '/threads/$threadId': typeof ThreadsThreadIdRoute
-  '/threads/new': typeof ThreadsNewRoute
   '/workspace/compliance': typeof WorkspaceComplianceRoute
   '/workspace/finance': typeof WorkspaceFinanceRoute
   '/workspace/operations': typeof WorkspaceOperationsRoute
@@ -1215,7 +1207,6 @@ export interface FileRoutesById {
   '/tesoreria/cashflow': typeof TesoreriaCashflowRoute
   '/tesoreria/reconciliations': typeof TesoreriaReconciliationsRoute
   '/threads/$threadId': typeof ThreadsThreadIdRoute
-  '/threads/new': typeof ThreadsNewRoute
   '/workspace/compliance': typeof WorkspaceComplianceRoute
   '/workspace/finance': typeof WorkspaceFinanceRoute
   '/workspace/operations': typeof WorkspaceOperationsRoute
@@ -1353,7 +1344,6 @@ export interface FileRouteTypes {
     | '/tesoreria/cashflow'
     | '/tesoreria/reconciliations'
     | '/threads/$threadId'
-    | '/threads/new'
     | '/workspace/compliance'
     | '/workspace/finance'
     | '/workspace/operations'
@@ -1484,7 +1474,6 @@ export interface FileRouteTypes {
     | '/tesoreria/cashflow'
     | '/tesoreria/reconciliations'
     | '/threads/$threadId'
-    | '/threads/new'
     | '/workspace/compliance'
     | '/workspace/finance'
     | '/workspace/operations'
@@ -1620,7 +1609,6 @@ export interface FileRouteTypes {
     | '/tesoreria/cashflow'
     | '/tesoreria/reconciliations'
     | '/threads/$threadId'
-    | '/threads/new'
     | '/workspace/compliance'
     | '/workspace/finance'
     | '/workspace/operations'
@@ -1727,7 +1715,6 @@ export interface RootRouteChildren {
   TesoreriaCashflowRoute: typeof TesoreriaCashflowRoute
   TesoreriaReconciliationsRoute: typeof TesoreriaReconciliationsRoute
   ThreadsThreadIdRoute: typeof ThreadsThreadIdRoute
-  ThreadsNewRoute: typeof ThreadsNewRoute
   WorkspaceComplianceRoute: typeof WorkspaceComplianceRoute
   WorkspaceFinanceRoute: typeof WorkspaceFinanceRoute
   WorkspaceOperationsRoute: typeof WorkspaceOperationsRoute
@@ -2215,13 +2202,6 @@ declare module '@tanstack/react-router' {
       path: '/workspace/compliance'
       fullPath: '/workspace/compliance'
       preLoaderRoute: typeof WorkspaceComplianceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/threads/new': {
-      id: '/threads/new'
-      path: '/threads/new'
-      fullPath: '/threads/new'
-      preLoaderRoute: typeof ThreadsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/threads/$threadId': {
@@ -2920,7 +2900,6 @@ const rootRouteChildren: RootRouteChildren = {
   TesoreriaCashflowRoute: TesoreriaCashflowRoute,
   TesoreriaReconciliationsRoute: TesoreriaReconciliationsRoute,
   ThreadsThreadIdRoute: ThreadsThreadIdRoute,
-  ThreadsNewRoute: ThreadsNewRoute,
   WorkspaceComplianceRoute: WorkspaceComplianceRoute,
   WorkspaceFinanceRoute: WorkspaceFinanceRoute,
   WorkspaceOperationsRoute: WorkspaceOperationsRoute,
