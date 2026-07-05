@@ -1,16 +1,17 @@
 import { Elysia } from "elysia";
 
 export type {
-	SireDocumentRecord,
 	SireDiffRow,
 	SireDiffRowDecision,
+	SireDocumentRecord,
 } from "./services/sire-diff.service";
 export {
-	SireDiffService,
 	buildDiffRows,
 	buildSummary,
+	SireDiffService,
 } from "./services/sire-diff.service";
 export { SireDiffLedgerService } from "./services/sire-diff-ledger.service";
+
 import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
 import { enforceSireRateLimit } from "./middleware/rate-limit.middleware";
 import { enforceSireAuth } from "./middleware/sire-auth.middleware";

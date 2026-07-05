@@ -5,12 +5,12 @@
  * data mapping without requiring a real PostgreSQL instance.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { createPostgresTraceEvidenceStore } from "../../src/control-plane/trace-evidence";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type {
 	EvidenceTraceBundle,
 	TenantCompanyRucScope,
 } from "../../src/control-plane/trace-evidence";
+import { createPostgresTraceEvidenceStore } from "../../src/control-plane/trace-evidence";
 
 // ============================================================================
 // Helpers
@@ -90,9 +90,7 @@ function createMockDb() {
 					then: vi.fn(),
 					catch: vi.fn(),
 				})),
-				then: vi
-					.fn()
-					.mockResolvedValue(Array.from(store.values())),
+				then: vi.fn().mockResolvedValue(Array.from(store.values())),
 				catch: vi.fn(),
 				orderBy: vi.fn(),
 				limit: vi.fn(),
@@ -177,9 +175,7 @@ describe("createPostgresTraceEvidenceStore", () => {
 		it("should save multiple bundles independently", () => {
 			const store = createPostgresTraceEvidenceStore(db as never);
 
-			store.save(
-				createSampleBundle({ traceId: "trace-1" }),
-			);
+			store.save(createSampleBundle({ traceId: "trace-1" }));
 			store.save(
 				createSampleBundle({
 					traceId: "trace-2",
@@ -247,9 +243,7 @@ describe("createPostgresTraceEvidenceStore", () => {
 			expect(result.found).toBe(true);
 			if (result.found) {
 				expect(result.bundle.approvalLineage).toBeDefined();
-				expect(result.bundle.approvalLineage?.approvalStatus).toBe(
-					"approved",
-				);
+				expect(result.bundle.approvalLineage?.approvalStatus).toBe("approved");
 				expect(result.bundle.approvalLineage?.decision).toBe("approved");
 			}
 		});

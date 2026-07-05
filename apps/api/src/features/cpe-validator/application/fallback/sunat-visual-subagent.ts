@@ -133,7 +133,8 @@ function parseTxtResponse(txtPayload: string): SunatCpeValidationResponse {
 
 	const codigo = map.get("CODIGO");
 	const mensaje = map.get("MENSAJE");
-	const observaciones = map.get("OBSERVACIONES")
+	const observaciones = map
+		.get("OBSERVACIONES")
 		?.split("|")
 		.map((item) => item.trim())
 		.filter(Boolean);
@@ -143,7 +144,8 @@ function parseTxtResponse(txtPayload: string): SunatCpeValidationResponse {
 		estado,
 		mensaje,
 		codigoRespuesta: codigo,
-		observaciones: observaciones && observaciones.length > 0 ? observaciones : undefined,
+		observaciones:
+			observaciones && observaciones.length > 0 ? observaciones : undefined,
 	};
 }
 
@@ -163,7 +165,9 @@ function parseTxtResponse(txtPayload: string): SunatCpeValidationResponse {
  */
 
 export class SunatVisualFallbackSubagent {
-	async run(request: SunatCpeValidationRequest): Promise<SunatVisualFallbackResult> {
+	async run(
+		request: SunatCpeValidationRequest,
+	): Promise<SunatVisualFallbackResult> {
 		const startedAt = Date.now();
 		const mode = resolveFallbackMode();
 		if (mode === "disabled") {
@@ -176,7 +180,9 @@ export class SunatVisualFallbackSubagent {
 		steps.push("txt-download");
 		steps.push("txt-local-parse");
 
-		const shouldDelay = parseBoolEnv(process.env.SUNAT_AGENTIC_FALLBACK_SLOW_MODE);
+		const shouldDelay = parseBoolEnv(
+			process.env.SUNAT_AGENTIC_FALLBACK_SLOW_MODE,
+		);
 		if (shouldDelay) {
 			await new Promise((resolve) => setTimeout(resolve, 150));
 		}

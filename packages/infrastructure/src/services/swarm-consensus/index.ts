@@ -14,8 +14,8 @@ import type {
 	DynamicConsensusOptions,
 } from "./types";
 
+export type { DynamicConsensusOptions, FalsePositiveStats } from "./types";
 export { THRESHOLD_CONFIG };
-export type { FalsePositiveStats, DynamicConsensusOptions } from "./types";
 
 /**
  * swarmConsensusService const.

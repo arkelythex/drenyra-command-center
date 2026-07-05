@@ -3,6 +3,12 @@
  * Orchestrates querying accounts with various filters and formats
  */
 
+import type { Account } from "@drenyra/domain/entities/Account";
+import type {
+	AccountFilters,
+	AccountRepository,
+	AccountWithChildren,
+} from "@drenyra/domain/repositories/account.repository";
 import {
 	type AccountFiltersDTO,
 	type AccountHierarchyDTO,
@@ -11,12 +17,6 @@ import {
 	formatBalance,
 	LEVEL_NAMES,
 } from "../../dtos/account/account.dto";
-import type { Account } from "@drenyra/domain/entities/Account";
-import type {
-	AccountFilters,
-	AccountRepository,
-	AccountWithChildren,
-} from "@drenyra/domain/repositories/account.repository";
 
 /**
  * GetAccountsUseCase class.

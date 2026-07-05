@@ -1,4 +1,4 @@
-import { useHaptics, useFinancialHaptics } from "@/hooks/useHaptics";
+import { useFinancialHaptics, useHaptics } from "@/hooks/useHaptics";
 import type { Entity } from "../types/entity.types";
 import { EntityAuditPanel } from "./entity-detail-view/audit-panel";
 import { EntityDetailHeader } from "./entity-detail-view/header";

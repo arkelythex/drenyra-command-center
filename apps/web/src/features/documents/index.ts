@@ -9,10 +9,9 @@ export { DocumentsView } from "./components/DocumentsView";
 
 // Shared Components
 export { DocumentStatusBadge } from "./components/shared/DocumentStatusBadge";
-
+export { documentsKeys, documentsQueryOptions } from "./documents.query";
 // Hooks
 export { useDocuments } from "./hooks/useDocuments";
-export { documentsKeys, documentsQueryOptions } from "./documents.query";
 
 // Types
 export type { Document, DocumentStatus } from "./types/document.types";

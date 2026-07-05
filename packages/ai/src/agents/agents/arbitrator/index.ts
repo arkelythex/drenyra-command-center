@@ -1,1 +1,1 @@
-export { ArbitratorAgent } from './agent';
+export { ArbitratorAgent } from "./agent";

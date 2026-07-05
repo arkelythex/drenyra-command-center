@@ -1,11 +1,11 @@
-export type { SkillId } from "./skill-id";
-export { createSkillId, skillIdFromString } from "./skill-id";
+export type { SkillProps } from "./skill";
+export { Skill } from "./skill";
 export type { SkillCapability } from "./skill-capability";
 export type { SkillCategory } from "./skill-category";
 export { SKILL_CATEGORIES, SKILL_CATEGORY_LABELS } from "./skill-category";
-export type { SkillStatus, InstallationStatus } from "./skill-status";
-export { SKILL_STATUSES, INSTALLATION_STATUSES } from "./skill-status";
-export { Skill } from "./skill";
-export type { SkillProps } from "./skill";
-export { SkillInstallation } from "./skill-installation";
+export type { SkillId } from "./skill-id";
+export { createSkillId, skillIdFromString } from "./skill-id";
 export type { SkillInstallationProps } from "./skill-installation";
+export { SkillInstallation } from "./skill-installation";
+export type { InstallationStatus, SkillStatus } from "./skill-status";
+export { INSTALLATION_STATUSES, SKILL_STATUSES } from "./skill-status";

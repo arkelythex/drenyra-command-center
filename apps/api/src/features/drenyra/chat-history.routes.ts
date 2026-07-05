@@ -1,10 +1,12 @@
-import { db } from "@drenyra/persistence";
-import { chatSessions, messages } from "@drenyra/persistence";
-import { eq, desc, asc, and } from "drizzle-orm";
+import { chatSessions, db, messages } from "@drenyra/persistence";
+import { and, asc, desc, eq } from "drizzle-orm";
 import { Elysia, t } from "elysia";
-import { ok, fail } from "../shared/api-response";
+import { fail, ok } from "../shared/api-response";
 
-function readHeader(headers: Record<string, string | undefined>, key: string): string {
+function readHeader(
+	headers: Record<string, string | undefined>,
+	key: string,
+): string {
 	return headers[key]?.trim() ?? "";
 }
 
@@ -22,9 +24,13 @@ function resolveContext(
 		return {
 			ok: false,
 			status: 400,
-			error: fail("x-company-id header is required", "TENANT_CONTEXT_REQUIRED", {
-				details: { missingHeaders: ["x-company-id"] },
-			}),
+			error: fail(
+				"x-company-id header is required",
+				"TENANT_CONTEXT_REQUIRED",
+				{
+					details: { missingHeaders: ["x-company-id"] },
+				},
+			),
 		};
 	}
 
@@ -187,8 +193,13 @@ export const chatHistoryRoutes = new Elysia({
 				role: row.role,
 				content: row.content,
 				timestamp: row.timestamp.toISOString(),
-				...(row.metadata && typeof row.metadata === "object" && "artifactTypes" in row.metadata
-					? { artifactTypes: (row.metadata as { artifactTypes: string[] }).artifactTypes }
+				...(row.metadata &&
+				typeof row.metadata === "object" &&
+				"artifactTypes" in row.metadata
+					? {
+							artifactTypes: (row.metadata as { artifactTypes: string[] })
+								.artifactTypes,
+						}
 					: {}),
 			}));
 
@@ -197,7 +208,9 @@ export const chatHistoryRoutes = new Elysia({
 		{
 			query: t.Object({
 				companyId: t.String({ minLength: 1 }),
-				limit: t.Optional(t.Numeric({ default: 100, minimum: 1, maximum: 1000 })),
+				limit: t.Optional(
+					t.Numeric({ default: 100, minimum: 1, maximum: 1000 }),
+				),
 			}),
 		},
 	);

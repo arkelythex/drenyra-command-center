@@ -4,9 +4,9 @@
  * Split from 801 lines → 3 modules (types, shadow, matching) + facade.
  */
 
-import { bankTransactions } from "@drenyra/persistence/schema";
 import { db } from "@drenyra/persistence/client";
 import { eq } from "@drenyra/persistence/query";
+import { bankTransactions } from "@drenyra/persistence/schema";
 import { SecureLogger } from "@drenyra/shared/secure-logger";
 import { ReconciliationWorkerClient } from "../../../../shared/clients/reconciliation-worker.client";
 import type { MatchCandidate } from "../../domain/services/matching-strategy";

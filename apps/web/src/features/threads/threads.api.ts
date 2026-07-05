@@ -23,7 +23,9 @@ import type {
 
 // ─── Thread CRUD ─────────────────────────────────────────────────────────────
 
-export async function listThreads(filters?: ThreadFilters): Promise<PaginatedResult<ThreadSummary>> {
+export async function listThreads(
+	filters?: ThreadFilters,
+): Promise<PaginatedResult<ThreadSummary>> {
 	return unwrap(
 		api.api.threads.get({
 			query: {
@@ -32,7 +34,9 @@ export async function listThreads(filters?: ThreadFilters): Promise<PaginatedRes
 				...(filters?.priority && { priority: filters.priority }),
 				...(filters?.search && { search: filters.search }),
 				...(filters?.limit !== undefined && { limit: String(filters.limit) }),
-				...(filters?.offset !== undefined && { offset: String(filters.offset) }),
+				...(filters?.offset !== undefined && {
+					offset: String(filters.offset),
+				}),
 			},
 			headers: getGovernanceAuditHeaders(),
 		}),
@@ -47,7 +51,9 @@ export async function getThread(id: string): Promise<ThreadDetail> {
 	);
 }
 
-export async function createThread(data: CreateThreadPayload): Promise<ThreadSummary> {
+export async function createThread(
+	data: CreateThreadPayload,
+): Promise<ThreadSummary> {
 	return unwrap(
 		api.api.threads.post(data, {
 			headers: getGovernanceAuditHeaders(),
@@ -55,7 +61,10 @@ export async function createThread(data: CreateThreadPayload): Promise<ThreadSum
 	);
 }
 
-export async function updateThread(id: string, data: UpdateThreadPayload): Promise<ThreadSummary> {
+export async function updateThread(
+	id: string,
+	data: UpdateThreadPayload,
+): Promise<ThreadSummary> {
 	return unwrap(
 		api.api.threads({ id }).patch(data, {
 			headers: getGovernanceAuditHeaders(),
@@ -68,7 +77,13 @@ export async function updateThread(id: string, data: UpdateThreadPayload): Promi
 export async function assignAgent(
 	threadId: string,
 	data: AssignAgentPayload,
-): Promise<{ agentId: string; agentName: string; role: string; isActive: boolean; assignedAt: string }> {
+): Promise<{
+	agentId: string;
+	agentName: string;
+	role: string;
+	isActive: boolean;
+	assignedAt: string;
+}> {
 	return unwrap(
 		api.api.threads({ id: threadId }).agents.post(data, {
 			headers: getGovernanceAuditHeaders(),
@@ -76,7 +91,10 @@ export async function assignAgent(
 	);
 }
 
-export async function removeAgent(threadId: string, agentId: string): Promise<void> {
+export async function removeAgent(
+	threadId: string,
+	agentId: string,
+): Promise<void> {
 	await unwrap(
 		api.api.threads({ id: threadId }).agents({ agentId }).delete({
 			headers: getGovernanceAuditHeaders(),
@@ -92,14 +110,19 @@ export async function linkEvidence(
 	note?: string,
 ): Promise<{ linked: boolean }> {
 	return unwrap(
-		api.api.threads({ id: threadId }).evidence.post(
-			{ evidenceId, note },
-			{ headers: getGovernanceAuditHeaders() },
-		),
+		api.api
+			.threads({ id: threadId })
+			.evidence.post(
+				{ evidenceId, note },
+				{ headers: getGovernanceAuditHeaders() },
+			),
 	);
 }
 
-export async function unlinkEvidence(threadId: string, evidenceId: string): Promise<void> {
+export async function unlinkEvidence(
+	threadId: string,
+	evidenceId: string,
+): Promise<void> {
 	await unwrap(
 		api.api.threads({ id: threadId }).evidence({ evidenceId }).delete({
 			headers: getGovernanceAuditHeaders(),
@@ -109,12 +132,14 @@ export async function unlinkEvidence(threadId: string, evidenceId: string): Prom
 
 // ─── Close ───────────────────────────────────────────────────────────────────
 
-export async function closeThread(id: string, closeNote?: string): Promise<ThreadSummary> {
+export async function closeThread(
+	id: string,
+	closeNote?: string,
+): Promise<ThreadSummary> {
 	return unwrap(
-		api.api.threads({ id }).close.post(
-			{ closeNote },
-			{ headers: getGovernanceAuditHeaders() },
-		),
+		api.api
+			.threads({ id })
+			.close.post({ closeNote }, { headers: getGovernanceAuditHeaders() }),
 	);
 }
 
@@ -159,5 +184,8 @@ export async function getQuickActions(
 		}),
 	);
 	// The API returns ok(result) where result.data is the array
-	return (result as unknown as { data: QuickAction[] }).data ?? (result as QuickAction[]);
+	return (
+		(result as unknown as { data: QuickAction[] }).data ??
+		(result as QuickAction[])
+	);
 }

@@ -1,4 +1,4 @@
-import { EVIDENCE_EDGE_KIND, TRUTH_EVENT_KIND } from "../constants";
+import type { EVIDENCE_EDGE_KIND, TRUTH_EVENT_KIND } from "../constants";
 
 export type TruthEventKind =
 	(typeof TRUTH_EVENT_KIND)[keyof typeof TRUTH_EVENT_KIND];

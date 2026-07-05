@@ -6,7 +6,11 @@ export function unwrapOkEnvelope<T>(payload: unknown): T {
 	if (payload === undefined || payload === null) {
 		throw new Error("Empty ledger API response");
 	}
-	if (typeof payload !== "object" || payload === null || !("success" in payload)) {
+	if (
+		typeof payload !== "object" ||
+		payload === null ||
+		!("success" in payload)
+	) {
 		return payload as T;
 	}
 	const body = payload as { success: boolean; data?: unknown; error?: string };

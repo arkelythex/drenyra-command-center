@@ -60,8 +60,10 @@ export function useUpdateSkillConfig() {
 		mutationFn: ({
 			id,
 			config,
-		}: { id: string; config: Record<string, unknown> }) =>
-			skillsApi.updateSkillConfig(id, config),
+		}: {
+			id: string;
+			config: Record<string, unknown>;
+		}) => skillsApi.updateSkillConfig(id, config),
 		onSuccess: () => {
 			queryClient.invalidateQueries({
 				queryKey: skillsApi.skillKeys.installed(),

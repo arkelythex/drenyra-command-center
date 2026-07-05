@@ -10,8 +10,8 @@
 import { PostgresPlatformMcpAuditSink } from "@drenyra/infrastructure";
 import { createPlatformMcpModule } from "./mcp.routes";
 
-export { InMemoryPlatformMcpAuditSink } from "./mcp.audit";
 export type { PlatformMcpAuditEvent, PlatformMcpAuditSink } from "./mcp.audit";
+export { InMemoryPlatformMcpAuditSink } from "./mcp.audit";
 export { createPlatformMcpHandlers } from "./mcp.handlers";
 export { createPlatformMcpModule } from "./mcp.routes";
 

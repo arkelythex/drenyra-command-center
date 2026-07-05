@@ -1,15 +1,15 @@
+import { ArrowRight, Check, RefreshCw, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { RefreshCw, Check, ArrowRight, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MotionDiv } from "@/components/ui/motion-primitives";
-import { useHaptics, useFinancialHaptics } from "@/hooks/useHaptics";
-import { toast } from "sonner";
+import { useFinancialHaptics, useHaptics } from "@/hooks/useHaptics";
+import { confidenceToStatus } from "@/lib/design-tokens/semantic-tokens";
 import { presentError } from "@/lib/error-messages";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { cn } from "@/lib/utils";
 import { useBankingReconciliation } from "../../stores/banking.store";
-import { confidenceToStatus } from "@/lib/design-tokens/semantic-tokens";
 
 interface AutoReconcilePanelProps {
 	accountId: string;

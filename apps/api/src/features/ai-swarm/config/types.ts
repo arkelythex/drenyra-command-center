@@ -11,12 +11,12 @@
  */
 
 export type AgentType =
-  | 'orchestrator'
-  | 'ocr'
-  | 'sunat'
-  | 'pcge'
-  | 'reconciliation'
-  | 'evidence';
+	| "orchestrator"
+	| "ocr"
+	| "sunat"
+	| "pcge"
+	| "reconciliation"
+	| "evidence";
 
 /**
  * Task priority levels
@@ -27,7 +27,7 @@ export type AgentType =
  * ```
  */
 
-export type TaskPriority = 'low' | 'medium' | 'high' | 'critical';
+export type TaskPriority = "low" | "medium" | "high" | "critical";
 
 /**
  * Task status
@@ -39,11 +39,11 @@ export type TaskPriority = 'low' | 'medium' | 'high' | 'critical';
  */
 
 export type TaskStatus =
-  | 'pending'
-  | 'processing'
-  | 'completed'
-  | 'failed'
-  | 'cancelled';
+	| "pending"
+	| "processing"
+	| "completed"
+	| "failed"
+	| "cancelled";
 
 /**
  * Base task interface
@@ -55,13 +55,13 @@ export type TaskStatus =
  */
 
 export interface BaseTask {
-  id: string;
-  type: string;
-  priority: TaskPriority;
-  status: TaskStatus;
-  createdAt: Date;
-  updatedAt: Date;
-  metadata?: Record<string, unknown>;
+	id: string;
+	type: string;
+	priority: TaskPriority;
+	status: TaskStatus;
+	createdAt: Date;
+	updatedAt: Date;
+	metadata?: Record<string, unknown>;
 }
 
 /**
@@ -74,11 +74,11 @@ export interface BaseTask {
  */
 
 export interface TaskAnalysis {
-  shouldParallelize: boolean;
-  batchSize: number;
-  estimatedCost: number;
-  estimatedTime: number; // seconds
-  agentsRequired: AgentType[];
+	shouldParallelize: boolean;
+	batchSize: number;
+	estimatedCost: number;
+	estimatedTime: number; // seconds
+	agentsRequired: AgentType[];
 }
 
 /**
@@ -92,21 +92,21 @@ export interface TaskAnalysis {
  */
 
 export interface AgentResult<T = unknown> {
-  success: boolean;
-  data?: T;
-  error?: {
-    code: string;
-    message: string;
-    details?: unknown;
-  };
-  metadata: {
-    agentType: AgentType;
-    modelUsed: string;
-    tokensUsed: number;
-    costUsd: number;
-    durationMs: number;
-    timestamp: Date;
-  };
+	success: boolean;
+	data?: T;
+	error?: {
+		code: string;
+		message: string;
+		details?: unknown;
+	};
+	metadata: {
+		agentType: AgentType;
+		modelUsed: string;
+		tokensUsed: number;
+		costUsd: number;
+		durationMs: number;
+		timestamp: Date;
+	};
 }
 
 /**
@@ -119,10 +119,10 @@ export interface AgentResult<T = unknown> {
  */
 
 export interface ValidationResult {
-  isValid: boolean;
-  errors: ValidationError[];
-  warnings: ValidationWarning[];
-  confidence: number; // 0-1
+	isValid: boolean;
+	errors: ValidationError[];
+	warnings: ValidationWarning[];
+	confidence: number; // 0-1
 }
 
 /**
@@ -135,10 +135,10 @@ export interface ValidationResult {
  * ```
  */
 export interface ValidationError {
-  field: string;
-  code: string;
-  message: string;
-  severity: 'error' | 'critical';
+	field: string;
+	code: string;
+	message: string;
+	severity: "error" | "critical";
 }
 
 /**
@@ -151,10 +151,10 @@ export interface ValidationError {
  * ```
  */
 export interface ValidationWarning {
-  field: string;
-  code: string;
-  message: string;
-  suggestion?: string;
+	field: string;
+	code: string;
+	message: string;
+	suggestion?: string;
 }
 
 /**
@@ -167,16 +167,16 @@ export interface ValidationWarning {
  */
 
 export interface InvoiceData {
-  id: string;
-  ruc: string;
-  serie: string;
-  numero: string;
-  fecha: string;
-  moneda: import('@drenyra/domain').Currency;
-  subtotal: number;
-  igv: number;
-  total: number;
-  items: InvoiceItem[];
+	id: string;
+	ruc: string;
+	serie: string;
+	numero: string;
+	fecha: string;
+	moneda: import("@drenyra/domain").Currency;
+	subtotal: number;
+	igv: number;
+	total: number;
+	items: InvoiceItem[];
 }
 
 /**
@@ -189,10 +189,10 @@ export interface InvoiceData {
  * ```
  */
 export interface InvoiceItem {
-  descripcion: string;
-  cantidad: number;
-  precioUnitario: number;
-  subtotal: number;
+	descripcion: string;
+	cantidad: number;
+	precioUnitario: number;
+	subtotal: number;
 }
 
 /**
@@ -205,10 +205,10 @@ export interface InvoiceItem {
  */
 
 export interface PCGEClassification {
-  cuenta: string;
-  descripcion: string;
-  debe: number;
-  haber: number;
-  confidence: number;
-  evidence?: string;
+	cuenta: string;
+	descripcion: string;
+	debe: number;
+	haber: number;
+	confidence: number;
+	evidence?: string;
 }

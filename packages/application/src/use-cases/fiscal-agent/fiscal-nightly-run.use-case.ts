@@ -7,6 +7,14 @@
  * @module use-cases/fiscal-agent/fiscal-nightly-run.use-case
  */
 
+import {
+	CalculatorStep,
+	CategorizerStep,
+	CollectorStep,
+	LearnerStep,
+	ReconcilerStep,
+	ReporterStep,
+} from "@drenyra/infrastructure/agents/fiscal-agent";
 import type {
 	CalculateOutput,
 	CategorizeOutput,
@@ -18,15 +26,6 @@ import type {
 	ReportOutput,
 	StepResult,
 } from "./types";
-
-import {
-	CalculatorStep,
-	CategorizerStep,
-	CollectorStep,
-	LearnerStep,
-	ReconcilerStep,
-	ReporterStep,
-} from "@drenyra/infrastructure/agents/fiscal-agent";
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 2000;
@@ -56,33 +55,64 @@ export class FiscalNightlyRunUseCase {
 		const stepResults: FiscalNightlyRunReport["steps"] = [];
 
 		// Step 1: Collect
-		const collect = await this.runStep(new CollectorStep(), undefined, context, stepResults);
+		const collect = await this.runStep(
+			new CollectorStep(),
+			undefined,
+			context,
+			stepResults,
+		);
 
 		// Step 2: Categorize
 		const categorize = collect.success
-			? await this.runStep(new CategorizerStep(), collect.data?.transactions ?? [], context, stepResults)
-			: { success: false } as StepResult<CategorizeOutput>;
+			? await this.runStep(
+					new CategorizerStep(),
+					collect.data?.transactions ?? [],
+					context,
+					stepResults,
+				)
+			: ({ success: false } as StepResult<CategorizeOutput>);
 
 		// Step 3: Calculate
-		const calculate = categorize.success && collect.data
-			? await this.runStep(new CalculatorStep(), {
-					transactions: collect.data.transactions,
-					categorizations: categorize.data?.categorizations ?? [],
-			  }, context, stepResults)
-			: { success: false } as StepResult<CalculateOutput>;
+		const calculate =
+			categorize.success && collect.data
+				? await this.runStep(
+						new CalculatorStep(),
+						{
+							transactions: collect.data.transactions,
+							categorizations: categorize.data?.categorizations ?? [],
+						},
+						context,
+						stepResults,
+					)
+				: ({ success: false } as StepResult<CalculateOutput>);
 
 		// Step 4: Reconcile
 		const reconcile = collect.data
-			? await this.runStep(new ReconcilerStep(), collect.data.transactions, context, stepResults)
-			: { success: false } as StepResult<ReconcileOutput>;
+			? await this.runStep(
+					new ReconcilerStep(),
+					collect.data.transactions,
+					context,
+					stepResults,
+				)
+			: ({ success: false } as StepResult<ReconcileOutput>);
 
 		// Step 5: Report
-		const report = await this.runStep(new ReporterStep(), {
-			collect: collect.data ?? { transactions: [], sireRecords: [] },
-			categorize: categorize.data ?? { categorizations: [] },
-			calculate: calculate.data ?? { calculations: [] },
-			reconcile: reconcile.data ?? { discrepancies: [], matchedCount: 0, unmatchedLocalCount: 0, unmatchedSunatCount: 0 },
-		}, context, stepResults);
+		const report = await this.runStep(
+			new ReporterStep(),
+			{
+				collect: collect.data ?? { transactions: [], sireRecords: [] },
+				categorize: categorize.data ?? { categorizations: [] },
+				calculate: calculate.data ?? { calculations: [] },
+				reconcile: reconcile.data ?? {
+					discrepancies: [],
+					matchedCount: 0,
+					unmatchedLocalCount: 0,
+					unmatchedSunatCount: 0,
+				},
+			},
+			context,
+			stepResults,
+		);
 
 		const completedAt = new Date();
 		const allSuccess = stepResults.every((s) => s.success);
@@ -92,7 +122,11 @@ export class FiscalNightlyRunUseCase {
 			organizationId: params.organizationId,
 			companyId: params.companyId,
 			period: params.period,
-			status: allSuccess ? "SUCCESS" : stepResults.some((s) => s.success) ? "PARTIAL" : "FAILED",
+			status: allSuccess
+				? "SUCCESS"
+				: stepResults.some((s) => s.success)
+					? "PARTIAL"
+					: "FAILED",
 			steps: stepResults,
 			summary: report.data?.summary ?? {
 				totalTransactions: 0,
@@ -108,7 +142,13 @@ export class FiscalNightlyRunUseCase {
 	}
 
 	private async runStep<TInput, TOutput>(
-		step: { readonly name: string; execute(input: TInput, context: FiscalAgentStepContext): Promise<StepResult<TOutput>> },
+		step: {
+			readonly name: string;
+			execute(
+				input: TInput,
+				context: FiscalAgentStepContext,
+			): Promise<StepResult<TOutput>>;
+		},
 		input: TInput,
 		context: FiscalAgentStepContext,
 		results: FiscalNightlyRunReport["steps"],
@@ -135,11 +175,27 @@ export class FiscalNightlyRunUseCase {
 
 		const failed: StepResult<TOutput> = {
 			success: false,
-			errors: [{ code: "STEP_FAILED", message: lastError?.message ?? "Step failed after retries", retryable: false }],
+			errors: [
+				{
+					code: "STEP_FAILED",
+					message: lastError?.message ?? "Step failed after retries",
+					retryable: false,
+				},
+			],
 			warnings: [],
-			metrics: { startedAt: new Date(), completedAt: new Date(), itemsProcessed: 0, itemsFailed: 1 },
+			metrics: {
+				startedAt: new Date(),
+				completedAt: new Date(),
+				itemsProcessed: 0,
+				itemsFailed: 1,
+			},
 		};
-		results.push({ name: step.name, success: false, metrics: failed.metrics, errors: failed.errors });
+		results.push({
+			name: step.name,
+			success: false,
+			metrics: failed.metrics,
+			errors: failed.errors,
+		});
 		return failed;
 	}
 }
@@ -148,7 +204,9 @@ export class FiscalNightlyRunUseCase {
  * CorrectionUseCase — Process user-submitted corrections.
  */
 export class CorrectionUseCase {
-	async execute(corrections: CorrectionInput[]): Promise<{ applied: number; failed: number }> {
+	async execute(
+		corrections: CorrectionInput[],
+	): Promise<{ applied: number; failed: number }> {
 		const learner = new LearnerStep();
 		const result = await learner.execute(corrections, {
 			organizationId: 0,

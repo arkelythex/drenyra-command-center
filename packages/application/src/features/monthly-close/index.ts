@@ -5,12 +5,12 @@
  */
 
 export type {
-	ChecklistStatus,
-	ItemStatus,
-	GateStatus,
-	ItemCategory,
 	ChecklistDTO,
 	ChecklistItemDTO,
-	GateDTO,
+	ChecklistStatus,
 	CloseDashboardDTO,
+	GateDTO,
+	GateStatus,
+	ItemCategory,
+	ItemStatus,
 } from "./types";

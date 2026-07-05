@@ -1,7 +1,7 @@
 export { CreditNote } from "./entity";
 export type {
-	CreditNoteProps,
-	CreditNoteType,
-	CreditNoteStatus,
 	CreditNotePrimitiveData,
+	CreditNoteProps,
+	CreditNoteStatus,
+	CreditNoteType,
 } from "./types";

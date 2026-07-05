@@ -1,4 +1,7 @@
-import type { LedgerAccount, LedgerTransaction } from "../components/ledger-view/ledger-data";
+import type {
+	LedgerAccount,
+	LedgerTransaction,
+} from "../components/ledger-view/ledger-data";
 import { LEDGER_ALL_ACCOUNTS_ID } from "./ledger-constants";
 
 /** Shape returned by GET /ledger/accounts (inner `data`). */
@@ -25,9 +28,10 @@ export interface LedgerApiGlRow {
 	bancarizado: boolean;
 }
 
-export function getCalendarMonthBounds(
-	reference: Date = new Date(),
-): { start: Date; end: Date } {
+export function getCalendarMonthBounds(reference: Date = new Date()): {
+	start: Date;
+	end: Date;
+} {
 	const y = reference.getFullYear();
 	const m = reference.getMonth();
 	return {
@@ -36,7 +40,10 @@ export function getCalendarMonthBounds(
 	};
 }
 
-export function toLedgerPeriodQueryKeys(start: Date, end: Date): { startKey: string; endKey: string } {
+export function toLedgerPeriodQueryKeys(
+	start: Date,
+	end: Date,
+): { startKey: string; endKey: string } {
 	return {
 		startKey: start.toISOString().slice(0, 10),
 		endKey: end.toISOString().slice(0, 10),
@@ -61,7 +68,11 @@ export function mapChartRowsToSidebarAccounts(rows: unknown): LedgerAccount[] {
 	for (const raw of rows) {
 		if (!raw || typeof raw !== "object") continue;
 		const row = raw as Partial<LedgerApiChartRow>;
-		if (typeof row.code !== "string" || typeof row.name !== "string" || typeof row.activity !== "number") {
+		if (
+			typeof row.code !== "string" ||
+			typeof row.name !== "string" ||
+			typeof row.activity !== "number"
+		) {
 			continue;
 		}
 		out.push({
@@ -75,7 +86,9 @@ export function mapChartRowsToSidebarAccounts(rows: unknown): LedgerAccount[] {
 	return out;
 }
 
-export function mapGeneralLedgerRowsToTransactions(rows: unknown): LedgerTransaction[] {
+export function mapGeneralLedgerRowsToTransactions(
+	rows: unknown,
+): LedgerTransaction[] {
 	if (!Array.isArray(rows)) return [];
 	const out: LedgerTransaction[] = [];
 	for (const raw of rows) {
@@ -120,7 +133,9 @@ export function filterTransactionsByCategoryName(
 	return transactions.filter((t) => t.cuenta === categoryName);
 }
 
-export function buildLedgerSidebarAccounts(accounts: LedgerAccount[]): LedgerAccount[] {
+export function buildLedgerSidebarAccounts(
+	accounts: LedgerAccount[],
+): LedgerAccount[] {
 	const all: LedgerAccount = {
 		id: LEDGER_ALL_ACCOUNTS_ID,
 		code: "*",

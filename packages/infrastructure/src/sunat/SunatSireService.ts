@@ -13,10 +13,10 @@
  * All operations affect PRODUCTION data.
  */
 
-import {
-	type SireDownloadResponse,
-	type SireTicketRequest,
-	type SunatApiClient,
+import type {
+	SireDownloadResponse,
+	SireTicketRequest,
+	SunatApiClient,
 } from "./SunatApiClient";
 
 // ============================================
@@ -94,9 +94,9 @@ export interface SireRecord {
 	igv: number;
 	/** Monetary amount in cents (integer). Divide by 100 for soles display. */
 	total: number;
-		moneda: import("@drenyra/domain").Currency;
-		/** Exchange rate (decimal, NOT in cents). E.g. 3.75 = S/ 3.75 per USD. */
-		tipoCambio?: number;
+	moneda: import("@drenyra/domain").Currency;
+	/** Exchange rate (decimal, NOT in cents). E.g. 3.75 = S/ 3.75 per USD. */
+	tipoCambio?: number;
 
 	// Purchase-specific
 	estado?: string;

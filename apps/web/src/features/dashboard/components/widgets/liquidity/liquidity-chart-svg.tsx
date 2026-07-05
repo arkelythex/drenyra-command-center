@@ -1,11 +1,11 @@
+import type { LiquidityPoint } from "./liquidity-chart.constants";
 import {
-	CHART_WIDTH,
 	CHART_HEIGHT,
 	CHART_PADDING_X,
 	CHART_PADDING_Y,
+	CHART_WIDTH,
 	type ChartPoint,
 } from "./liquidity-chart-path";
-import type { LiquidityPoint } from "./liquidity-chart.constants";
 
 interface LiquidityChartSvgProps {
 	chartData: LiquidityPoint[];
@@ -35,13 +35,7 @@ export const LiquidityChartSvg = ({
 			aria-hidden="true"
 		>
 			<defs>
-				<linearGradient
-					id="liquidity-surface"
-					x1="0"
-					y1="0"
-					x2="0"
-					y2="1"
-				>
+				<linearGradient id="liquidity-surface" x1="0" y1="0" x2="0" y2="1">
 					<stop
 						offset="0%"
 						stopColor="rgb(var(--premium-info-rgb))"
@@ -78,12 +72,7 @@ export const LiquidityChartSvg = ({
 				strokeDasharray="5 6"
 				strokeWidth="2"
 			/>
-			<path
-				d={cashPath}
-				fill="none"
-				stroke="#F7F1E8"
-				strokeWidth="3.5"
-			/>
+			<path d={cashPath} fill="none" stroke="#F7F1E8" strokeWidth="3.5" />
 
 			{projectedPoints.map((point, index) => (
 				<circle

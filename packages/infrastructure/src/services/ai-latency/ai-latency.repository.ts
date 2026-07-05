@@ -7,11 +7,11 @@
  * @module infrastructure/services/ai-latency
  */
 
-import { and, desc, eq, gte, sql } from "@drenyra/persistence/query";
 import { db } from "@drenyra/persistence/client";
+import { and, desc, eq, gte, sql } from "@drenyra/persistence/query";
 import {
-	aiLatencyEvents,
 	type AiLatencyEvent,
+	aiLatencyEvents,
 	type NewAiLatencyEvent,
 } from "@drenyra/persistence/schema";
 
@@ -105,7 +105,10 @@ export const aiLatencyRepository = {
 			await db.insert(aiLatencyEvents).values(row);
 		} catch (err) {
 			// Non-blocking: latency tracking must never fail the AI pipeline
-			console.warn("[ai-latency-repository] Failed to persist latency event:", err);
+			console.warn(
+				"[ai-latency-repository] Failed to persist latency event:",
+				err,
+			);
 		}
 	},
 
@@ -117,9 +120,7 @@ export const aiLatencyRepository = {
 		if (companyId) filters.push(sql`company_id = ${companyId}::uuid`);
 		if (since) filters.push(sql`created_at >= ${since}`);
 		const where =
-			filters.length > 0
-				? sql`${sql.join(filters, sql` AND `)}`
-				: sql`1=1`;
+			filters.length > 0 ? sql`${sql.join(filters, sql` AND `)}` : sql`1=1`;
 
 		const [result] = await db.execute<{
 			avg: string;
@@ -157,14 +158,15 @@ export const aiLatencyRepository = {
 	/**
 	 * Returns latency breakdown by agent type.
 	 */
-	async getByAgent(companyId?: string, since?: Date): Promise<LatencyByAgent[]> {
+	async getByAgent(
+		companyId?: string,
+		since?: Date,
+	): Promise<LatencyByAgent[]> {
 		const filters: ReturnType<typeof sql>[] = [];
 		if (companyId) filters.push(sql`company_id = ${companyId}::uuid`);
 		if (since) filters.push(sql`created_at >= ${since}`);
 		const where =
-			filters.length > 0
-				? sql`${sql.join(filters, sql` AND `)}`
-				: sql`1=1`;
+			filters.length > 0 ? sql`${sql.join(filters, sql` AND `)}` : sql`1=1`;
 
 		const rows = await db.execute<{
 			agent_type: string;
@@ -199,9 +201,7 @@ export const aiLatencyRepository = {
 		if (companyId) filters.push(sql`company_id = ${companyId}::uuid`);
 		if (since) filters.push(sql`created_at >= ${since}`);
 		const where =
-			filters.length > 0
-				? sql`${sql.join(filters, sql` AND `)}`
-				: sql`1=1`;
+			filters.length > 0 ? sql`${sql.join(filters, sql` AND `)}` : sql`1=1`;
 
 		const rows = await db.execute<{
 			date: string;

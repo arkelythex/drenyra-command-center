@@ -25,9 +25,7 @@ export interface CDRMetadata {
 }
 
 export class CpeTrackingService {
-	constructor(
-		private readonly cpeLogRepo: CpeLogRepository,
-	) {}
+	constructor(private readonly cpeLogRepo: CpeLogRepository) {}
 
 	/**
 	 * Register a new CPE log entry when an invoice is created.

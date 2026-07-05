@@ -9,11 +9,11 @@
  */
 import {
 	AGENT_TYPES,
+	type DrenyraAgentType,
 	EVIDENCE_TYPES,
+	type EvidenceType,
 	FISCAL_CASE_STATUSES,
 	FISCAL_CASE_TYPES,
-	type DrenyraAgentType,
-	type EvidenceType,
 	type FiscalCaseStatus,
 	type FiscalCaseType,
 } from "./types";
@@ -28,7 +28,8 @@ export const DRENYRA_REQUIRED_SCOPE_HEADERS = [
 	"x-user-id",
 ] as const;
 
-export type DrenyraRequiredScopeHeader = (typeof DRENYRA_REQUIRED_SCOPE_HEADERS)[number];
+export type DrenyraRequiredScopeHeader =
+	(typeof DRENYRA_REQUIRED_SCOPE_HEADERS)[number];
 
 export const DRENYRA_IDEMPOTENCY_HEADER = "x-idempotency-key" as const;
 
@@ -57,7 +58,9 @@ export type DrenyraOfflineCommandKind =
 	| "REQUEST_APPROVAL"
 	| "DECIDE_APPROVAL";
 
-export interface DrenyraCommandEnvelope<TPayload extends Record<string, unknown> = Record<string, unknown>> {
+export interface DrenyraCommandEnvelope<
+	TPayload extends Record<string, unknown> = Record<string, unknown>,
+> {
 	contractVersion: typeof DRENYRA_CONTRACT_VERSION;
 	idempotencyKey: string;
 	surface: DrenyraSurface;
@@ -153,11 +156,42 @@ export function buildDrenyraDualSurfaceContract(): DrenyraDualSurfaceContract {
 			"DECIDE_APPROVAL",
 		],
 		endpoints: [
-			{ method: "GET", path: "/api/drenyra/contract", idempotentReplay: true, cliParity: "required", webParity: "required" },
-			{ method: "GET", path: "/api/drenyra/cases", idempotentReplay: true, cliParity: "required", webParity: "required" },
-			{ method: "GET", path: "/api/drenyra/fiscal-work/:workItemId/inspect", idempotentReplay: true, cliParity: "required", webParity: "required" },
-			{ method: "POST", path: "/api/drenyra/cases", idempotentReplay: true, cliParity: "required", webParity: "required" },
-			{ method: "GET", path: "/api/drenyra/brain/threads/:threadId/events", idempotentReplay: false, cliParity: "required", webParity: "required", sseEvents: ["heartbeat"] },
+			{
+				method: "GET",
+				path: "/api/drenyra/contract",
+				idempotentReplay: true,
+				cliParity: "required",
+				webParity: "required",
+			},
+			{
+				method: "GET",
+				path: "/api/drenyra/cases",
+				idempotentReplay: true,
+				cliParity: "required",
+				webParity: "required",
+			},
+			{
+				method: "GET",
+				path: "/api/drenyra/fiscal-work/:workItemId/inspect",
+				idempotentReplay: true,
+				cliParity: "required",
+				webParity: "required",
+			},
+			{
+				method: "POST",
+				path: "/api/drenyra/cases",
+				idempotentReplay: true,
+				cliParity: "required",
+				webParity: "required",
+			},
+			{
+				method: "GET",
+				path: "/api/drenyra/brain/threads/:threadId/events",
+				idempotentReplay: false,
+				cliParity: "required",
+				webParity: "required",
+				sseEvents: ["heartbeat"],
+			},
 		],
 		invariants: [
 			"API/domain/application are source of truth; CLI and Web are UX adapters.",

@@ -4,7 +4,12 @@
  * @since Jun 2026
  */
 
-export type SimulationCategory = "salary" | "revenue" | "expense" | "tax" | "investment";
+export type SimulationCategory =
+	| "salary"
+	| "revenue"
+	| "expense"
+	| "tax"
+	| "investment";
 
 export interface SimulationParam {
 	category: SimulationCategory;

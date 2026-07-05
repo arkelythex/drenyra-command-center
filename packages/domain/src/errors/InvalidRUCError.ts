@@ -27,7 +27,12 @@ export class InvalidRUCError extends Error {
 			) => void;
 		};
 		if (ErrorWithCapture.captureStackTrace) {
-			ErrorWithCapture.captureStackTrace(this, InvalidRUCError as new (...args: unknown[]) => unknown);
+			ErrorWithCapture.captureStackTrace(
+				this,
+				InvalidRUCError as new (
+					...args: unknown[]
+				) => unknown,
+			);
 		}
 	}
 

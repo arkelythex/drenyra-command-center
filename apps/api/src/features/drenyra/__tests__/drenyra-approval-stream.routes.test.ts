@@ -1,4 +1,7 @@
-import type { AgentContext, ApprovalRequest } from "@drenyra/drenyra-orchestrator";
+import type {
+	AgentContext,
+	ApprovalRequest,
+} from "@drenyra/drenyra-orchestrator";
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
 import { createApprovalStreamRoutes } from "../approval-stream.routes";
@@ -41,7 +44,9 @@ async function readChunk(reader: ReadableStreamDefaultReader<Uint8Array>) {
 describe("Drenyra approval stream routes", () => {
 	it("rejects blank company id after trimming", async () => {
 		const response = await createTestApp().handle(
-			new Request("http://localhost/api/drenyra/approvals/stream?companyId=%20%20"),
+			new Request(
+				"http://localhost/api/drenyra/approvals/stream?companyId=%20%20",
+			),
 		);
 		const payload = await response.json();
 

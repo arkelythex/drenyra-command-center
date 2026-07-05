@@ -5,10 +5,10 @@
 
 import { ulid } from "ulid";
 import { AgentDecisionLog } from "./entity";
+import { computeHash } from "./hash.service";
 import { AgentContext } from "./value-objects/agent-context.vo";
 import { DecisionData } from "./value-objects/decision-data.vo";
 import { HashChain } from "./value-objects/hash-chain.vo";
-import { computeHash } from "./hash.service";
 
 /**
  * CreateLogInput interface.

@@ -5,7 +5,10 @@
  */
 
 import type { CountryCode, CountryPack } from "@/lib/latam-country-packs";
-import type { RoadmapActionId, RoadmapDecisionType } from "../../components/shared/types";
+import type {
+	RoadmapActionId,
+	RoadmapDecisionType,
+} from "../../components/shared/types";
 
 export interface ApiEnvelope<T> {
 	success: boolean;

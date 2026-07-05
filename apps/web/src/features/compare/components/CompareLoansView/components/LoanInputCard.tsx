@@ -122,9 +122,7 @@ export const LoanInputCard = ({
 				/>
 			</div>
 			<div className="pt-6 border-t border-border/50 flex justify-between font-mono text-xs font-bold text-muted-foreground uppercase tracking-widest">
-				<span>
-					Cuota Base: {n(results.cuotaBase)}
-				</span>
+				<span>Cuota Base: {n(results.cuotaBase)}</span>
 				<span>
 					Seguros: {n(results.desgravamenFirstMonth + results.riskInsurance)}
 				</span>

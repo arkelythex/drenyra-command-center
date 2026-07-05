@@ -1,7 +1,7 @@
 export { Transaction } from "./entity";
 export type {
-	TransactionProps,
 	TransactionEntry,
-	TransactionType,
+	TransactionProps,
 	TransactionStatus,
+	TransactionType,
 } from "./types";

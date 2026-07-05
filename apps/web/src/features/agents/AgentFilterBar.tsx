@@ -25,16 +25,12 @@ export function AgentFilterBar() {
 				<input
 					type="month"
 					value={filters.period ?? ""}
-					onChange={(e) =>
-						setFilters({ period: e.target.value || undefined })
-					}
+					onChange={(e) => setFilters({ period: e.target.value || undefined })}
 					className="h-9 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)] px-3 text-sm text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--color-primary)]"
 				/>
 				<select
 					value={filters.status ?? ""}
-					onChange={(e) =>
-						setFilters({ status: e.target.value || undefined })
-					}
+					onChange={(e) => setFilters({ status: e.target.value || undefined })}
 					className="h-9 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)] px-3 text-sm text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--color-primary)]"
 				>
 					<option value="">Todos</option>
@@ -46,9 +42,7 @@ export function AgentFilterBar() {
 				</select>
 				<select
 					value={filters.risk ?? ""}
-					onChange={(e) =>
-						setFilters({ risk: e.target.value || undefined })
-					}
+					onChange={(e) => setFilters({ risk: e.target.value || undefined })}
 					className="h-9 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)] px-3 text-sm text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--color-primary)]"
 				>
 					<option value="">Todos</option>

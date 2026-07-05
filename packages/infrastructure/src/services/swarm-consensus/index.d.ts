@@ -1,89 +1,117 @@
 import { THRESHOLD_CONFIG } from "./consensus-engine";
-import type { AgentConfidence, AlertSeverity, ConsensusResult, DynamicConsensusOptions } from "./types";
+import type {
+	AgentConfidence,
+	AlertSeverity,
+	ConsensusResult,
+	DynamicConsensusOptions,
+} from "./types";
+
+export type { DynamicConsensusOptions, FalsePositiveStats } from "./types";
 export { THRESHOLD_CONFIG };
-export type { FalsePositiveStats, DynamicConsensusOptions } from "./types";
 export declare const swarmConsensusService: {
-    calculateConsensus(agentConfidences: AgentConfidence[], severity: AlertSeverity, organizationId: number, options?: DynamicConsensusOptions): Promise<ConsensusResult>;
-    createAlertFromConsensus(organizationId: number, entityType: string, entityId: string, alertType: string, severity: AlertSeverity, consensusResult: ConsensusResult, detectorAgentId: string): Promise<{
-        organizationId: number;
-        status: "pending" | "confirmed" | "false_positive" | "resolved";
-        id: string;
-        createdAt: Date;
-        updatedAt: Date;
-        entityType: string;
-        entityId: string;
-        alertType: string;
-        severity: "low" | "medium" | "high" | "critical";
-        detectorAgentId: string;
-        detectorConfidence: string;
-        lectorConfidence: string | null;
-        lectorReasoning: string | null;
-        validadorConfidence: string | null;
-        validadorReasoning: string | null;
-        swarmConsensusThreshold: string;
-        swarmConsensusScore: string | null;
-        isFalsePositive: boolean | null;
-        falsePositiveReason: string | null;
-        resolvedBy: string | null;
-        resolvedAt: Date | null;
-        alertReasoning: string;
-        alertContext: unknown;
-    }>;
-    recordFalsePositive(alertId: string, reason: string, userId: string): Promise<void>;
-    confirmAlert(alertId: string, userId: string): Promise<void>;
-    resolveAlert(alertId: string, userId: string): Promise<void>;
-    getAlertById(alertId: string): Promise<{
-        id: string;
-        organizationId: number;
-        entityType: string;
-        entityId: string;
-        alertType: string;
-        severity: "low" | "medium" | "high" | "critical";
-        status: "pending" | "confirmed" | "false_positive" | "resolved";
-        detectorAgentId: string;
-        detectorConfidence: string;
-        lectorConfidence: string | null;
-        lectorReasoning: string | null;
-        validadorConfidence: string | null;
-        validadorReasoning: string | null;
-        swarmConsensusThreshold: string;
-        swarmConsensusScore: string | null;
-        isFalsePositive: boolean | null;
-        falsePositiveReason: string | null;
-        resolvedBy: string | null;
-        resolvedAt: Date | null;
-        alertReasoning: string;
-        alertContext: unknown;
-        createdAt: Date;
-        updatedAt: Date;
-    }>;
-    getAlertsByOrganization(organizationId: number, options?: {
-        limit?: number;
-        status?: string;
-    }): Promise<{
-        id: string;
-        organizationId: number;
-        entityType: string;
-        entityId: string;
-        alertType: string;
-        severity: "low" | "medium" | "high" | "critical";
-        status: "pending" | "confirmed" | "false_positive" | "resolved";
-        detectorAgentId: string;
-        detectorConfidence: string;
-        lectorConfidence: string | null;
-        lectorReasoning: string | null;
-        validadorConfidence: string | null;
-        validadorReasoning: string | null;
-        swarmConsensusThreshold: string;
-        swarmConsensusScore: string | null;
-        isFalsePositive: boolean | null;
-        falsePositiveReason: string | null;
-        resolvedBy: string | null;
-        resolvedAt: Date | null;
-        alertReasoning: string;
-        alertContext: unknown;
-        createdAt: Date;
-        updatedAt: Date;
-    }[]>;
+	calculateConsensus(
+		agentConfidences: AgentConfidence[],
+		severity: AlertSeverity,
+		organizationId: number,
+		options?: DynamicConsensusOptions,
+	): Promise<ConsensusResult>;
+	createAlertFromConsensus(
+		organizationId: number,
+		entityType: string,
+		entityId: string,
+		alertType: string,
+		severity: AlertSeverity,
+		consensusResult: ConsensusResult,
+		detectorAgentId: string,
+	): Promise<{
+		organizationId: number;
+		status: "pending" | "confirmed" | "false_positive" | "resolved";
+		id: string;
+		createdAt: Date;
+		updatedAt: Date;
+		entityType: string;
+		entityId: string;
+		alertType: string;
+		severity: "low" | "medium" | "high" | "critical";
+		detectorAgentId: string;
+		detectorConfidence: string;
+		lectorConfidence: string | null;
+		lectorReasoning: string | null;
+		validadorConfidence: string | null;
+		validadorReasoning: string | null;
+		swarmConsensusThreshold: string;
+		swarmConsensusScore: string | null;
+		isFalsePositive: boolean | null;
+		falsePositiveReason: string | null;
+		resolvedBy: string | null;
+		resolvedAt: Date | null;
+		alertReasoning: string;
+		alertContext: unknown;
+	}>;
+	recordFalsePositive(
+		alertId: string,
+		reason: string,
+		userId: string,
+	): Promise<void>;
+	confirmAlert(alertId: string, userId: string): Promise<void>;
+	resolveAlert(alertId: string, userId: string): Promise<void>;
+	getAlertById(alertId: string): Promise<{
+		id: string;
+		organizationId: number;
+		entityType: string;
+		entityId: string;
+		alertType: string;
+		severity: "low" | "medium" | "high" | "critical";
+		status: "pending" | "confirmed" | "false_positive" | "resolved";
+		detectorAgentId: string;
+		detectorConfidence: string;
+		lectorConfidence: string | null;
+		lectorReasoning: string | null;
+		validadorConfidence: string | null;
+		validadorReasoning: string | null;
+		swarmConsensusThreshold: string;
+		swarmConsensusScore: string | null;
+		isFalsePositive: boolean | null;
+		falsePositiveReason: string | null;
+		resolvedBy: string | null;
+		resolvedAt: Date | null;
+		alertReasoning: string;
+		alertContext: unknown;
+		createdAt: Date;
+		updatedAt: Date;
+	}>;
+	getAlertsByOrganization(
+		organizationId: number,
+		options?: {
+			limit?: number;
+			status?: string;
+		},
+	): Promise<
+		{
+			id: string;
+			organizationId: number;
+			entityType: string;
+			entityId: string;
+			alertType: string;
+			severity: "low" | "medium" | "high" | "critical";
+			status: "pending" | "confirmed" | "false_positive" | "resolved";
+			detectorAgentId: string;
+			detectorConfidence: string;
+			lectorConfidence: string | null;
+			lectorReasoning: string | null;
+			validadorConfidence: string | null;
+			validadorReasoning: string | null;
+			swarmConsensusThreshold: string;
+			swarmConsensusScore: string | null;
+			isFalsePositive: boolean | null;
+			falsePositiveReason: string | null;
+			resolvedBy: string | null;
+			resolvedAt: Date | null;
+			alertReasoning: string;
+			alertContext: unknown;
+			createdAt: Date;
+			updatedAt: Date;
+		}[]
+	>;
 };
 //# sourceMappingURL=index.d.ts.map

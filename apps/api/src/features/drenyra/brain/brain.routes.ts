@@ -7,9 +7,10 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import { Elysia, t } from "elysia";
-import { RUC, type EvidenceGraphRepository } from "@drenyra/domain";
+
 import { createDrenyraBrainEvidenceBridge } from "@drenyra/application/drenyra";
+import { type EvidenceGraphRepository, RUC } from "@drenyra/domain";
+import { Elysia, t } from "elysia";
 import {
 	createInMemoryDrenyraBrainRepository,
 	type DrenyraBrainRepository,
@@ -27,7 +28,10 @@ interface DrenyraBrainContextResolution {
 	userId?: string;
 }
 
-function readHeader(headers: Record<string, string | undefined>, key: string): string {
+function readHeader(
+	headers: Record<string, string | undefined>,
+	key: string,
+): string {
 	return headers[key]?.trim() ?? "";
 }
 
@@ -48,7 +52,8 @@ function resolveContext(
 		...(userId ? [] : ["x-user-id"]),
 	];
 
-	const invalidHeaders = companyRuc && !RUC.isValid(companyRuc) ? ["x-company-ruc"] : [];
+	const invalidHeaders =
+		companyRuc && !RUC.isValid(companyRuc) ? ["x-company-ruc"] : [];
 
 	if (missingHeaders.length > 0 || invalidHeaders.length > 0) {
 		return { ok: false, missingHeaders, invalidHeaders };
@@ -65,14 +70,22 @@ function resolveContext(
 	};
 }
 
-function tenantContextRequired(context: Pick<DrenyraBrainContextResolution, "missingHeaders" | "invalidHeaders">) {
+function tenantContextRequired(
+	context: Pick<
+		DrenyraBrainContextResolution,
+		"missingHeaders" | "invalidHeaders"
+	>,
+) {
 	const hasInvalidHeaders = (context.invalidHeaders?.length ?? 0) > 0;
 	return {
 		error: hasInvalidHeaders
 			? "Drenyra brain requests require a valid SUNAT RUC"
 			: "Drenyra brain requests require tenant and user scope headers",
 		code: hasInvalidHeaders ? "INVALID_RUC" : "TENANT_CONTEXT_REQUIRED",
-		details: { missingHeaders: context.missingHeaders, invalidHeaders: context.invalidHeaders ?? [] },
+		details: {
+			missingHeaders: context.missingHeaders,
+			invalidHeaders: context.invalidHeaders ?? [],
+		},
 	};
 }
 
@@ -92,8 +105,7 @@ async function digestText(value: string): Promise<string> {
 export function createDrenyraBrainModule(
 	input: CreateDrenyraBrainModuleInput = {},
 ) {
-	const repository =
-		input.repository ?? createInMemoryDrenyraBrainRepository();
+	const repository = input.repository ?? createInMemoryDrenyraBrainRepository();
 	const evidenceBridge = input.evidenceGraph
 		? createDrenyraBrainEvidenceBridge({
 				appendNode: input.evidenceGraph.appendNode,
@@ -282,14 +294,20 @@ export function createDrenyraBrainModule(
 					};
 				}
 
-				const events = await service.listEvents({ threadId: params.threadId, fiscalScope });
-				return new Response(`event: heartbeat\ndata: ${JSON.stringify({ status: "ok", threadId: params.threadId, events: events.length })}\n\n`, {
-					headers: {
-						"content-type": "text/event-stream",
-						"cache-control": "no-cache",
-						connection: "keep-alive",
-					},
+				const events = await service.listEvents({
+					threadId: params.threadId,
+					fiscalScope,
 				});
+				return new Response(
+					`event: heartbeat\ndata: ${JSON.stringify({ status: "ok", threadId: params.threadId, events: events.length })}\n\n`,
+					{
+						headers: {
+							"content-type": "text/event-stream",
+							"cache-control": "no-cache",
+							connection: "keep-alive",
+						},
+					},
+				);
 			},
 			{ params: t.Object({ threadId: t.String({ minLength: 1 }) }) },
 		);

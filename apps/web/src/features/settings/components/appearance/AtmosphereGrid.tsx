@@ -1,19 +1,19 @@
-import React from "react";
 import { Check } from "lucide-react";
+import React from "react";
+import {
+	CODEX_LIGHT_THEME,
+	DEFAULT_CODEX_THEME,
+	useSettings,
+} from "@/context/SettingsContext";
+import type { CodexThemeSettings } from "@/context/settings.types";
 import { cn } from "@/lib/utils";
-import { THEME_PRESETS } from "./AppearanceConstants";
-import { useSettings } from "@/context/SettingsContext";
-import { useUIStore } from "@/store/ui-store";
 import {
 	THEME_ID,
 	THEME_PREFERENCE,
 	type ThemePreference,
 } from "@/lib/ux-mode";
-import {
-	CODEX_LIGHT_THEME,
-	DEFAULT_CODEX_THEME,
-} from "@/context/SettingsContext";
-import type { CodexThemeSettings } from "@/context/settings.types";
+import { useUIStore } from "@/store/ui-store";
+import { THEME_PRESETS } from "./AppearanceConstants";
 
 export const AtmosphereGrid = () => {
 	const { settings, updateSettings } = useSettings();

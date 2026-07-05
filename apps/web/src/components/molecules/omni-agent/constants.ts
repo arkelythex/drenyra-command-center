@@ -1,5 +1,5 @@
-import { Users2, ArrowRightLeft, Plus, Sparkles, Search } from "lucide-react";
-import React from "react";
+import { ArrowRightLeft, Plus, Search, Sparkles, Users2 } from "lucide-react";
+import type React from "react";
 import {
 	COMMAND_PALETTE_ITEMS,
 	type NavigationSectionId,

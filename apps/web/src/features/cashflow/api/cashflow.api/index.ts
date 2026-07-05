@@ -15,12 +15,12 @@ import type {
 	CashflowVarianceData,
 } from "./cashflow.types";
 import {
-	mapActualData,
-	mapProjectionData,
-	mapVarianceData,
 	type ActualCashflowApiData,
 	type CashflowProjectionApiData,
 	type CashflowVarianceApiData,
+	mapActualData,
+	mapProjectionData,
+	mapVarianceData,
 } from "./cashflow.utils";
 
 /**
@@ -33,9 +33,14 @@ export const cashflowApi = {
 		currency?: "PEN" | "USD" | "EUR";
 	}) => {
 		return safeApiCall(async () => {
-			const body = await unwrap(api.api.cashflow.projection.get({ query: params }));
+			const body = await unwrap(
+				api.api.cashflow.projection.get({ query: params }),
+			);
 			return mapProjectionData(
-				extractOkData<CashflowProjectionApiData>(body, "No se pudo cargar la proyección de cashflow"),
+				extractOkData<CashflowProjectionApiData>(
+					body,
+					"No se pudo cargar la proyección de cashflow",
+				),
 			);
 		});
 	},
@@ -49,7 +54,10 @@ export const cashflowApi = {
 		return safeApiCall(async () => {
 			const body = await unwrap(api.api.cashflow.actual.get({ query: params }));
 			return mapActualData(
-				extractOkData<ActualCashflowApiData>(body, "No se pudo cargar el cashflow real"),
+				extractOkData<ActualCashflowApiData>(
+					body,
+					"No se pudo cargar el cashflow real",
+				),
 			);
 		});
 	},
@@ -60,8 +68,13 @@ export const cashflowApi = {
 		currency?: "PEN" | "USD" | "EUR";
 	}) => {
 		return safeApiCall(async () => {
-			const body = await unwrap(api.api.cashflow.forecast.get({ query: params }));
-			return extractOkData<CashflowForecastData>(body, "No se pudo cargar el forecast de cashflow");
+			const body = await unwrap(
+				api.api.cashflow.forecast.get({ query: params }),
+			);
+			return extractOkData<CashflowForecastData>(
+				body,
+				"No se pudo cargar el forecast de cashflow",
+			);
 		});
 	},
 
@@ -72,9 +85,14 @@ export const cashflowApi = {
 		currency?: "PEN" | "USD" | "EUR";
 	}) => {
 		return safeApiCall(async () => {
-			const body = await unwrap(api.api.cashflow.variance.get({ query: params }));
+			const body = await unwrap(
+				api.api.cashflow.variance.get({ query: params }),
+			);
 			return mapVarianceData(
-				extractOkData<CashflowVarianceApiData>(body, "No se pudo cargar la variación de cashflow"),
+				extractOkData<CashflowVarianceApiData>(
+					body,
+					"No se pudo cargar la variación de cashflow",
+				),
 			);
 		});
 	},

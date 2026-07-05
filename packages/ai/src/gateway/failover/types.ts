@@ -1,7 +1,7 @@
 import type { FailoverAttempt, LLMProvider } from "../types";
 import { LLMGatewayError } from "../types";
 
-export { type FailoverAttempt, type LLMProvider, LLMGatewayError };
+export { type FailoverAttempt, LLMGatewayError, type LLMProvider };
 
 export enum CircuitState {
 	CLOSED = "closed",

@@ -1,5 +1,5 @@
-import { n } from "@/lib/utils";
 import { GitCompareArrows, ShieldAlert } from "lucide-react";
+import { n } from "@/lib/utils";
 import type { DiscrepancyScenario } from "../../anomaly/discrepancy-scenario";
 import { getScenarioImpact } from "./hub-empty-state.helpers";
 
@@ -15,14 +15,18 @@ export function L1RiskCard({
 	onReviewDiscrepancy,
 }: L1RiskCardProps) {
 	const impact = getScenarioImpact(scenario);
-  const hasScenario = Boolean(scenario);
+	const hasScenario = Boolean(scenario);
 
 	return (
 		<section className="h-full rounded-3xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-6 shadow-sm">
 			<div className="mb-4">
-				<p className="text-sm font-semibold text-[var(--text-primary)]">Riesgo detectado</p>
+				<p className="text-sm font-semibold text-[var(--text-primary)]">
+					Riesgo detectado
+				</p>
 				<p className="mt-1 text-xs text-[var(--text-secondary)]">
-					{hasScenario ? 'Se detectó una diferencia antes de automatizar cambios.' : 'No hay incidencias críticas en este momento.'}
+					{hasScenario
+						? "Se detectó una diferencia antes de automatizar cambios."
+						: "No hay incidencias críticas en este momento."}
 				</p>
 			</div>
 
@@ -34,28 +38,42 @@ export function L1RiskCard({
 						</div>
 						<div>
 							<p className="text-label font-semibold uppercase tracking-[0.08em] text-danger">
-								{hasScenario ? 'Diferencia de conciliación' : 'Sin alertas activas'}
+								{hasScenario
+									? "Diferencia de conciliación"
+									: "Sin alertas activas"}
 							</p>
 							<p className="text-sm font-semibold text-[var(--text-primary)]">
 								{hasScenario
-									? 'El sistema detectó una brecha entre la fuente fiscal y el ERP.'
-									: 'El asistente puede seguir monitoreando sin bloquear tareas.'}
+									? "El sistema detectó una brecha entre la fuente fiscal y el ERP."
+									: "El asistente puede seguir monitoreando sin bloquear tareas."}
 							</p>
 						</div>
 					</div>
 
 					<div className="grid max-w-3xl gap-3 sm:grid-cols-3">
 						<div className="hub-panel-inset px-4 py-3">
-							<p className="text-2xs uppercase tracking-[0.08em] text-[var(--text-secondary)]">Filas con conflicto</p>
-							<p className="text-2xl font-bold tabular-nums text-danger">{impact.flaggedRows}</p>
+							<p className="text-2xs uppercase tracking-[0.08em] text-[var(--text-secondary)]">
+								Filas con conflicto
+							</p>
+							<p className="text-2xl font-bold tabular-nums text-danger">
+								{impact.flaggedRows}
+							</p>
 						</div>
 						<div className="hub-panel-inset px-4 py-3">
-							<p className="text-2xs uppercase tracking-[0.08em] text-[var(--text-secondary)]">Filas ajustables</p>
-							<p className="text-2xl font-bold tabular-nums text-warning">{impact.updatedRows}</p>
+							<p className="text-2xs uppercase tracking-[0.08em] text-[var(--text-secondary)]">
+								Filas ajustables
+							</p>
+							<p className="text-2xl font-bold tabular-nums text-warning">
+								{impact.updatedRows}
+							</p>
 						</div>
 						<div className="hub-panel-inset px-4 py-3">
-							<p className="text-2xs uppercase tracking-[0.08em] text-[var(--text-secondary)]">Impacto estimado</p>
-							<p className="text-2xl font-bold tabular-nums text-info">{n(impact.estimatedDelta)}</p>
+							<p className="text-2xs uppercase tracking-[0.08em] text-[var(--text-secondary)]">
+								Impacto estimado
+							</p>
+							<p className="text-2xl font-bold tabular-nums text-info">
+								{n(impact.estimatedDelta)}
+							</p>
 						</div>
 					</div>
 				</div>
@@ -70,8 +88,8 @@ export function L1RiskCard({
 					</button>
 					<span className="text-label text-[var(--text-secondary)]">
 						{hasScenario
-							? 'Valida el ajuste antes de aplicar cambios.'
-							: 'No se requiere acción inmediata.'}
+							? "Valida el ajuste antes de aplicar cambios."
+							: "No se requiere acción inmediata."}
 					</span>
 				</div>
 			</div>

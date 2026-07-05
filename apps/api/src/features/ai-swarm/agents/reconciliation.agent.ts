@@ -9,16 +9,16 @@
  * @module ai-swarm/agents
  */
 
-import { generateObject } from 'ai';
-import { z } from 'zod';
+import { generateObject } from "ai";
+import { z } from "zod";
 import {
-  hasOpenRouterKey,
-  openrouter,
-  getModelForAgent,
-  estimateCost,
-} from '../config/openrouter.config';
-import { budgetTracker } from '../tools/budget-tracker';
-import type { AgentResult } from '../config/types';
+	estimateCost,
+	getModelForAgent,
+	hasOpenRouterKey,
+	openrouter,
+} from "../config/openrouter.config";
+import type { AgentResult } from "../config/types";
+import { budgetTracker } from "../tools/budget-tracker";
 
 /**
  * Bank transaction
@@ -30,12 +30,12 @@ import type { AgentResult } from '../config/types';
  */
 
 export interface BankTransaction {
-  id: string;
-  date: string;
-  description: string;
-  amount: number;
-  type: 'debit' | 'credit';
-  reference?: string;
+	id: string;
+	date: string;
+	description: string;
+	amount: number;
+	type: "debit" | "credit";
+	reference?: string;
 }
 
 /**
@@ -48,13 +48,13 @@ export interface BankTransaction {
  */
 
 export interface Document {
-  id: string;
-  ruc: string;
-  serie: string;
-  numero: string;
-  date: string;
-  total: number;
-  type: 'invoice' | 'bill';
+	id: string;
+	ruc: string;
+	serie: string;
+	numero: string;
+	date: string;
+	total: number;
+	type: "invoice" | "bill";
 }
 
 /**
@@ -67,34 +67,34 @@ export interface Document {
  */
 
 export interface Match {
-  transactionId: string;
-  documentId: string;
-  confidence: number;
-  matchType: 'exact' | 'partial' | 'multiple' | 'manual';
-  amountMatched: number;
-  difference: number;
-  evidence: string;
+	transactionId: string;
+	documentId: string;
+	confidence: number;
+	matchType: "exact" | "partial" | "multiple" | "manual";
+	amountMatched: number;
+	difference: number;
+	evidence: string;
 }
 
 /**
  * Reconciliation schema
  */
 const ReconciliationSchema = z.object({
-  matches: z.array(
-    z.object({
-      transactionId: z.string(),
-      documentId: z.string(),
-      confidence: z.number().min(0).max(1),
-      matchType: z.enum(['exact', 'partial', 'multiple', 'manual']),
-      amountMatched: z.number(),
-      difference: z.number(),
-      evidence: z.string(),
-    })
-  ),
-  unmatched: z.object({
-    transactions: z.array(z.string()),
-    documents: z.array(z.string()),
-  }),
+	matches: z.array(
+		z.object({
+			transactionId: z.string(),
+			documentId: z.string(),
+			confidence: z.number().min(0).max(1),
+			matchType: z.enum(["exact", "partial", "multiple", "manual"]),
+			amountMatched: z.number(),
+			difference: z.number(),
+			evidence: z.string(),
+		}),
+	),
+	unmatched: z.object({
+		transactions: z.array(z.string()),
+		documents: z.array(z.string()),
+	}),
 });
 
 /**
@@ -109,60 +109,74 @@ const ReconciliationSchema = z.object({
  */
 
 export class ReconciliationAgent {
-  /**
-   * Reconcile bank transactions with documents
-   *
-   * @param transactions - Bank transactions
-   * @param documents - Invoices/bills to match
-   * @returns Matching results
-   */
-  async reconcile(
-    transactions: BankTransaction[],
-    documents: Document[]
-  ): Promise<AgentResult<{ matches: Match[]; unmatched: { transactions: string[]; documents: string[] } }>> {
-    const startTime = Date.now();
+	/**
+	 * Reconcile bank transactions with documents
+	 *
+	 * @param transactions - Bank transactions
+	 * @param documents - Invoices/bills to match
+	 * @returns Matching results
+	 */
+	async reconcile(
+		transactions: BankTransaction[],
+		documents: Document[],
+	): Promise<
+		AgentResult<{
+			matches: Match[];
+			unmatched: { transactions: string[]; documents: string[] };
+		}>
+	> {
+		const startTime = Date.now();
 
-    if (!hasOpenRouterKey()) {
-      return {
-        success: false,
-        error: {
-          code: 'RECONCILIATION_NO_API_KEY',
-          message: 'OPENROUTER_API_KEY not configured. Reconciliation agent requires API key.',
-        },
-        metadata: {
-          agentType: 'reconciliation',
-          modelUsed: 'none',
-          tokensUsed: 0,
-          costUsd: 0,
-          durationMs: Date.now() - startTime,
-          timestamp: new Date(),
-        },
-      };
-    }
+		if (!hasOpenRouterKey()) {
+			return {
+				success: false,
+				error: {
+					code: "RECONCILIATION_NO_API_KEY",
+					message:
+						"OPENROUTER_API_KEY not configured. Reconciliation agent requires API key.",
+				},
+				metadata: {
+					agentType: "reconciliation",
+					modelUsed: "none",
+					tokensUsed: 0,
+					costUsd: 0,
+					durationMs: Date.now() - startTime,
+					timestamp: new Date(),
+				},
+			};
+		}
 
-    try {
-      const modelId = getModelForAgent('reconciliation');
-      const model = openrouter(modelId);
+		try {
+			const modelId = getModelForAgent("reconciliation");
+			const model = openrouter(modelId);
 
-      const prompt = `
+			const prompt = `
 Eres un experto en reconciliación bancaria para contabilidad peruana.
 
 Tienes que hacer matching entre transacciones bancarias y documentos contables (facturas y recibos).
 
 TRANSACCIONES BANCARIAS:
-${transactions.map((t, i) => `${i + 1}. ID: ${t.id}
+${transactions
+	.map(
+		(t, i) => `${i + 1}. ID: ${t.id}
    Fecha: ${t.date}
    Descripción: ${t.description}
-   Monto: ${t.type === 'debit' ? '-' : '+'}${t.amount}
-   Referencia: ${t.reference || 'N/A'}`).join('\n\n')}
+   Monto: ${t.type === "debit" ? "-" : "+"}${t.amount}
+   Referencia: ${t.reference || "N/A"}`,
+	)
+	.join("\n\n")}
 
 DOCUMENTOS CONTABLES:
-${documents.map((d, i) => `${i + 1}. ID: ${d.id}
+${documents
+	.map(
+		(d, i) => `${i + 1}. ID: ${d.id}
    Tipo: ${d.type}
    RUC: ${d.ruc}
    Serie-Número: ${d.serie}-${d.numero}
    Fecha: ${d.date}
-   Total: ${d.total}`).join('\n\n')}
+   Total: ${d.total}`,
+	)
+	.join("\n\n")}
 
 REGLAS DE MATCHING:
 1. **Exact match**: Mismo monto, fechas cercanas (±3 días)
@@ -183,126 +197,134 @@ Devuelve:
 Devuelve SOLO JSON válido, sin texto adicional.
 `;
 
-      const result = await generateObject({
-        model,
-        schema: ReconciliationSchema,
-        prompt,
-        temperature: 0.2,
-      });
+			const result = await generateObject({
+				model,
+				schema: ReconciliationSchema,
+				prompt,
+				temperature: 0.2,
+			});
 
-      const durationMs = Date.now() - startTime;
-      const tokensUsed = result.usage.totalTokens ?? 0;
-      const costUsd = estimateCost('reconciliation', tokensUsed);
+			const durationMs = Date.now() - startTime;
+			const tokensUsed = result.usage.totalTokens ?? 0;
+			const costUsd = estimateCost("reconciliation", tokensUsed);
 
-      if (costUsd > 0 || tokensUsed > 0) {
-        budgetTracker.record({
-          agentType: 'reconciliation',
-          modelUsed: modelId,
-          tokensUsed,
-          costUsd,
-        });
-      }
+			if (costUsd > 0 || tokensUsed > 0) {
+				budgetTracker.record({
+					agentType: "reconciliation",
+					modelUsed: modelId,
+					tokensUsed,
+					costUsd,
+				});
+			}
 
-      return {
-        success: true,
-        data: {
-          matches: result.object.matches,
-          unmatched: result.object.unmatched,
-        },
-        metadata: {
-          agentType: 'reconciliation',
-          modelUsed: modelId,
-          tokensUsed,
-          costUsd,
-          durationMs,
-          timestamp: new Date(),
-        },
-      };
-    } catch (error) {
-      const durationMs = Date.now() - startTime;
+			return {
+				success: true,
+				data: {
+					matches: result.object.matches,
+					unmatched: result.object.unmatched,
+				},
+				metadata: {
+					agentType: "reconciliation",
+					modelUsed: modelId,
+					tokensUsed,
+					costUsd,
+					durationMs,
+					timestamp: new Date(),
+				},
+			};
+		} catch (error) {
+			const durationMs = Date.now() - startTime;
 
-      return {
-        success: false,
-        error: {
-          code: 'RECONCILIATION_FAILED',
-          message: error instanceof Error ? error.message : 'Unknown error',
-          details: error,
-        },
-        metadata: {
-          agentType: 'reconciliation',
-          modelUsed: getModelForAgent('reconciliation'),
-          tokensUsed: 0,
-          costUsd: 0,
-          durationMs,
-          timestamp: new Date(),
-        },
-      };
-    }
-  }
+			return {
+				success: false,
+				error: {
+					code: "RECONCILIATION_FAILED",
+					message: error instanceof Error ? error.message : "Unknown error",
+					details: error,
+				},
+				metadata: {
+					agentType: "reconciliation",
+					modelUsed: getModelForAgent("reconciliation"),
+					tokensUsed: 0,
+					costUsd: 0,
+					durationMs,
+					timestamp: new Date(),
+				},
+			};
+		}
+	}
 
-  /**
-   * Reconcile for multiple RUCs in parallel
-   *
-   * @param reconciliations - Array of reconciliation tasks per RUC
-   * @returns Array of reconciliation results
-   */
-  async reconcileBatch(
-    reconciliations: Array<{
-      ruc: string;
-      transactions: BankTransaction[];
-      documents: Document[];
-    }>
-  ): Promise<
-    Array<
-      AgentResult<{
-        matches: Match[];
-        unmatched: { transactions: string[]; documents: string[] };
-      }> & { ruc: string }
-    >
-  > {
-    const results = await Promise.all(
-      reconciliations.map(async (recon) => {
-        const result = await this.reconcile(recon.transactions, recon.documents);
-        return {
-          ...result,
-          ruc: recon.ruc,
-        };
-      })
-    );
+	/**
+	 * Reconcile for multiple RUCs in parallel
+	 *
+	 * @param reconciliations - Array of reconciliation tasks per RUC
+	 * @returns Array of reconciliation results
+	 */
+	async reconcileBatch(
+		reconciliations: Array<{
+			ruc: string;
+			transactions: BankTransaction[];
+			documents: Document[];
+		}>,
+	): Promise<
+		Array<
+			AgentResult<{
+				matches: Match[];
+				unmatched: { transactions: string[]; documents: string[] };
+			}> & { ruc: string }
+		>
+	> {
+		const results = await Promise.all(
+			reconciliations.map(async (recon) => {
+				const result = await this.reconcile(
+					recon.transactions,
+					recon.documents,
+				);
+				return {
+					...result,
+					ruc: recon.ruc,
+				};
+			}),
+		);
 
-    return results;
-  }
+		return results;
+	}
 
-  /**
-   * Calculate reconciliation statistics
-   */
-  calculateStats(result: {
-    matches: Match[];
-    unmatched: { transactions: string[]; documents: string[] };
-  }): {
-    totalMatches: number;
-    exactMatches: number;
-    partialMatches: number;
-    averageConfidence: number;
-    totalUnmatched: number;
-    matchRate: number;
-  } {
-    const totalMatches = result.matches.length;
-    const exactMatches = result.matches.filter((m) => m.matchType === 'exact').length;
-    const partialMatches = result.matches.filter((m) => m.matchType === 'partial').length;
-    const averageConfidence =
-      result.matches.reduce((sum, m) => sum + m.confidence, 0) / (totalMatches || 1);
-    const totalUnmatched =
-      result.unmatched.transactions.length + result.unmatched.documents.length;
-    const matchRate = totalMatches / (totalMatches + totalUnmatched);
+	/**
+	 * Calculate reconciliation statistics
+	 */
+	calculateStats(result: {
+		matches: Match[];
+		unmatched: { transactions: string[]; documents: string[] };
+	}): {
+		totalMatches: number;
+		exactMatches: number;
+		partialMatches: number;
+		averageConfidence: number;
+		totalUnmatched: number;
+		matchRate: number;
+	} {
+		const totalMatches = result.matches.length;
+		const exactMatches = result.matches.filter(
+			(m) => m.matchType === "exact",
+		).length;
+		const partialMatches = result.matches.filter(
+			(m) => m.matchType === "partial",
+		).length;
+		const averageConfidence =
+			result.matches.reduce((sum, m) => sum + m.confidence, 0) /
+			(totalMatches || 1);
+		const totalUnmatched =
+			result.unmatched.transactions.length + result.unmatched.documents.length;
+		const matchRate = totalMatches / (totalMatches + totalUnmatched);
 
-    return {
-      totalMatches,
-      exactMatches,
-      partialMatches,
-      averageConfidence,
-      totalUnmatched,
-      matchRate,
-    };
-  }
+		return {
+			totalMatches,
+			exactMatches,
+			partialMatches,
+			averageConfidence,
+			totalUnmatched,
+			matchRate,
+		};
+	}
 }

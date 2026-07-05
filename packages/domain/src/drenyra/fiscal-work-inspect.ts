@@ -8,9 +8,15 @@
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
 import { RUC } from "../value-objects/RUC";
-import type { ApprovalStatus, FiscalCaseStatus, FiscalRiskLevel, FiscalScope } from "./types";
+import type {
+	ApprovalStatus,
+	FiscalCaseStatus,
+	FiscalRiskLevel,
+	FiscalScope,
+} from "./types";
 
-export const DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY = "drenyra.fiscal-work.inspect" as const;
+export const DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY =
+	"drenyra.fiscal-work.inspect" as const;
 
 export type DrenyraFiscalWorkInspectStatus = "success" | "denied" | "not_found";
 export type DrenyraFiscalWorkInspectReason =
@@ -63,10 +69,17 @@ export function validateDrenyraFiscalWorkInspectRequest(
 	) {
 		return "MISSING_SCOPE";
 	}
-	if (!RUC.isValid(scope.companyRuc) || !/^\d{4}-(0[1-9]|1[0-2])$/.test(scope.period)) {
+	if (
+		!RUC.isValid(scope.companyRuc) ||
+		!/^\d{4}-(0[1-9]|1[0-2])$/.test(scope.period)
+	) {
 		return "INVALID_SCOPE";
 	}
-	if (!request.grantedCapabilities.includes(DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY)) {
+	if (
+		!request.grantedCapabilities.includes(
+			DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY,
+		)
+	) {
 		return "CAPABILITY_DENIED";
 	}
 	return "ALLOWED";

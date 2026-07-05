@@ -5,10 +5,7 @@ import type {
 	CashflowVarianceData,
 } from "../api/cashflow.api";
 import type { CashflowTask, ColumnId } from "../types/cashflow-types";
-import {
-	COLUMN_ORDER,
-	COLUMN_TITLES,
-} from "./cashflow-constants";
+import { COLUMN_ORDER, COLUMN_TITLES } from "./cashflow-constants";
 
 export function findColumnForTask(
 	columns: Record<ColumnId, string[]>,
@@ -228,10 +225,7 @@ export function extractTotalBalance(payload: unknown): number {
 	if (!isRecord(payload)) return 0;
 
 	const summary = payload as Record<string, unknown>;
-	if (
-		summary.success === true &&
-		typeof summary.data !== "undefined"
-	) {
+	if (summary.success === true && typeof summary.data !== "undefined") {
 		return extractTotalBalance(summary.data);
 	}
 

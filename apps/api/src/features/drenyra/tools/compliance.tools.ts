@@ -8,8 +8,8 @@
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
 import { Money, TaxCalculator } from "@drenyra/domain";
+import type { AgentContext, AgentTool } from "@drenyra/drenyra-orchestrator";
 import { z } from "zod";
-import type { AgentTool, AgentContext } from "@drenyra/drenyra-orchestrator";
 
 /**
  * calculateIgvTool const.
@@ -23,7 +23,10 @@ export const calculateIgvTool: AgentTool = {
 	name: "calculate_igv",
 	description:
 		"Calcula el IGV (18%) para un monto dado. Retorna base imponible, IGV y total.",
-	inputSchema: z.object({ amountCents: z.number().int().min(0), currency: z.literal("PEN").default("PEN") }),
+	inputSchema: z.object({
+		amountCents: z.number().int().min(0),
+		currency: z.literal("PEN").default("PEN"),
+	}),
 	outputSchema: z.object({
 		base: z.string(),
 		igv: z.string(),

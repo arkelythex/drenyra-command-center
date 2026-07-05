@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from "vitest";
 import type { DrenyraFiscalScope } from "@drenyra/domain/drenyra";
+import { describe, expect, it, vi } from "vitest";
 import { createInMemoryDrenyraBrainRepository } from "./brain.repository";
 import { createDrenyraBrainService } from "./brain.service";
 
@@ -60,11 +60,18 @@ describe("DrenyraBrainService", () => {
 		});
 
 		const items = await service.listItems({ threadId: thread.id, fiscalScope });
-		const events = await service.listEvents({ threadId: thread.id, fiscalScope });
+		const events = await service.listEvents({
+			threadId: thread.id,
+			fiscalScope,
+		});
 
 		expect(turn.threadId).toBe(thread.id);
 		expect(items[0]?.type).toBe("user_message");
-		expect(events.map((event) => event.type)).toEqual(["thread_created", "turn_started", "item_appended"]);
+		expect(events.map((event) => event.type)).toEqual([
+			"thread_created",
+			"turn_started",
+			"item_appended",
+		]);
 	});
 	it("mirrors Brain audit events into Fiscal Truth evidence when bridge is configured", async () => {
 		const repository = createInMemoryDrenyraBrainRepository();
@@ -119,5 +126,4 @@ describe("DrenyraBrainService", () => {
 			}),
 		).rejects.toThrow(/scope rejected/);
 	});
-
 });

@@ -1,6 +1,6 @@
-import type { SkillId } from "./skill-id";
 import type { SkillCapability } from "./skill-capability";
 import type { SkillCategory } from "./skill-category";
+import type { SkillId } from "./skill-id";
 import type { SkillStatus } from "./skill-status";
 
 export interface SkillProps {
@@ -46,7 +46,9 @@ export class Skill {
 		);
 	}
 
-	static reconstitute(data: SkillProps & { createdAt: Date; updatedAt: Date }): Skill {
+	static reconstitute(
+		data: SkillProps & { createdAt: Date; updatedAt: Date },
+	): Skill {
 		return new Skill(
 			data.id,
 			data.name,

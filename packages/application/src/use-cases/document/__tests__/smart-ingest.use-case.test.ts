@@ -1,11 +1,11 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Document } from "@drenyra/domain/entities/Document";
 import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
-import type { IStorageService } from "../../../ports/storage.port";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type {
 	IDocumentSyncProcessor,
 	IUBLInvoiceParser,
 } from "../../../ports/document-processing.port";
+import type { IStorageService } from "../../../ports/storage.port";
 import { SmartIngestUseCase } from "../smart-ingest.use-case";
 
 // Mock job-dispatcher module (direct import, must be hoisted)
@@ -52,7 +52,7 @@ function createServices() {
 function createFile(
 	name: string,
 	type: "XML" | "PDF" | "IMAGE",
-	content = '<invoice><total>118.00</total></invoice>',
+	content = "<invoice><total>118.00</total></invoice>",
 ): File {
 	const blob = new Blob([content], { type: "application/octet-stream" });
 	return Object.assign(blob, {
@@ -138,7 +138,7 @@ describe("SmartIngestUseCase", () => {
 
 			expect(mockParseInvoice).toHaveBeenCalledTimes(1);
 			expect(mockParseInvoice).toHaveBeenCalledWith(
-				'<invoice><total>118.00</total></invoice>',
+				"<invoice><total>118.00</total></invoice>",
 			);
 		});
 
@@ -171,9 +171,7 @@ describe("SmartIngestUseCase", () => {
 				clientName: CLIENT_NAME,
 			});
 
-			expect(
-				vi.mocked(repository.saveForCompany),
-			).toHaveBeenCalledTimes(1);
+			expect(vi.mocked(repository.saveForCompany)).toHaveBeenCalledTimes(1);
 			expect(vi.mocked(repository.save)).not.toHaveBeenCalled();
 
 			const [savedDocument, savedCompanyId] = vi.mocked(
@@ -262,8 +260,7 @@ describe("SmartIngestUseCase", () => {
 			});
 
 			expect(dispatchDocumentProcessing).toHaveBeenCalledTimes(1);
-			const payload = vi.mocked(dispatchDocumentProcessing).mock
-				.calls[0][0];
+			const payload = vi.mocked(dispatchDocumentProcessing).mock.calls[0][0];
 			expect(payload.userId).toBe(CLIENT_ID);
 			expect(payload.userId).not.toBe("system");
 		});
@@ -291,9 +288,7 @@ describe("SmartIngestUseCase", () => {
 
 			// PDF backup should also be uploaded
 			expect(vi.mocked(storageService.upload)).toHaveBeenCalledTimes(2);
-			expect(result.documents[0].attachments).toEqual([
-				"invoice-f001-1.pdf",
-			]);
+			expect(result.documents[0].attachments).toEqual(["invoice-f001-1.pdf"]);
 		});
 
 		it("should upload PDF backup alongside XML", async () => {
@@ -457,12 +452,8 @@ describe("SmartIngestUseCase", () => {
 			expect(result.xmlProcessed).toBe(1);
 			expect(result.documents).toHaveLength(2);
 
-			const errorDocs = result.documents.filter(
-				(d) => d.source === "ERROR",
-			);
-			const successDocs = result.documents.filter(
-				(d) => d.source === "XML",
-			);
+			const errorDocs = result.documents.filter((d) => d.source === "ERROR");
+			const successDocs = result.documents.filter((d) => d.source === "XML");
 			expect(errorDocs).toHaveLength(1);
 			expect(successDocs).toHaveLength(1);
 		});
@@ -484,9 +475,7 @@ describe("SmartIngestUseCase", () => {
 			});
 
 			// saveForCompany called for each file (XML + PDF = 2)
-			expect(
-				vi.mocked(repository.saveForCompany),
-			).toHaveBeenCalledTimes(2);
+			expect(vi.mocked(repository.saveForCompany)).toHaveBeenCalledTimes(2);
 			expect(vi.mocked(repository.save)).not.toHaveBeenCalled();
 			expect(vi.mocked(repository.update)).not.toHaveBeenCalled();
 			expect(vi.mocked(repository.updateForCompany)).not.toHaveBeenCalled();
@@ -501,8 +490,7 @@ describe("SmartIngestUseCase", () => {
 				clientName: CLIENT_NAME,
 			});
 
-			const [, companyId] = vi.mocked(repository.saveForCompany).mock
-				.calls[0];
+			const [, companyId] = vi.mocked(repository.saveForCompany).mock.calls[0];
 			expect(companyId).toBe(COMPANY_ID);
 		});
 	});

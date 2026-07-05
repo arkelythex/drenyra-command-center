@@ -1,9 +1,9 @@
-import React from "react";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { useHaptics } from "@/hooks/useHaptics";
 import { Link, useLocation } from "@tanstack/react-router";
-import { LucideIcon } from "lucide-react";
+import { motion } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
+import type React from "react";
+import { useHaptics } from "@/hooks/useHaptics";
+import { cn } from "@/lib/utils";
 
 interface NavItem {
 	icon: LucideIcon;

@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import type { HubArtifact } from "@drenyra/shared/artifacts";
 import type { HubViewMode } from "@drenyra/shared/agents";
+import type { HubArtifact } from "@drenyra/shared/artifacts";
+import { create } from "zustand";
 
 const FISCAL_CASE_STORAGE_KEY = "drenyra.hub.fiscalCase.v1";
 

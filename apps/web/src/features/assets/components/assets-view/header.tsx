@@ -18,7 +18,9 @@ export function AssetsHeader({ onOpenSidebar }: AssetsHeaderProps) {
 				<Menu className="h-4 w-4 text-muted-foreground" />
 			</Button>
 			<div>
-				<h1 className="text-xl font-semibold tracking-tight text-foreground">Control de activos</h1>
+				<h1 className="text-xl font-semibold tracking-tight text-foreground">
+					Control de activos
+				</h1>
 				<div className="mt-1 flex items-center gap-3 text-xs font-medium text-muted-foreground">
 					<span className="text-primary">Depreciación LIR</span>
 					<span className="opacity-30">|</span>

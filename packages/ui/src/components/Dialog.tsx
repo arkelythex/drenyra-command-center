@@ -26,8 +26,8 @@
  * ```
  */
 
-import type { ReactNode } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
+import type { ReactNode } from "react";
 import { cn } from "../lib/utils";
 
 export interface DialogProps {
@@ -53,7 +53,13 @@ export function Dialog({ children, open, onOpenChange }: DialogProps) {
 /**
  * Dialog trigger - element that opens the dialog
  */
-export function DialogTrigger({ children, asChild }: { children: ReactNode; asChild?: boolean }) {
+export function DialogTrigger({
+	children,
+	asChild,
+}: {
+	children: ReactNode;
+	asChild?: boolean;
+}) {
 	return (
 		<DialogPrimitive.Trigger asChild={asChild}>
 			{children}
@@ -189,13 +195,13 @@ export interface DialogDescriptionProps {
 /**
  * Dialog description - accessible description for the dialog
  */
-export function DialogDescription({ children, className }: DialogDescriptionProps) {
+export function DialogDescription({
+	children,
+	className,
+}: DialogDescriptionProps) {
 	return (
 		<DialogPrimitive.Description
-			className={cn(
-				"text-sm text-[var(--color-text-secondary)]",
-				className,
-			)}
+			className={cn("text-sm text-[var(--color-text-secondary)]", className)}
 		>
 			{children}
 		</DialogPrimitive.Description>
@@ -229,10 +235,14 @@ export function DialogFooter({ children, className }: DialogFooterProps) {
 /**
  * Dialog close - element that closes the dialog
  */
-export function DialogClose({ children, asChild }: { children: ReactNode; asChild?: boolean }) {
+export function DialogClose({
+	children,
+	asChild,
+}: {
+	children: ReactNode;
+	asChild?: boolean;
+}) {
 	return (
-		<DialogPrimitive.Close asChild={asChild}>
-			{children}
-		</DialogPrimitive.Close>
+		<DialogPrimitive.Close asChild={asChild}>{children}</DialogPrimitive.Close>
 	);
 }

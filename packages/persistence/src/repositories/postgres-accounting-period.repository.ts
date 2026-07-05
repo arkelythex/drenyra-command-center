@@ -4,12 +4,12 @@
  * Infrastructure layer — implements domain repository interface.
  */
 
-import { and, asc, desc, eq, ne, sql } from "drizzle-orm";
-import { randomUUID } from "crypto";
 import { AccountingPeriod } from "@drenyra/domain/accounting/accounting-period";
 import type { AccountingPeriodRepository } from "@drenyra/domain/repositories/accounting-period.repository";
 import { db } from "@drenyra/persistence/client";
 import { accountingPeriods } from "@drenyra/persistence/schema";
+import { randomUUID } from "crypto";
+import { and, asc, desc, eq, ne, sql } from "drizzle-orm";
 
 export class PostgresAccountingPeriodRepository
 	implements AccountingPeriodRepository
@@ -86,9 +86,7 @@ export class PostgresAccountingPeriodRepository
 		return result.map((row) => this.mapToDomain(row));
 	}
 
-	async getCurrentPeriod(
-		companyId: string,
-	): Promise<AccountingPeriod | null> {
+	async getCurrentPeriod(companyId: string): Promise<AccountingPeriod | null> {
 		// Find the most recent period that is NOT in a fully closed/audited state
 		const result = await db
 			.select()

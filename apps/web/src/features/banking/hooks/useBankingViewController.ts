@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useHaptics, useFinancialHaptics } from "@/hooks/useHaptics";
+import { useFinancialHaptics, useHaptics } from "@/hooks/useHaptics";
 import { presentError } from "@/lib/error-messages";
-import { n } from "@/lib/utils";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { n } from "@/lib/utils";
+import type { BankingTab } from "../components/banking-view/constants";
+import type { TransactionFiltersValue } from "../components/transactions";
 import {
 	useBankingReconciliation,
 	useBankingSelection,
@@ -12,8 +14,6 @@ import {
 	useBankingAccountsQuery,
 	useBankingTransactionsQuery,
 } from "./useBankingQueries";
-import type { BankingTab } from "../components/banking-view/constants";
-import type { TransactionFiltersValue } from "../components/transactions";
 
 export function useBankingViewController() {
 	const {

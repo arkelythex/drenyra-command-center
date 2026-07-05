@@ -120,7 +120,8 @@ export function InvoiceOseArtifacts({
 						</Button>
 					</div>
 					<p className="mt-2 text-xs font-bold leading-relaxed text-muted-foreground">
-						Esta factura ya tiene evidencia persistida de recepcion y puede retomarse despues de recargar.
+						Esta factura ya tiene evidencia persistida de recepcion y puede
+						retomarse despues de recargar.
 					</p>
 					{persistedSunatIncidentMessage ? (
 						<div className="mt-3 rounded-lg border border-yellow-500/20 bg-yellow-500/8 px-3 py-2">
@@ -136,12 +137,7 @@ export function InvoiceOseArtifacts({
 			) : null}
 
 			{transientOseResult ? (
-				<div
-					className={cn(
-						"mt-4 rounded-xl border px-3 py-3",
-						transientTone,
-					)}
-				>
+				<div className={cn("mt-4 rounded-xl border px-3 py-3", transientTone)}>
 					<div className="flex flex-wrap items-center gap-2">
 						<Badge variant="outline" className="gap-1.5 bg-background/70">
 							<Send size={10} />

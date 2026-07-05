@@ -5,13 +5,13 @@
  */
 
 export type {
-	DiscrepancyType,
+	ComparisonDashboard,
+	ComparisonReport,
+	ComparisonSummary,
+	DashboardPeriodStat,
+	DiscrepancyDTO,
 	DiscrepancyResolution,
+	DiscrepancyType,
 	ReconciliationAction,
 	SireDocumentRecordDTO,
-	ComparisonSummary,
-	DiscrepancyDTO,
-	ComparisonReport,
-	DashboardPeriodStat,
-	ComparisonDashboard,
 } from "./types";

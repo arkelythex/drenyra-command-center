@@ -1,8 +1,13 @@
-import { betterAuth, type BetterAuthOptions } from "better-auth";
+import { db } from "@drenyra/persistence/client";
+import {
+	authAccounts,
+	authSessions,
+	authUsers,
+	authVerifications,
+} from "@drenyra/persistence/schema";
+import { type BetterAuthOptions, betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { customSession } from "better-auth/plugins/custom-session";
-import { db } from "@drenyra/persistence/client";
-import { authUsers, authSessions, authAccounts, authVerifications } from "@drenyra/persistence/schema";
 import { enrichSessionUserWithCompanyContext } from "./handlers/session-company-context";
 import { resolveTrustedOriginsFromEnv } from "./lib/auth-trusted-origins";
 
@@ -55,43 +60,43 @@ import { resolveTrustedOriginsFromEnv } from "./lib/auth-trusted-origins";
  * ```
  */
 const authOptions = {
-  secret: process.env.BETTER_AUTH_SECRET,
-  database: drizzleAdapter(db, {
-    provider: "pg",
-    schema: {
-      user: authUsers,
-      session: authSessions,
-      account: authAccounts,
-      verification: authVerifications,
-    },
-  }),
-  emailAndPassword: {
-    enabled: true,
-  },
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
-  trustedOrigins: resolveTrustedOriginsFromEnv(
-    process.env.BETTER_AUTH_TRUSTED_ORIGINS,
-  ),
-  user: {
-    additionalFields: {
-      ruc: {
-        type: "string",
-        required: false,
-        defaultValue: "",
-      },
-    },
-  },
+	secret: process.env.BETTER_AUTH_SECRET,
+	database: drizzleAdapter(db, {
+		provider: "pg",
+		schema: {
+			user: authUsers,
+			session: authSessions,
+			account: authAccounts,
+			verification: authVerifications,
+		},
+	}),
+	emailAndPassword: {
+		enabled: true,
+	},
+	baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+	trustedOrigins: resolveTrustedOriginsFromEnv(
+		process.env.BETTER_AUTH_TRUSTED_ORIGINS,
+	),
+	user: {
+		additionalFields: {
+			ruc: {
+				type: "string",
+				required: false,
+				defaultValue: "",
+			},
+		},
+	},
 } satisfies BetterAuthOptions;
 
 export const auth = betterAuth({
-  ...authOptions,
-  plugins: [
-    customSession(
-      async ({ user, session }) => ({
-        session,
-        user: (await enrichSessionUserWithCompanyContext(user)) ?? user,
-      }),
-      authOptions,
-    ),
-  ],
+	...authOptions,
+	plugins: [
+		customSession(
+			async ({ user, session }) => ({
+				session,
+				user: (await enrichSessionUserWithCompanyContext(user)) ?? user,
+			}),
+			authOptions,
+		),
+	],
 });

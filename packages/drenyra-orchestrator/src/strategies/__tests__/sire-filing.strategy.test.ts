@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import type { AgentContext } from "../../types/agent-context";
 import type { SireFilingRecord } from "../sire-filing.strategy";
 import {
-	SIRE_DEADLINE_DAYS,
 	createSireFilingStrategy,
+	SIRE_DEADLINE_DAYS,
 } from "../sire-filing.strategy";
 
 const mockContext: AgentContext = {

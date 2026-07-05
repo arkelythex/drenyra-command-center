@@ -4,13 +4,13 @@
  * @module ai/agents/orchestrator/batch
  */
 
-export { BatchOrchestrator } from "./batch-orchestrator";
 export type {
-	BatchStatus,
+	BatchCompletedEvent as BatchCompletedEventType,
+	BatchItemResult,
 	BatchItemStatus,
 	BatchOrchestratorConfig,
-	BatchItemResult,
-	BatchResult,
 	BatchProgressEvent as BatchProgressEventType,
-	BatchCompletedEvent as BatchCompletedEventType,
+	BatchResult,
+	BatchStatus,
 } from "./batch.types";
+export { BatchOrchestrator } from "./batch-orchestrator";

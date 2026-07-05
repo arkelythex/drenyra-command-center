@@ -4,10 +4,10 @@
  * @module ledger/__tests__/unit/ledger-service.test
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { LedgerService } from "../../index";
 import { db } from "@drenyra/persistence/client";
 import { categories, transactions } from "@drenyra/persistence/schema";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { LedgerService } from "../../index";
 
 vi.mock("@drenyra/persistence/client", () => ({
 	db: {

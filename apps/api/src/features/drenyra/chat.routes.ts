@@ -29,7 +29,10 @@ export interface DrenyraChatOrchestrator {
 }
 
 export interface DrenyraIntentDetector {
-	detectIntent(message: string, context: AgentContext): Promise<DrenyraChatIntent>;
+	detectIntent(
+		message: string,
+		context: AgentContext,
+	): Promise<DrenyraChatIntent>;
 }
 
 export interface ChatRoutesDeps {

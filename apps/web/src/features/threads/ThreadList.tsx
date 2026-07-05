@@ -1,18 +1,18 @@
-import { useState, useMemo } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
-	Search,
-	Plus,
 	AlertCircle,
-	RefreshCw,
 	Clock,
 	Loader2,
+	Plus,
+	RefreshCw,
+	Search,
 } from "lucide-react";
-import { StatusBadge } from "@/components/ui/StatusBadge";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { StatusBadge } from "@/components/ui/StatusBadge";
+import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 import { threadsListQueryOptions } from "./query-options";
 import type { ThreadSummary } from "./threads.types";
 
@@ -20,7 +20,10 @@ import type { ThreadSummary } from "./threads.types";
 
 const STATUS_BADGE: Record<
 	string,
-	{ status: "success" | "warning" | "danger" | "info" | "neutral" | "pending"; label: string }
+	{
+		status: "success" | "warning" | "danger" | "info" | "neutral" | "pending";
+		label: string;
+	}
 > = {
 	DRAFT: { status: "neutral", label: "Borrador" },
 	ACTIVE: { status: "info", label: "Activo" },
@@ -77,11 +80,7 @@ function ThreadCard({ thread }: { thread: ThreadSummary }) {
 						<p className="truncate text-sm font-semibold text-[var(--text-primary)]">
 							{thread.title}
 						</p>
-						<StatusBadge
-							status={badge.status}
-							label={badge.label}
-							size="sm"
-						/>
+						<StatusBadge status={badge.status} label={badge.label} size="sm" />
 					</div>
 
 					{/* Progress bar */}
@@ -251,7 +250,10 @@ export function ThreadList() {
 
 					{isError && (
 						<div className="flex flex-col items-center gap-3 rounded-2xl border border-[var(--color-danger-border)]/20 bg-[var(--color-danger-bg)]/10 p-8 text-center">
-							<AlertCircle size={24} className="text-[var(--color-danger-text)]" />
+							<AlertCircle
+								size={24}
+								className="text-[var(--color-danger-text)]"
+							/>
 							<p className="text-sm text-[var(--text-secondary)]">
 								{error instanceof Error
 									? error.message

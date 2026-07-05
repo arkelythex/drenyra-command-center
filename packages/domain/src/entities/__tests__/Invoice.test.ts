@@ -182,7 +182,10 @@ describe("Invoice Entity", () => {
 		});
 
 		it("should reject cancellation after SUNAT acceptance", () => {
-			const invoice = new InvoiceBuilder().withStatus("SENT").build().markAsAccepted();
+			const invoice = new InvoiceBuilder()
+				.withStatus("SENT")
+				.build()
+				.markAsAccepted();
 
 			expect(() => invoice.cancel()).toThrow(
 				/No se pueden cancelar facturas enviadas a SUNAT/,

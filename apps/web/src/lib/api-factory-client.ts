@@ -6,8 +6,14 @@
  */
 
 import { api, getTenantContext } from "./api";
+import type {
+	CrudApiOptions,
+	CrudMessages,
+	TreatyParamRoute,
+	TreatyRoot,
+	TreatyRouteGroup,
+} from "./api-factory.types";
 import { extractOkData, unwrap } from "./api-helpers";
-import type { CrudApiOptions, CrudMessages, TreatyParamRoute, TreatyRoot, TreatyRouteGroup } from "./api-factory.types";
 
 /**
  * Creates a typed CRUD client for a resource under the Eden Treaty tree.
@@ -45,10 +51,10 @@ import type { CrudApiOptions, CrudMessages, TreatyParamRoute, TreatyRoot, Treaty
  * })
  * ```
  */
-export function createCrudApi<TCreate = Record<string, unknown>, TUpdate = Record<string, unknown>>(
-	path: string,
-	options?: CrudApiOptions,
-) {
+export function createCrudApi<
+	TCreate = Record<string, unknown>,
+	TUpdate = Record<string, unknown>,
+>(path: string, options?: CrudApiOptions) {
 	const { extract = false, messages = {}, noPrefix = false } = options ?? {};
 	const m: CrudMessages = {
 		list: messages.list ?? `No se pudieron cargar ${path}`,
@@ -83,21 +89,29 @@ export function createCrudApi<TCreate = Record<string, unknown>, TUpdate = Recor
 		return (cur[last] as (id: string) => TreatyParamRoute)(id);
 	}
 
-	const asEnvelope = <T>(p: Promise<T>) => p as Promise<Record<string, unknown>>;
+	const asEnvelope = <T>(p: Promise<T>) =>
+		p as Promise<Record<string, unknown>>;
 
 	return {
 		/** Fetch all records for the resource. Supports optional query filters. */
 		list: async <T = unknown>(query?: Record<string, unknown>) => {
 			const body = await unwrap(
-				asEnvelope(resolveGroup().get({ query: { ...getTenantContext(), ...query } })),
+				asEnvelope(
+					resolveGroup().get({ query: { ...getTenantContext(), ...query } }),
+				),
 			);
 			return (extract ? extractOkData(body, m.list!) : body) as T[];
 		},
 
 		/** Fetch a single record by ID. Supports optional query params. */
-		getById: async <T = unknown>(id: string, query?: Record<string, unknown>) => {
+		getById: async <T = unknown>(
+			id: string,
+			query?: Record<string, unknown>,
+		) => {
 			const body = await unwrap(
-				asEnvelope(resolveParam(id).get({ query: { ...getTenantContext(), ...query } })),
+				asEnvelope(
+					resolveParam(id).get({ query: { ...getTenantContext(), ...query } }),
+				),
 			);
 			return (extract ? extractOkData(body, m.getById!) : body) as T;
 		},
@@ -105,10 +119,12 @@ export function createCrudApi<TCreate = Record<string, unknown>, TUpdate = Recor
 		/** Create a new record. Tenant context is auto-injected into the payload. */
 		create: async (payload: TCreate) => {
 			const body = await unwrap(
-				asEnvelope(resolveGroup().post({
-					...getTenantContext(),
-					...(payload as Record<string, unknown>),
-				})),
+				asEnvelope(
+					resolveGroup().post({
+						...getTenantContext(),
+						...(payload as Record<string, unknown>),
+					}),
+				),
 			);
 			return (extract ? extractOkData(body, m.create!) : body) as TCreate;
 		},

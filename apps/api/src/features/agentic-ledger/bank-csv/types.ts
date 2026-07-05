@@ -8,7 +8,12 @@ import type { ImportTransactionInput } from "../agentic-ledger.service";
  * const format: BankCsvFormat = "BCP";
  * ```
  */
-export type BankCsvFormat = "BCP" | "BBVA" | "INTERBANK" | "SCOTIABANK" | "GENERIC";
+export type BankCsvFormat =
+	| "BCP"
+	| "BBVA"
+	| "INTERBANK"
+	| "SCOTIABANK"
+	| "GENERIC";
 
 /**
  * Result of parsing a bank-export CSV.
@@ -19,6 +24,6 @@ export type BankCsvFormat = "BCP" | "BBVA" | "INTERBANK" | "SCOTIABANK" | "GENER
  * ```
  */
 export type BankCsvParseResult = {
-  transactions: ImportTransactionInput[];
-  warnings: string[];
+	transactions: ImportTransactionInput[];
+	warnings: string[];
 };

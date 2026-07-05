@@ -4,9 +4,11 @@ import type {
 	ApprovalRequest,
 	GovernanceBundleResult,
 } from "../types/approval-gate";
-import { ApprovalStore } from "./approval-store";
+import type { ApprovalStore } from "./approval-store";
 
-type ActionResult<T> = { success: true; data: T } | { success: false; error: string };
+type ActionResult<T> =
+	| { success: true; data: T }
+	| { success: false; error: string };
 
 /**
  * Mastra-based ApprovalGateEngine.

@@ -30,7 +30,10 @@ export interface DrenyraBrainRepository {
 		fiscalScope: DrenyraFiscalScope,
 	): Promise<DrenyraBrainItem[]>;
 	appendEvent(event: DrenyraBrainEvent): Promise<DrenyraBrainEvent>;
-	listEvents(threadId: string, fiscalScope: DrenyraFiscalScope): Promise<DrenyraBrainEvent[]>;
+	listEvents(
+		threadId: string,
+		fiscalScope: DrenyraFiscalScope,
+	): Promise<DrenyraBrainEvent[]>;
 }
 
 export function createInMemoryDrenyraBrainRepository(): DrenyraBrainRepository {
@@ -53,8 +56,8 @@ export function createInMemoryDrenyraBrainRepository(): DrenyraBrainRepository {
 			return (
 				threads.find(
 					(thread) =>
-						thread.id === threadId
-						&& isSameFiscalScope(thread.fiscalScope, fiscalScope),
+						thread.id === threadId &&
+						isSameFiscalScope(thread.fiscalScope, fiscalScope),
 				) ?? null
 			);
 		},
@@ -69,8 +72,8 @@ export function createInMemoryDrenyraBrainRepository(): DrenyraBrainRepository {
 		async listItems(threadId, fiscalScope) {
 			return items.filter(
 				(item) =>
-					item.threadId === threadId
-					&& isSameFiscalScope(item.fiscalScope, fiscalScope),
+					item.threadId === threadId &&
+					isSameFiscalScope(item.fiscalScope, fiscalScope),
 			);
 		},
 		async appendEvent(event) {
@@ -78,11 +81,13 @@ export function createInMemoryDrenyraBrainRepository(): DrenyraBrainRepository {
 			return event;
 		},
 		async listEvents(threadId, fiscalScope) {
-			return events.filter(
-				(event) =>
-					event.threadId === threadId
-					&& isSameFiscalScope(event.fiscalScope, fiscalScope),
-			).sort((a, b) => a.sequence - b.sequence);
+			return events
+				.filter(
+					(event) =>
+						event.threadId === threadId &&
+						isSameFiscalScope(event.fiscalScope, fiscalScope),
+				)
+				.sort((a, b) => a.sequence - b.sequence);
 		},
 	};
 }

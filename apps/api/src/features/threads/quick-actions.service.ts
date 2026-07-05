@@ -27,10 +27,7 @@ export interface QuickAction {
 // ---------------------------------------------------------------------------
 
 export class QuickActionsService {
-	getForCompany(
-		_companyId: string,
-		period?: string,
-	): QuickAction[] {
+	getForCompany(_companyId: string, period?: string): QuickAction[] {
 		const p = period ?? "current";
 
 		return [

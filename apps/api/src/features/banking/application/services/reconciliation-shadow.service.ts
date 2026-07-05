@@ -3,9 +3,9 @@
  * between local engine and Go worker results.
  */
 
-import { reconciliationShadowRuns } from "@drenyra/persistence/schema";
 import { db } from "@drenyra/persistence/client";
 import { desc, eq } from "@drenyra/persistence/query";
+import { reconciliationShadowRuns } from "@drenyra/persistence/schema";
 import { SecureLogger } from "@drenyra/shared/secure-logger";
 import type {
 	ReconciliationShadowCutoverDecision,
@@ -26,7 +26,8 @@ const SHADOW_MIN_SUCCESS_RUNS = Number.parseInt(
 	10,
 );
 const SHADOW_MAX_DISCREPANCY_RATE_BPS = Number.parseInt(
-	process.env.ARKELYTHEX_RECONCILIATION_SHADOW_MAX_DISCREPANCY_RATE_BPS ?? "500",
+	process.env.ARKELYTHEX_RECONCILIATION_SHADOW_MAX_DISCREPANCY_RATE_BPS ??
+		"500",
 	10,
 );
 const SHADOW_MAX_FAILURE_RATE_BPS = Number.parseInt(

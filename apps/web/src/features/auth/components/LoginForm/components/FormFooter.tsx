@@ -1,7 +1,4 @@
-import {
-	MotionDiv,
-	entranceVariants,
-} from "@/components/ui/motion-primitives";
+import { entranceVariants, MotionDiv } from "@/components/ui/motion-primitives";
 
 export function FormFooter() {
 	return (

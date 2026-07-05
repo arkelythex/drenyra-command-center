@@ -30,7 +30,12 @@ export type DrenyraDeterministicCheckStatus =
 
 export interface DrenyraCommandEvidenceRef {
 	id: string;
-	type: "DOCUMENT" | "SUNAT_RECORD" | "LEDGER_ENTRY" | "BANK_STATEMENT" | "AGENT_OUTPUT";
+	type:
+		| "DOCUMENT"
+		| "SUNAT_RECORD"
+		| "LEDGER_ENTRY"
+		| "BANK_STATEMENT"
+		| "AGENT_OUTPUT";
 	title: string;
 	sourceRef?: string;
 	contentHash?: string;

@@ -1,9 +1,9 @@
 import { api, getGovernanceAuditHeaders } from "@/lib/api";
 import { unwrap } from "@/lib/api-helpers";
 import type {
+	QueueFilters,
 	ReviewQueueItemDTO,
 	ReviewQueueStatsDTO,
-	QueueFilters,
 } from "./review-queue.types";
 
 export async function listQueue(filters?: QueueFilters) {

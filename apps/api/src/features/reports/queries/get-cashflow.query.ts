@@ -1,9 +1,9 @@
 import { Money } from "@drenyra/domain";
-import { bills, invoices } from "@drenyra/persistence/schema";
 import { db as globalDb } from "@drenyra/persistence/client";
 import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
-import type { CashFlowReport } from "../reports.schemas";
+import { bills, invoices } from "@drenyra/persistence/schema";
 import { moneyFromDecimalString, zeroMoney } from "../_internal/money-utils";
+import type { CashFlowReport } from "../reports.schemas";
 
 /**
  * GetCashFlowQuery class.

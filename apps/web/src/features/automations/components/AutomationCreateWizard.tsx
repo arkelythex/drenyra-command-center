@@ -1,5 +1,5 @@
+import { ArrowRight, Sparkles, X } from "lucide-react";
 import { useState } from "react";
-import { X, Sparkles, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface AutomationWizardData {
@@ -56,13 +56,25 @@ export function AutomationCreateWizard({
 	};
 
 	const next = () => {
-		const order: WizardStep[] = ["name", "trigger", "skills", "autonomy", "review"];
+		const order: WizardStep[] = [
+			"name",
+			"trigger",
+			"skills",
+			"autonomy",
+			"review",
+		];
 		const idx = order.indexOf(step);
 		if (idx < order.length - 1) setStep(order[idx + 1]);
 	};
 
 	const back = () => {
-		const order: WizardStep[] = ["name", "trigger", "skills", "autonomy", "review"];
+		const order: WizardStep[] = [
+			"name",
+			"trigger",
+			"skills",
+			"autonomy",
+			"review",
+		];
 		const idx = order.indexOf(step);
 		if (idx > 0) setStep(order[idx - 1]);
 	};
@@ -110,8 +122,9 @@ export function AutomationCreateWizard({
 										"flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold",
 										step === s
 											? "bg-[var(--color-primary)] text-white"
-											: ["name", "trigger", "skills", "autonomy"].indexOf(step) >
-													i
+											: ["name", "trigger", "skills", "autonomy"].indexOf(
+														step,
+													) > i
 												? "bg-[var(--color-success)]/20 text-[var(--color-success)]"
 												: "bg-[var(--surface-2)] text-[var(--text-muted)]",
 									)}
@@ -131,7 +144,10 @@ export function AutomationCreateWizard({
 					{step === "name" && (
 						<div className="space-y-4">
 							<div>
-								<label htmlFor="wiz-name" className="block text-sm font-medium text-[var(--text-primary)] mb-1">
+								<label
+									htmlFor="wiz-name"
+									className="block text-sm font-medium text-[var(--text-primary)] mb-1"
+								>
 									Nombre
 								</label>
 								<input
@@ -146,7 +162,10 @@ export function AutomationCreateWizard({
 								/>
 							</div>
 							<div>
-								<label htmlFor="wiz-desc" className="block text-sm font-medium text-[var(--text-primary)] mb-1">
+								<label
+									htmlFor="wiz-desc"
+									className="block text-sm font-medium text-[var(--text-primary)] mb-1"
+								>
 									Descripción
 								</label>
 								<textarea
@@ -168,19 +187,25 @@ export function AutomationCreateWizard({
 							<legend className="block text-sm font-medium text-[var(--text-primary)] mb-1">
 								¿Cuándo se ejecuta?
 							</legend>
-							{([
-								{ value: "manual", label: "Manual", desc: "Solo cuando vos lo iniciás" },
-								{
-									value: "schedule",
-									label: "Programado",
-									desc: "En un horario fijo (cada día, semana, mes)",
-								},
-								{
-									value: "event",
-									label: "Por evento",
-									desc: "Cuando ocurre algo (nuevo CPE, diff, etc.)",
-								},
-							] as const).map((opt) => (
+							{(
+								[
+									{
+										value: "manual",
+										label: "Manual",
+										desc: "Solo cuando vos lo iniciás",
+									},
+									{
+										value: "schedule",
+										label: "Programado",
+										desc: "En un horario fijo (cada día, semana, mes)",
+									},
+									{
+										value: "event",
+										label: "Por evento",
+										desc: "Cuando ocurre algo (nuevo CPE, diff, etc.)",
+									},
+								] as const
+							).map((opt) => (
 								<button
 									key={opt.value}
 									type="button"
@@ -253,23 +278,25 @@ export function AutomationCreateWizard({
 							<legend className="block text-sm font-medium text-[var(--text-primary)] mb-1">
 								¿Qué nivel de autonomía tiene?
 							</legend>
-							{([
-								{
-									value: "suggest",
-									label: "Sugerir",
-									desc: "Propone cambios y espera tu aprobación",
-								},
-								{
-									value: "auto-approve",
-									label: "Auto-aprobar",
-									desc: "Ejecuta y aprueba cambios de bajo riesgo",
-								},
-								{
-									value: "execute",
-									label: "Ejecutar",
-									desc: "Ejecuta todo automáticamente, deja registro",
-								},
-							] as const).map((opt) => (
+							{(
+								[
+									{
+										value: "suggest",
+										label: "Sugerir",
+										desc: "Propone cambios y espera tu aprobación",
+									},
+									{
+										value: "auto-approve",
+										label: "Auto-aprobar",
+										desc: "Ejecuta y aprueba cambios de bajo riesgo",
+									},
+									{
+										value: "execute",
+										label: "Ejecutar",
+										desc: "Ejecuta todo automáticamente, deja registro",
+									},
+								] as const
+							).map((opt) => (
 								<button
 									key={opt.value}
 									type="button"

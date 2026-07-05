@@ -76,7 +76,11 @@ export class RetryEngine {
 				const agentError = classifyError(err, context.agentName);
 
 				// If this is a permanent error, don't retry
-				if (!cfg.retryableErrors.includes(agentError.type as "TRANSIENT" | "UNKNOWN")) {
+				if (
+					!cfg.retryableErrors.includes(
+						agentError.type as "TRANSIENT" | "UNKNOWN",
+					)
+				) {
 					return { error: agentError, retries: attempt };
 				}
 
@@ -237,8 +241,10 @@ export class RetryEngine {
 	 * @returns Delay in milliseconds
 	 */
 	calculateDelay(attempt: number, config: RetryConfig): number {
-		const exponential = config.baseDelayMs * Math.pow(2, attempt);
-		const jitter = config.useJitter ? Math.random() * (config.baseDelayMs / 2) : 0;
+		const exponential = config.baseDelayMs * 2 ** attempt;
+		const jitter = config.useJitter
+			? Math.random() * (config.baseDelayMs / 2)
+			: 0;
 		return Math.min(exponential + jitter, config.maxDelayMs);
 	}
 

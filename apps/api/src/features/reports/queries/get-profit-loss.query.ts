@@ -1,9 +1,9 @@
 import { Money } from "@drenyra/domain";
-import { bills, invoices } from "@drenyra/persistence/schema";
 import { db as globalDb } from "@drenyra/persistence/client";
 import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
-import type { ProfitLossReport } from "../reports.schemas";
+import { bills, invoices } from "@drenyra/persistence/schema";
 import { moneyFromDecimalString } from "../_internal/money-utils";
+import type { ProfitLossReport } from "../reports.schemas";
 
 /**
  * GetProfitLossQuery class.

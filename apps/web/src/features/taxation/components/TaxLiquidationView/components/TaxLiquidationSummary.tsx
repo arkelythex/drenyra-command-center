@@ -45,7 +45,12 @@ export function TaxLiquidationSummary({
 		<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 			<TaxStat label="IGV Estimado" value={n(igvPagar)} delay={0.1} />
 			<TaxStat label="Renta (Pago Cuenta)" value={n(rentaPagar)} delay={0.2} />
-			<TaxStat label="Total del periodo" value={n(totalImpuestos)} highlight delay={0.3} />
+			<TaxStat
+				label="Total del periodo"
+				value={n(totalImpuestos)}
+				highlight
+				delay={0.3}
+			/>
 		</div>
 	);
 }

@@ -1,4 +1,4 @@
-import { Money } from "../../value-objects/Money";
+import type { Money } from "../../value-objects/Money";
 import type { AccountingTransactionType } from "../../value-objects/TransactionType";
 
 /**
@@ -20,10 +20,7 @@ export type TransactionType = AccountingTransactionType;
  * const s: TransactionStatus = "DRAFT";
  * ```
  */
-export type TransactionStatus =
-	| "DRAFT"
-	| "POSTED"
-	| "VOIDED";
+export type TransactionStatus = "DRAFT" | "POSTED" | "VOIDED";
 
 /**
  * A single double-entry line (debit/credit) inside a transaction.

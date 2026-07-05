@@ -1,7 +1,10 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { z } from "zod";
 import { zodToolSchema } from "../../src/tools/json-schema";
-import type { JSONSchemaObject, ToolDefinition } from "../../src/tools/tool-definition";
+import type {
+	JSONSchemaObject,
+	ToolDefinition,
+} from "../../src/tools/tool-definition";
 
 // ---- Type-level tests ----
 // These verify type constraints at compile time (TypeScript).

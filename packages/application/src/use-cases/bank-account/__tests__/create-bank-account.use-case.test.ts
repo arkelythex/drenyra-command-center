@@ -2,9 +2,9 @@
  * CreateBankAccountUseCase Tests
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import { BankAccount } from "@drenyra/domain/entities/BankAccount";
 import type { BankAccountRepository } from "@drenyra/domain/repositories/bank-account.repository";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CreateBankAccountUseCase } from "../create-bank-account.use-case";
 
 // Mock repository

@@ -1,6 +1,6 @@
-import { Loader2, CheckCircle2 } from "lucide-react";
-import { ApprovalHubCard } from "./ApprovalHubCard";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import type { ApprovalItem } from "../ApprovalHubPage.types";
+import { ApprovalHubCard } from "./ApprovalHubCard";
 
 interface ApprovalHubListProps {
 	items: ApprovalItem[];

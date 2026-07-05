@@ -50,9 +50,7 @@ describe("Accounting Schema", () => {
 
 	it("should export exchangeRates table", () => {
 		expect(exchangeRates).toBeDefined();
-		const columns = getColumnNames(
-			exchangeRates as Record<string, unknown>,
-		);
+		const columns = getColumnNames(exchangeRates as Record<string, unknown>);
 		expect(columns).toContain("currencyFrom");
 		expect(columns).toContain("currencyTo");
 		expect(columns).toContain("buyRate");
@@ -74,9 +72,7 @@ describe("Accounting Schema", () => {
 
 	it("should export journalEntries table", () => {
 		expect(journalEntries).toBeDefined();
-		const columns = getColumnNames(
-			journalEntries as Record<string, unknown>,
-		);
+		const columns = getColumnNames(journalEntries as Record<string, unknown>);
 		expect(columns).toContain("entryNumber");
 		expect(columns).toContain("periodKey");
 		expect(columns).toContain("gloss");
@@ -93,13 +89,41 @@ describe("Accounting Schema", () => {
 
 	it("should have all 7 accounting tables with expected shape", () => {
 		const tables = [
-			{ name: "pcgeAccounts", table: pcgeAccounts, expectedCols: ["code", "companyId", "type", "isActive"] },
-			{ name: "accountingPeriods", table: accountingPeriods, expectedCols: ["year", "month", "status"] },
-			{ name: "exchangeRates", table: exchangeRates, expectedCols: ["currencyFrom", "currencyTo", "buyRate"] },
-			{ name: "cpeLog", table: cpeLog, expectedCols: ["sunatStatus", "hashValue", "cdrData"] },
-			{ name: "detractions", table: detractions, expectedCols: ["spotCode", "amountCents", "status"] },
-			{ name: "journalEntries", table: journalEntries, expectedCols: ["entryNumber", "periodKey", "gloss"] },
-			{ name: "journalEntryLines", table: journalEntryLines, expectedCols: ["debitCents", "creditCents", "accountCode"] },
+			{
+				name: "pcgeAccounts",
+				table: pcgeAccounts,
+				expectedCols: ["code", "companyId", "type", "isActive"],
+			},
+			{
+				name: "accountingPeriods",
+				table: accountingPeriods,
+				expectedCols: ["year", "month", "status"],
+			},
+			{
+				name: "exchangeRates",
+				table: exchangeRates,
+				expectedCols: ["currencyFrom", "currencyTo", "buyRate"],
+			},
+			{
+				name: "cpeLog",
+				table: cpeLog,
+				expectedCols: ["sunatStatus", "hashValue", "cdrData"],
+			},
+			{
+				name: "detractions",
+				table: detractions,
+				expectedCols: ["spotCode", "amountCents", "status"],
+			},
+			{
+				name: "journalEntries",
+				table: journalEntries,
+				expectedCols: ["entryNumber", "periodKey", "gloss"],
+			},
+			{
+				name: "journalEntryLines",
+				table: journalEntryLines,
+				expectedCols: ["debitCents", "creditCents", "accountCode"],
+			},
 		];
 
 		expect(tables).toHaveLength(7);
@@ -108,10 +132,7 @@ describe("Accounting Schema", () => {
 			expect(table, `${name} should be defined`).toBeDefined();
 			const columns = getColumnNames(table as Record<string, unknown>);
 			for (const col of expectedCols) {
-				expect(
-					columns,
-					`${name} should have column '${col}'`,
-				).toContain(col);
+				expect(columns, `${name} should have column '${col}'`).toContain(col);
 			}
 		}
 	});
@@ -132,9 +153,7 @@ describe("Accounting Schema", () => {
 	});
 
 	it("should have exchange rate fields", () => {
-		const columns = getColumnNames(
-			exchangeRates as Record<string, unknown>,
-		);
+		const columns = getColumnNames(exchangeRates as Record<string, unknown>);
 		expect(columns).toContain("buyRate");
 		expect(columns).toContain("sellRate");
 		expect(columns).toContain("sunatReference");

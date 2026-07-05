@@ -34,11 +34,16 @@ vi.mock("@/features/drenyra-command-center/i18n/i18n", () => ({
 	}),
 }));
 
-vi.mock("@/features/cognitive-hub/components/artifacts/ArtifactRenderer", () => ({
-	ArtifactRenderer: ({ artifact }: { artifact: { type: string; title: string } }) => (
-		<div data-testid="artifact-renderer">Rendered: {artifact.type}</div>
-	),
-}));
+vi.mock(
+	"@/features/cognitive-hub/components/artifacts/ArtifactRenderer",
+	() => ({
+		ArtifactRenderer: ({
+			artifact,
+		}: {
+			artifact: { type: string; title: string };
+		}) => <div data-testid="artifact-renderer">Rendered: {artifact.type}</div>,
+	}),
+);
 
 vi.mock("@/lib/utils", () => ({
 	cn: (...args: unknown[]) => args.filter(Boolean).join(" "),
@@ -72,12 +77,12 @@ vi.mock("lucide-react", () => {
 
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import type { HubArtifact } from "@/features/cognitive-hub/types/hub.types";
+import type { FiscalCaseDetails } from "@/features/drenyra-command-center/api/drenyra-command-center.api";
 import {
 	ChatContextPanel,
 	type ChatContextPanelProps,
 } from "@/features/drenyra-command-center/components/ChatContextPanel";
-import type { HubArtifact } from "@/features/cognitive-hub/types/hub.types";
-import type { FiscalCaseDetails } from "@/features/drenyra-command-center/api/drenyra-command-center.api";
 
 // ---------------------------------------------------------------------------
 // Helper factories — datos de prueba tipados
@@ -153,11 +158,14 @@ function explanationArtifact(): HubArtifact {
 		id: "art-explain-1",
 		title: "Análisis de variación",
 		type: "explanation",
-		content: "La variación en ingresos se debe a un ajuste estacional en el sector construcción. Se recomienda revisar las partidas contables asociadas.",
+		content:
+			"La variación en ingresos se debe a un ajuste estacional en el sector construcción. Se recomienda revisar las partidas contables asociadas.",
 	} as HubArtifact;
 }
 
-function fiscalCaseDetails(overrides?: Partial<FiscalCaseDetails>): FiscalCaseDetails {
+function fiscalCaseDetails(
+	overrides?: Partial<FiscalCaseDetails>,
+): FiscalCaseDetails {
 	return {
 		case: {
 			id: "case-001",
@@ -351,13 +359,19 @@ describe("ChatContextPanel", () => {
 
 	describe('context="streaming"', () => {
 		it("muestra 'Agente trabajando' con Loader2 animado", () => {
-			render(<ChatContextPanel {...defaultProps} context="streaming" isStreaming />);
+			render(
+				<ChatContextPanel {...defaultProps} context="streaming" isStreaming />,
+			);
 			expect(screen.getByText("Agente trabajando")).toBeInTheDocument();
-			expect(screen.getAllByTestId("lucide-Loader2").length).toBeGreaterThanOrEqual(3);
+			expect(
+				screen.getAllByTestId("lucide-Loader2").length,
+			).toBeGreaterThanOrEqual(3);
 		});
 
 		it("muestra los 3 pasos del swarm (Analizando, Consultando, Generando)", () => {
-			render(<ChatContextPanel {...defaultProps} context="streaming" isStreaming />);
+			render(
+				<ChatContextPanel {...defaultProps} context="streaming" isStreaming />,
+			);
 			expect(screen.getByText("Analizando datos...")).toBeInTheDocument();
 			expect(screen.getByText("Consultando ledger...")).toBeInTheDocument();
 			expect(screen.getByText("Generando propuesta...")).toBeInTheDocument();
@@ -373,7 +387,9 @@ describe("ChatContextPanel", () => {
 		});
 
 		it("muestra el header 'Procesando...' cuando isStreaming es true", () => {
-			render(<ChatContextPanel {...defaultProps} context="streaming" isStreaming />);
+			render(
+				<ChatContextPanel {...defaultProps} context="streaming" isStreaming />,
+			);
 			expect(screen.getByText("Procesando...")).toBeInTheDocument();
 		});
 	});
@@ -514,7 +530,9 @@ describe("ChatContextPanel", () => {
 				/>,
 			);
 			// Busca los divs que hacen de barra dentro del contenedor flex
-			const barContainer = container.querySelector('div[style*="height: 48px"]');
+			const barContainer = container.querySelector(
+				'div[style*="height: 48px"]',
+			);
 			expect(barContainer).toBeInTheDocument();
 
 			const bars = barContainer?.querySelectorAll("div.w-full.rounded-t");
@@ -527,7 +545,11 @@ describe("ChatContextPanel", () => {
 	describe('context="artifact" — sin activeArtifact', () => {
 		it("muestra mensaje placeholder cuando no hay artifact activo", () => {
 			render(
-				<ChatContextPanel {...defaultProps} context="artifact" activeArtifact={null} />,
+				<ChatContextPanel
+					{...defaultProps}
+					context="artifact"
+					activeArtifact={null}
+				/>,
 			);
 			expect(
 				screen.getByText("Seleccioná un artifact para ver el preview."),
@@ -569,7 +591,9 @@ describe("ChatContextPanel", () => {
 				<ChatContextPanel
 					{...defaultProps}
 					context="case"
-					caseDetails={fiscalCaseDetails({ case: { ...fiscalCaseDetails().case, riskScore: 68 } })}
+					caseDetails={fiscalCaseDetails({
+						case: { ...fiscalCaseDetails().case, riskScore: 68 },
+					})}
 				/>,
 			);
 			expect(screen.getByText("Riesgo")).toBeInTheDocument();
@@ -580,7 +604,9 @@ describe("ChatContextPanel", () => {
 				<ChatContextPanel
 					{...defaultProps}
 					context="case"
-					caseDetails={fiscalCaseDetails({ case: { ...fiscalCaseDetails().case, riskScore: 85 } })}
+					caseDetails={fiscalCaseDetails({
+						case: { ...fiscalCaseDetails().case, riskScore: 85 },
+					})}
 				/>,
 			);
 			const bar = container.querySelector(".bg-red-500");
@@ -592,7 +618,9 @@ describe("ChatContextPanel", () => {
 				<ChatContextPanel
 					{...defaultProps}
 					context="case"
-					caseDetails={fiscalCaseDetails({ case: { ...fiscalCaseDetails().case, riskScore: 55 } })}
+					caseDetails={fiscalCaseDetails({
+						case: { ...fiscalCaseDetails().case, riskScore: 55 },
+					})}
 				/>,
 			);
 			const bar = container.querySelector(".bg-amber-500");
@@ -604,12 +632,16 @@ describe("ChatContextPanel", () => {
 				<ChatContextPanel
 					{...defaultProps}
 					context="case"
-					caseDetails={fiscalCaseDetails({ case: { ...fiscalCaseDetails().case, riskScore: 25 } })}
+					caseDetails={fiscalCaseDetails({
+						case: { ...fiscalCaseDetails().case, riskScore: 25 },
+					})}
 				/>,
 			);
 			// After migrating from emerald-500 to var(--color-success), the progress bar
 			// uses a CSS variable class. We verify the correct semantic token is applied.
-			const bar = container.querySelector('[class*="h-full"][class*="rounded-full"]');
+			const bar = container.querySelector(
+				'[class*="h-full"][class*="rounded-full"]',
+			);
 			expect(bar).toBeInTheDocument();
 			expect(bar!.className).toContain("color-success");
 		});
@@ -651,7 +683,10 @@ describe("ChatContextPanel", () => {
 				<ChatContextPanel
 					{...defaultProps}
 					context="case"
-					caseDetails={{ ...details, case: caseWithoutRisk as typeof details.case }}
+					caseDetails={{
+						...details,
+						case: caseWithoutRisk as typeof details.case,
+					}}
 				/>,
 			);
 			expect(screen.queryByText("Riesgo")).not.toBeInTheDocument();
@@ -663,11 +698,13 @@ describe("ChatContextPanel", () => {
 	describe('context="case" — sin caseDetails', () => {
 		it("muestra placeholder cuando no hay caso seleccionado", () => {
 			render(
-				<ChatContextPanel {...defaultProps} context="case" caseDetails={null} />,
+				<ChatContextPanel
+					{...defaultProps}
+					context="case"
+					caseDetails={null}
+				/>,
 			);
-			expect(
-				screen.getByText("Sin caso seleccionado."),
-			).toBeInTheDocument();
+			expect(screen.getByText("Sin caso seleccionado.")).toBeInTheDocument();
 		});
 	});
 
@@ -755,16 +792,10 @@ describe("ChatContextPanel", () => {
 			expect(screen.getByText("Contexto del chat")).toBeInTheDocument();
 
 			rerender(
-				<ChatContextPanel
-					{...defaultProps}
-					context="streaming"
-					isStreaming
-				/>,
+				<ChatContextPanel {...defaultProps} context="streaming" isStreaming />,
 			);
 			expect(screen.getByText("Agente trabajando")).toBeInTheDocument();
-			expect(
-				screen.queryByText("Contexto del chat"),
-			).not.toBeInTheDocument();
+			expect(screen.queryByText("Contexto del chat")).not.toBeInTheDocument();
 		});
 
 		it("cambia el header entre 'Procesando...' y 'Contexto' según isStreaming", () => {
@@ -774,7 +805,11 @@ describe("ChatContextPanel", () => {
 			expect(screen.getByText("Procesando...")).toBeInTheDocument();
 
 			rerender(
-				<ChatContextPanel {...defaultProps} context="streaming" isStreaming={false} />,
+				<ChatContextPanel
+					{...defaultProps}
+					context="streaming"
+					isStreaming={false}
+				/>,
 			);
 			expect(screen.getByText("Contexto")).toBeInTheDocument();
 		});

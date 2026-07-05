@@ -3,11 +3,11 @@
  * Infrastructure layer - implements domain repository interface
  */
 
-import { eq } from "drizzle-orm";
 import { AISettings } from "@drenyra/domain/entities/AISettings";
 import type { AISettingsRepository } from "@drenyra/domain/repositories/ai-settings.repository";
 import { db } from "@drenyra/persistence/client";
 import { userAISettings } from "@drenyra/persistence/schema";
+import { eq } from "drizzle-orm";
 
 /**
  * PostgresAISettingsRepository class.

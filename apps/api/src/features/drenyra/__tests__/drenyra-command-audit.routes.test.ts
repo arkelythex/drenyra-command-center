@@ -1,11 +1,15 @@
-import { Elysia } from "elysia";
-import { beforeEach, describe, expect, it } from "vitest";
 import {
+	type DrenyraActorContext,
 	DrenyraFiscalCommandCenterService,
 	InMemoryDrenyraRepository,
-	type DrenyraActorContext,
 } from "@drenyra/application/drenyra";
-import type { AuditEvent, AuditEventType, FiscalScope } from "@drenyra/domain/drenyra";
+import type {
+	AuditEvent,
+	AuditEventType,
+	FiscalScope,
+} from "@drenyra/domain/drenyra";
+import { Elysia } from "elysia";
+import { beforeEach, describe, expect, it } from "vitest";
 import { createDrenyraCommandAuditRoutes } from "../command-audit.routes";
 
 const context: DrenyraActorContext = {
@@ -54,11 +58,18 @@ function auditEvent(overrides: Partial<AuditEvent> = {}): AuditEvent {
 }
 
 function app() {
-	return new Elysia().use(createDrenyraCommandAuditRoutes(service, () => ({ ok: true, context })));
+	return new Elysia().use(
+		createDrenyraCommandAuditRoutes(service, () => ({ ok: true, context })),
+	);
 }
 
-async function getJson(path: string, requestHeaders: Record<string, string> = headers): Promise<Response> {
-	return app().handle(new Request(`http://localhost${path}`, { headers: requestHeaders }));
+async function getJson(
+	path: string,
+	requestHeaders: Record<string, string> = headers,
+): Promise<Response> {
+	return app().handle(
+		new Request(`http://localhost${path}`, { headers: requestHeaders }),
+	);
 }
 
 describe("Drenyra command audit routes", () => {
@@ -91,7 +102,10 @@ describe("Drenyra command audit routes", () => {
 
 		expect(response.status).toBe(200);
 		expect(payload.success).toBe(true);
-		expect(payload.data.map((event: { id: string }) => event.id)).toEqual(["audit-denied", "audit-allowed"]);
+		expect(payload.data.map((event: { id: string }) => event.id)).toEqual([
+			"audit-denied",
+			"audit-allowed",
+		]);
 		expect(payload.data[1].caseId).toBeUndefined();
 		expect(payload.data[0].scope).toBeUndefined();
 	});
@@ -106,11 +120,15 @@ describe("Drenyra command audit routes", () => {
 			}),
 		);
 
-		const response = await getJson("/commands/audit-events?commandId=review-sunat&eventType=CAPABILITY_ALLOWED");
+		const response = await getJson(
+			"/commands/audit-events?commandId=review-sunat&eventType=CAPABILITY_ALLOWED",
+		);
 		const payload = await response.json();
 
 		expect(response.status).toBe(200);
-		expect(payload.data.map((event: { id: string }) => event.id)).toEqual(["audit-review"]);
+		expect(payload.data.map((event: { id: string }) => event.id)).toEqual([
+			"audit-review",
+		]);
 	});
 
 	it("returns command-envelope audit shape for web consumers", async () => {
@@ -122,14 +140,21 @@ describe("Drenyra command audit routes", () => {
 			}),
 		);
 
-		const response = await getJson("/command-envelope/audit?decision=denied&limit=1");
+		const response = await getJson(
+			"/command-envelope/audit?decision=denied&limit=1",
+		);
 		const payload = await response.json();
 
 		expect(response.status).toBe(200);
 		expect(payload.data).toMatchObject({
 			decision: "denied",
 			count: 1,
-			events: [{ id: "audit-denied", eventType: "CAPABILITY_DENIED" as AuditEventType }],
+			events: [
+				{
+					id: "audit-denied",
+					eventType: "CAPABILITY_DENIED" as AuditEventType,
+				},
+			],
 		});
 	});
 

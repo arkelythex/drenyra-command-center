@@ -1,3 +1,7 @@
-export { ClassificationSchema, } from './types';
-export { classifyExpense, suggestPurchaseEntry, quickClassify, } from './service';
+export {
+	classifyExpense,
+	quickClassify,
+	suggestPurchaseEntry,
+} from "./service";
+export { ClassificationSchema } from "./types";
 //# sourceMappingURL=index.js.map

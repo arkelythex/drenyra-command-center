@@ -27,7 +27,7 @@ export interface SirePleGenerationInput {
  * ```
  */
 export interface SirePleFileSummary {
-	ledgerType: 'ventas' | 'compras';
+	ledgerType: "ventas" | "compras";
 	filename: string;
 	recordCount: number;
 	bytes: number;
@@ -59,20 +59,29 @@ export interface SirePleGenerationResult {
 const SALES_FIELD_COUNT = 30;
 const PURCHASE_FIELD_COUNT = 35;
 
-function parsePeriod(period: string): { year: number; month: number; yyyymm00: string } {
-	const [yearText, monthText] = period.split('-');
+function parsePeriod(period: string): {
+	year: number;
+	month: number;
+	yyyymm00: string;
+} {
+	const [yearText, monthText] = period.split("-");
 	const year = Number(yearText);
 	const month = Number(monthText);
-	if (!Number.isInteger(year) || !Number.isInteger(month) || month < 1 || month > 12) {
+	if (
+		!Number.isInteger(year) ||
+		!Number.isInteger(month) ||
+		month < 1 ||
+		month > 12
+	) {
 		throw new Error(`Periodo invalido para PLE: ${period}`);
 	}
 
-	const yyyymm00 = `${year}${month.toString().padStart(2, '0')}00`;
+	const yyyymm00 = `${year}${month.toString().padStart(2, "0")}00`;
 	return { year, month, yyyymm00 };
 }
 
 function formatDate(year: number, month: number): string {
-	return `01/${month.toString().padStart(2, '0')}/${year}`;
+	return `01/${month.toString().padStart(2, "0")}/${year}`;
 }
 
 function formatAmount(value: number): string {
@@ -83,16 +92,16 @@ function buildFilename(
 	ruc: string,
 	year: number,
 	month: number,
-	ledgerType: 'ventas' | 'compras',
+	ledgerType: "ventas" | "compras",
 ): string {
-	const yyyymm = `${year}${month.toString().padStart(2, '0')}`;
-	const suffix = ledgerType === 'ventas' ? 'RV' : 'RC';
+	const yyyymm = `${year}${month.toString().padStart(2, "0")}`;
+	const suffix = ledgerType === "ventas" ? "RV" : "RC";
 	return `LE${ruc}${yyyymm}${suffix}.txt`;
 }
 
 function countRecords(txt: string): number {
 	const trimmed = txt.trim();
-	return trimmed ? trimmed.split('\n').length : 0;
+	return trimmed ? trimmed.split("\n").length : 0;
 }
 
 function buildSalesRow(
@@ -108,38 +117,40 @@ function buildSalesRow(
 		periodo,
 		String(correlativo),
 		date,
-		'01',
-		'F001',
-		String(correlativo).padStart(8, '0'),
-		String(correlativo).padStart(8, '0'),
-		'6',
+		"01",
+		"F001",
+		String(correlativo).padStart(8, "0"),
+		String(correlativo).padStart(8, "0"),
+		"6",
 		ruc,
-		'CONSUMIDOR FINAL',
-		'0.00',
+		"CONSUMIDOR FINAL",
+		"0.00",
 		formatAmount(basePen),
-		'0.00',
+		"0.00",
 		formatAmount(igvPen),
-		'0.00',
-		'0.00',
-		'0.00',
-		'0.00',
-		'0.00',
-		'0.00',
-		'0.00',
-		'0.00',
+		"0.00",
+		"0.00",
+		"0.00",
+		"0.00",
+		"0.00",
+		"0.00",
+		"0.00",
+		"0.00",
 		formatAmount(totalPen),
-		'PEN',
-		'1.000',
-		'',
-		'',
-		'',
-		'',
-		'1',
+		"PEN",
+		"1.000",
+		"",
+		"",
+		"",
+		"",
+		"1",
 	];
 	if (fields.length !== SALES_FIELD_COUNT) {
-		throw new Error(`Formato RV invalido: ${fields.length} campos (esperado ${SALES_FIELD_COUNT})`);
+		throw new Error(
+			`Formato RV invalido: ${fields.length} campos (esperado ${SALES_FIELD_COUNT})`,
+		);
 	}
-	return fields.join('|');
+	return fields.join("|");
 }
 
 function buildPurchaseRow(
@@ -156,52 +167,57 @@ function buildPurchaseRow(
 		String(correlativo),
 		date,
 		date,
-		'01',
-		'F001',
-		'',
-		String(correlativo).padStart(8, '0'),
-		String(correlativo).padStart(8, '0'),
-		'6',
+		"01",
+		"F001",
+		"",
+		String(correlativo).padStart(8, "0"),
+		String(correlativo).padStart(8, "0"),
+		"6",
 		ruc,
-		'PROVEEDOR REFERENCIAL',
+		"PROVEEDOR REFERENCIAL",
 		formatAmount(basePen),
 		formatAmount(igvPen),
-		'0.00',
-		'0.00',
-		'0.00',
-		'0.00',
-		'0.00',
-		'0.00',
-		'0.00',
-		'0.00',
+		"0.00",
+		"0.00",
+		"0.00",
+		"0.00",
+		"0.00",
+		"0.00",
+		"0.00",
+		"0.00",
 		formatAmount(totalPen),
-		'PEN',
-		'1.000',
-		'',
-		'',
-		'',
-		'',
-		'',
-		'',
-		'',
-		'',
-		'1',
-		'',
+		"PEN",
+		"1.000",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"1",
+		"",
 	];
 	if (fields.length !== PURCHASE_FIELD_COUNT) {
 		throw new Error(
 			`Formato RC invalido: ${fields.length} campos (esperado ${PURCHASE_FIELD_COUNT})`,
 		);
 	}
-	return fields.join('|');
+	return fields.join("|");
 }
 
 function buildRows(
 	recordCount: number,
-	rowFactory: (correlativo: number, base: number, igv: number, total: number) => string,
+	rowFactory: (
+		correlativo: number,
+		base: number,
+		igv: number,
+		total: number,
+	) => string,
 	totals: { base: number; igv: number; total: number },
 ): string {
-	if (recordCount <= 0) return '';
+	if (recordCount <= 0) return "";
 	const rows: string[] = [];
 	for (let index = 1; index <= recordCount; index += 1) {
 		if (index === 1) {
@@ -210,11 +226,11 @@ function buildRows(
 			rows.push(rowFactory(index, 0, 0, 0));
 		}
 	}
-	return rows.join('\n');
+	return rows.join("\n");
 }
 
 function buildFileSummary(
-	ledgerType: 'ventas' | 'compras',
+	ledgerType: "ventas" | "compras",
 	filename: string,
 	txtContent: string,
 ): SirePleFileSummary {
@@ -222,8 +238,8 @@ function buildFileSummary(
 		ledgerType,
 		filename,
 		recordCount: countRecords(txtContent),
-		bytes: Buffer.byteLength(txtContent, 'utf-8'),
-		payloadBase64: Buffer.from(txtContent, 'utf-8').toString('base64'),
+		bytes: Buffer.byteLength(txtContent, "utf-8"),
+		payloadBase64: Buffer.from(txtContent, "utf-8").toString("base64"),
 	};
 }
 
@@ -244,11 +260,21 @@ export async function generateSirePleFiles(
 	const { year, month, yyyymm00 } = parsePeriod(input.period);
 	const firstDay = formatDate(year, month);
 
-	const salesBase = Number((input.salesTotalPen - input.declaredIgvPen).toFixed(2));
+	const salesBase = Number(
+		(input.salesTotalPen - input.declaredIgvPen).toFixed(2),
+	);
 	const salesTxt = buildRows(
 		input.rvieRecords,
 		(correlativo, base, igv, total) =>
-			buildSalesRow(yyyymm00, firstDay, correlativo, input.ruc, base, igv, total),
+			buildSalesRow(
+				yyyymm00,
+				firstDay,
+				correlativo,
+				input.ruc,
+				base,
+				igv,
+				total,
+			),
 		{
 			base: salesBase,
 			igv: input.declaredIgvPen,
@@ -259,7 +285,15 @@ export async function generateSirePleFiles(
 	const purchaseTxt = buildRows(
 		input.rceRecords,
 		(correlativo, base, igv, total) =>
-			buildPurchaseRow(yyyymm00, firstDay, correlativo, input.ruc, base, igv, total),
+			buildPurchaseRow(
+				yyyymm00,
+				firstDay,
+				correlativo,
+				input.ruc,
+				base,
+				igv,
+				total,
+			),
 		{
 			base: salesBase,
 			igv: input.declaredIgvPen,
@@ -276,13 +310,13 @@ export async function generateSirePleFiles(
 		},
 		files: {
 			ventas: buildFileSummary(
-				'ventas',
-				buildFilename(input.ruc, year, month, 'ventas'),
+				"ventas",
+				buildFilename(input.ruc, year, month, "ventas"),
 				salesTxt,
 			),
 			compras: buildFileSummary(
-				'compras',
-				buildFilename(input.ruc, year, month, 'compras'),
+				"compras",
+				buildFilename(input.ruc, year, month, "compras"),
 				purchaseTxt,
 			),
 		},

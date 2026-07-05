@@ -10,17 +10,16 @@ export { cn } from "@drenyra/ui";
 // Pass as a prop — never create Intl.NumberFormat inside leaf components.
 // ─────────────────────────────────────────────────────────────────────────────
 
+export type { MoneyFormatter } from "./money";
 export {
+	createFormatter,
 	n,
+	nCompact,
+	nEUR,
 	nPEN,
 	nUSD,
-	nEUR,
-	nCompact,
-	createFormatter,
 	useMoneyFormatter,
 } from "./money";
-
-export type { MoneyFormatter } from "./money";
 
 // ─── Legacy Helper: formatPEN with custom fraction digits ───────────────────
 
@@ -33,10 +32,7 @@ export type { MoneyFormatter } from "./money";
  * @deprecated Prefer `n()` for standard formatting. Use this only when
  *             you need non-default fraction digits.
  */
-export function formatPEN(
-	amount: number,
-	fractionDigits?: number,
-): string {
+export function formatPEN(amount: number, fractionDigits?: number): string {
 	return new Intl.NumberFormat("es-PE", {
 		style: "currency",
 		currency: "PEN",

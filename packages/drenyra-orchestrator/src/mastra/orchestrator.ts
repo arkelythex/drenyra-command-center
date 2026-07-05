@@ -1,8 +1,5 @@
 import type { AgentContext } from "../types/agent-context";
-import type { AgentIntent } from "../types/erp-types";
-import type {
-	AgentDefinition,
-} from "../types/erp-types";
+import type { AgentDefinition, AgentIntent } from "../types/erp-types";
 import { ApprovalGateEngine } from "./approval-gate";
 import { ApprovalStore } from "./approval-store";
 import { AgentEventBus } from "./event-bus";
@@ -13,7 +10,9 @@ import { LatinModernoOrchestrator } from "./latin-orchestrator";
 export interface OrchestrationResult {
 	sessionId: string;
 	intent: AgentIntent;
-	result: { success: boolean; data: unknown } | { success: boolean; error: string };
+	result:
+		| { success: boolean; data: unknown }
+		| { success: boolean; error: string };
 	agent: string;
 }
 
@@ -71,7 +70,9 @@ export class DrenyraOrchestrator {
 	}
 
 	isSwarmMode(): boolean {
-		return this.swarmMode === "hierarchy" && this.swarmOrchestrator !== undefined;
+		return (
+			this.swarmMode === "hierarchy" && this.swarmOrchestrator !== undefined
+		);
 	}
 
 	async handleInput(
@@ -109,7 +110,10 @@ export class DrenyraOrchestrator {
 			return {
 				sessionId: actualSessionId,
 				intent,
-				result: { success: false, error: `No agent registered for '${intent.agent}'` },
+				result: {
+					success: false,
+					error: `No agent registered for '${intent.agent}'`,
+				},
 				agent: intent.agent,
 			};
 		}
@@ -128,7 +132,10 @@ export class DrenyraOrchestrator {
 		return {
 			sessionId: actualSessionId,
 			intent,
-			result: { success: true, data: { agent: agent.id, intent: intent.tool, input } },
+			result: {
+				success: true,
+				data: { agent: agent.id, intent: intent.tool, input },
+			},
 			agent: intent.agent,
 		};
 	}
@@ -176,7 +183,8 @@ export function createDrenyraOrchestrator(
 	const orchestrator = new DrenyraOrchestrator(
 		approvalGate,
 		eventBus,
-		(input: string, context: AgentContext) => intentDetector.detectIntent(input, context),
+		(input: string, context: AgentContext) =>
+			intentDetector.detectIntent(input, context),
 	);
 
 	let latinOrchestrator: LatinModernoOrchestrator | undefined;

@@ -9,17 +9,17 @@
  *   that no longer exists in the runtime database.
  */
 
-import { randomUUID } from "crypto";
-import { and, eq, gte, lte, type SQL } from "drizzle-orm";
-import {
-	Invoice,
-	type InvoiceItem,
-} from "@drenyra/domain/entities/Invoice";
-import type { InvoiceFilters, InvoiceRepository } from "@drenyra/domain/repositories/invoice.repository";
+import { Invoice, type InvoiceItem } from "@drenyra/domain/entities/Invoice";
+import type {
+	InvoiceFilters,
+	InvoiceRepository,
+} from "@drenyra/domain/repositories/invoice.repository";
 import { DNI } from "@drenyra/domain/value-objects/DNI";
 import { DocumentSeries } from "@drenyra/domain/value-objects/DocumentSeries";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import { RUC } from "@drenyra/domain/value-objects/RUC";
+import { randomUUID } from "crypto";
+import { and, eq, gte, lte, type SQL } from "drizzle-orm";
 import { db } from "../client";
 import {
 	businessPartners,
@@ -27,15 +27,15 @@ import {
 	invoiceItems,
 	invoices,
 } from "../schema";
-import { resolveCompanyIdFromOrganization } from "./support/organization-resolver";
 import {
 	formatInvoiceAmount,
-	mapModularStatusToInvoiceStatus,
 	mapInvoiceItemToModularInsert,
 	mapInvoiceStatusToModularStatus,
 	mapInvoiceStatusToSunatStatus,
+	mapModularStatusToInvoiceStatus,
 	resolveInvoicePartnerIdentity,
 } from "./support/invoice-modern-persistence";
+import { resolveCompanyIdFromOrganization } from "./support/organization-resolver";
 import { toStableUuid } from "./support/stable-uuid";
 
 interface ModularInvoiceWithRelations {
@@ -44,21 +44,40 @@ interface ModularInvoiceWithRelations {
 	items: Array<typeof invoiceItems.$inferSelect>;
 }
 
-type NormalizedInvoiceFilters = Omit<InvoiceFilters, "startDate" | "endDate"> & {
+type NormalizedInvoiceFilters = Omit<
+	InvoiceFilters,
+	"startDate" | "endDate"
+> & {
 	startDate?: Date;
 	endDate?: Date;
 };
 
 type ModularInvoiceReadStatus = "DRAFT" | "SENT" | "CANCELLED";
-const normalizeInvoiceReadStatus = (status: typeof invoices.$inferSelect.status): ModularInvoiceReadStatus => {
+const normalizeInvoiceReadStatus = (
+	status: typeof invoices.$inferSelect.status,
+): ModularInvoiceReadStatus => {
 	if (status === "CANCELLED") return "CANCELLED";
 	if (status === "SENT") return "SENT";
 	return "DRAFT";
 };
 
-type ModularSunatReadStatus = "DRAFT" | "SUBMITTED" | "ACCEPTED" | "REJECTED" | "ANNULLED" | null;
-const normalizeSunatReadStatus = (status: typeof invoices.$inferSelect.sunatStatus): ModularSunatReadStatus => {
-	if (status === "SUBMITTED" || status === "ACCEPTED" || status === "REJECTED" || status === "ANNULLED") return status;
+type ModularSunatReadStatus =
+	| "DRAFT"
+	| "SUBMITTED"
+	| "ACCEPTED"
+	| "REJECTED"
+	| "ANNULLED"
+	| null;
+const normalizeSunatReadStatus = (
+	status: typeof invoices.$inferSelect.sunatStatus,
+): ModularSunatReadStatus => {
+	if (
+		status === "SUBMITTED" ||
+		status === "ACCEPTED" ||
+		status === "REJECTED" ||
+		status === "ANNULLED"
+	)
+		return status;
 	return status === "DRAFT" ? "DRAFT" : null;
 };
 
@@ -94,9 +113,7 @@ export class PostgresInvoiceRepository implements InvoiceRepository {
 		return this.mapModularToDomain(modular);
 	}
 
-	async findAll(
-		filters?: InvoiceFilters,
-	): Promise<Invoice[]> {
+	async findAll(filters?: InvoiceFilters): Promise<Invoice[]> {
 		const normalizedFilters = this.normalizeFilters(filters);
 		const results = await this.findAllModular(normalizedFilters);
 		const offset = normalizedFilters.offset ?? 0;
@@ -126,9 +143,7 @@ export class PostgresInvoiceRepository implements InvoiceRepository {
 		await this.upsertToModularStore(invoice, organizationId);
 	}
 
-	async count(
-		filters?: InvoiceFilters,
-	): Promise<number> {
+	async count(filters?: InvoiceFilters): Promise<number> {
 		const normalizedFilters = this.normalizeFilters(filters);
 		const results = await this.findAllModular(normalizedFilters);
 		return results.length;
@@ -235,21 +250,23 @@ export class PostgresInvoiceRepository implements InvoiceRepository {
 					},
 				});
 
-			await tx.delete(invoiceItems).where(eq(invoiceItems.invoiceId, persistedInvoiceId));
+			await tx
+				.delete(invoiceItems)
+				.where(eq(invoiceItems.invoiceId, persistedInvoiceId));
 
 			if (invoice.items.length > 0) {
-				await tx.insert(invoiceItems).values(
-					invoice.items.map((item) =>
-						mapInvoiceItemToModularInsert(persistedInvoiceId, item),
-					),
-				);
+				await tx
+					.insert(invoiceItems)
+					.values(
+						invoice.items.map((item) =>
+							mapInvoiceItemToModularInsert(persistedInvoiceId, item),
+						),
+					);
 			}
 		});
 	}
 
-	private normalizeFilters(
-		filters?: InvoiceFilters,
-	): NormalizedInvoiceFilters {
+	private normalizeFilters(filters?: InvoiceFilters): NormalizedInvoiceFilters {
 		if (!filters) {
 			return {};
 		}
@@ -322,11 +339,15 @@ export class PostgresInvoiceRepository implements InvoiceRepository {
 		}
 
 		if (filters.minAmount !== undefined) {
-			whereConditions.push(gte(invoices.totalAmount, filters.minAmount.toFixed(2)));
+			whereConditions.push(
+				gte(invoices.totalAmount, filters.minAmount.toFixed(2)),
+			);
 		}
 
 		if (filters.maxAmount !== undefined) {
-			whereConditions.push(lte(invoices.totalAmount, filters.maxAmount.toFixed(2)));
+			whereConditions.push(
+				lte(invoices.totalAmount, filters.maxAmount.toFixed(2)),
+			);
 		}
 
 		const rows = await db

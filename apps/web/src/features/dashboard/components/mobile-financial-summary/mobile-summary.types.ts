@@ -1,2 +1,1 @@
-export type MobileSummaryTab = 'resumen' | 'gastos' | 'ingresos';
-
+export type MobileSummaryTab = "resumen" | "gastos" | "ingresos";

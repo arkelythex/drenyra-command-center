@@ -1,5 +1,5 @@
 import { PythonOCRClient } from "./client";
-import type { OCRResult, InvoiceData } from "./types";
+import type { InvoiceData, OCRResult } from "./types";
 
 export interface PPOcrV6Config {
 	/** Model tier — ultra-light (1.5M params), light (7.7M, default), server (34.5M) */

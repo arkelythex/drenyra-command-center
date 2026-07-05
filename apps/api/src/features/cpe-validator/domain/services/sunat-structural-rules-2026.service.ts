@@ -35,15 +35,7 @@ const REQUIRED_STRUCTURAL_RULES: StructuralRule[] = [
 ];
 
 const ALLOWED_IGV_PERCENTAGES_2026 = new Set([
-	0,
-	2,
-	4,
-	8,
-	9,
-	9.5,
-	10,
-	10.5,
-	18,
+	0, 2, 4, 8, 9, 9.5, 10, 10.5, 18,
 ]);
 
 /**
@@ -113,7 +105,10 @@ export class SunatStructuralRules2026Service {
 			);
 		}
 
-		if (xml.includes("<cbc:TaxAmount") && !this.hasCurrencyAttribute(xml, "cbc:TaxAmount")) {
+		if (
+			xml.includes("<cbc:TaxAmount") &&
+			!this.hasCurrencyAttribute(xml, "cbc:TaxAmount")
+		) {
 			warnings.push(
 				"Missing currencyID on <cbc:TaxAmount>; declare currency explicitly to reduce SUNAT observations",
 			);
@@ -129,14 +124,18 @@ export class SunatStructuralRules2026Service {
 		xml: string,
 		warnings: string[],
 	): void {
-		const invoiceLines = xml.match(/<cac:InvoiceLine\b[\s\S]*?<\/cac:InvoiceLine>/g) ?? [];
+		const invoiceLines =
+			xml.match(/<cac:InvoiceLine\b[\s\S]*?<\/cac:InvoiceLine>/g) ?? [];
 
 		for (const [index, line] of invoiceLines.entries()) {
 			if (!line.includes("<cac:Item")) {
 				continue;
 			}
 
-			const standardCode = this.extractTagValue(line, "cbc:ItemClassificationCode");
+			const standardCode = this.extractTagValue(
+				line,
+				"cbc:ItemClassificationCode",
+			);
 			if (!standardCode) {
 				warnings.push(
 					`OBS-3496: La linea ${index + 1} no incluye un codigo estandar de producto (<cbc:ItemClassificationCode>). SUNAT observa CPE sin clasificacion homologada desde febrero 2026.`,

@@ -1,8 +1,8 @@
 "use client";
 
-import type { ReactElement } from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, CheckCircle2, FileText } from "lucide-react";
+import type { ReactElement } from "react";
 import { ConfidenceBadge } from "@/components/agentic/ConfidenceBadge";
 import { cn, n } from "@/lib/utils";
 import type { ReviewItem } from "../types/review.types";

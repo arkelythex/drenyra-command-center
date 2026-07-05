@@ -1,7 +1,7 @@
-import type { Context } from "elysia";
-import { authUsers } from "@drenyra/persistence/schema";
 import { db } from "@drenyra/persistence/client";
 import { eq } from "@drenyra/persistence/query";
+import { authUsers } from "@drenyra/persistence/schema";
+import type { Context } from "elysia";
 import { createLogger } from "../../../lib/logger";
 import { fail } from "../../shared/api-response";
 import { auth } from "../auth.config";

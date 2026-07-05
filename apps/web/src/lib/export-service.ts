@@ -26,63 +26,63 @@ import { buildDelimitedText } from "./export-utils";
  * while keeping IDE autocompletion for built-in values.
  */
 export type ExportFormat =
-  | "csv"
-  | "tsv"
-  | "json"
-  | "pdf"
-  | "xlsx"
-  | "encrypted"
-  | (string & {});
+	| "csv"
+	| "tsv"
+	| "json"
+	| "pdf"
+	| "xlsx"
+	| "encrypted"
+	| (string & {});
 
 /**
  * Defines a single column for tabular exports.
  */
 export interface ExportColumn {
-  /** Property key on the data row object */
-  key: string;
-  /** Human-readable column header shown in output */
-  label: string;
+	/** Property key on the data row object */
+	key: string;
+	/** Human-readable column header shown in output */
+	label: string;
 }
 
 /**
  * Full options for an export operation.
  */
 export interface ExportDataOptions {
-  /** Output filename (extension is appended automatically by the caller) */
-  filename: string;
-  /** Target format — one of the built-in formats or a registered custom format */
-  format: ExportFormat;
-  /** Array of row objects to export */
-  data: Record<string, unknown>[];
-  /** Column definitions; auto-detected from the first row when omitted */
-  columns?: ExportColumn[];
-  /**
-   * Server URL for formats that require server-side generation (PDF, XLSX).
-   * Required for PDF and XLSX; ignored for client-side formats.
-   */
-  apiUrl?: string;
-  /**
-   * Encryption password for `"encrypted"` format.
-   * Must be at least 12 characters when used.
-   */
-  password?: string;
+	/** Output filename (extension is appended automatically by the caller) */
+	filename: string;
+	/** Target format — one of the built-in formats or a registered custom format */
+	format: ExportFormat;
+	/** Array of row objects to export */
+	data: Record<string, unknown>[];
+	/** Column definitions; auto-detected from the first row when omitted */
+	columns?: ExportColumn[];
+	/**
+	 * Server URL for formats that require server-side generation (PDF, XLSX).
+	 * Required for PDF and XLSX; ignored for client-side formats.
+	 */
+	apiUrl?: string;
+	/**
+	 * Encryption password for `"encrypted"` format.
+	 * Must be at least 12 characters when used.
+	 */
+	password?: string;
 }
 
 /**
  * Contract for a custom export plugin registered via {@link registerPlugin}.
  */
 export interface ExportPlugin {
-  /** Format identifier (must match `ExportFormat` used by callers) */
-  format: ExportFormat;
-  /** MIME type for the generated Blob */
-  mimeType: string;
-  /** File extension including the leading dot (e.g. `".parquet"`) */
-  extension: string;
-  /** Async function that produces the Blob from data and options */
-  generate: (
-    data: Record<string, unknown>[],
-    options: ExportDataOptions,
-  ) => Promise<Blob>;
+	/** Format identifier (must match `ExportFormat` used by callers) */
+	format: ExportFormat;
+	/** MIME type for the generated Blob */
+	mimeType: string;
+	/** File extension including the leading dot (e.g. `".parquet"`) */
+	extension: string;
+	/** Async function that produces the Blob from data and options */
+	generate: (
+		data: Record<string, unknown>[],
+		options: ExportDataOptions,
+	) => Promise<Blob>;
 }
 
 /**
@@ -90,12 +90,12 @@ export interface ExportPlugin {
  * Use instead of magic strings: `EXPORT_FORMATS.CSV` instead of `"csv"`.
  */
 export const EXPORT_FORMATS = {
-  CSV: "csv",
-  TSV: "tsv",
-  JSON: "json",
-  PDF: "pdf",
-  XLSX: "xlsx",
-  ENCRYPTED: "encrypted",
+	CSV: "csv",
+	TSV: "tsv",
+	JSON: "json",
+	PDF: "pdf",
+	XLSX: "xlsx",
+	ENCRYPTED: "encrypted",
 } as const;
 
 const plugins = new Map<string, ExportPlugin>();
@@ -120,7 +120,7 @@ const plugins = new Map<string, ExportPlugin>();
  * ```
  */
 export function registerPlugin(plugin: ExportPlugin): void {
-  plugins.set(plugin.format, plugin);
+	plugins.set(plugin.format, plugin);
 }
 
 /**
@@ -141,12 +141,12 @@ export function registerPlugin(plugin: ExportPlugin): void {
  * ```
  */
 export function resolveColumns(
-  data: Record<string, unknown>[],
-  columns?: ExportColumn[],
+	data: Record<string, unknown>[],
+	columns?: ExportColumn[],
 ): ExportColumn[] {
-  if (columns) return columns;
-  if (data.length === 0) return [];
-  return Object.keys(data[0]).map((key) => ({ key, label: key }));
+	if (columns) return columns;
+	if (data.length === 0) return [];
+	return Object.keys(data[0]).map((key) => ({ key, label: key }));
 }
 
 /**
@@ -177,57 +177,53 @@ export function resolveColumns(
  * @see {@link registerPlugin} to add a custom format
  * @see {@link downloadExport} to trigger a browser download
  */
-export async function exportData(
-  options: ExportDataOptions,
-): Promise<Blob> {
-  const { data, columns, password, format } = options;
-  const resolved = resolveColumns(data, columns);
-  const headers = resolved.map((c) => c.label);
-  const rows = data.map((item) => resolved.map((c) => item[c.key]));
+export async function exportData(options: ExportDataOptions): Promise<Blob> {
+	const { data, columns, password, format } = options;
+	const resolved = resolveColumns(data, columns);
+	const headers = resolved.map((c) => c.label);
+	const rows = data.map((item) => resolved.map((c) => item[c.key]));
 
-  if (plugins.has(format)) {
-    const plugin = plugins.get(format)!;
-    return plugin.generate(data, options);
-  }
+	if (plugins.has(format)) {
+		const plugin = plugins.get(format)!;
+		return plugin.generate(data, options);
+	}
 
-  switch (format) {
-    case "csv": {
-      const csv = buildDelimitedText(headers, rows, ",");
-      return new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
-    }
-    case "tsv": {
-      const tsv = buildDelimitedText(headers, rows, "\t");
-      return new Blob([`\uFEFF${tsv}`], {
-        type: "text/tab-separated-values;charset=utf-8",
-      });
-    }
-    case "json": {
-      const formatted = JSON.stringify(data, null, 2);
-      return new Blob([formatted], { type: "application/json;charset=utf-8" });
-    }
-    case "encrypted": {
-      if (!password || password.trim().length < 12) {
-        throw new Error(
-          "Encryption password must be at least 12 characters",
-        );
-      }
-      throw new Error("Encrypted export not implemented in export-service");
-    }
-    case "pdf": {
-      if (!options.apiUrl) {
-        throw new Error("PDF export requires an apiUrl");
-      }
-      throw new Error("PDF export not implemented in export-service");
-    }
-    case "xlsx": {
-      if (!options.apiUrl) {
-        throw new Error("XLSX export requires an apiUrl");
-      }
-      throw new Error("XLSX export not implemented in export-service");
-    }
-    default:
-      throw new Error("Unsupported export format");
-  }
+	switch (format) {
+		case "csv": {
+			const csv = buildDelimitedText(headers, rows, ",");
+			return new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
+		}
+		case "tsv": {
+			const tsv = buildDelimitedText(headers, rows, "\t");
+			return new Blob([`\uFEFF${tsv}`], {
+				type: "text/tab-separated-values;charset=utf-8",
+			});
+		}
+		case "json": {
+			const formatted = JSON.stringify(data, null, 2);
+			return new Blob([formatted], { type: "application/json;charset=utf-8" });
+		}
+		case "encrypted": {
+			if (!password || password.trim().length < 12) {
+				throw new Error("Encryption password must be at least 12 characters");
+			}
+			throw new Error("Encrypted export not implemented in export-service");
+		}
+		case "pdf": {
+			if (!options.apiUrl) {
+				throw new Error("PDF export requires an apiUrl");
+			}
+			throw new Error("PDF export not implemented in export-service");
+		}
+		case "xlsx": {
+			if (!options.apiUrl) {
+				throw new Error("XLSX export requires an apiUrl");
+			}
+			throw new Error("XLSX export not implemented in export-service");
+		}
+		default:
+			throw new Error("Unsupported export format");
+	}
 }
 
 /**
@@ -246,13 +242,13 @@ export async function exportData(
  * ```
  */
 export function downloadExport(blob: Blob, filename: string): void {
-  if (typeof window === "undefined" || typeof document === "undefined") return;
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement("a");
-  anchor.href = url;
-  anchor.download = filename;
-  document.body.appendChild(anchor);
-  anchor.click();
-  document.body.removeChild(anchor);
-  URL.revokeObjectURL(url);
+	if (typeof window === "undefined" || typeof document === "undefined") return;
+	const url = URL.createObjectURL(blob);
+	const anchor = document.createElement("a");
+	anchor.href = url;
+	anchor.download = filename;
+	document.body.appendChild(anchor);
+	anchor.click();
+	document.body.removeChild(anchor);
+	URL.revokeObjectURL(url);
 }

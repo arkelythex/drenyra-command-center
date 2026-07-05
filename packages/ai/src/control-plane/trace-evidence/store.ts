@@ -1,15 +1,15 @@
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import { dirname } from "node:path";
+import { aiTraceEvidence } from "@drenyra/persistence/schema";
 import { eq } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { aiTraceEvidence } from "@drenyra/persistence/schema";
 import type { TenantCompanyRucScope } from "../contracts";
 import {
 	type EvidenceTraceBundle,
+	EvidenceTraceBundleSchema,
+	type TraceEvidenceStore,
 	type TraceLookupInput,
 	type TraceLookupResult,
-	type TraceEvidenceStore,
-	EvidenceTraceBundleSchema,
 } from "./types";
 
 const scopeMatches = (
@@ -197,15 +197,11 @@ export function createPostgresTraceEvidenceStore(
 				.values({
 					traceId: bundle.traceId,
 					agentId: null,
-					decision:
-						bundle.approvalLineage?.approvalStatus ?? "proposed",
+					decision: bundle.approvalLineage?.approvalStatus ?? "proposed",
 					policyResult: bundle as unknown as Record<string, unknown>,
-					tenantScope:
-						bundle.tenantScope as unknown as Record<string, unknown>,
+					tenantScope: bundle.tenantScope as unknown as Record<string, unknown>,
 					createdAt: new Date(),
-					expiresAt: new Date(
-						Date.now() + ttlDays * 24 * 60 * 60 * 1000,
-					),
+					expiresAt: new Date(Date.now() + ttlDays * 24 * 60 * 60 * 1000),
 				})
 				.returning()
 				.catch((err: Error) => {

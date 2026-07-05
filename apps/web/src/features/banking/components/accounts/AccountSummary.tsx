@@ -1,6 +1,6 @@
-import { TrendingUp, TrendingDown, Wallet } from "lucide-react";
-import { cn, n } from "@/lib/utils";
+import { TrendingDown, TrendingUp, Wallet } from "lucide-react";
 import { LEGIBILITY } from "@/lib/legibility";
+import { cn, n } from "@/lib/utils";
 
 interface AccountSummaryProps {
 	totalBalancePEN: string;

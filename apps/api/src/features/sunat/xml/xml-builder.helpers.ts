@@ -3,7 +3,7 @@
  * Utility functions for UBL XML construction
  */
 
-import type { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
+import type { XMLBuilder } from "xmlbuilder2/lib/interfaces";
 
 /**
  * Format amount with 2 decimals.
@@ -17,7 +17,7 @@ import type { XMLBuilder } from 'xmlbuilder2/lib/interfaces';
  * ```
  */
 export function formatAmount(amount: number): string {
-  return amount.toFixed(2);
+	return amount.toFixed(2);
 }
 
 /**
@@ -32,10 +32,10 @@ export function formatAmount(amount: number): string {
  * ```
  */
 export function formatDate(date: Date | string): string {
-  if (typeof date === 'string') {
-    return date.split('T')[0]; // Remove time if ISO string
-  }
-  return date.toISOString().split('T')[0];
+	if (typeof date === "string") {
+		return date.split("T")[0]; // Remove time if ISO string
+	}
+	return date.toISOString().split("T")[0];
 }
 
 /**
@@ -54,16 +54,16 @@ export function formatDate(date: Date | string): string {
  * ```
  */
 export function createElement(
-  parent: XMLBuilder,
-  namespace: string,
-  tagName: string,
-  value?: string | number
+	parent: XMLBuilder,
+	namespace: string,
+	tagName: string,
+	value?: string | number,
 ): XMLBuilder {
-  const element = parent.ele(`${namespace}:${tagName}`);
-  if (value !== undefined) {
-    element.txt(String(value));
-  }
-  return element;
+	const element = parent.ele(`${namespace}:${tagName}`);
+	if (value !== undefined) {
+		element.txt(String(value));
+	}
+	return element;
 }
 
 /**
@@ -83,17 +83,17 @@ export function createElement(
  * ```
  */
 export function createAmountElement(
-  parent: XMLBuilder,
-  namespace: string,
-  tagName: string,
-  amount: number,
-  currency: string
+	parent: XMLBuilder,
+	namespace: string,
+	tagName: string,
+	amount: number,
+	currency: string,
 ): XMLBuilder {
-  return parent
-    .ele(`${namespace}:${tagName}`)
-    .att('currencyID', currency)
-    .txt(formatAmount(amount))
-    .up();
+	return parent
+		.ele(`${namespace}:${tagName}`)
+		.att("currencyID", currency)
+		.txt(formatAmount(amount))
+		.up();
 }
 
 /**
@@ -115,83 +115,83 @@ export function createAmountElement(
  * ```
  */
 export function createPartyElement(
-  parent: XMLBuilder,
-  namespace: 'cac',
-  party: {
-    ruc: string;
-    documentType?: '1' | '6';
-    legalName: string;
-    tradeName?: string;
-    address?: {
-      streetName?: string;
-      cityName?: string;
-      district?: string;
-      country: string;
-    };
-  }
+	parent: XMLBuilder,
+	namespace: "cac",
+	party: {
+		ruc: string;
+		documentType?: "1" | "6";
+		legalName: string;
+		tradeName?: string;
+		address?: {
+			streetName?: string;
+			cityName?: string;
+			district?: string;
+			country: string;
+		};
+	},
 ): XMLBuilder {
-  const partyElement = parent.ele(`${namespace}:Party`);
-  const documentType = party.documentType ?? '6';
+	const partyElement = parent.ele(`${namespace}:Party`);
+	const documentType = party.documentType ?? "6";
 
-  // Party Identification
-  partyElement
-    .ele(`${namespace}:PartyIdentification`)
-    .ele('cbc:ID')
-    .att('schemeID', documentType) // 1 = DNI, 6 = RUC
-    .att('schemeName', 'Documento de Identidad')
-    .att('schemeAgencyName', 'PE:SUNAT')
-    .att('schemeURI', 'urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06')
-    .txt(party.ruc)
-    .up()
-    .up();
+	// Party Identification
+	partyElement
+		.ele(`${namespace}:PartyIdentification`)
+		.ele("cbc:ID")
+		.att("schemeID", documentType) // 1 = DNI, 6 = RUC
+		.att("schemeName", "Documento de Identidad")
+		.att("schemeAgencyName", "PE:SUNAT")
+		.att("schemeURI", "urn:pe:gob:sunat:cpe:see:gem:catalogos:catalogo06")
+		.txt(party.ruc)
+		.up()
+		.up();
 
-  // Party Name (Legal Name)
-  partyElement
-    .ele(`${namespace}:PartyName`)
-    .ele('cbc:Name')
-    .txt(party.legalName)
-    .up()
-    .up();
+	// Party Name (Legal Name)
+	partyElement
+		.ele(`${namespace}:PartyName`)
+		.ele("cbc:Name")
+		.txt(party.legalName)
+		.up()
+		.up();
 
-  // Party Legal Entity
-  const legalEntity = partyElement.ele(`${namespace}:PartyLegalEntity`);
-  legalEntity.ele('cbc:RegistrationName').txt(party.legalName).up();
+	// Party Legal Entity
+	const legalEntity = partyElement.ele(`${namespace}:PartyLegalEntity`);
+	legalEntity.ele("cbc:RegistrationName").txt(party.legalName).up();
 
-  // Address (if provided)
-  if (party.address) {
-    const addressElement = legalEntity.ele(`${namespace}:RegistrationAddress`);
+	// Address (if provided)
+	if (party.address) {
+		const addressElement = legalEntity.ele(`${namespace}:RegistrationAddress`);
 
-    if (party.address.streetName) {
-      addressElement
-        .ele('cbc:AddressLine')
-        .ele('cbc:Line')
-        .txt(party.address.streetName)
-        .up()
-        .up();
-    }
+		if (party.address.streetName) {
+			addressElement
+				.ele("cbc:AddressLine")
+				.ele("cbc:Line")
+				.txt(party.address.streetName)
+				.up()
+				.up();
+		}
 
-    if (party.address.cityName) {
-      addressElement.ele('cbc:CityName').txt(party.address.cityName).up();
-    }
+		if (party.address.cityName) {
+			addressElement.ele("cbc:CityName").txt(party.address.cityName).up();
+		}
 
-    if (party.address.district) {
-      addressElement.ele('cbc:District').txt(party.address.district).up();
-    }
+		if (party.address.district) {
+			addressElement.ele("cbc:District").txt(party.address.district).up();
+		}
 
-    addressElement
-      .ele('cbc:Country')
-      .ele('cbc:IdentificationCode')
-      .txt(party.address.country)
-      .up()
-      .up();
+		addressElement
+			.ele("cbc:Country")
+			.ele("cbc:IdentificationCode")
+			.txt(party.address.country)
+			.up()
+			.up();
 
-    addressElement.up(); // Close RegistrationAddress
-  }
+		addressElement.up(); // Close RegistrationAddress
+	}
 
-  legalEntity.up(); // Close PartyLegalEntity
-  partyElement.up(); // Close Party
+	legalEntity.up(); // Close PartyLegalEntity
+	partyElement.up(); // Close Party
 
-  return parent;
+	return parent;
 }
 
 /**
@@ -207,7 +207,7 @@ export function createPartyElement(
  * ```
  */
 export function validateSeries(series: string): boolean {
-  return /^[A-Z0-9]{4}$/.test(series);
+	return /^[A-Z0-9]{4}$/.test(series);
 }
 
 /**
@@ -223,7 +223,7 @@ export function validateSeries(series: string): boolean {
  * ```
  */
 export function validateCorrelative(correlative: string): boolean {
-  return /^\d{1,8}$/.test(correlative);
+	return /^\d{1,8}$/.test(correlative);
 }
 
 /**
@@ -238,7 +238,7 @@ export function validateCorrelative(correlative: string): boolean {
  * ```
  */
 export function validateRuc(ruc: string): boolean {
-  return /^\d{11}$/.test(ruc);
+	return /^\d{11}$/.test(ruc);
 }
 
 /**
@@ -255,14 +255,14 @@ export function validateRuc(ruc: string): boolean {
  * ```
  */
 export function validatePartyDocument(
-  documentNumber: string,
-  documentType: '1' | '6' = '6'
+	documentNumber: string,
+	documentType: "1" | "6" = "6",
 ): boolean {
-  if (documentType === '1') {
-    return /^\d{8}$/.test(documentNumber);
-  }
+	if (documentType === "1") {
+		return /^\d{8}$/.test(documentNumber);
+	}
 
-  return validateRuc(documentNumber);
+	return validateRuc(documentNumber);
 }
 
 /**
@@ -277,20 +277,27 @@ export function validatePartyDocument(
  * parseInvoiceId("F001-00000001"); // { series: "F001", correlative: "00000001" }
  * ```
  */
-export function parseInvoiceId(id: string): { series: string; correlative: string } {
-  const [series, correlative] = id.split('-');
-  if (!series || !correlative) {
-    throw new Error(`Invalid invoice ID format: ${id}. Expected: SERIE-CORRELATIVO`);
-  }
-  if (!validateSeries(series)) {
-    throw new Error(`Invalid series format: ${series}. Must be 4 alphanumeric characters.`);
-  }
-  if (!validateCorrelative(correlative)) {
-    throw new Error(
-      `Invalid correlative format: ${correlative}. Must be numeric, max 8 digits.`
-    );
-  }
-  return { series, correlative };
+export function parseInvoiceId(id: string): {
+	series: string;
+	correlative: string;
+} {
+	const [series, correlative] = id.split("-");
+	if (!series || !correlative) {
+		throw new Error(
+			`Invalid invoice ID format: ${id}. Expected: SERIE-CORRELATIVO`,
+		);
+	}
+	if (!validateSeries(series)) {
+		throw new Error(
+			`Invalid series format: ${series}. Must be 4 alphanumeric characters.`,
+		);
+	}
+	if (!validateCorrelative(correlative)) {
+		throw new Error(
+			`Invalid correlative format: ${correlative}. Must be numeric, max 8 digits.`,
+		);
+	}
+	return { series, correlative };
 }
 
 /**
@@ -310,10 +317,10 @@ export function parseInvoiceId(id: string): { series: string; correlative: strin
  * ```
  */
 export function generateXmlFileName(
-  ruc: string,
-  docType: string,
-  series: string,
-  correlative: string
+	ruc: string,
+	docType: string,
+	series: string,
+	correlative: string,
 ): string {
-  return `${ruc}-${docType}-${series}-${correlative}.xml`;
+	return `${ruc}-${docType}-${series}-${correlative}.xml`;
 }

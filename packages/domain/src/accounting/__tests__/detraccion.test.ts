@@ -43,9 +43,7 @@ describe("Detraccion", () => {
 		const info = det.spotCodeInfo;
 
 		expect(info.code).toBe("005");
-		expect(info.description).toBe(
-			"Intermediación laboral y tercerización",
-		);
+		expect(info.description).toBe("Intermediación laboral y tercerización");
 	});
 
 	it("should accept all valid SPOT codes", () => {
@@ -143,13 +141,7 @@ describe("Detraccion", () => {
 	// --- State Transitions ---
 
 	it("should transition from pendiente to depositado", () => {
-		const det = Detraccion.create(
-			"det-1",
-			"001",
-			4,
-			penMoney(1000),
-			"Ref",
-		);
+		const det = Detraccion.create("det-1", "001", 4, penMoney(1000), "Ref");
 		const deposited = det.deposit();
 
 		expect(deposited.status).toBe("depositado");
@@ -158,13 +150,7 @@ describe("Detraccion", () => {
 	});
 
 	it("should transition from depositado to usado", () => {
-		const det = Detraccion.create(
-			"det-1",
-			"001",
-			4,
-			penMoney(1000),
-			"Ref",
-		);
+		const det = Detraccion.create("det-1", "001", 4, penMoney(1000), "Ref");
 		const deposited = det.deposit();
 		const used = deposited.use();
 
@@ -173,13 +159,7 @@ describe("Detraccion", () => {
 	});
 
 	it("should transition from depositado to liberado", () => {
-		const det = Detraccion.create(
-			"det-1",
-			"001",
-			4,
-			penMoney(1000),
-			"Ref",
-		);
+		const det = Detraccion.create("det-1", "001", 4, penMoney(1000), "Ref");
 		const deposited = det.deposit();
 		const released = deposited.release();
 
@@ -188,81 +168,39 @@ describe("Detraccion", () => {
 	});
 
 	it("should reject deposit from depositado", () => {
-		const det = Detraccion.create(
-			"det-1",
-			"001",
-			4,
-			penMoney(1000),
-			"Ref",
-		);
+		const det = Detraccion.create("det-1", "001", 4, penMoney(1000), "Ref");
 		const deposited = det.deposit();
-		expect(() => deposited.deposit()).toThrow(
-			InvalidDetraccionTransitionError,
-		);
+		expect(() => deposited.deposit()).toThrow(InvalidDetraccionTransitionError);
 	});
 
 	it("should reject use from pendiente", () => {
-		const det = Detraccion.create(
-			"det-1",
-			"001",
-			4,
-			penMoney(1000),
-			"Ref",
-		);
+		const det = Detraccion.create("det-1", "001", 4, penMoney(1000), "Ref");
 		expect(() => det.use()).toThrow(InvalidDetraccionTransitionError);
 	});
 
 	it("should reject release from pendiente", () => {
-		const det = Detraccion.create(
-			"det-1",
-			"001",
-			4,
-			penMoney(1000),
-			"Ref",
-		);
-		expect(() => det.release()).toThrow(
-			InvalidDetraccionTransitionError,
-		);
+		const det = Detraccion.create("det-1", "001", 4, penMoney(1000), "Ref");
+		expect(() => det.release()).toThrow(InvalidDetraccionTransitionError);
 	});
 
 	it("should reject use from usado", () => {
-		const det = Detraccion.create(
-			"det-1",
-			"001",
-			4,
-			penMoney(1000),
-			"Ref",
-		);
+		const det = Detraccion.create("det-1", "001", 4, penMoney(1000), "Ref");
 		const deposited = det.deposit();
 		const used = deposited.use();
 		expect(() => used.use()).toThrow(InvalidDetraccionTransitionError);
 	});
 
 	it("should reject release from liberado", () => {
-		const det = Detraccion.create(
-			"det-1",
-			"001",
-			4,
-			penMoney(1000),
-			"Ref",
-		);
+		const det = Detraccion.create("det-1", "001", 4, penMoney(1000), "Ref");
 		const deposited = det.deposit();
 		const released = deposited.release();
-		expect(() => released.release()).toThrow(
-			InvalidDetraccionTransitionError,
-		);
+		expect(() => released.release()).toThrow(InvalidDetraccionTransitionError);
 	});
 
 	// --- State Queries ---
 
 	it("should correctly report isDeposited", () => {
-		const det = Detraccion.create(
-			"det-1",
-			"001",
-			4,
-			penMoney(1000),
-			"Ref",
-		);
+		const det = Detraccion.create("det-1", "001", 4, penMoney(1000), "Ref");
 		expect(det.isDeposited()).toBe(false);
 
 		const deposited = det.deposit();
@@ -270,13 +208,7 @@ describe("Detraccion", () => {
 	});
 
 	it("should correctly report isUsed", () => {
-		const det = Detraccion.create(
-			"det-1",
-			"001",
-			4,
-			penMoney(1000),
-			"Ref",
-		);
+		const det = Detraccion.create("det-1", "001", 4, penMoney(1000), "Ref");
 		expect(det.isUsed()).toBe(false);
 
 		const used = det.deposit().use();
@@ -284,13 +216,7 @@ describe("Detraccion", () => {
 	});
 
 	it("should correctly report isReleased", () => {
-		const det = Detraccion.create(
-			"det-1",
-			"001",
-			4,
-			penMoney(1000),
-			"Ref",
-		);
+		const det = Detraccion.create("det-1", "001", 4, penMoney(1000), "Ref");
 		expect(det.isReleased()).toBe(false);
 
 		const released = det.deposit().release();

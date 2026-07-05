@@ -124,7 +124,9 @@ export function UXModeToggle() {
 										: "border-transparent hover:border-[var(--border-subtle)]",
 								)}
 								title={ACCENT_LABELS[accent]}
-								style={{ '--accent': ACCENT_COLORS[accent] } as React.CSSProperties}
+								style={
+									{ "--accent": ACCENT_COLORS[accent] } as React.CSSProperties
+								}
 								aria-label={`Accent color: ${ACCENT_LABELS[accent]}`}
 								aria-pressed={isActive}
 							>
@@ -132,7 +134,8 @@ export function UXModeToggle() {
 									<span
 										className={cn(
 											"block size-4 rounded-full ring-1 ring-inset ring-black/10 transition-all duration-200",
-											isActive && "ring-2 ring-offset-1 ring-[var(--accent)] scale-110",
+											isActive &&
+												"ring-2 ring-offset-1 ring-[var(--accent)] scale-110",
 										)}
 										style={{ backgroundColor: ACCENT_COLORS[accent] }}
 									/>

@@ -1,5 +1,12 @@
-import { index, jsonb, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
 import type { DrenyraMcpAuditEvent } from "@drenyra/agents";
+import {
+	index,
+	jsonb,
+	pgTable,
+	text,
+	timestamp,
+	varchar,
+} from "drizzle-orm/pg-core";
 
 export const platformMcpAuditEvents = pgTable(
 	"platform_mcp_audit_events",
@@ -25,7 +32,10 @@ export const platformMcpAuditEvents = pgTable(
 			.$type<DrenyraMcpAuditEvent["reason"]>()
 			.notNull(),
 		occurredAt: timestamp("occurred_at").notNull(),
-		metadata: jsonb("metadata").$type<Record<string, unknown>>().default({}).notNull(),
+		metadata: jsonb("metadata")
+			.$type<Record<string, unknown>>()
+			.default({})
+			.notNull(),
 		message: text("message").notNull(),
 	},
 	(table) => ({

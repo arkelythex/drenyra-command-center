@@ -5,14 +5,14 @@
  */
 
 export type {
-	IntegrationProvider,
-	IntegrationCategory,
-	ConnectionStatus,
-	IntegrationDTO,
 	ConnectionDTO,
-	WebhookDTO,
-	InstallIntegrationRequest,
+	ConnectionStatus,
 	CreateConnectionRequest,
-	UpdateConnectionRequest,
 	CreateWebhookRequest,
+	InstallIntegrationRequest,
+	IntegrationCategory,
+	IntegrationDTO,
+	IntegrationProvider,
+	UpdateConnectionRequest,
+	WebhookDTO,
 } from "./types";

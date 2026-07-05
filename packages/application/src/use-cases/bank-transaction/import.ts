@@ -21,10 +21,10 @@ import type { BankAccountRepository } from "@drenyra/domain/repositories/bank-ac
 import type { BankTransactionRepository } from "@drenyra/domain/repositories/bank-transaction.repository";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import type {
-	ImportTransactionRow,
 	ImportBankTransactionsInput,
-	ImportResult,
 	ImportError,
+	ImportResult,
+	ImportTransactionRow,
 } from "./types";
 
 /**

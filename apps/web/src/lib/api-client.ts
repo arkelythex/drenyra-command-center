@@ -1,5 +1,5 @@
-import { treaty } from "@elysiajs/eden";
 import type { App } from "@drenyra/api/contract";
+import { treaty } from "@elysiajs/eden";
 import { runtimeConfig } from "./runtime-config";
 
 const API_URL = runtimeConfig.apiUrl;

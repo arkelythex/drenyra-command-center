@@ -36,15 +36,15 @@ export async function listSkills(): Promise<{ data: SkillDTO[] }> {
 }
 
 export async function getSkillDetail(id: string): Promise<SkillDTO> {
-	return unwrap(
-		api.api.skills({ id }).get(),
-	) as Promise<SkillDTO>;
+	return unwrap(api.api.skills({ id }).get()) as Promise<SkillDTO>;
 }
 
-export async function listInstalledSkills(): Promise<{ data: CompanySkillDTO[] }> {
-	return unwrap(
-		api.api.skills.installed.get(),
-	) as Promise<{ data: CompanySkillDTO[] }>;
+export async function listInstalledSkills(): Promise<{
+	data: CompanySkillDTO[];
+}> {
+	return unwrap(api.api.skills.installed.get()) as Promise<{
+		data: CompanySkillDTO[];
+	}>;
 }
 
 export async function installSkill(id: string): Promise<CompanySkillDTO> {
@@ -53,10 +53,12 @@ export async function installSkill(id: string): Promise<CompanySkillDTO> {
 	) as Promise<CompanySkillDTO>;
 }
 
-export async function uninstallSkillApi(id: string): Promise<{ uninstalled: boolean }> {
-	return unwrap(
-		api.api.skills({ id }).uninstall.post(),
-	) as Promise<{ uninstalled: boolean }>;
+export async function uninstallSkillApi(
+	id: string,
+): Promise<{ uninstalled: boolean }> {
+	return unwrap(api.api.skills({ id }).uninstall.post()) as Promise<{
+		uninstalled: boolean;
+	}>;
 }
 
 export async function updateSkillConfig(

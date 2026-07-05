@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ContextMonitor } from "../../src/context-monitor/context-monitor";
-import type { SessionStore } from "../../src/session/session-store";
 import type { AgentRunEvent } from "../../src/session/session.types";
+import type { SessionStore } from "../../src/session/session-store";
 
 // ---------------------------------------------------------------------------
 // Fixtures
@@ -223,8 +223,7 @@ describe("ContextMonitor", () => {
 				store.appendEvent as ReturnType<typeof vi.fn>
 			).mock.calls.filter(
 				(call: unknown[]) =>
-					(call[1] as AgentRunEvent).eventType ===
-					"context_threshold_reached",
+					(call[1] as AgentRunEvent).eventType === "context_threshold_reached",
 			);
 			expect(thresholdEvents).toHaveLength(1);
 		});
@@ -364,9 +363,7 @@ describe("ContextMonitor", () => {
 		it("should not throw when constructed without arguments", () => {
 			expect(() => new ContextMonitor()).not.toThrow();
 			expect(() => new ContextMonitor(undefined)).not.toThrow();
-			expect(
-				() => new ContextMonitor(undefined, {}),
-			).not.toThrow();
+			expect(() => new ContextMonitor(undefined, {})).not.toThrow();
 		});
 	});
 });

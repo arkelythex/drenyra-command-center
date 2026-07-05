@@ -2,9 +2,12 @@
  * ToolRegistry tests — uses vitest mocks to simulate Drizzle DB interactions.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type {
+	RiskTier,
+	ToolRegistration,
+} from "../../src/control-plane/contracts";
 import { ToolRegistry } from "../../src/control-plane/tool-registry";
-import type { ToolRegistration, RiskTier } from "../../src/control-plane/contracts";
 
 // ============================================================================
 // Mock Drizzle query helpers
@@ -14,7 +17,9 @@ import type { ToolRegistration, RiskTier } from "../../src/control-plane/contrac
  * Creates a thenable mock object that resolves to the given rows.
  * This mimics Drizzle's query objects which are both chainable AND thenable.
  */
-function thenableResult<T = unknown>(rows: T): {
+function thenableResult<T = unknown>(
+	rows: T,
+): {
 	then: ReturnType<typeof vi.fn>;
 	where: ReturnType<typeof vi.fn>;
 	limit: ReturnType<typeof vi.fn>;
@@ -132,8 +137,12 @@ describe("ToolRegistry", () => {
 
 			// Mock the inserting chain
 			const returningChain = thenableResult([toolRow]);
-			const onConflictChain = { returning: vi.fn().mockReturnValue(returningChain) };
-			const valuesChain = { onConflictDoUpdate: vi.fn().mockReturnValue(onConflictChain) };
+			const onConflictChain = {
+				returning: vi.fn().mockReturnValue(returningChain),
+			};
+			const valuesChain = {
+				onConflictDoUpdate: vi.fn().mockReturnValue(onConflictChain),
+			};
 
 			mockDb.insert.mockReturnValue({
 				values: vi.fn().mockReturnValue(valuesChain),
@@ -188,8 +197,12 @@ describe("ToolRegistry", () => {
 
 			// Mock insert for registration
 			const returningChain = thenableResult([toolRow]);
-			const onConflictChain = { returning: vi.fn().mockReturnValue(returningChain) };
-			const valuesChain = { onConflictDoUpdate: vi.fn().mockReturnValue(onConflictChain) };
+			const onConflictChain = {
+				returning: vi.fn().mockReturnValue(returningChain),
+			};
+			const valuesChain = {
+				onConflictDoUpdate: vi.fn().mockReturnValue(onConflictChain),
+			};
 			mockDb.insert.mockReturnValue({
 				values: vi.fn().mockReturnValue(valuesChain),
 			});

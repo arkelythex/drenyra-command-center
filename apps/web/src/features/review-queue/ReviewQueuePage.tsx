@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { listQueue, getQueueStats } from "./review-queue.api";
+import { getQueueStats, listQueue } from "./review-queue.api";
 import type { ReviewQueueItemDTO } from "./review-queue.types";
 
 const PRIORITY_ORDER: Record<string, number> = {

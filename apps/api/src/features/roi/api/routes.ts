@@ -11,36 +11,22 @@
 import { Elysia, t } from "elysia";
 import { roiService } from "../application/services/roi.service";
 import {
-	RoiCalculateInput,
-	PaybackInput,
-	NpvInput,
 	IrrInput,
+	NpvInput,
+	PaybackInput,
+	RoiCalculateInput,
 	ScenarioCompareInput,
 } from "../schemas";
 
 export const roiRoutes = new Elysia({ prefix: "/api/fiscal/roi" })
-	.post(
-		"/calculate",
-		({ body }) => roiService.calculate(body),
-		{ body: RoiCalculateInput },
-	)
-	.post(
-		"/payback",
-		({ body }) => roiService.payback(body),
-		{ body: PaybackInput },
-	)
-	.post(
-		"/npv",
-		({ body }) => roiService.npv(body),
-		{ body: NpvInput },
-	)
-	.post(
-		"/irr",
-		({ body }) => roiService.irr(body),
-		{ body: IrrInput },
-	)
-	.post(
-		"/scenario",
-		({ body }) => roiService.scenario(body),
-		{ body: ScenarioCompareInput },
-	);
+	.post("/calculate", ({ body }) => roiService.calculate(body), {
+		body: RoiCalculateInput,
+	})
+	.post("/payback", ({ body }) => roiService.payback(body), {
+		body: PaybackInput,
+	})
+	.post("/npv", ({ body }) => roiService.npv(body), { body: NpvInput })
+	.post("/irr", ({ body }) => roiService.irr(body), { body: IrrInput })
+	.post("/scenario", ({ body }) => roiService.scenario(body), {
+		body: ScenarioCompareInput,
+	});

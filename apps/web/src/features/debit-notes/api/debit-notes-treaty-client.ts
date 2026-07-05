@@ -6,9 +6,14 @@
  * structure without sacrificing type safety at the API wrapper layer.
  */
 
-import { registerClient } from "@/lib/treaty-route-client";
+import { api } from "@/lib/api";
 import type { TreatyClientRoute } from "@/lib/treaty-route-client";
-import { api } from '@/lib/api';
+import { registerClient } from "@/lib/treaty-route-client";
 
-const debitNotesRoute = (api.api as unknown as Record<string, unknown>)['debit-notes'] as TreatyClientRoute;
-export const debitNoteTreatyClient = registerClient("debit-notes", debitNotesRoute);
+const debitNotesRoute = (api.api as unknown as Record<string, unknown>)[
+	"debit-notes"
+] as TreatyClientRoute;
+export const debitNoteTreatyClient = registerClient(
+	"debit-notes",
+	debitNotesRoute,
+);

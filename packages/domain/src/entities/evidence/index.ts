@@ -1,5 +1,14 @@
 export { Evidence } from "./evidence.entity";
+export type { EvidenceLinkProps } from "./evidence-link";
 export { EvidenceLink } from "./evidence-link";
+export type {
+	EvidenceLinkEntityType,
+	EvidenceLinkRelationship,
+} from "./evidence-link-type";
+export {
+	EVIDENCE_LINK_ENTITY_TYPES,
+	EVIDENCE_LINK_RELATIONSHIPS,
+} from "./evidence-link-type";
 export type {
 	EvidenceAuditTrailEntry,
 	EvidenceFilters,
@@ -10,12 +19,3 @@ export type {
 	EvidenceType,
 	HashChainEntry,
 } from "./types";
-export type {
-	EvidenceLinkEntityType,
-	EvidenceLinkRelationship,
-} from "./evidence-link-type";
-export {
-	EVIDENCE_LINK_ENTITY_TYPES,
-	EVIDENCE_LINK_RELATIONSHIPS,
-} from "./evidence-link-type";
-export type { EvidenceLinkProps } from "./evidence-link";

@@ -1,44 +1,44 @@
-import { Elysia } from 'elysia';
-import { auth } from './auth.config';
+import { Elysia } from "elysia";
+import { auth } from "./auth.config";
 
 function isDev(): boolean {
-  return (process.env.NODE_ENV ?? 'development') !== 'production';
+	return (process.env.NODE_ENV ?? "development") !== "production";
 }
 
 function buildDevAuthError(error: unknown): { message: string; hint?: string } {
-  const raw =
-    error instanceof Error
-      ? error.message
-      : typeof error === 'string'
-        ? error
-        : JSON.stringify(error);
+	const raw =
+		error instanceof Error
+			? error.message
+			: typeof error === "string"
+				? error
+				: JSON.stringify(error);
 
-  if (/BETTER_AUTH_SECRET/i.test(raw)) {
-    return {
-      message: 'Config inválida: falta `BETTER_AUTH_SECRET` (min 32 chars).',
-      hint: 'Edita `apps/api/.env` y reinicia el API.',
-    };
-  }
+	if (/BETTER_AUTH_SECRET/i.test(raw)) {
+		return {
+			message: "Config inválida: falta `BETTER_AUTH_SECRET` (min 32 chars).",
+			hint: "Edita `apps/api/.env` y reinicia el API.",
+		};
+	}
 
-  if (/ECONNREFUSED|connect ECONNREFUSED/i.test(raw)) {
-    return {
-      message: 'No se pudo conectar a PostgreSQL (ECONNREFUSED).',
-      hint:
-        'Inicia Postgres (por ejemplo: `docker compose up -d postgres`) y verifica `DATABASE_URL`.',
-    };
-  }
+	if (/ECONNREFUSED|connect ECONNREFUSED/i.test(raw)) {
+		return {
+			message: "No se pudo conectar a PostgreSQL (ECONNREFUSED).",
+			hint: "Inicia Postgres (por ejemplo: `docker compose up -d postgres`) y verifica `DATABASE_URL`.",
+		};
+	}
 
-  if (/relation .* does not exist/i.test(raw)) {
-    return {
-      message: 'La base de datos no tiene tablas/migraciones (relation does not exist).',
-      hint: 'Ejecuta Drizzle: `bun run --filter @drenyra/infrastructure db:push`.',
-    };
-  }
+	if (/relation .* does not exist/i.test(raw)) {
+		return {
+			message:
+				"La base de datos no tiene tablas/migraciones (relation does not exist).",
+			hint: "Ejecuta Drizzle: `bun run --filter @drenyra/infrastructure db:push`.",
+		};
+	}
 
-  return {
-    message: 'Error interno en Auth (HTTP 500). Revisa logs del API.',
-    hint: raw,
-  };
+	return {
+		message: "Error interno en Auth (HTTP 500). Revisa logs del API.",
+		hint: raw,
+	};
 }
 
 /**
@@ -102,24 +102,31 @@ function buildDevAuthError(error: unknown): { message: string; hint?: string } {
  *   .listen(3000);
  * ```
  */
-export const authModule = new Elysia({ prefix: '/api/auth' })
-  .all('/*', async ({ request, set }) => {
-    try {
-      const res = await auth.handler(request);
+export const authModule = new Elysia({ prefix: "/api/auth" }).all(
+	"/*",
+	async ({ request, set }) => {
+		try {
+			const res = await auth.handler(request);
 
-      // If BetterAuth returns a 5xx response, return a friendlier JSON payload in dev.
-      if (isDev() && res instanceof Response && res.status >= 500) {
-        const hint = await res.clone().text().catch(() => "");
-        set.status = 500;
-        return {
-          message: 'Error interno en Auth (HTTP 500). Revisa logs del API.',
-          hint: hint ? hint.slice(0, 800) : undefined,
-        };
-      }
+			// If BetterAuth returns a 5xx response, return a friendlier JSON payload in dev.
+			if (isDev() && res instanceof Response && res.status >= 500) {
+				const hint = await res
+					.clone()
+					.text()
+					.catch(() => "");
+				set.status = 500;
+				return {
+					message: "Error interno en Auth (HTTP 500). Revisa logs del API.",
+					hint: hint ? hint.slice(0, 800) : undefined,
+				};
+			}
 
-      return res;
-    } catch (error) {
-      set.status = 500;
-      return isDev() ? buildDevAuthError(error) : { message: 'Internal server error' };
-    }
-  });
+			return res;
+		} catch (error) {
+			set.status = 500;
+			return isDev()
+				? buildDevAuthError(error)
+				: { message: "Internal server error" };
+		}
+	},
+);

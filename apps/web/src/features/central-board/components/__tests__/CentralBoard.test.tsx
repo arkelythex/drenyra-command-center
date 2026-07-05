@@ -8,19 +8,19 @@
  *   Test: rendering, empty states, tab switching, error states
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 import { toast } from "sonner";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // ---------------------------------------------------------------------------
 // State helpers (shared mutable via vi.hoisted)
 // ---------------------------------------------------------------------------
 
-const { mockTab, mockSetTab, mockJournalEntries, mockDocuments } =
-	vi.hoisted(() => ({
+const { mockTab, mockSetTab, mockJournalEntries, mockDocuments } = vi.hoisted(
+	() => ({
 		mockTab: "ledger" as string,
 		mockSetTab: vi.fn(),
 		mockJournalEntries: [] as Array<{
@@ -39,7 +39,8 @@ const { mockTab, mockSetTab, mockJournalEntries, mockDocuments } =
 			size: number;
 			status: string;
 		}>,
-	}));
+	}),
+);
 
 // ---------------------------------------------------------------------------
 // Mocks
@@ -169,9 +170,7 @@ function createWrapper() {
 
 	return function Wrapper({ children }: { children: ReactNode }) {
 		return (
-			<QueryClientProvider client={queryClient}>
-				{children}
-			</QueryClientProvider>
+			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 		);
 	};
 }
@@ -230,9 +229,7 @@ describe("CentralBoard", () => {
 			);
 			render(<LedgerEditableTable />, { wrapper: createWrapper() });
 
-			expect(
-				screen.getByText(/no hay asientos/i),
-			).toBeDefined();
+			expect(screen.getByText(/no hay asientos/i)).toBeDefined();
 		});
 
 		it("renders error state", async () => {
@@ -302,13 +299,11 @@ describe("CentralBoard", () => {
 			const { usePendingJournalEntries } = await import(
 				"@/features/drenyra/hooks/useJournalEntriesApi"
 			);
-			(usePendingJournalEntries as ReturnType<typeof vi.fn>).mockReturnValue(
-				{
-					data: [],
-					isLoading: false,
-					isError: false,
-				},
-			);
+			(usePendingJournalEntries as ReturnType<typeof vi.fn>).mockReturnValue({
+				data: [],
+				isLoading: false,
+				isError: false,
+			});
 
 			const { JournalPendingList } = await import(
 				"../../components/JournalPendingList"
@@ -319,28 +314,25 @@ describe("CentralBoard", () => {
 		});
 
 		it("shows pending entries with approve/reject buttons", async () => {
-			const { usePendingJournalEntries, useJournalEntries } =
-				await import(
-					"@/features/drenyra/hooks/useJournalEntriesApi"
-				);
-			(usePendingJournalEntries as ReturnType<typeof vi.fn>).mockReturnValue(
-				{
-					data: [
-						{
-							id: "je-pending",
-							entryNumber: "000003-2026",
-							date: "2026-06-02",
-							gloss: "Ajuste propuesto",
-							status: "borrador",
-							totalDebit: 500,
-							totalCredit: 500,
-							linesCount: 2,
-						},
-					],
-					isLoading: true,
-					isError: false,
-				},
+			const { usePendingJournalEntries, useJournalEntries } = await import(
+				"@/features/drenyra/hooks/useJournalEntriesApi"
 			);
+			(usePendingJournalEntries as ReturnType<typeof vi.fn>).mockReturnValue({
+				data: [
+					{
+						id: "je-pending",
+						entryNumber: "000003-2026",
+						date: "2026-06-02",
+						gloss: "Ajuste propuesto",
+						status: "borrador",
+						totalDebit: 500,
+						totalCredit: 500,
+						linesCount: 2,
+					},
+				],
+				isLoading: true,
+				isError: false,
+			});
 			(useJournalEntries as ReturnType<typeof vi.fn>).mockReturnValue({
 				data: [],
 				isLoading: true,
@@ -359,9 +351,7 @@ describe("CentralBoard", () => {
 
 	describe("DocumentsList", () => {
 		it("renders drop zone when no documents exist", async () => {
-			const { DocumentsList } = await import(
-				"../../components/DocumentsList"
-			);
+			const { DocumentsList } = await import("../../components/DocumentsList");
 			render(<DocumentsList />, { wrapper: createWrapper() });
 
 			// Should show the upload area
@@ -387,9 +377,7 @@ describe("CentralBoard", () => {
 				},
 			);
 
-			const { DocumentsList } = await import(
-				"../../components/DocumentsList"
-			);
+			const { DocumentsList } = await import("../../components/DocumentsList");
 			render(<DocumentsList />, { wrapper: createWrapper() });
 
 			expect(screen.getByText(/factura\.pdf/i)).toBeDefined();

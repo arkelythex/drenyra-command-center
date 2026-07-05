@@ -1,5 +1,5 @@
-import { Check, AlertTriangle, X, ShieldAlert, ArrowRight } from "lucide-react";
-import { useEffect, useState, useActionState } from "react";
+import { AlertTriangle, ArrowRight, Check, ShieldAlert, X } from "lucide-react";
+import { useActionState, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { AccountingJobRunView } from "../hooks/useAccountingJobRuns";
 import type { PendingToolApproval } from "../hooks/useCognitiveStream";
@@ -30,7 +30,9 @@ export function ToolApprovalCard({
 				await onApprove({ pairingCode, reason });
 				return null;
 			} catch (error) {
-				return error instanceof Error ? error.message : "No se pudo aprobar la acción";
+				return error instanceof Error
+					? error.message
+					: "No se pudo aprobar la acción";
 			}
 		},
 		null as string | null,
@@ -42,7 +44,9 @@ export function ToolApprovalCard({
 				await onDeny(reason);
 				return null;
 			} catch (error) {
-				return error instanceof Error ? error.message : "No se pudo rechazar la acción";
+				return error instanceof Error
+					? error.message
+					: "No se pudo rechazar la acción";
 			}
 		},
 		null as string | null,
@@ -96,25 +100,38 @@ export function ToolApprovalCard({
 							Alto Impacto
 						</span>
 					</div>
-					
+
 					<div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-md bg-[var(--surface-1)] p-3">
 						<div className="text-center">
-							<span className="block text-2xs font-medium text-[var(--text-tertiary)]">Estado Actual</span>
-							<span className="mt-1 block text-[13px] font-medium text-[var(--text-secondary)]">Sin ejecutar</span>
+							<span className="block text-2xs font-medium text-[var(--text-tertiary)]">
+								Estado Actual
+							</span>
+							<span className="mt-1 block text-[13px] font-medium text-[var(--text-secondary)]">
+								Sin ejecutar
+							</span>
 						</div>
 						<div className="text-[var(--text-tertiary)]">
 							<ArrowRight size={14} />
 						</div>
 						<div className="text-center">
-							<span className="block text-2xs font-medium text-[var(--text-tertiary)]">Decisión requerida</span>
-							<span className="mt-1 block text-[13px] font-bold text-[var(--color-success)]">Aprobar o rechazar</span>
+							<span className="block text-2xs font-medium text-[var(--text-tertiary)]">
+								Decisión requerida
+							</span>
+							<span className="mt-1 block text-[13px] font-bold text-[var(--color-success)]">
+								Aprobar o rechazar
+							</span>
 						</div>
 					</div>
-					
+
 					<div className="mt-3 flex items-start gap-2 rounded-md bg-amber-500/5 px-3 py-2">
-						<AlertTriangle size={14} className="mt-0.5 shrink-0 text-amber-500" />
+						<AlertTriangle
+							size={14}
+							className="mt-0.5 shrink-0 text-amber-500"
+						/>
 						<p className="text-label font-medium text-[var(--text-secondary)]">
-							<span className="font-bold text-[var(--text-primary)]">Política aplicada: </span>
+							<span className="font-bold text-[var(--text-primary)]">
+								Política aplicada:{" "}
+							</span>
 							{policyLabel}
 						</p>
 					</div>
@@ -139,10 +156,12 @@ export function ToolApprovalCard({
 				{requiresPairing ? (
 					<div className="mb-4 space-y-2 rounded-lg border border-warning/20 bg-warning/5 p-3">
 						<p className="text-xs font-medium text-[var(--text-primary)]">
-							{approval.pairingChallenge || "Se requiere código de autorización para aprobar esta transacción."}
+							{approval.pairingChallenge ||
+								"Se requiere código de autorización para aprobar esta transacción."}
 						</p>
 						<p className="text-2xs font-medium text-[var(--text-secondary)]">
-							Hint: <span className="font-mono">{approval.pairingHint || "--"}</span>
+							Hint:{" "}
+							<span className="font-mono">{approval.pairingHint || "--"}</span>
 						</p>
 						<input
 							value={pairingCode}
@@ -168,7 +187,7 @@ export function ToolApprovalCard({
 						disabled={!canApprove || isSubmitting}
 						className={cn(
 							"flex flex-1 items-center justify-center gap-2 rounded-lg bg-[var(--color-success)] px-4 py-2 text-[13px] font-bold text-white transition-colors hover:bg-[var(--color-success)]/80 focus:outline-none focus:ring-2 focus:ring-[var(--color-success)]/50 disabled:opacity-50",
-							(!canApprove || isSubmitting) && "cursor-not-allowed"
+							(!canApprove || isSubmitting) && "cursor-not-allowed",
 						)}
 					>
 						{isSubmitting ? (
@@ -187,13 +206,16 @@ export function ToolApprovalCard({
 						Rechazar
 					</button>
 				</div>
-				
+
 				{errorMessage ? (
-					<p role="alert" className="mt-3 text-center text-xs font-medium text-danger">
+					<p
+						role="alert"
+						className="mt-3 text-center text-xs font-medium text-danger"
+					>
 						{errorMessage}
 					</p>
 				) : null}
-				
+
 				{controlPlane ? (
 					<div className="mt-4 flex justify-between border-t border-[var(--border-subtle)] pt-3 text-2xs font-medium text-[var(--text-tertiary)]">
 						<span className="font-mono">id: {approval.runId.slice(0, 8)}</span>

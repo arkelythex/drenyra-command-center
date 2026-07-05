@@ -28,8 +28,12 @@ interface CommandAuditEventView {
 }
 
 const optionalRef = t.Optional(t.String({ minLength: 1 }));
-const eventTypeSchema = t.Optional(t.Union([t.Literal("CAPABILITY_ALLOWED"), t.Literal("CAPABILITY_DENIED")]));
-const decisionSchema = t.Optional(t.Union([t.Literal("allowed"), t.Literal("denied"), t.Literal("all")]));
+const eventTypeSchema = t.Optional(
+	t.Union([t.Literal("CAPABILITY_ALLOWED"), t.Literal("CAPABILITY_DENIED")]),
+);
+const decisionSchema = t.Optional(
+	t.Union([t.Literal("allowed"), t.Literal("denied"), t.Literal("all")]),
+);
 
 export function createDrenyraCommandAuditRoutes(
 	commandCenter: DrenyraFiscalCommandCenterService,
@@ -39,7 +43,13 @@ export function createDrenyraCommandAuditRoutes(
 		.get(
 			"/commands/audit-events",
 			async ({ query, headers, set }) => {
-				const result = await listCommandAudit(commandCenter, resolveDrenyraActorContext, headers, query, set);
+				const result = await listCommandAudit(
+					commandCenter,
+					resolveDrenyraActorContext,
+					headers,
+					query,
+					set,
+				);
 				if (!result.success) return result;
 				return ok(result.events);
 			},
@@ -48,10 +58,20 @@ export function createDrenyraCommandAuditRoutes(
 		.get(
 			"/command-envelope/audit",
 			async ({ query, headers, set }) => {
-				const result = await listCommandAudit(commandCenter, resolveDrenyraActorContext, headers, query, set);
+				const result = await listCommandAudit(
+					commandCenter,
+					resolveDrenyraActorContext,
+					headers,
+					query,
+					set,
+				);
 				if (!result.success) return result;
 				const decision = query.decision ?? "all";
-				return ok({ decision, events: result.events, count: result.events.length });
+				return ok({
+					decision,
+					events: result.events,
+					count: result.events.length,
+				});
 			},
 			{ query: commandEnvelopeAuditQuerySchema() },
 		);
@@ -81,7 +101,9 @@ async function listCommandAudit(
 	headers: Record<string, string | undefined>,
 	query: CommandAuditQuery,
 	set: { status?: number | string },
-): Promise<{ success: true; events: CommandAuditEventView[] } | ReturnType<typeof fail>> {
+): Promise<
+	{ success: true; events: CommandAuditEventView[] } | ReturnType<typeof fail>
+> {
 	const contextResolution = resolveDrenyraActorContext(headers);
 	if (!contextResolution.ok) {
 		set.status = 400;
@@ -89,22 +111,39 @@ async function listCommandAudit(
 	}
 	if (!hasAuditProof(headers)) {
 		set.status = 403;
-		return fail("Drenyra command audit requires scoped capability and redaction proof", "DRENYRA_CAPABILITY_DENIED");
+		return fail(
+			"Drenyra command audit requires scoped capability and redaction proof",
+			"DRENYRA_CAPABILITY_DENIED",
+		);
 	}
-	const events = await commandCenter.listCommandAuditEvents(contextResolution.context, {
-		caseId: query.caseId,
-		commandId: query.commandId,
-		eventType: query.eventType ?? eventTypeForDecision(query.decision),
-	});
-	return { success: true, events: events.slice(0, limitFromQuery(query.limit)).map(auditEventView) };
+	const events = await commandCenter.listCommandAuditEvents(
+		contextResolution.context,
+		{
+			caseId: query.caseId,
+			commandId: query.commandId,
+			eventType: query.eventType ?? eventTypeForDecision(query.decision),
+		},
+	);
+	return {
+		success: true,
+		events: events.slice(0, limitFromQuery(query.limit)).map(auditEventView),
+	};
 }
 
 function hasAuditProof(headers: Record<string, string | undefined>): boolean {
 	const capabilityGrant = headers["x-drenyra-capability-grant"]?.trim() ?? "";
-	return capabilityGrant.split(",").map((item) => item.trim()).includes("scoped") && headers["x-drenyra-redaction-ok"]?.trim() === "true";
+	return (
+		capabilityGrant
+			.split(",")
+			.map((item) => item.trim())
+			.includes("scoped") &&
+		headers["x-drenyra-redaction-ok"]?.trim() === "true"
+	);
 }
 
-function eventTypeForDecision(decision?: CommandAuditDecision): CommandAuditEventType | undefined {
+function eventTypeForDecision(
+	decision?: CommandAuditDecision,
+): CommandAuditEventType | undefined {
 	if (decision === "allowed") return "CAPABILITY_ALLOWED";
 	if (decision === "denied") return "CAPABILITY_DENIED";
 	return undefined;

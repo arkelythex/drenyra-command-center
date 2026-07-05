@@ -7,9 +7,12 @@
  * Follows existing test patterns in packages/ai/__tests__/ using vitest.
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+import type {
+	PermissionEffect,
+	PermissionEntry,
+} from "../../src/control-plane/contracts";
 import { PermissionService } from "../../src/governance/permission-service";
-import type { PermissionEffect, PermissionEntry } from "../../src/control-plane/contracts";
 
 // ============================================================================
 // Helpers

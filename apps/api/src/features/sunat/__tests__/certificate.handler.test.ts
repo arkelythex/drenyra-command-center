@@ -1,13 +1,13 @@
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import forge from "node-forge";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import type { Certificate } from "../signature/certificate.handler";
 import {
 	loadCertificateFromPem,
 	validateCertificate,
 } from "../signature/certificate.handler";
-import type { Certificate } from "../signature/certificate.handler";
-import { writeFileSync, rmSync, mkdtempSync } from "node:fs";
-import { join } from "node:path";
-import { tmpdir } from "node:os";
 
 describe("Certificate Handler", () => {
 	// Avoid mutating tracked repo fixtures during tests.

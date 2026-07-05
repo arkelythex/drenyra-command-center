@@ -1,4 +1,8 @@
-import type { ConversionResult, TipoCambio, TipoCambioHistorico } from "./types";
+import type {
+	ConversionResult,
+	TipoCambio,
+	TipoCambioHistorico,
+} from "./types";
 
 function getToday(): string {
 	return (

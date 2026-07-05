@@ -24,9 +24,7 @@ export function createSireTestJwtWithClaims(
 	secret: string,
 ): string {
 	const header = encodeBase64Url(JSON.stringify({ alg: "HS256", typ: "JWT" }));
-	const payload = encodeBase64Url(
-		JSON.stringify(claims),
-	);
+	const payload = encodeBase64Url(JSON.stringify(claims));
 	const signature = createHmac("sha256", secret)
 		.update(`${header}.${payload}`)
 		.digest("base64")
@@ -43,7 +41,10 @@ export function createSireAuthHeaders(
 	headers: HeadersInit = {},
 ): Headers {
 	const resolvedHeaders = new Headers(headers);
-	resolvedHeaders.set("Authorization", `Bearer ${createSireTestJwt(companyId, secret)}`);
+	resolvedHeaders.set(
+		"Authorization",
+		`Bearer ${createSireTestJwt(companyId, secret)}`,
+	);
 	resolvedHeaders.set("X-Company-Id", companyId);
 
 	return resolvedHeaders;

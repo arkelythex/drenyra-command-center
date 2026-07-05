@@ -3,7 +3,7 @@
  * Scenarios: INTERVENIR, ALLOW, Tampering Detection
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { createAgentDecisionLog } from "../domain";
 import { computeHash, verifyHash } from "../domain/hash.service";
 

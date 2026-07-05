@@ -65,7 +65,9 @@ export const AgenticStatusPanel = ({
 					<p className="text-2xs font-bold uppercase tracking-wider text-[var(--text-tertiary)]">
 						Superficies conectadas
 					</p>
-					<p className="mt-1 text-[13px] font-bold text-[var(--text-primary)]">{registrySurfaceCount} activas</p>
+					<p className="mt-1 text-[13px] font-bold text-[var(--text-primary)]">
+						{registrySurfaceCount} activas
+					</p>
 				</div>
 				<div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-3">
 					<p className="text-2xs font-bold uppercase tracking-wider text-[var(--text-tertiary)]">

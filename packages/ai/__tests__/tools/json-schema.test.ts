@@ -1,6 +1,9 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { z } from "zod";
-import { zodToolSchema, ZodSchemaConversionError } from "../../src/tools/json-schema";
+import {
+	ZodSchemaConversionError,
+	zodToolSchema,
+} from "../../src/tools/json-schema";
 import type { JSONSchemaObject } from "../../src/tools/tool-definition";
 
 describe("zodToolSchema", () => {

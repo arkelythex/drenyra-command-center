@@ -9,10 +9,17 @@
  * - Detect discrepancies and migration needs
  */
 
-import { randomUUID } from 'crypto';
-import type { BaseAgent, ParserInput, ParsedData, InvoiceData, Discrepancy, ExtractedData } from '../types';
-import { GeminiMultiAdapter } from '../adapters';
-import { loggers } from '../../logger';
+import { randomUUID } from "crypto";
+import { loggers } from "../../logger";
+import type { GeminiMultiAdapter } from "../adapters";
+import type {
+	BaseAgent,
+	Discrepancy,
+	ExtractedData,
+	InvoiceData,
+	ParsedData,
+	ParserInput,
+} from "../types";
 
 /**
  * ParserAgent class.
@@ -24,14 +31,15 @@ import { loggers } from '../../logger';
  * ```
  */
 export class ParserAgent implements BaseAgent {
-  id: string;
-  role = 'parser' as const;
-  status: 'idle' | 'processing' | 'completed' | 'error' = 'idle';
+	id: string;
+	role = "parser" as const;
+	status: "idle" | "processing" | "completed" | "error" = "idle";
 
-  private gemini: GeminiMultiAdapter;
+	private gemini: GeminiMultiAdapter;
 
-  // System prompt optimized for XML parsing
-  private readonly SYSTEM_PROMPT = `Eres un experto en XML UBL 2.0 y 2.1 para facturación electrónica SUNAT Perú.
+	// System prompt optimized for XML parsing
+	private readonly SYSTEM_PROMPT =
+		`Eres un experto en XML UBL 2.0 y 2.1 para facturación electrónica SUNAT Perú.
 Tu tarea es parsear y validar archivos XML de comprobantes de pago electrónicos.
 
 CONOCIMIENTO TÉCNICO REQUERIDO:
@@ -79,188 +87,218 @@ Responde SOLO en JSON válido:
   "needsMigration": false
 }`;
 
-  constructor(gemini: GeminiMultiAdapter) {
-    this.id = `parser-${randomUUID()}`;
-    this.gemini = gemini;
-  }
+	constructor(gemini: GeminiMultiAdapter) {
+		this.id = `parser-${randomUUID()}`;
+		this.gemini = gemini;
+	}
 
-  /**
-   * Process XML invoice
-   */
-  async process(input: ParserInput): Promise<ParsedData> {
-    this.status = 'processing';
-    const startTime = Date.now();
+	/**
+	 * Process XML invoice
+	 */
+	async process(input: ParserInput): Promise<ParsedData> {
+		this.status = "processing";
+		const startTime = Date.now();
 
-    try {
-      loggers.ai.info('Parser agent processing XML', {
-        schema: input.schema ?? input.schemaVersion ?? 'UBL_2.1',
-      });
+		try {
+			loggers.ai.info("Parser agent processing XML", {
+				schema: input.schema ?? input.schemaVersion ?? "UBL_2.1",
+			});
 
-      const prompt = this.buildPrompt(input);
+			const prompt = this.buildPrompt(input);
 
-      const response = await this.gemini.generate({
-        text: prompt,
-        systemInstruction: this.SYSTEM_PROMPT,
-      });
+			const response = await this.gemini.generate({
+				text: prompt,
+				systemInstruction: this.SYSTEM_PROMPT,
+			});
 
-      // Parse JSON response
-      const parsed = this.parseResponse(response.content);
+			// Parse JSON response
+			const parsed = this.parseResponse(response.content);
 
-      // Additional validation
-      const additionalDiscrepancies = this.validateXMLData(parsed.parsedData, input.readerData);
+			// Additional validation
+			const additionalDiscrepancies = this.validateXMLData(
+				parsed.parsedData,
+				input.readerData,
+			);
 
-      const result: ParsedData = {
-        parsedData: parsed.parsedData,
-        schemaVersion: parsed.schemaVersion || input.schemaVersion || input.schema || 'UBL_2.1',
-        discrepancies: [...parsed.discrepancies, ...additionalDiscrepancies],
-        needsMigration: parsed.needsMigration || this.checkMigrationNeed(parsed.schemaVersion),
-        processingTime: Date.now() - startTime,
-        agentId: this.id,
-      };
+			const result: ParsedData = {
+				parsedData: parsed.parsedData,
+				schemaVersion:
+					parsed.schemaVersion ||
+					input.schemaVersion ||
+					input.schema ||
+					"UBL_2.1",
+				discrepancies: [...parsed.discrepancies, ...additionalDiscrepancies],
+				needsMigration:
+					parsed.needsMigration ||
+					this.checkMigrationNeed(parsed.schemaVersion),
+				processingTime: Date.now() - startTime,
+				agentId: this.id,
+			};
 
-      this.status = 'completed';
-      loggers.ai.info('Parser agent completed', {
-        processingTime: result.processingTime,
-        discrepancies: result.discrepancies.length,
-      });
+			this.status = "completed";
+			loggers.ai.info("Parser agent completed", {
+				processingTime: result.processingTime,
+				discrepancies: result.discrepancies.length,
+			});
 
-      return result;
-    } catch (error) {
-      this.status = 'error';
-      loggers.ai.error('Parser agent failed', { error: error instanceof Error ? error.message : String(error) });
-      throw error;
-    }
-  }
+			return result;
+		} catch (error) {
+			this.status = "error";
+			loggers.ai.error("Parser agent failed", {
+				error: error instanceof Error ? error.message : String(error),
+			});
+			throw error;
+		}
+	}
 
-  /**
-   * Build parsing prompt
-   */
-  private buildPrompt(input: ParserInput): string {
-    let prompt = `Parsea el siguiente XML de comprobante de pago SUNAT y extrae todos los campos estructurados.\n\n`;
-    prompt += `Esquema esperado: ${input.schema}\n\n`;
-    prompt += `XML:\n\`\`\`xml\n${input.xmlContent}\n\`\`\`\n\n`;
+	/**
+	 * Build parsing prompt
+	 */
+	private buildPrompt(input: ParserInput): string {
+		let prompt = `Parsea el siguiente XML de comprobante de pago SUNAT y extrae todos los campos estructurados.\n\n`;
+		prompt += `Esquema esperado: ${input.schema}\n\n`;
+		prompt += `XML:\n\`\`\`xml\n${input.xmlContent}\n\`\`\`\n\n`;
 
-    if (input.readerData) {
-      prompt += `IMPORTANTE: El Reader Agent ya extrajo datos de la imagen del mismo comprobante.\n`;
-      prompt += `Compara los datos del XML con estos datos de referencia y marca cualquier discrepancia:\n\n`;
-      prompt += `\`\`\`json\n${JSON.stringify(input.readerData.extractedData, null, 2)}\n\`\`\`\n\n`;
-      prompt += `Presta especial atención a:\n`;
-      prompt += `- Montos (subtotal, IGV, total)\n`;
-      prompt += `- RUCs (emisor y cliente)\n`;
-      prompt += `- Número de comprobante\n`;
-      prompt += `- Fecha de emisión\n`;
-    }
+		if (input.readerData) {
+			prompt += `IMPORTANTE: El Reader Agent ya extrajo datos de la imagen del mismo comprobante.\n`;
+			prompt += `Compara los datos del XML con estos datos de referencia y marca cualquier discrepancia:\n\n`;
+			prompt += `\`\`\`json\n${JSON.stringify(input.readerData.extractedData, null, 2)}\n\`\`\`\n\n`;
+			prompt += `Presta especial atención a:\n`;
+			prompt += `- Montos (subtotal, IGV, total)\n`;
+			prompt += `- RUCs (emisor y cliente)\n`;
+			prompt += `- Número de comprobante\n`;
+			prompt += `- Fecha de emisión\n`;
+		}
 
-    return prompt;
-  }
+		return prompt;
+	}
 
-  /**
-   * Parse AI response to structured data
-   */
-  private parseResponse(response: string): {
-    parsedData: InvoiceData;
-    schemaVersion: string;
-    discrepancies: Discrepancy[];
-    needsMigration: boolean;
-  } {
-    try {
-      // Remove markdown code blocks if present
-      let cleaned = response.trim();
-      if (cleaned.startsWith('```json')) {
-        cleaned = cleaned.replace(/```json\s*/, '').replace(/```\s*$/, '');
-      } else if (cleaned.startsWith('```')) {
-        cleaned = cleaned.replace(/```\s*/, '').replace(/```\s*$/, '');
-      }
+	/**
+	 * Parse AI response to structured data
+	 */
+	private parseResponse(response: string): {
+		parsedData: InvoiceData;
+		schemaVersion: string;
+		discrepancies: Discrepancy[];
+		needsMigration: boolean;
+	} {
+		try {
+			// Remove markdown code blocks if present
+			let cleaned = response.trim();
+			if (cleaned.startsWith("```json")) {
+				cleaned = cleaned.replace(/```json\s*/, "").replace(/```\s*$/, "");
+			} else if (cleaned.startsWith("```")) {
+				cleaned = cleaned.replace(/```\s*/, "").replace(/```\s*$/, "");
+			}
 
-      const parsed = JSON.parse(cleaned);
+			const parsed = JSON.parse(cleaned);
 
-      // Convert issueDate string to Date object
-      if (parsed.parsedData?.issueDate) {
-        parsed.parsedData.issueDate = new Date(parsed.parsedData.issueDate);
-      }
-      if (parsed.parsedData?.dueDate) {
-        parsed.parsedData.dueDate = new Date(parsed.parsedData.dueDate);
-      }
+			// Convert issueDate string to Date object
+			if (parsed.parsedData?.issueDate) {
+				parsed.parsedData.issueDate = new Date(parsed.parsedData.issueDate);
+			}
+			if (parsed.parsedData?.dueDate) {
+				parsed.parsedData.dueDate = new Date(parsed.parsedData.dueDate);
+			}
 
-      return parsed;
-    } catch (error) {
-      loggers.ai.error('Parser agent failed to parse response');
-      throw new Error(`Failed to parse AI response: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  }
+			return parsed;
+		} catch (error) {
+			loggers.ai.error("Parser agent failed to parse response");
+			throw new Error(
+				`Failed to parse AI response: ${error instanceof Error ? error.message : "Unknown error"}`,
+			);
+		}
+	}
 
-  /**
-   * Validate XML data against Reader data
-   */
-  private validateXMLData(xmlData: InvoiceData, readerData?: ExtractedData): Discrepancy[] {
-    const discrepancies: Discrepancy[] = [];
+	/**
+	 * Validate XML data against Reader data
+	 */
+	private validateXMLData(
+		xmlData: InvoiceData,
+		readerData?: ExtractedData,
+	): Discrepancy[] {
+		const discrepancies: Discrepancy[] = [];
 
-    if (!readerData) return discrepancies;
+		if (!readerData) return discrepancies;
 
-    const reader = readerData.extractedData;
+		const reader = readerData.extractedData;
 
-    // Compare critical fields
-    const criticalFields: Array<{ field: keyof InvoiceData; label: string }> = [
-      { field: 'total', label: 'Total' },
-      { field: 'subtotal', label: 'Subtotal' },
-      { field: 'igv', label: 'IGV' },
-      { field: 'issuerRuc', label: 'RUC Emisor' },
-      { field: 'customerRuc', label: 'RUC Cliente' },
-    ];
+		// Compare critical fields
+		const criticalFields: Array<{ field: keyof InvoiceData; label: string }> = [
+			{ field: "total", label: "Total" },
+			{ field: "subtotal", label: "Subtotal" },
+			{ field: "igv", label: "IGV" },
+			{ field: "issuerRuc", label: "RUC Emisor" },
+			{ field: "customerRuc", label: "RUC Cliente" },
+		];
 
-    for (const { field, label } of criticalFields) {
-      const xmlValue = xmlData[field];
-      const readerValue = reader[field];
+		for (const { field, label } of criticalFields) {
+			const xmlValue = xmlData[field];
+			const readerValue = reader[field];
 
-      if (xmlValue !== readerValue) {
-        // For numbers, allow small tolerance
-        if (typeof xmlValue === 'number' && typeof readerValue === 'number') {
-          const diff = Math.abs(xmlValue - readerValue);
-          if (diff < 0.05) continue; // Tolerance of 5 cents
-        }
+			if (xmlValue !== readerValue) {
+				// For numbers, allow small tolerance
+				if (typeof xmlValue === "number" && typeof readerValue === "number") {
+					const diff = Math.abs(xmlValue - readerValue);
+					if (diff < 0.05) continue; // Tolerance of 5 cents
+				}
 
-        discrepancies.push({
-          field,
-          expectedValue: readerValue,
-          actualValue: xmlValue,
-          severity: this.getSeverity(field),
-          message: `${label} difiere: Reader=${readerValue}, XML=${xmlValue}`,
-        });
-      }
-    }
+				discrepancies.push({
+					field,
+					expectedValue: readerValue,
+					actualValue: xmlValue,
+					severity: this.getSeverity(field),
+					message: `${label} difiere: Reader=${readerValue}, XML=${xmlValue}`,
+				});
+			}
+		}
 
-    return discrepancies;
-  }
+		return discrepancies;
+	}
 
-  /**
-   * Get severity for field discrepancy
-   */
-  private getSeverity(field: keyof InvoiceData): 'low' | 'medium' | 'high' | 'critical' {
-    const criticalFields: Array<keyof InvoiceData> = ['total', 'issuerRuc', 'customerRuc'];
-    const highFields: Array<keyof InvoiceData> = ['subtotal', 'igv', 'invoiceNumber'];
-    const mediumFields: Array<keyof InvoiceData> = ['issueDate', 'series', 'correlative'];
+	/**
+	 * Get severity for field discrepancy
+	 */
+	private getSeverity(
+		field: keyof InvoiceData,
+	): "low" | "medium" | "high" | "critical" {
+		const criticalFields: Array<keyof InvoiceData> = [
+			"total",
+			"issuerRuc",
+			"customerRuc",
+		];
+		const highFields: Array<keyof InvoiceData> = [
+			"subtotal",
+			"igv",
+			"invoiceNumber",
+		];
+		const mediumFields: Array<keyof InvoiceData> = [
+			"issueDate",
+			"series",
+			"correlative",
+		];
 
-    if (criticalFields.includes(field)) return 'critical';
-    if (highFields.includes(field)) return 'high';
-    if (mediumFields.includes(field)) return 'medium';
-    return 'low';
-  }
+		if (criticalFields.includes(field)) return "critical";
+		if (highFields.includes(field)) return "high";
+		if (mediumFields.includes(field)) return "medium";
+		return "low";
+	}
 
-  /**
-   * Check if XML needs migration
-   */
-  private checkMigrationNeed(schemaVersion: string): boolean {
-    return schemaVersion === 'UBL_2.0';
-  }
+	/**
+	 * Check if XML needs migration
+	 */
+	private checkMigrationNeed(schemaVersion: string): boolean {
+		return schemaVersion === "UBL_2.0";
+	}
 
-  /**
-   * Get agent info
-   */
-  getInfo(): { id: string; role: string; status: string } {
-    return {
-      id: this.id,
-      role: this.role,
-      status: this.status,
-    };
-  }
+	/**
+	 * Get agent info
+	 */
+	getInfo(): { id: string; role: string; status: string } {
+		return {
+			id: this.id,
+			role: this.role,
+			status: this.status,
+		};
+	}
 }

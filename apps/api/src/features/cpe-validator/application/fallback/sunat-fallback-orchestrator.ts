@@ -3,8 +3,8 @@ import type {
 	SunatCpeValidationResponse,
 } from "../../infrastructure/sunat-cpe-client";
 import {
-	SunatVisualFallbackSubagent,
 	type SunatFallbackHitlRequest,
+	SunatVisualFallbackSubagent,
 } from "./sunat-visual-subagent";
 
 /**
@@ -42,7 +42,9 @@ export interface SunatFallbackOrchestrationResult {
 }
 
 interface SunatPrimaryClient {
-	validate(request: SunatCpeValidationRequest): Promise<SunatCpeValidationResponse>;
+	validate(
+		request: SunatCpeValidationRequest,
+	): Promise<SunatCpeValidationResponse>;
 }
 
 function resolveBudgetMs(): number {
@@ -51,7 +53,11 @@ function resolveBudgetMs(): number {
 	return Math.floor(raw);
 }
 
-function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
+function withTimeout<T>(
+	promise: Promise<T>,
+	timeoutMs: number,
+	label: string,
+): Promise<T> {
 	return new Promise<T>((resolve, reject) => {
 		const timer = setTimeout(() => {
 			reject(new Error(`${label}_TIMEOUT`));
@@ -71,7 +77,9 @@ function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): 
 
 function isRetryableSunatError(error: unknown): boolean {
 	const message =
-		error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
+		error instanceof Error
+			? error.message.toLowerCase()
+			: String(error).toLowerCase();
 	return (
 		message.includes("timeout") ||
 		message.includes("network") ||

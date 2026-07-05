@@ -1,5 +1,6 @@
 import { api, getGovernanceAuditHeaders } from "@/lib/api";
 import { unwrap } from "@/lib/api-helpers";
+import { isRecord, toNumericString } from "./helpers";
 import type {
 	CreateInvoicePayload,
 	Currency,
@@ -7,7 +8,6 @@ import type {
 	InvoiceStatus,
 	UpdateInvoicePayload,
 } from "./types";
-import { isRecord, toNumericString } from "./helpers";
 
 /**
  * Crear factura
@@ -70,7 +70,10 @@ export async function invoicingGetById(id: string) {
  *
  * IMPORTANT: Only DRAFT invoices can be updated
  */
-export async function invoicingUpdate(id: string, payload: UpdateInvoicePayload) {
+export async function invoicingUpdate(
+	id: string,
+	payload: UpdateInvoicePayload,
+) {
 	const normalized = {
 		...payload,
 		items: payload.items.map((item) => ({
@@ -107,7 +110,11 @@ export async function invoicingDelete(id: string) {
 /**
  * Aplicar pago a factura
  */
-export async function invoicingPay(id: string, amount: number, currency: Currency) {
+export async function invoicingPay(
+	id: string,
+	amount: number,
+	currency: Currency,
+) {
 	return unwrap(
 		api.api.invoices({ id }).pay.post(
 			{

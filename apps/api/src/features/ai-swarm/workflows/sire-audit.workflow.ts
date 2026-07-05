@@ -175,8 +175,10 @@ async function attemptSubmission(
 }
 
 function buildCpeAnomaly(result: ValidateCpeOutput): SireAnomaly {
-	const primaryError = result.errors[0]?.message ?? result.warnings[0] ?? "CPE no valido";
-	const breachType = result.breachType ?? result.errors[0]?.code ?? "CPE_INVALID";
+	const primaryError =
+		result.errors[0]?.message ?? result.warnings[0] ?? "CPE no valido";
+	const breachType =
+		result.breachType ?? result.errors[0]?.code ?? "CPE_INVALID";
 
 	return {
 		type: "cpe_breach",

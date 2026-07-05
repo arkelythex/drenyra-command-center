@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { RESOLVED_HUB_EVENTS } from "../hub-events.constants";
 import { INTELLIGENCE_ITEMS } from "@/lib/navigation/items/intelligence";
+import { RESOLVED_HUB_EVENTS } from "../hub-events.constants";
 
 describe("Drenyra branding alignment", () => {
 	it("uses Drenyra subagents in resolved demo events", () => {

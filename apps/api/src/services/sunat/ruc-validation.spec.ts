@@ -3,7 +3,7 @@
  * Tests for RUC validation logic
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { isValidRucFormat } from "./ruc-validation";
 
 describe("RUC Validation", () => {

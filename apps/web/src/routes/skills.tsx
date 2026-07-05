@@ -1,18 +1,18 @@
-import { useState, useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Grid3X3, List, Cpu } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Cpu, Grid3X3, List } from "lucide-react";
+import { useMemo, useState } from "react";
+import type { SkillCategory } from "@/features/agent-swarm/types/skills.types";
+import { SkillCard } from "@/features/skills/components/SkillCard";
+import { SkillDetailView } from "@/features/skills/components/SkillDetailView";
+import { SkillSearchBar } from "@/features/skills/components/SkillSearchBar";
 import {
-	useSkills,
 	useInstalledSkills,
 	useInstallSkill,
+	useSkills,
 	useUninstallSkill,
 } from "@/features/skills/hooks/useSkills";
-import { SkillCard } from "@/features/skills/components/SkillCard";
-import { SkillSearchBar } from "@/features/skills/components/SkillSearchBar";
-import { SkillDetailView } from "@/features/skills/components/SkillDetailView";
 import type { SkillDTO } from "@/features/skills/skills.api";
-import type { SkillCategory } from "@/features/agent-swarm/types/skills.types";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/skills")({
 	component: SkillsPage,

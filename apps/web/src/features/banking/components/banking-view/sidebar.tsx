@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils";
-import { ExchangeRateWidget } from "../widgets/ExchangeRateWidget";
-import { BankAccountsPanel } from "../BankAccountsPanel";
-import type { BankingTab } from "./constants";
 import type { BankAccount } from "../../stores/banking.store.types";
+import { BankAccountsPanel } from "../BankAccountsPanel";
+import { ExchangeRateWidget } from "../widgets/ExchangeRateWidget";
+import type { BankingTab } from "./constants";
 
 interface BankingSidebarProps {
 	activeTab: BankingTab;

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { normalizeJson } from "../normalize-json";
 
 describe("normalizeJson", () => {
@@ -7,9 +7,7 @@ describe("normalizeJson", () => {
 	});
 
 	it("should handle nested objects recursively", () => {
-		expect(normalizeJson({ z: { b: 2, a: 1 } })).toBe(
-			'{"z":{"a":1,"b":2}}',
-		);
+		expect(normalizeJson({ z: { b: 2, a: 1 } })).toBe('{"z":{"a":1,"b":2}}');
 	});
 
 	it("should handle arrays with objects", () => {

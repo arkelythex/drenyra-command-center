@@ -1,5 +1,5 @@
-import type { AgentSessionStatusDTO } from "./agents.types";
 import { useAgentsWindowStore } from "./agents.store";
+import type { AgentSessionStatusDTO } from "./agents.types";
 
 const statusLabels: Record<string, string> = {
 	running: "Ejecutando",

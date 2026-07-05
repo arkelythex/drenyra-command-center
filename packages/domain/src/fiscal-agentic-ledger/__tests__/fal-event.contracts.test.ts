@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { Money } from "../../value-objects/Money";
+import {
+	createFiscalOntologyScope,
+	FISCAL_OBJECT_KIND,
+	type FiscalObjectIdentity,
+} from "../../fiscal-ontology";
 import {
 	DETERMINISTIC_REASON_CODE,
 	GOVERNANCE_REVIEW_STATUS,
@@ -9,18 +13,14 @@ import type {
 	DeterministicValidatorResultRecord,
 	PolicyDecisionRecord,
 } from "../../fiscal-truth/types";
+import { Money } from "../../value-objects/Money";
 import {
-	FISCAL_OBJECT_KIND,
-	createFiscalOntologyScope,
-	type FiscalObjectIdentity,
-} from "../../fiscal-ontology";
-import {
+	canTransitionFalState,
+	createFiscalAgenticLedgerEvent,
 	FAL_ACTOR_KIND,
 	FAL_EVENT_KIND,
 	FAL_EVENT_STATE,
 	FAL_RISK_LEVEL,
-	canTransitionFalState,
-	createFiscalAgenticLedgerEvent,
 	type FiscalAgenticLedgerEvent,
 } from "../types";
 

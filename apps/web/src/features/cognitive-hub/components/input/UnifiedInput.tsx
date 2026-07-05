@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useId, useState } from "react";
-import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 import { getCountryPack } from "@/lib/latam-country-packs";
+import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { cn } from "@/lib/utils";
 import { useAccountingJobRuns } from "../../hooks/useAccountingJobRuns";
 import { useAccountingJobsCatalog } from "../../hooks/useAccountingJobsCatalog";
-import { useCountryPackCatalog } from "../../hooks/useCountryPackCatalog";
 import { useCommandSuggestions } from "../../hooks/useCommandSuggestions";
+import { useCountryPackCatalog } from "../../hooks/useCountryPackCatalog";
 import { usePromptInput } from "../../hooks/usePromptInput";
 import { useVoiceIntelligence } from "../../hooks/useVoiceIntelligence";
-import { cn } from "@/lib/utils";
 import { PromptComposerSupport } from "./prompt-composer-support";
 import {
 	buildQuickCommands,

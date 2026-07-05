@@ -54,7 +54,9 @@ export function LedgerAccountsSidebar({
 							<span
 								className={cn(
 									"font-mono text-2xs font-bold px-1.5 py-0.5 rounded border border-current opacity-80",
-									selectedAccountId === account.id ? "border-background/30" : "border-border",
+									selectedAccountId === account.id
+										? "border-background/30"
+										: "border-border",
 								)}
 							>
 								{account.code}
@@ -64,7 +66,10 @@ export function LedgerAccountsSidebar({
 							</span>
 						</div>
 						{selectedAccountId === account.id ? (
-							<ChevronRight size={14} className="text-background/80 animate-in slide-in-from-left-2 fade-in duration-300" />
+							<ChevronRight
+								size={14}
+								className="text-background/80 animate-in slide-in-from-left-2 fade-in duration-300"
+							/>
 						) : null}
 					</button>
 				))}

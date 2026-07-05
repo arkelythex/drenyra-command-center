@@ -6,8 +6,8 @@
 
 import type { AgentEvent } from "@drenyra/shared";
 import type {
-	CognitiveActivityEntry,
 	ApprovalStateRecord,
+	CognitiveActivityEntry,
 	CognitiveActivityStatus,
 } from "./cognitive-stream-types";
 
@@ -93,13 +93,15 @@ export function createActivityEntry(
 				id: crypto.randomUUID(),
 				runId,
 				type: "approval_decision",
-				label: event.payload.decision === "approved"
-					? "Aprobación aceptada"
-					: "Aprobación rechazada",
+				label:
+					event.payload.decision === "approved"
+						? "Aprobación aceptada"
+						: "Aprobación rechazada",
 				detail: event.payload.reason ?? null,
-				status: event.payload.decision === "approved"
-					? ("success" as CognitiveActivityStatus)
-					: ("warning" as CognitiveActivityStatus),
+				status:
+					event.payload.decision === "approved"
+						? ("success" as CognitiveActivityStatus)
+						: ("warning" as CognitiveActivityStatus),
 				timestamp,
 			};
 		case "complete":

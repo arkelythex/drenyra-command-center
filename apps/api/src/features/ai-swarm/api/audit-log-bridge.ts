@@ -30,7 +30,7 @@ export type SwarmAuditLogEnqueueResult =
 	| {
 			queued: false;
 			reason: "missing-organization-context" | "test-db-disabled";
-		};
+	  };
 
 /**
  * Enqueues an AI Swarm audit log when a valid organization context is available.

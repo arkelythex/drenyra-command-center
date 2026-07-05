@@ -65,7 +65,8 @@ export const LATIN_DOMAIN_CONFIGS: LatinDomainConfig[] = [
 	{
 		id: "necto",
 		name: "Necto — Audit Trail Assembly",
-		description: "Audit trail assembly, provenance tracking, compliance logging",
+		description:
+			"Audit trail assembly, provenance tracking, compliance logging",
 		capabilities: ["audit-trail", "provenance", "tracking", "logging"],
 		approvalRequired: false,
 		maxRetries: 2,
@@ -83,8 +84,7 @@ export const LATIN_DOMAIN_CONFIGS: LatinDomainConfig[] = [
 	{
 		id: "regula",
 		name: "Regula — Regulatory Compliance",
-		description:
-			"LATAM regulatory compliance validation per country-pack",
+		description: "LATAM regulatory compliance validation per country-pack",
 		capabilities: [
 			"regulatory-compliance",
 			"validation",
@@ -107,8 +107,7 @@ export const LATIN_DOMAIN_CONFIGS: LatinDomainConfig[] = [
 	{
 		id: "lumen",
 		name: "Lumen — Insights & Analytics",
-		description:
-			"Insights, forecasts, executive summaries, KPI analysis",
+		description: "Insights, forecasts, executive summaries, KPI analysis",
 		capabilities: [
 			"insights",
 			"analytics",
@@ -161,8 +160,7 @@ export const LATIN_DOMAIN_CONFIGS: LatinDomainConfig[] = [
 	{
 		id: "scripta",
 		name: "Scripta — Report Generation",
-		description:
-			"Report generation, documentation, customer-facing narratives",
+		description: "Report generation, documentation, customer-facing narratives",
 		capabilities: [
 			"report-generation",
 			"documentation",
@@ -190,12 +188,7 @@ export const LATIN_DOMAIN_CONFIGS: LatinDomainConfig[] = [
 		name: "Capsa — Evidence Retention",
 		description:
 			"Evidence retention, immutable archival, cost optimization, backup",
-		capabilities: [
-			"retention",
-			"archival",
-			"cost-optimization",
-			"backup",
-		],
+		capabilities: ["retention", "archival", "cost-optimization", "backup"],
 		approvalRequired: false,
 		maxRetries: 2,
 		matchPatterns: [

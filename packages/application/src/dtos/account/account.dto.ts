@@ -309,8 +309,7 @@ export interface AccountHierarchyDTO extends AccountResponseDTO {
  */
 
 export function formatBalance(amount: number, currency: Currency): string {
-	const symbol =
-		currency === "PEN" ? "S/" : currency === "USD" ? "$" : "EUR ";
+	const symbol = currency === "PEN" ? "S/" : currency === "USD" ? "$" : "EUR ";
 	return `${symbol} ${amount.toLocaleString("es-PE", {
 		minimumFractionDigits: 2,
 		maximumFractionDigits: 2,

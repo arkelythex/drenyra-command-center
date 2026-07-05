@@ -1,5 +1,5 @@
-import type { BankCsvParseResult } from "./types";
 import { parsePeruHeaderCsv } from "./peru-header";
+import type { BankCsvParseResult } from "./types";
 
 /**
  * Parse BCP-style CSV exports (Perú).
@@ -22,5 +22,5 @@ import { parsePeruHeaderCsv } from "./peru-header";
  * @returns Normalized transactions + warnings
  */
 export function parseBcpCsv(csvText: string): BankCsvParseResult {
-  return parsePeruHeaderCsv(csvText, "BCP");
+	return parsePeruHeaderCsv(csvText, "BCP");
 }

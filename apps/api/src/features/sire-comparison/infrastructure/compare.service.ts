@@ -1,8 +1,8 @@
 import {
 	buildSummary,
+	SireDiffLedgerService,
 	type SireDiffRow,
 	SireDiffService,
-	SireDiffLedgerService,
 } from "../../sire";
 import type {
 	ComparisonSummary,

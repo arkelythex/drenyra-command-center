@@ -8,13 +8,10 @@
  * - Circular reference prevention
  */
 
-import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
-import {
-	Account,
-	type AccountLevel,
-} from "@drenyra/domain/entities/Account";
+import { Account, type AccountLevel } from "@drenyra/domain/entities/Account";
 import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
 import { Money } from "@drenyra/domain/value-objects/Money";
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import type { UpdateAccountDTO } from "../../../dtos/account/account.dto";
 import { UpdateAccountUseCase } from "../update-account.use-case";
 
@@ -80,7 +77,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { name: "New Name" };
 
-				const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute("acc-123", dto);
 
 			expect(result.name).toBe("New Name");
 			expect(mockRepository.save).toHaveBeenCalled();
@@ -92,7 +89,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { description: "Nueva descripción" };
 
-				const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute("acc-123", dto);
 
 			expect(mockRepository.save).toHaveBeenCalled();
 		});
@@ -107,7 +104,7 @@ describe("UpdateAccountUseCase", () => {
 				destination: "New Destination",
 			};
 
-				const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute("acc-123", dto);
 
 			expect(result.name).toBe("Updated Name");
 			expect(mockRepository.save).toHaveBeenCalled();
@@ -124,7 +121,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { code: "20" };
 
-				const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute("acc-123", dto);
 
 			expect(result.code).toBe("20");
 		});
@@ -257,7 +254,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { parentId: newParentUuid };
 
-				const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute("acc-123", dto);
 
 			expect(mockRepository.save).toHaveBeenCalled();
 		});
@@ -295,7 +292,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { name: "Updated System Account Name" };
 
-				const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute("acc-123", dto);
 
 			expect(result.name).toBe("Updated System Account Name");
 		});
@@ -317,7 +314,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = {};
 
-				const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute("acc-123", dto);
 
 			expect(mockRepository.save).toHaveBeenCalled();
 		});

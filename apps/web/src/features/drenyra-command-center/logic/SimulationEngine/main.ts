@@ -10,17 +10,19 @@
  * @since Jun 2026
  */
 
-import type { HubArtifact, LedgerEntry } from "@/features/cognitive-hub/types/hub.types";
-
-import type { SimulationParam } from "./types";
+import type {
+	HubArtifact,
+	LedgerEntry,
+} from "@/features/cognitive-hub/types/hub.types";
 import { PREDICTIVE_PATTERNS } from "./constants";
+import type { SimulationParam } from "./types";
 import {
-	extractPercent,
+	buildBeforeAfter,
 	detectCategory,
 	detectDirection,
 	detectParameter,
+	extractPercent,
 	generateAccounts,
-	buildBeforeAfter,
 } from "./utils";
 
 // ── Main parse function ─────────────────────────────────────────────────────
@@ -55,10 +57,13 @@ export function parseSimulationIntent(text: string): SimulationParam | null {
 
 // ── Generate simulation artifact ────────────────────────────────────────────
 
-export function generateSimulationArtifact(param: SimulationParam): HubArtifact {
+export function generateSimulationArtifact(
+	param: SimulationParam,
+): HubArtifact {
 	const accounts = generateAccounts(param);
 	const beforeAfter = buildBeforeAfter(accounts, param);
-	const directionLabel = param.direction === "increase" ? "incremento" : "reducción";
+	const directionLabel =
+		param.direction === "increase" ? "incremento" : "reducción";
 	const emoji = param.direction === "increase" ? "📈" : "📉";
 
 	const entries: LedgerEntry[] = accounts.map((a) => ({

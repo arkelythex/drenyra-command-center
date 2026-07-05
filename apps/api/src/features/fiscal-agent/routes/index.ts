@@ -4,9 +4,9 @@
 
 import { Elysia } from "elysia";
 import { companyScopeGuard } from "../../../shared/plugins/company-scope-guard";
-import { fiscalAgentReportRoute } from "./report.route";
 import { fiscalAgentCorrectionRoute } from "./correction.route";
 import { fiscalAgentHealthRoute } from "./health.route";
+import { fiscalAgentReportRoute } from "./report.route";
 
 export const fiscalAgentRoutes = new Elysia({ prefix: "/api" })
 	.use(companyScopeGuard())

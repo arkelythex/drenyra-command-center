@@ -12,7 +12,8 @@ type PlatformMcpAuditRow = typeof platformMcpAuditEvents.$inferSelect;
 
 function toDate(value: string): Date {
 	const date = new Date(value);
-	if (Number.isNaN(date.getTime())) throw new Error(`Invalid date value: ${value}`);
+	if (Number.isNaN(date.getTime()))
+		throw new Error(`Invalid date value: ${value}`);
 	return date;
 }
 
@@ -41,7 +42,9 @@ function fromRow(row: PlatformMcpAuditRow): DrenyraMcpAuditEvent {
 	};
 }
 
-export class PostgresPlatformMcpAuditSink implements DrenyraMcpAuditSink, DrenyraMcpAuditReader {
+export class PostgresPlatformMcpAuditSink
+	implements DrenyraMcpAuditSink, DrenyraMcpAuditReader
+{
 	async append(event: DrenyraMcpAuditEvent): Promise<void> {
 		await db.insert(platformMcpAuditEvents).values({
 			id: createAuditId(),
@@ -69,8 +72,12 @@ export class PostgresPlatformMcpAuditSink implements DrenyraMcpAuditSink, Drenyr
 			eq(platformMcpAuditEvents.companyRuc, query.scope.companyRuc),
 			eq(platformMcpAuditEvents.period, query.scope.period),
 			eq(platformMcpAuditEvents.countryCode, query.scope.countryCode),
-			query.outcome ? eq(platformMcpAuditEvents.outcome, query.outcome) : undefined,
-			query.toolName ? eq(platformMcpAuditEvents.toolName, query.toolName) : undefined,
+			query.outcome
+				? eq(platformMcpAuditEvents.outcome, query.outcome)
+				: undefined,
+			query.toolName
+				? eq(platformMcpAuditEvents.toolName, query.toolName)
+				: undefined,
 		].filter((filter) => filter !== undefined);
 		const rows = await db
 			.select()

@@ -1,6 +1,6 @@
-import { Palette, Monitor, Moon, Sun, Zap } from "lucide-react";
-import { THEME_ID, THEME_PREFERENCE } from "@/lib/ux-mode";
+import { Monitor, Moon, Palette, Sun, Zap } from "lucide-react";
 import type { CodexPetCompanion } from "@/context/settings.types";
+import { THEME_ID, THEME_PREFERENCE } from "@/lib/ux-mode";
 
 export const THEME_PRESETS = [
 	{

@@ -15,9 +15,17 @@ import type {
 	FiscalCase,
 	FiscalScope,
 } from "@drenyra/domain/drenyra";
-import type { DrenyraAuditEventFilter, DrenyraAuditEventFilters, DrenyraRepository, DrenyraScopeGuard } from "./repository";
+import type {
+	DrenyraAuditEventFilter,
+	DrenyraAuditEventFilters,
+	DrenyraRepository,
+	DrenyraScopeGuard,
+} from "./repository";
 
-function sameScope(entityScope: FiscalScope, scope: DrenyraScopeGuard): boolean {
+function sameScope(
+	entityScope: FiscalScope,
+	scope: DrenyraScopeGuard,
+): boolean {
 	return (
 		entityScope.companyId === scope.companyId &&
 		entityScope.companyRuc === scope.companyRuc &&
@@ -26,10 +34,19 @@ function sameScope(entityScope: FiscalScope, scope: DrenyraScopeGuard): boolean 
 	);
 }
 
-function byNewest<T extends { createdAt?: string; startedAt?: string; requestedAt?: string; occurredAt?: string }>(items: T[]): T[] {
+function byNewest<
+	T extends {
+		createdAt?: string;
+		startedAt?: string;
+		requestedAt?: string;
+		occurredAt?: string;
+	},
+>(items: T[]): T[] {
 	return [...items].sort((a, b) => {
-		const aTime = a.createdAt ?? a.startedAt ?? a.requestedAt ?? a.occurredAt ?? "";
-		const bTime = b.createdAt ?? b.startedAt ?? b.requestedAt ?? b.occurredAt ?? "";
+		const aTime =
+			a.createdAt ?? a.startedAt ?? a.requestedAt ?? a.occurredAt ?? "";
+		const bTime =
+			b.createdAt ?? b.startedAt ?? b.requestedAt ?? b.occurredAt ?? "";
 		return bTime.localeCompare(aTime);
 	});
 }
@@ -47,10 +64,17 @@ export class InMemoryDrenyraRepository implements DrenyraRepository {
 	}
 
 	async listFiscalCases(scope: DrenyraScopeGuard): Promise<FiscalCase[]> {
-		return byNewest([...this.fiscalCases.values()].filter((item) => sameScope(item.scope, scope)));
+		return byNewest(
+			[...this.fiscalCases.values()].filter((item) =>
+				sameScope(item.scope, scope),
+			),
+		);
 	}
 
-	async getFiscalCaseById(id: string, scope: DrenyraScopeGuard): Promise<FiscalCase | null> {
+	async getFiscalCaseById(
+		id: string,
+		scope: DrenyraScopeGuard,
+	): Promise<FiscalCase | null> {
 		const fiscalCase = this.fiscalCases.get(id);
 		return fiscalCase && sameScope(fiscalCase.scope, scope) ? fiscalCase : null;
 	}
@@ -65,8 +89,15 @@ export class InMemoryDrenyraRepository implements DrenyraRepository {
 		return item;
 	}
 
-	async listEvidence(caseId: string, scope: DrenyraScopeGuard): Promise<EvidenceItem[]> {
-		return byNewest([...this.evidence.values()].filter((item) => item.caseId === caseId && sameScope(item.scope, scope)));
+	async listEvidence(
+		caseId: string,
+		scope: DrenyraScopeGuard,
+	): Promise<EvidenceItem[]> {
+		return byNewest(
+			[...this.evidence.values()].filter(
+				(item) => item.caseId === caseId && sameScope(item.scope, scope),
+			),
+		);
 	}
 
 	async createAgentRun(run: AgentRun): Promise<AgentRun> {
@@ -79,27 +110,49 @@ export class InMemoryDrenyraRepository implements DrenyraRepository {
 		return run;
 	}
 
-	async listAgentRuns(caseId: string, scope: DrenyraScopeGuard): Promise<AgentRun[]> {
-		return byNewest([...this.agentRuns.values()].filter((run) => run.caseId === caseId && sameScope(run.scope, scope)));
+	async listAgentRuns(
+		caseId: string,
+		scope: DrenyraScopeGuard,
+	): Promise<AgentRun[]> {
+		return byNewest(
+			[...this.agentRuns.values()].filter(
+				(run) => run.caseId === caseId && sameScope(run.scope, scope),
+			),
+		);
 	}
 
-	async createApprovalRequest(request: ApprovalRequest): Promise<ApprovalRequest> {
+	async createApprovalRequest(
+		request: ApprovalRequest,
+	): Promise<ApprovalRequest> {
 		this.approvals.set(request.id, request);
 		return request;
 	}
 
-	async getApprovalRequestById(id: string, scope: DrenyraScopeGuard): Promise<ApprovalRequest | null> {
+	async getApprovalRequestById(
+		id: string,
+		scope: DrenyraScopeGuard,
+	): Promise<ApprovalRequest | null> {
 		const request = this.approvals.get(id);
 		return request && sameScope(request.scope, scope) ? request : null;
 	}
 
-	async updateApprovalRequest(request: ApprovalRequest): Promise<ApprovalRequest> {
+	async updateApprovalRequest(
+		request: ApprovalRequest,
+	): Promise<ApprovalRequest> {
 		this.approvals.set(request.id, request);
 		return request;
 	}
 
-	async listApprovalRequests(caseId: string, scope: DrenyraScopeGuard): Promise<ApprovalRequest[]> {
-		return byNewest([...this.approvals.values()].filter((request) => request.caseId === caseId && sameScope(request.scope, scope)));
+	async listApprovalRequests(
+		caseId: string,
+		scope: DrenyraScopeGuard,
+	): Promise<ApprovalRequest[]> {
+		return byNewest(
+			[...this.approvals.values()].filter(
+				(request) =>
+					request.caseId === caseId && sameScope(request.scope, scope),
+			),
+		);
 	}
 
 	async createAuditEvent(event: AuditEvent): Promise<AuditEvent> {
@@ -107,11 +160,21 @@ export class InMemoryDrenyraRepository implements DrenyraRepository {
 		return event;
 	}
 
-	async listAuditEvents(caseId: string, scope: DrenyraScopeGuard): Promise<AuditEvent[]> {
-		return byNewest([...this.auditEvents.values()].filter((event) => event.caseId === caseId && sameScope(event.scope, scope)));
+	async listAuditEvents(
+		caseId: string,
+		scope: DrenyraScopeGuard,
+	): Promise<AuditEvent[]> {
+		return byNewest(
+			[...this.auditEvents.values()].filter(
+				(event) => event.caseId === caseId && sameScope(event.scope, scope),
+			),
+		);
 	}
 
-	async listScopedAuditEvents(scope: DrenyraScopeGuard, filters: DrenyraAuditEventFilters = {}): Promise<AuditEvent[]> {
+	async listScopedAuditEvents(
+		scope: DrenyraScopeGuard,
+		filters: DrenyraAuditEventFilters = {},
+	): Promise<AuditEvent[]> {
 		const eventTypes = new Set(filters.eventTypes ?? []);
 		const events = byNewest(
 			[...this.auditEvents.values()].filter((event) => {
@@ -120,17 +183,24 @@ export class InMemoryDrenyraRepository implements DrenyraRepository {
 				return eventTypes.size === 0 || eventTypes.has(event.eventType);
 			}),
 		);
-		return typeof filters.limit === "number" ? events.slice(0, filters.limit) : events;
+		return typeof filters.limit === "number"
+			? events.slice(0, filters.limit)
+			: events;
 	}
 
-	async listCommandAuditEvents(scope: DrenyraScopeGuard, filter: DrenyraAuditEventFilter = {}): Promise<AuditEvent[]> {
+	async listCommandAuditEvents(
+		scope: DrenyraScopeGuard,
+		filter: DrenyraAuditEventFilter = {},
+	): Promise<AuditEvent[]> {
 		return byNewest(
 			[...this.auditEvents.values()].filter(
 				(event) =>
 					sameScope(event.scope, scope) &&
-					(event.eventType === "CAPABILITY_ALLOWED" || event.eventType === "CAPABILITY_DENIED") &&
+					(event.eventType === "CAPABILITY_ALLOWED" ||
+						event.eventType === "CAPABILITY_DENIED") &&
 					(!filter.caseId || event.caseId === filter.caseId) &&
-					(!filter.commandId || event.metadata.commandId === filter.commandId) &&
+					(!filter.commandId ||
+						event.metadata.commandId === filter.commandId) &&
 					(!filter.eventType || event.eventType === filter.eventType),
 			),
 		);

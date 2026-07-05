@@ -113,9 +113,11 @@ export const useEconomicGroupStore = create<
 					id: groupId,
 				}).get(),
 			);
-			const groupData = extractOkDataOrPassthrough<
-				EconomicGroupDetailResponse | null
-			>(body, "Failed to fetch group");
+			const groupData =
+				extractOkDataOrPassthrough<EconomicGroupDetailResponse | null>(
+					body,
+					"Failed to fetch group",
+				);
 
 			if (groupData) {
 				set({
@@ -150,9 +152,11 @@ export const useEconomicGroupStore = create<
 
 		try {
 			const body = await unwrap(economicGroupsTreatyClient.post(data));
-			const createdGroup = extractOkDataOrPassthrough<
-				CreateEconomicGroupResponse | null
-			>(body, "Failed to create group");
+			const createdGroup =
+				extractOkDataOrPassthrough<CreateEconomicGroupResponse | null>(
+					body,
+					"Failed to create group",
+				);
 
 			if (createdGroup) {
 				trackEvent("economic_group_created", {
@@ -190,9 +194,11 @@ export const useEconomicGroupStore = create<
 					id: groupId,
 				}).companies.post(companyData),
 			);
-			const addCompanyResponse = extractOkDataOrPassthrough<
-				AddCompanyResponse | null
-			>(body, "Failed to add company");
+			const addCompanyResponse =
+				extractOkDataOrPassthrough<AddCompanyResponse | null>(
+					body,
+					"Failed to add company",
+				);
 
 			// Refresh companies list
 			await get().getCompanies(groupId);
@@ -226,9 +232,11 @@ export const useEconomicGroupStore = create<
 					id: groupId,
 				}).companies.get(),
 			);
-			const companiesResponse = extractOkDataOrPassthrough<
-				EconomicGroupCompaniesResponse | null
-			>(body, "Failed to fetch companies");
+			const companiesResponse =
+				extractOkDataOrPassthrough<EconomicGroupCompaniesResponse | null>(
+					body,
+					"Failed to fetch companies",
+				);
 
 			if (companiesResponse) {
 				set({

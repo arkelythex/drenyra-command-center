@@ -1,10 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Thread } from "../thread.entity";
-import type {
-	TaskStatus,
-	ThreadProps,
-	ThreadStatus,
-} from "../types";
+import type { TaskStatus, ThreadProps, ThreadStatus } from "../types";
 
 function createValidProps(overrides: Partial<ThreadProps> = {}): ThreadProps {
 	return {
@@ -66,7 +62,9 @@ describe("Thread Entity", () => {
 		it("should reject more than 10 tags", () => {
 			expect(() =>
 				Thread.create(
-					createValidProps({ tags: Array.from({ length: 11 }, (_, i) => `tag-${i}`) }),
+					createValidProps({
+						tags: Array.from({ length: 11 }, (_, i) => `tag-${i}`),
+					}),
 				),
 			).toThrow("Thread tags must have at most 10 items");
 		});
@@ -100,9 +98,7 @@ describe("Thread Entity", () => {
 
 		it("should reject ACTIVATE without tasks", () => {
 			expect(() =>
-				Thread.create(
-					createValidProps({ tasks: [] }),
-				).activate(),
+				Thread.create(createValidProps({ tasks: [] })).activate(),
 			).toThrow("Cannot activate a thread without at least one task");
 		});
 
@@ -135,17 +131,14 @@ describe("Thread Entity", () => {
 					updatedAt: new Date(),
 				},
 			];
-			const thread = Thread.create(
-				createValidProps({ tasks }),
-			)
+			const thread = Thread.create(createValidProps({ tasks }))
 				.activate()
 				.submitForReview();
 			expect(thread.status).toBe("PENDING_REVIEW");
 		});
 
 		it("should reject submitForReview with incomplete tasks", () => {
-			const thread = Thread.create(createValidProps())
-				.activate();
+			const thread = Thread.create(createValidProps()).activate();
 			expect(() => thread.submitForReview()).toThrow(
 				"Cannot submit for review until all tasks are completed or skipped",
 			);

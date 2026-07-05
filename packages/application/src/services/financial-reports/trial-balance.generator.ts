@@ -1,8 +1,8 @@
-import {
-	type BalanceReportDataSource,
-	type OrganizationReportDataSource,
-	type ReportPeriod,
-	type TrialBalanceReport,
+import type {
+	BalanceReportDataSource,
+	OrganizationReportDataSource,
+	ReportPeriod,
+	TrialBalanceReport,
 } from "./types";
 
 export async function generateTrialBalanceReport(

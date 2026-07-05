@@ -59,11 +59,19 @@ describe("Drenyra command center routes", () => {
 		expect(payload.data.version).toContain("dual-surface");
 		expect(payload.data.requiredScopeHeaders).toContain("x-company-ruc");
 		expect(payload.data.idempotencyHeader).toBe("x-idempotency-key");
-		expect(payload.data.platformCategory).toBe("ai_augmented_fiscal_sovereignty_platform");
-		expect(payload.data.fiscalOntologyVersion).toBe("2026-05.fiscal-ontology.v1");
+		expect(payload.data.platformCategory).toBe(
+			"ai_augmented_fiscal_sovereignty_platform",
+		);
+		expect(payload.data.fiscalOntologyVersion).toBe(
+			"2026-05.fiscal-ontology.v1",
+		);
 		expect(payload.data.agentGovernance.denyByDefault).toBe(true);
-		expect(payload.data.agentGovernance.capabilityManifestFields).toContain("redactionRequired");
-		expect(payload.data.agentGovernance.materialFiscalActionsRequireHumanApproval).toBe(true);
+		expect(payload.data.agentGovernance.capabilityManifestFields).toContain(
+			"redactionRequired",
+		);
+		expect(
+			payload.data.agentGovernance.materialFiscalActionsRequireHumanApproval,
+		).toBe(true);
 	});
 
 	it("replays create fiscal case idempotently when x-idempotency-key matches", async () => {
@@ -175,33 +183,53 @@ describe("Drenyra command center routes", () => {
 		const id = await createCase();
 		const listResponse = await requestJson("/api/drenyra/cases", "GET");
 		const listPayload = await listResponse.json();
-		const detailsResponse = await requestJson(`/api/drenyra/cases/${id}`, "GET");
+		const detailsResponse = await requestJson(
+			`/api/drenyra/cases/${id}`,
+			"GET",
+		);
 		const detailsPayload = await detailsResponse.json();
 
 		expect(listResponse.status).toBe(200);
-		expect(listPayload.data.some((item: { id: string }) => item.id === id)).toBe(true);
+		expect(
+			listPayload.data.some((item: { id: string }) => item.id === id),
+		).toBe(true);
 		expect(detailsPayload.data.case.id).toBe(id);
 		expect(detailsPayload.data.auditEvents).toHaveLength(1);
 	});
 
 	it("updates fiscal case status and returns an audit event in details", async () => {
 		const id = await createCase();
-		const statusResponse = await requestJson(`/api/drenyra/cases/${id}/status`, "PATCH", {
-			status: "IN_REVIEW",
-			reason: "Revisión fiscal iniciada",
-		});
+		const statusResponse = await requestJson(
+			`/api/drenyra/cases/${id}/status`,
+			"PATCH",
+			{
+				status: "IN_REVIEW",
+				reason: "Revisión fiscal iniciada",
+			},
+		);
 		const statusPayload = await statusResponse.json();
-		const detailsResponse = await requestJson(`/api/drenyra/cases/${id}`, "GET");
+		const detailsResponse = await requestJson(
+			`/api/drenyra/cases/${id}`,
+			"GET",
+		);
 		const detailsPayload = await detailsResponse.json();
 
 		expect(statusResponse.status).toBe(200);
 		expect(statusPayload.data.status).toBe("IN_REVIEW");
-		expect(detailsPayload.data.auditEvents.map((event: { eventType: string }) => event.eventType)).toContain("FISCAL_CASE_STATUS_CHANGED");
+		expect(
+			detailsPayload.data.auditEvents.map(
+				(event: { eventType: string }) => event.eventType,
+			),
+		).toContain("FISCAL_CASE_STATUS_CHANGED");
 	});
 
 	it("rejects unchanged fiscal case status through the route", async () => {
 		const id = await createCase();
-		const response = await requestJson(`/api/drenyra/cases/${id}/status`, "PATCH", { status: "OPEN" });
+		const response = await requestJson(
+			`/api/drenyra/cases/${id}/status`,
+			"PATCH",
+			{ status: "OPEN" },
+		);
 		const payload = await response.json();
 
 		expect(response.status).toBe(409);
@@ -210,7 +238,11 @@ describe("Drenyra command center routes", () => {
 
 	it("rejects manual approval-pending status through route validation", async () => {
 		const id = await createCase();
-		const response = await requestJson(`/api/drenyra/cases/${id}/status`, "PATCH", { status: "APPROVAL_PENDING" });
+		const response = await requestJson(
+			`/api/drenyra/cases/${id}/status`,
+			"PATCH",
+			{ status: "APPROVAL_PENDING" },
+		);
 
 		expect(response.status).toBe(422);
 	});
@@ -220,7 +252,12 @@ describe("Drenyra command center routes", () => {
 		const response = await app.handle(
 			new Request("http://localhost/api/drenyra/cases/case-1/status", {
 				method: "PATCH",
-				headers: { "content-type": "application/json", "x-organization-id": "org", "x-company-id": "company", "x-user-id": "user" },
+				headers: {
+					"content-type": "application/json",
+					"x-organization-id": "org",
+					"x-company-id": "company",
+					"x-user-id": "user",
+				},
 				body: JSON.stringify({ status: "IN_REVIEW" }),
 			}),
 		);
@@ -234,16 +271,27 @@ describe("Drenyra command center routes", () => {
 
 	it("adds evidence and starts a mock agent run", async () => {
 		const id = await createCase();
-		const evidenceResponse = await requestJson(`/api/drenyra/cases/${id}/evidence`, "POST", {
-			type: "SUNAT_RECORD",
-			title: "Registro SIRE",
-			summary: "Evidencia SIRE mock",
-			source: "SUNAT Portal",
-		});
-		const runResponse = await requestJson(`/api/drenyra/cases/${id}/agent-runs`, "POST", {
-			agentType: "SIRE_AGENT",
-		});
-		const runsResponse = await requestJson(`/api/drenyra/cases/${id}/agent-runs`, "GET");
+		const evidenceResponse = await requestJson(
+			`/api/drenyra/cases/${id}/evidence`,
+			"POST",
+			{
+				type: "SUNAT_RECORD",
+				title: "Registro SIRE",
+				summary: "Evidencia SIRE mock",
+				source: "SUNAT Portal",
+			},
+		);
+		const runResponse = await requestJson(
+			`/api/drenyra/cases/${id}/agent-runs`,
+			"POST",
+			{
+				agentType: "SIRE_AGENT",
+			},
+		);
+		const runsResponse = await requestJson(
+			`/api/drenyra/cases/${id}/agent-runs`,
+			"GET",
+		);
 		const runPayload = await runResponse.json();
 		const runsPayload = await runsResponse.json();
 
@@ -257,25 +305,41 @@ describe("Drenyra command center routes", () => {
 	it("requests, approves and rejects approval requests", async () => {
 		const approveCaseId = await createCase();
 		const rejectCaseId = await createCase();
-		const approvalResponse = await requestJson(`/api/drenyra/cases/${approveCaseId}/approvals`, "POST", {
-			title: "Aprobar preparación SIRE",
-			description: "No ejecuta SUNAT; prepara evidencia",
-			diff: { before: {}, after: { prepared: true }, summary: "Preparación" },
-		});
-		const rejectionResponse = await requestJson(`/api/drenyra/cases/${rejectCaseId}/approvals`, "POST", {
-			title: "Aprobar evidencia incompleta",
-			description: "Debe rechazarse por falta de sustento",
-			diff: { before: {}, after: { ready: false }, summary: "Evidencia" },
-		});
+		const approvalResponse = await requestJson(
+			`/api/drenyra/cases/${approveCaseId}/approvals`,
+			"POST",
+			{
+				title: "Aprobar preparación SIRE",
+				description: "No ejecuta SUNAT; prepara evidencia",
+				diff: { before: {}, after: { prepared: true }, summary: "Preparación" },
+			},
+		);
+		const rejectionResponse = await requestJson(
+			`/api/drenyra/cases/${rejectCaseId}/approvals`,
+			"POST",
+			{
+				title: "Aprobar evidencia incompleta",
+				description: "Debe rechazarse por falta de sustento",
+				diff: { before: {}, after: { ready: false }, summary: "Evidencia" },
+			},
+		);
 		const approvalPayload = await approvalResponse.json();
 		const rejectionPayload = await rejectionResponse.json();
 
-		const approvedResponse = await requestJson(`/api/drenyra/approvals/${approvalPayload.data.id}/approve`, "POST", {
-			decisionReason: "Evidencia suficiente",
-		});
-		const rejectedResponse = await requestJson(`/api/drenyra/approvals/${rejectionPayload.data.id}/reject`, "POST", {
-			decisionReason: "Falta CDR",
-		});
+		const approvedResponse = await requestJson(
+			`/api/drenyra/approvals/${approvalPayload.data.id}/approve`,
+			"POST",
+			{
+				decisionReason: "Evidencia suficiente",
+			},
+		);
+		const rejectedResponse = await requestJson(
+			`/api/drenyra/approvals/${rejectionPayload.data.id}/reject`,
+			"POST",
+			{
+				decisionReason: "Falta CDR",
+			},
+		);
 		const approvedPayload = await approvedResponse.json();
 		const rejectedPayload = await rejectedResponse.json();
 
@@ -290,7 +354,11 @@ describe("Drenyra command center routes", () => {
 		const response = await app.handle(
 			new Request("http://localhost/api/drenyra/cases", {
 				method: "GET",
-				headers: { "x-organization-id": "org", "x-company-id": "company", "x-user-id": "user" },
+				headers: {
+					"x-organization-id": "org",
+					"x-company-id": "company",
+					"x-user-id": "user",
+				},
 			}),
 		);
 		const payload = await response.json();

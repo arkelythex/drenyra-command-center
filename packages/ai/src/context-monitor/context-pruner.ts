@@ -13,8 +13,8 @@
  */
 
 import { AVAILABLE_MODELS } from "../ai/model-registry";
-import { loggers } from "../logger";
 import type { ChatMessage } from "../gateway/types";
+import { loggers } from "../logger";
 import type {
 	ContextPrunerConfig,
 	PruneResult,
@@ -134,9 +134,12 @@ export class ContextPruner {
 
 			return result;
 		} catch (err) {
-			loggers.ai.warn("ContextPruner: prune failed, returning original messages", {
-				error: String(err),
-			});
+			loggers.ai.warn(
+				"ContextPruner: prune failed, returning original messages",
+				{
+					error: String(err),
+				},
+			);
 			return this.noOpResult(messages, this.config.strategy);
 		}
 	}
@@ -330,8 +333,7 @@ export class ContextPruner {
 	 */
 	calculateBudget(modelId: string, ratio?: number): TokenBudget {
 		const effectiveRatio = ratio ?? this.config.tokenBudgetRatio;
-		const modelDef =
-			AVAILABLE_MODELS[modelId as keyof typeof AVAILABLE_MODELS];
+		const modelDef = AVAILABLE_MODELS[modelId as keyof typeof AVAILABLE_MODELS];
 		const contextWindow =
 			modelDef?.contextWindow ?? UNKNOWN_MODEL_CONTEXT_WINDOW;
 

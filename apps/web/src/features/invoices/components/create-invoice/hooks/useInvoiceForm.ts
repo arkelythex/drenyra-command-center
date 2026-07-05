@@ -115,7 +115,9 @@ export const useInvoiceForm = ({
 		if (!isValidFiscalDate(dueDate))
 			return alert("Ingrese una fecha de vencimiento válida");
 		if (dueDate < issueDate)
-			return alert("La fecha de vencimiento no puede ser anterior a la emisión");
+			return alert(
+				"La fecha de vencimiento no puede ser anterior a la emisión",
+			);
 		if (items.some((i) => !i.description))
 			return alert("Complete las descripciones");
 

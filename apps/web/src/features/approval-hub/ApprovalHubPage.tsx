@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
-import { useDrenyraApprovals } from "@/features/drenyra-workspace";
+import { useMemo, useState } from "react";
 import { useAuthStore } from "@/features/auth/hooks/useAuth";
+import { useDrenyraApprovals } from "@/features/drenyra-workspace";
 import { mapToApprovalItem } from "./ApprovalHubPage.data";
 import { ApprovalHubHeader } from "./components/ApprovalHubHeader";
 import { ApprovalHubList } from "./components/ApprovalHubList";
@@ -51,9 +51,7 @@ export function ApprovalHubPage() {
 						items={filtered}
 						isLoading={isLoading}
 						onApprove={(id) => approve(id, userId, "reviewer")}
-						onReject={(id) =>
-							reject(id, userId, "Rechazado por usuario")
-						}
+						onReject={(id) => reject(id, userId, "Rechazado por usuario")}
 					/>
 				</div>
 			</div>

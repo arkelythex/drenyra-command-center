@@ -1,4 +1,3 @@
-import { useState, type ReactNode } from "react";
 import {
 	ArrowDownRight,
 	ArrowUpRight,
@@ -7,27 +6,28 @@ import {
 	TrendingUp,
 	Waves,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { AnimatedNumber } from "@/components/ui/motion-primitives";
-import { Card } from "@/components/ui/card";
+import { type ReactNode, useState } from "react";
 import { Text } from "@/components/atoms/text";
+import { Card } from "@/components/ui/card";
+import { AnimatedNumber } from "@/components/ui/motion-primitives";
+import { cn } from "@/lib/utils";
 import {
+	type LiquidityPoint,
 	MOCK_DATA,
 	PEN_COMPACT_FORMATTER,
 	PEN_FORMATTER,
 	PERCENT_FORMATTER,
-	type LiquidityPoint,
 } from "./liquidity/liquidity-chart.constants";
+import { KPICard, SummaryCard } from "./liquidity/liquidity-chart-cards";
+import { ActiveDetailPanel } from "./liquidity/liquidity-chart-detail";
 import {
-	CHART_WIDTH,
-	CHART_PADDING_X,
-	CHART_PADDING_Y,
 	buildAreaPath,
 	buildPath,
+	CHART_PADDING_X,
+	CHART_PADDING_Y,
+	CHART_WIDTH,
 } from "./liquidity/liquidity-chart-path";
-import { KPICard, SummaryCard } from "./liquidity/liquidity-chart-cards";
 import { LiquidityChartSvg } from "./liquidity/liquidity-chart-svg";
-import { ActiveDetailPanel } from "./liquidity/liquidity-chart-detail";
 
 export const LiquidityChart = () => {
 	const [activeIndex, setActiveIndex] = useState(MOCK_DATA.length - 1);
@@ -83,10 +83,7 @@ export const LiquidityChart = () => {
 		x:
 			CHART_PADDING_X +
 			(index / Math.max(chartData.length - 1, 1)) * innerWidth,
-		y:
-			240 -
-			CHART_PADDING_Y -
-			((value - minValue) / valueRange) * innerHeight,
+		y: 240 - CHART_PADDING_Y - ((value - minValue) / valueRange) * innerHeight,
 	});
 
 	const cashPoints = chartData.map((point, index) =>

@@ -1,3 +1,7 @@
+import type {
+	BankAccount,
+	BankTransaction,
+} from "@/features/banking/stores/banking.store.types";
 import { api, getTenantContext } from "@/lib/api";
 import { safeApiCall } from "@/lib/api-factory";
 import {
@@ -5,10 +9,6 @@ import {
 	extractOkDataOrPassthrough,
 	unwrap,
 } from "@/lib/api-helpers";
-import type {
-	BankAccount,
-	BankTransaction,
-} from "@/features/banking/stores/banking.store.types";
 import type {
 	BankCsvFormat,
 	CreateBankAccountPayload,
@@ -44,14 +44,22 @@ export const bankingApi = {
 			const body = await unwrap(
 				api.api.banking.accounts.get({ query: { companyId } }),
 			);
-			return extractOkData<BankAccount[]>(body, "No se pudieron cargar las cuentas bancarias");
+			return extractOkData<BankAccount[]>(
+				body,
+				"No se pudieron cargar las cuentas bancarias",
+			);
 		});
 	},
 
 	getAccount: async (accountId: string) => {
 		return safeApiCall(async () => {
-			const body = await unwrap(api.api.banking.accounts({ id: accountId }).get());
-			return extractOkData<BankAccount>(body, "No se pudo cargar la cuenta bancaria");
+			const body = await unwrap(
+				api.api.banking.accounts({ id: accountId }).get(),
+			);
+			return extractOkData<BankAccount>(
+				body,
+				"No se pudo cargar la cuenta bancaria",
+			);
 		});
 	},
 
@@ -61,14 +69,22 @@ export const bankingApi = {
 			const body = await unwrap(
 				api.api.banking.accounts.post({ companyId, ...payload }),
 			);
-			return extractOkData<BankAccount>(body, "No se pudo crear la cuenta bancaria");
+			return extractOkData<BankAccount>(
+				body,
+				"No se pudo crear la cuenta bancaria",
+			);
 		});
 	},
 
 	deleteAccount: async (accountId: string) => {
 		return safeApiCall(async () => {
-			const body = await unwrap(api.api.banking.accounts({ id: accountId }).delete());
-			return extractOkData<{ success: boolean }>(body, "No se pudo eliminar la cuenta bancaria");
+			const body = await unwrap(
+				api.api.banking.accounts({ id: accountId }).delete(),
+			);
+			return extractOkData<{ success: boolean }>(
+				body,
+				"No se pudo eliminar la cuenta bancaria",
+			);
 		});
 	},
 
@@ -84,7 +100,10 @@ export const bankingApi = {
 					.accounts({ id: accountId })
 					.transactions.get(Object.keys(query).length ? { query } : undefined),
 			);
-			return extractOkData<BankTransaction[]>(body, "No se pudieron cargar las transacciones");
+			return extractOkData<BankTransaction[]>(
+				body,
+				"No se pudieron cargar las transacciones",
+			);
 		});
 	},
 
@@ -101,7 +120,10 @@ export const bankingApi = {
 							: new Date(transaction.transactionDate),
 				}),
 			);
-			return extractOkData<BankTransaction>(body, "No se pudo crear la transacción");
+			return extractOkData<BankTransaction>(
+				body,
+				"No se pudo crear la transacción",
+			);
 		});
 	},
 
@@ -116,7 +138,10 @@ export const bankingApi = {
 					.transactions({ id: transactionId })
 					.reconcile.post({ documentId, documentType }),
 			);
-			return extractOkData<{ success: boolean }>(body, "No se pudo conciliar la transacción");
+			return extractOkData<{ success: boolean }>(
+				body,
+				"No se pudo conciliar la transacción",
+			);
 		});
 	},
 
@@ -126,7 +151,10 @@ export const bankingApi = {
 			const body = await unwrap(
 				api.api.banking["auto-reconcile"].post({ companyId, accountId }),
 			);
-			return extractOkData<{ matched: number; unmatched: number }>(body, "No se pudo ejecutar la conciliación automática");
+			return extractOkData<{ matched: number; unmatched: number }>(
+				body,
+				"No se pudo ejecutar la conciliación automática",
+			);
 		});
 	},
 
@@ -177,8 +205,13 @@ export const bankingApi = {
 	getSummary: async () => {
 		const { companyId } = getTenantContext();
 		return safeApiCall(async () => {
-			const body = await unwrap(api.api.banking.summary.get({ query: { companyId } }));
-			return extractOkData<BankSummary>(body, "No se pudo cargar el resumen bancario");
+			const body = await unwrap(
+				api.api.banking.summary.get({ query: { companyId } }),
+			);
+			return extractOkData<BankSummary>(
+				body,
+				"No se pudo cargar el resumen bancario",
+			);
 		});
 	},
 };

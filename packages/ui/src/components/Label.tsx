@@ -11,10 +11,9 @@
  * ```
  */
 
-import { cn } from "../lib/utils";
 import * as LabelPrimitive from "@radix-ui/react-label";
-import type { LabelHTMLAttributes, ReactNode } from "react";
-import type { Ref } from "react";
+import type { LabelHTMLAttributes, ReactNode, Ref } from "react";
+import { cn } from "../lib/utils";
 
 export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
 	/** Additional CSS classes */

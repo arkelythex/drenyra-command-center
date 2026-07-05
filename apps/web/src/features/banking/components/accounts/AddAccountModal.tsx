@@ -1,11 +1,7 @@
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Plus } from "lucide-react";
-import { presentError } from "@/lib/error-messages";
-
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
 	Dialog,
 	DialogContent,
@@ -14,6 +10,8 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
 	Select,
 	SelectContent,
@@ -22,8 +20,9 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { useFinancialHaptics, useHaptics } from "@/hooks/useHaptics";
-import { useCreateAccountMutation } from "../../hooks/useBankingQueries";
+import { presentError } from "@/lib/error-messages";
 import type { BankAccountType, Currency } from "../../api/banking.api.types";
+import { useCreateAccountMutation } from "../../hooks/useBankingQueries";
 
 function isBankAccountType(value: string): value is BankAccountType {
 	return value === "CHECKING" || value === "SAVINGS" || value === "CREDIT";

@@ -33,7 +33,9 @@ export const inngest = {
 		});
 
 		if (!response.ok) {
-			throw new Error(`Inngest event dispatch failed with status ${response.status}`);
+			throw new Error(
+				`Inngest event dispatch failed with status ${response.status}`,
+			);
 		}
 	},
 };

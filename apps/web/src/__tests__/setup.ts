@@ -5,7 +5,7 @@
  */
 import * as jestDomMatchers from "@testing-library/jest-dom/matchers";
 import { cleanup } from "@testing-library/react";
-import { vi, beforeAll, beforeEach, afterEach, expect } from "vitest";
+import { afterEach, beforeAll, beforeEach, expect, vi } from "vitest";
 
 expect.extend(jestDomMatchers);
 

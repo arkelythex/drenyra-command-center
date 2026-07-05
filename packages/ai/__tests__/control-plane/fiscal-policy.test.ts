@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
+import type { TenantCompanyRucScope } from "../../src/control-plane";
 import {
-	FISCAL_POLICY_VIOLATION_CODES,
 	deriveFiscalApprovalLevel,
 	evaluateFiscalPolicy,
+	FISCAL_POLICY_VIOLATION_CODES,
 	resolveFiscalToolMapping,
 } from "../../src/control-plane";
-import type { TenantCompanyRucScope } from "../../src/control-plane";
 
 const validScope: TenantCompanyRucScope = {
 	tenantId: "tenant-1",

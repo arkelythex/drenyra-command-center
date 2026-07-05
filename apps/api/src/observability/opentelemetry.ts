@@ -14,9 +14,7 @@ function isTruthy(value: string | undefined): boolean {
  * This loader is intentionally lazy so the API can keep booting even before
  * `bun install` pulls the optional dependency into the workspace.
  */
-export async function attachOptionalOpenTelemetry<T>(
-	app: T,
-): Promise<T> {
+export async function attachOptionalOpenTelemetry<T>(app: T): Promise<T> {
 	if (!isTruthy(process.env.DRENYRA_ENABLE_OTEL)) {
 		return app;
 	}

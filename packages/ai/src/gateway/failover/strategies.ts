@@ -1,6 +1,6 @@
 import { loggers } from "../../logger";
-import { CircuitState } from "./types";
 import type { CircuitBreakerConfig } from "./types";
+import { CircuitState } from "./types";
 
 class ProviderCircuit {
 	state: CircuitState = CircuitState.CLOSED;

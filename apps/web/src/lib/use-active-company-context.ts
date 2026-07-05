@@ -9,10 +9,10 @@ import {
 import {
 	ACTIVE_FISCAL_PERIOD_CHANGED_EVENT,
 	ACTIVE_FISCAL_PERIOD_STORAGE_KEY,
+	formatFiscalPeriodLabel,
 	getAvailableFiscalPeriods,
 	getStoredFiscalPeriod,
 	setActiveFiscalPeriod as setFiscalPeriod,
-	formatFiscalPeriodLabel,
 } from "./fiscal-period";
 
 export const ACTIVE_COMPANY_CHANGED_EVENT = "drenyra-active-company-changed";

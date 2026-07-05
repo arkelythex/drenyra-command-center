@@ -5,5 +5,10 @@ export const threadKeys = {
 	details: () => [...threadKeys.all, "details"] as const,
 	detail: (id: string) => [...threadKeys.details(), id] as const,
 	quickActions: (companyId: string, period?: string) =>
-		[...threadKeys.all, "quick-actions", companyId, period ?? "current"] as const,
+		[
+			...threadKeys.all,
+			"quick-actions",
+			companyId,
+			period ?? "current",
+		] as const,
 } as const;

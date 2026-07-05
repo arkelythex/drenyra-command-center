@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
-import { SidebarWorkspaceProvider } from "@/context/SidebarWorkspaceContext";
+import { AgentAwareProvider } from "@/context/AgentAwareContext";
 import { ArtifactEventProvider } from "@/context/ArtifactEventContext";
 import { FiscalInspectorProvider } from "@/context/FiscalInspectorContext";
-import { AgentAwareProvider } from "@/context/AgentAwareContext";
+import { SidebarWorkspaceProvider } from "@/context/SidebarWorkspaceContext";
 import { PolicyGateProvider } from "@/features/artifacts/policy";
 import { MainLayoutView } from "./MainLayout";
 

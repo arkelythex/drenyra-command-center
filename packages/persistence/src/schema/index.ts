@@ -156,18 +156,6 @@ export {
 	type WorkflowCategory,
 	type WorkflowStatus,
 } from "./automation-studio.schema";
-// --- SKILLS ---
-export {
-	skills,
-	skillsRelations,
-	skillCapabilities,
-	skillCapabilitiesRelations,
-	companySkills,
-	companySkillsRelations,
-	type SkillCategory,
-	type SkillStatus,
-	type InstallationStatus,
-} from "./skills.schema";
 export {
 	type AiCostEvent,
 	type AnomalyAlert,
@@ -381,6 +369,18 @@ export {
 	sireSubmissions,
 	sireSubmissionsRelations,
 } from "./sire.schema";
+// --- SKILLS ---
+export {
+	companySkills,
+	companySkillsRelations,
+	type InstallationStatus,
+	type SkillCategory,
+	type SkillStatus,
+	skillCapabilities,
+	skillCapabilitiesRelations,
+	skills,
+	skillsRelations,
+} from "./skills.schema";
 export {
 	percepciones,
 	retenciones,
@@ -389,23 +389,8 @@ export {
 	taxRuleVersions,
 	taxRuleVersionsRelations,
 } from "./taxation.schema";
-// --- THREADS ---
-export {
-	type ThreadEnvironment,
-	threadEnvironments,
-	type ThreadPriority,
-	threadPriorities,
-	type ThreadStatus,
-	threadStatuses,
-	threads,
-	threadsRelations,
-} from "./threads.schema";
-export {
-	type ThreadTaskStatus,
-	threadTaskStatuses,
-	threadTasks,
-	threadTasksRelations,
-} from "./thread-tasks.schema";
+// --- TELEMETRY ---
+export { frontendTelemetryEvents } from "./telemetry.schema";
 export {
 	type ThreadAgentRole,
 	threadAgentRoles,
@@ -416,9 +401,23 @@ export {
 	threadEvidence,
 	threadEvidenceRelations,
 } from "./thread-evidence.schema";
-
-// --- TELEMETRY ---
-export { frontendTelemetryEvents } from "./telemetry.schema";
+export {
+	type ThreadTaskStatus,
+	threadTaskStatuses,
+	threadTasks,
+	threadTasksRelations,
+} from "./thread-tasks.schema";
+// --- THREADS ---
+export {
+	type ThreadEnvironment,
+	type ThreadPriority,
+	type ThreadStatus,
+	threadEnvironments,
+	threadPriorities,
+	threadStatuses,
+	threads,
+	threadsRelations,
+} from "./threads.schema";
 // --- TRANSACTIONS ---
 export {
 	transactions,

@@ -1,8 +1,11 @@
 export { CommandPalette } from "./CommandPalette";
 
-export type { NavTarget, ActionItem, CommandItemBase } from "./CommandPalette.types";
-
-export { CommandPaletteInput } from "./components/CommandPaletteInput";
-export { CommandPaletteList } from "./components/CommandPaletteList";
-export { CommandPaletteItem } from "./components/CommandPaletteItem";
+export type {
+	ActionItem,
+	CommandItemBase,
+	NavTarget,
+} from "./CommandPalette.types";
 export { CommandPaletteHotkey } from "./components/CommandPaletteHotkey";
+export { CommandPaletteInput } from "./components/CommandPaletteInput";
+export { CommandPaletteItem } from "./components/CommandPaletteItem";
+export { CommandPaletteList } from "./components/CommandPaletteList";

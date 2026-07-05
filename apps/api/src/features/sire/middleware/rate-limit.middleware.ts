@@ -23,8 +23,8 @@ import { resolveSireCompanyId } from "./request-company-id";
  * Rate limit configuration
  */
 interface RateLimitConfig {
-  maxRequests: number; // Max requests per window
-  windowMinutes: number; // Time window in minutes
+	maxRequests: number; // Max requests per window
+	windowMinutes: number; // Time window in minutes
 }
 
 const requestLog = new Map<string, number[]>();
@@ -33,20 +33,21 @@ const requestLog = new Map<string, number[]>();
  * Get rate limit config from environment
  */
 function getRateLimitConfig(): RateLimitConfig {
-  const maxRequests = Number.parseInt(
-    process.env.SIRE_RATE_LIMIT_MAX_REQUESTS ?? '10',
-    10
-  );
-  const windowMinutes = Number.parseInt(
-    process.env.SIRE_RATE_LIMIT_WINDOW_MINUTES ?? '1',
-    10
-  );
+	const maxRequests = Number.parseInt(
+		process.env.SIRE_RATE_LIMIT_MAX_REQUESTS ?? "10",
+		10,
+	);
+	const windowMinutes = Number.parseInt(
+		process.env.SIRE_RATE_LIMIT_WINDOW_MINUTES ?? "1",
+		10,
+	);
 
-  return {
-    maxRequests: Number.isFinite(maxRequests) && maxRequests > 0 ? maxRequests : 10,
-    windowMinutes:
-      Number.isFinite(windowMinutes) && windowMinutes > 0 ? windowMinutes : 1,
-  };
+	return {
+		maxRequests:
+			Number.isFinite(maxRequests) && maxRequests > 0 ? maxRequests : 10,
+		windowMinutes:
+			Number.isFinite(windowMinutes) && windowMinutes > 0 ? windowMinutes : 1,
+	};
 }
 
 /**
@@ -100,10 +101,10 @@ export function enforceSireRateLimit({
 
 /** Minimal context shape accepted by the rate-limit middleware function */
 type RateLimitMiddlewareContext = {
-  body: unknown;
-  query: unknown;
-  request: Request;
-  set: { status: number; headers: Record<string, string> };
+	body: unknown;
+	query: unknown;
+	request: Request;
+	set: { status: number; headers: Record<string, string> };
 };
 
 /**
@@ -115,11 +116,11 @@ type RateLimitMiddlewareContext = {
  * app.use(rateLimitMiddleware);
  * ```
  */
-export const rateLimitMiddleware = new Elysia({ name: 'sire-rate-limit' }).onBeforeHandle(
-  (context) => {
-    return enforceSireRateLimit(context as unknown as RateLimitMiddlewareContext);
-  },
-);
+export const rateLimitMiddleware = new Elysia({
+	name: "sire-rate-limit",
+}).onBeforeHandle((context) => {
+	return enforceSireRateLimit(context as unknown as RateLimitMiddlewareContext);
+});
 
 /**
  * resetSireRateLimitStateForTests operation.

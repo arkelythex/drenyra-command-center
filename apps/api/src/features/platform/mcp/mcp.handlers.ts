@@ -7,9 +7,10 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
+
+import type { DrenyraMcpScope } from "@drenyra/agents";
 import type { EvidenceGraphRepository } from "@drenyra/domain";
 import { buildDrenyraDualSurfaceContract } from "@drenyra/domain/drenyra";
-import type { DrenyraMcpScope } from "@drenyra/agents";
 import type { DrenyraBrainRepository } from "../../drenyra/brain/brain.repository";
 
 export interface PlatformMcpInvokeInput {

@@ -1,4 +1,4 @@
-import type { EventBusPort } from './port';
+import type { EventBusPort } from "./port";
 
 /**
  * Event Bus Port - Contract for Event-Driven Architecture

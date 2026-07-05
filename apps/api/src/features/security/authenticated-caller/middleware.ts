@@ -1,20 +1,20 @@
 import { resolveSessionIdentityFromHeaders } from "../../auth/handlers/session-identity";
 import { readHeaderValue, resolveTenantAssertion } from "../tenant-assertions";
-import type {
-	AuthenticatedCallerResult,
-	ResolveAuthenticatedCallerInput,
-} from "./types";
 import {
 	AUTHENTICATED_CALLER_KIND,
 	hasSpoofableHeaderContext,
+	normalizeRole,
 	resolveHeaderFallbackCaller,
 	resolveMachineCallerAllowlist,
 	resolveSignedMachineCaller,
 	shouldRequireSession,
 	validateRoleRequirement,
 	validateTenantScope,
-	normalizeRole,
 } from "./helpers";
+import type {
+	AuthenticatedCallerResult,
+	ResolveAuthenticatedCallerInput,
+} from "./types";
 
 export async function resolveAuthenticatedCaller(
 	input: ResolveAuthenticatedCallerInput,

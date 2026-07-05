@@ -9,7 +9,11 @@ interface ThreadsSectionProps {
 export function ThreadsSection({ companyId, t }: ThreadsSectionProps) {
 	const threads = useLocalStorageThreads(companyId);
 	return (
-		<section className="space-y-2" role="region" aria-label={t("sidebar.threads")}>
+		<section
+			className="space-y-2"
+			role="region"
+			aria-label={t("sidebar.threads")}
+		>
 			<p className="text-2xs font-bold uppercase tracking-widest text-[var(--text-tertiary)]">
 				{t("sidebar.threads")}
 			</p>
@@ -25,7 +29,11 @@ export function ThreadsSection({ companyId, t }: ThreadsSectionProps) {
 							type="button"
 							className="flex w-full items-center gap-2 rounded-xl border border-transparent p-3 text-left text-xs transition hover:bg-[var(--surface-1)]/60"
 						>
-							<GitBranch size={14} className="shrink-0 text-[var(--text-tertiary)]" aria-hidden="true" />
+							<GitBranch
+								size={14}
+								className="shrink-0 text-[var(--text-tertiary)]"
+								aria-hidden="true"
+							/>
 							<span className="flex-1 truncate font-medium">{thread.name}</span>
 						</button>
 					))}

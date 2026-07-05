@@ -18,8 +18,12 @@ export function CognitiveWorkspacePage() {
 	);
 	const fiscalCaseId = params.get("fiscalCaseId");
 	const fiscalCaseLabel = params.get("fiscalCaseLabel");
-	const { setMode, setShowHistory, setFiscalCase, hydrateFiscalCaseFromSession } =
-		useHubState();
+	const {
+		setMode,
+		setShowHistory,
+		setFiscalCase,
+		hydrateFiscalCaseFromSession,
+	} = useHubState();
 	const { settings } = useSettings();
 
 	useEffect(() => {
@@ -33,7 +37,12 @@ export function CognitiveWorkspacePage() {
 			return;
 		}
 		hydrateFiscalCaseFromSession();
-	}, [fiscalCaseId, fiscalCaseLabel, setFiscalCase, hydrateFiscalCaseFromSession]);
+	}, [
+		fiscalCaseId,
+		fiscalCaseLabel,
+		setFiscalCase,
+		hydrateFiscalCaseFromSession,
+	]);
 
 	return (
 		<div

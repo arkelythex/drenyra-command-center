@@ -38,7 +38,7 @@ export type OrganizationContextResolution =
 			code: "TENANT_CONTEXT_CONFLICT";
 			error: string;
 			details: { values: OrganizationContextValue[] };
-		};
+	  };
 
 /**
  * SIRE company tenant validation result.
@@ -57,7 +57,7 @@ export type CompanyTenantValidationResult =
 			code: "TENANT_CONTEXT_REQUIRED" | "TENANT_CONTEXT_CONFLICT";
 			error: string;
 			details?: Record<string, unknown>;
-		};
+	  };
 
 function parsePositiveInt(value?: string | null): number | null {
 	if (!value) return null;

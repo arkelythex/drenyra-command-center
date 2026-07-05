@@ -8,9 +8,14 @@
  * The routes are verified to exist via backend integration tests.
  */
 
-import { registerClient } from "@/lib/treaty-route-client";
+import { api } from "@/lib/api";
 import type { TreatyClientRoute } from "@/lib/treaty-route-client";
-import { api } from '@/lib/api';
+import { registerClient } from "@/lib/treaty-route-client";
 
-const creditNotesRoute = (api.api as unknown as Record<string, unknown>)['credit-notes'] as TreatyClientRoute;
-export const creditNoteTreatyClient = registerClient("credit-notes", creditNotesRoute);
+const creditNotesRoute = (api.api as unknown as Record<string, unknown>)[
+	"credit-notes"
+] as TreatyClientRoute;
+export const creditNoteTreatyClient = registerClient(
+	"credit-notes",
+	creditNotesRoute,
+);

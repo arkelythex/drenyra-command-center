@@ -25,11 +25,12 @@ export function getInvoiceOseTimelineTone(
 		case "SUBMITTED":
 		case "PROCESSING":
 			return {
-containerClassName: "border-[var(--color-info)]/20 bg-[var(--color-info)]/8",
-			statusBadgeClassName:
-				"border-[var(--color-info)]/20 bg-[var(--color-info)]/10 text-[var(--color-info)]",
-			railClassName: "bg-[var(--color-info)]/20",
-			dotClassName: "border-[var(--color-info)]/30 bg-[var(--color-info)]/30",
+				containerClassName:
+					"border-[var(--color-info)]/20 bg-[var(--color-info)]/8",
+				statusBadgeClassName:
+					"border-[var(--color-info)]/20 bg-[var(--color-info)]/10 text-[var(--color-info)]",
+				railClassName: "bg-[var(--color-info)]/20",
+				dotClassName: "border-[var(--color-info)]/30 bg-[var(--color-info)]/30",
 			};
 		case "OBSERVED":
 			return {

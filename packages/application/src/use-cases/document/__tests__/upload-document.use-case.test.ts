@@ -1,8 +1,8 @@
+import { Document } from "@drenyra/domain/entities/Document";
+import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { UploadDocumentDTO } from "../../dtos/document/upload-document.dto";
 import type { IStorageService } from "../../ports/storage.port";
-import { Document } from "@drenyra/domain/entities/Document";
-import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
 import { UploadDocumentUseCase } from "../upload-document.use-case";
 
 describe("UploadDocumentUseCase", () => {
@@ -44,7 +44,9 @@ describe("UploadDocumentUseCase", () => {
 		const uploadedFileUrl = "https://storage.example.com/documents/invoice.pdf";
 
 		vi.mocked(mockStorageService.upload).mockResolvedValue(uploadedFileUrl);
-		vi.mocked(mockDocumentRepository.saveForCompany).mockResolvedValue(undefined);
+		vi.mocked(mockDocumentRepository.saveForCompany).mockResolvedValue(
+			undefined,
+		);
 
 		const input: UploadDocumentDTO = {
 			companyId,
@@ -64,9 +66,9 @@ describe("UploadDocumentUseCase", () => {
 		expect(mockDocumentRepository.saveForCompany).toHaveBeenCalledTimes(1);
 		expect(mockDocumentRepository.save).not.toHaveBeenCalled();
 
-		const [savedDocument, receivedCompanyId] = vi
-			.mocked(mockDocumentRepository.saveForCompany)
-			.mock.calls[0];
+		const [savedDocument, receivedCompanyId] = vi.mocked(
+			mockDocumentRepository.saveForCompany,
+		).mock.calls[0];
 		expect(savedDocument).toBeInstanceOf(Document);
 		expect(receivedCompanyId).toBe(companyId);
 		expect(savedDocument.clientId).toBe(validClientId);
@@ -87,7 +89,9 @@ describe("UploadDocumentUseCase", () => {
 		const uploadedFileUrl = "https://storage.example.com/documents/factura.xml";
 
 		vi.mocked(mockStorageService.upload).mockResolvedValue(uploadedFileUrl);
-		vi.mocked(mockDocumentRepository.saveForCompany).mockResolvedValue(undefined);
+		vi.mocked(mockDocumentRepository.saveForCompany).mockResolvedValue(
+			undefined,
+		);
 
 		const input: UploadDocumentDTO = {
 			companyId,
@@ -100,8 +104,7 @@ describe("UploadDocumentUseCase", () => {
 
 		await useCase.execute(input);
 
-		const [savedDocument] = vi
-			.mocked(mockDocumentRepository.saveForCompany)
+		const [savedDocument] = vi.mocked(mockDocumentRepository.saveForCompany)
 			.mock.calls[0];
 		expect(savedDocument.fileSize).toBe(buffer.length);
 		expect(savedDocument.fileType).toBe("XML");

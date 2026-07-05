@@ -9,9 +9,11 @@
  * @module __tests__/context-monitor
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { ContextPruner } from "../../src/context-monitor/context-pruner";
-import { createContextPruner } from "../../src/context-monitor/context-pruner";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+	ContextPruner,
+	createContextPruner,
+} from "../../src/context-monitor/context-pruner";
 import type { ChatMessage } from "../../src/gateway/types";
 
 // ─── Helper: Create test messages ──────────────────────────────────────
@@ -260,7 +262,9 @@ describe("T5.2: Summarization and Non-Blocking", () => {
 	});
 
 	it("falls back to sliding-window on LLM error", async () => {
-		const mockSummarizeFn = vi.fn().mockRejectedValue(new Error("LLM API error"));
+		const mockSummarizeFn = vi
+			.fn()
+			.mockRejectedValue(new Error("LLM API error"));
 		const prunerWithFn = new ContextPruner(
 			{
 				strategy: "summarization",
@@ -335,7 +339,9 @@ describe("T5.2: Summarization and Non-Blocking", () => {
 	it("async summarize injects summary as system message on success", async () => {
 		const mockSummarizeFn = vi
 			.fn()
-			.mockResolvedValue("Previous conversation summary: user asked about invoices");
+			.mockResolvedValue(
+				"Previous conversation summary: user asked about invoices",
+			);
 		const prunerWithFn = new ContextPruner(
 			{
 				strategy: "summarization",
@@ -377,9 +383,7 @@ describe("T5.2: Summarization and Non-Blocking", () => {
 	});
 
 	it("async summarize handles LLM error gracefully", async () => {
-		const mockSummarizeFn = vi
-			.fn()
-			.mockRejectedValue(new Error("API timeout"));
+		const mockSummarizeFn = vi.fn().mockRejectedValue(new Error("API timeout"));
 		const prunerWithFn = new ContextPruner(
 			{
 				strategy: "summarization",

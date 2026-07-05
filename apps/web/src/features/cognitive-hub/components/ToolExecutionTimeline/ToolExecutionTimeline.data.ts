@@ -46,7 +46,9 @@ export function mapAccountingJobRunToActivity(
 	};
 }
 
-export function getStatusStyles(status: CognitiveActivityEntry["status"]): string {
+export function getStatusStyles(
+	status: CognitiveActivityEntry["status"],
+): string {
 	if (status === "success")
 		return "text-success border-success-subtle bg-success-subtle";
 	if (status === "warning")

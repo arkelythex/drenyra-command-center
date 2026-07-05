@@ -1,6 +1,6 @@
-import { Money } from '@drenyra/domain';
-import type { Currency } from '@drenyra/domain/value-objects/Money';
-import { bankingRepository } from '../../infrastructure/banking.repository';
+import { Money } from "@drenyra/domain";
+import type { Currency } from "@drenyra/domain/value-objects/Money";
+import { bankingRepository } from "../../infrastructure/banking.repository";
 
 /**
  * Application service that computes aggregated banking metrics (balances, counts).
@@ -15,38 +15,42 @@ import { bankingRepository } from '../../infrastructure/banking.repository';
  * ```
  */
 export class SummaryService {
-  constructor(private readonly repository = bankingRepository) {}
+	constructor(private readonly repository = bankingRepository) {}
 
-  async getSummary(companyId: string) {
-    const accounts = await this.repository.findAllAccounts(companyId);
+	async getSummary(companyId: string) {
+		const accounts = await this.repository.findAllAccounts(companyId);
 
-    let totalBalancePEN = Money.zero('PEN');
-    let totalBalanceUSD = Money.zero('USD');
+		let totalBalancePEN = Money.zero("PEN");
+		let totalBalanceUSD = Money.zero("USD");
 
-    for (const account of accounts) {
-      if (!account.isActive) continue;
-      const balance = Money.fromAmount(Number(account.currentBalance), toCurrency(account.currency));
-      if (account.currency === 'PEN') {
-        totalBalancePEN = totalBalancePEN.add(balance);
-      } else if (account.currency === 'USD') {
-        totalBalanceUSD = totalBalanceUSD.add(balance);
-      }
-    }
+		for (const account of accounts) {
+			if (!account.isActive) continue;
+			const balance = Money.fromAmount(
+				Number(account.currentBalance),
+				toCurrency(account.currency),
+			);
+			if (account.currency === "PEN") {
+				totalBalancePEN = totalBalancePEN.add(balance);
+			} else if (account.currency === "USD") {
+				totalBalanceUSD = totalBalanceUSD.add(balance);
+			}
+		}
 
-    const unreconciledCount = await this.repository.countUnreconciled(companyId);
+		const unreconciledCount =
+			await this.repository.countUnreconciled(companyId);
 
-    const format = (value: Money) => value.getAmount().toFixed(2);
+		const format = (value: Money) => value.getAmount().toFixed(2);
 
-    return {
-      totalAccounts: accounts.filter((account) => account.isActive).length,
-      totalBalance: format(totalBalancePEN),
-      totalBalancePEN: format(totalBalancePEN),
-      totalBalanceUSD: format(totalBalanceUSD),
-      unreconciledTransactions: unreconciledCount,
-    };
-  }
+		return {
+			totalAccounts: accounts.filter((account) => account.isActive).length,
+			totalBalance: format(totalBalancePEN),
+			totalBalancePEN: format(totalBalancePEN),
+			totalBalanceUSD: format(totalBalanceUSD),
+			unreconciledTransactions: unreconciledCount,
+		};
+	}
 }
 
 function toCurrency(value: string | null | undefined): Currency {
-  return value === 'USD' ? 'USD' : 'PEN';
+	return value === "USD" ? "USD" : "PEN";
 }

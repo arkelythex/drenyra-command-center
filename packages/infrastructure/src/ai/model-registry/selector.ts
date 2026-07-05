@@ -1,9 +1,20 @@
 import { anthropic } from "@ai-sdk/anthropic";
 import { google } from "@ai-sdk/google";
 import type { LanguageModel } from "ai";
-import type { AIProvider, ModelTier, TaskType, OpenRouterModelTier } from "./types";
-import type { ModelDefinition, ModelSelectionConfig, ModelSelection } from "./types";
-import { AVAILABLE_MODELS, TASK_TIER_REQUIREMENTS, OPENROUTER_MODEL_TIERS } from "./models";
+import {
+	AVAILABLE_MODELS,
+	OPENROUTER_MODEL_TIERS,
+	TASK_TIER_REQUIREMENTS,
+} from "./models";
+import type {
+	AIProvider,
+	ModelDefinition,
+	ModelSelection,
+	ModelSelectionConfig,
+	ModelTier,
+	OpenRouterModelTier,
+	TaskType,
+} from "./types";
 
 // ============================================
 // CONFIGURATION
@@ -62,11 +73,11 @@ function instantiateModel(modelKey: string): LanguageModel {
 	}
 
 	switch (def.provider) {
-			case "google":
-				return google(def.id as Parameters<typeof google>[0]);
-			case "anthropic":
-				return anthropic(def.id as Parameters<typeof anthropic>[0]);
-			case "openai":
+		case "google":
+			return google(def.id as Parameters<typeof google>[0]);
+		case "anthropic":
+			return anthropic(def.id as Parameters<typeof anthropic>[0]);
+		case "openai":
 			// OpenAI SDK not installed - fallback to Google
 			console.warn(
 				`[ModelRegistry] OpenAI not available, using Google fallback`,
@@ -345,11 +356,13 @@ export function getModelForTask(
  */
 
 export function getOpenRouterModelForTier(tierId: string): string {
-  const tier = OPENROUTER_MODEL_TIERS[tierId];
-  if (!tier) {
-    throw new Error(`Unknown OpenRouter tier: ${tierId}. Available: ${Object.keys(OPENROUTER_MODEL_TIERS).join(', ')}`);
-  }
-  return tier.models[0];  // First in list is preferred
+	const tier = OPENROUTER_MODEL_TIERS[tierId];
+	if (!tier) {
+		throw new Error(
+			`Unknown OpenRouter tier: ${tierId}. Available: ${Object.keys(OPENROUTER_MODEL_TIERS).join(", ")}`,
+		);
+	}
+	return tier.models[0]; // First in list is preferred
 }
 
 /**
@@ -364,9 +377,9 @@ export function getOpenRouterModelForTier(tierId: string): string {
  */
 
 export function getOpenRouterFallbackChain(tierId: string): string[] {
-  const tier = OPENROUTER_MODEL_TIERS[tierId];
-  if (!tier) return [];
-  return tier.models;
+	const tier = OPENROUTER_MODEL_TIERS[tierId];
+	if (!tier) return [];
+	return tier.models;
 }
 
 /**
@@ -380,6 +393,8 @@ export function getOpenRouterFallbackChain(tierId: string): string[] {
  * ```
  */
 
-export function getOpenRouterTierConfig(tierId: string): OpenRouterModelTier | null {
-  return OPENROUTER_MODEL_TIERS[tierId] || null;
+export function getOpenRouterTierConfig(
+	tierId: string,
+): OpenRouterModelTier | null {
+	return OPENROUTER_MODEL_TIERS[tierId] || null;
 }

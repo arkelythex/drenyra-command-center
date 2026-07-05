@@ -12,13 +12,16 @@
  *
  * @last-verified: 2026-06-06
  */
-import { describe, it, expect } from "vitest";
-import { Money } from "@drenyra/domain/value-objects/Money";
-import { RUC } from "@drenyra/domain/value-objects/RUC";
+
+import {
+	JournalEntry,
+	JournalLine,
+} from "@drenyra/domain/entities/JournalEntry";
 import { DNI } from "@drenyra/domain/value-objects/DNI";
 import { DocumentSeries } from "@drenyra/domain/value-objects/DocumentSeries";
-import { JournalEntry } from "@drenyra/domain/entities/JournalEntry";
-import { JournalLine } from "@drenyra/domain/entities/JournalEntry";
+import { Money } from "@drenyra/domain/value-objects/Money";
+import { RUC } from "@drenyra/domain/value-objects/RUC";
+import { describe, expect, it } from "vitest";
 import { JournalEntryBuilder } from "../../src/builders/journal-entry.builder";
 
 // ============================================================

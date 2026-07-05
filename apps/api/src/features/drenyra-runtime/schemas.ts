@@ -3,7 +3,12 @@ import { z } from "zod";
 const DRENYRA_RUC_REGEX = /^\d{11}$/;
 const DRENYRA_PERIOD_REGEX = /^\d{4}-(0[1-9]|1[0-2])$/;
 
-const DRENYRA_THREAD_STATUSES = ["active", "archived", "completed", "failed"] as const;
+const DRENYRA_THREAD_STATUSES = [
+	"active",
+	"archived",
+	"completed",
+	"failed",
+] as const;
 
 const DRENYRA_RUN_STATUSES = [
 	"queued",
@@ -27,11 +32,25 @@ const DRENYRA_RUN_EVENT_TYPES = [
 	"workflow.failed",
 ] as const;
 
-const DRENYRA_APPROVAL_STATUSES = ["pending", "approved", "rejected", "expired"] as const;
+const DRENYRA_APPROVAL_STATUSES = [
+	"pending",
+	"approved",
+	"rejected",
+	"expired",
+] as const;
 
 const DRENYRA_RISK_LEVELS = ["low", "medium", "high", "critical"] as const;
 
-const DRENYRA_ITEM_TYPES = ["message", "command", "approval", "evidence", "run", "output", "web_search", "tool_call"] as const;
+const DRENYRA_ITEM_TYPES = [
+	"message",
+	"command",
+	"approval",
+	"evidence",
+	"run",
+	"output",
+	"web_search",
+	"tool_call",
+] as const;
 
 const drenyraMetadataSchema = z.record(z.string(), z.unknown()).default({});
 const drenyraRefsSchema = z.array(z.string().min(1)).default([]);
@@ -62,7 +81,8 @@ export const createDrenyraThreadRequestSchema = z.object({
 	period: z.string().regex(DRENYRA_PERIOD_REGEX).optional(),
 	initialObjective: z.string().min(1).optional(),
 });
-export const CreateDrenyraThreadRequestSchema = createDrenyraThreadRequestSchema;
+export const CreateDrenyraThreadRequestSchema =
+	createDrenyraThreadRequestSchema;
 
 export const drenyraRunStatusSchema = z.enum(DRENYRA_RUN_STATUSES);
 export const DrenyraRunStatusSchema = drenyraRunStatusSchema;
@@ -164,67 +184,69 @@ const drenyraApprovalBaseSchema = z.object({
 
 type DrenyraApprovalDraft = z.infer<typeof drenyraApprovalBaseSchema>;
 
-export const drenyraApprovalSchema = drenyraApprovalBaseSchema.superRefine((approval: DrenyraApprovalDraft, ctx: z.RefinementCtx) => {
-	if (approval.status === "pending") {
-		if (approval.decidedBy !== undefined) {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				path: ["decidedBy"],
-				message: "decidedBy must be absent when status is pending",
-			});
+export const drenyraApprovalSchema = drenyraApprovalBaseSchema.superRefine(
+	(approval: DrenyraApprovalDraft, ctx: z.RefinementCtx) => {
+		if (approval.status === "pending") {
+			if (approval.decidedBy !== undefined) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					path: ["decidedBy"],
+					message: "decidedBy must be absent when status is pending",
+				});
+			}
+
+			if (approval.decidedAt !== undefined) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					path: ["decidedAt"],
+					message: "decidedAt must be absent when status is pending",
+				});
+			}
+
+			if (approval.reason !== undefined) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					path: ["reason"],
+					message: "reason must be absent when status is pending",
+				});
+			}
 		}
 
-		if (approval.decidedAt !== undefined) {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				path: ["decidedAt"],
-				message: "decidedAt must be absent when status is pending",
-			});
+		if (approval.status === "approved" || approval.status === "rejected") {
+			if (!approval.decidedBy) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					path: ["decidedBy"],
+					message: "decidedBy is required when status is approved or rejected",
+				});
+			}
+
+			if (!approval.decidedAt) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					path: ["decidedAt"],
+					message: "decidedAt is required when status is approved or rejected",
+				});
+			}
 		}
 
-		if (approval.reason !== undefined) {
+		if (approval.status === "rejected" && !approval.reason) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				path: ["reason"],
-				message: "reason must be absent when status is pending",
-			});
-		}
-	}
-
-	if (approval.status === "approved" || approval.status === "rejected") {
-		if (!approval.decidedBy) {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				path: ["decidedBy"],
-				message: "decidedBy is required when status is approved or rejected",
+				message: "reason is required when status is rejected",
 			});
 		}
 
-		if (!approval.decidedAt) {
+		if (approval.status === "expired" && !approval.decidedAt) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
 				path: ["decidedAt"],
-				message: "decidedAt is required when status is approved or rejected",
+				message: "decidedAt is required when status is expired",
 			});
 		}
-	}
-
-	if (approval.status === "rejected" && !approval.reason) {
-		ctx.addIssue({
-			code: z.ZodIssueCode.custom,
-			path: ["reason"],
-			message: "reason is required when status is rejected",
-		});
-	}
-
-	if (approval.status === "expired" && !approval.decidedAt) {
-		ctx.addIssue({
-			code: z.ZodIssueCode.custom,
-			path: ["decidedAt"],
-			message: "decidedAt is required when status is expired",
-		});
-	}
-});
+	},
+);
 export const DrenyraApprovalSchema = drenyraApprovalSchema;
 
 export const createDrenyraRunRequestSchema = z.object({
@@ -239,12 +261,18 @@ export const createDrenyraRunRequestSchema = z.object({
 export const CreateDrenyraRunRequestSchema = createDrenyraRunRequestSchema;
 
 export type DrenyraThread = z.infer<typeof drenyraThreadSchema>;
-export type CreateDrenyraThreadRequest = z.infer<typeof createDrenyraThreadRequestSchema>;
+export type CreateDrenyraThreadRequest = z.infer<
+	typeof createDrenyraThreadRequestSchema
+>;
 export type DrenyraRun = z.infer<typeof drenyraRunSchema>;
 export type DrenyraTurn = z.infer<typeof drenyraTurnSchema>;
-export type CreateDrenyraTurnRequest = z.infer<typeof createDrenyraTurnRequestSchema>;
+export type CreateDrenyraTurnRequest = z.infer<
+	typeof createDrenyraTurnRequestSchema
+>;
 export type DrenyraItem = z.infer<typeof drenyraItemSchema>;
 export type DrenyraRunEvent = z.infer<typeof drenyraRunEventSchema>;
 export type DrenyraApproval = z.infer<typeof drenyraApprovalSchema>;
-export type CreateDrenyraRunRequest = z.infer<typeof createDrenyraRunRequestSchema>;
+export type CreateDrenyraRunRequest = z.infer<
+	typeof createDrenyraRunRequestSchema
+>;
 export type DrenyraWebSearchAudit = z.infer<typeof drenyraWebSearchAuditSchema>;

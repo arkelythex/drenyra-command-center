@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 import type { FiscalCaseDetails } from "../api/drenyra-command-center.api";
-import { EvidenceCard } from "./evidence-card";
 import { ApprovalDecisionControl } from "./approval-decision-control";
-import { DecidedApprovalCard } from "./decided-approval-card";
 import { AuditTrail } from "./audit-trail";
 import { CommandCapabilityAuditPanel } from "./command-capability-audit-panel";
+import { DecidedApprovalCard } from "./decided-approval-card";
+import { EvidenceCard } from "./evidence-card";
 
 export function RightInspector({
 	details,

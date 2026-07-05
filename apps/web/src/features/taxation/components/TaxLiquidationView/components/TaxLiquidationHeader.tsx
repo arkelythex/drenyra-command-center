@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { BORDER_RADIUS, Z_INDEX } from "@/lib/design-tokens";
 import type { TaxLiquidationHeaderProps } from "../types";
 
-export function TaxLiquidationHeader({ period, onMenuClick }: TaxLiquidationHeaderProps) {
+export function TaxLiquidationHeader({
+	period,
+	onMenuClick,
+}: TaxLiquidationHeaderProps) {
 	return (
 		<header
 			className="hidden sm:flex px-6 py-4 border-b border-[var(--border-default)] bg-[var(--bg-1)] flex-col md:flex-row items-center justify-between gap-6 shrink-0 sticky top-0"
@@ -23,11 +26,7 @@ export function TaxLiquidationHeader({ period, onMenuClick }: TaxLiquidationHead
 					className="flex h-12 w-12 items-center justify-center border border-border bg-card shadow-sm"
 					style={{ borderRadius: BORDER_RADIUS.icon }}
 				>
-					<ShieldCheck
-						size={22}
-						className="text-primary"
-						strokeWidth={1.75}
-					/>
+					<ShieldCheck size={22} className="text-primary" strokeWidth={1.75} />
 				</div>
 				<div className="flex-1 min-w-0">
 					<h1 className="text-xl font-black uppercase tracking-tight text-foreground leading-none">

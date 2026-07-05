@@ -67,8 +67,7 @@ export class SunatCpeClient {
 	private readonly timeout: number;
 
 	constructor() {
-		this.baseUrl =
-			process.env.SUNAT_API_BASE_URL ?? "https://api.sunat.gob.pe";
+		this.baseUrl = process.env.SUNAT_API_BASE_URL ?? "https://api.sunat.gob.pe";
 		this.timeout = Number(process.env.SUNAT_API_TIMEOUT_MS ?? 4500);
 	}
 
@@ -81,9 +80,7 @@ export class SunatCpeClient {
 	async validate(
 		request: SunatCpeValidationRequest,
 	): Promise<SunatCpeValidationResponse> {
-		if (
-			process.env.SUNAT_CPE_FORCE_TIMEOUT?.trim().toLowerCase() === "true"
-		) {
+		if (process.env.SUNAT_CPE_FORCE_TIMEOUT?.trim().toLowerCase() === "true") {
 			throw new Error("SUNAT_API_TIMEOUT");
 		}
 
@@ -98,9 +95,9 @@ export class SunatCpeClient {
 	}
 
 	private resolveValidationMode(): SunatCpeValidationMode {
-		const normalized = (
-			process.env.SUNAT_CPE_VALIDATION_MODE ?? "sandbox"
-		).trim().toLowerCase();
+		const normalized = (process.env.SUNAT_CPE_VALIDATION_MODE ?? "sandbox")
+			.trim()
+			.toLowerCase();
 
 		if (normalized === "simulation" || normalized === "sandbox") {
 			return "sandbox";
@@ -185,7 +182,9 @@ export class SunatCpeClient {
 
 		return {
 			...fixture,
-			observaciones: fixture.observaciones ? [...fixture.observaciones] : undefined,
+			observaciones: fixture.observaciones
+				? [...fixture.observaciones]
+				: undefined,
 			mode: "replay",
 		};
 	}
@@ -301,7 +300,8 @@ export class SunatCpeClient {
 				: "NO_EXISTE";
 
 		return {
-			success: estado === "ACEPTADO" || estado === "ANULADO" || estado === "OBSERVADO",
+			success:
+				estado === "ACEPTADO" || estado === "ANULADO" || estado === "OBSERVADO",
 			estado,
 			mensaje:
 				this.readString(payload, "mensaje") ??
@@ -365,9 +365,7 @@ export class SunatCpeClient {
 	/**
 	 * Map SUNAT response to validation errors
 	 */
-	mapToErrors(
-		response: SunatCpeValidationResponse,
-	): ValidationError[] | null {
+	mapToErrors(response: SunatCpeValidationResponse): ValidationError[] | null {
 		if (response.success && response.estado === "ACEPTADO") {
 			return null;
 		}

@@ -41,9 +41,7 @@ export function parseDateLoose(value: string): Date | null {
 	const iso = new Date(trimmed);
 	if (!Number.isNaN(iso.getTime())) return iso;
 
-	const match = trimmed.match(
-		/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/,
-	);
+	const match = trimmed.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$/);
 	if (!match) return null;
 
 	const day = Number(match[1]);
@@ -82,7 +80,7 @@ export function parseAmountLoose(value: string): number | null {
 	const cleaned = value
 		.trim()
 		.replace(/\s+/g, "")
-		.replace(/[^\d,.\-]/g, "");
+		.replace(/[^\d,.-]/g, "");
 	if (!cleaned) return null;
 
 	const hasComma = cleaned.includes(",");
@@ -90,8 +88,7 @@ export function parseAmountLoose(value: string): number | null {
 
 	let normalized = cleaned;
 	if (hasComma && hasDot) {
-		const decimalIsComma =
-			cleaned.lastIndexOf(",") > cleaned.lastIndexOf(".");
+		const decimalIsComma = cleaned.lastIndexOf(",") > cleaned.lastIndexOf(".");
 		normalized = decimalIsComma
 			? cleaned.replace(/\./g, "").replace(",", ".")
 			: cleaned.replace(/,/g, "");
@@ -124,15 +121,12 @@ export function parseAmountLoose(value: string): number | null {
  * normalizeTxType("unknown") // => null
  * ```
  */
-export function normalizeTxType(
-	value: string,
-): "CREDIT" | "DEBIT" | null {
+export function normalizeTxType(value: string): "CREDIT" | "DEBIT" | null {
 	const normalized = value.trim().toUpperCase();
 	if (!normalized) return null;
 	if (["CREDIT", "ABONO", "HABER", "INGRESO"].includes(normalized))
 		return "CREDIT";
-	if (["DEBIT", "CARGO", "DEBE", "EGRESO"].includes(normalized))
-		return "DEBIT";
+	if (["DEBIT", "CARGO", "DEBE", "EGRESO"].includes(normalized)) return "DEBIT";
 	return null;
 }
 
@@ -155,17 +149,11 @@ export function normalizeTxType(
  * findColumnIndex(headers, ["amount", "monto", "importe"]) // => 1
  * ```
  */
-export function findColumnIndex(
-	headers: string[],
-	names: string[],
-): number {
+export function findColumnIndex(headers: string[], names: string[]): number {
 	return (
 		names
-			.map(
-				(name) =>
-					headers.findIndex(
-						(h) => h.toLowerCase() === name.toLowerCase(),
-					),
+			.map((name) =>
+				headers.findIndex((h) => h.toLowerCase() === name.toLowerCase()),
 			)
 			.find((idx) => idx >= 0) ?? -1
 	);

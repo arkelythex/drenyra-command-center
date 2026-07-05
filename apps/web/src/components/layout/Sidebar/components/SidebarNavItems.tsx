@@ -7,7 +7,10 @@ interface SidebarNavItemsProps {
 	onNavigate: () => void;
 }
 
-export function SidebarNavItems({ isCollapsed, onNavigate }: SidebarNavItemsProps) {
+export function SidebarNavItems({
+	isCollapsed,
+	onNavigate,
+}: SidebarNavItemsProps) {
 	const navigate = useNavigate();
 
 	if (isCollapsed) return null;
@@ -22,7 +25,9 @@ export function SidebarNavItems({ isCollapsed, onNavigate }: SidebarNavItemsProp
 						type="button"
 						onClick={() => {
 							onNavigate();
-							navigate({ to: item.to } as unknown as Parameters<typeof navigate>[0]);
+							navigate({ to: item.to } as unknown as Parameters<
+								typeof navigate
+							>[0]);
 						}}
 						className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-xs font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]"
 					>

@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { CognitiveActivityEntry } from "../../hooks/cognitive-stream";
 import { useAccountingJobRuns } from "../../hooks/useAccountingJobRuns";
+import { TimelineControlPlane } from "./components/TimelineControlPlane";
+import { TimelineEntry } from "./components/TimelineEntry";
 import {
 	getStatusStyles,
 	mapAccountingJobRunToActivity,
 } from "./ToolExecutionTimeline.data";
 import type { ToolExecutionTimelineProps } from "./ToolExecutionTimeline.types";
-import { TimelineControlPlane } from "./components/TimelineControlPlane";
-import { TimelineEntry } from "./components/TimelineEntry";
 
 export function ToolExecutionTimeline({
 	entries,

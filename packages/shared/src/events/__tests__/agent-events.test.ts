@@ -6,17 +6,17 @@ import {
 	type ApprovalDecisionEvent,
 	type ApprovalRequiredEvent,
 	type CompleteEvent,
+	deserializeEvent,
 	type ErrorEvent,
+	isAgentEvent,
 	type ProgressEvent,
 	type RunStartedEvent,
+	serializeEvent,
 	type ThinkingEvent,
 	type ToolCallEvent,
 	type ToolErrorEvent,
 	type ToolResultEvent,
 	type UsageEvent,
-	deserializeEvent,
-	isAgentEvent,
-	serializeEvent,
 } from "../index";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -328,7 +328,9 @@ describe("deserializeEvent", () => {
 
 	it("returns null for unknown event type", () => {
 		expect(
-			deserializeEvent('event: unknown_event\ndata: {"type":"unknown_event"}\n\n'),
+			deserializeEvent(
+				'event: unknown_event\ndata: {"type":"unknown_event"}\n\n',
+			),
 		).toBeNull();
 	});
 
@@ -341,7 +343,7 @@ describe("deserializeEvent", () => {
 	});
 
 	it("handles extra whitespace gracefully", () => {
-		const sse = "event: complete\ndata: {\"type\":\"complete\"}\n\n";
+		const sse = 'event: complete\ndata: {"type":"complete"}\n\n';
 		// Should still attempt to parse but fail validation
 		expect(deserializeEvent(sse)).toBeNull();
 	});

@@ -7,7 +7,14 @@
  * @module persistence/schema
  */
 
-import { index, integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+	index,
+	integer,
+	pgTable,
+	text,
+	timestamp,
+	uuid,
+} from "drizzle-orm/pg-core";
 
 export const aiLatencyEvents = pgTable(
 	"ai_latency_events",

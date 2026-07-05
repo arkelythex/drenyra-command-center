@@ -74,9 +74,10 @@ export function clearDemoAccess(): void {
 	localStorage.removeItem(DEMO_ACCESS_STORAGE_KEY);
 }
 
-export function buildDemoSessionPayload(
-	demoAccess: DemoAccessState,
-): { user: User; session: Session } {
+export function buildDemoSessionPayload(demoAccess: DemoAccessState): {
+	user: User;
+	session: Session;
+} {
 	return {
 		user: {
 			id: "demo-user",

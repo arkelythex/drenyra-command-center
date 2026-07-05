@@ -1,39 +1,44 @@
-import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'node:crypto';
+import {
+	createCipheriv,
+	createDecipheriv,
+	createHash,
+	randomBytes,
+} from "node:crypto";
 
-const ENVELOPE_VERSION = 'aes-256-gcm.v1';
-const ALGORITHM = 'aes-256-gcm';
+const ENVELOPE_VERSION = "aes-256-gcm.v1";
+const ALGORITHM = "aes-256-gcm";
 const IV_LENGTH = 12;
 
 type EncryptionEnvelope = {
-  __enc: typeof ENVELOPE_VERSION;
-  iv: string;
-  tag: string;
-  cipher: string;
+	__enc: typeof ENVELOPE_VERSION;
+	iv: string;
+	tag: string;
+	cipher: string;
 };
 
 interface CipherContext {
-  runId: string;
-  toolCallId: string;
+	runId: string;
+	toolCallId: string;
 }
 
 function resolveEncryptionKey(): Buffer | null {
-  const raw = (process.env.ARKELYTHEX_AES256_KEY ?? '').trim();
-  if (!raw) return null;
+	const raw = (process.env.ARKELYTHEX_AES256_KEY ?? "").trim();
+	if (!raw) return null;
 
-  if (/^[A-Fa-f0-9]{64}$/.test(raw)) {
-    return Buffer.from(raw, 'hex');
-  }
+	if (/^[A-Fa-f0-9]{64}$/.test(raw)) {
+		return Buffer.from(raw, "hex");
+	}
 
-  try {
-    const maybeBase64 = Buffer.from(raw, 'base64');
-    if (maybeBase64.length === 32) {
-      return maybeBase64;
-    }
-  } catch {
-    // ignore and fallback to hash derivation
-  }
+	try {
+		const maybeBase64 = Buffer.from(raw, "base64");
+		if (maybeBase64.length === 32) {
+			return maybeBase64;
+		}
+	} catch {
+		// ignore and fallback to hash derivation
+	}
 
-  return createHash('sha256').update(raw).digest();
+	return createHash("sha256").update(raw).digest();
 }
 
 /**
@@ -47,22 +52,22 @@ function resolveEncryptionKey(): Buffer | null {
  * ```
  */
 export function isAes256Configured(): boolean {
-  return resolveEncryptionKey() !== null;
+	return resolveEncryptionKey() !== null;
 }
 
 function createAad(context: CipherContext): Buffer {
-  return Buffer.from(`${context.runId}:${context.toolCallId}`, 'utf8');
+	return Buffer.from(`${context.runId}:${context.toolCallId}`, "utf8");
 }
 
 function isEncryptionEnvelope(value: unknown): value is EncryptionEnvelope {
-  if (!value || typeof value !== 'object') return false;
-  const record = value as Record<string, unknown>;
-  return (
-    record.__enc === ENVELOPE_VERSION &&
-    typeof record.iv === 'string' &&
-    typeof record.tag === 'string' &&
-    typeof record.cipher === 'string'
-  );
+	if (!value || typeof value !== "object") return false;
+	const record = value as Record<string, unknown>;
+	return (
+		record.__enc === ENVELOPE_VERSION &&
+		typeof record.iv === "string" &&
+		typeof record.tag === "string" &&
+		typeof record.cipher === "string"
+	);
 }
 
 /**
@@ -76,24 +81,27 @@ function isEncryptionEnvelope(value: unknown): value is EncryptionEnvelope {
  * const encrypted = encryptJsonValue({ amount: 10 }, { runId: 'run_1', toolCallId: 'tool_1' });
  * ```
  */
-export function encryptJsonValue(value: unknown, context: CipherContext): unknown {
-  const key = resolveEncryptionKey();
-  if (!key) return value;
+export function encryptJsonValue(
+	value: unknown,
+	context: CipherContext,
+): unknown {
+	const key = resolveEncryptionKey();
+	if (!key) return value;
 
-  const iv = randomBytes(IV_LENGTH);
-  const cipher = createCipheriv(ALGORITHM, key, iv);
-  cipher.setAAD(createAad(context));
+	const iv = randomBytes(IV_LENGTH);
+	const cipher = createCipheriv(ALGORITHM, key, iv);
+	cipher.setAAD(createAad(context));
 
-  const plaintext = Buffer.from(JSON.stringify(value), 'utf8');
-  const encrypted = Buffer.concat([cipher.update(plaintext), cipher.final()]);
-  const tag = cipher.getAuthTag();
+	const plaintext = Buffer.from(JSON.stringify(value), "utf8");
+	const encrypted = Buffer.concat([cipher.update(plaintext), cipher.final()]);
+	const tag = cipher.getAuthTag();
 
-  return {
-    __enc: ENVELOPE_VERSION,
-    iv: iv.toString('base64'),
-    tag: tag.toString('base64'),
-    cipher: encrypted.toString('base64'),
-  } as EncryptionEnvelope;
+	return {
+		__enc: ENVELOPE_VERSION,
+		iv: iv.toString("base64"),
+		tag: tag.toString("base64"),
+		cipher: encrypted.toString("base64"),
+	} as EncryptionEnvelope;
 }
 
 /**
@@ -110,25 +118,32 @@ export function encryptJsonValue(value: unknown, context: CipherContext): unknow
  * );
  * ```
  */
-export function decryptJsonValue(value: unknown, context: CipherContext): unknown {
-  const key = resolveEncryptionKey();
-  if (!key || !isEncryptionEnvelope(value)) return value;
+export function decryptJsonValue(
+	value: unknown,
+	context: CipherContext,
+): unknown {
+	const key = resolveEncryptionKey();
+	if (!key || !isEncryptionEnvelope(value)) return value;
 
-  try {
-    const decipher = createDecipheriv(ALGORITHM, key, Buffer.from(value.iv, 'base64'));
-    decipher.setAAD(createAad(context));
-    decipher.setAuthTag(Buffer.from(value.tag, 'base64'));
+	try {
+		const decipher = createDecipheriv(
+			ALGORITHM,
+			key,
+			Buffer.from(value.iv, "base64"),
+		);
+		decipher.setAAD(createAad(context));
+		decipher.setAuthTag(Buffer.from(value.tag, "base64"));
 
-    const decrypted = Buffer.concat([
-      decipher.update(Buffer.from(value.cipher, 'base64')),
-      decipher.final(),
-    ]);
+		const decrypted = Buffer.concat([
+			decipher.update(Buffer.from(value.cipher, "base64")),
+			decipher.final(),
+		]);
 
-    return JSON.parse(decrypted.toString('utf8')) as unknown;
-  } catch {
-    return {
-      redacted: true,
-      reason: 'encrypted_payload_unavailable',
-    };
-  }
+		return JSON.parse(decrypted.toString("utf8")) as unknown;
+	} catch {
+		return {
+			redacted: true,
+			reason: "encrypted_payload_unavailable",
+		};
+	}
 }

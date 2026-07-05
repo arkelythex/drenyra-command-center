@@ -1,12 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { evaluateAuditPlugins, listAuditPlugins, registerAuditPlugin } from "../plugins";
+import {
+	evaluateAuditPlugins,
+	listAuditPlugins,
+	registerAuditPlugin,
+} from "../plugins";
 
 describe("Audit Trail Plugins", () => {
 	it("should register built-in BCP plugin", () => {
 		const plugins = listAuditPlugins();
-		expect(plugins.some((plugin) => plugin.id === "bcp-reconciliation-v1")).toBe(
-			true,
-		);
+		expect(
+			plugins.some((plugin) => plugin.id === "bcp-reconciliation-v1"),
+		).toBe(true);
 	});
 
 	it("should emit finding for BCP reconciliation drift", () => {

@@ -1,5 +1,5 @@
-export { InboxUploadZone } from "./InboxUploadZone";
 export { InboxAgentFeed } from "./InboxAgentFeed";
-export { InboxInvoiceList } from "./InboxInvoiceList";
 export { InboxConversationInput } from "./InboxConversationInput";
+export { InboxInvoiceList } from "./InboxInvoiceList";
 export { InboxResultSummary } from "./InboxResultSummary";
+export { InboxUploadZone } from "./InboxUploadZone";

@@ -1,16 +1,16 @@
-import { MOBILE_NAV_ITEMS as MOBILE_NAV_ITEMS_SOURCE } from "./navigation/items/mobile";
-import { ALL_NAV_ITEMS } from "./navigation/items";
-import { GROUP_METADATA, SIDEBAR_GROUP_ORDER } from "./navigation/types";
 import {
 	isMobileNavigationRouteEnabledForDemo,
 	isNavigationItemEnabledForDemo,
 } from "./demo-feature-flags";
+import { ALL_NAV_ITEMS } from "./navigation/items";
+import { MOBILE_NAV_ITEMS as MOBILE_NAV_ITEMS_SOURCE } from "./navigation/items/mobile";
 import type {
 	MobileNavigationItem,
 	NavigationGroup,
 	NavigationItem,
 	NavigationSectionId,
 } from "./navigation/types";
+import { GROUP_METADATA, SIDEBAR_GROUP_ORDER } from "./navigation/types";
 
 export type {
 	MobileNavigationItem,

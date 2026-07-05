@@ -1,4 +1,4 @@
-import { type Currency } from "@drenyra/domain";
+import type { Currency } from "@drenyra/domain";
 
 export type SireRegisterType = "COMPRAS" | "VENTAS";
 

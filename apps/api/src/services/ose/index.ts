@@ -13,7 +13,10 @@ export type {
 	SendInvoiceData,
 	ValidationResult,
 } from "@drenyra/infrastructure/ose";
-export { OSEConfigValidator, oseConfigValidator } from "@drenyra/infrastructure/ose";
-export { OSEProviderFactory } from "@drenyra/infrastructure/ose";
-export { NubeFactProvider } from "@drenyra/infrastructure/ose";
-export { SimulationOSEProvider } from "@drenyra/infrastructure/ose";
+export {
+	NubeFactProvider,
+	OSEConfigValidator,
+	OSEProviderFactory,
+	oseConfigValidator,
+	SimulationOSEProvider,
+} from "@drenyra/infrastructure/ose";

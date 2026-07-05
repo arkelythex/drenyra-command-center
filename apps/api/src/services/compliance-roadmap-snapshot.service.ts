@@ -1,18 +1,18 @@
-import { invoices, transactions } from "@drenyra/persistence/schema";
-import { db } from "@drenyra/persistence/client";
-import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
 import type {
 	ComplianceRoadmapAction,
 	ComplianceRoadmapActionId,
 	ComplianceRoadmapSnapshot,
 } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
+import { invoices, transactions } from "@drenyra/persistence/schema";
+import { ComplianceService } from "./compliance.service";
 import {
 	buildRoadmapActions,
 	buildRoadmapFocus,
 	clampScore,
 	readPeriodTotal,
 } from "./compliance-roadmap-snapshot.helpers";
-import { ComplianceService } from "./compliance.service";
 
 const PENDING_SUNAT_STATUS_CLAUSE = sql`${invoices.sunatStatus} IS NULL OR ${invoices.sunatStatus} IN ('DRAFT', 'SUBMITTED', 'OBSERVED')`;
 
@@ -149,7 +149,8 @@ export class ComplianceRoadmapSnapshotService {
 			(candidate) => candidate.id === input.actionId,
 		);
 		if (!action) throw new Error("ROADMAP_ACTION_NOT_AVAILABLE");
-		if (action.traceId !== input.traceId) throw new Error("ROADMAP_TRACE_MISMATCH");
+		if (action.traceId !== input.traceId)
+			throw new Error("ROADMAP_TRACE_MISMATCH");
 		return action;
 	}
 }

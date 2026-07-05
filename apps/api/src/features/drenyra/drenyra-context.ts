@@ -7,8 +7,9 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import type { AgentContext } from "@drenyra/drenyra-orchestrator";
+
 import type { DrenyraActorContext } from "@drenyra/application/drenyra";
+import type { AgentContext } from "@drenyra/drenyra-orchestrator";
 import { fail } from "../shared/api-response";
 
 export type DrenyraAgentContextResolution =
@@ -94,7 +95,8 @@ export function resolveDrenyraActorContext(
 		context: {
 			companyId,
 			companyRuc,
-			organizationId: readOptionalHeader(headers, "x-organization-id") || companyId,
+			organizationId:
+				readOptionalHeader(headers, "x-organization-id") || companyId,
 			period,
 			userId,
 		},

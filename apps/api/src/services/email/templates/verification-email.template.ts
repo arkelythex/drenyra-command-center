@@ -1,17 +1,17 @@
-import { AUTH_EMAIL_STYLES, getEmailFooter } from './email-styles';
+import { AUTH_EMAIL_STYLES, getEmailFooter } from "./email-styles";
 
 /**
  * Email Verification Template
  */
 
 export interface VerificationEmailData {
-  userName: string;
-  verificationUrl: string;
-  expiresIn?: string;
+	userName: string;
+	verificationUrl: string;
+	expiresIn?: string;
 }
 
 export function generateVerificationEmail(data: VerificationEmailData): string {
-  return `
+	return `
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,14 +43,14 @@ export function generateVerificationEmail(data: VerificationEmailData): string {
       </div>
 
       ${
-        data.expiresIn
-          ? `
+				data.expiresIn
+					? `
       <div class="warning">
         ⏰ <strong>Importante:</strong> Este enlace expirará en <strong>${data.expiresIn}</strong>. Si el enlace expira, podrás solicitar uno nuevo desde la página de login.
       </div>
       `
-          : ''
-      }
+					: ""
+			}
 
       <p style="margin-top: 30px;">Si no creaste una cuenta en ARKELYTHEX, puedes ignorar este email de forma segura.</p>
     </div>

@@ -11,10 +11,10 @@
  * 3. Poor ratings trigger a Plausible event
  */
 
-import { onCLS, onINP, onLCP, onTTFB } from "web-vitals";
 import type { Metric } from "web-vitals";
-import { runtimeConfig } from "./runtime-config";
+import { onCLS, onINP, onLCP, onTTFB } from "web-vitals";
 import { captureWebVital, trackEvent } from "./monitoring";
+import { runtimeConfig } from "./runtime-config";
 
 let _initialized = false;
 
@@ -22,7 +22,7 @@ let _initialized = false;
  * @internal — only for testing. Resets the singleton guard.
  */
 export function __resetWebVitalsInit(): void {
-  _initialized = false;
+	_initialized = false;
 }
 
 /**
@@ -31,25 +31,29 @@ export function __resetWebVitalsInit(): void {
  * Safe to call multiple times — only the first call initializes observers.
  */
 export function initWebVitals(): void {
-  if (_initialized || !runtimeConfig.monitoringEnabled || !runtimeConfig.webVitalsEnabled) {
-    return;
-  }
-  if (typeof window === "undefined") return;
+	if (
+		_initialized ||
+		!runtimeConfig.monitoringEnabled ||
+		!runtimeConfig.webVitalsEnabled
+	) {
+		return;
+	}
+	if (typeof window === "undefined") return;
 
-  _initialized = true;
+	_initialized = true;
 
-  const report = (metric: Metric) => {
-    const { name, value, rating } = metric;
+	const report = (metric: Metric) => {
+		const { name, value, rating } = metric;
 
-    captureWebVital(name as "LCP" | "CLS" | "INP" | "TTFB", value, rating);
+		captureWebVital(name as "LCP" | "CLS" | "INP" | "TTFB", value, rating);
 
-    if (rating === "poor") {
-      trackEvent("web_vital_poor", { metric: name, value });
-    }
-  };
+		if (rating === "poor") {
+			trackEvent("web_vital_poor", { metric: name, value });
+		}
+	};
 
-  onLCP(report);
-  onCLS(report);
-  onINP(report);
-  onTTFB(report);
+	onLCP(report);
+	onCLS(report);
+	onINP(report);
+	onTTFB(report);
 }

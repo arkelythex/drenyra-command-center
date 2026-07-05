@@ -1,13 +1,13 @@
 import {
-	Landmark,
-	CreditCard,
 	Building2,
+	CreditCard,
+	Landmark,
 	MoreVertical,
 	Trash2,
 } from "lucide-react";
-import { cn, n } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import type { MouseEvent } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -15,8 +15,8 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useHaptics } from "@/hooks/useHaptics";
+import { cn, n } from "@/lib/utils";
 import type { BankAccount } from "../../stores/banking.store.types";
-import type { MouseEvent } from "react";
 
 interface AccountCardProps {
 	account: BankAccount;

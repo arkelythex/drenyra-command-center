@@ -1,4 +1,4 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import { ShadowSunatEngine } from "../ShadowSunatEngine";
 import type { TaxData } from "../types/shadow-sunat";
 
@@ -66,7 +66,11 @@ describe("ShadowSunatEngine — clean data (no alerts)", () => {
 
 	it("returns correct metadata fields", async () => {
 		const engine = ShadowSunatEngine.getInstance();
-		const data = createTaxData({ organizationId: "org-abc", fiscalYear: 2026, period: "2026-02" });
+		const data = createTaxData({
+			organizationId: "org-abc",
+			fiscalYear: 2026,
+			period: "2026-02",
+		});
 		const result = await engine.runPreAudit(data);
 
 		expect(result.organizationId).toBe("org-abc");
@@ -270,7 +274,9 @@ describe("ShadowSunatEngine — area risk calculations", () => {
 		});
 		const result = await engine.runPreAudit(data);
 
-		const igvArea = result.areaRisks.find((a) => a.area === "IGV_CREDITO_FISCAL");
+		const igvArea = result.areaRisks.find(
+			(a) => a.area === "IGV_CREDITO_FISCAL",
+		);
 		expect(igvArea).toBeDefined();
 		expect(igvArea!.findings.length).toBeGreaterThan(0);
 	});
@@ -283,8 +289,12 @@ describe("ShadowSunatEngine — area risk calculations", () => {
 		});
 		const result = await engine.runPreAudit(data);
 
-		const igvArea = result.areaRisks.find((a) => a.area === "IGV_CREDITO_FISCAL")!;
-		const creditMetric = igvArea.metrics.find((m) => m.name === "Ratio Crédito/Débito");
+		const igvArea = result.areaRisks.find(
+			(a) => a.area === "IGV_CREDITO_FISCAL",
+		)!;
+		const creditMetric = igvArea.metrics.find(
+			(m) => m.name === "Ratio Crédito/Débito",
+		);
 		expect(creditMetric).toBeDefined();
 		expect(creditMetric!.value).toBe(95); // 95%
 		expect(creditMetric!.threshold).toBe(90);
@@ -366,7 +376,9 @@ describe("ShadowSunatEngine — generateExplanation", () => {
 
 		// The explanation includes alert title and description, not the rule ID
 		expect(explanation).toContain("Ratio crédito/débito anómalo");
-		expect(explanation).toContain("El crédito fiscal excede el 90% del débito fiscal");
+		expect(explanation).toContain(
+			"El crédito fiscal excede el 90% del débito fiscal",
+		);
 	});
 
 	it("includes correct expected action label in explanation", async () => {
@@ -434,7 +446,9 @@ describe("ShadowSunatEngine — edge cases", () => {
 		expect(result.recommendations.length).toBeGreaterThan(0);
 
 		// DETR-001 should have a recommendation
-		const detraRec = result.recommendations.find((r) => r.alertId === "DETR-001");
+		const detraRec = result.recommendations.find(
+			(r) => r.alertId === "DETR-001",
+		);
 		expect(detraRec).toBeDefined();
 		expect(detraRec!.action).toContain("Depositar detracciones");
 	});
@@ -447,8 +461,12 @@ describe("ShadowSunatEngine — edge cases", () => {
 		});
 		const result = await engine.runPreAudit(data);
 
-		const igvArea = result.areaRisks.find((a) => a.area === "IGV_CREDITO_FISCAL")!;
-		const metric = igvArea.metrics.find((m) => m.name === "Ratio Crédito/Débito")!;
+		const igvArea = result.areaRisks.find(
+			(a) => a.area === "IGV_CREDITO_FISCAL",
+		)!;
+		const metric = igvArea.metrics.find(
+			(m) => m.name === "Ratio Crédito/Débito",
+		)!;
 		expect(metric.value).toBe(95);
 		expect(metric.sectorAverage).toBe(70);
 		expect(metric.deviation).toBe(25);

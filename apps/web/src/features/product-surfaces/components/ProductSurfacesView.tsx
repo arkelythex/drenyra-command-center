@@ -91,9 +91,9 @@ export function ProductSurfacesView() {
 						Product surfaces
 					</h1>
 					<p className="max-w-3xl text-sm text-muted-foreground sm:text-base">
-						Vista operativa de cómo Drenyra mapea marcas de producto a
-						módulos reales, documentación canónica y boundaries de runtime
-						dentro del monorepo.
+						Vista operativa de cómo Drenyra mapea marcas de producto a módulos
+						reales, documentación canónica y boundaries de runtime dentro del
+						monorepo.
 					</p>
 				</div>
 			</header>

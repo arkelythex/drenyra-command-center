@@ -7,6 +7,8 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
+
+import { randomUUID } from "node:crypto";
 import type {
 	DeterministicValidatorResultRecord,
 	EvidenceEdge,
@@ -20,7 +22,6 @@ import {
 	EVIDENCE_NODE_KIND,
 	isFiscalTruthScope,
 } from "@drenyra/domain";
-import { randomUUID } from "node:crypto";
 
 export interface AppendEvidenceCommandInput {
 	expectedScope: FiscalTruthScope;
@@ -58,7 +59,8 @@ export class AppendEvidenceCommand {
 		if (
 			input.expectedScope.companyId !== input.evidence.scope.companyId ||
 			input.expectedScope.companyRuc !== input.evidence.scope.companyRuc ||
-			input.expectedScope.organizationId !== input.evidence.scope.organizationId ||
+			input.expectedScope.organizationId !==
+				input.evidence.scope.organizationId ||
 			input.expectedScope.period !== input.evidence.scope.period ||
 			input.expectedScope.countryCode !== input.evidence.scope.countryCode
 		) {

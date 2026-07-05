@@ -1,4 +1,4 @@
-export * from "./types";
+export * from "./agents";
 export * from "./client";
 export * from "./ppocr-v6";
-export * from "./agents";
+export * from "./types";

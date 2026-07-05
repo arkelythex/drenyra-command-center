@@ -1,11 +1,12 @@
-import { Money } from "@drenyra/domain";
-import type { ComplianceReproducibilityReport } from "@drenyra/domain";
-import type { IGVSummary } from "@drenyra/domain";
-import type { SIRESummary } from "@drenyra/domain";
 import type {
+	ComplianceReproducibilityReport,
+	IGVSummary,
+	SIRESummary,
 	SIRESunatLiveSummary,
 	SIRESunatLiveUnavailableReason,
 } from "@drenyra/domain";
+import { Money } from "@drenyra/domain";
+import { buildFiscalTruthAdvisoryTrace } from "../../fiscal/truth/trace";
 import type { Pdt621Input, Pdt621Result } from "../../taxation/pdt-621.service";
 import type {
 	LedgerFlowStatus,
@@ -14,7 +15,6 @@ import type {
 	LedgerSunatCrossCheck,
 } from "../ledger-mvp.types";
 import { resolveLedgerPeriodRange } from "./period-range";
-import { buildFiscalTruthAdvisoryTrace } from "../../fiscal/truth/trace";
 
 function readNonNegativeNumberEnvDual(
 	primary: string,

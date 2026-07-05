@@ -94,11 +94,20 @@ export interface CrudHooks<T, Create, Update> {
 	/** Fetch a single record by ID */
 	useGet: (id: string) => { data?: T; isLoading: boolean };
 	/** Create a new record (auto-injects company ID) */
-	useCreate: () => { mutateAsync: (data: Create) => Promise<T>; isPending: boolean };
+	useCreate: () => {
+		mutateAsync: (data: Create) => Promise<T>;
+		isPending: boolean;
+	};
 	/** Update a record by ID */
-	useUpdate: () => { mutateAsync: (params: { id: string; data: Update }) => Promise<T>; isPending: boolean };
+	useUpdate: () => {
+		mutateAsync: (params: { id: string; data: Update }) => Promise<T>;
+		isPending: boolean;
+	};
 	/** Delete a record by ID */
-	useDelete: () => { mutateAsync: (id: string) => Promise<void>; isPending: boolean };
+	useDelete: () => {
+		mutateAsync: (id: string) => Promise<void>;
+		isPending: boolean;
+	};
 }
 
 /**

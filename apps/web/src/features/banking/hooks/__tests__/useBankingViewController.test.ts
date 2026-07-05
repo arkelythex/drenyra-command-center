@@ -66,8 +66,8 @@ vi.mock("../../stores/banking.store", () => ({
 }));
 
 import {
-	useBankingSelection,
 	useBankingReconciliation,
+	useBankingSelection,
 } from "../../stores/banking.store";
 import {
 	useBankingAccountsQuery,

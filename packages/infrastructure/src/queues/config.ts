@@ -1,13 +1,13 @@
 import { Queue, QueueEvents } from "bullmq";
 import IORedis from "ioredis";
-import { QUEUE_NAMES } from "./types";
 import type {
-	OCRJobData,
 	AIAnalysisJobData,
-	SUNATSubmissionJobData,
 	EmailJobData,
+	OCRJobData,
 	ReportJobData,
+	SUNATSubmissionJobData,
 } from "./types";
+import { QUEUE_NAMES } from "./types";
 
 const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
 

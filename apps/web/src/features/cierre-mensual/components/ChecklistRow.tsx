@@ -1,6 +1,6 @@
-import { CheckCircle2, AlertTriangle, type LucideIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 import type { CierreMensualChecklistItem } from "@drenyra/domain";
+import { AlertTriangle, CheckCircle2, type LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ChecklistRowProps {
 	item: CierreMensualChecklistItem;

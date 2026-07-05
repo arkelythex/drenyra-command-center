@@ -75,7 +75,9 @@ function renderHeader(
 function renderEntries(doc: PDFKit.PDFDocument, trail: GetTrailResult): void {
 	for (const log of trail.logs) {
 		doc.fontSize(9).fillColor("#111111");
-		doc.text(`[${log.createdAt.toISOString()}] ${log.agentName} -> ${log.decisionType}`);
+		doc.text(
+			`[${log.createdAt.toISOString()}] ${log.agentName} -> ${log.decisionType}`,
+		);
 		doc.fillColor("#444444");
 		doc.text(`Hash: ${log.hash}`);
 		doc.text(`Prev: ${log.prevHash ?? "GENESIS"}`);

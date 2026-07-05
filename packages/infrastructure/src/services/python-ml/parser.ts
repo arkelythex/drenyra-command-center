@@ -1,5 +1,9 @@
-import type { FraudAlert, InvoiceForAnalysis, VendorForAssessment } from "./types";
 import { pythonML } from "./client";
+import type {
+	FraudAlert,
+	InvoiceForAnalysis,
+	VendorForAssessment,
+} from "./types";
 
 // ============================================
 // Convenience Functions

@@ -7,11 +7,11 @@
  * - Period closing for SUNAT compliance
  */
 
-import { and, eq, sql } from "drizzle-orm";
 import { db } from "@drenyra/persistence/client";
 import { journalEntries, journalEntryLines } from "@drenyra/persistence/schema";
 // @ts-expect-error — Missing module, install via bun add
 import { accountBalances } from "@drenyra/persistence/schema/schema-extensions";
+import { and, eq, sql } from "drizzle-orm";
 import type { LedgerGuardResult, PeriodStatus } from "./types";
 
 /**
@@ -222,7 +222,7 @@ export async function createReversalEntry(
 
 	for (const line of original.lines || []) {
 		// @ts-expect-error — Drizzle schema evolution: columns not in journalEntryLines table schema
-	await db.insert(journalEntryLines).values({
+		await db.insert(journalEntryLines).values({
 			// @ts-expect-error — Drizzle schema evolution: column accountId not in line result type
 			id: `${reversalId}-${line.accountId}`,
 			journalEntryId: reversalId,

@@ -6,11 +6,11 @@
  */
 
 import type {
-	ThreadStatus,
+	AgentRole,
 	TaskStatus,
 	ThreadEnvironment,
 	ThreadPriority,
-	AgentRole,
+	ThreadStatus,
 } from "@drenyra/domain/entities/thread";
 
 // ─── List / Summary ──────────────────────────────────────────────────────────

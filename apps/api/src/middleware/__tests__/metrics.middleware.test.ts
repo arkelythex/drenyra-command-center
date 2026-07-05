@@ -25,18 +25,18 @@ describe("metrics middleware", () => {
 	});
 
 	it("records thrown requests once with a bounded route label", async () => {
-		const app = new Elysia()
-			.use(metricsMiddleware)
-			.get("/boom/:id", () => {
-				throw new Error("boom");
-			});
+		const app = new Elysia().use(metricsMiddleware).get("/boom/:id", () => {
+			throw new Error("boom");
+		});
 
 		const response = await app.handle(
 			new Request("http://localhost/boom/clh3k8u9p0000a1b2c3d4e5f6"),
 		);
 		expect(response.status).toBe(500);
 
-		const metricsResponse = await app.handle(new Request("http://localhost/metrics"));
+		const metricsResponse = await app.handle(
+			new Request("http://localhost/metrics"),
+		);
 		const metrics = await metricsResponse.text();
 
 		expect(metrics).toContain(

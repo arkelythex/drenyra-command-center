@@ -1,8 +1,8 @@
-import { useAgentsWindowStore } from "./agents.store";
+import { Bot, RefreshCw } from "lucide-react";
 import { AgentCard } from "./AgentCard";
 import { AgentSkeleton } from "./AgentSkeleton";
+import { useAgentsWindowStore } from "./agents.store";
 import type { AgentSessionStatus } from "./agents.types";
-import { Bot, RefreshCw } from "lucide-react";
 
 interface AgentGridProps {
 	sessions: AgentSessionStatus[];
@@ -50,7 +50,10 @@ export function AgentGrid({
 	if (sessions.length === 0) {
 		return (
 			<div className="flex flex-col items-center gap-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-8 text-center">
-				<Bot className="size-8 text-[var(--text-secondary)]" aria-hidden="true" />
+				<Bot
+					className="size-8 text-[var(--text-secondary)]"
+					aria-hidden="true"
+				/>
 				<p className="text-sm text-[var(--text-secondary)]">
 					No hay agentes activos
 				</p>

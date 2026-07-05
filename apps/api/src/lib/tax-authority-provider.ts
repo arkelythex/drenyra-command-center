@@ -8,8 +8,8 @@
  * @module lib/tax-authority-provider
  */
 
-import type { CountryCode } from "@drenyra/domain";
 import type { TaxAuthorityPort } from "@drenyra/application/ports/tax-authority.port";
+import type { CountryCode } from "@drenyra/domain";
 import { createTaxAuthority } from "@drenyra/infrastructure/tax-authority";
 
 const adapterCache = new Map<string, TaxAuthorityPort>();

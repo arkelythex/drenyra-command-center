@@ -131,7 +131,10 @@ describe("AgentsService", () => {
 				session2,
 			]);
 
-			const result = service.listSessions("company-1", { limit: 10, offset: 0 });
+			const result = service.listSessions("company-1", {
+				limit: 10,
+				offset: 0,
+			});
 
 			expect(result).toEqual({
 				data: [
@@ -235,8 +238,12 @@ describe("AgentsService", () => {
 		it("throws AGENT_NOT_FOUND for nonexistent session", () => {
 			mockSessionManager.get.mockReturnValue(undefined);
 
-			expect(() => service.getSession("company-1", "nonexistent")).toThrow(AppError);
-			expect(() => service.getSession("company-1", "nonexistent")).toThrow(/not found/);
+			expect(() => service.getSession("company-1", "nonexistent")).toThrow(
+				AppError,
+			);
+			expect(() => service.getSession("company-1", "nonexistent")).toThrow(
+				/not found/,
+			);
 		});
 	});
 
@@ -261,7 +268,9 @@ describe("AgentsService", () => {
 		it("throws AGENT_NOT_FOUND for nonexistent session", () => {
 			mockSessionManager.get.mockReturnValue(undefined);
 
-			expect(() => service.getTimeline("company-1", "nonexistent")).toThrow(AppError);
+			expect(() => service.getTimeline("company-1", "nonexistent")).toThrow(
+				AppError,
+			);
 		});
 	});
 
@@ -327,7 +336,9 @@ describe("AgentsService", () => {
 		it("throws INVALID_TRANSITION when resuming a non-paused session", () => {
 			mockSessionManager.get.mockReturnValue(session1);
 
-			expect(() => service.resumeSession("company-1", "session-1")).toThrow(AppError);
+			expect(() => service.resumeSession("company-1", "session-1")).toThrow(
+				AppError,
+			);
 			expect(() => service.resumeSession("company-1", "session-1")).toThrow(
 				/not in "paused"/,
 			);
@@ -337,8 +348,12 @@ describe("AgentsService", () => {
 			const completedSession = mockAgentSession({ status: "completed" });
 			mockSessionManager.get.mockReturnValue(completedSession);
 
-			expect(() => service.cancelSession("company-1", "session-1")).toThrow(AppError);
-			expect(() => service.cancelSession("company-1", "session-1")).toThrow(/Cannot cancel/);
+			expect(() => service.cancelSession("company-1", "session-1")).toThrow(
+				AppError,
+			);
+			expect(() => service.cancelSession("company-1", "session-1")).toThrow(
+				/Cannot cancel/,
+			);
 		});
 	});
 });

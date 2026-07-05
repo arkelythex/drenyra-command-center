@@ -1,10 +1,10 @@
 import { runSireAdversarialArbiter } from "./sire-adversarial-arbiter.service";
-import { runSireCreatorAgent } from "./sire-adversarial-creator.agent";
-import { runSireDestructorAgent } from "./sire-adversarial-destructor.agent";
 import type {
 	SireAdversarialAuditResult,
 	SireAdversarialInput,
 } from "./sire-adversarial-audit.types";
+import { runSireCreatorAgent } from "./sire-adversarial-creator.agent";
+import { runSireDestructorAgent } from "./sire-adversarial-destructor.agent";
 import { SireReadinessSubagentsService } from "./sire-readiness-subagents.service";
 
 const readinessService = new SireReadinessSubagentsService();

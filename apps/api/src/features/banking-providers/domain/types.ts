@@ -14,13 +14,13 @@
  */
 
 export type BankProvider =
-  | 'bcp_pers_pe'      // BCP Personal
-  | 'bcp_corp_pe'      // BCP Corporativo (Telecrédito)
-  | 'interbank_pe'     // Interbank
-  | 'bbva_pers_pe'     // BBVA Personal
-  | 'bbva_corp_pe'     // BBVA Corporativo
-  | 'scotia_pers_pe'   // Scotiabank Personal
-  | 'scotia_smes_pe';  // Scotiabank SMEs
+	| "bcp_pers_pe" // BCP Personal
+	| "bcp_corp_pe" // BCP Corporativo (Telecrédito)
+	| "interbank_pe" // Interbank
+	| "bbva_pers_pe" // BBVA Personal
+	| "bbva_corp_pe" // BBVA Corporativo
+	| "scotia_pers_pe" // Scotiabank Personal
+	| "scotia_smes_pe"; // Scotiabank SMEs
 
 /**
  * Tipo de documento (Perú)
@@ -31,7 +31,7 @@ export type BankProvider =
  * ```
  */
 
-export type DocumentType = 'dni' | 'pasaporte' | 'carne_extranjeria';
+export type DocumentType = "dni" | "pasaporte" | "carne_extranjeria";
 
 /**
  * Session key de Prometeo
@@ -45,9 +45,9 @@ export type DocumentType = 'dni' | 'pasaporte' | 'carne_extranjeria';
  */
 
 export interface PrometeoSession {
-  sessionKey: string;
-  provider: BankProvider;
-  expiresAt: Date; // 5 min desde creación
+	sessionKey: string;
+	provider: BankProvider;
+	expiresAt: Date; // 5 min desde creación
 }
 
 /**
@@ -62,12 +62,12 @@ export interface PrometeoSession {
  */
 
 export interface BankCredentials {
-  provider: BankProvider;
-  username: string; // Número de tarjeta
-  password: string; // Clave de internet (6 dígitos)
-  documentType?: DocumentType; // Requerido para BCP Personal
-  documentNumber?: string;      // Requerido para BCP Personal
-  otpToken?: string;            // OTP para providers que lo requieren
+	provider: BankProvider;
+	username: string; // Número de tarjeta
+	password: string; // Clave de internet (6 dígitos)
+	documentType?: DocumentType; // Requerido para BCP Personal
+	documentNumber?: string; // Requerido para BCP Personal
+	otpToken?: string; // OTP para providers que lo requieren
 }
 
 /**
@@ -80,14 +80,14 @@ export interface BankCredentials {
  */
 
 export interface BankAccount {
-  id: string;           // Account ID del provider
-  name: string;         // Nombre de la cuenta
-  number: string;       // Número de cuenta
-  branch: string;       // Sucursal/agencia
-  currency: 'PEN' | 'USD' | 'EUR';
-  balance: number;      // Balance actual
-  type: 'CHECKING' | 'SAVINGS' | 'CREDIT';
-  provider: BankProvider;
+	id: string; // Account ID del provider
+	name: string; // Nombre de la cuenta
+	number: string; // Número de cuenta
+	branch: string; // Sucursal/agencia
+	currency: "PEN" | "USD" | "EUR";
+	balance: number; // Balance actual
+	type: "CHECKING" | "SAVINGS" | "CREDIT";
+	provider: BankProvider;
 }
 
 /**
@@ -100,16 +100,16 @@ export interface BankAccount {
  */
 
 export interface BankMovement {
-  id: string;
-  date: string;         // ISO 8601
-  description: string;
-  reference: string;    // Número de referencia
-  debit: number | null; // Monto débito (null si es crédito)
-  credit: number | null; // Monto crédito (null si es débito)
-  balance: number;      // Balance después del movimiento
-  currency: 'PEN' | 'USD' | 'EUR';
-  type: 'CREDIT' | 'DEBIT';
-  provider: BankProvider;
+	id: string;
+	date: string; // ISO 8601
+	description: string;
+	reference: string; // Número de referencia
+	debit: number | null; // Monto débito (null si es crédito)
+	credit: number | null; // Monto crédito (null si es débito)
+	balance: number; // Balance después del movimiento
+	currency: "PEN" | "USD" | "EUR";
+	type: "CREDIT" | "DEBIT";
+	provider: BankProvider;
 }
 
 /**
@@ -122,10 +122,10 @@ export interface BankMovement {
  */
 
 export interface AccountHolder {
-  name: string;
-  documentType: DocumentType;
-  documentNumber: string;
-  provider: BankProvider;
+	name: string;
+	documentType: DocumentType;
+	documentNumber: string;
+	provider: BankProvider;
 }
 
 /**
@@ -138,7 +138,7 @@ export interface AccountHolder {
  */
 
 export interface PrometeoError {
-  status: string;
-  message: string;
-  code?: string;
+	status: string;
+	message: string;
+	code?: string;
 }

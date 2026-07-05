@@ -2,17 +2,14 @@ import { api } from "@/lib/api";
 import { safeApiCall } from "@/lib/api-factory";
 import { extractOkDataOrPassthrough, unwrap } from "@/lib/api-helpers";
 import type {
+	DashboardLiquidityPoint,
 	DashboardOverviewResponse,
 	DashboardOverviewSystemStatus,
-	DashboardLiquidityPoint,
 	DashboardRecentTransaction,
 } from "./types";
 
 export const overviewApi = {
-	async getRecentTransactions(
-		limit = 3,
-		companyId?: string,
-	) {
+	async getRecentTransactions(limit = 3, companyId?: string) {
 		return safeApiCall(async () => {
 			if (!companyId) return [];
 
@@ -62,10 +59,7 @@ export const overviewApi = {
 		});
 	},
 
-	async getOverview(
-		companyId: string,
-		currency: "PEN" | "USD" = "PEN",
-	) {
+	async getOverview(companyId: string, currency: "PEN" | "USD" = "PEN") {
 		return safeApiCall(async () => {
 			return extractOkDataOrPassthrough<DashboardOverviewResponse>(
 				await unwrap(
@@ -78,10 +72,7 @@ export const overviewApi = {
 		});
 	},
 
-	async getLiquidity(
-		companyId: string,
-		months: number = 12,
-	) {
+	async getLiquidity(companyId: string, months: number = 12) {
 		return safeApiCall(async () => {
 			return extractOkDataOrPassthrough<DashboardLiquidityPoint[]>(
 				await unwrap(

@@ -1,5 +1,9 @@
-import type { ModelDefinition, OpenRouterModelTier } from "./types";
-import type { TaskType, ModelTier } from "./types";
+import type {
+	ModelDefinition,
+	ModelTier,
+	OpenRouterModelTier,
+	TaskType,
+} from "./types";
 
 // ============================================
 // MODEL DEFINITIONS
@@ -104,67 +108,67 @@ export const TASK_TIER_REQUIREMENTS: Record<TaskType, ModelTier> = {
  */
 
 export const OPENROUTER_MODEL_TIERS: Record<string, OpenRouterModelTier> = {
-  /**
-   * Reasoning - Complex problem solving, multi-step logic
-   * Use cases: SUNAT compliance, tax optimization, complex refactoring
-   */
-  'reasoning': {
-    id: 'reasoning',
-    models: [
-      'anthropic/claude-opus-4.6',      // 2026: 1M context, extended thinking
-      'google/gemini-3-pro',            // 2026: Multimodal reasoning
-      'anthropic/claude-opus-4',        // Fallback (current best)
-    ],
-    maxTokens: 8192,
-    temperature: 0.3,
-    costLimit: 0.50,
-  },
+	/**
+	 * Reasoning - Complex problem solving, multi-step logic
+	 * Use cases: SUNAT compliance, tax optimization, complex refactoring
+	 */
+	reasoning: {
+		id: "reasoning",
+		models: [
+			"anthropic/claude-opus-4.6", // 2026: 1M context, extended thinking
+			"google/gemini-3-pro", // 2026: Multimodal reasoning
+			"anthropic/claude-opus-4", // Fallback (current best)
+		],
+		maxTokens: 8192,
+		temperature: 0.3,
+		costLimit: 0.5,
+	},
 
-  /**
-   * Fast - Quick responses, high throughput
-   * Use cases: Chat, validation, simple queries
-   */
-  'fast': {
-    id: 'fast',
-    models: [
-      'anthropic/claude-sonnet-4.5',    // Current production (Feb 2026)
-      'google/gemini-3-flash',          // 2026: Ultra-fast, cheap
-      'deepseek/deepseek-v3',           // 2026: Open-source alternative
-    ],
-    maxTokens: 4096,
-    temperature: 0.4,
-    costLimit: 0.10,
-  },
+	/**
+	 * Fast - Quick responses, high throughput
+	 * Use cases: Chat, validation, simple queries
+	 */
+	fast: {
+		id: "fast",
+		models: [
+			"anthropic/claude-sonnet-4.5", // Current production (Feb 2026)
+			"google/gemini-3-flash", // 2026: Ultra-fast, cheap
+			"deepseek/deepseek-v3", // 2026: Open-source alternative
+		],
+		maxTokens: 4096,
+		temperature: 0.4,
+		costLimit: 0.1,
+	},
 
-  /**
-   * Code - Code generation, refactoring, reviews
-   * Use cases: Bug fixing, feature implementation, documentation
-   */
-  'code': {
-    id: 'code',
-    models: [
-      'deepseek/deepseek-coder-v3',     // 2026: Best code model (open-source)
-      'anthropic/claude-opus-4.6',      // Fallback for complex refactors
-      'anthropic/claude-sonnet-4.5',    // Budget fallback
-    ],
-    maxTokens: 16384,
-    temperature: 0.1,
-    costLimit: 0.30,
-  },
+	/**
+	 * Code - Code generation, refactoring, reviews
+	 * Use cases: Bug fixing, feature implementation, documentation
+	 */
+	code: {
+		id: "code",
+		models: [
+			"deepseek/deepseek-coder-v3", // 2026: Best code model (open-source)
+			"anthropic/claude-opus-4.6", // Fallback for complex refactors
+			"anthropic/claude-sonnet-4.5", // Budget fallback
+		],
+		maxTokens: 16384,
+		temperature: 0.1,
+		costLimit: 0.3,
+	},
 
-  /**
-   * Vision - OCR, image analysis, document processing
-   * Use cases: Invoice OCR, document validation, diagrams
-   */
-  'vision': {
-    id: 'vision',
-    models: [
-      'google/gemini-3-pro',            // 2026: Native multimodal
-      'anthropic/claude-sonnet-4.5',    // Vision support
-      'openai/gpt-4o',                  // Fallback
-    ],
-    maxTokens: 4096,
-    temperature: 0.2,
-    costLimit: 0.25,
-  },
+	/**
+	 * Vision - OCR, image analysis, document processing
+	 * Use cases: Invoice OCR, document validation, diagrams
+	 */
+	vision: {
+		id: "vision",
+		models: [
+			"google/gemini-3-pro", // 2026: Native multimodal
+			"anthropic/claude-sonnet-4.5", // Vision support
+			"openai/gpt-4o", // Fallback
+		],
+		maxTokens: 4096,
+		temperature: 0.2,
+		costLimit: 0.25,
+	},
 };

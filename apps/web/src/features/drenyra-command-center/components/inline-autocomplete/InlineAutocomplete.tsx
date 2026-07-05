@@ -229,5 +229,5 @@ export function InlineAutocomplete({
 	);
 }
 
-export { useAutocompleteState };
 export type { AutocompleteState };
+export { useAutocompleteState };

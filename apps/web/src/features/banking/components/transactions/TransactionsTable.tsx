@@ -1,9 +1,8 @@
 import { CheckCircle2, Circle } from "lucide-react";
-
-import { cn, n } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import type { BankTransaction } from "../../stores/banking.store.types";
 import { useFinancialHaptics, useHaptics } from "@/hooks/useHaptics";
+import { cn, n } from "@/lib/utils";
+import type { BankTransaction } from "../../stores/banking.store.types";
 
 interface TransactionsTableProps {
 	transactions: BankTransaction[];

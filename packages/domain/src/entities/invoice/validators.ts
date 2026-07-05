@@ -43,9 +43,7 @@ export function validateInvoiceBusinessRules(props: InvoiceProps): void {
 
 	// Rule 5: Due date must be after issue date
 	if (props.dueDate && props.dueDate < props.issueDate) {
-		throw new Error(
-			"La fecha de vencimiento debe ser posterior a la emisión",
-		);
+		throw new Error("La fecha de vencimiento debe ser posterior a la emisión");
 	}
 
 	// Rule 6: Invoice number must be positive
@@ -61,8 +59,5 @@ export function calculateItemsTotal(
 	items: InvoiceItem[],
 	currency: Currency,
 ): Money {
-	return items.reduce(
-		(acc, item) => acc.add(item.total),
-		Money.zero(currency),
-	);
+	return items.reduce((acc, item) => acc.add(item.total), Money.zero(currency));
 }

@@ -24,7 +24,9 @@ describe("theme-package helpers", () => {
 	} as const;
 
 	it("parses JSON payloads", () => {
-		expect(parseThemePackageJson(JSON.stringify(validPackage))).toMatchObject(validPackage);
+		expect(parseThemePackageJson(JSON.stringify(validPackage))).toMatchObject(
+			validPackage,
+		);
 	});
 
 	it("serializes validated package", () => {

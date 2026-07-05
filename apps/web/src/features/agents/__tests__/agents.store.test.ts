@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { useAgentsWindowStore } from "../agents.store";
 import type { AgentFilters } from "../agents.types";
 
@@ -56,7 +56,13 @@ describe("AgentsWindowStore", () => {
 
 	it("resetFilters clears all filters", () => {
 		const { result } = createStore();
-		act(() => result.current.setFilters({ status: "running", risk: "high", client: "test" }));
+		act(() =>
+			result.current.setFilters({
+				status: "running",
+				risk: "high",
+				client: "test",
+			}),
+		);
 		act(() => result.current.resetFilters());
 		expect(result.current.filters).toEqual({});
 	});

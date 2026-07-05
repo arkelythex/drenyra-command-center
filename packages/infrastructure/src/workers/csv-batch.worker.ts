@@ -2,13 +2,13 @@
  * CSV Batch Worker — Process each CSV batch chunk in parallel.
  */
 
-import { Job, Worker } from "bullmq";
-import { getRedisConnection, isRedisConfigured } from "../queues/redis";
+import { type Job, Worker } from "bullmq";
+import { loggers } from "../logger";
 import type {
 	CsvBatchJobData,
 	CsvBatchResult,
 } from "../queues/csv-batch.queue";
-import { loggers } from "../logger";
+import { getRedisConnection, isRedisConfigured } from "../queues/redis";
 
 const CSV_BATCH_QUEUE = "csv-batch-agent";
 const logger = loggers.worker;

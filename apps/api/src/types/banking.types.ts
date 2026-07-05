@@ -2,9 +2,9 @@
  * Banking Types
  */
 
+import type { ReconciliationStatus as DomainReconciliationStatus } from "@drenyra/domain";
 import type { BankAccountType } from "@drenyra/domain/value-objects/AccountType";
 import type { BankTransactionType } from "@drenyra/domain/value-objects/TransactionType";
-import type { ReconciliationStatus as DomainReconciliationStatus } from "@drenyra/domain";
 export type ReconciliationStatus = DomainReconciliationStatus;
 
 export interface BankAccount {

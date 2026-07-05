@@ -1,18 +1,18 @@
-import { Context } from "elysia";
+import { db } from "@drenyra/persistence/client";
+import { eq } from "@drenyra/persistence/query";
+import { authAuditLogs, authUsers } from "@drenyra/persistence/schema";
+import type { Context } from "elysia";
+import { nanoid } from "nanoid";
+import { createLogger } from "../../../lib/logger";
 import { getTaxAuthority } from "../../../lib/tax-authority-provider";
 import { SunatService } from "../../../services/sunat.service";
-import { db } from "@drenyra/persistence/client";
-import { authAuditLogs, authUsers } from "@drenyra/persistence/schema";
-import { eq } from "@drenyra/persistence/query";
-import { nanoid } from "nanoid";
+import { fail, ok } from "../../shared/api-response";
 import { auth } from "../auth.config";
-import { ok, fail } from "../../shared/api-response";
-import { ensureUserCompanyMembershipFromRuc } from "./company-membership";
-import { createLogger } from "../../../lib/logger";
 import {
 	fingerprintSensitiveValue,
 	resolveClientIpAddress,
 } from "../lib/auth-event-sanitizer";
+import { ensureUserCompanyMembershipFromRuc } from "./company-membership";
 
 const logger = createLogger({ feature: "auth", handler: "signup" });
 

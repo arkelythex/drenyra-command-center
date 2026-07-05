@@ -5,7 +5,7 @@
  * cache invalidation, and cross-tenant isolation.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AgentRegistry } from "../../src/control-plane/agent-registry";
 import type { AgentRegistryEntry } from "../../src/control-plane/contracts";
 
@@ -253,7 +253,9 @@ describe("AgentRegistry", () => {
 				}),
 			});
 
-			const results = await registry.queryByCapability("nonexistent.capability");
+			const results = await registry.queryByCapability(
+				"nonexistent.capability",
+			);
 			expect(results).toHaveLength(0);
 		});
 	});
@@ -312,9 +314,7 @@ describe("AgentRegistry", () => {
 			expect(tenantAResults[0].agentId).toBe("agent-recon");
 
 			// Should NOT contain tenant B's agent
-			const leaked = tenantAResults.filter(
-				(a) => a.agentId === "agent-cross",
-			);
+			const leaked = tenantAResults.filter((a) => a.agentId === "agent-cross");
 			expect(leaked).toHaveLength(0);
 		});
 	});

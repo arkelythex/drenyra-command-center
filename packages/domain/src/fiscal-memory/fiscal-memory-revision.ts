@@ -1,5 +1,8 @@
-import type { FiscalMemoryProps, FiscalMemoryRevisionProps } from "./fiscal-memory.types";
 import { InvalidFiscalMemoryError } from "./fiscal-memory";
+import type {
+	FiscalMemoryProps,
+	FiscalMemoryRevisionProps,
+} from "./fiscal-memory.types";
 import { FISCAL_MEMORY_ERROR_CODES } from "./fiscal-memory.types";
 
 const assertText = (value: string, field: string): void => {
@@ -45,14 +48,30 @@ export class FiscalMemoryRevision {
 		return new FiscalMemoryRevision(props);
 	}
 
-	get id(): string { return this.props.id; }
-	get memoryId(): string { return this.props.memoryId; }
-	get revisionNumber(): number { return this.props.revisionNumber; }
-	get changedBy(): string { return this.props.changedBy; }
-	get changeReason(): string { return this.props.changeReason; }
-	get previousValue(): FiscalMemoryProps { return this.props.previousValue; }
-	get nextValue(): FiscalMemoryProps { return this.props.nextValue; }
-	get createdAt(): Date { return this.props.createdAt; }
+	get id(): string {
+		return this.props.id;
+	}
+	get memoryId(): string {
+		return this.props.memoryId;
+	}
+	get revisionNumber(): number {
+		return this.props.revisionNumber;
+	}
+	get changedBy(): string {
+		return this.props.changedBy;
+	}
+	get changeReason(): string {
+		return this.props.changeReason;
+	}
+	get previousValue(): FiscalMemoryProps {
+		return this.props.previousValue;
+	}
+	get nextValue(): FiscalMemoryProps {
+		return this.props.nextValue;
+	}
+	get createdAt(): Date {
+		return this.props.createdAt;
+	}
 
 	/**
 	 * Serializes the revision for repository persistence.

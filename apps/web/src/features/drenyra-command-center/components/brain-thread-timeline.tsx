@@ -8,7 +8,9 @@ interface BrainThreadTimelineProps {
 	items: DrenyraBrainItem[];
 }
 
-function isTextContent(content: DrenyraBrainItemContent): content is { text: string } {
+function isTextContent(
+	content: DrenyraBrainItemContent,
+): content is { text: string } {
 	return (
 		typeof content === "object" &&
 		content !== null &&

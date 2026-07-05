@@ -107,7 +107,7 @@ export const AUTH_EMAIL_STYLES = `
 `;
 
 export function getEmailFooter(): string {
-  return `
+	return `
     <div class="footer">
       <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
       <p style="margin-top: 15px;">

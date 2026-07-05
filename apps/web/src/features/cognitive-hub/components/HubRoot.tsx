@@ -1,7 +1,7 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense } from "react";
 
 const HubLayout = lazy(() =>
-	import('./HubLayout').then((m) => ({ default: m.HubLayout })),
+	import("./HubLayout").then((m) => ({ default: m.HubLayout })),
 );
 
 const HubChatSkeleton = () => (

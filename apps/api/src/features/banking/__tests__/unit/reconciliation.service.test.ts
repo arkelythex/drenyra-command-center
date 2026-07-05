@@ -1,7 +1,9 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import type { MatchingStrategy } from "../../domain/services/matching-strategy";
-import { TransactionBuilder, TestIds } from "../fixtures/banking.fixtures";
-import type { MatchCandidate } from "../../domain/services/matching-strategy";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type {
+	MatchCandidate,
+	MatchingStrategy,
+} from "../../domain/services/matching-strategy";
+import { TestIds, TransactionBuilder } from "../fixtures/banking.fixtures";
 
 // Mock DB modules used by ReconciliationService
 const mockDb = {

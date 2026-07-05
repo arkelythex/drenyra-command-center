@@ -17,14 +17,14 @@
  * (i.e., the defineAgent() calls at module level have executed).
  */
 
+import type { Agent, LatinAgentId } from "@drenyra/drenyra-orchestrator";
 import {
-	getAllRegisteredAgents,
-	LatinModernoOrchestrator,
-	DomainAgent,
 	ApprovalGateEngine,
 	ApprovalStore,
+	DomainAgent,
+	getAllRegisteredAgents,
+	LatinModernoOrchestrator,
 } from "@drenyra/drenyra-orchestrator";
-import type { Agent, LatinAgentId } from "@drenyra/drenyra-orchestrator";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -100,7 +100,8 @@ const LATIN_DOMAIN_CONFIGS: LatinDomainConfig[] = [
 	{
 		id: "necto",
 		name: "Necto — Audit Trail Assembly",
-		description: "Audit trail assembly, provenance tracking, compliance logging",
+		description:
+			"Audit trail assembly, provenance tracking, compliance logging",
 		capabilities: ["audit-trail", "provenance", "tracking", "logging"],
 		approvalRequired: false,
 		maxRetries: 2,
@@ -118,8 +119,7 @@ const LATIN_DOMAIN_CONFIGS: LatinDomainConfig[] = [
 	{
 		id: "regula",
 		name: "Regula — Regulatory Compliance",
-		description:
-			"LATAM regulatory compliance validation per country-pack",
+		description: "LATAM regulatory compliance validation per country-pack",
 		capabilities: [
 			"regulatory-compliance",
 			"validation",
@@ -142,8 +142,7 @@ const LATIN_DOMAIN_CONFIGS: LatinDomainConfig[] = [
 	{
 		id: "lumen",
 		name: "Lumen — Insights & Analytics",
-		description:
-			"Insights, forecasts, executive summaries, KPI analysis",
+		description: "Insights, forecasts, executive summaries, KPI analysis",
 		capabilities: [
 			"insights",
 			"analytics",
@@ -196,8 +195,7 @@ const LATIN_DOMAIN_CONFIGS: LatinDomainConfig[] = [
 	{
 		id: "scripta",
 		name: "Scripta — Report Generation",
-		description:
-			"Report generation, documentation, customer-facing narratives",
+		description: "Report generation, documentation, customer-facing narratives",
 		capabilities: [
 			"report-generation",
 			"documentation",
@@ -225,12 +223,7 @@ const LATIN_DOMAIN_CONFIGS: LatinDomainConfig[] = [
 		name: "Capsa — Evidence Retention",
 		description:
 			"Evidence retention, immutable archival, cost optimization, backup",
-		capabilities: [
-			"retention",
-			"archival",
-			"cost-optimization",
-			"backup",
-		],
+		capabilities: ["retention", "archival", "cost-optimization", "backup"],
 		approvalRequired: false,
 		maxRetries: 2,
 		matchPatterns: [
@@ -269,10 +262,7 @@ const FINANCIAL_AGENT_MAP: Record<string, LatinAgentId> = {
  * Score how well an agent matches a domain based on its capabilities.
  * Returns the count of capabilities that match any of the domain's patterns.
  */
-function scoreAgentForDomain(
-	agent: Agent,
-	domain: LatinDomainConfig,
-): number {
+function scoreAgentForDomain(agent: Agent, domain: LatinDomainConfig): number {
 	if (!agent.capabilities || agent.capabilities.length === 0) {
 		return 0;
 	}
@@ -381,7 +371,9 @@ export function createSwarmOrchestrator(
 			approvalGate,
 		);
 
-		orchestrator.registerDomainAgent(domainAgent as DomainAgent & { id: LatinAgentId });
+		orchestrator.registerDomainAgent(
+			domainAgent as DomainAgent & { id: LatinAgentId },
+		);
 	}
 
 	// Orphan check: warn if any financial agent was not found in the registry
@@ -459,7 +451,9 @@ export function createSwarmOrchestratorFromAgents(
 			resolvedGate,
 		);
 
-		orchestrator.registerDomainAgent(domainAgent as DomainAgent & { id: LatinAgentId });
+		orchestrator.registerDomainAgent(
+			domainAgent as DomainAgent & { id: LatinAgentId },
+		);
 	}
 
 	// Orphan check: warn if any financial agent was not found in the pool
@@ -519,12 +513,9 @@ export function getLatinAgentMapping(): Array<{
  * Used as default when no explicit engine is provided (e.g., in tests).
  */
 function createPermissiveApprovalGate(): ApprovalGateEngine {
-	return new ApprovalGateEngine(
-		new ApprovalStore(),
-		async () => ({
-			valid: true,
-			reasons: [],
-			evidenceRefs: [],
-		}),
-	);
+	return new ApprovalGateEngine(new ApprovalStore(), async () => ({
+		valid: true,
+		reasons: [],
+		evidenceRefs: [],
+	}));
 }

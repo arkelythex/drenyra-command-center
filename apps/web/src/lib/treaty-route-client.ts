@@ -44,7 +44,9 @@ export type TreatyClientRoute = {
 	patch(opts?: Record<string, unknown>): Promise<unknown>;
 	delete(opts?: Record<string, unknown>): Promise<unknown>;
 	// Nested routes: client.summary.get(), client({ id }).status.patch()
-	[key: string]: TreatyClientRoute | ((opts?: Record<string, unknown>) => Promise<unknown>);
+	[key: string]:
+		| TreatyClientRoute
+		| ((opts?: Record<string, unknown>) => Promise<unknown>);
 };
 
 /**
@@ -143,8 +145,7 @@ export function listClients(): string[] {
  * @see {@link registerClient} called internally to cache the resolved client
  */
 export function getTreatyRouteClient<TClient>(routeKey: string): TClient {
-	const treatyRoot = api as unknown as TreatyRoot &
-		Record<string, unknown>;
+	const treatyRoot = api as unknown as TreatyRoot & Record<string, unknown>;
 	const rootClient = treatyRoot[routeKey];
 	if (rootClient) {
 		registerClient(routeKey, rootClient);

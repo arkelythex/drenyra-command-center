@@ -102,17 +102,17 @@ describe("crudKeys", () => {
 		expect(typeof keys.detail).toBe("function");
 	});
 
-	it('all returns [resource] tuple', () => {
+	it("all returns [resource] tuple", () => {
 		const keys = crudKeys("products");
 		expect(keys.all).toEqual(["products"]);
 	});
 
-	it('list returns [resource, companyId] tuple', () => {
+	it("list returns [resource, companyId] tuple", () => {
 		const keys = crudKeys("products");
 		expect(keys.list("company-42")).toEqual(["products", "company-42"]);
 	});
 
-	it('detail returns [resource, id] tuple', () => {
+	it("detail returns [resource, id] tuple", () => {
 		const keys = crudKeys("products");
 		expect(keys.detail("prod-1")).toEqual(["products", "prod-1"]);
 	});
@@ -292,11 +292,9 @@ describe("createCrudHooks", () => {
 			const product: Product = { id: "p1", name: "Widget", price: 100 };
 			api.getById.mockResolvedValue(product);
 
-			const { useGet } = createCrudHooks<
-				Product,
-				CreateProduct,
-				UpdateProduct
-			>({ key: defaultKey, ...api });
+			const { useGet } = createCrudHooks<Product, CreateProduct, UpdateProduct>(
+				{ key: defaultKey, ...api },
+			);
 
 			const queryClient = createQueryClient();
 			const { result } = renderHook(() => useGet("p1"), {
@@ -314,11 +312,9 @@ describe("createCrudHooks", () => {
 			const api = createProductApiStubs();
 			api.getById.mockResolvedValue({} as Product);
 
-			const { useGet } = createCrudHooks<
-				Product,
-				CreateProduct,
-				UpdateProduct
-			>({ key: defaultKey, ...api });
+			const { useGet } = createCrudHooks<Product, CreateProduct, UpdateProduct>(
+				{ key: defaultKey, ...api },
+			);
 
 			const queryClient = createQueryClient();
 			const { result } = renderHook(() => useGet(""), {
@@ -526,11 +522,9 @@ describe("createCrudHooks", () => {
 			const error = new Error("Not found");
 			api.getById.mockRejectedValue(error);
 
-			const { useGet } = createCrudHooks<
-				Product,
-				CreateProduct,
-				UpdateProduct
-			>({ key: defaultKey, ...api });
+			const { useGet } = createCrudHooks<Product, CreateProduct, UpdateProduct>(
+				{ key: defaultKey, ...api },
+			);
 
 			const queryClient = createQueryClient();
 			const { result } = renderHook(() => useGet("p-404"), {
@@ -603,9 +597,9 @@ describe("createCrudHooks", () => {
 			});
 
 			await act(async () => {
-				await expect(
-					result.current.mutateAsync("p1"),
-				).rejects.toThrow("Forbidden");
+				await expect(result.current.mutateAsync("p1")).rejects.toThrow(
+					"Forbidden",
+				);
 			});
 		});
 	});

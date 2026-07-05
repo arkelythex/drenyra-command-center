@@ -1,5 +1,5 @@
-import { integer, pgTable, varchar } from "drizzle-orm/pg-core";
 import { eq } from "@drenyra/persistence/query";
+import { integer, pgTable, varchar } from "drizzle-orm/pg-core";
 import { db, schema } from "../../../lib/db";
 
 const legacyOrganizations = pgTable("organizations", {
@@ -67,7 +67,10 @@ function readHeaderValue(headers: HeaderContainer, key: string): string {
 export function readTenantScopeFromHeaders(
 	headers: HeaderContainer,
 ): TenantScopeInput {
-	const organizationIdRaw = readHeaderValue(headers, "x-organization-id").trim();
+	const organizationIdRaw = readHeaderValue(
+		headers,
+		"x-organization-id",
+	).trim();
 	const companyId = readHeaderValue(headers, "x-company-id").trim();
 	const organizationId =
 		organizationIdRaw && Number.isFinite(Number(organizationIdRaw))
@@ -146,7 +149,8 @@ export async function normalizeTenantScope(
 	resolveOrganizationId: ResolveOrganizationIdFromCompanyId,
 ): Promise<ResolvedTenantScope | null> {
 	const organizationId =
-		typeof input.organizationId === "number" && Number.isFinite(input.organizationId)
+		typeof input.organizationId === "number" &&
+		Number.isFinite(input.organizationId)
 			? input.organizationId
 			: undefined;
 	const companyId =

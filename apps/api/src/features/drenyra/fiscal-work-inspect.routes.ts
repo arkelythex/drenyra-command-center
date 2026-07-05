@@ -19,7 +19,9 @@ export interface FiscalWorkInspectRoutesDeps {
 	fiscalWorkInspect: DrenyraFiscalWorkInspectService;
 }
 
-function readGrantedCapabilities(headers: Record<string, string | undefined>): string[] {
+function readGrantedCapabilities(
+	headers: Record<string, string | undefined>,
+): string[] {
 	const value = `${headers["x-drenyra-capability"] ?? ""},${headers["x-drenyra-capabilities"] ?? ""}`;
 	return value
 		.split(",")
@@ -27,7 +29,9 @@ function readGrantedCapabilities(headers: Record<string, string | undefined>): s
 		.filter(Boolean);
 }
 
-export function createFiscalWorkInspectRoutes(deps: FiscalWorkInspectRoutesDeps) {
+export function createFiscalWorkInspectRoutes(
+	deps: FiscalWorkInspectRoutesDeps,
+) {
 	return new Elysia({ name: "drenyra-fiscal-work-inspect" }).get(
 		"/fiscal-work/:workItemId/inspect",
 		async ({ params, headers, set }) => {

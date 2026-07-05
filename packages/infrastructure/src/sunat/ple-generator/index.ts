@@ -1,3 +1,12 @@
+export {
+	calculateChecksum,
+	formatDate,
+	formatDateOptional,
+	formatDecimal,
+	formatDecimalOptional,
+} from "./formatting.js";
+
+export { createPleGenerator, SunatPleGenerator } from "./generator.js";
 export type {
 	PleBookType,
 	PleCompraRecord,
@@ -6,13 +15,3 @@ export type {
 	PleGenerationResult,
 	PleVentaRecord,
 } from "./types.js";
-
-export { SunatPleGenerator, createPleGenerator } from "./generator.js";
-
-export {
-	calculateChecksum,
-	formatDate,
-	formatDateOptional,
-	formatDecimal,
-	formatDecimalOptional,
-} from "./formatting.js";

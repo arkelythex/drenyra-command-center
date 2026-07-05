@@ -1,15 +1,16 @@
-import type { DashboardIncomeResponse } from '../../../api/dashboard.api';
+import type { DashboardIncomeResponse } from "../../../api/dashboard.api";
 
-export type IncomeTrendPoint = DashboardIncomeResponse['billingEvolution'][number] & {
-  avg3: number;
-  changePct: number | null;
-};
+export type IncomeTrendPoint =
+	DashboardIncomeResponse["billingEvolution"][number] & {
+		avg3: number;
+		changePct: number | null;
+	};
 
 export type IncomeTooltipPayload = {
-  payload: IncomeTrendPoint;
+	payload: IncomeTrendPoint;
 };
 
 export type IncomeQueryResult = {
-  payload: DashboardIncomeResponse;
-  source: 'live' | 'fallback' | 'mock';
+	payload: DashboardIncomeResponse;
+	source: "live" | "fallback" | "mock";
 };

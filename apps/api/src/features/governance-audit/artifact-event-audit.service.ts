@@ -1,6 +1,6 @@
-import { randomUUID } from 'node:crypto';
-import { authAuditLogs } from '@drenyra/persistence/schema';
-import { db } from '@drenyra/persistence/client';
+import { randomUUID } from "node:crypto";
+import { db } from "@drenyra/persistence/client";
+import { authAuditLogs } from "@drenyra/persistence/schema";
 
 /**
  * GovernanceArtifactEventInput interface.
@@ -12,19 +12,19 @@ import { db } from '@drenyra/persistence/client';
  * ```
  */
 export interface GovernanceArtifactEventInput {
-  companyId: string;
-  actorUserId: string;
-  actionId: string;
-  createdAt: string;
-  artifactId: string;
-  artifactType: string;
-  traceId: string;
-  message: string;
-  nextStatus?: string;
-  payload?: Record<string, unknown>;
-  source: 'workspace-artifact';
-  ipAddress?: string;
-  userAgent?: string;
+	companyId: string;
+	actorUserId: string;
+	actionId: string;
+	createdAt: string;
+	artifactId: string;
+	artifactType: string;
+	traceId: string;
+	message: string;
+	nextStatus?: string;
+	payload?: Record<string, unknown>;
+	source: "workspace-artifact";
+	ipAddress?: string;
+	userAgent?: string;
 }
 
 /**
@@ -37,8 +37,8 @@ export interface GovernanceArtifactEventInput {
  * ```
  */
 export interface GovernanceArtifactEventResult {
-  eventId: string;
-  storedAt: string;
+	eventId: string;
+	storedAt: string;
 }
 
 /**
@@ -51,54 +51,59 @@ export interface GovernanceArtifactEventResult {
  * ```
  */
 export class ArtifactEventAuditService {
-  static async record(input: GovernanceArtifactEventInput): Promise<GovernanceArtifactEventResult> {
-    const eventId = randomUUID();
-    const timestamp = toTimestamp(input.createdAt);
+	static async record(
+		input: GovernanceArtifactEventInput,
+	): Promise<GovernanceArtifactEventResult> {
+		const eventId = randomUUID();
+		const timestamp = toTimestamp(input.createdAt);
 
-    await db.insert(authAuditLogs).values({
-      id: eventId,
-      userId: input.actorUserId,
-      action: normalizeAction(input.actionId),
-      timestamp,
-      ipAddress: input.ipAddress,
-      userAgent: input.userAgent,
-      details: {
-        type: 'ARTIFACT_EVENT',
-        source: input.source,
-        companyId: input.companyId,
-        actionId: input.actionId,
-        createdAt: timestamp.toISOString(),
-        artifactId: input.artifactId,
-        artifactType: input.artifactType,
-        traceId: input.traceId,
-        message: input.message,
-        nextStatus: input.nextStatus,
-        payload: input.payload,
-      },
-    });
+		await db.insert(authAuditLogs).values({
+			id: eventId,
+			userId: input.actorUserId,
+			action: normalizeAction(input.actionId),
+			timestamp,
+			ipAddress: input.ipAddress,
+			userAgent: input.userAgent,
+			details: {
+				type: "ARTIFACT_EVENT",
+				source: input.source,
+				companyId: input.companyId,
+				actionId: input.actionId,
+				createdAt: timestamp.toISOString(),
+				artifactId: input.artifactId,
+				artifactType: input.artifactType,
+				traceId: input.traceId,
+				message: input.message,
+				nextStatus: input.nextStatus,
+				payload: input.payload,
+			},
+		});
 
-    return {
-      eventId,
-      storedAt: timestamp.toISOString(),
-    };
-  }
+		return {
+			eventId,
+			storedAt: timestamp.toISOString(),
+		};
+	}
 }
 
 function normalizeAction(value: string): string {
-  const normalized = value.trim().toUpperCase().replace(/[^A-Z0-9_]/g, '_');
-  if (!normalized) {
-    return 'ARTIFACT_EVENT';
-  }
-  if (normalized.length <= 50) {
-    return normalized;
-  }
-  return normalized.slice(0, 50);
+	const normalized = value
+		.trim()
+		.toUpperCase()
+		.replace(/[^A-Z0-9_]/g, "_");
+	if (!normalized) {
+		return "ARTIFACT_EVENT";
+	}
+	if (normalized.length <= 50) {
+		return normalized;
+	}
+	return normalized.slice(0, 50);
 }
 
 function toTimestamp(value: string): Date {
-  const parsed = new Date(value);
-  if (Number.isNaN(parsed.getTime())) {
-    return new Date();
-  }
-  return parsed;
+	const parsed = new Date(value);
+	if (Number.isNaN(parsed.getTime())) {
+		return new Date();
+	}
+	return parsed;
 }

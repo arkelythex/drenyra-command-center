@@ -1,20 +1,20 @@
-import { Elysia } from "elysia";
 import { eq } from "@drenyra/persistence/query";
 import { automationWorkflows } from "@drenyra/persistence/schema/automation-studio.schema";
+import { Elysia } from "elysia";
 import { db } from "../../lib/db";
+import { AppError } from "../../lib/errors";
 import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
-import { AppError } from "../../lib/errors";
-import * as automationsService from "./automations.service";
 import {
-	IdParams,
 	CreateAutomationBody,
-	UpdateAutomationBody,
-	ToggleBody,
-	RunBody,
-	LogQuery,
+	IdParams,
 	ListAutomationQuery,
+	LogQuery,
+	RunBody,
+	ToggleBody,
+	UpdateAutomationBody,
 } from "./automations.schemas";
+import * as automationsService from "./automations.service";
 
 function handleError(error: unknown, set: { status: number }) {
 	if (error instanceof AppError) {
@@ -67,7 +67,10 @@ export const automationsRoutes = new Elysia({
 				// Returns detail with execution logs
 				const logs = await automationsService.getExecutionLogs(params.id);
 				// Find the workflow
-				const workflows = await automationsService.listCompanyAutomations("", "");
+				const workflows = await automationsService.listCompanyAutomations(
+					"",
+					"",
+				);
 				const wf = workflows.find((w) => w.id === params.id);
 				if (!wf) {
 					set.status = 404;

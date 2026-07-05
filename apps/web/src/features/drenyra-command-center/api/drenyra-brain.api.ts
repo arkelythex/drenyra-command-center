@@ -46,7 +46,9 @@ export async function listBrainThreads(): Promise<DrenyraBrainThread[]> {
 export async function createBrainThread(
 	input: CreateBrainThreadRequest,
 ): Promise<DrenyraBrainThread> {
-	const body = await unwrap(api.api.drenyra.brain.threads.post(input, brainHeaders()));
+	const body = await unwrap(
+		api.api.drenyra.brain.threads.post(input, brainHeaders()),
+	);
 	return extractOkData(body, "No se pudo crear el thread del cerebro");
 }
 
@@ -55,7 +57,9 @@ export async function startBrainTurn(
 	input: StartBrainTurnRequest,
 ): Promise<DrenyraBrainTurn> {
 	const body = await unwrap(
-		api.api.drenyra.brain.threads({ id: threadId }).turns.post(input, brainHeaders()),
+		api.api.drenyra.brain
+			.threads({ id: threadId })
+			.turns.post(input, brainHeaders()),
 	);
 	return extractOkData(body, "No se pudo iniciar el turno");
 }

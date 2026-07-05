@@ -7,17 +7,17 @@
  * @module ai-swarm/api/agents
  */
 
-import { Elysia, t } from "elysia";
 import {
-	getAllRegisteredAgents,
 	type Agent,
+	getAllRegisteredAgents,
 } from "@drenyra/drenyra-orchestrator";
-import { ok, fail } from "../../shared/api-response";
+import { Elysia, t } from "elysia";
 import { createLogger } from "../../../lib/logger";
+import { fail, ok } from "../../shared/api-response";
 import {
-	agentExecutionsTotal,
 	agentExecutionDuration,
 	agentExecutionErrors,
+	agentExecutionsTotal,
 } from "./agents.metrics";
 
 const logger = createLogger({ module: "ai-swarm/agents" });
@@ -46,7 +46,8 @@ export const agentsRoute = new Elysia()
 			detail: {
 				tags: ["AI Swarm"],
 				summary: "List all registered agents",
-				description: "Returns metadata for every agent registered in the agent-swarm factory",
+				description:
+					"Returns metadata for every agent registered in the agent-swarm factory",
 			},
 		},
 	)
@@ -72,20 +73,34 @@ export const agentsRoute = new Elysia()
 
 				const duration = (Date.now() - startTime) / 1000;
 				agentExecutionDuration.observe({ agent_id: id }, duration);
-				agentExecutionsTotal.inc({ agent_id: id, status: result.success ? "success" : "error" });
+				agentExecutionsTotal.inc({
+					agent_id: id,
+					status: result.success ? "success" : "error",
+				});
 
-				logger.info({ agentId: id, durationMs: Date.now() - startTime, resultStatus: result.success }, "agent_executed");
+				logger.info(
+					{
+						agentId: id,
+						durationMs: Date.now() - startTime,
+						resultStatus: result.success,
+					},
+					"agent_executed",
+				);
 				return ok(result);
 			} catch (error) {
 				const duration = (Date.now() - startTime) / 1000;
-				const message = error instanceof Error ? error.message : "Unknown error";
+				const message =
+					error instanceof Error ? error.message : "Unknown error";
 				const errorType = error instanceof Error ? error.name : "unknown";
 
 				agentExecutionDuration.observe({ agent_id: id }, duration);
 				agentExecutionsTotal.inc({ agent_id: id, status: "error" });
 				agentExecutionErrors.inc({ agent_id: id, error_type: errorType });
 
-				logger.error({ agentId: id, durationMs: Date.now() - startTime, error: message }, "agent_execute_failed");
+				logger.error(
+					{ agentId: id, durationMs: Date.now() - startTime, error: message },
+					"agent_execute_failed",
+				);
 				return fail(message, "AGENT_EXECUTION_ERROR");
 			}
 		},
@@ -100,7 +115,8 @@ export const agentsRoute = new Elysia()
 			detail: {
 				tags: ["AI Swarm"],
 				summary: "Execute an agent by ID",
-				description: "Runs an agent's execute function with the provided payload and optional config",
+				description:
+					"Runs an agent's execute function with the provided payload and optional config",
 			},
 		},
 	);

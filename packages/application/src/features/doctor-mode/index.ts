@@ -6,10 +6,10 @@
 
 export type {
 	CheckCategory,
-	CheckStatus,
-	CheckRunResult,
-	SystemCheckDTO,
-	CheckHistoryEntryDTO,
 	CheckDetailDTO,
+	CheckHistoryEntryDTO,
+	CheckRunResult,
+	CheckStatus,
 	DashboardAggregate,
+	SystemCheckDTO,
 } from "./types";

@@ -7,7 +7,6 @@
  * - Bridge is resolved by matching legacy `organizations.ruc` to `companies.ruc`
  */
 
-import { and, count, desc, eq, gte, like, lte, or, type SQL } from "drizzle-orm";
 import {
 	Transaction,
 	type TransactionEntry,
@@ -21,6 +20,17 @@ import type {
 	TransactionRepository,
 } from "@drenyra/domain/repositories/transaction.repository";
 import { Money } from "@drenyra/domain/value-objects/Money";
+import {
+	and,
+	count,
+	desc,
+	eq,
+	gte,
+	like,
+	lte,
+	or,
+	type SQL,
+} from "drizzle-orm";
 import { db } from "../client";
 import { transactions } from "../schema";
 import { resolveCompanyIdFromOrganization } from "./support/organization-resolver";
@@ -44,7 +54,9 @@ type DbDocumentType =
 	| "TICKET"
 	| "MOVIMIENTO_BANCARIO";
 
-const mapDbStatusToDomain = (dbStatus: DbTransactionStatus | null): TransactionStatus => {
+const mapDbStatusToDomain = (
+	dbStatus: DbTransactionStatus | null,
+): TransactionStatus => {
 	switch (dbStatus) {
 		case "ACCEPTED":
 			return "POSTED";
@@ -97,10 +109,7 @@ const mapDbToDomainType = (
 	dbType: DbTransactionType,
 	dbDocumentType: DbDocumentType,
 ): TransactionType => {
-	if (
-		dbDocumentType === "NOTA_CREDITO" ||
-		dbDocumentType === "NOTA_DEBITO"
-	) {
+	if (dbDocumentType === "NOTA_CREDITO" || dbDocumentType === "NOTA_DEBITO") {
 		return "ADJUSTMENT";
 	}
 
@@ -170,7 +179,10 @@ export class PostgresTransactionRepository implements TransactionRepository {
 		const totalCents = totalAmount.getCents();
 		const subtotalCents = Math.round(totalCents / 1.18);
 		const igvCents = totalCents - subtotalCents;
-		const reference = resolveReferenceParts(transaction.referenceNumber, transaction.type);
+		const reference = resolveReferenceParts(
+			transaction.referenceNumber,
+			transaction.type,
+		);
 
 		await db.insert(transactions).values({
 			id,
@@ -211,7 +223,10 @@ export class PostgresTransactionRepository implements TransactionRepository {
 		const totalCents = totalAmount.getCents();
 		const subtotalCents = Math.round(totalCents / 1.18);
 		const igvCents = totalCents - subtotalCents;
-		const reference = resolveReferenceParts(transaction.referenceNumber, transaction.type);
+		const reference = resolveReferenceParts(
+			transaction.referenceNumber,
+			transaction.type,
+		);
 
 		await db
 			.update(transactions)
@@ -318,7 +333,9 @@ export class PostgresTransactionRepository implements TransactionRepository {
 		const page = pagination?.page || 1;
 		const limit = pagination?.limit || 20;
 		const offset = (page - 1) * limit;
-		const whereCondition = and(...this.buildFilterConditions(companyId, filters));
+		const whereCondition = and(
+			...this.buildFilterConditions(companyId, filters),
+		);
 
 		const rows = await db
 			.select()
@@ -361,7 +378,9 @@ export class PostgresTransactionRepository implements TransactionRepository {
 		filters?: TransactionFilters,
 	): Promise<number> {
 		const companyId = await resolveCompanyIdFromOrganization(organizationId);
-		const whereCondition = and(...this.buildFilterConditions(companyId, filters));
+		const whereCondition = and(
+			...this.buildFilterConditions(companyId, filters),
+		);
 		const result = await db
 			.select({ count: count() })
 			.from(transactions)
@@ -403,7 +422,9 @@ export class PostgresTransactionRepository implements TransactionRepository {
 		const conditions: SQL<unknown>[] = [eq(transactions.companyId, companyId)];
 
 		if (filters?.status) {
-			conditions.push(eq(transactions.status, mapDomainStatusToDb(filters.status)));
+			conditions.push(
+				eq(transactions.status, mapDomainStatusToDb(filters.status)),
+			);
 		}
 
 		if (filters?.type) {

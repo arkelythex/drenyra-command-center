@@ -3,11 +3,8 @@
  * TODO: Migrate accountBalances to a real Drizzle table definition.
  */
 
-const tableProxy = new Proxy(
-  {} as Record<string, unknown>,
-  {
-    get: (_target, prop) => prop,
-  },
-);
+const tableProxy = new Proxy({} as Record<string, unknown>, {
+	get: (_target, prop) => prop,
+});
 
 export const accountBalances = tableProxy;

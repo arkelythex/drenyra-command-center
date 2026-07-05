@@ -20,7 +20,8 @@ describe("/health/doctor observability smoke", () => {
 			DRENYRA_ENABLE_OTEL: "1",
 			OTEL_SERVICE_NAME: "drenyra-api-local-smoke",
 			OTEL_EXPORTER_OTLP_ENDPOINT: "http://localhost:4318/v1/traces",
-			DATABASE_URL: "postgresql://local-smoke:local-smoke@localhost:5436/drenyra",
+			DATABASE_URL:
+				"postgresql://local-smoke:local-smoke@localhost:5436/drenyra",
 			BETTER_AUTH_SECRET: "local-smoke-secret-with-at-least-32-chars",
 		};
 	});
@@ -30,11 +31,9 @@ describe("/health/doctor observability smoke", () => {
 	});
 
 	it("reports local OTEL readiness through /health/doctor without exposing secrets", async () => {
-		mockDbExecute
-			.mockResolvedValueOnce([])
-			.mockResolvedValueOnce({
-				rows: requiredTables.map((table_name) => ({ table_name })),
-			});
+		mockDbExecute.mockResolvedValueOnce([]).mockResolvedValueOnce({
+			rows: requiredTables.map((table_name) => ({ table_name })),
+		});
 
 		const app = new Elysia().use(
 			buildHealthModule({
@@ -91,7 +90,9 @@ describe("/health/doctor observability smoke", () => {
 			},
 		});
 		expect(JSON.stringify(payload)).not.toContain(process.env.DATABASE_URL);
-		expect(JSON.stringify(payload)).not.toContain(process.env.BETTER_AUTH_SECRET);
+		expect(JSON.stringify(payload)).not.toContain(
+			process.env.BETTER_AUTH_SECRET,
+		);
 		expect(payload.hints).not.toContain(
 			"OpenTelemetry is disabled. Set DRENYRA_ENABLE_OTEL=true and OTEL_EXPORTER_OTLP_ENDPOINT to enable production tracing.",
 		);

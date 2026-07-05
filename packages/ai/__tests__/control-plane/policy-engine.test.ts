@@ -5,19 +5,19 @@
  * and TraceEvidenceStore dependencies.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { PolicyEngine } from "../../src/control-plane/policy-engine";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { AgentRegistry } from "../../src/control-plane/agent-registry";
-import type { ToolRegistry } from "../../src/control-plane/tool-registry";
-import type {
-	TraceEvidenceStore,
-	EvidenceTraceBundle,
-} from "../../src/control-plane/trace-evidence";
 import type {
 	AgentRegistryEntry,
-	ToolDefinition,
 	TenantCompanyRucScope,
+	ToolDefinition,
 } from "../../src/control-plane/contracts";
+import { PolicyEngine } from "../../src/control-plane/policy-engine";
+import type { ToolRegistry } from "../../src/control-plane/tool-registry";
+import type {
+	EvidenceTraceBundle,
+	TraceEvidenceStore,
+} from "../../src/control-plane/trace-evidence";
 
 // ============================================================================
 // Helpers
@@ -61,7 +61,6 @@ const mockTool: ToolDefinition = {
 	createdAt: new Date(),
 	updatedAt: new Date(),
 };
-
 
 type AsyncMock<TArgs extends unknown[], TResult> = ((
 	...args: TArgs

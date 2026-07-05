@@ -4,17 +4,17 @@
  * @module __tests__/services/error-recovery
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
 	AgentError,
-	TimeoutError,
-	RateLimitError,
+	classifyError,
+	FiscalViolationError,
+	InvalidInputError,
 	NetworkError,
 	ProviderError,
+	RateLimitError,
+	TimeoutError,
 	ValidationError,
-	InvalidInputError,
-	FiscalViolationError,
-	classifyError,
 } from "../../../src/services/error-recovery/agent-error";
 
 // ─── AgentError Construction ──────────────────────────────────────────────────
@@ -166,14 +166,20 @@ describe("FiscalViolationError", () => {
 
 describe("classifyError", () => {
 	it("classifies timeout messages as TRANSIENT (TimeoutError)", () => {
-		const err = classifyError(new Error("Request timed out after 30s"), "reader");
+		const err = classifyError(
+			new Error("Request timed out after 30s"),
+			"reader",
+		);
 		expect(err.type).toBe("TRANSIENT");
 		expect(err).toBeInstanceOf(TimeoutError);
 		expect(err.agentName).toBe("reader");
 	});
 
 	it("classifies network errors as TRANSIENT (NetworkError)", () => {
-		const err = classifyError(new Error("network error: connection refused"), "reader");
+		const err = classifyError(
+			new Error("network error: connection refused"),
+			"reader",
+		);
 		expect(err.type).toBe("TRANSIENT");
 		expect(err).toBeInstanceOf(NetworkError);
 	});
@@ -209,7 +215,10 @@ describe("classifyError", () => {
 	});
 
 	it("classifies validation messages as PERMANENT (ValidationError)", () => {
-		const err = classifyError(new Error("Validation failed: field is required"), "validator");
+		const err = classifyError(
+			new Error("Validation failed: field is required"),
+			"validator",
+		);
 		expect(err.type).toBe("PERMANENT");
 		expect(err).toBeInstanceOf(ValidationError);
 	});
@@ -242,7 +251,10 @@ describe("classifyError", () => {
 	});
 
 	it("classifies unknown errors as UNKNOWN", () => {
-		const err = classifyError(new Error("Something completely unexpected"), "agent");
+		const err = classifyError(
+			new Error("Something completely unexpected"),
+			"agent",
+		);
 		expect(err.type).toBe("UNKNOWN");
 		expect(err).toBeInstanceOf(AgentError);
 		expect(err.retryable).toBe(true);

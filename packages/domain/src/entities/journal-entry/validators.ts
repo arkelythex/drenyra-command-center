@@ -43,9 +43,7 @@ export function validateJournalLine(props: JournalLineProps): void {
 
 export function validateJournalEntry(props: JournalEntryProps): void {
 	if (props.lines.length < 2) {
-		throw new Error(
-			"El asiento debe tener al menos 2 líneas (partida doble)",
-		);
+		throw new Error("El asiento debe tener al menos 2 líneas (partida doble)");
 	}
 
 	if (!isBalanced(props)) {

@@ -1,5 +1,5 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
 import { Elysia } from "elysia";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { pseComplianceRoutes } from "../../index";
 import { PseProactiveValidatorService } from "../../pse-proactive-validator.service";
 

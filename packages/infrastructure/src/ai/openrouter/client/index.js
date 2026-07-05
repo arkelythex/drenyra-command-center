@@ -1,2 +1,2 @@
-export { OpenRouterService } from './client.js';
+export { OpenRouterService } from "./client.js";
 //# sourceMappingURL=index.js.map

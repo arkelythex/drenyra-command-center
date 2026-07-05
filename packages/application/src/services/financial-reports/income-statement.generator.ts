@@ -1,9 +1,9 @@
-import {
-	type BalanceReportDataSource,
-	type OrganizationReportDataSource,
-	type ReportPeriod,
-	type IncomeStatementReport,
-	type AccountBalance,
+import type {
+	AccountBalance,
+	BalanceReportDataSource,
+	IncomeStatementReport,
+	OrganizationReportDataSource,
+	ReportPeriod,
 } from "./types";
 
 export async function generateIncomeStatementReport(

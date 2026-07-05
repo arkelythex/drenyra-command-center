@@ -5,7 +5,6 @@
  * Escenarios cubren los casos fiscales más comunes en el mercado peruano 2026.
  */
 
-import { describe, expect, it } from "vitest";
 import {
 	calculateWeightedConfidence,
 	computeConsensusScore,
@@ -14,11 +13,12 @@ import {
 	getThresholdForSeverity,
 	THRESHOLD_CONFIG,
 } from "@drenyra/ai/services/swarm-consensus/consensus-engine";
+import type { AgentConfidence } from "@drenyra/ai/services/swarm-consensus/types";
 import {
 	detectRucBreachAnomalies,
 	RUC_BREACH_THRESHOLD_PEN,
 } from "@drenyra/drenyra-orchestrator/strategies";
-import type { AgentConfidence } from "@drenyra/ai/services/swarm-consensus/types";
+import { describe, expect, it } from "vitest";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -50,7 +50,9 @@ function makeAgents(
 }
 
 function computeScore(lector: number, validador: number, detector: number) {
-	const weighted = calculateWeightedConfidence(makeAgents(lector, validador, detector));
+	const weighted = calculateWeightedConfidence(
+		makeAgents(lector, validador, detector),
+	);
 	return computeConsensusScore(weighted);
 }
 
@@ -61,7 +63,7 @@ describe("Bug fix: computeConsensusScore usa weighted sum, no promedio simple", 
 		const score = computeScore(0.9, 0.9, 0.9);
 		// Weighted sum: 0.9×0.35 + 0.9×0.40 + 0.9×0.25 = 0.90
 		// Agreement bonus: stdDev < 0.04 → +0.02 → 0.92 max
-		expect(score).toBeGreaterThanOrEqual(0.90);
+		expect(score).toBeGreaterThanOrEqual(0.9);
 		expect(score).toBeLessThanOrEqual(0.95); // capped at 1.0
 	});
 
@@ -75,7 +77,7 @@ describe("Bug fix: computeConsensusScore usa weighted sum, no promedio simple", 
 describe("Escenario 1: IGV mismatch pequeño (falso positivo esperado)", () => {
 	it("agentes con baja confianza no superan umbral crítico 0.95", () => {
 		// Simulación: diferencia de S/ 50 en IGV, probablemente redondeo
-		const score = computeScore(0.60, 0.65, 0.55);
+		const score = computeScore(0.6, 0.65, 0.55);
 		const threshold = getThresholdForSeverity("critical");
 
 		expect(score).toBeLessThan(threshold);
@@ -190,7 +192,7 @@ describe("Escenario 6: Org con 25% FP rate → threshold dinámico sube", () => 
 
 	it("high severity también se ajusta proporcionalmente", () => {
 		const base = getThresholdForSeverity("high"); // 0.88
-		const dynamic = computeDynamicThreshold("high", 0.20);
+		const dynamic = computeDynamicThreshold("high", 0.2);
 		// adjustment = min((0.20 - 0.10) * 0.8, 0.08) = 0.08
 		// threshold = min(0.88 + 0.08, 0.99) = 0.96
 		expect(dynamic).toBeGreaterThan(base);
@@ -234,7 +236,7 @@ describe("Escenario 8: Lector ausente — solo validador + detector", () => {
 		const score = computeConsensusScore(weighted);
 
 		// Max with validador + detector = 0.40 + 0.25 = 0.65 + bonus
-		expect(score).toBeLessThan(0.70);
+		expect(score).toBeLessThan(0.7);
 		// Critical threshold (0.95) NOT reachable → safe: no false alert
 		expect(score).toBeLessThan(getThresholdForSeverity("critical"));
 	});
@@ -252,8 +254,8 @@ describe("Escenario 9: Perfecta alineación entre agentes — bonus de acuerdo",
 
 	it("alta desviación estándar → sin bonus", () => {
 		// Lector 0.5, validador 0.99, detector 0.5 → high variance, no bonus
-		const scoreDisagreed = computeScore(0.50, 0.99, 0.50);
-		const scoreAgreed = computeScore(0.80, 0.80, 0.80);
+		const scoreDisagreed = computeScore(0.5, 0.99, 0.5);
+		const scoreAgreed = computeScore(0.8, 0.8, 0.8);
 		// Agreed score should have bonus, disagreed should not
 		expect(scoreAgreed).toBeGreaterThan(scoreDisagreed);
 	});
@@ -296,8 +298,8 @@ describe("Escenario 10: SIRE boletos aéreos 2026 — RUC aerolínea vs agencia"
 		const anomalies = detectRucBreachAnomalies(transactions);
 
 		expect(anomalies).toHaveLength(3);
-		expect(anomalies[0]?.severity).toBe("high");     // S/ 8,500
-		expect(anomalies[1]?.severity).toBe("medium");   // S/ 3,200 < umbral
+		expect(anomalies[0]?.severity).toBe("high"); // S/ 8,500
+		expect(anomalies[1]?.severity).toBe("medium"); // S/ 3,200 < umbral
 		expect(anomalies[2]?.severity).toBe("critical"); // S/ 12,000 > 2× umbral
 		expect(anomalies[2]?.context?.requiresOseValidation).toBe(true);
 	});

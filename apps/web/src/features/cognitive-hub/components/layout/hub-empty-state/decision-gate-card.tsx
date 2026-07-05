@@ -28,7 +28,9 @@ export function DecisionGateCard({
 	return (
 		<section className="hub-panel h-full">
 			<div className="mb-4">
-				<p className="text-sm font-semibold text-[var(--text-primary)]">Revisión necesaria</p>
+				<p className="text-sm font-semibold text-[var(--text-primary)]">
+					Revisión necesaria
+				</p>
 				<p className="mt-1 text-xs text-[var(--text-secondary)]">
 					Confirma el impacto antes de ejecutar cualquier ajuste automático.
 				</p>
@@ -36,7 +38,9 @@ export function DecisionGateCard({
 
 			<div className="grid gap-4 xl:grid-cols-[1.1fr_1.1fr_0.9fr]">
 				<article className="hub-panel-inset">
-					<p className="text-label font-medium text-[var(--text-secondary)]">Propuesta actual</p>
+					<p className="text-label font-medium text-[var(--text-secondary)]">
+						Propuesta actual
+					</p>
 					<p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
 						{scenario?.command ?? "Sin propuesta activa"}
 					</p>
@@ -46,18 +50,28 @@ export function DecisionGateCard({
 				</article>
 
 				<article className="hub-panel-inset">
-					<p className="text-label font-medium text-[var(--text-secondary)]">Impacto estimado</p>
+					<p className="text-label font-medium text-[var(--text-secondary)]">
+						Impacto estimado
+					</p>
 					<p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
 						Delta estimado {n(impact.estimatedDelta)}
 					</p>
 					<p className="mt-1 text-xs text-[var(--text-secondary)]">
-						{impact.flaggedRows} conflictos + {impact.updatedRows} ajustes auditables
+						{impact.flaggedRows} conflictos + {impact.updatedRows} ajustes
+						auditables
 					</p>
 				</article>
 
 				<article className="hub-panel-inset border-primary-subtle bg-primary/5 p-4">
-					<p className="text-label font-medium text-[var(--text-secondary)]">Estado actual</p>
-					<p className={cn("mt-1 text-sm font-semibold", getCommitTone(commitStatus))}>
+					<p className="text-label font-medium text-[var(--text-secondary)]">
+						Estado actual
+					</p>
+					<p
+						className={cn(
+							"mt-1 text-sm font-semibold",
+							getCommitTone(commitStatus),
+						)}
+					>
 						{getCommitLabel(commitStatus, undoSecondsLeft)}
 					</p>
 					<button

@@ -56,5 +56,8 @@ export async function listCommandEnvelopeAudit(
 			query,
 		}),
 	);
-	return extractOkData(body, "No se pudo obtener el audit del command envelope");
+	return extractOkData(
+		body,
+		"No se pudo obtener el audit del command envelope",
+	);
 }

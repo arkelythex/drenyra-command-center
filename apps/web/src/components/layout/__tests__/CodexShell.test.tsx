@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { CodexShell } from "../CodexShell";
+import { fireEvent, render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { CodexShell } from "../CodexShell";
 
 // ---------------------------------------------------------------------------
 // Shared mutable state — use vi.hoisted for mutable store state

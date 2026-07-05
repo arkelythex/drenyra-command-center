@@ -15,21 +15,24 @@
  * // "ACME\\_100\\%"
  * ```
  */
-export function sanitizeSqlInput(input: string, maxLength: number = 100): string {
-  if (!input || typeof input !== 'string') {
-    return '';
-  }
+export function sanitizeSqlInput(
+	input: string,
+	maxLength: number = 100,
+): string {
+	if (!input || typeof input !== "string") {
+		return "";
+	}
 
-  const escaped = input
-    .replace(/\\/g, '\\\\')
-    .replace(/%/g, '\\%')
-    .replace(/_/g, '\\_')
-    .replace(/'/g, "''")
-    .replace(/\[/g, '\\[')
-    .replace(/\]/g, '\\]')
-    .replace(/\^/g, '\\^');
+	const escaped = input
+		.replace(/\\/g, "\\\\")
+		.replace(/%/g, "\\%")
+		.replace(/_/g, "\\_")
+		.replace(/'/g, "''")
+		.replace(/\[/g, "\\[")
+		.replace(/\]/g, "\\]")
+		.replace(/\^/g, "\\^");
 
-  return escaped.slice(0, maxLength).trim();
+	return escaped.slice(0, maxLength).trim();
 }
 
 /**
@@ -44,18 +47,19 @@ export function sanitizeSqlInput(input: string, maxLength: number = 100): string
  * ```
  */
 export function sanitizeUuid(uuid: string): string | null {
-  if (!uuid || typeof uuid !== 'string') {
-    return null;
-  }
+	if (!uuid || typeof uuid !== "string") {
+		return null;
+	}
 
-  const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  const trimmed = uuid.trim().toLowerCase();
+	const uuidPattern =
+		/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+	const trimmed = uuid.trim().toLowerCase();
 
-  if (!uuidPattern.test(trimmed)) {
-    return null;
-  }
+	if (!uuidPattern.test(trimmed)) {
+		return null;
+	}
 
-  return trimmed;
+	return trimmed;
 }
 
 /**
@@ -70,26 +74,29 @@ export function sanitizeUuid(uuid: string): string | null {
  * // "1500.50"
  * ```
  */
-export function sanitizeMonetaryValue(value: string | number, maxDecimals: number = 2): string | null {
-  if (value === null || value === undefined) {
-    return null;
-  }
+export function sanitizeMonetaryValue(
+	value: string | number,
+	maxDecimals: number = 2,
+): string | null {
+	if (value === null || value === undefined) {
+		return null;
+	}
 
-  const strValue = String(value).trim();
-  const cleaned = strValue.replace(/[^0-9.-]/g, '');
-  const numericPattern = /^-?\d+(\.\d+)?$/;
+	const strValue = String(value).trim();
+	const cleaned = strValue.replace(/[^0-9.-]/g, "");
+	const numericPattern = /^-?\d+(\.\d+)?$/;
 
-  if (!numericPattern.test(cleaned)) {
-    return null;
-  }
+	if (!numericPattern.test(cleaned)) {
+		return null;
+	}
 
-  const num = parseFloat(cleaned);
+	const num = parseFloat(cleaned);
 
-  if (num < -999999999999.99 || num > 999999999999.99) {
-    return null;
-  }
+	if (num < -999999999999.99 || num > 999999999999.99) {
+		return null;
+	}
 
-  return num.toFixed(maxDecimals);
+	return num.toFixed(maxDecimals);
 }
 
 /**
@@ -104,14 +111,14 @@ export function sanitizeMonetaryValue(value: string | number, maxDecimals: numbe
  * ```
  */
 export function sanitizeInvoiceNumber(number: string): string {
-  if (!number || typeof number !== 'string') {
-    return '';
-  }
+	if (!number || typeof number !== "string") {
+		return "";
+	}
 
-  return number
-    .replace(/[^a-zA-Z0-9-]/g, '')
-    .slice(0, 20)
-    .toUpperCase();
+	return number
+		.replace(/[^a-zA-Z0-9-]/g, "")
+		.slice(0, 20)
+		.toUpperCase();
 }
 
 /**
@@ -125,17 +132,20 @@ export function sanitizeInvoiceNumber(number: string): string {
  * // { pattern: "%cliente%", isValid: true }
  * ```
  */
-export function createSafeLikePattern(searchTerm: string): { pattern: string; isValid: boolean } {
-  const sanitized = sanitizeSqlInput(searchTerm, 50);
+export function createSafeLikePattern(searchTerm: string): {
+	pattern: string;
+	isValid: boolean;
+} {
+	const sanitized = sanitizeSqlInput(searchTerm, 50);
 
-  if (!sanitized) {
-    return { pattern: '', isValid: false };
-  }
+	if (!sanitized) {
+		return { pattern: "", isValid: false };
+	}
 
-  return {
-    pattern: `%${sanitized}%`,
-    isValid: true,
-  };
+	return {
+		pattern: `%${sanitized}%`,
+		isValid: true,
+	};
 }
 
 /**
@@ -151,58 +161,58 @@ export function createSafeLikePattern(searchTerm: string): { pattern: string; is
  * ```
  */
 export function sanitizeDateRange(
-  startDate: string | Date,
-  endDate: string | Date,
+	startDate: string | Date,
+	endDate: string | Date,
 ): {
-  isValid: boolean;
-  start: Date | null;
-  end: Date | null;
-  error?: string;
+	isValid: boolean;
+	start: Date | null;
+	end: Date | null;
+	error?: string;
 } {
-  const start = startDate instanceof Date ? startDate : new Date(startDate);
-  const end = endDate instanceof Date ? endDate : new Date(endDate);
+	const start = startDate instanceof Date ? startDate : new Date(startDate);
+	const end = endDate instanceof Date ? endDate : new Date(endDate);
 
-  if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-    return {
-      isValid: false,
-      start: null,
-      end: null,
-      error: 'Invalid date format',
-    };
-  }
+	if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+		return {
+			isValid: false,
+			start: null,
+			end: null,
+			error: "Invalid date format",
+		};
+	}
 
-  const maxFuture = new Date();
-  maxFuture.setFullYear(maxFuture.getFullYear() + 1);
+	const maxFuture = new Date();
+	maxFuture.setFullYear(maxFuture.getFullYear() + 1);
 
-  if (start > maxFuture || end > maxFuture) {
-    return {
-      isValid: false,
-      start: null,
-      end: null,
-      error: 'Date too far in future',
-    };
-  }
+	if (start > maxFuture || end > maxFuture) {
+		return {
+			isValid: false,
+			start: null,
+			end: null,
+			error: "Date too far in future",
+		};
+	}
 
-  if (start > end) {
-    return {
-      isValid: false,
-      start: null,
-      end: null,
-      error: 'Start date must be before end date',
-    };
-  }
+	if (start > end) {
+		return {
+			isValid: false,
+			start: null,
+			end: null,
+			error: "Start date must be before end date",
+		};
+	}
 
-  const oneYear = 365 * 24 * 60 * 60 * 1000;
-  if (end.getTime() - start.getTime() > oneYear) {
-    return {
-      isValid: false,
-      start: null,
-      end: null,
-      error: 'Date range cannot exceed 1 year',
-    };
-  }
+	const oneYear = 365 * 24 * 60 * 60 * 1000;
+	if (end.getTime() - start.getTime() > oneYear) {
+		return {
+			isValid: false,
+			start: null,
+			end: null,
+			error: "Date range cannot exceed 1 year",
+		};
+	}
 
-  return { isValid: true, start, end };
+	return { isValid: true, start, end };
 }
 
 /**
@@ -214,13 +224,13 @@ export function sanitizeDateRange(
  * ```
  */
 export const SECURITY_CONSTANTS = {
-  MAX_SEARCH_LENGTH: 100,
-  MAX_INVOICE_NUMBER_LENGTH: 20,
-  MAX_QUERY_LIMIT: 1000,
-  DEFAULT_QUERY_LIMIT: 50,
-  MAX_DATE_RANGE_DAYS: 365,
-  ALLOWED_SORT_FIELDS: ['createdAt', 'updatedAt', 'totalAmount', 'issueDate'],
-  ALLOWED_SORT_ORDERS: ['asc', 'desc'],
+	MAX_SEARCH_LENGTH: 100,
+	MAX_INVOICE_NUMBER_LENGTH: 20,
+	MAX_QUERY_LIMIT: 1000,
+	DEFAULT_QUERY_LIMIT: 50,
+	MAX_DATE_RANGE_DAYS: 365,
+	ALLOWED_SORT_FIELDS: ["createdAt", "updatedAt", "totalAmount", "issueDate"],
+	ALLOWED_SORT_ORDERS: ["asc", "desc"],
 } as const;
 
 /**
@@ -236,19 +246,22 @@ export const SECURITY_CONSTANTS = {
  * ```
  */
 export function sanitizePagination(
-  limit: number | string,
-  offset: number | string,
+	limit: number | string,
+	offset: number | string,
 ): { limit: number; offset: number; isValid: boolean } {
-  const parsedLimit = Math.min(
-    Math.max(parseInt(String(limit)) || SECURITY_CONSTANTS.DEFAULT_QUERY_LIMIT, 1),
-    SECURITY_CONSTANTS.MAX_QUERY_LIMIT,
-  );
+	const parsedLimit = Math.min(
+		Math.max(
+			parseInt(String(limit)) || SECURITY_CONSTANTS.DEFAULT_QUERY_LIMIT,
+			1,
+		),
+		SECURITY_CONSTANTS.MAX_QUERY_LIMIT,
+	);
 
-  const parsedOffset = Math.max(parseInt(String(offset)) || 0, 0);
+	const parsedOffset = Math.max(parseInt(String(offset)) || 0, 0);
 
-  return {
-    limit: parsedLimit,
-    offset: parsedOffset,
-    isValid: true,
-  };
+	return {
+		limit: parsedLimit,
+		offset: parsedOffset,
+		isValid: true,
+	};
 }

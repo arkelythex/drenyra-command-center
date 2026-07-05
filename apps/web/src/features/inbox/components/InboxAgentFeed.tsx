@@ -1,10 +1,14 @@
 "use client";
 
-import type { ReactElement } from "react";
 import { Bot } from "lucide-react";
+import type { ReactElement } from "react";
 import { cn } from "@/lib/utils";
 import { INBOX_AGENT_ORDER } from "../inbox.config";
-import type { AgentStatusEvent, InboxStreamEvent, InboxUiPhase } from "../inbox.schema";
+import type {
+	AgentStatusEvent,
+	InboxStreamEvent,
+	InboxUiPhase,
+} from "../inbox.schema";
 
 type InboxAgentFeedProps = {
 	phase: InboxUiPhase;
@@ -85,7 +89,10 @@ export function InboxAgentFeed({
 					</p>
 					{debates.map((event, index) =>
 						event.type === "agent:debate" ? (
-							<p key={`${event.payload.invoiceId}-${index}`} className="text-xs">
+							<p
+								key={`${event.payload.invoiceId}-${index}`}
+								className="text-xs"
+							>
 								{event.payload.agents.join(" vs ")}: {event.payload.message}
 							</p>
 						) : null,

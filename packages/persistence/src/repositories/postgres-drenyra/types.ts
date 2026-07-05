@@ -1,5 +1,5 @@
 import type { DrenyraScopeGuard } from "@drenyra/application/drenyra";
-import {
+import type {
 	drenyraAgentRuns,
 	drenyraApprovalRequests,
 	drenyraAuditEvents,

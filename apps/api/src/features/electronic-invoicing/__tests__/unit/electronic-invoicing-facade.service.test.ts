@@ -6,11 +6,14 @@ import type {
 	ElectronicInvoiceResult,
 } from "../../domain/cpe.types";
 
-vi.mock("../../application/services/electronic-invoice-processor.service", () => ({
-	ElectronicInvoiceProcessorService: {
-		processElectronicInvoice: vi.fn(),
-	},
-}));
+vi.mock(
+	"../../application/services/electronic-invoice-processor.service",
+	() => ({
+		ElectronicInvoiceProcessorService: {
+			processElectronicInvoice: vi.fn(),
+		},
+	}),
+);
 
 describe("ElectronicInvoicingService facade", () => {
 	beforeEach(() => {

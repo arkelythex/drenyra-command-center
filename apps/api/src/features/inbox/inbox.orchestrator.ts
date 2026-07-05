@@ -88,7 +88,10 @@ function validateIgv(
 	igv: number | undefined,
 ): { valid: boolean; detail: string } {
 	if (subtotal === undefined || igv === undefined) {
-		return { valid: true, detail: "IGV no calculado — revisión manual sugerida" };
+		return {
+			valid: true,
+			detail: "IGV no calculado — revisión manual sugerida",
+		};
 	}
 	const expected = Math.round(subtotal * 0.18 * 100) / 100;
 	const delta = Math.abs(expected - igv);

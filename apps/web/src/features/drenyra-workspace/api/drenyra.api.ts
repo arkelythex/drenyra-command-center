@@ -1,6 +1,6 @@
 import { api, getGovernanceAuditHeaders } from "@/lib/api";
+import { extractOkData, unwrap } from "@/lib/api-helpers";
 import { runtimeConfig } from "@/lib/runtime-config";
-import { unwrap, extractOkData } from "@/lib/api-helpers";
 
 export interface DrenyraChatRequest {
 	message: string;

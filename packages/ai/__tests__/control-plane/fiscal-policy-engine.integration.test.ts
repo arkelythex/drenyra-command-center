@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { PolicyEngine } from "../../src/control-plane/policy-engine";
-import { createInMemoryTraceEvidenceStore } from "../../src/control-plane/trace-evidence";
-import type { AgentRegistry } from "../../src/control-plane/agent-registry";
-import type { ToolRegistry } from "../../src/control-plane/tool-registry";
 import type {
 	AgentRegistryEntry,
 	FiscalPolicyResult,
 	TenantCompanyRucScope,
 	ToolDefinition,
 } from "../../src/control-plane";
+import type { AgentRegistry } from "../../src/control-plane/agent-registry";
+import { PolicyEngine } from "../../src/control-plane/policy-engine";
+import type { ToolRegistry } from "../../src/control-plane/tool-registry";
+import { createInMemoryTraceEvidenceStore } from "../../src/control-plane/trace-evidence";
 
 const tenantScope: TenantCompanyRucScope = {
 	tenantId: "tenant-1",
@@ -22,7 +22,12 @@ const agent: AgentRegistryEntry = {
 	purpose: "Fiscal policy integration test agent",
 	tenantScope,
 	capabilities: ["advisory.review"],
-	allowedTools: ["cpe.issue", "sire.export", "tax.calculate-igv", "report.view"],
+	allowedTools: [
+		"cpe.issue",
+		"sire.export",
+		"tax.calculate-igv",
+		"report.view",
+	],
 	approvalClass: "not-required",
 	supportedSurfaces: ["api"],
 };

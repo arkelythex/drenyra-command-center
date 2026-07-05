@@ -3,9 +3,9 @@ import { useState } from "react";
 import { ApiError, unwrap } from "@/lib/api-helpers";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 import {
+	type DocumentsApiRunbook,
 	documentsTreatyClient,
 	parseDocumentsEnvelopeError,
-	type DocumentsApiRunbook,
 } from "../api/documents-treaty-client";
 import type { DocumentListEntryDTO } from "../lib/map-document-to-review-item";
 import { mapDocumentDtoToReviewItem } from "../lib/map-document-to-review-item";
@@ -111,9 +111,8 @@ export function useReviewQueue(): UseReviewQueueResult {
 	);
 	const [lastFailedAction, setLastFailedAction] =
 		useState<PendingActionState | null>(null);
-	const [actionInFlight, setActionInFlight] = useState<PendingActionState | null>(
-		null,
-	);
+	const [actionInFlight, setActionInFlight] =
+		useState<PendingActionState | null>(null);
 
 	const queueQuery = useQuery({
 		queryKey: ["review-queue", "documents", companyId],

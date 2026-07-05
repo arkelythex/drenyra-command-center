@@ -4,10 +4,10 @@
 
 export type * from "./types";
 
-import { sireApi } from "./sire";
-import { overviewApi } from "./overview";
 import { financialApi } from "./financial";
 import { fiscalApi } from "./fiscal";
+import { overviewApi } from "./overview";
+import { sireApi } from "./sire";
 
 /**
  * Unified dashboard API client — backward-compatible with the original

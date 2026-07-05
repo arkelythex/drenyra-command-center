@@ -14,7 +14,9 @@ describe("ConversationBubble", () => {
 	it("does not render hidden steps", () => {
 		render(<ConversationBubble step={assistantStep} visible={false} />);
 
-		expect(screen.queryByText(/validé el comprobante/i)).not.toBeInTheDocument();
+		expect(
+			screen.queryByText(/validé el comprobante/i),
+		).not.toBeInTheDocument();
 	});
 
 	it("renders visible assistant steps and artifact labels without motion wrappers", () => {

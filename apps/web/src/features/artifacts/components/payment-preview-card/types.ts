@@ -1,19 +1,23 @@
-import type { ArtifactFieldPatch, ArtifactRiskLevel, PaymentBeneficiary } from '../../types/artifact.types';
+import type {
+	ArtifactFieldPatch,
+	ArtifactRiskLevel,
+	PaymentBeneficiary,
+} from "../../types/artifact.types";
 
 export interface PaymentBeneficiaryDraft {
-  beneficiaryId: string;
-  nextAmount: number;
-  note: string;
-  patch: ArtifactFieldPatch;
+	beneficiaryId: string;
+	nextAmount: number;
+	note: string;
+	patch: ArtifactFieldPatch;
 }
 
-export type PaymentSelectionDirection = 'up' | 'down';
+export type PaymentSelectionDirection = "up" | "down";
 
 export interface PaymentBeneficiaryView extends PaymentBeneficiary {
-  draft?: PaymentBeneficiaryDraft;
+	draft?: PaymentBeneficiaryDraft;
 }
 
 export interface InlineEditRiskAssessment {
-  riskLevel: ArtifactRiskLevel;
-  requiresPolicyGate: boolean;
+	riskLevel: ArtifactRiskLevel;
+	requiresPolicyGate: boolean;
 }

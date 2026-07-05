@@ -1,13 +1,9 @@
-import {
-	type SireDownloadResponse,
-	type SireTicketRequest,
-	type SunatApiClient,
+import type {
+	SireDownloadResponse,
+	SireTicketRequest,
+	SunatApiClient,
 } from "../SunatApiClient";
-import {
-	type SireSyncRequest,
-	type SireSyncResult,
-	type SireSyncStatus,
-} from "./types";
+import type { SireSyncRequest, SireSyncResult, SireSyncStatus } from "./types";
 
 export async function requestDownload(
 	client: SunatApiClient,
@@ -25,8 +21,7 @@ export async function requestDownload(
 		if (!response.success || !response.data) {
 			return {
 				success: false,
-				error:
-					response.error?.message || "Error al solicitar descarga SIRE",
+				error: response.error?.message || "Error al solicitar descarga SIRE",
 			};
 		}
 
@@ -39,9 +34,7 @@ export async function requestDownload(
 		return {
 			success: false,
 			error:
-				error instanceof Error
-					? error.message
-					: "Error de conexión con SUNAT",
+				error instanceof Error ? error.message : "Error de conexión con SUNAT",
 		};
 	}
 }

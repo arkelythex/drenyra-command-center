@@ -10,10 +10,10 @@ import { Money } from "@drenyra/domain/value-objects/Money";
 import { classifyExpense } from "@drenyra/infrastructure/ai/accounting-classifier.service";
 import { extractInvoiceData } from "@drenyra/infrastructure/ai/ocr.service";
 import { UBLParser } from "@drenyra/infrastructure/xml/ubl-parser";
+import { DocumentRepositoryImpl } from "@drenyra/persistence/repositories/document.repository";
 import { isValidRUC } from "@drenyra/shared/validation/ruc";
 import { type Job, Worker } from "bullmq";
 import { z } from "zod";
-import { DocumentRepositoryImpl } from "@drenyra/persistence/repositories/document.repository";
 import { loggers } from "../logger";
 import type {
 	DocumentJobData,

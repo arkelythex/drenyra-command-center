@@ -12,9 +12,9 @@ import { RUC } from "../value-objects/RUC";
 import {
 	DETERMINISTIC_REASON_CODE,
 	EVIDENCE_NODE_KIND,
-	GOVERNANCE_REVIEW_STATUS,
-	POLICY_OUTCOME,
-	REPLAY_FAILURE_CODE,
+	type GOVERNANCE_REVIEW_STATUS,
+	type POLICY_OUTCOME,
+	type REPLAY_FAILURE_CODE,
 } from "./constants";
 
 export type EvidenceNodeKind =

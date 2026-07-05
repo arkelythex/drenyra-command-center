@@ -8,61 +8,65 @@
  */
 
 interface ApiRunbook {
-  path: string;
-  anchor?: string;
+	path: string;
+	anchor?: string;
 }
 
 interface ApiFailureValue {
-  error?: string;
-  code?: string;
-  runbook?: ApiRunbook;
+	error?: string;
+	code?: string;
+	runbook?: ApiRunbook;
 }
 
 interface TreatyErrorEnvelope {
-  value?: ApiFailureValue;
+	value?: ApiFailureValue;
 }
 
 export interface TreatyResponse<TData> {
-  data?: TData;
-  error?: TreatyErrorEnvelope | string | null;
+	data?: TData;
+	error?: TreatyErrorEnvelope | string | null;
 }
 
 /** Eden Treaty may return a stricter `{ data, error }` shape; unwrap accepts it at the boundary. */
 export type TreatyUnwrapInput<TData> = {
-  data?: TData;
-  error?: unknown;
+	data?: TData;
+	error?: unknown;
 };
 
 /**
  * Error thrown when API returns fail() response
  */
 export class ApiError extends Error {
-  constructor(
-    message: string,
-    public readonly code?: string,
-    public readonly runbook?: ApiRunbook,
-  ) {
-    super(message);
-    this.name = 'ApiError';
-  }
+	constructor(
+		message: string,
+		public readonly code?: string,
+		public readonly runbook?: ApiRunbook,
+	) {
+		super(message);
+		this.name = "ApiError";
+	}
 }
 
 /**
  * Type guard to check if response is success
  */
 export function isSuccess<T>(
-  response: { success: true; data: T } | { success: false; error: string; code?: string }
+	response:
+		| { success: true; data: T }
+		| { success: false; error: string; code?: string },
 ): response is { success: true; data: T } {
-  return response.success === true;
+	return response.success === true;
 }
 
 /**
  * Type guard to check if response is failure
  */
 export function isFailure(
-  response: { success: true; data: unknown } | { success: false; error: string; code?: string }
+	response:
+		| { success: true; data: unknown }
+		| { success: false; error: string; code?: string },
 ): response is { success: false; error: string; code?: string } {
-  return response.success === false;
+	return response.success === false;
 }
 
 /**
@@ -75,50 +79,49 @@ export function isFailure(
  * ```
  */
 export async function unwrap<TData>(
-  promise: Promise<TreatyResponse<TData> | TreatyUnwrapInput<TData>>,
+	promise: Promise<TreatyResponse<TData> | TreatyUnwrapInput<TData>>,
 ): Promise<TData> {
-  const response = await promise;
+	const response = await promise;
 
-  // Eden Treaty returns { data, error } structure
-  if ('error' in response && response.error) {
-    const err = response.error;
+	// Eden Treaty returns { data, error } structure
+	if ("error" in response && response.error) {
+		const err = response.error;
 
-    if (typeof err === 'string') {
-      throw new ApiError(err);
-    }
+		if (typeof err === "string") {
+			throw new ApiError(err);
+		}
 
-    if (typeof err === 'object' && err !== null && 'value' in err) {
-      const rawValue = (err as { value?: unknown }).value;
-      if (rawValue && typeof rawValue === 'object' && rawValue !== null) {
-        const fv = rawValue as ApiFailureValue;
-        if (typeof fv.error === 'string' || typeof fv.code === 'string') {
-          throw new ApiError(
-            fv.error || 'Request failed',
-            fv.code,
-            fv.runbook,
-          );
-        }
-      }
-      if (typeof rawValue === 'string') {
-        throw new ApiError(rawValue);
-      }
-    }
+		if (typeof err === "object" && err !== null && "value" in err) {
+			const rawValue = (err as { value?: unknown }).value;
+			if (rawValue && typeof rawValue === "object" && rawValue !== null) {
+				const fv = rawValue as ApiFailureValue;
+				if (typeof fv.error === "string" || typeof fv.code === "string") {
+					throw new ApiError(fv.error || "Request failed", fv.code, fv.runbook);
+				}
+			}
+			if (typeof rawValue === "string") {
+				throw new ApiError(rawValue);
+			}
+		}
 
-    throw new ApiError('Request failed');
-  }
+		throw new ApiError("Request failed");
+	}
 
-  if ('data' in response && response.data !== undefined) {
-    return response.data as TData;
-  }
+	if ("data" in response && response.data !== undefined) {
+		return response.data as TData;
+	}
 
-  throw new ApiError('Invalid response structure');
+	throw new ApiError("Invalid response structure");
 }
 
 /**
  * Second hop after {@link unwrap}: the Treaty `data` is often the API JSON body
  * shaped as `ok(data)` / `fail(...)` (`{ success, data?, error? }`).
  */
-export function extractOkData<T>(envelope: unknown, fallbackMessage: string): T {
+export function extractOkData<T>(
+	envelope: unknown,
+	fallbackMessage: string,
+): T {
 	if (envelope == null) {
 		throw new ApiError(fallbackMessage);
 	}
@@ -126,7 +129,11 @@ export function extractOkData<T>(envelope: unknown, fallbackMessage: string): T 
 		throw new ApiError(fallbackMessage);
 	}
 	if (!("success" in envelope) || envelope.success !== true) {
-		const failed = envelope as { error?: string; message?: string; code?: string };
+		const failed = envelope as {
+			error?: string;
+			message?: string;
+			code?: string;
+		};
 		const msg =
 			typeof failed.error === "string"
 				? failed.error
@@ -176,19 +183,19 @@ export function extractOkDataOrPassthrough<T>(
  * ```
  */
 export async function handleApiCall<T, R>(
-  promise: Promise<TreatyResponse<T> | TreatyUnwrapInput<T>>,
-  onSuccess: (data: T) => R,
-  onFailure: (error: string, code?: string) => R
+	promise: Promise<TreatyResponse<T> | TreatyUnwrapInput<T>>,
+	onSuccess: (data: T) => R,
+	onFailure: (error: string, code?: string) => R,
 ): Promise<R> {
-  try {
-    const data = await unwrap(promise);
-    return onSuccess(data as T);
-  } catch (error) {
-    if (error instanceof ApiError) {
-      return onFailure(error.message, error.code);
-    }
-    return onFailure(error instanceof Error ? error.message : 'Unknown error');
-  }
+	try {
+		const data = await unwrap(promise);
+		return onSuccess(data as T);
+	} catch (error) {
+		if (error instanceof ApiError) {
+			return onFailure(error.message, error.code);
+		}
+		return onFailure(error instanceof Error ? error.message : "Unknown error");
+	}
 }
 
 /**
@@ -199,4 +206,8 @@ export async function handleApiCall<T, R>(
  * type CustomerData = ExtractData<typeof api.customers.index.get>;
  * ```
  */
-export type ExtractData<T> = T extends (...args: unknown[]) => Promise<{ data: infer D }> ? D : never;
+export type ExtractData<T> = T extends (
+	...args: unknown[]
+) => Promise<{ data: infer D }>
+	? D
+	: never;

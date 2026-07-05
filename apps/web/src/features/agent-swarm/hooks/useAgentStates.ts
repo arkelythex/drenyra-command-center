@@ -147,9 +147,8 @@ export function useAgentStates(
 	// Resetear estados cuando no está pensando
 	useEffect(() => {
 		if (!isThinking) {
-			 
 			setStates(DEFAULT_STATES);
-			 
+
 			setTransitions([]);
 		}
 	}, [isThinking]);

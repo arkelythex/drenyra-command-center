@@ -136,10 +136,13 @@ export function notify(
 	const id = useNotifications.getState().add(entry);
 
 	const sonnerType =
-		entry.type === "error" ? "error"
-		: entry.type === "agent_complete" || entry.type === "case_created" ? "success"
-		: entry.type === "approval_requested" ? "warning"
-		: undefined;
+		entry.type === "error"
+			? "error"
+			: entry.type === "agent_complete" || entry.type === "case_created"
+				? "success"
+				: entry.type === "approval_requested"
+					? "warning"
+					: undefined;
 
 	if (sonnerType) {
 		toast[sonnerType](entry.title, {

@@ -1,6 +1,6 @@
+import { api } from "@/lib/api";
 import { extractOkDataOrPassthrough, unwrap } from "@/lib/api-helpers";
 import { registerClient } from "@/lib/treaty-route-client";
-import { api } from "@/lib/api";
 
 /** Eden treaty client for /api/bills routes */
 const billsTreatyClient = registerClient("bills", api.api.bills);

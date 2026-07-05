@@ -4,9 +4,9 @@ import {
 	InvalidDetraccionTransitionError,
 } from "./errors";
 import {
-	SPOT_CODE_REGISTRY,
 	type DetraccionStatus,
 	type SerializedMoney,
+	SPOT_CODE_REGISTRY,
 	type SpotCode,
 } from "./types";
 

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * Zod schema for {@link AccountType} values.
@@ -8,7 +8,7 @@ import { z } from 'zod';
  * AccountTypeSchema.parse('CHECKING'); // ok
  * ```
  */
-export const AccountTypeSchema = z.enum(['CHECKING', 'SAVINGS', 'CREDIT']);
+export const AccountTypeSchema = z.enum(["CHECKING", "SAVINGS", "CREDIT"]);
 
 /**
  * Zod schema for {@link TransactionType} values.
@@ -18,7 +18,7 @@ export const AccountTypeSchema = z.enum(['CHECKING', 'SAVINGS', 'CREDIT']);
  * TransactionTypeSchema.parse('DEBIT'); // ok
  * ```
  */
-export const TransactionTypeSchema = z.enum(['DEBIT', 'CREDIT']);
+export const TransactionTypeSchema = z.enum(["DEBIT", "CREDIT"]);
 
 /**
  * Request body schema for creating a bank account.
@@ -35,15 +35,15 @@ export const TransactionTypeSchema = z.enum(['DEBIT', 'CREDIT']);
  * ```
  */
 export const CreateAccountSchema = z.object({
-  companyId: z.string(),
-  accountName: z.string().min(1),
-  accountNumber: z.string().min(6),
-  accountType: AccountTypeSchema,
-  bankName: z.string().min(1),
-  bankCode: z.string().optional(),
-  branch: z.string().optional(),
-  currency: z.string().optional(),
-  currentBalance: z.number().optional(),
+	companyId: z.string(),
+	accountName: z.string().min(1),
+	accountNumber: z.string().min(6),
+	accountType: AccountTypeSchema,
+	bankName: z.string().min(1),
+	bankCode: z.string().optional(),
+	branch: z.string().optional(),
+	currency: z.string().optional(),
+	currentBalance: z.number().optional(),
 });
 
 /**
@@ -62,15 +62,15 @@ export const CreateAccountSchema = z.object({
  * ```
  */
 export const CreateTransactionSchema = z.object({
-  companyId: z.string(),
-  accountId: z.string(),
-  transactionDate: z.coerce.date(),
-  description: z.string().min(1),
-  reference: z.string().optional(),
-  type: TransactionTypeSchema,
-  amount: z.number(),
-  category: z.string().optional(),
-  tags: z.array(z.string()).optional(),
+	companyId: z.string(),
+	accountId: z.string(),
+	transactionDate: z.coerce.date(),
+	description: z.string().min(1),
+	reference: z.string().optional(),
+	type: TransactionTypeSchema,
+	amount: z.number(),
+	category: z.string().optional(),
+	tags: z.array(z.string()).optional(),
 });
 
 /**
@@ -82,7 +82,7 @@ export const CreateTransactionSchema = z.object({
  * ```
  */
 export const ListAccountsQuerySchema = z.object({
-  companyId: z.string(),
+	companyId: z.string(),
 });
 
 /**
@@ -94,8 +94,8 @@ export const ListAccountsQuerySchema = z.object({
  * ```
  */
 export const ListTransactionsQuerySchema = z.object({
-  startDate: z.coerce.date().optional(),
-  endDate: z.coerce.date().optional(),
+	startDate: z.coerce.date().optional(),
+	endDate: z.coerce.date().optional(),
 });
 
 /**
@@ -107,7 +107,7 @@ export const ListTransactionsQuerySchema = z.object({
  * ```
  */
 export const IdParamSchema = z.object({
-  id: z.string().uuid(),
+	id: z.string().uuid(),
 });
 
 /**
@@ -119,8 +119,8 @@ export const IdParamSchema = z.object({
  * ```
  */
 export const AutoReconcileSchema = z.object({
-  companyId: z.string(),
-  accountId: z.string(),
+	companyId: z.string(),
+	accountId: z.string(),
 });
 
 /**
@@ -132,7 +132,7 @@ export const AutoReconcileSchema = z.object({
  * ```
  */
 export const ReconciliationShadowMetricsQuerySchema = z.object({
-  companyId: z.string().optional(),
+	companyId: z.string().optional(),
 });
 
 /**
@@ -144,8 +144,8 @@ export const ReconciliationShadowMetricsQuerySchema = z.object({
  * ```
  */
 export const ReconciliationShadowCutoverQuerySchema = z.object({
-  companyId: z.string().optional(),
-  windowRuns: z.coerce.number().int().min(1).max(200).optional(),
+	companyId: z.string().optional(),
+	windowRuns: z.coerce.number().int().min(1).max(200).optional(),
 });
 
 /**
@@ -157,9 +157,9 @@ export const ReconciliationShadowCutoverQuerySchema = z.object({
  */
 
 export const AirlineTicketReportQuerySchema = z.object({
-  companyId: z.string(),
-  period: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/),
-  minAmountPen: z.coerce.number().nonnegative().optional(),
+	companyId: z.string(),
+	period: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/),
+	minAmountPen: z.coerce.number().nonnegative().optional(),
 });
 
 /**
@@ -173,17 +173,21 @@ export const AirlineTicketReportQuerySchema = z.object({
  * ReconcileTransactionSchema.parse({ documentId: 'inv_123', documentType: 'INVOICE' });
  * ```
  */
-export const ReconcileTransactionSchema = z.object({
-  userId: z.string().uuid().optional(),
-  documentId: z.string().uuid().optional(),
-  documentType: z.enum(['INVOICE', 'BILL']).optional(),
-}).refine(
-  (value) => (value.documentId && value.documentType) || (!value.documentId && !value.documentType),
-  {
-    message: 'documentId and documentType must be provided together',
-    path: ['documentId'],
-  }
-);
+export const ReconcileTransactionSchema = z
+	.object({
+		userId: z.string().uuid().optional(),
+		documentId: z.string().uuid().optional(),
+		documentType: z.enum(["INVOICE", "BILL"]).optional(),
+	})
+	.refine(
+		(value) =>
+			(value.documentId && value.documentType) ||
+			(!value.documentId && !value.documentType),
+		{
+			message: "documentId and documentType must be provided together",
+			path: ["documentId"],
+		},
+	);
 
 /**
  * Request body schema for importing multiple transactions in a single request.
@@ -198,15 +202,15 @@ export const ReconcileTransactionSchema = z.object({
  * ```
  */
 export const ImportTransactionsSchema = z.object({
-  companyId: z.string(),
-  accountId: z.string(),
-  transactions: z.array(
-    z.object({
-      date: z.coerce.date(),
-      description: z.string().min(1),
-      amount: z.number(),
-      type: TransactionTypeSchema,
-      reference: z.string().optional(),
-    })
-  ),
+	companyId: z.string(),
+	accountId: z.string(),
+	transactions: z.array(
+		z.object({
+			date: z.coerce.date(),
+			description: z.string().min(1),
+			amount: z.number(),
+			type: TransactionTypeSchema,
+			reference: z.string().optional(),
+		}),
+	),
 });

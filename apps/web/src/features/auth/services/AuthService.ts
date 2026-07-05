@@ -1,13 +1,13 @@
-import { authClient } from "@/lib/auth-client";
 import { api } from "@/lib/api-client";
-import { captureError } from "@/lib/monitoring";
-import type { LoginCredentials, User, Session } from "../types/auth.types";
+import { authClient } from "@/lib/auth-client";
 import {
+	clearActiveCompanyContext,
 	mergeUserWithStoredCompanyContext,
 	syncActiveCompanyContextFromUser,
-	clearActiveCompanyContext,
 } from "@/lib/company-context";
+import { captureError } from "@/lib/monitoring";
 import { readAuthSessionSnapshot } from "../lib/auth-session-snapshot";
+import type { LoginCredentials, Session, User } from "../types/auth.types";
 
 const enableDemoAuth =
 	import.meta.env.DEV && import.meta.env.VITE_ENABLE_DEMO_AUTH === "true";

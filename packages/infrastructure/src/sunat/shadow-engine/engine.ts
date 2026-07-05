@@ -1,3 +1,8 @@
+import {
+	generateRecommendations,
+	getSectorBenchmark,
+	SUNAT_RISK_RULES,
+} from "../shadow-rules";
 import type {
 	AreaMetric,
 	AreaRiskAssessment,
@@ -9,11 +14,6 @@ import type {
 	TaxArea,
 	TaxData,
 } from "./types";
-import {
-	generateRecommendations,
-	getSectorBenchmark,
-	SUNAT_RISK_RULES,
-} from "../shadow-rules";
 
 export class ShadowSunatEngine {
 	private static instance: ShadowSunatEngine;

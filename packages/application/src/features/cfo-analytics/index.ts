@@ -5,15 +5,15 @@
  */
 
 export type {
-	MoneyValue,
-	RevenueKPIs,
-	ExpenseKPIs,
-	ProfitKPIs,
-	LiquidityKPIs,
-	TaxKPISummary,
 	ClientSummaryKPIs,
-	DashboardKPIs,
-	WidgetConfig,
 	DashboardConfig,
+	DashboardKPIs,
+	ExpenseKPIs,
+	LiquidityKPIs,
+	MoneyValue,
+	ProfitKPIs,
 	ReportResult,
+	RevenueKPIs,
+	TaxKPISummary,
+	WidgetConfig,
 } from "./types";

@@ -6,7 +6,7 @@
  * @module cashflow/domain
  */
 
-import { Money, type Currency } from '@drenyra/domain';
+import { type Currency, Money } from "@drenyra/domain";
 
 /**
  * Cash flow item (invoice or bill)
@@ -26,15 +26,15 @@ import { Money, type Currency } from '@drenyra/domain';
  * ```
  */
 export interface CashflowItem {
-  id: string;
-  type: 'inflow' | 'outflow';
-  /** 'retention' items are SUNAT withholding obligations split from bill outflows */
-  documentType: 'invoice' | 'bill' | 'retention';
-  reference: string;
-  amount: Money;
-  dueDate: Date;
-  status: 'pending' | 'overdue' | 'paid';
-  customerOrVendor: string;
+	id: string;
+	type: "inflow" | "outflow";
+	/** 'retention' items are SUNAT withholding obligations split from bill outflows */
+	documentType: "invoice" | "bill" | "retention";
+	reference: string;
+	amount: Money;
+	dueDate: Date;
+	status: "pending" | "overdue" | "paid";
+	customerOrVendor: string;
 }
 
 /**
@@ -55,172 +55,179 @@ export interface CashflowItem {
  * ```
  */
 export class CashflowProjection {
-  constructor(
-    public readonly companyId: string,
-    public readonly startDate: Date,
-    public readonly endDate: Date,
-    public readonly currency: Currency,
-    public readonly inflows: CashflowItem[],
-    public readonly outflows: CashflowItem[]
-  ) {}
+	constructor(
+		public readonly companyId: string,
+		public readonly startDate: Date,
+		public readonly endDate: Date,
+		public readonly currency: Currency,
+		public readonly inflows: CashflowItem[],
+		public readonly outflows: CashflowItem[],
+	) {}
 
-  /**
-   * Calculate total expected inflows
-   */
-  get totalInflows(): Money {
-    return this.inflows.reduce(
-      (sum, item) => sum.add(item.amount),
-      Money.fromAmount(0, this.currency)
-    );
-  }
+	/**
+	 * Calculate total expected inflows
+	 */
+	get totalInflows(): Money {
+		return this.inflows.reduce(
+			(sum, item) => sum.add(item.amount),
+			Money.fromAmount(0, this.currency),
+		);
+	}
 
-  /**
-   * Calculate total expected outflows
-   */
-  get totalOutflows(): Money {
-    return this.outflows.reduce(
-      (sum, item) => sum.add(item.amount),
-      Money.fromAmount(0, this.currency)
-    );
-  }
+	/**
+	 * Calculate total expected outflows
+	 */
+	get totalOutflows(): Money {
+		return this.outflows.reduce(
+			(sum, item) => sum.add(item.amount),
+			Money.fromAmount(0, this.currency),
+		);
+	}
 
-  /**
-   * Calculate net cash flow
-   */
-  get netCashflow(): Money {
-    return toSignedMoney(this.totalInflows, this.totalOutflows, this.currency);
-  }
+	/**
+	 * Calculate net cash flow
+	 */
+	get netCashflow(): Money {
+		return toSignedMoney(this.totalInflows, this.totalOutflows, this.currency);
+	}
 
-  /**
-   * Check if net cash flow is negative
-   */
-  get isDeficit(): boolean {
-    return this.netCashflow.getAmount() < 0;
-  }
+	/**
+	 * Check if net cash flow is negative
+	 */
+	get isDeficit(): boolean {
+		return this.netCashflow.getAmount() < 0;
+	}
 
-  /**
-   * Get overdue items (past due date)
-   */
-  get overdueItems(): CashflowItem[] {
-    const now = new Date();
-    return [...this.inflows, ...this.outflows].filter(
-      (item) => item.status === 'overdue' && item.dueDate < now
-    );
-  }
+	/**
+	 * Get overdue items (past due date)
+	 */
+	get overdueItems(): CashflowItem[] {
+		const now = new Date();
+		return [...this.inflows, ...this.outflows].filter(
+			(item) => item.status === "overdue" && item.dueDate < now,
+		);
+	}
 
-  /**
-   * Get items due within N days
-   */
-  getItemsDueWithin(days: number): CashflowItem[] {
-    const targetDate = new Date();
-    targetDate.setDate(targetDate.getDate() + days);
+	/**
+	 * Get items due within N days
+	 */
+	getItemsDueWithin(days: number): CashflowItem[] {
+		const targetDate = new Date();
+		targetDate.setDate(targetDate.getDate() + days);
 
-    return [...this.inflows, ...this.outflows].filter(
-      (item) =>
-        item.status === 'pending' &&
-        item.dueDate >= new Date() &&
-        item.dueDate <= targetDate
-    );
-  }
+		return [...this.inflows, ...this.outflows].filter(
+			(item) =>
+				item.status === "pending" &&
+				item.dueDate >= new Date() &&
+				item.dueDate <= targetDate,
+		);
+	}
 
-  /**
-   * Group items by week
-   */
-  getWeeklyBreakdown(): Array<{
-    weekStart: Date;
-    weekEnd: Date;
-    inflows: Money;
-    outflows: Money;
-    netCashflow: Money;
-  }> {
-    const weeks: Map<
-      string,
-      { inflows: Money; outflows: Money; weekStart: Date; weekEnd: Date }
-    > = new Map();
+	/**
+	 * Group items by week
+	 */
+	getWeeklyBreakdown(): Array<{
+		weekStart: Date;
+		weekEnd: Date;
+		inflows: Money;
+		outflows: Money;
+		netCashflow: Money;
+	}> {
+		const weeks: Map<
+			string,
+			{ inflows: Money; outflows: Money; weekStart: Date; weekEnd: Date }
+		> = new Map();
 
-    const processItems = (items: CashflowItem[], type: 'inflow' | 'outflow') => {
-      for (const item of items) {
-        const weekStart = this.getWeekStart(item.dueDate);
-        const weekKey = weekStart.toISOString();
+		const processItems = (
+			items: CashflowItem[],
+			type: "inflow" | "outflow",
+		) => {
+			for (const item of items) {
+				const weekStart = this.getWeekStart(item.dueDate);
+				const weekKey = weekStart.toISOString();
 
-        if (!weeks.has(weekKey)) {
-          const weekEnd = new Date(weekStart);
-          weekEnd.setDate(weekEnd.getDate() + 6);
+				if (!weeks.has(weekKey)) {
+					const weekEnd = new Date(weekStart);
+					weekEnd.setDate(weekEnd.getDate() + 6);
 
-          weeks.set(weekKey, {
-            weekStart,
-            weekEnd,
-            inflows: Money.fromAmount(0, this.currency),
-            outflows: Money.fromAmount(0, this.currency),
-          });
-        }
+					weeks.set(weekKey, {
+						weekStart,
+						weekEnd,
+						inflows: Money.fromAmount(0, this.currency),
+						outflows: Money.fromAmount(0, this.currency),
+					});
+				}
 
-        const week = weeks.get(weekKey)!;
-        if (type === 'inflow') {
-          week.inflows = week.inflows.add(item.amount);
-        } else {
-          week.outflows = week.outflows.add(item.amount);
-        }
-      }
-    };
+				const week = weeks.get(weekKey)!;
+				if (type === "inflow") {
+					week.inflows = week.inflows.add(item.amount);
+				} else {
+					week.outflows = week.outflows.add(item.amount);
+				}
+			}
+		};
 
-    processItems(this.inflows, 'inflow');
-    processItems(this.outflows, 'outflow');
+		processItems(this.inflows, "inflow");
+		processItems(this.outflows, "outflow");
 
-    return Array.from(weeks.values())
-      .map((week) => ({
-        ...week,
-        netCashflow: toSignedMoney(week.inflows, week.outflows, this.currency),
-      }))
-      .sort((a, b) => a.weekStart.getTime() - b.weekStart.getTime());
-  }
+		return Array.from(weeks.values())
+			.map((week) => ({
+				...week,
+				netCashflow: toSignedMoney(week.inflows, week.outflows, this.currency),
+			}))
+			.sort((a, b) => a.weekStart.getTime() - b.weekStart.getTime());
+	}
 
-  /**
-   * Get week start date (Monday)
-   */
-  private getWeekStart(date: Date): Date {
-    const d = new Date(date);
-    const day = d.getDay();
-    const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
-    return new Date(d.setDate(diff));
-  }
+	/**
+	 * Get week start date (Monday)
+	 */
+	private getWeekStart(date: Date): Date {
+		const d = new Date(date);
+		const day = d.getDay();
+		const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
+		return new Date(d.setDate(diff));
+	}
 
-  /**
-   * Convert to plain object for serialization
-   */
-  toJSON() {
-    return {
-      companyId: this.companyId,
-      period: {
-        startDate: this.startDate,
-        endDate: this.endDate,
-      },
-      currency: this.currency,
-      summary: {
-        totalInflows: this.totalInflows.getAmount(),
-        totalOutflows: this.totalOutflows.getAmount(),
-        netCashflow: this.netCashflow.getAmount(),
-        isDeficit: this.isDeficit,
-      },
-      inflows: this.inflows.map((i) => ({
-        ...i,
-        amount: i.amount.getAmount(),
-      })),
-      outflows: this.outflows.map((o) => ({
-        ...o,
-        amount: o.amount.getAmount(),
-      })),
-      overdueItems: this.overdueItems.length,
-      weeklyBreakdown: this.getWeeklyBreakdown().map((week) => ({
-        ...week,
-        inflows: week.inflows.getAmount(),
-        outflows: week.outflows.getAmount(),
-        netCashflow: week.netCashflow.getAmount(),
-      })),
-    };
-  }
+	/**
+	 * Convert to plain object for serialization
+	 */
+	toJSON() {
+		return {
+			companyId: this.companyId,
+			period: {
+				startDate: this.startDate,
+				endDate: this.endDate,
+			},
+			currency: this.currency,
+			summary: {
+				totalInflows: this.totalInflows.getAmount(),
+				totalOutflows: this.totalOutflows.getAmount(),
+				netCashflow: this.netCashflow.getAmount(),
+				isDeficit: this.isDeficit,
+			},
+			inflows: this.inflows.map((i) => ({
+				...i,
+				amount: i.amount.getAmount(),
+			})),
+			outflows: this.outflows.map((o) => ({
+				...o,
+				amount: o.amount.getAmount(),
+			})),
+			overdueItems: this.overdueItems.length,
+			weeklyBreakdown: this.getWeeklyBreakdown().map((week) => ({
+				...week,
+				inflows: week.inflows.getAmount(),
+				outflows: week.outflows.getAmount(),
+				netCashflow: week.netCashflow.getAmount(),
+			})),
+		};
+	}
 }
 
-function toSignedMoney(inflows: Money, outflows: Money, currency: Currency): Money {
-  return Money.fromCents(inflows.getCents() - outflows.getCents(), currency);
+function toSignedMoney(
+	inflows: Money,
+	outflows: Money,
+	currency: Currency,
+): Money {
+	return Money.fromCents(inflows.getCents() - outflows.getCents(), currency);
 }

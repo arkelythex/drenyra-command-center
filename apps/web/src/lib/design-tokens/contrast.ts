@@ -56,11 +56,16 @@ export function relativeLuminance(input: string | RgbColor): number | null {
 	}
 
 	return (
-		0.2126 * linearize(color.r) + 0.7152 * linearize(color.g) + 0.0722 * linearize(color.b)
+		0.2126 * linearize(color.r) +
+		0.7152 * linearize(color.g) +
+		0.0722 * linearize(color.b)
 	);
 }
 
-export function contrastRatio(foreground: string, background: string): number | null {
+export function contrastRatio(
+	foreground: string,
+	background: string,
+): number | null {
 	const foregroundLuminance = relativeLuminance(foreground);
 	const backgroundLuminance = relativeLuminance(background);
 	if (foregroundLuminance === null || backgroundLuminance === null) {

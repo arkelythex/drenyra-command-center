@@ -5,11 +5,11 @@
  * Extracts structured data from PDF invoices
  */
 import { generateObject } from "ai";
-import { type OCRResult, OCRResultSchema } from "../schemas/invoice";
 import { loggers } from "../../logger";
 import { getOCRPrompt } from "../prompts";
 import { aiRouter } from "../router";
-import { type OCROptions, type OCRResponse } from "./types";
+import { type OCRResult, OCRResultSchema } from "../schemas/invoice";
+import type { OCROptions, OCRResponse } from "./types";
 
 /**
  * Extract invoice data from an image or PDF using Gemini OCR

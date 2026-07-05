@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 import type { LedgerTransaction } from "../components/ledger-view/ledger-data";
-import { LEDGER_ALL_ACCOUNTS_ID, isLedgerAllAccountsId } from "../lib/ledger-constants";
+import {
+	isLedgerAllAccountsId,
+	LEDGER_ALL_ACCOUNTS_ID,
+} from "../lib/ledger-constants";
 import {
 	buildLedgerSidebarAccounts,
 	filterTransactionsByCategoryName,
@@ -25,10 +28,18 @@ export function useLedgerViewModel() {
 	const chart = useChartOfAccounts();
 	const gl = useGeneralLedger(period.start, period.end);
 
-	const accounts = useMemo(() => mapChartRowsToSidebarAccounts(chart.data), [chart.data]);
-	const sidebarAccounts = useMemo(() => buildLedgerSidebarAccounts(accounts), [accounts]);
+	const accounts = useMemo(
+		() => mapChartRowsToSidebarAccounts(chart.data),
+		[chart.data],
+	);
+	const sidebarAccounts = useMemo(
+		() => buildLedgerSidebarAccounts(accounts),
+		[accounts],
+	);
 
-	const [selectedAccountId, setSelectedAccountId] = useState<string>(LEDGER_ALL_ACCOUNTS_ID);
+	const [selectedAccountId, setSelectedAccountId] = useState<string>(
+		LEDGER_ALL_ACCOUNTS_ID,
+	);
 
 	useEffect(() => {
 		setSelectedAccountId(LEDGER_ALL_ACCOUNTS_ID);
@@ -54,7 +65,10 @@ export function useLedgerViewModel() {
 
 	const periodLabel = useMemo(
 		() =>
-			new Intl.DateTimeFormat("es-PE", { month: "long", year: "numeric" }).format(period.start),
+			new Intl.DateTimeFormat("es-PE", {
+				month: "long",
+				year: "numeric",
+			}).format(period.start),
 		[period.start],
 	);
 

@@ -7,85 +7,88 @@
  * @since Feb 2026
  */
 
-import React, { Suspense } from 'react';
-import type { HubArtifact } from '@drenyra/shared/artifacts';
-import { type ArtifactComponent, getRenderer } from './artifact-registry';
+import type { HubArtifact } from "@drenyra/shared/artifacts";
+import React, { Suspense } from "react";
+import { type ArtifactComponent, getRenderer } from "./artifact-registry";
 
 type ArtifactRendererLoader = () => Promise<unknown>;
 
-const ARTIFACT_RENDERER_LOADERS: Record<HubArtifact['type'], ArtifactRendererLoader> = {
-  explanation: () => import('./renderers/ExplanationArtifact'),
-  chart: () => import('./renderers/ChartArtifact'),
-  table: () => import('./renderers/TableArtifact'),
-  action_card: () => import('./renderers/ActionCardArtifact'),
-  simulation: () => import('./renderers/SimulationArtifact'),
-  comparison: () => import('./renderers/ComparisonArtifact'),
-  accounting_diff: () => import('./renderers/AccountingDiffArtifact'),
-  sheet_diff: () => import('./renderers/SheetDiffArtifact'),
-  search_result: () => import('./renderers/SearchResultArtifact'),
-  report: () => import('./renderers/ReportArtifact'),
-  knowledge_graph: () => import('./renderers/KnowledgeGraphArtifact'),
-  dashboard: () => import('./renderers/DashboardArtifact'),
+const ARTIFACT_RENDERER_LOADERS: Record<
+	HubArtifact["type"],
+	ArtifactRendererLoader
+> = {
+	explanation: () => import("./renderers/ExplanationArtifact"),
+	chart: () => import("./renderers/ChartArtifact"),
+	table: () => import("./renderers/TableArtifact"),
+	action_card: () => import("./renderers/ActionCardArtifact"),
+	simulation: () => import("./renderers/SimulationArtifact"),
+	comparison: () => import("./renderers/ComparisonArtifact"),
+	accounting_diff: () => import("./renderers/AccountingDiffArtifact"),
+	sheet_diff: () => import("./renderers/SheetDiffArtifact"),
+	search_result: () => import("./renderers/SearchResultArtifact"),
+	report: () => import("./renderers/ReportArtifact"),
+	knowledge_graph: () => import("./renderers/KnowledgeGraphArtifact"),
+	dashboard: () => import("./renderers/DashboardArtifact"),
 };
 
-function createLazyArtifactRenderer(type: HubArtifact['type']) {
-  return React.lazy(async () => {
-    const loadRenderer = ARTIFACT_RENDERER_LOADERS[type];
-    await loadRenderer();
-    const Renderer = getRenderer(type);
+function createLazyArtifactRenderer(type: HubArtifact["type"]) {
+	return React.lazy(async () => {
+		const loadRenderer = ARTIFACT_RENDERER_LOADERS[type];
+		await loadRenderer();
+		const Renderer = getRenderer(type);
 
-    return {
-      default: Renderer ?? UnknownArtifact,
-    };
-  });
+		return {
+			default: Renderer ?? UnknownArtifact,
+		};
+	});
 }
 
 const LAZY_ARTIFACT_RENDERERS: Record<
-  HubArtifact['type'],
-  React.LazyExoticComponent<ArtifactComponent>
+	HubArtifact["type"],
+	React.LazyExoticComponent<ArtifactComponent>
 > = {
-  explanation: createLazyArtifactRenderer('explanation'),
-  chart: createLazyArtifactRenderer('chart'),
-  table: createLazyArtifactRenderer('table'),
-  action_card: createLazyArtifactRenderer('action_card'),
-  simulation: createLazyArtifactRenderer('simulation'),
-  comparison: createLazyArtifactRenderer('comparison'),
-  accounting_diff: createLazyArtifactRenderer('accounting_diff'),
-  sheet_diff: createLazyArtifactRenderer('sheet_diff'),
-  search_result: createLazyArtifactRenderer('search_result'),
-  report: createLazyArtifactRenderer('report'),
-  knowledge_graph: createLazyArtifactRenderer('knowledge_graph'),
-  dashboard: createLazyArtifactRenderer('dashboard'),
+	explanation: createLazyArtifactRenderer("explanation"),
+	chart: createLazyArtifactRenderer("chart"),
+	table: createLazyArtifactRenderer("table"),
+	action_card: createLazyArtifactRenderer("action_card"),
+	simulation: createLazyArtifactRenderer("simulation"),
+	comparison: createLazyArtifactRenderer("comparison"),
+	accounting_diff: createLazyArtifactRenderer("accounting_diff"),
+	sheet_diff: createLazyArtifactRenderer("sheet_diff"),
+	search_result: createLazyArtifactRenderer("search_result"),
+	report: createLazyArtifactRenderer("report"),
+	knowledge_graph: createLazyArtifactRenderer("knowledge_graph"),
+	dashboard: createLazyArtifactRenderer("dashboard"),
 };
 
 export const ArtifactRenderer = ({ artifact }: { artifact: HubArtifact }) => {
-  const Renderer = LAZY_ARTIFACT_RENDERERS[artifact.type];
+	const Renderer = LAZY_ARTIFACT_RENDERERS[artifact.type];
 
-  return (
-    <Suspense fallback={<ArtifactRendererFallback />}>
-      <Renderer artifact={artifact} />
-    </Suspense>
-  );
+	return (
+		<Suspense fallback={<ArtifactRendererFallback />}>
+			<Renderer artifact={artifact} />
+		</Suspense>
+	);
 };
 
 function UnknownArtifact({ artifact }: { artifact: HubArtifact }) {
-  return (
-    <div className="mt-6 rounded-lg border border-danger/20 bg-danger-subtle p-4 font-mono text-xs text-danger">
-      Unknown artifact type: {artifact.type}
-    </div>
-  );
+	return (
+		<div className="mt-6 rounded-lg border border-danger/20 bg-danger-subtle p-4 font-mono text-xs text-danger">
+			Unknown artifact type: {artifact.type}
+		</div>
+	);
 }
 
 function ArtifactRendererFallback() {
-  return (
-    <div
-      className="mt-6 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-4"
-      role="status"
-      aria-live="polite"
-    >
-      <div className="h-4 w-40 animate-pulse rounded bg-[var(--surface-hover)]" />
-      <div className="mt-3 h-20 animate-pulse rounded bg-[var(--surface-hover)]" />
-      <span className="sr-only">Cargando renderer del artefacto</span>
-    </div>
-  );
+	return (
+		<div
+			className="mt-6 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-4"
+			role="status"
+			aria-live="polite"
+		>
+			<div className="h-4 w-40 animate-pulse rounded bg-[var(--surface-hover)]" />
+			<div className="mt-3 h-20 animate-pulse rounded bg-[var(--surface-hover)]" />
+			<span className="sr-only">Cargando renderer del artefacto</span>
+		</div>
+	);
 }

@@ -165,7 +165,12 @@ export const ReconciliationWorkspace: React.FC<
 							onClick={() => triggerHaptic("light")}
 							role="button"
 							tabIndex={0}
-							onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerHaptic("light"); } }}
+							onKeyDown={(e) => {
+								if (e.key === "Enter" || e.key === " ") {
+									e.preventDefault();
+									triggerHaptic("light");
+								}
+							}}
 							className="group flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-dashed border-border bg-muted/20 p-4 transition-[background-color,border-color,box-shadow,transform] hover:border-info-muted hover:bg-info-subtle"
 						>
 							<div className="flex items-center gap-4 min-w-0">

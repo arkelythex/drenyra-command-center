@@ -1,4 +1,3 @@
-import { and, asc, desc, eq } from "drizzle-orm";
 import type {
 	ChainVerificationResult,
 	FiscalTruthEvent,
@@ -6,9 +5,10 @@ import type {
 	FiscalTruthScope,
 } from "@drenyra/domain";
 import { computeAuditHash } from "@drenyra/domain";
-import type { DbTransaction } from "../unit-of-work";
+import { and, asc, desc, eq } from "drizzle-orm";
 import { db } from "../client";
 import { fiscalTruthEvents } from "../schema/fiscal-truth.schema";
+import type { DbTransaction } from "../unit-of-work";
 
 function toOrganizationId(value: number | null): string | null {
 	if (value === null || Number.isNaN(value)) {
@@ -89,29 +89,29 @@ export class PostgresFiscalTruthRepository implements FiscalTruthRepository {
 
 		// 3. Insert with hash-link columns
 		await this.client.insert(fiscalTruthEvents).values({
-				eventId: event.eventId,
-				aggregateId: event.aggregateId,
-				aggregateType: event.aggregateType,
-				eventKind: event.eventKind,
-				companyId: event.scope.companyId,
-				companyRuc: event.scope.companyRuc,
-				organizationId: toOrganizationId(event.scope.organizationId),
-				period: event.scope.period,
-				countryCode: event.scope.countryCode,
-				traceId: event.trace.traceId,
-				correlationId: event.trace.correlationId,
-				causationId: event.trace.causationId,
-				validatorSetVersion: event.validatorSetVersion,
-				policyVersion: event.policyVersion,
-				evidenceRootNodeId: event.evidenceRootNodeId,
-				evidenceBundleHash: event.evidenceBundleHash,
-				approvalId: event.approvalId,
-				occurredAt: toDate(event.occurredAt),
-				payload: event.payload,
-				prevHash,
-				chainHash,
-			});
-		}
+			eventId: event.eventId,
+			aggregateId: event.aggregateId,
+			aggregateType: event.aggregateType,
+			eventKind: event.eventKind,
+			companyId: event.scope.companyId,
+			companyRuc: event.scope.companyRuc,
+			organizationId: toOrganizationId(event.scope.organizationId),
+			period: event.scope.period,
+			countryCode: event.scope.countryCode,
+			traceId: event.trace.traceId,
+			correlationId: event.trace.correlationId,
+			causationId: event.trace.causationId,
+			validatorSetVersion: event.validatorSetVersion,
+			policyVersion: event.policyVersion,
+			evidenceRootNodeId: event.evidenceRootNodeId,
+			evidenceBundleHash: event.evidenceBundleHash,
+			approvalId: event.approvalId,
+			occurredAt: toDate(event.occurredAt),
+			payload: event.payload,
+			prevHash,
+			chainHash,
+		});
+	}
 
 	async findByEventId(
 		eventId: string,

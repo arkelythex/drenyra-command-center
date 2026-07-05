@@ -1,6 +1,4 @@
-import {
-	resolveSessionIdentityFromHeaders,
-} from "../auth/handlers/session-identity";
+import { resolveSessionIdentityFromHeaders } from "../auth/handlers/session-identity";
 
 const DEFAULT_ACTOR_ID = "system";
 const SAFE_ACTOR_ID_PATTERN = /^[A-Za-z0-9:_-]+$/;

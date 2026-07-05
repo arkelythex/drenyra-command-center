@@ -1,9 +1,9 @@
-import { Context } from 'elysia';
-import { createLogger } from '../../../lib/logger';
-import { auth } from '../auth.config';
-import { ok, fail } from '../../shared/api-response';
+import type { Context } from "elysia";
+import { createLogger } from "../../../lib/logger";
+import { fail, ok } from "../../shared/api-response";
+import { auth } from "../auth.config";
 
-const logger = createLogger({ feature: 'auth', handler: 'password-reset' });
+const logger = createLogger({ feature: "auth", handler: "password-reset" });
 
 /**
  * Password Reset Handlers
@@ -40,8 +40,8 @@ const logger = createLogger({ feature: 'auth', handler: 'password-reset' });
  */
 
 export interface ForgetPasswordBody {
-  email: string;
-  redirectTo?: string;
+	email: string;
+	redirectTo?: string;
 }
 
 /**
@@ -59,8 +59,8 @@ export interface ForgetPasswordBody {
  * ```
  */
 export interface ResetPasswordBody {
-  token: string;
-  password: string;
+	token: string;
+	password: string;
 }
 
 /**
@@ -111,39 +111,44 @@ export interface ResetPasswordBody {
  * ```
  */
 export async function handleForgetPassword(
-  body: ForgetPasswordBody,
-  context: Context
+	body: ForgetPasswordBody,
+	context: Context,
 ): Promise<unknown> {
-  const { email, redirectTo } = body;
-  const { set, headers } = context;
+	const { email, redirectTo } = body;
+	const { set, headers } = context;
 
-  try {
-    const request = new Request(
-      `${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}/api/auth/forget-password`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...headers,
-        },
-        body: JSON.stringify({ email, redirectTo }),
-      }
-    );
+	try {
+		const request = new Request(
+			`${process.env.BETTER_AUTH_URL || "http://localhost:3000"}/api/auth/forget-password`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					...headers,
+				},
+				body: JSON.stringify({ email, redirectTo }),
+			},
+		);
 
-    const response = await auth.handler(request);
-    const result = await response.json();
+		const response = await auth.handler(request);
+		const result = await response.json();
 
-    if (response.status !== 200) {
-      set.status = response.status;
-      return fail(result.error?.message || 'Error al solicitar restablecimiento', 'FORGET_PASSWORD_ERROR');
-    }
+		if (response.status !== 200) {
+			set.status = response.status;
+			return fail(
+				result.error?.message || "Error al solicitar restablecimiento",
+				"FORGET_PASSWORD_ERROR",
+			);
+		}
 
-    return ok({ message: `Si existe una cuenta con ${email}, recibirás un email con instrucciones.` });
-  } catch (error) {
-    logger.error({ error, email }, 'Failed to request password reset');
-    set.status = 500;
-    return fail('Error al procesar solicitud', 'INTERNAL_ERROR');
-  }
+		return ok({
+			message: `Si existe una cuenta con ${email}, recibirás un email con instrucciones.`,
+		});
+	} catch (error) {
+		logger.error({ error, email }, "Failed to request password reset");
+		set.status = 500;
+		return fail("Error al procesar solicitud", "INTERNAL_ERROR");
+	}
 }
 
 /**
@@ -209,39 +214,45 @@ export async function handleForgetPassword(
  * ```
  */
 export async function handleResetPassword(
-  body: ResetPasswordBody,
-  context: Context
+	body: ResetPasswordBody,
+	context: Context,
 ): Promise<unknown> {
-  const { token, password } = body;
-  const { set, headers } = context;
+	const { token, password } = body;
+	const { set, headers } = context;
 
-  try {
-    const request = new Request(
-      `${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}/api/auth/reset-password`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...headers,
-        },
-        body: JSON.stringify({ token, password }),
-      }
-    );
+	try {
+		const request = new Request(
+			`${process.env.BETTER_AUTH_URL || "http://localhost:3000"}/api/auth/reset-password`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					...headers,
+				},
+				body: JSON.stringify({ token, password }),
+			},
+		);
 
-    const response = await auth.handler(request);
-    const result = await response.json();
+		const response = await auth.handler(request);
+		const result = await response.json();
 
-    if (response.status !== 200) {
-      set.status = response.status;
-      return fail(result.error?.message || 'Token inválido o expirado', 'RESET_PASSWORD_ERROR');
-    }
+		if (response.status !== 200) {
+			set.status = response.status;
+			return fail(
+				result.error?.message || "Token inválido o expirado",
+				"RESET_PASSWORD_ERROR",
+			);
+		}
 
-    logger.info({ email: result.user?.email ?? null }, 'Password reset completed');
+		logger.info(
+			{ email: result.user?.email ?? null },
+			"Password reset completed",
+		);
 
-    return ok({ message: 'Contraseña restablecida exitosamente' });
-  } catch (error) {
-    logger.error({ error, token }, 'Failed to reset password');
-    set.status = 500;
-    return fail('Error al restablecer contraseña', 'INTERNAL_ERROR');
-  }
+		return ok({ message: "Contraseña restablecida exitosamente" });
+	} catch (error) {
+		logger.error({ error, token }, "Failed to reset password");
+		set.status = 500;
+		return fail("Error al restablecer contraseña", "INTERNAL_ERROR");
+	}
 }

@@ -208,9 +208,7 @@ describe("ReconciliationEngine", () => {
 		it("should handle descriptions without extractable data", () => {
 			const engine = createReconciliationEngine();
 
-			const extracted = extractDataFromDescription(
-				"RETIRO CAJERO AUTOMATICO",
-			);
+			const extracted = extractDataFromDescription("RETIRO CAJERO AUTOMATICO");
 
 			expect(extracted.invoiceSeries).toBeUndefined();
 			expect(extracted.ruc).toBeUndefined();

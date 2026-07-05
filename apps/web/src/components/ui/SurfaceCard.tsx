@@ -4,7 +4,7 @@
  * Unified section surface with semantic variants and optional interactivity.
  */
 
-import { type HTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
+import type { HTMLAttributes, KeyboardEvent, ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export interface SurfaceCardProps {

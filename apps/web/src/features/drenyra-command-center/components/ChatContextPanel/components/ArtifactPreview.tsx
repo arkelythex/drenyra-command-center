@@ -22,7 +22,9 @@ export function ArtifactPreview({ artifact }: { artifact: HubArtifact }) {
 							<p className="text-lg font-bold text-[var(--color-success)]">
 								{summary.updated}
 							</p>
-							<p className="text-2xs text-[var(--color-success)]/70">Actualizadas</p>
+							<p className="text-2xs text-[var(--color-success)]/70">
+								Actualizadas
+							</p>
 						</div>
 						<div className="rounded-lg bg-amber-500/10 p-2">
 							<p className="text-lg font-bold text-amber-400">
@@ -76,9 +78,7 @@ export function ArtifactPreview({ artifact }: { artifact: HubArtifact }) {
 						style={{ height: 48 }}
 						role="img"
 						aria-label={
-							artifact.title
-								? `Gráfico: ${artifact.title}`
-								: "Gráfico de datos"
+							artifact.title ? `Gráfico: ${artifact.title}` : "Gráfico de datos"
 						}
 					>
 						{data.slice(0, 8).map((val: number, i: number) => {

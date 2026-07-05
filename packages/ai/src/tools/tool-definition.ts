@@ -1,4 +1,4 @@
-import { z } from "zod";
+import type { z } from "zod";
 
 /**
  * Strict JSON Schema object type for LLM tool parameters.
@@ -48,9 +48,7 @@ export interface ToolDefinition<TSchema extends z.ZodTypeAny = never> {
 	 * - When TSchema is provided: typed as `JSONSchemaObject`
 	 * - When TSchema is `never` (default, no params): resolves to `undefined`
 	 */
-	parameters: TSchema extends z.ZodTypeAny
-		? JSONSchemaObject
-		: undefined;
+	parameters: TSchema extends z.ZodTypeAny ? JSONSchemaObject : undefined;
 
 	/**
 	 * Optional JSON Schema describing the tool's output shape.

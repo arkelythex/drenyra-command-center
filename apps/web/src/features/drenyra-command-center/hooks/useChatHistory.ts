@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useRef } from "react";
-import { useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 import type { CognitiveMessage } from "@/features/cognitive-hub/types/hub.types";
 import { api as _rawApi, getGovernanceAuditHeaders } from "@/lib/api";
 
 const api = _rawApi as unknown as { api: Record<string, unknown> };
+
 import { extractOkData, unwrap } from "@/lib/api-helpers";
 import { getCompanyContext } from "@/lib/company-context";
 import { getActiveFiscalPeriod } from "@/lib/fiscal-period";
@@ -33,9 +33,7 @@ function load(companyId: string): CognitiveMessage[] {
 function save(companyId: string, messages: CognitiveMessage[]): void {
 	try {
 		const trimmed =
-			messages.length > MAX_MESSAGES
-				? messages.slice(-MAX_MESSAGES)
-				: messages;
+			messages.length > MAX_MESSAGES ? messages.slice(-MAX_MESSAGES) : messages;
 		localStorage.setItem(getStorageKey(companyId), JSON.stringify(trimmed));
 	} catch (e) {
 		console.error("useChatHistory: error saving to localStorage", e);
@@ -78,7 +76,9 @@ function serializeForApi(messages: CognitiveMessage[]) {
 	return messages.map(({ artifacts, timestamp, ...rest }) => ({
 		...rest,
 		timestamp: timestamp instanceof Date ? timestamp.toISOString() : timestamp,
-		...(artifacts?.length ? { artifactTypes: artifacts.map((a) => a.type) } : {}),
+		...(artifacts?.length
+			? { artifactTypes: artifacts.map((a) => a.type) }
+			: {}),
 	}));
 }
 
@@ -90,7 +90,9 @@ function reviveFromApi(apiMessages: ApiMessage[]): CognitiveMessage[] {
 	}));
 }
 
-async function fetchFromApi(companyId: string): Promise<CognitiveMessage[] | null> {
+async function fetchFromApi(
+	companyId: string,
+): Promise<CognitiveMessage[] | null> {
 	try {
 		const body = await unwrap(
 			api.api.drenyra.chat.history.get({
@@ -98,14 +100,20 @@ async function fetchFromApi(companyId: string): Promise<CognitiveMessage[] | nul
 				...getApiHeaders(),
 			}),
 		);
-		const data = extractOkData<ApiHistoryResponse>(body, "Failed to load chat history");
+		const data = extractOkData<ApiHistoryResponse>(
+			body,
+			"Failed to load chat history",
+		);
 		return reviveFromApi(data.messages);
 	} catch {
 		return null;
 	}
 }
 
-async function saveToApi(companyId: string, messages: CognitiveMessage[]): Promise<void> {
+async function saveToApi(
+	companyId: string,
+	messages: CognitiveMessage[],
+): Promise<void> {
 	try {
 		const serialized = serializeForApi(messages);
 		await unwrap(
@@ -142,7 +150,10 @@ function ensureRegistered() {
 export function useChatHistory(companyId: string) {
 	ensureRegistered();
 
-	const snapshotCache = useRef<{ key: string; data: CognitiveMessage[] } | null>(null);
+	const snapshotCache = useRef<{
+		key: string;
+		data: CognitiveMessage[];
+	} | null>(null);
 
 	const invalidateCache = useCallback(() => {
 		if (snapshotCache.current?.key === `${companyId}`) {
@@ -174,8 +185,13 @@ export function useChatHistory(companyId: string) {
 	}, [companyId, invalidateCache]);
 
 	const setMessages = useCallback(
-		(updater: CognitiveMessage[] | ((prev: CognitiveMessage[]) => CognitiveMessage[])) => {
-			const next = typeof updater === "function" ? updater(load(companyId)) : updater;
+		(
+			updater:
+				| CognitiveMessage[]
+				| ((prev: CognitiveMessage[]) => CognitiveMessage[]),
+		) => {
+			const next =
+				typeof updater === "function" ? updater(load(companyId)) : updater;
 			save(companyId, next);
 			invalidateCache();
 			for (const listener of listeners) listener();

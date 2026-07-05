@@ -36,7 +36,9 @@ export function PayrollSimulatorPanel({
 				<div className="space-y-8">
 					<div className="space-y-4">
 						<div className="flex justify-between text-xs font-bold uppercase tracking-wide">
-							<span className="text-muted-foreground">Ingresos Proyectados</span>
+							<span className="text-muted-foreground">
+								Ingresos Proyectados
+							</span>
 							<span className="font-mono font-black text-foreground text-sm">
 								S/ {(projectedTax * 12).toLocaleString()}
 							</span>
@@ -80,7 +82,9 @@ export function PayrollSimulatorPanel({
 					</div>
 
 					<p className="text-label text-muted-foreground/60 leading-relaxed font-medium border-l-2 border-foreground/20 pl-3">
-						* Calculo referencial basado en 7 UIT (2026). Drenyra ajusta automaticamente las retenciones mes a mes para evitar multas de SUNAT.
+						* Calculo referencial basado en 7 UIT (2026). Drenyra ajusta
+						automaticamente las retenciones mes a mes para evitar multas de
+						SUNAT.
 					</p>
 				</div>
 			</div>
@@ -111,7 +115,9 @@ export function PayrollSimulatorPanel({
 						<p className="text-label font-black uppercase tracking-widest text-muted-foreground mb-1">
 							Planilla Total
 						</p>
-						<p className="text-3xl font-black text-foreground tracking-tighter">185k</p>
+						<p className="text-3xl font-black text-foreground tracking-tighter">
+							185k
+						</p>
 					</div>
 				</div>
 			</div>

@@ -1,5 +1,5 @@
 import type { InvoiceFilters } from "@drenyra/domain/repositories/invoice.repository";
-import { businessPartners, invoiceItems, invoices } from "../../schema";
+import type { businessPartners, invoiceItems, invoices } from "../../schema";
 
 export interface ModularInvoiceWithRelations {
 	invoice: typeof invoices.$inferSelect;
@@ -7,10 +7,19 @@ export interface ModularInvoiceWithRelations {
 	items: Array<typeof invoiceItems.$inferSelect>;
 }
 
-export type NormalizedInvoiceFilters = Omit<InvoiceFilters, "startDate" | "endDate"> & {
+export type NormalizedInvoiceFilters = Omit<
+	InvoiceFilters,
+	"startDate" | "endDate"
+> & {
 	startDate?: Date;
 	endDate?: Date;
 };
 
 export type ModularInvoiceReadStatus = "DRAFT" | "SENT" | "CANCELLED";
-export type ModularSunatReadStatus = "DRAFT" | "SUBMITTED" | "ACCEPTED" | "REJECTED" | "ANNULLED" | null;
+export type ModularSunatReadStatus =
+	| "DRAFT"
+	| "SUBMITTED"
+	| "ACCEPTED"
+	| "REJECTED"
+	| "ANNULLED"
+	| null;

@@ -1,15 +1,15 @@
+import type { CierreMensual } from "@drenyra/domain";
 import {
+	Calculator,
 	Clock,
 	Fingerprint,
-	Receipt,
 	Landmark,
-	Calculator,
-	ShieldCheck,
 	type LucideIcon,
+	Receipt,
+	ShieldCheck,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import type { CierreMensual } from "@drenyra/domain";
+import { cn } from "@/lib/utils";
 
 interface SidePanelProps {
 	cierre: CierreMensual;
@@ -55,11 +55,7 @@ export function SidePanel({ cierre, onOpenInspector }: SidePanelProps) {
 					status={cierre.bancosStatus}
 					icon={Landmark}
 				/>
-				<StatusCard
-					label="IGV"
-					status={cierre.igvStatus}
-					icon={Calculator}
-				/>
+				<StatusCard label="IGV" status={cierre.igvStatus} icon={Calculator} />
 				<StatusCard
 					label="Riesgo"
 					status={
@@ -86,10 +82,7 @@ export function SidePanel({ cierre, onOpenInspector }: SidePanelProps) {
 						)}
 					>
 						{firma?.firmado ? (
-							<Fingerprint
-								size={14}
-								className="text-[var(--color-success)]"
-							/>
+							<Fingerprint size={14} className="text-[var(--color-success)]" />
 						) : (
 							<Clock size={14} className="text-[var(--text-tertiary)]" />
 						)}
@@ -104,9 +97,7 @@ export function SidePanel({ cierre, onOpenInspector }: SidePanelProps) {
 									: "text-[var(--text-tertiary)]",
 							)}
 						>
-							{firma?.firmado
-								? `Firmado ${firma.fecha ?? ""}`
-								: "Pendiente"}
+							{firma?.firmado ? `Firmado ${firma.fecha ?? ""}` : "Pendiente"}
 						</span>
 					</div>
 				))}

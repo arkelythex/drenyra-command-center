@@ -1,5 +1,5 @@
-import type { ReactElement } from "react";
 import { Sparkles } from "lucide-react";
+import type { ReactElement } from "react";
 
 export type DrenyraMissionDeskHeaderProps = {
 	connectionStatus: string;

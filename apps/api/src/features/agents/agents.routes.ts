@@ -8,11 +8,11 @@
  */
 
 import { Elysia } from "elysia";
+import { AppError } from "../../lib/errors";
 import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
-import { AppError } from "../../lib/errors";
-import { agentsService } from "./agents.service";
 import { ActionBody, ListSessionsQuery, SessionParams } from "./agents.schemas";
+import { agentsService } from "./agents.service";
 
 // ---------------------------------------------------------------------------
 // Helper to handle errors (matches threads.routes.ts pattern)

@@ -59,7 +59,6 @@ describe("drenyraBrainModule", () => {
 		expect(payload.fiscalScope.countryCode).toBe("PE");
 	});
 
-
 	it("mirrors route-created Brain events into configured Fiscal Truth evidence graph", async () => {
 		const appendNode = vi.fn().mockResolvedValue(undefined);
 		const appendEdge = vi.fn().mockResolvedValue(undefined);
@@ -115,7 +114,11 @@ describe("drenyraBrainModule", () => {
 		);
 		const otherScopePayload = await otherScopeResponse.json();
 
-		const response = await getJson(app, "/api/drenyra/brain/threads", scopedHeaders);
+		const response = await getJson(
+			app,
+			"/api/drenyra/brain/threads",
+			scopedHeaders,
+		);
 		const payload = await response.json();
 
 		expect(response.status).toBe(200);
@@ -211,7 +214,7 @@ describe("drenyraBrainModule", () => {
 		expect(response.headers.get("content-type")).toContain("text/event-stream");
 		expect(response.headers.get("cache-control")).toContain("no-cache");
 		expect(body).toContain("event: heartbeat");
-		expect(body).toContain(`\"threadId\":\"${thread.id}\"`);
+		expect(body).toContain(`"threadId":"${thread.id}"`);
 	});
 
 	it("GET /api/drenyra/brain/threads/:threadId/events returns 404 for unknown scoped thread", async () => {

@@ -9,4 +9,4 @@
  * ```
  */
 
-export type Currency = 'PEN' | 'USD' | 'EUR';
+export type Currency = "PEN" | "USD" | "EUR";

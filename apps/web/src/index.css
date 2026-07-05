@@ -13,35 +13,35 @@
 
 /* Force dark mode as default — kill beige-on-beige light theme */
 :root {
-	--akx-theme: dark;
-	color-scheme: dark;
+  --akx-theme: dark;
+  color-scheme: dark;
 }
 
 /* Carbon/cyan/violeta overrides — replace voltage orange #f54e00 */
 .dark {
-	--color-primary: #3CE6D8;
-	--color-primary-hover: #6aefe4;
-	--color-primary-active: #2ecfc2;
-	--primary: #3CE6D8;
-	--primary-foreground: #0a1a1a;
-	--ring: #3CE6D8;
-	--accent: #3CE6D8;
-	--accent-muted: color-mix(in oklch, #3CE6D8 14%, transparent);
-	--color-ai-primary: #3CE6D8;
-	--color-ai-secondary: #2ecfc2;
-	--color-ai-halo: color-mix(in oklch, #3CE6D8 14%, transparent);
-	--shadow-glow-blue: 0 0 12px color-mix(in oklch, #3CE6D8 14%, transparent);
-	--shadow-glow-ai: 0 0 8px color-mix(in oklch, #3CE6D8 10%, transparent);
-	--color-brand: #3CE6D8;
-	/* Violeta secundario */
-	--akx-violet: #9B7FE8;
-	--akx-violet-muted: color-mix(in oklch, #9B7FE8 14%, transparent);
-	--color-info: #9B7FE8;
-	--premium-action-blue: #3CE6D8;
-	/* Mayor contraste en textos */
-	--text-primary: #f0efe8;
-	--text-secondary: #b0aea6;
-	--text-tertiary: #807e76;
+  --color-primary: #3ce6d8;
+  --color-primary-hover: #6aefe4;
+  --color-primary-active: #2ecfc2;
+  --primary: #3ce6d8;
+  --primary-foreground: #0a1a1a;
+  --ring: #3ce6d8;
+  --accent: #3ce6d8;
+  --accent-muted: color-mix(in oklch, #3ce6d8 14%, transparent);
+  --color-ai-primary: #3ce6d8;
+  --color-ai-secondary: #2ecfc2;
+  --color-ai-halo: color-mix(in oklch, #3ce6d8 14%, transparent);
+  --shadow-glow-blue: 0 0 12px color-mix(in oklch, #3ce6d8 14%, transparent);
+  --shadow-glow-ai: 0 0 8px color-mix(in oklch, #3ce6d8 10%, transparent);
+  --color-brand: #3ce6d8;
+  /* Violeta secundario */
+  --akx-violet: #9b7fe8;
+  --akx-violet-muted: color-mix(in oklch, #9b7fe8 14%, transparent);
+  --color-info: #9b7fe8;
+  --premium-action-blue: #3ce6d8;
+  /* Mayor contraste en textos */
+  --text-primary: #f0efe8;
+  --text-secondary: #b0aea6;
+  --text-tertiary: #807e76;
 }
 
 /* ===========================================
@@ -370,11 +370,13 @@
     --shadow-2xl: 0 20px 48px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2);
 
     /* Theme transitions */
-    --theme-transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, fill 0.2s ease, stroke 0.2s ease;
+    --theme-transition:
+      color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, fill 0.2s ease, stroke 0.2s ease;
   }
 
   .light {
-    --theme-transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, fill 0.2s ease, stroke 0.2s ease;
+    --theme-transition:
+      color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, fill 0.2s ease, stroke 0.2s ease;
 
     /* ── Dreamcoder Light — Parchment + Cocoa ── */
     --color-bg-0: #f3eadc;
@@ -505,7 +507,7 @@
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
     --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04);
     --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.04);
-    --shadow-xl: 0 14px 32px rgba(0, 0, 0, 0.10), 0 6px 12px rgba(0, 0, 0, 0.06);
+    --shadow-xl: 0 14px 32px rgba(0, 0, 0, 0.1), 0 6px 12px rgba(0, 0, 0, 0.06);
     --shadow-2xl: 0 20px 48px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.08);
   }
 
@@ -1134,15 +1136,27 @@
 
   .ui-agent-shell {
     background:
-      radial-gradient(circle at 18% 14%, rgba(var(--color-primary-rgb, 185, 122, 69), 0.1), transparent 24%),
-      radial-gradient(circle at 82% 10%, rgba(var(--color-success-rgb, 127, 154, 116), 0.06), transparent 18%),
+      radial-gradient(
+        circle at 18% 14%,
+        rgba(var(--color-primary-rgb, 185, 122, 69), 0.1),
+        transparent 24%
+      ),
+      radial-gradient(
+        circle at 82% 10%,
+        rgba(var(--color-success-rgb, 127, 154, 116), 0.06),
+        transparent 18%
+      ),
       radial-gradient(circle at 50% 54%, rgba(0, 0, 0, 0.26), transparent 36%),
       linear-gradient(180deg, #050505 0%, #080808 36%, #050505 100%);
   }
 
   .ui-agent-shell-glow {
     background:
-      radial-gradient(circle at 50% 30%, rgba(var(--color-primary-rgb, 185, 122, 69), 0.11), transparent 20%),
+      radial-gradient(
+        circle at 50% 30%,
+        rgba(var(--color-primary-rgb, 185, 122, 69), 0.11),
+        transparent 20%
+      ),
       radial-gradient(circle at 50% 72%, rgba(255, 255, 255, 0.04), transparent 18%);
   }
 
@@ -1191,14 +1205,26 @@
 
   .light .ui-agent-shell {
     background:
-      radial-gradient(circle at 18% 14%, rgba(var(--color-primary-rgb, 185, 122, 69), 0.06), transparent 22%),
-      radial-gradient(circle at 82% 10%, rgba(var(--color-success-rgb, 127, 154, 116), 0.04), transparent 18%),
+      radial-gradient(
+        circle at 18% 14%,
+        rgba(var(--color-primary-rgb, 185, 122, 69), 0.06),
+        transparent 22%
+      ),
+      radial-gradient(
+        circle at 82% 10%,
+        rgba(var(--color-success-rgb, 127, 154, 116), 0.04),
+        transparent 18%
+      ),
       linear-gradient(180deg, #f4f5f7 0%, #eceef2 100%);
   }
 
   .light .ui-agent-shell-glow {
     background:
-      radial-gradient(circle at 50% 30%, rgba(var(--color-primary-rgb, 185, 122, 69), 0.08), transparent 20%),
+      radial-gradient(
+        circle at 50% 30%,
+        rgba(var(--color-primary-rgb, 185, 122, 69), 0.08),
+        transparent 20%
+      ),
       radial-gradient(circle at 50% 72%, rgba(255, 255, 255, 0.5), transparent 18%);
   }
 
@@ -1299,7 +1325,8 @@
       180deg,
       color-mix(in oklch, var(--scrim-color) calc(var(--scrim-opacity) * 74%), transparent) 0%,
       color-mix(in oklch, var(--scrim-color) calc(var(--scrim-opacity) * 100%), transparent) 38%,
-      color-mix(in oklch, var(--scrim-color) calc(var(--scrim-opacity) * 100% + 12%), transparent) 100%
+      color-mix(in oklch, var(--scrim-color) calc(var(--scrim-opacity) * 100% + 12%), transparent)
+        100%
     );
   }
 
@@ -1309,7 +1336,8 @@
       180deg,
       color-mix(in oklch, var(--scrim-color) calc(var(--scrim-opacity) * 65%), transparent) 0%,
       color-mix(in oklch, var(--scrim-color) calc(var(--scrim-opacity) * 100%), transparent) 42%,
-      color-mix(in oklch, var(--scrim-color) calc(var(--scrim-opacity) * 100% + 8%), transparent) 100%
+      color-mix(in oklch, var(--scrim-color) calc(var(--scrim-opacity) * 100% + 8%), transparent)
+        100%
     );
   }
 
@@ -1816,29 +1844,65 @@
    Usage: className="gap-density-md px-density-lg h-density-row"
    =========================================== */
 @layer utilities {
-  .gap-density-sm { gap: var(--density-gap-sm); }
-  .gap-density-md { gap: var(--density-gap-md); }
-  .gap-density-lg { gap: var(--density-gap-lg); }
+  .gap-density-sm {
+    gap: var(--density-gap-sm);
+  }
+  .gap-density-md {
+    gap: var(--density-gap-md);
+  }
+  .gap-density-lg {
+    gap: var(--density-gap-lg);
+  }
 
-  .p-density-sm { padding: var(--density-pad-sm); }
-  .p-density-md { padding: var(--density-pad-md); }
-  .p-density-lg { padding: var(--density-pad-lg); }
-  .p-density-xl { padding: var(--density-pad-xl); }
+  .p-density-sm {
+    padding: var(--density-pad-sm);
+  }
+  .p-density-md {
+    padding: var(--density-pad-md);
+  }
+  .p-density-lg {
+    padding: var(--density-pad-lg);
+  }
+  .p-density-xl {
+    padding: var(--density-pad-xl);
+  }
 
-  .px-density-sm { padding-inline: var(--density-pad-sm); }
-  .px-density-md { padding-inline: var(--density-pad-md); }
-  .px-density-lg { padding-inline: var(--density-pad-lg); }
-  .px-density-xl { padding-inline: var(--density-pad-xl); }
+  .px-density-sm {
+    padding-inline: var(--density-pad-sm);
+  }
+  .px-density-md {
+    padding-inline: var(--density-pad-md);
+  }
+  .px-density-lg {
+    padding-inline: var(--density-pad-lg);
+  }
+  .px-density-xl {
+    padding-inline: var(--density-pad-xl);
+  }
 
-  .py-density-sm { padding-block: var(--density-pad-sm); }
-  .py-density-md { padding-block: var(--density-pad-md); }
-  .py-density-lg { padding-block: var(--density-pad-lg); }
+  .py-density-sm {
+    padding-block: var(--density-pad-sm);
+  }
+  .py-density-md {
+    padding-block: var(--density-pad-md);
+  }
+  .py-density-lg {
+    padding-block: var(--density-pad-lg);
+  }
 
-  .h-density-row { height: var(--density-row); }
-  .min-h-density-row { min-height: var(--density-row); }
+  .h-density-row {
+    height: var(--density-row);
+  }
+  .min-h-density-row {
+    min-height: var(--density-row);
+  }
 
-  .mb-density-section { margin-bottom: var(--density-section); }
-  .mt-density-section { margin-top: var(--density-section); }
+  .mb-density-section {
+    margin-bottom: var(--density-section);
+  }
+  .mt-density-section {
+    margin-top: var(--density-section);
+  }
 }
 
 /* ===========================================

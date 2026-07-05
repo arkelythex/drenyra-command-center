@@ -11,8 +11,8 @@
  * @module events
  */
 
-import { randomUUID } from "crypto";
 import type { AgentEvent as CanonicalEvent } from "@drenyra/shared";
+import { randomUUID } from "crypto";
 import type {
 	EventBus,
 	AgentEvent as WorkflowEvent,
@@ -156,7 +156,11 @@ const MAPPING: MappingEntry[] = [
 			runId: event.processId,
 			timestamp: toEpoch(event.timestamp),
 			type: "progress" as const,
-			payload: { progress: 0.2, status: "Extraction complete", detail: "reader" },
+			payload: {
+				progress: 0.2,
+				status: "Extraction complete",
+				detail: "reader",
+			},
 		}),
 	},
 	{
@@ -176,7 +180,11 @@ const MAPPING: MappingEntry[] = [
 			runId: event.processId,
 			timestamp: toEpoch(event.timestamp),
 			type: "progress" as const,
-			payload: { progress: 0.35, status: "Parsing skipped", detail: (event as any).reason ?? "" },
+			payload: {
+				progress: 0.35,
+				status: "Parsing skipped",
+				detail: (event as any).reason ?? "",
+			},
 		}),
 	},
 	{
@@ -245,7 +253,7 @@ const MAPPING: MappingEntry[] = [
 			type: "complete" as const,
 			payload: {
 				result: { invoiceNumber: (event as any).invoiceNumber ?? null },
-				duration: ((event as any).duration ?? (event as any).totalTime) ?? 0,
+				duration: (event as any).duration ?? (event as any).totalTime ?? 0,
 				toolCalls: 0,
 			},
 		}),
@@ -260,9 +268,12 @@ const MAPPING: MappingEntry[] = [
 			type: "error" as const,
 			payload: {
 				code: "PROCESS_FAILED",
-				message: typeof (event as any).error === "string"
-					? (event as any).error
-					: String(((event as any).error as Error)?.message ?? "Unknown error"),
+				message:
+					typeof (event as any).error === "string"
+						? (event as any).error
+						: String(
+								((event as any).error as Error)?.message ?? "Unknown error",
+							),
 			},
 		}),
 	},
@@ -372,7 +383,11 @@ const MAPPING: MappingEntry[] = [
 			payload: {
 				code: "BATCH_FAILED",
 				message: `Batch failed: ${event.error}`,
-				details: { completed: event.completed, failed: event.failed, total: event.total },
+				details: {
+					completed: event.completed,
+					failed: event.failed,
+					total: event.total,
+				},
 			},
 		}),
 	},

@@ -16,9 +16,9 @@
  * @see /docs/05-development/design-system/text-component.md
  */
 
-import { type Ref } from "react";
-import { cn } from "@/lib/utils";
+import type { Ref } from "react";
 import { LEGIBILITY } from "@/lib/legibility";
+import { cn } from "@/lib/utils";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 

@@ -3,15 +3,15 @@ import { RouterProvider } from "@tanstack/react-router";
 import { lazy, StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { sanitizePersistedAuthState } from "./features/auth/lib/auth-storage";
+import { captureError, initMonitoring } from "./lib/monitoring";
+import { createAppQueryClient } from "./lib/query-client";
+import { initSentry } from "./lib/sentry";
 import {
 	bootstrapPersistedTheme,
 	subscribeToSystemTheme,
 	syncThemeDocumentState,
 } from "./lib/ux-mode";
-import { captureError, initMonitoring } from "./lib/monitoring";
-import { initSentry } from "./lib/sentry";
 import { initWebVitals } from "./lib/web-vitals";
-import { createAppQueryClient } from "./lib/query-client";
 import { createRouter } from "./router";
 import { useUIStore } from "./store/ui-store";
 import "./index.css";

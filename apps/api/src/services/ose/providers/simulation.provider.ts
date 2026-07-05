@@ -31,7 +31,8 @@ export class SimulationOSEProvider implements IOSEProvider {
 	}
 
 	async checkStatus(): Promise<{ online: boolean; message: string }> {
-		const envLabel = this.config.environment === "production" ? "production" : "sandbox";
+		const envLabel =
+			this.config.environment === "production" ? "production" : "sandbox";
 		return {
 			online: true,
 			message: `Simulation provider online (${envLabel})`,

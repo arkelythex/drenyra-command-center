@@ -1,20 +1,23 @@
-import { and, asc, eq, or, sql } from "drizzle-orm";
-import { FiscalMemory, FiscalMemoryRevision } from "@drenyra/domain/fiscal-memory";
 import type {
+	FiscalMemoryCategory,
 	FiscalMemoryProps,
 	FiscalMemoryRevisionProps,
 	FiscalMemoryScope,
-	FiscalMemoryCategory,
 	FiscalMemorySeverity,
+} from "@drenyra/domain/fiscal-memory";
+import {
+	FiscalMemory,
+	FiscalMemoryRevision,
 } from "@drenyra/domain/fiscal-memory";
 import type { FiscalMemoryRepository } from "@drenyra/domain/repositories/fiscal-memory.repository";
 import { db } from "@drenyra/persistence/client";
 import {
-	fiscalMemories,
-	fiscalMemoryRevisions,
 	type FiscalMemoryRevisionRow,
 	type FiscalMemoryRow,
+	fiscalMemories,
+	fiscalMemoryRevisions,
 } from "@drenyra/persistence/schema";
+import { and, asc, eq, or, sql } from "drizzle-orm";
 
 const scopedWhere = (scope: FiscalMemoryScope) =>
 	and(
@@ -74,7 +77,10 @@ export class PostgresFiscalMemoryRepository implements FiscalMemoryRepository {
 			});
 	}
 
-	async findById(id: string, scope: FiscalMemoryScope): Promise<FiscalMemory | null> {
+	async findById(
+		id: string,
+		scope: FiscalMemoryScope,
+	): Promise<FiscalMemory | null> {
 		const [row] = await db
 			.select()
 			.from(fiscalMemories)
@@ -83,25 +89,37 @@ export class PostgresFiscalMemoryRepository implements FiscalMemoryRepository {
 		return row ? this.toDomain(row) : null;
 	}
 
-	async findByPeriod(scope: FiscalMemoryScope, period: string): Promise<FiscalMemory[]> {
-		return this.findMany(and(scopedWhere(scope), eq(fiscalMemories.period, period)));
+	async findByPeriod(
+		scope: FiscalMemoryScope,
+		period: string,
+	): Promise<FiscalMemory[]> {
+		return this.findMany(
+			and(scopedWhere(scope), eq(fiscalMemories.period, period)),
+		);
 	}
 
 	async findByCategory(
 		scope: FiscalMemoryScope,
 		category: FiscalMemoryCategory,
 	): Promise<FiscalMemory[]> {
-		return this.findMany(and(scopedWhere(scope), eq(fiscalMemories.category, category)));
+		return this.findMany(
+			and(scopedWhere(scope), eq(fiscalMemories.category, category)),
+		);
 	}
 
 	async findBySeverity(
 		scope: FiscalMemoryScope,
 		severity: FiscalMemorySeverity,
 	): Promise<FiscalMemory[]> {
-		return this.findMany(and(scopedWhere(scope), eq(fiscalMemories.severity, severity)));
+		return this.findMany(
+			and(scopedWhere(scope), eq(fiscalMemories.severity, severity)),
+		);
 	}
 
-	async findByEvidenceRef(scope: FiscalMemoryScope, evidenceRef: string): Promise<FiscalMemory[]> {
+	async findByEvidenceRef(
+		scope: FiscalMemoryScope,
+		evidenceRef: string,
+	): Promise<FiscalMemory[]> {
 		return this.findMany(
 			and(
 				scopedWhere(scope),
@@ -111,7 +129,10 @@ export class PostgresFiscalMemoryRepository implements FiscalMemoryRepository {
 		);
 	}
 
-	async findRelated(scope: FiscalMemoryScope, memoryId: string): Promise<FiscalMemory[]> {
+	async findRelated(
+		scope: FiscalMemoryScope,
+		memoryId: string,
+	): Promise<FiscalMemory[]> {
 		return this.findMany(
 			and(
 				scopedWhere(scope),
@@ -147,7 +168,9 @@ export class PostgresFiscalMemoryRepository implements FiscalMemoryRepository {
 		return rows.map((row) => this.toRevisionDomain(row));
 	}
 
-	private async findMany(whereClause: ReturnType<typeof and>): Promise<FiscalMemory[]> {
+	private async findMany(
+		whereClause: ReturnType<typeof and>,
+	): Promise<FiscalMemory[]> {
 		const rows = await db
 			.select()
 			.from(fiscalMemories)

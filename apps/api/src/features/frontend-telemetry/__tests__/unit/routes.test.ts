@@ -1,7 +1,7 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { Elysia } from "elysia";
-import { frontendTelemetryModule } from "../../index";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { FrontendTelemetryService } from "../../../../services/frontend-telemetry.service";
+import { frontendTelemetryModule } from "../../index";
 
 describe("frontendTelemetryModule", () => {
 	const app = new Elysia().use(frontendTelemetryModule);
@@ -187,4 +187,3 @@ describe("frontendTelemetryModule", () => {
 		});
 	});
 });
-

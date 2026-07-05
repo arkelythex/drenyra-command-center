@@ -8,17 +8,19 @@
  * - No-op when no contextMonitor configured
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { WorkflowOrchestratorV2 } from "../../src/agents/orchestrator/workflow-v2/orchestrator";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { EventBus } from "../../src/agents/orchestrator/event.bus";
-import { ContextMonitor } from "../../src/context-monitor/context-monitor";
-import type { ReaderInput, InvoiceData } from "../../src/agents/types";
+import { WorkflowOrchestratorV2 } from "../../src/agents/orchestrator/workflow-v2/orchestrator";
+import type { InvoiceData, ReaderInput } from "../../src/agents/types";
+import type { ContextMonitor } from "../../src/context-monitor/context-monitor";
 
 // ---------------------------------------------------------------------------
 // Mock agent factories
 // ---------------------------------------------------------------------------
 
-function createMockInvoiceData(overrides: Partial<InvoiceData> = {}): InvoiceData {
+function createMockInvoiceData(
+	overrides: Partial<InvoiceData> = {},
+): InvoiceData {
 	return {
 		invoiceNumber: "F001-123",
 		invoiceType: "01",

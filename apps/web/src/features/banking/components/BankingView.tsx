@@ -1,17 +1,15 @@
-import { Suspense, lazy } from "react";
 import { Download, Search } from "lucide-react";
-
-import { cn } from "@/lib/utils";
+import { lazy, Suspense } from "react";
+import { MobileTabNavigation } from "@/components/layout/MobileTabNavigation";
 import { Button } from "@/components/ui/button";
 import { MotionDiv } from "@/components/ui/motion-primitives";
-import { MobileTabNavigation } from "@/components/layout/MobileTabNavigation";
-
+import { cn } from "@/lib/utils";
+import { useBankingViewController } from "../hooks/useBankingViewController";
 import { BANKING_TABS } from "./banking-view/constants";
-import { BankingMobileToolbar } from "./banking-view/mobile-toolbar";
-import { BankingSidebar } from "./banking-view/sidebar";
 import { BankingDesktopHeader } from "./banking-view/desktop-header";
 import { BankingGovernanceStrip } from "./banking-view/governance-strip";
-import { useBankingViewController } from "../hooks/useBankingViewController";
+import { BankingMobileToolbar } from "./banking-view/mobile-toolbar";
+import { BankingSidebar } from "./banking-view/sidebar";
 
 const ImportTransactionsModal = lazy(async () => {
 	const mod = await import("./transactions/ImportTransactionsModal");

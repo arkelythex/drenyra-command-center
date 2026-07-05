@@ -44,11 +44,9 @@ describe("healthModule", () => {
 	});
 
 	it("returns backup warning hints from /health/doctor without degrading status", async () => {
-		mockDbExecute
-			.mockResolvedValueOnce([])
-			.mockResolvedValueOnce({
-				rows: requiredTables.map((table_name) => ({ table_name })),
-			});
+		mockDbExecute.mockResolvedValueOnce([]).mockResolvedValueOnce({
+			rows: requiredTables.map((table_name) => ({ table_name })),
+		});
 		mockGetBackupReadinessStatus.mockResolvedValue({
 			status: "warning",
 			backupDir: "/tmp/drenyra-backups",
@@ -108,11 +106,9 @@ describe("healthModule", () => {
 	});
 
 	it("returns missing backup evidence hints from /health/doctor", async () => {
-		mockDbExecute
-			.mockResolvedValueOnce([])
-			.mockResolvedValueOnce({
-				rows: requiredTables.map((table_name) => ({ table_name })),
-			});
+		mockDbExecute.mockResolvedValueOnce([]).mockResolvedValueOnce({
+			rows: requiredTables.map((table_name) => ({ table_name })),
+		});
 		mockGetBackupReadinessStatus.mockResolvedValue({
 			status: "missing",
 			backupDir: "/tmp/drenyra-backups",

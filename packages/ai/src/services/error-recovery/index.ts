@@ -6,18 +6,16 @@
 
 export {
 	AgentError,
-	TimeoutError,
-	RateLimitError,
+	classifyError,
+	FiscalViolationError,
+	InvalidInputError,
 	NetworkError,
 	ProviderError,
+	RateLimitError,
+	TimeoutError,
 	ValidationError,
-	InvalidInputError,
-	FiscalViolationError,
-	classifyError,
 } from "./agent-error";
-
-export { PersistentCircuitBreaker } from "./persistent-circuit-breaker";
 export type { CBState } from "./persistent-circuit-breaker";
-
-export { RetryEngine } from "./retry-engine";
+export { PersistentCircuitBreaker } from "./persistent-circuit-breaker";
 export type { RetryConfig } from "./retry-engine";
+export { RetryEngine } from "./retry-engine";

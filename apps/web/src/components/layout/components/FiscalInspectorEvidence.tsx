@@ -1,4 +1,4 @@
-import { FileCheck, CheckCircle2, AlertTriangle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, FileCheck } from "lucide-react";
 import type { EvidenceListProps } from "../FiscalInspector.types";
 import { FiscalInspectorSection } from "./FiscalInspectorSection";
 

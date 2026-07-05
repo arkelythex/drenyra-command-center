@@ -72,15 +72,15 @@ describe("ExchangeRate", () => {
 	});
 
 	it("should reject invalid source currency code", () => {
-		expect(() =>
-			ExchangeRate.create(today, "US", "PEN", 3.72, 3.74),
-		).toThrow(InvalidExchangeRateError);
+		expect(() => ExchangeRate.create(today, "US", "PEN", 3.72, 3.74)).toThrow(
+			InvalidExchangeRateError,
+		);
 	});
 
 	it("should reject invalid target currency code", () => {
-		expect(() =>
-			ExchangeRate.create(today, "USD", "PE", 3.72, 3.74),
-		).toThrow(InvalidExchangeRateError);
+		expect(() => ExchangeRate.create(today, "USD", "PE", 3.72, 3.74)).toThrow(
+			InvalidExchangeRateError,
+		);
 	});
 
 	it("should accept lowercase ISO codes (normalized to uppercase)", () => {
@@ -90,27 +90,27 @@ describe("ExchangeRate", () => {
 	});
 
 	it("should reject same source and target", () => {
-		expect(() =>
-			ExchangeRate.create(today, "USD", "USD", 1, 1),
-		).toThrow(InvalidExchangeRateError);
+		expect(() => ExchangeRate.create(today, "USD", "USD", 1, 1)).toThrow(
+			InvalidExchangeRateError,
+		);
 	});
 
 	it("should reject zero buy rate", () => {
-		expect(() =>
-			ExchangeRate.create(today, "USD", "PEN", 0, 3.74),
-		).toThrow(InvalidExchangeRateError);
+		expect(() => ExchangeRate.create(today, "USD", "PEN", 0, 3.74)).toThrow(
+			InvalidExchangeRateError,
+		);
 	});
 
 	it("should reject negative buy rate", () => {
-		expect(() =>
-			ExchangeRate.create(today, "USD", "PEN", -1, 3.74),
-		).toThrow(InvalidExchangeRateError);
+		expect(() => ExchangeRate.create(today, "USD", "PEN", -1, 3.74)).toThrow(
+			InvalidExchangeRateError,
+		);
 	});
 
 	it("should reject zero sell rate", () => {
-		expect(() =>
-			ExchangeRate.create(today, "USD", "PEN", 3.72, 0),
-		).toThrow(InvalidExchangeRateError);
+		expect(() => ExchangeRate.create(today, "USD", "PEN", 3.72, 0)).toThrow(
+			InvalidExchangeRateError,
+		);
 	});
 
 	it("should reject negative SUNAT reference", () => {
@@ -120,9 +120,9 @@ describe("ExchangeRate", () => {
 	});
 
 	it("should reject non-finite buy rate", () => {
-		expect(() =>
-			ExchangeRate.create(today, "USD", "PEN", NaN, 3.74),
-		).toThrow(InvalidExchangeRateError);
+		expect(() => ExchangeRate.create(today, "USD", "PEN", NaN, 3.74)).toThrow(
+			InvalidExchangeRateError,
+		);
 
 		expect(() =>
 			ExchangeRate.create(today, "USD", "PEN", Infinity, 3.74),
@@ -198,14 +198,7 @@ describe("ExchangeRate", () => {
 	});
 
 	it("should deserialize from JSON", () => {
-		const original = ExchangeRate.create(
-			today,
-			"USD",
-			"PEN",
-			3.72,
-			3.74,
-			3.73,
-		);
+		const original = ExchangeRate.create(today, "USD", "PEN", 3.72, 3.74, 3.73);
 		const json = original.toJSON();
 		const restored = ExchangeRate.fromJSON(json);
 
@@ -214,8 +207,6 @@ describe("ExchangeRate", () => {
 
 	it("should produce readable toString", () => {
 		const rate = ExchangeRate.create(today, "USD", "PEN", 3.72, 3.74);
-		expect(rate.toString()).toBe(
-			"ExchangeRate(USD/PEN @ 3.72/3.74)",
-		);
+		expect(rate.toString()).toBe("ExchangeRate(USD/PEN @ 3.72/3.74)");
 	});
 });

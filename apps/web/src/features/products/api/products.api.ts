@@ -191,7 +191,10 @@ export const productsApi = {
 		const body = await unwrap(
 			api.products.post(serializeCreateProductPayload(payload)),
 		);
-		const record = extractOkDataOrPassthrough(body, "products.create") as unknown;
+		const record = extractOkDataOrPassthrough(
+			body,
+			"products.create",
+		) as unknown;
 		if (!isBackendProduct(record)) {
 			throw new Error("Invalid product payload received after create");
 		}
@@ -203,7 +206,10 @@ export const productsApi = {
 	 */
 	getById: async (id: string): Promise<Product | null> => {
 		const body = await unwrap(api.products({ id }).get());
-		const record = extractOkDataOrPassthrough(body, "products.getById") as unknown;
+		const record = extractOkDataOrPassthrough(
+			body,
+			"products.getById",
+		) as unknown;
 		if (!isBackendProduct(record)) return null;
 		return toBackendProduct(record);
 	},
@@ -215,7 +221,10 @@ export const productsApi = {
 		const body = await unwrap(
 			api.products({ id }).patch(serializeUpdateProductPayload(payload)),
 		);
-		const record = extractOkDataOrPassthrough(body, "products.update") as unknown;
+		const record = extractOkDataOrPassthrough(
+			body,
+			"products.update",
+		) as unknown;
 		if (!isBackendProduct(record)) {
 			throw new Error("Invalid product payload received after update");
 		}
@@ -227,7 +236,10 @@ export const productsApi = {
 	 */
 	delete: async (id: string): Promise<Product> => {
 		const body = await unwrap(api.products({ id }).delete());
-		const record = extractOkDataOrPassthrough(body, "products.delete") as unknown;
+		const record = extractOkDataOrPassthrough(
+			body,
+			"products.delete",
+		) as unknown;
 		if (!isBackendProduct(record)) {
 			throw new Error("Invalid product payload received after delete");
 		}

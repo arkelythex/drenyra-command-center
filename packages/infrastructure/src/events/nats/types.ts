@@ -8,8 +8,8 @@
  * ```
  */
 export interface NATSConfig {
-  url: string;
-  reconnect?: boolean;
-  maxReconnectAttempts?: number;
-  reconnectTimeWait?: number;
+	url: string;
+	reconnect?: boolean;
+	maxReconnectAttempts?: number;
+	reconnectTimeWait?: number;
 }

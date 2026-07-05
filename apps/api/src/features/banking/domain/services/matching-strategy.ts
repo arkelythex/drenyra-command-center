@@ -14,11 +14,11 @@
  */
 
 export type MatchCriteria =
-  | 'REFERENCE'
-  | 'AMOUNT_DATE'
-  | 'AMOUNT_ENTITY'
-  | 'FUZZY_ENTITY'
-  | 'PARTIAL';
+	| "REFERENCE"
+	| "AMOUNT_DATE"
+	| "AMOUNT_ENTITY"
+	| "FUZZY_ENTITY"
+	| "PARTIAL";
 
 /**
  * A candidate document match produced by a `MatchingStrategy`.
@@ -34,11 +34,11 @@ export type MatchCriteria =
  * ```
  */
 export interface MatchCandidate {
-  documentId: string;
-  documentType: 'INVOICE' | 'BILL';
-  score: number;
-  criteria: MatchCriteria;
-  relatedTransactionIds?: string[];
+	documentId: string;
+	documentType: "INVOICE" | "BILL";
+	score: number;
+	criteria: MatchCriteria;
+	relatedTransactionIds?: string[];
 }
 
 /**
@@ -57,14 +57,14 @@ export interface MatchCandidate {
  * ```
  */
 export interface BankTransactionLike {
-  id: string;
-  accountId: string;
-  companyId: string;
-  transactionDate: Date | string;
-  description?: string | null;
-  reference?: string | null;
-  type: 'DEBIT' | 'CREDIT';
-  amount: string;
+	id: string;
+	accountId: string;
+	companyId: string;
+	transactionDate: Date | string;
+	description?: string | null;
+	reference?: string | null;
+	type: "DEBIT" | "CREDIT";
+	amount: string;
 }
 
 /**
@@ -76,17 +76,45 @@ export interface BankTransactionLike {
  * ```
  */
 export interface MatchContext {
-  companyId: string;
-  dateWindowDays: number;
-  normalizeReference: (ref: string) => string;
-  findInvoiceByReference: (companyId: string, reference: string) => Promise<{ id: string } | null>;
-  findBillByReference: (companyId: string, reference: string) => Promise<{ id: string } | null>;
-  findInvoicesByAmountAndDate: (companyId: string, amount: string, start: Date, end: Date) => Promise<Array<{ id: string }>>;
-  findBillsByAmountAndDate: (companyId: string, amount: string, start: Date, end: Date) => Promise<Array<{ id: string }>>;
-  findPartners: (companyId: string) => Promise<Array<{ id: string; legalName: string }>>;
-  findInvoicesByAmountAndCustomer: (companyId: string, customerId: string, amount: string) => Promise<Array<{ id: string }>>;
-  findBillsByAmountAndVendor: (companyId: string, vendorId: string, amount: string) => Promise<Array<{ id: string }>>;
-  findPartialPaymentMatch: (tx: BankTransactionLike) => Promise<MatchCandidate | null>;
+	companyId: string;
+	dateWindowDays: number;
+	normalizeReference: (ref: string) => string;
+	findInvoiceByReference: (
+		companyId: string,
+		reference: string,
+	) => Promise<{ id: string } | null>;
+	findBillByReference: (
+		companyId: string,
+		reference: string,
+	) => Promise<{ id: string } | null>;
+	findInvoicesByAmountAndDate: (
+		companyId: string,
+		amount: string,
+		start: Date,
+		end: Date,
+	) => Promise<Array<{ id: string }>>;
+	findBillsByAmountAndDate: (
+		companyId: string,
+		amount: string,
+		start: Date,
+		end: Date,
+	) => Promise<Array<{ id: string }>>;
+	findPartners: (
+		companyId: string,
+	) => Promise<Array<{ id: string; legalName: string }>>;
+	findInvoicesByAmountAndCustomer: (
+		companyId: string,
+		customerId: string,
+		amount: string,
+	) => Promise<Array<{ id: string }>>;
+	findBillsByAmountAndVendor: (
+		companyId: string,
+		vendorId: string,
+		amount: string,
+	) => Promise<Array<{ id: string }>>;
+	findPartialPaymentMatch: (
+		tx: BankTransactionLike,
+	) => Promise<MatchCandidate | null>;
 }
 
 /**
@@ -98,9 +126,12 @@ export interface MatchContext {
  * ```
  */
 export interface MatchingStrategy {
-  readonly priority: number;
-  readonly criteria: MatchCriteria;
-  match(tx: BankTransactionLike, context: MatchContext): Promise<MatchCandidate | null>;
+	readonly priority: number;
+	readonly criteria: MatchCriteria;
+	match(
+		tx: BankTransactionLike,
+		context: MatchContext,
+	): Promise<MatchCandidate | null>;
 }
 
 /**
@@ -112,26 +143,45 @@ export interface MatchingStrategy {
  * ```
  */
 export class ReferenceMatchingStrategy implements MatchingStrategy {
-  readonly priority = 100;
-  readonly criteria: MatchCriteria = 'REFERENCE';
+	readonly priority = 100;
+	readonly criteria: MatchCriteria = "REFERENCE";
 
-  async match(tx: BankTransactionLike, context: MatchContext): Promise<MatchCandidate | null> {
-    if (!tx.reference || !tx.reference.trim()) return null;
+	async match(
+		tx: BankTransactionLike,
+		context: MatchContext,
+	): Promise<MatchCandidate | null> {
+		if (!tx.reference || !tx.reference.trim()) return null;
 
-    const normalizedRef = context.normalizeReference(tx.reference);
+		const normalizedRef = context.normalizeReference(tx.reference);
 
-    if (tx.type === 'CREDIT') {
-      const invoice = await context.findInvoiceByReference(context.companyId, normalizedRef);
-      return invoice
-        ? { documentId: invoice.id, documentType: 'INVOICE', score: 100, criteria: 'REFERENCE' }
-        : null;
-    }
+		if (tx.type === "CREDIT") {
+			const invoice = await context.findInvoiceByReference(
+				context.companyId,
+				normalizedRef,
+			);
+			return invoice
+				? {
+						documentId: invoice.id,
+						documentType: "INVOICE",
+						score: 100,
+						criteria: "REFERENCE",
+					}
+				: null;
+		}
 
-    const bill = await context.findBillByReference(context.companyId, normalizedRef);
-    return bill
-      ? { documentId: bill.id, documentType: 'BILL', score: 100, criteria: 'REFERENCE' }
-      : null;
-  }
+		const bill = await context.findBillByReference(
+			context.companyId,
+			normalizedRef,
+		);
+		return bill
+			? {
+					documentId: bill.id,
+					documentType: "BILL",
+					score: 100,
+					criteria: "REFERENCE",
+				}
+			: null;
+	}
 }
 
 /**
@@ -143,31 +193,54 @@ export class ReferenceMatchingStrategy implements MatchingStrategy {
  * ```
  */
 export class AmountDateMatchingStrategy implements MatchingStrategy {
-  readonly priority = 80;
-  readonly criteria: MatchCriteria = 'AMOUNT_DATE';
+	readonly priority = 80;
+	readonly criteria: MatchCriteria = "AMOUNT_DATE";
 
-  async match(tx: BankTransactionLike, context: MatchContext): Promise<MatchCandidate | null> {
-    const date = new Date(tx.transactionDate);
-    const start = new Date(date);
-    const end = new Date(date);
-    start.setDate(start.getDate() - context.dateWindowDays);
-    end.setDate(end.getDate() + context.dateWindowDays);
+	async match(
+		tx: BankTransactionLike,
+		context: MatchContext,
+	): Promise<MatchCandidate | null> {
+		const date = new Date(tx.transactionDate);
+		const start = new Date(date);
+		const end = new Date(date);
+		start.setDate(start.getDate() - context.dateWindowDays);
+		end.setDate(end.getDate() + context.dateWindowDays);
 
-    if (tx.type === 'CREDIT') {
-      const invoices = await context.findInvoicesByAmountAndDate(context.companyId, tx.amount, start, end);
-      if (invoices.length > 0) {
-        return { documentId: invoices[0].id, documentType: 'INVOICE', score: 80, criteria: 'AMOUNT_DATE' };
-      }
-      return null;
-    }
+		if (tx.type === "CREDIT") {
+			const invoices = await context.findInvoicesByAmountAndDate(
+				context.companyId,
+				tx.amount,
+				start,
+				end,
+			);
+			if (invoices.length > 0) {
+				return {
+					documentId: invoices[0].id,
+					documentType: "INVOICE",
+					score: 80,
+					criteria: "AMOUNT_DATE",
+				};
+			}
+			return null;
+		}
 
-    const bills = await context.findBillsByAmountAndDate(context.companyId, tx.amount, start, end);
-    if (bills.length > 0) {
-      return { documentId: bills[0].id, documentType: 'BILL', score: 80, criteria: 'AMOUNT_DATE' };
-    }
+		const bills = await context.findBillsByAmountAndDate(
+			context.companyId,
+			tx.amount,
+			start,
+			end,
+		);
+		if (bills.length > 0) {
+			return {
+				documentId: bills[0].id,
+				documentType: "BILL",
+				score: 80,
+				criteria: "AMOUNT_DATE",
+			};
+		}
 
-    return null;
-  }
+		return null;
+	}
 }
 
 /**
@@ -179,48 +252,61 @@ export class AmountDateMatchingStrategy implements MatchingStrategy {
  * ```
  */
 export class AmountEntityMatchingStrategy implements MatchingStrategy {
-  readonly priority = 60;
-  readonly criteria: MatchCriteria = 'AMOUNT_ENTITY';
+	readonly priority = 60;
+	readonly criteria: MatchCriteria = "AMOUNT_ENTITY";
 
-  async match(tx: BankTransactionLike, context: MatchContext): Promise<MatchCandidate | null> {
-    const description = (tx.description ?? '').toUpperCase();
-    if (!description) return null;
+	async match(
+		tx: BankTransactionLike,
+		context: MatchContext,
+	): Promise<MatchCandidate | null> {
+		const description = (tx.description ?? "").toUpperCase();
+		if (!description) return null;
 
-    const partners = await context.findPartners(context.companyId);
+		const partners = await context.findPartners(context.companyId);
 
-    if (tx.type === 'CREDIT') {
-      for (const partner of partners) {
-        const partnerName = partner.legalName.toUpperCase();
-        if (!description.includes(partnerName)) continue;
+		if (tx.type === "CREDIT") {
+			for (const partner of partners) {
+				const partnerName = partner.legalName.toUpperCase();
+				if (!description.includes(partnerName)) continue;
 
-        const invoices = await context.findInvoicesByAmountAndCustomer(
-          context.companyId,
-          partner.id,
-          tx.amount
-        );
-        if (invoices.length > 0) {
-          return { documentId: invoices[0].id, documentType: 'INVOICE', score: 60, criteria: 'AMOUNT_ENTITY' };
-        }
-      }
-      return null;
-    }
+				const invoices = await context.findInvoicesByAmountAndCustomer(
+					context.companyId,
+					partner.id,
+					tx.amount,
+				);
+				if (invoices.length > 0) {
+					return {
+						documentId: invoices[0].id,
+						documentType: "INVOICE",
+						score: 60,
+						criteria: "AMOUNT_ENTITY",
+					};
+				}
+			}
+			return null;
+		}
 
-    for (const partner of partners) {
-      const partnerName = partner.legalName.toUpperCase();
-      if (!description.includes(partnerName)) continue;
+		for (const partner of partners) {
+			const partnerName = partner.legalName.toUpperCase();
+			if (!description.includes(partnerName)) continue;
 
-      const bills = await context.findBillsByAmountAndVendor(
-        context.companyId,
-        partner.id,
-        tx.amount
-      );
-      if (bills.length > 0) {
-        return { documentId: bills[0].id, documentType: 'BILL', score: 60, criteria: 'AMOUNT_ENTITY' };
-      }
-    }
+			const bills = await context.findBillsByAmountAndVendor(
+				context.companyId,
+				partner.id,
+				tx.amount,
+			);
+			if (bills.length > 0) {
+				return {
+					documentId: bills[0].id,
+					documentType: "BILL",
+					score: 60,
+					criteria: "AMOUNT_ENTITY",
+				};
+			}
+		}
 
-    return null;
-  }
+		return null;
+	}
 }
 
 /**
@@ -232,63 +318,75 @@ export class AmountEntityMatchingStrategy implements MatchingStrategy {
  * ```
  */
 export class FuzzyEntityMatchingStrategy implements MatchingStrategy {
-  readonly priority = 55;
-  readonly criteria: MatchCriteria = 'FUZZY_ENTITY';
-  private static readonly MIN_SIMILARITY = 0.72;
+	readonly priority = 55;
+	readonly criteria: MatchCriteria = "FUZZY_ENTITY";
+	private static readonly MIN_SIMILARITY = 0.72;
 
-  async match(tx: BankTransactionLike, context: MatchContext): Promise<MatchCandidate | null> {
-    const description = normalizeFuzzyText(tx.description ?? '');
-    if (!description) return null;
+	async match(
+		tx: BankTransactionLike,
+		context: MatchContext,
+	): Promise<MatchCandidate | null> {
+		const description = normalizeFuzzyText(tx.description ?? "");
+		if (!description) return null;
 
-    const partners = await context.findPartners(context.companyId);
-    let bestPartner: { id: string; similarity: number } | null = null;
+		const partners = await context.findPartners(context.companyId);
+		let bestPartner: { id: string; similarity: number } | null = null;
 
-    for (const partner of partners) {
-      const similarity = computeBestSimilarity(description, normalizeFuzzyText(partner.legalName));
-      if (!bestPartner || similarity > bestPartner.similarity) {
-        bestPartner = { id: partner.id, similarity };
-      }
-    }
+		for (const partner of partners) {
+			const similarity = computeBestSimilarity(
+				description,
+				normalizeFuzzyText(partner.legalName),
+			);
+			if (!bestPartner || similarity > bestPartner.similarity) {
+				bestPartner = { id: partner.id, similarity };
+			}
+		}
 
-    if (!bestPartner || bestPartner.similarity < FuzzyEntityMatchingStrategy.MIN_SIMILARITY) {
-      return null;
-    }
+		if (
+			!bestPartner ||
+			bestPartner.similarity < FuzzyEntityMatchingStrategy.MIN_SIMILARITY
+		) {
+			return null;
+		}
 
-    const score = Math.max(55, Math.min(79, Math.round(bestPartner.similarity * 100)));
+		const score = Math.max(
+			55,
+			Math.min(79, Math.round(bestPartner.similarity * 100)),
+		);
 
-    if (tx.type === 'CREDIT') {
-      const invoices = await context.findInvoicesByAmountAndCustomer(
-        context.companyId,
-        bestPartner.id,
-        tx.amount
-      );
-      if (invoices.length > 0) {
-        return {
-          documentId: invoices[0].id,
-          documentType: 'INVOICE',
-          score,
-          criteria: 'FUZZY_ENTITY',
-        };
-      }
-      return null;
-    }
+		if (tx.type === "CREDIT") {
+			const invoices = await context.findInvoicesByAmountAndCustomer(
+				context.companyId,
+				bestPartner.id,
+				tx.amount,
+			);
+			if (invoices.length > 0) {
+				return {
+					documentId: invoices[0].id,
+					documentType: "INVOICE",
+					score,
+					criteria: "FUZZY_ENTITY",
+				};
+			}
+			return null;
+		}
 
-    const bills = await context.findBillsByAmountAndVendor(
-      context.companyId,
-      bestPartner.id,
-      tx.amount
-    );
-    if (bills.length > 0) {
-      return {
-        documentId: bills[0].id,
-        documentType: 'BILL',
-        score,
-        criteria: 'FUZZY_ENTITY',
-      };
-    }
+		const bills = await context.findBillsByAmountAndVendor(
+			context.companyId,
+			bestPartner.id,
+			tx.amount,
+		);
+		if (bills.length > 0) {
+			return {
+				documentId: bills[0].id,
+				documentType: "BILL",
+				score,
+				criteria: "FUZZY_ENTITY",
+			};
+		}
 
-    return null;
-  }
+		return null;
+	}
 }
 
 /**
@@ -300,88 +398,100 @@ export class FuzzyEntityMatchingStrategy implements MatchingStrategy {
  * ```
  */
 export class PartialPaymentMatchingStrategy implements MatchingStrategy {
-  readonly priority = 60;
-  readonly criteria: MatchCriteria = 'PARTIAL';
+	readonly priority = 60;
+	readonly criteria: MatchCriteria = "PARTIAL";
 
-  async match(tx: BankTransactionLike, context: MatchContext): Promise<MatchCandidate | null> {
-    return context.findPartialPaymentMatch(tx);
-  }
+	async match(
+		tx: BankTransactionLike,
+		context: MatchContext,
+	): Promise<MatchCandidate | null> {
+		return context.findPartialPaymentMatch(tx);
+	}
 }
 
 function normalizeFuzzyText(value: string): string {
-  return value
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toUpperCase()
-    .replace(/[^A-Z0-9 ]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+	return value
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "")
+		.toUpperCase()
+		.replace(/[^A-Z0-9 ]+/g, " ")
+		.replace(/\s+/g, " ")
+		.trim();
 }
 
 function computeSimilarity(left: string, right: string): number {
-  if (!left || !right) return 0;
-  if (left === right) return 1;
+	if (!left || !right) return 0;
+	if (left === right) return 1;
 
-  const tokenScore = jaccardScore(left.split(' '), right.split(' '));
-  const bigramScore = diceCoefficient(toBigrams(left), toBigrams(right));
-  return (tokenScore * 0.45) + (bigramScore * 0.55);
+	const tokenScore = jaccardScore(left.split(" "), right.split(" "));
+	const bigramScore = diceCoefficient(toBigrams(left), toBigrams(right));
+	return tokenScore * 0.45 + bigramScore * 0.55;
 }
 
-function computeBestSimilarity(description: string, partnerName: string): number {
-  const scores = [computeSimilarity(description, partnerName)];
-  const descriptionTokens = description.split(' ').filter(Boolean);
-  const partnerTokens = partnerName.split(' ').filter(Boolean);
-  const windowSize = partnerTokens.length;
+function computeBestSimilarity(
+	description: string,
+	partnerName: string,
+): number {
+	const scores = [computeSimilarity(description, partnerName)];
+	const descriptionTokens = description.split(" ").filter(Boolean);
+	const partnerTokens = partnerName.split(" ").filter(Boolean);
+	const windowSize = partnerTokens.length;
 
-  if (windowSize > 0 && descriptionTokens.length >= windowSize) {
-    for (let start = 0; start <= descriptionTokens.length - windowSize; start += 1) {
-      const window = descriptionTokens.slice(start, start + windowSize).join(' ');
-      scores.push(computeSimilarity(window, partnerName));
-    }
-  }
+	if (windowSize > 0 && descriptionTokens.length >= windowSize) {
+		for (
+			let start = 0;
+			start <= descriptionTokens.length - windowSize;
+			start += 1
+		) {
+			const window = descriptionTokens
+				.slice(start, start + windowSize)
+				.join(" ");
+			scores.push(computeSimilarity(window, partnerName));
+		}
+	}
 
-  return Math.max(...scores);
+	return Math.max(...scores);
 }
 
 function jaccardScore(leftTokens: string[], rightTokens: string[]): number {
-  const left = new Set(leftTokens.filter(Boolean));
-  const right = new Set(rightTokens.filter(Boolean));
-  if (left.size === 0 || right.size === 0) return 0;
+	const left = new Set(leftTokens.filter(Boolean));
+	const right = new Set(rightTokens.filter(Boolean));
+	if (left.size === 0 || right.size === 0) return 0;
 
-  let intersection = 0;
-  for (const token of left) {
-    if (right.has(token)) intersection += 1;
-  }
-  const union = left.size + right.size - intersection;
-  if (union === 0) return 0;
-  return intersection / union;
+	let intersection = 0;
+	for (const token of left) {
+		if (right.has(token)) intersection += 1;
+	}
+	const union = left.size + right.size - intersection;
+	if (union === 0) return 0;
+	return intersection / union;
 }
 
 function toBigrams(value: string): string[] {
-  if (value.length < 2) return [value];
-  const out: string[] = [];
-  for (let i = 0; i < value.length - 1; i += 1) {
-    out.push(value.slice(i, i + 2));
-  }
-  return out;
+	if (value.length < 2) return [value];
+	const out: string[] = [];
+	for (let i = 0; i < value.length - 1; i += 1) {
+		out.push(value.slice(i, i + 2));
+	}
+	return out;
 }
 
 function diceCoefficient(left: string[], right: string[]): number {
-  if (left.length === 0 || right.length === 0) return 0;
+	if (left.length === 0 || right.length === 0) return 0;
 
-  const frequencies = new Map<string, number>();
-  for (const gram of left) {
-    frequencies.set(gram, (frequencies.get(gram) ?? 0) + 1);
-  }
+	const frequencies = new Map<string, number>();
+	for (const gram of left) {
+		frequencies.set(gram, (frequencies.get(gram) ?? 0) + 1);
+	}
 
-  let overlap = 0;
-  for (const gram of right) {
-    const count = frequencies.get(gram) ?? 0;
-    if (count > 0) {
-      overlap += 1;
-      frequencies.set(gram, count - 1);
-    }
-  }
+	let overlap = 0;
+	for (const gram of right) {
+		const count = frequencies.get(gram) ?? 0;
+		if (count > 0) {
+			overlap += 1;
+			frequencies.set(gram, count - 1);
+		}
+	}
 
-  return (2 * overlap) / (left.length + right.length);
+	return (2 * overlap) / (left.length + right.length);
 }

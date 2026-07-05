@@ -2,12 +2,12 @@
  * ExchangeRate Service Tests
  */
 
-import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
 	ExchangeRate,
 	InvalidExchangeRateError,
 } from "@drenyra/domain/accounting/exchange-rate";
 import type { ExchangeRateRepository } from "@drenyra/domain/repositories/exchange-rate.repository";
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import { ExchangeRateService, type SetRateDTO } from "../exchange-rate.service";
 
 describe("ExchangeRateService", () => {
@@ -21,9 +21,9 @@ describe("ExchangeRateService", () => {
 			date: new Date("2025-06-15"),
 			currencyFrom: "USD",
 			currencyTo: "PEN",
-			buyRate: 3.7250,
-			sellRate: 3.7350,
-			sunatReferenceRate: 3.7300,
+			buyRate: 3.725,
+			sellRate: 3.735,
+			sunatReferenceRate: 3.73,
 			...overrides,
 		};
 	}
@@ -50,9 +50,9 @@ describe("ExchangeRateService", () => {
 			expect(rate).toBeDefined();
 			expect(rate.currencyFrom).toBe("USD");
 			expect(rate.currencyTo).toBe("PEN");
-			expect(rate.buy).toBe(3.7250);
-			expect(rate.sell).toBe(3.7350);
-			expect(rate.sunatReference).toBe(3.7300);
+			expect(rate.buy).toBe(3.725);
+			expect(rate.sell).toBe(3.735);
+			expect(rate.sunatReference).toBe(3.73);
 			expect(mockRepo.save).toHaveBeenCalledTimes(1);
 		});
 
@@ -67,33 +67,33 @@ describe("ExchangeRateService", () => {
 		it("should throw for invalid currency codes", async () => {
 			const dto = createValidDTO({ currencyFrom: "INVALID" });
 
-			await expect(
-				service.setRate(mockCompanyId, dto),
-			).rejects.toThrow(InvalidExchangeRateError);
+			await expect(service.setRate(mockCompanyId, dto)).rejects.toThrow(
+				InvalidExchangeRateError,
+			);
 		});
 
 		it("should throw for same currency from/to", async () => {
 			const dto = createValidDTO({ currencyTo: "USD" });
 
-			await expect(
-				service.setRate(mockCompanyId, dto),
-			).rejects.toThrow(InvalidExchangeRateError);
+			await expect(service.setRate(mockCompanyId, dto)).rejects.toThrow(
+				InvalidExchangeRateError,
+			);
 		});
 
 		it("should throw for negative buy rate", async () => {
 			const dto = createValidDTO({ buyRate: -1 });
 
-			await expect(
-				service.setRate(mockCompanyId, dto),
-			).rejects.toThrow(InvalidExchangeRateError);
+			await expect(service.setRate(mockCompanyId, dto)).rejects.toThrow(
+				InvalidExchangeRateError,
+			);
 		});
 
 		it("should throw for empty company ID", async () => {
 			const dto = createValidDTO();
 
-			await expect(
-				service.setRate("", dto),
-			).rejects.toThrow(InvalidExchangeRateError);
+			await expect(service.setRate("", dto)).rejects.toThrow(
+				InvalidExchangeRateError,
+			);
 		});
 
 		it("should normalize currency codes to uppercase", async () => {
@@ -115,8 +115,8 @@ describe("ExchangeRateService", () => {
 				new Date("2025-06-15"),
 				"USD",
 				"PEN",
-				3.7250,
-				3.7350,
+				3.725,
+				3.735,
 			);
 			mockRepo.findByDateAndCurrency.mockResolvedValue(expectedRate);
 
@@ -128,7 +128,7 @@ describe("ExchangeRateService", () => {
 			);
 
 			expect(result).toBeDefined();
-			expect(result!.buy).toBe(3.7250);
+			expect(result!.buy).toBe(3.725);
 			expect(mockRepo.findLatestBefore).not.toHaveBeenCalled();
 		});
 
@@ -137,8 +137,8 @@ describe("ExchangeRateService", () => {
 				new Date("2025-06-14"),
 				"USD",
 				"PEN",
-				3.7200,
-				3.7300,
+				3.72,
+				3.73,
 			);
 			mockRepo.findByDateAndCurrency.mockResolvedValue(null);
 			mockRepo.findLatestBefore.mockResolvedValue(fallbackRate);
@@ -151,7 +151,7 @@ describe("ExchangeRateService", () => {
 			);
 
 			expect(result).toBeDefined();
-			expect(result!.buy).toBe(3.7200);
+			expect(result!.buy).toBe(3.72);
 			expect(mockRepo.findLatestBefore).toHaveBeenCalled();
 		});
 
@@ -179,8 +179,8 @@ describe("ExchangeRateService", () => {
 	describe("getRateHistory", () => {
 		it("should return rates for a date range", async () => {
 			const rates = [
-				ExchangeRate.create(new Date("2025-06-15"), "USD", "PEN", 3.7250, 3.7350),
-				ExchangeRate.create(new Date("2025-06-16"), "USD", "PEN", 3.7300, 3.7400),
+				ExchangeRate.create(new Date("2025-06-15"), "USD", "PEN", 3.725, 3.735),
+				ExchangeRate.create(new Date("2025-06-16"), "USD", "PEN", 3.73, 3.74),
 			];
 			mockRepo.findByDateRange.mockResolvedValue(rates);
 

@@ -1,28 +1,35 @@
-import { useState, useMemo } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useParams } from "@tanstack/react-router";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-	ArrowLeft,
 	AlertCircle,
+	ArrowLeft,
 	Check,
-	SkipForward,
-	UserMinus,
-	Link2,
-	Unlink,
-	X,
-	Clock,
-	MessageSquare,
 	CheckCircle2,
 	Circle,
+	Clock,
+	Link2,
 	Loader2,
+	MessageSquare,
 	Plus,
+	SkipForward,
+	Unlink,
+	UserMinus,
+	X,
 } from "lucide-react";
-import { threadDetailQueryOptions } from "./query-options";
-import { threadKeys } from "./query-keys";
-import { StatusBadge, type StatusBadgeProps } from "@/components/ui/StatusBadge";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+	StatusBadge,
+	type StatusBadgeProps,
+} from "@/components/ui/StatusBadge";
+import { threadKeys } from "./query-keys";
+import { threadDetailQueryOptions } from "./query-options";
 import * as threadsApi from "./threads.api";
-import type { ThreadDetail, ThreadTask, ThreadAgentAssignment } from "./threads.types";
+import type {
+	ThreadAgentAssignment,
+	ThreadDetail,
+	ThreadTask,
+} from "./threads.types";
 
 // ─── Status helpers ──────────────────────────────────────────────────────────
 
@@ -30,13 +37,37 @@ const THREAD_STATUS_BADGE: Record<
 	string,
 	{ status: StatusBadgeProps["status"]; label: string; color: string }
 > = {
-	DRAFT: { status: "neutral", label: "Borrador", color: "var(--color-text-muted)" },
+	DRAFT: {
+		status: "neutral",
+		label: "Borrador",
+		color: "var(--color-text-muted)",
+	},
 	ACTIVE: { status: "info", label: "Activo", color: "var(--color-info)" },
-	BLOCKED: { status: "danger", label: "Bloqueado", color: "var(--color-danger)" },
-	PENDING_REVIEW: { status: "warning", label: "Revisión pendiente", color: "var(--color-warning)" },
-	AWAITING_INFO: { status: "pending", label: "Esperando info", color: "var(--color-warning)" },
-	REVIEWED: { status: "success", label: "Revisado", color: "var(--color-success)" },
-	CLOSED: { status: "neutral", label: "Cerrado", color: "var(--color-text-muted)" },
+	BLOCKED: {
+		status: "danger",
+		label: "Bloqueado",
+		color: "var(--color-danger)",
+	},
+	PENDING_REVIEW: {
+		status: "warning",
+		label: "Revisión pendiente",
+		color: "var(--color-warning)",
+	},
+	AWAITING_INFO: {
+		status: "pending",
+		label: "Esperando info",
+		color: "var(--color-warning)",
+	},
+	REVIEWED: {
+		status: "success",
+		label: "Revisado",
+		color: "var(--color-success)",
+	},
+	CLOSED: {
+		status: "neutral",
+		label: "Cerrado",
+		color: "var(--color-text-muted)",
+	},
 };
 
 const TASK_STATUS_BADGE: Record<string, StatusBadgeProps["status"]> = {
@@ -70,7 +101,13 @@ const TABS: { id: TabId; label: string }[] = [
 
 interface TimelineEvent {
 	id: string;
-	type: "created" | "task_completed" | "task_skipped" | "status_changed" | "agent_assigned" | "closed";
+	type:
+		| "created"
+		| "task_completed"
+		| "task_skipped"
+		| "status_changed"
+		| "agent_assigned"
+		| "closed";
 	label: string;
 	timestamp: string;
 }
@@ -113,7 +150,9 @@ function buildTimeline(thread: ThreadDetail): TimelineEvent[] {
 		});
 	}
 
-	events.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+	events.sort(
+		(a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+	);
 	return events;
 }
 
@@ -140,9 +179,13 @@ export function ThreadDetailPage() {
 	const [evidenceId, setEvidenceId] = useState("");
 
 	// ── Queries ────────────────────────────────────────────────────────────
-	const { data: thread, isLoading, isError, error, refetch } = useQuery(
-		threadDetailQueryOptions(threadId),
-	);
+	const {
+		data: thread,
+		isLoading,
+		isError,
+		error,
+		refetch,
+	} = useQuery(threadDetailQueryOptions(threadId));
 
 	// ── Mutations ──────────────────────────────────────────────────────────
 	const closeMutation = useMutation({
@@ -156,8 +199,13 @@ export function ThreadDetailPage() {
 	});
 
 	const updateTaskMutation = useMutation({
-		mutationFn: ({ taskId, data }: { taskId: string; data: { status: string } }) =>
-			threadsApi.updateTask(threadId, taskId, data),
+		mutationFn: ({
+			taskId,
+			data,
+		}: {
+			taskId: string;
+			data: { status: string };
+		}) => threadsApi.updateTask(threadId, taskId, data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: threadKeys.detail(threadId) });
 		},
@@ -180,7 +228,9 @@ export function ThreadDetailPage() {
 	});
 
 	// ── Derived ────────────────────────────────────────────────────────────
-	const threadBadge = thread ? THREAD_STATUS_BADGE[thread.status] ?? THREAD_STATUS_BADGE.DRAFT : null;
+	const threadBadge = thread
+		? (THREAD_STATUS_BADGE[thread.status] ?? THREAD_STATUS_BADGE.DRAFT)
+		: null;
 	const isClosed = thread?.status === "CLOSED";
 	const timeline = thread ? buildTimeline(thread) : [];
 
@@ -189,8 +239,13 @@ export function ThreadDetailPage() {
 		return (
 			<div className="flex h-full items-center justify-center p-8">
 				<div className="flex flex-col items-center gap-3 text-center">
-					<Loader2 size={24} className="animate-spin text-[var(--text-tertiary)]" />
-					<p className="text-sm text-[var(--text-secondary)]">Cargando thread...</p>
+					<Loader2
+						size={24}
+						className="animate-spin text-[var(--text-tertiary)]"
+					/>
+					<p className="text-sm text-[var(--text-secondary)]">
+						Cargando thread...
+					</p>
 				</div>
 			</div>
 		);
@@ -199,7 +254,8 @@ export function ThreadDetailPage() {
 	// ── Error state ────────────────────────────────────────────────────────
 	if (isError) {
 		const isNotFound =
-			error instanceof Error && (error.message.includes("not found") || error.message.includes("404"));
+			error instanceof Error &&
+			(error.message.includes("not found") || error.message.includes("404"));
 
 		if (isNotFound) {
 			return (
@@ -284,7 +340,11 @@ export function ThreadDetailPage() {
 								/>
 							)}
 							{thread.environment && (
-								<StatusBadge status="info" label={thread.environment} size="sm" />
+								<StatusBadge
+									status="info"
+									label={thread.environment}
+									size="sm"
+								/>
 							)}
 							{thread.period && (
 								<span className="text-2xs text-[var(--text-tertiary)] font-mono">
@@ -294,7 +354,9 @@ export function ThreadDetailPage() {
 						</div>
 
 						{thread.description && (
-							<p className="text-sm text-[var(--text-secondary)]">{thread.description}</p>
+							<p className="text-sm text-[var(--text-secondary)]">
+								{thread.description}
+							</p>
 						)}
 
 						{/* Tags */}
@@ -389,8 +451,16 @@ export function ThreadDetailPage() {
 						</div>
 
 						<div className="pt-4">
-							{activeTab === "tasks" && <TasksTab tasks={thread.tasks} onUpdateTask={updateTaskMutation.mutate} isClosed={isClosed} />}
-							{activeTab === "agents" && <AgentsTab agents={thread.agents} threadId={threadId} />}
+							{activeTab === "tasks" && (
+								<TasksTab
+									tasks={thread.tasks}
+									onUpdateTask={updateTaskMutation.mutate}
+									isClosed={isClosed}
+								/>
+							)}
+							{activeTab === "agents" && (
+								<AgentsTab agents={thread.agents} threadId={threadId} />
+							)}
 							{activeTab === "evidence" && (
 								<EvidenceTab
 									evidenceIds={thread.evidenceIds}
@@ -410,7 +480,8 @@ export function ThreadDetailPage() {
 									Cerrar thread
 								</h2>
 								<p className="mt-2 text-sm text-[var(--text-secondary)]">
-									¿Estás seguro de cerrar este thread? Esta acción no se puede deshacer.
+									¿Estás seguro de cerrar este thread? Esta acción no se puede
+									deshacer.
 								</p>
 								<div className="mt-4 space-y-2">
 									<label className="text-xs font-medium text-[var(--text-secondary)]">
@@ -469,7 +540,9 @@ export function ThreadDetailPage() {
 							<p className="text-xs font-medium text-[var(--text-tertiary)] mb-1">
 								Nota de cierre
 							</p>
-							<p className="text-sm text-[var(--text-secondary)]">{thread.closeNote}</p>
+							<p className="text-sm text-[var(--text-secondary)]">
+								{thread.closeNote}
+							</p>
 							{thread.closedAt && (
 								<p className="mt-2 text-2xs text-[var(--text-tertiary)]">
 									{new Date(thread.closedAt).toLocaleString("es-PE")}
@@ -498,7 +571,9 @@ function TasksTab({
 		return (
 			<div className="flex flex-col items-center gap-3 py-8 text-center">
 				<Circle size={20} className="text-[var(--text-tertiary)]" />
-				<p className="text-sm text-[var(--text-tertiary)]">No hay tareas en este thread</p>
+				<p className="text-sm text-[var(--text-tertiary)]">
+					No hay tareas en este thread
+				</p>
 			</div>
 		);
 	}
@@ -518,11 +593,17 @@ function TasksTab({
 						{/* Status indicator */}
 						<div className="mt-0.5">
 							{task.status === "COMPLETED" ? (
-								<CheckCircle2 size={18} className="text-[var(--color-success)]" />
+								<CheckCircle2
+									size={18}
+									className="text-[var(--color-success)]"
+								/>
 							) : task.status === "FAILED" ? (
 								<AlertCircle size={18} className="text-[var(--color-danger)]" />
 							) : task.status === "SKIPPED" ? (
-								<SkipForward size={18} className="text-[var(--text-tertiary)]" />
+								<SkipForward
+									size={18}
+									className="text-[var(--text-tertiary)]"
+								/>
 							) : (
 								<Circle size={18} className="text-[var(--text-tertiary)]" />
 							)}
@@ -540,7 +621,11 @@ function TasksTab({
 								>
 									{task.title}
 								</p>
-								<StatusBadge status={badgeStatus} label={task.status} size="sm" />
+								<StatusBadge
+									status={badgeStatus}
+									label={task.status}
+									size="sm"
+								/>
 							</div>
 
 							{task.description && (
@@ -562,30 +647,38 @@ function TasksTab({
 							)}
 
 							{/* Actions */}
-							{!isClosed && task.status !== "COMPLETED" && task.status !== "SKIPPED" && (
-								<div className="mt-2 flex gap-2">
-									<button
-										type="button"
-										onClick={() =>
-											onUpdateTask({ taskId: task.id, data: { status: "COMPLETED" } })
-										}
-										className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-2xs font-medium text-[var(--color-success)] hover:bg-[var(--color-success)]/10 transition-colors"
-									>
-										<Check size={12} />
-										Completar
-									</button>
-									<button
-										type="button"
-										onClick={() =>
-											onUpdateTask({ taskId: task.id, data: { status: "SKIPPED" } })
-										}
-										className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-2xs font-medium text-[var(--text-tertiary)] hover:bg-[var(--surface-2)] transition-colors"
-									>
-										<SkipForward size={12} />
-										Omitir
-									</button>
-								</div>
-							)}
+							{!isClosed &&
+								task.status !== "COMPLETED" &&
+								task.status !== "SKIPPED" && (
+									<div className="mt-2 flex gap-2">
+										<button
+											type="button"
+											onClick={() =>
+												onUpdateTask({
+													taskId: task.id,
+													data: { status: "COMPLETED" },
+												})
+											}
+											className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-2xs font-medium text-[var(--color-success)] hover:bg-[var(--color-success)]/10 transition-colors"
+										>
+											<Check size={12} />
+											Completar
+										</button>
+										<button
+											type="button"
+											onClick={() =>
+												onUpdateTask({
+													taskId: task.id,
+													data: { status: "SKIPPED" },
+												})
+											}
+											className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-2xs font-medium text-[var(--text-tertiary)] hover:bg-[var(--surface-2)] transition-colors"
+										>
+											<SkipForward size={12} />
+											Omitir
+										</button>
+									</div>
+								)}
 						</div>
 					</div>
 				);
@@ -637,9 +730,13 @@ function AgentsTab({
 							</p>
 							<div className="flex items-center gap-2 text-2xs text-[var(--text-tertiary)]">
 								<StatusBadge status="info" label={agent.role} size="sm" />
-								<span>{new Date(agent.assignedAt).toLocaleDateString("es-PE")}</span>
+								<span>
+									{new Date(agent.assignedAt).toLocaleDateString("es-PE")}
+								</span>
 								{!agent.isActive && (
-									<span className="text-[var(--color-danger-text)]">Inactivo</span>
+									<span className="text-[var(--color-danger-text)]">
+										Inactivo
+									</span>
 								)}
 							</div>
 						</div>
@@ -684,7 +781,9 @@ function EvidenceTab({
 							<Link2 size={16} className="text-[var(--text-tertiary)]" />
 						</div>
 						<div>
-							<p className="text-sm font-mono text-[var(--text-primary)]">{evId}</p>
+							<p className="text-sm font-mono text-[var(--text-primary)]">
+								{evId}
+							</p>
 						</div>
 					</div>
 					{!isClosed && (

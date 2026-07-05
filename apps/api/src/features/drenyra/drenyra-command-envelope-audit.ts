@@ -1,5 +1,10 @@
 import { randomUUID } from "node:crypto";
-import type { DrenyraActorContext, DrenyraAuditEventFilter, DrenyraFiscalCommandCenterService, DrenyraRepository } from "@drenyra/application/drenyra";
+import type {
+	DrenyraActorContext,
+	DrenyraAuditEventFilter,
+	DrenyraFiscalCommandCenterService,
+	DrenyraRepository,
+} from "@drenyra/application/drenyra";
 import type { AuditEvent } from "../../../../../packages/domain/src/drenyra/types";
 import type { CapabilityAuditInput } from "./drenyra-command-envelope-route-guards";
 
@@ -18,16 +23,24 @@ interface CapabilityDecisionRecorder {
 	) => Promise<unknown>;
 }
 
-
 interface CommandAuditReader {
-	listCommandAuditEvents?: (context: DrenyraActorContext, filter?: DrenyraAuditEventFilter) => Promise<AuditEvent[]>;
+	listCommandAuditEvents?: (
+		context: DrenyraActorContext,
+		filter?: DrenyraAuditEventFilter,
+	) => Promise<AuditEvent[]>;
 }
 
 interface RepositoryOwner {
-	repository?: Pick<DrenyraRepository, "createAuditEvent"> & Partial<Pick<DrenyraRepository, "listCommandAuditEvents">> & { auditEvents?: Map<string, AuditEvent> };
+	repository?: Pick<DrenyraRepository, "createAuditEvent"> &
+		Partial<Pick<DrenyraRepository, "listCommandAuditEvents">> & {
+			auditEvents?: Map<string, AuditEvent>;
+		};
 }
 
-function auditEvent(context: DrenyraActorContext, input: CapabilityAuditInput): AuditEvent {
+function auditEvent(
+	context: DrenyraActorContext,
+	input: CapabilityAuditInput,
+): AuditEvent {
 	return {
 		id: `audit_${randomUUID()}`,
 		caseId: input.caseId,
@@ -38,7 +51,10 @@ function auditEvent(context: DrenyraActorContext, input: CapabilityAuditInput): 
 			organizationId: context.organizationId,
 			period: context.period,
 		},
-		eventType: input.evaluation.decision === "allowed" ? "CAPABILITY_ALLOWED" : "CAPABILITY_DENIED",
+		eventType:
+			input.evaluation.decision === "allowed"
+				? "CAPABILITY_ALLOWED"
+				: "CAPABILITY_DENIED",
 		actorId: context.userId,
 		message: `Drenyra command capability ${input.evaluation.decision}: ${input.commandId}`,
 		occurredAt: new Date().toISOString(),
@@ -71,7 +87,8 @@ export async function recordCommandEnvelopeCapability(
 		return;
 	}
 	const repository = (commandCenter as unknown as RepositoryOwner).repository;
-	if (!repository) throw new Error("DRENYRA_COMMAND_AUDIT_REPOSITORY_UNAVAILABLE");
+	if (!repository)
+		throw new Error("DRENYRA_COMMAND_AUDIT_REPOSITORY_UNAVAILABLE");
 	await repository.createAuditEvent(auditEvent(context, input));
 }
 
@@ -85,7 +102,8 @@ export async function listCommandEnvelopeAuditEvents(
 		return reader.listCommandAuditEvents(context, filter);
 	}
 	const repository = (commandCenter as unknown as RepositoryOwner).repository;
-	if (!repository) throw new Error("DRENYRA_COMMAND_AUDIT_REPOSITORY_UNAVAILABLE");
+	if (!repository)
+		throw new Error("DRENYRA_COMMAND_AUDIT_REPOSITORY_UNAVAILABLE");
 	const scope = {
 		companyId: context.companyId,
 		companyRuc: context.companyRuc,
@@ -102,7 +120,8 @@ export async function listCommandEnvelopeAuditEvents(
 				event.scope.companyRuc === scope.companyRuc &&
 				event.scope.organizationId === scope.organizationId &&
 				event.scope.period === scope.period &&
-				(event.eventType === "CAPABILITY_ALLOWED" || event.eventType === "CAPABILITY_DENIED") &&
+				(event.eventType === "CAPABILITY_ALLOWED" ||
+					event.eventType === "CAPABILITY_DENIED") &&
 				(!filter.caseId || event.caseId === filter.caseId) &&
 				(!filter.commandId || event.metadata.commandId === filter.commandId) &&
 				(!filter.eventType || event.eventType === filter.eventType),

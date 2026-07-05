@@ -1,9 +1,9 @@
-import { cn } from "@/lib/utils";
 import { Text } from "@/components/atoms/text";
+import { cn } from "@/lib/utils";
 import {
+	type LiquidityPoint,
 	PEN_FORMATTER,
 	PERCENT_FORMATTER,
-	type LiquidityPoint,
 } from "./liquidity-chart.constants";
 
 interface ActiveDetailPanelProps {
@@ -20,10 +20,7 @@ export const ActiveDetailPanel = ({ activePoint }: ActiveDetailPanelProps) => (
 		</Text>
 		<div className="space-y-4">
 			<div>
-				<Text
-					variant="label"
-					className="block text-2xs text-muted-foreground"
-				>
+				<Text variant="label" className="block text-2xs text-muted-foreground">
 					Flujo real
 				</Text>
 				<Text
@@ -34,10 +31,7 @@ export const ActiveDetailPanel = ({ activePoint }: ActiveDetailPanelProps) => (
 				</Text>
 			</div>
 			<div>
-				<Text
-					variant="label"
-					className="block text-2xs text-muted-foreground"
-				>
+				<Text variant="label" className="block text-2xs text-muted-foreground">
 					Proyectado
 				</Text>
 				<Text
@@ -48,10 +42,7 @@ export const ActiveDetailPanel = ({ activePoint }: ActiveDetailPanelProps) => (
 				</Text>
 			</div>
 			<div>
-				<Text
-					variant="label"
-					className="block text-2xs text-muted-foreground"
-				>
+				<Text variant="label" className="block text-2xs text-muted-foreground">
 					Desviación
 				</Text>
 				<Text
@@ -66,10 +57,7 @@ export const ActiveDetailPanel = ({ activePoint }: ActiveDetailPanelProps) => (
 				</Text>
 			</div>
 			<div className="rounded-lg border border-border/35 bg-background/35 px-3 py-2.5">
-				<Text
-					variant="label"
-					className="block text-2xs text-muted-foreground"
-				>
+				<Text variant="label" className="block text-2xs text-muted-foreground">
 					Diferencia nominal
 				</Text>
 				<Text
@@ -80,10 +68,7 @@ export const ActiveDetailPanel = ({ activePoint }: ActiveDetailPanelProps) => (
 				</Text>
 			</div>
 			<div className="rounded-lg border border-border/35 bg-background/35 px-3 py-2.5">
-				<Text
-					variant="label"
-					className="block text-2xs text-muted-foreground"
-				>
+				<Text variant="label" className="block text-2xs text-muted-foreground">
 					Punto observado
 				</Text>
 				<Text

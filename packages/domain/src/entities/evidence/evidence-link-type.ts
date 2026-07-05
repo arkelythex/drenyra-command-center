@@ -27,9 +27,5 @@ export type EvidenceLinkRelationship =
 	| "output"
 	| "audit_trail";
 
-export const EVIDENCE_LINK_RELATIONSHIPS: readonly EvidenceLinkRelationship[] = [
-	"source",
-	"supporting",
-	"output",
-	"audit_trail",
-] as const;
+export const EVIDENCE_LINK_RELATIONSHIPS: readonly EvidenceLinkRelationship[] =
+	["source", "supporting", "output", "audit_trail"] as const;

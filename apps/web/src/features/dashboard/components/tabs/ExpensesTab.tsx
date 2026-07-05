@@ -1,11 +1,13 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { BarChart3, ReceiptText, ShieldCheck, Wallet } from "lucide-react";
+import type React from "react";
 import { getHttpStatusCode } from "@/lib/http-client";
 import { captureError } from "@/lib/monitoring";
 import { runtimeConfig } from "@/lib/runtime-config";
+import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 import { formatPEN } from "@/lib/utils";
 import { dashboardApi } from "../../api/dashboard.api";
+import { dashboardKeys } from "../../dashboard.query-keys";
 import { ExpensesDistributionCard } from "./expenses/ExpensesDistributionCard";
 import { ExpensesMetricCard } from "./expenses/ExpensesMetricCard";
 import { ExpensesTopVendorsCard } from "./expenses/ExpensesTopVendorsCard";
@@ -14,8 +16,6 @@ import {
 	SUPPRESSIBLE_HTTP_STATUSES,
 } from "./expenses/expenses-tab.constants";
 import type { ExpensesQueryResult } from "./expenses/expenses-tab.types";
-import { dashboardKeys } from "../../dashboard.query-keys";
-import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 
 export const ExpensesTab: React.FC = () => {
 	const {

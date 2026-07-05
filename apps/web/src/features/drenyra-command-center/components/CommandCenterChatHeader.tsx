@@ -5,14 +5,14 @@
  * @since Jun 2026
  */
 
-import { useTranslation } from "../i18n/i18n";
 import { FileText, Plus, Sparkles, ThumbsUp } from "lucide-react";
-import type { DensityMode } from "./ArtifactCollapsible";
 import type {
 	DrenyraAgentType,
 	FiscalCase,
 	FiscalCaseStatus,
 } from "../api/drenyra-command-center.api";
+import { useTranslation } from "../i18n/i18n";
+import type { DensityMode } from "./ArtifactCollapsible";
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -94,7 +94,9 @@ export function CommandCenterChatHeader({
 							<span className="text-xs font-bold tracking-tight truncate max-w-[180px]">
 								{activeCase.title}
 							</span>
-							<span className={`inline-flex items-center rounded-full px-2 py-0.5 text-2xs font-semibold ${STATUS_COLORS[activeCase.status]}`}>
+							<span
+								className={`inline-flex items-center rounded-full px-2 py-0.5 text-2xs font-semibold ${STATUS_COLORS[activeCase.status]}`}
+							>
 								{STATUS_LABELS[activeCase.status]}
 							</span>
 						</div>
@@ -116,7 +118,10 @@ export function CommandCenterChatHeader({
 			{/* Thread indicator */}
 			{activeThreadId !== "main" && (
 				<span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-warning)]/10 px-2.5 py-0.5 text-2xs font-semibold text-[var(--color-warning)]">
-					{t("thread.indicator")} {JSON.parse(localStorage.getItem("drenyra:threads:" + companyId) || "{}")[activeThreadId]?.name || "..."}
+					{t("thread.indicator")}{" "}
+					{JSON.parse(
+						localStorage.getItem("drenyra:threads:" + companyId) || "{}",
+					)[activeThreadId]?.name || "..."}
 				</span>
 			)}
 
@@ -183,7 +188,9 @@ export function CommandCenterChatHeader({
 			<div className="flex items-center gap-1 border-l border-[var(--border-subtle)] pl-3 ml-1">
 				<select
 					value={selectedAgent}
-					onChange={(e) => onSelectedAgentChange?.(e.target.value as DrenyraAgentType)}
+					onChange={(e) =>
+						onSelectedAgentChange?.(e.target.value as DrenyraAgentType)
+					}
 					className="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] px-2 py-1 text-2xs font-semibold text-[var(--text-secondary)] outline-none focus:border-[var(--color-info)]/50"
 					aria-label="Seleccionar agente"
 				>
@@ -197,7 +204,11 @@ export function CommandCenterChatHeader({
 			</div>
 
 			{/* Density mode */}
-			<div className="flex items-center gap-1 border-l border-[var(--border-subtle)] pl-3 ml-1" role="tablist" aria-label="Modo de densidad">
+			<div
+				className="flex items-center gap-1 border-l border-[var(--border-subtle)] pl-3 ml-1"
+				role="tablist"
+				aria-label="Modo de densidad"
+			>
 				<button
 					type="button"
 					role="tab"

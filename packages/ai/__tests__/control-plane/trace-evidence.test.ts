@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
-	EvidenceTraceBundleSchema,
 	createAppendOnlyTraceEvidenceStore,
 	createInMemoryTraceEvidenceStore,
+	EvidenceTraceBundleSchema,
 } from "../../src/control-plane/trace-evidence";
 
 describe("trace/evidence contracts and retrieval", () => {

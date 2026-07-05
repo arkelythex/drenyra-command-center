@@ -7,11 +7,7 @@ import type {
 } from "./types";
 
 export const financialApi = {
-	async getExpenses(
-		companyId: string,
-		startDate?: string,
-		endDate?: string,
-	) {
+	async getExpenses(companyId: string, startDate?: string, endDate?: string) {
 		return safeApiCall(async () => {
 			return extractOkDataOrPassthrough<DashboardExpensesResponse>(
 				await unwrap(
@@ -28,11 +24,7 @@ export const financialApi = {
 		});
 	},
 
-	async getIncome(
-		companyId: string,
-		startDate?: string,
-		endDate?: string,
-	) {
+	async getIncome(companyId: string, startDate?: string, endDate?: string) {
 		return safeApiCall(async () => {
 			return extractOkDataOrPassthrough<DashboardIncomeResponse>(
 				await unwrap(

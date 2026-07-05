@@ -60,9 +60,7 @@ export const resolveOrganizationIdFromCompany = async (
 		.limit(1);
 
 	if (orgRows.length === 0) {
-		throw new Error(
-			`Organization mapped from company ${companyId} not found`,
-		);
+		throw new Error(`Organization mapped from company ${companyId} not found`);
 	}
 
 	return orgRows[0].id;

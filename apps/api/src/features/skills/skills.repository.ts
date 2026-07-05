@@ -1,9 +1,9 @@
 import { and, eq } from "@drenyra/persistence/query";
 import {
-	skills,
-	skillCapabilities,
 	companySkills,
 	type InstallationStatus,
+	skillCapabilities,
+	skills,
 } from "@drenyra/persistence/schema";
 import { db } from "../../lib/db";
 
@@ -27,7 +27,11 @@ export async function findAllSkills(): Promise<
 }
 
 export async function findSkillById(id: string) {
-	const [skill] = await db.select().from(skills).where(eq(skills.id, id)).limit(1);
+	const [skill] = await db
+		.select()
+		.from(skills)
+		.where(eq(skills.id, id))
+		.limit(1);
 	return skill ?? null;
 }
 
@@ -39,10 +43,7 @@ export async function findCapabilitiesBySkillId(skillId: string) {
 		.orderBy(skillCapabilities.sortOrder);
 }
 
-export async function findCompanySkill(
-	companyId: string,
-	skillId: string,
-) {
+export async function findCompanySkill(companyId: string, skillId: string) {
 	const [cs] = await db
 		.select()
 		.from(companySkills)

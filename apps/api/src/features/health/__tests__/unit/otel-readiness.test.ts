@@ -1,7 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import {
-	getOpenTelemetryReadinessStatus,
-} from "../../otel-readiness.ts";
+import { getOpenTelemetryReadinessStatus } from "../../otel-readiness.ts";
 
 describe("getOpenTelemetryReadinessStatus", () => {
 	const originalEnv = { ...process.env };

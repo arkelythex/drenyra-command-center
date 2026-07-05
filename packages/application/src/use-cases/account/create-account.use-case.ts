@@ -3,14 +3,14 @@
  * Orchestrates the creation of a new accounting account
  */
 
+import { Account } from "@drenyra/domain/entities/Account";
+import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { randomUUID } from "crypto";
 import {
 	type CreateAccountDTO,
 	createAccountSchema,
 } from "../../dtos/account/account.dto";
-import { Account } from "@drenyra/domain/entities/Account";
-import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
-import { Money } from "@drenyra/domain/value-objects/Money";
 
 /**
  * CreateAccountUseCase class.

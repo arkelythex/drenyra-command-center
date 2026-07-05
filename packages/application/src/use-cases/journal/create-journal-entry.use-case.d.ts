@@ -1,16 +1,19 @@
-import { type CreateJournalEntryDTO } from "../../dtos/journal/journal-entry.dto";
 import { JournalEntry } from "@drenyra/domain/entities/JournalEntry";
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import { type CreateJournalEntryDTO } from "../../dtos/journal/journal-entry.dto";
 export interface AccountService {
-    getById(id: string): Promise<{
-        code: string;
-        name: string;
-    } | null>;
+	getById(id: string): Promise<{
+		code: string;
+		name: string;
+	} | null>;
 }
 export declare class CreateJournalEntryUseCase {
-    private readonly journalRepository;
-    private readonly accountService;
-    constructor(journalRepository: JournalEntryRepository, accountService: AccountService);
-    execute(input: CreateJournalEntryDTO, _userId: string): Promise<JournalEntry>;
+	private readonly journalRepository;
+	private readonly accountService;
+	constructor(
+		journalRepository: JournalEntryRepository,
+		accountService: AccountService,
+	);
+	execute(input: CreateJournalEntryDTO, _userId: string): Promise<JournalEntry>;
 }
 //# sourceMappingURL=create-journal-entry.use-case.d.ts.map

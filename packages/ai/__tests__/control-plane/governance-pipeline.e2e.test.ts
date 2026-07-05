@@ -8,20 +8,20 @@
  * to verify the end-to-end flow without requiring a real PostgreSQL instance.
  */
 
-import { describe, it, expect, vi } from "vitest";
-import { PolicyEngine } from "../../src/control-plane/policy-engine";
+import { describe, expect, it, vi } from "vitest";
 import type { AgentRegistry } from "../../src/control-plane/agent-registry";
-import type { ToolRegistry } from "../../src/control-plane/tool-registry";
-import { createInMemoryTraceEvidenceStore } from "../../src/control-plane/trace-evidence";
-import type {
-	TraceEvidenceStore,
-	EvidenceTraceBundle,
-} from "../../src/control-plane/trace-evidence";
 import type {
 	AgentRegistryEntry,
-	ToolDefinition,
 	TenantCompanyRucScope,
+	ToolDefinition,
 } from "../../src/control-plane/contracts";
+import { PolicyEngine } from "../../src/control-plane/policy-engine";
+import type { ToolRegistry } from "../../src/control-plane/tool-registry";
+import type {
+	EvidenceTraceBundle,
+	TraceEvidenceStore,
+} from "../../src/control-plane/trace-evidence";
+import { createInMemoryTraceEvidenceStore } from "../../src/control-plane/trace-evidence";
 
 // ============================================================================
 // Fixtures
@@ -65,7 +65,6 @@ const tool: ToolDefinition = {
 	createdAt: new Date(),
 	updatedAt: new Date(),
 };
-
 
 type AsyncMock<TArgs extends unknown[], TResult> = ((
 	...args: TArgs
@@ -145,9 +144,7 @@ describe("Governance Pipeline (E2E)", () => {
 		expect(evidenceResult.found).toBe(true);
 		if (evidenceResult.found) {
 			expect(evidenceResult.bundle.traceId).toBe("e2e-trace-1");
-			expect(evidenceResult.bundle.rationale).toContain(
-				"Policy approved",
-			);
+			expect(evidenceResult.bundle.rationale).toContain("Policy approved");
 			expect(evidenceResult.bundle.toolCalls).toContain("e2e.tool.read");
 			expect(evidenceResult.bundle.tenantScope).toEqual(scope);
 		}
@@ -307,9 +304,7 @@ describe("Governance Pipeline (E2E)", () => {
 		expect(updated.found).toBe(true);
 		if (updated.found) {
 			expect(updated.bundle.approvalLineage).toBeDefined();
-			expect(updated.bundle.approvalLineage?.approvalStatus).toBe(
-				"approved",
-			);
+			expect(updated.bundle.approvalLineage?.approvalStatus).toBe("approved");
 			expect(updated.bundle.approvalLineage?.decision).toBe("approved");
 		}
 	});

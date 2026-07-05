@@ -4,8 +4,8 @@
  * @group integration
  */
 
-import { describe, it, expect } from "vitest";
 import { Elysia } from "elysia";
+import { describe, expect, it } from "vitest";
 import { roiRoutes } from "../api/routes";
 
 function createTestApp() {

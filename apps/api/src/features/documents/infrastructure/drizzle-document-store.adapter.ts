@@ -1,6 +1,7 @@
-import { and, eq, sql } from "drizzle-orm";
 import { documents } from "@drenyra/persistence/schema";
+import { and, eq, sql } from "drizzle-orm";
 import { db } from "../../../lib/db";
+import type { TenantScopeInput } from "../handlers/tenant-scope";
 import type {
 	DocumentFilters,
 	DocumentResponseDTO,
@@ -8,7 +9,6 @@ import type {
 	DocumentStorePort,
 	SaveDocumentInput,
 } from "../ports/document-store.port";
-import type { TenantScopeInput } from "../handlers/tenant-scope";
 
 function escapeLikePattern(value: string): string {
 	return value.replace(/[\\%_]/g, "\\$&");

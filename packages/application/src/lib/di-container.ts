@@ -22,10 +22,12 @@ const registry = new Map<string, unknown>();
  * ```
  */
 export const SERVICE_TOKENS = {
-	BALANCE_REPORT_DATA_SOURCE: "BALANCE_REPORT_DATA_SOURCE" as ServiceToken<unknown>,
+	BALANCE_REPORT_DATA_SOURCE:
+		"BALANCE_REPORT_DATA_SOURCE" as ServiceToken<unknown>,
 	ORGANIZATION_REPORT_DATA_SOURCE:
 		"ORGANIZATION_REPORT_DATA_SOURCE" as ServiceToken<unknown>,
-	LEDGER_REPORT_DATA_SOURCE: "LEDGER_REPORT_DATA_SOURCE" as ServiceToken<unknown>,
+	LEDGER_REPORT_DATA_SOURCE:
+		"LEDGER_REPORT_DATA_SOURCE" as ServiceToken<unknown>,
 	OPENING_BALANCE_DATA_SOURCE:
 		"OPENING_BALANCE_DATA_SOURCE" as ServiceToken<unknown>,
 } as const;
@@ -64,4 +66,3 @@ export function register<T>(token: ServiceToken<T>, value: T): void {
 export function inject<T>(token: ServiceToken<T>): T | undefined {
 	return registry.get(token) as T | undefined;
 }
-

@@ -1,8 +1,8 @@
 export type {
-  BaseAgent,
-  ParserInput,
-  ParsedData,
-  InvoiceData,
-  Discrepancy,
-  ExtractedData,
-} from '../../types';
+	BaseAgent,
+	Discrepancy,
+	ExtractedData,
+	InvoiceData,
+	ParsedData,
+	ParserInput,
+} from "../../types";

@@ -38,7 +38,7 @@
  * ```
  */
 
-export type BankAccountType = 'CHECKING' | 'SAVINGS' | 'CREDIT';
+export type BankAccountType = "CHECKING" | "SAVINGS" | "CREDIT";
 
 /**
  * @deprecated Use BankAccountType instead. Kept for backwards compatibility.
@@ -67,7 +67,11 @@ export type AccountType = BankAccountType;
  * const options = ACCOUNT_TYPES.map(type => ({ value: type, label: type }));
  * ```
  */
-export const BANK_ACCOUNT_TYPES: readonly BankAccountType[] = ['CHECKING', 'SAVINGS', 'CREDIT'] as const;
+export const BANK_ACCOUNT_TYPES: readonly BankAccountType[] = [
+	"CHECKING",
+	"SAVINGS",
+	"CREDIT",
+] as const;
 
 /**
  * @deprecated Use BANK_ACCOUNT_TYPES instead.
@@ -90,9 +94,9 @@ export const ACCOUNT_TYPES = BANK_ACCOUNT_TYPES;
  * ```
  */
 export const BANK_ACCOUNT_TYPE_LABELS: Record<BankAccountType, string> = {
-  CHECKING: 'Cuenta Corriente',
-  SAVINGS: 'Cuenta de Ahorros',
-  CREDIT: 'Línea de Crédito',
+	CHECKING: "Cuenta Corriente",
+	SAVINGS: "Cuenta de Ahorros",
+	CREDIT: "Línea de Crédito",
 } as const;
 
 /**
@@ -111,7 +115,10 @@ export const BANK_ACCOUNT_TYPE_LABELS: Record<BankAccountType, string> = {
  * ```
  */
 export function isBankAccountType(value: unknown): value is BankAccountType {
-  return typeof value === 'string' && BANK_ACCOUNT_TYPES.includes(value as BankAccountType);
+	return (
+		typeof value === "string" &&
+		BANK_ACCOUNT_TYPES.includes(value as BankAccountType)
+	);
 }
 
 /**
@@ -128,10 +135,10 @@ export function isBankAccountType(value: unknown): value is BankAccountType {
  * ```
  */
 export function assertBankAccountType(value: unknown): BankAccountType {
-  if (!isBankAccountType(value)) {
-    throw new Error(
-      `Invalid BankAccountType: "${value}". Must be one of: ${BANK_ACCOUNT_TYPES.join(', ')}`
-    );
-  }
-  return value;
+	if (!isBankAccountType(value)) {
+		throw new Error(
+			`Invalid BankAccountType: "${value}". Must be one of: ${BANK_ACCOUNT_TYPES.join(", ")}`,
+		);
+	}
+	return value;
 }

@@ -1,6 +1,7 @@
-import { Elysia } from "elysia";
 import {
+	type AgentCapability,
 	AgentCapabilitySchema,
+	type AgentRegistryEntry,
 	AgentRegistryEntrySchema,
 	buildDeterministicHandoff,
 	canHandoffToDeterministicFlow,
@@ -8,26 +9,25 @@ import {
 	evaluateApprovalApplyGuard,
 	lookupAllowedToolsForCapability,
 	resolvePolicyDecision,
-	type AgentCapability,
-	type AgentRegistryEntry,
 	type TraceEvidenceStore,
 } from "@drenyra/ai";
+import { Elysia } from "elysia";
 import { fail, ok } from "../../shared/api-response";
 import {
-	type ApprovalRecord,
+	appendApprovalAuditEvent,
+	syncTraceApprovalLineage,
+	toApprovalLineage,
+} from "./monitor";
+import {
 	type AiControlPlaneModuleDependencies,
-	policyPreviewBodySchema,
-	capabilityLookupBodySchema,
+	type ApprovalRecord,
+	approvalDecisionBodySchema,
 	approvalRequestBodySchema,
 	approvalScopeSchema,
-	approvalDecisionBodySchema,
+	capabilityLookupBodySchema,
+	policyPreviewBodySchema,
 	traceRetrievalBodySchema,
 } from "./types";
-import {
-	toApprovalLineage,
-	syncTraceApprovalLineage,
-	appendApprovalAuditEvent,
-} from "./monitor";
 
 const defaultAgentRegistry: Record<string, AgentRegistryEntry> = {
 	"agent-reconciliation": AgentRegistryEntrySchema.parse({
@@ -115,382 +115,392 @@ export const createAiControlPlaneModule = (
 	dependencies: AiControlPlaneModuleDependencies = {},
 ) => {
 	const agentRegistry = dependencies.agentRegistry ?? defaultAgentRegistry;
-	const approvalStore = dependencies.approvalStore ?? new Map<string, ApprovalRecord>();
+	const approvalStore =
+		dependencies.approvalStore ?? new Map<string, ApprovalRecord>();
 	const traceEvidenceStore =
 		dependencies.traceEvidenceStore ?? createDefaultTraceEvidenceStore();
 
 	return new Elysia({
 		prefix: "/api/ai-control-plane",
 	})
-	.post(
-		"/policy/preview",
-		({ body, set }) => {
-			const registryEntry = agentRegistry[body.agentId];
-			if (!registryEntry) {
-				set.status = 404;
-				return fail("Agent registry entry not found", "AGENT_NOT_FOUND");
-			}
-
-			const capability = parseCapability(body.requestedCapability);
-			if (!capability.ok) {
-				set.status = 400;
-				return fail("Requested capability is invalid", "VALIDATION_ERROR");
-			}
-
-			const decision = resolvePolicyDecision({
-				traceId: body.traceId,
-				registryEntry,
-				requestedScope: {
-					tenantId: body.tenantId,
-					organizationId: body.organizationId,
-					companyId: body.companyId,
-					ruc: body.ruc,
-				},
-				requestedCapability: capability.value,
-				requestedTool: body.requestedTool,
-			});
-
-			return ok({
-				...decision,
-				canHandoffToDeterministic: canHandoffToDeterministicFlow({
-					approvalState: decision.approvalState,
-					decisionAllowed: decision.allowed,
-				}),
-			});
-		},
-		{
-			body: policyPreviewBodySchema,
-			detail: {
-				tags: ["AI Control Plane"],
-				summary: "Preview policy decision for advisory AI request",
-			},
-			error({ code, set }) {
-				if (code === "VALIDATION") {
-					set.status = 400;
-					return fail("Invalid policy preview request", "VALIDATION_ERROR");
+		.post(
+			"/policy/preview",
+			({ body, set }) => {
+				const registryEntry = agentRegistry[body.agentId];
+				if (!registryEntry) {
+					set.status = 404;
+					return fail("Agent registry entry not found", "AGENT_NOT_FOUND");
 				}
 
-				return;
-			},
-		},
-	)
-	.post(
-		"/capabilities/tools",
-		({ body, set }) => {
-			const registryEntry = agentRegistry[body.agentId];
-			if (!registryEntry) {
-				set.status = 404;
-				return fail("Agent registry entry not found", "AGENT_NOT_FOUND");
-			}
+				const capability = parseCapability(body.requestedCapability);
+				if (!capability.ok) {
+					set.status = 400;
+					return fail("Requested capability is invalid", "VALIDATION_ERROR");
+				}
 
-			const capability = parseCapability(body.requestedCapability);
-			if (!capability.ok) {
-				set.status = 400;
-				return fail("Requested capability is invalid", "VALIDATION_ERROR");
-			}
-
-			return ok({
-				allowedTools: lookupAllowedToolsForCapability({
+				const decision = resolvePolicyDecision({
+					traceId: body.traceId,
 					registryEntry,
+					requestedScope: {
+						tenantId: body.tenantId,
+						organizationId: body.organizationId,
+						companyId: body.companyId,
+						ruc: body.ruc,
+					},
 					requestedCapability: capability.value,
-				}),
-			});
-		},
-		{
-			body: capabilityLookupBodySchema,
-			detail: {
-				tags: ["AI Control Plane"],
-				summary: "Lookup least-privilege allowed tools for capability",
+					requestedTool: body.requestedTool,
+				});
+
+				return ok({
+					...decision,
+					canHandoffToDeterministic: canHandoffToDeterministicFlow({
+						approvalState: decision.approvalState,
+						decisionAllowed: decision.allowed,
+					}),
+				});
 			},
-			error({ code, set }) {
-				if (code === "VALIDATION") {
-					set.status = 400;
-					return fail("Invalid capability lookup request", "VALIDATION_ERROR");
+			{
+				body: policyPreviewBodySchema,
+				detail: {
+					tags: ["AI Control Plane"],
+					summary: "Preview policy decision for advisory AI request",
+				},
+				error({ code, set }) {
+					if (code === "VALIDATION") {
+						set.status = 400;
+						return fail("Invalid policy preview request", "VALIDATION_ERROR");
+					}
+
+					return;
+				},
+			},
+		)
+		.post(
+			"/capabilities/tools",
+			({ body, set }) => {
+				const registryEntry = agentRegistry[body.agentId];
+				if (!registryEntry) {
+					set.status = 404;
+					return fail("Agent registry entry not found", "AGENT_NOT_FOUND");
 				}
 
-				return;
-			},
-		},
-	)
-	.post(
-		"/approval/request",
-		({ body, set }) => {
-			const registryEntry = agentRegistry[body.agentId];
-			if (!registryEntry) {
-				set.status = 404;
-				return fail("Agent registry entry not found", "AGENT_NOT_FOUND");
-			}
-
-			const capability = parseCapability(body.requestedCapability);
-			if (!capability.ok) {
-				set.status = 400;
-				return fail("Requested capability is invalid", "VALIDATION_ERROR");
-			}
-
-			const decision = resolvePolicyDecision({
-				traceId: body.traceId,
-				registryEntry,
-				requestedScope: toScope(body),
-				requestedCapability: capability.value,
-				requestedTool: body.requestedTool,
-			});
-
-			if (!decision.allowed) {
-				set.status = 403;
-				return fail("Policy blocked approval request", "POLICY_BLOCKED");
-			}
-
-			const approval: ApprovalRecord = {
-				approvalId: body.approvalId,
-				traceId: body.traceId,
-				scope: toScope(body),
-				state: body.isMaterialAction ? "proposed" : "approved",
-				requiresHumanApproval: body.isMaterialAction,
-				reviewerRole:
-					registryEntry.approvalClass === "supervisor"
-						? "supervisor"
-						: "financial-controller",
-				allowed: true,
-				authoritativeMutationAllowed: false,
-			};
-
-			approvalStore.set(approval.approvalId, approval);
-			traceEvidenceStore.save({
-				traceId: approval.traceId,
-				tenantScope: approval.scope,
-				redactionStatus: "redacted",
-				toolCalls: [body.requestedTool],
-				rationale: "policy-approved advisory request",
-				evidence: [
-					{
-						sourceRef: `policy://${approval.approvalId}`,
-						hash: `hash-${approval.traceId}`,
-						scope: "policy-artifact",
-						isRedacted: true,
-					},
-				],
-				approvalLineage: toApprovalLineage(approval),
-				auditTrail: [
-					{
-						eventType: "approval.requested",
-						status: "success",
-						recordedAt: new Date().toISOString(),
-						actorId: "system",
-						actorRole: "system",
-						reasonCode: "APPROVAL_REQUESTED",
-					},
-				],
-			});
-			return ok(toApprovalResponse(approval));
-		},
-		{
-			body: approvalRequestBodySchema,
-			error({ code, set }) {
-				if (code === "VALIDATION") {
+				const capability = parseCapability(body.requestedCapability);
+				if (!capability.ok) {
 					set.status = 400;
-					return fail("Invalid approval request", "VALIDATION_ERROR");
+					return fail("Requested capability is invalid", "VALIDATION_ERROR");
 				}
 
-				return;
+				return ok({
+					allowedTools: lookupAllowedToolsForCapability({
+						registryEntry,
+						requestedCapability: capability.value,
+					}),
+				});
 			},
-		},
-	)
-	.post(
-		"/approval/escalate",
-		({ body, set }) => {
-			const approval = approvalStore.get(body.approvalId);
-			if (!approval || !scopeMatches(approval.scope, toScope(body))) {
-				set.status = 404;
-				return fail("Approval request not found", "APPROVAL_NOT_FOUND");
-			}
+			{
+				body: capabilityLookupBodySchema,
+				detail: {
+					tags: ["AI Control Plane"],
+					summary: "Lookup least-privilege allowed tools for capability",
+				},
+				error({ code, set }) {
+					if (code === "VALIDATION") {
+						set.status = 400;
+						return fail(
+							"Invalid capability lookup request",
+							"VALIDATION_ERROR",
+						);
+					}
 
-			if (approval.requiresHumanApproval) {
-				approval.state = "validated";
+					return;
+				},
+			},
+		)
+		.post(
+			"/approval/request",
+			({ body, set }) => {
+				const registryEntry = agentRegistry[body.agentId];
+				if (!registryEntry) {
+					set.status = 404;
+					return fail("Agent registry entry not found", "AGENT_NOT_FOUND");
+				}
+
+				const capability = parseCapability(body.requestedCapability);
+				if (!capability.ok) {
+					set.status = 400;
+					return fail("Requested capability is invalid", "VALIDATION_ERROR");
+				}
+
+				const decision = resolvePolicyDecision({
+					traceId: body.traceId,
+					registryEntry,
+					requestedScope: toScope(body),
+					requestedCapability: capability.value,
+					requestedTool: body.requestedTool,
+				});
+
+				if (!decision.allowed) {
+					set.status = 403;
+					return fail("Policy blocked approval request", "POLICY_BLOCKED");
+				}
+
+				const approval: ApprovalRecord = {
+					approvalId: body.approvalId,
+					traceId: body.traceId,
+					scope: toScope(body),
+					state: body.isMaterialAction ? "proposed" : "approved",
+					requiresHumanApproval: body.isMaterialAction,
+					reviewerRole:
+						registryEntry.approvalClass === "supervisor"
+							? "supervisor"
+							: "financial-controller",
+					allowed: true,
+					authoritativeMutationAllowed: false,
+				};
+
+				approvalStore.set(approval.approvalId, approval);
+				traceEvidenceStore.save({
+					traceId: approval.traceId,
+					tenantScope: approval.scope,
+					redactionStatus: "redacted",
+					toolCalls: [body.requestedTool],
+					rationale: "policy-approved advisory request",
+					evidence: [
+						{
+							sourceRef: `policy://${approval.approvalId}`,
+							hash: `hash-${approval.traceId}`,
+							scope: "policy-artifact",
+							isRedacted: true,
+						},
+					],
+					approvalLineage: toApprovalLineage(approval),
+					auditTrail: [
+						{
+							eventType: "approval.requested",
+							status: "success",
+							recordedAt: new Date().toISOString(),
+							actorId: "system",
+							actorRole: "system",
+							reasonCode: "APPROVAL_REQUESTED",
+						},
+					],
+				});
+				return ok(toApprovalResponse(approval));
+			},
+			{
+				body: approvalRequestBodySchema,
+				error({ code, set }) {
+					if (code === "VALIDATION") {
+						set.status = 400;
+						return fail("Invalid approval request", "VALIDATION_ERROR");
+					}
+
+					return;
+				},
+			},
+		)
+		.post(
+			"/approval/escalate",
+			({ body, set }) => {
+				const approval = approvalStore.get(body.approvalId);
+				if (!approval || !scopeMatches(approval.scope, toScope(body))) {
+					set.status = 404;
+					return fail("Approval request not found", "APPROVAL_NOT_FOUND");
+				}
+
+				if (approval.requiresHumanApproval) {
+					approval.state = "validated";
+					syncTraceApprovalLineage(traceEvidenceStore, approval);
+				}
+
+				return ok(toApprovalResponse(approval));
+			},
+			{
+				body: approvalScopeSchema,
+				error({ code, set }) {
+					if (code === "VALIDATION") {
+						set.status = 400;
+						return fail(
+							"Invalid approval escalation request",
+							"VALIDATION_ERROR",
+						);
+					}
+
+					return;
+				},
+			},
+		)
+		.post(
+			"/approval/reject",
+			({ body, set }) => {
+				const approval = approvalStore.get(body.approvalId);
+				if (!approval || !scopeMatches(approval.scope, toScope(body))) {
+					set.status = 404;
+					return fail("Approval request not found", "APPROVAL_NOT_FOUND");
+				}
+
+				approval.state = "rejected";
 				syncTraceApprovalLineage(traceEvidenceStore, approval);
-			}
+				return ok(toApprovalResponse(approval));
+			},
+			{
+				body: approvalScopeSchema,
+				error({ code, set }) {
+					if (code === "VALIDATION") {
+						set.status = 400;
+						return fail(
+							"Invalid approval rejection request",
+							"VALIDATION_ERROR",
+						);
+					}
 
-			return ok(toApprovalResponse(approval));
-		},
-		{
-			body: approvalScopeSchema,
-			error({ code, set }) {
-				if (code === "VALIDATION") {
-					set.status = 400;
+					return;
+				},
+			},
+		)
+		.post(
+			"/approval/approve",
+			({ body, set }) => {
+				const approval = approvalStore.get(body.approvalId);
+				if (!approval || !scopeMatches(approval.scope, toScope(body))) {
+					set.status = 404;
+					return fail("Approval request not found", "APPROVAL_NOT_FOUND");
+				}
+
+				if (
+					approval.requiresHumanApproval &&
+					(!body.authorizedForSensitiveApproval ||
+						body.reviewerRole !== approval.reviewerRole)
+				) {
+					set.status = 403;
 					return fail(
-						"Invalid approval escalation request",
-						"VALIDATION_ERROR",
+						"Reviewer is not authorized for sensitive approval",
+						"REVIEWER_UNAUTHORIZED",
 					);
 				}
 
-				return;
-			},
-		},
-	)
-	.post(
-		"/approval/reject",
-		({ body, set }) => {
-			const approval = approvalStore.get(body.approvalId);
-			if (!approval || !scopeMatches(approval.scope, toScope(body))) {
-				set.status = 404;
-				return fail("Approval request not found", "APPROVAL_NOT_FOUND");
-			}
-
-			approval.state = "rejected";
-			syncTraceApprovalLineage(traceEvidenceStore, approval);
-			return ok(toApprovalResponse(approval));
-		},
-		{
-			body: approvalScopeSchema,
-			error({ code, set }) {
-				if (code === "VALIDATION") {
-					set.status = 400;
-					return fail("Invalid approval rejection request", "VALIDATION_ERROR");
-				}
-
-				return;
-			},
-		},
-	)
-	.post(
-		"/approval/approve",
-		({ body, set }) => {
-			const approval = approvalStore.get(body.approvalId);
-			if (!approval || !scopeMatches(approval.scope, toScope(body))) {
-				set.status = 404;
-				return fail("Approval request not found", "APPROVAL_NOT_FOUND");
-			}
-
-			if (
-				approval.requiresHumanApproval &&
-				(!body.authorizedForSensitiveApproval ||
-					body.reviewerRole !== approval.reviewerRole)
-			) {
-				set.status = 403;
-				return fail(
-					"Reviewer is not authorized for sensitive approval",
-					"REVIEWER_UNAUTHORIZED",
-				);
-			}
-
-			approval.state = "approved";
-			approval.approvedBy = {
-				reviewerId: body.reviewerId,
-				reviewerRole: body.reviewerRole,
-			};
-			syncTraceApprovalLineage(traceEvidenceStore, approval);
-			appendApprovalAuditEvent(
-				traceEvidenceStore,
-				approval,
-				"approval.approved",
-				"success",
-				"APPROVAL_APPROVED",
-				{ actorId: body.reviewerId, actorRole: body.reviewerRole },
-			);
-			return ok(toApprovalResponse(approval));
-		},
-		{
-			body: approvalDecisionBodySchema,
-			error({ code, set }) {
-				if (code === "VALIDATION") {
-					set.status = 400;
-					return fail("Invalid approval decision request", "VALIDATION_ERROR");
-				}
-
-				return;
-			},
-		},
-	)
-	.post(
-		"/approval/apply",
-		({ body, set, request }) => {
-			const approval = approvalStore.get(body.approvalId);
-			if (!approval || !scopeMatches(approval.scope, toScope(body))) {
-				set.status = 404;
-				return fail("Approval request not found", "APPROVAL_NOT_FOUND");
-			}
-
-			const applyDecision = evaluateApprovalApplyGuard({
-				approvalState: approval.state,
-				decisionAllowed: approval.allowed,
-			});
-
-			if (!applyDecision.allowed) {
-				set.status = 403;
-				const code =
-					applyDecision.code === "APPROVAL_REJECTED"
-						? "APPROVAL_REJECTED"
-						: "APPROVAL_REQUIRED";
-				const message =
-					applyDecision.code === "APPROVAL_REJECTED"
-						? "Rejected approvals cannot be applied"
-						: "Deterministic handoff is blocked until explicit approval";
-				return fail(message, code);
-			}
-
-			if (
-				request.headers.get("x-drenyra-simulate-provider-failure") === "true"
-			) {
+				approval.state = "approved";
+				approval.approvedBy = {
+					reviewerId: body.reviewerId,
+					reviewerRole: body.reviewerRole,
+				};
+				syncTraceApprovalLineage(traceEvidenceStore, approval);
 				appendApprovalAuditEvent(
 					traceEvidenceStore,
 					approval,
-					"provider.apply.failed",
-					"failure",
-					"PROVIDER_FAILURE",
-					{ actorId: "system", actorRole: "system" },
+					"approval.approved",
+					"success",
+					"APPROVAL_APPROVED",
+					{ actorId: body.reviewerId, actorRole: body.reviewerRole },
 				);
-				set.status = 502;
-				return fail(
-					"Provider failure blocked deterministic handoff",
-					"PROVIDER_FAILURE",
-				);
-			}
-
-			return ok(buildDeterministicHandoff(approval.approvalId));
-		},
-		{
-			body: approvalScopeSchema,
-			error({ code, set }) {
-				if (code === "VALIDATION") {
-					set.status = 400;
-					return fail("Invalid apply request", "VALIDATION_ERROR");
-				}
-
-				return;
+				return ok(toApprovalResponse(approval));
 			},
-		},
-	)
-	.post(
-		"/trace/retrieve",
-		({ body, set }) => {
-			const lookup = traceEvidenceStore.getScoped({
-				traceId: body.traceId,
-				tenantScope: {
-					tenantId: body.tenantId,
-					organizationId: body.organizationId,
-					companyId: body.companyId,
-					ruc: body.ruc,
+			{
+				body: approvalDecisionBodySchema,
+				error({ code, set }) {
+					if (code === "VALIDATION") {
+						set.status = 400;
+						return fail(
+							"Invalid approval decision request",
+							"VALIDATION_ERROR",
+						);
+					}
+
+					return;
 				},
-			});
-
-			if (!lookup.found) {
-				set.status = 404;
-				return fail("Trace bundle not found", "TRACE_NOT_FOUND");
-			}
-
-			return ok(lookup.bundle);
-		},
-		{
-			body: traceRetrievalBodySchema,
-			error({ code, set }) {
-				if (code === "VALIDATION") {
-					set.status = 400;
-					return fail("Invalid trace retrieval request", "VALIDATION_ERROR");
+			},
+		)
+		.post(
+			"/approval/apply",
+			({ body, set, request }) => {
+				const approval = approvalStore.get(body.approvalId);
+				if (!approval || !scopeMatches(approval.scope, toScope(body))) {
+					set.status = 404;
+					return fail("Approval request not found", "APPROVAL_NOT_FOUND");
 				}
 
-				return;
+				const applyDecision = evaluateApprovalApplyGuard({
+					approvalState: approval.state,
+					decisionAllowed: approval.allowed,
+				});
+
+				if (!applyDecision.allowed) {
+					set.status = 403;
+					const code =
+						applyDecision.code === "APPROVAL_REJECTED"
+							? "APPROVAL_REJECTED"
+							: "APPROVAL_REQUIRED";
+					const message =
+						applyDecision.code === "APPROVAL_REJECTED"
+							? "Rejected approvals cannot be applied"
+							: "Deterministic handoff is blocked until explicit approval";
+					return fail(message, code);
+				}
+
+				if (
+					request.headers.get("x-drenyra-simulate-provider-failure") === "true"
+				) {
+					appendApprovalAuditEvent(
+						traceEvidenceStore,
+						approval,
+						"provider.apply.failed",
+						"failure",
+						"PROVIDER_FAILURE",
+						{ actorId: "system", actorRole: "system" },
+					);
+					set.status = 502;
+					return fail(
+						"Provider failure blocked deterministic handoff",
+						"PROVIDER_FAILURE",
+					);
+				}
+
+				return ok(buildDeterministicHandoff(approval.approvalId));
 			},
-		},
-	);
+			{
+				body: approvalScopeSchema,
+				error({ code, set }) {
+					if (code === "VALIDATION") {
+						set.status = 400;
+						return fail("Invalid apply request", "VALIDATION_ERROR");
+					}
+
+					return;
+				},
+			},
+		)
+		.post(
+			"/trace/retrieve",
+			({ body, set }) => {
+				const lookup = traceEvidenceStore.getScoped({
+					traceId: body.traceId,
+					tenantScope: {
+						tenantId: body.tenantId,
+						organizationId: body.organizationId,
+						companyId: body.companyId,
+						ruc: body.ruc,
+					},
+				});
+
+				if (!lookup.found) {
+					set.status = 404;
+					return fail("Trace bundle not found", "TRACE_NOT_FOUND");
+				}
+
+				return ok(lookup.bundle);
+			},
+			{
+				body: traceRetrievalBodySchema,
+				error({ code, set }) {
+					if (code === "VALIDATION") {
+						set.status = 400;
+						return fail("Invalid trace retrieval request", "VALIDATION_ERROR");
+					}
+
+					return;
+				},
+			},
+		);
 };
 
 /**

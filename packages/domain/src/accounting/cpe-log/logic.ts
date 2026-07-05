@@ -11,7 +11,7 @@
  *   (any state) → baja
  */
 
-import type { SunatStatus, CDRData } from "./types";
+import type { CDRData, SunatStatus } from "./types";
 import { InvalidCPELogError, InvalidCPELogTransitionError } from "./validation";
 
 export class CPELog {
@@ -41,10 +41,7 @@ export class CPELog {
 		}
 
 		if (!invoiceId || invoiceId.trim().length === 0) {
-			throw new InvalidCPELogError(
-				"invoiceId",
-				"Invoice ID is required",
-			);
+			throw new InvalidCPELogError("invoiceId", "Invoice ID is required");
 		}
 
 		return new CPELog(
@@ -182,7 +179,11 @@ export class CPELog {
 	 * Submit the CPE to SUNAT.
 	 * Can only submit from 'pendiente'.
 	 */
-	submit(sunatTicket: string, hashValue: string, hashAlgorithm: string = "SHA-256"): CPELog {
+	submit(
+		sunatTicket: string,
+		hashValue: string,
+		hashAlgorithm: string = "SHA-256",
+	): CPELog {
 		if (this._sunatStatus !== "pendiente") {
 			throw new InvalidCPELogTransitionError(
 				this._sunatStatus,
@@ -274,10 +275,7 @@ export class CPELog {
 		}
 
 		if (!reason || reason.trim().length === 0) {
-			throw new InvalidCPELogError(
-				"reason",
-				"Rejection reason is required",
-			);
+			throw new InvalidCPELogError("reason", "Rejection reason is required");
 		}
 
 		return new CPELog(
@@ -352,10 +350,7 @@ export class CPELog {
 		}
 
 		if (!reason || reason.trim().length === 0) {
-			throw new InvalidCPELogError(
-				"reason",
-				"Cancellation reason is required",
-			);
+			throw new InvalidCPELogError("reason", "Cancellation reason is required");
 		}
 
 		return new CPELog(
@@ -418,10 +413,7 @@ export class CPELog {
 		};
 	}
 
-	static fromJSON(json: {
-		id: string;
-		invoiceId: string;
-	}): CPELog {
+	static fromJSON(json: { id: string; invoiceId: string }): CPELog {
 		return CPELog.create(json.id, json.invoiceId);
 	}
 }

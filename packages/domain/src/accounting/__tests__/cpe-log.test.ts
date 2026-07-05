@@ -10,8 +10,8 @@
 
 import { describe, expect, it } from "vitest";
 import {
-	CPELog,
 	type CDRData,
+	CPELog,
 	InvalidCPELogError,
 	InvalidCPELogTransitionError,
 } from "../cpe-log";
@@ -113,9 +113,7 @@ describe("CPELog", () => {
 
 	it("should reject accept from pendiente", () => {
 		const log = CPELog.create("cpe-1", "inv-1");
-		expect(() => log.accept(makeCDR())).toThrow(
-			InvalidCPELogTransitionError,
-		);
+		expect(() => log.accept(makeCDR())).toThrow(InvalidCPELogTransitionError);
 	});
 
 	it("should reject accept with empty CDR ID", () => {
@@ -150,9 +148,7 @@ describe("CPELog", () => {
 
 	it("should reject reject from pendiente", () => {
 		const log = CPELog.create("cpe-1", "inv-1");
-		expect(() => log.reject("reason")).toThrow(
-			InvalidCPELogTransitionError,
-		);
+		expect(() => log.reject("reason")).toThrow(InvalidCPELogTransitionError);
 	});
 
 	it("should reject reject with empty reason", () => {

@@ -28,11 +28,11 @@
  * ```
  */
 
+import { createLogger } from "../../lib/logger";
 import {
 	DATA_ENGINE_CONTRACT_VERSION,
 	DATA_ENGINE_CONTRACT_VERSION_HEADER,
 } from "./contracts/data-engine-contract-version";
-import { createLogger } from "../../lib/logger";
 
 const DATA_ENGINE_URL = process.env.DATA_ENGINE_URL || "http://localhost:8000";
 const logger = createLogger({ module: "shared/data-engine-client" });

@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Elysia } from "elysia";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { auth } from "../../auth/auth.config";
 import { companySettingsRoute } from "../api/settings.route";
 

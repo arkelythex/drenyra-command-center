@@ -26,9 +26,9 @@ describe("validateCpe fallback", () => {
 
 		expect(result.validationSource).toBe("visual_subagent");
 		expect(result.fallbackActivated).toBe(true);
-		expect(result.traceSteps.some((step) => step.includes("visual_subagent"))).toBe(
-			true,
-		);
+		expect(
+			result.traceSteps.some((step) => step.includes("visual_subagent")),
+		).toBe(true);
 		expect(result.incident).toMatchObject({
 			isIncident: true,
 			category: "MANUAL_REVIEW",

@@ -1,9 +1,9 @@
 import {
 	ACCENT_PRESETS,
 	type AccentPreset,
-	type DrenyraThemePackage,
 	DENSITY_LEVELS,
 	type DensityLevel,
+	type DrenyraThemePackage,
 	THEME_PACKAGE_SCHEMA_ID,
 	THEME_TOKEN_CSS_VARIABLES,
 	type ThemePackage,
@@ -11,7 +11,12 @@ import {
 	themePackageSchema,
 } from "./theme-package.schema";
 
-export type { AccentPreset, DrenyraThemePackage, DensityLevel, ThemePackage } from "./theme-package.schema";
+export type {
+	AccentPreset,
+	DensityLevel,
+	DrenyraThemePackage,
+	ThemePackage,
+} from "./theme-package.schema";
 
 export type ThemePackageParseResult =
 	| { ok: true; package: DrenyraThemePackage }

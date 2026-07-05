@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import { getTaxAuthority } from "../../../lib/tax-authority-provider";
-import { OSEService } from "../../../services/ose.service";
 import { oseConfigValidator } from "../../../services/ose";
+import { OSEService } from "../../../services/ose.service";
 import { ok } from "../../shared/api-response";
 
 /**

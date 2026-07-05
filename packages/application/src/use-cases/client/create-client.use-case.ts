@@ -5,9 +5,9 @@
  * Following Clean Architecture - Application Layer
  */
 
-import {
-	type Client,
-	type ClientRepository,
+import type {
+	Client,
+	ClientRepository,
 } from "@drenyra/domain/repositories/client.repository";
 
 /**

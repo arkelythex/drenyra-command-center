@@ -4,13 +4,12 @@
  */
 
 import { useEffect } from "react";
-
-import { useFocusTrap, useScreenReader } from "./accessibility.utils";
 import type {
 	AccessibleModalProps,
 	ScreenReaderAnnouncementProps,
 	SkipLinkProps,
 } from "./accessibility.types";
+import { useFocusTrap, useScreenReader } from "./accessibility.utils";
 
 /**
  * Component for declarative screen reader announcements

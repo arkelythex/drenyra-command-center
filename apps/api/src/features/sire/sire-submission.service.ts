@@ -65,7 +65,10 @@ export class SireSubmissionService {
 			);
 		}
 
-		const authToken = await resolveAuthToken(config, options.tenantSunatContext);
+		const authToken = await resolveAuthToken(
+			config,
+			options.tenantSunatContext,
+		);
 		if (!authToken) {
 			if (config.allowSimulationFallbackInApiMode) {
 				return SireSubmissionService.simulateSubmission(

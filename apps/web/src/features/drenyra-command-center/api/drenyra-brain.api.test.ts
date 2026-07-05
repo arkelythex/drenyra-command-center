@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const getGovernanceAuditHeadersMock = vi.fn(() => ({
 	"x-company-id": "company-1",
@@ -62,12 +62,17 @@ import {
 } from "./drenyra-brain.api";
 
 function getBrainThreadsFn() {
-	return (globalThis as unknown as { __brainThreadsFn: ReturnType<typeof vi.fn> }).__brainThreadsFn;
+	return (
+		globalThis as unknown as { __brainThreadsFn: ReturnType<typeof vi.fn> }
+	).__brainThreadsFn;
 }
 
 describe("drenyra-brain.api headers", () => {
 	beforeEach(() => {
-		Object.defineProperty(globalThis, "localStorage", { value: createLocalStorageMock(), configurable: true });
+		Object.defineProperty(globalThis, "localStorage", {
+			value: createLocalStorageMock(),
+			configurable: true,
+		});
 		localStorage.setItem("drenyra-active-fiscal-period", "2026-05");
 		vi.clearAllMocks();
 	});
@@ -83,7 +88,10 @@ describe("drenyra-brain.api headers", () => {
 		await createBrainThread({ title: "Scope check", sourceSurface: "web" });
 
 		expect(brainThreadsFn.post).toHaveBeenCalledTimes(1);
-		const [body, config] = brainThreadsFn.post.mock.calls[0] as [unknown, { headers: Record<string, string> }];
+		const [body, config] = brainThreadsFn.post.mock.calls[0] as [
+			unknown,
+			{ headers: Record<string, string> },
+		];
 		expect(body).toEqual({ title: "Scope check", sourceSurface: "web" });
 		expect(config.headers["x-organization-id"]).toBe("org-1");
 		expect(config.headers["x-company-id"]).toBe("company-1");
@@ -99,7 +107,9 @@ describe("drenyra-brain.api headers", () => {
 		await listBrainThreads();
 
 		expect(brainThreadsFn.get).toHaveBeenCalledTimes(1);
-		const [config] = brainThreadsFn.get.mock.calls[0] as [{ headers: Record<string, string> }];
+		const [config] = brainThreadsFn.get.mock.calls[0] as [
+			{ headers: Record<string, string> },
+		];
 		expect(config.headers["x-organization-id"]).toBe("org-1");
 		expect(config.headers["x-company-id"]).toBe("company-1");
 		expect(config.headers["x-company-ruc"]).toBe("20601234567");
@@ -110,7 +120,10 @@ describe("drenyra-brain.api headers", () => {
 	it("startBrainTurn sends required tenant headers", async () => {
 		const brainThreadsFn = getBrainThreadsFn();
 		const turnsPost = vi.fn(async () => ({ data: { id: "turn-1" } }));
-		brainThreadsFn.mockReturnValue({ turns: { post: turnsPost }, items: { get: vi.fn() } });
+		brainThreadsFn.mockReturnValue({
+			turns: { post: turnsPost },
+			items: { get: vi.fn() },
+		});
 
 		await startBrainTurn("thread-1", {
 			prompt: "Review mismatch",
@@ -119,7 +132,10 @@ describe("drenyra-brain.api headers", () => {
 
 		expect(brainThreadsFn).toHaveBeenCalledWith({ id: "thread-1" });
 		expect(turnsPost).toHaveBeenCalledTimes(1);
-		const [body, config] = turnsPost.mock.calls[0] as [unknown, { headers: Record<string, string> }];
+		const [body, config] = turnsPost.mock.calls[0] as [
+			unknown,
+			{ headers: Record<string, string> },
+		];
 		expect(body).toEqual({ prompt: "Review mismatch", sourceSurface: "web" });
 		expect(config.headers["x-organization-id"]).toBe("org-1");
 		expect(config.headers["x-company-id"]).toBe("company-1");
@@ -131,13 +147,18 @@ describe("drenyra-brain.api headers", () => {
 	it("listBrainItems sends required tenant headers", async () => {
 		const brainThreadsFn = getBrainThreadsFn();
 		const itemsGet = vi.fn(async () => ({ data: [] }));
-		brainThreadsFn.mockReturnValue({ turns: { post: vi.fn() }, items: { get: itemsGet } });
+		brainThreadsFn.mockReturnValue({
+			turns: { post: vi.fn() },
+			items: { get: itemsGet },
+		});
 
 		await listBrainItems("thread-1");
 
 		expect(brainThreadsFn).toHaveBeenCalledWith({ id: "thread-1" });
 		expect(itemsGet).toHaveBeenCalledTimes(1);
-		const [config] = itemsGet.mock.calls[0] as [{ headers: Record<string, string> }];
+		const [config] = itemsGet.mock.calls[0] as [
+			{ headers: Record<string, string> },
+		];
 		expect(config.headers["x-organization-id"]).toBe("org-1");
 		expect(config.headers["x-company-id"]).toBe("company-1");
 		expect(config.headers["x-company-ruc"]).toBe("20601234567");
@@ -148,6 +169,8 @@ describe("drenyra-brain.api headers", () => {
 	it("does not silently infer fiscal period from the current date", async () => {
 		localStorage.removeItem("drenyra-active-fiscal-period");
 
-		await expect(listBrainThreads()).rejects.toThrow(/explicit selected fiscal period/);
+		await expect(listBrainThreads()).rejects.toThrow(
+			/explicit selected fiscal period/,
+		);
 	});
 });

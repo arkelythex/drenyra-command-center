@@ -49,7 +49,7 @@ export class CpeNumber {
 		}
 
 		const [, serie, numero] = match;
-		const type = this.inferType(serie);
+		const type = CpeNumber.inferType(serie);
 
 		return new CpeNumber(serie, numero, type);
 	}

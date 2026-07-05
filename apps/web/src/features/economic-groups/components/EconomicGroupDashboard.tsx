@@ -1,9 +1,9 @@
 import { useSidebarLayout } from "@/stores/sidebar-layout.store";
+import { useEconomicGroupDashboardController } from "../hooks/use-economic-group-dashboard-controller";
 import { AddCompanyModal } from "./AddCompanyModal";
 import { CompaniesGrid } from "./economic-group-dashboard/companies-grid";
 import { GroupHeaderCard } from "./economic-group-dashboard/header-card";
 import { PricingInsights } from "./economic-group-dashboard/pricing-insights";
-import { useEconomicGroupDashboardController } from "../hooks/use-economic-group-dashboard-controller";
 
 export const EconomicGroupDashboard = ({ groupId }: { groupId: string }) => {
 	const { setIsMobileOpen } = useSidebarLayout();
@@ -29,7 +29,9 @@ export const EconomicGroupDashboard = ({ groupId }: { groupId: string }) => {
 	if (!currentGroup) {
 		return (
 			<div className="flex items-center justify-center h-64">
-				<div className="text-muted-foreground">Grupo economico no encontrado</div>
+				<div className="text-muted-foreground">
+					Grupo economico no encontrado
+				</div>
 			</div>
 		);
 	}

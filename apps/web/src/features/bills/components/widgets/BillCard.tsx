@@ -1,15 +1,15 @@
-import React from "react";
-import { MoreHorizontal, Clock, CheckCircle2, Loader2 } from "lucide-react";
-import { cn, n } from "@/lib/utils";
-import { Bill } from "../../hooks/useBills";
+import { CheckCircle2, Clock, Loader2, MoreHorizontal } from "lucide-react";
+import type React from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { cn, n } from "@/lib/utils";
+import type { Bill } from "../../hooks/useBills";
 
 interface BillCardProps {
 	bill: Bill;

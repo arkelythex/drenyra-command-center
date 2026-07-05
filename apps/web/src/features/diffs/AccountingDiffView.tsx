@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearch } from "@tanstack/react-router";
+import type { DiffDetailDTO } from "./diffs.types";
 import { diffDetailQueryOptions } from "./query-options";
 import { VerificationReportView } from "./VerificationReportView";
-import type { DiffDetailDTO } from "./diffs.types";
 
 const DIFF_TYPE_LABELS: Record<string, string> = {
 	journalEntry: "Asiento nuevo",

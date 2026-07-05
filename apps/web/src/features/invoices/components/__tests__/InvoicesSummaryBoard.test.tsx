@@ -74,11 +74,11 @@ vi.mock("../widgets/InvoiceCard", () => ({
 	}) => <article>{invoice.invoiceNumber}</article>,
 }));
 
+import type { Invoice } from "../../hooks/useInvoices";
 import {
 	InvoicesSummaryBoard,
 	resolveInvoiceDragTransition,
 } from "../InvoicesSummaryBoard";
-import type { Invoice } from "../../hooks/useInvoices";
 
 const invoices: Invoice[] = [
 	{

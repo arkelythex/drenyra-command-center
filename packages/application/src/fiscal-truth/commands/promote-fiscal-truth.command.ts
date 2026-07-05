@@ -5,10 +5,7 @@ import type {
 	FiscalTruthRepository,
 	PolicyDecisionRecord,
 } from "@drenyra/domain";
-import {
-	canPromoteAuthoritativeTruth,
-	POLICY_OUTCOME,
-} from "@drenyra/domain";
+import { canPromoteAuthoritativeTruth, POLICY_OUTCOME } from "@drenyra/domain";
 
 export interface PromoteFiscalTruthCommandInput {
 	event: FiscalTruthEvent;

@@ -1,4 +1,4 @@
-import type { MatchCriteria } from '../types';
+import type { MatchCriteria } from "../types";
 
 /**
  * Match Score Value Object
@@ -14,99 +14,101 @@ import type { MatchCriteria } from '../types';
  */
 
 export class MatchScore {
-  static readonly PERFECT = 100;
-  static readonly HIGH = 80;
-  static readonly MEDIUM = 60;
-  static readonly LOW = 40;
-  static readonly MIN_THRESHOLD = 60;
+	static readonly PERFECT = 100;
+	static readonly HIGH = 80;
+	static readonly MEDIUM = 60;
+	static readonly LOW = 40;
+	static readonly MIN_THRESHOLD = 60;
 
-  private constructor(
-    private readonly value: number,
-    private readonly criteria: MatchCriteria
-  ) {
-    Object.freeze(this);
-  }
+	private constructor(
+		private readonly value: number,
+		private readonly criteria: MatchCriteria,
+	) {
+		Object.freeze(this);
+	}
 
-  static create(score: number, criteria: MatchCriteria): MatchScore {
-    if (!MatchScore.isValid(score)) {
-      throw new Error(`Invalid match score: ${score}. Must be between 0 and 100.`);
-    }
-    
-    return new MatchScore(Math.round(score), criteria);
-  }
+	static create(score: number, criteria: MatchCriteria): MatchScore {
+		if (!MatchScore.isValid(score)) {
+			throw new Error(
+				`Invalid match score: ${score}. Must be between 0 and 100.`,
+			);
+		}
 
-  static fromCriteria(criteria: MatchCriteria): MatchScore {
-    const scoreMap: Record<MatchCriteria, number> = {
-      REFERENCE: MatchScore.PERFECT,
-      AMOUNT_DATE: MatchScore.HIGH,
-      AMOUNT_ENTITY: MatchScore.MEDIUM,
-      PARTIAL: MatchScore.MEDIUM,
-    };
-    
-    return new MatchScore(scoreMap[criteria], criteria);
-  }
+		return new MatchScore(Math.round(score), criteria);
+	}
 
-  static isValid(score: number): boolean {
-    return Number.isFinite(score) && score >= 0 && score <= 100;
-  }
+	static fromCriteria(criteria: MatchCriteria): MatchScore {
+		const scoreMap: Record<MatchCriteria, number> = {
+			REFERENCE: MatchScore.PERFECT,
+			AMOUNT_DATE: MatchScore.HIGH,
+			AMOUNT_ENTITY: MatchScore.MEDIUM,
+			PARTIAL: MatchScore.MEDIUM,
+		};
 
-  getValue(): number {
-    return this.value;
-  }
+		return new MatchScore(scoreMap[criteria], criteria);
+	}
 
-  getCriteria(): MatchCriteria {
-    return this.criteria;
-  }
+	static isValid(score: number): boolean {
+		return Number.isFinite(score) && score >= 0 && score <= 100;
+	}
 
-  isAboveThreshold(): boolean {
-    return this.value >= MatchScore.MIN_THRESHOLD;
-  }
+	getValue(): number {
+		return this.value;
+	}
 
-  isPerfect(): boolean {
-    return this.value === MatchScore.PERFECT;
-  }
+	getCriteria(): MatchCriteria {
+		return this.criteria;
+	}
 
-  isHigh(): boolean {
-    return this.value >= MatchScore.HIGH;
-  }
+	isAboveThreshold(): boolean {
+		return this.value >= MatchScore.MIN_THRESHOLD;
+	}
 
-  isMedium(): boolean {
-    return this.value >= MatchScore.MEDIUM && this.value < MatchScore.HIGH;
-  }
+	isPerfect(): boolean {
+		return this.value === MatchScore.PERFECT;
+	}
 
-  isLow(): boolean {
-    return this.value < MatchScore.MEDIUM;
-  }
+	isHigh(): boolean {
+		return this.value >= MatchScore.HIGH;
+	}
 
-  getConfidenceLevel(): 'PERFECT' | 'HIGH' | 'MEDIUM' | 'LOW' {
-    if (this.isPerfect()) return 'PERFECT';
-    if (this.isHigh()) return 'HIGH';
-    if (this.isMedium()) return 'MEDIUM';
-    return 'LOW';
-  }
+	isMedium(): boolean {
+		return this.value >= MatchScore.MEDIUM && this.value < MatchScore.HIGH;
+	}
 
-  compareTo(other: MatchScore): number {
-    return this.value - other.value;
-  }
+	isLow(): boolean {
+		return this.value < MatchScore.MEDIUM;
+	}
 
-  isHigherThan(other: MatchScore): boolean {
-    return this.value > other.value;
-  }
+	getConfidenceLevel(): "PERFECT" | "HIGH" | "MEDIUM" | "LOW" {
+		if (this.isPerfect()) return "PERFECT";
+		if (this.isHigh()) return "HIGH";
+		if (this.isMedium()) return "MEDIUM";
+		return "LOW";
+	}
 
-  equals(other: MatchScore | null | undefined): boolean {
-    if (!other) return false;
-    return this.value === other.value && this.criteria === other.criteria;
-  }
+	compareTo(other: MatchScore): number {
+		return this.value - other.value;
+	}
 
-  toString(): string {
-    return `${this.value}% (${this.criteria})`;
-  }
+	isHigherThan(other: MatchScore): boolean {
+		return this.value > other.value;
+	}
 
-  toJSON(): { score: number; criteria: MatchCriteria; confidence: string } {
-    return {
-      score: this.value,
-      criteria: this.criteria,
-      confidence: this.getConfidenceLevel(),
-    };
-  }
+	equals(other: MatchScore | null | undefined): boolean {
+		if (!other) return false;
+		return this.value === other.value && this.criteria === other.criteria;
+	}
+
+	toString(): string {
+		return `${this.value}% (${this.criteria})`;
+	}
+
+	toJSON(): { score: number; criteria: MatchCriteria; confidence: string } {
+		return {
+			score: this.value,
+			criteria: this.criteria,
+			confidence: this.getConfidenceLevel(),
+		};
+	}
 }

@@ -9,12 +9,12 @@
  */
 
 import {
-	PPOcrV6Client,
 	OcrAgentRouter,
+	PPOcrV6Client,
 } from "@drenyra/infrastructure/services/python-ocr";
-import { extractInvoiceData } from "./service";
 import { loggers } from "../../logger";
 import type { OCRResult } from "../schemas/invoice";
+import { extractInvoiceData } from "./service";
 import type { OCROptions, OCRResponse } from "./types";
 
 // ============================================
@@ -121,8 +121,11 @@ export class OcrPipeline {
 	private async extractWithPpOcr(options: OCROptions): Promise<OCRResponse> {
 		const { imageBuffer } = this.resolveImage(options);
 
-		const { data, source: rawSource, needsEscalation } =
-			await this.router!.extractInvoiceWithRouting(imageBuffer);
+		const {
+			data,
+			source: rawSource,
+			needsEscalation,
+		} = await this.router!.extractInvoiceWithRouting(imageBuffer);
 
 		// Normalize source — router returns "llm" for escalation path, but our
 		// OCRResponse distinguishes actual processing backends (ppocr-v6 vs gemini)
@@ -140,9 +143,7 @@ export class OcrPipeline {
 					? Number.parseFloat(data.subtotal.value)
 					: null,
 				igv: data.igv?.value ? Number.parseFloat(data.igv.value) : null,
-				total: data.total?.value
-					? Number.parseFloat(data.total.value)
-					: null,
+				total: data.total?.value ? Number.parseFloat(data.total.value) : null,
 				currency:
 					data.moneda?.value === "SOLES"
 						? "PEN"
@@ -191,14 +192,10 @@ export class OcrPipeline {
 	private resolveImage(options: OCROptions): { imageBuffer: Uint8Array } {
 		if (options.imageUrl) {
 			// Image URL is a base64 data URL — convert to buffer
-			const base64 = options.imageUrl.replace(
-				/^data:image\/\w+;base64,/,
-				"",
-			);
+			const base64 = options.imageUrl.replace(/^data:image\/\w+;base64,/, "");
 			return {
-				imageBuffer: Uint8Array.from(
-					globalThis.atob(base64),
-					(c) => c.charCodeAt(0),
+				imageBuffer: Uint8Array.from(globalThis.atob(base64), (c) =>
+					c.charCodeAt(0),
 				),
 			};
 		}

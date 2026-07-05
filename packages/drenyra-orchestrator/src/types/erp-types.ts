@@ -1,8 +1,8 @@
 // ─── ERP Drenyra Types ─────────────────────────────────────────────
 // Snapshot from @drenyra/agent-swarm/src/erp/drenyra/drenyra.types.ts
 
-import type { AgentTool } from './agent-tool';
-import type { AgentContext } from './agent-context';
+import type { AgentContext } from "./agent-context";
+import type { AgentTool } from "./agent-tool";
 
 export type AgentId =
 	| "drenyra"
@@ -66,14 +66,46 @@ export const LATIN_AGENTS: Array<{
 	description: string;
 	drenyraSubagent?: string;
 }> = [
-	{ id: "cerno", name: "Cerno", description: "Evidence discovery across fiscal sources" },
-	{ id: "custos", name: "Custos", description: "Fiscal risk monitoring and detection" },
-	{ id: "necto", name: "Necto", description: "Audit trail assembly and provenance" },
-	{ id: "regula", name: "Regula", description: "LATAM regulatory compliance per country-pack" },
-	{ id: "lumen", name: "Lumen", description: "Insights, forecasts, and executive summaries" },
-	{ id: "fusio", name: "Fusio", description: "External integrations and data transfer" },
-	{ id: "scripta", name: "Scripta", description: "Report generation and customer-facing narratives" },
-	{ id: "capsa", name: "Capsa", description: "Evidence retention and immutable archival" },
+	{
+		id: "cerno",
+		name: "Cerno",
+		description: "Evidence discovery across fiscal sources",
+	},
+	{
+		id: "custos",
+		name: "Custos",
+		description: "Fiscal risk monitoring and detection",
+	},
+	{
+		id: "necto",
+		name: "Necto",
+		description: "Audit trail assembly and provenance",
+	},
+	{
+		id: "regula",
+		name: "Regula",
+		description: "LATAM regulatory compliance per country-pack",
+	},
+	{
+		id: "lumen",
+		name: "Lumen",
+		description: "Insights, forecasts, and executive summaries",
+	},
+	{
+		id: "fusio",
+		name: "Fusio",
+		description: "External integrations and data transfer",
+	},
+	{
+		id: "scripta",
+		name: "Scripta",
+		description: "Report generation and customer-facing narratives",
+	},
+	{
+		id: "capsa",
+		name: "Capsa",
+		description: "Evidence retention and immutable archival",
+	},
 ];
 
 export interface DrenyraOrchestratorOptions {

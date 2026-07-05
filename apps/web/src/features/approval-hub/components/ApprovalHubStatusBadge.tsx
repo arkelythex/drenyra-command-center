@@ -5,7 +5,9 @@ interface ApprovalHubStatusBadgeProps {
 	status: ApprovalItem["status"];
 }
 
-export function ApprovalHubStatusBadge({ status }: ApprovalHubStatusBadgeProps) {
+export function ApprovalHubStatusBadge({
+	status,
+}: ApprovalHubStatusBadgeProps) {
 	const badge = STATUS_BADGE[status];
 	const Icon = badge.icon;
 

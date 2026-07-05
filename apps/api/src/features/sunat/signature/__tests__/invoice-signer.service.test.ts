@@ -3,30 +3,30 @@
  * Tests for high-level invoice signing operations (SUNAT 2026)
  */
 
-import {
-	describe,
-	it,
-	expect,
-	vi,
-	beforeAll,
-	afterEach,
-	beforeEach,
-} from "vitest";
-import { EventEmitter } from "events";
 import fs from "node:fs";
+import { EventEmitter } from "events";
 import forge from "node-forge";
 import {
-	generateAndSignInvoice,
-	generateAndSignCreditNote,
-	batchSignInvoices,
-} from "../invoice-signer.service";
+	afterEach,
+	beforeAll,
+	beforeEach,
+	describe,
+	expect,
+	it,
+	vi,
+} from "vitest";
+import type { CreditNoteData, InvoiceData } from "../../types/ubl.types";
 import type { Certificate } from "../certificate.handler";
-import type { InvoiceData, CreditNoteData } from "../../types/ubl.types";
+import {
+	batchSignInvoices,
+	generateAndSignCreditNote,
+	generateAndSignInvoice,
+} from "../invoice-signer.service";
 
 // Mock fs modules
 vi.mock("fs");
 vi.mock("archiver", () => ({
-	ZipArchive: vi.fn(function () {
+	ZipArchive: vi.fn(() => {
 		let output: EventEmitter | null = null;
 		const api = {
 			on: vi.fn().mockImplementation(() => api),

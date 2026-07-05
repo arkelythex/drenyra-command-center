@@ -1,10 +1,10 @@
 import { ShieldCheck, X } from "lucide-react";
 import type { DetailHeaderProps } from "../FiscalInspector.types";
-import { FiscalInspectorRiskBadge } from "./FiscalInspectorRiskBadge";
-import { FiscalInspectorPipeline } from "./FiscalInspectorPipeline";
 import { FiscalInspectorAgentAnalysis } from "./FiscalInspectorAgentAnalysis";
-import { FiscalInspectorEvidence } from "./FiscalInspectorEvidence";
 import { FiscalInspectorApproval } from "./FiscalInspectorApproval";
+import { FiscalInspectorEvidence } from "./FiscalInspectorEvidence";
+import { FiscalInspectorPipeline } from "./FiscalInspectorPipeline";
+import { FiscalInspectorRiskBadge } from "./FiscalInspectorRiskBadge";
 import { FiscalInspectorSection } from "./FiscalInspectorSection";
 
 /**

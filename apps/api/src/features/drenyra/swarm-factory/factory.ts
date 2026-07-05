@@ -1,19 +1,15 @@
-import type { Agent } from "@drenyra/drenyra-orchestrator";
+import type { Agent, LatinAgentId } from "@drenyra/drenyra-orchestrator";
 import {
-	getAllRegisteredAgents,
-	LatinModernoOrchestrator,
-	DomainAgent,
 	ApprovalGateEngine,
 	ApprovalStore,
+	DomainAgent,
+	getAllRegisteredAgents,
+	LatinModernoOrchestrator,
 } from "@drenyra/drenyra-orchestrator";
-import type { LatinAgentId } from "@drenyra/drenyra-orchestrator";
-import { LATIN_DOMAIN_CONFIGS, FINANCIAL_AGENT_MAP } from "./types";
 import type { LatinDomainConfig } from "./types";
+import { FINANCIAL_AGENT_MAP, LATIN_DOMAIN_CONFIGS } from "./types";
 
-function scoreAgentForDomain(
-	agent: Agent,
-	domain: LatinDomainConfig,
-): number {
+function scoreAgentForDomain(agent: Agent, domain: LatinDomainConfig): number {
 	if (!agent.capabilities || agent.capabilities.length === 0) {
 		return 0;
 	}
@@ -100,7 +96,9 @@ export function createSwarmOrchestrator(
 			approvalGate,
 		);
 
-		orchestrator.registerDomainAgent(domainAgent as DomainAgent & { id: LatinAgentId });
+		orchestrator.registerDomainAgent(
+			domainAgent as DomainAgent & { id: LatinAgentId },
+		);
 	}
 
 	for (const [agentId] of Object.entries(FINANCIAL_AGENT_MAP)) {
@@ -168,7 +166,9 @@ export function createSwarmOrchestratorFromAgents(
 			resolvedGate,
 		);
 
-		orchestrator.registerDomainAgent(domainAgent as DomainAgent & { id: LatinAgentId });
+		orchestrator.registerDomainAgent(
+			domainAgent as DomainAgent & { id: LatinAgentId },
+		);
 	}
 
 	for (const [agentId] of Object.entries(FINANCIAL_AGENT_MAP)) {
@@ -215,12 +215,9 @@ export function getLatinAgentMapping(): Array<{
 }
 
 function createPermissiveApprovalGate(): ApprovalGateEngine {
-	return new ApprovalGateEngine(
-		new ApprovalStore(),
-		async () => ({
-			valid: true,
-			reasons: [],
-			evidenceRefs: [],
-		}),
-	);
+	return new ApprovalGateEngine(new ApprovalStore(), async () => ({
+		valid: true,
+		reasons: [],
+		evidenceRefs: [],
+	}));
 }

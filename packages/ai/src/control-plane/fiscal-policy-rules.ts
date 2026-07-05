@@ -82,12 +82,15 @@ export const resolveFiscalToolMapping = (
 
 	return (
 		FISCAL_TOOL_POLICY_MAPPINGS.find(
-			(mapping) => mapping.family === family && toolName.startsWith(`${family}.`),
+			(mapping) =>
+				mapping.family === family && toolName.startsWith(`${family}.`),
 		) ?? null
 	);
 };
 
 export const isUnmappedFiscalTool = (toolName: string): boolean => {
-	return /^(cpe|sire|ple|tax|detraction|journal)([._-]|$)/.test(toolName) &&
-		!resolveFiscalToolMapping(toolName);
+	return (
+		/^(cpe|sire|ple|tax|detraction|journal)([._-]|$)/.test(toolName) &&
+		!resolveFiscalToolMapping(toolName)
+	);
 };

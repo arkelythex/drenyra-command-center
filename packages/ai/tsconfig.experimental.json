@@ -9,11 +9,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false
   },
-  "include": [
-    "src/logger.ts",
-    "src/agents/**/*.ts",
-    "src/ai/**/*.ts"
-  ],
+  "include": ["src/logger.ts", "src/agents/**/*.ts", "src/ai/**/*.ts"],
   "exclude": [
     "dist",
     "**/dist/**",

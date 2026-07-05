@@ -16,7 +16,8 @@ export const DRENYRA_CORE_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "web", "workspace"] as const,
 		drenyraSubagent: "Eviden",
-		description: "Evidence tracking agent — rastrea evidencia fiscal en comprobantes, SIRE, bancos y documentos",
+		description:
+			"Evidence tracking agent — rastrea evidencia fiscal en comprobantes, SIRE, bancos y documentos",
 		sourcePath: "packages/drenyra-core/src/types.ts",
 	},
 	{
@@ -31,7 +32,8 @@ export const DRENYRA_CORE_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "web", "workspace"] as const,
 		drenyraSubagent: "Vigila",
-		description: "Risk monitoring agent — monitorea riesgo tributario, excepciones y umbrales de aprobación",
+		description:
+			"Risk monitoring agent — monitorea riesgo tributario, excepciones y umbrales de aprobación",
 		sourcePath: "packages/drenyra-core/src/types.ts",
 	},
 	{
@@ -46,7 +48,8 @@ export const DRENYRA_CORE_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "web", "workspace"] as const,
 		drenyraSubagent: "Traza",
-		description: "Traceability agent — funde fuentes, reglas y razonamiento con TraceId para auditoría",
+		description:
+			"Traceability agent — funde fuentes, reglas y razonamiento con TraceId para auditoría",
 		sourcePath: "packages/drenyra-core/src/types.ts",
 	},
 	{
@@ -61,7 +64,8 @@ export const DRENYRA_CORE_AGENTS = [
 		approvalClass: "financial-controller" as const,
 		supportedSurfaces: ["api", "web", "workspace"] as const,
 		drenyraSubagent: "Regula",
-		description: "Compliance agent — orquesta adaptación normativa por país mediante country packs",
+		description:
+			"Compliance agent — orquesta adaptación normativa por país mediante country packs",
 		sourcePath: "packages/drenyra-core/src/types.ts",
 	},
 	{
@@ -76,7 +80,8 @@ export const DRENYRA_CORE_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "web", "workspace"] as const,
 		drenyraSubagent: "Revela",
-		description: "Explanation agent — explica decisiones y hallazgos en lenguaje claro",
+		description:
+			"Explanation agent — explica decisiones y hallazgos en lenguaje claro",
 		sourcePath: "packages/drenyra-core/src/types.ts",
 	},
 	{
@@ -91,7 +96,8 @@ export const DRENYRA_CORE_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "web", "workspace"] as const,
 		drenyraSubagent: "Funde",
-		description: "Integration agent — sincroniza ERPs, bancos y fuentes documentales con controles de acceso",
+		description:
+			"Integration agent — sincroniza ERPs, bancos y fuentes documentales con controles de acceso",
 		sourcePath: "packages/drenyra-core/src/types.ts",
 	},
 	{
@@ -106,7 +112,8 @@ export const DRENYRA_CORE_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "web", "workspace"] as const,
 		drenyraSubagent: "Reporta",
-		description: "Prioritization agent — prioriza alertas y tareas críticas con contexto fiscal",
+		description:
+			"Prioritization agent — prioriza alertas y tareas críticas con contexto fiscal",
 		sourcePath: "packages/drenyra-core/src/types.ts",
 	},
 	{
@@ -121,7 +128,8 @@ export const DRENYRA_CORE_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "web", "workspace"] as const,
 		drenyraSubagent: "Archiva",
-		description: "Archive agent — consolida expediente auditable y evidencia versionada para fiscalización",
+		description:
+			"Archive agent — consolida expediente auditable y evidencia versionada para fiscalización",
 		sourcePath: "packages/drenyra-core/src/types.ts",
 	},
 ] as const satisfies readonly UnifiedAgentEntry[];

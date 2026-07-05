@@ -103,7 +103,10 @@ export class BreachDetectorService {
 		}
 
 		// 4. Check timeout
-		if (context.validationResult.durationMs > BreachDetectorService.TIMEOUT_THRESHOLD_MS) {
+		if (
+			context.validationResult.durationMs >
+			BreachDetectorService.TIMEOUT_THRESHOLD_MS
+		) {
 			return {
 				detected: true,
 				type: "TIMEOUT",

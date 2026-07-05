@@ -99,7 +99,10 @@ export function useCognitiveStream() {
 				let buffer = "";
 
 				const applyEvents = (events: Array<{ data: string }>) => {
-					for (const parsedEvent of parseSseEventChunks(events, runIdRef.current)) {
+					for (const parsedEvent of parseSseEventChunks(
+						events,
+						runIdRef.current,
+					)) {
 						setState((prev) => reduceToolEventState(prev, parsedEvent));
 						onEvent?.(parsedEvent);
 					}

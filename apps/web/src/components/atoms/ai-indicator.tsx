@@ -164,4 +164,4 @@ const colorMap: Record<"info" | "success" | "warning" | "danger", string> = {
 	danger: "bg-[rgb(var(--premium-danger-rgb))]",
 };
 
-export { AIIndicator, AIConfidenceBar };
+export { AIConfidenceBar, AIIndicator };

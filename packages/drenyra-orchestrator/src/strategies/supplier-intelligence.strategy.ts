@@ -131,10 +131,7 @@ function detectPaymentDelayTrend(
 	const anomalies: Anomaly[] = [];
 
 	// Group paid transactions by supplier, calculate avg delay
-	const supplierDelays = new Map<
-		string,
-		{ name: string; delays: number[] }
-	>();
+	const supplierDelays = new Map<string, { name: string; delays: number[] }>();
 
 	for (const tx of input.transactions) {
 		if (!tx.paid || !tx.paymentDate) continue;
@@ -172,7 +169,8 @@ function detectPaymentDelayTrend(
 				metric: "avg_payment_delay_days",
 				expectedValue: PAYMENT_DELAY_DAYS_THRESHOLD,
 				actualValue: Math.round(avgDelay * 100) / 100,
-				deviation: Math.round((avgDelay - PAYMENT_DELAY_DAYS_THRESHOLD) * 100) / 100,
+				deviation:
+					Math.round((avgDelay - PAYMENT_DELAY_DAYS_THRESHOLD) * 100) / 100,
 				severity: delaySeverity,
 				confidence: 0.75,
 				reasoning: `Supplier "${data.name}" has an average payment delay of ${avgDelay.toFixed(1)} days across ${data.delays.length} payments (max: ${maxDelay.toFixed(0)} days). Persistent delays may trigger SUNAT interest and penalties.`,
@@ -221,8 +219,7 @@ function detectNewSupplierHighValue(
 			metric: "first_invoice_amount_pen",
 			expectedValue: NEW_SUPPLIER_HIGH_VALUE_THRESHOLD,
 			actualValue: Math.abs(tx.amount),
-			deviation:
-				Math.abs(tx.amount) - NEW_SUPPLIER_HIGH_VALUE_THRESHOLD,
+			deviation: Math.abs(tx.amount) - NEW_SUPPLIER_HIGH_VALUE_THRESHOLD,
 			severity: Math.abs(tx.amount) > 50_000 ? "critical" : "high",
 			confidence: 0.7,
 			reasoning: `Supplier "${tx.supplierName}" was registered within the last ${NEW_SUPPLIER_LOOKBACK_DAYS} days and has a first invoice of S/ ${Math.abs(tx.amount).toLocaleString()}. High-value transactions with new suppliers warrant enhanced due diligence per SUNAT fiscal intelligence protocols.`,
@@ -304,7 +301,9 @@ function detectDebtAging(
 		if (totalPastDue > 0) {
 			const bucketSummary = Object.entries(buckets)
 				.filter(([, v]) => v.count > 0)
-				.map(([k, v]) => `>${k}d: S/ ${v.total.toLocaleString()} (${v.count} inv)`)
+				.map(
+					([k, v]) => `>${k}d: S/ ${v.total.toLocaleString()} (${v.count} inv)`,
+				)
 				.join("; ");
 
 			const severity: AnomalySeverity =

@@ -1,7 +1,7 @@
 "use client";
 
-import type { ReactElement } from "react";
 import { AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
+import type { ReactElement } from "react";
 import { cn, n } from "@/lib/utils";
 import type { InboxInvoiceSummary } from "../inbox.schema";
 

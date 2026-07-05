@@ -13,7 +13,10 @@ export async function fetchCostStats(
 					: undefined,
 		}),
 	);
-	return extractOkDataOrPassthrough(response, "cost-stats") as CostSummaryResponse;
+	return extractOkDataOrPassthrough(
+		response,
+		"cost-stats",
+	) as CostSummaryResponse;
 }
 
 export async function fetchRecentEvents(

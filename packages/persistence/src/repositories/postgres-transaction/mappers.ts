@@ -1,9 +1,19 @@
-import type { TransactionEntry, TransactionStatus, TransactionType } from "@drenyra/domain/entities/Transaction";
+import type {
+	TransactionEntry,
+	TransactionStatus,
+	TransactionType,
+} from "@drenyra/domain/entities/Transaction";
 import { Money } from "@drenyra/domain/value-objects/Money";
-import { transactions } from "../../schema";
-import type { DbDocumentType, DbTransactionStatus, DbTransactionType } from "./types";
+import type { transactions } from "../../schema";
+import type {
+	DbDocumentType,
+	DbTransactionStatus,
+	DbTransactionType,
+} from "./types";
 
-export const mapDbStatusToDomain = (dbStatus: DbTransactionStatus | null): TransactionStatus => {
+export const mapDbStatusToDomain = (
+	dbStatus: DbTransactionStatus | null,
+): TransactionStatus => {
 	switch (dbStatus) {
 		case "ACCEPTED":
 			return "POSTED";
@@ -27,7 +37,9 @@ export const mapDomainStatusToDb = (
 	}
 };
 
-export const mapDomainTypeToDb = (domainType: TransactionType): DbTransactionType => {
+export const mapDomainTypeToDb = (
+	domainType: TransactionType,
+): DbTransactionType => {
 	switch (domainType) {
 		case "PURCHASE":
 		case "PAYMENT":
@@ -56,10 +68,7 @@ export const mapDbToDomainType = (
 	dbType: DbTransactionType,
 	dbDocumentType: DbDocumentType,
 ): TransactionType => {
-	if (
-		dbDocumentType === "NOTA_CREDITO" ||
-		dbDocumentType === "NOTA_DEBITO"
-	) {
+	if (dbDocumentType === "NOTA_CREDITO" || dbDocumentType === "NOTA_DEBITO") {
 		return "ADJUSTMENT";
 	}
 

@@ -5,7 +5,15 @@
  * @module ai/session/store
  */
 
-import type { AgentRunState, AgentRunEvent, RunInput, RunStateFilter, StateSnapshot, BatchRunData, BatchItemData } from "./session.types";
+import type {
+	AgentRunEvent,
+	AgentRunState,
+	BatchItemData,
+	BatchRunData,
+	RunInput,
+	RunStateFilter,
+	StateSnapshot,
+} from "./session.types";
 
 /**
  * SessionStore interface.
@@ -35,7 +43,12 @@ export interface SessionStore {
 	recoverRunState(runId: string): Promise<StateSnapshot | null>;
 
 	/** Persist input data for a run (upsert by runId) */
-	saveInput(runId: string, inputType: string, inputData: string, checksum: string): Promise<void>;
+	saveInput(
+		runId: string,
+		inputType: string,
+		inputData: string,
+		checksum: string,
+	): Promise<void>;
 
 	/** Retrieve persisted input data for a run */
 	getInput(runId: string): Promise<RunInput | null>;
@@ -54,19 +67,28 @@ export interface SessionStore {
 	getBatch(batchId: string): Promise<BatchRunData | null>;
 
 	/** List batches for a company, newest first */
-	listBatches(companyId: string, limit?: number, offset?: number): Promise<BatchRunData[]>;
+	listBatches(
+		companyId: string,
+		limit?: number,
+		offset?: number,
+	): Promise<BatchRunData[]>;
 
 	/** Update batch status and counters */
 	updateBatch(
 		batchId: string,
-		data: Partial<Pick<BatchRunData, "status" | "completed" | "failed" | "completedAt">>,
+		data: Partial<
+			Pick<BatchRunData, "status" | "completed" | "failed" | "completedAt">
+		>,
 	): Promise<BatchRunData>;
 
 	/** Add an item to a batch */
 	createBatchItem(batchId: string, runId: string): Promise<BatchItemData>;
 
 	/** Update a batch item's status */
-	updateBatchItem(itemId: string, data: Partial<Pick<BatchItemData, "status" | "error">>): Promise<BatchItemData>;
+	updateBatchItem(
+		itemId: string,
+		data: Partial<Pick<BatchItemData, "status" | "error">>,
+	): Promise<BatchItemData>;
 
 	/** Get all items for a batch */
 	getBatchItems(batchId: string): Promise<BatchItemData[]>;

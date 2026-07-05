@@ -1,4 +1,4 @@
-export { MatchSuggester } from './MatchSuggester';
-export { MatchPreview } from './MatchPreview';
-export { AutoReconcilePanel } from './AutoReconcilePanel';
-export { UnreconciledBadge } from './UnreconciledBadge';
+export { AutoReconcilePanel } from "./AutoReconcilePanel";
+export { MatchPreview } from "./MatchPreview";
+export { MatchSuggester } from "./MatchSuggester";
+export { UnreconciledBadge } from "./UnreconciledBadge";

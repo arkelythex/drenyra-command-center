@@ -4,11 +4,11 @@
  */
 import { randomUUID } from "node:crypto";
 import { getOpenRouterModelForTier } from "@drenyra/ai/model-registry";
+import { OpenRouterService } from "@drenyra/infrastructure/ai/openrouter";
 import {
 	getOpenRouterTools,
 	streamWithToolExecution,
 } from "@drenyra/infrastructure/ai/tool-bridge";
-import { OpenRouterService } from "@drenyra/infrastructure/ai/openrouter";
 import { Elysia } from "elysia";
 import { logSecurityAccess } from "../../security/access-log.service";
 import { guardDestructivePrompt } from "../../security/destructive-action-guard";
@@ -17,9 +17,7 @@ import { enqueueSwarmAuditLog } from "./audit-log-bridge";
 import { cognitiveApprovalPersistence } from "./cognitive-approval.persistence";
 import { cognitiveApprovalStore } from "./cognitive-approval.store";
 import { createApprovalPairing } from "./cognitive-approval-pairing";
-import {
-	ARKELYTHEX_SYSTEM_PROMPT,
-} from "./cognitive-stream.constants";
+import { ARKELYTHEX_SYSTEM_PROMPT } from "./cognitive-stream.constants";
 import { CognitiveStreamRequestSchema } from "./schemas/cognitive-stream.schema";
 
 function readHeader(headers: Record<string, unknown>, key: string): string {
@@ -146,7 +144,10 @@ export const cognitiveStreamEndpoint = new Elysia({
 						messages[0]?.role === "system"
 							? messages
 							: [
-									{ role: "system" as const, content: ARKELYTHEX_SYSTEM_PROMPT },
+									{
+										role: "system" as const,
+										content: ARKELYTHEX_SYSTEM_PROMPT,
+									},
 									...messages,
 								];
 
@@ -161,7 +162,7 @@ export const cognitiveStreamEndpoint = new Elysia({
 						openrouter,
 						request,
 						{
-				maxToolIterations: 5,
+							maxToolIterations: 5,
 							approvalHandler: async (approval) => {
 								const requestedAt = new Date().toISOString();
 								const expiresAt = new Date(

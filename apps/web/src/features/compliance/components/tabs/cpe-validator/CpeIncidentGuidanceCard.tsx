@@ -4,8 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import type { CpeErrorCatalogItem } from "../../../hooks/useCpeErrorCatalog";
 import type { CpeValidationOutcome } from "../../../hooks/useCpeValidation";
-import { getIncidentTone } from "./incident-tone";
 import type { MockCpeRow } from "./cpe-validator.mock";
+import { getIncidentTone } from "./incident-tone";
 
 interface CpeIncidentGuidanceCardProps {
 	selectedRow: MockCpeRow | null;
@@ -87,7 +87,13 @@ export function CpeIncidentGuidanceCard({
 								No se pudo cargar el catalogo
 							</p>
 						</div>
-						<Button type="button" variant="outline" size="sm" className="btn-soft" onClick={onRetry}>
+						<Button
+							type="button"
+							variant="outline"
+							size="sm"
+							className="btn-soft"
+							onClick={onRetry}
+						>
 							<RefreshCw size={14} />
 							Reintentar
 						</Button>
@@ -137,7 +143,9 @@ export function CpeIncidentGuidanceCard({
 							<p className="text-2xs font-black uppercase tracking-[0.2em] text-muted-foreground">
 								Diagnostico
 							</p>
-							<p className="mt-2 text-sm font-bold text-foreground">{effectiveSummary}</p>
+							<p className="mt-2 text-sm font-bold text-foreground">
+								{effectiveSummary}
+							</p>
 							<p className="mt-3 text-xs font-bold leading-relaxed text-muted-foreground">
 								{effectiveSupportMessage}
 							</p>
@@ -149,7 +157,10 @@ export function CpeIncidentGuidanceCard({
 							</p>
 							<ul className="mt-3 space-y-2">
 								{guidance.recommendedActions.map((action) => (
-									<li key={action} className="flex items-start gap-2 text-xs font-bold leading-relaxed text-foreground">
+									<li
+										key={action}
+										className="flex items-start gap-2 text-xs font-bold leading-relaxed text-foreground"
+									>
 										<span className="mt-1 h-1.5 w-1.5 rounded-full bg-foreground/70" />
 										<span>{action}</span>
 									</li>

@@ -1,25 +1,12 @@
 // ─── DTOs ───────────────────────────────────────────────────────────
+
+export * from "./drenyra";
 export * from "./dtos/ai-context-control-plane/context-policy.dto";
 export * from "./dtos/ai-context-control-plane/context-registry.dto";
 export * from "./dtos/ai-context-control-plane/context-run.dto";
 export * from "./dtos/ai-context-control-plane/context-trace.dto";
 export * from "./dtos/ai-context-control-plane/evaluation.dto";
 export * from "./dtos/ai-control-plane/contracts.dto";
-
-// ─── Ports ─────────────────────────────────────────────────────────
-export * from "./ports/storage.port";
-export * from "./ports/ai-provider.port";
-export * from "./ports/document-processing.port";
-export * from "./ports/tax-authority.port";
-
-// ─── Services ──────────────────────────────────────────────────────
-export * from "./services/fiscal-memory.service";
-export * from "./services/recurring-error.service";
-
-// ─── Domain Modules ────────────────────────────────────────────────
-export * from "./fiscal-truth";
-export * from "./drenyra";
-
 // ─── Feature Type Barrels ──────────────────────────────────────────
 export * from "./features/accounting-prs";
 export * from "./features/api-marketplace";
@@ -32,10 +19,19 @@ export * from "./features/judgment-day";
 export * from "./features/monthly-close";
 export * from "./features/rag-enterprise";
 export * from "./features/sire-comparison";
-
+// ─── Domain Modules ────────────────────────────────────────────────
+export * from "./fiscal-truth";
+export * from "./ports/ai-provider.port";
+export * from "./ports/document-processing.port";
+// ─── Ports ─────────────────────────────────────────────────────────
+export * from "./ports/storage.port";
+export * from "./ports/tax-authority.port";
+// ─── Services ──────────────────────────────────────────────────────
+export * from "./services/fiscal-memory.service";
+export * from "./services/recurring-error.service";
+export {
+	CorrectionUseCase,
+	FiscalNightlyRunUseCase,
+} from "./use-cases/fiscal-agent/fiscal-nightly-run.use-case";
 // ─── Use Cases ───────────────────────────────────────────────────────
 export * from "./use-cases/fiscal-agent/types";
-export {
-	FiscalNightlyRunUseCase,
-	CorrectionUseCase,
-} from "./use-cases/fiscal-agent/fiscal-nightly-run.use-case";

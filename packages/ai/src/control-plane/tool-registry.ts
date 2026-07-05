@@ -5,15 +5,15 @@
  * that is populated on first read and invalidated on mutations.
  */
 
+import { aiTools, type NewAiTool } from "@drenyra/persistence/schema";
 import { eq } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { aiTools, type NewAiTool } from "@drenyra/persistence/schema";
 import { zodToolSchema } from "../tools/json-schema";
 import {
-	ToolRegistrationSchema,
+	type RiskTier,
 	type ToolDefinition,
 	type ToolRegistration,
-	type RiskTier,
+	ToolRegistrationSchema,
 	type ToolScope,
 } from "./contracts";
 
@@ -144,12 +144,10 @@ export class ToolRegistry {
 			setData.riskTier = partial.riskTier;
 		}
 		if (partial.inputSchema !== undefined) {
-			setData.inputSchema =
-				partial.inputSchema as Record<string, unknown>;
+			setData.inputSchema = partial.inputSchema as Record<string, unknown>;
 		}
 		if (partial.outputSchema !== undefined) {
-			setData.outputSchema =
-				partial.outputSchema as Record<string, unknown>;
+			setData.outputSchema = partial.outputSchema as Record<string, unknown>;
 		}
 		if (partial.requiresApproval !== undefined) {
 			setData.requiresApproval = partial.requiresApproval;
@@ -163,10 +161,7 @@ export class ToolRegistry {
 
 		setData.updatedAt = new Date();
 
-		await this.db
-			.update(aiTools)
-			.set(setData)
-			.where(eq(aiTools.name, name));
+		await this.db.update(aiTools).set(setData).where(eq(aiTools.name, name));
 
 		this.invalidateCache(name);
 	}
@@ -218,8 +213,14 @@ export class ToolRegistry {
 			name: row.name,
 			description: row.description,
 			riskTier: row.riskTier as RiskTier,
-			inputSchema: row.inputSchema as Record<string, unknown> | null | undefined,
-			outputSchema: row.outputSchema as Record<string, unknown> | null | undefined,
+			inputSchema: row.inputSchema as
+				| Record<string, unknown>
+				| null
+				| undefined,
+			outputSchema: row.outputSchema as
+				| Record<string, unknown>
+				| null
+				| undefined,
 			requiresApproval: row.requiresApproval,
 			fiscalImpact: row.fiscalImpact,
 			approvalLevel: row.approvalLevel,

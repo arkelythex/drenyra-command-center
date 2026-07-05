@@ -7,9 +7,7 @@
  * @domain Value Object — framework-free, deterministic
  */
 
-
 import type { PaybackInput, PaybackResult } from "./types";
-
 
 const MONTHS_IN_YEAR = 12;
 

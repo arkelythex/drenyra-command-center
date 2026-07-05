@@ -48,7 +48,12 @@ async function createScopedRiskCase(client: Elysia): Promise<string> {
 	return caseId;
 }
 
-async function getCaseDetails(client: Elysia, caseId: string): Promise<{ auditEvents: Array<{ eventType: string; metadata: Record<string, unknown> }> }> {
+async function getCaseDetails(
+	client: Elysia,
+	caseId: string,
+): Promise<{
+	auditEvents: Array<{ eventType: string; metadata: Record<string, unknown> }>;
+}> {
 	const response = await client.handle(
 		new Request(`http://localhost/api/drenyra/cases/${caseId}`, {
 			method: "GET",
@@ -56,15 +61,28 @@ async function getCaseDetails(client: Elysia, caseId: string): Promise<{ auditEv
 		}),
 	);
 	const payload = await response.json();
-	return payload.data as { auditEvents: Array<{ eventType: string; metadata: Record<string, unknown> }> };
+	return payload.data as {
+		auditEvents: Array<{
+			eventType: string;
+			metadata: Record<string, unknown>;
+		}>;
+	};
 }
 
-async function postExplainRisk(client: Elysia, caseId: string, requestHeaders = headers): Promise<Response> {
+async function postExplainRisk(
+	client: Elysia,
+	caseId: string,
+	requestHeaders = headers,
+): Promise<Response> {
 	return client.handle(
 		new Request("http://localhost/api/drenyra/commands/explain-risk", {
 			method: "POST",
 			headers: requestHeaders,
-			body: JSON.stringify({ caseId, riskRef: "igv-mismatch", sourceRef: "risk:igv-mismatch" }),
+			body: JSON.stringify({
+				caseId,
+				riskRef: "igv-mismatch",
+				sourceRef: "risk:igv-mismatch",
+			}),
 		}),
 	);
 }
@@ -83,9 +101,19 @@ describe("Drenyra explain-risk command envelope route", () => {
 			status: "ready",
 			riskLevel: "HIGH",
 			approval: { required: false, status: "not_required" },
-			diff: { kind: "risk_profile", after: { explainedRiskId: "risk-igv-mismatch" } },
+			diff: {
+				kind: "risk_profile",
+				after: { explainedRiskId: "risk-igv-mismatch" },
+			},
 		});
-		expect(payload.data.deterministicChecks.map((check: { id: string; status: string }) => ({ id: check.id, status: check.status }))).toEqual([
+		expect(
+			payload.data.deterministicChecks.map(
+				(check: { id: string; status: string }) => ({
+					id: check.id,
+					status: check.status,
+				}),
+			),
+		).toEqual([
 			{ id: "risk-scope", status: "passed" },
 			{ id: "advisory-only", status: "passed" },
 		]);
@@ -96,7 +124,11 @@ describe("Drenyra explain-risk command envelope route", () => {
 			expect.arrayContaining([
 				expect.objectContaining({
 					eventType: "CAPABILITY_ALLOWED",
-					metadata: expect.objectContaining({ commandId: "explain-risk", toolId: "explain_risk", traceId: "trace-command-test-001" }),
+					metadata: expect.objectContaining({
+						commandId: "explain-risk",
+						toolId: "explain_risk",
+						traceId: "trace-command-test-001",
+					}),
 				}),
 			]),
 		);
@@ -105,7 +137,10 @@ describe("Drenyra explain-risk command envelope route", () => {
 	it("fails closed when risk evidence is outside the scoped fiscal period", async () => {
 		const client = app();
 		const caseId = await createScopedRiskCase(client);
-		const response = await postExplainRisk(client, caseId, { ...headers, "x-fiscal-period": "2026-06" });
+		const response = await postExplainRisk(client, caseId, {
+			...headers,
+			"x-fiscal-period": "2026-06",
+		});
 		const payload = await response.json();
 
 		expect(response.status).toBe(404);
@@ -115,7 +150,10 @@ describe("Drenyra explain-risk command envelope route", () => {
 	it("denies explain-risk envelope without redaction proof", async () => {
 		const client = app();
 		const caseId = await createScopedRiskCase(client);
-		const response = await postExplainRisk(client, caseId, { ...headers, "x-drenyra-redaction-ok": "" });
+		const response = await postExplainRisk(client, caseId, {
+			...headers,
+			"x-drenyra-redaction-ok": "",
+		});
 		const payload = await response.json();
 
 		expect(response.status).toBe(403);
@@ -127,7 +165,10 @@ describe("Drenyra explain-risk command envelope route", () => {
 			expect.arrayContaining([
 				expect.objectContaining({
 					eventType: "CAPABILITY_DENIED",
-					metadata: expect.objectContaining({ commandId: "explain-risk", reason: "Required redaction failed" }),
+					metadata: expect.objectContaining({
+						commandId: "explain-risk",
+						reason: "Required redaction failed",
+					}),
 				}),
 			]),
 		);

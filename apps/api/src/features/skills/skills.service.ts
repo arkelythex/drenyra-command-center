@@ -41,9 +41,7 @@ export interface CompanySkillDTO {
 }
 
 export class SkillsService {
-	async listSkills(
-		companyId?: string,
-	): Promise<{ data: SkillDTO[] }> {
+	async listSkills(companyId?: string): Promise<{ data: SkillDTO[] }> {
 		const allSkills = await repo.findAllSkills();
 
 		// If company context exists, fetch installed skills for enrichment
@@ -67,17 +65,10 @@ export class SkillsService {
 		return { data };
 	}
 
-	async getSkillDetail(
-		id: string,
-		companyId?: string,
-	): Promise<SkillDTO> {
+	async getSkillDetail(id: string, companyId?: string): Promise<SkillDTO> {
 		const skill = await repo.findSkillById(id);
 		if (!skill) {
-			throw new AppError(
-				404,
-				ErrorCodes.NOT_FOUND,
-				`Skill not found: ${id}`,
-			);
+			throw new AppError(404, ErrorCodes.NOT_FOUND, `Skill not found: ${id}`);
 		}
 
 		const capabilities = await repo.findCapabilitiesBySkillId(id);
@@ -163,7 +154,11 @@ export class SkillsService {
 			);
 		}
 
-		const installation = await repo.installSkill(companyId, skillId, installedBy);
+		const installation = await repo.installSkill(
+			companyId,
+			skillId,
+			installedBy,
+		);
 
 		return {
 			id: installation.id,

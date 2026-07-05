@@ -9,11 +9,14 @@
  * @since Jun 2026
  */
 
-import { useCallback, useEffect, useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { Bot, User } from "lucide-react";
+import { useCallback, useEffect, useRef } from "react";
+import type {
+	CognitiveMessage,
+	HubArtifact,
+} from "@/features/cognitive-hub/types/hub.types";
 import { ArtifactCollapsible, type DensityMode } from "./ArtifactCollapsible";
-import type { CognitiveMessage, HubArtifact } from "@/features/cognitive-hub/types/hub.types";
 
 // ── Props ────────────────────────────────────────────────────────────────────
 
@@ -75,7 +78,8 @@ export function VirtualizedMessageList({
 		getScrollElement: () => parentRef.current,
 		estimateSize,
 		overscan: OVERSCAN,
-		measureElement: (el) => el?.getBoundingClientRect().height ?? TEXT_ONLY_ESTIMATE,
+		measureElement: (el) =>
+			el?.getBoundingClientRect().height ?? TEXT_ONLY_ESTIMATE,
 	});
 
 	// ── Auto-scroll to bottom when new messages arrive ──
@@ -92,7 +96,8 @@ export function VirtualizedMessageList({
 		const el = parentRef.current;
 		if (!el) return;
 		const { scrollHeight, scrollTop, clientHeight } = el;
-		isNearBottomRef.current = scrollHeight - scrollTop - clientHeight < NEAR_BOTTOM_THRESHOLD;
+		isNearBottomRef.current =
+			scrollHeight - scrollTop - clientHeight < NEAR_BOTTOM_THRESHOLD;
 	}, []);
 
 	useEffect(() => {
@@ -192,9 +197,17 @@ const MessageBubbleRow = ({
 				}`}
 			>
 				{msg.role === "assistant" ? (
-					<Bot size={14} className="text-[var(--color-info)]" aria-hidden="true" />
+					<Bot
+						size={14}
+						className="text-[var(--color-info)]"
+						aria-hidden="true"
+					/>
 				) : (
-					<User size={14} className="text-[var(--text-secondary)]" aria-hidden="true" />
+					<User
+						size={14}
+						className="text-[var(--text-secondary)]"
+						aria-hidden="true"
+					/>
 				)}
 			</div>
 

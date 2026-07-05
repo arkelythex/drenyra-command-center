@@ -35,8 +35,18 @@ export const ALERT_DAYS: Record<AnomalySeverity, number> = {
 
 /** Months in Spanish for display */
 const MONTHS_ES = [
-	"enero", "febrero", "marzo", "abril", "mayo", "junio",
-	"julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre",
+	"enero",
+	"febrero",
+	"marzo",
+	"abril",
+	"mayo",
+	"junio",
+	"julio",
+	"agosto",
+	"setiembre",
+	"octubre",
+	"noviembre",
+	"diciembre",
 ];
 
 // ─── Tax obligation type ──────────────────────────────────────────
@@ -83,7 +93,8 @@ export function createTaxCalendarStrategy(): AnomalyStrategy {
 			// Generate calendar alerts for upcoming obligations
 			for (const obligation of input.obligations) {
 				// Skip filed/exempt obligations
-				if (obligation.status === "filed" || obligation.status === "exempt") continue;
+				if (obligation.status === "filed" || obligation.status === "exempt")
+					continue;
 
 				const dueDate = new Date(obligation.dueDate);
 				if (isNaN(dueDate.getTime())) continue;
@@ -249,8 +260,8 @@ function calculateCalendarConfidence(daysUntilDue: number): number {
 	// Higher confidence as deadline approaches
 	if (daysUntilDue <= 0) return 0.99;
 	if (daysUntilDue <= 3) return 0.95;
-	if (daysUntilDue <= 7) return 0.90;
-	return 0.80;
+	if (daysUntilDue <= 7) return 0.9;
+	return 0.8;
 }
 
 function buildCalendarReasoning(

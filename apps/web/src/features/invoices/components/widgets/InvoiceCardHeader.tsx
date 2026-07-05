@@ -146,9 +146,7 @@ export function InvoiceCardHeader({
 							>
 								<Route className="mr-2 h-4 w-4" />
 								<span className="font-bold text-xs uppercase">
-									{isLoadingLifecycle
-										? "Cargando..."
-										: "Ver Trazabilidad OSE"}
+									{isLoadingLifecycle ? "Cargando..." : "Ver Trazabilidad OSE"}
 								</span>
 							</DropdownMenuItem>
 							<DropdownMenuSeparator />
@@ -156,10 +154,7 @@ export function InvoiceCardHeader({
 					) : null}
 					{isDraft && (
 						<>
-							<DropdownMenuItem
-								className="cursor-pointer"
-								onClick={onShowEdit}
-							>
+							<DropdownMenuItem className="cursor-pointer" onClick={onShowEdit}>
 								<Edit className="mr-2 h-4 w-4" />
 								<span className="font-bold text-xs uppercase">Editar</span>
 							</DropdownMenuItem>
@@ -174,9 +169,7 @@ export function InvoiceCardHeader({
 									onClick={onOpenCdr}
 								>
 									<CheckCircle2 className="mr-2 h-4 w-4" />
-									<span className="font-bold text-xs uppercase">
-										Abrir CDR
-									</span>
+									<span className="font-bold text-xs uppercase">Abrir CDR</span>
 								</DropdownMenuItem>
 							) : null}
 							{persistedTicket ? (

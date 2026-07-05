@@ -1,9 +1,9 @@
-import { AlertCircle, RefreshCw, Loader2 } from "lucide-react";
+import { AlertCircle, Loader2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { AgentSessionStatusDTO } from "./agents.types";
+import { AgentCostDisplay } from "./AgentCostDisplay";
 import { AgentProgressBar } from "./AgentProgressBar";
 import { AgentRiskBadge } from "./AgentRiskBadge";
-import { AgentCostDisplay } from "./AgentCostDisplay";
+import type { AgentSessionStatusDTO } from "./agents.types";
 
 export interface AgentTabPanelProps {
 	session?: AgentSessionStatusDTO | null;
@@ -46,7 +46,10 @@ export function AgentTabPanel({
 		return (
 			<div className="flex items-center justify-center rounded-2xl border border-[var(--border-subtle)] p-12">
 				<div className="text-center">
-					<Loader2 size={24} className="mx-auto mb-2 text-[var(--text-tertiary)]" />
+					<Loader2
+						size={24}
+						className="mx-auto mb-2 text-[var(--text-tertiary)]"
+					/>
 					<p className="text-sm text-[var(--text-tertiary)]">
 						Selecciona un agente para ver los detalles
 					</p>
@@ -152,9 +155,7 @@ export function AgentTabPanel({
 															: "border-[var(--border-subtle)] bg-[var(--surface-2)]"
 											}`}
 										>
-											{isDone && (
-												<span className="text-2xs text-white">✓</span>
-											)}
+											{isDone && <span className="text-2xs text-white">✓</span>}
 											{isFailed && (
 												<span className="text-2xs text-white">✕</span>
 											)}

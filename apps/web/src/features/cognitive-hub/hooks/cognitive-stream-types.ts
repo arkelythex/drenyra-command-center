@@ -4,7 +4,6 @@
  * Extracted from cognitive-stream.ts for maintainability.
  */
 
-import type { AgentEvent } from "@drenyra/shared";
 import type {
 	ContextApprovalState,
 	ContextEvaluationSummaryDTO,
@@ -12,6 +11,7 @@ import type {
 	ContextRetrievalMode,
 	ContextTraceRecordDTO,
 } from "@drenyra/application";
+import type { AgentEvent } from "@drenyra/shared";
 
 // ──────────────────────────────────────
 // Core types

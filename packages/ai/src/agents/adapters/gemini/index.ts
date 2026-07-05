@@ -1,2 +1,2 @@
-export type { GeminiConfig, GeminiMultimodalInput } from './types';
-export { GeminiMultiAdapter, GeminiInstanceFactory } from './adapter';
+export { GeminiInstanceFactory, GeminiMultiAdapter } from "./adapter";
+export type { GeminiConfig, GeminiMultimodalInput } from "./types";

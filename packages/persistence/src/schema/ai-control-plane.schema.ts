@@ -65,8 +65,7 @@ export const aiAgents = pgTable(
 		allowedTools: text("allowed_tools").array(),
 		approvalClass: varchar("approval_class", { length: 30 }).notNull(),
 		supportedSurfaces: text("supported_surfaces").array(),
-		metadata:
-			jsonb("metadata").$type<Record<string, unknown>>().default({}),
+		metadata: jsonb("metadata").$type<Record<string, unknown>>().default({}),
 		isActive: boolean("is_active").default(true).notNull(),
 		createdAt: timestamp("created_at").defaultNow().notNull(),
 		updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -78,9 +77,7 @@ export const aiAgents = pgTable(
 			table.companyId,
 			table.ruc,
 		),
-		capabilitiesIdx: index("ai_agents_capabilities_idx").on(
-			table.capabilities,
-		),
+		capabilitiesIdx: index("ai_agents_capabilities_idx").on(table.capabilities),
 		activeIdx: index("ai_agents_active_idx").on(table.isActive),
 	}),
 );
@@ -106,9 +103,7 @@ export const aiTraceEvidence = pgTable(
 		tenantScopeIdx: index("ai_trace_evidence_tenant_scope_idx").on(
 			table.tenantScope,
 		),
-		createdAtIdx: index("ai_trace_evidence_created_at_idx").on(
-			table.createdAt,
-		),
+		createdAtIdx: index("ai_trace_evidence_created_at_idx").on(table.createdAt),
 	}),
 );
 

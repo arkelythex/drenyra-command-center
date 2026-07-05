@@ -1,6 +1,6 @@
 import { type UseQueryResult, useQuery } from "@tanstack/react-query";
-import { extractOkData, unwrap } from "@/lib/api-helpers";
 import { safeApiCall } from "@/lib/api-factory";
+import { extractOkData, unwrap } from "@/lib/api-helpers";
 import {
 	type CpeErrorCatalogItem,
 	getCpeValidatorClient,
@@ -21,7 +21,10 @@ export function useCpeErrorCatalog(): UseQueryResult<
 		queryFn: async () => {
 			const result = await safeApiCall(async () => {
 				const body = await unwrap(cpeValidatorClient["error-catalog"].get());
-				const data = extractOkData(body, "No se pudo cargar el catalogo CPE") as {
+				const data = extractOkData(
+					body,
+					"No se pudo cargar el catalogo CPE",
+				) as {
 					items: readonly CpeErrorCatalogItem[];
 				};
 				return data.items;

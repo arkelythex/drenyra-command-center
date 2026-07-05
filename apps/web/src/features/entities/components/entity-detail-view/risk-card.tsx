@@ -1,6 +1,6 @@
 import { ShieldCheck } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 interface EntityRiskCardProps {
 	complianceScore: number;
@@ -30,18 +30,16 @@ export function EntityRiskCard({
 			<div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-700">
 				<ShieldCheck size={120} />
 			</div>
-			<h3
-				className="text-2xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-6"
-			>
+			<h3 className="text-2xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-6">
 				Salud fiscal
 			</h3>
 			<div className="flex items-end gap-4">
-				<span
-					className="text-6xl font-black text-foreground tabular-nums tracking-tighter"
-				>
+				<span className="text-6xl font-black text-foreground tabular-nums tracking-tighter">
 					{complianceScore}
 				</span>
-				<span className="text-xl font-bold text-muted-foreground mb-2">/100</span>
+				<span className="text-xl font-bold text-muted-foreground mb-2">
+					/100
+				</span>
 			</div>
 			<div className="mt-8 space-y-4">
 				<div className="h-2 bg-muted/50 rounded-full overflow-hidden border border-border/50">
@@ -54,7 +52,15 @@ export function EntityRiskCard({
 					/>
 				</div>
 				<div className="flex justify-between items-center text-label font-black uppercase tracking-widest">
-					<span className={complianceScore > 90 ? "text-success" : complianceScore > 70 ? "text-warning" : "text-danger"}>
+					<span
+						className={
+							complianceScore > 90
+								? "text-success"
+								: complianceScore > 70
+									? "text-warning"
+									: "text-danger"
+						}
+					>
 						{scoreLabel}
 					</span>
 					<span className="text-muted-foreground">Nivel {riskLevel}</span>

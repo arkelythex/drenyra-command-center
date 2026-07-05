@@ -8,13 +8,13 @@
  * ```
  */
 export type PeruRuleDomain =
-  | 'sire'
-  | 'ruc'
-  | 'igv'
-  | 'cpe'
-  | 'detraccion'
-  | 'bancarizacion'
-  | 'monitoring';
+	| "sire"
+	| "ruc"
+	| "igv"
+	| "cpe"
+	| "detraccion"
+	| "bancarizacion"
+	| "monitoring";
 
 /**
  * PeruRuleStatus type.
@@ -25,7 +25,7 @@ export type PeruRuleDomain =
  * console.log(value);
  * ```
  */
-export type PeruRuleStatus = 'active' | 'monitoring';
+export type PeruRuleStatus = "active" | "monitoring";
 
 /**
  * PeruRuleSource interface.
@@ -37,8 +37,8 @@ export type PeruRuleStatus = 'active' | 'monitoring';
  * ```
  */
 export interface PeruRuleSource {
-  title: string;
-  url: string;
+	title: string;
+	url: string;
 }
 
 /**
@@ -51,14 +51,14 @@ export interface PeruRuleSource {
  * ```
  */
 export interface PeruRule2026 {
-  id: string;
-  domain: PeruRuleDomain;
-  status: PeruRuleStatus;
-  severity: 'high' | 'medium' | 'low';
-  summary: string;
-  effectiveFrom: string;
-  tags: string[];
-  sources: PeruRuleSource[];
+	id: string;
+	domain: PeruRuleDomain;
+	status: PeruRuleStatus;
+	severity: "high" | "medium" | "low";
+	summary: string;
+	effectiveFrom: string;
+	tags: string[];
+	sources: PeruRuleSource[];
 }
 
 /**
@@ -71,11 +71,11 @@ export interface PeruRule2026 {
  * ```
  */
 export interface PeruFiscalThresholds2026 {
-  igvRate: number;
-  amountTolerancePen: number;
-  detraccionMinimumPen: number;
-  defaultBancarizacionMinimumPen: number;
-  sireMandatoryFrom: string;
-  sirePricoThresholdUit: number;
-  uit2026Pen: number;
+	igvRate: number;
+	amountTolerancePen: number;
+	detraccionMinimumPen: number;
+	defaultBancarizacionMinimumPen: number;
+	sireMandatoryFrom: string;
+	sirePricoThresholdUit: number;
+	uit2026Pen: number;
 }

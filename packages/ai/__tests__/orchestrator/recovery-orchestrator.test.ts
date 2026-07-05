@@ -9,13 +9,27 @@
  * - Non-blocking: orchestrator survives recovery errors
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { WorkflowOrchestratorV2 } from "../../src/agents/orchestrator/workflow-v2/orchestrator";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { EventBus } from "../../src/agents/orchestrator/event.bus";
-import { SessionStoreError, SessionNotFoundError } from "../../src/session/session.types";
+import { WorkflowOrchestratorV2 } from "../../src/agents/orchestrator/workflow-v2/orchestrator";
+import type {
+	ExtractedData,
+	InvoiceData,
+	ParsedInvoice,
+	ReaderInput,
+	ValidationResult,
+} from "../../src/agents/types";
+import type {
+	AgentRunState,
+	AgentRunStatus,
+	AgentWorkflowState,
+	StateSnapshot,
+} from "../../src/session/session.types";
+import {
+	SessionNotFoundError,
+	SessionStoreError,
+} from "../../src/session/session.types";
 import type { SessionStore } from "../../src/session/session-store";
-import type { AgentRunState, AgentRunStatus, AgentWorkflowState, StateSnapshot } from "../../src/session/session.types";
-import type { ReaderInput, InvoiceData, ExtractedData, ParsedInvoice, ValidationResult } from "../../src/agents/types";
 
 // ============================================================================
 // Test Fixtures
@@ -237,9 +251,14 @@ describe("WorkflowOrchestratorV2 → recoverRun", () => {
 
 	describe("state routing", () => {
 		it("should recover from IDLE with a full restart (processInvoice)", async () => {
-			mockSessionStore.recoverRunState.mockResolvedValue(makeStateSnapshot({ workflowState: "IDLE" }));
+			mockSessionStore.recoverRunState.mockResolvedValue(
+				makeStateSnapshot({ workflowState: "IDLE" }),
+			);
 
-			const context = await orchestrator.recoverRun("test-run-id", defaultInput);
+			const context = await orchestrator.recoverRun(
+				"test-run-id",
+				defaultInput,
+			);
 
 			expect(context).toBeDefined();
 			expect(context.processId).toBe("test-run-id");
@@ -255,7 +274,10 @@ describe("WorkflowOrchestratorV2 → recoverRun", () => {
 				makeStateSnapshot({ workflowState: "EXTRACTING" }),
 			);
 
-			const context = await orchestrator.recoverRun("test-run-id", defaultInput);
+			const context = await orchestrator.recoverRun(
+				"test-run-id",
+				defaultInput,
+			);
 
 			expect(context).toBeDefined();
 			expect(context.processId).toBe("test-run-id");
@@ -274,7 +296,10 @@ describe("WorkflowOrchestratorV2 → recoverRun", () => {
 				}),
 			);
 
-			const context = await orchestrator.recoverRun("test-run-id", defaultInput);
+			const context = await orchestrator.recoverRun(
+				"test-run-id",
+				defaultInput,
+			);
 
 			expect(context).toBeDefined();
 			expect(context.processId).toBe("test-run-id");
@@ -297,7 +322,10 @@ describe("WorkflowOrchestratorV2 → recoverRun", () => {
 				}),
 			);
 
-			const context = await orchestrator.recoverRun("test-run-id", defaultInput);
+			const context = await orchestrator.recoverRun(
+				"test-run-id",
+				defaultInput,
+			);
 
 			expect(context).toBeDefined();
 			expect(context.processId).toBe("test-run-id");
@@ -321,7 +349,10 @@ describe("WorkflowOrchestratorV2 → recoverRun", () => {
 				}),
 			);
 
-			const context = await orchestrator.recoverRun("test-run-id", defaultInput);
+			const context = await orchestrator.recoverRun(
+				"test-run-id",
+				defaultInput,
+			);
 
 			expect(context).toBeDefined();
 			expect(context.processId).toBe("test-run-id");
@@ -406,7 +437,9 @@ describe("WorkflowOrchestratorV2 → recoverRun", () => {
 
 	describe("event emission", () => {
 		it("should emit RECOVERY_STARTED when recovery begins", async () => {
-			mockSessionStore.recoverRunState.mockResolvedValue(makeStateSnapshot({ workflowState: "IDLE" }));
+			mockSessionStore.recoverRunState.mockResolvedValue(
+				makeStateSnapshot({ workflowState: "IDLE" }),
+			);
 
 			await orchestrator.recoverRun("test-run-id", defaultInput);
 
@@ -420,7 +453,9 @@ describe("WorkflowOrchestratorV2 → recoverRun", () => {
 		});
 
 		it("should emit RECOVERY_COMPLETED on successful recovery", async () => {
-			mockSessionStore.recoverRunState.mockResolvedValue(makeStateSnapshot({ workflowState: "IDLE" }));
+			mockSessionStore.recoverRunState.mockResolvedValue(
+				makeStateSnapshot({ workflowState: "IDLE" }),
+			);
 
 			await orchestrator.recoverRun("test-run-id", defaultInput);
 

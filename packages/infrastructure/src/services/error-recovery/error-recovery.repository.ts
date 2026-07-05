@@ -7,16 +7,16 @@
  * @module infrastructure/services/error-recovery
  */
 
-import { and, lte, sql } from "drizzle-orm";
 import { db } from "@drenyra/persistence/client";
 import {
-	circuitBreakerStates,
-	failedAgentItems,
 	type CircuitBreakerState,
+	circuitBreakerStates,
 	type FailedAgentItem,
+	failedAgentItems,
 	type NewCircuitBreakerState,
 	type NewFailedAgentItem,
 } from "@drenyra/persistence/schema";
+import { and, lte, sql } from "drizzle-orm";
 
 // ─── Circuit Breaker Repository ───────────────────────────────────────────────
 
@@ -61,10 +61,7 @@ export const circuitBreakerRepo = {
 			.insert(circuitBreakerStates)
 			.values(data)
 			.onConflictDoUpdate({
-				target: [
-					circuitBreakerStates.agentName,
-					circuitBreakerStates.scope,
-				],
+				target: [circuitBreakerStates.agentName, circuitBreakerStates.scope],
 				set: {
 					state: data.state,
 					failureCount: data.failureCount ?? 0,

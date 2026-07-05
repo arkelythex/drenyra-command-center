@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { ApprovalHubPage } from "./ApprovalHubPage";
 import type { DrenyraApproval } from "@/features/drenyra-workspace";
+import { ApprovalHubPage } from "./ApprovalHubPage";
 
 const { useDrenyraApprovalsMock, getAuthStateMock, approveMock, rejectMock } =
 	vi.hoisted(() => ({

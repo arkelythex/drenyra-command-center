@@ -44,7 +44,8 @@ export function getOpenTelemetryReadinessStatus(): OpenTelemetryReadiness {
 	const enabled = isTruthy(process.env.DRENYRA_ENABLE_OTEL);
 	const rawServiceName = process.env.OTEL_SERVICE_NAME?.trim() ?? "";
 	const serviceName = rawServiceName || "drenyra-api";
-	const exporterEndpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT?.trim() || null;
+	const exporterEndpoint =
+		process.env.OTEL_EXPORTER_OTLP_ENDPOINT?.trim() || null;
 
 	if (!enabled) {
 		return {

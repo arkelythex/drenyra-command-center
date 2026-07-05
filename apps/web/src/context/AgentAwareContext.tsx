@@ -1,11 +1,11 @@
+import type { FiscalAgentAnalysis } from "@drenyra/domain";
 import {
 	createContext,
+	type ReactNode,
+	useCallback,
 	useContext,
 	useState,
-	useCallback,
-	type ReactNode,
 } from "react";
-import type { FiscalAgentAnalysis } from "@drenyra/domain";
 import { useFiscalInspector } from "@/context/FiscalInspectorContext";
 
 export type AgentStatus = "idle" | "analyzing" | "ready" | "error";

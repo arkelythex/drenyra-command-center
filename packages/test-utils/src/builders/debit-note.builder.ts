@@ -17,8 +17,9 @@
  *   .build();
  * ```
  */
+
+import type { Currency, DebitNoteStatus } from "@drenyra/domain";
 import { DebitNote, DocumentSeries, Money } from "@drenyra/domain";
-import type { DebitNoteStatus, Currency } from "@drenyra/domain";
 
 import { BaseBuilder } from "./base.builder";
 
@@ -174,9 +175,7 @@ export class DebitNoteBuilder extends BaseBuilder<
 			igvAmount,
 			currency: this.data.currency ?? DEFAULT_CURRENCY,
 			reason: this.data.reason ?? DEFAULT_REASON,
-			series: DocumentSeries.create(
-				this.data.series ?? DEFAULT_SERIES,
-			),
+			series: DocumentSeries.create(this.data.series ?? DEFAULT_SERIES),
 			number: this.data.number ?? DEFAULT_NUMBER,
 			status: this.data.status ?? DEFAULT_STATUS,
 			issueDate: this.data.issueDate ?? today,

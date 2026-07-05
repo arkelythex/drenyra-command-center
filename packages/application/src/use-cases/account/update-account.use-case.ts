@@ -4,12 +4,12 @@
  * Respects business rules for system accounts
  */
 
+import type { Account } from "@drenyra/domain/entities/Account";
+import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
 import {
 	type UpdateAccountDTO,
 	updateAccountSchema,
 } from "../../dtos/account/account.dto";
-import type { Account } from "@drenyra/domain/entities/Account";
-import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
 
 /**
  * UpdateAccountUseCase class.

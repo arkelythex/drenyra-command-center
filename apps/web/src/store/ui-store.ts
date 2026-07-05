@@ -6,8 +6,8 @@ import {
 } from "@/lib/design-tokens/theme-package";
 import type {
 	AccentPreset,
-	DrenyraThemePackage,
 	DensityLevel,
+	DrenyraThemePackage,
 } from "@/lib/design-tokens/theme-package.schema";
 import {
 	normalizeThemePreference,

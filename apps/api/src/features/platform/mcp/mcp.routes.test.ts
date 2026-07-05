@@ -26,7 +26,11 @@ describe("platformMcpModule", () => {
 
 		expect(response.status).toBe(200);
 		expect(payload.data.defaultPolicy).toBe("deny_by_default");
-		expect(payload.data.tools.every((tool: { mode: string }) => tool.mode === "read_only")).toBe(true);
+		expect(
+			payload.data.tools.every(
+				(tool: { mode: string }) => tool.mode === "read_only",
+			),
+		).toBe(true);
 	});
 
 	it("authorizes a scoped read-only tool with redaction", async () => {
@@ -183,9 +187,12 @@ describe("platformMcpModule", () => {
 		);
 
 		const response = await testApp.handle(
-			new Request("http://localhost/api/platform/mcp/audit?limit=10&outcome=allowed", {
-				headers: auditorHeaders,
-			}),
+			new Request(
+				"http://localhost/api/platform/mcp/audit?limit=10&outcome=allowed",
+				{
+					headers: auditorHeaders,
+				},
+			),
 		);
 		const payload = await response.json();
 
@@ -202,7 +209,10 @@ describe("platformMcpModule", () => {
 	it("denies MCP audit reads without an auditor role or valid fiscal scope", async () => {
 		const auditStore = new InMemoryPlatformMcpAuditSink();
 		const testApp = new Elysia().use(
-			createPlatformMcpModule({ auditSink: auditStore, auditReader: auditStore }),
+			createPlatformMcpModule({
+				auditSink: auditStore,
+				auditReader: auditStore,
+			}),
 		);
 
 		const roleResponse = await testApp.handle(

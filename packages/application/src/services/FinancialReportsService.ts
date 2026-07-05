@@ -10,11 +10,7 @@
  * All reports follow PCGE (Plan Contable General Empresarial) format.
  */
 
-import {
-	inject,
-	type ServiceToken,
-	SERVICE_TOKENS,
-} from "../lib/di-container";
+import { inject, SERVICE_TOKENS, type ServiceToken } from "../lib/di-container";
 
 // ============================================
 // TYPES
@@ -406,10 +402,7 @@ export class FinancialReportsService {
 		);
 	}
 
-	private requireDependency<T>(
-		token: ServiceToken<unknown>,
-		name: string,
-	): T {
+	private requireDependency<T>(token: ServiceToken<unknown>, name: string): T {
 		const dependency = inject(token as ServiceToken<T>);
 		if (!dependency) {
 			throw new Error(`Missing dependency: ${name}`);

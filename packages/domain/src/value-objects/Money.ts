@@ -55,12 +55,12 @@ export class Money {
 
 	/**
 	 * Create Money from a base decimal amount (e.g., 100.50).
-	 * 
+	 *
 	 * @param amount - The decimal amount (must be finite).
 	 * @param currency - The ISO currency code (PEN or USD).
 	 * @returns A new immutable Money instance.
 	 * @throws {InvalidAmountError} If amount is NaN or Infinite.
-	 * 
+	 *
 	 * @example
 	 * const price = Money.fromAmount(120.99, 'PEN');
 	 */
@@ -80,12 +80,12 @@ export class Money {
 
 	/**
 	 * Create Money from the smallest currency unit (cents).
-	 * 
+	 *
 	 * @param cents - Integer value representing cents.
 	 * @param currency - The ISO currency code.
 	 * @returns A new immutable Money instance.
 	 * @throws {InvalidAmountError} If cents is not an integer.
-	 * 
+	 *
 	 * @example
 	 * const price = Money.fromCents(12099, 'PEN'); // Represents S/ 120.99
 	 */
@@ -106,11 +106,11 @@ export class Money {
 
 	/**
 	 * Adds another Money instance to this one.
-	 * 
+	 *
 	 * @param other - The Money instance to add.
 	 * @returns A new Money instance with the combined sum.
 	 * @throws {Error} If currency types are incompatible.
-	 * 
+	 *
 	 * @edge_case Currencies must match exactly (e.g., cannot add PEN to USD).
 	 */
 	add(other: Money): Money {
@@ -137,10 +137,10 @@ export class Money {
 	/**
 	 * Binary multiplication of the amount by a numeric factor.
 	 * Uses rounding to the nearest cent to maintain precision.
-	 * 
+	 *
 	 * @param factor - The numeric multiplier (e.g., 0.18 for tax).
 	 * @returns A new rounded Money instance.
-	 * 
+	 *
 	 * @example
 	 * const subtotal = Money.fromAmount(100, 'PEN');
 	 * const tax = subtotal.multiply(0.18); // S/ 18.00

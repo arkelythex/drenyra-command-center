@@ -9,8 +9,12 @@ interface EntitiesMetrics {
 
 export function useEntitiesMetrics(entities: Entity[]): EntitiesMetrics {
 	return useMemo(() => {
-		const highRiskCount = entities.filter((entity) => entity.riskLevel === "HIGH").length;
-		const pendingComplianceCount = entities.filter((entity) => entity.complianceScore < 80).length;
+		const highRiskCount = entities.filter(
+			(entity) => entity.riskLevel === "HIGH",
+		).length;
+		const pendingComplianceCount = entities.filter(
+			(entity) => entity.complianceScore < 80,
+		).length;
 		const avgCompliance =
 			entities.length > 0
 				? Math.round(

@@ -1,7 +1,7 @@
-import { unwrap } from '@/lib/api-helpers';
-import { api } from '@/lib/api';
-import { buildApiUrl } from '@/lib/http-client';
-import type { InboxQueryFilters, InboxTransactionRecord } from '../inbox.types';
+import { api } from "@/lib/api";
+import { unwrap } from "@/lib/api-helpers";
+import { buildApiUrl } from "@/lib/http-client";
+import type { InboxQueryFilters, InboxTransactionRecord } from "../inbox.types";
 
 /**
  * Inbox API client
@@ -10,10 +10,13 @@ import type { InboxQueryFilters, InboxTransactionRecord } from '../inbox.types';
  */
 export const inboxApi = {
 	async listTransactions(
-		filters: Omit<InboxQueryFilters, 'companyId'> | InboxQueryFilters,
+		filters: Omit<InboxQueryFilters, "companyId"> | InboxQueryFilters,
 	): Promise<InboxTransactionRecord[]> {
-		const { companyId: _companyId, status: _status, ...query } =
-			filters as InboxQueryFilters;
+		const {
+			companyId: _companyId,
+			status: _status,
+			...query
+		} = filters as InboxQueryFilters;
 
 		const response = await unwrap(
 			api.transactions.get(
@@ -26,7 +29,7 @@ export const inboxApi = {
 		);
 
 		return Array.isArray(response)
-			? response as InboxTransactionRecord[]
+			? (response as InboxTransactionRecord[])
 			: [];
 	},
 
@@ -35,7 +38,7 @@ export const inboxApi = {
 		formData.append("file", file);
 
 		// Multipart upload remains on the legacy endpoint until the typed contract is available.
-		await fetch(buildApiUrl('/inbox/upload'), {
+		await fetch(buildApiUrl("/inbox/upload"), {
 			method: "POST",
 			body: formData,
 		});

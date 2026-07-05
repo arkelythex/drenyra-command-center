@@ -1,3 +1,3 @@
-import type { UBLNode, UBLNodeObject, InvoiceItem } from "../ubl-parser.types";
+import type { InvoiceItem, UBLNode, UBLNodeObject } from "../ubl-parser.types";
 
-export type { UBLNode, UBLNodeObject, InvoiceItem };
+export type { InvoiceItem, UBLNode, UBLNodeObject };

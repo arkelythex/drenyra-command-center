@@ -12,68 +12,65 @@
  */
 
 export class AccountNumber {
-  private constructor(private readonly value: string) {
-    Object.freeze(this);
-  }
+	private constructor(private readonly value: string) {
+		Object.freeze(this);
+	}
 
-  static create(accountNumber: string): AccountNumber {
-    const normalized = AccountNumber.normalize(accountNumber);
-    
-    if (!AccountNumber.isValid(normalized)) {
-      throw new Error(`Invalid account number: ${accountNumber}`);
-    }
-    
-    return new AccountNumber(normalized);
-  }
+	static create(accountNumber: string): AccountNumber {
+		const normalized = AccountNumber.normalize(accountNumber);
 
-  static isValid(accountNumber: string): boolean {
-    const normalized = AccountNumber.normalize(accountNumber);
-    
-    if (normalized.length < 10 || normalized.length > 25) {
-      return false;
-    }
-    
-    if (!/^[\d-]+$/.test(normalized)) {
-      return false;
-    }
-    
-    return true;
-  }
+		if (!AccountNumber.isValid(normalized)) {
+			throw new Error(`Invalid account number: ${accountNumber}`);
+		}
 
-  static normalize(accountNumber: string): string {
-    return accountNumber
-      .trim()
-      .replace(/\s+/g, '')
-      .toUpperCase();
-  }
+		return new AccountNumber(normalized);
+	}
 
-  getValue(): string {
-    return this.value;
-  }
+	static isValid(accountNumber: string): boolean {
+		const normalized = AccountNumber.normalize(accountNumber);
 
-  getMasked(): string {
-    if (this.value.length <= 4) {
-      return this.value;
-    }
-    
-    const lastFour = this.value.slice(-4);
-    return `****${lastFour}`;
-  }
+		if (normalized.length < 10 || normalized.length > 25) {
+			return false;
+		}
 
-  getDigitsOnly(): string {
-    return this.value.replace(/\D/g, '');
-  }
+		if (!/^[\d-]+$/.test(normalized)) {
+			return false;
+		}
 
-  equals(other: AccountNumber | null | undefined): boolean {
-    if (!other) return false;
-    return this.value === other.value;
-  }
+		return true;
+	}
 
-  toString(): string {
-    return this.value;
-  }
+	static normalize(accountNumber: string): string {
+		return accountNumber.trim().replace(/\s+/g, "").toUpperCase();
+	}
 
-  toJSON(): string {
-    return this.value;
-  }
+	getValue(): string {
+		return this.value;
+	}
+
+	getMasked(): string {
+		if (this.value.length <= 4) {
+			return this.value;
+		}
+
+		const lastFour = this.value.slice(-4);
+		return `****${lastFour}`;
+	}
+
+	getDigitsOnly(): string {
+		return this.value.replace(/\D/g, "");
+	}
+
+	equals(other: AccountNumber | null | undefined): boolean {
+		if (!other) return false;
+		return this.value === other.value;
+	}
+
+	toString(): string {
+		return this.value;
+	}
+
+	toJSON(): string {
+		return this.value;
+	}
 }

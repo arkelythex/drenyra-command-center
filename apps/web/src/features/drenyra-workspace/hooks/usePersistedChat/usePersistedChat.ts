@@ -1,9 +1,16 @@
-import { useState, useCallback, useRef, useEffect } from "react";
-import { useThreadStore } from "@/stores/thread-store";
-import { createBrainThread, getThreadItems, streamChat } from "../../api/brain.api";
-import { generateId } from "@/lib/id";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Message } from "@/components/agentic/ThreadView";
-import type { UsePersistedChatOptions, UsePersistedChatReturn } from "./usePersistedChat.types";
+import { generateId } from "@/lib/id";
+import { useThreadStore } from "@/stores/thread-store";
+import {
+	createBrainThread,
+	getThreadItems,
+	streamChat,
+} from "../../api/brain.api";
+import type {
+	UsePersistedChatOptions,
+	UsePersistedChatReturn,
+} from "./usePersistedChat.types";
 import { mapItemToMessage } from "./usePersistedChat.utils";
 
 export function usePersistedChat({
@@ -32,7 +39,7 @@ export function usePersistedChat({
 
 		const store = useThreadStore.getState();
 		const thread = store.threads.find((t) => t.id === localThreadId);
-		let brainId =
+		const brainId =
 			brainIdsRef.current.get(localThreadId) ?? thread?.brainThreadId;
 
 		if (!brainId) return;
@@ -68,8 +75,7 @@ export function usePersistedChat({
 
 			let localId = localThreadIdRef.current;
 			if (!localId) {
-				const title =
-					text.length > 60 ? text.slice(0, 57) + "..." : text;
+				const title = text.length > 60 ? text.slice(0, 57) + "..." : text;
 				const thread = store.createThread(title);
 				localId = thread.id;
 			}
@@ -90,8 +96,7 @@ export function usePersistedChat({
 			if (!brainId) {
 				setIsLoading(true);
 				try {
-					const title =
-						text.length > 60 ? text.slice(0, 57) + "..." : text;
+					const title = text.length > 60 ? text.slice(0, 57) + "..." : text;
 					const thread = await createBrainThread(
 						title,
 						linkedCaseId ?? undefined,
@@ -101,9 +106,7 @@ export function usePersistedChat({
 					useThreadStore.getState().setThreadBrainId(localId, brainId);
 				} catch (err: unknown) {
 					const message =
-						err instanceof Error
-							? err.message
-							: "Failed to create thread";
+						err instanceof Error ? err.message : "Failed to create thread";
 					setError(message);
 					setIsLoading(false);
 					return;
@@ -132,10 +135,7 @@ export function usePersistedChat({
 						onToken: (token) => {
 							setMessages((prev) => {
 								const last = prev[prev.length - 1];
-								if (
-									last?.role === "agent" &&
-									last.status === "streaming"
-								) {
+								if (last?.role === "agent" && last.status === "streaming") {
 									return [
 										...prev.slice(0, -1),
 										{
@@ -150,10 +150,7 @@ export function usePersistedChat({
 						onDone: () => {
 							setMessages((prev) => {
 								const last = prev[prev.length - 1];
-								if (
-									last?.role === "agent" &&
-									last.status === "streaming"
-								) {
+								if (last?.role === "agent" && last.status === "streaming") {
 									return [
 										...prev.slice(0, -1),
 										{ ...last, status: "complete" },
@@ -165,10 +162,7 @@ export function usePersistedChat({
 						onError: (errMsg) => {
 							setMessages((prev) => {
 								const last = prev[prev.length - 1];
-								if (
-									last?.role === "agent" &&
-									last.status === "streaming"
-								) {
+								if (last?.role === "agent" && last.status === "streaming") {
 									const updated = [
 										...prev.slice(0, -1),
 										{
@@ -187,22 +181,13 @@ export function usePersistedChat({
 					abortController.signal,
 				);
 			} catch (err: unknown) {
-				if (
-					err instanceof Error &&
-					err.name === "AbortError"
-				) {
+				if (err instanceof Error && err.name === "AbortError") {
 					return;
 				}
-				const message =
-					err instanceof Error
-						? err.message
-						: "Chat failed";
+				const message = err instanceof Error ? err.message : "Chat failed";
 				setMessages((prev) => {
 					const last = prev[prev.length - 1];
-					if (
-						last?.role === "agent" &&
-						last.status === "streaming"
-					) {
+					if (last?.role === "agent" && last.status === "streaming") {
 						return [
 							...prev.slice(0, -1),
 							{

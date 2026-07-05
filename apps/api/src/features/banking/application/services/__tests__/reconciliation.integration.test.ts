@@ -43,9 +43,7 @@ describe("MatchingEngine — QueryService wiring", () => {
 
 	it("should successfully inject InvoiceQueryService and BillQueryService", () => {
 		expect(matchingEngine).toBeDefined();
-		expect(matchingEngine["invoiceQueryService"]).toBe(
-			mockInvoiceQueryService,
-		);
+		expect(matchingEngine["invoiceQueryService"]).toBe(mockInvoiceQueryService);
 		expect(matchingEngine["billQueryService"]).toBe(mockBillQueryService);
 	});
 

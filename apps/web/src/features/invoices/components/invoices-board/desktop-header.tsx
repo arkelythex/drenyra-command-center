@@ -1,7 +1,7 @@
 import { Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { Z_INDEX } from "@/lib/design-tokens";
+import { cn } from "@/lib/utils";
 import {
 	BOARD_TABS,
 	type InvoicesBoardTabId,

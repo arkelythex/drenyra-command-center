@@ -8,10 +8,10 @@
  * @since Jul 2026
  */
 
-import { useCallback, useState } from "react";
-import { useTranslation } from "../i18n/i18n";
 import { FileText, Paperclip, SendHorizontal, X } from "lucide-react";
+import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "../i18n/i18n";
 import {
 	InlineAutocomplete,
 	useAutocompleteState,

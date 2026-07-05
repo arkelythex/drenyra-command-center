@@ -1,15 +1,15 @@
-import { describe, expect, it, vi } from "vitest";
 import {
-	EVIDENCE_NODE_KIND,
-	POLICY_OUTCOME,
-	REPLAY_FAILURE_CODE,
 	type DeterministicValidatorResultRecord,
+	EVIDENCE_NODE_KIND,
 	type EvidenceNode,
 	type FiscalTruthEvent,
 	type FiscalTruthScope,
 	type GovernanceBundleReference,
+	POLICY_OUTCOME,
 	type PolicyDecisionRecord,
+	REPLAY_FAILURE_CODE,
 } from "@drenyra/domain";
+import { describe, expect, it, vi } from "vitest";
 import {
 	AppendEvidenceCommand,
 	type AppendEvidenceCommandInput,

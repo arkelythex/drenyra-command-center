@@ -18,7 +18,9 @@ export function SidebarToggle({ isCollapsed, onToggle }: SidebarToggleProps) {
 				onClick={onToggle}
 				type="button"
 				className="p-1.5 text-secondary hover:text-primary transition-colors rounded-lg hover:bg-[var(--surface-2)]"
-				aria-label={isCollapsed ? "Expandir barra lateral" : "Colapsar barra lateral"}
+				aria-label={
+					isCollapsed ? "Expandir barra lateral" : "Colapsar barra lateral"
+				}
 				aria-expanded={!isCollapsed}
 				aria-controls="sidebar-navigation"
 			>

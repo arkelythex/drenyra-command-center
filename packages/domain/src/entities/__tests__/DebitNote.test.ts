@@ -6,9 +6,9 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { DebitNote, type DebitNoteProps } from "../DebitNote";
 import { DocumentSeries } from "../../value-objects/DocumentSeries";
 import { Money } from "../../value-objects/Money";
+import { DebitNote, type DebitNoteProps } from "../DebitNote";
 
 function validProps(overrides: Partial<DebitNoteProps> = {}): DebitNoteProps {
 	const additionalAmount = Money.fromAmount(500, "PEN");
@@ -76,9 +76,7 @@ describe("DebitNote", () => {
 				igvAmount: Money.fromAmount(0, "PEN"),
 				totalAmount: Money.fromAmount(0, "PEN"),
 			});
-			expect(() => DebitNote.create(props)).toThrow(
-				/debe ser positivo/,
-			);
+			expect(() => DebitNote.create(props)).toThrow(/debe ser positivo/);
 		});
 
 		it("should reject future issue date", () => {
@@ -209,7 +207,9 @@ describe("DebitNote", () => {
 		});
 
 		it("should format full number with 8-digit padding", () => {
-			const dn = DebitNote.create(validProps({ series: DocumentSeries.create("FD01"), number: 7 }));
+			const dn = DebitNote.create(
+				validProps({ series: DocumentSeries.create("FD01"), number: 7 }),
+			);
 			expect(dn.getFullNumber()).toBe("FD01-00000007");
 		});
 	});
@@ -226,4 +226,4 @@ describe("DebitNote", () => {
 			expect(json.issueDate).toBeDefined();
 		});
 	});
-})
+});

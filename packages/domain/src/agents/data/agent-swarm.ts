@@ -13,12 +13,18 @@ export const AGENT_SWARM_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["sunat-validation", "compliance-audit", "document-processing"] as const,
+		capabilities: [
+			"sunat-validation",
+			"compliance-audit",
+			"document-processing",
+		] as const,
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["api", "batch", "automation"] as const,
 		drenyraSubagent: null,
-		description: "Validates invoices and transactions against SUNAT 2026 regulations (IGV, RUC, UBL 2.1)",
-		sourcePath: "packages/agent-swarm/src/agents/financial/sunat-compliance.agent.ts",
+		description:
+			"Validates invoices and transactions against SUNAT 2026 regulations (IGV, RUC, UBL 2.1)",
+		sourcePath:
+			"packages/agent-swarm/src/agents/financial/sunat-compliance.agent.ts",
 	},
 	{
 		id: "invoice-processor-agent",
@@ -28,12 +34,18 @@ export const AGENT_SWARM_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["invoice-processing", "document-processing", "validation"] as const,
+		capabilities: [
+			"invoice-processing",
+			"document-processing",
+			"validation",
+		] as const,
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "batch", "automation"] as const,
 		drenyraSubagent: null,
-		description: "Processes incoming invoices: extraction, validation, and ledger classification",
-		sourcePath: "packages/agent-swarm/src/agents/financial/invoice-processor.agent.ts",
+		description:
+			"Processes incoming invoices: extraction, validation, and ledger classification",
+		sourcePath:
+			"packages/agent-swarm/src/agents/financial/invoice-processor.agent.ts",
 	},
 	{
 		id: "banking-reconciliation-agent",
@@ -47,8 +59,10 @@ export const AGENT_SWARM_AGENTS = [
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["api", "batch", "automation"] as const,
 		drenyraSubagent: null,
-		description: "Matches bank statements against accounting entries for reconciliation",
-		sourcePath: "packages/agent-swarm/src/agents/financial/banking-reconciliation.agent.ts",
+		description:
+			"Matches bank statements against accounting entries for reconciliation",
+		sourcePath:
+			"packages/agent-swarm/src/agents/financial/banking-reconciliation.agent.ts",
 	},
 	{
 		id: "tax-optimizer-agent",
@@ -58,12 +72,17 @@ export const AGENT_SWARM_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["compliance-audit", "risk-analysis", "report-generation"] as const,
+		capabilities: [
+			"compliance-audit",
+			"risk-analysis",
+			"report-generation",
+		] as const,
 		approvalClass: "financial-controller" as const,
 		supportedSurfaces: ["api", "batch"] as const,
 		drenyraSubagent: null,
 		description: "Optimizes tax positions while maintaining SUNAT compliance",
-		sourcePath: "packages/agent-swarm/src/agents/financial/tax-optimizer.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/financial/tax-optimizer.agent.ts",
 	},
 	{
 		id: "financial-analyzer-agent",
@@ -73,12 +92,17 @@ export const AGENT_SWARM_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["report-generation", "risk-analysis", "knowledge-retrieval"] as const,
+		capabilities: [
+			"report-generation",
+			"risk-analysis",
+			"knowledge-retrieval",
+		] as const,
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "web"] as const,
 		drenyraSubagent: null,
 		description: "Analyzes financial data and generates insights and forecasts",
-		sourcePath: "packages/agent-swarm/src/agents/financial/financial-analyzer.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/financial/financial-analyzer.agent.ts",
 	},
 	{
 		id: "spot-calculator-agent",
@@ -92,8 +116,10 @@ export const AGENT_SWARM_AGENTS = [
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["api", "batch"] as const,
 		drenyraSubagent: null,
-		description: "Calculates SPOT (Sistema de Pago de Obligaciones Tributarias) detracciones",
-		sourcePath: "packages/agent-swarm/src/agents/financial/spot-calculator.agent.ts",
+		description:
+			"Calculates SPOT (Sistema de Pago de Obligaciones Tributarias) detracciones",
+		sourcePath:
+			"packages/agent-swarm/src/agents/financial/spot-calculator.agent.ts",
 	},
 
 	// --- Code Review Agents ---
@@ -109,8 +135,10 @@ export const AGENT_SWARM_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "cli", "automation"] as const,
 		drenyraSubagent: null,
-		description: "Performs automated security audits on codebases and dependencies",
-		sourcePath: "packages/agent-swarm/src/agents/code-review/security-audit.agent.ts",
+		description:
+			"Performs automated security audits on codebases and dependencies",
+		sourcePath:
+			"packages/agent-swarm/src/agents/code-review/security-audit.agent.ts",
 	},
 	{
 		id: "quality-analyzer-agent",
@@ -125,7 +153,8 @@ export const AGENT_SWARM_AGENTS = [
 		supportedSurfaces: ["api", "cli", "automation"] as const,
 		drenyraSubagent: null,
 		description: "Analyzes code quality metrics and enforces coding standards",
-		sourcePath: "packages/agent-swarm/src/agents/code-review/quality-analyzer.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/code-review/quality-analyzer.agent.ts",
 	},
 	{
 		id: "performance-analyzer-agent",
@@ -139,8 +168,10 @@ export const AGENT_SWARM_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "cli", "automation"] as const,
 		drenyraSubagent: null,
-		description: "Identifies performance bottlenecks and optimization opportunities",
-		sourcePath: "packages/agent-swarm/src/agents/code-review/performance-analyzer.agent.ts",
+		description:
+			"Identifies performance bottlenecks and optimization opportunities",
+		sourcePath:
+			"packages/agent-swarm/src/agents/code-review/performance-analyzer.agent.ts",
 	},
 	{
 		id: "style-checker-agent",
@@ -155,7 +186,8 @@ export const AGENT_SWARM_AGENTS = [
 		supportedSurfaces: ["api", "cli", "automation"] as const,
 		drenyraSubagent: null,
 		description: "Enforces coding style consistency and formatting rules",
-		sourcePath: "packages/agent-swarm/src/agents/code-review/style-checker.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/code-review/style-checker.agent.ts",
 	},
 
 	// --- Development Agents ---
@@ -171,8 +203,10 @@ export const AGENT_SWARM_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "cli", "workspace"] as const,
 		drenyraSubagent: null,
-		description: "Generates code scaffolding, boilerplate, and implementation patterns",
-		sourcePath: "packages/agent-swarm/src/agents/development/code-generator.agent.ts",
+		description:
+			"Generates code scaffolding, boilerplate, and implementation patterns",
+		sourcePath:
+			"packages/agent-swarm/src/agents/development/code-generator.agent.ts",
 	},
 	{
 		id: "documentation-agent",
@@ -186,8 +220,10 @@ export const AGENT_SWARM_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "cli", "web"] as const,
 		drenyraSubagent: null,
-		description: "Generates and maintains documentation, READMEs, and API references",
-		sourcePath: "packages/agent-swarm/src/agents/development/documentation.agent.ts",
+		description:
+			"Generates and maintains documentation, READMEs, and API references",
+		sourcePath:
+			"packages/agent-swarm/src/agents/development/documentation.agent.ts",
 	},
 	{
 		id: "refactoring-agent",
@@ -201,8 +237,10 @@ export const AGENT_SWARM_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "cli", "workspace"] as const,
 		drenyraSubagent: null,
-		description: "Refactors code to improve structure, readability, and maintainability",
-		sourcePath: "packages/agent-swarm/src/agents/development/refactoring.agent.ts",
+		description:
+			"Refactors code to improve structure, readability, and maintainability",
+		sourcePath:
+			"packages/agent-swarm/src/agents/development/refactoring.agent.ts",
 	},
 	{
 		id: "migration-agent",
@@ -212,12 +250,17 @@ export const AGENT_SWARM_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["migration", "integration", "database-optimization"] as const,
+		capabilities: [
+			"migration",
+			"integration",
+			"database-optimization",
+		] as const,
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "cli", "batch"] as const,
 		drenyraSubagent: null,
 		description: "Manages schema and data migrations across environments",
-		sourcePath: "packages/agent-swarm/src/agents/development/migration.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/development/migration.agent.ts",
 	},
 	{
 		id: "feature-implementer-agent",
@@ -231,8 +274,10 @@ export const AGENT_SWARM_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "cli", "workspace"] as const,
 		drenyraSubagent: null,
-		description: "Implements new features based on requirements and specifications",
-		sourcePath: "packages/agent-swarm/src/agents/development/feature-implementer.agent.ts",
+		description:
+			"Implements new features based on requirements and specifications",
+		sourcePath:
+			"packages/agent-swarm/src/agents/development/feature-implementer.agent.ts",
 	},
 	{
 		id: "bug-fixer-agent",
@@ -247,7 +292,8 @@ export const AGENT_SWARM_AGENTS = [
 		supportedSurfaces: ["api", "cli", "workspace"] as const,
 		drenyraSubagent: null,
 		description: "Analyzes and fixes bugs with regression test coverage",
-		sourcePath: "packages/agent-swarm/src/agents/development/bug-fixer.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/development/bug-fixer.agent.ts",
 	},
 
 	// --- Testing Agents ---
@@ -263,8 +309,10 @@ export const AGENT_SWARM_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "cli", "automation"] as const,
 		drenyraSubagent: null,
-		description: "Generates unit, integration, and E2E tests with coverage targets",
-		sourcePath: "packages/agent-swarm/src/agents/testing/test-generator.agent.ts",
+		description:
+			"Generates unit, integration, and E2E tests with coverage targets",
+		sourcePath:
+			"packages/agent-swarm/src/agents/testing/test-generator.agent.ts",
 	},
 	{
 		id: "coverage-analyzer-agent",
@@ -279,7 +327,8 @@ export const AGENT_SWARM_AGENTS = [
 		supportedSurfaces: ["api", "cli", "automation"] as const,
 		drenyraSubagent: null,
 		description: "Analyzes test coverage gaps and suggests improvements",
-		sourcePath: "packages/agent-swarm/src/agents/testing/coverage-analyzer.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/testing/coverage-analyzer.agent.ts",
 	},
 	{
 		id: "integration-tester-agent",
@@ -294,7 +343,8 @@ export const AGENT_SWARM_AGENTS = [
 		supportedSurfaces: ["api", "cli", "automation"] as const,
 		drenyraSubagent: null,
 		description: "Tests API and service integrations end-to-end",
-		sourcePath: "packages/agent-swarm/src/agents/testing/integration-tester.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/testing/integration-tester.agent.ts",
 	},
 	{
 		id: "e2e-tester-agent",
@@ -326,7 +376,8 @@ export const AGENT_SWARM_AGENTS = [
 		supportedSurfaces: ["api", "cli", "automation"] as const,
 		drenyraSubagent: null,
 		description: "Optimizes database performance, indexes, and query execution",
-		sourcePath: "packages/agent-swarm/src/agents/infrastructure/database-optimizer.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/infrastructure/database-optimizer.agent.ts",
 	},
 	{
 		id: "api-designer-agent",
@@ -341,7 +392,8 @@ export const AGENT_SWARM_AGENTS = [
 		supportedSurfaces: ["api", "cli", "web"] as const,
 		drenyraSubagent: null,
 		description: "Designs RESTful and GraphQL API contracts and schemas",
-		sourcePath: "packages/agent-swarm/src/agents/infrastructure/api-designer.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/infrastructure/api-designer.agent.ts",
 	},
 	{
 		id: "dependency-checker-agent",
@@ -355,8 +407,10 @@ export const AGENT_SWARM_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "cli", "automation"] as const,
 		drenyraSubagent: null,
-		description: "Audits dependency trees for security vulnerabilities and outdated packages",
-		sourcePath: "packages/agent-swarm/src/agents/infrastructure/dependency-checker.agent.ts",
+		description:
+			"Audits dependency trees for security vulnerabilities and outdated packages",
+		sourcePath:
+			"packages/agent-swarm/src/agents/infrastructure/dependency-checker.agent.ts",
 	},
 	{
 		id: "schema-validator-agent",
@@ -370,8 +424,10 @@ export const AGENT_SWARM_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "cli", "automation"] as const,
 		drenyraSubagent: null,
-		description: "Validates data schemas against defined constraints and formats",
-		sourcePath: "packages/agent-swarm/src/agents/infrastructure/schema-validator.agent.ts",
+		description:
+			"Validates data schemas against defined constraints and formats",
+		sourcePath:
+			"packages/agent-swarm/src/agents/infrastructure/schema-validator.agent.ts",
 	},
 	{
 		id: "cost-optimizer-agent",
@@ -386,7 +442,8 @@ export const AGENT_SWARM_AGENTS = [
 		supportedSurfaces: ["api", "cli", "automation"] as const,
 		drenyraSubagent: null,
 		description: "Analyzes and optimizes cloud infrastructure costs",
-		sourcePath: "packages/agent-swarm/src/agents/infrastructure/cost-optimizer.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/infrastructure/cost-optimizer.agent.ts",
 	},
 
 	// --- Workflow Agents ---
@@ -413,7 +470,11 @@ export const AGENT_SWARM_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["monitoring", "notification", "performance-analysis"] as const,
+		capabilities: [
+			"monitoring",
+			"notification",
+			"performance-analysis",
+		] as const,
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "automation"] as const,
 		drenyraSubagent: null,
@@ -433,7 +494,8 @@ export const AGENT_SWARM_AGENTS = [
 		supportedSurfaces: ["api", "automation"] as const,
 		drenyraSubagent: null,
 		description: "Sends notifications across channels (email, Slack, in-app)",
-		sourcePath: "packages/agent-swarm/src/agents/workflow/notification.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/workflow/notification.agent.ts",
 	},
 	{
 		id: "report-generator-agent",
@@ -448,7 +510,8 @@ export const AGENT_SWARM_AGENTS = [
 		supportedSurfaces: ["api", "web", "batch"] as const,
 		drenyraSubagent: null,
 		description: "Generates customizable reports from business data",
-		sourcePath: "packages/agent-swarm/src/agents/workflow/report-generator.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/workflow/report-generator.agent.ts",
 	},
 	{
 		id: "compliance-auditor-agent",
@@ -458,11 +521,17 @@ export const AGENT_SWARM_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["compliance-audit", "security-audit", "report-generation"] as const,
+		capabilities: [
+			"compliance-audit",
+			"security-audit",
+			"report-generation",
+		] as const,
 		approvalClass: "financial-controller" as const,
 		supportedSurfaces: ["api", "batch", "automation"] as const,
 		drenyraSubagent: null,
-		description: "Audits regulatory compliance across fiscal, data, and security domains",
-		sourcePath: "packages/agent-swarm/src/agents/workflow/compliance-auditor.agent.ts",
+		description:
+			"Audits regulatory compliance across fiscal, data, and security domains",
+		sourcePath:
+			"packages/agent-swarm/src/agents/workflow/compliance-auditor.agent.ts",
 	},
 ] as const satisfies readonly UnifiedAgentEntry[];

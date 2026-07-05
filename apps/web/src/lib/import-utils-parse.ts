@@ -20,11 +20,11 @@
  */
 
 import type {
-	Delimiter,
 	CSVParserOptions,
-	ParseResult,
-	ParseError,
+	Delimiter,
 	FileParserOptions,
+	ParseError,
+	ParseResult,
 } from "./import-types";
 
 /* ------------------------------------------------------------------ */
@@ -155,9 +155,7 @@ export function parseCsvLine(line: string, delimiter: Delimiter): string[] {
  */
 export function detectHeaderRow(headers: string[]): boolean {
 	return headers.some((h) =>
-		(KNOWN_HEADER_WORDS as readonly string[]).includes(
-			h.toLowerCase(),
-		),
+		(KNOWN_HEADER_WORDS as readonly string[]).includes(h.toLowerCase()),
 	);
 }
 
@@ -220,8 +218,7 @@ export function parseCSV<T = Record<string, string>>(
 	const delimiter = options?.delimiter ?? detectDelimiter(lines[0]);
 
 	const autoDetectHeader =
-		options?.hasHeader ??
-		detectHeaderRow(parseCsvLine(lines[0], delimiter));
+		options?.hasHeader ?? detectHeaderRow(parseCsvLine(lines[0], delimiter));
 	const headers = autoDetectHeader
 		? parseCsvLine(lines[0], delimiter).map((h) => h.toLowerCase())
 		: [];
@@ -243,7 +240,9 @@ export function parseCSV<T = Record<string, string>>(
 				errors.push({
 					row: i + 1,
 					message:
-						e instanceof Error ? e.message : "Error desconocido al parsear fila",
+						e instanceof Error
+							? e.message
+							: "Error desconocido al parsear fila",
 				});
 			}
 		} else if (headers.length > 0) {

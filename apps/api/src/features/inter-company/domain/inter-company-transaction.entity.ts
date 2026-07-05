@@ -5,7 +5,7 @@
  * No infrastructure dependencies allowed in this layer.
  */
 
-import type { SpotDetractionProfile } from '../../taxation/domain/spot-detraction-profile';
+import type { SpotDetractionProfile } from "../../taxation/domain/spot-detraction-profile";
 
 // ─── Primitives ───────────────────────────────────────────────────────────────
 
@@ -18,7 +18,7 @@ import type { SpotDetractionProfile } from '../../taxation/domain/spot-detractio
  * console.log(value);
  * ```
  */
-export type TaxType = 'GRAVADO' | 'EXONERADO' | 'INAFECTO';
+export type TaxType = "GRAVADO" | "EXONERADO" | "INAFECTO";
 
 // ─── Value Objects ────────────────────────────────────────────────────────────
 
@@ -32,14 +32,14 @@ export type TaxType = 'GRAVADO' | 'EXONERADO' | 'INAFECTO';
  * ```
  */
 export interface TaxCalculations {
-  subtotal: number;
-  igv: number;
-  total: number;
-  hasDetraction: boolean;
-  detraction: number | null;
-  detractionRate: number | null;
-  detractionProfile: SpotDetractionProfile | null;
-  detractionRuleCode: string | null;
+	subtotal: number;
+	igv: number;
+	total: number;
+	hasDetraction: boolean;
+	detraction: number | null;
+	detractionRate: number | null;
+	detractionProfile: SpotDetractionProfile | null;
+	detractionRuleCode: string | null;
 }
 
 // ─── Entities ─────────────────────────────────────────────────────────────────
@@ -54,25 +54,25 @@ export interface TaxCalculations {
  * ```
  */
 export interface InterCompanyTransactionRow {
-  id: string;
-  economicGroupId: string;
-  fromCompanyId: string;
-  fromTransactionId: string | null;
-  toCompanyId: string;
-  toTransactionId: string | null;
-  concept: string;
-  amount: string;
-  taxType: string;
-  igvAmount: string | null;
-  detractionAmount: string | null;
-  detractionRate: string | null;
-  detractionProfile: SpotDetractionProfile | null;
-  detractionRuleCode: string | null;
-  status: string;
-  reconciledAt: Date | null;
-  spotPdfUrl: string | null;
-  spotReferenceNumber: string | null;
-  createdAt: Date;
+	id: string;
+	economicGroupId: string;
+	fromCompanyId: string;
+	fromTransactionId: string | null;
+	toCompanyId: string;
+	toTransactionId: string | null;
+	concept: string;
+	amount: string;
+	taxType: string;
+	igvAmount: string | null;
+	detractionAmount: string | null;
+	detractionRate: string | null;
+	detractionProfile: SpotDetractionProfile | null;
+	detractionRuleCode: string | null;
+	status: string;
+	reconciledAt: Date | null;
+	spotPdfUrl: string | null;
+	spotReferenceNumber: string | null;
+	createdAt: Date;
 }
 
 /**
@@ -84,11 +84,12 @@ export interface InterCompanyTransactionRow {
  * console.log(value);
  * ```
  */
-export interface InterCompanyTransactionEnriched extends InterCompanyTransactionRow {
-  fromCompanyName: string;
-  fromCompanyRuc: string;
-  toCompanyName: string;
-  toCompanyRuc: string;
+export interface InterCompanyTransactionEnriched
+	extends InterCompanyTransactionRow {
+	fromCompanyName: string;
+	fromCompanyRuc: string;
+	toCompanyName: string;
+	toCompanyRuc: string;
 }
 
 // ─── Commands ─────────────────────────────────────────────────────────────────
@@ -103,13 +104,13 @@ export interface InterCompanyTransactionEnriched extends InterCompanyTransaction
  * ```
  */
 export interface CreateInterCompanyTransactionInput {
-  economicGroupId: string;
-  fromCompanyId: string;
-  toCompanyId: string;
-  concept: string;
-  amount: number;
-  taxType: TaxType;
-  detractionProfile?: SpotDetractionProfile;
+	economicGroupId: string;
+	fromCompanyId: string;
+	toCompanyId: string;
+	concept: string;
+	amount: number;
+	taxType: TaxType;
+	detractionProfile?: SpotDetractionProfile;
 }
 
 /**
@@ -122,14 +123,14 @@ export interface CreateInterCompanyTransactionInput {
  * ```
  */
 export interface AtomicCreateInput {
-  economicGroupId: string;
-  fromCompanyId: string;
-  toCompanyId: string;
-  concept: string;
-  amount: number;
-  taxType: TaxType;
-  calculations: TaxCalculations;
-  detractionProfile: SpotDetractionProfile | null;
+	economicGroupId: string;
+	fromCompanyId: string;
+	toCompanyId: string;
+	concept: string;
+	amount: number;
+	taxType: TaxType;
+	calculations: TaxCalculations;
+	detractionProfile: SpotDetractionProfile | null;
 }
 
 /**
@@ -142,10 +143,10 @@ export interface AtomicCreateInput {
  * ```
  */
 export interface CreateInterCompanyTransactionResult {
-  interCompany: { id: string };
-  expense: { id: string };
-  income: { id: string };
-  calculations: TaxCalculations;
+	interCompany: { id: string };
+	expense: { id: string };
+	income: { id: string };
+	calculations: TaxCalculations;
 }
 
 /**
@@ -158,8 +159,8 @@ export interface CreateInterCompanyTransactionResult {
  * ```
  */
 export interface SpotPdfResult {
-  url: string;
-  referenceNumber: string;
+	url: string;
+	referenceNumber: string;
 }
 
 // ─── Queries ──────────────────────────────────────────────────────────────────
@@ -174,15 +175,15 @@ export interface SpotPdfResult {
  * ```
  */
 export interface InterCompanyDetractionAuditFilters {
-  economicGroupId: string;
-  detractionProfile?: SpotDetractionProfile;
-  detractionRuleCode?: string;
-  dateFrom?: Date;
-  dateTo?: Date;
-  limit?: number;
-  offset?: number;
-  sortBy?: 'createdAt' | 'amount' | 'igvAmount' | 'detractionAmount';
-  sortDir?: 'asc' | 'desc';
+	economicGroupId: string;
+	detractionProfile?: SpotDetractionProfile;
+	detractionRuleCode?: string;
+	dateFrom?: Date;
+	dateTo?: Date;
+	limit?: number;
+	offset?: number;
+	sortBy?: "createdAt" | "amount" | "igvAmount" | "detractionAmount";
+	sortDir?: "asc" | "desc";
 }
 
 /**
@@ -195,9 +196,9 @@ export interface InterCompanyDetractionAuditFilters {
  * ```
  */
 export interface AuditPage {
-  items: InterCompanyTransactionEnriched[];
-  total: number;
-  limit: number;
-  offset: number;
-  hasMore: boolean;
+	items: InterCompanyTransactionEnriched[];
+	total: number;
+	limit: number;
+	offset: number;
+	hasMore: boolean;
 }

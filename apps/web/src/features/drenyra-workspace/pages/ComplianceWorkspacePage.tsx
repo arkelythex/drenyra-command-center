@@ -53,12 +53,16 @@ function QuickAction({
 	return (
 		<div className="rounded-lg border border-[var(--color-stroke-2)] bg-[var(--color-surface-1)]/50 p-3 transition-colors hover:bg-[var(--color-surface-2)]/50">
 			<div className="flex items-center justify-between">
-				<div className="text-sm font-medium text-[var(--color-text-primary)]">{label}</div>
+				<div className="text-sm font-medium text-[var(--color-text-primary)]">
+					{label}
+				</div>
 				<span className="rounded-full bg-[var(--color-surface-2)] px-2 py-0.5 text-3xs font-bold text-[var(--color-text-muted)] uppercase">
 					{approval}
 				</span>
 			</div>
-			<p className="mt-1 text-xs text-[var(--color-text-muted)]">{description}</p>
+			<p className="mt-1 text-xs text-[var(--color-text-muted)]">
+				{description}
+			</p>
 		</div>
 	);
 }

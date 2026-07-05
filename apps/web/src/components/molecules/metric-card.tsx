@@ -19,8 +19,8 @@
 import { motion } from "framer-motion";
 import type * as React from "react";
 import { AIConfidenceBar } from "@/components/atoms/ai-indicator";
-import { Badge } from "@/components/ui/badge";
 import { Text } from "@/components/atoms/text";
+import { Badge } from "@/components/ui/badge";
 import type { StatusVariant } from "@/lib/design-tokens/semantic-tokens";
 import { cn } from "@/lib/utils";
 

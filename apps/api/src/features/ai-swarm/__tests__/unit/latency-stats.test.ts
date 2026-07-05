@@ -4,17 +4,23 @@
  * @module ai-swarm/__tests__/unit
  */
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { LatencyStatsService } from "../../latency-stats/latency-stats.service";
 import type {
-	LatencySummary,
 	LatencyByAgent,
+	LatencySummary,
 	LatencyTrend,
 } from "@drenyra/ai/services/ai-latency";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { LatencyStatsService } from "../../latency-stats/latency-stats.service";
 
 // ─── Mock the repository ─────────────────────────────────────────────────────
 
-const { mockRecord, mockGetSummary, mockGetByAgent, mockGetTrend, mockGetRecent } = vi.hoisted(() => ({
+const {
+	mockRecord,
+	mockGetSummary,
+	mockGetByAgent,
+	mockGetTrend,
+	mockGetRecent,
+} = vi.hoisted(() => ({
 	mockRecord: vi.fn().mockResolvedValue(undefined),
 	mockGetSummary: vi.fn(),
 	mockGetByAgent: vi.fn(),
@@ -115,15 +121,17 @@ describe("LatencyStatsService", () => {
 		});
 
 		it("should return zeros for empty data", async () => {
-			mockGetSummary.mockResolvedValue(makeSummary({
-				avgLatencyMs: 0,
-				p50LatencyMs: 0,
-				p95LatencyMs: 0,
-				p99LatencyMs: 0,
-				totalCalls: 0,
-				errorCount: 0,
-				errorRate: 0,
-			}));
+			mockGetSummary.mockResolvedValue(
+				makeSummary({
+					avgLatencyMs: 0,
+					p50LatencyMs: 0,
+					p95LatencyMs: 0,
+					p99LatencyMs: 0,
+					totalCalls: 0,
+					errorCount: 0,
+					errorRate: 0,
+				}),
+			);
 			mockGetByAgent.mockResolvedValue([]);
 
 			const result = await LatencyStatsService.getSummary({});
@@ -225,17 +233,21 @@ describe("LatencyStatsService", () => {
 
 	describe("percentile calculation (sorted data)", () => {
 		it("should return correct p50 and p95 percentiles", async () => {
-			mockGetSummary.mockResolvedValue(makeSummary({
-				p50LatencyMs: 200,
-				p95LatencyMs: 950,
-			}));
+			mockGetSummary.mockResolvedValue(
+				makeSummary({
+					p50LatencyMs: 200,
+					p95LatencyMs: 950,
+				}),
+			);
 			mockGetByAgent.mockResolvedValue([]);
 
 			const result = await LatencyStatsService.getSummary({});
 
 			expect(result.summary.p50LatencyMs).toBe(200);
 			expect(result.summary.p95LatencyMs).toBe(950);
-			expect(result.summary.p95LatencyMs).toBeGreaterThan(result.summary.p50LatencyMs);
+			expect(result.summary.p95LatencyMs).toBeGreaterThan(
+				result.summary.p50LatencyMs,
+			);
 		});
 	});
 });

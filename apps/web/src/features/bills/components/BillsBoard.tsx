@@ -1,8 +1,8 @@
 import { Plus, Search } from "lucide-react";
 import { lazy, Suspense, useMemo, useState } from "react";
-import { n } from "@/lib/utils";
 import { MobileTabNavigation } from "@/components/layout/MobileTabNavigation";
 import { Input } from "@/components/ui/input";
+import { n } from "@/lib/utils";
 import { useSidebarLayout } from "@/stores/sidebar-layout.store";
 import type { Bill, BillsView } from "../hooks/use-bills.types";
 import { useBills } from "../hooks/useBills";

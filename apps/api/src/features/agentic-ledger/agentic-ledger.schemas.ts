@@ -11,7 +11,10 @@ import { t } from "elysia";
  * const connector = "normalized";
  * ```
  */
-export const BankIngestConnectorSchema = t.Union([t.Literal("normalized"), t.Literal("csv")]);
+export const BankIngestConnectorSchema = t.Union([
+	t.Literal("normalized"),
+	t.Literal("csv"),
+]);
 
 /**
  * Supported bank CSV formats (Perú) for ingestion.
@@ -22,11 +25,11 @@ export const BankIngestConnectorSchema = t.Union([t.Literal("normalized"), t.Lit
  * ```
  */
 export const BankCsvFormatSchema = t.Union([
-  t.Literal("BCP"),
-  t.Literal("BBVA"),
-  t.Literal("INTERBANK"),
-  t.Literal("SCOTIABANK"),
-  t.Literal("GENERIC"),
+	t.Literal("BCP"),
+	t.Literal("BBVA"),
+	t.Literal("INTERBANK"),
+	t.Literal("SCOTIABANK"),
+	t.Literal("GENERIC"),
 ]);
 
 /**
@@ -44,11 +47,13 @@ export const BankCsvFormatSchema = t.Union([
  * ```
  */
 export const NormalizedBankTransactionSchema = t.Object({
-  date: t.String({ description: "ISO date (YYYY-MM-DD)" }),
-  description: t.String({ minLength: 1 }),
-  amount: t.Number({ description: "Decimal amount in account currency (PEN/USD)" }),
-  type: t.Union([t.Literal("DEBIT"), t.Literal("CREDIT")]),
-  reference: t.Optional(t.String()),
+	date: t.String({ description: "ISO date (YYYY-MM-DD)" }),
+	description: t.String({ minLength: 1 }),
+	amount: t.Number({
+		description: "Decimal amount in account currency (PEN/USD)",
+	}),
+	type: t.Union([t.Literal("DEBIT"), t.Literal("CREDIT")]),
+	reference: t.Optional(t.String()),
 });
 
 /**
@@ -65,15 +70,21 @@ export const NormalizedBankTransactionSchema = t.Object({
  * ```
  */
 export const IngestBankSchema = t.Object({
-  companyId: t.String({ format: "uuid", description: "Company UUID (maps to multi-RUC entity)" }),
-  accountId: t.String({ format: "uuid", description: "Bank account UUID in `bank_accounts`" }),
-  connector: BankIngestConnectorSchema,
-  format: t.Optional(
-    t.Union([
-      BankCsvFormatSchema,
-      t.String({ description: "Custom format key (future)", minLength: 1 }),
-    ])
-  ),
-  transactions: t.Optional(t.Array(NormalizedBankTransactionSchema)),
-  csvText: t.Optional(t.String({ description: "Raw CSV text (bank export)" })),
+	companyId: t.String({
+		format: "uuid",
+		description: "Company UUID (maps to multi-RUC entity)",
+	}),
+	accountId: t.String({
+		format: "uuid",
+		description: "Bank account UUID in `bank_accounts`",
+	}),
+	connector: BankIngestConnectorSchema,
+	format: t.Optional(
+		t.Union([
+			BankCsvFormatSchema,
+			t.String({ description: "Custom format key (future)", minLength: 1 }),
+		]),
+	),
+	transactions: t.Optional(t.Array(NormalizedBankTransactionSchema)),
+	csvText: t.Optional(t.String({ description: "Raw CSV text (bank export)" })),
 });

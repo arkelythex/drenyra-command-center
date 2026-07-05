@@ -7,12 +7,12 @@
  * Persists completion to localStorage so it only shows once.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
-import { STORAGE_KEY } from "./OnboardingTour.types";
-import { TOUR_STEPS } from "./OnboardingTour.data";
-import { calcTooltipPosition, getTargetRect } from "./OnboardingTour.helpers";
 import { TourBackdrop } from "./components/TourBackdrop";
 import { TourHighlight } from "./components/TourHighlight";
 import { TourTooltip } from "./components/TourTooltip";
+import { TOUR_STEPS } from "./OnboardingTour.data";
+import { calcTooltipPosition, getTargetRect } from "./OnboardingTour.helpers";
+import { STORAGE_KEY } from "./OnboardingTour.types";
 
 export function OnboardingTour() {
 	const [step, setStep] = useState(0);

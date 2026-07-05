@@ -10,24 +10,22 @@ import { describe, expect, it, vi } from "vitest";
 
 // Mock the storage service module entirely
 vi.mock("../storage.service", () => ({
-	StorageService: vi.fn(function () {
-		return {
-			upload: vi
-				.fn()
-				.mockImplementation(
-					async (file: File, opts: { companyId: string; folder: string }) => ({
-						url: `http://localhost:3001/storage/${opts.folder}/${opts.companyId}/test-key`,
-						key: `${opts.folder}/${opts.companyId}/test-key`,
-						bucket: "local",
-						size: file.size,
-					}),
-				),
-			getSignedUrl: vi
-				.fn()
-				.mockResolvedValue("http://localhost:3001/storage/token?token=xyz"),
-			delete: vi.fn().mockResolvedValue(undefined),
-		};
-	}),
+	StorageService: vi.fn(() => ({
+		upload: vi
+			.fn()
+			.mockImplementation(
+				async (file: File, opts: { companyId: string; folder: string }) => ({
+					url: `http://localhost:3001/storage/${opts.folder}/${opts.companyId}/test-key`,
+					key: `${opts.folder}/${opts.companyId}/test-key`,
+					bucket: "local",
+					size: file.size,
+				}),
+			),
+		getSignedUrl: vi
+			.fn()
+			.mockResolvedValue("http://localhost:3001/storage/token?token=xyz"),
+		delete: vi.fn().mockResolvedValue(undefined),
+	})),
 	storageService: {
 		upload: vi
 			.fn()

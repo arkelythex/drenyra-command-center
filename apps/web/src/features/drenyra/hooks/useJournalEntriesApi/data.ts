@@ -3,20 +3,20 @@
  */
 
 import type {
-	JournalEntryResponseDTO,
 	JournalEntryFiltersDTO,
+	JournalEntryResponseDTO,
+	JournalPendingRow,
+	JournalTxRow,
 } from "./types";
-import type { JournalTxRow, JournalPendingRow } from "./types";
 
 // ─── Query Keys ─────────────────────────────────────────────
 
 export const journalKeys = {
 	all: (companyId: string) => ["journal", companyId] as const,
-	lists: (companyId: string) => [...journalKeys.all(companyId), "list"] as const,
-	list: (
-		companyId: string,
-		filters?: Partial<JournalEntryFiltersDTO>,
-	) => [...journalKeys.lists(companyId), filters] as const,
+	lists: (companyId: string) =>
+		[...journalKeys.all(companyId), "list"] as const,
+	list: (companyId: string, filters?: Partial<JournalEntryFiltersDTO>) =>
+		[...journalKeys.lists(companyId), filters] as const,
 	details: (companyId: string) =>
 		[...journalKeys.all(companyId), "detail"] as const,
 	detail: (companyId: string, id: string) =>

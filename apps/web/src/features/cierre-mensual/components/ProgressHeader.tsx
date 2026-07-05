@@ -31,11 +31,7 @@ export function ProgressHeader({
 						Cierre Mensual
 					</h1>
 				</div>
-				<Button
-					size="sm"
-					variant="outline"
-					className="h-8 text-2xs font-bold"
-				>
+				<Button size="sm" variant="outline" className="h-8 text-2xs font-bold">
 					Cambiar empresa
 				</Button>
 			</div>
@@ -44,9 +40,7 @@ export function ProgressHeader({
 				<span className="text-[var(--text-secondary)]">
 					{companyName} · RUC {companyRuc}
 				</span>
-				<span className="text-[var(--text-tertiary)]">
-					Período {periodo}
-				</span>
+				<span className="text-[var(--text-tertiary)]">Período {periodo}</span>
 			</div>
 
 			{/* Progress Bar */}

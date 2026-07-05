@@ -5,10 +5,10 @@ import {
 	ShieldCheck,
 	UploadCloud,
 } from "lucide-react";
+import { Text } from "@/components/atoms/text";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Text } from "@/components/atoms/text";
 import { cn, n } from "@/lib/utils";
 
 // --- Sub-componente Interno: Header (Aislado) ---

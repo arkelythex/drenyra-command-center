@@ -4,7 +4,7 @@
  * Standard page header with title, description, context and actions.
  */
 
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export interface PageHeaderProps {

@@ -100,7 +100,8 @@ export function validateAuditPluginDefinition(plugin: AuditPluginDefinition): {
 	} catch (error) {
 		return {
 			valid: false,
-			error: error instanceof Error ? error.message : "plugin_validation_failed",
+			error:
+				error instanceof Error ? error.message : "plugin_validation_failed",
 		};
 	}
 }

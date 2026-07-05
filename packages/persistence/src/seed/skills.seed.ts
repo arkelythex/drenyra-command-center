@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
-import { skills, skillCapabilities } from "../schema/skills.schema";
 import type { NodePgDatabase } from "drizzle-orm/node-postgres";
+import { skillCapabilities, skills } from "../schema/skills.schema";
 
 interface SeedSkill {
 	name: string;
@@ -79,7 +79,8 @@ const SEED_SKILLS: SeedSkill[] = [
 			},
 			{
 				name: "Crédito fiscal",
-				description: "Análisis de crédito fiscal y arrastres de períodos anteriores",
+				description:
+					"Análisis de crédito fiscal y arrastres de períodos anteriores",
 				actionType: "tax:tax-credit",
 				sortOrder: 4,
 			},
@@ -153,7 +154,8 @@ const SEED_SKILLS: SeedSkill[] = [
 			},
 			{
 				name: "Reporte para auditoría",
-				description: "Generación de reportes formales para auditoría externa o SUNAT",
+				description:
+					"Generación de reportes formales para auditoría externa o SUNAT",
 				actionType: "audit:report",
 				sortOrder: 3,
 			},
@@ -239,7 +241,8 @@ const SEED_SKILLS: SeedSkill[] = [
 			},
 			{
 				name: "AFP",
-				description: "Cálculo de aportes a AFP con comisiones y prima de seguro",
+				description:
+					"Cálculo de aportes a AFP con comisiones y prima de seguro",
 				actionType: "payroll:afp",
 				sortOrder: 6,
 			},

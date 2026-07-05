@@ -33,7 +33,10 @@ const PaybackInput = z.object({
 const NpvInput = z.object({
 	initialInvestment: MoneyInput,
 	cashFlows: z.array(MoneyInput).min(1, "At least one cash flow required"),
-	discountRate: z.number().min(-100).max(1000, "Discount rate must be between -100% and 1000%"),
+	discountRate: z
+		.number()
+		.min(-100)
+		.max(1000, "Discount rate must be between -100% and 1000%"),
 });
 
 // ── IRR ────────────────────────────────────────────────────────────
@@ -97,17 +100,17 @@ const IrrResponse = z.object({
 // ── Exports ────────────────────────────────────────────────────────
 
 export {
-	RoiCalculateInput,
-	PaybackInput,
-	NpvInput,
-	IrrInput,
-	ScenarioCompareInput,
-	RoiScenarioInput,
-	RoiRequest,
-	RoiCalculateResponse,
-	PaybackResponse,
-	NpvResponse,
-	IrrResponse,
 	Currency,
+	IrrInput,
+	IrrResponse,
 	MoneyInput,
+	NpvInput,
+	NpvResponse,
+	PaybackInput,
+	PaybackResponse,
+	RoiCalculateInput,
+	RoiCalculateResponse,
+	RoiRequest,
+	RoiScenarioInput,
+	ScenarioCompareInput,
 };

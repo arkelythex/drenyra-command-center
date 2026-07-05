@@ -4,41 +4,41 @@
  */
 
 export interface InvoiceEmailData {
-  invoiceNumber: string;
-  customerName: string;
-  total: string;
-  dueDate: string;
-  items: Array<{
-    description: string;
-    quantity: number;
-    unitPrice: string;
-    total: string;
-  }>;
+	invoiceNumber: string;
+	customerName: string;
+	total: string;
+	dueDate: string;
+	items: Array<{
+		description: string;
+		quantity: number;
+		unitPrice: string;
+		total: string;
+	}>;
 }
 
 export interface PaymentConfirmationData {
-  invoiceNumber: string;
-  customerName: string;
-  amount: string;
-  paymentDate: string;
-  paymentMethod: string;
-  remaining: string;
+	invoiceNumber: string;
+	customerName: string;
+	amount: string;
+	paymentDate: string;
+	paymentMethod: string;
+	remaining: string;
 }
 
 export interface PaymentReminderData {
-  invoiceNumber: string;
-  customerName: string;
-  total: string;
-  dueDate: string;
-  daysOverdue: number;
+	invoiceNumber: string;
+	customerName: string;
+	total: string;
+	dueDate: string;
+	daysOverdue: number;
 }
 
 export interface OverdueNoticeData {
-  invoiceNumber: string;
-  customerName: string;
-  total: string;
-  dueDate: string;
-  daysOverdue: number;
+	invoiceNumber: string;
+	customerName: string;
+	total: string;
+	dueDate: string;
+	daysOverdue: number;
 }
 
 /**
@@ -56,7 +56,7 @@ const commonStyles = `
  * Generate invoice email HTML
  */
 export function generateInvoiceEmail(data: InvoiceEmailData): string {
-  return `
+	return `
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,7 +87,7 @@ export function generateInvoiceEmail(data: InvoiceEmailData): string {
       
       <div class="invoice-info">
         <p><strong>Número de Factura:</strong> ${data.invoiceNumber}</p>
-        <p><strong>Fecha de Vencimiento:</strong> ${new Date(data.dueDate).toLocaleDateString('es-PE')}</p>
+        <p><strong>Fecha de Vencimiento:</strong> ${new Date(data.dueDate).toLocaleDateString("es-PE")}</p>
         <p><strong>Total a Pagar:</strong> S/ ${data.total}</p>
       </div>
 
@@ -102,14 +102,18 @@ export function generateInvoiceEmail(data: InvoiceEmailData): string {
           </tr>
         </thead>
         <tbody>
-          ${data.items.map(item => `
+          ${data.items
+						.map(
+							(item) => `
             <tr>
               <td>${item.description}</td>
               <td>${item.quantity}</td>
               <td>S/ ${item.unitPrice}</td>
               <td>S/ ${item.total}</td>
             </tr>
-          `).join('')}
+          `,
+						)
+						.join("")}
         </tbody>
       </table>
 
@@ -132,8 +136,10 @@ export function generateInvoiceEmail(data: InvoiceEmailData): string {
 /**
  * Generate payment confirmation email HTML
  */
-export function generatePaymentConfirmationEmail(data: PaymentConfirmationData): string {
-  return `
+export function generatePaymentConfirmationEmail(
+	data: PaymentConfirmationData,
+): string {
+	return `
 <!DOCTYPE html>
 <html>
 <head>
@@ -163,7 +169,7 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationData):
       <div class="payment-info">
         <p><strong>Factura:</strong> ${data.invoiceNumber}</p>
         <p><strong>Monto Pagado:</strong> S/ ${data.amount}</p>
-        <p><strong>Fecha de Pago:</strong> ${new Date(data.paymentDate).toLocaleDateString('es-PE')}</p>
+        <p><strong>Fecha de Pago:</strong> ${new Date(data.paymentDate).toLocaleDateString("es-PE")}</p>
         <p><strong>Método de Pago:</strong> ${data.paymentMethod}</p>
         <p><strong>Saldo Pendiente:</strong> S/ ${data.remaining}</p>
       </div>
@@ -183,8 +189,10 @@ export function generatePaymentConfirmationEmail(data: PaymentConfirmationData):
 /**
  * Generate payment reminder email HTML
  */
-export function generatePaymentReminderEmail(data: PaymentReminderData): string {
-  return `
+export function generatePaymentReminderEmail(
+	data: PaymentReminderData,
+): string {
+	return `
 <!DOCTYPE html>
 <html>
 <head>
@@ -212,8 +220,8 @@ export function generatePaymentReminderEmail(data: PaymentReminderData): string 
       <div class="reminder-info">
         <p><strong>Factura:</strong> ${data.invoiceNumber}</p>
         <p><strong>Total:</strong> S/ ${data.total}</p>
-        <p><strong>Fecha de Vencimiento:</strong> ${new Date(data.dueDate).toLocaleDateString('es-PE')}</p>
-        ${data.daysOverdue > 0 ? `<p><strong>Días de Atraso:</strong> ${data.daysOverdue} días</p>` : ''}
+        <p><strong>Fecha de Vencimiento:</strong> ${new Date(data.dueDate).toLocaleDateString("es-PE")}</p>
+        ${data.daysOverdue > 0 ? `<p><strong>Días de Atraso:</strong> ${data.daysOverdue} días</p>` : ""}
       </div>
 
       <p>Le agradeceremos realizar el pago a la brevedad posible para evitar cargos adicionales.</p>
@@ -232,7 +240,7 @@ export function generatePaymentReminderEmail(data: PaymentReminderData): string 
  * Generate overdue notice email HTML
  */
 export function generateOverdueNoticeEmail(data: OverdueNoticeData): string {
-  return `
+	return `
 <!DOCTYPE html>
 <html>
 <head>
@@ -261,7 +269,7 @@ export function generateOverdueNoticeEmail(data: OverdueNoticeData): string {
       <div class="overdue-info">
         <p><strong>Factura:</strong> ${data.invoiceNumber}</p>
         <p><strong>Total:</strong> S/ ${data.total}</p>
-        <p><strong>Fecha de Vencimiento:</strong> ${new Date(data.dueDate).toLocaleDateString('es-PE')}</p>
+        <p><strong>Fecha de Vencimiento:</strong> ${new Date(data.dueDate).toLocaleDateString("es-PE")}</p>
         <p><strong>Días de Atraso:</strong> ${data.daysOverdue} días</p>
       </div>
 

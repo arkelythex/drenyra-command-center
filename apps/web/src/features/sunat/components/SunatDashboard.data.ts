@@ -2,7 +2,11 @@
  * Demo / placeholder data for the SUNAT compliance dashboard.
  */
 
-import type { Period, SunatInvoice, TaxObligation } from "./SunatDashboard.types";
+import type {
+	Period,
+	SunatInvoice,
+	TaxObligation,
+} from "./SunatDashboard.types";
 
 export const PERIODS: { value: Period; label: string }[] = [
 	{ value: "2026-04", label: "Abril 2026" },

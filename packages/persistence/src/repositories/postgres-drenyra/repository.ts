@@ -1,13 +1,17 @@
 import type {
+	DrenyraAuditEventFilter,
+	DrenyraAuditEventFilters,
+	DrenyraRepository,
+} from "@drenyra/application/drenyra";
+import type {
 	AgentRun,
 	ApprovalRequest,
 	AuditEvent,
 	EvidenceItem,
 	FiscalCase,
 } from "@drenyra/domain/drenyra";
-import type { DrenyraAuditEventFilter, DrenyraAuditEventFilters, DrenyraRepository } from "@drenyra/application/drenyra";
-import { and, desc, eq, inArray } from "../../query";
 import { db } from "../../client";
+import { and, desc, eq, inArray } from "../../query";
 import {
 	drenyraAgentRuns,
 	drenyraApprovalRequests,
@@ -15,7 +19,6 @@ import {
 	drenyraEvidenceItems,
 	drenyraFiscalCases,
 } from "../../schema/drenyra-command-center.schema";
-import type { ScopeGuard } from "./types";
 import {
 	agentRunValues,
 	approvalValues,
@@ -29,6 +32,7 @@ import {
 	mapFiscalCase,
 	requireOrganizationId,
 } from "./mappers";
+import type { ScopeGuard } from "./types";
 
 export class PostgresDrenyraRepository implements DrenyraRepository {
 	async createFiscalCase(fiscalCase: FiscalCase): Promise<FiscalCase> {
@@ -52,7 +56,10 @@ export class PostgresDrenyraRepository implements DrenyraRepository {
 		return rows.map(mapFiscalCase);
 	}
 
-	async getFiscalCaseById(id: string, scope: ScopeGuard): Promise<FiscalCase | null> {
+	async getFiscalCaseById(
+		id: string,
+		scope: ScopeGuard,
+	): Promise<FiscalCase | null> {
 		const rows = await db
 			.select()
 			.from(drenyraFiscalCases)
@@ -79,7 +86,10 @@ export class PostgresDrenyraRepository implements DrenyraRepository {
 					eq(drenyraFiscalCases.companyId, fiscalCase.scope.companyId),
 					eq(drenyraFiscalCases.companyRuc, fiscalCase.scope.companyRuc),
 					eq(drenyraFiscalCases.period, fiscalCase.scope.period),
-					eq(drenyraFiscalCases.organizationId, requireOrganizationId(fiscalCase.scope)),
+					eq(
+						drenyraFiscalCases.organizationId,
+						requireOrganizationId(fiscalCase.scope),
+					),
 				),
 			);
 		return fiscalCase;
@@ -90,7 +100,10 @@ export class PostgresDrenyraRepository implements DrenyraRepository {
 		return item;
 	}
 
-	async listEvidence(caseId: string, scope: ScopeGuard): Promise<EvidenceItem[]> {
+	async listEvidence(
+		caseId: string,
+		scope: ScopeGuard,
+	): Promise<EvidenceItem[]> {
 		const rows = await db
 			.select()
 			.from(drenyraEvidenceItems)
@@ -145,12 +158,17 @@ export class PostgresDrenyraRepository implements DrenyraRepository {
 		return rows.map(mapAgentRun);
 	}
 
-	async createApprovalRequest(request: ApprovalRequest): Promise<ApprovalRequest> {
+	async createApprovalRequest(
+		request: ApprovalRequest,
+	): Promise<ApprovalRequest> {
 		await db.insert(drenyraApprovalRequests).values(approvalValues(request));
 		return request;
 	}
 
-	async getApprovalRequestById(id: string, scope: ScopeGuard): Promise<ApprovalRequest | null> {
+	async getApprovalRequestById(
+		id: string,
+		scope: ScopeGuard,
+	): Promise<ApprovalRequest | null> {
 		const rows = await db
 			.select()
 			.from(drenyraApprovalRequests)
@@ -167,7 +185,9 @@ export class PostgresDrenyraRepository implements DrenyraRepository {
 		return rows[0] ? mapApproval(rows[0]) : null;
 	}
 
-	async updateApprovalRequest(request: ApprovalRequest): Promise<ApprovalRequest> {
+	async updateApprovalRequest(
+		request: ApprovalRequest,
+	): Promise<ApprovalRequest> {
 		await db
 			.update(drenyraApprovalRequests)
 			.set(approvalValues(request))
@@ -177,13 +197,19 @@ export class PostgresDrenyraRepository implements DrenyraRepository {
 					eq(drenyraApprovalRequests.companyId, request.scope.companyId),
 					eq(drenyraApprovalRequests.companyRuc, request.scope.companyRuc),
 					eq(drenyraApprovalRequests.period, request.scope.period),
-					eq(drenyraApprovalRequests.organizationId, requireOrganizationId(request.scope)),
+					eq(
+						drenyraApprovalRequests.organizationId,
+						requireOrganizationId(request.scope),
+					),
 				),
 			);
 		return request;
 	}
 
-	async listApprovalRequests(caseId: string, scope: ScopeGuard): Promise<ApprovalRequest[]> {
+	async listApprovalRequests(
+		caseId: string,
+		scope: ScopeGuard,
+	): Promise<ApprovalRequest[]> {
 		const rows = await db
 			.select()
 			.from(drenyraApprovalRequests)
@@ -205,7 +231,10 @@ export class PostgresDrenyraRepository implements DrenyraRepository {
 		return event;
 	}
 
-	async listAuditEvents(caseId: string, scope: ScopeGuard): Promise<AuditEvent[]> {
+	async listAuditEvents(
+		caseId: string,
+		scope: ScopeGuard,
+	): Promise<AuditEvent[]> {
 		const rows = await db
 			.select()
 			.from(drenyraAuditEvents)
@@ -222,15 +251,22 @@ export class PostgresDrenyraRepository implements DrenyraRepository {
 		return rows.map(mapAudit);
 	}
 
-	async listScopedAuditEvents(scope: ScopeGuard, filters: DrenyraAuditEventFilters = {}): Promise<AuditEvent[]> {
+	async listScopedAuditEvents(
+		scope: ScopeGuard,
+		filters: DrenyraAuditEventFilters = {},
+	): Promise<AuditEvent[]> {
 		const predicates = [
 			eq(drenyraAuditEvents.companyId, scope.companyId),
 			eq(drenyraAuditEvents.companyRuc, scope.companyRuc),
 			eq(drenyraAuditEvents.period, scope.period),
 			eq(drenyraAuditEvents.organizationId, scope.organizationId),
 		];
-		if (filters.caseId) predicates.push(eq(drenyraAuditEvents.caseId, filters.caseId));
-		if (filters.eventTypes?.length) predicates.push(inArray(drenyraAuditEvents.eventType, [...filters.eventTypes]));
+		if (filters.caseId)
+			predicates.push(eq(drenyraAuditEvents.caseId, filters.caseId));
+		if (filters.eventTypes?.length)
+			predicates.push(
+				inArray(drenyraAuditEvents.eventType, [...filters.eventTypes]),
+			);
 		const rows = await db
 			.select()
 			.from(drenyraAuditEvents)
@@ -240,16 +276,24 @@ export class PostgresDrenyraRepository implements DrenyraRepository {
 		return rows.map(mapAudit);
 	}
 
-	async listCommandAuditEvents(scope: ScopeGuard, filter: DrenyraAuditEventFilter = {}): Promise<AuditEvent[]> {
+	async listCommandAuditEvents(
+		scope: ScopeGuard,
+		filter: DrenyraAuditEventFilter = {},
+	): Promise<AuditEvent[]> {
 		const conditions = [
 			eq(drenyraAuditEvents.companyId, scope.companyId),
 			eq(drenyraAuditEvents.companyRuc, scope.companyRuc),
 			eq(drenyraAuditEvents.period, scope.period),
 			eq(drenyraAuditEvents.organizationId, scope.organizationId),
-			inArray(drenyraAuditEvents.eventType, ["CAPABILITY_ALLOWED", "CAPABILITY_DENIED"]),
+			inArray(drenyraAuditEvents.eventType, [
+				"CAPABILITY_ALLOWED",
+				"CAPABILITY_DENIED",
+			]),
 		];
-		if (filter.caseId) conditions.push(eq(drenyraAuditEvents.caseId, filter.caseId));
-		if (filter.eventType) conditions.push(eq(drenyraAuditEvents.eventType, filter.eventType));
+		if (filter.caseId)
+			conditions.push(eq(drenyraAuditEvents.caseId, filter.caseId));
+		if (filter.eventType)
+			conditions.push(eq(drenyraAuditEvents.eventType, filter.eventType));
 
 		const rows = await db
 			.select()
@@ -258,6 +302,9 @@ export class PostgresDrenyraRepository implements DrenyraRepository {
 			.orderBy(desc(drenyraAuditEvents.occurredAt));
 		return rows
 			.map(mapAudit)
-			.filter((event) => !filter.commandId || event.metadata.commandId === filter.commandId);
+			.filter(
+				(event) =>
+					!filter.commandId || event.metadata.commandId === filter.commandId,
+			);
 	}
 }

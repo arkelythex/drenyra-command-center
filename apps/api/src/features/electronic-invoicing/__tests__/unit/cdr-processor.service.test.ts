@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CdrProcessorService } from "../../application/services/cdr-processor.service";
 import type { CdrWebhookPayload } from "../../domain/cpe.types";
 

@@ -1,21 +1,19 @@
-import { z, toJSONSchema } from "zod";
-import {
-	consultarRucSunat as consultarRucApi,
-} from "@drenyra/infrastructure/api/sunat.service";
+import { consultarRucSunat as consultarRucApi } from "@drenyra/infrastructure/api/sunat.service";
+import { toJSONSchema, type z } from "zod";
 import { loggers } from "../../logger";
 import {
-	CalcularDetraccionSchema,
-	ConsultarRucSchema,
-	CrearAsientoSchema,
-	ObtenerTipoCambioSchema,
-	RegistrarGastoVozSchema,
-	VerificarComprobanteSchema,
 	type CalcularDetraccionInput,
+	CalcularDetraccionSchema,
 	type ConsultarRucInput,
+	ConsultarRucSchema,
 	type CrearAsientoInput,
+	CrearAsientoSchema,
 	type ObtenerTipoCambioInput,
+	ObtenerTipoCambioSchema,
 	type RegistrarGastoVozInput,
+	RegistrarGastoVozSchema,
 	type VerificarComprobanteInput,
+	VerificarComprobanteSchema,
 } from "./types";
 
 // ---------------------------------------------------------------------------

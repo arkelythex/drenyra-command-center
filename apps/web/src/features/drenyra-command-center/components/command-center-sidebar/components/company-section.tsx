@@ -9,9 +9,18 @@ interface CompanySectionProps {
 	t: (key: string) => string;
 }
 
-export function CompanySection({ companies, selectedCompanyId, onCompanySelect, t }: CompanySectionProps) {
+export function CompanySection({
+	companies,
+	selectedCompanyId,
+	onCompanySelect,
+	t,
+}: CompanySectionProps) {
 	return (
-		<section className="space-y-2" role="region" aria-label={t("sidebar.companies")}>
+		<section
+			className="space-y-2"
+			role="region"
+			aria-label={t("sidebar.companies")}
+		>
 			<p className="text-2xs font-bold uppercase tracking-widest text-[var(--text-tertiary)]">
 				{t("sidebar.companies")}
 			</p>
@@ -31,7 +40,12 @@ export function CompanySection({ companies, selectedCompanyId, onCompanySelect, 
 						<Building2 size={14} aria-hidden="true" />
 						{company.companyName}
 						{company.companyId === selectedCompanyId && (
-							<span aria-hidden="true" className="ml-auto text-[var(--color-info)]">✓</span>
+							<span
+								aria-hidden="true"
+								className="ml-auto text-[var(--color-info)]"
+							>
+								✓
+							</span>
 						)}
 					</span>
 					<span className="mt-1 block text-2xs text-[var(--text-tertiary)]">

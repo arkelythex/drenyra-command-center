@@ -13,10 +13,10 @@
  */
 
 import type {
-	PermissionResult,
+	PermissionContext,
 	PermissionEffect,
 	PermissionEntry,
-	PermissionContext,
+	PermissionResult,
 } from "../control-plane/contracts";
 
 /**
@@ -50,14 +50,14 @@ export class PermissionService {
 	 * 2. Global permission (toolName only, no company scoping)
 	 * 3. Fall-through: REQUIRE_APPROVAL (safe default)
 	 */
-	canExecute(
-		toolName: string,
-		context?: PermissionContext,
-	): PermissionResult {
+	canExecute(toolName: string, context?: PermissionContext): PermissionResult {
 		const toolEntry = this.lookupPermission(toolName, context);
 
 		if (!toolEntry) {
-			return { effect: "REQUIRE_APPROVAL" as PermissionEffect, source: "default" };
+			return {
+				effect: "REQUIRE_APPROVAL" as PermissionEffect,
+				source: "default",
+			};
 		}
 
 		return { effect: toolEntry, source: "permission_entry" };

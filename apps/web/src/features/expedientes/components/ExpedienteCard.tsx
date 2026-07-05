@@ -1,23 +1,26 @@
-import type { ReactElement } from "react";
-import {
-	Clock,
-	CheckCircle2,
-	AlertTriangle,
-	ChevronRight,
-	FileText,
-	Building2,
-	Calendar,
-	ShieldCheck,
-} from "lucide-react";
-import { cn } from "@/lib/utils";
 import type { ExpedienteFiscal, ExpedienteStatus } from "@drenyra/domain";
 import {
-	EXPEDIENTE_STATUS_LABELS,
-	EXPEDIENTE_STATUS_COLORS,
 	EXPEDIENTE_KIND_LABELS,
+	EXPEDIENTE_STATUS_COLORS,
+	EXPEDIENTE_STATUS_LABELS,
 } from "@drenyra/domain";
+import {
+	AlertTriangle,
+	Building2,
+	Calendar,
+	CheckCircle2,
+	ChevronRight,
+	Clock,
+	FileText,
+	ShieldCheck,
+} from "lucide-react";
+import type { ReactElement } from "react";
+import { cn } from "@/lib/utils";
 
-const STATUS_ICON: Record<ExpedienteStatus, (props: { size?: number }) => ReactElement> = {
+const STATUS_ICON: Record<
+	ExpedienteStatus,
+	(props: { size?: number }) => ReactElement
+> = {
 	ABIERTO: Clock,
 	EN_PROCESO: Clock,
 	PENDIENTE_REVISION: AlertTriangle,
@@ -89,10 +92,7 @@ export function ExpedienteCard({
 						<StatusIcon size={10} />
 						{EXPEDIENTE_STATUS_LABELS[exp.status]}
 					</span>
-					<ChevronRight
-						size={14}
-						className="text-[var(--text-tertiary)]"
-					/>
+					<ChevronRight size={14} className="text-[var(--text-tertiary)]" />
 				</div>
 			</div>
 

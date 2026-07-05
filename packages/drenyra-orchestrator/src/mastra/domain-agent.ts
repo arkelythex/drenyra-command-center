@@ -1,6 +1,6 @@
 import type { AgentContext } from "../types/agent-context";
 import type { LatinAgentId } from "../types/latin-agent";
-import { ApprovalGateEngine } from "./approval-gate";
+import type { ApprovalGateEngine } from "./approval-gate";
 
 /** Result from a domain agent task execution */
 export interface DomainResult {
@@ -106,7 +106,10 @@ export class DomainAgent {
 	}
 
 	/** Select the best agent for a given task based on capabilities */
-	selectBestAgent(task: { goal?: string; tools?: string[] }): { id: string; name: string } {
+	selectBestAgent(task: { goal?: string; tools?: string[] }): {
+		id: string;
+		name: string;
+	} {
 		if (task.tools?.length && this.agents.length > 1) {
 			// Try to find an agent matching the required tools
 			const matched = this.agents.find((a) =>
@@ -163,7 +166,8 @@ export class DomainAgent {
 		}
 
 		// Determine if action needs approval
-		const isFinancialAction = action.type === "financial" && (action.amount ?? 0) > 0;
+		const isFinancialAction =
+			action.type === "financial" && (action.amount ?? 0) > 0;
 		const isComplianceAction = action.type === "compliance";
 		const needsApproval = isFinancialAction || isComplianceAction;
 

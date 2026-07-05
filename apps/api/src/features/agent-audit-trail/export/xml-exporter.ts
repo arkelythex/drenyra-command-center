@@ -44,7 +44,9 @@ export async function exportToXml(
     <cbc:TotalEntries>${trail.total}</cbc:TotalEntries>
   </Header>
   <Entries>
-${trail.logs.map((log) => `    <Entry>
+${trail.logs
+	.map(
+		(log) => `    <Entry>
       <cbc:ID>${escapeXml(log.id)}</cbc:ID>
       <cbc:Timestamp>${log.createdAt.toISOString()}</cbc:Timestamp>
       <Agent>
@@ -58,7 +60,9 @@ ${trail.logs.map((log) => `    <Entry>
       <Outputs><![CDATA[${toSafeCdata(JSON.stringify(log.outputs))}]]></Outputs>
       <Hash>${escapeXml(log.hash)}</Hash>
       <PrevHash>${escapeXml(log.prevHash ?? "GENESIS")}</PrevHash>
-    </Entry>`).join("\n")}
+    </Entry>`,
+	)
+	.join("\n")}
   </Entries>
 </AuditTrail>`;
 

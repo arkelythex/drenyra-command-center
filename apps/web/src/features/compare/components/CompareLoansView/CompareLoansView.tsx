@@ -5,7 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartSkeleton } from "@/components/ui/skeleton";
 import { n } from "@/lib/utils";
 import { useSidebarLayout } from "@/stores/sidebar-layout.store";
-import { DEFAULT_SCENARIO_A, DEFAULT_SCENARIO_B } from "./CompareLoansView.data";
+import {
+	DEFAULT_SCENARIO_A,
+	DEFAULT_SCENARIO_B,
+} from "./CompareLoansView.data";
 import type {
 	LoanCalculationResult,
 	PeruLoanScenario,

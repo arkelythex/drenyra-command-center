@@ -3,12 +3,12 @@
  * Retrieves journal entries with optional filters
  */
 
+import type { JournalEntry } from "@drenyra/domain/entities/JournalEntry";
+import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
 import {
 	type JournalEntryFiltersDTO,
 	JournalEntryFiltersSchema,
 } from "../../dtos/journal/journal-entry.dto";
-import type { JournalEntry } from "@drenyra/domain/entities/JournalEntry";
-import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
 
 /**
  * GetJournalEntriesUseCase class.

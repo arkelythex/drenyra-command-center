@@ -330,14 +330,9 @@ describe("ThreadsService", () => {
 			const errorChain = new Proxy(() => ({}), {
 				get(_target: unknown, prop: string) {
 					if (prop === "then") {
-						return (
-							_resolve: unknown,
-							reject: (e: Error) => void,
-						) =>
+						return (_resolve: unknown, reject: (e: Error) => void) =>
 							reject(
-								new Error(
-									"duplicate key value violates unique constraint",
-								),
+								new Error("duplicate key value violates unique constraint"),
 							);
 					}
 					if (prop === "catch") {

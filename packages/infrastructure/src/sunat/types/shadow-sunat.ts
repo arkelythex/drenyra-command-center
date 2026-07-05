@@ -245,4 +245,3 @@ export interface PreAuditResult {
 	recommendations: PreAuditRecommendation[];
 	sectorBenchmark: SectorBenchmark;
 }
-

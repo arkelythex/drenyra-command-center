@@ -17,9 +17,9 @@
  * @since 1.0.0
  */
 
+import type { Currency } from "../types/currency";
 import { DocumentSeries } from "../value-objects/DocumentSeries";
 import { Money } from "../value-objects/Money";
-import type { Currency } from "../types/currency";
 
 /**
  * Debit note lifecycle status.
@@ -29,11 +29,7 @@ import type { Currency } from "../types/currency";
  * - ACCEPTED: Accepted by SUNAT
  * - REJECTED: Rejected by SUNAT
  */
-export type DebitNoteStatus =
-	| "DRAFT"
-	| "SENT"
-	| "ACCEPTED"
-	| "REJECTED";
+export type DebitNoteStatus = "DRAFT" | "SENT" | "ACCEPTED" | "REJECTED";
 
 /**
  * Properties for creating a DebitNote entity.
@@ -160,7 +156,9 @@ export class DebitNote {
 
 		// Rule 3: Additional amount must be positive
 		if (!this.props.baseAmount.isPositive()) {
-			throw new Error("El monto adicional de la nota de débito debe ser positivo");
+			throw new Error(
+				"El monto adicional de la nota de débito debe ser positivo",
+			);
 		}
 
 		// Rule 4: Issue date cannot be in the future
@@ -263,22 +261,54 @@ export class DebitNote {
 
 	// ─── Getters ─────────────────────────────────────────────────
 
-	get id(): string { return this.props.id; }
-	get referenceInvoiceId(): string { return this.props.referenceInvoiceId; }
-	get additionalAmount(): Money { return this.props.additionalAmount; }
-	get totalAmount(): Money { return this.props.totalAmount; }
-	get baseAmount(): Money { return this.props.baseAmount; }
-	get igvAmount(): Money { return this.props.igvAmount; }
-	get currency(): Currency { return this.props.currency; }
-	get reason(): string { return this.props.reason; }
-	get series(): DocumentSeries { return this.props.series; }
-	get number(): number { return this.props.number; }
-	get status(): DebitNoteStatus { return this.props.status; }
-	get sunatResponseCode(): string | undefined { return this.props.sunatResponseCode; }
-	get sentToSunatAt(): Date | undefined { return this.props.sentToSunatAt; }
-	get issueDate(): Date { return this.props.issueDate; }
-	get createdAt(): Date { return this.props.createdAt; }
-	get updatedAt(): Date { return this.props.updatedAt; }
+	get id(): string {
+		return this.props.id;
+	}
+	get referenceInvoiceId(): string {
+		return this.props.referenceInvoiceId;
+	}
+	get additionalAmount(): Money {
+		return this.props.additionalAmount;
+	}
+	get totalAmount(): Money {
+		return this.props.totalAmount;
+	}
+	get baseAmount(): Money {
+		return this.props.baseAmount;
+	}
+	get igvAmount(): Money {
+		return this.props.igvAmount;
+	}
+	get currency(): Currency {
+		return this.props.currency;
+	}
+	get reason(): string {
+		return this.props.reason;
+	}
+	get series(): DocumentSeries {
+		return this.props.series;
+	}
+	get number(): number {
+		return this.props.number;
+	}
+	get status(): DebitNoteStatus {
+		return this.props.status;
+	}
+	get sunatResponseCode(): string | undefined {
+		return this.props.sunatResponseCode;
+	}
+	get sentToSunatAt(): Date | undefined {
+		return this.props.sentToSunatAt;
+	}
+	get issueDate(): Date {
+		return this.props.issueDate;
+	}
+	get createdAt(): Date {
+		return this.props.createdAt;
+	}
+	get updatedAt(): Date {
+		return this.props.updatedAt;
+	}
 
 	/**
 	 * Serializes to a plain JSON object.

@@ -1,6 +1,6 @@
-import { useMemo } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
+import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { useFiscalCaseStore } from "@/stores/fiscal-case-store";
 import { STATUS_LABELS, STATUS_STYLES } from "../Sidebar.data";
@@ -10,7 +10,10 @@ interface SidebarCaseListProps {
 	onNavigate: () => void;
 }
 
-export function SidebarCaseList({ isCollapsed, onNavigate }: SidebarCaseListProps) {
+export function SidebarCaseList({
+	isCollapsed,
+	onNavigate,
+}: SidebarCaseListProps) {
 	const navigate = useNavigate();
 	const fiscalCases = useFiscalCaseStore((s) => s.fiscalCases);
 
@@ -103,7 +106,12 @@ export function SidebarCaseList({ isCollapsed, onNavigate }: SidebarCaseListProp
 														</span>
 													</div>
 													{label2 && (
-														<span className={cn("shrink-0 text-2xs font-medium mt-0.5", style)}>
+														<span
+															className={cn(
+																"shrink-0 text-2xs font-medium mt-0.5",
+																style,
+															)}
+														>
 															{label2}
 														</span>
 													)}

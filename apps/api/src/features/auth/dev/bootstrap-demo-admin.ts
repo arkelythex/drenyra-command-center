@@ -1,6 +1,13 @@
-import { authAccounts, authAuditLogs, authSessions, authUserCompanies, authUsers, authVerifications } from "@drenyra/persistence/schema";
 import { db } from "@drenyra/persistence/client";
 import { and, eq } from "@drenyra/persistence/query";
+import {
+	authAccounts,
+	authAuditLogs,
+	authSessions,
+	authUserCompanies,
+	authUsers,
+	authVerifications,
+} from "@drenyra/persistence/schema";
 import { auth } from "../auth.config";
 import { ensureUserCompanyMembershipFromRuc } from "../handlers/company-membership";
 
@@ -34,13 +41,23 @@ export async function bootstrapDemoAdminAuthUser(): Promise<BootstrapDemoAdminRe
 	if (existingUsers.length > 0) {
 		await db.transaction(async (tx) => {
 			for (const existingUser of existingUsers) {
-				await tx.delete(authUserCompanies).where(eq(authUserCompanies.userId, existingUser.id));
-				await tx.delete(authSessions).where(eq(authSessions.userId, existingUser.id));
-				await tx.delete(authAccounts).where(eq(authAccounts.userId, existingUser.id));
-				await tx.delete(authAuditLogs).where(eq(authAuditLogs.userId, existingUser.id));
+				await tx
+					.delete(authUserCompanies)
+					.where(eq(authUserCompanies.userId, existingUser.id));
+				await tx
+					.delete(authSessions)
+					.where(eq(authSessions.userId, existingUser.id));
+				await tx
+					.delete(authAccounts)
+					.where(eq(authAccounts.userId, existingUser.id));
+				await tx
+					.delete(authAuditLogs)
+					.where(eq(authAuditLogs.userId, existingUser.id));
 				await tx.delete(authUsers).where(eq(authUsers.id, existingUser.id));
 			}
-			await tx.delete(authVerifications).where(eq(authVerifications.identifier, DEMO_ADMIN_EMAIL));
+			await tx
+				.delete(authVerifications)
+				.where(eq(authVerifications.identifier, DEMO_ADMIN_EMAIL));
 		});
 	}
 
@@ -82,7 +99,10 @@ export async function bootstrapDemoAdminAuthUser(): Promise<BootstrapDemoAdminRe
 			),
 		);
 
-	const membership = await ensureUserCompanyMembershipFromRuc(createdUser.id, DEMO_ADMIN_RUC);
+	const membership = await ensureUserCompanyMembershipFromRuc(
+		createdUser.id,
+		DEMO_ADMIN_RUC,
+	);
 	if (!membership) {
 		throw new Error(
 			`No company found for demo RUC ${DEMO_ADMIN_RUC}. Run the infrastructure seed first.`,

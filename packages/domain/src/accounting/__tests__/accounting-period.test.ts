@@ -11,9 +11,9 @@
 import { describe, expect, it } from "vitest";
 import {
 	AccountingPeriod,
+	type AccountingPeriodStatus,
 	InvalidAccountingPeriodError,
 	InvalidAccountingTransitionError,
-	type AccountingPeriodStatus,
 } from "../accounting-period";
 
 describe("AccountingPeriod", () => {
@@ -196,9 +196,7 @@ describe("AccountingPeriod", () => {
 
 	it("should reject closeFinal from auditado", () => {
 		const period = AccountingPeriod.create(2026, 5, "auditado");
-		expect(() => period.closeFinal()).toThrow(
-			InvalidAccountingTransitionError,
-		);
+		expect(() => period.closeFinal()).toThrow(InvalidAccountingTransitionError);
 	});
 
 	// --- Equality & Serialization ---
@@ -244,8 +242,6 @@ describe("AccountingPeriod", () => {
 
 	it("should produce readable toString", () => {
 		const period = AccountingPeriod.create(2026, 5);
-		expect(period.toString()).toBe(
-			"AccountingPeriod(2026-05, abierto)",
-		);
+		expect(period.toString()).toBe("AccountingPeriod(2026-05, abierto)");
 	});
 });

@@ -1,10 +1,10 @@
-import { type ReactNode } from "react";
 import { Landmark, Plus } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { AnimatedNumber } from "@/components/ui/motion-primitives";
 import { tokensToClasses } from "@/lib/design-tokens";
+import { cn } from "@/lib/utils";
 
 interface BankingDesktopHeaderProps {
 	isLoading: boolean;

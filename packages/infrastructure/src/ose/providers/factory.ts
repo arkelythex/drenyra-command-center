@@ -4,7 +4,7 @@
  * @principle Open/Closed - Add new providers without modifying existing code
  */
 
-import type { OSEConfig, IOSEProvider } from "../types";
+import type { IOSEProvider, OSEConfig } from "../types";
 import { NubeFactProvider } from "./nubefact.provider";
 import { SimulationOSEProvider } from "./simulation.provider";
 

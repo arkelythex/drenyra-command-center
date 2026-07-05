@@ -9,14 +9,22 @@ export function AssetsInsightBanner() {
 					<TriangleAlert size={20} />
 				</div>
 				<div>
-					<p className="mb-1 text-label font-semibold tracking-wide text-primary">Alerta operativa</p>
+					<p className="mb-1 text-label font-semibold tracking-wide text-primary">
+						Alerta operativa
+					</p>
 					<p className="text-sm leading-relaxed text-foreground/80">
 						Se detectó desgaste acelerado en la flota de{" "}
-						<span className="font-semibold text-foreground">vehículos</span>. Conviene programar mantenimiento preventivo para evitar una pérdida estimada de{" "}
-						<span className="font-semibold text-destructive">15%</span> en el valor de reventa.
+						<span className="font-semibold text-foreground">vehículos</span>.
+						Conviene programar mantenimiento preventivo para evitar una pérdida
+						estimada de{" "}
+						<span className="font-semibold text-destructive">15%</span> en el
+						valor de reventa.
 					</p>
 				</div>
-				<Button size="sm" className="ml-auto text-label font-semibold tracking-wide">
+				<Button
+					size="sm"
+					className="ml-auto text-label font-semibold tracking-wide"
+				>
 					Ver detalle
 				</Button>
 			</div>

@@ -3,17 +3,17 @@
  * Orchestrates the update of an existing journal entry
  */
 
-import { randomUUID } from "crypto";
-import {
-	type UpdateJournalEntryDTO,
-	UpdateJournalEntrySchema,
-} from "../../dtos/journal/journal-entry.dto";
 import {
 	type JournalEntry,
 	JournalLine,
 } from "@drenyra/domain/entities/JournalEntry";
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
 import { Money } from "@drenyra/domain/value-objects/Money";
+import { randomUUID } from "crypto";
+import {
+	type UpdateJournalEntryDTO,
+	UpdateJournalEntrySchema,
+} from "../../dtos/journal/journal-entry.dto";
 import type { AccountService } from "./create-journal-entry.use-case";
 
 /**

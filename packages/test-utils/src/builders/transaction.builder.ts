@@ -14,13 +14,13 @@
  * ```
  */
 import type {
+	TransactionEntry,
 	TransactionProps,
 	TransactionType,
-	TransactionEntry,
 } from "@drenyra/domain/entities/Transaction";
-import { Money, type Currency } from "@drenyra/domain/value-objects/Money";
-import { BaseBuilder } from "./base.builder";
 import { Transaction } from "@drenyra/domain/entities/Transaction";
+import { type Currency, Money } from "@drenyra/domain/value-objects/Money";
+import { BaseBuilder } from "./base.builder";
 
 const DEFAULT_TRANSACTION_ID = "tx_test_001";
 const DEFAULT_TYPE: TransactionType = "SALE";

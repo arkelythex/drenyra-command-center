@@ -42,7 +42,7 @@ export class PDFService {
 	/**
 	 * Generate PDF blob from invoice data
 	 */
-	 
+
 	static async generatePDF(_invoice: Invoice): Promise<Blob> {
 		// This will be implemented with server-side rendering
 		// For now, return empty blob

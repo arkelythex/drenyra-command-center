@@ -1,7 +1,7 @@
 import { type ReactNode, Suspense } from "react";
 
 interface I18nProviderProps {
-  children: ReactNode;
+	children: ReactNode;
 }
 
 /**
@@ -11,9 +11,5 @@ interface I18nProviderProps {
  * Usage: wrap the root of DrenyraCommandCenter with this provider.
  */
 export function I18nProvider({ children }: I18nProviderProps) {
-  return (
-    <Suspense fallback={null}>
-      {children}
-    </Suspense>
-  );
+	return <Suspense fallback={null}>{children}</Suspense>;
 }

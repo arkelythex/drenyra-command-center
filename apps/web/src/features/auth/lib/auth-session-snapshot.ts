@@ -23,7 +23,9 @@ export async function readAuthSessionSnapshot(): Promise<{
 
 		if (!response.ok) return null;
 
-		const payload = (await response.json().catch(() => null)) as AuthSessionEnvelope | null;
+		const payload = (await response
+			.json()
+			.catch(() => null)) as AuthSessionEnvelope | null;
 		if (!payload?.success || !payload.data?.session || !payload.data?.user) {
 			return null;
 		}

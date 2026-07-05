@@ -1,7 +1,7 @@
 import { AlertTriangle, Loader2, UploadCloud } from "lucide-react";
 import type { FC } from "react";
-import { Card } from "@/components/ui/card";
 import { Text } from "@/components/atoms/text";
+import { Card } from "@/components/ui/card";
 import type {
 	Bill,
 	BillStatus,

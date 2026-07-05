@@ -7,18 +7,24 @@
  * @see https://docs.oasis-open.org/ubl/UBL-2.1.html
  */
 
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 import type { ValidationError } from "../value-objects/validation-result.vo";
 import { SunatStructuralRules2026Service } from "./sunat-structural-rules-2026.service";
-import { resolve } from "node:path";
-import { existsSync } from "node:fs";
 
 // Dynamic import for XSD validator — graceful if xsd files aren't available
-let XsdValidatorModule: typeof import("@drenyra/infrastructure/xsd/xsd-validator") | null = null;
+let XsdValidatorModule:
+	| typeof import("@drenyra/infrastructure/xsd/xsd-validator")
+	| null = null;
 
-async function getXsdValidatorModule(): Promise<typeof import("@drenyra/infrastructure/xsd/xsd-validator") | null> {
+async function getXsdValidatorModule(): Promise<
+	typeof import("@drenyra/infrastructure/xsd/xsd-validator") | null
+> {
 	if (!XsdValidatorModule) {
 		try {
-			XsdValidatorModule = await import("@drenyra/infrastructure/xsd/xsd-validator");
+			XsdValidatorModule = await import(
+				"@drenyra/infrastructure/xsd/xsd-validator"
+			);
 		} catch {
 			// XSD module not available — validation will be skipped
 		}
@@ -116,7 +122,9 @@ export class UblValidatorService {
 		const errors: ValidationError[] = [];
 		const warnings: string[] = [];
 		let xsdValid: boolean | undefined;
-		let xsdErrors: Array<{ code: string; message: string; path: string }> | undefined;
+		let xsdErrors:
+			| Array<{ code: string; message: string; path: string }>
+			| undefined;
 
 		// 1. Check XML well-formedness
 		if (!this.isWellFormed(xml.content)) {

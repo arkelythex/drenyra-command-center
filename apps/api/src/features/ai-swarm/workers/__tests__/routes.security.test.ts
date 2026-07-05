@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Elysia } from "elysia";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const queueMocks = vi.hoisted(() => ({
 	enqueue: vi.fn(),
@@ -103,7 +103,12 @@ describe("aiWorkersRoutes tenant isolation", () => {
 
 	it("lists only tasks for the authenticated company even when no company filter is supplied", async () => {
 		queueMocks.getPendingForCompany.mockResolvedValue([
-			{ id: "task-a", companyId: COMPANY_A, status: "pending", type: "ocr-processing" },
+			{
+				id: "task-a",
+				companyId: COMPANY_A,
+				status: "pending",
+				type: "ocr-processing",
+			},
 		]);
 		const app = createApp();
 
@@ -114,7 +119,11 @@ describe("aiWorkersRoutes tenant isolation", () => {
 		);
 
 		expect(response.status).toBe(200);
-		expect(queueMocks.getPendingForCompany).toHaveBeenCalledWith(COMPANY_A, 50, 0);
+		expect(queueMocks.getPendingForCompany).toHaveBeenCalledWith(
+			COMPANY_A,
+			50,
+			0,
+		);
 		expect(queueMocks.getPending).not.toHaveBeenCalled();
 		const payload = await response.json();
 		expect(payload.data.tasks).toEqual([
@@ -126,9 +135,12 @@ describe("aiWorkersRoutes tenant isolation", () => {
 		const app = createApp();
 
 		const response = await app.handle(
-			new Request(`http://localhost/api/ai-workers/list?companyId=${COMPANY_B}`, {
-				headers: authHeaders(COMPANY_A),
-			}),
+			new Request(
+				`http://localhost/api/ai-workers/list?companyId=${COMPANY_B}`,
+				{
+					headers: authHeaders(COMPANY_A),
+				},
+			),
 		);
 
 		expect(response.status).toBe(403);
@@ -149,7 +161,10 @@ describe("aiWorkersRoutes tenant isolation", () => {
 		);
 
 		expect(response.status).toBe(404);
-		expect(queueMocks.getStatusForCompany).toHaveBeenCalledWith("task-b", COMPANY_A);
+		expect(queueMocks.getStatusForCompany).toHaveBeenCalledWith(
+			"task-b",
+			COMPANY_A,
+		);
 		expect(queueMocks.getStatus).not.toHaveBeenCalled();
 	});
 
@@ -164,7 +179,10 @@ describe("aiWorkersRoutes tenant isolation", () => {
 		);
 
 		expect(response.status).toBe(200);
-		expect(queueMocks.cancelTaskForCompany).toHaveBeenCalledWith("task-a", COMPANY_A);
+		expect(queueMocks.cancelTaskForCompany).toHaveBeenCalledWith(
+			"task-a",
+			COMPANY_A,
+		);
 		expect(queueMocks.cancelTask).not.toHaveBeenCalled();
 	});
 });

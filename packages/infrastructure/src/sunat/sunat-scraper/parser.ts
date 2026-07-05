@@ -1,22 +1,16 @@
 import type { BuzonNotification, RucStatus } from "./types";
 
 export function parseNotificationsFromPage(): BuzonNotification[] {
-	const rows = document.querySelectorAll(
-		".notificacion-row, tr.notification",
-	);
+	const rows = document.querySelectorAll(".notificacion-row, tr.notification");
 	const results: BuzonNotification[] = [];
 
 	rows.forEach((row, index) => {
 		const asunto =
-			row
-				.querySelector(".asunto, td:nth-child(2)")
-				?.textContent?.trim() || "";
+			row.querySelector(".asunto, td:nth-child(2)")?.textContent?.trim() || "";
 		const fecha =
-			row.querySelector(".fecha, td:nth-child(3)")?.textContent?.trim() ||
-			"";
+			row.querySelector(".fecha, td:nth-child(3)")?.textContent?.trim() || "";
 		const tipo =
-			row.querySelector(".tipo, td:nth-child(1)")?.textContent?.trim() ||
-			"";
+			row.querySelector(".tipo, td:nth-child(1)")?.textContent?.trim() || "";
 		const urgente =
 			row.classList.contains("urgente") || tipo.includes("URGENTE");
 		const leido = row.classList.contains("leido");
@@ -44,9 +38,7 @@ export function parseRucStatusFromPage(): Partial<RucStatus> {
 
 	return {
 		razonSocial: getText(".razon-social, #razonSocial"),
-		estado: getText(
-			".estado, #estado",
-		).toUpperCase() as RucStatus["estado"],
+		estado: getText(".estado, #estado").toUpperCase() as RucStatus["estado"],
 		condicion: getText(
 			".condicion, #condicion",
 		).toUpperCase() as RucStatus["condicion"],

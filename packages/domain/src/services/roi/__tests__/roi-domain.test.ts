@@ -4,12 +4,12 @@
  * @group unit
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { Money } from "../../value-objects/Money";
-import { calculateRoi } from "../roi";
-import { calculatePaybackPeriod } from "../payback-period";
-import { calculateNpv } from "../npv";
 import { calculateIrr } from "../irr";
+import { calculateNpv } from "../npv";
+import { calculatePaybackPeriod } from "../payback-period";
+import { calculateRoi } from "../roi";
 import { InvalidFinancialInputError } from "../types";
 
 // ── ROI ────────────────────────────────────────────────────────────
@@ -171,10 +171,7 @@ describe("calculateNpv", () => {
 	it("should handle zero discount rate", () => {
 		const result = calculateNpv({
 			initialInvestment: Money.fromAmount(1000, "PEN"),
-			cashFlows: [
-				Money.fromAmount(500, "PEN"),
-				Money.fromAmount(600, "PEN"),
-			],
+			cashFlows: [Money.fromAmount(500, "PEN"), Money.fromAmount(600, "PEN")],
 			discountRate: 0,
 		});
 		expect(result.isViable).toBe(true);
@@ -183,9 +180,7 @@ describe("calculateNpv", () => {
 	it("should make NPV positive with large cash flows", () => {
 		const result = calculateNpv({
 			initialInvestment: Money.fromAmount(1000, "PEN"),
-			cashFlows: [
-				Money.fromAmount(50000, "PEN"),
-			],
+			cashFlows: [Money.fromAmount(50000, "PEN")],
 			discountRate: 5,
 		});
 		expect(result.isViable).toBe(true);
@@ -222,10 +217,7 @@ describe("calculateIrr", () => {
 	it("should not converge for all-negative cash flows", () => {
 		const result = calculateIrr({
 			initialInvestment: Money.fromAmount(1000, "PEN"),
-			cashFlows: [
-				Money.fromCents(0, "PEN"),
-				Money.fromCents(0, "PEN"),
-			],
+			cashFlows: [Money.fromCents(0, "PEN"), Money.fromCents(0, "PEN")],
 		});
 		expect(result.converged).toBe(false);
 	});
@@ -233,10 +225,7 @@ describe("calculateIrr", () => {
 	it("should return null convergence for flat cash flows", () => {
 		const result = calculateIrr({
 			initialInvestment: Money.fromAmount(100, "PEN"),
-			cashFlows: [
-				Money.fromAmount(50, "PEN"),
-				Money.fromAmount(50, "PEN"),
-			],
+			cashFlows: [Money.fromAmount(50, "PEN"), Money.fromAmount(50, "PEN")],
 		});
 		expect(typeof result.irr).toBe("number");
 		expect(result.iterations).toBeGreaterThan(0);

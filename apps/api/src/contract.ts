@@ -1,1 +1,1 @@
-export type { App } from './app-core';
+export type { App } from "./app-core";

@@ -1,4 +1,9 @@
-import type { EventType, EventMetadata, EventHandler, SubscriptionOptions } from './types';
+import type {
+	EventHandler,
+	EventMetadata,
+	EventType,
+	SubscriptionOptions,
+} from "./types";
 
 /**
  * Event Bus Port - Interface that all implementations must follow

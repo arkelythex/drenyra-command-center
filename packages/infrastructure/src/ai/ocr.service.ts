@@ -5,10 +5,10 @@
  * Extracts structured data from PDF invoices
  */
 import { generateObject } from "ai";
-import { type OCRResult, OCRResultSchema } from "./schemas/invoice";
 import { loggers } from "../logger";
 import { getOCRPrompt } from "./prompts";
 import { aiRouter } from "./router";
+import { type OCRResult, OCRResultSchema } from "./schemas/invoice";
 
 /**
  * OCR extraction options

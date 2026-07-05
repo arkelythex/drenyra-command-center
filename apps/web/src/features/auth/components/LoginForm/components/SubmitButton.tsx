@@ -1,11 +1,8 @@
 import { ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { entranceVariants, MotionDiv } from "@/components/ui/motion-primitives";
 import { cn } from "@/lib/utils";
-import {
-	MotionDiv,
-	entranceVariants,
-} from "@/components/ui/motion-primitives";
-import { SUBMIT_TEXT, SUBMIT_LOADING_TEXT } from "../LoginForm.data";
+import { SUBMIT_LOADING_TEXT, SUBMIT_TEXT } from "../LoginForm.data";
 
 interface SubmitButtonProps {
 	isLoading: boolean;

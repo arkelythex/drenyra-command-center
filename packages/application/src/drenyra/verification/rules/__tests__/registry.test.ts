@@ -8,12 +8,9 @@
  * @since Jul 2026
  */
 
+import { type BypassedFinding, getFiscalRate } from "@drenyra/domain/drenyra";
 import { describe, expect, expectTypeOf, it } from "vitest";
 import { runVerificationRules } from "../registry";
-import {
-	getFiscalRate,
-	type BypassedFinding,
-} from "@drenyra/domain/drenyra";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 

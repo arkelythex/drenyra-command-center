@@ -1,14 +1,13 @@
 // Public API for Customers Feature
 // Enforces FSD isolation boundaries.
 
-// UI Components
-export { CustomersView } from './components/CustomersView';
-export { CustomerModal } from './components/CustomerModal';
-export { CustomerForm } from './components/CustomerForm';
-
 // API Client
-export { customersApi } from './api/customers.api';
-export { customerKeys } from './api/query-keys';
+export { customersApi } from "./api/customers.api";
+export { customerKeys } from "./api/query-keys";
+export { CustomerForm } from "./components/CustomerForm";
+export { CustomerModal } from "./components/CustomerModal";
+// UI Components
+export { CustomersView } from "./components/CustomersView";
 
 // Shared Hooks
-export { useCustomers } from './hooks/useCustomers';
+export { useCustomers } from "./hooks/useCustomers";

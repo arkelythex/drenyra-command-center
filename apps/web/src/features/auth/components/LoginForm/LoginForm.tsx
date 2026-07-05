@@ -1,18 +1,18 @@
-import { useTransition } from "react";
-import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ShieldCheck } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
-import { useAuthStore } from "../../hooks/useAuth";
+import { ShieldCheck } from "lucide-react";
+import { useTransition } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useAuthStore } from "../../hooks/useAuth";
 import { AuthLayout } from "../AuthLayout";
-import { loginSchema, type LoginFormData } from "./LoginForm.types";
-import { resolveSafeLoginRedirect } from "./LoginForm.utils";
 import { EmailField } from "./components/EmailField";
-import { PasswordField } from "./components/PasswordField";
-import { FormOptions } from "./components/FormOptions";
-import { SubmitButton } from "./components/SubmitButton";
 import { FormFooter } from "./components/FormFooter";
+import { FormOptions } from "./components/FormOptions";
+import { PasswordField } from "./components/PasswordField";
+import { SubmitButton } from "./components/SubmitButton";
+import { type LoginFormData, loginSchema } from "./LoginForm.types";
+import { resolveSafeLoginRedirect } from "./LoginForm.utils";
 
 export { resolveSafeLoginRedirect };
 

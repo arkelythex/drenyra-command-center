@@ -2,17 +2,17 @@
  * Detraction Service Tests
  */
 
-import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
 	Detraccion,
 	InvalidDetraccionError,
 } from "@drenyra/domain/accounting/detraccion";
 import type { DetractionRepository } from "@drenyra/domain/repositories/detraction.repository";
 import { Money } from "@drenyra/domain/value-objects/Money";
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
+	type DepositInfo,
 	DetractionService,
 	type RegisterDetractionDTO,
-	type DepositInfo,
 } from "../detraction.service";
 
 describe("DetractionService", () => {
@@ -74,55 +74,55 @@ describe("DetractionService", () => {
 
 			const detraction = await service.registerDetraction(dto);
 
-			expect(detraction.amount.getAmount()).toBe(2500.50);
+			expect(detraction.amount.getAmount()).toBe(2500.5);
 		});
 
 		it("should throw for invalid SPOT code", async () => {
 			const dto = createValidDTO({ spotCode: "999" });
 
-			await expect(
-				service.registerDetraction(dto),
-			).rejects.toThrow(InvalidDetraccionError);
+			await expect(service.registerDetraction(dto)).rejects.toThrow(
+				InvalidDetraccionError,
+			);
 		});
 
 		it("should throw for zero amount", async () => {
 			const dto = createValidDTO({ amountCents: 0 });
 
-			await expect(
-				service.registerDetraction(dto),
-			).rejects.toThrow(InvalidDetraccionError);
+			await expect(service.registerDetraction(dto)).rejects.toThrow(
+				InvalidDetraccionError,
+			);
 		});
 
 		it("should throw for negative percentage", async () => {
 			const dto = createValidDTO({ percentage: -5 });
 
-			await expect(
-				service.registerDetraction(dto),
-			).rejects.toThrow(InvalidDetraccionError);
+			await expect(service.registerDetraction(dto)).rejects.toThrow(
+				InvalidDetraccionError,
+			);
 		});
 
 		it("should throw for percentage over 100", async () => {
 			const dto = createValidDTO({ percentage: 101 });
 
-			await expect(
-				service.registerDetraction(dto),
-			).rejects.toThrow(InvalidDetraccionError);
+			await expect(service.registerDetraction(dto)).rejects.toThrow(
+				InvalidDetraccionError,
+			);
 		});
 
 		it("should throw for empty company ID", async () => {
 			const dto = createValidDTO({ companyId: "" });
 
-			await expect(
-				service.registerDetraction(dto),
-			).rejects.toThrow(InvalidDetraccionError);
+			await expect(service.registerDetraction(dto)).rejects.toThrow(
+				InvalidDetraccionError,
+			);
 		});
 
 		it("should throw for empty reference", async () => {
 			const dto = createValidDTO({ reference: "" });
 
-			await expect(
-				service.registerDetraction(dto),
-			).rejects.toThrow(InvalidDetraccionError);
+			await expect(service.registerDetraction(dto)).rejects.toThrow(
+				InvalidDetraccionError,
+			);
 		});
 	});
 
@@ -212,9 +212,7 @@ describe("DetractionService", () => {
 			const result = await service.getPendingByCompany(mockCompanyId);
 
 			expect(result).toHaveLength(1);
-			expect(mockRepo.findPendingByCompany).toHaveBeenCalledWith(
-				mockCompanyId,
-			);
+			expect(mockRepo.findPendingByCompany).toHaveBeenCalledWith(mockCompanyId);
 		});
 
 		it("should return empty array when no pending detractions", async () => {

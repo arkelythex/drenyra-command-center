@@ -1,4 +1,4 @@
-import { logger } from '../../lib/logger';
+import { logger } from "../../lib/logger";
 
 /**
  * Canonical result values for security access logging.
@@ -8,7 +8,7 @@ import { logger } from '../../lib/logger';
  * const result: SecurityAccessResult = 'ALLOW';
  * ```
  */
-export type SecurityAccessResult = 'ALLOW' | 'DENY' | 'FAILED';
+export type SecurityAccessResult = "ALLOW" | "DENY" | "FAILED";
 
 /**
  * Structured security access event captured for audit and operational review.
@@ -23,26 +23,28 @@ export type SecurityAccessResult = 'ALLOW' | 'DENY' | 'FAILED';
  * ```
  */
 export interface SecurityAccessEvent {
-  action: string;
-  resource: string;
-  result: SecurityAccessResult;
-  userId?: string;
-  userEmail?: string;
-  ipAddress?: string;
-  userAgent?: string;
-  details?: Record<string, unknown>;
-  timestamp?: string;
+	action: string;
+	resource: string;
+	result: SecurityAccessResult;
+	userId?: string;
+	userEmail?: string;
+	ipAddress?: string;
+	userAgent?: string;
+	details?: Record<string, unknown>;
+	timestamp?: string;
 }
 
 const MAX_RECENT_EVENTS = 500;
 const recentSecurityEvents: SecurityAccessEvent[] = [];
 
 function shouldSkipStructuredLogging(): boolean {
-  const isTest = (process.env.NODE_ENV ?? '').toLowerCase() === 'test';
-  if (!isTest) return false;
+	const isTest = (process.env.NODE_ENV ?? "").toLowerCase() === "test";
+	if (!isTest) return false;
 
-  const enforce = (process.env.SECURITY_ENFORCE_TEST_ACCESS_LOGS ?? '').toLowerCase();
-  return !(enforce === '1' || enforce === 'true');
+	const enforce = (
+		process.env.SECURITY_ENFORCE_TEST_ACCESS_LOGS ?? ""
+	).toLowerCase();
+	return !(enforce === "1" || enforce === "true");
 }
 
 /**
@@ -59,21 +61,23 @@ function shouldSkipStructuredLogging(): boolean {
  * });
  * ```
  */
-export async function logSecurityAccess(event: SecurityAccessEvent): Promise<void> {
-  const normalized: SecurityAccessEvent = {
-    ...event,
-    timestamp: event.timestamp ?? new Date().toISOString(),
-  };
+export async function logSecurityAccess(
+	event: SecurityAccessEvent,
+): Promise<void> {
+	const normalized: SecurityAccessEvent = {
+		...event,
+		timestamp: event.timestamp ?? new Date().toISOString(),
+	};
 
-  recentSecurityEvents.push(normalized);
-  if (recentSecurityEvents.length > MAX_RECENT_EVENTS) {
-    recentSecurityEvents.shift();
-  }
+	recentSecurityEvents.push(normalized);
+	if (recentSecurityEvents.length > MAX_RECENT_EVENTS) {
+		recentSecurityEvents.shift();
+	}
 
-  if (shouldSkipStructuredLogging()) return;
+	if (shouldSkipStructuredLogging()) return;
 
-  const level = normalized.result === 'ALLOW' ? 'info' : 'warn';
-  logger[level]({ security: normalized }, 'Security access event');
+	const level = normalized.result === "ALLOW" ? "info" : "warn";
+	logger[level]({ security: normalized }, "Security access event");
 }
 
 /**
@@ -87,9 +91,11 @@ export async function logSecurityAccess(event: SecurityAccessEvent): Promise<voi
  * console.log(events.length);
  * ```
  */
-export function getRecentSecurityAccessEvents(limit = 50): SecurityAccessEvent[] {
-  const boundedLimit = Math.max(1, Math.min(limit, MAX_RECENT_EVENTS));
-  return recentSecurityEvents.slice(-boundedLimit);
+export function getRecentSecurityAccessEvents(
+	limit = 50,
+): SecurityAccessEvent[] {
+	const boundedLimit = Math.max(1, Math.min(limit, MAX_RECENT_EVENTS));
+	return recentSecurityEvents.slice(-boundedLimit);
 }
 
 /**
@@ -102,5 +108,5 @@ export function getRecentSecurityAccessEvents(limit = 50): SecurityAccessEvent[]
  * ```
  */
 export function clearSecurityAccessEvents(): void {
-  recentSecurityEvents.splice(0, recentSecurityEvents.length);
+	recentSecurityEvents.splice(0, recentSecurityEvents.length);
 }

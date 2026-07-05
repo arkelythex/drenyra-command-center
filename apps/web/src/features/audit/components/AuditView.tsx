@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { useAuditEvents } from "../hooks/useAuditEvents";
+import { AuditFilters } from "./AuditFilters";
 import { AuditHeader } from "./AuditHeader";
 import { AuditMetrics } from "./AuditMetrics";
-import { AuditFilters } from "./AuditFilters";
 import { AuditTable } from "./AuditTable";
 
 export const AuditView = () => {
 	const [selectedPeriod, setSelectedPeriod] = useState("month");
 	const [searchQuery, setSearchQuery] = useState("");
-	const { data: events = [], isLoading } = useAuditEvents(selectedPeriod, searchQuery);
+	const { data: events = [], isLoading } = useAuditEvents(
+		selectedPeriod,
+		searchQuery,
+	);
 
 	return (
 		<div className="flex flex-col flex-1 bg-background text-foreground overflow-hidden font-sans relative">

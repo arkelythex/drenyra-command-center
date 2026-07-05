@@ -15,18 +15,18 @@
  */
 
 import { randomUUID } from "crypto";
+import { loggers } from "../../../logger";
 import type { SessionStore } from "../../../session/session-store";
-import type { WorkflowOrchestratorV2 } from "../workflow-v2";
 import type { ReaderInput } from "../../types/agent.types";
+import type { EventBus } from "../event.bus";
+import type { WorkflowOrchestratorV2 } from "../workflow-v2";
 import type {
-	BatchOrchestratorConfig,
-	BatchResult,
 	BatchItemResult,
 	BatchItemStatus,
+	BatchOrchestratorConfig,
+	BatchResult,
 	BatchStatus,
 } from "./batch.types";
-import type { EventBus } from "../event.bus";
-import { loggers } from "../../../logger";
 
 /**
  * BatchOrchestrator — processes multiple invoice inputs with a concurrency
@@ -171,9 +171,8 @@ export class BatchOrchestrator {
 					runId,
 				});
 			} catch (error) {
-				const errorMessage = error instanceof Error
-					? error.message
-					: String(error);
+				const errorMessage =
+					error instanceof Error ? error.message : String(error);
 
 				itemResult.status = "failed";
 				itemResult.error = errorMessage;

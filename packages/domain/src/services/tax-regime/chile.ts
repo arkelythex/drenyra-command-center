@@ -5,7 +5,7 @@
  */
 
 import type { CountryCode } from "../../types/tax-identifier";
-import { Money } from "../../value-objects/Money";
+import type { Money } from "../../value-objects/Money";
 import type { TaxRegime } from "./types";
 
 const IVA_RATE = 0.19;

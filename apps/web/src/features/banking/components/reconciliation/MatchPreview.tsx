@@ -1,17 +1,17 @@
 import {
+	ArrowRight,
+	Check,
 	FileText,
 	Receipt,
-	Check,
-	X,
-	ArrowRight,
 	Sparkles,
+	X,
 } from "lucide-react";
-import { cn, n } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { MotionDiv } from "@/components/ui/motion-primitives";
-import { useHaptics, useFinancialHaptics } from "@/hooks/useHaptics";
-import { LEGIBILITY } from "@/lib/legibility";
+import { useFinancialHaptics, useHaptics } from "@/hooks/useHaptics";
 import { confidenceToStatus } from "@/lib/design-tokens/semantic-tokens";
+import { LEGIBILITY } from "@/lib/legibility";
+import { cn, n } from "@/lib/utils";
 
 interface MatchPreviewProps {
 	transaction: {
@@ -48,8 +48,7 @@ export const MatchPreview = ({
 	const { trigger } = useHaptics();
 	const financialHaptics = useFinancialHaptics();
 
-	const formatMoney = (amount: string) =>
-		n(parseFloat(amount));
+	const formatMoney = (amount: string) => n(parseFloat(amount));
 
 	const getScoreColor = () => {
 		const status = confidenceToStatus(matchScore);

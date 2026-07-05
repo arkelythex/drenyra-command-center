@@ -14,18 +14,18 @@
  * - ref="cbc:ID" resolution across namespace boundaries
  */
 
-import { XMLParser, type X2jOptions } from "fast-xml-parser";
-import { readFileSync, existsSync } from "node:fs";
-import { resolve, dirname } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { type X2jOptions, XMLParser } from "fast-xml-parser";
 import type {
-	XsdSchema,
-	XsdElementDef,
-	XsdComplexType,
-	XsdSimpleType,
-	XsdAttributeDef,
 	DocumentType,
+	XsdAttributeDef,
+	XsdComplexType,
+	XsdElementDef,
+	XsdSchema,
+	XsdSimpleType,
 } from "./types";
-import { XSD_FILE_NAMESPACE_MAP, UBL_DOCUMENT_NAMESPACES } from "./types";
+import { UBL_DOCUMENT_NAMESPACES, XSD_FILE_NAMESPACE_MAP } from "./types";
 
 /**
  * Raw parsed XSD file structure before type conversion.
@@ -189,13 +189,13 @@ export class XsdSchemaLoader {
 		const schemaNode = parsed["xsd:schema"] ?? parsed["xs:schema"];
 
 		if (!schemaNode) {
-			throw new Error(
-				`No xsd:schema root element found in ${fileName}`,
-			);
+			throw new Error(`No xsd:schema root element found in ${fileName}`);
 		}
 
 		// Process imports first
-		const imports = this.normalizeArray(schemaNode["xsd:import"] ?? schemaNode["xs:import"]);
+		const imports = this.normalizeArray(
+			schemaNode["xsd:import"] ?? schemaNode["xs:import"],
+		);
 
 		for (const imp of imports) {
 			if (imp["@_schemaLocation"]) {
@@ -294,13 +294,9 @@ export class XsdSchemaLoader {
 		this.parsedSchemas.clear();
 	}
 
-	private buildSchema(
-		raw: RawXsdSchema,
-		fileName: string,
-	): XsdSchema {
+	private buildSchema(raw: RawXsdSchema, fileName: string): XsdSchema {
 		const schema: XsdSchema = {
-			targetNamespace:
-				raw["@_targetNamespace"] ?? "",
+			targetNamespace: raw["@_targetNamespace"] ?? "",
 			elementFormDefault:
 				(raw["@_elementFormDefault"] as "qualified" | "unqualified") ??
 				"unqualified",
@@ -358,17 +354,17 @@ export class XsdSchemaLoader {
 			minOccurs: raw["@_minOccurs"]
 				? Number.parseInt(raw["@_minOccurs"], 10)
 				: 1,
-			maxOccurs: raw["@_maxOccurs"] === "unbounded"
-				? "unbounded"
-				: raw["@_maxOccurs"]
-					? Number.parseInt(raw["@_maxOccurs"], 10)
-					: 1,
+			maxOccurs:
+				raw["@_maxOccurs"] === "unbounded"
+					? "unbounded"
+					: raw["@_maxOccurs"]
+						? Number.parseInt(raw["@_maxOccurs"], 10)
+						: 1,
 			nillable: raw["@_nillable"] === "true",
 		};
 
 		// Inline complexType
-		const inlineCt =
-			raw["xsd:complexType"] ?? raw["xs:complexType"];
+		const inlineCt = raw["xsd:complexType"] ?? raw["xs:complexType"];
 		if (inlineCt) {
 			const parsed = this.parseRawComplexType(inlineCt);
 			element.children = parsed.sequence ?? parsed.choice ?? parsed.all;
@@ -376,8 +372,7 @@ export class XsdSchemaLoader {
 		}
 
 		// Inline simpleType
-		const inlineSt =
-			raw["xsd:simpleType"] ?? raw["xs:simpleType"];
+		const inlineSt = raw["xsd:simpleType"] ?? raw["xs:simpleType"];
 
 		return element;
 	}
@@ -389,12 +384,10 @@ export class XsdSchemaLoader {
 		};
 
 		// Handle simpleContent extension (common in UBL Basic Components)
-		const simpleContent =
-			raw["xsd:simpleContent"] ?? raw["xs:simpleContent"];
+		const simpleContent = raw["xsd:simpleContent"] ?? raw["xs:simpleContent"];
 		if (simpleContent) {
 			const extension =
-				simpleContent["xsd:extension"] ??
-				simpleContent["xs:extension"];
+				simpleContent["xsd:extension"] ?? simpleContent["xs:extension"];
 			if (extension?.["@_base"]) {
 				ct.name = raw["@_name"] ?? extension["@_base"];
 			}
@@ -403,8 +396,7 @@ export class XsdSchemaLoader {
 		}
 
 		// Parse sequence
-		const sequence =
-			raw["xsd:sequence"] ?? raw["xs:sequence"];
+		const sequence = raw["xsd:sequence"] ?? raw["xs:sequence"];
 		if (sequence) {
 			ct.sequence = this.parseSequenceElements(sequence);
 		}
@@ -455,14 +447,12 @@ export class XsdSchemaLoader {
 		return {
 			name: raw["@_name"] ?? raw["@_ref"] ?? "",
 			type: raw["@_type"],
-			use: (raw["@_use"] as "required" | "optional" | "prohibited") ??
-				"optional",
+			use:
+				(raw["@_use"] as "required" | "optional" | "prohibited") ?? "optional",
 		};
 	}
 
-	private parseSequenceElements(
-		sequence: RawXsdSequence,
-	): XsdElementDef[] {
+	private parseSequenceElements(sequence: RawXsdSequence): XsdElementDef[] {
 		const elements: XsdElementDef[] = [];
 		const rawElements = this.normalizeArray(
 			sequence["xsd:element"] ?? sequence["xs:element"] ?? [],
@@ -473,8 +463,7 @@ export class XsdSchemaLoader {
 		}
 
 		// Handle nested choice inside sequence
-		const nestedChoice =
-			sequence["xsd:choice"] ?? sequence["xs:choice"];
+		const nestedChoice = sequence["xsd:choice"] ?? sequence["xs:choice"];
 		if (nestedChoice && !rawElements.length) {
 			const choiceElements = this.parseChoiceElements(nestedChoice);
 			elements.push(...choiceElements);
@@ -555,9 +544,7 @@ export function resolvePrefixedElement(
  * Build a prefix-to-namespace map from an XML document string
  * by extracting xmlns:* declarations.
  */
-export function extractNamespaceMap(
-	xmlContent: string,
-): Map<string, string> {
+export function extractNamespaceMap(xmlContent: string): Map<string, string> {
 	const map = new Map<string, string>();
 	// Match xmlns:prefix="uri" and xmlns="uri" (default)
 	const xmlnsRegex = /xmlns:?(\w*)\s*=\s*"([^"]+)"/g;

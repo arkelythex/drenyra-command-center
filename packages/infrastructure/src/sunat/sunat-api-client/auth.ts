@@ -33,8 +33,6 @@ export async function requestNewToken(
 		accessToken: data.access_token,
 		tokenType: data.token_type || "Bearer",
 		expiresIn: data.expires_in || 3600,
-		expiresAt: new Date(
-			Date.now() + (data.expires_in || 3600) * 1000 - 60000,
-		),
+		expiresAt: new Date(Date.now() + (data.expires_in || 3600) * 1000 - 60000),
 	};
 }

@@ -1,4 +1,4 @@
-import { createHash } from 'node:crypto';
+import { createHash } from "node:crypto";
 
 /**
  * AuditQueryFingerprintInput interface.
@@ -10,54 +10,54 @@ import { createHash } from 'node:crypto';
  * ```
  */
 export interface AuditQueryFingerprintInput {
-  economicGroupId: string;
-  detractionProfile?: string;
-  detractionRuleCode?: string;
-  dateFrom?: string;
-  dateTo?: string;
-  limit?: number;
-  offset?: number;
-  sortBy?: string;
-  sortDir?: string;
+	economicGroupId: string;
+	detractionProfile?: string;
+	detractionRuleCode?: string;
+	dateFrom?: string;
+	dateTo?: string;
+	limit?: number;
+	offset?: number;
+	sortBy?: string;
+	sortDir?: string;
 }
 
 const ISO_CIVIL_DATE_RE = /^(\d{4})-(\d{2})-(\d{2})$/;
-const PERU_UTC_OFFSET = '-05:00';
+const PERU_UTC_OFFSET = "-05:00";
 
-function parsePeruCivilDate(value: string, boundary: 'start' | 'end'): Date {
-  const match = ISO_CIVIL_DATE_RE.exec(value);
-  if (!match) {
-    throw new Error(`Invalid date format: ${value}`);
-  }
+function parsePeruCivilDate(value: string, boundary: "start" | "end"): Date {
+	const match = ISO_CIVIL_DATE_RE.exec(value);
+	if (!match) {
+		throw new Error(`Invalid date format: ${value}`);
+	}
 
-  const year = Number.parseInt(match[1], 10);
-  const month = Number.parseInt(match[2], 10);
-  const day = Number.parseInt(match[3], 10);
+	const year = Number.parseInt(match[1], 10);
+	const month = Number.parseInt(match[2], 10);
+	const day = Number.parseInt(match[3], 10);
 
-  const validationDate = new Date(Date.UTC(year, month - 1, day));
-  if (
-    validationDate.getUTCFullYear() !== year ||
-    validationDate.getUTCMonth() !== month - 1 ||
-    validationDate.getUTCDate() !== day
-  ) {
-    throw new Error(`Invalid date value: ${value}`);
-  }
+	const validationDate = new Date(Date.UTC(year, month - 1, day));
+	if (
+		validationDate.getUTCFullYear() !== year ||
+		validationDate.getUTCMonth() !== month - 1 ||
+		validationDate.getUTCDate() !== day
+	) {
+		throw new Error(`Invalid date value: ${value}`);
+	}
 
-  const time = boundary === 'start' ? '00:00:00.000' : '23:59:59.999';
-  return new Date(`${value}T${time}${PERU_UTC_OFFSET}`);
+	const time = boundary === "start" ? "00:00:00.000" : "23:59:59.999";
+	return new Date(`${value}T${time}${PERU_UTC_OFFSET}`);
 }
 
 function escapeCsvCell(value: unknown): string {
-  if (value === null || value === undefined) return '';
-  const raw =
-    value instanceof Date
-      ? value.toISOString()
-      : typeof value === 'object'
-        ? JSON.stringify(value)
-        : String(value);
+	if (value === null || value === undefined) return "";
+	const raw =
+		value instanceof Date
+			? value.toISOString()
+			: typeof value === "object"
+				? JSON.stringify(value)
+				: String(value);
 
-  if (!/[,"\n]/.test(raw)) return raw;
-  return `"${raw.replace(/"/g, '""')}"`;
+	if (!/[,"\n]/.test(raw)) return raw;
+	return `"${raw.replace(/"/g, '""')}"`;
 }
 
 /**
@@ -71,36 +71,38 @@ function escapeCsvCell(value: unknown): string {
  * console.log(result);
  * ```
  */
-export function buildDetractionAuditCsv(items: Array<Record<string, unknown>>): string {
-  const headers = [
-    'id',
-    'createdAt',
-    'economicGroupId',
-    'fromCompanyId',
-    'fromCompanyName',
-    'fromCompanyRuc',
-    'toCompanyId',
-    'toCompanyName',
-    'toCompanyRuc',
-    'amount',
-    'currency',
-    'taxType',
-    'igvAmount',
-    'detractionAmount',
-    'detractionRate',
-    'detractionProfile',
-    'detractionRuleCode',
-    'status',
-    'reconciledAt',
-  ];
+export function buildDetractionAuditCsv(
+	items: Array<Record<string, unknown>>,
+): string {
+	const headers = [
+		"id",
+		"createdAt",
+		"economicGroupId",
+		"fromCompanyId",
+		"fromCompanyName",
+		"fromCompanyRuc",
+		"toCompanyId",
+		"toCompanyName",
+		"toCompanyRuc",
+		"amount",
+		"currency",
+		"taxType",
+		"igvAmount",
+		"detractionAmount",
+		"detractionRate",
+		"detractionProfile",
+		"detractionRuleCode",
+		"status",
+		"reconciledAt",
+	];
 
-  const lines = [headers.join(',')];
-  for (const item of items) {
-    const row = headers.map((header) => escapeCsvCell(item[header]));
-    lines.push(row.join(','));
-  }
+	const lines = [headers.join(",")];
+	for (const item of items) {
+		const row = headers.map((header) => escapeCsvCell(item[header]));
+		lines.push(row.join(","));
+	}
 
-  return `\uFEFF${lines.join('\n')}`;
+	return `\uFEFF${lines.join("\n")}`;
 }
 
 /**
@@ -114,20 +116,22 @@ export function buildDetractionAuditCsv(items: Array<Record<string, unknown>>): 
  * console.log(result);
  * ```
  */
-export function buildAuditQueryFingerprint(input: AuditQueryFingerprintInput): string {
-  const payload = {
-    economicGroupId: input.economicGroupId,
-    detractionProfile: input.detractionProfile ?? null,
-    detractionRuleCode: input.detractionRuleCode ?? null,
-    dateFrom: input.dateFrom ?? null,
-    dateTo: input.dateTo ?? null,
-    limit: input.limit ?? null,
-    offset: input.offset ?? null,
-    sortBy: input.sortBy ?? 'createdAt',
-    sortDir: input.sortDir ?? 'desc',
-  };
+export function buildAuditQueryFingerprint(
+	input: AuditQueryFingerprintInput,
+): string {
+	const payload = {
+		economicGroupId: input.economicGroupId,
+		detractionProfile: input.detractionProfile ?? null,
+		detractionRuleCode: input.detractionRuleCode ?? null,
+		dateFrom: input.dateFrom ?? null,
+		dateTo: input.dateTo ?? null,
+		limit: input.limit ?? null,
+		offset: input.offset ?? null,
+		sortBy: input.sortBy ?? "createdAt",
+		sortDir: input.sortDir ?? "desc",
+	};
 
-  return sha256Utf8(JSON.stringify(payload));
+	return sha256Utf8(JSON.stringify(payload));
 }
 
 /**
@@ -143,24 +147,26 @@ export function buildAuditQueryFingerprint(input: AuditQueryFingerprintInput): s
  * ```
  */
 export function parseAuditDateRange(input: {
-  dateFrom?: string;
-  dateTo?: string;
+	dateFrom?: string;
+	dateTo?: string;
 }): {
-  dateFrom?: Date;
-  dateTo?: Date;
+	dateFrom?: Date;
+	dateTo?: Date;
 } {
-  const dateFrom = input.dateFrom
-    ? parsePeruCivilDate(input.dateFrom, 'start')
-    : undefined;
-  const dateTo = input.dateTo
-    ? parsePeruCivilDate(input.dateTo, 'end')
-    : undefined;
+	const dateFrom = input.dateFrom
+		? parsePeruCivilDate(input.dateFrom, "start")
+		: undefined;
+	const dateTo = input.dateTo
+		? parsePeruCivilDate(input.dateTo, "end")
+		: undefined;
 
-  if (dateFrom && dateTo && dateFrom.getTime() > dateTo.getTime()) {
-    throw new Error('Invalid date range: dateFrom must be before or equal to dateTo');
-  }
+	if (dateFrom && dateTo && dateFrom.getTime() > dateTo.getTime()) {
+		throw new Error(
+			"Invalid date range: dateFrom must be before or equal to dateTo",
+		);
+	}
 
-  return { dateFrom, dateTo };
+	return { dateFrom, dateTo };
 }
 
 /**
@@ -175,7 +181,7 @@ export function parseAuditDateRange(input: {
  * ```
  */
 export function sha256Utf8(value: string): string {
-  return createHash('sha256').update(value, 'utf8').digest('hex');
+	return createHash("sha256").update(value, "utf8").digest("hex");
 }
 
 /**
@@ -190,5 +196,5 @@ export function sha256Utf8(value: string): string {
  * ```
  */
 export function sha256Json(value: unknown): string {
-  return sha256Utf8(JSON.stringify(value));
+	return sha256Utf8(JSON.stringify(value));
 }

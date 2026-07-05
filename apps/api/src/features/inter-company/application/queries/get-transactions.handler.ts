@@ -5,8 +5,8 @@
  * enriched with company metadata (name, RUC).
  */
 
-import type { IInterCompanyTransactionRepository } from '../../domain/inter-company-transaction.repository';
-import type { InterCompanyTransactionEnriched } from '../../domain/inter-company-transaction.entity';
+import type { InterCompanyTransactionEnriched } from "../../domain/inter-company-transaction.entity";
+import type { IInterCompanyTransactionRepository } from "../../domain/inter-company-transaction.repository";
 
 /**
  * GetTransactionsHandler class.
@@ -18,9 +18,13 @@ import type { InterCompanyTransactionEnriched } from '../../domain/inter-company
  * ```
  */
 export class GetTransactionsHandler {
-  constructor(private readonly repository: IInterCompanyTransactionRepository) {}
+	constructor(
+		private readonly repository: IInterCompanyTransactionRepository,
+	) {}
 
-  async execute(economicGroupId: string): Promise<InterCompanyTransactionEnriched[]> {
-    return this.repository.findManyByGroup(economicGroupId);
-  }
+	async execute(
+		economicGroupId: string,
+	): Promise<InterCompanyTransactionEnriched[]> {
+		return this.repository.findManyByGroup(economicGroupId);
+	}
 }

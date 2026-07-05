@@ -1,11 +1,11 @@
-import { useCallback } from "react";
 import {
-	Zap,
 	CheckCircle2,
-	XCircle,
 	Download,
 	type LucideIcon,
+	XCircle,
+	Zap,
 } from "lucide-react";
+import { useCallback } from "react";
 import { cn } from "@/lib/utils";
 import type { SkillDTO } from "../skills.api";
 
@@ -37,7 +37,12 @@ export interface SkillCardProps {
 	onSelect?: (skill: SkillDTO) => void;
 }
 
-export function SkillCard({ skill, onInstall, onUninstall, onSelect }: SkillCardProps) {
+export function SkillCard({
+	skill,
+	onInstall,
+	onUninstall,
+	onSelect,
+}: SkillCardProps) {
 	const isInstalled = skill.installed ?? false;
 	const Icon = OUTPUT_ICON[skill.category] || Zap;
 

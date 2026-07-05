@@ -1,7 +1,7 @@
 import { isCompleteDrenyraCapabilityScope } from "./capabilities";
 import {
-	DRENYRA_COMMAND_STATUS,
 	type CreateDrenyraCommandEnvelopeInput,
+	DRENYRA_COMMAND_STATUS,
 	type DrenyraApprovalState,
 	type DrenyraCommandDiff,
 	type DrenyraCommandEnvelope,
@@ -31,7 +31,10 @@ export function createDrenyraCommandEnvelope(
 	const approval = normalizeApproval(input.approval, input.status);
 	assertEvidenceRefs(evidence);
 	assertChecksReferenceEvidence(deterministicChecks, evidence);
-	if (input.status === DRENYRA_COMMAND_STATUS.NEEDS_APPROVAL && !approval.required) {
+	if (
+		input.status === DRENYRA_COMMAND_STATUS.NEEDS_APPROVAL &&
+		!approval.required
+	) {
 		throw new Error("DRENYRA_COMMAND_APPROVAL_REQUIRED");
 	}
 	return {
@@ -55,12 +58,22 @@ function normalizeApproval(
 ): DrenyraApprovalState {
 	if (approval) return approval;
 	if (status === DRENYRA_COMMAND_STATUS.NEEDS_APPROVAL) {
-		return { required: true, status: "pending", summary: "Human approval required" };
+		return {
+			required: true,
+			status: "pending",
+			summary: "Human approval required",
+		};
 	}
-	return { required: false, status: "not_required", summary: "No approval required" };
+	return {
+		required: false,
+		status: "not_required",
+		summary: "No approval required",
+	};
 }
 
-function assertEvidenceRefs(evidence: readonly DrenyraCommandEvidenceRef[]): void {
+function assertEvidenceRefs(
+	evidence: readonly DrenyraCommandEvidenceRef[],
+): void {
 	const ids = new Set<string>();
 	for (const item of evidence) {
 		assertNonEmpty(item.id, "evidence.id");

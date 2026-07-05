@@ -16,4 +16,4 @@ export function getDrenyraApiKey(
 	return legacy === "" ? undefined : legacy;
 }
 
-export { ARKELYTHEX_API_KEY, ARKALYTHIX_API_KEY };
+export { ARKALYTHIX_API_KEY, ARKELYTHEX_API_KEY };

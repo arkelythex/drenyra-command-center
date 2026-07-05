@@ -35,102 +35,99 @@ import type { ApprovalGate, ApprovalRequest } from "./types.js";
  * ```
  */
 export class ApprovalWorkflow {
-  private gates: ApprovalGate[] = [];
+	private gates: ApprovalGate[] = [];
 
-  /**
-   * Add an approval gate to the workflow.
-   * Gates are evaluated in order of addition.
-   */
-  addGate(gate: ApprovalGate): void {
-    this.gates.push(gate);
-  }
+	/**
+	 * Add an approval gate to the workflow.
+	 * Gates are evaluated in order of addition.
+	 */
+	addGate(gate: ApprovalGate): void {
+		this.gates.push(gate);
+	}
 
-  /**
-   * Add multiple gates at once.
-   */
-  addGates(gates: ApprovalGate[]): void {
-    this.gates.push(...gates);
-  }
+	/**
+	 * Add multiple gates at once.
+	 */
+	addGates(gates: ApprovalGate[]): void {
+		this.gates.push(...gates);
+	}
 
-  /**
-   * Remove a gate by name.
-   */
-  removeGate(name: string): boolean {
-    const index = this.gates.findIndex((g) => g.name === name);
-    if (index === -1) return false;
-    this.gates.splice(index, 1);
-    return true;
-  }
+	/**
+	 * Remove a gate by name.
+	 */
+	removeGate(name: string): boolean {
+		const index = this.gates.findIndex((g) => g.name === name);
+		if (index === -1) return false;
+		this.gates.splice(index, 1);
+		return true;
+	}
 
-  /**
-   * Get all registered gates.
-   */
-  getGates(): readonly ApprovalGate[] {
-    return [...this.gates];
-  }
+	/**
+	 * Get all registered gates.
+	 */
+	getGates(): readonly ApprovalGate[] {
+		return [...this.gates];
+	}
 
-  /**
-   * Check if a task matches any gate's condition.
-   * Optionally check only against a specific agentRequiresApproval flag.
-   */
-  taskRequiresApproval(
-    task: string,
-    agentRequiresApproval?: boolean,
-  ): boolean {
-    if (agentRequiresApproval) return true;
-    return this.gates.some((gate) => gate.condition(task));
-  }
+	/**
+	 * Check if a task matches any gate's condition.
+	 * Optionally check only against a specific agentRequiresApproval flag.
+	 */
+	taskRequiresApproval(task: string, agentRequiresApproval?: boolean): boolean {
+		if (agentRequiresApproval) return true;
+		return this.gates.some((gate) => gate.condition(task));
+	}
 
-  /**
-   * Evaluate all matching gates for a task and return the approval decisions.
-   * If no gates match, the task is considered approved by default.
-   *
-   * Returns an array of results, one per matching gate.
-   * All gates must approve for the task to proceed.
-   */
-  async evaluate(
-    request: ApprovalRequest,
-  ): Promise<{ gate: string; approved: boolean; reason?: string }[]> {
-    const results: { gate: string; approved: boolean; reason?: string }[] = [];
+	/**
+	 * Evaluate all matching gates for a task and return the approval decisions.
+	 * If no gates match, the task is considered approved by default.
+	 *
+	 * Returns an array of results, one per matching gate.
+	 * All gates must approve for the task to proceed.
+	 */
+	async evaluate(
+		request: ApprovalRequest,
+	): Promise<{ gate: string; approved: boolean; reason?: string }[]> {
+		const results: { gate: string; approved: boolean; reason?: string }[] = [];
 
-    for (const gate of this.gates) {
-      if (!gate.condition(request.task)) continue;
+		for (const gate of this.gates) {
+			if (!gate.condition(request.task)) continue;
 
-      if (gate.handler) {
-        const approved = await gate.handler(request);
-        results.push({
-          gate: gate.name,
-          approved,
-          reason: approved
-            ? undefined
-            : `Gate "${gate.name}" rejected the request`,
-        });
-      } else {
-        // Gate matches but has no handler — requires intervention
-        results.push({
-          gate: gate.name,
-          approved: false,
-          reason: `Gate "${gate.name}" matches but no handler is registered`,
-        });
-      }
-    }
+			if (gate.handler) {
+				const approved = await gate.handler(request);
+				results.push({
+					gate: gate.name,
+					approved,
+					reason: approved
+						? undefined
+						: `Gate "${gate.name}" rejected the request`,
+				});
+			} else {
+				// Gate matches but has no handler — requires intervention
+				results.push({
+					gate: gate.name,
+					approved: false,
+					reason: `Gate "${gate.name}" matches but no handler is registered`,
+				});
+			}
+		}
 
-    // If no gates matched, auto-approved
-    if (results.length === 0) {
-      results.push({
-        gate: "__default__",
-        approved: true,
-        reason: "No gates matched — auto-approved",
-      });
-    }
+		// If no gates matched, auto-approved
+		if (results.length === 0) {
+			results.push({
+				gate: "__default__",
+				approved: true,
+				reason: "No gates matched — auto-approved",
+			});
+		}
 
-    return results;
-  }
+		return results;
+	}
 
-  /**
-   * Clear all gates.
-   */
-  clear(): void {
-    this.gates = [];
-  }
+	/**
+	 * Clear all gates.
+	 */
+	clear(): void {
+		this.gates = [];
+	}
 }

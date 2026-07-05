@@ -4,19 +4,19 @@
  * @module ai/session
  */
 
-export type { SessionStore } from "./session-store";
-export type { BatchRunData, BatchItemData } from "./session.types";
+export { PostgresSessionStore } from "./postgres-store";
 export type {
-	AgentRunState,
 	AgentRunEvent,
+	AgentRunState,
+	AgentRunStatus,
+	AgentWorkflowState,
+	BatchItemData,
+	BatchRunData,
 	RunInput,
 	RunStateFilter,
 	StateSnapshot,
-	AgentRunStatus,
-	AgentWorkflowState,
 } from "./session.types";
-export { SessionStoreError, SessionNotFoundError } from "./session.types";
-export { PostgresSessionStore } from "./postgres-store";
-export { SessionRecovery } from "./session-recovery";
+export { SessionNotFoundError, SessionStoreError } from "./session.types";
 export type { RecoveryResult } from "./session-recovery";
-export { SessionRecoveryError } from "./session-recovery";
+export { SessionRecovery, SessionRecoveryError } from "./session-recovery";
+export type { SessionStore } from "./session-store";

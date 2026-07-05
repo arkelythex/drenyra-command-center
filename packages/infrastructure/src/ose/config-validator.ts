@@ -12,7 +12,8 @@ export class OSEConfigValidator {
 	validate(config: OSEConfig): ValidationResult {
 		const missing: string[] = [];
 		const errors: string[] = [];
-		const isSimulation = config.provider === "simulation" || config.simulationMode === true;
+		const isSimulation =
+			config.provider === "simulation" || config.simulationMode === true;
 
 		if (isSimulation) {
 			return { valid: true, missing, errors };

@@ -4,8 +4,8 @@ import {
 	pgTable,
 	text,
 	timestamp,
-	uuid,
 	uniqueIndex,
+	uuid,
 } from "drizzle-orm/pg-core";
 import { evidence } from "./evidence.schema";
 import { threads } from "./threads.schema";

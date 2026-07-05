@@ -10,12 +10,12 @@
 import {
 	EVIDENCE_EDGE_KIND,
 	EVIDENCE_NODE_KIND,
-	isFiscalTruthScope,
 	type EvidenceEdge,
 	type EvidenceGraphRepository,
 	type EvidenceNode,
 	type EvidenceNodeKind,
 	type FiscalTruthScope,
+	isFiscalTruthScope,
 } from "@drenyra/domain";
 import type {
 	DrenyraBrainEvent,
@@ -35,7 +35,9 @@ export interface DrenyraBrainEvidenceBridge {
 function organizationIdToNumber(value: string | undefined): number | null {
 	if (!value) return null;
 	const parsed = Number.parseInt(value, 10);
-	return Number.isSafeInteger(parsed) && String(parsed) === value ? parsed : null;
+	return Number.isSafeInteger(parsed) && String(parsed) === value
+		? parsed
+		: null;
 }
 
 export function toFiscalTruthScope(

@@ -9,8 +9,13 @@
  */
 
 import { getTenantContext, type TenantContext } from "./api";
-import { ApiError, extractOkData, extractOkDataOrPassthrough, unwrap } from "./api-helpers";
 import type { ApiResult } from "./api-factory.types";
+import {
+	ApiError,
+	extractOkData,
+	extractOkDataOrPassthrough,
+	unwrap,
+} from "./api-helpers";
 
 export type { TenantContext };
 
@@ -83,7 +88,9 @@ export async function queryApi<T>(
 	call: (ctx: TenantContext) => Promise<unknown>,
 	fallbackMessage: string,
 ): Promise<T> {
-	const body = await unwrap(call(getTenantContext()) as Promise<Record<string, unknown>>);
+	const body = await unwrap(
+		call(getTenantContext()) as Promise<Record<string, unknown>>,
+	);
 	return extractOkData(body, fallbackMessage) as T;
 }
 
@@ -112,7 +119,9 @@ export async function queryApiPassthrough<T>(
 	call: (ctx: TenantContext) => Promise<unknown>,
 	fallbackMessage: string,
 ): Promise<T> {
-	const body = await unwrap(call(getTenantContext()) as Promise<Record<string, unknown>>);
+	const body = await unwrap(
+		call(getTenantContext()) as Promise<Record<string, unknown>>,
+	);
 	return extractOkDataOrPassthrough(body, fallbackMessage) as T;
 }
 
@@ -140,6 +149,8 @@ export async function mutateApi<T>(
 	call: (ctx: TenantContext) => Promise<unknown>,
 	fallbackMessage: string,
 ): Promise<T> {
-	const body = await unwrap(call(getTenantContext()) as Promise<Record<string, unknown>>);
+	const body = await unwrap(
+		call(getTenantContext()) as Promise<Record<string, unknown>>,
+	);
 	return extractOkData(body, fallbackMessage) as T;
 }

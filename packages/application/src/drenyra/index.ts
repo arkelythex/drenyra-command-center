@@ -7,9 +7,10 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
+
+export * from "./brain-evidence-bridge";
+export * from "./fiscal-work-inspect.service";
 export * from "./in-memory-repository";
 export * from "./mock-agents";
 export * from "./repository";
 export * from "./service";
-export * from "./fiscal-work-inspect.service";
-export * from "./brain-evidence-bridge";

@@ -1,15 +1,15 @@
-import { useState } from "react";
 import { KeyRound, Shield, ShieldAlert } from "lucide-react";
-import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import { useState } from "react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { SettingsShell } from "./SettingsShell";
+import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import { SecurityHealth, SessionCard } from "./appearance/SecurityUI";
+import { SettingsButton } from "./appearance/SettingsUI";
 import {
 	SettingSwitch,
 	SettingsRow,
 	SettingsSection,
 } from "./SettingsPrimitives";
-import { SettingsButton } from "./appearance/SettingsUI";
-import { SecurityHealth, SessionCard } from "./appearance/SecurityUI";
+import { SettingsShell } from "./SettingsShell";
 
 export const SecuritySettings = () => {
 	const [twoFactorRequired, setTwoFactorRequired] = useState(true);

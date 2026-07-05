@@ -10,25 +10,23 @@ export {
 	InvalidAccountingPeriodError,
 	InvalidAccountingTransitionError,
 } from "./accounting-period";
-
 export {
-	ExchangeRate,
-	InvalidExchangeRateError,
-} from "./exchange-rate";
+	type CDRData,
+	CPELog,
+	InvalidCPELogError,
+	InvalidCPELogTransitionError,
+	type SunatStatus,
+} from "./cpe-log";
 
 export {
 	Detraccion,
 	type DetraccionStatus,
-	type SpotCode,
-	SPOT_CODE_REGISTRY,
 	InvalidDetraccionError,
 	InvalidDetraccionTransitionError,
+	SPOT_CODE_REGISTRY,
+	type SpotCode,
 } from "./detraccion";
-
 export {
-	CPELog,
-	type SunatStatus,
-	type CDRData,
-	InvalidCPELogError,
-	InvalidCPELogTransitionError,
-} from "./cpe-log";
+	ExchangeRate,
+	InvalidExchangeRateError,
+} from "./exchange-rate";

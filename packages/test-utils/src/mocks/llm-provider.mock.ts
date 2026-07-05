@@ -55,9 +55,7 @@ export function llmFailure(_error = "API error"): LLMResponse {
  * Pre-built LLM rate limited response.
  * Includes retryAfter field indicating seconds to wait before retrying.
  */
-export function llmRateLimited(
-	retryAfter = 30,
-): LLMResponse {
+export function llmRateLimited(retryAfter = 30): LLMResponse {
 	return {
 		text: JSON.stringify({
 			error: "rate_limit_exceeded",

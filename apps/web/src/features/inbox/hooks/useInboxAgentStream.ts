@@ -2,7 +2,11 @@ import { useCallback, useRef, useState } from "react";
 import { getCompanyContext } from "@/lib/company-context";
 import { buildApiUrl } from "@/lib/http-client";
 import { INBOX_PROCESS_ENDPOINT } from "../inbox.config";
-import type { BatchCompleteEvent, InboxStreamEvent, InboxUiPhase } from "../inbox.schema";
+import type {
+	BatchCompleteEvent,
+	InboxStreamEvent,
+	InboxUiPhase,
+} from "../inbox.schema";
 
 function parseSseBlock(block: string): InboxStreamEvent | null {
 	const lines = block.split("\n");
@@ -136,7 +140,10 @@ export function useInboxAgentStream(): UseInboxAgentStreamResult {
 						setBatch(parsed.payload);
 						setPhase("complete");
 					}
-					if (parsed.type === "invoice:error" && parsed.payload.invoiceId === "batch") {
+					if (
+						parsed.type === "invoice:error" &&
+						parsed.payload.invoiceId === "batch"
+					) {
 						throw new Error(parsed.payload.error);
 					}
 				}

@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
-	themePackageSchema,
-	THEME_PACKAGE_SCHEMA_ID,
 	isAllowedColorValue,
+	THEME_PACKAGE_SCHEMA_ID,
+	themePackageSchema,
 } from "../theme-package.schema";
 
 describe("themePackageSchema", () => {
@@ -63,7 +63,9 @@ describe("isAllowedColorValue", () => {
 		expect(isAllowedColorValue("#fff")).toBe(true);
 		expect(isAllowedColorValue("rgb(0, 0, 0)")).toBe(true);
 		expect(isAllowedColorValue("oklch(0.75 0.2 220 / 0.9)")).toBe(true);
-		expect(isAllowedColorValue("color-mix(in srgb, #fff, #000 30%)")).toBe(true);
+		expect(isAllowedColorValue("color-mix(in srgb, #fff, #000 30%)")).toBe(
+			true,
+		);
 		expect(isAllowedColorValue("var(--color-brand-500)")).toBe(true);
 	});
 

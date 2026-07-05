@@ -61,7 +61,7 @@ export const AgentCard = memo(function AgentCard({
 			transition={{ delay: index * 0.05, duration: 0.3 }}
 			layout
 			className={cn(
-					"group relative flex items-center gap-3 overflow-hidden rounded-2xl border p-2.5 transition-[background-color,border-color,box-shadow,transform] duration-300",
+				"group relative flex items-center gap-3 overflow-hidden rounded-2xl border p-2.5 transition-[background-color,border-color,box-shadow,transform] duration-300",
 				!isCollapsed && "hover:bg-muted/40 hover:border-border",
 				config.containerClass,
 			)}
@@ -83,7 +83,7 @@ export const AgentCard = memo(function AgentCard({
 			{/* Icono del agente con estado visual */}
 			<div
 				className={cn(
-						"relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border transition-[background-color,border-color,color,box-shadow,transform] duration-300",
+					"relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border transition-[background-color,border-color,color,box-shadow,transform] duration-300",
 					config.iconClass,
 				)}
 			>
@@ -120,7 +120,7 @@ export const AgentCard = memo(function AgentCard({
 				<Icon
 					size={20}
 					className={cn(
-							"relative z-10 transition-[color,transform,opacity] duration-300",
+						"relative z-10 transition-[color,transform,opacity] duration-300",
 						isActive && "animate-pulse",
 					)}
 				/>
@@ -155,7 +155,7 @@ export const AgentCard = memo(function AgentCard({
 						</span>
 						<span
 							className={cn(
-									"rounded-md border px-2 py-0.5 text-3xs font-bold uppercase tracking-wider transition-[background-color,border-color,color,box-shadow,transform] duration-200",
+								"rounded-md border px-2 py-0.5 text-3xs font-bold uppercase tracking-wider transition-[background-color,border-color,color,box-shadow,transform] duration-200",
 								config.badgeClass,
 							)}
 						>

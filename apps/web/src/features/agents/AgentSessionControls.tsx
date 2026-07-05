@@ -1,7 +1,7 @@
 import { Pause, Play, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { AgentSessionStatusDTO } from "./agents.types";
 import * as agentsApi from "./agents.api";
+import type { AgentSessionStatusDTO } from "./agents.types";
 
 export interface AgentSessionControlsProps {
 	session: AgentSessionStatusDTO;

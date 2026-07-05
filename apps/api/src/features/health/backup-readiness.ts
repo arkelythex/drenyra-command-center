@@ -1,4 +1,4 @@
-import { readdir, stat, readFile } from "node:fs/promises";
+import { readdir, readFile, stat } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const DEFAULT_BACKUP_MAX_AGE_HOURS = 24;

@@ -56,9 +56,7 @@ export function ActiveCompanySwitcher({
 				) : (
 					<div className="min-w-0">
 						<div
-							className={cn(
-								"truncate font-semibold text-[13px]",
-							)}
+							className={cn("truncate font-semibold text-[13px]")}
 							title={companyContext.companyName}
 						>
 							{companyContext.companyName}
@@ -66,9 +64,7 @@ export function ActiveCompanySwitcher({
 					</div>
 				)}
 				<span
-					className={cn(
-						"truncate text-[var(--text-muted)] block text-label",
-					)}
+					className={cn("truncate text-[var(--text-muted)] block text-label")}
 				>
 					RUC {companyContext.ruc}
 				</span>

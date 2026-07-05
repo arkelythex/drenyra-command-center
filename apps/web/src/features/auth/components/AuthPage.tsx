@@ -2,12 +2,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { Text } from "@/components/atoms/text";
 import {
-	MotionDiv,
 	containerVariants,
 	entranceVariants,
+	MotionDiv,
 } from "@/components/ui/motion-primitives";
-import { Text } from "@/components/atoms/text";
 import { useAuthStore } from "../hooks/useAuth";
 import {
 	RegisterCorporateUserError,
@@ -37,7 +37,6 @@ export function AuthPage() {
 	const { login } = useAuthStore();
 
 	useEffect(() => {
-		 
 		setIsLoading(false);
 	}, []);
 

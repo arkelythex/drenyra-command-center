@@ -7,6 +7,8 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
+
+import type { DrenyraBrainEvidenceBridge } from "@drenyra/application/drenyra";
 import type {
 	DrenyraBrainEvent,
 	DrenyraBrainEventType,
@@ -16,7 +18,6 @@ import type {
 	DrenyraBrainTurn,
 	DrenyraFiscalScope,
 } from "@drenyra/domain/drenyra";
-import type { DrenyraBrainEvidenceBridge } from "@drenyra/application/drenyra";
 import type { DrenyraBrainRepository } from "./brain.repository";
 import type {
 	CreateDrenyraBrainThreadInput,
@@ -33,8 +34,12 @@ export interface DrenyraBrainServiceDeps {
 }
 
 export interface DrenyraBrainService {
-	createThread(input: CreateDrenyraBrainThreadInput): Promise<DrenyraBrainThread>;
-	listThreads(input: ListDrenyraBrainThreadsInput): Promise<DrenyraBrainThread[]>;
+	createThread(
+		input: CreateDrenyraBrainThreadInput,
+	): Promise<DrenyraBrainThread>;
+	listThreads(
+		input: ListDrenyraBrainThreadsInput,
+	): Promise<DrenyraBrainThread[]>;
 	startTurn(input: StartDrenyraBrainTurnInput): Promise<DrenyraBrainTurn>;
 	listItems(input: ListDrenyraBrainItemsInput): Promise<DrenyraBrainItem[]>;
 	listEvents(input: ListDrenyraBrainItemsInput): Promise<DrenyraBrainEvent[]>;
@@ -97,7 +102,10 @@ export function createDrenyraBrainService(
 				type: "thread_created",
 				actorId: input.createdBy,
 				sourceSurface: input.sourceSurface,
-				metadata: { linkedCaseId: input.linkedCaseId, linkedMissionId: input.linkedMissionId },
+				metadata: {
+					linkedCaseId: input.linkedCaseId,
+					linkedMissionId: input.linkedMissionId,
+				},
 			});
 			return thread;
 		},

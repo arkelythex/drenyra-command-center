@@ -5,15 +5,12 @@
  * enforcing tenant-scoped isolation on all queries.
  */
 
-import { eq, and, sql } from "drizzle-orm";
+import { aiAgents, type NewAiAgent } from "@drenyra/persistence/schema";
+import { and, eq, sql } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import {
-	aiAgents,
-	type NewAiAgent,
-} from "@drenyra/persistence/schema";
-import {
-	AgentRegistryEntrySchema,
 	type AgentRegistryEntry,
+	AgentRegistryEntrySchema,
 	type TenantCompanyRucScope,
 } from "./contracts";
 
@@ -109,9 +106,7 @@ export class AgentRegistry {
 	/**
 	 * Query agents by capability using PostgreSQL array containment operator (@>).
 	 */
-	async queryByCapability(
-		capability: string,
-	): Promise<AgentRegistryEntry[]> {
+	async queryByCapability(capability: string): Promise<AgentRegistryEntry[]> {
 		const rows = await this.db
 			.select()
 			.from(aiAgents)
@@ -214,10 +209,12 @@ export class AgentRegistry {
 				companyId: row.companyId ?? "",
 				ruc: row.ruc ?? "",
 			},
-			capabilities: (row.capabilities ?? []) as AgentRegistryEntry["capabilities"],
+			capabilities: (row.capabilities ??
+				[]) as AgentRegistryEntry["capabilities"],
 			allowedTools: row.allowedTools ?? [],
 			approvalClass: row.approvalClass as AgentRegistryEntry["approvalClass"],
-			supportedSurfaces: (row.supportedSurfaces ?? []) as AgentRegistryEntry["supportedSurfaces"],
+			supportedSurfaces: (row.supportedSurfaces ??
+				[]) as AgentRegistryEntry["supportedSurfaces"],
 		};
 	}
 }

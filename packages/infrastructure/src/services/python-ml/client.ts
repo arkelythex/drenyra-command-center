@@ -1,14 +1,14 @@
 import {
-	fraudAnalysisResultSchema,
-	vendorRiskResultSchema,
-	financialHealthResultSchema,
-	MLServiceError,
-	type FraudAnalysisResult,
-	type VendorRiskResult,
-	type FinancialHealthResult,
-	type InvoiceForAnalysis,
-	type VendorForAssessment,
 	type FinancialHealthInput,
+	type FinancialHealthResult,
+	type FraudAnalysisResult,
+	financialHealthResultSchema,
+	fraudAnalysisResultSchema,
+	type InvoiceForAnalysis,
+	MLServiceError,
+	type VendorForAssessment,
+	type VendorRiskResult,
+	vendorRiskResultSchema,
 } from "./types";
 
 // ============================================
@@ -91,10 +91,7 @@ export class PythonMLClient {
 	}
 
 	async assessVendor(vendor: VendorForAssessment): Promise<VendorRiskResult> {
-		const response = await this.makeRequest(
-			"/v1/fraud/assess-vendor",
-			vendor,
-		);
+		const response = await this.makeRequest("/v1/fraud/assess-vendor", vendor);
 
 		const validated = vendorRiskResultSchema.safeParse(response);
 		if (!validated.success) {
@@ -157,10 +154,7 @@ export class PythonMLClient {
 		}>;
 	}
 
-	private async makeRequest(
-		endpoint: string,
-		data: unknown,
-	): Promise<unknown> {
+	private async makeRequest(endpoint: string, data: unknown): Promise<unknown> {
 		try {
 			const response = await fetch(`${this.baseUrl}${endpoint}`, {
 				method: "POST",

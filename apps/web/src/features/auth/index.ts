@@ -11,30 +11,29 @@ export { SessionExpiryNotification } from "./components/SessionExpiryNotificatio
 export { SignupForm } from "./components/SignupForm";
 export { UserMenu } from "./components/UserMenu";
 export { VerifyEmailPage } from "./components/VerifyEmailPage";
-
+export { useAuthStore } from "./hooks/useAuth";
 // Hooks
 export { useAuthSession } from "./hooks/useAuthSession";
-export { useAuthStore } from "./hooks/useAuth";
 
 // Schemas
 export {
-	forgotPasswordSchema,
 	type ForgotPasswordFormData,
+	forgotPasswordSchema,
 } from "./schemas/forgot-password.schema";
 export {
-	resetPasswordSchema,
 	type ResetPasswordFormData,
+	resetPasswordSchema,
 } from "./schemas/reset-password.schema";
 
 // Types
 export type {
-	UserCompanyAccess,
-	User,
-	Session,
 	AuthState,
 	LoginCredentials,
 	RegisterData,
+	Session,
+	User,
+	UserCompanyAccess,
 } from "./types/auth.types";
 
 // Utils
-export { getInitials, getAvatarColor } from "./utils/avatar.utils";
+export { getAvatarColor, getInitials } from "./utils/avatar.utils";

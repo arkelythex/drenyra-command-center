@@ -42,7 +42,9 @@ export function useSidebarLayout(): SidebarLayoutState {
 		setIsCollapsed: useSidebarLayoutStore((s) => s.setIsCollapsed),
 		setIsMobileOpen: useSidebarLayoutStore((s) => s.setIsMobileOpen),
 		setIsFocusMode: useSidebarLayoutStore((s) => s.setIsFocusMode),
-		setIsNotificationsOpen: useSidebarLayoutStore((s) => s.setIsNotificationsOpen),
+		setIsNotificationsOpen: useSidebarLayoutStore(
+			(s) => s.setIsNotificationsOpen,
+		),
 		toggleCollapsed: useSidebarLayoutStore((s) => s.toggleCollapsed),
 		toggleMobileOpen: useSidebarLayoutStore((s) => s.toggleMobileOpen),
 	};

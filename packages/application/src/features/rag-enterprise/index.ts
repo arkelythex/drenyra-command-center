@@ -5,16 +5,16 @@
  */
 
 export type {
-	CreateCollectionRequest,
-	UpdateCollectionRequest,
-	CollectionDTO,
-	DocumentDTO,
 	ChunkDTO,
-	DocumentDetailDTO,
-	QueryRequest,
-	QueryResultDTO,
-	QueryResponseDTO,
-	QueryFeedbackRequest,
+	CollectionDTO,
 	CollectionStatsDTO,
+	CreateCollectionRequest,
+	DocumentDetailDTO,
+	DocumentDTO,
+	QueryFeedbackRequest,
+	QueryRequest,
+	QueryResponseDTO,
+	QueryResultDTO,
 	RAGDashboardStatsDTO,
+	UpdateCollectionRequest,
 } from "./types";

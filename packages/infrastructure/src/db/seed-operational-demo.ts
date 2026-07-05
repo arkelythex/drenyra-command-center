@@ -1,6 +1,6 @@
+import * as schema from "@drenyra/persistence/schema";
 import { eq } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import * as schema from "@drenyra/persistence/schema";
 
 type SeedDb = PostgresJsDatabase<typeof schema>;
 

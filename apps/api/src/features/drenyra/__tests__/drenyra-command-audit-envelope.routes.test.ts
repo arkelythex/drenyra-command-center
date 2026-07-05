@@ -27,11 +27,17 @@ async function postReviewSunat(client: Elysia): Promise<Response> {
 	);
 }
 
-async function listAudit(client: Elysia, requestHeaders = headers): Promise<Response> {
+async function listAudit(
+	client: Elysia,
+	requestHeaders = headers,
+): Promise<Response> {
 	return client.handle(
-		new Request("http://localhost/api/drenyra/commands/audit-events?commandId=review-sunat&eventType=CAPABILITY_ALLOWED", {
-			headers: requestHeaders,
-		}),
+		new Request(
+			"http://localhost/api/drenyra/commands/audit-events?commandId=review-sunat&eventType=CAPABILITY_ALLOWED",
+			{
+				headers: requestHeaders,
+			},
+		),
 	);
 }
 
@@ -49,7 +55,10 @@ describe("Drenyra command envelope audit routes", () => {
 			expect.arrayContaining([
 				expect.objectContaining({
 					eventType: "CAPABILITY_ALLOWED",
-					metadata: expect.objectContaining({ commandId: "review-sunat", traceId: "trace-command-audit-001" }),
+					metadata: expect.objectContaining({
+						commandId: "review-sunat",
+						traceId: "trace-command-audit-001",
+					}),
 				}),
 			]),
 		);
@@ -58,7 +67,10 @@ describe("Drenyra command envelope audit routes", () => {
 	it("keeps command audit reads isolated by fiscal period", async () => {
 		const client = app();
 		await postReviewSunat(client);
-		const response = await listAudit(client, { ...headers, "x-fiscal-period": "2026-06" });
+		const response = await listAudit(client, {
+			...headers,
+			"x-fiscal-period": "2026-06",
+		});
 		const payload = await response.json();
 
 		expect(response.status).toBe(200);

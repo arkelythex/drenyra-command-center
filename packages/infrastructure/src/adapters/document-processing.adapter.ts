@@ -43,7 +43,9 @@ class ExpenseClassifierAdapter implements IExpenseClassifier {
 }
 
 class DocumentSyncProcessorAdapter implements IDocumentSyncProcessor {
-	async processDocumentSync(payload: Parameters<typeof processDocumentSync>[0]) {
+	async processDocumentSync(
+		payload: Parameters<typeof processDocumentSync>[0],
+	) {
 		return processDocumentSync(payload);
 	}
 }
@@ -83,5 +85,4 @@ export const expenseClassifierAdapter = new ExpenseClassifierAdapter();
  * console.log(documentSyncProcessorAdapter);
  * ```
  */
-export const documentSyncProcessorAdapter =
-	new DocumentSyncProcessorAdapter();
+export const documentSyncProcessorAdapter = new DocumentSyncProcessorAdapter();

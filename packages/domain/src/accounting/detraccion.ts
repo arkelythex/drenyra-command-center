@@ -41,7 +41,10 @@ export const SPOT_CODE_REGISTRY: Record<
 	"001": { code: "001", description: "Transporte de bienes por vía terrestre" },
 	"002": { code: "002", description: "Transporte público de pasajeros" },
 	"003": { code: "003", description: "Alquiler de bienes muebles" },
-	"004": { code: "004", description: "Mantenimiento y reparación de bienes muebles" },
+	"004": {
+		code: "004",
+		description: "Mantenimiento y reparación de bienes muebles",
+	},
 	"005": { code: "005", description: "Intermediación laboral y tercerización" },
 	"006": { code: "006", description: "Arrendamiento de bienes inmuebles" },
 	"007": { code: "007", description: "Otros servicios empresariales" },
@@ -352,10 +355,7 @@ export class InvalidDetraccionTransitionError extends Error {
 				`Invalid detraccion transition: ${currentStatus} → ${targetStatus}`,
 		);
 		this.name = "InvalidDetraccionTransitionError";
-		Object.setPrototypeOf(
-			this,
-			InvalidDetraccionTransitionError.prototype,
-		);
+		Object.setPrototypeOf(this, InvalidDetraccionTransitionError.prototype);
 	}
 
 	toJSON(): Record<string, unknown> {

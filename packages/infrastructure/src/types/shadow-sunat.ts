@@ -2,6 +2,7 @@ export type {
 	AreaMetric,
 	AreaRiskAssessment,
 	PreAuditAlert,
+	PreAuditRecommendation,
 	PreAuditResult,
 	RecommendationPriority,
 	RiskLevel,
@@ -11,5 +12,4 @@ export type {
 	SUNATExpectedAction,
 	TaxArea,
 	TaxData,
-	PreAuditRecommendation,
 } from "../sunat/types/shadow-sunat";

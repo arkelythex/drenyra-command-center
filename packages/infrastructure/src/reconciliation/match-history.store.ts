@@ -39,7 +39,11 @@ export class MatchHistoryStore {
 
 	findByDescription(description: string): MatchHistoryRecord[] {
 		const norm = this.normalize(description);
-		return this.history.filter((h) => this.normalize(h.bankDescription).includes(norm) || norm.includes(this.normalize(h.bankDescription)));
+		return this.history.filter(
+			(h) =>
+				this.normalize(h.bankDescription).includes(norm) ||
+				norm.includes(this.normalize(h.bankDescription)),
+		);
 	}
 
 	findByAmount(amount: string): MatchHistoryRecord[] {

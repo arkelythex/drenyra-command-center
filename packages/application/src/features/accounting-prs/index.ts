@@ -7,7 +7,7 @@
 export type {
 	AccountingPrDTO,
 	CreatePrRequest,
-	UpdatePrRequest,
-	PrListQuery,
 	PaginatedResponse,
+	PrListQuery,
+	UpdatePrRequest,
 } from "./types";

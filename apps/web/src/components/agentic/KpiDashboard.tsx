@@ -1,17 +1,17 @@
 "use client";
 
-import { cn, n } from "@/lib/utils";
-import { useActiveCompanyContext } from "@/lib/use-active-company-context";
-import { useAccountingStore, type KpiMetric } from "@/stores/accounting-store";
 import {
-	TrendingUp,
-	TrendingDown,
-	Minus,
-	DollarSign,
-	Percent,
 	CalendarDays,
+	DollarSign,
 	Hash,
+	Minus,
+	Percent,
+	TrendingDown,
+	TrendingUp,
 } from "lucide-react";
+import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { cn, n } from "@/lib/utils";
+import { type KpiMetric, useAccountingStore } from "@/stores/accounting-store";
 
 const FORMAT_ICONS = {
 	currency: DollarSign,

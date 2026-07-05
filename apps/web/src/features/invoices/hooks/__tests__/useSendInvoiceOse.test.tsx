@@ -1,5 +1,5 @@
-import { act, renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -67,7 +67,9 @@ describe("useSendInvoiceOse", () => {
 	});
 
 	it("shows an error toast when OSE submission fails", async () => {
-		vi.mocked(invoicingApi.sendOSE).mockRejectedValue(new Error("COMPANY_SCOPE_REQUIRED"));
+		vi.mocked(invoicingApi.sendOSE).mockRejectedValue(
+			new Error("COMPANY_SCOPE_REQUIRED"),
+		);
 		const { wrapper } = createWrapper();
 		const { result } = renderHook(() => useSendInvoiceOse(), { wrapper });
 

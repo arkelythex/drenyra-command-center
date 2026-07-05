@@ -1,4 +1,4 @@
-import { verifyApprovalPairingCode } from './cognitive-approval-pairing';
+import { verifyApprovalPairingCode } from "./cognitive-approval-pairing";
 
 /**
  * PendingApproval interface.
@@ -10,16 +10,16 @@ import { verifyApprovalPairingCode } from './cognitive-approval-pairing';
  * ```
  */
 export interface PendingApproval {
-  runId: string;
-  toolCallId: string;
-  name: string;
-  args: unknown;
-  requestedAt: string;
-  pairingRequired?: boolean;
-  pairingSessionId?: string;
-  pairingHint?: string;
-  pairingChallenge?: string;
-  pairingCodeHash?: string;
+	runId: string;
+	toolCallId: string;
+	name: string;
+	args: unknown;
+	requestedAt: string;
+	pairingRequired?: boolean;
+	pairingSessionId?: string;
+	pairingHint?: string;
+	pairingChallenge?: string;
+	pairingCodeHash?: string;
 }
 
 /**
@@ -31,7 +31,7 @@ export interface PendingApproval {
  * console.log(value);
  * ```
  */
-export type ApprovalResolution = 'approved' | 'rejected' | 'timeout';
+export type ApprovalResolution = "approved" | "rejected" | "timeout";
 
 /**
  * ApprovalDecision interface.
@@ -43,8 +43,8 @@ export type ApprovalResolution = 'approved' | 'rejected' | 'timeout';
  * ```
  */
 export interface ApprovalDecision {
-  approved: boolean;
-  resolution: ApprovalResolution;
+	approved: boolean;
+	resolution: ApprovalResolution;
 }
 
 /**
@@ -57,14 +57,14 @@ export interface ApprovalDecision {
  * ```
  */
 export interface ApprovalResolveResult {
-  ok: boolean;
-  code: 'resolved' | 'not_found' | 'pairing_required' | 'pairing_invalid';
+	ok: boolean;
+	code: "resolved" | "not_found" | "pairing_required" | "pairing_invalid";
 }
 
 interface PendingApprovalEntry {
-  approval: PendingApproval;
-  resolve: (decision: ApprovalDecision) => void;
-  timeout: ReturnType<typeof setTimeout>;
+	approval: PendingApproval;
+	resolve: (decision: ApprovalDecision) => void;
+	timeout: ReturnType<typeof setTimeout>;
 }
 
 /**
@@ -78,102 +78,106 @@ interface PendingApprovalEntry {
  */
 
 export class CognitiveApprovalStore {
-  private pendingByRun = new Map<string, Map<string, PendingApprovalEntry>>();
+	private pendingByRun = new Map<string, Map<string, PendingApprovalEntry>>();
 
-  async createAndWait(
-    approval: PendingApproval,
-    timeoutMs: number,
-  ): Promise<ApprovalDecision> {
-    const runEntries = this.pendingByRun.get(approval.runId) ?? new Map<string, PendingApprovalEntry>();
-    this.pendingByRun.set(approval.runId, runEntries);
+	async createAndWait(
+		approval: PendingApproval,
+		timeoutMs: number,
+	): Promise<ApprovalDecision> {
+		const runEntries =
+			this.pendingByRun.get(approval.runId) ??
+			new Map<string, PendingApprovalEntry>();
+		this.pendingByRun.set(approval.runId, runEntries);
 
-    if (runEntries.has(approval.toolCallId)) {
-      throw new Error(`Approval already pending for toolCallId=${approval.toolCallId}`);
-    }
+		if (runEntries.has(approval.toolCallId)) {
+			throw new Error(
+				`Approval already pending for toolCallId=${approval.toolCallId}`,
+			);
+		}
 
-    return new Promise<ApprovalDecision>((resolve) => {
-      const timeout = setTimeout(() => {
-        runEntries.delete(approval.toolCallId);
-        if (runEntries.size === 0) this.pendingByRun.delete(approval.runId);
-        resolve({
-          approved: false,
-          resolution: 'timeout',
-        });
-      }, timeoutMs);
+		return new Promise<ApprovalDecision>((resolve) => {
+			const timeout = setTimeout(() => {
+				runEntries.delete(approval.toolCallId);
+				if (runEntries.size === 0) this.pendingByRun.delete(approval.runId);
+				resolve({
+					approved: false,
+					resolution: "timeout",
+				});
+			}, timeoutMs);
 
-      runEntries.set(approval.toolCallId, {
-        approval,
-        timeout,
-        resolve: (decision: ApprovalDecision) => {
-          clearTimeout(timeout);
-          runEntries.delete(approval.toolCallId);
-          if (runEntries.size === 0) this.pendingByRun.delete(approval.runId);
-          resolve(decision);
-        },
-      });
-    });
-  }
+			runEntries.set(approval.toolCallId, {
+				approval,
+				timeout,
+				resolve: (decision: ApprovalDecision) => {
+					clearTimeout(timeout);
+					runEntries.delete(approval.toolCallId);
+					if (runEntries.size === 0) this.pendingByRun.delete(approval.runId);
+					resolve(decision);
+				},
+			});
+		});
+	}
 
-  resolve(
-    runId: string,
-    toolCallId: string,
-    approved: boolean,
-    options?: { pairingCode?: string },
-  ): ApprovalResolveResult {
-    const runEntries = this.pendingByRun.get(runId);
-    if (!runEntries) {
-      return { ok: false, code: 'not_found' };
-    }
+	resolve(
+		runId: string,
+		toolCallId: string,
+		approved: boolean,
+		options?: { pairingCode?: string },
+	): ApprovalResolveResult {
+		const runEntries = this.pendingByRun.get(runId);
+		if (!runEntries) {
+			return { ok: false, code: "not_found" };
+		}
 
-    const entry = runEntries.get(toolCallId);
-    if (!entry) {
-      return { ok: false, code: 'not_found' };
-    }
+		const entry = runEntries.get(toolCallId);
+		if (!entry) {
+			return { ok: false, code: "not_found" };
+		}
 
-    const pairingRequired = entry.approval.pairingRequired === true;
-    if (pairingRequired && approved) {
-      const pairingCodeHash = entry.approval.pairingCodeHash;
-      const pairingSessionId = entry.approval.pairingSessionId;
-      if (!options?.pairingCode || !pairingCodeHash || !pairingSessionId) {
-        return { ok: false, code: 'pairing_required' };
-      }
+		const pairingRequired = entry.approval.pairingRequired === true;
+		if (pairingRequired && approved) {
+			const pairingCodeHash = entry.approval.pairingCodeHash;
+			const pairingSessionId = entry.approval.pairingSessionId;
+			if (!options?.pairingCode || !pairingCodeHash || !pairingSessionId) {
+				return { ok: false, code: "pairing_required" };
+			}
 
-      const normalizedCode = options.pairingCode.trim();
-      if (
-        normalizedCode.length === 0 ||
-        !verifyApprovalPairingCode(
-          normalizedCode,
-          {
-            codeHash: pairingCodeHash,
-            sessionId: pairingSessionId,
-          },
-          { runId, toolCallId },
-        )
-      ) {
-        return { ok: false, code: 'pairing_invalid' };
-      }
-    }
+			const normalizedCode = options.pairingCode.trim();
+			if (
+				normalizedCode.length === 0 ||
+				!verifyApprovalPairingCode(
+					normalizedCode,
+					{
+						codeHash: pairingCodeHash,
+						sessionId: pairingSessionId,
+					},
+					{ runId, toolCallId },
+				)
+			) {
+				return { ok: false, code: "pairing_invalid" };
+			}
+		}
 
-    entry.resolve({
-      approved,
-      resolution: approved ? 'approved' : 'rejected',
-    });
-    return { ok: true, code: 'resolved' };
-  }
+		entry.resolve({
+			approved,
+			resolution: approved ? "approved" : "rejected",
+		});
+		return { ok: true, code: "resolved" };
+	}
 
-  clearRun(runId: string): void {
-    const runEntries = this.pendingByRun.get(runId);
-    if (!runEntries) return;
+	clearRun(runId: string): void {
+		const runEntries = this.pendingByRun.get(runId);
+		if (!runEntries) return;
 
-    this.pendingByRun.delete(runId);
-    for (const entry of runEntries.values()) {
-      clearTimeout(entry.timeout);
-      entry.resolve({
-        approved: false,
-        resolution: 'timeout',
-      });
-    }
-  }
+		this.pendingByRun.delete(runId);
+		for (const entry of runEntries.values()) {
+			clearTimeout(entry.timeout);
+			entry.resolve({
+				approved: false,
+				resolution: "timeout",
+			});
+		}
+	}
 }
 
 /**

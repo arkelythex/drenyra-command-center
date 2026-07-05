@@ -1,8 +1,8 @@
-import { Suspense, lazy, type ReactNode } from "react";
+import { lazy, type ReactNode, Suspense } from "react";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { FiscalInspector } from "@/components/layout/FiscalInspector";
-import { ArtifactRegistryLoadingFallback } from "./MainLayoutLoading";
 import type { ArtifactInteractionEvent } from "@/features/artifacts/types/artifact.types";
+import { ArtifactRegistryLoadingFallback } from "./MainLayoutLoading";
 
 const ArtifactRegistry = lazy(async () => {
 	const mod = await import("@/features/artifacts/ArtifactRegistry");

@@ -1,4 +1,5 @@
 import type { AgentEvent } from "@drenyra/shared";
+
 /**
  * Cognitive Stream — barrel module.
  *
@@ -6,25 +7,18 @@ import type { AgentEvent } from "@drenyra/shared";
  * and state reducer from the extracted sub-modules.
  */
 
-import { runtimeConfig } from "@/lib/runtime-config";
 import { ACTIVE_COMPANY_STORAGE_KEY } from "@/lib/company-context";
 import { ACTIVE_FISCAL_PERIOD_STORAGE_KEY } from "@/lib/fiscal-period";
+import { runtimeConfig } from "@/lib/runtime-config";
 
-// Re-export types
-export type {
-	Message,
-	ModelTier,
-	PendingToolApproval,
-	StreamState,
-	StreamUsage,
-	RunStateRecord,
-	RunStateResponse,
-	ControlPlaneRunSnapshot,
-	CognitiveActivityStatus,
-	CognitiveActivityEntry,
-	ApprovalStateRecord,
-} from "./cognitive-stream-types";
-
+// Re-export activity timeline
+export {
+	appendActivityEntry,
+	createActivityEntry,
+	mergeRecoveredActivities,
+	resolveEventRunId,
+} from "./cognitive-stream-activities";
+export type { SseEventChunk } from "./cognitive-stream-sse";
 // Re-export SSE parser + event normalizer
 export {
 	consumeSseBuffer,
@@ -32,24 +26,28 @@ export {
 	parseSseEventChunks,
 	parseTypedSseEvent,
 } from "./cognitive-stream-sse";
-export type { SseEventChunk } from "./cognitive-stream-sse";
-
-// Re-export activity timeline
-export {
-	createActivityEntry,
-	appendActivityEntry,
-	mergeRecoveredActivities,
-	resolveEventRunId,
-} from "./cognitive-stream-activities";
-
 // Re-export storage
 export {
-	readPersistedRunId,
-	writePersistedRunId,
-	readPersistedTimeline,
-	writePersistedTimeline,
 	clearPersistedTimeline,
+	readPersistedRunId,
+	readPersistedTimeline,
+	writePersistedRunId,
+	writePersistedTimeline,
 } from "./cognitive-stream-storage";
+// Re-export types
+export type {
+	ApprovalStateRecord,
+	CognitiveActivityEntry,
+	CognitiveActivityStatus,
+	ControlPlaneRunSnapshot,
+	Message,
+	ModelTier,
+	PendingToolApproval,
+	RunStateRecord,
+	RunStateResponse,
+	StreamState,
+	StreamUsage,
+} from "./cognitive-stream-types";
 
 // ──────────────────────────────────────
 // Transport
@@ -95,9 +93,9 @@ export function buildCognitiveHeaders(organizationId: string): HeadersInit {
 // ──────────────────────────────────────
 
 import {
-	resolveEventRunId,
-	createActivityEntry,
 	appendActivityEntry,
+	createActivityEntry,
+	resolveEventRunId,
 } from "./cognitive-stream-activities";
 import { writePersistedRunId } from "./cognitive-stream-storage";
 import type { StreamState } from "./cognitive-stream-types";

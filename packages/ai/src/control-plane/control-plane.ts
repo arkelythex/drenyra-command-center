@@ -5,11 +5,11 @@
  * and permission service into a single composable unit.
  */
 
+import type { PermissionService } from "../governance/permission-service";
+import type { AgentRegistry } from "./agent-registry";
 import type { PolicyEngine } from "./policy-engine";
 import type { ToolRegistry } from "./tool-registry";
-import type { AgentRegistry } from "./agent-registry";
 import type { TraceEvidenceStore } from "./trace-evidence";
-import type { PermissionService } from "../governance/permission-service";
 
 export interface ControlPlane {
 	policy: PolicyEngine;

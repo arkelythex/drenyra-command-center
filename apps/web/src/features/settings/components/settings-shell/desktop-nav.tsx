@@ -1,8 +1,8 @@
-import type { NavigationItem } from "@/lib/navigation";
 import { NavSection } from "@/components/ui/NavSection";
+import type { NavigationItem } from "@/lib/navigation";
 import type { AppRoutePath } from "@/lib/router/app-route";
-import { SETTINGS_NAV_GROUPS } from "./constants";
 import type { SettingsNavItem } from "./constants";
+import { SETTINGS_NAV_GROUPS } from "./constants";
 
 interface SettingsDesktopNavProps {
 	pathname: string;

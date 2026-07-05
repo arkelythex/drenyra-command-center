@@ -365,7 +365,7 @@ export const TEST_TENANTS = {
  * Result of createInvoiceScenario factory.
  */
 export interface InvoiceScenarioResult {
-	company: typeof TEST_COMPANIES[keyof typeof TEST_COMPANIES];
+	company: (typeof TEST_COMPANIES)[keyof typeof TEST_COMPANIES];
 	customer: { ruc: string; name: string };
 	invoice: {
 		id: string;
@@ -400,18 +400,16 @@ export interface InvoiceScenarioResult {
  * // custom.invoice.baseAmount === 500
  * ```
  */
-export function createInvoiceScenario(
-	overrides?: {
-		company?: Partial<typeof TEST_COMPANIES.EMPRESA_TEST>;
-		invoice?: Partial<{
-			baseAmount: number;
-			series: string;
-			number: number;
-			currency: string;
-			status: string;
-		}>;
-	},
-): InvoiceScenarioResult {
+export function createInvoiceScenario(overrides?: {
+	company?: Partial<typeof TEST_COMPANIES.EMPRESA_TEST>;
+	invoice?: Partial<{
+		baseAmount: number;
+		series: string;
+		number: number;
+		currency: string;
+		status: string;
+	}>;
+}): InvoiceScenarioResult {
 	const baseAmount = overrides?.invoice?.baseAmount ?? 1000;
 	const igvAmount = Math.round(baseAmount * 0.18);
 	const totalAmount = baseAmount + igvAmount;
@@ -444,7 +442,7 @@ export function createInvoiceScenario(
  * Result of createBankingScenario factory.
  */
 export interface BankingScenarioResult {
-	company: typeof TEST_COMPANIES[keyof typeof TEST_COMPANIES];
+	company: (typeof TEST_COMPANIES)[keyof typeof TEST_COMPANIES];
 	bankAccount: {
 		id: string;
 		accountNumber: string;
@@ -479,17 +477,15 @@ export interface BankingScenarioResult {
  * // custom.transactions.length === 10
  * ```
  */
-export function createBankingScenario(
-	overrides?: {
-		transactions?: number;
-		account?: Partial<{
-			accountNumber: string;
-			bankName: string;
-			currency: string;
-			balance: number;
-		}>;
-	},
-): BankingScenarioResult {
+export function createBankingScenario(overrides?: {
+	transactions?: number;
+	account?: Partial<{
+		accountNumber: string;
+		bankName: string;
+		currency: string;
+		balance: number;
+	}>;
+}): BankingScenarioResult {
 	const transactionCount = overrides?.transactions ?? 5;
 	const today = new Date();
 

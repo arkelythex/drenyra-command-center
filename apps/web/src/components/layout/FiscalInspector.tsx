@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useFiscalInspector } from "@/context/FiscalInspectorContext";
 import { FiscalInspectorDetail } from "./components/FiscalInspectorDetail";
 import { FiscalInspectorHistory } from "./components/FiscalInspectorHistory";
@@ -41,23 +41,23 @@ export function FiscalInspector() {
 	);
 }
 
+export { FiscalInspectorAgentAnalysis } from "./components/FiscalInspectorAgentAnalysis";
+export { FiscalInspectorApproval } from "./components/FiscalInspectorApproval";
 // Re-export sub-components and utilities for consumers that may need them.
 export { FiscalInspectorDetail } from "./components/FiscalInspectorDetail";
-export { FiscalInspectorHistory } from "./components/FiscalInspectorHistory";
-export { FiscalInspectorSection } from "./components/FiscalInspectorSection";
-export { FiscalInspectorRiskBadge } from "./components/FiscalInspectorRiskBadge";
-export { FiscalInspectorPipeline } from "./components/FiscalInspectorPipeline";
-export { FiscalInspectorAgentAnalysis } from "./components/FiscalInspectorAgentAnalysis";
 export { FiscalInspectorEvidence } from "./components/FiscalInspectorEvidence";
-export { FiscalInspectorApproval } from "./components/FiscalInspectorApproval";
+export { FiscalInspectorHistory } from "./components/FiscalInspectorHistory";
+export { FiscalInspectorPipeline } from "./components/FiscalInspectorPipeline";
+export { FiscalInspectorRiskBadge } from "./components/FiscalInspectorRiskBadge";
+export { FiscalInspectorSection } from "./components/FiscalInspectorSection";
 export { RISK_BG } from "./FiscalInspector.data";
 export type {
-	DetailHeaderProps,
-	HistoryListProps,
-	SectionProps,
-	RiskBadgeProps,
-	PipelineProps,
 	AgentAnalysisProps,
-	EvidenceListProps,
 	ApprovalSectionProps,
+	DetailHeaderProps,
+	EvidenceListProps,
+	HistoryListProps,
+	PipelineProps,
+	RiskBadgeProps,
+	SectionProps,
 } from "./FiscalInspector.types";

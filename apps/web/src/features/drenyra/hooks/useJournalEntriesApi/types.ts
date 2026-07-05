@@ -3,11 +3,11 @@
  */
 
 import type {
-	JournalEntryResponseDTO,
 	JournalEntryFiltersDTO,
+	JournalEntryResponseDTO,
 } from "@drenyra/application/dtos/journal/journal-entry.dto";
 
-export type { JournalEntryResponseDTO, JournalEntryFiltersDTO };
+export type { JournalEntryFiltersDTO, JournalEntryResponseDTO };
 
 // ─── UI Row Types ───────────────────────────────────────────
 

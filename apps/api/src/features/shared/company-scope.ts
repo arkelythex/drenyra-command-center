@@ -41,15 +41,17 @@ export function readCompanyIdFromHeaders(headers: HeaderBag): string | null {
  * console.log(result);
  * ```
  */
-export function requireCompanyIdFromHeaders(headers: HeaderBag): {
-	ok: true;
-	companyId: string;
-} | {
-	ok: false;
-	error: string;
-	code: string;
-	status: 400;
-} {
+export function requireCompanyIdFromHeaders(headers: HeaderBag):
+	| {
+			ok: true;
+			companyId: string;
+	  }
+	| {
+			ok: false;
+			error: string;
+			code: string;
+			status: 400;
+	  } {
 	const companyId = readCompanyIdFromHeaders(headers);
 	if (!companyId) {
 		return {
@@ -81,15 +83,17 @@ export function requireCompanyIdFromHeaders(headers: HeaderBag): {
 export function enforceCompanyScope(
 	headers: HeaderBag,
 	requestedCompanyId: string,
-): {
-	ok: true;
-	companyId: string;
-} | {
-	ok: false;
-	error: string;
-	code: string;
-	status: 400 | 403;
-} {
+):
+	| {
+			ok: true;
+			companyId: string;
+	  }
+	| {
+			ok: false;
+			error: string;
+			code: string;
+			status: 400 | 403;
+	  } {
 	const headerScope = requireCompanyIdFromHeaders(headers);
 	if (!headerScope.ok) {
 		return headerScope;

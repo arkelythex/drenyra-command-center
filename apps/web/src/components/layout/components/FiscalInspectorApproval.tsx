@@ -1,5 +1,5 @@
+import { Clock, Fingerprint } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Fingerprint, Clock } from "lucide-react";
 import type { ApprovalSectionProps } from "../FiscalInspector.types";
 import { FiscalInspectorSection } from "./FiscalInspectorSection";
 

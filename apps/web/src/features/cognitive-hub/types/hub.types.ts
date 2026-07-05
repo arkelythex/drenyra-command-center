@@ -1,20 +1,21 @@
 import type { AgentEvent } from "@drenyra/shared";
+
 // Re-export shared types
 export type {
+	BackgroundMission,
 	HubViewMode,
 	SwarmStep,
 	SwarmTrace,
-	BackgroundMission,
 } from "@drenyra/shared/agents";
 export type {
-	HubArtifact,
+	AccountingDiffItem,
 	ArtifactType,
 	AuditEvent,
-	LedgerEntry,
 	ComparisonScenario,
-	SearchResult,
 	GapItem,
-	AccountingDiffItem,
+	HubArtifact,
+	LedgerEntry,
+	SearchResult,
 	SheetDiffRow,
 } from "@drenyra/shared/artifacts";
 export type { CognitiveMessage } from "@drenyra/shared/messaging";

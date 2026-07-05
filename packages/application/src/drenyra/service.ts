@@ -8,13 +8,14 @@
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
 import {
-	DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY,
 	type AgentRun,
 	type ApprovalDiffPayload,
 	type ApprovalRequest,
 	type AuditEvent,
 	type AuditEventType,
 	type AutonomyLevel,
+	DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY,
+	type DrenyraAgentType,
 	type DrenyraFiscalWorkInspectEnvelope,
 	type DrenyraFiscalWorkInspectSourceSurface,
 	type EvidenceItem,
@@ -25,16 +26,15 @@ import {
 	type FiscalCaseType,
 	type FiscalRiskLevel,
 	type FiscalScope,
-	type DrenyraAgentType,
 } from "@drenyra/domain/drenyra";
 import { runDeterministicMockAgent } from "./mock-agents";
-import { verifyAgentRunOutput } from "./verification";
 import type {
 	DrenyraAuditEventFilter,
 	DrenyraAuditEventFilters,
 	DrenyraRepository,
 	DrenyraScopeGuard,
 } from "./repository";
+import { verifyAgentRunOutput } from "./verification";
 
 export interface DrenyraActorContext {
 	companyId: string;

@@ -1,9 +1,9 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import {
-	SUNAT_RISK_RULES,
-	getSectorBenchmark,
 	generateRecommendations,
+	getSectorBenchmark,
 	SECTOR_BENCHMARKS,
+	SUNAT_RISK_RULES,
 } from "../ShadowSunatRules";
 import type { TaxData } from "../types/shadow-sunat";
 
@@ -97,7 +97,10 @@ describe("Rule conditions — triggered", () => {
 
 	it("RENTA-001 triggers when gastosRepresentacion/ingresosBrutos > 0.005", () => {
 		const rule = SUNAT_RISK_RULES.find((r) => r.id === "RENTA-001")!;
-		const data = createTaxData({ ingresosBrutos: 100000, gastosRepresentacion: 3000 }); // 0.03 > 0.005
+		const data = createTaxData({
+			ingresosBrutos: 100000,
+			gastosRepresentacion: 3000,
+		}); // 0.03 > 0.005
 		expect(rule.condition(data)).toBe(true);
 	});
 
@@ -109,7 +112,10 @@ describe("Rule conditions — triggered", () => {
 
 	it("INV-001 triggers when inventory discrepancy > 10%", () => {
 		const rule = SUNAT_RISK_RULES.find((r) => r.id === "INV-001")!;
-		const data = createTaxData({ inventarioReal: 100000, inventarioTeoricoFinal: 75000 }); // 25% diff
+		const data = createTaxData({
+			inventarioReal: 100000,
+			inventarioTeoricoFinal: 75000,
+		}); // 25% diff
 		expect(rule.condition(data)).toBe(true);
 	});
 
@@ -157,13 +163,19 @@ describe("Rule conditions — NOT triggered", () => {
 
 	it("RENTA-001 does NOT trigger when ratio <= 0.005", () => {
 		const rule = SUNAT_RISK_RULES.find((r) => r.id === "RENTA-001")!;
-		const data = createTaxData({ ingresosBrutos: 100000, gastosRepresentacion: 500 }); // 0.005 exactly
+		const data = createTaxData({
+			ingresosBrutos: 100000,
+			gastosRepresentacion: 500,
+		}); // 0.005 exactly
 		expect(rule.condition(data)).toBe(false);
 	});
 
 	it("RENTA-001 does NOT trigger when ingresosBrutos is 0", () => {
 		const rule = SUNAT_RISK_RULES.find((r) => r.id === "RENTA-001")!;
-		const data = createTaxData({ ingresosBrutos: 0, gastosRepresentacion: 1000 });
+		const data = createTaxData({
+			ingresosBrutos: 0,
+			gastosRepresentacion: 1000,
+		});
 		expect(rule.condition(data)).toBe(false);
 	});
 
@@ -175,13 +187,19 @@ describe("Rule conditions — NOT triggered", () => {
 
 	it("INV-001 does NOT trigger when discrepancy <= 10%", () => {
 		const rule = SUNAT_RISK_RULES.find((r) => r.id === "INV-001")!;
-		const data = createTaxData({ inventarioReal: 100000, inventarioTeoricoFinal: 90000 }); // 10% exactly
+		const data = createTaxData({
+			inventarioReal: 100000,
+			inventarioTeoricoFinal: 90000,
+		}); // 10% exactly
 		expect(rule.condition(data)).toBe(false);
 	});
 
 	it("INV-001 does NOT trigger when inventarioReal is 0", () => {
 		const rule = SUNAT_RISK_RULES.find((r) => r.id === "INV-001")!;
-		const data = createTaxData({ inventarioReal: 0, inventarioTeoricoFinal: 50000 });
+		const data = createTaxData({
+			inventarioReal: 0,
+			inventarioTeoricoFinal: 50000,
+		});
 		expect(rule.condition(data)).toBe(false);
 	});
 

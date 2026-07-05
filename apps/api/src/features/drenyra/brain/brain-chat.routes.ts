@@ -13,17 +13,20 @@
  * This is the SAME core used by Drenyra CLI, Drenyra Web, and the LLM Gateway.
  */
 
-import { Elysia, t } from "elysia";
-import { RUC } from "@drenyra/domain";
 import {
+	extractStreamText,
+	LLM_PROVIDER,
 	llmGateway,
 	systemMessage,
 	userMessage,
-	extractStreamText,
-	LLM_PROVIDER,
 } from "@drenyra/ai/gateway";
-import { createDrenyraBrainService, type DrenyraBrainService } from "./brain.service";
+import { RUC } from "@drenyra/domain";
+import { Elysia, t } from "elysia";
 import type { DrenyraBrainRepository } from "./brain.repository";
+import {
+	createDrenyraBrainService,
+	type DrenyraBrainService,
+} from "./brain.service";
 
 // ─── Context resolution (shared pattern from brain.routes.ts) ───
 
@@ -38,7 +41,10 @@ interface ContextResolution {
 	userId?: string;
 }
 
-function readHeader(headers: Record<string, string | undefined>, key: string): string {
+function readHeader(
+	headers: Record<string, string | undefined>,
+	key: string,
+): string {
 	return headers[key]?.trim() ?? "";
 }
 
@@ -59,7 +65,8 @@ function resolveContext(
 		...(userId ? [] : ["x-user-id"]),
 	];
 
-	const invalidHeaders = companyRuc && !RUC.isValid(companyRuc) ? ["x-company-ruc"] : [];
+	const invalidHeaders =
+		companyRuc && !RUC.isValid(companyRuc) ? ["x-company-ruc"] : [];
 
 	if (missingHeaders.length > 0 || invalidHeaders.length > 0) {
 		return { ok: false, missingHeaders, invalidHeaders };
@@ -83,7 +90,10 @@ function contextError(context: ContextResolution) {
 			? "Requests require a valid SUNAT RUC"
 			: "Requests require tenant and user scope headers",
 		code: hasInvalidHeaders ? "INVALID_RUC" : "TENANT_CONTEXT_REQUIRED",
-		details: { missingHeaders: context.missingHeaders, invalidHeaders: context.invalidHeaders ?? [] },
+		details: {
+			missingHeaders: context.missingHeaders,
+			invalidHeaders: context.invalidHeaders ?? [],
+		},
 	};
 }
 
@@ -103,170 +113,184 @@ export function createBrainChatRoutes(deps: {
 		return new Date().toISOString();
 	}
 
-	return new Elysia({ prefix: "/api/drenyra/brain", name: "drenyra-brain-chat" })
-		.post(
-			"/chat",
-			async ({ body, headers, set, request }) => {
-				const context = resolveContext(headers);
-				if (!context.ok) {
-					set.status = 400;
-					return contextError(context);
-				}
+	return new Elysia({
+		prefix: "/api/drenyra/brain",
+		name: "drenyra-brain-chat",
+	}).post(
+		"/chat",
+		async ({ body, headers, set, request }) => {
+			const context = resolveContext(headers);
+			if (!context.ok) {
+				set.status = 400;
+				return contextError(context);
+			}
 
-				const fiscalScope = {
-					organizationId: context.organizationId!,
-					companyId: context.companyId!,
-					companyRuc: context.companyRuc!,
-					period: context.period!,
-					countryCode: "PE" as const,
-				};
+			const fiscalScope = {
+				organizationId: context.organizationId!,
+				companyId: context.companyId!,
+				companyRuc: context.companyRuc!,
+				period: context.period!,
+				countryCode: "PE" as const,
+			};
 
-				// 1. Get or create thread
-				let threadId = body.threadId;
-				if (!threadId) {
-					const thread = await service.createThread({
-						title: body.message.length > 60
+			// 1. Get or create thread
+			let threadId = body.threadId;
+			if (!threadId) {
+				const thread = await service.createThread({
+					title:
+						body.message.length > 60
 							? body.message.slice(0, 57) + "..."
 							: body.message,
-						sourceSurface: "web",
-						createdBy: context.userId!,
-						fiscalScope,
-					});
-					threadId = thread.id;
-				}
-
-				// 2. Create turn for user message
-				const turn = await service.startTurn({
-					threadId,
-					prompt: body.message,
 					sourceSurface: "web",
 					createdBy: context.userId!,
 					fiscalScope,
 				});
+				threadId = thread.id;
+			}
 
-				// 3. Append user message as item
-				await repository.appendItem({
-					id: generateId("item"),
-					threadId,
-					turnId: turn.id,
-					fiscalScope,
-					type: "user_message",
-					content: { text: body.message },
-					actorId: context.userId,
-					sourceSurface: "web",
-					createdAt: now(),
-				});
+			// 2. Create turn for user message
+			const turn = await service.startTurn({
+				threadId,
+				prompt: body.message,
+				sourceSurface: "web",
+				createdBy: context.userId!,
+				fiscalScope,
+			});
 
-				// 4. Call LLM Gateway with DeepSeek V4 Flash
-				const stream = llmGateway.streamChat({
-					model: "deepseek-chat",
-					provider: LLM_PROVIDER.DEEPSEEK,
-					messages: [
-						systemMessage(
-							"Eres Drenyra, el asistente fiscal inteligente de ARKELYTHEX. " +
+			// 3. Append user message as item
+			await repository.appendItem({
+				id: generateId("item"),
+				threadId,
+				turnId: turn.id,
+				fiscalScope,
+				type: "user_message",
+				content: { text: body.message },
+				actorId: context.userId,
+				sourceSurface: "web",
+				createdAt: now(),
+			});
+
+			// 4. Call LLM Gateway with DeepSeek V4 Flash
+			const stream = llmGateway.streamChat({
+				model: "deepseek-chat",
+				provider: LLM_PROVIDER.DEEPSEEK,
+				messages: [
+					systemMessage(
+						"Eres Drenyra, el asistente fiscal inteligente de ARKELYTHEX. " +
 							"Responde de forma clara y precisa en español. " +
 							"Usa terminología fiscal peruana (IGV, RUC, SUNAT, detracciones, retenciones) cuando sea pertinente.",
-						),
-						userMessage(body.message),
-					],
-					temperature: 0.3,
-					maxTokens: 4096,
-					stream: true,
-					organizationId: Number(context.organizationId!) || 1,
-					userId: context.userId!,
-				});
+					),
+					userMessage(body.message),
+				],
+				temperature: 0.3,
+				maxTokens: 4096,
+				stream: true,
+				organizationId: Number(context.organizationId!) || 1,
+				userId: context.userId!,
+			});
 
-				// 5. Stream response via SSE + collect full response
-				const encoder = new TextEncoder();
-				let fullResponse = "";
+			// 5. Stream response via SSE + collect full response
+			const encoder = new TextEncoder();
+			let fullResponse = "";
 
-				const sseStream = new ReadableStream<Uint8Array>({
-					async start(controller) {
-						let isClosed = false;
+			const sseStream = new ReadableStream<Uint8Array>({
+				async start(controller) {
+					let isClosed = false;
 
-						function emit(event: string, payload: unknown) {
-							if (isClosed) return;
-							try {
-								controller.enqueue(
-									encoder.encode(`event: ${event}\ndata: ${JSON.stringify(payload)}\n\n`),
-								);
-							} catch { /* ignore */ }
-						}
-
-						function close() {
-							if (isClosed) return;
-							isClosed = true;
-							try { controller.close(); } catch { /* ignore */ }
-						}
-
-						request.signal.addEventListener("abort", close, { once: true });
-
+					function emit(event: string, payload: unknown) {
+						if (isClosed) return;
 						try {
-							for await (const chunk of stream) {
-								const token = extractStreamText(chunk);
-								if (token) {
-									fullResponse += token;
-									emit("token", { token });
-								}
+							controller.enqueue(
+								encoder.encode(
+									`event: ${event}\ndata: ${JSON.stringify(payload)}\n\n`,
+								),
+							);
+						} catch {
+							/* ignore */
+						}
+					}
 
-								// Check if this is the final chunk (has usage info)
-								if (chunk.usage) {
-									emit("usage", {
-										promptTokens: chunk.usage.promptTokens,
-										completionTokens: chunk.usage.completionTokens,
-										totalTokens: chunk.usage.totalTokens,
-									});
-								}
+					function close() {
+						if (isClosed) return;
+						isClosed = true;
+						try {
+							controller.close();
+						} catch {
+							/* ignore */
+						}
+					}
+
+					request.signal.addEventListener("abort", close, { once: true });
+
+					try {
+						for await (const chunk of stream) {
+							const token = extractStreamText(chunk);
+							if (token) {
+								fullResponse += token;
+								emit("token", { token });
 							}
 
-							// 6. Append AI response as item
-							await repository.appendItem({
-								id: generateId("item"),
-								threadId,
-								turnId: turn.id,
-								fiscalScope,
-								type: "assistant_message",
-								content: { text: fullResponse },
-								actorId: "drenyra-ai",
-								sourceSurface: "web",
-								createdAt: now(),
-							});
-
-							emit("done", {
-								threadId,
-								turnId: turn.id,
-								responseLength: fullResponse.length,
-							});
-						} catch (error) {
-							emit("error", {
-								error: error instanceof Error ? error.message : "Unknown error during AI generation",
-							});
-						} finally {
-							close();
+							// Check if this is the final chunk (has usage info)
+							if (chunk.usage) {
+								emit("usage", {
+									promptTokens: chunk.usage.promptTokens,
+									completionTokens: chunk.usage.completionTokens,
+									totalTokens: chunk.usage.totalTokens,
+								});
+							}
 						}
-					},
-				});
 
-				return new Response(sseStream, {
-					headers: {
-						"Content-Type": "text/event-stream",
-						"Cache-Control": "no-cache, no-transform",
-						Connection: "keep-alive",
-						"X-Accel-Buffering": "no",
-						"X-Thread-Id": threadId,
-						"X-Turn-Id": turn.id,
-					},
-				});
-			},
-			{
-				body: t.Object({
-					message: t.String({ minLength: 1 }),
-					threadId: t.Optional(t.String()),
-				}),
-			},
-		);
+						// 6. Append AI response as item
+						await repository.appendItem({
+							id: generateId("item"),
+							threadId,
+							turnId: turn.id,
+							fiscalScope,
+							type: "assistant_message",
+							content: { text: fullResponse },
+							actorId: "drenyra-ai",
+							sourceSurface: "web",
+							createdAt: now(),
+						});
+
+						emit("done", {
+							threadId,
+							turnId: turn.id,
+							responseLength: fullResponse.length,
+						});
+					} catch (error) {
+						emit("error", {
+							error:
+								error instanceof Error
+									? error.message
+									: "Unknown error during AI generation",
+						});
+					} finally {
+						close();
+					}
+				},
+			});
+
+			return new Response(sseStream, {
+				headers: {
+					"Content-Type": "text/event-stream",
+					"Cache-Control": "no-cache, no-transform",
+					Connection: "keep-alive",
+					"X-Accel-Buffering": "no",
+					"X-Thread-Id": threadId,
+					"X-Turn-Id": turn.id,
+				},
+			});
+		},
+		{
+			body: t.Object({
+				message: t.String({ minLength: 1 }),
+				threadId: t.Optional(t.String()),
+			}),
+		},
+	);
 }
 
+export { createInMemoryDrenyraBrainRepository } from "./brain.repository";
 // ─── Re-export for mounting ───
 export { createDrenyraBrainService } from "./brain.service";
-export { createInMemoryDrenyraBrainRepository } from "./brain.repository";

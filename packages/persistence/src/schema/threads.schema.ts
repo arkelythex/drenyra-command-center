@@ -10,7 +10,6 @@ import {
 } from "drizzle-orm/pg-core";
 import { companies } from "./core.schema";
 
-
 export const threadStatuses = [
 	"DRAFT",
 	"ACTIVE",

@@ -8,9 +8,9 @@
 
 import { createCrudHooks } from "@/lib/crud-api";
 import {
-	toolPermissionsApi,
-	type ToolPermission,
 	type CreateToolPermissionDTO,
+	type ToolPermission,
+	toolPermissionsApi,
 	type UpdateToolPermissionDTO,
 } from "../api/tool-permissions.api";
 
@@ -20,16 +20,14 @@ export const toolPermissionHooks = createCrudHooks<
 	UpdateToolPermissionDTO
 >({
 	key: "tool-permissions",
-	list: (companyId) =>
-		toolPermissionsApi.list<ToolPermission[]>({ companyId }),
+	list: (companyId) => toolPermissionsApi.list<ToolPermission[]>({ companyId }),
 	getById: (id) => toolPermissionsApi.getById<ToolPermission>(id),
 	create: (companyId, data) =>
 		toolPermissionsApi.create<CreateToolPermissionDTO>({
 			...data,
 			companyId: data.companyId ?? companyId,
 		}),
-	update: (id, data) =>
-		toolPermissionsApi.update<ToolPermission>(id, data),
+	update: (id, data) => toolPermissionsApi.update<ToolPermission>(id, data),
 	delete: (id) => toolPermissionsApi.delete<ToolPermission>(id),
 });
 

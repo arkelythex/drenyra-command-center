@@ -10,7 +10,9 @@ import type {
 	StepResult,
 } from "@drenyra/application/use-cases/fiscal-agent/types";
 
-export class LearnerStep implements FiscalAgentStep<CorrectionInput[], CorrectionRecord[]> {
+export class LearnerStep
+	implements FiscalAgentStep<CorrectionInput[], CorrectionRecord[]>
+{
 	readonly name = "learn";
 
 	async execute(
@@ -25,7 +27,10 @@ export class LearnerStep implements FiscalAgentStep<CorrectionInput[], Correctio
 				await this.saveCorrection(correction);
 				records.push({ ...correction, timestamp: new Date(), applied: true });
 			} catch (err) {
-				console.error(`Failed to save correction for ${correction.transactionId}:`, err);
+				console.error(
+					`Failed to save correction for ${correction.transactionId}:`,
+					err,
+				);
 				records.push({ ...correction, timestamp: new Date(), applied: false });
 			}
 		}
@@ -49,6 +54,8 @@ export class LearnerStep implements FiscalAgentStep<CorrectionInput[], Correctio
 		// TODO: Store correction in DB for future categorization matching
 		// Pattern: same vendor → suggested account
 		// Pattern: same description keywords → suggested account
-		console.log(`Correction saved: ${correction.transactionId} → ${correction.correctedCategory}`);
+		console.log(
+			`Correction saved: ${correction.transactionId} → ${correction.correctedCategory}`,
+		);
 	}
 }

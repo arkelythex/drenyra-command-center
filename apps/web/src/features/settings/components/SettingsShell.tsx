@@ -1,13 +1,13 @@
-import type { ReactNode } from "react";
-import type { LucideIcon } from "lucide-react";
 import { Link, useLocation, useRouter } from "@tanstack/react-router";
+import type { LucideIcon } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
+import type { ReactNode } from "react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { PageShell } from "@/components/ui/PageShell";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { useSettingsShell } from "../hooks/use-settings-shell";
 import { SettingsDesktopNav } from "./settings-shell/desktop-nav";
 import { SettingsMobileNav } from "./settings-shell/mobile-nav";
-import { useSettingsShell } from "../hooks/use-settings-shell";
 
 interface SettingsShellProps {
 	title: string;

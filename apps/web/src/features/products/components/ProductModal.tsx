@@ -21,8 +21,10 @@ export const ProductModal = ({
 	product,
 	mode,
 }: ProductModalProps) => {
-	const { mutate: createProduct, isPending: isCreating } = productHooks.useCreate();
-	const { mutate: updateProduct, isPending: isUpdating } = productHooks.useUpdate();
+	const { mutate: createProduct, isPending: isCreating } =
+		productHooks.useCreate();
+	const { mutate: updateProduct, isPending: isUpdating } =
+		productHooks.useUpdate();
 
 	const isLoading = isCreating || isUpdating;
 

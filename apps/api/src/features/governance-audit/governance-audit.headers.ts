@@ -10,12 +10,15 @@
  * console.log(result);
  * ```
  */
-export function readHeader(headers: Record<string, unknown>, key: string): string {
-  const direct = headers[key];
-  if (typeof direct === 'string' && direct.trim()) return direct.trim();
+export function readHeader(
+	headers: Record<string, unknown>,
+	key: string,
+): string {
+	const direct = headers[key];
+	if (typeof direct === "string" && direct.trim()) return direct.trim();
 
-  const lower = headers[key.toLowerCase()];
-  if (typeof lower === 'string' && lower.trim()) return lower.trim();
+	const lower = headers[key.toLowerCase()];
+	if (typeof lower === "string" && lower.trim()) return lower.trim();
 
-  return '';
+	return "";
 }

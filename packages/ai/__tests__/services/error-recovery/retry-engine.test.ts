@@ -4,17 +4,22 @@
  * @module __tests__/services/error-recovery
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 // vi.mock is hoisted, so declarative mock fns must use vi.hoisted()
-const { mockEnqueue, mockDequeue, mockMarkResolved, mockMarkDead, mockIncrementRetry } =
-	vi.hoisted(() => ({
-		mockEnqueue: vi.fn(),
-		mockDequeue: vi.fn(),
-		mockMarkResolved: vi.fn(),
-		mockMarkDead: vi.fn(),
-		mockIncrementRetry: vi.fn(),
-	}));
+const {
+	mockEnqueue,
+	mockDequeue,
+	mockMarkResolved,
+	mockMarkDead,
+	mockIncrementRetry,
+} = vi.hoisted(() => ({
+	mockEnqueue: vi.fn(),
+	mockDequeue: vi.fn(),
+	mockMarkResolved: vi.fn(),
+	mockMarkDead: vi.fn(),
+	mockIncrementRetry: vi.fn(),
+}));
 
 vi.mock("@drenyra/infrastructure/services/error-recovery", () => ({
 	dlqRepo: {
@@ -29,8 +34,8 @@ vi.mock("@drenyra/infrastructure/services/error-recovery", () => ({
 }));
 
 import { AgentError } from "../../../src/services/error-recovery/agent-error";
-import { RetryEngine } from "../../../src/services/error-recovery/retry-engine";
 import type { RetryConfig } from "../../../src/services/error-recovery/retry-engine";
+import { RetryEngine } from "../../../src/services/error-recovery/retry-engine";
 
 describe("RetryEngine", () => {
 	let engine: RetryEngine;

@@ -1,17 +1,26 @@
 "use client";
 
-import type { FormEvent, ReactElement } from "react";
-import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { MessageSquare, SendHorizontal } from "lucide-react";
+import type { FormEvent, ReactElement } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const FISCAL_QUICK_PROMPTS = [
 	{ label: "Subir factura", action: "upload" as const },
-	{ label: "Preparar SIRE", prompt: "Prepará el SIRE del periodo activo con evidencia SUNAT." },
-	{ label: "Cierre mensual", prompt: "Revisá el cierre mensual: CPE, libro mayor y conciliación." },
-	{ label: "Validar IGV", prompt: "Validá IGV 18% y totales de mis comprobantes del periodo." },
+	{
+		label: "Preparar SIRE",
+		prompt: "Prepará el SIRE del periodo activo con evidencia SUNAT.",
+	},
+	{
+		label: "Cierre mensual",
+		prompt: "Revisá el cierre mensual: CPE, libro mayor y conciliación.",
+	},
+	{
+		label: "Validar IGV",
+		prompt: "Validá IGV 18% y totales de mis comprobantes del periodo.",
+	},
 ] as const;
 
 type DrenyraConversationalBarProps = {

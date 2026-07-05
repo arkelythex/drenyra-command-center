@@ -26,7 +26,10 @@ export function ControlPlaneView() {
 	return (
 		<div className="space-y-3">
 			<div className="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)] p-3 text-label font-medium text-[var(--text-secondary)]">
-				<span className="font-bold text-[var(--text-primary)]">Integraciones Activas</span> · Fuentes de datos con soporte documental y validación.
+				<span className="font-bold text-[var(--text-primary)]">
+					Integraciones Activas
+				</span>{" "}
+				· Fuentes de datos con soporte documental y validación.
 			</div>
 			{surfaces.map((surface: ContextRegistrySurfaceDTO) => {
 				const latestRun = runs.find(
@@ -59,7 +62,9 @@ export function ControlPlaneView() {
 						<div className="mt-3 flex flex-wrap gap-2">
 							<span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--border-subtle)] bg-[var(--surface-2)] px-2 py-1 text-2xs font-medium text-[var(--text-secondary)]">
 								<Workflow className="h-3 w-3 opacity-70" />
-								<span className="truncate max-w-[120px]">{surface.surfaceId}</span>
+								<span className="truncate max-w-[120px]">
+									{surface.surfaceId}
+								</span>
 							</span>
 							<span className="inline-flex items-center gap-1.5 rounded-md border border-[var(--border-subtle)] bg-[var(--surface-2)] px-2 py-1 text-2xs font-medium text-[var(--text-secondary)]">
 								<ShieldCheck className="h-3 w-3 opacity-70" />
@@ -71,7 +76,10 @@ export function ControlPlaneView() {
 
 						<div className="mt-3 rounded-lg bg-[var(--surface-2)] p-2.5">
 							<p className="text-2xs text-[var(--text-secondary)] line-clamp-1">
-								<span className="font-bold text-[var(--text-primary)]">Actividad:</span> {latestRun?.summary ?? "Sin sincronización reciente"}
+								<span className="font-bold text-[var(--text-primary)]">
+									Actividad:
+								</span>{" "}
+								{latestRun?.summary ?? "Sin sincronización reciente"}
 							</p>
 							<p className="mt-1 text-2xs font-mono text-[var(--text-tertiary)]">
 								Evidencia documental: {evidenceCount} ref(s)

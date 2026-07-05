@@ -4,12 +4,12 @@
  * Infrastructure layer — implements domain repository interface.
  */
 
-import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
-import { randomUUID } from "crypto";
 import { ExchangeRate } from "@drenyra/domain/accounting/exchange-rate";
 import type { ExchangeRateRepository } from "@drenyra/domain/repositories/exchange-rate.repository";
 import { db } from "@drenyra/persistence/client";
 import { exchangeRates } from "@drenyra/persistence/schema";
+import { randomUUID } from "crypto";
+import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 
 /**
  * Rates are stored as integers with 4 decimal places (e.g., 37250 = 3.7250).
@@ -35,9 +35,7 @@ export class PostgresExchangeRateRepository implements ExchangeRateRepository {
 			buyRate: rateToDb(rate.buy),
 			sellRate: rateToDb(rate.sell),
 			sunatReference:
-				rate.sunatReference !== null
-					? rateToDb(rate.sunatReference)
-					: null,
+				rate.sunatReference !== null ? rateToDb(rate.sunatReference) : null,
 		});
 	}
 
@@ -134,9 +132,7 @@ export class PostgresExchangeRateRepository implements ExchangeRateRepository {
 		await db.delete(exchangeRates).where(eq(exchangeRates.id, id));
 	}
 
-	private mapToDomain(
-		raw: typeof exchangeRates.$inferSelect,
-	): ExchangeRate {
+	private mapToDomain(raw: typeof exchangeRates.$inferSelect): ExchangeRate {
 		return ExchangeRate.fromJSON({
 			date: raw.date.toISOString(),
 			currencyFrom: raw.currencyFrom,
@@ -144,9 +140,7 @@ export class PostgresExchangeRateRepository implements ExchangeRateRepository {
 			buy: rateFromDb(raw.buyRate),
 			sell: rateFromDb(raw.sellRate),
 			sunatReference:
-				raw.sunatReference !== null
-					? rateFromDb(raw.sunatReference)
-					: null,
+				raw.sunatReference !== null ? rateFromDb(raw.sunatReference) : null,
 		});
 	}
 }

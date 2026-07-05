@@ -9,16 +9,16 @@
  */
 
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { ToolRegistry } from "./tool-registry";
+import { PermissionService } from "../governance/permission-service";
 import { AgentRegistry } from "./agent-registry";
+import type { ControlPlane } from "./control-plane";
 import { PolicyEngine } from "./policy-engine";
+import { ToolRegistry } from "./tool-registry";
+import type { TraceEvidenceStore } from "./trace-evidence";
 import {
 	createInMemoryTraceEvidenceStore,
 	createPostgresTraceEvidenceStore,
 } from "./trace-evidence";
-import type { TraceEvidenceStore } from "./trace-evidence";
-import { PermissionService } from "../governance/permission-service";
-import type { ControlPlane } from "./control-plane";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type DrizzleDb = PostgresJsDatabase<any>;

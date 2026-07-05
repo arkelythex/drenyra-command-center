@@ -10,7 +10,12 @@
  */
 
 import { Money } from "../../value-objects/Money";
-import type { TransactionProps, TransactionEntry, TransactionType, TransactionStatus } from "./types";
+import type {
+	TransactionEntry,
+	TransactionProps,
+	TransactionStatus,
+	TransactionType,
+} from "./types";
 
 /**
  * Accounting transaction aggregate (double-entry bookkeeping).

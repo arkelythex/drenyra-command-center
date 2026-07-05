@@ -1,11 +1,8 @@
 import { Elysia, t } from "elysia";
 import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
-import {
-	ThreadServiceError,
-	threadsService,
-} from "./threads.service";
 import { quickActionsService } from "./quick-actions.service";
+import { ThreadServiceError, threadsService } from "./threads.service";
 
 // ---------------------------------------------------------------------------
 // Validation schemas
@@ -31,15 +28,9 @@ const CreateThreadBody = t.Object({
 	title: t.String({ minLength: 1, maxLength: 200 }),
 	description: t.Optional(t.String({ maxLength: 2000 })),
 	environment: t.Optional(
-		t.Union([
-			t.Literal("local"),
-			t.Literal("sandbox"),
-			t.Literal("cloud"),
-		]),
+		t.Union([t.Literal("local"), t.Literal("sandbox"), t.Literal("cloud")]),
 	),
-	period: t.Optional(
-		t.String({ pattern: "^\\d{4}-(0[1-9]|1[0-2])$" }),
-	),
+	period: t.Optional(t.String({ pattern: "^\\d{4}-(0[1-9]|1[0-2])$" })),
 	priority: t.Optional(
 		t.Union([
 			t.Literal("LOW"),
@@ -76,16 +67,10 @@ const UpdateThreadBody = t.Object({
 		]),
 	),
 	environment: t.Optional(
-		t.Union([
-			t.Literal("local"),
-			t.Literal("sandbox"),
-			t.Literal("cloud"),
-		]),
+		t.Union([t.Literal("local"), t.Literal("sandbox"), t.Literal("cloud")]),
 	),
 	tags: t.Optional(t.Array(t.String({ maxLength: 50 }), { maxItems: 10 })),
-	period: t.Optional(
-		t.String({ pattern: "^\\d{4}-(0[1-9]|1[0-2])$" }),
-	),
+	period: t.Optional(t.String({ pattern: "^\\d{4}-(0[1-9]|1[0-2])$" })),
 });
 
 const AssignAgentBody = t.Object({
@@ -142,7 +127,10 @@ const UpdateTaskBody = t.Object({
 // Helper to handle service errors
 // ---------------------------------------------------------------------------
 
-function handleServiceError(error: unknown, set: { status: number; [key: string]: unknown }) {
+function handleServiceError(
+	error: unknown,
+	set: { status: number; [key: string]: unknown },
+) {
 	if (error instanceof ThreadServiceError) {
 		set.status = error.httpStatus;
 		return fail(error.message, error.code);
@@ -208,7 +196,8 @@ export const threadRoutes = new Elysia({
 			detail: {
 				tags: ["Threads"],
 				summary: "List threads",
-				description: "List threads for the current company with pagination and filters",
+				description:
+					"List threads for the current company with pagination and filters",
 			},
 		},
 	)

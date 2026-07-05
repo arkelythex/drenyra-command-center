@@ -2,26 +2,25 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ComponentProps } from "react";
 import { describe, expect, it, vi } from "vitest";
-
+import { componentTokenVars } from "@/lib/design-tokens/component-tokens";
 import { Badge } from "../badge";
 import { Button } from "../button";
 import { Card } from "../card";
-import { Input } from "../input";
 import { Checkbox } from "../checkbox";
-import {
-	Select,
-	SelectTrigger,
-	SelectValue,
-	SelectContent,
-	SelectItem,
-} from "../select";
 import {
 	Dialog,
 	DialogContent,
-	DialogTitle,
 	DialogDescription,
+	DialogTitle,
 } from "../dialog";
-import { componentTokenVars } from "@/lib/design-tokens/component-tokens";
+import { Input } from "../input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "../select";
 
 vi.mock("@/hooks/useHaptics", () => ({
 	useHaptics: () => ({ trigger: vi.fn() }),
@@ -212,7 +211,9 @@ describe("UI primitives rendering behavior", () => {
 			<Dialog open>
 				<DialogContent aria-describedby={undefined}>
 					<DialogTitle>Confirmar acción</DialogTitle>
-					<DialogDescription>¿Desea proceder con la operación?</DialogDescription>
+					<DialogDescription>
+						¿Desea proceder con la operación?
+					</DialogDescription>
 				</DialogContent>
 			</Dialog>,
 		);
@@ -220,7 +221,9 @@ describe("UI primitives rendering behavior", () => {
 		expect(
 			screen.getByRole("heading", { name: "Confirmar acción" }),
 		).toBeInTheDocument();
-		expect(screen.getByText("¿Desea proceder con la operación?")).toBeInTheDocument();
+		expect(
+			screen.getByText("¿Desea proceder con la operación?"),
+		).toBeInTheDocument();
 	});
 
 	it("dialog does not render content when closed (open=false)", () => {
@@ -233,6 +236,8 @@ describe("UI primitives rendering behavior", () => {
 			</Dialog>,
 		);
 
-		expect(screen.queryByRole("heading", { name: "No visible" })).not.toBeInTheDocument();
+		expect(
+			screen.queryByRole("heading", { name: "No visible" }),
+		).not.toBeInTheDocument();
 	});
 });

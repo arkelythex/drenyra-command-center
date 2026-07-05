@@ -1,5 +1,5 @@
-import { Money } from "@drenyra/domain";
 import type { IGVSummary, TaxCalendar } from "@drenyra/domain";
+import { Money } from "@drenyra/domain";
 import {
 	type DetractionInvoiceRow,
 	type TaxationRepository,

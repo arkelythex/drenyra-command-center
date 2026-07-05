@@ -7,11 +7,11 @@
  */
 
 import type {
-	ImportTransactionRow,
 	BankCsvFormat,
+	ImportTransactionRow,
 } from "@/features/banking/api/banking.api.types";
 
-export type { ImportTransactionRow, BankCsvFormat };
+export type { BankCsvFormat, ImportTransactionRow };
 
 /**
  * Supported import file formats.

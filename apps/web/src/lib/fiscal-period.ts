@@ -1,5 +1,4 @@
-export const ACTIVE_FISCAL_PERIOD_STORAGE_KEY =
-	"drenyra-active-fiscal-period";
+export const ACTIVE_FISCAL_PERIOD_STORAGE_KEY = "drenyra-active-fiscal-period";
 
 export const ACTIVE_FISCAL_PERIOD_CHANGED_EVENT =
 	"drenyra-active-fiscal-period-changed";

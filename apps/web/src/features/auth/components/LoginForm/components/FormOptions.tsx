@@ -1,9 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-	MotionDiv,
-	entranceVariants,
-} from "@/components/ui/motion-primitives";
+import { entranceVariants, MotionDiv } from "@/components/ui/motion-primitives";
 import type { LoginFormData } from "../LoginForm.types";
 
 export function FormOptions() {
@@ -20,7 +17,12 @@ export function FormOptions() {
 				onClick={() => setValue("rememberMe", !rememberMe)}
 				role="button"
 				tabIndex={0}
-				onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setValue("rememberMe", !rememberMe); } }}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" || e.key === " ") {
+						e.preventDefault();
+						setValue("rememberMe", !rememberMe);
+					}
+				}}
 			>
 				<Checkbox
 					id="rememberMe"

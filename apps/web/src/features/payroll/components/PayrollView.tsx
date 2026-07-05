@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from "react";
 import { useState } from "react";
 import { useDesignTokens } from "@/lib/design-tokens";
 import { useSidebarLayout } from "@/stores/sidebar-layout.store";
@@ -9,7 +9,8 @@ import { STAFF } from "./payroll-view/staff-data";
 
 export const PayrollView: React.FC = () => {
 	const [projectedTax, setProjectedTax] = useState(14500);
-	const { gradients, borderRadius, shadows, zIndex, backdropBlur } = useDesignTokens();
+	const { gradients, borderRadius, shadows, zIndex, backdropBlur } =
+		useDesignTokens();
 	const { setIsMobileOpen } = useSidebarLayout();
 
 	return (

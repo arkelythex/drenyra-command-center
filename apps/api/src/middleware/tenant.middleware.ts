@@ -51,7 +51,9 @@ const PUBLIC_TENANT_EXEMPT_PREFIXES = [
 ] as const;
 
 function isTenantExemptPath(path: string): boolean {
-	return PUBLIC_TENANT_EXEMPT_PREFIXES.some((prefix) => path.startsWith(prefix));
+	return PUBLIC_TENANT_EXEMPT_PREFIXES.some((prefix) =>
+		path.startsWith(prefix),
+	);
 }
 
 function tenantFailureResponse(error: TenantContextError): {

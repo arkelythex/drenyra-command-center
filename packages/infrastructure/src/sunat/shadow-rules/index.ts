@@ -1,8 +1,8 @@
 export {
-	SUNAT_RISK_RULES,
 	generateRecommendations,
-	SECTOR_BENCHMARKS,
 	getSectorBenchmark,
+	SECTOR_BENCHMARKS,
+	SUNAT_RISK_RULES,
 } from "./rules";
 
 export type {

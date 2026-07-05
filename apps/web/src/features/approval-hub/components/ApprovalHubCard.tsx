@@ -1,10 +1,15 @@
-import { AlertTriangle, ShieldAlert, CheckCircle2, XCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { FISCAL_RISK_COLORS } from "@drenyra/domain";
+import {
+	AlertTriangle,
+	CheckCircle2,
+	ShieldAlert,
+	XCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { MODULE_LABELS } from "../ApprovalHubPage.data";
-import { ApprovalHubStatusBadge } from "./ApprovalHubStatusBadge";
 import type { ApprovalItem } from "../ApprovalHubPage.types";
+import { ApprovalHubStatusBadge } from "./ApprovalHubStatusBadge";
 
 interface ApprovalHubCardProps {
 	approval: ApprovalItem;
@@ -12,10 +17,13 @@ interface ApprovalHubCardProps {
 	onReject: (id: string) => void;
 }
 
-export function ApprovalHubCard({ approval, onApprove, onReject }: ApprovalHubCardProps) {
-	const urgencyBg = approval.urgency === "URGENT"
-		? "border-l-[var(--color-danger)]"
-		: "";
+export function ApprovalHubCard({
+	approval,
+	onApprove,
+	onReject,
+}: ApprovalHubCardProps) {
+	const urgencyBg =
+		approval.urgency === "URGENT" ? "border-l-[var(--color-danger)]" : "";
 
 	return (
 		<div
@@ -39,9 +47,11 @@ export function ApprovalHubCard({ approval, onApprove, onReject }: ApprovalHubCa
 								color: FISCAL_RISK_COLORS[approval.riskLevel],
 							}}
 						>
-							{approval.riskLevel === "CRITICAL"
-								? <AlertTriangle size={10} />
-								: <ShieldAlert size={10} />}
+							{approval.riskLevel === "CRITICAL" ? (
+								<AlertTriangle size={10} />
+							) : (
+								<ShieldAlert size={10} />
+							)}
 							{approval.riskLevel}
 						</span>
 						{approval.urgency !== "LOW" && (

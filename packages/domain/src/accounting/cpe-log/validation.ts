@@ -35,10 +35,7 @@ export class InvalidCPELogTransitionError extends Error {
 				`Invalid CPE log transition: ${currentStatus} → ${targetStatus}`,
 		);
 		this.name = "InvalidCPELogTransitionError";
-		Object.setPrototypeOf(
-			this,
-			InvalidCPELogTransitionError.prototype,
-		);
+		Object.setPrototypeOf(this, InvalidCPELogTransitionError.prototype);
 	}
 
 	toJSON(): Record<string, unknown> {

@@ -1,6 +1,6 @@
-import type { TenantScopeInput } from "../handlers/tenant-scope";
+import type { documents } from "@drenyra/persistence/schema";
 import type { InferSelectModel } from "drizzle-orm";
-import { documents } from "@drenyra/persistence/schema";
+import type { TenantScopeInput } from "../handlers/tenant-scope";
 
 /**
  * DocumentFilters interface.
@@ -102,7 +102,10 @@ export interface DocumentStorePort {
 		updates: Record<string, unknown>,
 		scope?: TenantScopeInput,
 	): Promise<void>;
-	getById(id: string, scope?: TenantScopeInput): Promise<DocumentRow | undefined>;
+	getById(
+		id: string,
+		scope?: TenantScopeInput,
+	): Promise<DocumentRow | undefined>;
 	list(filters: DocumentFilters): Promise<DocumentRow[]>;
 	toResponseDTO(row: DocumentRow): DocumentResponseDTO;
 }

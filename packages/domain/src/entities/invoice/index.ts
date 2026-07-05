@@ -1,5 +1,4 @@
 export { Invoice } from "./invoice.entity";
-export { calculateItemsTotal, validateInvoiceBusinessRules } from "./validators";
 export type {
 	Currency,
 	InvoiceItem,
@@ -7,3 +6,7 @@ export type {
 	InvoiceProps,
 	InvoiceStatus,
 } from "./types";
+export {
+	calculateItemsTotal,
+	validateInvoiceBusinessRules,
+} from "./validators";

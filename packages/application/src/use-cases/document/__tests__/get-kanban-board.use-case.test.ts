@@ -3,9 +3,9 @@
  * Comprehensive tests for Kanban board aggregation (0% → 100% coverage)
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Document } from "@drenyra/domain/entities/Document";
 import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { GetKanbanBoardUseCase } from "../get-kanban-board.use-case";
 
 describe("GetKanbanBoardUseCase", () => {
@@ -50,7 +50,9 @@ describe("GetKanbanBoardUseCase", () => {
 		it("should return empty Kanban board when no documents exist", async () => {
 			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result).toEqual({
 				porProcesar: [],
@@ -67,32 +69,34 @@ describe("GetKanbanBoardUseCase", () => {
 			});
 
 			expect(mockDocumentRepository.findAll).toHaveBeenCalledTimes(1);
-			expect(mockDocumentRepository.findAll).toHaveBeenCalledWith(
-				{ companyId: "123e4567-e89b-12d3-a456-426614174001" },
-			);
+			expect(mockDocumentRepository.findAll).toHaveBeenCalledWith({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 		});
 
 		it("should prefer company-scoped reads when companyId is provided", async () => {
 			const companyId = "123e4567-e89b-12d3-a456-426614174001";
-			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue(
-				[],
-			);
+			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([]);
 
 			const result = await useCase.execute({ companyId });
 
 			expect(result.counts.total).toBe(0);
 			expect(mockDocumentRepository.findAll).toHaveBeenCalledTimes(1);
-			expect(mockDocumentRepository.findAll).toHaveBeenCalledWith(
-				{ companyId },
-			);
+			expect(mockDocumentRepository.findAll).toHaveBeenCalledWith({
+				companyId,
+			});
 		});
 
 		it("should organize UPLOADED documents in porProcesar", async () => {
 			const uploadedDoc = createMockDocument({ status: "UPLOADED" });
 
-			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([uploadedDoc]);
+			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([
+				uploadedDoc,
+			]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.porProcesar).toHaveLength(1);
 			expect(result.porProcesar[0].status).toBe("UPLOADED");
@@ -103,9 +107,13 @@ describe("GetKanbanBoardUseCase", () => {
 		it("should organize EXTRACTING documents in porProcesar", async () => {
 			const extractingDoc = createMockDocument({ status: "EXTRACTING" });
 
-			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([extractingDoc]);
+			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([
+				extractingDoc,
+			]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.porProcesar).toHaveLength(1);
 			expect(result.porProcesar[0].status).toBe("EXTRACTING");
@@ -117,7 +125,9 @@ describe("GetKanbanBoardUseCase", () => {
 
 			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([pendingDoc]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.revisionHumana).toHaveLength(1);
 			expect(result.revisionHumana[0].status).toBe("PENDING_VALIDATION");
@@ -128,9 +138,13 @@ describe("GetKanbanBoardUseCase", () => {
 		it("should organize VALIDATED documents in listoParaSIRE", async () => {
 			const validatedDoc = createMockDocument({ status: "VALIDATED" });
 
-			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([validatedDoc]);
+			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([
+				validatedDoc,
+			]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.listoParaSIRE).toHaveLength(1);
 			expect(result.listoParaSIRE[0].status).toBe("VALIDATED");
@@ -140,9 +154,13 @@ describe("GetKanbanBoardUseCase", () => {
 		it("should organize REJECTED documents in rechazadoPorSIRE", async () => {
 			const rejectedDoc = createMockDocument({ status: "REJECTED" });
 
-			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([rejectedDoc]);
+			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([
+				rejectedDoc,
+			]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.rechazadoPorSIRE).toHaveLength(1);
 			expect(result.rechazadoPorSIRE[0].status).toBe("REJECTED");
@@ -179,7 +197,9 @@ describe("GetKanbanBoardUseCase", () => {
 				rejectedDoc,
 			]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.porProcesar).toHaveLength(2); // UPLOADED + EXTRACTING
 			expect(result.revisionHumana).toHaveLength(1);
@@ -202,7 +222,9 @@ describe("GetKanbanBoardUseCase", () => {
 
 			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue(docs);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.counts.porProcesar).toBe(3); // 2 UPLOADED + 1 EXTRACTING
 			expect(result.counts.revisionHumana).toBe(3);
@@ -230,13 +252,17 @@ describe("GetKanbanBoardUseCase", () => {
 				status: "UPLOADED",
 			});
 
-			vi.mocked(mockDocumentRepository.findAll).mockImplementation(async (filters) =>
-				[client1Doc1, client1Doc2, client2Doc].filter(
-					(doc) => !filters.clientId || doc.clientId === filters.clientId,
-				),
+			vi.mocked(mockDocumentRepository.findAll).mockImplementation(
+				async (filters) =>
+					[client1Doc1, client1Doc2, client2Doc].filter(
+						(doc) => !filters.clientId || doc.clientId === filters.clientId,
+					),
 			);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001", clientId: clientId1 });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+				clientId: clientId1,
+			});
 
 			expect(result.porProcesar).toHaveLength(1);
 			expect(result.porProcesar[0].clientId).toBe(clientId1);
@@ -261,7 +287,9 @@ describe("GetKanbanBoardUseCase", () => {
 
 			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([doc1, doc2]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.porProcesar).toHaveLength(2);
 			expect(result.counts.total).toBe(2);
@@ -273,13 +301,17 @@ describe("GetKanbanBoardUseCase", () => {
 				status: "UPLOADED",
 			});
 
-			vi.mocked(mockDocumentRepository.findAll).mockImplementation(async (filters) =>
-				[otherClientDoc].filter(
-					(doc) => !filters.clientId || doc.clientId === filters.clientId,
-				),
+			vi.mocked(mockDocumentRepository.findAll).mockImplementation(
+				async (filters) =>
+					[otherClientDoc].filter(
+						(doc) => !filters.clientId || doc.clientId === filters.clientId,
+					),
 			);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001", clientId: clientId1 });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+				clientId: clientId1,
+			});
 
 			expect(result.porProcesar).toHaveLength(0);
 			expect(result.counts.total).toBe(0);
@@ -301,7 +333,9 @@ describe("GetKanbanBoardUseCase", () => {
 
 			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([doc]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			const mappedDoc = result.porProcesar[0];
 			expect(mappedDoc.id).toBe("doc-123");
@@ -323,7 +357,9 @@ describe("GetKanbanBoardUseCase", () => {
 
 			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([doc]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.porProcesar[0].uploadedAt).toBe("2025-01-15T10:30:00.000Z");
 		});
@@ -337,7 +373,9 @@ describe("GetKanbanBoardUseCase", () => {
 
 			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([doc]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.listoParaSIRE[0].processedAt).toBe(
 				"2025-01-15T12:00:00.000Z",
@@ -354,7 +392,9 @@ describe("GetKanbanBoardUseCase", () => {
 
 			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([doc]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.listoParaSIRE[0].validatedAt).toBe(
 				"2025-01-15T14:00:00.000Z",
@@ -379,7 +419,9 @@ describe("GetKanbanBoardUseCase", () => {
 
 			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([doc]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.revisionHumana[0].extractedData).toEqual({
 				series: "F001",
@@ -399,7 +441,9 @@ describe("GetKanbanBoardUseCase", () => {
 
 			vi.mocked(mockDocumentRepository.findAll).mockResolvedValue([doc]);
 
-			const result = await useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" });
+			const result = await useCase.execute({
+				companyId: "123e4567-e89b-12d3-a456-426614174001",
+			});
 
 			expect(result.porProcesar[0].extractedData).toBeUndefined();
 		});
@@ -411,9 +455,9 @@ describe("GetKanbanBoardUseCase", () => {
 				new Error("Database connection failed"),
 			);
 
-			await expect(useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" })).rejects.toThrow(
-				"Database connection failed",
-			);
+			await expect(
+				useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" }),
+			).rejects.toThrow("Database connection failed");
 		});
 
 		it("should handle partial repository failures", async () => {
@@ -421,7 +465,9 @@ describe("GetKanbanBoardUseCase", () => {
 				new Error("Query failed"),
 			);
 
-			await expect(useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" })).rejects.toThrow("Query failed");
+			await expect(
+				useCase.execute({ companyId: "123e4567-e89b-12d3-a456-426614174001" }),
+			).rejects.toThrow("Query failed");
 		});
 	});
 });

@@ -1,8 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
-import type { CreateInvoiceDTO } from "../../dtos/invoice/create-invoice.dto";
 import { Invoice } from "@drenyra/domain/entities/Invoice";
 import type { InvoiceRepository } from "@drenyra/domain/repositories/invoice.repository";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import type { CreateInvoiceDTO } from "../../dtos/invoice/create-invoice.dto";
 import { CreateInvoiceUseCase } from "../create-invoice.use-case";
 import { TEST_RUCS } from "./fixtures";
 
@@ -95,14 +94,14 @@ describe("CreateInvoiceUseCase", () => {
 
 			await createInvoiceUseCase.execute(dto);
 
-			expect(mockInvoiceRepository.saveForOrganization).toHaveBeenCalledTimes(1);
+			expect(mockInvoiceRepository.saveForOrganization).toHaveBeenCalledTimes(
+				1,
+			);
 			expect(mockInvoiceRepository.save).not.toHaveBeenCalled();
 			const saveForOrganizationMock = vi.mocked(
 				mockInvoiceRepository.saveForOrganization,
 			);
-			expect(saveForOrganizationMock.mock.calls[0]?.[1]).toBe(
-				42,
-			);
+			expect(saveForOrganizationMock.mock.calls[0]?.[1]).toBe(42);
 		});
 	});
 

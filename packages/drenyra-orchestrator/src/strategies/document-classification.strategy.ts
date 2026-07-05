@@ -72,7 +72,10 @@ export const DOCUMENT_TYPE_KEYWORDS: Record<
 	{ keywords: string[]; weight: number }[]
 > = {
 	invoice: [
-		{ keywords: ["FACTURA", "FACTURA ELECTRÓNICA", "BOLETA DE VENTA"], weight: 1.0 },
+		{
+			keywords: ["FACTURA", "FACTURA ELECTRÓNICA", "BOLETA DE VENTA"],
+			weight: 1.0,
+		},
 		{ keywords: ["RUC", "IGV", "SUBTOTAL", "TOTAL"], weight: 0.8 },
 		{ keywords: ["SERIE", "CORRELATIVO", "CPE"], weight: 0.6 },
 	],
@@ -92,7 +95,10 @@ export const DOCUMENT_TYPE_KEYWORDS: Record<
 		{ keywords: ["BANCO", "CUENTA", "SALDO"], weight: 0.8 },
 	],
 	sunat_xml: [
-		{ keywords: ["UBL", "SUNAT", "cbc:Invoice", "cac:InvoiceLine"], weight: 1.0 },
+		{
+			keywords: ["UBL", "SUNAT", "cbc:Invoice", "cac:InvoiceLine"],
+			weight: 1.0,
+		},
 		{ keywords: ["IssueDate", "InvoiceTypeCode", "cbc:ID"], weight: 0.8 },
 	],
 	unknown: [],
@@ -173,11 +179,17 @@ function detectSunatType(
 	return undefined;
 }
 
-function classifyByContent(
-	text: string,
-): { type: DetectedDocType; confidence: number; method: string } {
+function classifyByContent(text: string): {
+	type: DetectedDocType;
+	confidence: number;
+	method: string;
+} {
 	const upper = text.toUpperCase();
-	const scores: { type: DetectedDocType; score: number; matchedKeywords: number }[] = [];
+	const scores: {
+		type: DetectedDocType;
+		score: number;
+		matchedKeywords: number;
+	}[] = [];
 
 	for (const [type, groups] of Object.entries(DOCUMENT_TYPE_KEYWORDS)) {
 		if (type === "unknown") continue;
@@ -187,7 +199,9 @@ function classifyByContent(
 
 		for (const group of groups) {
 			totalWeight += group.weight;
-			const matchCount = group.keywords.filter((kw) => upper.includes(kw)).length;
+			const matchCount = group.keywords.filter((kw) =>
+				upper.includes(kw),
+			).length;
 			if (matchCount > 0) {
 				totalScore += (matchCount / group.keywords.length) * group.weight;
 				matchedKeywords += matchCount;
@@ -218,11 +232,19 @@ function classifyByContent(
 
 	// Check if top score clearly beats second
 	if (scores.length > 1 && scores[0].score > scores[1].score * 1.5) {
-		return { type: scores[0].type, confidence: scores[0].score, method: "keyword_match" };
+		return {
+			type: scores[0].type,
+			confidence: scores[0].score,
+			method: "keyword_match",
+		};
 	}
 
 	// Close race — return top but lower confidence
-	return { type: scores[0].type, confidence: scores[0].score * 0.7, method: "keyword_match_low_confidence" };
+	return {
+		type: scores[0].type,
+		confidence: scores[0].score * 0.7,
+		method: "keyword_match_low_confidence",
+	};
 }
 
 function checkCompleteness(
@@ -332,7 +354,11 @@ export function classifyDocument(
 			confidence: 0.9,
 			reasoning: `Document could not be classified (confidence ${(confidence * 100).toFixed(0)}%, minimum ${(opts.minConfidence * 100).toFixed(0)}%)`,
 			detectionMethod: "content_classification",
-			context: { filename: doc.filename, format, textPreview: doc.text.slice(0, 100) },
+			context: {
+				filename: doc.filename,
+				format,
+				textPreview: doc.text.slice(0, 100),
+			},
 		});
 	}
 
@@ -346,7 +372,12 @@ export function classifyDocument(
 		missingFields = completeness.missing;
 
 		if (completeness.missing.length > 0) {
-			const severity = completeness.missing.length >= 3 ? "high" : completeness.missing.length >= 2 ? "medium" : "low";
+			const severity =
+				completeness.missing.length >= 3
+					? "high"
+					: completeness.missing.length >= 2
+						? "medium"
+						: "low";
 			anomalies.push({
 				id: generateDocAnomalyId("missing_fields", anomalies.length),
 				timestamp,
@@ -370,7 +401,11 @@ export function classifyDocument(
 	}
 
 	// 7. Type mismatch anomaly
-	if (opts.checkTypeMismatch && doc.declaredType && detectedType !== "unknown") {
+	if (
+		opts.checkTypeMismatch &&
+		doc.declaredType &&
+		detectedType !== "unknown"
+	) {
 		if (doc.declaredType !== detectedType) {
 			anomalies.push({
 				id: generateDocAnomalyId("type_mismatch", anomalies.length),

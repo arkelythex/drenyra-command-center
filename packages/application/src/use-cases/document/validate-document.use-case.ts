@@ -1,15 +1,15 @@
-import { NotFoundError } from "@drenyra/shared/errors";
 import {
 	Document,
 	type DocumentProps,
 } from "@drenyra/domain/entities/Document";
 import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
+import { NotFoundError } from "@drenyra/shared/errors";
 import type { ValidateDocumentDTO } from "../../dtos/document/validate-document.dto";
+import { ValidateDocumentSchema } from "../../validators/document/document.validators";
 import {
 	findDocumentByTenant,
 	updateDocumentWithTenant,
 } from "./support/document-tenant";
-import { ValidateDocumentSchema } from "../../validators/document/document.validators";
 
 /**
  * ValidateDocumentUseCase class.

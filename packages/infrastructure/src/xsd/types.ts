@@ -92,10 +92,8 @@ export const UBL_NAMESPACE_PREFIXES = {
  * UBL 2.1 main document namespace mapping.
  */
 export const UBL_DOCUMENT_NAMESPACES = {
-	Invoice:
-		"urn:oasis:names:specification:ubl:schema:xsd:Invoice-2",
-	CreditNote:
-		"urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2",
+	Invoice: "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2",
+	CreditNote: "urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2",
 } as const;
 
 /**

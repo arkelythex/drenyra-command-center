@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 import type { AgentContext } from "../../types/agent-context";
 import type { DetraccionInvoice } from "../detracciones.strategy";
 import {
-	SPOT_MIN_CASH_AMOUNT,
-	SPOT_MIN_AMOUNT,
-	SPOT_RATES,
 	createDetraccionesStrategy,
+	SPOT_MIN_AMOUNT,
+	SPOT_MIN_CASH_AMOUNT,
+	SPOT_RATES,
 } from "../detracciones.strategy";
 
 const mockContext: AgentContext = {
@@ -160,9 +160,22 @@ describe("createDetraccionesStrategy", () => {
 			// Below threshold — skip
 			makeInv({ id: "INV-001", operationCode: "022", totalAmount: 300 }),
 			// Missing — flag
-			makeInv({ id: "INV-002", operationCode: "022", totalAmount: 10000, detraccionAmount: null }),
+			makeInv({
+				id: "INV-002",
+				operationCode: "022",
+				totalAmount: 10000,
+				detraccionAmount: null,
+			}),
 			// Compliant — skip
-			makeInv({ id: "INV-003", operationCode: "022", totalAmount: 8000, detraccionAmount: 1200, detraccionPercentage: 15, detraccionDeposited: true, depositDate: "2026-03-18" }),
+			makeInv({
+				id: "INV-003",
+				operationCode: "022",
+				totalAmount: 8000,
+				detraccionAmount: 1200,
+				detraccionPercentage: 15,
+				detraccionDeposited: true,
+				depositDate: "2026-03-18",
+			}),
 		];
 		const anomalies = strategy.execute(invoices, mockContext);
 		expect(anomalies).toHaveLength(1);
@@ -170,14 +183,22 @@ describe("createDetraccionesStrategy", () => {
 	});
 
 	it("should include legal reference in context", () => {
-		const inv = makeInv({ operationCode: "022", totalAmount: 10000, detraccionAmount: null });
+		const inv = makeInv({
+			operationCode: "022",
+			totalAmount: 10000,
+			detraccionAmount: null,
+		});
 		const anomalies = strategy.execute([inv], mockContext);
 		const ctx = anomalies[0]?.context as Record<string, unknown>;
 		expect(ctx?.legalReference).toContain("D.S. 155-2007-EF");
 	});
 
 	it("should include expected rate in missing detraccion context", () => {
-		const inv = makeInv({ operationCode: "022", totalAmount: 10000, detraccionAmount: null });
+		const inv = makeInv({
+			operationCode: "022",
+			totalAmount: 10000,
+			detraccionAmount: null,
+		});
 		const anomalies = strategy.execute([inv], mockContext);
 		expect(anomalies[0]?.context?.expectedRate).toBe(15);
 	});

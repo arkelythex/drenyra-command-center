@@ -1,6 +1,6 @@
 import { Activity, BrainCircuit, Layers, ShieldCheck, Zap } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useSettings } from "@/context/SettingsContext";
+import { cn } from "@/lib/utils";
 
 export const CompanionHub = () => {
 	const { settings, updateSettings } = useSettings();

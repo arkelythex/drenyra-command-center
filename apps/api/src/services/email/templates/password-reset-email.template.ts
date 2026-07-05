@@ -1,17 +1,19 @@
-import { AUTH_EMAIL_STYLES, getEmailFooter } from './email-styles';
+import { AUTH_EMAIL_STYLES, getEmailFooter } from "./email-styles";
 
 /**
  * Password Reset Email Template
  */
 
 export interface PasswordResetEmailData {
-  userName: string;
-  resetUrl: string;
-  expiresIn?: string;
+	userName: string;
+	resetUrl: string;
+	expiresIn?: string;
 }
 
-export function generatePasswordResetEmail(data: PasswordResetEmailData): string {
-  return `
+export function generatePasswordResetEmail(
+	data: PasswordResetEmailData,
+): string {
+	return `
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,14 +45,14 @@ export function generatePasswordResetEmail(data: PasswordResetEmailData): string
       </div>
 
       ${
-        data.expiresIn
-          ? `
+				data.expiresIn
+					? `
       <div class="warning">
         ⏰ <strong>Importante:</strong> Este enlace expirará en <strong>${data.expiresIn}</strong>. Si el enlace expira, deberás solicitar un nuevo restablecimiento.
       </div>
       `
-          : ''
-      }
+					: ""
+			}
 
       <div class="warning" style="margin-top: 30px; background: rgba(239, 68, 68, 0.1); border-left-color: #ef4444; color: #fecaca;">
         🛡️ <strong>¿No solicitaste este cambio?</strong><br>

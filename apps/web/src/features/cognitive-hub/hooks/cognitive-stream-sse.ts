@@ -146,7 +146,8 @@ export function normalizeRawToAgentEvent(
 					toolName: String(raw.name ?? ""),
 					callId: "",
 					result: raw.result,
-					duration: typeof raw.duration === "number" ? (raw.duration as number) : 0,
+					duration:
+						typeof raw.duration === "number" ? (raw.duration as number) : 0,
 				},
 			};
 
@@ -213,7 +214,8 @@ export function normalizeRawToAgentEvent(
 				type: "complete",
 				payload: {
 					result: null,
-					duration: typeof raw.duration === "number" ? (raw.duration as number) : 0,
+					duration:
+						typeof raw.duration === "number" ? (raw.duration as number) : 0,
 					toolCalls: (raw.tool_calls as number) ?? 0,
 				},
 			};

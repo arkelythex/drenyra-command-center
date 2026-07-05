@@ -19,18 +19,22 @@ export class ComplianceRoadmapExecutionService {
 		traceId: string;
 		countryCode?: string;
 	}): Promise<ComplianceRoadmapActionRunResult> {
-		const snapshot = await ComplianceRoadmapSnapshotService.getRoadmapMvpSnapshot({
-			companyId: input.companyId,
-			year: input.year,
-			month: input.month,
-		});
+		const snapshot =
+			await ComplianceRoadmapSnapshotService.getRoadmapMvpSnapshot({
+				companyId: input.companyId,
+				year: input.year,
+				month: input.month,
+			});
 		const action = ComplianceRoadmapSnapshotService.findRoadmapRecommendation({
 			snapshot,
 			actionId: input.actionId,
 			traceId: input.traceId,
 		});
 
-		if (action.id === "prepare-sire" && action.automationLevel === "one-click") {
+		if (
+			action.id === "prepare-sire" &&
+			action.automationLevel === "one-click"
+		) {
 			const run = await AccountingJobRunsService.createRun({
 				companyId: input.companyId,
 				countryCode: input.countryCode ?? "pe",

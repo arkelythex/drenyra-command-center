@@ -1,8 +1,8 @@
 import {
+	Building2,
 	PackageSearch,
 	ScanLine,
 	Tags,
-	Building2,
 	UserCheck,
 	Zap,
 } from "lucide-react";

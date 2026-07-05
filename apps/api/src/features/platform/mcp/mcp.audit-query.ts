@@ -14,7 +14,11 @@ import type {
 } from "@drenyra/agents";
 
 const auditRoles = new Set(["admin", "auditor", "owner", "compliance"]);
-const outcomes = new Set<DrenyraMcpAuditOutcome>(["allowed", "denied", "failed"]);
+const outcomes = new Set<DrenyraMcpAuditOutcome>([
+	"allowed",
+	"denied",
+	"failed",
+]);
 
 export function canReadPlatformMcpAudit(role: string): boolean {
 	return auditRoles.has(role.trim().toLowerCase());
@@ -28,9 +32,10 @@ export function readAuditQuery(
 	const limit = Number.isFinite(parsedLimit)
 		? Math.min(Math.max(parsedLimit, 1), 100)
 		: 50;
-	const outcome = query.outcome && outcomes.has(query.outcome as DrenyraMcpAuditOutcome)
-		? (query.outcome as DrenyraMcpAuditOutcome)
-		: undefined;
+	const outcome =
+		query.outcome && outcomes.has(query.outcome as DrenyraMcpAuditOutcome)
+			? (query.outcome as DrenyraMcpAuditOutcome)
+			: undefined;
 	const toolName = query.toolName?.trim() || undefined;
 	return { scope, limit, outcome, toolName };
 }

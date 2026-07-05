@@ -1,8 +1,8 @@
+export { FailoverService, failoverService } from "./service";
+export { ProviderCircuit } from "./strategies";
+export type { FailoverChain, ProviderHealth } from "./types";
 export {
 	type FailoverAttempt,
-	type LLMProvider,
 	LLMGatewayError,
+	type LLMProvider,
 } from "./types";
-export type { FailoverChain, ProviderHealth } from "./types";
-export { ProviderCircuit } from "./strategies";
-export { FailoverService, failoverService } from "./service";

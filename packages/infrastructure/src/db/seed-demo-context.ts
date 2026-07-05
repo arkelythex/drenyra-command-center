@@ -1,6 +1,6 @@
+import * as schema from "@drenyra/persistence/schema";
 import { eq } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import * as schema from "@drenyra/persistence/schema";
 
 type SeedDb = PostgresJsDatabase<typeof schema>;
 
@@ -57,7 +57,9 @@ export interface DemoSeedContext {
  * console.log(result);
  * ```
  */
-export async function ensureDemoSeedContext(db: SeedDb): Promise<DemoSeedContext> {
+export async function ensureDemoSeedContext(
+	db: SeedDb,
+): Promise<DemoSeedContext> {
 	const existingAdminByEmail = await db.query.users.findFirst({
 		where: eq(schema.users.email, "admin@drenyrafounders.com"),
 	});

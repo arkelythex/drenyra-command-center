@@ -6,11 +6,7 @@
  * - DEVOLUCION: Product return
  * - OTROS: Other reasons
  */
-export type CreditNoteType =
-	| "ANULACION"
-	| "DESCUENTO"
-	| "DEVOLUCION"
-	| "OTROS";
+export type CreditNoteType = "ANULACION" | "DESCUENTO" | "DEVOLUCION" | "OTROS";
 
 /**
  * Credit note lifecycle status.
@@ -20,15 +16,11 @@ export type CreditNoteType =
  * - ACCEPTED: Accepted by SUNAT
  * - REJECTED: Rejected by SUNAT
  */
-export type CreditNoteStatus =
-	| "DRAFT"
-	| "SENT"
-	| "ACCEPTED"
-	| "REJECTED";
+export type CreditNoteStatus = "DRAFT" | "SENT" | "ACCEPTED" | "REJECTED";
 
-import { DocumentSeries } from "../../value-objects/DocumentSeries";
-import { Money } from "../../value-objects/Money";
 import type { Currency } from "../../types/currency";
+import type { DocumentSeries } from "../../value-objects/DocumentSeries";
+import type { Money } from "../../value-objects/Money";
 
 /**
  * Properties for creating a CreditNote entity.

@@ -1,4 +1,4 @@
-import { DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
+import type { DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
 import { Elysia, t } from "elysia";
 import { ok } from "../shared/api-response";
 import {

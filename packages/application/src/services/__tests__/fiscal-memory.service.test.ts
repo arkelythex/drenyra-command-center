@@ -1,4 +1,3 @@
-import { describe, expect, it } from "vitest";
 import type {
 	FiscalMemory,
 	FiscalMemoryCategory,
@@ -7,6 +6,7 @@ import type {
 	FiscalMemorySeverity,
 } from "@drenyra/domain/fiscal-memory";
 import type { FiscalMemoryRepository } from "@drenyra/domain/repositories/fiscal-memory.repository";
+import { describe, expect, it } from "vitest";
 import { FiscalMemoryService } from "../fiscal-memory.service";
 
 const scope: FiscalMemoryScope = {
@@ -23,13 +23,19 @@ class InMemoryFiscalMemoryRepository implements FiscalMemoryRepository {
 		this.memories.set(memory.id, memory);
 	}
 
-	async findById(id: string, findScope: FiscalMemoryScope): Promise<FiscalMemory | null> {
+	async findById(
+		id: string,
+		findScope: FiscalMemoryScope,
+	): Promise<FiscalMemory | null> {
 		const memory = this.memories.get(id);
 		if (!memory) return null;
 		return this.matchesScope(memory, findScope) ? memory : null;
 	}
 
-	async findByPeriod(findScope: FiscalMemoryScope, period: string): Promise<FiscalMemory[]> {
+	async findByPeriod(
+		findScope: FiscalMemoryScope,
+		period: string,
+	): Promise<FiscalMemory[]> {
 		return this.all(findScope).filter((memory) => memory.period === period);
 	}
 
@@ -47,13 +53,22 @@ class InMemoryFiscalMemoryRepository implements FiscalMemoryRepository {
 		return this.all(findScope).filter((memory) => memory.severity === severity);
 	}
 
-	async findByEvidenceRef(findScope: FiscalMemoryScope, evidenceRef: string): Promise<FiscalMemory[]> {
-		return this.all(findScope).filter((memory) => memory.evidenceRefs.includes(evidenceRef));
+	async findByEvidenceRef(
+		findScope: FiscalMemoryScope,
+		evidenceRef: string,
+	): Promise<FiscalMemory[]> {
+		return this.all(findScope).filter((memory) =>
+			memory.evidenceRefs.includes(evidenceRef),
+		);
 	}
 
-	async findRelated(findScope: FiscalMemoryScope, memoryId: string): Promise<FiscalMemory[]> {
+	async findRelated(
+		findScope: FiscalMemoryScope,
+		memoryId: string,
+	): Promise<FiscalMemory[]> {
 		return this.all(findScope).filter(
-			(memory) => memory.id === memoryId || memory.relatedMemoryIds.includes(memoryId),
+			(memory) =>
+				memory.id === memoryId || memory.relatedMemoryIds.includes(memoryId),
 		);
 	}
 
@@ -67,10 +82,15 @@ class InMemoryFiscalMemoryRepository implements FiscalMemoryRepository {
 	}
 
 	private all(findScope: FiscalMemoryScope): FiscalMemory[] {
-		return [...this.memories.values()].filter((memory) => this.matchesScope(memory, findScope));
+		return [...this.memories.values()].filter((memory) =>
+			this.matchesScope(memory, findScope),
+		);
 	}
 
-	private matchesScope(memory: FiscalMemory, findScope: FiscalMemoryScope): boolean {
+	private matchesScope(
+		memory: FiscalMemory,
+		findScope: FiscalMemoryScope,
+	): boolean {
 		return (
 			memory.tenantId === findScope.tenantId &&
 			memory.companyId === findScope.companyId &&

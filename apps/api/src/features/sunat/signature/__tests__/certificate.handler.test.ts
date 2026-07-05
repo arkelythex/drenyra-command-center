@@ -3,22 +3,22 @@
  * Tests for digital certificate operations (SUNAT 2026)
  */
 
-import {
-	describe,
-	it,
-	expect,
-	vi,
-	beforeEach,
-	afterEach,
-	type MockedFunction,
-} from "vitest";
 import fs from "node:fs";
 import forge from "node-forge";
 import {
+	afterEach,
+	beforeEach,
+	describe,
+	expect,
+	it,
+	type MockedFunction,
+	vi,
+} from "vitest";
+import {
+	type Certificate,
+	getCertificateInfo,
 	loadCertificateFromPem,
 	validateCertificate,
-	getCertificateInfo,
-	type Certificate,
 } from "../certificate.handler";
 
 // Mock fs module

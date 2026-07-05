@@ -6,8 +6,8 @@
  * @module banking-providers/application/queries
  */
 
-import type { BankProvider, BankAccount } from '../../domain/types';
-import { PrometeoService } from '../../infrastructure/prometeo.service';
+import type { BankAccount, BankProvider } from "../../domain/types";
+import { PrometeoService } from "../../infrastructure/prometeo.service";
 
 /**
  * GetBankAccountsInput interface.
@@ -19,8 +19,8 @@ import { PrometeoService } from '../../infrastructure/prometeo.service';
  * ```
  */
 export interface GetBankAccountsInput {
-  sessionKey: string;
-  provider: BankProvider;
+	sessionKey: string;
+	provider: BankProvider;
 }
 
 /**
@@ -35,13 +35,13 @@ export interface GetBankAccountsInput {
  */
 
 export class GetBankAccountsQuery {
-  private prometeoService: PrometeoService;
+	private prometeoService: PrometeoService;
 
-  constructor() {
-    this.prometeoService = new PrometeoService();
-  }
+	constructor() {
+		this.prometeoService = new PrometeoService();
+	}
 
-  async execute(input: GetBankAccountsInput): Promise<BankAccount[]> {
-    return this.prometeoService.getAccounts(input.sessionKey, input.provider);
-  }
+	async execute(input: GetBankAccountsInput): Promise<BankAccount[]> {
+		return this.prometeoService.getAccounts(input.sessionKey, input.provider);
+	}
 }

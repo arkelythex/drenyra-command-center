@@ -1,14 +1,14 @@
-import { AgentProgressBar } from "./AgentProgressBar";
-import { AgentRiskBadge } from "./AgentRiskBadge";
-import { AgentCostDisplay } from "./AgentCostDisplay";
-import type { AgentSessionStatus } from "./agents.types";
 import {
 	AlertCircle,
 	CheckCircle2,
+	Loader2,
 	PauseCircle,
 	XCircle,
-	Loader2,
 } from "lucide-react";
+import { AgentCostDisplay } from "./AgentCostDisplay";
+import { AgentProgressBar } from "./AgentProgressBar";
+import { AgentRiskBadge } from "./AgentRiskBadge";
+import type { AgentSessionStatus } from "./agents.types";
 
 interface AgentCardProps {
 	session: AgentSessionStatus;

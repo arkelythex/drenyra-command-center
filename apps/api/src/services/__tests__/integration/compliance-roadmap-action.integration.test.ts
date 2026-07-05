@@ -1,5 +1,4 @@
-import { randomUUID } from "node:crypto";
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import {
 	accountingJobRuns,
 	businessPartners,
@@ -99,7 +98,11 @@ describeDb("ComplianceRoadmapService.runRoadmapAction (integration)", () => {
 	});
 });
 
-function buildTraceId(companyId: string, period: string, actionId: string): string {
+function buildTraceId(
+	companyId: string,
+	period: string,
+	actionId: string,
+): string {
 	const digest = createHash("sha256")
 		.update(`${companyId}:${period}:${actionId}`)
 		.digest("hex")

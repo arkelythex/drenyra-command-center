@@ -1,11 +1,12 @@
-import type { DrenyraBrainItem, DrenyraBrainThread, DrenyraBrainTurn } from "@drenyra/domain/drenyra";
+import type {
+	DrenyraBrainItem,
+	DrenyraBrainThread,
+	DrenyraBrainTurn,
+} from "@drenyra/domain/drenyra";
 import { render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@/lib/api-helpers";
-import {
-	createBrainThread,
-	startBrainTurn,
-} from "../api/drenyra-brain.api";
+import { createBrainThread, startBrainTurn } from "../api/drenyra-brain.api";
 import { BrainThreadTimeline } from "./brain-thread-timeline";
 
 describe("BrainThreadTimeline", () => {
@@ -54,7 +55,8 @@ describe("BrainThreadTimeline", () => {
 					sourceUrl: "https://example.com/sunat-sire-guide",
 					sourceTitle: "SUNAT SIRE Guidance",
 					retrievedAt: "2026-05-24T13:02:00.000Z",
-					snippet: "SIRE debe cuadrar con el libro mayor y el periodo declarado.",
+					snippet:
+						"SIRE debe cuadrar con el libro mayor y el periodo declarado.",
 					citationText: "SUNAT SIRE Guidance, sección 2.1",
 					toolName: "web-research",
 					purpose: "grounding",
@@ -66,7 +68,9 @@ describe("BrainThreadTimeline", () => {
 
 		render(<BrainThreadTimeline items={items} />);
 
-		expect(screen.getByText("¿Podés revisar este riesgo fiscal?")).toBeInTheDocument();
+		expect(
+			screen.getByText("¿Podés revisar este riesgo fiscal?"),
+		).toBeInTheDocument();
 		expect(
 			screen.getByText("Encontré inconsistencias en SIRE vs libro mayor."),
 		).toBeInTheDocument();
@@ -128,7 +132,10 @@ vi.mock("@/lib/api", () => ({
 }));
 
 vi.mock("@/lib/api-helpers", async () => {
-	const actual = await vi.importActual<typeof import("@/lib/api-helpers")>("@/lib/api-helpers");
+	const actual =
+		await vi.importActual<typeof import("@/lib/api-helpers")>(
+			"@/lib/api-helpers",
+		);
 	return {
 		unwrap: actual.unwrap,
 		extractOkData: (data: unknown) => data,
@@ -167,7 +174,10 @@ describe("drenyra-brain.api", () => {
 
 	it("calls /api/drenyra/brain/threads/:threadId/turns with sourceSurface in request body", async () => {
 		const turnsPost = vi.fn(async () => ({ data: { id: "turn-1" } }));
-		brainThreadsFn.mockReturnValue({ turns: { post: turnsPost }, items: { get: vi.fn() } });
+		brainThreadsFn.mockReturnValue({
+			turns: { post: turnsPost },
+			items: { get: vi.fn() },
+		});
 
 		await startBrainTurn("thread-1", {
 			prompt: "Review mismatch",
@@ -184,7 +194,10 @@ describe("drenyra-brain.api", () => {
 		const turnsPost = vi.fn(async () => ({
 			error: { value: { error: "Bad request" } },
 		}));
-		brainThreadsFn.mockReturnValue({ turns: { post: turnsPost }, items: { get: vi.fn() } });
+		brainThreadsFn.mockReturnValue({
+			turns: { post: turnsPost },
+			items: { get: vi.fn() },
+		});
 
 		await expect(
 			startBrainTurn("thread-1", {

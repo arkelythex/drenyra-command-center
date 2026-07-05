@@ -5,9 +5,7 @@ import { FiscalInspectorSection } from "./FiscalInspectorSection";
 /**
  * Displays the AI agent's analysis for a proposed fiscal action.
  */
-export function FiscalInspectorAgentAnalysis({
-	analysis,
-}: AgentAnalysisProps) {
+export function FiscalInspectorAgentAnalysis({ analysis }: AgentAnalysisProps) {
 	return (
 		<FiscalInspectorSection title="Análisis del Agente">
 			<div className="rounded-xl border border-[var(--color-stroke-1)] bg-[var(--color-surface-2)]/50 p-3 space-y-2">

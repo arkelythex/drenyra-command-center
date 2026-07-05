@@ -2,17 +2,13 @@
  * Accounting Classifier - Barrel
  */
 
+export {
+	classifyExpense,
+	quickClassify,
+	suggestPurchaseEntry,
+} from "./service";
 export type {
-  ClassificationInput,
-  ClassificationResult,
-} from './types';
-
-export {
-  ClassificationSchema,
-} from './types';
-
-export {
-  classifyExpense,
-  suggestPurchaseEntry,
-  quickClassify,
-} from './service';
+	ClassificationInput,
+	ClassificationResult,
+} from "./types";
+export { ClassificationSchema } from "./types";

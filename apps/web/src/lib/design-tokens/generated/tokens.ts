@@ -15,45 +15,45 @@
  * For everything else, use CSS variables or Tailwind semantic classes.
  */
 export const PALETTE = {
-  // Accent — blue
-  blue: {
-    light:  "oklch(0.78 0.14 55)",
-    base:   "#d99555",
-    hover:  "oklch(0.70 0.16 50)",
-    active: "oklch(0.50 0.18 45)",
-  },
+	// Accent — blue
+	blue: {
+		light: "oklch(0.78 0.14 55)",
+		base: "#d99555",
+		hover: "oklch(0.70 0.16 50)",
+		active: "oklch(0.50 0.18 45)",
+	},
 
-  // Accent — green (success / positive metrics)
-  green: {
-    base:   "oklch(0.65 0.22 150)",
-    hover:  "oklch(0.75 0.20 150)",
-    active: "oklch(0.55 0.22 150)",
-  },
+	// Accent — green (success / positive metrics)
+	green: {
+		base: "oklch(0.65 0.22 150)",
+		hover: "oklch(0.75 0.20 150)",
+		active: "oklch(0.55 0.22 150)",
+	},
 
-  // State
-  state: {
-    success: "oklch(0.65 0.22 150)",
-    warning: "oklch(0.75 0.22 80)",
-    danger:  "oklch(0.55 0.25 25)",
-    info:    "#d99555",
-  },
+	// State
+	state: {
+		success: "oklch(0.65 0.22 150)",
+		warning: "oklch(0.75 0.22 80)",
+		danger: "oklch(0.55 0.25 25)",
+		info: "#d99555",
+	},
 
-  // Component: Score Ring (SVG gradient)
-  scoreRing: {
-    from: "oklch(0.85 0.20 80)",
-    mid:  "oklch(0.75 0.22 80)",
-    to:   "#d99555",
-  },
+	// Component: Score Ring (SVG gradient)
+	scoreRing: {
+		from: "oklch(0.85 0.20 80)",
+		mid: "oklch(0.75 0.22 80)",
+		to: "#d99555",
+	},
 
-  // CSS variable references (for chart libraries that accept style strings)
-  cssVar: {
-    success:    "var(--color-success)",
-    warning:    "var(--color-warning)",
-    danger:     "var(--color-danger)",
-    info:       "var(--color-info)",
-    textPrimary: "var(--color-text-primary)",
-    border:     "var(--color-stroke-2)",
-  },
-} as const
+	// CSS variable references (for chart libraries that accept style strings)
+	cssVar: {
+		success: "var(--color-success)",
+		warning: "var(--color-warning)",
+		danger: "var(--color-danger)",
+		info: "var(--color-info)",
+		textPrimary: "var(--color-text-primary)",
+		border: "var(--color-stroke-2)",
+	},
+} as const;
 
-export type PaletteColor = typeof PALETTE
+export type PaletteColor = typeof PALETTE;

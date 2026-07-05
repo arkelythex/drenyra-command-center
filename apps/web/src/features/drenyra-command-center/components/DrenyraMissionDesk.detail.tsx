@@ -1,9 +1,9 @@
-import type { ReactElement } from "react";
 import { CheckCircle2 } from "lucide-react";
+import type { ReactElement } from "react";
 import { cn } from "@/lib/utils";
 import type { DocumentMissionResult } from "../api/drenyra-mission.api";
-import type { MissionPhase } from "./DrenyraMissionDesk.types";
 import { AGENT_STAGES } from "./DrenyraMissionDesk.data";
+import type { MissionPhase } from "./DrenyraMissionDesk.types";
 
 /* ------------------------------------------------------------------ */
 /*  Stage list                                                         */
@@ -26,10 +26,7 @@ export function DrenyraMissionDeskStageList({
 	return (
 		<ul className="space-y-2 text-2xs">
 			{AGENT_STAGES.map((stage, index) => {
-				const activeIndex = Math.min(
-					activeLogCount,
-					AGENT_STAGES.length - 1,
-				);
+				const activeIndex = Math.min(activeLogCount, AGENT_STAGES.length - 1);
 				const done = phase === "ready" || index < activeIndex;
 				const active = isBusy && index === activeIndex;
 				return (
@@ -45,10 +42,7 @@ export function DrenyraMissionDeskStageList({
 						)}
 					>
 						{done ? (
-							<CheckCircle2
-								size={14}
-								className="text-[var(--color-success)]"
-							/>
+							<CheckCircle2 size={14} className="text-[var(--color-success)]" />
 						) : (
 							<span className="inline-block h-2 w-2 rounded-full bg-[var(--text-tertiary)]" />
 						)}

@@ -4,7 +4,7 @@
  * @module @drenyra/ai/gateway
  */
 
-import { ContextMonitor, ContextPruner } from "../context-monitor";
+import type { ContextMonitor, ContextPruner } from "../context-monitor";
 import { loggers } from "../logger";
 import { type CostTracker, costTracker } from "./cost-tracker";
 import {
@@ -114,8 +114,9 @@ export class LLMGatewayService {
 					request.model,
 					this.contextPruner.config.tokenBudgetRatio,
 				);
-				const estimatedTokens =
-					this.contextPruner.getEstimatedTokenCount(request.messages);
+				const estimatedTokens = this.contextPruner.getEstimatedTokenCount(
+					request.messages,
+				);
 
 				if (estimatedTokens > budget.maxTokens) {
 					const result = this.contextPruner.prune(request.messages, runId);
@@ -128,10 +129,13 @@ export class LLMGatewayService {
 					});
 				}
 			} catch (err) {
-				loggers.ai.warn("Gateway: pre-execution pruning failed, continuing with original messages", {
-					runId,
-					error: String(err),
-				});
+				loggers.ai.warn(
+					"Gateway: pre-execution pruning failed, continuing with original messages",
+					{
+						runId,
+						error: String(err),
+					},
+				);
 			}
 		}
 
@@ -177,46 +181,50 @@ export class LLMGatewayService {
 
 			if (this.contextMonitor && runId && response.usage) {
 				// ── Pre-execution context pruning (non-blocking) ──────────────
-		// If a pruner is configured AND messages exceed the budget,
-		// prune the messages before sending to the provider.
-		if (
-			this.contextPruner &&
-			runId &&
-			request.messages.length > this.contextPruner.config.maxMessages
-		) {
-			try {
-				const budget = this.contextPruner.calculateBudget(
-					request.model,
-					this.contextPruner.config.tokenBudgetRatio,
-				);
-				const estimatedTokens =
-					this.contextPruner.getEstimatedTokenCount(request.messages);
+				// If a pruner is configured AND messages exceed the budget,
+				// prune the messages before sending to the provider.
+				if (
+					this.contextPruner &&
+					runId &&
+					request.messages.length > this.contextPruner.config.maxMessages
+				) {
+					try {
+						const budget = this.contextPruner.calculateBudget(
+							request.model,
+							this.contextPruner.config.tokenBudgetRatio,
+						);
+						const estimatedTokens = this.contextPruner.getEstimatedTokenCount(
+							request.messages,
+						);
 
-				if (estimatedTokens > budget.maxTokens) {
-					const result = this.contextPruner.prune(request.messages, runId);
-					request.messages = result.messages;
-					loggers.ai.info("Gateway: pre-execution pruning applied", {
-						runId,
-						strategy: result.strategy,
-						tokensBefore: result.tokensBefore,
-						tokensAfter: result.tokensAfter,
-					});
+						if (estimatedTokens > budget.maxTokens) {
+							const result = this.contextPruner.prune(request.messages, runId);
+							request.messages = result.messages;
+							loggers.ai.info("Gateway: pre-execution pruning applied", {
+								runId,
+								strategy: result.strategy,
+								tokensBefore: result.tokensBefore,
+								tokensAfter: result.tokensAfter,
+							});
+						}
+					} catch (err) {
+						loggers.ai.warn(
+							"Gateway: pre-execution pruning failed, continuing with original messages",
+							{
+								runId,
+								error: String(err),
+							},
+						);
+					}
 				}
-			} catch (err) {
-				loggers.ai.warn("Gateway: pre-execution pruning failed, continuing with original messages", {
-					runId,
-					error: String(err),
-				});
-			}
-		}
 
-		try {
+				try {
 					this.contextMonitor.trackRequest(runId, response.model, {
 						promptTokens: response.usage.promptTokens,
 						completionTokens: response.usage.completionTokens,
 					});
 				} catch (err) {
-					loggers.ai.warn('ContextMonitor tracking failed', { error: err });
+					loggers.ai.warn("ContextMonitor tracking failed", { error: err });
 				}
 			}
 
@@ -283,8 +291,9 @@ export class LLMGatewayService {
 					request.model,
 					this.contextPruner.config.tokenBudgetRatio,
 				);
-				const estimatedTokens =
-					this.contextPruner.getEstimatedTokenCount(request.messages);
+				const estimatedTokens = this.contextPruner.getEstimatedTokenCount(
+					request.messages,
+				);
 
 				if (estimatedTokens > budget.maxTokens) {
 					const result = this.contextPruner.prune(request.messages, runId);
@@ -297,10 +306,13 @@ export class LLMGatewayService {
 					});
 				}
 			} catch (err) {
-				loggers.ai.warn("Gateway: pre-execution pruning failed, continuing with original messages", {
-					runId,
-					error: String(err),
-				});
+				loggers.ai.warn(
+					"Gateway: pre-execution pruning failed, continuing with original messages",
+					{
+						runId,
+						error: String(err),
+					},
+				);
 			}
 		}
 
@@ -323,7 +335,13 @@ export class LLMGatewayService {
 
 			const stream = await StreamExecutor.execute(request, credential);
 
-			let lastUsage: { promptTokens: number; completionTokens: number; totalTokens: number } | undefined;
+			let lastUsage:
+				| {
+						promptTokens: number;
+						completionTokens: number;
+						totalTokens: number;
+				  }
+				| undefined;
 
 			for await (const chunk of stream) {
 				if (chunk.usage) {
@@ -334,46 +352,52 @@ export class LLMGatewayService {
 
 			if (this.contextMonitor && runId && lastUsage) {
 				// ── Pre-execution context pruning (non-blocking) ──────────────
-		// If a pruner is configured AND messages exceed the budget,
-		// prune the messages before sending to the provider.
-		if (
-			this.contextPruner &&
-			runId &&
-			request.messages.length > this.contextPruner.config.maxMessages
-		) {
-			try {
-				const budget = this.contextPruner.calculateBudget(
-					request.model,
-					this.contextPruner.config.tokenBudgetRatio,
-				);
-				const estimatedTokens =
-					this.contextPruner.getEstimatedTokenCount(request.messages);
+				// If a pruner is configured AND messages exceed the budget,
+				// prune the messages before sending to the provider.
+				if (
+					this.contextPruner &&
+					runId &&
+					request.messages.length > this.contextPruner.config.maxMessages
+				) {
+					try {
+						const budget = this.contextPruner.calculateBudget(
+							request.model,
+							this.contextPruner.config.tokenBudgetRatio,
+						);
+						const estimatedTokens = this.contextPruner.getEstimatedTokenCount(
+							request.messages,
+						);
 
-				if (estimatedTokens > budget.maxTokens) {
-					const result = this.contextPruner.prune(request.messages, runId);
-					request.messages = result.messages;
-					loggers.ai.info("Gateway: pre-execution pruning applied", {
-						runId,
-						strategy: result.strategy,
-						tokensBefore: result.tokensBefore,
-						tokensAfter: result.tokensAfter,
-					});
+						if (estimatedTokens > budget.maxTokens) {
+							const result = this.contextPruner.prune(request.messages, runId);
+							request.messages = result.messages;
+							loggers.ai.info("Gateway: pre-execution pruning applied", {
+								runId,
+								strategy: result.strategy,
+								tokensBefore: result.tokensBefore,
+								tokensAfter: result.tokensAfter,
+							});
+						}
+					} catch (err) {
+						loggers.ai.warn(
+							"Gateway: pre-execution pruning failed, continuing with original messages",
+							{
+								runId,
+								error: String(err),
+							},
+						);
+					}
 				}
-			} catch (err) {
-				loggers.ai.warn("Gateway: pre-execution pruning failed, continuing with original messages", {
-					runId,
-					error: String(err),
-				});
-			}
-		}
 
-		try {
+				try {
 					this.contextMonitor.trackRequest(runId, request.model, {
 						promptTokens: lastUsage.promptTokens,
 						completionTokens: lastUsage.completionTokens,
 					});
 				} catch (err) {
-					loggers.ai.warn('ContextMonitor streaming tracking failed', { error: err });
+					loggers.ai.warn("ContextMonitor streaming tracking failed", {
+						error: err,
+					});
 				}
 			}
 

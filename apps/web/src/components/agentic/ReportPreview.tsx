@@ -1,9 +1,9 @@
 "use client";
 
+import { type BarChart3, DollarSign, PieChart, TrendingUp } from "lucide-react";
 import { useState } from "react";
-import { cn, n } from "@/lib/utils";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
-import { BarChart3, TrendingUp, DollarSign, PieChart } from "lucide-react";
+import { cn, n } from "@/lib/utils";
 
 type ReportType = "balance" | "income" | "cashflow";
 

@@ -1,6 +1,6 @@
+import type { DeterministicFiscalValidatorPort } from "@drenyra/application/fiscal-truth";
 import type { DeterministicValidatorResultRecord } from "@drenyra/domain";
 import { Money } from "@drenyra/domain";
-import type { DeterministicFiscalValidatorPort } from "@drenyra/application/fiscal-truth";
 import type { FiscalDeterministicValidationInput } from "./types";
 
 const VALIDATOR_NAME = "retention-detraction";

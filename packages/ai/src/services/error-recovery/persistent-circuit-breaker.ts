@@ -141,10 +141,7 @@ export class PersistentCircuitBreaker {
 				this.persistedState = dbState.state as CBState;
 
 				// Rebuild in-memory circuit breaker with persisted configuration
-				this.memory = new CircuitBreaker(
-					dbState.threshold,
-					dbState.timeoutMs,
-				);
+				this.memory = new CircuitBreaker(dbState.threshold, dbState.timeoutMs);
 			}
 
 			this.cacheTimestamp = now;

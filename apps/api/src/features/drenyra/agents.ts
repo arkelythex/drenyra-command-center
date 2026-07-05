@@ -1,9 +1,9 @@
-import type { AgentDefinition } from "@drenyra/drenyra-orchestrator/erp-types";
 import type { DrenyraSubagentName } from "@drenyra/domain";
+import type { AgentDefinition } from "@drenyra/drenyra-orchestrator/erp-types";
 import {
+	complianceTools,
 	financeTools,
 	operationsTools,
-	complianceTools,
 	systemAdminTools,
 } from "./tools";
 

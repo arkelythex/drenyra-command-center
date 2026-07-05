@@ -17,21 +17,24 @@ export {
 	type CrudMessages,
 	type TenantContext,
 } from "./api-factory.types";
-
-// ── Re-export interceptors ────────────────────────────────────────────────────
-export {
-	safeApiCall,
-	queryApi,
-	queryApiPassthrough,
-	mutateApi,
-} from "./api-factory-interceptors";
-
 // ── Re-export CRUD factory ────────────────────────────────────────────────────
 export { createCrudApi } from "./api-factory-client";
+// ── Re-export interceptors ────────────────────────────────────────────────────
+export {
+	mutateApi,
+	queryApi,
+	queryApiPassthrough,
+	safeApiCall,
+} from "./api-factory-interceptors";
 
-// ── Convenience object ────────────────────────────────────────────────────────
-import { safeApiCall, queryApi, queryApiPassthrough, mutateApi } from "./api-factory-interceptors";
 import { createCrudApi } from "./api-factory-client";
+// ── Convenience object ────────────────────────────────────────────────────────
+import {
+	mutateApi,
+	queryApi,
+	queryApiPassthrough,
+	safeApiCall,
+} from "./api-factory-interceptors";
 
 /**
  * Convenience object grouping all API factory utilities.

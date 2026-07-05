@@ -1,5 +1,5 @@
-import { useLineage } from "../hooks/useEvidence";
 import { FileText, Link2, Loader2 } from "lucide-react";
+import { useLineage } from "../hooks/useEvidence";
 
 const ENTITY_LABELS: Record<string, string> = {
 	journal_entry: "Asiento",
@@ -87,7 +87,8 @@ export function EvidenceLineagePanel({
 								<div className="flex items-center gap-2">
 									<span
 										className={`rounded-full px-2 py-0.5 text-2xs font-bold ${
-											STATUS_BADGE[link.evidence.status] ?? "bg-[var(--surface-3)] text-[var(--text-muted)]"
+											STATUS_BADGE[link.evidence.status] ??
+											"bg-[var(--surface-3)] text-[var(--text-muted)]"
 										}`}
 									>
 										{link.evidence.status}

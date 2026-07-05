@@ -53,10 +53,7 @@ export interface InvoiceRepository {
 	 * This is additive and optional so legacy implementations can coexist while
 	 * newer adapters migrate to explicit tenant context.
 	 */
-	saveForOrganization?(
-		invoice: Invoice,
-		organizationId: number,
-	): Promise<void>;
+	saveForOrganization?(invoice: Invoice, organizationId: number): Promise<void>;
 
 	/**
 	 * Actualiza una factura existente en el repositorio.

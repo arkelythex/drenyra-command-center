@@ -1,3 +1,5 @@
+import { RUC } from "../value-objects/RUC";
+import { DRENYRA_CAPABILITY_POLICIES } from "./capability-policies";
 import {
 	DRENYRA_CAPABILITY_DECISION,
 	DRENYRA_CAPABILITY_RISK,
@@ -7,12 +9,10 @@ import {
 	type DrenyraCapabilityPolicy,
 	type DrenyraCapabilityRequest,
 } from "./capability-types";
-import { DRENYRA_CAPABILITY_POLICIES } from "./capability-policies";
 import type { DrenyraFiscalScope } from "./types";
-import { RUC } from "../value-objects/RUC";
 
-export * from "./capability-types";
 export * from "./capability-policies";
+export * from "./capability-types";
 
 export function evaluateDrenyraCapability(input: {
 	request: DrenyraCapabilityRequest;

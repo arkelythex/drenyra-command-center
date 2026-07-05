@@ -1,10 +1,10 @@
-import { type FC } from "react";
-import { ShieldCheck, TrendingUp, Wallet, ExternalLink } from "lucide-react";
-import { useDashboardData } from "../hooks/useDashboardData";
+import { ExternalLink, ShieldCheck, TrendingUp, Wallet } from "lucide-react";
+import type { FC } from "react";
 import { AnimatedNumber } from "@/components/ui/motion-primitives";
-import { formatDashboardFreshness } from "../lib/dashboard-freshness";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 import { formatPEN } from "@/lib/utils";
+import { useDashboardData } from "../hooks/useDashboardData";
+import { formatDashboardFreshness } from "../lib/dashboard-freshness";
 
 function parseAmount(amount: string): number {
 	const parsed = Number(amount);
@@ -66,7 +66,10 @@ export const DashboardOverviewStrip: FC = () => {
 						<div className="h-1.5 w-1.5 rounded-full bg-success" />
 						Live Sync: {freshnessLabel}
 					</div>
-					<button aria-label="Abrir enlace externo" className="p-1.5 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors text-secondary">
+					<button
+						aria-label="Abrir enlace externo"
+						className="p-1.5 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors text-secondary"
+					>
 						<ExternalLink size={14} />
 					</button>
 				</div>

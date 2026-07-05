@@ -31,10 +31,7 @@ export const IngestBankWithWasmSchema = t.Object({
 	accountId: t.String({ format: "uuid" }),
 	csvText: t.String({ minLength: 10 }),
 	format: t.Optional(
-		t.Union([
-			BankCsvFormatSchema,
-			t.String({ minLength: 1, maxLength: 40 }),
-		]),
+		t.Union([BankCsvFormatSchema, t.String({ minLength: 1, maxLength: 40 })]),
 	),
 	wasmSkill: WasmBankSkillConfigSchema,
 });

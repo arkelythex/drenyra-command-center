@@ -2,13 +2,13 @@ import { useNavigate } from "@tanstack/react-router";
 import { CheckCircle, Loader2, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Text } from "@/components/atoms/text";
 import { Button } from "@/components/ui/button";
 import {
 	containerVariants,
 	entranceVariants,
 	MotionDiv,
 } from "@/components/ui/motion-primitives";
-import { Text } from "@/components/atoms/text";
 import { authClient } from "@/lib/auth-client";
 import { captureError } from "@/lib/monitoring";
 import { useAuthSession } from "../hooks/useAuthSession";

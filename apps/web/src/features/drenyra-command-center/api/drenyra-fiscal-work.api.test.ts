@@ -12,7 +12,9 @@ function setMockOrganizationId(value: string): void {
 
 function getMockOrganizationId(): string {
 	const state = globalThis as Record<string, unknown>;
-	return typeof state[organizationIdKey] === "string" ? state[organizationIdKey] : "org-1";
+	return typeof state[organizationIdKey] === "string"
+		? state[organizationIdKey]
+		: "org-1";
 }
 
 setMockOrganizationId("org-1");
@@ -127,10 +129,14 @@ describe("drenyra-fiscal-work.api", () => {
 		inspectGetMock.mockResolvedValue({ data: { status: "success" } });
 
 		setMockOrganizationId("");
-		await expect(inspectFiscalWorkItem("case-001")).rejects.toThrow(/organization id/);
+		await expect(inspectFiscalWorkItem("case-001")).rejects.toThrow(
+			/organization id/,
+		);
 
 		setMockOrganizationId("org-1");
 		localStorage.removeItem("drenyra-active-fiscal-period");
-		await expect(inspectFiscalWorkItem("case-001")).rejects.toThrow(/explicit selected fiscal period/);
+		await expect(inspectFiscalWorkItem("case-001")).rejects.toThrow(
+			/explicit selected fiscal period/,
+		);
 	});
 });

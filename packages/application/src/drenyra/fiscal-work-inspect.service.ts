@@ -9,9 +9,9 @@
  */
 import {
 	DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY,
-	validateDrenyraFiscalWorkInspectRequest,
 	type DrenyraFiscalWorkInspectRequest,
 	type DrenyraFiscalWorkInspectResult,
+	validateDrenyraFiscalWorkInspectRequest,
 } from "@drenyra/domain/drenyra";
 import type { DrenyraRepository, DrenyraScopeGuard } from "./repository";
 
@@ -19,7 +19,9 @@ function defaultTraceId(): string {
 	return `trace_drenyra_inspect_${crypto.randomUUID()}`;
 }
 
-function toScopeGuard(request: DrenyraFiscalWorkInspectRequest): DrenyraScopeGuard {
+function toScopeGuard(
+	request: DrenyraFiscalWorkInspectRequest,
+): DrenyraScopeGuard {
 	return {
 		organizationId: request.scope.organizationId,
 		companyId: request.scope.companyId,
@@ -34,7 +36,9 @@ export class DrenyraFiscalWorkInspectService {
 		private readonly createTraceId: () => string = defaultTraceId,
 	) {}
 
-	async inspect(request: DrenyraFiscalWorkInspectRequest): Promise<DrenyraFiscalWorkInspectResult> {
+	async inspect(
+		request: DrenyraFiscalWorkInspectRequest,
+	): Promise<DrenyraFiscalWorkInspectResult> {
 		const traceId = this.createTraceId();
 		const reason = validateDrenyraFiscalWorkInspectRequest(request);
 		if (reason !== "ALLOWED") {
@@ -47,7 +51,10 @@ export class DrenyraFiscalWorkInspectService {
 			};
 		}
 		const scope = toScopeGuard(request);
-		const fiscalCase = await this.repository.getFiscalCaseById(request.workItemId, scope);
+		const fiscalCase = await this.repository.getFiscalCaseById(
+			request.workItemId,
+			scope,
+		);
 		if (!fiscalCase) {
 			return {
 				status: "not_found",
@@ -55,7 +62,8 @@ export class DrenyraFiscalWorkInspectService {
 				traceId,
 				capability: DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY,
 				workItemId: request.workItemId,
-				redactedDetail: "Fiscal work item was not found in the requested scope.",
+				redactedDetail:
+					"Fiscal work item was not found in the requested scope.",
 			};
 		}
 		const [evidence, approvals] = await Promise.all([

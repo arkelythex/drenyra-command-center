@@ -50,7 +50,10 @@ export class ContextMonitor {
 	private config: ContextMonitorConfig;
 	private sessionStore?: SessionStore;
 
-	constructor(sessionStore?: SessionStore, config?: Partial<ContextMonitorConfig>) {
+	constructor(
+		sessionStore?: SessionStore,
+		config?: Partial<ContextMonitorConfig>,
+	) {
 		this.sessionStore = sessionStore;
 		this.config = { ...DEFAULT_CONFIG, ...config };
 	}
@@ -168,9 +171,7 @@ export class ContextMonitor {
 				modelContextWindow: run.contextWindow,
 				modelId: run.modelId,
 				usageRatio:
-					run.contextWindow > 0
-						? run.totalTokens / run.contextWindow
-						: 0,
+					run.contextWindow > 0 ? run.totalTokens / run.contextWindow : 0,
 				lastChecked: new Date(),
 			};
 		} catch (err) {
@@ -209,10 +210,13 @@ export class ContextMonitor {
 			return modelDef.contextWindow;
 		}
 
-		loggers.ai.warn("ContextMonitor: unknown model, using fallback context window", {
-			modelId,
-			fallbackWindow: UNKNOWN_MODEL_CONTEXT_WINDOW,
-		});
+		loggers.ai.warn(
+			"ContextMonitor: unknown model, using fallback context window",
+			{
+				modelId,
+				fallbackWindow: UNKNOWN_MODEL_CONTEXT_WINDOW,
+			},
+		);
 		return UNKNOWN_MODEL_CONTEXT_WINDOW;
 	}
 
@@ -237,9 +241,7 @@ export class ContextMonitor {
 				cumulativeTokens: run.totalTokens,
 				contextWindow: run.contextWindow,
 				usageRatio:
-					run.contextWindow > 0
-						? run.totalTokens / run.contextWindow
-						: 0,
+					run.contextWindow > 0 ? run.totalTokens / run.contextWindow : 0,
 				model: modelId,
 				promptTokens: run.promptTokens,
 				completionTokens: run.completionTokens,

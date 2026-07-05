@@ -80,7 +80,12 @@ export const SireDashboard = () => {
 							onClick={() => fileInputRef.current?.click()}
 							role="button"
 							tabIndex={0}
-							onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInputRef.current?.click(); } }}
+							onKeyDown={(e) => {
+								if (e.key === "Enter" || e.key === " ") {
+									e.preventDefault();
+									fileInputRef.current?.click();
+								}
+							}}
 						>
 							<div className="text-center space-y-8 max-w-lg">
 								<div className="h-24 w-24 bg-primary/5 border border-primary/20 rounded-2xl flex items-center justify-center mx-auto text-primary shadow-lg group-hover:scale-105 transition-transform duration-150">
@@ -228,9 +233,7 @@ const StatBox = ({ label, value, highlight, isCount }: StatBoxProps) => (
 					highlight ? "text-danger" : "text-foreground",
 				)}
 			>
-				{isCount
-					? value
-					: n(Number(value))}
+				{isCount ? value : n(Number(value))}
 			</p>
 		</div>
 	</div>

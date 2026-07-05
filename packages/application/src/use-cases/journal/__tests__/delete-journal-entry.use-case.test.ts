@@ -3,10 +3,10 @@
  * Comprehensive tests for journal entry deletion (0% → 100% coverage)
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import { JournalEntry } from "@drenyra/domain/entities/JournalEntry";
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
 import { Money } from "@drenyra/domain/value-objects/Money";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DeleteJournalEntryUseCase } from "../delete-journal-entry.use-case";
 
 describe("DeleteJournalEntryUseCase", () => {
@@ -124,12 +124,12 @@ describe("DeleteJournalEntryUseCase", () => {
 			expect(mockJournalRepository.delete).not.toHaveBeenCalled();
 		});
 
-			it("should throw error when journal entry not found (undefined)", async () => {
-				vi.mocked(mockJournalRepository.findById).mockResolvedValue(
-					undefined as unknown as Awaited<
-						ReturnType<typeof mockJournalRepository.findById>
-					>,
-				);
+		it("should throw error when journal entry not found (undefined)", async () => {
+			vi.mocked(mockJournalRepository.findById).mockResolvedValue(
+				undefined as unknown as Awaited<
+					ReturnType<typeof mockJournalRepository.findById>
+				>,
+			);
 
 			await expect(useCase.execute("non-existent-id")).rejects.toThrow(
 				"Asiento no encontrado",

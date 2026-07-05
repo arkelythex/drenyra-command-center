@@ -5,50 +5,51 @@
  * Orquestador que compone hooks y subcomponentes extraídos para mantener
  * el archivo focalizado en mutations, queries y layout.
  */
-import { useCallback, useState } from "react";
-import { I18nProvider } from "../i18n/I18nProvider";
+
+import type { DrenyraAgentType } from "@drenyra/domain/drenyra";
+import { useQuery } from "@tanstack/react-query";
 import {
-	LayoutDashboard,
-	Plus,
-	Sparkles,
-	Search,
-	Settings,
-	MessageSquare,
 	FileText,
 	HelpCircle,
+	LayoutDashboard,
 	Menu,
+	MessageSquare,
 	PanelRightOpen,
+	Plus,
+	Search,
+	Settings,
+	Sparkles,
 } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useCallback, useState } from "react";
 import { Toaster } from "sonner";
-import { LoadingState } from "@/components/ui/loading-state";
 import { ErrorState } from "@/components/ui/error-state";
+import { LoadingState } from "@/components/ui/loading-state";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 import {
-	drenyraCommandCenterApi,
 	type CreateFiscalCaseRequest,
+	drenyraCommandCenterApi,
 } from "../api/drenyra-command-center.api";
-import type { DrenyraAgentType } from "@drenyra/domain/drenyra";
 import { inspectFiscalWorkItem } from "../api/drenyra-fiscal-work.api";
-import { useDrenyraMutations } from "../hooks/useDrenyraMutations";
 import { useDrenyraChatState } from "../hooks/useDrenyraChatState";
-import { CommandCenterSidebar } from "./command-center-sidebar";
-import { CommandCenterChat } from "./CommandCenterChat";
+import { useDrenyraKeyboardShortcuts } from "../hooks/useDrenyraKeyboardShortcuts";
+import { useDrenyraMutations } from "../hooks/useDrenyraMutations";
+import { notifySettingsChanged } from "../hooks/useTheme";
+import { I18nProvider } from "../i18n/I18nProvider";
 import { ChatContextPanel } from "./ChatContextPanel";
 import { ChatSearch, type SearchResult } from "./ChatSearch";
-import {
-	SettingsPanel,
-	DEFAULT_SETTINGS,
-	type CommandCenterSettings,
-} from "./SettingsPanel";
-import { ShortcutReference } from "./ShortcutReference";
-import { OnboardingTour } from "./OnboardingTour";
-import { notifySettingsChanged } from "../hooks/useTheme";
-import { useDrenyraKeyboardShortcuts } from "../hooks/useDrenyraKeyboardShortcuts";
+import { CommandCenterChat } from "./CommandCenterChat";
+import { CommandCenterSidebar } from "./command-center-sidebar";
 import {
 	DrenyraCommandPalette,
 	type PaletteCmd,
 } from "./DrenyraCommandPalette";
+import { OnboardingTour } from "./OnboardingTour";
+import {
+	type CommandCenterSettings,
+	DEFAULT_SETTINGS,
+	SettingsPanel,
+} from "./SettingsPanel";
+import { ShortcutReference } from "./ShortcutReference";
 
 const drenyraKeys = {
 	cases: ["drenyra", "cases"] as const,

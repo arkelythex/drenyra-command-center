@@ -8,7 +8,9 @@ export function getOpenableInvoiceArtifactUrl(
 	return /^https?:\/\//i.test(value) ? value : null;
 }
 
-export function getPersistedInvoiceTicket(value?: string | null): string | null {
+export function getPersistedInvoiceTicket(
+	value?: string | null,
+): string | null {
 	if (!value) {
 		return null;
 	}
@@ -17,10 +19,12 @@ export function getPersistedInvoiceTicket(value?: string | null): string | null 
 	return normalized.length > 0 ? normalized : null;
 }
 
-export function getInvoiceRunbookHref(runbook?: {
-	path: string;
-	anchor?: string;
-} | null): string | null {
+export function getInvoiceRunbookHref(
+	runbook?: {
+		path: string;
+		anchor?: string;
+	} | null,
+): string | null {
 	if (!runbook?.path) {
 		return null;
 	}

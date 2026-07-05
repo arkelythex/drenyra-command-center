@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Document } from "@drenyra/domain/entities/Document";
 import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type {
 	IExpenseClassifier,
 	IInvoiceOCRService,

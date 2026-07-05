@@ -11,9 +11,9 @@
  * @since Jun 2026
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom";
 
 vi.mock("@/features/drenyra-command-center/i18n/i18n", () => ({
@@ -21,7 +21,8 @@ vi.mock("@/features/drenyra-command-center/i18n/i18n", () => ({
 		t: (key: string) => {
 			const translations: Record<string, string> = {
 				"chat.empty.title": "Chat Fiscal",
-				"chat.empty.subtitle": "Agentes IA especializados para tu cierre mensual",
+				"chat.empty.subtitle":
+					"Agentes IA especializados para tu cierre mensual",
 				"chat.empty.quick.conciliate": "Conciliar banco",
 				"chat.empty.quick.sire": "Preparar SIRE",
 				"chat.empty.quick.risk": "Análisis de riesgo",
@@ -230,22 +231,12 @@ vi.mock(
 vi.mock("@/features/drenyra-command-center/components/metric", () => {
 	const React = require("react");
 	return {
-		Metric: ({
-			label,
-			value,
-		}: {
-			label: string;
-			value: string;
-		}) =>
+		Metric: ({ label, value }: { label: string; value: string }) =>
 			React.createElement(
 				"div",
 				{ "data-testid": "metric" },
 				React.createElement("span", { "data-testid": "metric-label" }, label),
-				React.createElement(
-					"span",
-					{ "data-testid": "metric-value" },
-					value,
-				),
+				React.createElement("span", { "data-testid": "metric-value" }, value),
 			),
 	};
 });
@@ -263,26 +254,40 @@ vi.mock(
 	},
 );
 
-vi.mock("@/features/drenyra-command-center/components/VirtualizedMessageList", () => ({
-	VirtualizedMessageList: ({
-		messages,
-		densityMode,
-	}: {
-		messages: Array<{ id: string; role: string; content: string; timestamp: Date; artifacts?: Array<{ id: string }> }>;
-		densityMode?: string;
-	}) => (
-		<div data-testid="virtualized-msg-list">
-			{messages.map((msg) => (
-				<div key={msg.id} data-role={msg.role}>
-					{msg.content}
-					{msg.artifacts?.map((a: { id: string }) => (
-						<div key={a.id} data-testid="artifact-collapsible" data-artifact-id={a.id} data-density={densityMode ?? "detail"} />
-					))}
-				</div>
-			))}
-		</div>
-	),
-}));
+vi.mock(
+	"@/features/drenyra-command-center/components/VirtualizedMessageList",
+	() => ({
+		VirtualizedMessageList: ({
+			messages,
+			densityMode,
+		}: {
+			messages: Array<{
+				id: string;
+				role: string;
+				content: string;
+				timestamp: Date;
+				artifacts?: Array<{ id: string }>;
+			}>;
+			densityMode?: string;
+		}) => (
+			<div data-testid="virtualized-msg-list">
+				{messages.map((msg) => (
+					<div key={msg.id} data-role={msg.role}>
+						{msg.content}
+						{msg.artifacts?.map((a: { id: string }) => (
+							<div
+								key={a.id}
+								data-testid="artifact-collapsible"
+								data-artifact-id={a.id}
+								data-density={densityMode ?? "detail"}
+							/>
+						))}
+					</div>
+				))}
+			</div>
+		),
+	}),
+);
 
 // ── SUT import (after mocks) ─────────────────────────────────────────────────
 
@@ -427,9 +432,7 @@ describe("CommandCenterChat", () => {
 		expect(screen.getByText("Validar IGV")).toBeInTheDocument();
 
 		// Shortcut hint
-		expect(
-			screen.getByText(/⌘K para comandos/),
-		).toBeInTheDocument();
+		expect(screen.getByText(/⌘K para comandos/)).toBeInTheDocument();
 	});
 
 	it("hides empty state when streaming even with no messages", () => {
@@ -465,9 +468,7 @@ describe("CommandCenterChat", () => {
 		);
 
 		// Case title visible
-		expect(
-			screen.getByText("Cierre Mensual Junio 2026"),
-		).toBeInTheDocument();
+		expect(screen.getByText("Cierre Mensual Junio 2026")).toBeInTheDocument();
 		// Status badge
 		expect(screen.getByText("Abierto")).toBeInTheDocument();
 		// Change button
@@ -483,9 +484,7 @@ describe("CommandCenterChat", () => {
 			/>,
 		);
 
-		expect(
-			screen.getByText("Cierre Mensual Junio 2026"),
-		).toBeInTheDocument();
+		expect(screen.getByText("Cierre Mensual Junio 2026")).toBeInTheDocument();
 
 		rerender(
 			<CommandCenterChat
@@ -579,9 +578,9 @@ describe("CommandCenterChat", () => {
 		expect(select).toBeInTheDocument();
 		expect(select).toHaveValue("LEDGER_AGENT");
 
-		const options = Array.from(
-			select.querySelectorAll("option"),
-		).map((opt) => opt.value);
+		const options = Array.from(select.querySelectorAll("option")).map(
+			(opt) => opt.value,
+		);
 		expect(options).toEqual([
 			"LEDGER_AGENT",
 			"SIRE_AGENT",
@@ -636,9 +635,7 @@ describe("CommandCenterChat", () => {
 		).toBeInTheDocument();
 
 		// Paperclip (hidden file input + trigger button)
-		expect(
-			screen.getByLabelText("Adjuntar archivos"),
-		).toBeInTheDocument();
+		expect(screen.getByLabelText("Adjuntar archivos")).toBeInTheDocument();
 
 		// Send button
 		expect(screen.getByTestId("lucide-sendhorizontal")).toBeInTheDocument();
@@ -943,11 +940,11 @@ describe("CommandCenterChat", () => {
 		const user = userEvent.setup();
 		render(<CommandCenterChat {...defaultProps} />);
 
-		await user.click(screen.getByRole("button", { name: "Crear nuevo caso fiscal" }));
+		await user.click(
+			screen.getByRole("button", { name: "Crear nuevo caso fiscal" }),
+		);
 
-		expect(
-			screen.getByTestId("fiscal-case-creation-form"),
-		).toBeInTheDocument();
+		expect(screen.getByTestId("fiscal-case-creation-form")).toBeInTheDocument();
 	});
 
 	it("shows EvidenceAttachmentForm when Upload button is clicked and a case is selected", async () => {
@@ -960,10 +957,10 @@ describe("CommandCenterChat", () => {
 			/>,
 		);
 
-		await user.click(screen.getByRole("button", { name: "Adjuntar evidencia" }));
+		await user.click(
+			screen.getByRole("button", { name: "Adjuntar evidencia" }),
+		);
 
-		expect(
-			screen.getByTestId("evidence-attachment-form"),
-		).toBeInTheDocument();
+		expect(screen.getByTestId("evidence-attachment-form")).toBeInTheDocument();
 	});
 });

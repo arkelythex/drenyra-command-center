@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Document } from "@drenyra/domain/entities/Document";
 import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
 import { NotFoundError } from "@drenyra/shared/errors";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ValidateDocumentUseCase } from "../validate-document.use-case";
 
 function createMockDocument(
@@ -70,7 +70,9 @@ describe("ValidateDocumentUseCase", () => {
 	});
 
 	it("validates the document through the company-scoped path", async () => {
-		vi.mocked(mockRepo.findByIdForCompany).mockResolvedValue(createMockDocument());
+		vi.mocked(mockRepo.findByIdForCompany).mockResolvedValue(
+			createMockDocument(),
+		);
 		vi.mocked(mockRepo.updateForCompany).mockResolvedValue(undefined);
 
 		await useCase.execute({
@@ -112,7 +114,9 @@ describe("ValidateDocumentUseCase", () => {
 		});
 
 		const updatedDoc = vi.mocked(mockRepo.updateForCompany).mock.calls[0][0];
-		expect(updatedDoc.extractedData.providerName).toBe("Proveedor Corregido SAC");
+		expect(updatedDoc.extractedData.providerName).toBe(
+			"Proveedor Corregido SAC",
+		);
 		expect(updatedDoc.extractedData.totalAmount).toBe(1180);
 		expect(updatedDoc.status).toBe("VALIDATED");
 	});

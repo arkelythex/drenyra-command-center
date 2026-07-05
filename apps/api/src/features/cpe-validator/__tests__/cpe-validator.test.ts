@@ -3,14 +3,14 @@
  * Scenarios: Valid CPE, Invalid Schema, Breach Detection (RUC mismatch)
  */
 
-import { describe, it, expect } from "vitest";
-import { Ruc } from "../domain/value-objects/ruc.vo";
 import { InvalidRUCError } from "@drenyra/domain";
-import { CpeNumber } from "../domain/value-objects/cpe-number.vo";
-import { ValidationResult } from "../domain/value-objects/validation-result.vo";
-import { UblValidatorService } from "../domain/services/ubl-validator.service";
+import { describe, expect, it } from "vitest";
 import { BreachDetectorService } from "../domain/services/breach-detector.service";
+import { UblValidatorService } from "../domain/services/ubl-validator.service";
 import { ValidationCacheService } from "../domain/services/validation-cache.service";
+import { CpeNumber } from "../domain/value-objects/cpe-number.vo";
+import { Ruc } from "../domain/value-objects/ruc.vo";
+import { ValidationResult } from "../domain/value-objects/validation-result.vo";
 import { VALID_CPE_XML } from "./support/valid-cpe-xml";
 
 describe("CPE Validator", () => {
@@ -118,7 +118,9 @@ describe("CPE Validator", () => {
   </cac:LegalMonetaryTotal>
 </Invoice>`;
 
-			const result = await validator.validate({ content: xmlWithoutCurrencyAndTax });
+			const result = await validator.validate({
+				content: xmlWithoutCurrencyAndTax,
+			});
 
 			expect(result.isValid).toBe(false);
 			expect(result.errors.map((error) => error.code)).toEqual(
@@ -152,10 +154,14 @@ describe("CPE Validator", () => {
   </cac:InvoiceLine>
 </Invoice>`;
 
-			const result = await validator.validate({ content: xmlWithoutProductCode });
+			const result = await validator.validate({
+				content: xmlWithoutProductCode,
+			});
 
 			expect(result.isValid).toBe(true);
-			expect(result.warnings.some((warning) => warning.includes("OBS-3496"))).toBe(true);
+			expect(
+				result.warnings.some((warning) => warning.includes("OBS-3496")),
+			).toBe(true);
 		});
 
 		it("should accept 10.50 IGV percentage in the Feb 2026 baseline", async () => {
@@ -178,7 +184,9 @@ describe("CPE Validator", () => {
 
 			const result = await validator.validate({ content: xmlWithReducedRate });
 
-			expect(result.warnings.some((warning) => warning.includes("OBS-4332"))).toBe(false);
+			expect(
+				result.warnings.some((warning) => warning.includes("OBS-4332")),
+			).toBe(false);
 		});
 	});
 

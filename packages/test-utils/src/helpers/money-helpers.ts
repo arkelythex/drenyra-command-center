@@ -4,7 +4,7 @@
  * Provides utilities for creating Money value objects and
  * performing common monetary calculations in tests.
  */
-import { Money, type Currency } from "@drenyra/domain/value-objects/Money";
+import { type Currency, Money } from "@drenyra/domain/value-objects/Money";
 
 /**
  * Create Money from a decimal amount.

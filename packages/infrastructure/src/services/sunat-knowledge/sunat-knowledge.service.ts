@@ -12,9 +12,9 @@
  * 5. Hybrid search combines BM25 + Dense for best of both worlds
  */
 
+import { db } from "@drenyra/persistence/client";
 import { sql } from "drizzle-orm";
 import type { RAGSearchOptions, SearchScores } from "../../ai/rag/types";
-import { db } from "@drenyra/persistence/client";
 import { embeddingService } from "../embedding/embedding.service";
 import { rerankerService } from "../reranker/reranker.service";
 import type {

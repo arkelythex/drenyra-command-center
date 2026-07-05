@@ -1,5 +1,8 @@
-import type { CountryCode } from './latam-country-packs';
-import { DEFAULT_COUNTRY_CODE, resolveCountryCode } from './latam-country-packs';
+import type { CountryCode } from "./latam-country-packs";
+import {
+	DEFAULT_COUNTRY_CODE,
+	resolveCountryCode,
+} from "./latam-country-packs";
 
 export interface StoredAuthUser {
 	id?: string;
@@ -154,7 +157,13 @@ export function getAvailableCompanyContexts(): CompanyContext[] {
 					const countryCode = resolveCountryCode(company?.countryCode);
 					if (!companyId || !companyName || !ruc) return null;
 
-					return buildCompanyContext(companyId, companyName, ruc, countryCode, false);
+					return buildCompanyContext(
+						companyId,
+						companyName,
+						ruc,
+						countryCode,
+						false,
+					);
 				})
 				.filter((company): company is CompanyContext => company !== null)
 		: [];
@@ -183,7 +192,9 @@ export function setActiveCompanyContext(context: {
 
 	localStorage.setItem(
 		ACTIVE_COMPANY_STORAGE_KEY,
-		JSON.stringify(buildCompanyContext(companyId, companyName, ruc, countryCode, false)),
+		JSON.stringify(
+			buildCompanyContext(companyId, companyName, ruc, countryCode, false),
+		),
 	);
 
 	if (typeof window !== "undefined") {
@@ -200,13 +211,17 @@ export function clearActiveCompanyContext(): void {
 	}
 }
 
-export function syncActiveCompanyContextFromUser(user: StoredAuthUser | null | undefined): void {
-	const preferredCompanyId = normalizeString(user?.activeCompanyId) ?? normalizeString(user?.companyId);
+export function syncActiveCompanyContextFromUser(
+	user: StoredAuthUser | null | undefined,
+): void {
+	const preferredCompanyId =
+		normalizeString(user?.activeCompanyId) ?? normalizeString(user?.companyId);
 	const matchingActiveCompany =
 		preferredCompanyId && Array.isArray(user?.availableCompanies)
 			? user?.availableCompanies.find(
-					(company) => normalizeString(company?.companyId) === preferredCompanyId,
-			  )
+					(company) =>
+						normalizeString(company?.companyId) === preferredCompanyId,
+				)
 			: null;
 
 	const companyId =
@@ -218,8 +233,7 @@ export function syncActiveCompanyContextFromUser(user: StoredAuthUser | null | u
 		normalizeString(user?.legalName) ??
 		normalizeString(user?.businessName);
 	const ruc =
-		normalizeRuc(matchingActiveCompany?.ruc) ??
-		normalizeRuc(user?.ruc);
+		normalizeRuc(matchingActiveCompany?.ruc) ?? normalizeRuc(user?.ruc);
 	const countryCode =
 		resolveCountryCode(matchingActiveCompany?.countryCode) ??
 		resolveCountryCode(user?.countryCode);

@@ -1,11 +1,11 @@
-import { and, count, eq, gte, lte, type SQL } from "drizzle-orm";
-import { type Document } from "@drenyra/domain/entities/Document";
+import type { Document } from "@drenyra/domain/entities/Document";
 import type {
 	DocumentFilters,
 	DocumentQueryFilters,
 	DocumentRepository,
 } from "@drenyra/domain/repositories/document.repository";
 import { DatabaseError } from "@drenyra/shared/errors";
+import { and, count, eq, gte, lte, type SQL } from "drizzle-orm";
 import { db } from "../client";
 import { documents } from "../schema/documents.schema";
 import {
@@ -13,9 +13,7 @@ import {
 	mapDocumentToInsert,
 	mapDocumentToUpdate,
 } from "./support/document-persistence";
-import {
-	buildDocumentCompanyCompatibilityScope,
-} from "./support/document-scope";
+import { buildDocumentCompanyCompatibilityScope } from "./support/document-scope";
 import { createOrganizationIdResolver } from "./support/organization-id-cache";
 
 /**
@@ -28,8 +26,7 @@ import { createOrganizationIdResolver } from "./support/organization-id-cache";
  * ```
  */
 export class DocumentRepositoryImpl implements DocumentRepository {
-	private readonly resolveLegacyOrganizationId =
-		createOrganizationIdResolver();
+	private readonly resolveLegacyOrganizationId = createOrganizationIdResolver();
 
 	async save(_document: Document): Promise<void> {
 		throw new DatabaseError(

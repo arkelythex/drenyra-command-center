@@ -1,7 +1,7 @@
+import { Bell, Globe, Mail, ShieldAlert, Zap } from "lucide-react";
 import { useState } from "react";
-import { Bell, Mail, ShieldAlert, Zap, Globe } from "lucide-react";
-import { SurfaceCard } from "@/components/ui/SurfaceCard";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { SurfaceCard } from "@/components/ui/SurfaceCard";
 import {
 	Select,
 	SelectContent,
@@ -9,13 +9,13 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { SettingsShell } from "./SettingsShell";
+import { cn } from "@/lib/utils";
 import {
 	SettingSwitch,
 	SettingsRow,
 	SettingsSection,
 } from "./SettingsPrimitives";
-import { cn } from "@/lib/utils";
+import { SettingsShell } from "./SettingsShell";
 
 export const NotificationsSettings = () => {
 	const [emailEnabled, setEmailEnabled] = useState(true);

@@ -2,13 +2,13 @@ import { Loader2 } from "lucide-react";
 import { lazy, Suspense } from "react";
 import { MobileTabNavigation } from "@/components/layout/MobileTabNavigation";
 import { useInvoicesBoardController } from "../hooks/useInvoicesBoardController";
-import { InvoicesBoardDesktopHeader } from "./invoices-board/desktop-header";
-import { InvoicesBoardMobileToolbar } from "./invoices-board/mobile-toolbar";
-import { BOARD_TABS } from "./invoices-board.constants";
 import {
 	loadCreateInvoiceDialogModule,
 	preloadCreateInvoiceDialog,
 } from "./create-invoice/create-invoice-dialog-loader";
+import { InvoicesBoardDesktopHeader } from "./invoices-board/desktop-header";
+import { InvoicesBoardMobileToolbar } from "./invoices-board/mobile-toolbar";
+import { BOARD_TABS } from "./invoices-board.constants";
 
 const CreateInvoiceDialog = lazy(async () => {
 	const mod = await loadCreateInvoiceDialogModule();

@@ -14,16 +14,27 @@ import type {
 	StepResult,
 } from "@drenyra/application/use-cases/fiscal-agent/types";
 
-export class ReporterStep implements FiscalAgentStep<{
-	collect: CollectOutput;
-	categorize: CategorizeOutput;
-	calculate: CalculateOutput;
-	reconcile: ReconcileOutput;
-}, ReportOutput> {
+export class ReporterStep
+	implements
+		FiscalAgentStep<
+			{
+				collect: CollectOutput;
+				categorize: CategorizeOutput;
+				calculate: CalculateOutput;
+				reconcile: ReconcileOutput;
+			},
+			ReportOutput
+		>
+{
 	readonly name = "report";
 
 	async execute(
-		input: { collect: CollectOutput; categorize: CategorizeOutput; calculate: CalculateOutput; reconcile: ReconcileOutput },
+		input: {
+			collect: CollectOutput;
+			categorize: CategorizeOutput;
+			calculate: CalculateOutput;
+			reconcile: ReconcileOutput;
+		},
 		_context: FiscalAgentStepContext,
 	): Promise<StepResult<ReportOutput>> {
 		const startedAt = new Date();
@@ -48,11 +59,17 @@ export class ReporterStep implements FiscalAgentStep<{
 		// Exceptions from SUNAT discrepancies
 		for (const disc of input.reconcile.discrepancies) {
 			exceptions.push({
-				type: disc.type === "AMOUNT_MISMATCH" ? "AMOUNT_MISMATCH" : "SUNAT_DISCREPANCY",
+				type:
+					disc.type === "AMOUNT_MISMATCH"
+						? "AMOUNT_MISMATCH"
+						: "SUNAT_DISCREPANCY",
 				severity: disc.severity,
 				transactionId: disc.documentKey,
 				suggestedAction: `Discrepancy detected: ${disc.type}`,
-				details: { localValue: disc.localValue, authorityValue: disc.authorityValue },
+				details: {
+					localValue: disc.localValue,
+					authorityValue: disc.authorityValue,
+				},
 			});
 		}
 
@@ -78,7 +95,13 @@ export class ReporterStep implements FiscalAgentStep<{
 					categorized: input.categorize.categorizations.length,
 					exceptions: exceptions.length,
 					discrepancies: input.reconcile.discrepancies.length,
-					completedSteps: ["collect", "categorize", "calculate", "reconcile", "report"],
+					completedSteps: [
+						"collect",
+						"categorize",
+						"calculate",
+						"reconcile",
+						"report",
+					],
 					failedSteps: [],
 					durationMs: completedAt.getTime() - startedAt.getTime(),
 				},

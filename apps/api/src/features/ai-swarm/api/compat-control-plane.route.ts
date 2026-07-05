@@ -1,10 +1,10 @@
 import {
 	AgentCapabilitySchema,
+	type AgentRegistryEntry,
 	AgentRegistryEntrySchema,
 	canHandoffToDeterministicFlow,
 	lookupAllowedToolsForCapability,
 	resolvePolicyDecision,
-	type AgentRegistryEntry,
 } from "@drenyra/ai";
 import {
 	normalizeLegacyCapabilityToolsLookup,

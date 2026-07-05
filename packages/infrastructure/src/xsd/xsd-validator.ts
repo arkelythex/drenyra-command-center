@@ -16,17 +16,21 @@
  * since they're SUNAT-specific and validated separately.
  */
 
-import { XMLParser, XMLValidator, type X2jOptions } from "fast-xml-parser";
-import { XsdSchemaLoader, extractNamespaceMap, resolvePrefixedElement } from "./xsd-schema-loader";
+import { type X2jOptions, XMLParser, XMLValidator } from "fast-xml-parser";
 import type {
-	XsdSchema,
-	XsdElementDef,
-	XsdComplexType,
-	XsdValidationResult,
-	XsdValidationError,
 	DocumentType,
+	XsdComplexType,
+	XsdElementDef,
+	XsdSchema,
+	XsdValidationError,
+	XsdValidationResult,
 } from "./types";
 import { UBL_DOCUMENT_NAMESPACES, UBL_NAMESPACE_PREFIXES } from "./types";
+import {
+	extractNamespaceMap,
+	resolvePrefixedElement,
+	XsdSchemaLoader,
+} from "./xsd-schema-loader";
 
 /**
  * Error codes used in XSD validation results.
@@ -231,7 +235,9 @@ export class XsdValidator {
 		if (!typeName) return undefined;
 
 		// UBL types use prefixed types like "cbc:IDType" or unqualified like "InvoiceType"
-		const localName = typeName.includes(":") ? typeName.split(":")[1] : typeName;
+		const localName = typeName.includes(":")
+			? typeName.split(":")[1]
+			: typeName;
 
 		// Check current schema first
 		const localType = currentSchema.types.get(localName);
@@ -313,9 +319,10 @@ export class XsdValidator {
 			}
 
 			// Check maxOccurs
-			const maxOccurs = schemaElement.maxOccurs === "unbounded"
-				? Number.MAX_SAFE_INTEGER
-				: schemaElement.maxOccurs;
+			const maxOccurs =
+				schemaElement.maxOccurs === "unbounded"
+					? Number.MAX_SAFE_INTEGER
+					: schemaElement.maxOccurs;
 
 			if (xmlCount > maxOccurs) {
 				errors.push({
@@ -445,7 +452,9 @@ export class XsdValidator {
 
 	private getLocalTagName(prefixedName: string): string {
 		const colonIndex = prefixedName.indexOf(":");
-		return colonIndex === -1 ? prefixedName : prefixedName.slice(colonIndex + 1);
+		return colonIndex === -1
+			? prefixedName
+			: prefixedName.slice(colonIndex + 1);
 	}
 
 	private stripPrefix(key: string): string {

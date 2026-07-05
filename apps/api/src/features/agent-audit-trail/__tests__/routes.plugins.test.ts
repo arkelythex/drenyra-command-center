@@ -20,9 +20,9 @@ describe("Agent Audit Trail Routes", () => {
 		};
 
 		expect(payload.success).toBe(true);
-		expect(payload.data.some((plugin) => plugin.id === "bcp-reconciliation-v1")).toBe(
-			true,
-		);
+		expect(
+			payload.data.some((plugin) => plugin.id === "bcp-reconciliation-v1"),
+		).toBe(true);
 	});
 
 	it("should pass zero-trust plugin preflight for valid contract", async () => {

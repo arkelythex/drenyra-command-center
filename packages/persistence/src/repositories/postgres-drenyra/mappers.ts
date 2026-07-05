@@ -6,14 +6,20 @@ import type {
 	FiscalCase,
 	FiscalScope,
 } from "@drenyra/domain/drenyra";
-import {
+import type {
 	drenyraAgentRuns,
 	drenyraApprovalRequests,
 	drenyraAuditEvents,
 	drenyraEvidenceItems,
 	drenyraFiscalCases,
 } from "../../schema/drenyra-command-center.schema";
-import type { FiscalCaseRow, EvidenceRow, AgentRunRow, ApprovalRow, AuditRow } from "./types";
+import type {
+	AgentRunRow,
+	ApprovalRow,
+	AuditRow,
+	EvidenceRow,
+	FiscalCaseRow,
+} from "./types";
 
 export function rowScope(row: {
 	companyId: string;
@@ -61,7 +67,9 @@ export function mapFiscalCase(row: FiscalCaseRow): FiscalCase {
 	};
 }
 
-export function fiscalCaseValues(fiscalCase: FiscalCase): typeof drenyraFiscalCases.$inferInsert {
+export function fiscalCaseValues(
+	fiscalCase: FiscalCase,
+): typeof drenyraFiscalCases.$inferInsert {
 	return {
 		id: fiscalCase.id,
 		companyId: fiscalCase.scope.companyId,
@@ -100,7 +108,9 @@ export function mapEvidence(row: EvidenceRow): EvidenceItem {
 	};
 }
 
-export function evidenceValues(item: EvidenceItem): typeof drenyraEvidenceItems.$inferInsert {
+export function evidenceValues(
+	item: EvidenceItem,
+): typeof drenyraEvidenceItems.$inferInsert {
 	return {
 		id: item.id,
 		caseId: item.caseId,
@@ -136,7 +146,9 @@ export function mapAgentRun(row: AgentRunRow): AgentRun {
 	};
 }
 
-export function agentRunValues(run: AgentRun): typeof drenyraAgentRuns.$inferInsert {
+export function agentRunValues(
+	run: AgentRun,
+): typeof drenyraAgentRuns.$inferInsert {
 	return {
 		id: run.id,
 		caseId: run.caseId,
@@ -174,7 +186,9 @@ export function mapApproval(row: ApprovalRow): ApprovalRequest {
 	};
 }
 
-export function approvalValues(request: ApprovalRequest): typeof drenyraApprovalRequests.$inferInsert {
+export function approvalValues(
+	request: ApprovalRequest,
+): typeof drenyraApprovalRequests.$inferInsert {
 	return {
 		id: request.id,
 		caseId: request.caseId,
@@ -217,7 +231,9 @@ export function mapAudit(row: AuditRow): AuditEvent {
 	};
 }
 
-export function auditValues(event: AuditEvent): typeof drenyraAuditEvents.$inferInsert {
+export function auditValues(
+	event: AuditEvent,
+): typeof drenyraAuditEvents.$inferInsert {
 	return {
 		id: event.id,
 		caseId: event.caseId,

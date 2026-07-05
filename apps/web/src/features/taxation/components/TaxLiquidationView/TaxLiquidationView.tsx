@@ -21,7 +21,7 @@ import { useTaxation } from "../../hooks/useTaxation";
 import { TaxLiquidationHeader } from "./components/TaxLiquidationHeader";
 import { TaxLiquidationSummary } from "./components/TaxLiquidationSummary";
 import { TaxLiquidationTable } from "./components/TaxLiquidationTable";
-import { type StepItemProps, type TaxTabId, isTaxTabId } from "./types";
+import { isTaxTabId, type StepItemProps, type TaxTabId } from "./types";
 
 /* ─── StepItem — checklist row ─── */
 const StepItem = ({ label, done }: StepItemProps) => (

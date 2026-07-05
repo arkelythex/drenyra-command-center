@@ -1,5 +1,9 @@
 import { Money } from "../../value-objects/Money";
-import type { JournalEntryProps, JournalEntryStatus, JournalLineProps } from "./types";
+import type {
+	JournalEntryProps,
+	JournalEntryStatus,
+	JournalLineProps,
+} from "./types";
 import { validateJournalEntry, validateJournalLine } from "./validators";
 
 export class JournalLine {

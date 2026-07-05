@@ -1,4 +1,4 @@
-import { Loader2, Filter } from "lucide-react";
+import { Filter, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MODULE_LABELS, STATUS_BADGE } from "../ApprovalHubPage.data";
 
@@ -88,9 +88,7 @@ export function ApprovalHubHeader({
 					>
 						{modules.map((m) => (
 							<option key={m} value={m}>
-								{m === "ALL"
-									? "Todos los módulos"
-									: (MODULE_LABELS[m] ?? m)}
+								{m === "ALL" ? "Todos los módulos" : (MODULE_LABELS[m] ?? m)}
 							</option>
 						))}
 					</select>

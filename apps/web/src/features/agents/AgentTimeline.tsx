@@ -20,7 +20,9 @@ export function AgentTimeline({ steps }: AgentTimelineProps) {
 
 	if (steps.length === 0) {
 		return (
-			<p className="text-xs text-[var(--text-tertiary)]">Sin pasos registrados</p>
+			<p className="text-xs text-[var(--text-tertiary)]">
+				Sin pasos registrados
+			</p>
 		);
 	}
 
@@ -87,7 +89,9 @@ export function AgentTimeline({ steps }: AgentTimelineProps) {
 								</p>
 							)}
 							{isCurrent && (
-								<p className="text-2xs text-[var(--text-tertiary)]">en progreso</p>
+								<p className="text-2xs text-[var(--text-tertiary)]">
+									en progreso
+								</p>
 							)}
 						</div>
 					</div>

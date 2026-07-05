@@ -1,5 +1,5 @@
-import type { ReactElement, RefObject } from "react";
 import { Loader2, Upload } from "lucide-react";
+import type { ReactElement, RefObject } from "react";
 import { cn } from "@/lib/utils";
 import type { MissionPhase } from "./DrenyraMissionDesk.types";
 
@@ -59,11 +59,7 @@ export function DrenyraMissionDeskCard({
 					aria-hidden
 				/>
 			) : (
-				<Upload
-					size={28}
-					className="text-[var(--color-info)]"
-					aria-hidden
-				/>
+				<Upload size={28} className="text-[var(--color-info)]" aria-hidden />
 			)}
 			<p className="mt-3 text-sm font-medium">
 				{filename

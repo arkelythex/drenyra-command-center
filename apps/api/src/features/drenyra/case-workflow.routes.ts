@@ -27,7 +27,9 @@ export interface CaseWorkflowRoutesDeps {
 	commandCenter: DrenyraFiscalCommandCenterService;
 }
 
-export function createCaseWorkflowRoutes({ commandCenter }: CaseWorkflowRoutesDeps) {
+export function createCaseWorkflowRoutes({
+	commandCenter,
+}: CaseWorkflowRoutesDeps) {
 	return new Elysia({ name: "drenyra-case-workflow" })
 		.post(
 			"/cases/:id/evidence",
@@ -46,7 +48,10 @@ export function createCaseWorkflowRoutes({ commandCenter }: CaseWorkflowRoutesDe
 					set.status = 201;
 					return ok(evidence);
 				} catch (error) {
-					set.status = error instanceof Error && error.message.endsWith("_NOT_FOUND") ? 404 : 400;
+					set.status =
+						error instanceof Error && error.message.endsWith("_NOT_FOUND")
+							? 404
+							: 400;
 					return commandCenterError(error);
 				}
 			},
@@ -60,7 +65,9 @@ export function createCaseWorkflowRoutes({ commandCenter }: CaseWorkflowRoutesDe
 					sourceRef: t.Optional(t.String()),
 					contentHash: t.Optional(t.String()),
 					metadata: metadataSchema,
-					idempotencyKey: t.Optional(t.String({ minLength: 8, maxLength: 160 })),
+					idempotencyKey: t.Optional(
+						t.String({ minLength: 8, maxLength: 160 }),
+					),
 				}),
 			},
 		)
@@ -82,7 +89,10 @@ export function createCaseWorkflowRoutes({ commandCenter }: CaseWorkflowRoutesDe
 					set.status = 201;
 					return ok(run);
 				} catch (error) {
-					set.status = error instanceof Error && error.message.endsWith("_NOT_FOUND") ? 404 : 400;
+					set.status =
+						error instanceof Error && error.message.endsWith("_NOT_FOUND")
+							? 404
+							: 400;
 					return commandCenterError(error);
 				}
 			},
@@ -90,7 +100,9 @@ export function createCaseWorkflowRoutes({ commandCenter }: CaseWorkflowRoutesDe
 				params: t.Object({ id: t.String({ minLength: 1 }) }),
 				body: t.Object({
 					agentType: drenyraAgentTypeSchema,
-					idempotencyKey: t.Optional(t.String({ minLength: 8, maxLength: 160 })),
+					idempotencyKey: t.Optional(
+						t.String({ minLength: 8, maxLength: 160 }),
+					),
 				}),
 			},
 		)
@@ -103,7 +115,12 @@ export function createCaseWorkflowRoutes({ commandCenter }: CaseWorkflowRoutesDe
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					return ok(await commandCenter.listAgentRuns(contextResolution.context, params.id));
+					return ok(
+						await commandCenter.listAgentRuns(
+							contextResolution.context,
+							params.id,
+						),
+					);
 				} catch (error) {
 					set.status = 404;
 					return commandCenterError(error);
@@ -128,7 +145,10 @@ export function createCaseWorkflowRoutes({ commandCenter }: CaseWorkflowRoutesDe
 					set.status = 201;
 					return ok(approval);
 				} catch (error) {
-					set.status = error instanceof Error && error.message.endsWith("_NOT_FOUND") ? 404 : 400;
+					set.status =
+						error instanceof Error && error.message.endsWith("_NOT_FOUND")
+							? 404
+							: 400;
 					return commandCenterError(error);
 				}
 			},
@@ -144,7 +164,9 @@ export function createCaseWorkflowRoutes({ commandCenter }: CaseWorkflowRoutesDe
 						summary: t.String({ minLength: 2 }),
 					}),
 					metadata: metadataSchema,
-					idempotencyKey: t.Optional(t.String({ minLength: 8, maxLength: 160 })),
+					idempotencyKey: t.Optional(
+						t.String({ minLength: 8, maxLength: 160 }),
+					),
 				}),
 			},
 		);

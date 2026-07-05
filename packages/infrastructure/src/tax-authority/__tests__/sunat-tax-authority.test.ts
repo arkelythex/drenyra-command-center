@@ -1,8 +1,8 @@
-import { describe, it, expect } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import {
+	createTaxAuthority,
 	hasTaxAuthority,
 	registerTaxAuthority,
-	createTaxAuthority,
 } from "../index";
 import { SunatTaxAuthorityAdapter } from "../sunat-tax-authority.adapter";
 
@@ -14,8 +14,8 @@ describe("TaxAuthority registry", () => {
 	it("throws for unregistered country codes", () => {
 		expect(() => {
 			// Trigger the factory lookup
-			registerTaxAuthority("XX" as never, () => ({} as never));
-			registerTaxAuthority("AR" as never, () => ({} as never));
+			registerTaxAuthority("XX" as never, () => ({}) as never);
+			registerTaxAuthority("AR" as never, () => ({}) as never);
 		}).not.toThrow();
 	});
 

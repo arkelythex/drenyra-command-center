@@ -15,12 +15,17 @@ export function readIdempotencyKey(
 	headers: Record<string, string | undefined>,
 	body: { idempotencyKey?: string } = {},
 ): string | undefined {
-	return body.idempotencyKey?.trim() || headers[DRENYRA_IDEMPOTENCY_HEADER]?.trim() || undefined;
+	return (
+		body.idempotencyKey?.trim() ||
+		headers[DRENYRA_IDEMPOTENCY_HEADER]?.trim() ||
+		undefined
+	);
 }
 
 export function commandCenterError(error: unknown) {
 	if (error instanceof Error) {
-		if (error.message.endsWith("_NOT_FOUND")) return fail(error.message, "NOT_FOUND");
+		if (error.message.endsWith("_NOT_FOUND"))
+			return fail(error.message, "NOT_FOUND");
 		if (
 			error.message === "APPROVAL_ALREADY_DECIDED" ||
 			error.message === "FISCAL_CASE_STATUS_UNCHANGED"
@@ -29,7 +34,10 @@ export function commandCenterError(error: unknown) {
 		}
 		return fail(error.message, "DRENYRA_COMMAND_CENTER_ERROR");
 	}
-	return fail("Unknown Drenyra command center error", "DRENYRA_COMMAND_CENTER_ERROR");
+	return fail(
+		"Unknown Drenyra command center error",
+		"DRENYRA_COMMAND_CENTER_ERROR",
+	);
 }
 
 export const fiscalCaseTypeSchema = t.Union([

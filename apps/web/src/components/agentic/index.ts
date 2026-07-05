@@ -7,31 +7,23 @@
  * @module components/agentic
  */
 
-// CommandPalette
-export { CommandPalette } from "./CommandPalette";
-
-// ThreadView
-export { ThreadView, DEMO_MESSAGES } from "./ThreadView";
-export type { Message, ToolCall, DiffBlock, DiffHunk } from "./ThreadView";
-
 // ApprovalCard
 export { ApprovalCard } from "./ApprovalCard";
-
-// PopOutThread
-export { PopOutThread } from "./PopOutThread";
-
-// Composer
-export { Composer } from "./Composer";
-
-// TerminalShell
-export { TerminalShell } from "./TerminalShell";
-
-// DrenyraFlexMain
-export { DrenyraFlexMain } from "./DrenyraFlexMain";
-
-// ConfidenceBadge
-export { ConfidenceBadge } from "./ConfidenceBadge";
-
+export type { Checkpoint, CheckpointHistoryProps } from "./CheckpointHistory";
 // CheckpointHistory
 export { CheckpointHistory } from "./CheckpointHistory";
-export type { Checkpoint, CheckpointHistoryProps } from "./CheckpointHistory";
+// CommandPalette
+export { CommandPalette } from "./CommandPalette";
+// Composer
+export { Composer } from "./Composer";
+// ConfidenceBadge
+export { ConfidenceBadge } from "./ConfidenceBadge";
+// DrenyraFlexMain
+export { DrenyraFlexMain } from "./DrenyraFlexMain";
+// PopOutThread
+export { PopOutThread } from "./PopOutThread";
+// TerminalShell
+export { TerminalShell } from "./TerminalShell";
+export type { DiffBlock, DiffHunk, Message, ToolCall } from "./ThreadView";
+// ThreadView
+export { DEMO_MESSAGES, ThreadView } from "./ThreadView";

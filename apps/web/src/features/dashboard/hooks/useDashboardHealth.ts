@@ -1,10 +1,10 @@
-import { useDashboardData } from './useDashboardData';
+import { useDashboardData } from "./useDashboardData";
 
 export function useDashboardHealth() {
-  const { health, isLoading } = useDashboardData();
+	const { health, isLoading } = useDashboardData();
 
-  return {
-    health,
-    isLoading
-  };
+	return {
+		health,
+		isLoading,
+	};
 }

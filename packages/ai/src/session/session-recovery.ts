@@ -6,8 +6,8 @@
  */
 
 import { createHash } from "crypto";
-import type { SessionStore } from "./session-store";
 import type { AgentRunStatus, AgentWorkflowState } from "./session.types";
+import type { SessionStore } from "./session-store";
 
 // ============================================================================
 // Types
@@ -214,9 +214,7 @@ export class SessionRecovery {
 	/**
 	 * Map a workflow state to the last completed phase name.
 	 */
-	private mapToCompletedPhase(
-		workflowState: string | undefined,
-	): string {
+	private mapToCompletedPhase(workflowState: string | undefined): string {
 		switch (workflowState) {
 			case "EXTRACTING":
 				return "reader";
@@ -234,9 +232,7 @@ export class SessionRecovery {
 	/**
 	 * Determine which phases can be skipped based on the last completed phase.
 	 */
-	private getSkippedPhases(
-		lastCompletedPhase: string,
-	): string[] {
+	private getSkippedPhases(lastCompletedPhase: string): string[] {
 		switch (lastCompletedPhase) {
 			case "reader":
 				return ["reader"];

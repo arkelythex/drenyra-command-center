@@ -9,10 +9,10 @@
  * @module domain/ledger/quantum-ledger-guard
  */
 
-import { and, eq, sql } from "drizzle-orm";
 import { db } from "@drenyra/persistence/client";
 import { journalEntries, journalEntryLines } from "@drenyra/persistence/schema";
 import { accountBalances } from "@drenyra/persistence/schema/schema-extensions";
+import { and, eq, sql } from "drizzle-orm";
 
 // ============================================
 // TYPES

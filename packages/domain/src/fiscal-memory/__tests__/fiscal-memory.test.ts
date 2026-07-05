@@ -14,7 +14,8 @@ const baseInput = {
 	category: "tax_decision" as const,
 	severity: "high" as const,
 	title: "IGV credit criterion",
-	summary: "Accountant approved IGV credit usage with supporting invoice evidence.",
+	summary:
+		"Accountant approved IGV credit usage with supporting invoice evidence.",
 	evidenceRefs: ["evidence://invoice-1"],
 	tags: ["igv", "credit"],
 	createdBy: "accountant-1",
@@ -34,9 +35,9 @@ describe("FiscalMemory", () => {
 	});
 
 	it("rejects fiscal memory without valid scope", () => {
-		expect(() =>
-			FiscalMemory.create({ ...baseInput, tenantId: "" }),
-		).toThrow(InvalidFiscalMemoryError);
+		expect(() => FiscalMemory.create({ ...baseInput, tenantId: "" })).toThrow(
+			InvalidFiscalMemoryError,
+		);
 	});
 
 	it("rejects tax decisions without evidence", () => {

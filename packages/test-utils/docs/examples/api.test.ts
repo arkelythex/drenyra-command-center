@@ -12,15 +12,16 @@
  *
  * @last-verified: 2026-06-06
  */
-import { describe, it, expect, beforeAll } from "vitest";
+
 import { Elysia } from "elysia";
+import { beforeAll, describe, expect, it } from "vitest";
 import {
-	createAuthHeaders,
-	createTenantRequestHeaders,
-	createEdenTestClient,
+	assertClientError,
 	assertStatus,
 	assertSuccess,
-	assertClientError,
+	createAuthHeaders,
+	createEdenTestClient,
+	createTenantRequestHeaders,
 } from "../../src/api";
 
 // Shared test app for all API tests
@@ -46,7 +47,10 @@ beforeAll(() => {
 			const tenantId = headers["x-tenant-id"];
 			if (!tenantId) {
 				return new Response(
-					JSON.stringify({ code: "TENANT_REQUIRED", message: "Tenant ID required" }),
+					JSON.stringify({
+						code: "TENANT_REQUIRED",
+						message: "Tenant ID required",
+					}),
 					{ status: 400, headers: { "Content-Type": "application/json" } },
 				);
 			}
@@ -66,7 +70,10 @@ beforeAll(() => {
 			}
 
 			return new Response(
-				JSON.stringify({ code: "NOT_FOUND", message: "Journal entry not found" }),
+				JSON.stringify({
+					code: "NOT_FOUND",
+					message: "Journal entry not found",
+				}),
 				{ status: 404, headers: { "Content-Type": "application/json" } },
 			);
 		})
@@ -81,7 +88,7 @@ beforeAll(() => {
 			return new Response(
 				JSON.stringify({
 					id: "je_new_001",
-					...body as Record<string, unknown>,
+					...(body as Record<string, unknown>),
 					status: "borrador",
 				}),
 				{ status: 201, headers: { "Content-Type": "application/json" } },
@@ -97,33 +104,27 @@ describe("Journal Entry API — Eden Treaty Client", () => {
 	const client = () => createEdenTestClient(app);
 
 	it("fetches a journal entry by ID with auth", async () => {
-		const response = await client().request(
-			"/api/v1/journal-entries/je_001",
-			{
-				method: "GET",
-				headers: createAuthHeaders({
-					token: "test-token-123",
-					tenantId: "1",
-				}),
-			},
-		);
+		const response = await client().request("/api/v1/journal-entries/je_001", {
+			method: "GET",
+			headers: createAuthHeaders({
+				token: "test-token-123",
+				tenantId: "1",
+			}),
+		});
 
 		assertSuccess(response);
 		expect(response.status).toBe(200);
 	});
 
 	it("fetches existing journal entry", async () => {
-		const response = await client().request(
-			"/api/v1/journal-entries/je_001",
-			{
-				method: "GET",
-				headers: createTenantRequestHeaders({
-					token: "test-token-123",
-					tenantId: "1",
-					ruc: "20546296564",
-				}),
-			},
-		);
+		const response = await client().request("/api/v1/journal-entries/je_001", {
+			method: "GET",
+			headers: createTenantRequestHeaders({
+				token: "test-token-123",
+				tenantId: "1",
+				ruc: "20546296564",
+			}),
+		});
 
 		expect(response.status).toBe(200);
 		expect(response.data).toEqual(
@@ -136,23 +137,20 @@ describe("Journal Entry API — Eden Treaty Client", () => {
 	});
 
 	it("creates a new journal entry", async () => {
-		const response = await client().request(
-			"/api/v1/journal-entries",
-			{
-				method: "POST",
-				headers: createAuthHeaders({
-					token: "test-token-123",
-					tenantId: "1",
-				}),
-				body: {
-					gloss: "Nuevo asiento",
-					lines: [
-						{ accountCode: "1041", amount: 1000, type: "debit" },
-						{ accountCode: "7011", amount: 1000, type: "credit" },
-					],
-				},
+		const response = await client().request("/api/v1/journal-entries", {
+			method: "POST",
+			headers: createAuthHeaders({
+				token: "test-token-123",
+				tenantId: "1",
+			}),
+			body: {
+				gloss: "Nuevo asiento",
+				lines: [
+					{ accountCode: "1041", amount: 1000, type: "debit" },
+					{ accountCode: "7011", amount: 1000, type: "credit" },
+				],
 			},
-		);
+		});
 
 		assertStatus(response, 201);
 		expect(response.data).toEqual(

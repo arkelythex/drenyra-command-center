@@ -68,7 +68,10 @@ function toTypeCode(type: ImportTransactionInput["type"]): number {
 	return type === "DEBIT" ? 0 : 1;
 }
 
-function fromTypeCode(code: number, fallback: ImportTransactionInput["type"]): ImportTransactionInput["type"] {
+function fromTypeCode(
+	code: number,
+	fallback: ImportTransactionInput["type"],
+): ImportTransactionInput["type"] {
 	if (code === 0) return "DEBIT";
 	if (code === 1) return "CREDIT";
 	return fallback;
@@ -188,7 +191,9 @@ export class WasmBankSkillSandboxService {
 
 			let nextAmountCents = amountCents;
 			if (transformAmountFn) {
-				const transformedAmount = Number(transformAmountFn(amountCents, typeCode));
+				const transformedAmount = Number(
+					transformAmountFn(amountCents, typeCode),
+				);
 				if (!Number.isFinite(transformedAmount)) {
 					throw new Error("WASM transform_amount returned non-numeric value.");
 				}
@@ -197,7 +202,9 @@ export class WasmBankSkillSandboxService {
 
 			let nextType = row.type;
 			if (transformTypeFn) {
-				const transformedTypeCode = Number(transformTypeFn(amountCents, typeCode));
+				const transformedTypeCode = Number(
+					transformTypeFn(amountCents, typeCode),
+				);
 				if (!Number.isFinite(transformedTypeCode)) {
 					throw new Error("WASM transform_type returned non-numeric value.");
 				}

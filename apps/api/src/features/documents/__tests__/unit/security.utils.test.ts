@@ -44,7 +44,9 @@ describe("documents security utils", () => {
 	it("supports Headers instance resolution", () => {
 		const headers = new Headers();
 		headers.set("x-user-id", "api-user-42");
-		return expect(resolveActorIdFromHeaders(headers)).resolves.toBe("api-user-42");
+		return expect(resolveActorIdFromHeaders(headers)).resolves.toBe(
+			"api-user-42",
+		);
 	});
 
 	it("prefers Better Auth session identity when cookie session is present", async () => {
@@ -85,6 +87,8 @@ describe("documents security utils", () => {
 		expect(hasUnsafeXmlDeclarations("<!ENTITY xxe 'abc'><Invoice/>")).toBe(
 			true,
 		);
-		expect(hasUnsafeXmlDeclarations("<Invoice><cbc:ID>F001-1</cbc:ID></Invoice>")).toBe(false);
+		expect(
+			hasUnsafeXmlDeclarations("<Invoice><cbc:ID>F001-1</cbc:ID></Invoice>"),
+		).toBe(false);
 	});
 });

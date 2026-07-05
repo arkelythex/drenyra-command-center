@@ -143,11 +143,12 @@ describe("buildBatchRecords", () => {
 	const channel = "email";
 
 	it("creates one record per client ID", () => {
-		const records = buildBatchRecords(companyId, templateId, [
-			"c1",
-			"c2",
-			"c3",
-		], channel);
+		const records = buildBatchRecords(
+			companyId,
+			templateId,
+			["c1", "c2", "c3"],
+			channel,
+		);
 		expect(records).toHaveLength(3);
 	});
 
@@ -172,10 +173,12 @@ describe("buildBatchRecords", () => {
 	});
 
 	it("assigns status queued to every record", () => {
-		const records = buildBatchRecords(companyId, templateId, [
-			"c1",
-			"c2",
-		], channel);
+		const records = buildBatchRecords(
+			companyId,
+			templateId,
+			["c1", "c2"],
+			channel,
+		);
 		for (const r of records) {
 			expect(r.status).toBe("queued");
 		}

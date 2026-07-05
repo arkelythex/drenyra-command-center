@@ -1,7 +1,7 @@
 import type { DiffChange } from "./diff-change";
-import type { DiffId, DiffImpact } from "./index";
 import type { DiffStatus } from "./diff-status";
 import type { DiffType } from "./diff-type";
+import type { DiffId, DiffImpact } from "./index";
 
 export interface AccountingDiffProps {
 	id: DiffId;

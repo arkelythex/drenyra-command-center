@@ -4,6 +4,11 @@
  * @module infrastructure/sunat/ShadowSunatEngine
  */
 
+import {
+	generateRecommendations,
+	getSectorBenchmark,
+	SUNAT_RISK_RULES,
+} from "./ShadowSunatRules";
 import type {
 	AreaMetric,
 	AreaRiskAssessment,
@@ -15,11 +20,6 @@ import type {
 	TaxArea,
 	TaxData,
 } from "./types/shadow-sunat";
-import {
-	generateRecommendations,
-	getSectorBenchmark,
-	SUNAT_RISK_RULES,
-} from "./ShadowSunatRules";
 
 // ============================================================================
 // SHADOW SUNAT ENGINE

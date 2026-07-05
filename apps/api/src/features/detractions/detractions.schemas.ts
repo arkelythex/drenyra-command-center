@@ -12,9 +12,7 @@ export const DetractionItemSchema = z.object({
 
 export const ListDetractionsQuerySchema = z.object({
 	companyId: z.string().uuid().optional(),
-	status: z
-		.enum(["pendiente", "depositado", "usado", "liberado"])
-		.optional(),
+	status: z.enum(["pendiente", "depositado", "usado", "liberado"]).optional(),
 });
 
 export const ListDetractionsResponseSchema = z.array(DetractionItemSchema);

@@ -1,4 +1,3 @@
-import { describe, expect, it } from "vitest";
 import type {
 	FiscalMemory,
 	FiscalMemoryCategory,
@@ -8,6 +7,7 @@ import type {
 } from "@drenyra/domain/fiscal-memory";
 import { FiscalMemory as FiscalMemoryEntity } from "@drenyra/domain/fiscal-memory";
 import type { FiscalMemoryRepository } from "@drenyra/domain/repositories/fiscal-memory.repository";
+import { describe, expect, it } from "vitest";
 import { RecurringErrorService } from "../recurring-error.service";
 
 const scope: FiscalMemoryScope = {
@@ -18,9 +18,16 @@ const scope: FiscalMemoryScope = {
 
 class MemoryRepo implements FiscalMemoryRepository {
 	constructor(private readonly values: readonly FiscalMemory[]) {}
-	async save(): Promise<void> { /* stub */ }
-	async findById(): Promise<FiscalMemory | null> { return null; }
-	async findByPeriod(findScope: FiscalMemoryScope, period: string): Promise<FiscalMemory[]> {
+	async save(): Promise<void> {
+		/* stub */
+	}
+	async findById(): Promise<FiscalMemory | null> {
+		return null;
+	}
+	async findByPeriod(
+		findScope: FiscalMemoryScope,
+		period: string,
+	): Promise<FiscalMemory[]> {
 		return this.values.filter(
 			(memory) =>
 				memory.tenantId === findScope.tenantId &&
@@ -29,12 +36,30 @@ class MemoryRepo implements FiscalMemoryRepository {
 				memory.period === period,
 		);
 	}
-	async findByCategory(_scope: FiscalMemoryScope, _category: FiscalMemoryCategory): Promise<FiscalMemory[]> { return []; }
-	async findBySeverity(_scope: FiscalMemoryScope, _severity: FiscalMemorySeverity): Promise<FiscalMemory[]> { return []; }
-	async findByEvidenceRef(): Promise<FiscalMemory[]> { return []; }
-	async findRelated(): Promise<FiscalMemory[]> { return []; }
-	async saveRevision(_revision: FiscalMemoryRevision): Promise<void> { /* stub */ }
-	async findRevisions(): Promise<FiscalMemoryRevision[]> { return []; }
+	async findByCategory(
+		_scope: FiscalMemoryScope,
+		_category: FiscalMemoryCategory,
+	): Promise<FiscalMemory[]> {
+		return [];
+	}
+	async findBySeverity(
+		_scope: FiscalMemoryScope,
+		_severity: FiscalMemorySeverity,
+	): Promise<FiscalMemory[]> {
+		return [];
+	}
+	async findByEvidenceRef(): Promise<FiscalMemory[]> {
+		return [];
+	}
+	async findRelated(): Promise<FiscalMemory[]> {
+		return [];
+	}
+	async saveRevision(_revision: FiscalMemoryRevision): Promise<void> {
+		/* stub */
+	}
+	async findRevisions(): Promise<FiscalMemoryRevision[]> {
+		return [];
+	}
 }
 
 const memoryFor = (period: string): FiscalMemory =>

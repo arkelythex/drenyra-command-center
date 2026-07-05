@@ -38,11 +38,16 @@ export class ResultMerger {
 						conflicts.push({
 							between: [
 								result.domainId,
-								results.find((r) => r.data && (r.data as Record<string, unknown>)[key] !== undefined)?.domainId ?? "unknown",
+								results.find(
+									(r) =>
+										r.data &&
+										(r.data as Record<string, unknown>)[key] !== undefined,
+								)?.domainId ?? "unknown",
 							],
 							field: key,
 							values: [data[key], value],
-							resolvedBy: result.confidence > 0.8 ? result.domainId : "lower-confidence",
+							resolvedBy:
+								result.confidence > 0.8 ? result.domainId : "lower-confidence",
 						});
 						// Keep existing value if higher confidence
 						if (result.confidence > 0.85) {
@@ -56,7 +61,9 @@ export class ResultMerger {
 		}
 
 		return {
-			success: conflicts.length === 0 || conflicts.every((c) => c.resolvedBy !== "unresolved"),
+			success:
+				conflicts.length === 0 ||
+				conflicts.every((c) => c.resolvedBy !== "unresolved"),
 			data,
 			conflicts,
 		};

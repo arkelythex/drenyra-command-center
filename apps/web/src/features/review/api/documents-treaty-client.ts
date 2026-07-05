@@ -85,7 +85,10 @@ function parseRunbook(value: unknown): DocumentsApiRunbook | null {
 	};
 }
 
-function parseEnvelopeMessage(value: unknown, fallback: string): ParsedDocumentsApiError {
+function parseEnvelopeMessage(
+	value: unknown,
+	fallback: string,
+): ParsedDocumentsApiError {
 	if (!isRecord(value)) {
 		return { message: fallback, runbook: null };
 	}

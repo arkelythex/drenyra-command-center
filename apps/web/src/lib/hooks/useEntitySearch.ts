@@ -52,7 +52,12 @@ export function useEntitySearch<T extends { id: string }, TStats>(
 	const [expandedIds, setExpandedIds] = useState<string[]>([]);
 	const [activeTab, setActiveTab] = useState<string>(tabs[0] ?? "");
 
-	const { data: raw = [], isLoading, isError, refetch } = useQuery({
+	const {
+		data: raw = [],
+		isLoading,
+		isError,
+		refetch,
+	} = useQuery({
 		queryKey,
 		queryFn: () => fetcher(companyId),
 	});

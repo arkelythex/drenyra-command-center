@@ -5,8 +5,8 @@
  */
 
 import { extractOkData, unwrap } from "@/lib/api-helpers";
-import type { SireDemoSummaryData } from "../compliance-client";
 import { SIRE_DEMO_EXPORT_PERIOD } from "../../lib/sire-demo-export";
+import type { SireDemoSummaryData } from "../compliance-client";
 import { getComplianceClient } from "../compliance-client";
 
 const complianceClient = getComplianceClient();

@@ -16,17 +16,24 @@ function app() {
 	return new Elysia().use(drenyraModule);
 }
 
-async function postReviewSunat(requestHeaders: Record<string, string>): Promise<Response> {
+async function postReviewSunat(
+	requestHeaders: Record<string, string>,
+): Promise<Response> {
 	return app().handle(
 		new Request("http://localhost/api/drenyra/commands/review-sunat", {
 			method: "POST",
 			headers: requestHeaders,
-			body: JSON.stringify({ caseId: "case-command-001", sourceRef: "sunat:sire" }),
+			body: JSON.stringify({
+				caseId: "case-command-001",
+				sourceRef: "sunat:sire",
+			}),
 		}),
 	);
 }
 
-async function postPrepareEvidence(requestHeaders: Record<string, string>): Promise<Response> {
+async function postPrepareEvidence(
+	requestHeaders: Record<string, string>,
+): Promise<Response> {
 	return app().handle(
 		new Request("http://localhost/api/drenyra/commands/prepare-evidence", {
 			method: "POST",
@@ -40,7 +47,9 @@ async function postPrepareEvidence(requestHeaders: Record<string, string>): Prom
 	);
 }
 
-async function postAnalyzeInvoice(requestHeaders: Record<string, string>): Promise<Response> {
+async function postAnalyzeInvoice(
+	requestHeaders: Record<string, string>,
+): Promise<Response> {
 	return app().handle(
 		new Request("http://localhost/api/drenyra/commands/analyze-invoice", {
 			method: "POST",
@@ -75,15 +84,17 @@ describe("Drenyra command envelope routes", () => {
 			diff: { kind: "none" },
 		});
 		expect(payload.data.evidence).toHaveLength(1);
-		expect(payload.data.deterministicChecks.map((check: { id: string }) => check.id)).toEqual([
-			"ruc-checksum",
-			"period-scope",
-		]);
+		expect(
+			payload.data.deterministicChecks.map((check: { id: string }) => check.id),
+		).toEqual(["ruc-checksum", "period-scope"]);
 		expect(payload.data.trace.traceId).toMatch(/^cmd-/);
 	});
 
 	it("denies review-sunat envelope without a scoped capability grant", async () => {
-		const response = await postReviewSunat({ ...headers, "x-drenyra-capability-grant": "" });
+		const response = await postReviewSunat({
+			...headers,
+			"x-drenyra-capability-grant": "",
+		});
 		const payload = await response.json();
 
 		expect(response.status).toBe(403);
@@ -112,14 +123,16 @@ describe("Drenyra command envelope routes", () => {
 			type: "DOCUMENT",
 			sourceRef: "document:invoice",
 		});
-		expect(payload.data.deterministicChecks.map((check: { id: string }) => check.id)).toEqual([
-			"evidence-scope",
-			"mutation-check",
-		]);
+		expect(
+			payload.data.deterministicChecks.map((check: { id: string }) => check.id),
+		).toEqual(["evidence-scope", "mutation-check"]);
 	});
 
 	it("denies prepare-evidence envelope when redaction proof is missing", async () => {
-		const response = await postPrepareEvidence({ ...headers, "x-drenyra-redaction-ok": "" });
+		const response = await postPrepareEvidence({
+			...headers,
+			"x-drenyra-redaction-ok": "",
+		});
 		const payload = await response.json();
 
 		expect(response.status).toBe(403);
@@ -148,10 +161,9 @@ describe("Drenyra command envelope routes", () => {
 			type: "DOCUMENT",
 			sourceRef: "invoice:F001-123",
 		});
-		expect(payload.data.deterministicChecks.map((check: { id: string }) => check.id)).toEqual([
-			"invoice-scope",
-			"cpe-review-ready",
-		]);
+		expect(
+			payload.data.deterministicChecks.map((check: { id: string }) => check.id),
+		).toEqual(["invoice-scope", "cpe-review-ready"]);
 	});
 
 	it("denies analyze-invoice envelope without a scoped capability grant", async () => {

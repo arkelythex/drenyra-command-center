@@ -4,24 +4,23 @@
  * Multi-domain case with extensible projections for cross-domain collaboration.
  */
 
-export {
-  Case,
-  CaseId,
-  CaseProjectionAttached,
-  CaseProjectionUpdated,
-  CaseCrossDomainQuery,
-} from './case'
-
 export type {
-  CaseIdentity,
-  CaseStatus,
-  DomainKey,
-  CaseProjection,
-  ProjectionMetadata,
-  FiscalProjection,
-  LegalProjection,
-  ClinicalProjection,
-  CaseRepository,
-  CrossDomainQuery,
-  CrossDomainResponse,
-} from './case'
+	CaseIdentity,
+	CaseProjection,
+	CaseRepository,
+	CaseStatus,
+	ClinicalProjection,
+	CrossDomainQuery,
+	CrossDomainResponse,
+	DomainKey,
+	FiscalProjection,
+	LegalProjection,
+	ProjectionMetadata,
+} from "./case";
+export {
+	Case,
+	CaseCrossDomainQuery,
+	CaseId,
+	CaseProjectionAttached,
+	CaseProjectionUpdated,
+} from "./case";

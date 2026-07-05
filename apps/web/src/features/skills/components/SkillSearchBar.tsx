@@ -1,14 +1,15 @@
-import { Search, CheckCircle2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { CheckCircle2, Search } from "lucide-react";
 import type { SkillCategory } from "@/features/agent-swarm/types/skills.types";
+import { cn } from "@/lib/utils";
 
-export const SKILL_CATEGORIES: { key: SkillCategory | "all"; label: string }[] = [
-	{ key: "all", label: "Todas" },
-	{ key: "fiscal", label: "Fiscal" },
-	{ key: "finance", label: "Finanzas" },
-	{ key: "operations", label: "Operaciones" },
-	{ key: "audit", label: "Auditoría" },
-];
+export const SKILL_CATEGORIES: { key: SkillCategory | "all"; label: string }[] =
+	[
+		{ key: "all", label: "Todas" },
+		{ key: "fiscal", label: "Fiscal" },
+		{ key: "finance", label: "Finanzas" },
+		{ key: "operations", label: "Operaciones" },
+		{ key: "audit", label: "Auditoría" },
+	];
 
 export interface SkillSearchBarProps {
 	searchQuery: string;

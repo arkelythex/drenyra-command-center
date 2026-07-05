@@ -57,8 +57,7 @@ export const CONTROL_PLANE_PAYLOAD_KEY = "contextControlPlane";
 export const TOP_LEVEL_TRACE_ID_KEY = "traceId";
 
 export const SUPPORTED_EXECUTABLE_JOBS = ["prepare-sire"] as const;
-export type SupportedExecutableJob =
-	(typeof SUPPORTED_EXECUTABLE_JOBS)[number];
+export type SupportedExecutableJob = (typeof SUPPORTED_EXECUTABLE_JOBS)[number];
 
 export const ACCOUNTING_JOB_ERRORS = {
 	NOT_SUPPORTED: "ACCOUNTING_JOB_NOT_SUPPORTED",

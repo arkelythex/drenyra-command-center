@@ -9,9 +9,9 @@
  */
 
 import { google } from "@ai-sdk/google";
+import { GEMINI_SYSTEM_INSTRUCTION } from "@drenyra/infrastructure/ai/context";
 import { generateText } from "ai";
 import { z } from "zod";
-import { GEMINI_SYSTEM_INSTRUCTION } from "@drenyra/infrastructure/ai/context";
 import type { AgentConfig, AgentResult } from "./types";
 
 // ============================================

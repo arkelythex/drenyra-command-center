@@ -87,7 +87,9 @@ describe("FinancialReportsService", () => {
 				}),
 			];
 
-			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(mockBalances(accounts));
+			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(
+				mockBalances(accounts),
+			);
 
 			const report = await service.generateTrialBalance(1, mockPeriod);
 
@@ -105,7 +107,9 @@ describe("FinancialReportsService", () => {
 				createAccountBalance({ accountCode: "4011", debit: 0, credit: 3000 }),
 			];
 
-			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(mockBalances(accounts));
+			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(
+				mockBalances(accounts),
+			);
 
 			const report = await service.generateTrialBalance(1, mockPeriod);
 
@@ -119,7 +123,9 @@ describe("FinancialReportsService", () => {
 				createAccountBalance({ accountCode: "4011" }),
 			];
 
-			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(mockBalances(accounts));
+			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(
+				mockBalances(accounts),
+			);
 
 			const report = await service.generateTrialBalance(1, mockPeriod);
 
@@ -173,7 +179,9 @@ describe("FinancialReportsService", () => {
 				}),
 			];
 
-			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(mockBalances(accounts));
+			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(
+				mockBalances(accounts),
+			);
 
 			const report = await service.generateBalanceSheet(1, mockPeriod);
 
@@ -196,7 +204,9 @@ describe("FinancialReportsService", () => {
 				createAccountBalance({ accountCode: "5011", balance: -5000 }), // Not enough equity
 			];
 
-			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(mockBalances(accounts));
+			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(
+				mockBalances(accounts),
+			);
 
 			const report = await service.generateBalanceSheet(1, mockPeriod);
 
@@ -233,7 +243,9 @@ describe("FinancialReportsService", () => {
 				}),
 			];
 
-			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(mockBalances(accounts));
+			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(
+				mockBalances(accounts),
+			);
 
 			const report = await service.generateIncomeStatement(1, mockPeriod);
 
@@ -254,7 +266,9 @@ describe("FinancialReportsService", () => {
 				createAccountBalance({ accountCode: "6911", balance: 15000 }), // Loss
 			];
 
-			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(mockBalances(accounts));
+			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(
+				mockBalances(accounts),
+			);
 
 			const report = await service.generateIncomeStatement(1, mockPeriod);
 
@@ -296,7 +310,9 @@ describe("FinancialReportsService", () => {
 				},
 			];
 
-			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(mockBalances(accounts));
+			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(
+				mockBalances(accounts),
+			);
 			vi.mocked(mockDataSource.getLedgerEntries).mockResolvedValue(entries);
 			vi.mocked(mockDataSource.getOpeningBalance).mockResolvedValue(0);
 
@@ -331,7 +347,9 @@ describe("FinancialReportsService", () => {
 				},
 			];
 
-			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(mockBalances(accounts));
+			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(
+				mockBalances(accounts),
+			);
 			vi.mocked(mockDataSource.getLedgerEntries).mockResolvedValue(entries);
 			vi.mocked(mockDataSource.getOpeningBalance).mockResolvedValue(5000); // Opening balance
 
@@ -350,7 +368,9 @@ describe("FinancialReportsService", () => {
 				createAccountBalance({ accountCode: "4011" }),
 			];
 
-			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(mockBalances(accounts));
+			vi.mocked(mockDataSource.getAccountBalances).mockResolvedValue(
+				mockBalances(accounts),
+			);
 			vi.mocked(mockDataSource.getLedgerEntries).mockResolvedValue([]);
 
 			const report = await service.generateGeneralLedger(1, mockPeriod, [

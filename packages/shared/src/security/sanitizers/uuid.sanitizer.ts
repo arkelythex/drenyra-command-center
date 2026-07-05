@@ -22,30 +22,30 @@ export type UuidVersion = 4 | 5 | 7;
  * ```
  */
 export interface UuidSanitizeResult {
-  value: string | null;
-  isValid: boolean;
-  version: UuidVersion | null;
-  normalized: string | null;
+	value: string | null;
+	isValid: boolean;
+	version: UuidVersion | null;
+	normalized: string | null;
 }
 
 const UUID_PATTERNS: Record<UuidVersion, RegExp> = {
-  4: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
-  5: /^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
-  7: /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+	4: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+	5: /^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+	7: /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
 };
 
 function detectUuidVersion(uuid: string): UuidVersion | null {
-  const versionChar = uuid.charAt(14);
-  switch (versionChar) {
-    case "4":
-      return 4;
-    case "5":
-      return 5;
-    case "7":
-      return 7;
-    default:
-      return null;
-  }
+	const versionChar = uuid.charAt(14);
+	switch (versionChar) {
+		case "4":
+			return 4;
+		case "5":
+			return 5;
+		case "7":
+			return 7;
+		default:
+			return null;
+	}
 }
 
 /**
@@ -61,49 +61,49 @@ function detectUuidVersion(uuid: string): UuidVersion | null {
  * ```
  */
 export function sanitizeUuid(
-  uuid: unknown,
-  allowedVersions: UuidVersion[] = [4, 5, 7],
+	uuid: unknown,
+	allowedVersions: UuidVersion[] = [4, 5, 7],
 ): UuidSanitizeResult {
-  if (typeof uuid !== "string") {
-    return {
-      value: null,
-      isValid: false,
-      version: null,
-      normalized: null,
-    };
-  }
+	if (typeof uuid !== "string") {
+		return {
+			value: null,
+			isValid: false,
+			version: null,
+			normalized: null,
+		};
+	}
 
-  const trimmed = uuid.trim();
-  if (!trimmed) {
-    return {
-      value: null,
-      isValid: false,
-      version: null,
-      normalized: null,
-    };
-  }
+	const trimmed = uuid.trim();
+	if (!trimmed) {
+		return {
+			value: null,
+			isValid: false,
+			version: null,
+			normalized: null,
+		};
+	}
 
-  const normalized = trimmed.toLowerCase();
-  const detectedVersion = detectUuidVersion(normalized);
+	const normalized = trimmed.toLowerCase();
+	const detectedVersion = detectUuidVersion(normalized);
 
-  if (!detectedVersion || !allowedVersions.includes(detectedVersion)) {
-    return {
-      value: null,
-      isValid: false,
-      version: detectedVersion,
-      normalized,
-    };
-  }
+	if (!detectedVersion || !allowedVersions.includes(detectedVersion)) {
+		return {
+			value: null,
+			isValid: false,
+			version: detectedVersion,
+			normalized,
+		};
+	}
 
-  const pattern = UUID_PATTERNS[detectedVersion];
-  const isValid = pattern.test(normalized);
+	const pattern = UUID_PATTERNS[detectedVersion];
+	const isValid = pattern.test(normalized);
 
-  return {
-    value: isValid ? normalized : null,
-    isValid,
-    version: detectedVersion,
-    normalized,
-  };
+	return {
+		value: isValid ? normalized : null,
+		isValid,
+		version: detectedVersion,
+		normalized,
+	};
 }
 
 /**
@@ -119,10 +119,10 @@ export function sanitizeUuid(
  * ```
  */
 export function sanitizeUuidBatch(
-  uuids: unknown[],
-  allowedVersions?: UuidVersion[],
+	uuids: unknown[],
+	allowedVersions?: UuidVersion[],
 ): UuidSanitizeResult[] {
-  return uuids.map((uuid) => sanitizeUuid(uuid, allowedVersions));
+	return uuids.map((uuid) => sanitizeUuid(uuid, allowedVersions));
 }
 
 /**
@@ -138,11 +138,11 @@ export function sanitizeUuidBatch(
  * ```
  */
 export function isValidUuid(
-  value: unknown,
-  version?: UuidVersion,
+	value: unknown,
+	version?: UuidVersion,
 ): value is string {
-  if (typeof value !== "string") return false;
+	if (typeof value !== "string") return false;
 
-  const result = sanitizeUuid(value, version ? [version] : undefined);
-  return result.isValid;
+	const result = sanitizeUuid(value, version ? [version] : undefined);
+	return result.isValid;
 }

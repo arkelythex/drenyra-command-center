@@ -9,14 +9,17 @@
  * @since Jun 2026
  */
 
-import { useMemo } from "react";
 import { Bot, MessageSquare, Pin } from "lucide-react";
-import type { ChatContextPanelProps } from "./ChatContextPanel.types";
+import { useMemo } from "react";
 import { useTranslation } from "../../i18n/i18n";
-import { getArtifactSummary, ARTIFACT_TYPE_BADGES } from "./ChatContextPanel.data";
+import {
+	ARTIFACT_TYPE_BADGES,
+	getArtifactSummary,
+} from "./ChatContextPanel.data";
+import type { ChatContextPanelProps } from "./ChatContextPanel.types";
 import { ArtifactPreview } from "./components/ArtifactPreview";
-import { StreamingStatus } from "./components/StreamingStatus";
 import { CasePreview } from "./components/CasePreview";
+import { StreamingStatus } from "./components/StreamingStatus";
 
 export function ChatContextPanel({
 	context,
@@ -75,7 +78,13 @@ export function ChatContextPanel({
 					</div>
 				);
 		}
-	}, [context, activeArtifact, caseDetails, pendingApprovalsCount, pinnedArtifacts]);
+	}, [
+		context,
+		activeArtifact,
+		caseDetails,
+		pendingApprovalsCount,
+		pinnedArtifacts,
+	]);
 
 	return (
 		<aside
@@ -83,7 +92,11 @@ export function ChatContextPanel({
 			aria-label="Panel de contexto del chat"
 		>
 			<div className="mb-4 flex items-center gap-2">
-				<Bot size={16} className="text-[var(--color-info)]" aria-hidden="true" />
+				<Bot
+					size={16}
+					className="text-[var(--color-info)]"
+					aria-hidden="true"
+				/>
 				<p className="text-2xs font-bold uppercase tracking-widest text-[var(--text-tertiary)]">
 					{isStreaming ? t("context.streaming.title") : "Contexto"}
 				</p>
@@ -111,7 +124,11 @@ export function ChatContextPanel({
 					aria-label="Artifacts anclados"
 				>
 					<div className="mb-3 flex items-center gap-2">
-						<Pin size={12} className="text-[var(--text-tertiary)]" aria-hidden="true" />
+						<Pin
+							size={12}
+							className="text-[var(--text-tertiary)]"
+							aria-hidden="true"
+						/>
 						<p className="text-2xs font-bold uppercase tracking-widest text-[var(--text-tertiary)]">
 							{t("context.pinned")} ({pinnedArtifacts.length})
 						</p>

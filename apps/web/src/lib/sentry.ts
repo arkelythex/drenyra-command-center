@@ -18,14 +18,23 @@ import type { Router } from "@tanstack/react-router";
 import { runtimeConfig } from "./runtime-config";
 
 export type SentryInitResult = {
-  /** The Sentry hub, for manual instrumentation if needed. */
-  hub: typeof Sentry;
-  /** React 19 createRoot error handlers. */
-  reactErrorHandlers: {
-    onUncaughtError: (error: unknown, errorInfo: { componentStack?: string }) => void;
-    onCaughtError: (error: unknown, errorInfo: { componentStack?: string }) => void;
-    onRecoverableError: (error: unknown, errorInfo: { componentStack?: string }) => void;
-  };
+	/** The Sentry hub, for manual instrumentation if needed. */
+	hub: typeof Sentry;
+	/** React 19 createRoot error handlers. */
+	reactErrorHandlers: {
+		onUncaughtError: (
+			error: unknown,
+			errorInfo: { componentStack?: string },
+		) => void;
+		onCaughtError: (
+			error: unknown,
+			errorInfo: { componentStack?: string },
+		) => void;
+		onRecoverableError: (
+			error: unknown,
+			errorInfo: { componentStack?: string },
+		) => void;
+	};
 };
 
 let _initialized = false;
@@ -34,7 +43,7 @@ let _initialized = false;
  * @internal — only for testing. Resets the singleton guard.
  */
 export function __resetSentryInit(): void {
-  _initialized = false;
+	_initialized = false;
 }
 
 /**
@@ -45,42 +54,48 @@ export function __resetSentryInit(): void {
  *
  * Returns `null` when monitoring is disabled in config.
  */
-export function initSentry(router: Router<unknown, unknown, unknown>): SentryInitResult | null {
-  if (_initialized || !runtimeConfig.monitoringEnabled || !runtimeConfig.sentryDsn) {
-    return null;
-  }
+export function initSentry(
+	router: Router<unknown, unknown, unknown>,
+): SentryInitResult | null {
+	if (
+		_initialized ||
+		!runtimeConfig.monitoringEnabled ||
+		!runtimeConfig.sentryDsn
+	) {
+		return null;
+	}
 
-  Sentry.init({
-    dsn: runtimeConfig.sentryDsn,
-    environment: runtimeConfig.sentryEnvironment,
+	Sentry.init({
+		dsn: runtimeConfig.sentryDsn,
+		environment: runtimeConfig.sentryEnvironment,
 
-    integrations: [
-      Sentry.tanstackRouterBrowserTracingIntegration(router),
-      ...(runtimeConfig.sentryReplaysOnErrorSampleRate > 0
-        ? [
-            Sentry.replayIntegration({
-              maskAllText: true,
-              blockAllMedia: true,
-            }),
-          ]
-        : []),
-    ],
+		integrations: [
+			Sentry.tanstackRouterBrowserTracingIntegration(router),
+			...(runtimeConfig.sentryReplaysOnErrorSampleRate > 0
+				? [
+						Sentry.replayIntegration({
+							maskAllText: true,
+							blockAllMedia: true,
+						}),
+					]
+				: []),
+		],
 
-    tracesSampleRate: runtimeConfig.sentryTracesSampleRate,
-    replaysSessionSampleRate: runtimeConfig.sentryReplaysSessionSampleRate,
-    replaysOnErrorSampleRate: runtimeConfig.sentryReplaysOnErrorSampleRate,
-  });
+		tracesSampleRate: runtimeConfig.sentryTracesSampleRate,
+		replaysSessionSampleRate: runtimeConfig.sentryReplaysSessionSampleRate,
+		replaysOnErrorSampleRate: runtimeConfig.sentryReplaysOnErrorSampleRate,
+	});
 
-  _initialized = true;
+	_initialized = true;
 
-  const errorHandler = Sentry.reactErrorHandler();
+	const errorHandler = Sentry.reactErrorHandler();
 
-  return {
-    hub: Sentry,
-    reactErrorHandlers: {
-      onUncaughtError: errorHandler,
-      onCaughtError: errorHandler,
-      onRecoverableError: errorHandler,
-    },
-  };
+	return {
+		hub: Sentry,
+		reactErrorHandlers: {
+			onUncaughtError: errorHandler,
+			onCaughtError: errorHandler,
+			onRecoverableError: errorHandler,
+		},
+	};
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from "react";
 /**
  * @fileoverview Componente QuickAction para respuestas del agente
  * @module features/cognitive-hub/components/QuickActionCard
@@ -62,8 +62,7 @@ export function QuickActionCard({
 	const variantStyles = {
 		primary:
 			"bg-primary/10 border-primary/30 hover:bg-primary/20 hover:border-primary/50",
-		secondary:
-			"border-border bg-card hover:border-border/80 hover:bg-muted/70",
+		secondary: "border-border bg-card hover:border-border/80 hover:bg-muted/70",
 		ghost: "bg-transparent border-transparent hover:bg-muted/70",
 	};
 
@@ -71,23 +70,23 @@ export function QuickActionCard({
 		<motion.button
 			initial={{ opacity: 0, y: 10 }}
 			animate={{ opacity: 1, y: 0 }}
-				whileHover={{ scale: 1.01, x: 2 }}
-				whileTap={{ scale: 0.99 }}
-				onClick={handleClick}
-				className={cn(
-					"group flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-[background-color,border-color,box-shadow,transform] duration-200",
-					variantStyles[variant],
-					className,
-				)}
+			whileHover={{ scale: 1.01, x: 2 }}
+			whileTap={{ scale: 0.99 }}
+			onClick={handleClick}
+			className={cn(
+				"group flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-[background-color,border-color,box-shadow,transform] duration-200",
+				variantStyles[variant],
+				className,
+			)}
 		>
 			{/* Icono */}
 			{Icon && (
 				<div
 					className={cn(
 						"h-10 w-10 rounded-lg flex items-center justify-center shrink-0",
-							variant === "primary"
-								? "bg-primary/20 text-primary"
-								: "bg-muted/70 text-muted-foreground",
+						variant === "primary"
+							? "bg-primary/20 text-primary"
+							: "bg-muted/70 text-muted-foreground",
 					)}
 				>
 					<Icon size={20} />
@@ -100,25 +99,27 @@ export function QuickActionCard({
 					<h4
 						className={cn(
 							"font-bold text-sm",
-								variant === "primary" ? "text-primary" : "text-foreground",
+							variant === "primary" ? "text-primary" : "text-foreground",
 						)}
 					>
 						{title}
 					</h4>
 					<ExternalLink
 						size={12}
-							className="text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
-						/>
-					</div>
-					<p className="mt-0.5 truncate text-xs text-muted-foreground">{description}</p>
+						className="text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+					/>
 				</div>
+				<p className="mt-0.5 truncate text-xs text-muted-foreground">
+					{description}
+				</p>
+			</div>
 
 			{/* Flecha */}
 			<ArrowRight
 				size={16}
 				className={cn(
-						"shrink-0 transition-[color,transform,opacity] duration-200",
-						variant === "primary" ? "text-primary" : "text-muted-foreground",
+					"shrink-0 transition-[color,transform,opacity] duration-200",
+					variant === "primary" ? "text-primary" : "text-muted-foreground",
 					"group-hover:translate-x-1",
 				)}
 			/>

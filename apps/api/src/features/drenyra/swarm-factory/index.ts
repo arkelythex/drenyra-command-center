@@ -1,1 +1,5 @@
-export { createSwarmOrchestrator, createSwarmOrchestratorFromAgents, getLatinAgentMapping } from './factory';
+export {
+	createSwarmOrchestrator,
+	createSwarmOrchestratorFromAgents,
+	getLatinAgentMapping,
+} from "./factory";

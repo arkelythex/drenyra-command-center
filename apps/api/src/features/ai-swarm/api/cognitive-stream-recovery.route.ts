@@ -8,12 +8,12 @@
  */
 
 import { Elysia } from "elysia";
-import type { SecurityOperation } from "../../security/rbac-policy";
-import { authorizeOperation } from "../../security/rbac-guard";
 import { logger } from "../../../lib/logger";
+import { authorizeOperation } from "../../security/rbac-guard";
+import type { SecurityOperation } from "../../security/rbac-policy";
 import {
-	RecoverRunParamsSchema,
 	RecoverRunBodySchema,
+	RecoverRunParamsSchema,
 } from "./schemas/cognitive-stream.schema";
 
 /**
@@ -32,9 +32,7 @@ export const cognitiveStreamRecoveryEndpoint = new Elysia({
 		// 0. Bootstrap DB client for company lookup
 		// ------------------------------------------------------------------
 		const { db } = await import("@drenyra/persistence/client");
-		const { agentRunStates } = await import(
-			"@drenyra/persistence/schema"
-		);
+		const { agentRunStates } = await import("@drenyra/persistence/schema");
 		const { eq } = await import("@drenyra/persistence/query");
 
 		// Look up the run's companyId for tenant-scoped authorization
@@ -64,9 +62,7 @@ export const cognitiveStreamRecoveryEndpoint = new Elysia({
 		// ------------------------------------------------------------------
 		let sessionStore: import("@drenyra/ai/session").SessionStore;
 		try {
-			const { PostgresSessionStore } = await import(
-				"@drenyra/ai/session"
-			);
+			const { PostgresSessionStore } = await import("@drenyra/ai/session");
 			sessionStore = new PostgresSessionStore(db);
 		} catch (_err) {
 			set.status = 503;
@@ -131,7 +127,10 @@ export const cognitiveStreamRecoveryEndpoint = new Elysia({
 				storedInput = await sessionStore.getInput(runId);
 			} catch {
 				// Non-blocking — recovery context is still valid without input
-				logger.warn({ runId }, "Recovery: unable to fetch stored input for orchestrator");
+				logger.warn(
+					{ runId },
+					"Recovery: unable to fetch stored input for orchestrator",
+				);
 			}
 
 			// Recovery context includes the last completed phase so the caller

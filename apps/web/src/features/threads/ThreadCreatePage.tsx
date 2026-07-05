@@ -1,18 +1,27 @@
-import { useState, useCallback } from "react";
+import type {
+	ThreadEnvironment,
+	ThreadPriority,
+} from "@drenyra/domain/entities/thread";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useActiveCompanyContext } from "@/lib/use-active-company-context";
-import type { ThreadEnvironment, ThreadPriority } from "@drenyra/domain/entities/thread";
-import { AlertCircle, ChevronDown, ChevronUp, Plus, Loader2 } from "lucide-react";
-import { EnvironmentSelector } from "./EnvironmentSelector";
-import { QuickActionButton } from "./QuickActionButton";
-import { quickActionsQueryOptions } from "./query-options";
-import { threadKeys } from "./query-keys";
-import * as threadsApi from "./threads.api";
-import type { QuickAction } from "./threads.types";
+import {
+	AlertCircle,
+	ChevronDown,
+	ChevronUp,
+	Loader2,
+	Plus,
+} from "lucide-react";
+import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { EnvironmentSelector } from "./EnvironmentSelector";
+import { QuickActionButton } from "./QuickActionButton";
+import { threadKeys } from "./query-keys";
+import { quickActionsQueryOptions } from "./query-options";
+import * as threadsApi from "./threads.api";
+import type { QuickAction } from "./threads.types";
 
 // ─── Quick-action icon resolver (matches quick-actions.service.ts) ────────────
 
@@ -120,7 +129,8 @@ export function ThreadCreatePage() {
 							Let&apos;s close
 						</h1>
 						<p className="text-sm text-[var(--text-tertiary)]">
-							Inicia un thread de trabajo fiscal — elige una acción rápida o crea un thread manual
+							Inicia un thread de trabajo fiscal — elige una acción rápida o
+							crea un thread manual
 						</p>
 					</header>
 
@@ -155,36 +165,49 @@ export function ThreadCreatePage() {
 
 						{quickActionsError && (
 							<div className="flex flex-col items-center gap-3 rounded-2xl border border-[var(--color-danger-border)]/20 bg-[var(--color-danger-bg)]/10 p-6 text-center">
-								<AlertCircle size={24} className="text-[var(--color-danger-text)]" />
+								<AlertCircle
+									size={24}
+									className="text-[var(--color-danger-text)]"
+								/>
 								<p className="text-sm text-[var(--text-secondary)]">
 									No se pudieron cargar las acciones rápidas
 								</p>
-								<Button variant="secondary" size="sm" onClick={() => refetchQuickActions()}>
+								<Button
+									variant="secondary"
+									size="sm"
+									onClick={() => refetchQuickActions()}
+								>
 									Reintentar
 								</Button>
 							</div>
 						)}
 
-						{!quickActionsLoading && !quickActionsError && quickActions && quickActions.length === 0 && (
-							<div className="rounded-2xl border border-[var(--border-subtle)] p-6 text-center">
-								<p className="text-sm text-[var(--text-tertiary)]">
-									No hay acciones rápidas disponibles
-								</p>
-							</div>
-						)}
+						{!quickActionsLoading &&
+							!quickActionsError &&
+							quickActions &&
+							quickActions.length === 0 && (
+								<div className="rounded-2xl border border-[var(--border-subtle)] p-6 text-center">
+									<p className="text-sm text-[var(--text-tertiary)]">
+										No hay acciones rápidas disponibles
+									</p>
+								</div>
+							)}
 
-						{!quickActionsLoading && !quickActionsError && quickActions && quickActions.length > 0 && (
-							<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-								{quickActions.map((action) => (
-									<QuickActionButton
-										key={action.id}
-										action={action}
-										onClick={() => handleQuickAction(action)}
-										disabled={createMutation.isPending}
-									/>
-								))}
-							</div>
-						)}
+						{!quickActionsLoading &&
+							!quickActionsError &&
+							quickActions &&
+							quickActions.length > 0 && (
+								<div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+									{quickActions.map((action) => (
+										<QuickActionButton
+											key={action.id}
+											action={action}
+											onClick={() => handleQuickAction(action)}
+											disabled={createMutation.isPending}
+										/>
+									))}
+								</div>
+							)}
 					</section>
 
 					{/* Divider */}
@@ -217,7 +240,10 @@ export function ThreadCreatePage() {
 							{showManualForm ? (
 								<ChevronUp size={18} className="text-[var(--text-tertiary)]" />
 							) : (
-								<ChevronDown size={18} className="text-[var(--text-tertiary)]" />
+								<ChevronDown
+									size={18}
+									className="text-[var(--text-tertiary)]"
+								/>
 							)}
 						</button>
 
@@ -255,7 +281,9 @@ export function ThreadCreatePage() {
 										<select
 											id="thread-priority"
 											value={priority}
-											onChange={(e) => setPriority(e.target.value as ThreadPriority)}
+											onChange={(e) =>
+												setPriority(e.target.value as ThreadPriority)
+											}
 											className="flex h-10 w-full rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none transition-colors focus:border-[var(--color-primary)]"
 										>
 											{PRIORITIES.map((p) => (
@@ -307,7 +335,10 @@ export function ThreadCreatePage() {
 					{createMutation.isPending && (
 						<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
 							<div className="rounded-2xl bg-[var(--surface-1)] p-8 text-center shadow-xl">
-								<Loader2 size={32} className="mx-auto animate-spin text-[var(--color-primary)]" />
+								<Loader2
+									size={32}
+									className="mx-auto animate-spin text-[var(--color-primary)]"
+								/>
 								<p className="mt-4 text-sm font-medium text-[var(--text-primary)]">
 									Creando thread...
 								</p>

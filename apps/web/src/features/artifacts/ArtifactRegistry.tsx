@@ -154,7 +154,7 @@ export const ArtifactRegistry = ({
 						</Badge>
 					)}
 				</div>
-				
+
 				{artifact.description && (
 					<p className="text-xs text-secondary leading-relaxed">
 						{artifact.description}
@@ -216,14 +216,24 @@ export const ArtifactRegistry = ({
 	);
 };
 
-function MetaRow({ label, value, mono = false }: { label: string; value: string; mono?: boolean }) {
+function MetaRow({
+	label,
+	value,
+	mono = false,
+}: {
+	label: string;
+	value: string;
+	mono?: boolean;
+}) {
 	return (
 		<div className="flex items-center justify-between gap-4">
 			<span className="text-xs font-medium text-secondary/60">{label}</span>
-			<span className={cn(
-				"text-xs font-bold text-primary truncate max-w-[180px]",
-				mono && "font-mono text-xs"
-			)}>
+			<span
+				className={cn(
+					"text-xs font-bold text-primary truncate max-w-[180px]",
+					mono && "font-mono text-xs",
+				)}
+			>
 				{value}
 			</span>
 		</div>

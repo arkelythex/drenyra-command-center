@@ -7,11 +7,11 @@
  * ```
  */
 export interface MoneySanitizerOptions {
-  maxDecimals?: number;
-  maxValue?: number;
-  minValue?: number;
-  currency?: string;
-  allowNegative?: boolean;
+	maxDecimals?: number;
+	maxValue?: number;
+	minValue?: number;
+	currency?: string;
+	allowNegative?: boolean;
 }
 
 /**
@@ -28,19 +28,19 @@ export interface MoneySanitizerOptions {
  * ```
  */
 export interface MoneySanitizeResult {
-  value: string | null;
-  isValid: boolean;
-  numericValue: number | null;
-  error?: string;
-  wasRounded: boolean;
+	value: string | null;
+	isValid: boolean;
+	numericValue: number | null;
+	error?: string;
+	wasRounded: boolean;
 }
 
 const DEFAULT_OPTIONS: Required<MoneySanitizerOptions> = {
-  maxDecimals: 2,
-  maxValue: 999_999_999_999.99,
-  minValue: -999_999_999_999.99,
-  currency: "PEN",
-  allowNegative: true,
+	maxDecimals: 2,
+	maxValue: 999_999_999_999.99,
+	minValue: -999_999_999_999.99,
+	currency: "PEN",
+	allowNegative: true,
 };
 
 /**
@@ -55,15 +55,18 @@ const DEFAULT_OPTIONS: Required<MoneySanitizerOptions> = {
  * ```
  */
 export function sanitizeInvoiceNumber(number: unknown): string {
-  if (typeof number !== "string") {
-    return "";
-  }
+	if (typeof number !== "string") {
+		return "";
+	}
 
-  if (!number.trim()) {
-    return "";
-  }
+	if (!number.trim()) {
+		return "";
+	}
 
-  return number.replace(/[^a-zA-Z0-9-]/g, "").slice(0, 20).toUpperCase();
+	return number
+		.replace(/[^a-zA-Z0-9-]/g, "")
+		.slice(0, 20)
+		.toUpperCase();
 }
 
 /**
@@ -79,91 +82,89 @@ export function sanitizeInvoiceNumber(number: unknown): string {
  * ```
  */
 export function sanitizeMonetaryValue(
-  value: unknown,
-  options: MoneySanitizerOptions = {},
+	value: unknown,
+	options: MoneySanitizerOptions = {},
 ): MoneySanitizeResult {
-  const config = { ...DEFAULT_OPTIONS, ...options };
+	const config = { ...DEFAULT_OPTIONS, ...options };
 
-  if (value === null || value === undefined) {
-    return {
-      value: null,
-      isValid: false,
-      numericValue: null,
-      error: "Value is required",
-      wasRounded: false,
-    };
-  }
+	if (value === null || value === undefined) {
+		return {
+			value: null,
+			isValid: false,
+			numericValue: null,
+			error: "Value is required",
+			wasRounded: false,
+		};
+	}
 
-  const strValue = String(value).trim();
+	const strValue = String(value).trim();
 
-  if (!strValue) {
-    return {
-      value: null,
-      isValid: false,
-      numericValue: null,
-      error: "Value cannot be empty",
-      wasRounded: false,
-    };
-  }
+	if (!strValue) {
+		return {
+			value: null,
+			isValid: false,
+			numericValue: null,
+			error: "Value cannot be empty",
+			wasRounded: false,
+		};
+	}
 
-  let cleaned = strValue
-    .replace(/[^\d.-]/g, "")
-    .replace(/(?!^)-/g, "");
+	let cleaned = strValue.replace(/[^\d.-]/g, "").replace(/(?!^)-/g, "");
 
-  const parts = cleaned.split(".");
-  if (parts.length > 2) {
-    cleaned = parts[0] + "." + parts.slice(1).join("");
-  }
+	const parts = cleaned.split(".");
+	if (parts.length > 2) {
+		cleaned = parts[0] + "." + parts.slice(1).join("");
+	}
 
-  const numericPattern = /^-?\d+(\.\d+)?$/;
-  if (!numericPattern.test(cleaned)) {
-    return {
-      value: null,
-      isValid: false,
-      numericValue: null,
-      error: "Invalid numeric format",
-      wasRounded: false,
-    };
-  }
+	const numericPattern = /^-?\d+(\.\d+)?$/;
+	if (!numericPattern.test(cleaned)) {
+		return {
+			value: null,
+			isValid: false,
+			numericValue: null,
+			error: "Invalid numeric format",
+			wasRounded: false,
+		};
+	}
 
-  const num = parseFloat(cleaned);
+	const num = parseFloat(cleaned);
 
-  if (isNaN(num)) {
-    return {
-      value: null,
-      isValid: false,
-      numericValue: null,
-      error: "Invalid numeric value (NaN)",
-      wasRounded: false,
-    };
-  }
+	if (isNaN(num)) {
+		return {
+			value: null,
+			isValid: false,
+			numericValue: null,
+			error: "Invalid numeric value (NaN)",
+			wasRounded: false,
+		};
+	}
 
-  if (num < config.minValue) {
-    return {
-      value: null,
-      isValid: false,
-      numericValue: null,
-      error: `Value below minimum (${config.minValue})`,
-      wasRounded: false,
-    };
-  }
+	if (num < config.minValue) {
+		return {
+			value: null,
+			isValid: false,
+			numericValue: null,
+			error: `Value below minimum (${config.minValue})`,
+			wasRounded: false,
+		};
+	}
 
-  if (num > config.maxValue) {
-    return {
-      value: null,
-      isValid: false,
-      numericValue: null,
-      error: `Value above maximum (${config.maxValue})`,
-      wasRounded: false,
-    };
-  }
+	if (num > config.maxValue) {
+		return {
+			value: null,
+			isValid: false,
+			numericValue: null,
+			error: `Value above maximum (${config.maxValue})`,
+			wasRounded: false,
+		};
+	}
 
-  const formatted = num.toFixed(config.maxDecimals);
+	const formatted = num.toFixed(config.maxDecimals);
 
-  return {
-    value: formatted,
-    isValid: true,
-    numericValue: num,
-    wasRounded: false,
-  };
+	return {
+		value: formatted,
+		isValid: true,
+		numericValue: num,
+		wasRounded: false,
+	};
 }

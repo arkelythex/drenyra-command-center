@@ -34,7 +34,10 @@ export function InvoiceOseTimeline({ timeline }: InvoiceOseTimelineProps) {
 		hasOverflow && !isExpanded
 			? sortedEvents.slice(0, DEFAULT_VISIBLE_EVENTS)
 			: sortedEvents;
-	const hiddenEventsCount = Math.max(sortedEvents.length - DEFAULT_VISIBLE_EVENTS, 0);
+	const hiddenEventsCount = Math.max(
+		sortedEvents.length - DEFAULT_VISIBLE_EVENTS,
+		0,
+	);
 
 	return (
 		<div className="mt-3 grid gap-2">
@@ -106,7 +109,9 @@ export function InvoiceOseTimeline({ timeline }: InvoiceOseTimelineProps) {
 								<div className="flex flex-wrap items-center gap-x-2 gap-y-1 pl-5 text-2xs font-black uppercase tracking-widest text-muted-foreground sm:pl-0">
 									<span>{event.source}</span>
 									{timeLabel ? (
-										<span className="text-muted-foreground/90">{timeLabel}</span>
+										<span className="text-muted-foreground/90">
+											{timeLabel}
+										</span>
 									) : null}
 								</div>
 							</div>
@@ -127,9 +132,7 @@ export function InvoiceOseTimeline({ timeline }: InvoiceOseTimelineProps) {
 						className="h-7 px-2 text-2xs font-black uppercase tracking-widest"
 						onClick={() => setIsExpanded((current) => !current)}
 					>
-						{isExpanded
-							? "Ver menos"
-							: `Ver mas (${hiddenEventsCount})`}
+						{isExpanded ? "Ver menos" : `Ver mas (${hiddenEventsCount})`}
 					</Button>
 				</div>
 			) : null}

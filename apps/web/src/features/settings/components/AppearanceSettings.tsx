@@ -1,10 +1,10 @@
-import { Sun, Moon, Monitor, ChevronDown, Type } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ChevronDown, Monitor, Moon, Sun, Type } from "lucide-react";
 import { SurfaceCard } from "@/components/ui/SurfaceCard";
 import { useSettings } from "@/context/SettingsContext";
-import { SettingsShell } from "./SettingsShell";
-import { SettingsRow, SettingsSection } from "./SettingsPrimitives";
+import { cn } from "@/lib/utils";
 import { CodeDiffPreview } from "./appearance/CodeDiffPreview";
+import { SettingsRow, SettingsSection } from "./SettingsPrimitives";
+import { SettingsShell } from "./SettingsShell";
 
 export const AppearanceSettings = () => {
 	const { settings, updateSettings } = useSettings();
@@ -91,10 +91,10 @@ export const AppearanceSettings = () => {
 							action={
 								<div className="flex items-center gap-3">
 									<button
-							type="button"
-							aria-label="Accent color: #0169CC"
-							className="h-6 w-16 rounded-lg bg-[#0169CC] border border-black/5 shadow-inner"
-						/>
+										type="button"
+										aria-label="Accent color: #0169CC"
+										className="h-6 w-16 rounded-lg bg-[#0169CC] border border-black/5 shadow-inner"
+									/>
 									<span className="font-mono text-xs font-medium text-[var(--text-secondary)] uppercase">
 										#0169CC
 									</span>
@@ -107,10 +107,10 @@ export const AppearanceSettings = () => {
 							action={
 								<div className="flex items-center gap-3">
 									<button
-							type="button"
-							aria-label="Background color: white"
-							className="h-6 w-6 rounded-full border border-[var(--border-default)] bg-[var(--surface-1)] shadow-sm"
-						/>
+										type="button"
+										aria-label="Background color: white"
+										className="h-6 w-6 rounded-full border border-[var(--border-default)] bg-[var(--surface-1)] shadow-sm"
+									/>
 									<span className="font-mono text-xs font-medium text-[var(--text-secondary)] uppercase">
 										#FFFFFF
 									</span>
@@ -123,10 +123,10 @@ export const AppearanceSettings = () => {
 							action={
 								<div className="flex items-center gap-3">
 									<button
-							type="button"
-							aria-label="Foreground color: #0D0D0D"
-							className="h-6 w-16 rounded-full bg-[#0D0D0D] border border-black/5 shadow-inner"
-						/>
+										type="button"
+										aria-label="Foreground color: #0D0D0D"
+										className="h-6 w-16 rounded-full bg-[#0D0D0D] border border-black/5 shadow-inner"
+									/>
 									<span className="font-mono text-xs font-medium text-[var(--text-secondary)] uppercase">
 										#0D0D0D
 									</span>

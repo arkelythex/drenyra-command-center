@@ -40,9 +40,9 @@ export interface CreateAutomationBody {
 }
 
 export async function listAutomations(): Promise<{ data: AutomationDTO[] }> {
-	return unwrap(
-		api.api.automations.index.get(),
-	) as Promise<{ data: AutomationDTO[] }>;
+	return unwrap(api.api.automations.index.get()) as Promise<{
+		data: AutomationDTO[];
+	}>;
 }
 
 export async function getAutomationDetail(
@@ -56,9 +56,10 @@ export async function getAutomationDetail(
 export async function createAutomation(
 	body: CreateAutomationBody,
 ): Promise<{ id: string; name: string }> {
-	return unwrap(
-		api.api.automations.index.post(body),
-	) as Promise<{ id: string; name: string }>;
+	return unwrap(api.api.automations.index.post(body)) as Promise<{
+		id: string;
+		name: string;
+	}>;
 }
 
 export async function toggleAutomation(
@@ -73,17 +74,17 @@ export async function toggleAutomation(
 export async function getAutomationLogs(
 	id: string,
 ): Promise<{ data: AutomationLogEntry[] }> {
-	return unwrap(
-		api.api.automations({ id }).logs.get(),
-	) as Promise<{ data: AutomationLogEntry[] }>;
+	return unwrap(api.api.automations({ id }).logs.get()) as Promise<{
+		data: AutomationLogEntry[];
+	}>;
 }
 
 export async function runAutomation(
 	automationId: string,
 ): Promise<{ executionId: string }> {
-	return unwrap(
-		api.api.automations.run.post({ automationId }),
-	) as Promise<{ executionId: string }>;
+	return unwrap(api.api.automations.run.post({ automationId })) as Promise<{
+		executionId: string;
+	}>;
 }
 
 // ─── Query Keys ───

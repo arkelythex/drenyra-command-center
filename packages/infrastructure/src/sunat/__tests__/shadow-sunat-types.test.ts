@@ -1,5 +1,10 @@
-import { describe, it, expect } from "bun:test";
-import type { TaxData, RiskLevel, SUNATExpectedAction, RiskSeverity } from "../types/shadow-sunat";
+import { describe, expect, it } from "bun:test";
+import type {
+	RiskLevel,
+	RiskSeverity,
+	SUNATExpectedAction,
+	TaxData,
+} from "../types/shadow-sunat";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -63,7 +68,11 @@ describe("TaxData builder", () => {
 	});
 
 	it("overrides partial fields correctly", () => {
-		const data = createTaxData({ organizationId: "org-xyz", fiscalYear: 2030, ciiu: "6201" });
+		const data = createTaxData({
+			organizationId: "org-xyz",
+			fiscalYear: 2030,
+			ciiu: "6201",
+		});
 		expect(data.organizationId).toBe("org-xyz");
 		expect(data.fiscalYear).toBe(2030);
 		expect(data.ciiu).toBe("6201");

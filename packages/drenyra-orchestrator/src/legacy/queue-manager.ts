@@ -173,7 +173,11 @@ export class QueueManager {
 	async markProcessing(taskId: string): Promise<void> {
 		await db
 			.update(aiWorkerQueues)
-			.set({ status: "processing", startedAt: new Date(), updatedAt: new Date() })
+			.set({
+				status: "processing",
+				startedAt: new Date(),
+				updatedAt: new Date(),
+			})
 			.where(eq(aiWorkerQueues.id, taskId));
 	}
 
@@ -209,7 +213,9 @@ export class QueueManager {
 				.set({
 					error,
 					retryCount: newRetryCount,
-					nextRetryAt: new Date(Date.now() + calculateBackoffDelay(newRetryCount)),
+					nextRetryAt: new Date(
+						Date.now() + calculateBackoffDelay(newRetryCount),
+					),
 					updatedAt: new Date(),
 				})
 				.where(eq(aiWorkerQueues.id, taskId));
@@ -240,7 +246,9 @@ export class QueueManager {
 			.update(aiWorkerQueues)
 			.set({
 				status: "pending",
-				nextRetryAt: new Date(Date.now() + calculateBackoffDelay(task.retryCount)),
+				nextRetryAt: new Date(
+					Date.now() + calculateBackoffDelay(task.retryCount),
+				),
 				updatedAt: new Date(),
 			})
 			.where(eq(aiWorkerQueues.id, taskId));
@@ -272,10 +280,18 @@ export class QueueManager {
 
 		for (const task of allTasks) {
 			switch (task.status) {
-				case "pending": stats.pending++; break;
-				case "processing": stats.processing++; break;
-				case "completed": stats.completed++; break;
-				case "failed": stats.failed++; break;
+				case "pending":
+					stats.pending++;
+					break;
+				case "processing":
+					stats.processing++;
+					break;
+				case "completed":
+					stats.completed++;
+					break;
+				case "failed":
+					stats.failed++;
+					break;
 			}
 		}
 		return stats;
@@ -296,12 +312,21 @@ export class QueueManager {
 		companyId?: string,
 	): Promise<void> {
 		const conditions = companyId
-			? [eq(aiWorkerQueues.companyId, companyId), eq(aiWorkerQueues.id, taskId), eq(aiWorkerQueues.status, "pending")]
+			? [
+					eq(aiWorkerQueues.companyId, companyId),
+					eq(aiWorkerQueues.id, taskId),
+					eq(aiWorkerQueues.status, "pending"),
+				]
 			: [eq(aiWorkerQueues.id, taskId), eq(aiWorkerQueues.status, "pending")];
 
 		await db
 			.update(aiWorkerQueues)
-			.set({ status: "failed", error: "Cancelled by user", completedAt: new Date(), updatedAt: new Date() })
+			.set({
+				status: "failed",
+				error: "Cancelled by user",
+				completedAt: new Date(),
+				updatedAt: new Date(),
+			})
 			.where(and(...conditions));
 	}
 

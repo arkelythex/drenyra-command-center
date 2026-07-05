@@ -4,11 +4,11 @@
 
 import { describe, expect, it } from "vitest";
 import {
-	AccountType,
 	ACCOUNT_TYPES,
+	type AccountType,
 	assertBankAccountType,
-	BankAccountType,
 	BANK_ACCOUNT_TYPES,
+	type BankAccountType,
 	isBankAccountType,
 } from "../AccountType";
 
@@ -95,6 +95,8 @@ describe("assertBankAccountType", () => {
 			'Invalid BankAccountType: "INVALID"',
 		);
 		expect(() => assertBankAccountType("")).toThrow("Must be one of");
-		expect(() => assertBankAccountType(null)).toThrow('Invalid BankAccountType: "null"');
+		expect(() => assertBankAccountType(null)).toThrow(
+			'Invalid BankAccountType: "null"',
+		);
 	});
 });

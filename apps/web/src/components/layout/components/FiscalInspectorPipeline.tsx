@@ -1,9 +1,9 @@
-import { cn } from "@/lib/utils";
 import {
-	FISCAL_ACTION_STATUS_ORDER,
 	FISCAL_ACTION_STATUS_LABELS,
+	FISCAL_ACTION_STATUS_ORDER,
 } from "@drenyra/domain";
 import { CheckCircle2, Clock, XCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 import type { PipelineProps } from "../FiscalInspector.types";
 
 /**

@@ -2,8 +2,6 @@
  * Calculator Step — Calculate IGV, detracciones, retenciones using TaxRegime.
  */
 
-import { PeruGeneralRegime } from "@drenyra/domain/services/tax-regime/peru";
-import type { Money } from "@drenyra/domain";
 import type {
 	CalculateOutput,
 	FiscalAgentStep,
@@ -13,16 +11,27 @@ import type {
 	TaxCalculation,
 	TransactionCategorization,
 } from "@drenyra/application/use-cases/fiscal-agent/types";
+import type { Money } from "@drenyra/domain";
+import { PeruGeneralRegime } from "@drenyra/domain/services/tax-regime/peru";
 
-export class CalculatorStep implements FiscalAgentStep<{
-	transactions: ProcessableTransaction[];
-	categorizations: TransactionCategorization[];
-}, CalculateOutput> {
+export class CalculatorStep
+	implements
+		FiscalAgentStep<
+			{
+				transactions: ProcessableTransaction[];
+				categorizations: TransactionCategorization[];
+			},
+			CalculateOutput
+		>
+{
 	readonly name = "calculate";
 	private regime = new PeruGeneralRegime();
 
 	async execute(
-		input: { transactions: ProcessableTransaction[]; categorizations: TransactionCategorization[] },
+		input: {
+			transactions: ProcessableTransaction[];
+			categorizations: TransactionCategorization[];
+		},
 		_context: FiscalAgentStepContext,
 	): Promise<StepResult<CalculateOutput>> {
 		const startedAt = new Date();

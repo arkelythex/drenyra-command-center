@@ -80,7 +80,9 @@ describe("getDrenyraProductSurface", () => {
 	});
 
 	it("should return undefined for unknown ID", () => {
-		const surface = getDrenyraProductSurface("nonexistent" as DrenyraProductSurface["id"]);
+		const surface = getDrenyraProductSurface(
+			"nonexistent" as DrenyraProductSurface["id"],
+		);
 		expect(surface).toBeUndefined();
 	});
 

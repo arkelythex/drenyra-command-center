@@ -45,7 +45,8 @@ export class Thread {
 			priority: (data.priority ?? "MEDIUM") as ThreadPriority,
 			tags: (data.tags ?? []) as string[],
 			tasks: (data.tasks ?? []) as ThreadTaskProps[],
-			agentAssignments: (data.agentAssignments ?? []) as ThreadAgentAssignmentProps[],
+			agentAssignments: (data.agentAssignments ??
+				[]) as ThreadAgentAssignmentProps[],
 			evidenceIds: (data.evidenceIds ?? []) as string[],
 			createdById: data.createdById as string,
 			createdAt: assertValidDate(data.createdAt as string, "createdAt"),

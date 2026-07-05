@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import type { AgentContext } from "../../types/agent-context";
 import type { TaxCalendarInput, TaxObligation } from "../tax-calendar.strategy";
-import { createTaxCalendarStrategy, ALERT_DAYS } from "../tax-calendar.strategy";
+import {
+	ALERT_DAYS,
+	createTaxCalendarStrategy,
+} from "../tax-calendar.strategy";
 
 const mockContext: AgentContext = {
 	tenantId: "test",
@@ -24,9 +27,7 @@ function pastDate(days: number): string {
 	return d.toISOString().split("T")[0];
 }
 
-function makeObligation(
-	overrides: Partial<TaxObligation> = {},
-): TaxObligation {
+function makeObligation(overrides: Partial<TaxObligation> = {}): TaxObligation {
 	return {
 		id: "obl-001",
 		code: "0621",
@@ -137,9 +138,21 @@ describe("createTaxCalendarStrategy", () => {
 					status: "filed",
 					filingDate: pastDate(3),
 				}),
-				makeObligation({ code: "0601", status: "filed", filingDate: pastDate(3) }),
-				makeObligation({ code: "0616", status: "filed", filingDate: pastDate(3) }),
-				makeObligation({ code: "0710", status: "filed", filingDate: pastDate(3) }),
+				makeObligation({
+					code: "0601",
+					status: "filed",
+					filingDate: pastDate(3),
+				}),
+				makeObligation({
+					code: "0616",
+					status: "filed",
+					filingDate: pastDate(3),
+				}),
+				makeObligation({
+					code: "0710",
+					status: "filed",
+					filingDate: pastDate(3),
+				}),
 			],
 		});
 		expect(strategy.execute(input, mockContext)).toHaveLength(0);
@@ -230,8 +243,18 @@ describe("createTaxCalendarStrategy", () => {
 			taxRegime: "general",
 			obligations: [
 				makeObligation({ id: "obl-001", code: "0621", dueDate: futureDate(2) }), // high
-				makeObligation({ id: "obl-002", code: "0601", dueDate: pastDate(1), status: "filed", filingDate: pastDate(2) }), // filed → skip
-				makeObligation({ id: "obl-003", code: "0616", dueDate: futureDate(10) }), // low
+				makeObligation({
+					id: "obl-002",
+					code: "0601",
+					dueDate: pastDate(1),
+					status: "filed",
+					filingDate: pastDate(2),
+				}), // filed → skip
+				makeObligation({
+					id: "obl-003",
+					code: "0616",
+					dueDate: futureDate(10),
+				}), // low
 				// Missing: 0710
 			],
 		});
@@ -264,6 +287,8 @@ describe("createTaxCalendarStrategy", () => {
 		const farResult = strategy.execute(far, mockContext);
 		const nearResult = strategy.execute(near, mockContext);
 
-		expect(farResult[0]?.confidence).toBeLessThan(nearResult[0]?.confidence as number);
+		expect(farResult[0]?.confidence).toBeLessThan(
+			nearResult[0]?.confidence as number,
+		);
 	});
 });

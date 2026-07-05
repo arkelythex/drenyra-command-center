@@ -1,2 +1,5 @@
 export { ChatContextPanel } from "./ChatContextPanel";
-export type { ChatContext, ChatContextPanelProps } from "./ChatContextPanel.types";
+export type {
+	ChatContext,
+	ChatContextPanelProps,
+} from "./ChatContextPanel.types";

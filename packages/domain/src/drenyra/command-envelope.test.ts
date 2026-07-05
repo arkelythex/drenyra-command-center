@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
+	type CreateDrenyraCommandEnvelopeInput,
+	createDrenyraCommandEnvelope,
 	DRENYRA_COMMAND_ID,
 	DRENYRA_COMMAND_STATUS,
 	DRENYRA_DETERMINISTIC_CHECK_STATUS,
-	createDrenyraCommandEnvelope,
-	type CreateDrenyraCommandEnvelopeInput,
 	type DrenyraFiscalScope,
 } from "./index";
 
@@ -41,7 +41,10 @@ function input(overrides: Partial<CreateDrenyraCommandEnvelopeInput> = {}) {
 				evidenceIds: ["evidence-1"],
 			},
 		],
-		trace: { traceId: "trace-command-1", createdAt: "2026-05-26T00:00:00.000Z" },
+		trace: {
+			traceId: "trace-command-1",
+			createdAt: "2026-05-26T00:00:00.000Z",
+		},
 		...overrides,
 	};
 }
@@ -63,7 +66,10 @@ describe("Drenyra command envelope", () => {
 			input({ status: DRENYRA_COMMAND_STATUS.NEEDS_APPROVAL }),
 		);
 
-		expect(envelope.approval).toMatchObject({ required: true, status: "pending" });
+		expect(envelope.approval).toMatchObject({
+			required: true,
+			status: "pending",
+		});
 	});
 
 	it("rejects incomplete fiscal scope", () => {

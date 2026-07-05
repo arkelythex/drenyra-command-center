@@ -1,4 +1,10 @@
-import type { DocumentProps, DocumentStatus, DocumentType, ConfidenceLevel, ExtractedData } from "./types";
+import type {
+	ConfidenceLevel,
+	DocumentProps,
+	DocumentStatus,
+	DocumentType,
+	ExtractedData,
+} from "./types";
 
 export class Document {
 	private constructor(private props: DocumentProps) {

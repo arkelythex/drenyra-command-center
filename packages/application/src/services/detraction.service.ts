@@ -9,8 +9,8 @@ import {
 	InvalidDetraccionError,
 } from "@drenyra/domain/accounting/detraccion";
 import type { DetractionRepository } from "@drenyra/domain/repositories/detraction.repository";
-import { Money } from "@drenyra/domain/value-objects/Money";
 import type { Currency } from "@drenyra/domain/types/currency";
+import { Money } from "@drenyra/domain/value-objects/Money";
 
 /**
  * DTO used to register a SPOT detraction using explicit minor units.
@@ -51,9 +51,7 @@ export interface DepositInfo {
  * const detraction = await service.registerDetraction(dto);
  */
 export class DetractionService {
-	constructor(
-		private readonly detractionRepo: DetractionRepository,
-	) {}
+	constructor(private readonly detractionRepo: DetractionRepository) {}
 
 	/**
 	 * Registers a new detraction from an invoice or other reference.

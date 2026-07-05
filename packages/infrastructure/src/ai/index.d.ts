@@ -1,20 +1,83 @@
-export type { ModelTask } from "./models";
-export { getModelForTask, MODEL_STRATEGY, modelFlash, modelOpus, modelReasoning, } from "./models";
-export type { OCROptions, OCRResponse } from "./ocr";
-export { batchExtractInvoices, extractFromFile, extractInvoiceData, } from "./ocr";
-export { ANTIGRAVITY_PROMPT, getAntigravityPrompt, getOCRPrompt, getValidationPrompt, OCR_EXTRACTION_PROMPT, PERUVIAN_ACCOUNTING_CONTEXT, VALIDATION_PROMPT, } from "./prompts";
-export { aiRouter, logAIOperation } from "./router";
-export type { ErrorSeverity, ValidationError, ValidationResponse, } from "./validation.service";
-export { applyAutoCorrections, batchValidateInvoices, quickValidate, validateInvoiceWithAI, } from "./validation.service";
-export { EXPENSE_CLASSIFICATION_CONTEXT, FUNCTION_CALLING_INSTRUCTIONS, GEMINI_SYSTEM_INSTRUCTION, PCGE_FULL_CONTEXT, } from "./context";
+export type {
+	ClassificationInput,
+	ClassificationResult,
+} from "./accounting-classifier";
+export {
+	ClassificationSchema,
+	classifyExpense,
+	quickClassify,
+	suggestPurchaseEntry,
+} from "./accounting-classifier";
+export {
+	EXPENSE_CLASSIFICATION_CONTEXT,
+	FUNCTION_CALLING_INSTRUCTIONS,
+	GEMINI_SYSTEM_INSTRUCTION,
+	PCGE_FULL_CONTEXT,
+} from "./context";
 export type { CacheConfig, CachedContext } from "./context-cache.service";
-export { ContextCacheService, getContextCacheService, } from "./context-cache.service";
+export {
+	ContextCacheService,
+	getContextCacheService,
+} from "./context-cache.service";
 export type { GeminiToolName } from "./gemini-tools";
-export { CalcularDetraccionSchema, ConsultarRucSchema, CrearAsientoSchema, calcularDetraccion, consultarRucSunat, crearAsiento, executeGeminiTool, geminiToolDefinitions, ObtenerTipoCambioSchema, obtenerTipoCambio, RegistrarGastoVozSchema, registrarGastoVoz, VerificarComprobanteSchema, verificarComprobante, } from "./gemini-tools";
+export {
+	CalcularDetraccionSchema,
+	ConsultarRucSchema,
+	CrearAsientoSchema,
+	calcularDetraccion,
+	consultarRucSunat,
+	crearAsiento,
+	executeGeminiTool,
+	geminiToolDefinitions,
+	ObtenerTipoCambioSchema,
+	obtenerTipoCambio,
+	RegistrarGastoVozSchema,
+	registrarGastoVoz,
+	VerificarComprobanteSchema,
+	verificarComprobante,
+} from "./gemini-tools";
 export type { OpenRouterModelTier } from "./model-registry";
-export { OPENROUTER_MODEL_TIERS, getOpenRouterModelForTier, getOpenRouterFallbackChain, getOpenRouterTierConfig, } from "./model-registry";
-export type { ToolStreamEvent, ToolApprovalRequest } from "./tool-bridge";
-export { getOpenRouterTools, streamWithToolExecution, } from "./tool-bridge";
-export type { ClassificationInput, ClassificationResult } from "./accounting-classifier";
-export { ClassificationSchema, classifyExpense, suggestPurchaseEntry, quickClassify, } from "./accounting-classifier";
+export {
+	getOpenRouterFallbackChain,
+	getOpenRouterModelForTier,
+	getOpenRouterTierConfig,
+	OPENROUTER_MODEL_TIERS,
+} from "./model-registry";
+export type { ModelTask } from "./models";
+export {
+	getModelForTask,
+	MODEL_STRATEGY,
+	modelFlash,
+	modelOpus,
+	modelReasoning,
+} from "./models";
+export type { OCROptions, OCRResponse } from "./ocr";
+export {
+	batchExtractInvoices,
+	extractFromFile,
+	extractInvoiceData,
+} from "./ocr";
+export {
+	ANTIGRAVITY_PROMPT,
+	getAntigravityPrompt,
+	getOCRPrompt,
+	getValidationPrompt,
+	OCR_EXTRACTION_PROMPT,
+	PERUVIAN_ACCOUNTING_CONTEXT,
+	VALIDATION_PROMPT,
+} from "./prompts";
+export { aiRouter, logAIOperation } from "./router";
+export type { ToolApprovalRequest, ToolStreamEvent } from "./tool-bridge";
+export { getOpenRouterTools, streamWithToolExecution } from "./tool-bridge";
+export type {
+	ErrorSeverity,
+	ValidationError,
+	ValidationResponse,
+} from "./validation.service";
+export {
+	applyAutoCorrections,
+	batchValidateInvoices,
+	quickValidate,
+	validateInvoiceWithAI,
+} from "./validation.service";
 //# sourceMappingURL=index.d.ts.map

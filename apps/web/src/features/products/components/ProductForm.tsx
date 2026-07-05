@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import type { CreateProductDTO } from "@/lib/schemas/product.schema";
+import { useProductForm } from "../hooks/use-product-form";
 import { ProductFormStockSection } from "./ProductFormStockSection";
 import { ProductFormBasicInfoSection } from "./product-form/basic-info-section";
 import { ProductFormClassificationSection } from "./product-form/classification-section";
 import { ProductFormPricingSection } from "./product-form/pricing-section";
-import { useProductForm } from "../hooks/use-product-form";
 
 interface ProductFormProps {
 	defaultValues?: Partial<CreateProductDTO>;
@@ -25,7 +25,10 @@ export const ProductForm = ({
 
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(handleFormSubmit)} className="space-y-6">
+			<form
+				onSubmit={form.handleSubmit(handleFormSubmit)}
+				className="space-y-6"
+			>
 				<ProductFormBasicInfoSection
 					form={form}
 					onFieldFocus={() => trigger("light")}

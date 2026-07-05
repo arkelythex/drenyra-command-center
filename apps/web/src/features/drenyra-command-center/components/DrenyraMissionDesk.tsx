@@ -1,9 +1,9 @@
 "use client";
 
-import type { DragEvent, ReactElement } from "react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { FileUp } from "lucide-react";
+import type { DragEvent, ReactElement } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SwarmActivityFeed } from "@/features/intelligence/components/SwarmActivityFeed";
 import { useAgentStream } from "@/features/intelligence/hooks/useAgentStream";
@@ -14,13 +14,16 @@ import {
 } from "../api/drenyra-mission.api";
 import { DrenyraConversationalBar } from "./DrenyraConversationalBar";
 import { DrenyraMissionDeskCard } from "./DrenyraMissionDesk.card";
-import { DrenyraMissionDeskHeader } from "./DrenyraMissionDesk.header";
 import {
 	DrenyraMissionDeskResult,
 	DrenyraMissionDeskStageList,
 } from "./DrenyraMissionDesk.detail";
+import { DrenyraMissionDeskHeader } from "./DrenyraMissionDesk.header";
+import type {
+	DrenyraMissionDeskProps,
+	MissionPhase,
+} from "./DrenyraMissionDesk.types";
 import { seedBootstrapDebateLogs } from "./DrenyraMissionDesk.utils";
-import type { DrenyraMissionDeskProps, MissionPhase } from "./DrenyraMissionDesk.types";
 
 /* ------------------------------------------------------------------ */
 /*  Main orchestrator                                                  */
@@ -37,10 +40,9 @@ export function DrenyraMissionDesk({
 	const [phase, setPhase] = useState<MissionPhase>("idle");
 	const [filename, setFilename] = useState<string | null>(null);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const [missionResult, setMissionResult] =
-		useState<Awaited<ReturnType<typeof bootstrapMissionFromDocument>> | null>(
-			null,
-		);
+	const [missionResult, setMissionResult] = useState<Awaited<
+		ReturnType<typeof bootstrapMissionFromDocument>
+	> | null>(null);
 	const notifiedCaseIdRef = useRef<string | null>(null);
 
 	const { startStream, isStreaming, connectionStatus } = useAgentStream();
@@ -186,10 +188,7 @@ export function DrenyraMissionDesk({
 				/>
 			</div>
 
-			<DrenyraMissionDeskResult
-				missionResult={missionResult}
-				phase={phase}
-			/>
+			<DrenyraMissionDeskResult missionResult={missionResult} phase={phase} />
 
 			<div className="mt-4 flex flex-wrap gap-2">
 				<Button
@@ -207,10 +206,16 @@ export function DrenyraMissionDesk({
 	);
 }
 
+export { DrenyraMissionDeskCard } from "./DrenyraMissionDesk.card";
+export { AGENT_STAGES, DEBATE_AGENTS } from "./DrenyraMissionDesk.data";
+export {
+	DrenyraMissionDeskResult,
+	DrenyraMissionDeskStageList,
+} from "./DrenyraMissionDesk.detail";
 /* Re-exports for backward compatibility */
 export { DrenyraMissionDeskHeader } from "./DrenyraMissionDesk.header";
-export { DrenyraMissionDeskCard } from "./DrenyraMissionDesk.card";
-export { DrenyraMissionDeskStageList, DrenyraMissionDeskResult } from "./DrenyraMissionDesk.detail";
+export type {
+	DrenyraMissionDeskProps,
+	MissionPhase,
+} from "./DrenyraMissionDesk.types";
 export { seedBootstrapDebateLogs } from "./DrenyraMissionDesk.utils";
-export { DEBATE_AGENTS, AGENT_STAGES } from "./DrenyraMissionDesk.data";
-export type { MissionPhase, DrenyraMissionDeskProps } from "./DrenyraMissionDesk.types";

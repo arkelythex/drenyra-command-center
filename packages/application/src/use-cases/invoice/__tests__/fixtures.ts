@@ -1,7 +1,4 @@
-import {
-	Invoice,
-	type InvoiceStatus,
-} from "@drenyra/domain/entities/Invoice";
+import { Invoice, type InvoiceStatus } from "@drenyra/domain/entities/Invoice";
 import { DocumentSeries } from "@drenyra/domain/value-objects/DocumentSeries";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import { RUC } from "@drenyra/domain/value-objects/RUC";

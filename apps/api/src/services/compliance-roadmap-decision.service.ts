@@ -19,11 +19,12 @@ export class ComplianceRoadmapDecisionService {
 		countryCode?: string;
 		decidedBy?: string;
 	}): Promise<ComplianceRoadmapDecisionRunResult> {
-		const snapshot = await ComplianceRoadmapSnapshotService.getRoadmapMvpSnapshot({
-			companyId: input.companyId,
-			year: input.year,
-			month: input.month,
-		});
+		const snapshot =
+			await ComplianceRoadmapSnapshotService.getRoadmapMvpSnapshot({
+				companyId: input.companyId,
+				year: input.year,
+				month: input.month,
+			});
 		const action = ComplianceRoadmapSnapshotService.findRoadmapRecommendation({
 			snapshot,
 			actionId: input.actionId,
@@ -51,7 +52,7 @@ export class ComplianceRoadmapDecisionService {
 			},
 		});
 
-		const updated = await this.applyDecisionStatus({
+		const updated = await ComplianceRoadmapDecisionService.applyDecisionStatus({
 			runId: run.id,
 			companyId: input.companyId,
 			decision: input.decision,

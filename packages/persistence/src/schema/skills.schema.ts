@@ -21,7 +21,11 @@ export const skillCategoryEnum = [
 ] as const;
 export type SkillCategory = (typeof skillCategoryEnum)[number];
 
-export const skillStatusEnum = ["active", "deprecated", "experimental"] as const;
+export const skillStatusEnum = [
+	"active",
+	"deprecated",
+	"experimental",
+] as const;
 export type SkillStatus = (typeof skillStatusEnum)[number];
 
 export const installationStatusEnum = ["installed", "disabled"] as const;
@@ -127,12 +131,15 @@ export const skillsRelations = relations(skills, ({ many }) => ({
 	installations: many(companySkills),
 }));
 
-export const skillCapabilitiesRelations = relations(skillCapabilities, ({ one }) => ({
-	skill: one(skills, {
-		fields: [skillCapabilities.skillId],
-		references: [skills.id],
+export const skillCapabilitiesRelations = relations(
+	skillCapabilities,
+	({ one }) => ({
+		skill: one(skills, {
+			fields: [skillCapabilities.skillId],
+			references: [skills.id],
+		}),
 	}),
-}));
+);
 
 export const companySkillsRelations = relations(companySkills, ({ one }) => ({
 	skill: one(skills, {

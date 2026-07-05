@@ -11,8 +11,8 @@ import type { DrenyraFiscalCommandCenterService } from "@drenyra/application/dre
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../shared/api-response";
 import {
-	commandCenterError,
 	autonomyLevelSchema,
+	commandCenterError,
 	fiscalCaseTypeSchema,
 	fiscalRiskLevelSchema,
 	manualFiscalCaseStatusSchema,
@@ -38,7 +38,9 @@ export function createCasesRoutes({ commandCenter }: CasesRoutesDeps) {
 					set.status = 400;
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
-				return ok(await commandCenter.listFiscalCases(contextResolution.context));
+				return ok(
+					await commandCenter.listFiscalCases(contextResolution.context),
+				);
 			},
 			{ detail: { tags: ["Drenyra"], summary: "List Drenyra fiscal cases" } },
 		)
@@ -71,7 +73,9 @@ export function createCasesRoutes({ commandCenter }: CasesRoutesDeps) {
 					riskScore: t.Optional(t.Integer({ minimum: 0, maximum: 100 })),
 					autonomyLevel: t.Optional(autonomyLevelSchema),
 					metadata: metadataSchema,
-					idempotencyKey: t.Optional(t.String({ minLength: 8, maxLength: 160 })),
+					idempotencyKey: t.Optional(
+						t.String({ minLength: 8, maxLength: 160 }),
+					),
 				}),
 				detail: { tags: ["Drenyra"], summary: "Create Drenyra fiscal case" },
 			},
@@ -84,7 +88,10 @@ export function createCasesRoutes({ commandCenter }: CasesRoutesDeps) {
 					set.status = 400;
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
-				const details = await commandCenter.getFiscalCaseDetails(contextResolution.context, params.id);
+				const details = await commandCenter.getFiscalCaseDetails(
+					contextResolution.context,
+					params.id,
+				);
 				if (!details) {
 					set.status = 404;
 					return fail("Fiscal case not found", "NOT_FOUND");
@@ -93,7 +100,10 @@ export function createCasesRoutes({ commandCenter }: CasesRoutesDeps) {
 			},
 			{
 				params: t.Object({ id: t.String({ minLength: 1 }) }),
-				detail: { tags: ["Drenyra"], summary: "Get Drenyra fiscal case details" },
+				detail: {
+					tags: ["Drenyra"],
+					summary: "Get Drenyra fiscal case details",
+				},
 			},
 		)
 		.patch(
@@ -105,9 +115,21 @@ export function createCasesRoutes({ commandCenter }: CasesRoutesDeps) {
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					return ok(await commandCenter.updateFiscalCaseStatus(contextResolution.context, params.id, body));
+					return ok(
+						await commandCenter.updateFiscalCaseStatus(
+							contextResolution.context,
+							params.id,
+							body,
+						),
+					);
 				} catch (error) {
-					set.status = error instanceof Error && error.message.endsWith("_NOT_FOUND") ? 404 : error instanceof Error && error.message === "FISCAL_CASE_STATUS_UNCHANGED" ? 409 : 400;
+					set.status =
+						error instanceof Error && error.message.endsWith("_NOT_FOUND")
+							? 404
+							: error instanceof Error &&
+									error.message === "FISCAL_CASE_STATUS_UNCHANGED"
+								? 409
+								: 400;
 					return commandCenterError(error);
 				}
 			},
@@ -117,7 +139,10 @@ export function createCasesRoutes({ commandCenter }: CasesRoutesDeps) {
 					status: manualFiscalCaseStatusSchema,
 					reason: t.Optional(t.String({ maxLength: 500 })),
 				}),
-				detail: { tags: ["Drenyra"], summary: "Update Drenyra fiscal case status" },
+				detail: {
+					tags: ["Drenyra"],
+					summary: "Update Drenyra fiscal case status",
+				},
 			},
 		);
 }

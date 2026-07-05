@@ -106,12 +106,12 @@ UI FEEDBACK:
 - success: Campo validado correctamente
 `;
 export function getOCRPrompt(imageType = "pdf") {
-    return `${OCR_EXTRACTION_PROMPT}\n\nTipo de documento: ${imageType === "pdf" ? "PDF" : "Imagen"}`;
+	return `${OCR_EXTRACTION_PROMPT}\n\nTipo de documento: ${imageType === "pdf" ? "PDF" : "Imagen"}`;
 }
 export function getValidationPrompt(invoiceData) {
-    return `${VALIDATION_PROMPT}\n\nDatos a validar:\n${JSON.stringify(invoiceData, null, 2)}`;
+	return `${VALIDATION_PROMPT}\n\nDatos a validar:\n${JSON.stringify(invoiceData, null, 2)}`;
 }
 export function getAntigravityPrompt(field, value, context) {
-    return `${ANTIGRAVITY_PROMPT}\n\nCampo: ${field}\nValor actual: ${JSON.stringify(value)}\nContexto: ${JSON.stringify(context, null, 2)}`;
+	return `${ANTIGRAVITY_PROMPT}\n\nCampo: ${field}\nValor actual: ${JSON.stringify(value)}\nContexto: ${JSON.stringify(context, null, 2)}`;
 }
 //# sourceMappingURL=prompts.js.map

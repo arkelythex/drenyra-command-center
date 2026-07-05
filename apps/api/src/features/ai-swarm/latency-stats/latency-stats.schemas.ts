@@ -49,7 +49,9 @@ export const LatencySummaryResponseSchema = z.object({
 	errorRate: z.number(),
 });
 
-export type LatencySummaryResponse = z.infer<typeof LatencySummaryResponseSchema>;
+export type LatencySummaryResponse = z.infer<
+	typeof LatencySummaryResponseSchema
+>;
 
 /**
  * Latency breakdown by agent type.
@@ -97,7 +99,9 @@ export const LatencyCombinedResponseSchema = z.object({
 	byAgent: z.array(LatencyByAgentItemSchema),
 });
 
-export type LatencyCombinedResponse = z.infer<typeof LatencyCombinedResponseSchema>;
+export type LatencyCombinedResponse = z.infer<
+	typeof LatencyCombinedResponseSchema
+>;
 
 /**
  * Recent list response.

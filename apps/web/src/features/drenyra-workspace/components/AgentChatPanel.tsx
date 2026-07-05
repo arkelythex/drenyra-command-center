@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDrenyraChat } from "../hooks/useDrenyraChat";
 
 interface AgentChatPanelProps {
@@ -32,7 +32,9 @@ export function AgentChatPanel({
 				{messages.length === 0 && (
 					<div className="flex h-full items-center justify-center">
 						<div className="max-w-md text-center">
-							<p className="text-lg text-[var(--color-text-secondary)]">{agentName}</p>
+							<p className="text-lg text-[var(--color-text-secondary)]">
+								{agentName}
+							</p>
 							<p className="mt-2 text-sm text-[var(--color-text-muted)]">
 								Hacé una consulta sobre {agentName.toLowerCase()}.
 							</p>
@@ -56,7 +58,9 @@ export function AgentChatPanel({
 						>
 							<p className="whitespace-pre-wrap text-sm">{msg.content}</p>
 							{msg.agent && (
-								<p className="mt-1 text-xs text-[var(--color-text-muted)]">Agent: {msg.agent}</p>
+								<p className="mt-1 text-xs text-[var(--color-text-muted)]">
+									Agent: {msg.agent}
+								</p>
 							)}
 						</div>
 					</div>
@@ -85,10 +89,13 @@ export function AgentChatPanel({
 				)}
 			</div>
 
-			<form onSubmit={handleSubmit} className="border-t border-[var(--color-stroke-2)] p-4">
+			<form
+				onSubmit={handleSubmit}
+				className="border-t border-[var(--color-stroke-2)] p-4"
+			>
 				<div className="flex gap-2">
 					<input
-							aria-label="Mensaje para el agente"
+						aria-label="Mensaje para el agente"
 						type="text"
 						value={input}
 						onChange={(e) => setInput(e.target.value)}

@@ -4,8 +4,7 @@
  * @module use-cases/fiscal-agent/types
  */
 
-import type { Money } from "@drenyra/domain";
-import type { CountryCode } from "@drenyra/domain";
+import type { CountryCode, Money } from "@drenyra/domain";
 
 // ─── Step Pipeline ───────────────────────────────────────────────────
 
@@ -42,7 +41,10 @@ export interface StepResult<T> {
 
 export interface FiscalAgentStep<TInput, TOutput> {
 	readonly name: string;
-	execute(input: TInput, context: FiscalAgentStepContext): Promise<StepResult<TOutput>>;
+	execute(
+		input: TInput,
+		context: FiscalAgentStepContext,
+	): Promise<StepResult<TOutput>>;
 }
 
 // ─── Pipeline Data ───────────────────────────────────────────────────

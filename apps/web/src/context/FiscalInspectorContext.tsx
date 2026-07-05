@@ -1,11 +1,11 @@
+import type { FiscalActionContext, FiscalActionStatus } from "@drenyra/domain";
 import {
 	createContext,
+	type ReactNode,
+	useCallback,
 	useContext,
 	useState,
-	useCallback,
-	type ReactNode,
 } from "react";
-import type { FiscalActionContext, FiscalActionStatus } from "@drenyra/domain";
 
 interface FiscalInspectorState {
 	/** Whether the inspector panel is open */

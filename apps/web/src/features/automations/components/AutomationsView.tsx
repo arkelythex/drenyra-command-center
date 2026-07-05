@@ -1,16 +1,16 @@
-import React from "react";
 import {
-	Clock3,
-	Play,
-	Pause,
-	Settings2,
 	Activity,
-	History,
-	Sparkles,
 	ArrowRight,
+	Clock3,
+	History,
+	Pause,
+	Play,
+	Settings2,
+	Sparkles,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import type React from "react";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 interface Automation {
 	id: string;
@@ -136,10 +136,10 @@ export const AutomationsView = () => {
 };
 
 interface StatCardProps {
-  label: string;
-  value: string;
-  icon: React.ComponentType<{ className?: string; size?: number }>;
-  color: string;
+	label: string;
+	value: string;
+	icon: React.ComponentType<{ className?: string; size?: number }>;
+	color: string;
 }
 
 function StatCard({ label, value, icon: Icon, color }: StatCardProps) {
@@ -230,8 +230,8 @@ function AutomationRow({ auto }: { auto: Automation }) {
 }
 
 interface ShieldCheckProps {
-  size?: number;
-  className?: string;
+	size?: number;
+	className?: string;
 }
 
 function ShieldCheck({ size, className }: ShieldCheckProps) {

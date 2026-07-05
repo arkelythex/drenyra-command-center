@@ -83,7 +83,8 @@ export function resolveTrustedMachineCallerAllowlist(
 		.filter((serviceId) => serviceId.length > 0);
 	if (fromInput.length > 0) return fromInput;
 
-	const envVarName = input?.envVarName?.trim() || "ARKELYTHEX_MACHINE_CALLER_ALLOWLIST";
+	const envVarName =
+		input?.envVarName?.trim() || "ARKELYTHEX_MACHINE_CALLER_ALLOWLIST";
 	return parseMachineCallerAllowlist(process.env[envVarName] ?? "");
 }
 

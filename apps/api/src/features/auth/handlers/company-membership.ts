@@ -1,6 +1,6 @@
 import { db } from "@drenyra/persistence/client";
-import { authUserCompanies, companies } from "@drenyra/persistence/schema";
 import { asc, desc, eq } from "@drenyra/persistence/query";
+import { authUserCompanies, companies } from "@drenyra/persistence/schema";
 
 /**
  * AccessibleCompany interface.

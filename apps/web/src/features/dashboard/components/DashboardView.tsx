@@ -1,12 +1,12 @@
+import { type FC, lazy, Suspense, useEffect, useState } from "react";
+import { toast } from "sonner";
+import { FloatingActionButton } from "@/components/ui/floating-action-button";
+import { ChartSkeleton } from "@/components/ui/skeleton";
 import { n } from "@/lib/utils";
-import { lazy, Suspense, useEffect, useState, type FC } from "react";
+import { useDashboardActions } from "../hooks/useDashboardActions";
+import { useDashboardData } from "../hooks/useDashboardData";
 import { useDashboardNavigation } from "../hooks/useDashboardNavigation";
 import { DashboardHeader } from "./layout/DashboardHeader";
-import { ChartSkeleton } from "@/components/ui/skeleton";
-import { FloatingActionButton } from "@/components/ui/floating-action-button";
-import { toast } from "sonner";
-import { useDashboardData } from "../hooks/useDashboardData";
-import { useDashboardActions } from "../hooks/useDashboardActions";
 import { SummaryTabContent } from "./sections/SummaryTabContent";
 
 const DASHBOARD_MOBILE_QUERY = "(max-width: 639px)";

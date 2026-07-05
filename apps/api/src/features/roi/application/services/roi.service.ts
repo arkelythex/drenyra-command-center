@@ -4,9 +4,21 @@
  * Wraps domain calculators for the API layer.
  */
 
-import { Money } from "@drenyra/domain";
-import { calculateRoi, calculatePaybackPeriod, calculateNpv, calculateIrr } from "@drenyra/domain";
-import type { RoiCalculateInputType, PaybackInputType, NpvInputType, IrrInputType, ScenarioCompareInputType, RoiScenarioInputType } from "../../types";
+import {
+	calculateIrr,
+	calculateNpv,
+	calculatePaybackPeriod,
+	calculateRoi,
+	Money,
+} from "@drenyra/domain";
+import type {
+	IrrInputType,
+	NpvInputType,
+	PaybackInputType,
+	RoiCalculateInputType,
+	RoiScenarioInputType,
+	ScenarioCompareInputType,
+} from "../../types";
 
 interface ScenarioResult {
 	name: string;
@@ -78,55 +90,57 @@ export const roiService = {
 	},
 
 	scenario(input: ScenarioCompareInputType) {
-		const results: Array<ScenarioResult> = input.scenarios.map((s: RoiScenarioInputType) => {
-			const investment = toMoney(s.investment);
-			const annualFlow = toMoney(s.annualCashFlow);
-			const years = s.projectDurationYears;
+		const results: Array<ScenarioResult> = input.scenarios.map(
+			(s: RoiScenarioInputType) => {
+				const investment = toMoney(s.investment);
+				const annualFlow = toMoney(s.annualCashFlow);
+				const years = s.projectDurationYears;
 
-			// Generate yearly cash flows (simplified: constant annual flow)
-			const cashFlows = Array.from({ length: years }, () => annualFlow);
+				// Generate yearly cash flows (simplified: constant annual flow)
+				const cashFlows = Array.from({ length: years }, () => annualFlow);
 
-			const roiResult = calculateRoi({
-				investment,
-				currentValue: annualFlow.multiply(years).add(investment),
-			});
+				const roiResult = calculateRoi({
+					investment,
+					currentValue: annualFlow.multiply(years).add(investment),
+				});
 
-			const paybackResult = calculatePaybackPeriod({
-				initialInvestment: investment,
-				annualCashFlow: annualFlow,
-			});
+				const paybackResult = calculatePaybackPeriod({
+					initialInvestment: investment,
+					annualCashFlow: annualFlow,
+				});
 
-			const npvResult = calculateNpv({
-				initialInvestment: investment,
-				cashFlows,
-				discountRate: s.discountRate,
-			});
+				const npvResult = calculateNpv({
+					initialInvestment: investment,
+					cashFlows,
+					discountRate: s.discountRate,
+				});
 
-			const irrResult = calculateIrr({
-				initialInvestment: investment,
-				cashFlows,
-			});
+				const irrResult = calculateIrr({
+					initialInvestment: investment,
+					cashFlows,
+				});
 
-			// Score: weighted combination of metrics
-			const npvScore = npvResult.isViable ? 30 : -30;
-			const roiScore = Math.min(roiResult.roiPercentage * 0.3, 30);
-			const paybackScore = paybackResult.isInfinite
-				? -20
-				: Math.max(-20, 20 - paybackResult.months * 0.5);
-			const irrScore = irrResult.converged
-				? Math.min(irrResult.irr, 20)
-				: -10;
-			const score = Math.round(npvScore + roiScore + paybackScore + irrScore);
+				// Score: weighted combination of metrics
+				const npvScore = npvResult.isViable ? 30 : -30;
+				const roiScore = Math.min(roiResult.roiPercentage * 0.3, 30);
+				const paybackScore = paybackResult.isInfinite
+					? -20
+					: Math.max(-20, 20 - paybackResult.months * 0.5);
+				const irrScore = irrResult.converged
+					? Math.min(irrResult.irr, 20)
+					: -10;
+				const score = Math.round(npvScore + roiScore + paybackScore + irrScore);
 
-			return {
-				name: s.name,
-				roi: roiResult.roiPercentage,
-				paybackMonths: paybackResult.months,
-				npv: npvResult.npvCents,
-				irr: irrResult.converged ? irrResult.irr : null,
-				score,
-			};
-		});
+				return {
+					name: s.name,
+					roi: roiResult.roiPercentage,
+					paybackMonths: paybackResult.months,
+					npv: npvResult.npvCents,
+					irr: irrResult.converged ? irrResult.irr : null,
+					score,
+				};
+			},
+		);
 
 		// Sort by score descending, recommend the best
 		results.sort((a, b) => b.score - a.score);

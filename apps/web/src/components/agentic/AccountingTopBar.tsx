@@ -2,8 +2,8 @@
 
 import { Clock, Download, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useAccountingStore } from "@/stores/accounting-store";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { useAccountingStore } from "@/stores/accounting-store";
 
 interface AccountingTopBarProps {
 	onRunSwarm?: () => void;

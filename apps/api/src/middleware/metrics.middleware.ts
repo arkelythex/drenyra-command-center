@@ -9,13 +9,13 @@
  * - Active connections (gauge)
  */
 
-import { Elysia } from "elysia";
+import type { Elysia } from "elysia";
 import {
 	Counter,
-	Histogram,
-	Gauge,
-	register,
 	collectDefaultMetrics,
+	Gauge,
+	Histogram,
+	register,
 } from "prom-client";
 
 // Enable default metrics (CPU, memory, etc.)
@@ -115,7 +115,10 @@ export function normalizeMetricsRoute(path: string): string {
 	const cleanPath = path.split("?")[0] || "/";
 
 	return cleanPath
-		.replace(/\/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}(?=\/|$)/gi, "/:id") // UUIDs
+		.replace(
+			/\/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}(?=\/|$)/gi,
+			"/:id",
+		) // UUIDs
 		.replace(/\/c[a-z0-9]{24}(?=\/|$)/gi, "/:id") // CUID2
 		.replace(/\/[A-Za-z0-9_-]{21}(?=\/|$)/g, "/:id") // nanoid defaults
 		.replace(/\/doc-\d+-[a-z0-9]+(?=\/|$)/gi, "/:docId") // Document IDs

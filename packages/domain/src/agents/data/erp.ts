@@ -17,7 +17,8 @@ export const ERP_AGENTS = [
 		supportedSurfaces: ["api", "batch", "automation"] as const,
 		drenyraSubagent: null,
 		description: "Detects anomalous patterns in financial and operational data",
-		sourcePath: "packages/agent-swarm/src/agents/ai-ml/anomaly-detector.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/ai-ml/anomaly-detector.agent.ts",
 	},
 	{
 		id: "nlp-processor-agent",
@@ -31,7 +32,8 @@ export const ERP_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "batch"] as const,
 		drenyraSubagent: null,
-		description: "Natural language processing for document understanding and classification",
+		description:
+			"Natural language processing for document understanding and classification",
 		sourcePath: "packages/agent-swarm/src/agents/ai-ml/nlp-processor.agent.ts",
 	},
 	{
@@ -46,8 +48,10 @@ export const ERP_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "web"] as const,
 		drenyraSubagent: null,
-		description: "Creates data visualizations and dashboards from business data",
-		sourcePath: "packages/agent-swarm/src/agents/data-science/data-visualizer.agent.ts",
+		description:
+			"Creates data visualizations and dashboards from business data",
+		sourcePath:
+			"packages/agent-swarm/src/agents/data-science/data-visualizer.agent.ts",
 	},
 	{
 		id: "incident-responder-agent",
@@ -61,8 +65,10 @@ export const ERP_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "automation"] as const,
 		drenyraSubagent: null,
-		description: "Automated incident detection, triage, and response coordination",
-		sourcePath: "packages/agent-swarm/src/agents/security-ops/incident-responder.agent.ts",
+		description:
+			"Automated incident detection, triage, and response coordination",
+		sourcePath:
+			"packages/agent-swarm/src/agents/security-ops/incident-responder.agent.ts",
 	},
 	{
 		id: "threat-detector-agent",
@@ -77,7 +83,8 @@ export const ERP_AGENTS = [
 		supportedSurfaces: ["api", "automation"] as const,
 		drenyraSubagent: null,
 		description: "Proactive threat detection and vulnerability assessment",
-		sourcePath: "packages/agent-swarm/src/agents/security-ops/threat-detector.agent.ts",
+		sourcePath:
+			"packages/agent-swarm/src/agents/security-ops/threat-detector.agent.ts",
 	},
 	{
 		id: "budget-tracker-agent",
@@ -87,12 +94,18 @@ export const ERP_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["budget-tracking", "cost-optimization", "report-generation"] as const,
+		capabilities: [
+			"budget-tracking",
+			"cost-optimization",
+			"report-generation",
+		] as const,
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "web"] as const,
 		drenyraSubagent: null,
-		description: "Tracks budgets, spending, and cost allocation across departments",
-		sourcePath: "packages/agent-swarm/src/agents/cost-management/budget-tracker.agent.ts",
+		description:
+			"Tracks budgets, spending, and cost allocation across departments",
+		sourcePath:
+			"packages/agent-swarm/src/agents/cost-management/budget-tracker.agent.ts",
 	},
 	{
 		id: "usability-tester-agent",
@@ -106,8 +119,10 @@ export const ERP_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "automation"] as const,
 		drenyraSubagent: null,
-		description: "Evaluates user interfaces for usability and accessibility compliance",
-		sourcePath: "packages/agent-swarm/src/agents/ux-ui/usability-tester.agent.ts",
+		description:
+			"Evaluates user interfaces for usability and accessibility compliance",
+		sourcePath:
+			"packages/agent-swarm/src/agents/ux-ui/usability-tester.agent.ts",
 	},
 	{
 		id: "accessibility-checker-agent",
@@ -121,7 +136,9 @@ export const ERP_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "automation"] as const,
 		drenyraSubagent: null,
-		description: "Audits web interfaces for WCAG compliance and accessibility issues",
-		sourcePath: "packages/agent-swarm/src/agents/ux-ui/accessibility-checker.agent.ts",
+		description:
+			"Audits web interfaces for WCAG compliance and accessibility issues",
+		sourcePath:
+			"packages/agent-swarm/src/agents/ux-ui/accessibility-checker.agent.ts",
 	},
 ] as const satisfies readonly UnifiedAgentEntry[];

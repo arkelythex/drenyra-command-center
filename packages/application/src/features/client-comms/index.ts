@@ -5,15 +5,15 @@
  */
 
 export type {
-	CommsChannel,
+	AutomationDTO,
 	AutomationTrigger,
-	TemplateDTO,
+	BatchSendRequest,
+	CommsChannel,
+	CreateAutomationRequest,
 	CreateTemplateRequest,
-	UpdateTemplateRequest,
 	SendMessageRequest,
 	SendMessageResponse,
-	BatchSendRequest,
-	AutomationDTO,
-	CreateAutomationRequest,
+	TemplateDTO,
 	UpdateAutomationRequest,
+	UpdateTemplateRequest,
 } from "./types";

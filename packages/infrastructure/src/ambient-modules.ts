@@ -77,7 +77,9 @@ declare module "puppeteer-core" {
 			pageFunction: (...args: unknown[]) => T,
 			...args: unknown[]
 		): Promise<T>;
-		$(selector: string): Promise<{ screenshot(options?: unknown): Promise<Buffer> } | null>;
+		$(
+			selector: string,
+		): Promise<{ screenshot(options?: unknown): Promise<Buffer> } | null>;
 		close(): Promise<void>;
 		click(selector: string): Promise<void>;
 		type(

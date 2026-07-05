@@ -5,42 +5,42 @@
  */
 
 import {
-  validateRuc,
-  validateRucOnline,
-  isValidRucFormat,
-  getRucType,
-} from './sunat/ruc-validation';
-import { generateInvoiceXML } from './sunat/xml-generation';
-import { generateInvoiceQR } from './sunat/qr-generation';
+	getExchangeRate,
+	validateInvoiceNumbering,
+} from "./sunat/invoice-utils";
+import { generateInvoiceQR } from "./sunat/qr-generation";
 import {
-  validateInvoiceNumbering,
-  getExchangeRate,
-} from './sunat/invoice-utils';
+	getRucType,
+	isValidRucFormat,
+	validateRuc,
+	validateRucOnline,
+} from "./sunat/ruc-validation";
+import { generateInvoiceXML } from "./sunat/xml-generation";
 
 // Re-export types
 export type {
-  RucValidationResult,
-  InvoiceXMLData,
-  QRCodeData,
-  ExchangeRateResult,
-  InvoiceNumberingValidation,
-  RucType,
-} from './sunat/sunat-types';
+	ExchangeRateResult,
+	InvoiceNumberingValidation,
+	InvoiceXMLData,
+	QRCodeData,
+	RucType,
+	RucValidationResult,
+} from "./sunat/sunat-types";
 
 export class SunatService {
-  // RUC Validation
-  static validateRuc = validateRuc;
-  static validateRucOnline = validateRucOnline;
-  static isValidRucFormat = isValidRucFormat;
-  static getRucType = getRucType;
+	// RUC Validation
+	static validateRuc = validateRuc;
+	static validateRucOnline = validateRucOnline;
+	static isValidRucFormat = isValidRucFormat;
+	static getRucType = getRucType;
 
-  // XML Generation
-  static generateInvoiceXML = generateInvoiceXML;
+	// XML Generation
+	static generateInvoiceXML = generateInvoiceXML;
 
-  // QR Code Generation
-  static generateInvoiceQR = generateInvoiceQR;
+	// QR Code Generation
+	static generateInvoiceQR = generateInvoiceQR;
 
-  // Invoice Utilities
-  static validateInvoiceNumbering = validateInvoiceNumbering;
-  static getExchangeRate = getExchangeRate;
+	// Invoice Utilities
+	static validateInvoiceNumbering = validateInvoiceNumbering;
+	static getExchangeRate = getExchangeRate;
 }

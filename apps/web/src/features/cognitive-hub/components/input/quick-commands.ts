@@ -72,4 +72,5 @@ export function getQuickCommands(
 }
 
 /** Default hints for predictive row / palette (Peru pack). */
-export const QUICK_COMMANDS: ReadonlyArray<QuickCommand> = getQuickCommands("PE");
+export const QUICK_COMMANDS: ReadonlyArray<QuickCommand> =
+	getQuickCommands("PE");

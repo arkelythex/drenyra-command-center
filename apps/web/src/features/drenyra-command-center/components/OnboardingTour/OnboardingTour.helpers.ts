@@ -2,8 +2,8 @@
  * OnboardingTour — Pure helper functions
  */
 import type { CSSProperties } from "react";
-import { TOOLTIP_WIDTH, PLACEMENT_GAP } from "./OnboardingTour.types";
 import type { TourStep } from "./OnboardingTour.types";
+import { PLACEMENT_GAP, TOOLTIP_WIDTH } from "./OnboardingTour.types";
 
 export function getTargetRect(selector: string): DOMRect | null {
 	if (!selector) return null;

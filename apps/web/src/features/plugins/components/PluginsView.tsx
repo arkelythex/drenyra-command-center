@@ -1,16 +1,16 @@
-import { useState } from "react";
 import {
-	Zap,
-	ShieldCheck,
-	Landmark,
-	Cloud,
-	FileCode,
-	Search,
 	CheckCircle2,
+	Cloud,
 	ExternalLink,
+	FileCode,
+	Landmark,
+	Search,
+	ShieldCheck,
+	Zap,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 interface Plugin {
 	id: string;

@@ -78,8 +78,8 @@ export function KeyboardShortcutsHelp({
 						Atajos de Teclado
 					</DialogTitle>
 					<DialogDescription>
-						Referencia rápida de acciones globales para navegar y operar
-						Drenyra con menor fricción.
+						Referencia rápida de acciones globales para navegar y operar Drenyra
+						con menor fricción.
 					</DialogDescription>
 				</DialogHeader>
 

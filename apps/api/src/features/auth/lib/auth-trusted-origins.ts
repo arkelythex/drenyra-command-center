@@ -16,4 +16,3 @@ export function resolveTrustedOriginsFromEnv(
 			.filter(Boolean) ?? [];
 	return [...new Set([...DEV_TRUSTED_ORIGIN_DEFAULTS, ...extra])];
 }
-

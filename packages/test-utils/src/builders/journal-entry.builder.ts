@@ -16,9 +16,9 @@ import {
 	JournalEntry,
 	type JournalEntryProps,
 	type JournalEntryStatus,
+	JournalLine,
 } from "@drenyra/domain/entities/JournalEntry";
-import { JournalLine } from "@drenyra/domain/entities/JournalEntry";
-import { Money, type Currency } from "@drenyra/domain/value-objects/Money";
+import { type Currency, Money } from "@drenyra/domain/value-objects/Money";
 import { BaseBuilder } from "./base.builder";
 
 const DEFAULT_ENTRY_ID = "je_test_001";
@@ -188,9 +188,7 @@ export class JournalEntryBuilder extends BaseBuilder<
 		}
 
 		// Ensure all lines use the same currency for JournalEntry domain rules
-		const currencies = [
-			...new Set(this.linesData.map((l) => l.currency)),
-		];
+		const currencies = [...new Set(this.linesData.map((l) => l.currency))];
 		if (currencies.length > 1) {
 			throw new Error(
 				`Todos los asientos deben usar la misma moneda. Encontradas: ${currencies.join(", ")}`,

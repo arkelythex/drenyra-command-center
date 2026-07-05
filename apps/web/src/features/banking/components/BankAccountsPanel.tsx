@@ -1,10 +1,9 @@
 import { toast } from "sonner";
 import { presentError } from "@/lib/error-messages";
-
-import { AccountCard, AccountSummary, AddAccountModal } from "./accounts";
-import type { BankAccount } from "../stores/banking.store.types";
 import { useDeleteAccountMutation } from "../hooks/useBankingQueries";
 import { useBankingSelection } from "../stores/banking.store";
+import type { BankAccount } from "../stores/banking.store.types";
+import { AccountCard, AccountSummary, AddAccountModal } from "./accounts";
 
 interface BankAccountsPanelProps {
 	accounts: BankAccount[];

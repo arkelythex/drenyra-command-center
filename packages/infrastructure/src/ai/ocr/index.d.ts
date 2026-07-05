@@ -1,3 +1,7 @@
-export type { OCROptions, OCRResponse, } from './types';
-export { extractInvoiceData, batchExtractInvoices, extractFromFile, } from './service';
+export {
+	batchExtractInvoices,
+	extractFromFile,
+	extractInvoiceData,
+} from "./service";
+export type { OCROptions, OCRResponse } from "./types";
 //# sourceMappingURL=index.d.ts.map

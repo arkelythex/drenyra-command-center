@@ -1,4 +1,8 @@
-import { SettingSwitch, SettingsRow, SettingsSection } from "../SettingsPrimitives";
+import {
+	SettingSwitch,
+	SettingsRow,
+	SettingsSection,
+} from "../SettingsPrimitives";
 
 interface OperationalSettingsSectionProps {
 	autoClosePeriod: boolean;

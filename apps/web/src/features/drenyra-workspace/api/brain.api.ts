@@ -1,7 +1,10 @@
-import { runtimeConfig } from "@/lib/runtime-config";
-import { getGovernanceAuditHeaders } from "@/lib/api";
+import type {
+	DrenyraBrainItem,
+	DrenyraBrainThread,
+} from "@drenyra/domain/drenyra";
 import { useAuthStore } from "@/features/auth/hooks/useAuth";
-import type { DrenyraBrainItem, DrenyraBrainThread } from "@drenyra/domain/drenyra";
+import { getGovernanceAuditHeaders } from "@/lib/api";
+import { runtimeConfig } from "@/lib/runtime-config";
 import { parseSseBuffer, type SseEvent } from "./drenyra.api";
 
 function getBrainHeaders(): Record<string, string> {
@@ -152,10 +155,7 @@ export async function streamChat(
 	}
 }
 
-function processEvent(
-	event: SseEvent,
-	callbacks: StreamCallbacks,
-): void {
+function processEvent(event: SseEvent, callbacks: StreamCallbacks): void {
 	try {
 		const payload = JSON.parse(event.data) as Record<string, unknown>;
 

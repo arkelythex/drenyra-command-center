@@ -1,11 +1,11 @@
-import { getAuditPlugins } from "./plugin-registry";
-import { createSandboxContextData } from "./plugin-sandbox";
 import type {
 	AuditPluginCondition,
 	AuditPluginExecutionContext,
 	AuditPluginExecutionResult,
 	AuditPluginPathCondition,
 } from "./plugin.types";
+import { getAuditPlugins } from "./plugin-registry";
+import { createSandboxContextData } from "./plugin-sandbox";
 
 function readPositiveIntegerEnv(name: string, fallback: number): number {
 	const raw = Number(process.env[name] ?? fallback);
@@ -13,7 +13,9 @@ function readPositiveIntegerEnv(name: string, fallback: number): number {
 	return Math.floor(raw);
 }
 
-function getContextData(context: AuditPluginExecutionContext): Record<string, unknown> {
+function getContextData(
+	context: AuditPluginExecutionContext,
+): Record<string, unknown> {
 	return {
 		organizationId: context.organizationId,
 		agentName: context.agentName,
@@ -119,9 +121,13 @@ function matchesScope(
 		decisionTypes?: string[];
 	},
 ): boolean {
-	if (scope.organizationIds && !scope.organizationIds.includes(context.organizationId))
+	if (
+		scope.organizationIds &&
+		!scope.organizationIds.includes(context.organizationId)
+	)
 		return false;
-	if (scope.agentNames && !scope.agentNames.includes(context.agentName)) return false;
+	if (scope.agentNames && !scope.agentNames.includes(context.agentName))
+		return false;
 	if (
 		scope.decisionTypes &&
 		!scope.decisionTypes.includes(context.decisionType)
@@ -147,12 +153,18 @@ export function evaluateAuditPlugins(
 	pluginIds?: string[],
 ): AuditPluginExecutionResult {
 	const contextData = getContextData(context);
-	const maxEvaluationMs = readPositiveIntegerEnv("AUDIT_PLUGIN_EVAL_BUDGET_MS", 25);
+	const maxEvaluationMs = readPositiveIntegerEnv(
+		"AUDIT_PLUGIN_EVAL_BUDGET_MS",
+		25,
+	);
 	const maxTotalEvaluationMs = readPositiveIntegerEnv(
 		"AUDIT_PLUGIN_EVAL_TOTAL_BUDGET_MS",
 		80,
 	);
-	const maxPluginsPerRun = readPositiveIntegerEnv("AUDIT_PLUGIN_MAX_PER_RUN", 12);
+	const maxPluginsPerRun = readPositiveIntegerEnv(
+		"AUDIT_PLUGIN_MAX_PER_RUN",
+		12,
+	);
 	const maxFindings = readPositiveIntegerEnv("AUDIT_PLUGIN_MAX_FINDINGS", 20);
 	const plugins = getAuditPlugins(pluginIds);
 	const findings: AuditPluginExecutionResult["findings"] = [];

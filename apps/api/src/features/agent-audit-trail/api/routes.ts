@@ -4,16 +4,21 @@
  */
 
 import { Elysia, t } from "elysia";
+import { authorizeOperation } from "../../security/rbac-guard";
 import { logAgentDecision } from "../application/commands/log-decision.command";
 import { getAuditTrail } from "../application/queries/get-trail.query";
 import { verifyHashChain } from "../application/queries/verify-chain.query";
 import { exportToPdf } from "../export/pdf-exporter";
 import { exportToXml } from "../export/xml-exporter";
-import { listAuditPlugins, validateAuditPluginDefinition } from "../plugins";
 import type { AuditPluginDefinition } from "../plugins";
-import { authorizeOperation } from "../../security/rbac-guard";
+import { listAuditPlugins, validateAuditPluginDefinition } from "../plugins";
 
-const jsonScalarSchema = t.Union([t.String(), t.Number(), t.Boolean(), t.Null()]);
+const jsonScalarSchema = t.Union([
+	t.String(),
+	t.Number(),
+	t.Boolean(),
+	t.Null(),
+]);
 const jsonContainerSchema = t.Union([
 	t.Array(t.Unknown()),
 	t.Object({}, { additionalProperties: t.Unknown() }),
@@ -232,7 +237,10 @@ export const agentAuditTrailRoutes = new Elysia({ prefix: "/audit-trail" })
 			set.headers["Content-Type"] = "application/xml; charset=utf-8";
 			set.headers["Content-Disposition"] =
 				`attachment; filename="audit-trail-${query.organizationId}-${date}.xml"`;
-			set.headers["Content-Length"] = Buffer.byteLength(xml, "utf-8").toString();
+			set.headers["Content-Length"] = Buffer.byteLength(
+				xml,
+				"utf-8",
+			).toString();
 
 			return xml;
 		},

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
-import { Ruc } from "../domain/value-objects/ruc.vo";
-import { CpeNumber } from "../domain/value-objects/cpe-number.vo";
 import { SunatFallbackOrchestrator } from "../application/fallback/sunat-fallback-orchestrator";
+import { CpeNumber } from "../domain/value-objects/cpe-number.vo";
+import { Ruc } from "../domain/value-objects/ruc.vo";
 
 describe("SunatFallbackOrchestrator", () => {
 	const request = {
@@ -38,14 +38,16 @@ describe("SunatFallbackOrchestrator", () => {
 
 		expect(result.source).toBe("visual_subagent");
 		expect(result.fallbackActivated).toBe(true);
-		expect(result.traceSteps.some((step) => step.startsWith("visual_subagent:"))).toBe(
-			true,
-		);
+		expect(
+			result.traceSteps.some((step) => step.startsWith("visual_subagent:")),
+		).toBe(true);
 	});
 
 	it("rethrows non-retryable errors", async () => {
 		const primary = {
-			validate: vi.fn().mockRejectedValue(new Error("INVALID_REQUEST_SIGNATURE")),
+			validate: vi
+				.fn()
+				.mockRejectedValue(new Error("INVALID_REQUEST_SIGNATURE")),
 		};
 
 		const orchestrator = new SunatFallbackOrchestrator(primary);

@@ -2,12 +2,12 @@
  * Import Bank Transactions Use Case Tests
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import { BankAccount } from "@drenyra/domain/entities/BankAccount";
 import { BankTransaction } from "@drenyra/domain/entities/BankTransaction";
 import type { BankAccountRepository } from "@drenyra/domain/repositories/bank-account.repository";
 import type { BankTransactionRepository } from "@drenyra/domain/repositories/bank-transaction.repository";
 import { Money } from "@drenyra/domain/value-objects/Money";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
 	ImportBankTransactionsUseCase,
 	type ImportTransactionRow,

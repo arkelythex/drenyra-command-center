@@ -8,9 +8,7 @@
  * @module tax-authority/sunat-tax-authority.adapter
  */
 
-import type {
-	TaxAuthorityPort,
-} from "@drenyra/application/ports/tax-authority.port";
+import type { TaxAuthorityPort } from "@drenyra/application/ports/tax-authority.port";
 import type {
 	CDRInfo,
 	ConnectivityStatus,
@@ -27,22 +25,18 @@ import type {
 } from "@drenyra/application/ports/tax-authority.types";
 
 import type { CountryCode } from "@drenyra/domain";
-
-import { SunatApiClient } from "../sunat/SunatApiClient";
-import type { RucInfo } from "../sunat/SunatApiClient";
-import { OSEService } from "../ose/ose.service";
-import { SunatSireService } from "../sunat/SunatSireService";
-import type { SireRecord, SireSyncRequest } from "../sunat/SunatSireService";
 import { XMLValidator } from "fast-xml-parser";
+import { OSEService } from "../ose/ose.service";
+import type { RucInfo } from "../sunat/SunatApiClient";
+import { SunatApiClient } from "../sunat/SunatApiClient";
+import type { SireRecord, SireSyncRequest } from "../sunat/SunatSireService";
+import { SunatSireService } from "../sunat/SunatSireService";
 import { UBLParser } from "../xml/ubl-parser";
 
 /**
  * Map SUNAT taxpayer status to the generic TaxIdStatus enum.
  */
-function mapRucStatus(
-	estado: string,
-	condicion: string,
-): TaxIdStatus {
+function mapRucStatus(estado: string, condicion: string): TaxIdStatus {
 	if (estado === "ACTIVO" && condicion === "HABIDO") return "ACTIVE";
 	if (condicion === "NO HABIDO") return "SUSPENDED";
 	if (estado === "BAJA") return "INACTIVE";
@@ -228,9 +222,7 @@ export class SunatTaxAuthorityAdapter implements TaxAuthorityPort {
 		// Step 2: Try to parse as UBL 2.1
 		const parseResult = this.ublParser.safeParse(xml);
 		if (!parseResult.success || !parseResult.data) {
-			errors.push(
-				parseResult.error ?? "Failed to parse UBL 2.1 document",
-			);
+			errors.push(parseResult.error ?? "Failed to parse UBL 2.1 document");
 			return { valid: false, errors, warnings };
 		}
 
@@ -418,7 +410,8 @@ export class SunatTaxAuthorityAdapter implements TaxAuthorityPort {
 		// Convert generic FiscalRecord[] back to SireRecord[] for the existing service
 		const sireLocalRecords: SireRecord[] = localRecords.map((r) => ({
 			periodo: r.period,
-			correlativo: (r.metadata as Record<string, unknown>)?.correlativo as string ?? "",
+			correlativo:
+				((r.metadata as Record<string, unknown>)?.correlativo as string) ?? "",
 			fechaEmision: r.issueDate,
 			tipoComprobante: r.documentType,
 			serie: r.series,
@@ -427,11 +420,15 @@ export class SunatTaxAuthorityAdapter implements TaxAuthorityPort {
 			numeroDocIdentidad: r.issuerTaxId,
 			razonSocial: r.issuerName,
 			baseImponible: 0,
-			igv: (r.metadata as Record<string, unknown>)?.igv as number ?? 0,
+			igv: ((r.metadata as Record<string, unknown>)?.igv as number) ?? 0,
 			total: r.total,
 			moneda: r.currency as never,
-			tipoCambio: (r.metadata as Record<string, unknown>)?.tipoCambio as number | undefined,
-			estado: (r.metadata as Record<string, unknown>)?.estado as string | undefined,
+			tipoCambio: (r.metadata as Record<string, unknown>)?.tipoCambio as
+				| number
+				| undefined,
+			estado: (r.metadata as Record<string, unknown>)?.estado as
+				| string
+				| undefined,
 		}));
 
 		const sireRequest: SireSyncRequest = {
@@ -447,7 +444,7 @@ export class SunatTaxAuthorityAdapter implements TaxAuthorityPort {
 					estado: "PENDIENTE" | "PROCESANDO" | "LISTO" | "ERROR";
 					mensaje?: string;
 					progreso?: number;
-			  }) => {
+				}) => {
 					const syncStatusMap: Record<string, RegisterSyncStatus["status"]> = {
 						PENDIENTE: "PENDING",
 						PROCESANDO: "PROCESSING",
@@ -460,7 +457,7 @@ export class SunatTaxAuthorityAdapter implements TaxAuthorityPort {
 						message: status.mensaje,
 						progress: status.progreso,
 					});
-			  }
+				}
 			: undefined;
 
 		const result = await this.sireService.fullSync(
@@ -484,9 +481,7 @@ export class SunatTaxAuthorityAdapter implements TaxAuthorityPort {
 		};
 	}
 
-	private mapDiscrepancyType(
-		tipo: string,
-	): RegisterDiscrepancy["type"] {
+	private mapDiscrepancyType(tipo: string): RegisterDiscrepancy["type"] {
 		switch (tipo) {
 			case "FALTA_LOCAL":
 				return "MISSING_LOCAL";
@@ -499,7 +494,6 @@ export class SunatTaxAuthorityAdapter implements TaxAuthorityPort {
 		}
 	}
 }
-
 
 // ─── Factory ──────────────────────────────────────────────────────────
 

@@ -1,12 +1,12 @@
 import {
-	ocrResultSchema,
-	invoiceDataSchema,
+	type BatchResult,
 	batchResultSchema,
+	type InvoiceData,
+	invoiceDataSchema,
+	type OCRResult,
 	OCRServiceError,
 	OCRServiceUnavailable,
-	type OCRResult,
-	type InvoiceData,
-	type BatchResult,
+	ocrResultSchema,
 } from "./types";
 
 // ============================================

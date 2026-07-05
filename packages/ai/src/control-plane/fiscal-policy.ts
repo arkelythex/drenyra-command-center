@@ -6,7 +6,10 @@ import {
 	type FiscalPolicyViolationCode,
 	type SunatImpact,
 } from "./fiscal-policy.types";
-import { isUnmappedFiscalTool, resolveFiscalToolMapping } from "./fiscal-policy-rules";
+import {
+	isUnmappedFiscalTool,
+	resolveFiscalToolMapping,
+} from "./fiscal-policy-rules";
 
 const MUTATION_ACTIONS = new Set(["write", "execute", "admin"]);
 
@@ -53,21 +56,22 @@ const requiresEvidence = (input: FiscalPolicyInput): boolean => {
 };
 
 const requiresDeterministicEngine = (input: FiscalPolicyInput): boolean => {
-	return Boolean(resolveFiscalToolMapping(input.toolName)?.requiresDeterministicEngine);
+	return Boolean(
+		resolveFiscalToolMapping(input.toolName)?.requiresDeterministicEngine,
+	);
 };
 
 export const evaluateFiscalPolicy = (
 	input: FiscalPolicyInput,
 ): FiscalPolicyResult => {
 	const mapping = resolveFiscalToolMapping(input.toolName);
-	const sunatImpact = input.sunatImpact ?? mapping?.defaultSunatImpact ?? "none";
+	const sunatImpact =
+		input.sunatImpact ?? mapping?.defaultSunatImpact ?? "none";
 	const approvalLevel = deriveFiscalApprovalLevel(sunatImpact);
 	const violations: FiscalPolicyViolationCode[] = [];
 
 	if (isUnmappedFiscalTool(input.toolName)) {
-		violations.push(
-			FISCAL_POLICY_VIOLATION_CODES.FISCAL_TOOL_MAPPING_REQUIRED,
-		);
+		violations.push(FISCAL_POLICY_VIOLATION_CODES.FISCAL_TOOL_MAPPING_REQUIRED);
 	}
 
 	if (sunatImpact !== "none" && !isValidFiscalScope(input.tenantScope)) {
@@ -100,9 +104,7 @@ export const evaluateFiscalPolicy = (
 	}
 
 	if (approvalLevel === "deny") {
-		violations.push(
-			FISCAL_POLICY_VIOLATION_CODES.CRITICAL_SUNAT_IMPACT_DENIED,
-		);
+		violations.push(FISCAL_POLICY_VIOLATION_CODES.CRITICAL_SUNAT_IMPACT_DENIED);
 	}
 
 	return {

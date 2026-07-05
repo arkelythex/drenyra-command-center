@@ -1,8 +1,8 @@
-import { createFileRoute, lazyRouteComponent } from '@tanstack/react-router';
+import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/drenyra/hub')({
+export const Route = createFileRoute("/drenyra/hub")({
 	component: lazyRouteComponent(
-		() => import('@/features/cognitive-hub/components/HubContent'),
-		'HubContent',
+		() => import("@/features/cognitive-hub/components/HubContent"),
+		"HubContent",
 	),
 });

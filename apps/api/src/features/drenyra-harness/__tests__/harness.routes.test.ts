@@ -29,17 +29,20 @@ describe("drenyra harness routes", () => {
 			drenyraHarnessRoutes,
 		);
 		const response = await app.handle(
-			new Request("http://localhost/api/fiscal-command-center/harness/execute", {
-				method: "POST",
-				headers: {
-					...fiscalHeaders,
-					"content-type": "application/json",
+			new Request(
+				"http://localhost/api/fiscal-command-center/harness/execute",
+				{
+					method: "POST",
+					headers: {
+						...fiscalHeaders,
+						"content-type": "application/json",
+					},
+					body: JSON.stringify({
+						task: "Revisar SIRE del periodo",
+						autoSpawn: true,
+					}),
 				},
-				body: JSON.stringify({
-					task: "Revisar SIRE del periodo",
-					autoSpawn: true,
-				}),
-			}),
+			),
 		);
 		expect(response.status).toBe(200);
 		const json = await response.json();

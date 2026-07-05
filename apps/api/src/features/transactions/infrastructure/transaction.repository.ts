@@ -10,7 +10,6 @@
 import { db } from "@drenyra/persistence/client";
 import { and, desc, eq } from "@drenyra/persistence/query";
 import { transactions } from "@drenyra/persistence/schema";
-import type { ITransactionRepository } from "../domain/transaction.repository";
 import type {
 	TransactionFilters,
 	TransactionInsertData,
@@ -18,6 +17,7 @@ import type {
 	TransactionWithPartner,
 	TypeSummaryEntry,
 } from "../domain/transaction.entity";
+import type { ITransactionRepository } from "../domain/transaction.repository";
 
 class TransactionRepository implements ITransactionRepository {
 	async list(filters: TransactionFilters): Promise<TransactionWithPartner[]> {

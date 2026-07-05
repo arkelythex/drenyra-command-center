@@ -3,14 +3,17 @@ import type {
 	ComplianceRoadmapDecision,
 } from "@drenyra/domain";
 
-export const ROADMAP_ACTION_JOB_MAP: Record<ComplianceRoadmapActionId, string> = {
-	"prepare-sire": "prepare-sire",
-	"collect-overdue-invoices": "accounts-receivable-review",
-	"stabilize-cashflow": "accounts-payable-review",
-	"resolve-ledger-repro-mismatch": "monthly-igv-close",
-};
+export const ROADMAP_ACTION_JOB_MAP: Record<ComplianceRoadmapActionId, string> =
+	{
+		"prepare-sire": "prepare-sire",
+		"collect-overdue-invoices": "accounts-receivable-review",
+		"stabilize-cashflow": "accounts-payable-review",
+		"resolve-ledger-repro-mismatch": "monthly-igv-close",
+	};
 
-export function readTraceId(payload: Record<string, unknown> | null): string | null {
+export function readTraceId(
+	payload: Record<string, unknown> | null,
+): string | null {
 	const value = payload?.traceId;
 	return typeof value === "string" && value.length > 0 ? value : null;
 }
@@ -40,7 +43,9 @@ export function readDecision(
 	return null;
 }
 
-export function readReason(payload: Record<string, unknown> | null): string | null {
+export function readReason(
+	payload: Record<string, unknown> | null,
+): string | null {
 	const value = payload?.reason;
 	return typeof value === "string" && value.trim().length > 0 ? value : null;
 }

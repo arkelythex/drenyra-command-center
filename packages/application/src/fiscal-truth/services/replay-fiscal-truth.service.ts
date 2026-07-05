@@ -34,11 +34,7 @@ export class ReplayFiscalTruthService {
 				REPLAY_FAILURE_CODE.MISSING_EVIDENCE,
 				"No authoritative events found for replay.",
 			);
-			await this.deps.saveReplayResult(
-				input.aggregateId,
-				result,
-				input.scope,
-			);
+			await this.deps.saveReplayResult(input.aggregateId, result, input.scope);
 			return result;
 		}
 

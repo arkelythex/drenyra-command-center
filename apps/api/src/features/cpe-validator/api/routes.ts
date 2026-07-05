@@ -9,11 +9,11 @@ import {
 	getValidationCacheStats,
 	validateCpe,
 } from "../application/commands/validate-cpe.command";
-import { Ruc } from "../domain/value-objects/ruc.vo";
-import { CpeNumber } from "../domain/value-objects/cpe-number.vo";
-import { SunatVisualFallbackSubagent } from "../application/fallback/sunat-visual-subagent";
 import { CPE_RULES_PROFILE } from "../application/cpe-rules-profile";
+import { SunatVisualFallbackSubagent } from "../application/fallback/sunat-visual-subagent";
 import { SUNAT_CODE_CATALOG } from "../domain/sunat-code-catalog";
+import { CpeNumber } from "../domain/value-objects/cpe-number.vo";
+import { Ruc } from "../domain/value-objects/ruc.vo";
 
 const fallbackSubagent = new SunatVisualFallbackSubagent();
 

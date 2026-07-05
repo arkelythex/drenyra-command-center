@@ -10,7 +10,11 @@
 
 // --- ACCOUNTING ---
 export * from "./accounting";
-
+export {
+	DRENYRA_SUBAGENTS,
+	type DrenyraSubagent,
+	type DrenyraSubagentName,
+} from "./agents/drenyra-subagents";
 export * from "./audit-ledger";
 // --- FISCAL SEAMS (Phase 1) ---
 export * from "./country-pack";
@@ -22,7 +26,6 @@ export * from "./fiscal-agentic-ledger";
 export * from "./fiscal-memory";
 export * from "./fiscal-ontology";
 export * from "./fiscal-truth";
-
 export * from "./services";
 export type {
 	CountryCode,
@@ -33,8 +36,3 @@ export { DNI } from "./value-objects/DNI";
 export { DocumentSeries } from "./value-objects/DocumentSeries";
 export { type Currency, Money } from "./value-objects/Money";
 export { RUC } from "./value-objects/RUC";
-export {
-	type DrenyraSubagent,
-	type DrenyraSubagentName,
-	DRENYRA_SUBAGENTS,
-} from "./agents/drenyra-subagents";

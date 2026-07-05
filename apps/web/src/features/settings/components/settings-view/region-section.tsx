@@ -5,8 +5,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { SettingsRow, SettingsSection } from "../SettingsPrimitives";
 import { cn } from "@/lib/utils";
+import { SettingsRow, SettingsSection } from "../SettingsPrimitives";
 
 interface RegionSettingsSectionProps {
 	language: string;

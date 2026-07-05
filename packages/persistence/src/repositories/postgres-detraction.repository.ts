@@ -4,7 +4,6 @@
  * Infrastructure layer — implements domain repository interface.
  */
 
-import { and, between, eq, sql } from "drizzle-orm";
 import {
 	Detraccion,
 	type DetraccionStatus,
@@ -13,6 +12,7 @@ import type { DetractionRepository } from "@drenyra/domain/repositories/detracti
 import { Money } from "@drenyra/domain/value-objects/Money";
 import { db } from "@drenyra/persistence/client";
 import { detractions } from "@drenyra/persistence/schema";
+import { and, between, eq, sql } from "drizzle-orm";
 
 export class PostgresDetractionRepository implements DetractionRepository {
 	async save(detraction: Detraccion, companyId: string): Promise<void> {
@@ -123,9 +123,7 @@ export class PostgresDetractionRepository implements DetractionRepository {
 		return Number(result[0]?.count ?? 0);
 	}
 
-	private mapToDomain(
-		raw: typeof detractions.$inferSelect,
-	): Detraccion {
+	private mapToDomain(raw: typeof detractions.$inferSelect): Detraccion {
 		return Detraccion.fromJSON({
 			id: raw.id,
 			spotCode: raw.spotCode,

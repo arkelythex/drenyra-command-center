@@ -20,7 +20,7 @@
  * @see {@link createProcessMachine} for the factory
  */
 
-import { createMachine, assign, fromPromise } from "xstate";
+import { assign, createMachine, fromPromise } from "xstate";
 import type { ProcessMachineConfig } from "./types";
 
 type ProcessEvent =
@@ -141,8 +141,8 @@ export function createProcessMachine<TContext extends { error: string | null }>(
 	};
 
 	if (hasProcess) {
-		const processActor = fromPromise<Partial<TContext>, TContext>(
-			({ input }) => onProcess!(input),
+		const processActor = fromPromise<Partial<TContext>, TContext>(({ input }) =>
+			onProcess!(input),
 		);
 
 		(machineConfig.states as Record<string, unknown>).processing = {
@@ -151,11 +151,19 @@ export function createProcessMachine<TContext extends { error: string | null }>(
 				input: ({ context }: { context: TContext }) => context,
 				onDone: {
 					target: hasAnalyze ? "analyzing" : "resolved",
-					actions: assign(({ context, event }: { context: TContext; event: { output: Partial<TContext> } }) => ({
-						...context,
-						...event.output,
-						error: null,
-					})),
+					actions: assign(
+						({
+							context,
+							event,
+						}: {
+							context: TContext;
+							event: { output: Partial<TContext> };
+						}) => ({
+							...context,
+							...event.output,
+							error: null,
+						}),
+					),
 				},
 				onError: {
 					target: "error",
@@ -165,7 +173,8 @@ export function createProcessMachine<TContext extends { error: string | null }>(
 					}),
 				},
 			},
-		} as Parameters<typeof createMachine>[0]['states']![string];
+		} as Parameters<typeof createMachine>[0]["states"];
+		![string];
 
 		if (hasAnalyze) {
 			const analyzeActor = fromPromise<Partial<TContext>, TContext>(
@@ -178,11 +187,19 @@ export function createProcessMachine<TContext extends { error: string | null }>(
 					input: ({ context }: { context: TContext }) => context,
 					onDone: {
 						target: "resolved",
-						actions: assign(({ context, event }: { context: TContext; event: { output: Partial<TContext> } }) => ({
-							...context,
-							...event.output,
-							error: null,
-						})),
+						actions: assign(
+							({
+								context,
+								event,
+							}: {
+								context: TContext;
+								event: { output: Partial<TContext> };
+							}) => ({
+								...context,
+								...event.output,
+								error: null,
+							}),
+						),
 					},
 					onError: {
 						target: "error",
@@ -192,7 +209,8 @@ export function createProcessMachine<TContext extends { error: string | null }>(
 						}),
 					},
 				},
-			} as Parameters<typeof createMachine>[0]['states']![string];
+			} as Parameters<typeof createMachine>[0]["states"];
+			![string];
 		}
 
 		return createMachine(

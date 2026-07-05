@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { CpeIncidentGuidanceCard } from "../CpeIncidentGuidanceCard";
 import type { CpeErrorCatalogItem } from "../../../../hooks/useCpeErrorCatalog";
 import type { CpeValidationOutcome } from "../../../../hooks/useCpeValidation";
+import { CpeIncidentGuidanceCard } from "../CpeIncidentGuidanceCard";
 
 const baseRow = {
 	id: "c3",
@@ -24,7 +24,10 @@ const baseGuidance: CpeErrorCatalogItem = {
 	summary: "SUNAT rechazo el comprobante.",
 	defaultErrorMessage: "RUC no valido",
 	supportMessage: "Corrige el RUC emisor.",
-	recommendedActions: ["Verifica el RUC", "Actualiza la configuracion tributaria"],
+	recommendedActions: [
+		"Verifica el RUC",
+		"Actualiza la configuracion tributaria",
+	],
 };
 
 function buildValidation(
@@ -59,7 +62,12 @@ describe("CpeIncidentGuidanceCard", () => {
 		render(
 			<CpeIncidentGuidanceCard
 				selectedRow={baseRow}
-				guidance={{ ...baseGuidance, state: "OBSERVADO", code: "0101", incidentCategory: "SUNAT_OBSERVED" }}
+				guidance={{
+					...baseGuidance,
+					state: "OBSERVADO",
+					code: "0101",
+					incidentCategory: "SUNAT_OBSERVED",
+				}}
 				validation={buildValidation("SUNAT_OBSERVED", { code: "0101" })}
 				isLoading={false}
 				isError={false}
@@ -79,7 +87,12 @@ describe("CpeIncidentGuidanceCard", () => {
 		render(
 			<CpeIncidentGuidanceCard
 				selectedRow={{ ...baseRow, sunatCode: "4040" }}
-				guidance={{ ...baseGuidance, state: "NO_EXISTE", code: "4040", incidentCategory: "SUNAT_NOT_FOUND" }}
+				guidance={{
+					...baseGuidance,
+					state: "NO_EXISTE",
+					code: "4040",
+					incidentCategory: "SUNAT_NOT_FOUND",
+				}}
 				validation={buildValidation("SUNAT_NOT_FOUND", { code: "4040" })}
 				isLoading={false}
 				isError={false}

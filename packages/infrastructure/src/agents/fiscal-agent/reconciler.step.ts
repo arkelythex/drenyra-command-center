@@ -11,7 +11,9 @@ import type {
 	StepResult,
 } from "@drenyra/application/use-cases/fiscal-agent/types";
 
-export class ReconcilerStep implements FiscalAgentStep<ProcessableTransaction[], ReconcileOutput> {
+export class ReconcilerStep
+	implements FiscalAgentStep<ProcessableTransaction[], ReconcileOutput>
+{
 	readonly name = "reconcile";
 
 	async execute(

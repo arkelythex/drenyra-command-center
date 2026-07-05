@@ -1,17 +1,17 @@
+import { requestNewToken, tokenCache } from "./auth";
 import type { SunatCredentials, SunatToken } from "./types";
 import {
+	MAX_RETRIES,
+	REQUEST_TIMEOUT_MS,
+	RETRY_DELAY_MS,
 	type RucInfo,
 	type SireDownloadResponse,
 	type SireTicketRequest,
 	type SireTicketResponse,
-	type SunatApiResponse,
 	SUNAT_BASE_URL,
 	SUNAT_SIRE_URL,
-	MAX_RETRIES,
-	RETRY_DELAY_MS,
-	REQUEST_TIMEOUT_MS,
+	type SunatApiResponse,
 } from "./types";
-import { requestNewToken, tokenCache } from "./auth";
 
 export class SunatApiClient {
 	private organizationId: number;

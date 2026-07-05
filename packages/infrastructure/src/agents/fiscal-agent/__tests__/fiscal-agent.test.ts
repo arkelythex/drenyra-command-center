@@ -3,7 +3,7 @@
  * Tests the full pipeline: Collector → Categorizer → Calculator → Reconciler → Reporter
  */
 
-import { describe, it, expect, beforeAll, afterAll } from "bun:test";
+import { afterAll, beforeAll, describe, expect, it } from "bun:test";
 import { FiscalNightlyRunUseCase } from "@drenyra/application/use-cases/fiscal-agent/fiscal-nightly-run.use-case";
 import { FiscalHealthService } from "@drenyra/infrastructure/services/fiscal-health.service";
 
@@ -107,7 +107,9 @@ describe("FiscalHealthService", () => {
 
 describe("Agent Router", () => {
 	it("provides routes for all fiscal tasks", async () => {
-		const { FISCAL_AGENT_ROUTES } = await import("@drenyra/infrastructure/ai/agent-router");
+		const { FISCAL_AGENT_ROUTES } = await import(
+			"@drenyra/infrastructure/ai/agent-router"
+		);
 
 		expect(FISCAL_AGENT_ROUTES.length).toBeGreaterThanOrEqual(6);
 
@@ -121,12 +123,18 @@ describe("Agent Router", () => {
 	});
 
 	it("assigns appropriate delegation modes", async () => {
-		const { FISCAL_AGENT_ROUTES } = await import("@drenyra/infrastructure/ai/agent-router");
+		const { FISCAL_AGENT_ROUTES } = await import(
+			"@drenyra/infrastructure/ai/agent-router"
+		);
 
-		const categorization = FISCAL_AGENT_ROUTES.find((r) => r.task === "transaction_categorization");
+		const categorization = FISCAL_AGENT_ROUTES.find(
+			(r) => r.task === "transaction_categorization",
+		);
 		expect(categorization?.delegation).toBe("proactive");
 
-		const anomaly = FISCAL_AGENT_ROUTES.find((r) => r.task === "anomaly_detection");
+		const anomaly = FISCAL_AGENT_ROUTES.find(
+			(r) => r.task === "anomaly_detection",
+		);
 		expect(anomaly?.delegation).toBe("explicit-request-only");
 	});
 });

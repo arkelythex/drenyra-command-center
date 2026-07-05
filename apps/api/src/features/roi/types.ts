@@ -4,13 +4,13 @@
 
 import type { z } from "zod";
 import type {
-	RoiCalculateInput,
-	PaybackInput,
-	NpvInput,
 	IrrInput,
-	ScenarioCompareInput,
-	RoiScenarioInput,
+	NpvInput,
+	PaybackInput,
+	RoiCalculateInput,
 	RoiRequest,
+	RoiScenarioInput,
+	ScenarioCompareInput,
 } from "./schemas";
 
 export type RoiCalculateInputType = z.infer<typeof RoiCalculateInput>;

@@ -27,12 +27,12 @@
  */
 
 export type AccountingTransactionType =
-  | 'SALE'        // Venta
-  | 'PURCHASE'    // Compra
-  | 'PAYMENT'     // Pago
-  | 'RECEIPT'     // Cobro
-  | 'ADJUSTMENT'  // Ajuste
-  | 'TRANSFER';   // Transferencia
+	| "SALE" // Venta
+	| "PURCHASE" // Compra
+	| "PAYMENT" // Pago
+	| "RECEIPT" // Cobro
+	| "ADJUSTMENT" // Ajuste
+	| "TRANSFER"; // Transferencia
 
 /**
  * Bank transaction types (bank account movements).
@@ -49,8 +49,8 @@ export type AccountingTransactionType =
  * ```
  */
 export type BankTransactionType =
-  | 'DEBIT'   // Débito (salida)
-  | 'CREDIT'; // Crédito (entrada)
+	| "DEBIT" // Débito (salida)
+	| "CREDIT"; // Crédito (entrada)
 
 /**
  * Cashflow transaction types (financial reports).
@@ -67,8 +67,8 @@ export type BankTransactionType =
  * ```
  */
 export type CashflowTransactionType =
-  | 'INCOME'   // Ingreso
-  | 'EXPENSE'; // Egreso
+	| "INCOME" // Ingreso
+	| "EXPENSE"; // Egreso
 
 /**
  * @deprecated Use specific type instead (AccountingTransactionType, BankTransactionType, or CashflowTransactionType)
@@ -79,7 +79,10 @@ export type CashflowTransactionType =
  * ```
  */
 
-export type TransactionType = AccountingTransactionType | BankTransactionType | CashflowTransactionType;
+export type TransactionType =
+	| AccountingTransactionType
+	| BankTransactionType
+	| CashflowTransactionType;
 
 // ===== Constants and Helpers =====
 
@@ -91,14 +94,8 @@ export type TransactionType = AccountingTransactionType | BankTransactionType | 
  * ```
  */
 
-export const ACCOUNTING_TRANSACTION_TYPES: readonly AccountingTransactionType[] = [
-  'SALE',
-  'PURCHASE',
-  'PAYMENT',
-  'RECEIPT',
-  'ADJUSTMENT',
-  'TRANSFER',
-] as const;
+export const ACCOUNTING_TRANSACTION_TYPES: readonly AccountingTransactionType[] =
+	["SALE", "PURCHASE", "PAYMENT", "RECEIPT", "ADJUSTMENT", "TRANSFER"] as const;
 
 /**
  * All valid bank transaction types.
@@ -109,8 +106,8 @@ export const ACCOUNTING_TRANSACTION_TYPES: readonly AccountingTransactionType[] 
  */
 
 export const BANK_TRANSACTION_TYPES: readonly BankTransactionType[] = [
-  'DEBIT',
-  'CREDIT',
+	"DEBIT",
+	"CREDIT",
 ] as const;
 
 /**
@@ -122,8 +119,8 @@ export const BANK_TRANSACTION_TYPES: readonly BankTransactionType[] = [
  */
 
 export const CASHFLOW_TRANSACTION_TYPES: readonly CashflowTransactionType[] = [
-  'INCOME',
-  'EXPENSE',
+	"INCOME",
+	"EXPENSE",
 ] as const;
 
 /**
@@ -134,13 +131,16 @@ export const CASHFLOW_TRANSACTION_TYPES: readonly CashflowTransactionType[] = [
  * ```
  */
 
-export const ACCOUNTING_TRANSACTION_TYPE_LABELS: Record<AccountingTransactionType, string> = {
-  SALE: 'Venta',
-  PURCHASE: 'Compra',
-  PAYMENT: 'Pago',
-  RECEIPT: 'Cobro',
-  ADJUSTMENT: 'Ajuste',
-  TRANSFER: 'Transferencia',
+export const ACCOUNTING_TRANSACTION_TYPE_LABELS: Record<
+	AccountingTransactionType,
+	string
+> = {
+	SALE: "Venta",
+	PURCHASE: "Compra",
+	PAYMENT: "Pago",
+	RECEIPT: "Cobro",
+	ADJUSTMENT: "Ajuste",
+	TRANSFER: "Transferencia",
 } as const;
 
 /**
@@ -151,10 +151,11 @@ export const ACCOUNTING_TRANSACTION_TYPE_LABELS: Record<AccountingTransactionTyp
  * ```
  */
 
-export const BANK_TRANSACTION_TYPE_LABELS: Record<BankTransactionType, string> = {
-  DEBIT: 'Débito',
-  CREDIT: 'Crédito',
-} as const;
+export const BANK_TRANSACTION_TYPE_LABELS: Record<BankTransactionType, string> =
+	{
+		DEBIT: "Débito",
+		CREDIT: "Crédito",
+	} as const;
 
 /**
  * Spanish labels for cashflow transaction types.
@@ -164,9 +165,12 @@ export const BANK_TRANSACTION_TYPE_LABELS: Record<BankTransactionType, string> =
  * ```
  */
 
-export const CASHFLOW_TRANSACTION_TYPE_LABELS: Record<CashflowTransactionType, string> = {
-  INCOME: 'Ingreso',
-  EXPENSE: 'Egreso',
+export const CASHFLOW_TRANSACTION_TYPE_LABELS: Record<
+	CashflowTransactionType,
+	string
+> = {
+	INCOME: "Ingreso",
+	EXPENSE: "Egreso",
 } as const;
 
 /**
@@ -180,8 +184,13 @@ export const CASHFLOW_TRANSACTION_TYPE_LABELS: Record<CashflowTransactionType, s
  * ```
  */
 
-export function isAccountingTransactionType(value: unknown): value is AccountingTransactionType {
-  return typeof value === 'string' && ACCOUNTING_TRANSACTION_TYPES.includes(value as AccountingTransactionType);
+export function isAccountingTransactionType(
+	value: unknown,
+): value is AccountingTransactionType {
+	return (
+		typeof value === "string" &&
+		ACCOUNTING_TRANSACTION_TYPES.includes(value as AccountingTransactionType)
+	);
 }
 
 /**
@@ -195,8 +204,13 @@ export function isAccountingTransactionType(value: unknown): value is Accounting
  * console.log(result);
  * ```
  */
-export function isBankTransactionType(value: unknown): value is BankTransactionType {
-  return typeof value === 'string' && BANK_TRANSACTION_TYPES.includes(value as BankTransactionType);
+export function isBankTransactionType(
+	value: unknown,
+): value is BankTransactionType {
+	return (
+		typeof value === "string" &&
+		BANK_TRANSACTION_TYPES.includes(value as BankTransactionType)
+	);
 }
 
 /**
@@ -210,6 +224,11 @@ export function isBankTransactionType(value: unknown): value is BankTransactionT
  * console.log(result);
  * ```
  */
-export function isCashflowTransactionType(value: unknown): value is CashflowTransactionType {
-  return typeof value === 'string' && CASHFLOW_TRANSACTION_TYPES.includes(value as CashflowTransactionType);
+export function isCashflowTransactionType(
+	value: unknown,
+): value is CashflowTransactionType {
+	return (
+		typeof value === "string" &&
+		CASHFLOW_TRANSACTION_TYPES.includes(value as CashflowTransactionType)
+	);
 }

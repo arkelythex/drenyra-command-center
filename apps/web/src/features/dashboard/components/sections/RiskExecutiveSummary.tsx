@@ -1,7 +1,7 @@
-import React from "react";
-import { cn, formatPEN } from "@/lib/utils";
-import { Fingerprint, Clock3 } from "lucide-react";
+import { Clock3, Fingerprint } from "lucide-react";
+import type React from "react";
 import { Badge } from "@/components/ui/badge";
+import { cn, formatPEN } from "@/lib/utils";
 
 interface RiskExecutiveSummaryProps {
 	riskExposure: number;

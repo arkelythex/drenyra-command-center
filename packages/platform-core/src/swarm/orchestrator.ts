@@ -19,19 +19,19 @@ import type { TaskDefinition, TaskResult } from "../kernel/types.js";
  * this interface.
  */
 export interface AgentExecutor {
-  id: string;
-  type: string;
-  capabilities: string[];
-  execute(task: TaskDefinition): Promise<TaskResult>;
+	id: string;
+	type: string;
+	capabilities: string[];
+	execute(task: TaskDefinition): Promise<TaskResult>;
 }
 
 /**
  * Orchestrator health metrics.
  */
 export interface OrchestratorMetrics {
-  totalAgents: number;
-  tasksExecuted: number;
-  tasksFailed: number;
+	totalAgents: number;
+	tasksExecuted: number;
+	tasksFailed: number;
 }
 
 /**
@@ -50,145 +50,142 @@ export type AggregationStrategy = "all-results" | "first-wins" | "consensus";
  * ```
  */
 export class Orchestrator {
-  private agents = new Map<string, AgentExecutor>();
-  private tasksExecuted = 0;
-  private tasksFailed = 0;
-  private isShutdown = false;
+	private agents = new Map<string, AgentExecutor>();
+	private tasksExecuted = 0;
+	private tasksFailed = 0;
+	private isShutdown = false;
 
-  /**
-   * Register an agent executor.
-   */
-  registerAgent(agent: AgentExecutor): void {
-    this.agents.set(agent.id, agent);
-  }
+	/**
+	 * Register an agent executor.
+	 */
+	registerAgent(agent: AgentExecutor): void {
+		this.agents.set(agent.id, agent);
+	}
 
-  /**
-   * Execute a single task against the first matching agent.
-   *
-   * If no agent matches the task type, returns a failed TaskResult.
-   * If the orchestrator is shut down, returns a failed TaskResult.
-   */
-  async execute(task: TaskDefinition): Promise<TaskResult> {
-    if (this.isShutdown) {
-      return this.failedResult(task.id, "Orchestrator is shut down");
-    }
+	/**
+	 * Execute a single task against the first matching agent.
+	 *
+	 * If no agent matches the task type, returns a failed TaskResult.
+	 * If the orchestrator is shut down, returns a failed TaskResult.
+	 */
+	async execute(task: TaskDefinition): Promise<TaskResult> {
+		if (this.isShutdown) {
+			return this.failedResult(task.id, "Orchestrator is shut down");
+		}
 
-    const agent = this.findAgent(task);
-    if (!agent) {
-      return this.failedResult(
-        task.id,
-        `No agent registered for type: ${task.type}`,
-      );
-    }
+		const agent = this.findAgent(task);
+		if (!agent) {
+			return this.failedResult(
+				task.id,
+				`No agent registered for type: ${task.type}`,
+			);
+		}
 
-    try {
-      const result = await agent.execute(task);
-      this.tasksExecuted++;
-      return result;
-    } catch (error) {
-      this.tasksFailed++;
-      return this.failedResult(
-        task.id,
-        error instanceof Error ? error.message : String(error),
-      );
-    }
-  }
+		try {
+			const result = await agent.execute(task);
+			this.tasksExecuted++;
+			return result;
+		} catch (error) {
+			this.tasksFailed++;
+			return this.failedResult(
+				task.id,
+				error instanceof Error ? error.message : String(error),
+			);
+		}
+	}
 
-  /**
-   * Execute a task across multiple agents in parallel.
-   */
-  async executeParallel(
-    task: TaskDefinition,
-    agentIds: string[],
-    strategy: AggregationStrategy = "all-results",
-  ): Promise<TaskResult[]> {
-    if (agentIds.length === 0) return [];
+	/**
+	 * Execute a task across multiple agents in parallel.
+	 */
+	async executeParallel(
+		task: TaskDefinition,
+		agentIds: string[],
+		strategy: AggregationStrategy = "all-results",
+	): Promise<TaskResult[]> {
+		if (agentIds.length === 0) return [];
 
-    const promises = agentIds.map(async (agentId) => {
-      const agent = this.agents.get(agentId);
-      if (!agent) {
-        return this.failedResult(
-          task.id,
-          `Agent not found: ${agentId}`,
-        );
-      }
+		const promises = agentIds.map(async (agentId) => {
+			const agent = this.agents.get(agentId);
+			if (!agent) {
+				return this.failedResult(task.id, `Agent not found: ${agentId}`);
+			}
 
-      try {
-        const result = await agent.execute(task);
-        this.tasksExecuted++;
-        return result;
-      } catch (error) {
-        this.tasksFailed++;
-        return this.failedResult(
-          task.id,
-          error instanceof Error ? error.message : String(error),
-        );
-      }
-    });
+			try {
+				const result = await agent.execute(task);
+				this.tasksExecuted++;
+				return result;
+			} catch (error) {
+				this.tasksFailed++;
+				return this.failedResult(
+					task.id,
+					error instanceof Error ? error.message : String(error),
+				);
+			}
+		});
 
-    const results = await Promise.all(promises);
-    return this.aggregate(results, strategy);
-  }
+		const results = await Promise.all(promises);
+		return this.aggregate(results, strategy);
+	}
 
-  /**
-   * Shut down the orchestrator. No further tasks will be accepted.
-   */
-  shutdown(): void {
-    this.isShutdown = true;
-  }
+	/**
+	 * Shut down the orchestrator. No further tasks will be accepted.
+	 */
+	shutdown(): void {
+		this.isShutdown = true;
+	}
 
-  /**
-   * Return health metrics.
-   */
-  getHealthMetrics(): OrchestratorMetrics {
-    return {
-      totalAgents: this.agents.size,
-      tasksExecuted: this.tasksExecuted,
-      tasksFailed: this.tasksFailed,
-    };
-  }
+	/**
+	 * Return health metrics.
+	 */
+	getHealthMetrics(): OrchestratorMetrics {
+		return {
+			totalAgents: this.agents.size,
+			tasksExecuted: this.tasksExecuted,
+			tasksFailed: this.tasksFailed,
+		};
+	}
 
-  /**
-   * Find the best agent for a task.
-   */
-  private findAgent(task: TaskDefinition): AgentExecutor | undefined {
-    // Direct type match first
-    for (const agent of this.agents.values()) {
-      if (agent.type === task.type) return agent;
-    }
-    return undefined;
-  }
+	/**
+	 * Find the best agent for a task.
+	 */
+	private findAgent(task: TaskDefinition): AgentExecutor | undefined {
+		// Direct type match first
+		for (const agent of this.agents.values()) {
+			if (agent.type === task.type) return agent;
+		}
+		return undefined;
+	}
 
-  /**
-   * Create a failed TaskResult.
-   */
-  private failedResult(taskId: string, error: string): TaskResult {
-    return {
-      taskId,
-      status: "failed",
-      error,
-      startedAt: new Date().toISOString(),
-      attempts: 1,
-    };
-  }
+	/**
+	 * Create a failed TaskResult.
+	 */
+	private failedResult(taskId: string, error: string): TaskResult {
+		return {
+			taskId,
+			status: "failed",
+			error,
+			startedAt: new Date().toISOString(),
+			attempts: 1,
+		};
+	}
 
-  /**
-   * Aggregate results using the specified strategy.
-   */
-  private aggregate(
-    results: TaskResult[],
-    strategy: AggregationStrategy,
-  ): TaskResult[] {
-    switch (strategy) {
-      case "first-wins":
-        return results.length > 0 ? [results[0]] : [];
-      case "consensus": {
-        const completed = results.filter((r) => r.status === "completed");
-        return completed.length > 0 ? [completed[0]] : results.slice(0, 1);
-      }
-      case "all-results":
-      default:
-        return results;
-    }
-  }
+	/**
+	 * Aggregate results using the specified strategy.
+	 */
+	private aggregate(
+		results: TaskResult[],
+		strategy: AggregationStrategy,
+	): TaskResult[] {
+		switch (strategy) {
+			case "first-wins":
+				return results.length > 0 ? [results[0]] : [];
+			case "consensus": {
+				const completed = results.filter((r) => r.status === "completed");
+				return completed.length > 0 ? [completed[0]] : results.slice(0, 1);
+			}
+			case "all-results":
+			default:
+				return results;
+		}
+	}
 }

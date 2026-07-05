@@ -1,8 +1,8 @@
-import { History, ShieldCheck, X, ChevronRight } from "lucide-react";
 import {
 	FISCAL_ACTION_STATUS_COLORS,
 	FISCAL_ACTION_STATUS_LABELS,
 } from "@drenyra/domain";
+import { ChevronRight, History, ShieldCheck, X } from "lucide-react";
 import type { HistoryListProps } from "../FiscalInspector.types";
 
 /**

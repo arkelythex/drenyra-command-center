@@ -88,14 +88,18 @@ describe("Fiscal Ontology foundation", () => {
 	it("declares ARKELYTHEX as fiscal sovereignty platform rather than ERP modules", () => {
 		const manifest = buildFiscalOntologyManifest();
 
-		expect(manifest.positioning).toBe("ai_augmented_fiscal_sovereignty_platform");
+		expect(manifest.positioning).toBe(
+			"ai_augmented_fiscal_sovereignty_platform",
+		);
 		expect(manifest.nodeKinds).toContain("truth_claim");
 		expect(manifest.nodeKinds).toContain("agent_decision");
 		expect(manifest.edgeKinds).toContain("promotes_to_truth");
 	});
 
 	it("allows truth claim promotion only with evidence root, ontology links and approval", () => {
-		expect(canPromoteFiscalTruthClaim(scopedClaim, promotionContext)).toBe(true);
+		expect(canPromoteFiscalTruthClaim(scopedClaim, promotionContext)).toBe(
+			true,
+		);
 		expect(
 			canPromoteFiscalTruthClaim(
 				{ ...scopedClaim, humanApprovalId: null },
@@ -126,7 +130,9 @@ describe("Fiscal Ontology foundation", () => {
 			],
 		};
 
-		expect(canPromoteFiscalTruthClaim(incompleteClaim, promotionContext)).toBe(false);
+		expect(canPromoteFiscalTruthClaim(incompleteClaim, promotionContext)).toBe(
+			false,
+		);
 	});
 
 	it("rejects cross-scope ontology links and agent-suggested edges", () => {

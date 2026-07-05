@@ -1,14 +1,32 @@
-import { OverviewService } from '../application/services/overview.service';
-import { ExpenseAnalyticsService } from '../application/services/expense-analytics.service';
-import { IncomeAnalyticsService } from '../application/services/income-analytics.service';
-import { FiscalIndicatorsService } from '../application/services/fiscal-indicators.service';
-import { fail, getErrorMessage, ok } from '../../shared/api-response';
+import { fail, getErrorMessage, ok } from "../../shared/api-response";
+import { ExpenseAnalyticsService } from "../application/services/expense-analytics.service";
+import { FiscalIndicatorsService } from "../application/services/fiscal-indicators.service";
+import { IncomeAnalyticsService } from "../application/services/income-analytics.service";
+import { OverviewService } from "../application/services/overview.service";
 
-interface OverviewQuery { companyId: string; currency?: 'PEN' | 'USD' }
-interface DateRangeQuery { companyId: string; startDate?: string; endDate?: string; currency?: 'PEN' | 'USD' }
-interface LiquidityQuery { companyId: string; months?: number }
-interface TaxCalendarQuery { companyId: string; month?: number; year?: number }
-interface SireStatusQuery { companyId: string; period?: string }
+interface OverviewQuery {
+	companyId: string;
+	currency?: "PEN" | "USD";
+}
+interface DateRangeQuery {
+	companyId: string;
+	startDate?: string;
+	endDate?: string;
+	currency?: "PEN" | "USD";
+}
+interface LiquidityQuery {
+	companyId: string;
+	months?: number;
+}
+interface TaxCalendarQuery {
+	companyId: string;
+	month?: number;
+	year?: number;
+}
+interface SireStatusQuery {
+	companyId: string;
+	period?: string;
+}
 type Ctx<Q> = { query: Q; set: { status?: number | string } };
 
 /**
@@ -39,31 +57,41 @@ export const dashboardHandlers = {
 			return ok({ systemStatus, processedDocs, liquidity });
 		} catch (error) {
 			set.status = 500;
-			return fail('Failed to get overview', 'OVERVIEW_ERROR', { details: getErrorMessage(error, 'Unknown') });
+			return fail("Failed to get overview", "OVERVIEW_ERROR", {
+				details: getErrorMessage(error, "Unknown"),
+			});
 		}
 	},
 
 	getLiquidity: async ({ query, set }: Ctx<LiquidityQuery>) => {
 		const { companyId, months } = query;
 		try {
-			return ok(await OverviewService.getLiquidity(companyId, Number(months) || 12));
+			return ok(
+				await OverviewService.getLiquidity(companyId, Number(months) || 12),
+			);
 		} catch (error) {
 			set.status = 500;
-			return fail('Failed to get liquidity', 'LIQUIDITY_ERROR', { details: getErrorMessage(error, 'Unknown') });
+			return fail("Failed to get liquidity", "LIQUIDITY_ERROR", {
+				details: getErrorMessage(error, "Unknown"),
+			});
 		}
 	},
 
 	getTaxCalendar: async ({ query, set }: Ctx<TaxCalendarQuery>) => {
 		const { companyId, month, year } = query;
 		try {
-			return ok(await FiscalIndicatorsService.getTaxCalendar(
-				companyId,
-				month ? Number(month) : undefined,
-				year ? Number(year) : undefined,
-			));
+			return ok(
+				await FiscalIndicatorsService.getTaxCalendar(
+					companyId,
+					month ? Number(month) : undefined,
+					year ? Number(year) : undefined,
+				),
+			);
 		} catch (error) {
 			set.status = 500;
-			return fail('Failed to get tax calendar', 'TAX_CALENDAR_ERROR', { details: getErrorMessage(error, 'Unknown') });
+			return fail("Failed to get tax calendar", "TAX_CALENDAR_ERROR", {
+				details: getErrorMessage(error, "Unknown"),
+			});
 		}
 	},
 
@@ -73,35 +101,45 @@ export const dashboardHandlers = {
 			return ok(await FiscalIndicatorsService.getSireStatus(companyId, period));
 		} catch (error) {
 			set.status = 500;
-			return fail('Failed to get SIRE status', 'SIRE_STATUS_ERROR', { details: getErrorMessage(error, 'Unknown') });
+			return fail("Failed to get SIRE status", "SIRE_STATUS_ERROR", {
+				details: getErrorMessage(error, "Unknown"),
+			});
 		}
 	},
 
 	getExpenses: async ({ query, set }: Ctx<DateRangeQuery>) => {
 		const { companyId, startDate, endDate } = query;
 		try {
-			return ok(await ExpenseAnalyticsService.getExpenses(
-				companyId,
-				startDate ? new Date(startDate) : undefined,
-				endDate ? new Date(endDate) : undefined,
-			));
+			return ok(
+				await ExpenseAnalyticsService.getExpenses(
+					companyId,
+					startDate ? new Date(startDate) : undefined,
+					endDate ? new Date(endDate) : undefined,
+				),
+			);
 		} catch (error) {
 			set.status = 500;
-			return fail('Failed to get expenses', 'EXPENSES_ERROR', { details: getErrorMessage(error, 'Unknown') });
+			return fail("Failed to get expenses", "EXPENSES_ERROR", {
+				details: getErrorMessage(error, "Unknown"),
+			});
 		}
 	},
 
 	getIncome: async ({ query, set }: Ctx<DateRangeQuery>) => {
 		const { companyId, startDate, endDate } = query;
 		try {
-			return ok(await IncomeAnalyticsService.getIncome(
-				companyId,
-				startDate ? new Date(startDate) : undefined,
-				endDate ? new Date(endDate) : undefined,
-			));
+			return ok(
+				await IncomeAnalyticsService.getIncome(
+					companyId,
+					startDate ? new Date(startDate) : undefined,
+					endDate ? new Date(endDate) : undefined,
+				),
+			);
 		} catch (error) {
 			set.status = 500;
-			return fail('Failed to get income', 'INCOME_ERROR', { details: getErrorMessage(error, 'Unknown') });
+			return fail("Failed to get income", "INCOME_ERROR", {
+				details: getErrorMessage(error, "Unknown"),
+			});
 		}
 	},
 };

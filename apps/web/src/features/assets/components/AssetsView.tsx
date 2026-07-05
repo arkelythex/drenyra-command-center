@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from "react";
 import { useSidebarLayout } from "@/stores/sidebar-layout.store";
 import { ASSETS } from "./assets-view/assets-data";
 import { AssetsTable } from "./assets-view/assets-table";

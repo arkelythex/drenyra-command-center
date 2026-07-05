@@ -4,12 +4,12 @@
  * Infrastructure layer — implements domain repository interface.
  */
 
-import { and, between, eq, sql } from "drizzle-orm";
-import { randomUUID } from "crypto";
 import { CPELog, type SunatStatus } from "@drenyra/domain/accounting/cpe-log";
 import type { CpeLogRepository } from "@drenyra/domain/repositories/cpe-log.repository";
 import { db } from "@drenyra/persistence/client";
 import { cpeLog } from "@drenyra/persistence/schema";
+import { randomUUID } from "crypto";
+import { and, between, eq, sql } from "drizzle-orm";
 
 export class PostgresCpeLogRepository implements CpeLogRepository {
 	async save(log: CPELog, companyId: string): Promise<void> {
@@ -94,10 +94,7 @@ export class PostgresCpeLogRepository implements CpeLogRepository {
 			.select()
 			.from(cpeLog)
 			.where(
-				and(
-					eq(cpeLog.companyId, companyId),
-					eq(cpeLog.sunatStatus, status),
-				),
+				and(eq(cpeLog.companyId, companyId), eq(cpeLog.sunatStatus, status)),
 			)
 			.orderBy(sql`${cpeLog.createdAt} DESC`);
 
@@ -170,10 +167,7 @@ export class PostgresCpeLogRepository implements CpeLogRepository {
 			updateData.cancelledAt = metadata.cancelledAt;
 		}
 
-		await db
-			.update(cpeLog)
-			.set(updateData)
-			.where(eq(cpeLog.id, id));
+		await db.update(cpeLog).set(updateData).where(eq(cpeLog.id, id));
 	}
 
 	async verifyHash(id: string, xmlHash: string): Promise<boolean> {

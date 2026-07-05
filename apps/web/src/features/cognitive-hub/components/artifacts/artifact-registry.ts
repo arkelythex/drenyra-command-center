@@ -10,8 +10,8 @@
  * @since Feb 2026
  */
 
-import type { FC } from 'react';
-import type { HubArtifact, ArtifactType } from '@drenyra/shared/artifacts';
+import type { ArtifactType, HubArtifact } from "@drenyra/shared/artifacts";
+import type { FC } from "react";
 
 /** Public component contract — receives the full union for the dispatch layer */
 export type ArtifactComponent = FC<{ artifact: HubArtifact }>;
@@ -25,11 +25,11 @@ const REGISTRY = new Map<ArtifactType, ArtifactComponent>();
  * specific HubArtifact variant for `type T`.
  */
 export function registerArtifact<T extends ArtifactType>(
-  type: T,
-  component: FC<{ artifact: Extract<HubArtifact, { type: T }> }>
+	type: T,
+	component: FC<{ artifact: Extract<HubArtifact, { type: T }> }>,
 ): void {
-  // Safe cast: registry will always call this with artifact.type === T
-  REGISTRY.set(type, component as ArtifactComponent);
+	// Safe cast: registry will always call this with artifact.type === T
+	REGISTRY.set(type, component as ArtifactComponent);
 }
 
 /**
@@ -37,5 +37,5 @@ export function registerArtifact<T extends ArtifactType>(
  * Returns null if the type was never registered.
  */
 export function getRenderer(type: ArtifactType): ArtifactComponent | null {
-  return REGISTRY.get(type) ?? null;
+	return REGISTRY.get(type) ?? null;
 }

@@ -95,8 +95,7 @@ export const componentTokenClasses = {
 	button: {
 		primaryBg: "bg-[var(--akx-component-button-background)]",
 		primaryText: "text-[var(--akx-component-button-text)]",
-		focusRing:
-			"focus-visible:ring-[var(--akx-component-button-focus-ring)]/55",
+		focusRing: "focus-visible:ring-[var(--akx-component-button-focus-ring)]/55",
 	},
 	card: {
 		bg: "bg-[var(--akx-card-bg)]",
@@ -144,8 +143,7 @@ export const componentTokenClasses = {
 			"bg-[var(--akx-alert-warning-bg)] border-[var(--akx-alert-warning-border)] text-[var(--akx-alert-warning-text)]",
 		danger:
 			"bg-[var(--akx-alert-danger-bg)] border-[var(--akx-alert-danger-border)] text-[var(--akx-alert-danger-text)]",
-		info:
-			"bg-[var(--akx-alert-info-bg)] border-[var(--akx-alert-info-border)] text-[var(--akx-alert-info-text)]",
+		info: "bg-[var(--akx-alert-info-bg)] border-[var(--akx-alert-info-border)] text-[var(--akx-alert-info-text)]",
 	},
 	checkbox: {
 		base: "border-[var(--akx-checkbox-border)]",
@@ -162,7 +160,6 @@ export const componentTokenClasses = {
 			"bg-[var(--akx-dialog-close-bg)] border-[var(--akx-dialog-close-border)] text-[var(--akx-dialog-close-text)]",
 		closeHover:
 			"hover:bg-[var(--akx-dialog-close-hover-bg)] hover:text-[var(--akx-dialog-close-hover-text)]",
-		closeFocus:
-			"focus:ring-[var(--akx-dialog-close-focus-ring)]",
+		closeFocus: "focus:ring-[var(--akx-dialog-close-focus-ring)]",
 	},
 } as const;

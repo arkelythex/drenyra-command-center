@@ -35,7 +35,15 @@ export const pcgeAccounts = pgTable(
 		name: varchar("name", { length: 255 }).notNull(),
 		level: varchar("level", { length: 1 }).notNull(),
 		type: varchar("type", { length: 50 })
-			.$type<"Activo" | "Pasivo" | "Patrimonio" | "Ingreso" | "Gasto" | "Costo" | "Saldo">()
+			.$type<
+				| "Activo"
+				| "Pasivo"
+				| "Patrimonio"
+				| "Ingreso"
+				| "Gasto"
+				| "Costo"
+				| "Saldo"
+			>()
 			.notNull(),
 
 		parentId: uuid("parent_id"),
@@ -69,12 +77,7 @@ export const accountingPeriods = pgTable(
 		year: integer("year").notNull(),
 		month: integer("month").notNull(),
 		status: varchar("status", { length: 20 })
-			.$type<
-				| "abierto"
-				| "cerrado_parcial"
-				| "cerrado_final"
-				| "auditado"
-			>()
+			.$type<"abierto" | "cerrado_parcial" | "cerrado_final" | "auditado">()
 			.default("abierto")
 			.notNull(),
 
@@ -149,15 +152,14 @@ export const cpeLog = pgTable(
 		cancelledAt: timestamp("cancelled_at"),
 
 		sunatTicket: varchar("sunat_ticket", { length: 255 }),
-		cdrData: jsonb("cdr_data")
-			.$type<{
-				id: string;
-				content: string;
-				resultCode: string;
-				resultDescription: string;
-				ticket: string;
-				receivedAt: string;
-			} | null>(),
+		cdrData: jsonb("cdr_data").$type<{
+			id: string;
+			content: string;
+			resultCode: string;
+			resultDescription: string;
+			ticket: string;
+			receivedAt: string;
+		} | null>(),
 		hashValue: varchar("hash_value", { length: 128 }),
 		hashAlgorithm: varchar("hash_algorithm", { length: 50 }).default("SHA-256"),
 
@@ -264,18 +266,21 @@ export const journalEntryLines = pgTable(
 
 // --- RELATIONS ---
 
-export const pcgeAccountsRelations = relations(pcgeAccounts, ({ one, many }) => ({
-	company: one(companies, {
-		fields: [pcgeAccounts.companyId],
-		references: [companies.id],
+export const pcgeAccountsRelations = relations(
+	pcgeAccounts,
+	({ one, many }) => ({
+		company: one(companies, {
+			fields: [pcgeAccounts.companyId],
+			references: [companies.id],
+		}),
+		children: many(pcgeAccounts, { relationName: "pcgeParentChildren" }),
+		parent: one(pcgeAccounts, {
+			fields: [pcgeAccounts.parentId],
+			references: [pcgeAccounts.id],
+			relationName: "pcgeParentChildren",
+		}),
 	}),
-	children: many(pcgeAccounts, { relationName: "pcgeParentChildren" }),
-	parent: one(pcgeAccounts, {
-		fields: [pcgeAccounts.parentId],
-		references: [pcgeAccounts.id],
-		relationName: "pcgeParentChildren",
-	}),
-}));
+);
 
 export const accountingPeriodsRelations = relations(
 	accountingPeriods,

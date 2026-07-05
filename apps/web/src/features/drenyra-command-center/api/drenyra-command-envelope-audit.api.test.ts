@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const organizationIdKey = "__drenyraCommandEnvelopeAuditOrgId";
 
@@ -12,7 +12,9 @@ function setMockOrganizationId(value: string): void {
 
 function getMockOrganizationId(): string {
 	const state = globalThis as Record<string, unknown>;
-	return typeof state[organizationIdKey] === "string" ? state[organizationIdKey] : "org-1";
+	return typeof state[organizationIdKey] === "string"
+		? state[organizationIdKey]
+		: "org-1";
 }
 
 setMockOrganizationId("org-1");
@@ -85,21 +87,36 @@ describe("drenyra-command-envelope-audit.api", () => {
 	});
 
 	it("sends scoped audit query headers and filters", async () => {
-		const auditGet = (globalThis as unknown as { __auditGet: ReturnType<typeof vi.fn> }).__auditGet;
+		const auditGet = (
+			globalThis as unknown as { __auditGet: ReturnType<typeof vi.fn> }
+		).__auditGet;
 		auditGet.mockResolvedValueOnce({
-			data: { success: true, data: { decision: "denied", events: [], count: 0 } },
+			data: {
+				success: true,
+				data: { decision: "denied", events: [], count: 0 },
+			},
 		});
 
-		await listCommandEnvelopeAudit({ decision: "denied", caseId: "case-001", limit: 25 });
+		await listCommandEnvelopeAudit({
+			decision: "denied",
+			caseId: "case-001",
+			limit: 25,
+		});
 
 		expect(auditGet).toHaveBeenCalledTimes(1);
-		const [config] = auditGet.mock.calls[0] as [{ headers: Record<string, string>; query: Record<string, string> }];
+		const [config] = auditGet.mock.calls[0] as [
+			{ headers: Record<string, string>; query: Record<string, string> },
+		];
 		expect(config.headers["x-organization-id"]).toBe("org-1");
 		expect(config.headers["x-company-id"]).toBe("company-1");
 		expect(config.headers["x-company-ruc"]).toBe("20100070970");
 		expect(config.headers["x-fiscal-period"]).toBe("2026-05");
 		expect(config.headers["x-user-id"]).toBe("user-1");
-		expect(config.query).toEqual({ decision: "denied", caseId: "case-001", limit: "25" });
+		expect(config.query).toEqual({
+			decision: "denied",
+			caseId: "case-001",
+			limit: "25",
+		});
 	});
 
 	it("does not infer organization or period silently", async () => {
@@ -108,6 +125,8 @@ describe("drenyra-command-envelope-audit.api", () => {
 
 		setMockOrganizationId("org-1");
 		localStorage.removeItem("drenyra-active-fiscal-period");
-		await expect(listCommandEnvelopeAudit()).rejects.toThrow(/explicit selected fiscal period/);
+		await expect(listCommandEnvelopeAudit()).rejects.toThrow(
+			/explicit selected fiscal period/,
+		);
 	});
 });

@@ -1,4 +1,4 @@
-import type { User, Organization, AuthContext } from "./types";
+import type { AuthContext, Organization, User } from "./types";
 
 async function loadAuthDeps() {
 	const [clerk, drizzle, nextNav, dbModule, schemaModule, errorsModule] =
@@ -173,8 +173,7 @@ export async function syncUserFromClerk(clerkUserId: string) {
 		)?.emailAddress || "";
 
 	const name =
-		`${clerkUser.firstName || ""} ${clerkUser.lastName || ""}`.trim() ||
-		"User";
+		`${clerkUser.firstName || ""} ${clerkUser.lastName || ""}`.trim() || "User";
 
 	const existingUser = await db.query.users.findFirst({
 		where: eq(users.id, clerkUserId),
@@ -225,8 +224,7 @@ export async function createUserWithOrganization(
 		)?.emailAddress || "";
 
 	const name =
-		`${clerkUser.firstName || ""} ${clerkUser.lastName || ""}`.trim() ||
-		"User";
+		`${clerkUser.firstName || ""} ${clerkUser.lastName || ""}`.trim() || "User";
 
 	const [user] = await db
 		.insert(users)

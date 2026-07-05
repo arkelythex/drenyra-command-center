@@ -5,7 +5,13 @@
  * @module persistence/schema/agent-run-inputs
  */
 
-import { index, pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
+import {
+	index,
+	pgTable,
+	text,
+	timestamp,
+	uniqueIndex,
+} from "drizzle-orm/pg-core";
 import { agentRunStates } from "./agent-run.schema";
 
 // --- AGENT RUN INPUTS ---
@@ -24,7 +30,9 @@ export const agentRunInputs = pgTable(
 		inputType: text("input_type").notNull(),
 		inputData: text("input_data").notNull(),
 		checksum: text("checksum").notNull(),
-		createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+		createdAt: timestamp("created_at", { withTimezone: true })
+			.notNull()
+			.defaultNow(),
 	},
 	(table) => ({
 		runIdIdx: uniqueIndex("agent_run_inputs_run_id_idx").on(table.runId),

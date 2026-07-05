@@ -35,7 +35,9 @@ describe("Drenyra fiscal work inspect route", () => {
 		const id = await createInspectableCase();
 		const app = new Elysia().use(drenyraModule);
 		const response = await app.handle(
-			new Request(`http://localhost/api/drenyra/fiscal-work/${id}/inspect`, { headers }),
+			new Request(`http://localhost/api/drenyra/fiscal-work/${id}/inspect`, {
+				headers,
+			}),
 		);
 		const payload = await response.json();
 

@@ -3,7 +3,11 @@ import { db } from "@drenyra/persistence/client";
 import { frontendTelemetryEvents } from "@drenyra/persistence/schema";
 import { logger } from "../lib/logger";
 
-export type FrontendTelemetryKind = "error" | "web-vital" | "event" | "pageview";
+export type FrontendTelemetryKind =
+	| "error"
+	| "web-vital"
+	| "event"
+	| "pageview";
 export type FrontendTelemetryRating = "good" | "needs-improvement" | "poor";
 
 export interface FrontendTelemetryInput {
@@ -56,7 +60,10 @@ const counters: Record<FrontendTelemetryKind, number> = {
 let persistedTotal = 0;
 let persistErrors = 0;
 
-function parseBooleanEnv(value: string | undefined, defaultValue: boolean): boolean {
+function parseBooleanEnv(
+	value: string | undefined,
+	defaultValue: boolean,
+): boolean {
 	if (typeof value !== "string") return defaultValue;
 	const normalized = value.trim().toLowerCase();
 	return normalized === "1" || normalized === "true" || normalized === "yes";
@@ -109,8 +116,11 @@ function sanitizeUnknown(value: unknown, depth = 0): unknown {
 	return String(value);
 }
 
-function sanitizeContext(context: unknown): Record<string, unknown> | undefined {
-	if (!context || typeof context !== "object" || Array.isArray(context)) return undefined;
+function sanitizeContext(
+	context: unknown,
+): Record<string, unknown> | undefined {
+	if (!context || typeof context !== "object" || Array.isArray(context))
+		return undefined;
 
 	const entries = Object.entries(context).slice(0, MAX_CONTEXT_KEYS);
 	const sanitized = entries.map(([key, value]) => [
@@ -128,7 +138,9 @@ function sanitizeTimestamp(timestamp: unknown): string {
 		: candidate.toISOString();
 }
 
-function createEntry(input: FrontendTelemetryInput): StoredFrontendTelemetryEvent {
+function createEntry(
+	input: FrontendTelemetryInput,
+): StoredFrontendTelemetryEvent {
 	return {
 		id: randomUUID(),
 		kind: input.kind,
@@ -214,7 +226,9 @@ async function persistTelemetryEvent(
 }
 
 export const FrontendTelemetryService = {
-	async record(input: FrontendTelemetryInput): Promise<StoredFrontendTelemetryEvent> {
+	async record(
+		input: FrontendTelemetryInput,
+	): Promise<StoredFrontendTelemetryEvent> {
 		const entry = createEntry(input);
 		counters[entry.kind] += 1;
 		events.push(entry);
@@ -235,7 +249,8 @@ export const FrontendTelemetryService = {
 			persistedTotal,
 			persistErrors,
 			dbWriteEnabled,
-			lastReceivedAt: events.length > 0 ? events[events.length - 1]?.receivedAt : null,
+			lastReceivedAt:
+				events.length > 0 ? events[events.length - 1]?.receivedAt : null,
 			bufferSize: MAX_EVENTS,
 		};
 	},

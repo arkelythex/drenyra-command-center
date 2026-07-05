@@ -1,16 +1,16 @@
 import { Bot, MessageSquare, Play, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DRENYRA_AGENTS } from "@/lib/agents";
 import type {
 	AddEvidenceRequest,
 	DrenyraAgentType,
 	FiscalCaseDetails,
 	FiscalCaseStatus,
 } from "../api/drenyra-command-center.api";
-import { EvidenceAttachmentForm } from "./EvidenceAttachmentForm";
-import { CaseStatusControl } from "./case-status-control";
 import { AgentRunPanel } from "./agent-run-panel";
+import { CaseStatusControl } from "./case-status-control";
+import { EvidenceAttachmentForm } from "./EvidenceAttachmentForm";
 import { Metric } from "./metric";
-import { DRENYRA_AGENTS } from "@/lib/agents";
 
 export function FiscalCaseWorkspace({
 	details,
@@ -92,7 +92,7 @@ export function FiscalCaseWorkspace({
 								Agentes fiscales mock
 							</h4>
 							<select
-									aria-label="Seleccionar agente"
+								aria-label="Seleccionar agente"
 								value={selectedAgent}
 								onChange={(event) =>
 									onSelectedAgentChange(event.target.value as DrenyraAgentType)

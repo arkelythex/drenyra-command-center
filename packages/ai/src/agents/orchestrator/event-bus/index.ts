@@ -1,1 +1,1 @@
-export { EventBus, globalEventBus } from './bus';
+export { EventBus, globalEventBus } from "./bus";

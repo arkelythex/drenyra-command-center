@@ -1,6 +1,6 @@
-import { X, BrainCircuit, Activity, BookOpen } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Activity, BookOpen, BrainCircuit, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import { useHubState } from "../hooks/useHubState";
 
 /**

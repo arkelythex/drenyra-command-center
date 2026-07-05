@@ -1,11 +1,11 @@
 import {
+	type ConfidenceLevel,
 	Document,
-	type ExtractedData,
 	type DocumentStatus,
 	type DocumentType,
-	type ConfidenceLevel,
+	type ExtractedData,
 } from "@drenyra/domain/entities/Document";
-import { documents } from "../../schema/documents.schema";
+import type { documents } from "../../schema/documents.schema";
 
 type PersistedExtractedData = Omit<ExtractedData, "issueDate"> & {
 	issueDate?: string | Date | null;

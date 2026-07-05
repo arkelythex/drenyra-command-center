@@ -8,7 +8,11 @@
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
 import { EVIDENCE_NODE_KIND } from "./constants";
-import { isFiscalTruthScope, type EvidenceNodeKind, type FiscalTruthScope } from "./types";
+import {
+	type EvidenceNodeKind,
+	type FiscalTruthScope,
+	isFiscalTruthScope,
+} from "./types";
 
 export const FISCAL_ONTOLOGY_NODE_KIND = {
 	RUC: "ruc",
@@ -127,7 +131,10 @@ export function buildFiscalOntologyManifest(): FiscalOntologyManifest {
 	};
 }
 
-function isSameFiscalScope(left: FiscalTruthScope, right: FiscalTruthScope): boolean {
+function isSameFiscalScope(
+	left: FiscalTruthScope,
+	right: FiscalTruthScope,
+): boolean {
 	return (
 		left.companyId === right.companyId &&
 		left.companyRuc === right.companyRuc &&
@@ -145,13 +152,22 @@ export function canPromoteFiscalTruthClaim(
 	if (!isSameFiscalScope(claim.scope, context.graph.scope)) return false;
 	if (claim.evidenceRootNodeId.trim().length === 0) return false;
 	if (claim.ontologyNodeIds.length === 0) return false;
-	if (!claim.humanApprovalId || claim.humanApprovalId !== context.humanApprovalId) {
+	if (
+		!claim.humanApprovalId ||
+		claim.humanApprovalId !== context.humanApprovalId
+	) {
 		return false;
 	}
-	if (!claim.policyDecisionId || claim.policyDecisionId !== context.policyDecisionId) {
+	if (
+		!claim.policyDecisionId ||
+		claim.policyDecisionId !== context.policyDecisionId
+	) {
 		return false;
 	}
-	if (!claim.governanceBundleId || claim.governanceBundleId !== context.governanceBundleId) {
+	if (
+		!claim.governanceBundleId ||
+		claim.governanceBundleId !== context.governanceBundleId
+	) {
 		return false;
 	}
 	if (claim.evidenceRootNodeId !== context.evidenceRootNodeId) return false;
@@ -163,11 +179,12 @@ export function canPromoteFiscalTruthClaim(
 	});
 	if (!allClaimNodesExistInScope) return false;
 
-	const hasDeterministicSupportEdge = context.graph.edges.some((edge) =>
-		claim.ontologyNodeIds.includes(edge.fromNodeId) &&
-		claim.ontologyNodeIds.includes(edge.toNodeId) &&
-		edge.confidenceBasis !== "agent_suggested" &&
-		isSameFiscalScope(claim.scope, edge.scope),
+	const hasDeterministicSupportEdge = context.graph.edges.some(
+		(edge) =>
+			claim.ontologyNodeIds.includes(edge.fromNodeId) &&
+			claim.ontologyNodeIds.includes(edge.toNodeId) &&
+			edge.confidenceBasis !== "agent_suggested" &&
+			isSameFiscalScope(claim.scope, edge.scope),
 	);
 	if (!hasDeterministicSupportEdge) return false;
 

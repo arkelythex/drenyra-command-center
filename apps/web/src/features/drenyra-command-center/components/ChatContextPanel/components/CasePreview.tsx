@@ -1,6 +1,6 @@
 import { Clock, ShieldAlert } from "lucide-react";
-import type { FiscalCaseDetails } from "../../../api/drenyra-command-center.api";
 import { cn } from "@/lib/utils";
+import type { FiscalCaseDetails } from "../../../api/drenyra-command-center.api";
 
 export function CasePreview({
 	caseDetails,
@@ -50,10 +50,7 @@ export function CasePreview({
 										: "bg-[var(--color-success)]",
 							)}
 							style={{
-								width: `${Math.min(
-									caseDetails.case.riskScore ?? 0,
-									100,
-								)}%`,
+								width: `${Math.min(caseDetails.case.riskScore ?? 0, 100)}%`,
 							}}
 						/>
 					</div>

@@ -1,8 +1,4 @@
-import type {
-	ParseResult,
-	UblInvoice,
-	UblInvoiceItem,
-} from "./types";
+import type { ParseResult, UblInvoice, UblInvoiceItem } from "./types";
 
 export type {
 	ParseResult,

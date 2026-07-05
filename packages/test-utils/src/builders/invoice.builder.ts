@@ -12,12 +12,13 @@
  *   .build();
  * ```
  */
+
+import type { TaxIdentifier } from "@drenyra/domain";
 import { Invoice, type InvoiceProps } from "@drenyra/domain/entities/Invoice";
-import { Money, type Currency } from "@drenyra/domain/value-objects/Money";
-import { RUC } from "@drenyra/domain/value-objects/RUC";
 import { DNI } from "@drenyra/domain/value-objects/DNI";
 import { DocumentSeries } from "@drenyra/domain/value-objects/DocumentSeries";
-import type { TaxIdentifier } from "@drenyra/domain";
+import { type Currency, Money } from "@drenyra/domain/value-objects/Money";
+import { RUC } from "@drenyra/domain/value-objects/RUC";
 import { BaseBuilder } from "./base.builder";
 
 const DEFAULT_INVOICE_ID = "inv_test_001";
@@ -28,38 +29,38 @@ const DEFAULT_NUMBER = 1;
 const DEFAULT_CURRENCY: Currency = "PEN";
 
 export class InvoiceBuilder extends BaseBuilder<InvoiceProps, Invoice> {
-private itemCount = 0;
+	private itemCount = 0;
 
-constructor() {
-const yesterday = new Date();
-yesterday.setDate(yesterday.getDate() - 1);
+	constructor() {
+		const yesterday = new Date();
+		yesterday.setDate(yesterday.getDate() - 1);
 
-const baseAmount = Money.fromAmount(1000, DEFAULT_CURRENCY);
-const igvAmount = baseAmount.multiply(0.18);
-const taxAmount = igvAmount; // Same as IGV in PE (generic field)
-const totalAmount = baseAmount.add(igvAmount);
+		const baseAmount = Money.fromAmount(1000, DEFAULT_CURRENCY);
+		const igvAmount = baseAmount.multiply(0.18);
+		const taxAmount = igvAmount; // Same as IGV in PE (generic field)
+		const totalAmount = baseAmount.add(igvAmount);
 
-const buyerRuc = RUC.create(DEFAULT_RUC);
+		const buyerRuc = RUC.create(DEFAULT_RUC);
 
-super({
-id: DEFAULT_INVOICE_ID,
-series: DocumentSeries.create(DEFAULT_SERIES),
-number: DEFAULT_NUMBER,
-issueDate: yesterday,
-clientName: DEFAULT_CLIENT_NAME,
-buyerTaxId: buyerRuc,
-clientRUC: buyerRuc,
-baseAmount,
-taxAmount,
-igvAmount,
-totalAmount,
-status: "DRAFT",
-fiscalStatus: "DRAFT",
-items: [],
-createdAt: yesterday,
-updatedAt: yesterday,
-});
-}
+		super({
+			id: DEFAULT_INVOICE_ID,
+			series: DocumentSeries.create(DEFAULT_SERIES),
+			number: DEFAULT_NUMBER,
+			issueDate: yesterday,
+			clientName: DEFAULT_CLIENT_NAME,
+			buyerTaxId: buyerRuc,
+			clientRUC: buyerRuc,
+			baseAmount,
+			taxAmount,
+			igvAmount,
+			totalAmount,
+			status: "DRAFT",
+			fiscalStatus: "DRAFT",
+			items: [],
+			createdAt: yesterday,
+			updatedAt: yesterday,
+		});
+	}
 
 	/**
 	 * Set a custom invoice ID.
@@ -156,7 +157,9 @@ updatedAt: yesterday,
 	/**
 	 * Set the generic fiscal lifecycle status.
 	 */
-	withFiscalStatus(fiscalStatus: NonNullable<InvoiceProps["fiscalStatus"]>): this {
+	withFiscalStatus(
+		fiscalStatus: NonNullable<InvoiceProps["fiscalStatus"]>,
+	): this {
 		return this.set({ fiscalStatus });
 	}
 

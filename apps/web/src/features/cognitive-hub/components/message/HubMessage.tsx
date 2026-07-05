@@ -1,15 +1,16 @@
-import React from 'react';
+import type React from "react";
+
 /**
  * @fileoverview HubMessage - Mensajes con diseño Elite Binary 2026
  * @module features/cognitive-hub/components/message/HubMessage
  */
 
+import type { CognitiveMessage } from "@drenyra/shared/messaging";
 import { motion } from "framer-motion";
 import { ShieldCheck, Sparkles, User } from "lucide-react";
 import { trackEvent } from "@/lib/monitoring";
 import { cn } from "@/lib/utils";
 import { useHubState } from "../../hooks/useHubState";
-import type { CognitiveMessage } from '@drenyra/shared/messaging';
 import { ArtifactRenderer } from "../artifacts/ArtifactRenderer";
 import { SwarmTrace } from "./SwarmTrace";
 
@@ -134,7 +135,9 @@ function MessageHeader({
 				<span
 					className={cn(
 						"text-[8px] @md:text-3xs font-black uppercase tracking-[0.2em] @md:tracking-[0.3em] antialiased",
-						isAssistant ? "text-[var(--text-primary)]" : "text-[var(--text-tertiary)]",
+						isAssistant
+							? "text-[var(--text-primary)]"
+							: "text-[var(--text-tertiary)]",
 					)}
 				>
 					{isAssistant ? "Drenyra Core" : "Authorized Operator"}
@@ -193,7 +196,12 @@ function MessageBody({
 						}}
 						role="button"
 						tabIndex={0}
-						onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trackEvent("cognitive_hub.deep_link_click", { token: part }); } }}
+						onKeyDown={(e) => {
+							if (e.key === "Enter" || e.key === " ") {
+								e.preventDefault();
+								trackEvent("cognitive_hub.deep_link_click", { token: part });
+							}
+						}}
 					>
 						{part}
 					</span>

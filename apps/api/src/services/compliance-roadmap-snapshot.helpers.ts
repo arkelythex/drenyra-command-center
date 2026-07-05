@@ -27,10 +27,14 @@ export function buildRoadmapFocus(input: {
 		focus.add("Close critical and high-severity compliance findings.");
 	}
 	if (!input.reproducibility.reproducible) {
-		focus.add("Resolve SIRE vs ledger reproducibility mismatches before monthly close.");
+		focus.add(
+			"Resolve SIRE vs ledger reproducibility mismatches before monthly close.",
+		);
 	}
 	if (input.pendingSunatInvoices > 0) {
-		focus.add("Submit pending SUNAT documents and confirm CDR lifecycle evidence.");
+		focus.add(
+			"Submit pending SUNAT documents and confirm CDR lifecycle evidence.",
+		);
 	}
 	if (focus.size === 0) {
 		focus.add("Maintain current controls and monitor drift daily.");

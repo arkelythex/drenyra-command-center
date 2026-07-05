@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { InvoiceRepository } from "@drenyra/domain/repositories/invoice.repository";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { UpdateInvoiceUseCase } from "../update-invoice.use-case";
 import { createTestInvoice, TEST_IDS, TEST_RUCS } from "./fixtures";
 
@@ -52,9 +52,7 @@ describe("UpdateInvoiceUseCase", () => {
 			const updateForOrganizationMock = vi.mocked(
 				mockRepository.updateForOrganization,
 			);
-			expect(updateForOrganizationMock.mock.calls[0]?.[1]).toBe(
-				42,
-			);
+			expect(updateForOrganizationMock.mock.calls[0]?.[1]).toBe(42);
 		});
 
 		it("should throw error when invoice does not exist", async () => {

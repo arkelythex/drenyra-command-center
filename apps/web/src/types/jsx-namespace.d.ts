@@ -9,5 +9,3 @@ declare global {
 		type Element = ReactElement;
 	}
 }
-
-export {};

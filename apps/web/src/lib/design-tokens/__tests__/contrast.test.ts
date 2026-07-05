@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { contrastRatio, passesWcagContrast, relativeLuminance } from "../contrast";
+import {
+	contrastRatio,
+	passesWcagContrast,
+	relativeLuminance,
+} from "../contrast";
 
 describe("contrast", () => {
 	it("computes contrast ratio for parseable rgb/hex colors", () => {

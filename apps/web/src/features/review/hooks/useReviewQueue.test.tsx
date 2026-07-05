@@ -106,7 +106,10 @@ describe("review/useReviewQueue", () => {
 		});
 		mocks.rejectPostMock.mockResolvedValue({
 			error: null,
-			data: { success: true, data: { id: "doc-1", status: "rechazado_por_sire" } },
+			data: {
+				success: true,
+				data: { id: "doc-1", status: "rechazado_por_sire" },
+			},
 		});
 	});
 
@@ -145,7 +148,10 @@ describe("review/useReviewQueue", () => {
 			})
 			.mockResolvedValueOnce({
 				error: null,
-				data: { success: true, data: { id: "doc-1", status: "listo_para_sire" } },
+				data: {
+					success: true,
+					data: { id: "doc-1", status: "listo_para_sire" },
+				},
 			});
 
 		const { wrapper } = createWrapper();

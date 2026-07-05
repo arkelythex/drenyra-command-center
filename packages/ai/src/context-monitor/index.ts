@@ -5,7 +5,6 @@
  */
 
 export { ContextMonitor } from "./context-monitor";
-export { ContextPruner, createContextPruner } from "./context-pruner";
 export type {
 	ContextMonitorConfig,
 	ContextPrunerConfig,
@@ -17,3 +16,4 @@ export type {
 	TokenBudget,
 } from "./context-monitor.types";
 export type { OnPruneApplied, SummarizeFn } from "./context-pruner";
+export { ContextPruner, createContextPruner } from "./context-pruner";

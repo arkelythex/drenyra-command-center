@@ -1,14 +1,14 @@
 /**
  * Barrel export for database test utilities.
  */
-export {
-	TestDatabase,
-	withTransaction,
-	createTransactionHooks,
-} from "./test-db";
 
 export {
-	seedTestData,
-	seedScenarios,
 	type SeedData,
+	seedScenarios,
+	seedTestData,
 } from "./seed";
+export {
+	createTransactionHooks,
+	TestDatabase,
+	withTransaction,
+} from "./test-db";

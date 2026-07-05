@@ -33,7 +33,9 @@ function readLimit(value: string | undefined): number {
 	return Math.min(parsed, 100);
 }
 
-export function createCommandEnvelopeAuditRoutes({ commandCenter }: CommandEnvelopeAuditRoutesDeps) {
+export function createCommandEnvelopeAuditRoutes({
+	commandCenter,
+}: CommandEnvelopeAuditRoutesDeps) {
 	return new Elysia({ name: "drenyra-command-envelope-audit" }).get(
 		"/command-envelope/audit",
 		async ({ query, headers, set }) => {
@@ -43,11 +45,14 @@ export function createCommandEnvelopeAuditRoutes({ commandCenter }: CommandEnvel
 				return drenyraActorContextFailure(contextResolution.missingHeaders);
 			}
 			const decision = query.decision ?? "all";
-			const events = await commandCenter.listAuditEvents(contextResolution.context, {
-				caseId: query.caseId,
-				eventTypes: commandEnvelopeEventTypes[decision],
-				limit: readLimit(query.limit),
-			});
+			const events = await commandCenter.listAuditEvents(
+				contextResolution.context,
+				{
+					caseId: query.caseId,
+					eventTypes: commandEnvelopeEventTypes[decision],
+					limit: readLimit(query.limit),
+				},
+			);
 			return ok({
 				decision,
 				events,
@@ -56,7 +61,13 @@ export function createCommandEnvelopeAuditRoutes({ commandCenter }: CommandEnvel
 		},
 		{
 			query: t.Object({
-				decision: t.Optional(t.Union([t.Literal("allowed"), t.Literal("denied"), t.Literal("all")])),
+				decision: t.Optional(
+					t.Union([
+						t.Literal("allowed"),
+						t.Literal("denied"),
+						t.Literal("all"),
+					]),
+				),
 				caseId: t.Optional(t.String({ minLength: 1 })),
 				limit: t.Optional(t.String()),
 			}),

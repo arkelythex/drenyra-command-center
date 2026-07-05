@@ -2,10 +2,10 @@ import { describe, expect, it } from "vitest";
 import {
 	DRENYRA_CAPABILITY_DECISION,
 	DRENYRA_TOOL_ID,
-	evaluateDrenyraCapability,
 	type DrenyraCapabilityGrant,
 	type DrenyraCapabilityRequest,
 	type DrenyraFiscalScope,
+	evaluateDrenyraCapability,
 } from "./index";
 
 const scope: DrenyraFiscalScope = {

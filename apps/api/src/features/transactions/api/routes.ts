@@ -8,19 +8,19 @@
  */
 
 import { Elysia, t } from "elysia";
-import { createTransaction } from "../application/commands/create-transaction.command";
-import { updateTransaction } from "../application/commands/update-transaction.command";
-import { deleteTransaction } from "../application/commands/delete-transaction.command";
-import { listTransactions } from "../application/queries/list-transactions.query";
-import { getTransaction } from "../application/queries/get-transaction.query";
-import { getSummary } from "../application/queries/get-summary.query";
+import { companyScopeGuard } from "../../../shared/plugins";
 import {
 	createTransactionSchema,
-	updateTransactionSchema,
 	listTransactionsQuerySchema,
+	updateTransactionSchema,
 } from "../../../validators/transaction.schema";
 import { fail, getErrorMessage, ok } from "../../shared/api-response";
-import { companyScopeGuard } from "../../../shared/plugins";
+import { createTransaction } from "../application/commands/create-transaction.command";
+import { deleteTransaction } from "../application/commands/delete-transaction.command";
+import { updateTransaction } from "../application/commands/update-transaction.command";
+import { getSummary } from "../application/queries/get-summary.query";
+import { getTransaction } from "../application/queries/get-transaction.query";
+import { listTransactions } from "../application/queries/list-transactions.query";
 
 /**
  * transactionsRoutes const.
@@ -94,7 +94,10 @@ export const transactionsRoutes = new Elysia({ prefix: "/api/transactions" })
 				return fail("Company context is required", "COMPANY_CONTEXT_REQUIRED");
 			}
 			try {
-				const result = await getTransaction(params.id, companyContext.companyId);
+				const result = await getTransaction(
+					params.id,
+					companyContext.companyId,
+				);
 				if (!result) {
 					set.status = 404;
 					return fail("Transaction not found", "NOT_FOUND");
@@ -139,7 +142,10 @@ export const transactionsRoutes = new Elysia({ prefix: "/api/transactions" })
 				return fail("Company context is required", "COMPANY_CONTEXT_REQUIRED");
 			}
 			try {
-				const result = await deleteTransaction(params.id, companyContext.companyId);
+				const result = await deleteTransaction(
+					params.id,
+					companyContext.companyId,
+				);
 				return ok(result);
 			} catch (error: unknown) {
 				set.status = 500;

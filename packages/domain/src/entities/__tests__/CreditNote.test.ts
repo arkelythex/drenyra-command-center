@@ -6,9 +6,13 @@
  */
 
 import { beforeEach, describe, expect, it } from "vitest";
-import { CreditNote, type CreditNoteProps, type CreditNoteType } from "../CreditNote";
 import { DocumentSeries } from "../../value-objects/DocumentSeries";
 import { Money } from "../../value-objects/Money";
+import {
+	CreditNote,
+	type CreditNoteProps,
+	type CreditNoteType,
+} from "../CreditNote";
 
 function validProps(overrides: Partial<CreditNoteProps> = {}): CreditNoteProps {
 	const baseAmount = Money.fromAmount(1000, "PEN");
@@ -96,9 +100,9 @@ describe("CreditNote", () => {
 		it("should reject future issue date", () => {
 			const future = new Date();
 			future.setDate(future.getDate() + 5);
-			expect(() => CreditNote.create(validProps({ issueDate: future }))).toThrow(
-				/La fecha de emisión no puede ser futura/,
-			);
+			expect(() =>
+				CreditNote.create(validProps({ issueDate: future })),
+			).toThrow(/La fecha de emisión no puede ser futura/);
 		});
 
 		it("should reject non-positive number", () => {
@@ -182,9 +186,7 @@ describe("CreditNote", () => {
 
 		it("should reject send from non-DRAFT status", () => {
 			const cn = CreditNote.create(validProps({ status: "SENT" }));
-			expect(() => cn.markAsSent("OK")).toThrow(
-				/Solo se pueden enviar/,
-			);
+			expect(() => cn.markAsSent("OK")).toThrow(/Solo se pueden enviar/);
 		});
 
 		it("should transition SENT → ACCEPTED", () => {
@@ -240,7 +242,9 @@ describe("CreditNote", () => {
 		});
 
 		it("should format full number with 8-digit padding", () => {
-			const cn = CreditNote.create(validProps({ series: DocumentSeries.create("FC01"), number: 42 }));
+			const cn = CreditNote.create(
+				validProps({ series: DocumentSeries.create("FC01"), number: 42 }),
+			);
 			expect(cn.getFullNumber()).toBe("FC01-00000042");
 		});
 	});
@@ -257,4 +261,4 @@ describe("CreditNote", () => {
 			expect(json.issueDate).toBeDefined();
 		});
 	});
-})
+});

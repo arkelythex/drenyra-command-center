@@ -1,7 +1,7 @@
-import { DNI } from "../../value-objects/DNI";
-import { DocumentSeries } from "../../value-objects/DocumentSeries";
-import { Money } from "../../value-objects/Money";
-import { RUC } from "../../value-objects/RUC";
+import type { DNI } from "../../value-objects/DNI";
+import type { DocumentSeries } from "../../value-objects/DocumentSeries";
+import type { Money } from "../../value-objects/Money";
+import type { RUC } from "../../value-objects/RUC";
 
 /**
  * Estados posibles de una factura.

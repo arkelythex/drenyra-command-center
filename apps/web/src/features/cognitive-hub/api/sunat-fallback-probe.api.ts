@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { getCpeValidatorClient } from "@/features/compliance/api/compliance-client";
 import type {
 	CpeFallbackProbeBody,
 	CpeFallbackProbeData,
 } from "@/features/compliance/api/compliance-client";
+import { getCpeValidatorClient } from "@/features/compliance/api/compliance-client";
 import { unwrap } from "@/lib/api-helpers";
 
 /** Inner payload of POST /cpe-validator/fallback/probe (aligned with API + `CpeFallbackProbeData`). */
@@ -52,9 +52,7 @@ function parseProbeEnvelope(raw: unknown): CpeFallbackProbeData {
 		throw new Error("cpe-validator/fallback/probe: respuesta inválida");
 	}
 	if (parsed.data.success === false) {
-		throw new Error(
-			parsed.data.error ?? "cpe-validator/fallback/probe falló",
-		);
+		throw new Error(parsed.data.error ?? "cpe-validator/fallback/probe falló");
 	}
 	return parsed.data.data;
 }

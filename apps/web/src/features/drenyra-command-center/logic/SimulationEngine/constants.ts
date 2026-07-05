@@ -12,9 +12,22 @@ export const PREDICTIVE_PATTERNS = [
 ];
 
 export const CATEGORY_KEYWORDS: Record<SimulationCategory, RegExp[]> = {
-	salary: [/salarios?/, /sueldos?/, /planilla/, /remuneracion/, /remuneración/, /personal/],
+	salary: [
+		/salarios?/,
+		/sueldos?/,
+		/planilla/,
+		/remuneracion/,
+		/remuneración/,
+		/personal/,
+	],
 	revenue: [/ventas?/, /ingresos?/, /facturación/, /facturacion/, /ingreso/],
-	expense: [/gastos?/, /costos?/, /proveedores?/, /suministros?/, /operativos?/],
+	expense: [
+		/gastos?/,
+		/costos?/,
+		/proveedores?/,
+		/suministros?/,
+		/operativos?/,
+	],
 	tax: [/impuestos?/, /igv/, /renta/, /tributos?/, /sunat/, /sire/],
 	investment: [/inversión/, /inversion/, /invertir/, /capital/, /activos?/],
 };

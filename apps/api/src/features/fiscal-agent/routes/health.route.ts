@@ -3,19 +3,26 @@
  * Returns the FiscalHealthScore from FiscalHealthService.
  */
 
-import { Elysia } from "elysia";
 import { fiscalHealthService } from "@drenyra/infrastructure/services/fiscal-health.service";
-import { ok, fail } from "../../shared/api-response";
+import { Elysia } from "elysia";
+import { fail, ok } from "../../shared/api-response";
 
 export const fiscalAgentHealthRoute = new Elysia().get(
 	"/fiscal-agent/health",
 	async ({ headers }) => {
 		try {
-			const orgId = Number((headers as Record<string, string>)["x-organization-id"] ?? "1");
-			const companyId = (headers as Record<string, string>)["x-company-id"] ?? "default";
+			const orgId = Number(
+				(headers as Record<string, string>)["x-organization-id"] ?? "1",
+			);
+			const companyId =
+				(headers as Record<string, string>)["x-company-id"] ?? "default";
 			const period = new Date().toISOString().slice(0, 7).replace("-", "");
 
-			const score = await fiscalHealthService.getHealthScore(orgId, companyId, period);
+			const score = await fiscalHealthService.getHealthScore(
+				orgId,
+				companyId,
+				period,
+			);
 			return ok(score);
 		} catch (error) {
 			return fail(

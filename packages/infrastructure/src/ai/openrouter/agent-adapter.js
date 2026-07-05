@@ -1,7 +1,8 @@
-import { openRouter } from './index.js';
-import { SecureLogger } from '@drenyra/shared/secure-logger';
+import { SecureLogger } from "@drenyra/shared/secure-logger";
+import { openRouter } from "./index.js";
+
 const SYSTEM_PROMPTS = {
-    'security-audit-agent': `You are a Security Audit Agent specialized in detecting vulnerabilities in code.
+	"security-audit-agent": `You are a Security Audit Agent specialized in detecting vulnerabilities in code.
 Analyze the provided code for:
 - SQL injection vulnerabilities
 - XSS (Cross-Site Scripting) attacks
@@ -11,7 +12,7 @@ Analyze the provided code for:
 
 Provide specific line numbers, severity levels (critical/high/medium/low), and actionable recommendations.
 Format your response as JSON with findings array.`,
-    'quality-analyzer-agent': `You are a Code Quality Analyzer specialized in software engineering best practices.
+	"quality-analyzer-agent": `You are a Code Quality Analyzer specialized in software engineering best practices.
 Analyze code for:
 - SOLID principles compliance
 - Cyclomatic complexity
@@ -21,7 +22,7 @@ Analyze code for:
 - Type safety (no 'any' usage)
 
 Provide a quality score (0-100) and specific issues with recommendations.`,
-    'performance-analyzer-agent': `You are a Performance Analyzer specialized in optimization.
+	"performance-analyzer-agent": `You are a Performance Analyzer specialized in optimization.
 Analyze code for:
 - Algorithmic complexity (Big O notation)
 - N+1 query problems
@@ -30,7 +31,7 @@ Analyze code for:
 - Database anti-patterns
 
 Identify bottlenecks and suggest optimizations with expected performance gains.`,
-    'code-generator-agent': `You are a Code Generation Agent specialized in creating production-ready TypeScript code.
+	"code-generator-agent": `You are a Code Generation Agent specialized in creating production-ready TypeScript code.
 Generate code that follows:
 - ARKELYTHEX coding standards
 - Vertical Slice Architecture
@@ -40,7 +41,7 @@ Generate code that follows:
 - JSDoc documentation
 
 Generate complete, working code with proper error handling.`,
-    'documentation-agent': `You are a Documentation Agent specialized in technical writing.
+	"documentation-agent": `You are a Documentation Agent specialized in technical writing.
 Create comprehensive documentation including:
 - JSDoc comments with @param, @returns, @throws, @example
 - README files with usage examples
@@ -49,7 +50,7 @@ Create comprehensive documentation including:
 - Mermaid diagrams
 
 Follow ARKELYTHEX documentation standards.`,
-    'sunat-compliance-agent': `You are a SUNAT Compliance Agent specialized in Peruvian tax regulations.
+	"sunat-compliance-agent": `You are a SUNAT Compliance Agent specialized in Peruvian tax regulations.
 Validate documents for:
 - SUNAT 2026 compliance
 - RUC validation
@@ -58,7 +59,7 @@ Validate documents for:
 - SPOT (Sistema de Pago de Obligaciones Tributarias) calculations
 
 Ensure full compliance with Peruvian tax authority requirements.`,
-    'tax-optimizer-agent': `You are a Tax Optimization Agent specialized in Peruvian tax law.
+	"tax-optimizer-agent": `You are a Tax Optimization Agent specialized in Peruvian tax law.
 Analyze financial situations and suggest:
 - Legal tax deductions
 - IGV optimization strategies
@@ -67,7 +68,7 @@ Analyze financial situations and suggest:
 - SPOT calculation validation
 
 Focus on legal tax optimization within SUNAT 2026 framework.`,
-    'financial-analyzer-agent': `You are a Financial Analysis Agent specialized in ERP financial data.
+	"financial-analyzer-agent": `You are a Financial Analysis Agent specialized in ERP financial data.
 Analyze:
 - Balance sheets
 - Income statements
@@ -76,7 +77,7 @@ Analyze:
 - Trends and forecasts
 
 Provide professional financial analysis with actionable insights.`,
-    'default': `You are an ARKELYTHEX Agent specialized in fiscal intelligence for Peruvian businesses.
+	default: `You are an ARKELYTHEX Agent specialized in fiscal intelligence for Peruvian businesses.
 Follow best practices:
 - SUNAT 2026 compliance
 - Clean Architecture
@@ -87,113 +88,118 @@ Follow best practices:
 Provide accurate, helpful responses.`,
 };
 export function createOpenRouterAgent(baseAgent, options) {
-    return {
-        ...baseAgent,
-        async execute(task) {
-            const startTime = Date.now();
-            try {
-                const systemPrompt = SYSTEM_PROMPTS[baseAgent.id] || SYSTEM_PROMPTS['default'];
-                const userPrompt = typeof task.data === 'string'
-                    ? task.data
-                    : JSON.stringify(task.data, null, 2);
-                const response = await openRouter.executeAgentTask(baseAgent.id, systemPrompt, userPrompt, options?.tools);
-                const content = response.choices[0]?.message?.content || '';
-                let parsedData;
-                try {
-                    parsedData = JSON.parse(content);
-                }
-                catch {
-                    parsedData = { analysis: content };
-                }
-                const costMetrics = openRouter.getCostMetrics();
-                SecureLogger.info('Agent execution via OpenRouter', {
-                    agentId: baseAgent.id,
-                    model: response.model,
-                    tokens: response.usage.total_tokens,
-                    cost: response.usage.cost,
-                    budgetRemaining: costMetrics.budgetRemaining,
-                });
-                return {
-                    agentId: baseAgent.id,
-                    taskId: task.id,
-                    success: true,
-                    data: {
-                        ...parsedData,
-                        _meta: {
-                            model: response.model,
-                            tokens: response.usage.total_tokens,
-                            cost: response.usage.cost,
-                        },
-                    },
-                    executionTime: Date.now() - startTime,
-                    timestamp: new Date(),
-                };
-            }
-            catch (error) {
-                SecureLogger.error('Agent execution failed', {
-                    agentId: baseAgent.id,
-                    error: error instanceof Error ? error.message : String(error),
-                });
-                return {
-                    agentId: baseAgent.id,
-                    taskId: task.id,
-                    success: false,
-                    data: null,
-                    executionTime: Date.now() - startTime,
-                    timestamp: new Date(),
-                    errors: [error instanceof Error ? error.message : String(error)],
-                };
-            }
-        },
-    };
+	return {
+		...baseAgent,
+		async execute(task) {
+			const startTime = Date.now();
+			try {
+				const systemPrompt =
+					SYSTEM_PROMPTS[baseAgent.id] || SYSTEM_PROMPTS["default"];
+				const userPrompt =
+					typeof task.data === "string"
+						? task.data
+						: JSON.stringify(task.data, null, 2);
+				const response = await openRouter.executeAgentTask(
+					baseAgent.id,
+					systemPrompt,
+					userPrompt,
+					options?.tools,
+				);
+				const content = response.choices[0]?.message?.content || "";
+				let parsedData;
+				try {
+					parsedData = JSON.parse(content);
+				} catch {
+					parsedData = { analysis: content };
+				}
+				const costMetrics = openRouter.getCostMetrics();
+				SecureLogger.info("Agent execution via OpenRouter", {
+					agentId: baseAgent.id,
+					model: response.model,
+					tokens: response.usage.total_tokens,
+					cost: response.usage.cost,
+					budgetRemaining: costMetrics.budgetRemaining,
+				});
+				return {
+					agentId: baseAgent.id,
+					taskId: task.id,
+					success: true,
+					data: {
+						...parsedData,
+						_meta: {
+							model: response.model,
+							tokens: response.usage.total_tokens,
+							cost: response.usage.cost,
+						},
+					},
+					executionTime: Date.now() - startTime,
+					timestamp: new Date(),
+				};
+			} catch (error) {
+				SecureLogger.error("Agent execution failed", {
+					agentId: baseAgent.id,
+					error: error instanceof Error ? error.message : String(error),
+				});
+				return {
+					agentId: baseAgent.id,
+					taskId: task.id,
+					success: false,
+					data: null,
+					executionTime: Date.now() - startTime,
+					timestamp: new Date(),
+					errors: [error instanceof Error ? error.message : String(error)],
+				};
+			}
+		},
+	};
 }
 export async function batchExecuteAgents(tasks, options) {
-    const maxConcurrent = options?.maxConcurrent || 5;
-    const results = [];
-    for (let i = 0; i < tasks.length; i += maxConcurrent) {
-        const batch = tasks.slice(i, i + maxConcurrent);
-        const batchResults = await Promise.all(batch.map(({ agent, task }) => {
-            const enhancedAgent = createOpenRouterAgent(agent);
-            return enhancedAgent.execute(task);
-        }));
-        results.push(...batchResults);
-    }
-    return results;
+	const maxConcurrent = options?.maxConcurrent || 5;
+	const results = [];
+	for (let i = 0; i < tasks.length; i += maxConcurrent) {
+		const batch = tasks.slice(i, i + maxConcurrent);
+		const batchResults = await Promise.all(
+			batch.map(({ agent, task }) => {
+				const enhancedAgent = createOpenRouterAgent(agent);
+				return enhancedAgent.execute(task);
+			}),
+		);
+		results.push(...batchResults);
+	}
+	return results;
 }
 export function getOpenRouterCostSummary() {
-    const metrics = openRouter.getCostMetrics();
-    const topModels = Array.from(metrics.modelBreakdown.entries())
-        .map(([model, stats]) => ({ model, cost: stats.cost }))
-        .sort((a, b) => b.cost - a.cost)
-        .slice(0, 5);
-    const topProviders = Array.from(metrics.providerBreakdown.entries())
-        .map(([provider, stats]) => ({ provider, cost: stats.cost }))
-        .sort((a, b) => b.cost - a.cost)
-        .slice(0, 5);
-    return {
-        totalCost: metrics.totalCost,
-        budgetRemaining: metrics.budgetRemaining,
-        topModels,
-        topProviders,
-    };
+	const metrics = openRouter.getCostMetrics();
+	const topModels = Array.from(metrics.modelBreakdown.entries())
+		.map(([model, stats]) => ({ model, cost: stats.cost }))
+		.sort((a, b) => b.cost - a.cost)
+		.slice(0, 5);
+	const topProviders = Array.from(metrics.providerBreakdown.entries())
+		.map(([provider, stats]) => ({ provider, cost: stats.cost }))
+		.sort((a, b) => b.cost - a.cost)
+		.slice(0, 5);
+	return {
+		totalCost: metrics.totalCost,
+		budgetRemaining: metrics.budgetRemaining,
+		topModels,
+		topProviders,
+	};
 }
 export function checkBudgetStatus(warningThreshold = 0.8) {
-    const metrics = openRouter.getCostMetrics();
-    const percentage = metrics.totalCost / metrics.monthlyBudget;
-    let status;
-    if (percentage >= 1) {
-        status = 'exceeded';
-    }
-    else if (percentage >= warningThreshold) {
-        status = 'warning';
-    }
-    else {
-        status = 'ok';
-    }
-    return {
-        status,
-        remaining: metrics.budgetRemaining,
-        percentage: percentage * 100,
-    };
+	const metrics = openRouter.getCostMetrics();
+	const percentage = metrics.totalCost / metrics.monthlyBudget;
+	let status;
+	if (percentage >= 1) {
+		status = "exceeded";
+	} else if (percentage >= warningThreshold) {
+		status = "warning";
+	} else {
+		status = "ok";
+	}
+	return {
+		status,
+		remaining: metrics.budgetRemaining,
+		percentage: percentage * 100,
+	};
 }
 //# sourceMappingURL=agent-adapter.js.map

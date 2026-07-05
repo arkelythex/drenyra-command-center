@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
-import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
 import { standardRateLimit } from "../../middleware/rate-limit.middleware";
+import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
 import { documentStore } from "./documents.repository";
 import {
 	createDocumentsHandlers,
@@ -23,16 +23,13 @@ type BuildDocumentsRoutesDeps = DocumentsHandlersDeps;
  * console.log(result);
  * ```
  */
-export function buildDocumentsModule(
-	deps: BuildDocumentsRoutesDeps = {},
-) {
+export function buildDocumentsModule(deps: BuildDocumentsRoutesDeps = {}) {
 	const handlers = createDocumentsHandlers({
 		documentStore: deps.documentStore ?? documentStore,
 		resolveActorIdFromHeaders: deps.resolveActorIdFromHeaders,
 		parseStoredExtractedData: deps.parseStoredExtractedData,
 		queueOcrJob: deps.queueOcrJob,
-		resolveOrganizationIdFromCompanyId:
-			deps.resolveOrganizationIdFromCompanyId,
+		resolveOrganizationIdFromCompanyId: deps.resolveOrganizationIdFromCompanyId,
 	});
 
 	return new Elysia({ prefix: "/api/documents" })

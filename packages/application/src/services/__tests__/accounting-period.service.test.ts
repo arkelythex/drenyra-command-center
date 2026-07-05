@@ -2,12 +2,12 @@
  * AccountingPeriod Service Tests
  */
 
-import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
 	AccountingPeriod,
 	InvalidAccountingPeriodError,
 } from "@drenyra/domain/accounting/accounting-period";
 import type { AccountingPeriodRepository } from "@drenyra/domain/repositories/accounting-period.repository";
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import { AccountingPeriodService } from "../accounting-period.service";
 
 describe("AccountingPeriodService", () => {
@@ -47,29 +47,29 @@ describe("AccountingPeriodService", () => {
 			const existingPeriod = AccountingPeriod.create(2025, 1, "abierto");
 			mockRepo.findByCompanyAndPeriod.mockResolvedValue(existingPeriod);
 
-			await expect(
-				service.openPeriod(mockCompanyId, 2025, 1),
-			).rejects.toThrow(InvalidAccountingPeriodError);
+			await expect(service.openPeriod(mockCompanyId, 2025, 1)).rejects.toThrow(
+				InvalidAccountingPeriodError,
+			);
 
 			expect(mockRepo.save).not.toHaveBeenCalled();
 		});
 
 		it("should throw for invalid year", async () => {
-			await expect(
-				service.openPeriod(mockCompanyId, 2019, 1),
-			).rejects.toThrow(InvalidAccountingPeriodError);
+			await expect(service.openPeriod(mockCompanyId, 2019, 1)).rejects.toThrow(
+				InvalidAccountingPeriodError,
+			);
 		});
 
 		it("should throw for invalid month", async () => {
-			await expect(
-				service.openPeriod(mockCompanyId, 2025, 13),
-			).rejects.toThrow(InvalidAccountingPeriodError);
+			await expect(service.openPeriod(mockCompanyId, 2025, 13)).rejects.toThrow(
+				InvalidAccountingPeriodError,
+			);
 		});
 
 		it("should throw for empty company ID", async () => {
-			await expect(
-				service.openPeriod("", 2025, 1),
-			).rejects.toThrow(InvalidAccountingPeriodError);
+			await expect(service.openPeriod("", 2025, 1)).rejects.toThrow(
+				InvalidAccountingPeriodError,
+			);
 		});
 	});
 
@@ -103,9 +103,9 @@ describe("AccountingPeriodService", () => {
 		});
 
 		it("should throw for empty period ID", async () => {
-			await expect(
-				service.closePeriod("", "final"),
-			).rejects.toThrow("Period ID is required");
+			await expect(service.closePeriod("", "final")).rejects.toThrow(
+				"Period ID is required",
+			);
 		});
 
 		it("should throw when transitioning from invalid state", async () => {
@@ -138,9 +138,9 @@ describe("AccountingPeriodService", () => {
 		});
 
 		it("should throw for empty company ID", async () => {
-			await expect(
-				service.getCurrentPeriod(""),
-			).rejects.toThrow("Company ID is required");
+			await expect(service.getCurrentPeriod("")).rejects.toThrow(
+				"Company ID is required",
+			);
 		});
 	});
 
@@ -180,9 +180,9 @@ describe("AccountingPeriodService", () => {
 		});
 
 		it("should throw for empty company ID", async () => {
-			await expect(
-				service.listPeriods(""),
-			).rejects.toThrow("Company ID is required");
+			await expect(service.listPeriods("")).rejects.toThrow(
+				"Company ID is required",
+			);
 		});
 	});
 });

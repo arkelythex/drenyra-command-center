@@ -72,6 +72,8 @@ export const RegistrarGastoVozSchema = z.object({
 export type CrearAsientoInput = z.infer<typeof CrearAsientoSchema>;
 export type ConsultarRucInput = z.infer<typeof ConsultarRucSchema>;
 export type CalcularDetraccionInput = z.infer<typeof CalcularDetraccionSchema>;
-export type VerificarComprobanteInput = z.infer<typeof VerificarComprobanteSchema>;
+export type VerificarComprobanteInput = z.infer<
+	typeof VerificarComprobanteSchema
+>;
 export type ObtenerTipoCambioInput = z.infer<typeof ObtenerTipoCambioSchema>;
 export type RegistrarGastoVozInput = z.infer<typeof RegistrarGastoVozSchema>;

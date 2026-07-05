@@ -9,6 +9,8 @@
  *   - invoicing/ose.api.ts     — OSE lifecycle, PDF, and export endpoints
  */
 
+// Re-export helper functions
+export { downloadBlobFile, normalizeInvoicingError } from "./invoicing/helpers";
 // Re-export all types
 export type {
 	ApplyPaymentPayload,
@@ -22,9 +24,6 @@ export type {
 	TaxType,
 	UpdateInvoicePayload,
 } from "./invoicing/types";
-
-// Re-export helper functions
-export { downloadBlobFile, normalizeInvoicingError } from "./invoicing/helpers";
 
 // Compose the full invoicingApi from sub-modules
 import {

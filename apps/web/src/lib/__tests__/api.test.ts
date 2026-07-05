@@ -5,15 +5,15 @@ vi.mock("@elysiajs/eden", () => ({
 	treaty: vi.fn(() => ({})),
 }));
 
+import { useAuthStore } from "../../features/auth/hooks/useAuth";
 import {
 	getAuthUserId,
 	getGovernanceAuditHeaders,
 	getLegacyUserId,
-	getTenantHeaders,
 	getTenantContext,
+	getTenantHeaders,
 	getUserId,
 } from "../api";
-import { useAuthStore } from "../../features/auth/hooks/useAuth";
 
 function createUser(overrides: Partial<User> = {}): User {
 	return {

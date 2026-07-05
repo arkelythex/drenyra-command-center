@@ -25,10 +25,7 @@ export class LearningMatchingStrategy implements MatchingStrategy {
 		tx: BankTransactionLike,
 		_context: MatchContext,
 	): Promise<MatchCandidate | null> {
-		const learned = this.store.getLearnedMatch(
-			tx.description ?? "",
-			tx.amount,
-		);
+		const learned = this.store.getLearnedMatch(tx.description ?? "", tx.amount);
 		if (!learned) return null;
 
 		return {

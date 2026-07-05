@@ -1,4 +1,4 @@
-import { t } from 'elysia';
+import { t } from "elysia";
 
 /**
  * CompanyQuerySchema const.
@@ -9,7 +9,7 @@ import { t } from 'elysia';
  * ```
  */
 export const CompanyQuerySchema = t.Object({
-  companyId: t.String({ format: 'uuid' }),
+	companyId: t.String({ format: "uuid" }),
 });
 
 /**
@@ -21,8 +21,8 @@ export const CompanyQuerySchema = t.Object({
  * ```
  */
 export const OverviewQuerySchema = t.Object({
-  companyId: t.String({ format: 'uuid' }),
-  currency: t.Optional(t.Union([t.Literal('PEN'), t.Literal('USD')])),
+	companyId: t.String({ format: "uuid" }),
+	currency: t.Optional(t.Union([t.Literal("PEN"), t.Literal("USD")])),
 });
 
 /**
@@ -34,10 +34,10 @@ export const OverviewQuerySchema = t.Object({
  * ```
  */
 export const DateRangeQuerySchema = t.Object({
-  companyId: t.String({ format: 'uuid' }),
-  startDate: t.Optional(t.String()),
-  endDate: t.Optional(t.String()),
-  currency: t.Optional(t.Union([t.Literal('PEN'), t.Literal('USD')])),
+	companyId: t.String({ format: "uuid" }),
+	startDate: t.Optional(t.String()),
+	endDate: t.Optional(t.String()),
+	currency: t.Optional(t.Union([t.Literal("PEN"), t.Literal("USD")])),
 });
 
 /**
@@ -49,8 +49,8 @@ export const DateRangeQuerySchema = t.Object({
  * ```
  */
 export const LiquidityQuerySchema = t.Object({
-  companyId: t.String({ format: 'uuid' }),
-  months: t.Optional(t.Numeric({ default: 12 })),
+	companyId: t.String({ format: "uuid" }),
+	months: t.Optional(t.Numeric({ default: 12 })),
 });
 
 /**
@@ -62,9 +62,9 @@ export const LiquidityQuerySchema = t.Object({
  * ```
  */
 export const TaxCalendarQuerySchema = t.Object({
-  companyId: t.String({ format: 'uuid' }),
-  month: t.Optional(t.Numeric()),
-  year: t.Optional(t.Numeric()),
+	companyId: t.String({ format: "uuid" }),
+	month: t.Optional(t.Numeric()),
+	year: t.Optional(t.Numeric()),
 });
 
 /**
@@ -76,6 +76,6 @@ export const TaxCalendarQuerySchema = t.Object({
  * ```
  */
 export const SireStatusQuerySchema = t.Object({
-  companyId: t.String({ format: 'uuid' }),
-  period: t.Optional(t.String({ pattern: '^\\d{4}-\\d{2}$' })),
+	companyId: t.String({ format: "uuid" }),
+	period: t.Optional(t.String({ pattern: "^\\d{4}-\\d{2}$" })),
 });

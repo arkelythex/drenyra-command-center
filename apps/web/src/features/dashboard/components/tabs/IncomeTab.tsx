@@ -1,9 +1,11 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { dashboardApi } from "../../api/dashboard.api";
+import type React from "react";
 import { getHttpStatusCode } from "@/lib/http-client";
 import { captureError } from "@/lib/monitoring";
 import { runtimeConfig } from "@/lib/runtime-config";
+import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { dashboardApi } from "../../api/dashboard.api";
+import { dashboardKeys } from "../../dashboard.query-keys";
 import {
 	INCOME_FALLBACK,
 	SUPPRESSIBLE_HTTP_STATUSES,
@@ -17,8 +19,6 @@ import {
 	getAverageBilling,
 	getPeakPeriod,
 } from "./income-tab/utils";
-import { dashboardKeys } from "../../dashboard.query-keys";
-import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 
 export const IncomeTab: React.FC = () => {
 	const {

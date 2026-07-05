@@ -1,6 +1,6 @@
 import { Building2 } from "lucide-react";
-import type { CompanyContext } from "@/lib/company-context";
 import { Text } from "@/components/atoms/text";
+import type { CompanyContext } from "@/lib/company-context";
 
 interface DashboardTenantCardProps {
 	companyContext: CompanyContext;
@@ -13,7 +13,8 @@ export function DashboardTenantCard({
 	availableCompanies = [],
 	onSelectCompany,
 }: DashboardTenantCardProps) {
-	const hasCompanySwitcher = availableCompanies.length > 1 && typeof onSelectCompany === "function";
+	const hasCompanySwitcher =
+		availableCompanies.length > 1 && typeof onSelectCompany === "function";
 
 	return (
 		<div
@@ -25,7 +26,10 @@ export function DashboardTenantCard({
 			</div>
 			<div className="min-w-0 flex-1">
 				<div className="flex items-center gap-2">
-					<Text variant="label" className="text-[8px] tracking-[0.2em] text-muted-foreground uppercase">
+					<Text
+						variant="label"
+						className="text-[8px] tracking-[0.2em] text-muted-foreground uppercase"
+					>
 						Tenant Activo
 					</Text>
 					{companyContext.isDemoFallback ? (

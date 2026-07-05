@@ -72,7 +72,8 @@ export class RateLimitError extends AgentError {
 		details?: Record<string, unknown>;
 	}) {
 		super({
-			message: opts.message ?? `Rate limit exceeded for agent ${opts.agentName}`,
+			message:
+				opts.message ?? `Rate limit exceeded for agent ${opts.agentName}`,
 			type: "TRANSIENT",
 			agentName: opts.agentName,
 			details: { ...opts.details, retryAfter: opts.retryAfter },
@@ -124,7 +125,11 @@ export class ProviderError extends AgentError {
 				`Provider ${opts.provider} error for agent ${opts.agentName}`,
 			type: "TRANSIENT",
 			agentName: opts.agentName,
-			details: { ...opts.details, provider: opts.provider, statusCode: opts.statusCode },
+			details: {
+				...opts.details,
+				provider: opts.provider,
+				statusCode: opts.statusCode,
+			},
 		});
 		this.name = "ProviderError";
 		this.provider = opts.provider;
@@ -188,7 +193,8 @@ export class FiscalViolationError extends AgentError {
 		details?: Record<string, unknown>;
 	}) {
 		super({
-			message: opts.message ?? `Fiscal violation detected for agent ${opts.agentName}`,
+			message:
+				opts.message ?? `Fiscal violation detected for agent ${opts.agentName}`,
 			type: "PERMANENT",
 			agentName: opts.agentName,
 			details: opts.details,
@@ -214,7 +220,11 @@ export class FiscalViolationError extends AgentError {
  */
 export function classifyError(err: unknown, agentName: string): AgentError {
 	const message =
-		err instanceof Error ? err.message : err != null ? String(err) : "Unknown error";
+		err instanceof Error
+			? err.message
+			: err != null
+				? String(err)
+				: "Unknown error";
 	const lower = message.toLowerCase();
 
 	// TRANSIENT patterns
@@ -242,10 +252,18 @@ export function classifyError(err: unknown, agentName: string): AgentError {
 	for (const pattern of transientPatterns) {
 		if (lower.includes(pattern)) {
 			// Return more specific subclass for known transient patterns
-			if (pattern.includes("rate limit") || pattern === "too many requests" || pattern === "429") {
+			if (
+				pattern.includes("rate limit") ||
+				pattern === "too many requests" ||
+				pattern === "429"
+			) {
 				return new RateLimitError({ message, agentName });
 			}
-			if (pattern.includes("timeout") || pattern === "timed out" || pattern === "etimedout") {
+			if (
+				pattern.includes("timeout") ||
+				pattern === "timed out" ||
+				pattern === "etimedout"
+			) {
 				return new TimeoutError({ message, agentName });
 			}
 			if (
@@ -289,10 +307,19 @@ export function classifyError(err: unknown, agentName: string): AgentError {
 			if (pattern === "validation" || pattern === "schema") {
 				return new ValidationError({ message, agentName });
 			}
-			if (pattern === "invalid" || pattern === "malformed" || pattern === "bad request" || pattern === "400") {
+			if (
+				pattern === "invalid" ||
+				pattern === "malformed" ||
+				pattern === "bad request" ||
+				pattern === "400"
+			) {
 				return new InvalidInputError({ message, agentName });
 			}
-			if (pattern === "forbidden" || pattern === "unauthorized" || pattern === "403") {
+			if (
+				pattern === "forbidden" ||
+				pattern === "unauthorized" ||
+				pattern === "403"
+			) {
 				return new InvalidInputError({ message, agentName });
 			}
 			if (pattern === "fiscal" || pattern === "violation") {

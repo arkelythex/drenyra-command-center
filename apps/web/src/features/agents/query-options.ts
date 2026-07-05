@@ -1,7 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
-import { agentKeys } from "./query-keys";
 import * as agentsApi from "./agents.api";
 import type { AgentFilters } from "./agents.types";
+import { agentKeys } from "./query-keys";
 
 export function agentsListQueryOptions(filters?: AgentFilters) {
 	return queryOptions({

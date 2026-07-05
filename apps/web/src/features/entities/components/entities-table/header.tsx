@@ -22,7 +22,10 @@ export function EntitiesTableHeader({
 						Empresas y terceros
 					</h1>
 					<div className="flex items-center gap-3">
-						<Badge variant="info" className="h-6 gap-2 border-primary/20 bg-primary/10 text-primary">
+						<Badge
+							variant="info"
+							className="h-6 gap-2 border-primary/20 bg-primary/10 text-primary"
+						>
 							<div className="w-1.5 h-1.5 rounded-full bg-current" />
 							Directorio activo
 						</Badge>

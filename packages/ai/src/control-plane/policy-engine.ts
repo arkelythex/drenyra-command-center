@@ -6,25 +6,22 @@
  * Fail-closed: any error results in an explicit denial.
  */
 
+import type { PermissionService } from "../governance/permission-service";
 import type { AgentRegistry } from "./agent-registry";
-import type { ToolRegistry } from "./tool-registry";
 import type {
-	TraceEvidenceStore,
-	EvidenceTraceBundle,
-} from "./trace-evidence";
-import {
-	resolvePolicyDecision,
-	scopeMatches,
-} from "./policy-resolution";
-import type {
-	TenantCompanyRucScope,
 	AgentCapability,
 	GovernanceBundleResult,
+	TenantCompanyRucScope,
 	ToolActionInput,
 } from "./contracts";
-import type { PermissionService } from "../governance/permission-service";
 import { evaluateFiscalPolicy } from "./fiscal-policy";
-import type { FiscalPolicyInput, FiscalPolicyResult } from "./fiscal-policy.types";
+import type {
+	FiscalPolicyInput,
+	FiscalPolicyResult,
+} from "./fiscal-policy.types";
+import { resolvePolicyDecision, scopeMatches } from "./policy-resolution";
+import type { ToolRegistry } from "./tool-registry";
+import type { EvidenceTraceBundle, TraceEvidenceStore } from "./trace-evidence";
 
 // ============================================================================
 // Types
@@ -38,7 +35,9 @@ export interface PolicyEvaluationInput {
 	requestedTool: string;
 	action: "read" | "write" | "execute" | "admin";
 	evidence?: Record<string, unknown>;
-	fiscalPolicy?: Partial<Omit<FiscalPolicyInput, "traceId" | "toolName" | "action">>;
+	fiscalPolicy?: Partial<
+		Omit<FiscalPolicyInput, "traceId" | "toolName" | "action">
+	>;
 }
 
 export interface PolicyEngineResult {
@@ -169,8 +168,7 @@ export class PolicyEngine {
 			traceId: input.traceId,
 			registryEntry: agent,
 			requestedScope: input.requestedScope,
-			requestedCapability: input
-				.requestedCapability as AgentCapability,
+			requestedCapability: input.requestedCapability as AgentCapability,
 			requestedTool: input.requestedTool,
 		});
 
@@ -243,7 +241,10 @@ export class PolicyEngine {
 					: decision.approvalState
 				: "rejected",
 			violations,
-			evidenceRefs: [input.traceId, ...(input.fiscalPolicy?.evidenceRefs ?? [])],
+			evidenceRefs: [
+				input.traceId,
+				...(input.fiscalPolicy?.evidenceRefs ?? []),
+			],
 			fiscalPolicy,
 		};
 	}

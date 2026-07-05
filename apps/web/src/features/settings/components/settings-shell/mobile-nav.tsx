@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { SETTINGS_NAV, isSettingsNavItemActive } from "./constants";
+import { isSettingsNavItemActive, SETTINGS_NAV } from "./constants";
 
 interface SettingsMobileNavProps {
 	pathname: string;

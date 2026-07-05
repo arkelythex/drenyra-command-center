@@ -1,9 +1,9 @@
 import { QueryClient, type QueryKey } from "@tanstack/react-query";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { Route as BankingRoute } from "../tesoreria/banking";
 import { Route as ComplianceRoute } from "../cumplimiento/compliance";
 import { Route as DashboardRoute } from "../dashboard";
 import { Route as DocumentsRoute } from "../operaciones/documents";
+import { Route as BankingRoute } from "../tesoreria/banking";
 
 const COMPANY_ID = "company-loader-smoke";
 let routeCompanyId = COMPANY_ID;
@@ -23,7 +23,12 @@ vi.mock("../../features/dashboard/dashboard.query-options", () => ({
 	dashboardOverviewQueryOptions: (companyId: string) =>
 		loaderQueryOptions(["dashboard", "overview", companyId] as const),
 	dashboardRecentDocumentsQueryOptions: (companyId: string, limit: number) =>
-		loaderQueryOptions(["dashboard", "recent-documents", companyId, limit] as const),
+		loaderQueryOptions([
+			"dashboard",
+			"recent-documents",
+			companyId,
+			limit,
+		] as const),
 	dashboardSummaryQueryOptions: (companyId: string) =>
 		loaderQueryOptions(["dashboard", "summary", companyId] as const),
 	fiscalIndicatorsQueryOptions: () =>
@@ -70,10 +75,15 @@ function createQueryClient() {
 	});
 }
 
-async function runLoader(route: typeof DashboardRoute, queryClient: QueryClient) {
+async function runLoader(
+	route: typeof DashboardRoute,
+	queryClient: QueryClient,
+) {
 	const loader = route.options.loader;
 	if (!loader) throw new Error("Expected route loader to be defined");
-	await loader({ context: { queryClient } } as Parameters<NonNullable<typeof loader>>[0]);
+	await loader({ context: { queryClient } } as Parameters<
+		NonNullable<typeof loader>
+	>[0]);
 }
 
 describe("route-loader query splitting", () => {
@@ -87,12 +97,23 @@ describe("route-loader query splitting", () => {
 
 		await runLoader(DashboardRoute, queryClient);
 
-		expect(queryClient.getQueryData(["dashboard", "overview", COMPANY_ID])).toEqual({ ok: true });
 		expect(
-			queryClient.getQueryData(["dashboard", "recent-documents", COMPANY_ID, 3]),
+			queryClient.getQueryData(["dashboard", "overview", COMPANY_ID]),
 		).toEqual({ ok: true });
-		expect(queryClient.getQueryData(["dashboard", "summary", COMPANY_ID])).toEqual({ ok: true });
-		expect(queryClient.getQueryData(["dashboard", "fiscal-indicators"])).toEqual({ ok: true });
+		expect(
+			queryClient.getQueryData([
+				"dashboard",
+				"recent-documents",
+				COMPANY_ID,
+				3,
+			]),
+		).toEqual({ ok: true });
+		expect(
+			queryClient.getQueryData(["dashboard", "summary", COMPANY_ID]),
+		).toEqual({ ok: true });
+		expect(
+			queryClient.getQueryData(["dashboard", "fiscal-indicators"]),
+		).toEqual({ ok: true });
 	});
 
 	it("prefetches banking accounts before default account transactions", async () => {
@@ -100,11 +121,15 @@ describe("route-loader query splitting", () => {
 
 		await runLoader(BankingRoute, queryClient);
 
-		expect(queryClient.getQueryData(["banking", "accounts", COMPANY_ID])).toEqual([
+		expect(
+			queryClient.getQueryData(["banking", "accounts", COMPANY_ID]),
+		).toEqual([
 			{ id: "account-fallback", isDefault: false },
 			{ id: "account-default", isDefault: true },
 		]);
-		expect(queryClient.getQueryData(["banking", "transactions", "account-default"])).toEqual({ ok: true });
+		expect(
+			queryClient.getQueryData(["banking", "transactions", "account-default"]),
+		).toEqual({ ok: true });
 	});
 
 	it("prefetches compliance overview with company scope", async () => {
@@ -112,7 +137,9 @@ describe("route-loader query splitting", () => {
 
 		await runLoader(ComplianceRoute, queryClient);
 
-		expect(queryClient.getQueryData(["compliance", "overview", COMPANY_ID])).toEqual({ ok: true });
+		expect(
+			queryClient.getQueryData(["compliance", "overview", COMPANY_ID]),
+		).toEqual({ ok: true });
 	});
 
 	it("prefetches documents with company scope", async () => {
@@ -120,7 +147,9 @@ describe("route-loader query splitting", () => {
 
 		await runLoader(DocumentsRoute, queryClient);
 
-		expect(queryClient.getQueryData(["documents", COMPANY_ID])).toEqual({ ok: true });
+		expect(queryClient.getQueryData(["documents", COMPANY_ID])).toEqual({
+			ok: true,
+		});
 	});
 
 	it("does not prefetch tenant-scoped dashboard data without a company id", async () => {

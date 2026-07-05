@@ -1,6 +1,7 @@
 import { generateObject } from "ai";
 import { modelFlash } from "../models";
 import { ClassificationSchema } from "./types";
+
 const PCGE_CONTEXT = `
 Plan Contable General Empresarial (PCGE) - Perú:
 
@@ -48,8 +49,8 @@ CLASE 4 - PASIVOS:
   - 4212 Emitidas
 `;
 export async function classifyExpense(input) {
-    try {
-        const systemPrompt = `Eres un contador peruano experto en el Plan Contable General Empresarial (PCGE).
+	try {
+		const systemPrompt = `Eres un contador peruano experto en el Plan Contable General Empresarial (PCGE).
 
 ${PCGE_CONTEXT}
 
@@ -64,107 +65,113 @@ Reglas importantes:
 5. Las cuentas por pagar van a 4212
 
 Responde siempre en JSON estructurado.`;
-        const userPrompt = `Clasifica este gasto:
+		const userPrompt = `Clasifica este gasto:
 - Descripción: ${input.itemDescription}
 - Monto: S/ ${input.amount.toFixed(2)}
 ${input.providerName ? `- Proveedor: ${input.providerName}` : ""}
 ${input.category ? `- Categoría sugerida: ${input.category}` : ""}
 
 ¿Cuál es la cuenta contable correcta según el PCGE?`;
-        const result = await generateObject({
-            model: modelFlash,
-            schema: ClassificationSchema,
-            messages: [
-                { role: "system", content: systemPrompt },
-                { role: "user", content: userPrompt },
-            ],
-            temperature: 0.1,
-        });
-        return result.object;
-    }
-    catch (error) {
-        console.error("[AccountingClassifier] Error:", error);
-        return null;
-    }
+		const result = await generateObject({
+			model: modelFlash,
+			schema: ClassificationSchema,
+			messages: [
+				{ role: "system", content: systemPrompt },
+				{ role: "user", content: userPrompt },
+			],
+			temperature: 0.1,
+		});
+		return result.object;
+	} catch (error) {
+		console.error("[AccountingClassifier] Error:", error);
+		return null;
+	}
 }
 export async function suggestPurchaseEntry(invoice) {
-    try {
-        const mainItem = invoice.items[0];
-        const classification = await classifyExpense({
-            itemDescription: mainItem?.description || invoice.providerName,
-            amount: invoice.subtotal,
-            providerName: invoice.providerName,
-        });
-        if (!classification) {
-            return null;
-        }
-        return {
-            debit: [
-                {
-                    accountCode: classification.accountCode,
-                    accountName: classification.accountName,
-                    amount: invoice.subtotal,
-                },
-                {
-                    accountCode: "4011",
-                    accountName: "IGV - Cuenta propia",
-                    amount: invoice.igv,
-                },
-            ],
-            credit: [
-                {
-                    accountCode: "4212",
-                    accountName: "Cuentas por pagar comerciales - Emitidas",
-                    amount: invoice.total,
-                },
-            ],
-        };
-    }
-    catch (error) {
-        console.error("[AccountingClassifier] Error suggesting entry:", error);
-        return null;
-    }
+	try {
+		const mainItem = invoice.items[0];
+		const classification = await classifyExpense({
+			itemDescription: mainItem?.description || invoice.providerName,
+			amount: invoice.subtotal,
+			providerName: invoice.providerName,
+		});
+		if (!classification) {
+			return null;
+		}
+		return {
+			debit: [
+				{
+					accountCode: classification.accountCode,
+					accountName: classification.accountName,
+					amount: invoice.subtotal,
+				},
+				{
+					accountCode: "4011",
+					accountName: "IGV - Cuenta propia",
+					amount: invoice.igv,
+				},
+			],
+			credit: [
+				{
+					accountCode: "4212",
+					accountName: "Cuentas por pagar comerciales - Emitidas",
+					amount: invoice.total,
+				},
+			],
+		};
+	} catch (error) {
+		console.error("[AccountingClassifier] Error suggesting entry:", error);
+		return null;
+	}
 }
 export function quickClassify(description) {
-    const lowerDesc = description.toLowerCase();
-    if (lowerDesc.includes("taxi") ||
-        lowerDesc.includes("uber") ||
-        lowerDesc.includes("transporte")) {
-        return { accountCode: "6311", accountName: "Transporte de carga" };
-    }
-    if (lowerDesc.includes("restaurante") ||
-        lowerDesc.includes("almuerzo") ||
-        lowerDesc.includes("comida")) {
-        return { accountCode: "6314", accountName: "Alimentación" };
-    }
-    if (lowerDesc.includes("hotel") || lowerDesc.includes("hospedaje")) {
-        return { accountCode: "6313", accountName: "Alojamiento" };
-    }
-    if (lowerDesc.includes("luz") || lowerDesc.includes("electricidad")) {
-        return { accountCode: "6361", accountName: "Energía eléctrica" };
-    }
-    if (lowerDesc.includes("agua")) {
-        return { accountCode: "6363", accountName: "Agua" };
-    }
-    if (lowerDesc.includes("teléfono") ||
-        lowerDesc.includes("telefono") ||
-        lowerDesc.includes("celular")) {
-        return { accountCode: "6364", accountName: "Teléfono" };
-    }
-    if (lowerDesc.includes("internet")) {
-        return { accountCode: "6365", accountName: "Internet" };
-    }
-    if (lowerDesc.includes("útiles") ||
-        lowerDesc.includes("oficina") ||
-        lowerDesc.includes("papelería")) {
-        return { accountCode: "6561", accountName: "Suministros" };
-    }
-    if (lowerDesc.includes("contab") || lowerDesc.includes("auditor")) {
-        return { accountCode: "6323", accountName: "Auditoría y contable" };
-    }
-    if (lowerDesc.includes("legal") || lowerDesc.includes("abogado")) {
-        return { accountCode: "6322", accountName: "Legal y tributaria" };
-    }
-    return { accountCode: "6599", accountName: "Otros gastos de gestión" };
+	const lowerDesc = description.toLowerCase();
+	if (
+		lowerDesc.includes("taxi") ||
+		lowerDesc.includes("uber") ||
+		lowerDesc.includes("transporte")
+	) {
+		return { accountCode: "6311", accountName: "Transporte de carga" };
+	}
+	if (
+		lowerDesc.includes("restaurante") ||
+		lowerDesc.includes("almuerzo") ||
+		lowerDesc.includes("comida")
+	) {
+		return { accountCode: "6314", accountName: "Alimentación" };
+	}
+	if (lowerDesc.includes("hotel") || lowerDesc.includes("hospedaje")) {
+		return { accountCode: "6313", accountName: "Alojamiento" };
+	}
+	if (lowerDesc.includes("luz") || lowerDesc.includes("electricidad")) {
+		return { accountCode: "6361", accountName: "Energía eléctrica" };
+	}
+	if (lowerDesc.includes("agua")) {
+		return { accountCode: "6363", accountName: "Agua" };
+	}
+	if (
+		lowerDesc.includes("teléfono") ||
+		lowerDesc.includes("telefono") ||
+		lowerDesc.includes("celular")
+	) {
+		return { accountCode: "6364", accountName: "Teléfono" };
+	}
+	if (lowerDesc.includes("internet")) {
+		return { accountCode: "6365", accountName: "Internet" };
+	}
+	if (
+		lowerDesc.includes("útiles") ||
+		lowerDesc.includes("oficina") ||
+		lowerDesc.includes("papelería")
+	) {
+		return { accountCode: "6561", accountName: "Suministros" };
+	}
+	if (lowerDesc.includes("contab") || lowerDesc.includes("auditor")) {
+		return { accountCode: "6323", accountName: "Auditoría y contable" };
+	}
+	if (lowerDesc.includes("legal") || lowerDesc.includes("abogado")) {
+		return { accountCode: "6322", accountName: "Legal y tributaria" };
+	}
+	return { accountCode: "6599", accountName: "Otros gastos de gestión" };
 }
 //# sourceMappingURL=service.js.map

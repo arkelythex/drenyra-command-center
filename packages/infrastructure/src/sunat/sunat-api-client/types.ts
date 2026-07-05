@@ -49,7 +49,8 @@ export interface SireDownloadResponse {
 }
 
 export const SUNAT_BASE_URL = "https://api.sunat.gob.pe";
-export const SUNAT_OAUTH_URL = "https://api-seguridad.sunat.gob.pe/v1/clientessol";
+export const SUNAT_OAUTH_URL =
+	"https://api-seguridad.sunat.gob.pe/v1/clientessol";
 export const SUNAT_SIRE_URL = "https://api-sire.sunat.gob.pe/v1";
 export const REQUEST_TIMEOUT_MS = 45000;
 export const MAX_RETRIES = 3;

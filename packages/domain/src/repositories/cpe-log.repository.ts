@@ -16,10 +16,7 @@ export interface CpeLogRepository {
 		year: number,
 		month: number,
 	): Promise<CPELog[]>;
-	findByStatus(
-		companyId: string,
-		status: SunatStatus,
-	): Promise<CPELog[]>;
+	findByStatus(companyId: string, status: SunatStatus): Promise<CPELog[]>;
 	findByTicket(ticket: string): Promise<CPELog | null>;
 	updateStatus(
 		id: string,

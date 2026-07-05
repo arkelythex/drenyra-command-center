@@ -7,7 +7,11 @@ interface PeriodSectionProps {
 
 export function PeriodSection({ activePeriod, t }: PeriodSectionProps) {
 	return (
-		<section className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-4" role="region" aria-label={t("sidebar.period")}>
+		<section
+			className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-4"
+			role="region"
+			aria-label={t("sidebar.period")}
+		>
 			<p className="flex items-center gap-2 text-xs font-bold">
 				<CalendarDays size={14} aria-hidden="true" />
 				{t("sidebar.period")}

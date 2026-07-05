@@ -3,8 +3,8 @@
  * Following Arrange-Act-Assert pattern
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createHmac } from "node:crypto";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { OSEService } from "../ose.service";
 
 describe("OSEService Configuration Validation", () => {
@@ -161,14 +161,18 @@ describe("OSEService webhook signature", () => {
 	it("validates HMAC signature correctly when secret is configured", () => {
 		const payload = JSON.stringify({ invoiceNumber: "F001-1" });
 		const secret = "test-secret";
-		const signature = createHmac("sha256", secret).update(payload).digest("hex");
+		const signature = createHmac("sha256", secret)
+			.update(payload)
+			.digest("hex");
 
 		OSEService.updateConfig({ webhookSecret: secret });
 
 		expect(OSEService.verifyWebhookSignature(payload, signature)).toBe(true);
-		expect(OSEService.verifyWebhookSignature(payload, `sha256=${signature}`)).toBe(
-			true,
+		expect(
+			OSEService.verifyWebhookSignature(payload, `sha256=${signature}`),
+		).toBe(true);
+		expect(OSEService.verifyWebhookSignature(payload, "bad-signature")).toBe(
+			false,
 		);
-		expect(OSEService.verifyWebhookSignature(payload, "bad-signature")).toBe(false);
 	});
 });

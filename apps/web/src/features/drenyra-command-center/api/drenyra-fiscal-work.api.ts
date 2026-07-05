@@ -9,9 +9,12 @@ import { getActiveFiscalPeriod } from "@/lib/fiscal-period";
 
 export type { DrenyraFiscalWorkInspectEnvelope };
 
-export const DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY = "drenyra.fiscal-work.inspect" as const;
+export const DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY =
+	"drenyra.fiscal-work.inspect" as const;
 
-function fiscalWorkInspectHeaders(sourceSurface: DrenyraFiscalWorkInspectSourceSurface) {
+function fiscalWorkInspectHeaders(
+	sourceSurface: DrenyraFiscalWorkInspectSourceSurface,
+) {
 	const organizationId = getOrganizationId();
 	if (!organizationId) {
 		throw new Error("Drenyra requires an explicit organization id");

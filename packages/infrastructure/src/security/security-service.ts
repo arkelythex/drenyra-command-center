@@ -1,9 +1,9 @@
 // Security Service - Failed Login Protection
 // Handles rate limiting and account locking
 
-import { and, desc, eq, gt, isNotNull, sql } from "drizzle-orm";
 import { db } from "@drenyra/persistence/client";
 import { accessLogs, failedLoginAttempts } from "@drenyra/persistence/schema";
+import { and, desc, eq, gt, isNotNull, sql } from "drizzle-orm";
 
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MINUTES = 30;

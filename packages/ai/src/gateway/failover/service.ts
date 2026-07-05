@@ -2,8 +2,8 @@ import { loggers } from "../../logger";
 import type { FailoverAttempt, LLMProvider } from "../types";
 import { LLMGatewayError } from "../types";
 import { ProviderCircuit } from "./strategies";
-import { CircuitState } from "./types";
 import type { FailoverChain, ProviderHealth } from "./types";
+import { CircuitState } from "./types";
 
 export class FailoverService {
 	private circuits: Map<LLMProvider, ProviderCircuit> = new Map();

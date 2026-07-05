@@ -1,6 +1,6 @@
 import { FileText, Plus } from "lucide-react";
-import type { FiscalCase } from "../../../api/drenyra-command-center.api";
 import { cn } from "@/lib/utils";
+import type { FiscalCase } from "../../../api/drenyra-command-center.api";
 import { CASE_TYPE_LABELS } from "../command-center-sidebar.data";
 
 interface FiscalCasesSectionProps {
@@ -11,9 +11,19 @@ interface FiscalCasesSectionProps {
 	t: (key: string) => string;
 }
 
-export function FiscalCasesSection({ cases, selectedCaseId, onCaseSelect, onCreateCase, t }: FiscalCasesSectionProps) {
+export function FiscalCasesSection({
+	cases,
+	selectedCaseId,
+	onCaseSelect,
+	onCreateCase,
+	t,
+}: FiscalCasesSectionProps) {
 	return (
-		<section className="space-y-2" role="region" aria-label={t("sidebar.cases")}>
+		<section
+			className="space-y-2"
+			role="region"
+			aria-label={t("sidebar.cases")}
+		>
 			<p className="text-2xs font-bold uppercase tracking-widest text-[var(--text-tertiary)]">
 				{t("sidebar.cases")}
 			</p>
@@ -58,7 +68,9 @@ export function FiscalCasesSection({ cases, selectedCaseId, onCaseSelect, onCrea
 								{CASE_TYPE_LABELS[fiscalCase.type] ?? fiscalCase.type}
 							</span>
 							{fiscalCase.id === selectedCaseId && (
-								<span aria-hidden="true" className="text-[var(--color-info)]">●</span>
+								<span aria-hidden="true" className="text-[var(--color-info)]">
+									●
+								</span>
 							)}
 						</button>
 					))}

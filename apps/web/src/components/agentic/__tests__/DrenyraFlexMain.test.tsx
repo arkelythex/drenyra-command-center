@@ -1,9 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { DrenyraFlexMain } from "../DrenyraFlexMain";
 import type { ReactNode } from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { DrenyraFlexMain } from "../DrenyraFlexMain";
 
 // ---------------------------------------------------------------------------
 // Shared mutable state (vi.hoisted)
@@ -23,7 +23,12 @@ const mockClearError = vi.hoisted(() => vi.fn());
 const mockExtractNavigationIntent = vi.hoisted(() => vi.fn());
 
 const mockUsePersistedChatReturn = vi.hoisted(() => ({
-	messages: [] as Array<{ id: string; role: string; content: string; timestamp: string }>,
+	messages: [] as Array<{
+		id: string;
+		role: string;
+		content: string;
+		timestamp: string;
+	}>,
 	sendMessage: mockSendMessage,
 	isLoading: false,
 	isStreaming: false,
@@ -75,10 +80,7 @@ vi.mock("../ThreadView", () => ({
 }));
 
 vi.mock("../SplitView", () => ({
-	SplitView: ({
-		left,
-		right,
-	}: { left: ReactNode; right: ReactNode }) => (
+	SplitView: ({ left, right }: { left: ReactNode; right: ReactNode }) => (
 		<div data-testid="split-view">
 			<div data-testid="split-view-left">{left}</div>
 			<div data-testid="split-view-right">{right}</div>
@@ -125,9 +127,7 @@ function createWrapper() {
 	});
 	return function Wrapper({ children }: { children: ReactNode }) {
 		return (
-			<QueryClientProvider client={queryClient}>
-				{children}
-			</QueryClientProvider>
+			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 		);
 	};
 }

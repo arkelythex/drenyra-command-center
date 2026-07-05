@@ -12,11 +12,14 @@
  * - Error isolation between items
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { BatchOrchestrator } from "../../src/agents/orchestrator/batch/batch-orchestrator";
-import type { SessionStore } from "../../src/session/session-store";
 import type { WorkflowOrchestratorV2 } from "../../src/agents/orchestrator/workflow-v2";
-import type { ReaderInput, ProcessedInvoice } from "../../src/agents/types/agent.types";
+import type {
+	ProcessedInvoice,
+	ReaderInput,
+} from "../../src/agents/types/agent.types";
+import type { SessionStore } from "../../src/session/session-store";
 
 // ============================================================================
 // Test Fixtures
@@ -34,7 +37,9 @@ function makeReaderInput(overrides: Partial<ReaderInput> = {}): ReaderInput {
 	};
 }
 
-function makeProcessedInvoice(overrides: Partial<ProcessedInvoice> = {}): ProcessedInvoice {
+function makeProcessedInvoice(
+	overrides: Partial<ProcessedInvoice> = {},
+): ProcessedInvoice {
 	return {
 		status: "success",
 		invoiceData: {
@@ -143,7 +148,9 @@ describe("BatchOrchestrator", () => {
 	describe("success handling", () => {
 		it("should process all items and return completed status when all succeed", async () => {
 			mockProcessInvoice.mockResolvedValue(makeProcessedInvoice());
-			mockSessionStore.getBatchItems.mockResolvedValue(generateMockBatchItems(3));
+			mockSessionStore.getBatchItems.mockResolvedValue(
+				generateMockBatchItems(3),
+			);
 
 			const result = await orchestrator.runBatch({
 				batchId: "test-batch",
@@ -169,16 +176,14 @@ describe("BatchOrchestrator", () => {
 				.mockRejectedValueOnce(new Error("Item 2 failed"))
 				.mockResolvedValueOnce(makeProcessedInvoice());
 
-			mockSessionStore.getBatchItems.mockResolvedValue(generateMockBatchItems(3));
+			mockSessionStore.getBatchItems.mockResolvedValue(
+				generateMockBatchItems(3),
+			);
 
 			const result = await orchestrator.runBatch({
 				batchId: "test-batch",
 				companyId: "company-uuid",
-				inputs: [
-					makeReaderInput(),
-					makeReaderInput(),
-					makeReaderInput(),
-				],
+				inputs: [makeReaderInput(), makeReaderInput(), makeReaderInput()],
 				sessionId: "test-session",
 			});
 
@@ -199,16 +204,14 @@ describe("BatchOrchestrator", () => {
 				.mockRejectedValueOnce(new Error("Item 2 failed"))
 				.mockRejectedValueOnce(new Error("Item 3 failed"));
 
-			mockSessionStore.getBatchItems.mockResolvedValue(generateMockBatchItems(3));
+			mockSessionStore.getBatchItems.mockResolvedValue(
+				generateMockBatchItems(3),
+			);
 
 			const result = await orchestrator.runBatch({
 				batchId: "test-batch",
 				companyId: "company-uuid",
-				inputs: [
-					makeReaderInput(),
-					makeReaderInput(),
-					makeReaderInput(),
-				],
+				inputs: [makeReaderInput(), makeReaderInput(), makeReaderInput()],
 				sessionId: "test-session",
 			});
 
@@ -249,7 +252,9 @@ describe("BatchOrchestrator", () => {
 
 		it("should respect maxConcurrency and process all items", async () => {
 			mockProcessInvoice.mockResolvedValue(makeProcessedInvoice());
-			mockSessionStore.getBatchItems.mockResolvedValue(generateMockBatchItems(10));
+			mockSessionStore.getBatchItems.mockResolvedValue(
+				generateMockBatchItems(10),
+			);
 			const concurrencyLimiter = new BatchOrchestrator(
 				mockSessionStore as unknown as SessionStore,
 				() =>
@@ -287,7 +292,9 @@ describe("BatchOrchestrator", () => {
 				return makeProcessedInvoice();
 			});
 
-			mockSessionStore.getBatchItems.mockResolvedValue(generateMockBatchItems(3));
+			mockSessionStore.getBatchItems.mockResolvedValue(
+				generateMockBatchItems(3),
+			);
 
 			await orchestrator.runBatch({
 				batchId: "test-batch",
@@ -299,11 +306,14 @@ describe("BatchOrchestrator", () => {
 			// updateBatchProgress should have been called once at the end
 			// with the aggregated progress
 			expect(mockSessionStore.updateBatchProgress).toHaveBeenCalledTimes(1);
-			expect(mockSessionStore.updateBatchProgress).toHaveBeenCalledWith("test-batch", {
-				status: "completed",
-				completed: 3,
-				failed: 0,
-			});
+			expect(mockSessionStore.updateBatchProgress).toHaveBeenCalledWith(
+				"test-batch",
+				{
+					status: "completed",
+					completed: 3,
+					failed: 0,
+				},
+			);
 		});
 
 		it("should track failures in progress updates", async () => {
@@ -311,7 +321,9 @@ describe("BatchOrchestrator", () => {
 				.mockResolvedValueOnce(makeProcessedInvoice())
 				.mockRejectedValueOnce(new Error("Failed"));
 
-			mockSessionStore.getBatchItems.mockResolvedValue(generateMockBatchItems(2));
+			mockSessionStore.getBatchItems.mockResolvedValue(
+				generateMockBatchItems(2),
+			);
 
 			await orchestrator.runBatch({
 				batchId: "test-batch",
@@ -320,11 +332,14 @@ describe("BatchOrchestrator", () => {
 				sessionId: "test-session",
 			});
 
-			expect(mockSessionStore.updateBatchProgress).toHaveBeenCalledWith("test-batch", {
-				status: "partial",
-				completed: 1,
-				failed: 1,
-			});
+			expect(mockSessionStore.updateBatchProgress).toHaveBeenCalledWith(
+				"test-batch",
+				{
+					status: "partial",
+					completed: 1,
+					failed: 1,
+				},
+			);
 		});
 
 		it("should have correct progress in BatchResult after mixed results", async () => {
@@ -335,7 +350,9 @@ describe("BatchOrchestrator", () => {
 				.mockResolvedValueOnce(makeProcessedInvoice())
 				.mockRejectedValueOnce(new Error("Item 5 failed"));
 
-			mockSessionStore.getBatchItems.mockResolvedValue(generateMockBatchItems(5));
+			mockSessionStore.getBatchItems.mockResolvedValue(
+				generateMockBatchItems(5),
+			);
 
 			const result = await orchestrator.runBatch({
 				batchId: "test-batch",
@@ -365,7 +382,9 @@ describe("BatchOrchestrator", () => {
 			);
 
 			mockProcessInvoice.mockResolvedValue(makeProcessedInvoice());
-			mockSessionStore.getBatchItems.mockResolvedValue(generateMockBatchItems(3));
+			mockSessionStore.getBatchItems.mockResolvedValue(
+				generateMockBatchItems(3),
+			);
 
 			const result = await defaultOrch.runBatch({
 				batchId: "test-batch",
@@ -397,16 +416,14 @@ describe("BatchOrchestrator", () => {
 					throw new Error("First item failed");
 				});
 
-			mockSessionStore.getBatchItems.mockResolvedValue(generateMockBatchItems(3));
+			mockSessionStore.getBatchItems.mockResolvedValue(
+				generateMockBatchItems(3),
+			);
 
 			const result = await orchestrator.runBatch({
 				batchId: "test-batch",
 				companyId: "company-uuid",
-				inputs: [
-					makeReaderInput(),
-					makeReaderInput(),
-					makeReaderInput(),
-				],
+				inputs: [makeReaderInput(), makeReaderInput(), makeReaderInput()],
 				sessionId: "test-session",
 			});
 
@@ -433,7 +450,9 @@ describe("BatchOrchestrator", () => {
 				.mockRejectedValueOnce(new TypeError("Invalid input format"))
 				.mockRejectedValueOnce(new Error("Generic failure"));
 
-			mockSessionStore.getBatchItems.mockResolvedValue(generateMockBatchItems(3));
+			mockSessionStore.getBatchItems.mockResolvedValue(
+				generateMockBatchItems(3),
+			);
 
 			const result = await orchestrator.runBatch({
 				batchId: "test-batch",

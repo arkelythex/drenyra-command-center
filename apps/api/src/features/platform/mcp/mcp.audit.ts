@@ -21,7 +21,9 @@ export type PlatformMcpAuditEvent = DrenyraMcpAuditEvent;
 export type PlatformMcpAuditSink = DrenyraMcpAuditSink;
 export type PlatformMcpAuditReader = DrenyraMcpAuditReader;
 
-export class InMemoryPlatformMcpAuditSink implements PlatformMcpAuditSink, PlatformMcpAuditReader {
+export class InMemoryPlatformMcpAuditSink
+	implements PlatformMcpAuditSink, PlatformMcpAuditReader
+{
 	private readonly events: PlatformMcpAuditEvent[] = [];
 
 	async append(event: PlatformMcpAuditEvent): Promise<void> {
@@ -32,7 +34,9 @@ export class InMemoryPlatformMcpAuditSink implements PlatformMcpAuditSink, Platf
 		const events = [...this.events].reverse();
 		if (!query) return events;
 		return events
-			.filter((event) => event.scope.organizationId === query.scope.organizationId)
+			.filter(
+				(event) => event.scope.organizationId === query.scope.organizationId,
+			)
 			.filter((event) => event.scope.companyId === query.scope.companyId)
 			.filter((event) => event.scope.companyRuc === query.scope.companyRuc)
 			.filter((event) => event.scope.period === query.scope.period)

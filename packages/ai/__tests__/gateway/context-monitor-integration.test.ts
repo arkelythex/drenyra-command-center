@@ -8,9 +8,9 @@
  * - streamChat() with runId → final usage captured
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { ContextMonitor } from "../../src/context-monitor/context-monitor";
 import { LLMGatewayService } from "../../src/gateway/service";
-import { ContextMonitor } from "../../src/context-monitor/context-monitor";
 import type { AuthenticatedChatCompletionRequest } from "../../src/gateway/types";
 
 // ---------------------------------------------------------------------------

@@ -7,17 +7,22 @@
  * @module __tests__/orchestrator
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // ─── Hoisted mocks ───────────────────────────────────────────────────────────
-const { mockEnqueueForRetry, mockExecuteWithRetry, mockIsAvailable, mockRecordSuccess, mockRecordFailure } =
-	vi.hoisted(() => ({
-		mockEnqueueForRetry: vi.fn(),
-		mockExecuteWithRetry: vi.fn(),
-		mockIsAvailable: vi.fn(),
-		mockRecordSuccess: vi.fn(),
-		mockRecordFailure: vi.fn(),
-	}));
+const {
+	mockEnqueueForRetry,
+	mockExecuteWithRetry,
+	mockIsAvailable,
+	mockRecordSuccess,
+	mockRecordFailure,
+} = vi.hoisted(() => ({
+	mockEnqueueForRetry: vi.fn(),
+	mockExecuteWithRetry: vi.fn(),
+	mockIsAvailable: vi.fn(),
+	mockRecordSuccess: vi.fn(),
+	mockRecordFailure: vi.fn(),
+}));
 
 // Mock @drenyra/infrastructure/services/error-recovery for RetryEngine/PersistentCircuitBreaker
 vi.mock("@drenyra/infrastructure/services/error-recovery", () => ({
@@ -38,10 +43,10 @@ vi.mock("@drenyra/infrastructure/services/error-recovery", () => ({
 
 // ─── Imports after mocks ────────────────────────────────────────────────────
 import { BatchOrchestrator } from "../../src/agents/orchestrator/batch/batch-orchestrator";
-import { WorkflowOrchestratorV2 } from "../../src/agents/orchestrator/workflow-v2/orchestrator";
 import type { WorkflowOrchestratorV2 as WorkflowOrchestratorV2Type } from "../../src/agents/orchestrator/workflow-v2";
-import type { SessionStore } from "../../src/session/session-store";
+import { WorkflowOrchestratorV2 } from "../../src/agents/orchestrator/workflow-v2/orchestrator";
 import type { AgentError } from "../../src/services/error-recovery/agent-error";
+import type { SessionStore } from "../../src/session/session-store";
 
 // ─── Factories ───────────────────────────────────────────────────────────────
 
@@ -263,9 +268,11 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 			},
 		);
 
-		const result = await orchestrator.processInvoice(
-			{ type: "invoice_image", data: "test", metadata: {} },
-		);
+		const result = await orchestrator.processInvoice({
+			type: "invoice_image",
+			data: "test",
+			metadata: {},
+		});
 
 		expect(result.status).toBe("failed");
 		// Reader should never have been called since CB blocked
@@ -299,10 +306,12 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 
 		const mockRetry = createMockRetryEngine();
 		// Simulate first-try success
-		mockExecuteWithRetry.mockImplementation(async (fn: () => Promise<unknown>) => {
-			const result = await fn();
-			return { result, retries: 0 };
-		});
+		mockExecuteWithRetry.mockImplementation(
+			async (fn: () => Promise<unknown>) => {
+				const result = await fn();
+				return { result, retries: 0 };
+			},
+		);
 
 		const orchestrator = new WorkflowOrchestratorV2(
 			mockReader as any,
@@ -318,9 +327,11 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 			},
 		);
 
-		const result = await orchestrator.processInvoice(
-			{ type: "invoice_image", data: "test", metadata: {} },
-		);
+		const result = await orchestrator.processInvoice({
+			type: "invoice_image",
+			data: "test",
+			metadata: {},
+		});
 
 		expect(result.status).toBe("success");
 	});
@@ -357,17 +368,19 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 		});
 
 		const mockRetry = createMockRetryEngine();
-		mockExecuteWithRetry.mockImplementation(async (fn: () => Promise<unknown>) => {
-			// Simulate retry: first call fails, second succeeds
-			try {
-				const result = await fn();
-				return { result, retries: 1 };
-			} catch (err) {
-				// retry once
-				const result = await fn();
-				return { result, retries: 1 };
-			}
-		});
+		mockExecuteWithRetry.mockImplementation(
+			async (fn: () => Promise<unknown>) => {
+				// Simulate retry: first call fails, second succeeds
+				try {
+					const result = await fn();
+					return { result, retries: 1 };
+				} catch (err) {
+					// retry once
+					const result = await fn();
+					return { result, retries: 1 };
+				}
+			},
+		);
 
 		const orchestrator = new WorkflowOrchestratorV2(
 			mockReader as any,
@@ -383,16 +396,20 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 			},
 		);
 
-		const result = await orchestrator.processInvoice(
-			{ type: "invoice_image", data: "test", metadata: {} },
-		);
+		const result = await orchestrator.processInvoice({
+			type: "invoice_image",
+			data: "test",
+			metadata: {},
+		});
 
 		expect(result.status).toBe("success");
 		expect(readerCallCount).toBe(2);
 	});
 
 	it("8. executeAgentWithRetry does NOT retry permanent error", async () => {
-		mockReader.process.mockRejectedValue(new Error("validation failed: invalid RUC"));
+		mockReader.process.mockRejectedValue(
+			new Error("validation failed: invalid RUC"),
+		);
 
 		mockParser.process.mockResolvedValue({
 			parsedData: {},
@@ -411,23 +428,25 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 
 		const mockRetry = createMockRetryEngine();
 		// Simulate permanent error — no retry
-		mockExecuteWithRetry.mockImplementation(async (fn: () => Promise<unknown>) => {
-			try {
-				const result = await fn();
-				return { result, retries: 0 };
-			} catch (err) {
-				return {
-					error: {
-						type: "PERMANENT",
-						message: (err as Error).message,
-						agentName: "reader",
-						retryable: false,
-						recoverable: false,
-					} as AgentError,
-					retries: 0,
-				};
-			}
-		});
+		mockExecuteWithRetry.mockImplementation(
+			async (fn: () => Promise<unknown>) => {
+				try {
+					const result = await fn();
+					return { result, retries: 0 };
+				} catch (err) {
+					return {
+						error: {
+							type: "PERMANENT",
+							message: (err as Error).message,
+							agentName: "reader",
+							retryable: false,
+							recoverable: false,
+						} as AgentError,
+						retries: 0,
+					};
+				}
+			},
+		);
 
 		const orchestrator = new WorkflowOrchestratorV2(
 			mockReader as any,
@@ -443,9 +462,11 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 			},
 		);
 
-		const result = await orchestrator.processInvoice(
-			{ type: "invoice_image", data: "test", metadata: {} },
-		);
+		const result = await orchestrator.processInvoice({
+			type: "invoice_image",
+			data: "test",
+			metadata: {},
+		});
 
 		expect(result.status).toBe("failed");
 	});

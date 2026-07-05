@@ -150,8 +150,7 @@ export function sunatObservacion(
 		status: "rejected",
 		cdrCode,
 		cdrDescription:
-			OBSERVACION_DESCRIPTIONS[cdrCode] ??
-			"Observación no especificada",
+			OBSERVACION_DESCRIPTIONS[cdrCode] ?? "Observación no especificada",
 		errorMessage: `Observación código ${cdrCode}: ${OBSERVACION_DESCRIPTIONS[cdrCode] ?? "Desconocida"}`,
 		responseDate: new Date(),
 	};
@@ -185,9 +184,7 @@ export function sunatHardRejection(cdrCode: string): SunatResponse {
 		cdrCode,
 		cdrDescription:
 			messages[cdrCode] ?? "Error no especificado en la validación de SUNAT",
-		errorMessage:
-			messages[cdrCode] ??
-			`Error SUNAT código ${cdrCode}`,
+		errorMessage: messages[cdrCode] ?? `Error SUNAT código ${cdrCode}`,
 		responseDate: new Date(),
 	};
 }

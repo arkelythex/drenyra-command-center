@@ -15,7 +15,9 @@ describe("DashboardTenantCard", () => {
 			/>,
 		);
 
-		expect(screen.getByText("NEBULA OPERACIONES LOGISTICAS S.A.C.")).toBeInTheDocument();
+		expect(
+			screen.getByText("NEBULA OPERACIONES LOGISTICAS S.A.C."),
+		).toBeInTheDocument();
 		expect(screen.getByText("Demo Seed")).toBeInTheDocument();
 		expect(screen.getByText("RUC: 20608451231")).toBeInTheDocument();
 	});

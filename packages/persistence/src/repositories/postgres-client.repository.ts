@@ -9,8 +9,6 @@
  * - Bridge is resolved by matching legacy `organizations.ruc` to `companies.ruc`
  */
 
-import { randomUUID } from "crypto";
-import { and, eq, ilike, like, sql } from "drizzle-orm";
 import type {
 	Client,
 	ClientFilters,
@@ -18,6 +16,8 @@ import type {
 	CreateClientDTO,
 	UpdateClientDTO,
 } from "@drenyra/domain/repositories/client.repository";
+import { randomUUID } from "crypto";
+import { and, eq, ilike, like, sql } from "drizzle-orm";
 import { db } from "../client";
 import { businessPartners, customerProfiles } from "../schema";
 import {
@@ -72,7 +72,11 @@ export class PostgresClientRepository implements ClientRepository {
 			return { partner, profile };
 		});
 
-		return this.mapToClient(created.partner, created.profile, data.organizationId);
+		return this.mapToClient(
+			created.partner,
+			created.profile,
+			data.organizationId,
+		);
 	}
 
 	async update(id: string, data: UpdateClientDTO): Promise<Client> {
@@ -112,7 +116,11 @@ export class PostgresClientRepository implements ClientRepository {
 			return { partner, profile };
 		});
 
-		return this.mapToClient(updated.partner, updated.profile, existing.organizationId);
+		return this.mapToClient(
+			updated.partner,
+			updated.profile,
+			existing.organizationId,
+		);
 	}
 
 	async delete(id: string): Promise<void> {
@@ -123,16 +131,18 @@ export class PostgresClientRepository implements ClientRepository {
 		const context = await this.findClientContext(id);
 		if (!context) return null;
 
-		return this.mapToClient(context.partner, context.profile, context.organizationId);
+		return this.mapToClient(
+			context.partner,
+			context.profile,
+			context.organizationId,
+		);
 	}
 
 	async findAll(
 		organizationId: number,
 		filters?: ClientFilters,
 	): Promise<Client[]> {
-		const companyId = await resolveCompanyIdFromOrganization(
-			organizationId,
-		);
+		const companyId = await resolveCompanyIdFromOrganization(organizationId);
 		const conditions = [eq(businessPartners.companyId, companyId)];
 
 		if (filters?.name) {
@@ -144,7 +154,9 @@ export class PostgresClientRepository implements ClientRepository {
 			);
 		}
 		if (filters?.documentNumber) {
-			conditions.push(like(businessPartners.taxId, `%${filters.documentNumber}%`));
+			conditions.push(
+				like(businessPartners.taxId, `%${filters.documentNumber}%`),
+			);
 		}
 		if (filters?.email) {
 			conditions.push(ilike(businessPartners.email, `%${filters.email}%`));
@@ -166,9 +178,7 @@ export class PostgresClientRepository implements ClientRepository {
 		organizationId: number,
 		filters?: ClientFilters,
 	): Promise<number> {
-		const companyId = await resolveCompanyIdFromOrganization(
-			organizationId,
-		);
+		const companyId = await resolveCompanyIdFromOrganization(organizationId);
 		const conditions = [eq(businessPartners.companyId, companyId)];
 
 		if (filters?.name) {
@@ -180,7 +190,9 @@ export class PostgresClientRepository implements ClientRepository {
 			);
 		}
 		if (filters?.documentNumber) {
-			conditions.push(like(businessPartners.taxId, `%${filters.documentNumber}%`));
+			conditions.push(
+				like(businessPartners.taxId, `%${filters.documentNumber}%`),
+			);
 		}
 		if (filters?.email) {
 			conditions.push(ilike(businessPartners.email, `%${filters.email}%`));
@@ -199,9 +211,7 @@ export class PostgresClientRepository implements ClientRepository {
 		organizationId: number,
 		documentNumber: string,
 	): Promise<Client | null> {
-		const companyId = await resolveCompanyIdFromOrganization(
-			organizationId,
-		);
+		const companyId = await resolveCompanyIdFromOrganization(organizationId);
 
 		const rows = await db
 			.select({ partner: businessPartners, profile: customerProfiles })

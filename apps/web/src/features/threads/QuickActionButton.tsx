@@ -1,9 +1,9 @@
 import {
 	CalendarCheck,
-	Landmark,
 	FileSearch,
-	Search,
+	Landmark,
 	Loader2,
+	Search,
 } from "lucide-react";
 import type { QuickAction } from "./threads.types";
 
@@ -45,9 +45,7 @@ export function QuickActionButton({
 				"border-[var(--border-subtle)] bg-[var(--surface-1)]",
 				"hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/[0.03]",
 				"active:scale-[0.98]",
-				disabled
-					? "cursor-not-allowed opacity-50"
-					: "cursor-pointer",
+				disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
 			].join(" ")}
 		>
 			<div className="flex size-10 items-center justify-center rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] transition-colors group-hover:bg-[var(--color-primary)]/15">

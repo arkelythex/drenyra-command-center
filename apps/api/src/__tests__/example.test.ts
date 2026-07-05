@@ -4,27 +4,25 @@
  * This file serves as both a working test and documentation
  * for how to use @drenyra/test-utils in your tests.
  */
-import { describe, it, expect } from "vitest";
 
 // Builders
 import {
-	InvoiceBuilder,
-	CompanyBuilder,
-	UserBuilder,
 	AccountBuilder,
 	BankTransactionBuilder,
+	CompanyBuilder,
+	InvoiceBuilder,
 	TransactionBuilder,
+	UserBuilder,
 } from "@drenyra/test-utils/builders";
-
 // Fixtures
 import {
-	VALID_RUCS,
-	TEST_USERS,
 	TEST_COMPANIES,
+	TEST_USERS,
+	VALID_RUCS,
 } from "@drenyra/test-utils/fixtures";
-
 // Helpers
 import { money, moneyFromCents } from "@drenyra/test-utils/helpers";
+import { describe, expect, it } from "vitest";
 
 describe("Example: Shared Test Utilities", () => {
 	describe("Builders", () => {

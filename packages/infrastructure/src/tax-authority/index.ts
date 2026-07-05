@@ -7,12 +7,15 @@
  * @module tax-authority
  */
 
-import type { CountryCode } from "@drenyra/domain";
 import type { TaxAuthorityPort } from "@drenyra/application/ports/tax-authority.port";
+import type { CountryCode } from "@drenyra/domain";
 import { SunatTaxAuthorityAdapter } from "./sunat-tax-authority.adapter";
 
-export { SunatTaxAuthorityAdapter, createSunatTaxAuthority } from "./sunat-tax-authority.adapter";
 export type { TaxAuthorityPort } from "@drenyra/application/ports/tax-authority.port";
+export {
+	createSunatTaxAuthority,
+	SunatTaxAuthorityAdapter,
+} from "./sunat-tax-authority.adapter";
 
 // ─── Adapter Registry ─────────────────────────────────────────────────
 
@@ -85,7 +88,4 @@ export async function createTaxAuthority(
 
 // ─── Default registrations ────────────────────────────────────────────
 
-registerTaxAuthority(
-	"PE",
-	(orgId) => new SunatTaxAuthorityAdapter(orgId),
-);
+registerTaxAuthority("PE", (orgId) => new SunatTaxAuthorityAdapter(orgId));

@@ -1,10 +1,15 @@
-import { useState, useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Zap } from "lucide-react";
-import { useSkills, useInstallSkill, useUninstallSkill, SkillCard } from "@/features/skills";
+import { useMemo, useState } from "react";
 import type { SkillDTO } from "@/features/skills";
-import { SkillSearchBar } from "@/features/skills/components/SkillSearchBar";
+import {
+	SkillCard,
+	useInstallSkill,
+	useSkills,
+	useUninstallSkill,
+} from "@/features/skills";
 import { SkillDetailView } from "@/features/skills/components/SkillDetailView";
+import { SkillSearchBar } from "@/features/skills/components/SkillSearchBar";
 
 function SkillsPage() {
 	const { data, isLoading } = useSkills();

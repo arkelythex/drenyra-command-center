@@ -3,14 +3,14 @@
 import { Mic, ShieldCheck, Zap } from "lucide-react";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { getCommandSuggestions } from "@/features/cognitive-hub/logic/intent-parser";
-import { cn } from "@/lib/utils";
-import { ComposerControls } from "./ComposerControls";
-import { ComposerSendButton } from "./ComposerSendButton";
-import { SlashCommandMenu } from "./SlashCommandMenu";
 import {
 	InlineAutocomplete,
 	useAutocompleteState,
 } from "@/features/drenyra-command-center/components/inline-autocomplete/InlineAutocomplete";
+import { cn } from "@/lib/utils";
+import { ComposerControls } from "./ComposerControls";
+import { ComposerSendButton } from "./ComposerSendButton";
+import { SlashCommandMenu } from "./SlashCommandMenu";
 import type { SuggestedAction } from "./SuggestedActions";
 import { SuggestedActions } from "./SuggestedActions";
 import { useSendFeedback } from "./useSendFeedback";

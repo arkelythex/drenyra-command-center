@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Context } from "elysia";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("../../auth.config", () => ({
 	auth: {
@@ -89,7 +89,9 @@ describe("handleGetSession", () => {
 
 	it("returns a null session envelope when Better Auth rejects the request", async () => {
 		vi.mocked(auth.handler).mockResolvedValue(
-			new Response(JSON.stringify({ error: { message: "Unauthorized" } }), { status: 401 }),
+			new Response(JSON.stringify({ error: { message: "Unauthorized" } }), {
+				status: 401,
+			}),
 		);
 
 		const set = { status: 200 } as { status: number };
@@ -110,7 +112,9 @@ describe("handleGetSession", () => {
 
 	it("returns a null session envelope when Better Auth fails with 5xx", async () => {
 		vi.mocked(auth.handler).mockResolvedValue(
-			new Response(JSON.stringify({ message: "Database unavailable" }), { status: 500 }),
+			new Response(JSON.stringify({ message: "Database unavailable" }), {
+				status: 500,
+			}),
 		);
 
 		const set = { status: 200 } as { status: number };

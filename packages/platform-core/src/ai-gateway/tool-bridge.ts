@@ -18,26 +18,26 @@
  * A callable tool that an AI model can invoke.
  */
 export interface Tool {
-  /** Unique tool name */
-  name: string;
-  /** Human-readable description of what the tool does */
-  description: string;
-  /** Optional JSON Schema for tool parameters */
-  schema?: Record<string, unknown>;
-  /** Execute the tool with the given arguments */
-  execute(args: Record<string, unknown>): Promise<Record<string, unknown>>;
+	/** Unique tool name */
+	name: string;
+	/** Human-readable description of what the tool does */
+	description: string;
+	/** Optional JSON Schema for tool parameters */
+	schema?: Record<string, unknown>;
+	/** Execute the tool with the given arguments */
+	execute(args: Record<string, unknown>): Promise<Record<string, unknown>>;
 }
 
 /**
  * The result of a tool execution.
  */
 export interface ToolResult {
-  /** Whether execution succeeded */
-  success: boolean;
-  /** Output data (present on success) */
-  data?: Record<string, unknown>;
-  /** Error message (present on failure) */
-  error?: string;
+	/** Whether execution succeeded */
+	success: boolean;
+	/** Output data (present on success) */
+	data?: Record<string, unknown>;
+	/** Error message (present on failure) */
+	error?: string;
 }
 
 // ──────────────────────────────────────────────
@@ -65,55 +65,55 @@ export interface ToolResult {
  * ```
  */
 export class ToolRegistry {
-  private tools = new Map<string, Tool>();
+	private tools = new Map<string, Tool>();
 
-  /**
-   * Register a tool. Overwrites if a tool with the same name exists.
-   */
-  register(tool: Tool): void {
-    this.tools.set(tool.name, tool);
-  }
+	/**
+	 * Register a tool. Overwrites if a tool with the same name exists.
+	 */
+	register(tool: Tool): void {
+		this.tools.set(tool.name, tool);
+	}
 
-  /**
-   * Get a registered tool by name. Returns undefined if not found.
-   */
-  get(name: string): Tool | undefined {
-    return this.tools.get(name);
-  }
+	/**
+	 * Get a registered tool by name. Returns undefined if not found.
+	 */
+	get(name: string): Tool | undefined {
+		return this.tools.get(name);
+	}
 
-  /**
-   * List all registered tools.
-   */
-  list(): Tool[] {
-    return Array.from(this.tools.values());
-  }
+	/**
+	 * List all registered tools.
+	 */
+	list(): Tool[] {
+		return Array.from(this.tools.values());
+	}
 
-  /**
-   * Execute a tool by name with the given arguments.
-   * Always returns a ToolResult — never throws.
-   */
-  async execute(
-    name: string,
-    args: Record<string, unknown>,
-  ): Promise<ToolResult> {
-    const tool = this.tools.get(name);
-    if (!tool) {
-      return { success: false, error: `Tool not found: ${name}` };
-    }
+	/**
+	 * Execute a tool by name with the given arguments.
+	 * Always returns a ToolResult — never throws.
+	 */
+	async execute(
+		name: string,
+		args: Record<string, unknown>,
+	): Promise<ToolResult> {
+		const tool = this.tools.get(name);
+		if (!tool) {
+			return { success: false, error: `Tool not found: ${name}` };
+		}
 
-    try {
-      const data = await tool.execute(args);
-      return { success: true, data };
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      return { success: false, error: message };
-    }
-  }
+		try {
+			const data = await tool.execute(args);
+			return { success: true, data };
+		} catch (error) {
+			const message = error instanceof Error ? error.message : String(error);
+			return { success: false, error: message };
+		}
+	}
 
-  /**
-   * Remove a registered tool. Returns true if removed, false if not found.
-   */
-  remove(name: string): boolean {
-    return this.tools.delete(name);
-  }
+	/**
+	 * Remove a registered tool. Returns true if removed, false if not found.
+	 */
+	remove(name: string): boolean {
+		return this.tools.delete(name);
+	}
 }

@@ -1,11 +1,11 @@
-import { Elysia } from "elysia";
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import type {
 	DecideApprovalInput,
 	DrenyraActorContext,
 	DrenyraFiscalCommandCenterService,
 } from "@drenyra/application/drenyra";
 import type { ApprovalRequest } from "@drenyra/domain/drenyra";
+import { Elysia } from "elysia";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createDrenyraCommandCenterApprovalRoutes } from "../command-center-approval.routes";
 
 const fiscalContext: DrenyraActorContext = {
@@ -16,12 +16,22 @@ const fiscalContext: DrenyraActorContext = {
 	userId: "reviewer-1",
 };
 
-const approveApprovalRequest = vi.fn<
-	(context: DrenyraActorContext, approvalId: string, input: DecideApprovalInput) => Promise<ApprovalRequest>
->();
-const rejectApprovalRequest = vi.fn<
-	(context: DrenyraActorContext, approvalId: string, input: DecideApprovalInput) => Promise<ApprovalRequest>
->();
+const approveApprovalRequest =
+	vi.fn<
+		(
+			context: DrenyraActorContext,
+			approvalId: string,
+			input: DecideApprovalInput,
+		) => Promise<ApprovalRequest>
+	>();
+const rejectApprovalRequest =
+	vi.fn<
+		(
+			context: DrenyraActorContext,
+			approvalId: string,
+			input: DecideApprovalInput,
+		) => Promise<ApprovalRequest>
+	>();
 
 function approval(overrides: Partial<ApprovalRequest> = {}): ApprovalRequest {
 	return {
@@ -56,12 +66,18 @@ function createApp(contextOk = true) {
 	} as unknown as DrenyraFiscalCommandCenterService;
 	return new Elysia().use(
 		createDrenyraCommandCenterApprovalRoutes(commandCenter, () =>
-			contextOk ? { ok: true, context: fiscalContext } : { ok: false, missingHeaders: ["x-company-ruc"] },
+			contextOk
+				? { ok: true, context: fiscalContext }
+				: { ok: false, missingHeaders: ["x-company-ruc"] },
 		),
 	);
 }
 
-async function postDecision(path: string, body: DecideApprovalInput = {}, contextOk = true): Promise<Response> {
+async function postDecision(
+	path: string,
+	body: DecideApprovalInput = {},
+	contextOk = true,
+): Promise<Response> {
 	return createApp(contextOk).handle(
 		new Request(`http://localhost${path}`, {
 			method: "POST",
@@ -86,15 +102,23 @@ describe("Drenyra command-center approval routes", () => {
 		const payload = await response.json();
 
 		expect(response.status).toBe(200);
-		expect(approveApprovalRequest).toHaveBeenCalledWith(fiscalContext, "approval-1", {
-			decisionReason: "Reviewed evidence",
-		});
+		expect(approveApprovalRequest).toHaveBeenCalledWith(
+			fiscalContext,
+			"approval-1",
+			{
+				decisionReason: "Reviewed evidence",
+			},
+		);
 		expect(payload.success).toBe(true);
 		expect(payload.data.status).toBe("APPROVED");
 	});
 
 	it("rejects without calling the service when fiscal scope is missing", async () => {
-		const response = await postDecision("/approvals/approval-1/reject", {}, false);
+		const response = await postDecision(
+			"/approvals/approval-1/reject",
+			{},
+			false,
+		);
 		const payload = await response.json();
 
 		expect(response.status).toBe(400);
@@ -105,7 +129,9 @@ describe("Drenyra command-center approval routes", () => {
 	});
 
 	it("maps already-decided approval errors to conflict envelopes", async () => {
-		approveApprovalRequest.mockRejectedValueOnce(new Error("APPROVAL_ALREADY_DECIDED"));
+		approveApprovalRequest.mockRejectedValueOnce(
+			new Error("APPROVAL_ALREADY_DECIDED"),
+		);
 
 		const response = await postDecision("/approvals/approval-1/approve");
 		const payload = await response.json();
@@ -116,7 +142,9 @@ describe("Drenyra command-center approval routes", () => {
 	});
 
 	it("maps missing approval reject errors to not-found envelopes", async () => {
-		rejectApprovalRequest.mockRejectedValueOnce(new Error("APPROVAL_REQUEST_NOT_FOUND"));
+		rejectApprovalRequest.mockRejectedValueOnce(
+			new Error("APPROVAL_REQUEST_NOT_FOUND"),
+		);
 
 		const response = await postDecision("/approvals/missing/reject", {
 			decisionReason: "Out of scope",

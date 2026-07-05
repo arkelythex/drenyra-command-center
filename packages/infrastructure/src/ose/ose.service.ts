@@ -7,9 +7,14 @@
  */
 
 import { createHmac, timingSafeEqual } from "node:crypto";
-import type { AttemptTrace, OSEConfig, OSEResponse, SendInvoiceData } from "./types";
-import { OSEProviderFactory } from "./providers/factory";
 import { oseConfigValidator } from "./config-validator";
+import { OSEProviderFactory } from "./providers/factory";
+import type {
+	AttemptTrace,
+	OSEConfig,
+	OSEResponse,
+	SendInvoiceData,
+} from "./types";
 
 export class OSEService {
 	private static config: OSEConfig = {
@@ -72,7 +77,10 @@ export class OSEService {
 	 * Verify signed webhook payload (HMAC SHA-256).
 	 * Returns true when no webhook secret is configured to allow local development.
 	 */
-	static verifyWebhookSignature(rawPayload: string, signatureHeader?: string): boolean {
+	static verifyWebhookSignature(
+		rawPayload: string,
+		signatureHeader?: string,
+	): boolean {
 		const secret = (OSEService.config.webhookSecret ?? "").trim();
 		if (!secret) return true;
 		if (!signatureHeader) return false;
@@ -80,7 +88,9 @@ export class OSEService {
 		const provided = signatureHeader.startsWith("sha256=")
 			? signatureHeader.slice("sha256=".length)
 			: signatureHeader;
-		const expected = createHmac("sha256", secret).update(rawPayload).digest("hex");
+		const expected = createHmac("sha256", secret)
+			.update(rawPayload)
+			.digest("hex");
 
 		try {
 			const providedBuffer = Buffer.from(provided, "hex");
@@ -141,7 +151,9 @@ export class OSEService {
 		return normalized === "1" || normalized === "true" || normalized === "yes";
 	}
 
-	private static parseProvider(value: string | undefined): OSEConfig["provider"] {
+	private static parseProvider(
+		value: string | undefined,
+	): OSEConfig["provider"] {
 		switch ((value ?? "nubefact").trim().toLowerCase()) {
 			case "nubefact":
 				return "nubefact";

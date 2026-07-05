@@ -1,7 +1,7 @@
+import { createHmac } from "node:crypto";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { auth } from "../../auth/auth.config";
 import { resolveSessionContext } from "../session-context";
-import { createHmac } from "node:crypto";
 
 describe("session-context", () => {
 	const originalEnv = { ...process.env };

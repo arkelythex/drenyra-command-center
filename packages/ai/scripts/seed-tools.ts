@@ -10,12 +10,12 @@
  * Requires DATABASE_URL environment variable.
  */
 
+import { getAllRegisteredAgents } from "@drenyra/drenyra-orchestrator";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { getAllRegisteredAgents } from "@drenyra/drenyra-orchestrator";
-import { ToolRegistry } from "../src/control-plane/tool-registry";
 import { AgentRegistry } from "../src/control-plane/agent-registry";
 import type { AgentRegistryEntry } from "../src/control-plane/contracts";
+import { ToolRegistry } from "../src/control-plane/tool-registry";
 
 async function main() {
 	const connectionString = process.env.DATABASE_URL;
@@ -43,9 +43,10 @@ async function main() {
 
 		// ---- Register Agent ----
 		try {
-			const capabilities = agent.capabilities.length > 0
-				? agent.capabilities
-				: ["advisory.review", "advisory.summarize"];
+			const capabilities =
+				agent.capabilities.length > 0
+					? agent.capabilities
+					: ["advisory.review", "advisory.summarize"];
 
 			const entry = {
 				agentId: agent.id,
@@ -59,7 +60,10 @@ async function main() {
 				capabilities: capabilities as AgentRegistryEntry["capabilities"],
 				allowedTools: capabilities.map((c: string) => `tool:${c}`),
 				approvalClass: "not-required" as const,
-				supportedSurfaces: ["api", "workspace"] as AgentRegistryEntry["supportedSurfaces"],
+				supportedSurfaces: [
+					"api",
+					"workspace",
+				] as AgentRegistryEntry["supportedSurfaces"],
 			};
 
 			await agentRegistry.registerAgent(entry);

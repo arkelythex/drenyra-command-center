@@ -1,1 +1,1 @@
-export { submitWithAudit, logBlockedSubmissionAttempt } from './service';
+export { logBlockedSubmissionAttempt, submitWithAudit } from "./service";

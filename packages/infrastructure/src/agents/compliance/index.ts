@@ -1,15 +1,15 @@
 export {
-	CompanyContext,
-	ExpenseToAnalyze,
-	PLESIREDiscrepancy,
-	ComplianceAnalysis,
-	ProposedAction,
-	ComplianceAlert,
-} from "./types";
-export {
-	analyzeExpenseCompliance,
 	analyzeDiscrepancy,
-	checkVendorCompliance,
+	analyzeExpenseCompliance,
 	analyzeRepresentationLimits,
 	askComplianceAgent,
+	checkVendorCompliance,
 } from "./agent";
+export {
+	CompanyContext,
+	ComplianceAlert,
+	ComplianceAnalysis,
+	ExpenseToAnalyze,
+	PLESIREDiscrepancy,
+	ProposedAction,
+} from "./types";

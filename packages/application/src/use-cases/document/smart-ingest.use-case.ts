@@ -7,18 +7,19 @@
  * 3. Attaches PDF as visual backup for XML
  * 4. Only queues OCR for files without XML
  */
+
+import { Document } from "@drenyra/domain/entities/Document";
+import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
 import type {
 	BatchUploadDTO,
 	SmartIngestResultDTO,
 } from "../../dtos/document/smart-ingest.dto";
-import type { IStorageService } from "../../ports/storage.port";
+import { dispatchDocumentProcessing } from "../../lib/job-dispatcher";
 import type {
 	IDocumentSyncProcessor,
 	IUBLInvoiceParser,
 } from "../../ports/document-processing.port";
-import { Document } from "@drenyra/domain/entities/Document";
-import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
-import { dispatchDocumentProcessing } from "../../lib/job-dispatcher";
+import type { IStorageService } from "../../ports/storage.port";
 import { saveDocumentWithTenant } from "./support/document-tenant";
 
 interface FileGroup {

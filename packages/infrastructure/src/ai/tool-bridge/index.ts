@@ -2,18 +2,17 @@
  * Tool Bridge - Barrel
  */
 
-export type {
-  OpenRouterJsonType,
-  OpenRouterJsonSchemaProperty,
-  OpenRouterJsonObjectSchema,
-  ZodIntrospectable,
-  ToolStreamEvent,
-  ToolApprovalRequest,
-  PermissionEffect,
-  PermissionCheckFn,
-} from './types';
-
 export {
-  getOpenRouterTools,
-  streamWithToolExecution,
-} from './bridge';
+	getOpenRouterTools,
+	streamWithToolExecution,
+} from "./bridge";
+export type {
+	OpenRouterJsonObjectSchema,
+	OpenRouterJsonSchemaProperty,
+	OpenRouterJsonType,
+	PermissionCheckFn,
+	PermissionEffect,
+	ToolApprovalRequest,
+	ToolStreamEvent,
+	ZodIntrospectable,
+} from "./types";

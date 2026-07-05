@@ -1,6 +1,14 @@
-import { describe, it, expect } from "vitest";
-import { AGENT_REGISTRY, getAgentById, getAgentsBySystem, getAgentsByTier, getLeafAgents, getRootAgents, getDrenyraSubagents } from "../registry";
-import { AGENT_TIERS, AGENT_SYSTEMS, isAgentInTier } from "../types";
+import { describe, expect, it } from "vitest";
+import {
+	AGENT_REGISTRY,
+	getAgentById,
+	getAgentsBySystem,
+	getAgentsByTier,
+	getDrenyraSubagents,
+	getLeafAgents,
+	getRootAgents,
+} from "../registry";
+import { AGENT_SYSTEMS, AGENT_TIERS, isAgentInTier } from "../types";
 
 describe("Unified Agent Registry", () => {
 	it("should have at least 50 entries", () => {

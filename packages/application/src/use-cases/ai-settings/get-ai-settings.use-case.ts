@@ -3,12 +3,12 @@
  * Retrieves current AI settings for an authenticated user
  */
 
+import type { AISettingsRepository } from "@drenyra/domain/repositories/ai-settings.repository";
 import {
 	type AISettingsResponseDTO,
 	createDefaultAISettingsResponseDTO,
 	toAISettingsResponseDTO,
 } from "../../dtos/ai-settings/ai-settings.dto";
-import type { AISettingsRepository } from "@drenyra/domain/repositories/ai-settings.repository";
 
 /**
  * GetAISettingsUseCase class.

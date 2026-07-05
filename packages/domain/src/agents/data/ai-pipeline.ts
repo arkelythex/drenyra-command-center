@@ -16,7 +16,8 @@ export const AI_PIPELINE_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "batch"] as const,
 		drenyraSubagent: null,
-		description: "OCR multi-modal reader for invoice documents — Gemini Flash instance",
+		description:
+			"OCR multi-modal reader for invoice documents — Gemini Flash instance",
 		sourcePath: "packages/ai/src/agents/agents/reader.agent.ts",
 	},
 	{
@@ -42,11 +43,16 @@ export const AI_PIPELINE_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["validation", "sunat-validation", "compliance-audit"] as const,
+		capabilities: [
+			"validation",
+			"sunat-validation",
+			"compliance-audit",
+		] as const,
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "batch"] as const,
 		drenyraSubagent: null,
-		description: "SUNAT 2026 compliance validator and XML generator — Grok adapter",
+		description:
+			"SUNAT 2026 compliance validator and XML generator — Grok adapter",
 		sourcePath: "packages/ai/src/agents/agents/validator.agent.ts",
 	},
 	{
@@ -61,7 +67,8 @@ export const AI_PIPELINE_AGENTS = [
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["api", "batch"] as const,
 		drenyraSubagent: null,
-		description: "Multi-agent debate arbitration and conflict resolution — Gemini Pro",
+		description:
+			"Multi-agent debate arbitration and conflict resolution — Gemini Pro",
 		sourcePath: "packages/ai/src/agents/agents/arbitrator.agent.ts",
 	},
 ] as const satisfies readonly UnifiedAgentEntry[];

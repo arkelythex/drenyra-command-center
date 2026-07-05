@@ -1,5 +1,5 @@
-import { n } from "@/lib/utils";
 import { useCallback, useMemo, useState } from "react";
+import { n } from "@/lib/utils";
 import type { BatchCompleteEvent } from "../inbox.schema";
 
 export interface InboxConversationMessage {
@@ -23,13 +23,18 @@ export function useInboxConversation(batch: BatchCompleteEvent | null) {
 
 			if (q.includes("error") || q.includes("fall")) {
 				const errors = batch.invoices.filter((item) => item.status === "error");
-				if (errors.length === 0) return "No hay facturas con error en este batch.";
+				if (errors.length === 0)
+					return "No hay facturas con error en este batch.";
 				return errors
 					.map((item) => `${item.filename}: ${item.error ?? "error"}`)
 					.join("\n");
 			}
 
-			if (q.includes("revisión") || q.includes("revision") || q.includes("revisar")) {
+			if (
+				q.includes("revisión") ||
+				q.includes("revision") ||
+				q.includes("revisar")
+			) {
 				const review = batch.invoices.filter(
 					(item) => item.status === "needs-review",
 				);

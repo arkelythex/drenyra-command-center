@@ -31,7 +31,8 @@ export const CLI_DELEGATION_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "Kuntur SDD orchestrator — coordinates subsidiary task decomposition",
+		description:
+			"Kuntur SDD orchestrator — coordinates subsidiary task decomposition",
 		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
 	},
 	{
@@ -40,13 +41,18 @@ export const CLI_DELEGATION_AGENTS = [
 		system: "cli-delegation" as const,
 		tier: "tier1" as const,
 		parentId: "drenyra-orchestrator",
-		maySpawn: ["fiscal-command-orchestrator", "ai-swarm-orchestrator", "drenyra-hr-orchestrator"],
+		maySpawn: [
+			"fiscal-command-orchestrator",
+			"ai-swarm-orchestrator",
+			"drenyra-hr-orchestrator",
+		],
 		isLeaf: false,
 		capabilities: ["orchestration", "task-delegation"] as const,
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "Drenyra SDD coordinator — decomposes complex tasks into sub-tasks",
+		description:
+			"Drenyra SDD coordinator — decomposes complex tasks into sub-tasks",
 		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
 	},
 	{
@@ -55,13 +61,22 @@ export const CLI_DELEGATION_AGENTS = [
 		system: "cli-delegation" as const,
 		tier: "tier2" as const,
 		parentId: "drenyra-sdd-orchestrator",
-		maySpawn: ["fiscal-sunat-agent", "fiscal-ledger-agent", "fiscal-reconcile-agent"],
+		maySpawn: [
+			"fiscal-sunat-agent",
+			"fiscal-ledger-agent",
+			"fiscal-reconcile-agent",
+		],
 		isLeaf: false,
-		capabilities: ["orchestration", "task-delegation", "compliance-audit"] as const,
+		capabilities: [
+			"orchestration",
+			"task-delegation",
+			"compliance-audit",
+		] as const,
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "Fiscal command orchestrator — coordinates SUNAT, ledger and reconciliation specialists",
+		description:
+			"Fiscal command orchestrator — coordinates SUNAT, ledger and reconciliation specialists",
 		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
 	},
 	{
@@ -76,7 +91,8 @@ export const CLI_DELEGATION_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "AI swarm orchestrator — coordinates codegen, test and review agent swarms",
+		description:
+			"AI swarm orchestrator — coordinates codegen, test and review agent swarms",
 		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
 	},
 	{
@@ -91,7 +107,8 @@ export const CLI_DELEGATION_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "HR orchestrator — coordinates payroll and HR compliance specialists",
+		description:
+			"HR orchestrator — coordinates payroll and HR compliance specialists",
 		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
 	},
 	{
@@ -102,11 +119,16 @@ export const CLI_DELEGATION_AGENTS = [
 		parentId: "fiscal-command-orchestrator",
 		maySpawn: ["fiscal-sunat-payload-agent"],
 		isLeaf: false,
-		capabilities: ["sunat-validation", "compliance-audit", "document-processing"] as const,
+		capabilities: [
+			"sunat-validation",
+			"compliance-audit",
+			"document-processing",
+		] as const,
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "SUNAT specialist — validates invoices and tax submissions against SUNAT regulations",
+		description:
+			"SUNAT specialist — validates invoices and tax submissions against SUNAT regulations",
 		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
 	},
 	{
@@ -121,7 +143,8 @@ export const CLI_DELEGATION_AGENTS = [
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "SUNAT payload drafter — prepares and formats SUNAT submission payloads",
+		description:
+			"SUNAT payload drafter — prepares and formats SUNAT submission payloads",
 		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
 	},
 	{
@@ -136,7 +159,8 @@ export const CLI_DELEGATION_AGENTS = [
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "Ledger specialist — reviews and validates ledger entries for fiscal compliance",
+		description:
+			"Ledger specialist — reviews and validates ledger entries for fiscal compliance",
 		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
 	},
 	{
@@ -151,7 +175,8 @@ export const CLI_DELEGATION_AGENTS = [
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "Reconciliation specialist — matches bank transactions with ledger entries",
+		description:
+			"Reconciliation specialist — matches bank transactions with ledger entries",
 		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
 	},
 	{
@@ -166,7 +191,8 @@ export const CLI_DELEGATION_AGENTS = [
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "Payroll specialist — processes payroll calculations and compliance",
+		description:
+			"Payroll specialist — processes payroll calculations and compliance",
 		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
 	},
 	{
@@ -181,7 +207,8 @@ export const CLI_DELEGATION_AGENTS = [
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "HR compliance specialist — ensures HR operations meet regulatory requirements",
+		description:
+			"HR compliance specialist — ensures HR operations meet regulatory requirements",
 		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
 	},
 	{
@@ -196,7 +223,8 @@ export const CLI_DELEGATION_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "Codegen leaf — generates code scaffolding and boilerplate implementation",
+		description:
+			"Codegen leaf — generates code scaffolding and boilerplate implementation",
 		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
 	},
 	{

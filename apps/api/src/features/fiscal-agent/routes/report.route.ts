@@ -2,11 +2,11 @@
  * Fiscal Agent Report Routes — GET reports, trigger manual runs.
  */
 
-import { Elysia } from "elysia";
-import { z } from "zod";
 import { FiscalNightlyRunUseCase } from "@drenyra/application/use-cases/fiscal-agent/fiscal-nightly-run.use-case";
 import { triggerManualRun } from "@drenyra/infrastructure/queues/fiscal-agent.queue";
-import { ok, fail } from "../../shared/api-response";
+import { Elysia } from "elysia";
+import { z } from "zod";
+import { fail, ok } from "../../shared/api-response";
 
 const useCase = new FiscalNightlyRunUseCase();
 
@@ -35,7 +35,10 @@ export const fiscalAgentReportRoute = new Elysia()
 		"/fiscal-agent/schedule",
 		async ({ body }) => {
 			await triggerManualRun(body);
-			return ok({ message: "Nightly run scheduled", orgId: body.organizationId });
+			return ok({
+				message: "Nightly run scheduled",
+				orgId: body.organizationId,
+			});
 		},
 		{
 			body: z.object({

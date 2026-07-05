@@ -3,8 +3,8 @@
  * Core type definitions for the banking bounded context
  */
 
-import type { Currency } from "@drenyra/domain/value-objects/Money";
 import type { BankAccountType } from "@drenyra/domain/value-objects/AccountType";
+import type { Currency } from "@drenyra/domain/value-objects/Money";
 
 /**
  * Bank account category.

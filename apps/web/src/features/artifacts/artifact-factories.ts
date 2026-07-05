@@ -1,276 +1,325 @@
 import {
-  ARTIFACT_TYPES,
-  type ArtifactMetadata,
-  type CurrencyCode,
-  type PaymentBeneficiary,
-  type PaymentPreviewArtifact,
-  type SireDiffArtifact,
-  type SireDiffRow,
-  type WorkspaceArtifact,
-} from './types/artifact.types';
+	ARTIFACT_TYPES,
+	type ArtifactMetadata,
+	type CurrencyCode,
+	type PaymentBeneficiary,
+	type PaymentPreviewArtifact,
+	type SireDiffArtifact,
+	type SireDiffRow,
+	type WorkspaceArtifact,
+} from "./types/artifact.types";
 
-const SIRE_TRIGGER_KEYWORDS = ['sire', 'concili', 'rvie', 'rce'];
-const PAYMENT_TRIGGER_KEYWORDS = ['pago', 'tesorer', 'banco', 'transfer', 'lote', 'beneficiario'];
+const SIRE_TRIGGER_KEYWORDS = ["sire", "concili", "rvie", "rce"];
+const PAYMENT_TRIGGER_KEYWORDS = [
+	"pago",
+	"tesorer",
+	"banco",
+	"transfer",
+	"lote",
+	"beneficiario",
+];
 
-const generateTraceId = (): string => `tr_${Math.random().toString(36).slice(2, 11)}`;
-const generateCorrelationId = (): string => `corr_${Math.random().toString(36).slice(2, 11)}`;
-const generateArtifactId = (): string => `art_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
+const generateTraceId = (): string =>
+	`tr_${Math.random().toString(36).slice(2, 11)}`;
+const generateCorrelationId = (): string =>
+	`corr_${Math.random().toString(36).slice(2, 11)}`;
+const generateArtifactId = (): string =>
+	`art_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`;
 
-function createMetadata(source: ArtifactMetadata['source'], actor = 'OmniAgent-Core'): ArtifactMetadata {
-  return {
-    traceId: generateTraceId(),
-    correlationId: generateCorrelationId(),
-    source,
-    createdAt: new Date().toISOString(),
-    actor,
-  };
+function createMetadata(
+	source: ArtifactMetadata["source"],
+	actor = "OmniAgent-Core",
+): ArtifactMetadata {
+	return {
+		traceId: generateTraceId(),
+		correlationId: generateCorrelationId(),
+		source,
+		createdAt: new Date().toISOString(),
+		actor,
+	};
 }
 
 function toMoney(value: number): number {
-  return Number(value.toFixed(2));
+	return Number(value.toFixed(2));
 }
 
 function buildSireSummary(rows: SireDiffRow[]) {
-  const matched = rows.filter((row) => row.status === 'MATCH').length;
-  const mismatched = rows.filter((row) => row.status === 'MISMATCH').length;
-  const missingOnLedger = rows.filter((row) => row.status === 'MISSING_LOCAL').length;
-  const missingOnSunat = rows.filter((row) => row.status === 'MISSING_SUNAT').length;
-  const critical = mismatched + missingOnLedger + missingOnSunat;
-  const totalDifference = toMoney(rows.reduce((acc, row) => acc + row.difference, 0));
+	const matched = rows.filter((row) => row.status === "MATCH").length;
+	const mismatched = rows.filter((row) => row.status === "MISMATCH").length;
+	const missingOnLedger = rows.filter(
+		(row) => row.status === "MISSING_LOCAL",
+	).length;
+	const missingOnSunat = rows.filter(
+		(row) => row.status === "MISSING_SUNAT",
+	).length;
+	const critical = mismatched + missingOnLedger + missingOnSunat;
+	const totalDifference = toMoney(
+		rows.reduce((acc, row) => acc + row.difference, 0),
+	);
 
-  return {
-    matched,
-    mismatched,
-    missingOnLedger,
-    missingOnSunat,
-    critical,
-    totalDifference,
-  };
+	return {
+		matched,
+		mismatched,
+		missingOnLedger,
+		missingOnSunat,
+		critical,
+		totalDifference,
+	};
 }
 
 function extractPeriodFromQuery(query: string): string | null {
-  const match = query.match(/\b(20\d{2})[-/](0[1-9]|1[0-2])\b/);
-  if (!match) return null;
-  return `${match[1]}-${match[2]}`;
+	const match = query.match(/\b(20\d{2})[-/](0[1-9]|1[0-2])\b/);
+	if (!match) return null;
+	return `${match[1]}-${match[2]}`;
 }
 
 function extractCurrencyFromQuery(query: string): CurrencyCode {
-  if (query.includes('usd') || query.includes('dolar') || query.includes('$')) {
-    return 'USD';
-  }
-  return 'PEN';
+	if (query.includes("usd") || query.includes("dolar") || query.includes("$")) {
+		return "USD";
+	}
+	return "PEN";
 }
 
-export const createSireDiffArtifact = (period = '2026-01'): SireDiffArtifact => {
-  const rows: SireDiffRow[] = [
-    {
-      id: 'rvie-001',
-      status: 'MATCH',
-      reason: 'Montos y fecha consistentes en ambos libros.',
-      difference: 0,
-      localRecord: {
-        documentType: '01',
-        series: 'F001',
-        number: '4599',
-        issueDate: `${period}-05`,
-        total: 1250.0,
-        currency: 'PEN',
-        ruc: '20100045678',
-        reasonSocial: 'SERVICIOS CLOUD PERU S.A.C.',
-      },
-      sunatRecord: {
-        documentType: '01',
-        series: 'F001',
-        number: '4599',
-        issueDate: `${period}-05`,
-        total: 1250.0,
-        currency: 'PEN',
-        ruc: '20100045678',
-        reasonSocial: 'SERVICIOS CLOUD PERU S.A.C.',
-      },
-      resolution: 'KEPT_LOCAL',
-    },
-    {
-      id: 'rvie-002',
-      status: 'MISMATCH',
-      reason: 'Diferencia en IGV reportado.',
-      difference: -50.0,
-      localRecord: {
-        documentType: '01',
-        series: 'E001',
-        number: '230',
-        issueDate: `${period}-08`,
-        total: 4500.0,
-        currency: 'PEN',
-        ruc: '20556677889',
-        reasonSocial: 'LOGISTICA INTEGRAL S.A.',
-      },
-      sunatRecord: {
-        documentType: '01',
-        series: 'E001',
-        number: '230',
-        issueDate: `${period}-08`,
-        total: 4550.0,
-        currency: 'PEN',
-        ruc: '20556677889',
-        reasonSocial: 'LOGISTICA INTEGRAL S.A.',
-      },
-      resolution: 'PENDING',
-    },
-    {
-      id: 'rvie-003',
-      status: 'MISSING_LOCAL',
-      reason: 'Comprobante detectado en SUNAT no registrado en ERP.',
-      difference: -2300.0,
-      sunatRecord: {
-        documentType: '01',
-        series: 'F099',
-        number: '112',
-        issueDate: `${period}-12`,
-        total: 2300.0,
-        currency: 'PEN',
-        ruc: '20601234567',
-        reasonSocial: 'CONSULTORA FINANCIERA ELITE',
-      },
-      resolution: 'PENDING',
-    },
-    {
-      id: 'rvie-004',
-      status: 'MISSING_SUNAT',
-      reason: 'Comprobante local pendiente de validación en SUNAT.',
-      difference: 890.0,
-      localRecord: {
-        documentType: '01',
-        series: 'F002',
-        number: '887',
-        issueDate: `${period}-15`,
-        total: 890.0,
-        currency: 'PEN',
-        ruc: '20498877665',
-        reasonSocial: 'PROVEEDORES UNIDOS S.A.C.',
-      },
-      resolution: 'PENDING',
-    },
-    {
-      id: 'rvie-005',
-      status: 'MATCH',
-      reason: 'Coincidencia total.',
-      difference: 0,
-      localRecord: {
-        documentType: '01',
-        series: 'F020',
-        number: '5566',
-        issueDate: `${period}-20`,
-        total: 340.5,
-        currency: 'PEN',
-        ruc: '20100099988',
-        reasonSocial: 'TELECOMUNICACIONES GLOBALES',
-      },
-      sunatRecord: {
-        documentType: '01',
-        series: 'F020',
-        number: '5566',
-        issueDate: `${period}-20`,
-        total: 340.5,
-        currency: 'PEN',
-        ruc: '20100099988',
-        reasonSocial: 'TELECOMUNICACIONES GLOBALES',
-      },
-      resolution: 'KEPT_LOCAL',
-    },
-  ];
+export const createSireDiffArtifact = (
+	period = "2026-01",
+): SireDiffArtifact => {
+	const rows: SireDiffRow[] = [
+		{
+			id: "rvie-001",
+			status: "MATCH",
+			reason: "Montos y fecha consistentes en ambos libros.",
+			difference: 0,
+			localRecord: {
+				documentType: "01",
+				series: "F001",
+				number: "4599",
+				issueDate: `${period}-05`,
+				total: 1250.0,
+				currency: "PEN",
+				ruc: "20100045678",
+				reasonSocial: "SERVICIOS CLOUD PERU S.A.C.",
+			},
+			sunatRecord: {
+				documentType: "01",
+				series: "F001",
+				number: "4599",
+				issueDate: `${period}-05`,
+				total: 1250.0,
+				currency: "PEN",
+				ruc: "20100045678",
+				reasonSocial: "SERVICIOS CLOUD PERU S.A.C.",
+			},
+			resolution: "KEPT_LOCAL",
+		},
+		{
+			id: "rvie-002",
+			status: "MISMATCH",
+			reason: "Diferencia en IGV reportado.",
+			difference: -50.0,
+			localRecord: {
+				documentType: "01",
+				series: "E001",
+				number: "230",
+				issueDate: `${period}-08`,
+				total: 4500.0,
+				currency: "PEN",
+				ruc: "20556677889",
+				reasonSocial: "LOGISTICA INTEGRAL S.A.",
+			},
+			sunatRecord: {
+				documentType: "01",
+				series: "E001",
+				number: "230",
+				issueDate: `${period}-08`,
+				total: 4550.0,
+				currency: "PEN",
+				ruc: "20556677889",
+				reasonSocial: "LOGISTICA INTEGRAL S.A.",
+			},
+			resolution: "PENDING",
+		},
+		{
+			id: "rvie-003",
+			status: "MISSING_LOCAL",
+			reason: "Comprobante detectado en SUNAT no registrado en ERP.",
+			difference: -2300.0,
+			sunatRecord: {
+				documentType: "01",
+				series: "F099",
+				number: "112",
+				issueDate: `${period}-12`,
+				total: 2300.0,
+				currency: "PEN",
+				ruc: "20601234567",
+				reasonSocial: "CONSULTORA FINANCIERA ELITE",
+			},
+			resolution: "PENDING",
+		},
+		{
+			id: "rvie-004",
+			status: "MISSING_SUNAT",
+			reason: "Comprobante local pendiente de validación en SUNAT.",
+			difference: 890.0,
+			localRecord: {
+				documentType: "01",
+				series: "F002",
+				number: "887",
+				issueDate: `${period}-15`,
+				total: 890.0,
+				currency: "PEN",
+				ruc: "20498877665",
+				reasonSocial: "PROVEEDORES UNIDOS S.A.C.",
+			},
+			resolution: "PENDING",
+		},
+		{
+			id: "rvie-005",
+			status: "MATCH",
+			reason: "Coincidencia total.",
+			difference: 0,
+			localRecord: {
+				documentType: "01",
+				series: "F020",
+				number: "5566",
+				issueDate: `${period}-20`,
+				total: 340.5,
+				currency: "PEN",
+				ruc: "20100099988",
+				reasonSocial: "TELECOMUNICACIONES GLOBALES",
+			},
+			sunatRecord: {
+				documentType: "01",
+				series: "F020",
+				number: "5566",
+				issueDate: `${period}-20`,
+				total: 340.5,
+				currency: "PEN",
+				ruc: "20100099988",
+				reasonSocial: "TELECOMUNICACIONES GLOBALES",
+			},
+			resolution: "KEPT_LOCAL",
+		},
+	];
 
-  return {
-    id: generateArtifactId(),
-    type: ARTIFACT_TYPES.SIRE_DIFF,
-    version: '1.1.0',
-    status: 'PREVIEW',
-    title: `Conciliación RVIE ${period}`,
-    description: 'Diff entre libro local y propuesta SUNAT con trazabilidad por fila.',
-    metadata: createMetadata('SUNAT'),
-    data: {
-      period,
-      currency: 'PEN',
-      summary: buildSireSummary(rows),
-      rows,
-    },
-    actions: [
-      {
-        id: 'accept-sunat-batch',
-        label: 'Aceptar SUNAT (lote)',
-        type: 'PRIMARY',
-        requiresConfirmation: true,
-        riskLevel: 'HIGH',
-        policyGate: {
-          policyKey: 'SIRE_BATCH_COMMIT',
-          requiresReason: true,
-          requiresDualApproval: true,
-        },
-      },
-      { id: 'keep-local-batch', label: 'Mantener Local (lote)', type: 'SECONDARY' },
-    ],
-  };
+	return {
+		id: generateArtifactId(),
+		type: ARTIFACT_TYPES.SIRE_DIFF,
+		version: "1.1.0",
+		status: "PREVIEW",
+		title: `Conciliación RVIE ${period}`,
+		description:
+			"Diff entre libro local y propuesta SUNAT con trazabilidad por fila.",
+		metadata: createMetadata("SUNAT"),
+		data: {
+			period,
+			currency: "PEN",
+			summary: buildSireSummary(rows),
+			rows,
+		},
+		actions: [
+			{
+				id: "accept-sunat-batch",
+				label: "Aceptar SUNAT (lote)",
+				type: "PRIMARY",
+				requiresConfirmation: true,
+				riskLevel: "HIGH",
+				policyGate: {
+					policyKey: "SIRE_BATCH_COMMIT",
+					requiresReason: true,
+					requiresDualApproval: true,
+				},
+			},
+			{
+				id: "keep-local-batch",
+				label: "Mantener Local (lote)",
+				type: "SECONDARY",
+			},
+		],
+	};
 };
 
-export const createPaymentPreviewArtifact = (currency: CurrencyCode = 'PEN'): PaymentPreviewArtifact => {
-  const beneficiaries: PaymentBeneficiary[] = [
-    { id: 'ben-001', name: 'Servicios Digitales Andes S.A.C.', bankAccount: '191-284756-0-12', amount: 4200.0 },
-    { id: 'ben-002', name: 'Operaciones Logisticas Sur EIRL', bankAccount: '194-902002-0-44', amount: 2750.4 },
-    { id: 'ben-003', name: 'Consultoria Financiera Lima S.A.', bankAccount: '191-638210-0-09', amount: 1980.3 },
-  ];
+export const createPaymentPreviewArtifact = (
+	currency: CurrencyCode = "PEN",
+): PaymentPreviewArtifact => {
+	const beneficiaries: PaymentBeneficiary[] = [
+		{
+			id: "ben-001",
+			name: "Servicios Digitales Andes S.A.C.",
+			bankAccount: "191-284756-0-12",
+			amount: 4200.0,
+		},
+		{
+			id: "ben-002",
+			name: "Operaciones Logisticas Sur EIRL",
+			bankAccount: "194-902002-0-44",
+			amount: 2750.4,
+		},
+		{
+			id: "ben-003",
+			name: "Consultoria Financiera Lima S.A.",
+			bankAccount: "191-638210-0-09",
+			amount: 1980.3,
+		},
+	];
 
-  const totalAmount = toMoney(beneficiaries.reduce((acc, beneficiary) => acc + beneficiary.amount, 0));
+	const totalAmount = toMoney(
+		beneficiaries.reduce((acc, beneficiary) => acc + beneficiary.amount, 0),
+	);
 
-  return {
-    id: generateArtifactId(),
-    type: ARTIFACT_TYPES.PAYMENT_PREVIEW,
-    version: '1.0.0',
-    status: 'PREVIEW',
-    title: 'Vista previa de lote de pagos',
-    description: 'Simulación de ejecución bancaria antes de confirmar el lote.',
-    metadata: createMetadata('BANK'),
-    data: {
-      provider: 'BCP',
-      bankAccount: currency === 'USD' ? 'USD-191-002184' : 'PEN-191-002183',
-      currency,
-      totalAmount,
-      beneficiaries,
-    },
-    actions: [
-      {
-        id: 'confirm-payment',
-        label: 'Confirmar lote',
-        type: 'PRIMARY',
-        requiresConfirmation: true,
-        riskLevel: 'CRITICAL',
-        policyGate: {
-          policyKey: 'PAYMENT_BATCH_EXECUTION',
-          requiresReason: true,
-          requiresDualApproval: true,
-        },
-      },
-      { id: 'cancel-payment', label: 'Cancelar', type: 'DANGER' },
-      { id: 'download-voucher', label: 'Descargar resumen', type: 'SECONDARY' },
-    ],
-  };
+	return {
+		id: generateArtifactId(),
+		type: ARTIFACT_TYPES.PAYMENT_PREVIEW,
+		version: "1.0.0",
+		status: "PREVIEW",
+		title: "Vista previa de lote de pagos",
+		description: "Simulación de ejecución bancaria antes de confirmar el lote.",
+		metadata: createMetadata("BANK"),
+		data: {
+			provider: "BCP",
+			bankAccount: currency === "USD" ? "USD-191-002184" : "PEN-191-002183",
+			currency,
+			totalAmount,
+			beneficiaries,
+		},
+		actions: [
+			{
+				id: "confirm-payment",
+				label: "Confirmar lote",
+				type: "PRIMARY",
+				requiresConfirmation: true,
+				riskLevel: "CRITICAL",
+				policyGate: {
+					policyKey: "PAYMENT_BATCH_EXECUTION",
+					requiresReason: true,
+					requiresDualApproval: true,
+				},
+			},
+			{ id: "cancel-payment", label: "Cancelar", type: "DANGER" },
+			{ id: "download-voucher", label: "Descargar resumen", type: "SECONDARY" },
+		],
+	};
 };
 
 /**
  * Compat export for OmniAgent + legacy callers.
  */
-export const resolveArtifactFromQuery = (query: string): WorkspaceArtifact | null => {
-  const normalized = query.toLowerCase().trim();
-  if (!normalized) return null;
+export const resolveArtifactFromQuery = (
+	query: string,
+): WorkspaceArtifact | null => {
+	const normalized = query.toLowerCase().trim();
+	if (!normalized) return null;
 
-  if (SIRE_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))) {
-    const period = extractPeriodFromQuery(normalized) ?? '2026-01';
-    return createSireDiffArtifact(period);
-  }
+	if (SIRE_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))) {
+		const period = extractPeriodFromQuery(normalized) ?? "2026-01";
+		return createSireDiffArtifact(period);
+	}
 
-  if (PAYMENT_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))) {
-    const currency = extractCurrencyFromQuery(normalized);
-    return createPaymentPreviewArtifact(currency);
-  }
+	if (
+		PAYMENT_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))
+	) {
+		const currency = extractCurrencyFromQuery(normalized);
+		return createPaymentPreviewArtifact(currency);
+	}
 
-  return null;
+	return null;
 };

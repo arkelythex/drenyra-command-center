@@ -62,7 +62,9 @@ describe("OseReadinessCard", () => {
 			/>,
 		);
 
-		expect(screen.getByText("Proveedor OSE en modo simulación")).toBeInTheDocument();
+		expect(
+			screen.getByText("Proveedor OSE en modo simulación"),
+		).toBeInTheDocument();
 		expect(screen.getByText("Demo")).toBeInTheDocument();
 	});
 });

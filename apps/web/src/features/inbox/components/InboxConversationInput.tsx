@@ -1,8 +1,8 @@
 "use client";
 
+import { MessageSquare, SendHorizontal } from "lucide-react";
 import type { FormEvent, ReactElement } from "react";
 import { useState } from "react";
-import { MessageSquare, SendHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { InboxConversationMessage } from "../hooks/useInboxConversation";
 

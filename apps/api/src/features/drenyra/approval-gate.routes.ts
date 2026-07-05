@@ -1,4 +1,7 @@
-import type { AgentContext, ApprovalRequest } from "@drenyra/drenyra-orchestrator";
+import type {
+	AgentContext,
+	ApprovalRequest,
+} from "@drenyra/drenyra-orchestrator";
 import { Elysia, t } from "elysia";
 import { fail } from "../shared/api-response";
 import {
@@ -50,7 +53,9 @@ export function createApprovalGateRoutes({
 					return drenyraContextFailure(contextResolution);
 				}
 
-				const allApprovals = approvalStore.listByContext(contextResolution.context);
+				const allApprovals = approvalStore.listByContext(
+					contextResolution.context,
+				);
 				return {
 					ok: true,
 					approvals: allApprovals

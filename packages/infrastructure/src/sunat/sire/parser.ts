@@ -1,4 +1,4 @@
-import { type SireRecord, type SireRegisterType } from "./types";
+import type { SireRecord, SireRegisterType } from "./types";
 
 function parseDate(dateStr: string): Date {
 	if (!dateStr) return new Date();

@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Context } from "elysia";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fingerprintSensitiveValue } from "../../lib/auth-event-sanitizer";
 
 interface AuthUserRow {

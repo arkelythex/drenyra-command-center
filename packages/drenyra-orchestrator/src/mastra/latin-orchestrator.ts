@@ -1,10 +1,10 @@
 import type { AgentContext } from "../types/agent-context";
 import type { LatinAgentId } from "../types/latin-agent";
-import { DomainAgent } from "./domain-agent";
-import { SessionManager } from "./session-manager";
-import { Supervisor, type PhaseTiming, type SwarmMode } from "./supervisor";
-import { TaskDecomposer } from "./task-decomposer";
+import type { DomainAgent } from "./domain-agent";
 import { ResultMerger } from "./result-merger";
+import { SessionManager } from "./session-manager";
+import { type PhaseTiming, Supervisor, type SwarmMode } from "./supervisor";
+import { TaskDecomposer } from "./task-decomposer";
 
 /** Result from a Latin Moderno orchestration request */
 export interface LatinOrchestrationResult {
@@ -47,7 +47,9 @@ export class LatinModernoOrchestrator {
 	private readonly sessionManager: SessionManager;
 	private readonly mode: SwarmMode;
 
-	constructor(options: LatinModernoOrchestratorOptions = { mode: "hierarchy" }) {
+	constructor(
+		options: LatinModernoOrchestratorOptions = { mode: "hierarchy" },
+	) {
 		this.mode = options.mode;
 		this.taskDecomposer = new TaskDecomposer();
 		this.resultMerger = new ResultMerger();
@@ -77,7 +79,8 @@ export class LatinModernoOrchestrator {
 			? this.sessionManager.get(sessionId)
 			: this.sessionManager.create(intent, context);
 
-		const actualSessionId = session?.id ?? this.sessionManager.create(intent, context).id;
+		const actualSessionId =
+			session?.id ?? this.sessionManager.create(intent, context).id;
 		const availableDomains = Array.from(this.domainAgents.keys());
 
 		// 1. Decompose the intent into steps
@@ -88,7 +91,11 @@ export class LatinModernoOrchestrator {
 		);
 
 		// 2. Execute steps (parallel groups sequentially, steps within group in parallel)
-		const results: Array<{ domainId: string; data: unknown; confidence: number }> = [];
+		const results: Array<{
+			domainId: string;
+			data: unknown;
+			confidence: number;
+		}> = [];
 
 		for (const group of decomposition.parallelGroups) {
 			const groupResults = await Promise.all(
@@ -96,7 +103,9 @@ export class LatinModernoOrchestrator {
 					const step = decomposition.steps.find((s) => s.id === stepId);
 					if (!step) return [];
 
-					const domainAgent = this.domainAgents.get(step.domain as LatinAgentId);
+					const domainAgent = this.domainAgents.get(
+						step.domain as LatinAgentId,
+					);
 					if (!domainAgent) return [];
 
 					const startTime = new Date();
@@ -110,33 +119,48 @@ export class LatinModernoOrchestrator {
 							tools: step.tools,
 						});
 
-						this.sessionManager.updateStep(actualSessionId, `${actualSessionId}-${step.domain}`, {
-							status: "completed",
-							result: result.data,
-							startedAt: startTime,
-							completedAt: new Date(),
-						});
+						this.sessionManager.updateStep(
+							actualSessionId,
+							`${actualSessionId}-${step.domain}`,
+							{
+								status: "completed",
+								result: result.data,
+								startedAt: startTime,
+								completedAt: new Date(),
+							},
+						);
 
 						this.supervisor.recordTiming(step.domain, startTime, new Date());
 
-						return [{
-							domainId: step.domain,
-							data: result.data,
-							confidence: result.confidence,
-						}];
+						return [
+							{
+								domainId: step.domain,
+								data: result.data,
+								confidence: result.confidence,
+							},
+						];
 					} catch (error) {
-						this.sessionManager.updateStep(actualSessionId, `${actualSessionId}-${step.domain}`, {
-							status: "failed",
-							error: error instanceof Error ? error.message : "Unknown error",
-							startedAt: startTime,
-							completedAt: new Date(),
-						});
+						this.sessionManager.updateStep(
+							actualSessionId,
+							`${actualSessionId}-${step.domain}`,
+							{
+								status: "failed",
+								error: error instanceof Error ? error.message : "Unknown error",
+								startedAt: startTime,
+								completedAt: new Date(),
+							},
+						);
 
-						return [{
-							domainId: step.domain,
-							data: { error: error instanceof Error ? error.message : "Unknown error" },
-							confidence: 0,
-						}];
+						return [
+							{
+								domainId: step.domain,
+								data: {
+									error:
+										error instanceof Error ? error.message : "Unknown error",
+								},
+								confidence: 0,
+							},
+						];
 					}
 				}),
 			);
@@ -147,7 +171,11 @@ export class LatinModernoOrchestrator {
 
 			// Check if we can proceed after each parallel group
 			const canProceed = this.supervisor.canProceed(
-				results.map((r) => ({ domainId: r.domainId, status: r.confidence > 0 ? "completed" as const : "error" as const })),
+				results.map((r) => ({
+					domainId: r.domainId,
+					status:
+						r.confidence > 0 ? ("completed" as const) : ("error" as const),
+				})),
 			);
 
 			if (!canProceed.proceed) {

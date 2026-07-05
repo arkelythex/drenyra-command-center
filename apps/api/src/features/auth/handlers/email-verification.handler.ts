@@ -1,9 +1,9 @@
-import { Context } from 'elysia';
-import { createLogger } from '../../../lib/logger';
-import { auth } from '../auth.config';
-import { ok, fail } from '../../shared/api-response';
+import type { Context } from "elysia";
+import { createLogger } from "../../../lib/logger";
+import { fail, ok } from "../../shared/api-response";
+import { auth } from "../auth.config";
 
-const logger = createLogger({ feature: 'auth', handler: 'email-verification' });
+const logger = createLogger({ feature: "auth", handler: "email-verification" });
 
 /**
  * Email Verification Handlers
@@ -42,8 +42,8 @@ const logger = createLogger({ feature: 'auth', handler: 'email-verification' });
  */
 
 export interface SendVerificationEmailBody {
-  email: string;
-  callbackURL: string;
+	email: string;
+	callbackURL: string;
 }
 
 /**
@@ -59,7 +59,7 @@ export interface SendVerificationEmailBody {
  * ```
  */
 export interface VerifyEmailQuery {
-  token: string;
+	token: string;
 }
 
 /**
@@ -117,39 +117,42 @@ export interface VerifyEmailQuery {
  * ```
  */
 export async function handleSendVerificationEmail(
-  body: SendVerificationEmailBody,
-  context: Context
+	body: SendVerificationEmailBody,
+	context: Context,
 ): Promise<unknown> {
-  const { email, callbackURL } = body;
-  const { set, headers } = context;
+	const { email, callbackURL } = body;
+	const { set, headers } = context;
 
-  try {
-    const request = new Request(
-      `${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}/api/auth/send-verification-email`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...headers,
-        },
-        body: JSON.stringify({ email, callbackURL }),
-      }
-    );
+	try {
+		const request = new Request(
+			`${process.env.BETTER_AUTH_URL || "http://localhost:3000"}/api/auth/send-verification-email`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					...headers,
+				},
+				body: JSON.stringify({ email, callbackURL }),
+			},
+		);
 
-    const response = await auth.handler(request);
-    const result = await response.json();
+		const response = await auth.handler(request);
+		const result = await response.json();
 
-    if (response.status !== 200) {
-      set.status = response.status;
-      return fail(result.error?.message || 'Error al enviar email', 'EMAIL_SEND_ERROR');
-    }
+		if (response.status !== 200) {
+			set.status = response.status;
+			return fail(
+				result.error?.message || "Error al enviar email",
+				"EMAIL_SEND_ERROR",
+			);
+		}
 
-    return ok({ message: `Email de verificación enviado a ${email}` });
-  } catch (error) {
-    logger.error({ error, email }, 'Failed to send verification email');
-    set.status = 500;
-    return fail('Error al enviar email de verificación', 'EMAIL_SEND_ERROR');
-  }
+		return ok({ message: `Email de verificación enviado a ${email}` });
+	} catch (error) {
+		logger.error({ error, email }, "Failed to send verification email");
+		set.status = 500;
+		return fail("Error al enviar email de verificación", "EMAIL_SEND_ERROR");
+	}
 }
 
 /**
@@ -217,46 +220,49 @@ export async function handleSendVerificationEmail(
  * ```
  */
 export async function handleVerifyEmail(
-  query: VerifyEmailQuery,
-  context: Context
+	query: VerifyEmailQuery,
+	context: Context,
 ): Promise<unknown> {
-  const { token } = query;
-  const { set, headers } = context;
+	const { token } = query;
+	const { set, headers } = context;
 
-  try {
-    if (!token) {
-      set.status = 400;
-      return fail('Token requerido', 'TOKEN_REQUIRED');
-    }
+	try {
+		if (!token) {
+			set.status = 400;
+			return fail("Token requerido", "TOKEN_REQUIRED");
+		}
 
-    const request = new Request(
-      `${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}/api/auth/verify-email?token=${token}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          ...headers,
-        },
-      }
-    );
+		const request = new Request(
+			`${process.env.BETTER_AUTH_URL || "http://localhost:3000"}/api/auth/verify-email?token=${token}`,
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					...headers,
+				},
+			},
+		);
 
-    const response = await auth.handler(request);
-    const result = await response.json();
+		const response = await auth.handler(request);
+		const result = await response.json();
 
-    if (response.status !== 200) {
-      set.status = response.status;
-      return fail(result.error?.message || 'Token inválido o expirado', 'TOKEN_INVALID');
-    }
+		if (response.status !== 200) {
+			set.status = response.status;
+			return fail(
+				result.error?.message || "Token inválido o expirado",
+				"TOKEN_INVALID",
+			);
+		}
 
-    logger.info({ email: result.user?.email ?? null }, 'Email verified');
+		logger.info({ email: result.user?.email ?? null }, "Email verified");
 
-    return ok({
-      message: 'Email verificado exitosamente',
-      user: result.user,
-    });
-  } catch (error) {
-    logger.error({ error, token }, 'Failed to verify email');
-    set.status = 500;
-    return fail('Error al verificar email', 'EMAIL_VERIFY_ERROR');
-  }
+		return ok({
+			message: "Email verificado exitosamente",
+			user: result.user,
+		});
+	} catch (error) {
+		logger.error({ error, token }, "Failed to verify email");
+		set.status = 500;
+		return fail("Error al verificar email", "EMAIL_VERIFY_ERROR");
+	}
 }

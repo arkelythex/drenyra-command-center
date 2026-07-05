@@ -33,9 +33,7 @@ export interface TenantContext {
 const getAuthContext = (): AuthContext => {
 	const state = useAuthStore.getState();
 	const companyId =
-		state.user?.activeCompanyId?.trim() ||
-		state.user?.companyId?.trim() ||
-		"";
+		state.user?.activeCompanyId?.trim() || state.user?.companyId?.trim() || "";
 
 	return {
 		user: state.user,

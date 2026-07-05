@@ -1,15 +1,18 @@
 import {
-	Clock3,
-	Play,
-	Pause,
 	CheckCircle2,
-	XCircle,
+	Clock3,
+	Pause,
+	Play,
 	RefreshCw,
+	XCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { AutomationDTO } from "../automations.api";
 
-const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; icon: typeof Play }> = {
+const STATUS_CONFIG: Record<
+	string,
+	{ label: string; color: string; bg: string; icon: typeof Play }
+> = {
 	active: {
 		label: "Activo",
 		color: "text-[var(--color-success)]",
@@ -124,9 +127,12 @@ export function AutomationCard({
 					{statusCfg.label}
 				</span>
 				<span className="flex items-center gap-1">
-					<Clock3 size={11} /> {TRIGGER_LABELS[automation.triggerType] ?? automation.triggerType}
+					<Clock3 size={11} />{" "}
+					{TRIGGER_LABELS[automation.triggerType] ?? automation.triggerType}
 				</span>
-				<span>{AUTONOMY_LABELS[automation.autonomy] ?? automation.autonomy}</span>
+				<span>
+					{AUTONOMY_LABELS[automation.autonomy] ?? automation.autonomy}
+				</span>
 			</div>
 
 			{/* Skills */}
@@ -151,7 +157,10 @@ export function AutomationCard({
 						<span>
 							Última:{" "}
 							{automation.lastRunStatus === "success" ? (
-								<CheckCircle2 size={10} className="inline text-[var(--color-success)]" />
+								<CheckCircle2
+									size={10}
+									className="inline text-[var(--color-success)]"
+								/>
 							) : automation.lastRunStatus === "failed" ? (
 								<XCircle size={10} className="inline text-red-500" />
 							) : null}

@@ -16,7 +16,9 @@ export const SUNAT_VISUAL_AGENTS = [
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["api", "automation"] as const,
 		drenyraSubagent: null,
-		description: "SUNAT visual fallback for CPE validation when primary SUNAT OSE is unreachable",
-		sourcePath: "apps/api/src/features/cpe-validator/application/fallback/sunat-visual-subagent.ts",
+		description:
+			"SUNAT visual fallback for CPE validation when primary SUNAT OSE is unreachable",
+		sourcePath:
+			"apps/api/src/features/cpe-validator/application/fallback/sunat-visual-subagent.ts",
 	},
 ] as const satisfies readonly UnifiedAgentEntry[];

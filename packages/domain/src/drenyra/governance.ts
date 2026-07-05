@@ -9,7 +9,12 @@
  */
 import type { FiscalScope } from "./types";
 
-export const DRENYRA_TOOL_RISK_LEVELS = ["LOW", "MEDIUM", "HIGH", "CRITICAL"] as const;
+export const DRENYRA_TOOL_RISK_LEVELS = [
+	"LOW",
+	"MEDIUM",
+	"HIGH",
+	"CRITICAL",
+] as const;
 export type DrenyraToolRiskLevel = (typeof DRENYRA_TOOL_RISK_LEVELS)[number];
 
 export const DRENYRA_TOOL_APPROVAL_LEVELS = [
@@ -57,7 +62,9 @@ function isSameFiscalScope(left: FiscalScope, right: FiscalScope): boolean {
 	);
 }
 
-function requiresHumanApproval(manifest: DrenyraToolCapabilityManifest): boolean {
+function requiresHumanApproval(
+	manifest: DrenyraToolCapabilityManifest,
+): boolean {
 	return (
 		manifest.approvalLevel === "gate" ||
 		manifest.approvalLevel === "fiscal_gate" ||
@@ -81,10 +88,7 @@ export function evaluateDrenyraToolGovernance(
 		return { allowed: false, reason: "SCOPE_NOT_ALLOWED" };
 	}
 
-	if (
-		manifest.redactionRequired &&
-		request.redactionStatus !== "passed"
-	) {
+	if (manifest.redactionRequired && request.redactionStatus !== "passed") {
 		return { allowed: false, reason: "REDACTION_FAILED" };
 	}
 

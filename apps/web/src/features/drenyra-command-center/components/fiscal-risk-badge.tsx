@@ -1,5 +1,5 @@
-import type { FiscalRiskLevel } from "../api/drenyra-command-center.api";
 import { cn } from "@/lib/utils";
+import type { FiscalRiskLevel } from "../api/drenyra-command-center.api";
 
 export function FiscalRiskBadge({
 	riskLevel,

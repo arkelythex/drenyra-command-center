@@ -5,11 +5,14 @@
  * non-blocking error handling, and unsubscribe lifecycle.
  */
 
-import { describe, it, expect, vi } from "vitest";
-import { createEventAdapter } from "../../src/events/adapter";
-import type { EventBus, EventSubscription } from "../../src/agents/types/workflow.types";
-import type { AgentEventType as WorkflowEventType } from "../../src/agents/types/workflow.types";
 import type { AgentEvent as CanonicalEvent } from "@drenyra/shared";
+import { describe, expect, it, vi } from "vitest";
+import type {
+	EventBus,
+	EventSubscription,
+	AgentEventType as WorkflowEventType,
+} from "../../src/agents/types/workflow.types";
+import { createEventAdapter } from "../../src/events/adapter";
 
 // ============================================================================
 // Helpers
@@ -240,7 +243,11 @@ describe("EventAdapter", () => {
 
 			entry!.handler(
 				createWorkflowEvent("PRUNE_REQUESTED", {
-					usage: { totalTokens: 500000, contextWindow: 1000000, usagePercent: 50 },
+					usage: {
+						totalTokens: 500000,
+						contextWindow: 1000000,
+						usagePercent: 50,
+					},
 					threshold: 0.95,
 				}),
 			);
@@ -307,7 +314,9 @@ describe("EventAdapter", () => {
 
 			adapter.subscribe(bus, onEvent);
 
-			const extractEntry = handlers.find((h) => h.type === "EXTRACTION_STARTED");
+			const extractEntry = handlers.find(
+				(h) => h.type === "EXTRACTION_STARTED",
+			);
 			const parseEntry = handlers.find((h) => h.type === "PARSING_STARTED");
 			expect(extractEntry).toBeDefined();
 			expect(parseEntry).toBeDefined();

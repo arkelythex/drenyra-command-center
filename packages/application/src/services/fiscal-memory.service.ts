@@ -1,8 +1,8 @@
 import {
 	FiscalMemory,
-	FiscalMemoryRevision,
 	type FiscalMemoryCategory,
 	type FiscalMemoryProps,
+	FiscalMemoryRevision,
 	type FiscalMemoryScope,
 	type FiscalMemorySeverity,
 } from "@drenyra/domain/fiscal-memory";
@@ -41,7 +41,10 @@ export interface RecordFiscalMemoryInput extends FiscalMemoryScope {
  * const decision: RecordDecisionInput = { ...input, evidenceRefs: ["evidence:1"] };
  */
 export type RecordDecisionInput = Omit<RecordFiscalMemoryInput, "category"> & {
-	readonly category?: "accounting_criterion" | "tax_decision" | "risk_exception";
+	readonly category?:
+		| "accounting_criterion"
+		| "tax_decision"
+		| "risk_exception";
 };
 
 /**
@@ -60,7 +63,10 @@ export type RecordAuditFindingInput = Omit<RecordFiscalMemoryInput, "category">;
  * @example
  * const closing: RecordMonthlyClosingInput = { ...input, period: "2026-05" };
  */
-export type RecordMonthlyClosingInput = Omit<RecordFiscalMemoryInput, "category">;
+export type RecordMonthlyClosingInput = Omit<
+	RecordFiscalMemoryInput,
+	"category"
+>;
 
 /**
  * Application service that records and revises verified fiscal memories.
@@ -93,7 +99,9 @@ export class FiscalMemoryService {
 	 * @returns The persisted audit finding memory.
 	 * @throws InvalidFiscalMemoryError when evidence or scope validation fails.
 	 */
-	async recordAuditFinding(input: RecordAuditFindingInput): Promise<FiscalMemory> {
+	async recordAuditFinding(
+		input: RecordAuditFindingInput,
+	): Promise<FiscalMemory> {
 		return this.recordMemory({
 			...input,
 			category: "audit_finding",
@@ -107,7 +115,9 @@ export class FiscalMemoryService {
 	 * @returns The persisted monthly closing memory.
 	 * @throws InvalidFiscalMemoryError when required evidence is missing.
 	 */
-	async recordMonthlyClosingMemory(input: RecordMonthlyClosingInput): Promise<FiscalMemory> {
+	async recordMonthlyClosingMemory(
+		input: RecordMonthlyClosingInput,
+	): Promise<FiscalMemory> {
 		return this.recordMemory({
 			...input,
 			category: "monthly_closing",
@@ -148,7 +158,9 @@ export class FiscalMemoryService {
 		return this.changeStatus({ ...input, status: "superseded" });
 	}
 
-	private async recordMemory(input: RecordFiscalMemoryInput): Promise<FiscalMemory> {
+	private async recordMemory(
+		input: RecordFiscalMemoryInput,
+	): Promise<FiscalMemory> {
 		const now = new Date();
 		const memory = FiscalMemory.create({
 			id: input.id ?? createFiscalMemoryId(),
@@ -210,7 +222,9 @@ export class FiscalMemoryService {
 		readonly changedBy: string;
 		readonly changeReason: string;
 	}): Promise<FiscalMemoryRevision> {
-		const revisions = await this.repository.findRevisions(input.previousValue.id);
+		const revisions = await this.repository.findRevisions(
+			input.previousValue.id,
+		);
 		return FiscalMemoryRevision.create({
 			id: createFiscalMemoryId(),
 			memoryId: input.previousValue.id,

@@ -2,14 +2,14 @@
  * CPE Tracking Service Tests
  */
 
-import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
+	type CDRData,
 	CPELog,
 	InvalidCPELogError,
 	InvalidCPELogTransitionError,
-	type CDRData,
 } from "@drenyra/domain/accounting/cpe-log";
 import type { CpeLogRepository } from "@drenyra/domain/repositories/cpe-log.repository";
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
 	CpeTrackingService,
 	type RegisterCPEDTO,
@@ -124,7 +124,12 @@ describe("CpeTrackingService", () => {
 			mockRepo.findById.mockResolvedValue(cpeLog);
 
 			// First submission works
-			await service.submitCPE(mockCpeLogId, mockCompanyId, "TICKET-001", "hash1");
+			await service.submitCPE(
+				mockCpeLogId,
+				mockCompanyId,
+				"TICKET-001",
+				"hash1",
+			);
 
 			// Reset mock for second attempt — the domain entity is immutable
 			// so the original CPELog is still "pendiente". The second submit

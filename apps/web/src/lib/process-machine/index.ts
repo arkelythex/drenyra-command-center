@@ -11,4 +11,8 @@
  */
 
 export { createProcessMachine } from "./machine";
-export type { ProcessBaseContext, ProcessMachineConfig, ProcessStatus } from "./types";
+export type {
+	ProcessBaseContext,
+	ProcessMachineConfig,
+	ProcessStatus,
+} from "./types";

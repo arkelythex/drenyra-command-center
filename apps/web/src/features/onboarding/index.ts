@@ -1,9 +1,9 @@
-export { OnboardingWizard } from "./components/OnboardingWizard";
 export { DemoShowcase } from "./components/DemoShowcase";
+export { OnboardingWizard } from "./components/OnboardingWizard";
 export { useOnboarding } from "./hooks/useOnboarding";
 export type {
 	CompanySetup,
-	RucLookupResult,
 	CompanySetupDraft,
 	OnboardingStep,
+	RucLookupResult,
 } from "./types/onboarding.types";

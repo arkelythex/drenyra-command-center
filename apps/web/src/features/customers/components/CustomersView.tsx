@@ -1,7 +1,7 @@
 import { Download, Menu, Search, UserPlus, Users2 } from "lucide-react";
 import { useState } from "react";
-import { Button } from "../../../components/ui/button";
 import { useSidebarLayout } from "@/stores/sidebar-layout.store";
+import { Button } from "../../../components/ui/button";
 import { cn } from "../../../lib/utils";
 import { type Customer, useCustomers } from "../hooks/useCustomers";
 import { CustomerModal } from "./CustomerModal";
@@ -162,7 +162,12 @@ export const CustomersView = () => {
 									onClick={handleNewCustomer}
 									role="button"
 									tabIndex={0}
-									onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleNewCustomer(); } }}
+									onKeyDown={(e) => {
+										if (e.key === "Enter" || e.key === " ") {
+											e.preventDefault();
+											handleNewCustomer();
+										}
+									}}
 								>
 									<div className="mb-8 flex h-24 w-24 items-center justify-center rounded-2xl border border-primary/20 bg-primary/5 text-primary shadow-xl transition-transform duration-300 group-hover:scale-[1.05]">
 										<Users2 size={48} strokeWidth={1} />

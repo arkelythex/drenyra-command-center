@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
-	customersApi,
 	type CustomerRecord,
+	customersApi,
 } from "@/features/customers/api/customers.api";
 import { captureError } from "@/lib/monitoring";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";

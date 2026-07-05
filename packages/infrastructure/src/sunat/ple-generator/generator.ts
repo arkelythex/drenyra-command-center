@@ -1,5 +1,17 @@
-import type { PleCompraRecord, PleConfig, PleDiarioRecord, PleGenerationResult, PleVentaRecord } from "./types.js";
-import { formatDate, formatDateOptional, formatDecimal, formatDecimalOptional, calculateChecksum } from "./formatting.js";
+import {
+	calculateChecksum,
+	formatDate,
+	formatDateOptional,
+	formatDecimal,
+	formatDecimalOptional,
+} from "./formatting.js";
+import type {
+	PleCompraRecord,
+	PleConfig,
+	PleDiarioRecord,
+	PleGenerationResult,
+	PleVentaRecord,
+} from "./types.js";
 
 export class SunatPleGenerator {
 	private config: PleConfig;

@@ -1,5 +1,3 @@
-import { Elysia } from "elysia";
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import type {
 	DrenyraActorContext,
 	DrenyraFiscalCommandCenterService,
@@ -9,6 +7,8 @@ import {
 	DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY,
 	type DrenyraFiscalWorkInspectEnvelope,
 } from "@drenyra/domain/drenyra";
+import { Elysia } from "elysia";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createDrenyraFiscalWorkRoutes } from "../fiscal-work.routes";
 
 const fiscalContext: DrenyraActorContext = {
@@ -19,21 +19,35 @@ const fiscalContext: DrenyraActorContext = {
 	userId: "user-1",
 };
 
-const inspectFiscalWorkItem = vi.fn<
-	(context: DrenyraActorContext, input: InspectFiscalWorkItemInput) => Promise<DrenyraFiscalWorkInspectEnvelope>
->();
+const inspectFiscalWorkItem =
+	vi.fn<
+		(
+			context: DrenyraActorContext,
+			input: InspectFiscalWorkItemInput,
+		) => Promise<DrenyraFiscalWorkInspectEnvelope>
+	>();
 
 function createApp(contextOk = true) {
-	const commandCenter = { inspectFiscalWorkItem } as unknown as DrenyraFiscalCommandCenterService;
+	const commandCenter = {
+		inspectFiscalWorkItem,
+	} as unknown as DrenyraFiscalCommandCenterService;
 	return new Elysia().use(
 		createDrenyraFiscalWorkRoutes(commandCenter, () =>
-			contextOk ? { ok: true, context: fiscalContext } : { ok: false, missingHeaders: ["x-company-ruc", "x-fiscal-period"] },
+			contextOk
+				? { ok: true, context: fiscalContext }
+				: { ok: false, missingHeaders: ["x-company-ruc", "x-fiscal-period"] },
 		),
 	);
 }
 
-async function getInspect(path: string, headers: Record<string, string>, contextOk = true): Promise<Response> {
-	return createApp(contextOk).handle(new Request(`http://localhost${path}`, { headers }));
+async function getInspect(
+	path: string,
+	headers: Record<string, string>,
+	contextOk = true,
+): Promise<Response> {
+	return createApp(contextOk).handle(
+		new Request(`http://localhost${path}`, { headers }),
+	);
 }
 
 describe("Drenyra fiscal work routes", () => {

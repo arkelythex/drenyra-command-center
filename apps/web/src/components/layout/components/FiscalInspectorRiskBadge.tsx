@@ -1,13 +1,16 @@
-import { cn } from "@/lib/utils";
 import { FISCAL_RISK_COLORS } from "@drenyra/domain";
-import { CheckCircle2, ShieldAlert, AlertTriangle } from "lucide-react";
-import type { RiskBadgeProps } from "../FiscalInspector.types";
+import { AlertTriangle, CheckCircle2, ShieldAlert } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { RISK_BG } from "../FiscalInspector.data";
+import type { RiskBadgeProps } from "../FiscalInspector.types";
 
 /**
  * Displays the fiscal risk level with icon, label, and impact description.
  */
-export function FiscalInspectorRiskBadge({ riskLevel, impact }: RiskBadgeProps) {
+export function FiscalInspectorRiskBadge({
+	riskLevel,
+	impact,
+}: RiskBadgeProps) {
 	const RiskIcon =
 		riskLevel === "LOW"
 			? CheckCircle2

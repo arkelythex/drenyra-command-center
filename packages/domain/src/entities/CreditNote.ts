@@ -18,9 +18,9 @@
  * @since 1.0.0
  */
 
+import type { Currency } from "../types/currency";
 import { DocumentSeries } from "../value-objects/DocumentSeries";
 import { Money } from "../value-objects/Money";
-import type { Currency } from "../types/currency";
 
 /**
  * SUNAT credit note types.
@@ -30,11 +30,7 @@ import type { Currency } from "../types/currency";
  * - DEVOLUCION: Product return
  * - OTROS: Other reasons
  */
-export type CreditNoteType =
-	| "ANULACION"
-	| "DESCUENTO"
-	| "DEVOLUCION"
-	| "OTROS";
+export type CreditNoteType = "ANULACION" | "DESCUENTO" | "DEVOLUCION" | "OTROS";
 
 /**
  * Credit note lifecycle status.
@@ -44,11 +40,7 @@ export type CreditNoteType =
  * - ACCEPTED: Accepted by SUNAT
  * - REJECTED: Rejected by SUNAT
  */
-export type CreditNoteStatus =
-	| "DRAFT"
-	| "SENT"
-	| "ACCEPTED"
-	| "REJECTED";
+export type CreditNoteStatus = "DRAFT" | "SENT" | "ACCEPTED" | "REJECTED";
 
 /**
  * Properties for creating a CreditNote entity.
@@ -249,7 +241,9 @@ export class CreditNote {
 	 */
 	markAsRejected(reason: string): CreditNote {
 		if (this.props.status !== "SENT") {
-			throw new Error("Solo se pueden rechazar notas de crédito en estado SENT");
+			throw new Error(
+				"Solo se pueden rechazar notas de crédito en estado SENT",
+			);
 		}
 
 		return new CreditNote({
@@ -293,23 +287,57 @@ export class CreditNote {
 
 	// ─── Getters ─────────────────────────────────────────────────
 
-	get id(): string { return this.props.id; }
-	get referenceInvoiceId(): string { return this.props.referenceInvoiceId; }
-	get referenceInvoiceTotal(): number | undefined { return this.props.referenceInvoiceTotal; }
-	get creditNoteType(): CreditNoteType { return this.props.creditNoteType; }
-	get reason(): string { return this.props.reason; }
-	get series(): DocumentSeries { return this.props.series; }
-	get number(): number { return this.props.number; }
-	get totalAmount(): Money { return this.props.totalAmount; }
-	get baseAmount(): Money { return this.props.baseAmount; }
-	get igvAmount(): Money { return this.props.igvAmount; }
-	get currency(): Currency { return this.props.currency; }
-	get status(): CreditNoteStatus { return this.props.status; }
-	get sunatResponseCode(): string | undefined { return this.props.sunatResponseCode; }
-	get sentToSunatAt(): Date | undefined { return this.props.sentToSunatAt; }
-	get issueDate(): Date { return this.props.issueDate; }
-	get createdAt(): Date { return this.props.createdAt; }
-	get updatedAt(): Date { return this.props.updatedAt; }
+	get id(): string {
+		return this.props.id;
+	}
+	get referenceInvoiceId(): string {
+		return this.props.referenceInvoiceId;
+	}
+	get referenceInvoiceTotal(): number | undefined {
+		return this.props.referenceInvoiceTotal;
+	}
+	get creditNoteType(): CreditNoteType {
+		return this.props.creditNoteType;
+	}
+	get reason(): string {
+		return this.props.reason;
+	}
+	get series(): DocumentSeries {
+		return this.props.series;
+	}
+	get number(): number {
+		return this.props.number;
+	}
+	get totalAmount(): Money {
+		return this.props.totalAmount;
+	}
+	get baseAmount(): Money {
+		return this.props.baseAmount;
+	}
+	get igvAmount(): Money {
+		return this.props.igvAmount;
+	}
+	get currency(): Currency {
+		return this.props.currency;
+	}
+	get status(): CreditNoteStatus {
+		return this.props.status;
+	}
+	get sunatResponseCode(): string | undefined {
+		return this.props.sunatResponseCode;
+	}
+	get sentToSunatAt(): Date | undefined {
+		return this.props.sentToSunatAt;
+	}
+	get issueDate(): Date {
+		return this.props.issueDate;
+	}
+	get createdAt(): Date {
+		return this.props.createdAt;
+	}
+	get updatedAt(): Date {
+		return this.props.updatedAt;
+	}
 
 	/**
 	 * Serializes to a plain JSON object.

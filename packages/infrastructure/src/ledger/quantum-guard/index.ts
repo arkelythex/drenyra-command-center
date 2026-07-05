@@ -1,9 +1,9 @@
 export {
-	isPeriodClosed,
 	canCreateJournalEntry,
 	canModifyJournalEntry,
-	getPeriodStatus,
 	createReversalEntry,
+	getPeriodStatus,
+	isPeriodClosed,
 } from "./guard";
 
 export type { LedgerGuardResult, PeriodStatus } from "./types";

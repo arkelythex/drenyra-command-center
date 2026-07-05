@@ -25,7 +25,9 @@ export function getScenarioImpact(
 
 	let estimatedDelta = 0;
 	for (const row of scenario.rows) {
-		estimatedDelta += Math.abs(parseMoney(row.original) - parseMoney(row.corrected));
+		estimatedDelta += Math.abs(
+			parseMoney(row.original) - parseMoney(row.corrected),
+		);
 	}
 
 	return {
@@ -43,7 +45,8 @@ export function getCommitLabel(
 		return `Pendiente de confirmación (${undoSecondsLeft}s)`;
 	}
 	if (status === "committed") return "Confirmación registrada en evidencia";
-	if (status === "error") return "Error de confirmación: requiere revisión humana";
+	if (status === "error")
+		return "Error de confirmación: requiere revisión humana";
 	return "Sin confirmar";
 }
 

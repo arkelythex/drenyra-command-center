@@ -1,12 +1,12 @@
-import { createHash, randomInt, timingSafeEqual } from 'node:crypto';
+import { createHash, randomInt, timingSafeEqual } from "node:crypto";
 
 const PAIRING_CODE_LENGTH = 6;
-const PAIRING_NAMESPACE = 'cognitive-approval-pairing-v1';
+const PAIRING_NAMESPACE = "cognitive-approval-pairing-v1";
 
 interface PairingHashContext {
-  runId: string;
-  toolCallId: string;
-  sessionId: string;
+	runId: string;
+	toolCallId: string;
+	sessionId: string;
 }
 
 /**
@@ -19,12 +19,12 @@ interface PairingHashContext {
  * ```
  */
 export interface ApprovalPairingMetadata {
-  required: boolean;
-  sessionId: string;
-  hint: string;
-  challenge: string;
-  codeHash: string;
-  algorithm: 'sha256-v1';
+	required: boolean;
+	sessionId: string;
+	hint: string;
+	challenge: string;
+	codeHash: string;
+	algorithm: "sha256-v1";
 }
 
 /**
@@ -37,23 +37,26 @@ export interface ApprovalPairingMetadata {
  * ```
  */
 export interface ApprovalPairingBundle {
-  code: string;
-  metadata: ApprovalPairingMetadata;
+	code: string;
+	metadata: ApprovalPairingMetadata;
 }
 
 function getPairingSecret(): string {
-  return process.env.COGNITIVE_APPROVAL_PAIRING_SECRET?.trim() || 'drenyra-local-pairing-secret';
+	return (
+		process.env.COGNITIVE_APPROVAL_PAIRING_SECRET?.trim() ||
+		"drenyra-local-pairing-secret"
+	);
 }
 
 function toPairingHashInput(code: string, context: PairingHashContext): string {
-  return [
-    PAIRING_NAMESPACE,
-    getPairingSecret(),
-    context.runId,
-    context.toolCallId,
-    context.sessionId,
-    code,
-  ].join(':');
+	return [
+		PAIRING_NAMESPACE,
+		getPairingSecret(),
+		context.runId,
+		context.toolCallId,
+		context.sessionId,
+		code,
+	].join(":");
 }
 
 /**
@@ -68,16 +71,21 @@ function toPairingHashInput(code: string, context: PairingHashContext): string {
  * console.log(result);
  * ```
  */
-export function hashApprovalPairingCode(code: string, context: PairingHashContext): string {
-  return createHash('sha256').update(toPairingHashInput(code, context)).digest('hex');
+export function hashApprovalPairingCode(
+	code: string,
+	context: PairingHashContext,
+): string {
+	return createHash("sha256")
+		.update(toPairingHashInput(code, context))
+		.digest("hex");
 }
 
 function secureHexEquals(left: string, right: string): boolean {
-  if (!left || !right) return false;
-  const leftBuffer = Buffer.from(left, 'hex');
-  const rightBuffer = Buffer.from(right, 'hex');
-  if (leftBuffer.length !== rightBuffer.length) return false;
-  return timingSafeEqual(leftBuffer, rightBuffer);
+	if (!left || !right) return false;
+	const leftBuffer = Buffer.from(left, "hex");
+	const rightBuffer = Buffer.from(right, "hex");
+	if (leftBuffer.length !== rightBuffer.length) return false;
+	return timingSafeEqual(leftBuffer, rightBuffer);
 }
 
 /**
@@ -94,17 +102,17 @@ function secureHexEquals(left: string, right: string): boolean {
  * ```
  */
 export function verifyApprovalPairingCode(
-  code: string,
-  metadata: Pick<ApprovalPairingMetadata, 'codeHash' | 'sessionId'>,
-  context: Pick<PairingHashContext, 'runId' | 'toolCallId'>,
+	code: string,
+	metadata: Pick<ApprovalPairingMetadata, "codeHash" | "sessionId">,
+	context: Pick<PairingHashContext, "runId" | "toolCallId">,
 ): boolean {
-  const expectedHash = hashApprovalPairingCode(code, {
-    runId: context.runId,
-    toolCallId: context.toolCallId,
-    sessionId: metadata.sessionId,
-  });
+	const expectedHash = hashApprovalPairingCode(code, {
+		runId: context.runId,
+		toolCallId: context.toolCallId,
+		sessionId: metadata.sessionId,
+	});
 
-  return secureHexEquals(expectedHash, metadata.codeHash);
+	return secureHexEquals(expectedHash, metadata.codeHash);
 }
 
 /**
@@ -120,22 +128,29 @@ export function verifyApprovalPairingCode(
  * ```
  */
 export function createApprovalPairing(
-  runId: string,
-  toolCallId: string,
+	runId: string,
+	toolCallId: string,
 ): ApprovalPairingBundle {
-  const sessionId = `pair-${Date.now().toString(36)}-${randomInt(1000, 9999)}`;
-  const code = randomInt(0, 1_000_000).toString().padStart(PAIRING_CODE_LENGTH, '0');
-  const codeHash = hashApprovalPairingCode(code, { runId, toolCallId, sessionId });
+	const sessionId = `pair-${Date.now().toString(36)}-${randomInt(1000, 9999)}`;
+	const code = randomInt(0, 1_000_000)
+		.toString()
+		.padStart(PAIRING_CODE_LENGTH, "0");
+	const codeHash = hashApprovalPairingCode(code, {
+		runId,
+		toolCallId,
+		sessionId,
+	});
 
-  return {
-    code,
-    metadata: {
-      required: true,
-      sessionId,
-      hint: `**${code.slice(-2)}`,
-      challenge: 'Ingresa el código de pairing para ejecutar esta herramienta crítica.',
-      codeHash,
-      algorithm: 'sha256-v1',
-    },
-  };
+	return {
+		code,
+		metadata: {
+			required: true,
+			sessionId,
+			hint: `**${code.slice(-2)}`,
+			challenge:
+				"Ingresa el código de pairing para ejecutar esta herramienta crítica.",
+			codeHash,
+			algorithm: "sha256-v1",
+		},
+	};
 }

@@ -1,8 +1,10 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { AccountingPr } from "../accounting-pr.entity";
 import type { AccountingPrProps } from "../types";
 
-function makeProps(overrides: Partial<AccountingPrProps> = {}): AccountingPrProps {
+function makeProps(
+	overrides: Partial<AccountingPrProps> = {},
+): AccountingPrProps {
 	return {
 		id: "pr-001",
 		companyId: "company-1",
@@ -46,27 +48,27 @@ describe("AccountingPr", () => {
 		});
 
 		it("throws if title is empty", () => {
-			expect(() =>
-				AccountingPr.create(makeProps({ title: "" })),
-			).toThrow("El título de la PR es requerido");
+			expect(() => AccountingPr.create(makeProps({ title: "" }))).toThrow(
+				"El título de la PR es requerido",
+			);
 		});
 
 		it("throws if title is only whitespace", () => {
-			expect(() =>
-				AccountingPr.create(makeProps({ title: "   " })),
-			).toThrow("El título de la PR es requerido");
+			expect(() => AccountingPr.create(makeProps({ title: "   " }))).toThrow(
+				"El título de la PR es requerido",
+			);
 		});
 
 		it("throws if prNumber is zero", () => {
-			expect(() =>
-				AccountingPr.create(makeProps({ prNumber: 0 })),
-			).toThrow("El número de PR debe ser positivo");
+			expect(() => AccountingPr.create(makeProps({ prNumber: 0 }))).toThrow(
+				"El número de PR debe ser positivo",
+			);
 		});
 
 		it("throws if prNumber is negative", () => {
-			expect(() =>
-				AccountingPr.create(makeProps({ prNumber: -1 })),
-			).toThrow("El número de PR debe ser positivo");
+			expect(() => AccountingPr.create(makeProps({ prNumber: -1 }))).toThrow(
+				"El número de PR debe ser positivo",
+			);
 		});
 
 		it("throws if totalDebitCents is negative", () => {
@@ -82,32 +84,42 @@ describe("AccountingPr", () => {
 		});
 
 		it("allows zero balances", () => {
-			const pr = AccountingPr.create(makeProps({ totalDebitCents: 0, totalCreditCents: 0 }));
+			const pr = AccountingPr.create(
+				makeProps({ totalDebitCents: 0, totalCreditCents: 0 }),
+			);
 			expect(pr.totalDebitCents).toBe(0);
 			expect(pr.totalCreditCents).toBe(0);
 		});
 
 		it("throws if entries is not an array", () => {
 			expect(() =>
-				AccountingPr.create(makeProps({ entries: undefined as unknown as string[] })),
+				AccountingPr.create(
+					makeProps({ entries: undefined as unknown as string[] }),
+				),
 			).toThrow("Las entradas deben ser un arreglo");
 		});
 
 		it("throws if evidenceIds is not an array", () => {
 			expect(() =>
-				AccountingPr.create(makeProps({ evidenceIds: undefined as unknown as string[] })),
+				AccountingPr.create(
+					makeProps({ evidenceIds: undefined as unknown as string[] }),
+				),
 			).toThrow("Los IDs de evidencia deben ser un arreglo");
 		});
 
 		it("throws if approveSignerIds is not an array", () => {
 			expect(() =>
-				AccountingPr.create(makeProps({ approveSignerIds: undefined as unknown as string[] })),
+				AccountingPr.create(
+					makeProps({ approveSignerIds: undefined as unknown as string[] }),
+				),
 			).toThrow("Los signatarios deben ser un arreglo");
 		});
 
 		it("throws if approveSignatures is not an array", () => {
 			expect(() =>
-				AccountingPr.create(makeProps({ approveSignatures: undefined as unknown as never[] })),
+				AccountingPr.create(
+					makeProps({ approveSignatures: undefined as unknown as never[] }),
+				),
 			).toThrow("Las firmas deben ser un arreglo");
 		});
 	});
@@ -249,7 +261,9 @@ describe("AccountingPr", () => {
 
 		it("throws if reason is only whitespace", () => {
 			const pr = AccountingPr.create(makeProps({ status: "PENDING_REVIEW" }));
-			expect(() => pr.reject("   ")).toThrow("El motivo de rechazo es requerido");
+			expect(() => pr.reject("   ")).toThrow(
+				"El motivo de rechazo es requerido",
+			);
 		});
 
 		it("throws when not in PENDING_REVIEW status", () => {

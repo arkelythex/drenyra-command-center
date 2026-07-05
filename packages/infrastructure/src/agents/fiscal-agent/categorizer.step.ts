@@ -3,7 +3,6 @@
  * Uses real PCGE catalog with keyword matching. Scalable: add ML later.
  */
 
-import { findBestAccount } from "@drenyra/domain/services/pcge-catalog";
 import type {
 	CategorizeOutput,
 	FiscalAgentStep,
@@ -12,6 +11,7 @@ import type {
 	StepResult,
 	TransactionCategorization,
 } from "@drenyra/application/use-cases/fiscal-agent/types";
+import { findBestAccount } from "@drenyra/domain/services/pcge-catalog";
 
 export class CategorizerStep
 	implements FiscalAgentStep<ProcessableTransaction[], CategorizeOutput>

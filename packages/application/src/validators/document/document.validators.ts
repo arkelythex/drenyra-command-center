@@ -17,22 +17,20 @@ const withDocumentTenant = <T extends z.ZodRawShape>(shape: T) =>
  * ```
  */
 export const UploadDocumentSchema = withDocumentTenant({
-		clientId: z.string().uuid("ID de cliente inválido"),
-		clientName: z.string().min(1, "Nombre de cliente requerido").max(200),
-		file: z.instanceof(File).or(z.instanceof(Buffer)),
-		fileName: z.string().min(1).max(255),
-		fileType: z.enum(["IMAGE", "XML", "PDF"]),
-	})
-	.refine(
-		(data) => {
-			const size =
-				data.file instanceof File ? data.file.size : data.file.length;
-			return size <= MAX_FILE_SIZE;
-		},
-		{
-			message: `El archivo no debe exceder ${MAX_FILE_SIZE / 1024 / 1024}MB`,
-		},
-	);
+	clientId: z.string().uuid("ID de cliente inválido"),
+	clientName: z.string().min(1, "Nombre de cliente requerido").max(200),
+	file: z.instanceof(File).or(z.instanceof(Buffer)),
+	fileName: z.string().min(1).max(255),
+	fileType: z.enum(["IMAGE", "XML", "PDF"]),
+}).refine(
+	(data) => {
+		const size = data.file instanceof File ? data.file.size : data.file.length;
+		return size <= MAX_FILE_SIZE;
+	},
+	{
+		message: `El archivo no debe exceder ${MAX_FILE_SIZE / 1024 / 1024}MB`,
+	},
+);
 
 /**
  * UploadDocumentInput type.

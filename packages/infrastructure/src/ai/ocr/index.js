@@ -1,2 +1,6 @@
-export { extractInvoiceData, batchExtractInvoices, extractFromFile, } from './service';
+export {
+	batchExtractInvoices,
+	extractFromFile,
+	extractInvoiceData,
+} from "./service";
 //# sourceMappingURL=index.js.map

@@ -1,16 +1,16 @@
 import { Elysia } from "elysia";
+import { AppError } from "../../lib/errors";
 import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
-import { AppError } from "../../lib/errors";
-import * as service from "./service";
 import {
-	IdParams,
-	SearchQuery,
-	LinkBody,
-	UnlinkBody,
 	BatchValidateBody,
+	IdParams,
 	LineageParams,
+	LinkBody,
+	SearchQuery,
+	UnlinkBody,
 } from "./schemas";
+import * as service from "./service";
 
 function handleError(error: unknown, set: { status: number }) {
 	if (error instanceof AppError) {

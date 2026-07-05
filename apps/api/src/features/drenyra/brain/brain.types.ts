@@ -33,9 +33,11 @@ export function isSameFiscalScope(
 	left: DrenyraFiscalScope,
 	right: DrenyraFiscalScope,
 ): boolean {
-	return left.organizationId === right.organizationId
-		&& left.companyId === right.companyId
-		&& left.companyRuc === right.companyRuc
-		&& left.period === right.period
-		&& left.countryCode === right.countryCode;
+	return (
+		left.organizationId === right.organizationId &&
+		left.companyId === right.companyId &&
+		left.companyRuc === right.companyRuc &&
+		left.period === right.period &&
+		left.countryCode === right.countryCode
+	);
 }

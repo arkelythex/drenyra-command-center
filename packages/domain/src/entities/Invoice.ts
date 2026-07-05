@@ -16,11 +16,11 @@
  * @since 1.0.0
  */
 
+import type { TaxIdentifier } from "../types/tax-identifier";
 import { DNI } from "../value-objects/DNI";
 import { DocumentSeries } from "../value-objects/DocumentSeries";
 import { Money } from "../value-objects/Money";
 import { RUC } from "../value-objects/RUC";
-import type { TaxIdentifier } from "../types/tax-identifier";
 
 /**
  * Estados posibles de una factura (legacy, Perú-centric).
@@ -294,13 +294,15 @@ export class Invoice {
 				: undefined,
 			clientAddress: plainData.clientAddress,
 			baseAmount: Money.fromCents(plainData.baseAmount, currency),
-			taxAmount: plainData.taxAmount != null
-				? Money.fromCents(plainData.taxAmount, currency)
-				: Money.fromCents(plainData.igvAmount, currency),
+			taxAmount:
+				plainData.taxAmount != null
+					? Money.fromCents(plainData.taxAmount, currency)
+					: Money.fromCents(plainData.igvAmount, currency),
 			igvAmount: Money.fromCents(plainData.igvAmount, currency),
 			totalAmount: Money.fromCents(plainData.totalAmount, currency),
 			status: plainData.status as InvoiceStatus,
-			fiscalStatus: (plainData.fiscalStatus ?? plainData.status) as FiscalStatus,
+			fiscalStatus: (plainData.fiscalStatus ??
+				plainData.status) as FiscalStatus,
 			items: (plainData.items || []).map((item) => ({
 				id: item.id,
 				description: item.description,
@@ -494,7 +496,9 @@ export class Invoice {
 	 */
 	canBeModified(): boolean {
 		const s = this.props.fiscalStatus ?? this.props.status;
-		return s === "DRAFT" || s === "PENDING_REVIEW" || this.props.status === "PENDING";
+		return (
+			s === "DRAFT" || s === "PENDING_REVIEW" || this.props.status === "PENDING"
+		);
 	}
 
 	/**

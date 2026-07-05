@@ -3,8 +3,12 @@
  * @principle Single Responsibility - Only handles NubeFact API
  */
 
-import type { OSEConfig } from "../types";
-import type { IOSEProvider, OSEResponse, SendInvoiceData } from "../types";
+import type {
+	IOSEProvider,
+	OSEConfig,
+	OSEResponse,
+	SendInvoiceData,
+} from "../types";
 
 export class NubeFactProvider implements IOSEProvider {
 	constructor(private config: OSEConfig) {}

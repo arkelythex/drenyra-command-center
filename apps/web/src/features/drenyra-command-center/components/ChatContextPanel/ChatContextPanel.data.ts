@@ -6,7 +6,11 @@ export const STREAMING_STEPS = [
 	"Generando propuesta...",
 ] as const;
 
-export const ARTIFACT_TYPE_BADGES = ["sheet_diff", "chart", "dashboard"] as const;
+export const ARTIFACT_TYPE_BADGES = [
+	"sheet_diff",
+	"chart",
+	"dashboard",
+] as const;
 
 export function getArtifactSummary(artifact: HubArtifact): string {
 	switch (artifact.type) {

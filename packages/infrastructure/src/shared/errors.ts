@@ -9,10 +9,13 @@
  */
 
 export class AppError extends Error {
-  constructor(message: string, public code?: string) {
-    super(message);
-    this.name = 'AppError';
-  }
+	constructor(
+		message: string,
+		public code?: string,
+	) {
+		super(message);
+		this.name = "AppError";
+	}
 }
 
 /**
@@ -25,10 +28,10 @@ export class AppError extends Error {
  * ```
  */
 export class ValidationError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = 'ValidationError';
-  }
+	constructor(message: string) {
+		super(message);
+		this.name = "ValidationError";
+	}
 }
 
 /**
@@ -41,10 +44,10 @@ export class ValidationError extends Error {
  * ```
  */
 export class NotFoundError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = 'NotFoundError';
-  }
+	constructor(message: string) {
+		super(message);
+		this.name = "NotFoundError";
+	}
 }
 
 /**
@@ -57,8 +60,8 @@ export class NotFoundError extends Error {
  * ```
  */
 export class UnauthorizedError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = 'UnauthorizedError';
-  }
+	constructor(message: string) {
+		super(message);
+		this.name = "UnauthorizedError";
+	}
 }

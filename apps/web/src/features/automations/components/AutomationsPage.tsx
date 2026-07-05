@@ -1,9 +1,17 @@
-import { useState, useCallback } from "react";
 import { Clock3, Sparkles } from "lucide-react";
-import { AutomationCard } from "./AutomationCard";
-import { AutomationCreateWizard, type AutomationWizardData } from "./AutomationCreateWizard";
-import { useAutomations, useCreateAutomation, useToggleAutomation, useRunAutomation } from "../hooks/useAutomations";
+import { useCallback, useState } from "react";
 import { useSkills } from "@/features/skills";
+import {
+	useAutomations,
+	useCreateAutomation,
+	useRunAutomation,
+	useToggleAutomation,
+} from "../hooks/useAutomations";
+import { AutomationCard } from "./AutomationCard";
+import {
+	AutomationCreateWizard,
+	type AutomationWizardData,
+} from "./AutomationCreateWizard";
 
 export function AutomationsPage() {
 	const { data, isLoading } = useAutomations();
@@ -50,12 +58,9 @@ export function AutomationsPage() {
 		[runMutation],
 	);
 
-	const handleSelect = useCallback(
-		(_automation: any) => {
-			// Future: open detail/inspector
-		},
-		[],
-	);
+	const handleSelect = useCallback((_automation: any) => {
+		// Future: open detail/inspector
+	}, []);
 
 	const availableSkills = (skillsData?.data ?? []).filter((s) => s.installed);
 
@@ -107,7 +112,8 @@ export function AutomationsPage() {
 								Todavía no hay automatizaciones
 							</p>
 							<p className="text-xs text-[var(--text-secondary)] mb-6">
-								Creá tu primera automatización para ejecutar skills sin intervención manual.
+								Creá tu primera automatización para ejecutar skills sin
+								intervención manual.
 							</p>
 							<button
 								type="button"

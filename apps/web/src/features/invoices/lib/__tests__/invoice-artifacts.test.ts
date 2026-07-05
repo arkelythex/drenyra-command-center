@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
 	getInvoiceRunbookHref,
-	getPersistedSunatIncidentMessage,
 	getOpenableInvoiceArtifactUrl,
 	getPersistedInvoiceTicket,
 	getPersistedSunatCode,
+	getPersistedSunatIncidentMessage,
 	getPersistedSunatStatus,
 } from "../invoice-artifacts";
 
@@ -43,7 +43,9 @@ describe("getInvoiceRunbookHref", () => {
 				path: "docs/09-troubleshooting/cpe-compliance-incidents-runbook-2026.md",
 				anchor: "ose",
 			}),
-		).toBe("/docs/09-troubleshooting/cpe-compliance-incidents-runbook-2026.md#ose");
+		).toBe(
+			"/docs/09-troubleshooting/cpe-compliance-incidents-runbook-2026.md#ose",
+		);
 	});
 
 	it("returns null when runbook metadata is missing", () => {

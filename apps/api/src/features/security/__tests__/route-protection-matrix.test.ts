@@ -29,7 +29,18 @@ function extractMountedSurfaceExports(source: string): string[] {
 		: [];
 
 	return [...new Set([...directUseNames, ...conditionalUseNames])]
-		.filter((name) => !["cors", "swagger", "helmet", "ledgerMvpEnabled", "metricsMiddleware", "apiModules", "backwardCompatRedirects"].includes(name))
+		.filter(
+			(name) =>
+				![
+					"cors",
+					"swagger",
+					"helmet",
+					"ledgerMvpEnabled",
+					"metricsMiddleware",
+					"apiModules",
+					"backwardCompatRedirects",
+				].includes(name),
+		)
 		.sort();
 }
 

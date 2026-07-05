@@ -12,11 +12,17 @@
  * - OSE_SUBMITTING state transition
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { WorkflowOrchestratorV2 } from "../../src/agents/orchestrator/workflow-v2/orchestrator";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { EventBus } from "../../src/agents/orchestrator/event.bus";
-import type { ReaderInput, InvoiceData, ExtractedData, ParsedInvoice, ValidationResult } from "../../src/agents/types";
-import type { CDRResponse } from "../../src/agents/types";
+import { WorkflowOrchestratorV2 } from "../../src/agents/orchestrator/workflow-v2/orchestrator";
+import type {
+	CDRResponse,
+	ExtractedData,
+	InvoiceData,
+	ParsedInvoice,
+	ReaderInput,
+	ValidationResult,
+} from "../../src/agents/types";
 
 // ============================================================================
 // Test Fixtures
@@ -139,29 +145,40 @@ function createMockAgents() {
 // OSE Service Mocks
 // ============================================================================
 
-function createOSEServiceMock(options?: { shouldFail?: boolean; shouldThrow?: boolean }) {
+function createOSEServiceMock(options?: {
+	shouldFail?: boolean;
+	shouldThrow?: boolean;
+}) {
 	return {
-		sendInvoice: vi.fn().mockImplementation(async (data: { xmlContent: string; invoiceNumber: string; invoiceType: string }) => {
-			if (options?.shouldThrow) {
-				throw new Error("OSE network error");
-			}
+		sendInvoice: vi
+			.fn()
+			.mockImplementation(
+				async (data: {
+					xmlContent: string;
+					invoiceNumber: string;
+					invoiceType: string;
+				}) => {
+					if (options?.shouldThrow) {
+						throw new Error("OSE network error");
+					}
 
-			if (options?.shouldFail) {
-				return {
-					success: false,
-					error: "SUNAT rejected: invalid RUC",
-					cdrStatus: "RECHAZADO" as const,
-				};
-			}
+					if (options?.shouldFail) {
+						return {
+							success: false,
+							error: "SUNAT rejected: invalid RUC",
+							cdrStatus: "RECHAZADO" as const,
+						};
+					}
 
-			return {
-				success: true,
-				cdrContent: "base64-cdr-content",
-				cdrStatus: "ACEPTADO" as const,
-				cdrMessage: "Comprobante aceptado",
-				sunatCode: "0",
-			};
-		}),
+					return {
+						success: true,
+						cdrContent: "base64-cdr-content",
+						cdrStatus: "ACEPTADO" as const,
+						cdrMessage: "Comprobante aceptado",
+						sunatCode: "0",
+					};
+				},
+			),
 	};
 }
 
@@ -209,7 +226,9 @@ describe("WorkflowOrchestratorV2 - OSE Submission Stage", () => {
 
 		it("should emit OSE_SUBMISSION_STARTED event", async () => {
 			const events: string[] = [];
-			eventBus.on("OSE_SUBMISSION_STARTED", () => { events.push("OSE_SUBMISSION_STARTED"); });
+			eventBus.on("OSE_SUBMISSION_STARTED", () => {
+				events.push("OSE_SUBMISSION_STARTED");
+			});
 
 			const oseService = createOSEServiceMock();
 			orchestrator = new WorkflowOrchestratorV2(
@@ -349,7 +368,9 @@ describe("WorkflowOrchestratorV2 - OSE Submission Stage", () => {
 
 		it("should skip OSE submission when no xmlContent is generated", async () => {
 			const oseService = createOSEServiceMock();
-			mockAgents.validatorAgent.process = vi.fn().mockResolvedValue(makeValidationResult(false));
+			mockAgents.validatorAgent.process = vi
+				.fn()
+				.mockResolvedValue(makeValidationResult(false));
 
 			orchestrator = new WorkflowOrchestratorV2(
 				mockAgents.readerAgent,

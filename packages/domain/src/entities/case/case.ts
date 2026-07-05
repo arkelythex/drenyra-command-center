@@ -14,189 +14,189 @@
  * - Ownership-aware: each projection has a clear owner
  */
 
-import { DomainEvent } from '../../events'
-import type { Money } from '../../value-objects'
+import { DomainEvent } from "../../events";
+import type { Money } from "../../value-objects";
 
 // ─── Core Case Entity ────────────────────────────────────────────────
 
-export type CaseStatus = 'open' | 'active' | 'resolved' | 'closed'
+export type CaseStatus = "open" | "active" | "resolved" | "closed";
 
 /**
  * CaseIdentity — Branded ID for type safety.
  * Prevents mixing case IDs with other entity IDs.
  */
-export type CaseIdentity = string & { readonly __brand: 'CaseId' }
+export type CaseIdentity = string & { readonly __brand: "CaseId" };
 
 export function CaseId(id: string): CaseIdentity {
-  if (!id || id.length === 0) {
-    throw new Error('CaseId cannot be empty')
-  }
-  return id as CaseIdentity
+	if (!id || id.length === 0) {
+		throw new Error("CaseId cannot be empty");
+	}
+	return id as CaseIdentity;
 }
 
 /**
  * Case — The core entity for cross-domain collaboration.
  */
 export class Case {
-  readonly id: CaseIdentity
-  readonly companyId: string
-  readonly status: CaseStatus
-  readonly createdAt: Date
-  readonly updatedAt: Date
+	readonly id: CaseIdentity;
+	readonly companyId: string;
+	readonly status: CaseStatus;
+	readonly createdAt: Date;
+	readonly updatedAt: Date;
 
-  // Projections are stored as a Map<DomainKey, Projection>
-  // This allows any domain to attach its view without modifying Case
-  private readonly projections: Map<string, CaseProjection>
+	// Projections are stored as a Map<DomainKey, Projection>
+	// This allows any domain to attach its view without modifying Case
+	private readonly projections: Map<string, CaseProjection>;
 
-  private constructor(
-    id: CaseIdentity,
-    companyId: string,
-    status: CaseStatus,
-    projections: Map<string, CaseProjection>,
-    createdAt: Date,
-    updatedAt: Date
-  ) {
-    this.id = id
-    this.companyId = companyId
-    this.status = status
-    this.projections = projections
-    this.createdAt = createdAt
-    this.updatedAt = updatedAt
-  }
+	private constructor(
+		id: CaseIdentity,
+		companyId: string,
+		status: CaseStatus,
+		projections: Map<string, CaseProjection>,
+		createdAt: Date,
+		updatedAt: Date,
+	) {
+		this.id = id;
+		this.companyId = companyId;
+		this.status = status;
+		this.projections = projections;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
 
-  // ─── Factory ──────────────────────────────────────────────────────
+	// ─── Factory ──────────────────────────────────────────────────────
 
-  static create(params: { companyId: string }): Case {
-    return new Case(
-      CaseId(crypto.randomUUID()),
-      params.companyId,
-      'open',
-      new Map(),
-      new Date(),
-      new Date()
-    )
-  }
+	static create(params: { companyId: string }): Case {
+		return new Case(
+			CaseId(crypto.randomUUID()),
+			params.companyId,
+			"open",
+			new Map(),
+			new Date(),
+			new Date(),
+		);
+	}
 
-  // ─── Projections ──────────────────────────────────────────────────
+	// ─── Projections ──────────────────────────────────────────────────
 
-  /**
-   * Get a projection by domain key.
-   * Returns undefined if the domain hasn't attached a projection yet.
-   *
-   * @example
-   * const fiscal = case.getProjection<FiscalProjection>('fiscal')
-   * const legal = case.getProjection<LegalProjection>('legal')
-   */
-  getProjection<T extends CaseProjection>(domain: DomainKey): T | undefined {
-    return this.projections.get(domain) as T | undefined
-  }
+	/**
+	 * Get a projection by domain key.
+	 * Returns undefined if the domain hasn't attached a projection yet.
+	 *
+	 * @example
+	 * const fiscal = case.getProjection<FiscalProjection>('fiscal')
+	 * const legal = case.getProjection<LegalProjection>('legal')
+	 */
+	getProjection<T extends CaseProjection>(domain: DomainKey): T | undefined {
+		return this.projections.get(domain) as T | undefined;
+	}
 
-  /**
-   * Attach or update a projection for a specific domain.
-   * Only the domain owner can modify its projection.
-   *
-   * @example
-   * const updated = case.attachProjection('fiscal', fiscalProjection, 'fiscal')
-   */
-  attachProjection(
-    domain: DomainKey,
-    projection: CaseProjection,
-    owner: DomainKey
-  ): Case {
-    if (domain !== owner) {
-      throw new Error(
-        `Domain "${domain}" cannot modify projection owned by "${owner}"`
-      )
-    }
+	/**
+	 * Attach or update a projection for a specific domain.
+	 * Only the domain owner can modify its projection.
+	 *
+	 * @example
+	 * const updated = case.attachProjection('fiscal', fiscalProjection, 'fiscal')
+	 */
+	attachProjection(
+		domain: DomainKey,
+		projection: CaseProjection,
+		owner: DomainKey,
+	): Case {
+		if (domain !== owner) {
+			throw new Error(
+				`Domain "${domain}" cannot modify projection owned by "${owner}"`,
+			);
+		}
 
-    const newProjections = new Map(this.projections)
-    newProjections.set(domain, {
-      ...projection,
-      domain,
-      updatedAt: new Date()
-    })
+		const newProjections = new Map(this.projections);
+		newProjections.set(domain, {
+			...projection,
+			domain,
+			updatedAt: new Date(),
+		});
 
-    return new Case(
-      this.id,
-      this.companyId,
-      this.status,
-      newProjections,
-      this.createdAt,
-      new Date()
-    )
-  }
+		return new Case(
+			this.id,
+			this.companyId,
+			this.status,
+			newProjections,
+			this.createdAt,
+			new Date(),
+		);
+	}
 
-  /**
-   * Get all attached projections.
-   * Useful for cross-domain queries (Aevon).
-   */
-  getAllProjections(): ReadonlyMap<string, CaseProjection> {
-    return new Map(this.projections)
-  }
+	/**
+	 * Get all attached projections.
+	 * Useful for cross-domain queries (Aevon).
+	 */
+	getAllProjections(): ReadonlyMap<string, CaseProjection> {
+		return new Map(this.projections);
+	}
 
-  /**
-   * Check which domains have projections on this case.
-   */
-  getAttachedDomains(): DomainKey[] {
-    return Array.from(this.projections.keys()) as DomainKey[]
-  }
+	/**
+	 * Check which domains have projections on this case.
+	 */
+	getAttachedDomains(): DomainKey[] {
+		return Array.from(this.projections.keys()) as DomainKey[];
+	}
 
-  // ─── Status Transitions ───────────────────────────────────────────
+	// ─── Status Transitions ───────────────────────────────────────────
 
-  activate(): Case {
-    if (this.status !== 'open') {
-      throw new Error(`Cannot activate case in status "${this.status}"`)
-    }
-    return new Case(
-      this.id,
-      this.companyId,
-      'active',
-      this.projections,
-      this.createdAt,
-      new Date()
-    )
-  }
+	activate(): Case {
+		if (this.status !== "open") {
+			throw new Error(`Cannot activate case in status "${this.status}"`);
+		}
+		return new Case(
+			this.id,
+			this.companyId,
+			"active",
+			this.projections,
+			this.createdAt,
+			new Date(),
+		);
+	}
 
-  resolve(): Case {
-    if (this.status !== 'active') {
-      throw new Error(`Cannot resolve case in status "${this.status}"`)
-    }
-    return new Case(
-      this.id,
-      this.companyId,
-      'resolved',
-      this.projections,
-      this.createdAt,
-      new Date()
-    )
-  }
+	resolve(): Case {
+		if (this.status !== "active") {
+			throw new Error(`Cannot resolve case in status "${this.status}"`);
+		}
+		return new Case(
+			this.id,
+			this.companyId,
+			"resolved",
+			this.projections,
+			this.createdAt,
+			new Date(),
+		);
+	}
 
-  close(): Case {
-    if (this.status !== 'resolved') {
-      throw new Error(`Cannot close case in status "${this.status}"`)
-    }
-    return new Case(
-      this.id,
-      this.companyId,
-      'closed',
-      this.projections,
-      this.createdAt,
-      new Date()
-    )
-  }
+	close(): Case {
+		if (this.status !== "resolved") {
+			throw new Error(`Cannot close case in status "${this.status}"`);
+		}
+		return new Case(
+			this.id,
+			this.companyId,
+			"closed",
+			this.projections,
+			this.createdAt,
+			new Date(),
+		);
+	}
 
-  // ─── Domain Events ────────────────────────────────────────────────
+	// ─── Domain Events ────────────────────────────────────────────────
 
-  /**
-   * Emit events when projections are attached.
-   * These events enable cross-domain coordination.
-   */
-  static projectionAttached(
-    caseId: CaseIdentity,
-    domain: DomainKey
-  ): CaseProjectionAttached {
-    return new CaseProjectionAttached(caseId, domain)
-  }
+	/**
+	 * Emit events when projections are attached.
+	 * These events enable cross-domain coordination.
+	 */
+	static projectionAttached(
+		caseId: CaseIdentity,
+		domain: DomainKey,
+	): CaseProjectionAttached {
+		return new CaseProjectionAttached(caseId, domain);
+	}
 }
 
 // ─── Projection System ───────────────────────────────────────────────
@@ -206,15 +206,15 @@ export class Case {
  * Prevents typos and enables autocomplete.
  */
 export type DomainKey =
-  | 'fiscal'       // Drenyra
-  | 'legal'        // Solevra
-  | 'clinical'     // Ascleron
-  | 'creative'     // Aurevon
-  | 'operational'  // Arkoven
-  | 'financial'    // Aetheron
-  | 'technical'    // Ferion
-  | 'government'   // Valion
-  | string         // Future domains
+	| "fiscal" // Drenyra
+	| "legal" // Solevra
+	| "clinical" // Ascleron
+	| "creative" // Aurevon
+	| "operational" // Arkoven
+	| "financial" // Aetheron
+	| "technical" // Ferion
+	| "government" // Valion
+	| string; // Future domains
 
 /**
  * CaseProjection — Base interface for all domain projections.
@@ -225,9 +225,9 @@ export type DomainKey =
  * - Be immutable (methods return new instances)
  */
 export interface CaseProjection {
-  readonly domain: DomainKey
-  readonly updatedAt: Date
-  readonly metadata: ProjectionMetadata
+	readonly domain: DomainKey;
+	readonly updatedAt: Date;
+	readonly metadata: ProjectionMetadata;
 }
 
 /**
@@ -235,11 +235,11 @@ export interface CaseProjection {
  * Enables cross-domain queries without knowing projection-specific fields.
  */
 export interface ProjectionMetadata {
-  readonly summary: string          // Human-readable one-liner
-  readonly priority: 'low' | 'medium' | 'high' | 'critical'
-  readonly assignedTo?: string      // Agent or human responsible
-  readonly dueDate?: Date           // Deadline if applicable
-  readonly tags: readonly string[]  // For filtering and grouping
+	readonly summary: string; // Human-readable one-liner
+	readonly priority: "low" | "medium" | "high" | "critical";
+	readonly assignedTo?: string; // Agent or human responsible
+	readonly dueDate?: Date; // Deadline if applicable
+	readonly tags: readonly string[]; // For filtering and grouping
 }
 
 // ─── Cross-Domain Events ─────────────────────────────────────────────
@@ -249,23 +249,23 @@ export interface ProjectionMetadata {
  * Aevon uses this to coordinate cross-domain workflows.
  */
 export class CaseProjectionAttached extends DomainEvent {
-  get eventName(): string {
-    return 'case.projection.attached'
-  }
+	get eventName(): string {
+		return "case.projection.attached";
+	}
 
-  constructor(
-    readonly caseId: CaseIdentity,
-    readonly domain: DomainKey
-  ) {
-    super()
-  }
+	constructor(
+		readonly caseId: CaseIdentity,
+		readonly domain: DomainKey,
+	) {
+		super();
+	}
 
-  protected getPayload(): Record<string, unknown> {
-    return {
-      caseId: this.caseId,
-      domain: this.domain,
-    }
-  }
+	protected getPayload(): Record<string, unknown> {
+		return {
+			caseId: this.caseId,
+			domain: this.domain,
+		};
+	}
 }
 
 /**
@@ -273,25 +273,25 @@ export class CaseProjectionAttached extends DomainEvent {
  * Enables reactive workflows (e.g., fiscal change triggers legal review).
  */
 export class CaseProjectionUpdated extends DomainEvent {
-  get eventName(): string {
-    return 'case.projection.updated'
-  }
+	get eventName(): string {
+		return "case.projection.updated";
+	}
 
-  constructor(
-    readonly caseId: CaseIdentity,
-    readonly domain: DomainKey,
-    readonly changedFields: readonly string[]
-  ) {
-    super()
-  }
+	constructor(
+		readonly caseId: CaseIdentity,
+		readonly domain: DomainKey,
+		readonly changedFields: readonly string[],
+	) {
+		super();
+	}
 
-  protected getPayload(): Record<string, unknown> {
-    return {
-      caseId: this.caseId,
-      domain: this.domain,
-      changedFields: this.changedFields,
-    }
-  }
+	protected getPayload(): Record<string, unknown> {
+		return {
+			caseId: this.caseId,
+			domain: this.domain,
+			changedFields: this.changedFields,
+		};
+	}
 }
 
 /**
@@ -299,29 +299,29 @@ export class CaseProjectionUpdated extends DomainEvent {
  * The queried domain can choose to respond or deny.
  */
 export class CaseCrossDomainQuery extends DomainEvent {
-  get eventName(): string {
-    return 'case.cross_domain.query'
-  }
+	get eventName(): string {
+		return "case.cross_domain.query";
+	}
 
-  constructor(
-    readonly caseId: CaseIdentity,
-    readonly sourceDomain: DomainKey,
-    readonly targetDomain: DomainKey,
-    readonly queryType: string,
-    readonly queryPayload: Record<string, unknown>
-  ) {
-    super()
-  }
+	constructor(
+		readonly caseId: CaseIdentity,
+		readonly sourceDomain: DomainKey,
+		readonly targetDomain: DomainKey,
+		readonly queryType: string,
+		readonly queryPayload: Record<string, unknown>,
+	) {
+		super();
+	}
 
-  protected getPayload(): Record<string, unknown> {
-    return {
-      caseId: this.caseId,
-      sourceDomain: this.sourceDomain,
-      targetDomain: this.targetDomain,
-      queryType: this.queryType,
-      payload: this.queryPayload,
-    }
-  }
+	protected getPayload(): Record<string, unknown> {
+		return {
+			caseId: this.caseId,
+			sourceDomain: this.sourceDomain,
+			targetDomain: this.targetDomain,
+			queryType: this.queryType,
+			payload: this.queryPayload,
+		};
+	}
 }
 
 // ─── Domain-Specific Projection Examples ─────────────────────────────
@@ -331,13 +331,13 @@ export class CaseCrossDomainQuery extends DomainEvent {
  * ONLY Drenyra should create/update this.
  */
 export interface FiscalProjection extends CaseProjection {
-  readonly domain: 'fiscal'
-  readonly ruc: string
-  readonly period: string                    // "2026-01"
-  readonly totalIncome: Money
-  readonly totalTax: Money
-  readonly status: 'pending' | 'filed' | 'audited'
-  readonly sunatSubmissionId?: string
+	readonly domain: "fiscal";
+	readonly ruc: string;
+	readonly period: string; // "2026-01"
+	readonly totalIncome: Money;
+	readonly totalTax: Money;
+	readonly status: "pending" | "filed" | "audited";
+	readonly sunatSubmissionId?: string;
 }
 
 /**
@@ -345,12 +345,12 @@ export interface FiscalProjection extends CaseProjection {
  * ONLY Solevra should create/update this.
  */
 export interface LegalProjection extends CaseProjection {
-  readonly domain: 'legal'
-  readonly matterType: string                // "contract_dispute", "regulatory"
-  readonly clientId: string
-  readonly opposingParty?: string
-  readonly deadlines: readonly Date[]
-  readonly status: 'research' | 'active_litigation' | 'settled'
+	readonly domain: "legal";
+	readonly matterType: string; // "contract_dispute", "regulatory"
+	readonly clientId: string;
+	readonly opposingParty?: string;
+	readonly deadlines: readonly Date[];
+	readonly status: "research" | "active_litigation" | "settled";
 }
 
 /**
@@ -358,11 +358,11 @@ export interface LegalProjection extends CaseProjection {
  * ONLY Ascleron should create/update this.
  */
 export interface ClinicalProjection extends CaseProjection {
-  readonly domain: 'clinical'
-  readonly patientId: string
-  readonly diagnosisCode: string            // ICD-10
-  readonly treatmentPlan: string
-  readonly status: 'diagnosis' | 'treatment' | 'follow_up'
+	readonly domain: "clinical";
+	readonly patientId: string;
+	readonly diagnosisCode: string; // ICD-10
+	readonly treatmentPlan: string;
+	readonly status: "diagnosis" | "treatment" | "follow_up";
 }
 
 // ─── Repository Interface ────────────────────────────────────────────
@@ -372,12 +372,12 @@ export interface ClinicalProjection extends CaseProjection {
  * Implementation belongs in infrastructure layer.
  */
 export interface CaseRepository {
-  findById(id: CaseIdentity): Promise<Case | null>
-  findByCompany(companyId: string): Promise<Case[]>
-  findByDomain(domain: DomainKey): Promise<Case[]>
-  findByStatus(status: CaseStatus): Promise<Case[]>
-  save(caseEntity: Case): Promise<void>
-  delete(id: CaseIdentity): Promise<void>
+	findById(id: CaseIdentity): Promise<Case | null>;
+	findByCompany(companyId: string): Promise<Case[]>;
+	findByDomain(domain: DomainKey): Promise<Case[]>;
+	findByStatus(status: CaseStatus): Promise<Case[]>;
+	save(caseEntity: Case): Promise<void>;
+	delete(id: CaseIdentity): Promise<void>;
 }
 
 // ─── Cross-Domain Query Protocol ─────────────────────────────────────
@@ -392,28 +392,28 @@ export interface CaseRepository {
  * 4. Aevon orchestrates the exchange
  */
 export interface CrossDomainQuery<TRequest, TResponse> {
-  readonly sourceDomain: DomainKey
-  readonly targetDomain: DomainKey
-  readonly queryType: string
+	readonly sourceDomain: DomainKey;
+	readonly targetDomain: DomainKey;
+	readonly queryType: string;
 
-  /**
-   * Validate the request before sending.
-   */
-  validateRequest(request: TRequest): boolean
+	/**
+	 * Validate the request before sending.
+	 */
+	validateRequest(request: TRequest): boolean;
 
-  /**
-   * Process the query and return a response.
-   * The target domain decides what data to share.
-   */
-  processQuery(
-    request: TRequest,
-    caseEntity: Case
-  ): Promise<CrossDomainResponse<TResponse>>
+	/**
+	 * Process the query and return a response.
+	 * The target domain decides what data to share.
+	 */
+	processQuery(
+		request: TRequest,
+		caseEntity: Case,
+	): Promise<CrossDomainResponse<TResponse>>;
 }
 
 /**
  * CrossDomainResponse — Response from a domain query.
  */
 export type CrossDomainResponse<T> =
-  | { success: true; data: T }
-  | { success: false; reason: string }  // Domain denied the query
+	| { success: true; data: T }
+	| { success: false; reason: string }; // Domain denied the query

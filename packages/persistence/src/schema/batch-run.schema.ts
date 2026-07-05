@@ -5,7 +5,14 @@
  * @module persistence/schema/batch-run
  */
 
-import { index, integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+	index,
+	integer,
+	pgTable,
+	text,
+	timestamp,
+	uuid,
+} from "drizzle-orm/pg-core";
 
 // --- BATCH RUNS ---
 /**
@@ -19,7 +26,14 @@ export const batchRuns = pgTable(
 		id: uuid("id").primaryKey().defaultRandom(),
 		companyId: uuid("company_id").notNull(),
 		status: text("status", {
-			enum: ["pending", "running", "completed", "failed", "partial", "cancelled"],
+			enum: [
+				"pending",
+				"running",
+				"completed",
+				"failed",
+				"partial",
+				"cancelled",
+			],
 		})
 			.notNull()
 			.default("pending"),
@@ -27,8 +41,12 @@ export const batchRuns = pgTable(
 		completed: integer("completed").notNull().default(0),
 		failed: integer("failed").notNull().default(0),
 		error: text("error"),
-		createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-		updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+		createdAt: timestamp("created_at", { withTimezone: true })
+			.defaultNow()
+			.notNull(),
+		updatedAt: timestamp("updated_at", { withTimezone: true })
+			.defaultNow()
+			.notNull(),
 		completedAt: timestamp("completed_at", { withTimezone: true }),
 	},
 	(table) => ({
@@ -58,8 +76,12 @@ export const batchRunItems = pgTable(
 			.notNull()
 			.default("pending"),
 		error: text("error"),
-		createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
-		updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+		createdAt: timestamp("created_at", { withTimezone: true })
+			.defaultNow()
+			.notNull(),
+		updatedAt: timestamp("updated_at", { withTimezone: true })
+			.defaultNow()
+			.notNull(),
 		completedAt: timestamp("completed_at", { withTimezone: true }),
 	},
 	(table) => ({

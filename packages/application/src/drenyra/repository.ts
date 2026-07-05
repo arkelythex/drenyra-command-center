@@ -31,7 +31,10 @@ import type {
  *   period: "2026-05",
  * };
  */
-export type DrenyraScopeGuard = Pick<FiscalScope, "companyId" | "companyRuc" | "period"> & { organizationId: string };
+export type DrenyraScopeGuard = Pick<
+	FiscalScope,
+	"companyId" | "companyRuc" | "period"
+> & { organizationId: string };
 
 export interface DrenyraAuditEventFilters {
 	caseId?: string;
@@ -42,7 +45,10 @@ export interface DrenyraAuditEventFilters {
 export interface DrenyraAuditEventFilter {
 	caseId?: string;
 	commandId?: string;
-	eventType?: Extract<AuditEventType, "CAPABILITY_ALLOWED" | "CAPABILITY_DENIED">;
+	eventType?: Extract<
+		AuditEventType,
+		"CAPABILITY_ALLOWED" | "CAPABILITY_DENIED"
+	>;
 }
 
 /**
@@ -77,7 +83,10 @@ export interface DrenyraRepository {
 	 * @param scope - Company/RUC/organization/period guard.
 	 * @returns Matching case, or null when out of scope or missing.
 	 */
-	getFiscalCaseById(id: string, scope: DrenyraScopeGuard): Promise<FiscalCase | null>;
+	getFiscalCaseById(
+		id: string,
+		scope: DrenyraScopeGuard,
+	): Promise<FiscalCase | null>;
 	/**
 	 * Updates a fiscal case inside its own scope.
 	 *
@@ -99,7 +108,10 @@ export interface DrenyraRepository {
 	 * @param scope - Company/RUC/organization/period guard.
 	 * @returns Evidence items for the case and scope.
 	 */
-	listEvidence(caseId: string, scope: DrenyraScopeGuard): Promise<EvidenceItem[]>;
+	listEvidence(
+		caseId: string,
+		scope: DrenyraScopeGuard,
+	): Promise<EvidenceItem[]>;
 	/**
 	 * Persists a started agent run.
 	 *
@@ -136,7 +148,10 @@ export interface DrenyraRepository {
 	 * @param scope - Company/RUC/organization/period guard.
 	 * @returns Approval request, or null when out of scope or missing.
 	 */
-	getApprovalRequestById(id: string, scope: DrenyraScopeGuard): Promise<ApprovalRequest | null>;
+	getApprovalRequestById(
+		id: string,
+		scope: DrenyraScopeGuard,
+	): Promise<ApprovalRequest | null>;
 	/**
 	 * Updates an approval request after a human decision.
 	 *
@@ -151,7 +166,10 @@ export interface DrenyraRepository {
 	 * @param scope - Company/RUC/organization/period guard.
 	 * @returns Approval requests for the case and scope.
 	 */
-	listApprovalRequests(caseId: string, scope: DrenyraScopeGuard): Promise<ApprovalRequest[]>;
+	listApprovalRequests(
+		caseId: string,
+		scope: DrenyraScopeGuard,
+	): Promise<ApprovalRequest[]>;
 	/**
 	 * Persists an immutable audit event.
 	 *
@@ -166,7 +184,10 @@ export interface DrenyraRepository {
 	 * @param scope - Company/RUC/organization/period guard.
 	 * @returns Audit events for the case and scope.
 	 */
-	listAuditEvents(caseId: string, scope: DrenyraScopeGuard): Promise<AuditEvent[]>;
+	listAuditEvents(
+		caseId: string,
+		scope: DrenyraScopeGuard,
+	): Promise<AuditEvent[]>;
 	/**
 	 * Lists audit events in a fiscal workspace, including case-less governance events.
 	 *
@@ -174,7 +195,10 @@ export interface DrenyraRepository {
 	 * @param filters - Optional case/type/limit filters.
 	 * @returns Scoped audit events ordered newest first.
 	 */
-	listScopedAuditEvents(scope: DrenyraScopeGuard, filters?: DrenyraAuditEventFilters): Promise<AuditEvent[]>;
+	listScopedAuditEvents(
+		scope: DrenyraScopeGuard,
+		filters?: DrenyraAuditEventFilters,
+	): Promise<AuditEvent[]>;
 	/**
 	 * Lists command capability audit events across a scoped fiscal workspace, including case-less events.
 	 *
@@ -182,5 +206,8 @@ export interface DrenyraRepository {
 	 * @param filter - Optional case, command and capability-decision filters.
 	 * @returns Matching CAPABILITY_ALLOWED/CAPABILITY_DENIED events ordered by repository convention.
 	 */
-	listCommandAuditEvents(scope: DrenyraScopeGuard, filter?: DrenyraAuditEventFilter): Promise<AuditEvent[]>;
+	listCommandAuditEvents(
+		scope: DrenyraScopeGuard,
+		filter?: DrenyraAuditEventFilter,
+	): Promise<AuditEvent[]>;
 }

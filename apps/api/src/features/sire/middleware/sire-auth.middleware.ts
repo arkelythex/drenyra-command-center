@@ -1,8 +1,8 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { Elysia } from "elysia";
 import { fail } from "../../shared/api-response";
-import { resolveSireCompanyId } from "./request-company-id";
 import { resolveCompanyIdFromLegacyOrganizationClaim } from "./company-scope-resolver";
+import { resolveSireCompanyId } from "./request-company-id";
 
 interface JwtHeader {
 	alg?: string;
@@ -88,7 +88,7 @@ async function resolveCompanyIdFromClaims(
 	const legacyCandidate =
 		typeof claims.companyId === "number" && Number.isFinite(claims.companyId)
 			? claims.companyId
-			: claims.organizationId ?? claims.orgId;
+			: (claims.organizationId ?? claims.orgId);
 
 	return await resolveCompanyIdFromLegacyOrganizationClaim(legacyCandidate);
 }
@@ -184,10 +184,10 @@ export async function enforceSireAuth({
 
 /** Minimal context shape accepted by the auth middleware function */
 type SireAuthMiddlewareContext = {
-  body: unknown;
-  query: unknown;
-  request: Request;
-  set: { status: number };
+	body: unknown;
+	query: unknown;
+	request: Request;
+	set: { status: number };
 };
 
 /**
@@ -199,8 +199,8 @@ type SireAuthMiddlewareContext = {
  * app.use(sireAuthMiddleware);
  * ```
  */
-export const sireAuthMiddleware = new Elysia({ name: 'sire-auth' }).onBeforeHandle(
-  async (context) => {
-    return await enforceSireAuth(context as unknown as SireAuthMiddlewareContext);
-  },
-);
+export const sireAuthMiddleware = new Elysia({
+	name: "sire-auth",
+}).onBeforeHandle(async (context) => {
+	return await enforceSireAuth(context as unknown as SireAuthMiddlewareContext);
+});

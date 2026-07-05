@@ -1,22 +1,22 @@
-import { type Job, type Queue } from "bullmq";
-import { QUEUE_NAMES } from "./types";
-import type {
-	OCRJobData,
-	AIAnalysisJobData,
-	SUNATSubmissionJobData,
-	EmailJobData,
-	ReportJobData,
-	QueueName,
-} from "./types";
+import type { Job, Queue } from "bullmq";
 import {
-	ocrQueue,
 	aiAnalysisQueue,
-	sunatQueue,
 	emailQueue,
-	reportQueue,
+	ocrQueue,
 	ocrQueueEvents,
 	redisConnection,
+	reportQueue,
+	sunatQueue,
 } from "./config";
+import type {
+	AIAnalysisJobData,
+	EmailJobData,
+	OCRJobData,
+	QueueName,
+	ReportJobData,
+	SUNATSubmissionJobData,
+} from "./types";
+import { QUEUE_NAMES } from "./types";
 
 export async function addOCRJob(
 	data: OCRJobData,

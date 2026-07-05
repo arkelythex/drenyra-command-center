@@ -4,15 +4,15 @@
 
 import { describe, expect, it } from "vitest";
 import {
-	AccountingTransactionType,
-	ACCOUNTING_TRANSACTION_TYPES,
 	ACCOUNTING_TRANSACTION_TYPE_LABELS,
-	BankTransactionType,
-	BANK_TRANSACTION_TYPES,
+	ACCOUNTING_TRANSACTION_TYPES,
+	AccountingTransactionType,
 	BANK_TRANSACTION_TYPE_LABELS,
-	CashflowTransactionType,
-	CASHFLOW_TRANSACTION_TYPES,
+	BANK_TRANSACTION_TYPES,
+	BankTransactionType,
 	CASHFLOW_TRANSACTION_TYPE_LABELS,
+	CASHFLOW_TRANSACTION_TYPES,
+	CashflowTransactionType,
 	isAccountingTransactionType,
 	isBankTransactionType,
 	isCashflowTransactionType,

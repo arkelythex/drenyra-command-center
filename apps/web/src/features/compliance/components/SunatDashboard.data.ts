@@ -2,7 +2,12 @@
  * SunatDashboard — mock/seed data for initial development.
  */
 
-import type { Notification, RucInfo, SirePeriod, TaxDeadline } from "./SunatDashboard.types";
+import type {
+	Notification,
+	RucInfo,
+	SirePeriod,
+	TaxDeadline,
+} from "./SunatDashboard.types";
 
 export const MOCK_RUC: RucInfo = {
 	ruc: "20612345678",
@@ -12,12 +17,36 @@ export const MOCK_RUC: RucInfo = {
 };
 
 export const MOCK_SIRE_PERIODS: SirePeriod[] = [
-	{ periodo: "2026-01", estado: "VALIDADO", vencimiento: new Date(2026, 1, 15) },
-	{ periodo: "2026-02", estado: "PENDIENTE", vencimiento: new Date(2026, 2, 15) },
-	{ periodo: "2026-03", estado: "OBSERVADO", vencimiento: new Date(2026, 3, 15) },
-	{ periodo: "2026-04", estado: "VALIDADO", vencimiento: new Date(2026, 4, 15) },
-	{ periodo: "2026-05", estado: "VALIDADO", vencimiento: new Date(2026, 5, 15) },
-	{ periodo: "2026-06", estado: "PENDIENTE", vencimiento: new Date(2026, 6, 15) },
+	{
+		periodo: "2026-01",
+		estado: "VALIDADO",
+		vencimiento: new Date(2026, 1, 15),
+	},
+	{
+		periodo: "2026-02",
+		estado: "PENDIENTE",
+		vencimiento: new Date(2026, 2, 15),
+	},
+	{
+		periodo: "2026-03",
+		estado: "OBSERVADO",
+		vencimiento: new Date(2026, 3, 15),
+	},
+	{
+		periodo: "2026-04",
+		estado: "VALIDADO",
+		vencimiento: new Date(2026, 4, 15),
+	},
+	{
+		periodo: "2026-05",
+		estado: "VALIDADO",
+		vencimiento: new Date(2026, 5, 15),
+	},
+	{
+		periodo: "2026-06",
+		estado: "PENDIENTE",
+		vencimiento: new Date(2026, 6, 15),
+	},
 ];
 
 export const MOCK_TAX_CALENDAR: TaxDeadline[] = [

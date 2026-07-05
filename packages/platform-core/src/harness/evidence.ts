@@ -15,25 +15,25 @@ import type { EvidenceQuery, EvidenceRecord } from "./types.js";
  * Implementations can be in-memory, SQLite-backed, or any other backend.
  */
 export interface EvidenceStore {
-  /** Persist a new evidence record */
-  save(record: EvidenceRecord): Promise<void>;
+	/** Persist a new evidence record */
+	save(record: EvidenceRecord): Promise<void>;
 
-  /** Retrieve evidence records matching the given query */
-  query(query: EvidenceQuery): Promise<EvidenceRecord[]>;
+	/** Retrieve evidence records matching the given query */
+	query(query: EvidenceQuery): Promise<EvidenceRecord[]>;
 
-  /** Get a single evidence record by ID */
-  getById(id: string): Promise<EvidenceRecord | null>;
+	/** Get a single evidence record by ID */
+	getById(id: string): Promise<EvidenceRecord | null>;
 
-  /** Delete evidence records for a run */
-  deleteByRun(runId: string): Promise<void>;
+	/** Delete evidence records for a run */
+	deleteByRun(runId: string): Promise<void>;
 }
 
 /**
  * Options for creating an {@link InMemoryEvidenceStore}.
  */
 export interface InMemoryEvidenceStoreOptions {
-  /** Maximum records before auto-pruning oldest (default: unlimited) */
-  maxRecords?: number;
+	/** Maximum records before auto-pruning oldest (default: unlimited) */
+	maxRecords?: number;
 }
 
 /**
@@ -56,64 +56,66 @@ export interface InMemoryEvidenceStoreOptions {
  * ```
  */
 export class InMemoryEvidenceStore implements EvidenceStore {
-  private readonly records: EvidenceRecord[] = [];
-  private readonly maxRecords: number;
+	private readonly records: EvidenceRecord[] = [];
+	private readonly maxRecords: number;
 
-  constructor(options?: InMemoryEvidenceStoreOptions) {
-    this.maxRecords = options?.maxRecords ?? Infinity;
-  }
+	constructor(options?: InMemoryEvidenceStoreOptions) {
+		this.maxRecords = options?.maxRecords ?? Infinity;
+	}
 
-  async save(record: EvidenceRecord): Promise<void> {
-    this.records.push({ ...record, content: structuredClone(record.content) });
+	async save(record: EvidenceRecord): Promise<void> {
+		this.records.push({ ...record, content: structuredClone(record.content) });
 
-    // Prune oldest records if over limit
-    while (this.records.length > this.maxRecords) {
-      this.records.shift();
-    }
-  }
+		// Prune oldest records if over limit
+		while (this.records.length > this.maxRecords) {
+			this.records.shift();
+		}
+	}
 
-  async query(query: EvidenceQuery): Promise<EvidenceRecord[]> {
-    const limit = query.limit ?? 50;
+	async query(query: EvidenceQuery): Promise<EvidenceRecord[]> {
+		const limit = query.limit ?? 50;
 
-    let results = [...this.records];
+		let results = [...this.records];
 
-    if (query.runId !== undefined) {
-      results = results.filter((r) => r.runId === query.runId);
-    }
+		if (query.runId !== undefined) {
+			results = results.filter((r) => r.runId === query.runId);
+		}
 
-    if (query.type !== undefined) {
-      results = results.filter((r) => r.type === query.type);
-    }
+		if (query.type !== undefined) {
+			results = results.filter((r) => r.type === query.type);
+		}
 
-    // Sort by timestamp descending (newest first)
-    results.sort(
-      (a, b) =>
-        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-    );
+		// Sort by timestamp descending (newest first)
+		results.sort(
+			(a, b) =>
+				new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+		);
 
-    return results.slice(0, limit);
-  }
+		return results.slice(0, limit);
+	}
 
-  async getById(id: string): Promise<EvidenceRecord | null> {
-    const record = this.records.find((r) => r.id === id);
-    return record ? { ...record, content: structuredClone(record.content) } : null;
-  }
+	async getById(id: string): Promise<EvidenceRecord | null> {
+		const record = this.records.find((r) => r.id === id);
+		return record
+			? { ...record, content: structuredClone(record.content) }
+			: null;
+	}
 
-  async deleteByRun(runId: string): Promise<void> {
-    let i = 0;
-    while (i < this.records.length) {
-      if (this.records[i].runId === runId) {
-        this.records.splice(i, 1);
-      } else {
-        i++;
-      }
-    }
-  }
+	async deleteByRun(runId: string): Promise<void> {
+		let i = 0;
+		while (i < this.records.length) {
+			if (this.records[i].runId === runId) {
+				this.records.splice(i, 1);
+			} else {
+				i++;
+			}
+		}
+	}
 
-  /**
-   * Get total count of stored records.
-   */
-  get count(): number {
-    return this.records.length;
-  }
+	/**
+	 * Get total count of stored records.
+	 */
+	get count(): number {
+		return this.records.length;
+	}
 }

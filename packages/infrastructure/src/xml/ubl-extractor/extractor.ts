@@ -3,7 +3,7 @@
  * Extracts financial and identifying data from UBL node objects.
  */
 
-import type { UBLNode, UBLNodeObject, InvoiceItem } from "./types";
+import type { InvoiceItem, UBLNode, UBLNodeObject } from "./types";
 
 export function extractText(obj: UBLNode, ...paths: string[]): string {
 	for (const path of paths) {

@@ -162,8 +162,9 @@ describe("SireSubmissionService", () => {
 		process.env.SIRE_API_BASE_URL = "https://api.sunat.gob.pe";
 		process.env.SIRE_API_SUBMISSION_PATH = "/v1/contribuyente/sire/submissions";
 
-		const fetchMock = vi.fn(async () =>
-			new Response(JSON.stringify({ id: "UNSAFE" }), { status: 200 }),
+		const fetchMock = vi.fn(
+			async () =>
+				new Response(JSON.stringify({ id: "UNSAFE" }), { status: 200 }),
 		);
 		globalThis.fetch = fetchMock as typeof fetch;
 
@@ -225,10 +226,13 @@ describe("SireSubmissionService", () => {
 		process.env.COMPANY_RUC = "20999999999";
 
 		const fetchMock = vi.fn(async () => {
-			return new Response(JSON.stringify({ id: "SUB-ZIP", status: "ACCEPTED" }), {
-				status: 200,
-				headers: { "content-type": "application/json" },
-			});
+			return new Response(
+				JSON.stringify({ id: "SUB-ZIP", status: "ACCEPTED" }),
+				{
+					status: 200,
+					headers: { "content-type": "application/json" },
+				},
+			);
 		});
 		globalThis.fetch = fetchMock as typeof fetch;
 

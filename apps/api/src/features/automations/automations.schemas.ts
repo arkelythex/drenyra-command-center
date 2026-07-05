@@ -9,11 +9,7 @@ export const AutomationStatusEnum = t.UnionEnum([
 	"error",
 ]);
 
-export const AutonomyEnum = t.UnionEnum([
-	"suggest",
-	"auto-approve",
-	"execute",
-]);
+export const AutonomyEnum = t.UnionEnum(["suggest", "auto-approve", "execute"]);
 
 export const IdParams = t.Object({
 	id: t.String({ minLength: 1 }),

@@ -11,8 +11,19 @@ import type { ProcessedInvoice, ReaderInput } from "../../types/workflow.types";
 // Status Types
 // ============================================================================
 
-export type BatchStatus = "pending" | "running" | "completed" | "failed" | "partial" | "cancelled";
-export type BatchItemStatus = "pending" | "running" | "completed" | "failed" | "cancelled";
+export type BatchStatus =
+	| "pending"
+	| "running"
+	| "completed"
+	| "failed"
+	| "partial"
+	| "cancelled";
+export type BatchItemStatus =
+	| "pending"
+	| "running"
+	| "completed"
+	| "failed"
+	| "cancelled";
 
 // ============================================================================
 // Configuration

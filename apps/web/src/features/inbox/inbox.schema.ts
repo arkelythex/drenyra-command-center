@@ -64,11 +64,17 @@ export type InboxUiPhase =
 export type InboxStreamEvent =
 	| { type: "agent:status"; payload: AgentStatusEvent }
 	| { type: "agent:debate"; payload: AgentDebateEvent }
-	| { type: "invoice:ready"; payload: { invoiceId: string; summary: InboxInvoiceSummary } }
+	| {
+			type: "invoice:ready";
+			payload: { invoiceId: string; summary: InboxInvoiceSummary };
+	  }
 	| {
 			type: "invoice:needs-review";
 			payload: { invoiceId: string; reason: string; details: string };
 	  }
 	| { type: "invoice:error"; payload: { invoiceId: string; error: string } }
-	| { type: "batch:progress"; payload: { processed: number; total: number; percent: number } }
+	| {
+			type: "batch:progress";
+			payload: { processed: number; total: number; percent: number };
+	  }
 	| { type: "batch:complete"; payload: BatchCompleteEvent };

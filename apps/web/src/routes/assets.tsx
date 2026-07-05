@@ -1,5 +1,7 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/assets')({
-  loader: () => { throw redirect({ to: '/contabilidad/assets' }) },
-})
+export const Route = createFileRoute("/assets")({
+	loader: () => {
+		throw redirect({ to: "/contabilidad/assets" });
+	},
+});

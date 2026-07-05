@@ -1,7 +1,13 @@
-import type { ComplianceReproducibilityReport } from "@drenyra/domain";
-import type { IGVSummary } from "@drenyra/domain";
-import type { SIRESummary, SIRESunatLiveSummary } from "@drenyra/domain";
-import type { Pdt621Input, Pdt621Result } from "../../../taxation/pdt-621.service";
+import type {
+	ComplianceReproducibilityReport,
+	IGVSummary,
+	SIRESummary,
+	SIRESunatLiveSummary,
+} from "@drenyra/domain";
+import type {
+	Pdt621Input,
+	Pdt621Result,
+} from "../../../taxation/pdt-621.service";
 import type {
 	LedgerSireAutopilotInput,
 	LedgerSireAutopilotResult,

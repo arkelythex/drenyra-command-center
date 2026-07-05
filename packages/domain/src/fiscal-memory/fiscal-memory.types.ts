@@ -96,12 +96,13 @@ export const FISCAL_MEMORY_STATUSES: readonly FiscalMemoryStatus[] = [
  * @example
  * FISCAL_MEMORY_EVIDENCE_REQUIRED_CATEGORIES.has("tax_decision");
  */
-export const FISCAL_MEMORY_EVIDENCE_REQUIRED_CATEGORIES = new Set<FiscalMemoryCategory>([
-	"tax_decision",
-	"audit_finding",
-	"risk_exception",
-	"monthly_closing",
-]);
+export const FISCAL_MEMORY_EVIDENCE_REQUIRED_CATEGORIES =
+	new Set<FiscalMemoryCategory>([
+		"tax_decision",
+		"audit_finding",
+		"risk_exception",
+		"monthly_closing",
+	]);
 
 /**
  * Stable fiscal-memory validation error codes.

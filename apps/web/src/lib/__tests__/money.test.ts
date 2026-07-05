@@ -2,8 +2,8 @@
 // Tests for canonical money formatting (n(), nPEN, nUSD, nCompact, ...)
 // ============================================================================
 
-import { describe, it, expect } from "vitest";
-import { n, nPEN, nUSD, nCompact, createFormatter, formatPEN } from "../money";
+import { describe, expect, it } from "vitest";
+import { createFormatter, formatPEN, n, nCompact, nPEN, nUSD } from "../money";
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 

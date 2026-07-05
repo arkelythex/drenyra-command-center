@@ -285,9 +285,7 @@ describe("useAccountingJobRuns", () => {
 		rerender({ includeControlPlane: true });
 
 		await waitFor(() => {
-			expect(result.current.runs[0]?.controlPlane?.traceId).toBe(
-				"trace-1234",
-			);
+			expect(result.current.runs[0]?.controlPlane?.traceId).toBe("trace-1234");
 		});
 
 		expect(mocks.accountingJobRunsGetMock).toHaveBeenCalledTimes(1);

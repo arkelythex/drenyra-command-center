@@ -1,6 +1,6 @@
-import { db } from '@drenyra/persistence/client';
-import { and, desc, eq, sql } from '@drenyra/persistence/query';
-import { bills, businessPartners } from '@drenyra/persistence/schema';
+import { db } from "@drenyra/persistence/client";
+import { and, desc, eq, sql } from "@drenyra/persistence/query";
+import { bills, businessPartners } from "@drenyra/persistence/schema";
 
 /**
  * ExpenseAnalyticsService class.
@@ -13,7 +13,11 @@ import { bills, businessPartners } from '@drenyra/persistence/schema';
  */
 export class ExpenseAnalyticsService {
 	/** Budget execution and expense summary */
-	static async getExpenses(companyId: string, startDate?: Date, endDate?: Date) {
+	static async getExpenses(
+		companyId: string,
+		startDate?: Date,
+		endDate?: Date,
+	) {
 		const now = new Date();
 		const start = startDate ?? new Date(now.getFullYear(), now.getMonth(), 1);
 		const end = endDate ?? new Date(now.getFullYear(), now.getMonth() + 1, 0);
@@ -31,12 +35,18 @@ export class ExpenseAnalyticsService {
 				and(
 					eq(bills.companyId, companyId),
 					sql`${bills.issueDate} >= ${start}`,
-					sql`${bills.issueDate} <= ${end}`
-				)
+					sql`${bills.issueDate} <= ${end}`,
+				),
 			);
 
-		const row = totals[0] ?? { totalAmount: '0', totalIgv: '0', count: 0, paid: 0 };
-		const paymentCompliance = row.count > 0 ? Math.round((row.paid / row.count) * 10000) / 100 : 0;
+		const row = totals[0] ?? {
+			totalAmount: "0",
+			totalIgv: "0",
+			count: 0,
+			paid: 0,
+		};
+		const paymentCompliance =
+			row.count > 0 ? Math.round((row.paid / row.count) * 10000) / 100 : 0;
 
 		// Expense by status (MVP: bills schema lacks PCGE category field)
 		const byStatus = await db
@@ -50,18 +60,21 @@ export class ExpenseAnalyticsService {
 				and(
 					eq(bills.companyId, companyId),
 					sql`${bills.issueDate} >= ${start}`,
-					sql`${bills.issueDate} <= ${end}`
-				)
+					sql`${bills.issueDate} <= ${end}`,
+				),
 			)
 			.groupBy(bills.status)
 			.orderBy(desc(sql`SUM(CAST(${bills.totalAmount} AS DECIMAL))`));
 
 		const totalExpense = parseFloat(row.totalAmount);
-		const expenseByCategory = byStatus.map(c => ({
-			category: c.status ?? 'Sin estado',
+		const expenseByCategory = byStatus.map((c) => ({
+			category: c.status ?? "Sin estado",
 			total: parseFloat(c.total),
 			count: c.count,
-			percentage: totalExpense > 0 ? Math.round((parseFloat(c.total) / totalExpense) * 10000) / 100 : 0,
+			percentage:
+				totalExpense > 0
+					? Math.round((parseFloat(c.total) / totalExpense) * 10000) / 100
+					: 0,
 		}));
 
 		// Top vendors
@@ -79,10 +92,14 @@ export class ExpenseAnalyticsService {
 				and(
 					eq(bills.companyId, companyId),
 					sql`${bills.issueDate} >= ${start}`,
-					sql`${bills.issueDate} <= ${end}`
-				)
+					sql`${bills.issueDate} <= ${end}`,
+				),
 			)
-			.groupBy(bills.vendorId, businessPartners.legalName, businessPartners.taxId)
+			.groupBy(
+				bills.vendorId,
+				businessPartners.legalName,
+				businessPartners.taxId,
+			)
 			.orderBy(desc(sql`SUM(CAST(${bills.totalAmount} AS DECIMAL))`))
 			.limit(10);
 
@@ -91,14 +108,14 @@ export class ExpenseAnalyticsService {
 				totalExpenses: parseFloat(row.totalAmount),
 				totalIgv: parseFloat(row.totalIgv),
 				billCount: row.count,
-				currency: 'PEN' as const,
+				currency: "PEN" as const,
 			},
 			paymentCompliance,
 			expenseByCategory,
-			topVendors: topVendors.map(v => ({
+			topVendors: topVendors.map((v) => ({
 				vendorId: v.vendorId,
-				vendorName: v.vendorName ?? 'Desconocido',
-				ruc: v.ruc ?? '',
+				vendorName: v.vendorName ?? "Desconocido",
+				ruc: v.ruc ?? "",
 				total: parseFloat(v.total),
 				billCount: v.count,
 			})),

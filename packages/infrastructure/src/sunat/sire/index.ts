@@ -1,9 +1,9 @@
+export { createSireService, SunatSireService } from "./service";
 export type {
+	SireDiscrepancy,
+	SireRecord,
 	SireRegisterType,
 	SireSyncRequest,
-	SireSyncStatus,
-	SireRecord,
 	SireSyncResult,
-	SireDiscrepancy,
+	SireSyncStatus,
 } from "./types";
-export { SunatSireService, createSireService } from "./service";

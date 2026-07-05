@@ -6,10 +6,14 @@
  * @since Jun 2026
  */
 
-import { useTranslation } from "../i18n/i18n";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import type {
+	FiscalCase,
+	FiscalCaseDetails,
+	FiscalCaseStatus,
+} from "../api/drenyra-command-center.api";
+import { useTranslation } from "../i18n/i18n";
 import { Metric } from "./metric";
-import type { FiscalCase, FiscalCaseDetails, FiscalCaseStatus } from "../api/drenyra-command-center.api";
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -62,9 +66,17 @@ export function CommandCenterChatCaseDetails({
 			>
 				<div className="flex items-center gap-3">
 					{showDetails ? (
-						<ChevronDown size={16} className="text-[var(--text-tertiary)]" aria-hidden="true" />
+						<ChevronDown
+							size={16}
+							className="text-[var(--text-tertiary)]"
+							aria-hidden="true"
+						/>
 					) : (
-						<ChevronRight size={16} className="text-[var(--text-tertiary)]" aria-hidden="true" />
+						<ChevronRight
+							size={16}
+							className="text-[var(--text-tertiary)]"
+							aria-hidden="true"
+						/>
 					)}
 					<span className="text-xs font-bold uppercase tracking-widest text-[var(--text-tertiary)]">
 						{t("chat.case.details")}
@@ -80,7 +92,10 @@ export function CommandCenterChatCaseDetails({
 			</button>
 
 			{showDetails && (
-				<div id="case-details-panel" className="border-t border-[var(--border-subtle)] p-4 space-y-4">
+				<div
+					id="case-details-panel"
+					className="border-t border-[var(--border-subtle)] p-4 space-y-4"
+				>
 					{/* Description */}
 					<div>
 						<p className="text-2xs font-bold uppercase tracking-widest text-[var(--text-tertiary)]">
@@ -120,7 +135,9 @@ export function CommandCenterChatCaseDetails({
 										type="button"
 										onClick={() => onUpdateStatus(status)}
 										disabled={isBusy || status === details.case.status}
-										aria-current={status === details.case.status ? "true" : undefined}
+										aria-current={
+											status === details.case.status ? "true" : undefined
+										}
 										className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
 											status === details.case.status
 												? `${STATUS_COLORS[status]} ring-1 ring-inset ring-current`

@@ -10,23 +10,32 @@
 import {
 	authorizeDrenyraMcpTool,
 	buildDrenyraMcpManifest,
-	isDrenyraMcpScope,
 	type DrenyraMcpScope,
+	isDrenyraMcpScope,
 } from "@drenyra/agents";
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../../shared/api-response";
+import type {
+	PlatformMcpAuditOutcome,
+	PlatformMcpAuditReader,
+	PlatformMcpAuditSink,
+} from "./mcp.audit";
+import { canReadPlatformMcpAudit, readAuditQuery } from "./mcp.audit-query";
 import {
 	createPlatformMcpHandlers,
 	type PlatformMcpHandlersDeps,
 } from "./mcp.handlers";
-import { canReadPlatformMcpAudit, readAuditQuery } from "./mcp.audit-query";
-import type { PlatformMcpAuditSink, PlatformMcpAuditOutcome, PlatformMcpAuditReader } from "./mcp.audit";
 
-function readHeader(headers: Record<string, string | undefined>, key: string): string {
+function readHeader(
+	headers: Record<string, string | undefined>,
+	key: string,
+): string {
 	return headers[key]?.trim() ?? "";
 }
 
-function scopeFromHeaders(headers: Record<string, string | undefined>): DrenyraMcpScope {
+function scopeFromHeaders(
+	headers: Record<string, string | undefined>,
+): DrenyraMcpScope {
 	return {
 		organizationId: readHeader(headers, "x-organization-id"),
 		companyId: readHeader(headers, "x-company-id"),
@@ -89,14 +98,19 @@ export function createPlatformMcpModule(deps: PlatformMcpModuleDeps = {}) {
 				const role = readHeader(headers, "x-user-role");
 				if (!canReadPlatformMcpAudit(role)) {
 					set.status = 403;
-					return fail("MCP audit requires admin, auditor, owner or compliance role", "MCP_AUDIT_FORBIDDEN");
+					return fail(
+						"MCP audit requires admin, auditor, owner or compliance role",
+						"MCP_AUDIT_FORBIDDEN",
+					);
 				}
 				const scope = scopeFromHeaders(headers);
 				if (!isDrenyraMcpScope(scope)) {
 					set.status = 403;
 					return fail("Invalid MCP audit scope", "INVALID_SCOPE");
 				}
-				const events = await deps.auditReader?.list(readAuditQuery(scope, query));
+				const events = await deps.auditReader?.list(
+					readAuditQuery(scope, query),
+				);
 				return ok(events ?? []);
 			},
 			{
@@ -129,7 +143,9 @@ export function createPlatformMcpModule(deps: PlatformMcpModuleDeps = {}) {
 					reason: decision.reason,
 				});
 				if (!decision.allowed) set.status = 403;
-				return decision.allowed ? ok(decision) : fail(decision.reason, decision.reason);
+				return decision.allowed
+					? ok(decision)
+					: fail(decision.reason, decision.reason);
 			},
 			{ body: authorizationBody, detail: { tags: ["Platform MCP"] } },
 		)
@@ -155,7 +171,11 @@ export function createPlatformMcpModule(deps: PlatformMcpModuleDeps = {}) {
 					return fail(decision.reason, decision.reason);
 				}
 				try {
-					const data = await invokeTool({ toolName: body.toolName, scope, arguments: body.arguments ?? {} });
+					const data = await invokeTool({
+						toolName: body.toolName,
+						scope,
+						arguments: body.arguments ?? {},
+					});
 					await audit({
 						operation: "invoke",
 						outcome: "allowed",
@@ -163,7 +183,9 @@ export function createPlatformMcpModule(deps: PlatformMcpModuleDeps = {}) {
 						scope,
 						redactionStatus: body.redactionStatus,
 						reason: decision.reason,
-						metadata: { argumentKeys: Object.keys(body.arguments ?? {}).sort() },
+						metadata: {
+							argumentKeys: Object.keys(body.arguments ?? {}).sort(),
+						},
 					});
 					return ok(data);
 				} catch (error) {
@@ -176,13 +198,18 @@ export function createPlatformMcpModule(deps: PlatformMcpModuleDeps = {}) {
 						reason: "MCP_INVOKE_FAILED",
 					});
 					set.status = 400;
-					return fail(error instanceof Error ? error.message : "MCP invoke failed", "MCP_INVOKE_FAILED");
+					return fail(
+						error instanceof Error ? error.message : "MCP invoke failed",
+						"MCP_INVOKE_FAILED",
+					);
 				}
 			},
 			{
 				body: t.Composite([
 					authorizationBody,
-					t.Object({ arguments: t.Optional(t.Record(t.String(), t.Unknown())) }),
+					t.Object({
+						arguments: t.Optional(t.Record(t.String(), t.Unknown())),
+					}),
 				]),
 				detail: { tags: ["Platform MCP"] },
 			},

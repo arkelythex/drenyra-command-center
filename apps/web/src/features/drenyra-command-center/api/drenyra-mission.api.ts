@@ -1,12 +1,9 @@
+import type { AgentRun, FiscalCase } from "@drenyra/domain/drenyra";
 import { api, getGovernanceAuditHeaders, getOrganizationId } from "@/lib/api";
 import { extractOkData, unwrap } from "@/lib/api-helpers";
 import { getCompanyContext } from "@/lib/company-context";
 import { getActiveFiscalPeriod } from "@/lib/fiscal-period";
 import { buildApiUrl, HttpClientError } from "@/lib/http-client";
-import type {
-	AgentRun,
-	FiscalCase,
-} from "@drenyra/domain/drenyra";
 
 export interface UploadedDocumentRef {
 	id: string;

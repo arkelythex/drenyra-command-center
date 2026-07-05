@@ -27,7 +27,7 @@ describe("Audit Trail Exporters", () => {
 		});
 
 		expect(xml).toContain("<cbc:CompanyRUC>20123456789</cbc:CompanyRUC>");
-		expect(xml).toContain("<Inputs><![CDATA[{\"bankCode\":\"BCP\"");
+		expect(xml).toContain('<Inputs><![CDATA[{"bankCode":"BCP"');
 		expect(xml).toContain("<PrevHash>GENESIS</PrevHash>");
 	});
 
@@ -42,4 +42,3 @@ describe("Audit Trail Exporters", () => {
 		expect(pdf.subarray(0, 5).toString("utf-8")).toBe("%PDF-");
 	});
 });
-

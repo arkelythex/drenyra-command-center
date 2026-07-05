@@ -1,5 +1,5 @@
-import type { GeneralLedgerEntry, TrialBalanceResult } from "../queries";
 import { LedgerQueryService } from "../application/services/ledger-query.service";
+import type { GeneralLedgerEntry, TrialBalanceResult } from "../queries";
 
 const defaultService = new LedgerQueryService();
 

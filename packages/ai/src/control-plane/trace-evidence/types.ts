@@ -1,7 +1,7 @@
 import { z } from "zod";
 import {
-	TenantCompanyRucScopeSchema,
 	type TenantCompanyRucScope,
+	TenantCompanyRucScopeSchema,
 } from "../contracts";
 
 const nonEmpty = z.string().min(1);

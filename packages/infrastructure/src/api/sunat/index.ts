@@ -1,4 +1,3 @@
-export type { DniInfo, InvoiceVerification, RucInfo } from "./types";
 export {
 	consultarDni,
 	consultarRucSunat,
@@ -6,3 +5,4 @@ export {
 	validarDni,
 	verificarComprobanteSunat,
 } from "./service";
+export type { DniInfo, InvoiceVerification, RucInfo } from "./types";

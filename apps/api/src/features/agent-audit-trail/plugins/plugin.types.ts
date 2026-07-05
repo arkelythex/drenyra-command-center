@@ -205,4 +205,3 @@ export interface AuditPluginExecutionResult {
 	findings: AuditPluginFinding[];
 	skipped: AuditPluginSkipInfo[];
 }
-

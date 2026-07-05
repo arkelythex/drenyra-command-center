@@ -1,19 +1,18 @@
 // Public API for Vendors Feature
 // Enforces FSD isolation boundaries.
 
-// UI Components
-export { VendorsView } from './components/VendorsView';
-export { VendorModal } from './components/VendorModal';
-export { VendorForm } from './components/VendorForm';
-
+export { vendorKeys } from "./api/query-keys";
 // API Client
-export { vendorsApi } from './api/vendors.api';
-export { vendorKeys } from './api/query-keys';
+export { vendorsApi } from "./api/vendors.api";
+export { VendorForm } from "./components/VendorForm";
+export { VendorModal } from "./components/VendorModal";
+// UI Components
+export { VendorsView } from "./components/VendorsView";
 
 // Hooks
 export {
-  useVendors,
-  useCreateVendor,
-  useUpdateVendor,
-  useDeleteVendor,
-} from './hooks/useVendors';
+	useCreateVendor,
+	useDeleteVendor,
+	useUpdateVendor,
+	useVendors,
+} from "./hooks/useVendors";

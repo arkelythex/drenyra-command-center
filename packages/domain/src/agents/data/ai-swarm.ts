@@ -16,7 +16,8 @@ export const AI_SWARM_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api", "batch"] as const,
 		drenyraSubagent: null,
-		description: "Document storage and linking for audit trails — pure infrastructure, no LLM",
+		description:
+			"Document storage and linking for audit trails — pure infrastructure, no LLM",
 		sourcePath: "apps/api/src/features/ai-swarm/agents/evidence.agent.ts",
 	},
 	{
@@ -31,7 +32,8 @@ export const AI_SWARM_AGENTS = [
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["api"] as const,
 		drenyraSubagent: null,
-		description: "Bank statement matching with AI reasoning — handles partial payments and complex scenarios",
+		description:
+			"Bank statement matching with AI reasoning — handles partial payments and complex scenarios",
 		sourcePath: "apps/api/src/features/ai-swarm/agents/reconciliation.agent.ts",
 	},
 	{
@@ -42,11 +44,16 @@ export const AI_SWARM_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["sunat-validation", "compliance-audit", "validation"] as const,
+		capabilities: [
+			"sunat-validation",
+			"compliance-audit",
+			"validation",
+		] as const,
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["api"] as const,
 		drenyraSubagent: null,
-		description: "Hybrid rule-based + AI SUNAT compliance validation (RUC, IGV, UBL 2.1, SIRE)",
+		description:
+			"Hybrid rule-based + AI SUNAT compliance validation (RUC, IGV, UBL 2.1, SIRE)",
 		sourcePath: "apps/api/src/features/ai-swarm/agents/sunat.agent.ts",
 	},
 	{
@@ -57,11 +64,16 @@ export const AI_SWARM_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["ledger-review", "validation", "document-processing"] as const,
+		capabilities: [
+			"ledger-review",
+			"validation",
+			"document-processing",
+		] as const,
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["api"] as const,
 		drenyraSubagent: null,
-		description: "PCGE accounting classification — classifies transactions into Plan Contable General Empresarial accounts",
+		description:
+			"PCGE accounting classification — classifies transactions into Plan Contable General Empresarial accounts",
 		sourcePath: "apps/api/src/features/ai-swarm/agents/pcge.agent.ts",
 	},
 	{
@@ -76,7 +88,8 @@ export const AI_SWARM_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api"] as const,
 		drenyraSubagent: null,
-		description: "Document data extraction from PDF/image invoices using vision models",
+		description:
+			"Document data extraction from PDF/image invoices using vision models",
 		sourcePath: "apps/api/src/features/ai-swarm/agents/ocr.agent.ts",
 	},
 ] as const satisfies readonly UnifiedAgentEntry[];

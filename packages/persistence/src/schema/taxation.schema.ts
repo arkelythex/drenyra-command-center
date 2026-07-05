@@ -92,12 +92,15 @@ export const taxRulesRelations = relations(taxRules, ({ many }) => ({
  * console.log(taxRuleVersionsRelations);
  * ```
  */
-export const taxRuleVersionsRelations = relations(taxRuleVersions, ({ one }) => ({
-	rule: one(taxRules, {
-		fields: [taxRuleVersions.ruleId],
-		references: [taxRules.id],
+export const taxRuleVersionsRelations = relations(
+	taxRuleVersions,
+	({ one }) => ({
+		rule: one(taxRules, {
+			fields: [taxRuleVersions.ruleId],
+			references: [taxRules.id],
+		}),
 	}),
-}));
+);
 
 /**
  * retenciones table — IGV withholding records (RS 037-2002/SUNAT).

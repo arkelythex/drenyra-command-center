@@ -287,7 +287,7 @@ describe("UploadDocumentSchema", () => {
 			validUUIDs.forEach((uuid) => {
 				const input = {
 					companyId: "123e4567-e89b-12d3-a456-426614174001",
-				clientId: uuid,
+					clientId: uuid,
 					clientName: "Client",
 					file,
 					fileName: "test.pdf",
@@ -404,8 +404,8 @@ describe("UploadDocumentSchema", () => {
 				clientName: "Client",
 				file,
 				fileName: "test.doc",
-					fileType: "DOCX", // Invalid type
-				};
+				fileType: "DOCX", // Invalid type
+			};
 
 			const result = UploadDocumentSchema.safeParse(input);
 
@@ -420,7 +420,7 @@ describe("UploadDocumentSchema", () => {
 
 				const input = {
 					companyId: "123e4567-e89b-12d3-a456-426614174001",
-				clientId: validClientId,
+					clientId: validClientId,
 					clientName: "Client",
 					file,
 					fileName: `test.${fileType.toLowerCase()}`,

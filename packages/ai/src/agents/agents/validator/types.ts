@@ -3,34 +3,34 @@
  * SUNAT 2026 compliance rules, prompts, and shared constants
  */
 
-import type { ComplianceViolation } from '../../types';
+import type { ComplianceViolation } from "../../types";
 
 export interface ParsedValidatorResponse {
-  isCompliant: boolean;
-  violations: ComplianceViolation[];
-  suggestedFixes: string[];
-  generatedXML?: string;
+	isCompliant: boolean;
+	violations: ComplianceViolation[];
+	suggestedFixes: string[];
+	generatedXML?: string;
 }
 
 export const SUNAT_RULES = {
-  IGV_RATE: 0.18,
-  IGV_TAX_CODE: '1000',
-  INVOICE_TYPE_CODES: ['01', '03', '07', '08'],
-  SERIES_PATTERNS: {
-    '01': /^F\d{3}$/,
-    '03': /^B\d{3}$/,
-    '07': /^[FB]\d{3}$/,
-    '08': /^[FB]\d{3}$/,
-  },
-  CURRENCIES: ['PEN', 'USD'],
-  DOC_TYPES: {
-    RUC: '6',
-    DNI: '1',
-    PASSPORT: '7',
-  },
-  RUC_LENGTH: 11,
-  UBL_VERSION: '2.1',
-  CUSTOMIZATION_ID: '2.0',
+	IGV_RATE: 0.18,
+	IGV_TAX_CODE: "1000",
+	INVOICE_TYPE_CODES: ["01", "03", "07", "08"],
+	SERIES_PATTERNS: {
+		"01": /^F\d{3}$/,
+		"03": /^B\d{3}$/,
+		"07": /^[FB]\d{3}$/,
+		"08": /^[FB]\d{3}$/,
+	},
+	CURRENCIES: ["PEN", "USD"],
+	DOC_TYPES: {
+		RUC: "6",
+		DNI: "1",
+		PASSPORT: "7",
+	},
+	RUC_LENGTH: 11,
+	UBL_VERSION: "2.1",
+	CUSTOMIZATION_ID: "2.0",
 };
 
 export const SYSTEM_PROMPT = `Eres un auditor experto en cumplimiento normativo SUNAT 2026 para Perú.
@@ -84,8 +84,8 @@ Responde SOLO en JSON:
 }`;
 
 export const INVOICE_TYPE_NAMES: Record<string, string> = {
-  '01': 'Factura',
-  '03': 'Boleta de Venta',
-  '07': 'Nota de Crédito',
-  '08': 'Nota de Débito',
+	"01": "Factura",
+	"03": "Boleta de Venta",
+	"07": "Nota de Crédito",
+	"08": "Nota de Débito",
 };

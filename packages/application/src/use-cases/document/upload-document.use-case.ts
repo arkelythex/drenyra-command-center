@@ -5,8 +5,8 @@ import type {
 	UploadDocumentResponseDTO,
 } from "../../dtos/document/upload-document.dto";
 import type { IStorageService } from "../../ports/storage.port";
-import { saveDocumentWithTenant } from "./support/document-tenant";
 import { UploadDocumentSchema } from "../../validators/document/document.validators";
+import { saveDocumentWithTenant } from "./support/document-tenant";
 
 /**
  * UploadDocumentUseCase class.
@@ -48,7 +48,11 @@ export class UploadDocumentUseCase {
 			updatedAt: new Date(),
 		});
 
-		await saveDocumentWithTenant(this.documentRepository, document, validatedInput);
+		await saveDocumentWithTenant(
+			this.documentRepository,
+			document,
+			validatedInput,
+		);
 
 		return {
 			documentId: document.id,

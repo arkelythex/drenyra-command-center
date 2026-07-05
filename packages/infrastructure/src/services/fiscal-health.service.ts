@@ -4,8 +4,8 @@
  */
 
 import type { Money } from "@drenyra/domain";
-import { SunatSireService } from "@drenyra/infrastructure/sunat/SunatSireService";
 import { createSunatClient } from "@drenyra/infrastructure/sunat/SunatApiClient";
+import { SunatSireService } from "@drenyra/infrastructure/sunat/SunatSireService";
 
 export interface FiscalHealthScore {
 	overall: number; // 0-100

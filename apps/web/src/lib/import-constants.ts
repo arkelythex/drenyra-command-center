@@ -58,5 +58,4 @@ export const BANK_FORMATS = {
 /** Name of a known bank format (key of `BANK_FORMATS`) */
 export type BankFormatName = keyof typeof BANK_FORMATS;
 /** Metadata value from the `BANK_FORMATS` map */
-export type BankFormatMeta =
-	(typeof BANK_FORMATS)[keyof typeof BANK_FORMATS];
+export type BankFormatMeta = (typeof BANK_FORMATS)[keyof typeof BANK_FORMATS];

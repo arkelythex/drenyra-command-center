@@ -37,7 +37,8 @@ export function resolveTrustedMachineCallerAllowlist(
 		.filter((serviceId) => serviceId.length > 0);
 	if (fromInput.length > 0) return fromInput;
 
-	const envVarName = input?.envVarName?.trim() || "ARKELYTHEX_MACHINE_CALLER_ALLOWLIST";
+	const envVarName =
+		input?.envVarName?.trim() || "ARKELYTHEX_MACHINE_CALLER_ALLOWLIST";
 	return parseMachineCallerAllowlist(process.env[envVarName] ?? "");
 }
 
@@ -53,7 +54,8 @@ function resolveMachineCallerAllowlist(
 }
 
 function shouldRequireSession(requireSessionOverride?: boolean): boolean {
-	if (typeof requireSessionOverride === "boolean") return requireSessionOverride;
+	if (typeof requireSessionOverride === "boolean")
+		return requireSessionOverride;
 
 	const env = (process.env.NODE_ENV ?? "").toLowerCase();
 	if (env !== "test") return true;
@@ -133,7 +135,9 @@ function validateRoleRequirement(
 	return null;
 }
 
-function resolveMachineSignaturePayload(headers: HeaderContainer): SignedMachineCaller | null {
+function resolveMachineSignaturePayload(
+	headers: HeaderContainer,
+): SignedMachineCaller | null {
 	const serviceId = readHeaderValue(headers, "x-ark-service-id");
 	const role = normalizeRole(
 		readHeaderValue(headers, "x-ark-service-role") || "service",
@@ -314,15 +318,15 @@ function resolveHeaderFallbackCaller(
 
 export {
 	AUTHENTICATED_CALLER_KIND,
-	normalizeRole,
+	hasSpoofableHeaderContext,
 	normalizeMachineIdentity,
+	normalizeRole,
 	parseMachineCallerAllowlist,
+	resolveHeaderFallbackCaller,
 	resolveMachineCallerAllowlist,
-	shouldRequireSession,
-	validateTenantScope,
-	validateRoleRequirement,
 	resolveMachineSignaturePayload,
 	resolveSignedMachineCaller,
-	hasSpoofableHeaderContext,
-	resolveHeaderFallbackCaller,
+	shouldRequireSession,
+	validateRoleRequirement,
+	validateTenantScope,
 };

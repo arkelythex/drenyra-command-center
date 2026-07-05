@@ -13,7 +13,12 @@
  * - `"resolved"` — successful completion
  * - `"error"` — failure, allows `RETRY` or `RESET`
  */
-export type ProcessStatus = "idle" | "processing" | "analyzing" | "resolved" | "error";
+export type ProcessStatus =
+	| "idle"
+	| "processing"
+	| "analyzing"
+	| "resolved"
+	| "error";
 
 /**
  * Minimum context shape each process machine must implement.

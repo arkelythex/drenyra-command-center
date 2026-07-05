@@ -5,16 +5,18 @@
  * an effect. Used both for creating new permissions and editing existing ones.
  */
 
-import { useEffect, useState } from "react";
 import { ShieldCheck } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
+	DialogDescription,
 	DialogHeader,
 	DialogTitle,
-	DialogDescription,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
 	Select,
 	SelectContent,
@@ -22,12 +24,10 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import type {
+	CreateToolPermissionDTO,
 	PermissionEffect,
 	ToolPermission,
-	CreateToolPermissionDTO,
 	UpdateToolPermissionDTO,
 } from "../api/tool-permissions.api";
 
@@ -43,10 +43,18 @@ const KNOWN_TOOLS = [
 	"analizar_documento",
 ];
 
-const EFFECT_OPTIONS: { value: PermissionEffect; label: string; description: string }[] = [
+const EFFECT_OPTIONS: {
+	value: PermissionEffect;
+	label: string;
+	description: string;
+}[] = [
 	{ value: "ALLOW", label: "Allow", description: "Ejecutar sin aprobación" },
 	{ value: "DENY", label: "Deny", description: "Bloquear ejecución" },
-	{ value: "REQUIRE_APPROVAL", label: "Require Approval", description: "Requiere aprobación manual" },
+	{
+		value: "REQUIRE_APPROVAL",
+		label: "Require Approval",
+		description: "Requiere aprobación manual",
+	},
 ];
 
 // ─── Props ────────────────────────────────────────────────────────────────────
@@ -79,8 +87,14 @@ export function ToolPermissionFormDialog({
 	useEffect(() => {
 		if (open) {
 			if (permission) {
-				setToolName(KNOWN_TOOLS.includes(permission.toolName) ? permission.toolName : "__custom__");
-				setCustomToolName(KNOWN_TOOLS.includes(permission.toolName) ? "" : permission.toolName);
+				setToolName(
+					KNOWN_TOOLS.includes(permission.toolName)
+						? permission.toolName
+						: "__custom__",
+				);
+				setCustomToolName(
+					KNOWN_TOOLS.includes(permission.toolName) ? "" : permission.toolName,
+				);
 				setEffect(permission.effect);
 			} else {
 				setToolName("");
@@ -90,7 +104,8 @@ export function ToolPermissionFormDialog({
 		}
 	}, [open, permission]);
 
-	const resolvedToolName = toolName === "__custom__" ? customToolName : toolName;
+	const resolvedToolName =
+		toolName === "__custom__" ? customToolName : toolName;
 	const canSave = resolvedToolName.trim().length > 0;
 
 	const handleSave = () => {
@@ -193,7 +208,11 @@ export function ToolPermissionFormDialog({
 						Cancelar
 					</Button>
 					<Button onClick={handleSave} disabled={!canSave || isSaving}>
-						{isSaving ? "Guardando…" : isEditing ? "Guardar cambios" : "Crear permiso"}
+						{isSaving
+							? "Guardando…"
+							: isEditing
+								? "Guardar cambios"
+								: "Crear permiso"}
 					</Button>
 				</div>
 			</DialogContent>

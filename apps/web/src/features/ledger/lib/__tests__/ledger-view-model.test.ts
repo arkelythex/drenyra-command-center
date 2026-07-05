@@ -76,16 +76,52 @@ describe("mapGeneralLedgerRowsToTransactions", () => {
 describe("filterTransactionsByCategoryName", () => {
 	it("returns all when category is null", () => {
 		const txs = [
-			{ id: "1", date: "", voucher: "", glosa: "", cuenta: "A", debe: 0, haber: 0, doc: "" },
-			{ id: "2", date: "", voucher: "", glosa: "", cuenta: "B", debe: 0, haber: 0, doc: "" },
+			{
+				id: "1",
+				date: "",
+				voucher: "",
+				glosa: "",
+				cuenta: "A",
+				debe: 0,
+				haber: 0,
+				doc: "",
+			},
+			{
+				id: "2",
+				date: "",
+				voucher: "",
+				glosa: "",
+				cuenta: "B",
+				debe: 0,
+				haber: 0,
+				doc: "",
+			},
 		];
 		expect(filterTransactionsByCategoryName(txs, null)).toHaveLength(2);
 	});
 
 	it("filters by category name", () => {
 		const txs = [
-			{ id: "1", cuenta: "X", date: "", voucher: "", glosa: "", debe: 0, haber: 0, doc: "" },
-			{ id: "2", cuenta: "Y", date: "", voucher: "", glosa: "", debe: 0, haber: 0, doc: "" },
+			{
+				id: "1",
+				cuenta: "X",
+				date: "",
+				voucher: "",
+				glosa: "",
+				debe: 0,
+				haber: 0,
+				doc: "",
+			},
+			{
+				id: "2",
+				cuenta: "Y",
+				date: "",
+				voucher: "",
+				glosa: "",
+				debe: 0,
+				haber: 0,
+				doc: "",
+			},
 		];
 		expect(filterTransactionsByCategoryName(txs, "X")).toHaveLength(1);
 	});

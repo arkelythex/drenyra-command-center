@@ -18,8 +18,13 @@
  *   .build();
  * ```
  */
+
+import type {
+	CreditNoteStatus,
+	CreditNoteType,
+	Currency,
+} from "@drenyra/domain";
 import { CreditNote, DocumentSeries, Money } from "@drenyra/domain";
-import type { CreditNoteType, CreditNoteStatus, Currency } from "@drenyra/domain";
 
 import { BaseBuilder } from "./base.builder";
 
@@ -117,10 +122,7 @@ export class CreditNoteBuilder extends BaseBuilder<
 	 * @param amount - Total amount for the credit note
 	 * @param currency - Currency (defaults to PEN)
 	 */
-	withAmount(
-		amount: number,
-		currency: Currency = DEFAULT_CURRENCY,
-	): this {
+	withAmount(amount: number, currency: Currency = DEFAULT_CURRENCY): this {
 		const baseAmount = Money.fromAmount(amount / 1.18, currency);
 		const igvAmount = baseAmount.multiply(0.18);
 		const totalAmount = baseAmount.add(igvAmount);
@@ -205,14 +207,13 @@ export class CreditNoteBuilder extends BaseBuilder<
 			referenceInvoiceTotal: this.referenceInvoiceTotal ?? undefined,
 			creditNoteType,
 			reason: this.data.reason ?? DEFAULT_REASON,
-			series: DocumentSeries.create(
-				this.data.series ?? DEFAULT_SERIES,
-			),
+			series: DocumentSeries.create(this.data.series ?? DEFAULT_SERIES),
 			number: this.data.number ?? DEFAULT_NUMBER,
 			totalAmount:
 				this.data.totalAmount ??
-				Money.fromAmount(DEFAULT_AMOUNT, DEFAULT_CURRENCY)
-					.add(Money.fromAmount(DEFAULT_AMOUNT, DEFAULT_CURRENCY).multiply(0.18)),
+				Money.fromAmount(DEFAULT_AMOUNT, DEFAULT_CURRENCY).add(
+					Money.fromAmount(DEFAULT_AMOUNT, DEFAULT_CURRENCY).multiply(0.18),
+				),
 			baseAmount:
 				this.data.baseAmount ??
 				Money.fromAmount(DEFAULT_AMOUNT, DEFAULT_CURRENCY),

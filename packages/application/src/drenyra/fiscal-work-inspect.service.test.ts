@@ -1,8 +1,11 @@
-import { describe, expect, it } from "vitest";
 import { DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY } from "@drenyra/domain/drenyra";
-import { InMemoryDrenyraRepository } from "./in-memory-repository";
+import { describe, expect, it } from "vitest";
 import { DrenyraFiscalWorkInspectService } from "./fiscal-work-inspect.service";
-import { DrenyraFiscalCommandCenterService, type DrenyraActorContext } from "./service";
+import { InMemoryDrenyraRepository } from "./in-memory-repository";
+import {
+	type DrenyraActorContext,
+	DrenyraFiscalCommandCenterService,
+} from "./service";
 
 const context: DrenyraActorContext = {
 	organizationId: "org-001",
@@ -16,7 +19,10 @@ function makeServices() {
 	const repository = new InMemoryDrenyraRepository();
 	return {
 		commandCenter: new DrenyraFiscalCommandCenterService(repository),
-		inspect: new DrenyraFiscalWorkInspectService(repository, () => "trace-test-001"),
+		inspect: new DrenyraFiscalWorkInspectService(
+			repository,
+			() => "trace-test-001",
+		),
 	};
 }
 
@@ -28,15 +34,23 @@ describe("DrenyraFiscalWorkInspectService", () => {
 			title: "SIRE mayo",
 			description: "Inspeccionar propuesta SIRE",
 		});
-		const evidence = await commandCenter.addEvidenceItem(context, fiscalCase.id, {
-			type: "SUNAT_RECORD",
-			title: "Propuesta SIRE",
-			summary: "Registro descargado",
-			source: "SUNAT",
-		});
+		const evidence = await commandCenter.addEvidenceItem(
+			context,
+			fiscalCase.id,
+			{
+				type: "SUNAT_RECORD",
+				title: "Propuesta SIRE",
+				summary: "Registro descargado",
+				source: "SUNAT",
+			},
+		);
 
 		const result = await inspect.inspect({
-			scope: { ...fiscalCase.scope, organizationId: context.organizationId, actorId: context.userId },
+			scope: {
+				...fiscalCase.scope,
+				organizationId: context.organizationId,
+				actorId: context.userId,
+			},
 			workItemId: fiscalCase.id,
 			grantedCapabilities: [DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY],
 		});
@@ -73,7 +87,12 @@ describe("DrenyraFiscalWorkInspectService", () => {
 		});
 
 		const result = await inspect.inspect({
-			scope: { ...context, companyId: "company-002", countryCode: "PE", actorId: context.userId },
+			scope: {
+				...context,
+				companyId: "company-002",
+				countryCode: "PE",
+				actorId: context.userId,
+			},
 			workItemId: fiscalCase.id,
 			grantedCapabilities: [DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY],
 		});

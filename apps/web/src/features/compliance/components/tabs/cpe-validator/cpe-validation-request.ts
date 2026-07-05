@@ -12,7 +12,9 @@ interface CpeValidationRequestBody {
 const DEFAULT_COMPANY_RUC = "20100070970";
 const SANDBOX_REJECTED_RUC = "99999000009";
 
-export function buildCpeValidationRequest(row: MockCpeRow): CpeValidationRequestBody {
+export function buildCpeValidationRequest(
+	row: MockCpeRow,
+): CpeValidationRequestBody {
 	const companyRuc = resolveCompanyRuc(row.sunatCode);
 	const cpeNumber = resolveCpeNumber(row);
 
@@ -49,7 +51,10 @@ function resolveCpeNumber(row: MockCpeRow): string {
 }
 
 function normalizeCpeNumber(value: string): string {
-	const match = value.trim().toUpperCase().match(/^([A-Z0-9]{4})-(\d{1,8})$/);
+	const match = value
+		.trim()
+		.toUpperCase()
+		.match(/^([A-Z0-9]{4})-(\d{1,8})$/);
 	if (!match) {
 		return "F001-00001234";
 	}

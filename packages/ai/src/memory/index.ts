@@ -7,5 +7,5 @@
  * @module ai/memory
  */
 
+export type { MemoryConfig, MemoryContext } from "../services/memory-context";
 export { MemoryContextProvider } from "../services/memory-context";
-export type { MemoryContext, MemoryConfig } from "../services/memory-context";

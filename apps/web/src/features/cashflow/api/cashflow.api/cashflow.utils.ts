@@ -85,7 +85,9 @@ function serializeDate(value: DateLike): string {
 	return value.toISOString().slice(0, 10);
 }
 
-function mapProjectionData(data: CashflowProjectionApiData): CashflowProjectionData {
+function mapProjectionData(
+	data: CashflowProjectionApiData,
+): CashflowProjectionData {
 	const mapProjectionItem = (
 		item: CashflowProjectionApiData["inflows"][number],
 	): CashflowProjectionItem => ({
@@ -150,5 +152,9 @@ function mapVarianceData(data: CashflowVarianceApiData): CashflowVarianceData {
 	};
 }
 
-export type { CashflowProjectionApiData, ActualCashflowApiData, CashflowVarianceApiData };
-export { serializeDate, mapProjectionData, mapActualData, mapVarianceData };
+export type {
+	ActualCashflowApiData,
+	CashflowProjectionApiData,
+	CashflowVarianceApiData,
+};
+export { mapActualData, mapProjectionData, mapVarianceData, serializeDate };

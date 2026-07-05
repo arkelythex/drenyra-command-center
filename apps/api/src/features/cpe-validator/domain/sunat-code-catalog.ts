@@ -129,7 +129,9 @@ export function findSunatCatalogEntry(
 	const normalizedCode = (code ?? "").trim();
 
 	if (normalizedCode.length > 0) {
-		const byCode = SUNAT_CODE_CATALOG.find((entry) => entry.code === normalizedCode);
+		const byCode = SUNAT_CODE_CATALOG.find(
+			(entry) => entry.code === normalizedCode,
+		);
 		if (byCode) {
 			return byCode;
 		}

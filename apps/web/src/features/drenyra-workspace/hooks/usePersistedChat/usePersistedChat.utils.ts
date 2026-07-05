@@ -1,14 +1,26 @@
-import type { DrenyraBrainItem, DrenyraBrainItemContent } from "@drenyra/domain/drenyra";
+import type {
+	DrenyraBrainItem,
+	DrenyraBrainItemContent,
+} from "@drenyra/domain/drenyra";
 import type { Message } from "@/components/agentic/ThreadView";
 
 function extractText(content: DrenyraBrainItemContent): string {
-	if ("text" in content && typeof (content as { text: string }).text === "string") {
+	if (
+		"text" in content &&
+		typeof (content as { text: string }).text === "string"
+	) {
 		return (content as { text: string }).text;
 	}
-	if ("message" in content && typeof (content as { message: string }).message === "string") {
+	if (
+		"message" in content &&
+		typeof (content as { message: string }).message === "string"
+	) {
 		return (content as { message: string }).message;
 	}
-	if ("summary" in content && typeof (content as { summary?: string }).summary === "string") {
+	if (
+		"summary" in content &&
+		typeof (content as { summary?: string }).summary === "string"
+	) {
 		return (content as { summary: string }).summary;
 	}
 	return JSON.stringify(content);

@@ -1,11 +1,14 @@
-import { describe, expect, it } from "vitest";
 import {
 	DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY,
 	DRENYRA_FISCAL_WORK_INSPECT_REASON_CODES,
 	DRENYRA_FISCAL_WORK_INSPECT_STATUSES,
 } from "@drenyra/domain/drenyra";
+import { describe, expect, it } from "vitest";
 import { InMemoryDrenyraRepository } from "./in-memory-repository";
-import { DrenyraFiscalCommandCenterService, type DrenyraActorContext } from "./service";
+import {
+	type DrenyraActorContext,
+	DrenyraFiscalCommandCenterService,
+} from "./service";
 
 const context: DrenyraActorContext = {
 	companyId: "company-001",
@@ -17,12 +20,17 @@ const context: DrenyraActorContext = {
 
 function makeService() {
 	const repository = new InMemoryDrenyraRepository();
-	return { repository, service: new DrenyraFiscalCommandCenterService(repository) };
+	return {
+		repository,
+		service: new DrenyraFiscalCommandCenterService(repository),
+	};
 }
 
 describe("DrenyraFiscalCommandCenterService", () => {
 	it("exposes stable inspect envelope discriminants and reason codes", () => {
-		expect(DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY).toBe("drenyra.fiscal-work.inspect");
+		expect(DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY).toBe(
+			"drenyra.fiscal-work.inspect",
+		);
 		expect(DRENYRA_FISCAL_WORK_INSPECT_STATUSES).toEqual([
 			"success",
 			"denied",
@@ -64,13 +72,22 @@ describe("DrenyraFiscalCommandCenterService", () => {
 		});
 
 		await expect(
-			service.getFiscalCaseDetails({ ...context, period: "2026-06" }, fiscalCase.id),
+			service.getFiscalCaseDetails(
+				{ ...context, period: "2026-06" },
+				fiscalCase.id,
+			),
 		).resolves.toBeNull();
 		await expect(
-			service.getFiscalCaseDetails({ ...context, organizationId: "org-002" }, fiscalCase.id),
+			service.getFiscalCaseDetails(
+				{ ...context, organizationId: "org-002" },
+				fiscalCase.id,
+			),
 		).resolves.toBeNull();
 		await expect(
-			service.getFiscalCaseDetails({ ...context, companyRuc: "20999999999" }, fiscalCase.id),
+			service.getFiscalCaseDetails(
+				{ ...context, companyRuc: "20999999999" },
+				fiscalCase.id,
+			),
 		).resolves.toBeNull();
 	});
 
@@ -82,16 +99,28 @@ describe("DrenyraFiscalCommandCenterService", () => {
 			description: "Preparar cambio de estado auditado",
 		});
 
-		const updated = await service.updateFiscalCaseStatus(context, fiscalCase.id, {
-			status: "IN_REVIEW",
-			reason: "Revisión humana iniciada",
-		});
+		const updated = await service.updateFiscalCaseStatus(
+			context,
+			fiscalCase.id,
+			{
+				status: "IN_REVIEW",
+				reason: "Revisión humana iniciada",
+			},
+		);
 		const details = await service.getFiscalCaseDetails(context, fiscalCase.id);
-		const statusEvent = details?.auditEvents.find((event) => event.eventType === "FISCAL_CASE_STATUS_CHANGED");
+		const statusEvent = details?.auditEvents.find(
+			(event) => event.eventType === "FISCAL_CASE_STATUS_CHANGED",
+		);
 
 		expect(updated.status).toBe("IN_REVIEW");
-		expect(Date.parse(updated.updatedAt)).toBeGreaterThanOrEqual(Date.parse(fiscalCase.updatedAt));
-		expect(statusEvent?.metadata).toMatchObject({ previousStatus: "OPEN", nextStatus: "IN_REVIEW", reason: "Revisión humana iniciada" });
+		expect(Date.parse(updated.updatedAt)).toBeGreaterThanOrEqual(
+			Date.parse(fiscalCase.updatedAt),
+		);
+		expect(statusEvent?.metadata).toMatchObject({
+			previousStatus: "OPEN",
+			nextStatus: "IN_REVIEW",
+			reason: "Revisión humana iniciada",
+		});
 	});
 
 	it("does not update fiscal case status outside the scoped period", async () => {
@@ -102,11 +131,19 @@ describe("DrenyraFiscalCommandCenterService", () => {
 			description: "Debe respetar periodo fiscal",
 		});
 
-		await expect(service.updateFiscalCaseStatus({ ...context, period: "2026-06" }, fiscalCase.id, { status: "IN_REVIEW" })).rejects.toThrow("FISCAL_CASE_NOT_FOUND");
+		await expect(
+			service.updateFiscalCaseStatus(
+				{ ...context, period: "2026-06" },
+				fiscalCase.id,
+				{ status: "IN_REVIEW" },
+			),
+		).rejects.toThrow("FISCAL_CASE_NOT_FOUND");
 		const details = await service.getFiscalCaseDetails(context, fiscalCase.id);
 
 		expect(details?.case.status).toBe("OPEN");
-		expect(details?.auditEvents.map((event) => event.eventType)).not.toContain("FISCAL_CASE_STATUS_CHANGED");
+		expect(details?.auditEvents.map((event) => event.eventType)).not.toContain(
+			"FISCAL_CASE_STATUS_CHANGED",
+		);
 	});
 
 	it("rejects manual approval-pending status updates", async () => {
@@ -117,7 +154,11 @@ describe("DrenyraFiscalCommandCenterService", () => {
 			description: "Debe usar solicitud de aprobación",
 		});
 
-		await expect(service.updateFiscalCaseStatus(context, fiscalCase.id, { status: "APPROVAL_PENDING" })).rejects.toThrow("FISCAL_CASE_STATUS_REQUIRES_APPROVAL_REQUEST");
+		await expect(
+			service.updateFiscalCaseStatus(context, fiscalCase.id, {
+				status: "APPROVAL_PENDING",
+			}),
+		).rejects.toThrow("FISCAL_CASE_STATUS_REQUIRES_APPROVAL_REQUEST");
 	});
 
 	it("rejects unchanged fiscal case status updates", async () => {
@@ -128,7 +169,11 @@ describe("DrenyraFiscalCommandCenterService", () => {
 			description: "Evitar auditoría redundante",
 		});
 
-		await expect(service.updateFiscalCaseStatus(context, fiscalCase.id, { status: "OPEN" })).rejects.toThrow("FISCAL_CASE_STATUS_UNCHANGED");
+		await expect(
+			service.updateFiscalCaseStatus(context, fiscalCase.id, {
+				status: "OPEN",
+			}),
+		).rejects.toThrow("FISCAL_CASE_STATUS_UNCHANGED");
 	});
 
 	it("adds evidence to a fiscal case and audits it", async () => {
@@ -150,7 +195,9 @@ describe("DrenyraFiscalCommandCenterService", () => {
 
 		expect(evidence.contentHash).toHaveLength(64);
 		expect(details?.evidence).toHaveLength(1);
-		expect(details?.auditEvents.map((event) => event.eventType)).toContain("EVIDENCE_ADDED");
+		expect(details?.auditEvents.map((event) => event.eventType)).toContain(
+			"EVIDENCE_ADDED",
+		);
 	});
 
 	it("bootstraps a document mission with case, evidence and agent run", async () => {
@@ -160,12 +207,17 @@ describe("DrenyraFiscalCommandCenterService", () => {
 			filename: "F001-00001234.xml",
 			mimeType: "text/xml",
 		});
-		const details = await service.getFiscalCaseDetails(context, mission.fiscalCase.id);
+		const details = await service.getFiscalCaseDetails(
+			context,
+			mission.fiscalCase.id,
+		);
 
 		expect(mission.fiscalCase.type).toBe("CPE_REVIEW");
 		expect(mission.fiscalCase.metadata.documentId).toBe("doc_test_001");
 		expect(mission.agentRun.agentType).toBe("CPE_AGENT");
-		expect(details?.evidence.some((item) => item.sourceRef === "doc_test_001")).toBe(true);
+		expect(
+			details?.evidence.some((item) => item.sourceRef === "doc_test_001"),
+		).toBe(true);
 	});
 
 	it("starts and completes a deterministic mock agent run", async () => {
@@ -178,14 +230,22 @@ describe("DrenyraFiscalCommandCenterService", () => {
 			riskScore: 76,
 		});
 
-		const run = await service.startAndCompleteMockAgentRun(context, fiscalCase.id, "CPE_AGENT");
+		const run = await service.startAndCompleteMockAgentRun(
+			context,
+			fiscalCase.id,
+			"CPE_AGENT",
+		);
 		const details = await service.getFiscalCaseDetails(context, fiscalCase.id);
 
 		expect(run.status).toBe("COMPLETED");
 		expect(run.output?.approvalRequired).toBe(true);
 		expect(run.output?.requiredEvidence).toContain("CDR SUNAT");
-		expect(details?.evidence.some((item) => item.type === "AGENT_OUTPUT")).toBe(true);
-		expect(details?.auditEvents.map((event) => event.eventType)).toContain("AGENT_RUN_COMPLETED");
+		expect(details?.evidence.some((item) => item.type === "AGENT_OUTPUT")).toBe(
+			true,
+		);
+		expect(details?.auditEvents.map((event) => event.eventType)).toContain(
+			"AGENT_RUN_COMPLETED",
+		);
 	});
 
 	it("requests approval and writes an audit event", async () => {
@@ -199,13 +259,19 @@ describe("DrenyraFiscalCommandCenterService", () => {
 		const approval = await service.requestApproval(context, fiscalCase.id, {
 			title: "Aprobar ajuste contable",
 			description: "El ajuste queda preparado pero no ejecutado",
-			diff: { before: { status: "draft" }, after: { status: "prepared" }, summary: "Preparar ajuste" },
+			diff: {
+				before: { status: "draft" },
+				after: { status: "prepared" },
+				summary: "Preparar ajuste",
+			},
 		});
 		const details = await service.getFiscalCaseDetails(context, fiscalCase.id);
 
 		expect(approval.status).toBe("PENDING");
 		expect(details?.case.status).toBe("APPROVAL_PENDING");
-		expect(details?.auditEvents.map((event) => event.eventType)).toContain("APPROVAL_REQUESTED");
+		expect(details?.auditEvents.map((event) => event.eventType)).toContain(
+			"APPROVAL_REQUESTED",
+		);
 	});
 
 	it("approves and rejects approval requests with audit trail", async () => {
@@ -228,18 +294,40 @@ describe("DrenyraFiscalCommandCenterService", () => {
 		const rejection = await service.requestApproval(context, secondCase.id, {
 			title: "Aprobar evidencia",
 			description: "Evidencia aún incompleta",
-			diff: { before: {}, after: { ready: false }, summary: "Evidencia insuficiente" },
+			diff: {
+				before: {},
+				after: { ready: false },
+				summary: "Evidencia insuficiente",
+			},
 		});
 
-		const approved = await service.approveApprovalRequest(context, approval.id, { decisionReason: "Evidencia suficiente" });
-		const rejected = await service.rejectApprovalRequest(context, rejection.id, { decisionReason: "Falta CDR" });
-		const approvedDetails = await service.getFiscalCaseDetails(context, firstCase.id);
-		const rejectedDetails = await service.getFiscalCaseDetails(context, secondCase.id);
+		const approved = await service.approveApprovalRequest(
+			context,
+			approval.id,
+			{ decisionReason: "Evidencia suficiente" },
+		);
+		const rejected = await service.rejectApprovalRequest(
+			context,
+			rejection.id,
+			{ decisionReason: "Falta CDR" },
+		);
+		const approvedDetails = await service.getFiscalCaseDetails(
+			context,
+			firstCase.id,
+		);
+		const rejectedDetails = await service.getFiscalCaseDetails(
+			context,
+			secondCase.id,
+		);
 
 		expect(approved.status).toBe("APPROVED");
 		expect(rejected.status).toBe("REJECTED");
-		expect(approvedDetails?.auditEvents.map((event) => event.eventType)).toContain("APPROVAL_APPROVED");
-		expect(rejectedDetails?.auditEvents.map((event) => event.eventType)).toContain("APPROVAL_REJECTED");
+		expect(
+			approvedDetails?.auditEvents.map((event) => event.eventType),
+		).toContain("APPROVAL_APPROVED");
+		expect(
+			rejectedDetails?.auditEvents.map((event) => event.eventType),
+		).toContain("APPROVAL_REJECTED");
 	});
 
 	it("inspects a scoped fiscal work item with shared envelope metadata", async () => {
@@ -286,19 +374,35 @@ describe("DrenyraFiscalCommandCenterService", () => {
 		const envelopes = await Promise.all([
 			service.inspectFiscalWorkItem(
 				{ ...context, period: "2026-06" },
-				{ workItemId: fiscalCase.id, capabilityGranted: true, traceId: "trace-period" },
+				{
+					workItemId: fiscalCase.id,
+					capabilityGranted: true,
+					traceId: "trace-period",
+				},
 			),
 			service.inspectFiscalWorkItem(
 				{ ...context, companyRuc: "20999999999" },
-				{ workItemId: fiscalCase.id, capabilityGranted: true, traceId: "trace-ruc" },
+				{
+					workItemId: fiscalCase.id,
+					capabilityGranted: true,
+					traceId: "trace-ruc",
+				},
 			),
 			service.inspectFiscalWorkItem(
 				{ ...context, companyId: "company-002" },
-				{ workItemId: fiscalCase.id, capabilityGranted: true, traceId: "trace-company" },
+				{
+					workItemId: fiscalCase.id,
+					capabilityGranted: true,
+					traceId: "trace-company",
+				},
 			),
 			service.inspectFiscalWorkItem(
 				{ ...context, organizationId: "org-002" },
-				{ workItemId: fiscalCase.id, capabilityGranted: true, traceId: "trace-org" },
+				{
+					workItemId: fiscalCase.id,
+					capabilityGranted: true,
+					traceId: "trace-org",
+				},
 			),
 		]);
 
@@ -320,7 +424,11 @@ describe("DrenyraFiscalCommandCenterService", () => {
 
 		const missingScope = await service.inspectFiscalWorkItem(
 			{ ...context, companyRuc: "" },
-			{ workItemId: fiscalCase.id, capabilityGranted: true, traceId: "trace-missing" },
+			{
+				workItemId: fiscalCase.id,
+				capabilityGranted: true,
+				traceId: "trace-missing",
+			},
 		);
 		const deniedCapability = await service.inspectFiscalWorkItem(context, {
 			workItemId: fiscalCase.id,
@@ -413,7 +521,10 @@ describe("DrenyraFiscalCommandCenterService", () => {
 			eventType: "CAPABILITY_ALLOWED",
 		});
 
-		expect(allEvents.map((event) => event.id)).toEqual(["audit-allowed", "audit-denied"]);
+		expect(allEvents.map((event) => event.id)).toEqual([
+			"audit-allowed",
+			"audit-denied",
+		]);
 		expect(reviewEvents.map((event) => event.id)).toEqual(["audit-allowed"]);
 		expect(reviewEvents[0]?.caseId).toBeUndefined();
 	});

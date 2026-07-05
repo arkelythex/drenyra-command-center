@@ -1,7 +1,7 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { z } from "zod";
-import { ToolRegistry } from "../../src/control-plane/tool-registry";
 import type { RiskTier } from "../../src/control-plane/contracts";
+import { ToolRegistry } from "../../src/control-plane/tool-registry";
 
 // ============================================================================
 // Mock Drizzle query helpers (same pattern as tool-registry.test.ts)

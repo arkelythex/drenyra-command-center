@@ -13,11 +13,7 @@ export const fiscalApi = {
 		});
 	},
 
-	async getTaxCalendar(
-		companyId: string,
-		month?: number,
-		year?: number,
-	) {
+	async getTaxCalendar(companyId: string, month?: number, year?: number) {
 		return safeApiCall(async () => {
 			return extractOkDataOrPassthrough<unknown>(
 				await unwrap(

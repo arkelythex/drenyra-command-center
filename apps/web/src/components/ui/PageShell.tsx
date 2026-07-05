@@ -4,7 +4,7 @@
  * Consistent page wrapper for width, spacing, background and scrolling behavior.
  */
 
-import { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export interface PageShellProps {

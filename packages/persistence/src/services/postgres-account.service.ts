@@ -5,10 +5,10 @@
  * HIGH-003: Added batch query to fix N+1 problem - Elite 2026
  */
 
-import { eq, inArray } from "drizzle-orm";
 import type { AccountService } from "@drenyra/application/use-cases/journal/create-journal-entry.use-case";
 import { db } from "@drenyra/persistence/client";
 import { accounts } from "@drenyra/persistence/schema";
+import { eq, inArray } from "drizzle-orm";
 
 type AccountInfo = { code: string; name: string };
 

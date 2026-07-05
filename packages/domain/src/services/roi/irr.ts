@@ -12,7 +12,6 @@
  * @domain Value Object — framework-free, deterministic
  */
 
-
 import type { IrrInput, IrrResult } from "./types";
 import { InvalidFinancialInputError } from "./types";
 
@@ -63,8 +62,7 @@ export function calculateIrr(input: IrrInput): IrrResult {
 		for (let t = 0; t < cashFlowCents.length; t++) {
 			const denominator = (1 + guess) ** t;
 			npv += cashFlowCents[t] / denominator;
-			npvDerivative +=
-				(-t * cashFlowCents[t]) / ((1 + guess) ** (t + 1));
+			npvDerivative += (-t * cashFlowCents[t]) / (1 + guess) ** (t + 1);
 		}
 
 		if (Math.abs(npvDerivative) < 1e-15) {

@@ -1,15 +1,12 @@
 import { type Browser, type BrowserContext, chromium } from "playwright";
 import { solveCaptcha } from "../captcha";
+import { parseNotificationsFromPage, parseRucStatusFromPage } from "./parser";
 import type {
 	BuzonNotification,
 	RucStatus,
 	ScraperResult,
 	SunatCredentials,
 } from "./types";
-import {
-	parseNotificationsFromPage,
-	parseRucStatusFromPage,
-} from "./parser";
 
 const SUNAT_URLS = {
 	login: "https://e-menu.sunat.gob.pe/cl-ti-itmenu/MenuInternet.htm",

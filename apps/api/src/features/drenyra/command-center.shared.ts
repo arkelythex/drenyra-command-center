@@ -20,7 +20,8 @@ export function drenyraActorContextFailure(missingHeaders: string[]) {
 
 export function commandCenterError(error: unknown) {
 	if (error instanceof Error) {
-		if (error.message.endsWith("_NOT_FOUND")) return fail(error.message, "NOT_FOUND");
+		if (error.message.endsWith("_NOT_FOUND"))
+			return fail(error.message, "NOT_FOUND");
 		if (
 			error.message === "APPROVAL_ALREADY_DECIDED" ||
 			error.message === "FISCAL_CASE_STATUS_UNCHANGED"
@@ -29,11 +30,16 @@ export function commandCenterError(error: unknown) {
 		}
 		return fail(error.message, "DRENYRA_COMMAND_CENTER_ERROR");
 	}
-	return fail("Unknown Drenyra command center error", "DRENYRA_COMMAND_CENTER_ERROR");
+	return fail(
+		"Unknown Drenyra command center error",
+		"DRENYRA_COMMAND_CENTER_ERROR",
+	);
 }
 
 export function statusForCaseMutationError(error: unknown): 400 | 404 {
-	return error instanceof Error && error.message.endsWith("_NOT_FOUND") ? 404 : 400;
+	return error instanceof Error && error.message.endsWith("_NOT_FOUND")
+		? 404
+		: 400;
 }
 
 export function statusForStatusMutationError(error: unknown): 400 | 404 | 409 {

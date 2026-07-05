@@ -1,5 +1,5 @@
+import type { AgentContext, AgentTool } from "@drenyra/drenyra-orchestrator";
 import { z } from "zod";
-import type { AgentTool, AgentContext } from "@drenyra/drenyra-orchestrator";
 
 /**
  * manageIntegrationsTool const.

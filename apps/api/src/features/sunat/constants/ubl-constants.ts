@@ -13,7 +13,7 @@
  * ```
  */
 
-export const UBL_VERSION = '2.1';
+export const UBL_VERSION = "2.1";
 
 /**
  * CustomizationId used by SUNAT for UBL 2.1 documents.
@@ -23,7 +23,7 @@ export const UBL_VERSION = '2.1';
  * console.log(CUSTOMIZATION_ID); // "2.0"
  * ```
  */
-export const CUSTOMIZATION_ID = '2.0';
+export const CUSTOMIZATION_ID = "2.0";
 
 /**
  * Document Types (Tipo de Comprobante)
@@ -34,10 +34,10 @@ export const CUSTOMIZATION_ID = '2.0';
  * ```
  */
 export const DOCUMENT_TYPES = {
-  FACTURA: '01',
-  BOLETA: '03',
-  NOTA_CREDITO: '07',
-  NOTA_DEBITO: '08',
+	FACTURA: "01",
+	BOLETA: "03",
+	NOTA_CREDITO: "07",
+	NOTA_DEBITO: "08",
 } as const;
 
 /**
@@ -49,9 +49,9 @@ export const DOCUMENT_TYPES = {
  * ```
  */
 export const TAX_TYPES = {
-  IGV: '1000', // Impuesto General a las Ventas
-  ISC: '2000', // Impuesto Selectivo al Consumo
-  OTROS: '9999',
+	IGV: "1000", // Impuesto General a las Ventas
+	ISC: "2000", // Impuesto Selectivo al Consumo
+	OTROS: "9999",
 } as const;
 
 /**
@@ -63,11 +63,11 @@ export const TAX_TYPES = {
  * ```
  */
 export const TAX_CATEGORIES = {
-  GRAVADO: 'S', // Gravado - Operación Onerosa
-  EXONERADO: 'E', // Exonerado - Operación Onerosa
-  INAFECTO: 'O', // Inafecto - Operación Onerosa
-  EXPORTACION: 'G', // Exportación
-  GRATUITO: 'Z', // Gratuito
+	GRAVADO: "S", // Gravado - Operación Onerosa
+	EXONERADO: "E", // Exonerado - Operación Onerosa
+	INAFECTO: "O", // Inafecto - Operación Onerosa
+	EXPORTACION: "G", // Exportación
+	GRATUITO: "Z", // Gratuito
 } as const;
 
 /**
@@ -78,7 +78,7 @@ export const TAX_CATEGORIES = {
  * const rate = IGV_RATE; // 18
  * ```
  */
-export const IGV_RATE = 18.00;
+export const IGV_RATE = 18.0;
 
 /**
  * IGV rate as a decimal fraction (e.g., 0.18).
@@ -99,9 +99,9 @@ export const IGV_DECIMAL = 0.18;
  * ```
  */
 export const CURRENCIES = {
-  PEN: 'PEN', // Soles
-  USD: 'USD', // Dólares
-  EUR: 'EUR', // Euros
+	PEN: "PEN", // Soles
+	USD: "USD", // Dólares
+	EUR: "EUR", // Euros
 } as const;
 
 /**
@@ -113,12 +113,12 @@ export const CURRENCIES = {
  * ```
  */
 export const UNIT_CODES = {
-  UNIDAD: 'NIU', // Unidad (pieza)
-  KILOGRAMO: 'KGM',
-  METRO: 'MTR',
-  LITRO: 'LTR',
-  CAJA: 'BX',
-  SERVICIO: 'ZZ', // Servicio
+	UNIDAD: "NIU", // Unidad (pieza)
+	KILOGRAMO: "KGM",
+	METRO: "MTR",
+	LITRO: "LTR",
+	CAJA: "BX",
+	SERVICIO: "ZZ", // Servicio
 } as const;
 
 /**
@@ -130,8 +130,8 @@ export const UNIT_CODES = {
  * ```
  */
 export const PAYMENT_TERMS = {
-  CONTADO: 'Contado',
-  CREDITO: 'Credito',
+	CONTADO: "Contado",
+	CREDITO: "Credito",
 } as const;
 
 /**
@@ -143,13 +143,13 @@ export const PAYMENT_TERMS = {
  * ```
  */
 export const XML_NAMESPACES = {
-  invoice: 'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2',
-  creditNote: 'urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2',
-  debitNote: 'urn:oasis:names:specification:ubl:schema:xsd:DebitNote-2',
-  cac: 'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2',
-  cbc: 'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2',
-  ds: 'http://www.w3.org/2000/09/xmldsig#',
-  ext: 'urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2',
+	invoice: "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2",
+	creditNote: "urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2",
+	debitNote: "urn:oasis:names:specification:ubl:schema:xsd:DebitNote-2",
+	cac: "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2",
+	cbc: "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2",
+	ds: "http://www.w3.org/2000/09/xmldsig#",
+	ext: "urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2",
 } as const;
 
 /**
@@ -161,8 +161,10 @@ export const XML_NAMESPACES = {
  * ```
  */
 export const SCHEMA_LOCATIONS = {
-  invoice: 'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd',
-  creditNote: 'urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2 http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CreditNote-2.1.xsd',
+	invoice:
+		"urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd",
+	creditNote:
+		"urn:oasis:names:specification:ubl:schema:xsd:CreditNote-2 http://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-CreditNote-2.1.xsd",
 } as const;
 
 /**
@@ -216,8 +218,8 @@ export const CORRELATIVE_MAX_LENGTH = 8;
  * ```
  */
 export const ID_DOCUMENT_TYPES = {
-  DNI: '1',
-  RUC: '6',
-  PASSPORT: '7',
-  CARNET_EXTRANJERIA: '4',
+	DNI: "1",
+	RUC: "6",
+	PASSPORT: "7",
+	CARNET_EXTRANJERIA: "4",
 } as const;

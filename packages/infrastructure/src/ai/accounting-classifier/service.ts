@@ -7,7 +7,11 @@
 
 import { generateObject } from "ai";
 import { modelFlash } from "../models";
-import { type ClassificationInput, type ClassificationResult, ClassificationSchema } from "./types";
+import {
+	type ClassificationInput,
+	type ClassificationResult,
+	ClassificationSchema,
+} from "./types";
 
 /**
  * PCGE Account categories for context

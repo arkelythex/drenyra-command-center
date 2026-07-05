@@ -10,9 +10,9 @@ describe("Fiscal Truth legal rule set", () => {
 		expect(PERU_BANCARIZATION_RULE_2026.version).toBe("DL-1529-2022-v1");
 		expect(PERU_BANCARIZATION_RULE_2026.thresholds.PEN.getCents()).toBe(200000);
 		expect(PERU_BANCARIZATION_RULE_2026.thresholds.USD.getCents()).toBe(50000);
-		expect(PERU_BANCARIZATION_RULE_2026.legalBasis.map((basis) => basis.code)).toContain(
-			"DL-1529-2022",
-		);
+		expect(
+			PERU_BANCARIZATION_RULE_2026.legalBasis.map((basis) => basis.code),
+		).toContain("DL-1529-2022");
 	});
 
 	it("requires auditable payment method at and above the versioned threshold", () => {

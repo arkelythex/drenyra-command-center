@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { getLedgerErrorMessage, unwrapOkEnvelope } from "../ledger-api-response";
+import {
+	getLedgerErrorMessage,
+	unwrapOkEnvelope,
+} from "../ledger-api-response";
 
 describe("unwrapOkEnvelope", () => {
 	it("returns inner data when envelope is success", () => {
@@ -7,7 +10,9 @@ describe("unwrapOkEnvelope", () => {
 	});
 
 	it("throws when envelope reports failure", () => {
-		expect(() => unwrapOkEnvelope({ success: false, error: "falló" })).toThrow("falló");
+		expect(() => unwrapOkEnvelope({ success: false, error: "falló" })).toThrow(
+			"falló",
+		);
 	});
 
 	it("passes through non-envelope payloads", () => {

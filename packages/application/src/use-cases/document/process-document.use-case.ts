@@ -7,10 +7,10 @@
 
 import type { ExtractedData } from "@drenyra/domain/entities/Document";
 import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
-import {
-	type IExpenseClassifier,
-	type IInvoiceOCRService,
-	type IUBLInvoiceParser,
+import type {
+	IExpenseClassifier,
+	IInvoiceOCRService,
+	IUBLInvoiceParser,
 } from "../../ports/document-processing.port";
 import {
 	findDocumentByTenant,

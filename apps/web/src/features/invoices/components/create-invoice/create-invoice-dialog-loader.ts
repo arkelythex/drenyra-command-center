@@ -1,9 +1,10 @@
-type CreateInvoiceDialogModule = typeof import('./CreateInvoiceDialog');
+type CreateInvoiceDialogModule = typeof import("./CreateInvoiceDialog");
 
-let createInvoiceDialogModulePromise: Promise<CreateInvoiceDialogModule> | null = null;
+let createInvoiceDialogModulePromise: Promise<CreateInvoiceDialogModule> | null =
+	null;
 
 export function loadCreateInvoiceDialogModule(): Promise<CreateInvoiceDialogModule> {
-	createInvoiceDialogModulePromise ??= import('./CreateInvoiceDialog');
+	createInvoiceDialogModulePromise ??= import("./CreateInvoiceDialog");
 	return createInvoiceDialogModulePromise;
 }
 

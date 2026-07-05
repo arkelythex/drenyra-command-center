@@ -3,19 +3,15 @@
  * SUNAT compliance monitoring and issue tracking
  */
 
-import {
-	customers,
-	invoices,
-	transactions,
-} from "@drenyra/persistence/schema";
-import { db } from "@drenyra/persistence/client";
-import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
-import { SIRE_LEDGER_REPRO_RUNBOOK } from "../lib/compliance-runbooks";
 import type {
 	ComplianceDashboard,
 	ComplianceIssue,
 	ComplianceReproducibilityReport,
 } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
+import { customers, invoices, transactions } from "@drenyra/persistence/schema";
+import { SIRE_LEDGER_REPRO_RUNBOOK } from "../lib/compliance-runbooks";
 
 const PENDING_SUNAT_STATUS_CLAUSE = sql`${invoices.sunatStatus} IS NULL OR ${invoices.sunatStatus} IN ('DRAFT', 'SUBMITTED', 'OBSERVED')`;
 

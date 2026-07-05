@@ -1,11 +1,11 @@
-import { useTranslation } from "../../i18n/i18n";
 import { useNotifications } from "../../hooks/useNotifications";
+import { useTranslation } from "../../i18n/i18n";
 import type { CommandCenterSidebarProps } from "./command-center-sidebar.types";
-import { NotificationBadge } from "./components/notification-badge";
 import { CompanySection } from "./components/company-section";
 import { FiscalCasesSection } from "./components/fiscal-cases-section";
-import { ThreadsSection } from "./components/threads-section";
+import { NotificationBadge } from "./components/notification-badge";
 import { PeriodSection } from "./components/period-section";
+import { ThreadsSection } from "./components/threads-section";
 
 export function CommandCenterSidebar({
 	companyContext,

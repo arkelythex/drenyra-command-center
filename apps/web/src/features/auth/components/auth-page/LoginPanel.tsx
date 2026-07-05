@@ -1,8 +1,8 @@
 import { Lock, Mail } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
-import type { LoginFormData } from "./schemas";
-import { FormField } from "./FormField";
 import { AuthSubmitButton } from "./AuthSubmitButton";
+import { FormField } from "./FormField";
+import type { LoginFormData } from "./schemas";
 
 interface LoginPanelProps {
 	form: UseFormReturn<LoginFormData>;

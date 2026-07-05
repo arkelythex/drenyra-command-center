@@ -1,4 +1,4 @@
-import type { QueuePriority, DiffType } from "../diffs/diffs.types";
+import type { DiffType, QueuePriority } from "../diffs/diffs.types";
 
 export interface ReviewQueueItemDTO {
 	id: string;

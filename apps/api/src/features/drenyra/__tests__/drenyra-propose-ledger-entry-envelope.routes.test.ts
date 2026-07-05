@@ -17,7 +17,10 @@ function app() {
 	return new Elysia().use(drenyraModule);
 }
 
-async function postProposeLedgerEntry(body: Record<string, unknown>, requestHeaders = headers): Promise<Response> {
+async function postProposeLedgerEntry(
+	body: Record<string, unknown>,
+	requestHeaders = headers,
+): Promise<Response> {
 	return app().handle(
 		new Request("http://localhost/api/drenyra/commands/propose-ledger-entry", {
 			method: "POST",
@@ -43,17 +46,23 @@ describe("Drenyra propose-ledger-entry command envelope route", () => {
 			commandId: "propose-ledger-entry",
 			status: "needs_approval",
 			riskLevel: "HIGH",
-			approval: { required: true, approvalId: "approval-ledger-001", status: "pending" },
+			approval: {
+				required: true,
+				approvalId: "approval-ledger-001",
+				status: "pending",
+			},
 			diff: {
 				kind: "ledger_entry",
 				after: { proposedLedgerEntryId: "ledger-draft-draft-001" },
 			},
-			trace: { traceId: "trace-ledger-proposal-001", caseId: "case-command-001" },
+			trace: {
+				traceId: "trace-ledger-proposal-001",
+				caseId: "case-command-001",
+			},
 		});
-		expect(payload.data.deterministicChecks.map((check: { id: string }) => check.id)).toEqual([
-			"ledger-scope",
-			"posting-blocked",
-		]);
+		expect(
+			payload.data.deterministicChecks.map((check: { id: string }) => check.id),
+		).toEqual(["ledger-scope", "posting-blocked"]);
 	});
 
 	it("denies ledger proposals without a scoped capability grant", async () => {

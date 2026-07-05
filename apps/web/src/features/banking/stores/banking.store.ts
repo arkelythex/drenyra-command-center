@@ -10,8 +10,8 @@ import type {
 	BankingActions,
 	BankingState,
 	BankTransaction,
-	ReconciliationResult,
 	ReconciliationMatch,
+	ReconciliationResult,
 } from "./banking.store.types";
 import { initialState } from "./banking.store.types";
 
@@ -19,8 +19,8 @@ export type {
 	BankAccount,
 	BankingState,
 	BankTransaction,
-	ReconciliationResult,
 	ReconciliationMatch,
+	ReconciliationResult,
 } from "./banking.store.types";
 
 export const useBankingStore = create<BankingState & BankingActions>()(

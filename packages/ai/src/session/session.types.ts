@@ -9,7 +9,13 @@
 // Status & Workflow Types
 // ============================================================================
 
-export type AgentRunStatus = "running" | "completed" | "failed" | "manual_review" | "degraded" | "ose_submitting";
+export type AgentRunStatus =
+	| "running"
+	| "completed"
+	| "failed"
+	| "manual_review"
+	| "degraded"
+	| "ose_submitting";
 export type AgentWorkflowState =
 	| "IDLE"
 	| "EXTRACTING"
@@ -68,33 +74,38 @@ export interface StateSnapshot {
 // ============================================================================
 
 /** Status of a batch run */
-export type BatchStatus = "pending" | "running" | "completed" | "failed" | "partial";
+export type BatchStatus =
+	| "pending"
+	| "running"
+	| "completed"
+	| "failed"
+	| "partial";
 
 /** Status of a single item within a batch */
 export type BatchItemStatus = "pending" | "running" | "completed" | "failed";
 
 /** Data persisted for a batch run (batch_runs table) */
 export interface BatchRunData {
-  id: string;
-  companyId: string;
-  status: BatchStatus;
-  total: number;
-  completed: number;
-  failed: number;
-  createdAt: Date;
-  completedAt: Date | null;
-  /** Optional FK to agent_run_states.sessionId for grouped queries */
-  sessionId: string | null;
+	id: string;
+	companyId: string;
+	status: BatchStatus;
+	total: number;
+	completed: number;
+	failed: number;
+	createdAt: Date;
+	completedAt: Date | null;
+	/** Optional FK to agent_run_states.sessionId for grouped queries */
+	sessionId: string | null;
 }
 
 /** Data for a single item within a batch (batch_run_items table) */
 export interface BatchItemData {
-  id: string;
-  batchId: string;
-  runId: string;
-  status: BatchItemStatus;
-  error: string | null;
-  createdAt: Date;
+	id: string;
+	batchId: string;
+	runId: string;
+	status: BatchItemStatus;
+	error: string | null;
+	createdAt: Date;
 }
 
 export class SessionStoreError extends Error {

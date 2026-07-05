@@ -87,9 +87,7 @@ describe("Drenyra Dual Surface Contract", () => {
 
 	it("sets idempotentReplay for 4 of 5 endpoints", () => {
 		const contract = buildDrenyraDualSurfaceContract();
-		const idempotent = contract.endpoints.filter(
-			(e) => e.idempotentReplay,
-		);
+		const idempotent = contract.endpoints.filter((e) => e.idempotentReplay);
 		expect(idempotent).toHaveLength(4);
 	});
 
@@ -113,12 +111,12 @@ describe("Drenyra Dual Surface Contract", () => {
 	it("defines 6 capability manifest fields", () => {
 		const contract = buildDrenyraDualSurfaceContract();
 		expect(contract.agentGovernance.capabilityManifestFields).toHaveLength(6);
-		expect(
-			contract.agentGovernance.capabilityManifestFields,
-		).toContain("toolName");
-		expect(
-			contract.agentGovernance.capabilityManifestFields,
-		).toContain("redactionRequired");
+		expect(contract.agentGovernance.capabilityManifestFields).toContain(
+			"toolName",
+		);
+		expect(contract.agentGovernance.capabilityManifestFields).toContain(
+			"redactionRequired",
+		);
 	});
 
 	it("lists 5 offline command kinds", () => {

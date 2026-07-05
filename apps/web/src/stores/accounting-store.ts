@@ -1,9 +1,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { ProposedEntry } from "./accounting-types";
+
 export type {
-	AccountingModuleId,
 	AccountingModule,
+	AccountingModuleId,
 	FinancialReportData,
 	FinancialReportSection,
 	KpiMetric,
@@ -14,9 +15,9 @@ export { ACCOUNTING_MODULES } from "./accounting-types";
 // ─── Seed data ────────────────────────────────────────────────────────────────
 
 import type {
-	KpiMetric,
 	AccountingModuleId,
 	FinancialReportData,
+	KpiMetric,
 } from "./accounting-types";
 
 const DEFAULT_KPI_METRICS: KpiMetric[] = [

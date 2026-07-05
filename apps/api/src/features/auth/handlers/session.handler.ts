@@ -1,27 +1,27 @@
-import { Context } from 'elysia';
-import { createLogger } from '../../../lib/logger';
-import { auth } from '../auth.config';
-import { ok, fail } from '../../shared/api-response';
-import { pickHeadersForAuthSubrequest } from '../lib/auth-internal-request-headers';
-import { forwardSetCookiesFromHeaders } from '../lib/forward-upstream-set-cookies';
-import { enrichSessionUserWithCompanyContext } from './session-company-context';
+import type { Context } from "elysia";
+import { createLogger } from "../../../lib/logger";
+import { fail, ok } from "../../shared/api-response";
+import { auth } from "../auth.config";
+import { pickHeadersForAuthSubrequest } from "../lib/auth-internal-request-headers";
+import { forwardSetCookiesFromHeaders } from "../lib/forward-upstream-set-cookies";
+import { enrichSessionUserWithCompanyContext } from "./session-company-context";
 
-const logger = createLogger({ feature: 'auth', handler: 'session' });
+const logger = createLogger({ feature: "auth", handler: "session" });
 
 function isAlreadyEnrichedUser(value: unknown): boolean {
-  if (!value || typeof value !== 'object') return false;
+	if (!value || typeof value !== "object") return false;
 
-  const candidate = value as {
-    legacyUserId?: unknown;
-    availableCompanies?: unknown;
-    activeCompanyId?: unknown;
-  };
+	const candidate = value as {
+		legacyUserId?: unknown;
+		availableCompanies?: unknown;
+		activeCompanyId?: unknown;
+	};
 
-  return (
-    typeof candidate.legacyUserId === 'string' ||
-    typeof candidate.activeCompanyId === 'string' ||
-    Array.isArray(candidate.availableCompanies)
-  );
+	return (
+		typeof candidate.legacyUserId === "string" ||
+		typeof candidate.activeCompanyId === "string" ||
+		Array.isArray(candidate.availableCompanies)
+	);
 }
 
 /**
@@ -78,33 +78,37 @@ function isAlreadyEnrichedUser(value: unknown): boolean {
  */
 
 export async function handleLogout(context: Context): Promise<unknown> {
-  const { headers, set, request } = context;
+	const { headers, set, request } = context;
 
-  try {
-    const logoutRequest = new Request(
-      `${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}/api/auth/sign-out`,
-      {
-        method: 'POST',
-        headers: pickHeadersForAuthSubrequest(headers, {
-          'content-type': 'application/json',
-        }, request),
-      }
-    );
+	try {
+		const logoutRequest = new Request(
+			`${process.env.BETTER_AUTH_URL || "http://localhost:3000"}/api/auth/sign-out`,
+			{
+				method: "POST",
+				headers: pickHeadersForAuthSubrequest(
+					headers,
+					{
+						"content-type": "application/json",
+					},
+					request,
+				),
+			},
+		);
 
-    const response = await auth.handler(logoutRequest);
-    forwardSetCookiesFromHeaders(response.headers, set);
+		const response = await auth.handler(logoutRequest);
+		forwardSetCookiesFromHeaders(response.headers, set);
 
-    if (response.status !== 200) {
-      set.status = response.status;
-      return fail('Error al cerrar sesión', 'LOGOUT_ERROR');
-    }
+		if (response.status !== 200) {
+			set.status = response.status;
+			return fail("Error al cerrar sesión", "LOGOUT_ERROR");
+		}
 
-    return ok({ message: 'Sesión cerrada exitosamente' });
-  } catch (error) {
-    logger.error({ error }, 'Logout handler failed');
-    set.status = 500;
-    return fail('Error interno del servidor', 'INTERNAL_ERROR');
-  }
+		return ok({ message: "Sesión cerrada exitosamente" });
+	} catch (error) {
+		logger.error({ error }, "Logout handler failed");
+		set.status = 500;
+		return fail("Error interno del servidor", "INTERNAL_ERROR");
+	}
 }
 
 /**
@@ -155,48 +159,56 @@ export async function handleLogout(context: Context): Promise<unknown> {
  * ```
  */
 export async function handleGetSession(context: Context): Promise<unknown> {
-  const { headers, set, request: incomingRequest } = context;
+	const { headers, set, request: incomingRequest } = context;
 
-  try {
-    const getSessionRequest = new Request(
-      `${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}/api/auth/get-session`,
-      {
-        method: 'GET',
-        headers: pickHeadersForAuthSubrequest(headers, undefined, incomingRequest),
-      }
-    );
+	try {
+		const getSessionRequest = new Request(
+			`${process.env.BETTER_AUTH_URL || "http://localhost:3000"}/api/auth/get-session`,
+			{
+				method: "GET",
+				headers: pickHeadersForAuthSubrequest(
+					headers,
+					undefined,
+					incomingRequest,
+				),
+			},
+		);
 
-    const response = await auth.handler(getSessionRequest);
-    const result = (await response.json().catch(() => null)) as
-      | { session?: unknown; user?: unknown }
-      | null;
+		const response = await auth.handler(getSessionRequest);
+		const result = (await response.json().catch(() => null)) as {
+			session?: unknown;
+			user?: unknown;
+		} | null;
 
-    if (response.status !== 200) {
-      if (response.status >= 500) {
-        const hint = await response.clone().text().catch(() => '');
-        logger.error(
-          { status: response.status, hint: hint.slice(0, 1200) },
-          'Better Auth get-session returned 5xx (check DATABASE_URL, migrations, BETTER_AUTH_SECRET)',
-        );
-        set.status = 200;
-        return ok({ session: null, user: null });
-      }
-      set.status = 200;
-      return ok({ session: null, user: null });
-    }
+		if (response.status !== 200) {
+			if (response.status >= 500) {
+				const hint = await response
+					.clone()
+					.text()
+					.catch(() => "");
+				logger.error(
+					{ status: response.status, hint: hint.slice(0, 1200) },
+					"Better Auth get-session returned 5xx (check DATABASE_URL, migrations, BETTER_AUTH_SECRET)",
+				);
+				set.status = 200;
+				return ok({ session: null, user: null });
+			}
+			set.status = 200;
+			return ok({ session: null, user: null });
+		}
 
-    if (!result?.session || !result?.user) {
-      return ok({ session: null, user: null });
-    }
+		if (!result?.session || !result?.user) {
+			return ok({ session: null, user: null });
+		}
 
-    const enrichedUser = isAlreadyEnrichedUser(result.user)
-      ? result.user
-      : await enrichSessionUserWithCompanyContext(result.user);
+		const enrichedUser = isAlreadyEnrichedUser(result.user)
+			? result.user
+			: await enrichSessionUserWithCompanyContext(result.user);
 
-    return ok({ session: result.session, user: enrichedUser });
-  } catch (error) {
-    logger.error({ error }, 'Get session handler failed');
-    set.status = 200;
-    return ok({ session: null, user: null });
-  }
+		return ok({ session: result.session, user: enrichedUser });
+	} catch (error) {
+		logger.error({ error }, "Get session handler failed");
+		set.status = 200;
+		return ok({ session: null, user: null });
+	}
 }

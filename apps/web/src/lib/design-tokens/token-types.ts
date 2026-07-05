@@ -1,7 +1,21 @@
-import { ANIMATIONS, MOTION_VARIANTS } from './motion-tokens';
-import { BACKDROP_BLUR, COLORS, GLASS_EFFECTS, GRADIENTS, INTERACTIONS } from './visual-tokens';
-import { BLUR, BORDER_RADIUS, OPACITY, SHADOWS, SPACING, TRANSITIONS, Z_INDEX } from './core-tokens';
-import { DIMENSIONS, TYPOGRAPHY } from './scale-tokens';
+import type {
+	BLUR,
+	BORDER_RADIUS,
+	OPACITY,
+	SHADOWS,
+	SPACING,
+	TRANSITIONS,
+	Z_INDEX,
+} from "./core-tokens";
+import type { ANIMATIONS, MOTION_VARIANTS } from "./motion-tokens";
+import type { DIMENSIONS, TYPOGRAPHY } from "./scale-tokens";
+import type {
+	BACKDROP_BLUR,
+	COLORS,
+	GLASS_EFFECTS,
+	GRADIENTS,
+	INTERACTIONS,
+} from "./visual-tokens";
 
 export type BorderRadiusToken = keyof typeof BORDER_RADIUS;
 export type ShadowToken = keyof typeof SHADOWS;

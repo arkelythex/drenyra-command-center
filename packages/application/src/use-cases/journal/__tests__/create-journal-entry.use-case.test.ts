@@ -8,8 +8,8 @@
  * - Line validation (at least 2 lines)
  */
 
-import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import type { CreateJournalEntryDTO } from "../../../dtos/journal/journal-entry.dto";
 import { CreateJournalEntryUseCase } from "../create-journal-entry.use-case";
 

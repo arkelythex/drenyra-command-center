@@ -19,12 +19,48 @@ export interface LedgerTransaction {
 }
 
 export const PCGE_STRUCTURE: LedgerAccount[] = [
-	{ id: "104", name: "CUENTAS CORRIENTES EN INST. FINANCIERAS", code: "104", type: "ACCOUNT", activity: 12 },
-	{ id: "121", name: "FACTURAS, BOLETAS Y OTROS POR COBRAR", code: "121", type: "ACCOUNT", activity: 45 },
-	{ id: "4011", name: "IGV - CUENTA PROPIA", code: "4011", type: "ACCOUNT", activity: 8 },
-	{ id: "421", name: "FACTURAS, BOLETAS Y OTROS POR PAGAR", code: "421", type: "ACCOUNT", activity: 23 },
-	{ id: "601", name: "MERCADERÍAS", code: "601", type: "ACCOUNT", activity: 15 },
-	{ id: "701", name: "MERCADERÍAS - EXPORTACIÓN/LOCAL", code: "701", type: "ACCOUNT", activity: 38 },
+	{
+		id: "104",
+		name: "CUENTAS CORRIENTES EN INST. FINANCIERAS",
+		code: "104",
+		type: "ACCOUNT",
+		activity: 12,
+	},
+	{
+		id: "121",
+		name: "FACTURAS, BOLETAS Y OTROS POR COBRAR",
+		code: "121",
+		type: "ACCOUNT",
+		activity: 45,
+	},
+	{
+		id: "4011",
+		name: "IGV - CUENTA PROPIA",
+		code: "4011",
+		type: "ACCOUNT",
+		activity: 8,
+	},
+	{
+		id: "421",
+		name: "FACTURAS, BOLETAS Y OTROS POR PAGAR",
+		code: "421",
+		type: "ACCOUNT",
+		activity: 23,
+	},
+	{
+		id: "601",
+		name: "MERCADERÍAS",
+		code: "601",
+		type: "ACCOUNT",
+		activity: 15,
+	},
+	{
+		id: "701",
+		name: "MERCADERÍAS - EXPORTACIÓN/LOCAL",
+		code: "701",
+		type: "ACCOUNT",
+		activity: 38,
+	},
 ];
 
 export const MOCK_TX: LedgerTransaction[] = [

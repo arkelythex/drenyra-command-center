@@ -7,13 +7,13 @@
  * After: ~100 lines with real AI integration
  */
 
+import type { CognitiveMessage } from "@drenyra/shared/messaging";
 import { useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { captureError } from "@/lib/monitoring";
 import { extractArtifacts, stripArtifacts } from "../logic/artifact-extractor";
 import { extractNavigationIntent, parseIntent } from "../logic/intent-parser";
 import { buildSheetDiffArtifactFromInput } from "../logic/sheet-diff-builder";
-import type { CognitiveMessage } from "@drenyra/shared/messaging";
 import { useCognitiveStream } from "./useCognitiveStream";
 
 export function useCognitiveHub() {

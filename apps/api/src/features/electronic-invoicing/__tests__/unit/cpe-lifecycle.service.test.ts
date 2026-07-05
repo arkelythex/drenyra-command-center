@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CpeLifecycleService } from "../../application/services/cpe-lifecycle.service";
 import type {
 	CpeLifecycleSnapshot,

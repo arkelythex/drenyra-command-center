@@ -1,1 +1,6 @@
-export type { BaseAgent, ReaderInput, ExtractedData, InvoiceData } from '../../types';
+export type {
+	BaseAgent,
+	ExtractedData,
+	InvoiceData,
+	ReaderInput,
+} from "../../types";

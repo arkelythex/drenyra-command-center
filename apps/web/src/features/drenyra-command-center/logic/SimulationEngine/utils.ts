@@ -4,8 +4,12 @@
  * @since Jun 2026
  */
 
-import type { SimulationCategory, SimulationParam, SimulatedAccount } from "./types";
-import { CATEGORY_KEYWORDS, TAX_RATE, RENTA_RATE } from "./constants";
+import { CATEGORY_KEYWORDS, RENTA_RATE, TAX_RATE } from "./constants";
+import type {
+	SimulatedAccount,
+	SimulationCategory,
+	SimulationParam,
+} from "./types";
 
 // ── Extract percentage ──────────────────────────────────────────────────────
 
@@ -35,8 +39,14 @@ export function detectCategory(text: string): SimulationCategory {
 // ── Detect direction (increase/decrease) ────────────────────────────────────
 
 export function detectDirection(text: string): "increase" | "decrease" {
-	if (/subir|aumento|incremento|aumentar|incrementar/i.test(text)) return "increase";
-	if (/bajar|reducción|reduccion|disminución|disminucion|disminuir|reducir/i.test(text)) return "decrease";
+	if (/subir|aumento|incremento|aumentar|incrementar/i.test(text))
+		return "increase";
+	if (
+		/bajar|reducción|reduccion|disminución|disminucion|disminuir|reducir/i.test(
+			text,
+		)
+	)
+		return "decrease";
 	return "increase";
 }
 
@@ -68,50 +78,170 @@ export function generateAccounts(param: SimulationParam): SimulatedAccount[] {
 		case "salary": {
 			const factor = 1 + sign * baseMultiplier;
 			return [
-				{ account: "62", name: "Gastos de Personal, Directores y Gerentes", debit: Math.round(85000 * factor), credit: 0 },
-				{ account: "621", name: "Sueldos y Salarios", debit: Math.round(62000 * factor), credit: 0 },
-				{ account: "627", name: "Seguridad Social y Contribuciones", debit: Math.round(12000 * factor), credit: 0 },
-				{ account: "629", name: "Compensación por Tiempo de Servicios", debit: Math.round(8000 * factor), credit: 0 },
-				{ account: "40", name: "Tributos por Pagar (ESSALUD/ONP)", debit: 0, credit: Math.round(11000 * factor) },
-				{ account: "41", name: "Remuneraciones por Pagar", debit: 0, credit: Math.round(74000 * factor) },
+				{
+					account: "62",
+					name: "Gastos de Personal, Directores y Gerentes",
+					debit: Math.round(85000 * factor),
+					credit: 0,
+				},
+				{
+					account: "621",
+					name: "Sueldos y Salarios",
+					debit: Math.round(62000 * factor),
+					credit: 0,
+				},
+				{
+					account: "627",
+					name: "Seguridad Social y Contribuciones",
+					debit: Math.round(12000 * factor),
+					credit: 0,
+				},
+				{
+					account: "629",
+					name: "Compensación por Tiempo de Servicios",
+					debit: Math.round(8000 * factor),
+					credit: 0,
+				},
+				{
+					account: "40",
+					name: "Tributos por Pagar (ESSALUD/ONP)",
+					debit: 0,
+					credit: Math.round(11000 * factor),
+				},
+				{
+					account: "41",
+					name: "Remuneraciones por Pagar",
+					debit: 0,
+					credit: Math.round(74000 * factor),
+				},
 			];
 		}
 		case "revenue": {
 			const factor = 1 + sign * baseMultiplier;
 			return [
-				{ account: "70", name: "Ventas", debit: 0, credit: Math.round(380000 * factor) },
-				{ account: "701", name: "Ventas Gravadas", debit: 0, credit: Math.round(320000 * factor) },
-				{ account: "702", name: "Ventas Exoneradas", debit: 0, credit: Math.round(60000 * factor) },
-				{ account: "12", name: "Cuentas por Cobrar Comerciales", debit: Math.round(95000 * factor), credit: 0 },
-				{ account: "10", name: "Efectivo y Equivalentes", debit: Math.round(285000 * factor), credit: 0 },
+				{
+					account: "70",
+					name: "Ventas",
+					debit: 0,
+					credit: Math.round(380000 * factor),
+				},
+				{
+					account: "701",
+					name: "Ventas Gravadas",
+					debit: 0,
+					credit: Math.round(320000 * factor),
+				},
+				{
+					account: "702",
+					name: "Ventas Exoneradas",
+					debit: 0,
+					credit: Math.round(60000 * factor),
+				},
+				{
+					account: "12",
+					name: "Cuentas por Cobrar Comerciales",
+					debit: Math.round(95000 * factor),
+					credit: 0,
+				},
+				{
+					account: "10",
+					name: "Efectivo y Equivalentes",
+					debit: Math.round(285000 * factor),
+					credit: 0,
+				},
 			];
 		}
 		case "expense": {
 			const factor = 1 + sign * baseMultiplier;
 			return [
-				{ account: "60", name: "Compras", debit: Math.round(210000 * factor), credit: 0 },
-				{ account: "601", name: "Mercaderías", debit: Math.round(150000 * factor), credit: 0 },
-				{ account: "603", name: "Suministros Diversos", debit: Math.round(30000 * factor), credit: 0 },
-				{ account: "609", name: "Costos Vinculados con Compras", debit: Math.round(30000 * factor), credit: 0 },
-				{ account: "42", name: "Cuentas por Pagar Comerciales", debit: 0, credit: Math.round(210000 * factor) },
+				{
+					account: "60",
+					name: "Compras",
+					debit: Math.round(210000 * factor),
+					credit: 0,
+				},
+				{
+					account: "601",
+					name: "Mercaderías",
+					debit: Math.round(150000 * factor),
+					credit: 0,
+				},
+				{
+					account: "603",
+					name: "Suministros Diversos",
+					debit: Math.round(30000 * factor),
+					credit: 0,
+				},
+				{
+					account: "609",
+					name: "Costos Vinculados con Compras",
+					debit: Math.round(30000 * factor),
+					credit: 0,
+				},
+				{
+					account: "42",
+					name: "Cuentas por Pagar Comerciales",
+					debit: 0,
+					credit: Math.round(210000 * factor),
+				},
 			];
 		}
 		case "tax": {
 			const factor = 1 + (isIncrease ? 1 : -1) * baseMultiplier;
 			return [
-				{ account: "4011", name: "IGV por Pagar", debit: 0, credit: Math.round(28000 * factor) },
-				{ account: "4017", name: "Impuesto a la Renta por Pagar", debit: 0, credit: Math.round(22000 * factor) },
-				{ account: "40", name: "Tributos por Pagar", debit: 0, credit: Math.round(50000 * factor) },
-				{ account: "64", name: "Gastos por Tributos", debit: Math.round(50000 * factor), credit: 0 },
+				{
+					account: "4011",
+					name: "IGV por Pagar",
+					debit: 0,
+					credit: Math.round(28000 * factor),
+				},
+				{
+					account: "4017",
+					name: "Impuesto a la Renta por Pagar",
+					debit: 0,
+					credit: Math.round(22000 * factor),
+				},
+				{
+					account: "40",
+					name: "Tributos por Pagar",
+					debit: 0,
+					credit: Math.round(50000 * factor),
+				},
+				{
+					account: "64",
+					name: "Gastos por Tributos",
+					debit: Math.round(50000 * factor),
+					credit: 0,
+				},
 			];
 		}
 		case "investment": {
 			const factor = 1 + (isIncrease ? 1 : -1) * baseMultiplier;
 			return [
-				{ account: "33", name: "Inmuebles, Maquinaria y Equipo", debit: Math.round(150000 * factor), credit: 0 },
-				{ account: "34", name: "Intangibles", debit: Math.round(30000 * factor), credit: 0 },
-				{ account: "46", name: "Cuentas por Pagar Diversas", debit: 0, credit: Math.round(180000 * factor) },
-				{ account: "68", name: "Depreciación y Amortización", debit: Math.round(12000 * factor), credit: 0 },
+				{
+					account: "33",
+					name: "Inmuebles, Maquinaria y Equipo",
+					debit: Math.round(150000 * factor),
+					credit: 0,
+				},
+				{
+					account: "34",
+					name: "Intangibles",
+					debit: Math.round(30000 * factor),
+					credit: 0,
+				},
+				{
+					account: "46",
+					name: "Cuentas por Pagar Diversas",
+					debit: 0,
+					credit: Math.round(180000 * factor),
+				},
+				{
+					account: "68",
+					name: "Depreciación y Amortización",
+					debit: Math.round(12000 * factor),
+					credit: 0,
+				},
 			];
 		}
 	}
@@ -119,7 +249,10 @@ export function generateAccounts(param: SimulationParam): SimulatedAccount[] {
 
 // ── Build before/after comparison ─────────────────────────────────────────
 
-export function buildBeforeAfter(accounts: SimulatedAccount[], param: SimulationParam) {
+export function buildBeforeAfter(
+	accounts: SimulatedAccount[],
+	param: SimulationParam,
+) {
 	const totalBefore = accounts.reduce((sum, a) => sum + a.debit + a.credit, 0);
 	const isIncrease = param.direction === "increase";
 	const sign = isIncrease ? 1 : -1;
@@ -143,7 +276,9 @@ export function buildBeforeAfter(accounts: SimulatedAccount[], param: Simulation
 		{
 			label: "Impuesto a la Renta Estimado",
 			before: Math.round(totalBefore * RENTA_RATE * 0.3),
-			after: Math.round(totalBefore * (1 + sign * changeFactor) * RENTA_RATE * 0.3),
+			after: Math.round(
+				totalBefore * (1 + sign * changeFactor) * RENTA_RATE * 0.3,
+			),
 			delta: Math.round(totalBefore * sign * changeFactor * RENTA_RATE * 0.3),
 			deltaPercent: param.changePercent * sign,
 		},

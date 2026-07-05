@@ -4,7 +4,7 @@
  * Provides functions to seed test data for E2E and integration tests.
  * Supports seeding users, companies, products, and initial catalog data.
  */
-import { type PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 
 /**
  * Seed data payload for E2E tests.

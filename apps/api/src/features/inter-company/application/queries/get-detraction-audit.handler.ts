@@ -5,11 +5,11 @@
  * for SPOT detraction compliance analysis.
  */
 
-import type { IInterCompanyTransactionRepository } from '../../domain/inter-company-transaction.repository';
 import type {
-  AuditPage,
-  InterCompanyDetractionAuditFilters,
-} from '../../domain/inter-company-transaction.entity';
+	AuditPage,
+	InterCompanyDetractionAuditFilters,
+} from "../../domain/inter-company-transaction.entity";
+import type { IInterCompanyTransactionRepository } from "../../domain/inter-company-transaction.repository";
 
 /**
  * GetDetractionAuditHandler class.
@@ -21,9 +21,13 @@ import type {
  * ```
  */
 export class GetDetractionAuditHandler {
-  constructor(private readonly repository: IInterCompanyTransactionRepository) {}
+	constructor(
+		private readonly repository: IInterCompanyTransactionRepository,
+	) {}
 
-  async execute(filters: InterCompanyDetractionAuditFilters): Promise<AuditPage> {
-    return this.repository.findAuditPage(filters);
-  }
+	async execute(
+		filters: InterCompanyDetractionAuditFilters,
+	): Promise<AuditPage> {
+		return this.repository.findAuditPage(filters);
+	}
 }

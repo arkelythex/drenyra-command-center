@@ -1,12 +1,16 @@
-import { useState, useCallback } from "react";
-import type { HubArtifact } from "@/features/cognitive-hub/types/hub.types";
-import type { CognitiveMessage } from "@/features/cognitive-hub/types/hub.types";
+import { useCallback, useState } from "react";
+import type {
+	CognitiveMessage,
+	HubArtifact,
+} from "@/features/cognitive-hub/types/hub.types";
 
 const STORAGE_PREFIX = "drenyra:chat:";
 
 export function useDrenyraChatState(companyId: string) {
 	const [chatStreaming, setChatStreaming] = useState(false);
-	const [chatLastArtifact, setChatLastArtifact] = useState<HubArtifact | null>(null);
+	const [chatLastArtifact, setChatLastArtifact] = useState<HubArtifact | null>(
+		null,
+	);
 	const [pinnedArtifacts, setPinnedArtifacts] = useState<HubArtifact[]>([]);
 
 	const loadChatMessages = useCallback((): CognitiveMessage[] => {

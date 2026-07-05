@@ -1,9 +1,9 @@
-import { CPE_COMPLIANCE_INCIDENT_RUNBOOK } from '../../../lib/compliance-runbooks';
-import { ElectronicInvoicingService } from '../../../services/electronic-invoicing.service';
-import { fail, getErrorMessage, ok } from '../../shared/api-response';
+import { CPE_COMPLIANCE_INCIDENT_RUNBOOK } from "../../../lib/compliance-runbooks";
+import { ElectronicInvoicingService } from "../../../services/electronic-invoicing.service";
+import { fail, getErrorMessage, ok } from "../../shared/api-response";
 
 type HandlerSet = {
-  status?: number | string;
+	status?: number | string;
 };
 
 /**
@@ -19,16 +19,21 @@ type HandlerSet = {
  * ```
  */
 export async function handleGetComplianceMetrics(
-  companyId: string,
-  set: HandlerSet
+	companyId: string,
+	set: HandlerSet,
 ): Promise<unknown> {
-  try {
-    const metrics = await ElectronicInvoicingService.getComplianceMetrics(companyId);
-    return ok(metrics);
-  } catch (error: unknown) {
-    set.status = 500;
-    return fail(getErrorMessage(error, 'Error interno del servidor'), 'INTERNAL_ERROR', {
-      runbook: CPE_COMPLIANCE_INCIDENT_RUNBOOK,
-    });
-  }
+	try {
+		const metrics =
+			await ElectronicInvoicingService.getComplianceMetrics(companyId);
+		return ok(metrics);
+	} catch (error: unknown) {
+		set.status = 500;
+		return fail(
+			getErrorMessage(error, "Error interno del servidor"),
+			"INTERNAL_ERROR",
+			{
+				runbook: CPE_COMPLIANCE_INCIDENT_RUNBOOK,
+			},
+		);
+	}
 }

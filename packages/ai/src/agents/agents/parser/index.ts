@@ -1,1 +1,1 @@
-export { ParserAgent } from './agent';
+export { ParserAgent } from "./agent";

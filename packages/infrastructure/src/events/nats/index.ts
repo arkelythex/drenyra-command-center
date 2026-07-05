@@ -1,2 +1,7 @@
-export type { NATSConfig } from './types';
-export { NATSEventBus, createNATSEventBus, getEventBus, connectEventBus } from './adapter';
+export {
+	connectEventBus,
+	createNATSEventBus,
+	getEventBus,
+	NATSEventBus,
+} from "./adapter";
+export type { NATSConfig } from "./types";

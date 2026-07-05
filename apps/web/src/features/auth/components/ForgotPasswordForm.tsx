@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle, Loader2, Mail } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { Text } from "@/components/atoms/text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,7 +11,6 @@ import {
 	entranceVariants,
 	MotionDiv,
 } from "@/components/ui/motion-primitives";
-import { Text } from "@/components/atoms/text";
 import { authClient } from "@/lib/auth-client";
 import { captureError } from "@/lib/monitoring";
 import {

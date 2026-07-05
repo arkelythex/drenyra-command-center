@@ -10,11 +10,11 @@
  */
 
 export interface Party {
-  ruc: string;
-  documentType?: '1' | '6'; // 1=DNI, 6=RUC. Defaults to 6 for backward compatibility.
-  legalName: string;
-  tradeName?: string;
-  address?: Address;
+	ruc: string;
+	documentType?: "1" | "6"; // 1=DNI, 6=RUC. Defaults to 6 for backward compatibility.
+	legalName: string;
+	tradeName?: string;
+	address?: Address;
 }
 
 /**
@@ -26,11 +26,11 @@ export interface Party {
  * ```
  */
 export interface Address {
-  streetName?: string;
-  cityName?: string;
-  countrySubentity?: string; // Departamento
-  district?: string;
-  country: string; // PE
+	streetName?: string;
+	cityName?: string;
+	countrySubentity?: string; // Departamento
+	district?: string;
+	country: string; // PE
 }
 
 /**
@@ -51,15 +51,15 @@ export interface Address {
  * ```
  */
 export interface InvoiceLineItem {
-  id: string; // Line number
-  quantity: number;
-  unitCode: string; // NIU, KGM, etc.
-  description: string;
-  unitPrice: number;
-  taxCategory: 'S' | 'E' | 'O' | 'G' | 'Z'; // Gravado, Exonerado, etc.
-  lineExtensionAmount: number; // Subtotal sin IGV
-  taxAmount?: number; // IGV amount
-  totalAmount: number; // Total con IGV
+	id: string; // Line number
+	quantity: number;
+	unitCode: string; // NIU, KGM, etc.
+	description: string;
+	unitPrice: number;
+	taxCategory: "S" | "E" | "O" | "G" | "Z"; // Gravado, Exonerado, etc.
+	lineExtensionAmount: number; // Subtotal sin IGV
+	taxAmount?: number; // IGV amount
+	totalAmount: number; // Total con IGV
 }
 
 /**
@@ -71,14 +71,14 @@ export interface InvoiceLineItem {
  * ```
  */
 export interface TaxTotal {
-  taxAmount: number;
-  taxSubtotal: {
-    taxableAmount: number;
-    taxAmount: number;
-    taxCategory: string;
-    taxType: string; // 1000 = IGV
-    taxRate: number; // 18.00
-  }[];
+	taxAmount: number;
+	taxSubtotal: {
+		taxableAmount: number;
+		taxAmount: number;
+		taxCategory: string;
+		taxType: string; // 1000 = IGV
+		taxRate: number; // 18.00
+	}[];
 }
 
 /**
@@ -90,11 +90,11 @@ export interface TaxTotal {
  * ```
  */
 export interface LegalMonetaryTotal {
-  lineExtensionAmount: number; // Subtotal
-  taxInclusiveAmount: number; // Total con impuestos
-  allowanceTotalAmount?: number; // Descuentos
-  chargeTotalAmount?: number; // Cargos
-  payableAmount: number; // Monto a pagar
+	lineExtensionAmount: number; // Subtotal
+	taxInclusiveAmount: number; // Total con impuestos
+	allowanceTotalAmount?: number; // Descuentos
+	chargeTotalAmount?: number; // Cargos
+	payableAmount: number; // Monto a pagar
 }
 
 /**
@@ -106,8 +106,8 @@ export interface LegalMonetaryTotal {
  * ```
  */
 export interface PaymentTerms {
-  paymentMeansCode: 'Contado' | 'Credito';
-  paymentDueDate?: string; // ISO 8601
+	paymentMeansCode: "Contado" | "Credito";
+	paymentDueDate?: string; // ISO 8601
 }
 
 /**
@@ -129,37 +129,37 @@ export interface PaymentTerms {
  * ```
  */
 export interface InvoiceData {
-  // Identifiers
-  id: string; // F001-00000001
-  issueDate: string; // YYYY-MM-DD
-  dueDate?: string;
+	// Identifiers
+	id: string; // F001-00000001
+	issueDate: string; // YYYY-MM-DD
+	dueDate?: string;
 
-  // Document type
-  invoiceTypeCode: '01' | '03'; // 01=Factura, 03=Boleta
+	// Document type
+	invoiceTypeCode: "01" | "03"; // 01=Factura, 03=Boleta
 
-  // Currency
-  documentCurrencyCode: 'PEN' | 'USD' | 'EUR';
+	// Currency
+	documentCurrencyCode: "PEN" | "USD" | "EUR";
 
-  // Parties
-  supplier: Party;
-  customer: Party;
+	// Parties
+	supplier: Party;
+	customer: Party;
 
-  // Items
-  invoiceLines: InvoiceLineItem[];
+	// Items
+	invoiceLines: InvoiceLineItem[];
 
-  // Totals
-  taxTotals: TaxTotal[];
-  legalMonetaryTotal: LegalMonetaryTotal;
+	// Totals
+	taxTotals: TaxTotal[];
+	legalMonetaryTotal: LegalMonetaryTotal;
 
-  // Payment
-  paymentTerms?: PaymentTerms;
+	// Payment
+	paymentTerms?: PaymentTerms;
 
-  // Notes
-  note?: string;
+	// Notes
+	note?: string;
 
-  // UBL version
-  ublVersionId?: string; // Default: 2.1
-  customizationId?: string; // Default: 2.0
+	// UBL version
+	ublVersionId?: string; // Default: 2.1
+	customizationId?: string; // Default: 2.0
 }
 
 /**
@@ -170,23 +170,24 @@ export interface InvoiceData {
  * const data = { creditNoteTypeCode: "07" } as CreditNoteData;
  * ```
  */
-export interface CreditNoteData extends Omit<InvoiceData, 'id' | 'invoiceTypeCode'> {
-  id: string; // FC01-00000001
-  creditNoteTypeCode: '07'; // Nota de Crédito
+export interface CreditNoteData
+	extends Omit<InvoiceData, "id" | "invoiceTypeCode"> {
+	id: string; // FC01-00000001
+	creditNoteTypeCode: "07"; // Nota de Crédito
 
-  // Reference to original invoice
-  billingReference: {
-    invoiceDocumentReference: {
-      id: string; // F001-00000001
-      issueDate: string;
-    };
-  };
+	// Reference to original invoice
+	billingReference: {
+		invoiceDocumentReference: {
+			id: string; // F001-00000001
+			issueDate: string;
+		};
+	};
 
-  // Reason
-  discrepancyResponse: {
-    responseCode: string; // 01-13 (códigos SUNAT)
-    description: string;
-  };
+	// Reason
+	discrepancyResponse: {
+		responseCode: string; // 01-13 (códigos SUNAT)
+		description: string;
+	};
 }
 
 /**
@@ -198,7 +199,7 @@ export interface CreditNoteData extends Omit<InvoiceData, 'id' | 'invoiceTypeCod
  * ```
  */
 export interface XmlGenerationResult {
-  xml: string;
-  hash: string; // SHA-256 hash for signature
-  fileName: string; // RUC-TipoDoc-Serie-Numero.xml
+	xml: string;
+	hash: string; // SHA-256 hash for signature
+	fileName: string; // RUC-TipoDoc-Serie-Numero.xml
 }

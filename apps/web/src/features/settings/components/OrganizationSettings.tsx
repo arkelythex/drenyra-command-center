@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { Building2, Plus } from "lucide-react";
-import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import { useState } from "react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { SettingsShell } from "./SettingsShell";
-import { SettingsSection } from "./SettingsPrimitives";
+import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import { MemberCard, OrganizationIdentity } from "./appearance/OrganizationUI";
 import { SettingsButton } from "./appearance/SettingsUI";
-import { OrganizationIdentity, MemberCard } from "./appearance/OrganizationUI";
+import { SettingsSection } from "./SettingsPrimitives";
+import { SettingsShell } from "./SettingsShell";
 
 const TEAM_MEMBERS = [
 	{

@@ -1,5 +1,5 @@
-import type { FiscalCaseDetails } from "../../api/drenyra-command-center.api";
 import type { HubArtifact } from "@/features/cognitive-hub/types/hub.types";
+import type { FiscalCaseDetails } from "../../api/drenyra-command-center.api";
 
 export type ChatContext = "idle" | "streaming" | "artifact" | "case";
 

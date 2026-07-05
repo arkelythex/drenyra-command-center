@@ -11,13 +11,13 @@
  *
  * @last-verified: 2026-06-06
  */
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { JournalEntryBuilder } from "../../src/builders";
 import {
 	createSunatMock,
-	sunatSuccess,
 	type SunatResponse,
+	sunatSuccess,
 } from "../../src/mocks";
-import { JournalEntryBuilder } from "../../src/builders";
 
 // ============================================================
 // 1. MOCK REPOSITORY INJECTION
@@ -119,7 +119,9 @@ describe("Command/Query Pattern", () => {
 			.withCredit("7011", 2000)
 			.build();
 
-		const mockQuery = vi.fn<() => Promise<typeof entry>>().mockResolvedValue(entry);
+		const mockQuery = vi
+			.fn<() => Promise<typeof entry>>()
+			.mockResolvedValue(entry);
 
 		// Act: execute query
 		const result = await mockQuery("je_002");

@@ -8,7 +8,11 @@ interface AgentsSectionProps {
 
 export function AgentsSection({ t }: AgentsSectionProps) {
 	return (
-		<section className="space-y-2" role="region" aria-label={t("sidebar.agents")}>
+		<section
+			className="space-y-2"
+			role="region"
+			aria-label={t("sidebar.agents")}
+		>
 			<p className="text-2xs font-bold uppercase tracking-widest text-[var(--text-tertiary)]">
 				{t("sidebar.agents")}
 			</p>

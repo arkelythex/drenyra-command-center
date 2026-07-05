@@ -8,11 +8,11 @@
  * (RUC emisor/receptor, monto, fecha, número SPOT).
  */
 
-import { SecureLogger } from '@drenyra/shared/secure-logger';
-import type { IInterCompanyTransactionRepository } from '../../domain/inter-company-transaction.repository';
-import type { SpotPdfResult } from '../../domain/inter-company-transaction.entity';
+import { SecureLogger } from "@drenyra/shared/secure-logger";
+import type { SpotPdfResult } from "../../domain/inter-company-transaction.entity";
+import type { IInterCompanyTransactionRepository } from "../../domain/inter-company-transaction.repository";
 
-const logger = SecureLogger.namespace('GenerateSpotPdfHandler');
+const logger = SecureLogger.namespace("GenerateSpotPdfHandler");
 
 /**
  * GenerateSpotPdfHandler class.
@@ -24,21 +24,23 @@ const logger = SecureLogger.namespace('GenerateSpotPdfHandler');
  * ```
  */
 export class GenerateSpotPdfHandler {
-  constructor(private readonly repository: IInterCompanyTransactionRepository) {}
+	constructor(
+		private readonly repository: IInterCompanyTransactionRepository,
+	) {}
 
-  async execute(interCompanyId: string): Promise<SpotPdfResult> {
-    logger.info('Generating SPOT PDF', { interCompanyId });
+	async execute(interCompanyId: string): Promise<SpotPdfResult> {
+		logger.info("Generating SPOT PDF", { interCompanyId });
 
-    const tx = await this.repository.findById(interCompanyId);
-    if (!tx) throw new Error('Inter-company transaction not found');
+		const tx = await this.repository.findById(interCompanyId);
+		if (!tx) throw new Error("Inter-company transaction not found");
 
-    const timestamp = Date.now().toString().slice(-8);
-    const referenceNumber = `SPOT-${timestamp}`;
-    const url = `/api/pdfs/spot-${interCompanyId}.pdf`;
+		const timestamp = Date.now().toString().slice(-8);
+		const referenceNumber = `SPOT-${timestamp}`;
+		const url = `/api/pdfs/spot-${interCompanyId}.pdf`;
 
-    await this.repository.updateSpotPdf(interCompanyId, url, referenceNumber);
+		await this.repository.updateSpotPdf(interCompanyId, url, referenceNumber);
 
-    logger.info('SPOT PDF generated', { referenceNumber });
-    return { url, referenceNumber };
-  }
+		logger.info("SPOT PDF generated", { referenceNumber });
+		return { url, referenceNumber };
+	}
 }

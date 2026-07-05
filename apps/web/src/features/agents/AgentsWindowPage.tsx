@@ -1,13 +1,13 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAgentsWindowStore } from "./agents.store";
-import { agentsListQueryOptions } from "./query-options";
-import { agentKeys } from "./query-keys";
-import { AgentGrid } from "./AgentGrid";
+import { FolderOpen, LayoutGrid } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { AgentFilterBar } from "./AgentFilterBar";
+import { AgentGrid } from "./AgentGrid";
 import { AgentTabBar } from "./AgentTabBar";
 import { AgentTabPanel } from "./AgentTabPanel";
-import { LayoutGrid, FolderOpen } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { useAgentsWindowStore } from "./agents.store";
+import { agentKeys } from "./query-keys";
+import { agentsListQueryOptions } from "./query-options";
 
 export function AgentsWindowPage() {
 	const queryClient = useQueryClient();

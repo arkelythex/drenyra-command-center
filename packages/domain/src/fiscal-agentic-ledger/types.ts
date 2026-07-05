@@ -1,12 +1,12 @@
-import type { Money } from "../value-objects/Money";
-import type {
-	DeterministicValidatorResultRecord,
-	PolicyDecisionRecord,
-} from "../fiscal-truth/types";
 import type {
 	FiscalObjectIdentity,
 	FiscalOntologyScope,
 } from "../fiscal-ontology/types";
+import type {
+	DeterministicValidatorResultRecord,
+	PolicyDecisionRecord,
+} from "../fiscal-truth/types";
+import type { Money } from "../value-objects/Money";
 
 export const FAL_EVENT_KIND = {
 	CLASSIFICATION_PROPOSAL: "classification_proposal",
@@ -39,8 +39,7 @@ export const FAL_ACTOR_KIND = {
 	SYSTEM: "system",
 } as const;
 
-export type FalActorKind =
-	(typeof FAL_ACTOR_KIND)[keyof typeof FAL_ACTOR_KIND];
+export type FalActorKind = (typeof FAL_ACTOR_KIND)[keyof typeof FAL_ACTOR_KIND];
 
 export const FAL_RISK_LEVEL = {
 	LOW: "low",
@@ -49,8 +48,7 @@ export const FAL_RISK_LEVEL = {
 	CRITICAL: "critical",
 } as const;
 
-export type FalRiskLevel =
-	(typeof FAL_RISK_LEVEL)[keyof typeof FAL_RISK_LEVEL];
+export type FalRiskLevel = (typeof FAL_RISK_LEVEL)[keyof typeof FAL_RISK_LEVEL];
 
 export interface FalActorRef {
 	kind: FalActorKind;

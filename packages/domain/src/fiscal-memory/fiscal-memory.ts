@@ -37,8 +37,12 @@ const assertNonEmpty = (value: string, code: string, field: string): void => {
 	}
 };
 
-const normalizeList = (values: readonly string[] | undefined): readonly string[] => {
-	return Object.freeze([...(values ?? [])].map((value) => value.trim()).filter(Boolean));
+const normalizeList = (
+	values: readonly string[] | undefined,
+): readonly string[] => {
+	return Object.freeze(
+		[...(values ?? [])].map((value) => value.trim()).filter(Boolean),
+	);
 };
 
 /**
@@ -65,7 +69,10 @@ export class FiscalMemory {
 	 * @returns A validated immutable fiscal-memory aggregate.
 	 * @throws InvalidFiscalMemoryError when scope, period, RUC, metadata, or evidence is invalid.
 	 */
-	static create(input: Omit<FiscalMemoryProps, "status" | "createdAt" | "updatedAt"> & Partial<Pick<FiscalMemoryProps, "status" | "createdAt" | "updatedAt">>): FiscalMemory {
+	static create(
+		input: Omit<FiscalMemoryProps, "status" | "createdAt" | "updatedAt"> &
+			Partial<Pick<FiscalMemoryProps, "status" | "createdAt" | "updatedAt">>,
+	): FiscalMemory {
 		const now = new Date();
 		const props: FiscalMemoryProps = {
 			...input,
@@ -100,9 +107,21 @@ export class FiscalMemory {
 
 	private static validate(props: FiscalMemoryProps): void {
 		assertNonEmpty(props.id, FISCAL_MEMORY_ERROR_CODES.INVALID_SCOPE, "id");
-		assertNonEmpty(props.tenantId, FISCAL_MEMORY_ERROR_CODES.INVALID_SCOPE, "tenantId");
-		assertNonEmpty(props.companyId, FISCAL_MEMORY_ERROR_CODES.INVALID_SCOPE, "companyId");
-		assertNonEmpty(props.createdBy, FISCAL_MEMORY_ERROR_CODES.INVALID_SCOPE, "createdBy");
+		assertNonEmpty(
+			props.tenantId,
+			FISCAL_MEMORY_ERROR_CODES.INVALID_SCOPE,
+			"tenantId",
+		);
+		assertNonEmpty(
+			props.companyId,
+			FISCAL_MEMORY_ERROR_CODES.INVALID_SCOPE,
+			"companyId",
+		);
+		assertNonEmpty(
+			props.createdBy,
+			FISCAL_MEMORY_ERROR_CODES.INVALID_SCOPE,
+			"createdBy",
+		);
 
 		if (!RUC_PATTERN.test(props.ruc)) {
 			throw new InvalidFiscalMemoryError(
@@ -140,7 +159,11 @@ export class FiscalMemory {
 		}
 
 		assertNonEmpty(props.title, FISCAL_MEMORY_ERROR_CODES.EMPTY_TITLE, "title");
-		assertNonEmpty(props.summary, FISCAL_MEMORY_ERROR_CODES.EMPTY_SUMMARY, "summary");
+		assertNonEmpty(
+			props.summary,
+			FISCAL_MEMORY_ERROR_CODES.EMPTY_SUMMARY,
+			"summary",
+		);
 
 		if (
 			FISCAL_MEMORY_EVIDENCE_REQUIRED_CATEGORIES.has(props.category) &&
@@ -175,24 +198,60 @@ export class FiscalMemory {
 		return FiscalMemory.rehydrate({ ...this.props, summary, updatedAt });
 	}
 
-	get id(): string { return this.props.id; }
-	get tenantId(): string { return this.props.tenantId; }
-	get companyId(): string { return this.props.companyId; }
-	get ruc(): string { return this.props.ruc; }
-	get period(): string { return this.props.period; }
-	get category(): FiscalMemoryCategory { return this.props.category; }
-	get severity(): FiscalMemorySeverity { return this.props.severity; }
-	get status(): FiscalMemoryStatus { return this.props.status; }
-	get title(): string { return this.props.title; }
-	get summary(): string { return this.props.summary; }
-	get evidenceRefs(): readonly string[] { return this.props.evidenceRefs; }
-	get tags(): readonly string[] { return this.props.tags; }
-	get createdBy(): string { return this.props.createdBy; }
-	get approvedBy(): string | undefined { return this.props.approvedBy; }
-	get sourceAgentId(): string | undefined { return this.props.sourceAgentId; }
-	get relatedMemoryIds(): readonly string[] { return this.props.relatedMemoryIds ?? []; }
-	get createdAt(): Date { return this.props.createdAt; }
-	get updatedAt(): Date { return this.props.updatedAt; }
+	get id(): string {
+		return this.props.id;
+	}
+	get tenantId(): string {
+		return this.props.tenantId;
+	}
+	get companyId(): string {
+		return this.props.companyId;
+	}
+	get ruc(): string {
+		return this.props.ruc;
+	}
+	get period(): string {
+		return this.props.period;
+	}
+	get category(): FiscalMemoryCategory {
+		return this.props.category;
+	}
+	get severity(): FiscalMemorySeverity {
+		return this.props.severity;
+	}
+	get status(): FiscalMemoryStatus {
+		return this.props.status;
+	}
+	get title(): string {
+		return this.props.title;
+	}
+	get summary(): string {
+		return this.props.summary;
+	}
+	get evidenceRefs(): readonly string[] {
+		return this.props.evidenceRefs;
+	}
+	get tags(): readonly string[] {
+		return this.props.tags;
+	}
+	get createdBy(): string {
+		return this.props.createdBy;
+	}
+	get approvedBy(): string | undefined {
+		return this.props.approvedBy;
+	}
+	get sourceAgentId(): string | undefined {
+		return this.props.sourceAgentId;
+	}
+	get relatedMemoryIds(): readonly string[] {
+		return this.props.relatedMemoryIds ?? [];
+	}
+	get createdAt(): Date {
+		return this.props.createdAt;
+	}
+	get updatedAt(): Date {
+		return this.props.updatedAt;
+	}
 
 	/**
 	 * Serializes the aggregate for repositories and audit revisions.

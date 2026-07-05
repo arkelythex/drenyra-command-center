@@ -1,2 +1,2 @@
-export * from './auth-utils';
-export * from './permissions';
+export * from "./auth-utils";
+export * from "./permissions";

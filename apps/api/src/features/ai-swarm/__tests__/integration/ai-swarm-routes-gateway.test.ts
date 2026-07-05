@@ -1,3 +1,4 @@
+import { Elysia } from "elysia";
 import {
 	afterEach,
 	beforeAll,
@@ -7,7 +8,6 @@ import {
 	it,
 	vi,
 } from "vitest";
-import { Elysia } from "elysia";
 
 type AiSwarmRoutesModule = typeof import("../../api/routes");
 let aiSwarmRoutes: AiSwarmRoutesModule["aiSwarmRoutes"];
@@ -55,22 +55,24 @@ describe("AI Swarm Routes Gateway", () => {
 		const response = await postJson(
 			aiSwarmRoutes,
 			"/api/ai-swarm/api/ai-swarm/validate-invoices",
-			{invoices: [
-				{
-					id: "INV-RT-001",
-					ruc: "20100070970",
-					serie: "F001",
-					numero: "00000001",
-					fecha: "2026-02-18",
-					moneda: "PEN",
-					subtotal: 100,
-					igv: 18,
-					total: 118,
-					items: [],
-				},
-			],
-			priority: "medium",
-		});
+			{
+				invoices: [
+					{
+						id: "INV-RT-001",
+						ruc: "20100070970",
+						serie: "F001",
+						numero: "00000001",
+						fecha: "2026-02-18",
+						moneda: "PEN",
+						subtotal: 100,
+						igv: 18,
+						total: 118,
+						items: [],
+					},
+				],
+				priority: "medium",
+			},
+		);
 
 		const payload = await response.json();
 		expect(response.status).toBe(200);
@@ -84,11 +86,13 @@ describe("AI Swarm Routes Gateway", () => {
 		const response = await postJson(
 			app,
 			"/api/ai-swarm/api/ai-swarm/analyze-task",
-			{fileCount: 3,
-			totalSizeBytes: 2048,
-			taskType: "INVOICE",
-			priority: "medium",
-		});
+			{
+				fileCount: 3,
+				totalSizeBytes: 2048,
+				taskType: "INVOICE",
+				priority: "medium",
+			},
+		);
 
 		const payload = await response.json();
 		expect(response.status).toBe(200);
@@ -129,16 +133,14 @@ describe("AI Swarm Routes Gateway", () => {
 		const app = new Elysia().use(aiSwarmRoutes);
 
 		const budgetResponse = await app.handle(
-			new Request(
-				"http://localhost/api/ai-swarm/api/ai-swarm/budget",
-				{ method: "GET" },
-			),
+			new Request("http://localhost/api/ai-swarm/api/ai-swarm/budget", {
+				method: "GET",
+			}),
 		);
 		const cacheResponse = await app.handle(
-			new Request(
-				"http://localhost/api/ai-swarm/api/ai-swarm/cache/stats",
-				{ method: "GET" },
-			),
+			new Request("http://localhost/api/ai-swarm/api/ai-swarm/cache/stats", {
+				method: "GET",
+			}),
 		);
 		const detailedBudgetResponse = await app.handle(
 			new Request(
@@ -167,16 +169,18 @@ describe("AI Swarm Routes Gateway", () => {
 		const response = await postJson(
 			app,
 			"/api/ai-swarm/api/ai-swarm/process-invoices",
-			{documents: [
-				{
-					id: "DOC-001",
-					imageUrl: "data:image/png;base64,AA==",
-					filename: "invoice.pdf",
-					mimeType: "application/pdf",
-				},
-			],
-			priority: "medium",
-		});
+			{
+				documents: [
+					{
+						id: "DOC-001",
+						imageUrl: "data:image/png;base64,AA==",
+						filename: "invoice.pdf",
+						mimeType: "application/pdf",
+					},
+				],
+				priority: "medium",
+			},
+		);
 
 		const payload = await response.json();
 		expect(response.status).toBe(400);
@@ -191,16 +195,18 @@ describe("AI Swarm Routes Gateway", () => {
 		const response = await postJson(
 			app,
 			"/api/ai-swarm/api/ai-swarm/process-invoices",
-			{documents: [
-				{
-					id: "DOC-002",
-					imageUrl: "data:image/png;base64,AA==",
-					filename: "invoice.pdf",
-					mimeType: "application/pdf",
-				},
-			],
-			priority: "high",
-		});
+			{
+				documents: [
+					{
+						id: "DOC-002",
+						imageUrl: "data:image/png;base64,AA==",
+						filename: "invoice.pdf",
+						mimeType: "application/pdf",
+					},
+				],
+				priority: "high",
+			},
+		);
 
 		const payload = await response.json();
 		expect(response.status).toBe(503);
@@ -237,10 +243,11 @@ describe("AI Swarm Routes Gateway", () => {
 			app,
 			"/api/ai-swarm/api/ai-swarm/reconcile",
 			{
-			priority: "medium",
-			transactions: [],
-			documents: [],
-		});
+				priority: "medium",
+				transactions: [],
+				documents: [],
+			},
+		);
 
 		const multiRucPayload = await multiRucResponse.json();
 		const reconcilePayload = await reconcileResponse.json();

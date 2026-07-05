@@ -1,9 +1,6 @@
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
-import {
-	createChatRoutes,
-	type ChatRoutesDeps,
-} from "../chat.routes";
+import { type ChatRoutesDeps, createChatRoutes } from "../chat.routes";
 
 const chatHeaders = {
 	"content-type": "application/json",

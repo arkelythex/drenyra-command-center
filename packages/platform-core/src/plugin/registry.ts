@@ -7,61 +7,63 @@
  * @module @drenyra/platform-core/plugin
  */
 
-import type {
-  AgenticOSPlugin,
-  DomainRegistry,
-  AgentRegistry,
-  PolicyRegistry,
-  ApprovalGateRegistry,
-  PolicyDefinition,
-  ApprovalGate,
-} from "./interface.js";
 import type { AgentType } from "../kernel/types.js";
+import type {
+	AgenticOSPlugin,
+	AgentRegistry,
+	ApprovalGate,
+	ApprovalGateRegistry,
+	DomainRegistry,
+	PolicyDefinition,
+	PolicyRegistry,
+} from "./interface.js";
 
 // ──────────────────────────────────────────────
 // Concrete Registry Implementations
 // ──────────────────────────────────────────────
 
 class DefaultDomainRegistry implements DomainRegistry {
-  readonly entities: Array<{ name: string; schema: unknown }> = [];
-  readonly rules: Array<{ name: string; rule: (input: unknown) => boolean }> = [];
+	readonly entities: Array<{ name: string; schema: unknown }> = [];
+	readonly rules: Array<{ name: string; rule: (input: unknown) => boolean }> =
+		[];
 
-  registerEntity(name: string, schema: unknown): void {
-    this.entities.push({ name, schema });
-  }
+	registerEntity(name: string, schema: unknown): void {
+		this.entities.push({ name, schema });
+	}
 
-  registerRule(name: string, rule: (input: unknown) => boolean): void {
-    this.rules.push({ name, rule });
-  }
+	registerRule(name: string, rule: (input: unknown) => boolean): void {
+		this.rules.push({ name, rule });
+	}
 }
 
 class DefaultAgentRegistry implements AgentRegistry {
-  readonly agentTypes: Array<{ type: AgentType; factory: () => unknown }> = [];
-  readonly capabilities: Array<{ agentType: AgentType; capability: string }> = [];
+	readonly agentTypes: Array<{ type: AgentType; factory: () => unknown }> = [];
+	readonly capabilities: Array<{ agentType: AgentType; capability: string }> =
+		[];
 
-  registerAgentType(type: AgentType, factory: () => unknown): void {
-    this.agentTypes.push({ type, factory });
-  }
+	registerAgentType(type: AgentType, factory: () => unknown): void {
+		this.agentTypes.push({ type, factory });
+	}
 
-  registerCapability(agentType: AgentType, capability: string): void {
-    this.capabilities.push({ agentType, capability });
-  }
+	registerCapability(agentType: AgentType, capability: string): void {
+		this.capabilities.push({ agentType, capability });
+	}
 }
 
 class DefaultPolicyRegistry implements PolicyRegistry {
-  readonly policies: Array<{ name: string; policy: PolicyDefinition }> = [];
+	readonly policies: Array<{ name: string; policy: PolicyDefinition }> = [];
 
-  registerPolicy(name: string, policy: PolicyDefinition): void {
-    this.policies.push({ name, policy });
-  }
+	registerPolicy(name: string, policy: PolicyDefinition): void {
+		this.policies.push({ name, policy });
+	}
 }
 
 class DefaultApprovalGateRegistry implements ApprovalGateRegistry {
-  readonly gates: Array<{ name: string; gate: ApprovalGate }> = [];
+	readonly gates: Array<{ name: string; gate: ApprovalGate }> = [];
 
-  registerGate(name: string, gate: ApprovalGate): void {
-    this.gates.push({ name, gate });
-  }
+	registerGate(name: string, gate: ApprovalGate): void {
+		this.gates.push({ name, gate });
+	}
 }
 
 // ──────────────────────────────────────────────
@@ -77,54 +79,54 @@ class DefaultApprovalGateRegistry implements ApprovalGateRegistry {
  * `registerApprovalGates` methods.
  */
 export class PluginRegistry {
-  private readonly plugins = new Map<string, AgenticOSPlugin>();
+	private readonly plugins = new Map<string, AgenticOSPlugin>();
 
-  /**
-   * Register a plugin. Replaces any existing plugin with the same name.
-   */
-  register(plugin: AgenticOSPlugin): void {
-    this.plugins.set(plugin.name, plugin);
-  }
+	/**
+	 * Register a plugin. Replaces any existing plugin with the same name.
+	 */
+	register(plugin: AgenticOSPlugin): void {
+		this.plugins.set(plugin.name, plugin);
+	}
 
-  /**
-   * Retrieve a plugin by name, or undefined if not found.
-   */
-  getPlugin(name: string): AgenticOSPlugin | undefined {
-    return this.plugins.get(name);
-  }
+	/**
+	 * Retrieve a plugin by name, or undefined if not found.
+	 */
+	getPlugin(name: string): AgenticOSPlugin | undefined {
+		return this.plugins.get(name);
+	}
 
-  /**
-   * List all registered plugins.
-   */
-  listPlugins(): AgenticOSPlugin[] {
-    return Array.from(this.plugins.values());
-  }
+	/**
+	 * List all registered plugins.
+	 */
+	listPlugins(): AgenticOSPlugin[] {
+		return Array.from(this.plugins.values());
+	}
 
-  /**
-   * Create a new DomainRegistry instance.
-   */
-  createDomainRegistry(): DomainRegistry {
-    return new DefaultDomainRegistry();
-  }
+	/**
+	 * Create a new DomainRegistry instance.
+	 */
+	createDomainRegistry(): DomainRegistry {
+		return new DefaultDomainRegistry();
+	}
 
-  /**
-   * Create a new AgentRegistry instance.
-   */
-  createAgentRegistry(): AgentRegistry {
-    return new DefaultAgentRegistry();
-  }
+	/**
+	 * Create a new AgentRegistry instance.
+	 */
+	createAgentRegistry(): AgentRegistry {
+		return new DefaultAgentRegistry();
+	}
 
-  /**
-   * Create a new PolicyRegistry instance.
-   */
-  createPolicyRegistry(): PolicyRegistry {
-    return new DefaultPolicyRegistry();
-  }
+	/**
+	 * Create a new PolicyRegistry instance.
+	 */
+	createPolicyRegistry(): PolicyRegistry {
+		return new DefaultPolicyRegistry();
+	}
 
-  /**
-   * Create a new ApprovalGateRegistry instance.
-   */
-  createApprovalGateRegistry(): ApprovalGateRegistry {
-    return new DefaultApprovalGateRegistry();
-  }
+	/**
+	 * Create a new ApprovalGateRegistry instance.
+	 */
+	createApprovalGateRegistry(): ApprovalGateRegistry {
+		return new DefaultApprovalGateRegistry();
+	}
 }

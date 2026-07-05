@@ -30,7 +30,11 @@ export class CollectorStep implements FiscalAgentStep<void, CollectOutput> {
 			const transactions = await this.fetchLocalTransactions(context);
 
 			// 2. Pull SIRE data from SUNAT
-			let sireRecords: { period: string; totalRecords: number; discrepancies: number }[] = [];
+			let sireRecords: {
+				period: string;
+				totalRecords: number;
+				discrepancies: number;
+			}[] = [];
 
 			try {
 				const taxAuthority = await createTaxAuthority(
@@ -47,14 +51,18 @@ export class CollectorStep implements FiscalAgentStep<void, CollectOutput> {
 						},
 						[],
 					);
-					sireRecords = [{
-						period: context.period,
-						totalRecords: syncResult.totalRecords ?? 0,
-						discrepancies: syncResult.discrepancies?.length ?? 0,
-					}];
+					sireRecords = [
+						{
+							period: context.period,
+							totalRecords: syncResult.totalRecords ?? 0,
+							discrepancies: syncResult.discrepancies?.length ?? 0,
+						},
+					];
 				}
 			} catch (err) {
-				warnings.push(`SIRE sync failed: ${err instanceof Error ? err.message : "Unknown"}`);
+				warnings.push(
+					`SIRE sync failed: ${err instanceof Error ? err.message : "Unknown"}`,
+				);
 			}
 
 			const completedAt = new Date();
@@ -74,11 +82,14 @@ export class CollectorStep implements FiscalAgentStep<void, CollectOutput> {
 			const completedAt = new Date();
 			return {
 				success: false,
-				errors: [{
-					code: "COLLECT_FAILED",
-					message: error instanceof Error ? error.message : "Collect step failed",
-					retryable: true,
-				}],
+				errors: [
+					{
+						code: "COLLECT_FAILED",
+						message:
+							error instanceof Error ? error.message : "Collect step failed",
+						retryable: true,
+					},
+				],
 				warnings,
 				metrics: {
 					startedAt,

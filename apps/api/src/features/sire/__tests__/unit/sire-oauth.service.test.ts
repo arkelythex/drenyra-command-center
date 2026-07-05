@@ -1,5 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { clearOAuthTokenCache, resolveAuthToken } from "../../services/sire-oauth.service";
+import {
+	clearOAuthTokenCache,
+	resolveAuthToken,
+} from "../../services/sire-oauth.service";
 import type { SireSubmissionConfig, TenantSunatContext } from "../../types";
 
 const ORIGINAL_FETCH = globalThis.fetch;
@@ -51,25 +54,33 @@ describe("SIRE OAuth tenant context", () => {
 
 	it("builds SOL username from tenant RUC and isolates token cache by credential identity", async () => {
 		const requests: URLSearchParams[] = [];
-		const fetchMock = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
-			requests.push(init?.body as URLSearchParams);
-			return new Response(
-				JSON.stringify({
-					access_token: `token-${requests.length}`,
-					expires_in: 3600,
-				}),
-				{ status: 200, headers: { "content-type": "application/json" } },
-			);
-		});
+		const fetchMock = vi.fn(
+			async (_input: RequestInfo | URL, init?: RequestInit) => {
+				requests.push(init?.body as URLSearchParams);
+				return new Response(
+					JSON.stringify({
+						access_token: `token-${requests.length}`,
+						expires_in: 3600,
+					}),
+					{ status: 200, headers: { "content-type": "application/json" } },
+				);
+			},
+		);
 		globalThis.fetch = fetchMock as typeof fetch;
 
 		const config = createConfig();
 		const firstContext = createContext("20123456786", "sha256:first");
 		const secondContext = createContext("20492928373", "sha256:second");
 
-		await expect(resolveAuthToken(config, firstContext)).resolves.toBe("token-1");
-		await expect(resolveAuthToken(config, firstContext)).resolves.toBe("token-1");
-		await expect(resolveAuthToken(config, secondContext)).resolves.toBe("token-2");
+		await expect(resolveAuthToken(config, firstContext)).resolves.toBe(
+			"token-1",
+		);
+		await expect(resolveAuthToken(config, firstContext)).resolves.toBe(
+			"token-1",
+		);
+		await expect(resolveAuthToken(config, secondContext)).resolves.toBe(
+			"token-2",
+		);
 
 		expect(fetchMock).toHaveBeenCalledTimes(2);
 		expect(requests.map((body) => body.get("username"))).toEqual([

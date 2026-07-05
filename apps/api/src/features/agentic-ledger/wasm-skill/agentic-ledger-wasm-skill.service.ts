@@ -1,10 +1,10 @@
 import { SecureLogger } from "@drenyra/shared/secure-logger";
-import { parseBankCsv } from "../bank-csv";
-import type { BankCsvFormat } from "../bank-csv/types";
 import type {
 	BankTransactionImporter,
 	ImportTransactionInput,
 } from "../agentic-ledger.service";
+import { parseBankCsv } from "../bank-csv";
+import type { BankCsvFormat } from "../bank-csv/types";
 import {
 	type WasmBankSkillConfig,
 	WasmBankSkillSandboxService,
@@ -48,7 +48,9 @@ export interface IngestBankWithWasmOutput {
 	};
 }
 
-function normalizeBankCsvFormat(format: BankCsvFormat | string | undefined): BankCsvFormat {
+function normalizeBankCsvFormat(
+	format: BankCsvFormat | string | undefined,
+): BankCsvFormat {
 	if (
 		format === "BCP" ||
 		format === "BBVA" ||
@@ -61,7 +63,9 @@ function normalizeBankCsvFormat(format: BankCsvFormat | string | undefined): Ban
 	return "GENERIC";
 }
 
-function dedupeInMemory(inputs: ImportTransactionInput[]): ImportTransactionInput[] {
+function dedupeInMemory(
+	inputs: ImportTransactionInput[],
+): ImportTransactionInput[] {
 	const seen = new Set<string>();
 	const out: ImportTransactionInput[] = [];
 
@@ -91,17 +95,24 @@ function dedupeInMemory(inputs: ImportTransactionInput[]): ImportTransactionInpu
  * ```
  */
 export class AgenticLedgerWasmSkillService {
-	private readonly logger = SecureLogger.namespace("AgenticLedgerWasmSkillService");
+	private readonly logger = SecureLogger.namespace(
+		"AgenticLedgerWasmSkillService",
+	);
 	private readonly sandbox = new WasmBankSkillSandboxService();
 
 	constructor(private readonly transactionService: BankTransactionImporter) {}
 
-	async ingestWithWasm(input: IngestBankWithWasmInput): Promise<IngestBankWithWasmOutput> {
+	async ingestWithWasm(
+		input: IngestBankWithWasmInput,
+	): Promise<IngestBankWithWasmOutput> {
 		if (!input.companyId) throw new Error("companyId is required");
 		if (!input.accountId) throw new Error("accountId is required");
 		if (!input.csvText?.trim()) throw new Error("csvText is required");
 
-		const parsed = parseBankCsv(input.csvText, normalizeBankCsvFormat(input.format));
+		const parsed = parseBankCsv(
+			input.csvText,
+			normalizeBankCsvFormat(input.format),
+		);
 		const transformed = await this.sandbox.transformTransactions(
 			parsed.transactions,
 			input.wasmSkill,

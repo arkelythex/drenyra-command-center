@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-	evaluateDrenyraToolGovernance,
 	type DrenyraToolCapabilityManifest,
+	evaluateDrenyraToolGovernance,
 } from "../governance";
 import type { FiscalScope } from "../types";
 

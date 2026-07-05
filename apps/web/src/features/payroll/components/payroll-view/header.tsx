@@ -23,7 +23,9 @@ export function PayrollHeader({
 			className="px-4 py-3 sm:px-6 sm:py-5 border-b border-border bg-background flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 shrink-0 shadow-sm relative overflow-hidden"
 			style={{ zIndex: stickyZIndex }}
 		>
-			<div className={`absolute inset-0 ${ambientGradientClassName} pointer-events-none`} />
+			<div
+				className={`absolute inset-0 ${ambientGradientClassName} pointer-events-none`}
+			/>
 
 			<div className="flex items-center gap-4 sm:gap-6 relative z-10 w-full md:w-auto group">
 				<Button
@@ -54,7 +56,9 @@ export function PayrollHeader({
 								PLAME 2026
 							</span>
 						</div>
-						<span className="hidden xs:inline text-muted-foreground/30 font-light">|</span>
+						<span className="hidden xs:inline text-muted-foreground/30 font-light">
+							|
+						</span>
 						<p className="hidden xs:block text-xs font-bold text-muted-foreground uppercase tracking-widest pt-0.5">
 							T-REGISTRO CONNECTED
 						</p>

@@ -6,8 +6,8 @@
  */
 
 import { ArrowLeft } from "lucide-react";
-import { PageShell } from "@/components/ui/PageShell";
 import { Button } from "@/components/ui/button";
+import { PageShell } from "@/components/ui/PageShell";
 import { DrenyraCommandCenter } from "./DrenyraCommandCenter";
 
 interface DrenyraWorkspaceProps {

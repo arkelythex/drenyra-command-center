@@ -12,11 +12,16 @@ export const API_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["invoice-processing", "bank-reconciliation", "data-sync"] as const,
+		capabilities: [
+			"invoice-processing",
+			"bank-reconciliation",
+			"data-sync",
+		] as const,
 		approvalClass: "supervisor" as const,
 		supportedSurfaces: ["api"] as const,
 		drenyraSubagent: "Funde",
-		description: "Finance operations agent — integración financiera y sincronización",
+		description:
+			"Finance operations agent — integración financiera y sincronización",
 		sourcePath: "apps/api/src/features/drenyra/agents.ts",
 	},
 	{
@@ -31,7 +36,8 @@ export const API_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api"] as const,
 		drenyraSubagent: "Vigila",
-		description: "Operations agent — ciclo operativo del negocio: clientes, proveedores, inventario",
+		description:
+			"Operations agent — ciclo operativo del negocio: clientes, proveedores, inventario",
 		sourcePath: "apps/api/src/features/drenyra/agents.ts",
 	},
 	{
@@ -42,11 +48,16 @@ export const API_AGENTS = [
 		parentId: null,
 		maySpawn: [],
 		isLeaf: true,
-		capabilities: ["sunat-validation", "compliance-audit", "document-processing"] as const,
+		capabilities: [
+			"sunat-validation",
+			"compliance-audit",
+			"document-processing",
+		] as const,
 		approvalClass: "financial-controller" as const,
 		supportedSurfaces: ["api"] as const,
 		drenyraSubagent: "Regula",
-		description: "Compliance agent — ciclo fiscal peruano: SUNAT, IGV, SIRE, CPE, cierre contable",
+		description:
+			"Compliance agent — ciclo fiscal peruano: SUNAT, IGV, SIRE, CPE, cierre contable",
 		sourcePath: "apps/api/src/features/drenyra/agents.ts",
 	},
 	{
@@ -61,7 +72,8 @@ export const API_AGENTS = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["api"] as const,
 		drenyraSubagent: "Archiva",
-		description: "System administration agent — configuración del sistema, usuarios, integraciones",
+		description:
+			"System administration agent — configuración del sistema, usuarios, integraciones",
 		sourcePath: "apps/api/src/features/drenyra/agents.ts",
 	},
 ] as const satisfies readonly UnifiedAgentEntry[];

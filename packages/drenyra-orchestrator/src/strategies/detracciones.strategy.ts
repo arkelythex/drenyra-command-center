@@ -137,7 +137,8 @@ export function createDetraccionesStrategy(): AnomalyStrategy {
 
 				// Check if SPOT applies
 				const meetsThreshold =
-					inv.totalAmount >= (isCashPayment ? SPOT_MIN_CASH_AMOUNT : SPOT_MIN_AMOUNT);
+					inv.totalAmount >=
+					(isCashPayment ? SPOT_MIN_CASH_AMOUNT : SPOT_MIN_AMOUNT);
 
 				if (!meetsThreshold || !spotRate) continue;
 
@@ -172,7 +173,9 @@ export function createDetraccionesStrategy(): AnomalyStrategy {
 					inv.totalAmount * (spotRate.rate / 100),
 				);
 				const expectedPercentage = spotRate.rate;
-				const diffPct = Math.abs(expectedPercentage - (inv.detraccionPercentage ?? 0));
+				const diffPct = Math.abs(
+					expectedPercentage - (inv.detraccionPercentage ?? 0),
+				);
 
 				if (diffPct > 1) {
 					anomalies.push(
@@ -233,18 +236,14 @@ export function createDetraccionesStrategy(): AnomalyStrategy {
 // ─── Helpers ───────────────────────────────────────────────────────
 
 function daysBetween(from: Date, to: Date): number {
-	return Math.floor(
-		(to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24),
-	);
+	return Math.floor((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24));
 }
 
 function roundToCentesimos(value: number): number {
 	return Math.round(value * 100) / 100;
 }
 
-function classifyMissingDetraccion(
-	totalAmount: number,
-): AnomalySeverity {
+function classifyMissingDetraccion(totalAmount: number): AnomalySeverity {
 	if (totalAmount >= 50000) return "critical";
 	return "high";
 }

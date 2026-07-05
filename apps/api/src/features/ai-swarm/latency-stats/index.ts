@@ -13,20 +13,20 @@
  */
 
 import { Elysia } from "elysia";
-import { z } from "zod";
+import type { z } from "zod";
+import { authorizeOperation } from "../../security/rbac-guard";
+import { fail, getErrorMessage, ok } from "../../shared/api-response";
 import {
+	LatencyRecentQuerySchema,
 	LatencySummaryQuerySchema,
 	LatencyTrendQuerySchema,
-	LatencyRecentQuerySchema,
 } from "./latency-stats.schema";
 import {
+	LatencyRecentQuerySchema as ZodLatencyRecentQuerySchema,
 	LatencySummaryQuerySchema as ZodLatencySummaryQuerySchema,
 	LatencyTrendQuerySchema as ZodLatencyTrendQuerySchema,
-	LatencyRecentQuerySchema as ZodLatencyRecentQuerySchema,
 } from "./latency-stats.schemas";
 import { LatencyStatsService } from "./latency-stats.service";
-import { fail, getErrorMessage, ok } from "../../shared/api-response";
-import { authorizeOperation } from "../../security/rbac-guard";
 
 function validationErrorResponse(error: z.ZodError<unknown>) {
 	return fail("Invalid latency-stats request parameters", "VALIDATION_ERROR", {
@@ -53,111 +53,124 @@ export const latencyStatsModule = new Elysia({
 	/**
 	 * GET /latency-stats — Combined summary + by-agent breakdown
 	 */
-	.get("/", async ({ query, set, headers }) => {
-		const parsed = ZodLatencySummaryQuerySchema.safeParse(query);
-		if (!parsed.success) {
-			set.status = 422;
-			return validationErrorResponse(parsed.error);
-		}
+	.get(
+		"/",
+		async ({ query, set, headers }) => {
+			const parsed = ZodLatencySummaryQuerySchema.safeParse(query);
+			if (!parsed.success) {
+				set.status = 422;
+				return validationErrorResponse(parsed.error);
+			}
 
-		const authz = await authorizeOperation({
-			headers: headers as Record<string, unknown>,
-			operation: "observability:runs:read",
-			resource: "/api/ai-swarm/latency-stats",
-			requestedCompanyId: parsed.data.companyId,
-		});
-		if (!authz.ok) {
-			set.status = authz.status;
-			return fail(authz.error, authz.code);
-		}
+			const authz = await authorizeOperation({
+				headers: headers as Record<string, unknown>,
+				operation: "observability:runs:read",
+				resource: "/api/ai-swarm/latency-stats",
+				requestedCompanyId: parsed.data.companyId,
+			});
+			if (!authz.ok) {
+				set.status = authz.status;
+				return fail(authz.error, authz.code);
+			}
 
-		try {
-			const data = await LatencyStatsService.getSummary(parsed.data);
-			return ok(data);
-		} catch (error: unknown) {
-			set.status = 500;
-			return fail(getErrorMessage(error), "INTERNAL_ERROR");
-		}
-	}, {
-		query: LatencySummaryQuerySchema,
-		detail: {
-			tags: ["AI Swarm"],
-			summary: "Obtener resumen de latencia de agentes",
-			description:
-				"Retorna métricas de latencia consolidadas: promedio, p50, p95, p99, tasa de error y desglose por agente.",
+			try {
+				const data = await LatencyStatsService.getSummary(parsed.data);
+				return ok(data);
+			} catch (error: unknown) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "INTERNAL_ERROR");
+			}
 		},
-	})
+		{
+			query: LatencySummaryQuerySchema,
+			detail: {
+				tags: ["AI Swarm"],
+				summary: "Obtener resumen de latencia de agentes",
+				description:
+					"Retorna métricas de latencia consolidadas: promedio, p50, p95, p99, tasa de error y desglose por agente.",
+			},
+		},
+	)
 
 	/**
 	 * GET /latency-stats/trend — Daily latency trend
 	 */
-	.get("/trend", async ({ query, set, headers }) => {
-		const parsed = ZodLatencyTrendQuerySchema.safeParse(query);
-		if (!parsed.success) {
-			set.status = 422;
-			return validationErrorResponse(parsed.error);
-		}
+	.get(
+		"/trend",
+		async ({ query, set, headers }) => {
+			const parsed = ZodLatencyTrendQuerySchema.safeParse(query);
+			if (!parsed.success) {
+				set.status = 422;
+				return validationErrorResponse(parsed.error);
+			}
 
-		const authz = await authorizeOperation({
-			headers: headers as Record<string, unknown>,
-			operation: "observability:runs:read",
-			resource: "/api/ai-swarm/latency-stats/trend",
-			requestedCompanyId: parsed.data.companyId,
-		});
-		if (!authz.ok) {
-			set.status = authz.status;
-			return fail(authz.error, authz.code);
-		}
+			const authz = await authorizeOperation({
+				headers: headers as Record<string, unknown>,
+				operation: "observability:runs:read",
+				resource: "/api/ai-swarm/latency-stats/trend",
+				requestedCompanyId: parsed.data.companyId,
+			});
+			if (!authz.ok) {
+				set.status = authz.status;
+				return fail(authz.error, authz.code);
+			}
 
-		try {
-			const data = await LatencyStatsService.getTrend(parsed.data);
-			return ok(data);
-		} catch (error: unknown) {
-			set.status = 500;
-			return fail(getErrorMessage(error), "INTERNAL_ERROR");
-		}
-	}, {
-		query: LatencyTrendQuerySchema,
-		detail: {
-			tags: ["AI Swarm"],
-			summary: "Obtener tendencia de latencia",
-			description: "Retorna la evolución diaria de latencia promedio y p95.",
+			try {
+				const data = await LatencyStatsService.getTrend(parsed.data);
+				return ok(data);
+			} catch (error: unknown) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "INTERNAL_ERROR");
+			}
 		},
-	})
+		{
+			query: LatencyTrendQuerySchema,
+			detail: {
+				tags: ["AI Swarm"],
+				summary: "Obtener tendencia de latencia",
+				description: "Retorna la evolución diaria de latencia promedio y p95.",
+			},
+		},
+	)
 
 	/**
 	 * GET /latency-stats/recent — Recent latency events
 	 */
-	.get("/recent", async ({ query, set, headers }) => {
-		const parsed = ZodLatencyRecentQuerySchema.safeParse(query);
-		if (!parsed.success) {
-			set.status = 422;
-			return validationErrorResponse(parsed.error);
-		}
+	.get(
+		"/recent",
+		async ({ query, set, headers }) => {
+			const parsed = ZodLatencyRecentQuerySchema.safeParse(query);
+			if (!parsed.success) {
+				set.status = 422;
+				return validationErrorResponse(parsed.error);
+			}
 
-		const authz = await authorizeOperation({
-			headers: headers as Record<string, unknown>,
-			operation: "observability:runs:read",
-			resource: "/api/ai-swarm/latency-stats/recent",
-			requestedCompanyId: parsed.data.companyId,
-		});
-		if (!authz.ok) {
-			set.status = authz.status;
-			return fail(authz.error, authz.code);
-		}
+			const authz = await authorizeOperation({
+				headers: headers as Record<string, unknown>,
+				operation: "observability:runs:read",
+				resource: "/api/ai-swarm/latency-stats/recent",
+				requestedCompanyId: parsed.data.companyId,
+			});
+			if (!authz.ok) {
+				set.status = authz.status;
+				return fail(authz.error, authz.code);
+			}
 
-		try {
-			const data = await LatencyStatsService.getRecent(parsed.data);
-			return ok(data);
-		} catch (error: unknown) {
-			set.status = 500;
-			return fail(getErrorMessage(error), "INTERNAL_ERROR");
-		}
-	}, {
-		query: LatencyRecentQuerySchema,
-		detail: {
-			tags: ["AI Swarm"],
-			summary: "Obtener eventos de latencia recientes",
-			description: "Feed de actividad de latencia para el dashboard de monitoreo.",
+			try {
+				const data = await LatencyStatsService.getRecent(parsed.data);
+				return ok(data);
+			} catch (error: unknown) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "INTERNAL_ERROR");
+			}
 		},
-	});
+		{
+			query: LatencyRecentQuerySchema,
+			detail: {
+				tags: ["AI Swarm"],
+				summary: "Obtener eventos de latencia recientes",
+				description:
+					"Feed de actividad de latencia para el dashboard de monitoreo.",
+			},
+		},
+	);

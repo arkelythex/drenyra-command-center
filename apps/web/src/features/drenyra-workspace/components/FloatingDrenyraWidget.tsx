@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { Bot, X, Send, Loader2 } from "lucide-react";
+import { Bot, Loader2, Send, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useDrenyraChat } from "../hooks/useDrenyraChat";
 
 export function FloatingDrenyraWidget() {
@@ -88,7 +88,8 @@ export function FloatingDrenyraWidget() {
 						{messages.length === 0 && (
 							<div className="flex h-full items-center justify-center">
 								<p className="text-sm text-[var(--color-text-muted)]">
-									Preguntale a Drenyra sobre finanzas, compliance, operaciones...
+									Preguntale a Drenyra sobre finanzas, compliance,
+									operaciones...
 								</p>
 							</div>
 						)}
@@ -121,7 +122,10 @@ export function FloatingDrenyraWidget() {
 											processing...
 										</p>
 									) : (
-										<Loader2 size={16} className="animate-spin text-[var(--color-text-secondary)]" />
+										<Loader2
+											size={16}
+											className="animate-spin text-[var(--color-text-secondary)]"
+										/>
 									)}
 								</div>
 							</div>
@@ -134,7 +138,7 @@ export function FloatingDrenyraWidget() {
 					>
 						<div className="flex gap-2">
 							<input
-									aria-label="Mensaje para Drenyra"
+								aria-label="Mensaje para Drenyra"
 								type="text"
 								value={input}
 								onChange={(e) => setInput(e.target.value)}

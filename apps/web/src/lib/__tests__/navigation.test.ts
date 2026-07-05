@@ -1,7 +1,7 @@
 import { LayoutGrid } from "lucide-react";
 import { describe, expect, it } from "vitest";
-import { isNavigationItemActive } from "../navigation";
 import type { NavigationItem } from "../navigation";
+import { isNavigationItemActive } from "../navigation";
 
 const baseItem: NavigationItem = {
 	id: "dashboard",

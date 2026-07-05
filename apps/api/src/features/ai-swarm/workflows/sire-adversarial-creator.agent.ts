@@ -1,4 +1,7 @@
-import type { SireAdversarialInput, SireCreatorProposal } from "./sire-adversarial-audit.types";
+import type {
+	SireAdversarialInput,
+	SireCreatorProposal,
+} from "./sire-adversarial-audit.types";
 
 const IGV_RATE = 0.18;
 const IGV_SOFT_TOLERANCE_PEN = 2;
@@ -18,9 +21,13 @@ function clamp(value: number, min: number, max: number): number {
  * console.log(result);
  * ```
  */
-export function runSireCreatorAgent(input: SireAdversarialInput): SireCreatorProposal {
+export function runSireCreatorAgent(
+	input: SireAdversarialInput,
+): SireCreatorProposal {
 	const expectedIgv = Number((input.salesTotalPen * IGV_RATE).toFixed(2));
-	const igvGap = Number(Math.abs(input.declaredIgvPen - expectedIgv).toFixed(2));
+	const igvGap = Number(
+		Math.abs(input.declaredIgvPen - expectedIgv).toFixed(2),
+	);
 	const rvieGap = Math.abs(input.rvieRecords - input.pleSalesRecords);
 	const rceGap = Math.abs(input.rceRecords - input.plePurchaseRecords);
 	const hasRecordGap = rvieGap > 0 || rceGap > 0;
@@ -58,11 +65,18 @@ export function runSireCreatorAgent(input: SireAdversarialInput): SireCreatorPro
 			];
 
 	const confidencePenalty =
-		Math.min(igvGap / 100, 0.2) + (hasRecordGap ? 0.08 : 0) + (hasDetractionGap ? 0.08 : 0);
+		Math.min(igvGap / 100, 0.2) +
+		(hasRecordGap ? 0.08 : 0) +
+		(hasDetractionGap ? 0.08 : 0);
 	const confidenceBase = shouldSubmit ? 0.86 : 0.68;
-	const confidence = clamp(Number((confidenceBase - confidencePenalty).toFixed(3)), 0.5, 0.96);
+	const confidence = clamp(
+		Number((confidenceBase - confidencePenalty).toFixed(3)),
+		0.5,
+		0.96,
+	);
 
-	const recommendedAdjustments: SireCreatorProposal["recommendedAdjustments"] = [];
+	const recommendedAdjustments: SireCreatorProposal["recommendedAdjustments"] =
+		[];
 
 	if (igvGap > 0) {
 		recommendedAdjustments.push({

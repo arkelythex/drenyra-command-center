@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { ReviewQueueList } from "./ReviewQueueList";
 import type { ReviewItem } from "../types/review.types";
+import { ReviewQueueList } from "./ReviewQueueList";
 
 const BASE_ITEM: ReviewItem = {
 	id: "doc-1",

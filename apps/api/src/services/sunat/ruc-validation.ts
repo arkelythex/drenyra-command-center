@@ -5,7 +5,7 @@
 
 import { RUC } from "@drenyra/domain";
 import { createLogger } from "../../lib/logger";
-import type { RucValidationResult, RucType } from "./sunat-types";
+import type { RucType, RucValidationResult } from "./sunat-types";
 
 const logger = createLogger({ module: "services/sunat-ruc-validation" });
 

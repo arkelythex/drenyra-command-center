@@ -4,11 +4,11 @@
  * Runs the full FiscalNightlyRun pipeline for each job.
  */
 
-import { Job, Worker } from "bullmq";
 import { FiscalNightlyRunUseCase } from "@drenyra/application/use-cases/fiscal-agent/fiscal-nightly-run.use-case";
-import { getRedisConnection, isRedisConfigured } from "../queues/redis";
-import type { FiscalAgentJobData } from "../queues/fiscal-agent.queue";
+import { type Job, Worker } from "bullmq";
 import { loggers } from "../logger";
+import type { FiscalAgentJobData } from "../queues/fiscal-agent.queue";
+import { getRedisConnection, isRedisConfigured } from "../queues/redis";
 
 const FISCAL_AGENT_QUEUE = "fiscal-agent";
 const logger = loggers.worker;
@@ -32,7 +32,11 @@ async function processJob(job: Job<FiscalAgentJobData>): Promise<void> {
 	});
 
 	logger.info(
-		{ jobId: job.id, status: report.status, durationMs: report.summary.durationMs },
+		{
+			jobId: job.id,
+			status: report.status,
+			durationMs: report.summary.durationMs,
+		},
 		"Fiscal agent job completed",
 	);
 }

@@ -50,7 +50,10 @@ describe("CommandCapabilityAuditPanel", () => {
 
 		await screen.findByText("CAPABILITY_DENIED");
 		await user.click(screen.getByRole("button", { name: "DENIED" }));
-		await user.type(screen.getByLabelText("Filtrar por comando"), "review-sunat");
+		await user.type(
+			screen.getByLabelText("Filtrar por comando"),
+			"review-sunat",
+		);
 		await user.click(screen.getByRole("button", { name: "Filtrar" }));
 
 		expect(listCommandAuditEventsMock).toHaveBeenLastCalledWith({

@@ -4,7 +4,9 @@ interface TimelineControlPlaneProps {
 	controlPlane: ControlPlaneRunSnapshot;
 }
 
-export function TimelineControlPlane({ controlPlane }: TimelineControlPlaneProps) {
+export function TimelineControlPlane({
+	controlPlane,
+}: TimelineControlPlaneProps) {
 	return (
 		<div className="rounded-xl border border-[var(--border-subtle)] bg-black/5 p-3 text-label text-muted-foreground dark:bg-white/5">
 			<div className="flex flex-wrap gap-2">

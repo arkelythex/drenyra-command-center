@@ -1,8 +1,8 @@
 "use client";
 
+import { Loader2, Upload } from "lucide-react";
 import type { DragEvent, ReactElement } from "react";
 import { useRef } from "react";
-import { Loader2, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { INBOX_ACCEPT, INBOX_EXAMPLE_FILES } from "../inbox.config";
 import type { InboxUiPhase } from "../inbox.schema";

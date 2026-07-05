@@ -22,18 +22,24 @@ export interface ClosePeriodDTO {
 }
 
 export class AccountingPeriodService {
-	constructor(
-		private readonly periodRepo: AccountingPeriodRepository,
-	) {}
+	constructor(private readonly periodRepo: AccountingPeriodRepository) {}
 
 	/**
 	 * Open a new accounting period for a given company, year, and month.
 	 * Validates there's no existing period for the same combination.
 	 */
-	async openPeriod(companyId: string, year: number, month: number): Promise<AccountingPeriod> {
+	async openPeriod(
+		companyId: string,
+		year: number,
+		month: number,
+	): Promise<AccountingPeriod> {
 		// Validate inputs
 		if (!companyId || companyId.trim().length === 0) {
-			throw new InvalidAccountingPeriodError(year, month, "Company ID is required");
+			throw new InvalidAccountingPeriodError(
+				year,
+				month,
+				"Company ID is required",
+			);
 		}
 
 		// Check existing period
@@ -63,7 +69,10 @@ export class AccountingPeriodService {
 	 * Close an accounting period (partial or final).
 	 * Validates the state transition via the domain entity.
 	 */
-	async closePeriod(periodId: string, type: "parcial" | "final"): Promise<AccountingPeriod> {
+	async closePeriod(
+		periodId: string,
+		type: "parcial" | "final",
+	): Promise<AccountingPeriod> {
 		if (!periodId || periodId.trim().length === 0) {
 			throw new Error("Period ID is required");
 		}

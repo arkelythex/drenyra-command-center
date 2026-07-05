@@ -19,27 +19,27 @@ export type HubViewMode = "minimized" | "chat" | "swarm" | "commands";
 // ─── Swarm trace types ───────────────────────────────────────────────────────
 
 export interface SwarmStep {
-  agentId: string;
-  agentName: string;
-  status: "idle" | "running" | "completed" | "failed";
-  message: string;
-  timestamp: string;
+	agentId: string;
+	agentName: string;
+	status: "idle" | "running" | "completed" | "failed";
+	message: string;
+	timestamp: string;
 }
 
 export interface SwarmTrace {
-  runId: string;
-  steps: SwarmStep[];
-  isLive: boolean;
+	runId: string;
+	steps: SwarmStep[];
+	isLive: boolean;
 }
 
 // ─── Background mission ──────────────────────────────────────────────────────
 
 export interface BackgroundMission {
-  id: string;
-  title: string;
-  status: "active" | "completed" | "failed" | "alert";
-  progress: number;
-  agentId: string;
-  startedAt: string;
-  priority?: "normal" | "high" | "critical";
+	id: string;
+	title: string;
+	status: "active" | "completed" | "failed" | "alert";
+	progress: number;
+	agentId: string;
+	startedAt: string;
+	priority?: "normal" | "high" | "critical";
 }

@@ -9,10 +9,15 @@
  * - Flagging inconsistencies and quality issues
  */
 
-import { randomUUID } from 'crypto';
-import type { BaseAgent, ReaderInput, ExtractedData, InvoiceData } from '../types';
-import { GeminiMultiAdapter } from '../adapters';
-import { loggers } from '../../logger';
+import { randomUUID } from "crypto";
+import { loggers } from "../../logger";
+import type { GeminiMultiAdapter } from "../adapters";
+import type {
+	BaseAgent,
+	ExtractedData,
+	InvoiceData,
+	ReaderInput,
+} from "../types";
 
 /**
  * ReaderAgent class.
@@ -24,14 +29,15 @@ import { loggers } from '../../logger';
  * ```
  */
 export class ReaderAgent implements BaseAgent {
-  id: string;
-  role = 'reader' as const;
-  status: 'idle' | 'processing' | 'completed' | 'error' = 'idle';
+	id: string;
+	role = "reader" as const;
+	status: "idle" | "processing" | "completed" | "error" = "idle";
 
-  private gemini: GeminiMultiAdapter;
+	private gemini: GeminiMultiAdapter;
 
-  // System prompt optimized for Peruvian invoices
-  private readonly SYSTEM_PROMPT = `Eres un experto contador peruano especializado en facturación electrónica SUNAT.
+	// System prompt optimized for Peruvian invoices
+	private readonly SYSTEM_PROMPT =
+		`Eres un experto contador peruano especializado en facturación electrónica SUNAT.
 Tu tarea es extraer TODOS los campos de comprobantes de pago con precisión absoluta.
 
 REGLAS CRÍTICAS:
@@ -94,188 +100,202 @@ Responde SOLO en JSON válido, sin texto adicional, con esta estructura:
   "flags": []
 }`;
 
-  constructor(gemini: GeminiMultiAdapter) {
-    this.id = `reader-${randomUUID()}`;
-    this.gemini = gemini;
-  }
+	constructor(gemini: GeminiMultiAdapter) {
+		this.id = `reader-${randomUUID()}`;
+		this.gemini = gemini;
+	}
 
-  /**
-   * Process invoice image/PDF
-   */
-  async process(input: ReaderInput): Promise<ExtractedData> {
-    this.status = 'processing';
-    const startTime = Date.now();
+	/**
+	 * Process invoice image/PDF
+	 */
+	async process(input: ReaderInput): Promise<ExtractedData> {
+		this.status = "processing";
+		const startTime = Date.now();
 
-    try {
-      loggers.ai.info('Reader agent processing', { inputType: input.type });
+		try {
+			loggers.ai.info("Reader agent processing", { inputType: input.type });
 
-      const prompt = this.buildPrompt(input);
+			const prompt = this.buildPrompt(input);
 
-      const response = await this.gemini.generate({
-        text: prompt,
-        images: [input.data],
-        systemInstruction: this.SYSTEM_PROMPT,
-      });
+			const response = await this.gemini.generate({
+				text: prompt,
+				images: [input.data],
+				systemInstruction: this.SYSTEM_PROMPT,
+			});
 
-      // Parse JSON response
-      const parsed = this.parseResponse(response.content);
+			// Parse JSON response
+			const parsed = this.parseResponse(response.content);
 
-      // Validate extracted data
-      const flags = this.validate(parsed.invoiceData);
+			// Validate extracted data
+			const flags = this.validate(parsed.invoiceData);
 
-      const result: ExtractedData = {
-        extractedData: parsed.invoiceData,
-        confidence: parsed.confidence || 0.8,
-        flags: [...(parsed.flags || []), ...flags],
-        processingTime: Date.now() - startTime,
-        agentId: this.id,
-      };
+			const result: ExtractedData = {
+				extractedData: parsed.invoiceData,
+				confidence: parsed.confidence || 0.8,
+				flags: [...(parsed.flags || []), ...flags],
+				processingTime: Date.now() - startTime,
+				agentId: this.id,
+			};
 
-      this.status = 'completed';
-      loggers.ai.info('Reader agent completed', {
-        processingTime: result.processingTime,
-        confidence: result.confidence,
-      });
+			this.status = "completed";
+			loggers.ai.info("Reader agent completed", {
+				processingTime: result.processingTime,
+				confidence: result.confidence,
+			});
 
-      return result;
-    } catch (error) {
-      this.status = 'error';
-      loggers.ai.error('Reader agent failed', { error: error instanceof Error ? error.message : String(error) });
-      throw error;
-    }
-  }
+			return result;
+		} catch (error) {
+			this.status = "error";
+			loggers.ai.error("Reader agent failed", {
+				error: error instanceof Error ? error.message : String(error),
+			});
+			throw error;
+		}
+	}
 
-  /**
-   * Build extraction prompt
-   */
-  private buildPrompt(input: ReaderInput): string {
-    const hints = [];
+	/**
+	 * Build extraction prompt
+	 */
+	private buildPrompt(input: ReaderInput): string {
+		const hints = [];
 
-    if (input.metadata?.ruc) {
-      hints.push(`RUC esperado del emisor: ${input.metadata.ruc}`);
-    }
+		if (input.metadata?.ruc) {
+			hints.push(`RUC esperado del emisor: ${input.metadata.ruc}`);
+		}
 
-    if (input.metadata?.period) {
-      hints.push(`Período: ${input.metadata.period}`);
-    }
+		if (input.metadata?.period) {
+			hints.push(`Período: ${input.metadata.period}`);
+		}
 
-    const basePrompt = `Extrae todos los campos del comprobante de pago en la imagen.`;
+		const basePrompt = `Extrae todos los campos del comprobante de pago en la imagen.`;
 
-    if (hints.length > 0) {
-      return `${basePrompt}\n\nPistas adicionales:\n${hints.join('\n')}`;
-    }
+		if (hints.length > 0) {
+			return `${basePrompt}\n\nPistas adicionales:\n${hints.join("\n")}`;
+		}
 
-    return basePrompt;
-  }
+		return basePrompt;
+	}
 
-  /**
-   * Parse AI response to structured data
-   */
-  private parseResponse(response: string): {
-    invoiceData: InvoiceData;
-    confidence: number;
-    flags: string[];
-  } {
-    try {
-      // Remove markdown code blocks if present
-      let cleaned = response.trim();
-      if (cleaned.startsWith('```json')) {
-        cleaned = cleaned.replace(/```json\s*/, '').replace(/```\s*$/, '');
-      } else if (cleaned.startsWith('```')) {
-        cleaned = cleaned.replace(/```\s*/, '').replace(/```\s*$/, '');
-      }
+	/**
+	 * Parse AI response to structured data
+	 */
+	private parseResponse(response: string): {
+		invoiceData: InvoiceData;
+		confidence: number;
+		flags: string[];
+	} {
+		try {
+			// Remove markdown code blocks if present
+			let cleaned = response.trim();
+			if (cleaned.startsWith("```json")) {
+				cleaned = cleaned.replace(/```json\s*/, "").replace(/```\s*$/, "");
+			} else if (cleaned.startsWith("```")) {
+				cleaned = cleaned.replace(/```\s*/, "").replace(/```\s*$/, "");
+			}
 
-      const parsed = JSON.parse(cleaned);
+			const parsed = JSON.parse(cleaned);
 
-      // Convert issueDate string to Date object
-      if (parsed.invoiceData?.issueDate) {
-        parsed.invoiceData.issueDate = new Date(parsed.invoiceData.issueDate);
-      }
+			// Convert issueDate string to Date object
+			if (parsed.invoiceData?.issueDate) {
+				parsed.invoiceData.issueDate = new Date(parsed.invoiceData.issueDate);
+			}
 
-      return parsed;
-    } catch (error) {
-      loggers.ai.error('Reader agent failed to parse response');
-      throw new Error(`Failed to parse AI response: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  }
+			return parsed;
+		} catch (error) {
+			loggers.ai.error("Reader agent failed to parse response");
+			throw new Error(
+				`Failed to parse AI response: ${error instanceof Error ? error.message : "Unknown error"}`,
+			);
+		}
+	}
 
-  /**
-   * Validate extracted data
-   */
-  private validate(data: InvoiceData): string[] {
-    const flags: string[] = [];
+	/**
+	 * Validate extracted data
+	 */
+	private validate(data: InvoiceData): string[] {
+		const flags: string[] = [];
 
-    // Validate RUC length
-    if (data.issuerRuc && data.issuerRuc.length !== 11) {
-      flags.push(`RUC emisor inválido: ${data.issuerRuc} (debe tener 11 dígitos)`);
-    }
+		// Validate RUC length
+		if (data.issuerRuc && data.issuerRuc.length !== 11) {
+			flags.push(
+				`RUC emisor inválido: ${data.issuerRuc} (debe tener 11 dígitos)`,
+			);
+		}
 
-    if (data.customerRuc && data.customerRuc.length !== 11 && data.customerDocType === '6') {
-      flags.push(`RUC cliente inválido: ${data.customerRuc} (debe tener 11 dígitos)`);
-    }
+		if (
+			data.customerRuc &&
+			data.customerRuc.length !== 11 &&
+			data.customerDocType === "6"
+		) {
+			flags.push(
+				`RUC cliente inválido: ${data.customerRuc} (debe tener 11 dígitos)`,
+			);
+		}
 
-    // Validate IGV calculation (18%) using integer math (cents) to avoid floating point errors
-    const expectedIGVCents = Math.round(data.subtotal * 100 * 0.18);
-    const actualIGVCents = Math.round(data.igv * 100);
-    const TOLERANCE_CENTS = 2; // 2 cents tolerance
+		// Validate IGV calculation (18%) using integer math (cents) to avoid floating point errors
+		const expectedIGVCents = Math.round(data.subtotal * 100 * 0.18);
+		const actualIGVCents = Math.round(data.igv * 100);
+		const TOLERANCE_CENTS = 2; // 2 cents tolerance
 
-    if (Math.abs(expectedIGVCents - actualIGVCents) > TOLERANCE_CENTS) {
-      const expectedIGV = (expectedIGVCents / 100).toFixed(2);
-      const actualIGV = (actualIGVCents / 100).toFixed(2);
-      flags.push(
-        `IGV incorrecto: esperado ${expectedIGV} (18% de ${data.subtotal}), encontrado ${actualIGV}`
-      );
-    }
+		if (Math.abs(expectedIGVCents - actualIGVCents) > TOLERANCE_CENTS) {
+			const expectedIGV = (expectedIGVCents / 100).toFixed(2);
+			const actualIGV = (actualIGVCents / 100).toFixed(2);
+			flags.push(
+				`IGV incorrecto: esperado ${expectedIGV} (18% de ${data.subtotal}), encontrado ${actualIGV}`,
+			);
+		}
 
-    // Validate total using integer math (cents)
-    const expectedTotalCents = Math.round((data.subtotal + data.igv) * 100);
-    const actualTotalCents = Math.round(data.total * 100);
+		// Validate total using integer math (cents)
+		const expectedTotalCents = Math.round((data.subtotal + data.igv) * 100);
+		const actualTotalCents = Math.round(data.total * 100);
 
-    if (Math.abs(expectedTotalCents - actualTotalCents) > TOLERANCE_CENTS) {
-      const expectedTotal = (expectedTotalCents / 100).toFixed(2);
-      const actualTotal = (actualTotalCents / 100).toFixed(2);
-      flags.push(
-        `Total incorrecto: esperado ${expectedTotal} (subtotal + IGV), encontrado ${actualTotal}`
-      );
-    }
+		if (Math.abs(expectedTotalCents - actualTotalCents) > TOLERANCE_CENTS) {
+			const expectedTotal = (expectedTotalCents / 100).toFixed(2);
+			const actualTotal = (actualTotalCents / 100).toFixed(2);
+			flags.push(
+				`Total incorrecto: esperado ${expectedTotal} (subtotal + IGV), encontrado ${actualTotal}`,
+			);
+		}
 
-    // Validate invoice series format
-    if (data.series) {
-      const seriesPattern = /^[FB]\d{3}$/;
-      if (!seriesPattern.test(data.series)) {
-        flags.push(`Serie inválida: ${data.series} (debe ser F001-F999 o B001-B999)`);
-      }
-    }
+		// Validate invoice series format
+		if (data.series) {
+			const seriesPattern = /^[FB]\d{3}$/;
+			if (!seriesPattern.test(data.series)) {
+				flags.push(
+					`Serie inválida: ${data.series} (debe ser F001-F999 o B001-B999)`,
+				);
+			}
+		}
 
-    // Validate required fields
-    const requiredFields: (keyof InvoiceData)[] = [
-      'issuerRuc',
-      'issuerName',
-      'customerName',
-      'invoiceNumber',
-      'issueDate',
-      'subtotal',
-      'igv',
-      'total',
-    ];
+		// Validate required fields
+		const requiredFields: (keyof InvoiceData)[] = [
+			"issuerRuc",
+			"issuerName",
+			"customerName",
+			"invoiceNumber",
+			"issueDate",
+			"subtotal",
+			"igv",
+			"total",
+		];
 
-    for (const field of requiredFields) {
-      if (!data[field]) {
-        flags.push(`Campo obligatorio faltante: ${field}`);
-      }
-    }
+		for (const field of requiredFields) {
+			if (!data[field]) {
+				flags.push(`Campo obligatorio faltante: ${field}`);
+			}
+		}
 
-    return flags;
-  }
+		return flags;
+	}
 
-  /**
-   * Get agent info
-   */
-  getInfo(): { id: string; role: string; status: string } {
-    return {
-      id: this.id,
-      role: this.role,
-      status: this.status,
-    };
-  }
+	/**
+	 * Get agent info
+	 */
+	getInfo(): { id: string; role: string; status: string } {
+		return {
+			id: this.id,
+			role: this.role,
+			status: this.status,
+		};
+	}
 }

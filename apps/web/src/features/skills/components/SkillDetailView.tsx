@@ -1,4 +1,4 @@
-import { Zap, CheckCircle2, XCircle, Download } from "lucide-react";
+import { CheckCircle2, Download, XCircle, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { SkillDTO } from "../skills.api";
 
@@ -120,7 +120,9 @@ export function SkillDetailView({
 			<div className="border-t border-[var(--border-subtle)] px-6 py-4">
 				<button
 					type="button"
-					onClick={() => (isInstalled ? onUninstall(skill.id) : onInstall(skill.id))}
+					onClick={() =>
+						isInstalled ? onUninstall(skill.id) : onInstall(skill.id)
+					}
 					className={cn(
 						"flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition-all",
 						isInstalled
@@ -144,5 +146,3 @@ export function SkillDetailView({
 		</div>
 	);
 }
-
-

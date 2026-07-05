@@ -1,15 +1,31 @@
 /** PostgreSQL implementation of JournalEntryRepository over current accounting schema. */
 
-import { and, between, count, desc, eq, gte, lte, sql, type SQL } from "drizzle-orm";
-import { JournalEntry, JournalLine } from "@drenyra/domain/entities/JournalEntry";
+import {
+	JournalEntry,
+	JournalLine,
+} from "@drenyra/domain/entities/JournalEntry";
 import type {
 	JournalEntryFilters,
 	JournalEntryRepository,
 } from "@drenyra/domain/repositories/journal-entry.repository";
 import { Money } from "@drenyra/domain/value-objects/Money";
+import {
+	and,
+	between,
+	count,
+	desc,
+	eq,
+	gte,
+	lte,
+	type SQL,
+	sql,
+} from "drizzle-orm";
 import { db } from "../client";
 import { journalEntries, journalEntryLines, pcgeAccounts } from "../schema";
-import { resolveCompanyIdFromOrganization, resolveOrganizationIdFromCompany } from "./support/organization-resolver";
+import {
+	resolveCompanyIdFromOrganization,
+	resolveOrganizationIdFromCompany,
+} from "./support/organization-resolver";
 
 type JournalEntryRow = typeof journalEntries.$inferSelect;
 type JournalLineRow = typeof journalEntryLines.$inferSelect;
@@ -20,7 +36,9 @@ const moneyToCents = (money: Money): number => money.getCents();
 
 export class PostgresJournalEntryRepository implements JournalEntryRepository {
 	async save(entry: JournalEntry): Promise<void> {
-		const companyId = await resolveCompanyIdFromOrganization(entry.organizationId);
+		const companyId = await resolveCompanyIdFromOrganization(
+			entry.organizationId,
+		);
 		await db.transaction(async (tx) => {
 			await tx
 				.insert(journalEntries)
@@ -47,7 +65,9 @@ export class PostgresJournalEntryRepository implements JournalEntryRepository {
 					},
 				});
 
-			await tx.delete(journalEntryLines).where(eq(journalEntryLines.journalEntryId, entry.id));
+			await tx
+				.delete(journalEntryLines)
+				.where(eq(journalEntryLines.journalEntryId, entry.id));
 			if (entry.lines.length > 0) {
 				await tx.insert(journalEntryLines).values(
 					entry.lines.map((line) => ({
@@ -65,7 +85,9 @@ export class PostgresJournalEntryRepository implements JournalEntryRepository {
 	}
 
 	async findById(id: string): Promise<JournalEntry | null> {
-		const row = await db.query.journalEntries.findFirst({ where: eq(journalEntries.id, id) });
+		const row = await db.query.journalEntries.findFirst({
+			where: eq(journalEntries.id, id),
+		});
 		if (!row) return null;
 		return this.mapToDomain(row, await this.getLines(id, row.companyId));
 	}
@@ -76,21 +98,43 @@ export class PostgresJournalEntryRepository implements JournalEntryRepository {
 			where: eq(journalEntries.companyId, companyId),
 			orderBy: [desc(journalEntries.date), desc(journalEntries.entryNumber)],
 		});
-		return Promise.all(rows.map(async (row) => this.mapToDomain(row, await this.getLines(row.id, companyId), organizationId)));
+		return Promise.all(
+			rows.map(async (row) =>
+				this.mapToDomain(
+					row,
+					await this.getLines(row.id, companyId),
+					organizationId,
+				),
+			),
+		);
 	}
 
 	async findWithFilters(filters: JournalEntryFilters): Promise<JournalEntry[]> {
-		const companyId = await resolveCompanyIdFromOrganization(filters.organizationId);
+		const companyId = await resolveCompanyIdFromOrganization(
+			filters.organizationId,
+		);
 		const rows = await db.query.journalEntries.findMany({
 			where: and(...this.buildConditions(companyId, filters)),
 			orderBy: [desc(journalEntries.date), desc(journalEntries.entryNumber)],
 		});
-		let entries = await Promise.all(rows.map(async (row) => this.mapToDomain(row, await this.getLines(row.id, companyId), filters.organizationId)));
+		let entries = await Promise.all(
+			rows.map(async (row) =>
+				this.mapToDomain(
+					row,
+					await this.getLines(row.id, companyId),
+					filters.organizationId,
+				),
+			),
+		);
 
 		if (filters.minAmount !== undefined || filters.maxAmount !== undefined) {
 			entries = entries.filter((entry) => {
 				const totalAmount = entry.getTotalDebit().getAmount();
-				return (filters.minAmount === undefined || totalAmount >= filters.minAmount) && (filters.maxAmount === undefined || totalAmount <= filters.maxAmount);
+				return (
+					(filters.minAmount === undefined ||
+						totalAmount >= filters.minAmount) &&
+					(filters.maxAmount === undefined || totalAmount <= filters.maxAmount)
+				);
 			});
 		}
 		if (filters.documentNumber) return [];
@@ -99,17 +143,27 @@ export class PostgresJournalEntryRepository implements JournalEntryRepository {
 
 	async delete(id: string): Promise<void> {
 		await db.transaction(async (tx) => {
-			await tx.delete(journalEntryLines).where(eq(journalEntryLines.journalEntryId, id));
+			await tx
+				.delete(journalEntryLines)
+				.where(eq(journalEntryLines.journalEntryId, id));
 			await tx.delete(journalEntries).where(eq(journalEntries.id, id));
 		});
 	}
 
-	async getNextEntryNumber(organizationId: number, year: number): Promise<string> {
+	async getNextEntryNumber(
+		organizationId: number,
+		year: number,
+	): Promise<string> {
 		const companyId = await resolveCompanyIdFromOrganization(organizationId);
 		const [last] = await db
 			.select({ entryNumber: journalEntries.entryNumber })
 			.from(journalEntries)
-			.where(and(eq(journalEntries.companyId, companyId), sql`EXTRACT(YEAR FROM ${journalEntries.date}) = ${year}`))
+			.where(
+				and(
+					eq(journalEntries.companyId, companyId),
+					sql`EXTRACT(YEAR FROM ${journalEntries.date}) = ${year}`,
+				),
+			)
 			.orderBy(desc(journalEntries.entryNumber))
 			.limit(1);
 		const match = last?.entryNumber.match(/AS-\d{4}-(\d+)/);
@@ -122,8 +176,13 @@ export class PostgresJournalEntryRepository implements JournalEntryRepository {
 			const [result] = await db.select({ value: count() }).from(journalEntries);
 			return result?.value ?? 0;
 		}
-		const companyId = await resolveCompanyIdFromOrganization(filters.organizationId);
-		const [result] = await db.select({ value: count() }).from(journalEntries).where(and(...this.buildConditions(companyId, filters)));
+		const companyId = await resolveCompanyIdFromOrganization(
+			filters.organizationId,
+		);
+		const [result] = await db
+			.select({ value: count() })
+			.from(journalEntries)
+			.where(and(...this.buildConditions(companyId, filters)));
 		return result?.value ?? 0;
 	}
 
@@ -135,22 +194,44 @@ export class PostgresJournalEntryRepository implements JournalEntryRepository {
 		return result?.value ?? 0;
 	}
 
-	private buildConditions(companyId: string, filters: JournalEntryFilters): SQL<unknown>[] {
-		const conditions: SQL<unknown>[] = [eq(journalEntries.companyId, companyId)];
-		if (filters.status && filters.status !== "all") conditions.push(eq(journalEntries.status, filters.status));
-		if (filters.dateFrom && filters.dateTo) conditions.push(between(journalEntries.date, filters.dateFrom, filters.dateTo));
-		else if (filters.dateFrom) conditions.push(gte(journalEntries.date, filters.dateFrom));
-		else if (filters.dateTo) conditions.push(lte(journalEntries.date, filters.dateTo));
+	private buildConditions(
+		companyId: string,
+		filters: JournalEntryFilters,
+	): SQL<unknown>[] {
+		const conditions: SQL<unknown>[] = [
+			eq(journalEntries.companyId, companyId),
+		];
+		if (filters.status && filters.status !== "all")
+			conditions.push(eq(journalEntries.status, filters.status));
+		if (filters.dateFrom && filters.dateTo)
+			conditions.push(
+				between(journalEntries.date, filters.dateFrom, filters.dateTo),
+			);
+		else if (filters.dateFrom)
+			conditions.push(gte(journalEntries.date, filters.dateFrom));
+		else if (filters.dateTo)
+			conditions.push(lte(journalEntries.date, filters.dateTo));
 		return conditions;
 	}
 
-	private async getLines(journalEntryId: string, companyId: string): Promise<JournalLine[]> {
+	private async getLines(
+		journalEntryId: string,
+		companyId: string,
+	): Promise<JournalLine[]> {
 		const rows = await db
 			.select({ line: journalEntryLines, accountName: pcgeAccounts.name })
 			.from(journalEntryLines)
-			.leftJoin(pcgeAccounts, and(eq(journalEntryLines.accountCode, pcgeAccounts.code), eq(pcgeAccounts.companyId, companyId)))
+			.leftJoin(
+				pcgeAccounts,
+				and(
+					eq(journalEntryLines.accountCode, pcgeAccounts.code),
+					eq(pcgeAccounts.companyId, companyId),
+				),
+			)
 			.where(eq(journalEntryLines.journalEntryId, journalEntryId));
-		return rows.map(({ line, accountName }) => this.mapLine(line, accountName ?? line.accountCode));
+		return rows.map(({ line, accountName }) =>
+			this.mapLine(line, accountName ?? line.accountCode),
+		);
 	}
 
 	private mapLine(line: JournalLineRow, accountName: string): JournalLine {
@@ -165,10 +246,16 @@ export class PostgresJournalEntryRepository implements JournalEntryRepository {
 		});
 	}
 
-	private async mapToDomain(raw: JournalEntryRow, lines: JournalLine[], organizationId?: number): Promise<JournalEntry> {
+	private async mapToDomain(
+		raw: JournalEntryRow,
+		lines: JournalLine[],
+		organizationId?: number,
+	): Promise<JournalEntry> {
 		return JournalEntry.create({
 			id: raw.id,
-			organizationId: organizationId ?? await resolveOrganizationIdFromCompany(raw.companyId),
+			organizationId:
+				organizationId ??
+				(await resolveOrganizationIdFromCompany(raw.companyId)),
 			entryNumber: raw.entryNumber,
 			date: raw.date,
 			gloss: raw.gloss,

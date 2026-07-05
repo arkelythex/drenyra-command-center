@@ -5,18 +5,18 @@
  * Target: < 5s total validation time (configurable by CPE_BREACH_TARGET_MS)
  */
 
-import { Ruc } from "../../domain/value-objects/ruc.vo";
-import { CpeNumber } from "../../domain/value-objects/cpe-number.vo";
-import { ValidationResult } from "../../domain/value-objects/validation-result.vo";
-import { UblValidatorService } from "../../domain/services/ubl-validator.service";
 import { BreachDetectorService } from "../../domain/services/breach-detector.service";
+import { UblValidatorService } from "../../domain/services/ubl-validator.service";
 import { ValidationCacheService } from "../../domain/services/validation-cache.service";
+import { CpeNumber } from "../../domain/value-objects/cpe-number.vo";
+import { Ruc } from "../../domain/value-objects/ruc.vo";
+import { ValidationResult } from "../../domain/value-objects/validation-result.vo";
 import { SunatCpeClient } from "../../infrastructure/sunat-cpe-client";
-import { SunatFallbackOrchestrator } from "../fallback/sunat-fallback-orchestrator";
 import {
-	classifyCpeIncident,
 	type CpeIncidentInfo,
+	classifyCpeIncident,
 } from "../cpe-incident-classifier";
+import { SunatFallbackOrchestrator } from "../fallback/sunat-fallback-orchestrator";
 
 /**
  * ValidateCpeInput interface.

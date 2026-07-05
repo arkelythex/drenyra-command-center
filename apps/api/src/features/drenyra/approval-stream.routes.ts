@@ -1,4 +1,7 @@
-import type { AgentContext, ApprovalRequest } from "@drenyra/drenyra-orchestrator";
+import type {
+	AgentContext,
+	ApprovalRequest,
+} from "@drenyra/drenyra-orchestrator";
 import { Elysia, t } from "elysia";
 import { fail } from "../shared/api-response";
 import { formatApproval, toApprovalSseChunk } from "./approval-http";
@@ -43,7 +46,9 @@ export function createApprovalStreamRoutes({
 
 					const emit = (event: string, payload: unknown) => {
 						if (isClosed) return;
-						controller.enqueue(encoder.encode(toApprovalSseChunk(event, payload)));
+						controller.enqueue(
+							encoder.encode(toApprovalSseChunk(event, payload)),
+						);
 					};
 
 					const close = () => {
@@ -59,7 +64,10 @@ export function createApprovalStreamRoutes({
 					request.signal.addEventListener("abort", close, { once: true });
 					const seen = new Map<string, string>();
 
-					emit("connected", { status: "connected", companyId: context.companyId });
+					emit("connected", {
+						status: "connected",
+						companyId: context.companyId,
+					});
 
 					const emitSnapshot = () => {
 						const pending = approvalGate.getPendingApprovals(context);

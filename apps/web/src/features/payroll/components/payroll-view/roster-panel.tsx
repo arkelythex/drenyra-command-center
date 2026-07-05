@@ -1,7 +1,7 @@
-import React from 'react';
 import { BrainCircuit, MoreVertical, Search, TrendingUp } from "lucide-react";
-import { cn, n } from "@/lib/utils";
+import type React from "react";
 import { Button } from "@/components/ui/button";
+import { cn, n } from "@/lib/utils";
 import type { StaffMember } from "./staff-data";
 
 interface PayrollRosterPanelProps {
@@ -84,7 +84,9 @@ export function PayrollRosterPanel({
 
 				<div className="flex-1 overflow-auto custom-scrollbar p-0">
 					<table className="w-full text-left border-collapse">
-						<thead className={`sticky top-0 bg-card border-b border-border shadow-sm z-20 ${backdropClassName}`}>
+						<thead
+							className={`sticky top-0 bg-card border-b border-border shadow-sm z-20 ${backdropClassName}`}
+						>
 							<tr>
 								<Th>Colaborador Key</Th>
 								<Th>Rol / Estrategia</Th>
@@ -97,7 +99,10 @@ export function PayrollRosterPanel({
 						</thead>
 						<tbody className="divide-y divide-border/5">
 							{staff.map((employee) => (
-								<tr key={employee.id} className="group hover:bg-card/50 transition-colors relative">
+								<tr
+									key={employee.id}
+									className="group hover:bg-card/50 transition-colors relative"
+								>
 									<td className="px-6 py-4">
 										<div className="flex items-center gap-4">
 											<div className="h-10 w-10 rounded-2xl bg-card border border-border/50 flex items-center justify-center text-foreground font-black text-xs shadow-lg group-hover:scale-110 transition-transform">
@@ -114,7 +119,9 @@ export function PayrollRosterPanel({
 													<span
 														className={cn(
 															"h-1.5 w-1.5 rounded-full",
-															employee.status === "Activo" ? "bg-[var(--premium-success)]" : "bg-amber-500",
+															employee.status === "Activo"
+																? "bg-[var(--premium-success)]"
+																: "bg-amber-500",
 														)}
 													/>
 												</div>
@@ -145,7 +152,8 @@ export function PayrollRosterPanel({
 												"px-3 py-1 rounded-lg text-xs font-black border uppercase tracking-widest shadow-sm",
 												employee.risk === "Alto" || employee.risk === "High"
 													? "bg-red-500/10 text-red-500 border-red-500/20"
-													: employee.risk === "Medio" || employee.risk === "Medium"
+													: employee.risk === "Medio" ||
+															employee.risk === "Medium"
 														? "bg-amber-500/10 text-amber-500 border-amber-500/20"
 														: "bg-[rgba(var(--premium-info-rgb),0.05)] text-[var(--premium-action-cyan)] border-[rgba(var(--premium-info-rgb),0.10)]",
 											)}

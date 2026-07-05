@@ -2,21 +2,14 @@
  * OCR - Barrel
  */
 
-export type {
-  OCROptions,
-  OCRResponse,
-} from './types';
-
+export type { OcrPipelineConfig } from "./pipeline";
+export { OcrPipeline } from "./pipeline";
 export {
-  extractInvoiceData,
-  batchExtractInvoices,
-  extractFromFile,
-} from './service';
-
-export {
-  OcrPipeline,
-} from './pipeline';
-
+	batchExtractInvoices,
+	extractFromFile,
+	extractInvoiceData,
+} from "./service";
 export type {
-  OcrPipelineConfig,
-} from './pipeline';
+	OCROptions,
+	OCRResponse,
+} from "./types";

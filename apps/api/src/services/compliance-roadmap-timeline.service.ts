@@ -19,16 +19,18 @@ export class ComplianceRoadmapTimelineService {
 		actionId: ComplianceRoadmapActionId;
 		traceId: string;
 	}): Promise<ComplianceRoadmapActionTimeline> {
-		const snapshot = await ComplianceRoadmapSnapshotService.getRoadmapMvpSnapshot({
-			companyId: input.companyId,
-			year: input.year,
-			month: input.month,
-		});
-		const recommendation = ComplianceRoadmapSnapshotService.findRoadmapRecommendation({
-			snapshot,
-			actionId: input.actionId,
-			traceId: input.traceId,
-		});
+		const snapshot =
+			await ComplianceRoadmapSnapshotService.getRoadmapMvpSnapshot({
+				companyId: input.companyId,
+				year: input.year,
+				month: input.month,
+			});
+		const recommendation =
+			ComplianceRoadmapSnapshotService.findRoadmapRecommendation({
+				snapshot,
+				actionId: input.actionId,
+				traceId: input.traceId,
+			});
 
 		const runs = await AccountingJobRunsService.listRuns({
 			companyId: input.companyId,

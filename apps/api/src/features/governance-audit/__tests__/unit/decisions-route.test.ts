@@ -261,8 +261,6 @@ describe("governance audit route", () => {
 		expect(response.status).toBe(200);
 		expect(response.headers.get("content-type")).toContain("text/plain");
 		const payload = await response.text();
-		expect(payload).toContain(
-			"drenyra_api_governance_policy_decisions_total",
-		);
+		expect(payload).toContain("drenyra_api_governance_policy_decisions_total");
 	});
 });

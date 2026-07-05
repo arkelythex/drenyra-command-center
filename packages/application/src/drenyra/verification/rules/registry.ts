@@ -14,10 +14,10 @@
  */
 
 import {
+	type FiscalRiskLevel,
 	getFiscalRate,
 	type VerifiedFinding,
 	type VerifiedFindingBase,
-	type FiscalRiskLevel,
 } from "@drenyra/domain/drenyra";
 import type { VerificationContext } from "../VerificationInterceptor";
 

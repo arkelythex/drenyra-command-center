@@ -4,16 +4,16 @@
  */
 
 import {
+	AI_SETTINGS_MAX_CHARS,
+	AISettings,
+} from "@drenyra/domain/entities/AISettings";
+import type { AISettingsRepository } from "@drenyra/domain/repositories/ai-settings.repository";
+import {
 	type AISettingsResponseDTO,
 	toAISettingsResponseDTO,
 	type UpsertAISettingsDTO,
 	upsertAISettingsSchema,
 } from "../../dtos/ai-settings/ai-settings.dto";
-import {
-	AI_SETTINGS_MAX_CHARS,
-	AISettings,
-} from "@drenyra/domain/entities/AISettings";
-import type { AISettingsRepository } from "@drenyra/domain/repositories/ai-settings.repository";
 
 /**
  * UpsertAISettingsUseCase class.

@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
-import type { SidebarProps } from "./Sidebar.types";
-import { SidebarToggle } from "./components/SidebarToggle";
-import { SidebarSearch } from "./components/SidebarSearch";
 import { SidebarCaseList } from "./components/SidebarCaseList";
-import { SidebarNavItems } from "./components/SidebarNavItems";
 import { SidebarFooter } from "./components/SidebarFooter";
+import { SidebarNavItems } from "./components/SidebarNavItems";
+import { SidebarSearch } from "./components/SidebarSearch";
+import { SidebarToggle } from "./components/SidebarToggle";
+import type { SidebarProps } from "./Sidebar.types";
 
 export function Sidebar({ isCollapsed, onToggle, onNavigate }: SidebarProps) {
 	return (

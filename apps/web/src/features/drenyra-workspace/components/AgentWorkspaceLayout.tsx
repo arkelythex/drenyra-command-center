@@ -38,8 +38,12 @@ export function AgentWorkspaceLayout({
 					</div>
 				)}
 				<div>
-					<h1 className="text-lg font-semibold text-[var(--color-text-primary)]">{agentName}</h1>
-					<p className="text-sm text-[var(--color-text-muted)]">{description}</p>
+					<h1 className="text-lg font-semibold text-[var(--color-text-primary)]">
+						{agentName}
+					</h1>
+					<p className="text-sm text-[var(--color-text-muted)]">
+						{description}
+					</p>
 				</div>
 			</header>
 

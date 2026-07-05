@@ -75,9 +75,7 @@ export function assertValidTransition(
 
 	const allowed = transitions[currentStatus];
 	if (!allowed.includes(nextStatus)) {
-		throw new Error(
-			`Cannot transition from ${currentStatus} to ${nextStatus}`,
-		);
+		throw new Error(`Cannot transition from ${currentStatus} to ${nextStatus}`);
 	}
 }
 

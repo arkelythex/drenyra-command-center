@@ -7,10 +7,10 @@
  *   Use renderHook from @testing-library/react with QueryClientProvider
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { renderHook, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // ---------------------------------------------------------------------------
 // Mocks
@@ -82,9 +82,7 @@ function createWrapper() {
 
 	return function Wrapper({ children }: { children: ReactNode }) {
 		return (
-			<QueryClientProvider client={queryClient}>
-				{children}
-			</QueryClientProvider>
+			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 		);
 	};
 }
@@ -135,9 +133,7 @@ describe("useJournalEntriesApi", () => {
 				]),
 			);
 
-			const { useJournalEntries } = await import(
-				"../useJournalEntriesApi"
-			);
+			const { useJournalEntries } = await import("../useJournalEntriesApi");
 			const { result } = renderHook(() => useJournalEntries(), {
 				wrapper: createWrapper(),
 			});
@@ -156,9 +152,7 @@ describe("useJournalEntriesApi", () => {
 		it("passes filters to the API call", async () => {
 			mockGet.mockResolvedValue(okEnvelope([]));
 
-			const { useJournalEntries } = await import(
-				"../useJournalEntriesApi"
-			);
+			const { useJournalEntries } = await import("../useJournalEntriesApi");
 			renderHook(
 				() =>
 					useJournalEntries({
@@ -181,9 +175,7 @@ describe("useJournalEntriesApi", () => {
 		it("handles empty response gracefully", async () => {
 			mockGet.mockResolvedValue(okEnvelope([]));
 
-			const { useJournalEntries } = await import(
-				"../useJournalEntriesApi"
-			);
+			const { useJournalEntries } = await import("../useJournalEntriesApi");
 			const { result } = renderHook(() => useJournalEntries(), {
 				wrapper: createWrapper(),
 			});
@@ -195,9 +187,7 @@ describe("useJournalEntriesApi", () => {
 		it("throws error when API returns error", async () => {
 			mockGet.mockResolvedValue(errorEnvelope("API Error"));
 
-			const { useJournalEntries } = await import(
-				"../useJournalEntriesApi"
-			);
+			const { useJournalEntries } = await import("../useJournalEntriesApi");
 			const { result } = renderHook(() => useJournalEntries(), {
 				wrapper: createWrapper(),
 			});
@@ -218,9 +208,7 @@ describe("useJournalEntriesApi", () => {
 				}),
 			);
 
-			const { useJournalEntry } = await import(
-				"../useJournalEntriesApi"
-			);
+			const { useJournalEntry } = await import("../useJournalEntriesApi");
 			const { result } = renderHook(() => useJournalEntry("je-1"), {
 				wrapper: createWrapper(),
 			});
@@ -230,9 +218,7 @@ describe("useJournalEntriesApi", () => {
 		});
 
 		it("does not fetch when id is undefined", async () => {
-			const { useJournalEntry } = await import(
-				"../useJournalEntriesApi"
-			);
+			const { useJournalEntry } = await import("../useJournalEntriesApi");
 			renderHook(() => useJournalEntry(undefined), {
 				wrapper: createWrapper(),
 			});
@@ -253,9 +239,7 @@ describe("useJournalEntriesApi", () => {
 				}),
 			);
 
-			const { useCreateJournalEntry } = await import(
-				"../useJournalEntriesApi"
-			);
+			const { useCreateJournalEntry } = await import("../useJournalEntriesApi");
 			const { result } = renderHook(() => useCreateJournalEntry(), {
 				wrapper: createWrapper(),
 			});
@@ -291,9 +275,7 @@ describe("useJournalEntriesApi", () => {
 		it("calls PATCH with correct id and body", async () => {
 			mockPatch.mockResolvedValue(okEnvelope({ id: "je-1" }));
 
-			const { useUpdateJournalEntry } = await import(
-				"../useJournalEntriesApi"
-			);
+			const { useUpdateJournalEntry } = await import("../useJournalEntriesApi");
 			const { result } = renderHook(() => useUpdateJournalEntry(), {
 				wrapper: createWrapper(),
 			});
@@ -313,9 +295,7 @@ describe("useJournalEntriesApi", () => {
 		it("calls DELETE with correct id", async () => {
 			mockDelete.mockResolvedValue(okEnvelope({ deleted: true }));
 
-			const { useDeleteJournalEntry } = await import(
-				"../useJournalEntriesApi"
-			);
+			const { useDeleteJournalEntry } = await import("../useJournalEntriesApi");
 			const { result } = renderHook(() => useDeleteJournalEntry(), {
 				wrapper: createWrapper(),
 			});

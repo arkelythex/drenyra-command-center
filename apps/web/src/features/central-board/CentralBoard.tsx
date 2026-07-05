@@ -1,16 +1,16 @@
 "use client";
 
+import { BookOpen, ClipboardList, FileText, Rocket } from "lucide-react";
 import { useCallback, useMemo } from "react";
+import { useDesignTokens } from "@/lib/design-tokens";
 import { cn } from "@/lib/utils";
 import {
-	useCentralBoardStore,
 	type CentralBoardTab,
+	useCentralBoardStore,
 } from "@/stores/central-board-store";
-import { BookOpen, FileText, ClipboardList, Rocket } from "lucide-react";
-import { LedgerEditableTable } from "./components/LedgerEditableTable";
-import { JournalPendingList } from "./components/JournalPendingList";
 import { DocumentsList } from "./components/DocumentsList";
-import { useDesignTokens } from "@/lib/design-tokens";
+import { JournalPendingList } from "./components/JournalPendingList";
+import { LedgerEditableTable } from "./components/LedgerEditableTable";
 
 const TABS: {
 	key: CentralBoardTab;

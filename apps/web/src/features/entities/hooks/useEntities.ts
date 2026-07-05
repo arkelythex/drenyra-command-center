@@ -1,12 +1,12 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import {
-	customersApi,
 	type CustomerRecord,
+	customersApi,
 } from "@/features/customers/api/customers.api";
 import {
-	vendorsApi,
 	type VendorRecord,
+	vendorsApi,
 } from "@/features/vendors/api/vendors.api";
 import { captureError, trackEvent } from "@/lib/monitoring";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";

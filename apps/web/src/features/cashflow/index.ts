@@ -1,1 +1,1 @@
-export { CashflowBoard } from './components/CashflowBoard';
+export { CashflowBoard } from "./components/CashflowBoard";

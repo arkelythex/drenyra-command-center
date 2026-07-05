@@ -1,4 +1,4 @@
-import type { DiffType, DiffStatus, QueuePriority } from "@drenyra/domain";
+import type { DiffStatus, DiffType, QueuePriority } from "@drenyra/domain";
 
 export interface DiffChangeDTO {
 	field: string;

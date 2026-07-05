@@ -4,7 +4,7 @@
  * Types for Gemini-powered invoice data extraction
  */
 
-import { type OCRResult } from "../schemas/invoice";
+import type { OCRResult } from "../schemas/invoice";
 
 /**
  * OCR extraction options

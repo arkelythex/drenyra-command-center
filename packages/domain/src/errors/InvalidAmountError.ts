@@ -24,7 +24,12 @@ export class InvalidAmountError extends Error {
 			) => void;
 		};
 		if (ErrorWithCapture.captureStackTrace) {
-			ErrorWithCapture.captureStackTrace(this, InvalidAmountError as new (...args: unknown[]) => unknown);
+			ErrorWithCapture.captureStackTrace(
+				this,
+				InvalidAmountError as new (
+					...args: unknown[]
+				) => unknown,
+			);
 		}
 	}
 

@@ -20,9 +20,7 @@ export interface SetRateDTO {
 }
 
 export class ExchangeRateService {
-	constructor(
-		private readonly rateRepo: ExchangeRateRepository,
-	) {}
+	constructor(private readonly rateRepo: ExchangeRateRepository) {}
 
 	/**
 	 * Set a new exchange rate for a given date and currency pair.

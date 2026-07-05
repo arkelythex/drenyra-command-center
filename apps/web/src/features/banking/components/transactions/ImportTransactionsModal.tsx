@@ -1,11 +1,8 @@
+import { Upload } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Upload } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { presentError } from "@/lib/error-messages";
 import {
 	Dialog,
 	DialogContent,
@@ -14,6 +11,8 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
 	Select,
 	SelectContent,
@@ -21,7 +20,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { useHaptics, useFinancialHaptics } from "@/hooks/useHaptics";
+import { useFinancialHaptics, useHaptics } from "@/hooks/useHaptics";
+import { presentError } from "@/lib/error-messages";
 import type { BankCsvFormat } from "../../api/banking.api";
 import { useImportTransactionsMutation } from "../../hooks/useBankingQueries";
 

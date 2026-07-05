@@ -1,5 +1,5 @@
-import type { FiscalCase } from "../api/drenyra-command-center.api";
 import { cn } from "@/lib/utils";
+import type { FiscalCase } from "../api/drenyra-command-center.api";
 import { FiscalRiskBadge } from "./fiscal-risk-badge";
 
 export function FiscalCaseList({

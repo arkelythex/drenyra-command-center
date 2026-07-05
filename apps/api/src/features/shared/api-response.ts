@@ -1,4 +1,4 @@
-import type { RunbookReference } from '../../lib/compliance-runbooks';
+import type { RunbookReference } from "../../lib/compliance-runbooks";
 
 /**
  * ApiSuccess interface.
@@ -12,8 +12,8 @@ import type { RunbookReference } from '../../lib/compliance-runbooks';
  */
 
 export interface ApiSuccess<T> {
-  success: true;
-  data: T;
+	success: true;
+	data: T;
 }
 
 /**
@@ -26,12 +26,12 @@ export interface ApiSuccess<T> {
  * ```
  */
 export interface ApiFailure {
-  success: false;
-  error: string;
-  code?: string;
-  runbook?: RunbookReference;
-  field?: string;
-  details?: unknown;
+	success: false;
+	error: string;
+	code?: string;
+	runbook?: RunbookReference;
+	field?: string;
+	details?: unknown;
 }
 
 /**
@@ -48,7 +48,7 @@ export interface ApiFailure {
  */
 
 export function ok<T>(data: T): ApiSuccess<T> {
-  return { success: true, data };
+	return { success: true, data };
 }
 
 /**
@@ -65,18 +65,20 @@ export function ok<T>(data: T): ApiSuccess<T> {
  * ```
  */
 export function fail(
-  error: string,
-  code?: string,
-  options?: { runbook?: RunbookReference; field?: string; details?: unknown }
+	error: string,
+	code?: string,
+	options?: { runbook?: RunbookReference; field?: string; details?: unknown },
 ): ApiFailure {
-  return {
-    success: false,
-    error,
-    code,
-    ...(options?.runbook ? { runbook: options.runbook } : {}),
-    ...(options?.field ? { field: options.field } : {}),
-    ...(typeof options?.details !== 'undefined' ? { details: options.details } : {}),
-  };
+	return {
+		success: false,
+		error,
+		code,
+		...(options?.runbook ? { runbook: options.runbook } : {}),
+		...(options?.field ? { field: options.field } : {}),
+		...(typeof options?.details !== "undefined"
+			? { details: options.details }
+			: {}),
+	};
 }
 
 /**
@@ -91,9 +93,12 @@ export function fail(
  * console.log(result);
  * ```
  */
-export function getErrorMessage(error: unknown, fallback = 'Internal server error'): string {
-  if (error instanceof Error && error.message.trim()) {
-    return error.message;
-  }
-  return fallback;
+export function getErrorMessage(
+	error: unknown,
+	fallback = "Internal server error",
+): string {
+	if (error instanceof Error && error.message.trim()) {
+		return error.message;
+	}
+	return fallback;
 }

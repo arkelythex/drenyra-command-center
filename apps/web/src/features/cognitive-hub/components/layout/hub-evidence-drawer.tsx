@@ -1,5 +1,5 @@
-import { useMemo } from "react";
 import { ChevronDown, ChevronUp, Fingerprint, Sigma } from "lucide-react";
+import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import type { CognitiveActivityEntry } from "../../hooks/cognitive-stream";
 

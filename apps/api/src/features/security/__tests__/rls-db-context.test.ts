@@ -39,7 +39,9 @@ describe("rls-db-context", () => {
 		const execute = vi.fn().mockResolvedValue(undefined);
 		const work = vi.fn(async () => "ok");
 
-		mocks.transaction.mockImplementation(async (callback) => callback({ execute }));
+		mocks.transaction.mockImplementation(async (callback) =>
+			callback({ execute }),
+		);
 
 		const result = await withTenantRlsTransaction(
 			{
@@ -59,7 +61,9 @@ describe("rls-db-context", () => {
 		const execute = vi.fn().mockResolvedValue(undefined);
 		const work = vi.fn(async () => "company-only");
 
-		mocks.transaction.mockImplementation(async (callback) => callback({ execute }));
+		mocks.transaction.mockImplementation(async (callback) =>
+			callback({ execute }),
+		);
 
 		const result = await withCompanyRlsTransaction(
 			"00000000-0000-0000-0000-000000000002",

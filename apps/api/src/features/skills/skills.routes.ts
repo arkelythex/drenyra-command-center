@@ -1,9 +1,9 @@
 import { Elysia } from "elysia";
+import { AppError } from "../../lib/errors";
 import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
-import { AppError } from "../../lib/errors";
+import { CompanySkillConfigBody, SkillIdParams } from "./skills.schemas";
 import { skillsService } from "./skills.service";
-import { SkillIdParams, CompanySkillConfigBody } from "./skills.schemas";
 
 function handleError(error: unknown, set: { status: number }) {
 	if (error instanceof AppError) {

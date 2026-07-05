@@ -13,11 +13,11 @@
  */
 
 import { existsSync } from "node:fs";
-import { resolve, dirname } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { XsdSchemaLoader } from "./xsd-schema-loader";
-import type { XsdSchema, DocumentType } from "./types";
+import type { DocumentType, XsdSchema } from "./types";
 import { XSD_FILE_NAMESPACE_MAP } from "./types";
+import { XsdSchemaLoader } from "./xsd-schema-loader";
 
 export class XsdCache {
 	private loader: XsdSchemaLoader;
@@ -41,7 +41,8 @@ export class XsdCache {
 			this.loaded = true;
 			return true;
 		} catch (error) {
-			this.loadError = error instanceof Error ? error : new Error(String(error));
+			this.loadError =
+				error instanceof Error ? error : new Error(String(error));
 			this.loaded = false;
 			return false;
 		}
@@ -60,7 +61,10 @@ export class XsdCache {
 	 */
 	getSchemaForDocument(docType: DocumentType): XsdSchema | undefined {
 		if (!this.ensureLoaded()) return undefined;
-		return this.loader.getSchemaForDocumentType(docType, this.schemas ?? new Map());
+		return this.loader.getSchemaForDocumentType(
+			docType,
+			this.schemas ?? new Map(),
+		);
 	}
 
 	/**

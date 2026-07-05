@@ -27,6 +27,10 @@ export interface AIClassification {
  */
 export interface IAIProvider {
 	classify(description: string, context?: string): Promise<AIClassification>;
-	analyze(message: string, images?: string[], context?: string): Promise<string>;
+	analyze(
+		message: string,
+		images?: string[],
+		context?: string,
+	): Promise<string>;
 	embedText?(text: string): Promise<number[]>;
 }

@@ -1,5 +1,5 @@
 export interface CommandSuggestion {
-  command: string;
-  title: string;
-  description: string;
+	command: string;
+	title: string;
+	description: string;
 }

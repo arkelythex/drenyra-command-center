@@ -13,7 +13,8 @@ export async function resolveAuthToken(
 	tenantContext?: TenantSunatContext,
 ): Promise<string> {
 	if (config.authMode === "token") return config.apiToken;
-	if (config.authMode === "oauth-sol") return getOAuthToken(config, tenantContext);
+	if (config.authMode === "oauth-sol")
+		return getOAuthToken(config, tenantContext);
 	if (config.apiToken) return config.apiToken;
 	if (hasOAuthCredentials(config)) return getOAuthToken(config, tenantContext);
 	return "";
@@ -47,7 +48,9 @@ function getTenantContextForOAuth(
 	tenantContext: TenantSunatContext | undefined,
 ): TenantSunatContext {
 	if (!tenantContext) {
-		throw new Error("Tenant SUNAT context is required for OAuth SOL authentication");
+		throw new Error(
+			"Tenant SUNAT context is required for OAuth SOL authentication",
+		);
 	}
 	return tenantContext;
 }
@@ -67,9 +70,7 @@ function buildOAuthUsername(
 	return `${tenantContext.ruc}${config.oauth.solUsername}`;
 }
 
-function buildOAuthCacheKey(
-	tenantContext: TenantSunatContext,
-): string {
+function buildOAuthCacheKey(tenantContext: TenantSunatContext): string {
 	return JSON.stringify([
 		tenantContext.ruc,
 		tenantContext.credential.fingerprint,

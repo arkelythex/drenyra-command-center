@@ -94,9 +94,9 @@ export interface ModelSelection {
  */
 
 export interface OpenRouterModelTier {
-  id: string;
-  models: string[];  // Ordered preference, fallback chain
-  maxTokens: number;
-  temperature: number;
-  costLimit: number;  // Max USD per request
+	id: string;
+	models: string[]; // Ordered preference, fallback chain
+	maxTokens: number;
+	temperature: number;
+	costLimit: number; // Max USD per request
 }

@@ -19,9 +19,7 @@ export function DefaultRouteError({
 			<div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10">
 				<AlertTriangle className="h-8 w-8 text-destructive" />
 			</div>
-			<h2 className="mb-2 text-xl font-bold text-foreground">
-				Algo salió mal
-			</h2>
+			<h2 className="mb-2 text-xl font-bold text-foreground">Algo salió mal</h2>
 			<p className="mb-6 max-w-md text-sm text-muted-foreground">
 				{error.message.includes("fetch") || error.message.includes("network")
 					? "No se pudo conectar con el servidor. Verifica tu conexión a internet."

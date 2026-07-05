@@ -1,4 +1,8 @@
-import type { Invoice, InvoiceItem, InvoiceStatus } from "@drenyra/domain/entities/Invoice";
+import type {
+	Invoice,
+	InvoiceItem,
+	InvoiceStatus,
+} from "@drenyra/domain/entities/Invoice";
 
 type ModularInvoiceStatus = "DRAFT" | "SENT" | "CANCELLED";
 type ModularSunatStatus =
@@ -197,4 +201,5 @@ export const mapInvoiceItemToModularInsert = (
  * console.log(result);
  * ```
  */
-export const formatInvoiceAmount = (amount: number): string => formatDecimal(amount);
+export const formatInvoiceAmount = (amount: number): string =>
+	formatDecimal(amount);

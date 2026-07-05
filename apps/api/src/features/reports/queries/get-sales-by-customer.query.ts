@@ -1,8 +1,8 @@
-import { invoices } from "@drenyra/persistence/schema";
 import { db as globalDb } from "@drenyra/persistence/client";
 import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
-import type { SalesByCustomerRow } from "../reports.schemas";
+import { invoices } from "@drenyra/persistence/schema";
 import { moneyFromDecimalString } from "../_internal/money-utils";
+import type { SalesByCustomerRow } from "../reports.schemas";
 
 interface SalesByCustomerAggregateRow {
 	customerId: string | null;

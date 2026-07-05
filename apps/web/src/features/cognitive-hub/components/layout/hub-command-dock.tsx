@@ -1,5 +1,5 @@
-import { lazy, Suspense, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { lazy, Suspense, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { CognitiveActivityEntry } from "../../hooks/cognitive-stream";
 import { useAccountingJobRuns } from "../../hooks/useAccountingJobRuns";

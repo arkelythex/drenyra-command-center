@@ -8,7 +8,7 @@
  * ```
  */
 
-export type AgentRole = 'reader' | 'parser' | 'validator' | 'arbitrator';
+export type AgentRole = "reader" | "parser" | "validator" | "arbitrator";
 
 /**
  * AgentStatus type.
@@ -19,7 +19,7 @@ export type AgentRole = 'reader' | 'parser' | 'validator' | 'arbitrator';
  * console.log(value);
  * ```
  */
-export type AgentStatus = 'idle' | 'processing' | 'completed' | 'error';
+export type AgentStatus = "idle" | "processing" | "completed" | "error";
 
 /**
  * BaseAgent interface.
@@ -31,10 +31,10 @@ export type AgentStatus = 'idle' | 'processing' | 'completed' | 'error';
  * ```
  */
 export interface BaseAgent {
-  id: string;
-  role: AgentRole;
-  status: AgentStatus;
-  process(input: unknown): Promise<unknown>;
+	id: string;
+	role: AgentRole;
+	status: AgentStatus;
+	process(input: unknown): Promise<unknown>;
 }
 
 // ============================================================================
@@ -51,13 +51,13 @@ export interface BaseAgent {
  * ```
  */
 export interface InvoiceItem {
-  description: string;
-  quantity: number;
-  unitPrice: number;
-  subtotal: number;
-  igvAmount: number;
-  totalAmount: number;
-  unitCode: string; // SUNAT unit code (NIU, etc.)
+	description: string;
+	quantity: number;
+	unitPrice: number;
+	subtotal: number;
+	igvAmount: number;
+	totalAmount: number;
+	unitCode: string; // SUNAT unit code (NIU, etc.)
 }
 
 /**
@@ -70,37 +70,37 @@ export interface InvoiceItem {
  * ```
  */
 export interface InvoiceData {
-  // Issuer (Company)
-  issuerRuc: string;
-  issuerName: string;
-  issuerAddress?: string;
+	// Issuer (Company)
+	issuerRuc: string;
+	issuerName: string;
+	issuerAddress?: string;
 
-  // Customer
-  customerRuc: string;
-  customerName: string;
-  customerDocType: '1' | '6'; // 1=DNI, 6=RUC
-  customerAddress?: string;
+	// Customer
+	customerRuc: string;
+	customerName: string;
+	customerDocType: "1" | "6"; // 1=DNI, 6=RUC
+	customerAddress?: string;
 
-  // Invoice metadata
-  invoiceType: '01' | '03' | '07' | '08'; // 01=Factura, 03=Boleta, 07=NC, 08=ND
-  invoiceNumber: string;
-  series: string;
-  correlative: string;
-  issueDate: Date;
-  dueDate?: Date;
+	// Invoice metadata
+	invoiceType: "01" | "03" | "07" | "08"; // 01=Factura, 03=Boleta, 07=NC, 08=ND
+	invoiceNumber: string;
+	series: string;
+	correlative: string;
+	issueDate: Date;
+	dueDate?: Date;
 
-  // Amounts
-  currency: 'PEN' | 'USD';
-  subtotal: number;
-  igv: number;
-  total: number;
+	// Amounts
+	currency: "PEN" | "USD";
+	subtotal: number;
+	igv: number;
+	total: number;
 
-  // Items
-  items: InvoiceItem[];
+	// Items
+	items: InvoiceItem[];
 
-  // Additional
-  observations?: string;
-  paymentTerms?: string;
+	// Additional
+	observations?: string;
+	paymentTerms?: string;
 }
 
 // ============================================================================
@@ -117,13 +117,13 @@ export interface InvoiceData {
  * ```
  */
 export interface ReaderInput {
-  type: 'invoice_image' | 'receipt_photo' | 'pdf_scan' | 'invoice_xml';
-  data: string; // base64 encoded
-  metadata?: {
-    ruc?: string;
-    period?: string;
-    fileName?: string;
-  };
+	type: "invoice_image" | "receipt_photo" | "pdf_scan" | "invoice_xml";
+	data: string; // base64 encoded
+	metadata?: {
+		ruc?: string;
+		period?: string;
+		fileName?: string;
+	};
 }
 
 /**
@@ -136,10 +136,10 @@ export interface ReaderInput {
  * ```
  */
 export interface ParserInput {
-  xmlContent: string;
-  schema?: 'UBL_2.0' | 'UBL_2.1';
-  schemaVersion?: 'UBL_2.0' | 'UBL_2.1';
-  readerData?: ExtractedData;
+	xmlContent: string;
+	schema?: "UBL_2.0" | "UBL_2.1";
+	schemaVersion?: "UBL_2.0" | "UBL_2.1";
+	readerData?: ExtractedData;
 }
 
 /**
@@ -152,9 +152,9 @@ export interface ParserInput {
  * ```
  */
 export interface ValidatorInput {
-  proposedInvoice: InvoiceData;
-  complianceYear: number;
-  invoiceType: '01' | '03' | '07' | '08';
+	proposedInvoice: InvoiceData;
+	complianceYear: number;
+	invoiceType: "01" | "03" | "07" | "08";
 }
 
 /**
@@ -167,13 +167,13 @@ export interface ValidatorInput {
  * ```
  */
 export interface ArbitratorInput {
-  reader?: ExtractedData | null;
-  parser?: ParsedData | null;
-  validator?: ValidationResult | null;
-  readerOutput?: ExtractedData | null;
-  parserOutput?: ParsedData | null;
-  validatorOutput?: ValidationResult | null;
-  conflicts: Conflict[];
+	reader?: ExtractedData | null;
+	parser?: ParsedData | null;
+	validator?: ValidationResult | null;
+	readerOutput?: ExtractedData | null;
+	parserOutput?: ParsedData | null;
+	validatorOutput?: ValidationResult | null;
+	conflicts: Conflict[];
 }
 
 // ============================================================================
@@ -190,11 +190,11 @@ export interface ArbitratorInput {
  * ```
  */
 export interface ExtractedData {
-  extractedData: InvoiceData;
-  confidence: number; // 0-1
-  flags: string[]; // Issues detected
-  processingTime: number; // milliseconds
-  agentId: string;
+	extractedData: InvoiceData;
+	confidence: number; // 0-1
+	flags: string[]; // Issues detected
+	processingTime: number; // milliseconds
+	agentId: string;
 }
 
 /**
@@ -207,12 +207,12 @@ export interface ExtractedData {
  * ```
  */
 export interface ParsedData {
-  parsedData: InvoiceData;
-  schemaVersion: string;
-  discrepancies: Discrepancy[];
-  needsMigration: boolean;
-  processingTime: number;
-  agentId: string;
+	parsedData: InvoiceData;
+	schemaVersion: string;
+	discrepancies: Discrepancy[];
+	needsMigration: boolean;
+	processingTime: number;
+	agentId: string;
 }
 
 /**
@@ -225,12 +225,12 @@ export interface ParsedData {
  * ```
  */
 export interface ValidationResult {
-  isCompliant: boolean;
-  violations: ComplianceViolation[];
-  suggestedFixes: string[];
-  generatedXML?: string;
-  processingTime: number;
-  agentId: string;
+	isCompliant: boolean;
+	violations: ComplianceViolation[];
+	suggestedFixes: string[];
+	generatedXML?: string;
+	processingTime: number;
+	agentId: string;
 }
 
 /**
@@ -243,17 +243,17 @@ export interface ValidationResult {
  * ```
  */
 export interface ArbitrationDecision {
-  decision: 'APPROVED' | 'REJECTED' | 'MANUAL_REVIEW';
-  finalData: InvoiceData;
-  arbitrationLog: {
-    conflicts: Conflict[];
-    resolutions: Resolution[];
-    timestamp: Date;
-    arbitratorModel: string;
-  };
-  confidence: number;
-  processingTime: number;
-  requiresManualReview?: boolean;
+	decision: "APPROVED" | "REJECTED" | "MANUAL_REVIEW";
+	finalData: InvoiceData;
+	arbitrationLog: {
+		conflicts: Conflict[];
+		resolutions: Resolution[];
+		timestamp: Date;
+		arbitratorModel: string;
+	};
+	confidence: number;
+	processingTime: number;
+	requiresManualReview?: boolean;
 }
 
 /**
@@ -281,11 +281,11 @@ export type ParsedInvoice = ParsedData;
  * ```
  */
 export interface Discrepancy {
-  field: keyof InvoiceData;
-  expectedValue: unknown;
-  actualValue: unknown;
-  severity: 'low' | 'medium' | 'high' | 'critical';
-  message: string;
+	field: keyof InvoiceData;
+	expectedValue: unknown;
+	actualValue: unknown;
+	severity: "low" | "medium" | "high" | "critical";
+	message: string;
 }
 
 /**
@@ -298,11 +298,11 @@ export interface Discrepancy {
  * ```
  */
 export interface ComplianceViolation {
-  rule: string;
-  description: string;
-  field?: string;
-  severity: 'warning' | 'error' | 'critical';
-  sunatCode?: string;
+	rule: string;
+	description: string;
+	field?: string;
+	severity: "warning" | "error" | "critical";
+	sunatCode?: string;
 }
 
 /**
@@ -315,13 +315,13 @@ export interface ComplianceViolation {
  * ```
  */
 export interface Conflict {
-  field: keyof InvoiceData;
-  sources: {
-    reader?: unknown;
-    parser?: unknown;
-    validator?: unknown;
-  };
-  severity: 'low' | 'medium' | 'high';
+	field: keyof InvoiceData;
+	sources: {
+		reader?: unknown;
+		parser?: unknown;
+		validator?: unknown;
+	};
+	severity: "low" | "medium" | "high";
 }
 
 /**
@@ -334,11 +334,11 @@ export interface Conflict {
  * ```
  */
 export interface Resolution {
-  conflict: Conflict;
-  resolvedValue: unknown;
-  reasoning: string;
-  confidence: number;
-  source: 'reader' | 'parser' | 'validator' | 'arbitrator' | 'external';
+	conflict: Conflict;
+	resolvedValue: unknown;
+	reasoning: string;
+	confidence: number;
+	source: "reader" | "parser" | "validator" | "arbitrator" | "external";
 }
 
 // ============================================================================
@@ -355,12 +355,12 @@ export interface Resolution {
  * ```
  */
 export interface ProcessedInvoice {
-  status: 'success' | 'failed' | 'manual_review';
-  invoiceData: InvoiceData;
-  xmlContent?: string;
-  cdrResponse?: CDRResponse;
-  processingLog: ProcessingLog;
-  errors?: Error[];
+	status: "success" | "failed" | "manual_review";
+	invoiceData: InvoiceData;
+	xmlContent?: string;
+	cdrResponse?: CDRResponse;
+	processingLog: ProcessingLog;
+	errors?: Error[];
 }
 
 /**
@@ -373,17 +373,17 @@ export interface ProcessedInvoice {
  * ```
  */
 export interface ProcessingLog {
-  startTime: Date;
-  endTime: Date;
-  totalTime: number;
-  stages: {
-    reading: StageLog;
-    parsing: StageLog;
-    validation: StageLog;
-    arbitration?: StageLog;
-    xmlGeneration?: StageLog;
-    oseSubmission?: StageLog;
-  };
+	startTime: Date;
+	endTime: Date;
+	totalTime: number;
+	stages: {
+		reading: StageLog;
+		parsing: StageLog;
+		validation: StageLog;
+		arbitration?: StageLog;
+		xmlGeneration?: StageLog;
+		oseSubmission?: StageLog;
+	};
 }
 
 /**
@@ -396,13 +396,13 @@ export interface ProcessingLog {
  * ```
  */
 export interface StageLog {
-  startTime: Date;
-  endTime: Date;
-  duration: number;
-  status: 'success' | 'failed' | 'skipped';
-  agentId: string;
-  output?: unknown;
-  error?: string;
+	startTime: Date;
+	endTime: Date;
+	duration: number;
+	status: "success" | "failed" | "skipped";
+	agentId: string;
+	output?: unknown;
+	error?: string;
 }
 
 /**
@@ -415,11 +415,11 @@ export interface StageLog {
  * ```
  */
 export interface CDRResponse {
-  status: 'ACEPTADO' | 'RECHAZADO' | 'OBSERVADO';
-  code: string;
-  message: string;
-  cdrContent: string; // base64
-  receivedAt: Date;
+	status: "ACEPTADO" | "RECHAZADO" | "OBSERVADO";
+	code: string;
+	message: string;
+	cdrContent: string; // base64
+	receivedAt: Date;
 }
 
 // ============================================================================
@@ -436,12 +436,12 @@ export interface CDRResponse {
  * ```
  */
 export interface AIProviderConfig {
-  provider: 'gemini' | 'grok' | 'openai';
-  model: string;
-  apiKey: string;
-  maxTokens?: number;
-  temperature?: number;
-  cacheEnabled?: boolean;
+	provider: "gemini" | "grok" | "openai";
+	model: string;
+	apiKey: string;
+	maxTokens?: number;
+	temperature?: number;
+	cacheEnabled?: boolean;
 }
 
 /**
@@ -454,12 +454,12 @@ export interface AIProviderConfig {
  * ```
  */
 export interface AIResponse {
-  content: string;
-  tokensUsed: {
-    input: number;
-    output: number;
-  };
-  cost: number;
-  latency: number;
-  cached: boolean;
+	content: string;
+	tokensUsed: {
+		input: number;
+		output: number;
+	};
+	cost: number;
+	latency: number;
+	cached: boolean;
 }

@@ -63,9 +63,10 @@ export function calculateNpv(input: NpvInput): NpvResult {
 
 	// Money only stores non-negative amounts: use absolute magnitude
 	const magnitude = Math.abs(npvCents);
-	const npvMagnitude = magnitude === 0
-		? Money.zero(currency)
-		: Money.fromCents(magnitude, currency);
+	const npvMagnitude =
+		magnitude === 0
+			? Money.zero(currency)
+			: Money.fromCents(magnitude, currency);
 
 	return {
 		npv: npvMagnitude,

@@ -50,4 +50,3 @@ registerAuditPlugin({
 			"Validar voucher, estado de cuenta y asiento antes de aprobar.",
 	},
 });
-

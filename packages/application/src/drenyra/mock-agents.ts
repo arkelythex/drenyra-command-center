@@ -1,4 +1,8 @@
-import type { AgentRunOutput, FiscalCase, DrenyraAgentType } from "@drenyra/domain/drenyra";
+import type {
+	AgentRunOutput,
+	DrenyraAgentType,
+	FiscalCase,
+} from "@drenyra/domain/drenyra";
 
 const AGENT_LABEL: Record<DrenyraAgentType, string> = {
 	CPE_AGENT: "CPE",
@@ -11,17 +15,40 @@ const AGENT_LABEL: Record<DrenyraAgentType, string> = {
 
 const REQUIRED_EVIDENCE: Record<DrenyraAgentType, string[]> = {
 	CPE_AGENT: ["XML UBL 2.1", "CDR SUNAT", "serie y correlativo"],
-	SIRE_AGENT: ["registro SIRE", "constancia de propuesta", "periodo tributario"],
+	SIRE_AGENT: [
+		"registro SIRE",
+		"constancia de propuesta",
+		"periodo tributario",
+	],
 	LEDGER_AGENT: ["asiento contable", "cuenta PCGE", "traza de usuario"],
-	CONCILIATION_AGENT: ["extracto bancario", "movimiento contable", "match propuesto"],
-	FISCAL_REVIEWER_AGENT: ["bundle de evidencia", "resumen de riesgo", "aprobación humana"],
-	EVIDENCE_AGENT: ["hash de documento", "origen de fuente", "actor que adjuntó"],
+	CONCILIATION_AGENT: [
+		"extracto bancario",
+		"movimiento contable",
+		"match propuesto",
+	],
+	FISCAL_REVIEWER_AGENT: [
+		"bundle de evidencia",
+		"resumen de riesgo",
+		"aprobación humana",
+	],
+	EVIDENCE_AGENT: [
+		"hash de documento",
+		"origen de fuente",
+		"actor que adjuntó",
+	],
 };
 
-export function runDeterministicMockAgent(agentType: DrenyraAgentType, fiscalCase: FiscalCase): AgentRunOutput {
+export function runDeterministicMockAgent(
+	agentType: DrenyraAgentType,
+	fiscalCase: FiscalCase,
+): AgentRunOutput {
 	const label = AGENT_LABEL[agentType];
-	const highRisk = fiscalCase.riskLevel === "HIGH" || fiscalCase.riskLevel === "CRITICAL";
-	const approvalRequired = highRisk || fiscalCase.autonomyLevel === "EXECUTE_AFTER_APPROVAL" || agentType === "FISCAL_REVIEWER_AGENT";
+	const highRisk =
+		fiscalCase.riskLevel === "HIGH" || fiscalCase.riskLevel === "CRITICAL";
+	const approvalRequired =
+		highRisk ||
+		fiscalCase.autonomyLevel === "EXECUTE_AFTER_APPROVAL" ||
+		agentType === "FISCAL_REVIEWER_AGENT";
 
 	return {
 		summary: `${label} revisó el caso ${fiscalCase.title} para el periodo ${fiscalCase.scope.period} sin ejecutar acciones fiscales reales.`,

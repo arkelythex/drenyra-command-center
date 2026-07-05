@@ -82,10 +82,13 @@ export const STATE_CONFIG: Record<AgentStatus, AgentStateConfig> = {
 		badgeClass: "bg-primary/20 border-primary/30 text-primary animate-pulse",
 	},
 	completed: {
-		containerClass: "border-[rgba(var(--premium-success-rgb),0.30)] bg-[rgba(var(--premium-success-rgb),0.05)]",
-		iconClass: "text-[var(--premium-success)] bg-[rgba(var(--premium-success-rgb),0.15)] border-[rgba(var(--premium-success-rgb),0.40)]",
+		containerClass:
+			"border-[rgba(var(--premium-success-rgb),0.30)] bg-[rgba(var(--premium-success-rgb),0.05)]",
+		iconClass:
+			"text-[var(--premium-success)] bg-[rgba(var(--premium-success-rgb),0.15)] border-[rgba(var(--premium-success-rgb),0.40)]",
 		badgeText: "Done",
-		badgeClass: "bg-[rgba(var(--premium-success-rgb),0.20)] border-[rgba(var(--premium-success-rgb),0.30)] text-[var(--premium-success)]",
+		badgeClass:
+			"bg-[rgba(var(--premium-success-rgb),0.20)] border-[rgba(var(--premium-success-rgb),0.30)] text-[var(--premium-success)]",
 	},
 	error: {
 		containerClass: "border-red-500/30 bg-red-500/[0.05]",

@@ -1,14 +1,14 @@
+import type { LucideIcon } from "lucide-react";
 import {
+	Bell,
 	Building2,
 	CreditCard,
 	Palette,
 	Settings,
 	Shield,
-	Bell,
-	Zap,
 	ShieldCheck,
+	Zap,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 
 export type SettingsNavItem = {
 	to: string;

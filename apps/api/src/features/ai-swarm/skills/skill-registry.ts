@@ -86,7 +86,9 @@ export class SkillRegistry {
 	 */
 	discover(category?: SkillCategory): SkillSummary[] {
 		const all = Array.from(this.skills.values());
-		const filtered = category ? all.filter((s) => s.category === category) : all;
+		const filtered = category
+			? all.filter((s) => s.category === category)
+			: all;
 		return filtered.map((s) => ({
 			id: s.id,
 			name: s.name,
@@ -129,10 +131,9 @@ export class SkillRegistry {
 				`- ${s.id} [${s.metadata.deterministic ? "determinístico" : "IA"}]: ${s.description}`,
 		);
 
-		return [
-			`Habilidades ${categoryLabel} en el enjambre:`,
-			...lines,
-		].join("\n");
+		return [`Habilidades ${categoryLabel} en el enjambre:`, ...lines].join(
+			"\n",
+		);
 	}
 }
 

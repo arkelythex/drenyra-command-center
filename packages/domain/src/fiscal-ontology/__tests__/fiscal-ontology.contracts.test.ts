@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { RUC } from "../../value-objects/RUC";
 import {
-	FISCAL_OBJECT_KIND,
-	FISCAL_RELATION_KIND,
 	canRelateFiscalObjects,
 	createFiscalObjectRelation,
 	createFiscalOntologyScope,
 	createFiscalPeriod,
+	FISCAL_OBJECT_KIND,
+	FISCAL_RELATION_KIND,
 	isFiscalOntologyScope,
 	isFiscalPeriodValue,
 } from "../types";
@@ -109,9 +109,15 @@ describe("Fiscal Ontology v0 contracts", () => {
 		const scope = createFiscalOntologyScope(baseScopeInput);
 		const cpe = { id: "cpe_123", kind: FISCAL_OBJECT_KIND.CPE, scope };
 		const mismatches = [
-			createFiscalOntologyScope({ ...baseScopeInput, companyId: "company_456" }),
+			createFiscalOntologyScope({
+				...baseScopeInput,
+				companyId: "company_456",
+			}),
 			createFiscalOntologyScope({ ...baseScopeInput, period: "2026-06" }),
-			createFiscalOntologyScope({ ...baseScopeInput, companyRuc: "20100070970" }),
+			createFiscalOntologyScope({
+				...baseScopeInput,
+				companyRuc: "20100070970",
+			}),
 		];
 
 		for (const mismatchScope of mismatches) {

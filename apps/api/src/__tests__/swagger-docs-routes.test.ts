@@ -26,7 +26,9 @@ describe("swagger docs routes", () => {
 		expect(CANONICAL_SWAGGER_PATH).toBe("/api/swagger");
 		expect(CANONICAL_SWAGGER_JSON_PATH).toBe("/api/swagger/json");
 		expect(swaggerResponse.status).toBe(308);
-		expect(swaggerResponse.headers.get("Location")).toBe(CANONICAL_SWAGGER_PATH);
+		expect(swaggerResponse.headers.get("Location")).toBe(
+			CANONICAL_SWAGGER_PATH,
+		);
 		expect(swaggerJsonResponse.status).toBe(308);
 		expect(swaggerJsonResponse.headers.get("Location")).toBe(
 			CANONICAL_SWAGGER_JSON_PATH,

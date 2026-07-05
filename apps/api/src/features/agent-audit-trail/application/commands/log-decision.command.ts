@@ -3,7 +3,7 @@
  * Creates immutable audit log entry with hash chain
  */
 
-import { createAgentDecisionLog, type CreateLogInput } from "../../domain";
+import { type CreateLogInput, createAgentDecisionLog } from "../../domain";
 import { AgentDecisionLogRepository } from "../../infrastructure/repository";
 import { evaluateAuditPlugins } from "../../plugins";
 
@@ -32,9 +32,7 @@ export interface LogDecisionInput extends Omit<CreateLogInput, "prevHash"> {
  * console.log(result);
  * ```
  */
-export async function logAgentDecision(
-	input: LogDecisionInput,
-): Promise<{
+export async function logAgentDecision(input: LogDecisionInput): Promise<{
 	id: string;
 	hash: string;
 	pluginFindings: ReturnType<typeof evaluateAuditPlugins>["findings"];

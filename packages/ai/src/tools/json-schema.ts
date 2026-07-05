@@ -1,5 +1,4 @@
-import { z } from "zod";
-import { toJSONSchema } from "zod";
+import { toJSONSchema, type z } from "zod";
 import type { JSONSchemaObject } from "./tool-definition";
 
 /**

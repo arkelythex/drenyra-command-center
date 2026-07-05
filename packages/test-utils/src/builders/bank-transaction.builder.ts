@@ -15,9 +15,9 @@ import type {
 	BankTransactionProps,
 	BankTransactionType,
 } from "@drenyra/domain/entities/BankTransaction";
-import { Money, type Currency } from "@drenyra/domain/value-objects/Money";
-import { BaseBuilder } from "./base.builder";
 import { BankTransaction } from "@drenyra/domain/entities/BankTransaction";
+import { type Currency, Money } from "@drenyra/domain/value-objects/Money";
+import { BaseBuilder } from "./base.builder";
 
 const DEFAULT_BANK_ACCOUNT_ID = 1;
 const DEFAULT_AMOUNT = 1000;

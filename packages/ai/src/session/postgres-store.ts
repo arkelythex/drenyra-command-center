@@ -5,10 +5,15 @@
  * @module ai/session/postgres-store
  */
 
+import {
+	agentRunEvents,
+	agentRunInputs,
+	agentRunStates,
+	batchRunItems,
+	batchRuns,
+} from "@drenyra/persistence/schema";
 import { and, asc, desc, eq, inArray, lte, sql } from "drizzle-orm";
 import type { PgDatabase } from "drizzle-orm/pg-core";
-import { agentRunEvents, agentRunInputs, agentRunStates, batchRuns, batchRunItems } from "@drenyra/persistence/schema";
-import type { SessionStore } from "./session-store";
 import type {
 	AgentRunEvent,
 	AgentRunState,
@@ -19,6 +24,7 @@ import type {
 	StateSnapshot,
 } from "./session.types";
 import { SessionNotFoundError, SessionStoreError } from "./session.types";
+import type { SessionStore } from "./session-store";
 
 /**
  * Drizzle database client shape.
@@ -39,7 +45,10 @@ export class PostgresSessionStore implements SessionStore {
 	 * Save or update a run state.
 	 * Uses INSERT ... ON CONFLICT (run_id) DO UPDATE for idempotent upserts.
 	 */
-	async saveRunState(runId: string, state: Partial<AgentRunState>): Promise<void> {
+	async saveRunState(
+		runId: string,
+		state: Partial<AgentRunState>,
+	): Promise<void> {
 		try {
 			await this.db
 				.insert(agentRunStates)
@@ -135,7 +144,10 @@ export class PostgresSessionStore implements SessionStore {
 				companyId: event.companyId,
 			});
 		} catch (cause) {
-			throw new SessionStoreError(`Failed to append event for run: ${runId}`, cause);
+			throw new SessionStoreError(
+				`Failed to append event for run: ${runId}`,
+				cause,
+			);
 		}
 	}
 
@@ -160,26 +172,36 @@ export class PostgresSessionStore implements SessionStore {
 				createdAt: row.createdAt,
 			}));
 		} catch (cause) {
-			throw new SessionStoreError(`Failed to get events for run: ${runId}`, cause);
+			throw new SessionStoreError(
+				`Failed to get events for run: ${runId}`,
+				cause,
+			);
 		}
 	}
 
 	/**
 	 * Partial update of a run state.
 	 */
-	async updateRunState(runId: string, partial: Partial<AgentRunState>): Promise<void> {
+	async updateRunState(
+		runId: string,
+		partial: Partial<AgentRunState>,
+	): Promise<void> {
 		try {
 			const updateData: Record<string, unknown> = {
 				updatedAt: new Date(),
 			};
 
-			if (partial.workflowState !== undefined) updateData.workflowState = partial.workflowState;
-			if (partial.agentMetrics !== undefined) updateData.agentMetrics = partial.agentMetrics;
+			if (partial.workflowState !== undefined)
+				updateData.workflowState = partial.workflowState;
+			if (partial.agentMetrics !== undefined)
+				updateData.agentMetrics = partial.agentMetrics;
 			if (partial.context !== undefined) updateData.context = partial.context;
 			if (partial.status !== undefined) updateData.status = partial.status;
 			if (partial.error !== undefined) updateData.error = partial.error;
-			if (partial.completedAt !== undefined) updateData.completedAt = partial.completedAt;
-			if (partial.sessionId !== undefined) updateData.sessionId = partial.sessionId;
+			if (partial.completedAt !== undefined)
+				updateData.completedAt = partial.completedAt;
+			if (partial.sessionId !== undefined)
+				updateData.sessionId = partial.sessionId;
 
 			const result = await this.db
 				.update(agentRunStates)
@@ -191,7 +213,10 @@ export class PostgresSessionStore implements SessionStore {
 			}
 		} catch (cause) {
 			if (cause instanceof SessionNotFoundError) throw cause;
-			throw new SessionStoreError(`Failed to update run state: ${runId}`, cause);
+			throw new SessionStoreError(
+				`Failed to update run state: ${runId}`,
+				cause,
+			);
 		}
 	}
 
@@ -210,7 +235,10 @@ export class PostgresSessionStore implements SessionStore {
 
 			return { state, events };
 		} catch (cause) {
-			throw new SessionStoreError(`Failed to recover run state: ${runId}`, cause);
+			throw new SessionStoreError(
+				`Failed to recover run state: ${runId}`,
+				cause,
+			);
 		}
 	}
 
@@ -222,7 +250,12 @@ export class PostgresSessionStore implements SessionStore {
 	 * Persist input data for a run (upsert by runId).
 	 * Compression for inputs > 1MB is handled transparently.
 	 */
-	async saveInput(runId: string, inputType: string, inputData: string, checksum: string): Promise<void> {
+	async saveInput(
+		runId: string,
+		inputType: string,
+		inputData: string,
+		checksum: string,
+	): Promise<void> {
 		try {
 			await this.db
 				.insert(agentRunInputs)
@@ -241,7 +274,10 @@ export class PostgresSessionStore implements SessionStore {
 					},
 				});
 		} catch (cause) {
-			throw new SessionStoreError(`Failed to save input for run: ${runId}`, cause);
+			throw new SessionStoreError(
+				`Failed to save input for run: ${runId}`,
+				cause,
+			);
 		}
 	}
 
@@ -268,7 +304,10 @@ export class PostgresSessionStore implements SessionStore {
 				createdAt: row.createdAt,
 			};
 		} catch (cause) {
-			throw new SessionStoreError(`Failed to get input for run: ${runId}`, cause);
+			throw new SessionStoreError(
+				`Failed to get input for run: ${runId}`,
+				cause,
+			);
 		}
 	}
 
@@ -285,14 +324,17 @@ export class PostgresSessionStore implements SessionStore {
 		total: number;
 	}): Promise<BatchRunData> {
 		try {
-			const [row] = await this.db.insert(batchRuns).values({
-				id: data.id ?? crypto.randomUUID(),
-				companyId: data.companyId,
-				status: "pending",
-				total: data.total,
-				completed: 0,
-				failed: 0,
-			}).returning();
+			const [row] = await this.db
+				.insert(batchRuns)
+				.values({
+					id: data.id ?? crypto.randomUUID(),
+					companyId: data.companyId,
+					status: "pending",
+					total: data.total,
+					completed: 0,
+					failed: 0,
+				})
+				.returning();
 			if (!row) throw new Error("Insert returned no row");
 			return this.mapBatchRun(row);
 		} catch (error) {
@@ -312,14 +354,20 @@ export class PostgresSessionStore implements SessionStore {
 				.limit(1);
 			return rows[0] ? this.mapBatchRun(rows[0]) : null;
 		} catch (error) {
-			throw new SessionStoreError(`Failed to get batch ${batchId}`, { cause: error });
+			throw new SessionStoreError(`Failed to get batch ${batchId}`, {
+				cause: error,
+			});
 		}
 	}
 
 	/**
 	 * List batches for a company, newest first.
 	 */
-	async listBatches(companyId: string, limit = 20, offset = 0): Promise<BatchRunData[]> {
+	async listBatches(
+		companyId: string,
+		limit = 20,
+		offset = 0,
+	): Promise<BatchRunData[]> {
 		try {
 			const rows = await this.db
 				.select()
@@ -330,7 +378,9 @@ export class PostgresSessionStore implements SessionStore {
 				.offset(offset);
 			return rows.map(this.mapBatchRun);
 		} catch (error) {
-			throw new SessionStoreError(`Failed to list batches for ${companyId}`, { cause: error });
+			throw new SessionStoreError(`Failed to list batches for ${companyId}`, {
+				cause: error,
+			});
 		}
 	}
 
@@ -339,34 +389,47 @@ export class PostgresSessionStore implements SessionStore {
 	 */
 	async updateBatch(
 		batchId: string,
-		data: Partial<Pick<BatchRunData, "status" | "completed" | "failed" | "completedAt">>,
+		data: Partial<
+			Pick<BatchRunData, "status" | "completed" | "failed" | "completedAt">
+		>,
 	): Promise<BatchRunData> {
 		try {
-			const [row] = await this.db.update(batchRuns)
+			const [row] = await this.db
+				.update(batchRuns)
 				.set({ ...data, updatedAt: new Date() })
 				.where(eq(batchRuns.id, batchId))
 				.returning();
 			if (!row) throw new Error("Batch not found");
 			return this.mapBatchRun(row);
 		} catch (error) {
-			throw new SessionStoreError(`Failed to update batch ${batchId}`, { cause: error });
+			throw new SessionStoreError(`Failed to update batch ${batchId}`, {
+				cause: error,
+			});
 		}
 	}
 
 	/**
 	 * Add an item to a batch.
 	 */
-	async createBatchItem(batchId: string, runId: string): Promise<BatchItemData> {
+	async createBatchItem(
+		batchId: string,
+		runId: string,
+	): Promise<BatchItemData> {
 		try {
-			const [row] = await this.db.insert(batchRunItems).values({
-				batchId,
-				runId,
-				status: "pending",
-			}).returning();
+			const [row] = await this.db
+				.insert(batchRunItems)
+				.values({
+					batchId,
+					runId,
+					status: "pending",
+				})
+				.returning();
 			if (!row) throw new Error("Insert returned no row");
 			return this.mapBatchItem(row);
 		} catch (error) {
-			throw new SessionStoreError(`Failed to create batch item for ${runId}`, { cause: error });
+			throw new SessionStoreError(`Failed to create batch item for ${runId}`, {
+				cause: error,
+			});
 		}
 	}
 
@@ -378,14 +441,17 @@ export class PostgresSessionStore implements SessionStore {
 		data: Partial<Pick<BatchItemData, "status" | "error">>,
 	): Promise<BatchItemData> {
 		try {
-			const [row] = await this.db.update(batchRunItems)
+			const [row] = await this.db
+				.update(batchRunItems)
 				.set(data)
 				.where(eq(batchRunItems.id, itemId))
 				.returning();
 			if (!row) throw new Error("Batch item not found");
 			return this.mapBatchItem(row);
 		} catch (error) {
-			throw new SessionStoreError(`Failed to update batch item ${itemId}`, { cause: error });
+			throw new SessionStoreError(`Failed to update batch item ${itemId}`, {
+				cause: error,
+			});
 		}
 	}
 
@@ -401,7 +467,9 @@ export class PostgresSessionStore implements SessionStore {
 				.orderBy(batchRunItems.createdAt);
 			return rows.map(this.mapBatchItem);
 		} catch (error) {
-			throw new SessionStoreError(`Failed to get items for batch ${batchId}`, { cause: error });
+			throw new SessionStoreError(`Failed to get items for batch ${batchId}`, {
+				cause: error,
+			});
 		}
 	}
 
@@ -417,7 +485,8 @@ export class PostgresSessionStore implements SessionStore {
 			id: row.id as string,
 			runId: row.runId as string,
 			sessionId: (row.sessionId as string) ?? null,
-			workflowState: (row.workflowState as AgentRunState["workflowState"]) ?? null,
+			workflowState:
+				(row.workflowState as AgentRunState["workflowState"]) ?? null,
 			agentMetrics: (row.agentMetrics as Record<string, unknown>) ?? null,
 			context: (row.context as Record<string, unknown>) ?? null,
 			status: row.status as AgentRunState["status"],

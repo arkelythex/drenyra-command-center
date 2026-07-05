@@ -112,7 +112,12 @@ describe("cognitive stream activity helpers", () => {
 				runId: "run-x",
 				timestamp: 1000000,
 				type: "tool_result",
-				payload: { toolName: "consultar_ruc", result: { ok: true }, callId: "", duration: 0 },
+				payload: {
+					toolName: "consultar_ruc",
+					result: { ok: true },
+					callId: "",
+					duration: 0,
+				},
 			},
 			"run-x",
 		);
@@ -165,4 +170,3 @@ describe("cognitive stream activity helpers", () => {
 		expect(merged[1]?.label).toBe("Aprobacion pendiente");
 	});
 });
-

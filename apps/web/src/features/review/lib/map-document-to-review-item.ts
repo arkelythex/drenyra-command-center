@@ -113,7 +113,9 @@ export function conflictsFromExtracted(
 	return out;
 }
 
-export function mapDocumentDtoToReviewItem(dto: DocumentListEntryDTO): ReviewItem {
+export function mapDocumentDtoToReviewItem(
+	dto: DocumentListEntryDTO,
+): ReviewItem {
 	const baseConfidence = confidenceFromLevel(dto.confidenceLevel ?? undefined);
 	const extracted =
 		dto.extractedData && typeof dto.extractedData === "object"

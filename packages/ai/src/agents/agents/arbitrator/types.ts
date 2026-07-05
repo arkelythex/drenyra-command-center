@@ -1,1 +1,6 @@
-export type { BaseAgent, ArbitratorInput, ArbitrationDecision, InvoiceData } from '../../types';
+export type {
+	ArbitrationDecision,
+	ArbitratorInput,
+	BaseAgent,
+	InvoiceData,
+} from "../../types";

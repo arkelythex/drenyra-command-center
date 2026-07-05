@@ -10,8 +10,8 @@
  * @since Feb 2026
  */
 
-import { trackEvent } from "@/lib/monitoring";
 import type { ArtifactType, HubArtifact } from "@drenyra/shared/artifacts";
+import { trackEvent } from "@/lib/monitoring";
 
 const ARTIFACT_REGEX = /<artifact\s+type="([^"]+)">([\s\S]*?)<\/artifact>/g;
 

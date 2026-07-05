@@ -73,7 +73,9 @@ const useCashflow = (): CashflowHookResult => {
 			DEFAULT_PROJECTION_DAYS,
 			DEFAULT_CURRENCY,
 		),
-		queryFn: async (): Promise<Sourced<import("../api/cashflow.api").CashflowProjectionData>> => {
+		queryFn: async (): Promise<
+			Sourced<import("../api/cashflow.api").CashflowProjectionData>
+		> => {
 			try {
 				const result = await cashflowApi.getProjection({
 					companyId,
@@ -106,7 +108,9 @@ const useCashflow = (): CashflowHookResult => {
 			period.endKey,
 			DEFAULT_CURRENCY,
 		),
-		queryFn: async (): Promise<Sourced<import("../api/cashflow.api").ActualCashflowData>> => {
+		queryFn: async (): Promise<
+			Sourced<import("../api/cashflow.api").ActualCashflowData>
+		> => {
 			try {
 				const result = await cashflowApi.getActual({
 					companyId,
@@ -143,7 +147,9 @@ const useCashflow = (): CashflowHookResult => {
 			DEFAULT_FORECAST_MONTHS,
 			DEFAULT_CURRENCY,
 		),
-		queryFn: async (): Promise<Sourced<import("../api/cashflow.api").CashflowForecastData>> => {
+		queryFn: async (): Promise<
+			Sourced<import("../api/cashflow.api").CashflowForecastData>
+		> => {
 			try {
 				const result = await cashflowApi.getForecast({
 					companyId,
@@ -205,7 +211,9 @@ const useCashflow = (): CashflowHookResult => {
 			period.endKey,
 			DEFAULT_CURRENCY,
 		),
-		queryFn: async (): Promise<Sourced<import("../api/cashflow.api").CashflowVarianceData>> => {
+		queryFn: async (): Promise<
+			Sourced<import("../api/cashflow.api").CashflowVarianceData>
+		> => {
 			try {
 				const result = await cashflowApi.getVariance({
 					companyId,

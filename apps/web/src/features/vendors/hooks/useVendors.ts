@@ -6,13 +6,13 @@ import { extractOkDataOrPassthrough } from "@/lib/api-helpers";
 import { createCrudHooks } from "@/lib/crud-api";
 import { useEntitySearch } from "@/lib/hooks/useEntitySearch";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { vendorKeys } from "../api/query-keys";
 import {
-	vendorsApi,
 	type CreateVendorPayload,
 	type UpdateVendorPayload,
 	type VendorRecord,
+	vendorsApi,
 } from "../api/vendors.api";
-import { vendorKeys } from "../api/query-keys";
 
 interface VendorTransaction {
 	id: string;
@@ -72,22 +72,23 @@ export function useVendors(): UseVendorsResult {
 	const { companyContext } = useActiveCompanyContext();
 	const companyId = companyContext.companyId;
 
-	const entity = useEntitySearch<Vendor, VendorStats>({
-		queryKey: vendorKeys.list(companyId),
-		fetcher: async () => {
-			const list = await vendorsApi.list({ companyId });
-			return list.map(normalizeVendor);
+	const entity = useEntitySearch<Vendor, VendorStats>(
+		{
+			queryKey: vendorKeys.list(companyId),
+			fetcher: async () => {
+				const list = await vendorsApi.list({ companyId });
+				return list.map(normalizeVendor);
+			},
+			searchFields: (v) => [toVendorName(v as VendorRecord), v.taxId],
+			tabs: ["summary", "taxes"] as const,
+			calculateStats: (items) => ({
+				totalSpend: items.reduce((sum, v) => sum + v.totalSpend, 0),
+				criticalCount: items.filter((v) => v.condition === "NO HABIDO").length,
+				retentionAgents: items.filter((v) => v.isRetentionAgent).length,
+			}),
 		},
-		searchFields: (v) => [toVendorName(v as VendorRecord), v.taxId],
-		tabs: ["summary", "taxes"] as const,
-		calculateStats: (items) => ({
-			totalSpend: items.reduce((sum, v) => sum + v.totalSpend, 0),
-			criticalCount: items.filter(
-				(v) => v.condition === "NO HABIDO",
-			).length,
-			retentionAgents: items.filter((v) => v.isRetentionAgent).length,
-		}),
-	}, companyId);
+		companyId,
+	);
 
 	return {
 		vendors: entity.filtered,
@@ -103,7 +104,11 @@ export function useVendors(): UseVendorsResult {
 
 type CreateVendorInput = Partial<CreateVendorPayload>;
 
-const vendorCrud = createCrudHooks<Vendor, CreateVendorInput, UpdateVendorPayload>({
+const vendorCrud = createCrudHooks<
+	Vendor,
+	CreateVendorInput,
+	UpdateVendorPayload
+>({
 	key: "vendors",
 	list: async (companyId) => {
 		const list = await vendorsApi.list({ companyId });
@@ -133,4 +138,3 @@ const vendorCrud = createCrudHooks<Vendor, CreateVendorInput, UpdateVendorPayloa
 export const useCreateVendor = vendorCrud.useCreate;
 export const useUpdateVendor = vendorCrud.useUpdate;
 export const useDeleteVendor = vendorCrud.useDelete;
-

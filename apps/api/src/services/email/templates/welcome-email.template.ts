@@ -1,17 +1,17 @@
-import { AUTH_EMAIL_STYLES, getEmailFooter } from './email-styles';
+import { AUTH_EMAIL_STYLES, getEmailFooter } from "./email-styles";
 
 /**
  * Welcome Email Template
  */
 
 export interface WelcomeEmailData {
-  userName: string;
-  ruc: string;
-  loginUrl: string;
+	userName: string;
+	ruc: string;
+	loginUrl: string;
 }
 
 export function generateWelcomeEmail(data: WelcomeEmailData): string {
-  return `
+	return `
 <!DOCTYPE html>
 <html>
 <head>

@@ -1,4 +1,4 @@
-import { Money } from "../../value-objects/Money";
+import type { Money } from "../../value-objects/Money";
 
 export type BankAccountType =
 	| "CORRIENTE"

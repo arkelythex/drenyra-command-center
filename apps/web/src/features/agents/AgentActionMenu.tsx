@@ -1,5 +1,11 @@
+import {
+	ChevronDown,
+	FileSearch,
+	MessageCircle,
+	ShieldCheck,
+	ThumbsDown,
+} from "lucide-react";
 import { useState } from "react";
-import { ChevronDown, FileSearch, ShieldCheck, ThumbsDown, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
 import type { AgentSessionStatusDTO } from "./agents.types";
@@ -43,7 +49,11 @@ export function AgentActionMenu({ session }: AgentActionMenuProps) {
 							type="button"
 							className="flex w-full items-center gap-2 px-4 py-2 text-xs text-[var(--text-primary)] hover:bg-[var(--surface-2)]"
 							onClick={() => {
-								openInspector({ type: "diff" as never, id: "diff-review" as never, title: "Diff review" as never });
+								openInspector({
+									type: "diff" as never,
+									id: "diff-review" as never,
+									title: "Diff review" as never,
+								});
 								setOpen(false);
 							}}
 						>
@@ -54,7 +64,11 @@ export function AgentActionMenu({ session }: AgentActionMenuProps) {
 							type="button"
 							className="flex w-full items-center gap-2 px-4 py-2 text-xs text-[var(--text-primary)] hover:bg-[var(--surface-2)]"
 							onClick={() => {
-								openInspector({ type: "evidence" as never, id: "evidence-review" as never, title: "Evidence review" as never });
+								openInspector({
+									type: "evidence" as never,
+									id: "evidence-review" as never,
+									title: "Evidence review" as never,
+								});
 								setOpen(false);
 							}}
 						>

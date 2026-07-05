@@ -14,30 +14,35 @@
  * ```
  */
 
-export { XsdValidator, validateUblDocument } from "./xsd-validator";
-export type { XsdValidationResult, XsdValidationError } from "./types";
-export { XSD_ERROR_CODES } from "./xsd-validator";
-
-export { XsdSchemaLoader, extractNamespaceMap, resolvePrefixedElement } from "./xsd-schema-loader";
-export type { DocumentType } from "./types";
-
+export type {
+	DocumentType,
+	ResolvedElementRef,
+	XsdAttributeDef,
+	XsdComplexType,
+	XsdElementDef,
+	XsdSchema,
+	XsdSimpleType,
+	XsdValidationError,
+	XsdValidationResult,
+} from "./types";
 export {
-	XsdCache,
-	getXsdCache,
-	resetXsdCache,
-	DEFAULT_XSD_DIR,
-} from "./xsd-cache";
-
-export {
-	UBL_NAMESPACE_PREFIXES,
 	UBL_DOCUMENT_NAMESPACES,
+	UBL_NAMESPACE_PREFIXES,
 	XSD_FILE_NAMESPACE_MAP,
 } from "./types";
-export type {
-	XsdSchema,
-	XsdElementDef,
-	XsdComplexType,
-	XsdSimpleType,
-	XsdAttributeDef,
-	ResolvedElementRef,
-} from "./types";
+export {
+	DEFAULT_XSD_DIR,
+	getXsdCache,
+	resetXsdCache,
+	XsdCache,
+} from "./xsd-cache";
+export {
+	extractNamespaceMap,
+	resolvePrefixedElement,
+	XsdSchemaLoader,
+} from "./xsd-schema-loader";
+export {
+	validateUblDocument,
+	XSD_ERROR_CODES,
+	XsdValidator,
+} from "./xsd-validator";

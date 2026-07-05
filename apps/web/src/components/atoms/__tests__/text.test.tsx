@@ -3,8 +3,9 @@
  *
  * @phase 2.3 — Unified Text component
  */
-import { describe, it, expect } from "vitest";
+
 import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 import { Text } from "../text";
 
 describe("Text (unified)", () => {
@@ -29,7 +30,10 @@ describe("Text (unified)", () => {
 	// ── Variants ───────────────────────────────────────────────────────
 
 	it.each([
-		{ variant: "hero" as const, expected: ["text-4xl", "sm:text-5xl", "font-bold"] },
+		{
+			variant: "hero" as const,
+			expected: ["text-4xl", "sm:text-5xl", "font-bold"],
+		},
 		{ variant: "display" as const, expected: ["text-3xl", "font-bold"] },
 		{ variant: "h1" as const, expected: ["text-2xl", "font-bold"] },
 		{ variant: "h2" as const, expected: ["text-xl", "font-semibold"] },
@@ -38,10 +42,16 @@ describe("Text (unified)", () => {
 		{ variant: "body" as const, expected: ["text-base"] },
 		{ variant: "bodySm" as const, expected: ["text-sm"] },
 		{ variant: "caption" as const, expected: ["text-xs"] },
-		{ variant: "overline" as const, expected: ["text-2xs", "font-semibold", "uppercase", "tracking-widest"] },
+		{
+			variant: "overline" as const,
+			expected: ["text-2xs", "font-semibold", "uppercase", "tracking-widest"],
+		},
 		{ variant: "label" as const, expected: ["text-sm", "font-medium"] },
 		{ variant: "meta" as const, expected: ["text-xs"] },
-	])("renders $variant variant with expected classes", ({ variant, expected }) => {
+	])("renders $variant variant with expected classes", ({
+		variant,
+		expected,
+	}) => {
 		const { container } = render(<Text variant={variant}>{variant}</Text>);
 		const el = container.querySelector("p")!;
 		for (const cls of expected) {
@@ -66,7 +76,7 @@ describe("Text (unified)", () => {
 		{ as: "div" as const, tag: "div" },
 		{ as: "label" as const, tag: "label" },
 		{ as: "small" as const, tag: "small" },
-	])("renders as <$tag> when as=\"$as\"", ({ as, tag }) => {
+	])('renders as <$tag> when as="$as"', ({ as, tag }) => {
 		const { container } = render(<Text as={as}>content</Text>);
 		const el = container.querySelector(tag);
 		expect(el).toBeInTheDocument();
@@ -136,7 +146,9 @@ describe("Text (unified)", () => {
 	// ── className merge ────────────────────────────────────────────────
 
 	it("merges custom className", () => {
-		const { container } = render(<Text className="my-custom-class">custom</Text>);
+		const { container } = render(
+			<Text className="my-custom-class">custom</Text>,
+		);
 		const el = container.querySelector("p")!;
 		expect(el.className).toContain("my-custom-class");
 		// Preserves variant classes

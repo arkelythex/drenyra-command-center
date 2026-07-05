@@ -1,13 +1,13 @@
 const SQL_INJECTION_PATTERNS = [
-  /(%27)|(')|(--)|(%23)|(#)/i,
-  /((%3D)|(=))[^\n]*((%27)|(')|(--)|(%3B)|(;))/i,
-  /\w*((%27)|('))((%6F)|o|(%4F))((%72)|r|(%52))/i,
-  /((%27)|('))union/i,
-  /exec(\s|\+)+(s|x)p\w+/i,
-  /UNION\s+SELECT/i,
-  /INSERT\s+INTO/i,
-  /DELETE\s+FROM/i,
-  /DROP\s+TABLE/i,
+	/(%27)|(')|(--)|(%23)|(#)/i,
+	/((%3D)|(=))[^\n]*((%27)|(')|(--)|(%3B)|(;))/i,
+	/\w*((%27)|('))((%6F)|o|(%4F))((%72)|r|(%52))/i,
+	/((%27)|('))union/i,
+	/exec(\s|\+)+(s|x)p\w+/i,
+	/UNION\s+SELECT/i,
+	/INSERT\s+INTO/i,
+	/DELETE\s+FROM/i,
+	/DROP\s+TABLE/i,
 ] as const;
 
 /**
@@ -19,9 +19,9 @@ const SQL_INJECTION_PATTERNS = [
  * ```
  */
 export interface SqlSanitizerOptions {
-  maxLength?: number;
-  strictMode?: boolean;
-  additionalEscapes?: string[];
+	maxLength?: number;
+	strictMode?: boolean;
+	additionalEscapes?: string[];
 }
 
 /**
@@ -38,33 +38,33 @@ export interface SqlSanitizerOptions {
  * ```
  */
 export interface SqlSanitizeResult {
-  value: string;
-  wasModified: boolean;
-  injectionDetected: boolean;
-  originalLength: number;
+	value: string;
+	wasModified: boolean;
+	injectionDetected: boolean;
+	originalLength: number;
 }
 
 const DEFAULT_OPTIONS: Required<SqlSanitizerOptions> = {
-  maxLength: 100,
-  strictMode: true,
-  additionalEscapes: [],
+	maxLength: 100,
+	strictMode: true,
+	additionalEscapes: [],
 };
 
 function detectInjectionAttempt(input: string): boolean {
-  return SQL_INJECTION_PATTERNS.some((pattern) => pattern.test(input));
+	return SQL_INJECTION_PATTERNS.some((pattern) => pattern.test(input));
 }
 
 function escapeSpecialChars(input: string): string {
-  return input
-    .replace(/\\/g, "\\\\")
-    .replace(/%/g, "\\%")
-    .replace(/_/g, "\\_")
-    .replace(/'/g, "''")
-    .replace(/"/g, '""')
-    .replace(/\[/g, "\\[")
-    .replace(/\]/g, "\\]")
-    .replace(/\^/g, "\\^")
-    .replace(/;/g, "\\;");
+	return input
+		.replace(/\\/g, "\\\\")
+		.replace(/%/g, "\\%")
+		.replace(/_/g, "\\_")
+		.replace(/'/g, "''")
+		.replace(/"/g, '""')
+		.replace(/\[/g, "\\[")
+		.replace(/\]/g, "\\]")
+		.replace(/\^/g, "\\^")
+		.replace(/;/g, "\\;");
 }
 
 /**
@@ -81,50 +81,50 @@ function escapeSpecialChars(input: string): string {
  * ```
  */
 export function sanitizeSqlInput(
-  input: unknown,
-  options: SqlSanitizerOptions = {},
+	input: unknown,
+	options: SqlSanitizerOptions = {},
 ): SqlSanitizeResult {
-  const config = { ...DEFAULT_OPTIONS, ...options };
+	const config = { ...DEFAULT_OPTIONS, ...options };
 
-  if (typeof input !== "string") {
-    if (config.strictMode) {
-      throw new TypeError(`Expected string input, received ${typeof input}`);
-    }
-    return {
-      value: "",
-      wasModified: true,
-      injectionDetected: false,
-      originalLength: 0,
-    };
-  }
+	if (typeof input !== "string") {
+		if (config.strictMode) {
+			throw new TypeError(`Expected string input, received ${typeof input}`);
+		}
+		return {
+			value: "",
+			wasModified: true,
+			injectionDetected: false,
+			originalLength: 0,
+		};
+	}
 
-  const originalLength = input.length;
+	const originalLength = input.length;
 
-  if (!input.trim()) {
-    return {
-      value: "",
-      wasModified: originalLength > 0,
-      injectionDetected: false,
-      originalLength,
-    };
-  }
+	if (!input.trim()) {
+		return {
+			value: "",
+			wasModified: originalLength > 0,
+			injectionDetected: false,
+			originalLength,
+		};
+	}
 
-  const injectionDetected = detectInjectionAttempt(input);
-  let sanitized = escapeSpecialChars(input);
+	const injectionDetected = detectInjectionAttempt(input);
+	let sanitized = escapeSpecialChars(input);
 
-  const wasTruncated = sanitized.length > config.maxLength;
-  if (wasTruncated) {
-    sanitized = sanitized.slice(0, config.maxLength);
-  }
+	const wasTruncated = sanitized.length > config.maxLength;
+	if (wasTruncated) {
+		sanitized = sanitized.slice(0, config.maxLength);
+	}
 
-  sanitized = sanitized.trim();
+	sanitized = sanitized.trim();
 
-  return {
-    value: sanitized,
-    wasModified: injectionDetected || wasTruncated || sanitized !== input,
-    injectionDetected,
-    originalLength,
-  };
+	return {
+		value: sanitized,
+		wasModified: injectionDetected || wasTruncated || sanitized !== input,
+		injectionDetected,
+		originalLength,
+	};
 }
 
 /**
@@ -140,42 +140,44 @@ export function sanitizeSqlInput(
  * ```
  */
 export function createSafeLikePattern(
-  searchTerm: unknown,
-  options?: SqlSanitizerOptions & { patternType?: "prefix" | "suffix" | "contains" },
+	searchTerm: unknown,
+	options?: SqlSanitizerOptions & {
+		patternType?: "prefix" | "suffix" | "contains";
+	},
 ): {
-  pattern: string;
-  isValid: boolean;
-  injectionDetected: boolean;
+	pattern: string;
+	isValid: boolean;
+	injectionDetected: boolean;
 } {
-  const sanitized = sanitizeSqlInput(searchTerm, options);
+	const sanitized = sanitizeSqlInput(searchTerm, options);
 
-  if (!sanitized.value) {
-    return {
-      pattern: "",
-      isValid: false,
-      injectionDetected: sanitized.injectionDetected,
-    };
-  }
+	if (!sanitized.value) {
+		return {
+			pattern: "",
+			isValid: false,
+			injectionDetected: sanitized.injectionDetected,
+		};
+	}
 
-  const patternType = options?.patternType ?? "contains";
-  let pattern: string;
+	const patternType = options?.patternType ?? "contains";
+	let pattern: string;
 
-  switch (patternType) {
-    case "prefix":
-      pattern = `${sanitized.value}%`;
-      break;
-    case "suffix":
-      pattern = `%${sanitized.value}`;
-      break;
-    case "contains":
-    default:
-      pattern = `%${sanitized.value}%`;
-      break;
-  }
+	switch (patternType) {
+		case "prefix":
+			pattern = `${sanitized.value}%`;
+			break;
+		case "suffix":
+			pattern = `%${sanitized.value}`;
+			break;
+		case "contains":
+		default:
+			pattern = `%${sanitized.value}%`;
+			break;
+	}
 
-  return {
-    pattern,
-    isValid: true,
-    injectionDetected: sanitized.injectionDetected,
-  };
+	return {
+		pattern,
+		isValid: true,
+		injectionDetected: sanitized.injectionDetected,
+	};
 }

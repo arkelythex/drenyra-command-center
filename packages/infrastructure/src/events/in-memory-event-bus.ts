@@ -1,15 +1,16 @@
 import { EventEmitter } from "events";
 import {
-	type EventBusPort,
 	type DomainEvent,
-	type EventType,
-	type EventHandler,
-	type SubscriptionOptions,
-	type EventMetadata,
 	EVENT_SCHEMA_VERSION,
+	type EventBusPort,
+	type EventHandler,
+	type EventMetadata,
+	type EventType,
+	type SubscriptionOptions,
 } from "./event.port";
 
-export type { EventBusPort, EventType, EventHandler, DomainEvent };
+export type { DomainEvent, EventBusPort, EventHandler, EventType };
+
 import { nanoid } from "nanoid";
 
 export class InMemoryEventBus implements EventBusPort {

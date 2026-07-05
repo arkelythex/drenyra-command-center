@@ -1,10 +1,10 @@
-import { runSunatAiParitySubagent } from "../rules/peru-2026/sunat-ai-parity-subagent";
 import type { InvoiceData } from "../config/types";
-import type { SireAnomaly } from "./sire-readiness-subagents.service";
+import { runSunatAiParitySubagent } from "../rules/peru-2026/sunat-ai-parity-subagent";
 import type {
 	SireAdversarialInput,
 	SireDestructorChallenge,
 } from "./sire-adversarial-audit.types";
+import type { SireAnomaly } from "./sire-readiness-subagents.service";
 
 function toSyntheticInvoice(input: SireAdversarialInput): InvoiceData {
 	const issueDate = `${input.period}-01`;
@@ -22,7 +22,8 @@ function toSyntheticInvoice(input: SireAdversarialInput): InvoiceData {
 		items: [
 			{
 				descripcion:
-					typeof input.detractionableBasePen === "number" && input.detractionableBasePen > 0
+					typeof input.detractionableBasePen === "number" &&
+					input.detractionableBasePen > 0
 						? "Servicio sujeto a detraccion"
 						: "Venta gravada",
 				cantidad: 1,
@@ -46,9 +47,12 @@ function maxSeverity(
 	return order[next] > order[current] ? next : current;
 }
 
-function severityFromAnomaly(anomaly: SireAnomaly): SireDestructorChallenge["severity"] {
+function severityFromAnomaly(
+	anomaly: SireAnomaly,
+): SireDestructorChallenge["severity"] {
 	if (anomaly.type === "cpe_breach") return "critical";
-	if (anomaly.type === "igv_mismatch" && anomaly.gapPen >= 200) return "critical";
+	if (anomaly.type === "igv_mismatch" && anomaly.gapPen >= 200)
+		return "critical";
 	if (anomaly.type === "igv_mismatch") return "high";
 	if (anomaly.type === "rce_gap") return "high";
 	if (anomaly.type === "detraction_gap" && anomaly.gapPen >= 50) return "high";

@@ -1,53 +1,45 @@
 import {
-	getDetraccionRates,
+	calculateBaseFromTotal,
+	calculateDetraccion,
+	calculateIGV,
+	calculateInvoiceBreakdown,
+	calculatePercepcion,
+	calculateRetencion,
+} from "./calculator";
+import {
 	getDetraccionRate,
-	getPercepcionRates,
+	getDetraccionRates,
 	getPercepcionRate,
+	getPercepcionRates,
 } from "./rates";
 
 import {
-	calculateIGV,
-	calculateBaseFromTotal,
-	calculateDetraccion,
-	calculateRetencion,
-	calculatePercepcion,
-	calculateInvoiceBreakdown,
-} from "./calculator";
-
-import {
 	shouldApplyDetraccion,
-	shouldApplyRetencion,
 	shouldApplyPercepcion,
+	shouldApplyRetencion,
 } from "./validator";
 
 export type {
-	TaxType,
-	TaxCalculationResult,
 	DetraccionRate,
-	PercepcionType,
 	PercepcionRate,
+	PercepcionType,
+	TaxCalculationResult,
+	TaxType,
 } from "./types";
-
 export {
-	getDetraccionRates,
-	getDetraccionRate,
-	getPercepcionRates,
-	getPercepcionRate,
-};
-
-export {
-	calculateIGV,
 	calculateBaseFromTotal,
 	calculateDetraccion,
-	calculateRetencion,
-	calculatePercepcion,
+	calculateIGV,
 	calculateInvoiceBreakdown,
-};
-
-export {
+	calculatePercepcion,
+	calculateRetencion,
+	getDetraccionRate,
+	getDetraccionRates,
+	getPercepcionRate,
+	getPercepcionRates,
 	shouldApplyDetraccion,
-	shouldApplyRetencion,
 	shouldApplyPercepcion,
+	shouldApplyRetencion,
 };
 
 // Backward-compatible class wrapper for consumers using TaxCalculator.calculateIGV() pattern

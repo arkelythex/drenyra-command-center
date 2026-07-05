@@ -2,8 +2,8 @@
  * CreateClientUseCase Tests
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { ClientRepository } from "@drenyra/domain/repositories/client.repository";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CreateClientUseCase } from "../create-client.use-case";
 
 // Mock repository

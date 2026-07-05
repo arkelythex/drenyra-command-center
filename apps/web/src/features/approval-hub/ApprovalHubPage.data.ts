@@ -1,5 +1,5 @@
-import { Clock, CheckCircle2, XCircle, type LucideIcon } from "lucide-react";
 import type { FiscalRiskLevel } from "@drenyra/domain";
+import { CheckCircle2, Clock, type LucideIcon, XCircle } from "lucide-react";
 import type { DrenyraApproval } from "@/features/drenyra-workspace";
 import type { ApprovalItem } from "./ApprovalHubPage.types";
 

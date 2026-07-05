@@ -1,21 +1,18 @@
+import type { SireDownloadResponse, SunatApiClient } from "../SunatApiClient";
 import {
-	type SireDownloadResponse,
-	type SunatApiClient,
-} from "../SunatApiClient";
-import {
-	type SireSyncRequest,
-	type SireSyncStatus,
-	type SireSyncResult,
-	type SireRecord,
-	type SireRegisterType,
-	type SireDiscrepancy,
-} from "./types";
-import {
-	requestDownload as requestDownloadClient,
 	checkStatus as checkStatusClient,
 	download as downloadClient,
+	requestDownload as requestDownloadClient,
 } from "./client";
 import { parseRecords as parseSireRecords } from "./parser";
+import type {
+	SireDiscrepancy,
+	SireRecord,
+	SireRegisterType,
+	SireSyncRequest,
+	SireSyncResult,
+	SireSyncStatus,
+} from "./types";
 
 export class SunatSireService {
 	private client: SunatApiClient;
@@ -30,10 +27,7 @@ export class SunatSireService {
 		return requestDownloadClient(this.client, request);
 	}
 
-	async checkStatus(
-		ruc: string,
-		ticket: string,
-	): Promise<SireSyncStatus> {
+	async checkStatus(ruc: string, ticket: string): Promise<SireSyncStatus> {
 		return checkStatusClient(this.client, ruc, ticket);
 	}
 
@@ -50,10 +44,7 @@ export class SunatSireService {
 			if (onProgress) {
 				onProgress({
 					...status,
-					progreso: Math.min(
-						95,
-						(attempts / this.MAX_POLL_ATTEMPTS) * 100,
-					),
+					progreso: Math.min(95, (attempts / this.MAX_POLL_ATTEMPTS) * 100),
 				});
 			}
 
@@ -125,9 +116,7 @@ export class SunatSireService {
 		for (const [key, localRecord] of localMap) {
 			const sireRecord = sireMap.get(key);
 			if (sireRecord) {
-				const diff = Math.abs(
-					localRecord.total - sireRecord.total,
-				);
+				const diff = Math.abs(localRecord.total - sireRecord.total);
 				if (diff > 0.01) {
 					discrepancies.push({
 						tipo: "MONTO_DIFERENTE",
@@ -179,10 +168,7 @@ export class SunatSireService {
 			mensaje: "Descargando archivo...",
 		});
 
-		const file = await this.download(
-			request.ruc,
-			downloadRequest.ticket,
-		);
+		const file = await this.download(request.ruc, downloadRequest.ticket);
 		if (!file || !file.archivo) {
 			return {
 				success: false,
@@ -198,12 +184,8 @@ export class SunatSireService {
 			mensaje: "Procesando registros...",
 		});
 
-		const sireRecords = this.parseRecords(
-			file.archivo,
-			request.tipo,
-		);
-		const discrepancies =
-			this.findDiscrepancies(localRecords, sireRecords);
+		const sireRecords = this.parseRecords(file.archivo, request.tipo);
+		const discrepancies = this.findDiscrepancies(localRecords, sireRecords);
 
 		onProgress?.({
 			ticket: downloadRequest.ticket,
@@ -226,8 +208,6 @@ export class SunatSireService {
 	}
 }
 
-export function createSireService(
-	client: SunatApiClient,
-): SunatSireService {
+export function createSireService(client: SunatApiClient): SunatSireService {
 	return new SunatSireService(client);
 }

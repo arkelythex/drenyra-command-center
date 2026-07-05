@@ -18,20 +18,34 @@ export function EntitiesGovernanceStrip({
 			<article className="xl:col-span-5 rounded-[var(--radius-lg)] border border-danger-subtle bg-danger-subtle p-4">
 				<div className="mb-2 flex items-center gap-2">
 					<span className="chip chip-danger">L1 Riesgo de negocio</span>
-					<span className="text-label font-semibold uppercase tracking-[0.1em] text-danger">Exposicion por contraparte</span>
+					<span className="text-label font-semibold uppercase tracking-[0.1em] text-danger">
+						Exposicion por contraparte
+					</span>
 				</div>
 				<div className="grid gap-2 sm:grid-cols-3">
 					<div>
-						<p className="text-2xs uppercase tracking-[0.1em] text-muted-foreground">Riesgo alto</p>
-						<p className="text-xl font-black tabular-nums text-danger">{highRiskCount}</p>
+						<p className="text-2xs uppercase tracking-[0.1em] text-muted-foreground">
+							Riesgo alto
+						</p>
+						<p className="text-xl font-black tabular-nums text-danger">
+							{highRiskCount}
+						</p>
 					</div>
 					<div>
-						<p className="text-2xs uppercase tracking-[0.1em] text-muted-foreground">Cumplimiento bajo 80%</p>
-						<p className="text-xl font-black tabular-nums text-warning">{pendingComplianceCount}</p>
+						<p className="text-2xs uppercase tracking-[0.1em] text-muted-foreground">
+							Cumplimiento bajo 80%
+						</p>
+						<p className="text-xl font-black tabular-nums text-warning">
+							{pendingComplianceCount}
+						</p>
 					</div>
 					<div>
-						<p className="text-2xs uppercase tracking-[0.1em] text-muted-foreground">Compliance promedio</p>
-						<p className="text-xl font-black tabular-nums text-info">{avgCompliance}%</p>
+						<p className="text-2xs uppercase tracking-[0.1em] text-muted-foreground">
+							Compliance promedio
+						</p>
+						<p className="text-xl font-black tabular-nums text-info">
+							{avgCompliance}%
+						</p>
 					</div>
 				</div>
 			</article>
@@ -42,15 +56,24 @@ export function EntitiesGovernanceStrip({
 				</div>
 				<div className="space-y-2 text-label">
 					<p className="rounded-[var(--radius-md)] border border-[var(--color-stroke-1)] bg-surface-2 px-3 py-2">
-						<span className="text-muted-foreground">Propuesta:</span> Aplicar revision de compliance a entidades criticas.
+						<span className="text-muted-foreground">Propuesta:</span> Aplicar
+						revision de compliance a entidades criticas.
 					</p>
 					<p className="rounded-[var(--radius-md)] border border-[var(--color-stroke-1)] bg-surface-2 px-3 py-2">
-						<span className="text-muted-foreground">Impacto:</span> Ajusta perfil de riesgo y bloqueos operativos.
+						<span className="text-muted-foreground">Impacto:</span> Ajusta
+						perfil de riesgo y bloqueos operativos.
 					</p>
 					<p className="rounded-[var(--radius-md)] border border-[var(--color-stroke-1)] bg-surface-2 px-3 py-2">
 						<span className="text-muted-foreground">Confirmacion:</span>{" "}
-						<span className={cn("font-semibold", highRiskCount > 0 ? "text-warning" : "text-success")}>
-							{highRiskCount > 0 ? "Aprobacion humana requerida" : "Sin bloqueos criticos"}
+						<span
+							className={cn(
+								"font-semibold",
+								highRiskCount > 0 ? "text-warning" : "text-success",
+							)}
+						>
+							{highRiskCount > 0
+								? "Aprobacion humana requerida"
+								: "Sin bloqueos criticos"}
 						</span>
 					</p>
 				</div>

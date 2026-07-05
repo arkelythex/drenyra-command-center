@@ -1,4 +1,7 @@
-import type { AgentContext, ApprovalRequest } from "@drenyra/drenyra-orchestrator";
+import type {
+	AgentContext,
+	ApprovalRequest,
+} from "@drenyra/drenyra-orchestrator";
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
 import { createApprovalGateRoutes } from "../approval-gate.routes";
@@ -58,7 +61,8 @@ function createTestApp(seed = approval()) {
 			approvalGate: {
 				async approve(approvalId, reviewerId, reviewerRole) {
 					const item = store.get(approvalId);
-					if (!item) return { ok: false, error: "not found", code: "NOT_FOUND" };
+					if (!item)
+						return { ok: false, error: "not found", code: "NOT_FOUND" };
 					item.state = "approved";
 					item.reviewerId = reviewerId;
 					item.reviewerRole = reviewerRole;
@@ -66,7 +70,8 @@ function createTestApp(seed = approval()) {
 				},
 				async reject(approvalId, reviewerId, rationale) {
 					const item = store.get(approvalId);
-					if (!item) return { ok: false, error: "not found", code: "NOT_FOUND" };
+					if (!item)
+						return { ok: false, error: "not found", code: "NOT_FOUND" };
 					item.state = "rejected";
 					item.reviewerId = reviewerId;
 					item.rationale = rationale;

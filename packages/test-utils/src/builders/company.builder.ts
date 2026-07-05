@@ -11,8 +11,9 @@
  *   .build();
  * ```
  */
-import { RUC } from "@drenyra/domain/value-objects/RUC";
+
 import type { Currency } from "@drenyra/domain/value-objects/Money";
+import { RUC } from "@drenyra/domain/value-objects/RUC";
 import { BaseBuilder } from "./base.builder";
 
 const DEFAULT_COMPANY_ID = "cmp_test_001";

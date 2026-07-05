@@ -3,7 +3,10 @@ import {
 	type RunbookReference,
 } from "../../../lib/compliance-runbooks";
 import { findSunatCatalogEntry } from "../domain/sunat-code-catalog";
-import type { ValidationError, ValidationStatus } from "../domain/value-objects/validation-result.vo";
+import type {
+	ValidationError,
+	ValidationStatus,
+} from "../domain/value-objects/validation-result.vo";
 
 /**
  * CpeIncidentCategory type.

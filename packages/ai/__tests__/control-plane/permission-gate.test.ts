@@ -12,17 +12,17 @@
  * fiscal-policy-engine.integration.test.ts.
  */
 
-import { describe, it, expect, vi } from "vitest";
-import { PolicyEngine } from "../../src/control-plane/policy-engine";
-import { PermissionService } from "../../src/governance/permission-service";
-import { createInMemoryTraceEvidenceStore } from "../../src/control-plane/trace-evidence";
+import { describe, expect, it, vi } from "vitest";
 import type { AgentRegistry } from "../../src/control-plane/agent-registry";
-import type { ToolRegistry } from "../../src/control-plane/tool-registry";
 import type {
 	AgentRegistryEntry,
-	ToolDefinition,
 	TenantCompanyRucScope,
+	ToolDefinition,
 } from "../../src/control-plane/contracts";
+import { PolicyEngine } from "../../src/control-plane/policy-engine";
+import type { ToolRegistry } from "../../src/control-plane/tool-registry";
+import { createInMemoryTraceEvidenceStore } from "../../src/control-plane/trace-evidence";
+import { PermissionService } from "../../src/governance/permission-service";
 
 // ============================================================================
 // Fixtures
@@ -91,9 +91,7 @@ function createEngine(options?: {
 		getTool: vi
 			.fn()
 			.mockImplementation(async (name: string) =>
-				name === "perm-tool-1"
-					? makeTool(name, options?.toolOverrides)
-					: null,
+				name === "perm-tool-1" ? makeTool(name, options?.toolOverrides) : null,
 			),
 		registerTool: vi.fn(),
 		listToolsByRiskTier: vi.fn(),

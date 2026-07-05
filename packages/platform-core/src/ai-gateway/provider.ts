@@ -17,16 +17,16 @@
  * Configuration for an AI model provider.
  */
 export interface ProviderConfig {
-  /** Provider identifier (e.g., "google", "anthropic", "openai") */
-  name: string;
-  /** Base URL for the provider API */
-  baseUrl?: string;
-  /** API key (resolved from environment at runtime) */
-  apiKey?: string;
-  /** Maximum retries on provider errors */
-  maxRetries?: number;
-  /** Request timeout in milliseconds */
-  timeout?: number;
+	/** Provider identifier (e.g., "google", "anthropic", "openai") */
+	name: string;
+	/** Base URL for the provider API */
+	baseUrl?: string;
+	/** API key (resolved from environment at runtime) */
+	apiKey?: string;
+	/** Maximum retries on provider errors */
+	maxRetries?: number;
+	/** Request timeout in milliseconds */
+	timeout?: number;
 }
 
 // ──────────────────────────────────────────────
@@ -37,54 +37,54 @@ export interface ProviderConfig {
  * A message in a chat conversation.
  */
 export interface ChatMessage {
-  /** Message role */
-  role: "system" | "user" | "assistant" | "tool";
-  /** Message content */
-  content: string;
+	/** Message role */
+	role: "system" | "user" | "assistant" | "tool";
+	/** Message content */
+	content: string;
 }
 
 /**
  * A request for chat completion.
  */
 export interface ChatCompletionRequest {
-  /** Model identifier to use */
-  model: string;
-  /** Conversation messages */
-  messages: ChatMessage[];
-  /** Sampling temperature (0-1, lower = more deterministic) */
-  temperature?: number;
-  /** Maximum tokens to generate */
-  maxTokens?: number;
-  /** Sequences that stop generation */
-  stop?: string[];
+	/** Model identifier to use */
+	model: string;
+	/** Conversation messages */
+	messages: ChatMessage[];
+	/** Sampling temperature (0-1, lower = more deterministic) */
+	temperature?: number;
+	/** Maximum tokens to generate */
+	maxTokens?: number;
+	/** Sequences that stop generation */
+	stop?: string[];
 }
 
 /**
  * Token usage statistics.
  */
 export interface TokenUsage {
-  /** Number of prompt tokens consumed */
-  promptTokens: number;
-  /** Number of completion tokens generated */
-  completionTokens: number;
-  /** Total tokens consumed */
-  totalTokens: number;
+	/** Number of prompt tokens consumed */
+	promptTokens: number;
+	/** Number of completion tokens generated */
+	completionTokens: number;
+	/** Total tokens consumed */
+	totalTokens: number;
 }
 
 /**
  * The result of a chat completion request.
  */
 export interface ChatCompletionResult {
-  /** Unique response identifier */
-  id: string;
-  /** Model that generated the response */
-  model: string;
-  /** Generated content text */
-  content: string;
-  /** Token usage statistics (when available) */
-  usage?: TokenUsage;
-  /** Reason the generation finished ("stop", "length", "error") */
-  finishReason: string;
+	/** Unique response identifier */
+	id: string;
+	/** Model that generated the response */
+	model: string;
+	/** Generated content text */
+	content: string;
+	/** Token usage statistics (when available) */
+	usage?: TokenUsage;
+	/** Reason the generation finished ("stop", "length", "error") */
+	finishReason: string;
 }
 
 // ──────────────────────────────────────────────
@@ -95,22 +95,22 @@ export interface ChatCompletionResult {
  * A request for text embedding.
  */
 export interface EmbeddingRequest {
-  /** Model identifier for embeddings */
-  model: string;
-  /** Text or texts to embed */
-  input: string | string[];
+	/** Model identifier for embeddings */
+	model: string;
+	/** Text or texts to embed */
+	input: string | string[];
 }
 
 /**
  * The result of an embedding request.
  */
 export interface EmbeddingResult {
-  /** Model that generated the embeddings */
-  model: string;
-  /** Generated embedding vectors */
-  embeddings: number[][];
-  /** Token usage statistics (when available) */
-  usage?: TokenUsage;
+	/** Model that generated the embeddings */
+	model: string;
+	/** Generated embedding vectors */
+	embeddings: number[][];
+	/** Token usage statistics (when available) */
+	usage?: TokenUsage;
 }
 
 // ──────────────────────────────────────────────
@@ -121,14 +121,14 @@ export interface EmbeddingResult {
  * A chunk of a streaming response.
  */
 export interface StreamChunk {
-  /** Chunk type */
-  type: "token" | "done" | "error";
-  /** Text content (for token chunks) */
-  content?: string;
-  /** Reason generation finished (for done chunks) */
-  finishReason?: string;
-  /** Error message (for error chunks) */
-  error?: string;
+	/** Chunk type */
+	type: "token" | "done" | "error";
+	/** Text content (for token chunks) */
+	content?: string;
+	/** Reason generation finished (for done chunks) */
+	finishReason?: string;
+	/** Error message (for error chunks) */
+	error?: string;
 }
 
 // ──────────────────────────────────────────────
@@ -142,14 +142,18 @@ export interface StreamChunk {
  * this interface to be usable by the AI Gateway.
  */
 export interface LLMProvider {
-  /** Provider name */
-  name: string;
-  /** Send a chat completion request and return the result */
-  generateChatCompletion(request: ChatCompletionRequest): Promise<ChatCompletionResult>;
-  /** Stream a chat completion response */
-  generateStreamingCompletion(request: ChatCompletionRequest): AsyncIterable<StreamChunk>;
-  /** Generate embeddings for the given text */
-  generateEmbedding(request: EmbeddingRequest): Promise<EmbeddingResult>;
+	/** Provider name */
+	name: string;
+	/** Send a chat completion request and return the result */
+	generateChatCompletion(
+		request: ChatCompletionRequest,
+	): Promise<ChatCompletionResult>;
+	/** Stream a chat completion response */
+	generateStreamingCompletion(
+		request: ChatCompletionRequest,
+	): AsyncIterable<StreamChunk>;
+	/** Generate embeddings for the given text */
+	generateEmbedding(request: EmbeddingRequest): Promise<EmbeddingResult>;
 }
 
 // ──────────────────────────────────────────────
@@ -160,8 +164,8 @@ export interface LLMProvider {
  * A factory that creates LLM provider instances.
  */
 export interface ProviderFactory {
-  /** Create a provider instance from configuration */
-  createProvider(config: ProviderConfig): LLMProvider;
-  /** List supported provider names */
-  getSupportedProviders(): string[];
+	/** Create a provider instance from configuration */
+	createProvider(config: ProviderConfig): LLMProvider;
+	/** List supported provider names */
+	getSupportedProviders(): string[];
 }

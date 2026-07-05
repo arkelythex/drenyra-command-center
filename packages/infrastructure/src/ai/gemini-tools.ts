@@ -10,10 +10,8 @@
  * @since 2026 Gemini Brain Standard
  */
 
+import { consultarRucSunat as consultarRucApi } from "@drenyra/infrastructure/api/sunat.service";
 import { z } from "zod";
-import {
-	consultarRucSunat as consultarRucApi,
-} from "@drenyra/infrastructure/api/sunat.service";
 import { loggers } from "../logger";
 
 // ============================================

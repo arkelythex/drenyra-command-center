@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from "vitest";
 
-describe('@drenyra/ui', () => {
-  it('should be importable', () => {
-    expect(true).toBe(true);
-  });
+describe("@drenyra/ui", () => {
+	it("should be importable", () => {
+		expect(true).toBe(true);
+	});
 });

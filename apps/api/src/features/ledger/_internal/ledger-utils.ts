@@ -1,4 +1,4 @@
-import { transactionTypeEnum } from "@drenyra/persistence/schema";
+import type { transactionTypeEnum } from "@drenyra/persistence/schema";
 
 /**
  * TransactionDirection type.

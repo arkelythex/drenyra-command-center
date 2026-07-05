@@ -9,12 +9,12 @@ import type {
 	AgentConfidence,
 	AlertSeverity,
 } from "@drenyra/ai/services/swarm-consensus/types";
-import type { SubagentResult } from "./sire-readiness-subagents.service";
 import type {
 	SireArbiterDecision,
 	SireCreatorProposal,
 	SireDestructorChallenge,
 } from "./sire-adversarial-audit.types";
+import type { SubagentResult } from "./sire-readiness-subagents.service";
 
 function clamp(value: number, min: number, max: number): number {
 	return Math.min(max, Math.max(min, value));
@@ -50,7 +50,8 @@ function buildConfidences(
 			agentId: "destructor-subagent",
 			agentRole: "detector",
 			confidence: destructor.confidence,
-			reasoning: destructor.blockers[0] ?? destructor.warnings[0] ?? "Sin observaciones",
+			reasoning:
+				destructor.blockers[0] ?? destructor.warnings[0] ?? "Sin observaciones",
 			timestamp: new Date(),
 		},
 	];
@@ -62,8 +63,10 @@ function resolveDecision(
 	destructor: SireDestructorChallenge,
 ): SireArbiterDecision["decision"] {
 	if (destructor.severity === "critical") return "rejected";
-	if (destructor.blockers.length > 0 && consensusScore < threshold) return "rejected";
-	if (destructor.blockers.length === 0 && consensusScore >= threshold) return "approved";
+	if (destructor.blockers.length > 0 && consensusScore < threshold)
+		return "rejected";
+	if (destructor.blockers.length === 0 && consensusScore >= threshold)
+		return "approved";
 	return "manual_review";
 }
 

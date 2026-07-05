@@ -1,4 +1,8 @@
-import type { FiscalMemory, FiscalMemorySeverity, FiscalMemoryScope } from "@drenyra/domain/fiscal-memory";
+import type {
+	FiscalMemory,
+	FiscalMemoryScope,
+	FiscalMemorySeverity,
+} from "@drenyra/domain/fiscal-memory";
 import type { FiscalMemoryRepository } from "@drenyra/domain/repositories/fiscal-memory.repository";
 
 /**
@@ -45,7 +49,10 @@ const severityFromRank = (rank: number): FiscalMemorySeverity => {
 	return "info";
 };
 
-const memoryMatchesError = (memory: FiscalMemory, errorCode: string): boolean => {
+const memoryMatchesError = (
+	memory: FiscalMemory,
+	errorCode: string,
+): boolean => {
 	const normalized = errorCode.trim();
 	return memory.tags.some(
 		(tag) =>
@@ -72,15 +79,23 @@ export class RecurringErrorService {
 	 * @returns Recurrence count, affected periods, severity, and action recommendation.
 	 * @throws Error when the repository implementation fails to enforce scope.
 	 */
-	async evaluate(input: EvaluateRecurringErrorInput): Promise<RecurringErrorResult> {
+	async evaluate(
+		input: EvaluateRecurringErrorInput,
+	): Promise<RecurringErrorResult> {
 		const matching: FiscalMemory[] = [];
 
 		for (const period of input.periods) {
 			const memories = await this.repository.findByPeriod(input.scope, period);
-			matching.push(...memories.filter((memory) => memoryMatchesError(memory, input.errorCode)));
+			matching.push(
+				...memories.filter((memory) =>
+					memoryMatchesError(memory, input.errorCode),
+				),
+			);
 		}
 
-		const periods = [...new Set(matching.map((memory) => memory.period))].sort();
+		const periods = [
+			...new Set(matching.map((memory) => memory.period)),
+		].sort();
 		const maxSeverityRank = matching.reduce(
 			(max, memory) => Math.max(max, SEVERITY_RANK[memory.severity]),
 			SEVERITY_RANK.info,
@@ -91,9 +106,14 @@ export class RecurringErrorService {
 			errorCode: input.errorCode,
 			recurrenceCount,
 			periods,
-			severity: recurrenceCount >= 3 ? "high" : severityFromRank(maxSeverityRank),
+			severity:
+				recurrenceCount >= 3 ? "high" : severityFromRank(maxSeverityRank),
 			recommendedAction:
-				recurrenceCount >= 3 ? "escalate" : recurrenceCount > 0 ? "review" : "monitor",
+				recurrenceCount >= 3
+					? "escalate"
+					: recurrenceCount > 0
+						? "review"
+						: "monitor",
 		};
 	}
 }

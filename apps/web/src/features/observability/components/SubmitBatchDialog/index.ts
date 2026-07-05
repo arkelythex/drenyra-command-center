@@ -3,4 +3,7 @@
  */
 
 export { SubmitBatchDialog } from "./SubmitBatchDialog";
-export type { SubmitBatchDialogProps, DraftInvoice } from "./SubmitBatchDialog.types";
+export type {
+	DraftInvoice,
+	SubmitBatchDialogProps,
+} from "./SubmitBatchDialog.types";

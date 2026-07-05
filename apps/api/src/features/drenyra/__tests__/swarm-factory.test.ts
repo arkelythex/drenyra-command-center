@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
-import { createSwarmOrchestratorFromAgents } from "../swarm-factory";
 import type { Agent, LatinAgentId } from "@drenyra/drenyra-orchestrator";
 import { DomainAgent } from "@drenyra/drenyra-orchestrator";
+import { describe, expect, it } from "vitest";
+import { createSwarmOrchestratorFromAgents } from "../swarm-factory";
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -52,7 +52,8 @@ function getRegisteredDomains(
 		const agent = (orchestrator as any).getDomainAgent(id);
 		if (agent instanceof DomainAgent) {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			const agentIds = ((agent as any).agents ?? [])?.map((a: Agent) => a.id) ?? [];
+			const agentIds =
+				((agent as any).agents ?? [])?.map((a: Agent) => a.id) ?? [];
 			domains.push({ id: agent.id, agentId: agentIds.join(",") });
 		}
 	}
@@ -183,10 +184,7 @@ describe("createSwarmOrchestratorFromAgents", () => {
 			makeMockAgent("vulnerability-manager-agent", "Vuln Manager", [
 				"vulnerability-management",
 			]),
-			makeMockAgent("gdpr-checker-agent", "GDPR Checker", [
-				"gdpr",
-				"privacy",
-			]),
+			makeMockAgent("gdpr-checker-agent", "GDPR Checker", ["gdpr", "privacy"]),
 			makeMockAgent("kpi-tracker-agent", "KPI Tracker", ["kpi"]),
 		];
 
@@ -236,11 +234,9 @@ describe("multi-agent financial assignment", () => {
 			makeMockAgent("invoice-processor-agent", "Invoice Processor", [
 				"invoice-processing",
 			]),
-			makeMockAgent(
-				"banking-reconciliation-agent",
-				"Banking Reconciliation",
-				["reconciliation"],
-			),
+			makeMockAgent("banking-reconciliation-agent", "Banking Reconciliation", [
+				"reconciliation",
+			]),
 			makeMockAgent("financial-analyzer-agent", "Financial Analyzer", [
 				"financial-analysis",
 			]),
@@ -251,9 +247,7 @@ describe("multi-agent financial assignment", () => {
 				"audit-trail",
 				"report-generation",
 			]),
-			makeMockAgent("generic-monitor", "Generic Monitor", [
-				"risk-monitoring",
-			]),
+			makeMockAgent("generic-monitor", "Generic Monitor", ["risk-monitoring"]),
 		];
 	}
 

@@ -16,5 +16,5 @@
  */
 
 export { aiRagRoutes } from "./api/routes";
+export { knowledgeBaseModule, knowledgeBaseRoutes } from "./knowledge-base";
 export { aiRagModule } from "./module";
-export { knowledgeBaseRoutes, knowledgeBaseModule } from "./knowledge-base";

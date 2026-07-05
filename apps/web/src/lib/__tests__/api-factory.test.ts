@@ -144,8 +144,8 @@ describe("safeApiCall", () => {
 	});
 
 	it("returns { ok: false, error: 'Error desconocido' } when the promise rejects with a string", async () => {
-		const result = await safeApiCall<never>(() =>
-			Promise.reject("raw"), // eslint-disable-line prefer-promise-reject-errors
+		const result = await safeApiCall<never>(
+			() => Promise.reject("raw"), // eslint-disable-line prefer-promise-reject-errors
 		);
 
 		expect(result).toEqual({ ok: false, error: "Error desconocido" });
@@ -542,7 +542,10 @@ describe("createCrudApi", () => {
 
 		it("returns the raw server body by default (unwrap result)", async () => {
 			const api = createCrudApi("customers");
-			const serverBody = { success: true, data: { id: "new-1", name: "NewCo" } };
+			const serverBody = {
+				success: true,
+				data: { id: "new-1", name: "NewCo" },
+			};
 			hoisted.customers.route.post.mockResolvedValue({
 				data: serverBody,
 			});
@@ -742,7 +745,9 @@ describe("createCrudApi", () => {
 				data: { success: false },
 			});
 
-			await expect(api.list()).rejects.toThrow("No se pudieron cargar customers");
+			await expect(api.list()).rejects.toThrow(
+				"No se pudieron cargar customers",
+			);
 		});
 
 		it("includes the path name in the default create message", async () => {

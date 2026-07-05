@@ -8,14 +8,14 @@
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
 export * from "./constants";
-export * from "./types";
-export * from "./fiscal-pipeline";
-export * from "./expediente-fiscal";
-export * from "./entities/FiscalTruthEvent";
-export * from "./entities/EvidenceNode";
 export * from "./entities/EvidenceEdge";
-export * from "./repositories/fiscal-truth.repository";
-export * from "./repositories/evidence-graph.repository";
-export * from "./repositories/replay.repository";
+export * from "./entities/EvidenceNode";
+export * from "./entities/FiscalTruthEvent";
+export * from "./expediente-fiscal";
+export * from "./fiscal-pipeline";
 export * from "./ontology";
+export * from "./repositories/evidence-graph.repository";
+export * from "./repositories/fiscal-truth.repository";
+export * from "./repositories/replay.repository";
 export * from "./rule-set";
+export * from "./types";

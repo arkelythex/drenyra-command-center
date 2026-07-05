@@ -19,7 +19,9 @@ export const ACCOUNTING_PERIOD_STATUS = {
 export type AccountingPeriodStatus =
 	(typeof ACCOUNTING_PERIOD_STATUS)[keyof typeof ACCOUNTING_PERIOD_STATUS];
 
-const ALL_STATUS_VALUES = Object.values(ACCOUNTING_PERIOD_STATUS) as readonly string[];
+const ALL_STATUS_VALUES = Object.values(
+	ACCOUNTING_PERIOD_STATUS,
+) as readonly string[];
 
 const MIN_YEAR = 2020;
 const MAX_YEAR = 2100;
@@ -225,10 +227,7 @@ export class InvalidAccountingTransitionError extends Error {
 		public readonly targetStatus: string,
 		message?: string,
 	) {
-		super(
-			message ||
-				`Invalid transition: ${currentStatus} → ${targetStatus}`,
-		);
+		super(message || `Invalid transition: ${currentStatus} → ${targetStatus}`);
 		this.name = "InvalidAccountingTransitionError";
 		Object.setPrototypeOf(this, InvalidAccountingTransitionError.prototype);
 	}

@@ -1,5 +1,5 @@
-import type { AccessibleCompany } from "./company-membership";
 import { createLogger } from "../../../lib/logger";
+import type { AccessibleCompany } from "./company-membership";
 import {
 	ensureUserCompanyMembershipFromRuc,
 	listUserCompanyMemberships,
@@ -7,7 +7,10 @@ import {
 	normalizeSessionString,
 } from "./company-membership";
 
-const logger = createLogger({ feature: "auth", handler: "session-company-context" });
+const logger = createLogger({
+	feature: "auth",
+	handler: "session-company-context",
+});
 
 interface SessionUserLike {
 	id?: string;
@@ -33,11 +36,17 @@ function resolveActiveCompany(
 		normalizeSessionString(user.activeCompanyId) ||
 		normalizeSessionString(user.companyId);
 	if (explicitCompanyId) {
-		const explicit = availableCompanies.find((company) => company.companyId === explicitCompanyId);
+		const explicit = availableCompanies.find(
+			(company) => company.companyId === explicitCompanyId,
+		);
 		if (explicit) return explicit;
 	}
 
-	return availableCompanies.find((company) => company.isDefault) ?? availableCompanies[0] ?? null;
+	return (
+		availableCompanies.find((company) => company.isDefault) ??
+		availableCompanies[0] ??
+		null
+	);
 }
 
 /**
@@ -52,9 +61,18 @@ function resolveActiveCompany(
  * console.log(result);
  * ```
  */
-export async function enrichSessionUserWithCompanyContext<T extends SessionUserLike>(
+export async function enrichSessionUserWithCompanyContext<
+	T extends SessionUserLike,
+>(
 	user: T | null | undefined,
-): Promise<(T & { activeCompanyId?: string; availableCompanies?: AccessibleCompany[]; legacyUserId?: string }) | null> {
+): Promise<
+	| (T & {
+			activeCompanyId?: string;
+			availableCompanies?: AccessibleCompany[];
+			legacyUserId?: string;
+	  })
+	| null
+> {
 	if (!user) return null;
 
 	const userId = normalizeSessionString(user.id);
@@ -65,7 +83,10 @@ export async function enrichSessionUserWithCompanyContext<T extends SessionUserL
 			userId.length > 0 ? await listUserCompanyMemberships(userId) : [];
 
 		if (availableCompanies.length === 0 && userId && ruc) {
-			const bootstrapped = await ensureUserCompanyMembershipFromRuc(userId, ruc);
+			const bootstrapped = await ensureUserCompanyMembershipFromRuc(
+				userId,
+				ruc,
+			);
 			if (bootstrapped) {
 				availableCompanies = [bootstrapped];
 			}
@@ -88,7 +109,10 @@ export async function enrichSessionUserWithCompanyContext<T extends SessionUserL
 			availableCompanies,
 		};
 	} catch (error) {
-		logger.warn({ error, userId, ruc }, "Failed to resolve session company context");
+		logger.warn(
+			{ error, userId, ruc },
+			"Failed to resolve session company context",
+		);
 		return user;
 	}
 }

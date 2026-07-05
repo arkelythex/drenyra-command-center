@@ -1,8 +1,8 @@
 import { QueryClient } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 import { render, screen, waitFor } from "@testing-library/react";
-import { describe, expect, it, vi, beforeEach } from "vitest";
 import type { ReactNode } from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter } from "../router";
 
 // ---------------------------------------------------------------------------
@@ -41,7 +41,9 @@ vi.mock("../context/SettingsContext", () => ({
 }));
 
 vi.mock("../context/SimulationContext", () => ({
-	SimulationProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
+	SimulationProvider: ({ children }: { children: ReactNode }) => (
+		<>{children}</>
+	),
 }));
 
 vi.mock("../components/ui/motion-primitives", () => ({

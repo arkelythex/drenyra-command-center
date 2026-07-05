@@ -14,9 +14,9 @@
 
 import type {
 	AgentRunOutput,
-	VerificationReport,
 	VerificationAuditEvent,
 	VerificationMetrics,
+	VerificationReport,
 	VerifiedFinding,
 } from "@drenyra/domain/drenyra";
 import { runVerificationRules } from "./rules/registry";

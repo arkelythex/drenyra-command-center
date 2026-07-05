@@ -1,14 +1,14 @@
+import type { CierreMensualChecklistItem } from "@drenyra/domain";
 import {
 	ArrowRightLeft,
-	Receipt,
 	Calculator,
-	Landmark,
 	FileText,
-	Package,
 	Fingerprint,
+	Landmark,
 	type LucideIcon,
+	Package,
+	Receipt,
 } from "lucide-react";
-import type { CierreMensualChecklistItem } from "@drenyra/domain";
 import { ChecklistRow } from "./ChecklistRow";
 
 const CHECKLIST_ICONS: Record<number, LucideIcon> = {
@@ -42,9 +42,8 @@ export function ChecklistPanel({ checklist }: ChecklistPanelProps) {
 						const Icon = CHECKLIST_ICONS[item.orden] || FileText;
 						const nextIncomplete =
 							!item.completado &&
-							checklist.find(
-								(c) => c.orden < item.orden && !c.completado,
-							) === undefined;
+							checklist.find((c) => c.orden < item.orden && !c.completado) ===
+								undefined;
 
 						return (
 							<ChecklistRow

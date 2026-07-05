@@ -4,10 +4,10 @@
  * @module reports/__tests__/unit/reports-service.test
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { ReportsService } from "../../index";
 import { db } from "@drenyra/persistence/client";
 import { bills, invoices } from "@drenyra/persistence/schema";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { ReportsService } from "../../index";
 
 vi.mock("@drenyra/persistence/client", () => ({
 	db: {

@@ -23,7 +23,8 @@ describe("resolveTrustedOriginsFromEnv", () => {
 
 		expect(origins).toContain("http://192.168.18.4:5173");
 		expect(origins).toContain("http://10.0.0.20:4173");
-		expect(origins.filter((item) => item === "http://localhost:5173")).toHaveLength(1);
+		expect(
+			origins.filter((item) => item === "http://localhost:5173"),
+		).toHaveLength(1);
 	});
 });
-

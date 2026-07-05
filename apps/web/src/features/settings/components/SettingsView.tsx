@@ -1,11 +1,11 @@
 import { Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSettingsGeneral } from "../hooks/use-settings-general";
 import { SettingsShell } from "./SettingsShell";
 import { CompanySettingsSection } from "./settings-view/company-section";
 import { SettingsFooterActions } from "./settings-view/footer-actions";
 import { OperationalSettingsSection } from "./settings-view/operational-section";
 import { RegionSettingsSection } from "./settings-view/region-section";
-import { useSettingsGeneral } from "../hooks/use-settings-general";
 
 export const SettingsView = () => {
 	const {
@@ -32,7 +32,10 @@ export const SettingsView = () => {
 			icon={Settings}
 			badge="BASE DEL WORKSPACE"
 			actions={
-				<Button variant="outline" className="text-xs font-black uppercase tracking-widest">
+				<Button
+					variant="outline"
+					className="text-xs font-black uppercase tracking-widest"
+				>
 					Restaurar Base
 				</Button>
 			}

@@ -1,29 +1,29 @@
 import { sunatKnowledgeService } from "@drenyra/ai/services/sunat-knowledge";
-import {
-	type ContextEvaluationSummaryDTO,
-	type ContextRunStateDTO,
-	type ContextTraceRecordDTO,
+import type {
+	ContextEvaluationSummaryDTO,
+	ContextRunStateDTO,
+	ContextTraceRecordDTO,
 } from "@drenyra/application";
-import { accountingJobRuns } from "@drenyra/persistence/schema";
 import { db } from "@drenyra/persistence/client";
 import { and, desc, eq } from "@drenyra/persistence/query";
+import { accountingJobRuns } from "@drenyra/persistence/schema";
 import { contextAuditService } from "../../features/ai-swarm/context-control-plane/context-audit.service";
 import { contextEvaluationService } from "../../features/ai-swarm/context-control-plane/context-evaluation.service";
 import { contextPolicyService } from "../../features/ai-swarm/context-control-plane/context-policy.service";
 import { getControlPlaneJobMetadata } from "../../features/ai-swarm/context-control-plane/control-plane-job-metadata";
-import { getAccountingJobs } from "../../lib/accounting-jobs";
 import { SireRegisterExportService } from "../../features/sire/services/sire-register-export.service";
+import { getAccountingJobs } from "../../lib/accounting-jobs";
 import {
+	ACCOUNTING_JOB_ERRORS,
+	ACCOUNTING_JOB_RUN_TRANSITIONS,
 	type AccountingJobRunControlPlaneSnapshot,
 	type AccountingJobRunRecord,
 	type AccountingJobRunStatus,
-	ACCOUNTING_JOB_ERRORS,
-	ACCOUNTING_JOB_RUN_TRANSITIONS,
-	SUPPORTED_EXECUTABLE_JOBS,
-	type SupportedExecutableJob,
 	isTerminalAccountingJobRunStatus,
 	readControlPlaneSnapshot,
 	readObjectRecord,
+	SUPPORTED_EXECUTABLE_JOBS,
+	type SupportedExecutableJob,
 	toApprovalState,
 	writeControlPlaneSnapshot,
 } from "./types";
@@ -355,9 +355,7 @@ export class AccountingJobRunsService {
 			snapshot.requestedCorpora.length > 0
 				? snapshot.requestedCorpora
 				: snapshot.policy.allowedCorpora;
-		const documentaryContext = documentaryCorpora.includes(
-			"sunat-sire-manuals",
-		)
+		const documentaryContext = documentaryCorpora.includes("sunat-sire-manuals")
 			? await sunatKnowledgeService.buildDocumentaryContext({
 					query: `SIRE ${period} validación de registros y alertas`,
 					categories: ["sire"],
@@ -422,8 +420,7 @@ export class AccountingJobRunsService {
 			evaluationSummary,
 		});
 
-		const nextSnapshot: AccountingJobRunControlPlaneSnapshot =
-		{
+		const nextSnapshot: AccountingJobRunControlPlaneSnapshot = {
 			...snapshot,
 			traceRecords: [...snapshot.traceRecords, evaluationTrace],
 			evaluationSummary,

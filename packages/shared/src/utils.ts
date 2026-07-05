@@ -1,5 +1,5 @@
-import { type ClassValue, clsx } from "clsx";
 import type { Currency } from "@drenyra/domain";
+import { type ClassValue, clsx } from "clsx";
 
 /**
  * Merges conditional class names (clsx) and resolves Tailwind conflicts (tailwind-merge).

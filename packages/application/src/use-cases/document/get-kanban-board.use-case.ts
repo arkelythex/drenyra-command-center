@@ -67,9 +67,7 @@ export class GetKanbanBoardUseCase {
 		});
 
 		const porProcesar = documents
-			.filter(
-				(doc) => doc.status === "UPLOADED" || doc.status === "EXTRACTING",
-			)
+			.filter((doc) => doc.status === "UPLOADED" || doc.status === "EXTRACTING")
 			.map(mapToDTO);
 		const revisionHumana = documents
 			.filter((doc) => doc.status === "PENDING_VALIDATION")

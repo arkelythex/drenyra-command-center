@@ -1,11 +1,11 @@
 export * from "./commands/append-evidence.command";
 export * from "./commands/promote-fiscal-truth.command";
+export * from "./ports/deterministic-fiscal-validator.port";
+export * from "./ports/governance-bundle.port";
 export * from "./queries/get-evidence-graph.query";
 export * from "./queries/get-fiscal-truth-event.query";
 export * from "./queries/replay-fiscal-truth.query";
 export * from "./services/deterministic-validator-orchestrator.service";
 export * from "./services/governance-bundle.service";
 export * from "./services/replay-fiscal-truth.service";
-export * from "./ports/deterministic-fiscal-validator.port";
-export * from "./ports/governance-bundle.port";
 //# sourceMappingURL=index.js.map

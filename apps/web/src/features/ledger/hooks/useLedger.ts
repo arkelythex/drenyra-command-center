@@ -7,12 +7,12 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
-import { toLedgerPeriodQueryKeys } from "../lib/ledger-view-model";
 import {
 	chartOfAccountsQueryOptions,
 	generalLedgerQueryOptions,
 	trialBalanceQueryOptions,
 } from "../api/query-options";
+import { toLedgerPeriodQueryKeys } from "../lib/ledger-view-model";
 
 function useLedgerCompanyId(): string {
 	const { companyContext } = useActiveCompanyContext();
@@ -27,7 +27,9 @@ export function useChartOfAccounts() {
 export function useGeneralLedger(startDate: Date, endDate: Date) {
 	const companyId = useLedgerCompanyId();
 	const { startKey, endKey } = toLedgerPeriodQueryKeys(startDate, endDate);
-	return useQuery(generalLedgerQueryOptions(companyId, startDate, endDate, startKey, endKey));
+	return useQuery(
+		generalLedgerQueryOptions(companyId, startDate, endDate, startKey, endKey),
+	);
 }
 
 export function useTrialBalance(asOfDate: Date) {

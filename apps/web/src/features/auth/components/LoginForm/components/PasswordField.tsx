@@ -1,13 +1,10 @@
+import { Eye, EyeOff, Lock } from "lucide-react";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { Lock, Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { entranceVariants, MotionDiv } from "@/components/ui/motion-primitives";
 import { cn } from "@/lib/utils";
-import {
-	MotionDiv,
-	entranceVariants,
-} from "@/components/ui/motion-primitives";
 import { FIELD_IDS, LABELS, PLACEHOLDERS } from "../LoginForm.data";
 import type { LoginFormData } from "../LoginForm.types";
 

@@ -2,7 +2,10 @@ import { describe, expect, it } from "vitest";
 import { Money } from "../../value-objects/Money";
 import { RUC } from "../../value-objects/RUC";
 import { DETERMINISTIC_REASON_CODE } from "../constants";
-import { buildRucIgvDeterministicResult, type RucIgvDeterministicInput } from "../types";
+import {
+	buildRucIgvDeterministicResult,
+	type RucIgvDeterministicInput,
+} from "../types";
 
 describe("Fiscal Truth deterministic validators", () => {
 	it("produces stable reason code for valid RUC and IGV", () => {

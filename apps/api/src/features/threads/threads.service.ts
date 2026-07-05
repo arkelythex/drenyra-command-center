@@ -1,18 +1,15 @@
-import { and, count, desc, eq, inArray, like, sql } from "drizzle-orm";
-import { db, schema } from "../../lib/db";
-import {
-	assertValidTransition,
-	Thread,
-} from "@drenyra/domain/entities/thread";
 import type {
 	AgentRole,
 	TaskStatus,
 	ThreadStatus,
 } from "@drenyra/domain/entities/thread";
+import { assertValidTransition, Thread } from "@drenyra/domain/entities/thread";
 import type {
 	ThreadAgentRole,
 	ThreadTaskStatus,
 } from "@drenyra/persistence/schema";
+import { and, count, desc, eq, inArray, like, sql } from "drizzle-orm";
+import { db, schema } from "../../lib/db";
 
 // ---------------------------------------------------------------------------
 // Exported types
@@ -445,9 +442,11 @@ export class ThreadsService {
 		const updateValues: Record<string, unknown> = { updatedAt: new Date() };
 
 		if (data.title !== undefined) updateValues.title = data.title;
-		if (data.description !== undefined) updateValues.description = data.description;
+		if (data.description !== undefined)
+			updateValues.description = data.description;
 		if (data.priority !== undefined) updateValues.priority = data.priority;
-		if (data.environment !== undefined) updateValues.environment = data.environment;
+		if (data.environment !== undefined)
+			updateValues.environment = data.environment;
 		if (data.tags !== undefined) updateValues.tags = data.tags;
 		if (data.period !== undefined) updateValues.period = data.period;
 
@@ -824,7 +823,8 @@ export class ThreadsService {
 		const updateValues: Record<string, unknown> = { updatedAt: new Date() };
 
 		if (data.title !== undefined) updateValues.title = data.title;
-		if (data.description !== undefined) updateValues.description = data.description;
+		if (data.description !== undefined)
+			updateValues.description = data.description;
 		if (data.agentId !== undefined) updateValues.agentId = data.agentId;
 		if (data.resultSummary !== undefined)
 			updateValues.resultSummary = data.resultSummary;

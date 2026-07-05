@@ -9,8 +9,17 @@
  * - Rate limiting metadata
  */
 
-import { pgTable, uuid, varchar, text, timestamp, boolean, integer, jsonb } from 'drizzle-orm/pg-core';
-import { relations } from 'drizzle-orm';
+import { relations } from "drizzle-orm";
+import {
+	boolean,
+	integer,
+	jsonb,
+	pgTable,
+	text,
+	timestamp,
+	uuid,
+	varchar,
+} from "drizzle-orm/pg-core";
 
 /**
  * SIRE Submissions
@@ -29,50 +38,52 @@ import { relations } from 'drizzle-orm';
  * ```
  */
 
-export const sireSubmissions = pgTable('sire_submissions', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  companyId: uuid('company_id').notNull(),
+export const sireSubmissions = pgTable("sire_submissions", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	companyId: uuid("company_id").notNull(),
 
-  // Submission metadata
-  period: varchar('period', { length: 7 }).notNull(), // YYYY-MM
-  ledgerType: varchar('ledger_type', { length: 10 }).notNull(), // ventas, compras
-  payloadFormat: varchar('payload_format', { length: 10 }).notNull(), // txt, csv, json, xml
+	// Submission metadata
+	period: varchar("period", { length: 7 }).notNull(), // YYYY-MM
+	ledgerType: varchar("ledger_type", { length: 10 }).notNull(), // ventas, compras
+	payloadFormat: varchar("payload_format", { length: 10 }).notNull(), // txt, csv, json, xml
 
-  // Idempotency & retry
-  idempotencyKey: varchar('idempotency_key', { length: 100 }).unique().notNull(),
-  attemptNumber: integer('attempt_number').default(1).notNull(),
-  maxRetries: integer('max_retries').default(3).notNull(),
+	// Idempotency & retry
+	idempotencyKey: varchar("idempotency_key", { length: 100 })
+		.unique()
+		.notNull(),
+	attemptNumber: integer("attempt_number").default(1).notNull(),
+	maxRetries: integer("max_retries").default(3).notNull(),
 
-  // Submission state
-  status: varchar('status', { length: 20 }).notNull().default('PENDING'),
-  // PENDING, SUBMITTED, ACCEPTED, REJECTED, OBSERVED, SIMULATED, FAILED
+	// Submission state
+	status: varchar("status", { length: 20 }).notNull().default("PENDING"),
+	// PENDING, SUBMITTED, ACCEPTED, REJECTED, OBSERVED, SIMULATED, FAILED
 
-  provider: varchar('provider', { length: 20 }).notNull(), // sunat-api, simulation
-  dryRun: boolean('dry_run').default(false),
+	provider: varchar("provider", { length: 20 }).notNull(), // sunat-api, simulation
+	dryRun: boolean("dry_run").default(false),
 
-  // SUNAT response
-  submissionId: varchar('submission_id', { length: 100 }), // SUNAT ticket ID
-  sunatTicket: varchar('sunat_ticket', { length: 100 }),
-  trackingId: varchar('tracking_id', { length: 100 }),
+	// SUNAT response
+	submissionId: varchar("submission_id", { length: 100 }), // SUNAT ticket ID
+	sunatTicket: varchar("sunat_ticket", { length: 100 }),
+	trackingId: varchar("tracking_id", { length: 100 }),
 
-  // Response details
-  sunatStatus: varchar('sunat_status', { length: 50 }),
-  sunatCode: varchar('sunat_code', { length: 20 }),
-  sunatMessage: text('sunat_message'),
+	// Response details
+	sunatStatus: varchar("sunat_status", { length: 50 }),
+	sunatCode: varchar("sunat_code", { length: 20 }),
+	sunatMessage: text("sunat_message"),
 
-  // Errors & warnings (JSONB for structured data)
-  errors: jsonb('errors'), // Array<{ line: number, field: string, message: string }>
-  warnings: jsonb('warnings'), // Array<{ line: number, field: string, message: string }>
+	// Errors & warnings (JSONB for structured data)
+	errors: jsonb("errors"), // Array<{ line: number, field: string, message: string }>
+	warnings: jsonb("warnings"), // Array<{ line: number, field: string, message: string }>
 
-  // Timing
-  submittedAt: timestamp('submitted_at'),
-  processedAt: timestamp('processed_at'),
-  nextRetryAt: timestamp('next_retry_at'),
+	// Timing
+	submittedAt: timestamp("submitted_at"),
+	processedAt: timestamp("processed_at"),
+	nextRetryAt: timestamp("next_retry_at"),
 
-  // Metadata
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
-  createdBy: uuid('created_by'),
+	// Metadata
+	createdAt: timestamp("created_at").defaultNow(),
+	updatedAt: timestamp("updated_at").defaultNow(),
+	createdBy: uuid("created_by"),
 });
 
 /**
@@ -91,19 +102,19 @@ export const sireSubmissions = pgTable('sire_submissions', {
  * ```
  */
 
-export const sireRateLimits = pgTable('sire_rate_limits', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  companyId: uuid('company_id').notNull(),
+export const sireRateLimits = pgTable("sire_rate_limits", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	companyId: uuid("company_id").notNull(),
 
-  // Rate limit tracking
-  windowStart: timestamp('window_start').notNull(),
-  windowEnd: timestamp('window_end').notNull(),
-  requestCount: integer('request_count').default(0).notNull(),
-  maxRequests: integer('max_requests').default(10).notNull(),
+	// Rate limit tracking
+	windowStart: timestamp("window_start").notNull(),
+	windowEnd: timestamp("window_end").notNull(),
+	requestCount: integer("request_count").default(0).notNull(),
+	maxRequests: integer("max_requests").default(10).notNull(),
 
-  // Metadata
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+	// Metadata
+	createdAt: timestamp("created_at").defaultNow(),
+	updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 /**
@@ -124,34 +135,34 @@ export const sireRateLimits = pgTable('sire_rate_limits', {
  * ```
  */
 
-export const sireJobs = pgTable('sire_jobs', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  companyId: uuid('company_id').notNull(),
-  submissionId: uuid('submission_id').notNull(), // FK to sireSubmissions
+export const sireJobs = pgTable("sire_jobs", {
+	id: uuid("id").primaryKey().defaultRandom(),
+	companyId: uuid("company_id").notNull(),
+	submissionId: uuid("submission_id").notNull(), // FK to sireSubmissions
 
-  // Job type
-  jobType: varchar('job_type', { length: 50 }).notNull(), // SUBMIT, RETRY, SCHEDULED
+	// Job type
+	jobType: varchar("job_type", { length: 50 }).notNull(), // SUBMIT, RETRY, SCHEDULED
 
-  // Job state
-  status: varchar('status', { length: 20 }).notNull().default('QUEUED'),
-  // QUEUED, RUNNING, COMPLETED, FAILED, CANCELLED
+	// Job state
+	status: varchar("status", { length: 20 }).notNull().default("QUEUED"),
+	// QUEUED, RUNNING, COMPLETED, FAILED, CANCELLED
 
-  // Retry logic
-  attemptNumber: integer('attempt_number').default(1).notNull(),
-  maxAttempts: integer('max_attempts').default(3).notNull(),
+	// Retry logic
+	attemptNumber: integer("attempt_number").default(1).notNull(),
+	maxAttempts: integer("max_attempts").default(3).notNull(),
 
-  // Scheduling
-  scheduledAt: timestamp('scheduled_at').notNull(),
-  startedAt: timestamp('started_at'),
-  completedAt: timestamp('completed_at'),
+	// Scheduling
+	scheduledAt: timestamp("scheduled_at").notNull(),
+	startedAt: timestamp("started_at"),
+	completedAt: timestamp("completed_at"),
 
-  // Error tracking
-  lastError: text('last_error'),
-  errorDetails: jsonb('error_details'),
+	// Error tracking
+	lastError: text("last_error"),
+	errorDetails: jsonb("error_details"),
 
-  // Metadata
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+	// Metadata
+	createdAt: timestamp("created_at").defaultNow(),
+	updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 /**
@@ -162,9 +173,12 @@ export const sireJobs = pgTable('sire_jobs', {
  * ```
  */
 
-export const sireSubmissionsRelations = relations(sireSubmissions, ({ many }) => ({
-  jobs: many(sireJobs),
-}));
+export const sireSubmissionsRelations = relations(
+	sireSubmissions,
+	({ many }) => ({
+		jobs: many(sireJobs),
+	}),
+);
 
 /**
  * sireJobsRelations const.
@@ -175,8 +189,8 @@ export const sireSubmissionsRelations = relations(sireSubmissions, ({ many }) =>
  * ```
  */
 export const sireJobsRelations = relations(sireJobs, ({ one }) => ({
-  submission: one(sireSubmissions, {
-    fields: [sireJobs.submissionId],
-    references: [sireSubmissions.id],
-  }),
+	submission: one(sireSubmissions, {
+		fields: [sireJobs.submissionId],
+		references: [sireSubmissions.id],
+	}),
 }));

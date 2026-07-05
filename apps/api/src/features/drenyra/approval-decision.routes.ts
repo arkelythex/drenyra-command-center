@@ -84,7 +84,10 @@ export function createApprovalDecisionRoutes({
 			{
 				params: t.Object({ id: t.String({ minLength: 1 }) }),
 				body: t.Object({ decisionReason: t.Optional(t.String()) }),
-				detail: { tags: ["Drenyra"], summary: "Reject Drenyra approval request" },
+				detail: {
+					tags: ["Drenyra"],
+					summary: "Reject Drenyra approval request",
+				},
 			},
 		);
 }

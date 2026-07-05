@@ -12,7 +12,7 @@ import type {
 } from "../../../lib/schemas/customer.schema";
 import { useActiveCompanyContext } from "../../../lib/use-active-company-context";
 import { customerTreatyClient } from "../api/customer-treaty-client";
-import { customersApi, type CustomerRecord } from "../api/customers.api";
+import { type CustomerRecord, customersApi } from "../api/customers.api";
 import { customerKeys } from "../api/query-keys";
 
 interface CustomerTransaction {
@@ -139,23 +139,26 @@ export function useCustomers(): UseCustomersResult {
 	const { companyContext } = useActiveCompanyContext();
 	const companyId = companyContext.companyId;
 
-	const entity = useEntitySearch<Customer, CustomerStats>({
-		queryKey: customerKeys.list(companyId),
-		fetcher: async () => {
-			const list = await customersApi.list({ companyId });
-			return list.map(normalizeCustomer);
+	const entity = useEntitySearch<Customer, CustomerStats>(
+		{
+			queryKey: customerKeys.list(companyId),
+			fetcher: async () => {
+				const list = await customersApi.list({ companyId });
+				return list.map(normalizeCustomer);
+			},
+			searchFields: (c) => [c.name, c.taxId, c.tradeName],
+			tabs: ["summary", "cobranza"] as const,
+			calculateStats: (items) => ({
+				total: items.length,
+				active: items.filter((c) => c.status === "active").length,
+				debt: items.reduce((sum, c) => sum + c.currentBalance, 0),
+				totalRevenue: items.reduce((sum, c) => sum + c.totalRevenue, 0),
+				totalPending: items.reduce((sum, c) => sum + c.pendingBalance, 0),
+				retentionTotal: items.filter((c) => c.hasRetention).length,
+			}),
 		},
-		searchFields: (c) => [c.name, c.taxId, c.tradeName],
-		tabs: ["summary", "cobranza"] as const,
-		calculateStats: (items) => ({
-			total: items.length,
-			active: items.filter((c) => c.status === "active").length,
-			debt: items.reduce((sum, c) => sum + c.currentBalance, 0),
-			totalRevenue: items.reduce((sum, c) => sum + c.totalRevenue, 0),
-			totalPending: items.reduce((sum, c) => sum + c.pendingBalance, 0),
-			retentionTotal: items.filter((c) => c.hasRetention).length,
-		}),
-	}, companyId);
+		companyId,
+	);
 
 	return {
 		data: entity.raw,
@@ -175,7 +178,11 @@ export function useCustomers(): UseCustomersResult {
 	};
 }
 
-const customerCrudHooks = createCrudHooks<Customer, CreateCustomerDTO, UpdateCustomerDTO>({
+const customerCrudHooks = createCrudHooks<
+	Customer,
+	CreateCustomerDTO,
+	UpdateCustomerDTO
+>({
 	key: "customers",
 	list: async (companyId) => {
 		const customerList = await customersApi.list({ companyId });
@@ -183,10 +190,17 @@ const customerCrudHooks = createCrudHooks<Customer, CreateCustomerDTO, UpdateCus
 	},
 	getById: async (id) => {
 		const body = await unwrap(customerTreatyClient({ id }).get({ query: {} }));
-		return normalizeCustomer(extractOkDataOrPassthrough(body, "customers.getById") as CustomerApiRecord);
+		return normalizeCustomer(
+			extractOkDataOrPassthrough(
+				body,
+				"customers.getById",
+			) as CustomerApiRecord,
+		);
 	},
 	create: async (companyId, data) => {
-		const body = await unwrap(customerTreatyClient.post({ ...data, companyId }));
+		const body = await unwrap(
+			customerTreatyClient.post({ ...data, companyId }),
+		);
 		return extractOkDataOrPassthrough(body, "customers.create") as Customer;
 	},
 	update: async (id, data) => {

@@ -1,4 +1,4 @@
-import { CheckCircle2, Settings, Plus } from "lucide-react";
+import { CheckCircle2, Plus, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Integration } from "../hooks/useConnections";

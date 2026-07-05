@@ -1,4 +1,7 @@
-import type { AgentContext, ApprovalRequest } from "@drenyra/drenyra-orchestrator";
+import type {
+	AgentContext,
+	ApprovalRequest,
+} from "@drenyra/drenyra-orchestrator";
 
 export interface SseApprovalEvent {
 	id: string;

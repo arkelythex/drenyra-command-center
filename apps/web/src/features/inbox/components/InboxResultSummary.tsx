@@ -1,7 +1,7 @@
 "use client";
 
-import type { ReactElement } from "react";
 import { AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
+import type { ReactElement } from "react";
 import type { BatchCompleteEvent } from "../inbox.schema";
 
 type InboxResultSummaryProps = {
@@ -16,7 +16,9 @@ export function InboxResultSummary({
 	return (
 		<section className="rounded-2xl border border-[var(--color-success)]/30 bg-[var(--color-success)]/10 p-4">
 			<h3 className="text-sm font-bold">Batch completado</h3>
-			<p className="mt-2 text-xs text-[var(--text-secondary)]">{batch.summary}</p>
+			<p className="mt-2 text-xs text-[var(--text-secondary)]">
+				{batch.summary}
+			</p>
 			<ul className="mt-4 grid gap-2 sm:grid-cols-3">
 				<li className="flex items-center gap-2 rounded-lg bg-[var(--surface-1)]/80 px-3 py-2 text-xs">
 					<CheckCircle2 size={16} className="text-[var(--color-success)]" />

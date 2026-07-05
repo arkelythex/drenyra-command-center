@@ -13,30 +13,30 @@
 
 import { AlertTriangle, Bug, Home, RefreshCw } from "lucide-react";
 import {
-  useState,
-  useCallback,
-  useEffect,
-  type ReactNode,
-  type ErrorInfo,
-  Component,
-  type ComponentType
+	Component,
+	type ComponentType,
+	type ErrorInfo,
+	type ReactNode,
+	useCallback,
+	useEffect,
+	useState,
 } from "react";
 import { Button } from "@/components/ui/button";
 import { presentError } from "@/lib/error-messages";
 import { captureError } from "@/lib/monitoring";
 
 interface ErrorBoundaryProps {
-  children: ReactNode;
-  fallback?: ReactNode;
-  onError?: (error: Error, errorInfo: ErrorInfo) => void;
-  resetKeys?: unknown[];
-  isolate?: boolean;
+	children: ReactNode;
+	fallback?: ReactNode;
+	onError?: (error: Error, errorInfo: ErrorInfo) => void;
+	resetKeys?: unknown[];
+	isolate?: boolean;
 }
 
 interface ErrorBoundaryState {
-  hasError: boolean;
-  error: Error | null;
-  errorInfo: ErrorInfo | null;
+	hasError: boolean;
+	error: Error | null;
+	errorInfo: ErrorInfo | null;
 }
 
 const ERROR_STORAGE_KEY = "drenyra-error-log";
@@ -75,8 +75,8 @@ function getErrorMessage(error: Error): string {
 }
 
 export class ErrorBoundary extends Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
+	ErrorBoundaryProps,
+	ErrorBoundaryState
 > {
 	constructor(props: ErrorBoundaryProps) {
 		super(props);

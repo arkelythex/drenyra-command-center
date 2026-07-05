@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
 	resolveTenantSunatContext,
-	TenantSunatContextError,
-	type TenantSunatCompanyLookup,
 	type SunatCredentialProvider,
+	type TenantSunatCompanyLookup,
+	TenantSunatContextError,
 } from "../../services/tenant-sunat-context.service";
 
 const companyId = "cmp-tenant-a";
