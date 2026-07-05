@@ -34,6 +34,8 @@ const ARTIFACT_RENDERER_LOADERS: Record<
 	bills_payable: () => import("./renderers/BillsPayableArtifact"),
 	cashflow_projection: () =>
 		import("./renderers/CashflowProjectionArtifact"),
+	tax_summary: () => import("./renderers/TaxSummaryArtifact"),
+	payroll_summary: () => import("./renderers/PayrollSummaryArtifact"),
 };
 
 function createLazyArtifactRenderer(type: HubArtifact["type"]) {
@@ -69,6 +71,8 @@ const LAZY_ARTIFACT_RENDERERS: Record<
 	bills_payable: createLazyArtifactRenderer("bills_payable"),
 	cashflow_projection:
 		createLazyArtifactRenderer("cashflow_projection"),
+	tax_summary: createLazyArtifactRenderer("tax_summary"),
+	payroll_summary: createLazyArtifactRenderer("payroll_summary"),
 };
 
 export const ArtifactRenderer = ({ artifact }: { artifact: HubArtifact }) => {

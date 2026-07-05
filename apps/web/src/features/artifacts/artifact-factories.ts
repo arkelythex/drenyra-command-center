@@ -2,11 +2,15 @@ import {
 	ARTIFACT_TYPES,
 	type ArtifactMetadata,
 	type BankingReconciliationArtifact,
+	type BillsPayableArtifact,
+	type CashflowProjectionArtifact,
 	type CurrencyCode,
+	type PayrollSummaryArtifact,
 	type PaymentBeneficiary,
 	type PaymentPreviewArtifact,
 	type SireDiffArtifact,
 	type SireDiffRow,
+	type TaxSummaryArtifact,
 	type WorkspaceArtifact,
 } from "./types/artifact.types";
 
@@ -29,6 +33,26 @@ const CASHFLOW_TRIGGER_KEYWORDS = [
 	"proyeccion",
 	"liquidez",
 	"efectivo",
+];
+
+const TAX_TRIGGER_KEYWORDS = [
+	"tributo",
+	"impuesto",
+	"tax",
+	"igv",
+	"renta",
+	"sunat",
+	"declaraci",
+	"calcular.*tributo",
+];
+
+const PAYROLL_TRIGGER_KEYWORDS = [
+	"planilla",
+	"nomina",
+	"payroll",
+	"salario",
+	"empleado",
+	"sueldo",
 ];
 
 const BANKING_TRIGGER_KEYWORDS = [
@@ -375,6 +399,20 @@ export const resolveArtifactFromQuery = (
 		return createCashflowProjectionArtifact(currency);
 	}
 
+	if (
+		TAX_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))
+	) {
+		const period = extractPeriodFromQuery(normalized) ?? "2026-01";
+		return createTaxSummaryArtifact(period);
+	}
+
+	if (
+		PAYROLL_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))
+	) {
+		const period = extractPeriodFromQuery(normalized) ?? "2026-01";
+		return createPayrollSummaryArtifact(period);
+	}
+
 	return null;
 };
 
@@ -595,5 +633,155 @@ export const createBankingReconciliationArtifact = (
 				type: "SECONDARY" as const,
 			},
 		],
+	};
+};
+
+export const createTaxSummaryArtifact = (
+	period: string = "2026-01",
+): TaxSummaryArtifact => {
+	const rows = [
+		{
+			taxName: "IGV (18%)",
+			base: 125000,
+			rate: "18%",
+			amount: 22500,
+			status: "FILED" as const,
+			dueDate: `${period}-12`,
+		},
+		{
+			taxName: "Impuesto a la Renta 3ra",
+			base: 125000,
+			rate: "1.5%",
+			amount: 1875,
+			status: "CALCULATED" as const,
+			dueDate: `${period}-20`,
+		},
+		{
+			taxName: "ESSALUD",
+			base: 85000,
+			rate: "9%",
+			amount: 7650,
+			status: "FILED" as const,
+			dueDate: `${period}-15`,
+		},
+		{
+			taxName: "ONP",
+			base: 85000,
+			rate: "13%",
+			amount: 11050,
+			status: "PENDING" as const,
+			dueDate: `${period}-15`,
+		},
+		{
+			taxName: "ITAN",
+			base: 2000000,
+			rate: "0.4%",
+			amount: 8000,
+			status: "OVERDUE" as const,
+			dueDate: `${period}-05`,
+		},
+	];
+
+	const totalPayable = rows
+		.filter((r) => r.status === "PENDING")
+		.reduce((a, r) => a + r.amount, 0);
+	const totalFiled = rows
+		.filter((r) => r.status === "FILED" || r.status === "CALCULATED")
+		.reduce((a, r) => a + r.amount, 0);
+	const totalOverdue = rows
+		.filter((r) => r.status === "OVERDUE")
+		.reduce((a, r) => a + r.amount, 0);
+
+	return {
+		id: generateArtifactId(),
+		type: ARTIFACT_TYPES.TAX_SUMMARY,
+		version: "1.0.0",
+		status: "PREVIEW",
+		title: `Liquidaci\u00f3n de tributos ${period}`,
+		description:
+			"Resumen de impuestos por declarar y pagar ante SUNAT",
+		metadata: createMetadata("SUNAT"),
+		data: {
+			period,
+			rows,
+			summary: {
+				totalPayable,
+				totalFiled,
+				totalOverdue,
+			},
+		},
+		actions: [],
+	};
+};
+
+export const createPayrollSummaryArtifact = (
+	period: string = "2026-01",
+): PayrollSummaryArtifact => {
+	const employees = [
+		{
+			employeeId: "emp-001",
+			name: "Carlos Mendoza",
+			position: "Contador Senior",
+			baseSalary: 8500,
+			netSalary: 6980,
+			deductions: 1520,
+			bonus: 500,
+			status: "PAID" as const,
+		},
+		{
+			employeeId: "emp-002",
+			name: "Mar\u00eda Luna",
+			position: "Asistente Contable",
+			baseSalary: 3200,
+			netSalary: 2720,
+			deductions: 480,
+			status: "PAID" as const,
+		},
+		{
+			employeeId: "emp-003",
+			name: "Jos\u00e9 Torres",
+			position: "Analista Tributario",
+			baseSalary: 5500,
+			netSalary: 4620,
+			deductions: 880,
+			bonus: 300,
+			status: "PENDING" as const,
+		},
+		{
+			employeeId: "emp-004",
+			name: "Ana Garc\u00eda",
+			position: "Jefe de Tesorer\u00eda",
+			baseSalary: 11000,
+			netSalary: 8910,
+			deductions: 2090,
+			status: "PROCESSING" as const,
+		},
+	];
+
+	const totalSalaries = employees.reduce((a, e) => a + e.baseSalary, 0);
+	const totalDeductions = employees.reduce((a, e) => a + e.deductions, 0);
+	const totalBonuses = employees.reduce((a, e) => a + (e.bonus ?? 0), 0);
+	const totalNetPay = employees.reduce((a, e) => a + e.netSalary, 0);
+
+	return {
+		id: generateArtifactId(),
+		type: ARTIFACT_TYPES.PAYROLL_SUMMARY,
+		version: "1.0.0",
+		status: "PREVIEW",
+		title: `Planilla ${period}`,
+		description: "Resumen de n\u00f3mina del periodo",
+		metadata: createMetadata("INTERNAL"),
+		data: {
+			period,
+			employees,
+			summary: {
+				totalSalaries,
+				totalDeductions,
+				totalNetPay: totalNetPay + totalBonuses - totalDeductions,
+				employeeCount: employees.length,
+				processedCount: employees.filter((e) => e.status === "PAID").length,
+			},
+		},
+		actions: [],
 	};
 };

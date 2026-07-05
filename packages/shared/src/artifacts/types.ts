@@ -66,6 +66,26 @@ export interface CashflowProjectionPoint {
 	balance: number;
 }
 
+export interface TaxSummaryRow {
+	taxName: string;
+	base: number;
+	rate: string;
+	amount: number;
+	status: "CALCULATED" | "FILED" | "PENDING" | "OVERDUE";
+	dueDate: string;
+}
+
+export interface PayrollEmployeeRow {
+	employeeId: string;
+	name: string;
+	position: string;
+	baseSalary: number;
+	netSalary: number;
+	deductions: number;
+	bonus?: number;
+	status: "PAID" | "PENDING" | "PROCESSING";
+}
+
 export interface BankingReconciliationRow {
 	id: string;
 	bankRef: string;
@@ -205,6 +225,32 @@ export type HubArtifact =
 				projections: CashflowProjectionPoint[];
 				currentBalance: number;
 				currency: string;
+			};
+	  })
+	| (BaseArtifact & {
+			type: "tax_summary";
+			payload: {
+				period: string;
+				rows: TaxSummaryRow[];
+				summary: {
+					totalPayable: number;
+					totalFiled: number;
+					totalOverdue: number;
+				};
+			};
+	  })
+	| (BaseArtifact & {
+			type: "payroll_summary";
+			payload: {
+				period: string;
+				employees: PayrollEmployeeRow[];
+				summary: {
+					totalSalaries: number;
+					totalDeductions: number;
+					totalNetPay: number;
+					employeeCount: number;
+					processedCount: number;
+				};
 			};
 	  });
 
