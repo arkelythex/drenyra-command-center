@@ -13,12 +13,11 @@
 > /packages/domain/src/fiscal-truth/ - Fiscal Truth engine (core business logic)
 > /packages/domain/src/sunat/ - SUNAT compliance, RUC, IGV, UBL 2.1
 > /packages/domain/src/money/ - Money value-object (no floats for currency)
-> /packages/drenyra-core/ - Drenyra product core: invoicing, retention, credit notes
+> /packages/domain/src/agents/ - Agent definitions (eviden, vigila, traza, regula, etc.)
 
 ## 🤖 AI & Agents
 > /packages/ai/README.md - AI gateway, routing, OpenRouter integration
-> /packages/agent-swarm/README.md - Swarm agent system architecture
-> /packages/agent-memory/README.md - Persistent memory and context management
+> /packages/drenyra-harness/README.md - AI agent harness runtime
 > /packages/drenyra-harness/ - AI agent harness runtime
 
 ## 🖥️ Applications

@@ -123,7 +123,7 @@ bun run test         # Ejecutar tests unitarios (Vitest)
 ## 🔗 Dependencias
 
 - **Runtime**: Ninguna (zero dependencies)
-- **Dev**: TypeScript ^6.0.3, Vitest ^4.1.7, @drenyra/drenyra-core
+- **Dev**: TypeScript ^6.0.3, Vitest ^4.1.7
 
 ---
 

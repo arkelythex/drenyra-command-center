@@ -53,12 +53,11 @@ drenyra/drenyra/
 │   ├── drenyra-cli/      → Go + Bubbletea — TUI para operaciones fiscales
 │   └── data-engine/      → FastAPI + Polars — procesamiento analítico
 ├── packages/
-│   ├── drenyra-core/         → Tipos compartidos y definiciones de agentes
 │   ├── drenyra-orchestrator/ → Orquestación con Mastra + Vercel AI SDK
 │   ├── drenyra-engram/       → Persistencia de evidencia en Go
 │   ├── ai/                   → Gateway de modelos (OpenRouter, Gemini)
 │   ├── application/          → Casos de uso (CQRS)
-│   ├── domain/               → Modelos de dominio
+│   ├── domain/               → Modelos de dominio (incluye agent definitions)
 │   ├── infrastructure/       → Infraestructura (DB, S3, servicios)
 │   ├── persistence/          → Drizzle ORM + PostgreSQL
 │   ├── shared/               → Utilidades compartidas

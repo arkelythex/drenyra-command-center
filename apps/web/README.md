@@ -230,7 +230,6 @@ bun run test:run src/features/
 | `@drenyra/application` | Use cases & business logic |
 | `@drenyra/domain` | Domain entities & value objects |
 | `@drenyra/shared` | Shared utilities & validation |
-| `@drenyra/drenyra-core` | Core Drenyra primitives |
 | `@drenyra/ui` | Shared UI components |
 
 ---

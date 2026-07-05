@@ -1,4 +1,4 @@
-status: proposal
+status: completed
 created: 2026-07-04
 updated: 2026-07-04
 author: el-gentleman
@@ -6,7 +6,13 @@ execution_mode: single-pr
 pr_count: 1
 estimated_lines: 150
 blocked_by: [drenyra-s1-ai-consolidation]
-blocks: []
+blocks: [drenyra-s3-api-type-migration]
 risks:
   - Must not break imports from drenyra-core after merge
   - drenyra-core types are referenced in agent-window features — trace all consumers first
+resolution:
+  - Removed @drenyra/drenyra-core from package.json deps
+  - Cleaned up sourcePath references
+  - Removed dangling docs references (README, llms.txt, product-topology)
+  - All 110 tests pass in agents package
+  - typecheck: 8 pre-existing errors only (Drizzle)

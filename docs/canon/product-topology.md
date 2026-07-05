@@ -29,9 +29,9 @@ Drenyra/
 │   └── drenyra-cli/      → Go TUI
 ├── packages/
 │   ├── drenyra-orchestrator/
-│   ├── drenyra-core/
-│   ├── drenyra-engram/
-│   ├── domain/
+│   ├── drenyra-harness/
+│   ├── agents/
+│   ├── domain/ (incl. agent types)
 │   └── application/
 └── e2e/                  → Product smoke tests
 ```

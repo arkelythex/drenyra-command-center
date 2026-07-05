@@ -35,4 +35,5 @@ apps/web/.mf/
 
 # Bun cache (never commit)
 ~/.bun/
+# Editor / IDE
 .tanstack/
