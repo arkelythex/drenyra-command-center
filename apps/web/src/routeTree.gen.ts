@@ -142,6 +142,7 @@ import { Route as ConfiguracionAutomationsRouteImport } from './routes/configura
 import { Route as ConfiguracionAppearanceRouteImport } from './routes/configuracion/appearance'
 import { Route as OperacionesEconomicGroupsGroupIdRouteImport } from './routes/operaciones/economic-groups.$groupId'
 import { Route as FirmClientsIdRouteImport } from './routes/firm/clients.$id'
+import { Route as DrenyraCaseThreadIdRouteImport } from './routes/drenyra/case.$threadId'
 
 const VerifyEmailRoute = VerifyEmailRouteImport.update({
   id: '/verify-email',
@@ -821,6 +822,11 @@ const FirmClientsIdRoute = FirmClientsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => FirmClientsRoute,
 } as any)
+const DrenyraCaseThreadIdRoute = DrenyraCaseThreadIdRouteImport.update({
+  id: '/case/$threadId',
+  path: '/case/$threadId',
+  getParentRoute: () => DrenyraRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -954,6 +960,7 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof SettingsIndexRoute
   '/threads/': typeof ThreadsIndexRoute
   '/workspace/': typeof WorkspaceIndexRoute
+  '/drenyra/case/$threadId': typeof DrenyraCaseThreadIdRoute
   '/firm/clients/$id': typeof FirmClientsIdRoute
   '/operaciones/economic-groups/$groupId': typeof OperacionesEconomicGroupsGroupIdRoute
 }
@@ -1084,6 +1091,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsIndexRoute
   '/threads': typeof ThreadsIndexRoute
   '/workspace': typeof WorkspaceIndexRoute
+  '/drenyra/case/$threadId': typeof DrenyraCaseThreadIdRoute
   '/firm/clients/$id': typeof FirmClientsIdRoute
   '/operaciones/economic-groups/$groupId': typeof OperacionesEconomicGroupsGroupIdRoute
 }
@@ -1220,6 +1228,7 @@ export interface FileRoutesById {
   '/settings/': typeof SettingsIndexRoute
   '/threads/': typeof ThreadsIndexRoute
   '/workspace/': typeof WorkspaceIndexRoute
+  '/drenyra/case/$threadId': typeof DrenyraCaseThreadIdRoute
   '/firm/clients/$id': typeof FirmClientsIdRoute
   '/operaciones/economic-groups/$groupId': typeof OperacionesEconomicGroupsGroupIdRoute
 }
@@ -1357,6 +1366,7 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/threads/'
     | '/workspace/'
+    | '/drenyra/case/$threadId'
     | '/firm/clients/$id'
     | '/operaciones/economic-groups/$groupId'
   fileRoutesByTo: FileRoutesByTo
@@ -1487,6 +1497,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/threads'
     | '/workspace'
+    | '/drenyra/case/$threadId'
     | '/firm/clients/$id'
     | '/operaciones/economic-groups/$groupId'
   id:
@@ -1622,6 +1633,7 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/threads/'
     | '/workspace/'
+    | '/drenyra/case/$threadId'
     | '/firm/clients/$id'
     | '/operaciones/economic-groups/$groupId'
   fileRoutesById: FileRoutesById
@@ -2659,6 +2671,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FirmClientsIdRouteImport
       parentRoute: typeof FirmClientsRoute
     }
+    '/drenyra/case/$threadId': {
+      id: '/drenyra/case/$threadId'
+      path: '/case/$threadId'
+      fullPath: '/drenyra/case/$threadId'
+      preLoaderRoute: typeof DrenyraCaseThreadIdRouteImport
+      parentRoute: typeof DrenyraRoute
+    }
   }
 }
 
@@ -2711,6 +2730,7 @@ interface DrenyraRouteChildren {
   DrenyraObservabilityRoute: typeof DrenyraObservabilityRoute
   DrenyraSkillsRoute: typeof DrenyraSkillsRoute
   DrenyraIndexRoute: typeof DrenyraIndexRoute
+  DrenyraCaseThreadIdRoute: typeof DrenyraCaseThreadIdRoute
 }
 
 const DrenyraRouteChildren: DrenyraRouteChildren = {
@@ -2722,6 +2742,7 @@ const DrenyraRouteChildren: DrenyraRouteChildren = {
   DrenyraObservabilityRoute: DrenyraObservabilityRoute,
   DrenyraSkillsRoute: DrenyraSkillsRoute,
   DrenyraIndexRoute: DrenyraIndexRoute,
+  DrenyraCaseThreadIdRoute: DrenyraCaseThreadIdRoute,
 }
 
 const DrenyraRouteWithChildren =
