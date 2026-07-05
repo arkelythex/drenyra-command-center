@@ -1,0 +1,12 @@
+status: working-draft
+created: 2026-07-04
+updated: 2026-07-04
+author: el-gentleman
+execution_mode: ask-on-risk
+pr_count: 2
+estimated_lines: 350
+blocked_by: [drenyra-s1-ai-consolidation]
+blocks: []
+risks:
+  - packages/domain/src/ai/ and packages/domain/src/agents/ serve as domain contracts — removing them may break domain isolation
+  - Domain must stay framework-free — any AI types moved here must avoid framework dependencies

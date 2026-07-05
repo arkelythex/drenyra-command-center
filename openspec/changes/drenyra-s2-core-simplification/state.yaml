@@ -1,0 +1,12 @@
+status: proposal
+created: 2026-07-04
+updated: 2026-07-04
+author: el-gentleman
+execution_mode: single-pr
+pr_count: 1
+estimated_lines: 150
+blocked_by: [drenyra-s1-ai-consolidation]
+blocks: []
+risks:
+  - Must not break imports from drenyra-core after merge
+  - drenyra-core types are referenced in agent-window features — trace all consumers first

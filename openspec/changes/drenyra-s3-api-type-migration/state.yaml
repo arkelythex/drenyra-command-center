@@ -1,0 +1,13 @@
+status: implemented
+created: 2026-07-04
+updated: 2026-07-04
+author: el-gentleman
+execution_mode: ask-on-risk
+pr_count: 2
+estimated_lines: 400
+blocked_by: []
+blocks: []
+risks:
+  - apps/api/src/types/ types may have diverged from package types — need diff before merge
+  - Frontend may import from non-canonical paths — audit Eden/Elysia consumers
+  - Shared feature code in apps/api/src/features/shared/ needs boundary decision (move to package vs keep)

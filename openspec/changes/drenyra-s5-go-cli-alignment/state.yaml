@@ -1,0 +1,13 @@
+status: working-draft
+created: 2026-07-04
+updated: 2026-07-04
+author: el-gentleman
+execution_mode: ask-on-risk
+pr_count: 2
+estimated_lines: 500
+blocked_by: [drenyra-s1-ai-consolidation, drenyra-s4-domain-boundary-audit]
+blocks: []
+risks:
+  - Go CLI uses flat-file memory (MEMORY.md) + SQLite — align interfaces to match TS packages without breaking Go
+  - Delegation graph in Go (internal/delegation/) should mirror the TS harness abstraction
+  - May require Go->TS type alignment docs rather than code change
