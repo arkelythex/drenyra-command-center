@@ -14,7 +14,10 @@
     "./services/*": "./src/services/*.ts",
     "./use-cases/*": "./src/use-cases/*.ts",
     "./validators/*": "./src/validators/*.ts",
-    "./features/evidence": "./src/features/evidence/index.ts"
+    "./features/evidence": "./src/features/evidence/index.ts",
+    "./features/banking": "./src/features/banking/types.ts",
+    "./features/billing": "./src/features/billing/types.ts",
+    "./features/auth": "./src/features/auth/types.ts"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.typecheck.json",
