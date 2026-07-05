@@ -1,9 +1,8 @@
 /**
  * Model Router Types — Domain Contract
  *
- * Minimal type definitions for model routing repository contracts.
- * These are the domain-level interfaces that persistence implements.
- * The canonical type definitions live in @drenyra/ai.
+ * Canonical type definitions for model routing.
+ * These types serve as the source of truth for domain-persistence contracts.
  */
 export type ModelCapability =
 	| "OCR"
@@ -16,28 +15,70 @@ export type ModelCapability =
 	| "SUMMARIZATION"
 	| "CHAT";
 
+export type ProviderName =
+	| "openai"
+	| "anthropic"
+	| "google"
+	| "deepseek"
+	| "openrouter";
+
+export type RouterStrategy =
+	| "capability_match"
+	| "cost_optimal"
+	| "latency_optimal"
+	| "quality_preferred"
+	| "fallback_chain";
+
+export type ModelStatus = "ACTIVE" | "DEGRADED" | "OFFLINE" | "DEPRECATED";
+
 export interface ModelRegistration {
-	provider: string;
-	model: string;
+	id: string;
+	providerName: ProviderName;
+	modelName: string;
+	displayName: string;
 	capabilities: ModelCapability[];
-	status: "ACTIVE" | "DEGRADED" | "OFFLINE" | "DEPRECATED";
+	status: ModelStatus;
 	priority: number;
-	config?: Record<string, unknown>;
+	costPer1KInput: number;
+	costPer1KOutput: number;
+	maxTokens: number;
+	avgLatencyMs?: number;
+	reliability?: number;
+	metadata?: Record<string, unknown>;
+	healthProbeUrl?: string;
+	tags?: string[];
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 export interface CapabilityRoutingRule {
+	id: string;
 	capability: ModelCapability;
-	provider: string;
-	model: string;
-	weight: number;
-	fallbackProvider?: string;
-	fallbackModel?: string;
+	strategy: RouterStrategy;
+	allowedModelIds: string[];
+	excludedModelIds: string[];
+	maxRetries: number;
+	costCapCents?: number;
+	latencyCapMs?: number;
+	minReliability?: number;
+	requiresAudit: boolean;
+	fallbackStrategy: RouterStrategy;
+	metadata?: Record<string, unknown>;
 }
 
 export interface RoutingResult {
-	provider: string;
-	model: string;
+	requestId: string;
 	capability: ModelCapability;
-	confidence: number;
+	selectedModelId: string;
+	providerName: ProviderName;
+	modelName: string;
+	strategy: RouterStrategy;
 	latencyMs?: number;
+	costCents?: number;
+	success: boolean;
+	fallbackAttempted?: boolean;
+	attemptNumber: number;
+	errorMessage?: string;
+	responseContent?: string;
+	timestamp: Date;
 }

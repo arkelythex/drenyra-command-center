@@ -13,10 +13,6 @@
 
 // ─── Harness — Delegation, Approval, Execution ─────────────────────────
 export { createDrenyraHarness, DrenyraHarness } from "./harness/harness";
-export {
-	createDrenyraHarness as createDrenyraHarness,
-	DrenyraHarness as DrenyraHarness,
-} from "./harness/harness";
 export type {
 	HarnessExecuteResponse,
 	HarnessOptions,
@@ -179,23 +175,18 @@ export {
 // ─── MCP Protocol ─────────────────────────────────────────────────────
 export type {
 	DrenyraMcpAuditEvent,
+	DrenyraMcpAuditOutcome,
 	DrenyraMcpAuditQuery,
 	DrenyraMcpAuditReader,
 	DrenyraMcpAuditSink,
+	DrenyraMcpScope,
+	DrenyraMcpManifest,
+	DrenyraMcpAuthorizationInput,
+	DrenyraMcpAuthorizationDecision,
+	DrenyraMcpToolContract,
 } from "./protocol/mcp-contract";
-export type { DrenyraMcpAuditEvent as DrenyraMcpAuditEvent };
-export type { DrenyraMcpAuditQuery as DrenyraMcpAuditQuery };
-export type { DrenyraMcpAuditReader as DrenyraMcpAuditReader };
-export type { DrenyraMcpAuditSink as DrenyraMcpAuditSink };
-export type { DrenyraMcpScope as DrenyraMcpScope };
-export type { DrenyraMcpManifest as DrenyraMcpManifest };
-export type { DrenyraMcpAuthorizationInput as DrenyraMcpAuthorizationInput };
-export type {
-	DrenyraMcpAuthorizationDecision as DrenyraMcpAuthorizationDecision,
-};
-export type { DrenyraMcpToolContract as DrenyraMcpToolContract };
 export {
-	buildDrenyraMcpManifest as buildDrenyraMcpManifest,
-	isDrenyraMcpScope as isDrenyraMcpScope,
-	authorizeDrenyraMcpTool as authorizeDrenyraMcpTool,
+	buildDrenyraMcpManifest,
+	isDrenyraMcpScope,
+	authorizeDrenyraMcpTool,
 } from "./protocol/mcp-contract";

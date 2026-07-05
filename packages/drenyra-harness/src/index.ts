@@ -10,7 +10,6 @@
 
 export {
 	createDrenyraHarness,
-	createDrenyraHarness as createDrenyraHarness,
 	DrenyraHarness,
 } from "@drenyra/agents";
 export {

@@ -35,3 +35,4 @@ apps/web/.mf/
 
 # Bun cache (never commit)
 ~/.bun/
+.tanstack/
