@@ -102,9 +102,13 @@ for (const feature of features) {
 }
 
 // Print report
-console.log("\n═══════════════════════════════════════════════════════════════");
+console.log(
+	"\n═══════════════════════════════════════════════════════════════",
+);
 console.log("  TENANT ISOLATION AUDIT REPORT");
-console.log("═══════════════════════════════════════════════════════════════\n");
+console.log(
+	"═══════════════════════════════════════════════════════════════\n",
+);
 
 const SAFE = results.filter((r) => r.riskLevel === "safe");
 const MANUAL = results.filter((r) => r.riskLevel === "manual");
@@ -149,10 +153,10 @@ if (MANUAL.length > 0) {
 const totalRisky = MISSING.length + UNVERIFIED.length;
 console.log("═══════════════════════════════════════════════════════════════");
 if (totalRisky > 0) {
-	console.log(
-		`  ⚠️  ${totalRisky} feature(s) need tenant isolation review.`,
-	);
+	console.log(`  ⚠️  ${totalRisky} feature(s) need tenant isolation review.`);
 } else {
 	console.log("  ✅ All features have tenant scoping.");
 }
-console.log("═══════════════════════════════════════════════════════════════\n");
+console.log(
+	"═══════════════════════════════════════════════════════════════\n",
+);

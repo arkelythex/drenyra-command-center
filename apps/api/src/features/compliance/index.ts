@@ -1,5 +1,6 @@
 import { Elysia } from "elysia";
 import { z } from "zod";
+import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
 import { SIRE_LEDGER_REPRO_RUNBOOK } from "../../lib/compliance-runbooks";
 import { logger } from "../../lib/logger";
 import { ComplianceService } from "../../services/compliance.service";
@@ -20,6 +21,7 @@ import { sireDemoSummaryRoute } from "./routes/sire-demo-summary.route";
  * ```
  */
 export const complianceModule = new Elysia({ prefix: "/api/compliance" })
+	.use(companyScopeGuard())
 	.use(accountingJobRunsRoute)
 	.use(accountingJobsRoute)
 	.use(countryPackRoute)
