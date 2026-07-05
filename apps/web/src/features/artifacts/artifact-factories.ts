@@ -1,6 +1,7 @@
 import {
 	ARTIFACT_TYPES,
 	type ArtifactMetadata,
+	type BankingReconciliationArtifact,
 	type CurrencyCode,
 	type PaymentBeneficiary,
 	type PaymentPreviewArtifact,
@@ -321,5 +322,118 @@ export const resolveArtifactFromQuery = (
 		return createPaymentPreviewArtifact(currency);
 	}
 
+	if (
+		BANKING_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))
+	) {
+		const period = extractPeriodFromQuery(normalized) ?? "2026-01";
+		const currency = extractCurrencyFromQuery(normalized);
+		return createBankingReconciliationArtifact({ period, currency });
+	}
+
 	return null;
+};
+
+export const createBankingReconciliationArtifact = (
+	options: {
+		period?: string;
+		accountName?: string;
+		accountId?: string;
+		currency?: CurrencyCode;
+	} = {},
+): BankingReconciliationArtifact => {
+	const period = options.period ?? "2026-01";
+	const accountName = options.accountName ?? "BCP Corriente Soles";
+	const accountId = options.accountId ?? "acc-default";
+	const currency = options.currency ?? "PEN";
+
+	const rows = [
+		{
+			id: "rec-001",
+			bankRef: "BCP-2026-001",
+			description: "Transferencia entrante Cliente Minera X",
+			bankAmount: 15000.0,
+			ledgerAmount: 15000.0,
+			difference: 0,
+			status: "MATCH" as const,
+			date: `${period}-05`,
+		},
+		{
+			id: "rec-002",
+			bankRef: "BKM-2026-002",
+			description: "Pago proveedor AWS",
+			bankAmount: 4200.0,
+			ledgerAmount: 4150.0,
+			difference: 50.0,
+			status: "MISMATCH" as const,
+			date: `${period}-08`,
+		},
+		{
+			id: "rec-003",
+			bankRef: "INT-2026-003",
+			description: "Depósito efectivo sucursal",
+			bankAmount: 8900.0,
+			ledgerAmount: 8900.0,
+			difference: 0,
+			status: "MATCH" as const,
+			date: `${period}-12`,
+		},
+		{
+			id: "rec-004",
+			bankRef: "BKM-2026-004",
+			description: "Comisión bancaria mensual",
+			bankAmount: 45.0,
+			ledgerAmount: 0,
+			difference: 45.0,
+			status: "MISSING_IN_LEDGER" as const,
+			date: `${period}-15`,
+		},
+		{
+			id: "rec-005",
+			bankRef: "—",
+			description: "Nota de débito SUNAT (percepción)",
+			bankAmount: 0,
+			ledgerAmount: 320.0,
+			difference: -320.0,
+			status: "MISSING_IN_BANK" as const,
+			date: `${period}-18`,
+		},
+	];
+
+	const matched = rows.filter((r) => r.status === "MATCH").length;
+	const mismatched = rows.filter((r) => r.status !== "MATCH").length;
+	const totalBank = rows.reduce((acc, r) => acc + r.bankAmount, 0);
+	const totalLedger = rows.reduce((acc, r) => acc + r.ledgerAmount, 0);
+	const totalDifference = totalBank - totalLedger;
+
+	return {
+		id: generateArtifactId(),
+		type: ARTIFACT_TYPES.BANKING_RECONCILIATION,
+		version: "1.0.0",
+		status: "PREVIEW",
+		title: `Conciliación bancaria ${period}`,
+		description:
+			"Comparación entre movimientos bancarios y registros contables",
+		metadata: createMetadata("BANK"),
+		data: {
+			period,
+			accountId,
+			accountName,
+			currency,
+			rows,
+			summary: {
+				totalBank,
+				totalLedger,
+				totalDifference,
+				matched,
+				mismatched,
+			},
+		},
+		actions: [
+			{
+				id: "export-csv",
+				label: "Exportar CSV",
+				type: "SECONDARY" as const,
+			},
+		],
+	};
 };

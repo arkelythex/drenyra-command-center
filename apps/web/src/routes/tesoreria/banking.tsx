@@ -1,28 +1,15 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
-import { getTenantContext } from "../../lib/api";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+/**
+ * Banking route — redirigido al chat principal.
+ *
+ * AM3: Banking se accede ahora como artifact inline vía el agente.
+ * El usuario escribe "conciliar banco" en el chat y el agente
+ * invoca la herramienta conciliar_banco() que renderiza el
+ * resultado como BankingReconciliationArtifact en el thread.
+ */
 export const Route = createFileRoute("/tesoreria/banking")({
-	loader: async ({ context }) => {
-		const { companyId } = getTenantContext();
-		if (!companyId) return;
-
-		const { bankingAccountsQueryOptions, bankingTransactionsQueryOptions } =
-			await import("../../features/banking/api/query-options");
-
-		const accounts = await context.queryClient.ensureQueryData(
-			bankingAccountsQueryOptions(companyId),
-		);
-		const defaultAccountId =
-			accounts.find((account) => account.isDefault)?.id ?? accounts[0]?.id;
-
-		if (defaultAccountId) {
-			await context.queryClient.ensureQueryData(
-				bankingTransactionsQueryOptions(defaultAccountId),
-			);
-		}
+	loader: () => {
+		throw redirect({ to: "/" });
 	},
-	component: lazyRouteComponent(
-		() => import("../../features/banking/components/BankingView"),
-		"BankingView",
-	),
 });

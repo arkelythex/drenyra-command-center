@@ -1062,15 +1062,13 @@ export function ThreadView({
 							</p>
 						</div>
 					) : (
-						<>
-							{displayMessages.map((msg) => (
-								<MessageBubble
-									key={msg.id}
-									message={msg}
-									onShowCheckpoints={onShowCheckpoints}
-								/>
-							))}
-						</>
+						displayMessages.map((msg) => (
+							<MessageBubble
+								key={msg.id}
+								message={msg}
+								onShowCheckpoints={onShowCheckpoints}
+							/>
+						))
 					)}
 
 					<AnimatePresence>

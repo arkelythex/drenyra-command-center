@@ -5,22 +5,12 @@ import {
 	FileSpreadsheet,
 	GitPullRequest,
 	History,
-	Landmark,
 	Receipt,
 	TrendingUp,
 } from "lucide-react";
 import type { NavigationItem } from "../types";
 
 export const FINANZAS_ITEMS: readonly NavigationItem[] = [
-	{
-		id: "banking",
-		section: "finanzas",
-		label: "Bancos y caja",
-		description: "Cuentas, movimientos y saldos",
-		to: "/tesoreria/banking",
-		icon: Landmark,
-		keywords: ["bancos", "tesoreria", "cuentas", "saldo"],
-	},
 	{
 		id: "cashflow",
 		section: "finanzas",

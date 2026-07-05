@@ -8,6 +8,7 @@ export const ARTIFACT_TYPES = {
 	PAYMENT_PREVIEW: "payment.preview.v1",
 	FISCAL_ADVISORY: "fiscal.advisory.v1",
 	LEDGER_ADJUSTMENT: "ledger.adjustment.v1",
+	BANKING_RECONCILIATION: "banking.reconciliation.v1",
 } as const;
 
 export type ArtifactType = (typeof ARTIFACT_TYPES)[keyof typeof ARTIFACT_TYPES];
@@ -172,7 +173,49 @@ export interface ArtifactInteractionEvent {
 	payload?: Record<string, unknown>;
 }
 
-export type KnownArtifact = SireDiffArtifact | PaymentPreviewArtifact;
+// --- BANKING RECONCILIATION TYPES ---
+
+export interface BankingReconciliationRow {
+	id: string;
+	bankRef: string;
+	description: string;
+	bankAmount: number;
+	ledgerAmount: number;
+	difference: number;
+	status:
+		| "MATCH"
+		| "MISMATCH"
+		| "MISSING_IN_LEDGER"
+		| "MISSING_IN_BANK";
+	date: string;
+}
+
+export interface BankingReconciliationSummary {
+	totalBank: number;
+	totalLedger: number;
+	totalDifference: number;
+	matched: number;
+	mismatched: number;
+}
+
+export interface BankingReconciliationData {
+	period: string;
+	accountId: string;
+	accountName: string;
+	currency: CurrencyCode;
+	rows: BankingReconciliationRow[];
+	summary: BankingReconciliationSummary;
+}
+
+export type BankingReconciliationArtifact = Artifact<
+	BankingReconciliationData,
+	typeof ARTIFACT_TYPES.BANKING_RECONCILIATION
+>;
+
+export type KnownArtifact =
+	| SireDiffArtifact
+	| PaymentPreviewArtifact
+	| BankingReconciliationArtifact;
 export type WorkspaceArtifact = KnownArtifact | Artifact;
 
 export function isSireDiffArtifact(

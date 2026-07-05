@@ -29,6 +29,8 @@ const ARTIFACT_RENDERER_LOADERS: Record<
 	report: () => import("./renderers/ReportArtifact"),
 	knowledge_graph: () => import("./renderers/KnowledgeGraphArtifact"),
 	dashboard: () => import("./renderers/DashboardArtifact"),
+	banking_reconciliation: () =>
+		import("./renderers/BankingReconciliationArtifact"),
 };
 
 function createLazyArtifactRenderer(type: HubArtifact["type"]) {
@@ -59,6 +61,8 @@ const LAZY_ARTIFACT_RENDERERS: Record<
 	report: createLazyArtifactRenderer("report"),
 	knowledge_graph: createLazyArtifactRenderer("knowledge_graph"),
 	dashboard: createLazyArtifactRenderer("dashboard"),
+	banking_reconciliation:
+		createLazyArtifactRenderer("banking_reconciliation"),
 };
 
 export const ArtifactRenderer = ({ artifact }: { artifact: HubArtifact }) => {

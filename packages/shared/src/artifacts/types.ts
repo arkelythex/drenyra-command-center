@@ -46,6 +46,17 @@ export interface GapItem {
 	value: number;
 }
 
+export interface BankingReconciliationRow {
+	id: string;
+	bankRef: string;
+	description: string;
+	bankAmount: number;
+	ledgerAmount: number;
+	difference: number;
+	status: "MATCH" | "MISMATCH" | "MISSING_IN_LEDGER" | "MISSING_IN_BANK";
+	date: string;
+}
+
 export interface AccountingDiffItem {
 	field: string;
 	before: string;
@@ -137,6 +148,23 @@ export type HubArtifact =
 				statusScore: number;
 				gapAnalysis?: GapItem[];
 				ruleSource?: string;
+			};
+	  })
+	| (BaseArtifact & {
+			type: "banking_reconciliation";
+			payload: {
+				period: string;
+				accountId: string;
+				accountName: string;
+				currency: string;
+				rows: BankingReconciliationRow[];
+				summary: {
+					totalBank: number;
+					totalLedger: number;
+					totalDifference: number;
+					matched: number;
+					mismatched: number;
+				};
 			};
 	  });
 

@@ -88,7 +88,7 @@ export function Composer({
 			const lastSlashIndex = before.lastIndexOf("/");
 			const triggerPos = Math.max(lastAtIndex, lastSlashIndex);
 			if (triggerPos === -1) return;
-			const newValue = message.slice(0, triggerPos) + insertValue + " " + after;
+			const newValue = `${message.slice(0, triggerPos) + insertValue} ${after}`;
 			setMessage(newValue);
 			setTimeout(() => {
 				if (textareaRef.current) {
