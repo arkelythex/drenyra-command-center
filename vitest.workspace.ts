@@ -1,5 +1,5 @@
 /**
- * ARKELYTHEX Vitest Workspace Configuration
+ * Drenyra Vitest Workspace Configuration
  *
  * Defines all workspace projects for monorepo-wide test execution.
  * Run `bun vitest run` from root to execute all tests across every package.

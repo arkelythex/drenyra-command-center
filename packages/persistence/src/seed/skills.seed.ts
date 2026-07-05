@@ -23,7 +23,7 @@ const SEED_SKILLS: SeedSkill[] = [
 			"Validación y comparación de libros electrónicos con SUNAT. Consulta de RUC, descarga de XML/CDR, y preparación de declaraciones mensuales.",
 		category: "fiscal",
 		version: "2.1.0",
-		author: "ARKELYTHEX",
+		author: "Drenyra",
 		capabilities: [
 			{
 				name: "Validar RUC",
@@ -57,7 +57,7 @@ const SEED_SKILLS: SeedSkill[] = [
 			"Análisis de riesgos fiscales: detracciones, percepciones, retenciones, crédito fiscal y gastos no deducibles.",
 		category: "fiscal",
 		version: "1.8.0",
-		author: "ARKELYTHEX",
+		author: "Drenyra",
 		capabilities: [
 			{
 				name: "Detracciones",
@@ -98,7 +98,7 @@ const SEED_SKILLS: SeedSkill[] = [
 			"Asistente de cierre contable mensual: devengos, provisiones, diferencia de cambio, depreciación y cierre integral.",
 		category: "operations",
 		version: "1.5.0",
-		author: "ARKELYTHEX",
+		author: "Drenyra",
 		capabilities: [
 			{
 				name: "Devengos",
@@ -138,7 +138,7 @@ const SEED_SKILLS: SeedSkill[] = [
 			"Generación de pistas de auditoría, trazabilidad de cambios y reportes preparados para revisión de SUNAT o terceros.",
 		category: "audit",
 		version: "1.3.0",
-		author: "ARKELYTHEX",
+		author: "Drenyra",
 		capabilities: [
 			{
 				name: "Evidencia",
@@ -167,7 +167,7 @@ const SEED_SKILLS: SeedSkill[] = [
 			"Conciliación bancaria automatizada con los principales bancos peruanos: BCP, BBVA, Interbank, Scotiabank y billeteras digitales.",
 		category: "finance",
 		version: "2.0.4",
-		author: "ARKELYTHEX",
+		author: "Drenyra",
 		capabilities: [
 			{
 				name: "BCP",
@@ -207,7 +207,7 @@ const SEED_SKILLS: SeedSkill[] = [
 			"Gestión completa de planillas: cálculo de CTS, gratificaciones, Essalud, ONP y AFP. Preparación de registros y declaraciones.",
 		category: "operations",
 		version: "1.1.0",
-		author: "ARKELYTHEX",
+		author: "Drenyra",
 		capabilities: [
 			{
 				name: "Planillas",

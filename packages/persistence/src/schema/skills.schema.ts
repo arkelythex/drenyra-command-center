@@ -46,7 +46,7 @@ export const skills = pgTable(
 			.$type<SkillCategory>()
 			.notNull(),
 		version: varchar("version", { length: 20 }).notNull().default("1.0.0"),
-		author: varchar("author", { length: 255 }).notNull().default("ARKELYTHEX"),
+		author: varchar("author", { length: 255 }).notNull().default("Drenyra"),
 		status: varchar("status", { length: 20 })
 			.$type<SkillStatus>()
 			.notNull()
