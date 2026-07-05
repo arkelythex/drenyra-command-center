@@ -7,7 +7,7 @@
  * @domain Value Object — framework-free, deterministic
  */
 
-import { Money } from "../value-objects/Money";
+import { Money } from "../../value-objects/Money";
 import type { RoiInput, RoiResult } from "./types";
 import { InvalidFinancialInputError } from "./types";
 

@@ -23,17 +23,7 @@ export * from "./fiscal-memory";
 export * from "./fiscal-ontology";
 export * from "./fiscal-truth";
 
-export * from "./roi";
 export * from "./services";
-export {
-	DRENYRA_PRODUCT_SURFACES,
-	getDrenyraProductSurface,
-} from "./types/product-surface-registry";
-export type {
-	DrenyraProductSurface,
-	DrenyraSurfaceId,
-	DrenyraSurfaceModuleRef,
-} from "./types/product-surfaces";
 export type {
 	CountryCode,
 	TaxIdentifier,

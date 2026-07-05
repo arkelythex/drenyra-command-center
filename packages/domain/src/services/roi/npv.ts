@@ -9,7 +9,7 @@
  * @domain Value Object — framework-free, deterministic
  */
 
-import { Money } from "../value-objects/Money";
+import { Money } from "../../value-objects/Money";
 
 import type { NpvInput, NpvResult } from "./types";
 import { InvalidFinancialInputError } from "./types";

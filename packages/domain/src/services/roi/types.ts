@@ -5,8 +5,8 @@
  * @framework-free
  */
 
-import { Money } from "../value-objects/Money";
-import type { Currency } from "../value-objects/Money";
+import { Money } from "../../value-objects/Money";
+import type { Currency } from "../../value-objects/Money";
 
 // ── Percentage type ────────────────────────────────────────────────
 
