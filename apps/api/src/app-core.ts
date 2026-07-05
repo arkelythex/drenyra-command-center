@@ -60,7 +60,7 @@ import { sunatApiModule } from "./features/sunat";
 import { vendorRoutes } from "./features/vendors";
 import { createLogger } from "./lib/logger";
 import { metricsMiddleware } from "./middleware/metrics.middleware";
-import { globalErrorHandler, requestLogger } from "./shared/plugins";
+import { globalErrorHandler, rateLimiter, requestLogger } from "./shared/plugins";
 import { CANONICAL_SWAGGER_PATH } from "./swagger-docs-routes";
 
 const logger = createLogger({ module: "app-core" });
@@ -322,6 +322,7 @@ const baseApp = new Elysia()
 	.use(requestLogger)
 	.use(metricsMiddleware)
 	.use(globalErrorHandler)
+	.use(rateLimiter({ windowMs: 60_000, max: 100 }))
 	.use(apiModules)
 	.use(backwardCompatRedirects)
 	.use(healthModule)
