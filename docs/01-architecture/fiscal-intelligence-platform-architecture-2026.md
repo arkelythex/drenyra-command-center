@@ -1,6 +1,6 @@
 ---
 title: 'Fiscal Intelligence Platform Architecture 2026'
-description: 'Architecture for ARKELYTHEX as a Peru-first/LATAM-ready fiscal intelligence platform with FAL, Fiscal Ontology, Fiscal Truth Engine, Drenyra governance and MCP.'
+description: 'Architecture for DRENYRA as a Peru-first/LATAM-ready fiscal intelligence platform with FAL, Fiscal Ontology, Fiscal Truth Engine, Drenyra governance and MCP.'
 version: '1.1'
 last-updated: '2026-06-30'
 tags: ['architecture', 'fiscal-intelligence', 'fal', 'fiscal-truth', 'drenyra', 'mcp']
@@ -14,7 +14,7 @@ status: 'active'
 
 This document translates the strategic doctrine into an executable architecture.
 
-ARKELYTHEX is the platform. Drenyra is the command center. The Fiscal Agentic Ledger (FAL) is the governed operating model where agents prepare fiscal/accounting actions, deterministic systems validate them, humans approve material changes, and the Fiscal Truth Engine promotes only evidenced, scoped, replayable state.
+DRENYRA is the platform. Drenyra is the command center. The Fiscal Agentic Ledger (FAL) is the governed operating model where agents prepare fiscal/accounting actions, deterministic systems validate them, humans approve material changes, and the Fiscal Truth Engine promotes only evidenced, scoped, replayable state.
 
 ## Architecture invariants
 
@@ -37,7 +37,7 @@ flowchart TB
     Docs[Contracts / receipts / evidence files]
   end
 
-  subgraph Platform[ARKELYTHEX Platform]
+  subgraph Platform[DRENYRA Platform]
     Ontology[Fiscal Ontology]
     Truth[Fiscal Truth Engine]
     Evidence[Evidence Graph]

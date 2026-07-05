@@ -9,7 +9,7 @@
 
 Drenyra's web app accumulated dual token systems (packages/ui vs web DTCG), stale DESIGN.md, and glass-heavy UI that reads as generic "AI slop." User approved a **strong rebrand** toward Cursor 3 editorial aesthetics while preserving operations-first fiscal UX.
 
-Ecosystem brand guidelines (`06-brand-guidelines.md`) define Copper as primary accent for ARKELYTHEX. Drenyra as flagship product may evolve visual weight independently while staying in the warm neutral family.
+Ecosystem brand guidelines (`06-brand-guidelines.md`) define Copper as primary accent for DRENYRA. Drenyra as flagship product may evolve visual weight independently while staying in the warm neutral family.
 
 ## Decision
 
