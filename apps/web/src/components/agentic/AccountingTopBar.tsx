@@ -58,7 +58,7 @@ export function AccountingTopBar({ onRunSwarm }: AccountingTopBarProps) {
 					className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] px-3 py-1.5 text-xs font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-3)] hover:text-[var(--text-primary)]"
 				>
 					<Play size={13} className="text-[var(--color-primary)]" />
-					Run Swarm
+					Analizar periodo
 				</button>
 
 				{/* Export with dropdown */}
@@ -69,7 +69,7 @@ export function AccountingTopBar({ onRunSwarm }: AccountingTopBarProps) {
 						className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] px-3 py-1.5 text-xs font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-3)] hover:text-[var(--text-primary)]"
 					>
 						<Download size={13} />
-						Export
+						Exportar
 					</button>
 					{showExportMenu && (
 						<div className="absolute right-0 top-full z-50 mt-1 w-36 overflow-hidden rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] shadow-lg">

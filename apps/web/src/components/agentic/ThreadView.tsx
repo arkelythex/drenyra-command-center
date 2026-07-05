@@ -101,9 +101,9 @@ export const DEMO_MESSAGES: Message[] = [
 		id: "demo-2",
 		role: "agent",
 		content: [
-			"I've analyzed the financial data for **RUC 20123456789** (Minera Summa S.A.C.) for **March 2026**.",
+			"Analicé los datos financieros de **RUC 20123456789** (Minera Summa S.A.C.) para **Marzo 2026**.",
 			"",
-			"Here's the summary:",
+			"Acá está el resumen:",
 			"",
 			"- **Total Ingresos**: S/ 1,234,567.89",
 			"- **Total Gastos**: S/ 987,654.32",

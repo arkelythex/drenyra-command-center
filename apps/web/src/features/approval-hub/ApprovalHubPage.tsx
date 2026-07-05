@@ -16,7 +16,7 @@ export function ApprovalHubPage() {
 	);
 	const { approvals, isLoading, approve, reject } = useDrenyraApprovals();
 
-	const items = approvals.map(mapToApprovalItem);
+	const items = (approvals ?? []).map(mapToApprovalItem);
 
 	const filtered = items.filter((a) => {
 		const matchesStatus = filter === "ALL" || a.status === filter;

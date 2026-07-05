@@ -1,0 +1,13 @@
+change_id: drenyra-three-panel-layout
+status: applied
+phase: applied
+branch: design/drenyra-three-panel-layout
+delivery_strategy: auto-chain
+created_at: 2026-07-05
+updated_at: 2026-07-05
+depends_on:
+  - drenyra-design-tokens-v4
+  - drenyra-typography-system
+rationale: >
+  El layout de tres paneles necesita los tokens de color (DS1) y la tipografía (DS2)
+  para ser consistente. No bloquea iniciar spec/design, pero apply espera DS1+DS2.

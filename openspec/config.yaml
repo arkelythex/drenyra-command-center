@@ -1,20 +1,20 @@
 # OpenSpec Configuration — DRENYRA Drenyra
 # Creado: 2026-07-02
-# Actualizado: 2026-07-04
-# Modo: agentic-first transformation + structural quality (16 SDD plans: 6 frontend + 4 backend + 6 structural)
+# Actualizado: 2026-07-05
+# Modo: agentic-first transformation + structural quality (21 SDD plans: 5 DS + 4 backend + 6 structural + ? frontend)
 
 version: '1.0'
 project: '@drenyra/main'
 
 # SDD session preflight choices (2026-07-04)
 execution_mode: interactive
-artifact_store: both # openspec + engram cuando disponible
+artifact_store: openspec
 chained_pr_strategy: auto-forecast
-review_budget: 400 # líneas máximas por PR individual
+review_budget: 400
 
 # Estrategia general
-strategy: triple-track # Frontend agentic UX + Backend production readiness + Structural quality
-migration: replace-total # Reemplazo completo de navegación SaaS → agentic
+strategy: triple-track
+migration: replace-total
 
 # Equipo / autores
 authors:
@@ -25,11 +25,11 @@ authors:
 workspace:
   root: /home/dreamcoder08/Documents/PROYECTOS/Drenyra
   apps:
-    - apps/web # React SPA
-    - apps/api # Elysia API
-    - apps/data-engine # Python + Polars
-    - apps/drenyra-cli # Go CLI
-    - apps/landing # Next.js
+    - apps/web
+    - apps/api
+    - apps/data-engine
+    - apps/drenyra-cli
+    - apps/landing
   packages:
     - packages/domain
     - packages/application
@@ -45,8 +45,66 @@ workspace:
     - packages/drenyra-harness
     - packages/platform-core
 
-# Backend plans
+# Plans
 plans:
+  agentic-migration:
+    AM1:
+      name: Eliminate Duplicate Features (8→1 unification)
+      dir: openspec/changes/drenyra-am1-eliminate-duplicates
+      prs: 3
+      est_lines: 600
+      status: proposal
+    AM2:
+      name: Right Panel → Artifact Feed
+      dir: openspec/changes/drenyra-am2-artifact-feed
+      prs: 2
+      est_lines: 500
+      status: proposal
+    AM3:
+      name: Features → Tools/Artifacts (Banking as template)
+      dir: openspec/changes/drenyra-am3-features-to-tools
+      prs: 5
+      est_lines: 1200
+      status: proposal
+    AM4:
+      name: Sidebar Reduction & Navigation by Command
+      dir: openspec/changes/drenyra-am4-sidebar-reduction
+      prs: 2
+      est_lines: 400
+      status: proposal
+
+  design-system:
+    DS1:
+      name: Design Token Foundation (Cyan/Violet)
+      dir: openspec/changes/drenyra-design-tokens-v4
+      prs: 2
+      est_lines: 350
+      status: proposal
+    DS2:
+      name: Typography & Font System
+      dir: openspec/changes/drenyra-typography-system
+      prs: 1
+      est_lines: 200
+      status: proposal
+    DS3:
+      name: Accounting Vocabulary Migration
+      dir: openspec/changes/drenyra-vocabulary
+      prs: 1
+      est_lines: 150
+      status: proposal
+    DS4:
+      name: Component State Design (Empty/Error/Loading)
+      dir: openspec/changes/drenyra-component-states
+      prs: 2
+      est_lines: 400
+      status: proposal
+    DS5:
+      name: Three-Panel Layout (Agentic IDE)
+      dir: openspec/changes/drenyra-three-panel-layout
+      prs: 2
+      est_lines: 500
+      status: proposal
+
   backend:
     B1:
       name: API Contracts & Type Safety

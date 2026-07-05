@@ -1,19 +1,7 @@
-import { createFileRoute, useParams } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { DrenyraFlexMain } from "../../components/agentic/DrenyraFlexMain";
-import { useThreadStore } from "../../stores/thread-store";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/drenyra/$threadId")({
-	component: DrenyraThread,
+	loader: ({ params }) => {
+		throw redirect({ to: "/drenyra/case/$threadId", params });
+	},
 });
-
-function DrenyraThread() {
-	const { threadId } = useParams({ from: "/drenyra/$threadId" });
-	const setActiveThread = useThreadStore((s) => s.setActiveThread);
-
-	useEffect(() => {
-		setActiveThread(threadId);
-	}, [threadId, setActiveThread]);
-
-	return <DrenyraFlexMain />;
-}

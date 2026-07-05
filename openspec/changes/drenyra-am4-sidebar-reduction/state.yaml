@@ -1,0 +1,9 @@
+change_id: drenyra-am4-sidebar-reduction
+status: proposal
+phase: proposal
+branch: agentic/am4-sidebar-reduction
+delivery_strategy: single-pr
+created_at: 2026-07-05
+updated_at: 2026-07-05
+depends_on:
+  - drenyra-am3-features-to-tools

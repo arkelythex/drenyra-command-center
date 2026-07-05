@@ -26,9 +26,11 @@ export function DetailsTab() {
 		return (
 			<div className="flex h-full flex-col items-center justify-center text-center px-6">
 				<FileText size={32} className="text-[var(--text-muted)] mb-3" />
-				<p className="text-sm text-[var(--text-muted)]">No thread selected</p>
+				<p className="text-sm text-[var(--text-muted)]">
+					Ningún caso seleccionado
+				</p>
 				<p className="mt-1 text-xs text-[var(--text-muted)]">
-					Select a thread from the sidebar to view details
+					Seleccioná un caso del panel lateral para ver sus detalles
 				</p>
 			</div>
 		);
@@ -88,14 +90,16 @@ function ThreadDetailContent({
 								autoFocus
 							/>
 							<button
-								aria-label="Save edit"
+								type="button"
+								aria-label="Guardar"
 								onClick={handleSave}
 								className="rounded-lg p-1 text-[var(--color-success)] transition-colors hover:bg-[var(--color-success)]/10"
 							>
 								<Check size={12} />
 							</button>
 							<button
-								aria-label="Cancel edit"
+								type="button"
+								aria-label="Cancelar"
 								onClick={handleCancel}
 								className="rounded-lg p-1 text-[var(--color-danger)] transition-colors hover:bg-[var(--color-danger)]/10"
 							>
@@ -108,7 +112,8 @@ function ThreadDetailContent({
 								{thread.title}
 							</h3>
 							<button
-								aria-label="Edit title"
+								type="button"
+								aria-label="Editar título"
 								onClick={handleStartEdit}
 								className="rounded-lg p-1.5 text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]"
 							>
@@ -120,7 +125,7 @@ function ThreadDetailContent({
 			</div>
 
 			<div className="space-y-2">
-				<LabelValue label="Status">
+				<LabelValue label="Estado">
 					<span
 						className={cn(
 							"inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
@@ -136,19 +141,19 @@ function ThreadDetailContent({
 					</span>
 				</LabelValue>
 
-				<LabelValue label="Created">
+				<LabelValue label="Creado">
 					<span className="text-xs text-[var(--text-secondary)]">
 						{formatDate(thread.createdAt)}
 					</span>
 				</LabelValue>
 
-				<LabelValue label="Updated">
+				<LabelValue label="Actualizado">
 					<span className="text-xs text-[var(--text-secondary)]">
 						{formatDate(thread.updatedAt)}
 					</span>
 				</LabelValue>
 
-				<LabelValue label="Messages">
+				<LabelValue label="Mensajes">
 					<span className="text-xs font-mono text-[var(--text-primary)]">
 						{thread.messageCount}
 					</span>
@@ -158,7 +163,7 @@ function ThreadDetailContent({
 			{thread.context?.skills && thread.context.skills.length > 0 && (
 				<div>
 					<p className="mb-2 text-xs font-medium text-[var(--text-secondary)]">
-						Skills used
+						Skills utilizados
 					</p>
 					<div className="flex flex-wrap gap-1.5">
 						{thread.context.skills.map((skill) => (
@@ -187,7 +192,7 @@ function ThreadDetailContent({
 							</LabelValue>
 						)}
 						{thread.context.period && (
-							<LabelValue label="Period">
+							<LabelValue label="Periodo">
 								<span className="text-xs text-[var(--text-primary)]">
 									{thread.context.period}
 								</span>

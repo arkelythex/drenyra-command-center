@@ -1,8 +1,8 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+/** Threads list — merged into /drenyra case list. */
 export const Route = createFileRoute("/threads/")({
-	component: lazyRouteComponent(
-		() => import("../../features/threads/ThreadList"),
-		"ThreadList",
-	),
+	loader: () => {
+		throw redirect({ to: "/drenyra" });
+	},
 });

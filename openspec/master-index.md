@@ -1,9 +1,9 @@
 # Drenyra Transformation — SDD Master Index
 
-**Última actualización:** 2026-07-04
-**Estrategia:** Frontend agentic-first + Backend production readiness + Structural quality (S1–S6)
+**Última actualización:** 2026-07-05
+**Estrategia:** Agentic Paradigm Migration (AM1–AM4) + Backend production readiness + Structural quality + Design System
 **Review budget:** 400 líneas por PR · **Chained PR strategy:** auto-forecast
-**Artifact store:** both (openspec + engram)
+**Artifact store:** openspec
 
 ---
 
@@ -73,20 +73,52 @@ STRUCTURAL (el Gentleman):                                │
 
 ---
 
+## Agentic Migration Plans (AM)
+
+| #   | Plan                                   | Changes                                                   | PRs   | Est. lines | Bloqueado por |
+| --- | -------------------------------------- | --------------------------------------------------------- | ----- | ---------- | ------------- |
+| AM1 | **Eliminate Duplicate Features (8→1)** | Fusionar agent-swarm, cognitive-hub, command-center, etc. | 3 PRs | ~600       | —             |
+| AM2 | **Right Panel → Artifact Feed**        | Eliminar tabs fijos, implementar feed de artifacts        | 2 PRs | ~500       | AM1           |
+| AM3 | **Features → Tools/Artifacts**         | Banking como template, migrar 7 features a skills         | 5 PRs | ~1,200     | AM1, AM2      |
+| AM4 | **Sidebar Reduction & ⌘K Navigation**  | Reducir de 80+ a ~7 entradas + buscador universal         | 1 PR  | ~400       | AM3           |
+
+## Design System Plans (applied)
+
+| #   | Plan                                      | Estado                                         |
+| --- | ----------------------------------------- | ---------------------------------------------- |
+| DS1 | **Design Token Foundation (Cyan/Violet)** | ✅ Applied                                     |
+| DS2 | **Typography & Font System**              | ✅ Applied                                     |
+| DS3 | **Accounting Vocabulary Migration**       | ⚠️ Partial (pending AM2 for remaining strings) |
+| DS4 | **Component State Design**                | ✅ Applied                                     |
+| DS5 | **Three-Panel Layout (Agentic IDE)**      | ✅ Applied                                     |
+
 ## Full Delivery Summary
 
 | Área       | Plans  | PRs    | Líneas      |
 | ---------- | ------ | ------ | ----------- |
+| Agentic    | 4      | 11     | ~2,700      |
 | Frontend   | 6      | 20     | ~7,200      |
 | Backend    | 4      | 13     | ~3,300      |
 | Structural | 6      | 13     | ~3,300      |
-| **Total**  | **16** | **46** | **~13,800** |
+| Design Sys | 5      | 8      | ~1,600      |
+| **Total**  | **25** | **65** | **~18,100** |
 
 ---
 
 ## Recommended Execution Order
 
-### Fase 0: Backend Foundation + Structural Foundation (paralelo)
+### Fase 0: Agentic Migration (ACTIVE)
+
+1. **AM1: Eliminate Duplicates** — primero, destraba el resto
+2. **AM2: Artifact Feed** — el cambio de UI más visible
+3. **AM3: Features → Tools** — banking como template, luego el resto
+4. **AM4: Sidebar Reduction** — último, después de que todo lo demás esté funcionando como tool/artifact
+
+### Fase 0b: Design System Foundation
+
+1. **DS3: Vocabulary** — independiente, se puede hacer en paralelo con DS1/DS2
+
+### Fase 0b: Backend Foundation + Structural Foundation (paralelo con DS)
 
 1. **S3: API Type Migration** — independiente, quick win, destraba types limpios
 2. **B1: API Contracts** — CORS + response envelope (crítico para frontend)
@@ -151,6 +183,25 @@ STRUCTURAL (el Gentleman):                                │
 | S4   | `openspec/changes/drenyra-s4-domain-boundary-audit/` | `proposal.md` |
 | S5   | `openspec/changes/drenyra-s5-go-cli-alignment/`      | `proposal.md` |
 | S6   | `openspec/changes/drenyra-s6-docs-cleanup/`          | `proposal.md` |
+
+### Agentic Migration
+
+| Plan | Change dir                                           | Proposal      |
+| ---- | ---------------------------------------------------- | ------------- |
+| AM1  | `openspec/changes/drenyra-am1-eliminate-duplicates/` | `proposal.md` |
+| AM2  | `openspec/changes/drenyra-am2-artifact-feed/`        | `proposal.md` |
+| AM3  | `openspec/changes/drenyra-am3-features-to-tools/`    | `proposal.md` |
+| AM4  | `openspec/changes/drenyra-am4-sidebar-reduction/`    | `proposal.md` |
+
+### Design System
+
+| Plan | Change dir                                     | Proposal      |
+| ---- | ---------------------------------------------- | ------------- |
+| DS1  | `openspec/changes/drenyra-design-tokens-v4/`   | `proposal.md` |
+| DS2  | `openspec/changes/drenyra-typography-system/`  | `proposal.md` |
+| DS3  | `openspec/changes/drenyra-vocabulary/`         | `proposal.md` |
+| DS4  | `openspec/changes/drenyra-component-states/`   | `proposal.md` |
+| DS5  | `openspec/changes/drenyra-three-panel-layout/` | `proposal.md` |
 
 ---
 

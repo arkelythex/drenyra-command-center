@@ -1,47 +1,19 @@
 @import "tailwindcss";
 @import "./lib/design-tokens/generated/tokens.css";
+@import "./styles/fonts.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant light (&:where(.light, .light *));
 
 /* ===========================================
-   DRENYRA CARBON/CYAN/VIOLET VISUAL SYSTEM
+   DRENYRA CYAN/VIOLET VISUAL SYSTEM
    Token architecture: tokens.dtcg.json → generated/tokens.css
-   Para cambios permanentes: editar tokens.dtcg.json → bun tokens:generate
-   Overrides provisorios abajo mientras se estabiliza el scheme.
    =========================================== */
 
-/* Force dark mode as default — kill beige-on-beige light theme */
+/* Force dark mode as default */
 :root {
   --akx-theme: dark;
   color-scheme: dark;
-}
-
-/* Carbon/cyan/violeta overrides — replace voltage orange #f54e00 */
-.dark {
-  --color-primary: #3ce6d8;
-  --color-primary-hover: #6aefe4;
-  --color-primary-active: #2ecfc2;
-  --primary: #3ce6d8;
-  --primary-foreground: #0a1a1a;
-  --ring: #3ce6d8;
-  --accent: #3ce6d8;
-  --accent-muted: color-mix(in oklch, #3ce6d8 14%, transparent);
-  --color-ai-primary: #3ce6d8;
-  --color-ai-secondary: #2ecfc2;
-  --color-ai-halo: color-mix(in oklch, #3ce6d8 14%, transparent);
-  --shadow-glow-blue: 0 0 12px color-mix(in oklch, #3ce6d8 14%, transparent);
-  --shadow-glow-ai: 0 0 8px color-mix(in oklch, #3ce6d8 10%, transparent);
-  --color-brand: #3ce6d8;
-  /* Violeta secundario */
-  --akx-violet: #9b7fe8;
-  --akx-violet-muted: color-mix(in oklch, #9b7fe8 14%, transparent);
-  --color-info: #9b7fe8;
-  --premium-action-blue: #3ce6d8;
-  /* Mayor contraste en textos */
-  --text-primary: #f0efe8;
-  --text-secondary: #b0aea6;
-  --text-tertiary: #807e76;
 }
 
 /* ===========================================

@@ -3,14 +3,19 @@
 import { cn } from "@/lib/utils";
 
 interface ComposerControlsProps {
-	mode: "local" | "worktree";
-	onChangeMode: (mode: "local" | "worktree") => void;
+	mode: "consulta" | "periodo";
+	onChangeMode: (mode: "consulta" | "periodo") => void;
 	activeSkills: Set<string>;
 	onToggleSkill: (skill: string) => void;
 }
 
-const MODES: ("local" | "worktree")[] = ["local", "worktree"];
-const SKILLS = ["Fiscal", "Code", "Data"] as const;
+const MODES: ("consulta" | "periodo")[] = ["consulta", "periodo"];
+const SKILLS = ["Fiscal", "PCGE", "Datos"] as const;
+
+const MODE_LABELS: Record<string, string> = {
+	consulta: "Consultar",
+	periodo: "Periodo",
+};
 
 export function ComposerControls({
 	mode,
@@ -26,6 +31,7 @@ export function ComposerControls({
 			>
 				{MODES.map((m) => (
 					<button
+						type="button"
 						key={m}
 						role="tab"
 						aria-selected={mode === m}
@@ -37,7 +43,7 @@ export function ComposerControls({
 								: "text-[var(--text-muted)] hover:text-[var(--text-secondary)]",
 						)}
 					>
-						{m.charAt(0).toUpperCase() + m.slice(1)}
+						{MODE_LABELS[m]}
 					</button>
 				))}
 			</div>
@@ -47,6 +53,7 @@ export function ComposerControls({
 					const isActive = activeSkills.has(skill);
 					return (
 						<button
+							type="button"
 							key={skill}
 							onClick={() => onToggleSkill(skill)}
 							aria-pressed={isActive}

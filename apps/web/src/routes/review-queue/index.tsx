@@ -1,8 +1,8 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+/** Legacy review queue — merged into approval board. */
 export const Route = createFileRoute("/review-queue/")({
-	component: lazyRouteComponent(
-		() => import("../../features/review-queue/ReviewQueuePage"),
-		"ReviewQueuePage",
-	),
+	loader: () => {
+		throw redirect({ to: "/cumplimiento/approvals" });
+	},
 });

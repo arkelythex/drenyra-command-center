@@ -1,40 +1,51 @@
 "use client";
 
 /**
- * RightPanel — right sidebar that auto-switches between diff, artifact,
- * reports, KPI dashboard, and thread details views.
+ * RightPanel — Artifact Feed
  *
- * Views are loaded from co-located modules:
- *   - RightPanel.diff-view.tsx       (DiffView)
- *   - RightPanel.artifact-panel.tsx  (ContextPanel)
- *   - RightPanel.details-tab.tsx     (DetailsTab)
- *   - ReportPreview.tsx, KpiDashboard.tsx (standalone)
+ * Muestra en orden cronológico inverso los artifacts generados por el agente
+ * durante la conversación actual: aprobaciones, tablas, documentos, gráficos.
+ *
+ * Si el usuario quiere fijar una vista (ej: dejar el Ledger visible durante
+ * el cierre mensual), puede hacerlo con la acción "Anclar".
+ *
+ * ┌─────────────────────────────────────┐
+ * │  Feed de artefactos          [📌]   │
+ * ├─────────────────────────────────────┤
+ * │  ┌───────────────────────────────┐  │
+ * │  │  Conciliación bancaria        │  │
+ * │  │  (agente · hace 2min)        │  │
+ * │  └───────────────────────────────┘  │
+ * │  ┌───────────────────────────────┐  │
+ * │  │  Tabla de asientos            │  │
+ * │  │  (agente · hace 5min)        │  │
+ * │  └───────────────────────────────┘  │
+ * │  ┌───────────────────────────────┐  │
+ * │  │  Gráfico de flujo de caja     │  │
+ * │  │  (agente · hace 10min)       │  │
+ * │  └───────────────────────────────┘  │
+ * └─────────────────────────────────────┘
  */
 
-import { Pin, PinOff } from "lucide-react";
-import { useMemo, useState } from "react";
-import { cn } from "@/lib/utils";
+import { Bell, Pin } from "lucide-react";
+import { useMemo } from "react";
 import { useAccountingStore } from "@/stores/accounting-store";
 import { useArtifactStore } from "@/stores/artifact-store";
 import { useDiffApprovalStore } from "@/stores/diff-approval-store";
-import { ArtifactSidebar, type ArtifactSidebarItem } from "./ArtifactSidebar";
 import { KpiDashboard } from "./KpiDashboard";
 import { ReportPreview } from "./ReportPreview";
 import { ContextPanel } from "./RightPanel.artifact-panel";
-import { DetailsTab } from "./RightPanel.details-tab";
 import { DiffView } from "./RightPanel.diff-view";
 
-// ─── View types ───────────────────────────────────────────────────────────────
+// ─── Feed item type ──────────────────────────────────────────────────────────
 
-type ViewType = "diff" | "artifact" | "reports" | "kpi" | "details";
-
-const VIEW_LABELS: Record<ViewType, string> = {
-	diff: "Conciliación",
-	artifact: "Previsualización",
-	reports: "Reportes",
-	kpi: "Dashboard KPI",
-	details: "Detalles",
-};
+interface FeedItem {
+	id: string;
+	type: "diff" | "artifact" | "reports" | "kpi" | "details";
+	label: string;
+	timestamp: number;
+	component: React.ReactNode;
+}
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
@@ -42,79 +53,113 @@ export function RightPanel() {
 	const pinnedArtifacts = useArtifactStore((s) => s.pinnedArtifacts);
 	const diffFiles = useDiffApprovalStore((s) => s.diffFiles);
 	const financialReports = useAccountingStore((s) => s.financialReports);
-	const [lockedView, setLockedView] = useState<ViewType | null>(null);
 
-	const currentView: ViewType = useMemo(() => {
-		if (lockedView) return lockedView;
-		if (pinnedArtifacts.length > 0) return "artifact";
-		if (diffFiles.length > 0) return "diff";
-		if (financialReports.length > 0) return "reports";
-		return "kpi";
-	}, [
-		lockedView,
-		pinnedArtifacts.length,
-		diffFiles.length,
-		financialReports.length,
-	]);
+	// Build feed items in reverse chronological order
+	const feedItems: FeedItem[] = useMemo(() => {
+		const items: FeedItem[] = [];
 
-	const isLocked = lockedView !== null;
-
-	const artifactItems: ArtifactSidebarItem[] = useMemo(() => {
-		const items: ArtifactSidebarItem[] = [];
+		// Diffs siempre aparecen primero si hay
 		if (diffFiles.length > 0) {
 			items.push({
-				id: "diff-summary",
-				kind: "plan",
-				label: `${diffFiles.length} diff file(s)`,
-				description: "Pending review in conciliation view",
+				id: "diff-current",
+				type: "diff",
+				label: `Conciliación (${diffFiles.length})`,
+				timestamp: Date.now(),
+				component: <DiffView />,
 			});
 		}
+
+		// Artefactos anclados por el usuario
 		for (const artifact of pinnedArtifacts.slice(0, 5)) {
 			const meta = artifact as { title?: string; type?: string; kind?: string };
 			items.push({
 				id: artifact.id,
-				kind: "file",
+				type: "artifact",
 				label: meta.title ?? meta.kind ?? artifact.id,
-				description: meta.type,
+				timestamp: Date.now() - pinnedArtifacts.indexOf(artifact) * 1000,
+				component: <ContextPanel />,
 			});
 		}
-		return items;
-	}, [diffFiles.length, pinnedArtifacts]);
+
+		// Reportes financieros
+		if (financialReports.length > 0) {
+			items.push({
+				id: "reports",
+				type: "reports",
+				label: "Reportes",
+				timestamp: Date.now() - 5000,
+				component: <ReportPreview />,
+			});
+		}
+
+		// Dashboard KPI como item por defecto
+		items.push({
+			id: "kpi-dashboard",
+			type: "kpi",
+			label: "Dashboard KPI",
+			timestamp: Date.now() - 10000,
+			component: <KpiDashboard />,
+		});
+
+		return items.sort((a, b) => b.timestamp - a.timestamp);
+	}, [diffFiles.length, pinnedArtifacts, financialReports.length]);
+
+	const hasContent = feedItems.length > 0;
 
 	return (
 		<aside className="flex h-full w-[480px] max-xl:w-full max-xl:max-w-[480px] flex-col border-l border-[var(--border-subtle)] bg-[var(--surface-1)]">
 			{/* Header */}
 			<div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--surface-2)]/50 px-4 py-2.5">
 				<h2 className="text-xs font-semibold text-[var(--text-primary)]">
-					{VIEW_LABELS[currentView]}
+					Feed de artefactos
 				</h2>
-				<button
-					type="button"
-					onClick={() => setLockedView(isLocked ? null : currentView)}
-					className={cn(
-						"inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs transition-colors",
-						isLocked
-							? "bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
-							: "text-[var(--text-muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text-secondary)]",
-					)}
-					title={isLocked ? "Unpin" : "Pin current view"}
-				>
-					{isLocked ? <PinOff size={12} /> : <Pin size={12} />}
-					{isLocked ? "Fijado" : "Fijar"}
-				</button>
 			</div>
 
-			{/* Content */}
-			<div className="relative flex-1 overflow-hidden">
-				<div className="absolute inset-0 overflow-y-auto">
-					{currentView === "diff" && <DiffView />}
-					{currentView === "artifact" && <ContextPanel />}
-					{currentView === "details" && <DetailsTab />}
-					{currentView === "reports" && <ReportPreview />}
-					{currentView === "kpi" && <KpiDashboard />}
-				</div>
+			{/* Content — chronological feed */}
+			<div className="flex-1 overflow-y-auto">
+				{hasContent ? (
+					<div className="divide-y divide-[var(--border-subtle)]">
+						{feedItems.map((item) => (
+							<section key={item.id} className="flex flex-col">
+								{/* Item header */}
+								<div className="flex items-center justify-between px-4 py-2 bg-[var(--surface-2)]/30">
+									<h3 className="flex items-center gap-2 text-xs font-medium text-[var(--text-secondary)]">
+										{item.type === "diff" && (
+											<span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-warning)]/10 px-2 py-0.5 text-2xs font-medium text-[var(--color-warning)]">
+												{/* icon */}
+												{item.label}
+											</span>
+										)}
+										{item.type !== "diff" && item.label}
+									</h3>
+									<div className="flex items-center gap-1">
+										<button
+											type="button"
+											className="rounded p-1 text-[var(--text-muted)] opacity-0 hover:opacity-100 hover:text-[var(--text-primary)] transition-all"
+											title="Anclar artefacto"
+											aria-label="Anclar artefacto"
+										>
+											<Pin size={12} />
+										</button>
+									</div>
+								</div>
+								{/* Item content */}
+								<div className="px-0">{item.component}</div>
+							</section>
+						))}
+					</div>
+				) : (
+					<div className="flex h-full flex-col items-center justify-center text-center px-6">
+						<Bell size={28} className="text-[var(--text-muted)] mb-3" />
+						<p className="text-sm text-[var(--text-muted)]">
+							Sin artefactos todavía
+						</p>
+						<p className="mt-1 text-xs text-[var(--text-muted)]">
+							Los resultados del agente aparecen acá automáticamente
+						</p>
+					</div>
+				)}
 			</div>
-			<ArtifactSidebar items={artifactItems} className="px-4 pb-4" />
 		</aside>
 	);
 }

@@ -1,0 +1,12 @@
+change_id: drenyra-design-tokens-v4
+status: applied
+phase: applied
+branch: design/drenyra-design-tokens-v4
+delivery_strategy: auto-chain
+created_at: 2026-07-05
+updated_at: 2026-07-05
+supersedes: drenyra-fiscal-editorial-v3
+rationale: >
+  Reemplaza la paleta cálida "fiscal editorial" (espresso/cream/voltage #f54e00)
+  con la paleta fría cyan/violeta del nuevo Design System (#3CE6D8 / #9B7FE8).
+  Los tokens y la estructura DTCG se mantienen; solo cambian los valores de color.

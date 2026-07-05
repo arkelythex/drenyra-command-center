@@ -20,7 +20,7 @@ export interface ArtifactSidebarProps {
  */
 export function ArtifactSidebar({
 	items,
-	title = "Artifacts",
+	title = "Artefactos",
 	className,
 }: ArtifactSidebarProps) {
 	if (items.length === 0) return null;

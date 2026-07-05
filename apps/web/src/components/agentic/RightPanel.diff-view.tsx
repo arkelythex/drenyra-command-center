@@ -197,7 +197,7 @@ export function DiffView() {
 			<div className="flex h-full flex-col items-center justify-center text-center px-6">
 				<FileCode size={32} className="text-[var(--text-muted)] mb-3" />
 				<p className="text-sm text-[var(--text-muted)]">
-					No changes to display
+					Sin cambios para mostrar
 				</p>
 			</div>
 		);
@@ -209,9 +209,10 @@ export function DiffView() {
 		<div className="flex h-full flex-col">
 			<div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--surface-2)]/50 px-3 py-1">
 				<span className="text-xs text-[var(--text-muted)]">
-					{diffFiles.length} file{diffFiles.length !== 1 ? "s" : ""}
+					{diffFiles.length} {diffFiles.length === 1 ? "archivo" : "archivos"}
 				</span>
 				<button
+					type="button"
 					onClick={() => setSplitMode(!splitMode)}
 					className={cn(
 						"flex items-center gap-1 rounded px-2 py-1 text-xs transition-colors",
@@ -219,14 +220,14 @@ export function DiffView() {
 							? "bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
 							: "text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-[var(--surface-2)]",
 					)}
-					title={splitMode ? "Unified view" : "Split view"}
+					title={splitMode ? "Vista unificada" : "Vista dividida"}
 				>
 					{splitMode ? (
 						<AlignLeft size={12} />
 					) : (
 						<SplitSquareHorizontal size={12} />
 					)}
-					{splitMode ? "Unified" : "Split"}
+					{splitMode ? "Unificada" : "Dividida"}
 				</button>
 			</div>
 
@@ -245,6 +246,7 @@ export function DiffView() {
 
 						return (
 							<button
+								type="button"
 								key={file.fileName}
 								onClick={() => setSelectedPath(file.fileName)}
 								className={cn(
@@ -290,7 +292,7 @@ export function DiffView() {
 						</>
 					) : (
 						<div className="flex h-full items-center justify-center text-sm text-[var(--text-muted)]">
-							Select a file to view diff
+							Seleccioná un archivo para ver el diff
 						</div>
 					)}
 				</div>

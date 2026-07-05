@@ -36,7 +36,7 @@ export function ArtifactTab() {
 					<div className="flex items-center gap-1.5 border-b border-[var(--border-subtle)] bg-[var(--surface-2)]/50 px-3 py-2">
 						<Pin size={12} className="text-[var(--color-primary)]" />
 						<span className="text-xs font-medium text-[var(--text-secondary)]">
-							Pinned ({pinnedArtifacts.length})
+							Fijados ({pinnedArtifacts.length})
 						</span>
 					</div>
 				)}
@@ -46,6 +46,7 @@ export function ArtifactTab() {
 					<div className="border-b border-[var(--border-subtle)]">
 						{pinnedArtifacts.map((pa) => (
 							<button
+								type="button"
 								key={pa.id}
 								onClick={() => setActiveArtifactId(pa.id)}
 								className={cn(
@@ -65,7 +66,8 @@ export function ArtifactTab() {
 									</span>
 								</div>
 								<button
-									aria-label="Unpin"
+									type="button"
+									aria-label="Desfijar"
 									onClick={(e) => {
 										e.stopPropagation();
 										unpinArtifact(pa.id);
@@ -74,7 +76,7 @@ export function ArtifactTab() {
 										}
 									}}
 									className="shrink-0 rounded p-1 text-[var(--text-muted)] hover:bg-[var(--surface-3)] hover:text-[var(--text-primary)]"
-									title="Unpin"
+									title="Desfijar"
 								>
 									<X size={10} />
 								</button>
@@ -89,10 +91,10 @@ export function ArtifactTab() {
 						<div className="flex h-full flex-col items-center justify-center text-center px-6">
 							<PinOff size={28} className="text-[var(--text-muted)] mb-3" />
 							<p className="text-sm text-[var(--text-muted)]">
-								No pinned artifacts
+								Sin artefactos fijados
 							</p>
 							<p className="mt-1 text-xs text-[var(--text-muted)]">
-								Pin artifacts from the chat to preview them here
+								Fijá artefactos desde el chat para previsualizarlos acá
 							</p>
 						</div>
 					)}

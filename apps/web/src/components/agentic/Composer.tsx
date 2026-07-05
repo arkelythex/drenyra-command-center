@@ -18,7 +18,7 @@ import { useSendFeedback } from "./useSendFeedback";
 interface ComposerProps {
 	onSend?: (
 		message: string,
-		mode: "local" | "worktree",
+		mode: "consulta" | "periodo",
 		yoloMode?: boolean,
 	) => void;
 	isSending?: boolean;
@@ -26,7 +26,7 @@ interface ComposerProps {
 	onFileUpload?: () => void;
 }
 
-type ComposerMode = "local" | "worktree";
+type ComposerMode = "consulta" | "periodo";
 
 export function Composer({
 	onSend,
@@ -35,7 +35,7 @@ export function Composer({
 	onFileUpload,
 }: ComposerProps) {
 	const [message, setMessage] = useState("");
-	const [mode, setMode] = useState<ComposerMode>("local");
+	const [mode, setMode] = useState<ComposerMode>("consulta");
 	const [yoloMode, setYoloMode] = useState(false);
 	const [activeSkills, setActiveSkills] = useState<Set<string>>(new Set());
 	const [isDragging, setIsDragging] = useState(false);
@@ -250,7 +250,7 @@ export function Composer({
 			{isDragging && (
 				<div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg border-2 border-dashed border-[var(--color-primary)]/50 bg-[var(--color-primary)]/5">
 					<span className="text-sm font-medium text-[var(--color-primary)]">
-						Drop files here
+						Soltá archivos acá
 					</span>
 				</div>
 			)}
@@ -288,7 +288,7 @@ export function Composer({
 						value={message}
 						onChange={handleChange}
 						onKeyDown={handleKeyDown}
-						placeholder="Message Drenyra..."
+						placeholder="Escribí un mensaje..."
 						disabled={isSending}
 						rows={1}
 						className={cn(
@@ -356,16 +356,16 @@ export function Composer({
 				<div className="flex items-center gap-2">
 					{hasMessage && (
 						<span className="hidden text-xs text-[var(--text-muted)] sm:inline">
-							Cmd+Enter to send
+							Enter para enviar
 						</span>
 					)}
 
 					<button
 						type="button"
 						disabled
-						aria-label="Voice input (coming soon)"
+						aria-label="Entrada de voz (próximamente)"
 						className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--text-muted)] opacity-40"
-						title="Voice input (coming soon)"
+						title="Entrada de voz (próximamente)"
 					>
 						<Mic size={16} />
 					</button>

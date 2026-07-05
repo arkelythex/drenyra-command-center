@@ -7,35 +7,49 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#0f0f12" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="/api" />
     <link rel="preconnect" href="/api" />
 
     <!-- Anti-FOUC: Apply theme before React hydrates to prevent flash -->
     <script>
-      (function() {
+      ;(function () {
         try {
-          var stored = localStorage.getItem('drenyra-ui-storage');
-          var mode = stored ? JSON.parse(stored).state?.uxMode : 'dark';
-          var isDark = mode === 'dark' || mode === 'cyberpunk';
+          var stored = localStorage.getItem('drenyra-ui-storage')
+          var mode = stored ? JSON.parse(stored).state?.uxMode : 'dark'
+          var isDark = mode === 'dark' || mode === 'cyberpunk'
           if (mode === 'system') {
-            isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
           }
-          document.documentElement.classList.add(isDark ? 'dark' : 'light');
-          document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
-        } catch (e) { document.documentElement.classList.add('dark'); }
-      })();
+          document.documentElement.classList.add(isDark ? 'dark' : 'light')
+          document.documentElement.style.colorScheme = isDark ? 'dark' : 'light'
+        } catch (e) {
+          document.documentElement.classList.add('dark')
+        }
+      })()
     </script>
-    
-    <!-- Fonts (non-render-blocking via media="print" onload swap) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript>
-      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-    </noscript>
-    
+
+    <!-- Self-hosted fonts (subset Latin WOFF2 via fontsource) -->
+    <link
+      rel="preload"
+      href="/fonts/geist-mono/geist-mono-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter/inter-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter/inter-latin-600-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
   </head>
   <body>
     <div id="root"></div>
