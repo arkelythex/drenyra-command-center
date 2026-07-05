@@ -19,16 +19,16 @@ auto-generated: false
 
 Drenyra Web es el SPA de Drenyra — la Infraestructura Nacional de Inteligencia Fiscal. Esto es lo que necesitás saber:
 
-| Si venís por... | Respuesta corta |
-|----------------|-----------------|
-| **¿Qué es?** | SPA en React 19 para dashboards financieros, facturación, conciliación bancaria e inteligencia fiscal |
-| **Stack clave** | React 19 + Vite 8 + TanStack Router + TanStack Query + Tailwind CSS v4 + shadcn/ui |
+| Si venís por...            | Respuesta corta                                                                                         |
+| -------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **¿Qué es?**               | SPA en React 19 para dashboards financieros, facturación, conciliación bancaria e inteligencia fiscal   |
+| **Stack clave**            | React 19 + Vite 8 + TanStack Router + TanStack Query + Tailwind CSS v4 + shadcn/ui                      |
 | **¿Dónde está el código?** | `apps/web/src/` — features en `src/features/`, rutas en `src/routes/`, componentes en `src/components/` |
-| **¿Cómo lo ejecuto?** | `cd apps/web && bun run dev` |
-| **¿Cómo se prueba?** | `bun run test:run` (Vitest + Testing Library) |
-| **API** | Eden Treaty — tipado extremo a extremo con `@drenyra/api` |
-| **Auth** | Better Auth — login en `/login`, session-based con refresh automático |
-| **Diseño** | Glass & Steel — dark mode, tokens DTCG en `src/lib/design-tokens/` |
+| **¿Cómo lo ejecuto?**      | `cd apps/web && bun run dev`                                                                            |
+| **¿Cómo se prueba?**       | `bun run test:run` (Vitest + Testing Library)                                                           |
+| **API**                    | Eden Treaty — tipado extremo a extremo con `@drenyra/api`                                               |
+| **Auth**                   | Better Auth — login en `/login`, session-based con refresh automático                                   |
+| **Diseño**                 | Glass & Steel — dark mode, tokens DTCG en `src/lib/design-tokens/`                                      |
 
 Profundizá abajo según tu interés. Cada sección es independiente.
 
@@ -66,48 +66,48 @@ apps/web/src/
 
 All routes live in `src/routes/` — type-safe, file-based lazy loading with built-in search params and loaders.
 
-| Route | Description |
-|-------|-------------|
-| `/` | Dashboard |
-| `/login` | Authentication |
-| `/forgot-password` | Password recovery |
-| `/invoices` | Invoice management |
-| `/banking` | Banking & reconciliation |
-| `/cashflow` | Cash flow management |
-| `/customers` | Customer management |
-| `/bills` | Bills payable |
-| `/inventory` | Inventory / kardex |
-| `/taxation` | Tax compliance |
-| `/compliance` | Regulatory compliance |
-| `/audit` | Audit trail |
-| `/settings` | User & company settings |
-| `/reports` | Financial reports |
-| `/ledger` | General ledger |
-| `/cierre-mensual` | Monthly close |
-| `/documents` | Document management |
-| `/expedientes` | File/record management |
-| `/intelligence` | AI insights |
-| `/onboarding` | User onboarding |
-| `/payroll` | Payroll management |
-| `/entities` | Entity management |
-| `/products` | Product catalog |
-| `/assets` | Asset management |
-| `/approvals` | Approval hub |
-| `/automations` | Automation workflows |
-| `/connections` | Third-party connections |
-| `/drenyra` | Drenyra command center |
-| `/chat` | AI chat assistant |
-| `/neural-grid` | Neural analytics grid |
-| `/economic-groups/:groupId` | Economic group detail |
-| `/compare` | Multi-period comparison |
-| `/inbox` | Notification inbox |
-| `/reconciliations` | Bank reconciliation |
-| `/review` | Document review |
-| `/profile` | User profile |
-| `/mobile-summary` | Mobile-optimized summary |
-| `/cognitive-hub` | AI cognitive dashboard |
-| `/financials` | Financial overview |
-| + more | See `src/routes/` for full list |
+| Route                       | Description                     |
+| --------------------------- | ------------------------------- |
+| `/`                         | Dashboard                       |
+| `/login`                    | Authentication                  |
+| `/forgot-password`          | Password recovery               |
+| `/invoices`                 | Invoice management              |
+| `/banking`                  | Banking & reconciliation        |
+| `/cashflow`                 | Cash flow management            |
+| `/customers`                | Customer management             |
+| `/bills`                    | Bills payable                   |
+| `/inventory`                | Inventory / kardex              |
+| `/taxation`                 | Tax compliance                  |
+| `/compliance`               | Regulatory compliance           |
+| `/audit`                    | Audit trail                     |
+| `/settings`                 | User & company settings         |
+| `/reports`                  | Financial reports               |
+| `/ledger`                   | General ledger                  |
+| `/cierre-mensual`           | Monthly close                   |
+| `/documents`                | Document management             |
+| `/expedientes`              | File/record management          |
+| `/intelligence`             | AI insights                     |
+| `/onboarding`               | User onboarding                 |
+| `/payroll`                  | Payroll management              |
+| `/entities`                 | Entity management               |
+| `/products`                 | Product catalog                 |
+| `/assets`                   | Asset management                |
+| `/approvals`                | Approval hub                    |
+| `/automations`              | Automation workflows            |
+| `/connections`              | Third-party connections         |
+| `/drenyra`                  | Drenyra command center          |
+| `/chat`                     | AI chat assistant               |
+| `/neural-grid`              | Neural analytics grid           |
+| `/economic-groups/:groupId` | Economic group detail           |
+| `/compare`                  | Multi-period comparison         |
+| `/inbox`                    | Notification inbox              |
+| `/reconciliations`          | Bank reconciliation             |
+| `/review`                   | Document review                 |
+| `/profile`                  | User profile                    |
+| `/mobile-summary`           | Mobile-optimized summary        |
+| `/cognitive-hub`            | AI cognitive dashboard          |
+| `/financials`               | Financial overview              |
+| + more                      | See `src/routes/` for full list |
 
 ### Feature Catalog (src/features/)
 
@@ -129,23 +129,23 @@ All routes live in `src/routes/` — type-safe, file-based lazy loading with bui
 
 ## 📦 Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| **Framework** | React 19 with React Compiler |
-| **Build** | Vite 8 + @vitejs/plugin-react |
-| **Routing** | TanStack Router (type-safe routes) |
-| **Data Fetching** | TanStack Query |
-| **HTTP Client** | Eden Treaty (type-safe API consumption) |
-| **State** | Zustand 5 + XState (complex workflows) |
-| **Forms** | React Hook Form + Zod 4 |
-| **Styling** | Tailwind CSS v4 + shadcn/ui |
-| **Animation** | Framer Motion |
-| **PDF** | @react-pdf/renderer |
-| **Charts** | Recharts |
-| **Auth** | Better Auth (client) |
-| **DnD** | dnd-kit |
-| **Testing** | Vitest + Testing Library |
-| **Package** | @drenyra/* (workspace deps) |
+| Layer             | Technology                              |
+| ----------------- | --------------------------------------- |
+| **Framework**     | React 19 with React Compiler            |
+| **Build**         | Vite 8 + @vitejs/plugin-react           |
+| **Routing**       | TanStack Router (type-safe routes)      |
+| **Data Fetching** | TanStack Query                          |
+| **HTTP Client**   | Eden Treaty (type-safe API consumption) |
+| **State**         | Zustand 5 + XState (complex workflows)  |
+| **Forms**         | React Hook Form + Zod 4                 |
+| **Styling**       | Tailwind CSS v4 + shadcn/ui             |
+| **Animation**     | Framer Motion                           |
+| **PDF**           | @react-pdf/renderer                     |
+| **Charts**        | Recharts                                |
+| **Auth**          | Better Auth (client)                    |
+| **DnD**           | dnd-kit                                 |
+| **Testing**       | Vitest + Testing Library                |
+| **Package**       | @drenyra/* (workspace deps)             |
 
 ### Design System
 
@@ -162,7 +162,7 @@ The **Glass & Steel** design system powers the UI:
 All API requests flow through Eden Treaty for end-to-end type safety:
 
 ```typescript
-import { eden } from "@/lib/api-client";
+import { eden } from '@/lib/api-client'
 // Fully typed — matches @drenyra/api routes exactly
 ```
 
@@ -224,13 +224,13 @@ bun run test:run src/features/
 
 ## 📁 Related Packages
 
-| Package | Purpose |
-|---------|---------|
-| `@drenyra/api` | Backend API (Elysia) — consumed via Eden Treaty |
-| `@drenyra/application` | Use cases & business logic |
-| `@drenyra/domain` | Domain entities & value objects |
-| `@drenyra/shared` | Shared utilities & validation |
-| `@drenyra/ui` | Shared UI components |
+| Package                | Purpose                                         |
+| ---------------------- | ----------------------------------------------- |
+| `@drenyra/api`         | Backend API (Elysia) — consumed via Eden Treaty |
+| `@drenyra/application` | Use cases & business logic                      |
+| `@drenyra/domain`      | Domain entities & value objects                 |
+| `@drenyra/shared`      | Shared utilities & validation                   |
+| `@drenyra/ui`          | Shared UI components                            |
 
 ---
 

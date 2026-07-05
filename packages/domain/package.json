@@ -29,6 +29,7 @@
     "./ai/model-router/types": "./src/ai/model-router/types.ts",
     "./accounting/*": "./src/accounting/*.ts",
     "./roi/*": "./src/roi/*.ts",
+    "./fiscal": "./src/fiscal/index.ts",
     "./fiscal-memory": "./src/fiscal-memory/index.ts"
   },
   "scripts": {

@@ -44,63 +44,63 @@ packages/domain/src/
 
 ### Entidades (`src/entities/`)
 
-| Entidad | Descripción |
-|---------|-------------|
-| `Account` | Cuenta contable con plan de cuentas |
-| `AIPrompt` | Entidad de template de prompt de IA |
-| `AISettings` | Configuración de IA |
-| `BankAccount` | Cuenta bancaria |
-| `BankReconciliation` | Agregado de conciliación bancaria |
-| `BankTransaction` | Transacción bancaria |
-| `Document` | Documento genérico |
-| `Invoice` | Aggregate root de factura |
-| `JournalEntry` | Asiento contable con líneas de débito/crédito |
-| `Transaction` | Transacción financiera |
+| Entidad              | Descripción                                   |
+| -------------------- | --------------------------------------------- |
+| `Account`            | Cuenta contable con plan de cuentas           |
+| `AIPrompt`           | Entidad de template de prompt de IA           |
+| `AISettings`         | Configuración de IA                           |
+| `BankAccount`        | Cuenta bancaria                               |
+| `BankReconciliation` | Agregado de conciliación bancaria             |
+| `BankTransaction`    | Transacción bancaria                          |
+| `Document`           | Documento genérico                            |
+| `Invoice`            | Aggregate root de factura                     |
+| `JournalEntry`       | Asiento contable con líneas de débito/crédito |
+| `Transaction`        | Transacción financiera                        |
 
 ### Value Objects (`src/value-objects/`)
 
-| VO | Descripción |
-|----|-------------|
-| `Money` | Valor monetario con moneda — precisión segura, sin floats |
-| `RUC` | Identificador RUC peruano con checksum Módulo 11 |
-| `DNI` | Identificador DNI peruano |
-| `DocumentSeries` | Serie de documento (ej. F001, B001) |
-| `AccountType` | Clasificación tipada de cuenta contable |
-| `TransactionType` | Categorización tipada de transacción |
-| `PromptVersion` | Versión semántica para prompts de IA |
+| VO                | Descripción                                               |
+| ----------------- | --------------------------------------------------------- |
+| `Money`           | Valor monetario con moneda — precisión segura, sin floats |
+| `RUC`             | Identificador RUC peruano con checksum Módulo 11          |
+| `DNI`             | Identificador DNI peruano                                 |
+| `DocumentSeries`  | Serie de documento (ej. F001, B001)                       |
+| `AccountType`     | Clasificación tipada de cuenta contable                   |
+| `TransactionType` | Categorización tipada de transacción                      |
+| `PromptVersion`   | Versión semántica para prompts de IA                      |
 
 ### Eventos de Dominio (`src/events/`)
 
-| Evento | Descripción |
-|--------|-------------|
-| `InvoiceCreated` | Se emitió una factura |
+| Evento               | Descripción                 |
+| -------------------- | --------------------------- |
+| `InvoiceCreated`     | Se emitió una factura       |
 | `InvoiceSentToSunat` | La factura se envió a SUNAT |
-| `TransactionPosted` | Se contabilizó un asiento |
+| `TransactionPosted`  | Se contabilizó un asiento   |
 
 ### Errores de Dominio (`src/errors/`)
 
-| Error | Descripción |
-|-------|-------------|
-| `InvalidAmountError` | Monto monetario fuera de rango |
-| `InvalidDNIError` | Violación de formato/checksum de DNI |
-| `InvalidDocumentSeriesError` | Violación de formato de serie |
-| `InvalidRUCError` | Violación de formato/checksum de RUC |
+| Error                        | Descripción                          |
+| ---------------------------- | ------------------------------------ |
+| `InvalidAmountError`         | Monto monetario fuera de rango       |
+| `InvalidDNIError`            | Violación de formato/checksum de DNI |
+| `InvalidDocumentSeriesError` | Violación de formato de serie        |
+| `InvalidRUCError`            | Violación de formato/checksum de RUC |
 
 ### Servicios (`src/services/`)
 
-| Servicio | Descripción |
-|----------|-------------|
-| `TaxCalculator` | Cálculo de IGV y desglose de impuestos |
+| Servicio         | Descripción                              |
+| ---------------- | ---------------------------------------- |
+| `TaxCalculator`  | Cálculo de IGV y desglose de impuestos   |
 | `igv-calculator` | Cálculos standalone de porcentaje de IGV |
 
 ### Accounting (`src/accounting/`)
 
-| Módulo | Descripción |
-|--------|-------------|
-| `accounting-period` | Value object de periodo contable |
-| `cpe-log` | Tipos de log de CPE (Comprobante) |
-| `detraccion` | VOs del sistema de detracciones SPOT |
-| `exchange-rate` | Value object de tipo de cambio |
+| Módulo              | Descripción                          |
+| ------------------- | ------------------------------------ |
+| `accounting-period` | Value object de periodo contable     |
+| `cpe-log`           | Tipos de log de CPE (Comprobante)    |
+| `detraccion`        | VOs del sistema de detracciones SPOT |
+| `exchange-rate`     | Value object de tipo de cambio       |
 
 ### Interfaces de Repositorio (`src/repositories/`)
 
@@ -129,11 +129,11 @@ bun run test         # Ejecutar tests unitarios (Vitest)
 
 ## 📋 Restricciones de Diseño
 
-| Regla | Por qué |
-|-------|---------|
-| Sin imports de frameworks | El dominio debe poder testearse sin infraestructura |
-| Sin concerns de infraestructura (DB, HTTP, filesystem) | Esa es responsabilidad de la capa de aplicación |
-| Todos los valores monetarios usan `Money` — nunca `number` | Los floats causan errores de redondeo en contabilidad |
-| Identificadores fiscales peruanos (`RUC`, `DNI`) validados al construir | No puede existir un RUC inválido en el dominio |
-| Eventos de dominio son objetos planos | No atados a ningún event bus |
-| Las entidades aplican invariantes en sus constructores | Un objeto inválido no debería poder crearse |
+| Regla                                                                   | Por qué                                               |
+| ----------------------------------------------------------------------- | ----------------------------------------------------- |
+| Sin imports de frameworks                                               | El dominio debe poder testearse sin infraestructura   |
+| Sin concerns de infraestructura (DB, HTTP, filesystem)                  | Esa es responsabilidad de la capa de aplicación       |
+| Todos los valores monetarios usan `Money` — nunca `number`              | Los floats causan errores de redondeo en contabilidad |
+| Identificadores fiscales peruanos (`RUC`, `DNI`) validados al construir | No puede existir un RUC inválido en el dominio        |
+| Eventos de dominio son objetos planos                                   | No atados a ningún event bus                          |
+| Las entidades aplican invariantes en sus constructores                  | Un objeto inválido no debería poder crearse           |

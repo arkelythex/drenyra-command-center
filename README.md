@@ -6,10 +6,10 @@
 
 ## ADN: Codex + Digits
 
-| Layer | Qué es | Stack |
-|-------|--------|-------|
-| **Codex** | Motor de reglas fiscales deterministas — SUNAT, RUC, IGV, SIRE, CDR, detracciones, PLE. Lógica testable, replayable, 100% cubierta. | TypeScript strict, Bun + Elysia, PostgreSQL + Drizzle, Go (evidence graph) |
-| **Digits** | Experiencia de usuario — web SPA para el día a día + CLI para operaciones avanzadas. Cash-flow, close, conciliación, compliance en una interfaz. | React 19 + Vite + TanStack Router (web), Go + Bubbletea (CLI) |
+| Layer      | Qué es                                                                                                                                           | Stack                                                                      |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------- |
+| **Codex**  | Motor de reglas fiscales deterministas — SUNAT, RUC, IGV, SIRE, CDR, detracciones, PLE. Lógica testable, replayable, 100% cubierta.              | TypeScript strict, Bun + Elysia, PostgreSQL + Drizzle, Go (evidence graph) |
+| **Digits** | Experiencia de usuario — web SPA para el día a día + CLI para operaciones avanzadas. Cash-flow, close, conciliación, compliance en una interfaz. | React 19 + Vite + TanStack Router (web), Go + Bubbletea (CLI)              |
 
 ---
 
@@ -25,12 +25,12 @@ bun run dev:check
 
 **Servicios esperados:**
 
-| Servicio | URL |
-|----------|-----|
-| Web (Digits / Command Center) | `http://localhost:5174` |
-| API (Codex engine) | `http://localhost:3000` |
-| Swagger | `http://localhost:3000/swagger` |
-| Data Engine | `http://localhost:8000/health` |
+| Servicio                      | URL                             |
+| ----------------------------- | ------------------------------- |
+| Web (Digits / Command Center) | `http://localhost:5174`         |
+| API (Codex engine)            | `http://localhost:3000`         |
+| Swagger                       | `http://localhost:3000/swagger` |
+| Data Engine                   | `http://localhost:8000/health`  |
 
 **CLI:**
 
@@ -69,17 +69,17 @@ drenyra/drenyra/
 
 ## Tech Stack
 
-| Layer | Tech | Purpose |
-|-------|------|---------|
-| Frontend | React 19 + Vite + TanStack Router | Drenyra SPA command center |
-| API | Bun + Elysia + Swagger | Vertical slices, CQRS, Eden Treaty |
-| Data Engine | FastAPI + Polars | Procesamiento analítico high-throughput |
-| Database | PostgreSQL 16 + Drizzle ORM | ORM type-safe |
-| Auth | Better Auth | Email/password, OAuth, sesiones, RBAC |
-| AI | OpenRouter + Gemini + Mastra | Model gateway, agent orchestration |
-| CLI | Go + Cobra + Bubbletea | Drenyra TUI para operaciones fiscales |
-| Design System | Tailwind 4 + shadcn/ui + Glass & Steel | Tokens DTCG, dark-mode enterprise |
-| Testing | Vitest + Playwright | 80/100/0 rule: 80% unit, 100% fiscal paths, 0% flaky E2E |
+| Layer         | Tech                                   | Purpose                                                  |
+| ------------- | -------------------------------------- | -------------------------------------------------------- |
+| Frontend      | React 19 + Vite + TanStack Router      | Drenyra SPA command center                               |
+| API           | Bun + Elysia + Swagger                 | Vertical slices, CQRS, Eden Treaty                       |
+| Data Engine   | FastAPI + Polars                       | Procesamiento analítico high-throughput                  |
+| Database      | PostgreSQL 16 + Drizzle ORM            | ORM type-safe                                            |
+| Auth          | Better Auth                            | Email/password, OAuth, sesiones, RBAC                    |
+| AI            | OpenRouter + Gemini + Mastra           | Model gateway, agent orchestration                       |
+| CLI           | Go + Cobra + Bubbletea                 | Drenyra TUI para operaciones fiscales                    |
+| Design System | Tailwind 4 + shadcn/ui + Glass & Steel | Tokens DTCG, dark-mode enterprise                        |
+| Testing       | Vitest + Playwright                    | 80/100/0 rule: 80% unit, 100% fiscal paths, 0% flaky E2E |
 
 ---
 
