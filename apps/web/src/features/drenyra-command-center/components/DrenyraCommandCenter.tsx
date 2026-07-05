@@ -38,7 +38,7 @@ import { I18nProvider } from "../i18n/I18nProvider";
 import { ChatContextPanel } from "./ChatContextPanel";
 import { ChatSearch, type SearchResult } from "./ChatSearch";
 import { CommandCenterChat } from "./CommandCenterChat";
-import { CommandCenterSidebar } from "./command-center-sidebar";
+
 import {
 	DrenyraCommandPalette,
 	type PaletteCmd,
@@ -272,25 +272,7 @@ export function DrenyraCommandCenter() {
 	];
 
 	// ── Panel sections ──────────────────────────────────────────────────
-	const sidebarContent =
-		!casesQuery.isFetched && casesQuery.isLoading ? (
-			<LoadingState message="Cargando casos fiscales..." />
-		) : (
-			<CommandCenterSidebar
-				companyContext={companyContext}
-				availableCompanies={availableCompanies}
-				onCompanySelect={setActiveCompanyById}
-				activePeriod={fiscalPeriod ?? new Date().toISOString().slice(0, 7)}
-				cases={cases}
-				selectedCaseId={activeCaseId}
-				onCaseSelect={setSelectedCaseId}
-				onCreateCase={() => {}}
-				companyId={companyContext.companyId}
-				notificationBadge={
-					details?.approvals.filter((a) => a.status === "PENDING").length ?? 0
-				}
-			/>
-		);
+	const sidebarContent = null;
 
 	const rightPanelContent = (
 		<ChatContextPanel

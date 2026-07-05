@@ -18,19 +18,7 @@ const es = {
 	"chat.case.status.approval": "Aprobación pendiente",
 	"chat.case.status.resolved": "Resuelto",
 	"chat.case.status.archived": "Archivado",
-	"sidebar.title": "Centro de Comando Fiscal",
-	"sidebar.description":
-		"Agentes especializados, evidencia y aprobaciones para cierre mensual.",
-	"sidebar.companies": "Compañías",
-	"sidebar.period": "Periodo activo",
-	"sidebar.cases": "Casos Fiscales",
-	"sidebar.agents": "Agentes",
-	"sidebar.newCase": "Nuevo Caso",
-	"sidebar.notifications": "Notificaciones",
-	"sidebar.markAllRead": "Marcar leídas",
-	"sidebar.threads": "Hilos",
-	"sidebar.threads.hint":
-		"Iniciá una conversación con un agente sobre un caso específico",
+
 	"actions.runAgent": "Ejecutar Agente",
 	"actions.upload": "Subir",
 	"actions.newCase": "Nuevo Caso",
