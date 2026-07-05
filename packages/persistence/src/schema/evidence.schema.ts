@@ -60,6 +60,7 @@ export const evidence = pgTable(
 		status: evidenceStatusEnum("status").default("UPLOADED").notNull(),
 
 		metadata: jsonb("metadata").$type<Record<string, unknown>>(),
+		validations: jsonb("validations").$type<Array<Record<string, unknown>>>(),
 		extractedData: jsonb("extracted_data").$type<Record<string, unknown>>(),
 		classifierResult:
 			jsonb("classifier_result").$type<Record<string, unknown>>(),

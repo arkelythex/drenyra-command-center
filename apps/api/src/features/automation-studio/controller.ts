@@ -498,6 +498,11 @@ async function executeAction(
 				ok: false,
 				message: "call_webhook requiere configuración de webhook",
 			};
+		case "execute_skill":
+			return {
+				ok: true,
+				message: "Ejecución de skill iniciada (simulado)",
+			};
 		default:
 			return actionType satisfies never;
 	}

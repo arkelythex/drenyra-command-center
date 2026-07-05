@@ -1,4 +1,4 @@
-import { and, desc, eq, like, or, sql } from "@drenyra/persistence/query";
+import { and, desc, eq, inArray, like, or, sql } from "@drenyra/persistence/query";
 import { evidence, evidenceLinks } from "@drenyra/persistence/schema";
 import { db } from "../../lib/db";
 
@@ -140,7 +140,7 @@ export async function getLineage(entityType: string, entityId: string) {
 	const rows = await db
 		.select()
 		.from(evidence)
-		.where(evidence.id.in(evidenceIds));
+		.where(inArray(evidence.id, evidenceIds));
 
 	const evidenceMap = new Map(rows.map((r) => [r.id, toDTO(r)]));
 

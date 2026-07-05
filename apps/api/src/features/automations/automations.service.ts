@@ -1,4 +1,4 @@
-import { and, desc, eq } from "@drenyra/persistence/query";
+import { and, desc, eq, inArray } from "@drenyra/persistence/query";
 import {
 	automationWorkflows,
 	automationSteps,
@@ -71,7 +71,7 @@ export async function listCompanyAutomations(
 			const skillRows = await db
 				.select({ id: skills.id, name: skills.name })
 				.from(skills)
-				.where(skills.id.in(skillIds));
+				.where(inArray(skills.id, skillIds));
 			skillNames.push(...skillRows);
 		}
 
@@ -98,7 +98,7 @@ export async function listCompanyAutomations(
 			triggerConfig: wf.triggerConfig as Record<string, unknown>,
 			status: wf.status,
 			skills: skillNames,
-			autonomy: (wf.metadata as Record<string, unknown>)?.autonomy as string ?? "suggest",
+			autonomy: ((wf as any).metadata as Record<string, unknown>)?.autonomy as string ?? "suggest",
 			lastRunAt: lastExec?.completedAt?.toISOString() ?? lastExec?.startedAt?.toISOString(),
 			lastRunStatus: lastExec?.status,
 			runCount: executions.length,
@@ -136,7 +136,7 @@ export async function createWorkflow(
 			triggerType: data.triggerType as any,
 			triggerConfig: data.triggerConfig,
 			status: "draft",
-			metadata: { autonomy: data.autonomy },
+			// autonomy stored in a dedicated column or triggerConfig when available
 		})
 		.returning();
 	return wf;

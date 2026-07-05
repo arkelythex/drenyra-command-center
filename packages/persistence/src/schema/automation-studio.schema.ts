@@ -48,6 +48,7 @@ export const actionTypeEnum = [
 	"update_evidence",
 	"flag_for_review",
 	"call_webhook",
+	"execute_skill",
 ] as const;
 export type ActionType = (typeof actionTypeEnum)[number];
 
