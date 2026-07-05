@@ -1,8 +1,8 @@
-import type { Document as DocumentEntity } from "@arkelythex/domain/entities/Document";
+import type { Document as DocumentEntity } from "@drenyra/domain/entities/Document";
 import type {
 	DocumentRepository,
 	DocumentTenantScope,
-} from "@arkelythex/domain/repositories/document.repository";
+} from "@drenyra/domain/repositories/document.repository";
 import type {
 	DocumentResponseDTO,
 	KanbanBoardDTO,

@@ -6,7 +6,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { CashflowProjection, type CashflowItem } from '../../domain/cashflow-projection';
-import { Money } from '@arkelythex/domain';
+import { Money } from '@drenyra/domain';
 
 describe('CashflowProjection', () => {
   const companyId = 'company-1';

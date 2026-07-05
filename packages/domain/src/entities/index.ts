@@ -4,7 +4,7 @@
  * Core business entities following DDD principles.
  *
  * @example
- * import { Invoice, Account } from '@arkelythex/domain/entities'
+ * import { Invoice, Account } from '@drenyra/domain/entities'
  */
 
 // Export main entity classes

@@ -1,6 +1,6 @@
 /**
  * AI Agent Swarm - Main Entry Point
- * Arkelythex Cognitive Financial Governance System
+ * Drenyra Cognitive Financial Governance System
  *
  * Multi-agent system for SUNAT 2026 invoice processing
  */
@@ -193,7 +193,7 @@ export class AgentSwarmFactory {
 		// Initialize session store for persistence (graceful fallback if DB unavailable)
 		let sessionStore: SessionStore | undefined;
 		try {
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			const { PostgresSessionStore } = await import(
 				"../session/postgres-store"
 			);
@@ -395,7 +395,7 @@ export class AgentSwarmFactory {
 		| undefined
 	> {
 		try {
-			const { OSEService } = await import("@arkelythex/infrastructure/ose");
+			const { OSEService } = await import("@drenyra/infrastructure/ose");
 			return {
 				sendInvoice: async (data) => {
 					const result = await OSEService.sendInvoice(data);
@@ -411,7 +411,7 @@ export class AgentSwarmFactory {
 			};
 		} catch (error) {
 			loggers.ai.warn(
-				"[OSE] Failed to load OSE service from @arkelythex/infrastructure/ose:",
+				"[OSE] Failed to load OSE service from @drenyra/infrastructure/ose:",
 				error,
 			);
 			return undefined;

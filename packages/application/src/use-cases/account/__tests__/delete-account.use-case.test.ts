@@ -10,10 +10,10 @@
  */
 
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
-import { Account } from "@arkelythex/domain/entities/Account";
-import type { AccountRepository } from "@arkelythex/domain/repositories/account.repository";
-import type { JournalEntryRepository } from "@arkelythex/domain/repositories/journal-entry.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { Account } from "@drenyra/domain/entities/Account";
+import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
+import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { DeleteAccountUseCase } from "../delete-account.use-case";
 
 // Helper to create a mock account

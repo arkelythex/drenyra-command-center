@@ -3,16 +3,16 @@ import { db, schema } from "../../lib/db";
 import {
 	assertValidTransition,
 	Thread,
-} from "@arkelythex/domain/entities/thread";
+} from "@drenyra/domain/entities/thread";
 import type {
 	AgentRole,
 	TaskStatus,
 	ThreadStatus,
-} from "@arkelythex/domain/entities/thread";
+} from "@drenyra/domain/entities/thread";
 import type {
 	ThreadAgentRole,
 	ThreadTaskStatus,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 
 // ---------------------------------------------------------------------------
 // Exported types

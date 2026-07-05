@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import type { SheetDiffRow } from '@arkelythex/shared/artifacts';
+import type { SheetDiffRow } from '@drenyra/shared/artifacts';
 
 interface SheetDiffStatusBadgeProps {
   status: SheetDiffRow['status'];

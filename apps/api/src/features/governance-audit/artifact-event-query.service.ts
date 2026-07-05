@@ -1,4 +1,4 @@
-import { db } from '@arkelythex/persistence/client';
+import { db } from '@drenyra/persistence/client';
 
 /**
  * ArtifactEventAuditQuery interface.

@@ -63,7 +63,7 @@ describe("drenyra-fiscal-work.api", () => {
 			value: createLocalStorageMock(),
 			configurable: true,
 		});
-		localStorage.setItem("arkelythex-active-fiscal-period", "2026-05");
+		localStorage.setItem("drenyra-active-fiscal-period", "2026-05");
 		setMockOrganizationId("org-1");
 	});
 
@@ -130,7 +130,7 @@ describe("drenyra-fiscal-work.api", () => {
 		await expect(inspectFiscalWorkItem("case-001")).rejects.toThrow(/organization id/);
 
 		setMockOrganizationId("org-1");
-		localStorage.removeItem("arkelythex-active-fiscal-period");
+		localStorage.removeItem("drenyra-active-fiscal-period");
 		await expect(inspectFiscalWorkItem("case-001")).rejects.toThrow(/explicit selected fiscal period/);
 	});
 });

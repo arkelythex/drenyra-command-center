@@ -5,7 +5,7 @@ import {
 	createDrenyraCommandEnvelope,
 	type DrenyraCommandEnvelope,
 } from "../../../../../packages/domain/src/drenyra/command-envelope";
-import type { DrenyraActorContext } from "@arkelythex/application/drenyra";
+import type { DrenyraActorContext } from "@drenyra/application/drenyra";
 import { toDrenyraCommandScope, type CommandEnvelopeInputBase } from "./command-envelope.shared";
 
 export interface AnalyzeInvoiceCommandInput extends CommandEnvelopeInputBase {

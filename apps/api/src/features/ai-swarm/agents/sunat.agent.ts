@@ -16,7 +16,7 @@
 
 import { generateObject } from 'ai';
 import { z } from 'zod';
-import { RUC } from '@arkelythex/domain';
+import { RUC } from '@drenyra/domain';
 import { createLogger } from '../../../lib/logger';
 import { hasOpenRouterKey, openrouter, getModelForAgent, estimateCost } from '../config/openrouter.config';
 import { agentCache } from '../tools/cache';

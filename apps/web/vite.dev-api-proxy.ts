@@ -148,7 +148,7 @@ export function createApiDevServerPlugin(env: EnvMap = process.env): Plugin {
 	const target = resolveApiProxyTarget(env);
 
 	return {
-		name: "arkelythex-dev-api-availability",
+		name: "drenyra-dev-api-availability",
 		apply: "serve",
 		configureServer(server) {
 			server.middlewares.use(createApiAvailabilityMiddleware(target));

@@ -1,5 +1,5 @@
-import { db } from '@arkelythex/persistence/client';
-import { chatSessions, messages } from '@arkelythex/persistence/schema';
+import { db } from '@drenyra/persistence/client';
+import { chatSessions, messages } from '@drenyra/persistence/schema';
 import { eq, desc } from 'drizzle-orm';
 
 /**

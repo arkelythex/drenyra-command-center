@@ -7,10 +7,10 @@
 import {
 	Detraccion,
 	InvalidDetraccionError,
-} from "@arkelythex/domain/accounting/detraccion";
-import type { DetractionRepository } from "@arkelythex/domain/repositories/detraction.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
-import type { Currency } from "@arkelythex/domain/types/currency";
+} from "@drenyra/domain/accounting/detraccion";
+import type { DetractionRepository } from "@drenyra/domain/repositories/detraction.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
+import type { Currency } from "@drenyra/domain/types/currency";
 
 /**
  * DTO used to register a SPOT detraction using explicit minor units.

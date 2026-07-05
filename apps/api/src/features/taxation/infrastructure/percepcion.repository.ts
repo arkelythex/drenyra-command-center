@@ -1,7 +1,7 @@
-import { type Currency, Money } from "@arkelythex/domain/value-objects/Money";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, not } from "@arkelythex/persistence/query";
-import { percepciones } from "@arkelythex/persistence/schema";
+import { type Currency, Money } from "@drenyra/domain/value-objects/Money";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, not } from "@drenyra/persistence/query";
+import { percepciones } from "@drenyra/persistence/schema";
 import type { PercepcionStatus } from "../domain/entities/percepcion.entity";
 import { Percepcion } from "../domain/entities/percepcion.entity";
 import type { IPercepcionRepository } from "../domain/ports/percepcion-repository.port";

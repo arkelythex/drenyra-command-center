@@ -29,7 +29,7 @@ describe("cognitiveApprovalPayload", () => {
 		const decoded = decodeApprovalPayload({
 			schema: "approval_payload_v1",
 			args: {
-				email: "demo@arkelythexfounders.com",
+				email: "demo@drenyrafounders.com",
 				approved: true,
 			},
 			pairing: null,

@@ -1,7 +1,7 @@
 import {
 	ARKELYTHEX_PRODUCT_SURFACES,
-	type ArkelythexProductSurface,
-} from "@arkelythex/domain";
+	type DrenyraProductSurface,
+} from "@drenyra/domain";
 import {
 	Blocks,
 	BookOpenText,
@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/card";
 
 const STATUS_META: Record<
-	ArkelythexProductSurface["status"],
+	DrenyraProductSurface["status"],
 	{ label: string; className: string; icon: typeof Layers3 }
 > = {
 	"canonical-in-core": {
@@ -64,7 +64,7 @@ const surfaceGroups = [
 			"Narrativas o vías de expansión sin runtime independiente actual.",
 	},
 ] satisfies ReadonlyArray<{
-	id: ArkelythexProductSurface["status"];
+	id: DrenyraProductSurface["status"];
 	title: string;
 	description: string;
 }>;
@@ -91,7 +91,7 @@ export function ProductSurfacesView() {
 						Product surfaces
 					</h1>
 					<p className="max-w-3xl text-sm text-muted-foreground sm:text-base">
-						Vista operativa de cómo Arkelythex mapea marcas de producto a
+						Vista operativa de cómo Drenyra mapea marcas de producto a
 						módulos reales, documentación canónica y boundaries de runtime
 						dentro del monorepo.
 					</p>
@@ -103,7 +103,7 @@ export function ProductSurfacesView() {
 					icon={Blocks}
 					label="Superficies"
 					value={String(ARKELYTHEX_PRODUCT_SURFACES.length)}
-					hint="Mapa derivado desde @arkelythex/domain"
+					hint="Mapa derivado desde @drenyra/domain"
 				/>
 				<MetricCard
 					icon={FolderKanban}
@@ -177,7 +177,7 @@ function MetricCard({
 	);
 }
 
-function SurfaceCard({ surface }: { surface: ArkelythexProductSurface }) {
+function SurfaceCard({ surface }: { surface: DrenyraProductSurface }) {
 	const statusMeta = STATUS_META[surface.status];
 	const StatusIcon = statusMeta.icon;
 

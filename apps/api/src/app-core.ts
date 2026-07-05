@@ -128,7 +128,7 @@ const baseApp = new Elysia()
 			path: CANONICAL_SWAGGER_PATH,
 			documentation: {
 				info: {
-					title: "Arkelythex API",
+					title: "Drenyra API",
 					version: "2.0.0",
 					description:
 						"Single supported API surface (auth + banking + dashboard + analytics + CxC/CxP + SIRE)",

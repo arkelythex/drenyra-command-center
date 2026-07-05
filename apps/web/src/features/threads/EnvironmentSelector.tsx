@@ -1,5 +1,5 @@
 import { HardDrive, Cloud, FlaskConical } from "lucide-react";
-import type { ThreadEnvironment } from "@arkelythex/domain/entities/thread";
+import type { ThreadEnvironment } from "@drenyra/domain/entities/thread";
 import { cn } from "@/lib/utils";
 
 // ─── Options ─────────────────────────────────────────────────────────────────

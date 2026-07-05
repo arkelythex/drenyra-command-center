@@ -1,4 +1,4 @@
-import type { AdvisoryValidationResult, DeterministicValidationResult, InvoiceData, IValidationService } from "@arkelythex/application";
+import type { AdvisoryValidationResult, DeterministicValidationResult, InvoiceData, IValidationService } from "@drenyra/application";
 import { type Invoice } from "./schemas/invoice";
 export type ErrorSeverity = "CRITICAL" | "WARNING" | "INFO";
 export interface ValidationError {

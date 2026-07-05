@@ -1,5 +1,5 @@
 import { openRouter } from './index.js';
-import { SecureLogger } from '@arkelythex/shared/secure-logger';
+import { SecureLogger } from '@drenyra/shared/secure-logger';
 const SYSTEM_PROMPTS = {
     'security-audit-agent': `You are a Security Audit Agent specialized in detecting vulnerabilities in code.
 Analyze the provided code for:

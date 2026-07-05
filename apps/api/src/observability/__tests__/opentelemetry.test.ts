@@ -24,7 +24,7 @@ describe("attachOptionalOpenTelemetry", () => {
 	});
 
 	it("returns app unchanged when otel is disabled", async () => {
-		delete process.env.ARKELYTHEX_ENABLE_OTEL;
+		delete process.env.DRENYRA_ENABLE_OTEL;
 		const app = { use: useMock };
 
 		const { attachOptionalOpenTelemetry } = await import("../opentelemetry");
@@ -35,8 +35,8 @@ describe("attachOptionalOpenTelemetry", () => {
 	});
 
 	it("attaches plugin when otel is enabled", async () => {
-		process.env.ARKELYTHEX_ENABLE_OTEL = "true";
-		process.env.OTEL_SERVICE_NAME = "arkelythex-api-test";
+		process.env.DRENYRA_ENABLE_OTEL = "true";
+		process.env.OTEL_SERVICE_NAME = "drenyra-api-test";
 		const app = {
 			use: useMock.mockReturnValue("next-app"),
 		};

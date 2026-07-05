@@ -7,7 +7,7 @@
  * @module customer/domain
  */
 
-import { RUC } from "@arkelythex/domain";
+import { RUC } from "@drenyra/domain";
 import type { CustomerSegment } from "./customer.repository.interface";
 
 /**

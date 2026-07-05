@@ -1,6 +1,6 @@
-import { db } from '@arkelythex/persistence/client';
-import { and, eq, gte, lte } from '@arkelythex/persistence/query';
-import { bankTransactions } from '@arkelythex/persistence/schema';
+import { db } from '@drenyra/persistence/client';
+import { and, eq, gte, lte } from '@drenyra/persistence/query';
+import { bankTransactions } from '@drenyra/persistence/schema';
 
 /**
  * AirlineTicketReportQuery interface.

@@ -6,7 +6,7 @@ import { buildApiUrl, HttpClientError } from "@/lib/http-client";
 import type {
 	AgentRun,
 	FiscalCase,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 
 export interface UploadedDocumentRef {
 	id: string;

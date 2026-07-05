@@ -1,6 +1,6 @@
-import { invoices } from "@arkelythex/persistence/schema";
-import { db as globalDb } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte, sql } from "@arkelythex/persistence/query";
+import { invoices } from "@drenyra/persistence/schema";
+import { db as globalDb } from "@drenyra/persistence/client";
+import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
 import type { SalesByCustomerRow } from "../reports.schemas";
 import { moneyFromDecimalString } from "../_internal/money-utils";
 

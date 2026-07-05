@@ -141,7 +141,7 @@ function createLogger(source: string) {
  *
  * @example
  * ```ts
- * import { logger } from "@arkelythex/infrastructure/logger";
+ * import { logger } from "@drenyra/infrastructure/logger";
  *
  * logger.info("Service started", { port: 3000 });
  * logger.error("Unexpected error", { err: new Error("boom") });
@@ -166,7 +166,7 @@ export const logger = {
  *
  * @example
  * ```ts
- * import { loggers } from "@arkelythex/infrastructure/logger";
+ * import { loggers } from "@drenyra/infrastructure/logger";
  *
  * loggers.ai.info("Prompt executed", { promptId: "prompt_123" });
  * loggers.worker.warn("Job retry", { jobId: "job_123", attempt: 2 });

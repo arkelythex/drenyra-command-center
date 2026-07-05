@@ -1,4 +1,4 @@
-import { Money } from '@arkelythex/domain';
+import { Money } from '@drenyra/domain';
 import type {
   ComplianceDashboard,
   ComplianceIssue,

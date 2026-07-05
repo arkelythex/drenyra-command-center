@@ -205,7 +205,7 @@ Acciones Sugeridas:
 ${alert.suggestedActions.map((a, i) => `${i + 1}. ${a}`).join("\n")}
 
 ---
-Generado automáticamente por Arkelythex Treasury Agent
+Generado automáticamente por Drenyra Treasury Agent
     `.trim(),
 		priority: priorityMap[alert.severity],
 	};

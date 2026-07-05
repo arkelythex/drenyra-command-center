@@ -1,4 +1,4 @@
-import type { EvidenceSource, EvidenceType } from "@arkelythex/domain";
+import type { EvidenceSource, EvidenceType } from "@drenyra/domain";
 
 export interface RegisterEvidenceCommand {
 	organizationId: string;

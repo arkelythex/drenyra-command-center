@@ -1,5 +1,5 @@
 /**
- * Arkelythex Agent Registry
+ * Drenyra Agent Registry
  *
  * Implements Vercel AI SDK 6 Agent abstraction pattern.
  * Each agent is a reusable unit with its own model, instructions, and tools.
@@ -11,7 +11,7 @@
 import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
 import { z } from "zod";
-import { GEMINI_SYSTEM_INSTRUCTION } from "@arkelythex/infrastructure/ai/context";
+import { GEMINI_SYSTEM_INSTRUCTION } from "@drenyra/infrastructure/ai/context";
 import type { AgentConfig, AgentResult } from "./types";
 
 // ============================================

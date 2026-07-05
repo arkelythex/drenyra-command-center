@@ -124,7 +124,7 @@ export class NATSEventBus implements EventBusPort {
         eventType,
         timestamp: new Date(),
         version: EVENT_SCHEMA_VERSION,
-        source: partialMetadata?.source ?? 'arkelythex-api',
+        source: partialMetadata?.source ?? 'drenyra-api',
         correlationId: partialMetadata?.correlationId ?? nanoid(),
         causationId: partialMetadata?.causationId,
       },
@@ -281,7 +281,7 @@ export class NATSEventBus implements EventBusPort {
     }
 
     const jsm = await this.nc.jetstreamManager();
-    const streamName = process.env.NATS_STREAM_NAME?.trim() || 'ARKELYTHEX_EVENTS';
+    const streamName = process.env.NATS_STREAM_NAME?.trim() || 'DRENYRA_EVENTS';
     const desiredSubjects = resolveDesiredStreamSubjects();
 
     try {

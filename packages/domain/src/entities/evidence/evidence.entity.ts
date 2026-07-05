@@ -1,6 +1,5 @@
 import { computeAuditHash } from "../../audit-ledger/compute-audit-hash";
 import type {
-	EvidenceAuditTrailEntry,
 	EvidencePrimitiveData,
 	EvidenceProps,
 	EvidenceSource,

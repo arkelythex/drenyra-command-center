@@ -1,7 +1,7 @@
 import {
 	CONTEXT_APPROVAL_STATES,
 	CONTEXT_RETRIEVAL_MODES,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 import { describe, expect, it } from "vitest";
 import { ContextPolicyService } from "../../context-control-plane/context-policy.service";
 import { contextControlPlaneRegistry } from "../../context-control-plane/context-registry";

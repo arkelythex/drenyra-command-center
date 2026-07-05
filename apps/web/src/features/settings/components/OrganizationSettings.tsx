@@ -29,7 +29,7 @@ const TEAM_MEMBERS = [
 ];
 
 export const OrganizationSettings = () => {
-	const [companyName] = useState("Arkelythex Consulting SAC");
+	const [companyName] = useState("Drenyra Consulting SAC");
 	const [companyRuc] = useState("20123456789");
 
 	return (

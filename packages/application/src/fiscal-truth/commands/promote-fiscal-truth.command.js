@@ -1,4 +1,4 @@
-import { canPromoteAuthoritativeTruth, POLICY_OUTCOME, } from "@arkelythex/domain";
+import { canPromoteAuthoritativeTruth, POLICY_OUTCOME, } from "@drenyra/domain";
 export class PromoteFiscalTruthCommand {
     deps;
     constructor(deps) {

@@ -1,4 +1,4 @@
-import { DRENYRA_SUBAGENTS } from "@arkelythex/drenyra-core";
+import { DRENYRA_SUBAGENTS } from "@drenyra/domain";
 import { BarChart3, Calculator, FileSearch, ShieldCheck } from "lucide-react";
 import { getUserDisplayName } from "@/lib/api";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
@@ -49,28 +49,28 @@ export const HubEmptyState = ({
 			label: "Auditoría",
 			command: "Ejecutar análisis de auditoría",
 			icon: FileSearch,
-			provider: "Arkelythex Core",
+			provider: "Drenyra Core",
 		},
 		{
 			id: "cashflow",
 			label: "Flujo de Caja",
 			command: "Proyectar flujo de caja del mes",
 			icon: BarChart3,
-			provider: "Arkelythex Finance",
+			provider: "Drenyra Finance",
 		},
 		{
 			id: "taxation",
 			label: "Tributación",
 			command: "Revisar estado de impuestos",
 			icon: Calculator,
-			provider: "Arkelythex Tax",
+			provider: "Drenyra Tax",
 		},
 		{
 			id: "compliance",
 			label: "Cumplimiento",
 			command: "Revisar cumplimiento SUNAT",
 			icon: ShieldCheck,
-			provider: "Arkelythex Regulatory",
+			provider: "Drenyra Regulatory",
 		},
 	];
 

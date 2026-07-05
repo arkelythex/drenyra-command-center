@@ -1,7 +1,8 @@
-import { Money } from '@arkelythex/domain';
-import { SecureLogger } from '@arkelythex/shared/secure-logger';
-import type { Currency } from '@arkelythex/domain/value-objects/Money';
-import type { CreateTransactionDTO, TransactionType } from '../../../../types/banking.types';
+import { Money } from '@drenyra/domain';
+import { SecureLogger } from '@drenyra/shared/secure-logger';
+import type { Currency } from '@drenyra/domain/value-objects/Money';
+import type { BankTransactionType } from '@drenyra/domain/value-objects/TransactionType';
+import type { CreateTransactionDTO } from '../../../../types/banking.types';
 import { bankingRepository } from '../../infrastructure/banking.repository';
 import type { BankTransactionRecord } from '../../infrastructure/banking.repository';
 
@@ -17,7 +18,7 @@ export interface ImportTransactionInput {
   date: Date;
   description: string;
   amount: number;
-  type: TransactionType;
+  type: BankTransactionType;
   reference?: string;
 }
 

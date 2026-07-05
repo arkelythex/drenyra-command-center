@@ -21,7 +21,7 @@ func Path() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, ".arkelythex", "drenyra.db"), nil
+	return filepath.Join(home, ".drenyra", "drenyra.db"), nil
 }
 
 // Store wraps the local SQLite/FTS operational memory database.
@@ -49,7 +49,7 @@ func Open(path string) (*Store, error) {
 	return store, nil
 }
 
-// OpenDefault opens ~/.arkelythex/drenyra.db.
+// OpenDefault opens ~/.drenyra/drenyra.db.
 func OpenDefault() (*Store, error) {
 	path, err := Path()
 	if err != nil {
@@ -78,7 +78,7 @@ func OpenReadOnly(path string) (*Store, error) {
 	return &Store{db: db}, nil
 }
 
-// OpenDefaultReadOnly opens ~/.arkelythex/drenyra.db without creating it.
+// OpenDefaultReadOnly opens ~/.drenyra/drenyra.db without creating it.
 func OpenDefaultReadOnly() (*Store, error) {
 	path, err := Path()
 	if err != nil {

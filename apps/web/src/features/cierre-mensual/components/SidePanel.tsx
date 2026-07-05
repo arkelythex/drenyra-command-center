@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import type { CierreMensual } from "@arkelythex/domain";
+import type { CierreMensual } from "@drenyra/domain";
 
 interface SidePanelProps {
 	cierre: CierreMensual;

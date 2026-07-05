@@ -4,7 +4,7 @@
  * Calculates actual cost per request based on provider pricing.
  * Supports multiple pricing models and provides cost aggregation.
  *
- * @module @arkelythex/ai/gateway
+ * @module @drenyra/ai/gateway
  */
 
 import type { LLMProvider } from "./types";

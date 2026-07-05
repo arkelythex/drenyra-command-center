@@ -12,7 +12,7 @@
 
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { getAllRegisteredAgents } from "@arkelythex/drenyra-orchestrator";
+import { getAllRegisteredAgents } from "@drenyra/drenyra-orchestrator";
 import { ToolRegistry } from "../src/control-plane/tool-registry";
 import { AgentRegistry } from "../src/control-plane/agent-registry";
 import type { AgentRegistryEntry } from "../src/control-plane/contracts";

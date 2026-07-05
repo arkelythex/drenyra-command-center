@@ -4,7 +4,7 @@
 
 ## De un vistazo
 
-Esta migración agrega **40+ índices estratégicos** a la base de datos ARKELYTHEX para mejorar el rendimiento de queries entre **10x y 100x**.
+Esta migración agrega **40+ índices estratégicos** a la base de datos DRENYRA para mejorar el rendimiento de queries entre **10x y 100x**.
 
 | Si tu query es lenta... | El índice que la acelera |
 |--------------------------|--------------------------|
@@ -155,7 +155,7 @@ EXPLAIN ANALYZE SELECT * FROM invoices WHERE company_id = 'xxx' AND status = 'PA
 
 ```sql
 REINDEX TABLE invoices;
-REINDEX DATABASE arkelythex;
+REINDEX DATABASE drenyra;
 ```
 
 ### Actualizar estadísticas

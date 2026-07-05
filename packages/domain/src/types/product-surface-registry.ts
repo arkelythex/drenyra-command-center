@@ -1,9 +1,9 @@
-import type { ArkelythexProductSurface } from "./product-surfaces";
+import type { DrenyraProductSurface } from "./product-surfaces";
 
-export const ARKELYTHEX_PRODUCT_SURFACES: readonly ArkelythexProductSurface[] = [
+export const DRENYRA_PRODUCT_SURFACES: readonly DrenyraProductSurface[] = [
 	{
 		id: "drenyra",
-		name: "ARKELYTHEX Drenyra",
+		name: "DRENYRA Drenyra",
 		status: "canonical-in-core",
 		canonicalHome: "drenyra",
 		summary: "Codex-like agentic command center for accounting and fiscal operations.",
@@ -23,7 +23,7 @@ export const ARKELYTHEX_PRODUCT_SURFACES: readonly ArkelythexProductSurface[] = 
 	},
 	{
 		id: "ledger",
-		name: "ARKELYTHEX Ledger",
+		name: "DRENYRA Ledger",
 		status: "canonical-in-core",
 		canonicalHome: "drenyra",
 		summary: "Peru-first accounting and compliance control plane.",
@@ -70,7 +70,7 @@ export const ARKELYTHEX_PRODUCT_SURFACES: readonly ArkelythexProductSurface[] = 
 	},
 	{
 		id: "studio",
-		name: "ARKELYTHEX Studio",
+		name: "DRENYRA Studio",
 		status: "canonical-in-core",
 		canonicalHome: "drenyra",
 		summary: "Multi-RUC practice-management surface for accounting firms.",
@@ -104,7 +104,7 @@ export const ARKELYTHEX_PRODUCT_SURFACES: readonly ArkelythexProductSurface[] = 
 	},
 	{
 		id: "cortex",
-		name: "ARKELYTHEX Cortex",
+		name: "DRENYRA Cortex",
 		status: "canonical-in-core",
 		canonicalHome: "drenyra",
 		summary: "Intelligence and analytics layer on top of operational truth.",
@@ -148,7 +148,7 @@ export const ARKELYTHEX_PRODUCT_SURFACES: readonly ArkelythexProductSurface[] = 
 	},
 	{
 		id: "api",
-		name: "ARKELYTHEX API",
+		name: "DRENYRA API",
 		status: "canonical-in-core",
 		canonicalHome: "apps/api",
 		summary: "Developer-facing public platform surface.",
@@ -178,7 +178,7 @@ export const ARKELYTHEX_PRODUCT_SURFACES: readonly ArkelythexProductSurface[] = 
 	},
 	{
 		id: "gov",
-		name: "ARKELYTHEX Gov",
+		name: "DRENYRA Gov",
 		status: "strategy-layer",
 		canonicalHome: "docs/business",
 		summary: "Strategic public-sector expansion layer.",
@@ -202,7 +202,7 @@ export const ARKELYTHEX_PRODUCT_SURFACES: readonly ArkelythexProductSurface[] = 
 	},
 	{
 		id: "landing",
-		name: "ARKELYTHEX Landing",
+		name: "DRENYRA Landing",
 		status: "canonical-in-core",
 		canonicalHome: "apps/landing",
 		summary: "Public ecosystem marketing and discovery surface.",
@@ -221,14 +221,14 @@ export const ARKELYTHEX_PRODUCT_SURFACES: readonly ArkelythexProductSurface[] = 
 	},
 	{
 		id: "grid",
-		name: "ARKELYTHEX Grid",
+		name: "DRENYRA Grid",
 		status: "separate-runtime",
-		canonicalHome: "../arkelythex-grid",
+		canonicalHome: "../drenyra-grid",
 		summary: "Mobile/offline-first wedge into MYPE operations.",
 		documentationRefs: [
 			"docs/products/grid.md",
 			"docs/03-features/README.md",
-			"../arkelythex-grid/README.md",
+			"../drenyra-grid/README.md",
 		],
 		modules: [
 			{
@@ -240,6 +240,6 @@ export const ARKELYTHEX_PRODUCT_SURFACES: readonly ArkelythexProductSurface[] = 
 	},
 ] as const;
 
-export function getArkelythexProductSurface(id: ArkelythexProductSurface["id"]) {
-	return ARKELYTHEX_PRODUCT_SURFACES.find((surface) => surface.id === id);
+export function getDrenyraProductSurface(id: DrenyraProductSurface["id"]) {
+	return DRENYRA_PRODUCT_SURFACES.find((surface) => surface.id === id);
 }

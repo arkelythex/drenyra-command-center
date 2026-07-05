@@ -140,10 +140,10 @@ describe('Authentication Flow Integration Tests', () => {
       render(<LoginForm />);
 
       // Verify login form is visible
-      expect(screen.getByPlaceholderText(/usuario@arkelythex/i)).toBeInTheDocument();
+      expect(screen.getByPlaceholderText(/usuario@drenyra/i)).toBeInTheDocument();
 
       // Step 2: User enters credentials
-      const emailInput = screen.getByPlaceholderText(/usuario@arkelythex/i);
+      const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
       const passwordInput = screen.getByPlaceholderText(/••••/);
       const submitButton = screen.getByRole('button', { name: /autenticar/i });
 
@@ -184,7 +184,7 @@ describe('Authentication Flow Integration Tests', () => {
 
       render(<LoginForm />);
 
-      const emailInput = screen.getByPlaceholderText(/usuario@arkelythex/i);
+      const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
       const passwordInput = screen.getByPlaceholderText(/••••/);
       const submitButton = screen.getByRole('button', { name: /autenticar/i });
 
@@ -215,7 +215,7 @@ describe('Authentication Flow Integration Tests', () => {
 
       render(<LoginForm />);
 
-      const emailInput = screen.getByPlaceholderText(/usuario@arkelythex/i);
+      const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
       const passwordInput = screen.getByPlaceholderText(/••••/);
       const submitButton = screen.getByRole('button', { name: /autenticar/i });
 
@@ -245,7 +245,7 @@ describe('Authentication Flow Integration Tests', () => {
 
       render(<LoginForm />);
 
-      const emailInput = screen.getByPlaceholderText(/usuario@arkelythex/i);
+      const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
       const passwordInput = screen.getByPlaceholderText(/••••/);
       const submitButton = screen.getByRole('button', { name: /autenticar/i });
 

@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { HubMessage } from "../message/HubMessage";
 import type { ResolvedHubEvent } from "../hub-events.constants";
-import type { CognitiveMessage } from '@arkelythex/shared/messaging';
+import type { CognitiveMessage } from '@drenyra/shared/messaging';
 import type { PendingToolApproval } from "../../hooks/useCognitiveStream";
 import type { CognitiveActivityEntry } from "../../hooks/cognitive-stream";
 import type { DiscrepancyScenario } from "../anomaly/discrepancy-scenario";

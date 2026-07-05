@@ -1,6 +1,6 @@
 # DRENYRA — Codex + Digits
 
-> Drenyra es el producto flagship de ARKELYTHEX. **Codex** es el motor fiscal determinista. **Digits** es la experiencia de usuario. Juntos forman el sistema de inteligencia fiscal-operativa para Perú y LATAM.
+> Drenyra es el producto flagship de DRENYRA. **Codex** es el motor fiscal determinista. **Digits** es la experiencia de usuario. Juntos forman el sistema de inteligencia fiscal-operativa para Perú y LATAM.
 
 ---
 
@@ -43,10 +43,10 @@ go run cmd/drenyra/main.go
 
 ## Architecture
 
-Drenyra is a multi-app monorepo extracted from the ARKELYTHEX monorepo as a standalone project. It follows Clean Architecture with CQRS, vertical slices, and evidence-first AI agent orchestration.
+Drenyra is a multi-app monorepo extracted from the DRENYRA monorepo as a standalone project. It follows Clean Architecture with CQRS, vertical slices, and evidence-first AI agent orchestration.
 
 ```
-arkelythex/drenyra/
+drenyra/drenyra/
 ├── apps/
 │   ├── web/              → React 19 SPA — fiscal intelligence dashboard
 │   ├── api/              → Elysia (Bun) — API orquestadora con agentes AI
@@ -97,7 +97,7 @@ arkelythex/drenyra/
 
 Drenyra está construido sobre la tesis de **evidence-first AI**: los agentes proponen, el sistema valida, el contador aprueba, y Drenyra deja evidencia. No hay decisión fiscal sin supervisión humana, no hay operación sin rastro de auditoría.
 
-Este repo contiene TODO Drenyra — desde la web app hasta el CLI, pasando por la API, la orquestación de agentes, y la infraestructura de persistencia. Extraído del monorepo ARKELYTHEX como proyecto standalone.
+Este repo contiene TODO Drenyra — desde la web app hasta el CLI, pasando por la API, la orquestación de agentes, y la infraestructura de persistencia. Extraído del monorepo DRENYRA como proyecto standalone.
 
 ---
 
@@ -108,9 +108,9 @@ Este repo contiene TODO Drenyra — desde la web app hasta el CLI, pasando por l
 
 ---
 
-## Relationship to ARKELYTHEX
+## Relationship to DRENYRA
 
-This is the flagship product of the [ARKELYTHEX ecosystem](../arkelythex/sdd/ecosystem-readme-sdd/00-README.md). Drenyra es a la contabilidad peruana lo que Codex es al desarrollo de software. Codex + Digits: un motor fiscal determinista con una experiencia humana primero.
+This is the flagship product of the [DRENYRA ecosystem](../drenyra/sdd/ecosystem-readme-sdd/00-README.md). Drenyra es a la contabilidad peruana lo que Codex es al desarrollo de software. Codex + Digits: un motor fiscal determinista con una experiencia humana primero.
 
 > **Built by DreamCoder. From Peru. For Latin America.**
 
@@ -124,13 +124,13 @@ MIT — see [LICENSE](./LICENSE).
 
 ## Platform integration
 
-This repo is the **canonical fiscal product**. The Arkelythex platform shell loads it via Module Federation in production.
+This repo is the **canonical fiscal product**. The Drenyra platform shell loads it via Module Federation in production.
 
 - [docs/canon/product-topology.md](./docs/canon/product-topology.md)
-- Cross-repo workflow: [Arkelythex docs/cross-repo/drenyra-connection.md](https://github.com/arkelythex/Arkelythex/blob/main/docs/cross-repo/drenyra-connection.md)
+- Cross-repo workflow: [Drenyra docs/cross-repo/drenyra-connection.md](https://github.com/drenyra/Drenyra/blob/main/docs/cross-repo/drenyra-connection.md)
 
 ---
 
 ## SDD
 
-Documentation is maintained in the [SDD Maestro](../arkelythex/sdd/ecosystem-readme-sdd/00-README.md). Edit the SDD first, then propagate.
+Documentation is maintained in the [SDD Maestro](../drenyra/sdd/ecosystem-readme-sdd/00-README.md). Edit the SDD first, then propagate.

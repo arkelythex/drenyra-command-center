@@ -1,7 +1,7 @@
 import { and, between, eq, sql } from "drizzle-orm";
-import { CPELog } from "@arkelythex/domain/accounting/cpe-log";
-import { db } from "@arkelythex/persistence/client";
-import { cpeLog } from "@arkelythex/persistence/schema";
+import { CPELog } from "@drenyra/domain/accounting/cpe-log";
+import { db } from "@drenyra/persistence/client";
+import { cpeLog } from "@drenyra/persistence/schema";
 export class PostgresCpeLogRepository {
     async save(log, companyId) {
         await db.insert(cpeLog).values({

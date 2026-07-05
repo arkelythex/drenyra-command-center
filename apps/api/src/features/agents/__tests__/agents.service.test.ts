@@ -74,14 +74,14 @@ const { mockSessionManager, mockAgentSession } = vi.hoisted(() => {
 // so `new SessionManager()` in the service file works.
 // ---------------------------------------------------------------------------
 
-vi.mock("@arkelythex/drenyra-orchestrator", () => {
+vi.mock("@drenyra/drenyra-orchestrator", () => {
 	function SessionManager() {
 		return mockSessionManager;
 	}
 	return { SessionManager };
 });
 
-vi.mock("@arkelythex/drenyra-orchestrator/mastra", () => ({}));
+vi.mock("@drenyra/drenyra-orchestrator/mastra", () => ({}));
 
 // ---------------------------------------------------------------------------
 // Module under test

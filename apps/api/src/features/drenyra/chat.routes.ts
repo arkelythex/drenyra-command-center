@@ -1,4 +1,4 @@
-import type { AgentContext } from "@arkelythex/drenyra-orchestrator";
+import type { AgentContext } from "@drenyra/drenyra-orchestrator";
 import { Elysia, t } from "elysia";
 import {
 	drenyraContextFailure,

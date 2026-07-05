@@ -1,4 +1,4 @@
-# @arkelythex/rust-core
+# @drenyra/rust-core
 
 **Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
@@ -17,7 +17,7 @@ La implementación TypeScript de dominio sigue siendo la fuente de verdad hasta 
 
 - 🔲 IGV y detracciones SPOT con aritmética decimal/cents-safe
 - 🔲 Target de build `wasm-pack`
-- 🔲 Wrapper TypeScript con fallback obligatorio a `@arkelythex/domain`
+- 🔲 Wrapper TypeScript con fallback obligatorio a `@drenyra/domain`
 - 🔲 APIs batch para reducir overhead del boundary JS/WASM
 
 ## ¿Por qué Rust?

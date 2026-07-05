@@ -3,9 +3,9 @@
  * Score: 0-100 based on SUNAT sync, IGV compliance, discrepancies, deadlines.
  */
 
-import type { Money } from "@arkelythex/domain";
-import { SunatSireService } from "@arkelythex/infrastructure/sunat/SunatSireService";
-import { createSunatClient } from "@arkelythex/infrastructure/sunat/SunatApiClient";
+import type { Money } from "@drenyra/domain";
+import { SunatSireService } from "@drenyra/infrastructure/sunat/SunatSireService";
+import { createSunatClient } from "@drenyra/infrastructure/sunat/SunatApiClient";
 
 export interface FiscalHealthScore {
 	overall: number; // 0-100

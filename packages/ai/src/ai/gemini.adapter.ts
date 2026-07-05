@@ -1,4 +1,4 @@
 /**
- * AI gemini.adapter.ts - Re-exported from @arkelythex/infrastructure
+ * AI gemini.adapter.ts - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/gemini.adapter";
+export * from "@drenyra/infrastructure/ai/gemini.adapter";

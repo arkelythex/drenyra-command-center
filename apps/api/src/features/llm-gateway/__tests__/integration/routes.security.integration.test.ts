@@ -2,8 +2,8 @@ import { createHmac } from "node:crypto";
 import { Elysia } from "elysia";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@arkelythex/ai/gateway", async (importOriginal) => {
-	const actual = await importOriginal<typeof import("@arkelythex/ai/gateway")>();
+vi.mock("@drenyra/ai/gateway", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@drenyra/ai/gateway")>();
 
 	return {
 		...actual,
@@ -19,7 +19,7 @@ vi.mock("@arkelythex/ai/gateway", async (importOriginal) => {
 	};
 });
 
-import { llmGateway } from "@arkelythex/ai/gateway";
+import { llmGateway } from "@drenyra/ai/gateway";
 import { auth } from "../../../auth/auth.config";
 import * as tenantScope from "../../../documents/handlers/tenant-scope";
 import { llmGatewayModule } from "../../module";
@@ -155,7 +155,7 @@ describe("llm-gateway security hardening", () => {
 	});
 
 	// TODO: Vitest picks up worktree copies of this file instead of
-	// the main checkout, causing @arkelythex/ai/gateway import to
+	// the main checkout, causing @drenyra/ai/gateway import to
 	// fail. Works in CI where there are no worktrees.
 	it.skip("allows signed service credentials on read-only gateway routes", async () => {
 		process.env.ARKELYTHEX_MACHINE_CALLER_SECRET = "machine-secret";

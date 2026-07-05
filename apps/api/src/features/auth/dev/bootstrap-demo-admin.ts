@@ -1,10 +1,10 @@
-import { authAccounts, authAuditLogs, authSessions, authUserCompanies, authUsers, authVerifications } from "@arkelythex/persistence/schema";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq } from "@arkelythex/persistence/query";
+import { authAccounts, authAuditLogs, authSessions, authUserCompanies, authUsers, authVerifications } from "@drenyra/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq } from "@drenyra/persistence/query";
 import { auth } from "../auth.config";
 import { ensureUserCompanyMembershipFromRuc } from "../handlers/company-membership";
 
-export const DEMO_ADMIN_EMAIL = "admin@arkelythexfounders.com";
+export const DEMO_ADMIN_EMAIL = "admin@drenyrafounders.com";
 export const DEMO_ADMIN_PASSWORD = "password123";
 export const DEMO_ADMIN_NAME = "Admin User";
 export const DEMO_ADMIN_RUC = "20608451231";

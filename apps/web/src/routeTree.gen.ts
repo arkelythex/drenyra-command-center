@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as VendorsRouteImport } from './routes/vendors'
 import { Route as TaxationRouteImport } from './routes/taxation'
+import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ScannerRouteImport } from './routes/scanner'
@@ -25,6 +26,7 @@ import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ProductSurfacesRouteImport } from './routes/product-surfaces'
 import { Route as PluginsRouteImport } from './routes/plugins'
 import { Route as PlaygroundRouteImport } from './routes/playground'
+import { Route as PeriodCloseRouteImport } from './routes/period-close'
 import { Route as PayrollRouteImport } from './routes/payroll'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as NeuralGridRouteImport } from './routes/neural-grid'
@@ -157,6 +159,11 @@ const TaxationRoute = TaxationRouteImport.update({
   path: '/taxation',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SkillsRoute = SkillsRouteImport.update({
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
@@ -220,6 +227,11 @@ const PluginsRoute = PluginsRouteImport.update({
 const PlaygroundRoute = PlaygroundRouteImport.update({
   id: '/playground',
   path: '/playground',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PeriodCloseRoute = PeriodCloseRouteImport.update({
+  id: '/period-close',
+  path: '/period-close',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PayrollRoute = PayrollRouteImport.update({
@@ -854,6 +866,7 @@ export interface FileRoutesByFullPath {
   '/neural-grid': typeof NeuralGridRoute
   '/onboarding': typeof OnboardingRouteWithChildren
   '/payroll': typeof PayrollRoute
+  '/period-close': typeof PeriodCloseRoute
   '/playground': typeof PlaygroundRoute
   '/plugins': typeof PluginsRoute
   '/product-surfaces': typeof ProductSurfacesRoute
@@ -867,6 +880,7 @@ export interface FileRoutesByFullPath {
   '/scanner': typeof ScannerRoute
   '/settings': typeof SettingsRouteWithChildren
   '/signup': typeof SignupRoute
+  '/skills': typeof SkillsRoute
   '/taxation': typeof TaxationRoute
   '/vendors': typeof VendorsRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -985,6 +999,7 @@ export interface FileRoutesByTo {
   '/neural-grid': typeof NeuralGridRoute
   '/onboarding': typeof OnboardingRouteWithChildren
   '/payroll': typeof PayrollRoute
+  '/period-close': typeof PeriodCloseRoute
   '/playground': typeof PlaygroundRoute
   '/plugins': typeof PluginsRoute
   '/product-surfaces': typeof ProductSurfacesRoute
@@ -996,6 +1011,7 @@ export interface FileRoutesByTo {
   '/review': typeof ReviewRoute
   '/scanner': typeof ScannerRoute
   '/signup': typeof SignupRoute
+  '/skills': typeof SkillsRoute
   '/taxation': typeof TaxationRoute
   '/vendors': typeof VendorsRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -1118,6 +1134,7 @@ export interface FileRoutesById {
   '/neural-grid': typeof NeuralGridRoute
   '/onboarding': typeof OnboardingRouteWithChildren
   '/payroll': typeof PayrollRoute
+  '/period-close': typeof PeriodCloseRoute
   '/playground': typeof PlaygroundRoute
   '/plugins': typeof PluginsRoute
   '/product-surfaces': typeof ProductSurfacesRoute
@@ -1131,6 +1148,7 @@ export interface FileRoutesById {
   '/scanner': typeof ScannerRoute
   '/settings': typeof SettingsRouteWithChildren
   '/signup': typeof SignupRoute
+  '/skills': typeof SkillsRoute
   '/taxation': typeof TaxationRoute
   '/vendors': typeof VendorsRoute
   '/verify-email': typeof VerifyEmailRoute
@@ -1254,6 +1272,7 @@ export interface FileRouteTypes {
     | '/neural-grid'
     | '/onboarding'
     | '/payroll'
+    | '/period-close'
     | '/playground'
     | '/plugins'
     | '/product-surfaces'
@@ -1267,6 +1286,7 @@ export interface FileRouteTypes {
     | '/scanner'
     | '/settings'
     | '/signup'
+    | '/skills'
     | '/taxation'
     | '/vendors'
     | '/verify-email'
@@ -1385,6 +1405,7 @@ export interface FileRouteTypes {
     | '/neural-grid'
     | '/onboarding'
     | '/payroll'
+    | '/period-close'
     | '/playground'
     | '/plugins'
     | '/product-surfaces'
@@ -1396,6 +1417,7 @@ export interface FileRouteTypes {
     | '/review'
     | '/scanner'
     | '/signup'
+    | '/skills'
     | '/taxation'
     | '/vendors'
     | '/verify-email'
@@ -1517,6 +1539,7 @@ export interface FileRouteTypes {
     | '/neural-grid'
     | '/onboarding'
     | '/payroll'
+    | '/period-close'
     | '/playground'
     | '/plugins'
     | '/product-surfaces'
@@ -1530,6 +1553,7 @@ export interface FileRouteTypes {
     | '/scanner'
     | '/settings'
     | '/signup'
+    | '/skills'
     | '/taxation'
     | '/vendors'
     | '/verify-email'
@@ -1652,6 +1676,7 @@ export interface RootRouteChildren {
   NeuralGridRoute: typeof NeuralGridRoute
   OnboardingRoute: typeof OnboardingRouteWithChildren
   PayrollRoute: typeof PayrollRoute
+  PeriodCloseRoute: typeof PeriodCloseRoute
   PlaygroundRoute: typeof PlaygroundRoute
   PluginsRoute: typeof PluginsRoute
   ProductSurfacesRoute: typeof ProductSurfacesRoute
@@ -1665,6 +1690,7 @@ export interface RootRouteChildren {
   ScannerRoute: typeof ScannerRoute
   SettingsRoute: typeof SettingsRouteWithChildren
   SignupRoute: typeof SignupRoute
+  SkillsRoute: typeof SkillsRoute
   TaxationRoute: typeof TaxationRoute
   VendorsRoute: typeof VendorsRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
@@ -1734,6 +1760,13 @@ declare module '@tanstack/react-router' {
       path: '/taxation'
       fullPath: '/taxation'
       preLoaderRoute: typeof TaxationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/skills': {
+      id: '/skills'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof SkillsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/signup': {
@@ -1825,6 +1858,13 @@ declare module '@tanstack/react-router' {
       path: '/playground'
       fullPath: '/playground'
       preLoaderRoute: typeof PlaygroundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/period-close': {
+      id: '/period-close'
+      path: '/period-close'
+      fullPath: '/period-close'
+      preLoaderRoute: typeof PeriodCloseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/payroll': {
@@ -2829,6 +2869,7 @@ const rootRouteChildren: RootRouteChildren = {
   NeuralGridRoute: NeuralGridRoute,
   OnboardingRoute: OnboardingRouteWithChildren,
   PayrollRoute: PayrollRoute,
+  PeriodCloseRoute: PeriodCloseRoute,
   PlaygroundRoute: PlaygroundRoute,
   PluginsRoute: PluginsRoute,
   ProductSurfacesRoute: ProductSurfacesRoute,
@@ -2842,6 +2883,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScannerRoute: ScannerRoute,
   SettingsRoute: SettingsRouteWithChildren,
   SignupRoute: SignupRoute,
+  SkillsRoute: SkillsRoute,
   TaxationRoute: TaxationRoute,
   VendorsRoute: VendorsRoute,
   VerifyEmailRoute: VerifyEmailRoute,

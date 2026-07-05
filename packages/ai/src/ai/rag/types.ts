@@ -1,4 +1,4 @@
 /**
- * AI types - Re-exported from @arkelythex/infrastructure
+ * AI types - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/rag/types";
+export * from "@drenyra/infrastructure/ai/rag/types";

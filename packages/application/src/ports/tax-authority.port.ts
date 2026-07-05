@@ -9,7 +9,7 @@
  * @module ports/tax-authority.port
  */
 
-import type { CountryCode } from "@arkelythex/domain";
+import type { CountryCode } from "@drenyra/domain";
 import type {
 	CDRInfo,
 	ConnectivityStatus,

@@ -1,4 +1,4 @@
-# Instrucciones para Claude Code / Gemini CLI en ARKELYTHEX (@arkelythex/main)
+# Instrucciones para Claude Code / Gemini CLI en DRENYRA (@drenyra/main)
 
 ## Objetivos Generales
 - **War Architecture:** Ecosistema FinTech híbrido para cumplimiento SUNAT y atracción de inversión ProInnóvate.
@@ -10,7 +10,7 @@
 - **Infraestructura (TS/Bun):** Clean Architecture (Entities → Use Cases → Controllers → Adapters).
 - **Monorepo:** `packages/` (lógica desacoplada), `apps/` (API Elysia, Web React 19).
 - **Invariantes:** Validación explícita de reglas de negocio en TypeScript. Rust PLANNED para Phase 2 con TS fallback obligatorio.
-- **Money:** `Money` VO en `@arkelythex/domain` (cents pattern). dinero.js NO está instalado — no usar.
+- **Money:** `Money` VO en `@drenyra/domain` (cents pattern). dinero.js NO está instalado — no usar.
 
 ## Buenas Prácticas Obligatorias
 - **SOLID + DDD:** Uso estricto de Aggregates, Entities y Value Objects.
@@ -26,7 +26,7 @@
 
 ## Git worktrees y aislamiento
 
-- Preferencia de directorio para worktrees: `~/Documents/PROYECTOS/arkelythex/worktrees/drenyra/<task-name>`.
+- Preferencia de directorio para worktrees: `~/Documents/PROYECTOS/drenyra/worktrees/drenyra/<task-name>`.
 - Usar branch dedicada para cada cambio: `codex/<task-name>`.
 - Usar worktree aislado para cambios medianos/grandes, fases SDD, trabajo paralelo o cualquier cambio fiscal/SUNAT/DB/AI-control/CI.
 - No mezclar fases no relacionadas en la misma branch/worktree.
@@ -52,7 +52,7 @@
 
 **Última actualización**: 2026-06-20
 
-*Alineado con la [Filosofía Gentleman](docs/meta/gentleman-philosophy.md) de ARKELYTHEX — documentación que prioriza la claridad y el respeto por tu tiempo.*
+*Alineado con la [Filosofía Gentleman](docs/meta/gentleman-philosophy.md) de DRENYRA — documentación que prioriza la claridad y el respeto por tu tiempo.*
 
 ## Hooks de Control
 - **Pre-command:** `biome check .` (no `cargo check` — Rust no está activo en el repo).

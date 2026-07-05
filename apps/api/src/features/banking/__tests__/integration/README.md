@@ -69,7 +69,7 @@ RUN_DB_TESTS=1 DATABASE_URL="postgres://..." \
 
 ### Dependency Hell
 
-The `@arkelythex/infrastructure` package is monolithic and imports many external dependencies (AI, XML, Storage, etc.). When running integration tests, you may encounter missing dependency errors.
+The `@drenyra/infrastructure` package is monolithic and imports many external dependencies (AI, XML, Storage, etc.). When running integration tests, you may encounter missing dependency errors.
 
 **Workaround**: Install missing dependencies as dev dependencies in `apps/api`:
 
@@ -77,7 +77,7 @@ The `@arkelythex/infrastructure` package is monolithic and imports many external
 bun add -d @ai-sdk/google ai fast-xml-parser
 ```
 
-**Future Fix**: Refactor `@arkelythex/infrastructure` to use conditional imports or split into smaller packages.
+**Future Fix**: Refactor `@drenyra/infrastructure` to use conditional imports or split into smaller packages.
 
 ### Test Isolation
 

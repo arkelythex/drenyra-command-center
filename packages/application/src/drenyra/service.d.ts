@@ -1,4 +1,4 @@
-import { type AgentRun, type ApprovalDiffPayload, type ApprovalRequest, type AuditEvent, type AutonomyLevel, type DrenyraFiscalWorkInspectEnvelope, type DrenyraFiscalWorkInspectSourceSurface, type EvidenceItem, type EvidenceType, type FiscalCase, type FiscalCaseDetails, type FiscalCaseStatus, type FiscalCaseType, type FiscalRiskLevel, type DrenyraAgentType } from "@arkelythex/domain/drenyra";
+import { type AgentRun, type ApprovalDiffPayload, type ApprovalRequest, type AuditEvent, type AutonomyLevel, type DrenyraFiscalWorkInspectEnvelope, type DrenyraFiscalWorkInspectSourceSurface, type EvidenceItem, type EvidenceType, type FiscalCase, type FiscalCaseDetails, type FiscalCaseStatus, type FiscalCaseType, type FiscalRiskLevel, type DrenyraAgentType } from "@drenyra/domain/drenyra";
 import type { DrenyraAuditEventFilter, DrenyraAuditEventFilters, DrenyraRepository } from "./repository";
 export interface DrenyraActorContext {
     companyId: string;

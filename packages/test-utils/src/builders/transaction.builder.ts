@@ -17,10 +17,10 @@ import type {
 	TransactionProps,
 	TransactionType,
 	TransactionEntry,
-} from "@arkelythex/domain/entities/Transaction";
-import { Money, type Currency } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/entities/Transaction";
+import { Money, type Currency } from "@drenyra/domain/value-objects/Money";
 import { BaseBuilder } from "./base.builder";
-import { Transaction } from "@arkelythex/domain/entities/Transaction";
+import { Transaction } from "@drenyra/domain/entities/Transaction";
 
 const DEFAULT_TRANSACTION_ID = "tx_test_001";
 const DEFAULT_TYPE: TransactionType = "SALE";

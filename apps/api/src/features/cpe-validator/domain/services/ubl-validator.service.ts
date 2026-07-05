@@ -13,12 +13,12 @@ import { resolve } from "node:path";
 import { existsSync } from "node:fs";
 
 // Dynamic import for XSD validator — graceful if xsd files aren't available
-let XsdValidatorModule: typeof import("@arkelythex/infrastructure/xsd/xsd-validator") | null = null;
+let XsdValidatorModule: typeof import("@drenyra/infrastructure/xsd/xsd-validator") | null = null;
 
-async function getXsdValidatorModule(): Promise<typeof import("@arkelythex/infrastructure/xsd/xsd-validator") | null> {
+async function getXsdValidatorModule(): Promise<typeof import("@drenyra/infrastructure/xsd/xsd-validator") | null> {
 	if (!XsdValidatorModule) {
 		try {
-			XsdValidatorModule = await import("@arkelythex/infrastructure/xsd/xsd-validator");
+			XsdValidatorModule = await import("@drenyra/infrastructure/xsd/xsd-validator");
 		} catch {
 			// XSD module not available — validation will be skipped
 		}
@@ -37,7 +37,7 @@ function resolveXsdDir(): string | null {
 		// From infrastructure package (installed)
 		resolve(
 			process.cwd(),
-			"node_modules/@arkelythex/infrastructure/src/xsd/ubl21",
+			"node_modules/@drenyra/infrastructure/src/xsd/ubl21",
 		),
 		// Relative to this file
 		resolve(
@@ -193,7 +193,7 @@ export class UblValidatorService {
 			);
 		}
 
-		// 5. Apply Arkelythex structural baseline for SUNAT Feb 2026 rules
+		// 5. Apply Drenyra structural baseline for SUNAT Feb 2026 rules
 		const structuralValidation = this.sunatRules.validate(xml.content);
 		errors.push(...structuralValidation.errors);
 		warnings.push(...structuralValidation.warnings);

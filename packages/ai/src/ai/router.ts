@@ -1,4 +1,4 @@
 /**
- * AI router - Re-exported from @arkelythex/infrastructure
+ * AI router - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/router";
+export * from "@drenyra/infrastructure/ai/router";

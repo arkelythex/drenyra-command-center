@@ -3,7 +3,7 @@
  * Realistic seed data for demo/development
  */
 
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 import {
 	bills,
 	companies,
@@ -14,7 +14,7 @@ import {
 	payments,
 	products,
 	vendors,
-} from "@arkelythex/infrastructure";
+} from "@drenyra/infrastructure";
 
 export class DatabaseSeeder {
 	/**
@@ -49,9 +49,9 @@ export class DatabaseSeeder {
 			.insert(companies)
 			.values({
 				id: "00000000-0000-0000-0000-000000000001",
-				legalName: "ARKELYTHEX PERU SAC",
+				legalName: "DRENYRA PERU SAC",
 				taxId: "20123456789",
-				email: "contacto@arkelythexfounders.com",
+				email: "contacto@drenyrafounders.com",
 				sunatCondition: "ACTIVO",
 				complianceScore: 95,
 			})

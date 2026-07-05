@@ -1,12 +1,12 @@
-// @ts-nocheck — legacy code ported from @arkelythex/agent-swarm, pending rewrite
+// @ts-nocheck — legacy code ported from @drenyra/agent-swarm, pending rewrite
 /**
- * Queue Manager — ported from @arkelythex/agent-swarm/src/queue/manager.ts
+ * Queue Manager — ported from @drenyra/agent-swarm/src/queue/manager.ts
  *
  * Gestor de la cola de workers AI para procesamiento asíncrono.
  * Maneja enqueue, status, pending, retry con exponential backoff, y stats.
  */
-import { db } from "@arkelythex/infrastructure";
-import { aiWorkerQueues } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/infrastructure";
+import { aiWorkerQueues } from "@drenyra/persistence/schema";
 import { and, asc, desc, eq, isNotNull, isNull } from "drizzle-orm";
 import type {
 	AIWorkerTask,

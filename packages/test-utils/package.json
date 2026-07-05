@@ -1,7 +1,7 @@
 {
-  "name": "@arkelythex/test-utils",
+  "name": "@drenyra/test-utils",
   "version": "1.0.0",
-  "description": "Shared testing utilities for ARKELYTHEX monorepo — builders, fixtures, mocks, helpers",
+  "description": "Shared testing utilities for ARKELYTHEX monorepo \u2014 builders, fixtures, mocks, helpers",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -20,7 +20,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@arkelythex/domain": "workspace:*"
+    "@drenyra/domain": "workspace:*"
   },
   "devDependencies": {
     "@playwright/test": "^1.44.0",

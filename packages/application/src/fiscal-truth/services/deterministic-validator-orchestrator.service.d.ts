@@ -1,4 +1,4 @@
-import type { DeterministicValidatorResultRecord, PolicyDecisionRecord } from "@arkelythex/domain";
+import type { DeterministicValidatorResultRecord, PolicyDecisionRecord } from "@drenyra/domain";
 import type { DeterministicFiscalValidatorPort } from "../ports/deterministic-fiscal-validator.port";
 export interface DeterministicValidatorOrchestratorInput {
     validatorPayload: unknown;

@@ -5,9 +5,48 @@
 @custom-variant light (&:where(.light, .light *));
 
 /* ===========================================
-   ARKELYTHEX VISUAL SYSTEM v2.0
+   DRENYRA CARBON/CYAN/VIOLET VISUAL SYSTEM
    Token architecture: tokens.dtcg.json → generated/tokens.css
-   Para cambiar colores: editar tokens.dtcg.json → bun tokens:generate
+   Para cambios permanentes: editar tokens.dtcg.json → bun tokens:generate
+   Overrides provisorios abajo mientras se estabiliza el scheme.
+   =========================================== */
+
+/* Force dark mode as default — kill beige-on-beige light theme */
+:root {
+	--akx-theme: dark;
+	color-scheme: dark;
+}
+
+/* Carbon/cyan/violeta overrides — replace voltage orange #f54e00 */
+.dark {
+	--color-primary: #3CE6D8;
+	--color-primary-hover: #6aefe4;
+	--color-primary-active: #2ecfc2;
+	--primary: #3CE6D8;
+	--primary-foreground: #0a1a1a;
+	--ring: #3CE6D8;
+	--accent: #3CE6D8;
+	--accent-muted: color-mix(in oklch, #3CE6D8 14%, transparent);
+	--color-ai-primary: #3CE6D8;
+	--color-ai-secondary: #2ecfc2;
+	--color-ai-halo: color-mix(in oklch, #3CE6D8 14%, transparent);
+	--shadow-glow-blue: 0 0 12px color-mix(in oklch, #3CE6D8 14%, transparent);
+	--shadow-glow-ai: 0 0 8px color-mix(in oklch, #3CE6D8 10%, transparent);
+	--color-brand: #3CE6D8;
+	/* Violeta secundario */
+	--akx-violet: #9B7FE8;
+	--akx-violet-muted: color-mix(in oklch, #9B7FE8 14%, transparent);
+	--color-info: #9B7FE8;
+	--premium-action-blue: #3CE6D8;
+	/* Mayor contraste en textos */
+	--text-primary: #f0efe8;
+	--text-secondary: #b0aea6;
+	--text-tertiary: #807e76;
+}
+
+/* ===========================================
+   DRENYRA VISUAL SYSTEM v2.0
+   Legacy — will be fully replaced by overrides above
    =========================================== */
 
 @theme {
@@ -188,7 +227,7 @@
 }
 
 /* ===========================================
-   ROOT VARIABLES - DARK MODE PRIMARY (ARKELYTHEX v2)
+   ROOT VARIABLES - DARK MODE PRIMARY (DRENYRA v2)
    Dark is the default experience. Light is secondary.
    =========================================== */
 @layer base {
@@ -319,7 +358,7 @@
     --border: #453529;
 
     /* Legacy specific tokens */
-    --arkelythex-account-menu-bg: #2b231b;
+    --drenyra-account-menu-bg: #2b231b;
     --color-primary: #e8dfd0;
 
     /* Shadows (warm-tinted) */
@@ -459,7 +498,7 @@
     --border: #d4c5b3;
 
     /* Legacy */
-    --arkelythex-account-menu-bg: #fff7ea;
+    --drenyra-account-menu-bg: #fff7ea;
     --color-primary: #17120d;
     --border-strong: #8a7358;
     --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -1331,7 +1370,7 @@
 
 /* ===========================================
    SIGNATURE HALO EFFECT
-   Micro-identidad Arkelythex - solo en focus/selection/agent-thinking
+   Micro-identidad Drenyra - solo en focus/selection/agent-thinking
    =========================================== */
 @layer utilities {
   /* Oculta el thumb/track pero conserva scroll (wheel / trackpad / teclado) */
@@ -1803,7 +1842,7 @@
 }
 
 /* ===========================================
-   FINANCIAL TYPOGRAPHY - ARKELYTHEX v2
+   FINANCIAL TYPOGRAPHY - DRENYRA v2
    Monospace for numbers - authority & precision
    =========================================== */
 @layer utilities {

@@ -10,7 +10,7 @@
  */
 
 import { Money } from "../value-objects/Money";
-import type { Currency } from "../value-objects/Money";
+
 import type { NpvInput, NpvResult } from "./types";
 import { InvalidFinancialInputError } from "./types";
 

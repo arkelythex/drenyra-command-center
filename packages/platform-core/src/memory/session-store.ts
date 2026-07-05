@@ -6,7 +6,7 @@
  *
  * Zero fiscal imports — all types are generic and reusable across verticals.
  *
- * @module @arkelythex/platform-core/memory
+ * @module @drenyra/platform-core/memory
  */
 
 import type {

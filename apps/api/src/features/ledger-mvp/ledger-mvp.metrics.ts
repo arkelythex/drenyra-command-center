@@ -9,11 +9,11 @@ type LedgerMvpOutcome =
   | 'internal_error';
 type LedgerMvpDeniedReason = 'auth' | 'allowlist' | 'role' | 'unknown';
 
-const REQUEST_TOTAL_NAME = 'arkelythex_api_ledger_mvp_requests_total';
-const REQUEST_DURATION_NAME = 'arkelythex_api_ledger_mvp_request_duration_ms';
-const ACCESS_DENIED_TOTAL_NAME = 'arkelythex_api_ledger_mvp_access_denied_total';
+const REQUEST_TOTAL_NAME = 'drenyra_api_ledger_mvp_requests_total';
+const REQUEST_DURATION_NAME = 'drenyra_api_ledger_mvp_request_duration_ms';
+const ACCESS_DENIED_TOTAL_NAME = 'drenyra_api_ledger_mvp_access_denied_total';
 const SUNAT_UNAVAILABLE_TOTAL_NAME =
-  'arkelythex_api_ledger_mvp_sunat_live_unavailable_total';
+  'drenyra_api_ledger_mvp_sunat_live_unavailable_total';
 
 type LedgerMvpRequestCounter = Counter<'endpoint' | 'outcome' | 'http_status'>;
 type LedgerMvpRequestHistogram = Histogram<'endpoint' | 'outcome' | 'http_status'>;

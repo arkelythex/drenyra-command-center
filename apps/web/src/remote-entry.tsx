@@ -1,5 +1,5 @@
 /**
- * Module Federation remote surface for Arkelythex OS shell.
+ * Module Federation remote surface for Drenyra OS shell.
  * Exposes the fiscal Command Center as an embeddable app chunk.
  */
 export { DrenyraWorkspace as App } from "./features/drenyra-command-center/components/DrenyraWorkspace";

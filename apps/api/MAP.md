@@ -1,8 +1,8 @@
-# API-MAP — Arkelythex API Navigation
+# API-MAP — Drenyra API Navigation
 
 **Última actualización**: 2026-06-20
 
-> Manual navigation map for the ARKELYTHEX API (Bun + ElysiaJS). See `CODEX-MAP.md` for monorepo root, `apps/drenyra-cli/MAP.md` for CLI companion.
+> Manual navigation map for the DRENYRA API (Bun + ElysiaJS). See `CODEX-MAP.md` for monorepo root, `apps/drenyra-cli/MAP.md` for CLI companion.
 
 ---
 
@@ -24,7 +24,7 @@ Este mapa es tu brújula para navegar `apps/api/`. Tenés 42 features, 10 servic
 ## Start here
 
 - **Location:** `apps/api/`
-- **Package:** `@arkelythex/api` (v0.1.0)
+- **Package:** `@drenyra/api` (v0.1.0)
 - **Stack:** Bun 1.x + ElysiaJS 1.4.28 + Drizzle ORM 0.45 + PostgreSQL 15
 - **Runtime:** TypeScript ESM — `bun run dev` (watch), `bun src/index.ts` (start)
 - **Build:** `bun run build:binary` → single binary; `Dockerfile.production` → distroless image
@@ -95,7 +95,7 @@ features/<name>/
 | 3 | **ai-rag** | `features/ai-rag/` | — | RAG: hybrid search + LLM for SUNAT knowledge |
 | 4 | **ai-swarm** | `features/ai-swarm/` | — | Multi-agent orchestration, workflows, consensus, control-plane |
 | 5 | **analytics** | `features/analytics/` | — | Financial/tax/customer/operational KPIs |
-| 6 | **arkelythex-harness** | `features/arkelythex-harness/` | — | Harness API for Drenyra CLI agent delegation |
+| 6 | **drenyra-harness** | `features/drenyra-harness/` | — | Harness API for Drenyra CLI agent delegation |
 | 7 | **auth** | `features/auth/` | `/api/auth` | BetterAuth: signup/login/session/email-verification/password-reset |
 | 8 | **banking** | `features/banking/` | — | Accounts, transactions, reconciliation, reports |
 | 9 | **banking-providers** | `features/banking-providers/` | — | Prometeo API bank connections |
@@ -119,7 +119,7 @@ features/<name>/
 | 27 | **inventory** | `features/inventory/` | — | Warehouses, stock, movements, kardex |
 | 28 | **ledger** | `features/ledger/` | — | General ledger queries |
 | 29 | **ledger-mvp** | `features/ledger-mvp/` | — | SIRE Autopilot, NPIF, Fiscal Monitor (feature-flagged) |
-| 30 | **journal-entries** | `features/journal-entries/` | `/api/journal-entries` | Journal entries CRUD, mayorizar/declarar, wraps @arkelythex/application use-cases |
+| 30 | **journal-entries** | `features/journal-entries/` | `/api/journal-entries` | Journal entries CRUD, mayorizar/declarar, wraps @drenyra/application use-cases |
 | 31 | **llm-gateway** | `features/llm-gateway/` | — | Multi-provider AI gateway with failover |
 | 31 | **platform** | `features/platform/` | — | MCP routes + audit + handlers |
 | 32 | **products** | `features/products/` | — | Product/service catalog |

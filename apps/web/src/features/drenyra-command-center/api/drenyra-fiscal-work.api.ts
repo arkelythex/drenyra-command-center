@@ -1,7 +1,7 @@
 import type {
 	DrenyraFiscalWorkInspectEnvelope,
 	DrenyraFiscalWorkInspectSourceSurface,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 import { api, getGovernanceAuditHeaders, getOrganizationId } from "@/lib/api";
 import { unwrap } from "@/lib/api-helpers";
 import { getCompanyContext } from "@/lib/company-context";

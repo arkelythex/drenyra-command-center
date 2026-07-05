@@ -1,6 +1,6 @@
-import { db } from '@arkelythex/persistence/client';
-import { and, desc, eq, sql } from '@arkelythex/persistence/query';
-import { bills, businessPartners } from '@arkelythex/persistence/schema';
+import { db } from '@drenyra/persistence/client';
+import { and, desc, eq, sql } from '@drenyra/persistence/query';
+import { bills, businessPartners } from '@drenyra/persistence/schema';
 
 /**
  * ExpenseAnalyticsService class.

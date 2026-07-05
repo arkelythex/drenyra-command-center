@@ -1,4 +1,4 @@
-import type { GovernanceBundleReference } from "@arkelythex/domain";
+import type { GovernanceBundleReference } from "@drenyra/domain";
 
 /**
  * Governance bundle validation port.

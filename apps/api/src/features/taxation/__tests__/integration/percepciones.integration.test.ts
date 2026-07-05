@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import {
 	bills,
 	businessPartners,
@@ -8,7 +8,7 @@ import {
 	eq,
 	percepciones,
 	users,
-} from "@arkelythex/infrastructure";
+} from "@drenyra/infrastructure";
 import { afterEach, describe, expect, it } from "vitest";
 import { getPendingPercepciones } from "../../application/queries/get-pending-percepciones.query";
 import { getPercepcionSummary } from "../../application/queries/get-percepcion-summary.query";

@@ -7,9 +7,9 @@
  * Performance: list() filters at DB level (WHERE) — avoids N+1 of the legacy service.
  */
 
-import { db } from "@arkelythex/persistence/client";
-import { and, desc, eq } from "@arkelythex/persistence/query";
-import { transactions } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, desc, eq } from "@drenyra/persistence/query";
+import { transactions } from "@drenyra/persistence/schema";
 import type { ITransactionRepository } from "../domain/transaction.repository";
 import type {
 	TransactionFilters,

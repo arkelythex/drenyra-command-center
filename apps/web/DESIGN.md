@@ -116,11 +116,11 @@ Before generating UI for Drenyra web:
 
 1. Read this file and `docs/design/design-influences-2026.md`.
 2. Use `--color-*` and `--surface-*` tokens only.
-3. Prefer `@arkelythex/ui` Button, Card, Panel, SurfacePanel.
+3. Prefer `@drenyra/ui` Button, Card, Panel, SurfacePanel.
 4. Shell: `FiscalEditorialShell` with `operational` or `command-center` mode.
 
 ## References
 
 - [Design influences 2026](../../docs/design/design-influences-2026.md)
 - [ADR-2026-FE-001](../../docs/adr/ADR-2026-FE-001-fiscal-editorial-rebrand.md)
-- [Operations-first UX](../../../arkelythex/docs/design/operations-first-ai-assisted-2026.md)
+- [Operations-first UX](../../../drenyra/docs/design/operations-first-ai-assisted-2026.md)

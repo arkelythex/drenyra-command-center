@@ -26,7 +26,7 @@ Framework-free domain contracts live in:
 Consumers import through:
 
 ```ts
-import { evaluateDrenyraCapability } from "@arkelythex/domain/drenyra";
+import { evaluateDrenyraCapability } from "@drenyra/domain/drenyra";
 ```
 
 ## Deny-by-default rules

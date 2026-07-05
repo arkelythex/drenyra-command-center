@@ -4,7 +4,7 @@ import {
 	type ContextEvaluationState,
 	type ContextEvaluationSummaryDTO,
 	type ContextPolicySelectionResponseDTO,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 
 interface PrepareSireEvaluationInput {
 	approvalRequired: boolean;

@@ -14,8 +14,8 @@
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
-      "@arkelythex/domain": ["../domain/dist/index.d.ts"],
-      "@arkelythex/domain/*": ["../domain/dist/*"]
+      "@drenyra/domain": ["../domain/dist/index.d.ts"],
+      "@drenyra/domain/*": ["../domain/dist/*"]
     }
   },
   "include": ["src"],

@@ -11,9 +11,9 @@ import {
 import {
 	type JournalEntry,
 	JournalLine,
-} from "@arkelythex/domain/entities/JournalEntry";
-import type { JournalEntryRepository } from "@arkelythex/domain/repositories/journal-entry.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/entities/JournalEntry";
+import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import type { AccountService } from "./create-journal-entry.use-case";
 
 /**

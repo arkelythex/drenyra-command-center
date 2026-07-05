@@ -1,11 +1,7 @@
-import { Eye, MessageSquare, PanelLeft, Rocket, Terminal } from "lucide-react";
+import { Eye, MessageSquare, PanelLeft, Terminal } from "lucide-react";
 import { useUIStore } from "../../store/ui-store";
 
-interface CodexBottomNavProps {
-	onToggleMissions?: () => void;
-}
-
-export function CodexBottomNav({ onToggleMissions }: CodexBottomNavProps) {
+export function CodexBottomNav() {
 	const toggleSidebar = useUIStore((s) => s.toggleSidebar);
 	const toggleRightPanel = useUIStore((s) => s.toggleRightRail);
 	const toggleTerminal = useUIStore((s) => s.toggleTerminal);
@@ -28,15 +24,6 @@ export function CodexBottomNav({ onToggleMissions }: CodexBottomNavProps) {
 			>
 				<PanelLeft size={18} />
 				<span className="text-[10px] font-medium leading-none">Sidebar</span>
-			</button>
-			<button
-				type="button"
-				onClick={onToggleMissions}
-				className="flex h-full flex-1 flex-col items-center justify-center gap-0.5 text-[var(--text-secondary)] transition-colors hover:text-[var(--color-primary)]"
-				aria-label="Toggle missions"
-			>
-				<Rocket size={18} />
-				<span className="text-[10px] font-medium leading-none">Misiones</span>
 			</button>
 			<button
 				type="button"

@@ -1,16 +1,16 @@
 openapi: 3.1.0
 info:
-  title: ARKELYTHEX Banking API
+  title: DRENYRA Banking API
   version: 2026.1.0
   description: Bank account management and transaction reconciliation
   contact:
-    name: ARKELYTHEX Team
+    name: DRENYRA Team
     email: dev@arkalythix.pe
 
 servers:
   - url: http://localhost:3000/api
     description: Development
-  - url: https://api.arkelythexfounders.com/api
+  - url: https://api.drenyrafounders.com/api
     description: Production
 
 tags:

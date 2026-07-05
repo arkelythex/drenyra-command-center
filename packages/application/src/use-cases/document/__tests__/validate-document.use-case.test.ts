@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { Document } from "@arkelythex/domain/entities/Document";
-import type { DocumentRepository } from "@arkelythex/domain/repositories/document.repository";
-import { NotFoundError } from "@arkelythex/shared/errors";
+import { Document } from "@drenyra/domain/entities/Document";
+import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
+import { NotFoundError } from "@drenyra/shared/errors";
 import { ValidateDocumentUseCase } from "../validate-document.use-case";
 
 function createMockDocument(

@@ -3,7 +3,7 @@
  * Agent Event Adapter
  *
  * Bridges the internal EventBus (workflow.types.ts) to the canonical typed
- * AgentEvent format from @arkelythex/shared. Subscribes to all mapped workflow
+ * AgentEvent format from @drenyra/shared. Subscribes to all mapped workflow
  * event types and transforms each into the appropriate canonical variant.
  *
  * Non-blocking by design — mapping errors never propagate to the EventBus.
@@ -12,7 +12,7 @@
  */
 
 import { randomUUID } from "crypto";
-import type { AgentEvent as CanonicalEvent } from "@arkelythex/shared";
+import type { AgentEvent as CanonicalEvent } from "@drenyra/shared";
 import type {
 	EventBus,
 	AgentEvent as WorkflowEvent,

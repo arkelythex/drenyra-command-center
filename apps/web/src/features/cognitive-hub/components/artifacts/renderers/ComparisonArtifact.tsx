@@ -8,7 +8,7 @@ import type React from "react";
  * @since Feb 2026
  */
 
-import type { HubArtifact } from "@arkelythex/shared/artifacts";
+import type { HubArtifact } from "@drenyra/shared/artifacts";
 import { Zap } from "lucide-react";
 import { tokensToClasses } from "@/lib/design-tokens";
 import { cn } from "@/lib/utils";

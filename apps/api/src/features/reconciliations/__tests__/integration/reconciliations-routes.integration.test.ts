@@ -4,7 +4,7 @@ import {
 	bankTransactions,
 	db,
 	eq,
-} from "@arkelythex/infrastructure";
+} from "@drenyra/infrastructure";
 import { Elysia } from "elysia";
 import { afterEach, describe, expect, it } from "vitest";
 import { reconciliationsModule } from "../../index";

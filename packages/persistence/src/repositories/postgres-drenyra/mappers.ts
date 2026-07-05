@@ -5,7 +5,7 @@ import type {
 	EvidenceItem,
 	FiscalCase,
 	FiscalScope,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 import {
 	drenyraAgentRuns,
 	drenyraApprovalRequests,

@@ -1,4 +1,4 @@
-import { isValidRUC } from "@arkelythex/shared/validation/ruc";
+import { isValidRUC } from "@drenyra/shared/validation/ruc";
 import { z } from "zod";
 
 export const customerSchema = z.object({

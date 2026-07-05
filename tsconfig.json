@@ -29,36 +29,48 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "paths": {
-      "@arkelythex/domain": ["./packages/domain/src/index.ts"],
-      "@arkelythex/domain/*": ["./packages/domain/src/*"],
-      "@arkelythex/application": ["./packages/application/src/index.ts"],
-      "@arkelythex/application/*": ["./packages/application/src/*"],
+      "@drenyra/domain": ["./packages/domain/src/index.ts"],
+      "@drenyra/domain/*": ["./packages/domain/src/*"],
+      "@drenyra/application": ["./packages/application/src/index.ts"],
+      "@drenyra/application/*": ["./packages/application/src/*"],
 
-      "@arkelythex/ai": ["./packages/ai/src/index.ts"],
-      "@arkelythex/ai/provider": ["./packages/ai/src/provider.ts"],
-      "@arkelythex/ai/services/ai-cost": ["./packages/ai/src/services/ai-cost.ts"],
-      "@arkelythex/ai/services/sunat-knowledge": ["./packages/ai/src/services/sunat-knowledge.ts"],
-      "@arkelythex/ai/services/swarm-consensus": ["./packages/ai/src/services/swarm-consensus.ts"],
-      "@arkelythex/ai/services/swarm-consensus/consensus-engine": [
+      "@drenyra/ai": ["./packages/ai/src/index.ts"],
+      "@drenyra/ai/provider": ["./packages/ai/src/provider.ts"],
+      "@drenyra/ai/services/ai-cost": ["./packages/ai/src/services/ai-cost.ts"],
+      "@drenyra/ai/services/sunat-knowledge": ["./packages/ai/src/services/sunat-knowledge.ts"],
+      "@drenyra/ai/services/swarm-consensus": ["./packages/ai/src/services/swarm-consensus.ts"],
+      "@drenyra/ai/services/swarm-consensus/consensus-engine": [
         "./packages/ai/src/services/swarm-consensus-engine.ts"
       ],
-      "@arkelythex/ai/services/swarm-consensus/types": [
+      "@drenyra/ai/services/swarm-consensus/types": [
         "./packages/ai/src/services/swarm-consensus-types.ts"
       ],
-      "@arkelythex/ai/*": ["./packages/ai/src/*"],
-      "@arkelythex/infrastructure": ["./packages/infrastructure/src/index.ts"],
-      "@arkelythex/infrastructure/*": ["./packages/infrastructure/src/*"],
-      "@arkelythex/persistence": ["./packages/persistence/src/index.ts"],
-      "@arkelythex/persistence/*": ["./packages/persistence/src/*"],
-      "@arkelythex/shared": ["./packages/shared/src/index.ts"],
-      "@arkelythex/shared/*": ["./packages/shared/src/*"],
-      "@arkelythex/agent-swarm": ["./packages/agent-swarm/src/index.ts"],
-      "@arkelythex/agent-swarm/*": ["./packages/agent-swarm/src/*"],
-      "@arkelythex/agent-memory": ["./packages/agent-memory/src/index.ts"],
-      "@arkelythex/agent-memory/*": ["./packages/agent-memory/src/*"],
-      "@arkelythex/drenyra-core": ["./packages/drenyra-core/src/index.ts"],
-      "@arkelythex/platform-core": ["./packages/platform-core/src/index.ts"],
-      "@arkelythex/platform-core/*": ["./packages/platform-core/src/*"],
+      "@drenyra/ai/rag/types": ["./packages/ai/src/ai/rag/types.ts"],
+      "@drenyra/ai/*": ["./packages/ai/src/*"],
+      "@drenyra/infrastructure": ["./packages/infrastructure/src/index.ts"],
+      "@drenyra/infrastructure/*": ["./packages/infrastructure/src/*"],
+      "@drenyra/persistence": ["./packages/persistence/src/index.ts"],
+      "@drenyra/persistence/*": ["./packages/persistence/src/*"],
+      "@drenyra/shared": ["./packages/shared/src/index.ts"],
+      "@drenyra/shared/*": ["./packages/shared/src/*"],
+
+      "@drenyra/platform-core": ["./packages/platform-core/src/index.ts"],
+      "@drenyra/platform-core/*": ["./packages/platform-core/src/*"],
+      "@drenyra/memory": ["./packages/memory/src/index.ts"],
+      "@drenyra/memory/*": ["./packages/memory/src/*"],
+      "@drenyra/agents": ["./packages/agents/src/index.ts"],
+      "@drenyra/agents/*": ["./packages/agents/src/*"],
+      "@drenyra/drenyra-orchestrator": ["./packages/drenyra-orchestrator/src/index.ts"],
+      "@drenyra/drenyra-orchestrator/erp-types": [
+        "./packages/drenyra-orchestrator/src/types/erp-types.ts"
+      ],
+      "@drenyra/drenyra-orchestrator/*": ["./packages/drenyra-orchestrator/src/*"],
+      "@drenyra/harness": ["./packages/drenyra-harness/src/index.ts"],
+      "@drenyra/harness/*": ["./packages/drenyra-harness/src/*"],
+      "@drenyra/test-utils": ["./packages/test-utils/src/index.ts"],
+      "@drenyra/test-utils/*": ["./packages/test-utils/src/*"],
+      "@drenyra/ui": ["./packages/ui/src/index.ts"],
+      "@drenyra/ui/*": ["./packages/ui/src/*"],
       "@/*": ["./apps/web/src/*"],
       "@/components/*": ["./apps/web/src/components/*"],
       "@/lib/*": ["./apps/web/src/lib/*"],
@@ -93,10 +105,11 @@
     { "path": "./packages/ai" },
     { "path": "./packages/infrastructure" },
     { "path": "./packages/shared" },
-    { "path": "./packages/agent-memory" },
-    { "path": "./packages/agent-swarm" },
+    { "path": "./packages/memory" },
+
     { "path": "./packages/platform-core" },
-    { "path": "./packages/drenyra-core" },
+    { "path": "./packages/agents" },
+
     { "path": "./apps/api" },
     { "path": "./apps/web" }
   ]

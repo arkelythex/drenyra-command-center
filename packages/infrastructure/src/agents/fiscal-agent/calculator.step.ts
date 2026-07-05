@@ -2,8 +2,8 @@
  * Calculator Step — Calculate IGV, detracciones, retenciones using TaxRegime.
  */
 
-import { PeruGeneralRegime } from "@arkelythex/domain/services/tax-regime/peru";
-import type { Money } from "@arkelythex/domain";
+import { PeruGeneralRegime } from "@drenyra/domain/services/tax-regime/peru";
+import type { Money } from "@drenyra/domain";
 import type {
 	CalculateOutput,
 	FiscalAgentStep,
@@ -12,7 +12,7 @@ import type {
 	StepResult,
 	TaxCalculation,
 	TransactionCategorization,
-} from "@arkelythex/application/use-cases/fiscal-agent/types";
+} from "@drenyra/application/use-cases/fiscal-agent/types";
 
 export class CalculatorStep implements FiscalAgentStep<{
 	transactions: ProcessableTransaction[];

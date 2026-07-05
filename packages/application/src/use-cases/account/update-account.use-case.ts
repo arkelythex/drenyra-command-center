@@ -8,8 +8,8 @@ import {
 	type UpdateAccountDTO,
 	updateAccountSchema,
 } from "../../dtos/account/account.dto";
-import type { Account } from "@arkelythex/domain/entities/Account";
-import type { AccountRepository } from "@arkelythex/domain/repositories/account.repository";
+import type { Account } from "@drenyra/domain/entities/Account";
+import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
 
 /**
  * UpdateAccountUseCase class.

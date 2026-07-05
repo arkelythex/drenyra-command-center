@@ -1,4 +1,4 @@
-import type { HubArtifact } from "@arkelythex/shared/artifacts";
+import type { HubArtifact } from "@drenyra/shared/artifacts";
 import { Check, Columns3, Diff, ShieldAlert } from "lucide-react";
 import type React from "react";
 import { useMemo, useState } from "react";

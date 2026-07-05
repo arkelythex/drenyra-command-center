@@ -243,7 +243,7 @@ export async function buildSunatRagContextAsync(
   const deterministicContext = buildSunatRagContext(invoice);
 
   try {
-    const { sunatKnowledgeService } = await import('@arkelythex/ai/services/sunat-knowledge');
+    const { sunatKnowledgeService } = await import('@drenyra/ai/services/sunat-knowledge');
 
     // Build a query from invoice characteristics to retrieve relevant norms
     const queryTerms: string[] = ['IGV factura'];

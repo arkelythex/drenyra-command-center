@@ -3,7 +3,7 @@
  *
  * Domain-agnostic agent memory and session storage.
  *
- * @module @arkelythex/platform-core/memory
+ * @module @drenyra/platform-core/memory
  */
 
 export type { SessionStore } from "./session-store.js";

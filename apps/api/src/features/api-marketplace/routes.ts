@@ -1,10 +1,10 @@
-import { db } from "@arkelythex/persistence/client";
-import { and, eq } from "@arkelythex/persistence/query";
+import { db } from "@drenyra/persistence/client";
+import { and, eq } from "@drenyra/persistence/query";
 import {
 	integrationConnections,
 	integrationWebhooks,
 	marketplaceIntegrations,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 import { Elysia } from "elysia";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import {

@@ -1,5 +1,5 @@
 import { integer, pgTable, varchar } from "drizzle-orm/pg-core";
-import { eq } from "@arkelythex/persistence/query";
+import { eq } from "@drenyra/persistence/query";
 import { db, schema } from "../../../lib/db";
 
 const legacyOrganizations = pgTable("organizations", {

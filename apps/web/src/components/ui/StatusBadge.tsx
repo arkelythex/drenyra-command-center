@@ -4,8 +4,8 @@
  * Opinionated wrapper around Badge for common status display.
  */
 
-import type { BadgeVariant } from "@arkelythex/ui";
-import { Badge } from "@arkelythex/ui";
+import type { BadgeVariant } from "@drenyra/ui";
+import { Badge } from "@drenyra/ui";
 import { cn } from "@/lib/utils";
 
 export interface StatusBadgeProps {

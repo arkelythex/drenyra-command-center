@@ -1,7 +1,7 @@
-import { Money } from "@arkelythex/domain";
-import { bills, invoices } from "@arkelythex/persistence/schema";
-import { db as globalDb } from "@arkelythex/persistence/client";
-import { and, eq, lte, sql } from "@arkelythex/persistence/query";
+import { Money } from "@drenyra/domain";
+import { bills, invoices } from "@drenyra/persistence/schema";
+import { db as globalDb } from "@drenyra/persistence/client";
+import { and, eq, lte, sql } from "@drenyra/persistence/query";
 import type { BalanceSheetReport } from "../reports.schemas";
 import { moneyFromDecimalString } from "../_internal/money-utils";
 

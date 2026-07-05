@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { createSwarmOrchestratorFromAgents } from "../swarm-factory";
-import type { Agent, LatinAgentId } from "@arkelythex/drenyra-orchestrator";
-import { DomainAgent } from "@arkelythex/drenyra-orchestrator";
+import type { Agent, LatinAgentId } from "@drenyra/drenyra-orchestrator";
+import { DomainAgent } from "@drenyra/drenyra-orchestrator";
 
 // ---------------------------------------------------------------------------
 // Helpers

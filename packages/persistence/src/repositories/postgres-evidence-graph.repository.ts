@@ -4,7 +4,7 @@ import type {
 	EvidenceGraphRepository,
 	EvidenceNode,
 	FiscalTruthScope,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import { db } from "../client";
 import { evidenceEdges, evidenceNodes } from "../schema/fiscal-truth.schema";

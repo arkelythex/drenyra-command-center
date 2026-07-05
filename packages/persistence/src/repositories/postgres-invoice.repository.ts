@@ -14,12 +14,12 @@ import { and, eq, gte, lte, type SQL } from "drizzle-orm";
 import {
 	Invoice,
 	type InvoiceItem,
-} from "@arkelythex/domain/entities/Invoice";
-import type { InvoiceFilters, InvoiceRepository } from "@arkelythex/domain/repositories/invoice.repository";
-import { DNI } from "@arkelythex/domain/value-objects/DNI";
-import { DocumentSeries } from "@arkelythex/domain/value-objects/DocumentSeries";
-import { Money } from "@arkelythex/domain/value-objects/Money";
-import { RUC } from "@arkelythex/domain/value-objects/RUC";
+} from "@drenyra/domain/entities/Invoice";
+import type { InvoiceFilters, InvoiceRepository } from "@drenyra/domain/repositories/invoice.repository";
+import { DNI } from "@drenyra/domain/value-objects/DNI";
+import { DocumentSeries } from "@drenyra/domain/value-objects/DocumentSeries";
+import { Money } from "@drenyra/domain/value-objects/Money";
+import { RUC } from "@drenyra/domain/value-objects/RUC";
 import { db } from "../client";
 import {
 	businessPartners,

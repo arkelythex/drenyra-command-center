@@ -7,7 +7,7 @@
  * @since 2026.1.0
  */
 
-// Local type definitions to avoid circular dependency with @arkelythex/agent-swarm
+// Local type definitions to avoid circular dependency with @drenyra/agent-swarm
 // TODO: Extract these to a shared package when resolving the circular dependency
 interface AdapterTask {
   id: string;
@@ -33,7 +33,7 @@ interface AdapterAgent {
 }
 
 import { openRouter, OpenRouterTool } from '../index.js';
-import { SecureLogger } from '@arkelythex/shared/secure-logger';
+import { SecureLogger } from '@drenyra/shared/secure-logger';
 import { SYSTEM_PROMPTS } from './types.js';
 
 export function createOpenRouterAgent(

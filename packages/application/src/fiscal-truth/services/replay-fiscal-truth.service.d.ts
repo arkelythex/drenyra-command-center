@@ -1,4 +1,4 @@
-import type { EvidenceGraphRepository, FiscalTruthScope, ReplayRepository, ReplayResult } from "@arkelythex/domain";
+import type { EvidenceGraphRepository, FiscalTruthScope, ReplayRepository, ReplayResult } from "@drenyra/domain";
 export interface ReplayFiscalTruthInput {
     aggregateId: string;
     scope: FiscalTruthScope;

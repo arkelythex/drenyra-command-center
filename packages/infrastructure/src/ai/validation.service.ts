@@ -11,8 +11,8 @@ import type {
 	AdvisoryValidationResult,
 	DeterministicValidationResult,
 	IValidationService,
-} from "@arkelythex/application/ports/IValidationService";
-import type { InvoiceData } from "@arkelythex/application/ports/IOcrService";
+} from "@drenyra/application/ports/IValidationService";
+import type { InvoiceData } from "@drenyra/application/ports/IOcrService";
 import { type Invoice, validateInvoice } from "./schemas/invoice";
 import { loggers } from "../logger";
 import { getValidationPrompt } from "./prompts";

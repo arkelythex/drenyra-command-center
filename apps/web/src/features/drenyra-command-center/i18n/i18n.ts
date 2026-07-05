@@ -7,29 +7,30 @@ import es from "./es";
 const STORAGE_KEY = "drenyra:locale";
 
 const DETECTION_OPTIONS = {
-  order: ["localStorage", "navigator", "htmlTag"],
-  lookupLocalStorage: STORAGE_KEY,
-  caches: ["localStorage"],
+	order: ["localStorage", "navigator", "htmlTag"],
+	lookupLocalStorage: STORAGE_KEY,
+	caches: ["localStorage"],
 };
 
 i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources: {
-      en: { translation: en },
-      es: { translation: es },
-    },
-    fallbackLng: "es",
-    interpolation: {
-      escapeValue: false,
-    },
-    detection: DETECTION_OPTIONS,
-  });
+	.use(LanguageDetector)
+	.use(initReactI18next)
+	.init({
+		resources: {
+			en: { translation: en },
+			es: { translation: es },
+		},
+		fallbackLng: "es",
+		lng: "es",
+		interpolation: {
+			escapeValue: false,
+		},
+		detection: DETECTION_OPTIONS,
+	});
 
 export function changeLanguage(lng: string) {
-  localStorage.setItem(STORAGE_KEY, lng);
-  void i18n.changeLanguage(lng);
+	localStorage.setItem(STORAGE_KEY, lng);
+	void i18n.changeLanguage(lng);
 }
 
 export { useTranslation };

@@ -49,7 +49,7 @@ REST Brain endpoints (`/api/drenyra/brain/*`) and runtime runs (`/api/drenyra/ru
 
 ## Fiscal sovereignty positioning
 
-Drenyra is not a CRUD accounting dashboard. It is the Fiscal Agent Command Center over ARKELYTHEX Fiscal Ontology and Fiscal Truth Mesh. See `docs/01-architecture/arkelythex-fiscal-sovereignty-platform.md`.
+Drenyra is not a CRUD accounting dashboard. It is the Fiscal Agent Command Center over DRENYRA Fiscal Ontology and Fiscal Truth Mesh. See `docs/01-architecture/drenyra-fiscal-sovereignty-platform.md`.
 
 ## Related docs
 

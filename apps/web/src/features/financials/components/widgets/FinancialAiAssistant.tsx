@@ -33,7 +33,7 @@ export const FinancialAiAssistant = ({
 							Assistant Core
 						</span>
 						<p className="text-2xs font-bold text-muted-foreground uppercase tracking-widest">
-							Arkelythex Intelligence
+							Drenyra Intelligence
 						</p>
 					</div>
 				</div>

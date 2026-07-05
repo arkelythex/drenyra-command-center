@@ -6,7 +6,7 @@ import {
 } from "@/lib/design-tokens/theme-package";
 import type {
 	AccentPreset,
-	ArkelythexThemePackage,
+	DrenyraThemePackage,
 	DensityLevel,
 } from "@/lib/design-tokens/theme-package.schema";
 import {
@@ -16,13 +16,13 @@ import {
 } from "@/lib/ux-mode";
 
 /**
- * @fileoverview Store de UI para Arkelythex Core (2026)
+ * @fileoverview Store de UI para Drenyra Core (2026)
  * Gestiona el modo de experiencia visual (claro vs oscuro)
  * Y el nivel de complejidad (Basic/Advanced/Expert)
  */
 
 /**
- * Progressive Disclosure Levels - ARKELYTHEX v2
+ * Progressive Disclosure Levels - DRENYRA v2
  * - Basic: Solo KPIs y acciones principales (contador público)
  * - Advanced: Métricas, gráficos, panel de decisiones (contador senior)
  * - Expert: Todo + detalles técnicos, logs, debug (CFO/IT)
@@ -35,7 +35,7 @@ export type RightPanelTab = "diff" | "artifact" | "details" | "reports" | "kpi";
 
 interface UIState {
 	themePreference: ThemePreference;
-	customThemePackage: ArkelythexThemePackage | null;
+	customThemePackage: DrenyraThemePackage | null;
 	accentPreference: AccentPreset;
 	densityPreference: DensityLevel;
 	complexityLevel: ComplexityLevel;
@@ -46,7 +46,7 @@ interface UIState {
 	commandPaletteOpen: boolean;
 	swarmMode: SwarmMode;
 	setThemePreference: (mode: ThemePreference) => void;
-	setCustomThemePackage: (themePackage: ArkelythexThemePackage | null) => void;
+	setCustomThemePackage: (themePackage: DrenyraThemePackage | null) => void;
 	setAccentPreference: (accent: AccentPreset) => void;
 	setDensityPreference: (density: DensityLevel) => void;
 	setComplexityLevel: (level: ComplexityLevel) => void;
@@ -129,7 +129,7 @@ export const useUIStore = create<UIState>()(
 			setSwarmMode: (mode) => set({ swarmMode: mode }),
 		}),
 		{
-			name: "arkelythex-ui-storage",
+			name: "drenyra-ui-storage",
 			storage: createJSONStorage(() => window.localStorage),
 			migrate: (persistedState) => {
 				if (!persistedState || typeof persistedState !== "object") {

@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
-const SIDEBAR_PREFS_KEY = 'arkelythex-sidebar-prefs-v2';
+const SIDEBAR_PREFS_KEY = 'drenyra-sidebar-prefs-v2';
 const STREAM_WIDTH_DEFAULT = 400;
 const STREAM_WIDTH_MIN = 320;
 const STREAM_WIDTH_MAX = 680;

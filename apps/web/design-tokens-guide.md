@@ -1,4 +1,4 @@
-# 🎨 Guía de Design Tokens - Arkelythex UI
+# 🎨 Guía de Design Tokens - Drenyra UI
 
 ## 📚 Índice
 

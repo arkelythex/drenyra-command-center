@@ -1,5 +1,5 @@
 /**
- * OpenRouter Integration - ARKELYTHEX 2026
+ * OpenRouter Integration - DRENYRA 2026
  *
  * Unified LLM API integration for multi-agent system
  * Access to 300+ models from 60+ providers with single API key
@@ -239,8 +239,8 @@ export class OpenRouterService {
     return {
       'Authorization': `Bearer ${this.config.apiKey}`,
       'Content-Type': 'application/json',
-      'HTTP-Referer': 'https://arkelythex.io',
-      'X-Title': 'ARKELYTHEX Fiscal Platform',
+      'HTTP-Referer': 'https://drenyra.io',
+      'X-Title': 'DRENYRA Fiscal Platform',
     };
   }
 

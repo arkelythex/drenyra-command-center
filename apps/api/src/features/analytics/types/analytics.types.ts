@@ -6,7 +6,7 @@
  * Includes the `toMoneyValue` utility for serializing Money VOs.
  */
 
-import type { Currency, Money } from "@arkelythex/domain";
+import type { Currency, Money } from "@drenyra/domain";
 
 /**
  * Money Value (for JSON serialization)

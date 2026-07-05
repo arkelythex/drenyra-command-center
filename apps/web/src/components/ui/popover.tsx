@@ -5,4 +5,4 @@ export {
 	PopoverContent,
 	type PopoverContentProps,
 	PopoverTrigger,
-} from "@arkelythex/ui";
+} from "@drenyra/ui";

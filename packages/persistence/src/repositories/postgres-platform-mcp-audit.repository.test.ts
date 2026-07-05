@@ -1,4 +1,4 @@
-import type { ArkelythexMcpAuditEvent } from "@arkelythex/domain";
+import type { DrenyraMcpAuditEvent } from "@drenyra/domain";
 import { describe, expect, it, vi } from "vitest";
 
 const insertValues = vi.fn(async (_value: unknown) => undefined);
@@ -33,7 +33,7 @@ const { PostgresPlatformMcpAuditSink } = await import(
 	"./postgres-platform-mcp-audit.repository"
 );
 
-const event: ArkelythexMcpAuditEvent = {
+const event: DrenyraMcpAuditEvent = {
 	operation: "invoke",
 	outcome: "allowed",
 	toolName: "drenyra.contract.read",

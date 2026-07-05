@@ -11,7 +11,7 @@
  */
 
 import type { FC } from 'react';
-import type { HubArtifact, ArtifactType } from '@arkelythex/shared/artifacts';
+import type { HubArtifact, ArtifactType } from '@drenyra/shared/artifacts';
 
 /** Public component contract — receives the full union for the dispatch layer */
 export type ArtifactComponent = FC<{ artifact: HubArtifact }>;

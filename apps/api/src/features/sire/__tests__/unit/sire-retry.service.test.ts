@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@arkelythex/persistence/repositories/sire-submission.repository', () => ({
+vi.mock('@drenyra/persistence/repositories/sire-submission.repository', () => ({
   sireSubmissionRepository: {
     getFailedSubmissionsForRetry: vi.fn(),
     incrementAttempt: vi.fn(),
@@ -14,7 +14,7 @@ vi.mock('../../sire-submission.service', () => ({
   },
 }));
 
-import { sireSubmissionRepository } from '@arkelythex/persistence/repositories/sire-submission.repository';
+import { sireSubmissionRepository } from '@drenyra/persistence/repositories/sire-submission.repository';
 import { SireSubmissionService } from '../../sire-submission.service';
 import { SireRetryService } from '../../services/sire-retry.service';
 

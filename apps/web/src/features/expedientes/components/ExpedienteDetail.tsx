@@ -1,5 +1,5 @@
-import type { ExpedienteFiscal } from "@arkelythex/domain";
-import { EXPEDIENTE_KIND_LABELS } from "@arkelythex/domain";
+import type { ExpedienteFiscal } from "@drenyra/domain";
+import { EXPEDIENTE_KIND_LABELS } from "@drenyra/domain";
 import { Link } from "@tanstack/react-router";
 import { ArrowRightLeft, CheckCircle2, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";

@@ -4,7 +4,7 @@
  * Extracted from cognitive-stream.ts for maintainability.
  */
 
-import type { AgentEvent } from "@arkelythex/shared";
+import type { AgentEvent } from "@drenyra/shared";
 import { captureError } from "@/lib/monitoring";
 
 let eventIdCounter = 0;

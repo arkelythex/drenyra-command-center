@@ -11,7 +11,7 @@ import {
 	type AgentRegistryEntry,
 	type EvidenceTraceBundle,
 	type TraceEvidenceStore,
-} from "@arkelythex/ai";
+} from "@drenyra/ai";
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../../shared/api-response";
 
@@ -113,8 +113,8 @@ export interface AiControlPlaneModuleDependencies {
 const createDefaultTraceEvidenceStore = (): TraceEvidenceStore =>
 	createAppendOnlyTraceEvidenceStore({
 		filePath:
-			process.env.ARKELYTHEX_AI_CONTROL_PLANE_AUDIT_FILE ??
-			"/tmp/opencode/arkelythex-ai-control-plane-trace-audit.ndjson",
+			process.env.DRENYRA_AI_CONTROL_PLANE_AUDIT_FILE ??
+			"/tmp/opencode/drenyra-ai-control-plane-trace-audit.ndjson",
 	});
 
 const approvalDecisionBodySchema = t.Object({
@@ -556,7 +556,7 @@ export const createAiControlPlaneModule = (
 			}
 
 			if (
-				request.headers.get("x-arkelythex-simulate-provider-failure") === "true"
+				request.headers.get("x-drenyra-simulate-provider-failure") === "true"
 			) {
 				appendApprovalAuditEvent(
 					traceEvidenceStore,

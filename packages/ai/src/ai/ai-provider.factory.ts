@@ -1,4 +1,4 @@
 /**
- * AI ai-provider.factory - Re-exported from @arkelythex/infrastructure
+ * AI ai-provider.factory - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/ai-provider.factory";
+export * from "@drenyra/infrastructure/ai/ai-provider.factory";

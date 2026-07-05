@@ -1,9 +1,9 @@
-import type { ModelRegistration } from "@arkelythex/domain/ai/model-router/types";
+import type { ModelRegistration } from "@drenyra/domain/ai/model-router-types";
 import type {
 	CapabilityScoringParams,
 	ModelFilters,
 	ModelRegistrationRepository,
-} from "@arkelythex/domain/repositories/model-registration.repository";
+} from "@drenyra/domain/repositories/model-registration.repository";
 import { and, asc, eq, inArray, sql } from "drizzle-orm";
 import { db } from "../../client";
 import { modelRegistrations } from "../../schema/model-router.schema";

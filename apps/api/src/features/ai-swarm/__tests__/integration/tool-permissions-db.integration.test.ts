@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { aiToolPermissions, db, eq } from "@arkelythex/infrastructure";
+import { aiToolPermissions, db, eq } from "@drenyra/infrastructure";
 import { Elysia } from "elysia";
 import { afterEach, expect, it } from "vitest";
 import { aiToolPermissionsModule } from "../../../ai-tool-permissions";

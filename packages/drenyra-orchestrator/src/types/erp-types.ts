@@ -1,5 +1,5 @@
 // ─── ERP Drenyra Types ─────────────────────────────────────────────
-// Snapshot from @arkelythex/agent-swarm/src/erp/drenyra/drenyra.types.ts
+// Snapshot from @drenyra/agent-swarm/src/erp/drenyra/drenyra.types.ts
 
 import type { AgentTool } from './agent-tool';
 import type { AgentContext } from './agent-context';

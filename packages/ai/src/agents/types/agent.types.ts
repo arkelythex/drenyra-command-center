@@ -1,5 +1,5 @@
 /**
- * Agent Types for Arkelythex AI Swarm
+ * Agent Types for Drenyra AI Swarm
  * Defines core interfaces for multi-agent invoice processing
  * @example
  * ```ts

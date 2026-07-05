@@ -6,9 +6,9 @@
  * - vendor_profiles (AP-specific settings)
  */
 
-import { db } from '@arkelythex/persistence/client';
-import { and, desc, eq } from '@arkelythex/persistence/query';
-import { businessPartners, vendorProfiles } from '@arkelythex/persistence/schema';
+import { db } from '@drenyra/persistence/client';
+import { and, desc, eq } from '@drenyra/persistence/query';
+import { businessPartners, vendorProfiles } from '@drenyra/persistence/schema';
 import type { PreferredPaymentMethod } from '../domain/vendor';
 import { Vendor } from '../domain/vendor';
 import type {

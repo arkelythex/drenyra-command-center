@@ -16,18 +16,18 @@ const mockDb = {
 	}),
 };
 
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: mockDb,
 }));
 
-vi.mock("@arkelythex/persistence/query", () => ({
+vi.mock("@drenyra/persistence/query", () => ({
 	eq: (a: unknown, b: unknown) => ({ column: a, value: b }),
 	and: (...conditions: unknown[]) => conditions,
 	gte: (a: unknown, b: unknown) => ({ column: a, value: b, op: ">=" }),
 	lte: (a: unknown, b: unknown) => ({ column: a, value: b, op: "<=" }),
 }));
 
-vi.mock("@arkelythex/persistence/schema", () => ({
+vi.mock("@drenyra/persistence/schema", () => ({
 	bankTransactions: {
 		id: "id",
 		companyId: "company_id",

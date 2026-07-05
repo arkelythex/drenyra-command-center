@@ -15,14 +15,14 @@ const enableDemoAuth =
 const DEMO_USER: User = {
 	id: "demo-admin-001",
 	name: "Albert Admin",
-	email: "admin@arkelythexfounders.com",
+	email: "admin@drenyrafounders.com",
 	emailVerified: true,
 	image: null,
 	createdAt: new Date(),
 	updatedAt: new Date(),
 	role: "ADMIN",
 	companyId: "demo-company-001",
-	companyName: "Arkelythex Demo SAC",
+	companyName: "Drenyra Demo SAC",
 	ruc: "20123456789",
 };
 

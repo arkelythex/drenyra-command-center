@@ -4,17 +4,17 @@ import {
 	GovernanceBundleService,
 	ReplayFiscalTruthQuery,
 	ReplayFiscalTruthService,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 import type {
 	EvidenceGraphRepository,
 	FiscalTruthRepository,
 	ReplayRepository,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import {
 	PostgresEvidenceGraphRepository,
 	PostgresFiscalTruthRepository,
 	PostgresReplayRepository,
-} from "@arkelythex/infrastructure";
+} from "@drenyra/infrastructure";
 import { fiscalTruthRoutes } from "./routes";
 
 export interface FiscalTruthModuleDependencies {

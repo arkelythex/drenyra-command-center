@@ -1,4 +1,4 @@
-import { Document, } from "@arkelythex/domain/entities/Document";
+import { Document, } from "@drenyra/domain/entities/Document";
 function serializeExtractedData(extractedData) {
     if (!extractedData) {
         return null;

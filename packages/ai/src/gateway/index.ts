@@ -1,7 +1,7 @@
 /**
  * Multi-Provider LLM Gateway - Public API
  *
- * @module @arkelythex/ai/gateway
+ * @module @drenyra/ai/gateway
  */
 
 // Budget enforcement

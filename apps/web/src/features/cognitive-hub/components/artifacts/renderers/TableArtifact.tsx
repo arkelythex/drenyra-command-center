@@ -10,7 +10,7 @@ import React from 'react';
 
 import { BookMarked } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { HubArtifact } from '@arkelythex/shared/artifacts';
+import type { HubArtifact } from '@drenyra/shared/artifacts';
 import { registerArtifact } from '../artifact-registry';
 
 type TableArt = Extract<HubArtifact, { type: 'table' }>;

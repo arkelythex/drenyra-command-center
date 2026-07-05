@@ -3,7 +3,7 @@
  * Removes AI settings for a user
  */
 
-import type { AISettingsRepository } from "@arkelythex/domain/repositories/ai-settings.repository";
+import type { AISettingsRepository } from "@drenyra/domain/repositories/ai-settings.repository";
 
 /**
  * DeleteAISettingsUseCase class.

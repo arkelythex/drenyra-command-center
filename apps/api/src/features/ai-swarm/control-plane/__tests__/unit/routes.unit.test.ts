@@ -1,4 +1,4 @@
-import { createInMemoryTraceEvidenceStore } from "@arkelythex/ai";
+import { createInMemoryTraceEvidenceStore } from "@drenyra/ai";
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
 import { createAiControlPlaneModule } from "../../index";
@@ -356,7 +356,7 @@ describe("ai-control-plane approval orchestration routes", () => {
 				method: "POST",
 				headers: {
 					"content-type": "application/json",
-					"x-arkelythex-simulate-provider-failure": "true",
+					"x-drenyra-simulate-provider-failure": "true",
 				},
 				body: JSON.stringify({
 					approvalId: "approval-provider-failure-1",

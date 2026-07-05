@@ -7,9 +7,9 @@ import {
 	businessPartners,
 	invoices,
 	transactions,
-} from "@arkelythex/persistence/schema";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, gte } from "@arkelythex/persistence/query";
+} from "@drenyra/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte } from "@drenyra/persistence/query";
 
 export class CpeRepository {
 	static async findTransactionByIdAndCompany(

@@ -4,4 +4,4 @@ export {
 	EmptyState,
 	type EmptyStateProps,
 	type EmptyStateSize,
-} from "@arkelythex/ui";
+} from "@drenyra/ui";

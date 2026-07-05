@@ -19,7 +19,7 @@ function createUser(overrides: Partial<User> = {}): User {
 	return {
 		id: "auth-user-default",
 		email: "user@example.com",
-		name: "Arkelythex User",
+		name: "Drenyra User",
 		emailVerified: true,
 		...overrides,
 	};

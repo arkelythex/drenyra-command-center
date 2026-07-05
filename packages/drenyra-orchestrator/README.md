@@ -1,9 +1,9 @@
 # Drenyra Orchestrator
 
 > **Última actualización**: 2026-06-20
-> **Package**: `@arkelythex/drenyra-orchestrator`
+> **Package**: `@drenyra/drenyra-orchestrator`
 
-Orquestador multi-agente para Drenyra — el núcleo que coordina agentes de IA fiscal, detecta intenciones, descompone tareas complejas, gestiona aprobaciones y fusiona resultados. Reemplaza `@arkelythex/agent-swarm` (63K líneas) con una implementación limpia basada en **Mastra** + **Vercel AI SDK** + **Engram**.
+Orquestador multi-agente para Drenyra — el núcleo que coordina agentes de IA fiscal, detecta intenciones, descompone tareas complejas, gestiona aprobaciones y fusiona resultados. Reemplaza `@drenyra/agent-swarm` (63K líneas) con una implementación limpia basada en **Mastra** + **Vercel AI SDK** + **Engram**.
 
 ## Purpose
 
@@ -66,18 +66,18 @@ Existe porque el agent-swarm original era inmantenible: 63K líneas sin tipos cl
 ### Relaciones con otros paquetes
 
 ```
-@arkelythex/ai ──── provides LLM primitives ──────┐
+@drenyra/ai ──── provides LLM primitives ──────┐
                                                     ▼
-@arkelythex/persistence ── DB access ─────▶ drenyra-orchestrator
-@arkelythex/infrastructure ── services ──▶          │
+@drenyra/persistence ── DB access ─────▶ drenyra-orchestrator
+@drenyra/infrastructure ── services ──▶          │
                                                     ▼
-                              @arkelythex/domain ── types fiscales
+                              @drenyra/domain ── types fiscales
 ```
 
 ## API pública
 
 ```typescript
-import { createDrenyraOrchestrator } from '@arkelythex/drenyra-orchestrator';
+import { createDrenyraOrchestrator } from '@drenyra/drenyra-orchestrator';
 
 const orchestrator = createDrenyraOrchestrator({ db, ai, engram });
 const result = await orchestrator.orchestrate({
@@ -90,11 +90,11 @@ Sub-paths exportables:
 
 | Entrypoint | Contenido |
 |---|---|
-| `@arkelythex/drenyra-orchestrator` | API completa (orquestador + tipos + estrategias) |
-| `@arkelythex/drenyra-orchestrator/agent-types` | Tipos de agente (AgentContext, AgentTool, SwarmTask, etc.) |
-| `@arkelythex/drenyra-orchestrator/mastra` | Implementaciones Mastra (orquestador, supervisor, domain agents) |
-| `@arkelythex/drenyra-orchestrator/strategies` | Estrategias de detección fiscal (RUC breach, etc.) |
-| `@arkelythex/drenyra-orchestrator/erp-types` | Tipos ERP (AgentId, SwarmMode, SessionContext, LatinAgentId) |
+| `@drenyra/drenyra-orchestrator` | API completa (orquestador + tipos + estrategias) |
+| `@drenyra/drenyra-orchestrator/agent-types` | Tipos de agente (AgentContext, AgentTool, SwarmTask, etc.) |
+| `@drenyra/drenyra-orchestrator/mastra` | Implementaciones Mastra (orquestador, supervisor, domain agents) |
+| `@drenyra/drenyra-orchestrator/strategies` | Estrategias de detección fiscal (RUC breach, etc.) |
+| `@drenyra/drenyra-orchestrator/erp-types` | Tipos ERP (AgentId, SwarmMode, SessionContext, LatinAgentId) |
 
 ## Related
 

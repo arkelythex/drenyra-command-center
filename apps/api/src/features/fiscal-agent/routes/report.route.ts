@@ -4,8 +4,8 @@
 
 import { Elysia } from "elysia";
 import { z } from "zod";
-import { FiscalNightlyRunUseCase } from "@arkelythex/application/use-cases/fiscal-agent/fiscal-nightly-run.use-case";
-import { triggerManualRun } from "@arkelythex/infrastructure/queues/fiscal-agent.queue";
+import { FiscalNightlyRunUseCase } from "@drenyra/application/use-cases/fiscal-agent/fiscal-nightly-run.use-case";
+import { triggerManualRun } from "@drenyra/infrastructure/queues/fiscal-agent.queue";
 import { ok, fail } from "../../shared/api-response";
 
 const useCase = new FiscalNightlyRunUseCase();

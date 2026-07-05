@@ -5,7 +5,7 @@
  * Following Clean Architecture principles
  */
 
-import type { Currency } from "@arkelythex/domain/types/currency";
+import type { Currency } from "@drenyra/domain/types/currency";
 import { z } from "zod";
 
 // Account Level Enum

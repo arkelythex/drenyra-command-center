@@ -1,5 +1,5 @@
-import type { Organization } from "@arkelythex/domain";
-import { PostgresOrganizationRepository } from "@arkelythex/persistence";
+import type { Organization } from "@drenyra/domain";
+import { PostgresOrganizationRepository } from "@drenyra/persistence";
 import { getErrorMessage } from "../shared/api-response";
 import type {
 	AlertResponse,

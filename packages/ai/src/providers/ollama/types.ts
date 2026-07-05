@@ -4,7 +4,7 @@
  * Ollama-specific configuration and re-exports for the OpenAI-compatible
  * `/v1/chat/completions` and `/api/tags` endpoints.
  *
- * @module @arkelythex/ai/providers/ollama
+ * @module @drenyra/ai/providers/ollama
  */
 
 import type { OllamaConfig } from "../../gateway/types";

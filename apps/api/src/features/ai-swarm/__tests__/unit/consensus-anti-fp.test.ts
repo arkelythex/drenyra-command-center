@@ -13,12 +13,12 @@ import {
 	generateReasoning,
 	getThresholdForSeverity,
 	THRESHOLD_CONFIG,
-} from "@arkelythex/ai/services/swarm-consensus/consensus-engine";
+} from "@drenyra/ai/services/swarm-consensus/consensus-engine";
 import {
 	detectRucBreachAnomalies,
 	RUC_BREACH_THRESHOLD_PEN,
-} from "@arkelythex/drenyra-orchestrator/strategies";
-import type { AgentConfidence } from "@arkelythex/ai/services/swarm-consensus/types";
+} from "@drenyra/drenyra-orchestrator/strategies";
+import type { AgentConfidence } from "@drenyra/ai/services/swarm-consensus/types";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 

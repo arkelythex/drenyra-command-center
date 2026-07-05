@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { consultarRucSunat as consultarRucApi, } from "@arkelythex/infrastructure/api/sunat.service";
+import { consultarRucSunat as consultarRucApi, } from "@drenyra/infrastructure/api/sunat.service";
 import { loggers } from "../logger";
 export const CrearAsientoSchema = z.object({
     fecha: z

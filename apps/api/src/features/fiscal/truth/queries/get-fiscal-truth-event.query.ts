@@ -1,5 +1,5 @@
-import type { GetFiscalTruthEventQuery } from "@arkelythex/application";
-import type { FiscalTruthEvent, FiscalTruthScope } from "@arkelythex/domain";
+import type { GetFiscalTruthEventQuery } from "@drenyra/application";
+import type { FiscalTruthEvent, FiscalTruthScope } from "@drenyra/domain";
 
 /** Scoped API query for one fiscal truth event. */
 export class GetFiscalTruthEventApiQuery {

@@ -18,7 +18,7 @@
  * @module ai/services/error-recovery
  */
 
-import { circuitBreakerRepo } from "@arkelythex/infrastructure/services/error-recovery";
+import { circuitBreakerRepo } from "@drenyra/infrastructure/services/error-recovery";
 import { CircuitBreaker } from "../../agents/orchestrator/workflow-v2/steps";
 
 /**

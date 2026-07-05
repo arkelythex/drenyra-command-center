@@ -19,8 +19,8 @@ export WEB_HOST="${WEB_HOST:-localhost}"
 
 COMPOSE_CMD=(docker compose)
 REQUIRED_SERVICES=(
-  "postgres:arkelythex-db"
-  "drenyra-engram:arkelythex-engram"
+  "postgres:drenyra-db"
+  "drenyra-engram:drenyra-engram"
 )
 
 ensure_service() {
@@ -52,7 +52,7 @@ if command -v docker &>/dev/null; then
 
   echo "[dev] Waiting for PostgreSQL..."
   for i in $(seq 1 30); do
-    if docker exec arkelythex-db pg_isready -U user -d arkelythex &>/dev/null; then
+    if docker exec drenyra-db pg_isready -U user -d drenyra &>/dev/null; then
       echo "[dev] PostgreSQL ready"
       break
     fi
@@ -62,13 +62,13 @@ if command -v docker &>/dev/null; then
     sleep 1
   done
 
-  if docker exec arkelythex-db psql -U user -d arkelythex -c "SELECT 1 FROM pg_tables WHERE tablename='__drizzle_migrations'" 2>/dev/null | grep -q "1"; then
+  if docker exec drenyra-db psql -U user -d drenyra -c "SELECT 1 FROM pg_tables WHERE tablename='__drizzle_migrations'" 2>/dev/null | grep -q "1"; then
     echo "[dev] Migrations table exists — skipping push"
   else
     echo "[dev] Applying database schema..."
     if (
       cd packages/infrastructure &&
-        DATABASE_URL="${DATABASE_URL:-postgresql://user:password@localhost:5436/arkelythex}" bun run db:push
+        DATABASE_URL="${DATABASE_URL:-postgresql://user:password@localhost:5436/drenyra}" bun run db:push
     ); then
       echo "[dev] Schema applied"
     else
@@ -99,10 +99,10 @@ echo "[dev] API:    http://localhost:${PORT:-3000}"
 echo "[dev] Web:    http://${WEB_HOST}:${WEB_PORT}"
 echo "[dev] Engram: http://localhost:8733"
 
-bun run --filter @arkelythex/api dev &
+bun run --filter @drenyra/api dev &
 PIDS+=($!)
 
-WEB_PORT="${WEB_PORT}" bun run --filter @arkelythex/web dev &
+WEB_PORT="${WEB_PORT}" bun run --filter @drenyra/web dev &
 PIDS+=($!)
 
 wait -n "${PIDS[@]}"

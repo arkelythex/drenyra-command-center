@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { desc, eq } from "@arkelythex/persistence/query";
-import { aiToolPermissions } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { desc, eq } from "@drenyra/persistence/query";
+import { aiToolPermissions } from "@drenyra/persistence/schema";
 
 type AiToolPermissionRow = typeof aiToolPermissions.$inferSelect;
 

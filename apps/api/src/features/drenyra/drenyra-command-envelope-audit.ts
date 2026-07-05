@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { DrenyraActorContext, DrenyraAuditEventFilter, DrenyraFiscalCommandCenterService, DrenyraRepository } from "@arkelythex/application/drenyra";
+import type { DrenyraActorContext, DrenyraAuditEventFilter, DrenyraFiscalCommandCenterService, DrenyraRepository } from "@drenyra/application/drenyra";
 import type { AuditEvent } from "../../../../../packages/domain/src/drenyra/types";
 import type { CapabilityAuditInput } from "./drenyra-command-envelope-route-guards";
 

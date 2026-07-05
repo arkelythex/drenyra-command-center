@@ -1,4 +1,4 @@
-import type { FiscalScope } from "@arkelythex/domain/drenyra";
+import type { FiscalScope } from "@drenyra/domain/drenyra";
 import type { DrenyraScopeGuard } from "../repository";
 import type { DrenyraActorContext } from "./types";
 

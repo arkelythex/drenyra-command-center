@@ -190,8 +190,8 @@ export const CacheTTL = {
 async function getDbDeps() {
 	const [drizzle, dbModule, schemaModule] = await Promise.all([
 		import("drizzle-orm"),
-		import("@arkelythex/persistence"),
-		import("@arkelythex/persistence/schema"),
+		import("@drenyra/persistence"),
+		import("@drenyra/persistence/schema"),
 	]);
 
 	return {

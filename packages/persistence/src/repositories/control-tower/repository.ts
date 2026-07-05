@@ -1,16 +1,16 @@
-import type { AuditEventType } from "@arkelythex/domain/drenyra";
+import type { AuditEventType } from "@drenyra/domain/drenyra";
 import {
 	AgentRun,
 	ApprovalRequest,
 	AuditEvent,
 	EvidenceItem,
 	FiscalCase,
-} from "@arkelythex/domain/entities";
+} from "@drenyra/domain/entities";
 import type {
 	ControlTowerAuditEventFilters,
 	ControlTowerRepository,
 	ControlTowerScopeGuard,
-} from "@arkelythex/domain/repositories/control-tower.repository";
+} from "@drenyra/domain/repositories/control-tower.repository";
 import { and, desc, eq, inArray } from "drizzle-orm";
 import { db } from "../../client";
 import {

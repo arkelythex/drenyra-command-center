@@ -4,7 +4,7 @@
  * @module journal-entries/application/commands
  */
 
-import { CreateJournalEntryUseCase } from "@arkelythex/application/use-cases/journal";
+import { CreateJournalEntryUseCase } from "@drenyra/application/use-cases/journal";
 import { accountService, journalRepository } from "../_helpers";
 
 export interface CreateJournalEntryInput {

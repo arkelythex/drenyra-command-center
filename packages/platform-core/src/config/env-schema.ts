@@ -56,7 +56,7 @@ export const EnvSchema = z.object({
 	SMTP_SECURE: z.coerce.boolean().default(false),
 	SMTP_USER: z.string().optional(),
 	SMTP_PASS: z.string().optional(),
-	SMTP_FROM_NAME: z.string().default("ARKELYTHEX"),
+	SMTP_FROM_NAME: z.string().default("DRENYRA"),
 	SMTP_FROM_EMAIL: z.string().email().optional(),
 
 	// ── Storage ─────────────────────────────────────
@@ -64,7 +64,7 @@ export const EnvSchema = z.object({
 	R2_ENDPOINT: z.string().optional(),
 	R2_ACCESS_KEY_ID: z.string().optional(),
 	R2_SECRET_ACCESS_KEY: z.string().optional(),
-	R2_BUCKET_NAME: z.string().default("arkelythex-documents"),
+	R2_BUCKET_NAME: z.string().default("drenyra-documents"),
 
 	// ── Feature Flags ───────────────────────────────
 	ENABLE_AI_AGENTS: z.coerce.boolean().default(true),

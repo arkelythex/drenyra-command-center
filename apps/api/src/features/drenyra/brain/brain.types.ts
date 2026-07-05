@@ -1,7 +1,7 @@
 import type {
 	DrenyraBrainSourceSurface,
 	DrenyraFiscalScope,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 
 export interface CreateDrenyraBrainThreadInput {
 	title: string;

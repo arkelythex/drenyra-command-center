@@ -1,5 +1,5 @@
 /**
- * Stub for @arkelythex/ai/services/ai-latency
+ * Stub for @drenyra/ai/services/ai-latency
  *
  * Prevents Drizzle from connecting to PostgreSQL in test environment.
  *

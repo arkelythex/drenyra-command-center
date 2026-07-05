@@ -1,6 +1,6 @@
-import { db } from '@arkelythex/persistence/client';
-import { and, eq, sql } from '@arkelythex/persistence/query';
-import { invoices } from '@arkelythex/persistence/schema';
+import { db } from '@drenyra/persistence/client';
+import { and, eq, sql } from '@drenyra/persistence/query';
+import { invoices } from '@drenyra/persistence/schema';
 
 // SUNAT 2026 tax calendar - monthly obligations by last RUC digit
 const SUNAT_2026_DEADLINES: Record<string, Record<number, string>> = {

@@ -70,7 +70,7 @@ interface EconomicGroupState {
 	currentGroup: EconomicGroup | null;
 	companies: Company[];
 	pricing: {
-		arkelythex: number;
+		drenyra: number;
 		concar: number;
 		dora: number;
 	} | null;

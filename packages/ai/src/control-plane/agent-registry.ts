@@ -10,7 +10,7 @@ import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import {
 	aiAgents,
 	type NewAiAgent,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 import {
 	AgentRegistryEntrySchema,
 	type AgentRegistryEntry,

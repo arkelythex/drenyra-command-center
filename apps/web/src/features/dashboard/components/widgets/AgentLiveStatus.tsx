@@ -50,7 +50,7 @@ export const AgentLiveStatus = () => {
               <Bot size={18} />
             </div>
             <div>
-              <p className="text-sm font-semibold text-foreground">Asistente Arkelythex</p>
+              <p className="text-sm font-semibold text-foreground">Asistente Drenyra</p>
               <p className="text-xs text-muted-foreground">Estado del motor de automatización</p>
             </div>
           </div>
@@ -80,7 +80,7 @@ export const AgentLiveStatus = () => {
         {status === 'failed'
           ? 'El motor requiere revisión antes de volver a automatizar tareas.'
           : status === 'running'
-            ? 'El motor está procesando una misión activa. Puedes revisar el detalle en Asistente Arkelythex.'
+            ? 'El motor está procesando una misión activa. Puedes revisar el detalle en Asistente Drenyra.'
             : 'Listo para consultas, análisis y automatizaciones asistidas.'}
       </div>
     </Card>

@@ -21,8 +21,8 @@
 import type {
 	DomainEvent,
 	EventBusPort,
-} from "@arkelythex/infrastructure/events/event.port";
-import { SecureLogger } from "@arkelythex/shared/secure-logger";
+} from "@drenyra/infrastructure/events/event.port";
+import { SecureLogger } from "@drenyra/shared/secure-logger";
 
 /**
  * Shape of the RetentionApplied event payload received from EventBus.

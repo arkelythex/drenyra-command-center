@@ -41,7 +41,7 @@ const plausibleQueue: Array<{
   props?: Record<string, string | number | boolean | null>;
 }> = [];
 
-const PLAUSIBLE_SCRIPT_ID = 'arkelythex-plausible-sdk';
+const PLAUSIBLE_SCRIPT_ID = 'drenyra-plausible-sdk';
 
 function toTelemetryProps(
   props?: Record<string, unknown>,

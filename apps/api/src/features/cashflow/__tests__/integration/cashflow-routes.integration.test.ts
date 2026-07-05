@@ -4,7 +4,7 @@
  * @module cashflow/__tests__/integration/cashflow-routes.integration.test
  */
 
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 import { Elysia } from "elysia";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cashflowRoutes } from "../../api/routes";

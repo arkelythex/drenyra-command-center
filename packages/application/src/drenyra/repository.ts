@@ -15,7 +15,7 @@ import type {
 	EvidenceItem,
 	FiscalCase,
 	FiscalScope,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 
 /**
  * Scope required for every Drenyra command-center repository read.

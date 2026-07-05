@@ -2,7 +2,7 @@ change_id: drenyra-fiscal-editorial-v3
 status: archived
 phase: archived
 branch: codex/drenyra-fiscal-editorial-v3
-worktree: ~/Documents/PROYECTOS/arkelythex/worktrees/drenyra/drenyra-fiscal-editorial-v3
+worktree: ~/Documents/PROYECTOS/drenyra/worktrees/drenyra/drenyra-fiscal-editorial-v3
 delivery_strategy: auto-chain
 created_at: 2026-06-30
 updated_at: 2026-07-01

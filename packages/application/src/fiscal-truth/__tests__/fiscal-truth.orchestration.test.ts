@@ -9,7 +9,7 @@ import {
 	type FiscalTruthScope,
 	type GovernanceBundleReference,
 	type PolicyDecisionRecord,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import {
 	AppendEvidenceCommand,
 	type AppendEvidenceCommandInput,

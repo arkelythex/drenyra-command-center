@@ -12,7 +12,7 @@ import {
 	validateDrenyraFiscalWorkInspectRequest,
 	type DrenyraFiscalWorkInspectRequest,
 	type DrenyraFiscalWorkInspectResult,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 import type { DrenyraRepository, DrenyraScopeGuard } from "./repository";
 
 function defaultTraceId(): string {

@@ -10,7 +10,7 @@ import (
 func TestStoreAddReplaceRemove(t *testing.T) {
 	dir := t.TempDir()
 	t.Setenv("HOME", dir)
-	_ = os.MkdirAll(filepath.Join(dir, ".arkelythex", "memories"), 0o755)
+	_ = os.MkdirAll(filepath.Join(dir, ".drenyra", "memories"), 0o755)
 
 	st := NewStore(DefaultSettings())
 	res, err := st.Add(TargetMemory, "SUNAT uses PLE for period close")

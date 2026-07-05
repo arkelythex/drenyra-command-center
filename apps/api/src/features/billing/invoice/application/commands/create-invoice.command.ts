@@ -9,7 +9,7 @@
  */
 
 import { randomUUID } from "node:crypto";
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 import {
 	type TaxRateProviderService,
 	taxRateProviderService,

@@ -5,13 +5,13 @@ import type {
 	CloseChecklistWithItems,
 	CloseDashboard,
 	CloseGateRecord,
-} from "@arkelythex/domain/repositories/close-checklist.repository";
-import { db } from "@arkelythex/persistence/client";
+} from "@drenyra/domain/repositories/close-checklist.repository";
+import { db } from "@drenyra/persistence/client";
 import {
 	closeChecklistItems,
 	closeChecklists,
 	closeGates,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 import { and, asc, count, desc, eq, sql } from "drizzle-orm";
 
 const rowToRecord = (

@@ -16,7 +16,7 @@ const TriggerTypeEnum = t.UnionEnum(["schedule", "event", "hook", "webhook"]);
 
 const StepTypeEnum = t.UnionEnum(["condition", "action", "wait", "loop"]);
 
-import { actionTypeEnum } from "@arkelythex/persistence/schema";
+import { actionTypeEnum } from "@drenyra/persistence/schema";
 
 const ActionTypeEnum = t.UnionEnum(actionTypeEnum);
 

@@ -1,10 +1,10 @@
 /**
- * @arkelythex/platform-core — Public API.
+ * @drenyra/platform-core — Public API.
  *
  * Domain-agnostic agent orchestration platform.
  * Zero fiscal imports — all types here are shared across all verticals.
  *
- * @module @arkelythex/platform-core
+ * @module @drenyra/platform-core
  */
 
 export type {

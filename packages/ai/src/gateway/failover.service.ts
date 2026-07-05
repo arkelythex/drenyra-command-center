@@ -4,7 +4,7 @@
  * Implements automatic failover logic for LLM providers.
  * Handles circuit breaker pattern and provider health tracking.
  *
- * @module @arkelythex/ai/gateway
+ * @module @drenyra/ai/gateway
  */
 
 import { loggers } from "../logger";

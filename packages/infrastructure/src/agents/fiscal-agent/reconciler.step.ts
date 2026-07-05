@@ -9,7 +9,7 @@ import type {
 	ProcessableTransaction,
 	ReconcileOutput,
 	StepResult,
-} from "@arkelythex/application/use-cases/fiscal-agent/types";
+} from "@drenyra/application/use-cases/fiscal-agent/types";
 
 export class ReconcilerStep implements FiscalAgentStep<ProcessableTransaction[], ReconcileOutput> {
 	readonly name = "reconcile";

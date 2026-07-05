@@ -5,7 +5,7 @@
 
 import { describe, it, expect } from "vitest";
 import { Ruc } from "../domain/value-objects/ruc.vo";
-import { InvalidRUCError } from "@arkelythex/domain";
+import { InvalidRUCError } from "@drenyra/domain";
 import { CpeNumber } from "../domain/value-objects/cpe-number.vo";
 import { ValidationResult } from "../domain/value-objects/validation-result.vo";
 import { UblValidatorService } from "../domain/services/ubl-validator.service";

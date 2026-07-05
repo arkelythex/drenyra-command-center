@@ -1,14 +1,14 @@
-# @arkelythex/platform-core
+# @drenyra/platform-core
 
 **Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
-**Arkelythex Platform runtime** — agentes, AI gateway, memoria, harness y sistema de plugins.
+**Drenyra Platform runtime** — agentes, AI gateway, memoria, harness y sistema de plugins.
 
 ---
 
 ## De un vistazo
 
-Platform Core es el runtime de la plataforma Arkelythex: proporciona el kernel para construir agentes, un gateway unificado de LLM, un sistema de memoria, un harness de delegación con gates de aprobación, y un sistema de plugins basado en el principio abierto-cerrado.
+Platform Core es el runtime de la plataforma Drenyra: proporciona el kernel para construir agentes, un gateway unificado de LLM, un sistema de memoria, un harness de delegación con gates de aprobación, y un sistema de plugins basado en el principio abierto-cerrado.
 
 Es el "sistema operativo" sobre el que corren los agentes Drenyra.
 
@@ -84,9 +84,9 @@ Principio abierto-cerrado — extendé la plataforma sin modificar el kernel:
 ### Instalación
 
 ```bash
-npm install @arkelythex/platform-core
-pnpm add @arkelythex/platform-core
-yarn add @arkelythex/platform-core
+npm install @drenyra/platform-core
+pnpm add @drenyra/platform-core
+yarn add @drenyra/platform-core
 ```
 
 ### Crear un Plugin
@@ -98,7 +98,7 @@ import type {
   AgentRegistry,
   PolicyRegistry,
   ApprovalGateRegistry,
-} from '@arkelythex/platform-core'
+} from '@drenyra/platform-core'
 
 const myPlugin: AgenticOSPlugin = {
   name: 'my-vertical',
@@ -138,7 +138,7 @@ const myPlugin: AgenticOSPlugin = {
 ### Usar el Plugin Registry
 
 ```typescript
-import { PluginRegistry } from '@arkelythex/platform-core'
+import { PluginRegistry } from '@drenyra/platform-core'
 
 const registry = new PluginRegistry()
 registry.register(myPlugin)
@@ -149,7 +149,7 @@ const plugin = registry.getPlugin('my-vertical')
 ### Swarm Orchestration
 
 ```typescript
-import { Orchestrator, WorkerPool, TaskRouter } from '@arkelythex/platform-core'
+import { Orchestrator, WorkerPool, TaskRouter } from '@drenyra/platform-core'
 
 const pool = new WorkerPool({ maxConcurrency: 5 })
 const router = new TaskRouter()
@@ -165,7 +165,7 @@ const result = await orchestrator.run(task, context)
 ### AI Gateway
 
 ```typescript
-import { AIGateway, ModelRegistry, ToolRegistry } from '@arkelythex/platform-core'
+import { AIGateway, ModelRegistry, ToolRegistry } from '@drenyra/platform-core'
 
 const models = new ModelRegistry()
 const tools = new ToolRegistry()
@@ -194,8 +194,8 @@ Todo plugin implementa `AgenticOSPlugin`, que tiene cuatro métodos de registro:
 El paquete incluye un `FiscalPlugin` de referencia que demuestra un vertical de compliance fiscal peruano:
 
 ```typescript
-import { FiscalPlugin } from '@arkelythex/platform-core/plugin/fiscal-plugin'
-import { PluginRegistry } from '@arkelythex/platform-core'
+import { FiscalPlugin } from '@drenyra/platform-core/plugin/fiscal-plugin'
+import { PluginRegistry } from '@drenyra/platform-core'
 
 const registry = new PluginRegistry()
 registry.register(new FiscalPlugin())
@@ -212,7 +212,7 @@ El plugin fiscal registra:
 
 ## TypeScript Support
 
-Escrito en TypeScript strict mode. Re-exporta todos los tipos públicos desde `@arkelythex/platform-core`:
+Escrito en TypeScript strict mode. Re-exporta todos los tipos públicos desde `@drenyra/platform-core`:
 
 ```typescript
 import type {
@@ -229,7 +229,7 @@ import type {
   AgenticOSPlugin,
   PolicyDefinition,
   ApprovalGate,
-} from '@arkelythex/platform-core'
+} from '@drenyra/platform-core'
 ```
 
 ---
@@ -238,23 +238,23 @@ import type {
 
 | Ruta | Exports |
 |------|---------|
-| `@arkelythex/platform-core` | Todos los tipos públicos + clases core |
-| `@arkelythex/platform-core/kernel` | Tipos de kernel |
-| `@arkelythex/platform-core/kernel/errors` | Clases y guards de error |
-| `@arkelythex/platform-core/kernel/lifecycle` | Lifecycle manager |
-| `@arkelythex/platform-core/kernel/event-bus` | Event bus |
-| `@arkelythex/platform-core/swarm` | Tipos de swarm |
-| `@arkelythex/platform-core/swarm/orchestrator` | Orchestrator |
-| `@arkelythex/platform-core/swarm/worker-pool` | Worker pool |
-| `@arkelythex/platform-core/swarm/router` | Task router |
-| `@arkelythex/platform-core/ai-gateway` | Tipos de AI gateway |
-| `@arkelythex/platform-core/ai-gateway/provider` | Provider interface |
-| `@arkelythex/platform-core/ai-gateway/registry` | Model registry |
-| `@arkelythex/platform-core/ai-gateway/tool-bridge` | Tool registry |
-| `@arkelythex/platform-core/ai-gateway/gateway` | AI gateway core |
-| `@arkelythex/platform-core/memory` | Tipos de memoria |
-| `@arkelythex/platform-core/harness` | Tipos de harness |
-| `@arkelythex/platform-core/plugin` | Plugin interface |
+| `@drenyra/platform-core` | Todos los tipos públicos + clases core |
+| `@drenyra/platform-core/kernel` | Tipos de kernel |
+| `@drenyra/platform-core/kernel/errors` | Clases y guards de error |
+| `@drenyra/platform-core/kernel/lifecycle` | Lifecycle manager |
+| `@drenyra/platform-core/kernel/event-bus` | Event bus |
+| `@drenyra/platform-core/swarm` | Tipos de swarm |
+| `@drenyra/platform-core/swarm/orchestrator` | Orchestrator |
+| `@drenyra/platform-core/swarm/worker-pool` | Worker pool |
+| `@drenyra/platform-core/swarm/router` | Task router |
+| `@drenyra/platform-core/ai-gateway` | Tipos de AI gateway |
+| `@drenyra/platform-core/ai-gateway/provider` | Provider interface |
+| `@drenyra/platform-core/ai-gateway/registry` | Model registry |
+| `@drenyra/platform-core/ai-gateway/tool-bridge` | Tool registry |
+| `@drenyra/platform-core/ai-gateway/gateway` | AI gateway core |
+| `@drenyra/platform-core/memory` | Tipos de memoria |
+| `@drenyra/platform-core/harness` | Tipos de harness |
+| `@drenyra/platform-core/plugin` | Plugin interface |
 
 ---
 

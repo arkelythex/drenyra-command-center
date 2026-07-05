@@ -4,17 +4,17 @@ source-of-truth: packages/shared/package.json
 auto-generated: false
 ---
 
-# @arkelythex/shared — Shared Utilities
+# @drenyra/shared — Shared Utilities
 
 **Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
-**Versión**: 1.0.0 | **Dependencias**: @arkelythex/domain, clsx
+**Versión**: 1.0.0 | **Dependencias**: @drenyra/domain, clsx
 
 ---
 
 ## De un vistazo
 
-El paquete **shared** provee utilidades transversales, helpers y lógica de validación usada por múltiples capas del monorepo Arkelythex. Evita duplicar patrones comunes entre paquetes.
+El paquete **shared** provee utilidades transversales, helpers y lógica de validación usada por múltiples capas del monorepo Drenyra. Evita duplicar patrones comunes entre paquetes.
 
 Pensalo como la "caja de herramientas compartida" — cosas que necesitás en varios lados pero que no pertenecen al dominio ni a la infraestructura.
 
@@ -43,18 +43,18 @@ packages/shared/src/
 
 | Ruta de Exportación | Descripción |
 |---------------------|-------------|
-| `@arkelythex/shared` | Barrel export principal |
-| `@arkelythex/shared/errors` | Clases de error compartidas |
-| `@arkelythex/shared/env` | Helpers de entorno |
-| `@arkelythex/shared/utils` | Utilidades generales |
-| `@arkelythex/shared/action-helpers` | Helpers Either/Result |
-| `@arkelythex/shared/feature-flags` | Feature flags |
-| `@arkelythex/shared/secure-logger` | Logging PII-safe |
-| `@arkelythex/shared/security-utils` | Utilidades de seguridad |
-| `@arkelythex/shared/validation` | Helpers de validación |
-| `@arkelythex/shared/validation/ruc` | Validación de RUC |
-| `@arkelythex/shared/security` | Módulos de seguridad |
-| `@arkelythex/shared/security/sanitizers` | Sanitizadores de input |
+| `@drenyra/shared` | Barrel export principal |
+| `@drenyra/shared/errors` | Clases de error compartidas |
+| `@drenyra/shared/env` | Helpers de entorno |
+| `@drenyra/shared/utils` | Utilidades generales |
+| `@drenyra/shared/action-helpers` | Helpers Either/Result |
+| `@drenyra/shared/feature-flags` | Feature flags |
+| `@drenyra/shared/secure-logger` | Logging PII-safe |
+| `@drenyra/shared/security-utils` | Utilidades de seguridad |
+| `@drenyra/shared/validation` | Helpers de validación |
+| `@drenyra/shared/validation/ruc` | Validación de RUC |
+| `@drenyra/shared/security` | Módulos de seguridad |
+| `@drenyra/shared/security/sanitizers` | Sanitizadores de input |
 
 ---
 
@@ -70,7 +70,7 @@ bun run test         # Ejecutar tests (Vitest)
 
 ## 🔗 Dependencias
 
-- **Runtime**: `@arkelythex/domain`, `clsx`
+- **Runtime**: `@drenyra/domain`, `clsx`
 - **Dev**: TypeScript ^6.0.3, Vitest ^4.1.7
 
 ---

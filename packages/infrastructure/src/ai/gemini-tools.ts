@@ -1,7 +1,7 @@
 /**
  * Gemini Tools - Function Calling Definitions
  *
- * Defines callable functions for Gemini to interact with Arkelythex's backend.
+ * Defines callable functions for Gemini to interact with Drenyra's backend.
  * These tools enable the AI to perform real actions instead of just text responses.
  *
  * @description Implements the "Function Calling" pattern where Gemini can
@@ -13,7 +13,7 @@
 import { z } from "zod";
 import {
 	consultarRucSunat as consultarRucApi,
-} from "@arkelythex/infrastructure/api/sunat.service";
+} from "@drenyra/infrastructure/api/sunat.service";
 import { loggers } from "../logger";
 
 // ============================================
@@ -464,7 +464,7 @@ export async function registrarGastoVoz(input: RegistrarGastoVozInput) {
 export const geminiToolDefinitions = [
 	{
 		name: "crear_asiento",
-		description: "Crear un asiento contable en el libro diario de Arkelythex",
+		description: "Crear un asiento contable en el libro diario de Drenyra",
 		parameters: CrearAsientoSchema,
 	},
 	{

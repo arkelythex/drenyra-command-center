@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { and, eq } from "@arkelythex/persistence/query";
-import { invoices } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq } from "@drenyra/persistence/query";
+import { invoices } from "@drenyra/persistence/schema";
 import { SunatService } from "../../../../services/sunat.service";
 import { fail, getErrorMessage, ok } from "../../../shared/api-response";
 

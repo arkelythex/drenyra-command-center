@@ -1,3 +1,3 @@
 "use client";
 
-export { ScrollArea, type ScrollAreaProps } from "@arkelythex/ui";
+export { ScrollArea, type ScrollAreaProps } from "@drenyra/ui";

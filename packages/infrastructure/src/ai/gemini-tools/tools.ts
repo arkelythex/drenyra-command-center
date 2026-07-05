@@ -1,7 +1,7 @@
 import { z, toJSONSchema } from "zod";
 import {
 	consultarRucSunat as consultarRucApi,
-} from "@arkelythex/infrastructure/api/sunat.service";
+} from "@drenyra/infrastructure/api/sunat.service";
 import { loggers } from "../../logger";
 import {
 	CalcularDetraccionSchema,
@@ -20,7 +20,7 @@ import {
 
 // ---------------------------------------------------------------------------
 // JSON Schema helper for Gemini tool definitions
-// Avoids circular dependency with @arkelythex/ai by using zod directly.
+// Avoids circular dependency with @drenyra/ai by using zod directly.
 // ---------------------------------------------------------------------------
 
 /**
@@ -215,7 +215,7 @@ export async function registrarGastoVoz(input: RegistrarGastoVozInput) {
 export const geminiToolDefinitions = [
 	{
 		name: "crear_asiento",
-		description: "Crear un asiento contable en el libro diario de Arkelythex",
+		description: "Crear un asiento contable en el libro diario de Drenyra",
 		parameters: CrearAsientoSchema,
 	},
 	{

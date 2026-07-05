@@ -41,7 +41,7 @@ export function parseRecords(
 				baseImponible: parseFloat(fields[9] || "0"),
 				igv: parseFloat(fields[10] || "0"),
 				total: parseFloat(fields[11] || "0"),
-				moneda: (fields[12] || "PEN") as import("@arkelythex/domain").Currency,
+				moneda: (fields[12] || "PEN") as import("@drenyra/domain").Currency,
 				tipoCambio: fields[13] ? parseFloat(fields[13]) : undefined,
 				estado: fields[14],
 			};

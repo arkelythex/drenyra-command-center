@@ -109,7 +109,7 @@ export async function downloadEncryptedJsonBackup(
   );
 
   const envelope = {
-    version: 'arkelythex.encrypted.backup.v1',
+    version: 'drenyra.encrypted.backup.v1',
     createdAt: new Date().toISOString(),
     cipher: {
       algorithm: 'AES-GCM',

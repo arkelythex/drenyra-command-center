@@ -1,4 +1,4 @@
-import { RUC } from '@arkelythex/domain';
+import { RUC } from '@drenyra/domain';
 import { z } from 'zod';
 
 const PERIOD_PATTERN = /^\d{4}-(0[1-9]|1[0-2])$/;

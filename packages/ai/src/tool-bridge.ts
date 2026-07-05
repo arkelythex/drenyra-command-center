@@ -1,1 +1,1 @@
-export * from "@arkelythex/infrastructure/ai/tool-bridge";
+export * from "@drenyra/infrastructure/ai/tool-bridge";

@@ -3,15 +3,15 @@
 **Status:** Accepted  
 **Date:** 2026-06-30  
 **Deciders:** Architecture Team  
-**Canonical repo:** `github.com/arkelythex/Drenyra` (this file)  
-**Extends:** [ADR-033 Platform-Product Split](https://github.com/arkelythex/Arkelythex/blob/main/docs/02-adr/adr-033-platform-product-split.md) (Arkelythex repo)  
+**Canonical repo:** `github.com/drenyra/Drenyra` (this file)  
+**Extends:** [ADR-033 Platform-Product Split](https://github.com/drenyra/Drenyra/blob/main/docs/02-adr/adr-033-platform-product-split.md) (Drenyra repo)  
 **Supersedes:** Partial unification of ADR-026 runtime surfaces and dual-surface Brain transport layers
 
-> **Note:** ADR-032 = Korveth. ADR-033 = Platform vs Product split (Arkelythex). **ADR-034 = DFAS** (Drenyra product harness protocol).
+> **Note:** ADR-032 = Korveth. ADR-033 = Platform vs Product split (Drenyra). **ADR-034 = DFAS** (Drenyra product harness protocol).
 
 ## Context
 
-Within the [Platform vs Product split](https://github.com/arkelythex/Arkelythex/blob/main/docs/02-adr/adr-033-platform-product-split.md), Drenyra is the **Codex App equivalent** — harness + clients ship from this repo. Arkelythex is the **ChatGPT Platform equivalent** — shell, IAM, MF host.
+Within the [Platform vs Product split](https://github.com/drenyra/Drenyra/blob/main/docs/02-adr/adr-033-platform-product-split.md), Drenyra is the **Codex App equivalent** — harness + clients ship from this repo. Drenyra is the **ChatGPT Platform equivalent** — shell, IAM, MF host.
 
 Drenyra today exposes **four parallel runtime entry points**:
 
@@ -43,7 +43,7 @@ Single composition module at `apps/api/src/features/drenyra/kernel/`:
 |---|---|
 | `FiscalThreadManager` | Brain threads + run metadata |
 | `TurnController` | Turn lifecycle + approval pause/resume |
-| `DelegationRouter` | `@arkelythex/harness` tier graph |
+| `DelegationRouter` | `@drenyra/harness` tier graph |
 | `OrchestrationRouter` | Transaction layer (Mastra) + Period layer (phase orchestrator) |
 | `CapabilityGuard` | `evaluateDrenyraCapability` |
 | `SkillInjector` | Lexori skill registry |
@@ -53,7 +53,7 @@ REST endpoints remain **compat layer v0**. DFAS WebSocket at `/api/drenyra/v1/ws
 
 ### 3. MCP is not the primary transport
 
-MCP remains for **external tool connectors** (SUNAT, ERPNext). Arkelythex `os-supervisor` registers Drenyra MCP plugins at platform level. DFAS is for **Drenyra clients** (Digits web, CLI, automations).
+MCP remains for **external tool connectors** (SUNAT, ERPNext). Drenyra `os-supervisor` registers Drenyra MCP plugins at platform level. DFAS is for **Drenyra clients** (Digits web, CLI, automations).
 
 ### 4. Fiscal Guardian
 
@@ -66,14 +66,14 @@ Auto-approval for low-risk `read` / `explain` / `draft`. `material_action` **nev
 | DFAS ADR, spec, SDD tasks | **Drenyra** `docs/` |
 | Domain contracts (`dfas-*`, `guardian-*`, `skills-types`) | **Drenyra** `packages/domain/src/drenyra/` |
 | Runtime kernel implementation | **Drenyra** `apps/api/src/features/drenyra/kernel/` |
-| Arkelythex copies | **Deprecated mirrors** — no new DFAS code |
+| Drenyra copies | **Deprecated mirrors** — no new DFAS code |
 
 ## Platform ↔ Product boundary
 
 ```text
-Arkelythex shell (MF host)  →  loads Drenyra remoteEntry.js
+Drenyra shell (MF host)  →  loads Drenyra remoteEntry.js
 Drenyra web/CLI (clients)   →  DFAS / REST v0  →  kernel  →  orchestrator + engram
-Arkelythex os-supervisor    →  OPA gates / approvals policy (cross-repo)
+Drenyra os-supervisor    →  OPA gates / approvals policy (cross-repo)
 ```
 
 Fase 1 (platform split): MF remote + REST API. **Fase 2 (this ADR implementation):** full DFAS WebSocket.
@@ -93,5 +93,5 @@ Fase 1 (platform split): MF remote + REST API. **Fase 2 (this ADR implementation
 - [DFAS Protocol Spec](../01-architecture/drenyra-fiscal-app-server-2026.md)
 - [Sync playbook](../05-development/drenyra-repo-sync.md)
 - [SDD Tasks](../superpowers/specs/drenyra-fiscal-app-server-tasks-2026.md)
-- Arkelythex [drenyra-connection.md](https://github.com/arkelythex/Arkelythex/blob/main/docs/cross-repo/drenyra-connection.md)
+- Drenyra [drenyra-connection.md](https://github.com/drenyra/Drenyra/blob/main/docs/cross-repo/drenyra-connection.md)
 - [OpenAI Codex App Server](https://openai.com/index/unlocking-the-codex-harness/)

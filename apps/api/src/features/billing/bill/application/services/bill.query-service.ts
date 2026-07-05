@@ -11,9 +11,9 @@
  * @pattern Query Service (CQRS Read Side)
  */
 
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, gte, like, lte } from "@arkelythex/persistence/query";
-import { bills } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte, like, lte } from "@drenyra/persistence/query";
+import { bills } from "@drenyra/persistence/schema";
 
 /**
  * Date range (inclusive) used by bill queries.

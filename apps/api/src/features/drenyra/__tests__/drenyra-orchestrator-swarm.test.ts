@@ -17,13 +17,13 @@ import type {
 	Agent,
 	AgentContext,
 	AgentDefinition,
-} from "@arkelythex/drenyra-orchestrator";
+} from "@drenyra/drenyra-orchestrator";
 import {
 	AgentEventBus,
 	ApprovalGateEngine,
 	ApprovalStore,
 	MastraDrenyraOrchestrator as LegacyDrenyraOrchestrator,
-} from "@arkelythex/drenyra-orchestrator";
+} from "@drenyra/drenyra-orchestrator";
 import { describe, expect, it, vi } from "vitest";
 import { createSwarmOrchestratorFromAgents } from "../swarm-factory";
 

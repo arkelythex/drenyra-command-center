@@ -10,7 +10,7 @@
  * @module ai/services/error-recovery
  */
 
-import { dlqRepo } from "@arkelythex/infrastructure/services/error-recovery";
+import { dlqRepo } from "@drenyra/infrastructure/services/error-recovery";
 import type { AgentError } from "./agent-error";
 import { classifyError } from "./agent-error";
 

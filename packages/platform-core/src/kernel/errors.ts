@@ -4,7 +4,7 @@
  * Provides structured error types that carry domain metadata
  * (plugin name, agent ID, task ID) for better diagnostics.
  *
- * @module @arkelythex/platform-core/kernel
+ * @module @drenyra/platform-core/kernel
  */
 
 /**

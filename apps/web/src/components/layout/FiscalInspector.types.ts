@@ -1,4 +1,4 @@
-import type { FiscalActionContext } from "@arkelythex/domain";
+import type { FiscalActionContext } from "@drenyra/domain";
 
 export interface DetailHeaderProps {
 	action: FiscalActionContext;

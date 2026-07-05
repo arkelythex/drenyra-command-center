@@ -1,4 +1,4 @@
-import type { ModelCapability } from "@arkelythex/domain/ai";
+import type { ModelCapability } from "@drenyra/domain/ai";
 
 export interface CapabilityScore {
 	modelId: string;

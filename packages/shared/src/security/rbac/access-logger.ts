@@ -31,7 +31,7 @@ export interface AccessLog {
  * @example
  * ```ts
  * const failed: FailedLoginAttempt = {
- *   email: "ops@arkelythexfounders.com",
+ *   email: "ops@drenyrafounders.com",
  *   ipAddress: "203.0.113.10",
  *   timestamp: new Date(),
  *   reason: "INVALID_CREDENTIALS",
@@ -183,7 +183,7 @@ export function createAccessLogEntry(
  * @returns Failed login record with generated timestamp
  * @example
  * ```ts
- * const failed = createFailedLoginEntry("ops@arkelythexfounders.com", "203.0.113.10", "MFA_REQUIRED");
+ * const failed = createFailedLoginEntry("ops@drenyrafounders.com", "203.0.113.10", "MFA_REQUIRED");
  * ```
  */
 export function createFailedLoginEntry(

@@ -1,13 +1,13 @@
 import { randomUUID } from "node:crypto";
-import { type Currency, Money } from "@arkelythex/domain";
-import { and, eq } from "@arkelythex/persistence/query";
+import { type Currency, Money } from "@drenyra/domain";
+import { and, eq } from "@drenyra/persistence/query";
 import {
 	bills,
 	businessPartners,
 	customerProfiles,
 	invoices,
 	vendorProfiles,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 import { withCompanyRlsTransaction } from "../../security/rls-db-context";
 import type {
 	SireDiffCommitRow,

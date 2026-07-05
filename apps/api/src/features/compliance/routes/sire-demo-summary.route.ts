@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte } from "@arkelythex/persistence/query";
-import { bills, invoices } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte, lte } from "@drenyra/persistence/query";
+import { bills, invoices } from "@drenyra/persistence/schema";
 import { Elysia } from "elysia";
 import { z } from "zod";
 import { fail, getErrorMessage, ok } from "../../shared/api-response";

@@ -19,7 +19,7 @@ import {
 } from "prom-client";
 
 // Enable default metrics (CPU, memory, etc.)
-collectDefaultMetrics({ prefix: "arkelythex_api_" });
+collectDefaultMetrics({ prefix: "drenyra_api_" });
 
 // ============================================
 // METRICS DEFINITIONS
@@ -29,7 +29,7 @@ collectDefaultMetrics({ prefix: "arkelythex_api_" });
  * HTTP request duration in seconds
  */
 const httpRequestDuration = new Histogram({
-	name: "arkelythex_api_http_request_duration_seconds",
+	name: "drenyra_api_http_request_duration_seconds",
 	help: "Duration of HTTP requests in seconds",
 	labelNames: ["method", "route", "status_code"],
 	buckets: [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 2, 5],
@@ -39,7 +39,7 @@ const httpRequestDuration = new Histogram({
  * HTTP request count
  */
 const httpRequestCount = new Counter({
-	name: "arkelythex_api_http_requests_total",
+	name: "drenyra_api_http_requests_total",
 	help: "Total number of HTTP requests",
 	labelNames: ["method", "route", "status_code"],
 });
@@ -48,7 +48,7 @@ const httpRequestCount = new Counter({
  * HTTP errors
  */
 const httpErrors = new Counter({
-	name: "arkelythex_api_http_errors_total",
+	name: "drenyra_api_http_errors_total",
 	help: "Total number of HTTP errors",
 	labelNames: ["method", "route", "status_code", "error_type"],
 });
@@ -57,7 +57,7 @@ const httpErrors = new Counter({
  * Document uploads
  */
 export const documentUploads = new Counter({
-	name: "arkelythex_api_document_uploads_total",
+	name: "drenyra_api_document_uploads_total",
 	help: "Total number of document uploads",
 	labelNames: ["status", "file_type"],
 });
@@ -66,7 +66,7 @@ export const documentUploads = new Counter({
  * Document processing duration
  */
 export const documentProcessingDuration = new Histogram({
-	name: "arkelythex_api_document_processing_duration_seconds",
+	name: "drenyra_api_document_processing_duration_seconds",
 	help: "Document processing duration in seconds",
 	labelNames: ["operation", "file_type"],
 	buckets: [0.1, 0.5, 1, 2, 5, 10, 30, 60],
@@ -76,7 +76,7 @@ export const documentProcessingDuration = new Histogram({
  * OCR queue size
  */
 export const ocrQueueSize = new Gauge({
-	name: "arkelythex_api_ocr_queue_size",
+	name: "drenyra_api_ocr_queue_size",
 	help: "Number of documents waiting in OCR queue",
 });
 
@@ -84,7 +84,7 @@ export const ocrQueueSize = new Gauge({
  * Database query duration
  */
 export const dbQueryDuration = new Histogram({
-	name: "arkelythex_api_db_query_duration_seconds",
+	name: "drenyra_api_db_query_duration_seconds",
 	help: "Database query duration in seconds",
 	labelNames: ["operation", "table"],
 	buckets: [0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1],
@@ -94,7 +94,7 @@ export const dbQueryDuration = new Histogram({
  * Active database connections
  */
 export const dbConnections = new Gauge({
-	name: "arkelythex_api_db_connections_active",
+	name: "drenyra_api_db_connections_active",
 	help: "Number of active database connections",
 });
 

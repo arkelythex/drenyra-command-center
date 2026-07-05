@@ -8,7 +8,7 @@ import {
 	eq,
 	invoices,
 	users,
-} from "@arkelythex/infrastructure";
+} from "@drenyra/infrastructure";
 import { afterEach, describe, expect, it } from "vitest";
 import { ComplianceRoadmapService } from "../../compliance-roadmap.service";
 

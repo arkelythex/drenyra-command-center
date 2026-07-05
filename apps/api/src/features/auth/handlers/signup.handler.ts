@@ -1,9 +1,9 @@
 import { Context } from "elysia";
 import { getTaxAuthority } from "../../../lib/tax-authority-provider";
 import { SunatService } from "../../../services/sunat.service";
-import { db } from "@arkelythex/persistence/client";
-import { authAuditLogs, authUsers } from "@arkelythex/persistence/schema";
-import { eq } from "@arkelythex/persistence/query";
+import { db } from "@drenyra/persistence/client";
+import { authAuditLogs, authUsers } from "@drenyra/persistence/schema";
+import { eq } from "@drenyra/persistence/query";
 import { nanoid } from "nanoid";
 import { auth } from "../auth.config";
 import { ok, fail } from "../../shared/api-response";

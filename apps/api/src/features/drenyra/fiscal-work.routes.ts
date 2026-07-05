@@ -1,10 +1,10 @@
 import { Elysia, t } from "elysia";
-import type { DrenyraActorContext, DrenyraFiscalCommandCenterService } from "@arkelythex/application/drenyra";
+import type { DrenyraActorContext, DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
 import {
 	DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY,
 	type DrenyraFiscalWorkInspectEnvelope,
 	type DrenyraFiscalWorkInspectSourceSurface,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 
 type DrenyraActorContextResolution =
 	| { ok: true; context: DrenyraActorContext }

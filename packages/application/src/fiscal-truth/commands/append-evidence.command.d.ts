@@ -1,4 +1,4 @@
-import type { DeterministicValidatorResultRecord, EvidenceGraphRepository, EvidenceNode, FiscalTruthScope, PolicyDecisionRecord } from "@arkelythex/domain";
+import type { DeterministicValidatorResultRecord, EvidenceGraphRepository, EvidenceNode, FiscalTruthScope, PolicyDecisionRecord } from "@drenyra/domain";
 export interface AppendEvidenceCommandInput {
     expectedScope: FiscalTruthScope;
     evidence: EvidenceNode;

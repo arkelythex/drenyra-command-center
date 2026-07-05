@@ -11,12 +11,12 @@ import type {
 	GetFiscalTruthEventQuery,
 	GovernanceBundleService,
 	ReplayFiscalTruthQuery,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 import type {
 	EvidenceGraphRepository,
 	FiscalTruthRepository,
 	FiscalTruthScope,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import { Elysia } from "elysia";
 import { z } from "zod";
 import { fail, ok } from "../../shared/api-response";

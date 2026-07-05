@@ -1,1 +1,1 @@
-export * from "@arkelythex/infrastructure/services/ai-latency";
+export * from "@drenyra/infrastructure/services/ai-latency";

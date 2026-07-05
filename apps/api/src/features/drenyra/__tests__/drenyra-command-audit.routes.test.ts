@@ -4,8 +4,8 @@ import {
 	DrenyraFiscalCommandCenterService,
 	InMemoryDrenyraRepository,
 	type DrenyraActorContext,
-} from "@arkelythex/application/drenyra";
-import type { AuditEvent, AuditEventType, FiscalScope } from "@arkelythex/domain/drenyra";
+} from "@drenyra/application/drenyra";
+import type { AuditEvent, AuditEventType, FiscalScope } from "@drenyra/domain/drenyra";
 import { createDrenyraCommandAuditRoutes } from "../command-audit.routes";
 
 const context: DrenyraActorContext = {

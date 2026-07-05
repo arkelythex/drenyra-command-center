@@ -1,4 +1,4 @@
-import type { LatinAgentId } from "@arkelythex/drenyra-orchestrator";
+import type { LatinAgentId } from "@drenyra/drenyra-orchestrator";
 
 export interface LatinDomainConfig {
 	id: LatinAgentId;

@@ -1,5 +1,5 @@
 import { and, eq, sql } from "drizzle-orm";
-import { documents } from "@arkelythex/persistence/schema";
+import { documents } from "@drenyra/persistence/schema";
 import { db } from "../../../lib/db";
 import type {
 	DocumentFilters,

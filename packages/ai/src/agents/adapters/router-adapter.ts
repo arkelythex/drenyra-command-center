@@ -1,5 +1,5 @@
-import type { ModelCapability } from "@arkelythex/domain/ai";
-import type { AdaptiveRouter } from "@arkelythex/infrastructure/ai/model-router/router";
+import type { ModelCapability } from "@drenyra/domain/ai";
+import type { AdaptiveRouter } from "@drenyra/infrastructure/ai/model-router/router";
 import { loggers } from "../../logger";
 import type { AIResponse } from "../types";
 

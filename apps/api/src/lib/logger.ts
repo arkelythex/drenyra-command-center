@@ -1,5 +1,5 @@
 /**
- * Backward-compatible re-export of @arkelythex/platform-core logger.
+ * Backward-compatible re-export of @drenyra/platform-core logger.
  *
  * All exports preserved for existing consumers.
  *
@@ -13,4 +13,4 @@ export {
 	REDACTION_PLACEHOLDER,
 	redactLogPayload,
 	rootLogger as logger,
-} from "@arkelythex/platform-core/config/logger";
+} from "@drenyra/platform-core/config/logger";

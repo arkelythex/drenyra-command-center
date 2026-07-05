@@ -5,4 +5,4 @@ export {
 	type ButtonProps,
 	type ButtonSize,
 	type ButtonVariant,
-} from "@arkelythex/ui";
+} from "@drenyra/ui";

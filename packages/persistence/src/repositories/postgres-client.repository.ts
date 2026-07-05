@@ -17,7 +17,7 @@ import type {
 	ClientRepository,
 	CreateClientDTO,
 	UpdateClientDTO,
-} from "@arkelythex/domain/repositories/client.repository";
+} from "@drenyra/domain/repositories/client.repository";
 import { db } from "../client";
 import { businessPartners, customerProfiles } from "../schema";
 import {

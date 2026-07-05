@@ -44,8 +44,8 @@ beforeAll(() => {
   vi.mock('@/lib/db/schema-extensions', () => ({}));
   vi.mock('@/shared/errors', () => ({}));
 
-  vi.mock('@arkelythex/shared', async () => {
-    const actual = await vi.importActual<typeof import('@arkelythex/shared')>('@arkelythex/shared');
+  vi.mock('@drenyra/shared', async () => {
+    const actual = await vi.importActual<typeof import('@drenyra/shared')>('@drenyra/shared');
 
     return {
       ...actual,

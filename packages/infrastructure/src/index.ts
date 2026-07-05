@@ -5,18 +5,18 @@
  * should be exposed via subpath imports instead of being re-exported here.
  */
 
-// Database (re-exports from @arkelythex/persistence)
-export { db } from "@arkelythex/persistence/client";
-export * from "@arkelythex/persistence/query";
-export { PostgresCloseChecklistRepository } from "@arkelythex/persistence/repositories/postgres-close-checklist.repository";
-export { PostgresDrenyraRepository } from "@arkelythex/persistence/repositories/postgres-drenyra.repository";
-export { PostgresEvidenceGraphRepository } from "@arkelythex/persistence/repositories/postgres-evidence-graph.repository";
-export { PostgresFiscalTruthRepository } from "@arkelythex/persistence/repositories/postgres-fiscal-truth.repository";
-export { PostgresPlatformMcpAuditSink } from "@arkelythex/persistence/repositories/postgres-platform-mcp-audit.repository";
-export { PostgresReplayRepository } from "@arkelythex/persistence/repositories/postgres-replay.repository";
-export { SireSubmissionRepository } from "@arkelythex/persistence/repositories/sire-submission.repository";
-export * from "@arkelythex/persistence/schema";
-export * from "@arkelythex/persistence/unit-of-work";
+// Database (re-exports from @drenyra/persistence)
+export { db } from "@drenyra/persistence/client";
+export * from "@drenyra/persistence/query";
+export { PostgresCloseChecklistRepository } from "@drenyra/persistence/repositories/postgres-close-checklist.repository";
+export { PostgresDrenyraRepository } from "@drenyra/persistence/repositories/postgres-drenyra.repository";
+export { PostgresEvidenceGraphRepository } from "@drenyra/persistence/repositories/postgres-evidence-graph.repository";
+export { PostgresFiscalTruthRepository } from "@drenyra/persistence/repositories/postgres-fiscal-truth.repository";
+export { PostgresPlatformMcpAuditSink } from "@drenyra/persistence/repositories/postgres-platform-mcp-audit.repository";
+export { PostgresReplayRepository } from "@drenyra/persistence/repositories/postgres-replay.repository";
+export { SireSubmissionRepository } from "@drenyra/persistence/repositories/sire-submission.repository";
+export * from "@drenyra/persistence/schema";
+export * from "@drenyra/persistence/unit-of-work";
 // Re-export commonly used items from drizzle-orm
 export {
 	and,
@@ -34,7 +34,7 @@ export {
 	sql,
 } from "drizzle-orm";
 // Re-export pg-core primitives — ensures single drizzle-orm instance across the monorepo.
-// Always import these from @arkelythex/infrastructure, never directly from drizzle-orm/pg-core.
+// Always import these from @drenyra/infrastructure, never directly from drizzle-orm/pg-core.
 export {
 	integer,
 	jsonb,

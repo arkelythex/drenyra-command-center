@@ -1,4 +1,4 @@
-import type { EvidenceRepository } from "@arkelythex/domain/repositories/evidence.repository";
+import type { EvidenceRepository } from "@drenyra/domain/repositories/evidence.repository";
 import type { EvidenceDTO } from "./dtos";
 import type { GetEvidenceByIdQuery } from "./queries";
 

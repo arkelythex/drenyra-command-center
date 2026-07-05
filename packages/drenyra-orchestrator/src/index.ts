@@ -3,11 +3,11 @@
 // ⚠️  GENTLE-AI: Solo exportamos lo que los consumidores realmente usan.
 //     Filosofía: si nadie lo importa, no existe.
 //
-// Punto de entrada único para `import { ... } from '@arkelythex/drenyra-orchestrator'`
+// Punto de entrada único para `import { ... } from '@drenyra/drenyra-orchestrator'`
 
 // ─── Agent-Swarm Compat Types (snapshots locales) ─────────────────────
 // Estos tipos son el contrato público entre la API y el orquestador.
-// Fueron extraídos de @arkelythex/agent-swarm y ahora viven aquí.
+// Fueron extraídos de @drenyra/agent-swarm y ahora viven aquí.
 
 export type { AgentContext } from "./types/agent-context";
 export type {
@@ -74,7 +74,7 @@ export type {
 
 // ─── Mastra Implementations ──────────────────────────────────────────
 //
-// Reemplazan @arkelythex/agent-swarm (63K lines) con implementaciones
+// Reemplazan @drenyra/agent-swarm (63K lines) con implementaciones
 // limpias basadas en Mastra + Vercel AI SDK.
 
 export type {
@@ -166,7 +166,7 @@ export {
 } from "./mastra";
 
 // ─── Legacy Functions ──────────────────────────────────────────────────
-// Portadas de @arkelythex/agent-swarm para compatibilidad.
+// Portadas de @drenyra/agent-swarm para compatibilidad.
 
 export {
 	clearRegisteredAgents,

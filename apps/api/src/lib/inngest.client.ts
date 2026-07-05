@@ -24,7 +24,7 @@ export const inngest = {
 			return;
 		}
 
-		const response = await fetch(`${baseUrl}/e/arkelythex-documents`, {
+		const response = await fetch(`${baseUrl}/e/drenyra-documents`, {
 			method: "POST",
 			headers: {
 				"content-type": "application/json",

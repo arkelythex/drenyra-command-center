@@ -6,8 +6,8 @@
  * @pattern CQRS Write Model
  */
 
-import type { Currency } from "@arkelythex/domain";
-import { Money } from "@arkelythex/domain";
+import type { Currency } from "@drenyra/domain";
+import { Money } from "@drenyra/domain";
 import type { IInvoiceRepository } from "../../domain/invoice.repository.interface";
 import { InvoiceRepository } from "../../infrastructure/invoice.repository";
 

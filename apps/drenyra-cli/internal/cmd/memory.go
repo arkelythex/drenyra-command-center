@@ -7,9 +7,9 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/config"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/memory"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/memory"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
 	"github.com/spf13/cobra"
 )
 
@@ -17,10 +17,10 @@ var memoryCmd = &cobra.Command{
 	Use:   "memory",
 	Short: "Hermes-style persistent memory (MEMORY.md + USER.md)",
 	Long: `Curated memory like NousResearch/hermes-agent:
-  ~/.arkelythex/memories/MEMORY.md  — agent notes (§ entries)
-  ~/.arkelythex/memories/USER.md    — user profile
+  ~/.drenyra/memories/MEMORY.md  — agent notes (§ entries)
+  ~/.drenyra/memories/USER.md    — user profile
 
-Configure limits in ~/.arkelythex/config.yaml under memory:`,
+Configure limits in ~/.drenyra/config.yaml under memory:`,
 }
 
 func init() {

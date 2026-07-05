@@ -1,4 +1,4 @@
-import type { DrenyraBrainItem, DrenyraBrainItemContent } from "@arkelythex/domain/drenyra";
+import type { DrenyraBrainItem, DrenyraBrainItemContent } from "@drenyra/domain/drenyra";
 import type { Message } from "@/components/agentic/ThreadView";
 
 function extractText(content: DrenyraBrainItemContent): string {

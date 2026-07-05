@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
-import type { Currency } from "@arkelythex/domain";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte } from "@arkelythex/persistence/query";
-import { bills, invoices } from "@arkelythex/persistence/schema";
+import type { Currency } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte, lte } from "@drenyra/persistence/query";
+import { bills, invoices } from "@drenyra/persistence/schema";
 import { SireService } from "../sire.service";
 import { SirePersistedProposalService } from "./sire-persisted-proposal.service";
 

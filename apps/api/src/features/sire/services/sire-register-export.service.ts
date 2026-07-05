@@ -18,11 +18,11 @@
  * @see {@link https://www.sunat.gob.pe/legislacion/superin/2013/271-2013.pdf} SUNAT Resolution 271-2013
  */
 
-import { db } from '@arkelythex/persistence/client';
-import { and, eq, gte, lte, sql } from '@arkelythex/persistence/query';
-import { bills, invoices } from '@arkelythex/persistence/schema';
-import { Money } from '@arkelythex/domain';
-import type { Currency } from '@arkelythex/domain';
+import { db } from '@drenyra/persistence/client';
+import { and, eq, gte, lte, sql } from '@drenyra/persistence/query';
+import { bills, invoices } from '@drenyra/persistence/schema';
+import { Money } from '@drenyra/domain';
+import type { Currency } from '@drenyra/domain';
 import type {
   SIRESalesRecord,
   SIREPurchasesRecord,

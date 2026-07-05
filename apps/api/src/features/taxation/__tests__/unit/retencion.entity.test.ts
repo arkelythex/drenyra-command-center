@@ -1,4 +1,4 @@
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { describe, expect, it } from "vitest";
 import { Retencion } from "../../domain/entities/retencion.entity";
 import { RetentionApplied } from "../../domain/events/retention-applied.event";

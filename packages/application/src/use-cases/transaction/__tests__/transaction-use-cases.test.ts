@@ -8,12 +8,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
 	Transaction,
 	type TransactionEntry,
-} from "@arkelythex/domain/entities/Transaction";
+} from "@drenyra/domain/entities/Transaction";
 import type {
 	PaginatedResult,
 	TransactionRepository,
-} from "@arkelythex/domain/repositories/transaction.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/repositories/transaction.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { DeleteTransactionUseCase } from "../delete-transaction.use-case";
 import { GetTransactionUseCase } from "../get-transaction.use-case";
 import { ListTransactionsUseCase } from "../list-transactions.use-case";

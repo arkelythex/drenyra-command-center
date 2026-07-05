@@ -39,18 +39,18 @@ vi.mock("../../auth.config", () => ({
 	},
 }));
 
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		select: mocks.dbSelect,
 		update: mocks.dbUpdate,
 	},
 }));
 
-vi.mock("@arkelythex/persistence/query", () => ({
+vi.mock("@drenyra/persistence/query", () => ({
 	eq: mocks.eq,
 }));
 
-vi.mock("@arkelythex/persistence/schema", () => ({
+vi.mock("@drenyra/persistence/schema", () => ({
 	authUsers: {
 		id: "id",
 		email: "email",
@@ -111,7 +111,7 @@ describe("handleLogin durable lockout runtime behavior", () => {
 	});
 
 	it("increments failed_login_attempts and logs sanitized auth event payload on failed login", async () => {
-		const email = "qa.operator@arkelythexfounders.com";
+		const email = "qa.operator@drenyrafounders.com";
 		const ipAddress = "198.51.100.45";
 
 		mockSelectResultOnce([
@@ -182,7 +182,7 @@ describe("handleLogin durable lockout runtime behavior", () => {
 	});
 
 	it("resets failed_login_attempts and locked_until after successful login", async () => {
-		const email = "security.lead@arkelythexfounders.com";
+		const email = "security.lead@drenyrafounders.com";
 
 		mockSelectResultOnce([
 			{
@@ -214,7 +214,7 @@ describe("handleLogin durable lockout runtime behavior", () => {
 	});
 
 	it("enforces locked_until and blocks authentication before calling BetterAuth", async () => {
-		const email = "blocked.user@arkelythexfounders.com";
+		const email = "blocked.user@drenyrafounders.com";
 		const ipAddress = "203.0.113.23";
 		const lockUntil = new Date(Date.now() + 10 * 60 * 1000);
 

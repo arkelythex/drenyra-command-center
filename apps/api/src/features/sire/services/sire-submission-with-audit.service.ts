@@ -27,7 +27,7 @@ import {
   type SubmitSireInput,
   type SireSubmissionResult,
 } from '../sire-submission.service';
-import { sireSubmissionRepository } from '@arkelythex/persistence/repositories/sire-submission.repository';
+import { sireSubmissionRepository } from '@drenyra/persistence/repositories/sire-submission.repository';
 import { randomBytes } from 'node:crypto';
 import { createLogger } from '../../../lib/logger';
 import { buildSireConfig } from './sire-config.service';

@@ -1,4 +1,4 @@
-import { EVIDENCE_EDGE_KIND, EVIDENCE_NODE_KIND, isFiscalTruthScope, } from "@arkelythex/domain";
+import { EVIDENCE_EDGE_KIND, EVIDENCE_NODE_KIND, isFiscalTruthScope, } from "@drenyra/domain";
 import { randomUUID } from "node:crypto";
 export class AppendEvidenceCommand {
     deps;

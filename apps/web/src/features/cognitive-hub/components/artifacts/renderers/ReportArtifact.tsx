@@ -8,7 +8,7 @@ import React from 'react';
  */
 
 import { FileText, BrainCircuit, ArrowRight } from 'lucide-react';
-import type { HubArtifact } from '@arkelythex/shared/artifacts';
+import type { HubArtifact } from '@drenyra/shared/artifacts';
 import { registerArtifact } from '../artifact-registry';
 
 type ReportArt = Extract<HubArtifact, { type: 'report' }>;

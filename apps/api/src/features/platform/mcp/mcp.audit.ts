@@ -8,18 +8,18 @@
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
 import type {
-	ArkelythexMcpAuditEvent,
-	ArkelythexMcpAuditQuery,
-	ArkelythexMcpAuditReader,
-	ArkelythexMcpAuditSink,
-} from "@arkelythex/domain";
+	DrenyraMcpAuditEvent,
+	DrenyraMcpAuditQuery,
+	DrenyraMcpAuditReader,
+	DrenyraMcpAuditSink,
+} from "@drenyra/agents";
 
-export type PlatformMcpAuditOperation = ArkelythexMcpAuditEvent["operation"];
-export type PlatformMcpAuditOutcome = ArkelythexMcpAuditEvent["outcome"];
-export type PlatformMcpAuditEvent = ArkelythexMcpAuditEvent;
+export type PlatformMcpAuditOperation = DrenyraMcpAuditEvent["operation"];
+export type PlatformMcpAuditOutcome = DrenyraMcpAuditEvent["outcome"];
+export type PlatformMcpAuditEvent = DrenyraMcpAuditEvent;
 
-export type PlatformMcpAuditSink = ArkelythexMcpAuditSink;
-export type PlatformMcpAuditReader = ArkelythexMcpAuditReader;
+export type PlatformMcpAuditSink = DrenyraMcpAuditSink;
+export type PlatformMcpAuditReader = DrenyraMcpAuditReader;
 
 export class InMemoryPlatformMcpAuditSink implements PlatformMcpAuditSink, PlatformMcpAuditReader {
 	private readonly events: PlatformMcpAuditEvent[] = [];
@@ -28,7 +28,7 @@ export class InMemoryPlatformMcpAuditSink implements PlatformMcpAuditSink, Platf
 		this.events.push(event);
 	}
 
-	async list(query?: ArkelythexMcpAuditQuery): Promise<PlatformMcpAuditEvent[]> {
+	async list(query?: DrenyraMcpAuditQuery): Promise<PlatformMcpAuditEvent[]> {
 		const events = [...this.events].reverse();
 		if (!query) return events;
 		return events

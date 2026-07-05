@@ -3,11 +3,11 @@ import type {
 	ListInvoicesDTO,
 	ListInvoicesResponseDTO,
 } from "../../dtos/invoice/list-invoices.dto";
-import type { Invoice } from "@arkelythex/domain/entities/Invoice";
+import type { Invoice } from "@drenyra/domain/entities/Invoice";
 import type {
 	InvoiceFilters,
 	InvoiceRepository,
-} from "@arkelythex/domain/repositories/invoice.repository";
+} from "@drenyra/domain/repositories/invoice.repository";
 
 /**
  * List Invoices Use Case

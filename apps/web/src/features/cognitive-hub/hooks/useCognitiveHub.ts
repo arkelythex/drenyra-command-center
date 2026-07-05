@@ -13,7 +13,7 @@ import { captureError } from "@/lib/monitoring";
 import { extractArtifacts, stripArtifacts } from "../logic/artifact-extractor";
 import { extractNavigationIntent, parseIntent } from "../logic/intent-parser";
 import { buildSheetDiffArtifactFromInput } from "../logic/sheet-diff-builder";
-import type { CognitiveMessage } from "@arkelythex/shared/messaging";
+import type { CognitiveMessage } from "@drenyra/shared/messaging";
 import { useCognitiveStream } from "./useCognitiveStream";
 
 export function useCognitiveHub() {

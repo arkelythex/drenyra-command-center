@@ -7,7 +7,7 @@ import {
 import { commitDiscrepancyResolution } from "../api/discrepancy-resolution.api";
 import { toast } from "sonner";
 import { useSoundUI } from "@/hooks/useSoundUI";
-import type { HubArtifact } from "@arkelythex/shared/artifacts";
+import type { HubArtifact } from "@drenyra/shared/artifacts";
 
 const UNDO_WINDOW_MS = 10_000;
 

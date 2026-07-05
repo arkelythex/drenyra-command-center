@@ -1,5 +1,5 @@
 // ─── Latin Moderno Agent ID + Swarm Types ──────────────────────────
-// Snapshot from @arkelythex/agent-swarm/src/erp/drenyra/swarm/types.ts
+// Snapshot from @drenyra/agent-swarm/src/erp/drenyra/swarm/types.ts
 
 import type { AgentContext } from './agent-context';
 

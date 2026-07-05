@@ -5,7 +5,6 @@ import { NotificationBadge } from "./components/notification-badge";
 import { CompanySection } from "./components/company-section";
 import { FiscalCasesSection } from "./components/fiscal-cases-section";
 import { ThreadsSection } from "./components/threads-section";
-import { AgentsSection } from "./components/agents-section";
 import { PeriodSection } from "./components/period-section";
 
 export function CommandCenterSidebar({
@@ -23,15 +22,13 @@ export function CommandCenterSidebar({
 	const { t } = useTranslation();
 	const { markAllAsRead } = useNotifications();
 	return (
-		<aside className="flex h-full flex-col border-r border-[var(--border-subtle)] bg-[var(--surface-2)]/70 p-4"
+		<aside
+			className="flex h-full flex-col border-r border-[var(--border-subtle)] bg-[var(--surface-2)]/70 p-4"
 			aria-label="Panel lateral del Centro de Comandos"
 		>
-			{/* Header */}
+			{/* Header — sin Drenyya (ya está en la top bar) */}
 			<div className="mb-6 shrink-0">
-				<p className="text-2xs font-bold uppercase tracking-[0.24em] text-[var(--color-info)]">
-					Drenyra
-				</p>
-				<h1 className="mt-2 text-xl font-bold tracking-tight">
+				<h1 className="text-xl font-bold tracking-tight text-[var(--text-primary)]">
 					{t("sidebar.title")}
 				</h1>
 				<p className="mt-2 text-xs text-[var(--text-tertiary)]">
@@ -59,11 +56,7 @@ export function CommandCenterSidebar({
 					onCreateCase={onCreateCase}
 					t={t}
 				/>
-				<ThreadsSection
-					companyId={companyId}
-					t={t}
-				/>
-				<AgentsSection t={t} />
+				<ThreadsSection companyId={companyId} t={t} />
 				<PeriodSection activePeriod={activePeriod} t={t} />
 			</div>
 		</aside>

@@ -13,7 +13,7 @@ import { Counter, Histogram } from "prom-client";
  * Agent execution counter (by agent_id + status)
  */
 export const agentExecutionsTotal = new Counter({
-	name: "arkelythex_agent_executions_total",
+	name: "drenyra_agent_executions_total",
 	help: "Total number of agent executions",
 	labelNames: ["agent_id", "status"] as const,
 });
@@ -22,7 +22,7 @@ export const agentExecutionsTotal = new Counter({
  * Agent execution duration in seconds (by agent_id)
  */
 export const agentExecutionDuration = new Histogram({
-	name: "arkelythex_agent_execution_duration_seconds",
+	name: "drenyra_agent_execution_duration_seconds",
 	help: "Agent execution duration in seconds",
 	labelNames: ["agent_id"] as const,
 	buckets: [0.01, 0.05, 0.1, 0.5, 1, 2, 5, 10, 30],
@@ -32,7 +32,7 @@ export const agentExecutionDuration = new Histogram({
  * Agent execution error counter (by agent_id + error_type)
  */
 export const agentExecutionErrors = new Counter({
-	name: "arkelythex_agent_execution_errors_total",
+	name: "drenyra_agent_execution_errors_total",
 	help: "Total number of agent execution errors",
 	labelNames: ["agent_id", "error_type"] as const,
 });

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const findManyMock = vi.fn();
 
-vi.mock('@arkelythex/persistence/client', () => ({
+vi.mock('@drenyra/persistence/client', () => ({
   db: {
     query: {
       bankTransactions: {
@@ -12,14 +12,14 @@ vi.mock('@arkelythex/persistence/client', () => ({
   },
 }));
 
-vi.mock('@arkelythex/persistence/schema', () => ({
+vi.mock('@drenyra/persistence/schema', () => ({
   bankTransactions: {
     companyId: 'company_id',
     transactionDate: 'transaction_date',
   },
 }));
 
-vi.mock('@arkelythex/persistence/query', () => ({
+vi.mock('@drenyra/persistence/query', () => ({
   and: (...conditions: unknown[]) => conditions,
   eq: (column: unknown, value: unknown) => ({ column, value }),
   gte: (column: unknown, value: unknown) => ({ column, value, op: '>=' }),

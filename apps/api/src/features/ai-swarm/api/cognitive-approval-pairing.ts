@@ -42,7 +42,7 @@ export interface ApprovalPairingBundle {
 }
 
 function getPairingSecret(): string {
-  return process.env.COGNITIVE_APPROVAL_PAIRING_SECRET?.trim() || 'arkelythex-local-pairing-secret';
+  return process.env.COGNITIVE_APPROVAL_PAIRING_SECRET?.trim() || 'drenyra-local-pairing-secret';
 }
 
 function toPairingHashInput(code: string, context: PairingHashContext): string {

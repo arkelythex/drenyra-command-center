@@ -5,7 +5,7 @@ describe('aes-256.service', () => {
   const originalEnv = { ...process.env };
 
   beforeEach(() => {
-    process.env = { ...originalEnv, ARKELYTHEX_AES256_KEY: 'arkelythex-test-key-for-aes-256-gcm' };
+    process.env = { ...originalEnv, DRENYRA_AES256_KEY: 'drenyra-test-key-for-aes-256-gcm' };
   });
 
   afterEach(() => {
@@ -22,7 +22,7 @@ describe('aes-256.service', () => {
   });
 
   it('returns original payload when encryption key is missing', () => {
-    delete process.env.ARKELYTHEX_AES256_KEY;
+    delete process.env.DRENYRA_AES256_KEY;
     const payload = { amount: 100 };
 
     const encrypted = encryptJsonValue(payload, { runId: 'run-2', toolCallId: 'tool-2' });

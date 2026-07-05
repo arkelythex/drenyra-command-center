@@ -5,8 +5,8 @@
  * Used by the queue worker for async processing.
  */
 
-import type { ExtractedData } from "@arkelythex/domain/entities/Document";
-import type { DocumentRepository } from "@arkelythex/domain/repositories/document.repository";
+import type { ExtractedData } from "@drenyra/domain/entities/Document";
+import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
 import {
 	type IExpenseClassifier,
 	type IInvoiceOCRService,

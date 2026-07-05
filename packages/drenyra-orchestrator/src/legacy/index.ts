@@ -1,5 +1,5 @@
 /**
- * Legacy — ported functions from @arkelythex/agent-swarm
+ * Legacy — ported functions from @drenyra/agent-swarm
  *
  * Estas funciones se portearon para romper la dependencia del compat
  * bridge con el paquete agent-swarm. Eventualmente se migrarán a

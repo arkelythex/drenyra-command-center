@@ -1,4 +1,4 @@
-import { SecureLogger } from "@arkelythex/shared/secure-logger";
+import { SecureLogger } from "@drenyra/shared/secure-logger";
 import type { TransactionType } from "../../domain/types";
 import { recordTransaction } from "./record-transaction.command";
 

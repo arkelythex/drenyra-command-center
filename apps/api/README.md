@@ -8,7 +8,7 @@ auto-generated: false
 
 > 📖 Documentación bajo la [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md) — calidez técnica, disclosure progresivo, carga cognitiva reducida. Buscamos que entiendas el *por qué* detrás del código, no solo el *qué*.
 
-# Arkelythex API - Financial Intelligence API
+# Drenyra API - Financial Intelligence API
 
 **Versión**: 2.1.0 | **Arquitectura**: Vertical Slicing (Elysia + Eden)
 
@@ -16,7 +16,7 @@ auto-generated: false
 
 ## Si solo tenés tres minutos
 
-Arkelythex API es el backend de Drenyra — la plataforma de inteligencia fiscal peruana. Armamos cada decisión pensando en quien la mantiene después: tipos estrictos, tests donde duelen, y vertical slicing para que cada feature viva sola sin romper las demás.
+Drenyra API es el backend de Drenyra — la plataforma de inteligencia fiscal peruana. Armamos cada decisión pensando en quien la mantiene después: tipos estrictos, tests donde duelen, y vertical slicing para que cada feature viva sola sin romper las demás.
 
 | Si querés... | Hacé esto |
 |--------------|-----------|
@@ -171,14 +171,14 @@ OSE_WEBHOOK_SECRET=replace-with-long-random-secret
 bun run build:binary
 
 # Imagen distroless (producción canónica)
-docker build -f apps/api/Dockerfile.production -t arkelythex-api:prod .
+docker build -f apps/api/Dockerfile.production -t drenyra-api:prod .
 
 # Deploy a Fly.io usando el manifiesto del repo
 bun run deploy:fly
 
 # OpenTelemetry opcional (producción / staging)
-ARKELYTHEX_ENABLE_OTEL=true \
-OTEL_SERVICE_NAME=arkelythex-api \
+DRENYRA_ENABLE_OTEL=true \
+OTEL_SERVICE_NAME=drenyra-api \
 OTEL_EXPORTER_OTLP_ENDPOINT=https://otlp.example.com/v1/traces \
 bun run dev
 ```
@@ -191,7 +191,7 @@ bun run dev
 ### CPE 2026: trazabilidad de reglas
 
 - SUNAT publica "Reglas de Validación" con actualización oficial al **2026-02-09**.
-- Arkelythex expone la baseline activa en `GET /cpe-validator/rules-meta`.
+- Drenyra expone la baseline activa en `GET /cpe-validator/rules-meta`.
 - **Estado actual**: cobertura parcial (estructura UBL + chequeos SUNAT), aún no paridad completa con toda la matriz/XSD.
 
 ---

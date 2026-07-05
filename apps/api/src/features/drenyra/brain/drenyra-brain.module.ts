@@ -8,7 +8,7 @@ import { fail, ok } from "../../shared/api-response";
 import type {
   DrenyraFiscalScope,
   DrenyraBrainSourceSurface,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 
 let idCounter = 0;
 function generateId(prefix: string): string {

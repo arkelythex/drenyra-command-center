@@ -1,5 +1,5 @@
 {
-  "name": "@arkelythex/application",
+  "name": "@drenyra/application",
   "version": "1.0.0",
   "description": "Application layer - use cases, DTOs, and ports",
   "type": "module",
@@ -21,8 +21,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@arkelythex/domain": "workspace:*",
-    "@arkelythex/shared": "workspace:*"
+    "@drenyra/domain": "workspace:*",
+    "@drenyra/shared": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^6.0.3",

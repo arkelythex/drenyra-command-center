@@ -1,5 +1,5 @@
-import { type EvidenceGraphRepository, type EvidenceNode, type FiscalTruthScope } from "@arkelythex/domain";
-import type { DrenyraBrainEvent, DrenyraFiscalScope } from "@arkelythex/domain/drenyra";
+import { type EvidenceGraphRepository, type EvidenceNode, type FiscalTruthScope } from "@drenyra/domain";
+import type { DrenyraBrainEvent, DrenyraFiscalScope } from "@drenyra/domain/drenyra";
 export interface DrenyraBrainEvidenceBridgeDeps {
     appendNode: EvidenceGraphRepository["appendNode"];
     appendEdge: EvidenceGraphRepository["appendEdge"];

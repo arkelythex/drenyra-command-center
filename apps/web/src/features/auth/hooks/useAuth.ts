@@ -112,7 +112,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       reset: () => set(initialState),
     }),
     {
-      name: 'arkelythex-auth-storage',
+      name: 'drenyra-auth-storage',
       storage: createJSONStorage(() => window.localStorage),
       // Solo persistimos lo necesario para identificar al usuario
       // BetterAuth gestiona la sesión real vía cookies

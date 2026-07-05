@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
-import { EVIDENCE_NODE_KIND, EVIDENCE_EDGE_KIND, type EvidenceNode } from "@arkelythex/domain";
+import { EVIDENCE_NODE_KIND, EVIDENCE_EDGE_KIND, type EvidenceNode } from "@drenyra/agents";
 import { createPlatformMcpHandlers } from "./mcp.handlers";
-import type { ArkelythexMcpScope } from "@arkelythex/domain";
+import type { DrenyraMcpScope } from "@drenyra/agents";
 
-const scope: ArkelythexMcpScope = {
+const scope: DrenyraMcpScope = {
 	organizationId: "10",
 	companyId: "company-001",
 	companyRuc: "20100070970",

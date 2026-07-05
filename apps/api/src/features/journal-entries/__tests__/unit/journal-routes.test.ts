@@ -2,8 +2,8 @@
  * Unit tests for Journal Entry API routes.
  *
  * Strategy:
- *   Mock @arkelythex/application/use-cases/journal → return controlled data
- *   Mock @arkelythex/persistence/client + /schema → resolve organizationId
+ *   Mock @drenyra/application/use-cases/journal → return controlled data
+ *   Mock @drenyra/persistence/client + /schema → resolve organizationId
  *   Use new Elysia().use(journalEntryRoutes) → app.handle(Request)
  */
 
@@ -22,7 +22,7 @@ const mockStatusUseCase = { execute: vi.fn() };
 const mockUpdateUseCase = { execute: vi.fn() };
 const mockDeleteUseCase = { execute: vi.fn() };
 
-vi.mock("@arkelythex/application/use-cases/journal", () => ({
+vi.mock("@drenyra/application/use-cases/journal", () => ({
 	GetJournalEntriesUseCase: () => mockListUseCase,
 	CreateJournalEntryUseCase: () => mockCreateUseCase,
 	UpdateJournalEntryStatusUseCase: () => mockStatusUseCase,
@@ -34,7 +34,7 @@ vi.mock("@arkelythex/application/use-cases/journal", () => ({
 // Mock persistence packages — routes import db+schema via lib/db.ts re-exports
 // ---------------------------------------------------------------------------
 
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		select: vi.fn(() => ({
 			from: vi.fn(() => ({
@@ -58,7 +58,7 @@ vi.mock("@arkelythex/persistence/client", () => ({
 	client: vi.fn(),
 }));
 
-vi.mock("@arkelythex/persistence/schema", () => {
+vi.mock("@drenyra/persistence/schema", () => {
 	const tableProxy = new Proxy(
 		{},
 		{
@@ -76,7 +76,7 @@ vi.mock("@arkelythex/persistence/schema", () => {
 	);
 });
 
-vi.mock("@arkelythex/persistence", () => ({
+vi.mock("@drenyra/persistence", () => ({
 	PostgresJournalEntryRepository: class {
 		findById = vi.fn();
 		save = vi.fn();

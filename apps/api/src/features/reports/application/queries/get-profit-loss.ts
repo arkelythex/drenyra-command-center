@@ -4,10 +4,10 @@
  * @module reports/application/queries
  */
 
-import { Money } from "@arkelythex/domain";
-import { db as globalDb } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte, sql } from "@arkelythex/persistence/query";
-import { bills, invoices } from "@arkelythex/persistence/schema";
+import { Money } from "@drenyra/domain";
+import { db as globalDb } from "@drenyra/persistence/client";
+import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
+import { bills, invoices } from "@drenyra/persistence/schema";
 import { moneyFromDecimalString } from "../../_internal/money-utils";
 import type { ProfitLossReport } from "../../reports.schemas";
 

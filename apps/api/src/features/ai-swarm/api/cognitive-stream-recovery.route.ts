@@ -31,11 +31,11 @@ export const cognitiveStreamRecoveryEndpoint = new Elysia({
 		// ------------------------------------------------------------------
 		// 0. Bootstrap DB client for company lookup
 		// ------------------------------------------------------------------
-		const { db } = await import("@arkelythex/persistence/client");
+		const { db } = await import("@drenyra/persistence/client");
 		const { agentRunStates } = await import(
-			"@arkelythex/persistence/schema"
+			"@drenyra/persistence/schema"
 		);
-		const { eq } = await import("@arkelythex/persistence/query");
+		const { eq } = await import("@drenyra/persistence/query");
 
 		// Look up the run's companyId for tenant-scoped authorization
 		const runState = await db
@@ -62,10 +62,10 @@ export const cognitiveStreamRecoveryEndpoint = new Elysia({
 		// ------------------------------------------------------------------
 		// 2. Bootstrap session store + recovery
 		// ------------------------------------------------------------------
-		let sessionStore: import("@arkelythex/ai/session").SessionStore;
+		let sessionStore: import("@drenyra/ai/session").SessionStore;
 		try {
 			const { PostgresSessionStore } = await import(
-				"@arkelythex/ai/session"
+				"@drenyra/ai/session"
 			);
 			sessionStore = new PostgresSessionStore(db);
 		} catch (_err) {
@@ -78,7 +78,7 @@ export const cognitiveStreamRecoveryEndpoint = new Elysia({
 		}
 
 		const { SessionRecovery, SessionRecoveryError } = await import(
-			"@arkelythex/ai/session"
+			"@drenyra/ai/session"
 		);
 		const recovery = new SessionRecovery(sessionStore);
 
@@ -126,7 +126,7 @@ export const cognitiveStreamRecoveryEndpoint = new Elysia({
 			const recovered = await recovery.recover(runId, inputData, inputType);
 
 			// Attempt to fetch stored input for potential orchestrator resumption
-			let storedInput: import("@arkelythex/ai/session").RunInput | null = null;
+			let storedInput: import("@drenyra/ai/session").RunInput | null = null;
 			try {
 				storedInput = await sessionStore.getInput(runId);
 			} catch {

@@ -7,9 +7,9 @@
  * @domain Value Object — framework-free, deterministic
  */
 
-import { Money } from "../value-objects/Money";
+
 import type { PaybackInput, PaybackResult } from "./types";
-import { InvalidFinancialInputError } from "./types";
+
 
 const MONTHS_IN_YEAR = 12;
 

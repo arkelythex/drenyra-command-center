@@ -1,11 +1,11 @@
 import { eq } from "drizzle-orm";
-import * as schema from "@arkelythex/persistence/schema";
+import * as schema from "@drenyra/persistence/schema";
 export const ADMIN_USER_ID = "00000000-0000-0000-0000-000000000001";
 export const DEMO_COMPANY_ID = "00000000-0000-0000-0000-000000000001";
 export const DEMO_COMPANY_RUC = "20608451231";
 export async function ensureDemoSeedContext(db) {
     const existingAdminByEmail = await db.query.users.findFirst({
-        where: eq(schema.users.email, "admin@arkelythexfounders.com"),
+        where: eq(schema.users.email, "admin@drenyrafounders.com"),
     });
     let adminUserId = ADMIN_USER_ID;
     if (existingAdminByEmail) {
@@ -19,7 +19,7 @@ export async function ensureDemoSeedContext(db) {
         if (!existingAdminById) {
             await db.insert(schema.users).values({
                 id: ADMIN_USER_ID,
-                email: "admin@arkelythexfounders.com",
+                email: "admin@drenyrafounders.com",
                 password: "password123",
                 name: "Admin User",
                 role: "ADMIN",

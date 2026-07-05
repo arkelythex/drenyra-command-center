@@ -7,9 +7,9 @@ import {
 	customers,
 	invoices,
 	transactions,
-} from "@arkelythex/persistence/schema";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte, sql } from "@arkelythex/persistence/query";
+} from "@drenyra/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
 import { SIRE_LEDGER_REPRO_RUNBOOK } from "../lib/compliance-runbooks";
 import type {
 	ComplianceDashboard,

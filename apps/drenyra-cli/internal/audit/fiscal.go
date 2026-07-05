@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/config"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
 )
 
 var (
@@ -67,7 +67,7 @@ func ValidateFiscal(ctx harness.FiscalContext) error {
 		return fmt.Errorf("invalid period %q (need YYYY-MM)", ctx.Period)
 	}
 	if ctx.OrganizationID == "" || ctx.CompanyID == "" || ctx.UserID == "" {
-		return fmt.Errorf("missing fiscal context — set flags or ~/.arkelythex/config.yaml")
+		return fmt.Errorf("missing fiscal context — set flags or ~/.drenyra/config.yaml")
 	}
 	return nil
 }

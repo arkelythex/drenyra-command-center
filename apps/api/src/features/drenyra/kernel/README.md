@@ -12,7 +12,7 @@ The kernel is a **thin composition layer** that unifies four existing runtime en
 |---|---|---|
 | Brain threads | `brain/` | `FiscalThreadManager` |
 | Runtime runs + SSE | `drenyra.routes.ts` runs | `TurnController` |
-| Harness execution | `@arkelythex/harness` | `DelegationRouter` |
+| Harness execution | `@drenyra/harness` | `DelegationRouter` |
 | Orchestrator (tx + period) | `orchestrator/` + `drenyra-orchestrator` | `OrchestrationRouter` |
 
 REST v0 endpoints delegate to the kernel. DFAS WebSocket v1 is the canonical transport.
@@ -65,7 +65,7 @@ flowchart TB
   TC --> ISP
   OR --> MastraTx[Transaction Layer]
   OR --> PhaseOrch[Period Layer]
-  DR --> Harness[@arkelythex/harness]
+  DR --> Harness[@drenyra/harness]
   FTM --> BrainRepo[brain.repository]
   TPB --> TruthEngine[Fiscal Truth Engine]
   ISP --> FAL[FAL audit events]
@@ -116,7 +116,7 @@ queued → running → waiting_for_approval → running → completed
 
 **Responsibility:** Route tasks to harness tier graph (tier0 → tier3b).
 
-**Wraps:** `createArkelythexHarness().execute()`
+**Wraps:** `createDrenyraHarness().execute()`
 
 **Input:** Turn prompt + fiscal scope + optional agent hint  
 **Output:** Harness result linked to `brainThreadId`, `brainTurnId`, `traceId`
@@ -137,7 +137,7 @@ queued → running → waiting_for_approval → running → completed
 
 **Responsibility:** Pre-flight capability evaluation before any tool/harness call.
 
-**Wraps:** `evaluateDrenyraCapability` from `@arkelythex/domain/drenyra`
+**Wraps:** `evaluateDrenyraCapability` from `@drenyra/domain/drenyra`
 
 **On deny:** Emit `item/capability_decision` with `CAPABILITY_DENIED`, fail turn.
 
@@ -176,7 +176,7 @@ export function createFiscalAppServer(deps: FiscalAppServerDeps): FiscalAppServe
 
 interface FiscalAppServerDeps {
   brainService: DrenyraBrainService;
-  harness: ArkelythexHarness;
+  harness: DrenyraHarness;
   orchestratorModule: DrenyraOrchestratorModule;
   capabilityGrants: () => Promise<DrenyraCapabilityGrant[]>;
   skillRegistry?: LexoriSkillRegistry;
@@ -205,7 +205,7 @@ const orchestratorModule = createDrenyraOrchestratorModule({ ... });
 const brainService = createDrenyraBrainService({ repository });
 
 // harness — already exists
-const harness = createArkelythexHarness({ onApprovalRequired });
+const harness = createDrenyraHarness({ onApprovalRequired });
 
 // NEW: kernel composition
 const fiscalAppServer = createFiscalAppServer({

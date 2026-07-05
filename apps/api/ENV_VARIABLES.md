@@ -1,4 +1,4 @@
-# Environment Variables - ARKELYTHEX API
+# Environment Variables - DRENYRA API
 
 **Última actualización:** 2026-02-11
 **Versión:** 2.0.0
@@ -13,7 +13,7 @@
 
 ```bash
 # PostgreSQL connection string
-DATABASE_URL="postgresql://user:password@localhost:5436/arkelythex"
+DATABASE_URL="postgresql://user:password@localhost:5436/drenyra"
 ```
 
 **Setup rápido:**
@@ -33,7 +33,7 @@ BETTER_AUTH_SECRET="your-secret-key-min-32-chars-recommended-64-chars-for-produc
 BETTER_AUTH_URL="http://localhost:3000"
 
 # Base URL for callbacks (production)
-# BETTER_AUTH_URL="https://api.arkelythexfounders.com"
+# BETTER_AUTH_URL="https://api.drenyrafounders.com"
 ```
 
 **Generar secret:**
@@ -148,7 +148,7 @@ NODE_ENV="development"  # development | production | test
 
 # Lista allowlist de orígenes para CORS (separados por coma)
 # Requerido en producción si el frontend está en otro dominio
-# Ejemplo: "https://app.arkelythexfounders.com,https://admin.arkelythexfounders.com"
+# Ejemplo: "https://app.drenyrafounders.com,https://admin.drenyrafounders.com"
 CORS_ALLOWED_ORIGINS="http://localhost:5173"
 
 # Compatibilidad legacy (fallback si CORS_ALLOWED_ORIGINS no está definido)
@@ -204,11 +204,11 @@ GOVERNANCE_AUDIT_ALLOW_HEADER_AUTH_FALLBACK="false"
 
 ```bash
 # ============================================
-# ARKELYTHEX API - Development Environment
+# DRENYRA API - Development Environment
 # ============================================
 
 # Database
-DATABASE_URL="postgresql://user:password@localhost:5436/arkelythex"
+DATABASE_URL="postgresql://user:password@localhost:5436/drenyra"
 
 # Auth (BetterAuth)
 BETTER_AUTH_SECRET="dev-secret-key-change-in-production-min-32-chars-recommended-64"
@@ -237,15 +237,15 @@ CORS_ALLOWED_ORIGINS="http://localhost:5173,http://127.0.0.1:5173"
 
 ```bash
 # ============================================
-# ARKELYTHEX API - Production Environment
+# DRENYRA API - Production Environment
 # ============================================
 
 # Database
-DATABASE_URL="postgresql://user:password@production-db.aws.com:5432/arkelythex_prod"
+DATABASE_URL="postgresql://user:password@production-db.aws.com:5432/drenyra_prod"
 
 # Auth (BetterAuth)
 BETTER_AUTH_SECRET="<CAMBIAR-CON-SECRET-REAL-64-CHARS>"
-BETTER_AUTH_URL="https://api.arkelythexfounders.com"
+BETTER_AUTH_URL="https://api.drenyrafounders.com"
 
 # Banking Providers (Prometeo API)
 PROMETEO_API_KEY="<CAMBIAR-CON-KEY-REAL>"
@@ -265,7 +265,7 @@ COMPANY_RUC="20123456789"
 PORT="3000"
 NODE_ENV="production"
 LOG_LEVEL="warn"
-CORS_ALLOWED_ORIGINS="https://app.arkelythexfounders.com"
+CORS_ALLOWED_ORIGINS="https://app.drenyrafounders.com"
 ```
 
 ---
@@ -365,4 +365,4 @@ PROMETEO_API_KEY="pmt_api_xxx..."
 
 ---
 
-**© 2026 ARKELYTHEX - Neural-Symbolic Financial Governance**
+**© 2026 DRENYRA - Neural-Symbolic Financial Governance**

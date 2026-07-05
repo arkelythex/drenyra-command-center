@@ -1,12 +1,12 @@
-import type { FirmMetrics } from "@arkelythex/domain/entities/organization";
+import type { FirmMetrics } from "@drenyra/domain/entities/organization";
 import {
 	Organization,
 	type OrganizationProps,
-} from "@arkelythex/domain/entities/organization";
+} from "@drenyra/domain/entities/organization";
 import type {
 	OrganizationFilters,
 	OrganizationRepository,
-} from "@arkelythex/domain/repositories/organization.repository";
+} from "@drenyra/domain/repositories/organization.repository";
 import { and, eq, ilike, or, type SQL, sql } from "drizzle-orm";
 import { db } from "../../client";
 import { organizationMetrics, organizations } from "../../schema";

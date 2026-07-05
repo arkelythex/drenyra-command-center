@@ -1,5 +1,5 @@
-import { db } from "@arkelythex/persistence/client";
-import { sql } from "@arkelythex/persistence/query";
+import { db } from "@drenyra/persistence/client";
+import { sql } from "@drenyra/persistence/query";
 import { Elysia } from "elysia";
 import { logger } from "../../lib/logger";
 import { getTaxationEventBootstrapStatus } from "../taxation/application/handlers/bootstrap-taxation-event-subscriptions";
@@ -63,7 +63,7 @@ export function buildHealthModule(deps: HealthModuleDeps = {}) {
 			status: "ok",
 			timestamp: new Date().toISOString(),
 			uptime: process.uptime(),
-			service: "arkelythex-api",
+			service: "drenyra-api",
 			version: "2.0.0",
 		}))
 		.get("/ready", async ({ set }) => {

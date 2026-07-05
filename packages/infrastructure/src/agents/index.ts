@@ -1,19 +1,19 @@
 /**
- * Arkelythex Agents Module
+ * Drenyra Agents Module
  *
- * Exports all agents and guardrails for the Arkelythex AI system.
+ * Exports all agents and guardrails for the Drenyra AI system.
  *
  * @since December 2025 - AI-First Architecture
  */
 
 // Core Agents
-// Tools (functions) — migrated to @arkelythex/ai
+// Tools (functions) — migrated to @drenyra/ai
 export {
 	calculateDetraction,
 	calculateIGV,
 	suggestPCGEAccount,
 	validateRUC,
-} from "@arkelythex/ai";
+} from "@drenyra/ai";
 export {
 	type AgentConfig,
 	type AgentResult,

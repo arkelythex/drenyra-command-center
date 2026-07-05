@@ -1,4 +1,4 @@
-import type { AgentContext, ApprovalRequest } from "@arkelythex/drenyra-orchestrator";
+import type { AgentContext, ApprovalRequest } from "@drenyra/drenyra-orchestrator";
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
 import { createApprovalGateRoutes } from "../approval-gate.routes";

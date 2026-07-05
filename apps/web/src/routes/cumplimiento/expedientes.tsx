@@ -1,4 +1,4 @@
-import type { ExpedienteKind } from "@arkelythex/domain";
+import type { ExpedienteKind } from "@drenyra/domain";
 import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
 
 const EXPEDIENTE_KINDS = [

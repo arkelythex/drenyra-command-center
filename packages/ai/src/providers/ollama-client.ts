@@ -5,7 +5,7 @@
  * Uses Ollama's OpenAI-compatible `/v1/chat/completions` endpoint
  * for chat completions and `/api/tags` for health/model discovery.
  *
- * @module @arkelythex/ai/providers/ollama
+ * @module @drenyra/ai/providers/ollama
  */
 
 import type {

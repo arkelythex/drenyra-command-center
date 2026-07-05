@@ -116,7 +116,7 @@ Surfaces MUST NOT drop evidence, checks, risk, approval, diff or trace when rend
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://arkelythex.dev/schemas/dfas/fiscal-scope.json",
+  "$id": "https://drenyra.dev/schemas/dfas/fiscal-scope.json",
   "type": "object",
   "required": ["companyId", "companyRuc", "period", "countryCode"],
   "properties": {
@@ -134,7 +134,7 @@ Surfaces MUST NOT drop evidence, checks, risk, approval, diff or trace when rend
 
 ```json
 {
-  "$id": "https://arkelythex.dev/schemas/dfas/thread-create.json",
+  "$id": "https://drenyra.dev/schemas/dfas/thread-create.json",
   "type": "object",
   "required": ["title", "fiscalScope", "sourceSurface"],
   "properties": {
@@ -154,7 +154,7 @@ Surfaces MUST NOT drop evidence, checks, risk, approval, diff or trace when rend
 
 ```json
 {
-  "$id": "https://arkelythex.dev/schemas/dfas/turn-start.json",
+  "$id": "https://drenyra.dev/schemas/dfas/turn-start.json",
   "type": "object",
   "required": ["threadId", "prompt", "fiscalScope"],
   "properties": {
@@ -176,7 +176,7 @@ Surfaces MUST NOT drop evidence, checks, risk, approval, diff or trace when rend
 
 ```json
 {
-  "$id": "https://arkelythex.dev/schemas/dfas/approval-respond.json",
+  "$id": "https://drenyra.dev/schemas/dfas/approval-respond.json",
   "type": "object",
   "required": ["approvalId", "decision", "fiscalScope"],
   "properties": {
@@ -192,7 +192,7 @@ Surfaces MUST NOT drop evidence, checks, risk, approval, diff or trace when rend
 
 ```json
 {
-  "$id": "https://arkelythex.dev/schemas/dfas/item-appended.json",
+  "$id": "https://drenyra.dev/schemas/dfas/item-appended.json",
   "type": "object",
   "required": ["entry"],
   "properties": {

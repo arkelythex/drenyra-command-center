@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
-import { db } from "@arkelythex/persistence/client";
-import { frontendTelemetryEvents } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { frontendTelemetryEvents } from "@drenyra/persistence/schema";
 import { logger } from "../lib/logger";
 
 export type FrontendTelemetryKind = "error" | "web-vital" | "event" | "pageview";

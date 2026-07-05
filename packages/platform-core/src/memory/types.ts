@@ -4,7 +4,7 @@
  * Domain-agnostic types for the agent memory and session storage module.
  * Zero fiscal imports — all types are generic and reusable across verticals.
  *
- * @module @arkelythex/platform-core/memory
+ * @module @drenyra/platform-core/memory
  */
 
 // ──────────────────────────────────────────────

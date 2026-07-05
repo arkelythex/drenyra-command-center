@@ -106,7 +106,7 @@ export const authAuditLogs = pgTable('auth_audit_logs', {
 /**
  * authUserCompanies const.
  *
- * Membership bridge between Better Auth users and Arkelythex companies.
+ * Membership bridge between Better Auth users and Drenyra companies.
  * This is the foundation for real multi-company access without coupling
  * auth directly to a single RUC forever.
  * @example

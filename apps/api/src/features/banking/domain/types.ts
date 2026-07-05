@@ -3,13 +3,13 @@
  * Core type definitions for the banking bounded context
  */
 
-import type { Currency } from '@arkelythex/domain/value-objects/Money';
-import type { BankAccountType } from '@arkelythex/domain/value-objects/AccountType';
+import type { Currency } from "@drenyra/domain/value-objects/Money";
+import type { BankAccountType } from "@drenyra/domain/value-objects/AccountType";
 
 /**
  * Bank account category.
  *
- * @deprecated Import BankAccountType from @arkelythex/domain instead
+ * @deprecated Import BankAccountType from @drenyra/domain instead
  * @example
  * ```ts
  * const type: BankAccountType = 'CHECKING';
@@ -17,12 +17,12 @@ import type { BankAccountType } from '@arkelythex/domain/value-objects/AccountTy
  */
 export type AccountType = BankAccountType;
 
-import type { BankTransactionType } from '@arkelythex/domain/value-objects/TransactionType';
+import type { BankTransactionType } from "@drenyra/domain/value-objects/TransactionType";
 
 /**
  * Bank transaction direction.
  *
- * @deprecated Import BankTransactionType from @arkelythex/domain instead
+ * @deprecated Import BankTransactionType from @drenyra/domain instead
  * @example
  * ```ts
  * const type: BankTransactionType = 'DEBIT';
@@ -35,10 +35,14 @@ export type TransactionType = BankTransactionType;
  *
  * @example
  * ```ts
- * const status: ReconciliationStatus = 'PENDING';
+ * const status: ReconciliationMatchStatus = 'PENDING';
  * ```
  */
-export type ReconciliationStatus = 'PENDING' | 'MATCHED' | 'RECONCILED' | 'REJECTED';
+export type ReconciliationMatchStatus =
+	| "PENDING"
+	| "MATCHED"
+	| "RECONCILED"
+	| "REJECTED";
 
 /**
  * Matching strategy used to score a reconciliation candidate.
@@ -48,7 +52,11 @@ export type ReconciliationStatus = 'PENDING' | 'MATCHED' | 'RECONCILED' | 'REJEC
  * const criteria: MatchCriteria = 'AMOUNT_DATE';
  * ```
  */
-export type MatchCriteria = 'REFERENCE' | 'AMOUNT_DATE' | 'AMOUNT_ENTITY' | 'PARTIAL';
+export type MatchCriteria =
+	| "REFERENCE"
+	| "AMOUNT_DATE"
+	| "AMOUNT_ENTITY"
+	| "PARTIAL";
 
 /**
  * Document type that can be reconciled against a bank transaction.
@@ -58,7 +66,7 @@ export type MatchCriteria = 'REFERENCE' | 'AMOUNT_DATE' | 'AMOUNT_ENTITY' | 'PAR
  * const docType: DocumentType = 'INVOICE';
  * ```
  */
-export type DocumentType = 'INVOICE' | 'BILL';
+export type DocumentType = "INVOICE" | "BILL";
 
 /**
  * Source of imported bank transactions.
@@ -68,7 +76,7 @@ export type DocumentType = 'INVOICE' | 'BILL';
  * const source: ImportSource = 'CSV';
  * ```
  */
-export type ImportSource = 'MANUAL' | 'CSV' | 'BANK_API' | 'MT940';
+export type ImportSource = "MANUAL" | "CSV" | "BANK_API" | "MT940";
 
 /**
  * Bank account persistence/transport shape used by the Banking bounded context.
@@ -83,21 +91,21 @@ export type ImportSource = 'MANUAL' | 'CSV' | 'BANK_API' | 'MT940';
  * ```
  */
 export interface BankAccountProps {
-  id: string;
-  companyId: string;
-  accountName: string;
-  accountNumber: string;
-  accountType: AccountType;
-  bankName: string;
-  bankCode?: string;
-  branch?: string;
-  currency: Currency;
-  currentBalance: string;
-  availableBalance?: string;
-  isActive: boolean;
-  isDefault: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+	id: string;
+	companyId: string;
+	accountName: string;
+	accountNumber: string;
+	accountType: AccountType;
+	bankName: string;
+	bankCode?: string;
+	branch?: string;
+	currency: Currency;
+	currentBalance: string;
+	availableBalance?: string;
+	isActive: boolean;
+	isDefault: boolean;
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 /**
@@ -113,24 +121,24 @@ export interface BankAccountProps {
  * ```
  */
 export interface BankTransactionProps {
-  id: string;
-  companyId: string;
-  accountId: string;
-  transactionDate: Date;
-  description: string;
-  reference?: string;
-  type: TransactionType;
-  amount: string;
-  balance?: string;
-  category?: string;
-  tags?: string[];
-  isReconciled: boolean;
-  reconciledAt?: Date;
-  reconciledBy?: string;
-  invoiceId?: string;
-  billId?: string;
-  importedFrom: ImportSource;
-  createdAt: Date;
+	id: string;
+	companyId: string;
+	accountId: string;
+	transactionDate: Date;
+	description: string;
+	reference?: string;
+	type: TransactionType;
+	amount: string;
+	balance?: string;
+	category?: string;
+	tags?: string[];
+	isReconciled: boolean;
+	reconciledAt?: Date;
+	reconciledBy?: string;
+	invoiceId?: string;
+	billId?: string;
+	importedFrom: ImportSource;
+	createdAt: Date;
 }
 
 /**
@@ -147,14 +155,14 @@ export interface BankTransactionProps {
  * ```
  */
 export interface ReconciliationMatchProps {
-  transactionId: string;
-  documentId: string;
-  documentType: DocumentType;
-  matchScore: number;
-  matchCriteria: MatchCriteria;
-  matchedAt: Date;
-  matchedBy: string;
-  isConfirmed: boolean;
+	transactionId: string;
+	documentId: string;
+	documentType: DocumentType;
+	matchScore: number;
+	matchCriteria: MatchCriteria;
+	matchedAt: Date;
+	matchedBy: string;
+	isConfirmed: boolean;
 }
 
 /**
@@ -170,15 +178,15 @@ export interface ReconciliationMatchProps {
  * ```
  */
 export interface PartialPaymentProps {
-  id: string;
-  invoiceId: string;
-  transactionIds: string[];
-  totalPaid: string;
-  totalDue: string;
-  currency: Currency;
-  status: 'PARTIAL' | 'COMPLETE';
-  createdAt: Date;
-  updatedAt: Date;
+	id: string;
+	invoiceId: string;
+	transactionIds: string[];
+	totalPaid: string;
+	totalDue: string;
+	currency: Currency;
+	status: "PARTIAL" | "COMPLETE";
+	createdAt: Date;
+	updatedAt: Date;
 }
 
 /**
@@ -194,11 +202,11 @@ export interface PartialPaymentProps {
  * ```
  */
 export interface ReconciliationResult {
-  reconciledCount: number;
-  totalProcessed: number;
-  matches: ReconciliationMatchProps[];
-  unmatched: number;
-  errors: Array<{ transactionId: string; error: string }>;
+	reconciledCount: number;
+	totalProcessed: number;
+	matches: ReconciliationMatchProps[];
+	unmatched: number;
+	errors: Array<{ transactionId: string; error: string }>;
 }
 
 /**
@@ -215,11 +223,11 @@ export interface ReconciliationResult {
  * ```
  */
 export interface BankingSummary {
-  totalAccounts: number;
-  totalBalancePEN: string;
-  totalBalanceUSD: string;
-  unreconciledTransactions: number;
-  lastReconciliation?: Date;
+	totalAccounts: number;
+	totalBalancePEN: string;
+	totalBalanceUSD: string;
+	unreconciledTransactions: number;
+	lastReconciliation?: Date;
 }
 
 /**
@@ -236,14 +244,14 @@ export interface BankingSummary {
  * ```
  */
 export interface CreateAccountDTO {
-  accountName: string;
-  accountNumber: string;
-  accountType: AccountType;
-  bankName: string;
-  bankCode?: string;
-  branch?: string;
-  currency?: Currency;
-  currentBalance?: number;
+	accountName: string;
+	accountNumber: string;
+	accountType: AccountType;
+	bankName: string;
+	bankCode?: string;
+	branch?: string;
+	currency?: Currency;
+	currentBalance?: number;
 }
 
 /**
@@ -261,14 +269,14 @@ export interface CreateAccountDTO {
  * ```
  */
 export interface CreateTransactionDTO {
-  accountId: string;
-  transactionDate: Date;
-  description: string;
-  reference?: string;
-  type: TransactionType;
-  amount: number;
-  category?: string;
-  tags?: string[];
+	accountId: string;
+	transactionDate: Date;
+	description: string;
+	reference?: string;
+	type: TransactionType;
+	amount: number;
+	category?: string;
+	tags?: string[];
 }
 
 /**
@@ -280,15 +288,15 @@ export interface CreateTransactionDTO {
  * ```
  */
 export interface TransactionFilters {
-  startDate?: Date;
-  endDate?: Date;
-  type?: TransactionType;
-  isReconciled?: boolean;
-  category?: string;
-  minAmount?: number;
-  maxAmount?: number;
-  limit?: number;
-  offset?: number;
+	startDate?: Date;
+	endDate?: Date;
+	type?: TransactionType;
+	isReconciled?: boolean;
+	category?: string;
+	minAmount?: number;
+	maxAmount?: number;
+	limit?: number;
+	offset?: number;
 }
 
 /**
@@ -305,11 +313,11 @@ export interface TransactionFilters {
  * ```
  */
 export interface ImportTransactionDTO {
-  date: Date;
-  description: string;
-  amount: number;
-  type: TransactionType;
-  reference?: string;
+	date: Date;
+	description: string;
+	amount: number;
+	type: TransactionType;
+	reference?: string;
 }
 
 /**
@@ -321,7 +329,7 @@ export interface ImportTransactionDTO {
  * ```
  */
 export interface ImportResult {
-  imported: number;
-  skipped: number;
-  errors: Array<{ row: number; error: string }>;
+	imported: number;
+	skipped: number;
+	errors: Array<{ row: number; error: string }>;
 }

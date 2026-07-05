@@ -1,6 +1,6 @@
-# API — ARKELYTHEX Backend (Bun + ElysiaJS)
+# API — DRENYRA Backend (Bun + ElysiaJS)
 
-> **Last updated:** 2026-06-20 · **Package:** `@arkelythex/api` · **Entry:** `src/index.ts`
+> **Last updated:** 2026-06-20 · **Package:** `@drenyra/api` · **Entry:** `src/index.ts`
 > For detailed navigation (42 features, services, middleware, recipes) read [`MAP.md`](MAP.md) first.
 
 ---
@@ -88,7 +88,7 @@ apps/api/
 - **Zod at boundaries** — every external input (body, query, params, headers) validated with Zod.
 - **Explicit return types** — all exported/public functions must have explicit return types.
 - **No `console.log`** — use Pino logger from `lib/logger.ts` or `SecureLogger` for PII-sensitive context.
-- **Money** — never use `number`. Use the `Money` value object from `@arkelythex/domain`.
+- **Money** — never use `number`. Use the `Money` value object from `@drenyra/domain`.
 - **Fiscal correctness** — IGV, RUC validation (Módulo 11), UBL 2.1, CDR must match SUNAT specs.
 - **No raw SQL without justification** — use Drizzle builders. Comment if raw SQL is required.
 - **No N+1** — eager load with Drizzle `with()` or batch queries.
@@ -140,9 +140,9 @@ Artifacts in `.sdd/` at repo root. Full cycle is **mandatory** for any change to
 ## 11. Delegation Triggers
 
 When working on API features, delegate to sub-agents when:
-- **4-file rule**: change touches 4+ files across features, services, or middleware → use `backend-builder` or `arkelythex`
+- **4-file rule**: change touches 4+ files across features, services, or middleware → use `backend-builder` or `drenyra`
 - **SUNAT/fiscal change**: any change to tax logic, UBL, CDR, SIRE → `sunat-compliance` skill + `tester`
-- **DB schema change**: migration, new table, index → `database` + `arkelythex-database-migrations` skill
+- **DB schema change**: migration, new table, index → `database` + `drenyra-database-migrations` skill
 - **Full SDD cycle**: fiscal/DB/tenant/money changes → `sdd-*` agents
 - **PR pre-review**: change generates +200 line PR → `reviewer` or `code-reviewer`
 
@@ -169,4 +169,4 @@ bun run typecheck       # TypeScript strict
 - **SUNAT = safety** — fiscal routes need compliance tests.
 - **Money needs Money** — never use `number` for currency.
 - **SDD for fiscal/DB/arch** — small fixes can skip, but SUNAT/DB/tenant/money changes need the full cycle.
-- **Prefer targeted checks** — `bun run --filter @arkelythex/api test:run | typecheck` before broad root runs.
+- **Prefer targeted checks** — `bun run --filter @drenyra/api test:run | typecheck` before broad root runs.

@@ -1,8 +1,8 @@
-import { Evidence } from "@arkelythex/domain/entities/evidence";
+import { Evidence } from "@drenyra/domain/entities/evidence";
 import type {
 	EvidenceFilters,
 	EvidenceRepository,
-} from "@arkelythex/domain/repositories/evidence.repository";
+} from "@drenyra/domain/repositories/evidence.repository";
 import { and, eq, gte, lte, type SQL } from "drizzle-orm";
 import { db } from "../../client";
 import { evidence } from "../../schema/evidence.schema";

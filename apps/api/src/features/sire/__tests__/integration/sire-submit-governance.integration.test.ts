@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { db, eq, sireSubmissions } from "@arkelythex/infrastructure";
+import { db, eq, sireSubmissions } from "@drenyra/infrastructure";
 import { Elysia } from "elysia";
 import { afterEach, describe, expect, it } from "vitest";
 import { sireModule } from "../../index";

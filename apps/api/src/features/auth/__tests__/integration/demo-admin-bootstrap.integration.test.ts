@@ -5,7 +5,7 @@ import {
 	db,
 	eq,
 	seedDatabase,
-} from "@arkelythex/infrastructure";
+} from "@drenyra/infrastructure";
 import { desc } from "drizzle-orm";
 import { beforeAll, describe, expect, it } from "vitest";
 import { loadApiEnv } from "../../../../env/load-api-env";

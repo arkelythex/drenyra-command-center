@@ -11,4 +11,4 @@ export {
 	SelectSeparator,
 	SelectTrigger,
 	SelectValue,
-} from "@arkelythex/ui";
+} from "@drenyra/ui";

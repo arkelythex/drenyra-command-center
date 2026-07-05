@@ -174,7 +174,7 @@ describe('useAuthSession', () => {
 
   it('merges the persisted company context into the live Better Auth session user', async () => {
     localStorage.setItem(
-      'arkelythex-auth',
+      'drenyra-auth',
       JSON.stringify({
         state: {
           user: {

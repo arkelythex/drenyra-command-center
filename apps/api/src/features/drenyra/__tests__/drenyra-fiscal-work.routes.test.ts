@@ -4,11 +4,11 @@ import type {
 	DrenyraActorContext,
 	DrenyraFiscalCommandCenterService,
 	InspectFiscalWorkItemInput,
-} from "@arkelythex/application/drenyra";
+} from "@drenyra/application/drenyra";
 import {
 	DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY,
 	type DrenyraFiscalWorkInspectEnvelope,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 import { createDrenyraFiscalWorkRoutes } from "../fiscal-work.routes";
 
 const fiscalContext: DrenyraActorContext = {

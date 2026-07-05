@@ -10,12 +10,12 @@ import {
 	ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { ExpedienteFiscal, ExpedienteStatus } from "@arkelythex/domain";
+import type { ExpedienteFiscal, ExpedienteStatus } from "@drenyra/domain";
 import {
 	EXPEDIENTE_STATUS_LABELS,
 	EXPEDIENTE_STATUS_COLORS,
 	EXPEDIENTE_KIND_LABELS,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 
 const STATUS_ICON: Record<ExpedienteStatus, (props: { size?: number }) => ReactElement> = {
 	ABIERTO: Clock,

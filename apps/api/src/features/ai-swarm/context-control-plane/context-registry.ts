@@ -1,4 +1,4 @@
-import type { ContextRegistrySurfaceDTO } from "@arkelythex/application";
+import type { ContextRegistrySurfaceDTO } from "@drenyra/application";
 import {
 	type AccountingJobDefinition,
 	getAccountingJobs,

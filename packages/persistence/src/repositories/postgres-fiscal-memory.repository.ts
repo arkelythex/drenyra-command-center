@@ -1,20 +1,20 @@
 import { and, asc, eq, or, sql } from "drizzle-orm";
-import { FiscalMemory, FiscalMemoryRevision } from "@arkelythex/domain/fiscal-memory";
+import { FiscalMemory, FiscalMemoryRevision } from "@drenyra/domain/fiscal-memory";
 import type {
 	FiscalMemoryProps,
 	FiscalMemoryRevisionProps,
 	FiscalMemoryScope,
 	FiscalMemoryCategory,
 	FiscalMemorySeverity,
-} from "@arkelythex/domain/fiscal-memory";
-import type { FiscalMemoryRepository } from "@arkelythex/domain/repositories/fiscal-memory.repository";
-import { db } from "@arkelythex/persistence/client";
+} from "@drenyra/domain/fiscal-memory";
+import type { FiscalMemoryRepository } from "@drenyra/domain/repositories/fiscal-memory.repository";
+import { db } from "@drenyra/persistence/client";
 import {
 	fiscalMemories,
 	fiscalMemoryRevisions,
 	type FiscalMemoryRevisionRow,
 	type FiscalMemoryRow,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 
 const scopedWhere = (scope: FiscalMemoryScope) =>
 	and(

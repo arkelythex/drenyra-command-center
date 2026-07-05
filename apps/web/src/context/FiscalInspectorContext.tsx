@@ -5,7 +5,7 @@ import {
 	useCallback,
 	type ReactNode,
 } from "react";
-import type { FiscalActionContext, FiscalActionStatus } from "@arkelythex/domain";
+import type { FiscalActionContext, FiscalActionStatus } from "@drenyra/domain";
 
 interface FiscalInspectorState {
 	/** Whether the inspector panel is open */

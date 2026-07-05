@@ -1,6 +1,6 @@
 import { and, count, desc, eq, gte, like, lte, or } from "drizzle-orm";
-import { Transaction, } from "@arkelythex/domain/entities/Transaction";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { Transaction, } from "@drenyra/domain/entities/Transaction";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { db } from "../client";
 import { transactions } from "../schema";
 import { resolveCompanyIdFromOrganization } from "./support/organization-resolver";

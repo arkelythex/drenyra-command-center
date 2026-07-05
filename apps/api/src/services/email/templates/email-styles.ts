@@ -111,11 +111,11 @@ export function getEmailFooter(): string {
     <div class="footer">
       <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
       <p style="margin-top: 15px;">
-        <a href="https://arkelythexfounders.com">Visitar ARKELYTHEX</a> |
-        <a href="https://arkelythexfounders.com/support">Soporte</a>
+        <a href="https://drenyrafounders.com">Visitar DRENYRA</a> |
+        <a href="https://drenyrafounders.com/support">Soporte</a>
       </p>
       <p style="margin-top: 15px; font-size: 12px;">
-        © ${new Date().getFullYear()} ARKELYTHEX. Todos los derechos reservados.<br>
+        © ${new Date().getFullYear()} DRENYRA. Todos los derechos reservados.<br>
         Sistema de Gobernanza Financiera SUNAT 2026 Compliance
       </p>
     </div>

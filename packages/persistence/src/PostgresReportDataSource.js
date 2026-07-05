@@ -1,6 +1,6 @@
 import { and, asc, eq, gte, lt, lte, sql } from "drizzle-orm";
-import { db } from "@arkelythex/persistence/client";
-import { journalEntries, journalEntryLines, organizations, pcgeAccounts } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { journalEntries, journalEntryLines, organizations, pcgeAccounts } from "@drenyra/persistence/schema";
 import { resolveCompanyIdFromOrganization } from "./repositories/support/organization-resolver";
 const centsToAmount = (cents) => Math.round(cents) / 100;
 export class PostgresReportDataSource {

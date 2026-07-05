@@ -12,9 +12,9 @@ import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
 	Account,
 	type AccountLevel,
-} from "@arkelythex/domain/entities/Account";
-import type { AccountRepository } from "@arkelythex/domain/repositories/account.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/entities/Account";
+import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import type { UpdateAccountDTO } from "../../../dtos/account/account.dto";
 import { UpdateAccountUseCase } from "../update-account.use-case";
 

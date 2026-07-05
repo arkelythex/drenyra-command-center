@@ -10,9 +10,9 @@
  */
 
 import { and, eq, sql } from "drizzle-orm";
-import { db } from "@arkelythex/persistence/client";
-import { journalEntries, journalEntryLines } from "@arkelythex/persistence/schema";
-import { accountBalances } from "@arkelythex/persistence/schema/schema-extensions";
+import { db } from "@drenyra/persistence/client";
+import { journalEntries, journalEntryLines } from "@drenyra/persistence/schema";
+import { accountBalances } from "@drenyra/persistence/schema/schema-extensions";
 
 // ============================================
 // TYPES

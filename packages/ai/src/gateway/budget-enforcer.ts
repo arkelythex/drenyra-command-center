@@ -9,7 +9,7 @@
  * degradation) — cost control is important but must never be a hard
  * blocker in production paths.
  *
- * @module @arkelythex/ai/gateway
+ * @module @drenyra/ai/gateway
  */
 
 import { loggers } from "../logger";
@@ -227,7 +227,7 @@ export class BudgetEnforcer {
  *
  * @example
  * ```ts
- * import { aiCostRepository } from "@arkelythex/infrastructure/services/ai-cost";
+ * import { aiCostRepository } from "@drenyra/infrastructure/services/ai-cost";
  * const store = createRepositoryBudgetStore(aiCostRepository);
  * const enforcer = new BudgetEnforcer(store, { dailyUsd: 100 });
  * ```

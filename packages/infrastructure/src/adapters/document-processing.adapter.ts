@@ -3,7 +3,7 @@ import type {
 	IExpenseClassifier,
 	IInvoiceOCRService,
 	IUBLInvoiceParser,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 import {
 	classifyExpense,
 	quickClassify,

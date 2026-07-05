@@ -8,8 +8,8 @@
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
 import { Elysia, t } from "elysia";
-import { RUC, type EvidenceGraphRepository } from "@arkelythex/domain";
-import { createDrenyraBrainEvidenceBridge } from "@arkelythex/application/drenyra";
+import { RUC, type EvidenceGraphRepository } from "@drenyra/domain";
+import { createDrenyraBrainEvidenceBridge } from "@drenyra/application/drenyra";
 import {
 	createInMemoryDrenyraBrainRepository,
 	type DrenyraBrainRepository,

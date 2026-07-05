@@ -9,8 +9,8 @@
  * @module features/agents/agents.service
  */
 
-import { SessionManager } from "@arkelythex/drenyra-orchestrator";
-import type { AgentSession } from "@arkelythex/drenyra-orchestrator/mastra";
+import { SessionManager } from "@drenyra/drenyra-orchestrator";
+import type { AgentSession } from "@drenyra/drenyra-orchestrator/mastra";
 import { AppError } from "../../lib/errors";
 import type {
 	AgentSessionStatusDTO,

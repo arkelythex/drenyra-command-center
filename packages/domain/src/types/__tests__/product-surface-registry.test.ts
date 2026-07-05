@@ -5,9 +5,9 @@
 import { describe, expect, it } from "vitest";
 import {
 	ARKELYTHEX_PRODUCT_SURFACES,
-	getArkelythexProductSurface,
+	getDrenyraProductSurface,
 } from "../product-surface-registry";
-import type { ArkelythexProductSurface } from "../product-surfaces";
+import type { DrenyraProductSurface } from "../product-surfaces";
 
 describe("ARKELYTHEX_PRODUCT_SURFACES", () => {
 	it("should contain all expected product surfaces", () => {
@@ -71,27 +71,27 @@ describe("ARKELYTHEX_PRODUCT_SURFACES", () => {
 	});
 });
 
-describe("getArkelythexProductSurface", () => {
+describe("getDrenyraProductSurface", () => {
 	it("should return the surface by ID", () => {
-		const surface = getArkelythexProductSurface("drenyra");
+		const surface = getDrenyraProductSurface("drenyra");
 		expect(surface).toBeDefined();
 		expect(surface!.id).toBe("drenyra");
 		expect(surface!.name).toBe("ARKELYTHEX Drenyra");
 	});
 
 	it("should return undefined for unknown ID", () => {
-		const surface = getArkelythexProductSurface("nonexistent" as ArkelythexProductSurface["id"]);
+		const surface = getDrenyraProductSurface("nonexistent" as DrenyraProductSurface["id"]);
 		expect(surface).toBeUndefined();
 	});
 
 	it("should find gov surface", () => {
-		const surface = getArkelythexProductSurface("gov");
+		const surface = getDrenyraProductSurface("gov");
 		expect(surface).toBeDefined();
 		expect(surface!.status).toBe("strategy-layer");
 	});
 
 	it("should find grid surface", () => {
-		const surface = getArkelythexProductSurface("grid");
+		const surface = getDrenyraProductSurface("grid");
 		expect(surface).toBeDefined();
 		expect(surface!.status).toBe("separate-runtime");
 	});

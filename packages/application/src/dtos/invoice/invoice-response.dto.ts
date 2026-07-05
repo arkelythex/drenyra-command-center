@@ -1,5 +1,5 @@
-import type { Invoice, InvoiceStatus } from "@arkelythex/domain/entities/Invoice";
-import type { Currency } from "@arkelythex/domain/types/currency";
+import type { Invoice, InvoiceStatus } from "@drenyra/domain/entities/Invoice";
+import type { Currency } from "@drenyra/domain/types/currency";
 
 /**
  * InvoiceResponseDTO interface.

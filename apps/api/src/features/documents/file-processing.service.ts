@@ -1,4 +1,4 @@
-import { UBLParser } from "@arkelythex/infrastructure/xml/ubl-parser";
+import { UBLParser } from "@drenyra/infrastructure/xml/ubl-parser";
 import { hasUnsafeXmlDeclarations } from "./security.utils";
 
 const MAX_XML_PARSE_BYTES = 2 * 1024 * 1024;

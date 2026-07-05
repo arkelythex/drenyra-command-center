@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { Election } from "@arkelythex/domain-civic";
+import { Election } from "@drenyra/domain-civic";
 import { db } from "../client";
 import { elections } from "../schema/civic.schema";
 function toDomain(row) {

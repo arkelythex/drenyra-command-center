@@ -43,13 +43,13 @@ Competitors ship observability; few ship **evaluable fiscal correctness** agains
 bun run test:sire-bench
 
 # Domain golden only
-bun run --filter @arkelythex/domain test:sire-bench
+bun run --filter @drenyra/domain test:sire-bench
 
 # Python SIRE golden only
 cd apps/data-engine && uv run pytest tests/sire_bench/ --confcutdir=tests/sire_bench -m sire_bench
 
 # Gate/strategy fixtures
-bun run --filter @arkelythex/drenyra-orchestrator test:sire-bench
+bun run --filter @drenyra/drenyra-orchestrator test:sire-bench
 ```
 
 ## Golden expected format

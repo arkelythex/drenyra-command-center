@@ -15,8 +15,8 @@
  *   manual_review + warnings only  → medium
  */
 
-import { swarmConsensusService } from "@arkelythex/ai/services/swarm-consensus";
-import type { AgentConfidence, AlertSeverity } from "@arkelythex/ai/services/swarm-consensus/types";
+import { swarmConsensusService } from "@drenyra/ai/services/swarm-consensus";
+import type { AgentConfidence, AlertSeverity } from "@drenyra/ai/services/swarm-consensus/types";
 import type { MastraInvoiceWorkflowOutput } from "../workflows/mastra-invoice-processing.workflow";
 
 const DETECTOR_AGENT_ID = "arbitro-agent";

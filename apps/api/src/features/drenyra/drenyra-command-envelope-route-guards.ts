@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type { DrenyraActorContext } from "@arkelythex/application/drenyra";
+import type { DrenyraActorContext } from "@drenyra/application/drenyra";
 import { evaluateDrenyraCapability } from "../../../../../packages/domain/src/drenyra/capabilities";
 import type { DrenyraAgentType } from "../../../../../packages/domain/src/drenyra/types";
 import type {

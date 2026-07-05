@@ -3,8 +3,8 @@ import path from "path";
 import type {
 	IStorageService,
 	UploadOptions,
-} from "@arkelythex/application/ports/storage.port";
-import { StorageError } from "@arkelythex/shared/errors";
+} from "@drenyra/application/ports/storage.port";
+import { StorageError } from "@drenyra/shared/errors";
 
 /**
  * LocalStorageService - Servicio de almacenamiento local para desarrollo

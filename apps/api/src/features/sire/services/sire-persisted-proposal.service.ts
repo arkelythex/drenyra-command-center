@@ -1,7 +1,7 @@
-import type { Currency } from "@arkelythex/domain";
-import { db } from "@arkelythex/persistence/client";
-import { and, desc, eq } from "@arkelythex/persistence/query";
-import { sireSubmissions } from "@arkelythex/persistence/schema";
+import type { Currency } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
+import { and, desc, eq } from "@drenyra/persistence/query";
+import { sireSubmissions } from "@drenyra/persistence/schema";
 import { parseRecords } from "../../../../../../packages/infrastructure/src/sunat/sire/parser";
 import type { SireRegisterType } from "../../../../../../packages/infrastructure/src/sunat/sire/types";
 import type { SireDocumentRecord } from "./sire-diff.service";

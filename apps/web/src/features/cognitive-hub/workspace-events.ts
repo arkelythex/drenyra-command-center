@@ -1,4 +1,4 @@
-export const COGNITIVE_WORKSPACE_ACTION_EVENT = 'arkelythex:cognitive-workspace-action';
+export const COGNITIVE_WORKSPACE_ACTION_EVENT = 'drenyra:cognitive-workspace-action';
 
 export type CognitiveWorkspaceAction = 'start-mission';
 

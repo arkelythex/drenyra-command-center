@@ -1,4 +1,4 @@
 /**
- * AI prompts - Re-exported from @arkelythex/infrastructure
+ * AI prompts - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/prompts";
+export * from "@drenyra/infrastructure/ai/prompts";

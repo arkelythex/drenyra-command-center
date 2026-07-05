@@ -145,7 +145,7 @@ let persistenceDisabledLogged = false;
 
 async function getDb(): Promise<DbLike | null> {
 	if (!dbPromise) {
-		dbPromise = import("@arkelythex/persistence/client")
+		dbPromise = import("@drenyra/persistence/client")
 			.then((module) => module.db as unknown as DbLike)
 			.catch((error) => {
 				if (!dbUnavailableLogged) {

@@ -4,7 +4,7 @@ source-of-truth: packages/ui/package.json
 auto-generated: false
 ---
 
-# @arkelythex/ui — Arkelythex Design System
+# @drenyra/ui — Drenyra Design System
 
 **Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
@@ -44,7 +44,7 @@ Centralizamos los componentes UI reutilizables para evitar duplicación entre `a
 
 ```bash
 # Desde otro paquete del monorepo
-import { Button, Card, Badge, cn } from "@arkelythex/ui";
+import { Button, Card, Badge, cn } from "@drenyra/ui";
 ```
 
 **Peer dependencies** requeridas:
@@ -60,7 +60,7 @@ Importá los tokens en tu aplicación:
 
 ```tsx
 // En tu entry point (ej: apps/web/src/main.tsx)
-import "@arkelythex/ui/styles";
+import "@drenyra/ui/styles";
 ```
 
 ### Paleta de Marca
@@ -105,7 +105,7 @@ import "@arkelythex/ui/styles";
 ### Button
 
 ```tsx
-import { Button } from "@arkelythex/ui";
+import { Button } from "@drenyra/ui";
 
 <Button variant="primary" size="md" onClick={handleClick}>
   Guardar Factura
@@ -118,7 +118,7 @@ import { Button } from "@arkelythex/ui";
 ### Card
 
 ```tsx
-import { Card, CardHeader, CardTitle, CardContent } from "@arkelythex/ui";
+import { Card, CardHeader, CardTitle, CardContent } from "@drenyra/ui";
 
 <Card>
   <CardHeader>
@@ -133,7 +133,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@arkelythex/ui";
 ### Badge
 
 ```tsx
-import { Badge } from "@arkelythex/ui";
+import { Badge } from "@drenyra/ui";
 
 <Badge variant="success">Pagado</Badge>
 <Badge variant="warning">Pendiente</Badge>
@@ -143,7 +143,7 @@ import { Badge } from "@arkelythex/ui";
 ### Tooltip
 
 ```tsx
-import { Tooltip, TooltipProvider } from "@arkelythex/ui";
+import { Tooltip, TooltipProvider } from "@drenyra/ui";
 
 <TooltipProvider>
   <Tooltip content="Este campo es obligatorio para SUNAT">
@@ -159,7 +159,7 @@ import { Tooltip, TooltipProvider } from "@arkelythex/ui";
 Merge de clases Tailwind con resolución de conflictos:
 
 ```tsx
-import { cn } from "@arkelythex/ui";
+import { cn } from "@drenyra/ui";
 
 const className = cn(
   "px-4 py-2 rounded-md",

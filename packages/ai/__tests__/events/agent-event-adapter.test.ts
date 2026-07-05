@@ -9,7 +9,7 @@ import { describe, it, expect, vi } from "vitest";
 import { createEventAdapter } from "../../src/events/adapter";
 import type { EventBus, EventSubscription } from "../../src/agents/types/workflow.types";
 import type { AgentEventType as WorkflowEventType } from "../../src/agents/types/workflow.types";
-import type { AgentEvent as CanonicalEvent } from "@arkelythex/shared";
+import type { AgentEvent as CanonicalEvent } from "@drenyra/shared";
 
 // ============================================================================
 // Helpers

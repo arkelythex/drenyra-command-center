@@ -17,7 +17,7 @@ import type {
 	ApprovalRequest,
 	AuditEvent,
 	FiscalCaseDetails,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 
 export type {
 	AutonomyLevel,

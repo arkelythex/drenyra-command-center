@@ -1,5 +1,5 @@
 /**
- * Error Boundary Component for Arkelythex
+ * Error Boundary Component for Drenyra
  *
  * Catches React errors and provides graceful degradation.
  *
@@ -39,7 +39,7 @@ interface ErrorBoundaryState {
   errorInfo: ErrorInfo | null;
 }
 
-const ERROR_STORAGE_KEY = "arkelythex-error-log";
+const ERROR_STORAGE_KEY = "drenyra-error-log";
 
 /**
  * Log error to local storage for debugging

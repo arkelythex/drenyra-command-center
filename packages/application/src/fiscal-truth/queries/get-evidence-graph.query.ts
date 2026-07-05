@@ -2,7 +2,7 @@ import type {
 	EvidenceEdge,
 	EvidenceGraphRepository,
 	FiscalTruthScope,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 
 export interface GetEvidenceGraphQueryInput {
 	nodeId: string;

@@ -6,10 +6,10 @@
  * @module cashflow/application/queries
  */
 
-import { type Currency, Money } from "@arkelythex/domain";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, lte, or } from "@arkelythex/persistence/query";
-import { bills, invoices, retenciones } from "@arkelythex/persistence/schema";
+import { type Currency, Money } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, lte, or } from "@drenyra/persistence/query";
+import { bills, invoices, retenciones } from "@drenyra/persistence/schema";
 import {
 	type CashflowItem,
 	CashflowProjection,

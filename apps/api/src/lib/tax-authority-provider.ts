@@ -8,9 +8,9 @@
  * @module lib/tax-authority-provider
  */
 
-import type { CountryCode } from "@arkelythex/domain";
-import type { TaxAuthorityPort } from "@arkelythex/application/ports/tax-authority.port";
-import { createTaxAuthority } from "@arkelythex/infrastructure/tax-authority";
+import type { CountryCode } from "@drenyra/domain";
+import type { TaxAuthorityPort } from "@drenyra/application/ports/tax-authority.port";
+import { createTaxAuthority } from "@drenyra/infrastructure/tax-authority";
 
 const adapterCache = new Map<string, TaxAuthorityPort>();
 

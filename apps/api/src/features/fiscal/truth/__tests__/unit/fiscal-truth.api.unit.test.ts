@@ -7,8 +7,8 @@ import type {
 	GovernanceBundleReference,
 	PolicyDecisionRecord,
 	ReplayResult,
-} from "@arkelythex/domain";
-import { EVIDENCE_NODE_KIND, POLICY_OUTCOME } from "@arkelythex/domain";
+} from "@drenyra/domain";
+import { EVIDENCE_NODE_KIND, POLICY_OUTCOME } from "@drenyra/domain";
 import { Elysia } from "elysia";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createFiscalTruthModule } from "../../module";

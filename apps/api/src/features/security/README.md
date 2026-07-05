@@ -9,7 +9,7 @@
 
 ## Overview
 
-This directory contains shared security primitives used across Arkelythex runtime surfaces, including:
+This directory contains shared security primitives used across Drenyra runtime surfaces, including:
 
 - caller/session resolution
 - RBAC and destructive-action guards

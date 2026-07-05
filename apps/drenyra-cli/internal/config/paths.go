@@ -19,7 +19,7 @@ func Paths() (ConfigPaths, error) {
 	}
 	paths := ConfigPaths{Global: global}
 	if cwd, err := os.Getwd(); err == nil {
-		paths.Project = filepath.Join(cwd, ".arkelythex", "config.yaml")
+		paths.Project = filepath.Join(cwd, ".drenyra", "config.yaml")
 	}
 	return paths, nil
 }

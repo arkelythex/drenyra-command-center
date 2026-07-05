@@ -1,5 +1,5 @@
-import type { Currency } from "@arkelythex/domain/value-objects/Money";
-import { SecureLogger } from "@arkelythex/shared/secure-logger";
+import type { Currency } from "@drenyra/domain/value-objects/Money";
+import { SecureLogger } from "@drenyra/shared/secure-logger";
 import { BankTransaction } from "../../../banking/domain/entities/bank-transaction.entity";
 import { bankingRepository } from "../../infrastructure/banking.repository";
 

@@ -16,9 +16,9 @@ import {
 	JournalEntry,
 	type JournalEntryProps,
 	type JournalEntryStatus,
-} from "@arkelythex/domain/entities/JournalEntry";
-import { JournalLine } from "@arkelythex/domain/entities/JournalEntry";
-import { Money, type Currency } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/entities/JournalEntry";
+import { JournalLine } from "@drenyra/domain/entities/JournalEntry";
+import { Money, type Currency } from "@drenyra/domain/value-objects/Money";
 import { BaseBuilder } from "./base.builder";
 
 const DEFAULT_ENTRY_ID = "je_test_001";

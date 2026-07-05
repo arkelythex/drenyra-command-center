@@ -1,7 +1,7 @@
-import type { Currency } from "@arkelythex/domain/value-objects/Money";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte } from "@arkelythex/persistence/query";
-import { bankTransactions } from "@arkelythex/persistence/schema";
+import type { Currency } from "@drenyra/domain/value-objects/Money";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte, lte } from "@drenyra/persistence/query";
+import { bankTransactions } from "@drenyra/persistence/schema";
 
 export interface GetCashflowDataInput {
 	companyId: string;

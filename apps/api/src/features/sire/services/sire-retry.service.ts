@@ -19,7 +19,7 @@
  * ```
  */
 
-import { sireSubmissionRepository } from '@arkelythex/persistence/repositories/sire-submission.repository';
+import { sireSubmissionRepository } from '@drenyra/persistence/repositories/sire-submission.repository';
 import { SireSubmissionService } from '../sire-submission.service';
 import { createLogger } from '../../../lib/logger';
 

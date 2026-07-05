@@ -8,7 +8,7 @@
  */
 
 import { and, lte, sql } from "drizzle-orm";
-import { db } from "@arkelythex/persistence/client";
+import { db } from "@drenyra/persistence/client";
 import {
 	circuitBreakerStates,
 	failedAgentItems,
@@ -16,7 +16,7 @@ import {
 	type FailedAgentItem,
 	type NewCircuitBreakerState,
 	type NewFailedAgentItem,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 
 // ─── Circuit Breaker Repository ───────────────────────────────────────────────
 

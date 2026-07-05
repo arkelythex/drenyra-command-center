@@ -1,7 +1,7 @@
 {
-  "name": "@arkelythex/platform-core",
+  "name": "@drenyra/platform-core",
   "version": "0.1.0",
-  "description": "Arkelythex Platform runtime — agents, AI gateway, memory, harness and plugin system",
+  "description": "Drenyra Platform runtime \u2014 agents, AI gateway, memory, harness and plugin system",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.ts",
@@ -41,7 +41,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arkelythex/platform-core.git"
+    "url": "git+https://github.com/drenyra/platform-core.git"
   },
   "keywords": [
     "agent",

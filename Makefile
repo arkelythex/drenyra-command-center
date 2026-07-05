@@ -1,5 +1,5 @@
 # ═══════════════════════════════════════════════════════════
-# ARKELYTHEX — Makefile
+# DRENYRA — Makefile
 # Single entry point for ALL development workflows.
 #
 # Usage:
@@ -29,12 +29,12 @@ ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
 .PHONY: up
 up: ## Start full dev stack (infra + API + Web with hot-reload)
-	@echo "🚀 Starting ARKELYTHEX dev stack..."
+	@echo "🚀 Starting DRENYRA dev stack..."
 	@cd "$(ROOT_DIR)" && bash scripts/dev/dev-start.sh
 
 .PHONY: down
 down: ## Stop everything (containers + dev servers)
-	@echo "🛑 Stopping ARKELYTHEX dev stack..."
+	@echo "🛑 Stopping DRENYRA dev stack..."
 	@cd "$(ROOT_DIR)" && bash scripts/dev/dev-stop.sh
 
 .PHONY: status
@@ -149,14 +149,14 @@ quality: ## Full quality gate (typecheck + lint + test)
 .PHONY: help
 help: ## Show this help
 	@echo "╔══════════════════════════════════════════════╗"
-	@echo "║   ARKELYTHEX — Development Makefile         ║"
+	@echo "║   DRENYRA — Development Makefile         ║"
 	@echo "╚══════════════════════════════════════════════╝"
 	@echo ""
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 	@echo ""
 	@echo "Credentials (after setup):"
-	@echo "  Email:    admin@arkelythexfounders.com"
+	@echo "  Email:    admin@drenyrafounders.com"
 	@echo "  Password: password123"
 	@echo "  Web:      http://localhost:5173"
 	@echo "  API:      http://localhost:3000"

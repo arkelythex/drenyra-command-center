@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
-import { isValidRUC } from "@arkelythex/shared/validation/ruc";
-import { eq } from "@arkelythex/persistence/query";
+import { isValidRUC } from "@drenyra/shared/validation/ruc";
+import { eq } from "@drenyra/persistence/query";
 import { db, schema } from "../../../lib/db";
 import type {
 	SunatCredentialIdentity,

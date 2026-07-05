@@ -1,4 +1,4 @@
-import type { ExpedienteFiscal, ExpedienteKind } from "@arkelythex/domain";
+import type { ExpedienteFiscal, ExpedienteKind } from "@drenyra/domain";
 import { FolderOpen } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Route } from "@/routes/cumplimiento/expedientes";

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/memory"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/memory"
 )
 
 func TestFormatMemoryViewDoesNotInitializeLocalDB(t *testing.T) {
@@ -21,7 +21,7 @@ func TestFormatMemoryViewDoesNotInitializeLocalDB(t *testing.T) {
 	if strings.Contains(view, "Local SQLite memory DB") {
 		t.Fatalf("view should omit absent DB status: %q", view)
 	}
-	if _, err := os.Stat(filepath.Join(home, ".arkelythex")); !os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(home, ".drenyra")); !os.IsNotExist(err) {
 		t.Fatalf("memory view initialized runtime files, stat err=%v", err)
 	}
 }

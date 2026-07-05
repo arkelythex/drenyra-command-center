@@ -1,7 +1,7 @@
 /**
- * Utility functions for Arkelythex UI components
+ * Utility functions for Drenyra UI components
  *
- * @module @arkelythex/ui/lib/utils
+ * @module @drenyra/ui/lib/utils
  */
 
 import { type ClassValue, clsx } from "clsx";

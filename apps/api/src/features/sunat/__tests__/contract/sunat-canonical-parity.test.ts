@@ -1,4 +1,4 @@
-import { RUC as DomainRuc } from "@arkelythex/domain";
+import { RUC as DomainRuc } from "@drenyra/domain";
 import { describe, expect, it } from "vitest";
 import { SunatService } from "../../../../services/sunat.service";
 import {

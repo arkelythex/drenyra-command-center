@@ -1,7 +1,7 @@
 import { runtimeConfig } from "@/lib/runtime-config";
 import { getGovernanceAuditHeaders } from "@/lib/api";
 import { useAuthStore } from "@/features/auth/hooks/useAuth";
-import type { DrenyraBrainItem, DrenyraBrainThread } from "@arkelythex/domain/drenyra";
+import type { DrenyraBrainItem, DrenyraBrainThread } from "@drenyra/domain/drenyra";
 import { parseSseBuffer, type SseEvent } from "./drenyra.api";
 
 function getBrainHeaders(): Record<string, string> {

@@ -10,4 +10,4 @@ export {
 	CommandList,
 	CommandSeparator,
 	CommandShortcut,
-} from "@arkelythex/ui";
+} from "@drenyra/ui";

@@ -9,12 +9,12 @@
 
 # ── Stage 1: Pruner ────────────────────────────────────
 # Uses turbo prune to extract ONLY the packages needed by
-# @arkelythex/web from the monorepo dependency graph.
+# @drenyra/web from the monorepo dependency graph.
 FROM node:22-alpine AS pruner
 WORKDIR /app
 RUN npm install -g turbo@^2
 COPY . .
-RUN turbo prune @arkelythex/web --docker
+RUN turbo prune @drenyra/web --docker
 
 # ── Stage 2: Installer ─────────────────────────────────
 # Installs dependencies in isolation so layer is cached

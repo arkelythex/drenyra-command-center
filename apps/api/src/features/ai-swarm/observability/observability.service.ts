@@ -1,13 +1,13 @@
-import { db } from "@arkelythex/persistence/client";
-import { eq, and, desc, asc, sql } from "@arkelythex/persistence/query";
+import { db } from "@drenyra/persistence/client";
+import { eq, and, desc, asc, sql } from "@drenyra/persistence/query";
 import {
   agentRunStates,
   agentRunEvents,
   batchRuns,
   batchRunItems,
-} from "@arkelythex/persistence/schema";
-import { MemoryContextProvider } from "@arkelythex/ai/memory";
-import { PostgresSessionStore } from "@arkelythex/ai/session";
+} from "@drenyra/persistence/schema";
+import { MemoryContextProvider } from "@drenyra/ai/memory";
+import { PostgresSessionStore } from "@drenyra/ai/session";
 import { sanitizeAiObservationPayload } from "../api/ai-observability-sanitizer";
 
 type AgentRunState = typeof agentRunStates.$inferSelect;

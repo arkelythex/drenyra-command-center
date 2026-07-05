@@ -1,7 +1,7 @@
 /**
  * OSE Configuration Validator — Re-export
  *
- * Re-exports from @arkelythex/infrastructure/ose for backward compatibility.
+ * Re-exports from @drenyra/infrastructure/ose for backward compatibility.
  */
 
-export { OSEConfigValidator, oseConfigValidator } from "@arkelythex/infrastructure/ose";
+export { OSEConfigValidator, oseConfigValidator } from "@drenyra/infrastructure/ose";

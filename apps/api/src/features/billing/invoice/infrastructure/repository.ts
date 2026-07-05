@@ -1,5 +1,5 @@
-import { Money } from "@arkelythex/domain";
-import { db } from "@arkelythex/persistence/client";
+import { Money } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
 import {
 	and,
 	desc,
@@ -8,8 +8,8 @@ import {
 	like,
 	lte,
 	sql,
-} from "@arkelythex/persistence/query";
-import { invoiceItems, invoices } from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/query";
+import { invoiceItems, invoices } from "@drenyra/persistence/schema";
 import type { SQL } from "drizzle-orm";
 import {
 	withCompanyRlsTransaction,

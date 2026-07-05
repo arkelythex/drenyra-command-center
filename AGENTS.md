@@ -1,6 +1,6 @@
-# ARKELYTHEX Engineering Rules
+# DRENYRA Engineering Rules
 
-ARKELYTHEX builds Drenyra, the Infraestructura Nacional de Inteligencia Fiscal. Treat fiscal correctness, tenant isolation, and auditability as product safety requirements.
+DRENYRA builds Drenyra, the Infraestructura Nacional de Inteligencia Fiscal. Treat fiscal correctness, tenant isolation, and auditability as product safety requirements.
 
 ## Non-negotiables
 
@@ -15,8 +15,8 @@ ARKELYTHEX builds Drenyra, the Infraestructura Nacional de Inteligencia Fiscal. 
 
 ## Canonical paths
 
-- Canonical user-facing project path: `~/Documents/PROYECTOS/arkelythex/drenyra`.
-- Canonical worktree root: `~/Documents/PROYECTOS/arkelythex/worktrees/drenyra/<task-name>`.
+- Canonical user-facing project path: `~/Documents/PROYECTOS/drenyra/drenyra`.
+- Canonical worktree root: `~/Documents/PROYECTOS/drenyra/worktrees/drenyra/<task-name>`.
 - Treat older `/home/dreamcoder08/somnyx/...` paths as compatibility/symlink targets, not as the path to open in tools.
 
 ## Repo shape
@@ -58,7 +58,7 @@ Each app has a `MAP.md` (e.g. `apps/web/MAP.md`) with its architecture, routes, 
 
 - Default Git workflow: create a dedicated branch for every change; keep `main` clean and updated.
 - Use an isolated Git worktree for medium/large work, parallel phases, or any fiscal/SUNAT/DB/AI-control/CI change. Small one-file/documentation fixes may use a normal branch in the main checkout.
-- Preferred worktree root: `~/Documents/PROYECTOS/arkelythex/worktrees/drenyra/<task-name>`; avoid repo-local `.worktrees/` unless explicitly requested.
+- Preferred worktree root: `~/Documents/PROYECTOS/drenyra/worktrees/drenyra/<task-name>`; avoid repo-local `.worktrees/` unless explicitly requested.
 - Before editing in a worktree, verify `git status`, current branch, and worktree path; never mix unrelated phases in the same branch/worktree.
 - Start by inspecting the existing implementation before changing code.
 - Reuse existing patterns, scripts, schemas, and tests.
@@ -96,7 +96,7 @@ When working with AI agents in this repo, these triggers determine when to deleg
 
 ## Documentation standards (2026 best practices)
 
-ARKELYTHEX documentation follows the **Gentleman Philosophy** — cognitive load reduction, warm teaching, progressive disclosure.
+DRENYRA documentation follows the **Gentleman Philosophy** — cognitive load reduction, warm teaching, progressive disclosure.
 
 - **Diátaxis framework**: structure docs by user intent, not feature list — tutorials (learning), how-to guides (tasks), reference (facts), explanation (understanding). Keep quadrants separate; cross-link don't embed.
 - **Cognitive load patterns**: every doc must follow at least 3 of 6 patterns — lead with answer, progressive disclosure, chunking, signposting, recognition over recall, review empathy.
@@ -163,8 +163,8 @@ When reviewing or authoring a PR, design for low cognitive load:
 
 ## Engram (memoria persistente)
 
-- Proyecto: **`arkelythex`** (no `arkonyx` / `ARKONYX`).
-- Config: `~/Documents/PROYECTOS/arkelythex/.engram/config.json`; `drenyra/.engram` → `../.engram`.
+- Proyecto: **`drenyra`** (no `arkonyx` / `ARKONYX`).
+- Config: `~/Documents/PROYECTOS/drenyra/.engram/config.json`; `drenyra/.engram` → `../.engram`.
 - Guía: [`docs/05-development/engram-project-canonical.md`](docs/05-development/engram-project-canonical.md).
 
 ## Agent-specific guidance

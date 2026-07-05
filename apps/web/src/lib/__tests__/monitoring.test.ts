@@ -24,7 +24,7 @@ describe('monitoring', () => {
       sentryReplaysSessionSampleRate: 0.1,
       sentryReplaysOnErrorSampleRate: 1,
       sentryScriptUrl: '',
-      plausibleDomain: 'arkelythex.test',
+      plausibleDomain: 'drenyra.test',
       plausibleApiHost: 'https://plausible.io',
     });
     window.plausible = vi.fn();

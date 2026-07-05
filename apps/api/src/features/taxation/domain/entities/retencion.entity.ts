@@ -1,5 +1,5 @@
-import { TaxCalculator } from "@arkelythex/domain/services/TaxCalculator";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { TaxCalculator } from "@drenyra/domain/services/TaxCalculator";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { RetentionApplied } from "../events/retention-applied.event";
 import { RetentionCancelled } from "../events/retention-cancelled.event";
 import { RetentionDeclared } from "../events/retention-declared.event";

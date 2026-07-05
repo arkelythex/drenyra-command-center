@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { CreateJournalEntrySchema, } from "../../dtos/journal/journal-entry.dto";
-import { JournalEntry, JournalLine, } from "@arkelythex/domain/entities/JournalEntry";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { JournalEntry, JournalLine, } from "@drenyra/domain/entities/JournalEntry";
+import { Money } from "@drenyra/domain/value-objects/Money";
 export class CreateJournalEntryUseCase {
     journalRepository;
     accountService;

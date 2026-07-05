@@ -87,8 +87,8 @@ export const DEFAULT_CONFIG: Partial<AgentSwarmConfig> = {
 	enableErrorRecovery: false,
 	logLevel: "info",
 	enableMetrics: true,
-	siteName: "Arkelythex AI Swarm",
-	siteUrl: "https://arkelythexfounders.com",
+	siteName: "Drenyra AI Swarm",
+	siteUrl: "https://drenyrafounders.com",
 };
 
 /**

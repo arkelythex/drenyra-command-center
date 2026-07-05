@@ -2,7 +2,7 @@ import type {
 	AuditReviewStatus,
 	FindingCategory,
 	FindingSeverity,
-} from "@arkelythex/domain/entities";
+} from "@drenyra/domain/entities";
 import { Elysia, t } from "elysia";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import {

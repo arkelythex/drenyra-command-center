@@ -22,7 +22,7 @@ Real-time CPE (Comprobante de Pago Electrónico) validation with breach detectio
 
 **Reglas SUNAT (baseline actual):**
 - SUNAT indica “Reglas de Validación” actualizadas al **2026-02-09**.
-- Arkelythex ya expone esa baseline en `GET /cpe-validator/rules-meta`.
+- Drenyra ya expone esa baseline en `GET /cpe-validator/rules-meta`.
 - La cobertura actual sigue siendo **parcial**: validación estructural + estados SUNAT; la matriz completa/XSD aún está pendiente.
 
 ---
@@ -125,7 +125,7 @@ Get validation cache statistics.
 
 ### GET /cpe-validator/rules-meta
 
-Returns the current SUNAT rules baseline date and Arkelythex coverage status.
+Returns the current SUNAT rules baseline date and Drenyra coverage status.
 
 ### GET /cpe-validator/error-catalog
 

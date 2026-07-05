@@ -1,8 +1,7 @@
 import { Outlet } from "@tanstack/react-router";
-import { Eye, PanelLeft, Rocket } from "lucide-react";
-import { lazy, type ReactNode, Suspense, useState } from "react";
+import { Eye, PanelLeft } from "lucide-react";
+import { lazy, type ReactNode, Suspense } from "react";
 import { cn } from "@/lib/utils";
-import { MissionSidebar } from "../../features/cognitive-hub/components/MissionSidebar";
 import { useCodexKeyboardShortcuts } from "../../hooks/useCodexKeyboardShortcuts";
 import { useUIStore } from "../../store/ui-store";
 import { AccountingTopBar } from "../agentic/AccountingTopBar";
@@ -31,8 +30,6 @@ export function CodexShell(_props: CodexShellProps) {
 	const toggleSidebar = useUIStore((s) => s.toggleSidebar);
 	const toggleRightPanel = useUIStore((s) => s.toggleRightRail);
 	const toggleTerminal = useUIStore((s) => s.toggleTerminal);
-	const [missionSidebarOpen, setMissionSidebarOpen] = useState(false);
-
 	return (
 		<FiscalEditorialShell mode="command-center" className="pb-14 lg:pb-0">
 			<CommandPalette />
@@ -100,30 +97,7 @@ export function CodexShell(_props: CodexShellProps) {
 							<Eye size={14} />
 							<span>Panel</span>
 						</button>
-						<button
-							type="button"
-							onClick={() => setMissionSidebarOpen(!missionSidebarOpen)}
-							className="flex items-center gap-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)] px-2.5 py-1.5 text-xs font-medium text-[var(--text-secondary)] shadow-sm transition-colors hover:text-[var(--color-primary)]"
-							aria-label="Toggle missions"
-						>
-							<Rocket size={14} />
-							<span>Misiones</span>
-						</button>
 					</div>
-
-					{/* Desktop mission toggle */}
-					<button
-						type="button"
-						onClick={() => setMissionSidebarOpen(!missionSidebarOpen)}
-						className={cn(
-							"fixed bottom-20 right-4 z-50 flex items-center gap-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] px-3 py-2.5 text-xs font-medium text-[var(--text-secondary)] shadow-lg transition-colors hover:border-[var(--color-primary)]/30 hover:text-[var(--color-primary)]",
-							"max-lg:hidden",
-						)}
-						aria-label="Toggle missions"
-					>
-						<Rocket size={16} />
-						<span>Misiones</span>
-					</button>
 
 					<Outlet />
 				</main>
@@ -182,30 +156,6 @@ export function CodexShell(_props: CodexShellProps) {
 						}}
 					/>
 				)}
-
-				{/* MissionSidebar */}
-				{missionSidebarOpen && (
-					<>
-						<aside className="flex-shrink-0 border-l border-[var(--border-subtle)] bg-[var(--surface-1)] max-xl:hidden">
-							<MissionSidebar
-								isOpen={true}
-								onClose={() => setMissionSidebarOpen(false)}
-							/>
-						</aside>
-						{/* Mobile overlay */}
-						<div
-							className="fixed inset-0 z-30 bg-black/50 xl:hidden"
-							onClick={() => setMissionSidebarOpen(false)}
-							aria-hidden="true"
-						/>
-						<div className="fixed bottom-0 right-0 top-0 z-40 xl:hidden">
-							<MissionSidebar
-								isOpen={true}
-								onClose={() => setMissionSidebarOpen(false)}
-							/>
-						</div>
-					</>
-				)}
 			</div>
 
 			{/* Terminal drawer (in-flow, pushes panels up) */}
@@ -257,9 +207,7 @@ export function CodexShell(_props: CodexShellProps) {
 				)}
 			</div>
 
-			<CodexBottomNav
-				onToggleMissions={() => setMissionSidebarOpen(!missionSidebarOpen)}
-			/>
+			<CodexBottomNav />
 		</FiscalEditorialShell>
 	);
 }

@@ -1,4 +1,4 @@
-import { isValidRUC } from "@arkelythex/shared";
+import { isValidRUC } from "@drenyra/shared";
 import * as z from "zod";
 
 export interface PasswordStrength {
@@ -39,7 +39,7 @@ export function calculatePasswordStrength(password: string): PasswordStrength {
 }
 
 // Re-export for backwards compatibility
-export { isValidRUC as validateRucLocal } from "@arkelythex/shared";
+export { isValidRUC as validateRucLocal } from "@drenyra/shared";
 
 export const signupSchema = z
 	.object({

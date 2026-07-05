@@ -1,6 +1,6 @@
 import { type CreateJournalEntryDTO } from "../../dtos/journal/journal-entry.dto";
-import { JournalEntry } from "@arkelythex/domain/entities/JournalEntry";
-import type { JournalEntryRepository } from "@arkelythex/domain/repositories/journal-entry.repository";
+import { JournalEntry } from "@drenyra/domain/entities/JournalEntry";
+import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
 export interface AccountService {
     getById(id: string): Promise<{
         code: string;

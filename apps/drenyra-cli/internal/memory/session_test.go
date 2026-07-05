@@ -19,7 +19,7 @@ func TestLoadSnapshotReadOnlyDoesNotCreateFiles(t *testing.T) {
 	if snap.MemoryPath == "" || snap.UserPath == "" {
 		t.Fatalf("snapshot paths missing: %#v", snap)
 	}
-	if _, err := os.Stat(filepath.Join(home, ".arkelythex")); !os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(home, ".drenyra")); !os.IsNotExist(err) {
 		t.Fatalf("LoadSnapshotReadOnly created runtime files, stat err=%v", err)
 	}
 }
@@ -48,7 +48,7 @@ func TestRecordRunWritesHistoryAndSQLite(t *testing.T) {
 
 	RecordRun(ctx, Run{Task: "review SIRE export", RootAgent: "fiscal-command-orchestrator", AutoLevel: "medium", TraceID: "trace-1", Status: "done"})
 
-	historyPath := filepath.Join(home, ".arkelythex", "history.jsonl")
+	historyPath := filepath.Join(home, ".drenyra", "history.jsonl")
 	data, err := os.ReadFile(historyPath)
 	if err != nil {
 		t.Fatalf("history not written: %v", err)

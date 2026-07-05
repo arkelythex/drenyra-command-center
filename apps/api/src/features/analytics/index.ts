@@ -45,7 +45,7 @@ export {
  * - Each endpoint maps to AnalyticsService static method
  * - Query validation via Elysia schemas (AnalyticsQuerySchema, OperationalQuerySchema)
  * - Parallel query execution where possible (getDashboardAnalytics)
- * - All monetary values typed with @arkelythex/domain Money VO
+ * - All monetary values typed with @drenyra/domain Money VO
  *
  * **Module Features**:
  * - 6 primary endpoints (dashboard, financial, operational, tax, customers, trends)

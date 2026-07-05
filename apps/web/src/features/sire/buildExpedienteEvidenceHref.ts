@@ -1,4 +1,4 @@
-import type { ExpedienteKind } from "@arkelythex/domain";
+import type { ExpedienteKind } from "@drenyra/domain";
 
 /**
  * Builds expediente evidence deep-link for a SIRE diff period.

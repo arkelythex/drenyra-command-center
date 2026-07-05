@@ -7,8 +7,8 @@ async function loadAuthDeps() {
 			import("@clerk/nextjs/server"),
 			import("drizzle-orm"),
 			import("next/navigation"),
-			import("@arkelythex/persistence"),
-			import("@arkelythex/persistence/schema"),
+			import("@drenyra/persistence"),
+			import("@drenyra/persistence/schema"),
 			// @ts-expect-error — Missing module, install via bun add
 			import("@/shared/errors"),
 		]);
@@ -130,7 +130,7 @@ export async function requireAuthContext(): Promise<AuthContext> {
  * @returns Result of getClerkUser.
  * @throws Error when getClerkUser cannot complete successfully.
  *
- * @deprecated Arkelythex uses Better Auth as the active auth system. Keep this
+ * @deprecated Drenyra uses Better Auth as the active auth system. Keep this
  * helper only for migrations or legacy compatibility paths.
  * @example
  * ```ts
@@ -155,7 +155,7 @@ export async function getClerkUser() {
  * @param clerkUserId - Input for clerkUserId.
  * @returns Result of syncUserFromClerk.
  *
- * @deprecated Arkelythex uses Better Auth as the active auth system. Keep this
+ * @deprecated Drenyra uses Better Auth as the active auth system. Keep this
  * helper only for migrations or legacy compatibility paths.
  * @example
  * ```ts

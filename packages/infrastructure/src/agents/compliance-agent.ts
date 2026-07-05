@@ -12,7 +12,7 @@
  * @since December 2025
  */
 
-import { fiscalTools, runToolLoop } from "@arkelythex/ai";
+import { fiscalTools, runToolLoop } from "@drenyra/ai";
 import { generateObject } from "ai";
 import { z } from "zod";
 import { getComplianceModel, selectModelForTask } from "../ai/model-registry";

@@ -7,7 +7,7 @@ import {
 	type ChatCompletionRequest,
 	chatCompletionRequestSchema,
 	llmGateway,
-} from "@arkelythex/ai/gateway";
+} from "@drenyra/ai/gateway";
 import { Elysia, t } from "elysia";
 import { createLogger } from "../../lib/logger";
 import { authorizeAiSurface } from "../security/ai-surface-access";

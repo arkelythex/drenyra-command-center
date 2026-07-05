@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils";
 import { MOTION_VARIANTS } from "@/lib/design-tokens";
 
 /**
- * Arkelythex "Elite" Physics Constants
+ * Drenyra "Elite" Physics Constants
  * Inspired by iOS Spring Physics (WWDC 2024 Patterns)
  */
 export const SPRING_PHYSICS = {

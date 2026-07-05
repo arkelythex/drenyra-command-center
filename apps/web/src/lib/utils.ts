@@ -2,7 +2,7 @@
 // ARKELYTHEX Web App — Shared Utilities
 // ============================================================================
 
-export { cn } from "@arkelythex/ui";
+export { cn } from "@drenyra/ui";
 
 // ─── Canonical Money Formatting ─────────────────────────────────────────────
 //

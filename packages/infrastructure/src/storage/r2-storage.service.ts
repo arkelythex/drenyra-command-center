@@ -8,8 +8,8 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import type {
 	IStorageService,
 	UploadOptions,
-} from "@arkelythex/application/ports/storage.port";
-import { StorageError } from "@arkelythex/shared/errors";
+} from "@drenyra/application/ports/storage.port";
+import { StorageError } from "@drenyra/shared/errors";
 
 /**
  * R2StorageService class.

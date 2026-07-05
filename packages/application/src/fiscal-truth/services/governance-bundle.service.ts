@@ -1,8 +1,8 @@
-import type { GovernanceBundleReference } from "@arkelythex/domain";
+import type { GovernanceBundleReference } from "@drenyra/domain";
 import {
 	GOVERNANCE_REVIEW_STATUS,
 	PHASE_1_REQUIRED_ADR_IDS,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import type { GovernanceBundlePort } from "../ports/governance-bundle.port";
 
 /**

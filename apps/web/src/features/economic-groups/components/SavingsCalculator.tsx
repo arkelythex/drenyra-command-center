@@ -8,7 +8,7 @@ import { TrendingDown } from "lucide-react";
 
 interface SavingsCalculatorProps {
 	pricing: {
-		arkelythex: number;
+		drenyra: number;
 		concar: number;
 		dora: number;
 	};
@@ -74,17 +74,17 @@ export const SavingsCalculator: React.FC<SavingsCalculatorProps> = ({
 						</p>
 					</div>
 
-					{/* ARKELYTHEX */}
+					{/* DRENYRA */}
 					<div className=" bg-surface-2 border-2 border-info-subtle rounded-xl p-4 relative">
 						<div className="absolute -top-2 right-2 bg-info text-[var(--color-text-inverse)] text-xs font-black px-2 py-1 rounded">
 							TÚ
 						</div>
-						<p className="text-xs text-muted-foreground mb-1">ARKELYTHEX</p>
+						<p className="text-xs text-muted-foreground mb-1">DRENYRA</p>
 						<p className="text-xs text-muted-foreground mb-2">
 							RUCs ilimitados
 						</p>
 						<p className="text-2xl font-mono font-bold text-info">
-							S/ {pricing.arkelythex.toFixed(2)}
+							S/ {pricing.drenyra.toFixed(2)}
 						</p>
 					</div>
 				</div>

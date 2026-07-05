@@ -75,7 +75,7 @@ describe("AppearanceSettings theme selection", () => {
 		expect(useUIStore.getState().themePreference).toBe("mono-light");
 
 		await waitFor(() => {
-			const persisted = window.localStorage.getItem("arkelythex-ui-storage");
+			const persisted = window.localStorage.getItem("drenyra-ui-storage");
 			expect(persisted).toContain('"themePreference":"mono-light"');
 		});
 	});
@@ -89,7 +89,7 @@ describe("AppearanceSettings theme selection", () => {
 		expect(useUIStore.getState().themePreference).toBe("mono-dark");
 
 		await waitFor(() => {
-			const persisted = window.localStorage.getItem("arkelythex-ui-storage");
+			const persisted = window.localStorage.getItem("drenyra-ui-storage");
 			expect(persisted).toContain('"themePreference":"mono-dark"');
 		});
 	});
@@ -103,7 +103,7 @@ describe("AppearanceSettings theme selection", () => {
 		expect(useUIStore.getState().themePreference).toBe("system");
 
 		await waitFor(() => {
-			const persisted = window.localStorage.getItem("arkelythex-ui-storage");
+			const persisted = window.localStorage.getItem("drenyra-ui-storage");
 			expect(persisted).toContain('"themePreference":"system"');
 		});
 	});
@@ -115,7 +115,7 @@ describe("AppearanceSettings theme selection", () => {
 		await user.click(screen.getByRole("button", { name: /light/i }));
 
 		await waitFor(() => {
-			const settings = window.localStorage.getItem("arkelythex-settings");
+			const settings = window.localStorage.getItem("drenyra-settings");
 			expect(settings).toContain('"theme":"light"');
 		});
 	});

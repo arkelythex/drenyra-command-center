@@ -16,8 +16,8 @@ import type {
 	IDocumentSyncProcessor,
 	IUBLInvoiceParser,
 } from "../../ports/document-processing.port";
-import { Document } from "@arkelythex/domain/entities/Document";
-import type { DocumentRepository } from "@arkelythex/domain/repositories/document.repository";
+import { Document } from "@drenyra/domain/entities/Document";
+import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
 import { dispatchDocumentProcessing } from "../../lib/job-dispatcher";
 import { saveDocumentWithTenant } from "./support/document-tenant";
 

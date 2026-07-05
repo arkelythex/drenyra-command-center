@@ -1,7 +1,7 @@
 import { defineConfig } from "@ladle/react";
 
 export default defineConfig({
-	title: "Arkelythex Design System",
+	title: "Drenyra Design System",
 	description: "Component library documentation for ARKELYTHEX",
 	addons: {
 		a11y: true,

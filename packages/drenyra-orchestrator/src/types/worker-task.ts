@@ -1,5 +1,5 @@
 // ─── Worker Task Types ─────────────────────────────────────────────
-// Snapshot from @arkelythex/agent-swarm/src/types/worker-task.ts
+// Snapshot from @drenyra/agent-swarm/src/types/worker-task.ts
 
 export type WorkerTaskStatus =
 	| "pending"

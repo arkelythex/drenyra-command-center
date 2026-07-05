@@ -56,7 +56,7 @@ export default defineConfig({
 			"@/hooks": path.resolve(__dirname, "./src/hooks"),
 			"@/context": path.resolve(__dirname, "./src/context"),
 			"@/store": path.resolve(__dirname, "./src/store"),
-			"@arkelythex/shared": path.resolve(
+			"@drenyra/shared": path.resolve(
 				__dirname,
 				"../../packages/shared/src",
 			),
@@ -135,7 +135,7 @@ export default defineConfig({
 		// Pre-bundle lazily loaded deps to avoid transient 504/chunk-miss issues in dev.
 		include: ["@tanstack/react-query-devtools"],
 		exclude: [
-			"@arkelythex/infrastructure",
+			"@drenyra/infrastructure",
 			...(process.env.NODE_ENV === "production"
 				? ["@module-federation/vite"]
 				: []),

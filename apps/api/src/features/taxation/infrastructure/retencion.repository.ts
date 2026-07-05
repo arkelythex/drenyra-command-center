@@ -14,10 +14,10 @@
  * ```
  */
 
-import { type Currency, Money } from "@arkelythex/domain/value-objects/Money";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, not } from "@arkelythex/persistence/query";
-import { retenciones } from "@arkelythex/persistence/schema";
+import { type Currency, Money } from "@drenyra/domain/value-objects/Money";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, not } from "@drenyra/persistence/query";
+import { retenciones } from "@drenyra/persistence/schema";
 import type { RetentionStatus } from "../domain/entities/retencion.entity";
 import { Retencion } from "../domain/entities/retencion.entity";
 import type { IRetencionRepository } from "../domain/ports/retencion-repository.port";

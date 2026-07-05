@@ -1,8 +1,8 @@
 import { and, desc, eq, gte, lte } from "drizzle-orm";
 import { randomUUID } from "crypto";
-import { ExchangeRate } from "@arkelythex/domain/accounting/exchange-rate";
-import { db } from "@arkelythex/persistence/client";
-import { exchangeRates } from "@arkelythex/persistence/schema";
+import { ExchangeRate } from "@drenyra/domain/accounting/exchange-rate";
+import { db } from "@drenyra/persistence/client";
+import { exchangeRates } from "@drenyra/persistence/schema";
 function rateToDb(value) {
     return Math.round(value * 10000);
 }

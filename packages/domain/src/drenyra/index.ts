@@ -70,7 +70,9 @@ export {
 	type DrenyraFiscalWorkInspectScope,
 	validateDrenyraFiscalWorkInspectRequest,
 } from "./fiscal-work-inspect";
+export * from "./fiscal-rates-registry";
 export * from "./governance";
+export * from "./verification-types";
 export {
 	evaluateFiscalGuardian,
 	FISCAL_GUARDIAN_DECISION,

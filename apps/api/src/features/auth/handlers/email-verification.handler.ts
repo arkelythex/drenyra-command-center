@@ -9,7 +9,7 @@ const logger = createLogger({ feature: 'auth', handler: 'email-verification' });
  * Email Verification Handlers
  *
  * Handles email verification flow required before login.
- * ARKELYTHEX requires email verification to prevent:
+ * DRENYRA requires email verification to prevent:
  * - Spam signups with fake emails
  * - Account hijacking via typosquatting
  * - Bot registrations
@@ -36,7 +36,7 @@ const logger = createLogger({ feature: 'auth', handler: 'email-verification' });
  * ```ts
  * const body: SendVerificationEmailBody = {
  *   email: "user@example.com",
- *   callbackURL: "https://app.arkelythexfounders.com/login"
+ *   callbackURL: "https://app.drenyrafounders.com/login"
  * };
  * ```
  */
@@ -99,7 +99,7 @@ export interface VerifyEmailQuery {
  * const res = await handleSendVerificationEmail(
  *   {
  *     email: "user@example.com",
- *     callbackURL: "https://app.arkelythexfounders.com/login"
+ *     callbackURL: "https://app.drenyrafounders.com/login"
  *   },
  *   { set: { status: 200 }, headers: {} } as Context
  * );
@@ -110,7 +110,7 @@ export interface VerifyEmailQuery {
  * ```ts
  * // Failed send (email already verified)
  * const res = await handleSendVerificationEmail(
- *   { email: "verified@example.com", callbackURL: "https://app.arkelythexfounders.com" },
+ *   { email: "verified@example.com", callbackURL: "https://app.drenyrafounders.com" },
  *   { set: { status: 400 }, headers: {} } as Context
  * );
  * console.log(res.error); // "Email already verified"

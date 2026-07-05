@@ -1,11 +1,11 @@
-import type { AgentEvent } from "@arkelythex/shared";
+import type { AgentEvent } from "@drenyra/shared";
 // Re-export shared types
 export type {
 	HubViewMode,
 	SwarmStep,
 	SwarmTrace,
 	BackgroundMission,
-} from "@arkelythex/shared/agents";
+} from "@drenyra/shared/agents";
 export type {
 	HubArtifact,
 	ArtifactType,
@@ -16,5 +16,5 @@ export type {
 	GapItem,
 	AccountingDiffItem,
 	SheetDiffRow,
-} from "@arkelythex/shared/artifacts";
-export type { CognitiveMessage } from "@arkelythex/shared/messaging";
+} from "@drenyra/shared/artifacts";
+export type { CognitiveMessage } from "@drenyra/shared/messaging";

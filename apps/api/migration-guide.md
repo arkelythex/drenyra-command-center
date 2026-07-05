@@ -308,7 +308,7 @@ mv index.ts.backup index.ts
 **Solución**: Verifica que hayas agregado `.use(xyzRoutes)` en `index.ts`.
 
 ### Problema: Errores de TypeScript en Services
-**Solución**: Asegúrate de importar correctamente desde `@arkelythex/infrastructure`.
+**Solución**: Asegúrate de importar correctamente desde `@drenyra/infrastructure`.
 
 ### Problema: "Service is not a function"
 **Solución**: Verifica que estés usando métodos estáticos: `MyService.method()`.

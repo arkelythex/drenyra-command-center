@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Sync canonical Drenyra artifacts from arkelythex to standalone Drenyra repo.
+# Sync canonical Drenyra artifacts from drenyra to standalone Drenyra repo.
 # Usage:
 #   ./scripts/sync-drenyra-standalone.sh           # dry-run
 #   ./scripts/sync-drenyra-standalone.sh --apply   # copy files
@@ -7,7 +7,7 @@
 
 set -euo pipefail
 
-ARKELYTHEX_ROOT="${ARKELYTHEX_ROOT:-$HOME/Documents/PROYECTOS/arkelythex}"
+DRENYRA_ROOT="${DRENYRA_ROOT:-$HOME/Documents/PROYECTOS/drenyra}"
 DRENYRA_ROOT="${DRENYRA_STANDALONE_ROOT:-$HOME/Documents/PROYECTOS/Drenyra}"
 
 MODE="dry-run"
@@ -17,8 +17,8 @@ elif [[ "${1:-}" == "--check" ]]; then
   MODE="check"
 fi
 
-if [[ ! -d "$ARKELYTHEX_ROOT" ]]; then
-  echo "error: ARKELYTHEX_ROOT not found: $ARKELYTHEX_ROOT" >&2
+if [[ ! -d "$DRENYRA_ROOT" ]]; then
+  echo "error: DRENYRA_ROOT not found: $DRENYRA_ROOT" >&2
   exit 1
 fi
 
@@ -53,7 +53,7 @@ DRIFT=0
 
 sync_file() {
   local rel="$1"
-  local src="$ARKELYTHEX_ROOT/$rel"
+  local src="$DRENYRA_ROOT/$rel"
   local dst="$DRENYRA_ROOT/$rel"
 
   if [[ ! -f "$src" ]]; then
@@ -83,7 +83,7 @@ sync_file() {
 }
 
 echo "Drenyra sync ($MODE)"
-echo "  from: $ARKELYTHEX_ROOT"
+echo "  from: $DRENYRA_ROOT"
 echo "  to:   $DRENYRA_ROOT"
 echo
 

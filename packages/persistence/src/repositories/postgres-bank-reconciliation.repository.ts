@@ -10,11 +10,11 @@ import { and, count, desc, eq, gte, lte, type SQL } from "drizzle-orm";
 import {
 	BankReconciliation,
 	type ReconciliationStatus,
-} from "@arkelythex/domain/entities/BankReconciliation";
+} from "@drenyra/domain/entities/BankReconciliation";
 import type {
 	BankReconciliationRepository,
 	ReconciliationFilters,
-} from "@arkelythex/domain/repositories/bank-reconciliation.repository";
+} from "@drenyra/domain/repositories/bank-reconciliation.repository";
 import { db } from "../client";
 import { bankReconciliations } from "../schema";
 import { resolveCompanyIdFromOrganization, resolveOrganizationIdFromCompany } from "./support/organization-resolver";

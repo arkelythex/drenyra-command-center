@@ -1,4 +1,4 @@
-import type { GovernanceBundleReference } from "@arkelythex/domain";
+import type { GovernanceBundleReference } from "@drenyra/domain";
 export interface GovernanceBundlePort {
     verify(bundle: GovernanceBundleReference): Promise<boolean>;
 }

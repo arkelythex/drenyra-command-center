@@ -1,6 +1,6 @@
-import type { PercepcionType } from "@arkelythex/domain/services/TaxCalculator";
-import { TaxCalculator } from "@arkelythex/domain/services/TaxCalculator";
-import type { Money } from "@arkelythex/domain/value-objects/Money";
+import type { PercepcionType } from "@drenyra/domain/services/TaxCalculator";
+import { TaxCalculator } from "@drenyra/domain/services/TaxCalculator";
+import type { Money } from "@drenyra/domain/value-objects/Money";
 import { PercepcionApplied } from "../events/percepcion-applied.event";
 import { PercepcionCancelled } from "../events/percepcion-cancelled.event";
 import { PercepcionDeclared } from "../events/percepcion-declared.event";

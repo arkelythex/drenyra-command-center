@@ -1,8 +1,8 @@
 import type {
 	ModelCapability,
 	RoutingResult,
-} from "@arkelythex/domain/ai/model-router/types";
-import type { RoutingAuditLogRepository } from "@arkelythex/domain/repositories/model-registration.repository";
+} from "@drenyra/domain/ai/model-router-types";
+import type { RoutingAuditLogRepository } from "@drenyra/domain/repositories/model-registration.repository";
 import { and, eq, gte } from "drizzle-orm";
 import { db } from "../../client";
 import { routingAuditLog } from "../../schema/model-router.schema";

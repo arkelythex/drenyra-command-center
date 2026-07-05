@@ -5,7 +5,7 @@ import { SireRegisterExportService as SIREService } from "../../../sire/services
 const invoicesFindManyMock = vi.fn();
 const billsFindManyMock = vi.fn();
 
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		query: {
 			invoices: {

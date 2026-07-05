@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { sireSubmissions, transactions } from "@arkelythex/persistence/schema";
-import { eq } from "@arkelythex/persistence/query";
+import { sireSubmissions, transactions } from "@drenyra/persistence/schema";
+import { eq } from "@drenyra/persistence/query";
 import { ArtifactEventQueryService } from "../../artifact-event-query.service";
 import { GovernanceAuditService } from "../../governance-audit.service";
 
@@ -11,7 +11,7 @@ const { authAuditLogsFindManyMock, sireFindManyMock, transactionsFindManyMock } 
 		transactionsFindManyMock: vi.fn(),
 	}));
 
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		query: {
 			authAuditLogs: { findMany: authAuditLogsFindManyMock },

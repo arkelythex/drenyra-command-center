@@ -17,7 +17,7 @@ import type {
   ProviderFilters,
   ProviderRepository,
   UpdateProviderDTO,
-} from "@arkelythex/domain/repositories/provider.repository";
+} from "@drenyra/domain/repositories/provider.repository";
 import { db } from "../client";
 import { businessPartners, vendorProfiles } from "../schema";
 import {

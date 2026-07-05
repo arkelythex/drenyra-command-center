@@ -8,7 +8,7 @@ import React from 'react';
  */
 
 import { ShieldCheck } from 'lucide-react';
-import type { HubArtifact } from '@arkelythex/shared/artifacts';
+import type { HubArtifact } from '@drenyra/shared/artifacts';
 import { registerArtifact } from '../artifact-registry';
 
 type ActionCardArt = Extract<HubArtifact, { type: 'action_card' }>;

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import { dirname } from "node:path";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { aiTraceEvidence } from "@arkelythex/persistence/schema";
+import { aiTraceEvidence } from "@drenyra/persistence/schema";
 import {
 	TenantCompanyRucScopeSchema,
 	type TenantCompanyRucScope,

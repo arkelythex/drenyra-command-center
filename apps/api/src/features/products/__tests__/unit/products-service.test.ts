@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ProductsService } from '../../products.service';
-import { db } from '@arkelythex/persistence/client';
+import { db } from '@drenyra/persistence/client';
 
-vi.mock('@arkelythex/persistence/client', () => ({
+vi.mock('@drenyra/persistence/client', () => ({
   db: {
     query: {
       products: {

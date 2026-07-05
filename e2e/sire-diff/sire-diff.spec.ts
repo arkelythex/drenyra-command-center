@@ -2,7 +2,7 @@ import { expect, test } from "../base-test";
 
 const ACTIVE_COMPANY = {
 	companyId: "00000000-0000-0000-0000-000000000001",
-	companyName: "ARKELYTHEX S.A.C.",
+	companyName: "DRENYRA S.A.C.",
 	ruc: "20546296564",
 	countryCode: "pe",
 	isDemoFallback: false,
@@ -41,7 +41,7 @@ function isAppApiRequest(url: string): boolean {
 async function installSessionState(page: import("@playwright/test").Page) {
 	await page.addInitScript((company: typeof ACTIVE_COMPANY) => {
 		window.localStorage.setItem(
-			"arkelythex-active-company",
+			"drenyra-active-company",
 			JSON.stringify(company),
 		);
 	}, ACTIVE_COMPANY);

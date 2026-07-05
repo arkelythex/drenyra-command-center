@@ -10,4 +10,4 @@ export {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from "@arkelythex/ui";
+} from "@drenyra/ui";

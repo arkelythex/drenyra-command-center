@@ -8,7 +8,7 @@ import type {
 	FiscalAgentStep,
 	FiscalAgentStepContext,
 	StepResult,
-} from "@arkelythex/application/use-cases/fiscal-agent/types";
+} from "@drenyra/application/use-cases/fiscal-agent/types";
 
 export class LearnerStep implements FiscalAgentStep<CorrectionInput[], CorrectionRecord[]> {
 	readonly name = "learn";

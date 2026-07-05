@@ -2,7 +2,7 @@
  * Example Test — Demonstrates usage of shared test utilities.
  *
  * This file serves as both a working test and documentation
- * for how to use @arkelythex/test-utils in your tests.
+ * for how to use @drenyra/test-utils in your tests.
  */
 import { describe, it, expect } from "vitest";
 
@@ -14,17 +14,17 @@ import {
 	AccountBuilder,
 	BankTransactionBuilder,
 	TransactionBuilder,
-} from "@arkelythex/test-utils/builders";
+} from "@drenyra/test-utils/builders";
 
 // Fixtures
 import {
 	VALID_RUCS,
 	TEST_USERS,
 	TEST_COMPANIES,
-} from "@arkelythex/test-utils/fixtures";
+} from "@drenyra/test-utils/fixtures";
 
 // Helpers
-import { money, moneyFromCents } from "@arkelythex/test-utils/helpers";
+import { money, moneyFromCents } from "@drenyra/test-utils/helpers";
 
 describe("Example: Shared Test Utilities", () => {
 	describe("Builders", () => {
@@ -35,7 +35,7 @@ describe("Example: Shared Test Utilities", () => {
 
 		it("should create an invoice with custom RUC", () => {
 			const invoice = new InvoiceBuilder()
-				.withClientRUC(VALID_RUCS.ARKELYTHEX)
+				.withClientRUC(VALID_RUCS.DRENYRA)
 				.build();
 			expect(invoice).toBeDefined();
 		});
@@ -48,7 +48,7 @@ describe("Example: Shared Test Utilities", () => {
 
 		it("should create an admin user", () => {
 			const user = new UserBuilder()
-				.withEmail("admin@test.arkelythexfounders.com")
+				.withEmail("admin@test.drenyrafounders.com")
 				.withRole("admin")
 				.build();
 			expect(user).toBeDefined();
@@ -79,7 +79,7 @@ describe("Example: Shared Test Utilities", () => {
 
 	describe("Fixtures", () => {
 		it("should provide valid RUCs", () => {
-			expect(VALID_RUCS.ARKELYTHEX).toMatch(/^20\d{9}$/);
+			expect(VALID_RUCS.DRENYRA).toMatch(/^20\d{9}$/);
 			expect(VALID_RUCS.PERSONA_NATURAL).toMatch(/^10\d{9}$/);
 		});
 
@@ -90,7 +90,7 @@ describe("Example: Shared Test Utilities", () => {
 		});
 
 		it("should provide test companies", () => {
-			expect(TEST_COMPANIES.ARKELYTHEX).toBeDefined();
+			expect(TEST_COMPANIES.DRENYRA).toBeDefined();
 			expect(TEST_COMPANIES.EMPRESA_TEST).toBeDefined();
 			expect(TEST_COMPANIES.PROVEEDOR_DEMO).toBeDefined();
 		});

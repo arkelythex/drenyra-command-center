@@ -3,9 +3,9 @@
  * Data access layer for bank accounts and transactions
  */
 
-import { db } from '@arkelythex/persistence/client';
-import { bankAccounts, bankTransactions } from '@arkelythex/persistence/schema';
-import { and, desc, eq, gte, lte } from '@arkelythex/persistence/query';
+import { db } from '@drenyra/persistence/client';
+import { bankAccounts, bankTransactions } from '@drenyra/persistence/schema';
+import { and, desc, eq, gte, lte } from '@drenyra/persistence/query';
 import {
   withCompanyRlsTransaction,
   withTenantRlsTransaction,

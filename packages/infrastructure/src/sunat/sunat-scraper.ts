@@ -6,7 +6,7 @@
  * - Download Buzón Electrónico notifications
  * - Validate RUC status
  *
- * Part of the Shenzhen Elite "Arkelythex Watchdog" strategy.
+ * Part of the Shenzhen Elite "Drenyra Watchdog" strategy.
  *
  * @module infrastructure/sunat/sunat-scraper
  */

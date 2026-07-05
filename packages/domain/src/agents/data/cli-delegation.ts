@@ -5,8 +5,8 @@ export const CLI_DELEGATION_AGENTS = [
 	// CLI Delegation (apps/drenyra-cli/internal/delegation/graph.go)
 	// ═══════════════════════════════════════════════
 	{
-		id: "arkelythex-orchestrator",
-		name: "Arkelythex Orchestrator",
+		id: "drenyra-orchestrator",
+		name: "Drenyra Orchestrator",
 		system: "cli-delegation" as const,
 		tier: "tier0" as const,
 		parentId: null,
@@ -24,7 +24,7 @@ export const CLI_DELEGATION_AGENTS = [
 		name: "Kuntur SDD Orchestrator",
 		system: "cli-delegation" as const,
 		tier: "tier1" as const,
-		parentId: "arkelythex-orchestrator",
+		parentId: "drenyra-orchestrator",
 		maySpawn: [],
 		isLeaf: false,
 		capabilities: ["orchestration", "task-delegation"] as const,
@@ -39,7 +39,7 @@ export const CLI_DELEGATION_AGENTS = [
 		name: "Drenyra SDD Orchestrator",
 		system: "cli-delegation" as const,
 		tier: "tier1" as const,
-		parentId: "arkelythex-orchestrator",
+		parentId: "drenyra-orchestrator",
 		maySpawn: ["fiscal-command-orchestrator", "ai-swarm-orchestrator", "drenyra-hr-orchestrator"],
 		isLeaf: false,
 		capabilities: ["orchestration", "task-delegation"] as const,

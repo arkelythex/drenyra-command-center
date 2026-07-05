@@ -4,7 +4,7 @@ source-of-truth: apps/web/package.json
 auto-generated: false
 ---
 
-# Arkelythex Web — Financial Intelligence SPA
+# Drenyra Web — Financial Intelligence SPA
 
 **Última actualización**: 2026-06-20
 **Versión**: 0.1.0 | **Stack**: React 19 + Vite + TanStack Router
@@ -17,7 +17,7 @@ auto-generated: false
 
 ## ⏱ Si solo tenés tres minutos
 
-Arkelythex Web es el SPA de Drenyra — la Infraestructura Nacional de Inteligencia Fiscal. Esto es lo que necesitás saber:
+Drenyra Web es el SPA de Drenyra — la Infraestructura Nacional de Inteligencia Fiscal. Esto es lo que necesitás saber:
 
 | Si venís por... | Respuesta corta |
 |----------------|-----------------|
@@ -26,7 +26,7 @@ Arkelythex Web es el SPA de Drenyra — la Infraestructura Nacional de Inteligen
 | **¿Dónde está el código?** | `apps/web/src/` — features en `src/features/`, rutas en `src/routes/`, componentes en `src/components/` |
 | **¿Cómo lo ejecuto?** | `cd apps/web && bun run dev` |
 | **¿Cómo se prueba?** | `bun run test:run` (Vitest + Testing Library) |
-| **API** | Eden Treaty — tipado extremo a extremo con `@arkelythex/api` |
+| **API** | Eden Treaty — tipado extremo a extremo con `@drenyra/api` |
 | **Auth** | Better Auth — login en `/login`, session-based con refresh automático |
 | **Diseño** | Glass & Steel — dark mode, tokens DTCG en `src/lib/design-tokens/` |
 
@@ -36,7 +36,7 @@ Profundizá abajo según tu interés. Cada sección es independiente.
 
 ## 🎯 Purpose
 
-The **Arkelythex Web** app is the browser-based SPA for Drenyra, Peru's National Tax Intelligence Infrastructure. It provides financial dashboards, tax compliance tools, invoice management, banking reconciliation, and AI-powered fiscal insights — all in a responsive dark-mode interface built with the **Glass & Steel** design system.
+The **Drenyra Web** app is the browser-based SPA for Drenyra, Peru's National Tax Intelligence Infrastructure. It provides financial dashboards, tax compliance tools, invoice management, banking reconciliation, and AI-powered fiscal insights — all in a responsive dark-mode interface built with the **Glass & Steel** design system.
 
 > **Warm take**: Think of this as the cockpit for Peru's tax intelligence infrastructure. Every pixel exists to help fiscal professionals make better decisions — faster, with more context, and less friction.
 
@@ -145,7 +145,7 @@ All routes live in `src/routes/` — type-safe, file-based lazy loading with bui
 | **Auth** | Better Auth (client) |
 | **DnD** | dnd-kit |
 | **Testing** | Vitest + Testing Library |
-| **Package** | @arkelythex/* (workspace deps) |
+| **Package** | @drenyra/* (workspace deps) |
 
 ### Design System
 
@@ -163,7 +163,7 @@ All API requests flow through Eden Treaty for end-to-end type safety:
 
 ```typescript
 import { eden } from "@/lib/api-client";
-// Fully typed — matches @arkelythex/api routes exactly
+// Fully typed — matches @drenyra/api routes exactly
 ```
 
 ---
@@ -226,12 +226,12 @@ bun run test:run src/features/
 
 | Package | Purpose |
 |---------|---------|
-| `@arkelythex/api` | Backend API (Elysia) — consumed via Eden Treaty |
-| `@arkelythex/application` | Use cases & business logic |
-| `@arkelythex/domain` | Domain entities & value objects |
-| `@arkelythex/shared` | Shared utilities & validation |
-| `@arkelythex/drenyra-core` | Core Drenyra primitives |
-| `@arkelythex/ui` | Shared UI components |
+| `@drenyra/api` | Backend API (Elysia) — consumed via Eden Treaty |
+| `@drenyra/application` | Use cases & business logic |
+| `@drenyra/domain` | Domain entities & value objects |
+| `@drenyra/shared` | Shared utilities & validation |
+| `@drenyra/drenyra-core` | Core Drenyra primitives |
+| `@drenyra/ui` | Shared UI components |
 
 ---
 

@@ -3,7 +3,7 @@
  * @module lib/navigation/compact
  *
  * Este módulo define una navegación simplificada con solo 3 items principales:
- * - Agents Arkelythex (chat principal)
+ * - Agents Drenyra (chat principal)
  * - Dashboard (resumen visual)
  * - Configuración (ajustes)
  *
@@ -41,7 +41,7 @@ export interface CompactNavItem {
 export const COMPACT_NAV_ITEMS: readonly CompactNavItem[] = [
 	{
 		id: "agents",
-		label: "Agents Arkelythex",
+		label: "Agents Drenyra",
 		to: "/chat",
 		icon: BrainCircuit,
 		description: "Chat principal con inteligencia artificial",
@@ -69,7 +69,7 @@ export const COMPACT_NAV_ITEMS: readonly CompactNavItem[] = [
  */
 export function isCompactModeEnabled(): boolean {
 	if (typeof window === "undefined") return false;
-	const storedValue = localStorage.getItem("arkelythex:compact-nav");
+	const storedValue = localStorage.getItem("drenyra:compact-nav");
 	if (storedValue === null) return true;
 	return storedValue === "true";
 }
@@ -79,10 +79,10 @@ export function isCompactModeEnabled(): boolean {
  */
 export function toggleCompactMode(enabled: boolean): void {
 	if (typeof window === "undefined") return;
-	localStorage.setItem("arkelythex:compact-nav", String(enabled));
+	localStorage.setItem("drenyra:compact-nav", String(enabled));
 	// Disparar evento para que otros componentes se actualicen
 	window.dispatchEvent(
-		new CustomEvent("arkelythex:nav-mode-change", {
+		new CustomEvent("drenyra:nav-mode-change", {
 			detail: { compact: enabled },
 		}),
 	);

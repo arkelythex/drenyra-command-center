@@ -3,9 +3,9 @@
  * Extracted from ElectronicInvoicingService lifecycle methods.
  */
 
-import { transactions } from "@arkelythex/persistence/schema";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq } from "@arkelythex/persistence/query";
+import { transactions } from "@drenyra/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq } from "@drenyra/persistence/query";
 import { resolveCpeRunbook } from "../../../../lib/compliance-runbooks";
 import type {
 	CpeLifecycleSnapshot,

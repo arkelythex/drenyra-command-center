@@ -6,7 +6,7 @@
 import type {
 	OrganizationSettings,
 	OrganizationStatus,
-} from "@arkelythex/domain/entities/organization";
+} from "@drenyra/domain/entities/organization";
 import {
 	boolean,
 	index,

@@ -1,10 +1,10 @@
-import type { ExpedienteFiscal } from "@arkelythex/domain";
+import type { ExpedienteFiscal } from "@drenyra/domain";
 
 export const MOCK_EXPEDIENTES: ExpedienteFiscal[] = [
 	{
 		id: "EXP-2026-001",
 		companyRuc: "20123456789",
-		companyName: "Arkelythex Consulting SAC",
+		companyName: "Drenyra Consulting SAC",
 		periodo: "2026-04",
 		kind: "CIERRE_MENSUAL",
 		status: "PENDIENTE_APROBACION",
@@ -24,7 +24,7 @@ export const MOCK_EXPEDIENTES: ExpedienteFiscal[] = [
 	{
 		id: "EXP-2026-002",
 		companyRuc: "20123456789",
-		companyName: "Arkelythex Consulting SAC",
+		companyName: "Drenyra Consulting SAC",
 		periodo: "2026-04",
 		kind: "SIRE_COMPRAS",
 		status: "EN_PROCESO",
@@ -44,7 +44,7 @@ export const MOCK_EXPEDIENTES: ExpedienteFiscal[] = [
 	{
 		id: "EXP-2026-003",
 		companyRuc: "20123456789",
-		companyName: "Arkelythex Consulting SAC",
+		companyName: "Drenyra Consulting SAC",
 		periodo: "2026-03",
 		kind: "CIERRE_MENSUAL",
 		status: "CERRADO",

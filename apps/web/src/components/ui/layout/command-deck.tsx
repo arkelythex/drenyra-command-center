@@ -13,7 +13,7 @@ interface CommandDeckProps {
 }
 
 /**
- * Arkelythex "One UI" Command Deck
+ * Drenyra "One UI" Command Deck
  * Moves primary interactions to the bottom third for reachability.
  */
 export const CommandDeck = ({ children, className, isVisible = true }: CommandDeckProps) => {

@@ -1,5 +1,5 @@
-import { companies } from "@arkelythex/infrastructure";
-import { db } from "@arkelythex/persistence/client";
+import { companies } from "@drenyra/infrastructure";
+import { db } from "@drenyra/persistence/client";
 import { eq } from "drizzle-orm";
 
 export interface CompanySettingsResult {

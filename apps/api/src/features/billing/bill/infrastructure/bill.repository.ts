@@ -8,8 +8,8 @@
  * - Maps between domain entities and database records
  */
 
-import { Money } from "@arkelythex/domain";
-import { db } from "@arkelythex/persistence/client";
+import { Money } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
 import {
 	and,
 	desc,
@@ -19,8 +19,8 @@ import {
 	lt,
 	lte,
 	sql,
-} from "@arkelythex/persistence/query";
-import { billItems, bills } from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/query";
+import { billItems, bills } from "@drenyra/persistence/schema";
 import type { SQL } from "drizzle-orm";
 import {
 	withCompanyRlsTransaction,

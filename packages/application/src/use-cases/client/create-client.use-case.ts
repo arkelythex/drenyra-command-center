@@ -8,7 +8,7 @@
 import {
 	type Client,
 	type ClientRepository,
-} from "@arkelythex/domain/repositories/client.repository";
+} from "@drenyra/domain/repositories/client.repository";
 
 /**
  * CreateClientInput interface.

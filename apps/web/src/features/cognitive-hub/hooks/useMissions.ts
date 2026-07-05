@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { BackgroundMission } from '@arkelythex/shared/agents';
+import type { BackgroundMission } from '@drenyra/shared/agents';
 
 interface MissionStore {
   missions: BackgroundMission[];
@@ -31,6 +31,6 @@ export const useMissionStore = create<MissionStore>()(
         missions: state.missions.filter((m) => m.status !== 'completed')
       })),
     }),
-    { name: 'arkelythex-mission-engine' }
+    { name: 'drenyra-mission-engine' }
   )
 );

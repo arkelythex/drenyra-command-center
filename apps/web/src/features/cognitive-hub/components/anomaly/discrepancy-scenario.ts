@@ -1,4 +1,4 @@
-import type { HubArtifact, SheetDiffRow } from '@arkelythex/shared/artifacts';
+import type { HubArtifact, SheetDiffRow } from '@drenyra/shared/artifacts';
 
 export interface DiscrepancyLegalReference {
   id: string;

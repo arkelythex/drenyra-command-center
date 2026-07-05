@@ -26,7 +26,7 @@ describe("ledger-mvp routes security integration", () => {
 			LEDGER_MVP_REQUIRE_AUTH: "false",
 			LEDGER_MVP_ALLOWED_COMPANY_IDS: "cmp-1",
 			LEDGER_MVP_ALLOWED_ROLES_SIRE_AUTOPILOT: "admin",
-			ARKELYTHEX_MACHINE_CALLER_SECRET: "machine-secret",
+			DRENYRA_MACHINE_CALLER_SECRET: "machine-secret",
 			LEDGER_MVP_MACHINE_CALLER_ALLOWLIST: "ledger-orchestrator",
 		};
 	});
@@ -79,7 +79,7 @@ describe("ledger-mvp routes security integration", () => {
 		});
 
 		const deniedMetric = register.getSingleMetric(
-			"arkelythex_api_ledger_mvp_access_denied_total",
+			"drenyra_api_ledger_mvp_access_denied_total",
 		);
 		const deniedValues = deniedMetric
 			? ((await deniedMetric.get()).values ?? [])
@@ -211,7 +211,7 @@ describe("ledger-mvp routes security integration", () => {
 		const now = Date.now().toString();
 		const signature = createHmac(
 			"sha256",
-			process.env.ARKELYTHEX_MACHINE_CALLER_SECRET as string,
+			process.env.DRENYRA_MACHINE_CALLER_SECRET as string,
 		)
 			.update(["ledger-orchestrator", now, "cmp-1", "admin"].join("."))
 			.digest("hex");
@@ -242,7 +242,7 @@ describe("ledger-mvp routes security integration", () => {
 		});
 
 		const requestMetric = register.getSingleMetric(
-			"arkelythex_api_ledger_mvp_requests_total",
+			"drenyra_api_ledger_mvp_requests_total",
 		);
 		const requestValues = requestMetric
 			? ((await requestMetric.get()).values ?? [])
@@ -333,7 +333,7 @@ describe("ledger-mvp routes security integration", () => {
 		const now = Date.now().toString();
 		const signature = createHmac(
 			"sha256",
-			process.env.ARKELYTHEX_MACHINE_CALLER_SECRET as string,
+			process.env.DRENYRA_MACHINE_CALLER_SECRET as string,
 		)
 			.update(["ledger-orchestrator", now, "cmp-1", "admin"].join("."))
 			.digest("hex");
@@ -357,7 +357,7 @@ describe("ledger-mvp routes security integration", () => {
 		expect(response.status).toBe(200);
 
 		const unavailableMetric = register.getSingleMetric(
-			"arkelythex_api_ledger_mvp_sunat_live_unavailable_total",
+			"drenyra_api_ledger_mvp_sunat_live_unavailable_total",
 		);
 		const unavailableValues = unavailableMetric
 			? ((await unavailableMetric.get()).values ?? [])

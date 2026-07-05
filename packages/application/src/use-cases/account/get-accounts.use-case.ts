@@ -11,12 +11,12 @@ import {
 	formatBalance,
 	LEVEL_NAMES,
 } from "../../dtos/account/account.dto";
-import type { Account } from "@arkelythex/domain/entities/Account";
+import type { Account } from "@drenyra/domain/entities/Account";
 import type {
 	AccountFilters,
 	AccountRepository,
 	AccountWithChildren,
-} from "@arkelythex/domain/repositories/account.repository";
+} from "@drenyra/domain/repositories/account.repository";
 
 /**
  * GetAccountsUseCase class.

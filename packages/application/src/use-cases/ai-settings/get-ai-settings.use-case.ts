@@ -8,7 +8,7 @@ import {
 	createDefaultAISettingsResponseDTO,
 	toAISettingsResponseDTO,
 } from "../../dtos/ai-settings/ai-settings.dto";
-import type { AISettingsRepository } from "@arkelythex/domain/repositories/ai-settings.repository";
+import type { AISettingsRepository } from "@drenyra/domain/repositories/ai-settings.repository";
 
 /**
  * GetAISettingsUseCase class.

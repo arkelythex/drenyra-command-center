@@ -9,7 +9,7 @@
  */
 
 import { randomUUID } from "node:crypto";
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 import {
 	type TaxRateProviderService,
 	taxRateProviderService,
@@ -202,7 +202,7 @@ export class CreateInvoiceHandler {
 	 * - GRAVADO: 18% IGV included in price
 	 * - EXONERADO/INAFECTO: 0% IGV
 	 *
-	 * Uses @arkelythex/domain Money VO (cents pattern) to avoid floating-point errors.
+	 * Uses @drenyra/domain Money VO (cents pattern) to avoid floating-point errors.
 	 *
 	 * @param inputItems - Raw item inputs from command
 	 * @param currency - Invoice currency (PEN or USD)

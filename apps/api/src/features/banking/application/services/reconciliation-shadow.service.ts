@@ -3,10 +3,10 @@
  * between local engine and Go worker results.
  */
 
-import { reconciliationShadowRuns } from "@arkelythex/persistence/schema";
-import { db } from "@arkelythex/persistence/client";
-import { desc, eq } from "@arkelythex/persistence/query";
-import { SecureLogger } from "@arkelythex/shared/secure-logger";
+import { reconciliationShadowRuns } from "@drenyra/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { desc, eq } from "@drenyra/persistence/query";
+import { SecureLogger } from "@drenyra/shared/secure-logger";
 import type {
 	ReconciliationShadowCutoverDecision,
 	ReconciliationShadowCutoverEvaluation,

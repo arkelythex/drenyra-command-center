@@ -3,7 +3,7 @@ import type {
 	FiscalTruthScope,
 	ReplayRepository,
 	ReplayResult,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import type { DbTransaction } from "../unit-of-work";
 import { db } from "../client";
 import {

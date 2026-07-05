@@ -6,13 +6,13 @@ import {
 	type AccountLevel,
 	type AccountType,
 	type Currency,
-} from "@arkelythex/domain/entities/Account";
+} from "@drenyra/domain/entities/Account";
 import type {
 	AccountFilters,
 	AccountRepository,
 	AccountWithChildren,
-} from "@arkelythex/domain/repositories/account.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/repositories/account.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { db } from "../client";
 import { pcgeAccounts } from "../schema";
 import { resolveCompanyIdFromOrganization, resolveOrganizationIdFromCompany } from "./support/organization-resolver";

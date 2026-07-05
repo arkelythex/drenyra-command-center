@@ -1,5 +1,5 @@
 import { n } from "@/lib/utils";
-import type { HubArtifact, SheetDiffRow } from '@arkelythex/shared/artifacts';
+import type { HubArtifact, SheetDiffRow } from '@drenyra/shared/artifacts';
 
 type SheetDiffArtifact = Extract<HubArtifact, { type: 'sheet_diff' }>;
 

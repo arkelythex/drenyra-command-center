@@ -8,7 +8,7 @@ import {
   invoices,
   transactions,
   users,
-} from '@arkelythex/infrastructure';
+} from '@drenyra/infrastructure';
 import { SIRE_LEDGER_REPRO_RUNBOOK } from '../../../lib/compliance-runbooks';
 import { ComplianceService } from '../../compliance.service';
 

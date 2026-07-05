@@ -1,8 +1,8 @@
 import type {
 	ModelCapability,
 	RoutingResult,
-} from "@arkelythex/domain/ai/model-router/types";
-import type { RoutingAuditLogRepository } from "@arkelythex/domain/repositories/model-registration.repository";
+} from "@drenyra/ai/providers/model-router-types";
+import type { RoutingAuditLogRepository } from "@drenyra/domain/repositories/model-registration.repository";
 import type { ProviderAdapter } from "./provider-adapter.types";
 import { type QualityGate, runQualityGates } from "./quality-gates";
 

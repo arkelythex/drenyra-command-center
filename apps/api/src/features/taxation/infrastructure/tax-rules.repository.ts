@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { and, desc, eq, gt, lte, or, sql } from "@arkelythex/persistence/query";
-import { taxRules, taxRuleVersions } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, desc, eq, gt, lte, or, sql } from "@drenyra/persistence/query";
+import { taxRules, taxRuleVersions } from "@drenyra/persistence/schema";
 import { toPeruTaxDateKey } from "../domain/tax-date";
 
 /**

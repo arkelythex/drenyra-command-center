@@ -1,5 +1,5 @@
-import type { TransactionEntry, TransactionStatus, TransactionType } from "@arkelythex/domain/entities/Transaction";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import type { TransactionEntry, TransactionStatus, TransactionType } from "@drenyra/domain/entities/Transaction";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { transactions } from "../../schema";
 import type { DbDocumentType, DbTransactionStatus, DbTransactionType } from "./types";
 

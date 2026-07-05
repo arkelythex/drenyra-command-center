@@ -1,4 +1,4 @@
 /**
- * AI validation.service.ts - Re-exported from @arkelythex/infrastructure
+ * AI validation.service.ts - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/validation.service";
+export * from "@drenyra/infrastructure/ai/validation.service";

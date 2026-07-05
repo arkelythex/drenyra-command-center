@@ -4,17 +4,17 @@ source-of-truth: packages/test-utils/package.json
 auto-generated: false
 ---
 
-# @arkelythex/test-utils — Shared Testing Utilities
+# @drenyra/test-utils — Shared Testing Utilities
 
 **Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
-**Versión**: 1.0.0 | **Dependencias**: @arkelythex/domain
+**Versión**: 1.0.0 | **Dependencias**: @drenyra/domain
 
 ---
 
 ## De un vistazo
 
-El paquete **test-utils** provee infraestructura de testing reutilizable para todos los paquetes y apps de Arkelythex: builders (patrón builder), fixtures, mocks, helpers de base de datos para tests, utilidades de aislamiento de tenant, clientes de API para tests y helpers E2E.
+El paquete **test-utils** provee infraestructura de testing reutilizable para todos los paquetes y apps de Drenyra: builders (patrón builder), fixtures, mocks, helpers de base de datos para tests, utilidades de aislamiento de tenant, clientes de API para tests y helpers E2E.
 
 Escribí tests más rápido y con menos boilerplate — los builders y mocks hacen el trabajo pesado.
 
@@ -79,7 +79,7 @@ packages/test-utils/src/
 ### Builder Pattern
 
 ```typescript
-import { InvoiceBuilder } from "@arkelythex/test-utils/builders";
+import { InvoiceBuilder } from "@drenyra/test-utils/builders";
 
 const invoice = new InvoiceBuilder()
   .withCompanyRuc("20123456789")
@@ -98,15 +98,15 @@ Mocks listos para usar de servicios externos: SUNAT API, Prometeo (banking), pro
 
 | Ruta de Exportación | Descripción |
 |---------------------|-------------|
-| `@arkelythex/test-utils` | Barrel export principal |
-| `@arkelythex/test-utils/builders` | Patrón builder |
-| `@arkelythex/test-utils/fixtures` | Fixtures de test |
-| `@arkelythex/test-utils/mocks` | Implementaciones mock |
-| `@arkelythex/test-utils/helpers` | Helpers de test |
-| `@arkelythex/test-utils/database` | Utilidades de DB para tests |
-| `@arkelythex/test-utils/tenant` | Utilidades de aislamiento de tenant |
-| `@arkelythex/test-utils/api` | Clientes API para tests |
-| `@arkelythex/test-utils/e2e` | Helpers E2E |
+| `@drenyra/test-utils` | Barrel export principal |
+| `@drenyra/test-utils/builders` | Patrón builder |
+| `@drenyra/test-utils/fixtures` | Fixtures de test |
+| `@drenyra/test-utils/mocks` | Implementaciones mock |
+| `@drenyra/test-utils/helpers` | Helpers de test |
+| `@drenyra/test-utils/database` | Utilidades de DB para tests |
+| `@drenyra/test-utils/tenant` | Utilidades de aislamiento de tenant |
+| `@drenyra/test-utils/api` | Clientes API para tests |
+| `@drenyra/test-utils/e2e` | Helpers E2E |
 
 ---
 
@@ -121,7 +121,7 @@ bun run typecheck       # TypeScript type check
 
 ## 🔗 Dependencias
 
-- **Runtime**: `@arkelythex/domain`
+- **Runtime**: `@drenyra/domain`
 - **Dev**: `@playwright/test`, `drizzle-orm`, `postgres`, TypeScript ^6.0.3, Vitest ^4.1.7
 
 ---
@@ -130,9 +130,9 @@ bun run typecheck       # TypeScript type check
 
 ```typescript
 import { describe, it, expect } from "vitest";
-import { InvoiceBuilder } from "@arkelythex/test-utils/builders";
-import { sunatApiMock } from "@arkelythex/test-utils/mocks";
-import { setupTestDb } from "@arkelythex/test-utils/database";
+import { InvoiceBuilder } from "@drenyra/test-utils/builders";
+import { sunatApiMock } from "@drenyra/test-utils/mocks";
+import { setupTestDb } from "@drenyra/test-utils/database";
 
 describe("Invoice Service", () => {
   it("should create an invoice", async () => {

@@ -1,6 +1,6 @@
 /**
  * AI Worker Queues Schema
- * Tablas para el sistema de cola de workers AI de Arkelythex
+ * Tablas para el sistema de cola de workers AI de Drenyra
  */
 
 import { relations } from "drizzle-orm";

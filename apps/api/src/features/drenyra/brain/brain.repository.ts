@@ -13,7 +13,7 @@ import type {
 	DrenyraBrainThread,
 	DrenyraBrainTurn,
 	DrenyraFiscalScope,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 import { isSameFiscalScope } from "./brain.types";
 
 export interface DrenyraBrainRepository {

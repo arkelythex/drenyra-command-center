@@ -4,7 +4,7 @@
  * Types for tracking LLM context window usage per runId
  * and emitting threshold-based prune signals.
  *
- * @module @arkelythex/ai/context-monitor
+ * @module @drenyra/ai/context-monitor
  */
 
 import type { ChatMessage } from "../gateway/types";

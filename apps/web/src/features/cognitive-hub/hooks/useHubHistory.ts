@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-const HUB_HISTORY_KEY = 'arkelythex-cognitive-hub-history-v1';
+const HUB_HISTORY_KEY = 'drenyra-cognitive-hub-history-v1';
 
 export type HubMessageRole = 'user' | 'assistant' | 'system';
 

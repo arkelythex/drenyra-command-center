@@ -4,7 +4,7 @@ import {
 	kbCollections,
 	kbDocuments,
 	kbQueries,
-} from "@arkelythex/persistence";
+} from "@drenyra/persistence";
 import {
 	and,
 	asc,

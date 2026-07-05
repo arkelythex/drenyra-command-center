@@ -207,7 +207,7 @@ export const governanceAuditModule = new Elysia({
 			try {
 				const metrics = await getGovernancePolicyDecisionMetrics();
 				return ok({
-					metric: "arkelythex_api_governance_policy_decisions_total",
+					metric: "drenyra_api_governance_policy_decisions_total",
 					values: metrics,
 				});
 			} catch (error: unknown) {
@@ -261,7 +261,7 @@ export const governanceAuditModule = new Elysia({
 				tags: ["Governance Audit"],
 				summary: "Get governance metrics in Prometheus format",
 				description:
-					"Exposes arkelythex_api_governance_policy_decisions_total in Prometheus text format.",
+					"Exposes drenyra_api_governance_policy_decisions_total in Prometheus text format.",
 			},
 		},
 	);

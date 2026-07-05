@@ -6,7 +6,7 @@
  * @module cashflow/domain
  */
 
-import { Money, type Currency } from '@arkelythex/domain';
+import { Money, type Currency } from '@drenyra/domain';
 
 /**
  * Cash flow item (invoice or bill)

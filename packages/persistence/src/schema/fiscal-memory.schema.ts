@@ -4,7 +4,7 @@ import type {
 	FiscalMemoryProps,
 	FiscalMemorySeverity,
 	FiscalMemoryStatus,
-} from "@arkelythex/domain/fiscal-memory";
+} from "@drenyra/domain/fiscal-memory";
 
 export const fiscalMemories = pgTable(
 	"fiscal_memories",

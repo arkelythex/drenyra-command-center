@@ -29,7 +29,7 @@ describe("getCompanyContext", () => {
 
 	it("reads the authenticated company context when available", () => {
 		localStorage.setItem(
-			"arkelythex-auth",
+			"drenyra-auth",
 			JSON.stringify({
 				state: {
 					user: {
@@ -83,7 +83,7 @@ describe("getCompanyContext", () => {
 
 	it("hydrates a session user with stored company context when Better Auth omits tenant fields", () => {
 		localStorage.setItem(
-			"arkelythex-auth",
+			"drenyra-auth",
 			JSON.stringify({
 				state: {
 					user: {
@@ -148,7 +148,7 @@ describe("getCompanyContext", () => {
 
 	it("returns the available company memberships when present in auth storage", () => {
 		localStorage.setItem(
-			"arkelythex-auth",
+			"drenyra-auth",
 			JSON.stringify({
 				state: {
 					user: {

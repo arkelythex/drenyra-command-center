@@ -1,4 +1,4 @@
 /**
- * AI models - Re-exported from @arkelythex/infrastructure
+ * AI models - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/models";
+export * from "@drenyra/infrastructure/ai/models";

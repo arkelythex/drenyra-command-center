@@ -4,8 +4,8 @@
  * Wraps domain calculators for the API layer.
  */
 
-import { Money } from "@arkelythex/domain";
-import { calculateRoi, calculatePaybackPeriod, calculateNpv, calculateIrr } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
+import { calculateRoi, calculatePaybackPeriod, calculateNpv, calculateIrr } from "@drenyra/domain";
 import type { RoiCalculateInputType, PaybackInputType, NpvInputType, IrrInputType, ScenarioCompareInputType, RoiScenarioInputType } from "../../types";
 
 interface ScenarioResult {

@@ -4,8 +4,8 @@
  * @module use-cases/fiscal-agent/types
  */
 
-import type { Money } from "@arkelythex/domain";
-import type { CountryCode } from "@arkelythex/domain";
+import type { Money } from "@drenyra/domain";
+import type { CountryCode } from "@drenyra/domain";
 
 // ─── Step Pipeline ───────────────────────────────────────────────────
 

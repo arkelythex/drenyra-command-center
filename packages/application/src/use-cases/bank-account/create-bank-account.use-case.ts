@@ -8,8 +8,8 @@ import {
 	BankAccount,
 	type BankAccountType,
 	type Currency,
-} from "@arkelythex/domain/entities/BankAccount";
-import type { BankAccountRepository } from "@arkelythex/domain/repositories/bank-account.repository";
+} from "@drenyra/domain/entities/BankAccount";
+import type { BankAccountRepository } from "@drenyra/domain/repositories/bank-account.repository";
 
 /**
  * CreateBankAccountInput interface.

@@ -11,7 +11,7 @@ import { Elysia, t } from "elysia";
 import {
 	getAllRegisteredAgents,
 	type Agent,
-} from "@arkelythex/drenyra-orchestrator";
+} from "@drenyra/drenyra-orchestrator";
 import { ok, fail } from "../../shared/api-response";
 import { createLogger } from "../../../lib/logger";
 import {

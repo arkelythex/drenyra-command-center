@@ -1,8 +1,8 @@
 import type {
 	DeterministicValidatorResultRecord,
 	PolicyDecisionRecord,
-} from "@arkelythex/domain";
-import { POLICY_OUTCOME } from "@arkelythex/domain";
+} from "@drenyra/domain";
+import { POLICY_OUTCOME } from "@drenyra/domain";
 import type { DeterministicFiscalValidatorPort } from "../ports/deterministic-fiscal-validator.port";
 
 export interface DeterministicValidatorOrchestratorInput {

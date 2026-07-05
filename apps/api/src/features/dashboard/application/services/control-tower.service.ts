@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, inArray, sql } from "@arkelythex/persistence/query";
-import { companies, documents } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, inArray, sql } from "@drenyra/persistence/query";
+import { companies, documents } from "@drenyra/persistence/schema";
 import { expedienteService } from "../../../expedientes/application/expediente.service";
 import { resolveOrganizationId } from "../../../journal-entries/application/_helpers";
 import { buildSireConfig } from "../../../sire/services/sire-config.service";

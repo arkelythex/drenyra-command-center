@@ -1,4 +1,4 @@
-import type { IDocumentSyncProcessor, IExpenseClassifier, IInvoiceOCRService, IUBLInvoiceParser } from "@arkelythex/application";
+import type { IDocumentSyncProcessor, IExpenseClassifier, IInvoiceOCRService, IUBLInvoiceParser } from "@drenyra/application";
 import { processDocumentSync } from "../queues/document-processor.worker";
 declare class UBLInvoiceParserAdapter implements IUBLInvoiceParser {
     private readonly parser;
@@ -8,7 +8,7 @@ declare class InvoiceOCRServiceAdapter implements IInvoiceOCRService {
     extractInvoiceData(options: {
         imageUrl?: string;
         pdfUrl?: string;
-    }): Promise<import("@arkelythex/ai/ai").OCRResponse>;
+    }): Promise<import("@drenyra/ai/ai").OCRResponse>;
 }
 declare class ExpenseClassifierAdapter implements IExpenseClassifier {
     classifyExpense(input: {
@@ -17,7 +17,7 @@ declare class ExpenseClassifierAdapter implements IExpenseClassifier {
         businessType?: string;
         providerName?: string;
         category?: string;
-    }): Promise<import("@arkelythex/ai/ai").ClassificationResult | null>;
+    }): Promise<import("@drenyra/ai/ai").ClassificationResult | null>;
     quickClassify(description: string): {
         accountCode: string;
         accountName: string;

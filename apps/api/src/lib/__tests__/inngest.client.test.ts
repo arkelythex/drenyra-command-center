@@ -40,7 +40,7 @@ describe("inngest client", () => {
 		});
 
 		expect(fetchMock).toHaveBeenCalledWith(
-			"http://localhost:8288/e/arkelythex-documents",
+			"http://localhost:8288/e/drenyra-documents",
 			expect.objectContaining({
 				method: "POST",
 			}),

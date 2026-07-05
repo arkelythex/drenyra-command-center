@@ -3,7 +3,7 @@ import { TrendingDown } from "lucide-react";
 interface PricingInsightProps {
 	companiesCount: number;
 	pricing: {
-		arkelythex: number;
+		drenyra: number;
 		concar: number;
 		dora: number;
 	};
@@ -57,9 +57,9 @@ export function PricingInsights({
 						</span>
 					</div>
 					<div className="flex justify-between items-center pt-2 border-t border-border">
-						<span className="text-xs text-info font-bold">ARKELYTHEX</span>
+						<span className="text-xs text-info font-bold">DRENYRA</span>
 						<span className="text-2xl font-mono font-bold text-info">
-							S/ {pricing.arkelythex.toFixed(2)}
+							S/ {pricing.drenyra.toFixed(2)}
 						</span>
 					</div>
 				</div>

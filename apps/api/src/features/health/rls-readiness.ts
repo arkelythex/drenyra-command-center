@@ -1,5 +1,5 @@
-import { db } from "@arkelythex/persistence/client";
-import { sql } from "@arkelythex/persistence/query";
+import { db } from "@drenyra/persistence/client";
+import { sql } from "@drenyra/persistence/query";
 
 const RLS_TARGETS = [
 	{ table: "invoices", policy: "invoices_tenant_guard" },

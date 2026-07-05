@@ -19,7 +19,7 @@ const dbMocks = vi.hoisted(() => {
 	};
 });
 
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		query: {
 			companies: {

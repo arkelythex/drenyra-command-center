@@ -36,7 +36,7 @@ export async function exportToXml(
 	options: XmlExportOptions,
 ): Promise<string> {
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<AuditTrail xmlns="urn:arkelythex:audit:1.0" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+<AuditTrail xmlns="urn:drenyra:audit:1.0" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
   <Header>
     <cbc:CompanyRUC>${escapeXml(options.companyRuc)}</cbc:CompanyRUC>
     <cbc:CompanyName>${escapeXml(options.companyName)}</cbc:CompanyName>

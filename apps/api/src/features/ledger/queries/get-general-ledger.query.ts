@@ -1,6 +1,6 @@
-import { db as globalDb } from "@arkelythex/persistence/client";
-import { and, desc, eq, gte, lte } from "@arkelythex/persistence/query";
-import { categories, transactions } from "@arkelythex/persistence/schema";
+import { db as globalDb } from "@drenyra/persistence/client";
+import { and, desc, eq, gte, lte } from "@drenyra/persistence/query";
+import { categories, transactions } from "@drenyra/persistence/schema";
 import { formatVoucher, toNumber } from "../_internal/ledger-utils";
 
 /**

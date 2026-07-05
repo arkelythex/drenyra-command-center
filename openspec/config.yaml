@@ -1,18 +1,19 @@
-# OpenSpec Configuration — ARKELYTHEX Drenyra
+# OpenSpec Configuration — DRENYRA Drenyra
 # Creado: 2026-07-02
-# Modo: agentic-first transformation (10 SDD plans: 6 frontend + 4 backend)
+# Actualizado: 2026-07-04
+# Modo: agentic-first transformation + structural quality (16 SDD plans: 6 frontend + 4 backend + 6 structural)
 
 version: '1.0'
-project: '@arkelythex/main'
+project: '@drenyra/main'
 
-# SDD session preflight choices (2026-07-02)
+# SDD session preflight choices (2026-07-04)
 execution_mode: interactive
 artifact_store: both # openspec + engram cuando disponible
 chained_pr_strategy: auto-forecast
 review_budget: 400 # líneas máximas por PR individual
 
 # Estrategia general
-strategy: dual-track # Frontend agentic UX + Backend production readiness
+strategy: triple-track # Frontend agentic UX + Backend production readiness + Structural quality
 migration: replace-total # Reemplazo completo de navegación SaaS → agentic
 
 # Equipo / autores
@@ -40,6 +41,9 @@ workspace:
     - packages/shared
     - packages/drenyra-core
     - packages/drenyra-engram
+    - packages/agent-memory
+    - packages/drenyra-harness
+    - packages/platform-core
 
 # Backend plans
 plans:
@@ -68,3 +72,41 @@ plans:
       prs: 3
       est_lines: 750
       status: proposal
+
+  structural:
+    S1:
+      name: AI/Agent Ecosystem Consolidation
+      dir: openspec/changes/drenyra-s1-ai-consolidation
+      prs: 5
+      est_lines: 1800
+      status: proposal
+    S2:
+      name: Core Package Simplification
+      dir: openspec/changes/drenyra-s2-core-simplification
+      prs: 1
+      est_lines: 150
+      status: proposal
+    S3:
+      name: API Type Inline → Package Migration
+      dir: openspec/changes/drenyra-s3-api-type-migration
+      prs: 2
+      est_lines: 400
+      status: working-draft
+    S4:
+      name: Domain Boundary Audit
+      dir: openspec/changes/drenyra-s4-domain-boundary-audit
+      prs: 2
+      est_lines: 350
+      status: working-draft
+    S5:
+      name: Go CLI Pattern Alignment
+      dir: openspec/changes/drenyra-s5-go-cli-alignment
+      prs: 2
+      est_lines: 500
+      status: working-draft
+    S6:
+      name: Documentation & Navigation Cleanup
+      dir: openspec/changes/drenyra-s6-docs-cleanup
+      prs: 1
+      est_lines: 100
+      status: working-draft

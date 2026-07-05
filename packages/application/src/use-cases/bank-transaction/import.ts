@@ -16,10 +16,10 @@ import {
 	BankTransaction,
 	type BankTransactionType,
 	type Currency,
-} from "@arkelythex/domain/entities/BankTransaction";
-import type { BankAccountRepository } from "@arkelythex/domain/repositories/bank-account.repository";
-import type { BankTransactionRepository } from "@arkelythex/domain/repositories/bank-transaction.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/entities/BankTransaction";
+import type { BankAccountRepository } from "@drenyra/domain/repositories/bank-account.repository";
+import type { BankTransactionRepository } from "@drenyra/domain/repositories/bank-transaction.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import type {
 	ImportTransactionRow,
 	ImportBankTransactionsInput,

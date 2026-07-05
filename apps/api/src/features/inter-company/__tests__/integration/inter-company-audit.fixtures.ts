@@ -6,7 +6,7 @@ import {
   eq,
   interCompanyTransactions,
   users,
-} from '@arkelythex/infrastructure';
+} from '@drenyra/infrastructure';
 
 export type InterCompanyAuditFixture = {
   userId: string;

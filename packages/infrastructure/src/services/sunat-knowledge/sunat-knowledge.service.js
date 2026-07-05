@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { db } from "@arkelythex/persistence/client";
+import { db } from "@drenyra/persistence/client";
 import { embeddingService } from "../embedding/embedding.service";
 import { rerankerService } from "../reranker/reranker.service";
 function buildKnowledgeSources(chunks, corpusId) {

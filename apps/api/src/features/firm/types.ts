@@ -1,4 +1,4 @@
-import type { FirmMetrics } from "@arkelythex/domain";
+import type { FirmMetrics } from "@drenyra/domain";
 
 export interface DashboardResponse {
 	organizationId: string;

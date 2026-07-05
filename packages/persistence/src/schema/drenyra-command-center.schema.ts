@@ -11,7 +11,7 @@ import type {
 	DrenyraAgentType,
 	AgentRunStatus,
 	ApprovalStatus,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 
 export const drenyraFiscalCases = pgTable(
 	"drenyra_fiscal_cases",

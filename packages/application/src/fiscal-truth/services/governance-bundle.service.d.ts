@@ -1,4 +1,4 @@
-import type { GovernanceBundleReference } from "@arkelythex/domain";
+import type { GovernanceBundleReference } from "@drenyra/domain";
 import type { GovernanceBundlePort } from "../ports/governance-bundle.port";
 export declare class GovernanceBundleService {
     #private;

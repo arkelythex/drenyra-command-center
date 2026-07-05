@@ -1,4 +1,4 @@
-import { DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY } from "@arkelythex/domain/drenyra";
+import { DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY } from "@drenyra/domain/drenyra";
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
 import { drenyraModule } from "../drenyra.routes";

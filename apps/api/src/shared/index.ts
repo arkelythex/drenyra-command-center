@@ -1,5 +1,5 @@
 /**
- * Shared utilities and plugins for the Arkelythex API.
+ * Shared utilities and plugins for the Drenyra API.
  *
  * @module shared
  */

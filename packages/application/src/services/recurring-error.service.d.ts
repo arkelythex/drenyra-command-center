@@ -1,5 +1,5 @@
-import type { FiscalMemorySeverity, FiscalMemoryScope } from "@arkelythex/domain/fiscal-memory";
-import type { FiscalMemoryRepository } from "@arkelythex/domain/repositories/fiscal-memory.repository";
+import type { FiscalMemorySeverity, FiscalMemoryScope } from "@drenyra/domain/fiscal-memory";
+import type { FiscalMemoryRepository } from "@drenyra/domain/repositories/fiscal-memory.repository";
 export interface EvaluateRecurringErrorInput {
     readonly scope: FiscalMemoryScope;
     readonly periods: readonly string[];

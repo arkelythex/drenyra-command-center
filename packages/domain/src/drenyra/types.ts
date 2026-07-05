@@ -52,7 +52,13 @@ export type AutonomyLevel = (typeof AUTONOMY_LEVELS)[number];
  * @example
  * const status: FiscalCaseStatus = "APPROVAL_PENDING";
  */
-export const FISCAL_CASE_STATUSES = ["OPEN", "IN_REVIEW", "APPROVAL_PENDING", "RESOLVED", "ARCHIVED"] as const;
+export const FISCAL_CASE_STATUSES = [
+	"OPEN",
+	"IN_REVIEW",
+	"APPROVAL_PENDING",
+	"RESOLVED",
+	"ARCHIVED",
+] as const;
 /**
  * Fiscal case lifecycle state.
  *
@@ -67,7 +73,14 @@ export type FiscalCaseStatus = (typeof FISCAL_CASE_STATUSES)[number];
  * @example
  * FISCAL_CASE_TYPES.includes("MONTHLY_CLOSE");
  */
-export const FISCAL_CASE_TYPES = ["MONTHLY_CLOSE", "CPE_REVIEW", "SIRE_REVIEW", "LEDGER_REVIEW", "CONCILIATION", "EVIDENCE_REVIEW"] as const;
+export const FISCAL_CASE_TYPES = [
+	"MONTHLY_CLOSE",
+	"CPE_REVIEW",
+	"SIRE_REVIEW",
+	"LEDGER_REVIEW",
+	"CONCILIATION",
+	"EVIDENCE_REVIEW",
+] as const;
 /**
  * Type of fiscal workflow represented by a case.
  *
@@ -82,7 +95,12 @@ export type FiscalCaseType = (typeof FISCAL_CASE_TYPES)[number];
  * @example
  * const level: FiscalRiskLevel = "CRITICAL";
  */
-export const FISCAL_RISK_LEVELS = ["LOW", "MEDIUM", "HIGH", "CRITICAL"] as const;
+export const FISCAL_RISK_LEVELS = [
+	"LOW",
+	"MEDIUM",
+	"HIGH",
+	"CRITICAL",
+] as const;
 /**
  * Fiscal risk severity attached to cases and agent output.
  *
@@ -97,7 +115,14 @@ export type FiscalRiskLevel = (typeof FISCAL_RISK_LEVELS)[number];
  * @example
  * EVIDENCE_TYPES.includes("SUNAT_RECORD");
  */
-export const EVIDENCE_TYPES = ["DOCUMENT", "SUNAT_RECORD", "LEDGER_ENTRY", "BANK_STATEMENT", "USER_NOTE", "AGENT_OUTPUT"] as const;
+export const EVIDENCE_TYPES = [
+	"DOCUMENT",
+	"SUNAT_RECORD",
+	"LEDGER_ENTRY",
+	"BANK_STATEMENT",
+	"USER_NOTE",
+	"AGENT_OUTPUT",
+] as const;
 /**
  * Evidence item classification.
  *
@@ -265,6 +290,8 @@ export interface AgentRunOutput {
 	recommendedActions: string[];
 	requiredEvidence: string[];
 	approvalRequired: boolean;
+	/** VerificationReport post-ejecución para el loop intención↔acción */
+	verificationReport?: import("./verification-types").VerificationReport;
 }
 
 export interface AgentRun {
@@ -352,7 +379,8 @@ export interface FiscalCaseDetails {
  * @example
  * const capability = DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY;
  */
-export const DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY = "drenyra.fiscal-work.inspect" as const;
+export const DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY =
+	"drenyra.fiscal-work.inspect" as const;
 
 /**
  * Result states returned by the shared fiscal work inspect envelope.
@@ -366,7 +394,8 @@ export const DRENYRA_FISCAL_WORK_INSPECT_STATUSES = [
 	"not_found",
 	"validation_failed",
 ] as const;
-export type DrenyraFiscalWorkInspectStatus = (typeof DRENYRA_FISCAL_WORK_INSPECT_STATUSES)[number];
+export type DrenyraFiscalWorkInspectStatus =
+	(typeof DRENYRA_FISCAL_WORK_INSPECT_STATUSES)[number];
 
 /**
  * Machine-readable reason codes for CLI/Web handling of fiscal work inspect responses.
@@ -382,7 +411,8 @@ export const DRENYRA_FISCAL_WORK_INSPECT_REASON_CODES = [
 	"NOT_FOUND",
 	"VALIDATION_FAILED",
 ] as const;
-export type DrenyraFiscalWorkInspectReasonCode = (typeof DRENYRA_FISCAL_WORK_INSPECT_REASON_CODES)[number];
+export type DrenyraFiscalWorkInspectReasonCode =
+	(typeof DRENYRA_FISCAL_WORK_INSPECT_REASON_CODES)[number];
 
 /**
  * Source surface requesting fiscal work inspection.
@@ -390,7 +420,11 @@ export type DrenyraFiscalWorkInspectReasonCode = (typeof DRENYRA_FISCAL_WORK_INS
  * @example
  * const surface: DrenyraFiscalWorkInspectSourceSurface = "web";
  */
-export type DrenyraFiscalWorkInspectSourceSurface = "cli" | "web" | "api" | "automation";
+export type DrenyraFiscalWorkInspectSourceSurface =
+	| "cli"
+	| "web"
+	| "api"
+	| "automation";
 
 /**
  * Shared read-only inspect envelope consumed by Drenyra CLI and Web.
@@ -416,7 +450,12 @@ export interface DrenyraFiscalWorkInspectEnvelope {
 	sourceSurface?: DrenyraFiscalWorkInspectSourceSurface;
 }
 
-export type DrenyraBrainSourceSurface = "cli" | "tui" | "web" | "api" | "automation";
+export type DrenyraBrainSourceSurface =
+	| "cli"
+	| "tui"
+	| "web"
+	| "api"
+	| "automation";
 
 export type DrenyraBrainThreadStatus =
 	| "active"
@@ -540,5 +579,5 @@ export interface DrenyraBrainEvent {
 	metadata: Record<string, unknown>;
 }
 
-import type { DrenyraSubagentName } from "@arkelythex/drenyra-core";
+import type { DrenyraSubagentName } from "../agents/drenyra-subagents";
 export type { DrenyraSubagentName };

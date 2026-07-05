@@ -1,5 +1,5 @@
-import { Money } from "@arkelythex/domain";
-import type { Currency } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
+import type { Currency } from "@drenyra/domain";
 
 function decimalStringToCents(value: string): number {
 	const normalized = value.trim();

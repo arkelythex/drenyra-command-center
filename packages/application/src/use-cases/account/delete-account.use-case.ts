@@ -5,8 +5,8 @@
  * and accounts with children or transactions
  */
 
-import type { AccountRepository } from "@arkelythex/domain/repositories/account.repository";
-import type { JournalEntryRepository } from "@arkelythex/domain/repositories/journal-entry.repository";
+import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
+import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
 
 /**
  * DeleteAccountResult interface.

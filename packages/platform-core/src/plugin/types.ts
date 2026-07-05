@@ -4,7 +4,7 @@
  * Shared configuration types used by plugin registration and lifecycle
  * management. These will be extended in later PRs.
  *
- * @module @arkelythex/platform-core/plugin
+ * @module @drenyra/platform-core/plugin
  */
 
 import type { AgenticOSPlugin } from "./interface.js";

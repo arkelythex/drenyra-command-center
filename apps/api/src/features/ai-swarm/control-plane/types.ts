@@ -1,4 +1,4 @@
-import type { AgentRegistryEntry, TraceEvidenceStore } from "@arkelythex/ai";
+import type { AgentRegistryEntry, TraceEvidenceStore } from "@drenyra/ai";
 import { t } from "elysia";
 
 export const policyPreviewBodySchema = t.Object({

@@ -4,7 +4,7 @@ import {
 	type AddEvidenceRequest,
 	type CreateFiscalCaseRequest,
 } from "../api/drenyra-command-center.api";
-import type { DrenyraAgentType, FiscalCaseStatus } from "@arkelythex/domain/drenyra";
+import type { DrenyraAgentType, FiscalCaseStatus } from "@drenyra/domain/drenyra";
 import { notify } from "./useNotifications";
 
 const drenyraKeys = {

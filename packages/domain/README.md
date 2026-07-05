@@ -4,7 +4,7 @@ source-of-truth: packages/domain/package.json
 auto-generated: false
 ---
 
-# @arkelythex/domain — Domain Layer
+# @drenyra/domain — Domain Layer
 
 **Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
@@ -14,7 +14,7 @@ auto-generated: false
 
 ## De un vistazo
 
-El paquete **domain** es la capa más interna de la arquitectura Arkelythex. Contiene todas las entidades de negocio, value objects, eventos de dominio, interfaces de repositorio, errores de dominio y servicios de dominio. Tiene **cero dependencias runtime** y sigue diseño estrictamente framework-free — nada de ORM, HTTP ni frameworks.
+El paquete **domain** es la capa más interna de la arquitectura Drenyra. Contiene todas las entidades de negocio, value objects, eventos de dominio, interfaces de repositorio, errores de dominio y servicios de dominio. Tiene **cero dependencias runtime** y sigue diseño estrictamente framework-free — nada de ORM, HTTP ni frameworks.
 
 Este es el corazón de la lógica de negocio. Todo lo demás depende de él — y eso es exactamente como debería ser.
 
@@ -104,7 +104,7 @@ packages/domain/src/
 
 ### Interfaces de Repositorio (`src/repositories/`)
 
-Contratos para persistencia — las implementaciones viven en `@arkelythex/persistence`:
+Contratos para persistencia — las implementaciones viven en `@drenyra/persistence`:
 
 `account.repository`, `invoice.repository`, `document.repository`, `journal-entry.repository`, `transaction.repository`, `bank-account`, `bank-reconciliation`, `bank-transaction`, `client.repository`, `provider.repository`, `accounting-period.repository`, `detraction.repository`, `ai-settings.repository`, `ai-prompt.repository`, `exchange-rate.repository`, `fiscal-memory.repository`, `cpe-log.repository`
 
@@ -123,7 +123,7 @@ bun run test         # Ejecutar tests unitarios (Vitest)
 ## 🔗 Dependencias
 
 - **Runtime**: Ninguna (zero dependencies)
-- **Dev**: TypeScript ^6.0.3, Vitest ^4.1.7, @arkelythex/drenyra-core
+- **Dev**: TypeScript ^6.0.3, Vitest ^4.1.7, @drenyra/drenyra-core
 
 ---
 

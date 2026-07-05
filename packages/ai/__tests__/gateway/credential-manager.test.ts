@@ -16,7 +16,7 @@ describe("CredentialManager - Security Hardening", () => {
 	beforeEach(() => {
 		// Clear encryption env vars before each test
 		delete process.env.LLM_GATEWAY_KEY_PASSPHRASE;
-		delete process.env.ARKELYTHEX_MASTER_KEY;
+		delete process.env.DRENYRA_MASTER_KEY;
 	});
 
 	afterEach(() => {
@@ -49,8 +49,8 @@ describe("CredentialManager - Security Hardening", () => {
 			expect(decrypted).toBe("my-api-key");
 		});
 
-		it("should accept ARKELYTHEX_MASTER_KEY for encryption", () => {
-			process.env.ARKELYTHEX_MASTER_KEY = "master-key-from-env";
+		it("should accept DRENYRA_MASTER_KEY for encryption", () => {
+			process.env.DRENYRA_MASTER_KEY = "master-key-from-env";
 
 			const encrypted = credentialManager.encryptApiKey("another-key");
 			expect(encrypted).toBeDefined();
@@ -59,9 +59,9 @@ describe("CredentialManager - Security Hardening", () => {
 			expect(decrypted).toBe("another-key");
 		});
 
-		it("should prefer LLM_GATEWAY_KEY_PASSPHRASE over ARKELYTHEX_MASTER_KEY", () => {
+		it("should prefer LLM_GATEWAY_KEY_PASSPHRASE over DRENYRA_MASTER_KEY", () => {
 			process.env.LLM_GATEWAY_KEY_PASSPHRASE = "gateway-specific";
-			process.env.ARKELYTHEX_MASTER_KEY = "master-key";
+			process.env.DRENYRA_MASTER_KEY = "master-key";
 
 			// Encrypt with gateway-specific
 			const encrypted = credentialManager.encryptApiKey("test-key");
@@ -75,7 +75,7 @@ describe("CredentialManager - Security Hardening", () => {
 	describe("error message safety", () => {
 		it("should not expose sensitive path information in error message", () => {
 			delete process.env.LLM_GATEWAY_KEY_PASSPHRASE;
-			delete process.env.ARKELYTHEX_MASTER_KEY;
+			delete process.env.DRENYRA_MASTER_KEY;
 
 			try {
 				credentialManager.encryptApiKey("test");
@@ -84,7 +84,7 @@ describe("CredentialManager - Security Hardening", () => {
 				const message = (error as MissingEncryptionKeyError).message;
 				// Should not contain file paths or sensitive env values
 				expect(message).not.toContain("/");
-				expect(message).not.toContain("arkelythex-llm-gateway-default-key");
+				expect(message).not.toContain("drenyra-llm-gateway-default-key");
 				expect(message).not.toContain("change-in-production");
 			}
 		});

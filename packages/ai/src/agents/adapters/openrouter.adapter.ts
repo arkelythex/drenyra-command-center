@@ -115,8 +115,8 @@ export class OpenRouterAdapter {
       maxTokens: config.maxTokens || 4096,
       temperature: config.temperature || 0.1,
       cacheEnabled: config.cacheEnabled ?? true,
-      siteUrl: config.siteUrl || 'https://arkelythexfounders.com', // Default or from env
-      siteName: config.siteName || 'Arkelythex AI Swarm', // Default or from env
+      siteUrl: config.siteUrl || 'https://drenyrafounders.com', // Default or from env
+      siteName: config.siteName || 'Drenyra AI Swarm', // Default or from env
     };
 
     this.cache = new Map();

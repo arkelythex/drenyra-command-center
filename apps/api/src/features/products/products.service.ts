@@ -1,6 +1,6 @@
-import { products } from '@arkelythex/persistence/schema';
-import { db } from '@arkelythex/persistence/client';
-import { and, desc, eq } from '@arkelythex/persistence/query';
+import { products } from '@drenyra/persistence/schema';
+import { db } from '@drenyra/persistence/client';
+import { and, desc, eq } from '@drenyra/persistence/query';
 
 type ProductTaxType = 'GRAVADO' | 'EXONERADO' | 'INAFECTO';
 type ProductRow = typeof products.$inferSelect;

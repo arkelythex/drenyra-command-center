@@ -21,7 +21,7 @@
  * ```
  */
 
-import { Money, type Currency } from '@arkelythex/domain/value-objects/Money';
+import { Money, type Currency } from '@drenyra/domain/value-objects/Money';
 import { AccountNumber } from '../value-objects/account-number.vo';
 import type { AccountType, BankAccountProps } from '../types';
 

@@ -1,4 +1,4 @@
-import { GOVERNANCE_REVIEW_STATUS, PHASE_1_REQUIRED_ADR_IDS, } from "@arkelythex/domain";
+import { GOVERNANCE_REVIEW_STATUS, PHASE_1_REQUIRED_ADR_IDS, } from "@drenyra/domain";
 export class GovernanceBundleService {
     governancePort;
     constructor(governancePort) {

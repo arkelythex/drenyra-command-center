@@ -4,8 +4,8 @@ import type {
 	FiscalTruthEvent,
 	FiscalTruthRepository,
 	FiscalTruthScope,
-} from "@arkelythex/domain";
-import { computeAuditHash } from "@arkelythex/domain";
+} from "@drenyra/domain";
+import { computeAuditHash } from "@drenyra/domain";
 import type { DbTransaction } from "../unit-of-work";
 import { db } from "../client";
 import { fiscalTruthEvents } from "../schema/fiscal-truth.schema";

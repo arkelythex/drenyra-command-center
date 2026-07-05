@@ -1,4 +1,4 @@
-import type { DrenyraSubagentName } from "@arkelythex/drenyra-core";
+import type { DrenyraSubagentName } from "./drenyra-subagents";
 
 /**
  * Agent tier classification levels.
@@ -9,12 +9,18 @@ import type { DrenyraSubagentName } from "@arkelythex/drenyra-core";
  * - tier3: Leaf specialist agents
  * - tier3b: Sub-agents / payload drafters
  */
-export const AGENT_TIERS = ["tier0", "tier1", "tier2", "tier3", "tier3b"] as const;
+export const AGENT_TIERS = [
+	"tier0",
+	"tier1",
+	"tier2",
+	"tier3",
+	"tier3b",
+] as const;
 export type AgentTier = (typeof AGENT_TIERS)[number];
 
 /**
  * Source system origins for agent definitions.
- * Each constant represents a distinct subsystem in the Arkelythex ecosystem.
+ * Each constant represents a distinct subsystem in the Drenyra ecosystem.
  */
 export const AGENT_SYSTEMS = [
 	"cli-delegation",
@@ -142,6 +148,9 @@ export interface UnifiedAgentEntry {
  * }
  * ```
  */
-export function isAgentInTier(entry: UnifiedAgentEntry, tier: AgentTier): boolean {
+export function isAgentInTier(
+	entry: UnifiedAgentEntry,
+	tier: AgentTier,
+): boolean {
 	return entry.tier === tier;
 }

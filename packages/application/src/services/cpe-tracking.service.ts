@@ -8,8 +8,8 @@ import {
 	CPELog,
 	InvalidCPELogError,
 	type SunatStatus,
-} from "@arkelythex/domain/accounting/cpe-log";
-import type { CpeLogRepository } from "@arkelythex/domain/repositories/cpe-log.repository";
+} from "@drenyra/domain/accounting/cpe-log";
+import type { CpeLogRepository } from "@drenyra/domain/repositories/cpe-log.repository";
 
 export interface RegisterCPEDTO {
 	id: string;

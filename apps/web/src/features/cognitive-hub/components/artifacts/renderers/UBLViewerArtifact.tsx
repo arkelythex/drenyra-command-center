@@ -1,6 +1,6 @@
 import React from 'react';
 import { FileCode, Download, ExternalLink } from 'lucide-react';
-import type { HubArtifact } from '@arkelythex/shared/artifacts';
+import type { HubArtifact } from '@drenyra/shared/artifacts';
 
 interface UBLViewerArtifactProps {
   artifact: HubArtifact;

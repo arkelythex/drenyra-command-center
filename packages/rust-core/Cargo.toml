@@ -1,13 +1,13 @@
 [package]
-name = "arkelythex-rust-core"
+name = "drenyra-rust-core"
 version = "0.1.0"
 edition = "2021"
-description = "Rust hot-path fiscal primitives for ARKELYTHEX; TypeScript remains the source of truth until WASM parity is complete."
+description = "Rust hot-path fiscal primitives for DRENYRA; TypeScript remains the source of truth until WASM parity is complete."
 license = "UNLICENSED"
 publish = false
 
 [lib]
-name = "arkelythex_rust_core"
+name = "drenyra_rust_core"
 path = "src/lib.rs"
 crate-type = ["rlib", "cdylib"]
 

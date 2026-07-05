@@ -8,7 +8,7 @@
  * - Currency handling with Money type
  */
 
-import type { Currency } from "@arkelythex/domain";
+import type { Currency } from "@drenyra/domain";
 import type { Bill, BillItem } from "../domain/bill.entity";
 import type { BillDTO, BillItemDTO } from "../domain/bill.types";
 

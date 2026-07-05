@@ -14,7 +14,7 @@ import type {
 	EvidenceItem,
 	FiscalCase,
 	FiscalScope,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 import type { DrenyraAuditEventFilter, DrenyraAuditEventFilters, DrenyraRepository, DrenyraScopeGuard } from "./repository";
 
 function sameScope(entityScope: FiscalScope, scope: DrenyraScopeGuard): boolean {

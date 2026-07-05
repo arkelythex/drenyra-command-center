@@ -4,8 +4,8 @@
  * Retrieves a single transaction by ID for an organization.
  */
 
-import type { Transaction } from "@arkelythex/domain/entities/Transaction";
-import type { TransactionRepository } from "@arkelythex/domain/repositories/transaction.repository";
+import type { Transaction } from "@drenyra/domain/entities/Transaction";
+import type { TransactionRepository } from "@drenyra/domain/repositories/transaction.repository";
 
 /**
  * GetTransactionInput interface.

@@ -66,7 +66,7 @@ func (c *Config) Validate() []ValidationIssue {
 	}
 
 	if home, err := os.UserHomeDir(); err == nil {
-		memDir := filepath.Join(home, ".arkelythex", "memories")
+		memDir := filepath.Join(home, ".drenyra", "memories")
 		if _, err := os.Stat(memDir); err != nil {
 			issues = append(issues, ValidationIssue{"memory", "run: drenyra init", false})
 		} else {

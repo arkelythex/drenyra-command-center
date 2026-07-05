@@ -1,8 +1,8 @@
 import { Search, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import type { ExpedienteKind } from "@arkelythex/domain";
-import { EXPEDIENTE_KIND_LABELS } from "@arkelythex/domain";
+import type { ExpedienteKind } from "@drenyra/domain";
+import { EXPEDIENTE_KIND_LABELS } from "@drenyra/domain";
 
 export interface ExpedienteFiltersProps {
 	searchQuery: string;

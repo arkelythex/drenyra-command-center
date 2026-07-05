@@ -1,6 +1,6 @@
 import { and, desc, gte, sql } from "drizzle-orm";
-import { db } from "@arkelythex/persistence/client";
-import { aiCostEvents } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { aiCostEvents } from "@drenyra/persistence/schema";
 const DAILY_LIMIT_USD = 50;
 const MONTHLY_LIMIT_USD = 500;
 function ulid() {

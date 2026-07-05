@@ -1,5 +1,5 @@
 /**
- * ARKELYTHEX Root Vitest Configuration
+ * DRENYRA Root Vitest Configuration
  *
  * Workspace configuration for Vitest in monorepo.
  * Best practices for 2026: centralized config, shared coverage, workspace projects.
@@ -17,11 +17,6 @@ export default defineConfig({
 		// Global settings for all projects
 		globals: true,
 		pool: "forks",
-		poolOptions: {
-			forks: {
-				singleFork: true,
-			},
-		},
 		exclude: [
 			...configDefaults.exclude,
 			"**/node_modules/**",
@@ -95,53 +90,55 @@ export default defineConfig({
 	resolve: {
 		alias: [
 			// Use array-of-objects with prefix matching.
-			// More specific package aliases MUST come before the catch-all @arkelythex.
-			// This ensures subpath exports like @arkelythex/infrastructure/services/error-recovery
+			// More specific package aliases MUST come before the catch-all @drenyra.
+			// This ensures subpath exports like @drenyra/infrastructure/services/error-recovery
 			// resolve to ./packages/infrastructure/src/services/error-recovery (with src/).
 			{ find: "@", replacement: path.resolve(__dirname, "./") },
 			{
-				find: "@arkelythex/persistence",
+				find: "@drenyra/persistence",
 				replacement: path.resolve(__dirname, "./packages/persistence/src"),
 			},
 			{
-				find: "@arkelythex/infrastructure",
+				find: "@drenyra/infrastructure",
 				replacement: path.resolve(__dirname, "./packages/infrastructure/src"),
 			},
 			{
-				find: "@arkelythex/application",
+				find: "@drenyra/application",
 				replacement: path.resolve(__dirname, "./packages/application/src"),
 			},
 			{
-				find: "@arkelythex/ai",
+				find: "@drenyra/ai",
 				replacement: path.resolve(__dirname, "./packages/ai/src"),
 			},
 			{
-				find: "@arkelythex/domain",
+				find: "@drenyra/domain",
 				replacement: path.resolve(__dirname, "./packages/domain/src"),
 			},
 			{
-				find: "@arkelythex/shared",
+				find: "@drenyra/shared",
 				replacement: path.resolve(__dirname, "./packages/shared/src"),
 			},
+
 			{
-				find: "@arkelythex/agent-memory",
-				replacement: path.resolve(__dirname, "./packages/agent-memory/src"),
+				find: "@drenyra/memory",
+				replacement: path.resolve(__dirname, "./packages/memory/src"),
 			},
 			{
-				find: "@arkelythex/drenyra-core",
-				replacement: path.resolve(__dirname, "./packages/drenyra-core/src"),
+				find: "@drenyra/agents",
+				replacement: path.resolve(__dirname, "./packages/agents/src"),
 			},
+
 			{
-				find: "@arkelythex/platform-core",
+				find: "@drenyra/platform-core",
 				replacement: path.resolve(__dirname, "./packages/platform-core/src"),
 			},
-			// Catch-all for any @arkelythex/* subpath not matched above
+			// Catch-all for any @drenyra/* subpath not matched above
 			{
-				find: "@arkelythex/test-utils",
+				find: "@drenyra/test-utils",
 				replacement: path.resolve(__dirname, "./packages/test-utils/src"),
 			},
 			{
-				find: "@arkelythex",
+				find: "@drenyra",
 				replacement: path.resolve(__dirname, "./packages"),
 			},
 		],

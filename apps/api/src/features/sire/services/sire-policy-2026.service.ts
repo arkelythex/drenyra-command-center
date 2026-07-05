@@ -101,6 +101,6 @@ export function evaluateSireSubmissionPolicy(
     appliesToCompany,
     isDeferred,
     reason,
-    source: 'RS 000392-2025/SUNAT + configuracion Arkelythex',
+    source: 'RS 000392-2025/SUNAT + configuracion Drenyra',
   };
 }

@@ -1,6 +1,6 @@
-import { db as globalDb } from "@arkelythex/persistence/client";
-import { and, asc, eq, sql } from "@arkelythex/persistence/query";
-import { categories, transactions } from "@arkelythex/persistence/schema";
+import { db as globalDb } from "@drenyra/persistence/client";
+import { and, asc, eq, sql } from "@drenyra/persistence/query";
+import { categories, transactions } from "@drenyra/persistence/schema";
 import {
 	resolveAccountCode,
 	resolveAccountType,

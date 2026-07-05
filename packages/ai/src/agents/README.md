@@ -1,4 +1,4 @@
-# AI Agent Swarm — Arkelythex
+# AI Agent Swarm — Drenyra
 
 **Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../../../docs/meta/gentleman-philosophy.md)
 
@@ -65,7 +65,7 @@ bun install
 ## 🚀 Uso Básico
 
 ```typescript
-import { createAgentSwarm } from '@arkelythex/infrastructure/ai-agents';
+import { createAgentSwarm } from '@drenyra/infrastructure/ai-agents';
 
 // 1. Configurar agentes
 const orchestrator = createAgentSwarm({
@@ -99,7 +99,7 @@ if (result.status === 'success') {
 ## 🔧 Configuración Avanzada
 
 ```typescript
-import { AgentSwarmFactory } from '@arkelythex/infrastructure/ai-agents';
+import { AgentSwarmFactory } from '@drenyra/infrastructure/ai-agents';
 
 const factory = new AgentSwarmFactory({
   geminiApiKey: process.env.GOOGLE_AI_API_KEY!,
@@ -178,7 +178,7 @@ Para **100,000 facturas/mes**, implementamos una estrategia de optimización que
 | Concepto | Valor |
 |----------|-------|
 | Costo Manual | S/ 20,000/mes (equipo de digitadores) |
-| Costo Arkelythex | ~$220 USD/mes (S/ 850) |
+| Costo Drenyra | ~$220 USD/mes (S/ 850) |
 | **Ahorro neto** | **S/ 19,150/mes** |
 | **Eficiencia** | **95% de margen operativo** |
 

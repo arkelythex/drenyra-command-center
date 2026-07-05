@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-06-20
 
-**Last updated:** 2026-06-20 · **Package:** `@arkelythex/web` — Drenyra fiscal intelligence command center SPA.
+**Last updated:** 2026-06-20 · **Package:** `@drenyra/web` — Drenyra fiscal intelligence command center SPA.
 
 ## 1. Overview
 
@@ -157,7 +157,7 @@ init → explore → propose → spec → design → tasks → apply → verify 
 - `verify` — validate against specs.
 - `archive` — sync delta → main specs, close.
 
-Worktrees at `~/Documents/PROYECTOS/arkelythex/worktrees/drenyra/<task-name>`, branch `codex/<task-name>`.
+Worktrees at `~/Documents/PROYECTOS/drenyra/worktrees/drenyra/<task-name>`, branch `codex/<task-name>`.
 
 ### Delegation Triggers
 

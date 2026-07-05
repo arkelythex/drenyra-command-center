@@ -3,11 +3,11 @@
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { BankAccount } from "@arkelythex/domain/entities/BankAccount";
-import { BankTransaction } from "@arkelythex/domain/entities/BankTransaction";
-import type { BankAccountRepository } from "@arkelythex/domain/repositories/bank-account.repository";
-import type { BankTransactionRepository } from "@arkelythex/domain/repositories/bank-transaction.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { BankAccount } from "@drenyra/domain/entities/BankAccount";
+import { BankTransaction } from "@drenyra/domain/entities/BankTransaction";
+import type { BankAccountRepository } from "@drenyra/domain/repositories/bank-account.repository";
+import type { BankTransactionRepository } from "@drenyra/domain/repositories/bank-transaction.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import {
 	ImportBankTransactionsUseCase,
 	type ImportTransactionRow,

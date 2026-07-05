@@ -1,5 +1,5 @@
-import { Money } from "@arkelythex/domain";
-import type { Currency } from "@arkelythex/domain/value-objects/Money";
+import { Money } from "@drenyra/domain";
+import type { Currency } from "@drenyra/domain/value-objects/Money";
 import type { IBankingRepository } from "../../domain/ports/banking-repository.port";
 import { bankingRepository } from "../../infrastructure/banking.repository";
 

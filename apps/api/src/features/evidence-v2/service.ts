@@ -1,5 +1,5 @@
-import { and, desc, eq, like, or, sql } from "@arkelythex/persistence/query";
-import { evidence, evidenceLinks } from "@arkelythex/persistence/schema";
+import { and, desc, eq, like, or, sql } from "@drenyra/persistence/query";
+import { evidence, evidenceLinks } from "@drenyra/persistence/schema";
 import { db } from "../../lib/db";
 
 // ─── Evidence Search ───

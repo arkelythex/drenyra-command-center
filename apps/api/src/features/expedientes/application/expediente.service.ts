@@ -6,11 +6,11 @@ import type {
 	ExpedienteKind,
 	ExpedienteStatus,
 	FiscalTruthScope,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import {
 	buildDefaultCierreChecklist,
 	calculateCierreProgress,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import { eq } from "drizzle-orm";
 import { db, schema } from "../../../lib/db";
 import { hasSireDiffCommitAuditForPeriod } from "../../sire/services/sire-diff-commit-audit.service";

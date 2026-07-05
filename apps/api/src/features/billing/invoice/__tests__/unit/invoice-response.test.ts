@@ -1,4 +1,4 @@
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 import { describe, expect, it } from "vitest";
 import { serializeInvoice } from "../../api/handlers/invoice-response";
 import { Invoice, type InvoiceItem } from "../../domain/invoice.entity";

@@ -85,7 +85,7 @@ export class ContextCacheService {
 	 * Create or refresh the PCGE context cache
 	 */
 	async createPCGECache(config: CacheConfig = {}): Promise<CachedContext> {
-		const { ttlSeconds = 3600, displayName = "Arkelythex PCGE Context" } = config;
+		const { ttlSeconds = 3600, displayName = "Drenyra PCGE Context" } = config;
 
 		// Using gemini-3-pro for context caching (December 2025)
 		const requestBody = {

@@ -6,7 +6,7 @@
  *
  * Zero fiscal imports — all types here are shared across all verticals.
  *
- * @module @arkelythex/platform-core/ai-gateway
+ * @module @drenyra/platform-core/ai-gateway
  */
 
 // ──────────────────────────────────────────────

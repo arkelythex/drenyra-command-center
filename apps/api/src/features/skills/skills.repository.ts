@@ -1,10 +1,10 @@
-import { and, eq } from "@arkelythex/persistence/query";
+import { and, eq } from "@drenyra/persistence/query";
 import {
 	skills,
 	skillCapabilities,
 	companySkills,
 	type InstallationStatus,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 import { db } from "../../lib/db";
 
 // ─── QUERIES ───

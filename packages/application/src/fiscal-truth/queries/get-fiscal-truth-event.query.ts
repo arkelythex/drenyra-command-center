@@ -2,7 +2,7 @@ import type {
 	FiscalTruthEvent,
 	FiscalTruthRepository,
 	FiscalTruthScope,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 
 export interface GetFiscalTruthEventQueryInput {
 	eventId: string;

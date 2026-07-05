@@ -5,14 +5,14 @@
  * All infrastructure concerns live here: queries, joins, pagination, transactions.
  */
 
-import { db } from '@arkelythex/persistence/client';
-import { and, asc, desc, eq, gte, lte, sql } from '@arkelythex/persistence/query';
+import { db } from '@drenyra/persistence/client';
+import { and, asc, desc, eq, gte, lte, sql } from '@drenyra/persistence/query';
 import { inArray } from 'drizzle-orm';
 import {
   companies,
   interCompanyTransactions,
   transactions,
-} from '@arkelythex/persistence/schema';
+} from '@drenyra/persistence/schema';
 import type { IInterCompanyTransactionRepository } from '../domain/inter-company-transaction.repository';
 import type {
   AtomicCreateInput,

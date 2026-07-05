@@ -6,12 +6,12 @@
  * - customer_profiles (AR-specific settings)
  */
 
-import { db } from "@arkelythex/persistence/client";
-import { and, desc, eq } from "@arkelythex/persistence/query";
+import { db } from "@drenyra/persistence/client";
+import { and, desc, eq } from "@drenyra/persistence/query";
 import {
 	businessPartners,
 	customerProfiles,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 import { withCompanyRlsTransaction } from "../../security/rls-db-context";
 import { Customer } from "../domain/customer";
 import type {

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearch } from "@tanstack/react-router";
 import { diffDetailQueryOptions } from "./query-options";
+import { VerificationReportView } from "./VerificationReportView";
 import type { DiffDetailDTO } from "./diffs.types";
 
 const DIFF_TYPE_LABELS: Record<string, string> = {
@@ -25,10 +26,10 @@ const DIFF_STATUS_CONFIG: Record<string, { color: string; label: string }> = {
 export function AccountingDiffView() {
 	const { id } = useSearch({ from: "/diffs/" as never }) as { id?: string };
 
-	const { data, isLoading, error } = useQuery(
-		diffDetailQueryOptions(id ?? ""),
-		{ enabled: !!id },
-	);
+	const { data, isLoading, error } = useQuery({
+		...diffDetailQueryOptions(id ?? ""),
+		enabled: !!id,
+	});
 
 	if (!id) {
 		return (
@@ -136,6 +137,13 @@ function DiffContent({ diff }: { diff: DiffDetailDTO }) {
 							Confianza: {diff.impact.confidence}%
 						</span>
 					</div>
+				</div>
+			)}
+
+			{/* Verification Report */}
+			{diff.verificationReport && (
+				<div className="mb-4">
+					<VerificationReportView report={diff.verificationReport} />
 				</div>
 			)}
 

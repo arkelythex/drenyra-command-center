@@ -4,7 +4,7 @@
  * Records evidence during harness execution for auditability.
  * Domain-agnostic — no tax document types or fiscal-specific fields.
  *
- * @module @arkelythex/platform-core/harness
+ * @module @drenyra/platform-core/harness
  */
 
 import type { EvidenceQuery, EvidenceRecord } from "./types.js";

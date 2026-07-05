@@ -1,8 +1,8 @@
 {
-  "name": "arkelythex-fiscal-editorial",
+  "name": "drenyra-fiscal-editorial",
   "version": "3.0.0",
   "source": "apps/web/src/lib/design-tokens/tokens.dtcg.json",
-  "openpencilFile": "packages/ui/tokens/arkelythex-design-system.pen",
+  "openpencilFile": "packages/ui/tokens/drenyra-design-system.pen",
   "status": "stub — generate .pen when OpenPencil is installed",
   "updatedAt": "2026-06-30"
 }

@@ -6,14 +6,14 @@
  *
  * NOTE: Full DB integration pending Phase 3. Currently uses environment variables.
  *
- * @module @arkelythex/ai/gateway
+ * @module @drenyra/ai/gateway
  */
 
 import {
 	decryptWithPassphrase,
 	type EncryptedData,
 	encryptWithPassphrase,
-} from "@arkelythex/shared/security";
+} from "@drenyra/shared/security";
 import { loggers } from "../logger";
 import type { DecryptedCredential, LLMProvider } from "./types";
 

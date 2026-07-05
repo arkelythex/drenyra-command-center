@@ -1,5 +1,5 @@
 {
-  "name": "@arkelythex/api",
+  "name": "@drenyra/api",
   "version": "0.1.0",
   "type": "module",
   "exports": {
@@ -29,15 +29,6 @@
     "sire:demo:verify": "bun ./scripts/verify-sire-demo-export.ts"
   },
   "dependencies": {
-    "@arkelythex/ai": "workspace:*",
-    "@arkelythex/application": "workspace:*",
-    "@arkelythex/domain": "workspace:*",
-    "@arkelythex/drenyra-core": "workspace:*",
-    "@arkelythex/drenyra-orchestrator": "workspace:*",
-    "@arkelythex/harness": "workspace:*",
-    "@arkelythex/infrastructure": "workspace:*",
-    "@arkelythex/platform-core": "workspace:*",
-    "@arkelythex/shared": "workspace:*",
     "@aws-sdk/client-s3": "^3.1048.0",
     "@aws-sdk/s3-request-presigner": "^3.1048.0",
     "@elysiajs/cors": "^1.4.1",
@@ -70,7 +61,15 @@
     "ulid": "^3.0.2",
     "xml-crypto": "^6.0.0",
     "xmlbuilder2": "^4.0.3",
-    "zod": "^4.3.5"
+    "zod": "^4.3.5",
+    "@drenyra/ai": "workspace:*",
+    "@drenyra/application": "workspace:*",
+    "@drenyra/domain": "workspace:*",
+    "@drenyra/drenyra-orchestrator": "workspace:*",
+    "@drenyra/harness": "workspace:*",
+    "@drenyra/infrastructure": "workspace:*",
+    "@drenyra/platform-core": "workspace:*",
+    "@drenyra/shared": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^25.0.9",

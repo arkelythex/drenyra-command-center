@@ -73,7 +73,7 @@ export const COMPLIANCE_ACTIONS: readonly ComplianceActionItem[] = [
     icon: Building2,
     actionLabel: 'Investigar RUC',
     aiInsight:
-      'Arkelythex recomienda resolver la condicion fiscal antes de aceptar propuestas SIRE o aprobar documentos del proveedor.',
+      'Drenyra recomienda resolver la condicion fiscal antes de aceptar propuestas SIRE o aprobar documentos del proveedor.',
     impact: 'Evita validaciones SUNAT rechazadas y aprobaciones sin soporte.',
   },
   {

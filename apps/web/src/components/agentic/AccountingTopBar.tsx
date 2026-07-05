@@ -3,22 +3,18 @@
 import { Clock, Download, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useAccountingStore } from "@/stores/accounting-store";
+import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 
 interface AccountingTopBarProps {
 	onRunSwarm?: () => void;
 }
 
 export function AccountingTopBar({ onRunSwarm }: AccountingTopBarProps) {
-	const companies = useAccountingStore((s) => s.companies);
-	const activeCompanyId = useAccountingStore((s) => s.activeCompanyId);
-	const periods = useAccountingStore((s) => s.periods);
-	const activePeriodId = useAccountingStore((s) => s.activePeriodId);
+	const { companyContext, fiscalPeriod, formatFiscalPeriodLabel } =
+		useActiveCompanyContext();
 	const proposedEntries = useAccountingStore((s) => s.proposedEntries);
 	const [showExportMenu, setShowExportMenu] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
-
-	const activeCompany = companies.find((c) => c.id === activeCompanyId);
-	const activePeriod = periods.find((p) => p.id === activePeriodId);
 
 	const pendingCount = proposedEntries.filter(
 		(e) => e.status === "pending" || e.status === "reviewing",
@@ -36,12 +32,12 @@ export function AccountingTopBar({ onRunSwarm }: AccountingTopBarProps) {
 
 	return (
 		<div className="flex h-14 items-center justify-between gap-3 border-b border-[var(--border-subtle)] bg-[var(--surface-1)] px-4">
-			{/* Left: Company · Period */}
+			{/* Left: Company · Period (canonical source) */}
 			<div className="flex items-center gap-2 text-sm font-medium text-[var(--text-primary)]">
-				<span>{activeCompany?.name ?? "Empresa"}</span>
+				<span>{companyContext.companyName}</span>
 				<span className="text-[var(--text-muted)]">·</span>
 				<span className="text-[var(--text-secondary)]">
-					{activePeriod?.label ?? "Período"}
+					{fiscalPeriod ? formatFiscalPeriodLabel(fiscalPeriod) : "Período"}
 				</span>
 			</div>
 

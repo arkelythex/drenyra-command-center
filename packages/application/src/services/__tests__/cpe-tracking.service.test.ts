@@ -8,8 +8,8 @@ import {
 	InvalidCPELogError,
 	InvalidCPELogTransitionError,
 	type CDRData,
-} from "@arkelythex/domain/accounting/cpe-log";
-import type { CpeLogRepository } from "@arkelythex/domain/repositories/cpe-log.repository";
+} from "@drenyra/domain/accounting/cpe-log";
+import type { CpeLogRepository } from "@drenyra/domain/repositories/cpe-log.repository";
 import {
 	CpeTrackingService,
 	type RegisterCPEDTO,

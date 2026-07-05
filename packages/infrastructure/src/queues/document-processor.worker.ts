@@ -5,15 +5,15 @@
  * Implements XML-First strategy for cost optimization.
  */
 
-import type { ExtractedData } from "@arkelythex/domain/entities/Document";
-import { Money } from "@arkelythex/domain/value-objects/Money";
-import { classifyExpense } from "@arkelythex/infrastructure/ai/accounting-classifier.service";
-import { extractInvoiceData } from "@arkelythex/infrastructure/ai/ocr.service";
-import { UBLParser } from "@arkelythex/infrastructure/xml/ubl-parser";
-import { isValidRUC } from "@arkelythex/shared/validation/ruc";
+import type { ExtractedData } from "@drenyra/domain/entities/Document";
+import { Money } from "@drenyra/domain/value-objects/Money";
+import { classifyExpense } from "@drenyra/infrastructure/ai/accounting-classifier.service";
+import { extractInvoiceData } from "@drenyra/infrastructure/ai/ocr.service";
+import { UBLParser } from "@drenyra/infrastructure/xml/ubl-parser";
+import { isValidRUC } from "@drenyra/shared/validation/ruc";
 import { type Job, Worker } from "bullmq";
 import { z } from "zod";
-import { DocumentRepositoryImpl } from "@arkelythex/persistence/repositories/document.repository";
+import { DocumentRepositoryImpl } from "@drenyra/persistence/repositories/document.repository";
 import { loggers } from "../logger";
 import type {
 	DocumentJobData,

@@ -7,7 +7,7 @@
  * Zero fiscal imports — no hardcoded agent types or keyword matching.
  * All agent IDs and routing are provided by the caller.
  *
- * @module @arkelythex/platform-core/harness
+ * @module @drenyra/platform-core/harness
  */
 
 import type { DelegationNode, DelegationPath } from "./types.js";

@@ -1,4 +1,4 @@
-app = "arkelythex-api"
+app = "drenyra-api"
 primary_region = "bog"
 kill_signal = "SIGINT"
 kill_timeout = "30s"
@@ -9,7 +9,7 @@ kill_timeout = "30s"
 [env]
   NODE_ENV = "production"
   PORT = "3000"
-  OTEL_SERVICE_NAME = "arkelythex-api"
+  OTEL_SERVICE_NAME = "drenyra-api"
 
 [http_service]
   internal_port = 3000

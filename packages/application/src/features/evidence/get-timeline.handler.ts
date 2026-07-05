@@ -1,4 +1,4 @@
-import type { EvidenceRepository } from "@arkelythex/domain/repositories/evidence.repository";
+import type { EvidenceRepository } from "@drenyra/domain/repositories/evidence.repository";
 
 export interface EvidenceTimelineEntry {
 	action: string;

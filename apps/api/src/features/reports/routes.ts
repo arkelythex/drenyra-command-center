@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import { z } from "zod";
+import type { z } from "zod";
 import {
 	BalanceSheetReportSchema,
 	CashFlowReportSchema,
@@ -72,6 +72,7 @@ export const reportsModule = new Elysia({ prefix: "/api/reports" })
 				startDate: t.String(),
 				endDate: t.String(),
 			}),
+			detail: { tags: ["Reports"], summary: "Profit & loss statement" },
 		},
 	)
 	.get(
@@ -103,6 +104,7 @@ export const reportsModule = new Elysia({ prefix: "/api/reports" })
 			query: t.Object({
 				asOfDate: t.String(),
 			}),
+			detail: { tags: ["Reports"], summary: "Balance sheet" },
 		},
 	)
 	.get(
@@ -136,6 +138,7 @@ export const reportsModule = new Elysia({ prefix: "/api/reports" })
 				startDate: t.String(),
 				endDate: t.String(),
 			}),
+			detail: { tags: ["Reports"], summary: "Cash flow statement" },
 		},
 	)
 	.get(
@@ -169,5 +172,6 @@ export const reportsModule = new Elysia({ prefix: "/api/reports" })
 				startDate: t.String(),
 				endDate: t.String(),
 			}),
+			detail: { tags: ["Reports"], summary: "Sales by customer" },
 		},
 	);

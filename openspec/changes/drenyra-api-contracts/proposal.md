@@ -68,7 +68,7 @@ export interface CreatePrRequest { ... }
 export interface PrListResponse extends PaginatedResponse<AccountingPrDTO> {}
 ```
 
-El frontend importa desde `@arkelythex/application/features/accounting-prs`.
+El frontend importa desde `@drenyra/application/features/accounting-prs`.
 
 ### 3. OpenAPI Tags Completos
 

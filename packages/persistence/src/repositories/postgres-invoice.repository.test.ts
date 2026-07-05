@@ -1,7 +1,7 @@
-import { Invoice } from "@arkelythex/domain/entities/Invoice";
-import { DocumentSeries } from "@arkelythex/domain/value-objects/DocumentSeries";
-import { Money } from "@arkelythex/domain/value-objects/Money";
-import { RUC } from "@arkelythex/domain/value-objects/RUC";
+import { Invoice } from "@drenyra/domain/entities/Invoice";
+import { DocumentSeries } from "@drenyra/domain/value-objects/DocumentSeries";
+import { Money } from "@drenyra/domain/value-objects/Money";
+import { RUC } from "@drenyra/domain/value-objects/RUC";
 import { describe, expect, it } from "vitest";
 import { PostgresInvoiceRepository } from "./postgres-invoice.repository";
 

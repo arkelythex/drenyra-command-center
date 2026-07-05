@@ -1,9 +1,9 @@
-import { Evidence } from "@arkelythex/domain";
-import type { EvidenceFilters } from "@arkelythex/domain/entities/evidence/types";
-import type { EvidenceRepository } from "@arkelythex/domain/repositories/evidence.repository";
-import { db } from "@arkelythex/persistence/client";
-import { and, desc, eq, gte, lte } from "@arkelythex/persistence/query";
-import { evidence } from "@arkelythex/persistence/schema";
+import { Evidence } from "@drenyra/domain";
+import type { EvidenceFilters } from "@drenyra/domain/entities/evidence/types";
+import type { EvidenceRepository } from "@drenyra/domain/repositories/evidence.repository";
+import { db } from "@drenyra/persistence/client";
+import { and, desc, eq, gte, lte } from "@drenyra/persistence/query";
+import { evidence } from "@drenyra/persistence/schema";
 
 const toDomain = (row: typeof evidence.$inferSelect): Evidence =>
 	Evidence.fromPrimitives({

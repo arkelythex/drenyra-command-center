@@ -1,5 +1,5 @@
 {
-  "name": "@arkelythex/shared",
+  "name": "@drenyra/shared",
   "version": "1.0.0",
   "description": "Shared utilities and helpers",
   "type": "module",
@@ -27,8 +27,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@arkelythex/domain": "workspace:*",
-    "clsx": "^2.1.1"
+    "clsx": "^2.1.1",
+    "@drenyra/domain": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^6.0.3",

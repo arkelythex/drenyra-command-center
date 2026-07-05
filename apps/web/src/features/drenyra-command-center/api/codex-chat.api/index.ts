@@ -7,7 +7,7 @@ export type * from "./types";
 import type {
 	DrenyraBrainItem,
 	DrenyraBrainThread,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 import { api } from "@/lib/api";
 import { extractOkData, unwrap } from "@/lib/api-helpers";
 import type { ChatMessage, StreamChunk } from "./types";

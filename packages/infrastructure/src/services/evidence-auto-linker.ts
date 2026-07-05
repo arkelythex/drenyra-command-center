@@ -6,7 +6,7 @@
  * @module services/evidence-auto-linker
  */
 
-import type { FiscalNightlyRunReport } from "@arkelythex/application/use-cases/fiscal-agent/types";
+import type { FiscalNightlyRunReport } from "@drenyra/application/use-cases/fiscal-agent/types";
 
 export interface EvidenceLink {
 	sourceType:

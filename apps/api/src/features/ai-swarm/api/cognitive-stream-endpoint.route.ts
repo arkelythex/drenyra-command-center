@@ -3,12 +3,12 @@
  * Extracted from cognitive-stream.route.ts to reduce file size.
  */
 import { randomUUID } from "node:crypto";
-import { getOpenRouterModelForTier } from "@arkelythex/ai/model-registry";
+import { getOpenRouterModelForTier } from "@drenyra/ai/model-registry";
 import {
 	getOpenRouterTools,
 	streamWithToolExecution,
-} from "@arkelythex/infrastructure/ai/tool-bridge";
-import { OpenRouterService } from "@arkelythex/infrastructure/ai/openrouter";
+} from "@drenyra/infrastructure/ai/tool-bridge";
+import { OpenRouterService } from "@drenyra/infrastructure/ai/openrouter";
 import { Elysia } from "elysia";
 import { logSecurityAccess } from "../../security/access-log.service";
 import { guardDestructivePrompt } from "../../security/destructive-action-guard";

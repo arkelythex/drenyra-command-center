@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CustomersService } from "../customers.service";
 
 // Mock the database module
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		select: vi.fn().mockReturnThis(),
 		from: vi.fn().mockReturnThis(),
@@ -35,7 +35,7 @@ describe("CustomersService", () => {
 				},
 			];
 
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			vi.mocked(db.select).mockReturnValue({
 				from: vi.fn().mockReturnValue({
 					leftJoin: vi.fn().mockReturnValue({
@@ -52,7 +52,7 @@ describe("CustomersService", () => {
 		});
 
 		it("should return empty array when no customers exist", async () => {
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			vi.mocked(db.select).mockReturnValue({
 				from: vi.fn().mockReturnValue({
 					leftJoin: vi.fn().mockReturnValue({
@@ -77,7 +77,7 @@ describe("CustomersService", () => {
 				razonSocial: "Cliente SAC",
 			};
 
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			vi.mocked(db.select).mockReturnValue({
 				from: vi.fn().mockReturnValue({
 					leftJoin: vi.fn().mockReturnValue({
@@ -104,7 +104,7 @@ describe("CustomersService", () => {
 
 			const mockCreated = { id: "cus_002", ...newCustomer };
 
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			vi.mocked(db.insert).mockReturnValue({
 				values: vi.fn().mockReturnValue({
 					returning: vi.fn().mockResolvedValue([mockCreated]),
@@ -136,7 +136,7 @@ describe("CustomersService", () => {
 				razonSocial: "Cliente Actualizado",
 			};
 
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			vi.mocked(db.update).mockReturnValue({
 				set: vi.fn().mockReturnValue({
 					where: vi.fn().mockReturnValue({
@@ -155,7 +155,7 @@ describe("CustomersService", () => {
 
 	describe("delete", () => {
 		it("should delete a customer", async () => {
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			vi.mocked(db.delete).mockReturnValue({
 				where: vi.fn().mockReturnValue({
 					returning: vi.fn().mockResolvedValue([{ id: "cus_001" }]),

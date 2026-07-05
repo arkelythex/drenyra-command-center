@@ -1,10 +1,10 @@
 import {
 	Invoice,
 	type InvoiceStatus,
-} from "@arkelythex/domain/entities/Invoice";
-import { DocumentSeries } from "@arkelythex/domain/value-objects/DocumentSeries";
-import { Money } from "@arkelythex/domain/value-objects/Money";
-import { RUC } from "@arkelythex/domain/value-objects/RUC";
+} from "@drenyra/domain/entities/Invoice";
+import { DocumentSeries } from "@drenyra/domain/value-objects/DocumentSeries";
+import { Money } from "@drenyra/domain/value-objects/Money";
+import { RUC } from "@drenyra/domain/value-objects/RUC";
 
 // Valid UUIDs for testing
 export const TEST_IDS = {

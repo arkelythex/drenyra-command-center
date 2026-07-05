@@ -22,7 +22,7 @@
  * ```
  */
 
-import { Money, type Currency } from '@arkelythex/domain/value-objects/Money';
+import { Money, type Currency } from '@drenyra/domain/value-objects/Money';
 import { TransactionReference } from '../value-objects/transaction-reference.vo';
 import { MatchScore } from '../value-objects/match-score.vo';
 import type {

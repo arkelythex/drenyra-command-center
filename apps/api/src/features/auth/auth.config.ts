@@ -1,15 +1,15 @@
 import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { customSession } from "better-auth/plugins/custom-session";
-import { db } from "@arkelythex/persistence/client";
-import { authUsers, authSessions, authAccounts, authVerifications } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { authUsers, authSessions, authAccounts, authVerifications } from "@drenyra/persistence/schema";
 import { enrichSessionUserWithCompanyContext } from "./handlers/session-company-context";
 import { resolveTrustedOriginsFromEnv } from "./lib/auth-trusted-origins";
 
 /**
  * BetterAuth Configuration
  *
- * Centralized authentication configuration for ARKELYTHEX.
+ * Centralized authentication configuration for DRENYRA.
  * Uses BetterAuth with Drizzle ORM adapter for PostgreSQL.
  *
  * **Security Configuration:**
@@ -32,7 +32,7 @@ import { resolveTrustedOriginsFromEnv } from "./lib/auth-trusted-origins";
  * **Trusted Origins:**
  * - localhost:3000 (API server)
  * - localhost:5173 (Vite dev server for frontend)
- * - Production: add app.arkelythexfounders.com
+ * - Production: add app.drenyrafounders.com
  *
  * @module auth/config
  * @constant

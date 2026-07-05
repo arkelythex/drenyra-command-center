@@ -12,7 +12,7 @@ const { mockGetState, mockUpsertState } = vi.hoisted(() => ({
 	mockUpsertState: vi.fn(),
 }));
 
-vi.mock("@arkelythex/infrastructure/services/error-recovery", () => ({
+vi.mock("@drenyra/infrastructure/services/error-recovery", () => ({
 	circuitBreakerRepo: {
 		getState: mockGetState,
 		upsertState: mockUpsertState,

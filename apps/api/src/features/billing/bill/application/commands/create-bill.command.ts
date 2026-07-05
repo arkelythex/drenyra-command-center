@@ -7,7 +7,7 @@
  */
 
 import { randomUUID } from "node:crypto";
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 import { Bill, type BillItem, type Currency } from "../../domain/bill.entity";
 import { BillRepository } from "../../infrastructure/bill.repository";
 

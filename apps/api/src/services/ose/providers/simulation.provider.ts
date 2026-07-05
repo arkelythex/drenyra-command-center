@@ -1,4 +1,4 @@
-import type { OSEConfig } from "@arkelythex/infrastructure/ose";
+import type { OSEConfig } from "@drenyra/infrastructure/ose";
 import type {
 	IOSEProvider,
 	OSEResponse,

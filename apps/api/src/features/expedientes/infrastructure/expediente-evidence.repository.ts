@@ -3,9 +3,9 @@ import type {
 	CierreMensual,
 	ExpedienteFiscal,
 	FiscalTruthScope,
-} from "@arkelythex/domain";
-import { EVIDENCE_EDGE_KIND, EVIDENCE_NODE_KIND } from "@arkelythex/domain";
-import { PostgresEvidenceGraphRepository } from "@arkelythex/persistence";
+} from "@drenyra/domain";
+import { EVIDENCE_EDGE_KIND, EVIDENCE_NODE_KIND } from "@drenyra/domain";
+import { PostgresEvidenceGraphRepository } from "@drenyra/persistence";
 
 import {
 	CIERRE_AGGREGATE_TYPE,

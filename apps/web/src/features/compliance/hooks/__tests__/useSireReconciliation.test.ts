@@ -25,7 +25,7 @@ describe("useSireReconciliation", () => {
 		expect(result.current.stats).toBeNull();
 	});
 
-	it("detects missing-in-Arkelythex and amount mismatch discrepancies after processing", async () => {
+	it("detects missing-in-Drenyra and amount mismatch discrepancies after processing", async () => {
 		parseSireFileMock.mockResolvedValue([
 			{
 				periodo: "202501",

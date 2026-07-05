@@ -1,6 +1,6 @@
-import { db } from '@arkelythex/persistence/client';
-import { and, desc, eq, gte, lte, sql } from '@arkelythex/persistence/query';
-import { customers, invoices } from '@arkelythex/persistence/schema';
+import { db } from '@drenyra/persistence/client';
+import { and, desc, eq, gte, lte, sql } from '@drenyra/persistence/query';
+import { customers, invoices } from '@drenyra/persistence/schema';
 
 /**
  * IncomeAnalyticsService class.

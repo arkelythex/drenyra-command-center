@@ -7,7 +7,7 @@
  * @module vendors/domain
  */
 
-import { RUC } from '@arkelythex/domain';
+import { RUC } from '@drenyra/domain';
 
 /**
  * PreferredPaymentMethod type.

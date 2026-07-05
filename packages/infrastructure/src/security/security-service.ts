@@ -2,8 +2,8 @@
 // Handles rate limiting and account locking
 
 import { and, desc, eq, gt, isNotNull, sql } from "drizzle-orm";
-import { db } from "@arkelythex/persistence/client";
-import { accessLogs, failedLoginAttempts } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { accessLogs, failedLoginAttempts } from "@drenyra/persistence/schema";
 
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MINUTES = 30;
@@ -34,7 +34,7 @@ export interface LoginAttemptResult {
  * @returns Current lockout decision and rolling attempt count
  * @example
  * ```ts
- * const result = await recordFailedLogin("ops@arkelythexfounders.com", "203.0.113.10");
+ * const result = await recordFailedLogin("ops@drenyrafounders.com", "203.0.113.10");
  * ```
  */
 export async function recordFailedLogin(
@@ -94,7 +94,7 @@ export async function recordFailedLogin(
  * @returns Promise that resolves when cleanup and audit insert complete
  * @example
  * ```ts
- * await recordSuccessfulLogin("usr_1", "ops@arkelythexfounders.com", "203.0.113.10");
+ * await recordSuccessfulLogin("usr_1", "ops@drenyrafounders.com", "203.0.113.10");
  * ```
  */
 export async function recordSuccessfulLogin(
@@ -132,7 +132,7 @@ export async function recordSuccessfulLogin(
  * @returns Lock state, unlock timestamp (if any), and attempt count
  * @example
  * ```ts
- * const state = await isAccountLocked("ops@arkelythexfounders.com");
+ * const state = await isAccountLocked("ops@drenyrafounders.com");
  * ```
  */
 export async function isAccountLocked(email: string): Promise<{

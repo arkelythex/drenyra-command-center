@@ -8,9 +8,9 @@ import type {
 	LedgerReportDataSource,
 	OpeningBalanceDataSource,
 	OrganizationReportDataSource,
-} from "@arkelythex/application/services/FinancialReportsService";
-import { db } from "@arkelythex/persistence/client";
-import { journalEntries, journalEntryLines, organizations, pcgeAccounts } from "@arkelythex/persistence/schema";
+} from "@drenyra/application/services/FinancialReportsService";
+import { db } from "@drenyra/persistence/client";
+import { journalEntries, journalEntryLines, organizations, pcgeAccounts } from "@drenyra/persistence/schema";
 import { resolveCompanyIdFromOrganization } from "./repositories/support/organization-resolver";
 
 const centsToAmount = (cents: number): number => Math.round(cents) / 100;

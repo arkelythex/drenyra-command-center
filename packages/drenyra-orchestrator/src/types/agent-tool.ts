@@ -1,5 +1,5 @@
 // ─── AgentTool Types ───────────────────────────────────────────────
-// Snapshot from @arkelythex/agent-swarm/src/erp/types/agent-tool.ts
+// Snapshot from @drenyra/agent-swarm/src/erp/types/agent-tool.ts
 
 import type { z } from 'zod';
 import type { ApprovalLevel } from './approval-gate';

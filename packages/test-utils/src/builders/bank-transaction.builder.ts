@@ -14,10 +14,10 @@
 import type {
 	BankTransactionProps,
 	BankTransactionType,
-} from "@arkelythex/domain/entities/BankTransaction";
-import { Money, type Currency } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/entities/BankTransaction";
+import { Money, type Currency } from "@drenyra/domain/value-objects/Money";
 import { BaseBuilder } from "./base.builder";
-import { BankTransaction } from "@arkelythex/domain/entities/BankTransaction";
+import { BankTransaction } from "@drenyra/domain/entities/BankTransaction";
 
 const DEFAULT_BANK_ACCOUNT_ID = 1;
 const DEFAULT_AMOUNT = 1000;

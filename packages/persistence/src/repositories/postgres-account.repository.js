@@ -1,6 +1,6 @@
 import { and, asc, count, eq, like, ne, or } from "drizzle-orm";
-import { Account, } from "@arkelythex/domain/entities/Account";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { Account, } from "@drenyra/domain/entities/Account";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { db } from "../client";
 import { pcgeAccounts } from "../schema";
 import { resolveCompanyIdFromOrganization, resolveOrganizationIdFromCompany } from "./support/organization-resolver";

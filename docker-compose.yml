@@ -2,19 +2,19 @@ services:
   # 1. Database (The Vault)
   postgres:
     image: postgres:16-alpine
-    container_name: arkelythex-db
+    container_name: drenyra-db
     environment:
       POSTGRES_USER: ${DB_USER:-user}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
-      POSTGRES_DB: ${DB_NAME:-arkelythex}
+      POSTGRES_DB: ${DB_NAME:-drenyra}
     ports:
       - "5436:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - arkelythex-network
+      - drenyra-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U user -d arkelythex"]
+      test: ["CMD-SHELL", "pg_isready -U user -d drenyra"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -22,13 +22,13 @@ services:
   # 2. Message Broker (The Nervous System - NATS)
   nats:
     image: nats:2.10-alpine
-    container_name: arkelythex-nats
+    container_name: drenyra-nats
     ports:
       - "4222:4222" # Client connections
       - "8222:8222" # HTTP monitoring
     command: "--js -m 8222" # JetStream enabled
     networks:
-      - arkelythex-network
+      - drenyra-network
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8222/healthz"]
       interval: 5s
@@ -37,7 +37,7 @@ services:
 
   otel-collector:
     image: otel/opentelemetry-collector-contrib:0.123.0
-    container_name: arkelythex-otel
+    container_name: drenyra-otel
     command: ["--config=/etc/otelcol-contrib/config.yaml"]
     volumes:
       - ./ops/otel/collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
@@ -45,7 +45,7 @@ services:
       - "4318:4318"
       - "13133:13133"
     networks:
-      - arkelythex-network
+      - drenyra-network
     healthcheck:
       test: ["CMD", "/otelcol-contrib", "--version"]
       interval: 5s
@@ -55,13 +55,13 @@ services:
   # 3. Redis (BullMQ queues + cache)
   redis:
     image: redis:7-alpine
-    container_name: arkelythex-redis
+    container_name: drenyra-redis
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
     networks:
-      - arkelythex-network
+      - drenyra-network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -71,7 +71,7 @@ services:
   # 4. MinIO (S3-compatible local storage)
   minio:
     image: minio/minio:latest
-    container_name: arkelythex-minio
+    container_name: drenyra-minio
     ports:
       - "9000:9000"   # API
       - "9001:9001"   # Console
@@ -82,7 +82,7 @@ services:
     volumes:
       - minio_data:/data
     networks:
-      - arkelythex-network
+      - drenyra-network
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
       interval: 5s
@@ -92,13 +92,13 @@ services:
   # 6. Ollama (Self-hosted LLM - optional, enable with: docker compose --profile ai up -d)
   ollama:
     image: ollama/ollama:latest
-    container_name: arkelythex-ollama
+    container_name: drenyra-ollama
     ports:
       - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
     networks:
-      - arkelythex-network
+      - drenyra-network
     profiles:
       - ai
     healthcheck:
@@ -112,7 +112,7 @@ services:
     build:
       context: ./apps/data-engine
       dockerfile: Dockerfile
-    container_name: arkelythex-data-engine
+    container_name: drenyra-data-engine
     ports:
       - "8000:8000"
     environment:
@@ -120,7 +120,7 @@ services:
       - WORKERS=2
       - NATS_URL=nats://nats:4222
     networks:
-      - arkelythex-network
+      - drenyra-network
     depends_on:
       nats:
         condition: service_healthy
@@ -137,19 +137,19 @@ services:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
-    container_name: arkelythex-api
+    container_name: drenyra-api
     ports:
       - "${API_PORT:-3000}:3000"
     environment:
-      - DATABASE_URL=postgres://user:password@postgres:5432/arkelythex
+      - DATABASE_URL=postgres://user:password@postgres:5432/drenyra
       - DATA_ENGINE_URL=http://data-engine:8000
       - DRENYRA_ENGRAM_URL=http://drenyra-engram:8733
       - DRENYRA_ENGRAM_ENABLED=true
       - BETTER_AUTH_URL=http://localhost:${API_PORT:-3000}
       - NATS_URL=nats://nats:4222
-      - ARKELYTHEX_BACKUP_DIR=/app/backups/postgres
-      - ARKELYTHEX_ENABLE_OTEL=true
-      - OTEL_SERVICE_NAME=arkelythex-api
+      - DRENYRA_BACKUP_DIR=/app/backups/postgres
+      - DRENYRA_ENABLE_OTEL=true
+      - OTEL_SERVICE_NAME=drenyra-api
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318/v1/traces
     volumes:
       - ./backups/postgres:/app/backups/postgres
@@ -167,7 +167,7 @@ services:
       drenyra-engram:
         condition: service_healthy
     networks:
-      - arkelythex-network
+      - drenyra-network
 
   # 4. Web (The Face - React)
   # In development, you usually run this on host, but this is for full preview
@@ -175,7 +175,7 @@ services:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
-    container_name: arkelythex-web
+    container_name: drenyra-web
     ports:
       - "5173:80" # Nginx/Preview port
     environment:
@@ -183,14 +183,14 @@ services:
     depends_on:
       - api
     networks:
-      - arkelythex-network
+      - drenyra-network
 
   # 7. Drenyra Engram (phase gate evidence sidecar — Go)
   drenyra-engram:
     build:
       context: ./packages/drenyra-engram
       dockerfile: Dockerfile
-    container_name: arkelythex-engram
+    container_name: drenyra-engram
     ports:
       - "8733:8733"
     environment:
@@ -199,7 +199,7 @@ services:
     volumes:
       - engram_data:/data
     networks:
-      - arkelythex-network
+      - drenyra-network
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8733/health"]
       interval: 5s
@@ -207,7 +207,7 @@ services:
       retries: 3
 
 networks:
-  arkelythex-network:
+  drenyra-network:
     driver: bridge
 
 volumes:

@@ -6,7 +6,7 @@ import {
 	type ContextPolicySelectionRequestDTO,
 	type ContextPolicySelectionResponseDTO,
 	type ContextPolicyViolationDTO,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 import {
 	type ContextControlPlaneRegistry,
 	contextControlPlaneRegistry,

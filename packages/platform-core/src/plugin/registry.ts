@@ -4,7 +4,7 @@
  * Provides CRUD operations for plugins and factory methods for creating
  * registry instances that are passed to each plugin's registration methods.
  *
- * @module @arkelythex/platform-core/plugin
+ * @module @drenyra/platform-core/plugin
  */
 
 import type {

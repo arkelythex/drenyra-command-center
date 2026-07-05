@@ -1,6 +1,6 @@
-import { sireSubmissions, transactions } from '@arkelythex/persistence/schema';
-import { db } from '@arkelythex/persistence/client';
-import { eq } from '@arkelythex/persistence/query';
+import { sireSubmissions, transactions } from '@drenyra/persistence/schema';
+import { db } from '@drenyra/persistence/client';
+import { eq } from '@drenyra/persistence/query';
 
 /**
  * GovernanceFeature type.

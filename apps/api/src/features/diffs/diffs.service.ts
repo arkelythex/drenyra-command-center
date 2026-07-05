@@ -2,7 +2,7 @@ import {
 	AccountingDiff,
 	createDiffId,
 	type DiffType,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import { AppError } from "../../lib/errors";
 import type {
 	DiffDTO,

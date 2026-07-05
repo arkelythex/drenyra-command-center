@@ -7,7 +7,7 @@
  *
  * Zero fiscal imports — all types here are domain-agnostic.
  *
- * @module @arkelythex/platform-core/plugin
+ * @module @drenyra/platform-core/plugin
  */
 
 import type { AgentType, TaskDefinition } from "../kernel/types.js";

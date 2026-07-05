@@ -15,8 +15,8 @@ import type {
 	DrenyraBrainThread,
 	DrenyraBrainTurn,
 	DrenyraFiscalScope,
-} from "@arkelythex/domain/drenyra";
-import type { DrenyraBrainEvidenceBridge } from "@arkelythex/application/drenyra";
+} from "@drenyra/domain/drenyra";
+import type { DrenyraBrainEvidenceBridge } from "@drenyra/application/drenyra";
 import type { DrenyraBrainRepository } from "./brain.repository";
 import type {
 	CreateDrenyraBrainThreadInput,

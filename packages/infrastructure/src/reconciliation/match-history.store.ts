@@ -7,7 +7,7 @@ import type {
 	LearningMatchResult,
 	MatchHistoryRecord,
 	VendorPattern,
-} from "@arkelythex/application/ports/reconciliation-learning.port";
+} from "@drenyra/application/ports/reconciliation-learning.port";
 
 export class MatchHistoryStore {
 	private history: MatchHistoryRecord[] = [];

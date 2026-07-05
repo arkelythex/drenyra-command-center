@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import type { DrenyraActorContext, DrenyraFiscalCommandCenterService } from "@arkelythex/application/drenyra";
+import type { DrenyraActorContext, DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
 import { fail } from "../shared/api-response";
 import {
 	createAnalyzeInvoiceCommandEnvelope,

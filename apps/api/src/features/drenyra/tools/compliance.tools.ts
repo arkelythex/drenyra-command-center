@@ -7,9 +7,9 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import { Money, TaxCalculator } from "@arkelythex/domain";
+import { Money, TaxCalculator } from "@drenyra/domain";
 import { z } from "zod";
-import type { AgentTool, AgentContext } from "@arkelythex/drenyra-orchestrator";
+import type { AgentTool, AgentContext } from "@drenyra/drenyra-orchestrator";
 
 /**
  * calculateIgvTool const.

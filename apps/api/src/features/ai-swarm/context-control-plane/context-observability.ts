@@ -4,7 +4,7 @@ import {
 	type ContextPolicySelectionRequestDTO,
 	type ContextPolicySelectionResponseDTO,
 	type ContextTraceRecordDTO,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 import { summarizeAiObservationPayload } from "../api/ai-observability-sanitizer";
 
 interface PolicyTraceInput {

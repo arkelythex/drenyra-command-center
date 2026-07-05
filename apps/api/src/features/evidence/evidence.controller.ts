@@ -3,8 +3,8 @@ import {
 	GetEvidenceTimelineHandler,
 	ListPendingClassificationHandler,
 	RegisterEvidenceHandler,
-} from "@arkelythex/application/features/evidence";
-import { Evidence } from "@arkelythex/domain";
+} from "@drenyra/application/features/evidence";
+import { Evidence } from "@drenyra/domain";
 import { evidenceRepository } from "./infrastructure/evidence-repository.adapter";
 import type {
 	ClassifyEvidenceBody,

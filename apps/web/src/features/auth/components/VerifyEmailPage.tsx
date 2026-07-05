@@ -173,7 +173,7 @@ export const VerifyEmailPage = () => {
 						<MotionDiv variants={entranceVariants}>
 							<Text className="text-foreground/90">
 								Tu email ha sido verificado exitosamente. Ahora tienes acceso
-								completo a todas las funcionalidades de Arkelythex.
+								completo a todas las funcionalidades de Drenyra.
 							</Text>
 						</MotionDiv>
 					</>

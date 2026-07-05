@@ -6,7 +6,7 @@
  * threshold (default 95%). All methods are non-blocking — errors are
  * caught, logged, and swallowed.
  *
- * @module @arkelythex/ai/context-monitor
+ * @module @drenyra/ai/context-monitor
  */
 
 import { AVAILABLE_MODELS } from "../ai/model-registry";

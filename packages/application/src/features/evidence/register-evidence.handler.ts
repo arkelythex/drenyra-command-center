@@ -1,5 +1,5 @@
-import { Evidence } from "@arkelythex/domain";
-import type { EvidenceRepository } from "@arkelythex/domain/repositories/evidence.repository";
+import { Evidence } from "@drenyra/domain";
+import type { EvidenceRepository } from "@drenyra/domain/repositories/evidence.repository";
 import type { RegisterEvidenceCommand } from "./commands";
 import type { EvidenceDTO } from "./dtos";
 

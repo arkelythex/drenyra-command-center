@@ -26,7 +26,7 @@ import {
 	LearnerStep,
 	ReconcilerStep,
 	ReporterStep,
-} from "@arkelythex/infrastructure/agents/fiscal-agent";
+} from "@drenyra/infrastructure/agents/fiscal-agent";
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 2000;

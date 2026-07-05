@@ -6,7 +6,7 @@
  *
  * **Usage:**
  * ```typescript
- * import { AccountType } from '@arkelythex/domain/value-objects/AccountType';
+ * import { AccountType } from '@drenyra/domain/value-objects/AccountType';
  *
  * const type: AccountType = 'CHECKING';
  * ```

@@ -9,7 +9,7 @@ import {
 } from "@/lib/design-tokens/theme-package";
 import type {
 	AccentPreset,
-	ArkelythexThemePackage,
+	DrenyraThemePackage,
 	DensityLevel,
 } from "@/lib/design-tokens/theme-package.schema";
 import { captureError } from "@/lib/monitoring";
@@ -34,7 +34,7 @@ export type ResolvedColorScheme = "light" | "dark";
 
 export type UXMode = "light" | "dark" | "system";
 
-export const UI_STORAGE_KEY = "arkelythex-ui-storage";
+export const UI_STORAGE_KEY = "drenyra-ui-storage";
 
 interface PersistedUIState {
 	state?: {
@@ -122,7 +122,7 @@ export function subscribeToSystemTheme(
 
 export function syncThemeDocumentState(
 	preference: ThemePreference,
-	customThemePackage?: ArkelythexThemePackage | null,
+	customThemePackage?: DrenyraThemePackage | null,
 	accent?: AccentPreset | null | undefined,
 	density?: DensityLevel | null | undefined,
 ): void {

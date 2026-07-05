@@ -7,8 +7,8 @@
  * @module features/ai-rag/knowledge-base/api/routes
  */
 
-import { sunatKnowledgeService } from "@arkelythex/infrastructure/services/sunat-knowledge";
-import type { KnowledgeCategory } from "@arkelythex/infrastructure/services/sunat-knowledge/sunat-knowledge.types";
+import { sunatKnowledgeService } from "@drenyra/infrastructure/services/sunat-knowledge";
+import type { KnowledgeCategory } from "@drenyra/infrastructure/services/sunat-knowledge/sunat-knowledge.types";
 import { Elysia, t } from "elysia";
 
 /**

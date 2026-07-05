@@ -11,7 +11,7 @@ import { tmpdir } from "node:os";
 
 describe("Certificate Handler", () => {
 	// Avoid mutating tracked repo fixtures during tests.
-	const testDir = mkdtempSync(join(tmpdir(), "arkelythex-cert-fixtures-"));
+	const testDir = mkdtempSync(join(tmpdir(), "drenyra-cert-fixtures-"));
 	const privateKeyPath = join(testDir, "test-private.pem");
 	const certPath = join(testDir, "test-cert.pem");
 

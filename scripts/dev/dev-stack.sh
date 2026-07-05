@@ -7,7 +7,7 @@ cd "${ROOT_DIR}"
 # Product-focused infra: PostgreSQL + Drenyra Engram evidence sidecar.
 SERVICES=(postgres drenyra-engram)
 COMPOSE_CMD=(docker compose)
-STALE_CONTAINERS=(arkelythex-db arkelythex-engram)
+STALE_CONTAINERS=(drenyra-db drenyra-engram)
 
 if ! command -v docker >/dev/null 2>&1; then
   echo "[dev:stack] Missing dependency: docker" >&2
@@ -34,7 +34,7 @@ echo "[dev:stack] Starting product infra: ${SERVICES[*]}"
 
 echo "[dev:stack] Waiting for PostgreSQL..."
 for i in $(seq 1 30); do
-  if docker exec arkelythex-db pg_isready -U user -d arkelythex &>/dev/null; then
+  if docker exec drenyra-db pg_isready -U user -d drenyra &>/dev/null; then
     echo "[dev:stack] PostgreSQL ready"
     break
   fi

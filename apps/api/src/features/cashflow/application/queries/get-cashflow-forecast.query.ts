@@ -6,10 +6,10 @@
  * @module cashflow/application/queries
  */
 
-import type { Currency } from "@arkelythex/domain";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte } from "@arkelythex/persistence/query";
-import { bankTransactions } from "@arkelythex/persistence/schema";
+import type { Currency } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte, lte } from "@drenyra/persistence/query";
+import { bankTransactions } from "@drenyra/persistence/schema";
 
 /**
  * Input contract for generating a forward-looking cashflow forecast.

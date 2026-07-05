@@ -8,7 +8,7 @@ import {
 	Fingerprint,
 	type LucideIcon,
 } from "lucide-react";
-import type { CierreMensualChecklistItem } from "@arkelythex/domain";
+import type { CierreMensualChecklistItem } from "@drenyra/domain";
 import { ChecklistRow } from "./ChecklistRow";
 
 const CHECKLIST_ICONS: Record<number, LucideIcon> = {

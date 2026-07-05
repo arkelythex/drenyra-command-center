@@ -1,4 +1,4 @@
-// ─── Ported from @arkelythex/agent-swarm/src/core/*.d.ts ────────────
+// ─── Ported from @drenyra/agent-swarm/src/core/*.d.ts ────────────
 import type { Agent, AgentResult, Task } from "../types/agent-core";
 
 export type { Agent, AgentResult, Task };

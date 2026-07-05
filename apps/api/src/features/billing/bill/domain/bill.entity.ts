@@ -9,7 +9,7 @@
  * - No framework dependencies
  */
 
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 
 /**
  * Bill status lifecycle.
@@ -29,7 +29,7 @@ export type BillStatus = "DRAFT" | "SENT" | "PAID" | "OVERDUE" | "CANCELLED";
  * const currency: Currency = 'PEN';
  * ```
  */
-export type Currency = import("@arkelythex/domain").Currency;
+export type Currency = import("@drenyra/domain").Currency;
 
 /**
  * Bill line item.

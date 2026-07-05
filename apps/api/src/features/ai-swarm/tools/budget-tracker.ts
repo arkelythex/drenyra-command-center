@@ -8,7 +8,7 @@
  */
 
 import { BUDGET_LIMITS } from '../config/openrouter.config';
-import { aiCostRepository } from '@arkelythex/ai/services/ai-cost';
+import { aiCostRepository } from '@drenyra/ai/services/ai-cost';
 
 /**
  * Usage record

@@ -5,7 +5,7 @@
  * delegation graph, and approval workflow.
  * Zero fiscal imports — all types are generic and reusable.
  *
- * @module @arkelythex/platform-core/harness
+ * @module @drenyra/platform-core/harness
  */
 
 // ──────────────────────────────────────────────

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/memory"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/memory"
 )
 
 // FormatMemoryView renders Hermes-style memory for TUI/CLI.
@@ -36,8 +36,8 @@ func FormatMemoryView(s memory.Snapshot) string {
 	blocks = append(blocks,
 		th.MutedText.Render("Hermes CLI: drenyra memory add|replace|remove memory|user …"),
 		th.MutedText.Render("Edit files: drenyra memory edit [memory|user]"),
-		th.MutedText.Render("Config: ~/.arkelythex/config.yaml → memory:"),
-		th.MutedText.Render("IDE: Engram (Gentle AI) project arkelythex — set memory.provider: engram"),
+		th.MutedText.Render("Config: ~/.drenyra/config.yaml → memory:"),
+		th.MutedText.Render("IDE: Engram (Gentle AI) project drenyra — set memory.provider: engram"),
 	)
 
 	body := strings.Join(blocks, "\n")

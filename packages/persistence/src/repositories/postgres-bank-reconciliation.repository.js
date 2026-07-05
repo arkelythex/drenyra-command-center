@@ -1,5 +1,5 @@
 import { and, count, desc, eq, gte, lte } from "drizzle-orm";
-import { BankReconciliation, } from "@arkelythex/domain/entities/BankReconciliation";
+import { BankReconciliation, } from "@drenyra/domain/entities/BankReconciliation";
 import { db } from "../client";
 import { bankReconciliations } from "../schema";
 import { resolveCompanyIdFromOrganization, resolveOrganizationIdFromCompany } from "./support/organization-resolver";

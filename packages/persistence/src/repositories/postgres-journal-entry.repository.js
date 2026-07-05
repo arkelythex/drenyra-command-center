@@ -1,6 +1,6 @@
 import { and, between, count, desc, eq, gte, lte, sql } from "drizzle-orm";
-import { JournalEntry, JournalLine } from "@arkelythex/domain/entities/JournalEntry";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { JournalEntry, JournalLine } from "@drenyra/domain/entities/JournalEntry";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { db } from "../client";
 import { journalEntries, journalEntryLines, pcgeAccounts } from "../schema";
 import { resolveCompanyIdFromOrganization, resolveOrganizationIdFromCompany } from "./support/organization-resolver";

@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
-import { eq } from "@arkelythex/persistence/query";
-import { automationWorkflows } from "@arkelythex/persistence/schema/automation-studio.schema";
+import { eq } from "@drenyra/persistence/query";
+import { automationWorkflows } from "@drenyra/persistence/schema/automation-studio.schema";
 import { db } from "../../lib/db";
 import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";

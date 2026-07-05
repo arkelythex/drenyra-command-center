@@ -1,6 +1,6 @@
 import { and, count, eq, sql } from "drizzle-orm";
-import { BankAccount, } from "@arkelythex/domain/entities/BankAccount";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { BankAccount, } from "@drenyra/domain/entities/BankAccount";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { db } from "../client";
 import { bankAccounts } from "../schema";
 import { resolveCompanyIdFromOrganization, resolveOrganizationIdFromCompany, } from "./support/organization-resolver";

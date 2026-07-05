@@ -1,7 +1,7 @@
 import { and, asc, eq, or, sql } from "drizzle-orm";
-import { FiscalMemory, FiscalMemoryRevision } from "@arkelythex/domain/fiscal-memory";
-import { db } from "@arkelythex/persistence/client";
-import { fiscalMemories, fiscalMemoryRevisions, } from "@arkelythex/persistence/schema";
+import { FiscalMemory, FiscalMemoryRevision } from "@drenyra/domain/fiscal-memory";
+import { db } from "@drenyra/persistence/client";
+import { fiscalMemories, fiscalMemoryRevisions, } from "@drenyra/persistence/schema";
 const scopedWhere = (scope) => and(eq(fiscalMemories.tenantId, scope.tenantId), eq(fiscalMemories.companyId, scope.companyId), eq(fiscalMemories.ruc, scope.ruc));
 const toDate = (value) => value instanceof Date ? value : new Date(value);
 const normalizeMemoryProps = (props) => ({

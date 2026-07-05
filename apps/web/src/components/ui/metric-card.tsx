@@ -8,4 +8,4 @@ export {
 	type MetricCardTone,
 	type MetricCardTrend,
 	type MetricCardVariant,
-} from "@arkelythex/ui";
+} from "@drenyra/ui";

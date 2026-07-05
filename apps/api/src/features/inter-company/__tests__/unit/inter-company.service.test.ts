@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { InterCompanyService } from "../services/inter-company.service";
 
 // Mock the database module
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		select: vi.fn().mockReturnThis(),
 		from: vi.fn().mockReturnThis(),

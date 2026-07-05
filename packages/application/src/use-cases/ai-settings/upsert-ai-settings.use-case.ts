@@ -12,8 +12,8 @@ import {
 import {
 	AI_SETTINGS_MAX_CHARS,
 	AISettings,
-} from "@arkelythex/domain/entities/AISettings";
-import type { AISettingsRepository } from "@arkelythex/domain/repositories/ai-settings.repository";
+} from "@drenyra/domain/entities/AISettings";
+import type { AISettingsRepository } from "@drenyra/domain/repositories/ai-settings.repository";
 
 /**
  * UpsertAISettingsUseCase class.

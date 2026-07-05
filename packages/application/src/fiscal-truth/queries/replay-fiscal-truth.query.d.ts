@@ -1,4 +1,4 @@
-import type { FiscalTruthScope, ReplayResult } from "@arkelythex/domain";
+import type { FiscalTruthScope, ReplayResult } from "@drenyra/domain";
 import { ReplayFiscalTruthService } from "../services/replay-fiscal-truth.service";
 export interface ReplayFiscalTruthQueryInput {
     aggregateId: string;

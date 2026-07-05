@@ -23,9 +23,7 @@ const _jeApi = api as unknown as Record<string, unknown>;
 // ─── Hooks ──────────────────────────────────────────────────
 
 /** Fetch journal entries with optional filters */
-export function useJournalEntries(
-	filters?: Partial<JournalEntryFiltersDTO>,
-) {
+export function useJournalEntries(filters?: Partial<JournalEntryFiltersDTO>) {
 	const { companyContext } = useActiveCompanyContext();
 	const companyId = companyContext.companyId;
 
@@ -38,8 +36,7 @@ export function useJournalEntries(
 			}
 			if (filters?.dateFrom)
 				queryParams.dateFrom = filters.dateFrom.toISOString();
-			if (filters?.dateTo)
-				queryParams.dateTo = filters.dateTo.toISOString();
+			if (filters?.dateTo) queryParams.dateTo = filters.dateTo.toISOString();
 			if (filters?.documentNumber)
 				queryParams.documentNumber = filters.documentNumber;
 
@@ -50,9 +47,14 @@ export function useJournalEntries(
 				}),
 			);
 			const entries =
-				(responseData as { success: true; data: JournalEntryResponseDTO[] } | undefined)
-					?.data ?? (responseData as JournalEntryResponseDTO[] | undefined) ?? [];
-			return entries.map(toTxRow);
+				(
+					responseData as
+						| { success: true; data: JournalEntryResponseDTO[] }
+						| undefined
+				)?.data ??
+				(responseData as JournalEntryResponseDTO[] | undefined) ??
+				[];
+			return Array.isArray(entries) ? entries.map(toTxRow) : [];
 		},
 		enabled: !!companyId,
 	});
@@ -89,7 +91,17 @@ export function useCreateJournalEntry() {
 
 	return useMutation({
 		mutationFn: async (
-			input: Omit<JournalEntryResponseDTO, "id" | "entryNumber" | "status" | "createdAt" | "updatedAt" | "totalDebit" | "totalCredit" | "lines"> & {
+			input: Omit<
+				JournalEntryResponseDTO,
+				| "id"
+				| "entryNumber"
+				| "status"
+				| "createdAt"
+				| "updatedAt"
+				| "totalDebit"
+				| "totalCredit"
+				| "lines"
+			> & {
 				date: string;
 				lines: Array<{
 					accountId: string;
@@ -125,7 +137,11 @@ export function useUpdateJournalEntry() {
 		mutationFn: async ({
 			id,
 			...body
-		}: { id: string; date?: string; gloss?: string }) => {
+		}: {
+			id: string;
+			date?: string;
+			gloss?: string;
+		}) => {
 			const responseData = await unwrap<unknown>(
 				_jeApi["journal-entries"]({ id }).patch({
 					body: body as never,
@@ -226,9 +242,14 @@ export function usePendingJournalEntries() {
 				}),
 			);
 			const entries =
-				(responseData as { success: true; data: JournalEntryResponseDTO[] } | undefined)
-					?.data ?? (responseData as JournalEntryResponseDTO[] | undefined) ?? [];
-			return entries.map(toPendingRow);
+				(
+					responseData as
+						| { success: true; data: JournalEntryResponseDTO[] }
+						| undefined
+				)?.data ??
+				(responseData as JournalEntryResponseDTO[] | undefined) ??
+				[];
+			return Array.isArray(entries) ? entries.map(toPendingRow) : [];
 		},
 		enabled: !!companyId,
 	});

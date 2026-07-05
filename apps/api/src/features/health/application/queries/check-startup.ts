@@ -6,7 +6,7 @@
  * @module health/application/queries
  */
 
-import { sql } from "@arkelythex/persistence/query";
+import { sql } from "@drenyra/persistence/query";
 import type { TaxationBootstrapStatus } from "./check-doctor";
 
 export interface StartupCheckResult {

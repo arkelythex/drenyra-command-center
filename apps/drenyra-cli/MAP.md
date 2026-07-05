@@ -29,7 +29,7 @@ cmd/drenyra/main.go          ← Entry point
           ├── INTERNAL ENGINE
           │   ├── internal/config/        YAML config load/validate (config.yaml)
           │   ├── internal/execution/     Central Engine — ties everything together
-          │   ├── internal/harness/       HTTP client → @arkelythex/harness API
+          │   ├── internal/harness/       HTTP client → @drenyra/harness API
           │   ├── internal/brain/         HTTP client → Drenyra Brain API
           │   ├── internal/fiscalwork/    HTTP client → fiscal-work API
           │   ├── internal/modes/         Plan/Build modes

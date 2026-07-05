@@ -1,4 +1,4 @@
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 import type { ComplianceReproducibilityReport } from "../../../../types/compliance.types";
 import type { IGVSummary } from "../../../../types/taxation.types";
 import type { SIRESummary } from "../../../../types/sire.types";

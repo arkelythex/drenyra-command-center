@@ -5,8 +5,8 @@ import type {
 	EvidenceItem,
 	FiscalCase,
 	FiscalScope,
-} from "@arkelythex/domain/drenyra";
-import type { DrenyraAuditEventFilter, DrenyraAuditEventFilters, DrenyraRepository, DrenyraScopeGuard } from "@arkelythex/application/drenyra";
+} from "@drenyra/domain/drenyra";
+import type { DrenyraAuditEventFilter, DrenyraAuditEventFilters, DrenyraRepository, DrenyraScopeGuard } from "@drenyra/application/drenyra";
 import { and, desc, eq, inArray } from "../query";
 import { db } from "../client";
 import {

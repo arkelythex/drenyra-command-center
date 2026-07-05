@@ -5,7 +5,7 @@ import {
 	useCallback,
 	type ReactNode,
 } from "react";
-import type { FiscalAgentAnalysis } from "@arkelythex/domain";
+import type { FiscalAgentAnalysis } from "@drenyra/domain";
 import { useFiscalInspector } from "@/context/FiscalInspectorContext";
 
 export type AgentStatus = "idle" | "analyzing" | "ready" | "error";

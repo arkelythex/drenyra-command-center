@@ -5,9 +5,9 @@
 import {
 	bankTransactions,
 	businessPartners,
-} from "@arkelythex/persistence/schema";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte } from "@arkelythex/persistence/query";
+} from "@drenyra/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte, lte } from "@drenyra/persistence/query";
 import { BillQueryService } from "../../../billing/bill/application/services/bill.query-service";
 import { InvoiceQueryService } from "../../../billing/invoice/application/services/invoice.query-service";
 import type {

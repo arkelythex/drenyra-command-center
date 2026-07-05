@@ -4,7 +4,7 @@
  * Domain-agnostic types for the agent swarm orchestration module.
  * These interfaces will be implemented in Phase 2 (PR #2).
  *
- * @module @arkelythex/platform-core/swarm
+ * @module @drenyra/platform-core/swarm
  */
 
 /**

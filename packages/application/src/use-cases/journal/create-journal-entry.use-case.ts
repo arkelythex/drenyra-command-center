@@ -11,9 +11,9 @@ import {
 import {
 	JournalEntry,
 	JournalLine,
-} from "@arkelythex/domain/entities/JournalEntry";
-import type { JournalEntryRepository } from "@arkelythex/domain/repositories/journal-entry.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/entities/JournalEntry";
+import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 
 // Account service interface (to fetch account details)
 /**

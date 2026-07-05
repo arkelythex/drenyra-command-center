@@ -9,7 +9,7 @@ import type {
 	Client,
 	ClientFilters,
 	ClientRepository,
-} from "@arkelythex/domain/repositories/client.repository";
+} from "@drenyra/domain/repositories/client.repository";
 
 /**
  * ListClientsInput interface.

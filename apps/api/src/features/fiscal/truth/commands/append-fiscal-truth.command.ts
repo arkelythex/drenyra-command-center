@@ -2,7 +2,7 @@ import {
 	AppendEvidenceCommand,
 	type GovernanceBundleService,
 	PromoteFiscalTruthCommand,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 import type {
 	DeterministicValidatorResultRecord,
 	EvidenceGraphRepository,
@@ -11,7 +11,7 @@ import type {
 	FiscalTruthRepository,
 	FiscalTruthScope,
 	PolicyDecisionRecord,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 
 export interface AppendFiscalTruthInput {
 	expectedScope: FiscalTruthScope;

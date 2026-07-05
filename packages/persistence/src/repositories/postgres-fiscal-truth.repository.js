@@ -1,5 +1,5 @@
 import { and, asc, desc, eq } from "drizzle-orm";
-import { computeAuditHash } from "@arkelythex/domain";
+import { computeAuditHash } from "@drenyra/domain";
 import { db } from "../client";
 import { fiscalTruthEvents } from "../schema/fiscal-truth.schema";
 function toOrganizationId(value) {

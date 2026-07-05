@@ -8,7 +8,7 @@ import type {
 	EvidenceType,
 	AutonomyLevel,
 	DrenyraFiscalWorkInspectSourceSurface,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 import type { DrenyraAuditEventFilters } from "../repository";
 
 export interface DrenyraActorContext {

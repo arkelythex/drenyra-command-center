@@ -41,7 +41,7 @@ describe('SIRE audit stream security hardening', () => {
 			NODE_ENV: 'test',
 			SECURITY_ENFORCE_TEST_RBAC: 'true',
 			SECURITY_ENFORCE_TEST_SESSION: 'false',
-			ARKELYTHEX_AES256_KEY: 'arkelythex-test-key-for-aes-256-gcm',
+			DRENYRA_AES256_KEY: 'drenyra-test-key-for-aes-256-gcm',
 		};
 
 		runSireAuditWorkflowMock.mockImplementation(
@@ -174,7 +174,7 @@ describe('SIRE audit stream security hardening', () => {
 	});
 
 	it('fails fast when encryption is requested but key is missing', async () => {
-		delete process.env.ARKELYTHEX_AES256_KEY;
+		delete process.env.DRENYRA_AES256_KEY;
 
 		const { sireAuditRoute } = await import('../../api/sire-audit.route');
 		const app = new Elysia().use(sireAuditRoute);

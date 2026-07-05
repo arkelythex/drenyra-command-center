@@ -10,7 +10,7 @@ import React from 'react';
 import { FileText, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import type { HubArtifact } from '@arkelythex/shared/artifacts';
+import type { HubArtifact } from '@drenyra/shared/artifacts';
 import { registerArtifact } from '../artifact-registry';
 
 type DashboardArt = Extract<HubArtifact, { type: 'dashboard' }>;

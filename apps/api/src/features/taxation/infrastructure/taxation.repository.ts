@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte, sql } from "@arkelythex/persistence/query";
-import { invoices } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
+import { invoices } from "@drenyra/persistence/schema";
 
 /**
  * SalesSummaryRow interface.

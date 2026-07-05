@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { FISCAL_RISK_COLORS } from "@arkelythex/domain";
+import { FISCAL_RISK_COLORS } from "@drenyra/domain";
 import { CheckCircle2, ShieldAlert, AlertTriangle } from "lucide-react";
 import type { RiskBadgeProps } from "../FiscalInspector.types";
 import { RISK_BG } from "../FiscalInspector.data";

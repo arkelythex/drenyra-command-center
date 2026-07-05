@@ -1,4 +1,4 @@
-import { type AiCostEvent } from "@arkelythex/persistence/schema";
+import { type AiCostEvent } from "@drenyra/persistence/schema";
 export interface CostEventInput {
     agentType: string;
     modelUsed: string;

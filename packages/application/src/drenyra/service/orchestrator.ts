@@ -9,7 +9,7 @@ import {
 	type EvidenceItem,
 	type FiscalCase,
 	type FiscalCaseDetails,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 import { runDeterministicMockAgent } from "../mock-agents";
 import type { DrenyraAuditEventFilter, DrenyraRepository } from "../repository";
 import {

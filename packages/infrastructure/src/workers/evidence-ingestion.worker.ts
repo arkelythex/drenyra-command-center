@@ -1,5 +1,5 @@
-import { Evidence } from "@arkelythex/domain";
-import type { EvidenceRepository } from "@arkelythex/domain/repositories/evidence.repository";
+import { Evidence } from "@drenyra/domain";
+import type { EvidenceRepository } from "@drenyra/domain/repositories/evidence.repository";
 import type { EvidenceClassifierAgent } from "../ai/evidence-classifier";
 
 export interface DocumentIngestionEvent {

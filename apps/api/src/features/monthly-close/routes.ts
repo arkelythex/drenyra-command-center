@@ -1,4 +1,4 @@
-import type { CloseChecklistRepository } from "@arkelythex/domain/repositories/close-checklist.repository";
+import type { CloseChecklistRepository } from "@drenyra/domain/repositories/close-checklist.repository";
 import { Elysia, t } from "elysia";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import { MonthlyCloseController } from "./controller";

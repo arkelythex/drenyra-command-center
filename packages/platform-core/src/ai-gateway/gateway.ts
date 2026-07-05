@@ -4,7 +4,7 @@
  *
  * Domain-agnostic — no fiscal, tax, or vertical-specific logic.
  *
- * @module @arkelythex/platform-core/ai-gateway
+ * @module @drenyra/platform-core/ai-gateway
  */
 
 import type { LLMProvider, ChatMessage, TokenUsage } from "./provider.js";

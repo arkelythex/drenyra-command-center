@@ -9,7 +9,7 @@
 
 import { Agent, Task, AgentResult } from '../../../agent-swarm/src/core/orchestrator-2026.js';
 import { openRouter, OpenRouterTool } from './index.js';
-import { SecureLogger } from '@arkelythex/shared/secure-logger';
+import { SecureLogger } from '@drenyra/shared/secure-logger';
 
 /**
  * System prompts for each agent type

@@ -1,4 +1,4 @@
-import type { AgentContext, AgentTool } from "@arkelythex/drenyra-orchestrator";
+import type { AgentContext, AgentTool } from "@drenyra/drenyra-orchestrator";
 import { z } from "zod";
 
 const CurrencySchema = z.enum(["PEN", "USD"]);

@@ -1,4 +1,4 @@
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { Money } from "@drenyra/domain/value-objects/Money";
 export const mapDbStatusToDomain = (dbStatus) => {
     switch (dbStatus) {
         case "ACCEPTED":

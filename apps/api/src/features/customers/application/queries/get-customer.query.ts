@@ -6,9 +6,9 @@
  * @module customer/application/queries
  */
 
-import { db } from "@arkelythex/persistence/client";
-import { and, desc, eq } from "@arkelythex/persistence/query";
-import { invoices } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, desc, eq } from "@drenyra/persistence/query";
+import { invoices } from "@drenyra/persistence/schema";
 import type { Customer } from "../../domain/customer";
 import type { ICustomerRepository } from "../../domain/customer.repository.interface";
 

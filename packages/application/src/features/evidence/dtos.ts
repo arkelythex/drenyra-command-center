@@ -2,7 +2,7 @@ import type {
 	EvidenceSource,
 	EvidenceStatus,
 	EvidenceType,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 
 export interface EvidenceDTO {
 	id: string;

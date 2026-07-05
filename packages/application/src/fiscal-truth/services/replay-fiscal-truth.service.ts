@@ -3,8 +3,8 @@ import type {
 	FiscalTruthScope,
 	ReplayRepository,
 	ReplayResult,
-} from "@arkelythex/domain";
-import { REPLAY_FAILURE_CODE, toReplayFailureResult } from "@arkelythex/domain";
+} from "@drenyra/domain";
+import { REPLAY_FAILURE_CODE, toReplayFailureResult } from "@drenyra/domain";
 
 export interface ReplayFiscalTruthInput {
 	aggregateId: string;

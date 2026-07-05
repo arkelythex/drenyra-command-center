@@ -202,7 +202,7 @@ export const agentAuditTrailRoutes = new Elysia({ prefix: "/audit-trail" })
 		},
 	)
 
-	// GET /audit-trail/export/xml?organizationId=1&companyRuc=20123456789&companyName=Arkelythex
+	// GET /audit-trail/export/xml?organizationId=1&companyRuc=20123456789&companyName=Drenyra
 	.get(
 		"/export/xml",
 		async ({ query, headers, set }) => {
@@ -248,7 +248,7 @@ export const agentAuditTrailRoutes = new Elysia({ prefix: "/audit-trail" })
 		},
 	)
 
-	// GET /audit-trail/export/pdf?organizationId=1&companyName=Arkelythex
+	// GET /audit-trail/export/pdf?organizationId=1&companyName=Drenyra
 	.get(
 		"/export/pdf",
 		async ({ query, headers, set }) => {

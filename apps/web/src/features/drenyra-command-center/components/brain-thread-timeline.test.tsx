@@ -1,4 +1,4 @@
-import type { DrenyraBrainItem, DrenyraBrainThread, DrenyraBrainTurn } from "@arkelythex/domain/drenyra";
+import type { DrenyraBrainItem, DrenyraBrainThread, DrenyraBrainTurn } from "@drenyra/domain/drenyra";
 import { render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@/lib/api-helpers";
@@ -145,7 +145,7 @@ describe("drenyra-brain.api", () => {
 		Object.defineProperty(globalThis, "localStorage", {
 			value: {
 				getItem: (key: string) =>
-					key === "arkelythex-active-fiscal-period" ? "2026-05" : null,
+					key === "drenyra-active-fiscal-period" ? "2026-05" : null,
 				setItem: () => {},
 				removeItem: () => {},
 				clear: () => {},

@@ -16,4 +16,4 @@ export {
 	DropdownMenuSubContent,
 	DropdownMenuSubTrigger,
 	DropdownMenuTrigger,
-} from "@arkelythex/ui";
+} from "@drenyra/ui";

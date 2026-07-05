@@ -1,7 +1,7 @@
 /**
  * Button Component Stories
  *
- * Component documentation for Arkelythex Design System
+ * Component documentation for Drenyra Design System
  */
 import { Button } from "@/components/ui/button";
 

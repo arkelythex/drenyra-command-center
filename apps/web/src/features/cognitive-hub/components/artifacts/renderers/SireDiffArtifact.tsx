@@ -1,4 +1,4 @@
-import type { HubArtifact } from "@arkelythex/shared/artifacts";
+import type { HubArtifact } from "@drenyra/shared/artifacts";
 import { Link } from "@tanstack/react-router";
 import { ArrowRightLeft } from "lucide-react";
 

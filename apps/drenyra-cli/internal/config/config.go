@@ -110,7 +110,7 @@ func Default() *Config {
 	}
 }
 
-// Load merges global (~/.arkelythex/config.yaml) and optional project (.arkelythex/config.yaml).
+// Load merges global (~/.drenyra/config.yaml) and optional project (.drenyra/config.yaml).
 func Load() (*Config, error) {
 	cfg := Default()
 
@@ -123,7 +123,7 @@ func Load() (*Config, error) {
 	}
 
 	if cwd, err := os.Getwd(); err == nil {
-		projectPath := filepath.Join(cwd, ".arkelythex", "config.yaml")
+		projectPath := filepath.Join(cwd, ".drenyra", "config.yaml")
 		if err := mergeFile(cfg, projectPath); err != nil && !errors.Is(err, os.ErrNotExist) {
 			return nil, err
 		}
@@ -142,36 +142,36 @@ func mergeFile(cfg *Config, path string) error {
 }
 
 func applyEnv(cfg *Config) {
-	if v := os.Getenv("ARKELYTHEX_API_URL"); v != "" {
+	if v := os.Getenv("DRENYRA_API_URL"); v != "" {
 		cfg.Harness.API = v
 	}
-	if v := os.Getenv("ARKELYTHEX_ORGANIZATION_ID"); v != "" {
+	if v := os.Getenv("DRENYRA_ORGANIZATION_ID"); v != "" {
 		cfg.Fiscal.OrganizationID = v
 	}
-	if v := os.Getenv("ARKELYTHEX_COMPANY_ID"); v != "" {
+	if v := os.Getenv("DRENYRA_COMPANY_ID"); v != "" {
 		cfg.Fiscal.CompanyID = v
 	}
-	if v := os.Getenv("ARKELYTHEX_COMPANY_RUC"); v != "" {
+	if v := os.Getenv("DRENYRA_COMPANY_RUC"); v != "" {
 		cfg.Fiscal.CompanyRUC = v
 	}
-	if v := os.Getenv("ARKELYTHEX_FISCAL_PERIOD"); v != "" {
+	if v := os.Getenv("DRENYRA_FISCAL_PERIOD"); v != "" {
 		cfg.Fiscal.Period = v
 	}
-	if v := os.Getenv("ARKELYTHEX_USER_ID"); v != "" {
+	if v := os.Getenv("DRENYRA_USER_ID"); v != "" {
 		cfg.Fiscal.UserID = v
 	}
 }
 
-// GlobalPath returns ~/.arkelythex/config.yaml
+// GlobalPath returns ~/.drenyra/config.yaml
 func GlobalPath() (string, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, ".arkelythex", "config.yaml"), nil
+	return filepath.Join(home, ".drenyra", "config.yaml"), nil
 }
 
-// WriteGlobal writes default config to ~/.arkelythex/config.yaml
+// WriteGlobal writes default config to ~/.drenyra/config.yaml
 func WriteGlobal(cfg *Config) error {
 	path, err := GlobalPath()
 	if err != nil {

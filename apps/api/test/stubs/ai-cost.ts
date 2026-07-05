@@ -1,5 +1,5 @@
 /**
- * Stub for @arkelythex/infrastructure/services/ai-cost
+ * Stub for @drenyra/infrastructure/services/ai-cost
  *
  * Prevents Drizzle from connecting to PostgreSQL in test environment.
  * budget-tracker.ts imports aiCostRepository transitively.

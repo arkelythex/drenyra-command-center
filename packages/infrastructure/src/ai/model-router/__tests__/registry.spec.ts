@@ -3,11 +3,11 @@ import type {
 	CapabilityRoutingRule,
 	ModelCapability,
 	ModelRegistration,
-} from "@arkelythex/domain/ai/model-router/types";
+} from "@drenyra/ai/providers/model-router-types";
 import type {
 	CapabilityRoutingRuleRepository,
 	ModelRegistrationRepository,
-} from "@arkelythex/domain/repositories/model-registration.repository";
+} from "@drenyra/domain/repositories/model-registration.repository";
 import { ModelRegistryService } from "../registry";
 import type { RoutingRequest } from "../types";
 

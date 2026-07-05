@@ -1,5 +1,5 @@
-import type { CapabilityRoutingRule } from "@arkelythex/domain/ai/model-router/types";
-import type { CapabilityRoutingRuleRepository } from "@arkelythex/domain/repositories/model-registration.repository";
+import type { CapabilityRoutingRule } from "@drenyra/domain/ai/model-router-types";
+import type { CapabilityRoutingRuleRepository } from "@drenyra/domain/repositories/model-registration.repository";
 import { eq } from "drizzle-orm";
 import { db } from "../../client";
 import { capabilityRoutingRules } from "../../schema/model-router.schema";

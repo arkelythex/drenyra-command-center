@@ -5,7 +5,7 @@
  * scenarios, including invoice referencing, amount validation, and
  * automatic ANULACION detection.
  *
- * NOTE: CreditNote domain entity does not yet exist in @arkelythex/domain.
+ * NOTE: CreditNote domain entity does not yet exist in @drenyra/domain.
  * This builder uses a plain props interface as the built type until the
  * domain entity is implemented.
  *
@@ -18,8 +18,8 @@
  *   .build();
  * ```
  */
-import { CreditNote, DocumentSeries, Money } from "@arkelythex/domain";
-import type { CreditNoteType, CreditNoteStatus, Currency } from "@arkelythex/domain";
+import { CreditNote, DocumentSeries, Money } from "@drenyra/domain";
+import type { CreditNoteType, CreditNoteStatus, Currency } from "@drenyra/domain";
 
 import { BaseBuilder } from "./base.builder";
 

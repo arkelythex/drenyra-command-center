@@ -35,7 +35,7 @@ const MOCK_CASE = {
 
 const ACTIVE_COMPANY = {
 	companyId: "00000000-0000-0000-0000-000000000001",
-	companyName: "ARKELYTHEX S.A.C.",
+	companyName: "DRENYRA S.A.C.",
 	ruc: "20546296564",
 	countryCode: "pe",
 	isDemoFallback: false,
@@ -56,7 +56,7 @@ const AUTH_SESSION = {
 			role: "ADMIN",
 			companyId: "00000000-0000-0000-0000-000000000001",
 			activeCompanyId: "00000000-0000-0000-0000-000000000001",
-			companyName: "ARKELYTHEX S.A.C.",
+			companyName: "DRENYRA S.A.C.",
 			ruc: "20546296564",
 			countryCode: "pe",
 		},
@@ -224,7 +224,7 @@ async function mockCommandCenterApis(page: import("@playwright/test").Page) {
 async function installSessionState(page: import("@playwright/test").Page) {
 	await page.addInitScript((company: typeof ACTIVE_COMPANY) => {
 		window.localStorage.setItem(
-			"arkelythex-active-company",
+			"drenyra-active-company",
 			JSON.stringify(company),
 		);
 	}, ACTIVE_COMPANY);
@@ -255,7 +255,7 @@ async function installSessionState(page: import("@playwright/test").Page) {
 									role: "ADMIN",
 									companyId: "00000000-0000-0000-0000-000000000001",
 									activeCompanyId: "00000000-0000-0000-0000-000000000001",
-									companyName: "ARKELYTHEX S.A.C.",
+									companyName: "DRENYRA S.A.C.",
 									ruc: "20546296564",
 									countryCode: "pe",
 								},
@@ -298,7 +298,7 @@ test.describe("Drenyra Command Center", () => {
 		).toBeVisible({ timeout: 15_000 });
 
 		const companies = page.getByRole("region", { name: "Companies" });
-		await expect(companies.getByText("ARKELYTHEX S.A.C.")).toBeVisible();
+		await expect(companies.getByText("DRENYRA S.A.C.")).toBeVisible();
 		await expect(companies.getByText("RUC 20546296564")).toBeVisible();
 	});
 

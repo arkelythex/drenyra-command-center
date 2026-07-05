@@ -1,7 +1,7 @@
 import type { DeleteInvoiceDTO } from "../../dtos/invoice/delete-invoice.dto";
 import { DeleteInvoiceSchema } from "../../validators/invoice/invoice.validators";
-import type { InvoiceRepository } from "@arkelythex/domain/repositories/invoice.repository";
-import { BusinessRuleError, NotFoundError } from "@arkelythex/shared/errors";
+import type { InvoiceRepository } from "@drenyra/domain/repositories/invoice.repository";
+import { BusinessRuleError, NotFoundError } from "@drenyra/shared/errors";
 
 /**
  * DeleteInvoiceUseCase class.

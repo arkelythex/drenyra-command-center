@@ -1,4 +1,4 @@
-import type { ContextRegistrySurfaceDTO } from "@arkelythex/application";
+import type { ContextRegistrySurfaceDTO } from "@drenyra/application";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { extractOkData, unwrap } from "@/lib/api-helpers";

@@ -1,6 +1,6 @@
 import { describe, expect, it, mock } from "bun:test";
-import type { ModelCapability } from "@arkelythex/domain/ai/model-router/types";
-import type { RoutingAuditLogRepository } from "@arkelythex/domain/repositories/model-registration.repository";
+import type { ModelCapability } from "@drenyra/ai/providers/model-router-types";
+import type { RoutingAuditLogRepository } from "@drenyra/domain/repositories/model-registration.repository";
 import { FallbackExecutor } from "../fallback-executor";
 import type {
 	ProviderAdapter,

@@ -9,7 +9,7 @@
  * All methods are non-blocking — errors are caught, logged, and the original
  * messages are returned unmodified. This matches ContextMonitor's contract.
  *
- * @module @arkelythex/ai/context-monitor
+ * @module @drenyra/ai/context-monitor
  */
 
 import { AVAILABLE_MODELS } from "../ai/model-registry";

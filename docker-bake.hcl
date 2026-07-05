@@ -1,12 +1,12 @@
 # ─────────────────────────────────────────────────────────
-# ARKELYTHEX — Docker Buildx Bake Configuration
+# DRENYRA — Docker Buildx Bake Configuration
 # ─────────────────────────────────────────────────────────
 # Build all services:    docker buildx bake
 # Build single service:  docker buildx bake web
 #                        docker buildx bake api
 #                        docker buildx bake data-engine
 #
-# With custom tag:       docker buildx bake --set *.tags=arkelythex/web:v1.0.0
+# With custom tag:       docker buildx bake --set *.tags=drenyra/web:v1.0.0
 # With cache push:       docker buildx bake --push
 # ─────────────────────────────────────────────────────────
 
@@ -19,15 +19,15 @@ variable "DOCKER_REGISTRY" {
 }
 
 variable "WEB_TAG" {
-  default = "${DOCKER_REGISTRY}arkelythex/web:${TAG}"
+  default = "${DOCKER_REGISTRY}drenyra/web:${TAG}"
 }
 
 variable "API_TAG" {
-  default = "${DOCKER_REGISTRY}arkelythex/api:${TAG}"
+  default = "${DOCKER_REGISTRY}drenyra/api:${TAG}"
 }
 
 variable "DATA_ENGINE_TAG" {
-  default = "${DOCKER_REGISTRY}arkelythex/data-engine:${TAG}"
+  default = "${DOCKER_REGISTRY}drenyra/data-engine:${TAG}"
 }
 
 # ── Groups ──────────────────────────────────────────────

@@ -4,7 +4,7 @@
  */
 
 import { Elysia } from "elysia";
-import { fiscalHealthService } from "@arkelythex/infrastructure/services/fiscal-health.service";
+import { fiscalHealthService } from "@drenyra/infrastructure/services/fiscal-health.service";
 import { ok, fail } from "../../shared/api-response";
 
 export const fiscalAgentHealthRoute = new Elysia().get(

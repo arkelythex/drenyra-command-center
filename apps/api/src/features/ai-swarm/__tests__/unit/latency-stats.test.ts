@@ -10,7 +10,7 @@ import type {
 	LatencySummary,
 	LatencyByAgent,
 	LatencyTrend,
-} from "@arkelythex/ai/services/ai-latency";
+} from "@drenyra/ai/services/ai-latency";
 
 // ─── Mock the repository ─────────────────────────────────────────────────────
 
@@ -22,7 +22,7 @@ const { mockRecord, mockGetSummary, mockGetByAgent, mockGetTrend, mockGetRecent 
 	mockGetRecent: vi.fn(),
 }));
 
-vi.mock("@arkelythex/ai/services/ai-latency", () => ({
+vi.mock("@drenyra/ai/services/ai-latency", () => ({
 	aiLatencyRepository: {
 		record: mockRecord,
 		getSummary: mockGetSummary,

@@ -1,4 +1,4 @@
-import type { FiscalTruthEvent, FiscalTruthRepository, FiscalTruthScope } from "@arkelythex/domain";
+import type { FiscalTruthEvent, FiscalTruthRepository, FiscalTruthScope } from "@drenyra/domain";
 export interface GetFiscalTruthEventQueryInput {
     eventId: string;
     scope: FiscalTruthScope;

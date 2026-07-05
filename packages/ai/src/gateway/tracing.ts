@@ -4,7 +4,7 @@
  * Provides OpenTelemetry tracing for LLM Gateway operations.
  * Integrates with @elysiajs/opentelemetry when available.
  *
- * @module @arkelythex/ai/gateway
+ * @module @drenyra/ai/gateway
  */
 
 import type { LLMProvider } from "./types";

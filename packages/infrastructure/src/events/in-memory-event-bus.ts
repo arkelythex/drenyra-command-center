@@ -38,7 +38,7 @@ export class InMemoryEventBus implements EventBusPort {
 				eventType,
 				timestamp: new Date(),
 				version: EVENT_SCHEMA_VERSION,
-				source: metadata?.source ?? "arkelythex",
+				source: metadata?.source ?? "drenyra",
 				correlationId: metadata?.correlationId ?? nanoid(),
 				causationId: metadata?.causationId,
 			},

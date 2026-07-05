@@ -1,4 +1,4 @@
-import type { EvidenceTraceBundle, TraceEvidenceStore } from "@arkelythex/ai";
+import type { EvidenceTraceBundle, TraceEvidenceStore } from "@drenyra/ai";
 import type { ApprovalRecord } from "./types";
 
 export const toApprovalLineage = (

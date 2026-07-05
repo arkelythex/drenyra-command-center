@@ -29,7 +29,7 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 
 export const DEFAULT_CODEX_THEME: CodexThemeSettings = {
 	version: "codex-theme-v1",
-	name: "Arkelythex Dark",
+	name: "Drenyra Dark",
 	mode: "dark",
 	tokens: {
 		accent: "#e0e0e5",
@@ -55,7 +55,7 @@ export const DEFAULT_CODEX_THEME: CodexThemeSettings = {
 
 export const CODEX_LIGHT_THEME: CodexThemeSettings = {
 	version: "codex-theme-v1",
-	name: "Arkelythex Light",
+	name: "Drenyra Light",
 	mode: "light",
 	tokens: {
 		accent: "#c47f30",
@@ -176,7 +176,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 	useEffect(() => {
 		if (typeof window === "undefined") return;
 		try {
-			const saved = localStorage.getItem("arkelythex-settings");
+			const saved = localStorage.getItem("drenyra-settings");
 			if (saved) {
 				setSettings((prev) =>
 					withDefaultCodexTheme({
@@ -200,7 +200,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	useEffect(() => {
 		if (!isLoaded || typeof window === "undefined") return;
-		localStorage.setItem("arkelythex-settings", JSON.stringify(settings));
+		localStorage.setItem("drenyra-settings", JSON.stringify(settings));
 	}, [settings, isLoaded]);
 
 	const updateSettings = (newSettings: Partial<AppSettings>) => {

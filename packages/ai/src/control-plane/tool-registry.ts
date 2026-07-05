@@ -7,7 +7,7 @@
 
 import { eq } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { aiTools, type NewAiTool } from "@arkelythex/persistence/schema";
+import { aiTools, type NewAiTool } from "@drenyra/persistence/schema";
 import { zodToolSchema } from "../tools/json-schema";
 import {
 	ToolRegistrationSchema,

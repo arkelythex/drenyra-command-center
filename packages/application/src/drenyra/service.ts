@@ -26,9 +26,15 @@ import {
 	type FiscalRiskLevel,
 	type FiscalScope,
 	type DrenyraAgentType,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 import { runDeterministicMockAgent } from "./mock-agents";
-import type { DrenyraAuditEventFilter, DrenyraAuditEventFilters, DrenyraRepository, DrenyraScopeGuard } from "./repository";
+import { verifyAgentRunOutput } from "./verification";
+import type {
+	DrenyraAuditEventFilter,
+	DrenyraAuditEventFilters,
+	DrenyraRepository,
+	DrenyraScopeGuard,
+} from "./repository";
 
 export interface DrenyraActorContext {
 	companyId: string;
@@ -131,7 +137,9 @@ function newTraceId(): string {
 	return newId("trace");
 }
 
-function makeScope(context: DrenyraActorContext): FiscalScope & DrenyraScopeGuard {
+function makeScope(
+	context: DrenyraActorContext,
+): FiscalScope & DrenyraScopeGuard {
 	return {
 		companyId: context.companyId,
 		companyRuc: context.companyRuc,
@@ -144,7 +152,9 @@ function makeScope(context: DrenyraActorContext): FiscalScope & DrenyraScopeGuar
 async function digestText(value: string): Promise<string> {
 	const data = new TextEncoder().encode(value);
 	const digest = await crypto.subtle.digest("SHA-256", data);
-	return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+	return Array.from(new Uint8Array(digest), (byte) =>
+		byte.toString(16).padStart(2, "0"),
+	).join("");
 }
 
 function assertRiskScore(score: number): void {
@@ -153,12 +163,22 @@ function assertRiskScore(score: number): void {
 	}
 }
 
-function metadataWithIdempotency(metadata: Record<string, unknown> | undefined, idempotencyKey: string | undefined): Record<string, unknown> {
-	return idempotencyKey ? { ...(metadata ?? {}), idempotencyKey } : metadata ?? {};
+function metadataWithIdempotency(
+	metadata: Record<string, unknown> | undefined,
+	idempotencyKey: string | undefined,
+): Record<string, unknown> {
+	return idempotencyKey
+		? { ...(metadata ?? {}), idempotencyKey }
+		: (metadata ?? {});
 }
 
-function hasIdempotencyKey(record: { metadata: Record<string, unknown> }, idempotencyKey: string | undefined): boolean {
-	return Boolean(idempotencyKey) && record.metadata.idempotencyKey === idempotencyKey;
+function hasIdempotencyKey(
+	record: { metadata: Record<string, unknown> },
+	idempotencyKey: string | undefined,
+): boolean {
+	return (
+		Boolean(idempotencyKey) && record.metadata.idempotencyKey === idempotencyKey
+	);
 }
 
 function hasCompleteInspectContext(context: DrenyraActorContext): boolean {
@@ -180,9 +200,14 @@ function hasCompleteInspectContext(context: DrenyraActorContext): boolean {
 export class DrenyraFiscalCommandCenterService {
 	constructor(private readonly repository: DrenyraRepository) {}
 
-	async createFiscalCase(context: DrenyraActorContext, input: CreateFiscalCaseInput): Promise<FiscalCase> {
+	async createFiscalCase(
+		context: DrenyraActorContext,
+		input: CreateFiscalCaseInput,
+	): Promise<FiscalCase> {
 		if (input.idempotencyKey) {
-			const existing = (await this.repository.listFiscalCases(makeScope(context))).find((item) => hasIdempotencyKey(item, input.idempotencyKey));
+			const existing = (
+				await this.repository.listFiscalCases(makeScope(context))
+			).find((item) => hasIdempotencyKey(item, input.idempotencyKey));
 			if (existing) return existing;
 		}
 		const riskScore = input.riskScore ?? 35;
@@ -242,7 +267,8 @@ export class DrenyraFiscalCommandCenterService {
 		await this.addEvidenceItem(context, fiscalCase.id, {
 			type: "DOCUMENT",
 			title: input.filename,
-			summary: "Comprobante cargado por el contador para procesamiento multi-agente.",
+			summary:
+				"Comprobante cargado por el contador para procesamiento multi-agente.",
 			source: "DOCUMENT_UPLOAD",
 			sourceRef: input.documentId,
 			contentHash: input.documentId,
@@ -270,7 +296,10 @@ export class DrenyraFiscalCommandCenterService {
 		return this.repository.listFiscalCases(makeScope(context));
 	}
 
-	async getFiscalCaseDetails(context: DrenyraActorContext, caseId: string): Promise<FiscalCaseDetails | null> {
+	async getFiscalCaseDetails(
+		context: DrenyraActorContext,
+		caseId: string,
+	): Promise<FiscalCaseDetails | null> {
 		const scope = makeScope(context);
 		const fiscalCase = await this.repository.getFiscalCaseById(caseId, scope);
 		if (!fiscalCase) return null;
@@ -283,7 +312,10 @@ export class DrenyraFiscalCommandCenterService {
 		return { case: fiscalCase, evidence, agentRuns, approvals, auditEvents };
 	}
 
-	async listAuditEvents(context: DrenyraActorContext, input: ListAuditEventsInput = {}): Promise<AuditEvent[]> {
+	async listAuditEvents(
+		context: DrenyraActorContext,
+		input: ListAuditEventsInput = {},
+	): Promise<AuditEvent[]> {
 		return this.repository.listScopedAuditEvents(makeScope(context), input);
 	}
 
@@ -303,7 +335,8 @@ export class DrenyraFiscalCommandCenterService {
 				...baseEnvelope,
 				status: "validation_failed",
 				reasonCode: "TENANT_CONTEXT_REQUIRED",
-				redactedDetail: "Drenyra fiscal work inspect requires complete fiscal scope and work item id",
+				redactedDetail:
+					"Drenyra fiscal work inspect requires complete fiscal scope and work item id",
 			};
 		}
 
@@ -312,7 +345,8 @@ export class DrenyraFiscalCommandCenterService {
 				...baseEnvelope,
 				status: "denied",
 				reasonCode: "DRENYRA_CAPABILITY_DENIED",
-				redactedDetail: "Capability grant denied for Drenyra fiscal work inspect",
+				redactedDetail:
+					"Capability grant denied for Drenyra fiscal work inspect",
 			};
 		}
 
@@ -350,12 +384,18 @@ export class DrenyraFiscalCommandCenterService {
 	 * @example
 	 * await service.updateFiscalCaseStatus(context, caseId, { status: "RESOLVED", reason: "Evidence reviewed" });
 	 */
-	async updateFiscalCaseStatus(context: DrenyraActorContext, caseId: string, input: UpdateFiscalCaseStatusInput): Promise<FiscalCase> {
+	async updateFiscalCaseStatus(
+		context: DrenyraActorContext,
+		caseId: string,
+		input: UpdateFiscalCaseStatusInput,
+	): Promise<FiscalCase> {
 		const scope = makeScope(context);
 		const fiscalCase = await this.repository.getFiscalCaseById(caseId, scope);
 		if (!fiscalCase) throw new Error("FISCAL_CASE_NOT_FOUND");
-		if (input.status === "APPROVAL_PENDING") throw new Error("FISCAL_CASE_STATUS_REQUIRES_APPROVAL_REQUEST");
-		if (fiscalCase.status === input.status) throw new Error("FISCAL_CASE_STATUS_UNCHANGED");
+		if (input.status === "APPROVAL_PENDING")
+			throw new Error("FISCAL_CASE_STATUS_REQUIRES_APPROVAL_REQUEST");
+		if (fiscalCase.status === input.status)
+			throw new Error("FISCAL_CASE_STATUS_UNCHANGED");
 
 		const updated = await this.repository.updateFiscalCase({
 			...fiscalCase,
@@ -366,20 +406,34 @@ export class DrenyraFiscalCommandCenterService {
 			caseId,
 			eventType: "FISCAL_CASE_STATUS_CHANGED",
 			message: `Fiscal case status changed from ${fiscalCase.status} to ${input.status}`,
-			metadata: { previousStatus: fiscalCase.status, nextStatus: input.status, reason: input.reason ?? "Manual status update" },
+			metadata: {
+				previousStatus: fiscalCase.status,
+				nextStatus: input.status,
+				reason: input.reason ?? "Manual status update",
+			},
 		});
 		return updated;
 	}
 
-	async addEvidenceItem(context: DrenyraActorContext, caseId: string, input: AddEvidenceInput): Promise<EvidenceItem> {
+	async addEvidenceItem(
+		context: DrenyraActorContext,
+		caseId: string,
+		input: AddEvidenceInput,
+	): Promise<EvidenceItem> {
 		const scope = makeScope(context);
 		const fiscalCase = await this.repository.getFiscalCaseById(caseId, scope);
 		if (!fiscalCase) throw new Error("FISCAL_CASE_NOT_FOUND");
 		if (input.idempotencyKey) {
-			const existing = (await this.repository.listEvidence(caseId, scope)).find((item) => hasIdempotencyKey(item, input.idempotencyKey));
+			const existing = (await this.repository.listEvidence(caseId, scope)).find(
+				(item) => hasIdempotencyKey(item, input.idempotencyKey),
+			);
 			if (existing) return existing;
 		}
-		const contentHash = input.contentHash ?? (await digestText(`${caseId}:${input.source}:${input.sourceRef ?? ""}:${input.summary}`));
+		const contentHash =
+			input.contentHash ??
+			(await digestText(
+				`${caseId}:${input.source}:${input.sourceRef ?? ""}:${input.summary}`,
+			));
 		const item: EvidenceItem = {
 			id: newId("evidence"),
 			caseId,
@@ -400,17 +454,28 @@ export class DrenyraFiscalCommandCenterService {
 			caseId,
 			eventType: "EVIDENCE_ADDED",
 			message: `Evidence added: ${item.title}`,
-			metadata: { evidenceId: item.id, evidenceType: item.type, source: item.source },
+			metadata: {
+				evidenceId: item.id,
+				evidenceType: item.type,
+				source: item.source,
+			},
 		});
 		return item;
 	}
 
-	async startAndCompleteMockAgentRun(context: DrenyraActorContext, caseId: string, agentType: DrenyraAgentType, idempotencyKey?: string): Promise<AgentRun> {
+	async startAndCompleteMockAgentRun(
+		context: DrenyraActorContext,
+		caseId: string,
+		agentType: DrenyraAgentType,
+		idempotencyKey?: string,
+	): Promise<AgentRun> {
 		const scope = makeScope(context);
 		const fiscalCase = await this.repository.getFiscalCaseById(caseId, scope);
 		if (!fiscalCase) throw new Error("FISCAL_CASE_NOT_FOUND");
 		if (idempotencyKey) {
-			const existing = (await this.repository.listAgentRuns(caseId, scope)).find((run) => hasIdempotencyKey(run, idempotencyKey));
+			const existing = (
+				await this.repository.listAgentRuns(caseId, scope)
+			).find((run) => hasIdempotencyKey(run, idempotencyKey));
 			if (existing) return existing;
 		}
 		const startedAt = nowIso();
@@ -422,7 +487,10 @@ export class DrenyraFiscalCommandCenterService {
 			status: "STARTED",
 			startedBy: context.userId,
 			startedAt,
-			metadata: metadataWithIdempotency({ deterministic: true, provider: "mock" }, idempotencyKey),
+			metadata: metadataWithIdempotency(
+				{ deterministic: true, provider: "mock" },
+				idempotencyKey,
+			),
 		};
 		await this.repository.createAgentRun(started);
 		await this.writeAuditEvent(context, {
@@ -433,11 +501,22 @@ export class DrenyraFiscalCommandCenterService {
 		});
 
 		const output = runDeterministicMockAgent(agentType, fiscalCase);
+
+		// Intención↔acción verification: validar findings contra motor determinístico
+		const verificationReport = verifyAgentRunOutput(output, {
+			companyRuc: context.companyRuc,
+			period: context.period,
+		});
+
 		const completed: AgentRun = {
 			...started,
 			status: "COMPLETED",
 			completedAt: nowIso(),
-			output,
+			output: {
+				...output,
+				confidence: verificationReport.adjustedConfidence / 100,
+				verificationReport,
+			},
 		};
 		await this.repository.updateAgentRun(completed);
 		await this.repository.addEvidenceItem({
@@ -458,24 +537,37 @@ export class DrenyraFiscalCommandCenterService {
 			caseId,
 			eventType: "AGENT_RUN_COMPLETED",
 			message: `${agentType} completed deterministic output`,
-			metadata: { agentRunId: completed.id, riskLevel: output.riskLevel, approvalRequired: output.approvalRequired },
+			metadata: {
+				agentRunId: completed.id,
+				riskLevel: output.riskLevel,
+				approvalRequired: output.approvalRequired,
+			},
 		});
 		return completed;
 	}
 
-	async listAgentRuns(context: DrenyraActorContext, caseId: string): Promise<AgentRun[]> {
+	async listAgentRuns(
+		context: DrenyraActorContext,
+		caseId: string,
+	): Promise<AgentRun[]> {
 		const scope = makeScope(context);
 		const fiscalCase = await this.repository.getFiscalCaseById(caseId, scope);
 		if (!fiscalCase) throw new Error("FISCAL_CASE_NOT_FOUND");
 		return this.repository.listAgentRuns(caseId, scope);
 	}
 
-	async requestApproval(context: DrenyraActorContext, caseId: string, input: RequestApprovalInput): Promise<ApprovalRequest> {
+	async requestApproval(
+		context: DrenyraActorContext,
+		caseId: string,
+		input: RequestApprovalInput,
+	): Promise<ApprovalRequest> {
 		const scope = makeScope(context);
 		const fiscalCase = await this.repository.getFiscalCaseById(caseId, scope);
 		if (!fiscalCase) throw new Error("FISCAL_CASE_NOT_FOUND");
 		if (input.idempotencyKey) {
-			const existing = (await this.repository.listApprovalRequests(caseId, scope)).find((approval) => hasIdempotencyKey(approval, input.idempotencyKey));
+			const existing = (
+				await this.repository.listApprovalRequests(caseId, scope)
+			).find((approval) => hasIdempotencyKey(approval, input.idempotencyKey));
 			if (existing) return existing;
 		}
 		const request: ApprovalRequest = {
@@ -492,29 +584,63 @@ export class DrenyraFiscalCommandCenterService {
 			metadata: metadataWithIdempotency(input.metadata, input.idempotencyKey),
 		};
 		await this.repository.createApprovalRequest(request);
-		await this.repository.updateFiscalCase({ ...fiscalCase, status: "APPROVAL_PENDING", updatedAt: nowIso() });
+		await this.repository.updateFiscalCase({
+			...fiscalCase,
+			status: "APPROVAL_PENDING",
+			updatedAt: nowIso(),
+		});
 		await this.writeAuditEvent(context, {
 			caseId,
 			eventType: "APPROVAL_REQUESTED",
 			message: `Approval requested: ${request.title}`,
-			metadata: { approvalId: request.id, autonomyLevel: request.autonomyLevel },
+			metadata: {
+				approvalId: request.id,
+				autonomyLevel: request.autonomyLevel,
+			},
 		});
 		return request;
 	}
 
-	async approveApprovalRequest(context: DrenyraActorContext, approvalId: string, input: DecideApprovalInput = {}): Promise<ApprovalRequest> {
-		return this.decideApproval(context, approvalId, "APPROVED", input.decisionReason ?? "Approved by fiscal reviewer");
+	async approveApprovalRequest(
+		context: DrenyraActorContext,
+		approvalId: string,
+		input: DecideApprovalInput = {},
+	): Promise<ApprovalRequest> {
+		return this.decideApproval(
+			context,
+			approvalId,
+			"APPROVED",
+			input.decisionReason ?? "Approved by fiscal reviewer",
+		);
 	}
 
-	async rejectApprovalRequest(context: DrenyraActorContext, approvalId: string, input: DecideApprovalInput = {}): Promise<ApprovalRequest> {
-		return this.decideApproval(context, approvalId, "REJECTED", input.decisionReason ?? "Rejected by fiscal reviewer");
+	async rejectApprovalRequest(
+		context: DrenyraActorContext,
+		approvalId: string,
+		input: DecideApprovalInput = {},
+	): Promise<ApprovalRequest> {
+		return this.decideApproval(
+			context,
+			approvalId,
+			"REJECTED",
+			input.decisionReason ?? "Rejected by fiscal reviewer",
+		);
 	}
 
-	private async decideApproval(context: DrenyraActorContext, approvalId: string, status: "APPROVED" | "REJECTED", decisionReason: string): Promise<ApprovalRequest> {
+	private async decideApproval(
+		context: DrenyraActorContext,
+		approvalId: string,
+		status: "APPROVED" | "REJECTED",
+		decisionReason: string,
+	): Promise<ApprovalRequest> {
 		const scope = makeScope(context);
-		const request = await this.repository.getApprovalRequestById(approvalId, scope);
+		const request = await this.repository.getApprovalRequestById(
+			approvalId,
+			scope,
+		);
 		if (!request) throw new Error("APPROVAL_NOT_FOUND");
-		if (request.status !== "PENDING") throw new Error("APPROVAL_ALREADY_DECIDED");
+		if (request.status !== "PENDING")
+			throw new Error("APPROVAL_ALREADY_DECIDED");
 		const decided: ApprovalRequest = {
 			...request,
 			status,
@@ -525,17 +651,24 @@ export class DrenyraFiscalCommandCenterService {
 		await this.repository.updateApprovalRequest(decided);
 		await this.writeAuditEvent(context, {
 			caseId: request.caseId,
-			eventType: status === "APPROVED" ? "APPROVAL_APPROVED" : "APPROVAL_REJECTED",
+			eventType:
+				status === "APPROVED" ? "APPROVAL_APPROVED" : "APPROVAL_REJECTED",
 			message: `${status === "APPROVED" ? "Approved" : "Rejected"}: ${request.title}`,
 			metadata: { approvalId, decisionReason },
 		});
 		return decided;
 	}
 
-	async recordCapabilityDecision(context: DrenyraActorContext, input: RecordCapabilityDecisionInput): Promise<AuditEvent> {
+	async recordCapabilityDecision(
+		context: DrenyraActorContext,
+		input: RecordCapabilityDecisionInput,
+	): Promise<AuditEvent> {
 		return this.writeAuditEvent(context, {
 			caseId: input.caseId,
-			eventType: input.decision === "allowed" ? "CAPABILITY_ALLOWED" : "CAPABILITY_DENIED",
+			eventType:
+				input.decision === "allowed"
+					? "CAPABILITY_ALLOWED"
+					: "CAPABILITY_DENIED",
 			message: `Drenyra command capability ${input.decision}: ${input.commandId}`,
 			metadata: {
 				agentType: input.agentType,
@@ -547,13 +680,21 @@ export class DrenyraFiscalCommandCenterService {
 		});
 	}
 
-	async listCommandAuditEvents(context: DrenyraActorContext, filter: DrenyraAuditEventFilter = {}): Promise<AuditEvent[]> {
+	async listCommandAuditEvents(
+		context: DrenyraActorContext,
+		filter: DrenyraAuditEventFilter = {},
+	): Promise<AuditEvent[]> {
 		return this.repository.listCommandAuditEvents(makeScope(context), filter);
 	}
 
 	private async writeAuditEvent(
 		context: DrenyraActorContext,
-		input: { caseId?: string; eventType: AuditEventType; message: string; metadata?: Record<string, unknown> },
+		input: {
+			caseId?: string;
+			eventType: AuditEventType;
+			message: string;
+			metadata?: Record<string, unknown>;
+		},
 	): Promise<AuditEvent> {
 		const event: AuditEvent = {
 			id: newId("audit"),

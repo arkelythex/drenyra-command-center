@@ -1,8 +1,8 @@
 import { create } from "zustand";
-import type { HubArtifact } from "@arkelythex/shared/artifacts";
-import type { HubViewMode } from "@arkelythex/shared/agents";
+import type { HubArtifact } from "@drenyra/shared/artifacts";
+import type { HubViewMode } from "@drenyra/shared/agents";
 
-const FISCAL_CASE_STORAGE_KEY = "arkelythex.hub.fiscalCase.v1";
+const FISCAL_CASE_STORAGE_KEY = "drenyra.hub.fiscalCase.v1";
 
 function readFiscalCaseFromSession(): {
 	fiscalCaseId: string | null;

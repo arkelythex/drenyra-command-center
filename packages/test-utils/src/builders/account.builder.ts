@@ -11,15 +11,15 @@
  *   .build();
  * ```
  */
-import type { AccountProps } from "@arkelythex/domain/entities/Account";
+import type { AccountProps } from "@drenyra/domain/entities/Account";
 import type {
 	AccountLevel,
 	ChartAccountType,
 	Currency,
-} from "@arkelythex/domain/entities/account.types";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/entities/account.types";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { BaseBuilder } from "./base.builder";
-import { Account } from "@arkelythex/domain/entities/Account";
+import { Account } from "@drenyra/domain/entities/Account";
 
 const DEFAULT_ACCOUNT_ID = "acc_test_001";
 const DEFAULT_ORGANIZATION_ID = 1;

@@ -68,7 +68,7 @@ function getBrainThreadsFn() {
 describe("drenyra-brain.api headers", () => {
 	beforeEach(() => {
 		Object.defineProperty(globalThis, "localStorage", { value: createLocalStorageMock(), configurable: true });
-		localStorage.setItem("arkelythex-active-fiscal-period", "2026-05");
+		localStorage.setItem("drenyra-active-fiscal-period", "2026-05");
 		vi.clearAllMocks();
 	});
 
@@ -146,7 +146,7 @@ describe("drenyra-brain.api headers", () => {
 	});
 
 	it("does not silently infer fiscal period from the current date", async () => {
-		localStorage.removeItem("arkelythex-active-fiscal-period");
+		localStorage.removeItem("drenyra-active-fiscal-period");
 
 		await expect(listBrainThreads()).rejects.toThrow(/explicit selected fiscal period/);
 	});

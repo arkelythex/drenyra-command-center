@@ -3,7 +3,7 @@ import type {
 	ContextRegistrySurfaceDTO,
 	ContextRunStateDTO,
 	ContextTraceRecordDTO,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 import { api, getGovernanceAuditHeaders } from "@/lib/api";
 
 interface ApiEnvelope<TData> {

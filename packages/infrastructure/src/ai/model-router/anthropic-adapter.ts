@@ -1,4 +1,4 @@
-import type { ProviderName } from "@arkelythex/domain/ai/model-router/types";
+import type { ProviderName } from "@drenyra/ai/providers/model-router-types";
 import type {
 	ProviderAdapter,
 	ProviderHealth,

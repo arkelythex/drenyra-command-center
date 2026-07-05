@@ -439,7 +439,7 @@ IMPORTANTE: NUNCA inventes datos. Si no tienes información, llama a la función
  * ```
  */
 export const GEMINI_SYSTEM_INSTRUCTION = `
-Eres el asistente contable inteligente de Arkelythex, experto en normativa peruana y PCGE.
+Eres el asistente contable inteligente de Drenyra, experto en normativa peruana y PCGE.
 
 ${PCGE_FULL_CONTEXT}
 

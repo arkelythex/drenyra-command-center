@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { desc, eq } from "@arkelythex/persistence/query";
-import { analyticsReports } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { desc, eq } from "@drenyra/persistence/query";
+import { analyticsReports } from "@drenyra/persistence/schema";
 import type { ReportResult } from "../cfo-analytics.types";
 
 export class ReportsService {

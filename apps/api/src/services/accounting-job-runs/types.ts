@@ -5,8 +5,8 @@ import {
 	type ContextPolicySelectionResponseDTO,
 	type ContextRunStateDTO,
 	type ContextTraceRecordDTO,
-} from "@arkelythex/application";
-import type { KnowledgeSourceReference } from "@arkelythex/infrastructure/services/sunat-knowledge";
+} from "@drenyra/application";
+import type { KnowledgeSourceReference } from "@drenyra/infrastructure/services/sunat-knowledge";
 
 export type AccountingJobRunStatus =
 	| "QUEUED"

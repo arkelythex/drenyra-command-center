@@ -245,7 +245,7 @@ describe("governance audit route", () => {
 		expect(payload).toMatchObject({
 			success: true,
 			data: {
-				metric: "arkelythex_api_governance_policy_decisions_total",
+				metric: "drenyra_api_governance_policy_decisions_total",
 				values: expect.any(Array),
 			},
 		});
@@ -262,7 +262,7 @@ describe("governance audit route", () => {
 		expect(response.headers.get("content-type")).toContain("text/plain");
 		const payload = await response.text();
 		expect(payload).toContain(
-			"arkelythex_api_governance_policy_decisions_total",
+			"drenyra_api_governance_policy_decisions_total",
 		);
 	});
 });

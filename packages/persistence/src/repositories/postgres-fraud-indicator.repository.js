@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { FraudIndicator, } from "@arkelythex/domain-civic";
+import { FraudIndicator, } from "@drenyra/domain-civic";
 import { db } from "../client";
 import { fraudIndicators } from "../schema/civic.schema";
 function toDomain(row) {

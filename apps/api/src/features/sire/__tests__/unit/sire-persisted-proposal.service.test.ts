@@ -24,7 +24,7 @@ describe("parseProposalRecordsFromPayloadBase64", () => {
 
 describe("SirePersistedProposalService.loadPersistedRecords", () => {
 	it("returns null when no submissions contain proposalRecords", async () => {
-		vi.mock("@arkelythex/persistence/client", () => ({
+		vi.mock("@drenyra/persistence/client", () => ({
 			db: {
 				select: vi.fn().mockReturnValue({
 					from: vi.fn().mockReturnValue({

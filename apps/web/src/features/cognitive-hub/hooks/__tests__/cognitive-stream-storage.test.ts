@@ -7,8 +7,8 @@ import {
 	writePersistedTimeline,
 } from "../cognitive-stream";
 
-const RUN_ID_KEY = "arkelythex:cognitive-run-id";
-const TIMELINE_KEY = "arkelythex:cognitive-activity-timeline";
+const RUN_ID_KEY = "drenyra:cognitive-run-id";
+const TIMELINE_KEY = "drenyra:cognitive-activity-timeline";
 
 describe("cognitive stream storage helpers", () => {
 	beforeEach(() => {

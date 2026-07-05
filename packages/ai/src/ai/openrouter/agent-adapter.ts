@@ -1,4 +1,4 @@
 /**
- * AI openrouter-agent-adapter.ts - Re-exported from @arkelythex/infrastructure
+ * AI openrouter-agent-adapter.ts - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/openrouter/agent-adapter";
+export * from "@drenyra/infrastructure/ai/openrouter/agent-adapter";

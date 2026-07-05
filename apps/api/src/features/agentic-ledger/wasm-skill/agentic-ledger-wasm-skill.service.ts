@@ -1,4 +1,4 @@
-import { SecureLogger } from "@arkelythex/shared/secure-logger";
+import { SecureLogger } from "@drenyra/shared/secure-logger";
 import { parseBankCsv } from "../bank-csv";
 import type { BankCsvFormat } from "../bank-csv/types";
 import type {

@@ -1,4 +1,4 @@
-import type { FiscalRiskLevel } from "@arkelythex/domain";
+import type { FiscalRiskLevel } from "@drenyra/domain";
 
 export interface ApprovalItem {
 	id: string;

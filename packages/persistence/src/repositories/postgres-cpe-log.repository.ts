@@ -6,10 +6,10 @@
 
 import { and, between, eq, sql } from "drizzle-orm";
 import { randomUUID } from "crypto";
-import { CPELog, type SunatStatus } from "@arkelythex/domain/accounting/cpe-log";
-import type { CpeLogRepository } from "@arkelythex/domain/repositories/cpe-log.repository";
-import { db } from "@arkelythex/persistence/client";
-import { cpeLog } from "@arkelythex/persistence/schema";
+import { CPELog, type SunatStatus } from "@drenyra/domain/accounting/cpe-log";
+import type { CpeLogRepository } from "@drenyra/domain/repositories/cpe-log.repository";
+import { db } from "@drenyra/persistence/client";
+import { cpeLog } from "@drenyra/persistence/schema";
 
 export class PostgresCpeLogRepository implements CpeLogRepository {
 	async save(log: CPELog, companyId: string): Promise<void> {

@@ -168,8 +168,8 @@ export class OpenRouterService {
         return {
             'Authorization': `Bearer ${this.config.apiKey}`,
             'Content-Type': 'application/json',
-            'HTTP-Referer': 'https://arkelythex.io',
-            'X-Title': 'ARKELYTHEX Fiscal Platform',
+            'HTTP-Referer': 'https://drenyra.io',
+            'X-Title': 'DRENYRA Fiscal Platform',
         };
     }
     async makeRequest(request) {

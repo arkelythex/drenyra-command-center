@@ -36,7 +36,7 @@ export default defineWorkspace([
 	"packages/persistence",
 	"packages/infrastructure",
 	"packages/shared",
+	"packages/memory",
 	"packages/ai",
-	"packages/drenyra-core",
-	"packages/agent-memory",
+	"packages/agents",
 ]);

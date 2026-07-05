@@ -2,7 +2,7 @@ import type {
 	EvidenceSource,
 	EvidenceStatus,
 	EvidenceType,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import { Link, useParams } from "@tanstack/react-router";
 import { ArrowLeft, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";

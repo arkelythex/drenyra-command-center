@@ -21,19 +21,25 @@ const parseIsoDateOrNull = (value: string): Date | null => {
  */
 export const ledgerModule = new Elysia({ prefix: "/api/ledger" })
 	.use(companyScopeGuard({ allowHeaderFallback: true }))
-	.get("/accounts", async ({ companyContext, set }) => {
-		if (!companyContext) {
-			set.status = 401;
-			return fail("Company context is required", "COMPANY_CONTEXT_REQUIRED");
-		}
-		try {
-			const result = await getChartOfAccounts(companyContext.companyId);
-			return ok(result);
-		} catch (error: unknown) {
-			set.status = 500;
-			return fail(getErrorMessage(error), "INTERNAL_ERROR");
-		}
-	})
+	.get(
+		"/accounts",
+		async ({ companyContext, set }) => {
+			if (!companyContext) {
+				set.status = 401;
+				return fail("Company context is required", "COMPANY_CONTEXT_REQUIRED");
+			}
+			try {
+				const result = await getChartOfAccounts(companyContext.companyId);
+				return ok(result);
+			} catch (error: unknown) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "INTERNAL_ERROR");
+			}
+		},
+		{
+			detail: { tags: ["Ledger"], summary: "Get chart of accounts" },
+		},
+	)
 	.get(
 		"/general",
 		async ({ query, companyContext, set }) => {
@@ -75,6 +81,7 @@ export const ledgerModule = new Elysia({ prefix: "/api/ledger" })
 				startDate: z.string().min(1),
 				endDate: z.string().min(1),
 			}),
+			detail: { tags: ["Ledger"], summary: "Get general ledger" },
 		},
 	)
 	.get(
@@ -105,5 +112,6 @@ export const ledgerModule = new Elysia({ prefix: "/api/ledger" })
 			query: z.object({
 				asOfDate: z.string().min(1),
 			}),
+			detail: { tags: ["Ledger"], summary: "Get trial balance" },
 		},
 	);

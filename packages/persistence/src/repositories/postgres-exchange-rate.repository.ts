@@ -6,10 +6,10 @@
 
 import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { randomUUID } from "crypto";
-import { ExchangeRate } from "@arkelythex/domain/accounting/exchange-rate";
-import type { ExchangeRateRepository } from "@arkelythex/domain/repositories/exchange-rate.repository";
-import { db } from "@arkelythex/persistence/client";
-import { exchangeRates } from "@arkelythex/persistence/schema";
+import { ExchangeRate } from "@drenyra/domain/accounting/exchange-rate";
+import type { ExchangeRateRepository } from "@drenyra/domain/repositories/exchange-rate.repository";
+import { db } from "@drenyra/persistence/client";
+import { exchangeRates } from "@drenyra/persistence/schema";
 
 /**
  * Rates are stored as integers with 4 decimal places (e.g., 37250 = 3.7250).

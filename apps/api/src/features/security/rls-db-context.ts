@@ -38,8 +38,8 @@ export async function applyTenantRlsContext(
 	await executor.execute(
 		sql`
       select
-        set_config('arkelythex.current_company_id', ${context.companyId}, true),
-        set_config('arkelythex.current_user_id', ${context.userId ?? ""}, true)
+        set_config('drenyra.current_company_id', ${context.companyId}, true),
+        set_config('drenyra.current_user_id', ${context.userId ?? ""}, true)
     `,
 	);
 }

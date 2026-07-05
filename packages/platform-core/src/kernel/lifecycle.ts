@@ -5,7 +5,7 @@
  * `idle` → `busy` → `completed` | `error`
  * Agents can also be `offline` and reset back to `idle` from any terminal state.
  *
- * @module @arkelythex/platform-core/kernel
+ * @module @drenyra/platform-core/kernel
  */
 
 import type { AgentStatus } from "./types.js";

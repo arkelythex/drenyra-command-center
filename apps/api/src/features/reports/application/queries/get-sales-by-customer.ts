@@ -4,9 +4,9 @@
  * @module reports/application/queries
  */
 
-import { db as globalDb } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte, sql } from "@arkelythex/persistence/query";
-import { invoices } from "@arkelythex/persistence/schema";
+import { db as globalDb } from "@drenyra/persistence/client";
+import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
+import { invoices } from "@drenyra/persistence/schema";
 import { moneyFromDecimalString } from "../../_internal/money-utils";
 import type { SalesByCustomerRow } from "../../reports.schemas";
 

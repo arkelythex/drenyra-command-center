@@ -14,7 +14,7 @@ export const mockDb = {
 	}),
 };
 
-vi.mock("@arkelythex/infrastructure", () => ({
+vi.mock("@drenyra/infrastructure", () => ({
 	db: mockDb,
 	eq: (a: unknown, b: unknown) => ({ column: a, value: b }),
 	and: (...conditions: unknown[]) => conditions,

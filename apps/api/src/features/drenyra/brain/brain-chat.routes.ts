@@ -14,14 +14,14 @@
  */
 
 import { Elysia, t } from "elysia";
-import { RUC } from "@arkelythex/domain";
+import { RUC } from "@drenyra/domain";
 import {
 	llmGateway,
 	systemMessage,
 	userMessage,
 	extractStreamText,
 	LLM_PROVIDER,
-} from "@arkelythex/ai/gateway";
+} from "@drenyra/ai/gateway";
 import { createDrenyraBrainService, type DrenyraBrainService } from "./brain.service";
 import type { DrenyraBrainRepository } from "./brain.repository";
 

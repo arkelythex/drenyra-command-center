@@ -2,7 +2,7 @@ package delegation
 
 import "fmt"
 
-// Agent describes one node in the Arkelythex harness delegation graph.
+// Agent describes one node in the Drenyra harness delegation graph.
 type Agent struct {
 	ID       string
 	Tier     string
@@ -12,10 +12,10 @@ type Agent struct {
 	Leaf     bool
 }
 
-// Agents mirrors packages/arkelythex-harness/src/delegation/graph.ts
+// Agents mirrors packages/drenyra-harness/src/delegation/graph.ts
 var Agents = map[string]Agent{
-	"arkelythex-orchestrator": {
-		ID: "arkelythex-orchestrator", Tier: "tier0", Label: "Mother orchestrator",
+	"drenyra-orchestrator": {
+		ID: "drenyra-orchestrator", Tier: "tier0", Label: "Mother orchestrator",
 		MaySpawn: []string{"drenyra-sdd-orchestrator", "kuntur-sdd-orchestrator"},
 	},
 	"drenyra-sdd-orchestrator": {

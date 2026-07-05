@@ -4,7 +4,7 @@
  * @module reports/__tests__/unit/reports-routes.unit
  */
 
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 import { Elysia } from "elysia";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ReportsService, reportsModule } from "../../index";

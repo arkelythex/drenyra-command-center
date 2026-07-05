@@ -3,7 +3,7 @@ import type {
 	KbCollection,
 	KbDocument,
 	KbQuery,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 
 // --- REQUEST TYPES ---
 

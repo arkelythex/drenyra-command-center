@@ -55,7 +55,7 @@ export function AuthPage() {
 		setIsLoading(true);
 		try {
 			await login(data);
-			toast.success("✅ Bienvenido a Arkelythex");
+			toast.success("✅ Bienvenido a Drenyra");
 			window.location.assign("/");
 		} catch (error) {
 			const errorMessage =
@@ -157,7 +157,7 @@ export function AuthPage() {
 						variant="label"
 						className="text-xs font-mono uppercase tracking-wider text-muted-foreground"
 					>
-						v2.0.0 • Arkelythex Financial Intelligence Platform
+						v2.0.0 • Drenyra Financial Intelligence Platform
 					</Text>
 				</MotionDiv>
 			</MotionDiv>

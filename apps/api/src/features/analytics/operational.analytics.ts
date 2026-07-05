@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { eq, sql } from "@arkelythex/persistence/query";
-import { invoices } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { eq, sql } from "@drenyra/persistence/query";
+import { invoices } from "@drenyra/persistence/schema";
 import type {
 	AnalyticsOptions,
 	OperationalKPIs,

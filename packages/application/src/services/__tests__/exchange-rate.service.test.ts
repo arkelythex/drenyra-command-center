@@ -6,8 +6,8 @@ import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
 	ExchangeRate,
 	InvalidExchangeRateError,
-} from "@arkelythex/domain/accounting/exchange-rate";
-import type { ExchangeRateRepository } from "@arkelythex/domain/repositories/exchange-rate.repository";
+} from "@drenyra/domain/accounting/exchange-rate";
+import type { ExchangeRateRepository } from "@drenyra/domain/repositories/exchange-rate.repository";
 import { ExchangeRateService, type SetRateDTO } from "../exchange-rate.service";
 
 describe("ExchangeRateService", () => {

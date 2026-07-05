@@ -1,6 +1,6 @@
 /**
  * Agent Tasks Schema
- * Tablas para el sistema de agentes AI de Arkelythex
+ * Tablas para el sistema de agentes AI de Drenyra
  */
 
 import { relations } from "drizzle-orm";

@@ -1,7 +1,7 @@
 /**
  * LLM Gateway helper functions.
  */
-import { LLMGatewayError } from "@arkelythex/ai/gateway";
+import { LLMGatewayError } from "@drenyra/ai/gateway";
 
 export function toHeaderRecord(headers: Headers): Record<string, string> {
 	const normalized: Record<string, string> = {};

@@ -4,7 +4,7 @@
  * @module events
  */
 
-import type { AgentEvent as CanonicalEvent } from "@arkelythex/shared";
+import type { AgentEvent as CanonicalEvent } from "@drenyra/shared";
 import type { EventBus } from "../agents/types/workflow.types";
 
 export interface EventAdapter {

@@ -1,4 +1,4 @@
 /**
- * AI gemini-tools - Re-exported from @arkelythex/infrastructure
+ * AI gemini-tools - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/gemini-tools";
+export * from "@drenyra/infrastructure/ai/gemini-tools";

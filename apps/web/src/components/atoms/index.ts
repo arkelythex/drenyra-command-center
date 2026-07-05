@@ -1,5 +1,5 @@
 /**
- * Arkelythex Atomic Components - Index
+ * Drenyra Atomic Components - Index
  *
  * Architecture: Atomic Design 2026
  * - Atoms: Irreducible UI elements (Button, Badge, Icon, Text, Spinner)

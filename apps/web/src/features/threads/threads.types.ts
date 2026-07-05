@@ -11,7 +11,7 @@ import type {
 	ThreadEnvironment,
 	ThreadPriority,
 	AgentRole,
-} from "@arkelythex/domain/entities/thread";
+} from "@drenyra/domain/entities/thread";
 
 // ─── List / Summary ──────────────────────────────────────────────────────────
 

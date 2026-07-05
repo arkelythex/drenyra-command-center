@@ -2,7 +2,7 @@ import { useState, useCallback } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
-import type { ThreadEnvironment, ThreadPriority } from "@arkelythex/domain/entities/thread";
+import type { ThreadEnvironment, ThreadPriority } from "@drenyra/domain/entities/thread";
 import { AlertCircle, ChevronDown, ChevronUp, Plus, Loader2 } from "lucide-react";
 import { EnvironmentSelector } from "./EnvironmentSelector";
 import { QuickActionButton } from "./QuickActionButton";

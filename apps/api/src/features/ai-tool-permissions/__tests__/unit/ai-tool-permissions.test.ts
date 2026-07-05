@@ -25,15 +25,15 @@ const mockAiToolPermissions = vi.hoisted(() => ({
   $inferInsert: {},
 }));
 
-vi.mock('@arkelythex/persistence/schema', () => ({
+vi.mock('@drenyra/persistence/schema', () => ({
   aiToolPermissions: mockAiToolPermissions,
 }));
 
-vi.mock('@arkelythex/persistence/client', () => ({
+vi.mock('@drenyra/persistence/client', () => ({
   db: mockDb,
 }));
 
-vi.mock('@arkelythex/persistence/query', () => ({
+vi.mock('@drenyra/persistence/query', () => ({
   eq: vi.fn(() => 'eq_mock'),
   desc: vi.fn(() => 'desc_mock'),
   and: vi.fn(() => 'and_mock'),

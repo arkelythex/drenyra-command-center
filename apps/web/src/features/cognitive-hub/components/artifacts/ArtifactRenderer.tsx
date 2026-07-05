@@ -8,7 +8,7 @@
  */
 
 import React, { Suspense } from 'react';
-import type { HubArtifact } from '@arkelythex/shared/artifacts';
+import type { HubArtifact } from '@drenyra/shared/artifacts';
 import { type ArtifactComponent, getRenderer } from './artifact-registry';
 
 type ArtifactRendererLoader = () => Promise<unknown>;

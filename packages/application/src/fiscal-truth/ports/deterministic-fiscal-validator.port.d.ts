@@ -1,4 +1,4 @@
-import type { DeterministicValidatorResultRecord } from "@arkelythex/domain";
+import type { DeterministicValidatorResultRecord } from "@drenyra/domain";
 export interface DeterministicFiscalValidatorPort {
     validate(input: unknown): Promise<DeterministicValidatorResultRecord>;
 }

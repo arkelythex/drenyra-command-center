@@ -2,7 +2,7 @@ import type {
 	DrenyraBrainItem,
 	DrenyraBrainItemContent,
 	DrenyraBrainWebResearchContent,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 
 interface BrainThreadTimelineProps {
 	items: DrenyraBrainItem[];

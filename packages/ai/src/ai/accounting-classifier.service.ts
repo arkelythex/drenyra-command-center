@@ -1,4 +1,4 @@
 /**
- * AI accounting-classifier.service.ts - Re-exported from @arkelythex/infrastructure
+ * AI accounting-classifier.service.ts - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/accounting-classifier.service";
+export * from "@drenyra/infrastructure/ai/accounting-classifier.service";

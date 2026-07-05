@@ -8,7 +8,7 @@
  * (RUC emisor/receptor, monto, fecha, número SPOT).
  */
 
-import { SecureLogger } from '@arkelythex/shared/secure-logger';
+import { SecureLogger } from '@drenyra/shared/secure-logger';
 import type { IInterCompanyTransactionRepository } from '../../domain/inter-company-transaction.repository';
 import type { SpotPdfResult } from '../../domain/inter-company-transaction.entity';
 

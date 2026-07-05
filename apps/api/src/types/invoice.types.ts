@@ -1,4 +1,4 @@
-import type { Currency } from '@arkelythex/domain';
+import type { Currency } from '@drenyra/domain';
 
 export interface CreateInvoiceDTO {
   companyId: string;

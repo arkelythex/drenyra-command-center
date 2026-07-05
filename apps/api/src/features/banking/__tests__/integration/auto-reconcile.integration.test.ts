@@ -23,7 +23,7 @@ import {
   users,
   bankTransactions,
   eq,
-} from '@arkelythex/infrastructure';
+} from '@drenyra/infrastructure';
 import { ReconciliationService } from '../../application/services/reconciliation.service';
 import {
   describeBankingIntegration,

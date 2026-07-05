@@ -1,6 +1,6 @@
-import { inventory, inventoryMovements, products, warehouses } from '@arkelythex/persistence/schema';
-import { db } from '@arkelythex/persistence/client';
-import { and, desc, eq, gte, lte, sql } from '@arkelythex/persistence/query';
+import { inventory, inventoryMovements, products, warehouses } from '@drenyra/persistence/schema';
+import { db } from '@drenyra/persistence/client';
+import { and, desc, eq, gte, lte, sql } from '@drenyra/persistence/query';
 
 type ProductRow = typeof products.$inferSelect;
 type WarehouseRow = typeof warehouses.$inferSelect;

@@ -1,5 +1,5 @@
 import { and, count, eq, gte, lte } from "drizzle-orm";
-import { DatabaseError } from "@arkelythex/shared/errors";
+import { DatabaseError } from "@drenyra/shared/errors";
 import { db } from "../client";
 import { documents } from "../schema/documents.schema";
 import { mapDocumentRowToEntity, mapDocumentToInsert, mapDocumentToUpdate, } from "./support/document-persistence";

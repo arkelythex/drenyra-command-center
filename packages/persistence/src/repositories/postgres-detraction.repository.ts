@@ -8,11 +8,11 @@ import { and, between, eq, sql } from "drizzle-orm";
 import {
 	Detraccion,
 	type DetraccionStatus,
-} from "@arkelythex/domain/accounting/detraccion";
-import type { DetractionRepository } from "@arkelythex/domain/repositories/detraction.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
-import { db } from "@arkelythex/persistence/client";
-import { detractions } from "@arkelythex/persistence/schema";
+} from "@drenyra/domain/accounting/detraccion";
+import type { DetractionRepository } from "@drenyra/domain/repositories/detraction.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
+import { db } from "@drenyra/persistence/client";
+import { detractions } from "@drenyra/persistence/schema";
 
 export class PostgresDetractionRepository implements DetractionRepository {
 	async save(detraction: Detraccion, companyId: string): Promise<void> {

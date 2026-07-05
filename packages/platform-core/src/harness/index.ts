@@ -4,7 +4,7 @@
  * Domain-agnostic agent execution harness with delegation graph,
  * approval workflow, and evidence store.
  *
- * @module @arkelythex/platform-core/harness
+ * @module @drenyra/platform-core/harness
  */
 
 export { ApprovalWorkflow } from "./approval.js";
@@ -27,9 +27,9 @@ export type {
 // ──────────────────────────────────────────────
 // Harness Zod Schemas — from types.ts ⇒ platform-core
 //
-// Moved here per ADR-030 Phase 1.1 to make @arkelythex/harness
+// Moved here per ADR-030 Phase 1.1 to make @drenyra/harness
 // Zod-free. Re-exported from platform-core so consumers always
-// import from @arkelythex/platform-core/harness.
+// import from @drenyra/platform-core/harness.
 // ──────────────────────────────────────────────
 export {
 	HarnessAgentResultSchema,

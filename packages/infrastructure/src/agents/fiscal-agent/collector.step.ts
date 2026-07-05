@@ -10,9 +10,9 @@ import type {
 	FiscalAgentStepContext,
 	ProcessableTransaction,
 	StepResult,
-} from "@arkelythex/application/use-cases/fiscal-agent/types";
+} from "@drenyra/application/use-cases/fiscal-agent/types";
 
-import { createTaxAuthority } from "@arkelythex/infrastructure/tax-authority";
+import { createTaxAuthority } from "@drenyra/infrastructure/tax-authority";
 
 export class CollectorStep implements FiscalAgentStep<void, CollectOutput> {
 	readonly name = "collect";

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to ARKELYTHEX Core will be documented in this file.
+All notable changes to DRENYRA Core will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -42,7 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Infrastructure** — Workspace dependency cleanup.
 
-- Added missing `@arkelythex/application` workspace dependency to `@arkelythex/ai` package
+- Added missing `@drenyra/application` workspace dependency to `@drenyra/ai` package
 - Resolved `architecture:check-boundaries` failure in AI package
 
 **Quality Gates (Local — All Passing ✅):**
@@ -227,4 +227,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-*Alineado con la [Filosofía Gentleman](docs/meta/gentleman-philosophy.md) de ARKELYTHEX — documentación que prioriza la claridad y el respeto por tu tiempo.*
+*Alineado con la [Filosofía Gentleman](docs/meta/gentleman-philosophy.md) de DRENYRA — documentación que prioriza la claridad y el respeto por tu tiempo.*

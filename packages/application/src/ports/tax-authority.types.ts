@@ -7,7 +7,7 @@
  * @module ports/tax-authority.types
  */
 
-import type { CountryCode } from "@arkelythex/domain";
+import type { CountryCode } from "@drenyra/domain";
 
 // ─── Tax ID ───────────────────────────────────────────────────────────
 

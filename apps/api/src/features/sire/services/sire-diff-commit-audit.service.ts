@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, sql } from "@arkelythex/persistence/query";
-import { authAuditLogs } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, sql } from "@drenyra/persistence/query";
+import { authAuditLogs } from "@drenyra/persistence/schema";
 
 const SIRE_DIFF_COMMIT_ACTION = "SIRE_DIFF_COMMIT";
 

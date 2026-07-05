@@ -92,7 +92,7 @@ export const FISCAL_MEMORY_STATUSES: readonly FiscalMemoryStatus[] = [
 /**
  * Categories that cannot be persisted without evidence references.
  *
- * @remarks This protects Arkelythex from storing unsupported fiscal assertions.
+ * @remarks This protects Drenyra from storing unsupported fiscal assertions.
  * @example
  * FISCAL_MEMORY_EVIDENCE_REQUIRED_CATEGORIES.has("tax_decision");
  */

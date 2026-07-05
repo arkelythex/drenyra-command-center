@@ -1,8 +1,8 @@
 # Platform connection (Drenyra product repo)
 
-Cross-repo integration is documented in the **Arkelythex platform repo**:
+Cross-repo integration is documented in the **Drenyra platform repo**:
 
-[docs/cross-repo/drenyra-connection.md](https://github.com/arkelythex/Arkelythex/blob/main/docs/cross-repo/drenyra-connection.md)
+[docs/cross-repo/drenyra-connection.md](https://github.com/drenyra/Drenyra/blob/main/docs/cross-repo/drenyra-connection.md)
 
 ## Standalone Drenyra (single repo)
 
@@ -31,8 +31,8 @@ bun run dev:check      # infra smoke (add CHECK_API=1 INCLUDE_WEB=1 when app ser
 # Terminal 1 — Drenyra product (:5174)
 cd Drenyra && bun run dev:web
 
-# Terminal 2 — Arkelythex shell (:5173)
-cd arkelythex && VITE_DRENYRA_DEV_URL=http://127.0.0.1:5174 bun run --filter @arkelythex/web dev
+# Terminal 2 — Drenyra shell (:5173)
+cd drenyra && VITE_DRENYRA_DEV_URL=http://127.0.0.1:5174 bun run --filter @drenyra/web dev
 ```
 
 Open shell at `http://localhost:5173/drenyra` → redirects to Drenyra Command Center.

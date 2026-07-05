@@ -1,12 +1,12 @@
 /** PostgreSQL implementation of JournalEntryRepository over current accounting schema. */
 
 import { and, between, count, desc, eq, gte, lte, sql, type SQL } from "drizzle-orm";
-import { JournalEntry, JournalLine } from "@arkelythex/domain/entities/JournalEntry";
+import { JournalEntry, JournalLine } from "@drenyra/domain/entities/JournalEntry";
 import type {
 	JournalEntryFilters,
 	JournalEntryRepository,
-} from "@arkelythex/domain/repositories/journal-entry.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/repositories/journal-entry.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { db } from "../client";
 import { journalEntries, journalEntryLines, pcgeAccounts } from "../schema";
 import { resolveCompanyIdFromOrganization, resolveOrganizationIdFromCompany } from "./support/organization-resolver";

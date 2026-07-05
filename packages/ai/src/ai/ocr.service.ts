@@ -1,4 +1,4 @@
 /**
- * AI ocr.service - Re-exported from @arkelythex/infrastructure
+ * AI ocr.service - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/ocr.service";
+export * from "@drenyra/infrastructure/ai/ocr.service";

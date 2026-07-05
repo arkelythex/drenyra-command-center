@@ -1,1 +1,1 @@
-export * from "@arkelythex/infrastructure/services/swarm-consensus";
+export * from "@drenyra/infrastructure/services/swarm-consensus";

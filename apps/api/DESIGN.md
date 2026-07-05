@@ -105,7 +105,7 @@ components:
 
 ## Si solo tenés tres minutos
 
-Este archivo define el *contrato visual* del backend de Arkelythex: colores, tipografía, componentes de UI documental (callouts, chips de estado, paneles). No es un design system frontend — es el vocabulario visual que usamos para que la documentación generada, los reportes y las salidas automáticas se vean coherentes sin depender de un diseñador.
+Este archivo define el *contrato visual* del backend de Drenyra: colores, tipografía, componentes de UI documental (callouts, chips de estado, paneles). No es un design system frontend — es el vocabulario visual que usamos para que la documentación generada, los reportes y las salidas automáticas se vean coherentes sin depender de un diseñador.
 
 | Si necesitás... | Usá... |
 |-----------------|--------|
@@ -122,7 +122,7 @@ Los tokens están diseñados para ser deterministas y legibles por máquina — 
 
 This file governs service-facing visual consistency for API documentation, generated reference artifacts, and status semantics. It is not a frontend design system.
 
-Pensalo como el "mode guide" del backend: cuando una herramienta genere un PDF, un HTML de reporte, o un response de estado, estos tokens garantizan que se vea como Arkelythex sin que nadie tenga que abrir Figma.
+Pensalo como el "mode guide" del backend: cuando una herramienta genere un PDF, un HTML de reporte, o un response de estado, estos tokens garantizan que se vea como Drenyra sin que nadie tenga que abrir Figma.
 
 ## Components
 

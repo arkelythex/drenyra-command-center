@@ -3,13 +3,13 @@ import type {
 	CreateInvoiceItemDTO,
 } from "../../dtos/invoice/create-invoice.dto";
 import { CreateInvoiceSchema } from "../../validators/invoice/invoice.validators";
-import { Invoice, type InvoiceItem } from "@arkelythex/domain/entities/Invoice";
-import type { InvoiceRepository } from "@arkelythex/domain/repositories/invoice.repository";
-import { TaxCalculator } from "@arkelythex/domain/services/TaxCalculator";
-import { DNI } from "@arkelythex/domain/value-objects/DNI";
-import { DocumentSeries } from "@arkelythex/domain/value-objects/DocumentSeries";
-import { Money } from "@arkelythex/domain/value-objects/Money";
-import { RUC } from "@arkelythex/domain/value-objects/RUC";
+import { Invoice, type InvoiceItem } from "@drenyra/domain/entities/Invoice";
+import type { InvoiceRepository } from "@drenyra/domain/repositories/invoice.repository";
+import { TaxCalculator } from "@drenyra/domain/services/TaxCalculator";
+import { DNI } from "@drenyra/domain/value-objects/DNI";
+import { DocumentSeries } from "@drenyra/domain/value-objects/DocumentSeries";
+import { Money } from "@drenyra/domain/value-objects/Money";
+import { RUC } from "@drenyra/domain/value-objects/RUC";
 
 /**
  * Use case for creating a new Electronic Invoice (CPE).

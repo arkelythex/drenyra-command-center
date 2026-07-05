@@ -15,7 +15,7 @@ export const CPE_RULES_PROFILE = {
 		sunatApiModes: ["sandbox", "replay", "real"] as const,
 	},
 	notes: [
-		"Arkelythex tracks the SUNAT ruleset published as updated on 2026-02-09.",
+		"Drenyra tracks the SUNAT ruleset published as updated on 2026-02-09.",
 		"Current enforcement is partial but stronger: well-formedness, required UBL structure, Feb 2026 structural checks, product classification observations (OBS-3496), expanded IGV percentage baseline, and SUNAT API status checks.",
 		"Full parity with the complete SUNAT validation matrix still requires XSD/schema coverage and explicit regression fixtures for new rule codes.",
 	],

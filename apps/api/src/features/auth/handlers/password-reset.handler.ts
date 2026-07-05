@@ -34,7 +34,7 @@ const logger = createLogger({ feature: 'auth', handler: 'password-reset' });
  * ```ts
  * const body: ForgetPasswordBody = {
  *   email: "user@example.com",
- *   redirectTo: "https://app.arkelythexfounders.com/login"
+ *   redirectTo: "https://app.drenyrafounders.com/login"
  * };
  * ```
  */
@@ -92,7 +92,7 @@ export interface ResetPasswordBody {
  * ```ts
  * // Request password reset
  * const res = await handleForgetPassword(
- *   { email: "user@example.com", redirectTo: "https://app.arkelythexfounders.com/login" },
+ *   { email: "user@example.com", redirectTo: "https://app.drenyrafounders.com/login" },
  *   { set: { status: 200 }, headers: {} } as Context
  * );
  * console.log(res.message);

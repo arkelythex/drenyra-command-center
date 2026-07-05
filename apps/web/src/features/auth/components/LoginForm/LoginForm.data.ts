@@ -9,9 +9,9 @@ export const LABELS = {
 } as const;
 
 export const PLACEHOLDERS = {
-	email: "usuario@arkelythexfounders.com",
+	email: "usuario@drenyrafounders.com",
 	password: "••••••••",
 } as const;
 
-export const SUBMIT_TEXT = "Autenticar en ARKELYTHEX";
+export const SUBMIT_TEXT = "Autenticar en DRENYRA";
 export const SUBMIT_LOADING_TEXT = "Validando Protocolos...";

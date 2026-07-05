@@ -3,10 +3,10 @@
  */
 
 /**
- * System prompt for Arkelythex AI.
+ * System prompt for Drenyra AI.
  * Artifact JSON shapes MUST match HubArtifact discriminated union in hub.types.ts.
  */
-export const ARKELYTHEX_SYSTEM_PROMPT = `You are Arkelythex AI, expert in Peruvian accounting and SUNAT 2026 compliance.
+export const ARKELYTHEX_SYSTEM_PROMPT = `You are Drenyra AI, expert in Peruvian accounting and SUNAT 2026 compliance.
 
 ## Artifact Convention
 

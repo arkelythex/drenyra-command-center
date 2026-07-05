@@ -14,7 +14,7 @@ import {
 	type AuthenticatedChatRequest,
 	type ChatCompletionRequest,
 	llmGateway,
-} from "@arkelythex/ai/gateway";
+} from "@drenyra/ai/gateway";
 import type {
 	LegalDocumentType,
 	RAGGenerationResponse,
@@ -23,9 +23,9 @@ import type {
 	RAGSearchResponse,
 	RAGSearchResult,
 	SearchMetadata,
-} from "@arkelythex/ai/rag/types";
-import { DEFAULT_SEARCH_OPTIONS } from "@arkelythex/ai/rag/types";
-import { sunatKnowledgeService } from "@arkelythex/infrastructure/services/sunat-knowledge/sunat-knowledge.service";
+} from "@drenyra/ai/rag/types";
+import { DEFAULT_SEARCH_OPTIONS } from "@drenyra/ai/rag/types";
+import { sunatKnowledgeService } from "@drenyra/infrastructure/services/sunat-knowledge/sunat-knowledge.service";
 import { Elysia, t } from "elysia";
 import { createLogger } from "../../../lib/logger";
 import { authorizeAiSurface } from "../../security/ai-surface-access";

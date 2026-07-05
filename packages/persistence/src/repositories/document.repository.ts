@@ -1,11 +1,11 @@
 import { and, count, eq, gte, lte, type SQL } from "drizzle-orm";
-import { type Document } from "@arkelythex/domain/entities/Document";
+import { type Document } from "@drenyra/domain/entities/Document";
 import type {
 	DocumentFilters,
 	DocumentQueryFilters,
 	DocumentRepository,
-} from "@arkelythex/domain/repositories/document.repository";
-import { DatabaseError } from "@arkelythex/shared/errors";
+} from "@drenyra/domain/repositories/document.repository";
+import { DatabaseError } from "@drenyra/shared/errors";
 import { db } from "../client";
 import { documents } from "../schema/documents.schema";
 import {

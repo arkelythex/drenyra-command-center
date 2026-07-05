@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { eq } from "@arkelythex/persistence/query";
-import { companies } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { eq } from "@drenyra/persistence/query";
+import { companies } from "@drenyra/persistence/schema";
 import { loadApiEnv } from "../apps/api/src/env/load-api-env";
 import {
 	bootstrapDemoAdminAuthUser,

@@ -1,4 +1,4 @@
-import type { ExtractedData } from "@arkelythex/domain/entities/Document";
+import type { ExtractedData } from "@drenyra/domain/entities/Document";
 
 /**
  * AI extraction service port for turning images/XML/PDF into structured {@link ExtractedData}.

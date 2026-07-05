@@ -11,7 +11,7 @@ import {
 	type DeterministicFallbackDTO,
 	TENANT_SCOPES,
 	type TenantScope,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 import { getControlPlaneJobMetadata } from "./control-plane-job-metadata";
 
 export const CONTROL_PLANE_SURFACE_IDS = {

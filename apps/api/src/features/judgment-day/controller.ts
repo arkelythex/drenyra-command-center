@@ -1,10 +1,10 @@
-import { runJudgeAgent } from "@arkelythex/ai/agents/judgment-day";
-import { db } from "@arkelythex/persistence";
+import { runJudgeAgent } from "@drenyra/ai/agents/judgment-day";
+import { db } from "@drenyra/persistence";
 import {
 	auditFindings,
 	auditReviews,
 	auditRules,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 import { and, count, desc, eq, inArray } from "drizzle-orm";
 import type {
 	AuditFinding,

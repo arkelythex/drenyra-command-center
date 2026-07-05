@@ -84,7 +84,7 @@ export interface AISettingsResponseDTO {
 // Mapper Functions
 // ============================================
 
-import type { AISettings } from "@arkelythex/domain/entities/AISettings";
+import type { AISettings } from "@drenyra/domain/entities/AISettings";
 
 /**
  * Map domain entity to response DTO

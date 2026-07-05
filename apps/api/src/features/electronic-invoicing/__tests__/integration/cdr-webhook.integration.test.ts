@@ -1,4 +1,4 @@
-import { db, eq, invoices, transactions } from "@arkelythex/infrastructure";
+import { db, eq, invoices, transactions } from "@drenyra/infrastructure";
 import { Elysia } from "elysia";
 import { afterEach, describe, expect, it } from "vitest";
 import { electronicInvoicingModule } from "../../index";

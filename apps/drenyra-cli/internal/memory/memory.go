@@ -2,7 +2,7 @@
 //
 // Reference: https://github.com/NousResearch/hermes-agent (tools/memory_tool.py)
 //
-// - ~/.arkelythex/memories/MEMORY.md + USER.md
+// - ~/.drenyra/memories/MEMORY.md + USER.md
 // - § entry delimiter, add/replace/remove, char limits from config
 // - Frozen snapshot per harness run (like Hermes session-start injection)
 // - Engram (Gentle AI) is the IDE external provider; config memory.provider: engram
@@ -13,7 +13,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
 )
 
 // Limits — Hermes defaults when config omits overrides.
@@ -41,13 +41,13 @@ type Snapshot struct {
 func (s Snapshot) MemoryPct() float64 { return pct(s.MemoryUsed, s.MemoryLimit) }
 func (s Snapshot) UserPct() float64   { return pct(s.UserUsed, s.UserLimit) }
 
-// Dir returns ~/.arkelythex/memories
+// Dir returns ~/.drenyra/memories
 func Dir() (string, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, ".arkelythex", "memories"), nil
+	return filepath.Join(home, ".drenyra", "memories"), nil
 }
 
 // Paths returns MEMORY.md and USER.md paths.

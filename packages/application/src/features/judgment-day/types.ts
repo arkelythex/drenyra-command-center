@@ -4,7 +4,7 @@
  * @module application/features/judgment-day
  */
 
-// ─── Domain Enums (mirrored from @arkelythex/domain/entities) ────
+// ─── Domain Enums (mirrored from @drenyra/domain/entities) ────
 
 export type AuditReviewStatus = string;
 export type AuditTargetType = string;

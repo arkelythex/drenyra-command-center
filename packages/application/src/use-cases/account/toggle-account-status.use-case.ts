@@ -3,8 +3,8 @@
  * Orchestrates activating/deactivating an accounting account
  */
 
-import type { Account } from "@arkelythex/domain/entities/Account";
-import type { AccountRepository } from "@arkelythex/domain/repositories/account.repository";
+import type { Account } from "@drenyra/domain/entities/Account";
+import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
 
 /**
  * ToggleAccountStatusResult interface.

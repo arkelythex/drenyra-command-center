@@ -5,7 +5,7 @@
  * Detects anomalies: unclassifiable documents, missing fields, type mismatches,
  * unreadable content.
  *
- * Ported from @arkelythex/data-engine OCR classify_document() heuristic,
+ * Ported from @drenyra/data-engine OCR classify_document() heuristic,
  * extended with SUNAT document series detection and completeness checks.
  */
 

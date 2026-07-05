@@ -1,9 +1,9 @@
-import { NotFoundError } from "@arkelythex/shared/errors";
+import { NotFoundError } from "@drenyra/shared/errors";
 import {
 	Document,
 	type DocumentProps,
-} from "@arkelythex/domain/entities/Document";
-import type { DocumentRepository } from "@arkelythex/domain/repositories/document.repository";
+} from "@drenyra/domain/entities/Document";
+import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
 import type { ValidateDocumentDTO } from "../../dtos/document/validate-document.dto";
 import {
 	findDocumentByTenant,

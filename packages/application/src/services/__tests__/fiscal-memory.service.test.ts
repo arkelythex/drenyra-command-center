@@ -5,8 +5,8 @@ import type {
 	FiscalMemoryRevision,
 	FiscalMemoryScope,
 	FiscalMemorySeverity,
-} from "@arkelythex/domain/fiscal-memory";
-import type { FiscalMemoryRepository } from "@arkelythex/domain/repositories/fiscal-memory.repository";
+} from "@drenyra/domain/fiscal-memory";
+import type { FiscalMemoryRepository } from "@drenyra/domain/repositories/fiscal-memory.repository";
 import { FiscalMemoryService } from "../fiscal-memory.service";
 
 const scope: FiscalMemoryScope = {

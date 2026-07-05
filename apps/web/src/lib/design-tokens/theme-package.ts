@@ -1,7 +1,7 @@
 import {
 	ACCENT_PRESETS,
 	type AccentPreset,
-	type ArkelythexThemePackage,
+	type DrenyraThemePackage,
 	DENSITY_LEVELS,
 	type DensityLevel,
 	THEME_PACKAGE_SCHEMA_ID,
@@ -11,30 +11,30 @@ import {
 	themePackageSchema,
 } from "./theme-package.schema";
 
-export type { AccentPreset, ArkelythexThemePackage, DensityLevel, ThemePackage } from "./theme-package.schema";
+export type { AccentPreset, DrenyraThemePackage, DensityLevel, ThemePackage } from "./theme-package.schema";
 
 export type ThemePackageParseResult =
-	| { ok: true; package: ArkelythexThemePackage }
+	| { ok: true; package: DrenyraThemePackage }
 	| { ok: false; error: string };
 
-export function parseThemePackage(input: unknown): ArkelythexThemePackage {
+export function parseThemePackage(input: unknown): DrenyraThemePackage {
 	return themePackageSchema.parse(input);
 }
 
 export function tryParseThemePackage(
 	input: unknown,
-): ArkelythexThemePackage | null {
+): DrenyraThemePackage | null {
 	const result = themePackageSchema.safeParse(input);
 	return result.success ? result.data : null;
 }
 
-export function isThemePackage(input: unknown): input is ArkelythexThemePackage {
+export function isThemePackage(input: unknown): input is DrenyraThemePackage {
 	return themePackageSchema.safeParse(input).success;
 }
 
 export function parseThemePackageJson(
 	jsonPayload: string,
-): ArkelythexThemePackage {
+): DrenyraThemePackage {
 	const parsed = JSON.parse(jsonPayload) as unknown;
 	return parseThemePackage(parsed);
 }
@@ -124,7 +124,7 @@ export const PRESET_THEME_PACKAGES = {
 	},
 } satisfies Record<string, ThemePackage>;
 
-export function getPresetThemePackage(themeId: string): ArkelythexThemePackage {
+export function getPresetThemePackage(themeId: string): DrenyraThemePackage {
 	const preset =
 		PRESET_THEME_PACKAGES[themeId as keyof typeof PRESET_THEME_PACKAGES] ??
 		PRESET_THEME_PACKAGES["mono-dark"];

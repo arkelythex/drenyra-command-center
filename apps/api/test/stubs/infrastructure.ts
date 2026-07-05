@@ -1,5 +1,5 @@
 /**
- * Stub for @arkelythex/infrastructure package
+ * Stub for @drenyra/infrastructure package
  * Used in test environment to prevent import errors
  */
 import { vi } from 'vitest';

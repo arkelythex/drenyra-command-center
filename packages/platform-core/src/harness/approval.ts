@@ -8,7 +8,7 @@
  * Zero fiscal imports — all gates are generic condition functions,
  * not hardcoded fiscal keywords.
  *
- * @module @arkelythex/platform-core/harness
+ * @module @drenyra/platform-core/harness
  */
 
 import type { ApprovalGate, ApprovalRequest } from "./types.js";

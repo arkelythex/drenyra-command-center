@@ -1,8 +1,8 @@
 import { Elysia } from "elysia";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@arkelythex/ai/gateway", async (importOriginal) => {
-	const actual = await importOriginal<typeof import("@arkelythex/ai/gateway")>();
+vi.mock("@drenyra/ai/gateway", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("@drenyra/ai/gateway")>();
 
 	return {
 		...actual,
@@ -14,7 +14,7 @@ vi.mock("@arkelythex/ai/gateway", async (importOriginal) => {
 });
 
 vi.mock(
-	"@arkelythex/infrastructure/services/sunat-knowledge/sunat-knowledge.service",
+	"@drenyra/infrastructure/services/sunat-knowledge/sunat-knowledge.service",
 	() => ({
 		sunatKnowledgeService: {
 			hybridSearch: vi.fn(),
@@ -23,8 +23,8 @@ vi.mock(
 	}),
 );
 
-import { llmGateway } from "@arkelythex/ai/gateway";
-import { sunatKnowledgeService } from "@arkelythex/infrastructure/services/sunat-knowledge/sunat-knowledge.service";
+import { llmGateway } from "@drenyra/ai/gateway";
+import { sunatKnowledgeService } from "@drenyra/infrastructure/services/sunat-knowledge/sunat-knowledge.service";
 import { auth } from "../../../auth/auth.config";
 import * as tenantScope from "../../../documents/handlers/tenant-scope";
 import { aiRagModule } from "../../module";

@@ -7,7 +7,7 @@
  * Zero fiscal imports — tool inputs and outputs are Record<string, unknown>
  * and schemas are plain JSON Schema objects.
  *
- * @module @arkelythex/platform-core/ai-gateway
+ * @module @drenyra/platform-core/ai-gateway
  */
 
 // ──────────────────────────────────────────────

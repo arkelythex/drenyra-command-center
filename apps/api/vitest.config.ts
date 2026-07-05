@@ -109,19 +109,19 @@ export default defineConfig({
 			// String aliases do prefix-match (too broad); regex $ anchors the end.
 			// These stubs prevent Drizzle from connecting to PostgreSQL in unit/integration tests.
 			{
-				find: /^@arkelythex\/infrastructure\/services\/ai-cost(\/index)?$/,
+				find: /^@drenyra\/infrastructure\/services\/ai-cost(\/index)?$/,
 				replacement: path.resolve(__dirname, "test/stubs/ai-cost.ts"),
 			},
 			{
-				find: /^@arkelythex\/infrastructure\/services\/swarm-consensus(\/index)?$/,
+				find: /^@drenyra\/infrastructure\/services\/swarm-consensus(\/index)?$/,
 				replacement: path.resolve(__dirname, "test/stubs/swarm-consensus.ts"),
 			},
 			{
-				find: "@arkelythex/domain",
+				find: "@drenyra/domain",
 				replacement: path.resolve(__dirname, "../../packages/domain/src"),
 			},
 			{
-				find: "@arkelythex/infrastructure",
+				find: "@drenyra/infrastructure",
 				replacement: path.resolve(
 					__dirname,
 					"../../packages/infrastructure/src",
@@ -150,7 +150,7 @@ export default defineConfig({
 				),
 			},
 			{
-				find: "@arkelythex/test-utils",
+				find: "@drenyra/test-utils",
 				replacement: path.resolve(__dirname, "../../packages/test-utils/src"),
 			},
 		],

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@arkelythex/persistence/repositories/sire-submission.repository', () => ({
+vi.mock('@drenyra/persistence/repositories/sire-submission.repository', () => ({
   sireSubmissionRepository: {
     findByIdempotencyKey: vi.fn(),
     incrementAttempt: vi.fn(),
@@ -23,7 +23,7 @@ vi.mock('../../services/tenant-sunat-context.service', async (importOriginal) =>
   };
 });
 
-import { sireSubmissionRepository } from '@arkelythex/persistence/repositories/sire-submission.repository';
+import { sireSubmissionRepository } from '@drenyra/persistence/repositories/sire-submission.repository';
 import { SireSubmissionService } from '../../sire-submission.service';
 import {
   resolveTenantSunatContext,

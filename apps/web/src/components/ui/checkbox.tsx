@@ -1,3 +1,3 @@
 "use client";
 
-export { Checkbox, type CheckboxProps } from "@arkelythex/ui";
+export { Checkbox, type CheckboxProps } from "@drenyra/ui";

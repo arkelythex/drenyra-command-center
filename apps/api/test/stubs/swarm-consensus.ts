@@ -1,5 +1,5 @@
 /**
- * Stub for @arkelythex/infrastructure/services/swarm-consensus
+ * Stub for @drenyra/infrastructure/services/swarm-consensus
  *
  * Prevents Drizzle from connecting to PostgreSQL in test environment.
  * workflow-alert-trigger.ts imports swarmConsensusService transitively.

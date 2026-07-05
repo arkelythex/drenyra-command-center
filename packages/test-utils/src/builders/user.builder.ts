@@ -14,7 +14,7 @@
 import { BaseBuilder } from "./base.builder";
 
 const DEFAULT_USER_ID = "usr_test_001";
-const DEFAULT_EMAIL = "test.user@arkelythexfounders.com";
+const DEFAULT_EMAIL = "test.user@drenyrafounders.com";
 const DEFAULT_NAME = "Usuario de Prueba";
 const DEFAULT_ROLE = "user";
 const DEFAULT_TENANT_ID = 1;

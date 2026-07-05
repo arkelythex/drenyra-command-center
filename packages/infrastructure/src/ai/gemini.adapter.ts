@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import type { Part } from '@google/generative-ai';
 import { createHash } from 'crypto';
-import type { AIClassification, IAIProvider } from '@arkelythex/application';
+import type { AIClassification, IAIProvider } from '@drenyra/application';
 import { CacheMetrics } from '../cache/metrics';
 import { CACHE_TTL, redis } from '../cache/redis.client';
 

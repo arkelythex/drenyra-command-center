@@ -1,6 +1,6 @@
-import { and, desc, eq, sql } from "@arkelythex/persistence/query";
-import { accountingPrs, prApprovals } from "@arkelythex/persistence/schema";
-import { accountingPrStatus } from "@arkelythex/persistence/schema/accounting-pr.schema";
+import { and, desc, eq, sql } from "@drenyra/persistence/query";
+import { accountingPrs, prApprovals } from "@drenyra/persistence/schema";
+import { accountingPrStatus } from "@drenyra/persistence/schema/accounting-pr.schema";
 import { db } from "../../lib/db";
 
 // ---------------------------------------------------------------------------

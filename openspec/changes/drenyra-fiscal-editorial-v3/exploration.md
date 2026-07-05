@@ -37,7 +37,7 @@
 Manual capture required when dev server runs:
 
 ```bash
-bun run dev --filter @arkelythex/web
+bun run dev --filter @drenyra/web
 # Capture: dashboard, invoices, sire-diff, settings/appearance
 ```
 

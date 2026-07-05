@@ -1,13 +1,13 @@
-export { db } from "@arkelythex/persistence/client";
-export * from "@arkelythex/persistence/query";
-export { PostgresDrenyraRepository } from "@arkelythex/persistence/repositories/postgres-drenyra.repository";
-export { PostgresEvidenceGraphRepository } from "@arkelythex/persistence/repositories/postgres-evidence-graph.repository";
-export { PostgresFiscalTruthRepository } from "@arkelythex/persistence/repositories/postgres-fiscal-truth.repository";
-export { PostgresPlatformMcpAuditSink } from "@arkelythex/persistence/repositories/postgres-platform-mcp-audit.repository";
-export { PostgresReplayRepository } from "@arkelythex/persistence/repositories/postgres-replay.repository";
-export { SireSubmissionRepository } from "@arkelythex/persistence/repositories/sire-submission.repository";
-export * from "@arkelythex/persistence/schema";
-export * from "@arkelythex/persistence/unit-of-work";
+export { db } from "@drenyra/persistence/client";
+export * from "@drenyra/persistence/query";
+export { PostgresDrenyraRepository } from "@drenyra/persistence/repositories/postgres-drenyra.repository";
+export { PostgresEvidenceGraphRepository } from "@drenyra/persistence/repositories/postgres-evidence-graph.repository";
+export { PostgresFiscalTruthRepository } from "@drenyra/persistence/repositories/postgres-fiscal-truth.repository";
+export { PostgresPlatformMcpAuditSink } from "@drenyra/persistence/repositories/postgres-platform-mcp-audit.repository";
+export { PostgresReplayRepository } from "@drenyra/persistence/repositories/postgres-replay.repository";
+export { SireSubmissionRepository } from "@drenyra/persistence/repositories/sire-submission.repository";
+export * from "@drenyra/persistence/schema";
+export * from "@drenyra/persistence/unit-of-work";
 export {
 	and,
 	asc,

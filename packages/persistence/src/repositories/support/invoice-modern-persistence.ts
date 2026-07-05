@@ -1,4 +1,4 @@
-import type { Invoice, InvoiceItem, InvoiceStatus } from "@arkelythex/domain/entities/Invoice";
+import type { Invoice, InvoiceItem, InvoiceStatus } from "@drenyra/domain/entities/Invoice";
 
 type ModularInvoiceStatus = "DRAFT" | "SENT" | "CANCELLED";
 type ModularSunatStatus =

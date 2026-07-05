@@ -14,5 +14,5 @@ export {
 } from "./journal-entry.builder";
 export { CreditNoteBuilder } from "./credit-note.builder";
 export { DebitNoteBuilder } from "./debit-note.builder";
-export type { CreditNoteProps, CreditNoteType, CreditNoteStatus } from "@arkelythex/domain";
-export type { DebitNoteProps, DebitNoteStatus } from "@arkelythex/domain";
+export type { CreditNoteProps, CreditNoteType, CreditNoteStatus } from "@drenyra/domain";
+export type { DebitNoteProps, DebitNoteStatus } from "@drenyra/domain";

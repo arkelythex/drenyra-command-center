@@ -4,7 +4,7 @@
 
 ## Technical approach
 
-Rebrand via DTCG token layer first, then `@arkelythex/ui` parity, then shell unification, then agent surfaces. Operations-first three-zone layout is immutable.
+Rebrand via DTCG token layer first, then `@drenyra/ui` parity, then shell unification, then agent surfaces. Operations-first three-zone layout is immutable.
 
 ## Architecture
 

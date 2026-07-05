@@ -5,7 +5,7 @@
  * Provides common fixtures and test hooks.
  */
 
-import { BasePage } from "@arkelythex/test-utils/e2e";
+import { BasePage } from "@drenyra/test-utils/e2e";
 import { test as base } from "@playwright/test";
 
 /**

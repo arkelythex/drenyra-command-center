@@ -24,7 +24,7 @@ const INITIAL_WORKTREES: WorktreeInfo[] = [
   {
     id: "wt-1",
     branch: "main",
-    path: "~/arkelythex",
+    path: "~/drenyra",
     status: "clean",
     lastSync: new Date().toISOString(),
     isActive: true,
@@ -32,7 +32,7 @@ const INITIAL_WORKTREES: WorktreeInfo[] = [
   {
     id: "wt-2",
     branch: "feat/sunat-validation",
-    path: "~/arkelythex/worktrees/sunat",
+    path: "~/drenyra/worktrees/sunat",
     status: "modified",
     fileCount: 4,
     lastSync: new Date(Date.now() - 3600000).toISOString(),
@@ -41,7 +41,7 @@ const INITIAL_WORKTREES: WorktreeInfo[] = [
   {
     id: "wt-3",
     branch: "fix/igv-rounding",
-    path: "~/arkelythex/worktrees/igv-fix",
+    path: "~/drenyra/worktrees/igv-fix",
     status: "conflicts",
     fileCount: 2,
     lastSync: new Date(Date.now() - 7200000).toISOString(),
@@ -60,7 +60,7 @@ export const useWorktreeStore = create<WorktreeState>((set, get) => ({
     const worktree: WorktreeInfo = {
       id: generateId(),
       branch,
-      path: `~/arkelythex/worktrees/${branch.replace(/[/\s]/g, "-")}`,
+      path: `~/drenyra/worktrees/${branch.replace(/[/\s]/g, "-")}`,
       status: "clean",
       lastSync: now,
       isActive: false,

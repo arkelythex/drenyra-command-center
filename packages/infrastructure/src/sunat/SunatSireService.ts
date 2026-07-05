@@ -94,7 +94,7 @@ export interface SireRecord {
 	igv: number;
 	/** Monetary amount in cents (integer). Divide by 100 for soles display. */
 	total: number;
-		moneda: import("@arkelythex/domain").Currency;
+		moneda: import("@drenyra/domain").Currency;
 		/** Exchange rate (decimal, NOT in cents). E.g. 3.75 = S/ 3.75 per USD. */
 		tipoCambio?: number;
 
@@ -337,7 +337,7 @@ export class SunatSireService {
 					baseImponible: Math.round(parseFloat(fields[9] || "0") * 100),
 					igv: Math.round(parseFloat(fields[10] || "0") * 100),
 					total: Math.round(parseFloat(fields[11] || "0") * 100),
-					moneda: (fields[12] || "PEN") as import("@arkelythex/domain").Currency,
+					moneda: (fields[12] || "PEN") as import("@drenyra/domain").Currency,
 					tipoCambio: fields[13] ? parseFloat(fields[13]) : undefined,
 					estado: fields[14],
 				};

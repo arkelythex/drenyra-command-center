@@ -38,7 +38,7 @@ describe('LoginForm', () => {
   it('keeps credential fields empty by default', () => {
     render(<LoginForm />);
 
-    expect(screen.getByPlaceholderText(/usuario@arkelythex/i)).toHaveValue('');
+    expect(screen.getByPlaceholderText(/usuario@drenyra/i)).toHaveValue('');
     expect(screen.getByPlaceholderText(/••••/)).toHaveValue('');
   });
 
@@ -46,7 +46,7 @@ describe('LoginForm', () => {
     render(<LoginForm />);
 
     // Check for email input (by placeholder)
-    expect(screen.getByPlaceholderText(/usuario@arkelythex/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/usuario@drenyra/i)).toBeInTheDocument();
 
     // Check for password input (by placeholder)
     expect(screen.getByPlaceholderText(/••••/)).toBeInTheDocument();
@@ -67,7 +67,7 @@ describe('LoginForm', () => {
     const user = userEvent.setup();
     render(<LoginForm />);
 
-    const emailInput = screen.getByPlaceholderText(/usuario@arkelythex/i);
+    const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
     const submitButton = screen.getByRole('button', { name: /autenticar/i });
 
     await user.clear(emailInput);
@@ -85,7 +85,7 @@ describe('LoginForm', () => {
 
     render(<LoginForm />);
 
-    const emailInput = screen.getByPlaceholderText(/usuario@arkelythex/i);
+    const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
     const passwordInput = screen.getByPlaceholderText(/••••/);
     const submitButton = screen.getByRole('button', { name: /autenticar/i });
 
@@ -110,7 +110,7 @@ describe('LoginForm', () => {
 
     render(<LoginForm />);
 
-    const emailInput = screen.getByPlaceholderText(/usuario@arkelythex/i);
+    const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
     const passwordInput = screen.getByPlaceholderText(/••••/);
     const submitButton = screen.getByRole('button', { name: /autenticar/i });
 
@@ -134,7 +134,7 @@ describe('LoginForm', () => {
 
     render(<LoginForm />);
 
-    const emailInput = screen.getByPlaceholderText(/usuario@arkelythex/i);
+    const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
     const passwordInput = screen.getByPlaceholderText(/••••/);
     const submitButton = screen.getByRole('button', { name: /autenticar/i });
 
@@ -157,7 +157,7 @@ describe('LoginForm', () => {
 
     render(<LoginForm />);
 
-    const emailInput = screen.getByPlaceholderText(/usuario@arkelythex/i);
+    const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
     const passwordInput = screen.getByPlaceholderText(/••••/);
     const submitButton = screen.getByRole('button', { name: /autenticar/i });
 
@@ -180,7 +180,7 @@ describe('LoginForm', () => {
 
     render(<LoginForm />);
 
-    const emailInput = screen.getByPlaceholderText(/usuario@arkelythex/i);
+    const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
     const passwordInput = screen.getByPlaceholderText(/••••/);
     const submitButton = screen.getByRole('button', { name: /autenticar/i });
 

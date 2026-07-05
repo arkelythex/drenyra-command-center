@@ -1,4 +1,4 @@
-import type { AnomalySeverity } from "@arkelythex/drenyra-orchestrator";
+import type { AnomalySeverity } from "@drenyra/drenyra-orchestrator";
 import type {
 	AnomalyDisplayItem,
 	ComplianceDisplayItem,

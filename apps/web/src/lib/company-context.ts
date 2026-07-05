@@ -34,11 +34,11 @@ export interface CompanyContext {
 export const DEMO_COMPANY_ID = "00000000-0000-0000-0000-000000000001";
 export const DEMO_COMPANY_RUC = "20608451231";
 export const DEMO_COMPANY_NAME = "NEBULA OPERACIONES LOGISTICAS S.A.C.";
-export const ACTIVE_COMPANY_STORAGE_KEY = "arkelythex-active-company";
+export const ACTIVE_COMPANY_STORAGE_KEY = "drenyra-active-company";
 
 export const AUTH_STORAGE_KEYS = [
-	"arkelythex-auth",
-	"arkelythex-auth-storage",
+	"drenyra-auth",
+	"drenyra-auth-storage",
 	"auth-storage",
 ] as const;
 
@@ -187,7 +187,7 @@ export function setActiveCompanyContext(context: {
 	);
 
 	if (typeof window !== "undefined") {
-		window.dispatchEvent(new Event("arkelythex-active-company-changed"));
+		window.dispatchEvent(new Event("drenyra-active-company-changed"));
 	}
 }
 
@@ -196,7 +196,7 @@ export function clearActiveCompanyContext(): void {
 	localStorage.removeItem(ACTIVE_COMPANY_STORAGE_KEY);
 
 	if (typeof window !== "undefined") {
-		window.dispatchEvent(new Event("arkelythex-active-company-changed"));
+		window.dispatchEvent(new Event("drenyra-active-company-changed"));
 	}
 }
 

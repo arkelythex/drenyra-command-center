@@ -5,7 +5,7 @@
 import type {
 	JournalEntryResponseDTO,
 	JournalEntryFiltersDTO,
-} from "@arkelythex/application/dtos/journal/journal-entry.dto";
+} from "@drenyra/application/dtos/journal/journal-entry.dto";
 
 export type { JournalEntryResponseDTO, JournalEntryFiltersDTO };
 

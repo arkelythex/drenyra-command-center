@@ -1,5 +1,5 @@
-import type { CierreMensual } from "@arkelythex/domain";
-import { calculateCierreProgress } from "@arkelythex/domain";
+import type { CierreMensual } from "@drenyra/domain";
+import { calculateCierreProgress } from "@drenyra/domain";
 
 const SIRE_CHECKLIST_LABEL_MARKERS = [
 	"Validación SIRE Compras",

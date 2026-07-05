@@ -1,5 +1,5 @@
 /**
- * Agent Registry — ported from @arkelythex/agent-swarm/src/agent-registry.ts
+ * Agent Registry — ported from @drenyra/agent-swarm/src/agent-registry.ts
  *
  * Static registry populated by agent modules calling defineAgent().
  * Provides getAllRegisteredAgents() for legacy consumers.

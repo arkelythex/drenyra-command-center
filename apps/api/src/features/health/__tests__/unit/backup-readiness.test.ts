@@ -17,9 +17,9 @@ afterEach(async () => {
 
 describe("getBackupReadinessStatus", () => {
 	it("returns missing when the backup directory does not exist", async () => {
-		process.env.ARKELYTHEX_BACKUP_DIR = join(
+		process.env.DRENYRA_BACKUP_DIR = join(
 			tmpdir(),
-			`arkelythex-backups-missing-${Date.now()}`,
+			`drenyra-backups-missing-${Date.now()}`,
 		);
 
 		const result = await getBackupReadinessStatus(1_000_000);
@@ -34,16 +34,16 @@ describe("getBackupReadinessStatus", () => {
 
 	it("returns ok when a recent backup manifest exists", async () => {
 		const backupDir = await createTempBackupDir();
-		process.env.ARKELYTHEX_BACKUP_DIR = backupDir;
-		process.env.ARKELYTHEX_BACKUP_MAX_AGE_HOURS = "24";
+		process.env.DRENYRA_BACKUP_DIR = backupDir;
+		process.env.DRENYRA_BACKUP_MAX_AGE_HOURS = "24";
 
 		const backupTimestamp = Date.parse("2026-03-03T20:00:00.000Z");
 		await writeFile(
-			join(backupDir, "arkelythex_20260303T200000Z.dump.json"),
+			join(backupDir, "drenyra_20260303T200000Z.dump.json"),
 			JSON.stringify({
 				createdAt: new Date(backupTimestamp).toISOString(),
 				createdAtEpochMs: backupTimestamp,
-				filePath: join(backupDir, "arkelythex_20260303T200000Z.dump"),
+				filePath: join(backupDir, "drenyra_20260303T200000Z.dump"),
 			}),
 			"utf8",
 		);
@@ -56,17 +56,17 @@ describe("getBackupReadinessStatus", () => {
 			status: "ok",
 			source: "manifest",
 			lastBackupAt: "2026-03-03T20:00:00.000Z",
-			latestArtifact: join(backupDir, "arkelythex_20260303T200000Z.dump"),
+			latestArtifact: join(backupDir, "drenyra_20260303T200000Z.dump"),
 		});
 		expect(result.lastBackupAgeHours).toBe(2);
 	});
 
 	it("returns warning when only an old dump exists", async () => {
 		const backupDir = await createTempBackupDir();
-		process.env.ARKELYTHEX_BACKUP_DIR = backupDir;
-		process.env.ARKELYTHEX_BACKUP_MAX_AGE_HOURS = "24";
+		process.env.DRENYRA_BACKUP_DIR = backupDir;
+		process.env.DRENYRA_BACKUP_MAX_AGE_HOURS = "24";
 
-		const dumpPath = join(backupDir, "arkelythex_20260301T000000Z.dump");
+		const dumpPath = join(backupDir, "drenyra_20260301T000000Z.dump");
 		await writeFile(dumpPath, "backup", "utf8");
 
 		const staleTimestamp = Date.parse("2026-03-01T00:00:00.000Z");
@@ -90,7 +90,7 @@ describe("getBackupReadinessStatus", () => {
 });
 
 async function createTempBackupDir(): Promise<string> {
-	const directory = await mkdtemp(join(tmpdir(), "arkelythex-backups-"));
+	const directory = await mkdtemp(join(tmpdir(), "drenyra-backups-"));
 	tempDirs.push(directory);
 	return directory;
 }

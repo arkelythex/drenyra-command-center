@@ -1,7 +1,7 @@
 /**
  * RUC Breach Detection Strategy — SUNAT Art. 12 TUO IGV
  *
- * Ported from @arkelythex/agent-swarm/src/agents/ai-ml/ruc-breach.strategy.ts
+ * Ported from @drenyra/agent-swarm/src/agents/ai-ml/ruc-breach.strategy.ts
  *
  * When the RUC declared on an invoice does not match the RUC of the actual
  * payment recipient, SUNAT classifies the transaction as a potential tax evasion vector.

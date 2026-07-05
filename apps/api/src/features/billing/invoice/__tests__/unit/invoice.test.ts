@@ -3,7 +3,7 @@
  * Unit tests for Invoice domain logic
  */
 
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 import { beforeEach, describe, expect, it } from "vitest";
 import { Invoice, type InvoiceItem } from "../../domain/invoice.entity";
 

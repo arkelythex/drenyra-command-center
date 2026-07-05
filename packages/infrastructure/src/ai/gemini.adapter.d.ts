@@ -1,4 +1,4 @@
-import type { AIClassification, IAIProvider } from '@arkelythex/application';
+import type { AIClassification, IAIProvider } from '@drenyra/application';
 export declare class GeminiAdapter implements IAIProvider {
     private genAI;
     constructor(apiKey: string);

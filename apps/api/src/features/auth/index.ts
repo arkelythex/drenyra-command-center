@@ -31,7 +31,7 @@ function buildDevAuthError(error: unknown): { message: string; hint?: string } {
   if (/relation .* does not exist/i.test(raw)) {
     return {
       message: 'La base de datos no tiene tablas/migraciones (relation does not exist).',
-      hint: 'Ejecuta Drizzle: `bun run --filter @arkelythex/infrastructure db:push`.',
+      hint: 'Ejecuta Drizzle: `bun run --filter @drenyra/infrastructure db:push`.',
     };
   }
 

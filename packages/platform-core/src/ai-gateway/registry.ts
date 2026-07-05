@@ -7,7 +7,7 @@
  * Zero fiscal imports — capabilities are plain strings, not
  * domain-specific enums.
  *
- * @module @arkelythex/platform-core/ai-gateway
+ * @module @drenyra/platform-core/ai-gateway
  */
 
 // ──────────────────────────────────────────────

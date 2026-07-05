@@ -16,11 +16,11 @@ import {
 	type EvidenceNode,
 	type EvidenceNodeKind,
 	type FiscalTruthScope,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import type {
 	DrenyraBrainEvent,
 	DrenyraFiscalScope,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 
 export interface DrenyraBrainEvidenceBridgeDeps {
 	appendNode: EvidenceGraphRepository["appendNode"];

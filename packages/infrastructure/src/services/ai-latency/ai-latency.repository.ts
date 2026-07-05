@@ -7,13 +7,13 @@
  * @module infrastructure/services/ai-latency
  */
 
-import { and, desc, eq, gte, sql } from "@arkelythex/persistence/query";
-import { db } from "@arkelythex/persistence/client";
+import { and, desc, eq, gte, sql } from "@drenyra/persistence/query";
+import { db } from "@drenyra/persistence/client";
 import {
 	aiLatencyEvents,
 	type AiLatencyEvent,
 	type NewAiLatencyEvent,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

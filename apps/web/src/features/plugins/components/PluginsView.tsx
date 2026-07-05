@@ -31,7 +31,7 @@ const PLUGINS: Plugin[] = [
 		category: "Compliance",
 		icon: ShieldCheck,
 		status: "active",
-		provider: "Arkelythex Core",
+		provider: "Drenyra Core",
 	},
 	{
 		id: "bcp-connector",
@@ -41,7 +41,7 @@ const PLUGINS: Plugin[] = [
 		category: "Finance",
 		icon: Landmark,
 		status: "active",
-		provider: "Arkelythex Finance",
+		provider: "Drenyra Finance",
 	},
 	{
 		id: "drive-evidence",
@@ -61,7 +61,7 @@ const PLUGINS: Plugin[] = [
 		category: "Compliance",
 		icon: FileCode,
 		status: "active",
-		provider: "Arkelythex Core",
+		provider: "Drenyra Core",
 	},
 	{
 		id: "bbva-connector",
@@ -71,7 +71,7 @@ const PLUGINS: Plugin[] = [
 		category: "Finance",
 		icon: Landmark,
 		status: "available",
-		provider: "Arkelythex Finance",
+		provider: "Drenyra Finance",
 	},
 	{
 		id: "interbank-connector",
@@ -81,7 +81,7 @@ const PLUGINS: Plugin[] = [
 		category: "Finance",
 		icon: Landmark,
 		status: "experimental",
-		provider: "Arkelythex Finance",
+		provider: "Drenyra Finance",
 	},
 ];
 

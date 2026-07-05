@@ -1,10 +1,10 @@
-import { and, desc, eq, sql } from "@arkelythex/persistence/query";
+import { and, desc, eq, sql } from "@drenyra/persistence/query";
 import {
 	automationExecutions,
 	automationSteps,
 	automationWorkflows,
-} from "@arkelythex/persistence/schema/automation-studio.schema";
-import type { ActionType } from "@arkelythex/persistence/schema/automation-studio.schema";
+} from "@drenyra/persistence/schema/automation-studio.schema";
+import type { ActionType } from "@drenyra/persistence/schema/automation-studio.schema";
 import { db } from "../../lib/db";
 import type {
 	CreateStepBody,

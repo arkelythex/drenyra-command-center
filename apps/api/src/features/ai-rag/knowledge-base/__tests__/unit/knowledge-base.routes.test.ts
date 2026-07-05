@@ -6,7 +6,7 @@ const mockBuildContext = vi.fn();
 const mockGetStats = vi.fn();
 
 vi.mock(
-	"@arkelythex/infrastructure/services/sunat-knowledge/sunat-knowledge.service",
+	"@drenyra/infrastructure/services/sunat-knowledge/sunat-knowledge.service",
 	() => ({
 		sunatKnowledgeService: {
 			get hybridSearch() {

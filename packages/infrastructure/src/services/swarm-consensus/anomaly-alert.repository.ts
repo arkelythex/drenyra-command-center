@@ -1,6 +1,6 @@
 import { and, desc, eq, gte, sql } from "drizzle-orm";
-import { db } from "@arkelythex/persistence/client";
-import { anomalyAlerts } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { anomalyAlerts } from "@drenyra/persistence/schema";
 import type { AlertSeverity, FalsePositiveStats } from "./types";
 
 /**

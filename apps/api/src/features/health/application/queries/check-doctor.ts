@@ -6,7 +6,7 @@
  * @module health/application/queries
  */
 
-import { sql } from "@arkelythex/persistence/query";
+import { sql } from "@drenyra/persistence/query";
 import type { BackupReadinessStatus } from "../../backup-readiness";
 import type { OpenTelemetryReadiness } from "../../otel-readiness";
 import type { RlsReadinessStatus } from "../../rls-readiness";

@@ -1,5 +1,5 @@
 // ─── Core Agent Types ──────────────────────────────────────────────
-// Snapshots from @arkelythex/agent-swarm/src/agents/types.ts
+// Snapshots from @drenyra/agent-swarm/src/agents/types.ts
 
 export type AgentCapability = string;
 export type AgentPriority = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;

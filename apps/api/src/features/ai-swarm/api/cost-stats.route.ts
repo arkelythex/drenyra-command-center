@@ -13,7 +13,7 @@
  */
 
 import { Elysia, t } from 'elysia';
-import { aiCostRepository } from '@arkelythex/ai/services/ai-cost';
+import { aiCostRepository } from '@drenyra/ai/services/ai-cost';
 import { budgetTracker } from '../tools/budget-tracker';
 
 /**

@@ -21,16 +21,16 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			// Override root-level @arkelythex/* alias to include the src/ directory
-			// Root maps @arkelythex → ./packages (missing src/)
-			"@arkelythex/persistence": path.resolve(__dirname, "../persistence/src"),
-			"@arkelythex/infrastructure": path.resolve(
+			// Override root-level @drenyra/* alias to include the src/ directory
+			// Root maps @drenyra → ./packages (missing src/)
+			"@drenyra/persistence": path.resolve(__dirname, "../persistence/src"),
+			"@drenyra/infrastructure": path.resolve(
 				__dirname,
 				"../infrastructure/src",
 			),
-			"@arkelythex/ai": path.resolve(__dirname, "../ai/src"),
-			"@arkelythex/shared": path.resolve(__dirname, "../shared/src"),
-			"@arkelythex/application": path.resolve(__dirname, "../application/src"),
+			"@drenyra/ai": path.resolve(__dirname, "../ai/src"),
+			"@drenyra/shared": path.resolve(__dirname, "../shared/src"),
+			"@drenyra/application": path.resolve(__dirname, "../application/src"),
 		},
 	},
 });

@@ -1,10 +1,10 @@
-# ARKELYTHEX — Infraestructura Nacional de Inteligencia Fiscal
+# DRENYRA — Infraestructura Nacional de Inteligencia Fiscal
 # AI-Optimized Documentation Index (llms.txt standard)
 # Last Updated: 2026-06-06
 
 ## 🧠 Start Here
 > /AGENTS.md - Canonical engineering rules for AI agents
-> /docs/01-architecture/arkelythex-fiscal-sovereignty-platform.md - System architecture overview
+> /docs/01-architecture/drenyra-fiscal-sovereignty-platform.md - System architecture overview
 > /docs/meta/context/stack.yaml - Technology stack Source of Truth
 > /docs/concepts/architecture.md - High-level system map & patterns
 
@@ -19,7 +19,7 @@
 > /packages/ai/README.md - AI gateway, routing, OpenRouter integration
 > /packages/agent-swarm/README.md - Swarm agent system architecture
 > /packages/agent-memory/README.md - Persistent memory and context management
-> /packages/arkelythex-harness/ - AI agent harness runtime
+> /packages/drenyra-harness/ - AI agent harness runtime
 
 ## 🖥️ Applications
 > /apps/api/MAP.md - API (Bun + ElysiaJS) architecture map

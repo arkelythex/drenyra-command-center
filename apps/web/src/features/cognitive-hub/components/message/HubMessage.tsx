@@ -9,7 +9,7 @@ import { ShieldCheck, Sparkles, User } from "lucide-react";
 import { trackEvent } from "@/lib/monitoring";
 import { cn } from "@/lib/utils";
 import { useHubState } from "../../hooks/useHubState";
-import type { CognitiveMessage } from '@arkelythex/shared/messaging';
+import type { CognitiveMessage } from '@drenyra/shared/messaging';
 import { ArtifactRenderer } from "../artifacts/ArtifactRenderer";
 import { SwarmTrace } from "./SwarmTrace";
 
@@ -137,7 +137,7 @@ function MessageHeader({
 						isAssistant ? "text-[var(--text-primary)]" : "text-[var(--text-tertiary)]",
 					)}
 				>
-					{isAssistant ? "Arkelythex Core" : "Authorized Operator"}
+					{isAssistant ? "Drenyra Core" : "Authorized Operator"}
 				</span>
 				{isAssistant && isConsensus && (
 					<div className="px-1 py-0.5 rounded-md bg-[rgba(var(--premium-success-rgb),0.10)] border border-[rgba(var(--premium-success-rgb),0.20)] flex items-center gap-1">

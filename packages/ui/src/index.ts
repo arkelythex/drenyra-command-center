@@ -1,12 +1,12 @@
 /**
- * @arkelythex/ui - Arkelythex Design System
+ * @drenyra/ui - Drenyra Design System
  *
- * Shared UI component library for Arkelythex monorepo.
+ * Shared UI component library for Drenyra monorepo.
  * Provides consistent, accessible components with brand theming.
  *
  * @example
  * ```tsx
- * import { Button, Card, Badge } from "@arkelythex/ui";
+ * import { Button, Card, Badge } from "@drenyra/ui";
  * ```
  */
 

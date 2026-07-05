@@ -1,3 +1,3 @@
 "use client";
 
-export { Label, type LabelProps } from "@arkelythex/ui";
+export { Label, type LabelProps } from "@drenyra/ui";

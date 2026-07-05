@@ -1,4 +1,4 @@
-import { Document } from "@arkelythex/domain/entities/Document";
+import { Document } from "@drenyra/domain/entities/Document";
 import { describe, expect, it } from "vitest";
 import { DocumentRepositoryImpl } from "./document.repository";
 

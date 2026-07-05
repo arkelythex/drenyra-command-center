@@ -4,7 +4,7 @@ import type {
 	FindingCategory,
 	FindingSeverity,
 	FindingStatus,
-} from "@arkelythex/domain/entities";
+} from "@drenyra/domain/entities";
 
 export interface CreateReviewInput {
 	companyId: string;

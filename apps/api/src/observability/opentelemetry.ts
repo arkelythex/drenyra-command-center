@@ -17,7 +17,7 @@ function isTruthy(value: string | undefined): boolean {
 export async function attachOptionalOpenTelemetry<T>(
 	app: T,
 ): Promise<T> {
-	if (!isTruthy(process.env.ARKELYTHEX_ENABLE_OTEL)) {
+	if (!isTruthy(process.env.DRENYRA_ENABLE_OTEL)) {
 		return app;
 	}
 
@@ -38,7 +38,7 @@ export async function attachOptionalOpenTelemetry<T>(
 
 		const nextApp = currentApp.use(
 			pluginFactory({
-				serviceName: process.env.OTEL_SERVICE_NAME?.trim() || "arkelythex-api",
+				serviceName: process.env.OTEL_SERVICE_NAME?.trim() || "drenyra-api",
 			}) as never,
 		);
 		return nextApp as unknown as T;
@@ -47,7 +47,7 @@ export async function attachOptionalOpenTelemetry<T>(
 			{
 				errorMessage: error instanceof Error ? error.message : String(error),
 			},
-			"ARKELYTHEX_ENABLE_OTEL is enabled, but @elysiajs/opentelemetry is not installed",
+			"DRENYRA_ENABLE_OTEL is enabled, but @elysiajs/opentelemetry is not installed",
 		);
 		return app;
 	}

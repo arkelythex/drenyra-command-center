@@ -1,4 +1,4 @@
-import { DeterministicValidatorOrchestratorService } from "@arkelythex/application/fiscal-truth";
+import { DeterministicValidatorOrchestratorService } from "@drenyra/application/fiscal-truth";
 import {
 	DocumentSeriesValidator,
 	MoneyIgvConsistencyValidator,

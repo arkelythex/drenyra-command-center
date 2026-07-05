@@ -1,5 +1,5 @@
 /**
- * Canonical test fixtures for ARKELYTHEX.
+ * Canonical test fixtures for DRENYRA.
  *
  * Provides reusable, realistic Peruvian tax data for testing.
  * All RUCs here pass the Módulo 11 checksum validation.
@@ -18,8 +18,8 @@
  * - 10xxxxxxx: Persona Natural
  */
 export const VALID_RUCS = {
-	/** ARKELYTHEX SAC — Empresa de prueba principal */
-	ARKELYTHEX: "20546296564",
+	/** DRENYRA SAC — Empresa de prueba principal */
+	DRENYRA: "20546296564",
 	/** Empresa Test SAC — Segunda empresa de prueba */
 	EMPRESA_TEST: "20601234573",
 	/** Proveedor Demo SAC — Proveedor de prueba */
@@ -79,17 +79,17 @@ export const INVALID_DNIS = {
 // ============================================================
 
 export const TEST_COMPANIES = {
-	ARKELYTHEX: {
-		id: "cmp_arkelythex",
-		razonSocial: "ARKELYTHEX Sociedad Anónima Cerrada",
-		commercialName: "ARKELYTHEX",
-		ruc: VALID_RUCS.ARKELYTHEX,
+	DRENYRA: {
+		id: "cmp_drenyra",
+		razonSocial: "DRENYRA Sociedad Anónima Cerrada",
+		commercialName: "DRENYRA",
+		ruc: VALID_RUCS.DRENYRA,
 		address: "Av. Javier Prado Este 1234, San Isidro, Lima",
 		department: "Lima",
 		province: "Lima",
 		district: "San Isidro",
 		phone: "+51 1 234 5678",
-		email: "contacto@arkelythexfounders.com",
+		email: "contacto@drenyrafounders.com",
 		currency: "PEN" as const,
 		isActive: true,
 		plan: "enterprise" as const,
@@ -133,8 +133,8 @@ export const TEST_COMPANIES = {
 export const TEST_USERS = {
 	ADMIN: {
 		id: "usr_admin",
-		email: "admin@arkelythexfounders.com",
-		name: "Admin ARKELYTHEX",
+		email: "admin@drenyrafounders.com",
+		name: "Admin DRENYRA",
 		role: "admin",
 		tenantId: 1,
 		isActive: true,
@@ -142,7 +142,7 @@ export const TEST_USERS = {
 	},
 	ACCOUNTANT: {
 		id: "usr_accountant",
-		email: "contador@arkelythexfounders.com",
+		email: "contador@drenyrafounders.com",
 		name: "Contador Test",
 		role: "accountant",
 		tenantId: 1,
@@ -151,7 +151,7 @@ export const TEST_USERS = {
 	},
 	REGULAR_USER: {
 		id: "usr_regular",
-		email: "usuario@arkelythexfounders.com",
+		email: "usuario@drenyrafounders.com",
 		name: "Usuario Regular",
 		role: "user",
 		tenantId: 1,
@@ -160,7 +160,7 @@ export const TEST_USERS = {
 	},
 	INACTIVE_USER: {
 		id: "usr_inactive",
-		email: "inactivo@arkelythexfounders.com",
+		email: "inactivo@drenyrafounders.com",
 		name: "Usuario Inactivo",
 		role: "user",
 		tenantId: 1,
@@ -183,7 +183,7 @@ export const TEST_PRODUCTS = {
 	},
 	SOFTWARE_LICENSE: {
 		id: "prod_software",
-		description: "Licencia de software ARKELYTHEX",
+		description: "Licencia de software DRENYRA",
 		unitPrice: 2500,
 		currency: "PEN" as const,
 		igvRate: 0.18,
@@ -248,7 +248,7 @@ export const TEST_INVOICE_SCENARIOS = {
 	ZERO_AMOUNT: {
 		series: "F001",
 		number: 4,
-		clientRUC: VALID_RUCS.ARKELYTHEX,
+		clientRUC: VALID_RUCS.DRENYRA,
 		baseAmount: 0,
 		currency: "PEN" as const,
 	},
@@ -520,7 +520,7 @@ export function createBankingScenario(
 
 	return {
 		company: {
-			...TEST_COMPANIES.ARKELYTHEX,
+			...TEST_COMPANIES.DRENYRA,
 		},
 		bankAccount: {
 			id: `acc_bank_${Date.now()}`,

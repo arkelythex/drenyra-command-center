@@ -7,7 +7,7 @@
 
 import { and, asc, desc, eq, inArray, lte, sql } from "drizzle-orm";
 import type { PgDatabase } from "drizzle-orm/pg-core";
-import { agentRunEvents, agentRunInputs, agentRunStates, batchRuns, batchRunItems } from "@arkelythex/persistence/schema";
+import { agentRunEvents, agentRunInputs, agentRunStates, batchRuns, batchRunItems } from "@drenyra/persistence/schema";
 import type { SessionStore } from "./session-store";
 import type {
 	AgentRunEvent,

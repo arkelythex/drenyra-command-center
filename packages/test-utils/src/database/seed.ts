@@ -129,7 +129,7 @@ export const seedScenarios = {
 	minimal: {
 		users: [
 			{
-				email: "admin@test.arkelythexfounders.com",
+				email: "admin@test.drenyrafounders.com",
 				password: "hashed_test_password_123",
 				role: "admin" as const,
 			},
@@ -147,12 +147,12 @@ export const seedScenarios = {
 	full: {
 		users: [
 			{
-				email: "admin@test.arkelythexfounders.com",
+				email: "admin@test.drenyrafounders.com",
 				password: "hashed_test_password_123",
 				role: "admin" as const,
 			},
 			{
-				email: "accountant@test.arkelythexfounders.com",
+				email: "accountant@test.drenyrafounders.com",
 				password: "hashed_test_password_456",
 				role: "accountant" as const,
 			},
@@ -184,12 +184,12 @@ export const seedScenarios = {
 	multiTenant: {
 		users: [
 			{
-				email: "admin-a@test.arkelythexfounders.com",
+				email: "admin-a@test.drenyrafounders.com",
 				password: "hashed_test_password_a",
 				role: "admin" as const,
 			},
 			{
-				email: "admin-b@test.arkelythexfounders.com",
+				email: "admin-b@test.drenyrafounders.com",
 				password: "hashed_test_password_b",
 				role: "admin" as const,
 			},

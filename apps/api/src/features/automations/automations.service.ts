@@ -1,10 +1,10 @@
-import { and, desc, eq } from "@arkelythex/persistence/query";
+import { and, desc, eq } from "@drenyra/persistence/query";
 import {
 	automationWorkflows,
 	automationSteps,
 	automationExecutions,
-} from "@arkelythex/persistence/schema/automation-studio.schema";
-import { skills } from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema/automation-studio.schema";
+import { skills } from "@drenyra/persistence/schema";
 import { db } from "../../lib/db";
 
 export interface AutomationDTO {

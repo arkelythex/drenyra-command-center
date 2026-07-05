@@ -2,10 +2,10 @@
 
 import { cn } from "@/lib/utils";
 
-export { Skeleton, type SkeletonProps } from "@arkelythex/ui";
+export { Skeleton, type SkeletonProps } from "@drenyra/ui";
 
 // Local-only higher-level skeleton variants that compose the shared Skeleton
-import { Skeleton as SkeletonBase } from "@arkelythex/ui";
+import { Skeleton as SkeletonBase } from "@drenyra/ui";
 
 export function DashboardCardSkeleton({ className }: { className?: string }) {
 	return (

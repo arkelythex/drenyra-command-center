@@ -4,14 +4,14 @@
  * @module cashflow/__tests__
  */
 
-import { Money } from "@arkelythex/domain";
-import { db } from "@arkelythex/persistence/client";
+import { Money } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 // ---------------------------------------------------------------------------
 // Mock database (shared across forecast and projection tests)
 // ---------------------------------------------------------------------------
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		select: vi.fn().mockReturnThis(),
 		from: vi.fn().mockReturnThis(),
@@ -19,7 +19,7 @@ vi.mock("@arkelythex/persistence/client", () => ({
 	},
 }));
 
-vi.mock("@arkelythex/persistence/query", () => ({
+vi.mock("@drenyra/persistence/query", () => ({
 	eq: vi.fn(),
 	and: vi.fn(),
 	gte: vi.fn(),
@@ -27,7 +27,7 @@ vi.mock("@arkelythex/persistence/query", () => ({
 	or: vi.fn(),
 }));
 
-vi.mock("@arkelythex/persistence/schema", () => ({
+vi.mock("@drenyra/persistence/schema", () => ({
 	bankTransactions: {
 		id: "id",
 		companyId: "companyId",

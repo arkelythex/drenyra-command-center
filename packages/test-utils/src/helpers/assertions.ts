@@ -4,7 +4,7 @@
  * Provides custom assertion utilities beyond standard expect()
  * for common ARKELYTHEX domain validations.
  */
-import type { Money } from "@arkelythex/domain/value-objects/Money";
+import type { Money } from "@drenyra/domain/value-objects/Money";
 
 /**
  * Assert that two Money amounts are equal within a tolerance (in cents).

@@ -6,7 +6,7 @@
  *
  * Split from 724 lines → 4 modules (constants, request-executor, stream-executor, facade)
  *
- * @module @arkelythex/ai/gateway
+ * @module @drenyra/ai/gateway
  */
 
 import type { ContextMonitor } from "../context-monitor";

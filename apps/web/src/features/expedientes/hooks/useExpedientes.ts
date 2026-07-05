@@ -2,7 +2,7 @@ import type {
 	CierreMensual,
 	ExpedienteFiscal,
 	ExpedienteKind,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import { useQuery } from "@tanstack/react-query";
 import { extractOkData } from "@/lib/api-helpers";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";

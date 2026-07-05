@@ -28,7 +28,7 @@ Framework-free contracts live in:
 Consumers import through:
 
 ```ts
-import { createDrenyraCommandEnvelope } from "@arkelythex/domain/drenyra";
+import { createDrenyraCommandEnvelope } from "@drenyra/domain/drenyra";
 ```
 
 ## Supported command IDs

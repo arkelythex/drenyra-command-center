@@ -1,4 +1,4 @@
-import type { DocumentStatus } from "@arkelythex/domain/entities/Document";
+import type { DocumentStatus } from "@drenyra/domain/entities/Document";
 
 /**
  * DocumentResponseDTO interface.

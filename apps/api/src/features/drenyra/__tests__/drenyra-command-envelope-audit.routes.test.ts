@@ -1,5 +1,5 @@
-import { DrenyraFiscalCommandCenterService, InMemoryDrenyraRepository } from "@arkelythex/application/drenyra";
-import type { AuditEvent, FiscalScope } from "@arkelythex/domain/drenyra";
+import { DrenyraFiscalCommandCenterService, InMemoryDrenyraRepository } from "@drenyra/application/drenyra";
+import type { AuditEvent, FiscalScope } from "@drenyra/domain/drenyra";
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
 import { createCommandEnvelopeAuditRoutes } from "../command-envelope-audit.routes";

@@ -12,7 +12,7 @@ import type {
 	ReconcileOutput,
 	ReportOutput,
 	StepResult,
-} from "@arkelythex/application/use-cases/fiscal-agent/types";
+} from "@drenyra/application/use-cases/fiscal-agent/types";
 
 export class ReporterStep implements FiscalAgentStep<{
 	collect: CollectOutput;

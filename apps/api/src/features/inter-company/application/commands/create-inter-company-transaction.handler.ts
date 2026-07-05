@@ -7,7 +7,7 @@
  *   3. Persist atomically: EXPENSE tx + INCOME tx + inter-company link (repository)
  */
 
-import { SecureLogger } from '@arkelythex/shared/secure-logger';
+import { SecureLogger } from '@drenyra/shared/secure-logger';
 import { taxRateProviderService } from '../../../taxation/application/services/tax-rate-provider.service';
 import { normalizeSpotDetractionProfile } from '../../../taxation/domain/spot-detraction-profile';
 import type { SpotDetractionProfile } from '../../../taxation/domain/spot-detraction-profile';

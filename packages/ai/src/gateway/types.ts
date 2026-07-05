@@ -4,7 +4,7 @@
  * Provides type-safe interfaces for the unified LLM gateway that routes
  * requests to multiple providers (Anthropic, OpenAI, Google, Grok, OpenRouter).
  *
- * @module @arkelythex/ai/gateway
+ * @module @drenyra/ai/gateway
  */
 
 // ============================================

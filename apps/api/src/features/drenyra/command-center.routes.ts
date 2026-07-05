@@ -1,4 +1,4 @@
-import { DrenyraFiscalCommandCenterService } from "@arkelythex/application/drenyra";
+import { DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
 import { Elysia } from "elysia";
 import { createDrenyraCommandCenterApprovalRoutes } from "./command-center-approval.routes";
 import { createDrenyraCommandCenterCaseRoutes } from "./command-center-case.routes";

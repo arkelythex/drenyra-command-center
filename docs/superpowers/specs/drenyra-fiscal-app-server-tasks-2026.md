@@ -27,7 +27,7 @@
 
 | Task | Acceptance criteria |
 |---|---|
-| 1.1 Export `DFAS_PROTOCOL_VERSION` in package.json domain exports | `@arkelythex/domain/drenyra` re-exports all DFAS types |
+| 1.1 Export `DFAS_PROTOCOL_VERSION` in package.json domain exports | `@drenyra/domain/drenyra` re-exports all DFAS types |
 | 1.2 Add `dfas-protocol-contract.test.ts` | Validates sample JSON-RPC messages against TypeScript types |
 | 1.3 Wire guardian audit events to `AUDIT_EVENT_TYPES` | Add `GUARDIAN_*` event types to domain `types.ts` |
 | 1.4 Lexori YAML loader stub in TS | `packages/drenyra-orchestrator/src/skills/loader.ts` loads 6 canonical skills |
@@ -51,7 +51,7 @@ cd packages/domain && bun run test -- src/drenyra/__tests__/guardian-policies.te
 | 2.3 Implement `TurnController` | Start/cancel/approval pause-resume state machine |
 | 2.4 Implement `ItemStreamPublisher` | Monotonic sequence; `createDfasItemStreamEntry` on append |
 | 2.5 Implement `OrchestrationRouter` | Routes `transaction` / `period` / `auto` modes |
-| 2.6 Implement `DelegationRouter` | Delegates to `@arkelythex/harness` |
+| 2.6 Implement `DelegationRouter` | Delegates to `@drenyra/harness` |
 | 2.7 Implement `CapabilityGuard` + `SkillInjector` | Pre-flight capability + Lexori context |
 | 2.8 Implement `TruthPromotionBoundary` | No direct promotion; emits `item/truth_promoted` |
 | 2.9 Compose `createFiscalAppServer()` | Factory in `kernel/index.ts` |
@@ -76,7 +76,7 @@ curl -i -N -H "Connection: Upgrade" -H "Upgrade: websocket" http://localhost:300
 | 3.2 Port Lexori skills to standalone | `Drenyra/apps/data-engine/src/skills/` with 6 YAML files |
 | 3.3 Port kernel module to standalone | After Phase 2 implementation |
 | 3.4 Contract tests in CI both repos | GitHub workflow runs `test:contracts` + dfas tests |
-| 3.5 Fix standalone doc links | README references local `docs/` not `../../arkelythex` |
+| 3.5 Fix standalone doc links | README references local `docs/` not `../../drenyra` |
 
 **Verification:**
 

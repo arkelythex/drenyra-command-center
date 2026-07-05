@@ -8,7 +8,7 @@ import React from 'react';
  */
 
 import { Search, ArrowUpRight } from 'lucide-react';
-import type { HubArtifact } from '@arkelythex/shared/artifacts';
+import type { HubArtifact } from '@drenyra/shared/artifacts';
 import { registerArtifact } from '../artifact-registry';
 
 type SearchResultArt = Extract<HubArtifact, { type: 'search_result' }>;

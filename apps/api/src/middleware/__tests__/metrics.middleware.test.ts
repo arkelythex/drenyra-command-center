@@ -40,10 +40,10 @@ describe("metrics middleware", () => {
 		const metrics = await metricsResponse.text();
 
 		expect(metrics).toContain(
-			'arkelythex_api_http_requests_total{method="GET",route="/boom/:id",status_code="500"} 1',
+			'drenyra_api_http_requests_total{method="GET",route="/boom/:id",status_code="500"} 1',
 		);
 		expect(metrics).toContain(
-			'arkelythex_api_http_errors_total{method="GET",route="/boom/:id",status_code="500",error_type="Error"} 1',
+			'drenyra_api_http_errors_total{method="GET",route="/boom/:id",status_code="500",error_type="Error"} 1',
 		);
 		expect(metrics).not.toContain("clh3k8u9p0000a1b2c3d4e5f6");
 	});

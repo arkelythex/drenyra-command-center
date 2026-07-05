@@ -1,13 +1,13 @@
 /**
  * UI Components Index
  *
- * Re-exports from @arkelythex/ui for components that don't need web-specific behavior.
+ * Re-exports from @drenyra/ui for components that don't need web-specific behavior.
  * Components with app-specific behavior (haptics, framer-motion) are re-exported from
- * their respective files in this directory, which now delegate to @arkelythex/ui.
+ * their respective files in this directory, which now delegate to @drenyra/ui.
  */
 
-// Re-export utilities from @arkelythex/ui
-export { cn } from "@arkelythex/ui";
+// Re-export utilities from @drenyra/ui
+export { cn } from "@drenyra/ui";
 export { Badge, type BadgeProps, type BadgeVariant } from "./badge";
 export {
 	Button,
@@ -29,7 +29,7 @@ export {
 	CardTitle,
 	type CardTitleProps,
 } from "./card";
-// Dialog components — now re-exported from @arkelythex/ui
+// Dialog components — now re-exported from @drenyra/ui
 export {
 	Dialog,
 	DialogClose,

@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { RUC } from "@arkelythex/domain";
+import { RUC } from "@drenyra/domain";
 import { InboxService } from "../../services/inbox.service";
 import type {
 	AgentDebateEvent,

@@ -1,7 +1,7 @@
 /**
  * Global test setup file for API integration tests.
  *
- * Imports mocks from @arkelythex/test-utils and extends with
+ * Imports mocks from @drenyra/test-utils and extends with
  * SUNAT and Prometeo mock factories.
  */
 import { vi } from "vitest";
@@ -47,9 +47,9 @@ vi.mock("@/lib/db/schema", () => ({}));
 vi.mock("@/lib/db/schema-extensions", () => ({}));
 vi.mock("@/shared/errors", () => ({}));
 
-vi.mock("@arkelythex/shared", async () => {
+vi.mock("@drenyra/shared", async () => {
 	const actual =
-		await vi.importActual<typeof import("@arkelythex/shared")>("@arkelythex/shared");
+		await vi.importActual<typeof import("@drenyra/shared")>("@drenyra/shared");
 
 	return {
 		...actual,
@@ -70,10 +70,10 @@ vi.mock("@arkelythex/shared", async () => {
 });
 
 // Mock SUNAT API using shared test-utils factory.
-vi.mock("@arkelythex/infrastructure/services/sunat-api", async () => {
+vi.mock("@drenyra/infrastructure/services/sunat-api", async () => {
 	const { createSunatMock } = await vi.importActual<
-		typeof import("@arkelythex/test-utils/mocks")
-	>("@arkelythex/test-utils/mocks");
+		typeof import("@drenyra/test-utils/mocks")
+	>("@drenyra/test-utils/mocks");
 	const mock = createSunatMock();
 
 	return {
@@ -82,10 +82,10 @@ vi.mock("@arkelythex/infrastructure/services/sunat-api", async () => {
 });
 
 // Mock Prometeo API using shared test-utils factory.
-vi.mock("@arkelythex/infrastructure/services/prometeo", async () => {
+vi.mock("@drenyra/infrastructure/services/prometeo", async () => {
 	const { createPrometeoMock } = await vi.importActual<
-		typeof import("@arkelythex/test-utils/mocks")
-	>("@arkelythex/test-utils/mocks");
+		typeof import("@drenyra/test-utils/mocks")
+	>("@drenyra/test-utils/mocks");
 	const mock = createPrometeoMock();
 
 	return {

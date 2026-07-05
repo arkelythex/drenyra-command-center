@@ -1,8 +1,8 @@
 import {
   bankTransactions,
-} from '@arkelythex/persistence/schema';
-import { db } from '@arkelythex/persistence/client';
-import { and, eq } from '@arkelythex/persistence/query';
+} from '@drenyra/persistence/schema';
+import { db } from '@drenyra/persistence/client';
+import { and, eq } from '@drenyra/persistence/query';
 
 /**
  * Optional metadata accepted when manually reconciling a bank transaction.

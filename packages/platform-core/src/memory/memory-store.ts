@@ -4,7 +4,7 @@
  * A lightweight in-memory store for testing and development.
  * All data is lost when the process exits. Not suitable for production.
  *
- * @module @arkelythex/platform-core/memory
+ * @module @drenyra/platform-core/memory
  */
 
 import type {

@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { arkelythexHarnessRoutes } from "../../arkelythex-harness/harness.routes";
+import { drenyraHarnessRoutes } from "../../drenyra-harness/harness.routes";
 import { agentRunsRoutes } from "./agent-runs.routes";
 import { approvalRequestsRoutes } from "./approval-requests.routes";
 import { auditEventsRoutes } from "./audit-events.routes";
@@ -18,6 +18,6 @@ export const fiscalCommandCenterModule = new Elysia({
 })
 	.use(fiscalCasesRoutes)
 	.use(agentRunsRoutes)
-	.use(arkelythexHarnessRoutes)
+	.use(drenyraHarnessRoutes)
 	.use(approvalRequestsRoutes)
 	.use(auditEventsRoutes);

@@ -1,6 +1,6 @@
 import { and, desc, eq, gt, isNotNull, sql } from "drizzle-orm";
-import { db } from "@arkelythex/persistence/client";
-import { accessLogs, failedLoginAttempts } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { accessLogs, failedLoginAttempts } from "@drenyra/persistence/schema";
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MINUTES = 30;
 const WINDOW_MINUTES = 15;

@@ -1,7 +1,7 @@
 import type {
 	ModelCapability,
 	ProviderName,
-} from "@arkelythex/domain/ai/model-router/types";
+} from "@drenyra/ai/providers/model-router-types";
 
 export interface ProviderRequest {
 	prompt: string;

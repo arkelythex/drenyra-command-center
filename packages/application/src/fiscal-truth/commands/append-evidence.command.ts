@@ -14,12 +14,12 @@ import type {
 	EvidenceNode,
 	FiscalTruthScope,
 	PolicyDecisionRecord,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import {
 	EVIDENCE_EDGE_KIND,
 	EVIDENCE_NODE_KIND,
 	isFiscalTruthScope,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import { randomUUID } from "node:crypto";
 
 export interface AppendEvidenceCommandInput {

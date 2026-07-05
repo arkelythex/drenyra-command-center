@@ -1,4 +1,4 @@
 /**
- * AI tool-bridge - Re-exported from @arkelythex/infrastructure
+ * AI tool-bridge - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/tool-bridge";
+export * from "@drenyra/infrastructure/ai/tool-bridge";

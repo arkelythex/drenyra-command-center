@@ -11,7 +11,7 @@
  */
 
 import { trackEvent } from "@/lib/monitoring";
-import type { ArtifactType, HubArtifact } from "@arkelythex/shared/artifacts";
+import type { ArtifactType, HubArtifact } from "@drenyra/shared/artifacts";
 
 const ARTIFACT_REGEX = /<artifact\s+type="([^"]+)">([\s\S]*?)<\/artifact>/g;
 

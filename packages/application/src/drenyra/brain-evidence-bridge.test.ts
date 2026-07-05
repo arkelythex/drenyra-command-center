@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { EVIDENCE_NODE_KIND } from "@arkelythex/domain";
-import type { DrenyraBrainEvent } from "@arkelythex/domain/drenyra";
+import { EVIDENCE_NODE_KIND } from "@drenyra/domain";
+import type { DrenyraBrainEvent } from "@drenyra/domain/drenyra";
 import {
 	createDrenyraBrainEvidenceBridge,
 	toFiscalTruthScope,

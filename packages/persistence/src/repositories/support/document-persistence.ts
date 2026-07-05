@@ -4,7 +4,7 @@ import {
 	type DocumentStatus,
 	type DocumentType,
 	type ConfidenceLevel,
-} from "@arkelythex/domain/entities/Document";
+} from "@drenyra/domain/entities/Document";
 import { documents } from "../../schema/documents.schema";
 
 type PersistedExtractedData = Omit<ExtractedData, "issueDate"> & {

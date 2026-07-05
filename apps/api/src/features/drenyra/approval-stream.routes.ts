@@ -1,4 +1,4 @@
-import type { AgentContext, ApprovalRequest } from "@arkelythex/drenyra-orchestrator";
+import type { AgentContext, ApprovalRequest } from "@drenyra/drenyra-orchestrator";
 import { Elysia, t } from "elysia";
 import { fail } from "../shared/api-response";
 import { formatApproval, toApprovalSseChunk } from "./approval-http";

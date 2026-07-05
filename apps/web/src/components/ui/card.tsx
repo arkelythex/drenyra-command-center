@@ -13,4 +13,4 @@ export {
 	type CardProps,
 	CardTitle,
 	type CardTitleProps,
-} from "@arkelythex/ui";
+} from "@drenyra/ui";

@@ -1,12 +1,12 @@
-import { sunatKnowledgeService } from "@arkelythex/ai/services/sunat-knowledge";
+import { sunatKnowledgeService } from "@drenyra/ai/services/sunat-knowledge";
 import {
 	type ContextEvaluationSummaryDTO,
 	type ContextRunStateDTO,
 	type ContextTraceRecordDTO,
-} from "@arkelythex/application";
-import { accountingJobRuns } from "@arkelythex/persistence/schema";
-import { db } from "@arkelythex/persistence/client";
-import { and, desc, eq } from "@arkelythex/persistence/query";
+} from "@drenyra/application";
+import { accountingJobRuns } from "@drenyra/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, desc, eq } from "@drenyra/persistence/query";
 import { contextAuditService } from "../../features/ai-swarm/context-control-plane/context-audit.service";
 import { contextEvaluationService } from "../../features/ai-swarm/context-control-plane/context-evaluation.service";
 import { contextPolicyService } from "../../features/ai-swarm/context-control-plane/context-policy.service";

@@ -7,7 +7,7 @@ import {
 	type ContextRegistrySurfaceDTO,
 	type ContextRetrievalMode,
 	type ContextTraceRecordDTO,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 import type { ControlPlaneRunSnapshot } from "../hooks/cognitive-stream";
 
 type AccountingJobCategory =

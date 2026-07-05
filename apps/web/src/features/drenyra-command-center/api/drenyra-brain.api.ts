@@ -3,7 +3,7 @@ import type {
 	DrenyraBrainSourceSurface,
 	DrenyraBrainThread,
 	DrenyraBrainTurn,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 import { api, getGovernanceAuditHeaders, getOrganizationId } from "@/lib/api";
 import { extractOkData, unwrap } from "@/lib/api-helpers";
 import { getCompanyContext } from "@/lib/company-context";

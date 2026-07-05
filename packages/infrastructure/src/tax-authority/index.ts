@@ -7,12 +7,12 @@
  * @module tax-authority
  */
 
-import type { CountryCode } from "@arkelythex/domain";
-import type { TaxAuthorityPort } from "@arkelythex/application/ports/tax-authority.port";
+import type { CountryCode } from "@drenyra/domain";
+import type { TaxAuthorityPort } from "@drenyra/application/ports/tax-authority.port";
 import { SunatTaxAuthorityAdapter } from "./sunat-tax-authority.adapter";
 
 export { SunatTaxAuthorityAdapter, createSunatTaxAuthority } from "./sunat-tax-authority.adapter";
-export type { TaxAuthorityPort } from "@arkelythex/application/ports/tax-authority.port";
+export type { TaxAuthorityPort } from "@drenyra/application/ports/tax-authority.port";
 
 // ─── Adapter Registry ─────────────────────────────────────────────────
 

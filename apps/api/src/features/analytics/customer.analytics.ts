@@ -1,7 +1,7 @@
-import { Money } from "@arkelythex/domain";
-import { db } from "@arkelythex/persistence/client";
-import { and, desc, eq, sql } from "@arkelythex/persistence/query";
-import { customers, invoices } from "@arkelythex/persistence/schema";
+import { Money } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
+import { and, desc, eq, sql } from "@drenyra/persistence/query";
+import { customers, invoices } from "@drenyra/persistence/schema";
 import { type AnalyticsOptions, toMoneyValue } from "./types/analytics.types";
 
 /**

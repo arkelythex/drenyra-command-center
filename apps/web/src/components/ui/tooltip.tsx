@@ -11,4 +11,4 @@ export {
 	type TooltipRootProps,
 	TooltipTrigger,
 	type TooltipTriggerProps,
-} from "@arkelythex/ui";
+} from "@drenyra/ui";

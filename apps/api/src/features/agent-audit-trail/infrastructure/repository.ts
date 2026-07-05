@@ -3,8 +3,8 @@
  * Append-only persistence (immutable)
  */
 
-import { db } from "@arkelythex/persistence/client";
-import { and, desc, eq } from "@arkelythex/persistence/query";
+import { db } from "@drenyra/persistence/client";
+import { and, desc, eq } from "@drenyra/persistence/query";
 import {
 	integer,
 	jsonb,

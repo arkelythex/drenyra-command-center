@@ -1,4 +1,4 @@
 /**
- * AI context-cache.service - Re-exported from @arkelythex/infrastructure
+ * AI context-cache.service - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/context-cache.service";
+export * from "@drenyra/infrastructure/ai/context-cache.service";

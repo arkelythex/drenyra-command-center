@@ -6,7 +6,7 @@ import {
 } from "../theme-package.schema";
 
 describe("themePackageSchema", () => {
-	it("accepts schema arkelythex.theme.v1 with foundation/semantic/component", () => {
+	it("accepts schema drenyra.theme.v1 with foundation/semantic/component", () => {
 		const result = themePackageSchema.parse({
 			schema: THEME_PACKAGE_SCHEMA_ID,
 			tokens: {

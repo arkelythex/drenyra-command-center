@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { authUserCompanies, companies } from "@arkelythex/persistence/schema";
-import { asc, desc, eq } from "@arkelythex/persistence/query";
+import { db } from "@drenyra/persistence/client";
+import { authUserCompanies, companies } from "@drenyra/persistence/schema";
+import { asc, desc, eq } from "@drenyra/persistence/query";
 
 /**
  * AccessibleCompany interface.

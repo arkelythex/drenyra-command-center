@@ -1,5 +1,5 @@
 // ============================================================================
-// ARKELYTHEX — Canonical Money Formatting
+// DRENYRA — Canonical Money Formatting
 // ============================================================================
 //
 // The `n()` function is the SINGLE source of truth for formatting monetary
@@ -9,10 +9,10 @@
 // Design contract:
 //   type WithMoneyFormat = { n: (value: number) => string }
 //
-// See: .opencode/skills/arkelythex-design-system/SKILL.md
+// See: .opencode/skills/drenyra-design-system/SKILL.md
 // ============================================================================
 
-import type { Currency } from "@arkelythex/domain";
+import type { Currency } from "@drenyra/domain";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -64,7 +64,7 @@ function getFormatter(currency: Currency, compact = false): Intl.NumberFormat {
 // ─── Core `n()` — The ONE function ──────────────────────────────────────────
 
 /**
- * `n()` — Canonical money formatter for ARKELYTHEX.
+ * `n()` — Canonical money formatter for DRENYRA.
  *
  * Formats a numeric amount as a locale-aware currency string.
  * Defaults to PEN (Peruvian Soles) if no currency is specified.

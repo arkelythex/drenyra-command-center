@@ -1,7 +1,7 @@
-import { extractIgvFromUbl, RUC } from "@arkelythex/domain";
-import { db } from "@arkelythex/persistence/client";
-import { eq } from "@arkelythex/persistence/query";
-import { businessPartners, transactions } from "@arkelythex/persistence/schema";
+import { extractIgvFromUbl, RUC } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
+import { eq } from "@drenyra/persistence/query";
+import { businessPartners, transactions } from "@drenyra/persistence/schema";
 import { XMLParser } from "fast-xml-parser";
 import { createLogger } from "../lib/logger";
 

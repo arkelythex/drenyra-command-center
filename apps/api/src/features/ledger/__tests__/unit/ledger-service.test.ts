@@ -6,10 +6,10 @@
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { LedgerService } from "../../index";
-import { db } from "@arkelythex/persistence/client";
-import { categories, transactions } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { categories, transactions } from "@drenyra/persistence/schema";
 
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		select: vi.fn().mockReturnThis(),
 		from: vi.fn().mockReturnThis(),
@@ -20,7 +20,7 @@ vi.mock("@arkelythex/persistence/client", () => ({
 	},
 }));
 
-vi.mock("@arkelythex/persistence/query", () => ({
+vi.mock("@drenyra/persistence/query", () => ({
 	and: vi.fn(),
 	eq: vi.fn(),
 	asc: vi.fn(),

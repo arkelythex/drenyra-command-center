@@ -11,7 +11,7 @@ export interface UblInvoice {
 	receptorNumDoc: string;
 	receptorRazonSocial: string;
 	receptorDireccion?: string;
-	moneda: import("@arkelythex/domain").Currency;
+	moneda: import("@drenyra/domain").Currency;
 	subtotal: number;
 	descuentos: number;
 	igv: number;

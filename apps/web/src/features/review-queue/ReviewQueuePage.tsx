@@ -30,7 +30,7 @@ function ReviewQueueItem({ item }: { item: ReviewQueueItemDTO }) {
 					)}
 				</div>
 				<p className="text-xs text-[var(--text-secondary)]">
-					{item.clientName} · {item.period} · {item.agentName}
+					{item.clientName} · {item.period} · {item.agentName ?? "—"}
 				</p>
 			</div>
 			<a

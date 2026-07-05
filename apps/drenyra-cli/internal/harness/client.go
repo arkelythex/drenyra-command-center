@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-// Client talks to @arkelythex/harness HTTP API.
+// Client talks to @drenyra/harness HTTP API.
 type Client struct {
 	BaseURL    string
 	HTTPClient *http.Client

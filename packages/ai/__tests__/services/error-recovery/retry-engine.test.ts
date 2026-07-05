@@ -16,7 +16,7 @@ const { mockEnqueue, mockDequeue, mockMarkResolved, mockMarkDead, mockIncrementR
 		mockIncrementRetry: vi.fn(),
 	}));
 
-vi.mock("@arkelythex/infrastructure/services/error-recovery", () => ({
+vi.mock("@drenyra/infrastructure/services/error-recovery", () => ({
 	dlqRepo: {
 		enqueue: mockEnqueue,
 		dequeue: mockDequeue,

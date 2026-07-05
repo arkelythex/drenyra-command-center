@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { InvoiceRepository } from "@arkelythex/domain/repositories/invoice.repository";
+import type { InvoiceRepository } from "@drenyra/domain/repositories/invoice.repository";
 import { UpdateInvoiceUseCase } from "../update-invoice.use-case";
 import { createTestInvoice, TEST_IDS, TEST_RUCS } from "./fixtures";
 

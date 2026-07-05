@@ -4,9 +4,9 @@
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { JournalEntry } from "@arkelythex/domain/entities/JournalEntry";
-import type { JournalEntryRepository } from "@arkelythex/domain/repositories/journal-entry.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { JournalEntry } from "@drenyra/domain/entities/JournalEntry";
+import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { DeleteJournalEntryUseCase } from "../delete-journal-entry.use-case";
 
 describe("DeleteJournalEntryUseCase", () => {

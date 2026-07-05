@@ -1,4 +1,4 @@
-import type { DrenyraActorContext } from "@arkelythex/application/drenyra";
+import type { DrenyraActorContext } from "@drenyra/application/drenyra";
 
 export interface CommandEnvelopeInputBase {
 	caseId?: string;

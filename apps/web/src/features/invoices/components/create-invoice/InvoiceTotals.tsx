@@ -1,4 +1,4 @@
-import type { Currency } from "@arkelythex/domain";
+import type { Currency } from "@drenyra/domain";
 import { Info, Receipt, ShieldCheck } from "lucide-react";
 import { n } from "@/lib/utils";
 

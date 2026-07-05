@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { AgentTool, AgentContext } from "@arkelythex/drenyra-orchestrator";
+import type { AgentTool, AgentContext } from "@drenyra/drenyra-orchestrator";
 
 /**
  * manageIntegrationsTool const.

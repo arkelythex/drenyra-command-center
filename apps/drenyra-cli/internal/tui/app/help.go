@@ -3,7 +3,7 @@ package app
 import (
 	"strings"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
 )
 
 func helpContent(current screen, loading bool, focusMenu bool) string {
@@ -44,9 +44,9 @@ func helpContent(current screen, loading bool, focusMenu bool) string {
 		"  drenyra workflow run architecture-check [context]",
 		"",
 		"MEMORY (Hermes agent parity)",
-		"  ~/.arkelythex/config.yaml → memory: limits & provider",
-		"  ~/.arkelythex/memories/MEMORY.md — § entries, agent notes",
-		"  ~/.arkelythex/memories/USER.md   — § entries, user profile",
+		"  ~/.drenyra/config.yaml → memory: limits & provider",
+		"  ~/.drenyra/memories/MEMORY.md — § entries, agent notes",
+		"  ~/.drenyra/memories/USER.md   — § entries, user profile",
 		"  /memory opens the local DB browser: type query, Enter search, ↑↓ results, Esc home",
 		"  drenyra memory add|replace|remove memory|user …",
 		"  drenyra memory db-search <query>",

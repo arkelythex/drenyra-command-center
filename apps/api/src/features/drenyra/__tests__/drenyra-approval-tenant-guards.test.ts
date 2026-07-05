@@ -1,11 +1,11 @@
 import type {
 	AgentContext,
 	ApprovalRequest,
-} from "@arkelythex/drenyra-orchestrator";
+} from "@drenyra/drenyra-orchestrator";
 import {
 	ApprovalGateEngine,
 	ApprovalStore,
-} from "@arkelythex/drenyra-orchestrator";
+} from "@drenyra/drenyra-orchestrator";
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
 import { resolveAgentContextFromHeaders } from "../drenyra.routes";

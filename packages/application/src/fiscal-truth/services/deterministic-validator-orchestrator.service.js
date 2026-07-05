@@ -1,4 +1,4 @@
-import { POLICY_OUTCOME } from "@arkelythex/domain";
+import { POLICY_OUTCOME } from "@drenyra/domain";
 export class DeterministicValidatorOrchestratorService {
     validators;
     constructor(validators) {

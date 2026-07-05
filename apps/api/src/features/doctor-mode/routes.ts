@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { sql } from "@arkelythex/persistence/query";
-import { checkHistory, systemChecks } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { sql } from "@drenyra/persistence/query";
+import { checkHistory, systemChecks } from "@drenyra/persistence/schema";
 import { sql as drizzleSql, eq } from "drizzle-orm";
 import { Elysia, t } from "elysia";
 import { createLogger } from "../../lib/logger";

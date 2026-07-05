@@ -1,4 +1,4 @@
-import type { EventBusPort } from "@arkelythex/infrastructure/events/event.port";
+import type { EventBusPort } from "@drenyra/infrastructure/events/event.port";
 import { describe, expect, it, vi } from "vitest";
 import { CashflowRetentionHandler } from "../../application/handlers/cashflow-retention.handler";
 

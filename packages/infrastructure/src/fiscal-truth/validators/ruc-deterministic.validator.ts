@@ -1,6 +1,6 @@
-import type { DeterministicValidatorResultRecord } from "@arkelythex/domain";
-import { RUC } from "@arkelythex/domain";
-import type { DeterministicFiscalValidatorPort } from "@arkelythex/application/fiscal-truth";
+import type { DeterministicValidatorResultRecord } from "@drenyra/domain";
+import { RUC } from "@drenyra/domain";
+import type { DeterministicFiscalValidatorPort } from "@drenyra/application/fiscal-truth";
 import type { FiscalDeterministicValidationInput } from "./types";
 
 const VALIDATOR_NAME = "ruc-deterministic";

@@ -1,4 +1,4 @@
-import { FiscalMemory, FiscalMemoryRevision, } from "@arkelythex/domain/fiscal-memory";
+import { FiscalMemory, FiscalMemoryRevision, } from "@drenyra/domain/fiscal-memory";
 const createFiscalMemoryId = () => `fiscal-memory-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 export class FiscalMemoryService {
     repository;

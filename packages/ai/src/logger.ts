@@ -1,4 +1,4 @@
-import { SecureLogger } from "@arkelythex/shared/secure-logger";
+import { SecureLogger } from "@drenyra/shared/secure-logger";
 
 const ai = SecureLogger.namespace("AI");
 const validation = SecureLogger.namespace("Validation");

@@ -1,5 +1,5 @@
 <!-- Manual navigation map for Data Engine (Python). See CODEX-MAP.md for monorepo root. -->
-# DATA-ENGINE-MAP — Arkelythex Data Engine Navigation
+# DATA-ENGINE-MAP — Drenyra Data Engine Navigation
 
 **Última actualización**: 2026-06-20 · Filosofía: [Gentleman Philosophy](../../docs/meta/gentleman-philosophy.md) — cognitive load reduction, warm teaching, progressive disclosure.
 
@@ -12,7 +12,7 @@
 
 ## Start here
 - **Location:** `apps/data-engine/`
-- **Package:** `arkelythex-data-engine`
+- **Package:** `drenyra-data-engine`
 - **Language:** Python 3.11+
 - **Framework:** FastAPI + Uvicorn
 - **Data engine:** Polars (Rust-powered DataFrame) + scikit-learn (ML forecasting)

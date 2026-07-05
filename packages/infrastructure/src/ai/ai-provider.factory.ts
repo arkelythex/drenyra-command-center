@@ -1,4 +1,4 @@
-import type { IAIProvider } from '@arkelythex/application';
+import type { IAIProvider } from '@drenyra/application';
 import { GeminiAdapter } from './gemini.adapter';
 
 /**

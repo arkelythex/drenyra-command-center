@@ -1,4 +1,4 @@
-import type { AgentRun, ApprovalRequest, AuditEvent, EvidenceItem, FiscalCase } from "@arkelythex/domain/drenyra";
+import type { AgentRun, ApprovalRequest, AuditEvent, EvidenceItem, FiscalCase } from "@drenyra/domain/drenyra";
 import type { DrenyraAuditEventFilter, DrenyraAuditEventFilters, DrenyraRepository, DrenyraScopeGuard } from "./repository";
 export declare class InMemoryDrenyraRepository implements DrenyraRepository {
     private readonly fiscalCases;

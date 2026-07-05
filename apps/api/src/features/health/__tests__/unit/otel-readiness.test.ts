@@ -8,7 +8,7 @@ describe("getOpenTelemetryReadinessStatus", () => {
 
 	beforeEach(() => {
 		process.env = { ...originalEnv };
-		delete process.env.ARKELYTHEX_ENABLE_OTEL;
+		delete process.env.DRENYRA_ENABLE_OTEL;
 		delete process.env.OTEL_SERVICE_NAME;
 		delete process.env.OTEL_EXPORTER_OTLP_ENDPOINT;
 	});
@@ -21,33 +21,33 @@ describe("getOpenTelemetryReadinessStatus", () => {
 		expect(getOpenTelemetryReadinessStatus()).toEqual({
 			status: "disabled",
 			enabled: false,
-			serviceName: "arkelythex-api",
+			serviceName: "drenyra-api",
 			exporterEndpoint: null,
 			usingDefaultServiceName: true,
 		});
 	});
 
 	it("reports config_invalid when tracing is enabled without an exporter endpoint", () => {
-		process.env.ARKELYTHEX_ENABLE_OTEL = "true";
+		process.env.DRENYRA_ENABLE_OTEL = "true";
 
 		expect(getOpenTelemetryReadinessStatus()).toEqual({
 			status: "config_invalid",
 			enabled: true,
-			serviceName: "arkelythex-api",
+			serviceName: "drenyra-api",
 			exporterEndpoint: null,
 			usingDefaultServiceName: true,
 		});
 	});
 
 	it("reports ready when tracing is enabled with an OTLP endpoint", () => {
-		process.env.ARKELYTHEX_ENABLE_OTEL = "1";
-		process.env.OTEL_SERVICE_NAME = "arkelythex-api-prod";
+		process.env.DRENYRA_ENABLE_OTEL = "1";
+		process.env.OTEL_SERVICE_NAME = "drenyra-api-prod";
 		process.env.OTEL_EXPORTER_OTLP_ENDPOINT = "https://otlp.grafana.net/otlp";
 
 		expect(getOpenTelemetryReadinessStatus()).toEqual({
 			status: "ready",
 			enabled: true,
-			serviceName: "arkelythex-api-prod",
+			serviceName: "drenyra-api-prod",
 			exporterEndpoint: "https://otlp.grafana.net/otlp",
 			usingDefaultServiceName: false,
 		});

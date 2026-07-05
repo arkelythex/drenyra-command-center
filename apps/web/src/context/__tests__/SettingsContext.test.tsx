@@ -40,7 +40,7 @@ describe("SettingsContext theme bridge", () => {
 			result.current.updateSettings({ theme: "auto" });
 		});
 
-		const persisted = window.localStorage.getItem("arkelythex-ui-storage");
+		const persisted = window.localStorage.getItem("drenyra-ui-storage");
 		expect(persisted).not.toBeNull();
 		expect(persisted).toContain('"themePreference":"system"');
 	});

@@ -1,5 +1,5 @@
 # ───────────────────────────────────────────────────────
-# ARKELYTHEX API — Bun/Elysia Backend
+# DRENYRA API — Bun/Elysia Backend
 # ───────────────────────────────────────────────────────
 # Multi-stage build with turborepo prune and minimal Alpine
 # runtime. The API uses `bun build --compile` to produce a
@@ -16,12 +16,12 @@
 # node_modules directory (still present at build time).
 
 # ── Stage 1: Pruner ────────────────────────────────────
-# Extracts ONLY the packages needed by @arkelythex/api.
+# Extracts ONLY the packages needed by @drenyra/api.
 FROM node:22-alpine AS pruner
 WORKDIR /app
 RUN npm install -g turbo@^2
 COPY . .
-RUN turbo prune @arkelythex/api --docker
+RUN turbo prune @drenyra/api --docker
 
 # ── Stage 2: Installer ─────────────────────────────────
 # Install dependencies from the pruned lockfile.
@@ -42,7 +42,7 @@ COPY --from=installer /app/node_modules ./node_modules
 COPY --from=pruner /app/out/full/ .
 RUN bun build --compile \
     ./apps/api/src/index.ts \
-    --outfile /app/arkelythex-api \
+    --outfile /app/drenyra-api \
     --minify \
     --sourcemap
 
@@ -55,6 +55,6 @@ RUN bun build --compile \
 # future, this can switch to scratch or distroless/base.
 FROM alpine:3.20 AS runner
 RUN apk add --no-cache ca-certificates tzdata libstdc++ libgcc
-COPY --from=builder /app/arkelythex-api /app/api
+COPY --from=builder /app/drenyra-api /app/api
 EXPOSE 3000
 CMD ["/app/api"]

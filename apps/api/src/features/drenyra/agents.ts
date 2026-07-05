@@ -1,5 +1,5 @@
-import type { AgentDefinition } from "@arkelythex/drenyra-orchestrator/erp-types";
-import type { DrenyraSubagentName } from "@arkelythex/drenyra-core";
+import type { AgentDefinition } from "@drenyra/drenyra-orchestrator/erp-types";
+import type { DrenyraSubagentName } from "@drenyra/domain";
 import {
 	financeTools,
 	operationsTools,

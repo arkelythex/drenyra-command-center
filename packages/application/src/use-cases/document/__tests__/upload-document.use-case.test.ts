@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { UploadDocumentDTO } from "../../dtos/document/upload-document.dto";
 import type { IStorageService } from "../../ports/storage.port";
-import { Document } from "@arkelythex/domain/entities/Document";
-import type { DocumentRepository } from "@arkelythex/domain/repositories/document.repository";
+import { Document } from "@drenyra/domain/entities/Document";
+import type { DocumentRepository } from "@drenyra/domain/repositories/document.repository";
 import { UploadDocumentUseCase } from "../upload-document.use-case";
 
 describe("UploadDocumentUseCase", () => {

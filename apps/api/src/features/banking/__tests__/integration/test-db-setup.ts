@@ -19,7 +19,7 @@ import {
   bankTransactions,
   eq,
   and,
-} from '@arkelythex/infrastructure';
+} from '@drenyra/infrastructure';
 import { beforeEach, afterEach } from 'vitest';
 import { createId } from '@paralleldrive/cuid2';
 import { randomUUID } from 'node:crypto';

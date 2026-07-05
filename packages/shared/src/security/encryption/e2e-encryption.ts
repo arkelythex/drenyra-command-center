@@ -21,7 +21,7 @@ const ITERATIONS = 100000;
  *   iv: "base64",
  *   tag: "base64",
  *   salt: "base64",
- *   version: "arkelythex.e2e.v1",
+ *   version: "drenyra.e2e.v1",
  * };
  * ```
  */
@@ -85,7 +85,7 @@ export function encryptWithPassphrase(
 		iv: iv.toString("base64"),
 		tag: tag.toString("base64"),
 		salt: salt.toString("base64"),
-		version: "arkelythex.e2e.v1",
+		version: "drenyra.e2e.v1",
 	};
 }
 

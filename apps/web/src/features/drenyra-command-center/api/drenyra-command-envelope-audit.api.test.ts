@@ -76,7 +76,7 @@ describe("drenyra-command-envelope-audit.api", () => {
 			value: createLocalStorageMock(),
 			configurable: true,
 		});
-		localStorage.setItem("arkelythex-active-fiscal-period", "2026-05");
+		localStorage.setItem("drenyra-active-fiscal-period", "2026-05");
 	});
 
 	afterEach(() => {
@@ -107,7 +107,7 @@ describe("drenyra-command-envelope-audit.api", () => {
 		await expect(listCommandEnvelopeAudit()).rejects.toThrow(/organization id/);
 
 		setMockOrganizationId("org-1");
-		localStorage.removeItem("arkelythex-active-fiscal-period");
+		localStorage.removeItem("drenyra-active-fiscal-period");
 		await expect(listCommandEnvelopeAudit()).rejects.toThrow(/explicit selected fiscal period/);
 	});
 });

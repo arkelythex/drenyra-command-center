@@ -1,4 +1,4 @@
-import type { EvidenceEdge, EvidenceGraphRepository, FiscalTruthScope } from "@arkelythex/domain";
+import type { EvidenceEdge, EvidenceGraphRepository, FiscalTruthScope } from "@drenyra/domain";
 export interface GetEvidenceGraphQueryInput {
     nodeId: string;
     scope: FiscalTruthScope;

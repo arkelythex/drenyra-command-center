@@ -1,4 +1,4 @@
-import { DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY, validateDrenyraFiscalWorkInspectRequest, } from "@arkelythex/domain/drenyra";
+import { DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY, validateDrenyraFiscalWorkInspectRequest, } from "@drenyra/domain/drenyra";
 function defaultTraceId() {
     return `trace_drenyra_inspect_${crypto.randomUUID()}`;
 }

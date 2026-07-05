@@ -3,7 +3,7 @@ import type {
 	ModelCapability,
 	ModelRegistration,
 	RoutingResult,
-} from "../ai/model-router/types";
+} from "../ai/model-router-types";
 
 export interface ModelFilters {
 	status?: string;

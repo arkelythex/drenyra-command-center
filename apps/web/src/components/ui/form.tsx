@@ -9,4 +9,4 @@ export {
 	FormLabel,
 	FormMessage,
 	useFormField,
-} from "@arkelythex/ui";
+} from "@drenyra/ui";

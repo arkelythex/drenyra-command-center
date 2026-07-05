@@ -15,7 +15,7 @@ export interface DemoAccessState {
 	completedAt: string;
 }
 
-export const DEMO_ACCESS_STORAGE_KEY = "arkelythex-demo-access";
+export const DEMO_ACCESS_STORAGE_KEY = "drenyra-demo-access";
 
 function isStorageAvailable(): boolean {
 	return typeof localStorage !== "undefined";
@@ -96,7 +96,7 @@ export function buildDemoSessionPayload(
 			expiresAt: new Date("2026-12-31T23:59:59.000Z"),
 			token: "demo-session-token",
 			ipAddress: "127.0.0.1",
-			userAgent: "arkelythex-demo-access",
+			userAgent: "drenyra-demo-access",
 		},
 	};
 }

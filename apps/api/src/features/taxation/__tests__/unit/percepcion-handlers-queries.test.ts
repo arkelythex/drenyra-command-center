@@ -1,5 +1,5 @@
-import { Money } from "@arkelythex/domain/value-objects/Money";
-import type { EventBusPort } from "@arkelythex/infrastructure/events/event.port";
+import { Money } from "@drenyra/domain/value-objects/Money";
+import type { EventBusPort } from "@drenyra/infrastructure/events/event.port";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
 	Percepcion,

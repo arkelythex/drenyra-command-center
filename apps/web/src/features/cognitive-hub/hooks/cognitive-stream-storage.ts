@@ -6,8 +6,8 @@
 
 import type { CognitiveActivityEntry } from "./cognitive-stream-types";
 
-const COGNITIVE_RUN_ID_KEY = "arkelythex:cognitive-run-id";
-const COGNITIVE_ACTIVITY_TIMELINE_KEY = "arkelythex:cognitive-activity-timeline";
+const COGNITIVE_RUN_ID_KEY = "drenyra:cognitive-run-id";
+const COGNITIVE_ACTIVITY_TIMELINE_KEY = "drenyra:cognitive-activity-timeline";
 
 function getLocalStorage(): Storage | null {
 	if (typeof window === "undefined") return null;

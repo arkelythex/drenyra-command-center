@@ -8,11 +8,11 @@
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
 import {
-	authorizeArkelythexMcpTool,
-	buildArkelythexMcpManifest,
-	isArkelythexMcpScope,
-	type ArkelythexMcpScope,
-} from "@arkelythex/domain";
+	authorizeDrenyraMcpTool,
+	buildDrenyraMcpManifest,
+	isDrenyraMcpScope,
+	type DrenyraMcpScope,
+} from "@drenyra/agents";
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../../shared/api-response";
 import {
@@ -26,7 +26,7 @@ function readHeader(headers: Record<string, string | undefined>, key: string): s
 	return headers[key]?.trim() ?? "";
 }
 
-function scopeFromHeaders(headers: Record<string, string | undefined>): ArkelythexMcpScope {
+function scopeFromHeaders(headers: Record<string, string | undefined>): DrenyraMcpScope {
 	return {
 		organizationId: readHeader(headers, "x-organization-id"),
 		companyId: readHeader(headers, "x-company-id"),
@@ -59,7 +59,7 @@ export function createPlatformMcpModule(deps: PlatformMcpModuleDeps = {}) {
 		operation: "authorize" | "invoke";
 		outcome: PlatformMcpAuditOutcome;
 		toolName: string;
-		scope: ArkelythexMcpScope;
+		scope: DrenyraMcpScope;
 		redactionStatus: "passed" | "failed" | "not_required";
 		reason: Parameters<PlatformMcpAuditSink["append"]>[0]["reason"];
 		metadata?: Record<string, unknown>;
@@ -77,7 +77,7 @@ export function createPlatformMcpModule(deps: PlatformMcpModuleDeps = {}) {
 		});
 	}
 	return new Elysia({ prefix: "/api/platform/mcp", name: "platform-mcp" })
-		.get("/manifest", () => ok(buildArkelythexMcpManifest()), {
+		.get("/manifest", () => ok(buildDrenyraMcpManifest()), {
 			detail: {
 				tags: ["Platform MCP"],
 				summary: "Read ARKELYTHEX public MCP/SDK capability manifest",
@@ -92,7 +92,7 @@ export function createPlatformMcpModule(deps: PlatformMcpModuleDeps = {}) {
 					return fail("MCP audit requires admin, auditor, owner or compliance role", "MCP_AUDIT_FORBIDDEN");
 				}
 				const scope = scopeFromHeaders(headers);
-				if (!isArkelythexMcpScope(scope)) {
+				if (!isDrenyraMcpScope(scope)) {
 					set.status = 403;
 					return fail("Invalid MCP audit scope", "INVALID_SCOPE");
 				}
@@ -115,7 +115,7 @@ export function createPlatformMcpModule(deps: PlatformMcpModuleDeps = {}) {
 			"/authorize",
 			async ({ body, headers, set }) => {
 				const scope = scopeFromHeaders(headers);
-				const decision = authorizeArkelythexMcpTool({
+				const decision = authorizeDrenyraMcpTool({
 					toolName: body.toolName,
 					scope,
 					redactionStatus: body.redactionStatus,
@@ -137,7 +137,7 @@ export function createPlatformMcpModule(deps: PlatformMcpModuleDeps = {}) {
 			"/invoke",
 			async ({ body, headers, set }) => {
 				const scope = scopeFromHeaders(headers);
-				const decision = authorizeArkelythexMcpTool({
+				const decision = authorizeDrenyraMcpTool({
 					toolName: body.toolName,
 					scope,
 					redactionStatus: body.redactionStatus,

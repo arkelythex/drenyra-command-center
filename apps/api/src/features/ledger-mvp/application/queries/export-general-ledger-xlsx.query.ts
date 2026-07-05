@@ -1,5 +1,5 @@
-import { eq } from "@arkelythex/persistence/query";
-import { companies } from "@arkelythex/persistence/schema";
+import { eq } from "@drenyra/persistence/query";
+import { companies } from "@drenyra/persistence/schema";
 import ExcelJS from "exceljs";
 import type { GeneralLedgerEntry } from "../../../../features/ledger/queries/get-general-ledger.query";
 import { getGeneralLedger } from "../../../../features/ledger/queries/get-general-ledger.query";

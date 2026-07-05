@@ -10,7 +10,7 @@ describe("ActiveCompanySwitcher", () => {
 
 	it("renders the active company context when only one company is available", () => {
 		localStorage.setItem(
-			"arkelythex-auth",
+			"drenyra-auth",
 			JSON.stringify({
 				state: {
 					user: {
@@ -33,7 +33,7 @@ describe("ActiveCompanySwitcher", () => {
 
 	it("switches the active company when multiple memberships are available", () => {
 		localStorage.setItem(
-			"arkelythex-auth",
+			"drenyra-auth",
 			JSON.stringify({
 				state: {
 					user: {

@@ -1,4 +1,4 @@
-import type { DeterministicValidatorResultRecord } from "@arkelythex/domain";
+import type { DeterministicValidatorResultRecord } from "@drenyra/domain";
 
 /**
  * Deterministic validator port.

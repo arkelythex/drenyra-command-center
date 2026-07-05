@@ -2,7 +2,7 @@
  * Domain-agnostic core types for the Platform Core kernel.
  * Zero fiscal imports — these types are shared across all verticals.
  *
- * @module @arkelythex/platform-core/kernel
+ * @module @drenyra/platform-core/kernel
  */
 
 /**

@@ -6,7 +6,7 @@
  *
  * Usage:
  * ```ts
- * import { XsdValidator, XsdCache } from "@arkelythex/infrastructure/xsd";
+ * import { XsdValidator, XsdCache } from "@drenyra/infrastructure/xsd";
  *
  * const validator = new XsdValidator("/path/to/xsd/ubl21");
  * validator.loadSchemas();

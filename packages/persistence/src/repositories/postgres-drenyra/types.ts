@@ -1,4 +1,4 @@
-import type { DrenyraScopeGuard } from "@arkelythex/application/drenyra";
+import type { DrenyraScopeGuard } from "@drenyra/application/drenyra";
 import {
 	drenyraAgentRuns,
 	drenyraApprovalRequests,

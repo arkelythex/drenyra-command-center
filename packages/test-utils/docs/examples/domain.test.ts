@@ -1,7 +1,7 @@
 /**
  * CANONICAL EXAMPLE — Domain Layer Test
  *
- * Demonstrates recommended patterns for testing @arkelythex/domain entities,
+ * Demonstrates recommended patterns for testing @drenyra/domain entities,
  * value objects, and pure functions.
  *
  * Key patterns shown:
@@ -13,12 +13,12 @@
  * @last-verified: 2026-06-06
  */
 import { describe, it, expect } from "vitest";
-import { Money } from "@arkelythex/domain/value-objects/Money";
-import { RUC } from "@arkelythex/domain/value-objects/RUC";
-import { DNI } from "@arkelythex/domain/value-objects/DNI";
-import { DocumentSeries } from "@arkelythex/domain/value-objects/DocumentSeries";
-import { JournalEntry } from "@arkelythex/domain/entities/JournalEntry";
-import { JournalLine } from "@arkelythex/domain/entities/JournalEntry";
+import { Money } from "@drenyra/domain/value-objects/Money";
+import { RUC } from "@drenyra/domain/value-objects/RUC";
+import { DNI } from "@drenyra/domain/value-objects/DNI";
+import { DocumentSeries } from "@drenyra/domain/value-objects/DocumentSeries";
+import { JournalEntry } from "@drenyra/domain/entities/JournalEntry";
+import { JournalLine } from "@drenyra/domain/entities/JournalEntry";
 import { JournalEntryBuilder } from "../../src/builders/journal-entry.builder";
 
 // ============================================================

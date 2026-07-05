@@ -7,7 +7,7 @@ describe('ElectronicInvoicingService.assessLifecycleTraceability', () => {
       invoiceId: 'inv-1',
       currentStatus: 'ACCEPTED',
       sunatStatus: 'ACCEPTED',
-      cdrContent: 'https://storage.arkelythex.local/cdr/F001-1.xml',
+      cdrContent: 'https://storage.drenyra.local/cdr/F001-1.xml',
       timeline: [
         {
           stage: 'CREATED',

@@ -1,5 +1,5 @@
-import type { Invoice } from "@arkelythex/domain/entities/Invoice";
-import type { InvoiceRepository } from "@arkelythex/domain/repositories/invoice.repository";
+import type { Invoice } from "@drenyra/domain/entities/Invoice";
+import type { InvoiceRepository } from "@drenyra/domain/repositories/invoice.repository";
 
 /**
  * Get Invoice Details Use Case

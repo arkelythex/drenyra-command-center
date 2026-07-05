@@ -3,7 +3,7 @@ import type {
 	ContextPolicySelectionRequestDTO,
 	ContextPolicySelectionResponseDTO,
 	ContextTraceRecordDTO,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 import { enqueueSwarmAuditLog } from "../api/audit-log-bridge";
 import {
 	buildContextAuditEnvelope,

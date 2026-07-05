@@ -1,5 +1,5 @@
 /**
- * Arkelythex Design Tokens entrypoint
+ * Drenyra Design Tokens entrypoint
  *
  * Public API preserved for all existing imports from `@/lib/design-tokens`.
  */

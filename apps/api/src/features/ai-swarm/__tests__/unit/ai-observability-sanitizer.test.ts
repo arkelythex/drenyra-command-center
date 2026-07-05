@@ -9,7 +9,7 @@ describe("aiObservabilitySanitizer", () => {
 	it("redacts sensitive keys and truncates oversized payloads", () => {
 		const payload = sanitizeAiObservationPayload({
 			ruc: "20123456789",
-			email: "demo@arkelythexfounders.com",
+			email: "demo@drenyrafounders.com",
 			prompt: "x".repeat(200),
 			nested: {
 				token: "secret-token",

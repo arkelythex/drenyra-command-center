@@ -7,7 +7,7 @@ import type {
 	TriggerType,
 	WorkflowCategory,
 	WorkflowStatus,
-} from "@arkelythex/persistence/schema/automation-studio.schema";
+} from "@drenyra/persistence/schema/automation-studio.schema";
 
 export interface WorkflowResponse {
 	id: string;

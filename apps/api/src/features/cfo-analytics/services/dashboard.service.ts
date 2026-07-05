@@ -1,11 +1,11 @@
-import { Money } from "@arkelythex/domain";
-import { db } from "@arkelythex/persistence/client";
-import { and, desc, eq, gte, lte, sql } from "@arkelythex/persistence/query";
+import { Money } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
+import { and, desc, eq, gte, lte, sql } from "@drenyra/persistence/query";
 import {
 	analyticsDashboards,
 	analyticsWidgets,
 	invoices,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 import type { DashboardConfig, DashboardKPIs } from "../cfo-analytics.types";
 import { toMoneyValue } from "../cfo-analytics.types";
 

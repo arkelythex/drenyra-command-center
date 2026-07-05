@@ -1,5 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
-import type { Currency } from "@arkelythex/domain";
+import type { Currency } from "@drenyra/domain";
 
 /**
  * Merges conditional class names (clsx) and resolves Tailwind conflicts (tailwind-merge).
@@ -13,7 +13,7 @@ import type { Currency } from "@arkelythex/domain";
  * ```
  */
 export function cn(...inputs: ClassValue[]) {
-	// Keep `@arkelythex/shared` dependency-light. If you want Tailwind conflict
+	// Keep `@drenyra/shared` dependency-light. If you want Tailwind conflict
 	// resolution, install and use `tailwind-merge` at the app layer.
 	return clsx(inputs);
 }

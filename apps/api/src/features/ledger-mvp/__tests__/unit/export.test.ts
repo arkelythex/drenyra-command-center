@@ -23,11 +23,11 @@ vi.mock("../../../ledger/queries", () => ({
 
 // ---------------------------------------------------------------------------
 // Mock db — routes import from "../../lib/db" (relative) which re-exports
-// @arkelythex/persistence/client.  Mock the persistence package directly,
+// @drenyra/persistence/client.  Mock the persistence package directly,
 // matching the pattern used in the journal-routes test.
 // ---------------------------------------------------------------------------
 
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		select: vi.fn(() => ({
 			from: vi.fn(() => ({
@@ -40,7 +40,7 @@ vi.mock("@arkelythex/persistence/client", () => ({
 	client: vi.fn(),
 }));
 
-vi.mock("@arkelythex/persistence/schema", () => {
+vi.mock("@drenyra/persistence/schema", () => {
 	const tableProxy = new Proxy(
 		{},
 		{
@@ -58,7 +58,7 @@ vi.mock("@arkelythex/persistence/schema", () => {
 	);
 });
 
-vi.mock("@arkelythex/persistence/query", () => ({
+vi.mock("@drenyra/persistence/query", () => ({
 	eq: vi.fn(() => "mocked-eq"),
 }));
 

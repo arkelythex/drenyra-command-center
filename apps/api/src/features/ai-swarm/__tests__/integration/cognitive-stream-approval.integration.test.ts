@@ -46,17 +46,17 @@ const streamWithToolExecutionMock = vi.fn(async function* (
 	yield { type: "done", finish_reason: "stop" } as const;
 });
 
-vi.mock("@arkelythex/infrastructure/ai/openrouter", () => ({
+vi.mock("@drenyra/infrastructure/ai/openrouter", () => ({
 	OpenRouterService: class OpenRouterService {
 		constructor(_config: unknown) {}
 	},
 }));
 
-vi.mock("@arkelythex/ai/model-registry", () => ({
+vi.mock("@drenyra/ai/model-registry", () => ({
 	getOpenRouterModelForTier: () => "openai/gpt-5.1",
 }));
 
-vi.mock("@arkelythex/infrastructure/ai/tool-bridge", () => ({
+vi.mock("@drenyra/infrastructure/ai/tool-bridge", () => ({
 	getOpenRouterTools: () => [],
 	streamWithToolExecution: (
 		service: unknown,

@@ -1,6 +1,6 @@
 import { AlertTriangle, ShieldAlert, CheckCircle2, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { FISCAL_RISK_COLORS } from "@arkelythex/domain";
+import { FISCAL_RISK_COLORS } from "@drenyra/domain";
 import { Button } from "@/components/ui/button";
 import { MODULE_LABELS } from "../ApprovalHubPage.data";
 import { ApprovalHubStatusBadge } from "./ApprovalHubStatusBadge";

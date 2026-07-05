@@ -1,7 +1,7 @@
 /**
  * Context Monitor Barrel
  *
- * @module @arkelythex/ai/context-monitor
+ * @module @drenyra/ai/context-monitor
  */
 
 export { ContextMonitor } from "./context-monitor";

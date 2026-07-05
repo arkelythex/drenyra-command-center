@@ -32,8 +32,8 @@ export const STATUS_CODE_MAPPING: Record<number, string> = {
 export const OPENROUTER_BASE_URL =
 	"https://openrouter.ai/api/v1/chat/completions";
 export const OPENROUTER_HEADERS = {
-	"HTTP-Referer": "https://arkelythex.io",
-	"X-Title": "ARKELYTHEX Fiscal Platform",
+	"HTTP-Referer": "https://drenyra.io",
+	"X-Title": "DRENYRA Fiscal Platform",
 };
 
 /** DeepSeek API — OpenAI-compatible, direct access */

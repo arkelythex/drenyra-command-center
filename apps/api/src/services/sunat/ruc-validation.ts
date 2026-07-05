@@ -3,7 +3,7 @@
  * Handles RUC validation logic
  */
 
-import { RUC } from "@arkelythex/domain";
+import { RUC } from "@drenyra/domain";
 import { createLogger } from "../../lib/logger";
 import type { RucValidationResult, RucType } from "./sunat-types";
 

@@ -285,5 +285,5 @@ Browser ← TanStack Query → Elysia API ← Drizzle → PostgreSQL
 
 1. **Dependencia de automation-studio**: el wrapper thin debe sincronizarse con cambios en automation-studio. No romper contratos existentes.
 2. **Skills engine**: la ejecución de skills asume que drenyra-orchestrator puede resolver capacidades por nombre. Verificar existencia del contrato.
-3. **Migración de store persistido**: `useSkillStore` usa `persist` de Zustand con localStorage key `arkelythex-skills-v1`. Usuarios existentes pueden tener datos stale. Estrategia: mantener localStorage como cache client-side, migrar a API como source of truth, ignorar datos stale en init.
+3. **Migración de store persistido**: `useSkillStore` usa `persist` de Zustand con localStorage key `drenyra-skills-v1`. Usuarios existentes pueden tener datos stale. Estrategia: mantener localStorage como cache client-side, migrar a API como source of truth, ignorar datos stale en init.
 4. **Rendimiento de categorías**: skills fijas (~10-20), no hay riesgo de paginación. Todo client-side después del fetch inicial.

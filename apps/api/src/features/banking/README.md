@@ -144,10 +144,10 @@ sequenceDiagram
 
 ### Money Handling
 
-All monetary values use `Money` from `@arkelythex/domain`:
+All monetary values use `Money` from `@drenyra/domain`:
 
 ```typescript
-import { Money } from '@arkelythex/domain';
+import { Money } from '@drenyra/domain';
 
 const balance = new Money('15000.00', 'PEN');
 const newBalance = balance.add(new Money('500.00', 'PEN'));
@@ -156,9 +156,9 @@ const newBalance = balance.add(new Money('500.00', 'PEN'));
 ## Dependencies
 
 ### Internal
-- `@arkelythex/domain` - Money value object
-- `@arkelythex/shared` - SecureLogger
-- `@arkelythex/infrastructure` - Database, Drizzle schemas
+- `@drenyra/domain` - Money value object
+- `@drenyra/shared` - SecureLogger
+- `@drenyra/infrastructure` - Database, Drizzle schemas
 - `features/invoice` - Invoice queries for reconciliation
 - `features/bill` - Bill queries for reconciliation
 

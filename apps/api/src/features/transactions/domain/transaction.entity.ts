@@ -5,7 +5,7 @@
  * No infrastructure or framework dependencies allowed here.
  */
 
-import type { Currency } from "@arkelythex/domain";
+import type { Currency } from "@drenyra/domain";
 import type { SpotDetractionProfile } from "../../taxation/domain/spot-detraction-profile";
 
 // ─── Primitives ───────────────────────────────────────────────────────────────

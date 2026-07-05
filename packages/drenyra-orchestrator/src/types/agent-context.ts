@@ -1,5 +1,5 @@
 // ─── AgentContext ──────────────────────────────────────────────────
-// Snapshot from @arkelythex/agent-swarm/src/erp/types/agent-context.ts
+// Snapshot from @drenyra/agent-swarm/src/erp/types/agent-context.ts
 
 export interface AgentContext {
 	tenantId: string;

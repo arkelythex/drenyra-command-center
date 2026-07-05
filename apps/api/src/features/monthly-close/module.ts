@@ -1,5 +1,5 @@
-import type { CloseChecklistRepository } from "@arkelythex/domain/repositories/close-checklist.repository";
-import { PostgresCloseChecklistRepository } from "@arkelythex/persistence";
+import type { CloseChecklistRepository } from "@drenyra/domain/repositories/close-checklist.repository";
+import { PostgresCloseChecklistRepository } from "@drenyra/persistence";
 import { Elysia } from "elysia";
 import { createMonthlyCloseRoutes } from "./routes";
 

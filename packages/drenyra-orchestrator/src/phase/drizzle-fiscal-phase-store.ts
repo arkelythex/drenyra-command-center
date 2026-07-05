@@ -2,8 +2,8 @@
 // Persists fiscal phase state per (RUC, periodo) tuple to PostgreSQL.
 // Replaces InMemoryFiscalPhaseStore for production use.
 
-import { db } from "@arkelythex/persistence/client";
-import { fiscalPhasePeriods } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { fiscalPhasePeriods } from "@drenyra/persistence/schema";
 import { and, eq, inArray, not } from "drizzle-orm";
 import type { FiscalPhaseStore } from "./fiscal-phase-store";
 import type {

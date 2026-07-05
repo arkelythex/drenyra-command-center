@@ -7,7 +7,7 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import { DRENYRA_IDEMPOTENCY_HEADER } from "@arkelythex/domain/drenyra";
+import { DRENYRA_IDEMPOTENCY_HEADER } from "@drenyra/domain/drenyra";
 import { t } from "elysia";
 import { fail } from "../shared/api-response";
 

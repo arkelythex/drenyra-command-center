@@ -4,7 +4,7 @@ source-of-truth: packages/persistence/package.json
 auto-generated: false
 ---
 
-# @arkelythex/persistence — Database Persistence Layer
+# @drenyra/persistence — Database Persistence Layer
 
 **Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
@@ -14,7 +14,7 @@ auto-generated: false
 
 ## De un vistazo
 
-El paquete **persistence** provee la capa de acceso a base de datos: definiciones de schema Drizzle ORM, implementaciones de repositorio, un patrón unit-of-work y helpers de query. Implementa las interfaces de repositorio declaradas en `@arkelythex/domain`.
+El paquete **persistence** provee la capa de acceso a base de datos: definiciones de schema Drizzle ORM, implementaciones de repositorio, un patrón unit-of-work y helpers de query. Implementa las interfaces de repositorio declaradas en `@drenyra/domain`.
 
 Si tenés que leer o escribir datos de la base de datos — la implementación está acá. El dominio define el contrato, persistence lo ejecuta.
 
@@ -127,5 +127,5 @@ bun run test            # Ejecutar tests (bun test)
 
 ## 🔗 Dependencias
 
-- **Runtime**: `@arkelythex/domain`, `@arkelythex/application`, `@arkelythex/shared`, `drizzle-orm`, `postgres`, `uuid`
+- **Runtime**: `@drenyra/domain`, `@drenyra/application`, `@drenyra/shared`, `drizzle-orm`, `postgres`, `uuid`
 - **Dev**: TypeScript ^6.0.3

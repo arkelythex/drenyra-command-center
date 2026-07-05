@@ -1,7 +1,7 @@
 import {
 	APPROVAL_REQUIREMENTS,
 	type ApprovalRequirement,
-} from "@arkelythex/application";
+} from "@drenyra/application";
 
 export interface ControlPlaneJobMetadata {
 	surfaceId: string;

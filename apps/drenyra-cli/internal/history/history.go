@@ -18,7 +18,7 @@ type Entry struct {
 	Status    string    `json:"status,omitempty"`
 }
 
-// Append writes one JSON line to ~/.arkelythex/history.jsonl (best-effort).
+// Append writes one JSON line to ~/.drenyra/history.jsonl (best-effort).
 func Append(e Entry) error {
 	if e.At.IsZero() {
 		e.At = time.Now().UTC()
@@ -43,13 +43,13 @@ func Append(e Entry) error {
 	return err
 }
 
-// Path returns ~/.arkelythex/history.jsonl
+// Path returns ~/.drenyra/history.jsonl
 func Path() (string, error) {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	return filepath.Join(home, ".arkelythex", "history.jsonl"), nil
+	return filepath.Join(home, ".drenyra", "history.jsonl"), nil
 }
 
 // Recent reads up to limit latest entries (newest last).

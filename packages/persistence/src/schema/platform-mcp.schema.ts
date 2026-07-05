@@ -1,15 +1,15 @@
 import { index, jsonb, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
-import type { ArkelythexMcpAuditEvent } from "@arkelythex/domain";
+import type { DrenyraMcpAuditEvent } from "@drenyra/agents";
 
 export const platformMcpAuditEvents = pgTable(
 	"platform_mcp_audit_events",
 	{
 		id: varchar("id", { length: 96 }).primaryKey(),
 		operation: varchar("operation", { length: 24 })
-			.$type<ArkelythexMcpAuditEvent["operation"]>()
+			.$type<DrenyraMcpAuditEvent["operation"]>()
 			.notNull(),
 		outcome: varchar("outcome", { length: 24 })
-			.$type<ArkelythexMcpAuditEvent["outcome"]>()
+			.$type<DrenyraMcpAuditEvent["outcome"]>()
 			.notNull(),
 		toolName: varchar("tool_name", { length: 128 }).notNull(),
 		companyId: varchar("company_id", { length: 128 }).notNull(),
@@ -19,10 +19,10 @@ export const platformMcpAuditEvents = pgTable(
 		countryCode: varchar("country_code", { length: 2 }).default("PE").notNull(),
 		actorId: varchar("actor_id", { length: 128 }).notNull(),
 		redactionStatus: varchar("redaction_status", { length: 24 })
-			.$type<ArkelythexMcpAuditEvent["redactionStatus"]>()
+			.$type<DrenyraMcpAuditEvent["redactionStatus"]>()
 			.notNull(),
 		reason: varchar("reason", { length: 64 })
-			.$type<ArkelythexMcpAuditEvent["reason"]>()
+			.$type<DrenyraMcpAuditEvent["reason"]>()
 			.notNull(),
 		occurredAt: timestamp("occurred_at").notNull(),
 		metadata: jsonb("metadata").$type<Record<string, unknown>>().default({}).notNull(),

@@ -4,11 +4,11 @@ import type {
 	FiscalTruthEvent,
 	FiscalTruthRepository,
 	PolicyDecisionRecord,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import {
 	canPromoteAuthoritativeTruth,
 	POLICY_OUTCOME,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 
 export interface PromoteFiscalTruthCommandInput {
 	event: FiscalTruthEvent;

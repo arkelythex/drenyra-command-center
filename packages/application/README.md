@@ -4,11 +4,11 @@ source-of-truth: packages/application/package.json
 auto-generated: false
 ---
 
-# @arkelythex/application — Application Layer
+# @drenyra/application — Application Layer
 
 **Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
-**Versión**: 1.0.0 | **Dependencias**: @arkelythex/domain, @arkelythex/shared
+**Versión**: 1.0.0 | **Dependencias**: @drenyra/domain, @drenyra/shared
 
 ---
 
@@ -112,7 +112,7 @@ bun run test         # Ejecutar tests (Vitest)
 
 ## 🔗 Dependencias
 
-- **Runtime**: `@arkelythex/domain`, `@arkelythex/shared`
+- **Runtime**: `@drenyra/domain`, `@drenyra/shared`
 - **Dev**: TypeScript ^6.0.3, Vitest ^4.1.7
 
 ---
@@ -121,7 +121,7 @@ bun run test         # Ejecutar tests (Vitest)
 
 | Regla | Por qué |
 |-------|---------|
-| Depende solo de `@arkelythex/domain` y `@arkelythex/shared` | Mantiene la arquitectura limpia y testeable |
+| Depende solo de `@drenyra/domain` y `@drenyra/shared` | Mantiene la arquitectura limpia y testeable |
 | Nunca depende de infraestructura, web framework o DB | Los puertos invierten la dependencia |
 | Todo I/O externo va a través de interfaces de puerto | Podés mockear cualquier adaptador |
 | Los casos de uso son stateless | Testeables con puertos mockeados |

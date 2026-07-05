@@ -8,8 +8,8 @@
  */
 
 import { and, desc, gte, sql } from "drizzle-orm";
-import { db } from "@arkelythex/persistence/client";
-import { aiCostEvents, type AiCostEvent, type NewAiCostEvent } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { aiCostEvents, type AiCostEvent, type NewAiCostEvent } from "@drenyra/persistence/schema";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

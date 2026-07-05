@@ -1,5 +1,5 @@
 /**
- * Currency codes supported by Arkelythex.
+ * Currency codes supported by Drenyra.
  *
  * NOTE: Keep this aligned with the database enum (`currency`) and any UI currency pickers.
  * @example

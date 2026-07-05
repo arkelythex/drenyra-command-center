@@ -126,7 +126,7 @@ describe("Unified Agent Registry", () => {
 	});
 
 	it("isAgentInTier type guard works correctly", () => {
-		const entry = getAgentById("arkelythex-orchestrator")!;
+		const entry = getAgentById("drenyra-orchestrator")!;
 		expect(isAgentInTier(entry, "tier0")).toBe(true);
 		expect(isAgentInTier(entry, "tier1")).toBe(false);
 	});

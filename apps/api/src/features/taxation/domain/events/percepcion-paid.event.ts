@@ -1,4 +1,4 @@
-import { DomainEvent } from "@arkelythex/domain/events/DomainEvent";
+import { DomainEvent } from "@drenyra/domain/events/DomainEvent";
 
 /**
  * Domain event emitted when a percepción IGV is paid to SUNAT.

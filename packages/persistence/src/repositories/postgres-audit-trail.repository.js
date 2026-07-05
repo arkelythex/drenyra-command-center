@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { AuditTrail } from "@arkelythex/domain-civic";
+import { AuditTrail } from "@drenyra/domain-civic";
 import { db } from "../client";
 import { auditTrails } from "../schema/civic.schema";
 function toDomain(row) {

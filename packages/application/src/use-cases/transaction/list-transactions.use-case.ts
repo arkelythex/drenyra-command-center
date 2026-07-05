@@ -5,13 +5,13 @@
  * with optional filters.
  */
 
-import type { Transaction } from "@arkelythex/domain/entities/Transaction";
+import type { Transaction } from "@drenyra/domain/entities/Transaction";
 import type {
 	PaginatedResult,
 	PaginationOptions,
 	TransactionFilters,
 	TransactionRepository,
-} from "@arkelythex/domain/repositories/transaction.repository";
+} from "@drenyra/domain/repositories/transaction.repository";
 
 /**
  * ListTransactionsInput interface.

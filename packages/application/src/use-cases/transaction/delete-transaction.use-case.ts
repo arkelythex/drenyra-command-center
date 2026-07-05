@@ -5,7 +5,7 @@
  * Posted transactions must be voided instead.
  */
 
-import type { TransactionRepository } from "@arkelythex/domain/repositories/transaction.repository";
+import type { TransactionRepository } from "@drenyra/domain/repositories/transaction.repository";
 
 /**
  * DeleteTransactionInput interface.

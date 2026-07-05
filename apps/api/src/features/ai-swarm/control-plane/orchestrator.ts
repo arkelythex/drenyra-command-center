@@ -11,7 +11,7 @@ import {
 	type AgentCapability,
 	type AgentRegistryEntry,
 	type TraceEvidenceStore,
-} from "@arkelythex/ai";
+} from "@drenyra/ai";
 import { fail, ok } from "../../shared/api-response";
 import {
 	type ApprovalRecord,
@@ -49,8 +49,8 @@ const defaultAgentRegistry: Record<string, AgentRegistryEntry> = {
 const createDefaultTraceEvidenceStore = (): TraceEvidenceStore =>
 	createAppendOnlyTraceEvidenceStore({
 		filePath:
-			process.env.ARKELYTHEX_AI_CONTROL_PLANE_AUDIT_FILE ??
-			"/tmp/opencode/arkelythex-ai-control-plane-trace-audit.ndjson",
+			process.env.DRENYRA_AI_CONTROL_PLANE_AUDIT_FILE ??
+			"/tmp/opencode/drenyra-ai-control-plane-trace-audit.ndjson",
 	});
 
 const parseCapability = (
@@ -428,7 +428,7 @@ export const createAiControlPlaneModule = (
 			}
 
 			if (
-				request.headers.get("x-arkelythex-simulate-provider-failure") === "true"
+				request.headers.get("x-drenyra-simulate-provider-failure") === "true"
 			) {
 				appendApprovalAuditEvent(
 					traceEvidenceStore,

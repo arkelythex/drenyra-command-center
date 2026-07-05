@@ -14,7 +14,7 @@
  * @pattern Aggregate Root (DDD)
  */
 
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 
 /**
  * Invoice status lifecycle.
@@ -34,7 +34,7 @@ export type InvoiceStatus = "DRAFT" | "SENT" | "PAID" | "OVERDUE" | "CANCELLED";
  * const currency: Currency = 'PEN';
  * ```
  */
-export type Currency = import("@arkelythex/domain").Currency;
+export type Currency = import("@drenyra/domain").Currency;
 
 /**
  * Invoice line item representing a product or service.

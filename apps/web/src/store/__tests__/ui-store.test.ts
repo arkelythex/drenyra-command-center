@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { useUIStore } from "../ui-store";
 
-const STORAGE_KEY = "arkelythex-ui-storage";
+const STORAGE_KEY = "drenyra-ui-storage";
 
 function readPersistedState() {
   const raw = localStorage.getItem(STORAGE_KEY);

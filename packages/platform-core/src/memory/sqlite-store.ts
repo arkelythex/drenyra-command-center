@@ -2,12 +2,12 @@
  * File-backed JSON SessionStore — persistent session storage.
  *
  * Persists memory records to a JSON file on disk.
- * Extracted and made domain-agnostic from @arkelythex/agent-memory's
+ * Extracted and made domain-agnostic from @drenyra/agent-memory's
  * BunSqliteAgentMemoryStore (which uses JSON file-backing, not SQLite).
  *
  * Domain-agnostic — no fiscal-specific types or fields.
  *
- * @module @arkelythex/platform-core/memory
+ * @module @drenyra/platform-core/memory
  */
 
 import { mkdir, readFile, writeFile } from "node:fs/promises";

@@ -3,7 +3,7 @@ import {
 	DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY,
 	DRENYRA_FISCAL_WORK_INSPECT_REASON_CODES,
 	DRENYRA_FISCAL_WORK_INSPECT_STATUSES,
-} from "@arkelythex/domain/drenyra";
+} from "@drenyra/domain/drenyra";
 import { InMemoryDrenyraRepository } from "./in-memory-repository";
 import { DrenyraFiscalCommandCenterService, type DrenyraActorContext } from "./service";
 

@@ -1,6 +1,6 @@
-import { db } from '@arkelythex/persistence/client';
-import { and, eq, sql } from '@arkelythex/persistence/query';
-import { bankAccounts, bankTransactions, invoices } from '@arkelythex/persistence/schema';
+import { db } from '@drenyra/persistence/client';
+import { and, eq, sql } from '@drenyra/persistence/query';
+import { bankAccounts, bankTransactions, invoices } from '@drenyra/persistence/schema';
 
 /**
  * OverviewService class.

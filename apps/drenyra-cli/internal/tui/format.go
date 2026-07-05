@@ -5,9 +5,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/delegation"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/harness"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/router"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/delegation"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/router"
 )
 
 // FormatAgentStack returns the delegation graph as a string (TUI-safe).
@@ -23,7 +23,7 @@ func FormatAgentStack() string {
 	}
 
 	lines := []line{
-		{"", "", "arkelythex-orchestrator", "tier0", ""},
+		{"", "", "drenyra-orchestrator", "tier0", ""},
 		{"  ", "└── ", "drenyra-sdd-orchestrator", "tier1", ""},
 		{"      ", "├── ", "fiscal-command-orchestrator", "tier2", ""},
 		{"      │   ", "├── ", "fiscal-sunat-agent", "tier3", "→ fiscal-sunat-payload-agent"},

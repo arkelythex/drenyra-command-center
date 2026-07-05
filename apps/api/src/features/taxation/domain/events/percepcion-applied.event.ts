@@ -1,5 +1,5 @@
-import { DomainEvent } from "@arkelythex/domain/events/DomainEvent";
-import type { Money } from "@arkelythex/domain/value-objects/Money";
+import { DomainEvent } from "@drenyra/domain/events/DomainEvent";
+import type { Money } from "@drenyra/domain/value-objects/Money";
 
 /**
  * Domain event emitted when a percepción IGV is applied from a purchase bill.

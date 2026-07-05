@@ -3,15 +3,15 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/config"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/memory"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/memory"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
 	"github.com/spf13/cobra"
 )
 
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "Write ~/.arkelythex/config.yaml with defaults",
+	Short: "Write ~/.drenyra/config.yaml with defaults",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if err := config.WriteGlobal(config.Default()); err != nil {
 			return err

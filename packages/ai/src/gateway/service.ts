@@ -1,7 +1,7 @@
 /**
  * LLM Gateway - Main Gateway Service (Facade)
  *
- * @module @arkelythex/ai/gateway
+ * @module @drenyra/ai/gateway
  */
 
 import { ContextMonitor, ContextPruner } from "../context-monitor";

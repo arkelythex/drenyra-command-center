@@ -1,6 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
 import { Settings, User } from "lucide-react";
-import { useAccountingStore } from "@/stores/accounting-store";
+import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 
 interface SidebarFooterProps {
 	isCollapsed: boolean;
@@ -9,8 +9,8 @@ interface SidebarFooterProps {
 
 export function SidebarFooter({ isCollapsed, onNavigate }: SidebarFooterProps) {
 	const navigate = useNavigate();
-	const activeCompany = useAccountingStore((s) => s.getActiveCompany());
-	const activePeriod = useAccountingStore((s) => s.getActivePeriod());
+	const { companyContext, fiscalPeriod, formatFiscalPeriodLabel } =
+		useActiveCompanyContext();
 
 	if (isCollapsed) {
 		return (
@@ -34,10 +34,10 @@ export function SidebarFooter({ isCollapsed, onNavigate }: SidebarFooterProps) {
 		<footer className="border-t border-[var(--border-subtle)] px-3 py-3 space-y-2">
 			<div className="flex flex-col gap-0.5 px-1">
 				<span className="text-xs font-medium text-[var(--text-primary)] truncate">
-					{activeCompany?.name ?? "Sin empresa"}
+					{companyContext.companyName}
 				</span>
 				<span className="text-2xs text-[var(--text-muted)]">
-					{activePeriod?.label ?? "Sin período"}
+					{fiscalPeriod ? formatFiscalPeriodLabel(fiscalPeriod) : "Sin período"}
 				</span>
 			</div>
 			<div className="flex items-center gap-1">

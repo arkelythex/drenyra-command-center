@@ -1,7 +1,7 @@
 import {
 	buildDefaultCierreChecklist,
 	type CierreMensual,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import { describe, expect, it } from "vitest";
 import { applySireDiffCommitChecklistGate } from "../cierre-sire-diff-gate";
 

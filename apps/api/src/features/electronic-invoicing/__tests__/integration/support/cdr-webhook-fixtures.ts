@@ -7,7 +7,7 @@ import {
   invoices,
   transactions,
   users,
-} from '@arkelythex/infrastructure';
+} from '@drenyra/infrastructure';
 
 export type CdrWebhookFixture = {
   userId: string;

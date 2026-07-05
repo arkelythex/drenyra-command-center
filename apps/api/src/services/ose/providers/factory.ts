@@ -4,7 +4,7 @@
  * @principle Open/Closed - Add new providers without modifying existing code
  */
 
-import type { OSEConfig } from "@arkelythex/infrastructure/ose";
+import type { OSEConfig } from "@drenyra/infrastructure/ose";
 import type { IOSEProvider } from "../provider.interface";
 import { NubeFactProvider } from "./nubefact.provider";
 import { SimulationOSEProvider } from "./simulation.provider";

@@ -64,7 +64,7 @@ if (bareAiToolsRedirect.status !== 308) process.exit(1);
 				...process.env,
 				DATABASE_URL:
 					process.env.DATABASE_URL ??
-					"postgresql://user:password@localhost:5432/arkelythex",
+					"postgresql://user:password@localhost:5432/drenyra",
 			},
 		});
 

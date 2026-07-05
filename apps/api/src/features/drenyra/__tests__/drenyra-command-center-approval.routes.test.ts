@@ -4,8 +4,8 @@ import type {
 	DecideApprovalInput,
 	DrenyraActorContext,
 	DrenyraFiscalCommandCenterService,
-} from "@arkelythex/application/drenyra";
-import type { ApprovalRequest } from "@arkelythex/domain/drenyra";
+} from "@drenyra/application/drenyra";
+import type { ApprovalRequest } from "@drenyra/domain/drenyra";
 import { createDrenyraCommandCenterApprovalRoutes } from "../command-center-approval.routes";
 
 const fiscalContext: DrenyraActorContext = {

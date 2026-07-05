@@ -1,9 +1,9 @@
 import type {
-	ArkelythexMcpAuditEvent,
-	ArkelythexMcpAuditQuery,
-	ArkelythexMcpAuditReader,
-	ArkelythexMcpAuditSink,
-} from "@arkelythex/domain";
+	DrenyraMcpAuditEvent,
+	DrenyraMcpAuditQuery,
+	DrenyraMcpAuditReader,
+	DrenyraMcpAuditSink,
+} from "@drenyra/agents";
 import { and, desc, eq } from "drizzle-orm";
 import { db } from "../client";
 import { platformMcpAuditEvents } from "../schema/platform-mcp.schema";
@@ -20,7 +20,7 @@ function createAuditId(): string {
 	return `pmcp_${crypto.randomUUID()}`;
 }
 
-function fromRow(row: PlatformMcpAuditRow): ArkelythexMcpAuditEvent {
+function fromRow(row: PlatformMcpAuditRow): DrenyraMcpAuditEvent {
 	return {
 		operation: row.operation,
 		outcome: row.outcome,
@@ -41,8 +41,8 @@ function fromRow(row: PlatformMcpAuditRow): ArkelythexMcpAuditEvent {
 	};
 }
 
-export class PostgresPlatformMcpAuditSink implements ArkelythexMcpAuditSink, ArkelythexMcpAuditReader {
-	async append(event: ArkelythexMcpAuditEvent): Promise<void> {
+export class PostgresPlatformMcpAuditSink implements DrenyraMcpAuditSink, DrenyraMcpAuditReader {
+	async append(event: DrenyraMcpAuditEvent): Promise<void> {
 		await db.insert(platformMcpAuditEvents).values({
 			id: createAuditId(),
 			operation: event.operation,
@@ -62,7 +62,7 @@ export class PostgresPlatformMcpAuditSink implements ArkelythexMcpAuditSink, Ark
 		});
 	}
 
-	async list(query: ArkelythexMcpAuditQuery): Promise<ArkelythexMcpAuditEvent[]> {
+	async list(query: DrenyraMcpAuditQuery): Promise<DrenyraMcpAuditEvent[]> {
 		const filters = [
 			eq(platformMcpAuditEvents.organizationId, query.scope.organizationId),
 			eq(platformMcpAuditEvents.companyId, query.scope.companyId),

@@ -1,7 +1,7 @@
 import { Counter, register } from 'prom-client';
 import type { GovernanceAction } from './autonomy-policy';
 
-const METRIC_NAME = 'arkelythex_api_governance_policy_decisions_total';
+const METRIC_NAME = 'drenyra_api_governance_policy_decisions_total';
 
 type GovernanceDecisionLabel = 'ALLOW' | 'BLOCK';
 

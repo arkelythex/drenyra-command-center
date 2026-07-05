@@ -1,4 +1,4 @@
-import { RUC } from '@arkelythex/domain';
+import { RUC } from '@drenyra/domain';
 import { openRouterChatJson } from '../../lib/llm/openrouter-client';
 
 type CheckStatus = 'pass' | 'warn' | 'fail';

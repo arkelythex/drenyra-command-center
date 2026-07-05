@@ -1,4 +1,4 @@
-import type { AlertSeverity } from "@arkelythex/ai/services/swarm-consensus/types";
+import type { AlertSeverity } from "@drenyra/ai/services/swarm-consensus/types";
 import type {
 	SireAnomaly,
 	SireReadinessInput,

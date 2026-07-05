@@ -1,4 +1,4 @@
-import type { HubArtifact } from "@arkelythex/shared/artifacts";
+import type { HubArtifact } from "@drenyra/shared/artifacts";
 import { GitCompareArrows } from "lucide-react";
 import type React from "react";
 import { tokensToClasses } from "@/lib/design-tokens";

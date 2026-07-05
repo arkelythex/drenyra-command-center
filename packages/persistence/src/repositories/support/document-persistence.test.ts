@@ -1,4 +1,4 @@
-import { Document } from "@arkelythex/domain/entities/Document";
+import { Document } from "@drenyra/domain/entities/Document";
 import { describe, expect, it } from "vitest";
 import {
 	mapDocumentRowToEntity,
@@ -12,7 +12,7 @@ function createDocument() {
 		clientId: "client_456",
 		clientName: "ACME SAC",
 		fileName: "invoice.xml",
-		fileUrl: "https://cdn.arkelythex.dev/invoice.xml",
+		fileUrl: "https://cdn.drenyra.dev/invoice.xml",
 		fileType: "XML",
 		fileSize: 2048,
 		status: "VALIDATED",
@@ -69,7 +69,7 @@ describe("document persistence mapping", () => {
 			clientId: "client_456",
 			clientName: "ACME SAC",
 			fileName: "invoice.xml",
-			fileUrl: "https://cdn.arkelythex.dev/invoice.xml",
+			fileUrl: "https://cdn.drenyra.dev/invoice.xml",
 			fileType: "XML",
 			fileSize: 2048,
 			status: "VALIDATED",

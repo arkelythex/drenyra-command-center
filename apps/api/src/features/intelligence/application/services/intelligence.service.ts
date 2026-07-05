@@ -5,7 +5,7 @@
  * @module intelligence/service
  */
 
-import type { AgentContext } from "@arkelythex/drenyra-orchestrator";
+import type { AgentContext } from "@drenyra/drenyra-orchestrator";
 
 import type {
 	Anomaly,
@@ -22,7 +22,7 @@ import type {
 	SupplierRecord,
 	TaxCalendarInput,
 	TransactionRecord,
-} from "@arkelythex/drenyra-orchestrator/strategies";
+} from "@drenyra/drenyra-orchestrator/strategies";
 import {
 	classifyDocuments,
 	createCashflowPredictorStrategy,
@@ -35,7 +35,7 @@ import {
 	detectRucBreachAnomalies,
 	FiscalAnomalyEngine,
 	RUC_BREACH_THRESHOLD_PEN,
-} from "@arkelythex/drenyra-orchestrator/strategies";
+} from "@drenyra/drenyra-orchestrator/strategies";
 
 // ─── Helpers ─────────────────────────────────────────────────────────
 

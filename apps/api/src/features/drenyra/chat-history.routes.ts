@@ -1,5 +1,5 @@
-import { db } from "@arkelythex/persistence";
-import { chatSessions, messages } from "@arkelythex/persistence";
+import { db } from "@drenyra/persistence";
+import { chatSessions, messages } from "@drenyra/persistence";
 import { eq, desc, asc, and } from "drizzle-orm";
 import { Elysia, t } from "elysia";
 import { ok, fail } from "../shared/api-response";

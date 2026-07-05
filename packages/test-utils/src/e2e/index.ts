@@ -221,15 +221,15 @@ export async function waitForApiCall(
  */
 export const testCredentials = {
 	admin: {
-		email: "admin@test.arkelythexfounders.com",
+		email: "admin@test.drenyrafounders.com",
 		password: "TestP@ssw0rd!",
 	},
 	accountant: {
-		email: "accountant@test.arkelythexfounders.com",
+		email: "accountant@test.drenyrafounders.com",
 		password: "TestP@ssw0rd!",
 	},
 	viewer: {
-		email: "viewer@test.arkelythexfounders.com",
+		email: "viewer@test.drenyrafounders.com",
 		password: "TestP@ssw0rd!",
 	},
 } as const;

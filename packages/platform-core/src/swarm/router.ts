@@ -9,7 +9,7 @@
  * Zero fiscal-specific patterns — all classification rules are
  * domain-agnostic and can be extended via `addPattern()`.
  *
- * @module @arkelythex/platform-core/swarm
+ * @module @drenyra/platform-core/swarm
  */
 
 import type { TaskDefinition } from "../kernel/types.js";

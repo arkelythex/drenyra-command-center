@@ -4,8 +4,8 @@
  */
 
 import { describe, it, expect, beforeAll, afterAll } from "bun:test";
-import { FiscalNightlyRunUseCase } from "@arkelythex/application/use-cases/fiscal-agent/fiscal-nightly-run.use-case";
-import { FiscalHealthService } from "@arkelythex/infrastructure/services/fiscal-health.service";
+import { FiscalNightlyRunUseCase } from "@drenyra/application/use-cases/fiscal-agent/fiscal-nightly-run.use-case";
+import { FiscalHealthService } from "@drenyra/infrastructure/services/fiscal-health.service";
 
 describe("FiscalNightlyRunUseCase", () => {
 	const useCase = new FiscalNightlyRunUseCase();
@@ -107,7 +107,7 @@ describe("FiscalHealthService", () => {
 
 describe("Agent Router", () => {
 	it("provides routes for all fiscal tasks", async () => {
-		const { FISCAL_AGENT_ROUTES } = await import("@arkelythex/infrastructure/ai/agent-router");
+		const { FISCAL_AGENT_ROUTES } = await import("@drenyra/infrastructure/ai/agent-router");
 
 		expect(FISCAL_AGENT_ROUTES.length).toBeGreaterThanOrEqual(6);
 
@@ -121,7 +121,7 @@ describe("Agent Router", () => {
 	});
 
 	it("assigns appropriate delegation modes", async () => {
-		const { FISCAL_AGENT_ROUTES } = await import("@arkelythex/infrastructure/ai/agent-router");
+		const { FISCAL_AGENT_ROUTES } = await import("@drenyra/infrastructure/ai/agent-router");
 
 		const categorization = FISCAL_AGENT_ROUTES.find((r) => r.task === "transaction_categorization");
 		expect(categorization?.delegation).toBe("proactive");

@@ -3,9 +3,9 @@ export type {
 	KnowledgeChunk,
 	KnowledgeContext,
 	KnowledgeQuery,
-} from "@arkelythex/infrastructure";
+} from "@drenyra/infrastructure";
 export {
 	SUNAT_2026_SEED,
 	SunatKnowledgeService,
 	sunatKnowledgeService,
-} from "@arkelythex/infrastructure";
+} from "@drenyra/infrastructure";

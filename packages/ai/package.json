@@ -1,7 +1,7 @@
 {
-  "name": "@arkelythex/ai",
+  "name": "@drenyra/ai",
   "version": "0.1.0",
-  "description": "AI facade package for Arkelythex",
+  "description": "AI facade package for Drenyra",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -40,12 +40,12 @@
     "typecheck:experimental": "tsc --noEmit"
   },
   "dependencies": {
-    "@arkelythex/application": "workspace:*",
-    "@arkelythex/infrastructure": "workspace:*",
-    "@arkelythex/persistence": "workspace:*",
-    "@arkelythex/shared": "workspace:*",
     "@google/generative-ai": "^0.24.1",
-    "ai": "^6.0.206"
+    "ai": "^6.0.206",
+    "@drenyra/application": "workspace:*",
+    "@drenyra/infrastructure": "workspace:*",
+    "@drenyra/persistence": "workspace:*",
+    "@drenyra/shared": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^6.0.3",

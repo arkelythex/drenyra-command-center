@@ -4,7 +4,7 @@
  * Implements token bucket rate limiting for LLM providers.
  * Uses in-memory sliding window with optional Redis support.
  *
- * @module @arkelythex/ai/gateway
+ * @module @drenyra/ai/gateway
  */
 
 import { loggers } from "../logger";

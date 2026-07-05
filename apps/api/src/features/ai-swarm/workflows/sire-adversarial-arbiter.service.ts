@@ -4,11 +4,11 @@ import {
 	computeDynamicThreshold,
 	generateReasoning,
 	getThresholdForSeverity,
-} from "@arkelythex/ai/services/swarm-consensus/consensus-engine";
+} from "@drenyra/ai/services/swarm-consensus/consensus-engine";
 import type {
 	AgentConfidence,
 	AlertSeverity,
-} from "@arkelythex/ai/services/swarm-consensus/types";
+} from "@drenyra/ai/services/swarm-consensus/types";
 import type { SubagentResult } from "./sire-readiness-subagents.service";
 import type {
 	SireArbiterDecision,

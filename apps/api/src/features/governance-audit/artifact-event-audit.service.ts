@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import { authAuditLogs } from '@arkelythex/persistence/schema';
-import { db } from '@arkelythex/persistence/client';
+import { authAuditLogs } from '@drenyra/persistence/schema';
+import { db } from '@drenyra/persistence/client';
 
 /**
  * GovernanceArtifactEventInput interface.

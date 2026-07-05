@@ -7,6 +7,10 @@ import { cn } from "@/lib/utils";
 import { ComposerControls } from "./ComposerControls";
 import { ComposerSendButton } from "./ComposerSendButton";
 import { SlashCommandMenu } from "./SlashCommandMenu";
+import {
+	InlineAutocomplete,
+	useAutocompleteState,
+} from "@/features/drenyra-command-center/components/inline-autocomplete/InlineAutocomplete";
 import type { SuggestedAction } from "./SuggestedActions";
 import { SuggestedActions } from "./SuggestedActions";
 import { useSendFeedback } from "./useSendFeedback";
@@ -37,6 +41,8 @@ export function Composer({
 	const [isDragging, setIsDragging] = useState(false);
 	const [showSlashMenu, setShowSlashMenu] = useState(false);
 	const [slashSelectedIndex, setSlashSelectedIndex] = useState(0);
+	const [autocompleteOpen, setAutocompleteOpen] = useState(false);
+	const [cursorPos, setCursorPos] = useState(0);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 	const { sendFeedback } = useSendFeedback(isSending, sendError);
 
@@ -48,6 +54,9 @@ export function Composer({
 	}, [message]);
 
 	const showSlashOverlay = showSlashMenu && suggestions.length > 0;
+	const autocompleteState = useAutocompleteState(message, cursorPos);
+	const showAutocomplete =
+		autocompleteOpen && autocompleteState?.trigger === "@";
 
 	const toggleSkill = useCallback((skill: string) => {
 		setActiveSkills((prev) => {
@@ -70,9 +79,33 @@ export function Composer({
 		[suggestions],
 	);
 
+	const handleAutocompleteInsert = useCallback(
+		(insertValue: string, cursorTarget: number) => {
+			if (!textareaRef.current) return;
+			const before = message.slice(0, cursorPos);
+			const after = message.slice(cursorPos);
+			const lastAtIndex = before.lastIndexOf("@");
+			const lastSlashIndex = before.lastIndexOf("/");
+			const triggerPos = Math.max(lastAtIndex, lastSlashIndex);
+			if (triggerPos === -1) return;
+			const newValue = message.slice(0, triggerPos) + insertValue + " " + after;
+			setMessage(newValue);
+			setTimeout(() => {
+				if (textareaRef.current) {
+					textareaRef.current.selectionStart = cursorTarget + 1;
+					textareaRef.current.selectionEnd = cursorTarget + 1;
+					textareaRef.current.focus();
+				}
+			}, 0);
+			setAutocompleteOpen(false);
+		},
+		[message, cursorPos],
+	);
+
 	const handleSend = useCallback(() => {
 		if (!hasMessage || isSending) return;
 		setShowSlashMenu(false);
+		setAutocompleteOpen(false);
 		onSend?.(message.trim(), mode, yoloMode);
 		setMessage("");
 		if (textareaRef.current) {
@@ -82,6 +115,8 @@ export function Composer({
 
 	const handleSlashOverlayKey = useCallback(
 		(e: React.KeyboardEvent<HTMLTextAreaElement>): boolean => {
+			// Si el autocomplete @ está abierto, no interceptar
+			if (showAutocomplete) return false;
 			if (!showSlashOverlay) return false;
 
 			switch (e.key) {
@@ -110,7 +145,13 @@ export function Composer({
 					return false;
 			}
 		},
-		[showSlashOverlay, suggestions, slashSelectedIndex, completeSlashCommand],
+		[
+			showSlashOverlay,
+			showAutocomplete,
+			suggestions,
+			slashSelectedIndex,
+			completeSlashCommand,
+		],
 	);
 
 	const handleKeyDown = useCallback(
@@ -131,13 +172,28 @@ export function Composer({
 			textarea.style.height = "auto";
 			textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`;
 			const value = textarea.value;
+			const pos = textarea.selectionStart ?? value.length;
+			setCursorPos(pos);
 			setMessage(value);
 
-			if (value.startsWith("/")) {
-				setShowSlashMenu(true);
-				setSlashSelectedIndex(0);
-			} else if (showSlashMenu) {
+			// Detectar trigger @ o /
+			const before = value.slice(0, pos);
+			const atPos = before.lastIndexOf("@");
+			const slashPos = before.lastIndexOf("/");
+			const triggerPos = Math.max(atPos, slashPos);
+			const afterTrigger = triggerPos >= 0 ? before.slice(triggerPos) : "";
+			const hasSpace = afterTrigger.includes(" ");
+
+			if (atPos >= 0 && !hasSpace) {
+				setAutocompleteOpen(true);
 				setShowSlashMenu(false);
+			} else if (value.startsWith("/")) {
+				setShowSlashMenu(true);
+				setAutocompleteOpen(false);
+				setSlashSelectedIndex(0);
+			} else {
+				setShowSlashMenu(false);
+				setAutocompleteOpen(false);
 			}
 		},
 		[showSlashMenu],
@@ -200,6 +256,14 @@ export function Composer({
 			)}
 
 			<div className="relative">
+				{showAutocomplete && autocompleteState && (
+					<InlineAutocomplete
+						inputValue={message}
+						cursorPos={cursorPos}
+						onInsert={handleAutocompleteInsert}
+						onClose={() => setAutocompleteOpen(false)}
+					/>
+				)}
 				{showSlashOverlay && (
 					<SlashCommandMenu
 						input={message}

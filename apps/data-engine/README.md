@@ -6,11 +6,11 @@ auto-generated: false
 
 **Última actualización**: 2026-06-20 · Filosofía: [Gentleman Philosophy](../../docs/meta/gentleman-philosophy.md) — cognitive load reduction, warm teaching, progressive disclosure.
 
-# 🦀 Arkelythex Data Engine
+# 🦀 Drenyra Data Engine
 
 **High-Performance Financial Data Processing** powered by [Polars](https://www.pola.rs/) (Rust Core).
 
-Mientras el backend principal de Arkelythex corre en **Bun (Elysia)**, las operaciones financieras intensivas en datos necesitan procesamiento especializado. Este microservicio FastAPI es esa capa.
+Mientras el backend principal de Drenyra corre en **Bun (Elysia)**, las operaciones financieras intensivas en datos necesitan procesamiento especializado. Este microservicio FastAPI es esa capa.
 
 ## Si solo tenés tres minutos
 
@@ -60,8 +60,8 @@ uvicorn src.main:app --reload --port 8000
 ### Option 3: Docker
 
 ```bash
-docker build -t arkelythex-data-engine .
-docker run -p 8000:8000 arkelythex-data-engine
+docker build -t drenyra-data-engine .
+docker run -p 8000:8000 drenyra-data-engine
 ```
 
 ## 🌐 API Endpoints
@@ -105,7 +105,7 @@ docker run -p 8000:8000 arkelythex-data-engine
 Create `.env` file (see `.env.example`):
 
 ```bash
-DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/arkelythex
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5432/drenyra
 REDIS_URL=redis://localhost:6379  # Optional
 POLARS_MAX_THREADS=8  # Match CPU cores
 ```
@@ -131,8 +131,8 @@ Interactive docs:
 ## 🐳 Docker
 
 ```bash
-docker build -t arkelythex-data-engine:latest .
-docker run -d -p 8000:8000 --name data-engine arkelythex-data-engine:latest
+docker build -t drenyra-data-engine:latest .
+docker run -d -p 8000:8000 --name data-engine drenyra-data-engine:latest
 ```
 
 ## Permanence and integration (monorepo)

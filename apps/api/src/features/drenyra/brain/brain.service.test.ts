@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { DrenyraFiscalScope } from "@arkelythex/domain/drenyra";
+import type { DrenyraFiscalScope } from "@drenyra/domain/drenyra";
 import { createInMemoryDrenyraBrainRepository } from "./brain.repository";
 import { createDrenyraBrainService } from "./brain.service";
 

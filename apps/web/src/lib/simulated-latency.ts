@@ -1,4 +1,4 @@
-const DEBUG_LATENCY_KEY = 'arkelythex-debug-latency';
+const DEBUG_LATENCY_KEY = 'drenyra-debug-latency';
 
 export function isDebugLatencyEnabled() {
   if (typeof window === 'undefined') return false;

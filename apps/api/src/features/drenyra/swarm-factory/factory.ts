@@ -1,12 +1,12 @@
-import type { Agent } from "@arkelythex/drenyra-orchestrator";
+import type { Agent } from "@drenyra/drenyra-orchestrator";
 import {
 	getAllRegisteredAgents,
 	LatinModernoOrchestrator,
 	DomainAgent,
 	ApprovalGateEngine,
 	ApprovalStore,
-} from "@arkelythex/drenyra-orchestrator";
-import type { LatinAgentId } from "@arkelythex/drenyra-orchestrator";
+} from "@drenyra/drenyra-orchestrator";
+import type { LatinAgentId } from "@drenyra/drenyra-orchestrator";
 import { LATIN_DOMAIN_CONFIGS, FINANCIAL_AGENT_MAP } from "./types";
 import type { LatinDomainConfig } from "./types";
 

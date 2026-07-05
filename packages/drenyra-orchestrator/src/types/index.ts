@@ -1,5 +1,5 @@
 // ─── Types Index ───────────────────────────────────────────────────
-// Re-exporta todos los tipos locales (no dependen de @arkelythex/agent-swarm)
+// Re-exporta todos los tipos locales (no dependen de @drenyra/agent-swarm)
 
 export type { AgentContext } from './agent-context';
 

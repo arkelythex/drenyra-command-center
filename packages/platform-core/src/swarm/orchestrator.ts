@@ -7,7 +7,7 @@
  * Zero fiscal imports — all agents are registered via the generic
  * agent registration interface.
  *
- * @module @arkelythex/platform-core/swarm
+ * @module @drenyra/platform-core/swarm
  */
 
 import type { TaskDefinition, TaskResult } from "../kernel/types.js";

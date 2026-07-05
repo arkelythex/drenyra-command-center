@@ -23,7 +23,7 @@ describe("Audit Trail Exporters", () => {
 	it("should export XML with escaped/cdata payloads", async () => {
 		const xml = await exportToXml(sampleTrail, {
 			companyRuc: "20123456789",
-			companyName: "Arkelythex SAC",
+			companyName: "Drenyra SAC",
 		});
 
 		expect(xml).toContain("<cbc:CompanyRUC>20123456789</cbc:CompanyRUC>");
@@ -33,7 +33,7 @@ describe("Audit Trail Exporters", () => {
 
 	it("should export a valid PDF binary", async () => {
 		const pdf = await exportToPdf(sampleTrail, {
-			companyName: "Arkelythex SAC",
+			companyName: "Drenyra SAC",
 			companyRuc: "20123456789",
 			reportDate: new Date("2026-02-19T10:00:00.000Z"),
 		});

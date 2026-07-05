@@ -1,4 +1,4 @@
-import { DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY, } from "@arkelythex/domain/drenyra";
+import { DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY, } from "@drenyra/domain/drenyra";
 import { runDeterministicMockAgent } from "./mock-agents";
 function nowIso() {
     return new Date().toISOString();

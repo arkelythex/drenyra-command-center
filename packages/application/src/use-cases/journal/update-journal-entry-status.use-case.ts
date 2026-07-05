@@ -3,8 +3,8 @@
  * Orchestrates status transitions (mayorizar, declarar)
  */
 
-import type { JournalEntry } from "@arkelythex/domain/entities/JournalEntry";
-import type { JournalEntryRepository } from "@arkelythex/domain/repositories/journal-entry.repository";
+import type { JournalEntry } from "@drenyra/domain/entities/JournalEntry";
+import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
 
 /**
  * UpdateJournalEntryStatusUseCase class.

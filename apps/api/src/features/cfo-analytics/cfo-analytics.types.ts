@@ -1,4 +1,4 @@
-import type { Money } from "@arkelythex/domain";
+import type { Money } from "@drenyra/domain";
 
 export interface MoneyValue {
 	amount: string;

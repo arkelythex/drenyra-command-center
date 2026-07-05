@@ -1,4 +1,4 @@
-import type { HubArtifact } from "@arkelythex/shared/artifacts";
+import type { HubArtifact } from "@drenyra/shared/artifacts";
 import { motion, useReducedMotion } from "framer-motion";
 import { Activity, Layers } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";

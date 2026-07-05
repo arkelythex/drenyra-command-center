@@ -11,7 +11,7 @@
 import {
 	PPOcrV6Client,
 	OcrAgentRouter,
-} from "@arkelythex/infrastructure/services/python-ocr";
+} from "@drenyra/infrastructure/services/python-ocr";
 import { extractInvoiceData } from "./service";
 import { loggers } from "../../logger";
 import type { OCRResult } from "../schemas/invoice";

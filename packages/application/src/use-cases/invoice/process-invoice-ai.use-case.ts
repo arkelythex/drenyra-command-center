@@ -1,7 +1,7 @@
 import type { ProcessInvoiceAiDTO } from "../../dtos/invoice/process-invoice-ai.dto";
 import type { IOcrService } from "../../ports/IOcrService";
 import type { IValidationService } from "../../ports/IValidationService";
-import { AIExtractionError, ValidationError } from "@arkelythex/shared/errors";
+import { AIExtractionError, ValidationError } from "@drenyra/shared/errors";
 
 /**
  * ProcessInvoiceAiUseCase class.

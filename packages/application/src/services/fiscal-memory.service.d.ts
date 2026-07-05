@@ -1,5 +1,5 @@
-import { FiscalMemory, type FiscalMemoryCategory, type FiscalMemoryScope, type FiscalMemorySeverity } from "@arkelythex/domain/fiscal-memory";
-import type { FiscalMemoryRepository } from "@arkelythex/domain/repositories/fiscal-memory.repository";
+import { FiscalMemory, type FiscalMemoryCategory, type FiscalMemoryScope, type FiscalMemorySeverity } from "@drenyra/domain/fiscal-memory";
+import type { FiscalMemoryRepository } from "@drenyra/domain/repositories/fiscal-memory.repository";
 export interface RecordFiscalMemoryInput extends FiscalMemoryScope {
     readonly id?: string;
     readonly period: string;

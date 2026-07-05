@@ -36,7 +36,7 @@ const COLOR_MIX_PATTERN =
 const CSS_VAR_PATTERN = /^var\(\s*--[a-z0-9-]+(?:\s*,\s*[^)]+)?\s*\)$/i;
 
 export const THEME_PACKAGE_SCHEMA_ID = "codex-theme-v1" as const;
-export const ARKELYTHEX_THEME_SCHEMA_VERSION = THEME_PACKAGE_SCHEMA_ID;
+export const DRENYRA_THEME_SCHEMA_VERSION = THEME_PACKAGE_SCHEMA_ID;
 
 export function normalizeKeyName(key: string): string {
 	return key.replace(/[^a-z0-9]/gi, "").toLowerCase();
@@ -143,9 +143,9 @@ export const themePackageSchema = z
 		}
 	});
 
-export const arkelythexThemePackageSchema = themePackageSchema;
+export const drenyraThemePackageSchema = themePackageSchema;
 export type ThemePackage = z.infer<typeof themePackageSchema>;
-export type ArkelythexThemePackage = ThemePackage;
+export type DrenyraThemePackage = ThemePackage;
 
 export const THEME_TOKEN_CSS_VARIABLES = {
 	"foundation.surface": "--akx-foundation-surface",

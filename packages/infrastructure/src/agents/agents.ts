@@ -1,5 +1,5 @@
 /**
- * Arkelythex Agent Definitions
+ * Drenyra Agent Definitions
  *
  * Implements Vercel AI SDK 6 Agent abstraction pattern.
  * Each agent is a reusable unit with its own model, instructions, and tools.
@@ -9,8 +9,8 @@
  */
 
 import { google } from "@ai-sdk/google";
-import { fiscalTools, runToolLoop } from "@arkelythex/ai";
-import { GEMINI_SYSTEM_INSTRUCTION } from "@arkelythex/infrastructure/ai/context";
+import { fiscalTools, runToolLoop } from "@drenyra/ai";
+import { GEMINI_SYSTEM_INSTRUCTION } from "@drenyra/infrastructure/ai/context";
 
 export interface AgentConfig {
 	name: string;

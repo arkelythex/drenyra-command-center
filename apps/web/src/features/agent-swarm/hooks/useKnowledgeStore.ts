@@ -46,6 +46,6 @@ export const useKnowledgeStore = create<KnowledgeStore>()(
         documents: state.documents.filter(d => d.id !== id)
       })),
     }),
-    { name: 'arkelythex-knowledge-base' }
+    { name: 'drenyra-knowledge-base' }
   )
 );

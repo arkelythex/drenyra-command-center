@@ -5,7 +5,7 @@ import {
   agentRunStates,
   db,
   eq,
-} from "@arkelythex/infrastructure";
+} from "@drenyra/infrastructure";
 
 const describeDb = process.env.RUN_DB_TESTS === "1" ? describe : describe.skip;
 

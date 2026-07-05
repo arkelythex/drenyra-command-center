@@ -12,8 +12,8 @@ import {
 	type LatencyByAgent,
 	type LatencySummary,
 	type LatencyTrend,
-} from "@arkelythex/ai/services/ai-latency";
-import { aiLatencyEvents, type AiLatencyEvent } from "@arkelythex/persistence/schema";
+} from "@drenyra/ai/services/ai-latency";
+import { aiLatencyEvents, type AiLatencyEvent } from "@drenyra/persistence/schema";
 
 /**
  * LatencyStatsService class.

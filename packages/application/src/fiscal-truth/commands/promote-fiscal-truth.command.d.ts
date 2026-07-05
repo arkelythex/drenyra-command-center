@@ -1,4 +1,4 @@
-import type { DeterministicValidatorResultRecord, EvidenceNode, FiscalTruthEvent, FiscalTruthRepository, PolicyDecisionRecord } from "@arkelythex/domain";
+import type { DeterministicValidatorResultRecord, EvidenceNode, FiscalTruthEvent, FiscalTruthRepository, PolicyDecisionRecord } from "@drenyra/domain";
 export interface PromoteFiscalTruthCommandInput {
     event: FiscalTruthEvent;
     validatorResults: DeterministicValidatorResultRecord[];

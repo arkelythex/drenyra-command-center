@@ -1,10 +1,10 @@
-import { db } from "@arkelythex/persistence/client";
-import { and, desc, eq, gte, lte, sql } from "@arkelythex/persistence/query";
+import { db } from "@drenyra/persistence/client";
+import { and, desc, eq, gte, lte, sql } from "@drenyra/persistence/query";
 import {
 	commAutomations,
 	commHistory,
 	commTemplates,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 import { Elysia, t } from "elysia";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import {

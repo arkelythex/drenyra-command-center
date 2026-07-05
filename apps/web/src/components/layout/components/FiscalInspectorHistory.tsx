@@ -2,7 +2,7 @@ import { History, ShieldCheck, X, ChevronRight } from "lucide-react";
 import {
 	FISCAL_ACTION_STATUS_COLORS,
 	FISCAL_ACTION_STATUS_LABELS,
-} from "@arkelythex/domain";
+} from "@drenyra/domain";
 import type { HistoryListProps } from "../FiscalInspector.types";
 
 /**

@@ -1,5 +1,5 @@
-import type { DrenyraFiscalCommandCenterService } from "@arkelythex/application/drenyra";
-import type { AuditEvent } from "@arkelythex/domain/drenyra";
+import type { DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
+import type { AuditEvent } from "@drenyra/domain/drenyra";
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../shared/api-response";
 import {

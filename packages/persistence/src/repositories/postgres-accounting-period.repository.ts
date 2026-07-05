@@ -6,10 +6,10 @@
 
 import { and, asc, desc, eq, ne, sql } from "drizzle-orm";
 import { randomUUID } from "crypto";
-import { AccountingPeriod } from "@arkelythex/domain/accounting/accounting-period";
-import type { AccountingPeriodRepository } from "@arkelythex/domain/repositories/accounting-period.repository";
-import { db } from "@arkelythex/persistence/client";
-import { accountingPeriods } from "@arkelythex/persistence/schema";
+import { AccountingPeriod } from "@drenyra/domain/accounting/accounting-period";
+import type { AccountingPeriodRepository } from "@drenyra/domain/repositories/accounting-period.repository";
+import { db } from "@drenyra/persistence/client";
+import { accountingPeriods } from "@drenyra/persistence/schema";
 
 export class PostgresAccountingPeriodRepository
 	implements AccountingPeriodRepository

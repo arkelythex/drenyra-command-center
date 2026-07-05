@@ -22,6 +22,7 @@ export const sunatApiModule = new Elysia({ prefix: "/api/sunat" })
 		body: t.Object({
 			ruc: t.String(),
 		}),
+		detail: { tags: ["SUNAT"], summary: "Validate RUC locally" },
 	})
 	.post(
 		"/validate-ruc-online",
@@ -30,10 +31,15 @@ export const sunatApiModule = new Elysia({ prefix: "/api/sunat" })
 			body: t.Object({
 				ruc: t.String(),
 			}),
+			detail: { tags: ["SUNAT"], summary: "Validate RUC online" },
 		},
 	)
-	.get("/exchange-rate", async () => getExchangeRate())
-	.get("/uit", () => getUit())
+	.get("/exchange-rate", async () => getExchangeRate(), {
+		detail: { tags: ["SUNAT"], summary: "Get exchange rate" },
+	})
+	.get("/uit", () => getUit(), {
+		detail: { tags: ["SUNAT"], summary: "Get UIT value" },
+	})
 	.post(
 		"/generate-xml/:invoiceId",
 		async ({ params: { invoiceId }, companyContext, set }) => {
@@ -80,5 +86,6 @@ export const sunatApiModule = new Elysia({ prefix: "/api/sunat" })
 				series: t.String(),
 				correlative: t.Number(),
 			}),
+			detail: { tags: ["SUNAT"], summary: "Validate invoice numbering" },
 		},
 	);

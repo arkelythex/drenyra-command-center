@@ -4,7 +4,7 @@ import type {
 	AuditEvent,
 	EvidenceItem,
 	FiscalCase,
-} from "@arkelythex/domain/entities";
+} from "@drenyra/domain/entities";
 import type {
 	drenyraAgentRuns,
 	drenyraApprovalRequests,

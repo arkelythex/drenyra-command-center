@@ -1,5 +1,5 @@
 /**
- * Semantic Design Tokens - Arkelythex 2026
+ * Semantic Design Tokens - Drenyra 2026
  *
  * Unified semantic token system that maps primitive tokens to meaningful UI concepts.
  * Reduces cognitive load by providing intent-based naming.

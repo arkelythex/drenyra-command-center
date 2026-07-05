@@ -7,8 +7,8 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import type { DrenyraFiscalCommandCenterService } from "@arkelythex/application/drenyra";
-import type { AuditEventType } from "@arkelythex/domain/drenyra";
+import type { DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
+import type { AuditEventType } from "@drenyra/domain/drenyra";
 import { Elysia, t } from "elysia";
 import { ok } from "../shared/api-response";
 import {

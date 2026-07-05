@@ -22,7 +22,7 @@ export function encryptWithPassphrase(plaintext, passphrase) {
         iv: iv.toString("base64"),
         tag: tag.toString("base64"),
         salt: salt.toString("base64"),
-        version: "arkelythex.e2e.v1",
+        version: "drenyra.e2e.v1",
     };
 }
 export function decryptWithPassphrase(encrypted, passphrase) {

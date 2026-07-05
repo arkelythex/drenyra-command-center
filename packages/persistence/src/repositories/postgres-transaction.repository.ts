@@ -13,14 +13,14 @@ import {
 	type TransactionEntry,
 	type TransactionStatus,
 	type TransactionType,
-} from "@arkelythex/domain/entities/Transaction";
+} from "@drenyra/domain/entities/Transaction";
 import type {
 	PaginatedResult,
 	PaginationOptions,
 	TransactionFilters,
 	TransactionRepository,
-} from "@arkelythex/domain/repositories/transaction.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/repositories/transaction.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { db } from "../client";
 import { transactions } from "../schema";
 import { resolveCompanyIdFromOrganization } from "./support/organization-resolver";

@@ -7,7 +7,7 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import { PostgresPlatformMcpAuditSink } from "@arkelythex/infrastructure";
+import { PostgresPlatformMcpAuditSink } from "@drenyra/infrastructure";
 import { createPlatformMcpModule } from "./mcp.routes";
 
 export { InMemoryPlatformMcpAuditSink } from "./mcp.audit";

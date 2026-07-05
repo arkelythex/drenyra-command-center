@@ -1,5 +1,5 @@
 /**
- * Control Plane Facade — ported from @arkelythex/agent-swarm
+ * Control Plane Facade — ported from @drenyra/agent-swarm
  *
  * Provides normalizeLegacyCapabilityToolsLookup, normalizeLegacyPolicyPreviewInput,
  * and createGovernanceValidator for legacy consumers migrating from agent-swarm.
@@ -78,12 +78,12 @@ export const normalizeLegacyCapabilityToolsLookup = ({
 /**
  * Create a governance validator function compatible with ApprovalGateEngine.
  *
- * Wraps a PolicyEngine (from @arkelythex/ai/control-plane) into the
+ * Wraps a PolicyEngine (from @drenyra/ai/control-plane) into the
  * GovernanceValidatorFn signature expected by ApprovalGateEngine.
  *
  * Fail-closed: any error returns { valid: false }.
  */
-import type { PolicyEngine } from "@arkelythex/ai/control-plane";
+import type { PolicyEngine } from "@drenyra/ai/control-plane";
 
 export function createGovernanceValidator(
 	policyEngine: PolicyEngine,

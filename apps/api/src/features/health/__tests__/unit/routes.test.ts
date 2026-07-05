@@ -23,7 +23,7 @@ describe("healthModule", () => {
 		vi.clearAllMocks();
 		process.env = {
 			...originalEnv,
-			DATABASE_URL: "postgresql://user:password@localhost:5436/arkelythex",
+			DATABASE_URL: "postgresql://user:password@localhost:5436/drenyra",
 			BETTER_AUTH_SECRET: "dev-secret-key-change-in-production-min-32-chars",
 		};
 		app = new Elysia().use(
@@ -51,17 +51,17 @@ describe("healthModule", () => {
 			});
 		mockGetBackupReadinessStatus.mockResolvedValue({
 			status: "warning",
-			backupDir: "/tmp/arkelythex-backups",
+			backupDir: "/tmp/drenyra-backups",
 			thresholdHours: 24,
 			lastBackupAt: "2026-03-01T00:00:00.000Z",
 			lastBackupAgeHours: 30,
-			latestArtifact: "/tmp/arkelythex-backups/arkelythex.dump",
+			latestArtifact: "/tmp/drenyra-backups/drenyra.dump",
 			source: "manifest",
 		});
 		mockGetOpenTelemetryReadinessStatus.mockReturnValue({
 			status: "ready",
 			enabled: true,
-			serviceName: "arkelythex-api",
+			serviceName: "drenyra-api",
 			exporterEndpoint: "https://otlp.example.com/v1/traces",
 			usingDefaultServiceName: false,
 		});
@@ -91,7 +91,7 @@ describe("healthModule", () => {
 				},
 				otel: {
 					status: "ready",
-					serviceName: "arkelythex-api",
+					serviceName: "drenyra-api",
 				},
 				rls: {
 					status: "staged",
@@ -115,7 +115,7 @@ describe("healthModule", () => {
 			});
 		mockGetBackupReadinessStatus.mockResolvedValue({
 			status: "missing",
-			backupDir: "/tmp/arkelythex-backups",
+			backupDir: "/tmp/drenyra-backups",
 			thresholdHours: 24,
 			lastBackupAt: null,
 			lastBackupAgeHours: null,
@@ -125,7 +125,7 @@ describe("healthModule", () => {
 		mockGetOpenTelemetryReadinessStatus.mockReturnValue({
 			status: "config_invalid",
 			enabled: true,
-			serviceName: "arkelythex-api",
+			serviceName: "drenyra-api",
 			exporterEndpoint: null,
 			usingDefaultServiceName: true,
 		});

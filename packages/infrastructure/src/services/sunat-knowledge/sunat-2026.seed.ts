@@ -7,7 +7,7 @@
  * Categories: igv, detraccion, sire, ruc, bancarizacion, pcge, uit, retencion, percepcion
  */
 
-import type { NewSunatKnowledgeChunk } from "@arkelythex/persistence/schema";
+import type { NewSunatKnowledgeChunk } from "@drenyra/persistence/schema";
 
 /**
  * SUNAT_2026_SEED const.

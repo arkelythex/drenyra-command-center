@@ -10,7 +10,7 @@
 
 import type {
 	TaxAuthorityPort,
-} from "@arkelythex/application/ports/tax-authority.port";
+} from "@drenyra/application/ports/tax-authority.port";
 import type {
 	CDRInfo,
 	ConnectivityStatus,
@@ -24,9 +24,9 @@ import type {
 	RegisterSyncStatus,
 	TaxIdInfo,
 	TaxIdStatus,
-} from "@arkelythex/application/ports/tax-authority.types";
+} from "@drenyra/application/ports/tax-authority.types";
 
-import type { CountryCode } from "@arkelythex/domain";
+import type { CountryCode } from "@drenyra/domain";
 
 import { SunatApiClient } from "../sunat/SunatApiClient";
 import type { RucInfo } from "../sunat/SunatApiClient";

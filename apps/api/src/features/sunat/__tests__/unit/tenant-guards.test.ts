@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { sunatApiModule } from "../../api.module";
 
 // Mock the persistence layer
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		query: {
 			invoices: {
@@ -13,12 +13,12 @@ vi.mock("@arkelythex/persistence/client", () => ({
 	},
 }));
 
-vi.mock("@arkelythex/persistence/query", () => ({
+vi.mock("@drenyra/persistence/query", () => ({
 	eq: vi.fn((col, val) => ({ column: col, value: val })),
 	and: vi.fn((...args) => ({ and: args })),
 }));
 
-vi.mock("@arkelythex/persistence/schema", () => ({
+vi.mock("@drenyra/persistence/schema", () => ({
 	invoices: {
 		id: "invoices.id",
 		companyId: "invoices.companyId",
@@ -72,8 +72,8 @@ vi.mock(import("../../../../services/sunat.service"), () => ({
 	SunatService: sunatServiceMocks,
 }));
 
-import { db } from "@arkelythex/persistence/client";
-import { and, eq } from "@arkelythex/persistence/query";
+import { db } from "@drenyra/persistence/client";
+import { and, eq } from "@drenyra/persistence/query";
 import { SunatService } from "../../../../services/sunat.service";
 
 type InvoiceQueryResult = Awaited<

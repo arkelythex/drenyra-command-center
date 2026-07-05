@@ -1,4 +1,4 @@
-import type { AnomalySeverity } from "@arkelythex/drenyra-orchestrator";
+import type { AnomalySeverity } from "@drenyra/drenyra-orchestrator";
 
 /** Metric card displayed at the top of the dashboard */
 export interface DashboardMetric {

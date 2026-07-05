@@ -1,6 +1,6 @@
 
-<!-- Manual navigation map for Arkelythex Web (React SPA). See CODEX-MAP.md for monorepo root. -->
-# WEB-MAP — Arkelythex Web App Navigation
+<!-- Manual navigation map for Drenyra Web (React SPA). See CODEX-MAP.md for monorepo root. -->
+# WEB-MAP — Drenyra Web App Navigation
 
 **Última actualización**: 2026-06-20
 
@@ -8,7 +8,7 @@
 
 ## Start here
 - **Location:** `apps/web/`
-- **Package:** `@arkelythex/web` — React 19 SPA
+- **Package:** `@drenyra/web` — React 19 SPA
 - **Language:** TypeScript 6 + React 19 (JSX)
 - **Framework:** React 19 + Vite 8 + TanStack Router 1.103
 - **Source files:** 1,089 `.ts`/`.tsx` files

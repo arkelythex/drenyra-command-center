@@ -1,17 +1,17 @@
 import { Elysia } from "elysia";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("@arkelythex/ai/openrouter", () => ({
+vi.mock("@drenyra/ai/openrouter", () => ({
 	OpenRouterService: class OpenRouterService {
 		constructor(_config: unknown) {}
 	},
 }));
 
-vi.mock("@arkelythex/ai/model-registry", () => ({
+vi.mock("@drenyra/ai/model-registry", () => ({
 	getOpenRouterModelForTier: () => "openai/gpt-5.1",
 }));
 
-vi.mock("@arkelythex/ai/tool-bridge", () => ({
+vi.mock("@drenyra/ai/tool-bridge", () => ({
 	getOpenRouterTools: () => [],
 	streamWithToolExecution: async function* () {
 		yield { type: "done", finish_reason: "stop" } as const;

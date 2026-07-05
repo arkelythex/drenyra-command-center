@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import { eq } from 'drizzle-orm';
-import * as schema from '@arkelythex/persistence/schema';
+import * as schema from '@drenyra/persistence/schema';
 import { ensureDemoSeedContext } from './seed-demo-context';
 import { seedOperationalDemoData } from './seed-operational-demo';
 import {
@@ -9,11 +9,11 @@ import {
   economicGroups,
   firmModels,
   interCompanyTransactions,
-} from '@arkelythex/persistence/schema';
+} from '@drenyra/persistence/schema';
 
 // Ensure DATABASE_URL is loaded from .env (Bun auto-loads from project root)
 const connectionString =
-  process.env.DATABASE_URL || 'postgresql://user:password@localhost:5436/arkelythex';
+  process.env.DATABASE_URL || 'postgresql://user:password@localhost:5436/drenyra';
 
 // Create a separate connection for seeding
 const client = postgres(connectionString);

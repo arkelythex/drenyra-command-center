@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
 )
 
 func TestFormatKeyGroup(t *testing.T) {
@@ -41,7 +41,7 @@ func TestHelpContentUsesContextualKeys(t *testing.T) {
 			if !strings.Contains(got, tt.want) {
 				t.Fatalf("helpContent() = %q, want to contain %q", got, tt.want)
 			}
-			if strings.Contains(got, "arkelythex"+" run") {
+			if strings.Contains(got, "drenyra"+" run") {
 				t.Fatalf("helpContent() used legacy CLI name: %q", got)
 			}
 		})

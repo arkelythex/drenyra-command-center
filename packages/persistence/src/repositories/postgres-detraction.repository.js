@@ -1,7 +1,7 @@
 import { and, between, eq, sql } from "drizzle-orm";
-import { Detraccion, } from "@arkelythex/domain/accounting/detraccion";
-import { db } from "@arkelythex/persistence/client";
-import { detractions } from "@arkelythex/persistence/schema";
+import { Detraccion, } from "@drenyra/domain/accounting/detraccion";
+import { db } from "@drenyra/persistence/client";
+import { detractions } from "@drenyra/persistence/schema";
 export class PostgresDetractionRepository {
     async save(detraction, companyId) {
         await db.insert(detractions).values({

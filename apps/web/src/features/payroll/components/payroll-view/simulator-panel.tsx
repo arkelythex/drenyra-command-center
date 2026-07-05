@@ -80,7 +80,7 @@ export function PayrollSimulatorPanel({
 					</div>
 
 					<p className="text-label text-muted-foreground/60 leading-relaxed font-medium border-l-2 border-foreground/20 pl-3">
-						* Calculo referencial basado en 7 UIT (2026). Arkelythex ajusta automaticamente las retenciones mes a mes para evitar multas de SUNAT.
+						* Calculo referencial basado en 7 UIT (2026). Drenyra ajusta automaticamente las retenciones mes a mes para evitar multas de SUNAT.
 					</p>
 				</div>
 			</div>

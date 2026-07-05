@@ -9,4 +9,4 @@ export {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@arkelythex/ui";
+} from "@drenyra/ui";

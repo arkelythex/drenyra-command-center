@@ -17,10 +17,10 @@ describe("/health/doctor observability smoke", () => {
 		vi.clearAllMocks();
 		process.env = {
 			...originalEnv,
-			ARKELYTHEX_ENABLE_OTEL: "1",
-			OTEL_SERVICE_NAME: "arkelythex-api-local-smoke",
+			DRENYRA_ENABLE_OTEL: "1",
+			OTEL_SERVICE_NAME: "drenyra-api-local-smoke",
 			OTEL_EXPORTER_OTLP_ENDPOINT: "http://localhost:4318/v1/traces",
-			DATABASE_URL: "postgresql://local-smoke:local-smoke@localhost:5436/arkelythex",
+			DATABASE_URL: "postgresql://local-smoke:local-smoke@localhost:5436/drenyra",
 			BETTER_AUTH_SECRET: "local-smoke-secret-with-at-least-32-chars",
 		};
 	});
@@ -42,11 +42,11 @@ describe("/health/doctor observability smoke", () => {
 				loggerInfo: vi.fn(),
 				getBackupReadinessStatus: async () => ({
 					status: "ok",
-					backupDir: "/tmp/arkelythex-backups",
+					backupDir: "/tmp/drenyra-backups",
 					thresholdHours: 24,
 					lastBackupAt: "2026-05-17T00:00:00.000Z",
 					lastBackupAgeHours: 1,
-					latestArtifact: "/tmp/arkelythex-backups/arkelythex.dump",
+					latestArtifact: "/tmp/drenyra-backups/drenyra.dump",
 					source: "manifest",
 				}),
 				getRlsReadinessStatus: async () => ({
@@ -81,7 +81,7 @@ describe("/health/doctor observability smoke", () => {
 				otel: {
 					status: "ready",
 					enabled: true,
-					serviceName: "arkelythex-api-local-smoke",
+					serviceName: "drenyra-api-local-smoke",
 					exporterEndpoint: "http://localhost:4318/v1/traces",
 					usingDefaultServiceName: false,
 				},
@@ -93,7 +93,7 @@ describe("/health/doctor observability smoke", () => {
 		expect(JSON.stringify(payload)).not.toContain(process.env.DATABASE_URL);
 		expect(JSON.stringify(payload)).not.toContain(process.env.BETTER_AUTH_SECRET);
 		expect(payload.hints).not.toContain(
-			"OpenTelemetry is disabled. Set ARKELYTHEX_ENABLE_OTEL=true and OTEL_EXPORTER_OTLP_ENDPOINT to enable production tracing.",
+			"OpenTelemetry is disabled. Set DRENYRA_ENABLE_OTEL=true and OTEL_EXPORTER_OTLP_ENDPOINT to enable production tracing.",
 		);
 		expect(payload.hints).not.toContain(
 			"OpenTelemetry is enabled but OTEL_EXPORTER_OTLP_ENDPOINT is missing. Configure an OTLP endpoint before relying on traces.",

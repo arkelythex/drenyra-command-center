@@ -4,7 +4,7 @@
  * Provides publish/subscribe semantics with typed event names.
  * No fiscal-specific event types — all events are generic key-value pairs.
  *
- * @module @arkelythex/platform-core/kernel
+ * @module @drenyra/platform-core/kernel
  */
 
 /**

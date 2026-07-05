@@ -4,7 +4,7 @@
  * @module journal-entries/application/commands
  */
 
-import { DeleteJournalEntryUseCase } from "@arkelythex/application/use-cases/journal";
+import { DeleteJournalEntryUseCase } from "@drenyra/application/use-cases/journal";
 import { journalRepository } from "../_helpers";
 
 /**

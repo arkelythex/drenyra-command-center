@@ -12,12 +12,12 @@
  *   .build();
  * ```
  */
-import { Invoice, type InvoiceProps } from "@arkelythex/domain/entities/Invoice";
-import { Money, type Currency } from "@arkelythex/domain/value-objects/Money";
-import { RUC } from "@arkelythex/domain/value-objects/RUC";
-import { DNI } from "@arkelythex/domain/value-objects/DNI";
-import { DocumentSeries } from "@arkelythex/domain/value-objects/DocumentSeries";
-import type { TaxIdentifier } from "@arkelythex/domain";
+import { Invoice, type InvoiceProps } from "@drenyra/domain/entities/Invoice";
+import { Money, type Currency } from "@drenyra/domain/value-objects/Money";
+import { RUC } from "@drenyra/domain/value-objects/RUC";
+import { DNI } from "@drenyra/domain/value-objects/DNI";
+import { DocumentSeries } from "@drenyra/domain/value-objects/DocumentSeries";
+import type { TaxIdentifier } from "@drenyra/domain";
 import { BaseBuilder } from "./base.builder";
 
 const DEFAULT_INVOICE_ID = "inv_test_001";

@@ -172,7 +172,7 @@ export interface InvoiceData {
   serie: string;
   numero: string;
   fecha: string;
-  moneda: import('@arkelythex/domain').Currency;
+  moneda: import('@drenyra/domain').Currency;
   subtotal: number;
   igv: number;
   total: number;

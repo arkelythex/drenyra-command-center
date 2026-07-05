@@ -1,4 +1,4 @@
-import { REPLAY_FAILURE_CODE, toReplayFailureResult } from "@arkelythex/domain";
+import { REPLAY_FAILURE_CODE, toReplayFailureResult } from "@drenyra/domain";
 export class ReplayFiscalTruthService {
     deps;
     constructor(deps) {

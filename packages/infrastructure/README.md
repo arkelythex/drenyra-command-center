@@ -4,7 +4,7 @@ source-of-truth: packages/infrastructure/package.json
 auto-generated: false
 ---
 
-# @arkelythex/infrastructure — Infrastructure Layer
+# @drenyra/infrastructure — Infrastructure Layer
 
 **Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
@@ -16,7 +16,7 @@ auto-generated: false
 
 El paquete **infrastructure** provee las implementaciones concretas de los puertos declarados en la capa de aplicación. Contiene todas las integraciones externas: acceso a base de datos, proveedores de IA, colas de mensajes, buses de eventos, almacenamiento de archivos, procesamiento XML y clientes de APIs de terceros.
 
-Si necesitás conectar Arkelythex con algo externo — una base de datos, un LLM, SUNAT, un bucket S3 — la implementación está acá.
+Si necesitás conectar Drenyra con algo externo — una base de datos, un LLM, SUNAT, un bucket S3 — la implementación está acá.
 
 ---
 
@@ -123,7 +123,7 @@ bun run db:seed         # Sembrar datos
 
 ## 🔗 Dependencias
 
-- **Domain/App**: `@arkelythex/domain`, `@arkelythex/application`, `@arkelythex/persistence`, `@arkelythex/shared`
+- **Domain/App**: `@drenyra/domain`, `@drenyra/application`, `@drenyra/persistence`, `@drenyra/shared`
 - **Database**: `drizzle-orm`, `postgres`
 - **AI**: `@ai-sdk/anthropic`, `@ai-sdk/google`, `@ai-sdk/openai`, `@google/genai`, `@google/generative-ai`, `ai`
 - **Queues**: `bullmq`, `ioredis`

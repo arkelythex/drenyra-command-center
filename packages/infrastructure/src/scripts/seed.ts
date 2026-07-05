@@ -1,5 +1,5 @@
-import { db } from '@arkelythex/persistence/client';
-import { users, companies, transactions, businessPartners, accounts, categories } from '@arkelythex/persistence/schema';
+import { db } from '@drenyra/persistence/client';
+import { users, companies, transactions, businessPartners, accounts, categories } from '@drenyra/persistence/schema';
 import { v4 as uuidv4 } from 'uuid';
 
 type SeedAccountRef = {
@@ -33,9 +33,9 @@ const main = async () => {
   const userId = uuidv4();
   await db.insert(users).values({
     id: userId,
-    email: "demo@arkelythexfounders.com",
+    email: "demo@drenyrafounders.com",
     password: "demo-demo-demo",
-    name: "CFO Arkelythex",
+    name: "CFO Drenyra",
   });
 
   const companyId = uuidv4();
@@ -43,8 +43,8 @@ const main = async () => {
     id: companyId,
     ownerId: userId,
     ruc: "20609999999",
-    businessName: "ARKELYTHEX TECHNOLOGIES S.A.C.",
-    tradeName: "Arkelythex",
+    businessName: "DRENYRA TECHNOLOGIES S.A.C.",
+    tradeName: "Drenyra",
     isActive: true,
   });
 

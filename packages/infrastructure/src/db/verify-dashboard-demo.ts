@@ -1,11 +1,11 @@
 import { eq, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import * as schema from "@arkelythex/persistence/schema";
+import * as schema from "@drenyra/persistence/schema";
 import { DEMO_COMPANY_ID, DEMO_COMPANY_RUC } from "./seed-demo-context";
 
 const connectionString =
-	process.env.DATABASE_URL || "postgresql://user:password@localhost:5436/arkelythex";
+	process.env.DATABASE_URL || "postgresql://user:password@localhost:5436/drenyra";
 
 const client = postgres(connectionString);
 const db = drizzle(client, { schema });

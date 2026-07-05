@@ -4,10 +4,10 @@
  */
 
 import { eq } from "drizzle-orm";
-import { AISettings } from "@arkelythex/domain/entities/AISettings";
-import type { AISettingsRepository } from "@arkelythex/domain/repositories/ai-settings.repository";
-import { db } from "@arkelythex/persistence/client";
-import { userAISettings } from "@arkelythex/persistence/schema";
+import { AISettings } from "@drenyra/domain/entities/AISettings";
+import type { AISettingsRepository } from "@drenyra/domain/repositories/ai-settings.repository";
+import { db } from "@drenyra/persistence/client";
+import { userAISettings } from "@drenyra/persistence/schema";
 
 /**
  * PostgresAISettingsRepository class.

@@ -14,7 +14,7 @@ export type ArtifactType = (typeof ARTIFACT_TYPES)[keyof typeof ARTIFACT_TYPES];
 export type ArtifactStatus = "PREVIEW" | "COMMITTED" | "ROLLED_BACK" | "ERROR";
 export type ArtifactSource = "SUNAT" | "INTERNAL" | "BANK" | "AI_DERIVED";
 
-import type { Currency as CurrencyCode } from "@arkelythex/domain";
+import type { Currency as CurrencyCode } from "@drenyra/domain";
 export type ArtifactRiskLevel = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
 export interface ArtifactPolicyGate {

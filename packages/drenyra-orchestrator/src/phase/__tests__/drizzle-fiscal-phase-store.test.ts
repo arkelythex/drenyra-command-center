@@ -11,7 +11,7 @@ const { mockSelect, mockInsert, mockUpdate } = vi.hoisted(() => ({
 	mockUpdate: vi.fn(),
 }));
 
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		select: mockSelect,
 		insert: mockInsert,
@@ -19,7 +19,7 @@ vi.mock("@arkelythex/persistence/client", () => ({
 	},
 }));
 
-vi.mock("@arkelythex/persistence/schema", () => ({
+vi.mock("@drenyra/persistence/schema", () => ({
 	fiscalPhasePeriods: {
 		id: {} as never,
 		ruc: {} as never,

@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import * as schema from "@arkelythex/persistence/schema";
+import * as schema from "@drenyra/persistence/schema";
 import { DEFAULT_VISIBLE_MONTHS, DEMO_PARTNERS, DEMO_PRODUCTS, INVOICE_BLUEPRINTS, BILL_BLUEPRINTS, BANK_TRANSACTION_BLUEPRINTS, IGV_RATE, } from "./seed-operational-demo.data";
 function money(value) {
     return value.toFixed(2);

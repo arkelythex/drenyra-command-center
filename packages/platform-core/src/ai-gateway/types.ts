@@ -4,7 +4,7 @@
  * Domain-agnostic types for the AI model provider abstraction layer.
  * These interfaces will be implemented in Phase 3 (PR #3).
  *
- * @module @arkelythex/platform-core/ai-gateway
+ * @module @drenyra/platform-core/ai-gateway
  */
 
 /**

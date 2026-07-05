@@ -5,11 +5,11 @@ import {
 	lookupAllowedToolsForCapability,
 	resolvePolicyDecision,
 	type AgentRegistryEntry,
-} from "@arkelythex/ai";
+} from "@drenyra/ai";
 import {
 	normalizeLegacyCapabilityToolsLookup,
 	normalizeLegacyPolicyPreviewInput,
-} from "@arkelythex/drenyra-orchestrator";
+} from "@drenyra/drenyra-orchestrator";
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../../shared/api-response";
 

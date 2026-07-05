@@ -1,5 +1,5 @@
 /**
- * Supported UUID versions accepted by Arkelythex validators.
+ * Supported UUID versions accepted by Drenyra validators.
  *
  * @example
  * ```ts

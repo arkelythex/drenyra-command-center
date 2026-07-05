@@ -335,7 +335,7 @@ const detractions = await taxationService.getDetractions('company-id');
 ## Dependencies
 
 ### Internal
-- `@arkelythex/domain` - Money value object (for proper decimal handling)
+- `@drenyra/domain` - Money value object (for proper decimal handling)
 - `features/invoice` - Invoice data models
 - `features/bill` - Bill data models (future)
 

@@ -5,7 +5,7 @@
  * scenarios, including invoice referencing, additional amount calculation,
  * and automatic IGV (18%) application.
  *
- * NOTE: DebitNote domain entity does not yet exist in @arkelythex/domain.
+ * NOTE: DebitNote domain entity does not yet exist in @drenyra/domain.
  * This builder uses a plain props interface as the built type until the
  * domain entity is implemented.
  *
@@ -17,8 +17,8 @@
  *   .build();
  * ```
  */
-import { DebitNote, DocumentSeries, Money } from "@arkelythex/domain";
-import type { DebitNoteStatus, Currency } from "@arkelythex/domain";
+import { DebitNote, DocumentSeries, Money } from "@drenyra/domain";
+import type { DebitNoteStatus, Currency } from "@drenyra/domain";
 
 import { BaseBuilder } from "./base.builder";
 

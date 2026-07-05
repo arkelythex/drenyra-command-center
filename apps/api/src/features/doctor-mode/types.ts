@@ -1,7 +1,7 @@
 import type {
 	CheckHistoryEntry,
 	SystemCheck,
-} from "@arkelythex/persistence/schema";
+} from "@drenyra/persistence/schema";
 
 const CHECK_CATEGORIES = [
 	"database",

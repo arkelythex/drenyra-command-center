@@ -1,7 +1,7 @@
 /**
  * CANONICAL EXAMPLE — Application Layer Test
  *
- * Demonstrates recommended patterns for testing @arkelythex/application
+ * Demonstrates recommended patterns for testing @drenyra/application
  * services, commands, and queries with mock repository injection.
  *
  * Key patterns shown:

@@ -1,4 +1,4 @@
-import { db as globalDb } from "@arkelythex/persistence/client";
+import { db as globalDb } from "@drenyra/persistence/client";
 import {
 	GetProfitLossQuery,
 	GetBalanceSheetQuery,

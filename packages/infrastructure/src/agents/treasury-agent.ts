@@ -10,7 +10,7 @@
  * @see docs/architecture/financial-os-masterplan.md
  */
 
-import { fiscalTools, runToolLoop } from "@arkelythex/ai";
+import { fiscalTools, runToolLoop } from "@drenyra/ai";
 import { selectModelForTask } from "../ai/model-registry";
 
 // ============================================
@@ -329,7 +329,7 @@ Acciones Sugeridas:
 ${alert.suggestedActions.map((a, i) => `${i + 1}. ${a}`).join("\n")}
 
 ---
-Generado automáticamente por Arkelythex Treasury Agent
+Generado automáticamente por Drenyra Treasury Agent
     `.trim(),
 		priority: priorityMap[alert.severity],
 	};

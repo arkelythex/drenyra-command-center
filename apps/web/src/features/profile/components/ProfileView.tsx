@@ -110,7 +110,7 @@ export const ProfileView = () => {
             <label className="mb-2 block text-xs font-black uppercase tracking-[0.13em] text-muted-foreground">
               Organización
             </label>
-            <Input value="Arkelythex Consulting SAC" readOnly className="opacity-80" />
+            <Input value="Drenyra Consulting SAC" readOnly className="opacity-80" />
           </div>
         </div>
 

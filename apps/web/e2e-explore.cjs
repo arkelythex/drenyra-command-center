@@ -51,7 +51,7 @@ await page.route('**/api/auth/session', async route => {
       user: {
         id: 'test-user-001',
         name: 'Test User',
-        email: 'test@arkelythex.com',
+        email: 'test@drenyra.com',
         emailVerified: true,
         image: null,
       },

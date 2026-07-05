@@ -1,4 +1,4 @@
-import type { IStorageService } from "@arkelythex/application/ports/storage.port";
+import type { IStorageService } from "@drenyra/application/ports/storage.port";
 import { logger } from "../logger";
 import { LocalStorageService } from "./local-storage.service";
 import { R2StorageService } from "./r2-storage.service";

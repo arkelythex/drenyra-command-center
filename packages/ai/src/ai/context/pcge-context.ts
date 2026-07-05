@@ -1,4 +1,4 @@
 /**
- * AI pcge-context - Re-exported from @arkelythex/infrastructure
+ * AI pcge-context - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/context/pcge-context";
+export * from "@drenyra/infrastructure/ai/context/pcge-context";

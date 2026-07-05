@@ -4,7 +4,7 @@ import type {
 	FindingCategory,
 	FindingSeverity,
 	RiskScoreInput,
-} from "@arkelythex/domain/entities";
+} from "@drenyra/domain/entities";
 
 export interface JudgeAgentInput {
 	companyId: string;

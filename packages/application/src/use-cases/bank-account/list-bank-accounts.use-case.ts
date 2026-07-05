@@ -5,11 +5,11 @@
  * with optional filtering by status and currency.
  */
 
-import type { BankAccount } from "@arkelythex/domain/entities/BankAccount";
+import type { BankAccount } from "@drenyra/domain/entities/BankAccount";
 import type {
 	BankAccountFilters,
 	BankAccountRepository,
-} from "@arkelythex/domain/repositories/bank-account.repository";
+} from "@drenyra/domain/repositories/bank-account.repository";
 
 /**
  * ListBankAccountsInput interface.

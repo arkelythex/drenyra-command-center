@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/modes"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/modes"
 )
 
 // TUIConfig controls Drenyra CLI full-screen UI preferences.
@@ -35,14 +35,14 @@ func TUIPaths() (ConfigPaths, error) {
 	if err != nil {
 		return ConfigPaths{}, err
 	}
-	paths := ConfigPaths{Global: filepath.Join(home, ".arkelythex", "tui.json")}
+	paths := ConfigPaths{Global: filepath.Join(home, ".drenyra", "tui.json")}
 	if cwd, err := os.Getwd(); err == nil {
-		paths.Project = filepath.Join(cwd, ".arkelythex", "tui.json")
+		paths.Project = filepath.Join(cwd, ".drenyra", "tui.json")
 	}
 	return paths, nil
 }
 
-// LoadTUI merges ~/.arkelythex/tui.json and optional project .arkelythex/tui.json.
+// LoadTUI merges ~/.drenyra/tui.json and optional project .drenyra/tui.json.
 func LoadTUI() (TUIConfig, error) {
 	cfg := DefaultTUI()
 	paths, err := TUIPaths()

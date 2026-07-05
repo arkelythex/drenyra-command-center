@@ -1,6 +1,6 @@
 import { and, count, desc, eq, gte, inArray, lte, sql } from "drizzle-orm";
-import { BankTransaction, } from "@arkelythex/domain/entities/BankTransaction";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { BankTransaction, } from "@drenyra/domain/entities/BankTransaction";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { db } from "../client";
 import { bankAccounts, bankTransactions } from "../schema";
 import { toStableUuid } from "./support/stable-uuid";

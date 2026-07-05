@@ -6,9 +6,9 @@ import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
 	Detraccion,
 	InvalidDetraccionError,
-} from "@arkelythex/domain/accounting/detraccion";
-import type { DetractionRepository } from "@arkelythex/domain/repositories/detraction.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/accounting/detraccion";
+import type { DetractionRepository } from "@drenyra/domain/repositories/detraction.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import {
 	DetractionService,
 	type RegisterDetractionDTO,

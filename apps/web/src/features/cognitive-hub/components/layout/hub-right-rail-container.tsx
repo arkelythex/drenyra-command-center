@@ -1,7 +1,7 @@
 import { useKnowledgeStore } from '@/features/agent-swarm/hooks/useKnowledgeStore';
 import { useSkillStore } from '@/features/agent-swarm/hooks/useSkillStore';
 import { HubRightRail } from './hub-right-rail';
-import type { HubArtifact } from '@arkelythex/shared/artifacts';
+import type { HubArtifact } from '@drenyra/shared/artifacts';
 
 interface HubRightRailContainerProps {
   activeArtifact: HubArtifact | null;

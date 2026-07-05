@@ -4,7 +4,7 @@
  * @module journal-entries/application/queries
  */
 
-import { GetJournalEntriesUseCase } from "@arkelythex/application/use-cases/journal";
+import { GetJournalEntriesUseCase } from "@drenyra/application/use-cases/journal";
 import { journalRepository } from "../_helpers";
 
 export interface ListJournalEntriesInput {

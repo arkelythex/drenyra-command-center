@@ -6,7 +6,7 @@
  * @deadline Junio 2026 - Obligatorio para principales contribuyentes
  */
 
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 
 /**
  * SirePeriod type.

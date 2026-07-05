@@ -4,17 +4,17 @@ source-of-truth: packages/ai/package.json
 auto-generated: false
 ---
 
-# @arkelythex/ai — AI Facade
+# @drenyra/ai — AI Facade
 
 **Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
-**Versión**: 0.1.0 | **Dependencias**: @arkelythex/application, @arkelythex/infrastructure, @arkelythex/persistence, @arkelythex/shared
+**Versión**: 0.1.0 | **Dependencias**: @drenyra/application, @drenyra/infrastructure, @drenyra/persistence, @drenyra/shared
 
 ---
 
 ## De un vistazo
 
-`@arkelythex/ai` es la fachada unificada sobre todas las capacidades de IA en la plataforma Arkelythex: registro de modelos, gateway de proveedores, RAG, puente de herramientas, consenso de swarm, recuperación de conocimiento SUNAT y tracking de costos de IA.
+`@drenyra/ai` es la fachada unificada sobre todas las capacidades de IA en la plataforma Drenyra: registro de modelos, gateway de proveedores, RAG, puente de herramientas, consenso de swarm, recuperación de conocimiento SUNAT y tracking de costos de IA.
 
 Si tu feature necesita hablar con un LLM, extraer datos estructurados de un documento, o validar algo contra la normativa SUNAT — este es el punto de entrada.
 
@@ -76,16 +76,16 @@ packages/ai/src/
 
 | Ruta de Exportación | Descripción |
 |---------------------|-------------|
-| `@arkelythex/ai` | Exports principales |
-| `@arkelythex/ai/control-plane` | Plano de control |
-| `@arkelythex/ai/gateway` | Gateway de proveedores |
-| `@arkelythex/ai/model-registry` | Registro de modelos |
-| `@arkelythex/ai/openrouter` | Integración OpenRouter |
-| `@arkelythex/ai/provider` | Factory de proveedores |
-| `@arkelythex/ai/sunat-corpus` | Corpus SUNAT |
-| `@arkelythex/ai/tool-bridge` | Tool bridge |
-| `@arkelythex/ai/rag/types` | Tipos de RAG |
-| `@arkelythex/ai/services/*` | Servicios (costos, conocimiento, swarm) |
+| `@drenyra/ai` | Exports principales |
+| `@drenyra/ai/control-plane` | Plano de control |
+| `@drenyra/ai/gateway` | Gateway de proveedores |
+| `@drenyra/ai/model-registry` | Registro de modelos |
+| `@drenyra/ai/openrouter` | Integración OpenRouter |
+| `@drenyra/ai/provider` | Factory de proveedores |
+| `@drenyra/ai/sunat-corpus` | Corpus SUNAT |
+| `@drenyra/ai/tool-bridge` | Tool bridge |
+| `@drenyra/ai/rag/types` | Tipos de RAG |
+| `@drenyra/ai/services/*` | Servicios (costos, conocimiento, swarm) |
 
 ---
 
@@ -102,7 +102,7 @@ bun run typecheck:experimental    # Type check experimental
 
 ## 🔗 Dependencias
 
-- **Monorepo**: `@arkelythex/application`, `@arkelythex/infrastructure`, `@arkelythex/persistence`, `@arkelythex/shared`
+- **Monorepo**: `@drenyra/application`, `@drenyra/infrastructure`, `@drenyra/persistence`, `@drenyra/shared`
 - **Externas**: `@google/generative-ai`
 - **Dev**: TypeScript ^6.0.3, Vitest ^4.1.7
 

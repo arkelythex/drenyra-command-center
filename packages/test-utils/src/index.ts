@@ -1,10 +1,10 @@
 /**
- * @arkelythex/test-utils — Shared testing utilities for ARKELYTHEX monorepo.
+ * @drenyra/test-utils — Shared testing utilities for ARKELYTHEX monorepo.
  *
  * Re-exports all sub-modules for convenience.
  * For tree-shaking, import from specific sub-paths:
- *   import { InvoiceBuilder } from '@arkelythex/test-utils/builders';
- *   import { createSunatMock } from '@arkelythex/test-utils/mocks';
+ *   import { InvoiceBuilder } from '@drenyra/test-utils/builders';
+ *   import { createSunatMock } from '@drenyra/test-utils/mocks';
  */
 export * from "./builders";
 export * from "./fixtures";

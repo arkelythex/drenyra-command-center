@@ -1,4 +1,4 @@
-import type { AgentRun, ApprovalRequest, AuditEvent, AuditEventType, EvidenceItem, FiscalCase, FiscalScope } from "@arkelythex/domain/drenyra";
+import type { AgentRun, ApprovalRequest, AuditEvent, AuditEventType, EvidenceItem, FiscalCase, FiscalScope } from "@drenyra/domain/drenyra";
 export type DrenyraScopeGuard = Pick<FiscalScope, "companyId" | "companyRuc" | "period"> & {
     organizationId: string;
 };

@@ -5,11 +5,11 @@
  * gates with the Platform Core kernel. This is the ONLY place in platform-core
  * that references fiscal concepts — the kernel itself remains domain-agnostic.
  *
- * @module @arkelythex/platform-core/plugin
+ * @module @drenyra/platform-core/plugin
  * @example
  * ```ts
- * import { FiscalPlugin } from "@arkelythex/platform-core/plugin/fiscal-plugin";
- * import { PluginRegistry } from "@arkelythex/platform-core/plugin";
+ * import { FiscalPlugin } from "@drenyra/platform-core/plugin/fiscal-plugin";
+ * import { PluginRegistry } from "@drenyra/platform-core/plugin";
  *
  * const registry = new PluginRegistry();
  * registry.register(new FiscalPlugin());
@@ -33,7 +33,7 @@ import type {
  *
  * These are structural definitions — actual validation schemas
  * are provided by the fiscal vertical package
- * (@arkelythex/domain or @arkelythex/application).
+ * (@drenyra/domain or @drenyra/application).
  */
 const FISCAL_ENTITIES = [
   { name: "invoice", description: "Electronic invoice (factura electrónica)" },
@@ -331,8 +331,8 @@ const FISCAL_APPROVAL_GATES = [
  *
  * @example
  * ```ts
- * import { FiscalPlugin } from "@arkelythex/platform-core/plugin/fiscal-plugin";
- * import { PluginRegistry } from "@arkelythex/platform-core/plugin";
+ * import { FiscalPlugin } from "@drenyra/platform-core/plugin/fiscal-plugin";
+ * import { PluginRegistry } from "@drenyra/platform-core/plugin";
  *
  * const registry = new PluginRegistry();
  * registry.register(new FiscalPlugin());

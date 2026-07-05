@@ -214,7 +214,7 @@ export class ElectronicInvoiceProcessorService {
  * used by CdrProcessorService.
  */
 function mapSubmissionToOseResult(
-	result: import("@arkelythex/application/ports/tax-authority.types").InvoiceSubmissionResult,
+	result: import("@drenyra/application/ports/tax-authority.types").InvoiceSubmissionResult,
 ): {
 	success: boolean;
 	cdrContent?: string;

@@ -1,5 +1,5 @@
-import type { EventBusPort } from "@arkelythex/infrastructure/events/event.port";
-import { SecureLogger } from "@arkelythex/shared/secure-logger";
+import type { EventBusPort } from "@drenyra/infrastructure/events/event.port";
+import { SecureLogger } from "@drenyra/shared/secure-logger";
 import { cashflowRetentionHandler } from "./cashflow-retention.handler";
 
 const logger = SecureLogger.namespace("TaxationEventBootstrap");
@@ -73,7 +73,7 @@ async function connectAndGetEventBus(): Promise<EventBusPort> {
 	}>;
 
 	const { connectEventBus, getEventBus } = await loadNatsAdapter(
-		"@arkelythex/infrastructure/events/nats.adapter",
+		"@drenyra/infrastructure/events/nats.adapter",
 	);
 	await connectEventBus();
 	return getEventBus();

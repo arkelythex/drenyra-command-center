@@ -7,8 +7,8 @@
 import {
 	AccountingPeriod,
 	InvalidAccountingPeriodError,
-} from "@arkelythex/domain/accounting/accounting-period";
-import type { AccountingPeriodRepository } from "@arkelythex/domain/repositories/accounting-period.repository";
+} from "@drenyra/domain/accounting/accounting-period";
+import type { AccountingPeriodRepository } from "@drenyra/domain/repositories/accounting-period.repository";
 
 export interface OpenPeriodDTO {
 	companyId: string;

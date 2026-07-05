@@ -1,7 +1,7 @@
-import { Money } from "@arkelythex/domain";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte, sql } from "@arkelythex/persistence/query";
-import { invoices } from "@arkelythex/persistence/schema";
+import { Money } from "@drenyra/domain";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
+import { invoices } from "@drenyra/persistence/schema";
 import type {
 	ExpenseKPIs,
 	LiquidityKPIs,

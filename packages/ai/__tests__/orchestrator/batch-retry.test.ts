@@ -19,8 +19,8 @@ const { mockEnqueueForRetry, mockExecuteWithRetry, mockIsAvailable, mockRecordSu
 		mockRecordFailure: vi.fn(),
 	}));
 
-// Mock @arkelythex/infrastructure/services/error-recovery for RetryEngine/PersistentCircuitBreaker
-vi.mock("@arkelythex/infrastructure/services/error-recovery", () => ({
+// Mock @drenyra/infrastructure/services/error-recovery for RetryEngine/PersistentCircuitBreaker
+vi.mock("@drenyra/infrastructure/services/error-recovery", () => ({
 	dlqRepo: {
 		enqueue: vi.fn(),
 		dequeue: vi.fn(),

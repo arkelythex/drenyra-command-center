@@ -9,14 +9,14 @@ import { and, count, desc, eq, gte, inArray, lte, sql, type SQL } from "drizzle-
 import {
 	BankTransaction,
 	type BankTransactionType,
-} from "@arkelythex/domain/entities/BankTransaction";
+} from "@drenyra/domain/entities/BankTransaction";
 import type {
 	BankTransactionFilters,
 	BankTransactionRepository,
 	PaginatedResult,
 	PaginationOptions,
-} from "@arkelythex/domain/repositories/bank-transaction.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/repositories/bank-transaction.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { db } from "../client";
 import { bankAccounts, bankTransactions } from "../schema";
 import { toStableUuid } from "./support/stable-uuid";

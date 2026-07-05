@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY } from "@arkelythex/domain/drenyra";
+import { DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY } from "@drenyra/domain/drenyra";
 import { InMemoryDrenyraRepository } from "./in-memory-repository";
 import { DrenyraFiscalWorkInspectService } from "./fiscal-work-inspect.service";
 import { DrenyraFiscalCommandCenterService, type DrenyraActorContext } from "./service";

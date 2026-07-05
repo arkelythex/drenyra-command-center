@@ -13,7 +13,7 @@ import (
 func TestSearch(t *testing.T) {
 	dir := t.TempDir()
 	t.Setenv("HOME", dir)
-	_ = os.MkdirAll(filepath.Join(dir, ".arkelythex"), 0o755)
+	_ = os.MkdirAll(filepath.Join(dir, ".drenyra"), 0o755)
 
 	e1 := Entry{At: time.Now(), Task: "conciliar SUNAT", Status: "ok"}
 	e2 := Entry{At: time.Now(), Task: "refactor payroll", Status: "ok"}
@@ -129,7 +129,7 @@ func TestRecentLimitHandlesLongHistoryLines(t *testing.T) {
 
 func writeHistoryLines(t *testing.T, home string, lines ...string) string {
 	t.Helper()
-	dir := filepath.Join(home, ".arkelythex")
+	dir := filepath.Join(home, ".drenyra")
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		t.Fatal(err)
 	}

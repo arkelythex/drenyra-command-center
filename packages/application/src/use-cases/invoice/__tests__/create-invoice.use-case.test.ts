@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { CreateInvoiceDTO } from "../../dtos/invoice/create-invoice.dto";
-import { Invoice } from "@arkelythex/domain/entities/Invoice";
-import type { InvoiceRepository } from "@arkelythex/domain/repositories/invoice.repository";
+import { Invoice } from "@drenyra/domain/entities/Invoice";
+import type { InvoiceRepository } from "@drenyra/domain/repositories/invoice.repository";
 import { CreateInvoiceUseCase } from "../create-invoice.use-case";
 import { TEST_RUCS } from "./fixtures";
 

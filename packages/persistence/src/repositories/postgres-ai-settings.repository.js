@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
-import { AISettings } from "@arkelythex/domain/entities/AISettings";
-import { db } from "@arkelythex/persistence/client";
-import { userAISettings } from "@arkelythex/persistence/schema";
+import { AISettings } from "@drenyra/domain/entities/AISettings";
+import { db } from "@drenyra/persistence/client";
+import { userAISettings } from "@drenyra/persistence/schema";
 export class PostgresAISettingsRepository {
     async findByUserId(userId) {
         const result = await db

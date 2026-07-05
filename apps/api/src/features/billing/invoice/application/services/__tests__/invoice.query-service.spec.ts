@@ -16,7 +16,7 @@ type InvoiceSingleResult = NonNullable<
 >;
 
 // Mock persistence + schema
-vi.mock("@arkelythex/persistence/client", () => ({
+vi.mock("@drenyra/persistence/client", () => ({
 	db: {
 		query: {
 			invoices: {
@@ -27,7 +27,7 @@ vi.mock("@arkelythex/persistence/client", () => ({
 	},
 }));
 
-vi.mock("@arkelythex/persistence/query", () => ({
+vi.mock("@drenyra/persistence/query", () => ({
 	eq: vi.fn(),
 	and: vi.fn(),
 	gte: vi.fn(),
@@ -35,7 +35,7 @@ vi.mock("@arkelythex/persistence/query", () => ({
 	like: vi.fn(),
 }));
 
-vi.mock("@arkelythex/persistence/schema", () => ({
+vi.mock("@drenyra/persistence/schema", () => ({
 	invoices: {},
 }));
 
@@ -58,7 +58,7 @@ describe("InvoiceQueryService", () => {
 				},
 			];
 
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			(
 				db.query.invoices.findMany as unknown as ReturnType<typeof vi.fn>
 			).mockResolvedValue(mockInvoices as InvoiceListResult);
@@ -70,7 +70,7 @@ describe("InvoiceQueryService", () => {
 		});
 
 		it("should return empty array when no invoices match", async () => {
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			(
 				db.query.invoices.findMany as unknown as ReturnType<typeof vi.fn>
 			).mockResolvedValue([]);
@@ -98,7 +98,7 @@ describe("InvoiceQueryService", () => {
 				},
 			];
 
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			(
 				db.query.invoices.findMany as unknown as ReturnType<typeof vi.fn>
 			).mockResolvedValue(mockInvoices as InvoiceListResult);
@@ -122,7 +122,7 @@ describe("InvoiceQueryService", () => {
 				dueDate: new Date("2026-02-15"),
 			};
 
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			(
 				db.query.invoices.findFirst as unknown as ReturnType<typeof vi.fn>
 			).mockResolvedValue(mockInvoice as InvoiceSingleResult);
@@ -134,7 +134,7 @@ describe("InvoiceQueryService", () => {
 		});
 
 		it("should return null when invoice not found", async () => {
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			(
 				db.query.invoices.findFirst as unknown as ReturnType<typeof vi.fn>
 			).mockResolvedValue(null);
@@ -145,7 +145,7 @@ describe("InvoiceQueryService", () => {
 		});
 
 		it("should escape LIKE pattern special characters", async () => {
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			(
 				db.query.invoices.findFirst as unknown as ReturnType<typeof vi.fn>
 			).mockResolvedValue(null);
@@ -168,7 +168,7 @@ describe("InvoiceQueryService", () => {
 				},
 			];
 
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			(
 				db.query.invoices.findMany as unknown as ReturnType<typeof vi.fn>
 			).mockResolvedValue(mockInvoices as InvoiceListResult);
@@ -194,7 +194,7 @@ describe("InvoiceQueryService", () => {
 				},
 			];
 
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			(
 				db.query.invoices.findMany as unknown as ReturnType<typeof vi.fn>
 			).mockResolvedValue(mockInvoices as InvoiceListResult);
@@ -212,7 +212,7 @@ describe("InvoiceQueryService", () => {
 		});
 
 		it("should return empty array when no match", async () => {
-			const { db } = await import("@arkelythex/persistence/client");
+			const { db } = await import("@drenyra/persistence/client");
 			(
 				db.query.invoices.findMany as unknown as ReturnType<typeof vi.fn>
 			).mockResolvedValue([]);

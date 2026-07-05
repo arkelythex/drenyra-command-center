@@ -10,7 +10,7 @@ Rebrand the Drenyra web design system from **Glass & Steel / Ember Noir** to **F
 
 ## In scope
 
-- Token unification (`tokens.dtcg.json` → web + `@arkelythex/ui`)
+- Token unification (`tokens.dtcg.json` → web + `@drenyra/ui`)
 - DESIGN.md v3 agent contract + anti-patterns
 - Primitives v3 (Button, Card, Panel, SurfacePanel)
 - `FiscalEditorialShell` (merge MainLayout + CodexShell)

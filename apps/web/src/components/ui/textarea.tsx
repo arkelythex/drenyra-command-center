@@ -1,3 +1,3 @@
 "use client";
 
-export { Textarea, type TextareaProps } from "@arkelythex/ui";
+export { Textarea, type TextareaProps } from "@drenyra/ui";

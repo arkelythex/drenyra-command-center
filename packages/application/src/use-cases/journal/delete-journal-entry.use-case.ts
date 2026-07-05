@@ -3,7 +3,7 @@
  * Orchestrates the deletion of a journal entry
  */
 
-import type { JournalEntryRepository } from "@arkelythex/domain/repositories/journal-entry.repository";
+import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
 
 /**
  * DeleteJournalEntryUseCase class.

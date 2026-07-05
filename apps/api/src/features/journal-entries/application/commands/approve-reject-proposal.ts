@@ -2,7 +2,7 @@
  * Approve or reject journal entry proposals (PR-style accounting flow).
  */
 
-import { UpdateJournalEntryStatusUseCase } from "@arkelythex/application/use-cases/journal";
+import { UpdateJournalEntryStatusUseCase } from "@drenyra/application/use-cases/journal";
 import { journalRepository } from "../_helpers";
 
 export async function approveJournalEntryProposal(

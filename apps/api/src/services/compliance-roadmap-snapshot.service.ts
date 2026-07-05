@@ -1,6 +1,6 @@
-import { invoices, transactions } from "@arkelythex/persistence/schema";
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, gte, lte, sql } from "@arkelythex/persistence/query";
+import { invoices, transactions } from "@drenyra/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
 import type {
 	ComplianceRoadmapAction,
 	ComplianceRoadmapActionId,

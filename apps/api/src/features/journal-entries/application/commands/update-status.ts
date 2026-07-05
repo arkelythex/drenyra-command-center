@@ -4,7 +4,7 @@
  * @module journal-entries/application/commands
  */
 
-import { UpdateJournalEntryStatusUseCase } from "@arkelythex/application/use-cases/journal";
+import { UpdateJournalEntryStatusUseCase } from "@drenyra/application/use-cases/journal";
 import { journalRepository } from "../_helpers";
 
 export type JournalEntryStatus = "mayorizado" | "declarado";

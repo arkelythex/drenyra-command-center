@@ -1,6 +1,6 @@
-import { db } from "@arkelythex/persistence/client";
-import { and, eq, or } from "@arkelythex/persistence/query";
-import { transactions } from "@arkelythex/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { and, eq, or } from "@drenyra/persistence/query";
+import { transactions } from "@drenyra/persistence/schema";
 import type { Invoice } from "../../domain/invoice.entity";
 
 /**

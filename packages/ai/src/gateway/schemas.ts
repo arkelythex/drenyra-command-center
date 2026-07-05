@@ -4,7 +4,7 @@
  * Input validation schemas for the unified LLM gateway API.
  * Uses Zod 4 patterns (top-level validators, error param).
  *
- * @module @arkelythex/ai/gateway
+ * @module @drenyra/ai/gateway
  */
 
 import { z } from "zod";

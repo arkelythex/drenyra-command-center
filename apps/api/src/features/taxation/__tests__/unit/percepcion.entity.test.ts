@@ -1,4 +1,4 @@
-import { Money } from "@arkelythex/domain/value-objects/Money";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { describe, expect, it } from "vitest";
 import { Percepcion } from "../../domain/entities/percepcion.entity";
 import { PercepcionApplied } from "../../domain/events/percepcion-applied.event";

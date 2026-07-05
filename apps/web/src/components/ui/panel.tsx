@@ -3,9 +3,9 @@
 import type { HTMLAttributes, Ref } from "react";
 import { cn } from "@/lib/utils";
 
-export { Panel, PanelHeader, type PanelProps } from "@arkelythex/ui";
+export { Panel, PanelHeader, type PanelProps } from "@drenyra/ui";
 
-// Local-only panel subcomponents not yet in @arkelythex/ui
+// Local-only panel subcomponents not yet in @drenyra/ui
 type PanelBodyProps = HTMLAttributes<HTMLDivElement> & {
 	ref?: Ref<HTMLDivElement>;
 };

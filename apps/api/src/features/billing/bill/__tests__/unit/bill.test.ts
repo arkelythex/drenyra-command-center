@@ -3,7 +3,7 @@
  * Unit tests for Bill domain logic
  */
 
-import { Money } from "@arkelythex/domain";
+import { Money } from "@drenyra/domain";
 import { beforeEach, describe, expect, it } from "vitest";
 import { Bill, type BillItem } from "../../domain/bill.entity";
 

@@ -5,7 +5,7 @@
  */
 
 import { Job, Worker } from "bullmq";
-import { FiscalNightlyRunUseCase } from "@arkelythex/application/use-cases/fiscal-agent/fiscal-nightly-run.use-case";
+import { FiscalNightlyRunUseCase } from "@drenyra/application/use-cases/fiscal-agent/fiscal-nightly-run.use-case";
 import { getRedisConnection, isRedisConfigured } from "../queues/redis";
 import type { FiscalAgentJobData } from "../queues/fiscal-agent.queue";
 import { loggers } from "../logger";

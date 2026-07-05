@@ -1,4 +1,4 @@
-import type { AgentRunOutput, FiscalCase, DrenyraAgentType } from "@arkelythex/domain/drenyra";
+import type { AgentRunOutput, FiscalCase, DrenyraAgentType } from "@drenyra/domain/drenyra";
 
 const AGENT_LABEL: Record<DrenyraAgentType, string> = {
 	CPE_AGENT: "CPE",

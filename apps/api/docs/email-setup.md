@@ -1,12 +1,12 @@
 # 📧 Email Configuration Guide
 
-Complete guide to configure email sending for ARKELYTHEX authentication and invoice notifications.
+Complete guide to configure email sending for DRENYRA authentication and invoice notifications.
 
 ---
 
 ## 📋 Overview
 
-ARKELYTHEX uses **Nodemailer** for email delivery with support for:
+DRENYRA uses **Nodemailer** for email delivery with support for:
 - ✅ Email verification (signup)
 - ✅ Password reset
 - ✅ Welcome emails
@@ -30,8 +30,8 @@ SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-app-password
 
 # From Address
-SMTP_FROM_NAME=Arkelythex
-SMTP_FROM_EMAIL=noreply@arkelythexfounders.com
+SMTP_FROM_NAME=Drenyra
+SMTP_FROM_EMAIL=noreply@drenyrafounders.com
 ```
 
 ### 2. SMTP Provider Options
@@ -172,7 +172,7 @@ import { EmailService } from '@/services/email.service';
 
 await EmailService.sendVerificationEmail('user@example.com', {
   userName: 'John Doe',
-  verificationUrl: 'https://app.arkelythexfounders.com/verify?token=abc123',
+  verificationUrl: 'https://app.drenyrafounders.com/verify?token=abc123',
   expiresIn: '24 horas',
 });
 ```
@@ -182,7 +182,7 @@ await EmailService.sendVerificationEmail('user@example.com', {
 ```typescript
 await EmailService.sendPasswordResetEmail('user@example.com', {
   userName: 'John Doe',
-  resetUrl: 'https://app.arkelythexfounders.com/reset?token=xyz456',
+  resetUrl: 'https://app.drenyrafounders.com/reset?token=xyz456',
   expiresIn: '1 hora',
 });
 ```
@@ -193,7 +193,7 @@ await EmailService.sendPasswordResetEmail('user@example.com', {
 await EmailService.sendWelcomeEmail('user@example.com', {
   userName: 'John Doe',
   ruc: '20123456789',
-  loginUrl: 'https://app.arkelythexfounders.com/login',
+  loginUrl: 'https://app.drenyrafounders.com/login',
 });
 ```
 
@@ -242,7 +242,7 @@ SMTP_REJECT_UNAUTHORIZED=false  # Development only!
 
 3. **DMARC:** Add TXT record
    ```
-   v=DMARC1; p=quarantine; rua=mailto:dmarc@arkelythexfounders.com
+   v=DMARC1; p=quarantine; rua=mailto:dmarc@drenyrafounders.com
    ```
 
 4. **Warm up domain:** Start with low volume, gradually increase
@@ -324,4 +324,4 @@ Before deploying to production:
 ---
 
 **Last updated:** January 25, 2026
-**Maintained by:** Arkelythex Team
+**Maintained by:** Drenyra Team

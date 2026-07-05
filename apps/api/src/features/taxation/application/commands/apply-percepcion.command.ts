@@ -1,7 +1,7 @@
-import type { PercepcionType } from "@arkelythex/domain/services/TaxCalculator";
-import { Money } from "@arkelythex/domain/value-objects/Money";
-import type { EventBusPort } from "@arkelythex/infrastructure/events/event.port";
-import { SecureLogger } from "@arkelythex/shared/secure-logger";
+import type { PercepcionType } from "@drenyra/domain/services/TaxCalculator";
+import { Money } from "@drenyra/domain/value-objects/Money";
+import type { EventBusPort } from "@drenyra/infrastructure/events/event.port";
+import { SecureLogger } from "@drenyra/shared/secure-logger";
 import { Percepcion } from "../../domain/entities/percepcion.entity";
 import type { PercepcionApplied } from "../../domain/events/percepcion-applied.event";
 import { percepcionRepository } from "../../infrastructure/percepcion.repository";

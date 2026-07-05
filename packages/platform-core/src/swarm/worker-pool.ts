@@ -7,7 +7,7 @@
  * No Worker Threads — this is an in-process scheduler suitable for
  * all JavaScript runtimes (Bun, Node.js, Deno).
  *
- * @module @arkelythex/platform-core/swarm
+ * @module @drenyra/platform-core/swarm
  */
 
 import type { TaskDefinition } from "../kernel/types.js";

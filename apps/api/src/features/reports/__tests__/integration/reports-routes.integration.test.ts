@@ -5,7 +5,7 @@
  */
 
 import { randomUUID } from "node:crypto";
-import { customers, db, eq, invoices } from "@arkelythex/infrastructure";
+import { customers, db, eq, invoices } from "@drenyra/infrastructure";
 import { Elysia } from "elysia";
 import { afterEach, describe, expect, it } from "vitest";
 import { reportsModule } from "../../index";

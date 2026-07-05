@@ -11,12 +11,12 @@ import {
 	BankAccount,
 	type BankAccountType,
 	type Currency,
-} from "@arkelythex/domain/entities/BankAccount";
+} from "@drenyra/domain/entities/BankAccount";
 import type {
 	BankAccountFilters,
 	BankAccountRepository,
-} from "@arkelythex/domain/repositories/bank-account.repository";
-import { Money } from "@arkelythex/domain/value-objects/Money";
+} from "@drenyra/domain/repositories/bank-account.repository";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { db } from "../client";
 import { bankAccounts } from "../schema";
 import {

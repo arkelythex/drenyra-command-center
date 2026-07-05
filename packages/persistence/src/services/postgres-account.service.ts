@@ -6,9 +6,9 @@
  */
 
 import { eq, inArray } from "drizzle-orm";
-import type { AccountService } from "@arkelythex/application/use-cases/journal/create-journal-entry.use-case";
-import { db } from "@arkelythex/persistence/client";
-import { accounts } from "@arkelythex/persistence/schema";
+import type { AccountService } from "@drenyra/application/use-cases/journal/create-journal-entry.use-case";
+import { db } from "@drenyra/persistence/client";
+import { accounts } from "@drenyra/persistence/schema";
 
 type AccountInfo = { code: string; name: string };
 

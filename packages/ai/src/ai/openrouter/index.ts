@@ -1,4 +1,4 @@
 /**
- * AI index - Re-exported from @arkelythex/infrastructure
+ * AI index - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/openrouter";
+export * from "@drenyra/infrastructure/ai/openrouter";

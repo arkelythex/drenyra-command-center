@@ -41,9 +41,9 @@ function isTruthy(value: string | undefined): boolean {
  * ```
  */
 export function getOpenTelemetryReadinessStatus(): OpenTelemetryReadiness {
-	const enabled = isTruthy(process.env.ARKELYTHEX_ENABLE_OTEL);
+	const enabled = isTruthy(process.env.DRENYRA_ENABLE_OTEL);
 	const rawServiceName = process.env.OTEL_SERVICE_NAME?.trim() ?? "";
-	const serviceName = rawServiceName || "arkelythex-api";
+	const serviceName = rawServiceName || "drenyra-api";
 	const exporterEndpoint = process.env.OTEL_EXPORTER_OTLP_ENDPOINT?.trim() || null;
 
 	if (!enabled) {

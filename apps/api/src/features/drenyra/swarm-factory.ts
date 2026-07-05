@@ -23,8 +23,8 @@ import {
 	DomainAgent,
 	ApprovalGateEngine,
 	ApprovalStore,
-} from "@arkelythex/drenyra-orchestrator";
-import type { Agent, LatinAgentId } from "@arkelythex/drenyra-orchestrator";
+} from "@drenyra/drenyra-orchestrator";
+import type { Agent, LatinAgentId } from "@drenyra/drenyra-orchestrator";
 
 // ---------------------------------------------------------------------------
 // Types

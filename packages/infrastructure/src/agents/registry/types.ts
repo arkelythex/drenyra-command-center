@@ -1,7 +1,7 @@
 /**
  * Agent Types
  *
- * Core types for the Arkelythex agent system.
+ * Core types for the Drenyra agent system.
  */
 
 export interface AgentConfig {

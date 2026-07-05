@@ -5,8 +5,8 @@ import {
 	type FiscalMemoryProps,
 	type FiscalMemoryScope,
 	type FiscalMemorySeverity,
-} from "@arkelythex/domain/fiscal-memory";
-import type { FiscalMemoryRepository } from "@arkelythex/domain/repositories/fiscal-memory.repository";
+} from "@drenyra/domain/fiscal-memory";
+import type { FiscalMemoryRepository } from "@drenyra/domain/repositories/fiscal-memory.repository";
 
 const createFiscalMemoryId = (): string =>
 	`fiscal-memory-${Date.now()}-${Math.random().toString(36).slice(2)}`;

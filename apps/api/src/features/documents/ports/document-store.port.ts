@@ -1,6 +1,6 @@
 import type { TenantScopeInput } from "../handlers/tenant-scope";
 import type { InferSelectModel } from "drizzle-orm";
-import { documents } from "@arkelythex/persistence/schema";
+import { documents } from "@drenyra/persistence/schema";
 
 /**
  * DocumentFilters interface.

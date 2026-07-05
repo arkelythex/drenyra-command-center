@@ -4,10 +4,10 @@
  * Split from 801 lines → 3 modules (types, shadow, matching) + facade.
  */
 
-import { bankTransactions } from "@arkelythex/persistence/schema";
-import { db } from "@arkelythex/persistence/client";
-import { eq } from "@arkelythex/persistence/query";
-import { SecureLogger } from "@arkelythex/shared/secure-logger";
+import { bankTransactions } from "@drenyra/persistence/schema";
+import { db } from "@drenyra/persistence/client";
+import { eq } from "@drenyra/persistence/query";
+import { SecureLogger } from "@drenyra/shared/secure-logger";
 import { ReconciliationWorkerClient } from "../../../../shared/clients/reconciliation-worker.client";
 import type { MatchCandidate } from "../../domain/services/matching-strategy";
 import {

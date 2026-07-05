@@ -9,7 +9,7 @@
  * instead of relying on LLM training data (which may be outdated).
  */
 
-import { sunatKnowledgeService } from "@arkelythex/ai/services/sunat-knowledge";
+import { sunatKnowledgeService } from "@drenyra/ai/services/sunat-knowledge";
 import { z } from "zod";
 import type { Skill } from "../skill.types";
 

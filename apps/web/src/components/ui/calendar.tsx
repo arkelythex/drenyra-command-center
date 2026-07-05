@@ -1,3 +1,3 @@
 "use client";
 
-export { Calendar, type CalendarProps } from "@arkelythex/ui";
+export { Calendar, type CalendarProps } from "@drenyra/ui";

@@ -10,8 +10,8 @@
       "@/hooks/*": ["./src/hooks/*"],
       "@/context/*": ["./src/context/*"],
       "@/store/*": ["./src/store/*"],
-      "@arkelythex/shared": ["../../packages/shared/src/index.ts"],
-      "@arkelythex/shared/*": ["../../packages/shared/src/*"]
+      "@drenyra/shared": ["../../packages/shared/src/index.ts"],
+      "@drenyra/shared/*": ["../../packages/shared/src/*"]
     }
   },
   "include": ["src"]

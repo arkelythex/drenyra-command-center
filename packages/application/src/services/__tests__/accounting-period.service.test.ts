@@ -6,8 +6,8 @@ import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
 	AccountingPeriod,
 	InvalidAccountingPeriodError,
-} from "@arkelythex/domain/accounting/accounting-period";
-import type { AccountingPeriodRepository } from "@arkelythex/domain/repositories/accounting-period.repository";
+} from "@drenyra/domain/accounting/accounting-period";
+import type { AccountingPeriodRepository } from "@drenyra/domain/repositories/accounting-period.repository";
 import { AccountingPeriodService } from "../accounting-period.service";
 
 describe("AccountingPeriodService", () => {

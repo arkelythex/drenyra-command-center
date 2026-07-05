@@ -4,7 +4,7 @@
 
 **Drenyra CLI** — production terminal companion for **Drenyra App** (Go + Charm TUI).
 
-Drenyra App es la aplicación React agente con la UI de producto pulida. Drenyra CLI conecta flujos de terminal al mismo harness vía HTTP: model routing, agentes fiscales, aprobaciones, automation, RPC, y operaciones de command center. El grafo de delegación y los handlers viven en TypeScript (`packages/arkelythex-harness`).
+Drenyra App es la aplicación React agente con la UI de producto pulida. Drenyra CLI conecta flujos de terminal al mismo harness vía HTTP: model routing, agentes fiscales, aprobaciones, automation, RPC, y operaciones de command center. El grafo de delegación y los handlers viven en TypeScript (`packages/drenyra-harness`).
 
 ## Quick start
 
@@ -40,7 +40,7 @@ cd apps/api && bun src/index.ts
 | `work inspect <workItemId>`                       | Inspect one fiscal work item through the shared backend contract    |
 | `config show\|path\|validate`                     | Configuration                                                       |
 | `memory show\|status\|add\|replace\|remove\|edit` | Hermes-style § entries + config limits                              |
-| `history list\|search`                            | Session recall (`~/.arkelythex/history.jsonl`)                      |
+| `history list\|search`                            | Session recall (`~/.drenyra/history.jsonl`)                      |
 | `command-audit list`                              | Inspect scoped command capability audit events                      |
 | `completion bash\|zsh\|fish`                      | Shell completions                                                   |
 | `version`                                         | Build metadata                                                      |
@@ -83,12 +83,12 @@ bun run go:drenyra:test
 
 ## Workflow ownership
 
-Drenyra/Arkelythex product workflows live in Drenyra CLI, not project-local Pi commands. Use `drenyra workflow list` and `drenyra workflow run <workflow-id> [context...]` for built-in workflows. See the migration matrix in [drenyra-cli.md](../../../docs/05-development/drenyra-cli.md#migration-from-project-local-pi-customizations). Pi/Gentleman remains the generic agent harness; Drenyra CLI owns product-facing fiscal, review, architecture, and command-center workflows.
+Drenyra/Drenyra product workflows live in Drenyra CLI, not project-local Pi commands. Use `drenyra workflow list` and `drenyra workflow run <workflow-id> [context...]` for built-in workflows. See the migration matrix in [drenyra-cli.md](../../../docs/05-development/drenyra-cli.md#migration-from-project-local-pi-customizations). Pi/Gentleman remains the generic agent harness; Drenyra CLI owns product-facing fiscal, review, architecture, and command-center workflows.
 
 ## Docs
 
 - [drenyra-cli.md](../../../docs/05-development/drenyra-cli.md)
-- [arkelythex-harness-runtime.md](../../../docs/05-development/arkelythex-harness-runtime.md)
-- [arkelythex-memory-architecture.md](../../../docs/05-development/arkelythex-memory-architecture.md)
+- [drenyra-harness-runtime.md](../../../docs/05-development/drenyra-harness-runtime.md)
+- [drenyra-memory-architecture.md](../../../docs/05-development/drenyra-memory-architecture.md)
 - [engram-project-canonical.md](../../../docs/05-development/engram-project-canonical.md)
-- [arkelythex-tui-antigravity-audit.md](../../../docs/05-development/arkelythex-tui-antigravity-audit.md)
+- [drenyra-tui-antigravity-audit.md](../../../docs/05-development/drenyra-tui-antigravity-audit.md)

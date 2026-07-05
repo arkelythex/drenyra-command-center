@@ -2,7 +2,7 @@
  * LLM Gateway — Operational routes.
  * Handles GET /rate-limit, /metrics, /costs
  */
-import { type LLMProvider, llmGateway } from "@arkelythex/ai/gateway";
+import { type LLMProvider, llmGateway } from "@drenyra/ai/gateway";
 import { Elysia, t } from "elysia";
 import { authorizeAiSurface } from "../security/ai-surface-access";
 import { toHeaderRecord } from "./helpers";

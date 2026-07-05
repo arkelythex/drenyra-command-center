@@ -1,5 +1,5 @@
-import type { EventBusPort } from "@arkelythex/infrastructure/events/event.port";
-import { SecureLogger } from "@arkelythex/shared/secure-logger";
+import type { EventBusPort } from "@drenyra/infrastructure/events/event.port";
+import { SecureLogger } from "@drenyra/shared/secure-logger";
 import { retencionRepository } from "../../infrastructure/retencion.repository";
 import {
 	mapDeclareDomainError,

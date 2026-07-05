@@ -1,4 +1,4 @@
-import type { CloseChecklistRepository } from "@arkelythex/domain/repositories/close-checklist.repository";
+import type { CloseChecklistRepository } from "@drenyra/domain/repositories/close-checklist.repository";
 
 export class MonthlyCloseController {
 	constructor(private readonly repo: CloseChecklistRepository) {}

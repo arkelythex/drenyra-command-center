@@ -52,6 +52,6 @@ export const useSkillStore = create<SkillStore>()(
       })),
       getSkillsByCategory: (category) => get().skills.filter(s => s.category === category)
     }),
-    { name: 'arkelythex-skills-v1' }
+    { name: 'drenyra-skills-v1' }
   )
 );

@@ -3,8 +3,8 @@
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { BankAccount } from "@arkelythex/domain/entities/BankAccount";
-import type { BankAccountRepository } from "@arkelythex/domain/repositories/bank-account.repository";
+import { BankAccount } from "@drenyra/domain/entities/BankAccount";
+import type { BankAccountRepository } from "@drenyra/domain/repositories/bank-account.repository";
 import { CreateBankAccountUseCase } from "../create-bank-account.use-case";
 
 // Mock repository

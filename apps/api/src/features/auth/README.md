@@ -1,6 +1,6 @@
 # 🔐 Auth Feature
 
-User authentication and authorization for ARKELYTHEX.
+User authentication and authorization for DRENYRA.
 
 **Status:** ✅ Production-Ready
 **Last Updated:** 2026-06-20  
@@ -147,7 +147,7 @@ flowchart TD
 ## Dependencies
 
 ### Internal
-- `@arkelythex/infrastructure` - Database, Drizzle schemas
+- `@drenyra/infrastructure` - Database, Drizzle schemas
 - `services/sunat.service` - RUC validation (SUNAT API)
 
 ### External
@@ -230,7 +230,7 @@ DATABASE_URL="postgresql://..."
 # Email (for verification and password reset)
 SMTP_HOST="smtp.gmail.com"
 SMTP_PORT="587"
-SMTP_USER="noreply@arkelythexfounders.com"
+SMTP_USER="noreply@drenyrafounders.com"
 SMTP_PASSWORD="..."
 ```
 
@@ -242,7 +242,7 @@ Add production frontend URL to `auth.config.ts`:
 trustedOrigins: [
   "http://localhost:3000",      // API server
   "http://localhost:5173",      // Vite dev
-  "https://app.arkelythexfounders.com",    // Production
+  "https://app.drenyrafounders.com",    // Production
 ],
 ```
 

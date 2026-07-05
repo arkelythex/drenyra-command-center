@@ -1,4 +1,4 @@
-import type { InvoiceFilters } from "@arkelythex/domain/repositories/invoice.repository";
+import type { InvoiceFilters } from "@drenyra/domain/repositories/invoice.repository";
 import { businessPartners, invoiceItems, invoices } from "../../schema";
 
 export interface ModularInvoiceWithRelations {

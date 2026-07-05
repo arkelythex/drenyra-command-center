@@ -6,7 +6,7 @@
  * @module cashflow/application/queries
  */
 
-import type { Currency } from "@arkelythex/domain";
+import type { Currency } from "@drenyra/domain";
 import {
 	type CashflowDataResult,
 	type GetCashflowDataInput,

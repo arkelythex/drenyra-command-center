@@ -37,6 +37,8 @@ export interface DiffDetailDTO extends DiffDTO {
 	changes: DiffChangeDTO[];
 	impact: DiffImpactDTO;
 	evidenceIds: string[];
+	/** Reporte de verificación intención↔acción, cuando el diff tiene un agent run asociado */
+	verificationReport?: import("@/stores/agentic-shell.store").VerificationReport;
 	reviewerId?: string;
 	rejectionReason?: string;
 	pendingQuestion?: string;

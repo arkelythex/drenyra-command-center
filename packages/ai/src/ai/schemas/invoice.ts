@@ -1,4 +1,4 @@
 /**
- * AI invoice - Re-exported from @arkelythex/infrastructure
+ * AI invoice - Re-exported from @drenyra/infrastructure
  */
-export * from "@arkelythex/infrastructure/ai/schemas/invoice";
+export * from "@drenyra/infrastructure/ai/schemas/invoice";

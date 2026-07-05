@@ -3,7 +3,7 @@ import {
   desc,
   eq,
   invoices,
-} from '@arkelythex/infrastructure';
+} from '@drenyra/infrastructure';
 import { SIREService } from '../src/services/sire.service';
 
 const DEMO_COMPANY_ID = '00000000-0000-0000-0000-000000000001';

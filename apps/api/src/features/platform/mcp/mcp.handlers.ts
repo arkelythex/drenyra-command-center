@@ -7,23 +7,26 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import type { EvidenceGraphRepository } from "@arkelythex/domain";
-import { buildDrenyraDualSurfaceContract } from "@arkelythex/domain/drenyra";
-import type { ArkelythexMcpScope } from "@arkelythex/domain";
+import type { EvidenceGraphRepository } from "@drenyra/domain";
+import { buildDrenyraDualSurfaceContract } from "@drenyra/domain/drenyra";
+import type { DrenyraMcpScope } from "@drenyra/agents";
 import type { DrenyraBrainRepository } from "../../drenyra/brain/brain.repository";
 
 export interface PlatformMcpInvokeInput {
 	toolName: string;
-	scope: ArkelythexMcpScope;
+	scope: DrenyraMcpScope;
 	arguments: Record<string, unknown>;
 }
 
 export interface PlatformMcpHandlersDeps {
 	brainRepository?: Pick<DrenyraBrainRepository, "listThreads">;
-	evidenceGraph?: Pick<EvidenceGraphRepository, "findNodeById" | "findEdgesFromNode">;
+	evidenceGraph?: Pick<
+		EvidenceGraphRepository,
+		"findNodeById" | "findEdgesFromNode"
+	>;
 }
 
-function toDrenyraScope(scope: ArkelythexMcpScope) {
+function toDrenyraScope(scope: DrenyraMcpScope) {
 	return {
 		organizationId: scope.organizationId,
 		companyId: scope.companyId,
@@ -33,7 +36,7 @@ function toDrenyraScope(scope: ArkelythexMcpScope) {
 	};
 }
 
-function toFiscalTruthScope(scope: ArkelythexMcpScope) {
+function toFiscalTruthScope(scope: DrenyraMcpScope) {
 	const parsedOrganizationId = Number.parseInt(scope.organizationId, 10);
 	return {
 		companyId: scope.companyId,
@@ -48,7 +51,9 @@ function toFiscalTruthScope(scope: ArkelythexMcpScope) {
 	};
 }
 
-function redactedMetadata(metadata: Record<string, unknown>): Record<string, unknown> {
+function redactedMetadata(
+	metadata: Record<string, unknown>,
+): Record<string, unknown> {
 	const allowedKeys = [
 		"platform",
 		"threadId",
@@ -67,13 +72,18 @@ function redactedMetadata(metadata: Record<string, unknown>): Record<string, unk
 	);
 }
 
-function readStringArg(args: Record<string, unknown>, key: string): string | null {
+function readStringArg(
+	args: Record<string, unknown>,
+	key: string,
+): string | null {
 	const value = args[key];
 	return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
 export function createPlatformMcpHandlers(deps: PlatformMcpHandlersDeps = {}) {
-	return async function invoke(input: PlatformMcpInvokeInput): Promise<unknown> {
+	return async function invoke(
+		input: PlatformMcpInvokeInput,
+	): Promise<unknown> {
 		switch (input.toolName) {
 			case "drenyra.contract.read":
 				return buildDrenyraDualSurfaceContract();

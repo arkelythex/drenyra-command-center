@@ -79,7 +79,7 @@ export function KeyboardShortcutsHelp({
 					</DialogTitle>
 					<DialogDescription>
 						Referencia rápida de acciones globales para navegar y operar
-						Arkelythex con menor fricción.
+						Drenyra con menor fricción.
 					</DialogDescription>
 				</DialogHeader>
 

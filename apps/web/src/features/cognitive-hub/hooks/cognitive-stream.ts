@@ -1,4 +1,4 @@
-import type { AgentEvent } from "@arkelythex/shared";
+import type { AgentEvent } from "@drenyra/shared";
 /**
  * Cognitive Stream — barrel module.
  *
@@ -7,6 +7,8 @@ import type { AgentEvent } from "@arkelythex/shared";
  */
 
 import { runtimeConfig } from "@/lib/runtime-config";
+import { ACTIVE_COMPANY_STORAGE_KEY } from "@/lib/company-context";
+import { ACTIVE_FISCAL_PERIOD_STORAGE_KEY } from "@/lib/fiscal-period";
 
 // Re-export types
 export type {
@@ -69,6 +71,22 @@ export function buildCognitiveHeaders(organizationId: string): HeadersInit {
 	if (organizationId.trim()) {
 		headers["x-organization-id"] = organizationId.trim();
 	}
+	// Inyectar contexto fiscal global desde las keys canónicas
+	try {
+		const companyRaw = localStorage.getItem(ACTIVE_COMPANY_STORAGE_KEY);
+		const period = localStorage.getItem(ACTIVE_FISCAL_PERIOD_STORAGE_KEY);
+		if (companyRaw) {
+			const company = JSON.parse(companyRaw) as {
+				ruc?: string;
+				companyId?: string;
+			};
+			if (company.ruc) headers["x-company-ruc"] = company.ruc;
+			if (company.companyId) headers["x-company-id"] = company.companyId;
+		}
+		if (period) headers["x-fiscal-period"] = period;
+	} catch {
+		// localStorage unavailable or corrupted — continue without context
+	}
 	return headers;
 }
 
@@ -76,7 +94,11 @@ export function buildCognitiveHeaders(organizationId: string): HeadersInit {
 // State reducer
 // ──────────────────────────────────────
 
-import { resolveEventRunId, createActivityEntry, appendActivityEntry } from "./cognitive-stream-activities";
+import {
+	resolveEventRunId,
+	createActivityEntry,
+	appendActivityEntry,
+} from "./cognitive-stream-activities";
 import { writePersistedRunId } from "./cognitive-stream-storage";
 import type { StreamState } from "./cognitive-stream-types";
 
