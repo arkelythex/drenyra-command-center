@@ -205,7 +205,7 @@
     "@biomejs/biome": "^2.5.0",
     "@module-federation/vite": "^1.16.8",
     "@playwright/test": "^1.61.1",
-    "@types/node": "^25.9.3",
+    "@types/node": "^26.1.0",
     "@typescript-eslint/eslint-plugin": "^8.61.1",
     "@typescript-eslint/parser": "^8.61.1",
     "@vitejs/plugin-react": "^6.0.2",
