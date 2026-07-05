@@ -9,6 +9,8 @@ export const ARTIFACT_TYPES = {
 	FISCAL_ADVISORY: "fiscal.advisory.v1",
 	LEDGER_ADJUSTMENT: "ledger.adjustment.v1",
 	BANKING_RECONCILIATION: "banking.reconciliation.v1",
+	BILLS_PAYABLE: "bills.payable.v1",
+	CASHFLOW_PROJECTION: "cashflow.projection.v1",
 } as const;
 
 export type ArtifactType = (typeof ARTIFACT_TYPES)[keyof typeof ARTIFACT_TYPES];
@@ -212,10 +214,64 @@ export type BankingReconciliationArtifact = Artifact<
 	typeof ARTIFACT_TYPES.BANKING_RECONCILIATION
 >;
 
+// --- BILLS PAYABLE TYPES ---
+
+export interface BillsPayableRow {
+	id: string;
+	vendor: string;
+	invoiceNumber: string;
+	amount: number;
+	dueDate: string;
+	status: "PENDING" | "PARTIAL" | "PAID" | "OVERDUE" | "APPROVAL" | "REVIEW";
+	daysOverdue?: number;
+}
+
+export interface BillsPayableData {
+	rows: BillsPayableRow[];
+	summary: {
+		totalPending: number;
+		totalOverdue: number;
+		totalPaid: number;
+		count: number;
+	};
+}
+
+export type BillsPayableArtifact = Artifact<
+	BillsPayableData,
+	typeof ARTIFACT_TYPES.BILLS_PAYABLE
+>;
+
+// --- CASHFLOW PROJECTION TYPES ---
+
+export interface CashflowProjectionPoint {
+	period: string;
+	inflow: number;
+	outflow: number;
+	balance: number;
+}
+
+export interface CashflowProjectionData {
+	projections: CashflowProjectionPoint[];
+	currentBalance: number;
+	currency: CurrencyCode;
+	summary: {
+		totalInflow: number;
+		totalOutflow: number;
+		netProjection: number;
+	};
+}
+
+export type CashflowProjectionArtifact = Artifact<
+	CashflowProjectionData,
+	typeof ARTIFACT_TYPES.CASHFLOW_PROJECTION
+>;
+
 export type KnownArtifact =
 	| SireDiffArtifact
 	| PaymentPreviewArtifact
-	| BankingReconciliationArtifact;
+	| BankingReconciliationArtifact
+	| BillsPayableArtifact
+	| CashflowProjectionArtifact;
 export type WorkspaceArtifact = KnownArtifact | Artifact;
 
 export function isSireDiffArtifact(

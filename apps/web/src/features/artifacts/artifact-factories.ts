@@ -11,6 +11,37 @@ import {
 } from "./types/artifact.types";
 
 const SIRE_TRIGGER_KEYWORDS = ["sire", "concili", "rvie", "rce"];
+const BILLS_TRIGGER_KEYWORDS = [
+	"cuenta",
+	"pagar",
+	"cxp",
+	"factura",
+	"proveedor",
+	"bill",
+	"vencimient",
+	"pago",
+];
+
+const CASHFLOW_TRIGGER_KEYWORDS = [
+	"flujo",
+	"caja",
+	"cashflow",
+	"proyeccion",
+	"liquidez",
+	"efectivo",
+];
+
+const BANKING_TRIGGER_KEYWORDS = [
+	"conciliacion",
+	"conciliar",
+	"reconcili",
+	"banco",
+	"bancaria",
+	"movimient",
+	"saldo",
+	"tesorer",
+];
+
 const PAYMENT_TRIGGER_KEYWORDS = [
 	"pago",
 	"tesorer",
@@ -330,7 +361,136 @@ export const resolveArtifactFromQuery = (
 		return createBankingReconciliationArtifact({ period, currency });
 	}
 
+	if (
+		BILLS_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))
+	) {
+		const currency = extractCurrencyFromQuery(normalized);
+		return createBillsPayableArtifact(currency);
+	}
+
+	if (
+		CASHFLOW_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))
+	) {
+		const currency = extractCurrencyFromQuery(normalized);
+		return createCashflowProjectionArtifact(currency);
+	}
+
 	return null;
+};
+
+export const createBillsPayableArtifact = (
+	currency: CurrencyCode = "PEN",
+): BillsPayableArtifact => {
+	const rows = [
+		{
+			id: "cxp-001",
+			vendor: "Servicios Cloud Perú S.A.C.",
+			invoiceNumber: "F001-4599",
+			amount: 12500.0,
+			dueDate: "2026-02-28",
+			status: "PENDING" as const,
+		},
+		{
+			id: "cxp-002",
+			vendor: "Logística Integral S.A.",
+			invoiceNumber: "E001-230",
+			amount: 4500.0,
+			dueDate: "2026-01-15",
+			status: "OVERDUE" as const,
+			daysOverdue: 15,
+		},
+		{
+			id: "cxp-003",
+			vendor: "Consultora Financiera Elite",
+			invoiceNumber: "F099-112",
+			amount: 2300.0,
+			dueDate: "2026-03-10",
+			status: "APPROVAL" as const,
+		},
+		{
+			id: "cxp-004",
+			vendor: "Proveedores Unidos S.A.C.",
+			invoiceNumber: "F002-887",
+			amount: 890.0,
+			dueDate: "2026-02-05",
+			status: "PAID" as const,
+		},
+		{
+			id: "cxp-005",
+			vendor: "Telecomunicaciones Globales",
+			invoiceNumber: "F020-5566",
+			amount: 340.5,
+			dueDate: "2026-01-20",
+			status: "OVERDUE" as const,
+			daysOverdue: 5,
+		},
+	];
+
+	const totalPending = rows
+		.filter((r) => r.status === "PENDING")
+		.reduce((a, r) => a + r.amount, 0);
+	const totalOverdue = rows
+		.filter((r) => r.status === "OVERDUE")
+		.reduce((a, r) => a + r.amount, 0);
+	const totalPaid = rows
+		.filter((r) => r.status === "PAID")
+		.reduce((a, r) => a + r.amount, 0);
+
+	return {
+		id: generateArtifactId(),
+		type: ARTIFACT_TYPES.BILLS_PAYABLE,
+		version: "1.0.0",
+		status: "PREVIEW",
+		title: "Cuentas por pagar",
+		description: "Resumen de facturas pendientes por pagar",
+		metadata: createMetadata("INTERNAL"),
+		data: {
+			rows,
+			summary: {
+				totalPending,
+				totalOverdue,
+				totalPaid,
+				count: rows.length,
+			},
+		},
+		actions: [],
+	};
+};
+
+export const createCashflowProjectionArtifact = (
+	currency: CurrencyCode = "PEN",
+): CashflowProjectionArtifact => {
+	const projections = [
+		{ period: "Ene 2026", inflow: 85000, outflow: 72000, balance: 13000 },
+		{ period: "Feb 2026", inflow: 92000, outflow: 78000, balance: 27000 },
+		{ period: "Mar 2026", inflow: 88000, outflow: 95000, balance: 20000 },
+		{ period: "Abr 2026", inflow: 95000, outflow: 85000, balance: 30000 },
+	];
+
+	const totalInflow = projections.reduce((a, p) => a + p.inflow, 0);
+	const totalOutflow = projections.reduce((a, p) => a + p.outflow, 0);
+
+	return {
+		id: generateArtifactId(),
+		type: ARTIFACT_TYPES.CASHFLOW_PROJECTION,
+		version: "1.0.0",
+		status: "PREVIEW",
+		title: "Proyección de flujo de caja",
+		description: "Proyección a 4 meses de ingresos y egresos",
+		metadata: createMetadata("INTERNAL"),
+		data: {
+			projections,
+			currentBalance: 45000,
+			currency,
+			summary: {
+				totalInflow,
+				totalOutflow,
+				netProjection: totalInflow - totalOutflow,
+			},
+		},
+		actions: [],
+	};
+};
 };
 
 export const createBankingReconciliationArtifact = (

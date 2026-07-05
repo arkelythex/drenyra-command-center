@@ -31,6 +31,9 @@ const ARTIFACT_RENDERER_LOADERS: Record<
 	dashboard: () => import("./renderers/DashboardArtifact"),
 	banking_reconciliation: () =>
 		import("./renderers/BankingReconciliationArtifact"),
+	bills_payable: () => import("./renderers/BillsPayableArtifact"),
+	cashflow_projection: () =>
+		import("./renderers/CashflowProjectionArtifact"),
 };
 
 function createLazyArtifactRenderer(type: HubArtifact["type"]) {
@@ -63,6 +66,9 @@ const LAZY_ARTIFACT_RENDERERS: Record<
 	dashboard: createLazyArtifactRenderer("dashboard"),
 	banking_reconciliation:
 		createLazyArtifactRenderer("banking_reconciliation"),
+	bills_payable: createLazyArtifactRenderer("bills_payable"),
+	cashflow_projection:
+		createLazyArtifactRenderer("cashflow_projection"),
 };
 
 export const ArtifactRenderer = ({ artifact }: { artifact: HubArtifact }) => {

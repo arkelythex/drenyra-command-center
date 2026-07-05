@@ -46,6 +46,26 @@ export interface GapItem {
 	value: number;
 }
 
+export interface BillsPayableRow {
+	id: string;
+	vendor: string;
+	invoiceNumber: string;
+	issueDate: string;
+	dueDate: string;
+	amount: number;
+	remainingBalance: number;
+	currency: string;
+	status: "PENDING" | "PARTIAL" | "PAID" | "OVERDUE" | "APPROVAL" | "REVIEW";
+	daysOverdue?: number;
+}
+
+export interface CashflowProjectionPoint {
+	period: string;
+	inflow: number;
+	outflow: number;
+	balance: number;
+}
+
 export interface BankingReconciliationRow {
 	id: string;
 	bankRef: string;
@@ -165,6 +185,26 @@ export type HubArtifact =
 					matched: number;
 					mismatched: number;
 				};
+			};
+	  })
+	| (BaseArtifact & {
+			type: "bills_payable";
+			payload: {
+				rows: BillsPayableRow[];
+				summary: {
+					totalPending: number;
+					totalOverdue: number;
+					totalPaid: number;
+					count: number;
+				};
+			};
+	  })
+	| (BaseArtifact & {
+			type: "cashflow_projection";
+			payload: {
+				projections: CashflowProjectionPoint[];
+				currentBalance: number;
+				currency: string;
 			};
 	  });
 

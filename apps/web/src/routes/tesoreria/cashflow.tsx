@@ -1,14 +1,14 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-const CashflowBoard = lazyRouteComponent(
-	() => import("../../features/cashflow"),
-	"CashflowBoard",
-);
-
+/**
+ * Cashflow route — redirigido al chat principal.
+ *
+ * AM3: Flujo de caja se accede ahora como artifact inline
+ * vía el agente. Escribí "proyectar flujo de caja"
+ * en el chat para invocar la herramienta.
+ */
 export const Route = createFileRoute("/tesoreria/cashflow")({
-	component: () => (
-		<div className="flex-1 h-full overflow-hidden">
-			<CashflowBoard />
-		</div>
-	),
+	loader: () => {
+		throw redirect({ to: "/" });
+	},
 });
