@@ -23,7 +23,9 @@ type ViewMode = "grid" | "list";
 
 function SkillsPage() {
 	const [searchQuery, setSearchQuery] = useState("");
-	const [activeCategory, setActiveCategory] = useState<SkillCategory | "all">("all");
+	const [activeCategory, setActiveCategory] = useState<SkillCategory | "all">(
+		"all",
+	);
 	const [viewMode, setViewMode] = useState<ViewMode>("grid");
 	const [selectedSkill, setSelectedSkill] = useState<SkillDTO | null>(null);
 
