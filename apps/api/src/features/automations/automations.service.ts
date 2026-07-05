@@ -1,10 +1,10 @@
 import { and, desc, eq, inArray } from "@drenyra/persistence/query";
-import {
-	automationWorkflows,
-	automationSteps,
-	automationExecutions,
-} from "@drenyra/persistence/schema/automation-studio.schema";
 import { skills } from "@drenyra/persistence/schema";
+import {
+	automationExecutions,
+	automationSteps,
+	automationWorkflows,
+} from "@drenyra/persistence/schema/automation-studio.schema";
 import { db } from "../../lib/db";
 
 export interface AutomationDTO {
@@ -98,8 +98,12 @@ export async function listCompanyAutomations(
 			triggerConfig: wf.triggerConfig as Record<string, unknown>,
 			status: wf.status,
 			skills: skillNames,
-			autonomy: ((wf as any).metadata as Record<string, unknown>)?.autonomy as string ?? "suggest",
-			lastRunAt: lastExec?.completedAt?.toISOString() ?? lastExec?.startedAt?.toISOString(),
+			autonomy:
+				(((wf as any).metadata as Record<string, unknown>)
+					?.autonomy as string) ?? "suggest",
+			lastRunAt:
+				lastExec?.completedAt?.toISOString() ??
+				lastExec?.startedAt?.toISOString(),
 			lastRunStatus: lastExec?.status,
 			runCount: executions.length,
 		});
@@ -163,10 +167,7 @@ export async function createStep(
 	return step;
 }
 
-export async function updateWorkflowStatus(
-	workflowId: string,
-	status: string,
-) {
+export async function updateWorkflowStatus(workflowId: string, status: string) {
 	const [wf] = await db
 		.update(automationWorkflows)
 		.set({ status: status as any, updatedAt: new Date() })

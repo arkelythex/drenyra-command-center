@@ -1,4 +1,12 @@
-import { and, desc, eq, inArray, like, or, sql } from "@drenyra/persistence/query";
+import {
+	and,
+	desc,
+	eq,
+	inArray,
+	like,
+	or,
+	sql,
+} from "@drenyra/persistence/query";
 import { evidence, evidenceLinks } from "@drenyra/persistence/schema";
 import { db } from "../../lib/db";
 
@@ -49,10 +57,7 @@ export async function searchEvidence(filters: SearchFilters) {
 			.orderBy(desc(evidence.createdAt))
 			.limit(filters.limit ?? 50)
 			.offset(filters.offset ?? 0),
-		db
-			.select({ count: sql<number>`count(*)` })
-			.from(evidence)
-			.where(where),
+		db.select({ count: sql<number>`count(*)` }).from(evidence).where(where),
 	]);
 
 	return {
@@ -196,11 +201,15 @@ export async function batchValidate(ids: string[]) {
 		(r) => r.status === "fulfilled" && r.value.validated,
 	).length;
 	const failed = results.filter(
-		(r) => r.status === "rejected" || (r.status === "fulfilled" && !r.value.validated),
+		(r) =>
+			r.status === "rejected" ||
+			(r.status === "fulfilled" && !r.value.validated),
 	).length;
 
 	const outcomes = results.map((r) =>
-		r.status === "fulfilled" ? r.value : { id: "unknown", validated: false, error: r.reason },
+		r.status === "fulfilled"
+			? r.value
+			: { id: "unknown", validated: false, error: r.reason },
 	);
 
 	return { validated: succeeded, failed, results: outcomes };

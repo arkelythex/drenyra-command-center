@@ -66,6 +66,8 @@ describe("DNI Value Object", () => {
 			const json = dni.toJSON();
 
 			expect(json).toEqual({
+				countryCode: "PE",
+				type: "DNI",
 				value: "12345678",
 			});
 		});
