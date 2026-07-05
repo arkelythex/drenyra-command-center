@@ -24,8 +24,10 @@ export function extractCliMemory(
 	return {
 		persistentMemory: typeof mem === "string" ? mem : undefined,
 		userContext: typeof user === "string" ? user : undefined,
-		memoryPct: typeof metadata.memoryPct === "number" ? metadata.memoryPct : undefined,
-		userPct: typeof metadata.userPct === "number" ? metadata.userPct : undefined,
+		memoryPct:
+			typeof metadata.memoryPct === "number" ? metadata.memoryPct : undefined,
+		userPct:
+			typeof metadata.userPct === "number" ? metadata.userPct : undefined,
 	};
 }
 

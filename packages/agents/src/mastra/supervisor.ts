@@ -24,7 +24,10 @@ export class Supervisor {
 	 */
 	resolveConflicts(
 		conflicts: Conflict[],
-		strategy: "highest-confidence" | "majority" | "latest" = "highest-confidence",
+		strategy:
+			| "highest-confidence"
+			| "majority"
+			| "latest" = "highest-confidence",
 	): Conflict[] {
 		return conflicts.map((conflict) => {
 			switch (strategy) {
@@ -53,10 +56,13 @@ export class Supervisor {
 	/**
 	 * Determine if the workflow can proceed given current results.
 	 */
-	canProceed(
-		results: Array<{ domainId: string; status: string }>,
-	): { proceed: boolean; reason?: string } {
-		const failures = results.filter((r) => r.status === "error" || r.status === "timeout");
+	canProceed(results: Array<{ domainId: string; status: string }>): {
+		proceed: boolean;
+		reason?: string;
+	} {
+		const failures = results.filter(
+			(r) => r.status === "error" || r.status === "timeout",
+		);
 
 		if (failures.length > results.length / 2) {
 			return {
@@ -96,7 +102,9 @@ export class Supervisor {
 		slowest: PhaseTiming | undefined;
 		fastest: PhaseTiming | undefined;
 	} {
-		const sorted = [...this.timings].sort((a, b) => b.durationMs - a.durationMs);
+		const sorted = [...this.timings].sort(
+			(a, b) => b.durationMs - a.durationMs,
+		);
 
 		return {
 			totalDurationMs: this.timings.reduce((sum, t) => sum + t.durationMs, 0),

@@ -1,7 +1,7 @@
 // ─── Latin Moderno Agent ID + Swarm Types ──────────────────────────
 // Snapshot from @drenyra/agent-swarm/src/erp/drenyra/swarm/types.ts
 
-import type { AgentContext } from './agent-context';
+import type { AgentContext } from "./agent-context";
 
 export type LatinAgentId =
 	| "cerno"

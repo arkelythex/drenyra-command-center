@@ -1,10 +1,10 @@
 import type { AgentContext } from "../types/agent-context";
 import type { LatinAgentId } from "../types/latin-agent";
 import type { DomainAgent } from "./domain-agent";
-import { SessionManager } from "./session-manager";
-import { Supervisor, type PhaseTiming, type SwarmMode } from "./supervisor";
-import { TaskDecomposer } from "./task-decomposer";
 import { ResultMerger } from "./result-merger";
+import { SessionManager } from "./session-manager";
+import { type PhaseTiming, Supervisor, type SwarmMode } from "./supervisor";
+import { TaskDecomposer } from "./task-decomposer";
 
 /** Result from a Latin Moderno orchestration request */
 export interface LatinOrchestrationResult {

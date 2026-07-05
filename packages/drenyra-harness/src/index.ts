@@ -8,16 +8,14 @@
  *   import { createDrenyraHarness } from "@drenyra/agents";
  */
 
-export {
-	createDrenyraHarness,
-	DrenyraHarness,
+export type {
+	AgentHandler,
+	HarnessExecuteResponse,
+	HarnessOptions,
 } from "@drenyra/agents";
 export {
 	createDefaultHandler,
+	createDrenyraHarness,
+	DrenyraHarness,
 	registerDefaultHandlers,
-} from "@drenyra/agents";
-export type {
-	HarnessExecuteResponse,
-	HarnessOptions,
-	AgentHandler,
 } from "@drenyra/agents";

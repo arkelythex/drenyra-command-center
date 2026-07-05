@@ -52,7 +52,9 @@ export interface TaskStatusDTO {
 	maxRetries: number;
 }
 export type TaskHandlerResult = unknown;
-export type TaskHandlerFunction = (task: AIWorkerTask) => Promise<TaskHandlerResult>;
+export type TaskHandlerFunction = (
+	task: AIWorkerTask,
+) => Promise<TaskHandlerResult>;
 export type TaskHandlerRegistry = Map<string, TaskHandlerFunction>;
 
 export interface QueueStatsDTO {

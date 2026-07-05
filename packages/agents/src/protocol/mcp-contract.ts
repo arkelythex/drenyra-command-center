@@ -20,8 +20,7 @@ export const DRENYRA_MCP_SCOPE_HEADERS = [
 	"x-user-id",
 ] as const;
 
-export type DrenyraMcpScopeHeader =
-	(typeof DRENYRA_MCP_SCOPE_HEADERS)[number];
+export type DrenyraMcpScopeHeader = (typeof DRENYRA_MCP_SCOPE_HEADERS)[number];
 
 export interface DrenyraMcpScope {
 	organizationId: string;

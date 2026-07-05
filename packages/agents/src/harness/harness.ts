@@ -180,17 +180,18 @@ export function canSpawn(parentId: string, childId: string): boolean {
 	const parent = DELEGATION_AGENTS[parentId];
 	return parent?.maySpawn.includes(childId) ?? false;
 }
-import type {
-	AgentHandler,
-	HarnessExecuteResponse,
-	HarnessOptions,
-} from "./types.js";
+
 import type {
 	HarnessExecuteRequest,
 	HarnessRunNode,
 	HarnessSpawnRequest,
 	HarnessStatus,
 } from "@drenyra/platform-core/harness";
+import type {
+	AgentHandler,
+	HarnessExecuteResponse,
+	HarnessOptions,
+} from "./types.js";
 
 /** @deprecated ADR-030 Phase 2 — moved to createDefaultDelegationGraph */
 const FISCAL_APPROVAL_KEYWORDS = [
@@ -501,8 +502,6 @@ export class DrenyraHarness {
 	}
 }
 
-export function createDrenyraHarness(
-	options?: HarnessOptions,
-): DrenyraHarness {
+export function createDrenyraHarness(options?: HarnessOptions): DrenyraHarness {
 	return new DrenyraHarness(options);
 }

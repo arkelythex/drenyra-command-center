@@ -45,10 +45,11 @@ export type FiscalEventHandler<T = unknown> = (
  * the same interface as the original AgentEventBus.
  */
 export class AgentEventBus {
-	private readonly handlers = new Map<FiscalEventType, Set<FiscalEventHandler>>();
-	private readonly wildcardHandlers = new Set<
-		FiscalEventHandler<unknown>
+	private readonly handlers = new Map<
+		FiscalEventType,
+		Set<FiscalEventHandler>
 	>();
+	private readonly wildcardHandlers = new Set<FiscalEventHandler<unknown>>();
 
 	async connect(): Promise<void> {
 		// No-op for in-memory implementation
@@ -113,7 +114,9 @@ export class AgentEventBus {
 		this.handlers.get(eventType)!.add(handler as FiscalEventHandler<unknown>);
 
 		return () => {
-			this.handlers.get(eventType)?.delete(handler as FiscalEventHandler<unknown>);
+			this.handlers
+				.get(eventType)
+				?.delete(handler as FiscalEventHandler<unknown>);
 		};
 	}
 
@@ -133,9 +136,7 @@ export class AgentEventBus {
 	}
 
 	/** Subscribe to ALL event types (wildcard) */
-	subscribeAll(
-		handler: FiscalEventHandler<unknown>,
-	): () => void {
+	subscribeAll(handler: FiscalEventHandler<unknown>): () => void {
 		this.wildcardHandlers.add(handler);
 		return () => {
 			this.wildcardHandlers.delete(handler);

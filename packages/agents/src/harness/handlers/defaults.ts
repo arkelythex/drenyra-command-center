@@ -1,3 +1,7 @@
+import type {
+	HarnessAgentResult,
+	HarnessSpawnRequest,
+} from "@drenyra/platform-core/harness";
 import {
 	canSpawn,
 	DELEGATION_AGENTS,
@@ -5,10 +9,6 @@ import {
 } from "../harness.js";
 import { enrichSummary, extractCliMemory } from "../memory-context.js";
 import type { AgentHandler } from "../types.js";
-import type {
-	HarnessAgentResult,
-	HarnessSpawnRequest,
-} from "@drenyra/platform-core/harness";
 
 function orchestratorSpawn(
 	agent: DelegationAgentNode,

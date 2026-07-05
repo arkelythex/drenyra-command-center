@@ -2,7 +2,7 @@
 // Snapshots from @drenyra/agent-swarm/src/erp/types/approval-level.ts
 // and @drenyra/agent-swarm/src/erp/approval-gate/approval-gate.types.ts
 
-import type { AgentContext } from './agent-context';
+import type { AgentContext } from "./agent-context";
 
 // ─── ApprovalLevel ─────────────────────────────────────────────────
 

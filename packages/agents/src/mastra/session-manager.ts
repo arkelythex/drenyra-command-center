@@ -74,10 +74,7 @@ export class SessionManager {
 		}
 	}
 
-	addStep(
-		sessionId: string,
-		domain: string,
-	): string | undefined {
+	addStep(sessionId: string, domain: string): string | undefined {
 		const session = this.sessions.get(sessionId);
 		if (!session) return undefined;
 

@@ -1,9 +1,9 @@
 // ─── AgentTool Types ───────────────────────────────────────────────
 // Snapshot from @drenyra/agent-swarm/src/erp/types/agent-tool.ts
 
-import type { z } from 'zod';
-import type { ApprovalLevel } from './approval-gate';
-import type { AgentContext } from './agent-context';
+import type { z } from "zod";
+import type { AgentContext } from "./agent-context";
+import type { ApprovalLevel } from "./approval-gate";
 
 export interface AgentTool<TInput = unknown, TOutput = unknown> {
 	name: string;
