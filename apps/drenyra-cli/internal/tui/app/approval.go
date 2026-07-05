@@ -1,8 +1,8 @@
 package app
 
 import (
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/harness"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
 )
 
 func formatApprovalView(resp *harness.ExecuteResponse, task string) string {

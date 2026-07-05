@@ -1,4 +1,4 @@
-module github.com/arkelythex/drenyra-engram
+module github.com/drenyra/drenyra-engram
 
 go 1.26.4
 

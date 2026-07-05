@@ -1,6 +1,6 @@
 package app
 
-import "github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/modes"
+import "github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/modes"
 
 type agentMode = modes.Mode
 

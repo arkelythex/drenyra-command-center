@@ -1,4 +1,4 @@
-module github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli
+module github.com/Albert-fer02/DRENYRA/apps/drenyra-cli
 
 go 1.25.0
 

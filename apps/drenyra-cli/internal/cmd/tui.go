@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/tui/app"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui/app"
 	"github.com/spf13/cobra"
 )
 

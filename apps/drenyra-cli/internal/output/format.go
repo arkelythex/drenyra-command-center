@@ -6,9 +6,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/fiscalwork"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/harness"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/fiscalwork"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
 )
 
 // Format is text or json (Pi/Droid exec style).

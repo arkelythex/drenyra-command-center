@@ -12,7 +12,7 @@
 
 ## Start here
 - **Location:** `apps/drenyra-cli/`
-- **Module:** `github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli`
+- **Module:** `github.com/Albert-fer02/DRENYRA/apps/drenyra-cli`
 - **Language:** Go 1.26.3
 - **Framework:** Cobra (CLI) + Bubble Tea (TUI)
 - **Build:** `go build ./...` — static binary, no CGO (SQLite via modernc.org/sqlite)

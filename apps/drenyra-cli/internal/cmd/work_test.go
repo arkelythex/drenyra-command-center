@@ -7,8 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/config"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/fiscalwork"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/fiscalwork"
 )
 
 func TestRunWorkInspectUsesSharedBackendContract(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/memory"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/memory"
 )
 
 func TestClampMemoryCursor(t *testing.T) {

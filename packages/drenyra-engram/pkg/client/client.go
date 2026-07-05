@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/arkelythex/drenyra-engram/internal/types"
+	"github.com/drenyra/drenyra-engram/internal/types"
 )
 
 // Client communicates with the Drenyra Engram HTTP server.

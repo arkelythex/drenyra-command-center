@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/history"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/memorystore"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/history"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/memorystore"
 )
 
 // DBStatus is the local SQLite operational memory status.

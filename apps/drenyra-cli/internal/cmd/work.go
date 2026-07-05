@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/config"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/fiscalwork"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/harness"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/output"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/fiscalwork"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/output"
 	"github.com/spf13/cobra"
 )
 

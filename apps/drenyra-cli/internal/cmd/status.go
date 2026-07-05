@@ -7,12 +7,12 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/config"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/harness"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/history"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/memory"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/tui"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/version"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/history"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/memory"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/version"
 	"github.com/spf13/cobra"
 )
 

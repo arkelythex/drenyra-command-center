@@ -36,7 +36,7 @@ Return a concise decision: safe to implement directly, needs scout/reviewer, or 
 		ID:          "bugfix-tdd",
 		Description: "Fix a bug using strict TDD evidence",
 		RootAgentID: "ai-swarm-orchestrator",
-		Template: `Fix this Drenyra App / Arkelythex platform bug using strict TDD discipline: {{CONTEXT}}
+		Template: `Fix this Drenyra App / Drenyra platform bug using strict TDD discipline: {{CONTEXT}}
 
 Protocol:
 
@@ -52,7 +52,7 @@ Preserve tenant/company/RUC scoping, fiscal correctness, Money value objects, an
 		ID:          "pre-pr",
 		Description: "Prepare the current change for review",
 		RootAgentID: "ai-swarm-orchestrator",
-		Template: `Prepare this Drenyra App / Arkelythex platform change for review: {{CONTEXT}}
+		Template: `Prepare this Drenyra App / Drenyra platform change for review: {{CONTEXT}}
 
 Follow the project rules in AGENTS.md. Inspect the current git diff and report:
 
@@ -68,7 +68,7 @@ Do not commit or push. If code changes are non-trivial, recommend a fresh-contex
 		ID:          "review-sunat",
 		Description: "Review changes for SUNAT and fiscal correctness",
 		RootAgentID: "fiscal-command-orchestrator",
-		Template: `Review this Drenyra App / Arkelythex platform change for Peruvian fiscal correctness and SUNAT safety: {{CONTEXT}}
+		Template: `Review this Drenyra App / Drenyra platform change for Peruvian fiscal correctness and SUNAT safety: {{CONTEXT}}
 
 Focus on:
 
@@ -103,7 +103,7 @@ Return: PASS, BLOCKER (with specific reason), or NEEDS_REVIEW (with flagged item
 		ID:          "explain-risk",
 		Description: "Analyze fiscal risk level for a situation, change, or proposed action",
 		RootAgentID: "fiscal-command-orchestrator",
-		Template: `Analyze the fiscal risk level for this Drenyra App / Arkelythex context: {{CONTEXT}}
+		Template: `Analyze the fiscal risk level for this Drenyra App / Drenyra context: {{CONTEXT}}
 
 Classify risk as:
 

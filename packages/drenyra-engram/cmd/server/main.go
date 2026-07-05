@@ -18,8 +18,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/arkelythex/drenyra-engram/internal/api"
-	"github.com/arkelythex/drenyra-engram/internal/db"
+	"github.com/drenyra/drenyra-engram/internal/api"
+	"github.com/drenyra/drenyra-engram/internal/db"
 )
 
 func main() {

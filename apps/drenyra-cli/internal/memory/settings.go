@@ -1,6 +1,6 @@
 package memory
 
-import "github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/config"
+import "github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
 
 // Settings mirrors ~/.hermes/config.yaml → memory: (Hermes Agent).
 type Settings struct {

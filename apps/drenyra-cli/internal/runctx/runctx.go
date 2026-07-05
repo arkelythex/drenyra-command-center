@@ -3,8 +3,8 @@ package runctx
 import (
 	"context"
 
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/harness"
-	"github.com/Albert-fer02/ARKELYTHEX/apps/drenyra-cli/internal/memory"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/memory"
 )
 
 // BuildMetadata merges CLI metadata with Hermes-style memory snapshot.
