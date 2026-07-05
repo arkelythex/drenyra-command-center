@@ -1,6 +1,6 @@
 import { Counter, Histogram, register } from 'prom-client';
 import type { LedgerMvpEndpoint } from './ledger-mvp-rollout.service';
-import type { SIRESunatLiveUnavailableReason } from '../../types/sire.types';
+import type { SIRESunatLiveUnavailableReason } from '@drenyra/domain';
 
 type LedgerMvpOutcome =
   | 'success'

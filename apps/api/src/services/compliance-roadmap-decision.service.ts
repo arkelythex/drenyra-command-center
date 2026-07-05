@@ -2,7 +2,7 @@ import type {
 	ComplianceRoadmapActionId,
 	ComplianceRoadmapDecision,
 	ComplianceRoadmapDecisionRunResult,
-} from "../types/compliance.types";
+} from "@drenyra/domain";
 import { AccountingJobRunsService } from "./accounting-job-runs.service";
 import { ROADMAP_ACTION_JOB_MAP } from "./compliance-roadmap-execution.helpers";
 import { ComplianceRoadmapSnapshotService } from "./compliance-roadmap-snapshot.service";

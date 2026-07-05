@@ -5,7 +5,7 @@ import type {
 	ComplianceRoadmapDecision,
 	ComplianceRoadmapDecisionRunResult,
 	ComplianceRoadmapSnapshot,
-} from "../types/compliance.types";
+} from "@drenyra/domain";
 import { ComplianceRoadmapExecutionService } from "./compliance-roadmap-execution.service";
 import { ComplianceRoadmapSnapshotService } from "./compliance-roadmap-snapshot.service";
 

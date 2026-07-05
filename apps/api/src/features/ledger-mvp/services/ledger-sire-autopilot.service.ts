@@ -1,11 +1,11 @@
 import { Money } from "@drenyra/domain";
-import type { ComplianceReproducibilityReport } from "../../../types/compliance.types";
-import type { IGVSummary } from "../../../types/taxation.types";
-import type { SIRESummary } from "../../../types/sire.types";
+import type { ComplianceReproducibilityReport } from "@drenyra/domain";
+import type { IGVSummary } from "@drenyra/domain";
+import type { SIRESummary } from "@drenyra/domain";
 import type {
 	SIRESunatLiveSummary,
 	SIRESunatLiveUnavailableReason,
-} from "../../../types/sire.types";
+} from "@drenyra/domain";
 import type { Pdt621Input, Pdt621Result } from "../../taxation/pdt-621.service";
 import type {
 	LedgerFlowStatus,

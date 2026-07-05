@@ -1,7 +1,7 @@
 import type {
 	ComplianceRoadmapActionId,
 	ComplianceRoadmapActionTimeline,
-} from "../types/compliance.types";
+} from "@drenyra/domain";
 import { AccountingJobRunsService } from "./accounting-job-runs.service";
 import {
 	readActionId,

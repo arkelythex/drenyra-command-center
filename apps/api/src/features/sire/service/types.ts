@@ -1,4 +1,4 @@
-import type { SIRESunatLiveLedgerSummary, SIRESunatLiveUnavailableReason } from '../../../types/sire.types';
+import type { SIRESunatLiveLedgerSummary, SIRESunatLiveUnavailableReason } from '@drenyra/domain';
 
 export interface SireMassiveAnalysisResult {
   companyId: string;

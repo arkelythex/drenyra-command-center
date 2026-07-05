@@ -12,7 +12,7 @@ import type {
   SIRESunatLiveSummary,
   SIRESunatLiveUnavailableReason,
   SIRESummary,
-} from '../../../types/sire.types';
+} from '@drenyra/domain';
 import type { SireMassiveAnalysisResult, SunatLiveLedgerFetchResult } from './types';
 
 const logger = createLogger({ module: 'sire/service' });

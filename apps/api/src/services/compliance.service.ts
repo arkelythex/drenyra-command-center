@@ -15,7 +15,7 @@ import type {
 	ComplianceDashboard,
 	ComplianceIssue,
 	ComplianceReproducibilityReport,
-} from "../types/compliance.types";
+} from "@drenyra/domain";
 
 const PENDING_SUNAT_STATUS_CLAUSE = sql`${invoices.sunatStatus} IS NULL OR ${invoices.sunatStatus} IN ('DRAFT', 'SUBMITTED', 'OBSERVED')`;
 

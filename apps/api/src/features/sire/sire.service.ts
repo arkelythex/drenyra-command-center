@@ -17,7 +17,7 @@ import type {
   SIRESunatLiveSummary,
   SIRESunatLiveUnavailableReason,
   SIRESummary,
-} from '../../types/sire.types';
+} from '@drenyra/domain';
 import type { TenantSunatContext } from './types';
 
 const logger = createLogger({ module: 'sire/service' });

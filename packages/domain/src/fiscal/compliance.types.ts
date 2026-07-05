@@ -83,10 +83,7 @@ export interface ComplianceRoadmapAction {
 	automationLevel: "one-click" | "review-required";
 }
 
-export type ComplianceRoadmapDecision =
-	| "APPROVE"
-	| "REJECT"
-	| "ESCALATE";
+export type ComplianceRoadmapDecision = "APPROVE" | "REJECT" | "ESCALATE";
 
 export interface ComplianceRoadmapDecisionRunResult {
 	actionId: ComplianceRoadmapActionId;

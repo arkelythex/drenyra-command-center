@@ -2,7 +2,7 @@ import { Money } from '@drenyra/domain';
 import type {
   ComplianceDashboard,
   ComplianceIssue,
-} from '../../../types/compliance.types';
+} from '@drenyra/domain';
 import type {
   PseComplianceInput,
   PseProactiveValidatorService,

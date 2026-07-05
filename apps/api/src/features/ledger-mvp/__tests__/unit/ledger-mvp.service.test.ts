@@ -3,9 +3,9 @@ import type {
   ComplianceDashboard,
   ComplianceIssue,
   ComplianceReproducibilityReport,
-} from '../../../../types/compliance.types';
-import type { IGVSummary } from '../../../../types/taxation.types';
-import type { SIRESummary, SIRESunatLiveSummary } from '../../../../types/sire.types';
+} from '@drenyra/domain';
+import type { IGVSummary } from '@drenyra/domain';
+import type { SIRESummary, SIRESunatLiveSummary } from '@drenyra/domain';
 import { LedgerMvpService } from '../../ledger-mvp.service';
 import type {
   BalanceSheetReport,

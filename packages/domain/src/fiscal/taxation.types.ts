@@ -6,16 +6,8 @@
  */
 
 export type TaxPeriod = "MONTHLY" | "QUARTERLY" | "ANNUAL";
-export type DeclarationType =
-	| "IGV"
-	| "INCOME_TAX"
-	| "DETRACTION"
-	| "RETENTION";
-export type DeclarationStatus =
-	| "DRAFT"
-	| "SUBMITTED"
-	| "ACCEPTED"
-	| "REJECTED";
+export type DeclarationType = "IGV" | "INCOME_TAX" | "DETRACTION" | "RETENTION";
+export type DeclarationStatus = "DRAFT" | "SUBMITTED" | "ACCEPTED" | "REJECTED";
 
 export interface TaxDeclaration {
 	id: string;

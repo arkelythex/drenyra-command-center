@@ -1,7 +1,7 @@
 import type {
 	ComplianceRoadmapActionId,
 	ComplianceRoadmapDecision,
-} from "../types/compliance.types";
+} from "@drenyra/domain";
 
 export const ROADMAP_ACTION_JOB_MAP: Record<ComplianceRoadmapActionId, string> = {
 	"prepare-sire": "prepare-sire",

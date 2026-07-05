@@ -15,8 +15,8 @@ import type {
 	ComplianceDashboard,
 	ComplianceIssue,
 	ComplianceReproducibilityReport,
-} from "../../types/compliance.types";
-import type { IGVSummary } from "../../types/taxation.types";
+} from "@drenyra/domain";
+import type { IGVSummary } from "@drenyra/domain";
 import type {
 	BalanceSheetReport,
 	CashFlowReport,

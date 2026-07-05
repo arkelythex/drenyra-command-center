@@ -4,7 +4,7 @@ import {
   parseRetryAfterMs,
   resolveSunatRetryDelayMs,
 } from '../services/sire-live-retry-policy.service';
-import type { SIRESunatLiveLedgerSummary, SIRESunatLiveUnavailableReason } from '../../../types/sire.types';
+import type { SIRESunatLiveLedgerSummary, SIRESunatLiveUnavailableReason } from '@drenyra/domain';
 import type { SunatLiveLedgerFetchResult } from './types';
 
 const logger = createLogger({ module: 'sire/client' });

@@ -29,7 +29,7 @@ import type {
   SIREExportOptions,
   SIREValidationResult,
   SIRESummary,
-} from '../../../types/sire.types';
+} from '@drenyra/domain';
 import ExcelJS from 'exceljs';
 
 /**

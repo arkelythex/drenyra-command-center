@@ -3,7 +3,7 @@ import type {
 	ComplianceReproducibilityReport,
 	ComplianceRoadmapAction,
 	ComplianceRoadmapActionId,
-} from "../types/compliance.types";
+} from "@drenyra/domain";
 
 export function readPeriodTotal(
 	rows: Array<{ type: string | null; total: number }>,

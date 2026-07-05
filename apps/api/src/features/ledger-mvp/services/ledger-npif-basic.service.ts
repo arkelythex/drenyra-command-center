@@ -1,4 +1,4 @@
-import type { IGVSummary } from '../../../types/taxation.types';
+import type { IGVSummary } from '@drenyra/domain';
 import type {
   BalanceSheetReport,
   CashFlowReport,

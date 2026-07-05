@@ -5,7 +5,7 @@ import type {
 	ComplianceRoadmapAction,
 	ComplianceRoadmapActionId,
 	ComplianceRoadmapSnapshot,
-} from "../types/compliance.types";
+} from "@drenyra/domain";
 import {
 	buildRoadmapActions,
 	buildRoadmapFocus,
