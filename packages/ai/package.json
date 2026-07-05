@@ -12,6 +12,7 @@
     "./model-registry": "./src/ai/model-registry.ts",
     "./openrouter": "./src/ai/openrouter/index.ts",
     "./provider": "./src/provider.ts",
+    "./providers/model-router-types": "./src/providers/model-router-types.ts",
     "./sunat-corpus": "./src/sunat-corpus.ts",
     "./tool-bridge": "./src/ai/tool-bridge.ts",
     "./rag/types": "./src/ai/rag/types.ts",
