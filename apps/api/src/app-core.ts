@@ -60,7 +60,11 @@ import { sunatApiModule } from "./features/sunat";
 import { vendorRoutes } from "./features/vendors";
 import { createLogger } from "./lib/logger";
 import { metricsMiddleware } from "./middleware/metrics.middleware";
-import { globalErrorHandler, rateLimiter, requestLogger } from "./shared/plugins";
+import {
+	globalErrorHandler,
+	rateLimiter,
+	requestLogger,
+} from "./shared/plugins";
 import { CANONICAL_SWAGGER_PATH } from "./swagger-docs-routes";
 
 const logger = createLogger({ module: "app-core" });

@@ -116,9 +116,13 @@ export function rateLimiter(options: RateLimiterOptions = {}) {
 			const remaining = Math.max(0, max - entry.count);
 			const resetSeconds = Math.ceil((entry.resetAt - now) / 1000);
 
-			(set.headers as Record<string, string | number>)["X-RateLimit-Limit"] = max;
-			(set.headers as Record<string, string | number>)["X-RateLimit-Remaining"] = remaining;
-			(set.headers as Record<string, string | number>)["X-RateLimit-Reset"] = resetSeconds;
+			(set.headers as Record<string, string | number>)["X-RateLimit-Limit"] =
+				max;
+			(set.headers as Record<string, string | number>)[
+				"X-RateLimit-Remaining"
+			] = remaining;
+			(set.headers as Record<string, string | number>)["X-RateLimit-Reset"] =
+				resetSeconds;
 
 			if (entry.count > max) {
 				set.status = statusCode;
