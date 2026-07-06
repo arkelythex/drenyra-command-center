@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useUIStore } from "@/store/ui-store";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
 import { FiscalEditorialShell } from "../../layout/FiscalEditorialShell";
+import { AgenticCommandBar } from "../AgenticCommandBar/AgenticCommandBar";
 import { AgenticLayoutContext } from "./AgenticLayout.context";
 import { AgenticLayoutLoading } from "./AgenticLayout.loading";
 import type {
@@ -148,6 +149,9 @@ export function AgenticLayout(_props: AgenticLayoutProps) {
 						)}
 					</aside>
 				</div>
+
+				{/* Always-visible command bar at the bottom */}
+				<AgenticCommandBar />
 			</FiscalEditorialShell>
 		</AgenticLayoutContext.Provider>
 	);
