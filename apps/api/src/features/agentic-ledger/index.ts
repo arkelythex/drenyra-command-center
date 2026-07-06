@@ -4,6 +4,7 @@ import { IngestBankSchema } from "./agentic-ledger.schemas";
 import { AgenticLedgerService } from "./agentic-ledger.service";
 import { AgenticLedgerWasmSkillService } from "./wasm-skill/agentic-ledger-wasm-skill.service";
 import { IngestBankWithWasmSchema } from "./wasm-skill/wasm-bank-skill.schemas";
+import { companyScopeGuard } from "../shared/plugins";
 
 const service = new AgenticLedgerService(new TransactionService());
 const wasmSkillService = new AgenticLedgerWasmSkillService(
@@ -25,6 +26,7 @@ const wasmSkillService = new AgenticLedgerWasmSkillService(
  * ```
  */
 export const agenticLedgerModule = new Elysia({ prefix: "/api/agentic-ledger" })
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	.post(
 		"/ingest/bank",
 		async ({ body, set }) => {

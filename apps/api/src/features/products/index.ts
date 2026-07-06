@@ -1,6 +1,7 @@
 import { Elysia } from "elysia";
 import type { z } from "zod";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
+import { companyScopeGuard } from "../shared/plugins";
 import {
 	CreateProductSchema as CreateProductOpenApiSchema,
 	ListProductsQuerySchema as ListProductsOpenApiSchema,
@@ -49,6 +50,7 @@ function responseContractErrorResponse(error: z.ZodError<unknown>) {
  * truth should not be inferred from code presence alone.
  */
 export const productsModule = new Elysia({ prefix: "/api/products" })
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	.get(
 		"/",
 		async ({ query, set }) => {

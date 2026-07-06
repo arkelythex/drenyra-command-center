@@ -1,5 +1,6 @@
 import { Elysia, t } from "elysia";
 import { fail, getErrorMessage, ok } from "../../shared/api-response";
+import { companyScopeGuard } from "../../../shared/plugins";
 import { getExpenses } from "../application/queries/get-expenses.query";
 import { getFiscalIndicators } from "../application/queries/get-fiscal-indicators.query";
 import { getIncome } from "../application/queries/get-income.query";
@@ -25,6 +26,7 @@ import {
  * ```
  */
 export const dashboardRoutes = new Elysia({ prefix: "/api/dashboard" })
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	.get("/system-status", async () => ok(await getSystemStatus()), {
 		detail: { tags: ["Dashboard"], summary: "System health status" },
 	})
