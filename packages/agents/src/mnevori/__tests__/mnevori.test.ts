@@ -4,6 +4,7 @@ import { FiscalPhaseOrchestrator } from "../../../../drenyra-orchestrator/src/ph
 import { InMemoryFiscalPhaseStore } from "../../../../drenyra-orchestrator/src/phase/fiscal-phase-store";
 import { PhaseGateEngine } from "../../../../drenyra-orchestrator/src/phase/phase-gate-engine";
 import { Mnevori } from "../mnevori";
+import { MnevoriResumeService } from "../mnevori.resume";
 
 function createTestOrchestrator(store: InMemoryFiscalPhaseStore) {
 	const gateEngine = new PhaseGateEngine();
@@ -110,5 +111,52 @@ describe("Mnevori", () => {
 		expect(point).not.toBeNull();
 		expect(point!.lastPhaseId).toBe("captura");
 		expect(point!.lastStatus).toBe("completed");
+	});
+});
+
+describe("MnevoriResumeService", () => {
+	let store: InMemoryFiscalPhaseStore;
+	let mnevori: Mnevori;
+	let resumeService: MnevoriResumeService;
+
+	beforeEach(() => {
+		store = new InMemoryFiscalPhaseStore();
+		mnevori = new Mnevori(store);
+		resumeService = new MnevoriResumeService(mnevori, store);
+	});
+
+	it("should return next phase when last was completed", async () => {
+		const orchestrator = createTestOrchestrator(store);
+		await orchestrator.startPeriod("20123456789", "2026-06");
+		await orchestrator.startPhase("20123456789", "2026-06", "captura");
+		await orchestrator.completePhase("20123456789", "2026-06", "captura", {});
+
+		const point = await mnevori.getResumePoint("20123456789", "2026-06");
+		expect(point).not.toBeNull();
+
+		const next = resumeService.getPhaseToResume(point!);
+		expect(next).toBe("clasificacion");
+	});
+
+	it("should return same phase when last was blocked", async () => {
+		const orchestrator = createTestOrchestrator(store);
+		await orchestrator.startPeriod("20123456789", "2026-06");
+		await orchestrator.startPhase("20123456789", "2026-06", "captura");
+
+		const point = await mnevori.getResumePoint("20123456789", "2026-06");
+		if (point) {
+			const next = resumeService.getPhaseToResume(point);
+			expect(next).toBe("captura");
+		}
+	});
+
+	it("should find interrupted periods from active list", async () => {
+		const orchestrator = createTestOrchestrator(store);
+		await orchestrator.startPeriod("20123456789", "2026-06");
+		await orchestrator.startPhase("20123456789", "2026-06", "captura");
+
+		const interrupted = await resumeService.findInterruptedPeriods();
+		expect(interrupted.length).toBeGreaterThanOrEqual(1);
+		expect(interrupted[0].ruc).toBe("20123456789");
 	});
 });

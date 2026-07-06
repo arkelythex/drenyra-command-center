@@ -69,6 +69,25 @@ describe("FiscalPhaseOrchestrator + Mnevori integration", () => {
 		});
 	});
 
+	it("should resume period from the last completed phase", async () => {
+		await orchestrator.startPeriod("20123456789", "2026-06");
+		await orchestrator.startPhase("20123456789", "2026-06", "captura");
+		await orchestrator.completePhase("20123456789", "2026-06", "captura", {});
+
+		const result = await orchestrator.resumePeriod("20123456789", "2026-06");
+		expect(result.success).toBe(true);
+		expect(result.phaseId).toBe("clasificacion");
+	});
+
+	it("should resume same phase if previous was in_progress", async () => {
+		await orchestrator.startPeriod("20123456789", "2026-06");
+		await orchestrator.startPhase("20123456789", "2026-06", "captura");
+
+		const result = await orchestrator.resumePeriod("20123456789", "2026-06");
+		expect(result.success).toBe(true);
+		expect(result.phaseId).toBe("captura");
+	});
+
 	it("should persist Mnevori snapshot when completing a phase", async () => {
 		await orchestrator.startPeriod("20123456789", "2026-06");
 		await orchestrator.startPhase("20123456789", "2026-06", "captura");

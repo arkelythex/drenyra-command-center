@@ -748,6 +748,54 @@ export class FiscalPhaseOrchestrator {
 		};
 	}
 
+	/**
+	 * Resume a period from where it left off.
+	 * Uses the phase history to determine the next phase to start.
+	 */
+	async resumePeriod(
+		ruc: string,
+		periodo: string,
+	): Promise<PhaseOperationResult> {
+		const state = await this.store.getPeriodState(ruc, periodo);
+		if (!state) {
+			return {
+				success: false,
+				status: "not_started",
+				error: `Period ${periodo} for RUC ${ruc} not found`,
+			};
+		}
+
+		const lastEntry = state.phaseHistory[state.phaseHistory.length - 1];
+		let targetPhase: FiscalPhaseId;
+
+		if (!lastEntry) {
+			targetPhase = "captura";
+		} else if (lastEntry.status === "completed") {
+			const sequence: FiscalPhaseId[] = [
+				"captura",
+				"clasificacion",
+				"conciliacion",
+				"cierre",
+				"declaracion",
+				"auditoria",
+			];
+			const idx = sequence.indexOf(lastEntry.phaseId);
+			if (idx === -1 || idx >= sequence.length - 1) {
+				return {
+					success: true,
+					phaseId: lastEntry.phaseId,
+					status: "completed",
+					state,
+				};
+			}
+			targetPhase = sequence[idx + 1];
+		} else {
+			targetPhase = lastEntry.phaseId;
+		}
+
+		return this.startPhase(ruc, periodo, targetPhase);
+	}
+
 	// ─── Query ───────────────────────────────────────────────────────
 
 	/**
