@@ -18,7 +18,16 @@
     "./features/evidence": "./src/features/evidence/index.ts",
     "./features/banking": "./src/features/banking/index.ts",
     "./features/billing": "./src/features/billing/index.ts",
-    "./features/auth": "./src/features/auth/index.ts"
+    "./features/auth": "./src/features/auth/index.ts",
+    "./features/api-marketplace": "./src/features/api-marketplace/index.ts",
+    "./features/automation-studio": "./src/features/automation-studio/index.ts",
+    "./features/cfo-analytics": "./src/features/cfo-analytics/index.ts",
+    "./features/client-comms": "./src/features/client-comms/index.ts",
+    "./features/doctor-mode": "./src/features/doctor-mode/index.ts",
+    "./features/judgment-day": "./src/features/judgment-day/index.ts",
+    "./features/monthly-close": "./src/features/monthly-close/index.ts",
+    "./features/rag-enterprise": "./src/features/rag-enterprise/index.ts",
+    "./features/sire-comparison": "./src/features/sire-comparison/index.ts"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.typecheck.json",
