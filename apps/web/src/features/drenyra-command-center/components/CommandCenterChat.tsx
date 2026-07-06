@@ -19,6 +19,7 @@
 import { AlertTriangle, Check, Loader2, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { CaseProgress } from "@/features/agents/CaseProgress";
 import { useCognitiveStream } from "@/features/cognitive-hub/hooks/useCognitiveStream";
 import {
 	extractArtifacts,
@@ -575,6 +576,13 @@ export function CommandCenterChat({
 				onToggleEvidenceForm={() => setShowEvidenceForm((prev) => !prev)}
 				onToggleNewCaseForm={() => setShowNewCaseForm((prev) => !prev)}
 			/>
+
+			{/* CaseProgress — behind dev flag */}
+			{localStorage.getItem("DRENYRA_V2_CASE_PROGRESS") === "true" && (
+				<div className="shrink-0 px-4 lg:px-6 pt-4 pb-2">
+					<CaseProgress completed={3} total={4} status="running" />
+				</div>
+			)}
 
 			{/* ═══════════════════════════════════════════════════════════════
 			     SCROLLABLE CONTENT AREA — Virtualized Message List
