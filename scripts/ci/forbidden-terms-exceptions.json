@@ -1,25 +1,135 @@
 {
-  "apps/web/src/routes/skills.tsx": [
+  "apps/web/src/stores/worktree-store.ts": [
     {
-      "term": "swarm",
+      "term": "Worktree",
       "line": 4,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Worktree",
+      "line": 14,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Worktree",
+      "line": 15,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "worktree",
+      "line": 15,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Worktree",
+      "line": 16,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Worktree",
+      "line": 19,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Worktree",
+      "line": 20,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Worktree",
+      "line": 23,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "worktree",
+      "line": 35,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "worktree",
+      "line": 44,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Worktree",
+      "line": 52,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "worktree",
+      "line": 53,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Worktree",
+      "line": 54,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Worktree",
+      "line": 58,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Worktree",
+      "line": 60,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "worktree",
+      "line": 60,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "worktree",
+      "line": 63,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "worktree",
+      "line": 69,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Worktree",
+      "line": 73,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "worktree",
+      "line": 75,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Worktree",
+      "line": 79,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/routes/cumplimiento/approvals.tsx": [
+  "apps/web/src/stores/artifact-store.ts": [
+    {
+      "term": "cognitive",
+      "line": 3,
+      "reason": "pre-existing"
+    },
     {
       "term": "Hub",
-      "line": 5,
+      "line": 3,
       "reason": "pre-existing"
     },
     {
       "term": "hub",
-      "line": 5,
+      "line": 3,
       "reason": "pre-existing"
     },
     {
       "term": "Hub",
-      "line": 6,
+      "line": 9,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 15,
       "reason": "pre-existing"
     }
   ],
@@ -70,414 +180,406 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/DrenyraMissionDesk.tsx": [
+  "apps/web/src/routes/skills.tsx": [
     {
-      "term": "Swarm",
-      "line": 8,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 10,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 40,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 49,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 50,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 51,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 52,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 53,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 54,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 55,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 169,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 172,
+      "term": "swarm",
+      "line": 4,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/CommandCenterChat.tsx": [
+  "apps/web/src/routes/cumplimiento/approvals.tsx": [
     {
-      "term": "Cognitive",
-      "line": 22,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 22,
+      "term": "Hub",
+      "line": 5,
       "reason": "pre-existing"
     },
     {
       "term": "hub",
-      "line": 22,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 26,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 26,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 28,
+      "line": 5,
       "reason": "pre-existing"
     },
     {
       "term": "Hub",
-      "line": 29,
+      "line": 6,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/lib/sentry.ts": [
+    {
+      "term": "hub",
+      "line": 22,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 94,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/lib/process-machine/types.ts": [
+    {
+      "term": "idle",
+      "line": 17,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/lib/process-machine/machine.ts": [
+    {
+      "term": "idle",
+      "line": 89,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 123,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 133,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/skills/components/SkillSearchBar.tsx": [
+    {
+      "term": "swarm",
+      "line": 2,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/settings/components/appearance/CompanionHub.tsx": [
+    {
+      "term": "Hub",
+      "line": 5,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/observability/components/ObservabilityDashboard.tsx": [
+    {
+      "term": "idle",
+      "line": 346,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 347,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 358,
       "reason": "pre-existing"
     },
     {
       "term": "cognitive",
+      "line": 358,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 376,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/observability/components/ObservabilityDashboard/RecoverDialog.tsx": [
+    {
+      "term": "idle",
       "line": 30,
       "reason": "pre-existing"
     },
     {
-      "term": "hub",
-      "line": 30,
+      "term": "idle",
+      "line": 31,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
-      "line": 63,
+      "term": "swarm",
+      "line": 42,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
-      "line": 64,
+      "term": "cognitive",
+      "line": 42,
       "reason": "pre-existing"
     },
-    {
-      "term": "Cognitive",
-      "line": 120,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 263,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 296,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 442,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 455,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 506,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/drenyra-command-center/components/DrenyraCommandCenter.tsx": [
     {
       "term": "idle",
-      "line": 137,
+      "line": 60,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/VirtualizedMessageList.tsx": [
+  "apps/web/src/features/observability/api/observability.api.ts": [
     {
-      "term": "Cognitive",
+      "term": "Swarm",
+      "line": 18,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 33,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 45,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 68,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 78,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 90,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 99,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 106,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 113,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 122,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 130,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 138,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/intelligence/types/intelligence.types.ts": [
+    {
+      "term": "orchestrator",
+      "line": 1,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/intelligence/stores/useSwarmStore.ts": [
+    {
+      "term": "idle",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 4,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 13,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
       "line": 16,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
+      "term": "Swarm",
       "line": 17,
       "reason": "pre-existing"
     },
     {
-      "term": "cognitive",
-      "line": 18,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 18,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
+      "term": "Swarm",
       "line": 24,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
+      "term": "Swarm",
+      "line": 26,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 27,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
       "line": 30,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
+      "term": "Swarm",
       "line": 32,
       "reason": "pre-existing"
     },
     {
-      "term": "Cognitive",
-      "line": 175,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 181,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 183,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/drenyra-command-center/components/DrenyraMissionDesk.utils.ts": [
-    {
       "term": "Swarm",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 5,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 7,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 9,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/drenyra-command-center/components/DrenyraMissionDesk.types.ts": [
-    {
-      "term": "idle",
-      "line": 5,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/drenyra-command-center/components/ArtifactCollapsible/ArtifactCollapsible.tsx": [
-    {
-      "term": "cognitive",
-      "line": 6,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 6,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/drenyra-command-center/components/ArtifactCollapsible/ArtifactCollapsible.types.ts": [
-    {
-      "term": "cognitive",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 6,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 10,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 12,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/drenyra-command-center/components/ArtifactCollapsible/ArtifactCollapsible.data.ts": [
-    {
-      "term": "cognitive",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 12,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
       "line": 38,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
-      "line": 81,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/drenyra-command-center/components/ArtifactCollapsible/components/CollapsibleHeader.tsx": [
-    {
-      "term": "cognitive",
-      "line": 9,
+      "term": "Swarm",
+      "line": 42,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
-      "line": 9,
+      "term": "Swarm",
+      "line": 44,
       "reason": "pre-existing"
     },
     {
-      "term": "hub",
-      "line": 9,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 18,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/drenyra-command-center/components/ChatContextPanel/ChatContextPanel.types.ts": [
-    {
-      "term": "cognitive",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 1,
+      "term": "Swarm",
+      "line": 47,
       "reason": "pre-existing"
     },
     {
       "term": "idle",
-      "line": 4,
+      "line": 61,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
-      "line": 8,
+      "term": "Swarm",
+      "line": 75,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
-      "line": 12,
+      "term": "idle",
+      "line": 96,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/ChatContextPanel/ChatContextPanel.data.ts": [
+  "apps/web/src/features/intelligence/lib/intelligence-utils.ts": [
     {
-      "term": "cognitive",
+      "term": "orchestrator",
       "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 15,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/ChatContextPanel/components/ArtifactPreview.tsx": [
+  "apps/web/src/features/intelligence/hooks/useAgentStream.ts": [
     {
-      "term": "cognitive",
+      "term": "Swarm",
       "line": 2,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
+      "term": "Swarm",
+      "line": 63,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 64,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 65,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 66,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 67,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 98,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/intelligence/components/SwarmActivityFeed.tsx": [
+    {
+      "term": "Swarm",
       "line": 2,
       "reason": "pre-existing"
     },
     {
-      "term": "hub",
-      "line": 2,
+      "term": "Swarm",
+      "line": 26,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
-      "line": 4,
+      "term": "Swarm",
+      "line": 31,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 34,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 35,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 36,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/intelligence/components/widgets/SeverityBadge.tsx": [
+    {
+      "term": "orchestrator",
+      "line": 1,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/intelligence/api/intelligence.api.ts": [
+    {
+      "term": "orchestrator",
+      "line": 1,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/inbox/inbox.schema.ts": [
+    {
+      "term": "idle",
+      "line": 58,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/inbox/hooks/useInboxAgentStream.ts": [
+    {
+      "term": "idle",
+      "line": 49,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 62,
       "reason": "pre-existing"
     }
   ],
@@ -637,143 +739,455 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/observability/api/observability.api.ts": [
+  "apps/web/src/features/drenyra-command-center/components/VirtualizedMessageList.tsx": [
     {
-      "term": "Swarm",
+      "term": "Cognitive",
+      "line": 16,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 17,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
       "line": 18,
       "reason": "pre-existing"
     },
     {
-      "term": "Swarm",
-      "line": 33,
+      "term": "hub",
+      "line": 18,
       "reason": "pre-existing"
     },
     {
-      "term": "Swarm",
-      "line": 45,
+      "term": "Cognitive",
+      "line": 24,
       "reason": "pre-existing"
     },
     {
-      "term": "Swarm",
-      "line": 68,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 78,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 90,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 99,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 106,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 113,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 122,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 130,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 138,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/observability/components/ObservabilityDashboard.tsx": [
-    {
-      "term": "idle",
-      "line": 346,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 347,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 358,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 358,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 376,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/observability/components/ObservabilityDashboard/RecoverDialog.tsx": [
-    {
-      "term": "idle",
+      "term": "Hub",
       "line": 30,
       "reason": "pre-existing"
     },
     {
-      "term": "idle",
-      "line": 31,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 42,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 42,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 60,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/automations/components/AutomationsView.tsx": [
-    {
-      "term": "idle",
-      "line": 20,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
+      "term": "Hub",
       "line": 32,
       "reason": "pre-existing"
     },
     {
-      "term": "idle",
-      "line": 62,
+      "term": "Cognitive",
+      "line": 175,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 181,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 183,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/bills/hooks/use-bills.mock-data.ts": [
+  "apps/web/src/features/drenyra-command-center/components/DrenyraMissionDesk.utils.ts": [
+    {
+      "term": "Swarm",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 5,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 7,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 9,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/DrenyraMissionDesk.types.ts": [
+    {
+      "term": "idle",
+      "line": 5,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/DrenyraMissionDesk.tsx": [
+    {
+      "term": "Swarm",
+      "line": 8,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 10,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 40,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 49,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 50,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 51,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 52,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 53,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 54,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 55,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 169,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 172,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/DrenyraCommandCenter.tsx": [
+    {
+      "term": "idle",
+      "line": 137,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/CommandCenterChat.tsx": [
+    {
+      "term": "Cognitive",
+      "line": 23,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 23,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 23,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 27,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 27,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 29,
+      "reason": "pre-existing"
+    },
     {
       "term": "Hub",
-      "line": 110,
+      "line": 30,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 31,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 31,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 64,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 65,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 121,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 264,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 297,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 443,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 456,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 507,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/ChatContextPanel/ChatContextPanel.types.ts": [
+    {
+      "term": "cognitive",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 4,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 8,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 12,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/ChatContextPanel/ChatContextPanel.data.ts": [
+    {
+      "term": "cognitive",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 15,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/ChatContextPanel/components/ArtifactPreview.tsx": [
+    {
+      "term": "cognitive",
+      "line": 2,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 2,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 2,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 4,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/ArtifactCollapsible/ArtifactCollapsible.types.ts": [
+    {
+      "term": "cognitive",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 6,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 10,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 12,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/ArtifactCollapsible/ArtifactCollapsible.tsx": [
+    {
+      "term": "cognitive",
+      "line": 6,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 6,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/ArtifactCollapsible/ArtifactCollapsible.data.ts": [
+    {
+      "term": "cognitive",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 12,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 38,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 81,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/ArtifactCollapsible/components/CollapsibleHeader.tsx": [
+    {
+      "term": "cognitive",
+      "line": 9,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 9,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 9,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 18,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/dashboard/components/DashboardView.tsx": [
+    {
+      "term": "Orchestrator",
+      "line": 164,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/dashboard/components/widgets/AgentLiveStatus.tsx": [
+    {
+      "term": "Swarm",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 36,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 37,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 40,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/compliance/machines/sire-reconciliation.machine.ts": [
+    {
+      "term": "idle",
+      "line": 142,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 169,
       "reason": "pre-existing"
     }
   ],
@@ -911,6 +1325,33 @@
       "reason": "pre-existing"
     }
   ],
+  "apps/web/src/features/cognitive-hub/types/hub.types.ts": [
+    {
+      "term": "Hub",
+      "line": 6,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 7,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 8,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 16,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 21,
+      "reason": "pre-existing"
+    }
+  ],
   "apps/web/src/features/cognitive-hub/pages/CognitiveWorkspacePage.tsx": [
     {
       "term": "Hub",
@@ -948,63 +1389,193 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/api/useHubSwarm.ts": [
+  "apps/web/src/features/cognitive-hub/logic/sheet-diff-builder.ts": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 4,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/logic/intent-parser.ts": [
+    {
+      "term": "Hub",
+      "line": 9,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 29,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 32,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/logic/artifact-extractor.ts": [
+    {
+      "term": "Hub",
+      "line": 13,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 42,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 43,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 54,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 54,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 93,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 95,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 95,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/logic/intent-parser/types.ts": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/lib/accounting-job-run-utils.ts": [
+    {
+      "term": "cognitive",
+      "line": 11,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/hooks/useMissionOrchestrator.ts": [
     {
       "term": "Swarm",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Orchestrator",
+      "line": 6,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 10,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 10,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 17,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/hooks/useHubState.ts": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
       "line": 2,
       "reason": "pre-existing"
     },
     {
-      "term": "Swarm",
-      "line": 4,
+      "term": "hub",
+      "line": 5,
       "reason": "pre-existing"
     },
     {
       "term": "Hub",
-      "line": 4,
+      "line": 45,
       "reason": "pre-existing"
     },
-    {
-      "term": "Swarm",
-      "line": 7,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 8,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 9,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/api/context-control-plane.api.ts": [
-    {
-      "term": "swarm",
-      "line": 97,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 111,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 125,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 139,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/HubInput.tsx": [
     {
       "term": "Hub",
+      "line": 53,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 54,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 55,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 57,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 64,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 65,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 68,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 77,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/hooks/useHubHistory.ts": [
+    {
+      "term": "cognitive",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
       "line": 3,
       "reason": "pre-existing"
     },
@@ -1020,27 +1591,475 @@
     },
     {
       "term": "Hub",
+      "line": 9,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 14,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 20,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 27,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 28,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 40,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 41,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 42,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/hooks/useDiscrepancyFlow.ts": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 16,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 17,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 47,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/hooks/useCognitiveStream.ts": [
+    {
+      "term": "cognitive",
+      "line": 21,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 23,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 24,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 33,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 35,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 37,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 73,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 73,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 73,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 76,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 129,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 131,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 149,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 149,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 181,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 181,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/hooks/useCognitiveHub.ts": [
+    {
+      "term": "Cognitive",
+      "line": 10,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 17,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 19,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 19,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 20,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 31,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 39,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 41,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 41,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 51,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 109,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 206,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/hooks/cognitive-stream.ts": [
+    {
+      "term": "cognitive",
+      "line": 20,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 21,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 28,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 36,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 40,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 41,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 50,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 58,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 65,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 99,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 100,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 101,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/hooks/cognitive-stream-types.ts": [
+    {
+      "term": "Cognitive",
+      "line": 48,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 98,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 105,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 111,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/hooks/cognitive-stream-storage.ts": [
+    {
+      "term": "Cognitive",
+      "line": 7,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 7,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 9,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 10,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 29,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 40,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 42,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 56,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/hooks/cognitive-stream-sse.ts": [
+    {
+      "term": "cognitive",
+      "line": 248,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/hooks/cognitive-stream-activities.ts": [
+    {
+      "term": "Cognitive",
+      "line": 10,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
       "line": 12,
       "reason": "pre-existing"
     },
     {
       "term": "Cognitive",
-      "line": 46,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 46,
+      "line": 37,
       "reason": "pre-existing"
     },
     {
       "term": "Cognitive",
-      "line": 53,
+      "line": 48,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 58,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 68,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 78,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 88,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 103,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 104,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 114,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 124,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 137,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 138,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 140,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 147,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 155,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 169,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 183,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 196,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 202,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 205,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 208,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/hub-events.constants.ts": [
+    {
+      "term": "Hub",
+      "line": 4,
       "reason": "pre-existing"
     },
     {
       "term": "Hub",
-      "line": 53,
+      "line": 13,
       "reason": "pre-existing"
     }
   ],
@@ -1048,6 +2067,45 @@
     {
       "term": "Cognitive",
       "line": 5,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/IntelligenceStream.tsx": [
+    {
+      "term": "Swarm",
+      "line": 32,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/HubRoot.tsx": [
+    {
+      "term": "Hub",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 4,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 7,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 19,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 22,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 23,
       "reason": "pre-existing"
     }
   ],
@@ -1238,47 +2296,62 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/components/IntelligenceStream.tsx": [
+  "apps/web/src/features/cognitive-hub/components/HubInput.tsx": [
     {
-      "term": "Swarm",
-      "line": 32,
+      "term": "Hub",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 5,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 7,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 12,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 46,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 46,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 53,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 53,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/components/DigitalSignaturePad.tsx": [
+  "apps/web/src/features/cognitive-hub/components/HubHeader.tsx": [
     {
-      "term": "idle",
-      "line": 21,
+      "term": "Hub",
+      "line": 4,
       "reason": "pre-existing"
     },
     {
-      "term": "idle",
-      "line": 22,
+      "term": "Hub",
+      "line": 9,
       "reason": "pre-existing"
     },
     {
-      "term": "idle",
-      "line": 110,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 120,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 168,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 174,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 184,
+      "term": "Hub",
+      "line": 10,
       "reason": "pre-existing"
     }
   ],
@@ -1409,32 +2482,203 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/components/hub-events.constants.ts": [
+  "apps/web/src/features/cognitive-hub/components/DigitalSignaturePad.tsx": [
     {
-      "term": "Hub",
-      "line": 4,
+      "term": "idle",
+      "line": 21,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 22,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 110,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 120,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 168,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 174,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 184,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/message/SwarmTrace.tsx": [
+    {
+      "term": "swarm",
+      "line": 8,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 20,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 28,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 211,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/message/HubMessage.tsx": [
+    {
+      "term": "Cognitive",
+      "line": 8,
       "reason": "pre-existing"
     },
     {
       "term": "Hub",
       "line": 13,
       "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/HubRoot.tsx": [
+    },
+    {
+      "term": "Swarm",
+      "line": 15,
+      "reason": "pre-existing"
+    },
     {
       "term": "Hub",
+      "line": 17,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 18,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 24,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 26,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 52,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 74,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 80,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 82,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 193,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 193,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 202,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 202,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 230,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/layout/workspace-sidebar-actions.tsx": [
+    {
+      "term": "Cognitive",
       "line": 3,
       "reason": "pre-existing"
     },
     {
+      "term": "Cognitive",
+      "line": 15,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/layout/hub-right-rail.tsx": [
+    {
       "term": "Hub",
-      "line": 4,
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 5,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 6,
       "reason": "pre-existing"
     },
     {
       "term": "Hub",
-      "line": 7,
+      "line": 9,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 10,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 14,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 15,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 16,
       "reason": "pre-existing"
     },
     {
@@ -1444,143 +2688,116 @@
     },
     {
       "term": "Hub",
+      "line": 20,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
       "line": 22,
       "reason": "pre-existing"
     },
     {
       "term": "Hub",
-      "line": 23,
+      "line": 29,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 33,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 53,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 55,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 65,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/components/HubHeader.tsx": [
+  "apps/web/src/features/cognitive-hub/components/layout/hub-right-rail.constants.ts": [
+    {
+      "term": "Swarm",
+      "line": 8,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 14,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/layout/hub-right-rail-container.tsx": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 2,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 3,
+      "reason": "pre-existing"
+    },
     {
       "term": "Hub",
       "line": 4,
       "reason": "pre-existing"
     },
     {
+      "term": "hub",
+      "line": 4,
+      "reason": "pre-existing"
+    },
+    {
       "term": "Hub",
+      "line": 6,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 7,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
       "line": 9,
       "reason": "pre-existing"
     },
     {
       "term": "Hub",
-      "line": 10,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/ToolExecutionTimeline/ToolExecutionTimeline.data.ts": [
-    {
-      "term": "Cognitive",
-      "line": 8,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 8,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
       "line": 13,
       "reason": "pre-existing"
     },
     {
-      "term": "Cognitive",
-      "line": 50,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 63,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/ToolExecutionTimeline/ToolExecutionTimeline.tsx": [
-    {
-      "term": "Cognitive",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 23,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/ToolExecutionTimeline/ToolExecutionTimeline.types.ts": [
-    {
-      "term": "Cognitive",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 4,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/ToolExecutionTimeline/components/TimelineEntry.tsx": [
-    {
-      "term": "Cognitive",
-      "line": 2,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 2,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 6,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/ToolExecutionTimeline/components/TimelineControlPlane.tsx": [
-    {
-      "term": "cognitive",
-      "line": 1,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/anomaly/discrepancy-scenario.ts": [
-    {
-      "term": "Hub",
-      "line": 1,
+      "term": "Swarm",
+      "line": 16,
       "reason": "pre-existing"
     },
     {
       "term": "Hub",
-      "line": 170,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/anomaly/use-discrepancy-resolution.store.ts": [
-    {
-      "term": "idle",
-      "line": 5,
+      "line": 18,
       "reason": "pre-existing"
     },
     {
-      "term": "idle",
-      "line": 30,
+      "term": "Hub",
+      "line": 24,
       "reason": "pre-existing"
     },
     {
-      "term": "idle",
-      "line": 79,
+      "term": "Swarm",
+      "line": 27,
       "reason": "pre-existing"
     }
   ],
@@ -1633,15 +2850,92 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/components/layout/workspace-sidebar-actions.tsx": [
+  "apps/web/src/features/cognitive-hub/components/layout/hub-evidence-drawer-loader.ts": [
     {
-      "term": "Cognitive",
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
       "line": 3,
       "reason": "pre-existing"
     },
     {
-      "term": "Cognitive",
+      "term": "hub",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 6,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 7,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 8,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 12,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 13,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/layout/hub-empty-state.tsx": [
+    {
+      "term": "Hub",
+      "line": 8,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 8,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 9,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 10,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 12,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
       "line": 15,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 29,
       "reason": "pre-existing"
     }
   ],
@@ -1734,97 +3028,6 @@
     {
       "term": "Hub",
       "line": 126,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-right-rail.constants.ts": [
-    {
-      "term": "Swarm",
-      "line": 8,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 14,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-artifact-aside.tsx": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 6,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 7,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 14,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-evidence-drawer-loader.ts": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 6,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 7,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 8,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 12,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 13,
       "reason": "pre-existing"
     }
   ],
@@ -1990,154 +3193,10 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-empty-state.tsx": [
-    {
-      "term": "Hub",
-      "line": 8,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 8,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 9,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 10,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 12,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 15,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 29,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-right-rail.tsx": [
+  "apps/web/src/features/cognitive-hub/components/layout/hub-artifact-aside.tsx": [
     {
       "term": "Hub",
       "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 5,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 6,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 9,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 10,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 14,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 15,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 16,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 19,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 20,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 22,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 29,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 33,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 53,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 55,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 65,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-right-rail-container.tsx": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 2,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 4,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 4,
       "reason": "pre-existing"
     },
     {
@@ -2151,33 +3210,133 @@
       "reason": "pre-existing"
     },
     {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 14,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/layout/hub-empty-state/l1-risk-card.tsx": [
+    {
+      "term": "hub",
+      "line": 4,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 54,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 62,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 70,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/layout/hub-empty-state/hub-empty-state.types.ts": [
+    {
+      "term": "Hub",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 5,
+      "reason": "pre-existing"
+    },
+    {
       "term": "Swarm",
+      "line": 8,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 20,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/layout/hub-empty-state/decision-gate-card.tsx": [
+    {
+      "term": "hub",
       "line": 9,
       "reason": "pre-existing"
     },
     {
+      "term": "hub",
+      "line": 29,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 40,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 52,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 65,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/layout/hub-context-aside/index.ts": [
+    {
       "term": "Hub",
-      "line": 13,
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 5,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/layout/hub-context-aside/hub-context-aside.types.ts": [
+    {
+      "term": "swarm",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 2,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 7,
       "reason": "pre-existing"
     },
     {
       "term": "Swarm",
-      "line": 16,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 18,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 24,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 27,
+      "line": 9,
       "reason": "pre-existing"
     }
   ],
@@ -2245,47 +3404,15 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-context-aside/hub-context-aside.types.ts": [
-    {
-      "term": "swarm",
-      "line": 1,
-      "reason": "pre-existing"
-    },
+  "apps/web/src/features/cognitive-hub/components/layout/hub-context-aside/components/ContextSkillsSection.tsx": [
     {
       "term": "swarm",
       "line": 2,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
-      "line": 7,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 9,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-context-aside/index.ts": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
       "term": "hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 5,
+      "line": 4,
       "reason": "pre-existing"
     }
   ],
@@ -2301,19 +3428,14 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-context-aside/components/ContextSkillsSection.tsx": [
-    {
-      "term": "swarm",
-      "line": 2,
-      "reason": "pre-existing"
-    },
+  "apps/web/src/features/cognitive-hub/components/layout/hub-context-aside/components/ContextRunCard.tsx": [
     {
       "term": "hub",
-      "line": 4,
+      "line": 3,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-context-aside/components/ContextRunCard.tsx": [
+  "apps/web/src/features/cognitive-hub/components/layout/hub-context-aside/components/ContextIntegrationSection.tsx": [
     {
       "term": "hub",
       "line": 3,
@@ -2332,89 +3454,6 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-context-aside/components/ContextIntegrationSection.tsx": [
-    {
-      "term": "hub",
-      "line": 3,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-empty-state/decision-gate-card.tsx": [
-    {
-      "term": "hub",
-      "line": 9,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 29,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 40,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 52,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 65,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-empty-state/l1-risk-card.tsx": [
-    {
-      "term": "hub",
-      "line": 4,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 54,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 62,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 70,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/layout/hub-empty-state/hub-empty-state.types.ts": [
-    {
-      "term": "Hub",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 5,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 8,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 20,
-      "reason": "pre-existing"
-    }
-  ],
   "apps/web/src/features/cognitive-hub/components/input/prompt-input-shell.tsx": [
     {
       "term": "hub",
@@ -2424,417 +3463,6 @@
     {
       "term": "hub",
       "line": 69,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/ArtifactRenderer.tsx": [
-    {
-      "term": "Hub",
-      "line": 10,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 41,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 54,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 78,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 88,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/artifact-registry.ts": [
-    {
-      "term": "Hub",
-      "line": 13,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 29,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/ComparisonArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 17,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/SireDiffArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 6,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 21,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/DashboardArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 25,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 52,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 96,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/ChartArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 18,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/CashflowProjectionArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 8,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/PayrollSummaryArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 7,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/KnowledgeGraphArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 23,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/AccountingDiffArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 8,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/TaxSummaryArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 7,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/BillsPayableArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 7,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/ExplanationArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 15,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 20,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/SearchResultArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 15,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/TableArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 12,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 17,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/SheetDiffArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/UBLViewerArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 6,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/BankingReconciliationArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 13,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/ReportArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 15,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 20,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/SimulationArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 18,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/ActionCardArtifact.tsx": [
-    {
-      "term": "Hub",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 15,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/message/SwarmTrace.tsx": [
-    {
-      "term": "swarm",
-      "line": 8,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 20,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 28,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 211,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/components/message/HubMessage.tsx": [
-    {
-      "term": "Cognitive",
-      "line": 8,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 13,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 15,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 18,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 24,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 26,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 52,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 74,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 80,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 82,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 193,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 193,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 202,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 202,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 230,
       "reason": "pre-existing"
     }
   ],
@@ -2872,36 +3500,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/logic/sheet-diff-builder.ts": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 4,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/logic/intent-parser.ts": [
-    {
-      "term": "Hub",
-      "line": 9,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 29,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 32,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/logic/artifact-extractor.ts": [
+  "apps/web/src/features/cognitive-hub/components/artifacts/artifact-registry.ts": [
     {
       "term": "Hub",
       "line": 13,
@@ -2909,51 +3508,433 @@
     },
     {
       "term": "Hub",
-      "line": 42,
+      "line": 17,
       "reason": "pre-existing"
     },
     {
       "term": "Hub",
-      "line": 43,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 54,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 54,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 93,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 95,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 95,
+      "line": 29,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/logic/intent-parser/types.ts": [
+  "apps/web/src/features/cognitive-hub/components/artifacts/ArtifactRenderer.tsx": [
+    {
+      "term": "Hub",
+      "line": 10,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 17,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 41,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 54,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 78,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 88,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/UBLViewerArtifact.tsx": [
     {
       "term": "Hub",
       "line": 1,
       "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/types/hub.types.ts": [
+    },
     {
       "term": "Hub",
       "line": 6,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/TaxSummaryArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 7,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/TableArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 12,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 17,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/SireDiffArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 6,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 21,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/SimulationArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 18,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/SheetDiffArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/SearchResultArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 15,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/ReportArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 15,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 20,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/PayrollSummaryArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 7,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/KnowledgeGraphArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 23,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/ExplanationArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 15,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 20,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/DashboardArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 17,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 25,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 52,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 96,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/ComparisonArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 17,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/ChartArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 18,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/CashflowProjectionArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 8,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/BillsPayableArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 7,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/BankingReconciliationArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 13,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/ActionCardArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 15,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/artifacts/renderers/AccountingDiffArtifact.tsx": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 8,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/anomaly/use-discrepancy-resolution.store.ts": [
+    {
+      "term": "idle",
+      "line": 5,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 30,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 79,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/anomaly/discrepancy-scenario.ts": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 170,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/ToolExecutionTimeline/ToolExecutionTimeline.types.ts": [
+    {
+      "term": "Cognitive",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 4,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/ToolExecutionTimeline/ToolExecutionTimeline.tsx": [
+    {
+      "term": "Cognitive",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 23,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/ToolExecutionTimeline/ToolExecutionTimeline.data.ts": [
+    {
+      "term": "Cognitive",
+      "line": 8,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 8,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 13,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 50,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 63,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/ToolExecutionTimeline/components/TimelineEntry.tsx": [
+    {
+      "term": "Cognitive",
+      "line": 2,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 2,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 6,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/components/ToolExecutionTimeline/components/TimelineControlPlane.tsx": [
+    {
+      "term": "cognitive",
+      "line": 1,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/api/useHubSwarm.ts": [
+    {
+      "term": "Swarm",
+      "line": 2,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 4,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 4,
       "reason": "pre-existing"
     },
     {
@@ -2967,604 +3948,78 @@
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
-      "line": 16,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 21,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/hooks/cognitive-stream-activities.ts": [
-    {
-      "term": "Cognitive",
-      "line": 10,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 12,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 37,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 48,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 58,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 68,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 78,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 88,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 103,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 104,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 114,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 124,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 137,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 138,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 140,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 147,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 155,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 169,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 183,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 196,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 202,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 205,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 208,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/hooks/useMissionOrchestrator.ts": [
-    {
       "term": "Swarm",
-      "line": 3,
+      "line": 9,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/cognitive-hub/api/context-control-plane.api.ts": [
+    {
+      "term": "swarm",
+      "line": 97,
       "reason": "pre-existing"
     },
+    {
+      "term": "swarm",
+      "line": 111,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 125,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "swarm",
+      "line": 139,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/bills/hooks/use-bills.mock-data.ts": [
     {
       "term": "Hub",
-      "line": 3,
+      "line": 110,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/automations/components/AutomationsView.tsx": [
+    {
+      "term": "idle",
+      "line": 20,
       "reason": "pre-existing"
     },
     {
-      "term": "Orchestrator",
+      "term": "idle",
+      "line": 32,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 62,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/auth/components/signup/signup-ruc-validation.ts": [
+    {
+      "term": "idle",
       "line": 6,
       "reason": "pre-existing"
     },
     {
-      "term": "Swarm",
-      "line": 10,
+      "term": "idle",
+      "line": 18,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
-      "line": 10,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 17,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/hooks/cognitive-stream-storage.ts": [
-    {
-      "term": "Cognitive",
-      "line": 7,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 7,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 9,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 10,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 29,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 40,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 42,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 56,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/hooks/cognitive-stream-types.ts": [
-    {
-      "term": "Cognitive",
-      "line": 48,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 98,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 105,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 111,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/hooks/useCognitiveHub.ts": [
-    {
-      "term": "Cognitive",
-      "line": 10,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 19,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 19,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 20,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 31,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 39,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 41,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 41,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 51,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 109,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 206,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/hooks/useDiscrepancyFlow.ts": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 16,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 47,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/hooks/useCognitiveStream.ts": [
-    {
-      "term": "cognitive",
-      "line": 21,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
+      "term": "idle",
       "line": 23,
       "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 24,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 33,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 35,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 37,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 73,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 73,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 73,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 76,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 129,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 131,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 149,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 149,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 181,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 181,
-      "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/cognitive-hub/hooks/cognitive-stream.ts": [
-    {
-      "term": "cognitive",
-      "line": 20,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 21,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 28,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 36,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 40,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 41,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 50,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 58,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 65,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 99,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 100,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 101,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/hooks/useHubState.ts": [
+  "apps/web/src/features/approval-hub/index.ts": [
     {
       "term": "Hub",
       "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 2,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 5,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 45,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 53,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 54,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 55,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 57,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 64,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 65,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 68,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 77,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/hooks/cognitive-stream-sse.ts": [
-    {
-      "term": "cognitive",
-      "line": 248,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/hooks/useHubHistory.ts": [
-    {
-      "term": "cognitive",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 5,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 7,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 9,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 14,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 20,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 27,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 28,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 40,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 41,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 42,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/cognitive-hub/lib/accounting-job-run-utils.ts": [
-    {
-      "term": "cognitive",
-      "line": 11,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/approval-hub/ApprovalHubPage.data.ts": [
-    {
-      "term": "Hub",
-      "line": 4,
       "reason": "pre-existing"
     }
   ],
@@ -3600,10 +4055,91 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/approval-hub/index.ts": [
+  "apps/web/src/features/approval-hub/ApprovalHubPage.data.ts": [
+    {
+      "term": "Hub",
+      "line": 4,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/approval-hub/components/ApprovalHubStatusBadge.tsx": [
     {
       "term": "Hub",
       "line": 1,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 2,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 4,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 8,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 10,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/approval-hub/components/ApprovalHubList.tsx": [
+    {
+      "term": "Hub",
+      "line": 2,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 5,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 12,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 17,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 52,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/features/approval-hub/components/ApprovalHubHeader.tsx": [
+    {
+      "term": "Hub",
+      "line": 3,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 5,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 17,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 27,
       "reason": "pre-existing"
     }
   ],
@@ -3641,293 +4177,6 @@
     {
       "term": "Hub",
       "line": 106,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/approval-hub/components/ApprovalHubList.tsx": [
-    {
-      "term": "Hub",
-      "line": 2,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 5,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 12,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 52,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/approval-hub/components/ApprovalHubStatusBadge.tsx": [
-    {
-      "term": "Hub",
-      "line": 1,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 2,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 4,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 8,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 10,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/approval-hub/components/ApprovalHubHeader.tsx": [
-    {
-      "term": "Hub",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 5,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 27,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/intelligence/api/intelligence.api.ts": [
-    {
-      "term": "orchestrator",
-      "line": 1,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/intelligence/components/SwarmActivityFeed.tsx": [
-    {
-      "term": "Swarm",
-      "line": 2,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 26,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 31,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 34,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 35,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 36,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/intelligence/components/widgets/SeverityBadge.tsx": [
-    {
-      "term": "orchestrator",
-      "line": 1,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/intelligence/types/intelligence.types.ts": [
-    {
-      "term": "orchestrator",
-      "line": 1,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/intelligence/hooks/useAgentStream.ts": [
-    {
-      "term": "Swarm",
-      "line": 2,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 63,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 64,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 65,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 66,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 67,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 98,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/intelligence/lib/intelligence-utils.ts": [
-    {
-      "term": "orchestrator",
-      "line": 1,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/intelligence/stores/useSwarmStore.ts": [
-    {
-      "term": "idle",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 4,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 13,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 16,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 24,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 26,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 27,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 30,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 32,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 38,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 42,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 44,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 47,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 61,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 75,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 96,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/compliance/machines/sire-reconciliation.machine.ts": [
-    {
-      "term": "idle",
-      "line": 142,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 169,
       "reason": "pre-existing"
     }
   ],
@@ -3972,200 +4221,70 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/skills/components/SkillSearchBar.tsx": [
-    {
-      "term": "swarm",
-      "line": 2,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/settings/components/appearance/CompanionHub.tsx": [
-    {
-      "term": "Hub",
-      "line": 5,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/inbox/inbox.schema.ts": [
+  "apps/web/src/context/AgentAwareContext.tsx": [
     {
       "term": "idle",
-      "line": 58,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/inbox/hooks/useInboxAgentStream.ts": [
-    {
-      "term": "idle",
-      "line": 49,
+      "line": 11,
       "reason": "pre-existing"
     },
     {
       "term": "idle",
-      "line": 62,
+      "line": 51,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/auth/components/signup/signup-ruc-validation.ts": [
+  "apps/web/src/components/layout/FiscalInspector.types.ts": [
     {
-      "term": "idle",
+      "term": "Pipeline",
+      "line": 29,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/components/layout/FiscalInspector.tsx": [
+    {
+      "term": "Pipeline",
+      "line": 50,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Pipeline",
+      "line": 60,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/components/layout/components/index.ts": [
+    {
+      "term": "Pipeline",
+      "line": 6,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/components/layout/components/FiscalInspectorPipeline.tsx": [
+    {
+      "term": "Pipeline",
+      "line": 7,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Pipeline",
+      "line": 13,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/components/layout/components/FiscalInspectorDetail.tsx": [
+    {
+      "term": "Pipeline",
       "line": 6,
       "reason": "pre-existing"
     },
     {
-      "term": "idle",
-      "line": 18,
+      "term": "Pipeline",
+      "line": 50,
       "reason": "pre-existing"
     },
     {
-      "term": "idle",
-      "line": 23,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/dashboard/components/DashboardView.tsx": [
-    {
-      "term": "Orchestrator",
-      "line": 164,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/features/dashboard/components/widgets/AgentLiveStatus.tsx": [
-    {
-      "term": "Swarm",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 36,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 37,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 40,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/components/agentic/ThreadView.message-bubble.tsx": [
-    {
-      "term": "cognitive",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 21,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 21,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 22,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 22,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 22,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 62,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 80,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 92,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/components/agentic/AgentHeartbeat.tsx": [
-    {
-      "term": "Swarm",
-      "line": 4,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Swarm",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "swarm",
-      "line": 19,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/components/agentic/RightPanel.artifact-panel.tsx": [
-    {
-      "term": "cognitive",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 11,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/components/agentic/DrenyraFlexMain.tsx": [
-    {
-      "term": "Cognitive",
-      "line": 14,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 16,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 16,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "cognitive",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 17,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Cognitive",
-      "line": 27,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 72,
+      "term": "Pipeline",
+      "line": 51,
       "reason": "pre-existing"
     }
   ],
@@ -4243,25 +4362,55 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/components/agentic/AccountingTopBar.tsx": [
+  "apps/web/src/components/agentic/ThreadView.message-bubble.tsx": [
     {
-      "term": "Swarm",
-      "line": 9,
+      "term": "cognitive",
+      "line": 17,
       "reason": "pre-existing"
     },
     {
-      "term": "Swarm",
-      "line": 12,
+      "term": "hub",
+      "line": 17,
       "reason": "pre-existing"
     },
     {
-      "term": "Swarm",
-      "line": 54,
+      "term": "cognitive",
+      "line": 21,
       "reason": "pre-existing"
     },
     {
-      "term": "Swarm",
-      "line": 57,
+      "term": "hub",
+      "line": 21,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 22,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 22,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 22,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 62,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 80,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Hub",
+      "line": 92,
       "reason": "pre-existing"
     }
   ],
@@ -4274,6 +4423,55 @@
     {
       "term": "hub",
       "line": 4,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/components/agentic/RightPanel.artifact-panel.tsx": [
+    {
+      "term": "cognitive",
+      "line": 11,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 11,
+      "reason": "pre-existing"
+    }
+  ],
+  "apps/web/src/components/agentic/DrenyraFlexMain.tsx": [
+    {
+      "term": "Cognitive",
+      "line": 14,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 16,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 16,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "cognitive",
+      "line": 17,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "hub",
+      "line": 17,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Cognitive",
+      "line": 27,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "idle",
+      "line": 72,
       "reason": "pre-existing"
     }
   ],
@@ -4296,240 +4494,42 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/components/layout/FiscalInspector.tsx": [
+  "apps/web/src/components/agentic/AgentHeartbeat.tsx": [
     {
-      "term": "Pipeline",
-      "line": 50,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Pipeline",
-      "line": 60,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/components/layout/FiscalInspector.types.ts": [
-    {
-      "term": "Pipeline",
-      "line": 29,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/components/layout/components/FiscalInspectorDetail.tsx": [
-    {
-      "term": "Pipeline",
-      "line": 6,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Pipeline",
-      "line": 50,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Pipeline",
-      "line": 51,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/components/layout/components/FiscalInspectorPipeline.tsx": [
-    {
-      "term": "Pipeline",
-      "line": 7,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Pipeline",
-      "line": 13,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/components/layout/components/index.ts": [
-    {
-      "term": "Pipeline",
-      "line": 6,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/context/AgentAwareContext.tsx": [
-    {
-      "term": "idle",
-      "line": 11,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 51,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/lib/sentry.ts": [
-    {
-      "term": "hub",
-      "line": 22,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 94,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/lib/process-machine/types.ts": [
-    {
-      "term": "idle",
-      "line": 17,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/lib/process-machine/machine.ts": [
-    {
-      "term": "idle",
-      "line": 89,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 123,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "idle",
-      "line": 133,
-      "reason": "pre-existing"
-    }
-  ],
-  "apps/web/src/stores/worktree-store.ts": [
-    {
-      "term": "Worktree",
+      "term": "Swarm",
       "line": 4,
       "reason": "pre-existing"
     },
     {
-      "term": "Worktree",
-      "line": 14,
+      "term": "Swarm",
+      "line": 11,
       "reason": "pre-existing"
     },
     {
-      "term": "Worktree",
-      "line": 15,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "worktree",
-      "line": 15,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Worktree",
-      "line": 16,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Worktree",
+      "term": "swarm",
       "line": 19,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Worktree",
-      "line": 20,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Worktree",
-      "line": 23,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "worktree",
-      "line": 35,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "worktree",
-      "line": 44,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Worktree",
-      "line": 52,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "worktree",
-      "line": 53,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Worktree",
-      "line": 54,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Worktree",
-      "line": 58,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Worktree",
-      "line": 60,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "worktree",
-      "line": 60,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "worktree",
-      "line": 63,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "worktree",
-      "line": 69,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Worktree",
-      "line": 73,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "worktree",
-      "line": 75,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Worktree",
-      "line": 79,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/stores/artifact-store.ts": [
+  "apps/web/src/components/agentic/AccountingTopBar.tsx": [
     {
-      "term": "cognitive",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "hub",
-      "line": 3,
-      "reason": "pre-existing"
-    },
-    {
-      "term": "Hub",
+      "term": "Swarm",
       "line": 9,
       "reason": "pre-existing"
     },
     {
-      "term": "Hub",
-      "line": 15,
+      "term": "Swarm",
+      "line": 12,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 54,
+      "reason": "pre-existing"
+    },
+    {
+      "term": "Swarm",
+      "line": 57,
       "reason": "pre-existing"
     }
   ]
