@@ -10,7 +10,6 @@
     "dev": "./scripts/dev/dev-host.sh",
     "dev:api": "bun run --filter @drenyra/api dev",
     "dev:web": "WEB_PORT=${WEB_PORT:-5174} bun run --filter @drenyra/web dev",
-
     "db:push": "./scripts/dev/run-infra-db.sh db:push",
     "db:check": "./scripts/dev/run-infra-db.sh db:check",
     "db:generate": "./scripts/dev/run-infra-db.sh db:generate",
@@ -21,6 +20,7 @@
     "codemod:fiscal-editorial-blur": "bun scripts/codemod/fiscal-editorial-remove-blur.ts",
     "ci:pr-readiness": "bun scripts/ci/pr-readiness.ts",
     "ci:depcheck": "bash scripts/ci/check-unused-deps.sh",
+    "ci:forbidden-terms": "bun scripts/ci/check-forbidden-terms.ts",
     "db:studio": "./scripts/dev/run-infra-db.sh db:studio",
     "db:seed": "bash ./scripts/dev/seed-dev-bootstrap.sh",
     "auth:bootstrap:demo": "bun scripts/create-admin-user.ts",
@@ -201,9 +201,9 @@
     "postcss": ">=8.5.10"
   },
   "devDependencies": {
-    "@drenyra/test-utils": "workspace:*",
     "@axe-core/playwright": "^4.11.3",
     "@biomejs/biome": "^2.5.0",
+    "@drenyra/test-utils": "workspace:*",
     "@module-federation/vite": "^1.16.8",
     "@playwright/test": "^1.61.1",
     "@types/node": "^25.9.3",
@@ -214,6 +214,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
+    "glob": "^13.0.6",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
     "marked": "^18.0.5",
