@@ -13,6 +13,8 @@ import {
 	PeriodsQuerySchema,
 	UpdateChecklistSchema,
 	UpdateItemSchema,
+} from "./schemas";
+import { companyScopeGuard } from "../../shared/plugins";
 } from "./types";
 
 export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {
@@ -20,6 +22,7 @@ export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {
 
 	return (
 		new Elysia({ prefix: "/api/v1/close" })
+			.use(companyScopeGuard({ allowHeaderFallback: true }))
 			// --- Checklists ---
 			.post(
 				"/checklists",

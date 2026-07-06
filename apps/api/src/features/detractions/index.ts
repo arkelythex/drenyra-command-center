@@ -2,6 +2,7 @@ import { Elysia } from "elysia";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import { listDetractions } from "./application/queries/list-detractions.query";
 import { ListDetractionsQuerySchema } from "./detractions.schemas";
+import { companyScopeGuard } from "../shared/plugins";
 
 /**
  * Detractions feature module.
@@ -15,7 +16,8 @@ import { ListDetractionsQuerySchema } from "./detractions.schemas";
  * // GET /api/detractions?companyId=<uuid>
  * ```
  */
-export const detractionsModule = new Elysia({ prefix: "/api/detractions" }).get(
+export const detractionsModule = new Elysia({ prefix: "/api/detractions" })
+	.use(companyScopeGuard({ allowHeaderFallback: true })).get(
 	"/",
 	async ({ query, set }) => {
 		try {

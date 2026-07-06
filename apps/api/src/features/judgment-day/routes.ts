@@ -17,8 +17,10 @@ import {
 	updateFindingStatus,
 	updateRule,
 } from "./controller";
+import { companyScopeGuard } from "../../shared/plugins";
 
 export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	.get("/dashboard", async ({ query, set }) => {
 		try {
 			const companyId = query["companyId"];
