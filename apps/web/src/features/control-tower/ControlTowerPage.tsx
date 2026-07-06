@@ -1,4 +1,5 @@
 import { Building2, Inbox, ShieldAlert } from "lucide-react";
+import { AgentSessionsSection } from "./components/AgentSessionsSection";
 import { useControlTower } from "./hooks/useControlTower";
 
 function riskColor(level: string): string {
@@ -46,6 +47,8 @@ export function ControlTowerPage() {
 						obligaciones por empresa. Período {data.period}.
 					</p>
 				</header>
+
+				<AgentSessionsSection />
 
 				<div className="rounded-2xl border border-dashed border-[var(--border-subtle)] p-4 flex items-start gap-3">
 					<Inbox size={18} className="text-[var(--text-disabled)] mt-0.5" />
