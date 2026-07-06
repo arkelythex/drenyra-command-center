@@ -4,7 +4,9 @@ import { FiscalPhaseOrchestrator } from "../../../../drenyra-orchestrator/src/ph
 import { InMemoryFiscalPhaseStore } from "../../../../drenyra-orchestrator/src/phase/fiscal-phase-store";
 import { PhaseGateEngine } from "../../../../drenyra-orchestrator/src/phase/phase-gate-engine";
 import { Mnevori } from "../mnevori";
+import { MnevoriRegulationTracker } from "../mnevori.regulation";
 import { MnevoriResumeService } from "../mnevori.resume";
+import type { MnevoriArtifact } from "../types";
 
 function createTestOrchestrator(store: InMemoryFiscalPhaseStore) {
 	const gateEngine = new PhaseGateEngine();
@@ -158,5 +160,75 @@ describe("MnevoriResumeService", () => {
 		const interrupted = await resumeService.findInterruptedPeriods();
 		expect(interrupted.length).toBeGreaterThanOrEqual(1);
 		expect(interrupted[0].ruc).toBe("20123456789");
+	});
+});
+
+describe("MnevoriRegulationTracker", () => {
+	let tracker: MnevoriRegulationTracker;
+
+	beforeEach(() => {
+		tracker = new MnevoriRegulationTracker("2026.1");
+	});
+
+	it("should mark artifact as valid when version matches", () => {
+		const artifact: MnevoriArtifact = {
+			id: "test:1",
+			ruc: "20123456789",
+			periodo: "2026-06",
+			phaseId: "captura",
+			type: "phase_snapshot",
+			payload: {},
+			version: 1,
+			tier: "T2_STRONG",
+			persistedAt: new Date().toISOString(),
+		};
+
+		expect(tracker.evaluateArtifactCache(artifact)).toBe("valid");
+	});
+
+	it("should mark artifact as needs_review when version differs", () => {
+		const artifact: MnevoriArtifact = {
+			id: "test:2",
+			ruc: "20123456789",
+			periodo: "2026-06",
+			phaseId: "captura",
+			type: "phase_snapshot",
+			payload: {},
+			version: 0,
+			tier: "T2_STRONG",
+			persistedAt: new Date().toISOString(),
+		};
+
+		tracker.updateCurrentVersion("2026.2");
+		expect(tracker.evaluateArtifactCache(artifact)).toBe("needs_review");
+	});
+
+	it("should find stale artifacts when version mismatch", () => {
+		const fresh: MnevoriArtifact = {
+			id: "test:3",
+			ruc: "1",
+			periodo: "2026-06",
+			phaseId: "captura",
+			type: "phase_snapshot",
+			payload: {},
+			version: 1,
+			tier: "T2_STRONG",
+			persistedAt: new Date().toISOString(),
+		};
+		const stale: MnevoriArtifact = {
+			id: "test:4",
+			ruc: "1",
+			periodo: "2026-06",
+			phaseId: "conciliacion",
+			type: "phase_snapshot",
+			payload: {},
+			version: 0,
+			tier: "T2_STRONG",
+			persistedAt: new Date().toISOString(),
+		};
+
+		const result = tracker.findStaleArtifacts([fresh, stale]);
+		expect(result).toHaveLength(1);
+		expect(result[0].phaseId).toBe("conciliacion");
 	});
 });
