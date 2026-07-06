@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Bot } from "lucide-react";
+import { useEffect } from "react";
 import { AgentTabBar } from "@/features/agents/AgentTabBar";
 import { AgentTabPanel } from "@/features/agents/AgentTabPanel";
 import { useAgentsWindowStore } from "@/features/agents/agents.store";
@@ -9,8 +10,15 @@ export function AgentSessionsSection() {
 	const { data, isLoading } = useQuery(agentsListQueryOptions({}));
 	const sessions = data?.data ?? [];
 	const selectedSessionId = useAgentsWindowStore((s) => s.selectedSessionId);
+	const selectSession = useAgentsWindowStore((s) => s.selectSession);
 	const selectedSession =
 		sessions.find((s) => s.id === selectedSessionId) ?? null;
+
+	useEffect(() => {
+		if (sessions.length > 0 && !selectedSessionId) {
+			selectSession(sessions[0].id);
+		}
+	}, [sessions, selectedSessionId, selectSession]);
 
 	return (
 		<section className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-5 space-y-4">

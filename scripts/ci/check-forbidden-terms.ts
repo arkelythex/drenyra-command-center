@@ -75,6 +75,7 @@ const ALLOWED_PATTERNS = [
 	/__tests__/,
 	/\.d\.ts$/,
 	/check-forbidden-terms\.ts$/,
+	/packages\/agents\/src\//,
 ];
 
 interface Violation {
@@ -171,7 +172,7 @@ function main(): void {
 	const { exceptionsFile } = parseArgs();
 	const exceptions = loadExceptions(exceptionsFile);
 
-	const files = globSync("apps/web/src/**/*.{tsx,ts}", {
+	const files = globSync("{apps/web/src,packages/agents/src}/**/*.{tsx,ts}", {
 		ignore: [
 			"**/node_modules/**",
 			"**/routeTree.gen.ts",
