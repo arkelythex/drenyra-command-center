@@ -65,6 +65,7 @@ import { Route as DrenyraAutomatizacionesRouteImport } from "./routes/drenyra/au
 import { Route as DrenyraCaseThreadIdRouteImport } from "./routes/drenyra/case.$threadId";
 import { Route as DrenyraControlTowerRouteImport } from "./routes/drenyra/control-tower";
 import { Route as DrenyraHerramientasRouteImport } from "./routes/drenyra/herramientas";
+import { Route as DrenyraHubRouteImport } from "./routes/drenyra/hub";
 import { Route as DrenyraIndexRouteImport } from "./routes/drenyra/index";
 import { Route as DrenyraObservabilityRouteImport } from "./routes/drenyra/observability";
 import { Route as DrenyraSkillsRouteImport } from "./routes/drenyra/skills";
@@ -84,6 +85,7 @@ import { Route as FirmIndexRouteImport } from "./routes/firm/index";
 import { Route as ForgotPasswordRouteImport } from "./routes/forgot-password";
 import { Route as InboxRouteImport } from "./routes/inbox";
 import { Route as IndexRouteImport } from "./routes/index";
+import { Route as InteligenciaRouteImport } from "./routes/inteligencia";
 import { Route as InventoryRouteImport } from "./routes/inventory";
 import { Route as InvoicesRouteImport } from "./routes/invoices";
 import { Route as LedgerRouteImport } from "./routes/ledger";
@@ -113,6 +115,8 @@ import { Route as ProfileRouteImport } from "./routes/profile";
 import { Route as ReconciliationsRouteImport } from "./routes/reconciliations";
 import { Route as ReportsRouteImport } from "./routes/reports";
 import { Route as ResetPasswordRouteImport } from "./routes/reset-password";
+import { Route as ReviewRouteImport } from "./routes/review";
+import { Route as ReviewQueueRouteImport } from "./routes/review-queue";
 import { Route as ScannerRouteImport } from "./routes/scanner";
 import { Route as SettingsRouteImport } from "./routes/settings";
 import { Route as SettingsAppearanceRouteImport } from "./routes/settings/appearance";
@@ -129,6 +133,8 @@ import { Route as TesoreriaBankingRouteImport } from "./routes/tesoreria/banking
 import { Route as TesoreriaBillsRouteImport } from "./routes/tesoreria/bills";
 import { Route as TesoreriaCashflowRouteImport } from "./routes/tesoreria/cashflow";
 import { Route as TesoreriaReconciliationsRouteImport } from "./routes/tesoreria/reconciliations";
+import { Route as ThreadsThreadIdRouteImport } from "./routes/threads/$threadId";
+import { Route as ThreadsIndexRouteImport } from "./routes/threads/index";
 import { Route as VendorsRouteImport } from "./routes/vendors";
 import { Route as VerifyEmailRouteImport } from "./routes/verify-email";
 import { Route as WorkspaceComplianceRouteImport } from "./routes/workspace/compliance";
@@ -170,6 +176,16 @@ const SettingsRoute = SettingsRouteImport.update({
 const ScannerRoute = ScannerRouteImport.update({
 	id: "/scanner",
 	path: "/scanner",
+	getParentRoute: () => rootRouteImport,
+} as any);
+const ReviewQueueRoute = ReviewQueueRouteImport.update({
+	id: "/review-queue",
+	path: "/review-queue",
+	getParentRoute: () => rootRouteImport,
+} as any);
+const ReviewRoute = ReviewRouteImport.update({
+	id: "/review",
+	path: "/review",
 	getParentRoute: () => rootRouteImport,
 } as any);
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -255,6 +271,11 @@ const InvoicesRoute = InvoicesRouteImport.update({
 const InventoryRoute = InventoryRouteImport.update({
 	id: "/inventory",
 	path: "/inventory",
+	getParentRoute: () => rootRouteImport,
+} as any);
+const InteligenciaRoute = InteligenciaRouteImport.update({
+	id: "/inteligencia",
+	path: "/inteligencia",
 	getParentRoute: () => rootRouteImport,
 } as any);
 const InboxRoute = InboxRouteImport.update({
@@ -402,6 +423,11 @@ const WorkspaceIndexRoute = WorkspaceIndexRouteImport.update({
 	path: "/workspace/",
 	getParentRoute: () => rootRouteImport,
 } as any);
+const ThreadsIndexRoute = ThreadsIndexRouteImport.update({
+	id: "/threads/",
+	path: "/threads/",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const SettingsIndexRoute = SettingsIndexRouteImport.update({
 	id: "/",
 	path: "/",
@@ -450,6 +476,11 @@ const WorkspaceFinanceRoute = WorkspaceFinanceRouteImport.update({
 const WorkspaceComplianceRoute = WorkspaceComplianceRouteImport.update({
 	id: "/workspace/compliance",
 	path: "/workspace/compliance",
+	getParentRoute: () => rootRouteImport,
+} as any);
+const ThreadsThreadIdRoute = ThreadsThreadIdRouteImport.update({
+	id: "/threads/$threadId",
+	path: "/threads/$threadId",
 	getParentRoute: () => rootRouteImport,
 } as any);
 const TesoreriaReconciliationsRoute =
@@ -596,6 +627,11 @@ const DrenyraSkillsRoute = DrenyraSkillsRouteImport.update({
 const DrenyraObservabilityRoute = DrenyraObservabilityRouteImport.update({
 	id: "/observability",
 	path: "/observability",
+	getParentRoute: () => DrenyraRoute,
+} as any);
+const DrenyraHubRoute = DrenyraHubRouteImport.update({
+	id: "/hub",
+	path: "/hub",
 	getParentRoute: () => DrenyraRoute,
 } as any);
 const DrenyraHerramientasRoute = DrenyraHerramientasRouteImport.update({
@@ -815,6 +851,7 @@ export interface FileRoutesByFullPath {
 	"/firm": typeof FirmRouteWithChildren;
 	"/forgot-password": typeof ForgotPasswordRoute;
 	"/inbox": typeof InboxRoute;
+	"/inteligencia": typeof InteligenciaRoute;
 	"/inventory": typeof InventoryRoute;
 	"/invoices": typeof InvoicesRoute;
 	"/ledger": typeof LedgerRoute;
@@ -832,6 +869,8 @@ export interface FileRoutesByFullPath {
 	"/reconciliations": typeof ReconciliationsRoute;
 	"/reports": typeof ReportsRoute;
 	"/reset-password": typeof ResetPasswordRoute;
+	"/review": typeof ReviewRoute;
+	"/review-queue": typeof ReviewQueueRoute;
 	"/scanner": typeof ScannerRoute;
 	"/settings": typeof SettingsRouteWithChildren;
 	"/signup": typeof SignupRoute;
@@ -871,6 +910,7 @@ export interface FileRoutesByFullPath {
 	"/drenyra/automatizaciones": typeof DrenyraAutomatizacionesRoute;
 	"/drenyra/control-tower": typeof DrenyraControlTowerRoute;
 	"/drenyra/herramientas": typeof DrenyraHerramientasRoute;
+	"/drenyra/hub": typeof DrenyraHubRoute;
 	"/drenyra/observability": typeof DrenyraObservabilityRoute;
 	"/drenyra/skills": typeof DrenyraSkillsRoute;
 	"/economic-groups/$groupId": typeof EconomicGroupsGroupIdRoute;
@@ -900,6 +940,7 @@ export interface FileRoutesByFullPath {
 	"/tesoreria/bills": typeof TesoreriaBillsRoute;
 	"/tesoreria/cashflow": typeof TesoreriaCashflowRoute;
 	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
+	"/threads/$threadId": typeof ThreadsThreadIdRoute;
 	"/workspace/compliance": typeof WorkspaceComplianceRoute;
 	"/workspace/finance": typeof WorkspaceFinanceRoute;
 	"/workspace/operations": typeof WorkspaceOperationsRoute;
@@ -910,6 +951,7 @@ export interface FileRoutesByFullPath {
 	"/drenyra/": typeof DrenyraIndexRoute;
 	"/firm/": typeof FirmIndexRoute;
 	"/settings/": typeof SettingsIndexRoute;
+	"/threads/": typeof ThreadsIndexRoute;
 	"/workspace/": typeof WorkspaceIndexRoute;
 	"/drenyra/case/$threadId": typeof DrenyraCaseThreadIdRoute;
 	"/firm/clients/$id": typeof FirmClientsIdRoute;
@@ -941,6 +983,7 @@ export interface FileRoutesByTo {
 	"/financials": typeof FinancialsRoute;
 	"/forgot-password": typeof ForgotPasswordRoute;
 	"/inbox": typeof InboxRoute;
+	"/inteligencia": typeof InteligenciaRoute;
 	"/inventory": typeof InventoryRoute;
 	"/invoices": typeof InvoicesRoute;
 	"/ledger": typeof LedgerRoute;
@@ -958,6 +1001,8 @@ export interface FileRoutesByTo {
 	"/reconciliations": typeof ReconciliationsRoute;
 	"/reports": typeof ReportsRoute;
 	"/reset-password": typeof ResetPasswordRoute;
+	"/review": typeof ReviewRoute;
+	"/review-queue": typeof ReviewQueueRoute;
 	"/scanner": typeof ScannerRoute;
 	"/signup": typeof SignupRoute;
 	"/skills": typeof SkillsRoute;
@@ -996,6 +1041,7 @@ export interface FileRoutesByTo {
 	"/drenyra/automatizaciones": typeof DrenyraAutomatizacionesRoute;
 	"/drenyra/control-tower": typeof DrenyraControlTowerRoute;
 	"/drenyra/herramientas": typeof DrenyraHerramientasRoute;
+	"/drenyra/hub": typeof DrenyraHubRoute;
 	"/drenyra/observability": typeof DrenyraObservabilityRoute;
 	"/drenyra/skills": typeof DrenyraSkillsRoute;
 	"/economic-groups/$groupId": typeof EconomicGroupsGroupIdRoute;
@@ -1025,6 +1071,7 @@ export interface FileRoutesByTo {
 	"/tesoreria/bills": typeof TesoreriaBillsRoute;
 	"/tesoreria/cashflow": typeof TesoreriaCashflowRoute;
 	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
+	"/threads/$threadId": typeof ThreadsThreadIdRoute;
 	"/workspace/compliance": typeof WorkspaceComplianceRoute;
 	"/workspace/finance": typeof WorkspaceFinanceRoute;
 	"/workspace/operations": typeof WorkspaceOperationsRoute;
@@ -1035,6 +1082,7 @@ export interface FileRoutesByTo {
 	"/drenyra": typeof DrenyraIndexRoute;
 	"/firm": typeof FirmIndexRoute;
 	"/settings": typeof SettingsIndexRoute;
+	"/threads": typeof ThreadsIndexRoute;
 	"/workspace": typeof WorkspaceIndexRoute;
 	"/drenyra/case/$threadId": typeof DrenyraCaseThreadIdRoute;
 	"/firm/clients/$id": typeof FirmClientsIdRoute;
@@ -1070,6 +1118,7 @@ export interface FileRoutesById {
 	"/firm": typeof FirmRouteWithChildren;
 	"/forgot-password": typeof ForgotPasswordRoute;
 	"/inbox": typeof InboxRoute;
+	"/inteligencia": typeof InteligenciaRoute;
 	"/inventory": typeof InventoryRoute;
 	"/invoices": typeof InvoicesRoute;
 	"/ledger": typeof LedgerRoute;
@@ -1087,6 +1136,8 @@ export interface FileRoutesById {
 	"/reconciliations": typeof ReconciliationsRoute;
 	"/reports": typeof ReportsRoute;
 	"/reset-password": typeof ResetPasswordRoute;
+	"/review": typeof ReviewRoute;
+	"/review-queue": typeof ReviewQueueRoute;
 	"/scanner": typeof ScannerRoute;
 	"/settings": typeof SettingsRouteWithChildren;
 	"/signup": typeof SignupRoute;
@@ -1126,6 +1177,7 @@ export interface FileRoutesById {
 	"/drenyra/automatizaciones": typeof DrenyraAutomatizacionesRoute;
 	"/drenyra/control-tower": typeof DrenyraControlTowerRoute;
 	"/drenyra/herramientas": typeof DrenyraHerramientasRoute;
+	"/drenyra/hub": typeof DrenyraHubRoute;
 	"/drenyra/observability": typeof DrenyraObservabilityRoute;
 	"/drenyra/skills": typeof DrenyraSkillsRoute;
 	"/economic-groups/$groupId": typeof EconomicGroupsGroupIdRoute;
@@ -1155,6 +1207,7 @@ export interface FileRoutesById {
 	"/tesoreria/bills": typeof TesoreriaBillsRoute;
 	"/tesoreria/cashflow": typeof TesoreriaCashflowRoute;
 	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
+	"/threads/$threadId": typeof ThreadsThreadIdRoute;
 	"/workspace/compliance": typeof WorkspaceComplianceRoute;
 	"/workspace/finance": typeof WorkspaceFinanceRoute;
 	"/workspace/operations": typeof WorkspaceOperationsRoute;
@@ -1165,6 +1218,7 @@ export interface FileRoutesById {
 	"/drenyra/": typeof DrenyraIndexRoute;
 	"/firm/": typeof FirmIndexRoute;
 	"/settings/": typeof SettingsIndexRoute;
+	"/threads/": typeof ThreadsIndexRoute;
 	"/workspace/": typeof WorkspaceIndexRoute;
 	"/drenyra/case/$threadId": typeof DrenyraCaseThreadIdRoute;
 	"/firm/clients/$id": typeof FirmClientsIdRoute;
@@ -1201,6 +1255,7 @@ export interface FileRouteTypes {
 		| "/firm"
 		| "/forgot-password"
 		| "/inbox"
+		| "/inteligencia"
 		| "/inventory"
 		| "/invoices"
 		| "/ledger"
@@ -1218,6 +1273,8 @@ export interface FileRouteTypes {
 		| "/reconciliations"
 		| "/reports"
 		| "/reset-password"
+		| "/review"
+		| "/review-queue"
 		| "/scanner"
 		| "/settings"
 		| "/signup"
@@ -1257,6 +1314,7 @@ export interface FileRouteTypes {
 		| "/drenyra/automatizaciones"
 		| "/drenyra/control-tower"
 		| "/drenyra/herramientas"
+		| "/drenyra/hub"
 		| "/drenyra/observability"
 		| "/drenyra/skills"
 		| "/economic-groups/$groupId"
@@ -1286,6 +1344,7 @@ export interface FileRouteTypes {
 		| "/tesoreria/bills"
 		| "/tesoreria/cashflow"
 		| "/tesoreria/reconciliations"
+		| "/threads/$threadId"
 		| "/workspace/compliance"
 		| "/workspace/finance"
 		| "/workspace/operations"
@@ -1296,6 +1355,7 @@ export interface FileRouteTypes {
 		| "/drenyra/"
 		| "/firm/"
 		| "/settings/"
+		| "/threads/"
 		| "/workspace/"
 		| "/drenyra/case/$threadId"
 		| "/firm/clients/$id"
@@ -1327,6 +1387,7 @@ export interface FileRouteTypes {
 		| "/financials"
 		| "/forgot-password"
 		| "/inbox"
+		| "/inteligencia"
 		| "/inventory"
 		| "/invoices"
 		| "/ledger"
@@ -1344,6 +1405,8 @@ export interface FileRouteTypes {
 		| "/reconciliations"
 		| "/reports"
 		| "/reset-password"
+		| "/review"
+		| "/review-queue"
 		| "/scanner"
 		| "/signup"
 		| "/skills"
@@ -1382,6 +1445,7 @@ export interface FileRouteTypes {
 		| "/drenyra/automatizaciones"
 		| "/drenyra/control-tower"
 		| "/drenyra/herramientas"
+		| "/drenyra/hub"
 		| "/drenyra/observability"
 		| "/drenyra/skills"
 		| "/economic-groups/$groupId"
@@ -1411,6 +1475,7 @@ export interface FileRouteTypes {
 		| "/tesoreria/bills"
 		| "/tesoreria/cashflow"
 		| "/tesoreria/reconciliations"
+		| "/threads/$threadId"
 		| "/workspace/compliance"
 		| "/workspace/finance"
 		| "/workspace/operations"
@@ -1421,6 +1486,7 @@ export interface FileRouteTypes {
 		| "/drenyra"
 		| "/firm"
 		| "/settings"
+		| "/threads"
 		| "/workspace"
 		| "/drenyra/case/$threadId"
 		| "/firm/clients/$id"
@@ -1455,6 +1521,7 @@ export interface FileRouteTypes {
 		| "/firm"
 		| "/forgot-password"
 		| "/inbox"
+		| "/inteligencia"
 		| "/inventory"
 		| "/invoices"
 		| "/ledger"
@@ -1472,6 +1539,8 @@ export interface FileRouteTypes {
 		| "/reconciliations"
 		| "/reports"
 		| "/reset-password"
+		| "/review"
+		| "/review-queue"
 		| "/scanner"
 		| "/settings"
 		| "/signup"
@@ -1511,6 +1580,7 @@ export interface FileRouteTypes {
 		| "/drenyra/automatizaciones"
 		| "/drenyra/control-tower"
 		| "/drenyra/herramientas"
+		| "/drenyra/hub"
 		| "/drenyra/observability"
 		| "/drenyra/skills"
 		| "/economic-groups/$groupId"
@@ -1540,6 +1610,7 @@ export interface FileRouteTypes {
 		| "/tesoreria/bills"
 		| "/tesoreria/cashflow"
 		| "/tesoreria/reconciliations"
+		| "/threads/$threadId"
 		| "/workspace/compliance"
 		| "/workspace/finance"
 		| "/workspace/operations"
@@ -1550,6 +1621,7 @@ export interface FileRouteTypes {
 		| "/drenyra/"
 		| "/firm/"
 		| "/settings/"
+		| "/threads/"
 		| "/workspace/"
 		| "/drenyra/case/$threadId"
 		| "/firm/clients/$id"
@@ -1585,6 +1657,7 @@ export interface RootRouteChildren {
 	FirmRoute: typeof FirmRouteWithChildren;
 	ForgotPasswordRoute: typeof ForgotPasswordRoute;
 	InboxRoute: typeof InboxRoute;
+	InteligenciaRoute: typeof InteligenciaRoute;
 	InventoryRoute: typeof InventoryRoute;
 	InvoicesRoute: typeof InvoicesRoute;
 	LedgerRoute: typeof LedgerRoute;
@@ -1602,6 +1675,8 @@ export interface RootRouteChildren {
 	ReconciliationsRoute: typeof ReconciliationsRoute;
 	ReportsRoute: typeof ReportsRoute;
 	ResetPasswordRoute: typeof ResetPasswordRoute;
+	ReviewRoute: typeof ReviewRoute;
+	ReviewQueueRoute: typeof ReviewQueueRoute;
 	ScannerRoute: typeof ScannerRoute;
 	SettingsRoute: typeof SettingsRouteWithChildren;
 	SignupRoute: typeof SignupRoute;
@@ -1641,12 +1716,14 @@ export interface RootRouteChildren {
 	TesoreriaBillsRoute: typeof TesoreriaBillsRoute;
 	TesoreriaCashflowRoute: typeof TesoreriaCashflowRoute;
 	TesoreriaReconciliationsRoute: typeof TesoreriaReconciliationsRoute;
+	ThreadsThreadIdRoute: typeof ThreadsThreadIdRoute;
 	WorkspaceComplianceRoute: typeof WorkspaceComplianceRoute;
 	WorkspaceFinanceRoute: typeof WorkspaceFinanceRoute;
 	WorkspaceOperationsRoute: typeof WorkspaceOperationsRoute;
 	WorkspaceSystemAdminRoute: typeof WorkspaceSystemAdminRoute;
 	AgentsIndexRoute: typeof AgentsIndexRoute;
 	DiffsIndexRoute: typeof DiffsIndexRoute;
+	ThreadsIndexRoute: typeof ThreadsIndexRoute;
 	WorkspaceIndexRoute: typeof WorkspaceIndexRoute;
 	OperacionesEconomicGroupsGroupIdRoute: typeof OperacionesEconomicGroupsGroupIdRoute;
 }
@@ -1700,6 +1777,20 @@ declare module "@tanstack/react-router" {
 			path: "/scanner";
 			fullPath: "/scanner";
 			preLoaderRoute: typeof ScannerRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/review-queue": {
+			id: "/review-queue";
+			path: "/review-queue";
+			fullPath: "/review-queue";
+			preLoaderRoute: typeof ReviewQueueRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/review": {
+			id: "/review";
+			path: "/review";
+			fullPath: "/review";
+			preLoaderRoute: typeof ReviewRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
 		"/reset-password": {
@@ -1819,6 +1910,13 @@ declare module "@tanstack/react-router" {
 			path: "/inventory";
 			fullPath: "/inventory";
 			preLoaderRoute: typeof InventoryRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/inteligencia": {
+			id: "/inteligencia";
+			path: "/inteligencia";
+			fullPath: "/inteligencia";
+			preLoaderRoute: typeof InteligenciaRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
 		"/inbox": {
@@ -2024,6 +2122,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof WorkspaceIndexRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		"/threads/": {
+			id: "/threads/";
+			path: "/threads";
+			fullPath: "/threads/";
+			preLoaderRoute: typeof ThreadsIndexRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
 		"/settings/": {
 			id: "/settings/";
 			path: "/";
@@ -2092,6 +2197,13 @@ declare module "@tanstack/react-router" {
 			path: "/workspace/compliance";
 			fullPath: "/workspace/compliance";
 			preLoaderRoute: typeof WorkspaceComplianceRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/threads/$threadId": {
+			id: "/threads/$threadId";
+			path: "/threads/$threadId";
+			fullPath: "/threads/$threadId";
+			preLoaderRoute: typeof ThreadsThreadIdRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
 		"/tesoreria/reconciliations": {
@@ -2295,6 +2407,13 @@ declare module "@tanstack/react-router" {
 			path: "/observability";
 			fullPath: "/drenyra/observability";
 			preLoaderRoute: typeof DrenyraObservabilityRouteImport;
+			parentRoute: typeof DrenyraRoute;
+		};
+		"/drenyra/hub": {
+			id: "/drenyra/hub";
+			path: "/hub";
+			fullPath: "/drenyra/hub";
+			preLoaderRoute: typeof DrenyraHubRouteImport;
 			parentRoute: typeof DrenyraRoute;
 		};
 		"/drenyra/herramientas": {
@@ -2590,6 +2709,7 @@ interface DrenyraRouteChildren {
 	DrenyraAutomatizacionesRoute: typeof DrenyraAutomatizacionesRoute;
 	DrenyraControlTowerRoute: typeof DrenyraControlTowerRoute;
 	DrenyraHerramientasRoute: typeof DrenyraHerramientasRoute;
+	DrenyraHubRoute: typeof DrenyraHubRoute;
 	DrenyraObservabilityRoute: typeof DrenyraObservabilityRoute;
 	DrenyraSkillsRoute: typeof DrenyraSkillsRoute;
 	DrenyraIndexRoute: typeof DrenyraIndexRoute;
@@ -2601,6 +2721,7 @@ const DrenyraRouteChildren: DrenyraRouteChildren = {
 	DrenyraAutomatizacionesRoute: DrenyraAutomatizacionesRoute,
 	DrenyraControlTowerRoute: DrenyraControlTowerRoute,
 	DrenyraHerramientasRoute: DrenyraHerramientasRoute,
+	DrenyraHubRoute: DrenyraHubRoute,
 	DrenyraObservabilityRoute: DrenyraObservabilityRoute,
 	DrenyraSkillsRoute: DrenyraSkillsRoute,
 	DrenyraIndexRoute: DrenyraIndexRoute,
@@ -2711,6 +2832,7 @@ const rootRouteChildren: RootRouteChildren = {
 	FirmRoute: FirmRouteWithChildren,
 	ForgotPasswordRoute: ForgotPasswordRoute,
 	InboxRoute: InboxRoute,
+	InteligenciaRoute: InteligenciaRoute,
 	InventoryRoute: InventoryRoute,
 	InvoicesRoute: InvoicesRoute,
 	LedgerRoute: LedgerRoute,
@@ -2728,6 +2850,8 @@ const rootRouteChildren: RootRouteChildren = {
 	ReconciliationsRoute: ReconciliationsRoute,
 	ReportsRoute: ReportsRoute,
 	ResetPasswordRoute: ResetPasswordRoute,
+	ReviewRoute: ReviewRoute,
+	ReviewQueueRoute: ReviewQueueRoute,
 	ScannerRoute: ScannerRoute,
 	SettingsRoute: SettingsRouteWithChildren,
 	SignupRoute: SignupRoute,
@@ -2767,12 +2891,14 @@ const rootRouteChildren: RootRouteChildren = {
 	TesoreriaBillsRoute: TesoreriaBillsRoute,
 	TesoreriaCashflowRoute: TesoreriaCashflowRoute,
 	TesoreriaReconciliationsRoute: TesoreriaReconciliationsRoute,
+	ThreadsThreadIdRoute: ThreadsThreadIdRoute,
 	WorkspaceComplianceRoute: WorkspaceComplianceRoute,
 	WorkspaceFinanceRoute: WorkspaceFinanceRoute,
 	WorkspaceOperationsRoute: WorkspaceOperationsRoute,
 	WorkspaceSystemAdminRoute: WorkspaceSystemAdminRoute,
 	AgentsIndexRoute: AgentsIndexRoute,
 	DiffsIndexRoute: DiffsIndexRoute,
+	ThreadsIndexRoute: ThreadsIndexRoute,
 	WorkspaceIndexRoute: WorkspaceIndexRoute,
 	OperacionesEconomicGroupsGroupIdRoute: OperacionesEconomicGroupsGroupIdRoute,
 };
