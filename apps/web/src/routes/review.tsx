@@ -1,7 +1,9 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/review")({
-	loader: () => {
-		throw redirect({ to: "/cumplimiento/review" });
-	},
+	component: RouteComponent,
 });
+
+function RouteComponent() {
+	return <div>Hello "/review"!</div>;
+}

@@ -1,6 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { DrenyraWorkspace } from "@/features/drenyra-command-center/components/DrenyraWorkspace";
+import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+
+const ThreadCreatePage = lazyRouteComponent(
+	() => import("@/features/threads/components/ThreadCreatePage"),
+	"ThreadCreatePage",
+);
 
 export const Route = createFileRoute("/drenyra/")({
-	component: DrenyraWorkspace,
+	component: ThreadCreatePage,
 });

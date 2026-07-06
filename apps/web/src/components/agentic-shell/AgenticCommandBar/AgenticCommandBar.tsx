@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowUp, AtSign, Slash } from "lucide-react";
+import { ArrowUp, AtSign, Loader2, Slash } from "lucide-react";
 import { type FormEvent, useRef, useState } from "react";
+import { createThread } from "@/features/threads/threads.api";
 
 const QUICK_REFERENCES = [
 	{ id: "facturas", label: "facturas", description: "Facturas electrónicas" },
@@ -28,13 +29,34 @@ export function AgenticCommandBar() {
 	const [input, setInput] = useState("");
 	const [showRefs, setShowRefs] = useState(false);
 	const [showCommands, setShowCommands] = useState(false);
+	const [isCreating, setIsCreating] = useState(false);
 
-	const handleSubmit = (e: FormEvent) => {
+	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
-		if (!input.trim()) return;
-		const encoded = encodeURIComponent(input.trim());
-		navigate({ to: "/drenyra", search: { q: encoded } as never });
-		setInput("");
+		if (!input.trim() || isCreating) return;
+
+		setIsCreating(true);
+		try {
+			const thread = await createThread({
+				companyId: "00000000-0000-0000-0000-000000000010",
+				title: input.trim().slice(0, 200),
+				tasks: [{ title: input.trim() }],
+			});
+			navigate({
+				to: "/drenyra/case/$threadId",
+				params: { threadId: thread.id },
+			});
+			setInput("");
+		} catch {
+			// Fallback: navigate with search param if API fails
+			navigate({
+				to: "/drenyra",
+				search: { q: encodeURIComponent(input.trim()) } as never,
+			});
+			setInput("");
+		} finally {
+			setIsCreating(false);
+		}
 	};
 
 	const handleInputChange = (value: string) => {
@@ -132,10 +154,14 @@ export function AgenticCommandBar() {
 
 				<button
 					type="submit"
-					disabled={!input.trim()}
+					disabled={!input.trim() || isCreating}
 					className="flex items-center justify-center rounded-md bg-[var(--color-primary)] p-1 text-white transition-opacity disabled:opacity-40"
 				>
-					<ArrowUp size={14} />
+					{isCreating ? (
+						<Loader2 size={14} className="animate-spin" />
+					) : (
+						<ArrowUp size={14} />
+					)}
 				</button>
 			</form>
 		</div>
