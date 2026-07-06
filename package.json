@@ -111,6 +111,7 @@
     "seed:demos:verify": "bun scripts/verify-demo-casos.ts",
     "seed:demos:report": "bun scripts/report-demo-casos.ts",
     "sire:demo:verify": "bun run --filter @drenyra/api sire:demo:verify",
+    "seed:evidence": "bun run --filter @drenyra/persistence seed:evidence",
     "seed:dashboard:demo": "bun run --filter @drenyra/infrastructure db:seed:dashboard-demo",
     "seed:dashboard:verify": "bun run --filter @drenyra/infrastructure db:verify:dashboard-demo",
     "seed:pitch": "bun scripts/seed-pitch-data.ts",
