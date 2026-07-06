@@ -4532,5 +4532,76 @@
       "line": 57,
       "reason": "pre-existing"
     }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/ArtifactFeed/ArtifactFeed.tsx": [
+    {
+      "term": "Cognitive",
+      "line": 1,
+      "reason": "Type import — @drenyra/shared/messaging"
+    },
+    {
+      "term": "cognitive",
+      "line": 1,
+      "reason": "Path segment in type import"
+    },
+    {
+      "term": "hub",
+      "line": 1,
+      "reason": "Path segment in type import"
+    },
+    {
+      "term": "Cognitive",
+      "line": 6,
+      "reason": "Type import — @drenyra/shared/messaging"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/ArtifactFeed/ArtifactFeedCard.tsx": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "Type import — @drenyra/shared/artifacts"
+    },
+    {
+      "term": "Hub",
+      "line": 5,
+      "reason": "Type reference in import"
+    }
+  ],
+  "apps/web/src/features/drenyra-command-center/components/ArtifactFeed/ArtifactFeed.data.ts": [
+    {
+      "term": "Hub",
+      "line": 1,
+      "reason": "Type import — @drenyra/shared/artifacts"
+    },
+    {
+      "term": "Cognitive",
+      "line": 2,
+      "reason": "Type import — @drenyra/shared/messaging"
+    },
+    {
+      "term": "cognitive",
+      "line": 2,
+      "reason": "Path segment in type import"
+    },
+    {
+      "term": "hub",
+      "line": 2,
+      "reason": "Path segment in type import"
+    },
+    {
+      "term": "Hub",
+      "line": 5,
+      "reason": "Type reference in interface"
+    },
+    {
+      "term": "Cognitive",
+      "line": 10,
+      "reason": "Type reference in interface"
+    },
+    {
+      "term": "Hub",
+      "line": 22,
+      "reason": "Type reference in switch case"
+    }
   ]
 }
