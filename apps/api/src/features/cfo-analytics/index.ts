@@ -7,7 +7,7 @@ import {
 	CfoQuerySchema,
 	GenerateReportSchema,
 	SaveConfigSchema,
-} from "./cfo-analytics.schemas";
+} from "@drenyra/application/features/cfo-analytics/schemas";
 import { ClientAnalyticsService } from "./services/client-analytics.service";
 import { DashboardService } from "./services/dashboard.service";
 import { FinancialKPIsService } from "./services/financial-kpis.service";
@@ -24,7 +24,7 @@ export type {
 	ReportResult,
 	RevenueKPIs,
 	TaxKPISummary,
-} from "./cfo-analytics.types";
+} from "@drenyra/application/features/cfo-analytics";
 export { ClientAnalyticsService } from "./services/client-analytics.service";
 export { DashboardService } from "./services/dashboard.service";
 export { FinancialKPIsService } from "./services/financial-kpis.service";

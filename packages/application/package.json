@@ -22,6 +22,7 @@
     "./features/api-marketplace": "./src/features/api-marketplace/index.ts",
     "./features/automation-studio": "./src/features/automation-studio/index.ts",
     "./features/cfo-analytics": "./src/features/cfo-analytics/index.ts",
+    "./features/cfo-analytics/schemas": "./src/features/cfo-analytics/schemas.ts",
     "./features/client-comms": "./src/features/client-comms/index.ts",
     "./features/doctor-mode": "./src/features/doctor-mode/index.ts",
     "./features/judgment-day": "./src/features/judgment-day/index.ts",

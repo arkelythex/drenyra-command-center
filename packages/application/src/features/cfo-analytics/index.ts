@@ -17,3 +17,7 @@ export type {
 	TaxKPISummary,
 	WidgetConfig,
 } from "./types";
+
+// Validation schemas
+import * as schemas from "./schemas";
+export { schemas };
