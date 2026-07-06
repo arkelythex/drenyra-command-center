@@ -579,6 +579,5 @@ export interface DrenyraBrainEvent {
 	metadata: Record<string, unknown>;
 }
 
-import type { DrenyraSubagentName } from "../agents/drenyra-subagents";
-
-export type { DrenyraSubagentName };
+/** Sub-agent names for Drenyra fiscal agents. */
+export type DrenyraSubagentName = "Funde" | "Vigila" | "Regula" | "Archiva";

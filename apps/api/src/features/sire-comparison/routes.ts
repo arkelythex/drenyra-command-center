@@ -1,6 +1,7 @@
 import { Elysia, t } from "elysia";
 import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
+import { audit } from "../shared/audit-log";
 import { SireComparisonService } from "./infrastructure/compare.service";
 
 export const sireComparisonRoutes = new Elysia({
@@ -114,6 +115,17 @@ export const sireComparisonRoutes = new Elysia({
 					body.action,
 					body.notes,
 				);
+				audit.log({
+					companyId,
+					feature: "sire-comparison",
+					action: "resolve_discrepancy",
+					targetId: params.id,
+					actorId: (companyContext as any)?.userId ?? "system",
+					newValue: body.action,
+					metadata: body.notes
+						? JSON.stringify({ notes: body.notes })
+						: undefined,
+				});
 				return ok(result);
 			} catch (error) {
 				const message = getErrorMessage(error);

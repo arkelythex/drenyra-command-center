@@ -125,6 +125,9 @@ export {
 	marketplaceIntegrations,
 	marketplaceIntegrationsRelations,
 } from "./api-marketplace.schema";
+export type { AuditLog, NewAuditLog } from "./audit-log.schema";
+// --- AUDIT LOG ---
+export { auditLogs } from "./audit-log.schema";
 export {
 	authAccounts,
 	authAccountsRelations,

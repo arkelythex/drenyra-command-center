@@ -2,9 +2,11 @@ import type {
 	AuditReviewStatus,
 	FindingCategory,
 	FindingSeverity,
-} from "@drenyra/domain/entities";
+} from "@drenyra/application/features/judgment-day";
 import { Elysia, t } from "elysia";
+import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
+import { audit } from "../shared/audit-log";
 import {
 	createReview,
 	createRule,
@@ -17,7 +19,6 @@ import {
 	updateFindingStatus,
 	updateRule,
 } from "./controller";
-import { companyScopeGuard } from "../../shared/plugins";
 
 export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 	.use(companyScopeGuard({ allowHeaderFallback: true }))
@@ -149,13 +150,20 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 	)
 	.patch(
 		"/findings/:id/acknowledge",
-		async ({ params, set }) => {
+		async ({ params, store, set }) => {
 			try {
 				const finding = await updateFindingStatus(params.id, "ACKNOWLEDGED");
 				if (!finding) {
 					set.status = 404;
 					return fail("Finding not found", "NOT_FOUND");
 				}
+				audit.log({
+					companyId: (store as any)?.companyContext?.companyId ?? "unknown",
+					feature: "judgment-day",
+					action: "acknowledge",
+					targetId: params.id,
+					actorId: (store as any)?.companyContext?.userId ?? "system",
+				});
 				return ok(finding);
 			} catch (error: unknown) {
 				set.status = 500;
@@ -173,7 +181,7 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 	)
 	.patch(
 		"/findings/:id/resolve",
-		async ({ params, body, set }) => {
+		async ({ params, body, store, set }) => {
 			try {
 				const finding = await updateFindingStatus(
 					params.id,
@@ -185,6 +193,19 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 					set.status = 404;
 					return fail("Finding not found", "NOT_FOUND");
 				}
+				audit.log({
+					companyId: (store as any)?.companyContext?.companyId ?? "unknown",
+					feature: "judgment-day",
+					action: "resolve",
+					targetId: params.id,
+					actorId:
+						body["resolvedById"] ??
+						(store as any)?.companyContext?.userId ??
+						"system",
+					metadata: body["resolutionComment"]
+						? JSON.stringify({ comment: body["resolutionComment"] })
+						: undefined,
+				});
 				return ok(finding);
 			} catch (error: unknown) {
 				set.status = 500;

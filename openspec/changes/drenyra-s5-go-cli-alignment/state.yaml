@@ -1,13 +1,19 @@
-status: working-draft
+status: applied
 created: 2026-07-04
-updated: 2026-07-04
+updated: 2026-07-05
 author: el-gentleman
 execution_mode: ask-on-risk
 pr_count: 2
 estimated_lines: 500
-blocked_by: [drenyra-s1-ai-consolidation, drenyra-s4-domain-boundary-audit]
+blocked_by: []
 blocks: []
-risks:
-  - Go CLI uses flat-file memory (MEMORY.md) + SQLite — align interfaces to match TS packages without breaking Go
-  - Delegation graph in Go (internal/delegation/) should mirror the TS harness abstraction
-  - May require Go->TS type alignment docs rather than code change
+risks: []
+verification:
+  - PR1: docs/05-development/go-ts-contracts.md (199 lines, created 2026-07-05)
+  - PR2: packages/agents/src/mastra/workflows/catalog.ts (workflow registry, 11 canonical workflows)
+  - PR2: packages/agents/src/mastra/workflows/types.ts (WorkflowDefinition type)
+  - Delegation graph: 12/12 agents aligned between Go and TS
+  - Memory model: Hermes-style consistent
+  - Router: Model/provider routing consistent
+  - Harness: Agent execution request/response consistent
+  - Workflows: 10 Go workflows now registered in TS catalog

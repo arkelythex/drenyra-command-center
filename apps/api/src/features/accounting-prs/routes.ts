@@ -1,6 +1,7 @@
 import { Elysia, t } from "elysia";
 import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
+import { audit } from "../shared/audit-log";
 import { accountingPrController } from "./controller";
 
 // ---------------------------------------------------------------------------
@@ -250,6 +251,15 @@ export const accountingPrRoutes = new Elysia({
 					set.status = 404;
 					return fail("PR no encontrada", "NOT_FOUND");
 				}
+				audit.log({
+					companyId,
+					feature: "accounting-prs",
+					action: "submit",
+					targetId: params.id,
+					actorId: companyContext?.userId ?? "system",
+					previousValue: "DRAFT",
+					newValue: "PENDING_REVIEW",
+				});
 				return ok(record);
 			} catch (error) {
 				set.status = 500;
@@ -289,6 +299,15 @@ export const accountingPrRoutes = new Elysia({
 						set.status = 404;
 						return fail("PR no encontrada", "NOT_FOUND");
 					}
+					audit.log({
+						companyId,
+						feature: "accounting-prs",
+						action: "approve",
+						targetId: params.id,
+						actorId: companyContext?.userId ?? "system",
+						previousValue: "PENDING_REVIEW",
+						newValue: "APPROVED",
+					});
 					return ok(record);
 				} catch (err) {
 					if (
@@ -335,6 +354,16 @@ export const accountingPrRoutes = new Elysia({
 					set.status = 404;
 					return fail("PR no encontrada", "NOT_FOUND");
 				}
+				audit.log({
+					companyId,
+					feature: "accounting-prs",
+					action: "reject",
+					targetId: params.id,
+					actorId: companyContext?.userId ?? "system",
+					previousValue: "PENDING_REVIEW",
+					newValue: "REJECTED",
+					metadata: JSON.stringify({ reason: body.reason }),
+				});
 				return ok(record);
 			} catch (error) {
 				set.status = 500;
@@ -415,6 +444,15 @@ export const accountingPrRoutes = new Elysia({
 					set.status = 404;
 					return fail("PR no encontrada", "NOT_FOUND");
 				}
+				audit.log({
+					companyId,
+					feature: "accounting-prs",
+					action: "post",
+					targetId: params.id,
+					actorId: companyContext?.userId ?? "system",
+					previousValue: "APPROVED",
+					newValue: "POSTED",
+				});
 				return ok(record);
 			} catch (error) {
 				set.status = 500;

@@ -1,6 +1,8 @@
 import type { CloseChecklistRepository } from "@drenyra/domain/repositories/close-checklist.repository";
 import { Elysia, t } from "elysia";
+import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
+import { audit } from "../shared/audit-log";
 import { MonthlyCloseController } from "./controller";
 import {
 	AttachEvidenceSchema,
@@ -13,8 +15,6 @@ import {
 	PeriodsQuerySchema,
 	UpdateChecklistSchema,
 	UpdateItemSchema,
-} from "./schemas";
-import { companyScopeGuard } from "../../shared/plugins";
 } from "./types";
 
 export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {
@@ -208,7 +208,7 @@ export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {
 			)
 			.patch(
 				"/gates/:id",
-				async ({ params, body, set }) => {
+				async ({ params, body, store, set }) => {
 					try {
 						const result = await ctrl.overrideGate(
 							params.id,
@@ -220,6 +220,20 @@ export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {
 							set.status = 404;
 							return fail("Gate not found", "GATE_NOT_FOUND");
 						}
+						audit.log({
+							companyId: (store as any)?.companyContext?.companyId ?? "unknown",
+							feature: "monthly-close",
+							action: "gate_override",
+							targetId: params.id,
+							actorId:
+								body.overrideById ??
+								(store as any)?.companyContext?.userId ??
+								"system",
+							newValue: body.status,
+							metadata: body.resolution
+								? JSON.stringify({ resolution: body.resolution })
+								: undefined,
+						});
 						return ok(result);
 					} catch (error) {
 						set.status = 500;

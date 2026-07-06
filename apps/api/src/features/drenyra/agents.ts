@@ -1,4 +1,3 @@
-import type { DrenyraSubagentName } from "@drenyra/domain";
 import type { AgentDefinition } from "@drenyra/drenyra-orchestrator/erp-types";
 import {
 	complianceTools,
@@ -6,6 +5,9 @@ import {
 	operationsTools,
 	systemAdminTools,
 } from "./tools";
+
+/** Sub-agent names for Drenyra fiscal agents. */
+type DrenyraSubagentName = "Funde" | "Vigila" | "Regula" | "Archiva";
 
 type AgentMeta = {
 	drenyraSubagent: DrenyraSubagentName;

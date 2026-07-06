@@ -8,7 +8,8 @@
  * POST /api/fiscal/roi/scenario
  */
 
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
+import { companyScopeGuard } from "../../../shared/plugins";
 import { roiService } from "../application/services/roi.service";
 import {
 	IrrInput,
@@ -19,6 +20,7 @@ import {
 } from "../schemas";
 
 export const roiRoutes = new Elysia({ prefix: "/api/fiscal/roi" })
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	.post("/calculate", ({ body }) => roiService.calculate(body), {
 		body: RoiCalculateInput,
 	})

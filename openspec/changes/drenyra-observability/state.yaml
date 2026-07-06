@@ -1,15 +1,17 @@
-status: implemented
+status: applied
 created: 2026-07-02
-updated: 2026-07-04
+updated: 2026-07-05
 author: el-gentleman
 execution_mode: auto-chain
-pr_count: 0
+pr_count: 0 (already implemented before SDD planning)
 estimated_lines: 0
 blocked_by: []
-blocks:
-  - B4 (needs error handler for rate limit responses)
-risks:
-  - Global onError may swallow business errors — distinguish 4xx from 5xx
-  - Pino needs production transport config
-  - Health checks testing external deps need aggressive timeouts (2s)
-  - In-memory metrics lost on restart — fine for MVP
+blocks: [B4 (audit trail dependency)]
+risks: []
+verification:
+  - Global error handler: apps/api/src/shared/plugins/error-handler.ts (registered in app-core.ts)
+  - Structured logger: apps/api/src/lib/logger.ts (Pino, re-exports from @drenyra/platform-core)
+  - Request logger: apps/api/src/shared/plugins/request-logger.ts (correlation ID + timing)
+  - Metrics middleware: apps/api/src/middleware/metrics.middleware.ts (Prometheus)
+  - Health checks: check-doctor.ts, check-ready.ts, check-startup.ts
+  - Rate limiter: apps/api/src/middleware/rate-limit.ts (auth, api, sunat, sensitive variants)

@@ -22,15 +22,15 @@ export const ConnectionStatusSchema = t.Union([
 ]);
 
 export const MarketplaceIdParams = t.Object({
-	id: t.String({ minLength: 1 }),
+	id: t.String({ format: "uuid" }),
 });
 
 export const ConnectionIdParams = t.Object({
-	id: t.String({ minLength: 1 }),
+	id: t.String({ format: "uuid" }),
 });
 
 export const WebhookIdParams = t.Object({
-	id: t.String({ minLength: 1 }),
+	id: t.String({ format: "uuid" }),
 });
 
 export const ListMarketplaceQuery = t.Object({
@@ -39,22 +39,22 @@ export const ListMarketplaceQuery = t.Object({
 });
 
 export const InstallIntegrationBody = t.Object({
-	companyId: t.String({ minLength: 1 }),
+	companyId: t.String({ format: "uuid" }),
 });
 
 export const UninstallIntegrationBody = t.Object({
-	companyId: t.String({ minLength: 1 }),
+	companyId: t.String({ format: "uuid" }),
 });
 
 export const ListConnectionsQuery = t.Object({
-	companyId: t.String({ minLength: 1 }),
+	companyId: t.String({ format: "uuid" }),
 	integrationId: t.Optional(t.String()),
 	status: t.Optional(ConnectionStatusSchema),
 });
 
 export const CreateConnectionBody = t.Object({
-	companyId: t.String({ minLength: 1 }),
-	integrationId: t.String({ minLength: 1 }),
+	companyId: t.String({ format: "uuid" }),
+	integrationId: t.String({ format: "uuid" }),
 	config: t.Optional(t.Record(t.String(), t.Unknown())),
 });
 
@@ -63,15 +63,15 @@ export const UpdateConnectionBody = t.Object({
 });
 
 export const TestConnectionBody = t.Object({
-	companyId: t.String({ minLength: 1 }),
+	companyId: t.String({ format: "uuid" }),
 });
 
 export const ListWebhooksQuery = t.Object({
-	connectionId: t.String({ minLength: 1 }),
+	connectionId: t.String({ format: "uuid" }),
 });
 
 export const CreateWebhookBody = t.Object({
-	connectionId: t.String({ minLength: 1 }),
+	connectionId: t.String({ format: "uuid" }),
 	eventType: t.String({ minLength: 1 }),
 	endpointUrl: t.String({ minLength: 1 }),
 	secret: t.Optional(t.String()),

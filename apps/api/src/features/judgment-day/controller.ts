@@ -96,7 +96,8 @@ export async function listReviews(query: ListReviewsQuery): Promise<{
 	total: number;
 }> {
 	const conditions = [eq(auditReviews.companyId, query.companyId)];
-	if (query.status) conditions.push(eq(auditReviews.status, query.status));
+	if (query.status)
+		conditions.push(eq(auditReviews.status, query.status as any));
 	if (query.targetType)
 		conditions.push(eq(auditReviews.targetType, query.targetType));
 
@@ -216,7 +217,7 @@ export async function updateFindingStatus(
 	const [row] = await db
 		.update(auditFindings)
 		.set({
-			status,
+			status: status as any,
 			resolvedById: resolvedById ?? null,
 			resolvedAt: shouldSetResolved ? now : undefined,
 			resolutionComment: resolutionComment ?? null,
@@ -266,7 +267,7 @@ export async function getDashboard(
 				eq(auditFindings.status, "OPEN"),
 			),
 		)
-		.groupBy(auditFindings.severity);
+		.groupBy(auditFindings.severity as any);
 
 	const openFindingsBySeverity: Record<string, number> = {
 		CRITICAL: 0,
@@ -305,8 +306,8 @@ export async function createRule(input: CreateRuleInput): Promise<AuditRule> {
 		.values({
 			companyId: input.companyId,
 			name: input.name,
-			category: input.category,
-			severity: input.severity,
+			category: input.category as any,
+			severity: input.severity as any,
 			condition: input.condition,
 			createdById: input.createdById,
 		})

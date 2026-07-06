@@ -1,4 +1,5 @@
 import { Elysia, t } from "elysia";
+import { companyScopeGuard } from "../../../shared/plugins";
 import { resolveSessionContext } from "../../security/session-context";
 import { updateCompanySettings } from "../application/commands/update-company-settings.command";
 import { getCompanySettings } from "../application/queries/get-company-settings.query";
@@ -54,6 +55,7 @@ async function authorizeCompanySettingsAccess(
 export const companySettingsRoute = new Elysia({
 	prefix: "/api/company/:companyId",
 })
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	.get("/settings", async ({ params, headers, set }) => {
 		const authFailure = await authorizeCompanySettingsAccess(
 			headers as Record<string, unknown>,

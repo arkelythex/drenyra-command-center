@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import type { z } from "zod";
+import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
-import { companyScopeGuard } from "../shared/plugins";
 import {
 	CreateProductSchema as CreateProductOpenApiSchema,
 	ListProductsQuerySchema as ListProductsOpenApiSchema,

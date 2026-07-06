@@ -6,6 +6,7 @@ import {
 	marketplaceIntegrations,
 } from "@drenyra/persistence/schema";
 import { Elysia } from "elysia";
+import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import {
 	ConnectionIdParams,
@@ -28,6 +29,7 @@ import {
 export const apiMarketplaceRoutes = new Elysia({
 	prefix: "/api/v1/marketplace",
 })
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
 
 	.get(
 		"/",

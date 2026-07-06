@@ -6,6 +6,7 @@ import {
 	commTemplates,
 } from "@drenyra/persistence/schema";
 import { Elysia, t } from "elysia";
+import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import {
 	BatchSendBody,
@@ -17,6 +18,7 @@ import {
 } from "./types";
 
 export const clientCommsRoutes = new Elysia({ prefix: "/api/v1/comms" })
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
 
 	// ─── Templates ────────────────────────────────────────────────
 	.post(

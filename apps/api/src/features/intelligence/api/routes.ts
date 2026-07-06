@@ -12,6 +12,7 @@
  */
 
 import { Elysia } from "elysia";
+import { companyScopeGuard } from "../../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../../shared/api-response";
 import type { DocumentClassificationInput } from "../application/services/intelligence.service";
 import {
@@ -40,6 +41,7 @@ import {
  * ```
  */
 export const intelligenceModule = new Elysia({ prefix: "/api/intelligence" })
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	/**
 	 * POST /api/intelligence/anomalies/detect
 	 *

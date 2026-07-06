@@ -2,6 +2,7 @@ import { Elysia } from "elysia";
 import { AppError } from "../../lib/errors";
 import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
+import { audit } from "../shared/audit-log";
 import {
 	BatchValidateBody,
 	IdParams,
@@ -127,7 +128,7 @@ export const evidenceV2Routes = new Elysia({
 	// ─── Link evidence to entity ───
 	.post(
 		"/link",
-		async ({ body, set }) => {
+		async ({ body, store, set }) => {
 			try {
 				const link = await service.createLink({
 					evidenceId: body.evidenceId,
@@ -140,6 +141,18 @@ export const evidenceV2Routes = new Elysia({
 					set.status = 409;
 					return fail("El vínculo ya existe", "DUPLICATE_LINK");
 				}
+				audit.log({
+					companyId: (store as any)?.companyContext?.companyId ?? "unknown",
+					feature: "evidence",
+					action: "link",
+					targetId: body.evidenceId,
+					actorId: (store as any)?.companyContext?.userId ?? "system",
+					metadata: JSON.stringify({
+						entityType: body.entityType,
+						entityId: body.entityId,
+						relationship: body.relationship ?? "supporting",
+					}),
+				});
 				set.status = 201;
 				return ok({ data: link });
 			} catch (error) {
@@ -158,13 +171,20 @@ export const evidenceV2Routes = new Elysia({
 	// ─── Unlink evidence ───
 	.post(
 		"/unlink",
-		async ({ body, set }) => {
+		async ({ body, store, set }) => {
 			try {
 				const deleted = await service.deleteLink(body.linkId);
 				if (!deleted) {
 					set.status = 404;
 					return fail("Vínculo no encontrado", "NOT_FOUND");
 				}
+				audit.log({
+					companyId: (store as any)?.companyContext?.companyId ?? "unknown",
+					feature: "evidence",
+					action: "unlink",
+					targetId: body.linkId,
+					actorId: (store as any)?.companyContext?.userId ?? "system",
+				});
 				return ok({ data: { unlinked: true } });
 			} catch (error) {
 				return handleError(error, s(set));

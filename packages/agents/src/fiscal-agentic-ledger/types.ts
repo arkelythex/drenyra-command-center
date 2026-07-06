@@ -1,12 +1,29 @@
-import type {
-	FiscalObjectIdentity,
-	FiscalOntologyScope,
-} from "../fiscal-ontology/types";
-import type {
-	DeterministicValidatorResultRecord,
-	PolicyDecisionRecord,
-} from "../fiscal-truth/types";
-import type { Money } from "../value-objects/Money";
+/** Identity reference for fiscal objects. */
+export type FiscalObjectIdentity = string;
+
+/** Scope identifier for fiscal ontology. */
+export type FiscalOntologyScope = string;
+
+/** Record of deterministic validation results. */
+export interface DeterministicValidatorResultRecord {
+	validatorId: string;
+	passed: boolean;
+	details?: string;
+}
+
+/** Record of a policy decision. */
+export interface PolicyDecisionRecord {
+	decisionId: string;
+	policyId: string;
+	decision: string;
+	justification?: string;
+}
+
+/** Money value object. */
+export interface Money {
+	amount: number;
+	currency: string;
+}
 
 export const FAL_EVENT_KIND = {
 	CLASSIFICATION_PROPOSAL: "classification_proposal",

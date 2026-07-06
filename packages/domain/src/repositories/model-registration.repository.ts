@@ -1,9 +1,62 @@
-import type {
-	CapabilityRoutingRule,
-	ModelCapability,
-	ModelRegistration,
-	RoutingResult,
-} from "../ai/model-router-types";
+/** Capability for AI model routing. */
+export type ModelCapability = string;
+
+/** Registration entry for an AI model. */
+export interface ModelRegistration {
+	id: string;
+	providerName: string;
+	modelName: string;
+	displayName?: string;
+	capabilities: string[];
+	status?: string;
+	priority?: number;
+	costPer1KInput?: number;
+	costPer1KOutput?: number;
+	maxTokens?: number;
+	avgLatencyMs?: number;
+	reliability?: number;
+	metadata?: Record<string, unknown>;
+	healthProbeUrl?: string;
+	tags?: string[];
+	createdAt: Date;
+	updatedAt: Date;
+}
+
+/** Routing rule for a specific capability. */
+export interface CapabilityRoutingRule {
+	id: string;
+	capability: string;
+	strategy?: string;
+	allowedModelIds?: string[];
+	excludedModelIds?: string[];
+	maxRetries?: number;
+	costCapCents?: number;
+	latencyCapMs?: number;
+	minReliability?: number;
+	requiresAudit?: boolean;
+	fallbackStrategy?: string;
+	metadata?: Record<string, unknown>;
+	createdAt?: Date;
+	updatedAt?: Date;
+}
+
+/** Result of a model routing decision. */
+export interface RoutingResult {
+	requestId: string;
+	capability: string;
+	selectedModelId?: string;
+	selectedModel?: string;
+	providerName: string;
+	modelName: string;
+	strategy: string;
+	latencyMs?: number;
+	costCents?: number;
+	success: boolean;
+	fallbackAttempted?: boolean;
+	attemptNumber?: number;
+	errorMessage?: string;
+	createdAt?: Date;
+}
 
 export interface ModelFilters {
 	status?: string;

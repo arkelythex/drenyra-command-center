@@ -1,11 +1,12 @@
 import { Elysia } from "elysia";
 import { z } from "zod";
+import { companyScopeGuard } from "../../shared/plugins";
 import { PseProactiveValidatorService } from "./pse-proactive-validator.service";
 
 const service = new PseProactiveValidatorService();
 
 const PseValidationSchema = z.object({
-	companyId: z.string().min(1),
+	companyId: z.string().uuid(),
 	period: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/),
 	ruc: z.string().length(11),
 	ple: z.object({
@@ -38,22 +39,24 @@ const PseValidationSchema = z.object({
  */
 export const pseComplianceRoutes = new Elysia({
 	prefix: "/api/pse-compliance",
-}).post(
-	"/validate",
-	async ({ body }) => {
-		const result = await service.validate(body);
-		return {
-			success: true,
-			data: result,
-		};
-	},
-	{
-		body: PseValidationSchema,
-		detail: {
-			tags: ["PSE Compliance"],
-			summary: "Validación proactiva PLE/PDT para envío por PSE",
-			description:
-				"Ejecuta subagentes en paralelo (IGV, RVIE/RCE, PDT) y devuelve alertas proactivas antes del envío.",
+})
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
+	.post(
+		"/validate",
+		async ({ body }) => {
+			const result = await service.validate(body);
+			return {
+				success: true,
+				data: result,
+			};
 		},
-	},
-);
+		{
+			body: PseValidationSchema,
+			detail: {
+				tags: ["PSE Compliance"],
+				summary: "Validación proactiva PLE/PDT para envío por PSE",
+				description:
+					"Ejecuta subagentes en paralelo (IGV, RVIE/RCE, PDT) y devuelve alertas proactivas antes del envío.",
+			},
+		},
+	);

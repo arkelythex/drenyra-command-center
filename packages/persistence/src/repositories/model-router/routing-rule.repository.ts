@@ -1,5 +1,7 @@
-import type { CapabilityRoutingRule } from "@drenyra/ai/providers/model-router-types";
-import type { CapabilityRoutingRuleRepository } from "@drenyra/domain/repositories/model-registration.repository";
+import type {
+	CapabilityRoutingRule,
+	CapabilityRoutingRuleRepository,
+} from "@drenyra/domain/repositories/model-registration.repository";
 import { eq } from "drizzle-orm";
 import { db } from "../../client";
 import { capabilityRoutingRules } from "../../schema/model-router.schema";
@@ -34,9 +36,13 @@ function mapDomainToRow(
 		capability: domain.capability,
 		strategy: domain.strategy,
 		allowedModelIds:
-			domain.allowedModelIds.length > 0 ? domain.allowedModelIds : null,
+			(domain.allowedModelIds?.length ?? 0) > 0
+				? domain.allowedModelIds!
+				: null,
 		excludedModelIds:
-			domain.excludedModelIds.length > 0 ? domain.excludedModelIds : null,
+			(domain.excludedModelIds?.length ?? 0) > 0
+				? domain.excludedModelIds!
+				: null,
 		maxRetries: domain.maxRetries,
 		costCapCents: domain.costCapCents ?? null,
 		latencyCapMs: domain.latencyCapMs ?? null,

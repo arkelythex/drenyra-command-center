@@ -20,7 +20,7 @@ import type {
 	ScenarioCompareInputType,
 } from "../../types";
 
-interface ScenarioResult {
+export interface ScenarioResult {
 	name: string;
 	roi: number;
 	paybackMonths: number;

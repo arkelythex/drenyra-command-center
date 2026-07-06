@@ -13,6 +13,7 @@
  */
 
 import { Elysia, t } from "elysia";
+import { companyScopeGuard } from "../../../shared/plugins";
 import { fail, ok } from "../../shared/api-response";
 import { ConnectBankCommand } from "../application/commands/connect-bank.command";
 import { GetBankAccountsQuery } from "../application/queries/get-bank-accounts.query";
@@ -98,6 +99,7 @@ function validateProviderSpecificFields(input: {
 export const bankingProvidersRoutes = new Elysia({
 	prefix: "/api/banking-providers",
 })
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	/**
 	 * POST /api/banking-providers/connect
 	 *

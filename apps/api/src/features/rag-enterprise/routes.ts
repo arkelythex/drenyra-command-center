@@ -19,6 +19,7 @@ import {
 	sql,
 } from "drizzle-orm";
 import { Elysia, t } from "elysia";
+import { companyScopeGuard } from "../../shared/plugins";
 import { fail, ok } from "../shared/api-response";
 
 const DEFAULT_TOP_K = 10;
@@ -149,7 +150,7 @@ function resolveContext(headers: Record<string, string | undefined>): Ctx {
 export const ragEnterpriseRoutes = new Elysia({
 	prefix: "/api/v1/rag",
 	name: "rag-enterprise",
-});
+}).use(companyScopeGuard({ allowHeaderFallback: true }));
 
 // ─── COLLECTIONS ────────────────────────────────────────────────
 
@@ -253,7 +254,7 @@ ragEnterpriseRoutes.get(
 		return ok(collection);
 	},
 	{
-		params: t.Object({ id: t.String() }),
+		params: t.Object({ id: t.String({ format: "uuid" }) }),
 		detail: {
 			tags: ["RAG Enterprise"],
 			summary: "Get collection",
@@ -309,7 +310,7 @@ ragEnterpriseRoutes.put(
 		return ok(updated);
 	},
 	{
-		params: t.Object({ id: t.String() }),
+		params: t.Object({ id: t.String({ format: "uuid" }) }),
 		body: t.Object({
 			name: t.Optional(t.String({ maxLength: 255 })),
 			description: t.Optional(t.String()),
@@ -359,7 +360,7 @@ ragEnterpriseRoutes.delete(
 		return ok({ deleted: true });
 	},
 	{
-		params: t.Object({ id: t.String() }),
+		params: t.Object({ id: t.String({ format: "uuid" }) }),
 		detail: {
 			tags: ["RAG Enterprise"],
 			summary: "Delete collection",
@@ -494,7 +495,7 @@ ragEnterpriseRoutes.post(
 		});
 	},
 	{
-		params: t.Object({ id: t.String() }),
+		params: t.Object({ id: t.String({ format: "uuid" }) }),
 		body: t.Object({
 			title: t.String({ minLength: 1, maxLength: 512 }),
 			fileName: t.String({ minLength: 1, maxLength: 512 }),
@@ -568,7 +569,7 @@ ragEnterpriseRoutes.get(
 		});
 	},
 	{
-		params: t.Object({ id: t.String() }),
+		params: t.Object({ id: t.String({ format: "uuid" }) }),
 		query: t.Object({
 			status: t.Optional(
 				t.Enum({
@@ -626,7 +627,7 @@ ragEnterpriseRoutes.get(
 		return ok({ ...document, chunks });
 	},
 	{
-		params: t.Object({ id: t.String() }),
+		params: t.Object({ id: t.String({ format: "uuid" }) }),
 		detail: {
 			tags: ["RAG Enterprise"],
 			summary: "Get document",
@@ -679,7 +680,7 @@ ragEnterpriseRoutes.delete(
 		return ok({ deleted: true });
 	},
 	{
-		params: t.Object({ id: t.String() }),
+		params: t.Object({ id: t.String({ format: "uuid" }) }),
 		detail: {
 			tags: ["RAG Enterprise"],
 			summary: "Delete document",
@@ -783,7 +784,7 @@ ragEnterpriseRoutes.post(
 		return ok(updated);
 	},
 	{
-		params: t.Object({ id: t.String() }),
+		params: t.Object({ id: t.String({ format: "uuid" }) }),
 		detail: {
 			tags: ["RAG Enterprise"],
 			summary: "Reindex document",
@@ -941,7 +942,7 @@ ragEnterpriseRoutes.post(
 	},
 	{
 		body: t.Object({
-			collectionId: t.String(),
+			collectionId: t.String({ format: "uuid" }),
 			query: t.String({ minLength: 1, maxLength: 1000 }),
 			topK: t.Optional(t.Numeric({ default: 10, minimum: 1, maximum: 50 })),
 			minScore: t.Optional(t.Numeric({ default: 0.1, minimum: 0, maximum: 1 })),
@@ -989,7 +990,7 @@ ragEnterpriseRoutes.post(
 		return ok({ updated: true });
 	},
 	{
-		params: t.Object({ id: t.String() }),
+		params: t.Object({ id: t.String({ format: "uuid" }) }),
 		body: t.Object({ feedback: t.Boolean() }),
 		detail: {
 			tags: ["RAG Enterprise"],
@@ -1065,7 +1066,7 @@ ragEnterpriseRoutes.get(
 		});
 	},
 	{
-		params: t.Object({ id: t.String() }),
+		params: t.Object({ id: t.String({ format: "uuid" }) }),
 		detail: {
 			tags: ["RAG Enterprise"],
 			summary: "Collection stats",

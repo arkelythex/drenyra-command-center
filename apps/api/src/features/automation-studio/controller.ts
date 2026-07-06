@@ -77,8 +77,8 @@ export async function createWorkflow(
 			companyId,
 			name: body.name,
 			description: body.description,
-			category: body.category,
-			triggerType: body.triggerType,
+			category: body.category as any,
+			triggerType: body.triggerType as any,
 			triggerConfig: body.triggerConfig,
 		})
 		.returning();
@@ -93,8 +93,12 @@ export async function updateWorkflow(
 	const [row] = await db
 		.update(automationWorkflows)
 		.set({
-			...body,
-			updatedAt: new Date().toISOString() as unknown as Date,
+			name: body.name,
+			description: body.description,
+			category: body.category as any,
+			triggerType: body.triggerType as any,
+			triggerConfig: body.triggerConfig,
+			updatedAt: new Date(),
 		})
 		.where(eq(automationWorkflows.id, id))
 		.returning();
@@ -226,7 +230,10 @@ export async function testWorkflow(
 			.where(eq(automationExecutions.id, exec.id));
 
 		try {
-			const result = await executeAction(step.actionType, step.config);
+			const result = await executeAction(
+				step.actionType as ActionType,
+				step.config,
+			);
 			if (result.ok) {
 				logLines.push(`[${new Date().toISOString()}]   ✓ ${result.message}`);
 			} else {
@@ -293,8 +300,8 @@ export async function createStep(
 		.values({
 			workflowId: body.workflowId,
 			stepOrder: body.stepOrder,
-			stepType: body.stepType,
-			actionType: body.actionType,
+			stepType: body.stepType as any,
+			actionType: body.actionType as any,
 			config: body.config,
 		})
 		.returning();
@@ -308,7 +315,7 @@ export async function updateStep(
 ): Promise<StepResponse | null> {
 	const [row] = await db
 		.update(automationSteps)
-		.set(body)
+		.set(body as any)
 		.where(eq(automationSteps.id, id))
 		.returning();
 
