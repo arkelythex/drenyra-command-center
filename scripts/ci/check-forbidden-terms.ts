@@ -5,13 +5,16 @@
  * CI guardrail: scans apps/web/src/ for forbidden English/orchestration-internal
  * terms in JSX string literals. Fails the build if any are found outside
  * allowed locations (route paths, code comments, test files, copy registry).
+ *
+ * Flags:
+ *   --exceptions-file <path>   Path to JSON exceptions file (relative to project root)
  */
 
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { globSync } from "glob";
 
 const FORBIDDEN_TERMS = [
-	// English status labels that expose orchestration internals
 	{
 		term: "idle",
 		context: "jsx-string",
@@ -19,7 +22,6 @@ const FORBIDDEN_TERMS = [
 			"Use Spanish equivalent ('inactivo', 'esperando', or a progress-based label)",
 	},
 	{ term: "Idle", context: "jsx-string", message: "Use Spanish equivalent" },
-	// Internal component names leaking to UI
 	{
 		term: "Swarm",
 		context: "code",
@@ -62,21 +64,16 @@ const FORBIDDEN_TERMS = [
 ] as const;
 
 const ALLOWED_PATTERNS = [
-	// Route paths — allowed to contain these as URL segments
 	/\/drenyra\/control-tower/,
 	/\/drenyra\/hub/,
 	/routeTree/,
-	// Copy registry file — central location for approved translations
 	/i18n/,
 	/locales/,
 	/translations/,
-	// Test files — orchestration terms may appear in test descriptions
 	/\.test\./,
 	/\.spec\./,
 	/__tests__/,
-	// Type definitions — orchestration types are allowed in .ts
 	/\.d\.ts$/,
-	// The CI script itself
 	/check-forbidden-terms\.ts$/,
 ];
 
@@ -87,12 +84,49 @@ interface Violation {
 	message: string;
 }
 
+interface ExceptionEntry {
+	term: string;
+	line?: number;
+	reason: string;
+}
+
+interface ExceptionsFile {
+	[filePath: string]: ExceptionEntry[];
+}
+
+function parseArgs(): { exceptionsFile?: string } {
+	const args = process.argv.slice(2);
+	const result: { exceptionsFile?: string } = {};
+	for (let i = 0; i < args.length; i++) {
+		if (args[i] === "--exceptions-file" && args[i + 1]) {
+			result.exceptionsFile = args[i + 1];
+			i++;
+		}
+	}
+	return result;
+}
+
+function loadExceptions(path: string | undefined): ExceptionsFile {
+	if (!path) return {};
+	try {
+		const content = readFileSync(resolve(process.cwd(), path), "utf-8");
+		return JSON.parse(content);
+	} catch (err) {
+		console.error(`⚠️  Could not load exceptions file "${path}":`, err);
+		return {};
+	}
+}
+
 function isAllowed(path: string): boolean {
 	return ALLOWED_PATTERNS.some((pattern) => pattern.test(path));
 }
 
-function scanFile(filePath: string): Violation[] {
+function scanFile(filePath: string, exceptions: ExceptionsFile): Violation[] {
 	const violations: Violation[] = [];
+	const fileExceptions = exceptions[filePath] ?? [];
+	const exceptionKeys = new Set(
+		fileExceptions.map((e) => (e.line ? `${e.term}:${e.line}` : e.term)),
+	);
 	const content = readFileSync(filePath, "utf-8");
 	const lines = content.split("\n");
 
@@ -100,7 +134,6 @@ function scanFile(filePath: string): Violation[] {
 		const line = lines[i];
 		const lineNum = i + 1;
 
-		// Skip comments
 		if (
 			line.trimStart().startsWith("//") ||
 			line.trimStart().startsWith("/*") ||
@@ -112,7 +145,6 @@ function scanFile(filePath: string): Violation[] {
 		for (const { term, context, message } of FORBIDDEN_TERMS) {
 			if (!line.includes(term)) continue;
 
-			// For JSX context terms, verify we're in a display context (not code)
 			if (context === "jsx-string") {
 				const inDisplayContext =
 					line.includes(`>${term}<`) ||
@@ -122,6 +154,9 @@ function scanFile(filePath: string): Violation[] {
 				if (!inDisplayContext) continue;
 			}
 
+			const key = lineNum ? `${term}:${lineNum}` : term;
+			if (exceptionKeys.has(key)) continue;
+
 			violations.push({ file: filePath, line: lineNum, term, message });
 		}
 	}
@@ -130,6 +165,9 @@ function scanFile(filePath: string): Violation[] {
 }
 
 function main(): void {
+	const { exceptionsFile } = parseArgs();
+	const exceptions = loadExceptions(exceptionsFile);
+
 	const files = globSync("apps/web/src/**/*.{tsx,ts}", {
 		ignore: [
 			"**/node_modules/**",
@@ -142,7 +180,7 @@ function main(): void {
 
 	for (const file of files) {
 		if (isAllowed(file)) continue;
-		const violations = scanFile(file);
+		const violations = scanFile(file, exceptions);
 		allViolations = allViolations.concat(violations);
 	}
 
