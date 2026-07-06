@@ -127,6 +127,9 @@ function scanFile(filePath: string, exceptions: ExceptionsFile): Violation[] {
 	const exceptionKeys = new Set(
 		fileExceptions.map((e) => (e.line ? `${e.term}:${e.line}` : e.term)),
 	);
+	const bareTermExceptions = new Set(
+		fileExceptions.filter((e) => !e.line).map((e) => e.term),
+	);
 	const content = readFileSync(filePath, "utf-8");
 	const lines = content.split("\n");
 
@@ -155,7 +158,7 @@ function scanFile(filePath: string, exceptions: ExceptionsFile): Violation[] {
 			}
 
 			const key = lineNum ? `${term}:${lineNum}` : term;
-			if (exceptionKeys.has(key)) continue;
+			if (exceptionKeys.has(key) || bareTermExceptions.has(term)) continue;
 
 			violations.push({ file: filePath, line: lineNum, term, message });
 		}
@@ -198,4 +201,6 @@ function main(): void {
 	process.exit(0);
 }
 
-main();
+if (import.meta.main) {
+	main();
+}
