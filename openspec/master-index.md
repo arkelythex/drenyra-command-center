@@ -55,7 +55,7 @@ STRUCTURAL (el Gentleman):                                │
 
 | #   | Plan                            | Changes                                                        | PRs   | Est. lines | Bloqueado por |
 | --- | ------------------------------- | -------------------------------------------------------------- | ----- | ---------- | ------------- |
-| B1  | **API Contracts & Type Safety** | Response envelope, type exports, CORS, OpenAPI                 | 3 PRs | ~850       | ✅ Applied     |
+| B1  | **API Contracts & Type Safety** | Response envelope (+meta), error codes, CORS, type exports     | 3/3 PRs | ~850       | ✅ Applied     |
 | B2  | **Data Integrity & Quality**    | Fix 50 type errors, Evidence FK, integration tests, migrations | 4 PRs | ~1,100     | B1 (opcional) |
 | B3  | **Observability & Operations**  | Global error handler, logging, health, metrics                 | 3 PRs | ~600       | —             |
 | B4  | **Security & Deployment**       | Tenant audit, rate limiting, Docker, env, validation           | 3 PRs | ~750       | B3 (logging)  |
