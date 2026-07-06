@@ -64,7 +64,7 @@
   "dependencies": {
     "zod": "^4.3.5",
     "pino": "^10.3.1",
-    "elysia": "1.4.28"
+    "elysia": "1.4.29"
   },
   "devDependencies": {
     "typescript": "~6.0.3",
