@@ -1,4 +1,5 @@
 import type { NavigationItem } from "../types";
+import { AGENTIC_NAV_ITEMS } from "./agentic";
 import { AUTOMATIONS_ITEMS } from "./automations";
 import { FINANZAS_ITEMS } from "./finanzas";
 import { FISCAL_ITEMS } from "./fiscal";
@@ -8,6 +9,7 @@ import { PLUGINS_ITEMS } from "./plugins";
 import { SISTEMA_ITEMS } from "./sistema";
 
 export const ALL_NAV_ITEMS: readonly NavigationItem[] = [
+	...AGENTIC_NAV_ITEMS,
 	...INTELLIGENCE_ITEMS,
 	...FINANZAS_ITEMS,
 	...FISCAL_ITEMS,

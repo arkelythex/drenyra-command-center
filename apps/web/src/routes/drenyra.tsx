@@ -1,10 +1,10 @@
 import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
 
-const DrenyraLayout = lazyRouteComponent(
-	() => import("../components/layout/CodexShell"),
-	"CodexShell",
+const AgenticShell = lazyRouteComponent(
+	() => import("../components/agentic-shell/AgenticLayout/AgenticLayout"),
+	"AgenticLayout",
 );
 
 export const Route = createFileRoute("/drenyra")({
-	component: DrenyraLayout,
+	component: AgenticShell,
 });
