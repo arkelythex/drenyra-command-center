@@ -8,7 +8,7 @@
 
 - Fast navigation source: this file. Machine-readable source: `.codebase/index.yml`.
 - Update both with `bun run codebase:index`; verify drift with `bun run codebase:index:check`.
-- Canonical path for tools: `/home/dreamcoder08/Documents/PROYECTOS/drenyra`.
+- Canonical path for tools: `/home/dreamcoder08/Documents/PROYECTOS/Drenyra`.
 - Before edits: inspect existing implementation, preserve fiscal correctness, tenant/RUC scope, audit trails.
 
 ## Where is what — each app has a MAP.md for detailed navigation

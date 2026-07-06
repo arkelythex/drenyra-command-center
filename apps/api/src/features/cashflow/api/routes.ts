@@ -12,6 +12,7 @@ import { getActualCashflow } from "../application/queries/get-actual-cashflow.qu
 import { getCashflowForecast } from "../application/queries/get-cashflow-forecast.query";
 import { getCashflowProjection } from "../application/queries/get-cashflow-projection.query";
 import { getCashflowVariance } from "../application/queries/get-cashflow-variance.query";
+import { companyScopeGuard } from "../../../shared/plugins";
 
 /**
  * Cashflow routes
@@ -22,6 +23,7 @@ import { getCashflowVariance } from "../application/queries/get-cashflow-varianc
  * ```
  */
 export const cashflowRoutes = new Elysia({ prefix: "/api/cashflow" })
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	/**
 	 * GET /api/cashflow/projection
 	 *

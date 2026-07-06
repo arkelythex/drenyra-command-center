@@ -8,6 +8,7 @@
 
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../../shared/api-response";
+import { companyScopeGuard } from "../../../shared/plugins";
 import { createVendor } from "../application/commands/create-vendor.command";
 import { deleteVendor } from "../application/commands/delete-vendor.command";
 import { updateVendor } from "../application/commands/update-vendor.command";
@@ -47,6 +48,7 @@ function isVendorNotFound(error: unknown): boolean {
  * ```
  */
 export const vendorRoutes = new Elysia({ prefix: "/api/vendors" })
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	/**
 	 * POST /api/vendors - Create vendor
 	 */
