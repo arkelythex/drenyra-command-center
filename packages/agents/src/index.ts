@@ -187,3 +187,7 @@ export type {
 	WorkerTaskPriority,
 	WorkerTaskStatus,
 } from "./types/worker-task";
+
+// ─── S4: Migrated from @drenyra/domain ──────────────────────────────
+export * from "./agents";
+export * from "./fiscal-agentic-ledger";

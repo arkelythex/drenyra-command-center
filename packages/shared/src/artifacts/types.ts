@@ -46,6 +46,57 @@ export interface GapItem {
 	value: number;
 }
 
+export interface BillsPayableRow {
+	id: string;
+	vendor: string;
+	invoiceNumber: string;
+	issueDate: string;
+	dueDate: string;
+	amount: number;
+	remainingBalance: number;
+	currency: string;
+	status: "PENDING" | "PARTIAL" | "PAID" | "OVERDUE" | "APPROVAL" | "REVIEW";
+	daysOverdue?: number;
+}
+
+export interface CashflowProjectionPoint {
+	period: string;
+	inflow: number;
+	outflow: number;
+	balance: number;
+}
+
+export interface TaxSummaryRow {
+	taxName: string;
+	base: number;
+	rate: string;
+	amount: number;
+	status: "CALCULATED" | "FILED" | "PENDING" | "OVERDUE";
+	dueDate: string;
+}
+
+export interface PayrollEmployeeRow {
+	employeeId: string;
+	name: string;
+	position: string;
+	baseSalary: number;
+	netSalary: number;
+	deductions: number;
+	bonus?: number;
+	status: "PAID" | "PENDING" | "PROCESSING";
+}
+
+export interface BankingReconciliationRow {
+	id: string;
+	bankRef: string;
+	description: string;
+	bankAmount: number;
+	ledgerAmount: number;
+	difference: number;
+	status: "MATCH" | "MISMATCH" | "MISSING_IN_LEDGER" | "MISSING_IN_BANK";
+	date: string;
+}
+
 export interface AccountingDiffItem {
 	field: string;
 	before: string;
@@ -137,6 +188,69 @@ export type HubArtifact =
 				statusScore: number;
 				gapAnalysis?: GapItem[];
 				ruleSource?: string;
+			};
+	  })
+	| (BaseArtifact & {
+			type: "banking_reconciliation";
+			payload: {
+				period: string;
+				accountId: string;
+				accountName: string;
+				currency: string;
+				rows: BankingReconciliationRow[];
+				summary: {
+					totalBank: number;
+					totalLedger: number;
+					totalDifference: number;
+					matched: number;
+					mismatched: number;
+				};
+			};
+	  })
+	| (BaseArtifact & {
+			type: "bills_payable";
+			payload: {
+				rows: BillsPayableRow[];
+				summary: {
+					totalPending: number;
+					totalOverdue: number;
+					totalPaid: number;
+					count: number;
+				};
+			};
+	  })
+	| (BaseArtifact & {
+			type: "cashflow_projection";
+			payload: {
+				projections: CashflowProjectionPoint[];
+				currentBalance: number;
+				currency: string;
+			};
+	  })
+	| (BaseArtifact & {
+			type: "tax_summary";
+			payload: {
+				period: string;
+				rows: TaxSummaryRow[];
+				summary: {
+					totalPayable: number;
+					totalFiled: number;
+					totalOverdue: number;
+				};
+			};
+	  })
+	| (BaseArtifact & {
+			type: "payroll_summary";
+			payload: {
+				period: string;
+				employees: PayrollEmployeeRow[];
+				summary: {
+					totalSalaries: number;
+					totalDeductions: number;
+					totalNetPay: number;
+					employeeCount: number;
+					processedCount: number;
+				};
 			};
 	  });
 

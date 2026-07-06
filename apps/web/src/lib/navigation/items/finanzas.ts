@@ -5,31 +5,10 @@ import {
 	FileSpreadsheet,
 	GitPullRequest,
 	History,
-	Landmark,
-	Receipt,
-	TrendingUp,
 } from "lucide-react";
 import type { NavigationItem } from "../types";
 
 export const FINANZAS_ITEMS: readonly NavigationItem[] = [
-	{
-		id: "banking",
-		section: "finanzas",
-		label: "Bancos y caja",
-		description: "Cuentas, movimientos y saldos",
-		to: "/tesoreria/banking",
-		icon: Landmark,
-		keywords: ["bancos", "tesoreria", "cuentas", "saldo"],
-	},
-	{
-		id: "cashflow",
-		section: "finanzas",
-		label: "Flujo de caja",
-		description: "Liquidez y proyeccion inmediata",
-		to: "/tesoreria/cashflow",
-		icon: TrendingUp,
-		keywords: ["cashflow", "flujo", "caja", "liquidez"],
-	},
 	{
 		id: "invoices",
 		section: "finanzas",
@@ -38,15 +17,6 @@ export const FINANZAS_ITEMS: readonly NavigationItem[] = [
 		to: "/facturacion/invoices",
 		icon: FileSpreadsheet,
 		keywords: ["invoices", "facturas", "cobrar", "ventas"],
-	},
-	{
-		id: "bills",
-		section: "finanzas",
-		label: "Pagos",
-		description: "Facturas recibidas y vencimientos",
-		to: "/tesoreria/bills",
-		icon: Receipt,
-		keywords: ["bills", "pagar", "gastos", "egresos"],
 	},
 	{
 		id: "credit-notes",

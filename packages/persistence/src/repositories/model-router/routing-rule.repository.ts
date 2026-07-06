@@ -1,4 +1,4 @@
-import type { CapabilityRoutingRule } from "@drenyra/domain/ai/model-router-types";
+import type { CapabilityRoutingRule } from "@drenyra/ai/providers/model-router-types";
 import type { CapabilityRoutingRuleRepository } from "@drenyra/domain/repositories/model-registration.repository";
 import { eq } from "drizzle-orm";
 import { db } from "../../client";

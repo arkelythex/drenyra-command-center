@@ -8,6 +8,11 @@ export const ARTIFACT_TYPES = {
 	PAYMENT_PREVIEW: "payment.preview.v1",
 	FISCAL_ADVISORY: "fiscal.advisory.v1",
 	LEDGER_ADJUSTMENT: "ledger.adjustment.v1",
+	BANKING_RECONCILIATION: "banking.reconciliation.v1",
+	BILLS_PAYABLE: "bills.payable.v1",
+	CASHFLOW_PROJECTION: "cashflow.projection.v1",
+	TAX_SUMMARY: "tax.summary.v1",
+	PAYROLL_SUMMARY: "payroll.summary.v1",
 } as const;
 
 export type ArtifactType = (typeof ARTIFACT_TYPES)[keyof typeof ARTIFACT_TYPES];
@@ -172,7 +177,161 @@ export interface ArtifactInteractionEvent {
 	payload?: Record<string, unknown>;
 }
 
-export type KnownArtifact = SireDiffArtifact | PaymentPreviewArtifact;
+// --- BANKING RECONCILIATION TYPES ---
+
+export interface BankingReconciliationRow {
+	id: string;
+	bankRef: string;
+	description: string;
+	bankAmount: number;
+	ledgerAmount: number;
+	difference: number;
+	status:
+		| "MATCH"
+		| "MISMATCH"
+		| "MISSING_IN_LEDGER"
+		| "MISSING_IN_BANK";
+	date: string;
+}
+
+export interface BankingReconciliationSummary {
+	totalBank: number;
+	totalLedger: number;
+	totalDifference: number;
+	matched: number;
+	mismatched: number;
+}
+
+export interface BankingReconciliationData {
+	period: string;
+	accountId: string;
+	accountName: string;
+	currency: CurrencyCode;
+	rows: BankingReconciliationRow[];
+	summary: BankingReconciliationSummary;
+}
+
+export type BankingReconciliationArtifact = Artifact<
+	BankingReconciliationData,
+	typeof ARTIFACT_TYPES.BANKING_RECONCILIATION
+>;
+
+// --- BILLS PAYABLE TYPES ---
+
+export interface BillsPayableRow {
+	id: string;
+	vendor: string;
+	invoiceNumber: string;
+	amount: number;
+	dueDate: string;
+	status: "PENDING" | "PARTIAL" | "PAID" | "OVERDUE" | "APPROVAL" | "REVIEW";
+	daysOverdue?: number;
+}
+
+export interface BillsPayableData {
+	rows: BillsPayableRow[];
+	summary: {
+		totalPending: number;
+		totalOverdue: number;
+		totalPaid: number;
+		count: number;
+	};
+}
+
+export type BillsPayableArtifact = Artifact<
+	BillsPayableData,
+	typeof ARTIFACT_TYPES.BILLS_PAYABLE
+>;
+
+// --- CASHFLOW PROJECTION TYPES ---
+
+export interface CashflowProjectionPoint {
+	period: string;
+	inflow: number;
+	outflow: number;
+	balance: number;
+}
+
+export interface CashflowProjectionData {
+	projections: CashflowProjectionPoint[];
+	currentBalance: number;
+	currency: CurrencyCode;
+	summary: {
+		totalInflow: number;
+		totalOutflow: number;
+		netProjection: number;
+	};
+}
+
+export type CashflowProjectionArtifact = Artifact<
+	CashflowProjectionData,
+	typeof ARTIFACT_TYPES.CASHFLOW_PROJECTION
+>;
+
+// --- TAX SUMMARY TYPES ---
+
+export interface TaxSummaryRow {
+	taxName: string;
+	base: number;
+	rate: string;
+	amount: number;
+	status: "CALCULATED" | "FILED" | "PENDING" | "OVERDUE";
+	dueDate: string;
+}
+
+export interface TaxSummaryData {
+	period: string;
+	rows: TaxSummaryRow[];
+	summary: {
+		totalPayable: number;
+		totalFiled: number;
+		totalOverdue: number;
+	};
+}
+
+export type TaxSummaryArtifact = Artifact<
+	TaxSummaryData,
+	typeof ARTIFACT_TYPES.TAX_SUMMARY
+>;
+
+// --- PAYROLL SUMMARY TYPES ---
+
+export interface PayrollEmployee {
+	employeeId: string;
+	name: string;
+	position: string;
+	baseSalary: number;
+	netSalary: number;
+	deductions: number;
+	bonus?: number;
+	status: "PAID" | "PENDING" | "PROCESSING";
+}
+
+export interface PayrollSummaryData {
+	period: string;
+	employees: PayrollEmployee[];
+	summary: {
+		totalSalaries: number;
+		totalDeductions: number;
+		totalNetPay: number;
+		employeeCount: number;
+		processedCount: number;
+	};
+}
+
+export type PayrollSummaryArtifact = Artifact<
+	PayrollSummaryData,
+	typeof ARTIFACT_TYPES.PAYROLL_SUMMARY
+>;
+
+export type KnownArtifact =
+	| SireDiffArtifact
+	| PaymentPreviewArtifact
+	| BankingReconciliationArtifact
+	| BillsPayableArtifact
+	| CashflowProjectionArtifact
+	| TaxSummaryArtifact
+	| PayrollSummaryArtifact;
 export type WorkspaceArtifact = KnownArtifact | Artifact;
 
 export function isSireDiffArtifact(

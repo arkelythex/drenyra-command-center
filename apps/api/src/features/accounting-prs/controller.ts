@@ -2,45 +2,20 @@ import { and, desc, eq, sql } from "@drenyra/persistence/query";
 import { accountingPrs, prApprovals } from "@drenyra/persistence/schema";
 import { accountingPrStatus } from "@drenyra/persistence/schema/accounting-pr.schema";
 import { db } from "../../lib/db";
+import type {
+	AccountingPrDTO,
+	CreatePrRequest,
+	PrListQuery,
+	PaginatedResponse,
+	UpdatePrRequest,
+} from "@drenyra/application/features/accounting-prs";
 
 // ---------------------------------------------------------------------------
-// Types
+// Types (Drizzle internal)
 // ---------------------------------------------------------------------------
 
 export type PrRecord = typeof accountingPrs.$inferSelect;
 export type PrInsert = typeof accountingPrs.$inferInsert;
-
-export interface CreatePrInput {
-	title: string;
-	description?: string;
-	entries: string[];
-	evidenceIds?: string[];
-	totalDebitCents: number;
-	totalCreditCents: number;
-}
-
-export interface UpdatePrInput {
-	title?: string;
-	description?: string;
-	entries?: string[];
-	evidenceIds?: string[];
-	totalDebitCents?: number;
-	totalCreditCents?: number;
-}
-
-export interface ListPrQuery {
-	status?: string;
-	reviewerId?: string;
-	limit?: string;
-	offset?: string;
-}
-
-export interface PaginatedResult<T> {
-	data: T[];
-	total: number;
-	limit: number;
-	offset: number;
-}
 
 // ---------------------------------------------------------------------------
 // Controller
@@ -82,7 +57,7 @@ class AccountingPrController {
 	async create(
 		companyId: string,
 		createdById: string | undefined,
-		data: CreatePrInput,
+		data: CreatePrRequest,
 	): Promise<PrRecord> {
 		const prNumber = await this.nextPrNumber(companyId);
 
@@ -108,8 +83,8 @@ class AccountingPrController {
 	// --- LIST ---
 	async list(
 		companyId: string,
-		query: ListPrQuery,
-	): Promise<PaginatedResult<PrRecord>> {
+		query: PrListQuery,
+	): Promise<PaginatedResponse<PrRecord>> {
 		const conditions: ReturnType<typeof eq>[] = [
 			eq(accountingPrs.companyId, companyId),
 		];
@@ -168,7 +143,7 @@ class AccountingPrController {
 	async update(
 		id: string,
 		companyId: string,
-		data: UpdatePrInput,
+		data: UpdatePrRequest,
 	): Promise<PrRecord | null> {
 		const existing = await this.getById(id);
 		if (!existing) return null;

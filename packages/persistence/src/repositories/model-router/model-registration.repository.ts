@@ -1,4 +1,4 @@
-import type { ModelRegistration } from "@drenyra/domain/ai/model-router-types";
+import type { ModelRegistration } from "@drenyra/ai/providers/model-router-types";
 import type {
 	CapabilityScoringParams,
 	ModelFilters,

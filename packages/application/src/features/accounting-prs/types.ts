@@ -25,6 +25,12 @@ export interface AccountingPrDTO {
 	updatedAt: string;
 }
 
+export interface FromEntriesRequest {
+	title: string;
+	description?: string;
+	entryIds: string[];
+}
+
 export interface CreatePrRequest {
 	title: string;
 	description?: string;

@@ -3,7 +3,6 @@ import {
 	PackageSearch,
 	ScanLine,
 	Tags,
-	UserCheck,
 	Zap,
 } from "lucide-react";
 import type { NavigationItem } from "../types";
@@ -48,16 +47,6 @@ export const PLUGINS_ITEMS: readonly NavigationItem[] = [
 		to: "/operaciones/products",
 		icon: Tags,
 		keywords: ["productos", "catalogo", "sku"],
-		showInSidebar: true,
-	},
-	{
-		id: "payroll",
-		section: "plugins",
-		label: "Nómina",
-		description: "Gestión y liquidación de planillas",
-		to: "/operaciones/payroll",
-		icon: UserCheck,
-		keywords: ["nomina", "planilla", "rrhh", "sueldos"],
 		showInSidebar: true,
 	},
 	{

@@ -10,11 +10,6 @@
 
 // --- ACCOUNTING ---
 export * from "./accounting";
-export {
-	DRENYRA_SUBAGENTS,
-	type DrenyraSubagent,
-	type DrenyraSubagentName,
-} from "./agents/drenyra-subagents";
 export * from "./audit-ledger";
 // --- FISCAL SEAMS (Phase 1) ---
 export * from "./country-pack";
@@ -22,7 +17,6 @@ export * from "./entities";
 export * from "./errors";
 export * from "./events";
 export * from "./fiscal";
-export * from "./fiscal-agentic-ledger";
 export * from "./fiscal-memory";
 export * from "./fiscal-ontology";
 export * from "./fiscal-truth";

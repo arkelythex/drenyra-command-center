@@ -16,17 +16,16 @@
     "./events/*": "./src/events/*.ts",
     "./services/*": "./src/services/*.ts",
     "./fiscal-ontology": "./src/fiscal-ontology/index.ts",
-    "./fiscal-agentic-ledger": "./src/fiscal-agentic-ledger/index.ts",
+
     "./drenyra": "./src/drenyra/index.ts",
     "./drenyra/types": "./src/drenyra/types.ts",
     "./drenyra/capabilities": "./src/drenyra/capabilities.ts",
     "./drenyra/capability-types": "./src/drenyra/capability-types.ts",
-    "./agents": "./src/agents/index.ts",
+
     "./types/*": "./src/types/*.ts",
     "./types/product-surfaces": "./src/types/product-surfaces.ts",
     "./types/product-surface-registry": "./src/types/product-surface-registry.ts",
-    "./ai": "./src/ai/index.ts",
-    "./ai/model-router/types": "./src/ai/model-router/types.ts",
+
     "./accounting/*": "./src/accounting/*.ts",
     "./roi/*": "./src/roi/*.ts",
     "./fiscal": "./src/fiscal/index.ts",
