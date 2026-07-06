@@ -31,11 +31,12 @@ import {
 } from "../api/drenyra-command-center.api";
 import { inspectFiscalWorkItem } from "../api/drenyra-fiscal-work.api";
 import { useDrenyraChatState } from "../hooks/useDrenyraChatState";
+import { useChatHistory } from "../hooks/useChatHistory";
 import { useDrenyraKeyboardShortcuts } from "../hooks/useDrenyraKeyboardShortcuts";
 import { useDrenyraMutations } from "../hooks/useDrenyraMutations";
 import { notifySettingsChanged } from "../hooks/useTheme";
 import { I18nProvider } from "../i18n/I18nProvider";
-import { ChatContextPanel } from "./ChatContextPanel";
+import { ArtifactFeed } from "./ArtifactFeed/ArtifactFeed";
 import { ChatSearch, type SearchResult } from "./ChatSearch";
 import { CommandCenterChat } from "./CommandCenterChat";
 
@@ -121,20 +122,11 @@ export function DrenyraCommandCenter() {
 
 	// ── Chat State ──────────────────────────────────────────────────────
 	const {
-		chatStreaming,
-		chatLastArtifact,
-		pinnedArtifacts,
 		handleChatContextChange,
 		loadChatMessages,
 	} = useDrenyraChatState(companyContext.companyId);
 
-	const chatContext = chatStreaming
-		? ("streaming" as const)
-		: chatLastArtifact
-			? ("artifact" as const)
-			: activeCaseId
-				? ("case" as const)
-				: ("idle" as const);
+	const { messages } = useChatHistory(companyContext.companyId);
 
 	// ── Callbacks ───────────────────────────────────────────────────────
 	const performSearch = useCallback(
@@ -275,16 +267,9 @@ export function DrenyraCommandCenter() {
 	const sidebarContent = null;
 
 	const rightPanelContent = (
-		<ChatContextPanel
-			context={chatContext}
-			activeArtifact={chatLastArtifact}
-			caseDetails={details ?? null}
-			pendingApprovalsCount={
-				details?.approvals.filter((a) => a.status === "PENDING").length ?? 0
-			}
-			isStreaming={chatStreaming}
-			pinnedArtifacts={pinnedArtifacts}
-		/>
+		<div className="border-l border-[var(--border-subtle)] bg-[var(--surface-2)] p-4 overflow-y-auto">
+			<ArtifactFeed messages={messages} />
+		</div>
 	);
 
 	// ── Render ──────────────────────────────────────────────────────────
