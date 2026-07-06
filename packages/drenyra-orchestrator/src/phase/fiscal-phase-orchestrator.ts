@@ -3,6 +3,7 @@
 // Coordinates phase transitions, gate evaluation, and phase agent execution.
 // Integrates with AutoAdvanceEngine for autonomous operation.
 
+import type { Mnevori } from "@drenyra/agents/mnevori";
 import type { AutoAdvanceEngine } from "./auto-advance-engine";
 import { buildAutoAdvanceContext } from "./auto-advance-engine";
 import {
@@ -32,6 +33,7 @@ export interface FiscalPhaseOrchestratorConfig {
 	gateEngine: PhaseGateEngine;
 	graph: FiscalPhaseGraph;
 	autoAdvanceEngine?: AutoAdvanceEngine;
+	mnevori?: Mnevori;
 	eventBus?: {
 		publish: (eventType: string, payload: unknown) => Promise<void>;
 	};
@@ -80,6 +82,7 @@ export class FiscalPhaseOrchestrator {
 	private readonly gateEngine: PhaseGateEngine;
 	private readonly graph: FiscalPhaseGraph;
 	private readonly autoAdvanceEngine?: AutoAdvanceEngine;
+	private readonly mnevori?: Mnevori;
 	private readonly eventBus?: {
 		publish: (eventType: string, payload: unknown) => Promise<void>;
 	};
@@ -89,6 +92,7 @@ export class FiscalPhaseOrchestrator {
 		this.gateEngine = config.gateEngine;
 		this.graph = config.graph;
 		this.autoAdvanceEngine = config.autoAdvanceEngine;
+		this.mnevori = config.mnevori;
 		this.eventBus = config.eventBus;
 	}
 
@@ -328,6 +332,22 @@ export class FiscalPhaseOrchestrator {
 			};
 			state.metadata = updatedMetadata;
 			await this.store.upsertPeriodState(state);
+		}
+
+		// Persist Mnevori snapshot BEFORE exit gate evaluation
+		if (this.mnevori) {
+			await this.mnevori
+				.persistPhaseSnapshot(ruc, periodo, phaseId, {
+					status: "completed",
+					agentOutput,
+					gateResults: [],
+				})
+				.catch((err) => {
+					console.error(
+						`[Mnevori] Failed to persist phase snapshot for ${phaseId}:`,
+						err,
+					);
+				});
 		}
 
 		// Evaluate exit gates
