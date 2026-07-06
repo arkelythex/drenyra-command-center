@@ -1,7 +1,6 @@
 import {
 	Bot,
 	FileSearch,
-	ListChecks,
 	Plug,
 	Settings,
 	Users,
@@ -28,22 +27,6 @@ export const AGENTIC_NAV_ITEMS: readonly NavigationItem[] = [
 		to: "/drenyra",
 		icon: Zap,
 		keywords: ["thread", "nuevo", "sesión", "agentes", "work"],
-	},
-	{
-		id: "review-queue",
-		section: "agents",
-		label: "Review Queue",
-		description: "Cola de aprobación de cambios propuestos por agentes",
-		to: "/review",
-		icon: ListChecks,
-		keywords: [
-			"review",
-			"queue",
-			"cola",
-			"aprobación",
-			"revisión",
-			"pendientes",
-		],
 	},
 	{
 		id: "agents",

@@ -1,7 +1,6 @@
 import {
 	Bot,
 	FileSearch,
-	ListChecks,
 	Plug,
 	Settings,
 	Users,
@@ -19,15 +18,6 @@ export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
 		description: "Iniciar sesión de trabajo",
 		to: "/drenyra",
 		icon: Zap,
-	},
-	{
-		id: "review-queue",
-		section: "agents",
-		label: "Review Queue",
-		description: "Cola de aprobación",
-		to: "/review",
-		icon: ListChecks,
-		badge: 3,
 	},
 	{
 		id: "agents",
