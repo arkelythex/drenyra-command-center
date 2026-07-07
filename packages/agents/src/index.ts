@@ -25,6 +25,8 @@ export type {
 	HarnessExecuteResponse,
 	HarnessOptions,
 } from "./harness/types";
+// ─── Lexori — Fiscal/Regulatory Skill Registry ────────────────────────
+export * from "./lexori";
 // ─── Mastra Implementations ───────────────────────────────────────────
 export type {
 	ApprovalResult,
