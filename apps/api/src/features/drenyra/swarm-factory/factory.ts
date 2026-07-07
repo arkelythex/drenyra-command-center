@@ -82,17 +82,16 @@ export function createSwarmOrchestrator(
 			: phase1Agents;
 
 		const domainAgent = new DomainAgent(
-			agentsForDomain,
-			{
-				id: domain.id,
-				name: domain.name,
-				description: domain.description,
-				capabilities: domain.capabilities,
-				approvalRequired: domain.approvalRequired,
-				maxRetries: domain.maxRetries,
-			},
-			approvalGate,
-		);
+				agentsForDomain,
+				{
+					id: domain.id,
+					name: domain.name,
+					description: domain.description,
+					capabilities: domain.capabilities,
+					approvalRequired: domain.approvalRequired,
+					maxRetries: domain.maxRetries,
+				},
+			);
 
 		orchestrator.registerDomainAgent(
 			domainAgent as DomainAgent & { id: LatinAgentId },
@@ -152,17 +151,16 @@ export function createSwarmOrchestratorFromAgents(
 			: phase1Agents;
 
 		const domainAgent = new DomainAgent(
-			agentsForDomain,
-			{
-				id: domain.id,
-				name: domain.name,
-				description: domain.description,
-				capabilities: domain.capabilities,
-				approvalRequired: domain.approvalRequired,
-				maxRetries: domain.maxRetries,
-			},
-			resolvedGate,
-		);
+				agentsForDomain,
+				{
+					id: domain.id,
+					name: domain.name,
+					description: domain.description,
+					capabilities: domain.capabilities,
+					approvalRequired: domain.approvalRequired,
+					maxRetries: domain.maxRetries,
+				},
+			);
 
 		orchestrator.registerDomainAgent(
 			domainAgent as DomainAgent & { id: LatinAgentId },

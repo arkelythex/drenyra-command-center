@@ -1,12 +1,12 @@
 import type {
 	FiscalObjectIdentity,
 	FiscalOntologyScope,
-} from "../fiscal-ontology/types";
+} from "@drenyra/domain/fiscal-ontology";
 import type {
 	DeterministicValidatorResultRecord,
 	PolicyDecisionRecord,
-} from "../fiscal-truth/types";
-import type { Money } from "../value-objects/Money";
+} from "@drenyra/domain/fiscal-truth";
+import type { Money } from "@drenyra/domain";
 
 export const FAL_EVENT_KIND = {
 	CLASSIFICATION_PROPOSAL: "classification_proposal",

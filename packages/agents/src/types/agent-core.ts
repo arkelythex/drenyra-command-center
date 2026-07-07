@@ -1,6 +1,8 @@
 // ─── Core Agent Types ──────────────────────────────────────────────
 // Snapshots from @drenyra/agent-swarm/src/agents/types.ts
 
+import type { AgentTool } from "./agent-tool";
+
 export type AgentCapability = string;
 export type AgentPriority = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
@@ -65,8 +67,10 @@ export interface AgentDefinition<
 	id: string;
 	name: string;
 	description: string;
+	systemPrompt?: string;
+	tools?: AgentTool[];
 	drenyraSubagent?: string | null;
 	capabilities?: AgentCapability[];
 	priority?: AgentPriority;
-	execute: (task: TTask, config?: TConfig) => Promise<AgentResult<TOutput>>;
+	execute?: (task: TTask, config?: TConfig) => Promise<AgentResult<TOutput>>;
 }

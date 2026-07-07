@@ -357,21 +357,20 @@ export function createSwarmOrchestrator(
 			: phase1Agents;
 
 		const domainAgent = new DomainAgent(
-			agentsForDomain,
-			{
-				id: domain.id,
-				name: domain.name,
-				description: domain.description,
-				capabilities: domain.capabilities,
-				approvalRequired: domain.approvalRequired,
-				maxRetries: domain.maxRetries,
-			},
-			approvalGate,
-		);
+				agentsForDomain,
+				{
+					id: domain.id,
+					name: domain.name,
+					description: domain.description,
+					capabilities: domain.capabilities,
+					approvalRequired: domain.approvalRequired,
+					maxRetries: domain.maxRetries,
+				},
+			);
 
-		orchestrator.registerDomainAgent(
-			domainAgent as DomainAgent & { id: LatinAgentId },
-		);
+			orchestrator.registerDomainAgent(
+				domainAgent as DomainAgent & { id: LatinAgentId },
+			);
 	}
 
 	// Orphan check: warn if any financial agent was not found in the registry
@@ -405,7 +404,7 @@ export function createSwarmOrchestratorFromAgents(
 	const assigned = new Set<string>();
 	const phase1DomainAgents = new Map<LatinAgentId, Agent[]>();
 	const orchestrator = new LatinModernoOrchestrator({ mode: "hierarchy" });
-	const resolvedGate = approvalGate ?? createPermissiveApprovalGate();
+
 
 	// Phase 1: Explicit assignment of financial agents to Latin domains
 	for (const [agentId, domainId] of Object.entries(FINANCIAL_AGENT_MAP)) {
@@ -437,17 +436,16 @@ export function createSwarmOrchestratorFromAgents(
 			: phase1Agents;
 
 		const domainAgent = new DomainAgent(
-			agentsForDomain,
-			{
-				id: domain.id,
-				name: domain.name,
-				description: domain.description,
-				capabilities: domain.capabilities,
-				approvalRequired: domain.approvalRequired,
-				maxRetries: domain.maxRetries,
-			},
-			resolvedGate,
-		);
+				agentsForDomain,
+				{
+					id: domain.id,
+					name: domain.name,
+					description: domain.description,
+					capabilities: domain.capabilities,
+					approvalRequired: domain.approvalRequired,
+					maxRetries: domain.maxRetries,
+				},
+			);
 
 		orchestrator.registerDomainAgent(
 			domainAgent as DomainAgent & { id: LatinAgentId },

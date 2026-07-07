@@ -2,7 +2,7 @@ import type {
 	AuditReviewStatus,
 	FindingCategory,
 	FindingSeverity,
-} from "@drenyra/domain/entities";
+} from "@drenyra/application/features/judgment-day";
 import { Elysia, t } from "elysia";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import {

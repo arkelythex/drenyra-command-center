@@ -12,7 +12,7 @@ import type {
 	AuditRuleDTO,
 	CreateReviewRequest,
 	CreateRuleRequest,
-	JudgmentDayDashboardDTO,
+	JudgmentDayDashboard,
 	ListReviewsQuery as AppListReviewsQuery,
 	ListRulesQuery as AppListRulesQuery,
 	PaginatedReviews as AppPaginatedReviews,
@@ -28,4 +28,4 @@ export type PaginatedReviews = AppPaginatedReviews;
 export type AuditReview = AuditReviewDTO;
 export type AuditFinding = AuditFindingDTO;
 export type AuditRule = AuditRuleDTO;
-export type JudgmentDayDashboard = JudgmentDayDashboardDTO;
+export type { JudgmentDayDashboard };
