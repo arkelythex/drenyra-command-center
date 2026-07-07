@@ -89,6 +89,7 @@
     "go:drenyra:test": "cd apps/cli && go test ./...",
     "go:drenyra:run": "cd apps/cli && go run ./cmd/drenyra",
     "go:drenyra:tui": "cd apps/cli && go run ./cmd/drenyra tui",
+    "drenyra:serve": "cd ../drenyra-pi && bun src/serve.ts",
     "metrics:dora": "bun scripts/metrics/dora-metrics.ts",
     "perf:audit": "bun scripts/perf/runtime-audit.ts",
     "compliance:sire-repro": "bun scripts/sire-ledger-repro-check.ts",
