@@ -53,12 +53,12 @@ STRUCTURAL (el Gentleman):                                │
 
 ## Backend Plans (el Gentleman)
 
-| #   | Plan                            | Changes                                                        | PRs   | Est. lines | Bloqueado por |
-| --- | ------------------------------- | -------------------------------------------------------------- | ----- | ---------- | ------------- |
-| B1  | **API Contracts & Type Safety** | Response envelope (+meta), error codes, CORS, type exports     | 3/3 PRs | ~850       | ✅ Applied     |
-| B2  | **Data Integrity & Quality**    | Fix 50 type errors, Evidence FK, integration tests, migrations | 4 PRs | ~1,100     | B1 (opcional) |
-| B3  | **Observability & Operations**  | Global error handler, logging, health, metrics                 | 3 PRs | ~600       | —             |
-| B4  | **Security & Deployment**       | Tenant audit, rate limiting, Docker, env, validation           | 3 PRs | ~750       | B3 (logging)  |
+| #   | Plan                            | Changes                                                        | PRs     | Est. lines | Bloqueado por |
+| --- | ------------------------------- | -------------------------------------------------------------- | ------- | ---------- | ------------- |
+| B1  | **API Contracts & Type Safety** | Response envelope (+meta), error codes, CORS, type exports     | 3/3 PRs | ~850       | ✅ Applied    |
+| B2  | **Data Integrity & Quality**    | Fix 50 type errors, Evidence FK, integration tests, migrations | 4 PRs   | ~1,100     | B1 (opcional) |
+| B3  | **Observability & Operations**  | Global error handler, logging, health, metrics                 | 3 PRs   | ~600       | —             |
+| B4  | **Security & Deployment**       | Tenant audit, rate limiting, Docker, env, validation           | 3 PRs   | ~750       | B3 (logging)  |
 
 ## Structural Plans (el Gentleman)
 
@@ -67,7 +67,7 @@ STRUCTURAL (el Gentleman):                                │
 | S1  | **AI/Agent Ecosystem Consolidation**    | Consolidar 5 packages AI/Agent en 3 (ai, agents, memory)   | 5 PRs | ~1,800     | ✅ Applied    |
 | S2  | **Core Package Simplification**         | Merge drenyra-core → domain/agents                         | 1 PR  | ~150       | ✅ Applied    |
 | S3  | **API Type Inline → Package Migration** | Mover types de apps/api/src/types/ a packages              | 2 PRs | ~400       | ✅ Applied    |
-| S4  | **Domain Boundary Audit**               | Auditar packages/domain/, limpiar boundaries               | 1 PR  | ~115       | ✅ Applied     |
+| S4  | **Domain Boundary Audit**               | Auditar packages/domain/, limpiar boundaries               | 1 PR  | ~115       | ✅ Applied    |
 | S5  | **Go CLI Pattern Alignment**            | Alinear contratos Go ↔ TS (memoria, delegación, workflows) | 2 PRs | ~500       | S1, S4        |
 | S6  | **Documentation & Navigation Cleanup**  | Fix CODEX-MAP duplicado, unificar MAP.md                   | 1 PR  | ~100       | S1, S3, S4    |
 
@@ -75,22 +75,22 @@ STRUCTURAL (el Gentleman):                                │
 
 ## Agentic Migration Plans (AM)
 
-| #   | Plan                                   | Changes                                                   | PRs   | Est. lines | Estado        |
-| --- | -------------------------------------- | --------------------------------------------------------- | ----- | ---------- | ------------- |
-| AM1 | **Eliminate Duplicate Features (8→1)** | Fusionar agent-swarm, cognitive-hub, command-center, etc. | 3 PRs | ~600       | ✅ Applied    |
-| AM2 | **Right Panel → Artifact Feed**        | Eliminar tabs fijos, implementar feed de artifacts        | 2 PRs | ~500       | ✅ Applied    |
-| AM3 | **Features → Tools/Artifacts**         | 7 features → artifacts inline en thread                   | 3 PRs | ~1,200     | ✅ Applied    |
-| AM4 | **Sidebar Reduction & ⌘K Navigation**  | Reducir de 80+ a ~7 entradas + buscador universal         | 1 PR  | ~400       | ✅ Applied    |
+| #   | Plan                                   | Changes                                                   | PRs   | Est. lines | Estado     |
+| --- | -------------------------------------- | --------------------------------------------------------- | ----- | ---------- | ---------- |
+| AM1 | **Eliminate Duplicate Features (8→1)** | Fusionar agent-swarm, cognitive-hub, command-center, etc. | 3 PRs | ~600       | ✅ Applied |
+| AM2 | **Right Panel → Artifact Feed**        | Eliminar tabs fijos, implementar feed de artifacts        | 2 PRs | ~500       | ✅ Applied |
+| AM3 | **Features → Tools/Artifacts**         | 7 features → artifacts inline en thread                   | 3 PRs | ~1,200     | ✅ Applied |
+| AM4 | **Sidebar Reduction & ⌘K Navigation**  | Reducir de 80+ a ~7 entradas + buscador universal         | 1 PR  | ~400       | ✅ Applied |
 
 ## Design System Plans (applied)
 
-| #   | Plan                                      | Estado                                         |
-| --- | ----------------------------------------- | ---------------------------------------------- |
-| DS1 | **Design Token Foundation (Cyan/Violet)** | ✅ Applied                                     |
-| DS2 | **Typography & Font System**              | ✅ Applied                                     |
-| DS3 | **Accounting Vocabulary Migration**       | ✅ Applied                                     |
-| DS4 | **Component State Design**                | ✅ Applied                                     |
-| DS5 | **Three-Panel Layout (Agentic IDE)**      | ✅ Applied                                     |
+| #   | Plan                                      | Estado     |
+| --- | ----------------------------------------- | ---------- |
+| DS1 | **Design Token Foundation (Cyan/Violet)** | ✅ Applied |
+| DS2 | **Typography & Font System**              | ✅ Applied |
+| DS3 | **Accounting Vocabulary Migration**       | ✅ Applied |
+| DS4 | **Component State Design**                | ✅ Applied |
+| DS5 | **Three-Panel Layout (Agentic IDE)**      | ✅ Applied |
 
 ## Full Delivery Summary
 

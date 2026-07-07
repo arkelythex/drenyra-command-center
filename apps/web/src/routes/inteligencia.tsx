@@ -1,10 +1,7 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
-
-const IntelligenceDashboard = lazyRouteComponent(
-	() => import("../features/intelligence"),
-	"IntelligenceDashboard",
-);
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/inteligencia")({
-	component: IntelligenceDashboard,
+	loader: () => {
+		throw redirect({ to: "/drenyra/skills" });
+	},
 });

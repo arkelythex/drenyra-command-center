@@ -1,191 +1,156 @@
-/**
- * Threads API client
- *
- * Eden Treaty-based API client for all thread CRUD and state transitions.
- * Follows the ok()/fail() + unwrap() pattern consistent with the rest of the app.
- */
-
-import { api, getGovernanceAuditHeaders } from "@/lib/api";
+import { api } from "@/lib/api";
 import { unwrap } from "@/lib/api-helpers";
-import type {
-	AssignAgentPayload,
-	CreateTaskInThreadPayload,
-	CreateThreadPayload,
-	PaginatedResult,
-	QuickAction,
-	ThreadDetail,
-	ThreadFilters,
-	ThreadSummary,
-	ThreadTask,
-	UpdateTaskPayload,
-	UpdateThreadPayload,
-} from "./threads.types";
 
-// ─── Thread CRUD ─────────────────────────────────────────────────────────────
+// ── Types matching backend ThreadSummary / ThreadDetail ──────────────────────
 
-export async function listThreads(
-	filters?: ThreadFilters,
-): Promise<PaginatedResult<ThreadSummary>> {
-	return unwrap(
-		api.api.threads.get({
-			query: {
-				...(filters?.status && { status: filters.status }),
-				...(filters?.period && { period: filters.period }),
-				...(filters?.priority && { priority: filters.priority }),
-				...(filters?.search && { search: filters.search }),
-				...(filters?.limit !== undefined && { limit: String(filters.limit) }),
-				...(filters?.offset !== undefined && {
-					offset: String(filters.offset),
-				}),
-			},
-			headers: getGovernanceAuditHeaders(),
-		}),
-	);
+export interface ThreadSummary {
+	id: string;
+	companyId: string;
+	title: string;
+	status: string;
+	environment: string;
+	period?: string;
+	priority: string;
+	tags: string[];
+	taskCount: number;
+	completedTaskCount: number;
+	agentCount: number;
+	lastActivityAt: string;
+	createdAt: string;
 }
 
-export async function getThread(id: string): Promise<ThreadDetail> {
-	return unwrap(
-		api.api.threads({ id }).get({
-			headers: getGovernanceAuditHeaders(),
-		}),
-	);
+export interface ThreadTaskDTO {
+	id: string;
+	title: string;
+	description?: string;
+	status: string;
+	agentId?: string;
+	assignedAt?: string;
+	completedAt?: string;
+	completedById?: string;
+	resultSummary?: string;
+	sortOrder: number;
+	createdAt: string;
+	updatedAt: string;
 }
 
-export async function createThread(
-	data: CreateThreadPayload,
-): Promise<ThreadSummary> {
-	return unwrap(
-		api.api.threads.post(data, {
-			headers: getGovernanceAuditHeaders(),
-		}),
-	);
-}
-
-export async function updateThread(
-	id: string,
-	data: UpdateThreadPayload,
-): Promise<ThreadSummary> {
-	return unwrap(
-		api.api.threads({ id }).patch(data, {
-			headers: getGovernanceAuditHeaders(),
-		}),
-	);
-}
-
-// ─── Agent Management ────────────────────────────────────────────────────────
-
-export async function assignAgent(
-	threadId: string,
-	data: AssignAgentPayload,
-): Promise<{
+export interface ThreadAgentDTO {
 	agentId: string;
 	agentName: string;
 	role: string;
 	isActive: boolean;
 	assignedAt: string;
-}> {
+}
+
+export interface ThreadDetail {
+	id: string;
+	companyId: string;
+	title: string;
+	description?: string;
+	status: string;
+	environment: string;
+	period?: string;
+	priority: string;
+	tags: string[];
+	tasks: ThreadTaskDTO[];
+	agents: ThreadAgentDTO[];
+	evidenceIds: string[];
+	createdById?: string;
+	createdAt: string;
+	updatedAt: string;
+	closedAt?: string;
+	closedById?: string;
+	closeNote?: string;
+}
+
+export interface QuickActionDTO {
+	id: string;
+	label: string;
+	description: string;
+	category: string;
+	suggestedTasks: { title: string; description?: string }[];
+}
+
+export interface CreateThreadData {
+	companyId: string;
+	title: string;
+	description?: string;
+	environment?: string;
+	period?: string;
+	priority?: string;
+	tasks: { title: string; description?: string }[];
+}
+
+export interface PaginatedThreads {
+	data: ThreadSummary[];
+	total: number;
+	limit: number;
+	offset: number;
+}
+
+export interface ThreadFilters {
+	companyId?: string;
+	status?: string;
+	period?: string;
+	priority?: string;
+	search?: string;
+	limit?: number;
+	offset?: number;
+}
+
+// ── API calls ───────────────────────────────────────────────────────────────
+
+export async function listThreads(
+	filters?: ThreadFilters,
+): Promise<PaginatedThreads> {
+	const params: Record<string, string> = {};
+	if (filters?.status) params.status = filters.status;
+	if (filters?.period) params.period = filters.period;
+	if (filters?.search) params.search = filters.search;
+	if (filters?.limit) params.limit = String(filters.limit);
+	if (filters?.offset) params.offset = String(filters.offset);
+	if (filters?.companyId) params.companyId = filters.companyId;
+
 	return unwrap(
-		api.api.threads({ id: threadId }).agents.post(data, {
-			headers: getGovernanceAuditHeaders(),
-		}),
-	);
+		api.api.threads.index.get({ query: params }),
+	) as Promise<PaginatedThreads>;
 }
 
-export async function removeAgent(
-	threadId: string,
-	agentId: string,
-): Promise<void> {
-	await unwrap(
-		api.api.threads({ id: threadId }).agents({ agentId }).delete({
-			headers: getGovernanceAuditHeaders(),
-		}),
-	);
+export async function getThread(id: string): Promise<ThreadDetail> {
+	return unwrap(api.api.threads({ id }).get()) as Promise<ThreadDetail>;
 }
 
-// ─── Evidence ────────────────────────────────────────────────────────────────
-
-export async function linkEvidence(
-	threadId: string,
-	evidenceId: string,
-	note?: string,
-): Promise<{ linked: boolean }> {
-	return unwrap(
-		api.api
-			.threads({ id: threadId })
-			.evidence.post(
-				{ evidenceId, note },
-				{ headers: getGovernanceAuditHeaders() },
-			),
-	);
+export async function createThread(
+	data: CreateThreadData,
+): Promise<ThreadDetail> {
+	return unwrap(api.api.threads.index.post(data)) as Promise<ThreadDetail>;
 }
 
-export async function unlinkEvidence(
-	threadId: string,
-	evidenceId: string,
-): Promise<void> {
-	await unwrap(
-		api.api.threads({ id: threadId }).evidence({ evidenceId }).delete({
-			headers: getGovernanceAuditHeaders(),
-		}),
-	);
+export async function updateThread(
+	id: string,
+	data: Partial<CreateThreadData>,
+): Promise<ThreadDetail> {
+	return unwrap(api.api.threads({ id }).patch(data)) as Promise<ThreadDetail>;
 }
-
-// ─── Close ───────────────────────────────────────────────────────────────────
 
 export async function closeThread(
 	id: string,
-	closeNote?: string,
-): Promise<ThreadSummary> {
+	note?: string,
+): Promise<ThreadDetail> {
 	return unwrap(
-		api.api
-			.threads({ id })
-			.close.post({ closeNote }, { headers: getGovernanceAuditHeaders() }),
-	);
+		api.api.threads({ id }).close.post({ closeNote: note }),
+	) as Promise<ThreadDetail>;
 }
-
-// ─── Task Management ─────────────────────────────────────────────────────────
-
-export async function createTask(
-	threadId: string,
-	data: CreateTaskInThreadPayload,
-): Promise<ThreadTask> {
-	return unwrap(
-		api.api.threads({ id: threadId }).tasks.post(data, {
-			headers: getGovernanceAuditHeaders(),
-		}),
-	);
-}
-
-export async function updateTask(
-	threadId: string,
-	taskId: string,
-	data: UpdateTaskPayload,
-): Promise<ThreadTask> {
-	return unwrap(
-		api.api.threads({ id: threadId }).tasks({ taskId }).patch(data, {
-			headers: getGovernanceAuditHeaders(),
-		}),
-	);
-}
-
-// ─── Quick Actions ───────────────────────────────────────────────────────────
 
 export async function getQuickActions(
-	companyId: string,
+	companyId?: string,
 	period?: string,
-): Promise<QuickAction[]> {
-	const result = await unwrap(
-		api.api.threads["quick-actions"].get({
-			query: {
-				companyId,
-				...(period && { period }),
-			},
-			headers: getGovernanceAuditHeaders(),
-		}),
-	);
-	// The API returns ok(result) where result.data is the array
-	return (
-		(result as unknown as { data: QuickAction[] }).data ??
-		(result as QuickAction[])
-	);
+): Promise<QuickActionDTO[]> {
+	const params: Record<string, string> = {};
+	if (companyId) params.companyId = companyId;
+	if (period) params.period = period;
+
+	return unwrap(
+		api.api.threads["quick-actions"].get({ query: params }),
+	) as Promise<QuickActionDTO[]>;
 }

@@ -11,6 +11,9 @@
  * @module @drenyra/agents
  */
 
+// ─── S4: Migrated from @drenyra/domain ──────────────────────────────
+export * from "./agents";
+export * from "./fiscal-agentic-ledger";
 export {
 	createDefaultHandler,
 	registerDefaultHandlers,
@@ -106,6 +109,8 @@ export {
 	Supervisor,
 	TaskDecomposer,
 } from "./mastra";
+// ─── Mnevori — Per-Node Artifact Persistence ──────────────────────────
+export * from "./mnevori";
 // ─── MCP Protocol ─────────────────────────────────────────────────────
 export type {
 	DrenyraMcpAuditEvent,
@@ -187,7 +192,3 @@ export type {
 	WorkerTaskPriority,
 	WorkerTaskStatus,
 } from "./types/worker-task";
-
-// ─── S4: Migrated from @drenyra/domain ──────────────────────────────
-export * from "./agents";
-export * from "./fiscal-agentic-ledger";

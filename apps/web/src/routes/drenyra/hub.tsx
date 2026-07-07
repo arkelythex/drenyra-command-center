@@ -1,8 +1,7 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/drenyra/hub")({
-	component: lazyRouteComponent(
-		() => import("@/features/cognitive-hub/components/HubContent"),
-		"HubContent",
-	),
+	loader: () => {
+		throw redirect({ to: "/drenyra/workspace" });
+	},
 });

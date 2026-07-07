@@ -3,6 +3,7 @@
 // Coordinates phase transitions, gate evaluation, and phase agent execution.
 // Integrates with AutoAdvanceEngine for autonomous operation.
 
+import type { Mnevori } from "@drenyra/agents/mnevori";
 import type { AutoAdvanceEngine } from "./auto-advance-engine";
 import { buildAutoAdvanceContext } from "./auto-advance-engine";
 import {
@@ -32,6 +33,7 @@ export interface FiscalPhaseOrchestratorConfig {
 	gateEngine: PhaseGateEngine;
 	graph: FiscalPhaseGraph;
 	autoAdvanceEngine?: AutoAdvanceEngine;
+	mnevori?: Mnevori;
 	eventBus?: {
 		publish: (eventType: string, payload: unknown) => Promise<void>;
 	};
@@ -80,6 +82,7 @@ export class FiscalPhaseOrchestrator {
 	private readonly gateEngine: PhaseGateEngine;
 	private readonly graph: FiscalPhaseGraph;
 	private readonly autoAdvanceEngine?: AutoAdvanceEngine;
+	private readonly mnevori?: Mnevori;
 	private readonly eventBus?: {
 		publish: (eventType: string, payload: unknown) => Promise<void>;
 	};
@@ -89,6 +92,7 @@ export class FiscalPhaseOrchestrator {
 		this.gateEngine = config.gateEngine;
 		this.graph = config.graph;
 		this.autoAdvanceEngine = config.autoAdvanceEngine;
+		this.mnevori = config.mnevori;
 		this.eventBus = config.eventBus;
 	}
 
@@ -328,6 +332,22 @@ export class FiscalPhaseOrchestrator {
 			};
 			state.metadata = updatedMetadata;
 			await this.store.upsertPeriodState(state);
+		}
+
+		// Persist Mnevori snapshot BEFORE exit gate evaluation
+		if (this.mnevori) {
+			await this.mnevori
+				.persistPhaseSnapshot(ruc, periodo, phaseId, {
+					status: "completed",
+					agentOutput,
+					gateResults: [],
+				})
+				.catch((err) => {
+					console.error(
+						`[Mnevori] Failed to persist phase snapshot for ${phaseId}:`,
+						err,
+					);
+				});
 		}
 
 		// Evaluate exit gates
@@ -726,6 +746,54 @@ export class FiscalPhaseOrchestrator {
 			phaseId: targetPhase,
 			status: "in_progress",
 		};
+	}
+
+	/**
+	 * Resume a period from where it left off.
+	 * Uses the phase history to determine the next phase to start.
+	 */
+	async resumePeriod(
+		ruc: string,
+		periodo: string,
+	): Promise<PhaseOperationResult> {
+		const state = await this.store.getPeriodState(ruc, periodo);
+		if (!state) {
+			return {
+				success: false,
+				status: "not_started",
+				error: `Period ${periodo} for RUC ${ruc} not found`,
+			};
+		}
+
+		const lastEntry = state.phaseHistory[state.phaseHistory.length - 1];
+		let targetPhase: FiscalPhaseId;
+
+		if (!lastEntry) {
+			targetPhase = "captura";
+		} else if (lastEntry.status === "completed") {
+			const sequence: FiscalPhaseId[] = [
+				"captura",
+				"clasificacion",
+				"conciliacion",
+				"cierre",
+				"declaracion",
+				"auditoria",
+			];
+			const idx = sequence.indexOf(lastEntry.phaseId);
+			if (idx === -1 || idx >= sequence.length - 1) {
+				return {
+					success: true,
+					phaseId: lastEntry.phaseId,
+					status: "completed",
+					state,
+				};
+			}
+			targetPhase = sequence[idx + 1];
+		} else {
+			targetPhase = lastEntry.phaseId;
+		}
+
+		return this.startPhase(ruc, periodo, targetPhase);
 	}
 
 	// ─── Query ───────────────────────────────────────────────────────

@@ -1,4 +1,4 @@
-import { BrainCircuit, Inbox, LayoutDashboard, Radar } from "lucide-react";
+import { BrainCircuit, Inbox, LayoutDashboard } from "lucide-react";
 import type { NavigationItem } from "../types";
 
 export const INTELLIGENCE_ITEMS: readonly NavigationItem[] = [
@@ -10,30 +10,6 @@ export const INTELLIGENCE_ITEMS: readonly NavigationItem[] = [
 		to: "/dashboard",
 		icon: LayoutDashboard,
 		keywords: ["dashboard", "inicio", "resumen", "panel", "home"],
-		activeMatch: "prefix",
-	},
-	{
-		id: "inteligencia",
-		section: "finanzas",
-		label: "Inteligencia Fiscal",
-		description:
-			"Dashboard de los 5 pilares: anomalías, cashflow, compliance, proveedores y documentos",
-		to: "/inteligencia",
-		icon: Radar,
-		keywords: [
-			"inteligencia",
-			"fiscal",
-			"anomalías",
-			"detección",
-			"cashflow",
-			"flujo",
-			"caja",
-			"compliance",
-			"proveedores",
-			"documentos",
-			"clasificación",
-			"dashboard inteligencia",
-		],
 		activeMatch: "prefix",
 	},
 	{
