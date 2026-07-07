@@ -10,7 +10,7 @@ import (
 
 	"encoding/json"
 
-	"github.com/drenyra/drenyra-engram/internal/types"
+	"github.com/drenyra/engram/internal/types"
 	_ "modernc.org/sqlite"
 )
 

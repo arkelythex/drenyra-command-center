@@ -1,4 +1,4 @@
-module github.com/drenyra/drenyra-engram
+module github.com/drenyra/engram
 
 go 1.26.4
 

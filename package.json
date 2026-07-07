@@ -84,7 +84,7 @@
     "go:reconcile:dev": "cd services/go/reconciliation-worker && go run ./cmd/server",
     "go:reconcile:test": "cd services/go/reconciliation-worker && go test ./...",
     "go:drenyra:build": "cd apps/cli && go build -o ../../../bin/drenyra-go ./cmd/drenyra",
-    "go:drenyra:build:release": "cd apps/cli && go build -ldflags \"-s -w -X github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/version.Version=0.1.0 -X github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/version.Commit=$(git -C ../.. rev-parse --short HEAD 2>/dev/null || echo none) -X github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/version.Date=$(date -u +%Y-%m-%dT%H:%M:%SZ)\" -o ../../../bin/drenyra-go ./cmd/drenyra",
+    "go:drenyra:build:release": "cd apps/cli && go build -ldflags \"-s -w -X github.com/Albert-fer02/DRENYRA/apps/cli/internal/version.Version=0.1.0 -X github.com/Albert-fer02/DRENYRA/apps/cli/internal/version.Commit=$(git -C ../.. rev-parse --short HEAD 2>/dev/null || echo none) -X github.com/Albert-fer02/DRENYRA/apps/cli/internal/version.Date=$(date -u +%Y-%m-%dT%H:%M:%SZ)\" -o ../../../bin/drenyra-go ./cmd/drenyra",
     "go:drenyra:test": "cd apps/cli && go test ./...",
     "go:drenyra:run": "cd apps/cli && go run ./cmd/drenyra",
     "go:drenyra:tui": "cd apps/cli && go run ./cmd/drenyra tui",

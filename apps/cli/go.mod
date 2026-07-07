@@ -1,4 +1,4 @@
-module github.com/Albert-fer02/DRENYRA/apps/drenyra-cli
+module github.com/Albert-fer02/DRENYRA/apps/cli
 
 go 1.25.0
 

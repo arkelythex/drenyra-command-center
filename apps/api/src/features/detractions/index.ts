@@ -17,36 +17,37 @@ import { companyScopeGuard } from "../../shared/plugins";
  * ```
  */
 export const detractionsModule = new Elysia({ prefix: "/api/detractions" })
-	.use(companyScopeGuard({ allowHeaderFallback: true })).get(
-	"/",
-	async ({ query, set }) => {
-		try {
-			const parsed = ListDetractionsQuerySchema.safeParse(query);
-			if (!parsed.success) {
-				set.status = 400;
-				return fail("Invalid query parameters", "VALIDATION_ERROR");
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
+	.get(
+		"/",
+		async ({ query, set }) => {
+			try {
+				const parsed = ListDetractionsQuerySchema.safeParse(query);
+				if (!parsed.success) {
+					set.status = 400;
+					return fail("Invalid query parameters", "VALIDATION_ERROR");
+				}
+
+				const result = await listDetractions({
+					companyId: parsed.data.companyId,
+					status: parsed.data.status,
+				});
+
+				return ok(result);
+			} catch (error: unknown) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "INTERNAL_ERROR");
 			}
-
-			const result = await listDetractions({
-				companyId: parsed.data.companyId,
-				status: parsed.data.status,
-			});
-
-			return ok(result);
-		} catch (error: unknown) {
-			set.status = 500;
-			return fail(getErrorMessage(error), "INTERNAL_ERROR");
-		}
-	},
-	{
-		query: ListDetractionsQuerySchema,
-		detail: {
-			tags: ["Compliance", "Detractions"],
-			summary: "List detractions",
-			description:
-				"Returns up to 100 detraction rows, ordered by createdAt descending. Filters by companyId or status are optional.",
 		},
-	},
-);
+		{
+			query: ListDetractionsQuerySchema,
+			detail: {
+				tags: ["Compliance", "Detractions"],
+				summary: "List detractions",
+				description:
+					"Returns up to 100 detraction rows, ordered by createdAt descending. Filters by companyId or status are optional.",
+			},
+		},
+	);
 
 export default detractionsModule;

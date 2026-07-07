@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/drenyra/drenyra-engram/internal/db"
-	"github.com/drenyra/drenyra-engram/internal/types"
+	"github.com/drenyra/engram/internal/db"
+	"github.com/drenyra/engram/internal/types"
 )
 
 // Handler holds references to the store and logger.

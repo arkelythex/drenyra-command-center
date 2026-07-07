@@ -1,9 +1,11 @@
 import type { Agent, LatinAgentId } from "@drenyra/agents";
-import { ApprovalGateEngine,
+import {
+	ApprovalGateEngine,
 	ApprovalStore,
 	DomainAgent,
 	getAllRegisteredAgents,
-	LatinModernoOrchestrator, } from "@drenyra/agents";
+	LatinModernoOrchestrator,
+} from "@drenyra/agents";
 import type { LatinDomainConfig } from "./types";
 import { FINANCIAL_AGENT_MAP, LATIN_DOMAIN_CONFIGS } from "./types";
 
@@ -81,17 +83,14 @@ export function createSwarmOrchestrator(
 			? [...phase1Agents, bestAgent]
 			: phase1Agents;
 
-		const domainAgent = new DomainAgent(
-				agentsForDomain,
-				{
-					id: domain.id,
-					name: domain.name,
-					description: domain.description,
-					capabilities: domain.capabilities,
-					approvalRequired: domain.approvalRequired,
-					maxRetries: domain.maxRetries,
-				},
-			);
+		const domainAgent = new DomainAgent(agentsForDomain, {
+			id: domain.id,
+			name: domain.name,
+			description: domain.description,
+			capabilities: domain.capabilities,
+			approvalRequired: domain.approvalRequired,
+			maxRetries: domain.maxRetries,
+		});
 
 		orchestrator.registerDomainAgent(
 			domainAgent as DomainAgent & { id: LatinAgentId },
@@ -150,17 +149,14 @@ export function createSwarmOrchestratorFromAgents(
 			? [...phase1Agents, bestAgent]
 			: phase1Agents;
 
-		const domainAgent = new DomainAgent(
-				agentsForDomain,
-				{
-					id: domain.id,
-					name: domain.name,
-					description: domain.description,
-					capabilities: domain.capabilities,
-					approvalRequired: domain.approvalRequired,
-					maxRetries: domain.maxRetries,
-				},
-			);
+		const domainAgent = new DomainAgent(agentsForDomain, {
+			id: domain.id,
+			name: domain.name,
+			description: domain.description,
+			capabilities: domain.capabilities,
+			approvalRequired: domain.approvalRequired,
+			maxRetries: domain.maxRetries,
+		});
 
 		orchestrator.registerDomainAgent(
 			domainAgent as DomainAgent & { id: LatinAgentId },
