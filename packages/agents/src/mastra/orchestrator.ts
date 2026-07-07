@@ -1,5 +1,5 @@
 import type { LexoriSkillContextResult } from "@drenyra/domain/drenyra";
-import type { LexoriSkillResolver } from "../lexori/lexori.resolver";
+import { LexoriSkillResolver } from "../lexori/lexori.resolver";
 import type { AgentContext } from "../types/agent-context";
 import type { AgentDefinition, AgentIntent } from "../types/erp-types";
 import { ApprovalGateEngine } from "./approval-gate";
@@ -177,6 +177,7 @@ export function createDrenyraOrchestrator(
 		) => Promise<{ valid: boolean; reasons: string[]; evidenceRefs: string[] }>;
 		notifyCallback?: (request: unknown) => Promise<void>;
 		swarmMode?: "flat" | "hierarchy";
+		withLexori?: boolean;
 	} = {},
 ): {
 	orchestrator: DrenyraOrchestrator;
@@ -185,6 +186,7 @@ export function createDrenyraOrchestrator(
 	eventBus: AgentEventBus;
 	intentDetector: IntentDetector;
 	latinOrchestrator?: LatinModernoOrchestrator;
+	lexoriResolver?: LexoriSkillResolver;
 } {
 	const approvalStore = new ApprovalStore();
 	const eventBus = new AgentEventBus();
@@ -196,11 +198,16 @@ export function createDrenyraOrchestrator(
 		options.notifyCallback,
 	);
 
+	const lexoriResolver = options.withLexori
+		? new LexoriSkillResolver()
+		: undefined;
+
 	const orchestrator = new DrenyraOrchestrator(
 		approvalGate,
 		eventBus,
 		(input: string, context: AgentContext) =>
 			intentDetector.detectIntent(input, context),
+		lexoriResolver,
 	);
 
 	let latinOrchestrator: LatinModernoOrchestrator | undefined;
@@ -217,5 +224,6 @@ export function createDrenyraOrchestrator(
 		eventBus,
 		intentDetector,
 		latinOrchestrator,
+		lexoriResolver,
 	};
 }
