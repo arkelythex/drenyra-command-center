@@ -1,0 +1,26 @@
+{
+  "name": "@drenyra/cli",
+  "version": "0.2.0",
+  "description": "Drenyra CLI — Terminal companion for fiscal intelligence",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "drenyra": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/index.js",
+    "dev": "bun src/index.ts"
+  },
+  "dependencies": {
+    "@drenyra/pi": "workspace:*",
+    "commander": "^15.0.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "@types/node": "^26.1.0"
+  }
+}
