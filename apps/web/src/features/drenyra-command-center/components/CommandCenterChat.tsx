@@ -577,7 +577,12 @@ export function CommandCenterChat({
 				onToggleNewCaseForm={() => setShowNewCaseForm((prev) => !prev)}
 			/>
 
-			{/* CaseProgress — behind dev flag */}
+			{/* CaseProgress — behind dev flag
+		     ⚠️ WARNING: Do NOT enable in production without parallel validation.
+		     The aggregated progress (e.g. "3 de 4 verificaciones completas")
+		     has NOT been validated against real session data. Enable only in
+		     staging/dev and cross-reference with agent detail views before
+		     graduating the flag. */}
 			{localStorage.getItem("DRENYRA_V2_CASE_PROGRESS") === "true" && (
 				<div className="shrink-0 px-4 lg:px-6 pt-4 pb-2">
 					<CaseProgress completed={3} total={4} status="running" />
