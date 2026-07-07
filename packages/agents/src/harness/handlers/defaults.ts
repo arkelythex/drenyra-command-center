@@ -1,7 +1,7 @@
 import type {
 	HarnessAgentResult,
 	HarnessSpawnRequest,
-} from "@drenyra/platform-core/harness";
+} from "../../harness-core";
 import {
 	canSpawn,
 	DELEGATION_AGENTS,

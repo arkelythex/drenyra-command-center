@@ -4,6 +4,8 @@
 import type { AgentContext } from "./agent-context";
 import type { AgentTool } from "./agent-tool";
 
+export type { AgentContext };
+
 export type AgentId =
 	| "drenyra"
 	| "operations"
@@ -29,8 +31,22 @@ export interface AgentIntent {
 
 export interface AgentSession {
 	id: string;
+	goal: string;
 	context: AgentContext;
 	activeAgent: AgentId;
+	startedAt: Date;
+	lastActivityAt: Date;
+	status: "active" | "completed" | "failed" | "timeout";
+	steps: Array<{
+		id: string;
+		domain: string;
+		status: "pending" | "running" | "completed" | "failed";
+		result?: unknown;
+		error?: string;
+		startedAt?: Date;
+		completedAt?: Date;
+	}>;
+	metadata: Record<string, unknown>;
 	history: Array<{
 		role: "user" | "assistant" | "tool";
 		content: string;

@@ -6,7 +6,7 @@ import type {
 	HarnessRunNode,
 	HarnessSpawnRequest,
 	HarnessStatus,
-} from "@drenyra/platform-core/harness";
+} from "../harness-core";
 
 export interface HarnessExecuteResponse {
 	traceId: string;

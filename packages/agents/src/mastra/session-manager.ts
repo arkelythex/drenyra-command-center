@@ -1,24 +1,4 @@
-import type { AgentContext } from "../types/agent-context";
-
-/** A session tracking a multi-step workflow */
-export interface AgentSession {
-	id: string;
-	goal: string;
-	context: AgentContext;
-	startedAt: Date;
-	lastActivityAt: Date;
-	status: "active" | "completed" | "failed" | "timeout";
-	steps: Array<{
-		id: string;
-		domain: string;
-		status: "pending" | "running" | "completed" | "failed";
-		result?: unknown;
-		error?: string;
-		startedAt?: Date;
-		completedAt?: Date;
-	}>;
-	metadata: Record<string, unknown>;
-}
+import type { AgentContext, AgentSession } from "../types/erp-types";
 
 /**
  * Manages workflow sessions.
@@ -38,11 +18,13 @@ export class SessionManager {
 			id: crypto.randomUUID(),
 			goal,
 			context,
+			activeAgent: "drenyra",
 			startedAt: new Date(),
 			lastActivityAt: new Date(),
 			status: "active",
 			steps: [],
 			metadata: {},
+			history: [],
 		};
 
 		this.sessions.set(session.id, session);

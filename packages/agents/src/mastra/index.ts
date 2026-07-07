@@ -132,7 +132,7 @@ export type { OrchestrationResult } from "./orchestrator";
 export { createDrenyraOrchestrator, DrenyraOrchestrator } from "./orchestrator";
 export type { Conflict, MergeResult } from "./result-merger";
 export { ResultMerger } from "./result-merger";
-export type { AgentSession } from "./session-manager";
+export type { AgentSession } from "../types/erp-types";
 export { SessionManager } from "./session-manager";
 export type { PhaseTiming, SwarmMode } from "./supervisor";
 export { Supervisor } from "./supervisor";

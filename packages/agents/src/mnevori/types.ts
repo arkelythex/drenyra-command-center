@@ -5,7 +5,7 @@
  * to Geavon, enabling mid-flow resume and regulation-change invalidation.
  */
 
-import type { FiscalPhaseId } from "../../../drenyra-orchestrator/src/phase/types";
+import type { FiscalPhaseId } from "../phase/types";
 
 /**
  * A single persisted artifact from one fiscal phase execution.

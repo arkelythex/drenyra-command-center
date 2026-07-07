@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { createDefaultPhaseGraph } from "../../../../drenyra-orchestrator/src/phase/fiscal-phase-graph";
-import { FiscalPhaseOrchestrator } from "../../../../drenyra-orchestrator/src/phase/fiscal-phase-orchestrator";
-import { InMemoryFiscalPhaseStore } from "../../../../drenyra-orchestrator/src/phase/fiscal-phase-store";
-import { PhaseGateEngine } from "../../../../drenyra-orchestrator/src/phase/phase-gate-engine";
+import { createDefaultPhaseGraph } from "../../phase/fiscal-phase-graph";
+import { FiscalPhaseOrchestrator } from "../../phase/fiscal-phase-orchestrator";
+import { InMemoryFiscalPhaseStore } from "../../phase/fiscal-phase-store";
+import { PhaseGateEngine } from "../../phase/phase-gate-engine";
 import { Mnevori } from "../mnevori";
 import { MnevoriRegulationTracker } from "../mnevori.regulation";
 import { MnevoriResumeService } from "../mnevori.resume";

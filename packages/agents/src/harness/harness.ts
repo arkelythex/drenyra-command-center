@@ -2,7 +2,7 @@ import {
 	ApprovalWorkflow,
 	DelegationGraph,
 	type DelegationNode,
-} from "@drenyra/platform-core/harness";
+} from "../harness-core";
 import {
 	registerDefaultHandlers,
 	validateSpawnPlan,
@@ -186,7 +186,7 @@ import type {
 	HarnessRunNode,
 	HarnessSpawnRequest,
 	HarnessStatus,
-} from "@drenyra/platform-core/harness";
+} from "../harness-core";
 import type {
 	AgentHandler,
 	HarnessExecuteResponse,

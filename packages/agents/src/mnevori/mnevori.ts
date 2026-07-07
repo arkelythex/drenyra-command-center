@@ -5,8 +5,8 @@
  * stays framework-free (no direct orchestration package imports).
  */
 
-import type { FiscalPhaseStore } from "../../../drenyra-orchestrator/src/phase/fiscal-phase-store";
-import type { FiscalPhaseId } from "../../../drenyra-orchestrator/src/phase/types";
+import type { FiscalPhaseStore } from "../phase/fiscal-phase-store";
+import type { FiscalPhaseId } from "../phase/types";
 import type {
 	MnevoriArtifact,
 	MnevoriPhaseSnapshot,

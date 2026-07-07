@@ -2,8 +2,9 @@
  * MnevoriResumeService — finds and resumes interrupted fiscal periods.
  */
 
-import type { FiscalPhaseStore } from "../../../drenyra-orchestrator/src/phase/fiscal-phase-store";
-import type { Mnevori, MnevoriResumePoint } from "./types";
+import type { FiscalPhaseStore } from "../phase/fiscal-phase-store";
+import type { MnevoriResumePoint } from "./types";
+import type { Mnevori } from "../mnevori";
 
 const PHASE_SEQUENCE = [
 	"captura",
