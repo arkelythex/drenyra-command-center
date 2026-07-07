@@ -192,6 +192,28 @@ export type {
     WorkerTaskStatus,
 } from "./types/worker-task";
 
+// ─── Plugin System ───────────────────────────────────────────────────────
+export type {
+	AgenticOSPlugin,
+	AgentRegistry,
+	ApprovalEvidence,
+	ApprovalGate,
+	ApprovalGateRegistry,
+	ApprovalVerdict,
+	DomainRegistry,
+	DrenyraSkill,
+	PolicyContext,
+	PolicyDefinition,
+	PolicyRegistry,
+	PolicyResult,
+	SkillContext,
+} from "./plugin/interface";
+export { PluginRegistry } from "./plugin/registry";
+export type {
+	PluginLifecycleConfig,
+	RegisteredPlugin,
+} from "./plugin/types";
+
 // ─── Legacy compatibility layer ──────────────────────────────
 export {
 	clearRegisteredAgents,

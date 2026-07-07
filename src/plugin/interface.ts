@@ -10,6 +10,7 @@
  * @module @drenyra/platform-core/plugin
  */
 
+import type { SessionManager } from "../mastra/session-manager.js";
 import type { AgentType, TaskDefinition } from "../kernel/types.js";
 
 // ──────────────────────────────────────────────
@@ -200,4 +201,68 @@ export interface AgenticOSPlugin {
 	registerPolicies(registry: PolicyRegistry): void;
 	/** Register approval gates for sensitive actions */
 	registerApprovalGates(registry: ApprovalGateRegistry): void;
+}
+
+// ──────────────────────────────────────────────
+// Drenyra Skill (fiscal skill contract)
+// ──────────────────────────────────────────────
+
+/**
+ * Context provided to a DrenyraSkill during initialization.
+ */
+export interface SkillContext {
+	sessionManager: SessionManager;
+	logger: {
+		info: (msg: string) => void;
+		warn: (msg: string) => void;
+		error: (msg: string) => void;
+	};
+	config: Record<string, unknown>;
+}
+
+/**
+ * A fiscal skill that can be loaded dynamically by drenyra-pi.
+ *
+ * Skills are npm packages that implement this interface and register
+ * themselves with the PluginRegistry via `drenyra pi install`.
+ *
+ * @example
+ * ```ts
+ * const skill: DrenyraSkill = {
+ *   id: "sire-filing",
+ *   name: "SIRE Filing",
+ *   version: "0.1.0",
+ *   description: "Electronic books (SIRE) filing for SUNAT compliance",
+ *   async initialize(ctx) {
+ *     ctx.logger.info("SIRE Filing skill initialized");
+ *   },
+ * };
+ * export default skill;
+ * ```
+ */
+export interface DrenyraSkill {
+	/** Unique skill identifier */
+	id: string;
+	/** Human-readable name */
+	name: string;
+	/** Semantic version */
+	version: string;
+	/** Human-readable description */
+	description: string;
+	/** Optional list of fiscal strategies this skill provides */
+	strategies?: Array<{
+		name: string;
+		execute: (
+			input: unknown,
+			context: Record<string, unknown>,
+		) => Promise<unknown>;
+	}>;
+	/** Optional CLI commands provided by this skill */
+	commands?: Array<{
+		name: string;
+		description: string;
+		execute: (args: string[]) => Promise<void>;
+	}>;
+	/** Initialize the skill with runtime dependencies */
+	initialize(context: SkillContext): Promise<void>;
 }

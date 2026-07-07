@@ -14,9 +14,12 @@ import type {
 	ApprovalGate,
 	ApprovalGateRegistry,
 	DomainRegistry,
+	DrenyraSkill,
 	PolicyDefinition,
 	PolicyRegistry,
+	SkillContext,
 } from "./interface.js";
+import { SessionManager } from "../mastra/session-manager.js";
 
 // ──────────────────────────────────────────────
 // Concrete Registry Implementations
@@ -80,6 +83,7 @@ class DefaultApprovalGateRegistry implements ApprovalGateRegistry {
  */
 export class PluginRegistry {
 	private readonly plugins = new Map<string, AgenticOSPlugin>();
+	private readonly skills = new Map<string, DrenyraSkill>();
 
 	/**
 	 * Register a plugin. Replaces any existing plugin with the same name.
@@ -128,5 +132,51 @@ export class PluginRegistry {
 	 */
 	createApprovalGateRegistry(): ApprovalGateRegistry {
 		return new DefaultApprovalGateRegistry();
+	}
+
+	// ──────────────────────────────────────────────
+	// Skill Management
+	// ──────────────────────────────────────────────
+
+	/**
+	 * Install and initialize a DrenyraSkill.
+	 * Replaces any existing skill with the same id.
+	 */
+	async installSkill(
+		skill: DrenyraSkill,
+		sessionManager?: SessionManager,
+	): Promise<void> {
+		const ctx: SkillContext = {
+			sessionManager: sessionManager ?? new SessionManager(),
+			logger: {
+				info: (msg: string) => console.log(`[skill:${skill.id}] ${msg}`),
+				warn: (msg: string) => console.warn(`[skill:${skill.id}] ${msg}`),
+				error: (msg: string) => console.error(`[skill:${skill.id}] ${msg}`),
+			},
+			config: {},
+		};
+		await skill.initialize(ctx);
+		this.skills.set(skill.id, skill);
+	}
+
+	/**
+	 * Uninstall a skill by id.
+	 */
+	uninstallSkill(id: string): boolean {
+		return this.skills.delete(id);
+	}
+
+	/**
+	 * Find a skill by id.
+	 */
+	findSkill(id: string): DrenyraSkill | undefined {
+		return this.skills.get(id);
+	}
+
+	/**
+	 * List all installed skills.
+	 */
+	listSkills(): DrenyraSkill[] {
+		return Array.from(this.skills.values());
 	}
 }
