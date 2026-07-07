@@ -61,4 +61,18 @@ describe("Geavon delegation rules", () => {
 		const result = evaluateDelegationRules(ctx);
 		expect(result.action).toBe("direct");
 	});
+
+	it("should delegate banking domain queries to the banking skill", () => {
+		const ctx: DelegationContext = {
+			queryType: "document-processing",
+			fiscalDomain: "banking",
+			requiresToolUse: true,
+			estimatedComplexity: "medium",
+		};
+		const result = evaluateDelegationRules(ctx);
+
+		expect(result.action).toBe("delegate");
+		expect(result.suggestedAgent).toBe("eviden");
+		expect(result.matchedRuleId).toBe("banking-reconciliation");
+	});
 });

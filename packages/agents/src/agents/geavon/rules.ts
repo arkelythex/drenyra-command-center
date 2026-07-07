@@ -13,6 +13,18 @@ const RULES: readonly GeavonRule[] = [
 		action: "direct",
 	},
 	{
+		id: "banking-reconciliation",
+		name: "Banking reconciliation — delegate to Eviden",
+		description:
+			"Banking reconciliation queries → available as inline skill artifact",
+		match: (ctx) =>
+			ctx.fiscalDomain === "banking" &&
+			(ctx.queryType === "document-processing" ||
+				ctx.queryType === "data-retrieval"),
+		action: "delegate",
+		suggestedAgent: "eviden",
+	},
+	{
 		id: "delegate-document",
 		name: "Document processing — delegate to Eviden",
 		description: "Document/evidence processing requires the evidence sub-agent",
