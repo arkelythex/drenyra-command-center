@@ -69,7 +69,7 @@ function AgentStatusLine({ isStreaming }: { isStreaming: boolean }) {
 						/>
 						{agent.label}
 						<span className="text-[var(--text-tertiary)]">
-							{active ? "working" : "idle"}
+							{active ? "trabajando" : "en espera"}
 						</span>
 					</span>
 				);
