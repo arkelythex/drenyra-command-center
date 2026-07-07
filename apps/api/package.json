@@ -65,10 +65,8 @@
     "@drenyra/ai": "workspace:*",
     "@drenyra/application": "workspace:*",
     "@drenyra/domain": "workspace:*",
-    "@drenyra/drenyra-orchestrator": "workspace:*",
-    "@drenyra/harness": "workspace:*",
     "@drenyra/infrastructure": "workspace:*",
-    "@drenyra/platform-core": "workspace:*",
+    "@drenyra/agents": "workspace:*",
     "@drenyra/shared": "workspace:*"
   },
   "devDependencies": {

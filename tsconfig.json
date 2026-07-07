@@ -54,19 +54,10 @@
       "@drenyra/shared": ["./packages/shared/src/index.ts"],
       "@drenyra/shared/*": ["./packages/shared/src/*"],
 
-      "@drenyra/platform-core": ["./packages/platform-core/src/index.ts"],
-      "@drenyra/platform-core/*": ["./packages/platform-core/src/*"],
       "@drenyra/memory": ["./packages/memory/src/index.ts"],
       "@drenyra/memory/*": ["./packages/memory/src/*"],
       "@drenyra/agents": ["./packages/agents/src/index.ts"],
       "@drenyra/agents/*": ["./packages/agents/src/*"],
-      "@drenyra/drenyra-orchestrator": ["./packages/drenyra-orchestrator/src/index.ts"],
-      "@drenyra/drenyra-orchestrator/erp-types": [
-        "./packages/drenyra-orchestrator/src/types/erp-types.ts"
-      ],
-      "@drenyra/drenyra-orchestrator/*": ["./packages/drenyra-orchestrator/src/*"],
-      "@drenyra/harness": ["./packages/drenyra-harness/src/index.ts"],
-      "@drenyra/harness/*": ["./packages/drenyra-harness/src/*"],
       "@drenyra/test-utils": ["./packages/test-utils/src/index.ts"],
       "@drenyra/test-utils/*": ["./packages/test-utils/src/*"],
       "@drenyra/ui": ["./packages/ui/src/index.ts"],
@@ -107,7 +98,6 @@
     { "path": "./packages/shared" },
     { "path": "./packages/memory" },
 
-    { "path": "./packages/platform-core" },
     { "path": "./packages/agents" },
 
     { "path": "./apps/api" },

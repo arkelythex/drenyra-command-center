@@ -128,10 +128,7 @@ export default defineConfig({
 				replacement: path.resolve(__dirname, "./packages/agents/src"),
 			},
 
-			{
-				find: "@drenyra/platform-core",
-				replacement: path.resolve(__dirname, "./packages/platform-core/src"),
-			},
+			{},
 			// Catch-all for any @drenyra/* subpath not matched above
 			{
 				find: "@drenyra/test-utils",

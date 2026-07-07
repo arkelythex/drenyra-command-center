@@ -66,6 +66,7 @@
     "@drenyra/api": "workspace:*",
     "@drenyra/application": "workspace:*",
     "@drenyra/domain": "workspace:*",
+    "@drenyra/agents": "workspace:*",
     "@drenyra/shared": "workspace:*",
     "@drenyra/ui": "workspace:*"
   },
