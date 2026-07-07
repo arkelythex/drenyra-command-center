@@ -1,5 +1,5 @@
 import type { AgentContext,
-	ApprovalRequest, } from "@drenyra/agents";
+	ApprovalRequest, } from "@drenyra/pi";
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
 import { createApprovalStreamRoutes } from "../approval-stream.routes";

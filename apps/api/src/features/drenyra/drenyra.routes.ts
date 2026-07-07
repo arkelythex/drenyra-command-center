@@ -6,12 +6,12 @@ import {
 } from "@drenyra/application/drenyra";
 import { DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY } from "@drenyra/domain/drenyra";
 import type { AgentContext,
-	ApprovalRequest, } from "@drenyra/agents";
+	ApprovalRequest, } from "@drenyra/pi";
 import { AgentEventBus,
 	ApprovalGateEngine,
 	ApprovalStore,
 	MastraDrenyraOrchestrator as DrenyraOrchestrator,
-	IntentDetector, } from "@drenyra/agents";
+	IntentDetector, } from "@drenyra/pi";
 import { PostgresDrenyraRepository } from "@drenyra/persistence/repositories/postgres-drenyra.repository";
 import { Elysia, t } from "elysia";
 import { evaluateDrenyraCapability } from "../../../../../packages/domain/src/drenyra/capabilities";

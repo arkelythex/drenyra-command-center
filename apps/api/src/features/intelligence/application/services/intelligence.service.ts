@@ -5,7 +5,7 @@
  * @module intelligence/service
  */
 
-import type { AgentContext } from "@drenyra/agents";
+import type { AgentContext } from "@drenyra/pi";
 
 import type {
 	Anomaly,
@@ -22,9 +22,8 @@ import type {
 	SupplierRecord,
 	TaxCalendarInput,
 	TransactionRecord,
-} from "@drenyra/agents/strategies";
-import {
-	classifyDocuments,
+} from "@drenyra/pi/strategies";
+import { classifyDocuments,
 	createCashflowPredictorStrategy,
 	createDetraccionesStrategy,
 	createDuplicateInvoiceStrategy,
@@ -34,8 +33,7 @@ import {
 	createTaxCalendarStrategy,
 	detectRucBreachAnomalies,
 	FiscalAnomalyEngine,
-	RUC_BREACH_THRESHOLD_PEN,
-} from "@drenyra/agents/strategies";
+	RUC_BREACH_THRESHOLD_PEN, } from "@drenyra/pi/strategies";
 
 // ─── Helpers ─────────────────────────────────────────────────────────
 

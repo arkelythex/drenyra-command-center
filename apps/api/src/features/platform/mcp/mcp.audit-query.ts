@@ -7,11 +7,9 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import type {
-	DrenyraMcpAuditOutcome,
+import type { DrenyraMcpAuditOutcome,
 	DrenyraMcpAuditQuery,
-	DrenyraMcpScope,
-} from "@drenyra/agents";
+	DrenyraMcpScope, } from "@drenyra/pi";
 
 const auditRoles = new Set(["admin", "auditor", "owner", "compliance"]);
 const outcomes = new Set<DrenyraMcpAuditOutcome>([

@@ -1,5 +1,5 @@
 import type { AgentContext,
-	ApprovalRequest, } from "@drenyra/agents";
+	ApprovalRequest, } from "@drenyra/pi";
 
 export interface SseApprovalEvent {
 	id: string;

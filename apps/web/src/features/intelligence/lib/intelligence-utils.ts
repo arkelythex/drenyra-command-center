@@ -1,4 +1,4 @@
-import type { AnomalySeverity } from "@drenyra/agents";
+import type { AnomalySeverity } from "@drenyra/pi";
 import type {
 	AnomalyDisplayItem,
 	ComplianceDisplayItem,

@@ -1,0 +1,47 @@
+# SDD State — drenyra-pi-extraction
+# Created: 2026-07-07
+name: drenyra-pi-extraction
+title: 'Drenyra Pi: standalone harness + fiscal skills + thin CLI'
+status: tasks-ready
+artifacts:
+  propose: openspec/changes/drenyra-pi-extraction/proposal.md
+  spec: openspec/changes/drenyra-pi-extraction/spec.md
+  design: openspec/changes/drenyra-pi-extraction/design.md
+  tasks: openspec/changes/drenyra-pi-extraction/tasks.md
+dependencies:
+  propose: ready
+  spec: ready
+  design: ready
+  tasks: ready
+  apply: blocked
+  verify: blocked
+  archive: blocked
+next_recommended: apply
+
+# Capture from preflight (2026-07-07)
+execution_mode: interactive
+artifact_store: openspec
+delivery_strategy: ask-on-risk
+chain_strategy: stacked-to-main
+review_budget: 400
+
+# User choices
+scope: extract-agents-only
+cli_strategy: rewrite-typescript
+first_skill: sire-filing
+
+# Progress (2026-07-07)
+pr1: completed
+pr2: pending
+pr3: pending
+pr4: pending
+pr5: pending
+pr6: pending
+pr7: pending
+pr8: pending
+pr9: pending
+
+pr1_details:
+  repo: /home/dreamcoder08/Documents/PROYECTOS/drenyra-pi
+  typecheck_barrel: pass (0 errors)
+  typecheck_all: 34 pre-existing errors (lexori skills, domain types)

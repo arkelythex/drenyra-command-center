@@ -8,7 +8,7 @@
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
 import { Money, TaxCalculator } from "@drenyra/domain";
-import type { AgentContext, AgentTool } from "@drenyra/agents";
+import type { AgentContext, AgentTool } from "@drenyra/pi";
 import { z } from "zod";
 
 /**

@@ -1,4 +1,4 @@
-import type { AgentContext } from "@drenyra/agents";
+import type { AgentContext } from "@drenyra/pi";
 import { api } from "@/lib/api";
 import { extractOkData, unwrap } from "@/lib/api-helpers";
 

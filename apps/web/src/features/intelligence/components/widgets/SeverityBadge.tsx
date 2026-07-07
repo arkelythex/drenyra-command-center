@@ -1,4 +1,4 @@
-import type { AnomalySeverity } from "@drenyra/agents";
+import type { AnomalySeverity } from "@drenyra/pi";
 import {
 	SEVERITY_COLORS,
 	SEVERITY_LABELS,

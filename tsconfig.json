@@ -56,8 +56,8 @@
 
       "@drenyra/memory": ["./packages/memory/src/index.ts"],
       "@drenyra/memory/*": ["./packages/memory/src/*"],
-      "@drenyra/agents": ["./packages/agents/src/index.ts"],
-      "@drenyra/agents/*": ["./packages/agents/src/*"],
+      "@drenyra/pi": ["../drenyra-pi/src/index.ts"],
+      "@drenyra/pi/*": ["../drenyra-pi/src/*"],
       "@drenyra/test-utils": ["./packages/test-utils/src/index.ts"],
       "@drenyra/test-utils/*": ["./packages/test-utils/src/*"],
       "@drenyra/ui": ["./packages/ui/src/index.ts"],
@@ -98,7 +98,6 @@
     { "path": "./packages/shared" },
     { "path": "./packages/memory" },
 
-    { "path": "./packages/agents" },
 
     { "path": "./apps/api" },
     { "path": "./apps/web" }

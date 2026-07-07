@@ -579,6 +579,6 @@ export interface DrenyraBrainEvent {
 	metadata: Record<string, unknown>;
 }
 
-import type { DrenyraSubagentName } from "@drenyra/agents";
+import type { DrenyraSubagentName } from "@drenyra/pi";
 
 export type { DrenyraSubagentName };

@@ -10,7 +10,7 @@
  * Requires DATABASE_URL environment variable.
  */
 
-import { getAllRegisteredAgents } from "@drenyra/agents";
+import { getAllRegisteredAgents } from "@drenyra/pi";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { AgentRegistry } from "../src/control-plane/agent-registry";

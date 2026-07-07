@@ -1,5 +1,5 @@
 import type { AgentContext,
-	ApprovalRequest, } from "@drenyra/agents";
+	ApprovalRequest, } from "@drenyra/pi";
 import { Elysia, t } from "elysia";
 import { fail } from "../shared/api-response";
 import {

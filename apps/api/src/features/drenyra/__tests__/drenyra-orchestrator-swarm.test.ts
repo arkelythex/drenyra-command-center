@@ -15,11 +15,11 @@
 
 import type { Agent,
 	AgentContext,
-	AgentDefinition, } from "@drenyra/agents";
+	AgentDefinition, } from "@drenyra/pi";
 import { AgentEventBus,
 	ApprovalGateEngine,
 	ApprovalStore,
-	MastraDrenyraOrchestrator as LegacyDrenyraOrchestrator, } from "@drenyra/agents";
+	MastraDrenyraOrchestrator as LegacyDrenyraOrchestrator, } from "@drenyra/pi";
 import { describe, expect, it, vi } from "vitest";
 import { createSwarmOrchestratorFromAgents } from "../swarm-factory";
 

@@ -9,7 +9,7 @@
  */
 
 import type { DrenyraActorContext } from "@drenyra/application/drenyra";
-import type { AgentContext } from "@drenyra/agents";
+import type { AgentContext } from "@drenyra/pi";
 import { fail } from "../shared/api-response";
 
 export type DrenyraAgentContextResolution =

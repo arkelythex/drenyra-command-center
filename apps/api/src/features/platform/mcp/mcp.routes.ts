@@ -7,12 +7,10 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import {
-	authorizeDrenyraMcpTool,
+import { authorizeDrenyraMcpTool,
 	buildDrenyraMcpManifest,
 	type DrenyraMcpScope,
-	isDrenyraMcpScope,
-} from "@drenyra/agents";
+	isDrenyraMcpScope, } from "@drenyra/pi";
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../../shared/api-response";
 import type {

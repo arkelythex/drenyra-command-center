@@ -1,9 +1,7 @@
-import type {
-	DrenyraMcpAuditEvent,
+import type { DrenyraMcpAuditEvent,
 	DrenyraMcpAuditQuery,
 	DrenyraMcpAuditReader,
-	DrenyraMcpAuditSink,
-} from "@drenyra/agents";
+	DrenyraMcpAuditSink, } from "@drenyra/pi";
 import { and, desc, eq } from "drizzle-orm";
 import { db } from "../client";
 import { platformMcpAuditEvents } from "../schema/platform-mcp.schema";

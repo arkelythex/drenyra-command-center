@@ -1,4 +1,4 @@
-import type { LatinAgentId } from "@drenyra/agents";
+import type { LatinAgentId } from "@drenyra/pi";
 
 export interface LatinDomainConfig {
 	id: LatinAgentId;

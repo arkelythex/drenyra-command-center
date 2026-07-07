@@ -5,7 +5,7 @@
  */
 
 import { type CreateTaskDTO,
-	queueManager, } from "@drenyra/agents";
+	queueManager, } from "@drenyra/pi";
 import { Elysia, t } from "elysia";
 import { authorizeAiSurface } from "../../security/ai-surface-access";
 import type { SecurityOperation } from "../../security/rbac-policy";

@@ -8,7 +8,7 @@
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
 
-import type { DrenyraMcpScope } from "@drenyra/agents";
+import type { DrenyraMcpScope } from "@drenyra/pi";
 import type { EvidenceGraphRepository } from "@drenyra/domain";
 import { buildDrenyraDualSurfaceContract } from "@drenyra/domain/drenyra";
 import type { DrenyraBrainRepository } from "../../drenyra/brain/brain.repository";
