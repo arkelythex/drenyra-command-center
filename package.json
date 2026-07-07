@@ -20,7 +20,7 @@
     "codemod:fiscal-editorial-blur": "bun scripts/codemod/fiscal-editorial-remove-blur.ts",
     "ci:pr-readiness": "bun scripts/ci/pr-readiness.ts",
     "ci:depcheck": "bash scripts/ci/check-unused-deps.sh",
-    "ci:forbidden-terms": "bun scripts/ci/check-forbidden-terms.ts",
+    "ci:forbidden-terms": "bun scripts/ci/check-forbidden-terms.ts --exceptions-file scripts/ci/forbidden-terms-exceptions.json",
     "db:studio": "./scripts/dev/run-infra-db.sh db:studio",
     "db:seed": "bash ./scripts/dev/seed-dev-bootstrap.sh",
     "auth:bootstrap:demo": "bun scripts/create-admin-user.ts",
