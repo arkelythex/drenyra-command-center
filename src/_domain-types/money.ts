@@ -30,7 +30,8 @@ import { InvalidAmountError } from "../errors/InvalidAmountError";
  * console.log(value);
  * ```
  */
-export type Currency = import("../types/currency").Currency;
+import type { CurrencyCode } from "../types/domain/currency";
+export type Currency = CurrencyCode;
 
 /**
  * Money value object using the "cents pattern" (integer smallest unit).

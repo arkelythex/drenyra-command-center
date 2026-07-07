@@ -11,7 +11,10 @@ export interface LexoriSkillDefinition {
 	version?: string;
 	category?: string;
 	context?: Record<string, unknown>;
-	rules?: string[];
+	contextTemplate?: string;
+	modelHint?: string;
+	tags?: string[];
+	rules?: Array<{ id: string; description: string }>;
 }
 
 export interface LexoriSkillContextResult {
@@ -22,8 +25,20 @@ export interface LexoriSkillContextResult {
 
 export function renderLexoriSkillContext(
 	skill: LexoriSkillDefinition,
-): string {
-	return `${skill.name}: ${skill.description}`;
+	variables?: Record<string, string>,
+): LexoriSkillContextResult {
+	const rendered =
+		variables && skill.context
+			? Object.entries(variables).reduce(
+					(text, [key, value]) => text.replace(`{{${key}}}`, value),
+					`${skill.name}: ${skill.description}`,
+				)
+			: `${skill.name}: ${skill.description}`;
+	return {
+		resolved: true,
+		context: { rendered },
+		skill,
+	};
 }
 
 export function validateLexoriSkillDefinition(

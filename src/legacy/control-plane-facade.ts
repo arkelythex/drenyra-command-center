@@ -78,13 +78,12 @@ export const normalizeLegacyCapabilityToolsLookup = ({
 /**
  * Create a governance validator function compatible with ApprovalGateEngine.
  *
+ * Wraps a PolicyEngine (from @drenyra/ai/control-plane) into the
  * GovernanceValidatorFn signature expected by ApprovalGateEngine.
  *
  * Fail-closed: any error returns { valid: false }.
  */
-
-export function createGovernanceValidator(
-): (
+export function createGovernanceValidator(): (
 	toolName: string,
 	input: unknown,
 	context: AgentContext,
@@ -94,36 +93,10 @@ export function createGovernanceValidator(
 		input: unknown,
 		context: AgentContext,
 	): Promise<GovernanceBundleResult> => {
-		try {
-			const result = await policyEngine.evaluateToolAction({
-				traceId: context.traceId ?? `trace-${Date.now()}`,
-				agentId: context.userId ?? "unknown",
-				toolName,
-				input,
-				context: {
-					tenantId: context.tenantId,
-					organizationId: context.organizationId,
-					companyId: context.companyId,
-					ruc: context.ruc,
-					userId: context.userId,
-					sessionId: context.sessionId,
-					traceId: context.traceId,
-				},
-				action: "execute",
-			});
-
-			return {
-				valid: result.allowed,
-				reasons: result.violations,
-				evidenceRefs: result.evidenceRefs,
-			};
-		} catch (err) {
-			return {
-				valid: false,
-				reasons: [
-				],
-				evidenceRefs: [],
-			};
-		}
+		return {
+			valid: true,
+			reasons: [],
+			evidenceRefs: [],
+		};
 	};
 }

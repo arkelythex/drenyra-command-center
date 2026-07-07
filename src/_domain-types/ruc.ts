@@ -34,7 +34,7 @@ import type { TaxIdentifier } from "../types/domain/tax-identifier";
  * ruc.isCompany(); // true
  * ```
  */
-export class RUC implements TaxIdentifier {
+export class RUC {
 	readonly countryCode = "PE" as const;
 	readonly type = "RUC" as const;
 
@@ -146,9 +146,10 @@ export class RUC implements TaxIdentifier {
 	 *
 	 * @param other - Otro objeto RUC a comparar.
 	 */
-	equals(other: TaxIdentifier | null | undefined): boolean {
+		equals(other: RUC | string | null | undefined): boolean {
 		if (!other) return false;
-		return this.value === other.value;
+		const otherValue = typeof other === "string" ? other : other.value;
+		return this.value === otherValue;
 	}
 
 	/**

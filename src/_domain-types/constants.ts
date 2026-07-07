@@ -49,6 +49,9 @@ export const DETERMINISTIC_REASON_CODE = {
 	PASS: "pass",
 	FAIL: "fail",
 	WARN: "warn",
+	VALIDATION_OK: "VALIDATION_OK",
+	RUC_INVALID: "RUC_INVALID",
+	IGV_MISMATCH: "IGV_MISMATCH",
 } as const;
 
 export const PHASE_1_REQUIRED_ADR_IDS = [
