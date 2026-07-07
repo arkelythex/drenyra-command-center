@@ -1,3 +1,5 @@
+import type { LexoriSkillContextResult } from "@drenyra/domain/drenyra";
+import type { LexoriSkillResolver } from "../lexori/lexori.resolver";
 import type { AgentContext } from "../types/agent-context";
 import type { AgentDefinition, AgentIntent } from "../types/erp-types";
 import { ApprovalGateEngine } from "./approval-gate";
@@ -14,6 +16,8 @@ export interface OrchestrationResult {
 		| { success: boolean; data: unknown }
 		| { success: boolean; error: string };
 	agent: string;
+	/** Lexori regulatory context for fiscal agents */
+	lexoriContext?: LexoriSkillContextResult[];
 }
 
 /**
@@ -41,6 +45,7 @@ export class DrenyraOrchestrator {
 		approvalGate: ApprovalGateEngine,
 		eventBus: AgentEventBus,
 		detectIntent: IntentHandler,
+		private readonly lexoriProvider?: LexoriSkillResolver,
 	) {
 		this.approvalGate = approvalGate;
 		this.eventBus = eventBus;
@@ -85,6 +90,15 @@ export class DrenyraOrchestrator {
 		// 1. Detect intent
 		const intent = await this.detectIntent(input, context);
 
+		// Resolve Lexori regulatory context for fiscal agents
+		let lexoriContext: LexoriSkillContextResult[] | undefined;
+		if (this.lexoriProvider) {
+			lexoriContext = await this.lexoriProvider.resolveForAgent(intent.agent, {
+				ruc: context.ruc ?? "",
+				periodo: "",
+			});
+		}
+
 		// 2. Route to swarm or flat mode
 		if (this.isSwarmMode() && this.swarmOrchestrator) {
 			const swarmResult = await this.swarmOrchestrator.handleRequest(
@@ -101,6 +115,7 @@ export class DrenyraOrchestrator {
 					data: swarmResult.data,
 				},
 				agent: "swarm",
+				lexoriContext,
 			};
 		}
 
@@ -137,6 +152,7 @@ export class DrenyraOrchestrator {
 				data: { agent: agent.id, intent: intent.tool, input },
 			},
 			agent: intent.agent,
+			lexoriContext,
 		};
 	}
 
