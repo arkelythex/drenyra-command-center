@@ -15,7 +15,7 @@
  * updated to match the current orchestration layer contract.
  */
 
-import type { Agent, AgentContext } from "@drenyra/drenyra-orchestrator";
+import type { Agent, AgentContext } from "@drenyra/agents";
 import { describe, expect, it, vi } from "vitest";
 import { createSwarmOrchestratorFromAgents } from "../swarm-factory";
 

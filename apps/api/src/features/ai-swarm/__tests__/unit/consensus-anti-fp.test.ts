@@ -17,7 +17,7 @@ import type { AgentConfidence } from "@drenyra/ai/services/swarm-consensus/types
 import {
 	detectRucBreachAnomalies,
 	RUC_BREACH_THRESHOLD_PEN,
-} from "@drenyra/drenyra-orchestrator/strategies";
+} from "@drenyra/agents/strategies";
 import { describe, expect, it } from "vitest";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

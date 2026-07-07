@@ -9,7 +9,8 @@
     ".": "./src/index.ts",
     "./agents": "./src/agents/index.ts",
     "./fiscal-agentic-ledger": "./src/fiscal-agentic-ledger/index.ts",
-    "./mnevori": "./src/mnevori/index.ts"
+    "./mnevori": "./src/mnevori/index.ts",
+    "./strategies": "./src/strategies/index.ts"
   },
   "scripts": {
     "test": "vitest run",

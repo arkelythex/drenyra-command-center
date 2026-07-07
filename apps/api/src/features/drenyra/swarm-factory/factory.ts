@@ -1,11 +1,9 @@
-import type { Agent, LatinAgentId } from "@drenyra/drenyra-orchestrator";
-import {
-	ApprovalGateEngine,
+import type { Agent, LatinAgentId } from "@drenyra/agents";
+import { ApprovalGateEngine,
 	ApprovalStore,
 	DomainAgent,
 	getAllRegisteredAgents,
-	LatinModernoOrchestrator,
-} from "@drenyra/drenyra-orchestrator";
+	LatinModernoOrchestrator, } from "@drenyra/agents";
 import type { LatinDomainConfig } from "./types";
 import { FINANCIAL_AGENT_MAP, LATIN_DOMAIN_CONFIGS } from "./types";
 

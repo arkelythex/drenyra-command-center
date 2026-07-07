@@ -5,17 +5,13 @@ import {
 	InMemoryDrenyraRepository,
 } from "@drenyra/application/drenyra";
 import { DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY } from "@drenyra/domain/drenyra";
-import type {
-	AgentContext,
-	ApprovalRequest,
-} from "@drenyra/drenyra-orchestrator";
-import {
-	AgentEventBus,
+import type { AgentContext,
+	ApprovalRequest, } from "@drenyra/agents";
+import { AgentEventBus,
 	ApprovalGateEngine,
 	ApprovalStore,
 	MastraDrenyraOrchestrator as DrenyraOrchestrator,
-	IntentDetector,
-} from "@drenyra/drenyra-orchestrator";
+	IntentDetector, } from "@drenyra/agents";
 import { PostgresDrenyraRepository } from "@drenyra/persistence/repositories/postgres-drenyra.repository";
 import { Elysia, t } from "elysia";
 import { evaluateDrenyraCapability } from "../../../../../packages/domain/src/drenyra/capabilities";

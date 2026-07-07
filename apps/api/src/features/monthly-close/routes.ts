@@ -1,5 +1,6 @@
 import type { CloseChecklistRepository } from "@drenyra/domain/repositories/close-checklist.repository";
 import { Elysia, t } from "elysia";
+import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import { MonthlyCloseController } from "./controller";
 import {
@@ -13,8 +14,6 @@ import {
 	PeriodsQuerySchema,
 	UpdateChecklistSchema,
 	UpdateItemSchema,
-} from "./schemas";
-import { companyScopeGuard } from "../../shared/plugins";
 } from "./types";
 
 export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {

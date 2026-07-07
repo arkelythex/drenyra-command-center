@@ -1,4 +1,4 @@
-import type { AnomalySeverity } from "@drenyra/drenyra-orchestrator";
+import type { AnomalySeverity } from "@drenyra/agents";
 import {
 	SEVERITY_COLORS,
 	SEVERITY_LABELS,

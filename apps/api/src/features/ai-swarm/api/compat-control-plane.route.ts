@@ -6,10 +6,8 @@ import {
 	lookupAllowedToolsForCapability,
 	resolvePolicyDecision,
 } from "@drenyra/ai";
-import {
-	normalizeLegacyCapabilityToolsLookup,
-	normalizeLegacyPolicyPreviewInput,
-} from "@drenyra/drenyra-orchestrator";
+import { normalizeLegacyCapabilityToolsLookup,
+	normalizeLegacyPolicyPreviewInput, } from "@drenyra/agents";
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../../shared/api-response";
 

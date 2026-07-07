@@ -17,14 +17,12 @@
  * (i.e., the defineAgent() calls at module level have executed).
  */
 
-import type { Agent, LatinAgentId } from "@drenyra/drenyra-orchestrator";
-import {
-	ApprovalGateEngine,
+import type { Agent, LatinAgentId } from "@drenyra/agents";
+import { ApprovalGateEngine,
 	ApprovalStore,
 	DomainAgent,
 	getAllRegisteredAgents,
-	LatinModernoOrchestrator,
-} from "@drenyra/drenyra-orchestrator";
+	LatinModernoOrchestrator, } from "@drenyra/agents";
 
 // ---------------------------------------------------------------------------
 // Types

@@ -1,4 +1,4 @@
-import { createDrenyraHarness } from "@drenyra/harness";
+import { createDrenyraHarness } from "@drenyra/agents";
 import { Elysia, t } from "elysia";
 import { resolveFiscalCmdContext } from "../fiscal/command-center/context";
 import { fail, ok } from "../shared/api-response";

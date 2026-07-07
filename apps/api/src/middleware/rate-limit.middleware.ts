@@ -1,5 +1,5 @@
 /**
- * @deprecated Use `@drenyra/platform-core/config/rate-limit` instead.
+ * @deprecated Use `@drenyra/shared/config/rate-limit` instead.
  * This file will be removed in the next major version.
  *
  * Rate Limiting Middleware for Elysia

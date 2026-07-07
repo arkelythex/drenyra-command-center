@@ -1,4 +1,4 @@
-import type { AgentContext, AgentTool } from "@drenyra/drenyra-orchestrator";
+import type { AgentContext, AgentTool } from "@drenyra/agents";
 import { z } from "zod";
 
 /**

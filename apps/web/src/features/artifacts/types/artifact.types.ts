@@ -20,6 +20,8 @@ export type ArtifactStatus = "PREVIEW" | "COMMITTED" | "ROLLED_BACK" | "ERROR";
 export type ArtifactSource = "SUNAT" | "INTERNAL" | "BANK" | "AI_DERIVED";
 
 import type { Currency as CurrencyCode } from "@drenyra/domain";
+
+export type { CurrencyCode };
 export type ArtifactRiskLevel = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
 export interface ArtifactPolicyGate {
@@ -186,11 +188,7 @@ export interface BankingReconciliationRow {
 	bankAmount: number;
 	ledgerAmount: number;
 	difference: number;
-	status:
-		| "MATCH"
-		| "MISMATCH"
-		| "MISSING_IN_LEDGER"
-		| "MISSING_IN_BANK";
+	status: "MATCH" | "MISMATCH" | "MISSING_IN_LEDGER" | "MISSING_IN_BANK";
 	date: string;
 }
 

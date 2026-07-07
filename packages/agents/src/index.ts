@@ -192,5 +192,26 @@ export type {
 	TaskHandlerResult,
 	TaskStatusDTO,
 	WorkerTaskPriority,
-	WorkerTaskStatus,
+    WorkerTaskStatus,
 } from "./types/worker-task";
+
+// ─── Legacy (ported from @drenyra/agent-swarm) ──────────────────────────────
+export {
+	clearRegisteredAgents,
+	getAllRegisteredAgents,
+	getRegisteredAgent,
+} from "./legacy/agent-registry";
+export type {
+	LegacyCapabilityToolsLookupInput,
+	LegacyPolicyPreviewInput,
+	NormalizedLegacyCapabilityToolsLookup,
+} from "./legacy/control-plane-facade";
+export {
+	createGovernanceValidator,
+	normalizeLegacyCapabilityToolsLookup,
+	normalizeLegacyPolicyPreviewInput,
+} from "./legacy/control-plane-facade";
+export { QueueManager, queueManager } from "./legacy/queue-manager";
+export type {
+	NormalizedLegacyPolicyPreview,
+} from "./legacy/control-plane-facade";

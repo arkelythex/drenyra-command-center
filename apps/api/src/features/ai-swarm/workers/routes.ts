@@ -4,10 +4,8 @@
  * @module apps/api/src/features/ai-swarm/workers/routes
  */
 
-import {
-	type CreateTaskDTO,
-	queueManager,
-} from "@drenyra/drenyra-orchestrator";
+import { type CreateTaskDTO,
+	queueManager, } from "@drenyra/agents";
 import { Elysia, t } from "elysia";
 import { authorizeAiSurface } from "../../security/ai-surface-access";
 import type { SecurityOperation } from "../../security/rbac-policy";

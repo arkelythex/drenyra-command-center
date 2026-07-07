@@ -9,8 +9,8 @@
  * @module features/agents/agents.service
  */
 
-import { SessionManager } from "@drenyra/drenyra-orchestrator";
-import type { AgentSession } from "@drenyra/drenyra-orchestrator/mastra";
+import { SessionManager } from "@drenyra/agents";
+import type { AgentSession } from "@drenyra/agents";
 import { AppError } from "../../lib/errors";
 import type {
 	AgentSessionStatusDTO,

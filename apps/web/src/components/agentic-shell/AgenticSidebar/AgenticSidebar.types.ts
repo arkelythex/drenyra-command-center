@@ -1,6 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 
-export type NavSectionId = "agents" | "automations" | "sistema";
+export type NavSectionId = "work" | "parties" | "system";
 
 export interface AgenticSidebarProps {
 	isCollapsed?: boolean;

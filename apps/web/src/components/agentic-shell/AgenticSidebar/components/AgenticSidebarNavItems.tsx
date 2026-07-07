@@ -1,4 +1,6 @@
 import { useNavigate } from "@tanstack/react-router";
+import { Plus, Search } from "lucide-react";
+import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 import { cn } from "@/lib/utils";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
 import { AGENTIC_SECTIONS } from "../AgenticSidebar.data";
@@ -12,11 +14,46 @@ export function AgenticSidebarNavItems({
 }: AgenticSidebarNavItemsProps) {
 	const navigate = useNavigate();
 	const closeSidebar = useAgenticShell((s) => s.setSidebarMobileOpen);
+	const { companyContext, fiscalPeriod } = useActiveCompanyContext();
 
 	if (isCollapsed) return null;
 
 	return (
 		<nav className="flex-1 space-y-5 overflow-y-auto px-3 pt-4 scrollbar-none">
+			<div className="space-y-2">
+				<button
+					type="button"
+					onClick={() => {
+						closeSidebar(false);
+						navigate({ to: "/drenyra" } as Parameters<typeof navigate>[0]);
+					}}
+					className="flex w-full items-center gap-2 rounded-lg bg-[var(--surface-2)] px-2 py-1.5 text-left text-xs font-semibold text-[var(--text-primary)] transition-colors hover:bg-[var(--surface-3)]"
+				>
+					<Plus size={14} className="text-[var(--color-primary)]" />
+					<span>New fiscal case</span>
+				</button>
+				<button
+					type="button"
+					onClick={() => {
+						closeSidebar(false);
+						navigate({ to: "/drenyra" } as Parameters<typeof navigate>[0]);
+					}}
+					className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-xs font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]"
+				>
+					<Search size={14} className="text-[var(--text-muted)]" />
+					<span>Search workspace</span>
+				</button>
+			</div>
+
+			<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-2)] px-3 py-2">
+				<p className="truncate text-xs font-semibold text-[var(--text-primary)]">
+					{companyContext.companyName}
+				</p>
+				<div className="mt-1 flex flex-wrap gap-x-2 gap-y-1 text-[10px] text-[var(--text-muted)]">
+					<span>RUC {companyContext.ruc}</span>
+					{fiscalPeriod && <span>{fiscalPeriod}</span>}
+				</div>
+			</div>
 			{AGENTIC_SECTIONS.map((section) => (
 				<div key={section.title}>
 					<p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">

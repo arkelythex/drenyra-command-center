@@ -5,9 +5,9 @@ import {
 	type BillsPayableArtifact,
 	type CashflowProjectionArtifact,
 	type CurrencyCode,
-	type PayrollSummaryArtifact,
 	type PaymentBeneficiary,
 	type PaymentPreviewArtifact,
+	type PayrollSummaryArtifact,
 	type SireDiffArtifact,
 	type SireDiffRow,
 	type TaxSummaryArtifact,
@@ -385,9 +385,7 @@ export const resolveArtifactFromQuery = (
 		return createBankingReconciliationArtifact({ period, currency });
 	}
 
-	if (
-		BILLS_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))
-	) {
+	if (BILLS_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))) {
 		const currency = extractCurrencyFromQuery(normalized);
 		return createBillsPayableArtifact(currency);
 	}
@@ -399,9 +397,7 @@ export const resolveArtifactFromQuery = (
 		return createCashflowProjectionArtifact(currency);
 	}
 
-	if (
-		TAX_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))
-	) {
+	if (TAX_TRIGGER_KEYWORDS.some((keyword) => normalized.includes(keyword))) {
 		const period = extractPeriodFromQuery(normalized) ?? "2026-01";
 		return createTaxSummaryArtifact(period);
 	}
@@ -417,7 +413,7 @@ export const resolveArtifactFromQuery = (
 };
 
 export const createBillsPayableArtifact = (
-	currency: CurrencyCode = "PEN",
+	_currency: CurrencyCode = "PEN",
 ): BillsPayableArtifact => {
 	const rows = [
 		{
@@ -528,7 +524,6 @@ export const createCashflowProjectionArtifact = (
 		},
 		actions: [],
 	};
-};
 };
 
 export const createBankingReconciliationArtifact = (
@@ -698,8 +693,7 @@ export const createTaxSummaryArtifact = (
 		version: "1.0.0",
 		status: "PREVIEW",
 		title: `Liquidaci\u00f3n de tributos ${period}`,
-		description:
-			"Resumen de impuestos por declarar y pagar ante SUNAT",
+		description: "Resumen de impuestos por declarar y pagar ante SUNAT",
 		metadata: createMetadata("SUNAT"),
 		data: {
 			period,
