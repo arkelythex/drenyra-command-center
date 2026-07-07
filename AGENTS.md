@@ -27,13 +27,13 @@ DRENYRA builds Drenyra, the Infraestructura Nacional de Inteligencia Fiscal. Tre
 
 ### Apps (canonical locations)
 
-| App | Path | Stack |
-|-----|------|-------|
-| API | `apps/api/` | Bun + ElysiaJS |
-| Web app | `apps/web/` | React 19 + TanStack Router |
-| Landing | `apps/landing/` | Next.js |
-| Data Engine | `apps/data-engine/` | Python + FastAPI + Polars |
-| CLI | `apps/drenyra-cli/` | Go |
+| App         | Path                | Stack                      |
+| ----------- | ------------------- | -------------------------- |
+| API         | `apps/api/`         | Bun + ElysiaJS             |
+| Web app     | `apps/web/`         | React 19 + TanStack Router |
+| Landing     | `apps/landing/`     | Next.js                    |
+| Data Engine | `apps/data-engine/` | Python + FastAPI + Polars  |
+| CLI         | `apps/cli/`         | Go                         |
 
 Each app has a `MAP.md` (e.g. `apps/web/MAP.md`) with its architecture, routes, features, fast-search recipes, and common tasks mapped to exact file paths. Start there before exploring inside an app — saves tokens.
 
@@ -71,26 +71,26 @@ Each app has a `MAP.md` (e.g. `apps/web/MAP.md`) with its architecture, routes, 
 
 When a change exceeds 400 lines, choose one of these and document it in the PR body:
 
-| Strategy | When | How |
-|----------|------|-----|
-| **ask-on-risk** | Estimate is uncertain | Ask first: "This will be ~600 lines. Split into two PRs?" |
-| **auto-chain** | Clearly divisible phases | PR1: schema + migration. PR2: API + tests. PR3: frontend + docs. |
-| **single-pr** | Low risk, reviewer has context | Single PR up to 600 lines if the reviewer knows the area. |
-| **exception-ok** | Mechanical refactor (rename, move) | Single PR documenting it's mechanical and reviewable by diff. |
+| Strategy         | When                               | How                                                              |
+| ---------------- | ---------------------------------- | ---------------------------------------------------------------- |
+| **ask-on-risk**  | Estimate is uncertain              | Ask first: "This will be ~600 lines. Split into two PRs?"        |
+| **auto-chain**   | Clearly divisible phases           | PR1: schema + migration. PR2: API + tests. PR3: frontend + docs. |
+| **single-pr**    | Low risk, reviewer has context     | Single PR up to 600 lines if the reviewer knows the area.        |
+| **exception-ok** | Mechanical refactor (rename, move) | Single PR documenting it's mechanical and reviewable by diff.    |
 
 ## Delegation Triggers for AI Agents
 
 When working with AI agents in this repo, these triggers determine when to delegate to specialized sub-agents:
 
-| Trigger | When to delegate | To whom |
-|---------|-----------------|---------|
-| **4-file rule** | Change touches 4+ files | `explore` to map, then `build` |
-| **Multi-file write** | Writing 3+ new files or modifying 5+ existing | Sub-agent with full context |
-| **PR pre-review** | Change generates +200 line PR | `reviewer` or `code-reviewer` |
-| **Incident** | Fiscal bug, security issue, or data loss | `security-reviewer` + `judge` |
-| **SUNAT/fiscal change** | Any change to fiscal/SUNAT logic | `sunat-compliance` skill + `tester` |
-| **Architecture decision** | Decision with significant tradeoffs | `architect` + ADR |
-| **Long session** | 20+ tool calls in current session | Compress + handoff to fresh agent |
+| Trigger                   | When to delegate                              | To whom                             |
+| ------------------------- | --------------------------------------------- | ----------------------------------- |
+| **4-file rule**           | Change touches 4+ files                       | `explore` to map, then `build`      |
+| **Multi-file write**      | Writing 3+ new files or modifying 5+ existing | Sub-agent with full context         |
+| **PR pre-review**         | Change generates +200 line PR                 | `reviewer` or `code-reviewer`       |
+| **Incident**              | Fiscal bug, security issue, or data loss      | `security-reviewer` + `judge`       |
+| **SUNAT/fiscal change**   | Any change to fiscal/SUNAT logic              | `sunat-compliance` skill + `tester` |
+| **Architecture decision** | Decision with significant tradeoffs           | `architect` + ADR                   |
+| **Long session**          | 20+ tool calls in current session             | Compress + handoff to fresh agent   |
 
 > These triggers are advisory. Subdirectory `AGENTS.md` files may add stricter local rules.
 
@@ -199,6 +199,7 @@ This project uses **Gentleman Guardian Angel (GGA)** for automated AI code revie
 ### CI Workflow
 
 The workflow is at `.github/workflows/ai-review.yml`:
+
 - Triggers on PRs (opened/synchronize) and pushes to `main`
 - Installs GGA from GitHub
 - Patches the DeepSeek provider if needed

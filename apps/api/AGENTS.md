@@ -7,28 +7,29 @@
 
 ## 1. Project Overview
 
-Backend for **Drenyra**, the Infraestructura Nacional de Inteligencia Fiscal. Single backend serving the web app (`apps/web`), Drenyra CLI (`apps/drenyra-cli`), and external integrations (SUNAT, OSE, banking providers). Covers: Peruvian electronic invoicing (UBL 2.1), SIRE electronic books, multi-RUC fiscal compliance, AI document processing, banking reconciliation, and agent swarms. ~630 `.ts` + 290 test files.
+Backend for **Drenyra**, the Infraestructura Nacional de Inteligencia Fiscal. Single backend serving the web app (`apps/web`), Drenyra CLI (`apps/cli`), and external integrations (SUNAT, OSE, banking providers). Covers: Peruvian electronic invoicing (UBL 2.1), SIRE electronic books, multi-RUC fiscal compliance, AI document processing, banking reconciliation, and agent swarms. ~630 `.ts` + 290 test files.
 
 ## 2. Stack
 
-| Layer | Tech | Ver |
-|-------|------|-----|
-| Runtime | Bun | 1.3.11 |
-| Framework | ElysiaJS | 1.4.28 |
-| ORM | Drizzle ORM | 0.45+ |
-| DB | PostgreSQL (Neon) | 16 |
-| Validation | Zod | 4.x |
-| Auth | Better Auth | 1.4+ |
-| Logging | Pino | 10.x |
-| Observability | OpenTelemetry | — |
-| Messaging | NATS JetStream | — |
-| AI | Vercel AI SDK + OpenRouter + Gemini | — |
+| Layer         | Tech                                | Ver    |
+| ------------- | ----------------------------------- | ------ |
+| Runtime       | Bun                                 | 1.3.11 |
+| Framework     | ElysiaJS                            | 1.4.28 |
+| ORM           | Drizzle ORM                         | 0.45+  |
+| DB            | PostgreSQL (Neon)                   | 16     |
+| Validation    | Zod                                 | 4.x    |
+| Auth          | Better Auth                         | 1.4+   |
+| Logging       | Pino                                | 10.x   |
+| Observability | OpenTelemetry                       | —      |
+| Messaging     | NATS JetStream                      | —      |
+| AI            | Vercel AI SDK + OpenRouter + Gemini | —      |
 
 ## 3. Architecture — Vertical Slice + CQRS
 
 Each feature is a self-contained vertical slice. Two patterns:
 
 **Full hexagonal** (banking, billing, customers, vendors, taxation, documents):
+
 ```
 features/<name>/
 ├── index.ts              ← Barrel + Elysia module
@@ -39,6 +40,7 @@ features/<name>/
 ```
 
 **Lightweight** (simpler features):
+
 ```
 features/<name>/
 ├── index.ts              ← Module with routes inline
@@ -95,12 +97,12 @@ apps/api/
 
 ## 7. Testing
 
-| Tier | Command | Scope |
-|------|---------|-------|
-| Unit + Integration | `bun test` / `bun test:run` | Feature tests, no real DB |
-| DB integration | `bun run test:db` | Real PostgreSQL |
-| DB compliance | `bun run test:db:compliance` | SUNAT reproducibility |
-| DB taxation | `bun run test:db:taxation` | Retenciones/detracciones |
+| Tier               | Command                      | Scope                     |
+| ------------------ | ---------------------------- | ------------------------- |
+| Unit + Integration | `bun test` / `bun test:run`  | Feature tests, no real DB |
+| DB integration     | `bun run test:db`            | Real PostgreSQL           |
+| DB compliance      | `bun run test:db:compliance` | SUNAT reproducibility     |
+| DB taxation        | `bun run test:db:taxation`   | Retenciones/detracciones  |
 
 **Framework:** Vitest 4.x + Elysia integration testing (`@elysiajs/testing`).  
 **Setup:** `src/__tests__/setup.ts` mocks AI SDK, S3, BullMQ, SUNAT API, Prometeo.  
@@ -129,17 +131,20 @@ Artifacts in `.sdd/` at repo root. Full cycle is **mandatory** for any change to
 - **Driver:** `postgres` (Bun-compatible) via `lib/db.ts`.
 - **Provider:** Neon serverless PostgreSQL 16.
 - **Migrations:**
+
   ```bash
   bun run db:generate   # From schema changes
   bun run db:push       # Push to dev
   bun run db:studio     # Drizzle Studio
   ```
+
 - SUNAT schema changes require a compliance verification step before deploy.
 - Connection pooling via Neon's serverless pooler.
 
 ## 11. Delegation Triggers
 
 When working on API features, delegate to sub-agents when:
+
 - **4-file rule**: change touches 4+ files across features, services, or middleware → use `backend-builder` or `drenyra`
 - **SUNAT/fiscal change**: any change to tax logic, UBL, CDR, SIRE → `sunat-compliance` skill + `tester`
 - **DB schema change**: migration, new table, index → `database` + `drenyra-database-migrations` skill
