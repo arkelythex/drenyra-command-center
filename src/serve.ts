@@ -237,16 +237,42 @@ app.get("/api/v1/skills", (c) => {
 
 app.post("/api/v1/skills/install", async (c) => {
 	const body = await c.req.json<{ package: string; version?: string }>();
-	return c.json(
-		{
-			success: false,
-			error: {
-				code: "NOT_IMPLEMENTED",
-				message: `Skill installation from npm (${body.package}) is not yet implemented. Use PluginRegistry.installSkill() directly.`,
+	try {
+		const mod = await import(body.package);
+		const skill = mod.default ?? mod.skill;
+		if (!skill || typeof skill.initialize !== "function") {
+			return c.json(
+				{
+					success: false,
+					error: {
+						code: "INVALID_SKILL",
+						message: `${body.package} does not export a valid DrenyraSkill`,
+					},
+				},
+				400,
+			);
+		}
+		await pluginRegistry.installSkill(skill);
+		return c.json(
+			{
+				success: true,
+				data: { skillId: skill.id },
 			},
-		},
-		501,
-	);
+			201,
+		);
+	} catch (err) {
+		const message = err instanceof Error ? err.message : String(err);
+		return c.json(
+			{
+				success: false,
+				error: {
+					code: "INSTALL_FAILED",
+					message: `Failed to load ${body.package}: ${message}`,
+				},
+			},
+			500,
+		);
+	}
 });
 
 app.post("/api/v1/skills/:id/uninstall", (c) => {
