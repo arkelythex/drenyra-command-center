@@ -10,6 +10,7 @@ import { agentsCommand } from "./commands/agents.js";
 import { workflowCommand } from "./commands/workflow.js";
 import { configCommand } from "./commands/config.js";
 import { serveCommand } from "./commands/serve.js";
+import { piCommand } from "./commands/pi.js";
 import { tuiCommand } from "./commands/tui.js";
 import { versionCommand } from "./commands/version.js";
 
@@ -26,6 +27,7 @@ program.addCommand(agentsCommand);
 program.addCommand(workflowCommand);
 program.addCommand(configCommand);
 program.addCommand(serveCommand);
+program.addCommand(piCommand);
 program.addCommand(tuiCommand);
 program.addCommand(versionCommand);
 

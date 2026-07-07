@@ -126,13 +126,42 @@ export async function runWorkflow(
 export async function getWorkflowStatus(
 	id: string,
 ): Promise<ApiResponse<Record<string, unknown>>> {
-	return request<Record<string, unknown>>(
-		"GET",
-		`/api/v1/workflows/${id}`,
-	);
+	return request<Record<string, unknown>>("GET", `/api/v1/workflows/${id}`);
 }
 
 // ─── Health API ─────────────────────────────────────────────────────────
+
+// ─── Skills API ────────────────────────────────────────────────────────────
+
+export interface SkillDTO {
+	id: string;
+	name: string;
+	version: string;
+	description: string;
+}
+
+export async function listSkills(): Promise<ApiResponse<SkillDTO[]>> {
+	return request<SkillDTO[]>("GET", "/api/v1/skills");
+}
+
+export async function installSkill(
+	pkg: string,
+	version?: string,
+): Promise<ApiResponse<{ skillId: string }>> {
+	return request<{ skillId: string }>("POST", "/api/v1/skills/install", {
+		package: pkg,
+		version,
+	});
+}
+
+export async function uninstallSkill(
+	id: string,
+): Promise<ApiResponse<{ id: string; status: string }>> {
+	return request<{ id: string; status: string }>(
+		"POST",
+		`/api/v1/skills/${id}/uninstall`,
+	);
+}
 
 export async function getHealth(): Promise<
 	ApiResponse<{
