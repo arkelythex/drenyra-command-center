@@ -95,6 +95,11 @@ export class SessionManager {
 		}
 	}
 
+	/** List all sessions */
+	listAll(): AgentSession[] {
+		return Array.from(this.sessions.values());
+	}
+
 	/** Clean up expired sessions */
 	cleanup(): number {
 		const now = Date.now();

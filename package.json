@@ -7,11 +7,13 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
+    "./serve": "./src/serve.ts",
     "./strategies": "./src/strategies/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "serve": "bun src/serve.ts",
     "test:watch": "vitest"
   },
   "dependencies": {
@@ -19,6 +21,7 @@
     "@mastra/core": "^1.4.0",
     "@paralleldrive/cuid2": "^3.0.6",
     "ai": "^6.0.39",
+    "hono": "^4.12.27",
     "yaml": "^2.9.0",
     "zod": "^4.3.5"
   },
