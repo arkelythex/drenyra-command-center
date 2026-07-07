@@ -17,24 +17,28 @@ export interface BankingSkill {
 
 function generateMockRows(count: number) {
 	const rows: Array<{
+		id: string;
+		bankRef: string;
 		date: string;
 		description: string;
 		bankAmount: number;
-		bookAmount: number;
+		ledgerAmount: number;
 		difference: number;
-		status: string;
+		status: "MATCH" | "MISMATCH" | "MISSING_IN_LEDGER" | "MISSING_IN_BANK";
 	}> = [];
 
 	for (let i = 0; i < count; i++) {
 		const bankAmount = Math.round(Math.random() * 100000) / 100;
-		const bookAmount = Math.round(Math.random() * 100000) / 100;
+		const ledgerAmount = Math.round(Math.random() * 100000) / 100;
 		rows.push({
+			id: `mock-row-${i}`,
+			bankRef: `REF-${i}`,
 			date: `2026-06-${String(i + 1).padStart(2, "0")}`,
 			description: `Transacción simulada #${i + 1}`,
 			bankAmount,
-			bookAmount,
-			difference: Math.round((bankAmount - bookAmount) * 100) / 100,
-			status: bankAmount === bookAmount ? "CONCILIATED" : "PENDING",
+			ledgerAmount,
+			difference: Math.round((bankAmount - ledgerAmount) * 100) / 100,
+			status: bankAmount === ledgerAmount ? "MATCH" : "MISMATCH",
 		});
 	}
 
@@ -42,13 +46,14 @@ function generateMockRows(count: number) {
 }
 
 function calculateSummary(rows: ReturnType<typeof generateMockRows>) {
+	const totalBank = rows.reduce((sum, r) => sum + r.bankAmount, 0);
+	const totalLedger = rows.reduce((sum, r) => sum + r.ledgerAmount, 0);
 	return {
-		totalRows: rows.length,
-		conciliatedCount: rows.filter((r) => r.status === "CONCILIATED").length,
-		pendingCount: rows.filter((r) => r.status === "PENDING").length,
-		totalBankAmount: rows.reduce((sum, r) => sum + r.bankAmount, 0),
-		totalBookAmount: rows.reduce((sum, r) => sum + r.bookAmount, 0),
-		totalDifference: rows.reduce((sum, r) => sum + r.difference, 0),
+		totalBank,
+		totalLedger,
+		totalDifference: Math.round((totalBank - totalLedger) * 100) / 100,
+		matched: rows.filter((r) => r.status === "MATCH").length,
+		mismatched: rows.filter((r) => r.status === "MISMATCH").length,
 	};
 }
 
@@ -82,8 +87,11 @@ export const bankingSkill: BankingSkill = {
 			id: `banking:${companyId}:${periodo}:${Date.now()}`,
 			title: `Conciliación bancaria — ${periodo}`,
 			type: "banking_reconciliation",
-			content: `Se procesaron ${rows.length} movimientos bancarios. ${summary.conciliatedCount} conciliados, ${summary.pendingCount} pendientes.`,
 			payload: {
+				period: periodo,
+				accountId: "mock-account-id",
+				accountName: "BCP",
+				currency: "S/.",
 				rows,
 				summary,
 			},

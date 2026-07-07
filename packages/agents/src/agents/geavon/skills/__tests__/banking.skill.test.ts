@@ -11,6 +11,8 @@ describe("bankingSkill", () => {
 		expect(result.payload.rows).toBeInstanceOf(Array);
 		expect(result.payload.summary).toBeDefined();
 		expect(result.payload.summary.totalDifference).toBeTypeOf("number");
+		expect(result.payload.currency).toBe("S/.");
+		expect(result.payload.accountName).toBe("BCP");
 	});
 
 	it("should handle empty reconciliation gracefully", async () => {
