@@ -1,11 +1,12 @@
 import {
-	Bot,
+	BookOpen,
+	Building2,
+	CheckSquare,
 	FileSearch,
-	Plug,
+	LayoutDashboard,
 	Settings,
+	Shield,
 	Users,
-	Wrench,
-	Zap,
 } from "lucide-react";
 import type { NavigationItem } from "../types";
 
@@ -13,60 +14,43 @@ import type { NavigationItem } from "../types";
  * Agentic-first navigation items for the new Drenyra shell.
  *
  * 3 sections:
- *   - workspace: New Thread, Review Queue, Agents
- *   - platform: Automations, Skills, Evidence Vault
- *   - organization: Clients, Settings
+ *   - tablero: Ledger, Compliance, Aprobaciones, Evidencia
+ *   - partes: Clientes, Proveedores
+ *   - sistema: Configuración, Control Tower
  */
 export const AGENTIC_NAV_ITEMS: readonly NavigationItem[] = [
-	// ── WORKSPACE ──────────────────────────────────────────────
+	// ── TABLERO ────────────────────────────────────────────────
 	{
-		id: "new-thread",
-		section: "agents",
-		label: "New Thread",
-		description: "Iniciar una nueva sesión de trabajo con agentes",
-		to: "/drenyra",
-		icon: Zap,
-		keywords: ["thread", "nuevo", "sesión", "agentes", "work"],
+		id: "ledger",
+		section: "tablero",
+		label: "Ledger",
+		description: "Libro mayor contable",
+		to: "/ledger",
+		icon: BookOpen,
+		keywords: ["ledger", "libro mayor", "contabilidad"],
 	},
 	{
-		id: "agents",
-		section: "agents",
-		label: "Agents",
-		description: "Sesiones activas de agentes trabajando en paralelo",
-		to: "/agents",
-		icon: Bot,
-		keywords: ["agents", "agentes", "sesiones", "paralelo", "trabajo"],
-	},
-
-	// ── PLATFORM ───────────────────────────────────────────────
-	{
-		id: "automations",
-		section: "automations",
-		label: "Automations",
-		description: "Rutinas automáticas que ejecutan skills en background",
-		to: "/automations",
-		icon: Wrench,
-		keywords: [
-			"automations",
-			"automatizaciones",
-			"rutinas",
-			"background",
-			"schedule",
-		],
+		id: "compliance",
+		section: "tablero",
+		label: "Compliance",
+		description: "Cumplimiento fiscal",
+		to: "/compliance",
+		icon: Shield,
+		keywords: ["compliance", "cumplimiento", "fiscal"],
 	},
 	{
-		id: "skills",
-		section: "automations",
-		label: "Skills",
-		description: "Librería de skills contables instalables",
-		to: "/skills",
-		icon: Plug,
-		keywords: ["skills", "capacidades", "plugins", "contables", "instalar"],
+		id: "aprobaciones",
+		section: "tablero",
+		label: "Aprobaciones",
+		description: "Aprobaciones pendientes",
+		to: "/cumplimiento/approvals",
+		icon: CheckSquare,
+		keywords: ["aprobaciones", "approvals", "revision"],
 	},
 	{
 		id: "evidence-vault",
-		section: "automations",
-		label: "Evidence Vault",
+		section: "tablero",
+		label: "Evidencia",
 		description: "Vault de evidencia con linaje probatorio completo",
 		to: "/evidence",
 		icon: FileSearch,
@@ -81,21 +65,31 @@ export const AGENTIC_NAV_ITEMS: readonly NavigationItem[] = [
 		],
 	},
 
-	// ── ORGANIZATION ───────────────────────────────────────────
+	// ── PARTES ─────────────────────────────────────────────────
 	{
 		id: "clients",
-		section: "sistema",
+		section: "partes",
 		label: "Clientes",
 		description: "Gestión de firmas y clientes",
-		to: "/drenyra/control-tower",
+		to: "/customers",
 		icon: Users,
 		keywords: ["clientes", "firmas", "client", "empresas", "ruc"],
-		showInSidebar: true,
 	},
+	{
+		id: "proveedores",
+		section: "partes",
+		label: "Proveedores",
+		description: "Gestión de proveedores",
+		to: "/vendors",
+		icon: Building2,
+		keywords: ["proveedores", "vendors", "proveedor"],
+	},
+
+	// ── SISTEMA ────────────────────────────────────────────────
 	{
 		id: "settings",
 		section: "sistema",
-		label: "Settings",
+		label: "Configuración",
 		description: "Configuración general del sistema",
 		to: "/configuracion",
 		icon: Settings,
@@ -107,21 +101,26 @@ export const AGENTIC_NAV_ITEMS: readonly NavigationItem[] = [
 			"perfil",
 		],
 	},
+	{
+		id: "control-tower",
+		section: "sistema",
+		label: "Control Tower",
+		description: "Administración del sistema",
+		to: "/drenyra/control-tower",
+		icon: LayoutDashboard,
+		keywords: ["control tower", "torre de control", "admin"],
+	},
 ];
 
 /** Order of sections as they appear in the sidebar. */
-export const AGENTIC_SECTION_ORDER = [
-	"agents",
-	"automations",
-	"sistema",
-] as const;
+export const AGENTIC_SECTION_ORDER = ["tablero", "partes", "sistema"] as const;
 
 /** Section display labels and icons. */
 export const AGENTIC_SECTION_CONFIG: Record<
 	string,
 	{ title: string; icon?: string }
 > = {
-	agents: { title: "WORKSPACE" },
-	automations: { title: "PLATFORM" },
-	sistema: { title: "ORGANIZATION" },
+	tablero: { title: "TABLERO" },
+	partes: { title: "PARTES" },
+	sistema: { title: "SISTEMA" },
 };

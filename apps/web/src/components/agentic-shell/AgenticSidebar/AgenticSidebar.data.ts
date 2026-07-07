@@ -1,90 +1,98 @@
 import {
-	Bot,
+	BookOpen,
+	Building2,
+	CheckSquare,
 	FileSearch,
-	Plug,
+	LayoutDashboard,
 	Settings,
+	Shield,
 	Users,
-	Wrench,
-	Zap,
 } from "lucide-react";
 import type { AgenticNavItem, NavSectionConfig } from "./AgenticSidebar.types";
 
 export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
-	// ── WORKSPACE ──
+	// ── TABLERO ──
 	{
-		id: "new-thread",
-		section: "agents",
-		label: "New Thread",
-		description: "Iniciar sesión de trabajo",
-		to: "/drenyra",
-		icon: Zap,
+		id: "ledger",
+		section: "tablero",
+		label: "Ledger",
+		description: "Libro mayor contable",
+		to: "/ledger",
+		icon: BookOpen,
 	},
 	{
-		id: "agents",
-		section: "agents",
-		label: "Agents",
-		description: "Sesiones de agentes activos",
-		to: "/agents",
-		icon: Bot,
-		badge: 2,
-	},
-
-	// ── PLATFORM ──
-	{
-		id: "automations",
-		section: "automations",
-		label: "Automations",
-		description: "Rutinas automáticas",
-		to: "/automations",
-		icon: Wrench,
+		id: "compliance",
+		section: "tablero",
+		label: "Compliance",
+		description: "Cumplimiento fiscal",
+		to: "/compliance",
+		icon: Shield,
 	},
 	{
-		id: "skills",
-		section: "automations",
-		label: "Skills",
-		description: "Librería de skills",
-		to: "/skills",
-		icon: Plug,
+		id: "aprobaciones",
+		section: "tablero",
+		label: "Aprobaciones",
+		description: "Aprobaciones pendientes",
+		to: "/cumplimiento/approvals",
+		icon: CheckSquare,
 	},
 	{
 		id: "evidence-vault",
-		section: "automations",
-		label: "Evidence Vault",
+		section: "tablero",
+		label: "Evidencia",
 		description: "Vault de evidencia",
 		to: "/evidence",
 		icon: FileSearch,
 	},
 
-	// ── ORGANIZATION ──
+	// ── PARTES ──
 	{
 		id: "clients",
-		section: "sistema",
+		section: "partes",
 		label: "Clientes",
 		description: "Gestión de firmas",
-		to: "/drenyra/control-tower",
+		to: "/customers",
 		icon: Users,
 	},
 	{
+		id: "proveedores",
+		section: "partes",
+		label: "Proveedores",
+		description: "Gestión de proveedores",
+		to: "/vendors",
+		icon: Building2,
+	},
+
+	// ── SISTEMA ──
+	{
 		id: "settings",
 		section: "sistema",
-		label: "Settings",
+		label: "Configuración",
 		description: "Configuración",
 		to: "/configuracion",
 		icon: Settings,
+	},
+	{
+		id: "control-tower",
+		section: "sistema",
+		label: "Control Tower",
+		description: "Administración del sistema",
+		to: "/drenyra/control-tower",
+		icon: LayoutDashboard,
 	},
 ];
 
 export const AGENTIC_SECTIONS: NavSectionConfig[] = [
 	{
-		title: "WORKSPACE",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "agents"),
+		title: "TABLERO",
+		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "tablero"),
 	},
 	{
-		title: "PLATFORM",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "automations"),
+		title: "PARTES",
+		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "partes"),
 	},
 	{
-		title: "ORGANIZATION",
+		title: "SISTEMA",
 		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "sistema"),
 	},
 ];
