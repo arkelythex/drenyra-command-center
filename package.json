@@ -5,7 +5,7 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "../drenyra-pi",
+    "../drenyra-pi"
   ],
   "scripts": {
     "dev": "./scripts/dev/dev-host.sh",
