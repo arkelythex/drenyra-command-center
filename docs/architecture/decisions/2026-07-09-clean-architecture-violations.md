@@ -16,11 +16,11 @@ Fixing requires either:
 - (b) Creating a shared types package (significant refactor)
 - (c) Splitting the interface into a simpler domain version
 
-**Status:** Documented, not fixed. Needs architecture decision.
+**Status:** RESOLVED. Domain now defines simplified types inline. AI keeps rich types. Adapter boundary is clean.
 
-### Options
+**Resolution:** Domain-level simplified , , ,  defined in domain. AI package's rich versions remain. No domain→AI import.
 
-1. **Keep as-is** (recommended): Minor type-level import. Domain still has 0 runtime dependencies in package.json. No runtime coupling.
+### Options (historical) (recommended): Minor type-level import. Domain still has 0 runtime dependencies in package.json. No runtime coupling.
 2. **Extract types to domain**: Move `ModelRegistration`, `CapabilityRoutingRule`, `RoutingResult` from AI to domain. Loses AI-specific fields like `providerName`, `modelName`, `costPer1KInput`.
 3. **Simplify domain interface**: Define minimal versions in domain, AI maintains rich versions. Adapter layer maps between them. Most architecturally pure but significant effort.
 
