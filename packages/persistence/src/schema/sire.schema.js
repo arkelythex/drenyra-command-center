@@ -76,4 +76,3 @@ export const sireJobsRelations = relations(sireJobs, ({ one }) => ({
 		references: [sireSubmissions.id],
 	}),
 }));
-

@@ -29,4 +29,3 @@ if (!(process.env.VITEST === "true" || process.env.NODE_ENV === "test")) {
 const client = postgres(connectionString);
 export const db = drizzle(client, { schema });
 export { client };
-

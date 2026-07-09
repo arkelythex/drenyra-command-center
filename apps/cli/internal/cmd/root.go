@@ -78,4 +78,9 @@ func init() {
 	rootCmd.AddCommand(spawnCmd)
 	rootCmd.AddCommand(commandAuditCmd)
 	rootCmd.AddCommand(serveCmd)
+	rootCmd.AddCommand(hooksCmd)
+	rootCmd.AddCommand(consultaCmd)
+	rootCmd.AddCommand(aprobarCmd)
+	rootCmd.AddCommand(rechazarCmd)
+	rootCmd.AddCommand(recomendacionesCmd)
 }

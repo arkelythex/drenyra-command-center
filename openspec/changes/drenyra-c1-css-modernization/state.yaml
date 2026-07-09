@@ -1,0 +1,15 @@
+change_id: drenyra-c1-css-modernization
+status: proposal
+phase: proposal
+created: 2026-07-09
+author: el Gentleman
+delivery_strategy: single-pr
+depends_on:
+  - drenyra-design-tokens-v4
+  - drenyra-typography-system
+tags:
+  - css
+  - tailwind
+  - design-system
+  - styles
+  - modernization

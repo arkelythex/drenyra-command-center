@@ -5,8 +5,9 @@
 import { Command } from "commander";
 import { runWorkflow, getWorkflowStatus } from "../client.js";
 
-export const workflowCommand = new Command("workflow")
-	.description("Manage fiscal workflows");
+export const workflowCommand = new Command("workflow").description(
+	"Manage fiscal workflows",
+);
 
 workflowCommand
 	.command("run <name>")

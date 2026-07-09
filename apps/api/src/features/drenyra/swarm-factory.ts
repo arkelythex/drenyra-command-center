@@ -18,11 +18,13 @@
  */
 
 import type { Agent, LatinAgentId } from "@drenyra/pi";
-import { ApprovalGateEngine,
+import {
+	ApprovalGateEngine,
 	ApprovalStore,
 	DomainAgent,
 	getAllRegisteredAgents,
-	LatinModernoOrchestrator, } from "@drenyra/pi";
+	LatinModernoOrchestrator,
+} from "@drenyra/pi";
 
 // ---------------------------------------------------------------------------
 // Types

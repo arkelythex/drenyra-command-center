@@ -29,4 +29,3 @@ export const documents = pgTable("documents", {
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
-

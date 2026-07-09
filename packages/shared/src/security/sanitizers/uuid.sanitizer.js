@@ -61,4 +61,3 @@ export function isValidUuid(value, version) {
 	const result = sanitizeUuid(value, version ? [version] : undefined);
 	return result.isValid;
 }
-

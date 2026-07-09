@@ -60,4 +60,3 @@ export function createAuditTrailEntry(action, prompt, result, userId) {
 		requiresAdminOverride: result.requiresAdminOverride,
 	};
 }
-

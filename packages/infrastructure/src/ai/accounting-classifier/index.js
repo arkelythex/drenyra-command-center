@@ -4,4 +4,3 @@ export {
 	suggestPurchaseEntry,
 } from "./service";
 export { ClassificationSchema } from "./types";
-

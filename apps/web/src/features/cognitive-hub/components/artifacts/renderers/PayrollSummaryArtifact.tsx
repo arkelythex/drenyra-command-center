@@ -16,24 +16,26 @@ function formatMoney(amount: number): string {
 	return CurrencyFormatter.format(amount);
 }
 
-const statusConfig: Record<string, { color: string; bg: string; label: string }> =
-	{
-		PAID: {
-			color: "text-[var(--premium-success)]",
-			bg: "bg-[var(--premium-success)]/10",
-			label: "Pagado",
-		},
-		PENDING: {
-			color: "text-[var(--premium-warning)]",
-			bg: "bg-[var(--premium-warning)]/10",
-			label: "Pendiente",
-		},
-		PROCESSING: {
-			color: "text-[var(--accent)]",
-			bg: "bg-[var(--accent)]/10",
-			label: "Procesando",
-		},
-	};
+const statusConfig: Record<
+	string,
+	{ color: string; bg: string; label: string }
+> = {
+	PAID: {
+		color: "text-[var(--premium-success)]",
+		bg: "bg-[var(--premium-success)]/10",
+		label: "Pagado",
+	},
+	PENDING: {
+		color: "text-[var(--premium-warning)]",
+		bg: "bg-[var(--premium-warning)]/10",
+		label: "Pendiente",
+	},
+	PROCESSING: {
+		color: "text-[var(--accent)]",
+		bg: "bg-[var(--accent)]/10",
+		label: "Procesando",
+	},
+};
 
 export const PayrollSummaryArtifact: React.FC<{
 	artifact: PayrollSummaryArt;
@@ -122,7 +124,9 @@ export const PayrollSummaryArtifact: React.FC<{
 									<td className="py-2 pr-3 font-medium text-foreground">
 										{emp.name}
 									</td>
-									<td className="py-2 pr-3 text-foreground/70">{emp.position}</td>
+									<td className="py-2 pr-3 text-foreground/70">
+										{emp.position}
+									</td>
 									<td className="py-2 pr-3 text-right font-mono text-foreground">
 										{formatMoney(emp.baseSalary)}
 									</td>

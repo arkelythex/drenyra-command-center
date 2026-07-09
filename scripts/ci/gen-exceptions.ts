@@ -97,7 +97,6 @@ function scanFile(filePath: string): Array<{ term: string; line: number }> {
 					trimmed.startsWith("interface ") ||
 					trimmed.startsWith("initial:") ||
 					trimmed.includes("? ")
-
 				) {
 					continue;
 				}
@@ -112,7 +111,10 @@ const files = globSync("{apps/web/src,packages/agents/src}/**/*.{tsx,ts}", {
 	ignore: ["**/node_modules/**"],
 });
 
-const exceptions: Record<string, Array<{ term: string; line: number; reason: string }>> = {};
+const exceptions: Record<
+	string,
+	Array<{ term: string; line: number; reason: string }>
+> = {};
 
 for (const file of files) {
 	const violations = scanFile(file);

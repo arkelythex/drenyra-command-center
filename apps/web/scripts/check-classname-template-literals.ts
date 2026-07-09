@@ -35,7 +35,7 @@ function findUnsafeTokenTemplateLiterals(filePath: string): Finding[] {
 
 	return lines.flatMap((line, index) => {
 		const embedsTokenHelperInsideString =
-			line.includes("className=\"") && line.includes("${tokensToClasses");
+			line.includes('className="') && line.includes("${tokensToClasses");
 
 		if (!embedsTokenHelperInsideString) {
 			return [];
@@ -65,4 +65,6 @@ if (findings.length > 0) {
 	process.exit(1);
 }
 
-console.log("[check:classnames] No unsafe tokensToClasses className strings found.");
+console.log(
+	"[check:classnames] No unsafe tokensToClasses className strings found.",
+);

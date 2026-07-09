@@ -21,7 +21,9 @@ function assertValidBudgets(): void {
 	}
 
 	if (Number.isNaN(MAX_TOTAL_JS_KB) || MAX_TOTAL_JS_KB <= 0) {
-		throw new Error("Invalid BUNDLE_MAX_TOTAL_JS_KB. Expected a positive number.");
+		throw new Error(
+			"Invalid BUNDLE_MAX_TOTAL_JS_KB. Expected a positive number.",
+		);
 	}
 }
 
@@ -46,7 +48,9 @@ function main(): void {
 	assertValidBudgets();
 
 	if (!existsSync(DIST_ASSETS_DIR)) {
-		throw new Error("Missing dist/assets. Run `bun run build` in apps/web first.");
+		throw new Error(
+			"Missing dist/assets. Run `bun run build` in apps/web first.",
+		);
 	}
 
 	const jsAssets = listJavaScriptAssets();

@@ -32,8 +32,7 @@ const ARTIFACT_RENDERER_LOADERS: Record<
 	banking_reconciliation: () =>
 		import("./renderers/BankingReconciliationArtifact"),
 	bills_payable: () => import("./renderers/BillsPayableArtifact"),
-	cashflow_projection: () =>
-		import("./renderers/CashflowProjectionArtifact"),
+	cashflow_projection: () => import("./renderers/CashflowProjectionArtifact"),
 	tax_summary: () => import("./renderers/TaxSummaryArtifact"),
 	payroll_summary: () => import("./renderers/PayrollSummaryArtifact"),
 };
@@ -66,11 +65,9 @@ const LAZY_ARTIFACT_RENDERERS: Record<
 	report: createLazyArtifactRenderer("report"),
 	knowledge_graph: createLazyArtifactRenderer("knowledge_graph"),
 	dashboard: createLazyArtifactRenderer("dashboard"),
-	banking_reconciliation:
-		createLazyArtifactRenderer("banking_reconciliation"),
+	banking_reconciliation: createLazyArtifactRenderer("banking_reconciliation"),
 	bills_payable: createLazyArtifactRenderer("bills_payable"),
-	cashflow_projection:
-		createLazyArtifactRenderer("cashflow_projection"),
+	cashflow_projection: createLazyArtifactRenderer("cashflow_projection"),
 	tax_summary: createLazyArtifactRenderer("tax_summary"),
 	payroll_summary: createLazyArtifactRenderer("payroll_summary"),
 };

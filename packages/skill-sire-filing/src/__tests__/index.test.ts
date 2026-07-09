@@ -3,10 +3,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import {
-	detectOverdueDocuments,
-	type SireFilingRecord,
-} from "../index.js";
+import { detectOverdueDocuments, type SireFilingRecord } from "../index.js";
 
 describe("detectOverdueDocuments", () => {
 	const baseRecord: SireFilingRecord = {
@@ -58,9 +55,7 @@ describe("detectOverdueDocuments", () => {
 
 	it("detects missing CDR after sending", () => {
 		const now = new Date("2026-06-10");
-		const records: SireFilingRecord[] = [
-			{ ...baseRecord, cdrRecibido: false },
-		];
+		const records: SireFilingRecord[] = [{ ...baseRecord, cdrRecibido: false }];
 		const anomalies = detectOverdueDocuments(records, now);
 
 		expect(anomalies.some((a) => a.tipo === "missing-cdr")).toBe(true);

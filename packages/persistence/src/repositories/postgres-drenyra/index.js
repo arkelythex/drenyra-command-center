@@ -1,2 +1,1 @@
 export { PostgresDrenyraRepository } from "./repository";
-

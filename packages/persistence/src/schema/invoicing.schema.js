@@ -215,4 +215,3 @@ export const paymentsRelations = relations(payments, ({ one }) => ({
 		references: [invoices.id],
 	}),
 }));
-

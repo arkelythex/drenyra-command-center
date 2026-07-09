@@ -143,4 +143,3 @@ export const aiCostRepository = {
 			.limit(limit);
 	},
 };
-

@@ -114,4 +114,3 @@ export function getValidationPrompt(invoiceData) {
 export function getAntigravityPrompt(field, value, context) {
 	return `${ANTIGRAVITY_PROMPT}\n\nCampo: ${field}\nValor actual: ${JSON.stringify(value)}\nContexto: ${JSON.stringify(context, null, 2)}`;
 }
-

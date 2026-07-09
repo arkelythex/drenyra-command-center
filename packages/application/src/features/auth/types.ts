@@ -40,6 +40,10 @@ export interface SessionDTO {
 }
 
 export interface AuthError {
-	code: "INVALID_CREDENTIALS" | "SESSION_EXPIRED" | "UNAUTHORIZED" | "FORBIDDEN";
+	code:
+		| "INVALID_CREDENTIALS"
+		| "SESSION_EXPIRED"
+		| "UNAUTHORIZED"
+		| "FORBIDDEN";
 	message: string;
 }

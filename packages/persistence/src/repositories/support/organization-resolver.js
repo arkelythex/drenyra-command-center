@@ -55,4 +55,3 @@ export const tryResolveOrganizationIdFromCompany = async (companyId) => {
 		return null;
 	}
 };
-

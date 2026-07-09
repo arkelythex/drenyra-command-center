@@ -59,4 +59,3 @@ export const messagesRelations = relations(messages, ({ one }) => ({
 		references: [chatSessions.id],
 	}),
 }));
-

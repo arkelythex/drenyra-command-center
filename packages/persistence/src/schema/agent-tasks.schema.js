@@ -73,4 +73,3 @@ export const agentTasksRelations = relations(agentTasks, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
-

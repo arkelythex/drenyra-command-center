@@ -78,4 +78,3 @@ export const aiTraceEvidence = pgTable(
 		createdAtIdx: index("ai_trace_evidence_created_at_idx").on(table.createdAt),
 	}),
 );
-

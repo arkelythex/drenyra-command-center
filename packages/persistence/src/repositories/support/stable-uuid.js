@@ -19,4 +19,3 @@ export const toStableUuid = (value) => {
 		hex.slice(20, 32),
 	].join("-");
 };
-

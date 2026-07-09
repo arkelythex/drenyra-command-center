@@ -402,4 +402,3 @@ REGLAS CRÍTICAS:
 4. Explica tu razonamiento en español claro.
 5. Si no estás seguro, pregunta antes de registrar.
 `;
-

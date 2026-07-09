@@ -121,10 +121,9 @@ export function DrenyraCommandCenter() {
 	});
 
 	// ── Chat State ──────────────────────────────────────────────────────
-	const {
-		handleChatContextChange,
-		loadChatMessages,
-	} = useDrenyraChatState(companyContext.companyId);
+	const { handleChatContextChange, loadChatMessages } = useDrenyraChatState(
+		companyContext.companyId,
+	);
 
 	const { messages } = useChatHistory(companyContext.companyId);
 

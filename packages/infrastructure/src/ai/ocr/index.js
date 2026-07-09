@@ -3,4 +3,3 @@ export {
 	extractFromFile,
 	extractInvoiceData,
 } from "./service";
-

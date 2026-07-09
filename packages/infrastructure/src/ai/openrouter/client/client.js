@@ -305,4 +305,3 @@ class CostTracker {
 		return this.totalCost < this.monthlyBudget;
 	}
 }
-

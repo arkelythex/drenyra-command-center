@@ -439,4 +439,3 @@ export class PostgresDrenyraRepository {
 			);
 	}
 }
-

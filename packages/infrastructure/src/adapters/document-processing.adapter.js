@@ -31,4 +31,3 @@ export const ublInvoiceParserAdapter = new UBLInvoiceParserAdapter();
 export const invoiceOCRServiceAdapter = new InvoiceOCRServiceAdapter();
 export const expenseClassifierAdapter = new ExpenseClassifierAdapter();
 export const documentSyncProcessorAdapter = new DocumentSyncProcessorAdapter();
-

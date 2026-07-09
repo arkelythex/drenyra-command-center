@@ -97,9 +97,7 @@ function App({ refreshInterval = 5000 }: AppProps) {
 				</Text>
 			</Box>
 			<Box>
-				<Text dimColor>
-					{"─".repeat(60)}
-				</Text>
+				<Text dimColor>{"─".repeat(60)}</Text>
 			</Box>
 
 			{sessions.length === 0 && !error && (

@@ -174,4 +174,3 @@ export function quickClassify(description) {
 	}
 	return { accountCode: "6599", accountName: "Otros gastos de gestión" };
 }
-

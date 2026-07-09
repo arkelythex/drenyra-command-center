@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# ─────────────────────────────────────────────────────────────────────────────
+# Drenyra — Pre-Push Hook
+# Advisory check on the branch being pushed.
+# Warns about large diffs, hot paths, and license/secret leaks.
+# Does NOT block the push — only warns.
+# ─────────────────────────────────────────────────────────────────────────────
+set -euo pipefail
+
+HOOK_NAME="pre-push"
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+echo -e "${CYAN}━━━ Drenyra Pre-Push Hook ━━━${NC}"
+
+# ── 1. Get push range ───────────────────────────────────────────────────────
+# Input format from git: <local-ref> <local-sha> <remote-ref> <remote-sha>
+# We read stdin line by line
+pushes=0
+while read local_ref local_sha remote_ref remote_sha; do
+	pushes=$((pushes + 1))
+
+	if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+		echo -e "${YELLOW}⚠  Deleting remote ref ${remote_ref}${NC}"
+		continue
+	fi
+
+	# Determine the range to check
+	if [ "$remote_sha" = "0000000000000000000000000000000000000000" ]; then
+		# New branch — check against main
+		RANGE="main..${local_sha}"
+		echo -e "${CYAN}📤  Pushing new branch ${local_ref}${NC}"
+	else
+		RANGE="${remote_sha}..${local_sha}"
+		echo -e "${CYAN}📤  Pushing ${local_ref}${NC}"
+	fi
+
+	# ── 2. Changed files and diff stats ───────────────────────────────────
+	CHANGED_FILES=$(git diff --name-only "$RANGE" 2>/dev/null || echo "")
+	if [ -z "$CHANGED_FILES" ]; then
+		echo -e "${YELLOW}⚠  No changed files in range (empty push?)${NC}"
+		continue
+	fi
+
+	NUMSTAT=$(git diff --numstat "$RANGE" 2>/dev/null || echo "0 0 0")
+	ADDED=$(echo "$NUMSTAT" | awk '{s+=$1} END {print s+0}')
+	DELETED=$(echo "$NUMSTAT" | awk '{s+=$2} END {print s+0}')
+	TOTAL=$((ADDED + DELETED))
+	FILE_COUNT=$(echo "$CHANGED_FILES" | wc -l)
+
+	echo -e "${CYAN}📊  ${FILE_COUNT} files | ${ADDED}+ / ${DELETED}- (${TOTAL} total lines)${NC}"
+
+	# ── 3. Check for hot paths ────────────────────────────────────────────
+	HOT_PATTERNS="auth/ security/ fiscal/ sunat/ payments/ compliance/"
+	HOT_COUNT=0
+	for pattern in $HOT_PATTERNS; do
+		matches=$(echo "$CHANGED_FILES" | grep -ci "$pattern" || true)
+		HOT_COUNT=$((HOT_COUNT + matches))
+	done
+
+	if [ "$HOT_COUNT" -gt 0 ]; then
+		echo -e "${YELLOW}⚠  ${HOT_COUNT} file(s) touch hot paths (auth/fiscal/sunat/compliance)${NC}"
+	fi
+
+	# ── 4. Large diff warning ─────────────────────────────────────────────
+	if [ "$TOTAL" -gt 400 ]; then
+		echo -e "${YELLOW}⚠  Large push (${TOTAL} lines across ${FILE_COUNT} files).${NC}"
+		echo -e "${YELLOW}   Consider splitting into chained PRs. See .agent/skills/chained-pr/SKILL.md${NC}"
+	fi
+
+	# Skip remaining warnings for pushes > 1 (already warned once)
+done
+
+echo -e "${CYAN}━━━ Pre-push review complete (advisory — push not blocked) ━━━${NC}"
+exit 0

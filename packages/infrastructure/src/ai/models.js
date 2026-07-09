@@ -22,4 +22,3 @@ export function getModelForTask(task) {
 			return modelFlash;
 	}
 }
-

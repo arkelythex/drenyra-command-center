@@ -245,4 +245,3 @@ export function extractItems(invoice) {
 		return { id, description, quantity, unitCode, unitPrice, lineTotal };
 	});
 }
-

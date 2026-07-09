@@ -1,6 +1,9 @@
-const tableProxy = new Proxy({}, {
-	get: (_target, prop) => prop,
-});
+const tableProxy = new Proxy(
+	{},
+	{
+		get: (_target, prop) => prop,
+	},
+);
 
 export const users = tableProxy;
 export const organizations = tableProxy;

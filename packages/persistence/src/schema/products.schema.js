@@ -47,4 +47,3 @@ export const productsRelations = relations(products, ({ one }) => ({
 		references: [companies.id],
 	}),
 }));
-

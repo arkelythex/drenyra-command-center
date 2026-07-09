@@ -1,8 +1,9 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
 
-/** Canonical home: redirect to the Drenyra workspace. */
+/** Drenyra Chat — centro de comando tipo Codex */
 export const Route = createFileRoute("/")({
-	beforeLoad: () => {
-		throw redirect({ to: "/drenyra" });
-	},
+	component: lazyRouteComponent(
+		() => import("../features/chat-agent/ChatAgent"),
+		"ChatAgent",
+	),
 });

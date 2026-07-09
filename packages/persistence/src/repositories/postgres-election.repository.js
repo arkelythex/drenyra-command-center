@@ -69,4 +69,3 @@ export class PostgresElectionRepository {
 		await db.delete(elections).where(eq(elections.id, id));
 	}
 }
-

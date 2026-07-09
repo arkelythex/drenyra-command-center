@@ -99,4 +99,3 @@ export async function isAccountLocked(email) {
 		attempts: recentAttempts[0]?.count || 0,
 	};
 }
-

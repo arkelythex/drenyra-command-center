@@ -14,8 +14,10 @@ import {
 	THRESHOLD_CONFIG,
 } from "@drenyra/ai/services/swarm-consensus/consensus-engine";
 import type { AgentConfidence } from "@drenyra/ai/services/swarm-consensus/types";
-import { detectRucBreachAnomalies,
-	RUC_BREACH_THRESHOLD_PEN, } from "@drenyra/pi/strategies";
+import {
+	detectRucBreachAnomalies,
+	RUC_BREACH_THRESHOLD_PEN,
+} from "@drenyra/pi/strategies";
 import { describe, expect, it } from "vitest";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────

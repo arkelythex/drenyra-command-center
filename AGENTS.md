@@ -197,6 +197,73 @@ Include:
 
 ---
 
+## Drenyra Orchestrator & Harness
+
+Drenyra now has its own orchestrator and harness system, modeled after the Gentlemen harness (gentle-pi).
+
+### Components
+
+| Component            | Location                         | Description                                                                                            |
+| -------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Orchestrator package | `packages/drenyra-orchestrator/` | Core types, delegation router, skills resolver, memory contract, review lenses, work routing           |
+| Skill registry       | `.atl/skill-registry.md`         | Index of all 18 Drenyra-specific skills                                                                |
+| Drenyra skills       | `.agent/skills/*/SKILL.md`       | 18 skills: fiscal compliance, SDD, gatekeeper, 4R review lenses, judgment-day, chained PR, hooks, etc. |
+
+### Orchestrator Capabilities
+
+- **Delegation Router**: Determines inline/simple-delegation/SDD routes based on task profile (file count, session state, incident recovery)
+- **Skills Resolver**: Reads `.atl/skill-registry.md`, matches task context against triggers, returns exact SKILL.md paths
+- **Memory Contract**: Defines who reads/writes memory (orchestrator-read, subagent-write)
+- **Review Lenses**: `review-risk`, `review-resilience`, `review-readability`, `review-reliability`, `judgment-day`
+- **Work Routing**: Review workload forecasting, canonical workflows for bugfix/feature/fiscal-change/review/docs
+- **Hooks Config**: Pre-commit/pre-push/pre-PR gate configuration with hot path detection
+
+### Test Status
+
+- `packages/drenyra-orchestrator`: 39 tests passing
+- `packages/phase-gatekeeper`: 18 tests passing
+- `packages/fiscal-sdd`: 97 tests passing
+- **Total: 154 tests, all passing**
+
+### Usage
+
+```typescript
+import {
+  determineRoute,
+  forecastReviewWorkload,
+  selectReviewLenses,
+  matchSkills,
+} from '@drenyra/orchestrator'
+
+// Route a task
+const route = determineRoute({
+  filesToUnderstand: 1,
+  filesToWrite: 2 /* ... */,
+})
+
+// Forecast review workload
+const forecast = forecastReviewWorkload({
+  estimatedLines: 600,
+  affectedSubsystems: ['fiscal'] /* ... */,
+})
+
+// Select review lenses for a PR
+const lenses = selectReviewLenses({
+  filePaths: ['packages/fiscal/...'],
+  changedLines: 450,
+  isPrePR: true,
+})
+```
+
+### Skills Resolution Flow
+
+1. Read `.atl/skill-registry.md` → match against task context
+2. Pass matching `SKILL.md` paths to subagents under `## Skills to load before work`
+3. Subagents read those exact files before task work
+4. Resolution status: `paths-injected` (preferred), `fallback-registry`, `fallback-path`, or `none`
+
+---
+
 ## GGA AI Code Review
 
 This project uses **Gentleman Guardian Angel (GGA)** for automated AI code review on every PR and push to `main`.

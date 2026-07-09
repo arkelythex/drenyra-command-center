@@ -1,10 +1,4 @@
-import {
-	Building2,
-	PackageSearch,
-	ScanLine,
-	Tags,
-	Zap,
-} from "lucide-react";
+import { Building2, PackageSearch, ScanLine, Tags, Zap } from "lucide-react";
 import type { NavigationItem } from "../types";
 
 export const PLUGINS_ITEMS: readonly NavigationItem[] = [

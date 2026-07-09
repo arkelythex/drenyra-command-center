@@ -51,4 +51,3 @@ export function decryptFiscalData(encrypted, userPassphrase) {
 	const decrypted = decryptWithPassphrase(encrypted, userPassphrase);
 	return JSON.parse(decrypted);
 }
-

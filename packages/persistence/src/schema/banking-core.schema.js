@@ -33,4 +33,3 @@ export const categories = pgTable("categories", {
 	color: varchar("color", { length: 20 }),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 });
-

@@ -16,29 +16,31 @@ function formatMoney(amount: number): string {
 	return CurrencyFormatter.format(amount);
 }
 
-const statusConfig: Record<string, { color: string; bg: string; label: string }> =
-	{
-		CALCULATED: {
-			color: "text-[var(--accent)]",
-			bg: "bg-[var(--accent)]/10",
-			label: "Calculado",
-		},
-		FILED: {
-			color: "text-[var(--premium-success)]",
-			bg: "bg-[var(--premium-success)]/10",
-			label: "Declarado",
-		},
-		PENDING: {
-			color: "text-[var(--premium-warning)]",
-			bg: "bg-[var(--premium-warning)]/10",
-			label: "Pendiente",
-		},
-		OVERDUE: {
-			color: "text-[var(--premium-danger)]",
-			bg: "bg-[var(--premium-danger)]/10",
-			label: "Vencido",
-		},
-	};
+const statusConfig: Record<
+	string,
+	{ color: string; bg: string; label: string }
+> = {
+	CALCULATED: {
+		color: "text-[var(--accent)]",
+		bg: "bg-[var(--accent)]/10",
+		label: "Calculado",
+	},
+	FILED: {
+		color: "text-[var(--premium-success)]",
+		bg: "bg-[var(--premium-success)]/10",
+		label: "Declarado",
+	},
+	PENDING: {
+		color: "text-[var(--premium-warning)]",
+		bg: "bg-[var(--premium-warning)]/10",
+		label: "Pendiente",
+	},
+	OVERDUE: {
+		color: "text-[var(--premium-danger)]",
+		bg: "bg-[var(--premium-danger)]/10",
+		label: "Vencido",
+	},
+};
 
 export const TaxSummaryArtifact: React.FC<{ artifact: TaxSummaryArt }> = ({
 	artifact,

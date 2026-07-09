@@ -240,4 +240,3 @@ export class SunatKnowledgeService {
 	}
 }
 export const sunatKnowledgeService = new SunatKnowledgeService();
-
