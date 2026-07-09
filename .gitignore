@@ -21,6 +21,7 @@ pnpm-lock.yaml
 uv.lock
 Cargo.lock
 *.sum
+!apps/drenyra-cli/go.sum
 lighthouse-*.json
 .env
 .venv/

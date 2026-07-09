@@ -53,9 +53,9 @@ func helpContent(current screen, loading bool, focusMenu bool) string {
 		"  Engram (IDE): memory.provider: engram in config",
 		"",
 		"CLI (outside TUI)",
-		"  drenyra run \"task\" --auto medium",
-		"  drenyra exec \"task\" --format json",
-		"  drenyra serve          # NDJSON RPC",
+		"  drenyra-pi run \"task\" --auto medium",
+		"  drenyra-pi exec \"task\" --format json",
+		"  drenyra-pi serve       # NDJSON RPC",
 	}, "\n"))
 }
 
