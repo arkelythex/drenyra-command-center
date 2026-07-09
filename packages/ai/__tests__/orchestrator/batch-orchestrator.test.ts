@@ -63,7 +63,26 @@ function makeProcessedInvoice(
 			startTime: new Date(),
 			endTime: new Date(),
 			totalTime: 100,
-			stages: { reading: { agentId: "reader", status: "success", startTime: new Date(), endTime: new Date() }, parsing: { agentId: "parser", status: "success", startTime: new Date(), endTime: new Date() }, validation: { agentId: "validator", status: "success", startTime: new Date(), endTime: new Date() } },
+			stages: {
+				reading: {
+					agentId: "reader",
+					status: "success",
+					startTime: new Date(),
+					endTime: new Date(),
+				},
+				parsing: {
+					agentId: "parser",
+					status: "success",
+					startTime: new Date(),
+					endTime: new Date(),
+				},
+				validation: {
+					agentId: "validator",
+					status: "success",
+					startTime: new Date(),
+					endTime: new Date(),
+				},
+			},
 		},
 		...overrides,
 	};
@@ -87,14 +106,14 @@ function generateMockBatchItems(count: number) {
 // ============================================================================
 
 function createMockSessionStore() {
-return {
-createBatch: vi.fn().mockResolvedValue({ id: "test-batch" }),
-getBatch: vi.fn(),
-listBatches: vi.fn(),
-updateBatch: vi.fn().mockResolvedValue(undefined),
-createBatchItem: vi.fn().mockResolvedValue(undefined),
-getBatchItems: vi.fn(),
-updateBatchItem: vi.fn().mockResolvedValue(undefined),
+	return {
+		createBatch: vi.fn().mockResolvedValue({ id: "test-batch" }),
+		getBatch: vi.fn(),
+		listBatches: vi.fn(),
+		updateBatch: vi.fn().mockResolvedValue(undefined),
+		createBatchItem: vi.fn().mockResolvedValue(undefined),
+		getBatchItems: vi.fn(),
+		updateBatchItem: vi.fn().mockResolvedValue(undefined),
 		// Other SessionStore interface methods (unused but required)
 		saveRunState: vi.fn(),
 		getRunState: vi.fn(),
@@ -119,7 +138,7 @@ describe("BatchOrchestrator", () => {
 	let mockSessionStore: MockSessionStore;
 	let mockProcessInvoice: ReturnType<typeof vi.fn>;
 
-		beforeEach(() => {
+	beforeEach(() => {
 		mockSessionStore = createMockSessionStore();
 		mockProcessInvoice = vi.fn();
 
@@ -133,7 +152,7 @@ describe("BatchOrchestrator", () => {
 			mockCreateOrchestrator,
 			{ maxConcurrent: 3 },
 		);
-});
+	});
 
 	afterEach(() => {
 		vi.restoreAllMocks();
@@ -304,14 +323,11 @@ describe("BatchOrchestrator", () => {
 			// updateBatch should have been called once at the end
 			// with the aggregated progress
 			expect(mockSessionStore.updateBatch).toHaveBeenCalledTimes(1);
-			expect(mockSessionStore.updateBatch).toHaveBeenCalledWith(
-				"test-batch",
-				{
-					status: "completed",
-					completed: 3,
-					failed: 0,
-				},
-			);
+			expect(mockSessionStore.updateBatch).toHaveBeenCalledWith("test-batch", {
+				status: "completed",
+				completed: 3,
+				failed: 0,
+			});
 		});
 
 		it("should track failures in progress updates", async () => {
@@ -330,14 +346,11 @@ describe("BatchOrchestrator", () => {
 				sessionId: "test-session",
 			});
 
-			expect(mockSessionStore.updateBatch).toHaveBeenCalledWith(
-				"test-batch",
-				{
-					status: "partial",
-					completed: 1,
-					failed: 1,
-				},
-			);
+			expect(mockSessionStore.updateBatch).toHaveBeenCalledWith("test-batch", {
+				status: "partial",
+				completed: 1,
+				failed: 1,
+			});
 		});
 
 		it("should have correct progress in BatchResult after mixed results", async () => {

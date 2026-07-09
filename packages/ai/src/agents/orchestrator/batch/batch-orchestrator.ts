@@ -16,9 +16,9 @@
 
 import { randomUUID } from "crypto";
 import { loggers } from "../../../logger";
+import { classifyError } from "../../../services/error-recovery";
 import type { SessionStore } from "../../../session/session-store";
 import type { ReaderInput } from "../../types/agent.types";
-import { classifyError } from "../../../services/error-recovery";
 import type { WorkflowOrchestratorV2 } from "../workflow-v2";
 import type {
 	BatchItemResult,
@@ -183,12 +183,12 @@ export class BatchOrchestrator {
 					});
 				}
 
-// Process the invoice
-const orchestrator = this.createOrchestrator();
-await orchestrator.processInvoice(input, runId);
+				// Process the invoice
+				const orchestrator = this.createOrchestrator();
+				await orchestrator.processInvoice(input, runId);
 
 				// Mark item completed
-								itemResult.status = "completed";
+				itemResult.status = "completed";
 				itemResult.runId = runId;
 				itemResult.sessionId = sessionId;
 
@@ -207,7 +207,7 @@ await orchestrator.processInvoice(input, runId);
 				const errorMessage =
 					error instanceof Error ? error.message : String(error);
 
-								itemResult.status = "failed";
+				itemResult.status = "failed";
 				itemResult.error = errorMessage;
 
 				if (this.config.enablePersistence && dbItems[index]) {
@@ -270,11 +270,11 @@ await orchestrator.processInvoice(input, runId);
 
 		// ── Persist final batch state ───────────────────────────────
 		if (this.config.enablePersistence) {
-		await this.sessionStore.updateBatch(batchId, {
-			status: finalStatus as any,
-			completed: completedCount,
-			failed: failedCount,
-		});
+			await this.sessionStore.updateBatch(batchId, {
+				status: finalStatus as any,
+				completed: completedCount,
+				failed: failedCount,
+			});
 		}
 
 		this.active.delete(batchId);

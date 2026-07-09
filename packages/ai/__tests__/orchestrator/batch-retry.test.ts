@@ -273,7 +273,7 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 			agentId: "validator",
 		});
 
-				mockExecuteWithRetry.mockImplementation(
+		mockExecuteWithRetry.mockImplementation(
 			async (fn: () => Promise<unknown>) => {
 				const result = await fn();
 				return { result, retries: 0 };
