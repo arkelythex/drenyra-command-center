@@ -1,4 +1,3 @@
-import type { SunatApiCredentials as SunatCredentials } from "../types";
 
 export interface SunatToken {
 	accessToken: string;
@@ -16,15 +15,6 @@ export interface SunatApiResponse<T> {
 	};
 }
 
-export interface RucInfo {
-	ruc: string;
-	razonSocial: string;
-	estado: "ACTIVO" | "BAJA" | "SUSPENDIDO";
-	condicion: "HABIDO" | "NO HABIDO";
-	direccion?: string;
-	ubigeo?: string;
-	tipoContribuyente?: string;
-}
 
 export interface SireTicketRequest {
 	ruc: string;

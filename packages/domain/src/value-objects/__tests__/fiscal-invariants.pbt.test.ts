@@ -50,7 +50,9 @@ describe("Property-based: IGV fiscal invariants", () => {
 					const base = Money.fromCents(baseCents, "PEN");
 					const igv = base.multiply(IGV_RATE);
 					const total = base.add(igv);
-					return total.getCents() === baseCents + Math.round(baseCents * IGV_RATE);
+					return (
+						total.getCents() === baseCents + Math.round(baseCents * IGV_RATE)
+					);
 				},
 			),
 		);
@@ -96,13 +98,10 @@ describe("Property-based: RUC checksum invariants", () => {
 
 	it("RUC checksum debe ser correcto para cualquier prefijo válido", () => {
 		fc.assert(
-			fc.property(
-				fc.constantFrom(...ALLOWED_PREFIXES),
-				(prefix: string) => {
-					const ruc = generateValidRUC(prefix);
-					return RUC.isValid(ruc);
-				},
-			),
+			fc.property(fc.constantFrom(...ALLOWED_PREFIXES), (prefix: string) => {
+				const ruc = generateValidRUC(prefix);
+				return RUC.isValid(ruc);
+			}),
 		);
 	});
 

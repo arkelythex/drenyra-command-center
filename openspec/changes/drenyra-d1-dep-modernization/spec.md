@@ -20,12 +20,12 @@ Migrar Drenyra de su estado actual de dependencias a un estado actualizado y con
 
 ### Fase 1: Safe Updates (listo ✅)
 
-| Dep | De | A | Riesgo | Estado |
-|-----|----|----|--------|--------|
-| turbo | 2.9.18 | 2.10.4 | ✅ Bajo | Done |
-| better-auth | 1.6.19 | 1.6.23 | ✅ Bajo | Done |
-| eslint | 10.5.0 | 10.6.0 | ✅ Bajo | Done |
-| biome | 2.5.0 | 2.5.3 | ✅ Bajo | Blocked by Bun age |
+| Dep         | De     | A      | Riesgo  | Estado             |
+| ----------- | ------ | ------ | ------- | ------------------ |
+| turbo       | 2.9.18 | 2.10.4 | ✅ Bajo | Done               |
+| better-auth | 1.6.19 | 1.6.23 | ✅ Bajo | Done               |
+| eslint      | 10.5.0 | 10.6.0 | ✅ Bajo | Done               |
+| biome       | 2.5.0  | 2.5.3  | ✅ Bajo | Blocked by Bun age |
 
 ### Fase 2: AI SDK v6→v7 (Siguiente)
 

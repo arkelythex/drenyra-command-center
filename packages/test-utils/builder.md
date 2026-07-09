@@ -19,17 +19,17 @@ test('detracción no excede monto', () => {
 
 ## Builders Disponibles
 
-| Builder | Props | Default |
-|---------|-------|---------|
-| `buildInvoice()` | `total`, `ruc`, `series`, `date`, `detraccion` | Invoice válida con defaults |
-| `buildBill()` | `total`, `ruc`, `provider`, `igv` | Bill válida |
-| `buildDetraccion()` | `amount`, `spotCode`, `depositDate` | Detracción sin depositar |
-| `buildRetencion()` | `amount`, `rate`, `period` | Retención estándar 3% |
-| `buildCompany()` | `ruc`, `name`, `fiscalStatus` | Empresa activa |
-| `buildRuc()` | `number` | RUC válido con checksum correcto |
-| `buildFiscalPeriod()` | `year`, `month` | Periodo actual |
-| `buildApprovalRequest()` | `type`, `amount`, `requester` | Solicitud pendiente |
-| `buildApprovalDecision()` | `requestId`, `approved` | Decisión aprobada |
+| Builder                   | Props                                          | Default                          |
+| ------------------------- | ---------------------------------------------- | -------------------------------- |
+| `buildInvoice()`          | `total`, `ruc`, `series`, `date`, `detraccion` | Invoice válida con defaults      |
+| `buildBill()`             | `total`, `ruc`, `provider`, `igv`              | Bill válida                      |
+| `buildDetraccion()`       | `amount`, `spotCode`, `depositDate`            | Detracción sin depositar         |
+| `buildRetencion()`        | `amount`, `rate`, `period`                     | Retención estándar 3%            |
+| `buildCompany()`          | `ruc`, `name`, `fiscalStatus`                  | Empresa activa                   |
+| `buildRuc()`              | `number`                                       | RUC válido con checksum correcto |
+| `buildFiscalPeriod()`     | `year`, `month`                                | Periodo actual                   |
+| `buildApprovalRequest()`  | `type`, `amount`, `requester`                  | Solicitud pendiente              |
+| `buildApprovalDecision()` | `requestId`, `approved`                        | Decisión aprobada                |
 
 ## Patrón
 

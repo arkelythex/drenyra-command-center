@@ -64,8 +64,14 @@ function createMockDb() {
         findMany: vi.fn(),
       },
     },
-    insert: vi.fn().mockReturnValue({ values: vi.fn().mockReturnValue({ returning: vi.fn() }) }),
-    update: vi.fn().mockReturnValue({ set: vi.fn().mockReturnValue({ where: vi.fn() }) }),
+    insert: vi
+      .fn()
+      .mockReturnValue({
+        values: vi.fn().mockReturnValue({ returning: vi.fn() }),
+      }),
+    update: vi
+      .fn()
+      .mockReturnValue({ set: vi.fn().mockReturnValue({ where: vi.fn() }) }),
     delete: vi.fn().mockReturnValue({ where: vi.fn() }),
   }
 }
@@ -94,9 +100,9 @@ function createMockLLM(): LanguageModel {
 
 ## Anti-patrones
 
-| Anti-patrón | Problema | Alternativa |
-|-------------|----------|-------------|
-| Mockear `Money` | Pierde validaciones de dominio | Usar `Money.fromCents()` real |
-| Mockear `RUC.create()` | No valida checksum | Usar RUC.create() real |
-| Mock demasiado permisivo (`mockResolvedValue(undefined)`) | Oculta errores | Usar valores realistas |
-| `vi.mock()` de módulo completo | Acopla test a estructura de imports | Inyectar mock via constructor/función |
+| Anti-patrón                                               | Problema                            | Alternativa                           |
+| --------------------------------------------------------- | ----------------------------------- | ------------------------------------- |
+| Mockear `Money`                                           | Pierde validaciones de dominio      | Usar `Money.fromCents()` real         |
+| Mockear `RUC.create()`                                    | No valida checksum                  | Usar RUC.create() real                |
+| Mock demasiado permisivo (`mockResolvedValue(undefined)`) | Oculta errores                      | Usar valores realistas                |
+| `vi.mock()` de módulo completo                            | Acopla test a estructura de imports | Inyectar mock via constructor/función |
