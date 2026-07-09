@@ -1,7 +1,7 @@
 # OpenSpec Configuration — DRENYRA Drenyra
 # Creado: 2026-07-02
-# Actualizado: 2026-07-05
-# Modo: agentic-first transformation + structural quality (21 SDD plans: 5 DS + 4 backend + 6 structural + ? frontend)
+# Actualizado: 2026-07-09
+# Modo: agentic-first transformation + structural quality (32 SDD plans: 5 DS + 4 backend + 6 structural + 7 P + 8 new)
 
 version: '1.0'
 project: '@drenyra/main'
@@ -49,25 +49,25 @@ workspace:
 plans:
   agentic-migration:
     AM1:
-      name: Eliminate Duplicate Features (8→1 unification)
+      name: Eliminate Duplicate Features (8 to 1 unification)
       dir: openspec/changes/drenyra-am1-eliminate-duplicates
       prs: 3
       est_lines: 600
       status: proposal
     AM2:
-      name: Right Panel → Artifact Feed
+      name: Right Panel to Artifact Feed
       dir: openspec/changes/drenyra-am2-artifact-feed
       prs: 2
       est_lines: 500
       status: proposal
     AM3:
-      name: Features → Tools/Artifacts (Banking as template)
+      name: Features to Tools/Artifacts
       dir: openspec/changes/drenyra-am3-features-to-tools
       prs: 5
       est_lines: 1200
-      status: proposal
+      status: applied
     AM4:
-      name: Sidebar Reduction & Navigation by Command
+      name: Sidebar Reduction and Navigation by Command
       dir: openspec/changes/drenyra-am4-sidebar-reduction
       prs: 2
       est_lines: 400
@@ -75,57 +75,57 @@ plans:
 
   design-system:
     DS1:
-      name: Design Token Foundation (Cyan/Violet)
+      name: Design Token Foundation
       dir: openspec/changes/drenyra-design-tokens-v4
       prs: 2
       est_lines: 350
-      status: proposal
+      status: applied
     DS2:
-      name: Typography & Font System
+      name: Typography and Font System
       dir: openspec/changes/drenyra-typography-system
       prs: 1
       est_lines: 200
-      status: proposal
+      status: applied
     DS3:
       name: Accounting Vocabulary Migration
       dir: openspec/changes/drenyra-vocabulary
       prs: 1
       est_lines: 150
-      status: proposal
+      status: verified
     DS4:
-      name: Component State Design (Empty/Error/Loading)
+      name: Component State Design
       dir: openspec/changes/drenyra-component-states
       prs: 2
       est_lines: 400
-      status: proposal
+      status: applied
     DS5:
-      name: Three-Panel Layout (Agentic IDE)
+      name: Three-Panel Layout
       dir: openspec/changes/drenyra-three-panel-layout
       prs: 2
       est_lines: 500
-      status: proposal
+      status: applied
 
   backend:
     B1:
-      name: API Contracts & Type Safety
+      name: API Contracts and Type Safety
       dir: openspec/changes/drenyra-api-contracts
       prs: 3
       est_lines: 850
       status: proposal
     B2:
-      name: Data Integrity & Quality
+      name: Data Integrity and Quality
       dir: openspec/changes/drenyra-data-integrity
       prs: 4
       est_lines: 1100
-      status: proposal
+      status: implemented
     B3:
-      name: Observability & Operations
+      name: Observability and Operations
       dir: openspec/changes/drenyra-observability
       prs: 3
       est_lines: 600
-      status: proposal
+      status: implemented
     B4:
-      name: Security & Deployment
+      name: Security and Deployment
       dir: openspec/changes/drenyra-security-deploy
       prs: 3
       est_lines: 750
@@ -143,13 +143,13 @@ plans:
       dir: openspec/changes/drenyra-s2-core-simplification
       prs: 1
       est_lines: 150
-      status: proposal
+      status: completed
     S3:
-      name: API Type Inline → Package Migration
+      name: API Type Inline to Package Migration
       dir: openspec/changes/drenyra-s3-api-type-migration
       prs: 2
       est_lines: 400
-      status: working-draft
+      status: implemented
     S4:
       name: Domain Boundary Audit
       dir: openspec/changes/drenyra-s4-domain-boundary-audit
@@ -163,8 +163,103 @@ plans:
       est_lines: 500
       status: working-draft
     S6:
-      name: Documentation & Navigation Cleanup
+      name: Documentation and Navigation Cleanup
       dir: openspec/changes/drenyra-s6-docs-cleanup
       prs: 1
       est_lines: 100
       status: working-draft
+
+  platform-quality:
+    P1:
+      name: Fiscal Terminal
+      dir: openspec/changes/drenyra-p1-fiscal-terminal
+      prs: 3
+      est_lines: 800
+      status: proposal
+    P2:
+      name: Performance and Optimization (Baseline)
+      dir: openspec/changes/drenyra-p2-performance
+      prs: 3
+      est_lines: 800
+      status: proposal
+    P2b:
+      name: Extended Performance (Rendering, Bundle, Memory)
+      dir: openspec/changes/drenyra-p2b-perf-extended
+      prs: 3
+      est_lines: 800
+      status: proposal
+    P3:
+      name: Testing Infrastructure
+      dir: openspec/changes/drenyra-p3-testing
+      prs: 2
+      est_lines: 600
+      status: proposal
+    P4:
+      name: CI/CD Pipeline
+      dir: openspec/changes/drenyra-p4-ci-cd
+      prs: 2
+      est_lines: 500
+      status: proposal
+    P5:
+      name: Code Quality
+      dir: openspec/changes/drenyra-p5-code-quality
+      prs: 2
+      est_lines: 400
+      status: applied
+      applied_at: 2026-07-09
+    P6:
+      name: Package Health Audit
+      dir: openspec/changes/drenyra-p6-package-health
+      prs: 2
+      est_lines: 300
+      status: proposal
+
+  cleanup:
+    R1:
+      name: Eliminate Redundancy (Cross-Package Unification)
+      dir: openspec/changes/drenyra-r1-eliminate-redundancy
+      prs: 4
+      est_lines: 1200
+      status: proposal
+    L1:
+      name: Legacy Cleanup (Dead Code and Deprecated Patterns)
+      dir: openspec/changes/drenyra-l1-legacy-cleanup
+      prs: 3
+      est_lines: 900
+      status: proposal
+
+  modernization:
+    D1:
+      name: Dependency Modernization
+      dir: openspec/changes/drenyra-d1-dep-modernization
+      prs: 5
+      est_lines: 1200
+      status: proposal
+    C1:
+      name: CSS Modernization (Tailwind 4 and Design Tokens)
+      dir: openspec/changes/drenyra-c1-css-modernization
+      prs: 2
+      est_lines: 500
+      status: proposal
+
+  architecture:
+    R2:
+      name: Deep Refactoring (Domain and Architecture Health)
+      dir: openspec/changes/drenyra-r2-deep-refactoring
+      prs: 4
+      est_lines: 1500
+      status: proposal
+
+  language-ecosystem:
+    G1:
+      name: Go CLI Quality and Testing
+      dir: openspec/changes/drenyra-g1-go-quality
+      prs: 2
+      est_lines: 600
+      status: proposal
+    D2:
+      name: Data Engine (Python Quality Foundation)
+      dir: openspec/changes/drenyra-d2-data-engine
+      prs: 2
+      est_lines: 400
+      status: proposal

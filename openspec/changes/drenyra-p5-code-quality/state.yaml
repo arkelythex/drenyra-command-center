@@ -22,3 +22,7 @@ summary:
     - quality:dead-code, quality:circular, quality:unused-deps, quality:all
   follow-up:
     - exactOptionalPropertyTypes y noUncheckedIndexedAccess requieren PR separado
+  r1-consolidation:
+    - SunatCredentials: 5->1 canonical types created
+    - Type duplication audit completed (reports/type-duplication-audit-2026-07.md)
+    - LedgerEntry (6x), RucInfo (5x) identified for future PRs
