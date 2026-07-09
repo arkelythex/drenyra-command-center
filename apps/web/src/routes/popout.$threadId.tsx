@@ -1,11 +1,11 @@
-import { createFileRoute, useParams } from "@tanstack/react-router";
-import { PopOutThread } from "../components/agentic/PopOutThread";
+import { createFileRoute, lazyRouteComponent, useParams } from "@tanstack/react-router";
+
+function PopOutRoute() {
+	const { threadId } = useParams({ from: "/popout/$threadId" });
+	const PopOutThread = lazyRouteComponent(() => import("../components/agentic/PopOutThread"), "PopOutThread");
+	return <PopOutThread threadId={threadId} />;
+}
 
 export const Route = createFileRoute("/popout/$threadId")({
 	component: PopOutRoute,
 });
-
-function PopOutRoute() {
-	const { threadId } = useParams({ from: "/popout/$threadId" });
-	return <PopOutThread threadId={threadId} />;
-}
