@@ -32,6 +32,10 @@ apps/web/.mf/
 .atl/
 .pi/
 .pi-subagents/
+**/.pi-lens/
+
+# Local build artifacts
+/apps/cli/drenyra
 
 # Bun cache (never commit)
 ~/.bun/
