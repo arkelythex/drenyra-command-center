@@ -1,6 +1,6 @@
 # DRENYRA Engineering Rules
 
-DRENYRA builds Drenyra, the Infraestructura Nacional de Inteligencia Fiscal. Treat fiscal correctness, tenant isolation, and auditability as product safety requirements.
+DRENYRA builds Drenyra, the Infraestructura Nacional de Inteligencia Fiscal. Treat fiscal correctness, tenant isolation, and auditability as product safety requirements. Product direction lives in [`docs/products/drenyra-product-philosophy.md`](docs/products/drenyra-product-philosophy.md).
 
 ## Non-negotiables
 
@@ -44,6 +44,17 @@ Each app has a `MAP.md` (e.g. `apps/web/MAP.md`) with its architecture, routes, 
 - `packages/application` depends on domain.
 - Adapters belong in persistence/infrastructure/ai packages.
 - `packages/core` was removed; its contents (product-surfaces types/registry) moved to `packages/domain/src/types/`.
+
+## Product philosophy guardrails
+
+Drenyra is an agentic fiscal intelligence platform, not a generic ERP with a chatbot. Web, CLI, agents, and docs must follow the canonical [Drenyra product philosophy](docs/products/drenyra-product-philosophy.md).
+
+- Make fiscal correctness, tenant/RUC scope, auditability, reversibility, and human approval visible product guarantees.
+- Treat external products as references for quality, not interfaces to copy.
+- Require evidence, confidence, fiscal scope, approval state, and reversal path for agentic accounting recommendations.
+- Keep the web app aligned with the agentic fiscal command center model.
+- Keep the CLI aligned with the Gentleman Fiscal Terminal model: terminal-native, scriptable, fiscal-safe, and reviewable.
+- Do not ship vague AI polish without tests, docs, evidence, and reviewable acceptance criteria.
 
 ## Architecture and domain rules
 
@@ -108,7 +119,7 @@ DRENYRA documentation follows the **Gentleman Philosophy** — cognitive load re
 - **Print-ready**: critical docs are compiled via `bun run docs:packages` to role-based HTML packages in `docs/print/` with A4 CSS for PDF export.
 - **Warm teaching**: explain the WHY behind the WHAT. Use examples. Admit tradeoffs. Mention fiscal/security risks FIRST.
 
-> Reference: [Gentleman Philosophy Guide](./docs/meta/gentleman-philosophy.md) · [Documentation Standards 2026](./docs/meta/documentation-standards-2026.md)
+> Reference: [Drenyra product philosophy](docs/products/drenyra-product-philosophy.md)
 
 ## Verification
 

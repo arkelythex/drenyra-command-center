@@ -1,0 +1,12 @@
+status: archived
+created: 2026-07-08
+author: el Gentleman
+parent: drenyra-north-star-philosophy
+surface: apps/web
+execution_mode: automatic
+artifact_store: openspec
+pr_strategy: auto-forecast
+review_budget: 400
+prs: 3
+lines: 900
+blocks: drenyra-north-star-philosophy

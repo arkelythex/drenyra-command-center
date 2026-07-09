@@ -7,6 +7,7 @@
 ## Start here
 
 - Fast navigation source: this file. Machine-readable source: `.codebase/index.yml`.
+- Product north star: [`docs/products/drenyra-product-philosophy.md`](docs/products/drenyra-product-philosophy.md).
 - Update both with `bun run codebase:index`; verify drift with `bun run codebase:index:check`.
 - Canonical path for tools: `/home/dreamcoder08/Documents/PROYECTOS/Drenyra`.
 - Before edits: inspect existing implementation, preserve fiscal correctness, tenant/RUC scope, audit trails.
@@ -16,10 +17,10 @@
 | Path | Area | Purpose | Tags | MAP.md |
 |---|---|---|---|
 | `apps/api` | api | Backend API: Bun + Elysia vertical slices, contracts, fiscal workflows. | backend, fiscal, api, elysia | `apps/api/MAP.md` |
-| `apps/web` | web | Drenyra command-center SPA for supervised fiscal operations. | frontend, drenyra, react | `apps/web/MAP.md` |
+| `apps/web` | web | Agentic fiscal command center for supervised accounting operations. | frontend, drenyra, react | `apps/web/MAP.md` |
 | `apps/landing` | landing | Public marketing and product documentation surface. | frontend, marketing, nextjs | `apps/landing/MAP.md` |
 | `apps/data-engine` | data-engine | Python analytical microservice for high-throughput financial data processing. | python, analytics, data-engine | `apps/data-engine/MAP.md` |
-| `apps/cli` | cli | Drenyra CLI: Go terminal companion for fiscal operations, agent orchestration, and TUI. | go, cli, tui, terminal | `apps/cli/MAP.md` |
+| `apps/cli` | cli | Gentleman Fiscal Terminal for scriptable fiscal operations, agent orchestration, and TUI. | go, cli, tui, terminal | `apps/cli/MAP.md` |
 | `packages/domain` | domain | Framework-free entities, value objects, fiscal rules, Money/RUC primitives. | domain, fiscal, money, ruc | — |
 | `packages/shared` | shared | Low-dependency cross-cutting helpers, validation, secure logging, schemas. | shared, validation, security | — |
 | `packages/application` | application | Use cases, DTOs, validators, and ports that depend on domain. | application, cqrs, use-cases | — |
