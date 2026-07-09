@@ -165,7 +165,7 @@ export interface ChatCompletionUsage {
 export interface ChatCompletionChoice {
 	index: number;
 	message: ChatMessage;
-	finishReason: "stop" | "length" | "content_filter" | "tool_calls" | null;
+	finishReason?: "stop" | "length" | "content_filter" | "tool_calls" | null;
 }
 
 /**
@@ -193,7 +193,7 @@ export interface ChatCompletionStreamChunk {
 	choices: Array<{
 		index: number;
 		delta: Partial<ChatMessage>;
-		finishReason: string | null;
+		finishReason?: "stop" | "length" | "content_filter" | "tool_calls" | null;
 	}>;
 	usage?: {
 		promptTokens: number;
