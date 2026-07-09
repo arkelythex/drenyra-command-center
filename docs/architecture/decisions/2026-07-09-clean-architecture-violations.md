@@ -18,6 +18,14 @@ Fixing requires either:
 
 **Status:** Documented, not fixed. Needs architecture decision.
 
+### Options
+
+1. **Keep as-is** (recommended): Minor type-level import. Domain still has 0 runtime dependencies in package.json. No runtime coupling.
+2. **Extract types to domain**: Move `ModelRegistration`, `CapabilityRoutingRule`, `RoutingResult` from AI to domain. Loses AI-specific fields like `providerName`, `modelName`, `costPer1KInput`.
+3. **Simplify domain interface**: Define minimal versions in domain, AI maintains rich versions. Adapter layer maps between them. Most architecturally pure but significant effort.
+
+**Recommendation**: Option 1. The 0-runtime-deps constraint is satisfied. This import is only type-level (deleted at compile time).
+
 ### 2. Domain imports from Pi package
 
 **File:** `packages/domain/src/drenyra/types.ts`
