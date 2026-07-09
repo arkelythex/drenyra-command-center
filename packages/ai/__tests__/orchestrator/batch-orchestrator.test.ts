@@ -63,7 +63,7 @@ function makeProcessedInvoice(
 			startTime: new Date(),
 			endTime: new Date(),
 			totalTime: 100,
-			stages: [],
+			stages: { reading: { agentId: "reader", status: "success", startTime: new Date(), endTime: new Date() }, parsing: { agentId: "parser", status: "success", startTime: new Date(), endTime: new Date() }, validation: { agentId: "validator", status: "success", startTime: new Date(), endTime: new Date() } },
 		},
 		...overrides,
 	};
@@ -87,14 +87,14 @@ function generateMockBatchItems(count: number) {
 // ============================================================================
 
 function createMockSessionStore() {
-	return {
-		createBatch: vi.fn().mockResolvedValue({ id: "test-batch" }),
-		getBatch: vi.fn(),
-		listBatches: vi.fn(),
-		updateBatchProgress: vi.fn().mockResolvedValue(undefined),
-		addBatchItem: vi.fn().mockResolvedValue(undefined),
-		getBatchItems: vi.fn(),
-		updateBatchItem: vi.fn().mockResolvedValue(undefined),
+return {
+createBatch: vi.fn().mockResolvedValue({ id: "test-batch" }),
+getBatch: vi.fn(),
+listBatches: vi.fn(),
+updateBatch: vi.fn().mockResolvedValue(undefined),
+createBatchItem: vi.fn().mockResolvedValue(undefined),
+getBatchItems: vi.fn(),
+updateBatchItem: vi.fn().mockResolvedValue(undefined),
 		// Other SessionStore interface methods (unused but required)
 		saveRunState: vi.fn(),
 		getRunState: vi.fn(),
@@ -119,7 +119,7 @@ describe("BatchOrchestrator", () => {
 	let mockSessionStore: MockSessionStore;
 	let mockProcessInvoice: ReturnType<typeof vi.fn>;
 
-	beforeEach(() => {
+		beforeEach(() => {
 		mockSessionStore = createMockSessionStore();
 		mockProcessInvoice = vi.fn();
 
@@ -133,9 +133,7 @@ describe("BatchOrchestrator", () => {
 			mockCreateOrchestrator,
 			{ maxConcurrent: 3 },
 		);
-
-		vi.clearAllMocks();
-	});
+});
 
 	afterEach(() => {
 		vi.restoreAllMocks();
@@ -303,10 +301,10 @@ describe("BatchOrchestrator", () => {
 				sessionId: "test-session",
 			});
 
-			// updateBatchProgress should have been called once at the end
+			// updateBatch should have been called once at the end
 			// with the aggregated progress
-			expect(mockSessionStore.updateBatchProgress).toHaveBeenCalledTimes(1);
-			expect(mockSessionStore.updateBatchProgress).toHaveBeenCalledWith(
+			expect(mockSessionStore.updateBatch).toHaveBeenCalledTimes(1);
+			expect(mockSessionStore.updateBatch).toHaveBeenCalledWith(
 				"test-batch",
 				{
 					status: "completed",
@@ -332,7 +330,7 @@ describe("BatchOrchestrator", () => {
 				sessionId: "test-session",
 			});
 
-			expect(mockSessionStore.updateBatchProgress).toHaveBeenCalledWith(
+			expect(mockSessionStore.updateBatch).toHaveBeenCalledWith(
 				"test-batch",
 				{
 					status: "partial",

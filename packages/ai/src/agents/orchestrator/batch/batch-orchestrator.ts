@@ -18,7 +18,7 @@ import { randomUUID } from "crypto";
 import { loggers } from "../../../logger";
 import type { SessionStore } from "../../../session/session-store";
 import type { ReaderInput } from "../../types/agent.types";
-import type { EventBus } from "../event.bus";
+import { classifyError } from "../../../services/error-recovery";
 import type { WorkflowOrchestratorV2 } from "../workflow-v2";
 import type {
 	BatchItemResult,
@@ -67,9 +67,42 @@ export class BatchOrchestrator {
 			maxConcurrent: 3,
 			enablePersistence: true,
 			companyId: "",
+			retryEngine: undefined,
 			...config,
 		};
 		this.active = new Map();
+	}
+
+	private async acquire(): Promise<void> {
+		if (this.semaphoreCount < this.config.maxConcurrent) {
+			this.semaphoreCount++;
+			return;
+		}
+		return new Promise((resolve) => {
+			this.queue.push(resolve);
+		});
+	}
+
+	private release(): void {
+		const next = this.queue.shift();
+		if (next) {
+			next();
+		} else {
+			this.semaphoreCount--;
+		}
+	}
+
+	/**
+	 * Cancel a running batch by batchId.
+	 * In-flight items will complete, queued items will be skipped.
+	 */
+	cancelBatch(batchId: string): void {
+		this.cancelled.add(batchId);
+		const controller = this.active.get(batchId);
+		if (controller) {
+			controller.abort();
+		}
+		loggers.ai.info("Batch cancellation requested", { batchId });
 	}
 
 	/**
@@ -102,9 +135,12 @@ export class BatchOrchestrator {
 
 		// ── Create batch item rows in the store ─────────────────────
 		if (this.config.enablePersistence) {
-			for (const _ of inputs) {
-				await this.sessionStore.addBatchItem(batchId, { sessionId });
-			}
+			await this.sessionStore.createBatch({
+				id: batchId,
+				companyId,
+				total,
+				sessionId,
+			});
 		}
 
 		// Retrieve item IDs so we can update by ID later
@@ -120,12 +156,12 @@ export class BatchOrchestrator {
 			if (this.cancelled.has(batchId)) {
 				const itemResult: BatchItemResult = {
 					index,
-					status: "cancelled" as BatchItemStatus,
+					status: "cancelled" as any,
 				};
 				items[index] = itemResult;
 				if (this.config.enablePersistence && dbItems[index]) {
-					await this.sessionStore.updateBatchItem(batchId, dbItems[index].id, {
-						status: "cancelled",
+					await this.sessionStore.updateBatchItem(dbItems[index].id, {
+						status: "cancelled" as any,
 					});
 				}
 				this.release();
@@ -134,7 +170,7 @@ export class BatchOrchestrator {
 
 			const itemResult: BatchItemResult = {
 				index,
-				status: "running" as BatchItemStatus,
+				status: "running" as any,
 			};
 
 			try {
@@ -142,26 +178,23 @@ export class BatchOrchestrator {
 
 				// Update item status to running
 				if (this.config.enablePersistence && dbItems[index]) {
-					await this.sessionStore.updateBatchItem(batchId, dbItems[index].id, {
-						status: "running",
-						runId,
+					await this.sessionStore.updateBatchItem(dbItems[index].id, {
+						status: "running" as any,
 					});
 				}
 
-				// Process the invoice
-				const orchestrator = this.createOrchestrator();
-				const result = await orchestrator.processInvoice(input, runId);
+// Process the invoice
+const orchestrator = this.createOrchestrator();
+await orchestrator.processInvoice(input, runId);
 
 				// Mark item completed
-				itemResult.status = "completed";
+								itemResult.status = "completed";
 				itemResult.runId = runId;
 				itemResult.sessionId = sessionId;
-				itemResult.result = result;
 
 				if (this.config.enablePersistence && dbItems[index]) {
-					await this.sessionStore.updateBatchItem(batchId, dbItems[index].id, {
-						status: "completed",
-						runId,
+					await this.sessionStore.updateBatchItem(dbItems[index].id, {
+						status: "completed" as any,
 					});
 				}
 
@@ -174,14 +207,36 @@ export class BatchOrchestrator {
 				const errorMessage =
 					error instanceof Error ? error.message : String(error);
 
-				itemResult.status = "failed";
+								itemResult.status = "failed";
 				itemResult.error = errorMessage;
 
 				if (this.config.enablePersistence && dbItems[index]) {
-					await this.sessionStore.updateBatchItem(batchId, dbItems[index].id, {
-						status: "failed",
+					await this.sessionStore.updateBatchItem(dbItems[index].id, {
+						status: "failed" as any,
 						error: errorMessage,
 					});
+				}
+
+				// Enqueue to DLQ via RetryEngine if configured
+				if (this.config.retryEngine) {
+					try {
+						const runId = randomUUID();
+						const agentError = classifyError(error, "invoice-processor");
+						await this.config.retryEngine.enqueueForRetry(
+							runId,
+							"invoice-processor",
+							agentError,
+							undefined,
+							batchId,
+							{ inputType: input.type },
+						);
+					} catch (enqueueError) {
+						loggers.ai.warn("Failed to enqueue item for retry", {
+							batchId,
+							index,
+							error: String(enqueueError),
+						});
+					}
 				}
 
 				loggers.ai.warn("Batch item failed", {
@@ -215,11 +270,11 @@ export class BatchOrchestrator {
 
 		// ── Persist final batch state ───────────────────────────────
 		if (this.config.enablePersistence) {
-			await this.sessionStore.updateBatchProgress(batchId, {
-				status: finalStatus,
-				completed: completedCount,
-				failed: failedCount,
-			});
+		await this.sessionStore.updateBatch(batchId, {
+			status: finalStatus as any,
+			completed: completedCount,
+			failed: failedCount,
+		});
 		}
 
 		this.active.delete(batchId);
@@ -239,100 +294,5 @@ export class BatchOrchestrator {
 			failed: failedCount,
 			items,
 		};
-	}
-
-	// ─── Progress Tracking ───────────────────────────────────────────────
-
-	/**
-	 * Returns lightweight progress for a running batch by reading the
-	 * persisted batch state from the session store.
-	 */
-	async getProgress(
-		batchId: string,
-	): Promise<{ total: number; completed: number; failed: number } | null> {
-		try {
-			const batch = await this.sessionStore.getBatch(batchId);
-			if (!batch) return null;
-			return {
-				total: batch.total,
-				completed: batch.completed,
-				failed: batch.failed,
-			};
-		} catch {
-			return null;
-		}
-	}
-
-	// ─── Cancel Batch ────────────────────────────────────────────────────
-
-	/**
-	 * Cancel a running batch.
-	 *
-	 * 1. Adds the batchId to the cancelled set so queued items skip processing.
-	 * 2. Resolves all queued semaphore waiters so they can check the cancelled set.
-	 * 3. Aborts any currently running processes.
-	 * 4. Updates the batch status in the DB if persistence is enabled.
-	 */
-	async cancelBatch(batchId: string): Promise<void> {
-		this.cancelled.add(batchId);
-
-		// Resolve all queued waiters — they'll check `cancelled` and skip
-		while (this.queue.length > 0) {
-			const waiter = this.queue.shift();
-			if (waiter) waiter();
-		}
-
-		// Abort any currently running processes
-		const controller = this.active.get(batchId);
-		if (controller) {
-			controller.abort();
-		}
-
-		// Update batch status in DB if persistence enabled
-		if (this.config.enablePersistence) {
-			try {
-				await this.sessionStore.updateBatchProgress(batchId, {
-					status: "cancelled",
-				});
-			} catch (err) {
-				loggers.ai.warn("Failed to update cancelled batch status in DB", {
-					batchId,
-					error: String(err),
-				});
-			}
-		}
-
-		loggers.ai.info("Batch cancelled", { batchId });
-		this.active.delete(batchId);
-	}
-
-	// ─── Semaphore Implementation ────────────────────────────────────────
-
-	/**
-	 * Acquire a semaphore slot. If the maximum concurrency has been reached,
-	 * the caller will be queued until a slot is released.
-	 */
-	private async acquire(): Promise<void> {
-		if (this.semaphoreCount < this.config.maxConcurrent) {
-			this.semaphoreCount++;
-			return;
-		}
-		return new Promise<void>((resolve) => {
-			this.queue.push(resolve);
-		});
-	}
-
-	/**
-	 * Release a semaphore slot. If items are queued, the next one acquires
-	 * the slot immediately. Otherwise the counter is decremented.
-	 */
-	private release(): void {
-		const next = this.queue.shift();
-		if (next) {
-			// Transfer the slot to the next queued item
-			next();
-		} else {
-			this.semaphoreCount--;
-		}
 	}
 }

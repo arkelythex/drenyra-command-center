@@ -5,7 +5,7 @@
  * @module ai/agents/orchestrator/batch/types
  */
 
-import type { ProcessedInvoice, ReaderInput } from "../../types/workflow.types";
+import type { RetryEngine } from "../../../services/error-recovery";
 
 // ============================================================================
 // Status Types
@@ -31,23 +31,32 @@ export type BatchItemStatus =
 
 export interface BatchOrchestratorConfig {
 	/** Max concurrent processInvoice() calls (default: 3) */
-	maxConcurrent: number;
+	readonly maxConcurrent: number;
 	/** Whether to persist batch state to the database (default: true) */
-	enablePersistence: boolean;
+	readonly enablePersistence: boolean;
 	/** Company ID for tenant isolation */
-	companyId: string;
+	readonly companyId: string;
+	/** Optional RetryEngine for DLQ integration on item failure */
+	readonly retryEngine?: RetryEngine;
 }
 
 // ============================================================================
 // Batch Data Interfaces
 // ============================================================================
 
+/** Processed invoice data returned by the orchestrator */
+export interface BatchProcessedInvoice {
+	readonly status: string;
+	readonly invoiceData?: Record<string, unknown>;
+	readonly processingLog?: Record<string, unknown>;
+}
+
 export interface BatchItemResult {
 	index: number;
 	runId?: string;
 	sessionId?: string;
 	status: BatchItemStatus;
-	result?: ProcessedInvoice;
+	result?: BatchProcessedInvoice;
 	error?: string;
 }
 
@@ -57,7 +66,7 @@ export interface BatchResult {
 	total: number;
 	completed: number;
 	failed: number;
-	items: BatchItemResult[];
+	items: readonly BatchItemResult[];
 	error?: string;
 }
 
@@ -66,20 +75,20 @@ export interface BatchResult {
 // ============================================================================
 
 export interface BatchProgressEvent {
-	type: "BATCH_PROGRESS";
-	batchId: string;
-	total: number;
-	completed: number;
-	failed: number;
-	timestamp: string;
+	readonly type: "BATCH_PROGRESS";
+	readonly batchId: string;
+	readonly total: number;
+	readonly completed: number;
+	readonly failed: number;
+	readonly timestamp: string;
 }
 
 export interface BatchCompletedEvent {
-	type: "BATCH_COMPLETED";
-	batchId: string;
-	status: BatchStatus;
-	total: number;
-	completed: number;
-	failed: number;
-	timestamp: string;
+	readonly type: "BATCH_COMPLETED";
+	readonly batchId: string;
+	readonly status: BatchStatus;
+	readonly total: number;
+	readonly completed: number;
+	readonly failed: number;
+	readonly timestamp: string;
 }

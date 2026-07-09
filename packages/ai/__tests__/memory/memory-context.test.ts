@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { MemoryContextProvider } from "../../src/memory/memory-context";
+import { MemoryContextProvider } from "../../src/services/memory-context";
 import type { AgentRunState, SessionStore } from "../../src/session";
 
 function createMockStore(runs: Partial<AgentRunState>[] = []): SessionStore {

@@ -92,26 +92,26 @@ rg 'executeAgent' packages/ai/src/agents/orchestrator
 
 ## Common tasks → exact paths
 
-| Task | Start path |
-|---|---|
-| Add LLM provider | `src/gateway/gateway.service.ts` + `src/gateway/types.ts` |
-| Modify rate limiting | `src/gateway/rate-limiter.ts` |
-| Add failover chain | `src/gateway/failover.service.ts` |
-| Add workflow step | `src/agents/orchestrator/workflow-v2/steps.ts` |
-| Add agent type | `src/agents/types/index.ts` |
-| Modify fiscal policy | `src/control-plane/fiscal-policy.ts` |
-| Add tool | `src/control-plane/tool-registry.ts` |
-| Orchestrator tests | `src/agents/orchestrator/__tests__/` |
-| Gateway tests | `src/gateway/__tests__/` |
+| Task                 | Start path                                                |
+| -------------------- | --------------------------------------------------------- |
+| Add LLM provider     | `src/gateway/gateway.service.ts` + `src/gateway/types.ts` |
+| Modify rate limiting | `src/gateway/rate-limiter.ts`                             |
+| Add failover chain   | `src/gateway/failover.service.ts`                         |
+| Add workflow step    | `src/agents/orchestrator/workflow-v2/steps.ts`            |
+| Add agent type       | `src/agents/types/index.ts`                               |
+| Modify fiscal policy | `src/control-plane/fiscal-policy.ts`                      |
+| Add tool             | `src/control-plane/tool-registry.ts`                      |
+| Orchestrator tests   | `src/agents/orchestrator/__tests__/`                      |
+| Gateway tests        | `src/gateway/__tests__/`                                  |
 
 ## Dependencies
 
-| Library | Version | Purpose |
-|---|---|---|
-| `@drenyra/domain` | workspace | Fiscal types, entities, value objects |
-| `@drenyra/persistence` | workspace | Session store, run persistence |
-| `@drenyra/shared` | workspace | Secure logger, validation helpers |
-| `vitest` | dev | Test runner |
+| Library                | Version   | Purpose                               |
+| ---------------------- | --------- | ------------------------------------- |
+| `@drenyra/domain`      | workspace | Fiscal types, entities, value objects |
+| `@drenyra/persistence` | workspace | Session store, run persistence        |
+| `@drenyra/shared`      | workspace | Secure logger, validation helpers     |
+| `vitest`               | dev       | Test runner                           |
 
 ## Quality gates
 

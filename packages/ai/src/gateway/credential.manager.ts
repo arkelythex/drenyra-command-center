@@ -38,7 +38,9 @@ export class MissingEncryptionKeyError extends Error {
  */
 function validateEncryptionKey(): string {
 	const passphrase =
-		process.env.LLM_GATEWAY_KEY_PASSPHRASE ?? process.env.ARKELYTHEX_MASTER_KEY;
+		process.env.LLM_GATEWAY_KEY_PASSPHRASE ??
+		process.env.DRENYRA_MASTER_KEY ??
+		process.env.ARKELYTHEX_MASTER_KEY;
 
 	// In production, we require explicit configuration - no fallback
 	if (!passphrase) {

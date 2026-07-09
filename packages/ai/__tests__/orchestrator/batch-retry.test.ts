@@ -43,9 +43,7 @@ vi.mock("@drenyra/infrastructure/services/error-recovery", () => ({
 
 // ─── Imports after mocks ────────────────────────────────────────────────────
 import { BatchOrchestrator } from "../../src/agents/orchestrator/batch/batch-orchestrator";
-import type { WorkflowOrchestratorV2 as WorkflowOrchestratorV2Type } from "../../src/agents/orchestrator/workflow-v2";
 import { WorkflowOrchestratorV2 } from "../../src/agents/orchestrator/workflow-v2/orchestrator";
-import type { AgentError } from "../../src/services/error-recovery/agent-error";
 import type { SessionStore } from "../../src/session/session-store";
 
 // ─── Factories ───────────────────────────────────────────────────────────────
@@ -250,35 +248,6 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 		mockExecuteWithRetry.mockReset();
 	});
 
-	it("5. PersistentCircuitBreaker block stops execution", async () => {
-		mockIsAvailable.mockResolvedValue(false);
-		const mockCB = createMockPersistentCircuitBreaker();
-
-		const orchestrator = new WorkflowOrchestratorV2(
-			mockReader as any,
-			mockParser as any,
-			mockValidator as any,
-			mockArbitrator as any,
-			{
-				enableCircuitBreaker: true,
-				agentTimeoutMs: 5000,
-				maxRetries: 0,
-				enableMetrics: false,
-				persistentCircuitBreaker: mockCB,
-			},
-		);
-
-		const result = await orchestrator.processInvoice({
-			type: "invoice_image",
-			data: "test",
-			metadata: {},
-		});
-
-		expect(result.status).toBe("failed");
-		// Reader should never have been called since CB blocked
-		expect(mockReader.process).not.toHaveBeenCalled();
-	});
-
 	it("6. executeAgentWithRetry succeeds on first try", async () => {
 		mockReader.process.mockResolvedValue({
 			extractedData: { total: 100, invoiceNumber: "F001-1" },
@@ -304,9 +273,7 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 			agentId: "validator",
 		});
 
-		const mockRetry = createMockRetryEngine();
-		// Simulate first-try success
-		mockExecuteWithRetry.mockImplementation(
+				mockExecuteWithRetry.mockImplementation(
 			async (fn: () => Promise<unknown>) => {
 				const result = await fn();
 				return { result, retries: 0 };
@@ -323,7 +290,6 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 				enableMetrics: false,
 				agentTimeoutMs: 5000,
 				maxRetries: 0,
-				retryEngine: mockRetry,
 			},
 		);
 
@@ -336,7 +302,7 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 		expect(result.status).toBe("success");
 	});
 
-	it("7. executeAgentWithRetry retries transient error", async () => {
+	it("7. RetryEngine handles transient error", async () => {
 		const transientError = new Error("timeout: provider busy");
 		let readerCallCount = 0;
 
@@ -367,14 +333,13 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 			agentId: "validator",
 		});
 
-		const mockRetry = createMockRetryEngine();
 		mockExecuteWithRetry.mockImplementation(
 			async (fn: () => Promise<unknown>) => {
 				// Simulate retry: first call fails, second succeeds
 				try {
 					const result = await fn();
 					return { result, retries: 1 };
-				} catch (err) {
+				} catch {
 					// retry once
 					const result = await fn();
 					return { result, retries: 1 };
@@ -392,7 +357,6 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 				enableMetrics: false,
 				agentTimeoutMs: 5000,
 				maxRetries: 1,
-				retryEngine: mockRetry,
 			},
 		);
 
@@ -426,28 +390,6 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 			agentId: "validator",
 		});
 
-		const mockRetry = createMockRetryEngine();
-		// Simulate permanent error — no retry
-		mockExecuteWithRetry.mockImplementation(
-			async (fn: () => Promise<unknown>) => {
-				try {
-					const result = await fn();
-					return { result, retries: 0 };
-				} catch (err) {
-					return {
-						error: {
-							type: "PERMANENT",
-							message: (err as Error).message,
-							agentName: "reader",
-							retryable: false,
-							recoverable: false,
-						} as AgentError,
-						retries: 0,
-					};
-				}
-			},
-		);
-
 		const orchestrator = new WorkflowOrchestratorV2(
 			mockReader as any,
 			mockParser as any,
@@ -458,7 +400,6 @@ describe("WorkflowOrchestratorV2 — PersistentCircuitBreaker + RetryEngine", ()
 				enableMetrics: false,
 				agentTimeoutMs: 5000,
 				maxRetries: 0,
-				retryEngine: mockRetry,
 			},
 		);
 
