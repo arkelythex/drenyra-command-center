@@ -1,0 +1,27 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "apps/api/src/index.ts",
+    "apps/web/src/main.tsx",
+    "apps/web/src/router.tsx",
+    "packages/domain/src/index.ts",
+    "packages/application/src/index.ts",
+    "packages/persistence/src/index.ts",
+    "packages/infrastructure/src/index.ts",
+    "packages/shared/src/index.ts",
+    "packages/ai/src/index.ts",
+    "packages/memory/src/index.ts",
+    "packages/ui/src/index.ts",
+    "packages/test-utils/src/index.ts"
+  ],
+  "project": ["apps/**/*.{ts,tsx}", "packages/**/*.{ts,tsx}"],
+  "ignoreDependencies": ["@types/*"],
+  "rules": {
+    "exports": "error",
+    "types": "error",
+    "files": "warn",
+    "dependencies": "warn",
+    "unlisted": "warn",
+    "binaries": "warn"
+  }
+}

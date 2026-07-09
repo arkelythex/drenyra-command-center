@@ -1,0 +1,24 @@
+status: applied
+applied: 2026-07-07
+author: el Gentleman
+prs: 2
+lines: 400
+summary:
+  biome:
+    - noExplicitAny: warn to error
+    - noUnusedVariables: warn to error
+    - noUnusedImports: warn to error
+    - noParameterAssign: warn to error
+    - noNonNullAssertion: warn to error
+    - noAccumulatingSpread: warn to error
+  tsconfig:
+    - noUncheckedIndexedAccess: postergado por 600+ type errors
+    - exactOptionalPropertyTypes: postergado por 400+ type errors
+  tools:
+    - knip v6.24.0 with knip.json config
+    - madge v8.0.0 with quality:circular script
+    - depcheck v1.4.7 with quality:unused-deps script
+  scripts:
+    - quality:dead-code, quality:circular, quality:unused-deps, quality:all
+  follow-up:
+    - exactOptionalPropertyTypes y noUncheckedIndexedAccess requieren PR separado
