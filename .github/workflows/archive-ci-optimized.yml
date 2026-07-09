@@ -43,7 +43,7 @@ jobs:
           bun-version: latest
 
       - name: Cache Bun dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/.bun/install/cache
@@ -53,7 +53,7 @@ jobs:
             ${{ runner.os }}-bun-
 
       - name: Cache Turborepo
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: .turbo
           key: ${{ runner.os }}-turbo-${{ hashFiles('**/bun.lock', '**/bun.lockb', 'turbo.json') }}
@@ -143,7 +143,7 @@ jobs:
           bun-version: latest
           
       - name: Cache Bun dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/.bun/install/cache
@@ -223,7 +223,7 @@ jobs:
           bun-version: latest
           
       - name: Cache Bun dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/.bun/install/cache
@@ -313,7 +313,7 @@ jobs:
           bun-version: latest
           
       - name: Cache Bun dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/.bun/install/cache
@@ -374,7 +374,7 @@ jobs:
         run: bash scripts/ci/verify-self-hosted-runner-host.sh native-deps
           
       - name: Cache Bun dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/.bun/install/cache
