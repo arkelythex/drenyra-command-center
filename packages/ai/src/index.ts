@@ -34,7 +34,7 @@ export * from "./control-plane";
 export * from "./events";
 export * from "./governance";
 export * from "./memory";
-export * from "./provider";
+export * from "./providers/provider";
 export * from "./providers/model-router-types";
 export * from "./services/ai-cost";
 export * from "./services/error-recovery";
@@ -46,7 +46,7 @@ export type {
 	DynamicConsensusOptions,
 	FalsePositiveStats,
 } from "./services/swarm-consensus-types";
-export * from "./sunat-corpus";
+export * from "./services/sunat-corpus";
 export type {
 	JSONSchemaObject,
 	ToolDefinition as ToolsToolDefinition,
