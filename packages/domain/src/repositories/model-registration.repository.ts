@@ -1,9 +1,56 @@
-import type {
-	CapabilityRoutingRule,
-	ModelCapability,
-	ModelRegistration,
-	RoutingResult,
-} from "@drenyra/ai/providers/model-router-types";
+/**
+ * Domain-level model capability types (simplified).
+ * Rich provider-specific types live in @drenyra/ai.
+ */
+
+/** Supported model capability categories */
+export type ModelCapability =
+	| "text-generation"
+	| "code-generation"
+	| "reasoning"
+	| "classification"
+	| "extraction"
+	| "embedding"
+	| "ocr"
+	| "analysis"
+	| "reconciliation"
+	| "chat";
+
+/** Simplified model registration for domain repositories */
+export interface ModelRegistration {
+	id: string;
+	modelId?: string;
+	provider?: string;
+	capabilities: ModelCapability[];
+	status: "active" | "inactive" | "deprecated";
+	costPerToken?: number;
+	latencyMs?: number;
+	reliability?: number;
+}
+
+/** Simplified routing rule for domain repositories */
+export interface CapabilityRoutingRule {
+	id: string;
+	capability: ModelCapability;
+	priority: number;
+	modelId: string;
+	provider: string;
+	fallbackModelId?: string;
+	minReliability?: number;
+}
+
+/** Simplified routing result for domain audit logs */
+export interface RoutingResult {
+	requestId: string;
+	capability: ModelCapability;
+	selectedModelId: string;
+	selectedProvider: string;
+	timestamp: Date;
+	success: boolean;
+	errorMessage?: string;
+	estimatedCostCents?: number;
+	estimatedLatencyMs?: number;
+}
 
 export interface ModelFilters {
 	status?: string;
