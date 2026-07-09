@@ -173,13 +173,13 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@ai-sdk/google": "^3.0.83",
+    "@ai-sdk/google": "^4.0.5",
     "@drenyra/application": "workspace:*",
     "@drenyra/domain": "workspace:*",
     "@drenyra/infrastructure": "workspace:*",
     "@drenyra/shared": "workspace:*",
     "@xmldom/xmldom": "^0.9.10",
-    "ai": "^6.0.208",
+    "ai": "^7.0.15",
     "better-auth": "^1.6.23",
     "drizzle-orm": "^0.45.2",
     "fast-uri": "4.0.0",
