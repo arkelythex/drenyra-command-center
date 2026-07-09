@@ -1,3 +1,4 @@
+import { LedgerEntry } from "./financial-reports/types";
 /**
  * Financial Reports types — PCGE report interfaces.
  */
@@ -88,14 +89,6 @@ export interface GeneralLedgerReport {
 	}[];
 }
 
-export interface LedgerEntry {
-	date: Date;
-	reference: string;
-	description: string;
-	debit: number;
-	credit: number;
-	balance: number;
-}
 
 export interface ReportGenerationResult {
 	success: boolean;

@@ -88,6 +88,7 @@ export interface IncomeStatementReport {
 
 export interface LedgerEntry {
 	date: Date;
+	reference: string;
 	journalEntryNumber: string;
 	description: string;
 	debit: number;

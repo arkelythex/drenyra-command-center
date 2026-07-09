@@ -1,3 +1,4 @@
+import { LedgerEntry } from "./financial-reports/types";
 export type ReportType =
 	| "BALANCE_GENERAL"
 	| "ESTADO_RESULTADOS"
@@ -79,14 +80,6 @@ export interface IncomeStatementReport {
 	incomeBeforeTax: number;
 	incomeTax: number;
 	netIncome: number;
-}
-export interface LedgerEntry {
-	date: Date;
-	journalEntryNumber: string;
-	description: string;
-	debit: number;
-	credit: number;
-	runningBalance: number;
 }
 export interface LedgerAccountReport {
 	accountCode: string;
