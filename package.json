@@ -41,7 +41,7 @@
     "typecheck:build:domain-core": "tsc -b tsconfig.domain-core-build.json --pretty",
     "quality:max-lines": "bun scripts/quality/check-max-lines.ts",
     "quality:dead-code": "knip",
-    "quality:circular": "madge --circular --ext ts,tsx apps/ packages/",
+    "quality:circular": "madge --circular --extensions ts,tsx apps/ packages/",
     "quality:unused-deps": "depcheck",
     "quality:all": "bun run quality:dead-code && bun run quality:circular && bun run quality:unused-deps",
     "env:check-canonical": "bun scripts/dev/validate-env-example.ts",
