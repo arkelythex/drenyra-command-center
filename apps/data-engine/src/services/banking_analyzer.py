@@ -130,14 +130,14 @@ class BankingAnalyzer:
         # 1. Load data into Polars
         bank_df = pl.DataFrame(bank_transactions).with_columns(
             [
-                pl.col("date").cast(pl.Date),
+                pl.col("date").str.to_date(),
                 pl.col("net_amount").cast(pl.Float64),
             ]
         )
 
         system_df = pl.DataFrame(system_transactions).with_columns(
             [
-                pl.col("date").cast(pl.Date),
+                pl.col("date").str.to_date(),
                 pl.col("amount").cast(pl.Float64),
             ]
         )
@@ -225,7 +225,7 @@ class BankingAnalyzer:
 
         # Ensure date column is cast to Date type for .dt accessors
         if "date" in df.columns:
-            df = df.with_columns([pl.col("date").cast(pl.Date)])
+            df = df.with_columns([pl.col("date").str.to_date()])
 
         # 1. Identify recurring transactions (same description + similar amount)
         recurring = (
@@ -303,7 +303,7 @@ class BankingAnalyzer:
         df = pl.DataFrame(transactions)
         df = df.with_columns(
             [
-                pl.col("date").cast(pl.Date),
+                pl.col("date").str.to_date(),
                 pl.col("net_amount").cast(pl.Float64),
             ]
         ).sort("date")
