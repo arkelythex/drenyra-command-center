@@ -1,0 +1,17 @@
+{
+  "name": "@drenyra/fiscal-sdd",
+  "version": "1.0.0",
+  "description": "Pipeline dinámico de cumplimiento fiscal — solicitud→análisis→diseño→plan→migración→auditoría",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "bash ../../scripts/tsc7.sh --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@drenyra/fiscal-compliance-pipeline",
+  "version": "1.0.0",
+  "description": "Chained compliance workflows — cascading fiscal rule changes through dependent subsystems with review gates",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "bash ../../scripts/tsc7.sh --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
+  }
+}

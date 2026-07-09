@@ -1,0 +1,17 @@
+{
+  "name": "@drenyra/phase-gatekeeper",
+  "version": "1.0.0",
+  "description": "Phase gatekeepers for orchestrator pipeline — validates phase outputs before passing to next phase",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "typecheck": "bash ../../scripts/tsc7.sh --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
+  }
+}
