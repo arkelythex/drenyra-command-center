@@ -40,18 +40,16 @@ packages = ["src"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+pythonpath = ["src"]
 
 [tool.ruff.lint]
 select = [
-    "E",  # pycodestyle errors
-    "W",  # pycodestyle warnings
-    "F",  # pyflakes
-    "I",  # isort
-    "B",  # flake8-bugbear
-    "C4", # flake8-comprehensions
-    "UP", # pyupgrade
+    "E", "W", "F", "I", "B", "C4", "UP",
+    "TCH",  # flake8-type-checking
+    "SIM",  # flake8-simplify
 ]
-ignore = []
+
+per-file-ignores = {"tests/*" = ["TCH"]}
 
 [tool.ruff.format]
 quote-style = "double"
@@ -59,10 +57,34 @@ indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
 
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+disallow_untyped_defs = true
+warn_unused_configs = true
+
 [dependency-groups]
 dev = [
     "pytest>=9.0.3",
 ]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "**/__pycache__/**"]
+relative_files = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
+
+[tool.coverage.html]
+directory = "coverage"
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
