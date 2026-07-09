@@ -82,8 +82,19 @@ export class Detraccion {
 		return this._spotCode;
 	}
 
-	get spotCodeInfo(): { code: string; description: string } {
-		return SPOT_CODE_REGISTRY[this._spotCode];
+	get spotCodeInfo(): { code: string; description: string; percentage: number } {
+		const info = SPOT_CODE_REGISTRY[this._spotCode];
+		if (!info) {
+			return { code: this._spotCode, description: "Unknown", percentage: this._percentage };
+		}
+		return info;
+	}
+
+	/**
+	 * Percentage for this SPOT code from the SUNAT registry.
+	 */
+	get spotCodePercentage(): number {
+		return SPOT_CODE_REGISTRY[this._spotCode]?.percentage ?? this._percentage;
 	}
 
 	get percentage(): number {
