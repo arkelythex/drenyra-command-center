@@ -1,3 +1,4 @@
+import { LedgerEntry } from "./financial-reports/types";
 /**
  * Financial Reports Service
  *
@@ -167,14 +168,6 @@ export interface IncomeStatementReport {
  * console.log(value);
  * ```
  */
-export interface LedgerEntry {
-	date: Date;
-	journalEntryNumber: string;
-	description: string;
-	debit: number;
-	credit: number;
-	runningBalance: number;
-}
 
 /**
  * LedgerAccountReport interface.
