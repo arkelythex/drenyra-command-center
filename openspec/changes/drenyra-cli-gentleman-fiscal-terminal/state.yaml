@@ -1,0 +1,15 @@
+status: archived
+created: 2026-07-08
+author: el Gentleman
+parent: drenyra-north-star-philosophy
+surface: apps/cli
+related:
+  - drenyra-s5-go-cli-alignment
+  - drenyra-p1-fiscal-terminal
+execution_mode: automatic
+artifact_store: openspec
+pr_strategy: auto-forecast
+review_budget: 400
+prs: 3
+lines: 800
+blocks: drenyra-north-star-philosophy
