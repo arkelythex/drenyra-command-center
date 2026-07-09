@@ -1,5 +1,4 @@
 import {
-	BarChart3,
 	ChevronLeft,
 	ChevronRight,
 	Download,
@@ -7,7 +6,6 @@ import {
 	Plus,
 } from "lucide-react";
 import { CommandDeck, DeckItem } from "@/components/ui/layout/command-deck";
-import { DashboardTab } from "../DashboardView";
 
 interface DashboardMobileNavProps {
 	handlePreviousMonth: () => void;

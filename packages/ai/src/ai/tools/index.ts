@@ -25,7 +25,7 @@ export const RUCValidationParams = z.object({
 	ruc: z.string().length(11).describe("11-digit RUC number"),
 });
 
-export function suggestPCGEAccount(description: string): {
+export function suggestPCGEAccount(_description: string): {
 	cuenta: string;
 	nombre: string;
 	confidence: number;

@@ -73,7 +73,7 @@ function createSheetDiffArtifact(
 	} as HubArtifact;
 }
 
-function createDashboardArtifact(): HubArtifact {
+function _createDashboardArtifact(): HubArtifact {
 	return {
 		id: "artifact-dashboard-1",
 		title: "Dashboard Financiero",
@@ -85,7 +85,7 @@ function createDashboardArtifact(): HubArtifact {
 	};
 }
 
-function createChartArtifact(): HubArtifact {
+function _createChartArtifact(): HubArtifact {
 	return {
 		id: "artifact-chart-1",
 		title: "Evolución de ingresos",

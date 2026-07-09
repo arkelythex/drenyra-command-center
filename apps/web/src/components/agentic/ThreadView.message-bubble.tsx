@@ -13,7 +13,7 @@ import {
 	PinOff,
 	User,
 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { ArtifactRenderer } from "@/features/cognitive-hub/components/artifacts/ArtifactRenderer";
 import {
 	extractArtifacts,

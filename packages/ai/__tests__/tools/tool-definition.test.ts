@@ -49,7 +49,7 @@ describe("ToolDefinition type", () => {
 
 		expect(tool.parameters.type).toBe("object");
 		expect(tool.outputSchema).toBeDefined();
-		expect(tool.outputSchema!.type).toBe("object");
+		expect(tool.outputSchema?.type).toBe("object");
 	});
 });
 

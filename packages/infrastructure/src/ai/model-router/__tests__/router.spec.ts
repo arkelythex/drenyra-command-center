@@ -43,7 +43,7 @@ function makeModel(
 function mockAdapterFactory(): ProviderAdapterFactory {
 	return {
 		createAdapter: mock(
-			(modelId: string, modelName: string): ProviderAdapter => ({
+			(_modelId: string, modelName: string): ProviderAdapter => ({
 				providerName: "openai",
 				modelName,
 				sendRequest: mock(() =>

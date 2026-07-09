@@ -8,7 +8,7 @@
  * @since Jun 2026
  */
 
-import { useCallback, useEffect, useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import type { CommandCenterSettings } from "../components/SettingsPanel";
 
 const STORAGE_KEY = "drenyra:settings";

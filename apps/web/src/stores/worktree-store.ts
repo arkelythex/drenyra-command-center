@@ -49,7 +49,7 @@ const INITIAL_WORKTREES: WorktreeInfo[] = [
 	},
 ];
 
-export const useWorktreeStore = create<WorktreeState>((set, get) => ({
+export const useWorktreeStore = create<WorktreeState>((set, _get) => ({
 	worktrees: INITIAL_WORKTREES,
 	activeWorktreeId: "wt-1",
 	isLoading: false,

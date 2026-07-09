@@ -2,8 +2,8 @@
  * Drenyra TUI — Main Ink application.
  */
 
-import React, { useState, useEffect } from "react";
-import { render, Text, Box, Static } from "ink";
+import { useState, useEffect } from "react";
+import { render, Text, Box } from "ink";
 import { listSessions } from "../client.js";
 import type { AgentSession } from "../types.js";
 

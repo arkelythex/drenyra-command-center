@@ -2,12 +2,7 @@
  * CPE Tracking Service Tests
  */
 
-import {
-	type CDRData,
-	CPELog,
-	InvalidCPELogError,
-	InvalidCPELogTransitionError,
-} from "@drenyra/domain/accounting/cpe-log";
+import { CPELog, InvalidCPELogError } from "@drenyra/domain/accounting/cpe-log";
 import type { CpeLogRepository } from "@drenyra/domain/repositories/cpe-log.repository";
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import {
@@ -200,7 +195,7 @@ describe("CpeTrackingService", () => {
 			const result = await service.getByInvoice(mockInvoiceId);
 
 			expect(result).toBeDefined();
-			expect(result!.invoiceId).toBe(mockInvoiceId);
+			expect(result?.invoiceId).toBe(mockInvoiceId);
 		});
 
 		it("should return null when no CPE log exists", async () => {

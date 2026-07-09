@@ -50,7 +50,7 @@ export function parseSkillRegistry(markdown: string): SkillRegistry {
 				description: cells[1]!,
 				trigger: cells[2]!,
 				path: cells[3]!,
-				scope: cells[3]!.startsWith(".") ? "project" : "global",
+				scope: cells[3]?.startsWith(".") ? "project" : "global",
 			});
 		}
 	}

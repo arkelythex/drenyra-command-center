@@ -104,8 +104,8 @@ describeDb("Batch API (DB integration)", () => {
 	});
 
 	it("should order batches by creation date descending", async () => {
-		const id1 = await insertBatch({ companyId });
-		const id2 = await insertBatch({ companyId });
+		const _id1 = await insertBatch({ companyId });
+		const _id2 = await insertBatch({ companyId });
 
 		const rows = await db
 			.select()
@@ -130,7 +130,7 @@ describeDb("Batch API (DB integration)", () => {
 		});
 
 		expect(batch).toBeDefined();
-		expect(batch!.items).toHaveLength(3);
+		expect(batch?.items).toHaveLength(3);
 	});
 
 	it("should return null for non-existent batch", async () => {
@@ -160,9 +160,9 @@ describeDb("Batch API (DB integration)", () => {
 
 	it("should cancel running items when batch is cancelled", async () => {
 		const batchId = await insertBatch({ status: "running", total: 3 });
-		const item1 = await insertBatchItem(batchId, { status: "running" });
-		const item2 = await insertBatchItem(batchId, { status: "running" });
-		const item3 = await insertBatchItem(batchId, { status: "pending" });
+		const _item1 = await insertBatchItem(batchId, { status: "running" });
+		const _item2 = await insertBatchItem(batchId, { status: "running" });
+		const _item3 = await insertBatchItem(batchId, { status: "pending" });
 
 		// Simulate cancel: update batch + all pending/running items
 		await db

@@ -151,9 +151,9 @@ describe("Escenario 4: RUC breach S/ 6,000 — detección y confianza", () => {
 
 		const [anomaly] = detectRucBreachAnomalies([txn]);
 		expect(anomaly).toBeDefined();
-		expect(anomaly!.severity).toBe("high");
-		expect(anomaly!.confidence).toBeGreaterThan(0.95);
-		expect(anomaly!.context).toMatchObject({
+		expect(anomaly?.severity).toBe("high");
+		expect(anomaly?.confidence).toBeGreaterThan(0.95);
+		expect(anomaly?.context).toMatchObject({
 			legalReference: "Art. 12 TUO IGV (D.S. 055-99-EF)",
 			sunatThresholdPen: 5_000,
 		});

@@ -69,7 +69,7 @@ export class CpeLifecycleService {
 			latestProviderReference,
 			lastEventAt:
 				nonDraftEvents.length > 0
-					? new Date(nonDraftEvents[nonDraftEvents.length - 1]!.at)
+					? new Date(nonDraftEvents[nonDraftEvents.length - 1]?.at)
 					: null,
 		};
 

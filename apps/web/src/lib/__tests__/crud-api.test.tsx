@@ -272,7 +272,7 @@ describe("createCrudHooks", () => {
 			>({ key: defaultKey, ...api });
 
 			const queryClient = createQueryClient();
-			const spy = vi.spyOn(queryClient, "getQueryCache");
+			const _spy = vi.spyOn(queryClient, "getQueryCache");
 
 			renderHook(() => useList(), {
 				wrapper: createWrapper(queryClient),

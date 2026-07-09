@@ -12,7 +12,7 @@ import {
 	batchRunItems,
 	batchRuns,
 } from "@drenyra/persistence/schema";
-import { and, asc, desc, eq, inArray, lte, sql } from "drizzle-orm";
+import { and, asc, desc, eq, sql } from "drizzle-orm";
 import type { PgDatabase } from "drizzle-orm/pg-core";
 import type {
 	AgentRunEvent,

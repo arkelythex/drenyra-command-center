@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ACCENT_PRESETS, type AccentPreset } from "../hooks/use-theme-switcher";
+import { ACCENT_PRESETS } from "../hooks/use-theme-switcher";
 
 interface ColorCard {
 	label: string;

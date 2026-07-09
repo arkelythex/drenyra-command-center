@@ -146,7 +146,7 @@ describe("AccountingStore", () => {
 	});
 
 	it("should return the active company via getActiveCompany", () => {
-		const companies = useAccountingStore.getState().companies;
+		const _companies = useAccountingStore.getState().companies;
 		useAccountingStore.getState().setActiveCompany("comp-2");
 		const active = useAccountingStore.getState().getActiveCompany();
 		expect(active).not.toBeNull();

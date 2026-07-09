@@ -36,8 +36,6 @@ vi.mock("../../application/services/reconciliation.service", () => ({
 vi.mock("../../../security/session-context", () => ({
 	resolveSessionContext: vi.fn(),
 }));
-
-import { resolveSessionContext } from "../../../security/session-context";
 import { bankingHandlers } from "../../api/banking.handlers";
 import {
 	BankingRepository,

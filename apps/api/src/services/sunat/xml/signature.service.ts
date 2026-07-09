@@ -70,7 +70,7 @@ export class XMLSignatureService {
 	/**
 	 * Verify XML signature
 	 */
-	static verify(signedXml: string, publicKey: string): boolean {
+	static verify(signedXml: string, _publicKey: string): boolean {
 		try {
 			// Extract signature components
 			const signatureMatch = signedXml.match(

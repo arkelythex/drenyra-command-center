@@ -178,7 +178,7 @@ describe("ThreadStore", () => {
 
 	it("should update updatedAt on thread modification", () => {
 		const thread = useThreadStore.getState().createThread("Test");
-		const originalUpdatedAt = thread.updatedAt;
+		const _originalUpdatedAt = thread.updatedAt;
 
 		// renameThread updates updatedAt to a new ISO timestamp
 		useThreadStore.getState().renameThread(thread.id, "Renamed");

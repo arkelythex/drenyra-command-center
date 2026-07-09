@@ -18,18 +18,18 @@ describe("skills-resolver", () => {
 		it("parses markdown table into skill entries", () => {
 			const registry = parseSkillRegistry(SAMPLE_REGISTRY_MD);
 			expect(registry.skills).toHaveLength(6);
-			expect(registry.skills[0]!.name).toBe("fiscal-compliance");
-			expect(registry.skills[0]!.path).toBe(
+			expect(registry.skills[0]?.name).toBe("fiscal-compliance");
+			expect(registry.skills[0]?.path).toBe(
 				".agent/skills/fiscal-compliance/SKILL.md",
 			);
-			expect(registry.skills[0]!.scope).toBe("project");
+			expect(registry.skills[0]?.scope).toBe("project");
 		});
 
 		it("marks global skills correctly", () => {
 			const md = `| my-skill | desc | trig | ~/.pi/skills/foo/SKILL.md |`;
 			const registry = parseSkillRegistry(md);
 			expect(registry.skills).toHaveLength(1);
-			expect(registry.skills[0]!.scope).toBe("global");
+			expect(registry.skills[0]?.scope).toBe("global");
 		});
 
 		it("returns empty array for empty table", () => {

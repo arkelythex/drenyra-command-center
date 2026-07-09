@@ -48,7 +48,7 @@ export function CentralBoard() {
 	const activeTab = useCentralBoardStore((s) => s.centralBoardTab);
 	const setActiveTab = useCentralBoardStore((s) => s.setCentralBoardTab);
 	const journalEntries = useCentralBoardStore((s) => s.journalEntries);
-	const documents = useCentralBoardStore((s) => s.documents);
+	const _documents = useCentralBoardStore((s) => s.documents);
 	const { borderRadius } = useDesignTokens();
 
 	const pendingCount = useMemo(

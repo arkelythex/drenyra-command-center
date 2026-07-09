@@ -154,7 +154,7 @@ export interface CashflowAnalysisOutput {
 export async function runCashflowAnalysis(
 	input: CashflowAnalysisInput,
 ): Promise<CashflowAnalysisOutput> {
-	const start = performance.now();
+	const _start = performance.now();
 	const context = buildAgentContext();
 	const strategy = createCashflowPredictorStrategy(input.options);
 

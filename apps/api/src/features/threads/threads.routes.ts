@@ -143,7 +143,7 @@ function handleServiceError(
 // Company guard helper
 // ---------------------------------------------------------------------------
 
-function assertCompanyId(
+function _assertCompanyId(
 	companyContext: { companyId: string } | undefined | null,
 	set: { status: number },
 ): string | null {

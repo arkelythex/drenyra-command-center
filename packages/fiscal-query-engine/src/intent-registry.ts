@@ -122,7 +122,7 @@ export function extractPeriodo(text: string): string | undefined {
 			noviembre: "11",
 			diciembre: "12",
 		};
-		const month = monthNames[monthMatch[1]!.toLowerCase()];
+		const month = monthNames[monthMatch[1]?.toLowerCase()];
 		if (month) {
 			return `${monthMatch[2]}-${month}`;
 		}

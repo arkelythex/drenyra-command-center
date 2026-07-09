@@ -6,7 +6,7 @@ const STATIC_ASSETS = /\/assets\/.+\.(js|css|woff2?|png|svg|ico)$/;
 const API_PATTERN = /\/api\//;
 
 // Install: pre-cache is handled by the browser naturally via fetch events
-self.addEventListener("install", (event) => {
+self.addEventListener("install", (_event) => {
 	self.skipWaiting();
 });
 

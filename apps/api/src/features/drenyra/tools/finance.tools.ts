@@ -154,7 +154,7 @@ export const getBalanceTool: AgentTool = {
 	inputSchema: z.object({ accountId: z.string() }),
 	outputSchema: z.object({ balance: z.string(), currency: z.string() }),
 	approvalLevel: "auto",
-	async execute(input: unknown, context: AgentContext) {
+	async execute(input: unknown, _context: AgentContext) {
 		const i = input as { accountId: string };
 		const { BankingApplicationService } = await import("../../banking");
 		const svc = new BankingApplicationService();

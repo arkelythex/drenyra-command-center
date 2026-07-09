@@ -126,7 +126,7 @@ describe("AccountingPeriodService", () => {
 			const result = await service.getCurrentPeriod(mockCompanyId);
 
 			expect(result).toBeDefined();
-			expect(result!.status).toBe("abierto");
+			expect(result?.status).toBe("abierto");
 		});
 
 		it("should return null when no open period exists", async () => {

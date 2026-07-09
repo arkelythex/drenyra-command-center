@@ -454,7 +454,7 @@ describe("Period-scoped rate resolution (asOf = fiscal period, not now)", () => 
 	it("resolves IGV correctly for current period with known rate", () => {
 		const rate = getFiscalRate("IGV", "2026-07-01");
 		expect(rate).not.toBeNull();
-		expect(rate!.rate).toBe(18);
+		expect(rate?.rate).toBe(18);
 
 		const results = runVerificationRules(["IGV calculado al 18%"], "MEDIUM", {
 			period: "2026-07",
@@ -469,8 +469,8 @@ describe("Period-scoped rate resolution (asOf = fiscal period, not now)", () => 
 		// IGV=18% desde 2011-03-01. El 2011-03-01 DEBE encontrar la tasa.
 		const rate = getFiscalRate("IGV", "2011-03-01");
 		expect(rate).not.toBeNull();
-		expect(rate!.rate).toBe(18);
-		expect(rate!.effectiveFrom).toBe("2011-03-01");
+		expect(rate?.rate).toBe(18);
+		expect(rate?.effectiveFrom).toBe("2011-03-01");
 	});
 
 	it("crosses effectiveFrom boundary correctly — day before rate exists", () => {

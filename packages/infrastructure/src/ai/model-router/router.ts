@@ -7,7 +7,7 @@ import type {
 	CapabilityRoutingRuleRepository,
 	RoutingAuditLogRepository,
 } from "@drenyra/domain/repositories/model-registration.repository";
-import { type FallbackConfig, FallbackExecutor } from "./fallback-executor";
+import { FallbackExecutor } from "./fallback-executor";
 import type { ProviderAdapterFactory } from "./provider-adapter.types";
 import {
 	CostCapEnforcer,

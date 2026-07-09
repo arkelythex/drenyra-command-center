@@ -4,10 +4,7 @@ import type { CognitiveActivityEntry } from "../../hooks/cognitive-stream";
 import { useAccountingJobRuns } from "../../hooks/useAccountingJobRuns";
 import { TimelineControlPlane } from "./components/TimelineControlPlane";
 import { TimelineEntry } from "./components/TimelineEntry";
-import {
-	getStatusStyles,
-	mapAccountingJobRunToActivity,
-} from "./ToolExecutionTimeline.data";
+import { mapAccountingJobRunToActivity } from "./ToolExecutionTimeline.data";
 import type { ToolExecutionTimelineProps } from "./ToolExecutionTimeline.types";
 
 export function ToolExecutionTimeline({

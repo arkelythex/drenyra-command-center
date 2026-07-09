@@ -125,7 +125,7 @@ export class OcrPipeline {
 			data,
 			source: rawSource,
 			needsEscalation,
-		} = await this.router!.extractInvoiceWithRouting(imageBuffer);
+		} = await this.router?.extractInvoiceWithRouting(imageBuffer);
 
 		// Normalize source — router returns "llm" for escalation path, but our
 		// OCRResponse distinguishes actual processing backends (ppocr-v6 vs gemini)

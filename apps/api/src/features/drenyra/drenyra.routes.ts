@@ -351,7 +351,7 @@ function mapChatToolCapability(input: {
 	return { agentType: "FISCAL_REVIEWER_AGENT", toolId: "promote_fiscal_truth" };
 }
 
-function authorizeDrenyraChatTool(input: DrenyraToolAuthorizationInput) {
+function _authorizeDrenyraChatTool(input: DrenyraToolAuthorizationInput) {
 	const capability = mapChatToolCapability({
 		agent: input.agent,
 		toolName: input.toolName,

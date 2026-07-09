@@ -450,7 +450,7 @@ export class WorkflowOrchestrator {
 	 * Create success result
 	 */
 	private createSuccessResult(
-		processId: string,
+		_processId: string,
 		context: WorkflowContext,
 		invoiceData: InvoiceData,
 		xmlContent: string,
@@ -467,7 +467,7 @@ export class WorkflowOrchestrator {
 	 * Create rejected result
 	 */
 	private createRejectedResult(
-		processId: string,
+		_processId: string,
 		context: WorkflowContext,
 		reason: string,
 	): ProcessedInvoice {
@@ -506,7 +506,7 @@ export class WorkflowOrchestrator {
 	 * Create failed result
 	 */
 	private createFailedResult(
-		processId: string,
+		_processId: string,
 		context: WorkflowContext,
 		error: Error,
 	): ProcessedInvoice {

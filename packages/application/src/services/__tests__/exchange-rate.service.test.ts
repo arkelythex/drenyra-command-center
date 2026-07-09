@@ -128,7 +128,7 @@ describe("ExchangeRateService", () => {
 			);
 
 			expect(result).toBeDefined();
-			expect(result!.buy).toBe(3.725);
+			expect(result?.buy).toBe(3.725);
 			expect(mockRepo.findLatestBefore).not.toHaveBeenCalled();
 		});
 
@@ -151,7 +151,7 @@ describe("ExchangeRateService", () => {
 			);
 
 			expect(result).toBeDefined();
-			expect(result!.buy).toBe(3.72);
+			expect(result?.buy).toBe(3.72);
 			expect(mockRepo.findLatestBefore).toHaveBeenCalled();
 		});
 

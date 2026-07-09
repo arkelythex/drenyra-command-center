@@ -1,8 +1,3 @@
-import type {
-	BankCsvFormat,
-	CreateBankAccountPayload,
-} from "../api/banking.api";
-
 export interface BankAccount {
 	id: string;
 	companyId: string;

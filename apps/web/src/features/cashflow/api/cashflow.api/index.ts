@@ -8,12 +8,7 @@ import { api } from "@/lib/api";
 import { safeApiCall } from "@/lib/api-factory";
 import { extractOkData, unwrap } from "@/lib/api-helpers";
 
-import type {
-	ActualCashflowData,
-	CashflowForecastData,
-	CashflowProjectionData,
-	CashflowVarianceData,
-} from "./cashflow.types";
+import type { CashflowForecastData } from "./cashflow.types";
 import {
 	type ActualCashflowApiData,
 	type CashflowProjectionApiData,

@@ -184,7 +184,7 @@ describe("ReconciliationEngine", () => {
 
 	describe("Document Extraction", () => {
 		it("should extract invoice from bank description", () => {
-			const engine = createReconciliationEngine();
+			const _engine = createReconciliationEngine();
 
 			const extracted = extractDataFromDescription(
 				"PAGO F001-00012345 EMPRESA SAC 20123456789",
@@ -196,7 +196,7 @@ describe("ReconciliationEngine", () => {
 		});
 
 		it("should extract amounts from description", () => {
-			const engine = createReconciliationEngine();
+			const _engine = createReconciliationEngine();
 
 			const extracted = extractDataFromDescription(
 				"PAGO POR 1,500.00 SOLES FACTURA",
@@ -206,7 +206,7 @@ describe("ReconciliationEngine", () => {
 		});
 
 		it("should handle descriptions without extractable data", () => {
-			const engine = createReconciliationEngine();
+			const _engine = createReconciliationEngine();
 
 			const extracted = extractDataFromDescription("RETIRO CAJERO AUTOMATICO");
 

@@ -86,7 +86,7 @@ describe("EventAdapter", () => {
 			const entry = handlers.find((h) => h.type === "INVOICE_RECEIVED");
 			expect(entry).toBeDefined();
 
-			entry!.handler(createWorkflowEvent("INVOICE_RECEIVED", { payload: {} }));
+			entry?.handler(createWorkflowEvent("INVOICE_RECEIVED", { payload: {} }));
 
 			expect(onEvent).toHaveBeenCalledTimes(1);
 			const event = onEvent.mock.calls[0][0] as CanonicalEvent;
@@ -105,7 +105,7 @@ describe("EventAdapter", () => {
 			const entry = handlers.find((h) => h.type === "EXTRACTION_STARTED");
 			expect(entry).toBeDefined();
 
-			entry!.handler(
+			entry?.handler(
 				createWorkflowEvent("EXTRACTION_STARTED", { agent: "reader" }),
 			);
 
@@ -127,7 +127,7 @@ describe("EventAdapter", () => {
 			const entry = handlers.find((h) => h.type === "VALIDATION_STARTED");
 			expect(entry).toBeDefined();
 
-			entry!.handler(
+			entry?.handler(
 				createWorkflowEvent("VALIDATION_STARTED", { agent: "validator" }),
 			);
 
@@ -145,7 +145,7 @@ describe("EventAdapter", () => {
 			const entry = handlers.find((h) => h.type === "PROCESS_COMPLETED");
 			expect(entry).toBeDefined();
 
-			entry!.handler(
+			entry?.handler(
 				createWorkflowEvent("PROCESS_COMPLETED", {
 					invoiceNumber: "F001-123",
 					duration: 4500,
@@ -169,7 +169,7 @@ describe("EventAdapter", () => {
 			const entry = handlers.find((h) => h.type === "PROCESS_FAILED");
 			expect(entry).toBeDefined();
 
-			entry!.handler(
+			entry?.handler(
 				createWorkflowEvent("PROCESS_FAILED", {
 					error: "Reader agent crashed",
 				}),
@@ -192,7 +192,7 @@ describe("EventAdapter", () => {
 			const entry = handlers.find((h) => h.type === "OSE_FAILED");
 			expect(entry).toBeDefined();
 
-			entry!.handler(
+			entry?.handler(
 				createWorkflowEvent("OSE_FAILED", {
 					error: "Connection timeout",
 					retryCount: 3,
@@ -217,7 +217,7 @@ describe("EventAdapter", () => {
 			const entry = handlers.find((h) => h.type === "MANUAL_REVIEW_REQUIRED");
 			expect(entry).toBeDefined();
 
-			entry!.handler(
+			entry?.handler(
 				createWorkflowEvent("MANUAL_REVIEW_REQUIRED", {
 					reason: "Unusual discrepancy detected",
 					conflicts: [],
@@ -241,7 +241,7 @@ describe("EventAdapter", () => {
 			const entry = handlers.find((h) => h.type === "PRUNE_REQUESTED");
 			expect(entry).toBeDefined();
 
-			entry!.handler(
+			entry?.handler(
 				createWorkflowEvent("PRUNE_REQUESTED", {
 					usage: {
 						totalTokens: 500000,
@@ -297,7 +297,7 @@ describe("EventAdapter", () => {
 
 			// Should not throw even though onEvent throws
 			expect(() => {
-				entry!.handler(
+				entry?.handler(
 					createWorkflowEvent("EXTRACTION_STARTED", { agent: "reader" }),
 				);
 			}).not.toThrow();
@@ -322,11 +322,11 @@ describe("EventAdapter", () => {
 			expect(parseEntry).toBeDefined();
 
 			// First call: throws
-			extractEntry!.handler(
+			extractEntry?.handler(
 				createWorkflowEvent("EXTRACTION_STARTED", { agent: "reader" }),
 			);
 			// Second call: should still work
-			parseEntry!.handler(
+			parseEntry?.handler(
 				createWorkflowEvent("PARSING_STARTED", { agent: "parser" }),
 			);
 

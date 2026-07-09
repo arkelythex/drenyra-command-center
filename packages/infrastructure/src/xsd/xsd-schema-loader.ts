@@ -15,7 +15,7 @@
  */
 
 import { existsSync, readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { resolve } from "node:path";
 import { type X2jOptions, XMLParser } from "fast-xml-parser";
 import type {
 	DocumentType,
@@ -294,7 +294,7 @@ export class XsdSchemaLoader {
 		this.parsedSchemas.clear();
 	}
 
-	private buildSchema(raw: RawXsdSchema, fileName: string): XsdSchema {
+	private buildSchema(raw: RawXsdSchema, _fileName: string): XsdSchema {
 		const schema: XsdSchema = {
 			targetNamespace: raw["@_targetNamespace"] ?? "",
 			elementFormDefault:
@@ -372,7 +372,7 @@ export class XsdSchemaLoader {
 		}
 
 		// Inline simpleType
-		const inlineSt = raw["xsd:simpleType"] ?? raw["xs:simpleType"];
+		const _inlineSt = raw["xsd:simpleType"] ?? raw["xs:simpleType"];
 
 		return element;
 	}

@@ -153,8 +153,8 @@ describe("LatencyStatsService", () => {
 			expect(result.byAgent).toHaveLength(3);
 			const sunat = result.byAgent.find((a) => a.agentType === "sunat");
 			expect(sunat).toBeDefined();
-			expect(sunat!.avgLatencyMs).toBe(200);
-			expect(sunat!.callCount).toBe(50);
+			expect(sunat?.avgLatencyMs).toBe(200);
+			expect(sunat?.callCount).toBe(50);
 		});
 	});
 

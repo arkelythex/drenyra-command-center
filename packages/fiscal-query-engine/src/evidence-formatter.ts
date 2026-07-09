@@ -64,7 +64,7 @@ export function formatAsText(result: QueryResult): string {
 	// Evidence artifacts hash
 	if (result.evidenceArtifacts.length > 0) {
 		lines.push("");
-		lines.push(`🔗 Hash: ${result.evidenceArtifacts[0]!.hash.slice(0, 16)}...`);
+		lines.push(`🔗 Hash: ${result.evidenceArtifacts[0]?.hash.slice(0, 16)}...`);
 	}
 
 	lines.push(SEPARATOR);

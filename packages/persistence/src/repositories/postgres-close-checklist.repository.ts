@@ -12,7 +12,7 @@ import {
 	closeChecklists,
 	closeGates,
 } from "@drenyra/persistence/schema";
-import { and, asc, count, desc, eq, sql } from "drizzle-orm";
+import { and, asc, desc, eq, sql } from "drizzle-orm";
 
 const rowToRecord = (
 	row: typeof closeChecklists.$inferSelect,

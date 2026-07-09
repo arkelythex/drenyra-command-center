@@ -194,12 +194,12 @@ describe("createSwarmOrchestratorFromAgents", () => {
 		// custos requires approval (approvalRequired: true)
 		const custosDomain = domains.find((d) => d.id === "custos");
 		expect(custosDomain).toBeDefined();
-		expect(custosDomain!.agentId).toBe("vulnerability-manager-agent");
+		expect(custosDomain?.agentId).toBe("vulnerability-manager-agent");
 
 		// regula requires approval (approvalRequired: true)
 		const regulaDomain = domains.find((d) => d.id === "regula");
 		expect(regulaDomain).toBeDefined();
-		expect(regulaDomain!.agentId).toContain("sunat-compliance-agent");
+		expect(regulaDomain?.agentId).toContain("sunat-compliance-agent");
 	});
 });
 
@@ -269,7 +269,7 @@ describe("multi-agent financial assignment", () => {
 
 		const regula = domains.find((d) => d.id === "regula");
 		expect(regula).toBeDefined();
-		const ids = regula!.agentId.split(",");
+		const ids = regula?.agentId.split(",");
 		expect(ids).toContain("sunat-compliance-agent");
 		expect(ids).toContain("spot-calculator-agent");
 	});
@@ -281,7 +281,7 @@ describe("multi-agent financial assignment", () => {
 
 		const cerno = domains.find((d) => d.id === "cerno");
 		expect(cerno).toBeDefined();
-		const ids = cerno!.agentId.split(",");
+		const ids = cerno?.agentId.split(",");
 		expect(ids).toContain("invoice-processor-agent");
 		expect(ids).toContain("banking-reconciliation-agent");
 	});
@@ -293,7 +293,7 @@ describe("multi-agent financial assignment", () => {
 
 		const lumen = domains.find((d) => d.id === "lumen");
 		expect(lumen).toBeDefined();
-		const ids = lumen!.agentId.split(",");
+		const ids = lumen?.agentId.split(",");
 		expect(ids).toContain("financial-analyzer-agent");
 		expect(ids).toContain("tax-optimizer-agent");
 	});
@@ -306,7 +306,7 @@ describe("multi-agent financial assignment", () => {
 		const capsa = domains.find((d) => d.id === "capsa");
 		// capsa may be unassigned if no matching agent remains after Phase 1
 		if (capsa) {
-			const ids = capsa!.agentId.split(",");
+			const ids = capsa?.agentId.split(",");
 			expect(ids).not.toContain("tax-optimizer-agent");
 		}
 	});

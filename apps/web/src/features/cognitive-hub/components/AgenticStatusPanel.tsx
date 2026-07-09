@@ -1,4 +1,4 @@
-import { Bot, Clock3, ShieldCheck, Sparkles } from "lucide-react";
+import { Clock3, ShieldCheck, Sparkles } from "lucide-react";
 import type { AccountingJobRunView } from "../hooks/useAccountingJobRuns";
 
 interface AgenticStatusPanelProps {

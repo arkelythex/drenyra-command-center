@@ -226,7 +226,7 @@ describe("AISettings Entity", () => {
 		it("should return correct character count", () => {
 			const settings = AISettings.create(validProps);
 			expect(settings.getCharacterCount()).toBe(
-				validProps.customSystemIndicator!.length,
+				validProps.customSystemIndicator?.length,
 			);
 		});
 
@@ -241,7 +241,7 @@ describe("AISettings Entity", () => {
 		it("should return correct remaining characters", () => {
 			const settings = AISettings.create(validProps);
 			const expected =
-				AI_SETTINGS_MAX_CHARS - validProps.customSystemIndicator!.length;
+				AI_SETTINGS_MAX_CHARS - validProps.customSystemIndicator?.length;
 			expect(settings.getRemainingCharacters()).toBe(expected);
 		});
 	});

@@ -145,7 +145,7 @@ function SkeletonCard() {
 export function ThreadList() {
 	const navigate = useNavigate();
 	const { companyContext } = useActiveCompanyContext();
-	const companyId = companyContext?.companyId ?? "";
+	const _companyId = companyContext?.companyId ?? "";
 
 	// ── Filters ────────────────────────────────────────────────────────────
 	const [search, setSearch] = useState("");

@@ -315,7 +315,7 @@ function findBestAgentForDomain(
  * @returns A configured LatinModernoOrchestrator ready for `enableSwarmMode()`.
  */
 export function createSwarmOrchestrator(
-	approvalGate: ApprovalGateEngine,
+	_approvalGate: ApprovalGateEngine,
 ): LatinModernoOrchestrator {
 	const registeredAgents = getAllRegisteredAgents();
 	const assigned = new Set<string>();
@@ -398,7 +398,7 @@ export function createSwarmOrchestrator(
  */
 export function createSwarmOrchestratorFromAgents(
 	agents: Agent[],
-	approvalGate?: ApprovalGateEngine,
+	_approvalGate?: ApprovalGateEngine,
 ): LatinModernoOrchestrator {
 	const assigned = new Set<string>();
 	const phase1DomainAgents = new Map<LatinAgentId, Agent[]>();
@@ -503,7 +503,7 @@ export function getLatinAgentMapping(): Array<{
  * Create a permissive ApprovalGateEngine that auto-approves all actions.
  * Used as default when no explicit engine is provided (e.g., in tests).
  */
-function createPermissiveApprovalGate(): ApprovalGateEngine {
+function _createPermissiveApprovalGate(): ApprovalGateEngine {
 	return new ApprovalGateEngine(new ApprovalStore(), async () => ({
 		valid: true,
 		reasons: [],

@@ -4,7 +4,7 @@
  * @module __tests__/services/error-recovery
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // vi.mock is hoisted, so declarative mock fns must use vi.hoisted()
 const {

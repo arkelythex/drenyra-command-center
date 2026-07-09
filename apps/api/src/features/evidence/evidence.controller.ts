@@ -4,7 +4,6 @@ import {
 	ListPendingClassificationHandler,
 	RegisterEvidenceHandler,
 } from "@drenyra/application/features/evidence";
-import { Evidence } from "@drenyra/domain";
 import { evidenceRepository } from "./infrastructure/evidence-repository.adapter";
 import type {
 	ClassifyEvidenceBody,
@@ -15,7 +14,7 @@ import type {
 const registerHandler = new RegisterEvidenceHandler(evidenceRepository);
 const getEvidenceHandler = new GetEvidenceHandler(evidenceRepository);
 const timelineHandler = new GetEvidenceTimelineHandler(evidenceRepository);
-const listHandler = new ListPendingClassificationHandler(evidenceRepository);
+const _listHandler = new ListPendingClassificationHandler(evidenceRepository);
 
 export const evidenceController = {
 	async upload(body: UploadEvidenceBody) {

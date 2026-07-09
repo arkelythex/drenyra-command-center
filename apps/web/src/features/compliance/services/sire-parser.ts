@@ -1,7 +1,7 @@
 import { simulateLatency } from "@/lib/simulated-latency";
 import type { SireRecord } from "../types/sire.types";
 
-export const parseSireFile = async (file: File): Promise<SireRecord[]> => {
+export const parseSireFile = async (_file: File): Promise<SireRecord[]> => {
 	// En producción, esto leería el File real con FileReader
 	// Simulamos un delay y retornamos datos mock de "Propuesta SUNAT"
 

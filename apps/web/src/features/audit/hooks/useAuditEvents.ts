@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { type AuditEvent, auditApi } from "../api/audit.api";
+import { auditApi } from "../api/audit.api";
 
 export const auditKeys = {
 	all: ["audit-events"] as const,

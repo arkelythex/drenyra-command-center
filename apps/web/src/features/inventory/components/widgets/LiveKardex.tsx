@@ -1,4 +1,3 @@
-import { History } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Movement } from "../../types/inventory.types";
 

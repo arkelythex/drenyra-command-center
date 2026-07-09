@@ -643,7 +643,7 @@ describe("ChatContextPanel", () => {
 				'[class*="h-full"][class*="rounded-full"]',
 			);
 			expect(bar).toBeInTheDocument();
-			expect(bar!.className).toContain("color-success");
+			expect(bar?.className).toContain("color-success");
 		});
 
 		it("muestra el contador de aprobaciones pendientes cuando pendingApprovalsCount > 0", () => {

@@ -3,7 +3,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { buildDocumentsModule } from "../..";
 import type {
 	DocumentResponseDTO,
-	DocumentRow,
 	DocumentStorePort,
 } from "../../ports/document-store.port";
 

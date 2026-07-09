@@ -1,5 +1,5 @@
 import type { ContextRegistrySurfaceDTO } from "@drenyra/application";
-import { ShieldCheck, Sparkles, Workflow } from "lucide-react";
+import { ShieldCheck, Workflow } from "lucide-react";
 import { useAccountingJobRuns } from "../../hooks/useAccountingJobRuns";
 import { useAccountingJobsCatalog } from "../../hooks/useAccountingJobsCatalog";
 

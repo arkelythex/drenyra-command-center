@@ -70,7 +70,7 @@ function successResponse<T>(data: T, meta?: Record<string, unknown>) {
 	};
 }
 
-function errorResponse(code: string, message: string, details?: unknown) {
+function _errorResponse(code: string, message: string, details?: unknown) {
 	return {
 		success: false,
 		error: { code, message, details },

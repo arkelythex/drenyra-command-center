@@ -9,7 +9,6 @@ import {
 	type DetraccionStatus,
 } from "@drenyra/domain/accounting/detraccion";
 import type { DetractionRepository } from "@drenyra/domain/repositories/detraction.repository";
-import { Money } from "@drenyra/domain/value-objects/Money";
 import { db } from "@drenyra/persistence/client";
 import { detractions } from "@drenyra/persistence/schema";
 import { and, between, eq, sql } from "drizzle-orm";

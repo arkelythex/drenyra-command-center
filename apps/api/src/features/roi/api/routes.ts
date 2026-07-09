@@ -8,7 +8,7 @@
  * POST /api/fiscal/roi/scenario
  */
 
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
 import { roiService } from "../application/services/roi.service";
 import {
 	IrrInput,

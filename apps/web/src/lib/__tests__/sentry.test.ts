@@ -51,10 +51,10 @@ describe("initSentry", () => {
 		);
 
 		expect(result).not.toBeNull();
-		expect(result!.reactErrorHandlers).toBeDefined();
-		expect(result!.reactErrorHandlers.onUncaughtError).toBeDefined();
-		expect(result!.reactErrorHandlers.onCaughtError).toBeDefined();
-		expect(result!.reactErrorHandlers.onRecoverableError).toBeDefined();
+		expect(result?.reactErrorHandlers).toBeDefined();
+		expect(result?.reactErrorHandlers.onUncaughtError).toBeDefined();
+		expect(result?.reactErrorHandlers.onCaughtError).toBeDefined();
+		expect(result?.reactErrorHandlers.onRecoverableError).toBeDefined();
 	});
 
 	it("returns null when monitoring is disabled", async () => {

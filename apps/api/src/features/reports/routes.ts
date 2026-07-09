@@ -52,7 +52,7 @@ export const reportsModule = new Elysia({ prefix: "/api/reports" })
 
 			try {
 				const result = await getProfitLoss(
-					companyContext!.companyId,
+					companyContext?.companyId,
 					parsed.data.startDate,
 					parsed.data.endDate,
 				);
@@ -86,7 +86,7 @@ export const reportsModule = new Elysia({ prefix: "/api/reports" })
 
 			try {
 				const result = await getBalanceSheet(
-					companyContext!.companyId,
+					companyContext?.companyId,
 					parsed.data.asOfDate,
 				);
 				const contract = BalanceSheetReportSchema.safeParse(result);
@@ -118,7 +118,7 @@ export const reportsModule = new Elysia({ prefix: "/api/reports" })
 
 			try {
 				const result = await getCashFlow(
-					companyContext!.companyId,
+					companyContext?.companyId,
 					parsed.data.startDate,
 					parsed.data.endDate,
 				);
@@ -152,7 +152,7 @@ export const reportsModule = new Elysia({ prefix: "/api/reports" })
 
 			try {
 				const result = await getSalesByCustomer(
-					companyContext!.companyId,
+					companyContext?.companyId,
 					parsed.data.startDate,
 					parsed.data.endDate,
 				);

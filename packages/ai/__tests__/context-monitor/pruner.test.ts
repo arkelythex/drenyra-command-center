@@ -9,7 +9,7 @@
  * @module __tests__/context-monitor
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
 	ContextPruner,
 	createContextPruner,

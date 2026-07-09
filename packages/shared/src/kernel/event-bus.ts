@@ -47,7 +47,7 @@ export class EventBus {
 		if (!this.handlers.has(type)) {
 			this.handlers.set(type, new Set());
 		}
-		this.handlers.get(type)!.add(handler);
+		this.handlers.get(type)?.add(handler);
 	}
 
 	/**
@@ -57,7 +57,7 @@ export class EventBus {
 		if (!this.onceHandlers.has(type)) {
 			this.onceHandlers.set(type, new Set());
 		}
-		this.onceHandlers.get(type)!.add(handler);
+		this.onceHandlers.get(type)?.add(handler);
 	}
 
 	/**

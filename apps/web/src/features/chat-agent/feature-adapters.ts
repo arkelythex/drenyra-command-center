@@ -50,14 +50,14 @@ export const APPROVAL_ADAPTER: FeatureAdapter = {
 			return {
 				featureId: "approval",
 				confidence: 0.95,
-				params: { action: "approve", id: m[1]!.toUpperCase() },
+				params: { action: "approve", id: m[1]?.toUpperCase() },
 			};
 		m = input.match(/^rechaza\s+(rec-\d+)(?:\s+--motivo\s+(.+))?/i);
 		if (m)
 			return {
 				featureId: "approval",
 				confidence: 0.95,
-				params: { action: "reject", id: m[1]!.toUpperCase(), motivo: m[2] },
+				params: { action: "reject", id: m[1]?.toUpperCase(), motivo: m[2] },
 			};
 		if (/^(qué\s+)?(hay\s+)?pendientes|recomendaciones/i.test(input))
 			return {
@@ -70,7 +70,7 @@ export const APPROVAL_ADAPTER: FeatureAdapter = {
 			return {
 				featureId: "approval",
 				confidence: 0.9,
-				params: { action: "detail", id: m[2]!.toUpperCase() },
+				params: { action: "detail", id: m[2]?.toUpperCase() },
 			};
 		return null;
 	},

@@ -42,7 +42,7 @@ function findBestAgentForDomain(
 }
 
 export function createSwarmOrchestrator(
-	approvalGate: ApprovalGateEngine,
+	_approvalGate: ApprovalGateEngine,
 ): LatinModernoOrchestrator {
 	const registeredAgents = getAllRegisteredAgents();
 	const assigned = new Set<string>();
@@ -120,7 +120,7 @@ export function createSwarmOrchestratorFromAgents(
 	const assigned = new Set<string>();
 	const phase1DomainAgents = new Map<LatinAgentId, Agent[]>();
 	const orchestrator = new LatinModernoOrchestrator({ mode: "hierarchy" });
-	const resolvedGate = approvalGate ?? createPermissiveApprovalGate();
+	const _resolvedGate = approvalGate ?? createPermissiveApprovalGate();
 
 	for (const [agentId, domainId] of Object.entries(FINANCIAL_AGENT_MAP)) {
 		const agent = agents.find((a) => a.id === agentId);

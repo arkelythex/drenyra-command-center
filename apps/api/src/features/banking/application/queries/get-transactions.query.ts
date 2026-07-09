@@ -1,4 +1,3 @@
-import type { IBankingRepository } from "../../domain/ports/banking-repository.port";
 import type { TransactionFilters } from "../../domain/types";
 import type { BankTransactionRecord } from "../../infrastructure/banking.repository";
 import { bankingRepository } from "../../infrastructure/banking.repository";

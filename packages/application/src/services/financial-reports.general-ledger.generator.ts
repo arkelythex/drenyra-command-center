@@ -32,10 +32,10 @@ export class GeneralLedgerGenerator {
 		const accounts = Array.from(byAccount.entries()).map(
 			([code, acctEntries]) => {
 				const startingBalance =
-					acctEntries.length > 0 ? acctEntries[0]!.balance : 0;
+					acctEntries.length > 0 ? acctEntries[0]?.balance : 0;
 				const endingBalance =
 					acctEntries.length > 0
-						? acctEntries[acctEntries.length - 1]!.balance
+						? acctEntries[acctEntries.length - 1]?.balance
 						: 0;
 				return {
 					accountCode: code,

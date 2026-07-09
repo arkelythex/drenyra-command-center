@@ -6,10 +6,9 @@ import {
 	FileText,
 	Loader2,
 	Search,
-	Sparkles,
 	Upload,
 } from "lucide-react";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { MobileTabNavigation } from "@/components/layout/MobileTabNavigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -48,7 +47,7 @@ export const InboxView = () => {
 	const [isUploading, setIsUploading] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	const handleFileUpload = async (file: File) => {
+	const _handleFileUpload = async (file: File) => {
 		setIsUploading(true);
 		try {
 			const res = await uploadFile(file);

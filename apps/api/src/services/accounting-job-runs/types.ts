@@ -3,7 +3,6 @@ import {
 	type ContextApprovalState,
 	type ContextEvaluationSummaryDTO,
 	type ContextPolicySelectionResponseDTO,
-	type ContextRunStateDTO,
 	type ContextTraceRecordDTO,
 } from "@drenyra/application";
 import type { KnowledgeSourceReference } from "@drenyra/infrastructure/services/sunat-knowledge";

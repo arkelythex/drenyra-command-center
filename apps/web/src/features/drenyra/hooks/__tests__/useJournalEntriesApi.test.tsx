@@ -141,7 +141,7 @@ describe("useJournalEntriesApi", () => {
 			await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
 			expect(result.current.data).toHaveLength(1);
-			expect(result.current.data![0]).toMatchObject({
+			expect(result.current.data?.[0]).toMatchObject({
 				id: "je-1",
 				entryNumber: "000001-2026",
 				gloss: "Apertura",
@@ -354,7 +354,7 @@ describe("useJournalEntriesApi", () => {
 			await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
 			expect(result.current.data).toHaveLength(1);
-			expect(result.current.data![0]).toMatchObject({
+			expect(result.current.data?.[0]).toMatchObject({
 				status: "borrador",
 				gloss: "Pending entry",
 			});

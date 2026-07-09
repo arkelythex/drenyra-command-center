@@ -1,10 +1,6 @@
-import type {
-	DrenyraBrainItem,
-	DrenyraBrainThread,
-	DrenyraBrainTurn,
-} from "@drenyra/domain/drenyra";
+import type { DrenyraBrainItem } from "@drenyra/domain/drenyra";
 import { render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { ApiError } from "@/lib/api-helpers";
 import { createBrainThread, startBrainTurn } from "../api/drenyra-brain.api";
 import { BrainThreadTimeline } from "./brain-thread-timeline";

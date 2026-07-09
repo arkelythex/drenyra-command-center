@@ -1,5 +1,4 @@
 import { describe, expect, it, mock } from "bun:test";
-import type { ModelCapability } from "@drenyra/ai/providers/model-router-types";
 import type { RoutingAuditLogRepository } from "@drenyra/domain/repositories/model-registration.repository";
 import { FallbackExecutor } from "../fallback-executor";
 import type {

@@ -123,7 +123,7 @@ export class RetryEngine {
 		error: AgentError,
 		workflowState?: string,
 		batchId?: string,
-		input?: unknown,
+		_input?: unknown,
 	): Promise<void> {
 		const now = new Date();
 		const retryDelay = error.type === "TRANSIENT" ? 5000 : 30000; // 5s for transient, 30s for unknown

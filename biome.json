@@ -145,7 +145,11 @@
       "linter": {
         "rules": {
           "suspicious": {
-            "noConsole": "off"
+            "noConsole": "off",
+            "noExplicitAny": "warn"
+          },
+          "complexity": {
+            "noExcessiveCognitiveComplexity": "warn"
           }
         }
       }
@@ -165,6 +169,9 @@
           },
           "complexity": {
             "noExcessiveCognitiveComplexity": "off"
+          },
+          "style": {
+            "noNonNullAssertion": "warn"
           }
         }
       }

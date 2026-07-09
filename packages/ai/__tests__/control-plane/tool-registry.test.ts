@@ -94,7 +94,7 @@ const validTool: ToolRegistration = {
 	approvalLevel: "auto",
 };
 
-const fiscalTool: ToolRegistration = {
+const _fiscalTool: ToolRegistration = {
 	name: "sunat-submitter",
 	description: "Submits documents to SUNAT",
 	riskTier: "T3" as RiskTier,
@@ -214,7 +214,7 @@ describe("ToolRegistry", () => {
 
 			const result = await registry.getTool("test-analyzer");
 			expect(result).toBeDefined();
-			expect(result!.name).toBe("test-analyzer");
+			expect(result?.name).toBe("test-analyzer");
 
 			// Cache hit — select was not called
 			expect(spy).not.toHaveBeenCalled();

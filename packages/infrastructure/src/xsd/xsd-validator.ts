@@ -25,7 +25,7 @@ import type {
 	XsdValidationError,
 	XsdValidationResult,
 } from "./types";
-import { UBL_DOCUMENT_NAMESPACES, UBL_NAMESPACE_PREFIXES } from "./types";
+import { UBL_DOCUMENT_NAMESPACES } from "./types";
 import {
 	extractNamespaceMap,
 	resolvePrefixedElement,

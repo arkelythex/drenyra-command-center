@@ -16,7 +16,7 @@ import {
 	type NewCircuitBreakerState,
 	type NewFailedAgentItem,
 } from "@drenyra/persistence/schema";
-import { and, lte, sql } from "drizzle-orm";
+import { and, sql } from "drizzle-orm";
 
 // ─── Circuit Breaker Repository ───────────────────────────────────────────────
 

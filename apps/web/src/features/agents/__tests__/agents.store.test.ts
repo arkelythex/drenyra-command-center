@@ -1,7 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { useAgentsWindowStore } from "../agents.store";
-import type { AgentFilters } from "../agents.types";
 
 function createStore() {
 	return renderHook(() => useAgentsWindowStore());

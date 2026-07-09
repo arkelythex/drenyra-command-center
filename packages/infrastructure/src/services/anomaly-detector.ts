@@ -80,7 +80,7 @@ export class AnomalyDetector {
 		for (const tx of transactions) {
 			if (!tx.vendorTaxId) continue;
 			if (!byTaxId.has(tx.vendorTaxId)) byTaxId.set(tx.vendorTaxId, new Set());
-			if (tx.vendorName) byTaxId.get(tx.vendorTaxId)!.add(tx.vendorName);
+			if (tx.vendorName) byTaxId.get(tx.vendorTaxId)?.add(tx.vendorName);
 		}
 
 		const anomalies: Anomaly[] = [];
@@ -109,7 +109,7 @@ export class AnomalyDetector {
 			if (!tx.vendorName) continue;
 			const key = `${tx.vendorName}:${tx.amount}`;
 			if (!byVendorAmount.has(key)) byVendorAmount.set(key, []);
-			byVendorAmount.get(key)!.push(tx);
+			byVendorAmount.get(key)?.push(tx);
 		}
 
 		return [...byVendorAmount.entries()]
@@ -117,7 +117,7 @@ export class AnomalyDetector {
 			.map(([key, txs]) => ({
 				type: "CIRCULAR_AMOUNT" as const,
 				severity: (txs.length >= 5 ? "HIGH" : "MEDIUM") as "HIGH" | "MEDIUM",
-				transactionId: txs[0]!.id,
+				transactionId: txs[0]?.id,
 				description: `${txs.length} transactions with same vendor and amount: ${key}`,
 				details: {
 					count: txs.length,

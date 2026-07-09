@@ -145,11 +145,11 @@ export class NATSEventBus implements EventBusPort {
 
 		try {
 			// Create JetStream consumer
-			const opts = NATS!.consumerOpts();
+			const opts = NATS?.consumerOpts();
 			opts.durable(consumerName);
 			opts.deliverAll(); // Deliver all messages (or use deliverNew for new only)
 			opts.ackExplicit(); // Require explicit acknowledgment
-			opts.deliverTo(NATS!.createInbox());
+			opts.deliverTo(NATS?.createInbox());
 
 			if (queue) {
 				opts.queue(queue); // Load balancing

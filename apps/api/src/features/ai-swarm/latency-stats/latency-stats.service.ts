@@ -13,10 +13,7 @@ import {
 	type LatencySummary,
 	type LatencyTrend,
 } from "@drenyra/ai/services/ai-latency";
-import {
-	type AiLatencyEvent,
-	aiLatencyEvents,
-} from "@drenyra/persistence/schema";
+import { type AiLatencyEvent } from "@drenyra/persistence/schema";
 
 /**
  * LatencyStatsService class.

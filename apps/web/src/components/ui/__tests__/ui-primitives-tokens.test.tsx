@@ -139,8 +139,8 @@ describe("UI primitives component tokens", () => {
 		// The trigger is rendered — confirm it carries token classes
 		const trigger = container.querySelector('[aria-label="Seleccionar mes"]');
 		expect(trigger).toBeTruthy();
-		expect(trigger!.className).toContain("var(--akx-select-trigger-bg)");
-		expect(trigger!.className).toContain("var(--akx-select-trigger-border)");
+		expect(trigger?.className).toContain("var(--akx-select-trigger-bg)");
+		expect(trigger?.className).toContain("var(--akx-select-trigger-border)");
 	});
 
 	it("maps dialog content styles to akx dialog tokens", () => {

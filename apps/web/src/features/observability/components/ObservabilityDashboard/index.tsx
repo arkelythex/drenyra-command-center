@@ -72,7 +72,7 @@ export function ObservabilityDashboard() {
 	const { data: batches, isLoading: batchesLoading } = useBatches();
 	const { data: batchDetail, isLoading: batchDetailLoading } =
 		useBatchDetail(selectedBatchId);
-	const submitBatch = useSubmitBatch();
+	const _submitBatch = useSubmitBatch();
 	const cancelBatchMutation = useCancelBatch();
 
 	const handleCancelBatch = useCallback(

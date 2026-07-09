@@ -12,7 +12,7 @@
  * @module scripts/validate-openapi-tags
  */
 
-import { readFileSync, readdirSync, existsSync } from "fs";
+import { readFileSync, readdirSync } from "fs";
 import { join, relative } from "path";
 
 const API_SRC = join(import.meta.dir, "..", "src");
@@ -96,7 +96,7 @@ function main(): { code: number } {
 	}
 
 	// Remove known non-route tags (zod schemas, entity tags, etc.)
-	const knownDataFields = [
+	const _knownDataFields = [
 		"tags", // zod `tags: z.array(...)`
 		"tags: body.tags", // entity field
 		"tags: cmd.tags",

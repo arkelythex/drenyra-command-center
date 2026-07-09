@@ -68,8 +68,12 @@ export const chatHistoryRoutes = new Elysia({
 			}
 
 			const timestamps = incomingMessages.map((m) => new Date(m.timestamp));
-			const minTime = new Date(Math.min(...timestamps.map((t) => t.getTime())));
-			const maxTime = new Date(Math.max(...timestamps.map((t) => t.getTime())));
+			const _minTime = new Date(
+				Math.min(...timestamps.map((t) => t.getTime())),
+			);
+			const _maxTime = new Date(
+				Math.max(...timestamps.map((t) => t.getTime())),
+			);
 
 			let sessionId: string;
 

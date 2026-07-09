@@ -16,7 +16,7 @@ describe("classifier", () => {
 		});
 		expect(result.confidence).toBeLessThan(0.7);
 		expect(result.suggestions).toBeDefined();
-		expect(result.suggestions!.length).toBeGreaterThan(0);
+		expect(result.suggestions?.length).toBeGreaterThan(0);
 	});
 
 	it("returns unknown for irrelevant query", async () => {

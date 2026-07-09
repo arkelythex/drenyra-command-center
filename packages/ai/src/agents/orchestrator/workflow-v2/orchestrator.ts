@@ -764,7 +764,7 @@ export class WorkflowOrchestratorV2 {
 				const result = await this.validatorAgent.process({
 					proposedInvoice: bestSource!,
 					complianceYear: 2026,
-					invoiceType: bestSource!.invoiceType || "01",
+					invoiceType: bestSource?.invoiceType || "01",
 				});
 
 				this.eventBus.emit({
@@ -1277,7 +1277,7 @@ export class WorkflowOrchestratorV2 {
 		runId: string,
 		input: ReaderInput,
 		result: ProcessedInvoice,
-		previousWorkflowState: string,
+		_previousWorkflowState: string,
 		recoveryStartTime: number,
 	): WorkflowContext {
 		const endTime = new Date();
@@ -1439,7 +1439,7 @@ export class WorkflowOrchestratorV2 {
 	}
 
 	private createSuccessResult(
-		processId: string,
+		_processId: string,
 		context: WorkflowContext,
 		invoiceData: InvoiceData,
 		xmlContent: string,
@@ -1456,7 +1456,7 @@ export class WorkflowOrchestratorV2 {
 	}
 
 	private createFailedResult(
-		processId: string,
+		_processId: string,
 		context: WorkflowContext,
 		error: Error,
 	): ProcessedInvoice {

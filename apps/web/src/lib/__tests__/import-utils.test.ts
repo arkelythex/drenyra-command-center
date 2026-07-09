@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import type { Delimiter } from "../import-utils";
 import {
 	BANK_FORMATS,
 	detectDelimiter,

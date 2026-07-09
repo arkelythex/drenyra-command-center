@@ -29,7 +29,7 @@ export class SunatCdcService {
 		handler: (event: SunatCdcEvent) => Promise<void>,
 	): void {
 		if (!this.handlers.has(type)) this.handlers.set(type, []);
-		this.handlers.get(type)!.push(handler);
+		this.handlers.get(type)?.push(handler);
 	}
 
 	/**

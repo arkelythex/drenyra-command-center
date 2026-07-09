@@ -33,8 +33,8 @@ describe("approval-store", () => {
 
 		const retrieved = approvalStore.get("REC-001");
 		expect(retrieved).toBeDefined();
-		expect(retrieved!.id).toBe("REC-001");
-		expect(retrieved!.status).toBe("pending");
+		expect(retrieved?.id).toBe("REC-001");
+		expect(retrieved?.status).toBe("pending");
 	});
 
 	it("approves a pending recommendation", () => {
@@ -43,9 +43,9 @@ describe("approval-store", () => {
 
 		const approved = approvalStore.approve("REC-001", "contador@drenyra");
 		expect(approved).toBeDefined();
-		expect(approved!.status).toBe("approved");
-		expect(approved!.aprobadoPor).toBe("contador@drenyra");
-		expect(approved!.aprobadoEn).toBeDefined();
+		expect(approved?.status).toBe("approved");
+		expect(approved?.aprobadoPor).toBe("contador@drenyra");
+		expect(approved?.aprobadoEn).toBeDefined();
 	});
 
 	it("rejects a pending recommendation", () => {
@@ -58,8 +58,8 @@ describe("approval-store", () => {
 			"período incorrecto",
 		);
 		expect(rejected).toBeDefined();
-		expect(rejected!.status).toBe("rejected");
-		expect(rejected!.motivoRechazo).toBe("período incorrecto");
+		expect(rejected?.status).toBe("rejected");
+		expect(rejected?.motivoRechazo).toBe("período incorrecto");
 	});
 
 	it("returns undefined when approving unknown recommendation", () => {
@@ -78,7 +78,7 @@ describe("approval-store", () => {
 
 		const pending = approvalStore.list({ status: "pending" });
 		expect(pending).toHaveLength(1);
-		expect(pending[0]!.id).toBe("REC-001");
+		expect(pending[0]?.id).toBe("REC-001");
 	});
 
 	it("filters by RUC", () => {
@@ -111,7 +111,7 @@ describe("approval-store", () => {
 
 		const history = approvalStore.getHistory();
 		expect(history).toHaveLength(1);
-		expect(history[0]!.action).toBe("approve");
-		expect(history[0]!.userId).toBe("contador@drenyra");
+		expect(history[0]?.action).toBe("approve");
+		expect(history[0]?.userId).toBe("contador@drenyra");
 	});
 });

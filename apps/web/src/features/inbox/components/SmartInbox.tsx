@@ -1,5 +1,4 @@
 import { Check, Filter, Inbox, Search } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { type InboxTab, useInbox } from "../hooks/useInbox";

@@ -22,7 +22,7 @@
           }
           document.documentElement.classList.add(isDark ? 'dark' : 'light')
           document.documentElement.style.colorScheme = isDark ? 'dark' : 'light'
-        } catch (e) {
+        } catch (_e) {
           document.documentElement.classList.add('dark')
         }
       })()

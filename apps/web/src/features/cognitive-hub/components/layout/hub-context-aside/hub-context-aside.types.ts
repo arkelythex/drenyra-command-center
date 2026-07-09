@@ -1,6 +1,5 @@
 import type { KnowledgeDocument } from "@/features/agent-swarm/hooks/useKnowledgeStore";
 import type { AccountingSkill } from "@/features/agent-swarm/types/skills.types";
-import type { AccountingJobRunView } from "../../../lib/accounting-job-run-utils";
 
 export type RunFilter = "ALL" | "AWAITING_APPROVAL" | "RUNNING" | "COMPLETED";
 

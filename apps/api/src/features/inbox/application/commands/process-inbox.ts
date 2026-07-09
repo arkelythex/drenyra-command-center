@@ -13,7 +13,6 @@ import {
 	InvoiceOrchestrator,
 } from "../../inbox.orchestrator";
 import { createInboxSseStream } from "../../inbox.sse";
-import type { InboxSseEvent } from "../../inbox.types";
 
 export interface ProcessInboxInput {
 	companyId: string;

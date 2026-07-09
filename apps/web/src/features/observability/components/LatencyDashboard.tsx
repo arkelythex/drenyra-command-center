@@ -26,7 +26,6 @@ import {
 	Zap,
 } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -74,7 +73,7 @@ function formatDate(date: string): string {
 	}).format(d);
 }
 
-function truncateId(id: string, len = 12): string {
+function _truncateId(id: string, len = 12): string {
 	if (id.length <= len) return id;
 	return `${id.slice(0, 8)}…`;
 }

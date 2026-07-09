@@ -133,7 +133,7 @@ const INITIAL_PROJECTS: Project[] = [
 class ThreadManager {
 	threads: Thread[] = [...INITIAL_THREADS];
 	projects: Project[] = [...INITIAL_PROJECTS];
-	activeThreadId: string = INITIAL_THREADS[0]!.id;
+	activeThreadId: string = INITIAL_THREADS[0]?.id;
 	private listeners = new Set<Listener>();
 
 	subscribe(listener: Listener): () => void {

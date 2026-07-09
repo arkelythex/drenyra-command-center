@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { extractOkDataOrPassthrough, unwrap } from "@/lib/api-helpers";
+import { unwrap } from "@/lib/api-helpers";
 import { registerClient } from "@/lib/treaty-route-client";
 
 /** Eden treaty client for /api/bills routes */

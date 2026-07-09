@@ -1,6 +1,5 @@
 import type { CloseChecklistRepository } from "@drenyra/domain/repositories/close-checklist.repository";
 import { PostgresCloseChecklistRepository } from "@drenyra/persistence";
-import { Elysia } from "elysia";
 import { createMonthlyCloseRoutes } from "./routes";
 
 export function createMonthlyCloseModule(repo: CloseChecklistRepository) {

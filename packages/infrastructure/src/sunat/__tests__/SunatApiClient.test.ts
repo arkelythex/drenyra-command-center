@@ -6,7 +6,7 @@ function setupEnv() {
 	process.env.SUNAT_CLIENT_SECRET = "test-client-secret";
 }
 
-function teardownEnv() {
+function _teardownEnv() {
 	delete process.env.SUNAT_CLIENT_ID;
 	delete process.env.SUNAT_CLIENT_SECRET;
 }

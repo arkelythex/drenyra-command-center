@@ -112,7 +112,7 @@ describe("ToolRegistry — Zod schema integration", () => {
 
 		// Verify auto-conversion happened
 		expect(insertedValues).toBeDefined();
-		const stored = insertedValues!.inputSchema as Record<string, unknown>;
+		const stored = insertedValues?.inputSchema as Record<string, unknown>;
 		expect(stored).toBeDefined();
 		expect(stored.type).toBe("object");
 		expect(stored.properties).toBeDefined();
@@ -162,7 +162,7 @@ describe("ToolRegistry — Zod schema integration", () => {
 			zodSchema: emptyRecordSchema,
 		});
 
-		const stored = insertedValues!.inputSchema as Record<string, unknown>;
+		const stored = insertedValues?.inputSchema as Record<string, unknown>;
 		expect(stored.type).toBe("object");
 		expect(stored.properties).toEqual({});
 		expect(stored.additionalProperties).toBe(false);
@@ -207,7 +207,7 @@ describe("ToolRegistry — Zod schema integration", () => {
 			inputSchema: rawSchema,
 		});
 
-		const stored = insertedValues!.inputSchema as Record<string, unknown>;
+		const stored = insertedValues?.inputSchema as Record<string, unknown>;
 		// Should be stored as-is (exact same object)
 		expect(stored).toEqual(rawSchema);
 		// Should NOT have auto-converted (no zodSchema present)
@@ -253,7 +253,7 @@ describe("ToolRegistry — Zod schema integration", () => {
 			zodSchema: personSchema,
 		});
 
-		const stored = insertedValues!.inputSchema as Record<string, unknown>;
+		const stored = insertedValues?.inputSchema as Record<string, unknown>;
 		expect(stored.type).toBe("object");
 		const props = stored.properties as Record<string, unknown>;
 		// PersonSchema has name and age (not "old")

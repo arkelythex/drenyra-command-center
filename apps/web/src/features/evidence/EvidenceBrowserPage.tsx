@@ -4,9 +4,8 @@ import type {
 	EvidenceType,
 } from "@drenyra/domain";
 import { Link } from "@tanstack/react-router";
-import { Loader2, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 
 interface EvidenceItem {
 	id: string;

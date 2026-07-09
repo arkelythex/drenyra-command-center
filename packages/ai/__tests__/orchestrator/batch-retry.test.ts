@@ -74,7 +74,7 @@ function createMockRetryEngine() {
 	} as unknown as import("../../src/services/error-recovery").RetryEngine;
 }
 
-function createMockPersistentCircuitBreaker() {
+function _createMockPersistentCircuitBreaker() {
 	return {
 		isAvailable: mockIsAvailable,
 		recordSuccess: mockRecordSuccess,

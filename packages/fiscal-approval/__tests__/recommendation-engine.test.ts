@@ -94,6 +94,6 @@ describe("recommendation-engine", () => {
 		});
 
 		expect(rec.fuentes).toHaveLength(1);
-		expect(rec.fuentes[0]!.serie).toBe("F001");
+		expect(rec.fuentes[0]?.serie).toBe("F001");
 	});
 });

@@ -30,7 +30,7 @@ describe("delegation-router", () => {
 		});
 		expect(result.route).toBe("simple-delegation");
 		expect(result.triggeredBy).toHaveLength(1);
-		expect(result.triggeredBy[0]!.rule).toBe("4-file-rule");
+		expect(result.triggeredBy[0]?.rule).toBe("4-file-rule");
 		expect(result.recommendedSubagent).toBe("worker");
 	});
 
@@ -47,7 +47,7 @@ describe("delegation-router", () => {
 		});
 		expect(result.route).toBe("simple-delegation");
 		expect(result.triggeredBy).toHaveLength(1);
-		expect(result.triggeredBy[0]!.rule).toBe("multi-file-write");
+		expect(result.triggeredBy[0]?.rule).toBe("multi-file-write");
 	});
 
 	it("returns SDD for 4+ file write", () => {

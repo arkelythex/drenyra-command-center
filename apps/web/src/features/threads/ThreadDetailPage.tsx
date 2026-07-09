@@ -9,14 +9,13 @@ import {
 	Clock,
 	Link2,
 	Loader2,
-	MessageSquare,
 	Plus,
 	SkipForward,
 	Unlink,
 	UserMinus,
 	X,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	StatusBadge,
