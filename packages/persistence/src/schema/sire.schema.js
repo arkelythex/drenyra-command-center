@@ -76,4 +76,4 @@ export const sireJobsRelations = relations(sireJobs, ({ one }) => ({
 		references: [sireSubmissions.id],
 	}),
 }));
-//# sourceMappingURL=sire.schema.js.map
+

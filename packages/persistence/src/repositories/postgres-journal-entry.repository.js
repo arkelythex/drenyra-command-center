@@ -218,4 +218,4 @@ export class PostgresJournalEntryRepository {
 		});
 	}
 }
-//# sourceMappingURL=postgres-journal-entry.repository.js.map
+

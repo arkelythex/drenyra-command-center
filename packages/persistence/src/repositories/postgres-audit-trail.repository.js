@@ -59,4 +59,4 @@ export class PostgresAuditTrailRepository {
 			});
 	}
 }
-//# sourceMappingURL=postgres-audit-trail.repository.js.map
+

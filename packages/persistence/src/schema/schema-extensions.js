@@ -5,4 +5,4 @@ const tableProxy = new Proxy(
 	},
 );
 export const accountBalances = tableProxy;
-//# sourceMappingURL=schema-extensions.js.map
+

@@ -59,4 +59,4 @@ export const messagesRelations = relations(messages, ({ one }) => ({
 		references: [chatSessions.id],
 	}),
 }));
-//# sourceMappingURL=chat.schema.js.map
+

@@ -112,4 +112,4 @@ export const aiRouter = new AdaptiveRouter();
 export function logAIOperation(task, cost, duration) {
 	loggers.ai.info("AI operation completed", { task, cost, duration });
 }
-//# sourceMappingURL=router.js.map
+

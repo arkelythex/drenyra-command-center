@@ -51,4 +51,4 @@ export class PostgresChatRepository {
 		return await this.getSessionsByUser(userId);
 	}
 }
-//# sourceMappingURL=chat.repository.js.map
+

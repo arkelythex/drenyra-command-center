@@ -74,4 +74,4 @@ export class PostgresPlatformMcpAuditSink {
 		return rows.map(fromRow);
 	}
 }
-//# sourceMappingURL=postgres-platform-mcp-audit.repository.js.map
+

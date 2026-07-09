@@ -87,4 +87,4 @@ export const customerProfiles = pgTable(
 		),
 	}),
 );
-//# sourceMappingURL=business-partners.schema.js.map
+

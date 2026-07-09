@@ -39,4 +39,4 @@ export const platformMcpAuditEvents = pgTable(
 		),
 	}),
 );
-//# sourceMappingURL=platform-mcp.schema.js.map
+

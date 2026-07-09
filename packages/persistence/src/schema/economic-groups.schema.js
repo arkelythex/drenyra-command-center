@@ -140,4 +140,4 @@ export const interCompanyTransactionsRelations = relations(
 		}),
 	}),
 );
-//# sourceMappingURL=economic-groups.schema.js.map
+

@@ -305,4 +305,4 @@ class CostTracker {
 		return this.totalCost < this.monthlyBudget;
 	}
 }
-//# sourceMappingURL=client.js.map
+

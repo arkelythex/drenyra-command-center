@@ -96,4 +96,4 @@ export class PostgresDetractionRepository {
 		});
 	}
 }
-//# sourceMappingURL=postgres-detraction.repository.js.map
+

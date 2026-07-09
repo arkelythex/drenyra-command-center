@@ -75,4 +75,4 @@ export const fiscalMemoryRevisions = pgTable(
 		memoryIdx: index("fiscal_memory_revisions_memory_idx").on(table.memoryId),
 	}),
 );
-//# sourceMappingURL=fiscal-memory.schema.js.map
+

@@ -72,4 +72,4 @@ export const aiWorkerQueuesRelations = relations(aiWorkerQueues, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
-//# sourceMappingURL=ai-worker-queues.schema.js.map
+

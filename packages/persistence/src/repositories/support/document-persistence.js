@@ -83,4 +83,4 @@ export function mapDocumentRowToEntity(row) {
 		updatedAt: new Date(row.updatedAt),
 	});
 }
-//# sourceMappingURL=document-persistence.js.map
+

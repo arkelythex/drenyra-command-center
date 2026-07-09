@@ -51,4 +51,4 @@ export class PostgresAISettingsRepository {
 		});
 	}
 }
-//# sourceMappingURL=postgres-ai-settings.repository.js.map
+

@@ -144,4 +144,4 @@ export class PostgresEvidenceGraphRepository {
 		return rows.map(mapEdge);
 	}
 }
-//# sourceMappingURL=postgres-evidence-graph.repository.js.map
+

@@ -93,4 +93,4 @@ export class PostgresAccountingPeriodRepository {
 		});
 	}
 }
-//# sourceMappingURL=postgres-accounting-period.repository.js.map
+

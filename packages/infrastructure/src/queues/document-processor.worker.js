@@ -251,4 +251,4 @@ export async function processDocumentSync(data) {
 	};
 	return processDocument(mockJob);
 }
-//# sourceMappingURL=document-processor.worker.js.map
+

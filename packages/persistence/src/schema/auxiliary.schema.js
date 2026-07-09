@@ -140,4 +140,4 @@ export const sunatKnowledgeChunks = pgTable(
 		sourceIdx: index("sunat_knowledge_source_idx").on(table.source),
 	}),
 );
-//# sourceMappingURL=auxiliary.schema.js.map
+

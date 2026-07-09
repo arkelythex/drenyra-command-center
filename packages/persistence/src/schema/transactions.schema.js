@@ -73,4 +73,4 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
 		references: [categories.id],
 	}),
 }));
-//# sourceMappingURL=transactions.schema.js.map
+

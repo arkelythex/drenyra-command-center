@@ -80,4 +80,4 @@ export const inventoryMovementsRelations = relations(
 		}),
 	}),
 );
-//# sourceMappingURL=inventory.schema.js.map
+

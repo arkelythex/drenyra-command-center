@@ -51,4 +51,4 @@ export function decryptFiscalData(encrypted, userPassphrase) {
 	const decrypted = decryptWithPassphrase(encrypted, userPassphrase);
 	return JSON.parse(decrypted);
 }
-//# sourceMappingURL=e2e-encryption.js.map
+

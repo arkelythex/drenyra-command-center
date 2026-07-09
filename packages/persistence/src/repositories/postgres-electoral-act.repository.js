@@ -72,4 +72,4 @@ export class PostgresElectoralActRepository {
 			});
 	}
 }
-//# sourceMappingURL=postgres-electoral-act.repository.js.map
+

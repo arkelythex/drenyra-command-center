@@ -215,4 +215,4 @@ export const paymentsRelations = relations(payments, ({ one }) => ({
 		references: [invoices.id],
 	}),
 }));
-//# sourceMappingURL=invoicing.schema.js.map
+

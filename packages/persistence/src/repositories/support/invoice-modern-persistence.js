@@ -81,4 +81,4 @@ export const mapInvoiceItemToModularInsert = (invoiceId, item) => {
 	};
 };
 export const formatInvoiceAmount = (amount) => formatDecimal(amount);
-//# sourceMappingURL=invoice-modern-persistence.js.map
+

@@ -89,4 +89,4 @@ export function sanitizeMonetaryValue(value, options = {}) {
 		wasRounded: false,
 	};
 }
-//# sourceMappingURL=money.sanitizer.js.map
+

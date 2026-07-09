@@ -169,4 +169,4 @@ export class PostgresFiscalMemoryRepository {
 		return FiscalMemoryRevision.create(props);
 	}
 }
-//# sourceMappingURL=postgres-fiscal-memory.repository.js.map
+

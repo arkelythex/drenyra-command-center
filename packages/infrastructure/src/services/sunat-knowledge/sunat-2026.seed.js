@@ -198,4 +198,4 @@ export const SUNAT_2026_SEED = [
 		effectiveDate: "2020-01-01",
 	},
 ];
-//# sourceMappingURL=sunat-2026.seed.js.map
+

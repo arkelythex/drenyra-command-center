@@ -94,4 +94,4 @@ export function createSafeLikePattern(searchTerm, options) {
 		injectionDetected: sanitized.injectionDetected,
 	};
 }
-//# sourceMappingURL=sql.sanitizer.js.map
+

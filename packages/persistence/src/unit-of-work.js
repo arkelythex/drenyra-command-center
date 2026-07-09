@@ -36,4 +36,4 @@ export function withTransaction(factory) {
 export async function batchQuery(_tx, items, getId = (item) => item.id) {
 	return new Map(items.map((item) => [getId(item), item]));
 }
-//# sourceMappingURL=unit-of-work.js.map
+

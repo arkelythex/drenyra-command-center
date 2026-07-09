@@ -51,4 +51,4 @@ Document: ${document.slice(0, 2000)}`,
 	}
 }
 export const rerankerService = new RerankerService();
-//# sourceMappingURL=reranker.service.js.map
+

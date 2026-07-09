@@ -143,4 +143,4 @@ function fileToBase64(file) {
 		reader.readAsDataURL(file);
 	});
 }
-//# sourceMappingURL=service.js.map
+

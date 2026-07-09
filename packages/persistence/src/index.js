@@ -29,4 +29,4 @@ export { PostgresTransactionRepository } from "./repositories/postgres-transacti
 export { SireSubmissionRepository } from "./repositories/sire-submission.repository";
 export * from "./schema";
 export { batchQuery, UnitOfWork, withTransaction } from "./unit-of-work";
-//# sourceMappingURL=index.js.map
+

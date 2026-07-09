@@ -74,4 +74,4 @@ export function isValidSunatXML(content) {
 	const parser = new UBLParser();
 	return parser.isValidUBL(content);
 }
-//# sourceMappingURL=ubl-parser.js.map
+

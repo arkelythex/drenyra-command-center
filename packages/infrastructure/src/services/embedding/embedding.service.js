@@ -38,4 +38,4 @@ export class EmbeddingService {
 	}
 }
 export const embeddingService = new EmbeddingService();
-//# sourceMappingURL=embedding.service.js.map
+

@@ -240,4 +240,4 @@ export class SunatKnowledgeService {
 	}
 }
 export const sunatKnowledgeService = new SunatKnowledgeService();
-//# sourceMappingURL=sunat-knowledge.service.js.map
+

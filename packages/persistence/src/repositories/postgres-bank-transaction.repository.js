@@ -282,4 +282,4 @@ export class PostgresBankTransactionRepository {
 		});
 	}
 }
-//# sourceMappingURL=postgres-bank-transaction.repository.js.map
+

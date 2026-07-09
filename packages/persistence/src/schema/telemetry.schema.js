@@ -34,4 +34,4 @@ export const frontendTelemetryEvents = pgTable(
 		pathIdx: index("frontend_telemetry_path_idx").on(t.path),
 	}),
 );
-//# sourceMappingURL=telemetry.schema.js.map
+

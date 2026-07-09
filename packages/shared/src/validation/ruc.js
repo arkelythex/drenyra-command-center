@@ -22,4 +22,4 @@ function calculateExpectedCheckDigit(ruc) {
 export function isNumericString(value) {
 	return /^\d+$/.test(value);
 }
-//# sourceMappingURL=ruc.js.map
+

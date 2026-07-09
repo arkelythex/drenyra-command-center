@@ -69,4 +69,4 @@ export class PostgresElectionRepository {
 		await db.delete(elections).where(eq(elections.id, id));
 	}
 }
-//# sourceMappingURL=postgres-election.repository.js.map
+

@@ -46,4 +46,4 @@ export class PostgresFraudIndicatorRepository {
 		});
 	}
 }
-//# sourceMappingURL=postgres-fraud-indicator.repository.js.map
+
