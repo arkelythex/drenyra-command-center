@@ -13,9 +13,9 @@ env:
 
 jobs:
   review:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -30,7 +30,7 @@ jobs:
 
       - name: Patch DeepSeek provider if needed
         run: |
-          GGA_LIB_DIR="$(dirname $(readlink -f $(which gga)))/../share/gga/lib"
+          GGA_LIB_DIR="$(dirname "$(readlink -f "$(which gga)")")/../share/gga/lib"
           if [ ! -f "$GGA_LIB_DIR/providers.sh" ]; then
             GGA_LIB_DIR="/home/runner/.local/share/gga/lib"
           fi
@@ -52,10 +52,10 @@ jobs:
         id: gga-review
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            gga run --pr-mode 2>&1 || echo "gga_exit=$?" >> $GITHUB_OUTPUT
+            gga run --pr-mode 2>&1 || echo "gga_exit=$?" >> "$GITHUB_OUTPUT"
           else
             git log -1 --format="%H" | xargs git diff --name-only HEAD~1..HEAD | xargs git add
-            gga run 2>&1 || echo "gga_exit=$?" >> $GITHUB_OUTPUT
+            gga run 2>&1 || echo "gga_exit=$?" >> "$GITHUB_OUTPUT"
           fi
 
       - name: GGA Review Summary
@@ -67,4 +67,4 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Provider | Model | Result |" >> $GITHUB_STEP_SUMMARY
           echo "|----------|-------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| DeepSeek | deepseek-chat (V4 Flash) | ${{ steps.gga-review.outputs.gga_exit == 0 && 'PASS' || 'Review Complete' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| DeepSeek | deepseek-chat (V4 Flash) | ${{ steps.gga-review.outputs.gga_exit == 0 && 'PASS' || 'Review Complete' }} |" >> "$GITHUB_STEP_SUMMARY"

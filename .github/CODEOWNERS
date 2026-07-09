@@ -1,4 +1,4 @@
-# CODEOWNERS — ARKELYTHEX Monorepo
+# CODEOWNERS — DRENYRA Monorepo
 # Solo-maintained ownership map. All paths resolve to @dreamcoder08.
 # Sections document architectural responsibility boundaries for review routing.
 
@@ -16,9 +16,8 @@
 /packages/infrastructure/src/sunat/ @dreamcoder08
 /packages/infrastructure/src/xml/ @dreamcoder08
 
-# Frontend — Drenyra app, landing, shared design system
+# Frontend — Drenyra web app, shared design system
 /apps/web/ @dreamcoder08
-/apps/landing/ @dreamcoder08
 /packages/ui/ @dreamcoder08
 
 # Infrastructure/persistence — Drizzle, adapters, data engine, ops, observability
@@ -30,11 +29,18 @@
 
 # AI/agents — governed agents, model gateway, harness, memory, audit trail
 /packages/ai/ @dreamcoder08
-/packages/agent-swarm/ @dreamcoder08
-/packages/agent-memory/ @dreamcoder08
-/packages/arkelythex-harness/ @dreamcoder08
+/packages/memory/ @dreamcoder08
 /apps/api/src/features/ai-swarm/ @dreamcoder08
 /apps/api/src/features/agent-audit-trail/ @dreamcoder08
+
+# CLI — Gentleman Fiscal Terminal
+/apps/cli/ @dreamcoder08
+/packages/engram/ @dreamcoder08
+
+# Compliance pipeline — fiscal compliance orchestrator, phase gates, SDD
+/packages/fiscal-compliance-pipeline/ @dreamcoder08
+/packages/fiscal-sdd/ @dreamcoder08
+/packages/phase-gatekeeper/ @dreamcoder08
 
 # Docs — canonical docs, codebase map, generated index
 /docs/ @dreamcoder08
@@ -49,4 +55,3 @@
 /bunfig.toml @dreamcoder08
 /turbo.json @dreamcoder08
 /tsconfig*.json @dreamcoder08
-/eslint.config.cjs @dreamcoder08

@@ -20,7 +20,7 @@
 
 ## Checklist
 
-- [ ] `bun run quality:core` (o el subset que toque el cambio) pasa en local
+- [ ] `bun run typecheck` (o el subset que toque el cambio) pasa en local
 - [ ] Sin secretos, tokens ni datos personales en el diff
 - [ ] Si hay cambio de contrato/API: actualicé tipos, docs u OpenSpec según corresponda
 
@@ -37,6 +37,6 @@
 
 ---
 
-**Última actualización**: 2026-06-20
+**Última actualización**: 2026-07-09
 
-*Alineado con la [Filosofía Gentleman](../docs/meta/gentleman-philosophy.md) de ARKELYTHEX — documentación que prioriza la claridad y el respeto por tu tiempo.*
+*Alineado con la [Filosofía Gentleman](../docs/meta/gentleman-philosophy.md) de DRENYRA — documentación que prioriza la claridad y el respeto por tu tiempo.*
