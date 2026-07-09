@@ -30,11 +30,7 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
  * console.log(value);
  * ```
  */
-export interface SunatCredentials {
-	ruc: string;
-	usuario: string;
-	clave: string;
-}
+import type { SunatWebCredentials as SunatCredentials } from "../types";
 
 /**
  * StealthScraperResult interface.

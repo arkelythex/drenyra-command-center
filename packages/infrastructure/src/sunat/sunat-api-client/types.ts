@@ -1,7 +1,4 @@
-export interface SunatCredentials {
-	clientId: string;
-	clientSecret: string;
-}
+import type { SunatApiCredentials as SunatCredentials } from "../types";
 
 export interface SunatToken {
 	accessToken: string;
