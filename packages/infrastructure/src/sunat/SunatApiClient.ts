@@ -72,15 +72,7 @@ export interface SunatApiResponse<T> {
  * console.log(value);
  * ```
  */
-export interface RucInfo {
-	ruc: string;
-	razonSocial: string;
-	estado: "ACTIVO" | "BAJA" | "SUSPENDIDO";
-	condicion: "HABIDO" | "NO HABIDO";
-	direccion?: string;
-	ubigeo?: string;
-	tipoContribuyente?: string;
-}
+import type { RucInfo } from "../types";
 
 /**
  * SireTicketRequest interface.

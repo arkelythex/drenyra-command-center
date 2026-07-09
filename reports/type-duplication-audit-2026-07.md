@@ -9,22 +9,22 @@ Total exported types across packages: ~2297
 
 ## Top Duplicated Types
 
-| Type | Occurrences | Packages | Action |
-|------|-------------|----------|--------|
-| Currency | 8 | domain (6 entities re-exporting) + application (2) | Low — domain already centralized, entities import from canonical |
-| LedgerEntry | 6 | shared (2) + application (4 services) | HIGH — consolidate to one shared type |
-| SunatCredentials | 5 | infrastructure (5 sub-modules) | HIGH — consolidate to 1 type in infrastructure |
-| RucInfo | 5 | infrastructure (3) + application (2) | HIGH — belong in domain |
-| ReportType | 5 | application (3) + domain (2) | MEDIUM — consolidate to domain |
-| DocumentType | 5 | domain (3) + application (2) | MEDIUM |
-| AgentRole | 5 | ai (3) + infrastructure (2) | HIGH — consolidate to ai package |
-| InvoiceItem | 5 | domain (2) + application (2) + shared (1) | MEDIUM — consolidate to domain |
-| OCROptions | 5 | infrastructure (3) + ai (2) | HIGH |
-| BankAccountType | 4 | domain (2) + application (2) | MEDIUM |
-| TrialBalanceReport | 4 | application (3) + shared (1) | HIGH |
-| BalanceSheetReport | 4 | application (3) + shared (1) | HIGH |
-| IncomeStatementReport | 4 | application (3) + shared (1) | HIGH |
-| AccountBalance | 4 | application (2) + domain (1) + shared (1) | MEDIUM |
+| Type                  | Occurrences | Packages                                           | Action                                                           |
+| --------------------- | ----------- | -------------------------------------------------- | ---------------------------------------------------------------- |
+| Currency              | 8           | domain (6 entities re-exporting) + application (2) | Low — domain already centralized, entities import from canonical |
+| LedgerEntry           | 6           | shared (2) + application (4 services)              | HIGH — consolidate to one shared type                            |
+| SunatCredentials      | 5           | infrastructure (5 sub-modules)                     | HIGH — consolidate to 1 type in infrastructure                   |
+| RucInfo               | 5           | infrastructure (3) + application (2)               | HIGH — belong in domain                                          |
+| ReportType            | 5           | application (3) + domain (2)                       | MEDIUM — consolidate to domain                                   |
+| DocumentType          | 5           | domain (3) + application (2)                       | MEDIUM                                                           |
+| AgentRole             | 5           | ai (3) + infrastructure (2)                        | HIGH — consolidate to ai package                                 |
+| InvoiceItem           | 5           | domain (2) + application (2) + shared (1)          | MEDIUM — consolidate to domain                                   |
+| OCROptions            | 5           | infrastructure (3) + ai (2)                        | HIGH                                                             |
+| BankAccountType       | 4           | domain (2) + application (2)                       | MEDIUM                                                           |
+| TrialBalanceReport    | 4           | application (3) + shared (1)                       | HIGH                                                             |
+| BalanceSheetReport    | 4           | application (3) + shared (1)                       | HIGH                                                             |
+| IncomeStatementReport | 4           | application (3) + shared (1)                       | HIGH                                                             |
+| AccountBalance        | 4           | application (2) + domain (1) + shared (1)          | MEDIUM                                                           |
 
 ## Priority Candidates (by impact)
 

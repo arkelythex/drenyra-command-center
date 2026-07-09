@@ -19,8 +19,8 @@ linters:
 linters-settings:
   staticcheck:
     checks:
-      - "all"
-      - "-SA1019"
+      - 'all'
+      - '-SA1019'
   revive:
     rules:
       - name: exported
