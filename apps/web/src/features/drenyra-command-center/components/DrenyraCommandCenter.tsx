@@ -23,7 +23,6 @@ import {
 import { useCallback, useState } from "react";
 import { Toaster } from "sonner";
 import { ErrorState } from "@/components/ui/error-state";
-import { LoadingState } from "@/components/ui/loading-state";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 import {
 	type CreateFiscalCaseRequest,
@@ -121,10 +120,9 @@ export function DrenyraCommandCenter() {
 	});
 
 	// ── Chat State ──────────────────────────────────────────────────────
-	const {
-		handleChatContextChange,
-		loadChatMessages,
-	} = useDrenyraChatState(companyContext.companyId);
+	const { handleChatContextChange, loadChatMessages } = useDrenyraChatState(
+		companyContext.companyId,
+	);
 
 	const { messages } = useChatHistory(companyContext.companyId);
 

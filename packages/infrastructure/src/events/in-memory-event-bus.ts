@@ -60,7 +60,7 @@ export class InMemoryEventBus implements EventBusPort {
 		if (!this.handlers.has(eventType)) {
 			this.handlers.set(eventType, new Set());
 		}
-		this.handlers.get(eventType)!.add(wrappedHandler);
+		this.handlers.get(eventType)?.add(wrappedHandler);
 		this.emitter.on(eventType, wrappedHandler);
 		return () => {
 			this.emitter.off(eventType, wrappedHandler);

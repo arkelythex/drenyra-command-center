@@ -12,7 +12,7 @@
  * - OSE_SUBMITTING state transition
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { EventBus } from "../../src/agents/orchestrator/event.bus";
 import { WorkflowOrchestratorV2 } from "../../src/agents/orchestrator/workflow-v2/orchestrator";
 import type {
@@ -153,7 +153,7 @@ function createOSEServiceMock(options?: {
 		sendInvoice: vi
 			.fn()
 			.mockImplementation(
-				async (data: {
+				async (_data: {
 					xmlContent: string;
 					invoiceNumber: string;
 					invoiceType: string;
@@ -267,7 +267,7 @@ describe("WorkflowOrchestratorV2 - OSE Submission Stage", () => {
 			expect(oseEvents.length).toBe(1);
 			expect(oseEvents[0].type).toBe("OSE_SENT");
 			expect(oseEvents[0].cdr).toBeDefined();
-			expect(oseEvents[0].cdr!.status).toBe("ACEPTADO");
+			expect(oseEvents[0].cdr?.status).toBe("ACEPTADO");
 		});
 
 		it("should populate CDR response in the result on success", async () => {
@@ -284,9 +284,9 @@ describe("WorkflowOrchestratorV2 - OSE Submission Stage", () => {
 			const result = await orchestrator.processInvoice(makeReaderInput());
 
 			expect(result.cdrResponse).toBeDefined();
-			expect(result.cdrResponse!.status).toBe("ACEPTADO");
-			expect(result.cdrResponse!.code).toBe("0");
-			expect(result.cdrResponse!.cdrContent).toBe("base64-cdr-content");
+			expect(result.cdrResponse?.status).toBe("ACEPTADO");
+			expect(result.cdrResponse?.code).toBe("0");
+			expect(result.cdrResponse?.cdrContent).toBe("base64-cdr-content");
 		});
 
 		it("should emit OSE_FAILED event when OSE returns failure", async () => {
@@ -306,7 +306,7 @@ describe("WorkflowOrchestratorV2 - OSE Submission Stage", () => {
 				eventBus,
 			);
 
-			const result = await orchestrator.processInvoice(makeReaderInput());
+			const _result = await orchestrator.processInvoice(makeReaderInput());
 
 			expect(oseEvents.length).toBe(1);
 			expect(oseEvents[0].type).toBe("OSE_FAILED");
@@ -362,8 +362,8 @@ describe("WorkflowOrchestratorV2 - OSE Submission Stage", () => {
 			const result = await orchestrator.processInvoice(makeReaderInput());
 
 			expect(result.processingLog.stages.oseSubmission).toBeDefined();
-			expect(result.processingLog.stages.oseSubmission!.status).toBe("success");
-			expect(result.processingLog.stages.oseSubmission!.agentId).toBe("ose");
+			expect(result.processingLog.stages.oseSubmission?.status).toBe("success");
+			expect(result.processingLog.stages.oseSubmission?.agentId).toBe("ose");
 		});
 
 		it("should skip OSE submission when no xmlContent is generated", async () => {
@@ -385,7 +385,7 @@ describe("WorkflowOrchestratorV2 - OSE Submission Stage", () => {
 
 			expect(oseService.sendInvoice).not.toHaveBeenCalled();
 			expect(result.processingLog.stages.oseSubmission).toBeDefined();
-			expect(result.processingLog.stages.oseSubmission!.status).toBe("skipped");
+			expect(result.processingLog.stages.oseSubmission?.status).toBe("skipped");
 		});
 
 		it("should record OSE_FAILED stage when submission fails", async () => {
@@ -402,7 +402,7 @@ describe("WorkflowOrchestratorV2 - OSE Submission Stage", () => {
 			const result = await orchestrator.processInvoice(makeReaderInput());
 
 			expect(result.processingLog.stages.oseSubmission).toBeDefined();
-			expect(result.processingLog.stages.oseSubmission!.status).toBe("failed");
+			expect(result.processingLog.stages.oseSubmission?.status).toBe("failed");
 		});
 	});
 
@@ -421,7 +421,7 @@ describe("WorkflowOrchestratorV2 - OSE Submission Stage", () => {
 
 			expect(result.status).toBe("success");
 			expect(result.processingLog.stages.oseSubmission).toBeDefined();
-			expect(result.processingLog.stages.oseSubmission!.status).toBe("skipped");
+			expect(result.processingLog.stages.oseSubmission?.status).toBe("skipped");
 		});
 
 		it("should not set cdrResponse when OSE is not configured", async () => {

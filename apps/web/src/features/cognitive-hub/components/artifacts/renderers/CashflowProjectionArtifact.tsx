@@ -26,7 +26,10 @@ function formatMoney(amount: number): string {
 function ProjectionBar({
 	point,
 	max,
-}: { point: { period: string; inflow: number; outflow: number; balance: number }; max: number }) {
+}: {
+	point: { period: string; inflow: number; outflow: number; balance: number };
+	max: number;
+}) {
 	const inWidth = (point.inflow / max) * 100;
 	const outWidth = (point.outflow / max) * 100;
 	const balanceColor =
@@ -34,9 +37,13 @@ function ProjectionBar({
 			? "text-[var(--premium-success)]"
 			: "text-[var(--premium-danger)]";
 	const barColor =
-		point.balance >= 0 ? "bg-[var(--premium-success)]/30" : "bg-[var(--premium-danger)]/30";
+		point.balance >= 0
+			? "bg-[var(--premium-success)]/30"
+			: "bg-[var(--premium-danger)]/30";
 	const fillColor =
-		point.balance >= 0 ? "bg-[var(--premium-success)]" : "bg-[var(--premium-danger)]";
+		point.balance >= 0
+			? "bg-[var(--premium-success)]"
+			: "bg-[var(--premium-danger)]";
 
 	return (
 		<div className="mb-4">

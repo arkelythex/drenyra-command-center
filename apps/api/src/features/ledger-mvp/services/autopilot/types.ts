@@ -8,10 +8,6 @@ import type {
 	Pdt621Input,
 	Pdt621Result,
 } from "../../../taxation/pdt-621.service";
-import type {
-	LedgerSireAutopilotInput,
-	LedgerSireAutopilotResult,
-} from "../../ledger-mvp.types";
 
 export interface LedgerSireAutopilotPorts {
 	verifySireReproducibility: (input: {

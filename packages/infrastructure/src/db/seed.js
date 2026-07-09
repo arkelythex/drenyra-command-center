@@ -205,4 +205,3 @@ if (import.meta.main) {
 			}
 		});
 }
-

@@ -5,18 +5,18 @@ import type {
 } from "@drenyra/domain";
 import { Link, useParams } from "@tanstack/react-router";
 import { ArrowLeft, Clock } from "lucide-react";
-import { cn } from "@/lib/utils";
 
-const STATUS_BADGE: Record<EvidenceStatus, { label: string; color: string }> = {
-	UPLOADED: { label: "Subido", color: "var(--color-warning)" },
-	EXTRACTING: { label: "Extrayendo", color: "var(--color-info)" },
-	CLASSIFIED: { label: "Clasificado", color: "var(--color-success)" },
-	VALIDATED: { label: "Validado", color: "var(--color-success)" },
-	REJECTED: { label: "Rechazado", color: "var(--color-danger)" },
-	ERROR: { label: "Error", color: "var(--color-danger)" },
-};
+const _STATUS_BADGE: Record<EvidenceStatus, { label: string; color: string }> =
+	{
+		UPLOADED: { label: "Subido", color: "var(--color-warning)" },
+		EXTRACTING: { label: "Extrayendo", color: "var(--color-info)" },
+		CLASSIFIED: { label: "Clasificado", color: "var(--color-success)" },
+		VALIDATED: { label: "Validado", color: "var(--color-success)" },
+		REJECTED: { label: "Rechazado", color: "var(--color-danger)" },
+		ERROR: { label: "Error", color: "var(--color-danger)" },
+	};
 
-const TYPE_LABELS: Record<EvidenceType, string> = {
+const _TYPE_LABELS: Record<EvidenceType, string> = {
 	INVOICE: "Factura",
 	RECEIPT: "Recibo",
 	CONTRACT: "Contrato",
@@ -25,7 +25,7 @@ const TYPE_LABELS: Record<EvidenceType, string> = {
 	OTHER: "Otro",
 };
 
-const SOURCE_LABELS: Record<EvidenceSource, string> = {
+const _SOURCE_LABELS: Record<EvidenceSource, string> = {
 	UPLOAD: "Carga manual",
 	EMAIL: "Correo",
 	API: "API",

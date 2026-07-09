@@ -118,7 +118,7 @@ describe("RiskSeverity", () => {
 	});
 
 	it("WARNING has lower severity than CRITICAL", () => {
-		const severityOrder: RiskSeverity[] = ["WARNING", "CRITICAL"];
+		const _severityOrder: RiskSeverity[] = ["WARNING", "CRITICAL"];
 		const impactMap: Record<RiskSeverity, number> = {
 			WARNING: 1,
 			CRITICAL: 2,

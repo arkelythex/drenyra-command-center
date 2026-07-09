@@ -7,4 +7,3 @@ export const openRouter = new OpenRouterService({
 	budgetLimit: parseFloat(process.env.OPENROUTER_BUDGET || "1000"),
 	enableAutoRouting: true,
 });
-

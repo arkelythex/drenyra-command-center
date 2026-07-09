@@ -1,6 +1,5 @@
 import { Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { TYPOGRAPHY, tokensToClasses } from "@/lib/design-tokens";
 
 interface InvoiceHeaderFieldsProps {
 	series: string;

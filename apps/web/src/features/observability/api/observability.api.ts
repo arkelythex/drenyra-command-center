@@ -85,7 +85,7 @@ export const memoryApi = {
 };
 
 export const batchApi = {
-	async list(companyId?: string): Promise<BatchRun[]> {
+	async list(_companyId?: string): Promise<BatchRun[]> {
 		const body = await unwrap(
 			api.api.ai.swarm.observability.batches.get({
 				query: { ...getTenantContext(), limit: "50" },

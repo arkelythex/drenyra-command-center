@@ -5,4 +5,3 @@ const tableProxy = new Proxy(
 	},
 );
 export const accountBalances = tableProxy;
-

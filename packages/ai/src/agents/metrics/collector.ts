@@ -4,7 +4,6 @@ import type {
 	HistogramMetric,
 	HistogramMetricValue,
 	Metric,
-	MetricValue,
 } from "./types";
 
 export class AgentMetricsCollector {

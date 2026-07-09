@@ -6,11 +6,8 @@ import {
 	useReconcileTransactionMutation,
 } from "../hooks/useBankingQueries";
 import type {
-	BankAccount,
 	BankingActions,
 	BankingState,
-	BankTransaction,
-	ReconciliationMatch,
 	ReconciliationResult,
 } from "./banking.store.types";
 import { initialState } from "./banking.store.types";

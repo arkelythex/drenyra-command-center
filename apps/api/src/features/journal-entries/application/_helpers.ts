@@ -4,13 +4,6 @@
  * @module journal-entries/application
  */
 
-import {
-	CreateJournalEntryUseCase,
-	DeleteJournalEntryUseCase,
-	GetJournalEntriesUseCase,
-	UpdateJournalEntryStatusUseCase,
-	UpdateJournalEntryUseCase,
-} from "@drenyra/application/use-cases/journal";
 import { PostgresJournalEntryRepository } from "@drenyra/persistence";
 import { eq } from "drizzle-orm";
 import { db, schema } from "../../../lib/db";

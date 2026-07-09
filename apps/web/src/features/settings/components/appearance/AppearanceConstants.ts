@@ -1,4 +1,4 @@
-import { Monitor, Moon, Palette, Sun, Zap } from "lucide-react";
+import { Monitor, Moon, Sun } from "lucide-react";
 import type { CodexPetCompanion } from "@/context/settings.types";
 import { THEME_ID, THEME_PREFERENCE } from "@/lib/ux-mode";
 

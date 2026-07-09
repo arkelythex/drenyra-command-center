@@ -303,9 +303,9 @@ describe("BatchOrchestrator", () => {
 
 	describe("progress tracking", () => {
 		it("should update progress after each item", async () => {
-			let callCount = 0;
+			let _callCount = 0;
 			mockProcessInvoice.mockImplementation(async () => {
-				callCount++;
+				_callCount++;
 				return makeProcessedInvoice();
 			});
 

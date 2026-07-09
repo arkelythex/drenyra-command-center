@@ -190,14 +190,14 @@ describe("AgentsService", () => {
 
 			const byClient = service.listSessions("company-1", { client: "Otra" });
 			expect(byClient.data).toHaveLength(1);
-			expect(byClient.data[0]!.id).toBe("session-2");
+			expect(byClient.data[0]?.id).toBe("session-2");
 
 			const byStatus = service.listSessions("company-1", { status: "running" });
 			expect(byStatus.data).toHaveLength(2);
 
 			const byRisk = service.listSessions("company-1", { risk: "low" });
 			expect(byRisk.data).toHaveLength(1);
-			expect(byRisk.data[0]!.id).toBe("session-2");
+			expect(byRisk.data[0]?.id).toBe("session-2");
 		});
 
 		it("respects pagination limits", () => {
@@ -208,12 +208,12 @@ describe("AgentsService", () => {
 
 			const page1 = service.listSessions("company-1", { limit: 1, offset: 0 });
 			expect(page1.data).toHaveLength(1);
-			expect(page1.data[0]!.id).toBe("session-1");
+			expect(page1.data[0]?.id).toBe("session-1");
 			expect(page1.total).toBe(2);
 
 			const page2 = service.listSessions("company-1", { limit: 1, offset: 1 });
 			expect(page2.data).toHaveLength(1);
-			expect(page2.data[0]!.id).toBe("session-2");
+			expect(page2.data[0]?.id).toBe("session-2");
 			expect(page2.total).toBe(2);
 		});
 	});
@@ -232,7 +232,7 @@ describe("AgentsService", () => {
 					status: "running",
 				}),
 			);
-			expect(result!.steps).toHaveLength(3);
+			expect(result?.steps).toHaveLength(3);
 		});
 
 		it("throws AGENT_NOT_FOUND for nonexistent session", () => {
@@ -255,14 +255,14 @@ describe("AgentsService", () => {
 			const result = service.getTimeline("company-1", "session-1");
 
 			expect(result).toHaveLength(3);
-			expect(result![0]).toEqual(
+			expect(result?.[0]).toEqual(
 				expect.objectContaining({
 					id: "step-1",
 					label: "Auditoría fiscal",
 					status: "completed",
 				}),
 			);
-			expect(typeof result![0]!.duration).toBe("number");
+			expect(typeof result?.[0]?.duration).toBe("number");
 		});
 
 		it("throws AGENT_NOT_FOUND for nonexistent session", () => {

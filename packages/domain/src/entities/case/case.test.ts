@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Money } from "../../value-objects";
 import type { DomainKey, FiscalProjection, LegalProjection } from "../case";
-import { Case, CaseId, CaseProjectionAttached } from "../case";
+import { Case, CaseId } from "../case";
 
 describe("Case", () => {
 	// ─── Factory ──────────────────────────────────────────────────────

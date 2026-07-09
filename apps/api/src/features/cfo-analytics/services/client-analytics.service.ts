@@ -1,6 +1,6 @@
 import { Money } from "@drenyra/domain";
 import { db } from "@drenyra/persistence/client";
-import { and, eq, gte, lte, sql } from "@drenyra/persistence/query";
+import { and, eq, gte, sql } from "@drenyra/persistence/query";
 import { businessPartners, invoices } from "@drenyra/persistence/schema";
 import type { ClientSummaryKPIs } from "../cfo-analytics.types";
 import { toMoneyValue } from "../cfo-analytics.types";

@@ -7,10 +7,12 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import type { DrenyraMcpAuditEvent,
+import type {
+	DrenyraMcpAuditEvent,
 	DrenyraMcpAuditQuery,
 	DrenyraMcpAuditReader,
-	DrenyraMcpAuditSink, } from "@drenyra/pi";
+	DrenyraMcpAuditSink,
+} from "@drenyra/pi";
 
 export type PlatformMcpAuditOperation = DrenyraMcpAuditEvent["operation"];
 export type PlatformMcpAuditOutcome = DrenyraMcpAuditEvent["outcome"];

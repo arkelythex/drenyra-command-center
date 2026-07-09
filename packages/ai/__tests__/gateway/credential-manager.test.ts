@@ -4,7 +4,7 @@
  * Tests for fail-closed behavior when no secure encryption key is configured.
  */
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
 	credentialManager,
 	MissingEncryptionKeyError,

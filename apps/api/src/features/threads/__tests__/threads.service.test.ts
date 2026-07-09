@@ -31,7 +31,7 @@ const { mockDb, stubDbChain, mockSchema } = vi.hoisted(() => {
 	const col = new Proxy(
 		{},
 		{
-			get(t: unknown, prop: string) {
+			get(_t: unknown, prop: string) {
 				if (prop === "then") return undefined;
 				if (prop === "catch") return undefined;
 				if (prop === Symbol.toPrimitive) return () => "mock-col";
@@ -176,9 +176,9 @@ describe("ThreadsService", () => {
 			expect(result.title).toBe("Cierre Jun 2026");
 			expect(result.status).toBe("ACTIVE");
 			expect(result.tasks).toHaveLength(1);
-			expect(result.tasks[0]!.title).toBe("Validar SIRE");
+			expect(result.tasks[0]?.title).toBe("Validar SIRE");
 			expect(result.agents).toHaveLength(1);
-			expect(result.agents[0]!.agentName).toBe("SIRE Agent");
+			expect(result.agents[0]?.agentName).toBe("SIRE Agent");
 			expect(result.evidenceIds).toHaveLength(1);
 			expect(result.evidenceIds[0]).toBe("evidence-1");
 		});
@@ -384,15 +384,15 @@ describe("QuickActionsService", () => {
 		const { quickActionsService } = await import("../quick-actions.service");
 		const actions = quickActionsService.getForCompany("company-1", "2026-06");
 		expect(actions).toHaveLength(4);
-		expect(actions[0]!.id).toBe("quick-close-month");
-		expect(actions[1]!.id).toBe("quick-reconcile-banks");
-		expect(actions[2]!.id).toBe("quick-validate-sire");
-		expect(actions[3]!.id).toBe("quick-fiscal-risks");
+		expect(actions[0]?.id).toBe("quick-close-month");
+		expect(actions[1]?.id).toBe("quick-reconcile-banks");
+		expect(actions[2]?.id).toBe("quick-validate-sire");
+		expect(actions[3]?.id).toBe("quick-fiscal-risks");
 	});
 
 	it("interpolates period into template titles", async () => {
 		const { quickActionsService } = await import("../quick-actions.service");
 		const actions = quickActionsService.getForCompany("company-1", "2026-06");
-		expect(actions[0]!.template.title).toContain("2026-06");
+		expect(actions[0]?.template.title).toContain("2026-06");
 	});
 });

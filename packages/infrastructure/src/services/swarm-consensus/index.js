@@ -102,4 +102,3 @@ export const swarmConsensusService = {
 		return anomalyAlertRepository.findByOrganization(organizationId, options);
 	},
 };
-

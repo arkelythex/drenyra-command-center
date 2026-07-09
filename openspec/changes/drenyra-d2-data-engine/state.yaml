@@ -1,0 +1,12 @@
+change_id: drenyra-d2-data-engine
+status: proposal
+phase: proposal
+created: 2026-07-09
+author: el Gentleman
+delivery_strategy: single-pr
+depends_on: []
+tags:
+  - python
+  - data-engine
+  - quality
+  - testing

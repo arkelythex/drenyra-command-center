@@ -4,7 +4,7 @@
  * complete recovery flow: save → fail → check → recover → resume context.
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import type { AgentRunState, RunInput } from "../../src/session/session.types";
 import {
 	SessionRecovery,
@@ -71,7 +71,7 @@ class InMemorySessionStore implements SessionStore {
 	}
 
 	async appendEvent(
-		runId: string,
+		_runId: string,
 		event: {
 			runId: string;
 			eventType: string;
@@ -187,8 +187,8 @@ describe("Session Recovery Integration", () => {
 				(e) => e.eventType === "RECOVERY_STARTED",
 			);
 			expect(recoveryEvent).toBeDefined();
-			expect(recoveryEvent!.payload!.lastCompletedPhase).toBe("reader");
-			expect(recoveryEvent!.payload!.previousWorkflowState).toBe("EXTRACTING");
+			expect(recoveryEvent?.payload?.lastCompletedPhase).toBe("reader");
+			expect(recoveryEvent?.payload?.previousWorkflowState).toBe("EXTRACTING");
 		});
 
 		it("should fail recovery when input checksum does not match", async () => {
@@ -235,13 +235,13 @@ describe("Session Recovery Integration", () => {
 			// Read back
 			const retrieved = await store.getInput(runId);
 			expect(retrieved).not.toBeNull();
-			expect(retrieved!.inputData).toBe(inputData);
-			expect(retrieved!.inputType).toBe(inputType);
-			expect(retrieved!.checksum).toBe(inputChecksum);
+			expect(retrieved?.inputData).toBe(inputData);
+			expect(retrieved?.inputType).toBe(inputType);
+			expect(retrieved?.checksum).toBe(inputChecksum);
 
 			// Verify checksum integrity
-			const verifiedChecksum = sha256(retrieved!.inputData);
-			expect(verifiedChecksum).toBe(retrieved!.checksum);
+			const verifiedChecksum = sha256(retrieved?.inputData);
+			expect(verifiedChecksum).toBe(retrieved?.checksum);
 		});
 
 		it("should handle recovery after degraded status with multiple phases completed", async () => {
@@ -281,7 +281,7 @@ describe("Session Recovery Integration", () => {
 			const recoveryEvent = events.find(
 				(e) => e.eventType === "RECOVERY_STARTED",
 			);
-			expect(recoveryEvent!.payload!.lastCompletedPhase).toBe("validator");
+			expect(recoveryEvent?.payload?.lastCompletedPhase).toBe("validator");
 		});
 
 		it("should maintain event ordering during recovery", async () => {
@@ -322,7 +322,7 @@ describe("Session Recovery Integration", () => {
 			});
 
 			// Recover
-			const result = await recovery.recover(runId, "base64-data", "image");
+			const _result = await recovery.recover(runId, "base64-data", "image");
 
 			// Verify events include both original events + RECOVERY_STARTED
 			const allEvents = await store.getEvents(runId);

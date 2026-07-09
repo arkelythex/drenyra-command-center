@@ -230,7 +230,7 @@ export class AgentsService {
 		// Apply filters
 		if (filters?.client) {
 			filtered = filtered.filter((s) =>
-				s.clientName.toLowerCase().includes(filters.client!.toLowerCase()),
+				s.clientName.toLowerCase().includes(filters.client?.toLowerCase()),
 			);
 		}
 		if (filters?.period) {

@@ -9,3 +9,4 @@ export * from "./messaging";
 export * from "./secure-logger";
 export * from "./security-utils";
 export * from "./validation";
+export * from "./consulta/types";

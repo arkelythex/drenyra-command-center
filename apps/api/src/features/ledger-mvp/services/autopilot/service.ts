@@ -1,16 +1,11 @@
 import type {
 	ComplianceReproducibilityReport,
-	IGVSummary,
 	SIRESummary,
 	SIRESunatLiveSummary,
 	SIRESunatLiveUnavailableReason,
 } from "@drenyra/domain";
 import { Money } from "@drenyra/domain";
 import { buildFiscalTruthAdvisoryTrace } from "../../../fiscal/truth/trace";
-import type {
-	Pdt621Input,
-	Pdt621Result,
-} from "../../../taxation/pdt-621.service";
 import type {
 	LedgerFlowStatus,
 	LedgerSireAutopilotInput,

@@ -306,8 +306,8 @@ describe("deserializeEvent", () => {
 		const parsed = deserializeEvent(sse);
 
 		expect(parsed).not.toBeNull();
-		expect(parsed!.type).toBe("progress");
-		expect(parsed!.payload.progress).toBe(50);
+		expect(parsed?.type).toBe("progress");
+		expect(parsed?.payload.progress).toBe(50);
 	});
 
 	it("returns null for empty string", () => {
@@ -447,12 +447,12 @@ describe("serialize → deserialize roundtrip", () => {
 		const parsed = deserializeEvent(sse);
 
 		expect(parsed).not.toBeNull();
-		expect(parsed!.type).toBe(event.type);
-		expect(parsed!.id).toBe(event.id);
-		expect(parsed!.runId).toBe(event.runId);
-		expect(parsed!.timestamp).toBe(event.timestamp);
+		expect(parsed?.type).toBe(event.type);
+		expect(parsed?.id).toBe(event.id);
+		expect(parsed?.runId).toBe(event.runId);
+		expect(parsed?.timestamp).toBe(event.timestamp);
 		// Deep comparison of payload
-		expect(JSON.stringify(parsed!.payload)).toBe(JSON.stringify(event.payload));
+		expect(JSON.stringify(parsed?.payload)).toBe(JSON.stringify(event.payload));
 	});
 });
 

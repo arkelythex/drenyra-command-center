@@ -169,4 +169,3 @@ export class PostgresFiscalMemoryRepository {
 		return FiscalMemoryRevision.create(props);
 	}
 }
-

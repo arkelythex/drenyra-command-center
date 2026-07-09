@@ -6,7 +6,7 @@
  */
 
 import { createHash } from "crypto";
-import type { AgentRunStatus, AgentWorkflowState } from "./session.types";
+import type { AgentRunStatus } from "./session.types";
 import type { SessionStore } from "./session-store";
 
 // ============================================================================
@@ -134,7 +134,7 @@ export class SessionRecovery {
 	async recover(
 		runId: string,
 		inputData: string,
-		inputType: string,
+		_inputType: string,
 	): Promise<{ context: Record<string, unknown> }> {
 		// Step 1: Check if the run is recoverable
 		const check = await this.checkRecoverable(runId);

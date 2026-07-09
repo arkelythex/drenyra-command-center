@@ -183,7 +183,7 @@ export class InboxService {
 							sunatCondition: "HABIDO",
 						})
 						.returning();
-				} catch (e) {
+				} catch (_e) {
 					// Manejo de concurrencia: si otro proceso lo creó en milisegundos
 					partner = await db.query.businessPartners.findFirst({
 						where: eq(businessPartners.taxId, ruc),

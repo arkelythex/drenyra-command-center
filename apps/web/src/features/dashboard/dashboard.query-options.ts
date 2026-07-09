@@ -9,7 +9,6 @@ import {
 import {
 	type DashboardFiscalIndicatorsResponse,
 	type DashboardRecentTransaction,
-	type DashboardSummaryResponse,
 	dashboardApi,
 } from "./api/dashboard.api";
 import { dashboardKeys } from "./dashboard.query-keys";

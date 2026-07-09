@@ -1,9 +1,4 @@
-import type {
-	KbChunk,
-	KbCollection,
-	KbDocument,
-	KbQuery,
-} from "@drenyra/persistence/schema";
+import type { KbChunk, KbQuery } from "@drenyra/persistence/schema";
 
 // --- REQUEST TYPES ---
 

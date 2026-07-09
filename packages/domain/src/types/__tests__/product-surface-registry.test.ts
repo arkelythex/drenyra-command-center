@@ -75,8 +75,8 @@ describe("getDrenyraProductSurface", () => {
 	it("should return the surface by ID", () => {
 		const surface = getDrenyraProductSurface("drenyra");
 		expect(surface).toBeDefined();
-		expect(surface!.id).toBe("drenyra");
-		expect(surface!.name).toBe("ARKELYTHEX Drenyra");
+		expect(surface?.id).toBe("drenyra");
+		expect(surface?.name).toBe("ARKELYTHEX Drenyra");
 	});
 
 	it("should return undefined for unknown ID", () => {
@@ -89,12 +89,12 @@ describe("getDrenyraProductSurface", () => {
 	it("should find gov surface", () => {
 		const surface = getDrenyraProductSurface("gov");
 		expect(surface).toBeDefined();
-		expect(surface!.status).toBe("strategy-layer");
+		expect(surface?.status).toBe("strategy-layer");
 	});
 
 	it("should find grid surface", () => {
 		const surface = getDrenyraProductSurface("grid");
 		expect(surface).toBeDefined();
-		expect(surface!.status).toBe("separate-runtime");
+		expect(surface?.status).toBe("separate-runtime");
 	});
 });

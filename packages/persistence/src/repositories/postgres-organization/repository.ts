@@ -1,8 +1,5 @@
 import type { FirmMetrics } from "@drenyra/domain/entities/organization";
-import {
-	Organization,
-	type OrganizationProps,
-} from "@drenyra/domain/entities/organization";
+import { Organization } from "@drenyra/domain/entities/organization";
 import type {
 	OrganizationFilters,
 	OrganizationRepository,

@@ -7,10 +7,7 @@
  */
 
 import type { Vendor as VendorEntity } from "../../domain/vendor";
-import type {
-	IVendorRepository,
-	Vendor,
-} from "../../domain/vendor.repository.interface";
+import type { IVendorRepository } from "../../domain/vendor.repository.interface";
 
 export interface DeleteVendorInput {
 	id: string;

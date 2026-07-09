@@ -74,4 +74,3 @@ export class PostgresPlatformMcpAuditSink {
 		return rows.map(fromRow);
 	}
 }
-

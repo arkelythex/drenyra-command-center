@@ -6,7 +6,7 @@ import {
 	TrendingUp,
 	Waves,
 } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { useState } from "react";
 import { Text } from "@/components/atoms/text";
 import { Card } from "@/components/ui/card";
 import { AnimatedNumber } from "@/components/ui/motion-primitives";

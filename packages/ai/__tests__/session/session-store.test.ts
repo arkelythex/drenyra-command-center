@@ -126,7 +126,7 @@ const completedRunState: AgentRunState = {
 	completedAt: new Date("2026-06-15T10:05:00Z"),
 };
 
-const failedRunState: AgentRunState = {
+const _failedRunState: AgentRunState = {
 	...defaultRunState,
 	runId: "run-failed-789",
 	workflowState: "FAILED",
@@ -256,10 +256,10 @@ describe("PostgresSessionStore", () => {
 			const result = await store.getRunState("run-abc-123");
 
 			expect(result).not.toBeNull();
-			expect(result!.runId).toBe("run-abc-123");
-			expect(result!.workflowState).toBe("EXTRACTING");
-			expect(result!.status).toBe("running");
-			expect(result!.companyId).toBe("company-a-uuid");
+			expect(result?.runId).toBe("run-abc-123");
+			expect(result?.workflowState).toBe("EXTRACTING");
+			expect(result?.status).toBe("running");
+			expect(result?.companyId).toBe("company-a-uuid");
 		});
 
 		it("should return null for an unknown runId", async () => {
@@ -584,10 +584,10 @@ describe("PostgresSessionStore", () => {
 			const snapshot = await store.recoverRunState("run-abc-123");
 
 			expect(snapshot).not.toBeNull();
-			expect(snapshot!.state.runId).toBe("run-abc-123");
-			expect(snapshot!.state.status).toBe("running");
-			expect(snapshot!.events).toHaveLength(1);
-			expect(snapshot!.events[0].eventType).toBe("EXTRACTION_COMPLETE");
+			expect(snapshot?.state.runId).toBe("run-abc-123");
+			expect(snapshot?.state.status).toBe("running");
+			expect(snapshot?.events).toHaveLength(1);
+			expect(snapshot?.events[0].eventType).toBe("EXTRACTION_COMPLETE");
 		});
 
 		it("should return null when no state is found", async () => {
@@ -706,10 +706,10 @@ describe("PostgresSessionStore", () => {
 			const result = await store.getInput("run-input-1");
 
 			expect(result).not.toBeNull();
-			expect(result!.runId).toBe("run-input-1");
-			expect(result!.inputType).toBe("image");
-			expect(result!.inputData).toBe("base64data==");
-			expect(result!.checksum).toBe("abc123checksum");
+			expect(result?.runId).toBe("run-input-1");
+			expect(result?.inputType).toBe("image");
+			expect(result?.inputData).toBe("base64data==");
+			expect(result?.checksum).toBe("abc123checksum");
 		});
 
 		it("should return null for an unknown runId", async () => {
@@ -769,7 +769,7 @@ describe("PostgresSessionStore", () => {
 	describe("tenant isolation", () => {
 		it("should only return states for the specified companyId", async () => {
 			const companyARow = toDbRow(defaultRunState);
-			const companyBRow = toDbRow({
+			const _companyBRow = toDbRow({
 				...defaultRunState,
 				runId: "run-company-b",
 				companyId: "company-b-uuid",

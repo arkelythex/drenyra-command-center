@@ -70,7 +70,7 @@ export const inventoryModule = new Elysia({ prefix: "/api/inventory" })
 
 			try {
 				const data = await InventoryService.list(
-					companyContext!.companyId,
+					companyContext?.companyId,
 					parsedQuery.data.warehouseId,
 				);
 				const contract = InventoryListResponseSchema.safeParse(data);
@@ -101,7 +101,7 @@ export const inventoryModule = new Elysia({ prefix: "/api/inventory" })
 
 			try {
 				const data = await InventoryService.recordMovement(
-					companyContext!.companyId,
+					companyContext?.companyId,
 					parsedBody.data,
 				);
 				const contract = InventoryMovementResponseSchema.safeParse(data);
@@ -139,7 +139,7 @@ export const inventoryModule = new Elysia({ prefix: "/api/inventory" })
 
 			try {
 				const data = await InventoryService.getKardex(
-					companyContext!.companyId,
+					companyContext?.companyId,
 					parsedParams.data.productId,
 					parsedQuery.data.startDate,
 					parsedQuery.data.endDate,
@@ -167,7 +167,7 @@ export const inventoryModule = new Elysia({ prefix: "/api/inventory" })
 		async ({ companyContext, set }) => {
 			try {
 				const data = await InventoryService.getSummary(
-					companyContext!.companyId,
+					companyContext?.companyId,
 				);
 				const contract = InventorySummaryResponseSchema.safeParse(data);
 				if (!contract.success) {
@@ -191,7 +191,7 @@ export const inventoryModule = new Elysia({ prefix: "/api/inventory" })
 		async ({ companyContext, set }) => {
 			try {
 				const data = await InventoryService.listWarehouses(
-					companyContext!.companyId,
+					companyContext?.companyId,
 				);
 				const contract = WarehouseListResponseSchema.safeParse(data);
 				if (!contract.success) {
@@ -221,7 +221,7 @@ export const inventoryModule = new Elysia({ prefix: "/api/inventory" })
 
 			try {
 				const data = await InventoryService.createWarehouse(
-					companyContext!.companyId,
+					companyContext?.companyId,
 					parsedBody.data,
 				);
 				const contract = WarehouseResponseSchema.safeParse(data);

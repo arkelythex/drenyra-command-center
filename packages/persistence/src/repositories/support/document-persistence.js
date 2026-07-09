@@ -83,4 +83,3 @@ export function mapDocumentRowToEntity(row) {
 		updatedAt: new Date(row.updatedAt),
 	});
 }
-

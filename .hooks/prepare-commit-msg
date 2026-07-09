@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# ─────────────────────────────────────────────────────────────────────────────
+# Drenyra — Prepare Commit Message Hook
+# Provides a conventional commit template for flagged commits.
+# Usage: passed automatically by git as prepare-commit-msg hook.
+# ─────────────────────────────────────────────────────────────────────────────
+set -euo pipefail
+
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+SHA="$3"
+
+# Only modify when there's no explicit message (not merge, not amend, not template)
+if [ "$COMMIT_SOURCE" = "message" ] || [ "$COMMIT_SOURCE" = "merge" ] || [ "$COMMIT_SOURCE" = "commit" ] || [ "$COMMIT_SOURCE" = "template" ]; then
+	exit 0
+fi
+
+# Detect fiscal scope from changed files
+STAGED_FILES=$(git diff --cached --name-only 2>/dev/null || true)
+
+SCOPE=""
+if echo "$STAGED_FILES" | grep -qiE 'fiscal|sunat|compliance'; then
+	SCOPE="fiscal"
+elif echo "$STAGED_FILES" | grep -qiE 'auth|security'; then
+	SCOPE="security"
+elif echo "$STAGED_FILES" | grep -qiE 'api/'; then
+	SCOPE="api"
+elif echo "$STAGED_FILES" | grep -qiE 'web/'; then
+	SCOPE="web"
+elif echo "$STAGED_FILES" | grep -qiE 'cli/'; then
+	SCOPE="cli"
+elif echo "$STAGED_FILES" | grep -qiE 'domain|application|persistence'; then
+	SCOPE="domain"
+fi
+
+# Add a comment with scope hint (will be cleaned by git)
+if [ -n "$SCOPE" ]; then
+	sed -i.bak "1s/^/# Hint: try: feat(${SCOPE}): <description>\n/" "$COMMIT_MSG_FILE" 2>/dev/null || true
+	rm -f "${COMMIT_MSG_FILE}.bak" 2>/dev/null || true
+fi

@@ -109,8 +109,8 @@ describe("ShadowSunatEngine — IGV-001 triggered", () => {
 		expect(result.alerts.length).toBeGreaterThan(0);
 		const igvAlert = result.alerts.find((a) => a.id === "IGV-001");
 		expect(igvAlert).toBeDefined();
-		expect(igvAlert!.area).toBe("IGV_CREDITO_FISCAL");
-		expect(igvAlert!.severity).toBe("CRITICAL");
+		expect(igvAlert?.area).toBe("IGV_CREDITO_FISCAL");
+		expect(igvAlert?.severity).toBe("CRITICAL");
 	});
 
 	it("returns riskScore > 0 and MEDIUM risk level", async () => {
@@ -278,7 +278,7 @@ describe("ShadowSunatEngine — area risk calculations", () => {
 			(a) => a.area === "IGV_CREDITO_FISCAL",
 		);
 		expect(igvArea).toBeDefined();
-		expect(igvArea!.findings.length).toBeGreaterThan(0);
+		expect(igvArea?.findings.length).toBeGreaterThan(0);
 	});
 
 	it("returns metrics with suspicious flags", async () => {
@@ -296,9 +296,9 @@ describe("ShadowSunatEngine — area risk calculations", () => {
 			(m) => m.name === "Ratio Crédito/Débito",
 		);
 		expect(creditMetric).toBeDefined();
-		expect(creditMetric!.value).toBe(95); // 95%
-		expect(creditMetric!.threshold).toBe(90);
-		expect(creditMetric!.isSuspicious).toBe(true);
+		expect(creditMetric?.value).toBe(95); // 95%
+		expect(creditMetric?.threshold).toBe(90);
+		expect(creditMetric?.isSuspicious).toBe(true);
 	});
 });
 
@@ -450,7 +450,7 @@ describe("ShadowSunatEngine — edge cases", () => {
 			(r) => r.alertId === "DETR-001",
 		);
 		expect(detraRec).toBeDefined();
-		expect(detraRec!.action).toContain("Depositar detracciones");
+		expect(detraRec?.action).toContain("Depositar detracciones");
 	});
 
 	it("returns correct credit ratio metrics in IGV area", async () => {

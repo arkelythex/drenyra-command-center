@@ -73,4 +73,3 @@ export async function ensureDemoSeedContext(db) {
 	console.log("✅ Admin user linked to company");
 	return { adminUserId, companyId };
 }
-

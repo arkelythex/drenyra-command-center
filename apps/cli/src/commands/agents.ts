@@ -12,8 +12,9 @@ import {
 	getSessionTimeline,
 } from "../client.js";
 
-export const agentsCommand = new Command("agents")
-	.description("Manage agent sessions");
+export const agentsCommand = new Command("agents").description(
+	"Manage agent sessions",
+);
 
 agentsCommand
 	.command("list")

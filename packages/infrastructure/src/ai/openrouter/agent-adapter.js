@@ -202,4 +202,3 @@ export function checkBudgetStatus(warningThreshold = 0.8) {
 		percentage: percentage * 100,
 	};
 }
-

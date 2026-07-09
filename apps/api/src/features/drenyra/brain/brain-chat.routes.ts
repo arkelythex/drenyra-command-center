@@ -23,10 +23,7 @@ import {
 import { RUC } from "@drenyra/domain";
 import { Elysia, t } from "elysia";
 import type { DrenyraBrainRepository } from "./brain.repository";
-import {
-	createDrenyraBrainService,
-	type DrenyraBrainService,
-} from "./brain.service";
+import { type DrenyraBrainService } from "./brain.service";
 
 // ─── Context resolution (shared pattern from brain.routes.ts) ───
 

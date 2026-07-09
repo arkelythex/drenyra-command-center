@@ -11,10 +11,8 @@ import {
 	count,
 	desc,
 	eq,
-	gte,
 	ilike,
 	inArray,
-	lte,
 	or,
 	sql,
 } from "drizzle-orm";
@@ -420,7 +418,7 @@ ragEnterpriseRoutes.post(
 			.execute();
 
 		const text = document.content || "";
-		const words = text.split(/\s+/).filter(Boolean);
+		const _words = text.split(/\s+/).filter(Boolean);
 		const avgTokensPerWord = 1.3;
 		const maxChunkSize = 1000;
 		const chunks: (typeof kbChunks.$inferInsert)[] = [];

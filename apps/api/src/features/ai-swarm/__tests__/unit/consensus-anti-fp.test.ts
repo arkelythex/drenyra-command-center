@@ -14,8 +14,10 @@ import {
 	THRESHOLD_CONFIG,
 } from "@drenyra/ai/services/swarm-consensus/consensus-engine";
 import type { AgentConfidence } from "@drenyra/ai/services/swarm-consensus/types";
-import { detectRucBreachAnomalies,
-	RUC_BREACH_THRESHOLD_PEN, } from "@drenyra/pi/strategies";
+import {
+	detectRucBreachAnomalies,
+	RUC_BREACH_THRESHOLD_PEN,
+} from "@drenyra/pi/strategies";
 import { describe, expect, it } from "vitest";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -149,9 +151,9 @@ describe("Escenario 4: RUC breach S/ 6,000 — detección y confianza", () => {
 
 		const [anomaly] = detectRucBreachAnomalies([txn]);
 		expect(anomaly).toBeDefined();
-		expect(anomaly!.severity).toBe("high");
-		expect(anomaly!.confidence).toBeGreaterThan(0.95);
-		expect(anomaly!.context).toMatchObject({
+		expect(anomaly?.severity).toBe("high");
+		expect(anomaly?.confidence).toBeGreaterThan(0.95);
+		expect(anomaly?.context).toMatchObject({
 			legalReference: "Art. 12 TUO IGV (D.S. 055-99-EF)",
 			sunatThresholdPen: 5_000,
 		});

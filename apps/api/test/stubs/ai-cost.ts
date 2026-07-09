@@ -6,10 +6,10 @@
  *
  * @module test/stubs/ai-cost
  */
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 export const aiCostRepository = {
-  record: vi.fn().mockResolvedValue(undefined),
-  getSummary: vi.fn().mockResolvedValue({}),
-  getRecent: vi.fn().mockResolvedValue([]),
+	record: vi.fn().mockResolvedValue(undefined),
+	getSummary: vi.fn().mockResolvedValue({}),
+	getRecent: vi.fn().mockResolvedValue([]),
 };

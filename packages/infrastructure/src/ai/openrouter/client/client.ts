@@ -18,7 +18,6 @@ import { loggers } from "../../../logger.js";
 import type {
 	CostMetrics,
 	OpenRouterConfig,
-	OpenRouterMessage,
 	OpenRouterModel,
 	OpenRouterRequest,
 	OpenRouterResponse,

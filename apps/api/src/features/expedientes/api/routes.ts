@@ -16,7 +16,7 @@ export const expedienteRoutes = new Elysia({ prefix: "/api/expedientes" })
 		async ({ query, companyContext, set }) => {
 			try {
 				const organizationId = await resolveOrganizationId(
-					companyContext!.companyId,
+					companyContext?.companyId,
 				);
 				const companyRuc =
 					typeof query.companyRuc === "string" && query.companyRuc.trim()
@@ -29,7 +29,7 @@ export const expedienteRoutes = new Elysia({ prefix: "/api/expedientes" })
 				}
 
 				const expedientes = await expedienteService.listExpedientes({
-					companyId: companyContext!.companyId,
+					companyId: companyContext?.companyId,
 					companyRuc,
 					organizationId,
 					period: query.periodo,
@@ -69,7 +69,7 @@ export const expedienteRoutes = new Elysia({ prefix: "/api/expedientes" })
 		async ({ params, query, companyContext, set }) => {
 			try {
 				const organizationId = await resolveOrganizationId(
-					companyContext!.companyId,
+					companyContext?.companyId,
 				);
 				const companyRuc =
 					typeof query.companyRuc === "string" && query.companyRuc.trim()
@@ -83,7 +83,7 @@ export const expedienteRoutes = new Elysia({ prefix: "/api/expedientes" })
 				}
 
 				const scope = expedienteService.toScope({
-					companyId: companyContext!.companyId,
+					companyId: companyContext?.companyId,
 					companyRuc,
 					organizationId,
 					period: periodo,
@@ -118,10 +118,10 @@ export const expedienteRoutes = new Elysia({ prefix: "/api/expedientes" })
 		async ({ body, companyContext, set }) => {
 			try {
 				const organizationId = await resolveOrganizationId(
-					companyContext!.companyId,
+					companyContext?.companyId,
 				);
 				const expediente = await expedienteService.createExpediente({
-					companyId: companyContext!.companyId,
+					companyId: companyContext?.companyId,
 					companyRuc: body.companyRuc,
 					organizationId,
 					periodo: body.periodo,
@@ -163,10 +163,10 @@ export const expedienteRoutes = new Elysia({ prefix: "/api/expedientes" })
 		async ({ params, body, companyContext, set }) => {
 			try {
 				const organizationId = await resolveOrganizationId(
-					companyContext!.companyId,
+					companyContext?.companyId,
 				);
 				const scope = expedienteService.toScope({
-					companyId: companyContext!.companyId,
+					companyId: companyContext?.companyId,
 					companyRuc: body.companyRuc,
 					organizationId,
 					period: body.periodo,
@@ -211,7 +211,7 @@ export const expedienteRoutes = new Elysia({ prefix: "/api/expedientes" })
 		async ({ query, companyContext, set }) => {
 			try {
 				const organizationId = await resolveOrganizationId(
-					companyContext!.companyId,
+					companyContext?.companyId,
 				);
 				const companyRuc =
 					typeof query.companyRuc === "string" && query.companyRuc.trim()
@@ -225,7 +225,7 @@ export const expedienteRoutes = new Elysia({ prefix: "/api/expedientes" })
 				}
 
 				const cierre = await expedienteService.getOrCreateCierreMensual({
-					companyId: companyContext!.companyId,
+					companyId: companyContext?.companyId,
 					companyRuc,
 					organizationId,
 					periodo,
@@ -253,10 +253,10 @@ export const expedienteRoutes = new Elysia({ prefix: "/api/expedientes" })
 		async ({ params, body, companyContext, set }) => {
 			try {
 				const organizationId = await resolveOrganizationId(
-					companyContext!.companyId,
+					companyContext?.companyId,
 				);
 				const scope = expedienteService.toScope({
-					companyId: companyContext!.companyId,
+					companyId: companyContext?.companyId,
 					companyRuc: body.companyRuc,
 					organizationId,
 					period: body.periodo,

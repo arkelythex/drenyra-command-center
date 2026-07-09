@@ -25,4 +25,3 @@ export const buildDocumentOrganizationScope = (organizationId, companyId) =>
 				),
 			)
 		: eq(documents.organizationId, organizationId);
-

@@ -312,11 +312,11 @@ describe("generateRecommendations", () => {
 
 		const recIgn002 = result.find((r) => r.alertId === "IGV-002");
 		expect(recIgn002).toBeDefined();
-		expect(recIgn002!.action).toContain("NO HABIDO");
-		expect(recIgn002!.priority).toBe("IMMEDIATE");
-		expect(recIgn002!.id).toBe("REC-IGV-002");
-		expect(recIgn002!.canAutoFix).toBe(true);
-		expect(recIgn002!.autoFixAction).toBe("EXCLUDE_NO_HABIDO");
+		expect(recIgn002?.action).toContain("NO HABIDO");
+		expect(recIgn002?.priority).toBe("IMMEDIATE");
+		expect(recIgn002?.id).toBe("REC-IGV-002");
+		expect(recIgn002?.canAutoFix).toBe(true);
+		expect(recIgn002?.autoFixAction).toBe("EXCLUDE_NO_HABIDO");
 	});
 
 	it("returns IMMEDIATE before BEFORE_DECLARATION before NEXT_PERIOD", () => {

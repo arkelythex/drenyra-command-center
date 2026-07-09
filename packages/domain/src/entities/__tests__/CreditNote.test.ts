@@ -5,14 +5,10 @@
  * validation, state transitions, and business rules.
  */
 
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { DocumentSeries } from "../../value-objects/DocumentSeries";
 import { Money } from "../../value-objects/Money";
-import {
-	CreditNote,
-	type CreditNoteProps,
-	type CreditNoteType,
-} from "../CreditNote";
+import { CreditNote, type CreditNoteProps } from "../CreditNote";
 
 function validProps(overrides: Partial<CreditNoteProps> = {}): CreditNoteProps {
 	const baseAmount = Money.fromAmount(1000, "PEN");

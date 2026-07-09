@@ -7,8 +7,6 @@ import {
 	TASK_TIER_REQUIREMENTS,
 } from "./models";
 import type {
-	AIProvider,
-	ModelDefinition,
 	ModelSelection,
 	ModelSelectionConfig,
 	ModelTier,

@@ -86,7 +86,13 @@ export interface InvoiceListFilters {
 
 // ─── Bill DTOs ───────────────────────────────────────────────────
 
-export type BillStatus = "DRAFT" | "SENT" | "PAID" | "PARTIAL" | "OVERDUE" | "CANCELLED";
+export type BillStatus =
+	| "DRAFT"
+	| "SENT"
+	| "PAID"
+	| "PARTIAL"
+	| "OVERDUE"
+	| "CANCELLED";
 
 export interface BillItemDTO {
 	id?: string;

@@ -89,7 +89,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { description: "Nueva descripción" };
 
-			const result = await useCase.execute("acc-123", dto);
+			const _result = await useCase.execute("acc-123", dto);
 
 			expect(mockRepository.save).toHaveBeenCalled();
 		});
@@ -254,7 +254,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { parentId: newParentUuid };
 
-			const result = await useCase.execute("acc-123", dto);
+			const _result = await useCase.execute("acc-123", dto);
 
 			expect(mockRepository.save).toHaveBeenCalled();
 		});
@@ -314,7 +314,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = {};
 
-			const result = await useCase.execute("acc-123", dto);
+			const _result = await useCase.execute("acc-123", dto);
 
 			expect(mockRepository.save).toHaveBeenCalled();
 		});
@@ -347,7 +347,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { code: "10", name: "Updated Name" };
 
-			const result = await useCase.execute("acc-123", dto);
+			const _result = await useCase.execute("acc-123", dto);
 
 			expect(mockRepository.codeExists).not.toHaveBeenCalled();
 		});
@@ -359,7 +359,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { code: "20" };
 
-			const result = await useCase.execute("acc-123", dto);
+			const _result = await useCase.execute("acc-123", dto);
 
 			expect(mockRepository.codeExists).toHaveBeenCalledWith(
 				expect.any(Number),

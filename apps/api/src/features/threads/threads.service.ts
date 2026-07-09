@@ -1,8 +1,4 @@
-import type {
-	AgentRole,
-	TaskStatus,
-	ThreadStatus,
-} from "@drenyra/domain/entities/thread";
+import type { TaskStatus, ThreadStatus } from "@drenyra/domain/entities/thread";
 import { assertValidTransition, Thread } from "@drenyra/domain/entities/thread";
 import type {
 	ThreadAgentRole,

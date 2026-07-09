@@ -183,7 +183,7 @@ describe("SireComparisonService", () => {
 				"SUNAT_ONLY",
 			);
 			expect(sunatOnly).toHaveLength(1);
-			expect(sunatOnly[0]!.type).toBe("SUNAT_ONLY");
+			expect(sunatOnly[0]?.type).toBe("SUNAT_ONLY");
 
 			const amountMismatch = await SireComparisonService.getDiscrepancies(
 				"company-1",
@@ -191,7 +191,7 @@ describe("SireComparisonService", () => {
 				"AMOUNT_MISMATCH",
 			);
 			expect(amountMismatch).toHaveLength(1);
-			expect(amountMismatch[0]!.type).toBe("AMOUNT_MISMATCH");
+			expect(amountMismatch[0]?.type).toBe("AMOUNT_MISMATCH");
 
 			const localOnly = await SireComparisonService.getDiscrepancies(
 				"company-1",

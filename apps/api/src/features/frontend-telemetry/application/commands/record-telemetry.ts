@@ -11,7 +11,6 @@ import {
 	type FrontendTelemetryInput,
 	FrontendTelemetryService,
 } from "../../../../services/frontend-telemetry.service";
-import { getErrorMessage } from "../../../shared/api-response";
 
 export interface RecordTelemetryInput {
 	kind: string;

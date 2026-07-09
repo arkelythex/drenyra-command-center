@@ -354,7 +354,7 @@ function RecoverDialog({
 			const { api } = await import("@/lib/api");
 			const { unwrap } = await import("@/lib/api-helpers");
 			const body = { inputData: inputData.trim(), inputType };
-			const res = await unwrap(
+			const _res = await unwrap(
 				api.api.ai.swarm["cognitive-stream"].runs[":runId"].recover.post({
 					params: { runId },
 					body,
@@ -643,7 +643,7 @@ export function ObservabilityDashboard() {
 	const { data: batches, isLoading: batchesLoading } = useBatches();
 	const { data: batchDetail, isLoading: batchDetailLoading } =
 		useBatchDetail(selectedBatchId);
-	const submitBatch = useSubmitBatch();
+	const _submitBatch = useSubmitBatch();
 	const cancelBatchMutation = useCancelBatch();
 
 	const handleCancelBatch = useCallback(

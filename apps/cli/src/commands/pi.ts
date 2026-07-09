@@ -5,8 +5,9 @@
 import { Command } from "commander";
 import { listSkills, installSkill, uninstallSkill } from "../client.js";
 
-export const piCommand = new Command("pi")
-	.description("Manage drenyra-pi skills");
+export const piCommand = new Command("pi").description(
+	"Manage drenyra-pi skills",
+);
 
 piCommand
 	.command("list")
@@ -26,7 +27,10 @@ piCommand
 				})),
 			);
 		} else {
-			console.error("Error:", res.error?.message ?? "Cannot connect to drenyra-pi");
+			console.error(
+				"Error:",
+				res.error?.message ?? "Cannot connect to drenyra-pi",
+			);
 			process.exit(1);
 		}
 	});
@@ -36,7 +40,9 @@ piCommand
 	.description("Install a skill from npm")
 	.option("-v, --version <version>", "Specific version to install")
 	.action(async (pkg, opts) => {
-		console.log(`Installing ${pkg}${opts.version ? `@${opts.version}` : ""}...`);
+		console.log(
+			`Installing ${pkg}${opts.version ? `@${opts.version}` : ""}...`,
+		);
 		const res = await installSkill(pkg, opts.version);
 		if (res.success && res.data) {
 			console.log(`Skill "${res.data.skillId}" installed successfully`);

@@ -268,4 +268,3 @@ export const BANK_TRANSACTION_BLUEPRINTS = [
 		billIndex: null,
 	},
 ];
-

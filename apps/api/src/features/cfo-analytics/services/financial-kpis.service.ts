@@ -5,7 +5,6 @@ import { invoices } from "@drenyra/persistence/schema";
 import type {
 	ExpenseKPIs,
 	LiquidityKPIs,
-	MoneyValue,
 	ProfitKPIs,
 	RevenueKPIs,
 } from "../cfo-analytics.types";

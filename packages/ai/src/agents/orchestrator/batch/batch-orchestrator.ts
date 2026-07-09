@@ -22,7 +22,6 @@ import type { ReaderInput } from "../../types/agent.types";
 import type { WorkflowOrchestratorV2 } from "../workflow-v2";
 import type {
 	BatchItemResult,
-	BatchItemStatus,
 	BatchOrchestratorConfig,
 	BatchResult,
 	BatchStatus,

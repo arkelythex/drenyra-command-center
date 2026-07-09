@@ -3,7 +3,7 @@
  * Tests the full pipeline: Collector → Categorizer → Calculator → Reconciler → Reporter
  */
 
-import { afterAll, beforeAll, describe, expect, it } from "bun:test";
+import { describe, expect, it } from "bun:test";
 import { FiscalNightlyRunUseCase } from "@drenyra/application/use-cases/fiscal-agent/fiscal-nightly-run.use-case";
 import { FiscalHealthService } from "@drenyra/infrastructure/services/fiscal-health.service";
 
@@ -80,7 +80,7 @@ describe("FiscalNightlyRunUseCase", () => {
 		const collectStep = report.steps.find((s) => s.name === "collect");
 		expect(collectStep).toBeDefined();
 		// Should still succeed even without SIRE credentials
-		expect(collectStep!.success).toBe(true);
+		expect(collectStep?.success).toBe(true);
 	});
 });
 

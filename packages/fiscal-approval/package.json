@@ -1,0 +1,22 @@
+{
+  "name": "@drenyra/fiscal-approval",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Fiscal recommendation + approval workflow engine",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "bash ../../scripts/tsc7.sh --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@drenyra/orchestrator": "workspace:*",
+    "@drenyra/phase-gatekeeper": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
+  }
+}

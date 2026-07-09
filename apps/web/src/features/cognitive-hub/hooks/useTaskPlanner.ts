@@ -15,7 +15,7 @@ export interface PlanStep {
 export function useTaskPlanner() {
 	const [activePlan, setActivePlan] = useState<PlanStep[] | null>(null);
 
-	const createPlan = useCallback((objective: string) => {
+	const createPlan = useCallback((_objective: string) => {
 		// Lógica de descomposición (Simulada para el prototipo)
 		const steps: PlanStep[] = [
 			{

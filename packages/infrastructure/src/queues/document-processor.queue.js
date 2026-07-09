@@ -123,4 +123,3 @@ export async function closeQueue() {
 	}
 	loggers.queue.info("Document queue closed");
 }
-

@@ -1,5 +1,4 @@
 import type {
-	AuditFinding,
 	AuditReviewStatus,
 	FindingCategory,
 	FindingSeverity,

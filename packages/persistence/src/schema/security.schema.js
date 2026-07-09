@@ -65,4 +65,3 @@ export const promptGuardAudit = pgTable(
 		allowedIdx: index("idx_prompt_guard_allowed").on(table.allowed),
 	}),
 );
-

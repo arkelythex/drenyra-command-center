@@ -51,7 +51,7 @@ function createServices() {
 
 function createFile(
 	name: string,
-	type: "XML" | "PDF" | "IMAGE",
+	_type: "XML" | "PDF" | "IMAGE",
 	content = "<invoice><total>118.00</total></invoice>",
 ): File {
 	const blob = new Blob([content], { type: "application/octet-stream" });

@@ -53,7 +53,7 @@ describe("PersistentCircuitBreaker", () => {
 			updatedAt: new Date(),
 		});
 
-		const cb = new PersistentCircuitBreaker("reader", "agent");
+		const _cb = new PersistentCircuitBreaker("reader", "agent");
 
 		// Give the fire-and-forget sync a chance
 		await vi.advanceTimersByTimeAsync(100);

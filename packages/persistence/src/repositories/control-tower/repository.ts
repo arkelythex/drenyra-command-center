@@ -1,4 +1,3 @@
-import type { AuditEventType } from "@drenyra/domain/drenyra";
 import {
 	AgentRun,
 	ApprovalRequest,

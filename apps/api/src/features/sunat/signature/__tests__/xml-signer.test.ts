@@ -119,7 +119,7 @@ describe("XML Signer", () => {
 				/<ext:ExtensionContent>([\s\S]*?)<\/ext:ExtensionContent>/,
 			);
 			expect(extensionContentMatch).toBeTruthy();
-			expect(extensionContentMatch![1]).toContain("Signature");
+			expect(extensionContentMatch?.[1]).toContain("Signature");
 		});
 
 		it("should validate XML signature structure with KeyInfo and X509Certificate", () => {
@@ -139,7 +139,7 @@ describe("XML Signer", () => {
 				/<ds:X509Certificate>([\s\S]*?)<\/ds:X509Certificate>/,
 			);
 			expect(certMatch).toBeTruthy();
-			expect(certMatch![1].length).toBeGreaterThan(0);
+			expect(certMatch?.[1].length).toBeGreaterThan(0);
 		});
 
 		it("should include ds namespace prefix for signature elements", () => {
@@ -216,7 +216,7 @@ describe("XML Signer", () => {
 
 			expect(signatureValue).toBeDefined();
 			expect(signatureValue).not.toBeNull();
-			expect(signatureValue!.length).toBeGreaterThan(0);
+			expect(signatureValue?.length).toBeGreaterThan(0);
 			// Signature value should be base64 encoded
 			expect(signatureValue).toMatch(/^[A-Za-z0-9+/=]+$/);
 		});

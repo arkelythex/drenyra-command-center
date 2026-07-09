@@ -29,8 +29,8 @@
     "rules": {
       "recommended": true,
       "correctness": {
-        "noUnusedVariables": "warn",
-        "noUnusedImports": "warn",
+        "noUnusedVariables": "error",
+        "noUnusedImports": "error",
         "useExhaustiveDependencies": "off",
         "useHookAtTopLevel": "error"
       },
@@ -39,14 +39,14 @@
         "useTemplate": "warn",
         "noNegationElse": "off",
         "useBlockStatements": "off",
-        "noParameterAssign": "warn",
-        "noNonNullAssertion": "warn",
+        "noParameterAssign": "error",
+        "noNonNullAssertion": "error",
         "useCollapsedElseIf": "warn",
         "useSingleVarDeclarator": "warn"
       },
       "complexity": {
         "noExcessiveCognitiveComplexity": {
-          "level": "warn",
+          "level": "error",
           "options": {
             "maxAllowedComplexity": 15
           }
@@ -56,17 +56,17 @@
         "useOptionalChain": "warn"
       },
       "performance": {
-        "noAccumulatingSpread": "warn",
+        "noAccumulatingSpread": "error",
         "noDelete": "warn"
       },
       "suspicious": {
         "noConsole": {
-          "level": "warn",
+          "level": "error",
           "options": {
             "allow": ["warn", "error", "info"]
           }
         },
-        "noExplicitAny": "warn",
+        "noExplicitAny": "error",
         "noArrayIndexKey": "warn",
         "noDoubleEquals": "warn",
         "noDebugger": "error",
@@ -145,7 +145,11 @@
       "linter": {
         "rules": {
           "suspicious": {
-            "noConsole": "off"
+            "noConsole": "off",
+            "noExplicitAny": "warn"
+          },
+          "complexity": {
+            "noExcessiveCognitiveComplexity": "warn"
           }
         }
       }
@@ -165,12 +169,41 @@
           },
           "complexity": {
             "noExcessiveCognitiveComplexity": "off"
+          },
+          "style": {
+            "noNonNullAssertion": "warn"
           }
         }
       }
     },
     {
       "includes": ["*.config.{js,ts,mjs,cjs}", "scripts/**/*.{js,ts}", "*.d.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": "off"
+          },
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/cli/src/**/*.{ts,tsx}"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": "off"
+          },
+          "style": {
+            "noDefaultExport": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.{js,mjs,cjs}", "**/scripts/**/*.{ts,js,mjs}", "**/*.example.ts"],
       "linter": {
         "rules": {
           "suspicious": {

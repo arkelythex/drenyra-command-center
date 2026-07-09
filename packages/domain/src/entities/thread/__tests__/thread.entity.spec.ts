@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Thread } from "../thread.entity";
-import type { TaskStatus, ThreadProps, ThreadStatus } from "../types";
+import type { TaskStatus, ThreadProps } from "../types";
 
 function createValidProps(overrides: Partial<ThreadProps> = {}): ThreadProps {
 	return {

@@ -1,5 +1,3 @@
-import type { AgentEvent } from "@drenyra/shared";
-
 // Re-export shared types
 export type {
 	BackgroundMission,

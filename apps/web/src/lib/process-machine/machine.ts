@@ -142,7 +142,7 @@ export function createProcessMachine<TContext extends { error: string | null }>(
 
 	if (hasProcess) {
 		const processActor = fromPromise<Partial<TContext>, TContext>(({ input }) =>
-			onProcess!(input),
+			onProcess?.(input),
 		);
 
 		(machineConfig.states as Record<string, unknown>).processing = {
@@ -178,7 +178,7 @@ export function createProcessMachine<TContext extends { error: string | null }>(
 
 		if (hasAnalyze) {
 			const analyzeActor = fromPromise<Partial<TContext>, TContext>(
-				({ input }) => onAnalyze!(input),
+				({ input }) => onAnalyze?.(input),
 			);
 
 			(machineConfig.states as Record<string, unknown>).analyzing = {

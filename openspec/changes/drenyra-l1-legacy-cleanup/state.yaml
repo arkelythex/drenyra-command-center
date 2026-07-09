@@ -1,0 +1,15 @@
+change_id: drenyra-l1-legacy-cleanup
+status: proposal
+phase: proposal
+created: 2026-07-09
+author: el Gentleman
+delivery_strategy: auto-chain
+chain_strategy: stacked-to-main
+depends_on:
+  - drenyra-p5-code-quality
+  - drenyra-r1-eliminate-redundancy
+tags:
+  - legacy
+  - cleanup
+  - dead-code
+  - tech-debt

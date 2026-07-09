@@ -8,7 +8,6 @@ import type {
 	CollectOutput,
 	FiscalAgentStep,
 	FiscalAgentStepContext,
-	FiscalDiscrepancy,
 	ReconcileOutput,
 	ReportOutput,
 	StepResult,

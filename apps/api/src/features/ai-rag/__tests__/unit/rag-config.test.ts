@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { getRAGConfig } from "../api/routes";
 
 describe("AI RAG Service", () => {

@@ -54,4 +54,3 @@ export async function isRedisReady() {
 		return false;
 	}
 }
-

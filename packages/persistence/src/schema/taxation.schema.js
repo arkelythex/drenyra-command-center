@@ -132,4 +132,3 @@ export const percepciones = pgTable(
 		dueDateIdx: index("percepciones_due_date_idx").on(table.sunatDueDate),
 	}),
 );
-

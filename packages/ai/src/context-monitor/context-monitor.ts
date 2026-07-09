@@ -15,7 +15,6 @@ import type { SessionStore } from "../session/session-store";
 import type {
 	ContextMonitorConfig,
 	ContextUsage,
-	RunUsage,
 } from "./context-monitor.types";
 
 // Safe default context window for unknown models (matches Claude's window)
@@ -227,7 +226,7 @@ export class ContextMonitor {
 	private async persistUsageSnapshot(
 		runId: string,
 		modelId: string,
-		contextWindow: number,
+		_contextWindow: number,
 	): Promise<void> {
 		if (!this.sessionStore) return;
 

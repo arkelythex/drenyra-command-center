@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import { toast } from "sonner";
 import { useHaptics } from "@/hooks/useHaptics";
 import { useSoundUI } from "@/hooks/useSoundUI";
-import { api } from "@/lib/api";
 
 /**
  * useAgentActions: Hook to execute real financial actions proposed by agents.
@@ -20,7 +19,7 @@ export function useAgentActions() {
 			try {
 				// Simulating a real POST to transactions/ledger
 				// In a real scenario, we would use the actual API client
-				const response = await new Promise((resolve) =>
+				const _response = await new Promise((resolve) =>
 					setTimeout(resolve, 1500),
 				);
 
@@ -31,7 +30,7 @@ export function useAgentActions() {
 
 				// Return true to update UI
 				return true;
-			} catch (error) {
+			} catch (_error) {
 				toast.error("Commit Failed", {
 					id: loadingToast,
 					description: "Error al sincronizar con la base de datos.",

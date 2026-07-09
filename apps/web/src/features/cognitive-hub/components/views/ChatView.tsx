@@ -1,4 +1,4 @@
-import { Bot, MessageSquare, Sparkles, User } from "lucide-react";
+import { Sparkles, User } from "lucide-react";
 
 export const ChatView = () => {
 	return (

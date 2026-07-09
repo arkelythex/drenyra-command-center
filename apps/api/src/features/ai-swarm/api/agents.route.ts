@@ -7,8 +7,7 @@
  * @module ai-swarm/api/agents
  */
 
-import { type Agent,
-	getAllRegisteredAgents, } from "@drenyra/pi";
+import { type Agent, getAllRegisteredAgents } from "@drenyra/pi";
 import { Elysia, t } from "elysia";
 import { createLogger } from "../../../lib/logger";
 import { fail, ok } from "../../shared/api-response";

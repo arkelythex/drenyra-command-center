@@ -39,4 +39,3 @@ export const platformMcpAuditEvents = pgTable(
 		),
 	}),
 );
-

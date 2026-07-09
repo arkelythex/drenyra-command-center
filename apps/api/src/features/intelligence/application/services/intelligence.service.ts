@@ -23,7 +23,8 @@ import type {
 	TaxCalendarInput,
 	TransactionRecord,
 } from "@drenyra/pi/strategies";
-import { classifyDocuments,
+import {
+	classifyDocuments,
 	createCashflowPredictorStrategy,
 	createDetraccionesStrategy,
 	createDuplicateInvoiceStrategy,
@@ -33,7 +34,8 @@ import { classifyDocuments,
 	createTaxCalendarStrategy,
 	detectRucBreachAnomalies,
 	FiscalAnomalyEngine,
-	RUC_BREACH_THRESHOLD_PEN, } from "@drenyra/pi/strategies";
+	RUC_BREACH_THRESHOLD_PEN,
+} from "@drenyra/pi/strategies";
 
 // ─── Helpers ─────────────────────────────────────────────────────────
 
@@ -152,7 +154,7 @@ export interface CashflowAnalysisOutput {
 export async function runCashflowAnalysis(
 	input: CashflowAnalysisInput,
 ): Promise<CashflowAnalysisOutput> {
-	const start = performance.now();
+	const _start = performance.now();
 	const context = buildAgentContext();
 	const strategy = createCashflowPredictorStrategy(input.options);
 

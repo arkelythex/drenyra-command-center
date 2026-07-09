@@ -3,7 +3,6 @@
  * Score: 0-100 based on SUNAT sync, IGV compliance, discrepancies, deadlines.
  */
 
-import type { Money } from "@drenyra/domain";
 import { createSunatClient } from "@drenyra/infrastructure/sunat/SunatApiClient";
 import { SunatSireService } from "@drenyra/infrastructure/sunat/SunatSireService";
 
@@ -29,7 +28,7 @@ export class FiscalHealthService {
 	async getHealthScore(
 		organizationId: number,
 		companyId: string,
-		period: string,
+		_period: string,
 	): Promise<FiscalHealthScore> {
 		let sunatSync = 100;
 		let lastSyncDate: string | null = null;

@@ -1,4 +1,4 @@
-import { ArrowRight, FileText, Search, X } from "lucide-react";
+import { ArrowRight, FileText, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useDesignTokens } from "@/lib/design-tokens";
 import { cn } from "@/lib/utils";

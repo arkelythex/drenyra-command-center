@@ -9,7 +9,7 @@ import type { ExchangeRateRepository } from "@drenyra/domain/repositories/exchan
 import { db } from "@drenyra/persistence/client";
 import { exchangeRates } from "@drenyra/persistence/schema";
 import { randomUUID } from "crypto";
-import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
+import { and, desc, eq, gte, lte } from "drizzle-orm";
 
 /**
  * Rates are stored as integers with 4 decimal places (e.g., 37250 = 3.7250).

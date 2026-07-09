@@ -259,4 +259,3 @@ export async function executeGeminiTool(toolName, args) {
 			throw new Error(`Unknown tool: ${toolName}`);
 	}
 }
-

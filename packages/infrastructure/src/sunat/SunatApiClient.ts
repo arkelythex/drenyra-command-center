@@ -25,10 +25,7 @@
  * console.log(value);
  * ```
  */
-export interface SunatCredentials {
-	clientId: string;
-	clientSecret: string;
-}
+import type { SunatApiCredentials as SunatCredentials } from "../types";
 
 /**
  * SunatToken interface.

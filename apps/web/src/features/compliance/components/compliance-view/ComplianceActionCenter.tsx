@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, type LucideIcon, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	Card,

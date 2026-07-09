@@ -189,4 +189,3 @@ export async function* streamWithToolExecution(service, request, options) {
 	}
 	yield { type: "done", finish_reason: "stop" };
 }
-

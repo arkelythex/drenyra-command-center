@@ -34,4 +34,3 @@ export const frontendTelemetryEvents = pgTable(
 		pathIdx: index("frontend_telemetry_path_idx").on(t.path),
 	}),
 );
-

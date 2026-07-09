@@ -99,7 +99,8 @@ export const COPY = {
 		},
 		generic: {
 			title: "Algo salió mal",
-			message: "Ocurrió un error inesperado. Si el problema persiste, contactá a soporte.",
+			message:
+				"Ocurrió un error inesperado. Si el problema persiste, contactá a soporte.",
 			action: "Reintentar",
 		},
 	},

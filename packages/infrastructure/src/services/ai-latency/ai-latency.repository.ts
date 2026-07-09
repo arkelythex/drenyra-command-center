@@ -8,7 +8,7 @@
  */
 
 import { db } from "@drenyra/persistence/client";
-import { and, desc, eq, gte, sql } from "@drenyra/persistence/query";
+import { and, desc, eq, sql } from "@drenyra/persistence/query";
 import {
 	type AiLatencyEvent,
 	aiLatencyEvents,
@@ -68,7 +68,7 @@ export interface LatencyTrend {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function daysAgo(n: number): Date {
+function _daysAgo(n: number): Date {
 	const d = new Date();
 	d.setDate(d.getDate() - n);
 	d.setHours(0, 0, 0, 0);

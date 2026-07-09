@@ -41,7 +41,7 @@ export class StreamExecutor {
 	private static async executeViaOpenRouter(
 		request: ChatCompletionRequest,
 		provider: LLMProvider,
-		credential: { apiKey: string; baseUrl?: string },
+		_credential: { apiKey: string; baseUrl?: string },
 	): Promise<AsyncGenerator<ChatCompletionStreamChunk>> {
 		const apiKey =
 			process.env.OPENROUTER_API_KEY ??

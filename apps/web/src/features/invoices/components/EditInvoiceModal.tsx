@@ -33,7 +33,7 @@ interface EditableInvoiceItem {
 	taxType?: "GRAVADO" | "EXONERADO" | "INAFECTO";
 }
 
-const DEFAULT_COMPANY_ID = "00000000-0000-0000-0000-000000000001";
+const _DEFAULT_COMPANY_ID = "00000000-0000-0000-0000-000000000001";
 
 function toInputDate(value: string): string {
 	return new Date(value).toISOString().split("T")[0];

@@ -73,4 +73,3 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
 		references: [categories.id],
 	}),
 }));
-

@@ -80,4 +80,3 @@ export const buildSyntheticEntries = (raw, totalAmount) => {
 		},
 	];
 };
-

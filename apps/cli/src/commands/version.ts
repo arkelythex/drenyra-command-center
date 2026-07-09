@@ -12,7 +12,9 @@ export const versionCommand = new Command("version")
 		try {
 			const health = await getHealth();
 			if (health.success && health.data) {
-				console.log(`drenyra-pi: v${health.data.version} (${health.data.status})`);
+				console.log(
+					`drenyra-pi: v${health.data.version} (${health.data.status})`,
+				);
 				console.log(`Skills:    ${health.data.skills}`);
 				console.log(`Uptime:    ${health.data.uptime}s`);
 			}

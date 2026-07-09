@@ -30,4 +30,3 @@ export const CACHE_TTL = {
 	EXCHANGE_RATE: 60 * 60 * 4,
 	SESSION: 60 * 60 * 24 * 7,
 };
-

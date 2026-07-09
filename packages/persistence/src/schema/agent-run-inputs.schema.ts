@@ -5,13 +5,7 @@
  * @module persistence/schema/agent-run-inputs
  */
 
-import {
-	index,
-	pgTable,
-	text,
-	timestamp,
-	uniqueIndex,
-} from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 import { agentRunStates } from "./agent-run.schema";
 
 // --- AGENT RUN INPUTS ---

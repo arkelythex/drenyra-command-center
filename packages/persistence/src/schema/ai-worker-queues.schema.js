@@ -72,4 +72,3 @@ export const aiWorkerQueuesRelations = relations(aiWorkerQueues, ({ one }) => ({
 		references: [users.id],
 	}),
 }));
-

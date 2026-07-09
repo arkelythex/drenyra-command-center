@@ -12,14 +12,7 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import {
-	AlertCircle,
-	CheckCircle2,
-	FileText,
-	Loader2,
-	Upload,
-	X,
-} from "lucide-react";
+import { AlertCircle, FileText, Loader2, Upload, X } from "lucide-react";
 import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {

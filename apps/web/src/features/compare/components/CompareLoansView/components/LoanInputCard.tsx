@@ -9,9 +9,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn, n } from "@/lib/utils";
 import type {
 	InputGroupProps,
-	LoanCalculationResult,
 	LoanInputCardProps,
-	PeruLoanScenario,
 } from "../CompareLoansView.types";
 
 const InputGroup = ({

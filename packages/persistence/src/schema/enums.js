@@ -41,4 +41,3 @@ export const accountingJobRunStatusEnum = pgEnum("accounting_job_run_status", [
 	"FAILED",
 	"CANCELLED",
 ]);
-

@@ -53,7 +53,7 @@ function mapRegisterType(tipo: "SALES" | "PURCHASES"): "COMPRAS" | "VENTAS" {
 /**
  * Map SUNAT register type to generic.
  */
-function mapFromSunatRegisterType(
+function _mapFromSunatRegisterType(
 	tipo: "COMPRAS" | "VENTAS",
 ): "SALES" | "PURCHASES" {
 	return tipo === "VENTAS" ? "SALES" : "PURCHASES";

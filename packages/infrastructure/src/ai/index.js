@@ -65,4 +65,3 @@ export {
 	quickValidate,
 	validateInvoiceWithAI,
 } from "./validation.service";
-

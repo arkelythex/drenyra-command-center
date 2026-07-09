@@ -54,7 +54,7 @@ export function useRunEvents(runId: string | null, limit = 50) {
 	});
 }
 
-import type { BatchDetail, BatchRun, CreateBatchPayload } from "../types";
+import type { CreateBatchPayload } from "../types";
 
 export const useBatches = (companyId?: string) =>
 	useQuery({

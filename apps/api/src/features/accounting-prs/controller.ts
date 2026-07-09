@@ -3,7 +3,6 @@ import { accountingPrs, prApprovals } from "@drenyra/persistence/schema";
 import { accountingPrStatus } from "@drenyra/persistence/schema/accounting-pr.schema";
 import { db } from "../../lib/db";
 import type {
-	AccountingPrDTO,
 	CreatePrRequest,
 	PrListQuery,
 	PaginatedResponse,

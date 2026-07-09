@@ -246,4 +246,3 @@ export const customerProfilesRelations = relations(
 	}),
 );
 export { fiscalMemories, fiscalMemoryRevisions } from "./fiscal-memory.schema";
-

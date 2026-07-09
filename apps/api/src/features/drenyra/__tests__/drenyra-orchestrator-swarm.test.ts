@@ -13,13 +13,13 @@
  * 4. Single-domain and multi-domain routing through the full stack
  */
 
-import type { Agent,
-	AgentContext,
-	AgentDefinition, } from "@drenyra/pi";
-import { AgentEventBus,
+import type { Agent, AgentContext, AgentDefinition } from "@drenyra/pi";
+import {
+	AgentEventBus,
 	ApprovalGateEngine,
 	ApprovalStore,
-	MastraDrenyraOrchestrator as LegacyDrenyraOrchestrator, } from "@drenyra/pi";
+	MastraDrenyraOrchestrator as LegacyDrenyraOrchestrator,
+} from "@drenyra/pi";
 import { describe, expect, it, vi } from "vitest";
 import { createSwarmOrchestratorFromAgents } from "../swarm-factory";
 

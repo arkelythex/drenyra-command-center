@@ -1,17 +1,15 @@
 import type { HubArtifact } from "@drenyra/shared/artifacts";
 import { motion, useReducedMotion } from "framer-motion";
-import { Activity, Layers } from "lucide-react";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense } from "react";
 import type { KnowledgeDocument } from "@/features/agent-swarm/hooks/useKnowledgeStore";
 import type { AccountingSkill } from "@/features/agent-swarm/types/skills.types";
-import { cn } from "@/lib/utils";
 
 const HubArtifactAside = lazy(async () => {
 	const mod = await import("./hub-artifact-aside");
 	return { default: mod.HubArtifactAside };
 });
 
-const HubContextAside = lazy(async () => {
+const _HubContextAside = lazy(async () => {
 	const mod = await import("./hub-context-aside");
 	return { default: mod.HubContextAside };
 });

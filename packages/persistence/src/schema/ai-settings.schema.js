@@ -21,4 +21,3 @@ export const userAISettings = pgTable(
 		userIdIdx: uniqueIndex("user_ai_settings_user_id_idx").on(table.userId),
 	}),
 );
-

@@ -5,7 +5,6 @@
  */
 
 import { db } from "@drenyra/persistence/client";
-import { categories, transactions } from "@drenyra/persistence/schema";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { LedgerService } from "../../index";
 

@@ -64,4 +64,3 @@ export class IdempotencyConflictError extends DomainError {
 	}
 	idempotencyKey;
 }
-

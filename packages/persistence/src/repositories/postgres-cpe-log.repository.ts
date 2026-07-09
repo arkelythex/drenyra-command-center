@@ -8,7 +8,6 @@ import { CPELog, type SunatStatus } from "@drenyra/domain/accounting/cpe-log";
 import type { CpeLogRepository } from "@drenyra/domain/repositories/cpe-log.repository";
 import { db } from "@drenyra/persistence/client";
 import { cpeLog } from "@drenyra/persistence/schema";
-import { randomUUID } from "crypto";
 import { and, between, eq, sql } from "drizzle-orm";
 
 export class PostgresCpeLogRepository implements CpeLogRepository {

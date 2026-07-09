@@ -5,7 +5,7 @@
  * Uses real database and real services.
  */
 
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 // We DO NOT mock anything for integration tests.
 // All imports will resolve to real implementations.
@@ -17,10 +17,10 @@ vi.setConfig({ testTimeout: 10000 });
 
 // Optional: Check that DATABASE_URL is set
 if (!process.env.DATABASE_URL) {
-  console.warn(
-    '⚠️  WARNING: DATABASE_URL not set. Integration tests will use default database.'
-  );
-  process.env.DATABASE_URL = 'postgres://user:password@localhost:5435/arkomix';
+	console.warn(
+		"⚠️  WARNING: DATABASE_URL not set. Integration tests will use default database.",
+	);
+	process.env.DATABASE_URL = "postgres://user:password@localhost:5435/arkomix";
 }
 
-console.log('✅ Integration test setup complete (no mocks)');
+console.log("✅ Integration test setup complete (no mocks)");

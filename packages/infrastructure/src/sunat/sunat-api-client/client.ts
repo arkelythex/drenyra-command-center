@@ -1,5 +1,5 @@
 import { requestNewToken, tokenCache } from "./auth";
-import type { SunatCredentials, SunatToken } from "./types";
+import type { SunatCredentials } from "./types";
 import {
 	MAX_RETRIES,
 	REQUEST_TIMEOUT_MS,

@@ -71,7 +71,7 @@ export const evidenceRepository: EvidenceRepository = {
 
 	async saveForOrganization(
 		entity: Evidence,
-		organizationId: number,
+		_organizationId: number,
 	): Promise<void> {
 		await this.save(entity);
 	},
@@ -96,7 +96,7 @@ export const evidenceRepository: EvidenceRepository = {
 
 	async updateForOrganization(
 		entity: Evidence,
-		organizationId: number,
+		_organizationId: number,
 	): Promise<void> {
 		await this.update(entity);
 	},
@@ -107,7 +107,7 @@ export const evidenceRepository: EvidenceRepository = {
 
 	async deleteForOrganization(
 		id: string,
-		organizationId: number,
+		_organizationId: number,
 	): Promise<void> {
 		await db.delete(evidence).where(eq(evidence.id, id));
 	},

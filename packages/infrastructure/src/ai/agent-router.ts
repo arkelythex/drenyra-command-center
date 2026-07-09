@@ -5,8 +5,6 @@
  * @module infrastructure/ai/agent-router
  */
 
-import type { TaskType } from "../ai/model-registry";
-
 // ─── Delegation Modes (Codex v0.142) ─────────────────────────────────
 
 export type DelegationMode = "disabled" | "explicit-request-only" | "proactive";

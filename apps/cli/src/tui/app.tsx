@@ -2,8 +2,8 @@
  * Drenyra TUI — Main Ink application.
  */
 
-import React, { useState, useEffect } from "react";
-import { render, Text, Box, Static } from "ink";
+import { useState, useEffect } from "react";
+import { render, Text, Box } from "ink";
 import { listSessions } from "../client.js";
 import type { AgentSession } from "../types.js";
 
@@ -97,9 +97,7 @@ function App({ refreshInterval = 5000 }: AppProps) {
 				</Text>
 			</Box>
 			<Box>
-				<Text dimColor>
-					{"─".repeat(60)}
-				</Text>
+				<Text dimColor>{"─".repeat(60)}</Text>
 			</Box>
 
 			{sessions.length === 0 && !error && (

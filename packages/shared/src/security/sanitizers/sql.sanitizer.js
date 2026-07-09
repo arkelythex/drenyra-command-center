@@ -94,4 +94,3 @@ export function createSafeLikePattern(searchTerm, options) {
 		injectionDetected: sanitized.injectionDetected,
 	};
 }
-

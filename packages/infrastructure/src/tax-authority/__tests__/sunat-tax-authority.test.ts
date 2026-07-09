@@ -100,8 +100,8 @@ describe("SunatTaxAuthorityAdapter", () => {
 
 		const result = adapter.findDiscrepancies([], [authRecord]);
 		expect(result).toHaveLength(1);
-		expect(result[0]!.type).toBe("MISSING_LOCAL");
-		expect(result[0]!.documentKey).toBe("F001-1");
+		expect(result[0]?.type).toBe("MISSING_LOCAL");
+		expect(result[0]?.documentKey).toBe("F001-1");
 	});
 
 	it("findDiscrepancies detects missing authority records", () => {
@@ -120,7 +120,7 @@ describe("SunatTaxAuthorityAdapter", () => {
 
 		const result = adapter.findDiscrepancies([localRecord], []);
 		expect(result).toHaveLength(1);
-		expect(result[0]!.type).toBe("MISSING_AUTHORITY");
+		expect(result[0]?.type).toBe("MISSING_AUTHORITY");
 	});
 
 	it("findDiscrepancies detects amount mismatches", () => {
@@ -140,7 +140,7 @@ describe("SunatTaxAuthorityAdapter", () => {
 
 		const result = adapter.findDiscrepancies([local], [auth]);
 		expect(result).toHaveLength(1);
-		expect(result[0]!.type).toBe("AMOUNT_MISMATCH");
+		expect(result[0]?.type).toBe("AMOUNT_MISMATCH");
 	});
 
 	it("findDiscrepancies ignores sub-cent differences", () => {

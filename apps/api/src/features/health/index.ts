@@ -1,5 +1,4 @@
 import { db } from "@drenyra/persistence/client";
-import { sql } from "@drenyra/persistence/query";
 import { Elysia } from "elysia";
 import { logger } from "../../lib/logger";
 import { getTaxationEventBootstrapStatus } from "../taxation/application/handlers/bootstrap-taxation-event-subscriptions";

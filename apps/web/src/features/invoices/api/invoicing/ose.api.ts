@@ -10,7 +10,6 @@ import {
 	requestBinaryFile,
 	resolveApiUrl,
 } from "./helpers";
-import type { InvoiceOseLifecycle } from "./types";
 
 /**
  * Enviar factura a SUNAT via OSE

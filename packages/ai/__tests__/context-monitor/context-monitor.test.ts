@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { ContextMonitor } from "../../src/context-monitor/context-monitor";
 import type { AgentRunEvent } from "../../src/session/session.types";
 import type { SessionStore } from "../../src/session/session-store";
@@ -11,7 +11,7 @@ const GEMINI_3_FLASH = "gemini-3-flash"; // contextWindow: 1_000_000
 const GEMINI_3_PRO = "gemini-3-pro"; // contextWindow: 2_000_000
 const UNKNOWN_MODEL = "unknown-model-xyz"; // fallback: 200_000
 
-const DEFAULT_THRESHOLD = 0.95;
+const _DEFAULT_THRESHOLD = 0.95;
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -45,10 +45,10 @@ describe("ContextMonitor", () => {
 
 			const usage = monitor.getRunUsage("run-1");
 			expect(usage).not.toBeNull();
-			expect(usage!.totalTokens).toBe(150);
-			expect(usage!.promptTokens).toBe(100);
-			expect(usage!.completionTokens).toBe(50);
-			expect(usage!.modelContextWindow).toBe(1_000_000);
+			expect(usage?.totalTokens).toBe(150);
+			expect(usage?.promptTokens).toBe(100);
+			expect(usage?.completionTokens).toBe(50);
+			expect(usage?.modelContextWindow).toBe(1_000_000);
 		});
 
 		it("should accumulate tokens across multiple calls for the same run", () => {
@@ -64,9 +64,9 @@ describe("ContextMonitor", () => {
 			});
 
 			const usage = monitor.getRunUsage("run-1");
-			expect(usage!.totalTokens).toBe(450);
-			expect(usage!.promptTokens).toBe(300);
-			expect(usage!.completionTokens).toBe(150);
+			expect(usage?.totalTokens).toBe(450);
+			expect(usage?.promptTokens).toBe(300);
+			expect(usage?.completionTokens).toBe(150);
 		});
 
 		it("should resolve the model context window correctly", () => {
@@ -81,8 +81,8 @@ describe("ContextMonitor", () => {
 				completionTokens: 10,
 			});
 
-			expect(monitor.getRunUsage("run-1")!.modelContextWindow).toBe(2_000_000);
-			expect(monitor.getRunUsage("run-2")!.modelContextWindow).toBe(1_000_000);
+			expect(monitor.getRunUsage("run-1")?.modelContextWindow).toBe(2_000_000);
+			expect(monitor.getRunUsage("run-2")?.modelContextWindow).toBe(1_000_000);
 		});
 
 		it("should fall back to 200K context window for unknown models", () => {
@@ -94,7 +94,7 @@ describe("ContextMonitor", () => {
 			});
 
 			const usage = monitor.getRunUsage("run-1");
-			expect(usage!.modelContextWindow).toBe(200_000);
+			expect(usage?.modelContextWindow).toBe(200_000);
 		});
 
 		it("should be non-blocking when SessionStore.appendEvent throws", () => {
@@ -112,7 +112,7 @@ describe("ContextMonitor", () => {
 			// Usage should still be tracked in memory
 			const usage = monitor.getRunUsage("run-1");
 			expect(usage).not.toBeNull();
-			expect(usage!.totalTokens).toBe(150);
+			expect(usage?.totalTokens).toBe(150);
 		});
 
 		it("should persist usage snapshot when SessionStore is configured", async () => {
@@ -280,10 +280,10 @@ describe("ContextMonitor", () => {
 
 			const usage = monitor.getRunUsage("run-1");
 			expect(usage).not.toBeNull();
-			expect(usage!.totalTokens).toBe(150);
-			expect(usage!.usageRatio).toBeCloseTo(150 / 1_000_000, 6);
-			expect(usage!.modelId).toBe(GEMINI_3_FLASH);
-			expect(usage!.lastChecked).toBeInstanceOf(Date);
+			expect(usage?.totalTokens).toBe(150);
+			expect(usage?.usageRatio).toBeCloseTo(150 / 1_000_000, 6);
+			expect(usage?.modelId).toBe(GEMINI_3_FLASH);
+			expect(usage?.lastChecked).toBeInstanceOf(Date);
 		});
 
 		it("should return null for an unknown run", () => {
@@ -335,10 +335,10 @@ describe("ContextMonitor", () => {
 				completionTokens: 200,
 			});
 
-			expect(monitor.getRunUsage("run-a")!.totalTokens).toBe(150);
-			expect(monitor.getRunUsage("run-b")!.totalTokens).toBe(700);
-			expect(monitor.getRunUsage("run-a")!.modelContextWindow).toBe(1_000_000);
-			expect(monitor.getRunUsage("run-b")!.modelContextWindow).toBe(2_000_000);
+			expect(monitor.getRunUsage("run-a")?.totalTokens).toBe(150);
+			expect(monitor.getRunUsage("run-b")?.totalTokens).toBe(700);
+			expect(monitor.getRunUsage("run-a")?.modelContextWindow).toBe(1_000_000);
+			expect(monitor.getRunUsage("run-b")?.modelContextWindow).toBe(2_000_000);
 		});
 
 		it("should handle model changes mid-run", () => {
@@ -355,9 +355,9 @@ describe("ContextMonitor", () => {
 			});
 
 			const usage = monitor.getRunUsage("run-1");
-			expect(usage!.totalTokens).toBe(450);
+			expect(usage?.totalTokens).toBe(450);
 			// Should use the latest model's context window
-			expect(usage!.modelContextWindow).toBe(2_000_000);
+			expect(usage?.modelContextWindow).toBe(2_000_000);
 		});
 
 		it("should not throw when constructed without arguments", () => {

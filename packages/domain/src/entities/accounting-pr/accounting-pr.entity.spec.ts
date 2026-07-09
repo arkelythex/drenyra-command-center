@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { AccountingPr } from "./accounting-pr.entity";
-import type { AccountingPrProps, AccountingPrStatus } from "./types";
+import type { AccountingPrProps } from "./types";
 
 function makeValidProps(
 	overrides?: Partial<AccountingPrProps>,

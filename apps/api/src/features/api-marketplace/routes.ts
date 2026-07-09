@@ -9,18 +9,13 @@ import { Elysia } from "elysia";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import {
 	ConnectionIdParams,
-	ConnectionStatusSchema,
 	CreateConnectionBody,
 	CreateWebhookBody,
 	InstallIntegrationBody,
-	IntegrationCategorySchema,
-	IntegrationProviderSchema,
 	ListConnectionsQuery,
 	ListMarketplaceQuery,
 	ListWebhooksQuery,
 	MarketplaceIdParams,
-	TestConnectionBody,
-	UninstallIntegrationBody,
 	UpdateConnectionBody,
 	WebhookIdParams,
 } from "./types";

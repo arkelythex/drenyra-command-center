@@ -198,4 +198,3 @@ export const SUNAT_2026_SEED = [
 		effectiveDate: "2020-01-01",
 	},
 ];
-

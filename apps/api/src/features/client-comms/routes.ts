@@ -343,7 +343,7 @@ export const clientCommsRoutes = new Elysia({ prefix: "/api/v1/comms" })
 
 				const [
 					[sentToday],
-					[deliveredCount],
+					[_deliveredCount],
 					[failedCount],
 					[activeAutomations],
 				] = await Promise.all([

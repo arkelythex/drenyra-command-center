@@ -1,10 +1,5 @@
 import type { HubArtifact } from "@drenyra/shared/artifacts";
-import {
-	ArrowUpDown,
-	CheckCircle2,
-	Landmark,
-	XCircle,
-} from "lucide-react";
+import { ArrowUpDown, CheckCircle2, Landmark, XCircle } from "lucide-react";
 import { tokensToClasses } from "@/lib/design-tokens";
 import { cn } from "@/lib/utils";
 import { registerArtifact } from "../artifact-registry";
@@ -54,8 +49,7 @@ function formatMoney(amount: number): string {
 export const BankingReconciliationArtifact: React.FC<{
 	artifact: BankingReconciliationArt;
 }> = ({ artifact }) => {
-	const { summary, rows, period, accountName, currency } =
-		artifact.payload;
+	const { summary, rows, period, accountName, currency } = artifact.payload;
 	const hasIssues = summary.mismatched > 0;
 
 	return (
@@ -155,7 +149,8 @@ export const BankingReconciliationArtifact: React.FC<{
 									key={row.id}
 									className={cn(
 										"border-b border-border/10 transition-colors hover:bg-foreground/[0.02]",
-										row.status === "MISMATCH" && "bg-[var(--premium-danger)]/[0.02]",
+										row.status === "MISMATCH" &&
+											"bg-[var(--premium-danger)]/[0.02]",
 									)}
 								>
 									<td className="py-2 pr-3 font-mono text-foreground">

@@ -148,8 +148,8 @@ describe("Evidence.create()", () => {
 			}),
 		);
 		expect(ev.hashChain).toBeDefined();
-		expect(ev.hashChain!.hash).toBe("c".repeat(64));
-		expect(ev.hashChain!.prevHash).toBeNull();
+		expect(ev.hashChain?.hash).toBe("c".repeat(64));
+		expect(ev.hashChain?.prevHash).toBeNull();
 	});
 
 	it("accepts valid hashChain with prevHash", () => {
@@ -162,7 +162,7 @@ describe("Evidence.create()", () => {
 				},
 			}),
 		);
-		expect(ev.hashChain!.prevHash).toBe("c".repeat(64));
+		expect(ev.hashChain?.prevHash).toBe("c".repeat(64));
 	});
 });
 
@@ -242,7 +242,7 @@ describe("Evidence.fromPrimitives()", () => {
 			createdAt: "2024-06-01T00:00:00Z",
 			updatedAt: "2024-07-01T00:00:00Z",
 		});
-		expect(ev.validatedAt!.toISOString()).toBe("2024-07-01T00:00:00.000Z");
+		expect(ev.validatedAt?.toISOString()).toBe("2024-07-01T00:00:00.000Z");
 		expect(ev.createdAt.toISOString()).toBe("2024-06-01T00:00:00.000Z");
 	});
 
@@ -445,26 +445,26 @@ describe("updateHashChain()", () => {
 		const next = await ev.updateHashChain(null);
 
 		expect(next.hashChain).toBeDefined();
-		expect(next.hashChain!.hash).toMatch(/^[0-9a-f]{64}$/);
-		expect(next.hashChain!.prevHash).toBeNull();
-		expect(next.hashChain!.timestamp).toBeDefined();
+		expect(next.hashChain?.hash).toMatch(/^[0-9a-f]{64}$/);
+		expect(next.hashChain?.prevHash).toBeNull();
+		expect(next.hashChain?.timestamp).toBeDefined();
 		expect(next).not.toBe(ev);
 	});
 
 	it("stores currentHash and prevHash", async () => {
 		const ev = Evidence.create(makeValidProps());
 		const prev = await ev.updateHashChain(null);
-		const next = await prev.updateHashChain(prev.hashChain!.hash);
+		const next = await prev.updateHashChain(prev.hashChain?.hash);
 
-		expect(next.hashChain!.prevHash).toBe(prev.hashChain!.hash);
-		expect(next.hashChain!.hash).not.toBe(prev.hashChain!.hash);
+		expect(next.hashChain?.prevHash).toBe(prev.hashChain?.hash);
+		expect(next.hashChain?.hash).not.toBe(prev.hashChain?.hash);
 	});
 
 	it("produces deterministic hash for same payload+prevHash", async () => {
 		const a = await Evidence.create(makeValidProps()).updateHashChain(null);
 		const b = await Evidence.create(makeValidProps()).updateHashChain(null);
 
-		expect(a.hashChain!.hash).toBe(b.hashChain!.hash);
+		expect(a.hashChain?.hash).toBe(b.hashChain?.hash);
 	});
 
 	it("produces different hash when payload differs", async () => {
@@ -475,15 +475,15 @@ describe("updateHashChain()", () => {
 			makeValidProps({ filename: "b.pdf" }),
 		).updateHashChain(null);
 
-		expect(a.hashChain!.hash).not.toBe(b.hashChain!.hash);
+		expect(a.hashChain?.hash).not.toBe(b.hashChain?.hash);
 	});
 
 	it("produces different hash when prevHash differs", async () => {
 		const ev = Evidence.create(makeValidProps());
 		const first = await ev.updateHashChain(null);
-		const second = await ev.updateHashChain(first.hashChain!.hash);
+		const second = await ev.updateHashChain(first.hashChain?.hash);
 
-		expect(first.hashChain!.hash).not.toBe(second.hashChain!.hash);
+		expect(first.hashChain?.hash).not.toBe(second.hashChain?.hash);
 	});
 });
 

@@ -5,8 +5,9 @@
 import { Command } from "commander";
 import { getPiUrl, setPiUrl } from "../client.js";
 
-export const configCommand = new Command("config")
-	.description("Manage configuration");
+export const configCommand = new Command("config").description(
+	"Manage configuration",
+);
 
 configCommand
 	.command("get [key]")

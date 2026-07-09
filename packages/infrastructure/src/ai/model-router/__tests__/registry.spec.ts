@@ -217,7 +217,7 @@ describe("ModelRegistryService", () => {
 			const result = await service.getRoutingRule("CHAT");
 
 			expect(result).not.toBeNull();
-			expect(result!.strategy).toBe("cost_optimal");
+			expect(result?.strategy).toBe("cost_optimal");
 		});
 
 		it("returns null when no rule exists", async () => {
@@ -369,7 +369,7 @@ describe("ModelRegistryService", () => {
 			const result = await service.getOptimalModel("CHAT", request);
 
 			expect(result).not.toBeNull();
-			expect(result!.id).toBe("budget");
+			expect(result?.id).toBe("budget");
 		});
 
 		it("returns null when no model fits constraints", async () => {

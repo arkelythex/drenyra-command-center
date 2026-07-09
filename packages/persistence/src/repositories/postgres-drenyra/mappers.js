@@ -197,4 +197,3 @@ export function auditValues(event) {
 		metadata: event.metadata,
 	};
 }
-

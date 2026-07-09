@@ -10,7 +10,6 @@ import {
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
-import { journalEntries } from "./accounting.schema";
 import { companies } from "./core.schema";
 
 export const accountingPrStatus = [

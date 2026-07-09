@@ -39,4 +39,3 @@ export class RAGError extends Error {
 		this.name = "RAGError";
 	}
 }
-

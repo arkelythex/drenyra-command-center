@@ -11,7 +11,6 @@ import type {
 	TaxCalculation,
 	TransactionCategorization,
 } from "@drenyra/application/use-cases/fiscal-agent/types";
-import type { Money } from "@drenyra/domain";
 import { PeruGeneralRegime } from "@drenyra/domain/services/tax-regime/peru";
 
 export class CalculatorStep

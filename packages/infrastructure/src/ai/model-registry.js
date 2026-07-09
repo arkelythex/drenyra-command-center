@@ -265,4 +265,3 @@ export function getOpenRouterFallbackChain(tierId) {
 export function getOpenRouterTierConfig(tierId) {
 	return OPENROUTER_MODEL_TIERS[tierId] || null;
 }
-

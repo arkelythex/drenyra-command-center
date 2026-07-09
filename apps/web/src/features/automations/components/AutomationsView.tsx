@@ -1,6 +1,5 @@
 import {
 	Activity,
-	ArrowRight,
 	Clock3,
 	History,
 	Pause,

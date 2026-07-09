@@ -48,11 +48,11 @@ describe("MemoryContextProvider", () => {
 			const result = await provider.getContext("ruc-20123456789");
 
 			expect(result).not.toBeNull();
-			expect(result!.recentRuns).toBe(1);
-			expect(result!.companyId).toBe("ruc-20123456789");
-			expect(result!.summary).toContain("[Past Run 1]");
-			expect(result!.summary).toContain("EMPRESA SAC");
-			expect(result!.summary).toContain("PEN 118.00");
+			expect(result?.recentRuns).toBe(1);
+			expect(result?.companyId).toBe("ruc-20123456789");
+			expect(result?.summary).toContain("[Past Run 1]");
+			expect(result?.summary).toContain("EMPRESA SAC");
+			expect(result?.summary).toContain("PEN 118.00");
 			expect(mockStore.listRunStates).toHaveBeenCalledWith({
 				companyId: "ruc-20123456789",
 				status: "completed",
@@ -108,8 +108,8 @@ describe("MemoryContextProvider", () => {
 
 			const result = await provider.getContext("ruc-test");
 
-			expect(result!.summary.length).toBeLessThan(150); // "[Past Run 1]\n" + 100 chars + "..."
-			expect(result!.summary).toContain("...");
+			expect(result?.summary.length).toBeLessThan(150); // "[Past Run 1]\n" + 100 chars + "..."
+			expect(result?.summary).toContain("...");
 		});
 
 		it("handles runs without memorySummary by using fallback", async () => {
@@ -125,8 +125,8 @@ describe("MemoryContextProvider", () => {
 			const result = await provider.getContext("ruc-test");
 
 			expect(result).not.toBeNull();
-			expect(result!.summary).toContain("invoice_image");
-			expect(result!.summary).toContain("EXTRACTING");
+			expect(result?.summary).toContain("invoice_image");
+			expect(result?.summary).toContain("EXTRACTING");
 		});
 
 		it("handles null context gracefully", async () => {
@@ -136,7 +136,7 @@ describe("MemoryContextProvider", () => {
 			const result = await provider.getContext("ruc-test");
 
 			expect(result).not.toBeNull();
-			expect(result!.summary).toContain("unknown");
+			expect(result?.summary).toContain("unknown");
 		});
 
 		it("non-blocking when store throws", async () => {
@@ -173,11 +173,11 @@ describe("MemoryContextProvider", () => {
 
 			const result = await provider.getContext("ruc-test");
 
-			expect(result!.recentRuns).toBe(2);
-			expect(result!.summary).toContain("[Past Run 1]");
-			expect(result!.summary).toContain("[Past Run 2]");
-			expect(result!.summary).toContain("First extraction");
-			expect(result!.summary).toContain("Second extraction");
+			expect(result?.recentRuns).toBe(2);
+			expect(result?.summary).toContain("[Past Run 1]");
+			expect(result?.summary).toContain("[Past Run 2]");
+			expect(result?.summary).toContain("First extraction");
+			expect(result?.summary).toContain("Second extraction");
 		});
 	});
 });

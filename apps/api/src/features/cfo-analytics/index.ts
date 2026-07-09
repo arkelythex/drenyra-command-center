@@ -2,7 +2,6 @@ import { Elysia } from "elysia";
 import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
 import { fail, ok } from "../shared/api-response";
 import {
-	CfoDateRangeQuerySchema,
 	CfoPeriodQuerySchema,
 	CfoQuerySchema,
 	GenerateReportSchema,

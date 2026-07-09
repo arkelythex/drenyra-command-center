@@ -61,7 +61,7 @@ export function generateSimulationArtifact(
 	param: SimulationParam,
 ): HubArtifact {
 	const accounts = generateAccounts(param);
-	const beforeAfter = buildBeforeAfter(accounts, param);
+	const _beforeAfter = buildBeforeAfter(accounts, param);
 	const directionLabel =
 		param.direction === "increase" ? "incremento" : "reducción";
 	const emoji = param.direction === "increase" ? "📈" : "📉";

@@ -144,4 +144,3 @@ export class PostgresEvidenceGraphRepository {
 		return rows.map(mapEdge);
 	}
 }
-

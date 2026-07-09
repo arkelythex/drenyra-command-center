@@ -45,7 +45,7 @@ export class TaxAnalyticsService {
 	}
 
 	static async getUpcomingDeadlines(
-		companyId: string,
+		_companyId: string,
 	): Promise<TaxKPISummary["upcomingDeadlines"]> {
 		const now = new Date();
 		const currentYear = now.getFullYear();

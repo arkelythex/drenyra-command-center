@@ -4,7 +4,6 @@ import {
 	createDateFromMonthYear,
 	extractMonthYear,
 	getMonthName,
-	isCurrentMonth,
 	isFutureMonth,
 	isValidMonthYear,
 } from "@/lib/date-utils";

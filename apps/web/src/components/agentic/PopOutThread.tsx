@@ -1,26 +1,11 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
-import {
-	AlertCircle,
-	Bot,
-	CheckCircle2,
-	ChevronDown,
-	ChevronRight,
-	FileCode,
-	Loader2,
-	Pin,
-	PinOff,
-	Sparkles,
-	Terminal,
-	User,
-	X,
-} from "lucide-react";
+import { motion } from "framer-motion";
+import { AlertCircle, Bot, Pin, PinOff, User, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { useThreadStore } from "@/stores/thread-store";
-import { ApprovalCard } from "./ApprovalCard";
 import { Composer } from "./Composer";
 import { DEMO_MESSAGES } from "./ThreadView";
 

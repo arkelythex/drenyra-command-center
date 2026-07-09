@@ -11,20 +11,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-	AlertTriangle,
-	ArrowLeft,
-	CheckCircle2,
-	Clock,
-	ExternalLink,
-	XCircle,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Clock, ExternalLink, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import type { BatchItemStatus, BatchRunDetail, BatchStatus } from "../types";
+import type { BatchItemStatus, BatchRunDetail } from "../types";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 

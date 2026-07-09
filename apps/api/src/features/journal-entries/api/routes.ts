@@ -34,7 +34,7 @@ export const journalEntryRoutes = new Elysia({
 		async ({ query, companyContext, set }) => {
 			try {
 				const organizationId = await resolveOrganizationId(
-					companyContext!.companyId,
+					companyContext?.companyId,
 				);
 				const entries = await listJournalEntries({
 					organizationId,
@@ -70,7 +70,7 @@ export const journalEntryRoutes = new Elysia({
 		async ({ body, companyContext, set }) => {
 			try {
 				const organizationId = await resolveOrganizationId(
-					companyContext!.companyId,
+					companyContext?.companyId,
 				);
 
 				const entry = await createJournalEntry({

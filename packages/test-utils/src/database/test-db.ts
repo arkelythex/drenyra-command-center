@@ -172,7 +172,7 @@ export class TestDatabase {
 
 		if (tables.length > 0) {
 			const tableList = tables.join(", ");
-			await this.client!.unsafe(`TRUNCATE ${tableList} CASCADE`);
+			await this.client?.unsafe(`TRUNCATE ${tableList} CASCADE`);
 		}
 	}
 

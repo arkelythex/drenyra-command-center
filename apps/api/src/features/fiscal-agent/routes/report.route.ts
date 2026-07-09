@@ -6,7 +6,7 @@ import { FiscalNightlyRunUseCase } from "@drenyra/application/use-cases/fiscal-a
 import { triggerManualRun } from "@drenyra/infrastructure/queues/fiscal-agent.queue";
 import { Elysia } from "elysia";
 import { z } from "zod";
-import { fail, ok } from "../../shared/api-response";
+import { ok } from "../../shared/api-response";
 
 const useCase = new FiscalNightlyRunUseCase();
 

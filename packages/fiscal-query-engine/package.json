@@ -1,0 +1,22 @@
+{
+  "name": "@drenyra/fiscal-query-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Natural language fiscal query engine — classifier, pipeline router, evidence formatter",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "bash ../../scripts/tsc7.sh --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@drenyra/orchestrator": "workspace:*",
+    "@drenyra/fiscal-sdd": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
+  }
+}

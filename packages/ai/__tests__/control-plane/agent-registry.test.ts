@@ -101,7 +101,7 @@ const agentA: AgentRegistryEntry = {
 	supportedSurfaces: ["api", "workspace"],
 };
 
-const agentB: AgentRegistryEntry = {
+const _agentB: AgentRegistryEntry = {
 	agentId: "agent-fiscal",
 	purpose: "Fiscal analysis agent",
 	tenantScope: tenantAScope,
@@ -111,7 +111,7 @@ const agentB: AgentRegistryEntry = {
 	supportedSurfaces: ["api"],
 };
 
-const agentCrossTenant: AgentRegistryEntry = {
+const _agentCrossTenant: AgentRegistryEntry = {
 	agentId: "agent-cross",
 	purpose: "Cross-tenant agent",
 	tenantScope: tenantBScope,
@@ -166,7 +166,7 @@ describe("AgentRegistry", () => {
 			const result = await registry.getAgent("agent-recon");
 
 			expect(result).toBeDefined();
-			expect(result!.agentId).toBe("agent-recon");
+			expect(result?.agentId).toBe("agent-recon");
 			expect(spy).not.toHaveBeenCalled();
 		});
 	});

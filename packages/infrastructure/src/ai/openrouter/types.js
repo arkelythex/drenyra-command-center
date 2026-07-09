@@ -25,4 +25,3 @@ export const AGENT_MODEL_MAP = {
 	"anomaly-detector-agent": ["openai/gpt-5.1", "google/gemini-3-pro-preview"],
 	default: ["openrouter/auto", "anthropic/claude-sonnet-4.5", "openai/gpt-5.1"],
 };
-

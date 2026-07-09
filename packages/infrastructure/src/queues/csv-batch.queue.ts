@@ -69,7 +69,7 @@ export function parseCsv(content: string): CsvTransactionRow[] {
 	const lines = content.split("\n").filter((l) => l.trim());
 	if (lines.length < 2) return [];
 
-	const headers = parseCsvLine(lines[0]!);
+	const _headers = parseCsvLine(lines[0]!);
 	const rows: CsvTransactionRow[] = [];
 
 	for (let i = 1; i < lines.length; i++) {

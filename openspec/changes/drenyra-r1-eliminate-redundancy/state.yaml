@@ -1,0 +1,15 @@
+change_id: drenyra-r1-eliminate-redundancy
+status: proposal
+phase: proposal
+created: 2026-07-09
+author: el Gentleman
+delivery_strategy: auto-chain
+chain_strategy: stacked-to-main
+depends_on:
+  - drenyra-p5-code-quality
+  - drenyra-p6-package-health
+tags:
+  - redundancy
+  - cleanup
+  - consolidation
+  - packages

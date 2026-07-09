@@ -123,4 +123,3 @@ export function sanitizePagination(limit, offset) {
 		isValid: true,
 	};
 }
-

@@ -89,4 +89,3 @@ export function sanitizeMonetaryValue(value, options = {}) {
 		wasRounded: false,
 	};
 }
-

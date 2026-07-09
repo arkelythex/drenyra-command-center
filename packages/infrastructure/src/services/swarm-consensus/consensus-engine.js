@@ -57,4 +57,3 @@ export function generateReasoning(
 			: "";
 	return `${parts.join(" | ")} | Score: ${(consensusScore * 100).toFixed(1)}% (umbral ${(threshold * 100).toFixed(0)}%${adjustmentNote}) | ${status}`;
 }
-

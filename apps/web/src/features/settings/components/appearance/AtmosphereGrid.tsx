@@ -1,5 +1,4 @@
 import { Check } from "lucide-react";
-import React from "react";
 import {
 	CODEX_LIGHT_THEME,
 	DEFAULT_CODEX_THEME,

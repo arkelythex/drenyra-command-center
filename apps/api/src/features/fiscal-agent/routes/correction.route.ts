@@ -5,7 +5,7 @@
 import { CorrectionUseCase } from "@drenyra/application/use-cases/fiscal-agent/fiscal-nightly-run.use-case";
 import { Elysia } from "elysia";
 import { z } from "zod";
-import { fail, ok } from "../../shared/api-response";
+import { ok } from "../../shared/api-response";
 
 const correctionUseCase = new CorrectionUseCase();
 
