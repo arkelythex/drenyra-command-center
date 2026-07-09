@@ -27,7 +27,7 @@ jobs:
           ~/.local/bin/git-lfs install --skip-repo --force
           echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           lfs: true
 
@@ -86,7 +86,7 @@ jobs:
           ~/.local/bin/git-lfs install --skip-repo --force
           echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           lfs: true
 
@@ -132,7 +132,7 @@ jobs:
           ~/.local/bin/git-lfs install --skip-repo --force
           echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           lfs: true
 
