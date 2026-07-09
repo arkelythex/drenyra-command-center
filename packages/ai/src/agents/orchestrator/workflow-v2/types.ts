@@ -6,55 +6,55 @@ import type {
 } from "../../types";
 
 interface AgentMetrics {
-	agentName: string;
-	startTime: number;
-	endTime?: number;
-	duration?: number;
-	status: "pending" | "running" | "success" | "failed" | "timeout";
-	error?: Error;
-	retryCount: number;
+	readonly agentName: string;
+	readonly startTime: number;
+	readonly endTime?: number;
+	readonly duration?: number;
+	readonly status: "pending" | "running" | "success" | "failed" | "timeout";
+	readonly error?: Error;
+	readonly retryCount: number;
 }
 
 interface ParallelExecutionResult {
-	reader: {
-		result: ExtractedData;
-		log: StageLog;
-		metrics: AgentMetrics;
+	readonly reader: {
+		readonly result: ExtractedData;
+		readonly log: StageLog;
+		readonly metrics: AgentMetrics;
 	} | null;
-	parser: {
-		result: ParsedInvoice;
-		log: StageLog;
-		metrics: AgentMetrics;
+	readonly parser: {
+		readonly result: ParsedInvoice;
+		readonly log: StageLog;
+		readonly metrics: AgentMetrics;
 	} | null;
-	validator: {
-		result: ValidationResult;
-		log: StageLog;
-		metrics: AgentMetrics;
+	readonly validator: {
+		readonly result: ValidationResult;
+		readonly log: StageLog;
+		readonly metrics: AgentMetrics;
 	} | null;
-	errors: Array<{ agent: string; error: Error }>;
-	totalDuration: number;
+	readonly errors: readonly { readonly agent: string; readonly error: Error }[];
+	readonly totalDuration: number;
 }
 
 interface OrchestratorConfig {
-	agentTimeoutMs: number;
-	maxRetries: number;
-	enableCircuitBreaker: boolean;
-	enableMetrics: boolean;
-	sessionStore?: import("../../../session/session-store").SessionStore;
-	contextMonitor?: import("../../../context-monitor").ContextMonitor;
-	pruner?: import("../../../context-monitor").ContextPruner;
-	oseService?: {
-		sendInvoice: (data: {
-			xmlContent: string;
-			invoiceNumber: string;
-			invoiceType: string;
+	readonly agentTimeoutMs: number;
+	readonly maxRetries: number;
+	readonly enableCircuitBreaker: boolean;
+	readonly enableMetrics: boolean;
+	readonly sessionStore?: import("../../../session/session-store").SessionStore;
+	readonly contextMonitor?: import("../../../context-monitor").ContextMonitor;
+	readonly pruner?: import("../../../context-monitor").ContextPruner;
+	readonly oseService?: {
+		readonly sendInvoice: (data: {
+			readonly xmlContent: string;
+			readonly invoiceNumber: string;
+			readonly invoiceType: string;
 		}) => Promise<{
-			success: boolean;
-			cdrContent?: string;
-			cdrStatus?: "ACEPTADO" | "RECHAZADO" | "OBSERVADO";
-			cdrMessage?: string;
-			sunatCode?: string;
-			error?: string;
+			readonly success: boolean;
+			readonly cdrContent?: string;
+			readonly cdrStatus?: "ACEPTADO" | "RECHAZADO" | "OBSERVADO";
+			readonly cdrMessage?: string;
+			readonly sunatCode?: string;
+			readonly error?: string;
 		}>;
 	};
 }
@@ -70,14 +70,14 @@ export type { AgentMetrics, OrchestratorConfig, ParallelExecutionResult };
  */
 export interface PhaseSkipOptions {
 	/** Agent phases to skip. Prebuilt data MUST be provided for skipped phases. */
-	skipPhases: Array<"reader" | "parser" | "validator">;
+	readonly skipPhases: readonly ("reader" | "parser" | "validator")[];
 
 	/** Preconstructed ExtractedData when skipping the reader phase. */
-	prebuiltExtractedData?: import("../../types").ExtractedData;
+	readonly prebuiltExtractedData?: import("../../types").ExtractedData;
 
 	/** Preconstructed ParsedData when skipping the parser phase. */
-	prebuiltParsedData?: import("../../types").ParsedInvoice;
+	readonly prebuiltParsedData?: import("../../types").ParsedInvoice;
 
 	/** Preconstructed ValidationResult when skipping the validator phase. */
-	prebuiltValidationResult?: import("../../types").ValidationResult;
+	readonly prebuiltValidationResult?: import("../../types").ValidationResult;
 }

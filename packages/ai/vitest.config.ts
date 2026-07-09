@@ -4,7 +4,10 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
 	test: {
 		globals: true,
-		include: ["__tests__/**/*.{test,spec}.{ts,js}"],
+		include: [
+			"__tests__/**/*.{test,spec}.{ts,js}",
+			"src/**/__tests__/**/*.{test,spec}.{ts,js}",
+		],
 		// Exclude pre-existing tests that use bun:test (incompatible with vitest).
 		// Those files should be run with `bun test` instead.
 		exclude: [
