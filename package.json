@@ -178,6 +178,7 @@
     "@drenyra/domain": "workspace:*",
     "@drenyra/infrastructure": "workspace:*",
     "@drenyra/shared": "workspace:*",
+    "@tailwindcss/vite": "^4.3",
     "@xmldom/xmldom": "^0.9.10",
     "ai": "^7.0.15",
     "better-auth": "^1.6.23",
@@ -186,6 +187,7 @@
     "minimatch": "9.0.7",
     "path-to-regexp": "8.4.0",
     "picomatch": "2.3.2",
+    "tailwindcss": "^4.3",
     "undici": "7.28.0",
     "ws": "8.21.0",
     "zod": "^4.4.3"
