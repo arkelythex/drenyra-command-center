@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/harness"
 )
 
 type stubHandler struct {

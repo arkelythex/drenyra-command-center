@@ -3,12 +3,12 @@ package app
 import (
 	"strings"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/tui"
 )
 
 func helpContent(current screen, loading bool, focusMenu bool) string {
 	return tui.Panel("Help · Drenyra CLI", strings.Join([]string{
-		"OpenCode-inspired TUI: Bubble Tea state, contextual keys, and visible workflow control.",
+		"Gentleman Fiscal Terminal TUI: Bubble Tea state, contextual keys, and visible workflow control.",
 		"",
 		"CONTEXT KEYS",
 		formatKeyGroup(keyBarFor(current, loading, focusMenu)),

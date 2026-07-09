@@ -4,11 +4,11 @@ import (
 	"context"
 	"testing"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/brain"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/memory"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/modes"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/brain"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/memory"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/modes"
 )
 
 type fakeClient struct {

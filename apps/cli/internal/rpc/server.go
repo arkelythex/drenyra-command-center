@@ -9,7 +9,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/harness"
 )
 
 // Handler dispatches RPC methods to the harness client.

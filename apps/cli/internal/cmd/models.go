@@ -3,9 +3,9 @@ package cmd
 import (
 	"sort"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/router"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/router"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/tui"
 	"github.com/spf13/cobra"
 )
 

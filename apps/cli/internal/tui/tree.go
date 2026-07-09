@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/delegation"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/delegation"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/harness"
 )
 
 // PrintAgentStack renders the canonical delegation tree.

@@ -3,7 +3,7 @@ package router
 import (
 	"testing"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/config"
 )
 
 func TestResolve_knownAgent(t *testing.T) {

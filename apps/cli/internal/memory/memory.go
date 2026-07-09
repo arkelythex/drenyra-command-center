@@ -13,7 +13,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/config"
 )
 
 // Limits — Hermes defaults when config omits overrides.

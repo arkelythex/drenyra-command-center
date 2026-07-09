@@ -6,10 +6,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/delegation"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/router"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/delegation"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/router"
 )
 
 // DoctorCheck is one row for doctor output.

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/tui"
 	tea "github.com/charmbracelet/bubbletea"
 )
 

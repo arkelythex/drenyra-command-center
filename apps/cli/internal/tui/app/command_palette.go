@@ -3,7 +3,7 @@ package app
 import (
 	"strings"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/tui"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"

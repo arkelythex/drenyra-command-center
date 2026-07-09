@@ -3,7 +3,7 @@ package tui
 import (
 	"strings"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/harness"
 )
 
 func FormatFiscalWorkInspect(result *harness.FiscalWorkInspectResult) string {

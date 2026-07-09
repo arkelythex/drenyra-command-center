@@ -3,7 +3,7 @@ package tui
 import (
 	"fmt"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/harness"
 )
 
 func FormatCommandEnvelopeAudit(result *harness.CommandEnvelopeAuditResponse) string {

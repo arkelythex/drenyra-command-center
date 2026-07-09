@@ -5,9 +5,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/delegation"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/router"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/delegation"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/router"
 )
 
 // FormatAgentStack returns the delegation graph as a string (TUI-safe).

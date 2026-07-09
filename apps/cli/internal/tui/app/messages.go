@@ -1,8 +1,8 @@
 package app
 
 import (
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/tui"
 )
 
 type executeDoneMsg struct {

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/memory"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/memory"
 )
 
 func TestFormatMemoryViewDoesNotInitializeLocalDB(t *testing.T) {

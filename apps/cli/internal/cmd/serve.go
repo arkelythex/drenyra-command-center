@@ -7,11 +7,11 @@ import (
 	"io"
 	"os"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/config"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/execution"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/harness"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/modes"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/rpc"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/config"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/execution"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/harness"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/modes"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/rpc"
 	"github.com/spf13/cobra"
 )
 

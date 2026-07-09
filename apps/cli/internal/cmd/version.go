@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/tui"
-	"github.com/Albert-fer02/DRENYRA/apps/drenyra-cli/internal/version"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/tui"
+	"github.com/Albert-fer02/DRENYRA/apps/cli/internal/version"
 	"github.com/spf13/cobra"
 )
 
