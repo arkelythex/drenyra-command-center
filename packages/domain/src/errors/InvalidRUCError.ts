@@ -1,50 +1,23 @@
-/**
- * Domain Error: Invalid RUC
- * Thrown when RUC validation fails
- *
- * @example
- * ```ts
- * throw new InvalidRUCError("2012345678");
- * ```
- */
+import { ValidationError } from "./AppError";
 
-export class InvalidRUCError extends Error {
+export class InvalidRUCError extends ValidationError {
+	override readonly code: string = "FISCAL_INVALID_RUC";
+
 	constructor(
 		public readonly invalidValue: string,
 		message?: string,
 	) {
 		super(
+			"ruc",
 			message ||
-				`RUC inválido: "${invalidValue}". Debe tener 11 dígitos y pasar validación modulo-11`,
+				`RUC invalido: "${invalidValue}". Debe tener 11 digitos y pasar validacion modulo-11`,
 		);
-		this.name = "InvalidRUCError";
-
-		// V8-specific stack trace capture (safe to call)
-		const ErrorWithCapture = Error as typeof Error & {
-			captureStackTrace?: (
-				target: object,
-				constructor?: { prototype: unknown },
-			) => void;
-		};
-		if (ErrorWithCapture.captureStackTrace) {
-			ErrorWithCapture.captureStackTrace(
-				this,
-				InvalidRUCError as new (
-					...args: unknown[]
-				) => unknown,
-			);
-		}
 	}
 
-	/**
-	 * Get error details for API response
-	 */
-	toJSON() {
+	override toJSON() {
 		return {
-			name: this.name,
-			message: this.message,
+			...super.toJSON(),
 			invalidValue: this.invalidValue,
-			code: "INVALID_RUC",
 		};
 	}
 }
