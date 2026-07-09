@@ -6,7 +6,7 @@ auto-generated: false
 
 # @drenyra/ui — Drenyra Design System
 
-**Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
+**Última actualización**: 2026-07-09 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
 **Shared UI component library** para el monorepo ARKELYTHEX. Proporciona componentes consistentes, accesibles y temáticos con la identidad de marca.
 

@@ -1,6 +1,6 @@
 # @drenyra/rust-core
 
-**Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
+**Última actualización**: 2026-07-09 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
 Primitivas fiscales Rust en hot-path para ARKELYTHEX — cálculos críticos de rendimiento que necesitan velocidad nativa.
 

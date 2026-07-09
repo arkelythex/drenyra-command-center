@@ -1,6 +1,6 @@
 # Domain Package Rules
 
-**Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
+**Última actualización**: 2026-07-09 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
 Se aplica a `packages/domain`.
 

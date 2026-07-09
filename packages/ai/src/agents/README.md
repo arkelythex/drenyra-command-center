@@ -1,6 +1,6 @@
 # AI Agent Swarm — Drenyra
 
-**Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../../../docs/meta/gentleman-philosophy.md)
+**Última actualización**: 2026-07-09 · [Filosofía Gentleman](../../../../docs/meta/gentleman-philosophy.md)
 
 Sistema de agentes de IA para procesamiento inteligente de facturas peruanas según normativa SUNAT 2026.
 

@@ -99,7 +99,7 @@ components:
     padding: "8px"
 ---
 
-**Última actualización**: 2026-06-20 · Filosofía: [Gentleman Philosophy](../../docs/meta/gentleman-philosophy.md) — cognitive load reduction, warm teaching, progressive disclosure.
+**Última actualización**: 2026-07-09 · Filosofía: [Gentleman Philosophy](../../docs/meta/gentleman-philosophy.md) — cognitive load reduction, warm teaching, progressive disclosure.
 
 ## Overview
 

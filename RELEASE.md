@@ -1,6 +1,6 @@
 # Release Process
 
-**Last updated**: 2026-06-06
+**Last updated**: 2026-07-09
 
 ---
 

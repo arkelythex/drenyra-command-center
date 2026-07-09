@@ -6,7 +6,7 @@ auto-generated: false
 
 # @drenyra/infrastructure — Infrastructure Layer
 
-**Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
+**Última actualización**: 2026-07-09 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
 **Versión**: 0.1.0 | **Dependencias**: Drizzle, BullMQ, NATS, AWS S3, AI SDKs
 

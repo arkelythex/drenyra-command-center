@@ -4,7 +4,7 @@ source-of-truth: apps/api/package.json
 auto-generated: false
 ---
 
-**Última actualización**: 2026-06-20
+**Última actualización**: 2026-07-09
 
 > 📖 Documentación bajo la [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md) — calidez técnica, disclosure progresivo, carga cognitiva reducida. Buscamos que entiendas el *por qué* detrás del código, no solo el *qué*.
 
@@ -332,4 +332,4 @@ Cada endpoint nuevo debería tener validación de input con TypeBox y scope de c
 
 **Arquitectura**: Vertical Slicing + Hexagonal  
 **Stack**: Bun 1.x + Elysia + Drizzle + PostgreSQL 15  
-**Última actualización**: 2026-06-20
+**Última actualización**: 2026-07-09

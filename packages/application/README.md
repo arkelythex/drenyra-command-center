@@ -1,12 +1,12 @@
 ---
-last-verified: 2026-06-20
+last-verified: 2026-07-09
 source-of-truth: packages/application/package.json
 auto-generated: false
 ---
 
 # @drenyra/application — Application Layer
 
-**Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
+**Última actualización**: 2026-07-09 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
 **Versión**: 1.0.0 | **Dependencias**: @drenyra/domain, @drenyra/shared
 

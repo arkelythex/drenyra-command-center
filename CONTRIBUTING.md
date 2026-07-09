@@ -1,6 +1,6 @@
 # Contributing to Arkelythex
 
-> **Última actualización:** 2026-06-20
+> **Última actualización:** 2026-07-09
 
 Bienvenido. Esto es lo que necesitás saber para contribuir de forma predecible, revisable y segura.
 

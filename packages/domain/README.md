@@ -1,12 +1,12 @@
 ---
-last-verified: 2026-06-20
+last-verified: 2026-07-09
 source-of-truth: packages/domain/package.json
 auto-generated: false
 ---
 
 # @drenyra/domain — Domain Layer
 
-**Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
+**Última actualización**: 2026-07-09 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
 **Versión**: 1.0.0 | **Framework**: Ninguno (pure TypeScript, zero dependencies)
 

@@ -1,7 +1,7 @@
 <!-- Manual navigation map for Data Engine (Python). See CODEX-MAP.md for monorepo root. -->
 # DATA-ENGINE-MAP — Drenyra Data Engine Navigation
 
-**Última actualización**: 2026-06-20 · Filosofía: [Gentleman Philosophy](../../docs/meta/gentleman-philosophy.md) — cognitive load reduction, warm teaching, progressive disclosure.
+**Última actualización**: 2026-07-09 · Filosofía: [Gentleman Philosophy](../../docs/meta/gentleman-philosophy.md) — cognitive load reduction, warm teaching, progressive disclosure.
 
 ## Si solo tenés tres minutos
 

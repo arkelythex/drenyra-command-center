@@ -6,7 +6,7 @@ auto-generated: false
 
 # @drenyra/ai — AI Facade
 
-**Última actualización**: 2026-06-20 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
+**Última actualización**: 2026-07-09 · [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md)
 
 **Versión**: 0.1.0 | **Dependencias**: @drenyra/application, @drenyra/infrastructure, @drenyra/persistence, @drenyra/shared
 

@@ -99,7 +99,7 @@ components:
     padding: "8px"
 ---
 
-**Última actualización**: 2026-06-20
+**Última actualización**: 2026-07-09
 
 > 🎨 Documentación bajo la [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md) — consistencia visual como requisito de calidad, no decoración.
 
@@ -155,4 +155,4 @@ Don't:
 
 ---
 
-**Última actualización**: 2026-06-20 | [Gentleman Philosophy](../../docs/meta/gentleman-philosophy.md)
+**Última actualización**: 2026-07-09 | [Gentleman Philosophy](../../docs/meta/gentleman-philosophy.md)

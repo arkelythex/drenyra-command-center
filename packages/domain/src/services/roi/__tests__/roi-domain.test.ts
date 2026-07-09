@@ -5,7 +5,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { Money } from "../../value-objects/Money";
+import { Money } from "../../../value-objects/Money";
 import { calculateIrr } from "../irr";
 import { calculateNpv } from "../npv";
 import { calculatePaybackPeriod } from "../payback-period";

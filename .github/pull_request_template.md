@@ -39,4 +39,4 @@
 
 **Última actualización**: 2026-07-09
 
-*Alineado con la [Filosofía Gentleman](../docs/meta/gentleman-philosophy.md) de DRENYRA — documentación que prioriza la claridad y el respeto por tu tiempo.*
+_Alineado con la [Filosofía Gentleman](../docs/meta/gentleman-philosophy.md) de DRENYRA — documentación que prioriza la claridad y el respeto por tu tiempo._
