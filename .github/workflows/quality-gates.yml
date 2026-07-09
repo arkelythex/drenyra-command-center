@@ -72,9 +72,9 @@ jobs:
         env:
           VITEST_MAX_WORKERS: "1"
         run: |
-          bun run --filter @arkelythex/domain test -- --coverage
-          bun run --filter @arkelythex/api test:run -- --coverage
-          bun run --filter @arkelythex/web test -- --coverage
+          bun run --filter @drenyra/domain test -- --coverage
+          bun run --filter @drenyra/api test:run -- --coverage
+          bun run --filter @drenyra/web test -- --coverage
 
   fiscal-boundaries:
     name: Fiscal Boundary Check

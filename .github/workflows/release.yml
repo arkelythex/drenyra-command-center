@@ -33,7 +33,7 @@ jobs:
         run: |
           bun run lint
           bun run typecheck:build:domain-core
-          bun run --filter @arkelythex/domain test
+          bun run --filter @drenyra/domain test
           bun run quality:max-lines
           bun run architecture:check-boundaries
 
@@ -49,7 +49,7 @@ jobs:
         id: bump
         run: |
           git config user.name "Arkelythex Bot"
-          git config user.email "bot@arkelythex.com"
+          git config user.email "bot@drenyra.com"
           NEW_VERSION=$(npm version "${{ github.event.inputs.version }}" -m "chore(release): bump to %s [skip ci]")
           echo "version=${NEW_VERSION#v}" >> "$GITHUB_OUTPUT"
           git push --follow-tags

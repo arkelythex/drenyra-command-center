@@ -29,7 +29,7 @@ CI/CD pipelines for ARKELYTHEX. El **gate principal** para merge en PR está en 
 
 **Caché Turborepo:** el workflow guarda/restaura `.turbo/`. Variables opcionales para caché remota: `TURBO_TOKEN` (secret), `TURBO_TEAM` (variable del repo/org).
 
-**Otros jobs en el mismo workflow:** tests unitarios, build (p. ej. `turbo run build --filter=@arkelythex/web`), auditoría `bun audit`, Gitleaks, migraciones DB, tests DB, contratos TS↔Python en PR (`contracts-smoke`), smoke Prometeo (opcional), job agregador `all-checks-passed`.
+**Otros jobs en el mismo workflow:** tests unitarios, build (p. ej. `turbo run build --filter=@drenyra/web`), auditoría `bun audit`, Gitleaks, migraciones DB, tests DB, contratos TS↔Python en PR (`contracts-smoke`), smoke Prometeo (opcional), job agregador `all-checks-passed`.
 
 **Contratos data-engine en PR:** ver sección más abajo (`contracts-smoke`).
 
@@ -56,7 +56,7 @@ CI/CD pipelines for ARKELYTHEX. El **gate principal** para merge en PR está en 
 **Triggers:** días laborables (cron) y `workflow_dispatch`.
 
 - Arranca `apps/data-engine` con `uv`
-- `bun run --filter @arkelythex/api test:contracts` con `REQUIRE_DATA_ENGINE_CONTRACTS=1`
+- `bun run --filter @drenyra/api test:contracts` con `REQUIRE_DATA_ENGINE_CONTRACTS=1`
 - Artefactos: informe JSON y log del engine
 
 ---
@@ -66,7 +66,7 @@ CI/CD pipelines for ARKELYTHEX. El **gate principal** para merge en PR está en 
 **Triggers:** `pull_request` a `main` / `develop`.
 
 - `DATA_ENGINE_CONTRACT_SCOPE=smoke`
-- `bun run --filter @arkelythex/api test:contracts`
+- `bun run --filter @drenyra/api test:contracts`
 
 ---
 

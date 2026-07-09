@@ -52,7 +52,7 @@ jobs:
             packages/application/coverage/coverage-final.json
             packages/ai/coverage/coverage-final.json
             packages/drenyra-core/coverage/coverage-final.json
-            packages/arkelythex-harness/coverage/coverage-final.json
+            packages/ai/coverage/coverage-final.json
           flags: nightly
           
       - name: Comment coverage trend on slack

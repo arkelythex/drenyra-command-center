@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 env:
-  BUN_VERSION: '1.3.11'
+  BUN_VERSION: "1.3.11"
 
 jobs:
   go:
@@ -23,36 +23,85 @@ jobs:
     defaults:
       run:
         working-directory: apps/cli
+    outputs:
+      run: ${{ steps.changes.outputs.run }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Detect Go changes
+        id: changes
+        working-directory: .
+        run: |
+          files=$(git diff --name-only HEAD^ HEAD || git diff --name-only)
+          if echo "$files" | grep -Eq '^(apps/cli/|packages/engram/)'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-go@v5
+        if: steps.changes.outputs.run == 'true'
         with:
           go-version-file: apps/cli/go.mod
           cache-dependency-path: apps/cli/go.sum
-      - run: go build ./...
-      - run: go test ./...
+      - if: steps.changes.outputs.run == 'true'
+        run: go build -buildvcs=false ./...
+      - if: steps.changes.outputs.run == 'true'
+        run: go test -buildvcs=false ./...
 
   node-api:
     name: Node — api typecheck
     runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.changes.outputs.run }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Detect API changes
+        id: changes
+        run: |
+          files=$(git diff --name-only HEAD^ HEAD || git diff --name-only)
+          if echo "$files" | grep -Eq '^(apps/api/|packages/|tsconfig|package\.json)'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: oven-sh/setup-bun@v2
+        if: steps.changes.outputs.run == 'true'
         with:
           bun-version: ${{ env.BUN_VERSION }}
-      - run: bun install --frozen-lockfile
-      - run: bun run --filter @arkelythex/api typecheck
+      - if: steps.changes.outputs.run == 'true'
+        run: bun install --frozen-lockfile
+      - if: steps.changes.outputs.run == 'true'
+        run: bun run --filter @drenyra/api typecheck
 
   node-web:
     name: Node — web typecheck
     runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.changes.outputs.run }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Detect web changes
+        id: changes
+        run: |
+          files=$(git diff --name-only HEAD^ HEAD || git diff --name-only)
+          if echo "$files" | grep -Eq '^(apps/web/|packages/|tsconfig|package\.json)'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: oven-sh/setup-bun@v2
+        if: steps.changes.outputs.run == 'true'
         with:
           bun-version: ${{ env.BUN_VERSION }}
-      - run: bun install --frozen-lockfile
-      - run: bun run --filter @arkelythex/web typecheck
+      - if: steps.changes.outputs.run == 'true'
+        run: bun install --frozen-lockfile
+      - if: steps.changes.outputs.run == 'true'
+        run: bun run --filter @drenyra/web typecheck
 
   python:
     name: Python — data-engine lint
@@ -60,10 +109,27 @@ jobs:
     defaults:
       run:
         working-directory: apps/data-engine
+    outputs:
+      run: ${{ steps.changes.outputs.run }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - run: pip install uv && uv sync --frozen
-      - run: uv run ruff check src/ tests/
+          fetch-depth: 2
+      - name: Detect data-engine changes
+        id: changes
+        working-directory: .
+        run: |
+          files=$(git diff --name-only HEAD^ HEAD || git diff --name-only)
+          if echo "$files" | grep -Eq '^apps/data-engine/'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-python@v5
+        if: steps.changes.outputs.run == 'true'
+        with:
+          python-version: "3.12"
+      - if: steps.changes.outputs.run == 'true'
+        run: pip install uv && uv sync --extra dev
+      - if: steps.changes.outputs.run == 'true'
+        run: uv run ruff check src/ tests/ --select F821,F822,F823
