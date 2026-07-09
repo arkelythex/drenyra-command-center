@@ -39,7 +39,7 @@ jobs:
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v6
         if: steps.changes.outputs.run == 'true'
         with:
           go-version-file: apps/cli/go.mod
