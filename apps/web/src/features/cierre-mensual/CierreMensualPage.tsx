@@ -1,7 +1,10 @@
 import { useFiscalInspector } from "@/context/FiscalInspectorContext";
+import { AgentTimeline } from "./components/AgentTimeline";
 import { ChecklistPanel } from "./components/ChecklistPanel";
+import { MissionBlockers } from "./components/MissionBlockers";
 import { ProgressHeader } from "./components/ProgressHeader";
 import { SidePanel } from "./components/SidePanel";
+import type { MissionBlocker, MissionTimelineEvent } from "./mission.types";
 import { useCierreMensual } from "./hooks/useCierreMensual";
 
 export function CierreMensualPage() {
@@ -66,7 +69,19 @@ export function CierreMensualPage() {
 					/>
 
 					<div className="grid gap-8 lg:grid-cols-[1fr_360px]">
-						<ChecklistPanel checklist={cierre.checklist} />
+						<div className="space-y-8">
+							<MissionBlockers blockers={cierre.blockers as MissionBlocker[]} />
+							<ChecklistPanel checklist={cierre.checklist} />
+
+							<section>
+								<h2 className="mb-3 text-xs font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]">
+									Línea de tiempo del agente
+								</h2>
+								<AgentTimeline
+									events={cierre.timeline as MissionTimelineEvent[]}
+								/>
+							</section>
+						</div>
 						<SidePanel cierre={cierre} onOpenInspector={handleOpenInspector} />
 					</div>
 				</div>

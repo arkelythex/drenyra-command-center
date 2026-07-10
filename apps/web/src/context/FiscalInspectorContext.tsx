@@ -6,6 +6,7 @@ import {
 	useContext,
 	useState,
 } from "react";
+import { useAgenticShell } from "@/stores/agentic-shell.store";
 
 interface FiscalInspectorState {
 	/** Whether the inspector panel is open */
@@ -40,18 +41,30 @@ export function FiscalInspectorProvider({ children }: { children: ReactNode }) {
 		recentActions: [],
 	});
 
-	const open = useCallback((action: FiscalActionContext) => {
-		setState((prev) => ({
-			isOpen: true,
-			activeAction: action,
-			recentActions: [
-				action,
-				...prev.recentActions
-					.filter((a) => a.traceId !== action.traceId)
-					.slice(0, 19),
-			],
-		}));
-	}, []);
+	const openInspector = useAgenticShell((s) => s.openInspector);
+
+	const open = useCallback(
+		(action: FiscalActionContext) => {
+			setState((prev) => ({
+				isOpen: true,
+				activeAction: action,
+				recentActions: [
+					action,
+					...prev.recentActions
+						.filter((a) => a.traceId !== action.traceId)
+						.slice(0, 19),
+				],
+			}));
+
+			// Sync with agentic-shell inspector panel so RightPanel opens
+			openInspector({
+				type: "fiscal",
+				id: action.traceId,
+				title: action.summary,
+			});
+		},
+		[openInspector],
+	);
 
 	const updateStatus = useCallback(
 		(traceId: string, status: FiscalActionStatus) => {
@@ -73,7 +86,10 @@ export function FiscalInspectorProvider({ children }: { children: ReactNode }) {
 
 	const close = useCallback(() => {
 		setState((prev) => ({ ...prev, isOpen: false }));
+		closeInspector();
 	}, []);
+
+	const closeInspector = useAgenticShell((s) => s.closeInspector);
 
 	const toggle = useCallback(() => {
 		setState((prev) => ({ ...prev, isOpen: !prev.isOpen }));
