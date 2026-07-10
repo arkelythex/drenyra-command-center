@@ -29,10 +29,25 @@ vi.mock("../features/auth/lib/auth-session-snapshot", () => ({
 	}) => Boolean(snapshot?.session && snapshot?.user),
 }));
 
-vi.mock("../components/layout/MainLayout", () => ({
-	MainLayout: ({ children }: { children: ReactNode }) => (
+vi.mock("../components/agentic-shell/AgenticLayout/AgenticLayout", () => ({
+	AgenticLayout: ({ children }: { children: ReactNode }) => (
 		<div data-testid="private-shell">{children}</div>
 	),
+}));
+
+vi.mock("../stores/agentic-shell.store", () => ({
+	useAgenticShell: (selector: (s: Record<string, unknown>) => unknown) =>
+		selector({
+			isSidebarCollapsed: false,
+			isSidebarMobileOpen: false,
+			setSidebarMobileOpen: vi.fn(),
+			activeInspector: null,
+			closeInspector: vi.fn(),
+			isCommandPaletteOpen: false,
+			openCommandPalette: vi.fn(),
+			closeCommandPalette: vi.fn(),
+			isFocusMode: false,
+		} as Record<string, unknown>),
 }));
 
 vi.mock("../context/SettingsContext", () => ({
@@ -80,11 +95,21 @@ vi.mock("../components/agentic/TerminalShell", () => ({
 }));
 
 // ---------------------------------------------------------------------------
-// Mocks — DrenyraFlexMain (leaf route component)
+// Mocks — leaf route components
 // ---------------------------------------------------------------------------
 
 vi.mock("../components/agentic/DrenyraFlexMain", () => ({
 	DrenyraFlexMain: () => <div data-testid="drenyra-flex-main" />,
+}));
+
+vi.mock("../features/threads/components/ThreadCreatePage", () => ({
+	ThreadCreatePage: () => <div data-testid="thread-create" />,
+}));
+
+vi.mock("../features/drenyra/components/DrenyraCaseLayout", () => ({
+	DrenyraCaseLayout: ({ children }: { children: ReactNode }) => (
+		<div data-testid="case-layout">{children}</div>
+	),
 }));
 
 // ---------------------------------------------------------------------------
@@ -174,12 +199,24 @@ function createQueryClient() {
 // Tests
 // ---------------------------------------------------------------------------
 
-describe("/drenyra routing", () => {
+describe("private shell routing", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 	});
 
-	it("renders DrenyraFlexMain at /drenyra", async () => {
+	it("renders private shell for authenticated /dashboard", async () => {
+		window.history.pushState(null, "", "/dashboard");
+		const queryClient = createQueryClient();
+		const router = createRouter({ queryClient });
+
+		render(<RouterProvider router={router} />);
+
+		await waitFor(() => {
+			expect(screen.getByTestId("private-shell")).toBeInTheDocument();
+		});
+	});
+
+	it("renders private shell for /drenyra/ (index)", async () => {
 		window.history.pushState(null, "", "/drenyra");
 		const queryClient = createQueryClient();
 		const router = createRouter({ queryClient });
@@ -187,19 +224,22 @@ describe("/drenyra routing", () => {
 		render(<RouterProvider router={router} />);
 
 		await waitFor(() => {
-			expect(screen.getByTestId("drenyra-flex-main")).toBeInTheDocument();
+			expect(screen.getByTestId("thread-create")).toBeInTheDocument();
+			expect(screen.getByTestId("private-shell")).toBeInTheDocument();
 		});
 	});
 
-	it("renders DrenyraFlexMain at /drenyra/$threadId", async () => {
-		window.history.pushState(null, "", "/drenyra/thread-abc-123");
+	it("renders private shell + case layout at /drenyra/case/$threadId", async () => {
+		window.history.pushState(null, "", "/drenyra/case/case-123");
 		const queryClient = createQueryClient();
 		const router = createRouter({ queryClient });
 
 		render(<RouterProvider router={router} />);
 
 		await waitFor(() => {
+			expect(screen.getByTestId("case-layout")).toBeInTheDocument();
 			expect(screen.getByTestId("drenyra-flex-main")).toBeInTheDocument();
+			expect(screen.getByTestId("private-shell")).toBeInTheDocument();
 		});
 	});
 
@@ -211,7 +251,8 @@ describe("/drenyra routing", () => {
 		render(<RouterProvider router={router} />);
 
 		await waitFor(() => {
-			expect(screen.getByTestId("drenyra-flex-main")).toBeInTheDocument();
+			expect(screen.getByTestId("thread-create")).toBeInTheDocument();
+			expect(screen.getByTestId("private-shell")).toBeInTheDocument();
 		});
 
 		expect(window.location.pathname).toBe("/drenyra");
@@ -225,7 +266,8 @@ describe("/drenyra routing", () => {
 		render(<RouterProvider router={router} />);
 
 		await waitFor(() => {
-			expect(screen.getByTestId("drenyra-flex-main")).toBeInTheDocument();
+			expect(screen.getByTestId("thread-create")).toBeInTheDocument();
+			expect(screen.getByTestId("private-shell")).toBeInTheDocument();
 		});
 
 		expect(window.location.pathname).toBe("/drenyra");

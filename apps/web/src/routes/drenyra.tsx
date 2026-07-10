@@ -1,10 +1,9 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 
-const AgenticShell = lazyRouteComponent(
-	() => import("../components/agentic-shell/AgenticLayout/AgenticLayout"),
-	"AgenticLayout",
-);
-
+/**
+ * Layout parent for /drenyra child routes.
+ * AgenticLayout is now provided by __root.tsx for all non-public routes.
+ */
 export const Route = createFileRoute("/drenyra")({
-	component: AgenticShell,
+	component: () => <Outlet />,
 });

@@ -18,8 +18,8 @@ vi.mock("../../lib/monitoring", () => ({
 	trackPageView: vi.fn(),
 }));
 
-vi.mock("../../components/layout/MainLayout", () => ({
-	MainLayout: ({ children }: { children: ReactNode }) => (
+vi.mock("../../components/agentic-shell/AgenticLayout/AgenticLayout", () => ({
+	AgenticLayout: ({ children }: { children: ReactNode }) => (
 		<div data-testid="private-shell">{children}</div>
 	),
 }));

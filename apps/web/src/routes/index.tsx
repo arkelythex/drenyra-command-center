@@ -1,9 +1,13 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-/** Drenyra Chat — centro de comando tipo Codex */
+/**
+ * Landing page redirects to /inbox.
+ * AgenticLayout is no longer needed here because __root.tsx provides
+ * the command-center shell for all non-public routes.
+ */
 export const Route = createFileRoute("/")({
-	component: lazyRouteComponent(
-		() => import("../features/chat-agent/ChatAgent"),
-		"ChatAgent",
-	),
+	loader: () => {
+		throw redirect({ to: "/inbox" });
+	},
+	component: () => null,
 });
