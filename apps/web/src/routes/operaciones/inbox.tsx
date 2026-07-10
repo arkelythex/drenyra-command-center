@@ -1,8 +1,8 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+/** Merged into /inbox (canonical route) */
 export const Route = createFileRoute("/operaciones/inbox")({
-	component: lazyRouteComponent(
-		() => import("../../features/inbox/pages"),
-		"InboxPage",
-	),
+	loader: () => {
+		throw redirect({ to: "/inbox" });
+	},
 });

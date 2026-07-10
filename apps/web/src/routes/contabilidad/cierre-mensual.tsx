@@ -1,8 +1,8 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+/** Merged into /cierre-mensual (canonical mission route) */
 export const Route = createFileRoute("/contabilidad/cierre-mensual")({
-	component: lazyRouteComponent(
-		() => import("../../features/cierre-mensual/CierreMensualPage"),
-		"CierreMensualPage",
-	),
+	loader: () => {
+		throw redirect({ to: "/cierre-mensual" });
+	},
 });

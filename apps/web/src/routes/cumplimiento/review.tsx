@@ -1,8 +1,8 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+/** Merged into /review (canonical route) */
 export const Route = createFileRoute("/cumplimiento/review")({
-	component: lazyRouteComponent(
-		() => import("../../features/review"),
-		"ReviewCockpitPage",
-	),
+	loader: () => {
+		throw redirect({ to: "/review" });
+	},
 });

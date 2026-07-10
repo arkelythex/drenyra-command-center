@@ -1,6 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { AutomationsView } from "../../features/automations/components/AutomationsView";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+/** Merged into /automations (canonical route) */
 export const Route = createFileRoute("/configuracion/automations")({
-	component: AutomationsView,
+	loader: () => {
+		throw redirect({ to: "/automations" });
+	},
 });
