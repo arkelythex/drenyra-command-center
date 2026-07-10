@@ -3,24 +3,55 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-// Mock the API module before importing the hook
-vi.mock("@/lib/api", () => ({
-	api: {
-		api: {
-			banking: {
-				accounts: {
-					get: vi.fn().mockResolvedValue({
-						data: { success: true, data: [] },
-						error: null,
-					}),
-				},
-			},
+// Mock the banking API module directly
+import { MOCK_ACCOUNTS } from "../../__fixtures__/accounts";
+
+vi.mock("../../api/banking.api", () => {
+	const mockAccounts = [
+		{
+			id: "acc1",
+			accountName: "BCP Cta. Corriente Soles",
+			accountType: "BANK",
+			currency: "PEN",
+			bankName: "BCP",
+			accountNumber: "191-2233445-0-01",
+			currentBalance: 145820.5,
 		},
-	},
-	getTenantContext: vi.fn(() => ({
-		companyId: "00000000-0000-0000-0000-000000000001",
-	})),
-}));
+		{
+			id: "acc2",
+			accountName: "BBVA Continental ME",
+			accountType: "BANK",
+			currency: "USD",
+			bankName: "BBVA",
+			accountNumber: "0011-0123-0100045678",
+			currentBalance: 45000.0,
+		},
+		{
+			id: "acc3",
+			accountName: "Detracciones - BN",
+			accountType: "DETRACTION",
+			currency: "PEN",
+			bankName: "Banco de la Nación",
+			accountNumber: "00-068-123456",
+			currentBalance: 12500.0,
+		},
+		{
+			id: "card1",
+			accountName: "Interbank Business",
+			accountType: "CREDIT",
+			currency: "PEN",
+			bankName: "Interbank",
+			accountNumber: "****-9988",
+			currentBalance: -5200.0,
+		},
+	];
+	return {
+		bankingApi: {
+			getAccounts: vi.fn().mockResolvedValue(mockAccounts),
+			getTransactions: vi.fn().mockResolvedValue([] as any),
+		},
+	};
+});
 
 vi.mock("@/lib/use-active-company-context", () => ({
 	useActiveCompanyContext: vi.fn(() => ({
@@ -35,7 +66,7 @@ vi.mock("@/lib/use-active-company-context", () => ({
 	})),
 }));
 
-import { MOCK_ACCOUNTS, useBanking } from "../useBanking";
+import { useBanking } from "../useBanking";
 
 /**
  * useBanking uses useSuspenseQuery, so we need:
@@ -68,57 +99,47 @@ describe("useBanking", () => {
 	});
 
 	describe("initialization", () => {
-		it("should start with the first mock account selected by default", async () => {
-			// Arrange & Act
+		it("should start with empty selectedAccountId (no longer defaults to mock)", async () => {
 			const { result } = renderHook(() => useBanking(), {
 				wrapper: createWrapper(),
 			});
 
-			// Assert -- wait for suspense to resolve
 			await waitFor(() => {
 				expect(result.current).not.toBeNull();
 			});
-			expect(result.current.selectedAccountId).toBe(MOCK_ACCOUNTS[0].id);
+			expect(result.current.selectedAccountId).toBe("");
 		});
 
 		it("should have empty search query initially", async () => {
-			// Arrange & Act
 			const { result } = renderHook(() => useBanking(), {
 				wrapper: createWrapper(),
 			});
 
-			// Assert
 			await waitFor(() => {
 				expect(result.current).not.toBeNull();
 			});
 			expect(result.current.searchQuery).toBe("");
 		});
 
-		it("should have a selected account object matching selectedAccountId", async () => {
-			// Arrange & Act
+		it("should return first account as selectedAccount when selectedAccountId is empty", async () => {
 			const { result } = renderHook(() => useBanking(), {
 				wrapper: createWrapper(),
 			});
 
-			// Assert
 			await waitFor(() => {
 				expect(result.current).not.toBeNull();
 			});
 			expect(result.current.selectedAccount).toBeDefined();
-			expect(result.current.selectedAccount.id).toBe(
-				result.current.selectedAccountId,
-			);
+			expect(result.current.selectedAccount.id).toBe("acc1");
 		});
 	});
 
 	describe("account grouping", () => {
 		it("should group accounts by type: bank, detraction, credit", async () => {
-			// Arrange & Act
 			const { result } = renderHook(() => useBanking(), {
 				wrapper: createWrapper(),
 			});
 
-			// Assert -- MOCK_ACCOUNTS has 2 BANK, 1 DETRACTION, 1 CREDIT
 			await waitFor(() => {
 				expect(result.current).not.toBeNull();
 			});
@@ -128,12 +149,10 @@ describe("useBanking", () => {
 		});
 
 		it("should include correct accounts in each group", async () => {
-			// Arrange & Act
 			const { result } = renderHook(() => useBanking(), {
 				wrapper: createWrapper(),
 			});
 
-			// Assert
 			await waitFor(() => {
 				expect(result.current).not.toBeNull();
 			});
