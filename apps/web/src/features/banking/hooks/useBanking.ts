@@ -15,59 +15,14 @@ export interface Account {
 	activityCount?: number;
 }
 
-export const MOCK_ACCOUNTS: Account[] = [
-	{
-		id: "acc1",
-		name: "BCP Cta. Corriente Soles",
-		type: "BANK",
-		currency: "PEN",
-		bankName: "BCP",
-		accountNumber: "191-2233445-0-01",
-		currentBalance: 145820.5,
-		activityCount: 15,
-	},
-	{
-		id: "acc2",
-		name: "BBVA Continental ME",
-		type: "BANK",
-		currency: "USD",
-		bankName: "BBVA",
-		accountNumber: "0011-0123-0100045678",
-		currentBalance: 45000.0,
-		activityCount: 8,
-	},
-	{
-		id: "acc3",
-		name: "Detracciones - BN",
-		type: "DETRACTION",
-		currency: "PEN",
-		bankName: "Banco de la Nación",
-		accountNumber: "00-068-123456",
-		currentBalance: 12500.0,
-		activityCount: 4,
-	},
-	{
-		id: "card1",
-		name: "Interbank Business",
-		type: "CREDIT",
-		currency: "PEN",
-		bankName: "Interbank",
-		accountNumber: "****-9988",
-		currentBalance: -5200.0,
-		activityCount: 12,
-	},
-];
-
 export const useBanking = () => {
 	const {
 		companyContext: { companyId },
 	} = useActiveCompanyContext();
-	const [selectedAccountId, setSelectedAccountId] = useState<string>(
-		MOCK_ACCOUNTS[0].id,
-	);
+	const [selectedAccountId, setSelectedAccountId] = useState<string>("");
 	const [searchQuery, setSearchQuery] = useState("");
 
-	// 1. Fetch Accounts from API
+	// Fetch Accounts from API — no mock fallback
 	const { data: apiAccounts = [] } = useSuspenseQuery({
 		queryKey: bankingKeys.accounts(companyId),
 		queryFn: async () => {
@@ -106,13 +61,12 @@ export const useBanking = () => {
 		},
 	});
 
-	// Combine API + Mock for a rich demo experience
-	const accounts = useMemo(() => {
-		return apiAccounts.length > 0 ? apiAccounts : MOCK_ACCOUNTS;
-	}, [apiAccounts]);
+	const accounts = apiAccounts;
 
+	// Auto-select first account when API data loads
 	const selectedAccount = useMemo(
-		() => accounts.find((a) => a.id === selectedAccountId) || accounts[0],
+		() =>
+			accounts.find((a) => a.id === selectedAccountId) || accounts[0] || null,
 		[accounts, selectedAccountId],
 	);
 

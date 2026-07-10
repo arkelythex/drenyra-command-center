@@ -31,12 +31,19 @@ interface SimulationProviderProps {
 	enabled?: boolean;
 }
 
+const IS_DEV = typeof window !== "undefined" && import.meta.env?.DEV === true;
+
+/**
+ * SimulationProvider: demo-only context for development.
+ * In production, renders children without simulation logic.
+ */
 export const SimulationProvider = ({
 	children,
 	enabled = true,
 }: SimulationProviderProps) => {
-	const [isActive, setIsActive] = useState(true); // Activo por defecto para la demo
+	const [isActive, setIsActive] = useState(false);
 	const showDemoEvent = useCallback(() => {
+		if (!IS_DEV) return;
 		const event = DEMO_EVENTS[Math.floor(Math.random() * DEMO_EVENTS.length)];
 
 		toast.custom(
@@ -48,12 +55,10 @@ export const SimulationProvider = ({
 	}, []);
 
 	useEffect(() => {
-		if (!enabled || !isActive) return;
+		if (!IS_DEV || !enabled || !isActive) return;
 
-		// Intervalo aleatorio entre 15s y 45s para no saturar
 		const scheduleNextEvent = () => {
 			const delay = Math.floor(Math.random() * (45000 - 15000 + 1) + 15000);
-
 			return setTimeout(() => {
 				showDemoEvent();
 				timer = scheduleNextEvent();
@@ -61,7 +66,6 @@ export const SimulationProvider = ({
 		};
 
 		let timer = scheduleNextEvent();
-
 		return () => clearTimeout(timer);
 	}, [enabled, isActive, showDemoEvent]);
 

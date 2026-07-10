@@ -4,14 +4,16 @@ interface WindowWithAudio extends Window {
 	webkitAudioContext?: typeof AudioContext;
 }
 
+const IS_DEV = typeof window !== "undefined" && import.meta.env?.DEV === true;
+
 /**
  * useSoundUI: Motor de retroalimentación auditiva minimalista.
- * Genera tonos sintetizados de alta fidelidad para interacciones agénticas.
- * Inspiración: iOS / VisionOS 2026.
+ * Solo activo en desarrollo. En producción es un no-op.
  */
 export function useSoundUI() {
 	const playSound = useCallback(
 		(type: "ping" | "success" | "alert" | "commit") => {
+			if (!IS_DEV) return;
 			if (typeof window === "undefined") return;
 
 			const AudioCtx =
