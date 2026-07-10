@@ -11,7 +11,7 @@ export interface FiscalEditorialShellProps {
 
 /**
  * Unified editorial chrome for Drenyra web shells.
- * Wraps MainLayout (operational) and CodexShell (command-center) with Fiscal Editorial tokens.
+ * Used by AgenticLayout (command-center) and was previously used by MainLayout (operational).
  */
 export function FiscalEditorialShell({
 	mode = "operational",

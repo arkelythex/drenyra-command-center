@@ -40,8 +40,11 @@ const CommandPalette = lazy(() =>
  *
  * Responsive: sidebar becomes overlay on <1024px.
  * Focus mode: hides sidebar.
+ *
+ * When used as a route layout (no `children`), renders `<Outlet />` for child routes.
+ * When passed `children`, renders them directly — useful for flat routes like `/`.
  */
-export function AgenticLayout(_props: AgenticLayoutProps) {
+export function AgenticLayout({ children }: AgenticLayoutProps) {
 	const {
 		isSidebarCollapsed,
 		isSidebarMobileOpen,
@@ -125,7 +128,7 @@ export function AgenticLayout(_props: AgenticLayoutProps) {
 					{/* Main content area */}
 					<main className="relative flex min-w-0 flex-1 flex-col">
 						<Suspense fallback={<AgenticLayoutLoading />}>
-							<Outlet />
+							{children ?? <Outlet />}
 						</Suspense>
 					</main>
 
