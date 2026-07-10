@@ -1,69 +1,76 @@
 import {
-	BookOpen,
 	Building2,
-	CheckSquare,
 	FileSearch,
-	LayoutDashboard,
+	Inbox,
+	Layers,
+	ScrollText,
 	Settings,
-	Shield,
 	Users,
+	Wrench,
 } from "lucide-react";
 import type { AgenticNavItem, NavSectionConfig } from "./AgenticSidebar.types";
 
+/**
+ * Outcome-first sidebar navigation.
+ *
+ * Items are organized by accounting outcome, not by module.
+ * Legacy module routes are accessible via /tools or command palette.
+ */
 export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
-	// ── TABLERO ──
+	// ── COMMAND CENTER ──
 	{
-		id: "ledger",
-		section: "work",
-		label: "Fiscal ledger",
-		description: "Accounting workbench",
-		to: "/ledger",
-		icon: BookOpen,
+		id: "inbox",
+		section: "command-center",
+		label: "Inbox",
+		description: "Critical tasks and due dates",
+		to: "/inbox",
+		icon: Inbox,
+		badge: "!",
 	},
 	{
-		id: "compliance",
-		section: "work",
-		label: "Compliance review",
-		description: "SUNAT and fiscal checks",
-		to: "/compliance",
-		icon: Shield,
+		id: "missions",
+		section: "command-center",
+		label: "Misiones",
+		description: "Accounting mission workspace",
+		to: "/cierre-mensual",
+		icon: Layers,
 	},
 	{
-		id: "aprobaciones",
-		section: "work",
-		label: "Pending approvals",
-		description: "Human decisions required",
-		to: "/cumplimiento/approvals",
-		icon: CheckSquare,
+		id: "client-360",
+		section: "command-center",
+		label: "Clientes 360",
+		description: "Company and RUC scope",
+		to: "/firm/clients",
+		icon: Users,
 	},
 	{
-		id: "evidence-vault",
-		section: "work",
+		id: "evidence",
+		section: "command-center",
 		label: "Evidence",
 		description: "Fiscal evidence vault",
 		to: "/evidence",
 		icon: FileSearch,
 	},
-
-	// ── PARTES ──
 	{
-		id: "clients",
-		section: "parties",
-		label: "Companies",
-		description: "Company and RUC scope",
-		to: "/customers",
-		icon: Users,
+		id: "review-queue",
+		section: "command-center",
+		label: "Review queue",
+		description: "Approvals and decisions",
+		to: "/review-queue",
+		icon: ScrollText,
 	},
+
+	// ── FISCAL SCOPE ──
 	{
-		id: "proveedores",
-		section: "parties",
-		label: "Counterparties",
-		description: "Vendors and related parties",
-		to: "/vendors",
+		id: "companies",
+		section: "fiscal-scope",
+		label: "Companies",
+		description: "Customer companies",
+		to: "/customers",
 		icon: Building2,
 	},
 
-	// ── SISTEMA ──
+	// ── SYSTEM ──
 	{
 		id: "settings",
 		section: "system",
@@ -73,26 +80,26 @@ export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
 		icon: Settings,
 	},
 	{
-		id: "control-tower",
+		id: "tools",
 		section: "system",
-		label: "Control Tower",
-		description: "System administration",
-		to: "/drenyra/control-tower",
-		icon: LayoutDashboard,
+		label: "Tools",
+		description: "Legacy module access",
+		to: "/tools",
+		icon: Wrench,
 	},
 ];
 
 export const AGENTIC_SECTIONS: NavSectionConfig[] = [
 	{
-		title: "ACTIVE WORK",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "work"),
+		title: "COMMAND CENTER",
+		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "command-center"),
 	},
 	{
 		title: "FISCAL SCOPE",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "parties"),
+		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "fiscal-scope"),
 	},
 	{
-		title: "SISTEMA",
+		title: "SYSTEM",
 		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "system"),
 	},
 ];
