@@ -7,7 +7,7 @@
  * @module @drenyra/ai/gateway
  */
 
-import { loggers } from "../logger";
+import { loggers } from "../services/logger";
 import type { LLMProvider, RateLimitCheck } from "./types";
 
 /**

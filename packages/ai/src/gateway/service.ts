@@ -5,7 +5,7 @@
  */
 
 import type { ContextMonitor, ContextPruner } from "../context-monitor";
-import { loggers } from "../logger";
+import { loggers } from "../services/logger";
 import { type CostTracker, costTracker } from "./cost-tracker";
 import {
 	type FailoverChain,

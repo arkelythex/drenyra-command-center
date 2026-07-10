@@ -81,11 +81,7 @@ export class NotFoundError extends AppError {
 	readonly resourceType: string;
 	readonly resourceId: string;
 
-	constructor(
-		resourceType: string,
-		resourceId: string,
-		message?: string,
-	) {
+	constructor(resourceType: string, resourceId: string, message?: string) {
 		super(message || `${resourceType} not found: ${resourceId}`);
 		this.resourceType = resourceType;
 		this.resourceId = resourceId;
@@ -114,9 +110,7 @@ export class TenantError extends AppError {
 	readonly actualTenant: string;
 
 	constructor(expectedTenant: string, actualTenant: string) {
-		super(
-			`Tenant mismatch: expected ${expectedTenant}, got ${actualTenant}`,
-		);
+		super(`Tenant mismatch: expected ${expectedTenant}, got ${actualTenant}`);
 		this.expectedTenant = expectedTenant;
 		this.actualTenant = actualTenant;
 	}

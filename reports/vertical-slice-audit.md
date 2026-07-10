@@ -4,13 +4,13 @@
 
 ## Current State
 
-| Pattern | Count | Notes |
-|---------|-------|-------|
-| Elysia routers | 363 | Group routes by feature |
-| Classes (services/controllers) | 210 | Different patterns, no consistency |
-| CQRS commands/queries | 14 | Partial adoption |
-| Service files | 96 | Main business logic pattern |
-| Handler files | 19 | Newer pattern, gradually adopted |
+| Pattern                        | Count | Notes                              |
+| ------------------------------ | ----- | ---------------------------------- |
+| Elysia routers                 | 363   | Group routes by feature            |
+| Classes (services/controllers) | 210   | Different patterns, no consistency |
+| CQRS commands/queries          | 14    | Partial adoption                   |
+| Service files                  | 96    | Main business logic pattern        |
+| Handler files                  | 19    | Newer pattern, gradually adopted   |
 
 ## Canonical Template
 

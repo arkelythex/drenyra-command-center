@@ -14,7 +14,7 @@
 
 import { AVAILABLE_MODELS } from "../ai/model-registry";
 import type { ChatMessage } from "../gateway/types";
-import { loggers } from "../logger";
+import { loggers } from "../services/logger";
 import type {
 	ContextPrunerConfig,
 	PruneResult,

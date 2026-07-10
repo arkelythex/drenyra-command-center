@@ -5,7 +5,7 @@
  */
 
 import { randomUUID } from "crypto";
-import { loggers } from "../../logger";
+import { loggers } from "../../services/logger";
 import type {
 	AgentEvent,
 	AgentEventHandler,

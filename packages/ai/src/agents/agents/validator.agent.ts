@@ -10,7 +10,7 @@
  */
 
 import { randomUUID } from "crypto";
-import { loggers } from "../../logger";
+import { loggers } from "../../services/logger";
 import type { GrokAdapter, OpenRouterAdapter } from "../adapters";
 import type {
 	BaseAgent,

@@ -15,7 +15,7 @@
  */
 
 import { randomUUID } from "crypto";
-import { loggers } from "../../../logger";
+import { loggers } from "../../../services/logger";
 import { classifyError } from "../../../services/error-recovery";
 import type { SessionStore } from "../../../session/session-store";
 import type { ReaderInput } from "../../types/agent.types";

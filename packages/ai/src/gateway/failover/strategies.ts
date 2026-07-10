@@ -1,4 +1,4 @@
-import { loggers } from "../../logger";
+import { loggers } from "../../services/logger";
 import type { CircuitBreakerConfig } from "./types";
 import { CircuitState } from "./types";
 

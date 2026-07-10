@@ -13,16 +13,16 @@ apps/api ──→ persistence ──→ infrastructure
 
 ## Actual Dependencies
 
-| Package | Depends on | Clean? |
-|---------|-----------|--------|
-| domain | (none runtime) | ✅ PERFECT |
-| shared | domain | ✅ |
-| application | domain, shared | ✅ |
-| persistence | domain, infrastructure | ✅ (infra layer) |
-| infrastructure | domain, shared | ✅ |
-| ai | application, infrastructure, persistence, shared | ⚠️ Fat module |
-| ui | domain, shared | ✅ |
-| memory | domain, ai, shared | ⚠️ Fat module |
+| Package        | Depends on                                       | Clean?           |
+| -------------- | ------------------------------------------------ | ---------------- |
+| domain         | (none runtime)                                   | ✅ PERFECT       |
+| shared         | domain                                           | ✅               |
+| application    | domain, shared                                   | ✅               |
+| persistence    | domain, infrastructure                           | ✅ (infra layer) |
+| infrastructure | domain, shared                                   | ✅               |
+| ai             | application, infrastructure, persistence, shared | ⚠️ Fat module    |
+| ui             | domain, shared                                   | ✅               |
+| memory         | domain, ai, shared                               | ⚠️ Fat module    |
 
 ## Issues
 

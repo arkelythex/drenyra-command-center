@@ -7,7 +7,7 @@
  * @module @drenyra/ai/gateway
  */
 
-import { loggers } from "../logger";
+import { loggers } from "../services/logger";
 import type { FailoverAttempt, LLMProvider } from "./types";
 import { LLMGatewayError } from "./types";
 

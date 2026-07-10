@@ -4,12 +4,12 @@
 
 ## Current State
 
-| Metric | Value |
-|--------|-------|
-| Web source files | 1712 |
-| Route files | 64 |
+| Metric                           | Value     |
+| -------------------------------- | --------- |
+| Web source files                 | 1712      |
+| Route files                      | 64        |
 | Lazy routes (lazyRouteComponent) | ~54 of 64 |
-| Eager imports still active | 10 routes |
+| Eager imports still active       | 10 routes |
 
 ## Findings
 

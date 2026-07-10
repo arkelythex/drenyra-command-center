@@ -1,1 +1,1 @@
-export { createAIProvider } from "./ai/ai-provider.factory";
+export { createAIProvider } from "../ai/ai-provider.factory";

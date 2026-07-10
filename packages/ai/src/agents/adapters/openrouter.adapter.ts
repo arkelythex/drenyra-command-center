@@ -7,7 +7,7 @@
  */
 
 import { createHash } from "crypto";
-import { loggers } from "../../logger";
+import { loggers } from "../../services/logger";
 import type { AIResponse } from "../types";
 
 /**

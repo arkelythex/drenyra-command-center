@@ -13,7 +13,7 @@
  */
 
 import { createHash, randomUUID } from "crypto";
-import { loggers } from "../../../logger";
+import { loggers } from "../../../services/logger";
 import type {
 	AgentRunStatus,
 	AgentWorkflowState,

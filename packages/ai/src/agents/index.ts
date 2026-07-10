@@ -7,7 +7,7 @@
 
 import { ContextMonitor, ContextPruner } from "../context-monitor";
 import { PermissionService } from "../governance/permission-service";
-import { loggers } from "../logger";
+import { loggers } from "../services/logger";
 import { MemoryContextProvider } from "../memory";
 import {
 	PersistentCircuitBreaker,
