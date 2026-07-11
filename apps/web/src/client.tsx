@@ -3,15 +3,13 @@ import { RouterProvider } from "@tanstack/react-router";
 import { lazy, StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { sanitizePersistedAuthState } from "./features/auth/lib/auth-storage";
-import { captureError, initMonitoring } from "./lib/monitoring";
+import { captureError } from "./lib/monitoring";
 import { createAppQueryClient } from "./lib/query-client";
-import { initSentry } from "./lib/sentry";
 import {
 	bootstrapPersistedTheme,
 	subscribeToSystemTheme,
 	syncThemeDocumentState,
 } from "./lib/ux-mode";
-import { initWebVitals } from "./lib/web-vitals";
 import { createRouter } from "./router";
 import { useUIStore } from "./store/ui-store";
 import "./index.css";
@@ -56,11 +54,19 @@ const queryClient = createAppQueryClient();
 const router = createRouter({ queryClient });
 
 // Initialize monitoring:
-// 1. Sentry (before createRoot — needs to be ready for reactErrorHandler)
+// 1. Sentry (deferred — dynamic import to keep it out of critical bundle)
 // 2. Legacy telemetry (Plausible + global error listeners)
 // 3. Core Web Vitals
-const sentryResult = initSentry(router);
-initMonitoring();
+const sentryPromise = import("./lib/sentry").then(({ initSentry }) =>
+	initSentry(router),
+);
+const initMonitoringPromise = import("./lib/monitoring").then(
+	({ initMonitoring }) => initMonitoring(),
+);
+
+// Fire both — they run asynchronously after first paint
+void sentryPromise;
+void initMonitoringPromise;
 
 bootstrapPersistedTheme();
 subscribeToSystemTheme(() => {
@@ -71,10 +77,7 @@ subscribeToSystemTheme(() => {
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
-	const root = createRoot(rootElement, {
-		// React 19 native error hooks — captured by Sentry
-		...(sentryResult?.reactErrorHandlers ?? {}),
-	});
+	const root = createRoot(rootElement);
 	root.render(
 		<StrictMode>
 			<QueryClientProvider client={queryClient}>
@@ -89,11 +92,16 @@ if (rootElement) {
 	);
 }
 
-// Start Web Vitals tracking after the first render
+// Start Web Vitals tracking after the first render (deferred import)
 if (typeof window !== "undefined") {
-	window.requestIdleCallback
-		? window.requestIdleCallback(() => initWebVitals(), { timeout: 3000 })
-		: setTimeout(() => initWebVitals(), 2000);
+	const loadVitals = () =>
+		import("./lib/web-vitals").then(({ initWebVitals }) => initWebVitals());
+
+	if (window.requestIdleCallback) {
+		window.requestIdleCallback(() => void loadVitals(), { timeout: 3000 });
+	} else {
+		setTimeout(() => void loadVitals(), 2000);
+	}
 }
 
 // Register service worker for PWA support (static asset caching + offline fallback)

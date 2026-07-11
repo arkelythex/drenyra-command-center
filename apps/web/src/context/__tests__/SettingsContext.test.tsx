@@ -19,11 +19,23 @@ describe("SettingsContext theme bridge", () => {
 		});
 	});
 
+	it("hydrates a persisted theme before bridging settings to the UI store", () => {
+		window.localStorage.setItem(
+			"drenyra-settings",
+			JSON.stringify({ theme: "dark" }),
+		);
+
+		const { result } = renderHook(() => useSettings(), { wrapper });
+
+		expect(result.current.settings.theme).toBe("dark");
+		expect(result.current.settings.codexTheme.name).toBe("Drenyra Black OLED");
+	});
+
 	it("bridges settings.theme updates to ui-store themePreference", async () => {
 		const { result } = renderHook(() => useSettings(), { wrapper });
 
 		await waitFor(() => {
-			expect(result.current.settings.theme).toBe("dark");
+			expect(result.current.settings.theme).toBe("light");
 		});
 
 		act(() => {

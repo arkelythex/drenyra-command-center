@@ -1,5 +1,4 @@
 import type { NavigationItem } from "../types";
-import { AGENTIC_NAV_ITEMS } from "./agentic";
 import { AUTOMATIONS_ITEMS } from "./automations";
 import { FINANZAS_ITEMS } from "./finanzas";
 import { FISCAL_ITEMS } from "./fiscal";
@@ -9,7 +8,6 @@ import { PLUGINS_ITEMS } from "./plugins";
 import { SISTEMA_ITEMS } from "./sistema";
 
 export const ALL_NAV_ITEMS: readonly NavigationItem[] = [
-	...AGENTIC_NAV_ITEMS,
 	...INTELLIGENCE_ITEMS,
 	...FINANZAS_ITEMS,
 	...FISCAL_ITEMS,
@@ -18,20 +16,3 @@ export const ALL_NAV_ITEMS: readonly NavigationItem[] = [
 	...PLUGINS_ITEMS,
 	...AUTOMATIONS_ITEMS,
 ];
-
-export const NAV_ITEMS = buildNavItemsMap(ALL_NAV_ITEMS);
-
-function buildNavItemsMap(
-	items: readonly NavigationItem[],
-): Readonly<Record<string, NavigationItem>> {
-	const map = new Map<string, NavigationItem>();
-
-	for (const item of items) {
-		if (map.has(item.id)) {
-			throw new Error(`[navigation] Duplicate item id detected: ${item.id}`);
-		}
-		map.set(item.id, item);
-	}
-
-	return Object.fromEntries(map.entries());
-}

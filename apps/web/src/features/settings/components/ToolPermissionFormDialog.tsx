@@ -16,14 +16,6 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import type {
 	CreateToolPermissionDTO,
 	PermissionEffect,
@@ -48,11 +40,11 @@ const EFFECT_OPTIONS: {
 	label: string;
 	description: string;
 }[] = [
-	{ value: "ALLOW", label: "Allow", description: "Ejecutar sin aprobación" },
-	{ value: "DENY", label: "Deny", description: "Bloquear ejecución" },
+	{ value: "ALLOW", label: "Permitir", description: "Ejecutar sin aprobación" },
+	{ value: "DENY", label: "Bloquear", description: "Bloquear ejecución" },
 	{
 		value: "REQUIRE_APPROVAL",
-		label: "Require Approval",
+		label: "Requiere aprobación",
 		description: "Requiere aprobación manual",
 	},
 ];
@@ -138,20 +130,26 @@ export function ToolPermissionFormDialog({
 				<div className="space-y-5 py-2">
 					{/* Tool name */}
 					<div className="space-y-2">
-						<Label htmlFor="tool-name">Herramienta</Label>
-						<Select value={toolName} onValueChange={setToolName}>
-							<SelectTrigger id="tool-name" className="w-full">
-								<SelectValue placeholder="Seleccionar herramienta…" />
-							</SelectTrigger>
-							<SelectContent>
-								{KNOWN_TOOLS.map((t) => (
-									<SelectItem key={t} value={t}>
-										<span className="font-mono text-sm">{t}</span>
-									</SelectItem>
-								))}
-								<SelectItem value="__custom__">✏️ Otra…</SelectItem>
-							</SelectContent>
-						</Select>
+						<label
+							htmlFor="tool-name"
+							className="text-sm font-medium text-[var(--text-primary)]"
+						>
+							Herramienta
+						</label>
+						<select
+							id="tool-name"
+							className="w-full rounded-md border border-[var(--border-default)] bg-[var(--surface-1)] px-3 py-2 text-sm text-[var(--text-primary)]"
+							value={toolName}
+							onChange={(event) => setToolName(event.target.value)}
+						>
+							<option value="">Seleccionar herramienta…</option>
+							{KNOWN_TOOLS.map((tool) => (
+								<option key={tool} value={tool}>
+									{tool}
+								</option>
+							))}
+							<option value="__custom__">✏️ Otra…</option>
+						</select>
 
 						{toolName === "__custom__" && (
 							<Input
@@ -165,7 +163,9 @@ export function ToolPermissionFormDialog({
 
 					{/* Effect */}
 					<div className="space-y-2">
-						<Label>Política</Label>
+						<p className="text-sm font-medium text-[var(--text-primary)]">
+							Política
+						</p>
 						<div className="space-y-2">
 							{EFFECT_OPTIONS.map((opt) => (
 								<label

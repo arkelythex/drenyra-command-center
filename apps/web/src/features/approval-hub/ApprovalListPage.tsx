@@ -16,10 +16,6 @@ export function ApprovalListPage() {
 	const [recs, setRecs] = useState<RecItem[]>([]);
 	const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		loadApprovals();
-	}, []);
-
 	const loadApprovals = async () => {
 		try {
 			const res = await fetch("/api/approval/pending");
@@ -68,6 +64,10 @@ export function ApprovalListPage() {
 			setLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		loadApprovals();
+	}, []);
 
 	const pending = recs.filter((r) => r.status === "pending");
 	const approved = recs.filter((r) => r.status === "approved");

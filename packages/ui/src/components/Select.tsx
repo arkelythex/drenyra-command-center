@@ -25,8 +25,49 @@ import { cn } from "../lib/utils";
 /**
  * Select root - wraps the entire select structure
  */
-export function Select({ children }: { children: ReactNode }) {
-	return <SelectPrimitive.Root>{children}</SelectPrimitive.Root>;
+export function Select({
+	children,
+	value,
+	onValueChange,
+	defaultValue,
+	open,
+	onOpenChange,
+	name,
+	disabled,
+	required,
+}: {
+	children: ReactNode;
+	/** Controlled selected value */
+	value?: string;
+	/** Callback when value changes */
+	onValueChange?: (value: string) => void;
+	/** Default value for uncontrolled mode */
+	defaultValue?: string;
+	/** Controlled open state */
+	open?: boolean;
+	/** Callback when open state changes */
+	onOpenChange?: (open: boolean) => void;
+	/** Form name attribute */
+	name?: string;
+	/** Disable the select */
+	disabled?: boolean;
+	/** Mark as required */
+	required?: boolean;
+}) {
+	return (
+		<SelectPrimitive.Root
+			value={value}
+			onValueChange={onValueChange}
+			defaultValue={defaultValue}
+			open={open}
+			onOpenChange={onOpenChange}
+			name={name}
+			disabled={disabled}
+			required={required}
+		>
+			{children}
+		</SelectPrimitive.Root>
+	);
 }
 
 export interface SelectTriggerProps {

@@ -333,7 +333,7 @@ export function ThreadCreatePage() {
 
 					{/* Create mutation loading overlay */}
 					{createMutation.isPending && (
-						<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+						<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 ">
 							<div className="rounded-2xl bg-[var(--surface-1)] p-8 text-center shadow-xl">
 								<Loader2
 									size={32}

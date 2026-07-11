@@ -48,14 +48,14 @@ export function AgentTimeline({ steps }: AgentTimelineProps) {
 									isCurrent
 										? "border-[var(--color-primary)]"
 										: isDone
-											? "border-emerald-500 bg-emerald-500"
+											? "border-[var(--color-success)] bg-[var(--color-success)]"
 											: isFailed
-												? "border-red-500 bg-red-500"
+												? "border-[var(--color-danger)] bg-[var(--color-danger-soft)]0"
 												: "border-[var(--border-subtle)] bg-[var(--surface-2)]"
 								}`}
 							>
-								{isDone && <span className="text-2xs text-white">✓</span>}
-								{isFailed && <span className="text-2xs text-white">✕</span>}
+								{isDone && <span className="text-2xs text-[var(--text-inverse)]">✓</span>}
+								{isFailed && <span className="text-2xs text-[var(--text-inverse)]">✕</span>}
 								{isCurrent && (
 									<span className="h-2 w-2 animate-pulse rounded-full bg-[var(--color-primary)]" />
 								)}
@@ -77,7 +77,7 @@ export function AgentTimeline({ steps }: AgentTimelineProps) {
 										: isDone
 											? "text-[var(--text-primary)]"
 											: isFailed
-												? "text-red-500"
+												? "text-[var(--color-danger)]"
 												: "text-[var(--text-tertiary)]"
 								}`}
 							>

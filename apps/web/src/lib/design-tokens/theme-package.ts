@@ -23,7 +23,11 @@ export type ThemePackageParseResult =
 	| { ok: false; error: string };
 
 export function parseThemePackage(input: unknown): DrenyraThemePackage {
-	return themePackageSchema.parse(input);
+	const result = themePackageSchema.safeParse(input);
+	if (!result.success) {
+		throw new Error(result.error.message);
+	}
+	return result.data;
 }
 
 export function tryParseThemePackage(
@@ -40,8 +44,14 @@ export function isThemePackage(input: unknown): input is DrenyraThemePackage {
 export function parseThemePackageJson(
 	jsonPayload: string,
 ): DrenyraThemePackage {
-	const parsed = JSON.parse(jsonPayload) as unknown;
-	return parseThemePackage(parsed);
+	try {
+		const parsed = JSON.parse(jsonPayload) as unknown;
+		return parseThemePackage(parsed);
+	} catch (error) {
+		throw new Error(
+			error instanceof Error ? error.message : "Theme JSON is invalid.",
+		);
+	}
 }
 
 export function parseThemePackageJsonSafe(
@@ -72,26 +82,29 @@ export const PRESET_THEME_PACKAGES = {
 		schema: THEME_PACKAGE_SCHEMA_ID,
 		colorScheme: "dark",
 		metadata: {
-			name: "ARKELYTHEX Dark",
+			name: "Drenyra Black OLED",
 			version: "1.0.0",
 			description:
-				"Monochromatic glass workspace: near-black canvas, graphite panels, soft white foreground.",
+				"Black OLED fiscal command center with warm copper emphasis and calm semantic states.",
 		},
 		meta: {
-			name: "ARKELYTHEX Dark",
+			name: "Drenyra Black OLED",
 			description:
-				"Monochromatic glass workspace: near-black canvas, graphite panels, soft white foreground.",
+				"Black OLED fiscal command center with warm copper emphasis and calm semantic states.",
 		},
 		tokens: {
 			foundation: {
-				"foundation.surface": "#16161e",
-				"foundation.ink": "#e0e0e5",
-				"foundation.accent": "#e0e0e5",
+				"foundation.surface": "#090807",
+				"foundation.ink": "#F7F1E8",
+				"foundation.accent": "#D39A5A",
 			},
 			semantic: {
-				"semantic.bg.canvas": "#0f0f12",
-				"semantic.text.primary": "#e0e0e5",
-				"semantic.accent.primary": "#e0e0e5",
+				"semantic.bg.canvas": "#000000",
+				"semantic.text.primary": "#F7F1E8",
+				"semantic.text.muted": "#81786E",
+				"semantic.accent.primary": "#D39A5A",
+				"semantic.border.default": "#2C261F",
+				"semantic.border.subtle": "#1E1A16",
 			},
 			component: {},
 		},
@@ -100,29 +113,29 @@ export const PRESET_THEME_PACKAGES = {
 		schema: THEME_PACKAGE_SCHEMA_ID,
 		colorScheme: "light",
 		metadata: {
-			name: "ARKELYTHEX Light",
+			name: "Drenyra Light Pearl",
 			version: "1.0.0",
 			description:
-				"Warm light theme — white surfaces, beige canvas, deep cocoa ink, warm lucuma accent.",
+				"Warm pearl accounting workspace with deep cocoa ink and copper emphasis.",
 		},
 		meta: {
-			name: "ARKELYTHEX Light",
+			name: "Drenyra Light Pearl",
 			description:
-				"Warm light theme — white surfaces, beige canvas, deep cocoa ink, warm lucuma accent.",
+				"Warm pearl accounting workspace with deep cocoa ink and copper emphasis.",
 		},
 		tokens: {
 			foundation: {
-				"foundation.surface": "#ffffff",
-				"foundation.ink": "#0d0b09",
-				"foundation.accent": "#c47f30",
+				"foundation.surface": "#FFFFFF",
+				"foundation.ink": "#1D1A16",
+				"foundation.accent": "#B87333",
 			},
 			semantic: {
-				"semantic.bg.canvas": "#ffffff",
-				"semantic.text.primary": "#0d0b09",
-				"semantic.text.muted": "#4a4035",
-				"semantic.accent.primary": "#c47f30",
-				"semantic.border.default": "#e0dcd2",
-				"semantic.border.subtle": "#ece8e0",
+				"semantic.bg.canvas": "#F8F5EF",
+				"semantic.text.primary": "#1D1A16",
+				"semantic.text.muted": "#7A7166",
+				"semantic.accent.primary": "#B87333",
+				"semantic.border.default": "#CEBFAE",
+				"semantic.border.subtle": "#E0D5C7",
 			},
 			component: {},
 		},
@@ -136,40 +149,39 @@ export function getPresetThemePackage(themeId: string): DrenyraThemePackage {
 	return parseThemePackage(preset);
 }
 
+function addKnownTokens(
+	target: Partial<Record<ThemeTokenName, string>>,
+	tokens: Record<string, string>,
+	prefix = "",
+): void {
+	for (const [tokenName, value] of Object.entries(tokens)) {
+		const qualifiedName = `${prefix}${tokenName}`;
+		if (qualifiedName in THEME_TOKEN_CSS_VARIABLES) {
+			target[qualifiedName as ThemeTokenName] = value;
+		}
+	}
+}
+
+function addComponentTokens(
+	target: Partial<Record<ThemeTokenName, string>>,
+	components: ThemePackage["tokens"]["component"],
+): void {
+	for (const [componentName, componentTokens] of Object.entries(components)) {
+		if (typeof componentTokens === "string") {
+			addKnownTokens(target, { [componentName]: componentTokens });
+			continue;
+		}
+		addKnownTokens(target, componentTokens, `${componentName}.`);
+	}
+}
+
 function flattenThemeTokens(
 	themePackage: ThemePackage,
 ): Partial<Record<ThemeTokenName, string>> {
 	const flattened: Partial<Record<ThemeTokenName, string>> = {};
-	for (const [tokenName, value] of Object.entries(
-		themePackage.tokens.foundation,
-	)) {
-		if (tokenName in THEME_TOKEN_CSS_VARIABLES) {
-			flattened[tokenName as ThemeTokenName] = value;
-		}
-	}
-	for (const [tokenName, value] of Object.entries(
-		themePackage.tokens.semantic,
-	)) {
-		if (tokenName in THEME_TOKEN_CSS_VARIABLES) {
-			flattened[tokenName as ThemeTokenName] = value;
-		}
-	}
-	for (const [componentName, componentTokens] of Object.entries(
-		themePackage.tokens.component,
-	)) {
-		if (typeof componentTokens === "string") {
-			if (componentName in THEME_TOKEN_CSS_VARIABLES) {
-				flattened[componentName as ThemeTokenName] = componentTokens;
-			}
-			continue;
-		}
-		for (const [tokenName, value] of Object.entries(componentTokens)) {
-			const qualifiedName = `${componentName}.${tokenName}`;
-			if (qualifiedName in THEME_TOKEN_CSS_VARIABLES) {
-				flattened[qualifiedName as ThemeTokenName] = value;
-			}
-		}
-	}
+	addKnownTokens(flattened, themePackage.tokens.foundation);
+	addKnownTokens(flattened, themePackage.tokens.semantic);
+	addComponentTokens(flattened, themePackage.tokens.component);
 	return flattened;
 }
 

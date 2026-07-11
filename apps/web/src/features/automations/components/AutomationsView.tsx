@@ -66,13 +66,13 @@ const AUTOMATIONS: Automation[] = [
 
 export const AutomationsView = () => {
 	return (
-		<div className="flex flex-col h-full bg-white">
+		<div className="flex flex-col h-full bg-[var(--surface-1)]">
 			{/* --- HEADER --- */}
 			<header className="px-8 py-12 lg:px-16 border-b border-gray-50">
 				<div className="max-w-5xl mx-auto flex items-end justify-between gap-8">
 					<div className="space-y-4">
 						<div className="flex items-center gap-3">
-							<div className="p-2 rounded-xl bg-orange-50 text-orange-600">
+							<div className="p-2 rounded-xl bg-[var(--color-warning-soft)] text-[var(--color-warning)]">
 								<Clock3 size={24} strokeWidth={2.5} />
 							</div>
 							<h1 className="text-3xl font-bold tracking-tight text-primary">
@@ -85,7 +85,7 @@ export const AutomationsView = () => {
 						</p>
 					</div>
 
-					<button className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gray-900 text-white font-bold text-sm hover:bg-black transition-all shadow-lg hover:shadow-xl active:scale-95">
+					<button className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-[var(--surface-1)] text-[var(--text-inverse)] font-bold text-sm hover:bg-[var(--surface-1)] transition-all shadow-lg hover:shadow-xl active:scale-95">
 						<Sparkles size={18} />
 						Nueva Automatización
 					</button>
@@ -101,7 +101,7 @@ export const AutomationsView = () => {
 							label="En Ejecución"
 							value="2"
 							icon={Activity}
-							color="text-blue-600"
+							color="text-[var(--color-info)]"
 						/>
 						<StatCard
 							label="Ejecutadas Hoy"
@@ -113,7 +113,7 @@ export const AutomationsView = () => {
 							label="Alerta de Riesgo"
 							value="0"
 							icon={ShieldCheck}
-							color="text-orange-600"
+							color="text-[var(--color-warning)]"
 						/>
 					</div>
 
@@ -143,14 +143,14 @@ interface StatCardProps {
 
 function StatCard({ label, value, icon: Icon, color }: StatCardProps) {
 	return (
-		<div className="p-6 rounded-2xl border border-gray-100 bg-white shadow-sm flex items-center justify-between">
+		<div className="p-6 rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] shadow-sm flex items-center justify-between">
 			<div className="space-y-1">
 				<p className="text-xs font-bold text-secondary/40 uppercase tracking-widest">
 					{label}
 				</p>
 				<p className={cn("text-3xl font-black", color)}>{value}</p>
 			</div>
-			<div className={cn("p-3 rounded-2xl bg-gray-50", color)}>
+			<div className={cn("p-3 rounded-2xl bg-[var(--surface-2)]", color)}>
 				<Icon size={24} />
 			</div>
 		</div>
@@ -161,13 +161,13 @@ function AutomationRow({ auto }: { auto: Automation }) {
 	const isRunning = auto.status === "running";
 
 	return (
-		<div className="group flex items-center gap-6 p-4 pr-6 rounded-[1.5rem] border border-gray-100 bg-white hover:border-info-subtle hover:shadow-sm transition-all duration-300">
+		<div className="group flex items-center gap-6 p-4 pr-6 rounded-[1.5rem] border border-[var(--border-subtle)] bg-[var(--surface-1)] hover:border-info-subtle hover:shadow-sm transition-all duration-300">
 			<div
 				className={cn(
 					"p-3 rounded-xl transition-all",
 					isRunning
-						? "bg-blue-50 text-blue-600 animate-pulse"
-						: "bg-gray-50 text-secondary/40 group-hover:bg-gray-100",
+						? "bg-[var(--color-info-soft)] text-[var(--color-info)] animate-pulse"
+						: "bg-[var(--surface-2)] text-secondary/40 group-hover:bg-[var(--border-subtle)]",
 				)}
 			>
 				<Activity size={20} />
@@ -180,7 +180,7 @@ function AutomationRow({ auto }: { auto: Automation }) {
 					</h3>
 					<Badge
 						variant="outline"
-						className="text-xs h-4 py-0 border-gray-100 uppercase tracking-wider"
+						className="text-xs h-4 py-0 border-[var(--border-subtle)] uppercase tracking-wider"
 					>
 						{auto.trigger}
 					</Badge>
@@ -188,7 +188,7 @@ function AutomationRow({ auto }: { auto: Automation }) {
 						className={cn(
 							"text-xs h-4 py-0 uppercase tracking-wider",
 							auto.riskLevel === "High"
-								? "bg-red-50 text-red-700"
+								? "bg-[var(--color-danger-soft)] text-red-700"
 								: "bg-[var(--color-success)]/10 text-[var(--color-success)]",
 						)}
 					>
@@ -206,15 +206,15 @@ function AutomationRow({ auto }: { auto: Automation }) {
 			</div>
 
 			<div className="flex items-center gap-2 ml-4">
-				<button className="p-2 rounded-xl text-secondary hover:bg-gray-100 hover:text-primary transition-colors">
+				<button className="p-2 rounded-xl text-secondary hover:bg-[var(--border-subtle)] hover:text-primary transition-colors">
 					<Settings2 size={18} />
 				</button>
 				<button
 					className={cn(
 						"p-2 rounded-xl transition-all shadow-sm",
 						isRunning
-							? "bg-orange-50 text-orange-600 hover:bg-orange-100"
-							: "bg-blue-50 text-blue-600 hover:bg-blue-100",
+							? "bg-[var(--color-warning-soft)] text-[var(--color-warning)] hover:bg-[var(--color-warning-soft)]"
+							: "bg-[var(--color-info-soft)] text-[var(--color-info)] hover:bg-[var(--color-info-soft)]",
 					)}
 				>
 					{isRunning ? (

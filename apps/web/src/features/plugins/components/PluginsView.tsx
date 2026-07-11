@@ -95,7 +95,7 @@ export const PluginsView = () => {
 	);
 
 	return (
-		<div className="flex flex-col h-full bg-white">
+		<div className="flex flex-col h-full bg-[var(--surface-1)]">
 			{/* --- HEADER --- */}
 			<header className="px-8 py-12 lg:px-16 border-b border-gray-50">
 				<div className="max-w-5xl mx-auto space-y-4">
@@ -115,19 +115,19 @@ export const PluginsView = () => {
 					<div className="pt-4 flex items-center gap-4">
 						<div className="relative flex-1 max-w-md">
 							<Search
-								className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary/40"
+								className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-secondary)]/40"
 								size={18}
 							/>
 							<input
 								type="text"
 								placeholder="Buscar plugins..."
 								aria-label="Buscar plugin"
-								className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-100 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-[var(--color-info)]/10 focus:border-info-muted outline-none transition-all text-sm"
+								className="w-full pl-10 pr-4 py-2 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-2)]/50 focus:bg-[var(--surface-1)] focus:ring-2 focus:ring-[var(--color-info)]/10 focus:border-info-muted outline-none transition-all text-sm"
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 							/>
 						</div>
-						<div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 border border-gray-100 text-xs font-bold text-secondary">
+						<div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--surface-2)] border border-[var(--border-subtle)] text-xs font-bold text-secondary">
 							<CheckCircle2 size={14} className="text-success" />3 Plugins
 							Activos
 						</div>
@@ -156,10 +156,10 @@ function PluginCard({ plugin }: { plugin: Plugin }) {
 	return (
 		<div
 			className={cn(
-				"group flex flex-col p-6 rounded-2xl border bg-white transition-all duration-300",
+				"group flex flex-col p-6 rounded-2xl border bg-[var(--surface-1)] transition-all duration-300",
 				isActive
-					? "border-blue-100 shadow-sm"
-					: "border-gray-100 hover:border-gray-200",
+					? "border-[var(--color-info-soft)] shadow-sm"
+					: "border-[var(--border-subtle)] hover:border-gray-200",
 			)}
 		>
 			<div className="flex items-start justify-between mb-6">
@@ -167,8 +167,8 @@ function PluginCard({ plugin }: { plugin: Plugin }) {
 					className={cn(
 						"p-3 rounded-2xl transition-colors",
 						isActive
-							? "bg-blue-50 text-blue-600"
-							: "bg-gray-50 text-secondary/40 group-hover:bg-gray-100",
+							? "bg-[var(--color-info-soft)] text-[var(--color-info)]"
+							: "bg-[var(--surface-2)] text-[var(--text-secondary)]/40 group-hover:bg-[var(--border-subtle)]",
 					)}
 				>
 					<Icon size={24} strokeWidth={2} />
@@ -177,8 +177,8 @@ function PluginCard({ plugin }: { plugin: Plugin }) {
 					className={cn(
 						"text-xs uppercase tracking-widest px-2 py-0.5 rounded-md",
 						isActive
-							? "bg-blue-600 text-white"
-							: "bg-gray-100 text-secondary/60",
+							? "bg-[var(--color-primary)] text-[var(--text-inverse)]"
+							: "bg-[var(--border-subtle)] text-secondary/60",
 					)}
 				>
 					{plugin.status}
@@ -196,13 +196,13 @@ function PluginCard({ plugin }: { plugin: Plugin }) {
 			</div>
 
 			<div className="mt-8 pt-4 border-t border-gray-50 flex items-center justify-between">
-				<span className="text-xs font-bold text-secondary/40 uppercase tracking-widest">
+				<span className="text-xs font-bold text-[var(--text-secondary)]/40 uppercase tracking-widest">
 					{plugin.provider}
 				</span>
 				<button
 					className={cn(
 						"flex items-center gap-1.5 text-xs font-bold transition-all",
-						isActive ? "text-blue-600" : "text-secondary hover:text-primary",
+						isActive ? "text-[var(--color-info)]" : "text-secondary hover:text-primary",
 					)}
 				>
 					{isActive ? "Configurar" : "Instalar"}

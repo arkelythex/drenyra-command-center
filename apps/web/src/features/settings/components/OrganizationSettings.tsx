@@ -11,7 +11,7 @@ const TEAM_MEMBERS = [
 	{
 		name: "Albert Ferrer",
 		email: "admin@arkalythix.io",
-		role: "Admin",
+		role: "Administrador",
 		status: "Activo",
 	},
 	{
@@ -23,7 +23,7 @@ const TEAM_MEMBERS = [
 	{
 		name: "Luis Ramos",
 		email: "auditoria@arkalythix.io",
-		role: "Viewer",
+		role: "Revisor",
 		status: "Pendiente",
 	},
 ];
@@ -34,14 +34,14 @@ export const OrganizationSettings = () => {
 
 	return (
 		<SettingsShell
-			title="Entity Studio"
-			description="Define your corporate identity and govern your operational team."
+			title="Organización"
+			description="Definí la identidad corporativa y gestioná el equipo operativo."
 			icon={Building2}
-			badge="ORGANIZATION ENGINE"
+			badge="GESTIÓN ORGANIZACIONAL"
 			actions={
 				<SettingsButton variant="primary" size="xs">
 					<Plus className="mr-2 h-3.5 w-3.5" />
-					Invite Agent
+					Invitar integrante
 				</SettingsButton>
 			}
 		>
@@ -51,8 +51,8 @@ export const OrganizationSettings = () => {
 				<div className="grid gap-10 lg:grid-cols-[1fr_400px]">
 					<div className="space-y-10">
 						<SettingsSection
-							title="Team Matrix"
-							description="Manage permissions and access levels for your strategic members."
+							title="Equipo y accesos"
+							description="Gestioná permisos y niveles de acceso del equipo."
 						>
 							<div className="space-y-3">
 								{TEAM_MEMBERS.map((member) => (
@@ -64,14 +64,14 @@ export const OrganizationSettings = () => {
 
 					<div className="space-y-6">
 						<SettingsSection
-							title="Work History"
-							description="Recent entity-level changes and audit events."
+							title="Historial de auditoría"
+							description="Cambios recientes de la organización y eventos auditables."
 						>
 							<div className="space-y-4">
 								{[
-									{ event: "Entity Verified", date: "2 hours ago" },
-									{ event: "New Seat Added", date: "Jan 15" },
-									{ event: "Logo Updated", date: "Dec 22" },
+									{ event: "Organización verificada", date: "hace 2 horas" },
+									{ event: "Integrante agregado", date: "15 ene." },
+									{ event: "Logotipo actualizado", date: "22 dic." },
 								].map((item, idx) => (
 									<div
 										key={idx}
@@ -92,8 +92,8 @@ export const OrganizationSettings = () => {
 							className="rounded-2xl border-[var(--accent)]/10 bg-[var(--accent)]/[0.02]"
 						>
 							<p className="text-xs leading-relaxed text-[var(--accent)]/60 font-medium italic">
-								"Organization settings are globally replicated across all
-								regional nodes for high-availability compliance."
+								"La configuración de la organización se replica en todos los
+								nodos regionales para preservar disponibilidad y trazabilidad."
 							</p>
 						</SurfaceCard>
 					</div>

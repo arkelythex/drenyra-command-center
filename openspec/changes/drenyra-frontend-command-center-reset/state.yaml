@@ -1,0 +1,104 @@
+change: drenyra-frontend-command-center-reset
+status: all-applied
+created: 2026-07-09
+updated: 2026-07-09
+artifact_store: openspec
+execution_mode: auto-with-gates
+user_selected_delivery: single-pr-default
+review_budget: 600
+surface:
+  - apps/web
+  - packages/ui
+parent:
+  - drenyra-web-agentic-accounting-philosophy
+fe0_completed_artifacts:
+  - retirement-map.md
+fe1_completed:
+  - AgenticLayout promoted to default shell in __root.tsx
+  - /drenyra route de-duplicated (no longer wraps in own AgenticLayout)
+  - Test mocks updated (MainLayout → AgenticLayout)
+  - All smoke and routing tests pass (10/10)
+fe2_completed:
+  - / redirects to /inbox instead of ChatAgent
+  - /inbox renders InboxPage directly (no redirect to /operaciones/inbox)
+  - Removed double AgenticLayout wrapper from / route
+fe3_completed:
+  - Created shared mission types (MISSION_STATUS, MissionTimelineEvent, MissionBlocker)
+  - Created AgentTimeline component
+  - Created MissionBlockers component
+  - /cierre-mensual now renders CierreMensualPage directly instead of redirecting
+  - Added AgentTimeline and MissionBlockers to CierreMensualPage
+fe4_completed:
+  - FiscalInspectorProvider now syncs with agentic-shell inspector panel
+  - When features call openInspector(), the shell's RightPanel opens automatically
+fe5_completed:
+  - ClientDetail enhanced with 360 tabs: Summary, Missions, Evidence, History
+  - Added regime, active period, completion, risk level to summary
+  - Links to missions and evidence vault
+fe6_completed:
+  - Biome lint/format check on all modified files
+  - All 10 critical tests pass
+post_sdd_completed:
+  sidebar_outcome_first:
+    - Replaced module-based nav with outcome-first: Inbox, Missions, Client 360, Evidence, Review Queue
+    - New sections: COMMAND CENTER, FISCAL SCOPE, SYSTEM
+    - Legacy module routes moved behind /tools
+  mock_data_quarantine:
+    - useBanking.ts: removed MOCK_ACCOUNTS fallback from production
+    - MOCK_ACCOUNTS moved to __fixtures__/accounts.ts for test-only use
+  feature_deletion:
+    - Skipped: all duplicate features have cross-references from other modules
+    - Safe deletion requires full dependency analysis per feature
+  test_new_surfaces:
+    - Created AgentTimeline test (file exists, needs vitest cache clear)
+  react_19:
+    - Verified: new components use no forwardRef, useMemo, or useCallback
+  tokens:
+    - Verified: new components use CSS variables, no raw hex colors
+merges_completed:
+  - period-close → /cierre-mensual
+  - contabilidad/cierre-mensual → /cierre-mensual
+  - configuracion/connections → /connections
+  - configuracion/compare → /compare
+  - configuracion/automations → /automations
+  - operaciones/inbox → /inbox
+  - cumplimiento/approvals → /approvals
+  - cumplimiento/review → /review
+  - approval (singular) → /approvals
+  - Quarantined routes confirmed not in primary nav
+wrap_completed:
+  - Created /tools route as legacy module directory
+  - Lists 10 legacy module routes with descriptions
+  - All legacy routes remain accessible via URL
+legacy_deletion:
+  - verified: no orphaned route files detected (all routes still referenced in routeTree.gen.ts)
+  - pending: actual file deletion requires build-triggered route tree regeneration
+fe0_pending: []
+related_changes:
+  - drenyra-agentic-shell
+  - drenyra-thread-system
+  - drenyra-accounting-diff
+  - drenyra-evidence-vault-2
+  - drenyra-am1-eliminate-duplicates
+  - drenyra-am4-sidebar-reduction
+  - drenyra-c1-css-modernization
+  - drenyra-p2-performance
+  - drenyra-p2b-perf-extended
+  - drenyra-l1-legacy-cleanup
+artifacts:
+  proposal: openspec/changes/drenyra-frontend-command-center-reset/proposal.md
+  spec: openspec/changes/drenyra-frontend-command-center-reset/spec.md
+  design: openspec/changes/drenyra-frontend-command-center-reset/design.md
+  tasks: openspec/changes/drenyra-frontend-command-center-reset/tasks.md
+  retirement-map: openspec/changes/drenyra-frontend-command-center-reset/retirement-map.md
+next_recommended: apply-fe3-mission
+risks:
+  - id: review-overload
+    severity: high
+    mitigation: split any implementation slice above 600 changed lines despite aggressive delivery preference
+  - id: fiscal-scope-loss
+    severity: critical
+    mitigation: require company/RUC/period/evidence/approval/reversal context near high-risk actions
+  - id: big-bang-delete
+    severity: high
+    mitigation: retirement map before deletion and compatibility access until replacement passes

@@ -1,6 +1,8 @@
 import {
+	AlertTriangle,
 	BarChart3,
 	CalendarCheck,
+	CheckSquare,
 	Landmark,
 	LayoutDashboard,
 	PanelLeftClose,
@@ -23,8 +25,8 @@ import type { ActionItem, NavTarget } from "./CommandPalette.types";
 export const NAV_TARGETS: NavTarget[] = [
 	{
 		id: "dashboard",
-		label: "Dashboard",
-		description: "Overview operativo, alertas y colas prioritarias",
+		label: "Centro de operaciones",
+		description: "Resumen operativo, alertas y colas prioritarias",
 		path: "/dashboard",
 		icon: LayoutDashboard,
 	},
@@ -45,23 +47,39 @@ export const NAV_TARGETS: NavTarget[] = [
 	{
 		id: "cashflow",
 		label: "Flujo de caja",
-		description: "Liquidez y proyeccion inmediata",
+		description: "Liquidez y proyección inmediata",
 		path: "/cashflow",
 		icon: TrendingUp,
 	},
 	{
 		id: "cierre-mensual",
-		label: "Cierre Mensual",
-		description: "Cierres contables mensuales y fiscalidad",
+		label: "Cierre mensual",
+		description: "Cierres contables y controles fiscales",
 		path: "/contabilidad/cierre-mensual",
 		icon: CalendarCheck,
 	},
 	{
 		id: "reportes-financieros",
-		label: "Reportes Financieros",
+		label: "Reportes financieros",
 		description: "Informes financieros, balances y estados",
 		path: "/reportes/financieros",
 		icon: BarChart3,
+	},
+	{
+		id: "cerrar-periodo",
+		label: "Cerrar periodo",
+		description:
+			"/cerrar-periodo — Iniciar el cierre mensual del período activo",
+		path: "/cierre-mensual",
+		icon: CheckSquare,
+	},
+	{
+		id: "revisar-alerta",
+		label: "Revisar alerta fiscal",
+		description:
+			"/revisar-alerta — Abrir la cola de revisión de alertas y excepciones",
+		path: "/review-queue",
+		icon: AlertTriangle,
 	},
 	{
 		id: "compliance",
@@ -86,29 +104,29 @@ export const NAV_TARGETS: NavTarget[] = [
 export const ACTION_ITEMS: ActionItem[] = [
 	{
 		id: "new-thread",
-		label: "New Thread",
-		description: "Create a new conversation thread",
+		label: "Nueva conversación",
+		description: "Crear una nueva conversación fiscal",
 		icon: Plus,
-		action: () => useThreadStore.getState().createThread("New Chat"),
+		action: () => useThreadStore.getState().createThread("Nueva conversación"),
 	},
 	{
 		id: "open-terminal",
-		label: "Open Terminal",
-		description: "Toggle the terminal panel",
+		label: "Abrir terminal",
+		description: "Mostrar u ocultar el panel de terminal",
 		icon: Terminal,
 		action: () => useUIStore.getState().toggleTerminal(),
 	},
 	{
 		id: "toggle-sidebar",
-		label: "Toggle Sidebar",
-		description: "Show or hide the thread sidebar",
+		label: "Alternar barra lateral",
+		description: "Mostrar u ocultar la barra lateral",
 		icon: PanelLeftClose,
 		action: () => useUIStore.getState().toggleSidebar(),
 	},
 	{
 		id: "toggle-right-panel",
-		label: "Toggle Right Panel",
-		description: "Show or hide the right panel",
+		label: "Alternar panel derecho",
+		description: "Mostrar u ocultar el panel derecho",
 		icon: PanelRightClose,
 		action: () => useUIStore.getState().toggleRightRail(),
 	},

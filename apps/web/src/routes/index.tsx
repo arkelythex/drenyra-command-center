@@ -1,9 +1,12 @@
 import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
 
-/** Drenyra Chat — centro de comando tipo Codex */
+/**
+ * Accounting Inbox — command center home page.
+ * Shows critical tasks, Drenyra suggestions, active agents, and company summaries.
+ */
 export const Route = createFileRoute("/")({
 	component: lazyRouteComponent(
-		() => import("../features/chat-agent/ChatAgent"),
-		"ChatAgent",
+		() => import("../features/accounting-inbox/AccountingInbox"),
+		"AccountingInbox",
 	),
 });

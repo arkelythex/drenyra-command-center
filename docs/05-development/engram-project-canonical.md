@@ -12,7 +12,7 @@ Use these values when you configure or query Engram:
 | Field              | Value                                               |
 | ------------------ | --------------------------------------------------- |
 | Project name       | `drenyra`                                           |
-| Config path        | `~/Documents/PROYECTOS/drenyra/.engram/config.json` |
+| Config path        | `~/Documents/PROYECTOS/Drenyra/.engram/config.json` |
 | Repository symlink | `drenyra/.engram` → `../.engram`                    |
 
 ## Rules

@@ -46,7 +46,10 @@ export function useCognitiveStream() {
 
 	const abortControllerRef = useRef<AbortController | null>(null);
 	const runIdRef = useRef(state.runId);
-	runIdRef.current = state.runId;
+
+	useEffect(() => {
+		runIdRef.current = state.runId;
+	}, [state.runId]);
 
 	useEffect(() => {
 		writePersistedTimeline(state.activityTimeline);

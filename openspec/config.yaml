@@ -263,3 +263,11 @@ plans:
       prs: 2
       est_lines: 400
       status: proposal
+
+  frontend-reset:
+    FE-RESET:
+      name: Frontend Command Center Reset
+      dir: openspec/changes/drenyra-frontend-command-center-reset
+      prs: 7
+      est_lines: 4200
+      status: planning
