@@ -5,7 +5,7 @@ interface CommandPaletteInputProps {
 }
 
 export function CommandPaletteInput({
-	placeholder = "¿Qué necesitas hacer?",
+	placeholder = "Buscar comandos fiscales: @facturas, @banco, @SUNAT…",
 }: CommandPaletteInputProps) {
 	return <Command.Input placeholder={placeholder} />;
 }
