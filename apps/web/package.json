@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "start": "vite preview",
-    "typecheck": "tsc -p tsconfig.check.json",
+    "typecheck": "NODE_OPTIONS=--max-old-space-size=4096 tsc -p tsconfig.check.json",
     "lint": "eslint src",
     "lint:fix": "eslint src --ext .ts,.tsx,.js,.jsx --fix",
     "check:bundle": "bun ./scripts/check-bundle-budget.ts",
