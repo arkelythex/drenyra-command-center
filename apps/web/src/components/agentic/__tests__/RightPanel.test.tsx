@@ -1,156 +1,153 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { RightPanel } from "../RightPanel";
 
-// ─── Hoisted mock factories ───────────────────────────────────────────────────
-// vi.mock is hoisted, so we must define fns via vi.hoisted first.
-
 const mockUseArtifactStore = vi.hoisted(() => vi.fn());
 const mockUseDiffApprovalStore = vi.hoisted(() => vi.fn());
-const mockUseThreadStore = vi.hoisted(() => vi.fn());
 const mockUseAccountingStore = vi.hoisted(() => vi.fn());
+const mockUseFiscalInspector = vi.hoisted(() => vi.fn());
+const mockUseAgenticLayout = vi.hoisted(() => vi.fn());
+const closeInspector = vi.hoisted(() => vi.fn());
 
-// ─── Mock all four Zustand stores ─────────────────────────────────────────────
+vi.mock("@tanstack/react-router", () => ({
+	Link: ({
+		children,
+		to,
+		className,
+	}: {
+		children: ReactNode;
+		to: string;
+		className?: string;
+	}) => (
+		<a href={to} className={className}>
+			{children}
+		</a>
+	),
+}));
 
 vi.mock("@/stores/artifact-store", () => ({
 	useArtifactStore: mockUseArtifactStore,
 }));
-
 vi.mock("@/stores/diff-approval-store", () => ({
 	useDiffApprovalStore: mockUseDiffApprovalStore,
 }));
-
-vi.mock("@/stores/thread-store", () => ({
-	useThreadStore: mockUseThreadStore,
-}));
-
 vi.mock("@/stores/accounting-store", () => ({
 	useAccountingStore: mockUseAccountingStore,
 }));
-
-// ─── Mock sub-components used by RightPanel ──────────────────────────────────
-// We render simple placeholders to avoid importing their real implementations.
-
+vi.mock("@/context/FiscalInspectorContext", () => ({
+	useFiscalInspector: mockUseFiscalInspector,
+}));
 vi.mock(
-	"@/features/cognitive-hub/components/artifacts/ArtifactRenderer",
+	"@/components/agentic-shell/AgenticLayout/AgenticLayout.context",
 	() => ({
-		ArtifactRenderer: () => <div data-testid="artifact-renderer" />,
+		useAgenticLayout: mockUseAgenticLayout,
 	}),
 );
-
 vi.mock("../ReportPreview", () => ({
-	ReportPreview: () => <div data-testid="report-preview">ReportPreview</div>,
+	ReportPreview: () => <div data-testid="report-preview" />,
 }));
-
 vi.mock("../KpiDashboard", () => ({
-	KpiDashboard: () => <div data-testid="kpi-dashboard">KpiDashboard</div>,
+	KpiDashboard: () => <div data-testid="kpi-dashboard" />,
+}));
+vi.mock("../RightPanel.artifact-panel", () => ({
+	ContextPanel: () => <div data-testid="context-panel" />,
+}));
+vi.mock("../RightPanel.diff-view", () => ({
+	DiffView: () => <div data-testid="diff-view" />,
 }));
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-/**
- * Reset all store mocks to their default (empty) state.
- * Call this in beforeEach so every test starts clean.
- */
-function setDefaultStoreState() {
+function setDefaultState() {
 	mockUseArtifactStore.mockImplementation(
-		(selector: (s: Record<string, unknown>) => unknown) =>
-			selector({
-				pinnedArtifacts: [],
-				activeArtifactId: null,
-				unpinArtifact: vi.fn(),
-				setActiveArtifactId: vi.fn(),
-			}),
+		(selector: (state: { pinnedArtifacts: [] }) => unknown) =>
+			selector({ pinnedArtifacts: [] }),
 	);
-
 	mockUseDiffApprovalStore.mockImplementation(
-		(selector: (s: Record<string, unknown>) => unknown) =>
-			selector({
-				diffFiles: [],
-			}),
+		(selector: (state: { diffFiles: [] }) => unknown) =>
+			selector({ diffFiles: [] }),
 	);
-
-	mockUseThreadStore.mockImplementation(
-		(selector: (s: Record<string, unknown>) => unknown) =>
-			selector({
-				threads: [],
-				activeThreadId: null,
-				renameThread: vi.fn(),
-			}),
-	);
-
 	mockUseAccountingStore.mockImplementation(
-		(selector: (s: Record<string, unknown>) => unknown) =>
-			selector({
-				financialReports: [],
-			}),
+		(selector: (state: { financialReports: [] }) => unknown) =>
+			selector({ financialReports: [] }),
 	);
+	mockUseFiscalInspector.mockReturnValue({
+		activeAction: null,
+		close: closeInspector,
+	});
+	mockUseAgenticLayout.mockReturnValue({
+		workspace: {
+			organizationId: "org-1",
+			companyId: "company-1",
+			period: "Julio 2026",
+		},
+	});
 }
-
-// ─── Tests ────────────────────────────────────────────────────────────────────
 
 describe("RightPanel", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		setDefaultStoreState();
+		setDefaultState();
 	});
 
-	it("renders without crashing with default (empty) state", () => {
+	it("keeps the artifact feed available when no inspector selection exists", () => {
 		render(<RightPanel />);
 
-		// The panel heading is always rendered — just verify presence
-		expect(screen.getByRole("heading")).toBeInTheDocument();
-
-		// With all stores empty the auto-view falls back to "kpi"
+		expect(
+			screen.getByRole("heading", { name: "Feed de artefactos" }),
+		).toBeInTheDocument();
 		expect(screen.getByTestId("kpi-dashboard")).toBeInTheDocument();
 	});
 
-	it("shows diff view when diff files are available", () => {
-		// Override the diff store to return one file
-		mockUseDiffApprovalStore.mockImplementation(
-			(selector: (s: Record<string, unknown>) => unknown) =>
-				selector({
-					diffFiles: [
-						{
-							fileName: "test.ts",
-							oldText: "console.log('old')",
-							newText: "console.log('new')",
-							status: "modified",
-						},
-					],
-				}),
-		);
-
+	it("opens the inspector from its keyboard-accessible mode control", async () => {
+		const user = userEvent.setup();
 		render(<RightPanel />);
 
-		// The view should auto-switch to "diff" → shows "Conciliación" in the header
-		expect(screen.getByText("Conciliación")).toBeInTheDocument();
+		await user.tab();
+		await user.keyboard("{Enter}");
 
-		// Should render the diff file name in the sidebar
-		expect(screen.getByText("test.ts")).toBeInTheDocument();
+		expect(screen.getByText("Seleccioná una decisión")).toBeInTheDocument();
 	});
 
-	it("shows artifact panel when artifacts are pinned", () => {
-		mockUseArtifactStore.mockImplementation(
-			(selector: (s: Record<string, unknown>) => unknown) =>
-				selector({
-					pinnedArtifacts: [
-						{
-							id: "a1",
-							title: "Test summary",
-							type: "explanation",
-							content: "hello",
-						},
-					],
-					activeArtifactId: null,
-					unpinArtifact: vi.fn(),
-					setActiveArtifactId: vi.fn(),
-				}),
-		);
+	it("renders fiscal evidence and approval context when a Home item is selected", () => {
+		mockUseFiscalInspector.mockReturnValue({
+			activeAction: {
+				traceId: "home-sire-mismatch",
+				summary: "Resolver inconsistencias SIRE",
+				status: "ANALYZED",
+				riskLevel: "CRITICAL",
+				impact: "Bloquea la declaración de IGV.",
+				proposedBy: "agent",
+				requiresApproval: true,
+				module: "sire",
+				companyRuc: "20123456789",
+				createdAt: "2026-07-10T13:00:00.000Z",
+				evidence: [
+					{
+						id: "sire-1",
+						kind: "SIRE",
+						label: "Cruce SIRE verificado",
+						hash: "hash-123",
+						verified: true,
+						attachedAt: "2026-07-10T13:00:00.000Z",
+					},
+				],
+			},
+			close: closeInspector,
+		});
 
 		render(<RightPanel />);
 
-		// View should auto-switch to "artifact"
-		expect(screen.getByText("Previsualización")).toBeInTheDocument();
+		expect(
+			screen.getByRole("heading", { name: "Inspector fiscal" }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByText("Resolver inconsistencias SIRE"),
+		).toBeInTheDocument();
+		expect(screen.getByText("Cruce SIRE verificado")).toBeInTheDocument();
+		expect(screen.getByText("Período Julio 2026")).toBeInTheDocument();
+		expect(screen.getByText(/Requiere aprobación humana/)).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Cerrar inspector" }));
+		expect(closeInspector).toHaveBeenCalledOnce();
 	});
 });
