@@ -5,7 +5,7 @@
     "declaration": false,
     "declarationMap": false,
     "noEmit": true,
-    "rootDir": "../..",
+"rootDir": ".",
     "types": ["vite/client", "react", "react-dom"],
     "noUnusedLocals": false,
     "noUnusedParameters": false,

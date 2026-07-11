@@ -1,5 +1,10 @@
 /// <reference types="vite/client" />
 
+declare module "*.css?raw" {
+	const source: string;
+	export default source;
+}
+
 interface ImportMetaEnv {
 	readonly VITE_API_URL?: string;
 	readonly VITE_APP_TITLE?: string;
