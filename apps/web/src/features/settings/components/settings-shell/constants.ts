@@ -29,7 +29,8 @@ export const SETTINGS_NAV_GROUPS: SettingsNavGroup[] = [
 			{
 				to: "/configuracion",
 				label: "General",
-				description: "Idioma, región y configuración base del workspace",
+				description:
+					"Idioma, región y configuración base del espacio de trabajo",
 				icon: Settings,
 			},
 			{
@@ -65,7 +66,7 @@ export const SETTINGS_NAV_GROUPS: SettingsNavGroup[] = [
 			{
 				to: "/configuracion/tool-permissions",
 				label: "Permisos",
-				description: "Políticas de aprobación por herramienta AI",
+				description: "Políticas de aprobación por herramienta de IA",
 				icon: ShieldCheck,
 			},
 			{

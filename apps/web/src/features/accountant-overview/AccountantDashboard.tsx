@@ -28,10 +28,6 @@ export function AccountantDashboard() {
 	const [consultaQuery, setConsultaQuery] = useState("");
 	const [consultaResult, setConsultaResult] = useState<string | null>(null);
 
-	useEffect(() => {
-		loadData();
-	}, []);
-
 	const loadData = async () => {
 		try {
 			const [sumRes, pendRes] = await Promise.all([
@@ -77,6 +73,10 @@ export function AccountantDashboard() {
 			setLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		loadData();
+	}, []);
 
 	const handleQuickConsulta = () => {
 		setConsultaResult(`✅ Consulta enviada: "${consultaQuery}"`);

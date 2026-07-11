@@ -49,21 +49,21 @@ export const CompanionHub = () => {
 	];
 
 	const getToneColor = (tone: string, active: boolean) => {
-		if (!active) return "text-muted";
-		if (tone === "info") return "text-info";
+		if (!active) return "text-[var(--text-tertiary)]";
+		if (tone === "info") return "text-[var(--color-info)]";
 		if (tone === "accent") return "text-[var(--accent)]";
-		if (tone === "warning") return "text-amber-500";
-		if (tone === "danger") return "text-red-500";
-		return "text-muted";
+		if (tone === "warning") return "text-[var(--color-warning)]";
+		if (tone === "danger") return "text-[var(--color-danger)]";
+		return "text-[var(--text-tertiary)]";
 	};
 
 	const getBgColor = (tone: string, active: boolean) => {
-		if (!active) return "bg-white/[0.01]";
-		if (tone === "info") return "bg-info-subtle";
+		if (!active) return "bg-[var(--surface-1)]/5";
+		if (tone === "info") return "bg-[var(--color-info-soft)]";
 		if (tone === "accent") return "bg-[var(--accent)]/5";
-		if (tone === "warning") return "bg-amber-500/5";
-		if (tone === "danger") return "bg-red-500/5";
-		return "bg-white/[0.01]";
+		if (tone === "warning") return "bg-[var(--color-warning-soft)]";
+		if (tone === "danger") return "bg-[var(--color-danger-soft)]";
+		return "bg-[var(--surface-1)]/5";
 	};
 
 	return (
@@ -144,7 +144,9 @@ export const CompanionHub = () => {
 									<h5
 										className={cn(
 											"text-[13px] font-black uppercase tracking-widest",
-											isActive ? "text-primary" : "text-muted",
+											isActive
+												? "text-[var(--text-primary)]"
+												: "text-[var(--text-tertiary)]",
 										)}
 									>
 										Nivel {item.level}: {item.title}
@@ -175,8 +177,8 @@ export const CompanionHub = () => {
 				className={cn(
 					"rounded-2xl border p-5 transition-all duration-500",
 					currentLevel >= 3
-						? "border-red-500/20 bg-red-500/5 shadow-lg shadow-red-500/5"
-						: "border-amber-500/20 bg-amber-500/5",
+						? "border-[var(--color-danger)]/20 bg-[var(--color-danger)]/5 shadow-lg shadow-[var(--color-danger)]/5"
+						: "border-[var(--color-warning)]/20 bg-[var(--color-warning)]/5",
 				)}
 			>
 				<div className="flex items-start gap-4">

@@ -1,3 +1,4 @@
+import { createElement, type ElementType } from "react";
 import {
 	CalendarCheck,
 	FileSearch,
@@ -9,14 +10,14 @@ import type { QuickAction } from "./threads.types";
 
 // ─── Icon resolver ───────────────────────────────────────────────────────────
 
-const ICON_MAP: Record<string, React.ElementType> = {
+const ICON_MAP: Record<string, ElementType> = {
 	"calendar-check": CalendarCheck,
 	landmark: Landmark,
 	"file-search": FileSearch,
 	search: Search,
 };
 
-function resolveIcon(iconName: string): React.ElementType {
+function resolveIcon(iconName: string): ElementType {
 	return ICON_MAP[iconName] ?? Search;
 }
 
@@ -33,8 +34,6 @@ export function QuickActionButton({
 	onClick,
 	disabled = false,
 }: QuickActionButtonProps) {
-	const Icon = resolveIcon(action.icon);
-
 	return (
 		<button
 			type="button"
@@ -52,7 +51,7 @@ export function QuickActionButton({
 				{disabled ? (
 					<Loader2 size={20} className="animate-spin" />
 				) : (
-					<Icon size={20} />
+					createElement(resolveIcon(action.icon), { size: 20 })
 				)}
 			</div>
 			<div className="space-y-1">

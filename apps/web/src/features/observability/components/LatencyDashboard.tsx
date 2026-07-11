@@ -225,6 +225,38 @@ function PercentileBars({ summary }: { summary: LatencySummary }) {
 type SortField = "agentType" | "avgLatencyMs" | "p95LatencyMs" | "callCount";
 type SortDir = "asc" | "desc";
 
+function SortHeader({
+	sortField,
+	sortDir,
+	toggleSort,
+	field,
+	label,
+}: {
+	sortField: SortField;
+	sortDir: SortDir;
+	toggleSort: (field: SortField) => void;
+	field: SortField;
+	label: string;
+}) {
+	const isActive = sortField === field;
+	return (
+		<th
+			className="px-4 py-2.5 text-left text-2xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)] cursor-pointer select-none hover:text-[var(--text-primary)] transition-colors"
+			onClick={() => toggleSort(field)}
+		>
+			<span className="inline-flex items-center gap-1">
+				{label}
+				{isActive &&
+					(sortDir === "asc" ? (
+						<ChevronUp className="h-3 w-3" />
+					) : (
+						<ChevronDown className="h-3 w-3" />
+					))}
+			</span>
+		</th>
+	);
+}
+
 function AgentTable({ summary }: { summary: LatencySummary }) {
 	const [sortField, setSortField] = useState<SortField>("avgLatencyMs");
 	const [sortDir, setSortDir] = useState<SortDir>("desc");
@@ -259,26 +291,6 @@ function AgentTable({ summary }: { summary: LatencySummary }) {
 		[summary.byAgent],
 	);
 
-	function SortHeader({ field, label }: { field: SortField; label: string }) {
-		const isActive = sortField === field;
-		return (
-			<th
-				className="px-4 py-2.5 text-left text-2xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)] cursor-pointer select-none hover:text-[var(--text-primary)] transition-colors"
-				onClick={() => toggleSort(field)}
-			>
-				<span className="inline-flex items-center gap-1">
-					{label}
-					{isActive &&
-						(sortDir === "asc" ? (
-							<ChevronUp className="h-3 w-3" />
-						) : (
-							<ChevronDown className="h-3 w-3" />
-						))}
-				</span>
-			</th>
-		);
-	}
-
 	if (sorted.length === 0) {
 		return (
 			<div className="flex flex-col items-center gap-2 px-4 py-8 text-center">
@@ -295,10 +307,34 @@ function AgentTable({ summary }: { summary: LatencySummary }) {
 			<table className="w-full">
 				<thead>
 					<tr className="border-b border-[var(--border-subtle)]">
-						<SortHeader field="agentType" label="Agent" />
-						<SortHeader field="avgLatencyMs" label="Avg" />
-						<SortHeader field="p95LatencyMs" label="P95" />
-						<SortHeader field="callCount" label="Calls" />
+						<SortHeader
+							sortField={sortField}
+							sortDir={sortDir}
+							toggleSort={toggleSort}
+							field="agentType"
+							label="Agent"
+						/>
+						<SortHeader
+							sortField={sortField}
+							sortDir={sortDir}
+							toggleSort={toggleSort}
+							field="avgLatencyMs"
+							label="Avg"
+						/>
+						<SortHeader
+							sortField={sortField}
+							sortDir={sortDir}
+							toggleSort={toggleSort}
+							field="p95LatencyMs"
+							label="P95"
+						/>
+						<SortHeader
+							sortField={sortField}
+							sortDir={sortDir}
+							toggleSort={toggleSort}
+							field="callCount"
+							label="Calls"
+						/>
 						<th className="px-4 py-2.5 text-left text-2xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
 							Usage
 						</th>

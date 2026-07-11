@@ -9,19 +9,11 @@ import { Plus, ShieldCheck, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SurfaceCard } from "@/components/ui/SurfaceCard";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
-} from "@/components/ui/tooltip";
-import type { ToolPermission } from "../api/tool-permissions.api";
+import type {
+	CreateToolPermissionDTO,
+	ToolPermission,
+	UpdateToolPermissionDTO,
+} from "../api/tool-permissions.api";
 import { SettingsSection } from "../components/SettingsPrimitives";
 import { SettingsShell } from "../components/SettingsShell";
 import {
@@ -44,9 +36,9 @@ function EffectBadge({ effect }: { effect: ToolPermission["effect"] }) {
 	};
 
 	const labels: Record<string, string> = {
-		ALLOW: "Allow",
-		DENY: "Deny",
-		REQUIRE_APPROVAL: "Require Approval",
+		ALLOW: "Permitir",
+		DENY: "Bloquear",
+		REQUIRE_APPROVAL: "Requiere aprobación",
 	};
 
 	return (
@@ -66,16 +58,18 @@ function PermissionRow({
 	onDelete,
 }: {
 	permission: ToolPermission;
-	onUpdate: (id: string, effect: ToolPermission["effect"]) => void;
+	onUpdate: (id: string, effect: ToolPermission["effect"]) => Promise<void>;
 	onDelete: (id: string) => void;
 }) {
 	const [updating, setUpdating] = useState(false);
 
-	const handleEffectChange = (effect: ToolPermission["effect"]) => {
+	const handleEffectChange = async (effect: ToolPermission["effect"]) => {
 		setUpdating(true);
-		onUpdate(permission.id, effect);
-		// The query invalidation will refetch; we just optimistically update the UI
-		setTimeout(() => setUpdating(false), 300);
+		try {
+			await onUpdate(permission.id, effect);
+		} finally {
+			setUpdating(false);
+		}
 	};
 
 	return (
@@ -91,36 +85,33 @@ function PermissionRow({
 			<div className="flex items-center gap-2">
 				<EffectBadge effect={permission.effect} />
 
-				<Select
-					value={permission.effect}
-					onValueChange={handleEffectChange}
+				<select
+					aria-label={`Política para ${permission.toolName}`}
+					className="h-8 w-40 rounded-md border border-[var(--border-subtle)] bg-[var(--surface-1)] px-2 text-xs text-[var(--text-primary)]"
 					disabled={updating}
+					value={permission.effect}
+					onChange={(event) =>
+						void handleEffectChange(
+							event.target.value as ToolPermission["effect"],
+						)
+					}
 				>
-					<SelectTrigger className="h-8 w-32 border-[var(--border-subtle)]">
-						<SelectValue />
-					</SelectTrigger>
-					<SelectContent>
-						<SelectItem value="ALLOW">Allow</SelectItem>
-						<SelectItem value="DENY">Deny</SelectItem>
-						<SelectItem value="REQUIRE_APPROVAL">Require Approval</SelectItem>
-					</SelectContent>
-				</Select>
+					<option value="ALLOW">Permitir</option>
+					<option value="DENY">Bloquear</option>
+					<option value="REQUIRE_APPROVAL">Requiere aprobación</option>
+				</select>
 			</div>
 
 			{/* Delete */}
-			<Tooltip>
-				<TooltipTrigger asChild>
-					<button
-						type="button"
-						onClick={() => onDelete(permission.id)}
-						className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--text-muted)] transition-colors hover:bg-[var(--color-danger)]/10 hover:text-[var(--color-danger)]"
-						aria-label={`Eliminar permiso para ${permission.toolName}`}
-					>
-						<Trash2 size={14} strokeWidth={2} />
-					</button>
-				</TooltipTrigger>
-				<TooltipContent>Eliminar permiso</TooltipContent>
-			</Tooltip>
+			<button
+				type="button"
+				onClick={() => onDelete(permission.id)}
+				className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--text-muted)] transition-colors hover:bg-[var(--color-danger)]/10 hover:text-[var(--color-danger)]"
+				aria-label={`Eliminar permiso para ${permission.toolName}`}
+				title="Eliminar permiso"
+			>
+				<Trash2 size={14} strokeWidth={2} />
+			</button>
 		</div>
 	);
 }
@@ -128,7 +119,7 @@ function PermissionRow({
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export const ToolPermissionsSettings = () => {
-	const { data: permissions, isLoading, isError } = useToolPermissions();
+	const { data: permissions, isLoading } = useToolPermissions();
 	const createMutation = useCreateToolPermission();
 	const updateMutation = useUpdateToolPermission();
 	const deleteMutation = useDeleteToolPermission();
@@ -136,36 +127,47 @@ export const ToolPermissionsSettings = () => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [editingPermission, setEditingPermission] =
 		useState<ToolPermission | null>(null);
+	const [operationError, setOperationError] = useState<string | null>(null);
 
 	// ── Handlers ───────────────────────────────────────────────────────────
 
-	const handleSave = (data: unknown) => {
+	const handleSave = (
+		data: CreateToolPermissionDTO | UpdateToolPermissionDTO,
+	) => {
+		setOperationError(null);
 		if (editingPermission) {
-			updateMutation.mutate(
-				{
+			void updateMutation
+				.mutateAsync({
 					id: editingPermission.id,
-					data: data as Parameters<typeof updateMutation.mutate>[0]["data"],
-				},
-				{ onSettled: () => setDialogOpen(false) },
-			);
-		} else {
-			createMutation.mutate(
-				data as Parameters<typeof createMutation.mutate>[0],
-				{
-					onSettled: () => setDialogOpen(false),
-				},
-			);
+					data: data as UpdateToolPermissionDTO,
+				})
+				.then(() => setDialogOpen(false))
+				.catch(() => setOperationError("No se pudo actualizar el permiso."));
+			return;
 		}
+
+		void createMutation
+			.mutateAsync(data as CreateToolPermissionDTO)
+			.then(() => setDialogOpen(false))
+			.catch(() => setOperationError("No se pudo crear el permiso."));
 	};
 
-	const handleUpdate = (id: string, effect: ToolPermission["effect"]) => {
-		updateMutation.mutate({ id, data: { effect } });
+	const handleUpdate = async (id: string, effect: ToolPermission["effect"]) => {
+		setOperationError(null);
+		try {
+			await updateMutation.mutateAsync({ id, data: { effect } });
+		} catch (error) {
+			setOperationError("No se pudo actualizar la política del permiso.");
+			throw error;
+		}
 	};
 
 	const handleDelete = (id: string) => {
-		if (window.confirm("¿Eliminar este permiso definitivamente?")) {
-			deleteMutation.mutate(id);
-		}
+		if (!window.confirm("¿Eliminar este permiso definitivamente?")) return;
+		setOperationError(null);
+		void deleteMutation
+			.mutateAsync(id)
+			.catch(() => setOperationError("No se pudo eliminar el permiso."));
 	};
 
 	// ── Render ─────────────────────────────────────────────────────────────
@@ -189,7 +191,7 @@ export const ToolPermissionsSettings = () => {
 		>
 			<SettingsSection title="Permisos configurados" className="max-w-3xl">
 				<SurfaceCard
-					variant="outlined"
+					variant="default"
 					padding="none"
 					className="divide-y divide-[var(--border-subtle)]"
 				>
@@ -212,42 +214,37 @@ export const ToolPermissionsSettings = () => {
 						</div>
 					)}
 
-					{isError && (
-						<div className="flex items-center justify-center py-12">
-							<span className="text-sm text-[var(--color-danger)]">
-								Error al cargar permisos
+					{operationError && (
+						<div className="px-5 py-3 text-sm text-[var(--color-danger)]">
+							{operationError}
+						</div>
+					)}
+
+					{!isLoading && (!permissions || permissions.length === 0) && (
+						<div className="flex flex-col items-center justify-center gap-2 py-12">
+							<ShieldCheck
+								size={32}
+								strokeWidth={1.5}
+								className="text-[var(--text-muted)]"
+							/>
+							<span className="text-sm text-[var(--text-secondary)]">
+								No hay permisos configurados.
 							</span>
+							<Button
+								variant="ghost"
+								size="sm"
+								onClick={() => {
+									setEditingPermission(null);
+									setDialogOpen(true);
+								}}
+							>
+								<Plus size={14} className="mr-1" />
+								Crear el primero
+							</Button>
 						</div>
 					)}
 
 					{!isLoading &&
-						!isError &&
-						(!permissions || permissions.length === 0) && (
-							<div className="flex flex-col items-center justify-center gap-2 py-12">
-								<ShieldCheck
-									size={32}
-									strokeWidth={1.5}
-									className="text-[var(--text-muted)]"
-								/>
-								<span className="text-sm text-[var(--text-secondary)]">
-									No hay permisos configurados.
-								</span>
-								<Button
-									variant="ghost"
-									size="sm"
-									onClick={() => {
-										setEditingPermission(null);
-										setDialogOpen(true);
-									}}
-								>
-									<Plus size={14} className="mr-1" />
-									Crear el primero
-								</Button>
-							</div>
-						)}
-
-					{!isLoading &&
-						!isError &&
 						permissions &&
 						permissions.length > 0 &&
 						permissions.map((perm) => (

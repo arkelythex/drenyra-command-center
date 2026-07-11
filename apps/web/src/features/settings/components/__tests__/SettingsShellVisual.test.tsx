@@ -41,25 +41,27 @@ describe("SettingsShell visual system", () => {
 		render(
 			<SettingsShell
 				title="Configuración General"
-				description="Workspace settings"
+				description="Configuración del espacio de trabajo"
 				icon={Settings}
 				badge="BASE"
 			>
-				<div>Settings content</div>
+				<div>Contenido de configuración</div>
 			</SettingsShell>,
 		);
 
 		expect(
 			screen.getByRole("heading", { name: /configuración general/i }),
 		).toBeInTheDocument();
-		expect(screen.getByText(/workspace settings/i)).toBeInTheDocument();
+		expect(
+			screen.getByText(/configuración del espacio de trabajo/i),
+		).toBeInTheDocument();
 		expect(screen.getByText("BASE")).toBeInTheDocument();
 		expect(
-			screen.getAllByRole("link", { name: /back to app/i })[0],
+			screen.getAllByRole("link", { name: /volver a drenyra/i })[0],
 		).toHaveAttribute("href", "/");
 		expect(
 			screen.getAllByRole("link", { name: /apariencia/i })[0],
 		).toHaveAttribute("href", "/configuracion/appearance");
-		expect(screen.getByText(/Settings content/i)).toBeInTheDocument();
+		expect(screen.getByText(/contenido de configuración/i)).toBeInTheDocument();
 	});
 });

@@ -18,13 +18,13 @@ export const SecuritySettings = () => {
 
 	return (
 		<SettingsShell
-			title="Security Protocol"
-			description="Manage access vectors, encryption parameters, and session integrity."
+			title="Seguridad"
+			description="Gestioná accesos, cifrado e integridad de las sesiones."
 			icon={Shield}
-			badge="LEVEL 4 CLEARANCE"
+			badge="CONTROL DE ACCESO"
 			actions={
 				<SettingsButton variant="secondary" size="xs">
-					Audit Logs
+					Registros de auditoría
 				</SettingsButton>
 			}
 		>
@@ -34,12 +34,12 @@ export const SecuritySettings = () => {
 				<div className="grid gap-10 lg:grid-cols-[1fr_350px]">
 					<div className="space-y-10">
 						<SettingsSection
-							title="Access Authentication"
-							description="Core measures to enforce team operational security."
+							title="Autenticación y acceso"
+							description="Controles esenciales para proteger el acceso del equipo."
 						>
 							<SettingsRow
-								title="Master Password"
-								description="Last rotation: Jan 12, 2026."
+								title="Clave maestra"
+								description="Última rotación: 12 ene. 2026."
 								action={
 									<SettingsButton
 										variant="secondary"
@@ -47,14 +47,14 @@ export const SecuritySettings = () => {
 										className="ml-auto"
 									>
 										<KeyRound className="mr-2 h-3.5 w-3.5" />
-										Rotate Key
+										Rotar clave
 									</SettingsButton>
 								}
 							/>
 
 							<SettingsRow
-								title="Mandatory 2FA"
-								description="Enforce two-factor authentication for all administrators."
+								title="2FA obligatorio"
+								description="Exigí autenticación de dos factores para administradores."
 								action={
 									<SettingSwitch
 										checked={twoFactorRequired}
@@ -67,12 +67,12 @@ export const SecuritySettings = () => {
 						</SettingsSection>
 
 						<SettingsSection
-							title="Neural Data Privacy"
-							description="Control how AI agents process and store your operational intelligence."
+							title="Privacidad de datos"
+							description="Controlá cómo los agentes de IA procesan y conservan la información operativa."
 						>
 							<SettingsRow
-								title="Intelligence Improvement"
-								description="Allow content processing to refine base models."
+								title="Mejora de modelos"
+								description="Permití procesar contenido para mejorar modelos base."
 								action={
 									<SettingSwitch
 										checked={allowModelImprovement}
@@ -84,8 +84,8 @@ export const SecuritySettings = () => {
 							/>
 
 							<SettingsRow
-								title="Long-term Neural Memory"
-								description="Persist operational context across multiple sessions."
+								title="Memoria de largo plazo"
+								description="Conservá el contexto operativo entre sesiones."
 								action={
 									<SettingSwitch
 										checked={longTermMemory}
@@ -101,9 +101,9 @@ export const SecuritySettings = () => {
 					<div className="space-y-6">
 						<div className="flex items-center justify-between px-2">
 							<span className="text-xs font-black uppercase tracking-[0.2em] text-[var(--text-tertiary)]">
-								Active Session Matrix
+								Sesiones activas
 							</span>
-							<StatusBadge status="success" label="LIVE" />
+							<StatusBadge status="success" label="ACTIVAS" />
 						</div>
 
 						<SurfaceCard
@@ -113,7 +113,7 @@ export const SecuritySettings = () => {
 						>
 							<SessionCard
 								device="MacBook Pro · Tokyo"
-								location="Current Device"
+								location="Dispositivo actual"
 								isCurrent
 							/>
 							<SessionCard device="iPhone 15 · Safari" location="Lima, PE" />
@@ -122,7 +122,7 @@ export const SecuritySettings = () => {
 
 						<SettingsButton variant="danger" size="sm" className="w-full">
 							<ShieldAlert className="mr-2 h-3.5 w-3.5" />
-							Terminate All Sessions
+							Cerrar todas las sesiones
 						</SettingsButton>
 					</div>
 				</div>

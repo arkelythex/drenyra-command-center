@@ -66,8 +66,8 @@ export function AgentTabPanel({
 	// Error
 	if (error) {
 		return (
-			<div className="flex flex-col items-center gap-3 rounded-2xl border border-red-500/20 bg-red-500/5 p-8 text-center">
-				<AlertCircle size={24} className="text-red-500" />
+			<div className="flex flex-col items-center gap-3 rounded-2xl border border-[var(--color-danger)]/20 bg-[var(--color-danger-soft)]0/5 p-8 text-center">
+				<AlertCircle size={24} className="text-[var(--color-danger)]" />
 				<p className="text-sm text-[var(--text-secondary)]">{error}</p>
 				{onRetry && (
 					<Button variant="secondary" size="sm" onClick={onRetry}>
@@ -149,15 +149,15 @@ export function AgentTabPanel({
 												isCurrent
 													? "border-[var(--color-primary)]"
 													: isDone
-														? "border-emerald-500 bg-emerald-500"
+														? "border-[var(--color-success)] bg-[var(--color-success)]"
 														: isFailed
-															? "border-red-500 bg-red-500"
+															? "border-[var(--color-danger)] bg-[var(--color-danger-soft)]0"
 															: "border-[var(--border-subtle)] bg-[var(--surface-2)]"
 											}`}
 										>
-											{isDone && <span className="text-2xs text-white">✓</span>}
+											{isDone && <span className="text-2xs text-[var(--text-inverse)]">✓</span>}
 											{isFailed && (
-												<span className="text-2xs text-white">✕</span>
+												<span className="text-2xs text-[var(--text-inverse)]">✕</span>
 											)}
 											{isCurrent && (
 												<span className="h-2 w-2 animate-pulse rounded-full bg-[var(--color-primary)]" />
@@ -177,7 +177,7 @@ export function AgentTabPanel({
 													: isDone
 														? "text-[var(--text-primary)]"
 														: isFailed
-															? "text-red-500"
+															? "text-[var(--color-danger)]"
 															: "text-[var(--text-tertiary)]"
 											}`}
 										>

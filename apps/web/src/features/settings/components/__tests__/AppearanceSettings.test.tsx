@@ -66,11 +66,11 @@ describe("AppearanceSettings theme selection", () => {
 		});
 	});
 
-	it("allows selecting Light theme and bridges to ui-store", async () => {
+	it("allows selecting Light Pearl and bridges to ui-store", async () => {
 		const user = userEvent.setup();
 		render(<AppearanceSettings />, { wrapper });
 
-		await user.click(screen.getByRole("button", { name: /light/i }));
+		await user.click(screen.getByRole("button", { name: /light pearl/i }));
 
 		expect(useUIStore.getState().themePreference).toBe("mono-light");
 
@@ -80,11 +80,11 @@ describe("AppearanceSettings theme selection", () => {
 		});
 	});
 
-	it("allows selecting Dark theme and bridges to ui-store", async () => {
+	it("allows selecting Black OLED and bridges to ui-store", async () => {
 		const user = userEvent.setup();
 		render(<AppearanceSettings />, { wrapper });
 
-		await user.click(screen.getByRole("button", { name: /dark/i }));
+		await user.click(screen.getByRole("button", { name: /black oled/i }));
 
 		expect(useUIStore.getState().themePreference).toBe("mono-dark");
 
@@ -94,11 +94,11 @@ describe("AppearanceSettings theme selection", () => {
 		});
 	});
 
-	it("allows selecting System theme and bridges to ui-store", async () => {
+	it("allows selecting Sistema and bridges to ui-store", async () => {
 		const user = userEvent.setup();
 		render(<AppearanceSettings />, { wrapper });
 
-		await user.click(screen.getByRole("button", { name: /system/i }));
+		await user.click(screen.getByRole("button", { name: /sistema/i }));
 
 		expect(useUIStore.getState().themePreference).toBe("system");
 
@@ -112,7 +112,7 @@ describe("AppearanceSettings theme selection", () => {
 		const user = userEvent.setup();
 		render(<AppearanceSettings />, { wrapper });
 
-		await user.click(screen.getByRole("button", { name: /light/i }));
+		await user.click(screen.getByRole("button", { name: /light pearl/i }));
 
 		await waitFor(() => {
 			const settings = window.localStorage.getItem("drenyra-settings");
@@ -124,7 +124,9 @@ describe("AppearanceSettings theme selection", () => {
 		render(<AppearanceSettings />, { wrapper });
 
 		await waitFor(() => {
-			expect(screen.getByText(/tema oscuro/i)).toBeInTheDocument();
+			expect(
+				screen.getByRole("heading", { name: "Light Pearl" }),
+			).toBeInTheDocument();
 		});
 	});
 });
