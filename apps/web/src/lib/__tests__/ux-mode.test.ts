@@ -6,7 +6,7 @@ import {
 	readPersistedThemePreference,
 	syncThemeDocumentState,
 	UI_STORAGE_KEY,
-} from "@/lib/ux-mode";
+} from "../ux-mode";
 
 describe("theme runtime", () => {
 	beforeEach(() => {
@@ -34,26 +34,27 @@ describe("theme runtime", () => {
 		expect(readPersistedThemePreference()).toBe("mono-dark");
 	});
 
-	it("falls back to mono-dark when persisted state is invalid", () => {
+	it("falls back to Light Pearl when persisted state is invalid", () => {
 		window.localStorage.setItem(UI_STORAGE_KEY, "{invalid-json");
 
-		expect(readPersistedThemePreference()).toBe("mono-dark");
+		expect(readPersistedThemePreference()).toBe("cocoa-light");
 	});
 
 	it("resolves system preference to cocoa-light when system is light", () => {
 		expect(getResolvedThemeId("system", false)).toBe("cocoa-light");
 	});
 
-	it("syncs theme dataset and compatibility classes", () => {
-		syncThemeDocumentState("cocoa-dark");
+	it("syncs Black OLED dataset and compatibility classes", () => {
+		syncThemeDocumentState("mono-dark");
 
-		expect(document.documentElement.dataset.theme).toBe("cocoa-dark");
+		expect(document.documentElement.dataset.theme).toBe("mono-dark");
+		expect(document.documentElement.dataset.ledgerTheme).toBe("black-oled");
 		expect(document.documentElement.dataset.colorScheme).toBe("dark");
 		expect(document.documentElement.classList.contains("dark")).toBe(true);
 		expect(document.documentElement.classList.contains("light")).toBe(false);
-		expect(
-			document.documentElement.classList.contains("theme-cocoa-dark"),
-		).toBe(true);
+		expect(document.documentElement.classList.contains("theme-mono-dark")).toBe(
+			true,
+		);
 	});
 
 	it("bootstraps the persisted preference into the document", () => {

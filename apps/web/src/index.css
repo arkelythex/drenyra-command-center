@@ -1,19 +1,22 @@
 @import "tailwindcss";
 @import "./lib/design-tokens/generated/tokens.css";
+@import "./styles/design-system.css";
 @import "./styles/fonts.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 @custom-variant light (&:where(.light, .light *));
+@custom-variant light-pearl (&:where([data-theme="light"], [data-theme="light"] *));
+@custom-variant black-oled (&:where([data-theme="black-oled"], [data-theme="black-oled"] *));
 
 /* ===========================================
    DRENYRA CYAN/VIOLET VISUAL SYSTEM
    Token architecture: tokens.dtcg.json → generated/tokens.css
    =========================================== */
 
-/* Force dark mode as default */
+/* Ledger OS defaults to Light Pearl; Black OLED remains an explicit mode. */
 :root {
-  --akx-theme: dark;
-  color-scheme: dark;
+  --akx-theme: light;
+  color-scheme: light;
 }
 
 /* ===========================================

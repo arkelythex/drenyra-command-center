@@ -72,14 +72,14 @@ function getFormatter(currency: Currency, compact = false): Intl.NumberFormat {
  * @param amount   - The numeric amount to format.
  * @param currency - ISO 4217 currency code (default: "PEN").
  *
- * @returns Formatted string, e.g. "S/ 1,234.56" or "US$ 1,000.00".
+ * @returns Formatted string, e.g. "S/ 1,234.56" or "US$ 1,000.00".
  *
  * @example
  * ```tsx
- * n(1234.56)        // "S/ 1,234.56"
- * n(1000, "USD")    // "US$ 1,000.00"
- * n(0)              // "S/ 0.00"
- * n(-500, "PEN")    // "-S/ 500.00"
+ * n(1234.56)        // "S/ 1,234.56"
+ * n(1000, "USD")    // "US$ 1,000.00"
+ * n(0)              // "S/ 0.00"
+ * n(-500, "PEN")    // "-S/ 500.00"
  * ```
  */
 export function n(amount: number, currency: Currency = "PEN"): string {
@@ -100,7 +100,7 @@ export const nEUR = (amount: number): string => n(amount, "EUR");
 // ─── Compact notation ───────────────────────────────────────────────────────
 
 /**
- * Compact money notation, e.g. "S/ 1.2K" or "US$ 5.3M".
+ * Compact money notation, e.g. "S/ 1.2K" or "US$ 5.3M".
  * Useful for dashboards and compact KPIs.
  */
 export function nCompact(amount: number, currency: Currency = "PEN"): string {
@@ -115,7 +115,7 @@ export function nCompact(amount: number, currency: Currency = "PEN"): string {
  * @example
  * ```tsx
  * const formatEUR = createFormatter("EUR");
- * formatEUR(99.90) // "EUR 99,90"
+ * formatEUR(99.90) // "EUR 99,90"
  * ```
  */
 export function createFormatter(currency: Currency): MoneyFormatter {
