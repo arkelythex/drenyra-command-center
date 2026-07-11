@@ -62,9 +62,9 @@ interface UIState {
 export const useUIStore = create<UIState>()(
 	persist(
 		(set, get) => ({
-			themePreference: "mono-dark",
+			themePreference: "cocoa-light",
 			customThemePackage: null,
-			accentPreference: "voltage",
+			accentPreference: "ember",
 			densityPreference: "normal",
 			complexityLevel: "advanced",
 			isSidebarOpen: true,
@@ -85,7 +85,7 @@ export const useUIStore = create<UIState>()(
 			},
 
 			setCustomThemePackage: (customThemePackage) => {
-				const nextPreference = customThemePackage ? "custom" : "mono-dark";
+				const nextPreference = customThemePackage ? "custom" : "cocoa-light";
 				syncThemeDocumentState(
 					nextPreference,
 					customThemePackage,
@@ -134,7 +134,7 @@ export const useUIStore = create<UIState>()(
 			migrate: (persistedState) => {
 				if (!persistedState || typeof persistedState !== "object") {
 					return {
-						themePreference: "mono-dark" as ThemePreference,
+						themePreference: "cocoa-light" as ThemePreference,
 						customThemePackage: null,
 						accentPreference: "ember" as AccentPreset,
 						densityPreference: "normal" as DensityLevel,

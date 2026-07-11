@@ -29,64 +29,64 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 
 export const DEFAULT_CODEX_THEME: CodexThemeSettings = {
 	version: "codex-theme-v1",
-	name: "Drenyra Dark",
+	name: "Drenyra Black OLED",
 	mode: "dark",
 	tokens: {
-		accent: "#3CE6D8",
-		surface: "#0B0E11",
-		surfaceLow: "#12161B",
-		surfaceHigh: "#1A1F26",
-		ink: "#EDEFF2",
-		inkSecondary: "#A8B0BC",
-		inkTertiary: "#6B7480",
-		border: "#262C34",
-		borderStrong: "#323A44",
+		accent: "#D39A5A",
+		surface: "#090807",
+		surfaceLow: "#11100E",
+		surfaceHigh: "#191612",
+		ink: "#F7F1E8",
+		inkSecondary: "#BDB3A6",
+		inkTertiary: "#81786E",
+		border: "#2C261F",
+		borderStrong: "#493D31",
 		contrast: 64,
 		uiFont: "Inter",
 		codeFont: "Geist Mono",
-		diffAdded: "#4ADE94",
-		diffRemoved: "#F0665E",
-		warning: "#F5B84A",
-		info: "#6B9FE8",
-		skill: "#9B7FE8",
+		diffAdded: "#62B47F",
+		diffRemoved: "#D66A66",
+		warning: "#D39A5A",
+		info: "#7EA6C8",
+		skill: "#A9793F",
 		opaqueWindows: true,
 	},
 };
 
 export const CODEX_LIGHT_THEME: CodexThemeSettings = {
 	version: "codex-theme-v1",
-	name: "Drenyra Light",
+	name: "Drenyra Light Pearl",
 	mode: "light",
 	tokens: {
-		accent: "#0A8A7D",
+		accent: "#B87333",
 		surface: "#FFFFFF",
-		surfaceLow: "#F2F2F0",
-		surfaceHigh: "#FFFFFF",
-		ink: "#16181B",
-		inkSecondary: "#52565D",
-		inkTertiary: "#7A7F87",
-		border: "#E5E5E2",
-		borderStrong: "#D4D4D0",
-		contrast: 26,
+		surfaceLow: "#F3EEE6",
+		surfaceHigh: "#ECE4D8",
+		ink: "#1D1A16",
+		inkSecondary: "#5C5347",
+		inkTertiary: "#7A7166",
+		border: "#E0D5C7",
+		borderStrong: "#B5A38E",
+		contrast: 64,
 		uiFont: "Inter",
 		codeFont: "Geist Mono",
-		diffAdded: "#1A8F52",
-		diffRemoved: "#C23B33",
-		warning: "#A86A0A",
-		info: "#2E5FB8",
-		skill: "#5B3FA8",
+		diffAdded: "#257F4E",
+		diffRemoved: "#A83E3C",
+		warning: "#8A5A18",
+		info: "#3D5F7E",
+		skill: "#D8A24A",
 		opaqueWindows: true,
 	},
 };
 
 const DEFAULT_SETTINGS: AppSettings = {
-	theme: "dark",
+	theme: "light",
 	bgImage: null,
 	overlayColor: null,
 	blur: false,
 	wallpaperDim: 20,
 	textureOverlay: true,
-	codexTheme: DEFAULT_CODEX_THEME,
+	codexTheme: CODEX_LIGHT_THEME,
 	codexPets: {
 		enabled: false,
 		companion: "alpaca",
@@ -97,15 +97,33 @@ const DEFAULT_SETTINGS: AppSettings = {
 	},
 } as AppSettings & { dynamicTheme?: boolean };
 
+function getDefaultCodexTheme(theme: AppSettings["theme"]): CodexThemeSettings {
+	return theme === "light" ? CODEX_LIGHT_THEME : DEFAULT_CODEX_THEME;
+}
+
+function isLegacyCodexTheme(theme: CodexThemeSettings | undefined): boolean {
+	return (
+		theme?.name === "Drenyra Dark" ||
+		theme?.name === "Drenyra Light" ||
+		theme?.tokens.accent === "#3CE6D8" ||
+		theme?.tokens.accent === "#0A8A7D"
+	);
+}
+
 function withDefaultCodexTheme(settings: AppSettings): AppSettings {
+	const defaultTheme = getDefaultCodexTheme(settings.theme);
+	const persistedTheme = isLegacyCodexTheme(settings.codexTheme)
+		? undefined
+		: settings.codexTheme;
+
 	return {
 		...settings,
 		codexTheme: {
-			...DEFAULT_CODEX_THEME,
-			...settings.codexTheme,
+			...defaultTheme,
+			...persistedTheme,
 			tokens: {
-				...DEFAULT_CODEX_THEME.tokens,
-				...settings.codexTheme?.tokens,
+				...defaultTheme.tokens,
+				...persistedTheme?.tokens,
 			},
 		},
 		codexPets: settings.codexPets ?? {
@@ -113,6 +131,26 @@ function withDefaultCodexTheme(settings: AppSettings): AppSettings {
 			companion: "alpaca",
 		},
 	};
+}
+
+function getInitialSettings(): AppSettings {
+	if (typeof window === "undefined") return DEFAULT_SETTINGS;
+
+	try {
+		const saved = localStorage.getItem("drenyra-settings");
+		if (!saved) return DEFAULT_SETTINGS;
+		const persisted = JSON.parse(saved) as Partial<AppSettings>;
+		return withDefaultCodexTheme({
+			...DEFAULT_SETTINGS,
+			...persisted,
+			codexTheme: persisted.codexTheme,
+		} as AppSettings);
+	} catch (error) {
+		captureError(
+			error instanceof Error ? error : new Error("Failed to load settings"),
+		);
+		return DEFAULT_SETTINGS;
+	}
 }
 
 function applyCodexThemeTokens(codexTheme: CodexThemeSettings): void {
@@ -123,6 +161,8 @@ function applyCodexThemeTokens(codexTheme: CodexThemeSettings): void {
 
 	// Global Theme Context
 	html.dataset.codexTheme = codexTheme.name;
+	html.dataset.ledgerTheme =
+		codexTheme.mode === "light" ? "light" : "black-oled";
 
 	// Core Surfaces
 	html.style.setProperty("--surface", tokens.surface);
@@ -165,7 +205,7 @@ function applyCodexThemeTokens(codexTheme: CodexThemeSettings): void {
 export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
-	const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
+	const [settings, setSettings] = useState<AppSettings>(getInitialSettings);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const themePreference = useUIStore((state) => state.themePreference);
 	const setThemePreference = useUIStore((state) => state.setThemePreference);
@@ -174,29 +214,21 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 	);
 
 	useEffect(() => {
-		if (typeof window === "undefined") return;
-		try {
-			const saved = localStorage.getItem("drenyra-settings");
-			if (saved) {
-				setSettings((prev) =>
-					withDefaultCodexTheme({
-						...prev,
-						...JSON.parse(saved),
-					}),
-				);
-			}
-		} catch (e) {
-			captureError(
-				e instanceof Error ? e : new Error("Failed to load settings"),
-			);
-		} finally {
-			setIsLoaded(true);
-		}
+		setIsLoaded(true);
 	}, []);
 
 	useEffect(() => {
+		if (!isLoaded) return;
 		applyCodexThemeTokens(settings.codexTheme);
-	}, [settings.codexTheme]);
+	}, [isLoaded, settings.codexTheme]);
+
+	useEffect(() => {
+		if (!isLoaded) return;
+		const bridgePreference = THEME_BRIDGE[settings.theme];
+		if (bridgePreference && bridgePreference !== themePreference) {
+			setThemePreference(bridgePreference);
+		}
+	}, [isLoaded, settings.theme, themePreference, setThemePreference]);
 
 	useEffect(() => {
 		if (!isLoaded || typeof window === "undefined") return;
@@ -204,7 +236,20 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 	}, [settings, isLoaded]);
 
 	const updateSettings = (newSettings: Partial<AppSettings>) => {
-		setSettings((prev) => withDefaultCodexTheme({ ...prev, ...newSettings }));
+		setSettings((prev) => {
+			const nextSettings = { ...prev, ...newSettings };
+			const themeChanged =
+				newSettings.theme !== undefined && newSettings.theme !== prev.theme;
+
+			return withDefaultCodexTheme({
+				...nextSettings,
+				codexTheme:
+					newSettings.codexTheme ??
+					(themeChanged
+						? getDefaultCodexTheme(nextSettings.theme)
+						: nextSettings.codexTheme),
+			});
+		});
 
 		if (newSettings.theme) {
 			const bridgePreference = THEME_BRIDGE[newSettings.theme];
