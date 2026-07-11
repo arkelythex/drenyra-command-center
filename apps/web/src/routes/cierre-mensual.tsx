@@ -1,7 +1,15 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { FiscalInspectorProvider } from "@/context/FiscalInspectorContext";
 
 export const Route = createFileRoute("/cierre-mensual")({
-	loader: () => {
-		throw redirect({ to: "/contabilidad/cierre-mensual" });
-	},
+	component: () => (
+		<FiscalInspectorProvider>
+			<CierreMensualPage />
+		</FiscalInspectorProvider>
+	),
 });
+
+const CierreMensualPage = lazyRouteComponent(
+	() => import("../features/cierre-mensual/CierreMensualPage"),
+	"CierreMensualPage",
+);
