@@ -44,7 +44,7 @@ export const SettingsShell = ({
 							strokeWidth={2}
 							className="transition-transform group-hover:-translate-x-0.5"
 						/>
-						<span>Back to app</span>
+						<span>Volver a Drenyra</span>
 					</Link>
 
 					<SettingsDesktopNav
@@ -72,7 +72,7 @@ export const SettingsShell = ({
 								strokeWidth={2}
 								className="transition-transform group-hover:-translate-x-0.5"
 							/>
-							<span>Back to app</span>
+							<span>Volver a Drenyra</span>
 						</Link>
 
 						<PageHeader

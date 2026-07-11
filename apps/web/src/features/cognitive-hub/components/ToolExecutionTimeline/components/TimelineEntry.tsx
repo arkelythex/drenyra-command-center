@@ -1,3 +1,4 @@
+import { createElement } from "react";
 import { cn } from "@/lib/utils";
 import type { CognitiveActivityEntry } from "../../../hooks/cognitive-stream";
 import { getStatusIcon, getStatusStyles } from "../ToolExecutionTimeline.data";
@@ -7,8 +8,6 @@ interface TimelineEntryProps {
 }
 
 export function TimelineEntry({ entry }: TimelineEntryProps) {
-	const StatusIcon = getStatusIcon(entry.status);
-
 	return (
 		<div
 			className={cn(
@@ -16,7 +15,10 @@ export function TimelineEntry({ entry }: TimelineEntryProps) {
 				getStatusStyles(entry.status),
 			)}
 		>
-			<StatusIcon size={14} className="mt-0.5 shrink-0" />
+			{createElement(getStatusIcon(entry.status), {
+				size: 14,
+				className: "mt-0.5 shrink-0",
+			})}
 			<div className="min-w-0">
 				<p className="font-semibold leading-tight">{entry.label}</p>
 				{entry.detail ? (

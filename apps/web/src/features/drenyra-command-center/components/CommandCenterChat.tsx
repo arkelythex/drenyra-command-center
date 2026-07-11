@@ -151,6 +151,38 @@ export function CommandCenterChat({
 
 	// ── Command parser & dispatch ──
 
+	// ── Simulation: detect intent + generate artifact locally ──
+
+	const runSimulation = useCallback(
+		(query: string) => {
+			const simParam = parseSimulationIntent(query);
+			if (!simParam) {
+				appendMessage({
+					id: crypto.randomUUID(),
+					role: "assistant",
+					content:
+						"No pude detectar un escenario de simulación. Probá con:\n- `/simular aumento de 10% en salarios`\n- `¿Qué pasa si subimos las ventas 15%?`\n- `Simulá reducción de 8% en gastos`",
+					timestamp: new Date(),
+				});
+				return;
+			}
+
+			const artifact = generateSimulationArtifact(simParam);
+			const summary = generateSimulationSummary(simParam);
+
+			appendMessage({
+				id: crypto.randomUUID(),
+				role: "assistant",
+				content: summary,
+				timestamp: new Date(),
+				artifacts: [artifact],
+			});
+
+			onContextChange?.({ isStreaming: false, lastArtifact: artifact });
+		},
+		[appendMessage, onContextChange],
+	);
+
 	const handleCommand = useCallback(
 		(content: string) => {
 			const cmdMatch = content.match(/^\/(\w+)\s*(.*)/);
@@ -211,38 +243,6 @@ export function CommandCenterChat({
 			return false;
 		},
 		[appendMessage, clearHistory, handleCreateThread],
-	);
-
-	// ── Simulation: detect intent + generate artifact locally ──
-
-	const runSimulation = useCallback(
-		(query: string) => {
-			const simParam = parseSimulationIntent(query);
-			if (!simParam) {
-				appendMessage({
-					id: crypto.randomUUID(),
-					role: "assistant",
-					content:
-						"No pude detectar un escenario de simulación. Probá con:\n- `/simular aumento de 10% en salarios`\n- `¿Qué pasa si subimos las ventas 15%?`\n- `Simulá reducción de 8% en gastos`",
-					timestamp: new Date(),
-				});
-				return;
-			}
-
-			const artifact = generateSimulationArtifact(simParam);
-			const summary = generateSimulationSummary(simParam);
-
-			appendMessage({
-				id: crypto.randomUUID(),
-				role: "assistant",
-				content: summary,
-				timestamp: new Date(),
-				artifacts: [artifact],
-			});
-
-			onContextChange?.({ isStreaming: false, lastArtifact: artifact });
-		},
-		[appendMessage, onContextChange],
 	);
 
 	const sendMessage = useCallback(

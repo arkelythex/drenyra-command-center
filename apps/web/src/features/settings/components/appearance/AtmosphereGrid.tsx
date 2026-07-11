@@ -25,7 +25,7 @@ export const AtmosphereGrid = () => {
 	): CodexThemeSettings => {
 		if (preference === THEME_ID.LIGHT) return CODEX_LIGHT_THEME;
 		if (preference === THEME_PREFERENCE.SYSTEM) {
-			return { ...currentTheme, mode: "system", name: "Arkelythex System" };
+			return { ...currentTheme, mode: "system", name: "Drenyra Sistema" };
 		}
 		return DEFAULT_CODEX_THEME;
 	};

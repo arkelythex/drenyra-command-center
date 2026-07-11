@@ -473,7 +473,7 @@ export function ThreadDetailPage() {
 
 					{/* Close confirmation dialog */}
 					{showCloseConfirm && (
-						<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+						<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 ">
 							<div className="mx-4 w-full max-w-md rounded-2xl bg-[var(--surface-1)] p-6 shadow-xl">
 								<h2 className="text-base font-semibold text-[var(--text-primary)]">
 									Cerrar thread

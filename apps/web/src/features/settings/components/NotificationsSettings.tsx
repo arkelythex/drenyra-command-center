@@ -1,14 +1,8 @@
+import { createElement } from "react";
 import { Bell, Globe, Mail, ShieldAlert, Zap } from "lucide-react";
 import { useState } from "react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { SurfaceCard } from "@/components/ui/SurfaceCard";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import {
 	SettingSwitch,
@@ -26,43 +20,39 @@ export const NotificationsSettings = () => {
 
 	return (
 		<SettingsShell
-			title="Signal Intelligence"
-			description="Calibrate the flow of operational signals and prevent alert fatigue."
+			title="Notificaciones"
+			description="Calibrá las señales operativas y evitá la fatiga de alertas."
 			icon={Bell}
-			badge="LEVEL 3 INTEL"
+			badge="SEÑALES OPERATIVAS"
 		>
 			<div className="space-y-10">
 				{/* Channel Matrix */}
 				<SettingsSection
-					title="Distribution Matrix"
-					description="Activate strategic channels for neural signal delivery."
+					title="Canales de distribución"
+					description="Activá los canales para recibir señales operativas."
 				>
-					<div
-						className="grid gap-4 md:grid-cols-3"
-						role="radiogroup"
-						aria-label="Canales de notificación"
-					>
+					<div className="grid gap-4 md:grid-cols-3">
 						{[
 							{
 								id: "email",
-								label: "Email Ledger",
-								desc: "Audit summaries & fiscal alerts.",
+								label: "Correo electrónico",
+								desc: "Resúmenes de auditoría y alertas fiscales.",
 								icon: Mail,
 								active: emailEnabled,
 								setter: setEmailEnabled,
 							},
 							{
 								id: "push",
-								label: "Push Pulse",
-								desc: "Real-time UI micro-events.",
+								label: "Notificaciones push",
+								desc: "Eventos operativos en tiempo real.",
 								icon: Zap,
 								active: pushEnabled,
 								setter: setPushEnabled,
 							},
 							{
 								id: "sms",
-								label: "SMS Matrix",
-								desc: "Critical emergency fallback.",
+								label: "SMS",
+								desc: "Canal de respaldo para alertas críticas.",
 								icon: Globe,
 								active: smsEnabled,
 								setter: setSmsEnabled,
@@ -72,8 +62,7 @@ export const NotificationsSettings = () => {
 								type="button"
 								key={channel.id}
 								onClick={() => channel.setter(!channel.active)}
-								role="radio"
-								aria-checked={channel.active}
+								aria-pressed={channel.active}
 								className={cn(
 									"group relative flex flex-col items-start gap-4 rounded-2xl border p-6 text-left transition-all duration-300",
 									channel.active
@@ -89,7 +78,7 @@ export const NotificationsSettings = () => {
 											: "border-[var(--border-default)] bg-[var(--surface-1)] text-[var(--text-tertiary)]",
 									)}
 								>
-									<channel.icon size={18} strokeWidth={2.5} />
+									{createElement(channel.icon, { size: 18, strokeWidth: 2.5 })}
 								</div>
 								<div className="space-y-1">
 									<p className="text-xs font-black uppercase tracking-widest text-[var(--text-primary)]">
@@ -115,32 +104,29 @@ export const NotificationsSettings = () => {
 				<div className="grid gap-10 lg:grid-cols-[1fr_400px]">
 					<div className="space-y-10">
 						<SettingsSection
-							title="Operational Sensitivity"
-							description="Adjust volume and priority to maintain high signal-to-noise ratio."
+							title="Sensibilidad operativa"
+							description="Ajustá volumen y prioridad para mantener señales relevantes."
 						>
 							<SettingsRow
-								title="Intelligence Digest"
-								description="Consolidated summaries for executive oversight."
+								title="Resumen operativo"
+								description="Resúmenes consolidados para seguimiento ejecutivo."
 								action={
-									<Select
+									<select
+										aria-label="Frecuencia del resumen operativo"
+										className="h-9 w-32 rounded-xl border border-[var(--border-default)] bg-[var(--surface-1)] px-3 text-xs font-black uppercase tracking-widest text-[var(--text-primary)]"
 										value={digestFrequency}
-										onValueChange={setDigestFrequency}
+										onChange={(event) => setDigestFrequency(event.target.value)}
 									>
-										<SelectTrigger className="h-9 w-32 rounded-xl bg-[var(--surface-1)] text-xs font-black uppercase tracking-widest">
-											<SelectValue placeholder="Frequency" />
-										</SelectTrigger>
-										<SelectContent>
-											<SelectItem value="realtime">Real-time</SelectItem>
-											<SelectItem value="daily">Daily</SelectItem>
-											<SelectItem value="weekly">Weekly</SelectItem>
-										</SelectContent>
-									</Select>
+										<option value="realtime">Tiempo real</option>
+										<option value="daily">Diaria</option>
+										<option value="weekly">Semanal</option>
+									</select>
 								}
 							/>
 
 							<SettingsRow
-								title="Critical Signal Priority"
-								description="When enabled, suppresses informational noise and prioritizes incidents."
+								title="Prioridad de señales críticas"
+								description="Reduce el ruido informativo y prioriza incidentes."
 								action={
 									<SettingSwitch
 										checked={criticalOnly}
@@ -156,7 +142,7 @@ export const NotificationsSettings = () => {
 					<div className="space-y-6">
 						<div className="flex items-center justify-between px-2">
 							<span className="text-xs font-black uppercase tracking-[0.2em] text-[var(--text-tertiary)]">
-								Signal Previews
+								Vista previa de señales
 							</span>
 							<Bell size={14} className="text-[var(--text-tertiary)]" />
 						</div>
@@ -164,22 +150,22 @@ export const NotificationsSettings = () => {
 						<div className="space-y-3">
 							{[
 								{
-									type: "Info",
-									msg: "Monthly closing ready for audit.",
+									type: "Informativa",
+									msg: "Cierre mensual listo para auditoría.",
 									icon: Mail,
-									color: "text-[var(--info)]",
+									color: "text-[var(--color-info)]",
 								},
 								{
-									type: "Update",
-									msg: "New bank matching pattern detected.",
+									type: "Actualización",
+									msg: "Nuevo patrón de conciliación bancaria detectado.",
 									icon: Zap,
 									color: "text-[var(--accent)]",
 								},
 								{
-									type: "Danger",
-									msg: "SUNAT mismatch detected in SIRE.",
+									type: "Crítica",
+									msg: "Inconsistencia con SUNAT detectada en SIRE.",
 									icon: ShieldAlert,
-									color: "text-[var(--diff-removed)]",
+									color: "text-[var(--color-danger)]",
 								},
 							].map((item, idx) => (
 								<SurfaceCard
@@ -189,14 +175,14 @@ export const NotificationsSettings = () => {
 									className="group relative flex items-start gap-4 rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)]/30 transition-all hover:bg-[var(--surface-2)]/60"
 								>
 									<div className={cn("mt-1", item.color)}>
-										<item.icon size={16} strokeWidth={2.5} />
+										{createElement(item.icon, { size: 16, strokeWidth: 2.5 })}
 									</div>
 									<div>
 										<StatusBadge
 											status={
-												item.type === "Danger"
+												item.type === "Crítica"
 													? "danger"
-													: item.type === "Update"
+													: item.type === "Actualización"
 														? "info"
 														: "neutral"
 											}

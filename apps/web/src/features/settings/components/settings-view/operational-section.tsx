@@ -20,17 +20,17 @@ export function OperationalSettingsSection({
 	return (
 		<SettingsSection
 			title="Preferencias Operativas"
-			description="Controles rapidos para estandarizar flujo de trabajo del equipo contable."
+			description="Controles rápidos para estandarizar el flujo de trabajo del equipo contable."
 		>
 			<SettingsRow
-				title="Cierre mensual automatico"
-				description="Sugiere y marca cierre de periodo cuando no hay movimientos pendientes."
+				title="Cierre mensual automático"
+				description="Sugiere y marca el cierre del período cuando no hay movimientos pendientes."
 				action={
 					<div className="flex justify-end">
 						<SettingSwitch
 							checked={autoClosePeriod}
 							onCheckedChange={onAutoCloseChange}
-							label="Cierre mensual automatico"
+							label="Cierre mensual automático"
 						/>
 					</div>
 				}
@@ -38,7 +38,7 @@ export function OperationalSettingsSection({
 
 			<SettingsRow
 				title="Montos en letras"
-				description="Muestra conversion automatica de importes en letras dentro de plantillas de comprobantes."
+				description="Muestra la conversión automática de importes en letras dentro de plantillas de comprobantes."
 				action={
 					<div className="flex justify-end">
 						<SettingSwitch
