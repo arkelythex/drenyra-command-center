@@ -1,12 +1,24 @@
-status: working-draft
+phase: archived
+completed_at: '2026-07-11'
+verified_at: '2026-07-11'
 created: 2026-07-04
-updated: 2026-07-04
+updated: 2026-07-11
 author: el-gentleman
 execution_mode: ask-on-risk
 pr_count: 2
 estimated_lines: 350
-blocked_by: [drenyra-s1-ai-consolidation]
+blocked_by: []
 blocks: []
+delivery:
+  pr1: completed
+  pr2: pending (CI boundary check + README)
+audit_results:
+  fiscal-memory: domain-pure ✅ (entity + types, no I/O)
+  fiscal-ontology: domain-pure ✅ (pure fiscal types)
+  types: partially cleaned ✅ (removed product-surfaces.ts, product-surface-registry.ts — dead code, no consumers)
+  services: domain-pure ✅ (TaxCalculator, igv-calculator, tax-regime — stateless pure domain services)
 risks:
-  - packages/domain/src/ai/ and packages/domain/src/agents/ serve as domain contracts — removing them may break domain isolation
-  - Domain must stay framework-free — any AI types moved here must avoid framework dependencies
+  - product-surfaces files were dead code (0 consumers), removed safely
+  - remaining types/ (currency.ts, tax-identifier.ts) are domain-pure — kept
+  - CI boundary check (PR2) still pending
+next_recommended: apply-pr2 (CI boundary check + README)

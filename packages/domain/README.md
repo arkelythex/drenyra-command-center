@@ -120,6 +120,34 @@ bun run test         # Ejecutar tests unitarios (Vitest)
 
 ---
 
+## 🧱 Domain Boundary Audit (2026-07-11)
+
+Resultado de la auditoría de boundaries del SDD S4. Cada directorio en `src/` fue clasificado:
+
+| Directorio               | Veredicto           | Acción                                                                      |
+| ------------------------ | ------------------- | --------------------------------------------------------------------------- |
+| `ai/`                    | ✅ Fuera de dominio | Ya removido                                                                 |
+| `agents/`                | ✅ Fuera de dominio | Ya removido                                                                 |
+| `fiscal-agentic-ledger/` | ✅ Fuera de dominio | Ya removido                                                                 |
+| `fiscal-memory/`         | ✅ Domain-pure      | Entidad con validación, sin I/O                                             |
+| `fiscal-ontology/`       | ✅ Domain-pure      | Tipos de ontología fiscal                                                   |
+| `platform/`              | ✅ Fuera de dominio | Ya removido                                                                 |
+| `roi/`                   | ✅ Fuera de dominio | Ya removido                                                                 |
+| `services/`              | ✅ Domain-pure      | Servicios de dominio (cálculos fiscales puros)                              |
+| `types/`                 | ⚠️ Limpiado         | `product-surfaces.ts` y `product-surface-registry.ts` removidos (dead code) |
+
+### Regla de boundary
+
+```
+packages/domain/ NO debe importar de:
+- Cualquier paquete externo (runtime)
+- Capas de infraestructura (DB, HTTP, filesystem)
+- Paquetes de aplicación (@drenyra/application, apps/api)
+- Paquetes de AI/agentes (@drenyra/ai, @drenyra/pi)
+```
+
+---
+
 ## 🔗 Dependencias
 
 - **Runtime**: Ninguna (zero dependencies)

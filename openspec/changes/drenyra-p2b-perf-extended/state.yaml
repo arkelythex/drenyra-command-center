@@ -1,15 +1,12 @@
-change_id: drenyra-p2b-perf-extended
-status: proposal
-phase: proposal
+status: tasks
 created: 2026-07-09
-author: el Gentleman
-delivery_strategy: auto-chain
-chain_strategy: stacked-to-main
-depends_on:
-  - drenyra-p2-performance
-tags:
-  - performance
-  - bundle
-  - react
-  - rendering
-  - profiling
+updated: 2026-07-11
+author: el-gentleman
+execution_mode: auto-chain
+prs: 3
+estimated_lines: 800
+depends_on: drenyra-p2-performance
+risks:
+  - PR2 (bundle splitting) may exceed 400-line budget
+  - Lazy loading may cause flash of loading state
+next_recommended: apply-pr1

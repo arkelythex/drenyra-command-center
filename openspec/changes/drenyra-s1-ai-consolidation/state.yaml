@@ -1,16 +1,27 @@
-status: proposal
+phase: archived
+completed_at: '2026-07-11'
+verified_at: '2026-07-11'
 created: 2026-07-04
-updated: 2026-07-04
+updated: 2026-07-11
 author: el-gentleman
 execution_mode: auto-chain
-pr_count: 5
-estimated_lines: 1800
+pr_count: 0
+estimated_lines: 0
+original_pr_count: 5
+actual_remaining: 0
+note: '3 of 5 target packages already removed naturally before plan execution'
 blocked_by: []
-blocks: [drenyra-s2-core-simplification]
-risks:
-  - Deep dependency entanglement — untangling 5 packages requires careful migration
-  - Mastra integration (@drenyra-orchestrator) has specific API contracts that must not break
-  - platform-core published as external npm package — need to handle publishConfig/consumer migration
-  - agent-memory used by harness depends on platform-core — circular risk during extraction
-  - Go CLI may import from wrong package after reorganization — audit needed
-  - Drenyra Brain API integration may depend on current ai/agent exports
+blocks: [drenyra-s4-domain-boundary-audit (unblocked)]
+audit_results:
+  - status: 'Plan is superseded by natural evolution'
+  - '@drenyra/platform-core': 'already removed before plan execution'
+  - '@drenyra/harness': 'already removed before plan execution'
+  - '@drenyra/agent-memory': 'already removed before plan execution'
+  - '@drenyra/ai/src/agents/': 'API-specific agent implementations (AgentSwarmFactory, invoice agents). Not movable to drenyra-pi — they depend on @drenyra/persistence, @drenyra/infrastructure, Gemini/Grok adapters'
+  - '@drenyra/ai/src/memory/': 'single re-export file, minimal'
+  - '@drenyra/ai/src/governance/': 'PermissionService — API-specific'
+  - '@drenyra/ai/src/control-plane/': '15 files, API-specific (tool-registry, policy-engine, fiscal-policy)'
+  - consumers: "Only 2 consumers of removable modules (judgment-day, memory/session) — both @drenyra/pi doesn't have equivalents"
+  - conclusion: 'No further action needed. Original consolidation target already achieved by natural removal of 3 packages.'
+s4_unblocked: true
+next_recommended: archive

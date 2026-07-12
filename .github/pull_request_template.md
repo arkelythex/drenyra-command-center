@@ -24,6 +24,22 @@
 - [ ] Sin secretos, tokens ni datos personales en el diff
 - [ ] Si hay cambio de contrato/API: actualicé tipos, docs u OpenSpec según corresponda
 
+## Fiscal correctness
+
+<!-- Verificá que este PR no rompa invariantes fiscales -->
+
+- [ ] Reglas fiscales (IGV, detracciones, RUC) no modificadas, o actualizadas con tests
+- [ ] Tests existentes pasan con los cambios
+- [ ] Si aplica: actualicé los cross-stack contracts
+
+## Review path
+
+<!-- Por dónde empezar a revisar este PR -->
+
+## Workload forecast
+
+<!-- ~XXX líneas, ~XX min de review estimado -->
+
 ## OpenSpec / enlaces
 
 <!-- Si el cambio sigue un change en `openspec/changes/`, enlázalo. Issues: Closes # -->

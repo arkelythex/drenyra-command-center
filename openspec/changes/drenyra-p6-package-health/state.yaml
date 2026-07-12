@@ -1,6 +1,8 @@
-status: proposal
+status: applied
 created: 2026-07-07
-author: el Gentleman
-prs: 2
-lines: 300
-blocks: drenyra-s3-api-type-migration
+applied: 2026-07-11
+author: el-gentleman
+actions:
+  - Added sideEffects: false to 6 packages (domain, shared, application, ai, ui, infrastructure)
+  - knip configured and run (found unused exports)
+  - knip.json already has exports: error rule

@@ -133,3 +133,45 @@ jobs:
         run: pip install uv && uv sync --extra dev
       - if: steps.changes.outputs.run == 'true'
         run: uv run ruff check src/ tests/ --select F821,F822,F823
+
+  domain:
+    name: Domain — typecheck + test
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.changes.outputs.run }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Detect domain changes
+        id: changes
+        run: |
+          files=$(git diff --name-only HEAD^ HEAD || git diff --name-only)
+          if echo "$files" | grep -Eq '^(packages/domain/|packages/application/)'; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: oven-sh/setup-bun@v2
+        if: steps.changes.outputs.run == 'true'
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - if: steps.changes.outputs.run == 'true'
+        run: bun install --frozen-lockfile
+      - if: steps.changes.outputs.run == 'true'
+        run: bun run --filter @drenyra/domain typecheck
+      - if: steps.changes.outputs.run == 'true'
+        run: bun run --filter @drenyra/domain test -- --run
+
+  quality-checks:
+    name: Quality — import health + lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - run: bash scripts/ci/check-import-health.sh
