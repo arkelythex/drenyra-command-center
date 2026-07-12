@@ -1,5 +1,15 @@
-status: applied
+status: proposal
 created: 2026-07-02
-applied: 2026-07-11
-notes: Tenant middleware, rate limiter, y .env.example ya existen. Plan mayormente implementado.
+updated: 2026-07-02
 author: el-gentleman
+execution_mode: auto-chain
+pr_count: 3
+estimated_lines: 750
+blocked_by:
+  - B3 (needs Pino logger for audit trail)
+blocks: []
+risks:
+  - Rate limiting may break marketplace webhooks and AI agent calls — add allowlist
+  - Tenant audit may discover unscoped features — prioritize by fiscal criticality
+  - Docker compose exposes DB internally — ensure no external access
+  - Audit trail adds writes to DB — monitor performance impact

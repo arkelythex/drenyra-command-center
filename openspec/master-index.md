@@ -1,7 +1,7 @@
 # Drenyra Transformation — SDD Master Index
 
-**Última actualización:** 2026-07-11
-**Estrategia:** Agentic Paradigm Migration (AM1–AM4) + Backend production readiness + Structural quality + Design System + Cross-stack contracts + Fiscal property testing + Developer experience
+**Última actualización:** 2026-07-05
+**Estrategia:** Agentic Paradigm Migration (AM1–AM4) + Backend production readiness + Structural quality + Design System
 **Review budget:** 400 líneas por PR · **Chained PR strategy:** auto-forecast
 **Artifact store:** openspec
 
@@ -94,16 +94,14 @@ STRUCTURAL (el Gentleman):                                │
 
 ## Full Delivery Summary
 
-| Área            | Plans  | PRs    | Líneas      |
-| --------------- | ------ | ------ | ----------- |
-| Agentic (AM)    | 4 (✅) | 7      | ~1,200      |
-| Frontend (F)    | 6      | 20     | ~7,200      |
-| Backend (B)     | 4      | 13     | ~3,300      |
-| Structural (S)  | 3 (✅) | 8      | ~2,350      |
-| Design Sys (DS) | 5 (✅) | 8      | ~1,600      |
-| Quality (P)     | 6      | 14     | ~3,400      |
-| Cross-Stack (X) | 8      | 16     | ~3,650      |
-| **Total**       | **36** | **86** | **~22,700** |
+| Área       | Plans  | PRs    | Líneas      |
+| ---------- | ------ | ------ | ----------- |
+| Agentic    | 4 (✅) | 7      | ~1,200      |
+| Frontend   | 6      | 20     | ~7,200      |
+| Backend    | 4      | 13     | ~3,300      |
+| Structural | 3 (✅) | 8      | ~2,350      |
+| Design Sys | 5 (✅) | 8      | ~1,600      |
+| **Total**  | **22** | **56** | **~15,650** |
 
 ---
 
@@ -147,20 +145,6 @@ All 4 AM plans applied. 25+ features now accessible through chat/agents. Sidebar
 1. **F3: Agents Window** (equipo UI)
 2. **F4: Accounting Diff + Review Queue** (equipo UI)
 3. **F6: Evidence Vault 2.0** (equipo UI)
-
-### Fase 5: Cross-Stack & Quality (paralelo con Fase 4)
-
-1. **X8: ADRs** — independiente, se puede hacer en cualquier momento
-2. **X7: Developer Experience** — quick win, independiente
-3. **X2: Property-Based Fiscal Testing** — testing profundo del dominio fiscal
-4. **X1: Cross-Stack Contracts** — después de S3, S4
-
-### Fase 6: Excellence Gates
-
-1. **X4: Import Health** — después de cambios estructurales
-2. **X3: Provider Architecture** — después de FE-RESET
-3. **X5: Benchmark CI** — después de P4 (CI/CD)
-4. **X6: Supply Chain Security** — después de B4 (Security)
 
 ---
 
@@ -215,19 +199,6 @@ All 4 AM plans applied. 25+ features now accessible through chat/agents. Sidebar
 | DS3  | `openspec/changes/drenyra-vocabulary/`         | `proposal.md` |
 | DS4  | `openspec/changes/drenyra-component-states/`   | `proposal.md` |
 | DS5  | `openspec/changes/drenyra-three-panel-layout/` | `proposal.md` |
-
-### Cross-Stack (New — Julio 2026)
-
-| Plan | Change dir                                             | Proposal      |
-| ---- | ------------------------------------------------------ | ------------- |
-| X1   | `openspec/changes/drenyra-x1-cross-stack-contracts/`   | `proposal.md` |
-| X2   | `openspec/changes/drenyra-x2-fiscal-property-testing/` | `proposal.md` |
-| X3   | `openspec/changes/drenyra-x3-provider-architecture/`   | `proposal.md` |
-| X4   | `openspec/changes/drenyra-x4-import-health/`           | `proposal.md` |
-| X5   | `openspec/changes/drenyra-x5-benchmark-ci/`            | `proposal.md` |
-| X6   | `openspec/changes/drenyra-x6-supply-chain-security/`   | `proposal.md` |
-| X7   | `openspec/changes/drenyra-x7-developer-experience/`    | `proposal.md` |
-| X8   | `openspec/changes/drenyra-x8-architecture-decisions/`  | `proposal.md` |
 
 ---
 

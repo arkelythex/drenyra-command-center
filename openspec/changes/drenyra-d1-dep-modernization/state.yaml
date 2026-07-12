@@ -1,12 +1,15 @@
-status: applied
+change_id: drenyra-d1-dep-modernization
+status: proposal
+phase: proposal
 created: 2026-07-09
-applied: 2026-07-11
-author: el-gentleman
-actions:
-  - PR1: Dependency audit report created at reports/dependency-audit-2026-07.md
-  - PR5: golangci-lint config verified (exists at apps/cli/.golangci.yml)
-  - knip 6.24.0 available globally
-pending:
-  - PR2: Drizzle ORM 0.45 → 1.0 RC migration (breaking, ~400 lines)
-  - PR3: AI SDK v6 → v7 migration (breaking, ~300 lines)
-  - PR4: Minor updates (Biome, Tailwind, Vitest)
+author: el Gentleman
+delivery_strategy: auto-chain
+chain_strategy: stacked-to-main
+depends_on:
+  - drenyra-p5-code-quality
+  - drenyra-p6-package-health
+tags:
+  - dependencies
+  - updates
+  - security
+  - modernization

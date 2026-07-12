@@ -264,70 +264,10 @@ plans:
       est_lines: 400
       status: proposal
 
-      frontend-reset:
-        FE-RESET:
-          name: Frontend Command Center Reset
-          dir: openspec/changes/drenyra-frontend-command-center-reset
-          prs: 7
-          est_lines: 4200
-          status: planning
-
-    cross-stack:
-      X1:
-        name: Cross-Stack Contract Testing & Truth Consistency
-        dir: openspec/changes/drenyra-x1-cross-stack-contracts
-        prs: 3
-        est_lines: 800
-        status: proposal
-      X2:
-        name: Property-Based Fiscal Testing
-        dir: openspec/changes/drenyra-x2-fiscal-property-testing
-        prs: 2
-        est_lines: 600
-        status: proposal
-
-    frontend-quality:
-      X3:
-        name: Frontend Provider/Context Architecture
-        dir: openspec/changes/drenyra-x3-provider-architecture
-        prs: 2
-        est_lines: 500
-        status: proposal
-      X4:
-        name: Import Health & Dead Code Elimination
-        dir: openspec/changes/drenyra-x4-import-health
-        prs: 2
-        est_lines: 400
-        status: proposal
-
-    performance-ci:
-      X5:
-        name: Performance Benchmarking & Regression Detection
-        dir: openspec/changes/drenyra-x5-benchmark-ci
-        prs: 2
-        est_lines: 500
-        status: proposal
-
-    security:
-      X6:
-        name: Supply Chain Security & SBOM
-        dir: openspec/changes/drenyra-x6-supply-chain-security
-        prs: 2
-        est_lines: 350
-        status: proposal
-
-    developer-experience:
-      X7:
-        name: Developer Experience & Onboarding
-        dir: openspec/changes/drenyra-x7-developer-experience
-        prs: 2
-        est_lines: 300
-        status: proposal
-
-    architecture-decisions:
-      X8:
-        name: Architecture Decision Records (ADRs)
-        dir: openspec/changes/drenyra-x8-architecture-decisions
-        prs: 1
-        est_lines: 200
-        status: proposal
+  frontend-reset:
+    FE-RESET:
+      name: Frontend Command Center Reset
+      dir: openspec/changes/drenyra-frontend-command-center-reset
+      prs: 7
+      est_lines: 4200
+      status: planning

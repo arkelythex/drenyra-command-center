@@ -1,9 +1,15 @@
-phase: archived
-completed_at: '2026-07-11'
 status: implemented
-verified: true
-evidence:
-  - globalErrorHandler in apps/api/src/shared/plugins/error-handler.ts
-  - requestLogger in app-core middleware chain
 created: 2026-07-02
-updated: 2026-07-11
+updated: 2026-07-04
+author: el-gentleman
+execution_mode: auto-chain
+pr_count: 0
+estimated_lines: 0
+blocked_by: []
+blocks:
+  - B4 (needs error handler for rate limit responses)
+risks:
+  - Global onError may swallow business errors — distinguish 4xx from 5xx
+  - Pino needs production transport config
+  - Health checks testing external deps need aggressive timeouts (2s)
+  - In-memory metrics lost on restart — fine for MVP

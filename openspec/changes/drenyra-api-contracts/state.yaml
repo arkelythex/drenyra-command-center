@@ -1,14 +1,13 @@
-phase: archived
-completed_at: '2026-07-11'
+status: proposal
 created: 2026-07-02
+updated: 2026-07-02
 author: el-gentleman
 execution_mode: auto-chain
-prs: 3
+pr_count: 3
 estimated_lines: 850
-delivery:
-  pr1: verified — api-response.ts, error-codes.ts, cors.ts exist and are used by 134 feature files
-  pr2: verified — type exports exist in packages/application/src/features/*/types.ts (14 features)
-  pr3: pending — OpenAPI tags verification (low priority, not blocking)
+blocked_by: []
+blocks: []
 risks:
-  - PR3 (OpenAPI tags) deferred — Swagger UI coverage may be incomplete but doesn't block frontend
-next_recommended: archive
+  - Response envelope change may break legacy clients
+  - Some features export types from Drizzle schemas — need DTO separation
+  - Frontend may import types from non-canonical paths — audit before moving

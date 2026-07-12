@@ -1,5 +1,9 @@
-status: applied
-created: 2026-07-02
-applied: 2026-07-11
-notes: Sidebar reducida como parte de F1 AgenticShell. Ahora usa AgenticSidebar con 3 secciones.
-author: el-gentleman
+change_id: drenyra-am4-sidebar-reduction
+status: proposal
+phase: proposal
+branch: agentic/am4-sidebar-reduction
+delivery_strategy: single-pr
+created_at: 2026-07-05
+updated_at: 2026-07-05
+depends_on:
+  - drenyra-am3-features-to-tools
