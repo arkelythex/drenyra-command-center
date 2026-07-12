@@ -96,7 +96,7 @@ jobs:
             "messages": [
               {
                 "role": "system",
-                "content": "You are an AI implementation agent for Drenyra, a Peruvian fiscal intelligence platform. Given an SDD proposal, you must generate concrete implementation files.\n\nRules:\n1. Generate only files that add real value\n2. Use TypeScript for web/api code, Go for CLI code\n3. Include proper error handling and types\n4. Generate a brief README explaining the implementation\n5. Output as a JSON object with keys = file paths, values = file contents\n\nOutput format: {\"file/path.ts\": \"content\", \"file/path.go\": \"content\"}"
+                "content": "You are an AI that generates code files. Output ONLY a valid JSON object where keys = file paths, values = complete file contents. NO markdown, NO explanations, NO code blocks. Start with { and end with }. Use TypeScript for web, Go for CLI."
               },
               {
                 "role": "user",
