@@ -72,9 +72,9 @@
     "./xsd/xsd-validator": "./src/xsd/xsd-validator.ts"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^3.0.44",
-    "@ai-sdk/google": "^3.0.29",
-    "@ai-sdk/openai": "^3.0.53",
+    "@ai-sdk/anthropic": "^4.0.12",
+    "@ai-sdk/google": "^4.0.12",
+    "@ai-sdk/openai": "^4.0.11",
     "@aws-sdk/client-s3": "^3.0.0",
     "@aws-sdk/s3-request-presigner": "^3.0.0",
     "@google/generative-ai": "^0.24.1",
