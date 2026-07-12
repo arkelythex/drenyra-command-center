@@ -8,2745 +8,2860 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as AgentsIndexRouteImport } from "./routes/agents/index";
-import { Route as ApprovalsRouteImport } from "./routes/approvals";
-import { Route as AssetsRouteImport } from "./routes/assets";
-import { Route as AuditRouteImport } from "./routes/audit";
-import { Route as AuthRouteImport } from "./routes/auth";
-import { Route as AutomationsRouteImport } from "./routes/automations";
-import { Route as BankingRouteImport } from "./routes/banking";
-import { Route as BillsRouteImport } from "./routes/bills";
-import { Route as CashflowRouteImport } from "./routes/cashflow";
-import { Route as ChatRouteImport } from "./routes/chat";
-import { Route as CierreMensualRouteImport } from "./routes/cierre-mensual";
-import { Route as CompareRouteImport } from "./routes/compare";
-import { Route as ComplianceRouteImport } from "./routes/compliance";
-import { Route as ConfiguracionRouteImport } from "./routes/configuracion";
-import { Route as ConfiguracionAppearanceRouteImport } from "./routes/configuracion/appearance";
-import { Route as ConfiguracionAutomationsRouteImport } from "./routes/configuracion/automations";
-import { Route as ConfiguracionBillingRouteImport } from "./routes/configuracion/billing";
-import { Route as ConfiguracionCompareRouteImport } from "./routes/configuracion/compare";
-import { Route as ConfiguracionConnectionsRouteImport } from "./routes/configuracion/connections";
-import { Route as ConfiguracionIndexRouteImport } from "./routes/configuracion/index";
-import { Route as ConfiguracionIntegrationsRouteImport } from "./routes/configuracion/integrations";
-import { Route as ConfiguracionKeyboardShortcutsRouteImport } from "./routes/configuracion/keyboard-shortcuts";
-import { Route as ConfiguracionNotificationsRouteImport } from "./routes/configuracion/notifications";
-import { Route as ConfiguracionOrganizationRouteImport } from "./routes/configuracion/organization";
-import { Route as ConfiguracionPluginsRouteImport } from "./routes/configuracion/plugins";
-import { Route as ConfiguracionProductSurfacesRouteImport } from "./routes/configuracion/product-surfaces";
-import { Route as ConfiguracionProfileRouteImport } from "./routes/configuracion/profile";
-import { Route as ConfiguracionSecurityRouteImport } from "./routes/configuracion/security";
-import { Route as ConfiguracionToolPermissionsRouteImport } from "./routes/configuracion/tool-permissions";
-import { Route as ConnectionsRouteImport } from "./routes/connections";
-import { Route as ContabilidadAccountingPrRouteImport } from "./routes/contabilidad/accounting-pr";
-import { Route as ContabilidadAssetsRouteImport } from "./routes/contabilidad/assets";
-import { Route as ContabilidadCierreMensualRouteImport } from "./routes/contabilidad/cierre-mensual";
-import { Route as ContabilidadFinancialsRouteImport } from "./routes/contabilidad/financials";
-import { Route as ContabilidadLedgerRouteImport } from "./routes/contabilidad/ledger";
-import { Route as ContabilidadReportsRouteImport } from "./routes/contabilidad/reports";
-import { Route as CreditNotesRouteImport } from "./routes/credit-notes";
-import { Route as CumplimientoApprovalsRouteImport } from "./routes/cumplimiento/approvals";
-import { Route as CumplimientoAuditRouteImport } from "./routes/cumplimiento/audit";
-import { Route as CumplimientoComplianceRouteImport } from "./routes/cumplimiento/compliance";
-import { Route as CumplimientoExpedientesRouteImport } from "./routes/cumplimiento/expedientes";
-import { Route as CumplimientoReviewRouteImport } from "./routes/cumplimiento/review";
-import { Route as CumplimientoSireDiffRouteImport } from "./routes/cumplimiento/sire-diff";
-import { Route as CumplimientoSunatDashboardRouteImport } from "./routes/cumplimiento/sunat-dashboard";
-import { Route as CumplimientoTaxationRouteImport } from "./routes/cumplimiento/taxation";
-import { Route as CustomersRouteImport } from "./routes/customers";
-import { Route as DashboardRouteImport } from "./routes/dashboard";
-import { Route as DebitNotesRouteImport } from "./routes/debit-notes";
-import { Route as DiffsIndexRouteImport } from "./routes/diffs/index";
-import { Route as DocumentsRouteImport } from "./routes/documents";
-import { Route as DrenyraRouteImport } from "./routes/drenyra";
-import { Route as DrenyraThreadIdRouteImport } from "./routes/drenyra/$threadId";
-import { Route as DrenyraAutomatizacionesRouteImport } from "./routes/drenyra/automatizaciones";
-import { Route as DrenyraCaseThreadIdRouteImport } from "./routes/drenyra/case.$threadId";
-import { Route as DrenyraControlTowerRouteImport } from "./routes/drenyra/control-tower";
-import { Route as DrenyraHerramientasRouteImport } from "./routes/drenyra/herramientas";
-import { Route as DrenyraHubRouteImport } from "./routes/drenyra/hub";
-import { Route as DrenyraIndexRouteImport } from "./routes/drenyra/index";
-import { Route as DrenyraObservabilityRouteImport } from "./routes/drenyra/observability";
-import { Route as DrenyraSkillsRouteImport } from "./routes/drenyra/skills";
-import { Route as EconomicGroupsGroupIdRouteImport } from "./routes/economic-groups.$groupId";
-import { Route as EntitiesRouteImport } from "./routes/entities";
-import { Route as EvidenceRouteImport } from "./routes/evidence";
-import { Route as EvidenceIdRouteImport } from "./routes/evidence/$id";
-import { Route as ExpedientesRouteImport } from "./routes/expedientes";
-import { Route as FacturacionCreditNotesRouteImport } from "./routes/facturacion/credit-notes";
-import { Route as FacturacionDebitNotesRouteImport } from "./routes/facturacion/debit-notes";
-import { Route as FacturacionInvoicesRouteImport } from "./routes/facturacion/invoices";
-import { Route as FinancialsRouteImport } from "./routes/financials";
-import { Route as FirmRouteImport } from "./routes/firm";
-import { Route as FirmClientsRouteImport } from "./routes/firm/clients";
-import { Route as FirmClientsIdRouteImport } from "./routes/firm/clients.$id";
-import { Route as FirmIndexRouteImport } from "./routes/firm/index";
-import { Route as ForgotPasswordRouteImport } from "./routes/forgot-password";
-import { Route as InboxRouteImport } from "./routes/inbox";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as InteligenciaRouteImport } from "./routes/inteligencia";
-import { Route as InventoryRouteImport } from "./routes/inventory";
-import { Route as InvoicesRouteImport } from "./routes/invoices";
-import { Route as LedgerRouteImport } from "./routes/ledger";
-import { Route as LoginRouteImport } from "./routes/login";
-import { Route as MobileSummaryRouteImport } from "./routes/mobile-summary";
-import { Route as NeuralGridRouteImport } from "./routes/neural-grid";
-import { Route as OnboardingRouteImport } from "./routes/onboarding";
-import { Route as OnboardingDemosRouteImport } from "./routes/onboarding.demos";
-import { Route as OperacionesCustomersRouteImport } from "./routes/operaciones/customers";
-import { Route as OperacionesDocumentsRouteImport } from "./routes/operaciones/documents";
-import { Route as OperacionesEconomicGroupsGroupIdRouteImport } from "./routes/operaciones/economic-groups.$groupId";
-import { Route as OperacionesEntitiesRouteImport } from "./routes/operaciones/entities";
-import { Route as OperacionesInboxRouteImport } from "./routes/operaciones/inbox";
-import { Route as OperacionesInventoryRouteImport } from "./routes/operaciones/inventory";
-import { Route as OperacionesPayrollRouteImport } from "./routes/operaciones/payroll";
-import { Route as OperacionesProductsRouteImport } from "./routes/operaciones/products";
-import { Route as OperacionesScannerRouteImport } from "./routes/operaciones/scanner";
-import { Route as OperacionesVendorsRouteImport } from "./routes/operaciones/vendors";
-import { Route as PayrollRouteImport } from "./routes/payroll";
-import { Route as PeriodCloseRouteImport } from "./routes/period-close";
-import { Route as PlaygroundRouteImport } from "./routes/playground";
-import { Route as PluginsRouteImport } from "./routes/plugins";
-import { Route as PopoutThreadIdRouteImport } from "./routes/popout.$threadId";
-import { Route as ProductSurfacesRouteImport } from "./routes/product-surfaces";
-import { Route as ProductsRouteImport } from "./routes/products";
-import { Route as ProfileRouteImport } from "./routes/profile";
-import { Route as ReconciliationsRouteImport } from "./routes/reconciliations";
-import { Route as ReportsRouteImport } from "./routes/reports";
-import { Route as ResetPasswordRouteImport } from "./routes/reset-password";
-import { Route as ReviewRouteImport } from "./routes/review";
-import { Route as ReviewQueueRouteImport } from "./routes/review-queue";
-import { Route as ScannerRouteImport } from "./routes/scanner";
-import { Route as SettingsRouteImport } from "./routes/settings";
-import { Route as SignupRouteImport } from "./routes/signup";
-import { Route as SkillsRouteImport } from "./routes/skills";
-import { Route as TaxationRouteImport } from "./routes/taxation";
-import { Route as TesoreriaBankingRouteImport } from "./routes/tesoreria/banking";
-import { Route as TesoreriaBillsRouteImport } from "./routes/tesoreria/bills";
-import { Route as TesoreriaCashflowRouteImport } from "./routes/tesoreria/cashflow";
-import { Route as TesoreriaReconciliationsRouteImport } from "./routes/tesoreria/reconciliations";
-import { Route as ThreadsThreadIdRouteImport } from "./routes/threads/$threadId";
-import { Route as ThreadsIndexRouteImport } from "./routes/threads/index";
-import { Route as VendorsRouteImport } from "./routes/vendors";
-import { Route as VerifyEmailRouteImport } from "./routes/verify-email";
-import { Route as WorkspaceComplianceRouteImport } from "./routes/workspace/compliance";
-import { Route as WorkspaceFinanceRouteImport } from "./routes/workspace/finance";
-import { Route as WorkspaceIndexRouteImport } from "./routes/workspace/index";
-import { Route as WorkspaceOperationsRouteImport } from "./routes/workspace/operations";
-import { Route as WorkspaceSystemAdminRouteImport } from "./routes/workspace/system-admin";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
+import { Route as VendorsRouteImport } from './routes/vendors'
+import { Route as TaxationRouteImport } from './routes/taxation'
+import { Route as SkillsRouteImport } from './routes/skills'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ScannerRouteImport } from './routes/scanner'
+import { Route as ReviewQueueRouteImport } from './routes/review-queue'
+import { Route as ReviewRouteImport } from './routes/review'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as ReconciliationsRouteImport } from './routes/reconciliations'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as ProductSurfacesRouteImport } from './routes/product-surfaces'
+import { Route as PluginsRouteImport } from './routes/plugins'
+import { Route as PlaygroundRouteImport } from './routes/playground'
+import { Route as PeriodCloseRouteImport } from './routes/period-close'
+import { Route as PayrollRouteImport } from './routes/payroll'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as NeuralGridRouteImport } from './routes/neural-grid'
+import { Route as MobileSummaryRouteImport } from './routes/mobile-summary'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as LedgerRouteImport } from './routes/ledger'
+import { Route as InvoicesRouteImport } from './routes/invoices'
+import { Route as InventoryRouteImport } from './routes/inventory'
+import { Route as InteligenciaRouteImport } from './routes/inteligencia'
+import { Route as InboxRouteImport } from './routes/inbox'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as FiscalChatRouteImport } from './routes/fiscal-chat'
+import { Route as FirmRouteImport } from './routes/firm'
+import { Route as FinancialsRouteImport } from './routes/financials'
+import { Route as ExpedientesRouteImport } from './routes/expedientes'
+import { Route as EvidenceRouteImport } from './routes/evidence'
+import { Route as EntitiesRouteImport } from './routes/entities'
+import { Route as DrenyraRouteImport } from './routes/drenyra'
+import { Route as DocumentsRouteImport } from './routes/documents'
+import { Route as DebitNotesRouteImport } from './routes/debit-notes'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as CustomersRouteImport } from './routes/customers'
+import { Route as CreditNotesRouteImport } from './routes/credit-notes'
+import { Route as ConsultaRouteImport } from './routes/consulta'
+import { Route as ConnectionsRouteImport } from './routes/connections'
+import { Route as ConfiguracionRouteImport } from './routes/configuracion'
+import { Route as ComplianceRouteImport } from './routes/compliance'
+import { Route as CompareRouteImport } from './routes/compare'
+import { Route as CierreMensualRouteImport } from './routes/cierre-mensual'
+import { Route as ChatRouteImport } from './routes/chat'
+import { Route as CashflowRouteImport } from './routes/cashflow'
+import { Route as BillsRouteImport } from './routes/bills'
+import { Route as BankingRouteImport } from './routes/banking'
+import { Route as AutomationsRouteImport } from './routes/automations'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuditRouteImport } from './routes/audit'
+import { Route as AssetsRouteImport } from './routes/assets'
+import { Route as ApprovalsRouteImport } from './routes/approvals'
+import { Route as ApprovalRouteImport } from './routes/approval'
+import { Route as AccountantRouteImport } from './routes/accountant'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as WorkspaceIndexRouteImport } from './routes/workspace/index'
+import { Route as ThreadsIndexRouteImport } from './routes/threads/index'
+import { Route as FirmIndexRouteImport } from './routes/firm/index'
+import { Route as DrenyraIndexRouteImport } from './routes/drenyra/index'
+import { Route as DiffsIndexRouteImport } from './routes/diffs/index'
+import { Route as ConfiguracionIndexRouteImport } from './routes/configuracion/index'
+import { Route as AgentsIndexRouteImport } from './routes/agents/index'
+import { Route as WorkspaceSystemAdminRouteImport } from './routes/workspace/system-admin'
+import { Route as WorkspaceOperationsRouteImport } from './routes/workspace/operations'
+import { Route as WorkspaceFinanceRouteImport } from './routes/workspace/finance'
+import { Route as WorkspaceComplianceRouteImport } from './routes/workspace/compliance'
+import { Route as ThreadsThreadIdRouteImport } from './routes/threads/$threadId'
+import { Route as TesoreriaReconciliationsRouteImport } from './routes/tesoreria/reconciliations'
+import { Route as TesoreriaCashflowRouteImport } from './routes/tesoreria/cashflow'
+import { Route as TesoreriaBillsRouteImport } from './routes/tesoreria/bills'
+import { Route as TesoreriaBankingRouteImport } from './routes/tesoreria/banking'
+import { Route as PopoutThreadIdRouteImport } from './routes/popout.$threadId'
+import { Route as OperacionesVendorsRouteImport } from './routes/operaciones/vendors'
+import { Route as OperacionesScannerRouteImport } from './routes/operaciones/scanner'
+import { Route as OperacionesProductsRouteImport } from './routes/operaciones/products'
+import { Route as OperacionesPayrollRouteImport } from './routes/operaciones/payroll'
+import { Route as OperacionesInventoryRouteImport } from './routes/operaciones/inventory'
+import { Route as OperacionesInboxRouteImport } from './routes/operaciones/inbox'
+import { Route as OperacionesEntitiesRouteImport } from './routes/operaciones/entities'
+import { Route as OperacionesDocumentsRouteImport } from './routes/operaciones/documents'
+import { Route as OperacionesCustomersRouteImport } from './routes/operaciones/customers'
+import { Route as OnboardingDemosRouteImport } from './routes/onboarding.demos'
+import { Route as FirmClientsRouteImport } from './routes/firm/clients'
+import { Route as FacturacionInvoicesRouteImport } from './routes/facturacion/invoices'
+import { Route as FacturacionDebitNotesRouteImport } from './routes/facturacion/debit-notes'
+import { Route as FacturacionCreditNotesRouteImport } from './routes/facturacion/credit-notes'
+import { Route as EvidenceIdRouteImport } from './routes/evidence/$id'
+import { Route as EconomicGroupsGroupIdRouteImport } from './routes/economic-groups.$groupId'
+import { Route as DrenyraSkillsRouteImport } from './routes/drenyra/skills'
+import { Route as DrenyraObservabilityRouteImport } from './routes/drenyra/observability'
+import { Route as DrenyraHubRouteImport } from './routes/drenyra/hub'
+import { Route as DrenyraHerramientasRouteImport } from './routes/drenyra/herramientas'
+import { Route as DrenyraControlTowerRouteImport } from './routes/drenyra/control-tower'
+import { Route as DrenyraAutomatizacionesRouteImport } from './routes/drenyra/automatizaciones'
+import { Route as DrenyraThreadIdRouteImport } from './routes/drenyra/$threadId'
+import { Route as CumplimientoTaxationRouteImport } from './routes/cumplimiento/taxation'
+import { Route as CumplimientoSunatDashboardRouteImport } from './routes/cumplimiento/sunat-dashboard'
+import { Route as CumplimientoSireDiffRouteImport } from './routes/cumplimiento/sire-diff'
+import { Route as CumplimientoReviewRouteImport } from './routes/cumplimiento/review'
+import { Route as CumplimientoExpedientesRouteImport } from './routes/cumplimiento/expedientes'
+import { Route as CumplimientoComplianceRouteImport } from './routes/cumplimiento/compliance'
+import { Route as CumplimientoAuditRouteImport } from './routes/cumplimiento/audit'
+import { Route as CumplimientoApprovalsRouteImport } from './routes/cumplimiento/approvals'
+import { Route as ContabilidadReportsRouteImport } from './routes/contabilidad/reports'
+import { Route as ContabilidadLedgerRouteImport } from './routes/contabilidad/ledger'
+import { Route as ContabilidadFinancialsRouteImport } from './routes/contabilidad/financials'
+import { Route as ContabilidadCierreMensualRouteImport } from './routes/contabilidad/cierre-mensual'
+import { Route as ContabilidadAssetsRouteImport } from './routes/contabilidad/assets'
+import { Route as ContabilidadAccountingPrRouteImport } from './routes/contabilidad/accounting-pr'
+import { Route as ConfiguracionToolPermissionsRouteImport } from './routes/configuracion/tool-permissions'
+import { Route as ConfiguracionSecurityRouteImport } from './routes/configuracion/security'
+import { Route as ConfiguracionProfileRouteImport } from './routes/configuracion/profile'
+import { Route as ConfiguracionProductSurfacesRouteImport } from './routes/configuracion/product-surfaces'
+import { Route as ConfiguracionPluginsRouteImport } from './routes/configuracion/plugins'
+import { Route as ConfiguracionOrganizationRouteImport } from './routes/configuracion/organization'
+import { Route as ConfiguracionNotificationsRouteImport } from './routes/configuracion/notifications'
+import { Route as ConfiguracionKeyboardShortcutsRouteImport } from './routes/configuracion/keyboard-shortcuts'
+import { Route as ConfiguracionIntegrationsRouteImport } from './routes/configuracion/integrations'
+import { Route as ConfiguracionConnectionsRouteImport } from './routes/configuracion/connections'
+import { Route as ConfiguracionCompareRouteImport } from './routes/configuracion/compare'
+import { Route as ConfiguracionBillingRouteImport } from './routes/configuracion/billing'
+import { Route as ConfiguracionAutomationsRouteImport } from './routes/configuracion/automations'
+import { Route as ConfiguracionAppearanceRouteImport } from './routes/configuracion/appearance'
+import { Route as ApprovalIdRouteImport } from './routes/approval.$id'
+import { Route as OperacionesEconomicGroupsGroupIdRouteImport } from './routes/operaciones/economic-groups.$groupId'
+import { Route as FirmClientsIdRouteImport } from './routes/firm/clients.$id'
+import { Route as DrenyraCaseThreadIdRouteImport } from './routes/drenyra/case.$threadId'
 
 const VerifyEmailRoute = VerifyEmailRouteImport.update({
-	id: "/verify-email",
-	path: "/verify-email",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VendorsRoute = VendorsRouteImport.update({
-	id: "/vendors",
-	path: "/vendors",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/vendors',
+  path: '/vendors',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TaxationRoute = TaxationRouteImport.update({
-	id: "/taxation",
-	path: "/taxation",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/taxation',
+  path: '/taxation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SkillsRoute = SkillsRouteImport.update({
-	id: "/skills",
-	path: "/skills",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
-	id: "/signup",
-	path: "/signup",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
-	id: "/settings",
-	path: "/settings",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScannerRoute = ScannerRouteImport.update({
-	id: "/scanner",
-	path: "/scanner",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/scanner',
+  path: '/scanner',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReviewQueueRoute = ReviewQueueRouteImport.update({
-	id: "/review-queue",
-	path: "/review-queue",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/review-queue',
+  path: '/review-queue',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReviewRoute = ReviewRouteImport.update({
-	id: "/review",
-	path: "/review",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
-	id: "/reset-password",
-	path: "/reset-password",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReportsRoute = ReportsRouteImport.update({
-	id: "/reports",
-	path: "/reports",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReconciliationsRoute = ReconciliationsRouteImport.update({
-	id: "/reconciliations",
-	path: "/reconciliations",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/reconciliations',
+  path: '/reconciliations',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfileRoute = ProfileRouteImport.update({
-	id: "/profile",
-	path: "/profile",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsRoute = ProductsRouteImport.update({
-	id: "/products",
-	path: "/products",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductSurfacesRoute = ProductSurfacesRouteImport.update({
-	id: "/product-surfaces",
-	path: "/product-surfaces",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/product-surfaces',
+  path: '/product-surfaces',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PluginsRoute = PluginsRouteImport.update({
-	id: "/plugins",
-	path: "/plugins",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/plugins',
+  path: '/plugins',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlaygroundRoute = PlaygroundRouteImport.update({
-	id: "/playground",
-	path: "/playground",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/playground',
+  path: '/playground',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PeriodCloseRoute = PeriodCloseRouteImport.update({
-	id: "/period-close",
-	path: "/period-close",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/period-close',
+  path: '/period-close',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PayrollRoute = PayrollRouteImport.update({
-	id: "/payroll",
-	path: "/payroll",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/payroll',
+  path: '/payroll',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
-	id: "/onboarding",
-	path: "/onboarding",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NeuralGridRoute = NeuralGridRouteImport.update({
-	id: "/neural-grid",
-	path: "/neural-grid",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/neural-grid',
+  path: '/neural-grid',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MobileSummaryRoute = MobileSummaryRouteImport.update({
-	id: "/mobile-summary",
-	path: "/mobile-summary",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/mobile-summary',
+  path: '/mobile-summary',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
-	id: "/login",
-	path: "/login",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LedgerRoute = LedgerRouteImport.update({
-	id: "/ledger",
-	path: "/ledger",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/ledger',
+  path: '/ledger',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InvoicesRoute = InvoicesRouteImport.update({
-	id: "/invoices",
-	path: "/invoices",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InventoryRoute = InventoryRouteImport.update({
-	id: "/inventory",
-	path: "/inventory",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/inventory',
+  path: '/inventory',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InteligenciaRoute = InteligenciaRouteImport.update({
-	id: "/inteligencia",
-	path: "/inteligencia",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/inteligencia',
+  path: '/inteligencia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InboxRoute = InboxRouteImport.update({
-	id: "/inbox",
-	path: "/inbox",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/inbox',
+  path: '/inbox',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-	id: "/forgot-password",
-	path: "/forgot-password",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FiscalChatRoute = FiscalChatRouteImport.update({
+  id: '/fiscal-chat',
+  path: '/fiscal-chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FirmRoute = FirmRouteImport.update({
-	id: "/firm",
-	path: "/firm",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/firm',
+  path: '/firm',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FinancialsRoute = FinancialsRouteImport.update({
-	id: "/financials",
-	path: "/financials",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/financials',
+  path: '/financials',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExpedientesRoute = ExpedientesRouteImport.update({
-	id: "/expedientes",
-	path: "/expedientes",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/expedientes',
+  path: '/expedientes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EvidenceRoute = EvidenceRouteImport.update({
-	id: "/evidence",
-	path: "/evidence",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/evidence',
+  path: '/evidence',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EntitiesRoute = EntitiesRouteImport.update({
-	id: "/entities",
-	path: "/entities",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/entities',
+  path: '/entities',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DrenyraRoute = DrenyraRouteImport.update({
-	id: "/drenyra",
-	path: "/drenyra",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/drenyra',
+  path: '/drenyra',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DocumentsRoute = DocumentsRouteImport.update({
-	id: "/documents",
-	path: "/documents",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DebitNotesRoute = DebitNotesRouteImport.update({
-	id: "/debit-notes",
-	path: "/debit-notes",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/debit-notes',
+  path: '/debit-notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
-	id: "/dashboard",
-	path: "/dashboard",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CustomersRoute = CustomersRouteImport.update({
-	id: "/customers",
-	path: "/customers",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/customers',
+  path: '/customers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CreditNotesRoute = CreditNotesRouteImport.update({
-	id: "/credit-notes",
-	path: "/credit-notes",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/credit-notes',
+  path: '/credit-notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConsultaRoute = ConsultaRouteImport.update({
+  id: '/consulta',
+  path: '/consulta',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConnectionsRoute = ConnectionsRouteImport.update({
-	id: "/connections",
-	path: "/connections",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/connections',
+  path: '/connections',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConfiguracionRoute = ConfiguracionRouteImport.update({
-	id: "/configuracion",
-	path: "/configuracion",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/configuracion',
+  path: '/configuracion',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ComplianceRoute = ComplianceRouteImport.update({
-	id: "/compliance",
-	path: "/compliance",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/compliance',
+  path: '/compliance',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CompareRoute = CompareRouteImport.update({
-	id: "/compare",
-	path: "/compare",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CierreMensualRoute = CierreMensualRouteImport.update({
-	id: "/cierre-mensual",
-	path: "/cierre-mensual",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/cierre-mensual',
+  path: '/cierre-mensual',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ChatRoute = ChatRouteImport.update({
-	id: "/chat",
-	path: "/chat",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CashflowRoute = CashflowRouteImport.update({
-	id: "/cashflow",
-	path: "/cashflow",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/cashflow',
+  path: '/cashflow',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BillsRoute = BillsRouteImport.update({
-	id: "/bills",
-	path: "/bills",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/bills',
+  path: '/bills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BankingRoute = BankingRouteImport.update({
-	id: "/banking",
-	path: "/banking",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/banking',
+  path: '/banking',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AutomationsRoute = AutomationsRouteImport.update({
-	id: "/automations",
-	path: "/automations",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/automations',
+  path: '/automations',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
-	id: "/auth",
-	path: "/auth",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuditRoute = AuditRouteImport.update({
-	id: "/audit",
-	path: "/audit",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AssetsRoute = AssetsRouteImport.update({
-	id: "/assets",
-	path: "/assets",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/assets',
+  path: '/assets',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApprovalsRoute = ApprovalsRouteImport.update({
-	id: "/approvals",
-	path: "/approvals",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/approvals',
+  path: '/approvals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApprovalRoute = ApprovalRouteImport.update({
+  id: '/approval',
+  path: '/approval',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountantRoute = AccountantRouteImport.update({
+  id: '/accountant',
+  path: '/accountant',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
-	id: "/",
-	path: "/",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkspaceIndexRoute = WorkspaceIndexRouteImport.update({
-	id: "/workspace/",
-	path: "/workspace/",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/workspace/',
+  path: '/workspace/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ThreadsIndexRoute = ThreadsIndexRouteImport.update({
-	id: "/threads/",
-	path: "/threads/",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/threads/',
+  path: '/threads/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FirmIndexRoute = FirmIndexRouteImport.update({
-	id: "/",
-	path: "/",
-	getParentRoute: () => FirmRoute,
-} as any);
+  id: '/',
+  path: '/',
+  getParentRoute: () => FirmRoute,
+} as any)
 const DrenyraIndexRoute = DrenyraIndexRouteImport.update({
-	id: "/",
-	path: "/",
-	getParentRoute: () => DrenyraRoute,
-} as any);
+  id: '/',
+  path: '/',
+  getParentRoute: () => DrenyraRoute,
+} as any)
 const DiffsIndexRoute = DiffsIndexRouteImport.update({
-	id: "/diffs/",
-	path: "/diffs/",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/diffs/',
+  path: '/diffs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConfiguracionIndexRoute = ConfiguracionIndexRouteImport.update({
-	id: "/",
-	path: "/",
-	getParentRoute: () => ConfiguracionRoute,
-} as any);
+  id: '/',
+  path: '/',
+  getParentRoute: () => ConfiguracionRoute,
+} as any)
 const AgentsIndexRoute = AgentsIndexRouteImport.update({
-	id: "/agents/",
-	path: "/agents/",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/agents/',
+  path: '/agents/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkspaceSystemAdminRoute = WorkspaceSystemAdminRouteImport.update({
-	id: "/workspace/system-admin",
-	path: "/workspace/system-admin",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/workspace/system-admin',
+  path: '/workspace/system-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkspaceOperationsRoute = WorkspaceOperationsRouteImport.update({
-	id: "/workspace/operations",
-	path: "/workspace/operations",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/workspace/operations',
+  path: '/workspace/operations',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkspaceFinanceRoute = WorkspaceFinanceRouteImport.update({
-	id: "/workspace/finance",
-	path: "/workspace/finance",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/workspace/finance',
+  path: '/workspace/finance',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkspaceComplianceRoute = WorkspaceComplianceRouteImport.update({
-	id: "/workspace/compliance",
-	path: "/workspace/compliance",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/workspace/compliance',
+  path: '/workspace/compliance',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ThreadsThreadIdRoute = ThreadsThreadIdRouteImport.update({
-	id: "/threads/$threadId",
-	path: "/threads/$threadId",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/threads/$threadId',
+  path: '/threads/$threadId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TesoreriaReconciliationsRoute =
-	TesoreriaReconciliationsRouteImport.update({
-		id: "/tesoreria/reconciliations",
-		path: "/tesoreria/reconciliations",
-		getParentRoute: () => rootRouteImport,
-	} as any);
+  TesoreriaReconciliationsRouteImport.update({
+    id: '/tesoreria/reconciliations',
+    path: '/tesoreria/reconciliations',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const TesoreriaCashflowRoute = TesoreriaCashflowRouteImport.update({
-	id: "/tesoreria/cashflow",
-	path: "/tesoreria/cashflow",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/tesoreria/cashflow',
+  path: '/tesoreria/cashflow',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TesoreriaBillsRoute = TesoreriaBillsRouteImport.update({
-	id: "/tesoreria/bills",
-	path: "/tesoreria/bills",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/tesoreria/bills',
+  path: '/tesoreria/bills',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TesoreriaBankingRoute = TesoreriaBankingRouteImport.update({
-	id: "/tesoreria/banking",
-	path: "/tesoreria/banking",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/tesoreria/banking',
+  path: '/tesoreria/banking',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PopoutThreadIdRoute = PopoutThreadIdRouteImport.update({
-	id: "/popout/$threadId",
-	path: "/popout/$threadId",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/popout/$threadId',
+  path: '/popout/$threadId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OperacionesVendorsRoute = OperacionesVendorsRouteImport.update({
-	id: "/operaciones/vendors",
-	path: "/operaciones/vendors",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/operaciones/vendors',
+  path: '/operaciones/vendors',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OperacionesScannerRoute = OperacionesScannerRouteImport.update({
-	id: "/operaciones/scanner",
-	path: "/operaciones/scanner",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/operaciones/scanner',
+  path: '/operaciones/scanner',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OperacionesProductsRoute = OperacionesProductsRouteImport.update({
-	id: "/operaciones/products",
-	path: "/operaciones/products",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/operaciones/products',
+  path: '/operaciones/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OperacionesPayrollRoute = OperacionesPayrollRouteImport.update({
-	id: "/operaciones/payroll",
-	path: "/operaciones/payroll",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/operaciones/payroll',
+  path: '/operaciones/payroll',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OperacionesInventoryRoute = OperacionesInventoryRouteImport.update({
-	id: "/operaciones/inventory",
-	path: "/operaciones/inventory",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/operaciones/inventory',
+  path: '/operaciones/inventory',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OperacionesInboxRoute = OperacionesInboxRouteImport.update({
-	id: "/operaciones/inbox",
-	path: "/operaciones/inbox",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/operaciones/inbox',
+  path: '/operaciones/inbox',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OperacionesEntitiesRoute = OperacionesEntitiesRouteImport.update({
-	id: "/operaciones/entities",
-	path: "/operaciones/entities",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/operaciones/entities',
+  path: '/operaciones/entities',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OperacionesDocumentsRoute = OperacionesDocumentsRouteImport.update({
-	id: "/operaciones/documents",
-	path: "/operaciones/documents",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/operaciones/documents',
+  path: '/operaciones/documents',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OperacionesCustomersRoute = OperacionesCustomersRouteImport.update({
-	id: "/operaciones/customers",
-	path: "/operaciones/customers",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/operaciones/customers',
+  path: '/operaciones/customers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingDemosRoute = OnboardingDemosRouteImport.update({
-	id: "/demos",
-	path: "/demos",
-	getParentRoute: () => OnboardingRoute,
-} as any);
+  id: '/demos',
+  path: '/demos',
+  getParentRoute: () => OnboardingRoute,
+} as any)
 const FirmClientsRoute = FirmClientsRouteImport.update({
-	id: "/clients",
-	path: "/clients",
-	getParentRoute: () => FirmRoute,
-} as any);
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => FirmRoute,
+} as any)
 const FacturacionInvoicesRoute = FacturacionInvoicesRouteImport.update({
-	id: "/facturacion/invoices",
-	path: "/facturacion/invoices",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/facturacion/invoices',
+  path: '/facturacion/invoices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FacturacionDebitNotesRoute = FacturacionDebitNotesRouteImport.update({
-	id: "/facturacion/debit-notes",
-	path: "/facturacion/debit-notes",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/facturacion/debit-notes',
+  path: '/facturacion/debit-notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FacturacionCreditNotesRoute = FacturacionCreditNotesRouteImport.update({
-	id: "/facturacion/credit-notes",
-	path: "/facturacion/credit-notes",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/facturacion/credit-notes',
+  path: '/facturacion/credit-notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EvidenceIdRoute = EvidenceIdRouteImport.update({
-	id: "/$id",
-	path: "/$id",
-	getParentRoute: () => EvidenceRoute,
-} as any);
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => EvidenceRoute,
+} as any)
 const EconomicGroupsGroupIdRoute = EconomicGroupsGroupIdRouteImport.update({
-	id: "/economic-groups/$groupId",
-	path: "/economic-groups/$groupId",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/economic-groups/$groupId',
+  path: '/economic-groups/$groupId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DrenyraSkillsRoute = DrenyraSkillsRouteImport.update({
-	id: "/skills",
-	path: "/skills",
-	getParentRoute: () => DrenyraRoute,
-} as any);
+  id: '/skills',
+  path: '/skills',
+  getParentRoute: () => DrenyraRoute,
+} as any)
 const DrenyraObservabilityRoute = DrenyraObservabilityRouteImport.update({
-	id: "/observability",
-	path: "/observability",
-	getParentRoute: () => DrenyraRoute,
-} as any);
+  id: '/observability',
+  path: '/observability',
+  getParentRoute: () => DrenyraRoute,
+} as any)
 const DrenyraHubRoute = DrenyraHubRouteImport.update({
-	id: "/hub",
-	path: "/hub",
-	getParentRoute: () => DrenyraRoute,
-} as any);
+  id: '/hub',
+  path: '/hub',
+  getParentRoute: () => DrenyraRoute,
+} as any)
 const DrenyraHerramientasRoute = DrenyraHerramientasRouteImport.update({
-	id: "/herramientas",
-	path: "/herramientas",
-	getParentRoute: () => DrenyraRoute,
-} as any);
+  id: '/herramientas',
+  path: '/herramientas',
+  getParentRoute: () => DrenyraRoute,
+} as any)
 const DrenyraControlTowerRoute = DrenyraControlTowerRouteImport.update({
-	id: "/control-tower",
-	path: "/control-tower",
-	getParentRoute: () => DrenyraRoute,
-} as any);
+  id: '/control-tower',
+  path: '/control-tower',
+  getParentRoute: () => DrenyraRoute,
+} as any)
 const DrenyraAutomatizacionesRoute = DrenyraAutomatizacionesRouteImport.update({
-	id: "/automatizaciones",
-	path: "/automatizaciones",
-	getParentRoute: () => DrenyraRoute,
-} as any);
+  id: '/automatizaciones',
+  path: '/automatizaciones',
+  getParentRoute: () => DrenyraRoute,
+} as any)
 const DrenyraThreadIdRoute = DrenyraThreadIdRouteImport.update({
-	id: "/$threadId",
-	path: "/$threadId",
-	getParentRoute: () => DrenyraRoute,
-} as any);
+  id: '/$threadId',
+  path: '/$threadId',
+  getParentRoute: () => DrenyraRoute,
+} as any)
 const CumplimientoTaxationRoute = CumplimientoTaxationRouteImport.update({
-	id: "/cumplimiento/taxation",
-	path: "/cumplimiento/taxation",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/cumplimiento/taxation',
+  path: '/cumplimiento/taxation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CumplimientoSunatDashboardRoute =
-	CumplimientoSunatDashboardRouteImport.update({
-		id: "/cumplimiento/sunat-dashboard",
-		path: "/cumplimiento/sunat-dashboard",
-		getParentRoute: () => rootRouteImport,
-	} as any);
+  CumplimientoSunatDashboardRouteImport.update({
+    id: '/cumplimiento/sunat-dashboard',
+    path: '/cumplimiento/sunat-dashboard',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const CumplimientoSireDiffRoute = CumplimientoSireDiffRouteImport.update({
-	id: "/cumplimiento/sire-diff",
-	path: "/cumplimiento/sire-diff",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/cumplimiento/sire-diff',
+  path: '/cumplimiento/sire-diff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CumplimientoReviewRoute = CumplimientoReviewRouteImport.update({
-	id: "/cumplimiento/review",
-	path: "/cumplimiento/review",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/cumplimiento/review',
+  path: '/cumplimiento/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CumplimientoExpedientesRoute = CumplimientoExpedientesRouteImport.update({
-	id: "/cumplimiento/expedientes",
-	path: "/cumplimiento/expedientes",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/cumplimiento/expedientes',
+  path: '/cumplimiento/expedientes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CumplimientoComplianceRoute = CumplimientoComplianceRouteImport.update({
-	id: "/cumplimiento/compliance",
-	path: "/cumplimiento/compliance",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/cumplimiento/compliance',
+  path: '/cumplimiento/compliance',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CumplimientoAuditRoute = CumplimientoAuditRouteImport.update({
-	id: "/cumplimiento/audit",
-	path: "/cumplimiento/audit",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/cumplimiento/audit',
+  path: '/cumplimiento/audit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CumplimientoApprovalsRoute = CumplimientoApprovalsRouteImport.update({
-	id: "/cumplimiento/approvals",
-	path: "/cumplimiento/approvals",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/cumplimiento/approvals',
+  path: '/cumplimiento/approvals',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContabilidadReportsRoute = ContabilidadReportsRouteImport.update({
-	id: "/contabilidad/reports",
-	path: "/contabilidad/reports",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/contabilidad/reports',
+  path: '/contabilidad/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContabilidadLedgerRoute = ContabilidadLedgerRouteImport.update({
-	id: "/contabilidad/ledger",
-	path: "/contabilidad/ledger",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/contabilidad/ledger',
+  path: '/contabilidad/ledger',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContabilidadFinancialsRoute = ContabilidadFinancialsRouteImport.update({
-	id: "/contabilidad/financials",
-	path: "/contabilidad/financials",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/contabilidad/financials',
+  path: '/contabilidad/financials',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContabilidadCierreMensualRoute =
-	ContabilidadCierreMensualRouteImport.update({
-		id: "/contabilidad/cierre-mensual",
-		path: "/contabilidad/cierre-mensual",
-		getParentRoute: () => rootRouteImport,
-	} as any);
+  ContabilidadCierreMensualRouteImport.update({
+    id: '/contabilidad/cierre-mensual',
+    path: '/contabilidad/cierre-mensual',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ContabilidadAssetsRoute = ContabilidadAssetsRouteImport.update({
-	id: "/contabilidad/assets",
-	path: "/contabilidad/assets",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/contabilidad/assets',
+  path: '/contabilidad/assets',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContabilidadAccountingPrRoute =
-	ContabilidadAccountingPrRouteImport.update({
-		id: "/contabilidad/accounting-pr",
-		path: "/contabilidad/accounting-pr",
-		getParentRoute: () => rootRouteImport,
-	} as any);
+  ContabilidadAccountingPrRouteImport.update({
+    id: '/contabilidad/accounting-pr',
+    path: '/contabilidad/accounting-pr',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ConfiguracionToolPermissionsRoute =
-	ConfiguracionToolPermissionsRouteImport.update({
-		id: "/tool-permissions",
-		path: "/tool-permissions",
-		getParentRoute: () => ConfiguracionRoute,
-	} as any);
+  ConfiguracionToolPermissionsRouteImport.update({
+    id: '/tool-permissions',
+    path: '/tool-permissions',
+    getParentRoute: () => ConfiguracionRoute,
+  } as any)
 const ConfiguracionSecurityRoute = ConfiguracionSecurityRouteImport.update({
-	id: "/security",
-	path: "/security",
-	getParentRoute: () => ConfiguracionRoute,
-} as any);
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => ConfiguracionRoute,
+} as any)
 const ConfiguracionProfileRoute = ConfiguracionProfileRouteImport.update({
-	id: "/profile",
-	path: "/profile",
-	getParentRoute: () => ConfiguracionRoute,
-} as any);
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => ConfiguracionRoute,
+} as any)
 const ConfiguracionProductSurfacesRoute =
-	ConfiguracionProductSurfacesRouteImport.update({
-		id: "/product-surfaces",
-		path: "/product-surfaces",
-		getParentRoute: () => ConfiguracionRoute,
-	} as any);
+  ConfiguracionProductSurfacesRouteImport.update({
+    id: '/product-surfaces',
+    path: '/product-surfaces',
+    getParentRoute: () => ConfiguracionRoute,
+  } as any)
 const ConfiguracionPluginsRoute = ConfiguracionPluginsRouteImport.update({
-	id: "/plugins",
-	path: "/plugins",
-	getParentRoute: () => ConfiguracionRoute,
-} as any);
+  id: '/plugins',
+  path: '/plugins',
+  getParentRoute: () => ConfiguracionRoute,
+} as any)
 const ConfiguracionOrganizationRoute =
-	ConfiguracionOrganizationRouteImport.update({
-		id: "/organization",
-		path: "/organization",
-		getParentRoute: () => ConfiguracionRoute,
-	} as any);
+  ConfiguracionOrganizationRouteImport.update({
+    id: '/organization',
+    path: '/organization',
+    getParentRoute: () => ConfiguracionRoute,
+  } as any)
 const ConfiguracionNotificationsRoute =
-	ConfiguracionNotificationsRouteImport.update({
-		id: "/notifications",
-		path: "/notifications",
-		getParentRoute: () => ConfiguracionRoute,
-	} as any);
+  ConfiguracionNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => ConfiguracionRoute,
+  } as any)
 const ConfiguracionKeyboardShortcutsRoute =
-	ConfiguracionKeyboardShortcutsRouteImport.update({
-		id: "/keyboard-shortcuts",
-		path: "/keyboard-shortcuts",
-		getParentRoute: () => ConfiguracionRoute,
-	} as any);
+  ConfiguracionKeyboardShortcutsRouteImport.update({
+    id: '/keyboard-shortcuts',
+    path: '/keyboard-shortcuts',
+    getParentRoute: () => ConfiguracionRoute,
+  } as any)
 const ConfiguracionIntegrationsRoute =
-	ConfiguracionIntegrationsRouteImport.update({
-		id: "/integrations",
-		path: "/integrations",
-		getParentRoute: () => ConfiguracionRoute,
-	} as any);
+  ConfiguracionIntegrationsRouteImport.update({
+    id: '/integrations',
+    path: '/integrations',
+    getParentRoute: () => ConfiguracionRoute,
+  } as any)
 const ConfiguracionConnectionsRoute =
-	ConfiguracionConnectionsRouteImport.update({
-		id: "/connections",
-		path: "/connections",
-		getParentRoute: () => ConfiguracionRoute,
-	} as any);
+  ConfiguracionConnectionsRouteImport.update({
+    id: '/connections',
+    path: '/connections',
+    getParentRoute: () => ConfiguracionRoute,
+  } as any)
 const ConfiguracionCompareRoute = ConfiguracionCompareRouteImport.update({
-	id: "/compare",
-	path: "/compare",
-	getParentRoute: () => ConfiguracionRoute,
-} as any);
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => ConfiguracionRoute,
+} as any)
 const ConfiguracionBillingRoute = ConfiguracionBillingRouteImport.update({
-	id: "/billing",
-	path: "/billing",
-	getParentRoute: () => ConfiguracionRoute,
-} as any);
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => ConfiguracionRoute,
+} as any)
 const ConfiguracionAutomationsRoute =
-	ConfiguracionAutomationsRouteImport.update({
-		id: "/automations",
-		path: "/automations",
-		getParentRoute: () => ConfiguracionRoute,
-	} as any);
+  ConfiguracionAutomationsRouteImport.update({
+    id: '/automations',
+    path: '/automations',
+    getParentRoute: () => ConfiguracionRoute,
+  } as any)
 const ConfiguracionAppearanceRoute = ConfiguracionAppearanceRouteImport.update({
-	id: "/appearance",
-	path: "/appearance",
-	getParentRoute: () => ConfiguracionRoute,
-} as any);
+  id: '/appearance',
+  path: '/appearance',
+  getParentRoute: () => ConfiguracionRoute,
+} as any)
+const ApprovalIdRoute = ApprovalIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ApprovalRoute,
+} as any)
 const OperacionesEconomicGroupsGroupIdRoute =
-	OperacionesEconomicGroupsGroupIdRouteImport.update({
-		id: "/operaciones/economic-groups/$groupId",
-		path: "/operaciones/economic-groups/$groupId",
-		getParentRoute: () => rootRouteImport,
-	} as any);
+  OperacionesEconomicGroupsGroupIdRouteImport.update({
+    id: '/operaciones/economic-groups/$groupId',
+    path: '/operaciones/economic-groups/$groupId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const FirmClientsIdRoute = FirmClientsIdRouteImport.update({
-	id: "/$id",
-	path: "/$id",
-	getParentRoute: () => FirmClientsRoute,
-} as any);
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => FirmClientsRoute,
+} as any)
 const DrenyraCaseThreadIdRoute = DrenyraCaseThreadIdRouteImport.update({
-	id: "/case/$threadId",
-	path: "/case/$threadId",
-	getParentRoute: () => DrenyraRoute,
-} as any);
+  id: '/case/$threadId',
+  path: '/case/$threadId',
+  getParentRoute: () => DrenyraRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-	"/": typeof IndexRoute;
-	"/approvals": typeof ApprovalsRoute;
-	"/assets": typeof AssetsRoute;
-	"/audit": typeof AuditRoute;
-	"/auth": typeof AuthRoute;
-	"/automations": typeof AutomationsRoute;
-	"/banking": typeof BankingRoute;
-	"/bills": typeof BillsRoute;
-	"/cashflow": typeof CashflowRoute;
-	"/chat": typeof ChatRoute;
-	"/cierre-mensual": typeof CierreMensualRoute;
-	"/compare": typeof CompareRoute;
-	"/compliance": typeof ComplianceRoute;
-	"/configuracion": typeof ConfiguracionRouteWithChildren;
-	"/connections": typeof ConnectionsRoute;
-	"/credit-notes": typeof CreditNotesRoute;
-	"/customers": typeof CustomersRoute;
-	"/dashboard": typeof DashboardRoute;
-	"/debit-notes": typeof DebitNotesRoute;
-	"/documents": typeof DocumentsRoute;
-	"/drenyra": typeof DrenyraRouteWithChildren;
-	"/entities": typeof EntitiesRoute;
-	"/evidence": typeof EvidenceRouteWithChildren;
-	"/expedientes": typeof ExpedientesRoute;
-	"/financials": typeof FinancialsRoute;
-	"/firm": typeof FirmRouteWithChildren;
-	"/forgot-password": typeof ForgotPasswordRoute;
-	"/inbox": typeof InboxRoute;
-	"/inteligencia": typeof InteligenciaRoute;
-	"/inventory": typeof InventoryRoute;
-	"/invoices": typeof InvoicesRoute;
-	"/ledger": typeof LedgerRoute;
-	"/login": typeof LoginRoute;
-	"/mobile-summary": typeof MobileSummaryRoute;
-	"/neural-grid": typeof NeuralGridRoute;
-	"/onboarding": typeof OnboardingRouteWithChildren;
-	"/payroll": typeof PayrollRoute;
-	"/period-close": typeof PeriodCloseRoute;
-	"/playground": typeof PlaygroundRoute;
-	"/plugins": typeof PluginsRoute;
-	"/product-surfaces": typeof ProductSurfacesRoute;
-	"/products": typeof ProductsRoute;
-	"/profile": typeof ProfileRoute;
-	"/reconciliations": typeof ReconciliationsRoute;
-	"/reports": typeof ReportsRoute;
-	"/reset-password": typeof ResetPasswordRoute;
-	"/review": typeof ReviewRoute;
-	"/review-queue": typeof ReviewQueueRoute;
-	"/scanner": typeof ScannerRoute;
-	"/settings": typeof SettingsRoute;
-	"/signup": typeof SignupRoute;
-	"/skills": typeof SkillsRoute;
-	"/taxation": typeof TaxationRoute;
-	"/vendors": typeof VendorsRoute;
-	"/verify-email": typeof VerifyEmailRoute;
-	"/configuracion/appearance": typeof ConfiguracionAppearanceRoute;
-	"/configuracion/automations": typeof ConfiguracionAutomationsRoute;
-	"/configuracion/billing": typeof ConfiguracionBillingRoute;
-	"/configuracion/compare": typeof ConfiguracionCompareRoute;
-	"/configuracion/connections": typeof ConfiguracionConnectionsRoute;
-	"/configuracion/integrations": typeof ConfiguracionIntegrationsRoute;
-	"/configuracion/keyboard-shortcuts": typeof ConfiguracionKeyboardShortcutsRoute;
-	"/configuracion/notifications": typeof ConfiguracionNotificationsRoute;
-	"/configuracion/organization": typeof ConfiguracionOrganizationRoute;
-	"/configuracion/plugins": typeof ConfiguracionPluginsRoute;
-	"/configuracion/product-surfaces": typeof ConfiguracionProductSurfacesRoute;
-	"/configuracion/profile": typeof ConfiguracionProfileRoute;
-	"/configuracion/security": typeof ConfiguracionSecurityRoute;
-	"/configuracion/tool-permissions": typeof ConfiguracionToolPermissionsRoute;
-	"/contabilidad/accounting-pr": typeof ContabilidadAccountingPrRoute;
-	"/contabilidad/assets": typeof ContabilidadAssetsRoute;
-	"/contabilidad/cierre-mensual": typeof ContabilidadCierreMensualRoute;
-	"/contabilidad/financials": typeof ContabilidadFinancialsRoute;
-	"/contabilidad/ledger": typeof ContabilidadLedgerRoute;
-	"/contabilidad/reports": typeof ContabilidadReportsRoute;
-	"/cumplimiento/approvals": typeof CumplimientoApprovalsRoute;
-	"/cumplimiento/audit": typeof CumplimientoAuditRoute;
-	"/cumplimiento/compliance": typeof CumplimientoComplianceRoute;
-	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
-	"/cumplimiento/review": typeof CumplimientoReviewRoute;
-	"/cumplimiento/sire-diff": typeof CumplimientoSireDiffRoute;
-	"/cumplimiento/sunat-dashboard": typeof CumplimientoSunatDashboardRoute;
-	"/cumplimiento/taxation": typeof CumplimientoTaxationRoute;
-	"/drenyra/$threadId": typeof DrenyraThreadIdRoute;
-	"/drenyra/automatizaciones": typeof DrenyraAutomatizacionesRoute;
-	"/drenyra/control-tower": typeof DrenyraControlTowerRoute;
-	"/drenyra/herramientas": typeof DrenyraHerramientasRoute;
-	"/drenyra/hub": typeof DrenyraHubRoute;
-	"/drenyra/observability": typeof DrenyraObservabilityRoute;
-	"/drenyra/skills": typeof DrenyraSkillsRoute;
-	"/economic-groups/$groupId": typeof EconomicGroupsGroupIdRoute;
-	"/evidence/$id": typeof EvidenceIdRoute;
-	"/facturacion/credit-notes": typeof FacturacionCreditNotesRoute;
-	"/facturacion/debit-notes": typeof FacturacionDebitNotesRoute;
-	"/facturacion/invoices": typeof FacturacionInvoicesRoute;
-	"/firm/clients": typeof FirmClientsRouteWithChildren;
-	"/onboarding/demos": typeof OnboardingDemosRoute;
-	"/operaciones/customers": typeof OperacionesCustomersRoute;
-	"/operaciones/documents": typeof OperacionesDocumentsRoute;
-	"/operaciones/entities": typeof OperacionesEntitiesRoute;
-	"/operaciones/inbox": typeof OperacionesInboxRoute;
-	"/operaciones/inventory": typeof OperacionesInventoryRoute;
-	"/operaciones/payroll": typeof OperacionesPayrollRoute;
-	"/operaciones/products": typeof OperacionesProductsRoute;
-	"/operaciones/scanner": typeof OperacionesScannerRoute;
-	"/operaciones/vendors": typeof OperacionesVendorsRoute;
-	"/popout/$threadId": typeof PopoutThreadIdRoute;
-	"/tesoreria/banking": typeof TesoreriaBankingRoute;
-	"/tesoreria/bills": typeof TesoreriaBillsRoute;
-	"/tesoreria/cashflow": typeof TesoreriaCashflowRoute;
-	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
-	"/threads/$threadId": typeof ThreadsThreadIdRoute;
-	"/workspace/compliance": typeof WorkspaceComplianceRoute;
-	"/workspace/finance": typeof WorkspaceFinanceRoute;
-	"/workspace/operations": typeof WorkspaceOperationsRoute;
-	"/workspace/system-admin": typeof WorkspaceSystemAdminRoute;
-	"/agents/": typeof AgentsIndexRoute;
-	"/configuracion/": typeof ConfiguracionIndexRoute;
-	"/diffs/": typeof DiffsIndexRoute;
-	"/drenyra/": typeof DrenyraIndexRoute;
-	"/firm/": typeof FirmIndexRoute;
-	"/threads/": typeof ThreadsIndexRoute;
-	"/workspace/": typeof WorkspaceIndexRoute;
-	"/drenyra/case/$threadId": typeof DrenyraCaseThreadIdRoute;
-	"/firm/clients/$id": typeof FirmClientsIdRoute;
-	"/operaciones/economic-groups/$groupId": typeof OperacionesEconomicGroupsGroupIdRoute;
+  '/': typeof IndexRoute
+  '/accountant': typeof AccountantRoute
+  '/approval': typeof ApprovalRouteWithChildren
+  '/approvals': typeof ApprovalsRoute
+  '/assets': typeof AssetsRoute
+  '/audit': typeof AuditRoute
+  '/auth': typeof AuthRoute
+  '/automations': typeof AutomationsRoute
+  '/banking': typeof BankingRoute
+  '/bills': typeof BillsRoute
+  '/cashflow': typeof CashflowRoute
+  '/chat': typeof ChatRoute
+  '/cierre-mensual': typeof CierreMensualRoute
+  '/compare': typeof CompareRoute
+  '/compliance': typeof ComplianceRoute
+  '/configuracion': typeof ConfiguracionRouteWithChildren
+  '/connections': typeof ConnectionsRoute
+  '/consulta': typeof ConsultaRoute
+  '/credit-notes': typeof CreditNotesRoute
+  '/customers': typeof CustomersRoute
+  '/dashboard': typeof DashboardRoute
+  '/debit-notes': typeof DebitNotesRoute
+  '/documents': typeof DocumentsRoute
+  '/drenyra': typeof DrenyraRouteWithChildren
+  '/entities': typeof EntitiesRoute
+  '/evidence': typeof EvidenceRouteWithChildren
+  '/expedientes': typeof ExpedientesRoute
+  '/financials': typeof FinancialsRoute
+  '/firm': typeof FirmRouteWithChildren
+  '/fiscal-chat': typeof FiscalChatRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/inbox': typeof InboxRoute
+  '/inteligencia': typeof InteligenciaRoute
+  '/inventory': typeof InventoryRoute
+  '/invoices': typeof InvoicesRoute
+  '/ledger': typeof LedgerRoute
+  '/login': typeof LoginRoute
+  '/mobile-summary': typeof MobileSummaryRoute
+  '/neural-grid': typeof NeuralGridRoute
+  '/onboarding': typeof OnboardingRouteWithChildren
+  '/payroll': typeof PayrollRoute
+  '/period-close': typeof PeriodCloseRoute
+  '/playground': typeof PlaygroundRoute
+  '/plugins': typeof PluginsRoute
+  '/product-surfaces': typeof ProductSurfacesRoute
+  '/products': typeof ProductsRoute
+  '/profile': typeof ProfileRoute
+  '/reconciliations': typeof ReconciliationsRoute
+  '/reports': typeof ReportsRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/review': typeof ReviewRoute
+  '/review-queue': typeof ReviewQueueRoute
+  '/scanner': typeof ScannerRoute
+  '/settings': typeof SettingsRoute
+  '/signup': typeof SignupRoute
+  '/skills': typeof SkillsRoute
+  '/taxation': typeof TaxationRoute
+  '/vendors': typeof VendorsRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/approval/$id': typeof ApprovalIdRoute
+  '/configuracion/appearance': typeof ConfiguracionAppearanceRoute
+  '/configuracion/automations': typeof ConfiguracionAutomationsRoute
+  '/configuracion/billing': typeof ConfiguracionBillingRoute
+  '/configuracion/compare': typeof ConfiguracionCompareRoute
+  '/configuracion/connections': typeof ConfiguracionConnectionsRoute
+  '/configuracion/integrations': typeof ConfiguracionIntegrationsRoute
+  '/configuracion/keyboard-shortcuts': typeof ConfiguracionKeyboardShortcutsRoute
+  '/configuracion/notifications': typeof ConfiguracionNotificationsRoute
+  '/configuracion/organization': typeof ConfiguracionOrganizationRoute
+  '/configuracion/plugins': typeof ConfiguracionPluginsRoute
+  '/configuracion/product-surfaces': typeof ConfiguracionProductSurfacesRoute
+  '/configuracion/profile': typeof ConfiguracionProfileRoute
+  '/configuracion/security': typeof ConfiguracionSecurityRoute
+  '/configuracion/tool-permissions': typeof ConfiguracionToolPermissionsRoute
+  '/contabilidad/accounting-pr': typeof ContabilidadAccountingPrRoute
+  '/contabilidad/assets': typeof ContabilidadAssetsRoute
+  '/contabilidad/cierre-mensual': typeof ContabilidadCierreMensualRoute
+  '/contabilidad/financials': typeof ContabilidadFinancialsRoute
+  '/contabilidad/ledger': typeof ContabilidadLedgerRoute
+  '/contabilidad/reports': typeof ContabilidadReportsRoute
+  '/cumplimiento/approvals': typeof CumplimientoApprovalsRoute
+  '/cumplimiento/audit': typeof CumplimientoAuditRoute
+  '/cumplimiento/compliance': typeof CumplimientoComplianceRoute
+  '/cumplimiento/expedientes': typeof CumplimientoExpedientesRoute
+  '/cumplimiento/review': typeof CumplimientoReviewRoute
+  '/cumplimiento/sire-diff': typeof CumplimientoSireDiffRoute
+  '/cumplimiento/sunat-dashboard': typeof CumplimientoSunatDashboardRoute
+  '/cumplimiento/taxation': typeof CumplimientoTaxationRoute
+  '/drenyra/$threadId': typeof DrenyraThreadIdRoute
+  '/drenyra/automatizaciones': typeof DrenyraAutomatizacionesRoute
+  '/drenyra/control-tower': typeof DrenyraControlTowerRoute
+  '/drenyra/herramientas': typeof DrenyraHerramientasRoute
+  '/drenyra/hub': typeof DrenyraHubRoute
+  '/drenyra/observability': typeof DrenyraObservabilityRoute
+  '/drenyra/skills': typeof DrenyraSkillsRoute
+  '/economic-groups/$groupId': typeof EconomicGroupsGroupIdRoute
+  '/evidence/$id': typeof EvidenceIdRoute
+  '/facturacion/credit-notes': typeof FacturacionCreditNotesRoute
+  '/facturacion/debit-notes': typeof FacturacionDebitNotesRoute
+  '/facturacion/invoices': typeof FacturacionInvoicesRoute
+  '/firm/clients': typeof FirmClientsRouteWithChildren
+  '/onboarding/demos': typeof OnboardingDemosRoute
+  '/operaciones/customers': typeof OperacionesCustomersRoute
+  '/operaciones/documents': typeof OperacionesDocumentsRoute
+  '/operaciones/entities': typeof OperacionesEntitiesRoute
+  '/operaciones/inbox': typeof OperacionesInboxRoute
+  '/operaciones/inventory': typeof OperacionesInventoryRoute
+  '/operaciones/payroll': typeof OperacionesPayrollRoute
+  '/operaciones/products': typeof OperacionesProductsRoute
+  '/operaciones/scanner': typeof OperacionesScannerRoute
+  '/operaciones/vendors': typeof OperacionesVendorsRoute
+  '/popout/$threadId': typeof PopoutThreadIdRoute
+  '/tesoreria/banking': typeof TesoreriaBankingRoute
+  '/tesoreria/bills': typeof TesoreriaBillsRoute
+  '/tesoreria/cashflow': typeof TesoreriaCashflowRoute
+  '/tesoreria/reconciliations': typeof TesoreriaReconciliationsRoute
+  '/threads/$threadId': typeof ThreadsThreadIdRoute
+  '/workspace/compliance': typeof WorkspaceComplianceRoute
+  '/workspace/finance': typeof WorkspaceFinanceRoute
+  '/workspace/operations': typeof WorkspaceOperationsRoute
+  '/workspace/system-admin': typeof WorkspaceSystemAdminRoute
+  '/agents/': typeof AgentsIndexRoute
+  '/configuracion/': typeof ConfiguracionIndexRoute
+  '/diffs/': typeof DiffsIndexRoute
+  '/drenyra/': typeof DrenyraIndexRoute
+  '/firm/': typeof FirmIndexRoute
+  '/threads/': typeof ThreadsIndexRoute
+  '/workspace/': typeof WorkspaceIndexRoute
+  '/drenyra/case/$threadId': typeof DrenyraCaseThreadIdRoute
+  '/firm/clients/$id': typeof FirmClientsIdRoute
+  '/operaciones/economic-groups/$groupId': typeof OperacionesEconomicGroupsGroupIdRoute
 }
 export interface FileRoutesByTo {
-	"/": typeof IndexRoute;
-	"/approvals": typeof ApprovalsRoute;
-	"/assets": typeof AssetsRoute;
-	"/audit": typeof AuditRoute;
-	"/auth": typeof AuthRoute;
-	"/automations": typeof AutomationsRoute;
-	"/banking": typeof BankingRoute;
-	"/bills": typeof BillsRoute;
-	"/cashflow": typeof CashflowRoute;
-	"/chat": typeof ChatRoute;
-	"/cierre-mensual": typeof CierreMensualRoute;
-	"/compare": typeof CompareRoute;
-	"/compliance": typeof ComplianceRoute;
-	"/connections": typeof ConnectionsRoute;
-	"/credit-notes": typeof CreditNotesRoute;
-	"/customers": typeof CustomersRoute;
-	"/dashboard": typeof DashboardRoute;
-	"/debit-notes": typeof DebitNotesRoute;
-	"/documents": typeof DocumentsRoute;
-	"/entities": typeof EntitiesRoute;
-	"/evidence": typeof EvidenceRouteWithChildren;
-	"/expedientes": typeof ExpedientesRoute;
-	"/financials": typeof FinancialsRoute;
-	"/forgot-password": typeof ForgotPasswordRoute;
-	"/inbox": typeof InboxRoute;
-	"/inteligencia": typeof InteligenciaRoute;
-	"/inventory": typeof InventoryRoute;
-	"/invoices": typeof InvoicesRoute;
-	"/ledger": typeof LedgerRoute;
-	"/login": typeof LoginRoute;
-	"/mobile-summary": typeof MobileSummaryRoute;
-	"/neural-grid": typeof NeuralGridRoute;
-	"/onboarding": typeof OnboardingRouteWithChildren;
-	"/payroll": typeof PayrollRoute;
-	"/period-close": typeof PeriodCloseRoute;
-	"/playground": typeof PlaygroundRoute;
-	"/plugins": typeof PluginsRoute;
-	"/product-surfaces": typeof ProductSurfacesRoute;
-	"/products": typeof ProductsRoute;
-	"/profile": typeof ProfileRoute;
-	"/reconciliations": typeof ReconciliationsRoute;
-	"/reports": typeof ReportsRoute;
-	"/reset-password": typeof ResetPasswordRoute;
-	"/review": typeof ReviewRoute;
-	"/review-queue": typeof ReviewQueueRoute;
-	"/scanner": typeof ScannerRoute;
-	"/settings": typeof SettingsRoute;
-	"/signup": typeof SignupRoute;
-	"/skills": typeof SkillsRoute;
-	"/taxation": typeof TaxationRoute;
-	"/vendors": typeof VendorsRoute;
-	"/verify-email": typeof VerifyEmailRoute;
-	"/configuracion/appearance": typeof ConfiguracionAppearanceRoute;
-	"/configuracion/automations": typeof ConfiguracionAutomationsRoute;
-	"/configuracion/billing": typeof ConfiguracionBillingRoute;
-	"/configuracion/compare": typeof ConfiguracionCompareRoute;
-	"/configuracion/connections": typeof ConfiguracionConnectionsRoute;
-	"/configuracion/integrations": typeof ConfiguracionIntegrationsRoute;
-	"/configuracion/keyboard-shortcuts": typeof ConfiguracionKeyboardShortcutsRoute;
-	"/configuracion/notifications": typeof ConfiguracionNotificationsRoute;
-	"/configuracion/organization": typeof ConfiguracionOrganizationRoute;
-	"/configuracion/plugins": typeof ConfiguracionPluginsRoute;
-	"/configuracion/product-surfaces": typeof ConfiguracionProductSurfacesRoute;
-	"/configuracion/profile": typeof ConfiguracionProfileRoute;
-	"/configuracion/security": typeof ConfiguracionSecurityRoute;
-	"/configuracion/tool-permissions": typeof ConfiguracionToolPermissionsRoute;
-	"/contabilidad/accounting-pr": typeof ContabilidadAccountingPrRoute;
-	"/contabilidad/assets": typeof ContabilidadAssetsRoute;
-	"/contabilidad/cierre-mensual": typeof ContabilidadCierreMensualRoute;
-	"/contabilidad/financials": typeof ContabilidadFinancialsRoute;
-	"/contabilidad/ledger": typeof ContabilidadLedgerRoute;
-	"/contabilidad/reports": typeof ContabilidadReportsRoute;
-	"/cumplimiento/approvals": typeof CumplimientoApprovalsRoute;
-	"/cumplimiento/audit": typeof CumplimientoAuditRoute;
-	"/cumplimiento/compliance": typeof CumplimientoComplianceRoute;
-	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
-	"/cumplimiento/review": typeof CumplimientoReviewRoute;
-	"/cumplimiento/sire-diff": typeof CumplimientoSireDiffRoute;
-	"/cumplimiento/sunat-dashboard": typeof CumplimientoSunatDashboardRoute;
-	"/cumplimiento/taxation": typeof CumplimientoTaxationRoute;
-	"/drenyra/$threadId": typeof DrenyraThreadIdRoute;
-	"/drenyra/automatizaciones": typeof DrenyraAutomatizacionesRoute;
-	"/drenyra/control-tower": typeof DrenyraControlTowerRoute;
-	"/drenyra/herramientas": typeof DrenyraHerramientasRoute;
-	"/drenyra/hub": typeof DrenyraHubRoute;
-	"/drenyra/observability": typeof DrenyraObservabilityRoute;
-	"/drenyra/skills": typeof DrenyraSkillsRoute;
-	"/economic-groups/$groupId": typeof EconomicGroupsGroupIdRoute;
-	"/evidence/$id": typeof EvidenceIdRoute;
-	"/facturacion/credit-notes": typeof FacturacionCreditNotesRoute;
-	"/facturacion/debit-notes": typeof FacturacionDebitNotesRoute;
-	"/facturacion/invoices": typeof FacturacionInvoicesRoute;
-	"/firm/clients": typeof FirmClientsRouteWithChildren;
-	"/onboarding/demos": typeof OnboardingDemosRoute;
-	"/operaciones/customers": typeof OperacionesCustomersRoute;
-	"/operaciones/documents": typeof OperacionesDocumentsRoute;
-	"/operaciones/entities": typeof OperacionesEntitiesRoute;
-	"/operaciones/inbox": typeof OperacionesInboxRoute;
-	"/operaciones/inventory": typeof OperacionesInventoryRoute;
-	"/operaciones/payroll": typeof OperacionesPayrollRoute;
-	"/operaciones/products": typeof OperacionesProductsRoute;
-	"/operaciones/scanner": typeof OperacionesScannerRoute;
-	"/operaciones/vendors": typeof OperacionesVendorsRoute;
-	"/popout/$threadId": typeof PopoutThreadIdRoute;
-	"/tesoreria/banking": typeof TesoreriaBankingRoute;
-	"/tesoreria/bills": typeof TesoreriaBillsRoute;
-	"/tesoreria/cashflow": typeof TesoreriaCashflowRoute;
-	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
-	"/threads/$threadId": typeof ThreadsThreadIdRoute;
-	"/workspace/compliance": typeof WorkspaceComplianceRoute;
-	"/workspace/finance": typeof WorkspaceFinanceRoute;
-	"/workspace/operations": typeof WorkspaceOperationsRoute;
-	"/workspace/system-admin": typeof WorkspaceSystemAdminRoute;
-	"/agents": typeof AgentsIndexRoute;
-	"/configuracion": typeof ConfiguracionIndexRoute;
-	"/diffs": typeof DiffsIndexRoute;
-	"/drenyra": typeof DrenyraIndexRoute;
-	"/firm": typeof FirmIndexRoute;
-	"/threads": typeof ThreadsIndexRoute;
-	"/workspace": typeof WorkspaceIndexRoute;
-	"/drenyra/case/$threadId": typeof DrenyraCaseThreadIdRoute;
-	"/firm/clients/$id": typeof FirmClientsIdRoute;
-	"/operaciones/economic-groups/$groupId": typeof OperacionesEconomicGroupsGroupIdRoute;
+  '/': typeof IndexRoute
+  '/accountant': typeof AccountantRoute
+  '/approval': typeof ApprovalRouteWithChildren
+  '/approvals': typeof ApprovalsRoute
+  '/assets': typeof AssetsRoute
+  '/audit': typeof AuditRoute
+  '/auth': typeof AuthRoute
+  '/automations': typeof AutomationsRoute
+  '/banking': typeof BankingRoute
+  '/bills': typeof BillsRoute
+  '/cashflow': typeof CashflowRoute
+  '/chat': typeof ChatRoute
+  '/cierre-mensual': typeof CierreMensualRoute
+  '/compare': typeof CompareRoute
+  '/compliance': typeof ComplianceRoute
+  '/connections': typeof ConnectionsRoute
+  '/consulta': typeof ConsultaRoute
+  '/credit-notes': typeof CreditNotesRoute
+  '/customers': typeof CustomersRoute
+  '/dashboard': typeof DashboardRoute
+  '/debit-notes': typeof DebitNotesRoute
+  '/documents': typeof DocumentsRoute
+  '/entities': typeof EntitiesRoute
+  '/evidence': typeof EvidenceRouteWithChildren
+  '/expedientes': typeof ExpedientesRoute
+  '/financials': typeof FinancialsRoute
+  '/fiscal-chat': typeof FiscalChatRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/inbox': typeof InboxRoute
+  '/inteligencia': typeof InteligenciaRoute
+  '/inventory': typeof InventoryRoute
+  '/invoices': typeof InvoicesRoute
+  '/ledger': typeof LedgerRoute
+  '/login': typeof LoginRoute
+  '/mobile-summary': typeof MobileSummaryRoute
+  '/neural-grid': typeof NeuralGridRoute
+  '/onboarding': typeof OnboardingRouteWithChildren
+  '/payroll': typeof PayrollRoute
+  '/period-close': typeof PeriodCloseRoute
+  '/playground': typeof PlaygroundRoute
+  '/plugins': typeof PluginsRoute
+  '/product-surfaces': typeof ProductSurfacesRoute
+  '/products': typeof ProductsRoute
+  '/profile': typeof ProfileRoute
+  '/reconciliations': typeof ReconciliationsRoute
+  '/reports': typeof ReportsRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/review': typeof ReviewRoute
+  '/review-queue': typeof ReviewQueueRoute
+  '/scanner': typeof ScannerRoute
+  '/settings': typeof SettingsRoute
+  '/signup': typeof SignupRoute
+  '/skills': typeof SkillsRoute
+  '/taxation': typeof TaxationRoute
+  '/vendors': typeof VendorsRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/approval/$id': typeof ApprovalIdRoute
+  '/configuracion/appearance': typeof ConfiguracionAppearanceRoute
+  '/configuracion/automations': typeof ConfiguracionAutomationsRoute
+  '/configuracion/billing': typeof ConfiguracionBillingRoute
+  '/configuracion/compare': typeof ConfiguracionCompareRoute
+  '/configuracion/connections': typeof ConfiguracionConnectionsRoute
+  '/configuracion/integrations': typeof ConfiguracionIntegrationsRoute
+  '/configuracion/keyboard-shortcuts': typeof ConfiguracionKeyboardShortcutsRoute
+  '/configuracion/notifications': typeof ConfiguracionNotificationsRoute
+  '/configuracion/organization': typeof ConfiguracionOrganizationRoute
+  '/configuracion/plugins': typeof ConfiguracionPluginsRoute
+  '/configuracion/product-surfaces': typeof ConfiguracionProductSurfacesRoute
+  '/configuracion/profile': typeof ConfiguracionProfileRoute
+  '/configuracion/security': typeof ConfiguracionSecurityRoute
+  '/configuracion/tool-permissions': typeof ConfiguracionToolPermissionsRoute
+  '/contabilidad/accounting-pr': typeof ContabilidadAccountingPrRoute
+  '/contabilidad/assets': typeof ContabilidadAssetsRoute
+  '/contabilidad/cierre-mensual': typeof ContabilidadCierreMensualRoute
+  '/contabilidad/financials': typeof ContabilidadFinancialsRoute
+  '/contabilidad/ledger': typeof ContabilidadLedgerRoute
+  '/contabilidad/reports': typeof ContabilidadReportsRoute
+  '/cumplimiento/approvals': typeof CumplimientoApprovalsRoute
+  '/cumplimiento/audit': typeof CumplimientoAuditRoute
+  '/cumplimiento/compliance': typeof CumplimientoComplianceRoute
+  '/cumplimiento/expedientes': typeof CumplimientoExpedientesRoute
+  '/cumplimiento/review': typeof CumplimientoReviewRoute
+  '/cumplimiento/sire-diff': typeof CumplimientoSireDiffRoute
+  '/cumplimiento/sunat-dashboard': typeof CumplimientoSunatDashboardRoute
+  '/cumplimiento/taxation': typeof CumplimientoTaxationRoute
+  '/drenyra/$threadId': typeof DrenyraThreadIdRoute
+  '/drenyra/automatizaciones': typeof DrenyraAutomatizacionesRoute
+  '/drenyra/control-tower': typeof DrenyraControlTowerRoute
+  '/drenyra/herramientas': typeof DrenyraHerramientasRoute
+  '/drenyra/hub': typeof DrenyraHubRoute
+  '/drenyra/observability': typeof DrenyraObservabilityRoute
+  '/drenyra/skills': typeof DrenyraSkillsRoute
+  '/economic-groups/$groupId': typeof EconomicGroupsGroupIdRoute
+  '/evidence/$id': typeof EvidenceIdRoute
+  '/facturacion/credit-notes': typeof FacturacionCreditNotesRoute
+  '/facturacion/debit-notes': typeof FacturacionDebitNotesRoute
+  '/facturacion/invoices': typeof FacturacionInvoicesRoute
+  '/firm/clients': typeof FirmClientsRouteWithChildren
+  '/onboarding/demos': typeof OnboardingDemosRoute
+  '/operaciones/customers': typeof OperacionesCustomersRoute
+  '/operaciones/documents': typeof OperacionesDocumentsRoute
+  '/operaciones/entities': typeof OperacionesEntitiesRoute
+  '/operaciones/inbox': typeof OperacionesInboxRoute
+  '/operaciones/inventory': typeof OperacionesInventoryRoute
+  '/operaciones/payroll': typeof OperacionesPayrollRoute
+  '/operaciones/products': typeof OperacionesProductsRoute
+  '/operaciones/scanner': typeof OperacionesScannerRoute
+  '/operaciones/vendors': typeof OperacionesVendorsRoute
+  '/popout/$threadId': typeof PopoutThreadIdRoute
+  '/tesoreria/banking': typeof TesoreriaBankingRoute
+  '/tesoreria/bills': typeof TesoreriaBillsRoute
+  '/tesoreria/cashflow': typeof TesoreriaCashflowRoute
+  '/tesoreria/reconciliations': typeof TesoreriaReconciliationsRoute
+  '/threads/$threadId': typeof ThreadsThreadIdRoute
+  '/workspace/compliance': typeof WorkspaceComplianceRoute
+  '/workspace/finance': typeof WorkspaceFinanceRoute
+  '/workspace/operations': typeof WorkspaceOperationsRoute
+  '/workspace/system-admin': typeof WorkspaceSystemAdminRoute
+  '/agents': typeof AgentsIndexRoute
+  '/configuracion': typeof ConfiguracionIndexRoute
+  '/diffs': typeof DiffsIndexRoute
+  '/drenyra': typeof DrenyraIndexRoute
+  '/firm': typeof FirmIndexRoute
+  '/threads': typeof ThreadsIndexRoute
+  '/workspace': typeof WorkspaceIndexRoute
+  '/drenyra/case/$threadId': typeof DrenyraCaseThreadIdRoute
+  '/firm/clients/$id': typeof FirmClientsIdRoute
+  '/operaciones/economic-groups/$groupId': typeof OperacionesEconomicGroupsGroupIdRoute
 }
 export interface FileRoutesById {
-	__root__: typeof rootRouteImport;
-	"/": typeof IndexRoute;
-	"/approvals": typeof ApprovalsRoute;
-	"/assets": typeof AssetsRoute;
-	"/audit": typeof AuditRoute;
-	"/auth": typeof AuthRoute;
-	"/automations": typeof AutomationsRoute;
-	"/banking": typeof BankingRoute;
-	"/bills": typeof BillsRoute;
-	"/cashflow": typeof CashflowRoute;
-	"/chat": typeof ChatRoute;
-	"/cierre-mensual": typeof CierreMensualRoute;
-	"/compare": typeof CompareRoute;
-	"/compliance": typeof ComplianceRoute;
-	"/configuracion": typeof ConfiguracionRouteWithChildren;
-	"/connections": typeof ConnectionsRoute;
-	"/credit-notes": typeof CreditNotesRoute;
-	"/customers": typeof CustomersRoute;
-	"/dashboard": typeof DashboardRoute;
-	"/debit-notes": typeof DebitNotesRoute;
-	"/documents": typeof DocumentsRoute;
-	"/drenyra": typeof DrenyraRouteWithChildren;
-	"/entities": typeof EntitiesRoute;
-	"/evidence": typeof EvidenceRouteWithChildren;
-	"/expedientes": typeof ExpedientesRoute;
-	"/financials": typeof FinancialsRoute;
-	"/firm": typeof FirmRouteWithChildren;
-	"/forgot-password": typeof ForgotPasswordRoute;
-	"/inbox": typeof InboxRoute;
-	"/inteligencia": typeof InteligenciaRoute;
-	"/inventory": typeof InventoryRoute;
-	"/invoices": typeof InvoicesRoute;
-	"/ledger": typeof LedgerRoute;
-	"/login": typeof LoginRoute;
-	"/mobile-summary": typeof MobileSummaryRoute;
-	"/neural-grid": typeof NeuralGridRoute;
-	"/onboarding": typeof OnboardingRouteWithChildren;
-	"/payroll": typeof PayrollRoute;
-	"/period-close": typeof PeriodCloseRoute;
-	"/playground": typeof PlaygroundRoute;
-	"/plugins": typeof PluginsRoute;
-	"/product-surfaces": typeof ProductSurfacesRoute;
-	"/products": typeof ProductsRoute;
-	"/profile": typeof ProfileRoute;
-	"/reconciliations": typeof ReconciliationsRoute;
-	"/reports": typeof ReportsRoute;
-	"/reset-password": typeof ResetPasswordRoute;
-	"/review": typeof ReviewRoute;
-	"/review-queue": typeof ReviewQueueRoute;
-	"/scanner": typeof ScannerRoute;
-	"/settings": typeof SettingsRoute;
-	"/signup": typeof SignupRoute;
-	"/skills": typeof SkillsRoute;
-	"/taxation": typeof TaxationRoute;
-	"/vendors": typeof VendorsRoute;
-	"/verify-email": typeof VerifyEmailRoute;
-	"/configuracion/appearance": typeof ConfiguracionAppearanceRoute;
-	"/configuracion/automations": typeof ConfiguracionAutomationsRoute;
-	"/configuracion/billing": typeof ConfiguracionBillingRoute;
-	"/configuracion/compare": typeof ConfiguracionCompareRoute;
-	"/configuracion/connections": typeof ConfiguracionConnectionsRoute;
-	"/configuracion/integrations": typeof ConfiguracionIntegrationsRoute;
-	"/configuracion/keyboard-shortcuts": typeof ConfiguracionKeyboardShortcutsRoute;
-	"/configuracion/notifications": typeof ConfiguracionNotificationsRoute;
-	"/configuracion/organization": typeof ConfiguracionOrganizationRoute;
-	"/configuracion/plugins": typeof ConfiguracionPluginsRoute;
-	"/configuracion/product-surfaces": typeof ConfiguracionProductSurfacesRoute;
-	"/configuracion/profile": typeof ConfiguracionProfileRoute;
-	"/configuracion/security": typeof ConfiguracionSecurityRoute;
-	"/configuracion/tool-permissions": typeof ConfiguracionToolPermissionsRoute;
-	"/contabilidad/accounting-pr": typeof ContabilidadAccountingPrRoute;
-	"/contabilidad/assets": typeof ContabilidadAssetsRoute;
-	"/contabilidad/cierre-mensual": typeof ContabilidadCierreMensualRoute;
-	"/contabilidad/financials": typeof ContabilidadFinancialsRoute;
-	"/contabilidad/ledger": typeof ContabilidadLedgerRoute;
-	"/contabilidad/reports": typeof ContabilidadReportsRoute;
-	"/cumplimiento/approvals": typeof CumplimientoApprovalsRoute;
-	"/cumplimiento/audit": typeof CumplimientoAuditRoute;
-	"/cumplimiento/compliance": typeof CumplimientoComplianceRoute;
-	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
-	"/cumplimiento/review": typeof CumplimientoReviewRoute;
-	"/cumplimiento/sire-diff": typeof CumplimientoSireDiffRoute;
-	"/cumplimiento/sunat-dashboard": typeof CumplimientoSunatDashboardRoute;
-	"/cumplimiento/taxation": typeof CumplimientoTaxationRoute;
-	"/drenyra/$threadId": typeof DrenyraThreadIdRoute;
-	"/drenyra/automatizaciones": typeof DrenyraAutomatizacionesRoute;
-	"/drenyra/control-tower": typeof DrenyraControlTowerRoute;
-	"/drenyra/herramientas": typeof DrenyraHerramientasRoute;
-	"/drenyra/hub": typeof DrenyraHubRoute;
-	"/drenyra/observability": typeof DrenyraObservabilityRoute;
-	"/drenyra/skills": typeof DrenyraSkillsRoute;
-	"/economic-groups/$groupId": typeof EconomicGroupsGroupIdRoute;
-	"/evidence/$id": typeof EvidenceIdRoute;
-	"/facturacion/credit-notes": typeof FacturacionCreditNotesRoute;
-	"/facturacion/debit-notes": typeof FacturacionDebitNotesRoute;
-	"/facturacion/invoices": typeof FacturacionInvoicesRoute;
-	"/firm/clients": typeof FirmClientsRouteWithChildren;
-	"/onboarding/demos": typeof OnboardingDemosRoute;
-	"/operaciones/customers": typeof OperacionesCustomersRoute;
-	"/operaciones/documents": typeof OperacionesDocumentsRoute;
-	"/operaciones/entities": typeof OperacionesEntitiesRoute;
-	"/operaciones/inbox": typeof OperacionesInboxRoute;
-	"/operaciones/inventory": typeof OperacionesInventoryRoute;
-	"/operaciones/payroll": typeof OperacionesPayrollRoute;
-	"/operaciones/products": typeof OperacionesProductsRoute;
-	"/operaciones/scanner": typeof OperacionesScannerRoute;
-	"/operaciones/vendors": typeof OperacionesVendorsRoute;
-	"/popout/$threadId": typeof PopoutThreadIdRoute;
-	"/tesoreria/banking": typeof TesoreriaBankingRoute;
-	"/tesoreria/bills": typeof TesoreriaBillsRoute;
-	"/tesoreria/cashflow": typeof TesoreriaCashflowRoute;
-	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
-	"/threads/$threadId": typeof ThreadsThreadIdRoute;
-	"/workspace/compliance": typeof WorkspaceComplianceRoute;
-	"/workspace/finance": typeof WorkspaceFinanceRoute;
-	"/workspace/operations": typeof WorkspaceOperationsRoute;
-	"/workspace/system-admin": typeof WorkspaceSystemAdminRoute;
-	"/agents/": typeof AgentsIndexRoute;
-	"/configuracion/": typeof ConfiguracionIndexRoute;
-	"/diffs/": typeof DiffsIndexRoute;
-	"/drenyra/": typeof DrenyraIndexRoute;
-	"/firm/": typeof FirmIndexRoute;
-	"/threads/": typeof ThreadsIndexRoute;
-	"/workspace/": typeof WorkspaceIndexRoute;
-	"/drenyra/case/$threadId": typeof DrenyraCaseThreadIdRoute;
-	"/firm/clients/$id": typeof FirmClientsIdRoute;
-	"/operaciones/economic-groups/$groupId": typeof OperacionesEconomicGroupsGroupIdRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/accountant': typeof AccountantRoute
+  '/approval': typeof ApprovalRouteWithChildren
+  '/approvals': typeof ApprovalsRoute
+  '/assets': typeof AssetsRoute
+  '/audit': typeof AuditRoute
+  '/auth': typeof AuthRoute
+  '/automations': typeof AutomationsRoute
+  '/banking': typeof BankingRoute
+  '/bills': typeof BillsRoute
+  '/cashflow': typeof CashflowRoute
+  '/chat': typeof ChatRoute
+  '/cierre-mensual': typeof CierreMensualRoute
+  '/compare': typeof CompareRoute
+  '/compliance': typeof ComplianceRoute
+  '/configuracion': typeof ConfiguracionRouteWithChildren
+  '/connections': typeof ConnectionsRoute
+  '/consulta': typeof ConsultaRoute
+  '/credit-notes': typeof CreditNotesRoute
+  '/customers': typeof CustomersRoute
+  '/dashboard': typeof DashboardRoute
+  '/debit-notes': typeof DebitNotesRoute
+  '/documents': typeof DocumentsRoute
+  '/drenyra': typeof DrenyraRouteWithChildren
+  '/entities': typeof EntitiesRoute
+  '/evidence': typeof EvidenceRouteWithChildren
+  '/expedientes': typeof ExpedientesRoute
+  '/financials': typeof FinancialsRoute
+  '/firm': typeof FirmRouteWithChildren
+  '/fiscal-chat': typeof FiscalChatRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/inbox': typeof InboxRoute
+  '/inteligencia': typeof InteligenciaRoute
+  '/inventory': typeof InventoryRoute
+  '/invoices': typeof InvoicesRoute
+  '/ledger': typeof LedgerRoute
+  '/login': typeof LoginRoute
+  '/mobile-summary': typeof MobileSummaryRoute
+  '/neural-grid': typeof NeuralGridRoute
+  '/onboarding': typeof OnboardingRouteWithChildren
+  '/payroll': typeof PayrollRoute
+  '/period-close': typeof PeriodCloseRoute
+  '/playground': typeof PlaygroundRoute
+  '/plugins': typeof PluginsRoute
+  '/product-surfaces': typeof ProductSurfacesRoute
+  '/products': typeof ProductsRoute
+  '/profile': typeof ProfileRoute
+  '/reconciliations': typeof ReconciliationsRoute
+  '/reports': typeof ReportsRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/review': typeof ReviewRoute
+  '/review-queue': typeof ReviewQueueRoute
+  '/scanner': typeof ScannerRoute
+  '/settings': typeof SettingsRoute
+  '/signup': typeof SignupRoute
+  '/skills': typeof SkillsRoute
+  '/taxation': typeof TaxationRoute
+  '/vendors': typeof VendorsRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/approval/$id': typeof ApprovalIdRoute
+  '/configuracion/appearance': typeof ConfiguracionAppearanceRoute
+  '/configuracion/automations': typeof ConfiguracionAutomationsRoute
+  '/configuracion/billing': typeof ConfiguracionBillingRoute
+  '/configuracion/compare': typeof ConfiguracionCompareRoute
+  '/configuracion/connections': typeof ConfiguracionConnectionsRoute
+  '/configuracion/integrations': typeof ConfiguracionIntegrationsRoute
+  '/configuracion/keyboard-shortcuts': typeof ConfiguracionKeyboardShortcutsRoute
+  '/configuracion/notifications': typeof ConfiguracionNotificationsRoute
+  '/configuracion/organization': typeof ConfiguracionOrganizationRoute
+  '/configuracion/plugins': typeof ConfiguracionPluginsRoute
+  '/configuracion/product-surfaces': typeof ConfiguracionProductSurfacesRoute
+  '/configuracion/profile': typeof ConfiguracionProfileRoute
+  '/configuracion/security': typeof ConfiguracionSecurityRoute
+  '/configuracion/tool-permissions': typeof ConfiguracionToolPermissionsRoute
+  '/contabilidad/accounting-pr': typeof ContabilidadAccountingPrRoute
+  '/contabilidad/assets': typeof ContabilidadAssetsRoute
+  '/contabilidad/cierre-mensual': typeof ContabilidadCierreMensualRoute
+  '/contabilidad/financials': typeof ContabilidadFinancialsRoute
+  '/contabilidad/ledger': typeof ContabilidadLedgerRoute
+  '/contabilidad/reports': typeof ContabilidadReportsRoute
+  '/cumplimiento/approvals': typeof CumplimientoApprovalsRoute
+  '/cumplimiento/audit': typeof CumplimientoAuditRoute
+  '/cumplimiento/compliance': typeof CumplimientoComplianceRoute
+  '/cumplimiento/expedientes': typeof CumplimientoExpedientesRoute
+  '/cumplimiento/review': typeof CumplimientoReviewRoute
+  '/cumplimiento/sire-diff': typeof CumplimientoSireDiffRoute
+  '/cumplimiento/sunat-dashboard': typeof CumplimientoSunatDashboardRoute
+  '/cumplimiento/taxation': typeof CumplimientoTaxationRoute
+  '/drenyra/$threadId': typeof DrenyraThreadIdRoute
+  '/drenyra/automatizaciones': typeof DrenyraAutomatizacionesRoute
+  '/drenyra/control-tower': typeof DrenyraControlTowerRoute
+  '/drenyra/herramientas': typeof DrenyraHerramientasRoute
+  '/drenyra/hub': typeof DrenyraHubRoute
+  '/drenyra/observability': typeof DrenyraObservabilityRoute
+  '/drenyra/skills': typeof DrenyraSkillsRoute
+  '/economic-groups/$groupId': typeof EconomicGroupsGroupIdRoute
+  '/evidence/$id': typeof EvidenceIdRoute
+  '/facturacion/credit-notes': typeof FacturacionCreditNotesRoute
+  '/facturacion/debit-notes': typeof FacturacionDebitNotesRoute
+  '/facturacion/invoices': typeof FacturacionInvoicesRoute
+  '/firm/clients': typeof FirmClientsRouteWithChildren
+  '/onboarding/demos': typeof OnboardingDemosRoute
+  '/operaciones/customers': typeof OperacionesCustomersRoute
+  '/operaciones/documents': typeof OperacionesDocumentsRoute
+  '/operaciones/entities': typeof OperacionesEntitiesRoute
+  '/operaciones/inbox': typeof OperacionesInboxRoute
+  '/operaciones/inventory': typeof OperacionesInventoryRoute
+  '/operaciones/payroll': typeof OperacionesPayrollRoute
+  '/operaciones/products': typeof OperacionesProductsRoute
+  '/operaciones/scanner': typeof OperacionesScannerRoute
+  '/operaciones/vendors': typeof OperacionesVendorsRoute
+  '/popout/$threadId': typeof PopoutThreadIdRoute
+  '/tesoreria/banking': typeof TesoreriaBankingRoute
+  '/tesoreria/bills': typeof TesoreriaBillsRoute
+  '/tesoreria/cashflow': typeof TesoreriaCashflowRoute
+  '/tesoreria/reconciliations': typeof TesoreriaReconciliationsRoute
+  '/threads/$threadId': typeof ThreadsThreadIdRoute
+  '/workspace/compliance': typeof WorkspaceComplianceRoute
+  '/workspace/finance': typeof WorkspaceFinanceRoute
+  '/workspace/operations': typeof WorkspaceOperationsRoute
+  '/workspace/system-admin': typeof WorkspaceSystemAdminRoute
+  '/agents/': typeof AgentsIndexRoute
+  '/configuracion/': typeof ConfiguracionIndexRoute
+  '/diffs/': typeof DiffsIndexRoute
+  '/drenyra/': typeof DrenyraIndexRoute
+  '/firm/': typeof FirmIndexRoute
+  '/threads/': typeof ThreadsIndexRoute
+  '/workspace/': typeof WorkspaceIndexRoute
+  '/drenyra/case/$threadId': typeof DrenyraCaseThreadIdRoute
+  '/firm/clients/$id': typeof FirmClientsIdRoute
+  '/operaciones/economic-groups/$groupId': typeof OperacionesEconomicGroupsGroupIdRoute
 }
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths:
-		| "/"
-		| "/approvals"
-		| "/assets"
-		| "/audit"
-		| "/auth"
-		| "/automations"
-		| "/banking"
-		| "/bills"
-		| "/cashflow"
-		| "/chat"
-		| "/cierre-mensual"
-		| "/compare"
-		| "/compliance"
-		| "/configuracion"
-		| "/connections"
-		| "/credit-notes"
-		| "/customers"
-		| "/dashboard"
-		| "/debit-notes"
-		| "/documents"
-		| "/drenyra"
-		| "/entities"
-		| "/evidence"
-		| "/expedientes"
-		| "/financials"
-		| "/firm"
-		| "/forgot-password"
-		| "/inbox"
-		| "/inteligencia"
-		| "/inventory"
-		| "/invoices"
-		| "/ledger"
-		| "/login"
-		| "/mobile-summary"
-		| "/neural-grid"
-		| "/onboarding"
-		| "/payroll"
-		| "/period-close"
-		| "/playground"
-		| "/plugins"
-		| "/product-surfaces"
-		| "/products"
-		| "/profile"
-		| "/reconciliations"
-		| "/reports"
-		| "/reset-password"
-		| "/review"
-		| "/review-queue"
-		| "/scanner"
-		| "/settings"
-		| "/signup"
-		| "/skills"
-		| "/taxation"
-		| "/vendors"
-		| "/verify-email"
-		| "/configuracion/appearance"
-		| "/configuracion/automations"
-		| "/configuracion/billing"
-		| "/configuracion/compare"
-		| "/configuracion/connections"
-		| "/configuracion/integrations"
-		| "/configuracion/keyboard-shortcuts"
-		| "/configuracion/notifications"
-		| "/configuracion/organization"
-		| "/configuracion/plugins"
-		| "/configuracion/product-surfaces"
-		| "/configuracion/profile"
-		| "/configuracion/security"
-		| "/configuracion/tool-permissions"
-		| "/contabilidad/accounting-pr"
-		| "/contabilidad/assets"
-		| "/contabilidad/cierre-mensual"
-		| "/contabilidad/financials"
-		| "/contabilidad/ledger"
-		| "/contabilidad/reports"
-		| "/cumplimiento/approvals"
-		| "/cumplimiento/audit"
-		| "/cumplimiento/compliance"
-		| "/cumplimiento/expedientes"
-		| "/cumplimiento/review"
-		| "/cumplimiento/sire-diff"
-		| "/cumplimiento/sunat-dashboard"
-		| "/cumplimiento/taxation"
-		| "/drenyra/$threadId"
-		| "/drenyra/automatizaciones"
-		| "/drenyra/control-tower"
-		| "/drenyra/herramientas"
-		| "/drenyra/hub"
-		| "/drenyra/observability"
-		| "/drenyra/skills"
-		| "/economic-groups/$groupId"
-		| "/evidence/$id"
-		| "/facturacion/credit-notes"
-		| "/facturacion/debit-notes"
-		| "/facturacion/invoices"
-		| "/firm/clients"
-		| "/onboarding/demos"
-		| "/operaciones/customers"
-		| "/operaciones/documents"
-		| "/operaciones/entities"
-		| "/operaciones/inbox"
-		| "/operaciones/inventory"
-		| "/operaciones/payroll"
-		| "/operaciones/products"
-		| "/operaciones/scanner"
-		| "/operaciones/vendors"
-		| "/popout/$threadId"
-		| "/tesoreria/banking"
-		| "/tesoreria/bills"
-		| "/tesoreria/cashflow"
-		| "/tesoreria/reconciliations"
-		| "/threads/$threadId"
-		| "/workspace/compliance"
-		| "/workspace/finance"
-		| "/workspace/operations"
-		| "/workspace/system-admin"
-		| "/agents/"
-		| "/configuracion/"
-		| "/diffs/"
-		| "/drenyra/"
-		| "/firm/"
-		| "/threads/"
-		| "/workspace/"
-		| "/drenyra/case/$threadId"
-		| "/firm/clients/$id"
-		| "/operaciones/economic-groups/$groupId";
-	fileRoutesByTo: FileRoutesByTo;
-	to:
-		| "/"
-		| "/approvals"
-		| "/assets"
-		| "/audit"
-		| "/auth"
-		| "/automations"
-		| "/banking"
-		| "/bills"
-		| "/cashflow"
-		| "/chat"
-		| "/cierre-mensual"
-		| "/compare"
-		| "/compliance"
-		| "/connections"
-		| "/credit-notes"
-		| "/customers"
-		| "/dashboard"
-		| "/debit-notes"
-		| "/documents"
-		| "/entities"
-		| "/evidence"
-		| "/expedientes"
-		| "/financials"
-		| "/forgot-password"
-		| "/inbox"
-		| "/inteligencia"
-		| "/inventory"
-		| "/invoices"
-		| "/ledger"
-		| "/login"
-		| "/mobile-summary"
-		| "/neural-grid"
-		| "/onboarding"
-		| "/payroll"
-		| "/period-close"
-		| "/playground"
-		| "/plugins"
-		| "/product-surfaces"
-		| "/products"
-		| "/profile"
-		| "/reconciliations"
-		| "/reports"
-		| "/reset-password"
-		| "/review"
-		| "/review-queue"
-		| "/scanner"
-		| "/settings"
-		| "/signup"
-		| "/skills"
-		| "/taxation"
-		| "/vendors"
-		| "/verify-email"
-		| "/configuracion/appearance"
-		| "/configuracion/automations"
-		| "/configuracion/billing"
-		| "/configuracion/compare"
-		| "/configuracion/connections"
-		| "/configuracion/integrations"
-		| "/configuracion/keyboard-shortcuts"
-		| "/configuracion/notifications"
-		| "/configuracion/organization"
-		| "/configuracion/plugins"
-		| "/configuracion/product-surfaces"
-		| "/configuracion/profile"
-		| "/configuracion/security"
-		| "/configuracion/tool-permissions"
-		| "/contabilidad/accounting-pr"
-		| "/contabilidad/assets"
-		| "/contabilidad/cierre-mensual"
-		| "/contabilidad/financials"
-		| "/contabilidad/ledger"
-		| "/contabilidad/reports"
-		| "/cumplimiento/approvals"
-		| "/cumplimiento/audit"
-		| "/cumplimiento/compliance"
-		| "/cumplimiento/expedientes"
-		| "/cumplimiento/review"
-		| "/cumplimiento/sire-diff"
-		| "/cumplimiento/sunat-dashboard"
-		| "/cumplimiento/taxation"
-		| "/drenyra/$threadId"
-		| "/drenyra/automatizaciones"
-		| "/drenyra/control-tower"
-		| "/drenyra/herramientas"
-		| "/drenyra/hub"
-		| "/drenyra/observability"
-		| "/drenyra/skills"
-		| "/economic-groups/$groupId"
-		| "/evidence/$id"
-		| "/facturacion/credit-notes"
-		| "/facturacion/debit-notes"
-		| "/facturacion/invoices"
-		| "/firm/clients"
-		| "/onboarding/demos"
-		| "/operaciones/customers"
-		| "/operaciones/documents"
-		| "/operaciones/entities"
-		| "/operaciones/inbox"
-		| "/operaciones/inventory"
-		| "/operaciones/payroll"
-		| "/operaciones/products"
-		| "/operaciones/scanner"
-		| "/operaciones/vendors"
-		| "/popout/$threadId"
-		| "/tesoreria/banking"
-		| "/tesoreria/bills"
-		| "/tesoreria/cashflow"
-		| "/tesoreria/reconciliations"
-		| "/threads/$threadId"
-		| "/workspace/compliance"
-		| "/workspace/finance"
-		| "/workspace/operations"
-		| "/workspace/system-admin"
-		| "/agents"
-		| "/configuracion"
-		| "/diffs"
-		| "/drenyra"
-		| "/firm"
-		| "/threads"
-		| "/workspace"
-		| "/drenyra/case/$threadId"
-		| "/firm/clients/$id"
-		| "/operaciones/economic-groups/$groupId";
-	id:
-		| "__root__"
-		| "/"
-		| "/approvals"
-		| "/assets"
-		| "/audit"
-		| "/auth"
-		| "/automations"
-		| "/banking"
-		| "/bills"
-		| "/cashflow"
-		| "/chat"
-		| "/cierre-mensual"
-		| "/compare"
-		| "/compliance"
-		| "/configuracion"
-		| "/connections"
-		| "/credit-notes"
-		| "/customers"
-		| "/dashboard"
-		| "/debit-notes"
-		| "/documents"
-		| "/drenyra"
-		| "/entities"
-		| "/evidence"
-		| "/expedientes"
-		| "/financials"
-		| "/firm"
-		| "/forgot-password"
-		| "/inbox"
-		| "/inteligencia"
-		| "/inventory"
-		| "/invoices"
-		| "/ledger"
-		| "/login"
-		| "/mobile-summary"
-		| "/neural-grid"
-		| "/onboarding"
-		| "/payroll"
-		| "/period-close"
-		| "/playground"
-		| "/plugins"
-		| "/product-surfaces"
-		| "/products"
-		| "/profile"
-		| "/reconciliations"
-		| "/reports"
-		| "/reset-password"
-		| "/review"
-		| "/review-queue"
-		| "/scanner"
-		| "/settings"
-		| "/signup"
-		| "/skills"
-		| "/taxation"
-		| "/vendors"
-		| "/verify-email"
-		| "/configuracion/appearance"
-		| "/configuracion/automations"
-		| "/configuracion/billing"
-		| "/configuracion/compare"
-		| "/configuracion/connections"
-		| "/configuracion/integrations"
-		| "/configuracion/keyboard-shortcuts"
-		| "/configuracion/notifications"
-		| "/configuracion/organization"
-		| "/configuracion/plugins"
-		| "/configuracion/product-surfaces"
-		| "/configuracion/profile"
-		| "/configuracion/security"
-		| "/configuracion/tool-permissions"
-		| "/contabilidad/accounting-pr"
-		| "/contabilidad/assets"
-		| "/contabilidad/cierre-mensual"
-		| "/contabilidad/financials"
-		| "/contabilidad/ledger"
-		| "/contabilidad/reports"
-		| "/cumplimiento/approvals"
-		| "/cumplimiento/audit"
-		| "/cumplimiento/compliance"
-		| "/cumplimiento/expedientes"
-		| "/cumplimiento/review"
-		| "/cumplimiento/sire-diff"
-		| "/cumplimiento/sunat-dashboard"
-		| "/cumplimiento/taxation"
-		| "/drenyra/$threadId"
-		| "/drenyra/automatizaciones"
-		| "/drenyra/control-tower"
-		| "/drenyra/herramientas"
-		| "/drenyra/hub"
-		| "/drenyra/observability"
-		| "/drenyra/skills"
-		| "/economic-groups/$groupId"
-		| "/evidence/$id"
-		| "/facturacion/credit-notes"
-		| "/facturacion/debit-notes"
-		| "/facturacion/invoices"
-		| "/firm/clients"
-		| "/onboarding/demos"
-		| "/operaciones/customers"
-		| "/operaciones/documents"
-		| "/operaciones/entities"
-		| "/operaciones/inbox"
-		| "/operaciones/inventory"
-		| "/operaciones/payroll"
-		| "/operaciones/products"
-		| "/operaciones/scanner"
-		| "/operaciones/vendors"
-		| "/popout/$threadId"
-		| "/tesoreria/banking"
-		| "/tesoreria/bills"
-		| "/tesoreria/cashflow"
-		| "/tesoreria/reconciliations"
-		| "/threads/$threadId"
-		| "/workspace/compliance"
-		| "/workspace/finance"
-		| "/workspace/operations"
-		| "/workspace/system-admin"
-		| "/agents/"
-		| "/configuracion/"
-		| "/diffs/"
-		| "/drenyra/"
-		| "/firm/"
-		| "/threads/"
-		| "/workspace/"
-		| "/drenyra/case/$threadId"
-		| "/firm/clients/$id"
-		| "/operaciones/economic-groups/$groupId";
-	fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/accountant'
+    | '/approval'
+    | '/approvals'
+    | '/assets'
+    | '/audit'
+    | '/auth'
+    | '/automations'
+    | '/banking'
+    | '/bills'
+    | '/cashflow'
+    | '/chat'
+    | '/cierre-mensual'
+    | '/compare'
+    | '/compliance'
+    | '/configuracion'
+    | '/connections'
+    | '/consulta'
+    | '/credit-notes'
+    | '/customers'
+    | '/dashboard'
+    | '/debit-notes'
+    | '/documents'
+    | '/drenyra'
+    | '/entities'
+    | '/evidence'
+    | '/expedientes'
+    | '/financials'
+    | '/firm'
+    | '/fiscal-chat'
+    | '/forgot-password'
+    | '/inbox'
+    | '/inteligencia'
+    | '/inventory'
+    | '/invoices'
+    | '/ledger'
+    | '/login'
+    | '/mobile-summary'
+    | '/neural-grid'
+    | '/onboarding'
+    | '/payroll'
+    | '/period-close'
+    | '/playground'
+    | '/plugins'
+    | '/product-surfaces'
+    | '/products'
+    | '/profile'
+    | '/reconciliations'
+    | '/reports'
+    | '/reset-password'
+    | '/review'
+    | '/review-queue'
+    | '/scanner'
+    | '/settings'
+    | '/signup'
+    | '/skills'
+    | '/taxation'
+    | '/vendors'
+    | '/verify-email'
+    | '/approval/$id'
+    | '/configuracion/appearance'
+    | '/configuracion/automations'
+    | '/configuracion/billing'
+    | '/configuracion/compare'
+    | '/configuracion/connections'
+    | '/configuracion/integrations'
+    | '/configuracion/keyboard-shortcuts'
+    | '/configuracion/notifications'
+    | '/configuracion/organization'
+    | '/configuracion/plugins'
+    | '/configuracion/product-surfaces'
+    | '/configuracion/profile'
+    | '/configuracion/security'
+    | '/configuracion/tool-permissions'
+    | '/contabilidad/accounting-pr'
+    | '/contabilidad/assets'
+    | '/contabilidad/cierre-mensual'
+    | '/contabilidad/financials'
+    | '/contabilidad/ledger'
+    | '/contabilidad/reports'
+    | '/cumplimiento/approvals'
+    | '/cumplimiento/audit'
+    | '/cumplimiento/compliance'
+    | '/cumplimiento/expedientes'
+    | '/cumplimiento/review'
+    | '/cumplimiento/sire-diff'
+    | '/cumplimiento/sunat-dashboard'
+    | '/cumplimiento/taxation'
+    | '/drenyra/$threadId'
+    | '/drenyra/automatizaciones'
+    | '/drenyra/control-tower'
+    | '/drenyra/herramientas'
+    | '/drenyra/hub'
+    | '/drenyra/observability'
+    | '/drenyra/skills'
+    | '/economic-groups/$groupId'
+    | '/evidence/$id'
+    | '/facturacion/credit-notes'
+    | '/facturacion/debit-notes'
+    | '/facturacion/invoices'
+    | '/firm/clients'
+    | '/onboarding/demos'
+    | '/operaciones/customers'
+    | '/operaciones/documents'
+    | '/operaciones/entities'
+    | '/operaciones/inbox'
+    | '/operaciones/inventory'
+    | '/operaciones/payroll'
+    | '/operaciones/products'
+    | '/operaciones/scanner'
+    | '/operaciones/vendors'
+    | '/popout/$threadId'
+    | '/tesoreria/banking'
+    | '/tesoreria/bills'
+    | '/tesoreria/cashflow'
+    | '/tesoreria/reconciliations'
+    | '/threads/$threadId'
+    | '/workspace/compliance'
+    | '/workspace/finance'
+    | '/workspace/operations'
+    | '/workspace/system-admin'
+    | '/agents/'
+    | '/configuracion/'
+    | '/diffs/'
+    | '/drenyra/'
+    | '/firm/'
+    | '/threads/'
+    | '/workspace/'
+    | '/drenyra/case/$threadId'
+    | '/firm/clients/$id'
+    | '/operaciones/economic-groups/$groupId'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/accountant'
+    | '/approval'
+    | '/approvals'
+    | '/assets'
+    | '/audit'
+    | '/auth'
+    | '/automations'
+    | '/banking'
+    | '/bills'
+    | '/cashflow'
+    | '/chat'
+    | '/cierre-mensual'
+    | '/compare'
+    | '/compliance'
+    | '/connections'
+    | '/consulta'
+    | '/credit-notes'
+    | '/customers'
+    | '/dashboard'
+    | '/debit-notes'
+    | '/documents'
+    | '/entities'
+    | '/evidence'
+    | '/expedientes'
+    | '/financials'
+    | '/fiscal-chat'
+    | '/forgot-password'
+    | '/inbox'
+    | '/inteligencia'
+    | '/inventory'
+    | '/invoices'
+    | '/ledger'
+    | '/login'
+    | '/mobile-summary'
+    | '/neural-grid'
+    | '/onboarding'
+    | '/payroll'
+    | '/period-close'
+    | '/playground'
+    | '/plugins'
+    | '/product-surfaces'
+    | '/products'
+    | '/profile'
+    | '/reconciliations'
+    | '/reports'
+    | '/reset-password'
+    | '/review'
+    | '/review-queue'
+    | '/scanner'
+    | '/settings'
+    | '/signup'
+    | '/skills'
+    | '/taxation'
+    | '/vendors'
+    | '/verify-email'
+    | '/approval/$id'
+    | '/configuracion/appearance'
+    | '/configuracion/automations'
+    | '/configuracion/billing'
+    | '/configuracion/compare'
+    | '/configuracion/connections'
+    | '/configuracion/integrations'
+    | '/configuracion/keyboard-shortcuts'
+    | '/configuracion/notifications'
+    | '/configuracion/organization'
+    | '/configuracion/plugins'
+    | '/configuracion/product-surfaces'
+    | '/configuracion/profile'
+    | '/configuracion/security'
+    | '/configuracion/tool-permissions'
+    | '/contabilidad/accounting-pr'
+    | '/contabilidad/assets'
+    | '/contabilidad/cierre-mensual'
+    | '/contabilidad/financials'
+    | '/contabilidad/ledger'
+    | '/contabilidad/reports'
+    | '/cumplimiento/approvals'
+    | '/cumplimiento/audit'
+    | '/cumplimiento/compliance'
+    | '/cumplimiento/expedientes'
+    | '/cumplimiento/review'
+    | '/cumplimiento/sire-diff'
+    | '/cumplimiento/sunat-dashboard'
+    | '/cumplimiento/taxation'
+    | '/drenyra/$threadId'
+    | '/drenyra/automatizaciones'
+    | '/drenyra/control-tower'
+    | '/drenyra/herramientas'
+    | '/drenyra/hub'
+    | '/drenyra/observability'
+    | '/drenyra/skills'
+    | '/economic-groups/$groupId'
+    | '/evidence/$id'
+    | '/facturacion/credit-notes'
+    | '/facturacion/debit-notes'
+    | '/facturacion/invoices'
+    | '/firm/clients'
+    | '/onboarding/demos'
+    | '/operaciones/customers'
+    | '/operaciones/documents'
+    | '/operaciones/entities'
+    | '/operaciones/inbox'
+    | '/operaciones/inventory'
+    | '/operaciones/payroll'
+    | '/operaciones/products'
+    | '/operaciones/scanner'
+    | '/operaciones/vendors'
+    | '/popout/$threadId'
+    | '/tesoreria/banking'
+    | '/tesoreria/bills'
+    | '/tesoreria/cashflow'
+    | '/tesoreria/reconciliations'
+    | '/threads/$threadId'
+    | '/workspace/compliance'
+    | '/workspace/finance'
+    | '/workspace/operations'
+    | '/workspace/system-admin'
+    | '/agents'
+    | '/configuracion'
+    | '/diffs'
+    | '/drenyra'
+    | '/firm'
+    | '/threads'
+    | '/workspace'
+    | '/drenyra/case/$threadId'
+    | '/firm/clients/$id'
+    | '/operaciones/economic-groups/$groupId'
+  id:
+    | '__root__'
+    | '/'
+    | '/accountant'
+    | '/approval'
+    | '/approvals'
+    | '/assets'
+    | '/audit'
+    | '/auth'
+    | '/automations'
+    | '/banking'
+    | '/bills'
+    | '/cashflow'
+    | '/chat'
+    | '/cierre-mensual'
+    | '/compare'
+    | '/compliance'
+    | '/configuracion'
+    | '/connections'
+    | '/consulta'
+    | '/credit-notes'
+    | '/customers'
+    | '/dashboard'
+    | '/debit-notes'
+    | '/documents'
+    | '/drenyra'
+    | '/entities'
+    | '/evidence'
+    | '/expedientes'
+    | '/financials'
+    | '/firm'
+    | '/fiscal-chat'
+    | '/forgot-password'
+    | '/inbox'
+    | '/inteligencia'
+    | '/inventory'
+    | '/invoices'
+    | '/ledger'
+    | '/login'
+    | '/mobile-summary'
+    | '/neural-grid'
+    | '/onboarding'
+    | '/payroll'
+    | '/period-close'
+    | '/playground'
+    | '/plugins'
+    | '/product-surfaces'
+    | '/products'
+    | '/profile'
+    | '/reconciliations'
+    | '/reports'
+    | '/reset-password'
+    | '/review'
+    | '/review-queue'
+    | '/scanner'
+    | '/settings'
+    | '/signup'
+    | '/skills'
+    | '/taxation'
+    | '/vendors'
+    | '/verify-email'
+    | '/approval/$id'
+    | '/configuracion/appearance'
+    | '/configuracion/automations'
+    | '/configuracion/billing'
+    | '/configuracion/compare'
+    | '/configuracion/connections'
+    | '/configuracion/integrations'
+    | '/configuracion/keyboard-shortcuts'
+    | '/configuracion/notifications'
+    | '/configuracion/organization'
+    | '/configuracion/plugins'
+    | '/configuracion/product-surfaces'
+    | '/configuracion/profile'
+    | '/configuracion/security'
+    | '/configuracion/tool-permissions'
+    | '/contabilidad/accounting-pr'
+    | '/contabilidad/assets'
+    | '/contabilidad/cierre-mensual'
+    | '/contabilidad/financials'
+    | '/contabilidad/ledger'
+    | '/contabilidad/reports'
+    | '/cumplimiento/approvals'
+    | '/cumplimiento/audit'
+    | '/cumplimiento/compliance'
+    | '/cumplimiento/expedientes'
+    | '/cumplimiento/review'
+    | '/cumplimiento/sire-diff'
+    | '/cumplimiento/sunat-dashboard'
+    | '/cumplimiento/taxation'
+    | '/drenyra/$threadId'
+    | '/drenyra/automatizaciones'
+    | '/drenyra/control-tower'
+    | '/drenyra/herramientas'
+    | '/drenyra/hub'
+    | '/drenyra/observability'
+    | '/drenyra/skills'
+    | '/economic-groups/$groupId'
+    | '/evidence/$id'
+    | '/facturacion/credit-notes'
+    | '/facturacion/debit-notes'
+    | '/facturacion/invoices'
+    | '/firm/clients'
+    | '/onboarding/demos'
+    | '/operaciones/customers'
+    | '/operaciones/documents'
+    | '/operaciones/entities'
+    | '/operaciones/inbox'
+    | '/operaciones/inventory'
+    | '/operaciones/payroll'
+    | '/operaciones/products'
+    | '/operaciones/scanner'
+    | '/operaciones/vendors'
+    | '/popout/$threadId'
+    | '/tesoreria/banking'
+    | '/tesoreria/bills'
+    | '/tesoreria/cashflow'
+    | '/tesoreria/reconciliations'
+    | '/threads/$threadId'
+    | '/workspace/compliance'
+    | '/workspace/finance'
+    | '/workspace/operations'
+    | '/workspace/system-admin'
+    | '/agents/'
+    | '/configuracion/'
+    | '/diffs/'
+    | '/drenyra/'
+    | '/firm/'
+    | '/threads/'
+    | '/workspace/'
+    | '/drenyra/case/$threadId'
+    | '/firm/clients/$id'
+    | '/operaciones/economic-groups/$groupId'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-	IndexRoute: typeof IndexRoute;
-	ApprovalsRoute: typeof ApprovalsRoute;
-	AssetsRoute: typeof AssetsRoute;
-	AuditRoute: typeof AuditRoute;
-	AuthRoute: typeof AuthRoute;
-	AutomationsRoute: typeof AutomationsRoute;
-	BankingRoute: typeof BankingRoute;
-	BillsRoute: typeof BillsRoute;
-	CashflowRoute: typeof CashflowRoute;
-	ChatRoute: typeof ChatRoute;
-	CierreMensualRoute: typeof CierreMensualRoute;
-	CompareRoute: typeof CompareRoute;
-	ComplianceRoute: typeof ComplianceRoute;
-	ConfiguracionRoute: typeof ConfiguracionRouteWithChildren;
-	ConnectionsRoute: typeof ConnectionsRoute;
-	CreditNotesRoute: typeof CreditNotesRoute;
-	CustomersRoute: typeof CustomersRoute;
-	DashboardRoute: typeof DashboardRoute;
-	DebitNotesRoute: typeof DebitNotesRoute;
-	DocumentsRoute: typeof DocumentsRoute;
-	DrenyraRoute: typeof DrenyraRouteWithChildren;
-	EntitiesRoute: typeof EntitiesRoute;
-	EvidenceRoute: typeof EvidenceRouteWithChildren;
-	ExpedientesRoute: typeof ExpedientesRoute;
-	FinancialsRoute: typeof FinancialsRoute;
-	FirmRoute: typeof FirmRouteWithChildren;
-	ForgotPasswordRoute: typeof ForgotPasswordRoute;
-	InboxRoute: typeof InboxRoute;
-	InteligenciaRoute: typeof InteligenciaRoute;
-	InventoryRoute: typeof InventoryRoute;
-	InvoicesRoute: typeof InvoicesRoute;
-	LedgerRoute: typeof LedgerRoute;
-	LoginRoute: typeof LoginRoute;
-	MobileSummaryRoute: typeof MobileSummaryRoute;
-	NeuralGridRoute: typeof NeuralGridRoute;
-	OnboardingRoute: typeof OnboardingRouteWithChildren;
-	PayrollRoute: typeof PayrollRoute;
-	PeriodCloseRoute: typeof PeriodCloseRoute;
-	PlaygroundRoute: typeof PlaygroundRoute;
-	PluginsRoute: typeof PluginsRoute;
-	ProductSurfacesRoute: typeof ProductSurfacesRoute;
-	ProductsRoute: typeof ProductsRoute;
-	ProfileRoute: typeof ProfileRoute;
-	ReconciliationsRoute: typeof ReconciliationsRoute;
-	ReportsRoute: typeof ReportsRoute;
-	ResetPasswordRoute: typeof ResetPasswordRoute;
-	ReviewRoute: typeof ReviewRoute;
-	ReviewQueueRoute: typeof ReviewQueueRoute;
-	ScannerRoute: typeof ScannerRoute;
-	SettingsRoute: typeof SettingsRoute;
-	SignupRoute: typeof SignupRoute;
-	SkillsRoute: typeof SkillsRoute;
-	TaxationRoute: typeof TaxationRoute;
-	VendorsRoute: typeof VendorsRoute;
-	VerifyEmailRoute: typeof VerifyEmailRoute;
-	ContabilidadAccountingPrRoute: typeof ContabilidadAccountingPrRoute;
-	ContabilidadAssetsRoute: typeof ContabilidadAssetsRoute;
-	ContabilidadCierreMensualRoute: typeof ContabilidadCierreMensualRoute;
-	ContabilidadFinancialsRoute: typeof ContabilidadFinancialsRoute;
-	ContabilidadLedgerRoute: typeof ContabilidadLedgerRoute;
-	ContabilidadReportsRoute: typeof ContabilidadReportsRoute;
-	CumplimientoApprovalsRoute: typeof CumplimientoApprovalsRoute;
-	CumplimientoAuditRoute: typeof CumplimientoAuditRoute;
-	CumplimientoComplianceRoute: typeof CumplimientoComplianceRoute;
-	CumplimientoExpedientesRoute: typeof CumplimientoExpedientesRoute;
-	CumplimientoReviewRoute: typeof CumplimientoReviewRoute;
-	CumplimientoSireDiffRoute: typeof CumplimientoSireDiffRoute;
-	CumplimientoSunatDashboardRoute: typeof CumplimientoSunatDashboardRoute;
-	CumplimientoTaxationRoute: typeof CumplimientoTaxationRoute;
-	EconomicGroupsGroupIdRoute: typeof EconomicGroupsGroupIdRoute;
-	FacturacionCreditNotesRoute: typeof FacturacionCreditNotesRoute;
-	FacturacionDebitNotesRoute: typeof FacturacionDebitNotesRoute;
-	FacturacionInvoicesRoute: typeof FacturacionInvoicesRoute;
-	OperacionesCustomersRoute: typeof OperacionesCustomersRoute;
-	OperacionesDocumentsRoute: typeof OperacionesDocumentsRoute;
-	OperacionesEntitiesRoute: typeof OperacionesEntitiesRoute;
-	OperacionesInboxRoute: typeof OperacionesInboxRoute;
-	OperacionesInventoryRoute: typeof OperacionesInventoryRoute;
-	OperacionesPayrollRoute: typeof OperacionesPayrollRoute;
-	OperacionesProductsRoute: typeof OperacionesProductsRoute;
-	OperacionesScannerRoute: typeof OperacionesScannerRoute;
-	OperacionesVendorsRoute: typeof OperacionesVendorsRoute;
-	PopoutThreadIdRoute: typeof PopoutThreadIdRoute;
-	TesoreriaBankingRoute: typeof TesoreriaBankingRoute;
-	TesoreriaBillsRoute: typeof TesoreriaBillsRoute;
-	TesoreriaCashflowRoute: typeof TesoreriaCashflowRoute;
-	TesoreriaReconciliationsRoute: typeof TesoreriaReconciliationsRoute;
-	ThreadsThreadIdRoute: typeof ThreadsThreadIdRoute;
-	WorkspaceComplianceRoute: typeof WorkspaceComplianceRoute;
-	WorkspaceFinanceRoute: typeof WorkspaceFinanceRoute;
-	WorkspaceOperationsRoute: typeof WorkspaceOperationsRoute;
-	WorkspaceSystemAdminRoute: typeof WorkspaceSystemAdminRoute;
-	AgentsIndexRoute: typeof AgentsIndexRoute;
-	DiffsIndexRoute: typeof DiffsIndexRoute;
-	ThreadsIndexRoute: typeof ThreadsIndexRoute;
-	WorkspaceIndexRoute: typeof WorkspaceIndexRoute;
-	OperacionesEconomicGroupsGroupIdRoute: typeof OperacionesEconomicGroupsGroupIdRoute;
+  IndexRoute: typeof IndexRoute
+  AccountantRoute: typeof AccountantRoute
+  ApprovalRoute: typeof ApprovalRouteWithChildren
+  ApprovalsRoute: typeof ApprovalsRoute
+  AssetsRoute: typeof AssetsRoute
+  AuditRoute: typeof AuditRoute
+  AuthRoute: typeof AuthRoute
+  AutomationsRoute: typeof AutomationsRoute
+  BankingRoute: typeof BankingRoute
+  BillsRoute: typeof BillsRoute
+  CashflowRoute: typeof CashflowRoute
+  ChatRoute: typeof ChatRoute
+  CierreMensualRoute: typeof CierreMensualRoute
+  CompareRoute: typeof CompareRoute
+  ComplianceRoute: typeof ComplianceRoute
+  ConfiguracionRoute: typeof ConfiguracionRouteWithChildren
+  ConnectionsRoute: typeof ConnectionsRoute
+  ConsultaRoute: typeof ConsultaRoute
+  CreditNotesRoute: typeof CreditNotesRoute
+  CustomersRoute: typeof CustomersRoute
+  DashboardRoute: typeof DashboardRoute
+  DebitNotesRoute: typeof DebitNotesRoute
+  DocumentsRoute: typeof DocumentsRoute
+  DrenyraRoute: typeof DrenyraRouteWithChildren
+  EntitiesRoute: typeof EntitiesRoute
+  EvidenceRoute: typeof EvidenceRouteWithChildren
+  ExpedientesRoute: typeof ExpedientesRoute
+  FinancialsRoute: typeof FinancialsRoute
+  FirmRoute: typeof FirmRouteWithChildren
+  FiscalChatRoute: typeof FiscalChatRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  InboxRoute: typeof InboxRoute
+  InteligenciaRoute: typeof InteligenciaRoute
+  InventoryRoute: typeof InventoryRoute
+  InvoicesRoute: typeof InvoicesRoute
+  LedgerRoute: typeof LedgerRoute
+  LoginRoute: typeof LoginRoute
+  MobileSummaryRoute: typeof MobileSummaryRoute
+  NeuralGridRoute: typeof NeuralGridRoute
+  OnboardingRoute: typeof OnboardingRouteWithChildren
+  PayrollRoute: typeof PayrollRoute
+  PeriodCloseRoute: typeof PeriodCloseRoute
+  PlaygroundRoute: typeof PlaygroundRoute
+  PluginsRoute: typeof PluginsRoute
+  ProductSurfacesRoute: typeof ProductSurfacesRoute
+  ProductsRoute: typeof ProductsRoute
+  ProfileRoute: typeof ProfileRoute
+  ReconciliationsRoute: typeof ReconciliationsRoute
+  ReportsRoute: typeof ReportsRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  ReviewRoute: typeof ReviewRoute
+  ReviewQueueRoute: typeof ReviewQueueRoute
+  ScannerRoute: typeof ScannerRoute
+  SettingsRoute: typeof SettingsRoute
+  SignupRoute: typeof SignupRoute
+  SkillsRoute: typeof SkillsRoute
+  TaxationRoute: typeof TaxationRoute
+  VendorsRoute: typeof VendorsRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
+  ContabilidadAccountingPrRoute: typeof ContabilidadAccountingPrRoute
+  ContabilidadAssetsRoute: typeof ContabilidadAssetsRoute
+  ContabilidadCierreMensualRoute: typeof ContabilidadCierreMensualRoute
+  ContabilidadFinancialsRoute: typeof ContabilidadFinancialsRoute
+  ContabilidadLedgerRoute: typeof ContabilidadLedgerRoute
+  ContabilidadReportsRoute: typeof ContabilidadReportsRoute
+  CumplimientoApprovalsRoute: typeof CumplimientoApprovalsRoute
+  CumplimientoAuditRoute: typeof CumplimientoAuditRoute
+  CumplimientoComplianceRoute: typeof CumplimientoComplianceRoute
+  CumplimientoExpedientesRoute: typeof CumplimientoExpedientesRoute
+  CumplimientoReviewRoute: typeof CumplimientoReviewRoute
+  CumplimientoSireDiffRoute: typeof CumplimientoSireDiffRoute
+  CumplimientoSunatDashboardRoute: typeof CumplimientoSunatDashboardRoute
+  CumplimientoTaxationRoute: typeof CumplimientoTaxationRoute
+  EconomicGroupsGroupIdRoute: typeof EconomicGroupsGroupIdRoute
+  FacturacionCreditNotesRoute: typeof FacturacionCreditNotesRoute
+  FacturacionDebitNotesRoute: typeof FacturacionDebitNotesRoute
+  FacturacionInvoicesRoute: typeof FacturacionInvoicesRoute
+  OperacionesCustomersRoute: typeof OperacionesCustomersRoute
+  OperacionesDocumentsRoute: typeof OperacionesDocumentsRoute
+  OperacionesEntitiesRoute: typeof OperacionesEntitiesRoute
+  OperacionesInboxRoute: typeof OperacionesInboxRoute
+  OperacionesInventoryRoute: typeof OperacionesInventoryRoute
+  OperacionesPayrollRoute: typeof OperacionesPayrollRoute
+  OperacionesProductsRoute: typeof OperacionesProductsRoute
+  OperacionesScannerRoute: typeof OperacionesScannerRoute
+  OperacionesVendorsRoute: typeof OperacionesVendorsRoute
+  PopoutThreadIdRoute: typeof PopoutThreadIdRoute
+  TesoreriaBankingRoute: typeof TesoreriaBankingRoute
+  TesoreriaBillsRoute: typeof TesoreriaBillsRoute
+  TesoreriaCashflowRoute: typeof TesoreriaCashflowRoute
+  TesoreriaReconciliationsRoute: typeof TesoreriaReconciliationsRoute
+  ThreadsThreadIdRoute: typeof ThreadsThreadIdRoute
+  WorkspaceComplianceRoute: typeof WorkspaceComplianceRoute
+  WorkspaceFinanceRoute: typeof WorkspaceFinanceRoute
+  WorkspaceOperationsRoute: typeof WorkspaceOperationsRoute
+  WorkspaceSystemAdminRoute: typeof WorkspaceSystemAdminRoute
+  AgentsIndexRoute: typeof AgentsIndexRoute
+  DiffsIndexRoute: typeof DiffsIndexRoute
+  ThreadsIndexRoute: typeof ThreadsIndexRoute
+  WorkspaceIndexRoute: typeof WorkspaceIndexRoute
+  OperacionesEconomicGroupsGroupIdRoute: typeof OperacionesEconomicGroupsGroupIdRoute
 }
 
-declare module "@tanstack/react-router" {
-	interface FileRoutesByPath {
-		"/verify-email": {
-			id: "/verify-email";
-			path: "/verify-email";
-			fullPath: "/verify-email";
-			preLoaderRoute: typeof VerifyEmailRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/vendors": {
-			id: "/vendors";
-			path: "/vendors";
-			fullPath: "/vendors";
-			preLoaderRoute: typeof VendorsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/taxation": {
-			id: "/taxation";
-			path: "/taxation";
-			fullPath: "/taxation";
-			preLoaderRoute: typeof TaxationRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/skills": {
-			id: "/skills";
-			path: "/skills";
-			fullPath: "/skills";
-			preLoaderRoute: typeof SkillsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/signup": {
-			id: "/signup";
-			path: "/signup";
-			fullPath: "/signup";
-			preLoaderRoute: typeof SignupRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/settings": {
-			id: "/settings";
-			path: "/settings";
-			fullPath: "/settings";
-			preLoaderRoute: typeof SettingsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/scanner": {
-			id: "/scanner";
-			path: "/scanner";
-			fullPath: "/scanner";
-			preLoaderRoute: typeof ScannerRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/review-queue": {
-			id: "/review-queue";
-			path: "/review-queue";
-			fullPath: "/review-queue";
-			preLoaderRoute: typeof ReviewQueueRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/review": {
-			id: "/review";
-			path: "/review";
-			fullPath: "/review";
-			preLoaderRoute: typeof ReviewRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/reset-password": {
-			id: "/reset-password";
-			path: "/reset-password";
-			fullPath: "/reset-password";
-			preLoaderRoute: typeof ResetPasswordRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/reports": {
-			id: "/reports";
-			path: "/reports";
-			fullPath: "/reports";
-			preLoaderRoute: typeof ReportsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/reconciliations": {
-			id: "/reconciliations";
-			path: "/reconciliations";
-			fullPath: "/reconciliations";
-			preLoaderRoute: typeof ReconciliationsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/profile": {
-			id: "/profile";
-			path: "/profile";
-			fullPath: "/profile";
-			preLoaderRoute: typeof ProfileRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/products": {
-			id: "/products";
-			path: "/products";
-			fullPath: "/products";
-			preLoaderRoute: typeof ProductsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/product-surfaces": {
-			id: "/product-surfaces";
-			path: "/product-surfaces";
-			fullPath: "/product-surfaces";
-			preLoaderRoute: typeof ProductSurfacesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/plugins": {
-			id: "/plugins";
-			path: "/plugins";
-			fullPath: "/plugins";
-			preLoaderRoute: typeof PluginsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/playground": {
-			id: "/playground";
-			path: "/playground";
-			fullPath: "/playground";
-			preLoaderRoute: typeof PlaygroundRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/period-close": {
-			id: "/period-close";
-			path: "/period-close";
-			fullPath: "/period-close";
-			preLoaderRoute: typeof PeriodCloseRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/payroll": {
-			id: "/payroll";
-			path: "/payroll";
-			fullPath: "/payroll";
-			preLoaderRoute: typeof PayrollRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/onboarding": {
-			id: "/onboarding";
-			path: "/onboarding";
-			fullPath: "/onboarding";
-			preLoaderRoute: typeof OnboardingRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/neural-grid": {
-			id: "/neural-grid";
-			path: "/neural-grid";
-			fullPath: "/neural-grid";
-			preLoaderRoute: typeof NeuralGridRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/mobile-summary": {
-			id: "/mobile-summary";
-			path: "/mobile-summary";
-			fullPath: "/mobile-summary";
-			preLoaderRoute: typeof MobileSummaryRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/login": {
-			id: "/login";
-			path: "/login";
-			fullPath: "/login";
-			preLoaderRoute: typeof LoginRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/ledger": {
-			id: "/ledger";
-			path: "/ledger";
-			fullPath: "/ledger";
-			preLoaderRoute: typeof LedgerRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/invoices": {
-			id: "/invoices";
-			path: "/invoices";
-			fullPath: "/invoices";
-			preLoaderRoute: typeof InvoicesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/inventory": {
-			id: "/inventory";
-			path: "/inventory";
-			fullPath: "/inventory";
-			preLoaderRoute: typeof InventoryRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/inteligencia": {
-			id: "/inteligencia";
-			path: "/inteligencia";
-			fullPath: "/inteligencia";
-			preLoaderRoute: typeof InteligenciaRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/inbox": {
-			id: "/inbox";
-			path: "/inbox";
-			fullPath: "/inbox";
-			preLoaderRoute: typeof InboxRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/forgot-password": {
-			id: "/forgot-password";
-			path: "/forgot-password";
-			fullPath: "/forgot-password";
-			preLoaderRoute: typeof ForgotPasswordRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/firm": {
-			id: "/firm";
-			path: "/firm";
-			fullPath: "/firm";
-			preLoaderRoute: typeof FirmRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/financials": {
-			id: "/financials";
-			path: "/financials";
-			fullPath: "/financials";
-			preLoaderRoute: typeof FinancialsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/expedientes": {
-			id: "/expedientes";
-			path: "/expedientes";
-			fullPath: "/expedientes";
-			preLoaderRoute: typeof ExpedientesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/evidence": {
-			id: "/evidence";
-			path: "/evidence";
-			fullPath: "/evidence";
-			preLoaderRoute: typeof EvidenceRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/entities": {
-			id: "/entities";
-			path: "/entities";
-			fullPath: "/entities";
-			preLoaderRoute: typeof EntitiesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/drenyra": {
-			id: "/drenyra";
-			path: "/drenyra";
-			fullPath: "/drenyra";
-			preLoaderRoute: typeof DrenyraRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/documents": {
-			id: "/documents";
-			path: "/documents";
-			fullPath: "/documents";
-			preLoaderRoute: typeof DocumentsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/debit-notes": {
-			id: "/debit-notes";
-			path: "/debit-notes";
-			fullPath: "/debit-notes";
-			preLoaderRoute: typeof DebitNotesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/dashboard": {
-			id: "/dashboard";
-			path: "/dashboard";
-			fullPath: "/dashboard";
-			preLoaderRoute: typeof DashboardRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/customers": {
-			id: "/customers";
-			path: "/customers";
-			fullPath: "/customers";
-			preLoaderRoute: typeof CustomersRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/credit-notes": {
-			id: "/credit-notes";
-			path: "/credit-notes";
-			fullPath: "/credit-notes";
-			preLoaderRoute: typeof CreditNotesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/connections": {
-			id: "/connections";
-			path: "/connections";
-			fullPath: "/connections";
-			preLoaderRoute: typeof ConnectionsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/configuracion": {
-			id: "/configuracion";
-			path: "/configuracion";
-			fullPath: "/configuracion";
-			preLoaderRoute: typeof ConfiguracionRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/compliance": {
-			id: "/compliance";
-			path: "/compliance";
-			fullPath: "/compliance";
-			preLoaderRoute: typeof ComplianceRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/compare": {
-			id: "/compare";
-			path: "/compare";
-			fullPath: "/compare";
-			preLoaderRoute: typeof CompareRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/cierre-mensual": {
-			id: "/cierre-mensual";
-			path: "/cierre-mensual";
-			fullPath: "/cierre-mensual";
-			preLoaderRoute: typeof CierreMensualRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/chat": {
-			id: "/chat";
-			path: "/chat";
-			fullPath: "/chat";
-			preLoaderRoute: typeof ChatRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/cashflow": {
-			id: "/cashflow";
-			path: "/cashflow";
-			fullPath: "/cashflow";
-			preLoaderRoute: typeof CashflowRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/bills": {
-			id: "/bills";
-			path: "/bills";
-			fullPath: "/bills";
-			preLoaderRoute: typeof BillsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/banking": {
-			id: "/banking";
-			path: "/banking";
-			fullPath: "/banking";
-			preLoaderRoute: typeof BankingRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/automations": {
-			id: "/automations";
-			path: "/automations";
-			fullPath: "/automations";
-			preLoaderRoute: typeof AutomationsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/auth": {
-			id: "/auth";
-			path: "/auth";
-			fullPath: "/auth";
-			preLoaderRoute: typeof AuthRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/audit": {
-			id: "/audit";
-			path: "/audit";
-			fullPath: "/audit";
-			preLoaderRoute: typeof AuditRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/assets": {
-			id: "/assets";
-			path: "/assets";
-			fullPath: "/assets";
-			preLoaderRoute: typeof AssetsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/approvals": {
-			id: "/approvals";
-			path: "/approvals";
-			fullPath: "/approvals";
-			preLoaderRoute: typeof ApprovalsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/": {
-			id: "/";
-			path: "/";
-			fullPath: "/";
-			preLoaderRoute: typeof IndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/workspace/": {
-			id: "/workspace/";
-			path: "/workspace";
-			fullPath: "/workspace/";
-			preLoaderRoute: typeof WorkspaceIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/threads/": {
-			id: "/threads/";
-			path: "/threads";
-			fullPath: "/threads/";
-			preLoaderRoute: typeof ThreadsIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/firm/": {
-			id: "/firm/";
-			path: "/";
-			fullPath: "/firm/";
-			preLoaderRoute: typeof FirmIndexRouteImport;
-			parentRoute: typeof FirmRoute;
-		};
-		"/drenyra/": {
-			id: "/drenyra/";
-			path: "/";
-			fullPath: "/drenyra/";
-			preLoaderRoute: typeof DrenyraIndexRouteImport;
-			parentRoute: typeof DrenyraRoute;
-		};
-		"/diffs/": {
-			id: "/diffs/";
-			path: "/diffs";
-			fullPath: "/diffs/";
-			preLoaderRoute: typeof DiffsIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/configuracion/": {
-			id: "/configuracion/";
-			path: "/";
-			fullPath: "/configuracion/";
-			preLoaderRoute: typeof ConfiguracionIndexRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/agents/": {
-			id: "/agents/";
-			path: "/agents";
-			fullPath: "/agents/";
-			preLoaderRoute: typeof AgentsIndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/workspace/system-admin": {
-			id: "/workspace/system-admin";
-			path: "/workspace/system-admin";
-			fullPath: "/workspace/system-admin";
-			preLoaderRoute: typeof WorkspaceSystemAdminRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/workspace/operations": {
-			id: "/workspace/operations";
-			path: "/workspace/operations";
-			fullPath: "/workspace/operations";
-			preLoaderRoute: typeof WorkspaceOperationsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/workspace/finance": {
-			id: "/workspace/finance";
-			path: "/workspace/finance";
-			fullPath: "/workspace/finance";
-			preLoaderRoute: typeof WorkspaceFinanceRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/workspace/compliance": {
-			id: "/workspace/compliance";
-			path: "/workspace/compliance";
-			fullPath: "/workspace/compliance";
-			preLoaderRoute: typeof WorkspaceComplianceRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/threads/$threadId": {
-			id: "/threads/$threadId";
-			path: "/threads/$threadId";
-			fullPath: "/threads/$threadId";
-			preLoaderRoute: typeof ThreadsThreadIdRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/tesoreria/reconciliations": {
-			id: "/tesoreria/reconciliations";
-			path: "/tesoreria/reconciliations";
-			fullPath: "/tesoreria/reconciliations";
-			preLoaderRoute: typeof TesoreriaReconciliationsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/tesoreria/cashflow": {
-			id: "/tesoreria/cashflow";
-			path: "/tesoreria/cashflow";
-			fullPath: "/tesoreria/cashflow";
-			preLoaderRoute: typeof TesoreriaCashflowRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/tesoreria/bills": {
-			id: "/tesoreria/bills";
-			path: "/tesoreria/bills";
-			fullPath: "/tesoreria/bills";
-			preLoaderRoute: typeof TesoreriaBillsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/tesoreria/banking": {
-			id: "/tesoreria/banking";
-			path: "/tesoreria/banking";
-			fullPath: "/tesoreria/banking";
-			preLoaderRoute: typeof TesoreriaBankingRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/popout/$threadId": {
-			id: "/popout/$threadId";
-			path: "/popout/$threadId";
-			fullPath: "/popout/$threadId";
-			preLoaderRoute: typeof PopoutThreadIdRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/operaciones/vendors": {
-			id: "/operaciones/vendors";
-			path: "/operaciones/vendors";
-			fullPath: "/operaciones/vendors";
-			preLoaderRoute: typeof OperacionesVendorsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/operaciones/scanner": {
-			id: "/operaciones/scanner";
-			path: "/operaciones/scanner";
-			fullPath: "/operaciones/scanner";
-			preLoaderRoute: typeof OperacionesScannerRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/operaciones/products": {
-			id: "/operaciones/products";
-			path: "/operaciones/products";
-			fullPath: "/operaciones/products";
-			preLoaderRoute: typeof OperacionesProductsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/operaciones/payroll": {
-			id: "/operaciones/payroll";
-			path: "/operaciones/payroll";
-			fullPath: "/operaciones/payroll";
-			preLoaderRoute: typeof OperacionesPayrollRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/operaciones/inventory": {
-			id: "/operaciones/inventory";
-			path: "/operaciones/inventory";
-			fullPath: "/operaciones/inventory";
-			preLoaderRoute: typeof OperacionesInventoryRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/operaciones/inbox": {
-			id: "/operaciones/inbox";
-			path: "/operaciones/inbox";
-			fullPath: "/operaciones/inbox";
-			preLoaderRoute: typeof OperacionesInboxRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/operaciones/entities": {
-			id: "/operaciones/entities";
-			path: "/operaciones/entities";
-			fullPath: "/operaciones/entities";
-			preLoaderRoute: typeof OperacionesEntitiesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/operaciones/documents": {
-			id: "/operaciones/documents";
-			path: "/operaciones/documents";
-			fullPath: "/operaciones/documents";
-			preLoaderRoute: typeof OperacionesDocumentsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/operaciones/customers": {
-			id: "/operaciones/customers";
-			path: "/operaciones/customers";
-			fullPath: "/operaciones/customers";
-			preLoaderRoute: typeof OperacionesCustomersRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/onboarding/demos": {
-			id: "/onboarding/demos";
-			path: "/demos";
-			fullPath: "/onboarding/demos";
-			preLoaderRoute: typeof OnboardingDemosRouteImport;
-			parentRoute: typeof OnboardingRoute;
-		};
-		"/firm/clients": {
-			id: "/firm/clients";
-			path: "/clients";
-			fullPath: "/firm/clients";
-			preLoaderRoute: typeof FirmClientsRouteImport;
-			parentRoute: typeof FirmRoute;
-		};
-		"/facturacion/invoices": {
-			id: "/facturacion/invoices";
-			path: "/facturacion/invoices";
-			fullPath: "/facturacion/invoices";
-			preLoaderRoute: typeof FacturacionInvoicesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/facturacion/debit-notes": {
-			id: "/facturacion/debit-notes";
-			path: "/facturacion/debit-notes";
-			fullPath: "/facturacion/debit-notes";
-			preLoaderRoute: typeof FacturacionDebitNotesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/facturacion/credit-notes": {
-			id: "/facturacion/credit-notes";
-			path: "/facturacion/credit-notes";
-			fullPath: "/facturacion/credit-notes";
-			preLoaderRoute: typeof FacturacionCreditNotesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/evidence/$id": {
-			id: "/evidence/$id";
-			path: "/$id";
-			fullPath: "/evidence/$id";
-			preLoaderRoute: typeof EvidenceIdRouteImport;
-			parentRoute: typeof EvidenceRoute;
-		};
-		"/economic-groups/$groupId": {
-			id: "/economic-groups/$groupId";
-			path: "/economic-groups/$groupId";
-			fullPath: "/economic-groups/$groupId";
-			preLoaderRoute: typeof EconomicGroupsGroupIdRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/drenyra/skills": {
-			id: "/drenyra/skills";
-			path: "/skills";
-			fullPath: "/drenyra/skills";
-			preLoaderRoute: typeof DrenyraSkillsRouteImport;
-			parentRoute: typeof DrenyraRoute;
-		};
-		"/drenyra/observability": {
-			id: "/drenyra/observability";
-			path: "/observability";
-			fullPath: "/drenyra/observability";
-			preLoaderRoute: typeof DrenyraObservabilityRouteImport;
-			parentRoute: typeof DrenyraRoute;
-		};
-		"/drenyra/hub": {
-			id: "/drenyra/hub";
-			path: "/hub";
-			fullPath: "/drenyra/hub";
-			preLoaderRoute: typeof DrenyraHubRouteImport;
-			parentRoute: typeof DrenyraRoute;
-		};
-		"/drenyra/herramientas": {
-			id: "/drenyra/herramientas";
-			path: "/herramientas";
-			fullPath: "/drenyra/herramientas";
-			preLoaderRoute: typeof DrenyraHerramientasRouteImport;
-			parentRoute: typeof DrenyraRoute;
-		};
-		"/drenyra/control-tower": {
-			id: "/drenyra/control-tower";
-			path: "/control-tower";
-			fullPath: "/drenyra/control-tower";
-			preLoaderRoute: typeof DrenyraControlTowerRouteImport;
-			parentRoute: typeof DrenyraRoute;
-		};
-		"/drenyra/automatizaciones": {
-			id: "/drenyra/automatizaciones";
-			path: "/automatizaciones";
-			fullPath: "/drenyra/automatizaciones";
-			preLoaderRoute: typeof DrenyraAutomatizacionesRouteImport;
-			parentRoute: typeof DrenyraRoute;
-		};
-		"/drenyra/$threadId": {
-			id: "/drenyra/$threadId";
-			path: "/$threadId";
-			fullPath: "/drenyra/$threadId";
-			preLoaderRoute: typeof DrenyraThreadIdRouteImport;
-			parentRoute: typeof DrenyraRoute;
-		};
-		"/cumplimiento/taxation": {
-			id: "/cumplimiento/taxation";
-			path: "/cumplimiento/taxation";
-			fullPath: "/cumplimiento/taxation";
-			preLoaderRoute: typeof CumplimientoTaxationRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/cumplimiento/sunat-dashboard": {
-			id: "/cumplimiento/sunat-dashboard";
-			path: "/cumplimiento/sunat-dashboard";
-			fullPath: "/cumplimiento/sunat-dashboard";
-			preLoaderRoute: typeof CumplimientoSunatDashboardRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/cumplimiento/sire-diff": {
-			id: "/cumplimiento/sire-diff";
-			path: "/cumplimiento/sire-diff";
-			fullPath: "/cumplimiento/sire-diff";
-			preLoaderRoute: typeof CumplimientoSireDiffRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/cumplimiento/review": {
-			id: "/cumplimiento/review";
-			path: "/cumplimiento/review";
-			fullPath: "/cumplimiento/review";
-			preLoaderRoute: typeof CumplimientoReviewRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/cumplimiento/expedientes": {
-			id: "/cumplimiento/expedientes";
-			path: "/cumplimiento/expedientes";
-			fullPath: "/cumplimiento/expedientes";
-			preLoaderRoute: typeof CumplimientoExpedientesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/cumplimiento/compliance": {
-			id: "/cumplimiento/compliance";
-			path: "/cumplimiento/compliance";
-			fullPath: "/cumplimiento/compliance";
-			preLoaderRoute: typeof CumplimientoComplianceRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/cumplimiento/audit": {
-			id: "/cumplimiento/audit";
-			path: "/cumplimiento/audit";
-			fullPath: "/cumplimiento/audit";
-			preLoaderRoute: typeof CumplimientoAuditRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/cumplimiento/approvals": {
-			id: "/cumplimiento/approvals";
-			path: "/cumplimiento/approvals";
-			fullPath: "/cumplimiento/approvals";
-			preLoaderRoute: typeof CumplimientoApprovalsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/contabilidad/reports": {
-			id: "/contabilidad/reports";
-			path: "/contabilidad/reports";
-			fullPath: "/contabilidad/reports";
-			preLoaderRoute: typeof ContabilidadReportsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/contabilidad/ledger": {
-			id: "/contabilidad/ledger";
-			path: "/contabilidad/ledger";
-			fullPath: "/contabilidad/ledger";
-			preLoaderRoute: typeof ContabilidadLedgerRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/contabilidad/financials": {
-			id: "/contabilidad/financials";
-			path: "/contabilidad/financials";
-			fullPath: "/contabilidad/financials";
-			preLoaderRoute: typeof ContabilidadFinancialsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/contabilidad/cierre-mensual": {
-			id: "/contabilidad/cierre-mensual";
-			path: "/contabilidad/cierre-mensual";
-			fullPath: "/contabilidad/cierre-mensual";
-			preLoaderRoute: typeof ContabilidadCierreMensualRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/contabilidad/assets": {
-			id: "/contabilidad/assets";
-			path: "/contabilidad/assets";
-			fullPath: "/contabilidad/assets";
-			preLoaderRoute: typeof ContabilidadAssetsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/contabilidad/accounting-pr": {
-			id: "/contabilidad/accounting-pr";
-			path: "/contabilidad/accounting-pr";
-			fullPath: "/contabilidad/accounting-pr";
-			preLoaderRoute: typeof ContabilidadAccountingPrRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/configuracion/tool-permissions": {
-			id: "/configuracion/tool-permissions";
-			path: "/tool-permissions";
-			fullPath: "/configuracion/tool-permissions";
-			preLoaderRoute: typeof ConfiguracionToolPermissionsRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/security": {
-			id: "/configuracion/security";
-			path: "/security";
-			fullPath: "/configuracion/security";
-			preLoaderRoute: typeof ConfiguracionSecurityRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/profile": {
-			id: "/configuracion/profile";
-			path: "/profile";
-			fullPath: "/configuracion/profile";
-			preLoaderRoute: typeof ConfiguracionProfileRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/product-surfaces": {
-			id: "/configuracion/product-surfaces";
-			path: "/product-surfaces";
-			fullPath: "/configuracion/product-surfaces";
-			preLoaderRoute: typeof ConfiguracionProductSurfacesRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/plugins": {
-			id: "/configuracion/plugins";
-			path: "/plugins";
-			fullPath: "/configuracion/plugins";
-			preLoaderRoute: typeof ConfiguracionPluginsRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/organization": {
-			id: "/configuracion/organization";
-			path: "/organization";
-			fullPath: "/configuracion/organization";
-			preLoaderRoute: typeof ConfiguracionOrganizationRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/notifications": {
-			id: "/configuracion/notifications";
-			path: "/notifications";
-			fullPath: "/configuracion/notifications";
-			preLoaderRoute: typeof ConfiguracionNotificationsRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/keyboard-shortcuts": {
-			id: "/configuracion/keyboard-shortcuts";
-			path: "/keyboard-shortcuts";
-			fullPath: "/configuracion/keyboard-shortcuts";
-			preLoaderRoute: typeof ConfiguracionKeyboardShortcutsRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/integrations": {
-			id: "/configuracion/integrations";
-			path: "/integrations";
-			fullPath: "/configuracion/integrations";
-			preLoaderRoute: typeof ConfiguracionIntegrationsRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/connections": {
-			id: "/configuracion/connections";
-			path: "/connections";
-			fullPath: "/configuracion/connections";
-			preLoaderRoute: typeof ConfiguracionConnectionsRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/compare": {
-			id: "/configuracion/compare";
-			path: "/compare";
-			fullPath: "/configuracion/compare";
-			preLoaderRoute: typeof ConfiguracionCompareRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/billing": {
-			id: "/configuracion/billing";
-			path: "/billing";
-			fullPath: "/configuracion/billing";
-			preLoaderRoute: typeof ConfiguracionBillingRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/automations": {
-			id: "/configuracion/automations";
-			path: "/automations";
-			fullPath: "/configuracion/automations";
-			preLoaderRoute: typeof ConfiguracionAutomationsRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/configuracion/appearance": {
-			id: "/configuracion/appearance";
-			path: "/appearance";
-			fullPath: "/configuracion/appearance";
-			preLoaderRoute: typeof ConfiguracionAppearanceRouteImport;
-			parentRoute: typeof ConfiguracionRoute;
-		};
-		"/operaciones/economic-groups/$groupId": {
-			id: "/operaciones/economic-groups/$groupId";
-			path: "/operaciones/economic-groups/$groupId";
-			fullPath: "/operaciones/economic-groups/$groupId";
-			preLoaderRoute: typeof OperacionesEconomicGroupsGroupIdRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/firm/clients/$id": {
-			id: "/firm/clients/$id";
-			path: "/$id";
-			fullPath: "/firm/clients/$id";
-			preLoaderRoute: typeof FirmClientsIdRouteImport;
-			parentRoute: typeof FirmClientsRoute;
-		};
-		"/drenyra/case/$threadId": {
-			id: "/drenyra/case/$threadId";
-			path: "/case/$threadId";
-			fullPath: "/drenyra/case/$threadId";
-			preLoaderRoute: typeof DrenyraCaseThreadIdRouteImport;
-			parentRoute: typeof DrenyraRoute;
-		};
-	}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vendors': {
+      id: '/vendors'
+      path: '/vendors'
+      fullPath: '/vendors'
+      preLoaderRoute: typeof VendorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/taxation': {
+      id: '/taxation'
+      path: '/taxation'
+      fullPath: '/taxation'
+      preLoaderRoute: typeof TaxationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/skills': {
+      id: '/skills'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof SkillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scanner': {
+      id: '/scanner'
+      path: '/scanner'
+      fullPath: '/scanner'
+      preLoaderRoute: typeof ScannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/review-queue': {
+      id: '/review-queue'
+      path: '/review-queue'
+      fullPath: '/review-queue'
+      preLoaderRoute: typeof ReviewQueueRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/review': {
+      id: '/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof ReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reconciliations': {
+      id: '/reconciliations'
+      path: '/reconciliations'
+      fullPath: '/reconciliations'
+      preLoaderRoute: typeof ReconciliationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/product-surfaces': {
+      id: '/product-surfaces'
+      path: '/product-surfaces'
+      fullPath: '/product-surfaces'
+      preLoaderRoute: typeof ProductSurfacesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plugins': {
+      id: '/plugins'
+      path: '/plugins'
+      fullPath: '/plugins'
+      preLoaderRoute: typeof PluginsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playground': {
+      id: '/playground'
+      path: '/playground'
+      fullPath: '/playground'
+      preLoaderRoute: typeof PlaygroundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/period-close': {
+      id: '/period-close'
+      path: '/period-close'
+      fullPath: '/period-close'
+      preLoaderRoute: typeof PeriodCloseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payroll': {
+      id: '/payroll'
+      path: '/payroll'
+      fullPath: '/payroll'
+      preLoaderRoute: typeof PayrollRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/neural-grid': {
+      id: '/neural-grid'
+      path: '/neural-grid'
+      fullPath: '/neural-grid'
+      preLoaderRoute: typeof NeuralGridRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mobile-summary': {
+      id: '/mobile-summary'
+      path: '/mobile-summary'
+      fullPath: '/mobile-summary'
+      preLoaderRoute: typeof MobileSummaryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ledger': {
+      id: '/ledger'
+      path: '/ledger'
+      fullPath: '/ledger'
+      preLoaderRoute: typeof LedgerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/invoices': {
+      id: '/invoices'
+      path: '/invoices'
+      fullPath: '/invoices'
+      preLoaderRoute: typeof InvoicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inventory': {
+      id: '/inventory'
+      path: '/inventory'
+      fullPath: '/inventory'
+      preLoaderRoute: typeof InventoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inteligencia': {
+      id: '/inteligencia'
+      path: '/inteligencia'
+      fullPath: '/inteligencia'
+      preLoaderRoute: typeof InteligenciaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inbox': {
+      id: '/inbox'
+      path: '/inbox'
+      fullPath: '/inbox'
+      preLoaderRoute: typeof InboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fiscal-chat': {
+      id: '/fiscal-chat'
+      path: '/fiscal-chat'
+      fullPath: '/fiscal-chat'
+      preLoaderRoute: typeof FiscalChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/firm': {
+      id: '/firm'
+      path: '/firm'
+      fullPath: '/firm'
+      preLoaderRoute: typeof FirmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/financials': {
+      id: '/financials'
+      path: '/financials'
+      fullPath: '/financials'
+      preLoaderRoute: typeof FinancialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/expedientes': {
+      id: '/expedientes'
+      path: '/expedientes'
+      fullPath: '/expedientes'
+      preLoaderRoute: typeof ExpedientesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evidence': {
+      id: '/evidence'
+      path: '/evidence'
+      fullPath: '/evidence'
+      preLoaderRoute: typeof EvidenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entities': {
+      id: '/entities'
+      path: '/entities'
+      fullPath: '/entities'
+      preLoaderRoute: typeof EntitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drenyra': {
+      id: '/drenyra'
+      path: '/drenyra'
+      fullPath: '/drenyra'
+      preLoaderRoute: typeof DrenyraRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/documents': {
+      id: '/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof DocumentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/debit-notes': {
+      id: '/debit-notes'
+      path: '/debit-notes'
+      fullPath: '/debit-notes'
+      preLoaderRoute: typeof DebitNotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/customers': {
+      id: '/customers'
+      path: '/customers'
+      fullPath: '/customers'
+      preLoaderRoute: typeof CustomersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/credit-notes': {
+      id: '/credit-notes'
+      path: '/credit-notes'
+      fullPath: '/credit-notes'
+      preLoaderRoute: typeof CreditNotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/consulta': {
+      id: '/consulta'
+      path: '/consulta'
+      fullPath: '/consulta'
+      preLoaderRoute: typeof ConsultaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/connections': {
+      id: '/connections'
+      path: '/connections'
+      fullPath: '/connections'
+      preLoaderRoute: typeof ConnectionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracion': {
+      id: '/configuracion'
+      path: '/configuracion'
+      fullPath: '/configuracion'
+      preLoaderRoute: typeof ConfiguracionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compliance': {
+      id: '/compliance'
+      path: '/compliance'
+      fullPath: '/compliance'
+      preLoaderRoute: typeof ComplianceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cierre-mensual': {
+      id: '/cierre-mensual'
+      path: '/cierre-mensual'
+      fullPath: '/cierre-mensual'
+      preLoaderRoute: typeof CierreMensualRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cashflow': {
+      id: '/cashflow'
+      path: '/cashflow'
+      fullPath: '/cashflow'
+      preLoaderRoute: typeof CashflowRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bills': {
+      id: '/bills'
+      path: '/bills'
+      fullPath: '/bills'
+      preLoaderRoute: typeof BillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/banking': {
+      id: '/banking'
+      path: '/banking'
+      fullPath: '/banking'
+      preLoaderRoute: typeof BankingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/automations': {
+      id: '/automations'
+      path: '/automations'
+      fullPath: '/automations'
+      preLoaderRoute: typeof AutomationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/audit': {
+      id: '/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assets': {
+      id: '/assets'
+      path: '/assets'
+      fullPath: '/assets'
+      preLoaderRoute: typeof AssetsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/approvals': {
+      id: '/approvals'
+      path: '/approvals'
+      fullPath: '/approvals'
+      preLoaderRoute: typeof ApprovalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/approval': {
+      id: '/approval'
+      path: '/approval'
+      fullPath: '/approval'
+      preLoaderRoute: typeof ApprovalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accountant': {
+      id: '/accountant'
+      path: '/accountant'
+      fullPath: '/accountant'
+      preLoaderRoute: typeof AccountantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/': {
+      id: '/workspace/'
+      path: '/workspace'
+      fullPath: '/workspace/'
+      preLoaderRoute: typeof WorkspaceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/threads/': {
+      id: '/threads/'
+      path: '/threads'
+      fullPath: '/threads/'
+      preLoaderRoute: typeof ThreadsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/firm/': {
+      id: '/firm/'
+      path: '/'
+      fullPath: '/firm/'
+      preLoaderRoute: typeof FirmIndexRouteImport
+      parentRoute: typeof FirmRoute
+    }
+    '/drenyra/': {
+      id: '/drenyra/'
+      path: '/'
+      fullPath: '/drenyra/'
+      preLoaderRoute: typeof DrenyraIndexRouteImport
+      parentRoute: typeof DrenyraRoute
+    }
+    '/diffs/': {
+      id: '/diffs/'
+      path: '/diffs'
+      fullPath: '/diffs/'
+      preLoaderRoute: typeof DiffsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracion/': {
+      id: '/configuracion/'
+      path: '/'
+      fullPath: '/configuracion/'
+      preLoaderRoute: typeof ConfiguracionIndexRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/agents/': {
+      id: '/agents/'
+      path: '/agents'
+      fullPath: '/agents/'
+      preLoaderRoute: typeof AgentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/system-admin': {
+      id: '/workspace/system-admin'
+      path: '/workspace/system-admin'
+      fullPath: '/workspace/system-admin'
+      preLoaderRoute: typeof WorkspaceSystemAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/operations': {
+      id: '/workspace/operations'
+      path: '/workspace/operations'
+      fullPath: '/workspace/operations'
+      preLoaderRoute: typeof WorkspaceOperationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/finance': {
+      id: '/workspace/finance'
+      path: '/workspace/finance'
+      fullPath: '/workspace/finance'
+      preLoaderRoute: typeof WorkspaceFinanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/compliance': {
+      id: '/workspace/compliance'
+      path: '/workspace/compliance'
+      fullPath: '/workspace/compliance'
+      preLoaderRoute: typeof WorkspaceComplianceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/threads/$threadId': {
+      id: '/threads/$threadId'
+      path: '/threads/$threadId'
+      fullPath: '/threads/$threadId'
+      preLoaderRoute: typeof ThreadsThreadIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tesoreria/reconciliations': {
+      id: '/tesoreria/reconciliations'
+      path: '/tesoreria/reconciliations'
+      fullPath: '/tesoreria/reconciliations'
+      preLoaderRoute: typeof TesoreriaReconciliationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tesoreria/cashflow': {
+      id: '/tesoreria/cashflow'
+      path: '/tesoreria/cashflow'
+      fullPath: '/tesoreria/cashflow'
+      preLoaderRoute: typeof TesoreriaCashflowRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tesoreria/bills': {
+      id: '/tesoreria/bills'
+      path: '/tesoreria/bills'
+      fullPath: '/tesoreria/bills'
+      preLoaderRoute: typeof TesoreriaBillsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tesoreria/banking': {
+      id: '/tesoreria/banking'
+      path: '/tesoreria/banking'
+      fullPath: '/tesoreria/banking'
+      preLoaderRoute: typeof TesoreriaBankingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/popout/$threadId': {
+      id: '/popout/$threadId'
+      path: '/popout/$threadId'
+      fullPath: '/popout/$threadId'
+      preLoaderRoute: typeof PopoutThreadIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operaciones/vendors': {
+      id: '/operaciones/vendors'
+      path: '/operaciones/vendors'
+      fullPath: '/operaciones/vendors'
+      preLoaderRoute: typeof OperacionesVendorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operaciones/scanner': {
+      id: '/operaciones/scanner'
+      path: '/operaciones/scanner'
+      fullPath: '/operaciones/scanner'
+      preLoaderRoute: typeof OperacionesScannerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operaciones/products': {
+      id: '/operaciones/products'
+      path: '/operaciones/products'
+      fullPath: '/operaciones/products'
+      preLoaderRoute: typeof OperacionesProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operaciones/payroll': {
+      id: '/operaciones/payroll'
+      path: '/operaciones/payroll'
+      fullPath: '/operaciones/payroll'
+      preLoaderRoute: typeof OperacionesPayrollRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operaciones/inventory': {
+      id: '/operaciones/inventory'
+      path: '/operaciones/inventory'
+      fullPath: '/operaciones/inventory'
+      preLoaderRoute: typeof OperacionesInventoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operaciones/inbox': {
+      id: '/operaciones/inbox'
+      path: '/operaciones/inbox'
+      fullPath: '/operaciones/inbox'
+      preLoaderRoute: typeof OperacionesInboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operaciones/entities': {
+      id: '/operaciones/entities'
+      path: '/operaciones/entities'
+      fullPath: '/operaciones/entities'
+      preLoaderRoute: typeof OperacionesEntitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operaciones/documents': {
+      id: '/operaciones/documents'
+      path: '/operaciones/documents'
+      fullPath: '/operaciones/documents'
+      preLoaderRoute: typeof OperacionesDocumentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/operaciones/customers': {
+      id: '/operaciones/customers'
+      path: '/operaciones/customers'
+      fullPath: '/operaciones/customers'
+      preLoaderRoute: typeof OperacionesCustomersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding/demos': {
+      id: '/onboarding/demos'
+      path: '/demos'
+      fullPath: '/onboarding/demos'
+      preLoaderRoute: typeof OnboardingDemosRouteImport
+      parentRoute: typeof OnboardingRoute
+    }
+    '/firm/clients': {
+      id: '/firm/clients'
+      path: '/clients'
+      fullPath: '/firm/clients'
+      preLoaderRoute: typeof FirmClientsRouteImport
+      parentRoute: typeof FirmRoute
+    }
+    '/facturacion/invoices': {
+      id: '/facturacion/invoices'
+      path: '/facturacion/invoices'
+      fullPath: '/facturacion/invoices'
+      preLoaderRoute: typeof FacturacionInvoicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/facturacion/debit-notes': {
+      id: '/facturacion/debit-notes'
+      path: '/facturacion/debit-notes'
+      fullPath: '/facturacion/debit-notes'
+      preLoaderRoute: typeof FacturacionDebitNotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/facturacion/credit-notes': {
+      id: '/facturacion/credit-notes'
+      path: '/facturacion/credit-notes'
+      fullPath: '/facturacion/credit-notes'
+      preLoaderRoute: typeof FacturacionCreditNotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evidence/$id': {
+      id: '/evidence/$id'
+      path: '/$id'
+      fullPath: '/evidence/$id'
+      preLoaderRoute: typeof EvidenceIdRouteImport
+      parentRoute: typeof EvidenceRoute
+    }
+    '/economic-groups/$groupId': {
+      id: '/economic-groups/$groupId'
+      path: '/economic-groups/$groupId'
+      fullPath: '/economic-groups/$groupId'
+      preLoaderRoute: typeof EconomicGroupsGroupIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drenyra/skills': {
+      id: '/drenyra/skills'
+      path: '/skills'
+      fullPath: '/drenyra/skills'
+      preLoaderRoute: typeof DrenyraSkillsRouteImport
+      parentRoute: typeof DrenyraRoute
+    }
+    '/drenyra/observability': {
+      id: '/drenyra/observability'
+      path: '/observability'
+      fullPath: '/drenyra/observability'
+      preLoaderRoute: typeof DrenyraObservabilityRouteImport
+      parentRoute: typeof DrenyraRoute
+    }
+    '/drenyra/hub': {
+      id: '/drenyra/hub'
+      path: '/hub'
+      fullPath: '/drenyra/hub'
+      preLoaderRoute: typeof DrenyraHubRouteImport
+      parentRoute: typeof DrenyraRoute
+    }
+    '/drenyra/herramientas': {
+      id: '/drenyra/herramientas'
+      path: '/herramientas'
+      fullPath: '/drenyra/herramientas'
+      preLoaderRoute: typeof DrenyraHerramientasRouteImport
+      parentRoute: typeof DrenyraRoute
+    }
+    '/drenyra/control-tower': {
+      id: '/drenyra/control-tower'
+      path: '/control-tower'
+      fullPath: '/drenyra/control-tower'
+      preLoaderRoute: typeof DrenyraControlTowerRouteImport
+      parentRoute: typeof DrenyraRoute
+    }
+    '/drenyra/automatizaciones': {
+      id: '/drenyra/automatizaciones'
+      path: '/automatizaciones'
+      fullPath: '/drenyra/automatizaciones'
+      preLoaderRoute: typeof DrenyraAutomatizacionesRouteImport
+      parentRoute: typeof DrenyraRoute
+    }
+    '/drenyra/$threadId': {
+      id: '/drenyra/$threadId'
+      path: '/$threadId'
+      fullPath: '/drenyra/$threadId'
+      preLoaderRoute: typeof DrenyraThreadIdRouteImport
+      parentRoute: typeof DrenyraRoute
+    }
+    '/cumplimiento/taxation': {
+      id: '/cumplimiento/taxation'
+      path: '/cumplimiento/taxation'
+      fullPath: '/cumplimiento/taxation'
+      preLoaderRoute: typeof CumplimientoTaxationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cumplimiento/sunat-dashboard': {
+      id: '/cumplimiento/sunat-dashboard'
+      path: '/cumplimiento/sunat-dashboard'
+      fullPath: '/cumplimiento/sunat-dashboard'
+      preLoaderRoute: typeof CumplimientoSunatDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cumplimiento/sire-diff': {
+      id: '/cumplimiento/sire-diff'
+      path: '/cumplimiento/sire-diff'
+      fullPath: '/cumplimiento/sire-diff'
+      preLoaderRoute: typeof CumplimientoSireDiffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cumplimiento/review': {
+      id: '/cumplimiento/review'
+      path: '/cumplimiento/review'
+      fullPath: '/cumplimiento/review'
+      preLoaderRoute: typeof CumplimientoReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cumplimiento/expedientes': {
+      id: '/cumplimiento/expedientes'
+      path: '/cumplimiento/expedientes'
+      fullPath: '/cumplimiento/expedientes'
+      preLoaderRoute: typeof CumplimientoExpedientesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cumplimiento/compliance': {
+      id: '/cumplimiento/compliance'
+      path: '/cumplimiento/compliance'
+      fullPath: '/cumplimiento/compliance'
+      preLoaderRoute: typeof CumplimientoComplianceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cumplimiento/audit': {
+      id: '/cumplimiento/audit'
+      path: '/cumplimiento/audit'
+      fullPath: '/cumplimiento/audit'
+      preLoaderRoute: typeof CumplimientoAuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cumplimiento/approvals': {
+      id: '/cumplimiento/approvals'
+      path: '/cumplimiento/approvals'
+      fullPath: '/cumplimiento/approvals'
+      preLoaderRoute: typeof CumplimientoApprovalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contabilidad/reports': {
+      id: '/contabilidad/reports'
+      path: '/contabilidad/reports'
+      fullPath: '/contabilidad/reports'
+      preLoaderRoute: typeof ContabilidadReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contabilidad/ledger': {
+      id: '/contabilidad/ledger'
+      path: '/contabilidad/ledger'
+      fullPath: '/contabilidad/ledger'
+      preLoaderRoute: typeof ContabilidadLedgerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contabilidad/financials': {
+      id: '/contabilidad/financials'
+      path: '/contabilidad/financials'
+      fullPath: '/contabilidad/financials'
+      preLoaderRoute: typeof ContabilidadFinancialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contabilidad/cierre-mensual': {
+      id: '/contabilidad/cierre-mensual'
+      path: '/contabilidad/cierre-mensual'
+      fullPath: '/contabilidad/cierre-mensual'
+      preLoaderRoute: typeof ContabilidadCierreMensualRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contabilidad/assets': {
+      id: '/contabilidad/assets'
+      path: '/contabilidad/assets'
+      fullPath: '/contabilidad/assets'
+      preLoaderRoute: typeof ContabilidadAssetsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contabilidad/accounting-pr': {
+      id: '/contabilidad/accounting-pr'
+      path: '/contabilidad/accounting-pr'
+      fullPath: '/contabilidad/accounting-pr'
+      preLoaderRoute: typeof ContabilidadAccountingPrRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracion/tool-permissions': {
+      id: '/configuracion/tool-permissions'
+      path: '/tool-permissions'
+      fullPath: '/configuracion/tool-permissions'
+      preLoaderRoute: typeof ConfiguracionToolPermissionsRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/security': {
+      id: '/configuracion/security'
+      path: '/security'
+      fullPath: '/configuracion/security'
+      preLoaderRoute: typeof ConfiguracionSecurityRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/profile': {
+      id: '/configuracion/profile'
+      path: '/profile'
+      fullPath: '/configuracion/profile'
+      preLoaderRoute: typeof ConfiguracionProfileRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/product-surfaces': {
+      id: '/configuracion/product-surfaces'
+      path: '/product-surfaces'
+      fullPath: '/configuracion/product-surfaces'
+      preLoaderRoute: typeof ConfiguracionProductSurfacesRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/plugins': {
+      id: '/configuracion/plugins'
+      path: '/plugins'
+      fullPath: '/configuracion/plugins'
+      preLoaderRoute: typeof ConfiguracionPluginsRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/organization': {
+      id: '/configuracion/organization'
+      path: '/organization'
+      fullPath: '/configuracion/organization'
+      preLoaderRoute: typeof ConfiguracionOrganizationRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/notifications': {
+      id: '/configuracion/notifications'
+      path: '/notifications'
+      fullPath: '/configuracion/notifications'
+      preLoaderRoute: typeof ConfiguracionNotificationsRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/keyboard-shortcuts': {
+      id: '/configuracion/keyboard-shortcuts'
+      path: '/keyboard-shortcuts'
+      fullPath: '/configuracion/keyboard-shortcuts'
+      preLoaderRoute: typeof ConfiguracionKeyboardShortcutsRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/integrations': {
+      id: '/configuracion/integrations'
+      path: '/integrations'
+      fullPath: '/configuracion/integrations'
+      preLoaderRoute: typeof ConfiguracionIntegrationsRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/connections': {
+      id: '/configuracion/connections'
+      path: '/connections'
+      fullPath: '/configuracion/connections'
+      preLoaderRoute: typeof ConfiguracionConnectionsRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/compare': {
+      id: '/configuracion/compare'
+      path: '/compare'
+      fullPath: '/configuracion/compare'
+      preLoaderRoute: typeof ConfiguracionCompareRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/billing': {
+      id: '/configuracion/billing'
+      path: '/billing'
+      fullPath: '/configuracion/billing'
+      preLoaderRoute: typeof ConfiguracionBillingRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/automations': {
+      id: '/configuracion/automations'
+      path: '/automations'
+      fullPath: '/configuracion/automations'
+      preLoaderRoute: typeof ConfiguracionAutomationsRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/configuracion/appearance': {
+      id: '/configuracion/appearance'
+      path: '/appearance'
+      fullPath: '/configuracion/appearance'
+      preLoaderRoute: typeof ConfiguracionAppearanceRouteImport
+      parentRoute: typeof ConfiguracionRoute
+    }
+    '/approval/$id': {
+      id: '/approval/$id'
+      path: '/$id'
+      fullPath: '/approval/$id'
+      preLoaderRoute: typeof ApprovalIdRouteImport
+      parentRoute: typeof ApprovalRoute
+    }
+    '/operaciones/economic-groups/$groupId': {
+      id: '/operaciones/economic-groups/$groupId'
+      path: '/operaciones/economic-groups/$groupId'
+      fullPath: '/operaciones/economic-groups/$groupId'
+      preLoaderRoute: typeof OperacionesEconomicGroupsGroupIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/firm/clients/$id': {
+      id: '/firm/clients/$id'
+      path: '/$id'
+      fullPath: '/firm/clients/$id'
+      preLoaderRoute: typeof FirmClientsIdRouteImport
+      parentRoute: typeof FirmClientsRoute
+    }
+    '/drenyra/case/$threadId': {
+      id: '/drenyra/case/$threadId'
+      path: '/case/$threadId'
+      fullPath: '/drenyra/case/$threadId'
+      preLoaderRoute: typeof DrenyraCaseThreadIdRouteImport
+      parentRoute: typeof DrenyraRoute
+    }
+  }
 }
+
+interface ApprovalRouteChildren {
+  ApprovalIdRoute: typeof ApprovalIdRoute
+}
+
+const ApprovalRouteChildren: ApprovalRouteChildren = {
+  ApprovalIdRoute: ApprovalIdRoute,
+}
+
+const ApprovalRouteWithChildren = ApprovalRoute._addFileChildren(
+  ApprovalRouteChildren,
+)
 
 interface ConfiguracionRouteChildren {
-	ConfiguracionAppearanceRoute: typeof ConfiguracionAppearanceRoute;
-	ConfiguracionAutomationsRoute: typeof ConfiguracionAutomationsRoute;
-	ConfiguracionBillingRoute: typeof ConfiguracionBillingRoute;
-	ConfiguracionCompareRoute: typeof ConfiguracionCompareRoute;
-	ConfiguracionConnectionsRoute: typeof ConfiguracionConnectionsRoute;
-	ConfiguracionIntegrationsRoute: typeof ConfiguracionIntegrationsRoute;
-	ConfiguracionKeyboardShortcutsRoute: typeof ConfiguracionKeyboardShortcutsRoute;
-	ConfiguracionNotificationsRoute: typeof ConfiguracionNotificationsRoute;
-	ConfiguracionOrganizationRoute: typeof ConfiguracionOrganizationRoute;
-	ConfiguracionPluginsRoute: typeof ConfiguracionPluginsRoute;
-	ConfiguracionProductSurfacesRoute: typeof ConfiguracionProductSurfacesRoute;
-	ConfiguracionProfileRoute: typeof ConfiguracionProfileRoute;
-	ConfiguracionSecurityRoute: typeof ConfiguracionSecurityRoute;
-	ConfiguracionToolPermissionsRoute: typeof ConfiguracionToolPermissionsRoute;
-	ConfiguracionIndexRoute: typeof ConfiguracionIndexRoute;
+  ConfiguracionAppearanceRoute: typeof ConfiguracionAppearanceRoute
+  ConfiguracionAutomationsRoute: typeof ConfiguracionAutomationsRoute
+  ConfiguracionBillingRoute: typeof ConfiguracionBillingRoute
+  ConfiguracionCompareRoute: typeof ConfiguracionCompareRoute
+  ConfiguracionConnectionsRoute: typeof ConfiguracionConnectionsRoute
+  ConfiguracionIntegrationsRoute: typeof ConfiguracionIntegrationsRoute
+  ConfiguracionKeyboardShortcutsRoute: typeof ConfiguracionKeyboardShortcutsRoute
+  ConfiguracionNotificationsRoute: typeof ConfiguracionNotificationsRoute
+  ConfiguracionOrganizationRoute: typeof ConfiguracionOrganizationRoute
+  ConfiguracionPluginsRoute: typeof ConfiguracionPluginsRoute
+  ConfiguracionProductSurfacesRoute: typeof ConfiguracionProductSurfacesRoute
+  ConfiguracionProfileRoute: typeof ConfiguracionProfileRoute
+  ConfiguracionSecurityRoute: typeof ConfiguracionSecurityRoute
+  ConfiguracionToolPermissionsRoute: typeof ConfiguracionToolPermissionsRoute
+  ConfiguracionIndexRoute: typeof ConfiguracionIndexRoute
 }
 
 const ConfiguracionRouteChildren: ConfiguracionRouteChildren = {
-	ConfiguracionAppearanceRoute: ConfiguracionAppearanceRoute,
-	ConfiguracionAutomationsRoute: ConfiguracionAutomationsRoute,
-	ConfiguracionBillingRoute: ConfiguracionBillingRoute,
-	ConfiguracionCompareRoute: ConfiguracionCompareRoute,
-	ConfiguracionConnectionsRoute: ConfiguracionConnectionsRoute,
-	ConfiguracionIntegrationsRoute: ConfiguracionIntegrationsRoute,
-	ConfiguracionKeyboardShortcutsRoute: ConfiguracionKeyboardShortcutsRoute,
-	ConfiguracionNotificationsRoute: ConfiguracionNotificationsRoute,
-	ConfiguracionOrganizationRoute: ConfiguracionOrganizationRoute,
-	ConfiguracionPluginsRoute: ConfiguracionPluginsRoute,
-	ConfiguracionProductSurfacesRoute: ConfiguracionProductSurfacesRoute,
-	ConfiguracionProfileRoute: ConfiguracionProfileRoute,
-	ConfiguracionSecurityRoute: ConfiguracionSecurityRoute,
-	ConfiguracionToolPermissionsRoute: ConfiguracionToolPermissionsRoute,
-	ConfiguracionIndexRoute: ConfiguracionIndexRoute,
-};
+  ConfiguracionAppearanceRoute: ConfiguracionAppearanceRoute,
+  ConfiguracionAutomationsRoute: ConfiguracionAutomationsRoute,
+  ConfiguracionBillingRoute: ConfiguracionBillingRoute,
+  ConfiguracionCompareRoute: ConfiguracionCompareRoute,
+  ConfiguracionConnectionsRoute: ConfiguracionConnectionsRoute,
+  ConfiguracionIntegrationsRoute: ConfiguracionIntegrationsRoute,
+  ConfiguracionKeyboardShortcutsRoute: ConfiguracionKeyboardShortcutsRoute,
+  ConfiguracionNotificationsRoute: ConfiguracionNotificationsRoute,
+  ConfiguracionOrganizationRoute: ConfiguracionOrganizationRoute,
+  ConfiguracionPluginsRoute: ConfiguracionPluginsRoute,
+  ConfiguracionProductSurfacesRoute: ConfiguracionProductSurfacesRoute,
+  ConfiguracionProfileRoute: ConfiguracionProfileRoute,
+  ConfiguracionSecurityRoute: ConfiguracionSecurityRoute,
+  ConfiguracionToolPermissionsRoute: ConfiguracionToolPermissionsRoute,
+  ConfiguracionIndexRoute: ConfiguracionIndexRoute,
+}
 
 const ConfiguracionRouteWithChildren = ConfiguracionRoute._addFileChildren(
-	ConfiguracionRouteChildren,
-);
+  ConfiguracionRouteChildren,
+)
 
 interface DrenyraRouteChildren {
-	DrenyraThreadIdRoute: typeof DrenyraThreadIdRoute;
-	DrenyraAutomatizacionesRoute: typeof DrenyraAutomatizacionesRoute;
-	DrenyraControlTowerRoute: typeof DrenyraControlTowerRoute;
-	DrenyraHerramientasRoute: typeof DrenyraHerramientasRoute;
-	DrenyraHubRoute: typeof DrenyraHubRoute;
-	DrenyraObservabilityRoute: typeof DrenyraObservabilityRoute;
-	DrenyraSkillsRoute: typeof DrenyraSkillsRoute;
-	DrenyraIndexRoute: typeof DrenyraIndexRoute;
-	DrenyraCaseThreadIdRoute: typeof DrenyraCaseThreadIdRoute;
+  DrenyraThreadIdRoute: typeof DrenyraThreadIdRoute
+  DrenyraAutomatizacionesRoute: typeof DrenyraAutomatizacionesRoute
+  DrenyraControlTowerRoute: typeof DrenyraControlTowerRoute
+  DrenyraHerramientasRoute: typeof DrenyraHerramientasRoute
+  DrenyraHubRoute: typeof DrenyraHubRoute
+  DrenyraObservabilityRoute: typeof DrenyraObservabilityRoute
+  DrenyraSkillsRoute: typeof DrenyraSkillsRoute
+  DrenyraIndexRoute: typeof DrenyraIndexRoute
+  DrenyraCaseThreadIdRoute: typeof DrenyraCaseThreadIdRoute
 }
 
 const DrenyraRouteChildren: DrenyraRouteChildren = {
-	DrenyraThreadIdRoute: DrenyraThreadIdRoute,
-	DrenyraAutomatizacionesRoute: DrenyraAutomatizacionesRoute,
-	DrenyraControlTowerRoute: DrenyraControlTowerRoute,
-	DrenyraHerramientasRoute: DrenyraHerramientasRoute,
-	DrenyraHubRoute: DrenyraHubRoute,
-	DrenyraObservabilityRoute: DrenyraObservabilityRoute,
-	DrenyraSkillsRoute: DrenyraSkillsRoute,
-	DrenyraIndexRoute: DrenyraIndexRoute,
-	DrenyraCaseThreadIdRoute: DrenyraCaseThreadIdRoute,
-};
+  DrenyraThreadIdRoute: DrenyraThreadIdRoute,
+  DrenyraAutomatizacionesRoute: DrenyraAutomatizacionesRoute,
+  DrenyraControlTowerRoute: DrenyraControlTowerRoute,
+  DrenyraHerramientasRoute: DrenyraHerramientasRoute,
+  DrenyraHubRoute: DrenyraHubRoute,
+  DrenyraObservabilityRoute: DrenyraObservabilityRoute,
+  DrenyraSkillsRoute: DrenyraSkillsRoute,
+  DrenyraIndexRoute: DrenyraIndexRoute,
+  DrenyraCaseThreadIdRoute: DrenyraCaseThreadIdRoute,
+}
 
 const DrenyraRouteWithChildren =
-	DrenyraRoute._addFileChildren(DrenyraRouteChildren);
+  DrenyraRoute._addFileChildren(DrenyraRouteChildren)
 
 interface EvidenceRouteChildren {
-	EvidenceIdRoute: typeof EvidenceIdRoute;
+  EvidenceIdRoute: typeof EvidenceIdRoute
 }
 
 const EvidenceRouteChildren: EvidenceRouteChildren = {
-	EvidenceIdRoute: EvidenceIdRoute,
-};
+  EvidenceIdRoute: EvidenceIdRoute,
+}
 
 const EvidenceRouteWithChildren = EvidenceRoute._addFileChildren(
-	EvidenceRouteChildren,
-);
+  EvidenceRouteChildren,
+)
 
 interface FirmClientsRouteChildren {
-	FirmClientsIdRoute: typeof FirmClientsIdRoute;
+  FirmClientsIdRoute: typeof FirmClientsIdRoute
 }
 
 const FirmClientsRouteChildren: FirmClientsRouteChildren = {
-	FirmClientsIdRoute: FirmClientsIdRoute,
-};
+  FirmClientsIdRoute: FirmClientsIdRoute,
+}
 
 const FirmClientsRouteWithChildren = FirmClientsRoute._addFileChildren(
-	FirmClientsRouteChildren,
-);
+  FirmClientsRouteChildren,
+)
 
 interface FirmRouteChildren {
-	FirmClientsRoute: typeof FirmClientsRouteWithChildren;
-	FirmIndexRoute: typeof FirmIndexRoute;
+  FirmClientsRoute: typeof FirmClientsRouteWithChildren
+  FirmIndexRoute: typeof FirmIndexRoute
 }
 
 const FirmRouteChildren: FirmRouteChildren = {
-	FirmClientsRoute: FirmClientsRouteWithChildren,
-	FirmIndexRoute: FirmIndexRoute,
-};
+  FirmClientsRoute: FirmClientsRouteWithChildren,
+  FirmIndexRoute: FirmIndexRoute,
+}
 
-const FirmRouteWithChildren = FirmRoute._addFileChildren(FirmRouteChildren);
+const FirmRouteWithChildren = FirmRoute._addFileChildren(FirmRouteChildren)
 
 interface OnboardingRouteChildren {
-	OnboardingDemosRoute: typeof OnboardingDemosRoute;
+  OnboardingDemosRoute: typeof OnboardingDemosRoute
 }
 
 const OnboardingRouteChildren: OnboardingRouteChildren = {
-	OnboardingDemosRoute: OnboardingDemosRoute,
-};
+  OnboardingDemosRoute: OnboardingDemosRoute,
+}
 
 const OnboardingRouteWithChildren = OnboardingRoute._addFileChildren(
-	OnboardingRouteChildren,
-);
+  OnboardingRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
-	IndexRoute: IndexRoute,
-	ApprovalsRoute: ApprovalsRoute,
-	AssetsRoute: AssetsRoute,
-	AuditRoute: AuditRoute,
-	AuthRoute: AuthRoute,
-	AutomationsRoute: AutomationsRoute,
-	BankingRoute: BankingRoute,
-	BillsRoute: BillsRoute,
-	CashflowRoute: CashflowRoute,
-	ChatRoute: ChatRoute,
-	CierreMensualRoute: CierreMensualRoute,
-	CompareRoute: CompareRoute,
-	ComplianceRoute: ComplianceRoute,
-	ConfiguracionRoute: ConfiguracionRouteWithChildren,
-	ConnectionsRoute: ConnectionsRoute,
-	CreditNotesRoute: CreditNotesRoute,
-	CustomersRoute: CustomersRoute,
-	DashboardRoute: DashboardRoute,
-	DebitNotesRoute: DebitNotesRoute,
-	DocumentsRoute: DocumentsRoute,
-	DrenyraRoute: DrenyraRouteWithChildren,
-	EntitiesRoute: EntitiesRoute,
-	EvidenceRoute: EvidenceRouteWithChildren,
-	ExpedientesRoute: ExpedientesRoute,
-	FinancialsRoute: FinancialsRoute,
-	FirmRoute: FirmRouteWithChildren,
-	ForgotPasswordRoute: ForgotPasswordRoute,
-	InboxRoute: InboxRoute,
-	InteligenciaRoute: InteligenciaRoute,
-	InventoryRoute: InventoryRoute,
-	InvoicesRoute: InvoicesRoute,
-	LedgerRoute: LedgerRoute,
-	LoginRoute: LoginRoute,
-	MobileSummaryRoute: MobileSummaryRoute,
-	NeuralGridRoute: NeuralGridRoute,
-	OnboardingRoute: OnboardingRouteWithChildren,
-	PayrollRoute: PayrollRoute,
-	PeriodCloseRoute: PeriodCloseRoute,
-	PlaygroundRoute: PlaygroundRoute,
-	PluginsRoute: PluginsRoute,
-	ProductSurfacesRoute: ProductSurfacesRoute,
-	ProductsRoute: ProductsRoute,
-	ProfileRoute: ProfileRoute,
-	ReconciliationsRoute: ReconciliationsRoute,
-	ReportsRoute: ReportsRoute,
-	ResetPasswordRoute: ResetPasswordRoute,
-	ReviewRoute: ReviewRoute,
-	ReviewQueueRoute: ReviewQueueRoute,
-	ScannerRoute: ScannerRoute,
-	SettingsRoute: SettingsRoute,
-	SignupRoute: SignupRoute,
-	SkillsRoute: SkillsRoute,
-	TaxationRoute: TaxationRoute,
-	VendorsRoute: VendorsRoute,
-	VerifyEmailRoute: VerifyEmailRoute,
-	ContabilidadAccountingPrRoute: ContabilidadAccountingPrRoute,
-	ContabilidadAssetsRoute: ContabilidadAssetsRoute,
-	ContabilidadCierreMensualRoute: ContabilidadCierreMensualRoute,
-	ContabilidadFinancialsRoute: ContabilidadFinancialsRoute,
-	ContabilidadLedgerRoute: ContabilidadLedgerRoute,
-	ContabilidadReportsRoute: ContabilidadReportsRoute,
-	CumplimientoApprovalsRoute: CumplimientoApprovalsRoute,
-	CumplimientoAuditRoute: CumplimientoAuditRoute,
-	CumplimientoComplianceRoute: CumplimientoComplianceRoute,
-	CumplimientoExpedientesRoute: CumplimientoExpedientesRoute,
-	CumplimientoReviewRoute: CumplimientoReviewRoute,
-	CumplimientoSireDiffRoute: CumplimientoSireDiffRoute,
-	CumplimientoSunatDashboardRoute: CumplimientoSunatDashboardRoute,
-	CumplimientoTaxationRoute: CumplimientoTaxationRoute,
-	EconomicGroupsGroupIdRoute: EconomicGroupsGroupIdRoute,
-	FacturacionCreditNotesRoute: FacturacionCreditNotesRoute,
-	FacturacionDebitNotesRoute: FacturacionDebitNotesRoute,
-	FacturacionInvoicesRoute: FacturacionInvoicesRoute,
-	OperacionesCustomersRoute: OperacionesCustomersRoute,
-	OperacionesDocumentsRoute: OperacionesDocumentsRoute,
-	OperacionesEntitiesRoute: OperacionesEntitiesRoute,
-	OperacionesInboxRoute: OperacionesInboxRoute,
-	OperacionesInventoryRoute: OperacionesInventoryRoute,
-	OperacionesPayrollRoute: OperacionesPayrollRoute,
-	OperacionesProductsRoute: OperacionesProductsRoute,
-	OperacionesScannerRoute: OperacionesScannerRoute,
-	OperacionesVendorsRoute: OperacionesVendorsRoute,
-	PopoutThreadIdRoute: PopoutThreadIdRoute,
-	TesoreriaBankingRoute: TesoreriaBankingRoute,
-	TesoreriaBillsRoute: TesoreriaBillsRoute,
-	TesoreriaCashflowRoute: TesoreriaCashflowRoute,
-	TesoreriaReconciliationsRoute: TesoreriaReconciliationsRoute,
-	ThreadsThreadIdRoute: ThreadsThreadIdRoute,
-	WorkspaceComplianceRoute: WorkspaceComplianceRoute,
-	WorkspaceFinanceRoute: WorkspaceFinanceRoute,
-	WorkspaceOperationsRoute: WorkspaceOperationsRoute,
-	WorkspaceSystemAdminRoute: WorkspaceSystemAdminRoute,
-	AgentsIndexRoute: AgentsIndexRoute,
-	DiffsIndexRoute: DiffsIndexRoute,
-	ThreadsIndexRoute: ThreadsIndexRoute,
-	WorkspaceIndexRoute: WorkspaceIndexRoute,
-	OperacionesEconomicGroupsGroupIdRoute: OperacionesEconomicGroupsGroupIdRoute,
-};
+  IndexRoute: IndexRoute,
+  AccountantRoute: AccountantRoute,
+  ApprovalRoute: ApprovalRouteWithChildren,
+  ApprovalsRoute: ApprovalsRoute,
+  AssetsRoute: AssetsRoute,
+  AuditRoute: AuditRoute,
+  AuthRoute: AuthRoute,
+  AutomationsRoute: AutomationsRoute,
+  BankingRoute: BankingRoute,
+  BillsRoute: BillsRoute,
+  CashflowRoute: CashflowRoute,
+  ChatRoute: ChatRoute,
+  CierreMensualRoute: CierreMensualRoute,
+  CompareRoute: CompareRoute,
+  ComplianceRoute: ComplianceRoute,
+  ConfiguracionRoute: ConfiguracionRouteWithChildren,
+  ConnectionsRoute: ConnectionsRoute,
+  ConsultaRoute: ConsultaRoute,
+  CreditNotesRoute: CreditNotesRoute,
+  CustomersRoute: CustomersRoute,
+  DashboardRoute: DashboardRoute,
+  DebitNotesRoute: DebitNotesRoute,
+  DocumentsRoute: DocumentsRoute,
+  DrenyraRoute: DrenyraRouteWithChildren,
+  EntitiesRoute: EntitiesRoute,
+  EvidenceRoute: EvidenceRouteWithChildren,
+  ExpedientesRoute: ExpedientesRoute,
+  FinancialsRoute: FinancialsRoute,
+  FirmRoute: FirmRouteWithChildren,
+  FiscalChatRoute: FiscalChatRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  InboxRoute: InboxRoute,
+  InteligenciaRoute: InteligenciaRoute,
+  InventoryRoute: InventoryRoute,
+  InvoicesRoute: InvoicesRoute,
+  LedgerRoute: LedgerRoute,
+  LoginRoute: LoginRoute,
+  MobileSummaryRoute: MobileSummaryRoute,
+  NeuralGridRoute: NeuralGridRoute,
+  OnboardingRoute: OnboardingRouteWithChildren,
+  PayrollRoute: PayrollRoute,
+  PeriodCloseRoute: PeriodCloseRoute,
+  PlaygroundRoute: PlaygroundRoute,
+  PluginsRoute: PluginsRoute,
+  ProductSurfacesRoute: ProductSurfacesRoute,
+  ProductsRoute: ProductsRoute,
+  ProfileRoute: ProfileRoute,
+  ReconciliationsRoute: ReconciliationsRoute,
+  ReportsRoute: ReportsRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  ReviewRoute: ReviewRoute,
+  ReviewQueueRoute: ReviewQueueRoute,
+  ScannerRoute: ScannerRoute,
+  SettingsRoute: SettingsRoute,
+  SignupRoute: SignupRoute,
+  SkillsRoute: SkillsRoute,
+  TaxationRoute: TaxationRoute,
+  VendorsRoute: VendorsRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
+  ContabilidadAccountingPrRoute: ContabilidadAccountingPrRoute,
+  ContabilidadAssetsRoute: ContabilidadAssetsRoute,
+  ContabilidadCierreMensualRoute: ContabilidadCierreMensualRoute,
+  ContabilidadFinancialsRoute: ContabilidadFinancialsRoute,
+  ContabilidadLedgerRoute: ContabilidadLedgerRoute,
+  ContabilidadReportsRoute: ContabilidadReportsRoute,
+  CumplimientoApprovalsRoute: CumplimientoApprovalsRoute,
+  CumplimientoAuditRoute: CumplimientoAuditRoute,
+  CumplimientoComplianceRoute: CumplimientoComplianceRoute,
+  CumplimientoExpedientesRoute: CumplimientoExpedientesRoute,
+  CumplimientoReviewRoute: CumplimientoReviewRoute,
+  CumplimientoSireDiffRoute: CumplimientoSireDiffRoute,
+  CumplimientoSunatDashboardRoute: CumplimientoSunatDashboardRoute,
+  CumplimientoTaxationRoute: CumplimientoTaxationRoute,
+  EconomicGroupsGroupIdRoute: EconomicGroupsGroupIdRoute,
+  FacturacionCreditNotesRoute: FacturacionCreditNotesRoute,
+  FacturacionDebitNotesRoute: FacturacionDebitNotesRoute,
+  FacturacionInvoicesRoute: FacturacionInvoicesRoute,
+  OperacionesCustomersRoute: OperacionesCustomersRoute,
+  OperacionesDocumentsRoute: OperacionesDocumentsRoute,
+  OperacionesEntitiesRoute: OperacionesEntitiesRoute,
+  OperacionesInboxRoute: OperacionesInboxRoute,
+  OperacionesInventoryRoute: OperacionesInventoryRoute,
+  OperacionesPayrollRoute: OperacionesPayrollRoute,
+  OperacionesProductsRoute: OperacionesProductsRoute,
+  OperacionesScannerRoute: OperacionesScannerRoute,
+  OperacionesVendorsRoute: OperacionesVendorsRoute,
+  PopoutThreadIdRoute: PopoutThreadIdRoute,
+  TesoreriaBankingRoute: TesoreriaBankingRoute,
+  TesoreriaBillsRoute: TesoreriaBillsRoute,
+  TesoreriaCashflowRoute: TesoreriaCashflowRoute,
+  TesoreriaReconciliationsRoute: TesoreriaReconciliationsRoute,
+  ThreadsThreadIdRoute: ThreadsThreadIdRoute,
+  WorkspaceComplianceRoute: WorkspaceComplianceRoute,
+  WorkspaceFinanceRoute: WorkspaceFinanceRoute,
+  WorkspaceOperationsRoute: WorkspaceOperationsRoute,
+  WorkspaceSystemAdminRoute: WorkspaceSystemAdminRoute,
+  AgentsIndexRoute: AgentsIndexRoute,
+  DiffsIndexRoute: DiffsIndexRoute,
+  ThreadsIndexRoute: ThreadsIndexRoute,
+  WorkspaceIndexRoute: WorkspaceIndexRoute,
+  OperacionesEconomicGroupsGroupIdRoute: OperacionesEconomicGroupsGroupIdRoute,
+}
 export const routeTree = rootRouteImport
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>();
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
