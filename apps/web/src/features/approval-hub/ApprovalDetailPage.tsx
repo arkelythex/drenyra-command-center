@@ -46,10 +46,6 @@ export function ApprovalDetailPage({ recId }: ApprovalDetailPageProps) {
 	const [rejectMotivo, setRejectMotivo] = useState("");
 	const [showRejectForm, setShowRejectForm] = useState(false);
 
-	useEffect(() => {
-		loadDetail();
-	}, [recId]);
-
 	const loadDetail = async () => {
 		try {
 			const res = await fetch(`/api/approval/${recId}`);
@@ -116,6 +112,10 @@ export function ApprovalDetailPage({ recId }: ApprovalDetailPageProps) {
 			setLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		loadDetail();
+	}, [recId]);
 
 	const handleApprove = async () => {
 		try {

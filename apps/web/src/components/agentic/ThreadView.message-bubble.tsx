@@ -73,7 +73,7 @@ export function MessageBubble({ message }: { message: Message }) {
 				}
 			}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		 
 	}, [showArtifacts]);
 
 	const handlePin = useCallback(

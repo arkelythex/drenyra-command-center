@@ -84,10 +84,16 @@ export function FiscalInspectorProvider({ children }: { children: ReactNode }) {
 		[],
 	);
 
+	const closeInspector = useAgenticShell((s) => s.closeInspector);
+
 	const close = useCallback(() => {
 		setState((prev) => ({ ...prev, isOpen: false }));
 		closeInspector();
+<<<<<<< HEAD
 	}, []);
+=======
+	}, [closeInspector]);
+>>>>>>> main
 
 	const closeInspector = useAgenticShell((s) => s.closeInspector);
 

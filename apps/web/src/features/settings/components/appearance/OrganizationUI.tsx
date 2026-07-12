@@ -10,7 +10,6 @@ export const OrganizationIdentity = ({
 }) => {
 	return (
 		<div className="relative overflow-hidden rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-8">
-			{/* Decorative Entity Icon */}
 			<div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[var(--accent)]/5 blur-2xl" />
 
 			<div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center">
@@ -20,32 +19,36 @@ export const OrganizationIdentity = ({
 
 				<div className="space-y-1">
 					<div className="flex items-center gap-3">
-						<h3 className="text-xl font-black tracking-tight text-[var(--ink)]">
+						<h3 className="text-xl font-black tracking-tight text-[var(--text-primary)]">
 							{name}
 						</h3>
-						<div className="flex items-center gap-1 rounded-full bg-success-subtle px-2 py-0.5 text-[8px] font-black uppercase tracking-widest text-success border border-success-subtle">
+						<div className="flex items-center gap-1 rounded-full bg-[var(--color-success-soft)] px-2 py-0.5 text-[8px] font-black uppercase tracking-widest text-[var(--color-success)] border border-[var(--color-success-soft)]">
 							<ShieldCheck size={10} />
 							Verified Entity
 						</div>
 					</div>
-					<p className="font-mono text-xs font-bold tracking-widest text-[var(--ink-secondary)]">
+					<p className="font-mono text-xs font-bold tracking-widest text-[var(--text-secondary)]">
 						ID: {ruc}
 					</p>
 				</div>
 
 				<div className="flex-1 md:flex md:justify-end">
-					<div className="grid grid-cols-2 gap-4 rounded-2xl border border-[var(--border)] bg-[var(--surface-high)]/50 p-4">
+					<div className="grid grid-cols-2 gap-4 rounded-2xl border border-[var(--border-default)] bg-[var(--surface-2)]/50 p-4">
 						<div className="text-center">
-							<p className="text-xs font-black uppercase tracking-widest text-[var(--ink-tertiary)]">
+							<p className="text-xs font-black uppercase tracking-widest text-[var(--text-tertiary)]">
 								Subsidiaries
 							</p>
-							<p className="text-sm font-black text-[var(--ink)]">04</p>
+							<p className="text-sm font-black text-[var(--text-primary)]">
+								04
+							</p>
 						</div>
-						<div className="text-center border-l border-[var(--border)]">
-							<p className="text-xs font-black uppercase tracking-widest text-[var(--ink-tertiary)]">
+						<div className="text-center border-l border-[var(--border-default)]">
+							<p className="text-xs font-black uppercase tracking-widest text-[var(--text-tertiary)]">
 								Region
 							</p>
-							<p className="text-sm font-black text-[var(--ink)]">LATAM</p>
+							<p className="text-sm font-black text-[var(--text-primary)]">
+								LATAM
+							</p>
 						</div>
 					</div>
 				</div>
@@ -65,14 +68,14 @@ export const MemberCard = ({ name, email, role }: MemberCardProps) => {
 	const isAdmin = role.toLowerCase() === "admin";
 
 	return (
-		<div className="group relative flex items-center justify-between rounded-3xl border border-[var(--border)] bg-[var(--surface-low)]/30 p-5 transition-all duration-300 hover:border-[var(--accent)]/20 hover:bg-[var(--surface-low)]/60">
+		<div className="group relative flex items-center justify-between rounded-3xl border border-[var(--border-default)] bg-[var(--surface-2)]/30 p-5 transition-all duration-300 hover:border-[var(--accent)]/20 hover:bg-[var(--surface-2)]/60">
 			<div className="flex items-center gap-4">
 				<div
 					className={cn(
 						"flex h-11 w-11 items-center justify-center rounded-2xl border font-black text-xs transition-colors",
 						isAdmin
 							? "border-[var(--accent)]/20 bg-[var(--accent)]/10 text-[var(--accent)]"
-							: "border-[var(--border)] bg-[var(--surface-high)] text-[var(--ink-secondary)]",
+							: "border-[var(--border-default)] bg-[var(--surface-1)] text-[var(--text-secondary)]",
 					)}
 				>
 					{name
@@ -81,12 +84,12 @@ export const MemberCard = ({ name, email, role }: MemberCardProps) => {
 						.join("")}
 				</div>
 				<div>
-					<p className="text-xs font-black uppercase tracking-widest text-[var(--ink)]">
+					<p className="text-xs font-black uppercase tracking-widest text-[var(--text-primary)]">
 						{name}
 					</p>
 					<div className="flex items-center gap-2 mt-0.5">
-						<Mail size={10} className="text-[var(--ink-tertiary)]" />
-						<p className="text-xs font-medium text-[var(--ink-secondary)] lowercase">
+						<Mail size={10} className="text-[var(--text-tertiary)]" />
+						<p className="text-xs font-medium text-[var(--text-secondary)] lowercase">
 							{email}
 						</p>
 					</div>
@@ -99,14 +102,14 @@ export const MemberCard = ({ name, email, role }: MemberCardProps) => {
 						"rounded-full px-2.5 py-1 text-[8px] font-black uppercase tracking-[0.15em] border",
 						isAdmin
 							? "border-[var(--accent)]/20 bg-[var(--accent)]/5 text-[var(--accent)]"
-							: "border-[var(--border)] bg-[var(--surface-high)] text-[var(--ink-tertiary)]",
+							: "border-[var(--border-default)] bg-[var(--surface-1)] text-[var(--text-tertiary)]",
 					)}
 				>
 					{role}
 				</div>
 				<button
 					type="button"
-					className="flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface-high)] text-[var(--ink-tertiary)] opacity-0 transition-all group-hover:opacity-100 hover:text-[var(--accent)] hover:border-[var(--accent)]/30"
+					className="flex h-8 w-8 items-center justify-center rounded-xl border border-[var(--border-default)] bg-[var(--surface-1)] text-[var(--text-tertiary)] opacity-0 transition-all group-hover:opacity-100 hover:text-[var(--accent)] hover:border-[var(--accent)]/30"
 				>
 					<ArrowUpRight size={14} />
 				</button>

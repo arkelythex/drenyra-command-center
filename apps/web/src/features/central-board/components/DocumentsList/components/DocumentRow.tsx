@@ -1,5 +1,6 @@
 "use client";
 
+import { createElement } from "react";
 import { Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { DocumentItem } from "@/stores/central-board-store";
@@ -15,12 +16,18 @@ interface DocumentRowProps {
 	onPreview: (doc: DocumentItem) => void;
 }
 
+function renderFileIcon(type: DocumentItem["type"]) {
+	return createElement(getFileIcon(type), {
+		size: 18,
+		className: "text-[var(--text-secondary)]",
+	});
+}
+
 export function DocumentRow({ doc, onRemove, onPreview }: DocumentRowProps) {
 	const status = STATUS_CONFIG[doc.status];
 	const isUploadingDoc = doc.status === "processing";
 	const isReady = doc.status === "ready";
-	const FileIcon = getFileIcon(doc.type);
-	const StatusIcon = status.icon;
+
 	const rowClassName = cn(
 		"group flex items-center gap-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-3 transition-all",
 		isReady &&
@@ -37,7 +44,7 @@ export function DocumentRow({ doc, onRemove, onPreview }: DocumentRowProps) {
 					className="flex min-w-0 flex-1 items-center gap-3 text-left"
 				>
 					<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-2)]">
-						<FileIcon size={18} className="text-[var(--text-secondary)]" />
+						{renderFileIcon(doc.type)}
 					</div>
 					<div className="min-w-0 flex-1">
 						<p className="truncate text-xs font-medium text-[var(--text-primary)]">
@@ -53,7 +60,7 @@ export function DocumentRow({ doc, onRemove, onPreview }: DocumentRowProps) {
 									status.className,
 								)}
 							>
-								<StatusIcon size={10} />
+								{createElement(status.icon, { size: 10 })}
 								{status.label}
 							</span>
 						</div>
@@ -62,7 +69,7 @@ export function DocumentRow({ doc, onRemove, onPreview }: DocumentRowProps) {
 			) : (
 				<>
 					<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[var(--surface-2)]">
-						<FileIcon size={18} className="text-[var(--text-secondary)]" />
+						{renderFileIcon(doc.type)}
 					</div>
 					<div className="min-w-0 flex-1">
 						<p className="truncate text-xs font-medium text-[var(--text-primary)]">
@@ -78,10 +85,10 @@ export function DocumentRow({ doc, onRemove, onPreview }: DocumentRowProps) {
 									status.className,
 								)}
 							>
-								<StatusIcon
-									size={10}
-									className={isUploadingDoc ? "animate-spin" : ""}
-								/>
+								{createElement(status.icon, {
+									size: 10,
+									className: isUploadingDoc ? "animate-spin" : "",
+								})}
 								{status.label}
 							</span>
 						</div>

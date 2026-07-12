@@ -1,14 +1,9 @@
+phase: archived
+completed_at: '2026-07-11'
 status: implemented
+verified: true
+evidence:
+  - evidence-links.schema.ts exists
+  - evidence-lifecycle integration test exists
 created: 2026-07-02
-updated: 2026-07-04
-author: el-gentleman
-execution_mode: auto-chain
-pr_count: 4
-estimated_lines: 1100
-blocked_by: []
-blocks: []
-risks:
-  - Fixing 50 type errors may uncover latent bugs
-  - evidence_links migration requires data migration from jsonb arrays
-  - Integration tests need real DB (test container or transaction rollback)
-  - Civic skills missing may need stubs instead of full features
+updated: 2026-07-11

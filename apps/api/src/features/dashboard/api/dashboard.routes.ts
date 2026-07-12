@@ -1,6 +1,7 @@
 import { Elysia, t } from "elysia";
 import { fail, getErrorMessage, ok } from "../../shared/api-response";
 import { companyScopeGuard } from "../../../shared/plugins";
+import { InboxDashboardService } from "./inbox-dashboard.service";
 import { getExpenses } from "../application/queries/get-expenses.query";
 import { getFiscalIndicators } from "../application/queries/get-fiscal-indicators.query";
 import { getIncome } from "../application/queries/get-income.query";
@@ -190,6 +191,29 @@ export const dashboardRoutes = new Elysia({ prefix: "/api/dashboard" })
 			detail: {
 				tags: ["Dashboard"],
 				summary: "Multi-RUC control tower portfolio view",
+			},
+		},
+	)
+	.get(
+		"/inbox",
+		async ({ query, set }) => {
+			try {
+				const dashboard = await InboxDashboardService.getDashboard(
+					query.companyId,
+				);
+				return ok(dashboard);
+			} catch (error) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "INBOX_ERROR");
+			}
+		},
+		{
+			query: t.Object({
+				companyId: t.String({ minLength: 1 }),
+			}),
+			detail: {
+				tags: ["Dashboard"],
+				summary: "Inbox dashboard for monthly close center",
 			},
 		},
 	);

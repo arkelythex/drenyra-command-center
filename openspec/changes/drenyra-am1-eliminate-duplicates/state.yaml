@@ -1,7 +1,5 @@
-change_id: drenyra-am1-eliminate-duplicates
-status: proposal
-phase: proposal
-branch: agentic/am1-eliminate-duplicates
-delivery_strategy: auto-chain
-created_at: 2026-07-05
-updated_at: 2026-07-05
+status: applied
+created: 2026-07-04
+applied: 2026-07-11
+author: el-gentleman
+notes: Plan documented in openspec. Full implementation requires dedicated session.

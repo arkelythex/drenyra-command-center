@@ -12,9 +12,9 @@ const statusLabels: Record<string, string> = {
 const dotColors: Record<string, string> = {
 	running: "bg-[var(--color-primary)]",
 	paused: "bg-gray-400",
-	completed: "bg-emerald-500",
-	failed: "bg-red-500",
-	awaiting_approval: "bg-amber-500",
+	completed: "bg-[var(--color-success)]",
+	failed: "bg-[var(--color-danger-soft)]0",
+	awaiting_approval: "bg-[var(--color-warning)]",
 };
 
 export interface AgentTabBarProps {

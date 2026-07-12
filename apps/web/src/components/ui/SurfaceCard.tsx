@@ -12,6 +12,7 @@ export interface SurfaceCardProps {
 		| "default"
 		| "muted"
 		| "interactive"
+		| "outlined"
 		| "danger"
 		| "warning"
 		| "success";
@@ -33,6 +34,8 @@ const variantClasses: Record<
 		"border border-[var(--border-default)] bg-[var(--surface-1)] text-[var(--text-primary)]",
 	muted:
 		"border border-[var(--border-subtle)] bg-[var(--surface-2)] text-[var(--text-primary)]",
+	outlined:
+		"border border-[var(--border-default)] bg-transparent text-[var(--text-primary)]",
 	interactive:
 		"border border-[var(--border-default)] bg-[var(--surface-1)] text-[var(--text-primary)] cursor-pointer transition-colors hover:bg-[var(--surface-2)]",
 	danger:

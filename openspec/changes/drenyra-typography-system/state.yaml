@@ -1,9 +1,8 @@
 change_id: drenyra-typography-system
+phase: archived
+completed_at: '2026-07-11'
 status: applied
-phase: proposal
 branch: design/drenyra-typography-system
 delivery_strategy: single-pr
 created_at: 2026-07-05
-updated_at: 2026-07-05
-depends_on:
-  - drenyra-design-tokens-v4
+updated_at: 2026-07-11

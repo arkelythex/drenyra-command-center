@@ -84,7 +84,8 @@ vi.mock("@/features/cognitive-hub/logic/artifact-extractor", () => ({
 }));
 
 vi.mock("lucide-react", () => {
-	const React = require("react");
+	// eslint-disable-next-line @typescript-eslint/no-require-imports
+		const React = require("react");
 	const iconNames = [
 		"AlertTriangle",
 		"BarChart3",
@@ -120,7 +121,8 @@ vi.mock("lucide-react", () => {
 });
 
 vi.mock("@/components/ui/button", () => {
-	const React = require("react");
+	// eslint-disable-next-line @typescript-eslint/no-require-imports
+		const React = require("react");
 	return {
 		Button: React.forwardRef(
 			(
@@ -158,6 +160,7 @@ vi.mock("@/components/ui/button", () => {
 vi.mock(
 	"@/features/drenyra-command-center/components/ArtifactCollapsible",
 	() => {
+		// eslint-disable-next-line @typescript-eslint/no-require-imports
 		const React = require("react");
 		return {
 			ArtifactCollapsible: ({
@@ -188,6 +191,7 @@ vi.mock(
 vi.mock(
 	"@/features/drenyra-command-center/components/EvidenceAttachmentForm",
 	() => {
+		// eslint-disable-next-line @typescript-eslint/no-require-imports
 		const React = require("react");
 		return {
 			EvidenceAttachmentForm: ({
@@ -211,6 +215,7 @@ vi.mock(
 vi.mock(
 	"@/features/drenyra-command-center/components/FiscalCaseCreationForm",
 	() => {
+		// eslint-disable-next-line @typescript-eslint/no-require-imports
 		const React = require("react");
 		return {
 			FiscalCaseCreationForm: ({
@@ -229,7 +234,8 @@ vi.mock(
 );
 
 vi.mock("@/features/drenyra-command-center/components/metric", () => {
-	const React = require("react");
+	// eslint-disable-next-line @typescript-eslint/no-require-imports
+		const React = require("react");
 	return {
 		Metric: ({ label, value }: { label: string; value: string }) =>
 			React.createElement(
@@ -244,6 +250,7 @@ vi.mock("@/features/drenyra-command-center/components/metric", () => {
 vi.mock(
 	"@/features/cognitive-hub/components/artifacts/ArtifactRenderer",
 	() => {
+		// eslint-disable-next-line @typescript-eslint/no-require-imports
 		const React = require("react");
 		return {
 			ArtifactRenderer: () =>

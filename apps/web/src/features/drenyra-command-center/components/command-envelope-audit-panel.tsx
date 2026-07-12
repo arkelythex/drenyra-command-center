@@ -13,7 +13,7 @@ const decisionOptions = [
 
 function decisionTone(eventType: string): string {
 	return eventType === "CAPABILITY_DENIED"
-		? "border-red-400/30 bg-red-500/10 text-red-200"
+		? "border-[var(--color-danger)]/30 bg-[var(--color-danger-soft)]0/10 text-red-200"
 		: "border-[var(--color-success)]/30 bg-[var(--color-success)]/10 text-[var(--color-success)]";
 }
 
@@ -26,13 +26,13 @@ export function CommandEnvelopeAuditPanel() {
 	const events = auditQuery.data?.events ?? [];
 
 	return (
-		<section className="mt-5 rounded-2xl border border-white/10 bg-slate-950/50 p-4 shadow-2xl shadow-black/20 ">
+		<section className="mt-5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-4 shadow-2xl shadow-[var(--surface-1)]/20 ">
 			<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<div>
-					<p className="text-2xs font-bold uppercase tracking-[0.22em] text-cyan-200/80">
+					<p className="text-2xs font-bold uppercase tracking-[0.22em] text-[var(--color-info)]/80">
 						Command Envelope Audit
 					</p>
-					<h2 className="mt-1 text-lg font-semibold text-white">
+					<h2 className="mt-1 text-lg font-semibold text-[var(--text-inverse)]">
 						Capability decisions
 					</h2>
 					<p className="mt-1 text-xs text-slate-400">
@@ -47,8 +47,8 @@ export function CommandEnvelopeAuditPanel() {
 							onClick={() => setDecision(option.value)}
 							className={
 								decision === option.value
-									? "rounded-full border border-cyan-300/40 bg-cyan-300/15 px-3 py-1 text-2xs font-bold text-cyan-100"
-									: "rounded-full border border-white/10 bg-white/5 px-3 py-1 text-2xs font-bold text-slate-300 hover:border-white/20"
+									? "rounded-full border border-[var(--color-info)]/40 bg-[var(--color-info)]/15 px-3 py-1 text-2xs font-bold text-[var(--color-info)]"
+									: "rounded-full border border-[var(--border-subtle)] bg-[var(--surface-1)]/5 px-3 py-1 text-2xs font-bold text-slate-300 hover:border-white/20"
 							}
 						>
 							{option.label}
@@ -60,11 +60,11 @@ export function CommandEnvelopeAuditPanel() {
 			{auditQuery.isLoading ? (
 				<p className="mt-4 text-xs text-slate-400">Cargando auditoría…</p>
 			) : auditQuery.error instanceof Error ? (
-				<p className="mt-4 rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-xs text-red-100">
+				<p className="mt-4 rounded-xl border border-[var(--color-danger)]/30 bg-[var(--color-danger-soft)]0/10 p-3 text-xs text-[var(--color-danger)]">
 					{auditQuery.error.message}
 				</p>
 			) : events.length === 0 ? (
-				<p className="mt-4 rounded-xl border border-white/10 bg-white/5 p-3 text-xs text-slate-400">
+				<p className="mt-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/5 p-3 text-xs text-slate-400">
 					Sin decisiones de capability para este scope fiscal.
 				</p>
 			) : (
@@ -72,7 +72,7 @@ export function CommandEnvelopeAuditPanel() {
 					{events.map((event) => (
 						<article
 							key={event.id}
-							className="rounded-xl border border-white/10 bg-white/[0.04] p-3"
+							className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/[0.04] p-3"
 						>
 							<div className="flex flex-wrap items-center gap-2">
 								<span

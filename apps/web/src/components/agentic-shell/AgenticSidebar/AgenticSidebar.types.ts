@@ -1,6 +1,15 @@
 import type { LucideIcon } from "lucide-react";
 
+<<<<<<< HEAD
 export type NavSectionId = "command-center" | "fiscal-scope" | "system";
+=======
+export type NavSectionId =
+	| "command-center"
+	| "operaciones"
+	| "fiscal-compliance"
+	| "reportes"
+	| "system";
+>>>>>>> main
 
 export interface AgenticSidebarProps {
 	isCollapsed?: boolean;

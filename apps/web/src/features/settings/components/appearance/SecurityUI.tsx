@@ -12,7 +12,7 @@ export const SecurityHealth = ({ score = 85 }: { score?: number }) => {
 				<div className="flex flex-col items-center justify-center">
 					<div className="relative flex h-32 w-32 items-center justify-center">
 						<svg className="h-full w-full -rotate-90" aria-hidden="true">
-							<title>Security health score</title>
+							<title>Indicador de seguridad</title>
 							<circle
 								cx="64"
 								cy="64"
@@ -40,7 +40,7 @@ export const SecurityHealth = ({ score = 85 }: { score?: number }) => {
 								{score}%
 							</span>
 							<span className="text-[8px] font-black uppercase tracking-widest text-[var(--ink)]/30">
-								Safe
+								Seguro
 							</span>
 						</div>
 					</div>
@@ -51,19 +51,20 @@ export const SecurityHealth = ({ score = 85 }: { score?: number }) => {
 					<div className="flex items-center gap-2">
 						<div className="h-1.5 w-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
 						<h3 className="text-xs font-black uppercase tracking-[0.2em] text-[var(--ink)]">
-							Trust Analysis
+							Análisis de seguridad
 						</h3>
 					</div>
 					<p className="max-w-md text-sm leading-relaxed text-[var(--ink)]/50">
-						Your account is currently in the{" "}
-						<span className="text-[var(--ink)] font-bold">Top 15%</span> of
-						secured profiles. 2FA is active and your session matrix is clean.
+						Tu cuenta está dentro del{" "}
+						<span className="text-[var(--ink)] font-bold">15% superior</span> de
+						perfiles protegidos. El 2FA está activo y no hay sesiones
+						sospechosas.
 					</p>
 					<div className="flex flex-wrap gap-2">
 						{[
-							{ icon: ShieldCheck, label: "2FA Active", active: true },
-							{ icon: Lock, label: "Biometrics", active: true },
-							{ icon: Zap, label: "Audit Log", active: false },
+							{ icon: ShieldCheck, label: "2FA activo", active: true },
+							{ icon: Lock, label: "Biometría", active: true },
+							{ icon: Zap, label: "Auditoría", active: false },
 						].map((tag) => (
 							<div
 								key={tag.label}
@@ -90,14 +91,12 @@ export const SecurityHealth = ({ score = 85 }: { score?: number }) => {
 interface SessionCardProps {
 	device: string;
 	location: string;
-	status: string;
 	isCurrent?: boolean;
 }
 
 export const SessionCard = ({
 	device,
 	location,
-	status: _status,
 	isCurrent,
 }: SessionCardProps) => {
 	return (
@@ -127,12 +126,12 @@ export const SessionCard = ({
 						</span>
 						{isCurrent && (
 							<span className="rounded-full bg-[var(--accent)]/10 px-1.5 py-0.5 text-[8px] font-black text-[var(--accent)]">
-								CURRENT
+								ACTUAL
 							</span>
 						)}
 					</div>
 					<p className="mt-1 text-xs font-medium text-[var(--ink)]/30 uppercase tracking-[0.1em]">
-						{location} • Last active: Just now
+						{location} • Última actividad: ahora
 					</p>
 				</div>
 			</div>

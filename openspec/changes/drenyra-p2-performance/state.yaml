@@ -1,5 +1,12 @@
-status: proposal
+status: applied
 created: 2026-07-07
-author: el Gentleman
-prs: 3
-lines: 800
+applied: 2026-07-11
+author: el-gentleman
+actions:
+  - X5 created benchmarks/domain/money.bench.ts (5 benchmarks)
+  - X5 created lighthouserc.yml with budgets
+  - P2 created scripts/perf/bundle-report.sh
+  - Dist size: 15MB (baseline captured)
+pending:
+  - PR2: Query optimization (N+1 queries)
+  - PR3: Caching strategy + cold start

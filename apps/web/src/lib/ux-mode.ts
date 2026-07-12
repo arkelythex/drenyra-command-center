@@ -56,19 +56,20 @@ const LEGACY_THEME_ALIAS: Record<string, ThemePreference> = {
 	"mono-light": THEME_ID.LIGHT,
 	"mono-dark": THEME_ID.MONO_DARK,
 	"cocoa-light": THEME_ID.LIGHT,
+	"cocoa-dark": THEME_ID.MONO_DARK,
 	custom: THEME_ID.CUSTOM,
 };
 
 function getSystemColorScheme(): ResolvedColorScheme {
-	if (typeof window === "undefined") return "dark";
+	if (typeof window === "undefined") return "light";
 	return window.matchMedia("(prefers-color-scheme: dark)").matches
 		? "dark"
 		: "light";
 }
 
 export function normalizeThemePreference(value: unknown): ThemePreference {
-	if (typeof value !== "string") return THEME_ID.MONO_DARK;
-	return LEGACY_THEME_ALIAS[value] ?? THEME_ID.MONO_DARK;
+	if (typeof value !== "string") return THEME_ID.LIGHT;
+	return LEGACY_THEME_ALIAS[value] ?? THEME_ID.LIGHT;
 }
 
 export function getResolvedThemeId(
@@ -149,6 +150,8 @@ export function syncThemeDocumentState(
 	html.classList.add(`theme-${resolvedThemeId}`);
 	html.classList.add(resolvedColorScheme);
 	html.dataset.theme = resolvedThemeId;
+	html.dataset.ledgerTheme =
+		resolvedColorScheme === "light" ? "light" : "black-oled";
 	html.dataset.colorScheme = resolvedColorScheme;
 	html.style.colorScheme = resolvedColorScheme;
 
@@ -193,12 +196,12 @@ export function syncUXModeDocumentClasses(mode: UXMode): void {
 
 export function readPersistedThemePreference(): ThemePreference {
 	if (typeof window === "undefined") {
-		return THEME_ID.MONO_DARK;
+		return THEME_ID.LIGHT;
 	}
 
 	const persistedState = window.localStorage.getItem(UI_STORAGE_KEY);
 	if (!persistedState) {
-		return THEME_ID.MONO_DARK;
+		return THEME_ID.LIGHT;
 	}
 
 	try {
@@ -215,7 +218,7 @@ export function readPersistedThemePreference(): ThemePreference {
 				source: "ux-mode.read-persisted",
 			},
 		);
-		return THEME_ID.MONO_DARK;
+		return THEME_ID.LIGHT;
 	}
 }
 

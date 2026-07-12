@@ -15,8 +15,8 @@ DRENYRA builds Drenyra, the Infraestructura Nacional de Inteligencia Fiscal. Tre
 
 ## Canonical paths
 
-- Canonical user-facing project path: `~/Documents/PROYECTOS/drenyra/drenyra`.
-- Canonical worktree root: `~/Documents/PROYECTOS/drenyra/worktrees/drenyra/<task-name>`.
+- Canonical user-facing project path: `~/Documents/PROYECTOS/Drenyra`.
+- Canonical worktree root: `~/Documents/PROYECTOS/Drenyra/worktrees/<task-name>`.
 - Treat older `/home/dreamcoder08/somnyx/...` paths as compatibility/symlink targets, not as the path to open in tools.
 
 ## Repo shape
@@ -69,7 +69,7 @@ Drenyra is an agentic fiscal intelligence platform, not a generic ERP with a cha
 
 - Default Git workflow: create a dedicated branch for every change; keep `main` clean and updated.
 - Use an isolated Git worktree for medium/large work, parallel phases, or any fiscal/SUNAT/DB/AI-control/CI change. Small one-file/documentation fixes may use a normal branch in the main checkout.
-- Preferred worktree root: `~/Documents/PROYECTOS/drenyra/worktrees/drenyra/<task-name>`; avoid repo-local `.worktrees/` unless explicitly requested.
+- Preferred worktree root: `~/Documents/PROYECTOS/Drenyra/worktrees/<task-name>`; avoid repo-local `.worktrees/` unless explicitly requested.
 - Before editing in a worktree, verify `git status`, current branch, and worktree path; never mix unrelated phases in the same branch/worktree.
 - Start by inspecting the existing implementation before changing code.
 - Reuse existing patterns, scripts, schemas, and tests.
@@ -175,7 +175,7 @@ When reviewing or authoring a PR, design for low cognitive load:
 ## Engram (memoria persistente)
 
 - Proyecto: **`drenyra`** (no `arkonyx` / `ARKONYX`).
-- Config: `~/Documents/PROYECTOS/drenyra/.engram/config.json`; `drenyra/.engram` → `../.engram`.
+- Config: `~/Documents/PROYECTOS/Drenyra/.engram/config.json`; `Drenyra/.engram` → `../.engram`.
 - Guía: [`docs/05-development/engram-project-canonical.md`](docs/05-development/engram-project-canonical.md).
 
 ## Agent-specific guidance

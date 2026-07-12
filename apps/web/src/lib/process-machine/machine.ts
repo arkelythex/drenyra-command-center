@@ -174,7 +174,6 @@ export function createProcessMachine<TContext extends { error: string | null }>(
 				},
 			},
 		} as Parameters<typeof createMachine>[0]["states"];
-		![string];
 
 		if (hasAnalyze) {
 			const analyzeActor = fromPromise<Partial<TContext>, TContext>(
@@ -210,7 +209,6 @@ export function createProcessMachine<TContext extends { error: string | null }>(
 					},
 				},
 			} as Parameters<typeof createMachine>[0]["states"];
-			![string];
 		}
 
 		return createMachine(

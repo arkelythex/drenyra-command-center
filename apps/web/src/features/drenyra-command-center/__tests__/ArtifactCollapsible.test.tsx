@@ -10,7 +10,8 @@ import {
 // ── Mocks ─────────────────────────────────────────────────────────────────────
 
 vi.mock("framer-motion", () => {
-	const React = require("react");
+	// eslint-disable-next-line @typescript-eslint/no-require-imports
+		const React = require("react");
 	const MotionDiv = (props: Record<string, unknown>) => {
 		const { children, ...rest } = props;
 		return React.createElement("div", rest, children);

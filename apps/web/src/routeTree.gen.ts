@@ -11,7 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as VendorsRouteImport } from './routes/vendors'
+<<<<<<< HEAD
 import { Route as ToolsRouteImport } from './routes/tools'
+=======
+>>>>>>> main
 import { Route as TaxationRouteImport } from './routes/taxation'
 import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as SignupRouteImport } from './routes/signup'
@@ -39,6 +42,10 @@ import { Route as InventoryRouteImport } from './routes/inventory'
 import { Route as InteligenciaRouteImport } from './routes/inteligencia'
 import { Route as InboxRouteImport } from './routes/inbox'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+<<<<<<< HEAD
+=======
+import { Route as FiscalChatRouteImport } from './routes/fiscal-chat'
+>>>>>>> main
 import { Route as FirmRouteImport } from './routes/firm'
 import { Route as FinancialsRouteImport } from './routes/financials'
 import { Route as ExpedientesRouteImport } from './routes/expedientes'
@@ -151,11 +158,14 @@ const VendorsRoute = VendorsRouteImport.update({
   path: '/vendors',
   getParentRoute: () => rootRouteImport,
 } as any)
+<<<<<<< HEAD
 const ToolsRoute = ToolsRouteImport.update({
   id: '/tools',
   path: '/tools',
   getParentRoute: () => rootRouteImport,
 } as any)
+=======
+>>>>>>> main
 const TaxationRoute = TaxationRouteImport.update({
   id: '/taxation',
   path: '/taxation',
@@ -291,6 +301,14 @@ const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+<<<<<<< HEAD
+=======
+const FiscalChatRoute = FiscalChatRouteImport.update({
+  id: '/fiscal-chat',
+  path: '/fiscal-chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+>>>>>>> main
 const FirmRoute = FirmRouteImport.update({
   id: '/firm',
   path: '/firm',
@@ -840,6 +858,10 @@ export interface FileRoutesByFullPath {
   '/expedientes': typeof ExpedientesRoute
   '/financials': typeof FinancialsRoute
   '/firm': typeof FirmRouteWithChildren
+<<<<<<< HEAD
+=======
+  '/fiscal-chat': typeof FiscalChatRoute
+>>>>>>> main
   '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
   '/inteligencia': typeof InteligenciaRoute
@@ -867,7 +889,10 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/skills': typeof SkillsRoute
   '/taxation': typeof TaxationRoute
+<<<<<<< HEAD
   '/tools': typeof ToolsRoute
+=======
+>>>>>>> main
   '/vendors': typeof VendorsRoute
   '/verify-email': typeof VerifyEmailRoute
   '/approval/$id': typeof ApprovalIdRoute
@@ -970,6 +995,10 @@ export interface FileRoutesByTo {
   '/evidence': typeof EvidenceRouteWithChildren
   '/expedientes': typeof ExpedientesRoute
   '/financials': typeof FinancialsRoute
+<<<<<<< HEAD
+=======
+  '/fiscal-chat': typeof FiscalChatRoute
+>>>>>>> main
   '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
   '/inteligencia': typeof InteligenciaRoute
@@ -997,7 +1026,10 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/skills': typeof SkillsRoute
   '/taxation': typeof TaxationRoute
+<<<<<<< HEAD
   '/tools': typeof ToolsRoute
+=======
+>>>>>>> main
   '/vendors': typeof VendorsRoute
   '/verify-email': typeof VerifyEmailRoute
   '/approval/$id': typeof ApprovalIdRoute
@@ -1104,6 +1136,10 @@ export interface FileRoutesById {
   '/expedientes': typeof ExpedientesRoute
   '/financials': typeof FinancialsRoute
   '/firm': typeof FirmRouteWithChildren
+<<<<<<< HEAD
+=======
+  '/fiscal-chat': typeof FiscalChatRoute
+>>>>>>> main
   '/forgot-password': typeof ForgotPasswordRoute
   '/inbox': typeof InboxRoute
   '/inteligencia': typeof InteligenciaRoute
@@ -1131,7 +1167,10 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/skills': typeof SkillsRoute
   '/taxation': typeof TaxationRoute
+<<<<<<< HEAD
   '/tools': typeof ToolsRoute
+=======
+>>>>>>> main
   '/vendors': typeof VendorsRoute
   '/verify-email': typeof VerifyEmailRoute
   '/approval/$id': typeof ApprovalIdRoute
@@ -1239,6 +1278,10 @@ export interface FileRouteTypes {
     | '/expedientes'
     | '/financials'
     | '/firm'
+<<<<<<< HEAD
+=======
+    | '/fiscal-chat'
+>>>>>>> main
     | '/forgot-password'
     | '/inbox'
     | '/inteligencia'
@@ -1266,7 +1309,10 @@ export interface FileRouteTypes {
     | '/signup'
     | '/skills'
     | '/taxation'
+<<<<<<< HEAD
     | '/tools'
+=======
+>>>>>>> main
     | '/vendors'
     | '/verify-email'
     | '/approval/$id'
@@ -1369,6 +1415,10 @@ export interface FileRouteTypes {
     | '/evidence'
     | '/expedientes'
     | '/financials'
+<<<<<<< HEAD
+=======
+    | '/fiscal-chat'
+>>>>>>> main
     | '/forgot-password'
     | '/inbox'
     | '/inteligencia'
@@ -1396,7 +1446,10 @@ export interface FileRouteTypes {
     | '/signup'
     | '/skills'
     | '/taxation'
+<<<<<<< HEAD
     | '/tools'
+=======
+>>>>>>> main
     | '/vendors'
     | '/verify-email'
     | '/approval/$id'
@@ -1502,6 +1555,10 @@ export interface FileRouteTypes {
     | '/expedientes'
     | '/financials'
     | '/firm'
+<<<<<<< HEAD
+=======
+    | '/fiscal-chat'
+>>>>>>> main
     | '/forgot-password'
     | '/inbox'
     | '/inteligencia'
@@ -1529,7 +1586,10 @@ export interface FileRouteTypes {
     | '/signup'
     | '/skills'
     | '/taxation'
+<<<<<<< HEAD
     | '/tools'
+=======
+>>>>>>> main
     | '/vendors'
     | '/verify-email'
     | '/approval/$id'
@@ -1636,6 +1696,10 @@ export interface RootRouteChildren {
   ExpedientesRoute: typeof ExpedientesRoute
   FinancialsRoute: typeof FinancialsRoute
   FirmRoute: typeof FirmRouteWithChildren
+<<<<<<< HEAD
+=======
+  FiscalChatRoute: typeof FiscalChatRoute
+>>>>>>> main
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   InboxRoute: typeof InboxRoute
   InteligenciaRoute: typeof InteligenciaRoute
@@ -1663,7 +1727,10 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   SkillsRoute: typeof SkillsRoute
   TaxationRoute: typeof TaxationRoute
+<<<<<<< HEAD
   ToolsRoute: typeof ToolsRoute
+=======
+>>>>>>> main
   VendorsRoute: typeof VendorsRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
   ContabilidadAccountingPrRoute: typeof ContabilidadAccountingPrRoute
@@ -1726,6 +1793,7 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VendorsRouteImport
       parentRoute: typeof rootRouteImport
     }
+<<<<<<< HEAD
     '/tools': {
       id: '/tools'
       path: '/tools'
@@ -1733,6 +1801,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
+=======
+>>>>>>> main
     '/taxation': {
       id: '/taxation'
       path: '/taxation'
@@ -1922,6 +1992,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+<<<<<<< HEAD
+=======
+    '/fiscal-chat': {
+      id: '/fiscal-chat'
+      path: '/fiscal-chat'
+      fullPath: '/fiscal-chat'
+      preLoaderRoute: typeof FiscalChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+>>>>>>> main
     '/firm': {
       id: '/firm'
       path: '/firm'
@@ -2789,6 +2869,10 @@ const rootRouteChildren: RootRouteChildren = {
   ExpedientesRoute: ExpedientesRoute,
   FinancialsRoute: FinancialsRoute,
   FirmRoute: FirmRouteWithChildren,
+<<<<<<< HEAD
+=======
+  FiscalChatRoute: FiscalChatRoute,
+>>>>>>> main
   ForgotPasswordRoute: ForgotPasswordRoute,
   InboxRoute: InboxRoute,
   InteligenciaRoute: InteligenciaRoute,
@@ -2816,7 +2900,10 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   SkillsRoute: SkillsRoute,
   TaxationRoute: TaxationRoute,
+<<<<<<< HEAD
   ToolsRoute: ToolsRoute,
+=======
+>>>>>>> main
   VendorsRoute: VendorsRoute,
   VerifyEmailRoute: VerifyEmailRoute,
   ContabilidadAccountingPrRoute: ContabilidadAccountingPrRoute,

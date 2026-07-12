@@ -1,12 +1,9 @@
-# State: Fiscal Agent 24/7
-
+phase: archived
+completed_at: '2026-07-11'
 change: fiscal-agent-247
-phase: tasks
-artifacts:
-  - proposal
-  - spec
-  - design
-  - tasks
-next: apply
 created: 2026-07-03
-updated: 2026-07-03
+updated: 2026-07-11
+evidence:
+  - packages/infrastructure/src/agents/fiscal-agent/ (6 steps + index + tests)
+  - packages/application/src/use-cases/fiscal-agent/ (use case + types)
+  - apps/api/src/features/fiscal-agent/routes/ (health, report, correction)

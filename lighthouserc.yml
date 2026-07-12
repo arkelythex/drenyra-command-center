@@ -1,0 +1,70 @@
+# 🌊 Drenyra Lighthouse CI Configuration
+# Performance budgets for the web app
+# See: https://github.com/GoogleChrome/lighthouse-ci
+
+ci:
+  collect:
+    # URL to test
+    url:
+      - http://localhost:5174/
+      - http://localhost:5174/login
+    # Number of runs to average
+    numberOfRuns: 3
+    # Static server (no puppeteer needed for SPA)
+    settings:
+      onlyCategories:
+        - performance
+        - accessibility
+        - best-practices
+        - seo
+      formFactor: desktop
+      throttling:
+        rttMs: 40
+        throughputKbps: 10240
+        cpuSlowdownMultiplier: 1
+
+  assert:
+    # Performance budgets
+    assertions:
+      # Performance score
+      'categories:performance':
+        - warn
+        - minScore: 0.7
+
+      'categories:accessibility':
+        - error
+        - minScore: 0.9
+
+      'categories:best-practices':
+        - error
+        - minScore: 0.9
+
+      # Resource budgets
+      'resource-summary:total:compressed':
+        - warn
+        - maxNumericValue: 500_000 # 500KB gzipped
+
+      'resource-summary:script:compressed':
+        - warn
+        - maxNumericValue: 300_000 # 300KB gzipped JS
+
+      # Timing
+      'first-contentful-paint':
+        - warn
+        - maxNumericValue: 2000 # 2s
+
+      'largest-contentful-paint':
+        - warn
+        - maxNumericValue: 3500 # 3.5s
+
+      'total-blocking-time':
+        - warn
+        - maxNumericValue: 300 # 300ms
+
+      'interactive':
+        - warn
+        - maxNumericValue: 5000 # 5s
+
+  upload:
+    target: filesystem
+    outputDir: ./reports/lighthouse

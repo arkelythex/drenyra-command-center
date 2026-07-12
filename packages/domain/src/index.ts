@@ -30,3 +30,6 @@ export { DNI } from "./value-objects/DNI";
 export { DocumentSeries } from "./value-objects/DocumentSeries";
 export { type Currency, Money } from "./value-objects/Money";
 export { RUC } from "./value-objects/RUC";
+
+// --- FISCAL CONTRACTS (Cross-stack source of truth) ---
+export * from "./fiscal-contracts";

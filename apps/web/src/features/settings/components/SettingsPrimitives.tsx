@@ -30,7 +30,7 @@ export const SettingsSection = ({
 			/>
 
 			<div className="relative mb-4 border-b border-[var(--border-subtle)]/50 pb-3">
-				<h2 className="text-xs font-bold uppercase tracking-widest text-[var(--accent)]">
+				<h2 className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
 					{title}
 				</h2>
 				{description ? (
@@ -65,7 +65,7 @@ export const SettingsRow = ({
 			)}
 		>
 			<div className="min-w-0">
-				<p className="text-xs font-black uppercase tracking-widest text-[var(--text-primary)]">
+				<p className="text-xs font-semibold uppercase tracking-widest text-[var(--text-primary)]">
 					{title}
 				</p>
 				{description ? (
