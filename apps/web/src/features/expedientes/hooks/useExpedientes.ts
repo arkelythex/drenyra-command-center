@@ -17,8 +17,8 @@ function buildHeaders(companyId: string, companyRuc: string): HeadersInit {
 async function fetchExpedientes(input: {
 	companyId: string;
 	companyRuc: string;
-	kind?: ExpedienteKind;
-	periodo?: string;
+	kind?: ExpedienteKind | undefined;
+	periodo?: string | undefined;
 }): Promise<ExpedienteFiscal[]> {
 	const params = new URLSearchParams({ companyRuc: input.companyRuc });
 	if (input.kind) params.set("kind", input.kind);
@@ -34,7 +34,7 @@ async function fetchExpedientes(input: {
 async function fetchCierreMensual(input: {
 	companyId: string;
 	companyRuc: string;
-	periodo?: string;
+	periodo?: string | undefined;
 }): Promise<CierreMensual> {
 	const params = new URLSearchParams({ companyRuc: input.companyRuc });
 	if (input.periodo) params.set("periodo", input.periodo);
@@ -50,7 +50,7 @@ async function fetchCierreMensual(input: {
 }
 
 export function useExpedientes(filters?: {
-	kind?: ExpedienteKind;
+	kind?: ExpedienteKind | undefined;
 	periodo?: string;
 }) {
 	const { companyContext } = useActiveCompanyContext();

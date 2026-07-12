@@ -13,7 +13,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Text } from "@/components/atoms/text";
 import { Card } from "@/components/ui/card";
-import { BORDER_RADIUS } from "@/lib/design-tokens";
+
 import type { Invoice } from "../hooks/useInvoices";
 import type { InvoiceStatus } from "../hooks/useInvoicesBoard";
 import { ALLOWED_TRANSITIONS } from "./invoices-board.constants";
@@ -143,7 +143,7 @@ export const InvoicesSummaryBoard = ({
 		>
 			<div className="flex h-full snap-x snap-mandatory justify-start gap-5 pb-16 lg:gap-6">
 				{isLoading ? (
-					<Card className="w-full rounded-3xl border border-border bg-card p-8">
+					<Card className="w-full rounded-[var(--radius-xl)] border border-[var(--border-subtle)] bg-[var(--surface-1)] p-6">
 						<div className="flex items-center gap-3 text-sm text-muted-foreground">
 							<Loader2 className="h-4 w-4 animate-spin" />
 							Sincronizando facturas...
@@ -152,7 +152,7 @@ export const InvoicesSummaryBoard = ({
 				) : null}
 
 				{!isLoading && error ? (
-					<Card className="w-full rounded-3xl border border-amber-500/30 bg-amber-500/10 p-6 text-amber-700 dark:text-amber-300">
+					<Card className="w-full rounded-[var(--radius-xl)] border border-amber-500/30 bg-amber-500/10 p-6 text-amber-700 dark:text-amber-300">
 						<div className="flex items-center gap-2 text-sm font-semibold">
 							<AlertTriangle className="h-4 w-4" />
 							No se pudo actualizar la cobranza. Se muestran datos de respaldo.
@@ -161,7 +161,7 @@ export const InvoicesSummaryBoard = ({
 				) : null}
 
 				{!isLoading && normalizedQuery && !hasSearchResults ? (
-					<Card className="w-full rounded-3xl border border-border bg-card p-8 text-center">
+					<Card className="w-full rounded-[var(--radius-xl)] border border-[var(--border-subtle)] bg-[var(--surface-1)] p-6 text-center">
 						<p className="text-sm font-semibold text-foreground">
 							Sin resultados para “{searchQuery}”
 						</p>
@@ -184,23 +184,19 @@ export const InvoicesSummaryBoard = ({
 									onClick={onCreateInvoice}
 									onPointerEnter={onCreateInvoiceIntent}
 									onFocus={onCreateInvoiceIntent}
-									className="group flex min-h-[180px] flex-none cursor-pointer flex-col items-start justify-between rounded-3xl border border-dashed border-border bg-card p-6 text-left transition-[background-color,border-color,box-shadow] duration-150 hover:bg-card/90 hover:shadow-md"
-									style={{ borderRadius: BORDER_RADIUS.modal }}
+									className="group flex min-h-[100px] flex-none cursor-pointer flex-col items-start justify-between rounded-[var(--radius-xl)] border border-dashed border-[var(--border-subtle)] bg-[var(--surface-1)] p-4 text-left transition-colors duration-150 hover:bg-[var(--surface-2)]"
 								>
-									<div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-border bg-muted text-foreground shadow-sm">
-										<Plus className="h-6 w-6" strokeWidth={1.75} />
-									</div>
-									<div>
-										<Text variant="label" className="mb-2 text-foreground">
+									<div className="flex items-center gap-3">
+										<div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)]">
+											<Plus size={14} strokeWidth={2} />
+										</div>
+										<Text
+											variant="label"
+											className="text-xs font-medium text-[var(--text-primary)]"
+										>
 											Nueva factura
 										</Text>
-										<p className="max-w-[220px] text-xs leading-relaxed text-muted-foreground">
-											Crea un comprobante nuevo y agrégalo al flujo de cobranza.
-										</p>
 									</div>
-									<p className="text-label font-medium text-muted-foreground">
-										Click para empezar
-									</p>
 								</button>
 								{filteredInvoicesByStatus.draft.map((invoice) => (
 									<InvoiceCard key={invoice.id} invoice={invoice} />
@@ -215,7 +211,7 @@ export const InvoicesSummaryBoard = ({
 							total={formatMoney(filteredColumnTotals.sent)}
 							active={filteredInvoicesByStatus.sent.length > 0}
 						>
-							<div className="space-y-4 rounded-3xl border border-border bg-card/70 p-3">
+							<div className="space-y-4 rounded-[var(--radius-xl)] border border-[var(--border-subtle)] bg-[var(--surface-1)]/70 p-3">
 								{filteredInvoicesByStatus.sent.map((invoice) => (
 									<InvoiceCard key={invoice.id} invoice={invoice} isSent />
 								))}
@@ -229,7 +225,7 @@ export const InvoicesSummaryBoard = ({
 							total={formatMoney(filteredColumnTotals.overdue)}
 							active={filteredInvoicesByStatus.overdue.length > 0}
 						>
-							<div className="space-y-4 rounded-3xl border border-destructive/20 bg-destructive/5 p-3">
+							<div className="space-y-4 rounded-[var(--radius-xl)] border border-destructive/20 bg-destructive/5 p-3">
 								{filteredInvoicesByStatus.overdue.map((invoice) => (
 									<InvoiceCard key={invoice.id} invoice={invoice} isOverdue />
 								))}
@@ -241,7 +237,7 @@ export const InvoicesSummaryBoard = ({
 							title="Cobradas"
 							count={filteredInvoicesByStatus.paid.length}
 						>
-							<div className="space-y-4 rounded-3xl border border-border bg-card/60 p-3">
+							<div className="space-y-4 rounded-[var(--radius-xl)] border border-[var(--border-subtle)] bg-[var(--surface-1)]/60 p-3">
 								{filteredInvoicesByStatus.paid.map((invoice) => (
 									<InvoiceCard key={invoice.id} invoice={invoice} isPaid />
 								))}

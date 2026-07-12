@@ -24,6 +24,11 @@ interface ComposerProps {
 	isSending?: boolean;
 	sendError?: boolean;
 	onFileUpload?: () => void;
+	/**
+	 * expanded: full composer with controls, chips, suggested actions (default)
+	 * compact: minimal input + send button only
+	 */
+	displayMode?: "expanded" | "compact";
 }
 
 type ComposerMode = "consulta" | "periodo";
@@ -33,6 +38,7 @@ export function Composer({
 	isSending = false,
 	sendError,
 	onFileUpload,
+	displayMode = "expanded",
 }: ComposerProps) {
 	const [message, setMessage] = useState("");
 	const [mode, setMode] = useState<ComposerMode>("consulta");
@@ -306,52 +312,54 @@ export function Composer({
 			</div>
 
 			<div className="mt-3 flex items-center justify-between">
-				<div className="flex items-center gap-3">
-					<ComposerControls
-						mode={mode}
-						onChangeMode={setMode}
-						activeSkills={activeSkills}
-						onToggleSkill={toggleSkill}
-					/>
+				{displayMode === "expanded" && (
+					<div className="flex items-center gap-3">
+						<ComposerControls
+							mode={mode}
+							onChangeMode={setMode}
+							activeSkills={activeSkills}
+							onToggleSkill={toggleSkill}
+						/>
 
-					{/* YOLO mode toggle: Manual vs Auto (approval bypass) */}
-					<div
-						className="flex items-center rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-0.5"
-						role="tablist"
-						title="Auto ejecuta aprobaciones de bajo riesgo sin confirmación manual"
-					>
-						<button
-							type="button"
-							role="tab"
-							aria-selected={!yoloMode}
-							onClick={() => setYoloMode(false)}
-							className={cn(
-								"rounded-md px-2.5 py-1 text-xs font-medium transition-all",
-								!yoloMode
-									? "bg-[var(--surface-1)] text-[var(--text-primary)] shadow-sm"
-									: "text-[var(--text-muted)] hover:text-[var(--text-secondary)]",
-							)}
+						{/* YOLO mode toggle: Manual vs Auto (approval bypass) */}
+						<div
+							className="flex items-center rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-0.5"
+							role="tablist"
+							title="Auto ejecuta aprobaciones de bajo riesgo sin confirmación manual"
 						>
-							<ShieldCheck size={14} className="-ml-0.5 mr-1 inline-block" />
-							Manual
-						</button>
-						<button
-							type="button"
-							role="tab"
-							aria-selected={yoloMode}
-							onClick={() => setYoloMode(true)}
-							className={cn(
-								"rounded-md px-2.5 py-1 text-xs font-medium transition-all",
-								yoloMode
-									? "bg-[var(--color-warning)]/10 text-[var(--color-warning)] shadow-sm"
-									: "text-[var(--text-muted)] hover:text-[var(--text-secondary)]",
-							)}
-						>
-							<Zap size={14} className="-ml-0.5 mr-1 inline-block" />
-							Auto
-						</button>
+							<button
+								type="button"
+								role="tab"
+								aria-selected={!yoloMode}
+								onClick={() => setYoloMode(false)}
+								className={cn(
+									"rounded-md px-2.5 py-1 text-xs font-medium transition-all",
+									!yoloMode
+										? "bg-[var(--surface-1)] text-[var(--text-primary)] shadow-sm"
+										: "text-[var(--text-muted)] hover:text-[var(--text-secondary)]",
+								)}
+							>
+								<ShieldCheck size={14} className="-ml-0.5 mr-1 inline-block" />
+								Manual
+							</button>
+							<button
+								type="button"
+								role="tab"
+								aria-selected={yoloMode}
+								onClick={() => setYoloMode(true)}
+								className={cn(
+									"rounded-md px-2.5 py-1 text-xs font-medium transition-all",
+									yoloMode
+										? "bg-[var(--color-warning)]/10 text-[var(--color-warning)] shadow-sm"
+										: "text-[var(--text-muted)] hover:text-[var(--text-secondary)]",
+								)}
+							>
+								<Zap size={14} className="-ml-0.5 mr-1 inline-block" />
+								Auto
+							</button>
+						</div>
 					</div>
-				</div>
+				)}
 
 				<div className="flex items-center gap-2">
 					{hasMessage && (
@@ -379,7 +387,9 @@ export function Composer({
 				</div>
 			</div>
 
-			<SuggestedActions onAction={handleSuggestedAction} />
+			{displayMode === "expanded" && (
+				<SuggestedActions onAction={handleSuggestedAction} />
+			)}
 		</section>
 	);
 }

@@ -89,7 +89,7 @@ export function ObservabilityDashboard() {
 	);
 
 	return (
-		<PageShell variant="board">
+		<PageShell variant="data-heavy">
 			<PageHeader
 				title="AI Observability"
 				description="Live monitoring of AI Control Plane agent runs, workflow states, and execution events."
@@ -115,6 +115,7 @@ export function ObservabilityDashboard() {
 			{/* Tab buttons */}
 			<div className="mb-6 flex items-center gap-4">
 				<button
+					type="button"
 					onClick={() => setActiveTab("runs")}
 					className={cn(
 						"rounded-lg px-4 py-2 text-sm font-medium transition-colors",
@@ -126,6 +127,7 @@ export function ObservabilityDashboard() {
 					Runs
 				</button>
 				<button
+					type="button"
 					onClick={() => setActiveTab("batches")}
 					className={cn(
 						"rounded-lg px-4 py-2 text-sm font-medium transition-colors",
@@ -137,6 +139,7 @@ export function ObservabilityDashboard() {
 					Batches
 				</button>
 				<button
+					type="button"
 					onClick={() => setActiveTab("latencia")}
 					className={cn(
 						"inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-colors",
@@ -149,6 +152,7 @@ export function ObservabilityDashboard() {
 					Latencia
 				</button>
 				<button
+					type="button"
 					onClick={() => setActiveTab("memoria")}
 					className={cn(
 						"inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-medium transition-colors",

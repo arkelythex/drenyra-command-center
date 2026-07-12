@@ -1,7 +1,7 @@
 "use client";
 
 import { Loader2, Upload } from "lucide-react";
-import type { DragEvent, ReactElement } from "react";
+import type { ReactElement } from "react";
 import { useRef } from "react";
 import { cn } from "@/lib/utils";
 import { INBOX_ACCEPT, INBOX_EXAMPLE_FILES } from "../inbox.config";
@@ -24,30 +24,23 @@ export function InboxUploadZone({
 		onFilesSelected(Array.from(list));
 	};
 
-	const onDrop = (event: DragEvent<HTMLDivElement>) => {
+	const onDrop = (event: React.DragEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		handleFiles(event.dataTransfer.files);
 	};
 
 	return (
-		<div
+		<button
+			type="button"
 			onDragOver={(event) => event.preventDefault()}
 			onDrop={onDrop}
 			className={cn(
-				"flex min-h-[180px] cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed px-6 py-10 text-center transition",
+				"flex min-h-[120px] cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed px-6 py-6 text-center transition",
 				isBusy
 					? "border-[var(--color-info)]/40 bg-[var(--color-info)]/5"
 					: "border-[var(--border-strong)] bg-[var(--surface-1)]/60 hover:border-[var(--color-info)]/50",
 			)}
 			onClick={() => !isBusy && inputRef.current?.click()}
-			role="button"
-			tabIndex={0}
-			onKeyDown={(event) => {
-				if (event.key === "Enter" || event.key === " ") {
-					event.preventDefault();
-					if (!isBusy) inputRef.current?.click();
-				}
-			}}
 		>
 			<input
 				ref={inputRef}
@@ -81,6 +74,6 @@ export function InboxUploadZone({
 					</li>
 				))}
 			</ul>
-		</div>
+		</button>
 	);
 }

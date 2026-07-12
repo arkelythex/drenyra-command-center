@@ -1,4 +1,4 @@
-import { FileCheck, ShieldAlert } from "lucide-react";
+import { CircleCheck, CircleAlert, TriangleAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TaxGateItem {
@@ -14,86 +14,48 @@ interface TaxReviewGateProps {
 	verdict: "ready" | "attention" | "blocked";
 }
 
-const VERDICT_CONFIG = {
+const VERDICT_META = {
 	ready: {
-		icon: FileCheck,
-		label: "Listo para declarar",
-		color:
-			"text-[var(--color-success)] border-[var(--color-success)]/20 bg-[var(--color-success)]/5",
+		icon: CircleCheck,
+		color: "text-[var(--color-success)]",
+		label: "Todo verificado",
 	},
 	attention: {
-		icon: ShieldAlert,
-		label: "Requiere atención antes de declarar",
-		color:
-			"text-[var(--color-warning)] border-[var(--color-warning)]/20 bg-[var(--color-warning)]/5",
+		icon: CircleAlert,
+		color: "text-[var(--color-warning)]",
+		label: "Requiere atención",
 	},
 	blocked: {
-		icon: ShieldAlert,
-		label: "No se puede declarar hasta resolver bloqueos",
-		color:
-			"text-[var(--color-danger)] border-[var(--color-danger)]/20 bg-[var(--color-danger)]/5",
+		icon: TriangleAlert,
+		color: "text-[var(--color-danger)]",
+		label: "Bloqueado",
 	},
 } as const;
 
-const ITEM_STATUS = {
-	verified: "text-[var(--color-success)]",
-	warning: "text-[var(--color-warning)]",
-	blocked: "text-[var(--color-danger)]",
-} as const;
-
-export function TaxReviewGate({ period, items, verdict }: TaxReviewGateProps) {
-	const config = VERDICT_CONFIG[verdict];
-	const Icon = config.icon;
+export function TaxReviewGate({ items, verdict }: TaxReviewGateProps) {
+	const meta = VERDICT_META[verdict];
+	const Icon = meta.icon;
+	const verified = items.filter((i) => i.status === "verified").length;
+	const needsAttention = items.length - verified;
 
 	return (
-		<section className="rounded-2xl border border-[var(--border-default)] bg-[var(--surface-1)] p-5">
+		<div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] px-4 py-2.5">
 			<div className="flex items-center justify-between gap-3">
-				<div>
-					<h2 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
-						Gate fiscal — {period}
-					</h2>
-					<p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
-						Revisión previa a declaración
-					</p>
+				<div className="flex items-center gap-2 min-w-0">
+					<Icon size={15} className={cn("shrink-0", meta.color)} />
+					<span className="text-xs font-medium text-[var(--text-primary)]">
+						Antes de declarar
+					</span>
 				</div>
-				<div
-					className={cn(
-						"flex items-center gap-2 rounded-xl border px-3 py-2",
-						config.color,
+				<span className="text-2xs text-[var(--text-tertiary)] shrink-0">
+					{verified}/{items.length} verificaciones{" "}
+					{needsAttention > 0 && (
+						<span className="text-[var(--color-warning)]">
+							· {needsAttention} requieren atención
+						</span>
 					)}
-				>
-					<Icon size={16} />
-					<span className="text-xs font-semibold">{config.label}</span>
-				</div>
+				</span>
 			</div>
-
-			<div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-				{items.map((item) => (
-					<div
-						key={item.id}
-						className="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-3"
-					>
-						<div className="flex items-center justify-between gap-2">
-							<span className="text-xs font-medium text-[var(--text-primary)]">
-								{item.label}
-							</span>
-							<span
-								className={cn(
-									"text-[10px] font-semibold",
-									ITEM_STATUS[item.status],
-								)}
-							>
-								{item.status === "verified" && "Verificado"}
-								{item.status === "warning" && "Atención"}
-								{item.status === "blocked" && "Bloqueado"}
-							</span>
-						</div>
-						<p className="mt-1 text-[11px] text-[var(--text-tertiary)]">
-							{item.detail}
-						</p>
-					</div>
-				))}
-			</div>
-		</section>
+		</div>
 	);
 }

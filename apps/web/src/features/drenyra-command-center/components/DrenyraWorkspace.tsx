@@ -16,7 +16,7 @@ interface DrenyraWorkspaceProps {
 
 export function DrenyraWorkspace({ onBack }: DrenyraWorkspaceProps) {
 	return (
-		<PageShell variant="board" padding="none" className="h-full relative">
+		<PageShell variant="data-heavy" padding="none" className="h-full relative">
 			{onBack && (
 				<div className="absolute left-4 top-4 z-20">
 					<Button variant="ghost" size="sm" onClick={onBack}>

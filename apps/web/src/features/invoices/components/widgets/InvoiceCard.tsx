@@ -205,7 +205,7 @@ export function InvoiceCard({
 						<div className="text-right">
 							<span
 								className={cn(
-									"text-lg font-semibold font-mono tracking-tight text-foreground tabular-nums",
+									"text-base font-medium font-mono tracking-tight text-[var(--text-primary)] tabular-nums",
 									LEGIBILITY.textShadow.medium,
 								)}
 							>

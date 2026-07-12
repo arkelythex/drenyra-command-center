@@ -1,39 +1,40 @@
 import {
 	Banknote,
-	BarChart3,
 	FileCheck,
 	FileSearch,
-	FileSpreadsheet,
 	FileText,
 	Gavel,
 	Inbox,
 	Landmark,
-	Layers,
 	Receipt,
 	ScrollText,
-	Search,
 	Settings,
-	Shield,
-	Users,
-	Wrench,
 } from "lucide-react";
 import type { AgenticNavItem, NavSectionConfig } from "./AgenticSidebar.types";
 
 /**
- * Outcome-first sidebar navigation.
+ * Restructured sidebar navigation — workspace-oriented, not module-oriented.
  *
  * Sections:
- *   COMMAND CENTER   — daily operations & agentic workflows
- *   OPERACIONES      — accounting operations (banking, reconciliations, ledgers)
- *   FISCAL & COMPLIANCE — tax, SUNAT, SIRE, detracciones
- *   REPORTES         — financial statements, reports, audit
- *   SYSTEM           — settings, legacy tools
+ *   TRABAJO    — daily operational tasks & agentic workflows
+ *   ÁREAS      — domain tools (banking, invoices, tax, SUNAT, reports)
+ *   SISTEMA    — audit trail and configuration
+ *
+ * Removed from first level:
+ *   - Misiones → renamed to Revisiones in TRABAJO
+ *   - Empresas → moved to bottom switcher
+ *   - Conciliaciones → accessible via /tesoreria pattern
+ *   - Ledger → accessible from context
+ *   - Cumplimiento → overlaps with SIRE + Impuestos + Auditoría
+ *   - Estados Financieros → Reportes covers it
+ *   - Herramientas → moved to command palette
  */
+
 export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
-	// ── COMMAND CENTER ──
+	// ── TRABAJO ──
 	{
 		id: "inbox",
-		section: "command-center",
+		section: "trabajo",
 		label: "Bandeja",
 		description: "Tareas críticas y fechas límite",
 		to: "/inbox",
@@ -41,132 +42,81 @@ export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
 		badge: "!",
 	},
 	{
-		id: "missions",
-		section: "command-center",
-		label: "Misiones",
-		description: "Espacio de trabajo del cierre contable",
+		id: "revisions",
+		section: "trabajo",
+		label: "Revisiones",
+		description: "Cierres, conciliaciones y revisiones activas",
 		to: "/cierre-mensual",
-		icon: Layers,
+		icon: ScrollText,
 	},
 	{
-		id: "client-360",
-		section: "command-center",
-		label: "Empresas",
-		description: "Empresas y alcance por RUC",
-		to: "/firm/clients",
-		icon: Users,
+		id: "approval-queue",
+		section: "trabajo",
+		label: "Aprobaciones",
+		description: "Pendientes de revisión y firma",
+		to: "/review-queue",
+		icon: FileSearch,
+		badge: "2",
 	},
 	{
 		id: "evidence",
-		section: "command-center",
+		section: "trabajo",
 		label: "Evidencia",
 		description: "Bóveda de evidencia fiscal",
 		to: "/evidence",
-		icon: FileSearch,
-	},
-	{
-		id: "review-queue",
-		section: "command-center",
-		label: "Cola de revisión",
-		description: "Aprobaciones y decisiones",
-		to: "/review-queue",
-		icon: ScrollText,
+		icon: FileText,
 	},
 
-	// ── OPERACIONES ──
+	// ── ÁREAS ──
 	{
 		id: "banking",
-		section: "operaciones",
+		section: "areas",
 		label: "Bancos",
 		description: "Gestión de bancos y tesorería",
 		to: "/banking",
 		icon: Landmark,
 	},
 	{
-		id: "reconciliations",
-		section: "operaciones",
-		label: "Conciliaciones",
-		description: "Conciliaciones bancarias",
-		to: "/tesoreria/reconciliations",
-		icon: Search,
-	},
-	{
 		id: "invoices",
-		section: "operaciones",
+		section: "areas",
 		label: "Comprobantes",
 		description: "Facturas, notas de crédito y débito",
 		to: "/invoices",
 		icon: Receipt,
 	},
 	{
-		id: "ledger",
-		section: "operaciones",
-		label: "Libro Mayor",
-		description: "Asientos y saldos por cuenta",
-		to: "/contabilidad/ledger",
-		icon: FileSpreadsheet,
-	},
-
-	// ── FISCAL & COMPLIANCE ──
-	{
-		id: "taxation",
-		section: "fiscal-compliance",
-		label: "Impuestos",
-		description: "IGV, renta y gestión tributaria",
-		to: "/taxation",
-		icon: Banknote,
-	},
-	{
 		id: "sire",
-		section: "fiscal-compliance",
+		section: "areas",
 		label: "SIRE / SUNAT",
 		description: "Registros electrónicos SUNAT y SIRE",
 		to: "/cumplimiento/expedientes",
 		icon: FileCheck,
 	},
 	{
-		id: "compliance",
-		section: "fiscal-compliance",
-		label: "Cumplimiento",
-		description: "Cumplimiento y validaciones fiscales",
-		to: "/compliance",
-		icon: Shield,
-	},
-
-	// ── REPORTES ──
-	{
-		id: "financials",
-		section: "reportes",
-		label: "Estados Financieros",
-		description: "Balance general y resultados",
-		to: "/financials",
-		icon: BarChart3,
+		id: "taxation",
+		section: "areas",
+		label: "Impuestos",
+		description: "IGV, renta y gestión tributaria",
+		to: "/taxation",
+		icon: Banknote,
 	},
 	{
 		id: "reports",
-		section: "reportes",
+		section: "areas",
 		label: "Reportes",
 		description: "Reportes y exportaciones",
 		to: "/reports",
 		icon: FileText,
 	},
+
+	// ── SISTEMA ──
 	{
 		id: "audit",
-		section: "reportes",
+		section: "system",
 		label: "Auditoría",
 		description: "Trazabilidad y registros de auditoría",
 		to: "/audit",
 		icon: Gavel,
-	},
-
-	// ── SYSTEM ──
-	{
-		id: "tools",
-		section: "system",
-		label: "Herramientas",
-		description: "Herramientas operativas",
-		to: "/tools",
-		icon: Wrench,
 	},
 	{
 		id: "settings",
@@ -180,20 +130,12 @@ export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
 
 export const AGENTIC_SECTIONS: NavSectionConfig[] = [
 	{
-		title: "CENTRO DE OPERACIONES",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "command-center"),
+		title: "TRABAJO",
+		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "trabajo"),
 	},
 	{
-		title: "OPERACIONES",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "operaciones"),
-	},
-	{
-		title: "FISCAL Y CUMPLIMIENTO",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "fiscal-compliance"),
-	},
-	{
-		title: "REPORTES",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "reportes"),
+		title: "ÁREAS",
+		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "areas"),
 	},
 	{
 		title: "SISTEMA",

@@ -244,6 +244,8 @@ function DonutChart({ summary }: { summary: RunSummary }) {
 				height={DONUT_SIZE}
 				viewBox={`0 0 ${DONUT_SIZE} ${DONUT_SIZE}`}
 				className="rotate-[-90deg]"
+				role="img"
+				aria-label="Distribución de ejecuciones de agentes"
 			>
 				{/* Background ring */}
 				<circle
@@ -660,7 +662,7 @@ export function ObservabilityDashboard() {
 	);
 
 	return (
-		<PageShell variant="board">
+		<PageShell variant="data-heavy">
 			<PageHeader
 				title="AI Observability"
 				description="Live monitoring of AI Control Plane agent runs, workflow states, and execution events."
@@ -686,6 +688,7 @@ export function ObservabilityDashboard() {
 			{/* Tab buttons */}
 			<div className="flex items-center gap-4 mb-6">
 				<button
+					type="button"
 					onClick={() => setActiveTab("runs")}
 					className={cn(
 						"px-4 py-2 rounded-lg text-sm font-medium transition-colors",
@@ -697,6 +700,7 @@ export function ObservabilityDashboard() {
 					Runs
 				</button>
 				<button
+					type="button"
 					onClick={() => setActiveTab("batches")}
 					className={cn(
 						"px-4 py-2 rounded-lg text-sm font-medium transition-colors",
@@ -708,6 +712,7 @@ export function ObservabilityDashboard() {
 					Batches
 				</button>
 				<button
+					type="button"
 					onClick={() => setActiveTab("latencia")}
 					className={cn(
 						"inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors",

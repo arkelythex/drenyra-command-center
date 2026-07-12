@@ -15,7 +15,7 @@ function riskColor(level: string): string {
 	}
 }
 
-export function ControlTowerPage() {
+export function CentroDeOperacionesPage() {
 	const { data, isLoading, isError } = useControlTower();
 
 	if (isLoading) {
@@ -50,20 +50,26 @@ export function ControlTowerPage() {
 
 				<AgentSessionsSection />
 
-				<div className="rounded-2xl border border-dashed border-[var(--border-subtle)] p-4 flex items-start gap-3">
-					<Inbox size={18} className="text-[var(--text-disabled)] mt-0.5" />
-					<div>
-						<p className="text-xs font-semibold text-[var(--text-secondary)]">
-							Buzón SOL
-							<span className="ml-2 rounded-md border border-[var(--border-subtle)] px-1.5 py-0.5 text-3xs uppercase tracking-wider text-[var(--text-tertiary)]">
-								{data.buzonSol.status}
-							</span>
-						</p>
-						<p className="text-2xs text-[var(--text-tertiary)]">
-							{data.buzonSol.message}
-						</p>
+				{data.buzonSol.status !== "AUTH_READY" && (
+					<div className="rounded-2xl border border-dashed border-[var(--color-warning)]/20 bg-[var(--color-warning)]/5 p-4 flex items-start gap-3">
+						<Inbox size={18} className="text-[var(--color-warning)] mt-0.5" />
+						<div className="flex-1">
+							<p className="text-xs font-semibold text-[var(--text-secondary)]">
+								Buzón SOL no está conectado
+							</p>
+							<p className="text-2xs text-[var(--text-tertiary)] mt-1">
+								Conectá SUNAT para sincronizar notificaciones y obligaciones
+								automáticamente.
+							</p>
+							<button
+								type="button"
+								className="mt-2 text-2xs font-medium text-[var(--color-primary)] hover:underline"
+							>
+								Configurar conexión
+							</button>
+						</div>
 					</div>
-				</div>
+				)}
 
 				<div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
 					{data.companies.map((company) => (
