@@ -1,20 +1,10 @@
 change_id: drenyra-agentic-shell
-status: spec
-phase: tasks
+status: applied
 created_at: 2026-07-02
-updated_at: 2026-07-02
+applied_at: 2026-07-11
+author: el-gentleman
 completed_prs:
-  pr2: true
   pr1: true
+  pr2: true
+  pr3: true
 delivery_strategy: auto-chain
-artifacts:
-  proposal: proposal.md
-  spec: spec.md
-  design: design.md
-  tasks: tasks.md
-  verify: null
-blocked_by: []
-blocks:
-  - drenyra-thread-system
-  - drenyra-agents-window
-  - drenyra-accounting-diff

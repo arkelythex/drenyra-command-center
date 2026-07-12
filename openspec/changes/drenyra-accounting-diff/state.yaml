@@ -1,12 +1,5 @@
 change_id: drenyra-accounting-diff
-status: proposed
-phase: proposal
+status: applied
 created_at: 2026-07-02
-updated_at: 2026-07-02
-delivery_strategy: auto-chain
-artifacts:
-  proposal: proposal.md
-blocked_by:
-  - drenyra-agentic-shell
-  - drenyra-thread-system
-blocks: []
+applied_at: 2026-07-11
+author: el-gentleman

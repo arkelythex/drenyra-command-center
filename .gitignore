@@ -44,3 +44,5 @@ apps/web/.mf/
 ~/.bun/
 # Editor / IDE
 .tanstack/
+# Cross-stack fiscal contracts (generated)
+/contracts/

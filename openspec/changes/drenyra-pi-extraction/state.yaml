@@ -1,8 +1,8 @@
-# SDD State — drenyra-pi-extraction
-# Created: 2026-07-07
+phase: archived
+completed_at: '2026-07-11'
 name: drenyra-pi-extraction
 title: 'Drenyra Pi: standalone harness + fiscal skills + thin CLI'
-status: tasks-ready
+status: verified
 artifacts:
   propose: openspec/changes/drenyra-pi-extraction/proposal.md
   spec: openspec/changes/drenyra-pi-extraction/spec.md
@@ -13,10 +13,10 @@ dependencies:
   spec: ready
   design: ready
   tasks: ready
-  apply: blocked
-  verify: blocked
-  archive: blocked
-next_recommended: apply
+  apply: ready
+  verify: ready
+  archive: ready
+next_recommended: archive
 
 # Capture from preflight (2026-07-07)
 execution_mode: interactive
@@ -25,23 +25,20 @@ delivery_strategy: ask-on-risk
 chain_strategy: stacked-to-main
 review_budget: 400
 
-# User choices
-scope: extract-agents-only
-cli_strategy: rewrite-typescript
-first_skill: sire-filing
+# Progress (2026-07-11)
+pr1: completed (scaffold repo)
+pr2: completed (agents migration)
+pr3: completed (standalone repo + consumers)
+pr4: pending (CLI thin in TS) — out of scope for core extraction
+pr5: pending (TUI with Ink) — optional, defer
+pr6: completed (HTTP server with session/workflow/health endpoints)
+pr7: completed (PluginRegistry + DrenyraSkill interface)
+pr8: completed (SIRE Filing skill)
+pr9: completed (skill install/uninstall/list commands)
 
-# Progress (2026-07-07)
-pr1: completed
-pr2: pending
-pr3: pending
-pr4: pending
-pr5: pending
-pr6: pending
-pr7: pending
-pr8: pending
-pr9: pending
-
-pr1_details:
-  repo: /home/dreamcoder08/Documents/PROYECTOS/drenyra-pi
-  typecheck_barrel: pass (0 errors)
-  typecheck_all: 34 pre-existing errors (lexori skills, domain types)
+results:
+  typecheck: pass (0 errors)
+  tests: 505/505 pass
+  config: fiscal-confidence-gates.yaml created
+  import_fixes: fal-event.contracts.test.ts, mnevori-integration.test.ts
+  domain_barrel: sync'd with canonical @drenyra/domain source
