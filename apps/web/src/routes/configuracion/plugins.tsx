@@ -1,6 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { PluginsView } from "../../features/plugins/components/PluginsView";
+import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/configuracion/plugins")({
-	component: PluginsView,
+	component: lazyRouteComponent(
+		() => import("../../features/plugins/components/PluginsView"),
+		"PluginsView",
+	),
 });

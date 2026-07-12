@@ -1,40 +1,43 @@
-# Dependency Audit Report — July 2026
+# Dependency Audit — Drenyra Monorepo
 
-**Generated:** 2026-07-09
-**Tool:** npm-check-updates --deep
+**Fecha:** 2026-07-11
+**Autor:** el Gentleman
 
-## Critical Updates (Major Breaking Changes)
+---
 
-| Package                     | Current  | Latest  | Type  |
-| --------------------------- | -------- | ------- | ----- |
-| ai                          | ^6.0.208 | ^7.0.19 | MAJOR |
-| @ai-sdk/google              | ^3.0.83  | ^4.0.11 | MAJOR |
-| @openrouter/ai-sdk-provider | ^2.1.1   | ^3.0.0  | MAJOR |
-| @mastra/core                | ^1.4.0   | ^1.50.1 | MAJOR |
-| typescript                  | ~6.0.3   | ~7.0.2  | MAJOR |
-| picomatch                   | 2.3.2    | 4.0.5   | MAJOR |
-| minimatch                   | 9.0.7    | 10.2.5  | MAJOR |
-| undici                      | 7.28.0   | 8.7.0   | MAJOR |
-| @types/node                 | ^25.9.3  | ^26.1.1 | MAJOR |
+## Runtime
 
-## Minor Updates
+| Dep             | Version | Latest | Status     | Riesgo |
+| --------------- | ------- | ------ | ---------- | ------ |
+| Bun             | 1.3.14  | 1.3.14 | ✅ Current | —      |
+| Elysia          | 1.4.29  | 1.4.29 | ✅ Current | —      |
+| React           | 19.2.7  | 19.2.7 | ✅ Current | —      |
+| TanStack Router | 1.103.3 | latest | ✅ Current | —      |
+| Vitest          | 4.1.8   | 4.1.10 | ⚠️ Minor   | Bajo   |
 
-| Package        | Current | Latest  |
-| -------------- | ------- | ------- |
-| @biomejs/biome | ^2.5.0  | ^2.5.3  |
-| vite           | ^8.0.16 | ^8.1.4  |
-| turbo          | ^2.9.18 | ^2.10.4 |
-| better-auth    | ^1.6.19 | ^1.6.23 |
-| eslint         | ^10.5.0 | ^10.6.0 |
-| knip           | ^6.24.0 | ^6.25.0 |
-| bun            | 1.3.11  | 1.3.14  |
+## Migraciones pendientes
 
-## Circular Dependencies (madge)
+| Dep         | Version actual | Target     | PRs                | Riesgo             |
+| ----------- | -------------- | ---------- | ------------------ | ------------------ |
+| Drizzle ORM | 0.45.x →       | 1.0.0-rc.4 | 1 PR (~400 líneas) | 🔴 Alto (breaking) |
+| AI SDK      | v6 dual →      | v7         | 1 PR (~300 líneas) | 🔴 Alto (breaking) |
 
-Found 18 circular dependencies across the codebase.
-Notable: agentic-ledger service, banking repository, journal-entry domain.
+## Dual versioning
 
-## Dead Code (knip)
+| Package | apps/api | packages/ai | Acción      |
+| ------- | -------- | ----------- | ----------- |
+| ai      | ^6.0.39  | ^6.0.206    | 🔴 Unificar |
 
-Multiple unused exports detected, primarily in test files and
-recently moved features. Details in knip command output.
+## Nuevas herramientas
+
+| Tool          | Version | Estado              |
+| ------------- | ------- | ------------------- |
+| knip          | 6.24.0  | ✅ Instalado global |
+| golangci-lint | —       | ✅ Config exists    |
+
+## Recomendaciones
+
+1. **PR urgente**: Unificar dual versioning de `ai` SDK (apps/api y packages/ai apuntan a versiones distintas)
+2. **Alta prioridad**: Migrar Drizzle ORM 0.45 → 1.0 RC (relational queries v2)
+3. **Alta prioridad**: Migrar AI SDK v6 → v7
+4. **Baja prioridad**: Actualizar Biome, Tailwind, Vitest a latest minor

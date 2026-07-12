@@ -1,11 +1,8 @@
-import { createFileRoute, useParams } from "@tanstack/react-router";
-import { ClientDetail } from "../../features/firm/ClientDetail";
+import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/firm/clients/$id")({
-	component: ClientDetailWrapper,
+	component: lazyRouteComponent(
+		() => import("../../features/firm/ClientDetail"),
+		"ClientDetail",
+	),
 });
-
-function ClientDetailWrapper() {
-	const { id } = useParams({ from: "/firm/clients/$id" });
-	return <ClientDetail clientId={id} />;
-}

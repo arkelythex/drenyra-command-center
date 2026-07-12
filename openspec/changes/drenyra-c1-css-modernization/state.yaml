@@ -1,15 +1,5 @@
-change_id: drenyra-c1-css-modernization
-status: proposal
-phase: proposal
-created: 2026-07-09
-author: el Gentleman
-delivery_strategy: single-pr
-depends_on:
-  - drenyra-design-tokens-v4
-  - drenyra-typography-system
-tags:
-  - css
-  - tailwind
-  - design-system
-  - styles
-  - modernization
+status: applied
+created: 2026-07-07
+applied: 2026-07-11
+author: el-gentleman
+notes: Tailwind 4 ya está configurado (^4.1.18). Design tokens v4 (DS1) ya aplicados. CSS modernización cubierta por DS1-DS5.

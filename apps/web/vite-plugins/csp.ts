@@ -10,7 +10,7 @@ const getProductionCSP = () =>
 		"font-src 'self' https://fonts.gstatic.com",
 		"connect-src 'self' ws://localhost:* http://localhost:* https://*.sentry.io",
 		"img-src 'self' data: blob:",
-		"frame-ancestors 'none'",
+		"worker-src 'self' blob:",
 		"form-action 'self'",
 		"base-uri 'self'",
 	].join("; ");
@@ -23,7 +23,7 @@ const getDevelopmentCSP = () =>
 		"font-src 'self' https://fonts.gstatic.com",
 		"connect-src 'self' ws://localhost:* http://localhost:* https://*.sentry.io",
 		"img-src 'self' data: blob:",
-		"frame-ancestors 'none'",
+		"worker-src 'self' blob:",
 		"form-action 'self'",
 		"base-uri 'self'",
 	].join("; ");

@@ -1,25 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { DrenyraCaseLayout } from "@/features/drenyra/components/DrenyraCaseLayout";
-import { DrenyraFlexMain } from "@/components/agentic/DrenyraFlexMain";
-import { useParams } from "@tanstack/react-router";
-import { useEffect } from "react";
-import { useThreadStore } from "@/stores/thread-store";
+import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/drenyra/case/$threadId")({
-	component: DrenyraCaseWrapper,
+	component: lazyRouteComponent(() => import("./case.$threadId.component")),
 });
-
-function DrenyraCaseWrapper() {
-	const { threadId } = useParams({ from: "/drenyra/case/$threadId" });
-	const setActiveThread = useThreadStore((s) => s.setActiveThread);
-
-	useEffect(() => {
-		setActiveThread(threadId);
-	}, [threadId, setActiveThread]);
-
-	return (
-		<DrenyraCaseLayout>
-			<DrenyraFlexMain />
-		</DrenyraCaseLayout>
-	);
-}

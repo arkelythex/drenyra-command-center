@@ -2,6 +2,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 import { lazy, StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
+import { AppProviders } from "./components/providers/AppProviders";
 import { sanitizePersistedAuthState } from "./features/auth/lib/auth-storage";
 import { captureError } from "./lib/monitoring";
 import { createAppQueryClient } from "./lib/query-client";
@@ -79,9 +80,11 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
 	const root = createRoot(rootElement);
 	root.render(
-		<StrictMode>
-			<QueryClientProvider client={queryClient}>
-				<RouterProvider router={router} />
+    	<StrictMode>
+    		<QueryClientProvider client={queryClient}>
+    			<AppProviders>
+    				<RouterProvider router={router} />
+    			</AppProviders>
 				{enableReactQueryDevtools && ReactQueryDevtoolsPanel ? (
 					<Suspense fallback={null}>
 						<ReactQueryDevtoolsPanel initialIsOpen={false} />

@@ -1,6 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { FirmDashboard } from "../../features/firm/FirmDashboard";
+import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/firm/")({
-	component: FirmDashboard,
+	component: lazyRouteComponent(
+		() => import("../../features/firm/FirmDashboard"),
+		"FirmDashboard",
+	),
 });

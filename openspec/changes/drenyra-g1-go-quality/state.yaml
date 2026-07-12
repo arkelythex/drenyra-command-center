@@ -1,13 +1,5 @@
-change_id: drenyra-g1-go-quality
-status: proposal
-phase: proposal
+status: applied
 created: 2026-07-09
-author: el Gentleman
-delivery_strategy: single-pr
-depends_on:
-  - drenyra-s5-go-cli-alignment
-tags:
-  - go
-  - cli
-  - testing
-  - quality
+applied: 2026-07-11
+author: el-gentleman
+notes: golangci-lint config exists at apps/cli/.golangci.yml. Tests exist (router, brain, delegation, memory, audit). Cross-stack contracts from X1 available.

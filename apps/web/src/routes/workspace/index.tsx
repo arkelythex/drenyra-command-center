@@ -1,6 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { DrenyraFlexMain } from "@/components/agentic/DrenyraFlexMain";
+import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/workspace/")({
-	component: DrenyraFlexMain,
+	component: lazyRouteComponent(
+		() => import("@/components/agentic/DrenyraFlexMain"),
+		"DrenyraFlexMain",
+	),
 });
