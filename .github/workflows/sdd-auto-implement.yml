@@ -133,7 +133,9 @@ jobs:
           B="${{ steps.proposal.outputs.branch }}"
 
           # Create branch from main
-          git checkout -b "$B" main
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+              git config user.name "github-actions[bot]"
+              git checkout -b "$B" main
 
           # Copy generated files
           if [ -d output ] && [ "$(find output -type f 2>/dev/null | wc -l)" -gt 0 ]; then
