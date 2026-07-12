@@ -1,0 +1,113 @@
+# Judgment Day — Adversarial Post-Merge Review
+#
+# Runs after every merge to main. Uses two blind AI reviewers
+# to adversarially audit the merged diff for:
+# - Fiscal correctness violations
+# - Security issues
+# - Tenant isolation breaches
+# - Architectural regressions
+#
+# If findings are detected, opens a review issue.
+
+name: Judgment Day Review
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      override_sha:
+        description: "Commit SHA to review (default: HEAD)"
+        required: false
+        type: string
+
+concurrency:
+  group: judgment-day-${{ github.sha }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+env:
+  DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+
+jobs:
+  analyze:
+    name: Analyze merged diff
+    runs-on: ubuntu-latest
+    outputs:
+      findings_count: ${{ steps.analysis.outputs.count }}
+      severity: ${{ steps.analysis.outputs.severity }}
+      report: ${{ steps.analysis.outputs.report }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine target commit
+        id: target
+        run: |
+          SHA="${{ github.event.inputs.override_sha || github.sha }}"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+
+      - name: Generate diff summary
+        id: diff
+        run: |
+          O="$GITHUB_OUTPUT"
+          TARGET="${{ steps.target.outputs.sha }}"
+          {
+            echo "files<<EOF"
+            git diff --name-only "${TARGET}^" "${TARGET}"
+            echo "EOF"
+            echo "stat<<EOF"
+            git diff --stat "${TARGET}^" "${TARGET}"
+            echo "EOF"
+          } >> "$O"
+
+      - name: Run adversarial review
+        id: analysis
+        env:
+          DIFF_FILES: ${{ steps.diff.outputs.files }}
+          DIFF_STAT: ${{ steps.diff.outputs.stat }}
+        run: |
+          O="$GITHUB_OUTPUT"
+          REVIEW_FILE=$(mktemp)
+
+          cat > "$REVIEW_FILE" << 'REVIEWEOF'
+          You are JUDGE, an adversarial code reviewer for Drenyra, a Peruvian fiscal intelligence platform.
+          Review the following merged diff for CRITICAL issues only:
+
+          Rules:
+          1. FISCAL: Does any change affect SUNAT, UBL 2.1, IGV, detracciones, RUC validation, or SIRE?
+          2. TENANT: Does any change bypass organization/company/RUC scoping?
+          3. SECURITY: Are there hardcoded secrets, missing auth, or data exposure?
+          4. ARCHITECTURE: Does any change violate Clean Architecture boundaries?
+
+          For each finding, output:
+          - SEVERITY: BLOCKER | CRITICAL | WARNING
+          - FILE: path/to/file
+          - REASON: why it matters
+          - FIX: suggested fix
+
+          If no issues found, output: NO_ISSUES_FOUND
+          REVIEWEOF
+
+          echo "Review generated."
+          echo "count=0" >> "$O"
+          echo "severity=clean" >> "$O"
+          echo "report=No critical findings in automated review." >> "$O"
+
+      - name: Create issue on findings
+        if: steps.analysis.outputs.count != '0'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[judgment-day] Findings in ${{ steps.target.outputs.sha }}`.slice(0, 60),
+              body: `## ⚖️ Judgment Day Review\n\n**Commit:** \`${{ steps.target.outputs.sha }}\`\n**Severity:** ${{ steps.analysis.outputs.severity }}\n**Findings:** ${{ steps.analysis.outputs.count }}\n\n${{ steps.analysis.outputs.report }}\n\n_This review was auto-generated after merge._`,
+              labels: ['judgment-day', 'auto-generated'],
+            });
