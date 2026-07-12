@@ -79,10 +79,12 @@ jobs:
           git push origin "$B"
           echo "Branch: $B"
 
-      - name: Create PR via gh CLI
-        id: create-pr
-        continue-on-error: true
-        run: |
+          - name: Create PR via gh CLI
+            id: create-pr
+            continue-on-error: true
+            env:
+              GH_TOKEN: ${{ secrets.GH_PAT }}
+            run: |
           B="${{ steps.proposal.outputs.branch }}"
           T="${{ steps.proposal.outputs.title }}"
           URL=$(/usr/bin/gh pr create \
