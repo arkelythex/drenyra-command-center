@@ -75,7 +75,9 @@ jobs:
       - name: Create implementation branch
         run: |
           B="${{ steps.proposal.outputs.branch }}"
-          git checkout -b "$B" main
+          git config user.email "github-actions@github.com"
+              git config user.name "github-actions[bot]"
+              git checkout -b "$B" main
           git push origin "$B"
           echo "Branch: $B"
 
