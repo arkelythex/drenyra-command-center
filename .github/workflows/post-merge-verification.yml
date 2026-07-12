@@ -180,10 +180,15 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `[auto] Post-merge check failed — ${{ github.sha }}`.slice(0, 60),
-              body: `## ⚠️ Post-Merge Verification Failed\n\nCommit \`${{ github.sha }}\` merged but verification checks failed.\n\n${{ steps.report.outputs.report }}\n\n**Suggested action:** Investigate and fix the failing checks.\n\n_This issue was auto-generated._`,
-              labels: ['bug', 'auto-generated'],
-            });
+                await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: `[auto] Post-merge check failed — ${{ github.sha }}`.slice(0, 60),
+                  body: `## ⚠️ Post-Merge Verification Failed\n\nCommit \`${{ github.sha }}\` merged but verification checks failed.\n\n${{ steps.report.outputs.report }}\n\n**Suggested action:** Investigate and fix the failing checks.\n\n_This issue was auto-generated._`,
+                  labels: ['bug', 'auto-generated'],
+                });
+
+      - name: Sync to Engram memory
+        if: always()
+        run: |
+          bash scripts/ci/sync-engram.sh 2>&1 || echo "Engram sync skipped (not available in CI)"
