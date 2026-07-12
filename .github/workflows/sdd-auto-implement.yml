@@ -1,13 +1,13 @@
-# SDD Auto-Implementation
+# SDD Auto-Implementation with AI Code Generation
 #
 # Watches for SDD proposal issues (labeled 'auto-generated' + 'enhancement')
-# and automatically implements the suggested improvements:
+# and:
 # 1. Reads the proposal issue body
-# 2. Creates a branch with the suggested changes
-# 3. Opens a PR for human review
+# 2. Calls DeepSeek AI to generate implementation code/files
+# 3. Creates a branch with the generated code
+# 4. Opens a PR for human review
 #
-# This is the final piece of the self-improvement loop:
-# Auto-SDD proposes -> Auto-Implement creates PR -> Human reviews -> Merge
+# This closes the loop: proposal -> AI implementation -> PR -> review -> merge
 
 name: SDD Auto-Implementation
 
@@ -20,6 +20,10 @@ on:
         description: 'Issue number to implement'
         required: true
         type: number
+      custom_prompt:
+        description: 'Optional custom implementation prompt'
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -28,10 +32,11 @@ permissions:
 
 env:
   BUN_VERSION: '1.3.11'
+  DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
 
 jobs:
   implement:
-    name: Auto-implement SDD proposal
+    name: AI Auto-implement SDD proposal
     if: >
       github.event.label.name == 'status:approved' ||
       github.event.inputs.issue_number != ''
@@ -71,31 +76,110 @@ jobs:
             const branchName = 'feat/auto-sdd-' + slug + '-' + num;
             core.setOutput('branch', branchName);
             core.setOutput('title', issue.title);
+            core.setOutput('body', issue.body || 'No body');
+            core.setOutput('slug', slug);
 
-      - name: Create implementation branch
+      - name: Generate implementation via DeepSeek
+        id: generate
+        env:
+          PROPOSAL_BODY: ${{ steps.proposal.outputs.body }}
+          PROPOSAL_TITLE: ${{ steps.proposal.outputs.title }}
+          CUSTOM_PROMPT: ${{ github.event.inputs.custom_prompt }}
+        run: |
+          mkdir -p output
+          TIMESTAMP=$(date -Iseconds)
+
+          # Build the AI prompt from the proposal
+          cat > /tmp/ai-prompt.json << 'JSONEOF'
+          {
+            "model": "deepseek-chat",
+            "messages": [
+              {
+                "role": "system",
+                "content": "You are an AI implementation agent for Drenyra, a Peruvian fiscal intelligence platform. Given an SDD proposal, you must generate concrete implementation files.\n\nRules:\n1. Generate only files that add real value\n2. Use TypeScript for web/api code, Go for CLI code\n3. Include proper error handling and types\n4. Generate a brief README explaining the implementation\n5. Output as a JSON object with keys = file paths, values = file contents\n\nOutput format: {\"file/path.ts\": \"content\", \"file/path.go\": \"content\"}"
+              },
+              {
+                "role": "user",
+                "content": "Implement the following SDD proposal:\n\nTitle: ${{ steps.proposal.outputs.title }}\n\nBody:\n${{ steps.proposal.outputs.body }}\n\n${{ github.event.inputs.custom_prompt && format('Additional instructions: {0}', github.event.inputs.custom_prompt) || '' }}\n\nGenerate implementation files that address the proposal's suggestions."
+              }
+            ],
+            "temperature": 0.3,
+            "max_tokens": 4000
+          }
+          JSONEOF
+
+          echo "Calling DeepSeek API..."
+          RESPONSE=$(curl -s -X POST "https://api.deepseek.com/v1/chat/completions" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $DEEPSEEK_API_KEY" \
+            -d @/tmp/ai-prompt.json 2>&1) || echo "API_CALL_FAILED=true"
+
+          echo "API Response received: $(echo "$RESPONSE" | wc -c) bytes"
+
+          # Extract the generated files
+          echo "$RESPONSE" > /tmp/ai-response.json
+          echo "api_response_saved=true"
+
+      - name: Process AI response and write files
+        run: |
+          if [ -f /tmp/ai-response.json ]; then
+            python3 scripts/ci/parse-ai-response.py /tmp/ai-response.json output 2>&1 || echo "PARSE_FAILED=true"
+          fi
+          echo "Generated files:"
+          find output -type f 2>/dev/null | sort || echo "No files generated"
+
+      - name: Commit generated code and create branch
         run: |
           B="${{ steps.proposal.outputs.branch }}"
-          git checkout -b "$B" main
-          git push origin "$B"
-          echo "Branch: $B"
 
-          - name: Create PR via gh CLI
-            id: create-pr
-            continue-on-error: true
-            env:
-              GH_TOKEN: ${{ secrets.GH_PAT }}
-            run: |
+          # Create branch from main
+          git checkout -b "$B" main
+
+          # Copy generated files
+          if [ -d output ] && [ "$(find output -type f 2>/dev/null | wc -l)" -gt 0 ]; then
+            cp -r output/* . 2>/dev/null || true
+            rm -rf output
+            git add -A
+            git stash 2>/dev/null || true
+            # Use direct git plumbing to commit
+            TREE=$(git write-tree 2>/dev/null) || git add -A && TREE=$(git write-tree)
+            if [ -n "$TREE" ]; then
+              COMMIT=$(echo "feat: auto-implement SDD proposal #${{ steps.issue.outputs.number }}
+
+              Auto-generated implementation from SDD proposal.
+              Generated by AI via DeepSeek." | git commit-tree "$TREE" -p HEAD)
+              git update-ref HEAD "$COMMIT" 2>/dev/null
+            fi
+            git push origin "$B" --force 2>&1 | tail -3
+            echo "Files committed and pushed"
+          else
+            echo "No files generated by AI. Pushing empty branch."
+            git push origin "$B" 2>&1 | tail -3
+          fi
+
+      - name: Create PR
+        id: create-pr
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
           B="${{ steps.proposal.outputs.branch }}"
           T="${{ steps.proposal.outputs.title }}"
-          URL=$(/usr/bin/gh pr create \
-            --base main \
-            --head "$B" \
-            --title "[auto] ${T:0:70}" \
-            --body "Auto-generated from SDD proposal #${{ steps.issue.outputs.number }}." \
-            -R arkelythex/Drenyra 2>&1) || true
-          echo "pr_url=$URL" >> "$GITHUB_OUTPUT"
-          NUM=$(echo "$URL" | grep -oE '[0-9]+$' || echo "0")
-          echo "pr_number=$NUM" >> "$GITHUB_OUTPUT"
+          HAS_FILES=$(find . -maxdepth 1 -name "*.md" -o -name "*.ts" -o -name "*.tsx" 2>/dev/null | head -1)
+
+          if [ -n "$HAS_FILES" ] || [ "$(git rev-list --count main..HEAD 2>/dev/null || echo 0)" -gt 0 ]; then
+            URL=$(/usr/bin/gh pr create \
+              --base main \
+              --head "$B" \
+              --title "[auto] ${T:0:70}" \
+              --body "## Auto-Implementation\n\nThis PR was auto-generated from SDD proposal #${{ steps.issue.outputs.number }}.\n\n**Implementation generated by AI (DeepSeek).**\n\nPlease review the changes carefully before merging.\n\n---\n_Generated by SDD Auto-Implementation workflow_" \
+              -R arkelythex/Drenyra 2>&1) || true
+            echo "pr_url=$URL" >> "$GITHUB_OUTPUT"
+            NUM=$(echo "$URL" | grep -oE '[0-9]+$' || echo "0")
+            echo "pr_number=$NUM" >> "$GITHUB_OUTPUT"
+          else
+            echo "No changes to commit. Skipping PR creation."
+          fi
 
       - name: Comment and label result
         run: |
@@ -105,8 +189,11 @@ jobs:
           ISNUM="${{ steps.issue.outputs.number }}"
 
           if [ -n "$PN" ] && [ "$PN" != "0" ]; then
-            /usr/bin/gh api "repos/arkelythex/Drenyra/issues/$PN/labels" --field labels='["auto-generated","enhancement"]' 2>/dev/null || true
-            /usr/bin/gh api "repos/arkelythex/Drenyra/issues/$ISNUM/comments" --field body="PR #$PN created: $PU" 2>/dev/null || true
+            /usr/bin/gh api "repos/arkelythex/Drenyra/issues/$PN/labels" \
+              --field labels='["auto-generated","enhancement"]' 2>/dev/null || true
+            /usr/bin/gh api "repos/arkelythex/Drenyra/issues/$ISNUM/comments" \
+              --field body="## Auto-Implementation Completed\n\nPR #$PN has been created with AI-generated implementation.\n\n$PU\n\nPlease review the PR." 2>/dev/null || true
           else
-            /usr/bin/gh api "repos/arkelythex/Drenyra/issues/$ISNUM/comments" --field body="Branch \`$B\` created. Create PR manually with:\n\`\`\`\ngh pr create --base main --head $B\n\`\`\`" 2>/dev/null || true
+            /usr/bin/gh api "repos/arkelythex/Drenyra/issues/$ISNUM/comments" \
+              --field body="## Auto-Implementation Attempted\n\nBranch \`$B\` was created but no PR was generated (no code changes or API unavailable).\n\nTo create PR manually:\n\`\`\`\ngh pr create --base main --head $B\n\`\`\`" 2>/dev/null || true
           fi
