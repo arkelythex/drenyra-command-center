@@ -16,7 +16,7 @@
     "@drenyra/phase-gatekeeper": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.7"
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
   }
 }
