@@ -17,6 +17,7 @@ import {
 	pgTable,
 	text,
 	timestamp,
+	unique,
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
@@ -38,53 +39,60 @@ import {
  * ```
  */
 
-export const sireSubmissions = pgTable("sire_submissions", {
-	id: uuid("id").primaryKey().defaultRandom(),
-	companyId: uuid("company_id").notNull(),
+export const sireSubmissions = pgTable(
+	"sire_submissions",
+	{
+		id: uuid("id").primaryKey().defaultRandom(),
+		companyId: uuid("company_id").notNull(),
 
-	// Submission metadata
-	period: varchar("period", { length: 7 }).notNull(), // YYYY-MM
-	ledgerType: varchar("ledger_type", { length: 10 }).notNull(), // ventas, compras
-	payloadFormat: varchar("payload_format", { length: 10 }).notNull(), // txt, csv, json, xml
+		// Submission metadata
+		period: varchar("period", { length: 7 }).notNull(), // YYYY-MM
+		ledgerType: varchar("ledger_type", { length: 10 }).notNull(), // ventas, compras
+		payloadFormat: varchar("payload_format", { length: 10 }).notNull(), // txt, csv, json, xml
 
-	// Idempotency & retry
-	idempotencyKey: varchar("idempotency_key", { length: 100 })
-		.unique()
-		.notNull(),
-	attemptNumber: integer("attempt_number").default(1).notNull(),
-	maxRetries: integer("max_retries").default(3).notNull(),
+		// Idempotency & retry — UNIQUE(company_id, idempotency_key) per ADR-009
+		idempotencyKey: varchar("idempotency_key", { length: 100 }).notNull(),
+		attemptNumber: integer("attempt_number").default(1).notNull(),
+		maxRetries: integer("max_retries").default(3).notNull(),
 
-	// Submission state
-	status: varchar("status", { length: 20 }).notNull().default("PENDING"),
-	// PENDING, SUBMITTED, ACCEPTED, REJECTED, OBSERVED, SIMULATED, FAILED
+		// Submission state
+		status: varchar("status", { length: 20 }).notNull().default("PENDING"),
+		// PENDING, SUBMITTED, ACCEPTED, REJECTED, OBSERVED, SIMULATED, FAILED
 
-	provider: varchar("provider", { length: 20 }).notNull(), // sunat-api, simulation
-	dryRun: boolean("dry_run").default(false),
+		provider: varchar("provider", { length: 20 }).notNull(), // sunat-api, simulation
+		dryRun: boolean("dry_run").default(false),
 
-	// SUNAT response
-	submissionId: varchar("submission_id", { length: 100 }), // SUNAT ticket ID
-	sunatTicket: varchar("sunat_ticket", { length: 100 }),
-	trackingId: varchar("tracking_id", { length: 100 }),
+		// SUNAT response
+		submissionId: varchar("submission_id", { length: 100 }), // SUNAT ticket ID
+		sunatTicket: varchar("sunat_ticket", { length: 100 }),
+		trackingId: varchar("tracking_id", { length: 100 }),
 
-	// Response details
-	sunatStatus: varchar("sunat_status", { length: 50 }),
-	sunatCode: varchar("sunat_code", { length: 20 }),
-	sunatMessage: text("sunat_message"),
+		// Response details
+		sunatStatus: varchar("sunat_status", { length: 50 }),
+		sunatCode: varchar("sunat_code", { length: 20 }),
+		sunatMessage: text("sunat_message"),
 
-	// Errors & warnings (JSONB for structured data)
-	errors: jsonb("errors"), // Array<{ line: number, field: string, message: string }>
-	warnings: jsonb("warnings"), // Array<{ line: number, field: string, message: string }>
+		// Errors & warnings (JSONB for structured data)
+		errors: jsonb("errors"), // Array<{ line: number, field: string, message: string }>
+		warnings: jsonb("warnings"), // Array<{ line: number, field: string, message: string }>
 
-	// Timing
-	submittedAt: timestamp("submitted_at"),
-	processedAt: timestamp("processed_at"),
-	nextRetryAt: timestamp("next_retry_at"),
+		// Timing
+		submittedAt: timestamp("submitted_at"),
+		processedAt: timestamp("processed_at"),
+		nextRetryAt: timestamp("next_retry_at"),
 
-	// Metadata
-	createdAt: timestamp("created_at").defaultNow(),
-	updatedAt: timestamp("updated_at").defaultNow(),
-	createdBy: uuid("created_by"),
-});
+		// Metadata
+		createdAt: timestamp("created_at").defaultNow(),
+		updatedAt: timestamp("updated_at").defaultNow(),
+		createdBy: uuid("created_by"),
+	},
+	(table) => ({
+		companyIdempotencyUnique: unique("sire_company_idempotency_unique").on(
+			table.companyId,
+			table.idempotencyKey,
+		),
+	}),
+);
 
 /**
  * SIRE Rate Limits

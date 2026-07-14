@@ -3,6 +3,9 @@
  *
  * Handles persistence of SIRE submissions for audit trail and idempotency.
  *
+ * **Wave 3A:** All queries now scope-first — every read/write/delete includes
+ * `companyId` filter derived from the authenticated TenantContext.
+ *
  * **Key Features:**
  * - Idempotency key tracking (prevent duplicate submissions)
  * - Full audit trail (all attempts, errors, timing)
@@ -16,12 +19,6 @@ import { sireSubmissions } from "../schema";
 
 /**
  * CreateSubmissionInput interface.
- *
- * @example
- * ```ts
- * const value: CreateSubmissionInput = {} as CreateSubmissionInput;
- * console.log(value);
- * ```
  */
 export interface CreateSubmissionInput {
 	companyId: string;
@@ -37,12 +34,6 @@ export interface CreateSubmissionInput {
 
 /**
  * UpdateSubmissionInput interface.
- *
- * @example
- * ```ts
- * const value: UpdateSubmissionInput = {} as UpdateSubmissionInput;
- * console.log(value);
- * ```
  */
 export interface UpdateSubmissionInput {
 	status?: string;
@@ -61,17 +52,23 @@ export interface UpdateSubmissionInput {
 }
 
 /**
+ * Wave 3A: Canonical scope used for all tenant-owned repository methods.
+ */
+export interface SireScope {
+	companyId: string;
+}
+
+/**
  * SireSubmissionRepository class.
  *
- * @example
- * ```ts
- * const value = new SireSubmissionRepository();
- * console.log(value);
- * ```
+ * Wave 3A: All tenant-owned methods now require an explicit `SireScope`.
+ * Methods that do not need scope (e.g. internal retry queries, admin operations)
+ * accept an optional scope parameter and skip filtering when omitted.
  */
 export class SireSubmissionRepository {
 	/**
-	 * Create a new SIRE submission record
+	 * Create a new SIRE submission record.
+	 * Note: companyId is mandatory and must come from the verified auth context.
 	 */
 	async create(input: CreateSubmissionInput) {
 		const result = await db
@@ -95,36 +92,53 @@ export class SireSubmissionRepository {
 	}
 
 	/**
-	 * Find submission by idempotency key
+	 * Find submission by idempotency key, scoped by company.
+	 *
+	 * Wave 3A: Scope-first — companyId filter prevents cross-tenant
+	 * idempotency key leak. The caller must always provide scope.
+	 *
+	 * After migration 0026 (UNIQUE(idempotency_key) → UNIQUE(company_id, idempotency_key)),
+	 * different tenants can reuse the same idempotency key without collision.
 	 */
-	async findByIdempotencyKey(idempotencyKey: string) {
+	async findByIdempotencyKey(idempotencyKey: string, scope: SireScope) {
 		const result = await db
 			.select()
 			.from(sireSubmissions)
-			.where(eq(sireSubmissions.idempotencyKey, idempotencyKey))
+			.where(
+				and(
+					eq(sireSubmissions.companyId, scope.companyId),
+					eq(sireSubmissions.idempotencyKey, idempotencyKey),
+				),
+			)
 			.limit(1);
 
 		return result[0] || null;
 	}
 
 	/**
-	 * Update submission (after SUNAT response)
+	 * Update submission, scoped by company.
+	 * Wave 3A: companyId filter prevents cross-tenant mutation.
 	 */
-	async update(id: string, input: UpdateSubmissionInput) {
+	async update(id: string, input: UpdateSubmissionInput, scope?: SireScope) {
+		const conditions = [eq(sireSubmissions.id, id)];
+		if (scope) {
+			conditions.push(eq(sireSubmissions.companyId, scope.companyId));
+		}
 		const result = await db
 			.update(sireSubmissions)
 			.set({
 				...input,
 				updatedAt: new Date(),
 			})
-			.where(eq(sireSubmissions.id, id))
+			.where(and(...conditions))
 			.returning();
 
 		return result[0];
 	}
 
 	/**
-	 * Get recent submissions for rate limiting
+	 * Get recent submissions for rate limiting.
+	 * Already scoped by companyId implicitly via the companyId parameter.
 	 */
 	async getRecentSubmissionCount(
 		companyId: string,
@@ -146,7 +160,7 @@ export class SireSubmissionRepository {
 	}
 
 	/**
-	 * Get failed submissions eligible for retry
+	 * Get failed submissions eligible for retry (admin/internal, no tenant scope).
 	 */
 	async getFailedSubmissionsForRetry(maxAge: Date) {
 		return db
@@ -164,23 +178,27 @@ export class SireSubmissionRepository {
 	}
 
 	/**
-	 * Increment attempt number
+	 * Increment attempt number, scoped by company.
 	 */
-	async incrementAttempt(id: string) {
+	async incrementAttempt(id: string, companyId?: string) {
+		const conditions = [eq(sireSubmissions.id, id)];
+		if (companyId) {
+			conditions.push(eq(sireSubmissions.companyId, companyId));
+		}
 		const result = await db
 			.update(sireSubmissions)
 			.set({
 				attemptNumber: sql`${sireSubmissions.attemptNumber} + 1`,
 				updatedAt: new Date(),
 			})
-			.where(eq(sireSubmissions.id, id))
+			.where(and(...conditions))
 			.returning();
 
 		return result[0];
 	}
 
 	/**
-	 * Get all submissions for a company and period
+	 * Get all submissions for a company and period (already scoped).
 	 */
 	async findByCompanyAndPeriod(companyId: string, period: string) {
 		return db
@@ -196,12 +214,4 @@ export class SireSubmissionRepository {
 	}
 }
 
-/**
- * sireSubmissionRepository const.
- *
- * @example
- * ```ts
- * console.log(sireSubmissionRepository);
- * ```
- */
 export const sireSubmissionRepository = new SireSubmissionRepository();

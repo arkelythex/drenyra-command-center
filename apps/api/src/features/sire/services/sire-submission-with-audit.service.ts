@@ -144,28 +144,6 @@ function mergeAuditWarnings(
 	};
 }
 
-function assertIdempotencyCompanyScope(
-	submission: { companyId: string; id: string } | null,
-	input: SubmitSireInput,
-	idempotencyKey: string,
-): void {
-	if (!submission || submission.companyId === input.companyId) {
-		return;
-	}
-
-	logger.warn(
-		{
-			idempotencyKey,
-			existingSubmissionId: submission.id,
-			existingCompanyId: submission.companyId,
-			requestedCompanyId: input.companyId,
-		},
-		"Blocked cross-company SIRE idempotency key reuse",
-	);
-
-	throw new Error("Forbidden SIRE idempotency key belongs to another company");
-}
-
 /**
  * Submit SIRE with full audit trail
  *
@@ -198,9 +176,9 @@ export const submitWithAudit = async (
 
 	// Check for existing submission (idempotency)
 	const existingSubmission =
-		await sireSubmissionRepository.findByIdempotencyKey(idempotencyKey);
-
-	assertIdempotencyCompanyScope(existingSubmission, input, idempotencyKey);
+		await sireSubmissionRepository.findByIdempotencyKey(idempotencyKey, {
+			companyId: input.companyId,
+		});
 
 	if (existingSubmission) {
 		logger.info(
@@ -248,6 +226,7 @@ export const submitWithAudit = async (
 		try {
 			auditRecord = await sireSubmissionRepository.incrementAttempt(
 				auditRecord.id,
+				input.companyId,
 			);
 			logger.info(
 				{
@@ -324,31 +303,35 @@ export const submitWithAudit = async (
 
 		// Update audit trail with successful result
 		if (auditRecord) {
-			await sireSubmissionRepository.update(auditRecord.id, {
-				status:
-					result.status === "ACCEPTED" || result.status === "SIMULATED"
-						? "ACCEPTED"
-						: result.status === "REJECTED"
-							? "REJECTED"
-							: "SUBMITTED",
-				submissionId: result.submissionId,
-				sunatTicket: result.sunatTicket,
-				trackingId: result.trackingId,
-				sunatMessage: result.message,
-				warnings: mergeAuditWarnings(
-					auditRecord.warnings,
-					options?.governanceTrace,
-					buildSunatAuditTrace({
-						companyId: input.companyId,
-						tenantSunatContext,
-						decision: "allowed",
-						outcome: result.status,
-						suppliedRuc: input.ruc,
-					}),
-				),
-				submittedAt: new Date(result.submittedAt),
-				processedAt: new Date(),
-			});
+			await sireSubmissionRepository.update(
+				auditRecord.id,
+				{
+					status:
+						result.status === "ACCEPTED" || result.status === "SIMULATED"
+							? "ACCEPTED"
+							: result.status === "REJECTED"
+								? "REJECTED"
+								: "SUBMITTED",
+					submissionId: result.submissionId,
+					sunatTicket: result.sunatTicket,
+					trackingId: result.trackingId,
+					sunatMessage: result.message,
+					warnings: mergeAuditWarnings(
+						auditRecord.warnings,
+						options?.governanceTrace,
+						buildSunatAuditTrace({
+							companyId: input.companyId,
+							tenantSunatContext,
+							decision: "allowed",
+							outcome: result.status,
+							suppliedRuc: input.ruc,
+						}),
+					),
+					submittedAt: new Date(result.submittedAt),
+					processedAt: new Date(),
+				},
+				{ companyId: input.companyId },
+			);
 
 			logger.info(
 				{
@@ -384,26 +367,30 @@ export const submitWithAudit = async (
 			const nextRetryMinutes = 2 ** attemptNumber; // 2^1 = 2, 2^2 = 4, 2^3 = 8
 			const nextRetryAt = new Date(Date.now() + nextRetryMinutes * 60 * 1000);
 
-			await sireSubmissionRepository.update(auditRecord.id, {
-				status: "FAILED",
-				sunatMessage: errorMessage,
-				errors: {
-					reason: failureReason,
-					message: errorMessage,
-					sunatTenant: {
-						...buildSunatAuditTrace({
-							companyId: input.companyId,
-							tenantSunatContext,
-							decision: "refused",
-							reason: failureReason,
-							suppliedRuc: input.ruc,
-						}),
-						...getTenantContextErrorTrace(error),
+			await sireSubmissionRepository.update(
+				auditRecord.id,
+				{
+					status: "FAILED",
+					sunatMessage: errorMessage,
+					errors: {
+						reason: failureReason,
+						message: errorMessage,
+						sunatTenant: {
+							...buildSunatAuditTrace({
+								companyId: input.companyId,
+								tenantSunatContext,
+								decision: "refused",
+								reason: failureReason,
+								suppliedRuc: input.ruc,
+							}),
+							...getTenantContextErrorTrace(error),
+						},
 					},
+					processedAt: new Date(),
+					nextRetryAt,
 				},
-				processedAt: new Date(),
-				nextRetryAt,
-			});
+				{ companyId: input.companyId },
+			);
 
 			logger.warn(
 				{
@@ -443,9 +430,10 @@ export const logBlockedSubmissionAttempt = async (
 	const idempotencyKey = buildIdempotencyKey(input);
 	const provider = resolveProvider();
 
-	let submission =
-		await sireSubmissionRepository.findByIdempotencyKey(idempotencyKey);
-	assertIdempotencyCompanyScope(submission, input, idempotencyKey);
+	let submission = await sireSubmissionRepository.findByIdempotencyKey(
+		idempotencyKey,
+		{ companyId: input.companyId },
+	);
 
 	if (!submission) {
 		submission = await sireSubmissionRepository.create({
@@ -463,13 +451,17 @@ export const logBlockedSubmissionAttempt = async (
 		});
 	}
 
-	await sireSubmissionRepository.update(submission.id, {
-		status: "BLOCKED_POLICY",
-		sunatMessage: message,
-		errors: {
-			governance: governanceTrace,
-			reason: message,
+	await sireSubmissionRepository.update(
+		submission.id,
+		{
+			status: "BLOCKED_POLICY",
+			sunatMessage: message,
+			errors: {
+				governance: governanceTrace,
+				reason: message,
+			},
+			processedAt: new Date(),
 		},
-		processedAt: new Date(),
-	});
+		{ companyId: input.companyId },
+	);
 };

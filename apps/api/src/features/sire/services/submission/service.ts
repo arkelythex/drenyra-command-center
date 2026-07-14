@@ -119,28 +119,6 @@ function buildProposalRecordWarnings(
 	};
 }
 
-function assertIdempotencyCompanyScope(
-	submission: { companyId: string; id: string } | null,
-	input: SubmitSireInput,
-	idempotencyKey: string,
-): void {
-	if (!submission || submission.companyId === input.companyId) {
-		return;
-	}
-
-	logger.warn(
-		{
-			idempotencyKey,
-			existingSubmissionId: submission.id,
-			existingCompanyId: submission.companyId,
-			requestedCompanyId: input.companyId,
-		},
-		"Blocked cross-company SIRE idempotency key reuse",
-	);
-
-	throw new Error("Forbidden SIRE idempotency key belongs to another company");
-}
-
 export const submitWithAudit = async (
 	input: SubmitSireInput,
 	options?: SireAuditOptions,
@@ -148,9 +126,9 @@ export const submitWithAudit = async (
 	const idempotencyKey = buildIdempotencyKey(input);
 
 	const existingSubmission =
-		await sireSubmissionRepository.findByIdempotencyKey(idempotencyKey);
-
-	assertIdempotencyCompanyScope(existingSubmission, input, idempotencyKey);
+		await sireSubmissionRepository.findByIdempotencyKey(idempotencyKey, {
+			companyId: input.companyId,
+		});
 
 	if (existingSubmission) {
 		logger.info(
@@ -371,9 +349,10 @@ export const logBlockedSubmissionAttempt = async (
 	const idempotencyKey = buildIdempotencyKey(input);
 	const provider = resolveProvider();
 
-	let submission =
-		await sireSubmissionRepository.findByIdempotencyKey(idempotencyKey);
-	assertIdempotencyCompanyScope(submission, input, idempotencyKey);
+	let submission = await sireSubmissionRepository.findByIdempotencyKey(
+		idempotencyKey,
+		{ companyId: input.companyId },
+	);
 
 	if (!submission) {
 		submission = await sireSubmissionRepository.create({
