@@ -14,6 +14,7 @@ export const submitSireRoute = new Elysia()
 	.use(tenantAuth({ allowHeaderFallback: false }))
 	.post(
 		"/submit",
+		// biome-ignore lint/suspicious/noExplicitAny: Elysia context with custom store
 		async ({ body, set, tenantContext }: any) =>
 			submitSire(body, set, tenantContext?.companyId),
 		{
