@@ -20,7 +20,8 @@
     "./security/sanitizers": "./src/security/sanitizers/index.ts",
     "./agents": "./src/agents/index.ts",
     "./artifacts": "./src/artifacts/index.ts",
-    "./messaging": "./src/messaging/index.ts"
+    "./messaging": "./src/messaging/index.ts",
+    "./config/logger": "./src/config/logger.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
