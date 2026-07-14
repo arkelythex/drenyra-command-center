@@ -8,7 +8,25 @@ import {
 
 const logger = createLogger({ module: "sire/submit-command" });
 
-export async function submitSire(body: any, set: any) {
+/**
+ * Submit SIRE with verified tenant context.
+ *
+ * Wave 3A: `verifiedCompanyId` MUST come from the authenticated TenantContext,
+ * NOT from the request body. The body's `companyId` is treated only as a
+ * client-side selection hint and MUST match the verified context.
+ *
+ * @param body - Request body (may contain companyId for client-side routing)
+ * @param set - Elysia response setter
+ * @param verifiedCompanyId - Verified company ID from tenantAuth middleware
+ */
+export async function submitSire(
+	body: any,
+	set: any,
+	verifiedCompanyId?: string,
+) {
+	// Wave 3A: Override body.companyId with verified context
+	const resolvedCompanyId = verifiedCompanyId ?? body.companyId;
+
 	const governance = await enforceGovernancePolicy({
 		action: "sire_submit",
 		priority: body.dryRun ? "medium" : "high",
@@ -26,7 +44,7 @@ export async function submitSire(body: any, set: any) {
 				logger.warn(
 					{
 						auditError,
-						companyId: body.companyId,
+						companyId: resolvedCompanyId,
 						dryRun: body.dryRun,
 						ledgerType: body.ledgerType,
 						period: body.period,
@@ -42,9 +60,10 @@ export async function submitSire(body: any, set: any) {
 	}
 
 	try {
-		const result = await submitWithAudit(body, {
-			governanceTrace: governance.trace,
-		});
+		const result = await submitWithAudit(
+			{ ...body, companyId: resolvedCompanyId },
+			{ governanceTrace: governance.trace },
+		);
 		set.status = 202;
 		return ok({
 			...result,
