@@ -20,7 +20,9 @@ const logger = createLogger({ module: "sire/submit-command" });
  * @param verifiedCompanyId - Verified company ID from tenantAuth middleware
  */
 export async function submitSire(
+	// biome-ignore lint/suspicious/noExplicitAny: Elysia body is untyped at command boundary
 	body: any,
+	// biome-ignore lint/suspicious/noExplicitAny: Elysia set is untyped at command boundary
 	set: any,
 	verifiedCompanyId?: string,
 ) {
@@ -33,6 +35,7 @@ export async function submitSire(
 		governance: body.governance,
 		fallbackObjective: `sire_submission_${body.ledgerType}`,
 		set,
+		// biome-ignore lint/suspicious/noExplicitAny: governance policy decision is untyped
 		onBlocked: async (decision: any) => {
 			try {
 				await logBlockedSubmissionAttempt(
