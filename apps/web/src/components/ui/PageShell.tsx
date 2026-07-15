@@ -8,19 +8,25 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export interface PageShellProps {
-	variant?: "default" | "narrow" | "board" | "fullHeight";
+	/**
+	 * Layout variant:
+	 * - focal: max-w-3xl centered (inbox, lectura, creación)
+	 * - operativo: flex workspace con right rail opcional (cierre, revisión, dashboard)
+	 * - data-heavy: full-width con padding (facturas, reportes, expedientes)
+	 */
+	variant?: "focal" | "operativo" | "data-heavy";
+	/** Si true, reserva espacio para right rail de 320px (solo operativo) */
+	aside?: boolean;
 	padding?: "none" | "sm" | "md" | "lg";
 	className?: string;
 	children: ReactNode;
-	/** HTML element: main (default) or div */
 	as?: "main" | "div";
 }
 
 const variantClasses: Record<NonNullable<PageShellProps["variant"]>, string> = {
-	default: "mx-auto w-full max-w-7xl overflow-y-auto",
-	narrow: "mx-auto w-full max-w-3xl overflow-y-auto",
-	board: "w-full overflow-auto",
-	fullHeight: "h-full w-full overflow-hidden",
+	focal: "mx-auto w-full max-w-3xl overflow-y-auto",
+	operativo: "flex-1 overflow-auto",
+	"data-heavy": "w-full overflow-auto",
 };
 
 const paddingClasses: Record<NonNullable<PageShellProps["padding"]>, string> = {
@@ -31,7 +37,7 @@ const paddingClasses: Record<NonNullable<PageShellProps["padding"]>, string> = {
 };
 
 export function PageShell({
-	variant = "default",
+	variant = "data-heavy",
 	padding = "md",
 	className,
 	children,

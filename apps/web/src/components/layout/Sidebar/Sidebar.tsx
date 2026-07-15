@@ -1,12 +1,17 @@
+import { Plus } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 import { SidebarCaseList } from "./components/SidebarCaseList";
 import { SidebarFooter } from "./components/SidebarFooter";
-import { SidebarNavItems } from "./components/SidebarNavItems";
+import { SidebarSection } from "./components/SidebarSection";
 import { SidebarSearch } from "./components/SidebarSearch";
 import { SidebarToggle } from "./components/SidebarToggle";
+import { SIDEBAR_SECTIONS } from "./Sidebar.data";
 import type { SidebarProps } from "./Sidebar.types";
 
 export function Sidebar({ isCollapsed, onToggle, onNavigate }: SidebarProps) {
+	const navigate = useNavigate();
+
 	return (
 		<aside
 			className={cn(
@@ -22,13 +27,42 @@ export function Sidebar({ isCollapsed, onToggle, onNavigate }: SidebarProps) {
 				aria-label="Navegación lateral"
 			>
 				<SidebarSearch isCollapsed={isCollapsed} />
-				<SidebarCaseList isCollapsed={isCollapsed} onNavigate={onNavigate} />
+
+				{!isCollapsed && (
+					<button
+						type="button"
+						onClick={() => {
+							onNavigate();
+							navigate({ to: "/inbox" });
+						}}
+						className="flex w-full items-center gap-2 rounded-lg border border-dashed border-[var(--border-subtle)] px-3 py-2 text-xs font-medium text-[var(--text-muted)] transition-colors hover:border-[var(--border-default)] hover:text-[var(--text-secondary)]"
+					>
+						<Plus size={14} />
+						<span>Nueva revisión</span>
+					</button>
+				)}
+
+				{!isCollapsed &&
+					SIDEBAR_SECTIONS.map((section) => (
+						<SidebarSection
+							key={section.id}
+							label={section.label}
+							items={section.items.map((item) => ({
+								icon: <item.icon size={13} />,
+								label: item.label,
+								to: item.to,
+							}))}
+							collapsible={section.collapsible}
+							defaultCollapsed={section.defaultCollapsed}
+							onNavigate={onNavigate}
+						/>
+					))}
 
 				{!isCollapsed && (
 					<div className="border-t border-[var(--border-subtle)]" />
 				)}
 
-				<SidebarNavItems isCollapsed={isCollapsed} onNavigate={onNavigate} />
+				<SidebarCaseList isCollapsed={isCollapsed} onNavigate={onNavigate} />
 			</nav>
 
 			<SidebarFooter isCollapsed={isCollapsed} onNavigate={onNavigate} />

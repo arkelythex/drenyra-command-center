@@ -58,7 +58,7 @@ export const SettingsShell = ({
 			<div className="min-h-0 flex-1 overflow-hidden">
 				<PageShell
 					as="main"
-					variant="narrow"
+					variant="focal"
 					padding="none"
 					className="h-full max-w-none custom-scrollbar px-6 py-8 lg:px-16 lg:py-12"
 				>

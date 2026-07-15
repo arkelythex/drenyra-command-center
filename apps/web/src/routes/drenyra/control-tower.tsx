@@ -1,8 +1,9 @@
-import { createFileRoute, lazyRouteComponent } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/drenyra/control-tower")({
-	component: lazyRouteComponent(
-		() => import("../../features/control-tower/ControlTowerPage"),
-		"ControlTowerPage",
-	),
+	component: RouteComponent,
 });
+
+function RouteComponent() {
+	return <div>Hello "/drenyra/control-tower"!</div>;
+}

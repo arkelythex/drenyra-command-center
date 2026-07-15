@@ -4,6 +4,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { useFiscalCaseStore } from "@/stores/fiscal-case-store";
 import { useThreadStore } from "@/stores/thread-store";
+import { useComposerMode } from "@/hooks/useComposerMode";
 
 const ThreadView = lazy(() =>
 	import("./ThreadView").then((m) => ({ default: m.ThreadView })),
@@ -45,7 +46,7 @@ function AgentStatusLine({ isStreaming }: { isStreaming: boolean }) {
 				.slice(-5)
 				.some(
 					(e) =>
-						e.type === "tool_executing" &&
+						String(e.type).includes("executing") &&
 						e.detail?.toLowerCase().includes(agentId),
 				);
 		},
@@ -84,6 +85,7 @@ export function DrenyraFlexMain() {
 	const navigate = useNavigate();
 	const activeThreadId = useThreadStore((s) => s.activeThreadId);
 	const activeFiscalCaseId = useFiscalCaseStore((s) => s.activeFiscalCaseId);
+	const composerMode = useComposerMode();
 
 	const {
 		messages,
@@ -101,12 +103,8 @@ export function DrenyraFlexMain() {
 		async (text: string) => {
 			if (text.startsWith("/")) {
 				const intent = extractNavigationIntent(text);
-				if (intent) {
-					navigate({
-						to: intent.target as unknown as Parameters<
-							typeof navigate
-						>[0]["to"],
-					});
+				if (intent?.target) {
+					navigate({ to: intent.target as string });
 					return;
 				}
 			}
@@ -161,12 +159,14 @@ export function DrenyraFlexMain() {
 									{error}
 								</span>
 								<button
+									type="button"
 									onClick={handleRetry}
 									className="text-xs font-medium text-[var(--color-primary)] hover:underline"
 								>
 									Reintentar
 								</button>
 								<button
+									type="button"
 									onClick={clearError}
 									className="text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)]"
 								>
@@ -178,12 +178,15 @@ export function DrenyraFlexMain() {
 						{/* Agent status line — inline above composer */}
 						<AgentStatusLine isStreaming={isStreaming} />
 
-						{/* Composer — always visible */}
-						<Composer
-							onSend={handleSend}
-							isSending={isStreaming}
-							onFileUpload={handleUploadEvidence}
-						/>
+						{/* Composer — contextual mode */}
+						{composerMode !== "hidden" && (
+							<Composer
+								onSend={handleSend}
+								isSending={isStreaming}
+								onFileUpload={handleUploadEvidence}
+								displayMode={composerMode}
+							/>
+						)}
 					</div>
 				}
 				right={<CentralBoard />}

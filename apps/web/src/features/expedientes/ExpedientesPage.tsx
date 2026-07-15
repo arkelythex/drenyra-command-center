@@ -1,6 +1,7 @@
 import type { ExpedienteFiscal, ExpedienteKind } from "@drenyra/domain";
 import { FolderOpen } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Route } from "@/routes/cumplimiento/expedientes";
 import { ExpedienteCard } from "./components/ExpedienteCard";
 import { ExpedienteDetail } from "./components/ExpedienteDetail";
@@ -57,12 +58,12 @@ export function ExpedientesPage() {
 								strokeWidth={1.5}
 							/>
 							<h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
-								Expedientes Fiscales
+								Expedientes
 							</h1>
 						</div>
 						<p className="text-xs text-[var(--text-tertiary)] max-w-2xl">
 							Dossiers verificables que agrupan documentos, evidencia, análisis
-							de agentes y aprobaciones por período fiscal.
+							de agentes y aprobaciones por período.
 							{periodo ? (
 								<span className="ml-1 font-semibold text-[var(--text-secondary)]">
 									Filtro activo: {periodo}
@@ -88,8 +89,24 @@ export function ExpedientesPage() {
 									Cargando expedientes…
 								</div>
 							) : isError ? (
-								<div className="rounded-2xl border border-[var(--border-subtle)] py-12 text-center text-xs text-[var(--color-danger)]">
-									No se pudieron cargar los expedientes.
+								<div className="rounded-2xl border border-[var(--border-subtle)] py-10 text-center space-y-3">
+									<p className="text-xs font-semibold text-[var(--color-danger)]">
+										No pudimos cargar los expedientes
+									</p>
+									<p className="text-2xs text-[var(--text-tertiary)]">
+										Comprobá tu conexión o volvé a intentarlo.
+									</p>
+									<div className="flex items-center justify-center gap-2">
+										<Button size="sm" variant="outline" className="h-8 text-xs">
+											Reintentar
+										</Button>
+										<button
+											type="button"
+											className="text-2xs text-[var(--text-muted)] underline hover:text-[var(--text-secondary)]"
+										>
+											Ver detalles técnicos
+										</button>
+									</div>
 								</div>
 							) : filtered.length === 0 ? (
 								<div className="rounded-2xl border border-[var(--border-subtle)] py-12 text-center">

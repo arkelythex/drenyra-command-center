@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as VendorsRouteImport } from './routes/vendors'
+import { Route as ToolsRouteImport } from './routes/tools'
 import { Route as TaxationRouteImport } from './routes/taxation'
 import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as SignupRouteImport } from './routes/signup'
@@ -20,6 +21,7 @@ import { Route as ReviewQueueRouteImport } from './routes/review-queue'
 import { Route as ReviewRouteImport } from './routes/review'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as RepoHealthRouteImport } from './routes/repo-health'
 import { Route as ReconciliationsRouteImport } from './routes/reconciliations'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ProductsRouteImport } from './routes/products'
@@ -106,6 +108,7 @@ import { Route as DrenyraObservabilityRouteImport } from './routes/drenyra/obser
 import { Route as DrenyraHubRouteImport } from './routes/drenyra/hub'
 import { Route as DrenyraHerramientasRouteImport } from './routes/drenyra/herramientas'
 import { Route as DrenyraControlTowerRouteImport } from './routes/drenyra/control-tower'
+import { Route as DrenyraCentroDeOperacionesRouteImport } from './routes/drenyra/centro-de-operaciones'
 import { Route as DrenyraAutomatizacionesRouteImport } from './routes/drenyra/automatizaciones'
 import { Route as DrenyraThreadIdRouteImport } from './routes/drenyra/$threadId'
 import { Route as CumplimientoTaxationRouteImport } from './routes/cumplimiento/taxation'
@@ -151,6 +154,11 @@ const VendorsRoute = VendorsRouteImport.update({
   path: '/vendors',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TaxationRoute = TaxationRouteImport.update({
   id: '/taxation',
   path: '/taxation',
@@ -194,6 +202,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const ReportsRoute = ReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RepoHealthRoute = RepoHealthRouteImport.update({
+  id: '/repo-health',
+  path: '/repo-health',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReconciliationsRoute = ReconciliationsRouteImport.update({
@@ -627,6 +640,12 @@ const DrenyraControlTowerRoute = DrenyraControlTowerRouteImport.update({
   path: '/control-tower',
   getParentRoute: () => DrenyraRoute,
 } as any)
+const DrenyraCentroDeOperacionesRoute =
+  DrenyraCentroDeOperacionesRouteImport.update({
+    id: '/centro-de-operaciones',
+    path: '/centro-de-operaciones',
+    getParentRoute: () => DrenyraRoute,
+  } as any)
 const DrenyraAutomatizacionesRoute = DrenyraAutomatizacionesRouteImport.update({
   id: '/automatizaciones',
   path: '/automatizaciones',
@@ -859,6 +878,7 @@ export interface FileRoutesByFullPath {
   '/products': typeof ProductsRoute
   '/profile': typeof ProfileRoute
   '/reconciliations': typeof ReconciliationsRoute
+  '/repo-health': typeof RepoHealthRoute
   '/reports': typeof ReportsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/review': typeof ReviewRoute
@@ -868,6 +888,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/skills': typeof SkillsRoute
   '/taxation': typeof TaxationRoute
+  '/tools': typeof ToolsRoute
   '/vendors': typeof VendorsRoute
   '/verify-email': typeof VerifyEmailRoute
   '/approval/$id': typeof ApprovalIdRoute
@@ -901,6 +922,7 @@ export interface FileRoutesByFullPath {
   '/cumplimiento/taxation': typeof CumplimientoTaxationRoute
   '/drenyra/$threadId': typeof DrenyraThreadIdRoute
   '/drenyra/automatizaciones': typeof DrenyraAutomatizacionesRoute
+  '/drenyra/centro-de-operaciones': typeof DrenyraCentroDeOperacionesRoute
   '/drenyra/control-tower': typeof DrenyraControlTowerRoute
   '/drenyra/herramientas': typeof DrenyraHerramientasRoute
   '/drenyra/hub': typeof DrenyraHubRoute
@@ -989,6 +1011,7 @@ export interface FileRoutesByTo {
   '/products': typeof ProductsRoute
   '/profile': typeof ProfileRoute
   '/reconciliations': typeof ReconciliationsRoute
+  '/repo-health': typeof RepoHealthRoute
   '/reports': typeof ReportsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/review': typeof ReviewRoute
@@ -998,6 +1021,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/skills': typeof SkillsRoute
   '/taxation': typeof TaxationRoute
+  '/tools': typeof ToolsRoute
   '/vendors': typeof VendorsRoute
   '/verify-email': typeof VerifyEmailRoute
   '/approval/$id': typeof ApprovalIdRoute
@@ -1031,6 +1055,7 @@ export interface FileRoutesByTo {
   '/cumplimiento/taxation': typeof CumplimientoTaxationRoute
   '/drenyra/$threadId': typeof DrenyraThreadIdRoute
   '/drenyra/automatizaciones': typeof DrenyraAutomatizacionesRoute
+  '/drenyra/centro-de-operaciones': typeof DrenyraCentroDeOperacionesRoute
   '/drenyra/control-tower': typeof DrenyraControlTowerRoute
   '/drenyra/herramientas': typeof DrenyraHerramientasRoute
   '/drenyra/hub': typeof DrenyraHubRoute
@@ -1123,6 +1148,7 @@ export interface FileRoutesById {
   '/products': typeof ProductsRoute
   '/profile': typeof ProfileRoute
   '/reconciliations': typeof ReconciliationsRoute
+  '/repo-health': typeof RepoHealthRoute
   '/reports': typeof ReportsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/review': typeof ReviewRoute
@@ -1132,6 +1158,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/skills': typeof SkillsRoute
   '/taxation': typeof TaxationRoute
+  '/tools': typeof ToolsRoute
   '/vendors': typeof VendorsRoute
   '/verify-email': typeof VerifyEmailRoute
   '/approval/$id': typeof ApprovalIdRoute
@@ -1165,6 +1192,7 @@ export interface FileRoutesById {
   '/cumplimiento/taxation': typeof CumplimientoTaxationRoute
   '/drenyra/$threadId': typeof DrenyraThreadIdRoute
   '/drenyra/automatizaciones': typeof DrenyraAutomatizacionesRoute
+  '/drenyra/centro-de-operaciones': typeof DrenyraCentroDeOperacionesRoute
   '/drenyra/control-tower': typeof DrenyraControlTowerRoute
   '/drenyra/herramientas': typeof DrenyraHerramientasRoute
   '/drenyra/hub': typeof DrenyraHubRoute
@@ -1258,6 +1286,7 @@ export interface FileRouteTypes {
     | '/products'
     | '/profile'
     | '/reconciliations'
+    | '/repo-health'
     | '/reports'
     | '/reset-password'
     | '/review'
@@ -1267,6 +1296,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/skills'
     | '/taxation'
+    | '/tools'
     | '/vendors'
     | '/verify-email'
     | '/approval/$id'
@@ -1300,6 +1330,7 @@ export interface FileRouteTypes {
     | '/cumplimiento/taxation'
     | '/drenyra/$threadId'
     | '/drenyra/automatizaciones'
+    | '/drenyra/centro-de-operaciones'
     | '/drenyra/control-tower'
     | '/drenyra/herramientas'
     | '/drenyra/hub'
@@ -1388,6 +1419,7 @@ export interface FileRouteTypes {
     | '/products'
     | '/profile'
     | '/reconciliations'
+    | '/repo-health'
     | '/reports'
     | '/reset-password'
     | '/review'
@@ -1397,6 +1429,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/skills'
     | '/taxation'
+    | '/tools'
     | '/vendors'
     | '/verify-email'
     | '/approval/$id'
@@ -1430,6 +1463,7 @@ export interface FileRouteTypes {
     | '/cumplimiento/taxation'
     | '/drenyra/$threadId'
     | '/drenyra/automatizaciones'
+    | '/drenyra/centro-de-operaciones'
     | '/drenyra/control-tower'
     | '/drenyra/herramientas'
     | '/drenyra/hub'
@@ -1521,6 +1555,7 @@ export interface FileRouteTypes {
     | '/products'
     | '/profile'
     | '/reconciliations'
+    | '/repo-health'
     | '/reports'
     | '/reset-password'
     | '/review'
@@ -1530,6 +1565,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/skills'
     | '/taxation'
+    | '/tools'
     | '/vendors'
     | '/verify-email'
     | '/approval/$id'
@@ -1563,6 +1599,7 @@ export interface FileRouteTypes {
     | '/cumplimiento/taxation'
     | '/drenyra/$threadId'
     | '/drenyra/automatizaciones'
+    | '/drenyra/centro-de-operaciones'
     | '/drenyra/control-tower'
     | '/drenyra/herramientas'
     | '/drenyra/hub'
@@ -1655,6 +1692,7 @@ export interface RootRouteChildren {
   ProductsRoute: typeof ProductsRoute
   ProfileRoute: typeof ProfileRoute
   ReconciliationsRoute: typeof ReconciliationsRoute
+  RepoHealthRoute: typeof RepoHealthRoute
   ReportsRoute: typeof ReportsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ReviewRoute: typeof ReviewRoute
@@ -1664,6 +1702,7 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   SkillsRoute: typeof SkillsRoute
   TaxationRoute: typeof TaxationRoute
+  ToolsRoute: typeof ToolsRoute
   VendorsRoute: typeof VendorsRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
   ContabilidadAccountingPrRoute: typeof ContabilidadAccountingPrRoute
@@ -1724,6 +1763,13 @@ declare module '@tanstack/react-router' {
       path: '/vendors'
       fullPath: '/vendors'
       preLoaderRoute: typeof VendorsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/taxation': {
@@ -1787,6 +1833,13 @@ declare module '@tanstack/react-router' {
       path: '/reports'
       fullPath: '/reports'
       preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/repo-health': {
+      id: '/repo-health'
+      path: '/repo-health'
+      fullPath: '/repo-health'
+      preLoaderRoute: typeof RepoHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reconciliations': {
@@ -2391,6 +2444,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DrenyraControlTowerRouteImport
       parentRoute: typeof DrenyraRoute
     }
+    '/drenyra/centro-de-operaciones': {
+      id: '/drenyra/centro-de-operaciones'
+      path: '/centro-de-operaciones'
+      fullPath: '/drenyra/centro-de-operaciones'
+      preLoaderRoute: typeof DrenyraCentroDeOperacionesRouteImport
+      parentRoute: typeof DrenyraRoute
+    }
     '/drenyra/automatizaciones': {
       id: '/drenyra/automatizaciones'
       path: '/automatizaciones'
@@ -2687,6 +2747,7 @@ const ConfiguracionRouteWithChildren = ConfiguracionRoute._addFileChildren(
 interface DrenyraRouteChildren {
   DrenyraThreadIdRoute: typeof DrenyraThreadIdRoute
   DrenyraAutomatizacionesRoute: typeof DrenyraAutomatizacionesRoute
+  DrenyraCentroDeOperacionesRoute: typeof DrenyraCentroDeOperacionesRoute
   DrenyraControlTowerRoute: typeof DrenyraControlTowerRoute
   DrenyraHerramientasRoute: typeof DrenyraHerramientasRoute
   DrenyraHubRoute: typeof DrenyraHubRoute
@@ -2699,6 +2760,7 @@ interface DrenyraRouteChildren {
 const DrenyraRouteChildren: DrenyraRouteChildren = {
   DrenyraThreadIdRoute: DrenyraThreadIdRoute,
   DrenyraAutomatizacionesRoute: DrenyraAutomatizacionesRoute,
+  DrenyraCentroDeOperacionesRoute: DrenyraCentroDeOperacionesRoute,
   DrenyraControlTowerRoute: DrenyraControlTowerRoute,
   DrenyraHerramientasRoute: DrenyraHerramientasRoute,
   DrenyraHubRoute: DrenyraHubRoute,
@@ -2808,6 +2870,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProductsRoute: ProductsRoute,
   ProfileRoute: ProfileRoute,
   ReconciliationsRoute: ReconciliationsRoute,
+  RepoHealthRoute: RepoHealthRoute,
   ReportsRoute: ReportsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ReviewRoute: ReviewRoute,
@@ -2817,6 +2880,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   SkillsRoute: SkillsRoute,
   TaxationRoute: TaxationRoute,
+  ToolsRoute: ToolsRoute,
   VendorsRoute: VendorsRoute,
   VerifyEmailRoute: VerifyEmailRoute,
   ContabilidadAccountingPrRoute: ContabilidadAccountingPrRoute,
