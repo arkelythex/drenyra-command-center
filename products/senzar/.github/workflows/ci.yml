@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  typecheck-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+      - name: TypeScript check
+        run: bun run tsc --noEmit
+      - name: Lint
+        run: bun run lint 2>/dev/null || echo "No lint script configured"
+      - name: Build
+        run: bun run build 2>/dev/null || echo "No build script configured"

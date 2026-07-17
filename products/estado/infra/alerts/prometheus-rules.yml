@@ -1,0 +1,83 @@
+groups:
+  - name: civictech-api
+    rules:
+      - alert: CivictechApiHighErrorRate
+        expr: |
+          sum(rate(civictech_http_requests_total{status=~"5.."}[5m]))
+          /
+          sum(rate(civictech_http_requests_total[5m])) > 0.05
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High API error rate"
+          description: "5xx error ratio is above 5% for 10 minutes."
+
+      - alert: CivictechApiHighLatencyP95
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(civictech_http_request_duration_seconds_bucket[5m])) by (le)
+          ) > 1
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "API latency p95 high"
+          description: "p95 API latency is above 1s for 15 minutes."
+
+      - alert: CivictechApiDown
+        expr: up{job="civictech-api"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "API target down"
+          description: "civictech-api scrape target has been down for 5 minutes."
+
+      - alert: CivictechAuthForbiddenSpike
+        expr: sum(rate(civictech_auth_decisions_total{decision="forbidden"}[5m])) > 2
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RBAC forbidden responses spiking"
+          description: "Forbidden authorization decisions are above normal baseline for 10 minutes."
+
+      - alert: CivictechAuthBackendError
+        expr: sum(rate(civictech_auth_decisions_total{decision="auth_error"}[5m])) > 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "OIDC auth backend failures"
+          description: "Auth backend errors detected (JWKS/config/JWT decode)."
+
+      - alert: CivictechIngestNoRecentSuccess
+        expr: increase(civictech_ingest_runs_total{result="success"}[24h]) < 1
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: "No successful ingest in last 24h"
+          description: "MVP-A ingest freshness target is at risk due to missing successful runs."
+
+      - alert: CivictechWorkflowRejectedSpike
+        expr: sum(rate(civictech_report_workflows_completed_total{outcome="rejected"}[30m])) > 0.2
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Report workflow rejected rate elevated"
+          description: "Rejected workflow outcomes are above expected baseline."
+
+      - alert: CivictechWorkflowResolutionP95High
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(civictech_report_resolution_seconds_bucket[6h])) by (le)
+          ) > 172800
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "Workflow resolution p95 high"
+          description: "p95 resolution time from SUBMITTED to terminal state is above 48h."

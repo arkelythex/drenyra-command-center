@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AgroTrace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#6f9b69",
+              "primary-dark": "#5a8055",
+              accent: "#2D5A27",
+              alert: "#F2994A",
+              "functional-blue": "#2F80ED",
+              "background-light": "#f7f7f7",
+              "background-dark": "#171b17",
+              "surface-light": "#ffffff",
+              "surface-dark": "#232923",
+            },
+            fontFamily: {
+              display: ["Lexend", "sans-serif"],
+              body: ["Lexend", "sans-serif"],
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        font-family: 'Lexend', sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .material-symbols-outlined.filled {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+  }
+}
+</script>
+</head>
+  <body class="bg-background-light text-slate-900 min-h-screen">
+    <div id="root"></div>
+  </body>
+</html>

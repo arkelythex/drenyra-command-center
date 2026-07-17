@@ -1,0 +1,4 @@
+entity,category,amount,occurred_on,doc_ref
+Municipio Demo,OBRAS,1250.75,2026-02-01,DOC-001
+Municipio Demo,SERVICIOS,320.50,2026-02-02,DOC-002
+Municipio Demo,PERSONAL,2100.00,2026-02-03,DOC-003

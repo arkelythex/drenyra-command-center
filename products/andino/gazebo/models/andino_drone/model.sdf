@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<model name="andino_drone">
+  <self_collide>false</self_collide>
+  <static>false</static>
+
+  <!-- The URDF is loaded via the robot_description parameter.
+       This SDF model provides the Gazebo-specific wrapper.
+       Actual geometry is defined in the generated URDF files. -->
+  <link name="base_link"/>
+</model>

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/data-engine/v1/health.json",
+  "title": "Data Engine Health Response v1",
+  "type": "object",
+  "required": ["status", "service"],
+  "properties": {
+    "status": { "type": "string", "enum": ["online", "offline"] },
+    "service": { "type": "string" },
+    "version": { "type": "string" },
+    "engine": { "type": "string" }
+  },
+  "additionalProperties": true
+}

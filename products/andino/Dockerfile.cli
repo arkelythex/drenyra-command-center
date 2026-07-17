@@ -1,0 +1,38 @@
+# =============================================================================
+# Dockerfile.cli — Andino CLI Pipeline (sin BuildKit)
+# Multi-stage: builder (uv sync) → runtime (python:3.13-slim)
+# =============================================================================
+FROM python:3.13-slim AS builder
+
+WORKDIR /app
+
+# uv — package manager ultra-rápido
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# Dependencias primero (layer cache)
+COPY pyproject.toml uv.lock ./
+RUN uv sync --no-dev --frozen --no-install-project
+
+# Source después (cambia más seguido)
+COPY orchestrator/ orchestrator/
+COPY morphology/ morphology/
+COPY agent/ agent/
+COPY skills/ skills/
+COPY README.md ./
+
+RUN uv sync --no-dev --frozen
+
+# =============================================================================
+FROM python:3.13-slim AS runtime
+
+WORKDIR /app
+
+# Solamente el .venv y el source — ni uv, ni cache, ni dev deps
+COPY --from=builder /app /app
+
+ENV PATH="/app/.venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1 \
+    PIPELINE_DATA_DIR="/app/pipeline_data"
+
+ENTRYPOINT ["andino"]
+CMD ["--help"]

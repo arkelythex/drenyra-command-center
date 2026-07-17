@@ -1,0 +1,40 @@
+# =============================================================================
+# docker-compose.yml — Andino Drone Lab
+# Servicios: cli (pipeline Python) + studio (Next.js 16)
+# =============================================================================
+services:
+  # -- Andino CLI Pipeline ---------------------------------------------------
+  cli:
+    build:
+      context: .
+      dockerfile: Dockerfile.cli
+    image: andino-cli:latest
+    container_name: andino-cli
+    volumes:
+      - pipeline_data:/app/pipeline_data
+    environment:
+      - PIPELINE_DATA_DIR=/app/pipeline_data
+    entrypoint: ["andino"]
+    command: ["--help"]
+
+  # -- Andino Studio (Next.js 16) --------------------------------------------
+  studio:
+    build:
+      context: ./studio
+      dockerfile: ../Dockerfile.studio
+    image: andino-studio:latest
+    container_name: andino-studio
+    ports:
+      - "3000:3000"
+    volumes:
+      - pipeline_data:/app/pipeline_data
+    environment:
+      - PIPELINE_DATA_DIR=/app/pipeline_data
+      - NEXT_TELEMETRY_DISABLED=1
+    depends_on:
+      - cli
+    restart: unless-stopped
+
+volumes:
+  pipeline_data:
+    name: andino_pipeline_data

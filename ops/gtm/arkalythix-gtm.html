@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arkelythex — Go-To-Market e Hipótesis Comercial Inicial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1a2e;
+      --ink-light: #4a4a6a;
+      --ink-muted: #7a7a9a;
+      --bg: #ffffff;
+      --bg-subtle: #f8f9fc;
+      --bg-elevated: #f0f2f8;
+      --border: #e2e4f0;
+      --border-strong: #c8cce0;
+      --accent: #0e4da6;
+      --accent-light: #e8f0fe;
+      --ok: #1a7f4e;
+      --ok-bg: #e8f5ee;
+      --warn: #b45309;
+      --warn-bg: #fef3c7;
+      --critical: #b42318;
+      --critical-bg: #fee4e2;
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+
+    @page {
+      size: A4;
+      margin: 22mm 24mm 28mm 24mm;
+      @top-center { content: "Arkelythex — Go-To-Market 2026"; font-size: 8pt; color: #999; font-family: Inter, sans-serif; }
+      @bottom-center { content: counter(page); font-size: 9pt; color: #666; font-family: Inter, sans-serif; }
+    }
+
+    @page :first {
+      @top-center { content: none; }
+      @bottom-center { content: none; }
+    }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 11pt;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3 {
+      font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 26pt;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6rem;
+      page-break-after: avoid;
+    }
+
+    h2 {
+      font-size: 15pt;
+      margin-top: 2.2rem;
+      margin-bottom: 0.9rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1.5pt solid var(--border-strong);
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-family: Inter, sans-serif;
+      font-size: 11.5pt;
+      font-weight: 600;
+      margin-top: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--ink-light);
+    }
+
+    p {
+      margin-bottom: 0.9rem;
+      orphans: 3;
+      widows: 3;
+    }
+
+    ul, ol { margin: 0 0 1rem 1.4rem; padding: 0; }
+    li { margin-bottom: 0.5rem; padding-left: 0.3rem; }
+    li::marker { color: var(--ink-muted); }
+
+    strong { font-weight: 600; color: var(--ink); }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .page { max-width: 170mm; margin: 0 auto; padding: 0; }
+
+    header.doc-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2pt solid var(--ink);
+    }
+
+    .doc-subtitle {
+      font-family: Inter, sans-serif;
+      font-size: 12pt;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .meta {
+      color: var(--ink-muted);
+      font-size: 9.5pt;
+      line-height: 1.5;
+      margin-bottom: 0.8rem;
+      font-family: Inter, sans-serif;
+    }
+
+    .pill-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.9rem; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      border: 1pt solid var(--border-strong);
+      color: var(--ink-light);
+      font-size: 8.5pt;
+      font-weight: 500;
+      font-family: Inter, sans-serif;
+      background: var(--bg-subtle);
+    }
+
+    .pill::before {
+      content: "";
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--ok);
+    }
+
+    .note {
+      margin: 1.2rem 0;
+      padding: 1rem 1.2rem;
+      border-radius: 6pt;
+      border-left: 3pt solid var(--accent);
+      background: var(--accent-light);
+      color: var(--ink);
+      font-size: 10pt;
+      line-height: 1.6;
+      page-break-inside: avoid;
+    }
+
+    .note strong { color: var(--accent); font-family: Inter, sans-serif; }
+
+    .toc-inline {
+      background: var(--bg-subtle);
+      border: 1pt solid var(--border);
+      border-radius: 5pt;
+      padding: 1rem 1.2rem;
+      margin-bottom: 2rem;
+      page-break-inside: avoid;
+    }
+
+    .toc-inline-title {
+      font-family: Inter, sans-serif;
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .toc-inline ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.2rem 1.5rem;
+    }
+
+    .toc-inline li { margin: 0; padding: 0; font-size: 9.5pt; }
+    .toc-inline li::before { content: none; }
+    .toc-inline a { color: var(--ink-light); text-decoration: none; }
+    .toc-inline a:hover { color: var(--accent); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin: 1rem 0 1.5rem;
+    }
+
+    .card {
+      border: 1pt solid var(--border);
+      border-radius: 5pt;
+      padding: 1rem;
+      background: var(--bg-subtle);
+      page-break-inside: avoid;
+    }
+
+    .q {
+      font-family: Inter, sans-serif;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+      font-size: 9.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .a {
+      color: var(--ink);
+      margin: 0;
+      font-size: 10pt;
+      line-height: 1.5;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 1.1rem;
+      font-size: 10pt;
+      line-height: 1.45;
+      page-break-inside: auto;
+    }
+
+    thead th {
+      background: var(--bg-elevated);
+      color: var(--ink-light);
+      padding: 0.5rem 0.6rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 9.2pt;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      border: 1pt solid var(--border);
+    }
+
+    tbody td {
+      padding: 0.5rem 0.6rem;
+      border: 1pt solid var(--border);
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--bg-subtle);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .arkelythex-col {
+      background: var(--accent-light);
+      font-weight: 600;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .tag-ok {
+      color: var(--ok);
+      font-weight: 600;
+      background: var(--ok-bg);
+      padding: 0.1rem 0.4rem;
+      border-radius: 3pt;
+      font-size: 0.9em;
+    }
+
+    .tag-warn {
+      color: var(--warn);
+      font-weight: 600;
+      background: var(--warn-bg);
+      padding: 0.1rem 0.4rem;
+      border-radius: 3pt;
+      font-size: 0.9em;
+    }
+
+    .tag-critical {
+      color: var(--critical);
+      font-weight: 600;
+      background: var(--critical-bg);
+      padding: 0.1rem 0.4rem;
+      border-radius: 3pt;
+      font-size: 0.9em;
+    }
+
+    .flow {
+      font-family: "JetBrains Mono", "Courier New", monospace;
+      font-size: 9pt;
+      line-height: 1.5;
+      background: var(--bg-subtle);
+      padding: 1rem;
+      border: 1pt solid var(--border);
+      border-left: 4pt solid var(--accent);
+      white-space: pre;
+      overflow-x: auto;
+      page-break-inside: avoid;
+    }
+
+    .flow-steps {
+      display: table;
+      width: 100%;
+      margin: 1rem 0;
+      page-break-inside: avoid;
+    }
+
+    .flow-step {
+      display: table-cell;
+      text-align: center;
+      padding: 0.8rem;
+      background: var(--bg-subtle);
+      border: 1pt solid var(--border);
+    }
+
+    .flow-step strong {
+      display: block;
+      color: var(--accent);
+      font-size: 11pt;
+      margin-bottom: 0.2rem;
+    }
+
+    .flow-arrow {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+      width: 1.8rem;
+      color: var(--accent);
+      font-size: 14pt;
+      font-weight: 700;
+    }
+
+    .price-tag {
+      font-size: 14pt;
+      font-weight: 700;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .annual-note {
+      font-size: 8.8pt;
+      color: var(--ok);
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .checklist {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .checklist li {
+      margin: 0;
+      padding: 0.5rem 0 0.5rem 1.6rem;
+      border-bottom: 1pt solid var(--border);
+      position: relative;
+    }
+
+    .checklist li::before {
+      content: "✓";
+      color: var(--accent);
+      font-weight: 700;
+      position: absolute;
+      left: 0.2rem;
+      top: 0.48rem;
+      font-size: 10pt;
+    }
+
+    .sources {
+      list-style: none;
+      margin: 1rem 0 0 0;
+      padding: 0;
+    }
+
+    .sources li {
+      margin-bottom: 0.45rem;
+      padding-left: 0;
+      font-size: 9.5pt;
+    }
+
+    .sources li::before {
+      content: "→";
+      color: var(--ink-muted);
+      margin-right: 0.4rem;
+      font-family: Inter, sans-serif;
+    }
+
+    .sources a { color: var(--accent); word-break: break-all; }
+
+    .divider {
+      margin: 2rem 0;
+      border: none;
+      height: 1pt;
+      background: var(--border-strong);
+    }
+
+    .meta-footer {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1pt solid var(--border);
+      font-size: 9.5pt;
+      color: var(--ink-muted);
+      font-family: Inter, sans-serif;
+    }
+
+    .no-break { page-break-inside: avoid; }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .toc-inline ul { grid-template-columns: 1fr; }
+      .flow-steps { display: block; }
+      .flow-step, .flow-arrow { display: block; width: 100%; }
+      .flow-arrow { padding: 0.3rem 0; }
+    }
+
+    @media screen {
+      body { background: #e8e8f0; padding: 2rem 1rem; }
+      .page {
+        background: var(--bg);
+        padding: 24mm 28mm 30mm 28mm;
+        max-width: 210mm;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+        border-radius: 2pt;
+      }
+    }
+
+    @media print {
+      section { page-break-before: always; }
+      section:first-of-type { page-break-before: avoid; }
+      h1, h2 { page-break-after: avoid; }
+      table, tr, td, th, .note, .card, .flow, .flow-steps { page-break-inside: avoid; }
+      thead { display: table-header-group; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="doc-header">
+      <div class="doc-subtitle">Documento Comercial-Operativo</div>
+      <h1>Arkelythex — Go-To-Market e Hipótesis Comercial Inicial</h1>
+      <p class="meta"><strong>Fecha:</strong> Abril 2026 · <strong>Versión:</strong> 2.0 — Rediseño editorial print · <strong>Clasificación:</strong> Confidencial</p>
+      <div class="pill-row">
+        <span class="pill">Perú-first compliance</span>
+        <span class="pill">Land-and-expand</span>
+        <span class="pill">SIRE como wedge</span>
+      </div>
+      <div class="note">
+        <strong>Resumen ejecutivo:</strong> Arkelythex entra por el dolor operativo más urgente — <strong>SIRE + facturación electrónica</strong> — y expande hacia ERP completo. El enfoque comercial privilegia ROI medible (horas de contador recuperadas + reducción de riesgo SUNAT).
+      </div>
+    </header>
+
+    <nav class="toc-inline no-break" aria-label="Contenido">
+      <div class="toc-inline-title">Contenido</div>
+      <ul>
+        <li><a href="#resumen">1) Resumen ejecutivo</a></li>
+        <li><a href="#icp">2) ICP inicial</a></li>
+        <li><a href="#dolor">3) Dolor principal</a></li>
+        <li><a href="#propuesta">4) Propuesta de valor</a></li>
+        <li><a href="#oferta">5) Oferta de entrada</a></li>
+        <li><a href="#pricing">6) Pricing tentativo</a></li>
+        <li><a href="#flujo">7) Flujo comercial</a></li>
+        <li><a href="#kpis">8) KPIs de validación</a></li>
+        <li><a href="#riesgos">9) Riesgos y mitigación</a></li>
+        <li><a href="#anexo">10) Fuentes</a></li>
+      </ul>
+    </nav>
+
+    <section id="resumen">
+      <h2>1) Resumen Ejecutivo</h2>
+      <p>ARKELYTHEX es un ERP moderno, full-stack y cloud-native diseñado para el mercado peruano, con cumplimiento SUNAT como propuesta central. El mercado objetivo combina alto volumen de emisores electrónicos y fricción operativa por herramientas fragmentadas.</p>
+      <p>La estrategia de entrada es <strong>land-and-expand</strong>: entrar con automatización SIRE (RVIE/RCE) + facturación electrónica, y expandir luego a inventario, contabilidad, analítica y API.</p>
+      <p>Pricing de entrada estimado: <strong>S/99–S/199 mensuales</strong>, con racional económico frente a multas y retrabajo manual de cierre.</p>
+      <div class="note"><strong>Claim comercial operativo:</strong> “Cumplimiento SUNAT más predecible, con menos horas manuales y mayor trazabilidad”.</div>
+    </section>
+
+    <hr class="divider" />
+
+    <section id="icp">
+      <h2>2) ICP Inicial (Ideal Customer Profile)</h2>
+      <h3>Segmento primario (Meses 1–6): empresas medianas en transición ERP</h3>
+      <table>
+        <thead><tr><th>Dimensión</th><th>Perfil</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Empleados</strong></td><td>10–200</td></tr>
+          <tr><td><strong>Ingresos anuales</strong></td><td>S/500,000 – S/10,000,000</td></tr>
+          <tr><td><strong>Tiempo en operación</strong></td><td>2+ años, RUC activo</td></tr>
+          <tr><td><strong>Industrias foco</strong></td><td>Retail/comercio, manufactura, servicios profesionales, restaurantes/hospitalidad</td></tr>
+          <tr><td><strong>Decisor</strong></td><td>Dueño/Gerente General + contador externo</td></tr>
+          <tr><td><strong>Ciclo de venta</strong></td><td>14–30 días</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Segmento secundario (Meses 3–6): Developers / ISVs</h3>
+      <table>
+        <thead><tr><th>Dimensión</th><th>Perfil</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Perfil</strong></td><td>Equipos que necesitan API moderna de emisión electrónica</td></tr>
+          <tr><td><strong>Decisor</strong></td><td>CTO / Lead Developer</td></tr>
+          <tr><td><strong>Ciclo de venta</strong></td><td>7–21 días</td></tr>
+          <tr><td><strong>Necesidad clave</strong></td><td>API, webhooks, sandbox y documentación clara</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note"><strong>Segmento diferido:</strong> microempresas por canal freemium; no como foco de venta consultiva en la fase inicial.</div>
+    </section>
+
+    <hr class="divider" />
+
+    <section id="dolor">
+      <h2>3) Dolor Principal del Cliente</h2>
+      <table>
+        <thead><tr><th>Punto de dolor</th><th>Cuantificación</th><th>Impacto</th><th>Fuente</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Fragmentación de herramientas</strong></td><td>3–4 sistemas desconectados (facturación + contabilidad + SIRE + Excel)</td><td><span class="tag-warn">Alto</span></td><td>Investigación de mercado</td></tr>
+          <tr><td><strong>Tiempo en SIRE</strong></td><td>8–16 horas/mes de reconciliación manual</td><td><span class="tag-warn">Alto</span></td><td>Entrevistas contables</td></tr>
+          <tr><td><strong>Multas SUNAT</strong></td><td>S/2,300+ por incumplimiento relevante</td><td><span class="tag-critical">Crítico</span></td><td>Normativa y tablas SUNAT</td></tr>
+          <tr><td><strong>Sin validación en tiempo real</strong></td><td>Errores detectados después del envío</td><td><span class="tag-warn">Alto</span></td><td>Casuística operativa</td></tr>
+          <tr><td><strong>UX legacy</strong></td><td>Onboarding lento, curva de aprendizaje 1–2 semanas</td><td><span class="tag-ok">Medio</span></td><td>Demos y reseñas</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr class="divider" />
+
+    <section id="propuesta">
+      <h2>4) Propuesta de Valor</h2>
+      <div class="note"><strong>Promesa central:</strong> “Cumplimiento SUNAT con menor fricción operativa y mejor evidencia para cierre”.</div>
+
+      <h3>Comparativa competitiva</h3>
+      <table>
+        <thead><tr><th>Dimensión</th><th class="arkelythex-col">Arkelythex</th><th>NubeFacT</th><th>Contasis</th><th>Facturador SUNAT</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Alcance</strong></td><td class="arkelythex-col">ERP + facturación</td><td>Facturación</td><td>Contabilidad + facturación</td><td>Facturación básica</td></tr>
+          <tr><td><strong>SIRE</strong></td><td class="arkelythex-col">Flujo nativo con conciliación</td><td>Cobertura parcial</td><td>Manual</td><td>No aplica</td></tr>
+          <tr><td><strong>Inteligencia operativa</strong></td><td class="arkelythex-col">Alertas y priorización de riesgo</td><td>Limitado</td><td>Limitado</td><td>No</td></tr>
+          <tr><td><strong>API moderna</strong></td><td class="arkelythex-col">Sí</td><td>Limitada</td><td>No</td><td>No</td></tr>
+          <tr><td><strong>Cloud-native</strong></td><td class="arkelythex-col">Sí</td><td>Mixto</td><td>Legacy</td><td>Básico</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Diferenciadores clave</h3>
+      <div class="grid">
+        <section class="card"><div class="q">SIRE-first</div><p class="a">Producto diseñado alrededor del dolor real de cierre y libros electrónicos.</p></section>
+        <section class="card"><div class="q">Evidence-first</div><p class="a">Cada recomendación relevante se justifica con trazabilidad operativa.</p></section>
+        <section class="card"><div class="q">API + stack moderno</div><p class="a">Facilita integración y crecimiento con partners técnicos.</p></section>
+        <section class="card"><div class="q">Canal WhatsApp</div><p class="a">Adopción más rápida en el contexto comercial peruano.</p></section>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <section id="oferta">
+      <h2>5) Oferta de Entrada (Land)</h2>
+      <h3>SIRE Automation + E-Invoicing Bundle</h3>
+      <table>
+        <thead><tr><th>Elemento</th><th>Detalle</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Qué</strong></td><td>Facturación electrónica + generación y conciliación RVIE/RCE + validación SUNAT en flujo.</td></tr>
+          <tr><td><strong>Por qué</strong></td><td>Es el dolor de mayor urgencia y frecuencia mensual.</td></tr>
+          <tr><td><strong>Para quién</strong></td><td>Empresas que hoy operan con facturación aislada + Excel para cierre/SIRE.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Expand (meses 3–6)</h3>
+      <ul>
+        <li>Inventario</li>
+        <li>Módulo contable (GL, P&L, balance)</li>
+        <li>Analítica avanzada</li>
+        <li>API e integraciones</li>
+        <li>Multi-RUC / multi-empresa</li>
+      </ul>
+
+      <h3>Flujo Land → Expand → Retain</h3>
+      <div class="flow-steps">
+        <div class="flow-step"><strong>LAND</strong><small>SIRE + Facturación</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><strong>EXPAND</strong><small>Inventario + Contabilidad + API</small></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><strong>RETAIN</strong><small>Multi-RUC + Analytics + SLA</small></div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <section id="pricing">
+      <h2>6) Pricing Inicial Tentativo</h2>
+      <table>
+        <thead><tr><th>Tier</th><th>Precio</th><th>Target</th><th>Características clave</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Freemium</strong></td><td><span class="price-tag">S/0</span>/mes</td><td>Microempresas</td><td>50 docs/mes, 1 usuario, facturación básica</td></tr>
+          <tr><td><strong>Professional</strong></td><td><span class="price-tag">S/99</span>/mes<br><span class="annual-note">S/990 anual (17% dto.)</span></td><td>10–50 empleados</td><td>SIRE, docs ilimitados, WhatsApp, 3 usuarios + 1 contador</td></tr>
+          <tr><td><strong>Business</strong></td><td><span class="price-tag">S/199</span>/mes<br><span class="annual-note">S/1,990 anual (17% dto.)</span></td><td>50–200 empleados</td><td>Todo en Pro + inventario + contabilidad + API + multi-RUC</td></tr>
+          <tr><td><strong>Enterprise</strong></td><td><span class="price-tag">Desde S/499</span>/mes</td><td>200+ empleados</td><td>SLA, integraciones custom, despliegues avanzados</td></tr>
+          <tr><td><strong>Developer/API</strong></td><td><span class="price-tag">S/49</span>/mes + variable</td><td>ISVs / devs</td><td>API, webhooks, sandbox y documentación técnica</td></tr>
+        </tbody>
+      </table>
+      <p>Racional: pagar S/99–S/199 es defendible si el cliente percibe reducción de horas contables y menor exposición a contingencias por cierre.</p>
+    </section>
+
+    <hr class="divider" />
+
+    <section id="flujo">
+      <h2>7) Flujo Comercial Básico</h2>
+      <p>Motion sugerido: WhatsApp-first + validación técnica breve + demo orientada a resultados de cierre.</p>
+      <pre class="flow">Lead Generation
+├── SEO/Ads orientado a SIRE / SUNAT
+├── Referidos con contadores
+├── Click-to-WhatsApp desde landing
+└── Contenido educativo (YouTube / guías)
+        │
+        ▼
+Qualificación (5 min)
+├── Tamaño + industria + herramienta actual
+├── Dolor mensual en horas de cierre
+└── Decisor + contador involucrado
+        │
+        ▼
+Demo (20-30 min)
+├── Caso real: 8 horas → minutos operativos
+├── Comparación contra herramienta actual
+└── Aprobación de contador
+        │
+        ▼
+Pilot (14 días)
+├── Onboarding rápido
+├── Soporte activo por WhatsApp
+└── Hito: primer SIRE exitoso
+        │
+        ▼
+Cierre + Onboarding
+├── Propuesta y ROI explícito
+├── Incentivo anual
+└── Plan de expansión modular</pre>
+    </section>
+
+    <hr class="divider" />
+
+    <section id="kpis">
+      <h2>8) KPIs de Validación GTM (90 días)</h2>
+      <div class="grid">
+        <section class="card no-break">
+          <div class="q">Embudo comercial</div>
+          <ul class="checklist">
+            <li>MQL → SQL conversion rate</li>
+            <li>Demo-to-pilot rate</li>
+            <li>Pilot-to-paid conversion</li>
+            <li>Días promedio de cierre</li>
+          </ul>
+        </section>
+        <section class="card no-break">
+          <div class="q">Unit economics</div>
+          <ul class="checklist">
+            <li>MRR nuevo mensual</li>
+            <li>ARPA por segmento</li>
+            <li>CAC por canal</li>
+            <li>Payback CAC</li>
+          </ul>
+        </section>
+        <section class="card no-break">
+          <div class="q">Adopción de producto</div>
+          <ul class="checklist">
+            <li>Tiempo a primer envío exitoso</li>
+            <li>Uso semanal del módulo SIRE</li>
+            <li>Tasa de errores bloqueados antes de envío</li>
+            <li>Activación de módulos expand</li>
+          </ul>
+        </section>
+        <section class="card no-break">
+          <div class="q">Retención y referencia</div>
+          <ul class="checklist">
+            <li>Logo churn 90 días</li>
+            <li>NPS en cuentas piloto</li>
+            <li>% cuentas con contador sponsor</li>
+            <li>% nuevos leads por referidos</li>
+          </ul>
+        </section>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <section id="riesgos">
+      <h2>9) Riesgos Clave y Mitigación</h2>
+      <table>
+        <thead><tr><th>Riesgo</th><th>Impacto</th><th>Mitigación</th></tr></thead>
+        <tbody>
+          <tr><td>Dependencia de cambios SUNAT</td><td><span class="tag-critical">Crítico</span></td><td>Motor de reglas versionado + monitoreo normativo continuo.</td></tr>
+          <tr><td>Objeción de confianza del contador</td><td><span class="tag-warn">Alto</span></td><td>Evidence-first, trazabilidad exportable y participación temprana del contador en demo/piloto.</td></tr>
+          <tr><td>Ciclo de ventas más largo de lo esperado</td><td><span class="tag-warn">Alto</span></td><td>Acotar ICP inicial, incluir calculadora de ROI y casos de uso verticales.</td></tr>
+          <tr><td>Competencia con pricing agresivo</td><td><span class="tag-ok">Medio</span></td><td>Defender diferencial operativo (SIRE + cierre + evidencia), no competir solo por precio.</td></tr>
+        </tbody>
+      </table>
+      <div class="note"><strong>Decisión de foco:</strong> priorizar win-rate en cuentas de dolor alto antes de ampliar segmentos.</div>
+    </section>
+
+    <hr class="divider" />
+
+    <section id="anexo">
+      <h2>10) Fuentes y trazabilidad</h2>
+      <ul class="sources">
+        <li><a href="https://www.gob.pe/institucion/sunat/informes-publicaciones/4445314-sistema-integrado-de-registros-electronicos-sire">SUNAT — SIRE (guía oficial)</a></li>
+        <li><a href="https://www.sunat.gob.pe/legislacion/superin/2025/000392-2025.pdf">SUNAT — RS 000392-2025</a></li>
+        <li><a href="https://cpe.sunat.gob.pe/guias-y-manuales">SUNAT CPE — guías y manuales</a></li>
+        <li><a href="https://www.gob.pe/institucion/produce/noticias/1299194-numero-de-mipyme-en-peru-ascendio-a-2-33-millones-al-cierre-del-2024-alcanzando-un-crecimiento-de-1-6">PRODUCE — MIPYME 2024</a></li>
+        <li><a href="https://www.gob.pe/institucion/inei/informes-publicaciones/7384316-peru-estructura-empresarial-2024">INEI — Estructura empresarial 2024</a></li>
+        <li><a href="https://www.alegra.com/peru/factura-electronica/">Alegra Perú</a> · <a href="https://www.starsoft.com.pe/">Starsoft</a> · <a href="https://www.nubefact.com/">NubeFact</a> · <a href="https://contasic.org/">Contasic</a></li>
+      </ul>
+
+      <p class="meta-footer">Nota: este documento define hipótesis GTM para validación comercial. No constituye promesa contractual ni garantía regulatoria absoluta.</p>
+    </section>
+  </main>
+</body>
+</html>

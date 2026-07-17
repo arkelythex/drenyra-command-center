@@ -1,0 +1,12 @@
+[package]
+name = "civictech-ingest"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+csv.workspace = true
+hex.workspace = true
+serde.workspace = true
+sha2.workspace = true
+thiserror.workspace = true

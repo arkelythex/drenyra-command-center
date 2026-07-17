@@ -1,0 +1,93 @@
+name: Integration Auth RBAC
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: integration-auth-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  auth-rbac:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install JS dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Start local infra
+        run: |
+          docker compose -f infra/docker-compose.yml up -d postgres redis minio minio-init keycloak-db keycloak otel-collector
+
+      - name: Wait for Postgres
+        run: |
+          until PGPASSWORD=postgres psql -h localhost -U postgres -d civictech -c "select 1" >/dev/null 2>&1; do
+            sleep 2
+          done
+
+      - name: Wait for Keycloak realm
+        run: bash ./scripts/keycloak/wait-ready.sh 180
+
+      - name: Apply migrations
+        run: bash ./scripts/migrate.sh
+
+      - name: Start API in OIDC mode
+        run: |
+          AUTH_MODE=oidc \
+          DATABASE_URL=postgres://postgres:postgres@localhost:5432/civictech \
+          S3_ENDPOINT=http://localhost:9000 \
+          S3_REGION=us-east-1 \
+          S3_ACCESS_KEY=minio \
+          S3_SECRET_KEY=minio12345 \
+          S3_EVIDENCE_BUCKET=evidence \
+          OIDC_ISSUER_URL=http://localhost:8081/realms/civictech \
+          OIDC_AUDIENCE=civictech-api \
+          OIDC_CLIENT_ID=civictech-api \
+          OIDC_JWKS_URL=http://localhost:8081/realms/civictech/protocol/openid-connect/certs \
+          cargo run -p civictech-api > /tmp/civictech-api.log 2>&1 &
+          echo $! > /tmp/civictech-api.pid
+
+      - name: Wait for API
+        run: bash ./scripts/wait-for-http.sh http://localhost:8080/health 200 120
+
+      - name: Validate RBAC smoke
+        run: pnpm smoke:rbac
+
+      - name: Validate auth metrics endpoint
+        run: |
+          curl -fsS http://localhost:8080/metrics | grep -q "civictech_auth_decisions_total"
+
+      - name: Print service logs on failure
+        if: failure()
+        run: |
+          echo "---- civictech-api.log ----"
+          cat /tmp/civictech-api.log || true
+          echo "---- docker compose logs ----"
+          docker compose -f infra/docker-compose.yml logs --no-color keycloak postgres minio otel-collector || true
+
+      - name: Shutdown services
+        if: always()
+        run: |
+          if [[ -f /tmp/civictech-api.pid ]]; then
+            kill "$(cat /tmp/civictech-api.pid)" || true
+          fi
+          docker compose -f infra/docker-compose.yml down -v

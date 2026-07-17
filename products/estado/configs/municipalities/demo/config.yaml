@@ -1,0 +1,23 @@
+municipality:
+  id: "demo-muni"
+  name: "Municipio Demo"
+  region: "Piura"
+
+transparency:
+  dataset_sources:
+    - kind: "open_data"
+      url: "https://example.gob.pe/opendata/gastos.csv"
+      license: "open"
+  taxonomy:
+    category_map:
+      "OBRAS": "infraestructura"
+      "SERVICIOS": "servicios"
+      "PERSONAL": "rrhh"
+
+reports:
+  moderation:
+    rate_limit_per_hour: 10
+    allow_anonymous: true
+  retention:
+    evidence_days: 90
+    drafts_days: 30

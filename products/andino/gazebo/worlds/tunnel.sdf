@@ -1,0 +1,145 @@
+<?xml version="1.0" ?>
+<sdf version="1.7">
+  <world name="andino_tunnel">
+    <physics name="default" type="ode">
+      <gravity>0 0 -9.81</gravity>
+      <real_time_update_rate>250</real_time_update_rate>
+      <max_step_size>0.004</max_step_size>
+    </physics>
+
+    <scene>
+      <ambient>0.15 0.15 0.18 1</ambient>
+      <background>0.1 0.1 0.15 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <!-- Dim directional light (simulating underground) -->
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 50 0 0 0</pose>
+      <diffuse>0.3 0.3 0.25 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <direction>0 0 -1</direction>
+    </light>
+
+    <!-- Floor -->
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <surface>
+            <friction>
+              <ode><mu>0.9</mu><mu2>0.7</mu2></ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+          <material><ambient>0.25 0.25 0.25 1</ambient><diffuse>0.3 0.3 0.3 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Tunnel walls — two parallel walls 4m apart, 30m long -->
+    <model name="tunnel_wall_left">
+      <static>true</static>
+      <pose>-2 0 1.5 0 0 0</pose>
+      <link name="wall">
+        <collision name="collision">
+          <geometry><box><size>0.5 30 3</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.5 30 3</size></box></geometry>
+          <material><ambient>0.3 0.25 0.2 1</ambient><diffuse>0.35 0.3 0.25 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name="tunnel_wall_right">
+      <static>true</static>
+      <pose>2 0 1.5 0 0 0</pose>
+      <link name="wall">
+        <collision name="collision">
+          <geometry><box><size>0.5 30 3</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.5 30 3</size></box></geometry>
+          <material><ambient>0.3 0.25 0.2 1</ambient><diffuse>0.35 0.3 0.25 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Tunnel ceiling -->
+    <model name="tunnel_ceiling">
+      <static>true</static>
+      <pose>0 0 3 0 0 0</pose>
+      <link name="ceiling">
+        <collision name="collision">
+          <geometry><box><size>4.5 30 0.3</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>4.5 30 0.3</size></box></geometry>
+          <material><ambient>0.25 0.25 0.22 1</ambient><diffuse>0.3 0.3 0.25 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Tunnel entrance arch visual -->
+    <model name="tunnel_entrance">
+      <static>true</static>
+      <pose>0 15 1.5 0 0 0</pose>
+      <link name="arch_top">
+        <visual name="visual">
+          <geometry><box><size>5 0.3 0.5</size></box></geometry>
+          <material><ambient>0.5 0.3 0.15 1</ambient><diffuse>0.6 0.4 0.2 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Obstacles inside tunnel (small rocks) -->
+    <model name="obstacle_a">
+      <static>true</static>
+      <pose>0 5 0.15 0 0 0</pose>
+      <link name="rock">
+        <collision name="collision">
+          <geometry><sphere><radius>0.15</radius></sphere></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.15</radius></sphere></geometry>
+          <material><ambient>0.3 0.25 0.2 1</ambient><diffuse>0.35 0.3 0.25 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name="obstacle_b">
+      <static>true</static>
+      <pose>0.8 -2 0.2 0 0 0</pose>
+      <link name="rock">
+        <collision name="collision">
+          <geometry><sphere><radius>0.2</radius></sphere></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.2</radius></sphere></geometry>
+          <material><ambient>0.35 0.3 0.22 1</ambient><diffuse>0.4 0.35 0.25 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+    <model name="obstacle_c">
+      <static>true</static>
+      <pose>-0.5 -8 0.1 0 0 0</pose>
+      <link name="rock">
+        <collision name="collision">
+          <geometry><sphere><radius>0.1</radius></sphere></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><sphere><radius>0.1</radius></sphere></geometry>
+          <material><ambient>0.3 0.28 0.2 1</ambient><diffuse>0.35 0.3 0.25 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Airflow simulation (mine ventilation) -->
+    <wind>
+      <linear_velocity>0.5 0 0</linear_velocity>
+    </wind>
+  </world>
+</sdf>

@@ -1,0 +1,39 @@
+# === Dockerignore para build de CLI ===
+# Excluye todo lo que no necesita el pipeline Python
+
+# Git
+.git/
+.gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.venv/
+*.egg-info/
+.python-version
+
+# Generado / temporal
+data/
+logs/
+.andino/
+.atl/
+.morphology_output/
+
+# Otros proyectos (no necesarios para el pipeline)
+studio/
+ros2_ws/
+projects/
+scripts/
+docs/
+
+# Hardware (CAD, PCBs)
+hardware/
+firmware/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

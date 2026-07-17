@@ -1,0 +1,22 @@
+{
+  "name": "@arkelythex/mastra-poc",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/basic-workflow.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@arkelythex/domain": "workspace:*",
+    "@ai-sdk/anthropic": "^3.0.44",
+    "@ai-sdk/openai": "^3.0.53",
+    "@mastra/core": "^1.4.0",
+    "ai": "^6.0.39",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0",
+    "typescript": "^6.0.3"
+  }
+}

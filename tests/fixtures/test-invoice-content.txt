@@ -1,0 +1,31 @@
+FACTURA ELECTRÓNICA
+Serie: F001
+Número: 00000123
+Fecha de Emisión: 19/01/2025
+
+EMISOR:
+RUC: 20123456789
+Razón Social: EMPRESA EJEMPLO S.A.C.
+Dirección: AV. EJEMPLO 123, LIMA
+
+CLIENTE:
+RUC: 10456789012
+Razón Social: CLIENTE EJEMPLO S.A.C.
+
+DETALLE DE FACTURA:
+
+Descripción: SERVICIO DE CONSULTORIA EMPRESARIAL
+Cantidad: 10.00
+Precio Unitario: S/ 150.00
+Subtotal: S/ 1,500.00
+
+IGV (18%): S/ 270.00
+
+TOTAL A PAGAR: S/ 1,770.00
+
+Monto en letras: MIL SETECIENTOS SETENTA Y 00/100 SOLES
+
+Observaciones:
+Factura generada por sistema Arkalythix
+RUC del emisor: 20123456789
+Monto total: S/. 1770.00

@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Rust format
+        run: cargo fmt --all -- --check
+      - name: Rust lint (clippy)
+        run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+      - name: Rust tests
+        run: cargo test --workspace --all-features
+
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install deps
+        run: pnpm install --no-frozen-lockfile
+      - name: Node lint
+        run: pnpm lint
+      - name: Node tests
+        run: pnpm test

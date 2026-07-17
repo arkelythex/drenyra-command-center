@@ -1,0 +1,19 @@
+# Normalizar line endings
+* text=auto eol=lf
+
+# Binarios — no tocar
+*.stl binary
+*.STL binary
+*.stp binary
+*.step binary
+*.gcode binary
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.blend binary
+
+# Firmware — compilados
+*.hex binary
+*.bin binary
+*.elf binary

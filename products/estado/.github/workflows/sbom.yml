@@ -1,0 +1,46 @@
+name: SBOM
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 11 1 * *"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  generate-and-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate CycloneDX SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          path: .
+          format: cyclonedx-json
+          output-file: sbom.cyclonedx.json
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-cyclonedx
+          path: sbom.cyclonedx.json
+
+      - name: Scan dependencies using Grype
+        uses: anchore/scan-action@v6
+        with:
+          sbom: sbom.cyclonedx.json
+          fail-build: false
+          severity-cutoff: high
+          output-format: sarif
+          output-file: grype.sarif
+
+      - name: Upload SARIF
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: grype.sarif

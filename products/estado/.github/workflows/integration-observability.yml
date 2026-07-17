@@ -1,0 +1,80 @@
+name: Integration Observability
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: integration-observability-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  observability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Start infra services
+        run: |
+          docker compose -f infra/docker-compose.yml up -d postgres minio minio-init prometheus grafana
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Validate observability assets
+        run: bash ./scripts/validate-observability-assets.sh
+
+      - name: Wait for Postgres
+        run: |
+          until PGPASSWORD=postgres psql -h localhost -U postgres -d civictech -c "select 1" >/dev/null 2>&1; do
+            sleep 2
+          done
+
+      - name: Apply migrations
+        run: bash ./scripts/migrate.sh
+
+      - name: Start API in dev auth mode
+        run: |
+          AUTH_MODE=dev_static \
+          DATABASE_URL=postgres://postgres:postgres@localhost:5432/civictech \
+          S3_ENDPOINT=http://localhost:9000 \
+          S3_REGION=us-east-1 \
+          S3_ACCESS_KEY=minio \
+          S3_SECRET_KEY=minio12345 \
+          S3_EVIDENCE_BUCKET=evidence \
+          cargo run -p civictech-api > /tmp/civictech-api.log 2>&1 &
+          echo $! > /tmp/civictech-api.pid
+
+      - name: Wait for API
+        run: bash ./scripts/wait-for-http.sh http://localhost:8080/health 200 120
+
+      - name: Validate workflow-B transitions (including invalid 409 paths)
+        run: bash ./scripts/smoke-workflow-b.sh
+
+      - name: Validate observability stack
+        run: bash ./scripts/observability-smoke.sh
+
+      - name: Print logs on failure
+        if: failure()
+        run: |
+          echo "---- civictech-api.log ----"
+          cat /tmp/civictech-api.log || true
+          echo "---- docker compose logs ----"
+          docker compose -f infra/docker-compose.yml logs --no-color prometheus grafana postgres minio || true
+
+      - name: Shutdown services
+        if: always()
+        run: |
+          if [[ -f /tmp/civictech-api.pid ]]; then
+            kill "$(cat /tmp/civictech-api.pid)" || true
+          fi
+          docker compose -f infra/docker-compose.yml down -v

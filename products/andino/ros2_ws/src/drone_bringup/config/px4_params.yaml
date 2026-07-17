@@ -1,0 +1,106 @@
+# PX4 Parameter Preset: Andino Heavy-Lift X8
+# Frame: Tarot TL8X000 X8 Coaxial
+# Motors: 8x MN501S KV240 + 20" props
+# Battery: 12S 28000mAh LiHV
+# Flight Controller: Holybro Pixhawk 6X
+# Compute: NVIDIA Jetson AGX Orin
+# Sensors: Ouster OS0-128, 2x GMSL2 cameras, H-RTK F9P GPS
+
+/**:
+  ros__parameters:
+    # Airframe
+    # Use Generic X8 coaxial airframe as base
+    SYS_AUTOSTART: 12012
+
+    # Sensor settings
+    SYS_HAS_GPS: 1
+    SYS_HAS_MAG: 1
+    SYS_HAS_BARO: 1
+
+    # Heavy lift PID tuning
+    IMC_GYRO_P: 0.15
+    IMC_GYRO_I: 0.2
+    IMC_ACC_P: 0.8
+    IMC_ACC_I: 0.4
+
+    # Rate controller
+    MC_ROLLRATE_P: 0.12
+    MC_ROLLRATE_I: 0.2
+    MC_ROLLRATE_D: 0.003
+    MC_PITCHRATE_P: 0.12
+    MC_PITCHRATE_I: 0.2
+    MC_PITCHRATE_D: 0.003
+    MC_YAWRATE_P: 0.2
+    MC_YAWRATE_I: 0.15
+    MC_YAWRATE_D: 0.0
+
+    # Attitude controller
+    MC_ROLL_P: 5.0
+    MC_PITCH_P: 5.0
+    MC_YAW_P: 3.0
+
+    # Position controller
+    MC_POS_P: 0.75
+    MC_VEL_P: 2.0
+    MC_VEL_I: 0.2
+    MC_VEL_D: 0.01
+
+    # Thrust and torque limits
+    MC_AIRMODE: 0
+    MC_ATT_MAX: 30.0
+    MC_YAW_FF: 0.5
+
+    # Battery settings
+    BAT_MONITOR: 4
+    BAT_N_CELLS: 12
+    BAT_V_CHARGED: 50.4
+    BAT_V_EMPTY: 39.6
+    BAT_CRIT_THR: 0.15
+    BAT_LOW_THR: 0.25
+    BAT_R_LIFE: 0.01
+    BAT_CAPACITY: 28000
+
+    # Estimator
+    EKF2_ENABLE: 1
+    EKF2_AID_MASK: 24
+    EKF2_HGT_MODE: 2
+    EKF2_GPS_CHECK: 1
+    EKF2_EV_DELAY: 0.01
+    EKF2_OF_DELAY: 0.02
+
+    # GPS
+    GPS_UBX_DYNMODEL: 1
+    GPS_SEC_PROT: 1
+
+    # Communication
+    MAV_PROTO_VER: 2
+    MAV_RADIO_ID: 0
+    MAV_USE_FORWARDING: 1
+    SER_TEL1_BAUD: 921600
+    SER_TEL2_BAUD: 57600
+
+    # Safety
+    NAV_DLL_ACT: 0
+    COM_DL_LOSS_T: 10
+    COM_HOME_H_T: 10
+    COM_ARM_HYG: 1
+    NAV_RCL_ACT: 0
+    COM_RCL_EXCEPT: 4
+
+    # Geofence
+    GF_ACTION: 1
+    GF_MAX_HOR_DIST: 500
+    GF_MAX_VER_DIST: 120
+
+    # Landing
+    LNDMC_ALT_MAX: 15.0
+    LNDMC_ALT_FF: 10.0
+    COM_DISARM_LAND: 3
+
+    # Altitude compensation
+    MC_THR_MIN: 0.0
+    MC_THR_MAX: 0.95
+    MC_THR_HOVER: 0.45
+
+    # Motor balancing
+    ESC_BLUEBIRD: 0

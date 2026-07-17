@@ -1,0 +1,679 @@
+<?xml version="1.0"?>
+<robot name="andino_heavy_x8" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="wheelbase" value="0.810"/>
+  <xacro:property name="arm_length" value="${wheelbase/2}"/>
+  <xacro:property name="arm_radius" value="0.008"/>
+  <xacro:property name="coaxial_spacing" value="0.085"/>
+  <xacro:property name="prop_radius" value="0.254"/>
+  <xacro:property name="frame_mass" value="2.1"/>
+  <xacro:property name="arm_mass" value="0.12"/>
+  <xacro:property name="motor_mass" value="0.30"/>
+  <xacro:property name="prop_mass" value="0.08"/>
+
+  <material name="carbon">
+    <color rgba="0.05 0.05 0.05 1.0"/>
+  </material>
+  <material name="carbon_silver">
+    <color rgba="0.15 0.15 0.16 1.0"/>
+  </material>
+  <material name="aluminum">
+    <color rgba="0.55 0.55 0.55 1.0"/>
+  </material>
+  <material name="red">
+    <color rgba="0.85 0.15 0.05 1.0"/>
+  </material>
+  <material name="blue">
+    <color rgba="0.05 0.25 0.85 1.0"/>
+  </material>
+  <material name="green">
+    <color rgba="0.05 0.75 0.15 1.0"/>
+  </material>
+  <material name="orange">
+    <color rgba="1.0 0.45 0.0 1.0"/>
+  </material>
+  <material name="gold">
+    <color rgba="0.75 0.65 0.15 1.0"/>
+  </material>
+  <material name="white">
+    <color rgba="0.85 0.85 0.85 1.0"/>
+  </material>
+  <material name="copper">
+    <color rgba="0.72 0.45 0.20 1.0"/>
+  </material>
+
+  <xacro:macro name="cylinder_inertia" params="mass radius height">
+    <inertia ixx="${mass * (3*radius^2 + height^2) / 12}"
+             iyy="${mass * (3*radius^2 + height^2) / 12}"
+             izz="${mass * radius^2 / 2}"
+             ixy="0.0" ixz="0.0" iyz="0.0"/>
+  </xacro:macro>
+
+  <xacro:macro name="box_inertia" params="mass x y z">
+    <inertia ixx="${mass * (y^2 + z^2) / 12}"
+             iyy="${mass * (x^2 + z^2) / 12}"
+             izz="${mass * (x^2 + y^2) / 12}"
+             ixy="0.0" ixz="0.0" iyz="0.0"/>
+  </xacro:macro>
+
+  <xacro:macro name="arm_mount" params="name angle x y top_spin bottom_spin motor_num_top motor_num_bottom">
+    <joint name="${name}_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="${name}_arm"/>
+      <origin xyz="${x} ${y} 0" rpy="0 0 ${angle}"/>
+    </joint>
+
+    <link name="${name}_arm">
+      <visual>
+        <geometry>
+          <cylinder radius="${arm_radius}" length="${arm_length}"/>
+        </geometry>
+        <origin xyz="${arm_length/2} 0 0" rpy="0 ${pi/2} 0"/>
+        <material name="carbon_silver"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="${arm_radius}" length="${arm_length}"/>
+        </geometry>
+        <origin xyz="${arm_length/2} 0 0" rpy="0 ${pi/2} 0"/>
+      </collision>
+      <inertial>
+        <mass value="${arm_mass}"/>
+        <origin xyz="${arm_length/2} 0 0"/>
+        <xacro:cylinder_inertia mass="${arm_mass}" radius="${arm_radius}" height="${arm_length}"/>
+      </inertial>
+    </link>
+
+    <joint name="${name}_motor_top_joint" type="fixed">
+      <parent link="${name}_arm"/>
+      <child link="${name}_motor_top"/>
+      <origin xyz="${arm_length} 0 ${coaxial_spacing/2}"/>
+    </joint>
+
+    <link name="${name}_motor_top">
+      <visual>
+        <geometry>
+          <cylinder radius="0.025" length="0.035"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="aluminum"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="0.025" length="0.035"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${motor_mass}"/>
+        <xacro:cylinder_inertia mass="${motor_mass}" radius="0.025" height="0.035"/>
+      </inertial>
+    </link>
+
+    <joint name="${name}_motor_bottom_joint" type="fixed">
+      <parent link="${name}_arm"/>
+      <child link="${name}_motor_bottom"/>
+      <origin xyz="${arm_length} 0 ${-coaxial_spacing/2}"/>
+    </joint>
+
+    <link name="${name}_motor_bottom">
+      <visual>
+        <geometry>
+          <cylinder radius="0.025" length="0.035"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="aluminum"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="0.025" length="0.035"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${motor_mass}"/>
+        <xacro:cylinder_inertia mass="${motor_mass}" radius="0.025" height="0.035"/>
+      </inertial>
+    </link>
+
+    <joint name="${name}_prop_top_joint" type="continuous">
+      <parent link="${name}_motor_top"/>
+      <child link="${name}_prop_top"/>
+      <origin xyz="0 0 0.017" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <dynamics damping="0.0005" friction="0.0001"/>
+    </joint>
+
+    <link name="${name}_prop_top">
+      <visual>
+        <geometry>
+          <cylinder radius="${prop_radius}" length="0.0015"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="${top_spin}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="${prop_radius}" length="0.0015"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${prop_mass}"/>
+        <xacro:cylinder_inertia mass="${prop_mass}" radius="${prop_radius}" height="0.0015"/>
+      </inertial>
+    </link>
+
+    <joint name="${name}_prop_bottom_joint" type="continuous">
+      <parent link="${name}_motor_bottom"/>
+      <child link="${name}_prop_bottom"/>
+      <origin xyz="0 0 0.017" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <dynamics damping="0.0005" friction="0.0001"/>
+    </joint>
+
+    <link name="${name}_prop_bottom">
+      <visual>
+        <geometry>
+          <cylinder radius="${prop_radius}" length="0.0015"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="${bottom_spin}"/>
+      </visual>
+      <collision>
+        <geometry>
+          <cylinder radius="${prop_radius}" length="0.0015"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${prop_mass}"/>
+        <xacro:cylinder_inertia mass="${prop_mass}" radius="${prop_radius}" height="0.0015"/>
+      </inertial>
+    </link>
+
+    <transmission name="${name}_trans_top">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${name}_prop_top_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${name}_motor_top">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <transmission name="${name}_trans_bottom">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${name}_prop_bottom_joint">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${name}_motor_bottom">
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <gazebo reference="${name}_prop_top_joint">
+      <plugin name="${name}_prop_top_plugin" filename="libgazebo_ros_multicopter_motor_model.so">
+        <jointName>${name}_prop_top_joint</jointName>
+        <linkName>${name}_prop_top</linkName>
+        <turningDirection>${top_spin}</turningDirection>
+        <timeConstantUp>0.05</timeConstantUp>
+        <timeConstantDown>0.02</timeConstantDown>
+        <maxRotVelocity>9000</maxRotVelocity>
+        <motorConstant>1.0e-06</motorConstant>
+        <momentConstant>0.016</momentConstant>
+        <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+        <motorNumber>${motor_num_top}</motorNumber>
+      </plugin>
+    </gazebo>
+
+    <gazebo reference="${name}_prop_bottom_joint">
+      <plugin name="${name}_prop_bottom_plugin" filename="libgazebo_ros_multicopter_motor_model.so">
+        <jointName>${name}_prop_bottom_joint</jointName>
+        <linkName>${name}_prop_bottom</linkName>
+        <turningDirection>${bottom_spin}</turningDirection>
+        <timeConstantUp>0.05</timeConstantUp>
+        <timeConstantDown>0.02</timeConstantDown>
+        <maxRotVelocity>9000</maxRotVelocity>
+        <motorConstant>1.0e-06</motorConstant>
+        <momentConstant>0.016</momentConstant>
+        <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+        <motorNumber>${motor_num_bottom}</motorNumber>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.09" length="0.005"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <material name="carbon"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.09" length="0.005"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="${frame_mass}"/>
+      <origin xyz="0 0 0"/>
+      <xacro:cylinder_inertia mass="${frame_mass}" radius="0.09" height="0.005"/>
+    </inertial>
+  </link>
+
+  <xacro:arm_mount name="arm_fr" angle="${pi/4}" x="${arm_length*cos(pi/4)}" y="${arm_length*sin(pi/4)}"
+                   top_spin="red" bottom_spin="blue" motor_num_top="1" motor_num_bottom="2"/>
+  <xacro:arm_mount name="arm_fl" angle="${3*pi/4}" x="${arm_length*cos(3*pi/4)}" y="${arm_length*sin(3*pi/4)}"
+                   top_spin="blue" bottom_spin="red" motor_num_top="3" motor_num_bottom="4"/>
+  <xacro:arm_mount name="arm_bl" angle="${5*pi/4}" x="${arm_length*cos(5*pi/4)}" y="${arm_length*sin(5*pi/4)}"
+                   top_spin="red" bottom_spin="blue" motor_num_top="5" motor_num_bottom="6"/>
+  <xacro:arm_mount name="arm_br" angle="${7*pi/4}" x="${arm_length*cos(7*pi/4)}" y="${arm_length*sin(7*pi/4)}"
+                   top_spin="blue" bottom_spin="red" motor_num_top="7" motor_num_bottom="8"/>
+
+  <link name="pixhawk_link">
+    <visual>
+      <geometry>
+        <box size="0.068 0.045 0.015"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.068 0.045 0.015"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.085"/>
+      <origin xyz="0 0 0"/>
+      <xacro:box_inertia mass="0.085" x="0.068" y="0.045" z="0.015"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_pixhawk" type="fixed">
+    <parent link="base_link"/>
+    <child link="pixhawk_link"/>
+    <origin xyz="0.02 0 0.015" rpy="0 0 0"/>
+  </joint>
+
+  <link name="gps_mast_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.003" length="0.15"/>
+      </geometry>
+      <origin xyz="0 0 0.075" rpy="0 0 0"/>
+      <material name="carbon_silver"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.003" length="0.15"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.02"/>
+      <xacro:cylinder_inertia mass="0.02" radius="0.003" height="0.15"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_gps_mast" type="fixed">
+    <parent link="base_link"/>
+    <child link="gps_mast_link"/>
+    <origin xyz="-0.04 0 0.005" rpy="0 0 0"/>
+  </joint>
+
+  <link name="gps_link">
+    <visual>
+      <geometry>
+        <box size="0.06 0.06 0.015"/>
+      </geometry>
+      <material name="gold"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.06 0.06 0.015"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.05"/>
+      <xacro:box_inertia mass="0.05" x="0.06" y="0.06" z="0.015"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_gps" type="fixed">
+    <parent link="gps_mast_link"/>
+    <child link="gps_link"/>
+    <origin xyz="0 0 0.15" rpy="0 0 0"/>
+  </joint>
+
+  <link name="jetson_link">
+    <visual>
+      <geometry>
+        <box size="0.110 0.100 0.027"/>
+      </geometry>
+      <material name="green"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.110 0.100 0.027"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.50"/>
+      <xacro:box_inertia mass="0.50" x="0.110" y="0.100" z="0.027"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_jetson" type="fixed">
+    <parent link="base_link"/>
+    <child link="jetson_link"/>
+    <origin xyz="-0.04 0.06 0.015" rpy="0 0 0"/>
+  </joint>
+
+  <link name="lidar_mount_link">
+    <visual>
+      <geometry>
+        <box size="0.05 0.05 0.03"/>
+      </geometry>
+      <material name="aluminum"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.05 0.05 0.03"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.05"/>
+      <xacro:box_inertia mass="0.05" x="0.05" y="0.05" z="0.03"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_lidar_mount" type="fixed">
+    <parent link="base_link"/>
+    <child link="lidar_mount_link"/>
+    <origin xyz="0.08 0 0.01" rpy="0 0 0"/>
+  </joint>
+
+  <link name="lidar_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.045" length="0.060"/>
+      </geometry>
+      <origin xyz="0 0 0.03" rpy="0 0 0"/>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.045" length="0.060"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.80"/>
+      <xacro:cylinder_inertia mass="0.80" radius="0.045" height="0.060"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_lidar" type="fixed">
+    <parent link="lidar_mount_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="0 0 0.03" rpy="0 0 0"/>
+  </joint>
+
+  <link name="camera_left_link">
+    <visual>
+      <geometry>
+        <box size="0.04 0.03 0.06"/>
+      </geometry>
+      <material name="copper"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.04 0.03 0.06"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.10"/>
+      <xacro:box_inertia mass="0.10" x="0.04" y="0.03" z="0.06"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_camera_left" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_left_link"/>
+    <origin xyz="0.12 0.06 0.015" rpy="0 0.2 0"/>
+  </joint>
+
+  <link name="camera_right_link">
+    <visual>
+      <geometry>
+        <box size="0.04 0.03 0.06"/>
+      </geometry>
+      <material name="copper"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.04 0.03 0.06"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.10"/>
+      <xacro:box_inertia mass="0.10" x="0.04" y="0.03" z="0.06"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_camera_right" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_right_link"/>
+    <origin xyz="0.12 -0.06 0.015" rpy="0 0.2 0"/>
+  </joint>
+
+  <link name="battery_link">
+    <visual>
+      <geometry>
+        <box size="0.220 0.100 0.055"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.220 0.100 0.055"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="4.5"/>
+      <origin xyz="0 0 0"/>
+      <xacro:box_inertia mass="4.5" x="0.220" y="0.100" z="0.055"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_battery" type="fixed">
+    <parent link="base_link"/>
+    <child link="battery_link"/>
+    <origin xyz="0 0 -0.035" rpy="0 0 0"/>
+  </joint>
+
+  <link name="landing_gear_left_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.006" length="0.18"/>
+      </geometry>
+      <origin xyz="0 0 0.09" rpy="0 0 0"/>
+      <material name="aluminum"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.006" length="0.18"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.10"/>
+      <xacro:cylinder_inertia mass="0.10" radius="0.006" height="0.18"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_landing_gear_left" type="fixed">
+    <parent link="base_link"/>
+    <child link="landing_gear_left_link"/>
+    <origin xyz="0.12 0.15 -0.005" rpy="0 0 0.15"/>
+  </joint>
+
+  <link name="landing_gear_right_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.006" length="0.18"/>
+      </geometry>
+      <origin xyz="0 0 0.09" rpy="0 0 0"/>
+      <material name="aluminum"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.006" length="0.18"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.10"/>
+      <xacro:cylinder_inertia mass="0.10" radius="0.006" height="0.18"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_landing_gear_right" type="fixed">
+    <parent link="base_link"/>
+    <child link="landing_gear_right_link"/>
+    <origin xyz="0.12 -0.15 -0.005" rpy="0 0 -0.15"/>
+  </joint>
+
+  <link name="landing_gear_rear_link">
+    <visual>
+      <geometry>
+        <cylinder radius="0.006" length="0.18"/>
+      </geometry>
+      <origin xyz="0 0 0.09" rpy="0 0 0"/>
+      <material name="aluminum"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.006" length="0.18"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.10"/>
+      <xacro:cylinder_inertia mass="0.10" radius="0.006" height="0.18"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_landing_gear_rear" type="fixed">
+    <parent link="base_link"/>
+    <child link="landing_gear_rear_link"/>
+    <origin xyz="-0.15 0 -0.005" rpy="0 0 0"/>
+  </joint>
+
+  <link name="parachute_link">
+    <visual>
+      <geometry>
+        <box size="0.12 0.08 0.04"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.12 0.08 0.04"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.50"/>
+      <xacro:box_inertia mass="0.50" x="0.12" y="0.08" z="0.04"/>
+    </inertial>
+  </link>
+
+  <joint name="joint_parachute" type="fixed">
+    <parent link="base_link"/>
+    <child link="parachute_link"/>
+    <origin xyz="0 0 0.04" rpy="0 0 0"/>
+  </joint>
+
+  <link name="imu_link"/>
+
+  <joint name="joint_imu" type="fixed">
+    <parent link="pixhawk_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <gazebo reference="base_link">
+    <material>Gazebo/Black</material>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="gazebo_ros_imu" filename="libgazebo_ros_imu_sensor.so">
+      <ros>
+        <namespace>/drone</namespace>
+      </ros>
+      <updateRate>200.0</updateRate>
+      <bodyName>imu_link</bodyName>
+      <topicName>imu/data_raw</topicName>
+      <gaussianNoise>0.0003</gaussianNoise>
+      <accelerometerGaussianNoise>0.001</accelerometerGaussianNoise>
+      <gyroscopeGaussianNoise>0.0003</gyroscopeGaussianNoise>
+      <accelerometerBiasStdDev>0.01</accelerometerBiasStdDev>
+      <gyroscopeBiasStdDev>0.001</gyroscopeBiasStdDev>
+    </plugin>
+
+    <plugin name="gazebo_ros_gps" filename="libgazebo_ros_gps.so">
+      <ros>
+        <namespace>/drone</namespace>
+      </ros>
+      <updateRate>10.0</updateRate>
+      <bodyName>gps_link</bodyName>
+      <topicName>gps/fix</topicName>
+      <gaussianNoise>0.5</gaussianNoise>
+      <velocityGaussianNoise>0.1</velocityGaussianNoise>
+    </plugin>
+
+    <plugin name="gazebo_ros_lidar" filename="libgazebo_ros_ray_sensor.so">
+      <ros>
+        <namespace>/drone</namespace>
+      </ros>
+      <updateRate>10.0</updateRate>
+      <bodyName>lidar_link</bodyName>
+      <topicName>lidar/points</topicName>
+      <frameName>lidar_link</frameName>
+      <minAngle>-2.094</minAngle>
+      <maxAngle>2.094</maxAngle>
+      <minRange>1.0</minRange>
+      <maxRange>100.0</maxRange>
+      <samples>1024</samples>
+      <rangeResolution>0.01</rangeResolution>
+    </plugin>
+
+    <plugin name="gazebo_ros_camera_left" filename="libgazebo_ros_camera.so">
+      <ros>
+        <namespace>/drone</namespace>
+      </ros>
+      <updateRate>30.0</updateRate>
+      <cameraName>camera_left</cameraName>
+      <imageTopicName>camera/left/image_raw</imageTopicName>
+      <cameraInfoTopicName>camera/left/camera_info</cameraInfoTopicName>
+      <frameName>camera_left_link</frameName>
+      <hackBaseline>0.0</hackBaseline>
+      <distortionK1>0.0</distortionK1>
+      <distortionK2>0.0</distortionK2>
+      <distortionK3>0.0</distortionK3>
+      <distortionT1>0.0</distortionT1>
+      <distortionT2>0.0</distortionT2>
+    </plugin>
+
+    <plugin name="gazebo_ros_camera_right" filename="libgazebo_ros_camera.so">
+      <ros>
+        <namespace>/drone</namespace>
+      </ros>
+      <updateRate>30.0</updateRate>
+      <cameraName>camera_right</cameraName>
+      <imageTopicName>camera/right/image_raw</imageTopicName>
+      <cameraInfoTopicName>camera/right/camera_info</cameraInfoTopicName>
+      <frameName>camera_right_link</frameName>
+      <hackBaseline>0.12</hackBaseline>
+      <distortionK1>0.0</distortionK1>
+      <distortionK2>0.0</distortionK2>
+      <distortionK3>0.0</distortionK3>
+      <distortionT1>0.0</distortionT1>
+      <distortionT2>0.0</distortionT2>
+    </plugin>
+  </gazebo>
+
+</robot>

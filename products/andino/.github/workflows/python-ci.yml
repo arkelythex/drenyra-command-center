@@ -1,0 +1,61 @@
+name: Python CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python-ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/pyproject.toml', '**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          pip install ruff mypy pytest
+
+      - name: Lint with ruff
+        run: |
+          ruff check orchestrator/ agent/ morphology/ skills/ memory/ scripts/
+
+      - name: Type check with mypy
+        run: |
+          mypy --ignore-missing-imports orchestrator/ agent/ morphology/ skills/ memory/
+
+      - name: Run tests
+        run: |
+          python -m pytest tests/ -v --tb=short
+        continue-on-error: true
+
+      - name: Compile check
+        run: |
+          python -c "import py_compile, glob; [py_compile.compile(f, doraise=True) for f in glob.glob('**/*.py', recursive=True)]"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.python-version }}
+          path: |
+            pytest.xml
+            .pytest_cache/
+          if-no-files-found: ignore

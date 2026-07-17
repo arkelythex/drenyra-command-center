@@ -1,0 +1,14 @@
+[Unit]
+Description=ARKALYTHIX Nightly AI Ops advisory report
+Documentation=file:/home/dreamcoder08/Documents/PROYECTOS/arkalythix/drenyra/docs/automation/nightly-ai-ops.md
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/dreamcoder08/Documents/PROYECTOS/arkalythix/drenyra
+EnvironmentFile=-%h/.config/arkalythix/nightly-ai-ops.env
+ExecStart=/usr/bin/env bun run ai:nightly
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

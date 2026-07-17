@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ "${SKIP_QUALITY_HOOKS:-0}" == "1" ]]; then
+  echo "[pre-commit] skipped (SKIP_QUALITY_HOOKS=1)"
+  exit 0
+fi
+
+if command -v cargo >/dev/null 2>&1 && [[ -f Cargo.toml ]]; then
+  echo "[pre-commit] cargo fmt --all -- --check"
+  cargo fmt --all -- --check
+fi
+
+if command -v pnpm >/dev/null 2>&1 && [[ -f package.json ]]; then
+  echo "[pre-commit] pnpm lint"
+  pnpm lint
+fi
+
+echo "[pre-commit] quality checks passed"

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/data-engine/v1/banking-reconcile.json",
+  "title": "Data Engine Banking Reconcile Response v1",
+  "type": "object",
+  "required": ["matched", "unmatched"],
+  "properties": {
+    "matched": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["bankIndex", "systemIndex", "confidence"],
+        "properties": {
+          "bankIndex": { "type": "number" },
+          "systemIndex": { "type": "number" },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+        },
+        "additionalProperties": true
+      }
+    },
+    "unmatched": {
+      "type": "object",
+      "required": ["bank", "system"],
+      "properties": {
+        "bank": { "type": "array", "items": { "type": "number" } },
+        "system": { "type": "array", "items": { "type": "number" } }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,12 @@
+[Unit]
+Description=Run ARKALYTHIX Nightly AI Ops every night
+Documentation=file:/home/dreamcoder08/Documents/PROYECTOS/arkalythix/drenyra/docs/automation/nightly-ai-ops.md
+
+[Timer]
+OnCalendar=*-*-* 02:00:00
+Persistent=true
+RandomizedDelaySec=15m
+Unit=arkalythix-nightly-ai-ops.service
+
+[Install]
+WantedBy=timers.target

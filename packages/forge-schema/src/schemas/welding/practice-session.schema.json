@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forgeos.dev/schemas/practice-session.schema.json",
+  "title": "Practice Session",
+  "description": "A discrete practice session in the workshop. Una sesion de practica en el taller.",
+  "type": "object",
+  "required": [
+    "sessionId",
+    "date",
+    "welder",
+    "process",
+    "position",
+    "supervisor"
+  ],
+  "properties": {
+    "sessionId": {
+      "type": "string",
+      "description": "Unique session identifier. Identificador unico de la sesion.",
+      "pattern": "^ps-[0-9a-f]{8}$"
+    },
+    "date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date and time of the session."
+    },
+    "welder": {
+      "type": "object",
+      "description": "Person performing the weld. Persona que realiza la soldadura.",
+      "required": ["alias"],
+      "properties": {
+        "alias": {
+          "type": "string",
+          "description": "Anonymous identifier — never store real names here."
+        },
+        "experience": {
+          "type": "string",
+          "enum": ["beginner", "intermediate", "advanced", "professional"],
+          "description": "Self-reported experience level."
+        }
+      }
+    },
+    "supervisor": {
+      "type": "object",
+      "description": "Supervisor or instructor present. Supervisor o instructor presente.",
+      "required": ["alias"],
+      "properties": {
+        "alias": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "process": {
+      "type": "string",
+      "enum": ["SMAW", "GMAW", "GTAW", "FCAW", "SAW"],
+      "description": "Welding process used. Proceso de soldadura utilizado."
+    },
+    "position": {
+      "type": "string",
+      "enum": ["1G", "2G", "3G", "4G", "5G", "6G"],
+      "description": "Welding position. Posicion de soldadura."
+    },
+    "jointType": {
+      "type": "string",
+      "enum": ["butt", "lap", "tee", "corner", "edge"],
+      "description": "Type of welded joint. Tipo de junta."
+    },
+    "material": {
+      "type": "object",
+      "description": "Base material. Material base.",
+      "required": ["type", "thicknessMm"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "e.g., A36 steel, 304 stainless"
+        },
+        "thicknessMm": { "type": "number", "minimum": 0.5 },
+        "condition": {
+          "type": "string",
+          "description": "Surface condition: clean, rusty, painted, etc."
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Workshop conditions. Condiciones del taller.",
+      "properties": {
+        "indoor": { "type": "boolean" },
+        "temperature": {
+          "type": "number",
+          "description": "Ambient temperature in C"
+        },
+        "humidity": {
+          "type": "number",
+          "description": "Relative humidity percentage"
+        },
+        "ventilation": {
+          "type": "string",
+          "enum": ["natural", "forced", "extraction", "none"]
+        }
+      }
+    },
+    "bends": {
+      "type": "array",
+      "description": "Individual beads or passes. Cordones o pases individuales.",
+      "items": { "$ref": "weld-record.schema.json" }
+    },
+    "totalTimeMinutes": {
+      "type": "integer",
+      "description": "Total duration of the session in minutes."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-text notes about the session. Notas libres sobre la sesion."
+    }
+  }
+}

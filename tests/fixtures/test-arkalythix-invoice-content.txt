@@ -1,0 +1,39 @@
+FACTURA ELECTRÓNICA
+Serie: F001
+Número: 00000123
+Fecha de Emisión: 19/01/2025
+
+ARKALYTHIX SOFTWARE S.A.C.
+RUC: 20123456789
+Dirección: AV. LARCO 123, MIRAFLORES, LIMA
+Teléfono: (01) 123-4567
+Email: contacto@arkalythix.com
+
+CLIENTE:
+RUC: 10456789012
+Razón Social: CLIENTE DEMO S.A.C.
+Dirección: AV. DEMO 456, LIMA
+
+DETALLE DE FACTURA:
+
+Código  Descripción                              Cantidad  Precio Unit.  Subtotal
+SW001   SERVICIO DE DESARROLLO DE SOFTWARE         10.00    S/ 150.00    S/ 1,500.00
+        EMPRESARIAL
+
+Subtotal: S/ 1,500.00
+IGV (18%): S/ 270.00
+
+TOTAL A PAGAR: S/ 1,770.00
+
+Monto en letras: MIL SETECIENTOS SETENTA Y 00/100 SOLES
+
+Condiciones de Pago: 30 días
+Fecha de Vencimiento: 18/02/2025
+
+Observaciones:
+Factura generada por sistema Arkalythix v2.0
+RUC del emisor: 20123456789
+Tipo de documento: FACTURA ELECTRÓNICA
+
+Representación impresa de la Factura Electrónica
+Puede verificar la validez de este documento en: https://cpe.sunat.gob.pe

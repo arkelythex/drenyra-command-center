@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: civictech
+    orgId: 1
+    folder: CivicTech
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards

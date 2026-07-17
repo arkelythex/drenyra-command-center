@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andino Studio — Agentic Drone Design Workspace</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* ── Inline overrides for the main layout ── */
+    .app-layout { grid-template-rows: var(--topbar-height) 1fr var(--chat-height); }
+    .agent-sidebar { grid-row: 2 / 4; }
+    .main-workspace { grid-row: 2 / 3; }
+    .chat-panel { grid-column: 2 / -1; }
+
+    .phase-steps-container { display: flex; align-items: center; gap: 4px; overflow-x: auto; padding: 8px 0; }
+
+    /* Agent list sidebar tab entries */
+    .skill-entry { display: flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: var(--radius-sm); cursor: pointer; transition: background var(--transition-fast); font-size: var(--font-size-xs); }
+    .skill-entry:hover { background: var(--bg-hover); color: var(--text-primary); }
+    .skill-entry .skill-icon { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Welcome state */
+    .welcome { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; padding: 40px; text-align: center; gap: 12px; }
+    .welcome h1 { font-size: var(--font-size-2xl); font-weight: 700; letter-spacing: -0.03em; }
+    .welcome p { color: var(--text-secondary); max-width: 400px; }
+    .welcome .features { display: flex; gap: 24px; margin-top: 16px; flex-wrap: wrap; justify-content: center; }
+    .welcome .features .feat { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px; background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-lg); min-width: 120px; }
+    .welcome .features .feat .icon { font-size: 24px; }
+    .welcome .features .feat .label { font-size: var(--font-size-xs); color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+
+    <!-- ═══ TOP BAR ═══ -->
+    <header class="topbar">
+      <div class="topbar-brand">
+        <div class="logo">A</div>
+        <span>Andino Studio</span>
+      </div>
+      <div class="topbar-nav">
+        <button class="topbar-btn active" id="project-selector">⇄ Tunnel Inspector</button>
+        <button class="topbar-btn" id="new-mission-btn">⊕ New Mission</button>
+        <button class="topbar-btn">☰ Settings</button>
+        <span class="topbar-status online">
+          <span class="dot"></span>
+          Connected
+        </span>
+      </div>
+    </header>
+
+    <!-- ═══ AGENT SIDEBAR ═══ -->
+    <aside class="agent-sidebar">
+      <div class="agent-list" id="agent-list"></div>
+      <div class="sidebar-tabs">
+        <div class="sidebar-tab-bar">
+          <button class="sidebar-tab active" data-tab="skills">Skills</button>
+          <button class="sidebar-tab" data-tab="memory">Memory</button>
+          <button class="sidebar-tab" data-tab="history">History</button>
+        </div>
+        <div class="sidebar-tab-content" data-tab="skills" style="display:block;">
+          <div class="skill-entry"><span class="skill-icon" style="background:var(--accent)"></span> Morphology Design · v2.1</div>
+          <div class="skill-entry"><span class="skill-icon" style="background:var(--secondary)"></span> CFD Simulation · v1.4</div>
+          <div class="skill-entry"><span class="skill-icon" style="background:var(--warning)"></span> BOM Generator · v3.0</div>
+          <div class="skill-entry"><span class="skill-icon" style="background:var(--info)"></span> Flight Controller Tuning · v1.8</div>
+          <div class="skill-entry"><span class="skill-icon" style="background:var(--accent)"></span> Structural Analysis · v0.9</div>
+        </div>
+        <div class="sidebar-tab-content" data-tab="memory" style="display:none;">
+          <div class="entry">📌 Tunnel morph. design (2h ago)</div>
+          <div class="entry">📌 Battery config selected (4h ago)</div>
+          <div class="entry">📌 Flight tests batch #12 (yesterday)</div>
+        </div>
+        <div class="sidebar-tab-content" data-tab="history" style="display:none;">
+          <div class="entry">🔹 DFT-01: Tunnel config (active)</div>
+          <div class="entry">🔹 DFT-00: Initial survey (archived)</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ═══ MAIN WORKSPACE ═══ -->
+    <main class="main-workspace">
+      <!-- Phase Header -->
+      <div class="phase-header" id="phase-header"></div>
+
+      <!-- Workspace Content -->
+      <div class="workspace-content" id="workspace-content">
+
+        <!-- Metrics Strip -->
+        <div class="metrics-strip" id="metrics-strip"></div>
+
+        <!-- Phase Content Sections -->
+        <div class="phase-content active" data-phase="explore"></div>
+        <div class="phase-content" data-phase="propose"></div>
+        <div class="phase-content" data-phase="spec"></div>
+        <div class="phase-content" data-phase="design"></div>
+        <div class="phase-content" data-phase="simulate"></div>
+        <div class="phase-content" data-phase="build"></div>
+        <div class="phase-content" data-phase="fly"></div>
+        <div class="phase-content" data-phase="verify"></div>
+        <div class="phase-content" data-phase="archive"></div>
+
+      </div>
+    </main>
+
+    <!-- ═══ CHAT PANEL ═══ -->
+    <div class="chat-panel">
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-msg agent">
+          <div class="chat-avatar">N</div>
+          <div class="chat-bubble">
+            👋 Welcome to <strong>Andino Studio</strong>. I'm Nova, your design agent. I've already analyzed the project requirements.
+            <br><br>
+            Type a mission goal or click <strong>⊕ New Mission</strong> to begin.
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <input class="chat-input" id="chat-input" type="text" placeholder="Ask the agent to design a drone..." autofocus>
+        <button class="chat-send-btn" id="chat-send">Send</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

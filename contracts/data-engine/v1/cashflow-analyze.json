@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/data-engine/v1/cashflow-analyze.json",
+  "title": "Data Engine Cashflow Analyze Response v1",
+  "type": "object",
+  "required": ["status", "summary"],
+  "properties": {
+    "status": { "type": "string" },
+    "summary": {
+      "type": "object",
+      "required": ["totalIncome", "totalExpenses", "netCashflow"],
+      "properties": {
+        "totalIncome": { "type": "number" },
+        "totalExpenses": { "type": "number" },
+        "netCashflow": { "type": "number" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
