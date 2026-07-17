@@ -1,0 +1,141 @@
+# Arkelythex API (Bun/Elysia) alert rules
+
+groups:
+  - name: arkelythex_api_alerts
+    interval: 30s
+    rules:
+      # ============================================
+      # System Alerts
+      # ============================================
+
+      # High Error Rate
+      - alert: HighErrorRate
+        expr: |
+          rate(arkelythex_api_http_requests_total{status_code=~"5.."}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          component: system
+        annotations:
+          summary: "High error rate detected in Arkelythex API"
+          description: "Error rate is {{ $value | humanizePercentage }} (threshold: 5%)"
+
+      # High Latency
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95, rate(arkelythex_api_http_request_duration_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          component: system
+        annotations:
+          summary: "High latency detected"
+          description: "P95 latency is {{ $value }}s (threshold: 2s)"
+
+      # Memory Usage
+      - alert: HighMemoryUsage
+        expr: |
+          arkelythex_api_process_resident_memory_bytes > 536870912
+        for: 5m
+        labels:
+          severity: warning
+          component: infrastructure
+        annotations:
+          summary: "High process memory usage in Arkelythex API"
+          description: "Process resident memory is {{ $value | humanize1024 }}B (threshold: 512MiB)"
+
+      # ============================================
+      # Application Alerts
+      # ============================================
+
+      # OCR Processing Issues
+      - alert: OCRHighFailureRate
+        expr: |
+          rate(arkelythex_ocr_documents_total{status="error"}[5m]) /
+          rate(arkelythex_ocr_documents_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          component: ocr
+        annotations:
+          summary: "High OCR failure rate"
+          description: "OCR failure rate is {{ $value | humanizePercentage }} (threshold: 10%)"
+
+      # Fraud Detection High Rate
+      - alert: FraudDetectionHighRate
+        expr: |
+          rate(arkelythex_fraud_predictions_total{prediction="fraud"}[1h]) /
+          rate(arkelythex_fraud_predictions_total[1h]) > 0.3
+        for: 10m
+        labels:
+          severity: info
+          component: fraud
+        annotations:
+          summary: "High fraud detection rate"
+          description: "Fraud rate is {{ $value | humanizePercentage }} in the last hour - review for potential attack"
+
+      # SIRE High Discrepancy Rate
+      - alert: SIREHighDiscrepancyRate
+        expr: |
+          rate(arkelythex_sire_discrepancies_total[5m]) /
+          rate(arkelythex_sire_records_processed_total[5m]) > 0.2
+        for: 10m
+        labels:
+          severity: warning
+          component: sire
+        annotations:
+          summary: "High SIRE discrepancy rate"
+          description: "Discrepancy rate is {{ $value | humanizePercentage }} (threshold: 20%)"
+
+      # Ledger Chain Integrity
+      - alert: LedgerVerificationFailed
+        expr: |
+          increase(arkelythex_ledger_verifications_total{status="invalid"}[5m]) > 0
+        for: 1m
+        labels:
+          severity: critical
+          component: ledger
+        annotations:
+          summary: "Ledger chain verification failed"
+          description: "Ledger integrity compromised - immediate investigation required"
+
+      # XML Validation High Failure Rate
+      - alert: XMLValidationHighFailureRate
+        expr: |
+          rate(arkelythex_xml_validations_total{status="invalid"}[5m]) /
+          rate(arkelythex_xml_validations_total[5m]) > 0.15
+        for: 5m
+        labels:
+          severity: warning
+          component: xml
+        annotations:
+          summary: "High XML validation failure rate"
+          description: "XML validation failure rate is {{ $value | humanizePercentage }} (threshold: 15%)"
+
+      # ============================================
+      # Infrastructure Alerts
+      # ============================================
+
+      # Redis Down
+      - alert: RedisDown
+        expr: |
+          up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: redis
+        annotations:
+          summary: "Redis is down"
+          description: "Redis exporter is not reachable - check Redis container"
+
+      # Arkelythex API Down
+      - alert: ArkelythexApiDown
+        expr: |
+          up{job=~"arkelythex-(api|core)"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: arkelythex-api
+        annotations:
+          summary: "Arkelythex API is down"
+          description: "Arkelythex API metrics target is not responding"

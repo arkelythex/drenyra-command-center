@@ -1,0 +1,11 @@
+[package]
+name = "civictech-usecases"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+async-trait.workspace = true
+civictech-domain = { path = "../domain" }
+thiserror.workspace = true
+uuid.workspace = true

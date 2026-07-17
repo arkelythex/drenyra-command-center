@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contracts/data-engine/v1/sire-analyze.json",
+  "title": "Data Engine SIRE Analyze Response v1",
+  "type": "object",
+  "required": ["status"],
+  "properties": {
+    "status": { "type": "string", "enum": ["success", "error"] },
+    "recordCount": { "type": "number" },
+    "totalAmount": { "type": "number" },
+    "totalIGV": { "type": "number" },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["line", "field", "message"],
+        "properties": {
+          "line": { "type": "number" },
+          "field": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "line": { "type": "number" },
+          "field": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,17 @@
+# Default owners
+* @dreamcoder08
+
+# Core platform
+/crates/ @dreamcoder08
+/openapi/ @dreamcoder08
+/infra/ @dreamcoder08
+
+# Product apps
+/apps/web/ @dreamcoder08
+/apps/admin/ @dreamcoder08
+
+# Governance and docs
+/docs/ @dreamcoder08
+/SECURITY.md @dreamcoder08
+/CONTRIBUTING.md @dreamcoder08
+/GOVERNANCE.md @dreamcoder08

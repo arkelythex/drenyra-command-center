@@ -1,0 +1,11 @@
+{
+  "name": "@civictech/tokens",
+  "version": "0.1.0",
+  "private": true,
+  "main": "tokens.json",
+  "scripts": {
+    "lint": "echo 'add token validation'",
+    "test": "echo 'add token tests'",
+    "format": "echo 'add token formatting pipeline'"
+  }
+}

@@ -1,0 +1,53 @@
+name: Studio CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "studio/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "studio/**"
+
+jobs:
+  studio-ci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node-version }}-${{ hashFiles('studio/package-lock.json', 'studio/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node-version }}-
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: |
+          cd studio && npm ci
+
+      - name: Lint
+        run: |
+          cd studio && npm run lint
+
+      - name: Build
+        run: |
+          cd studio && npm run build
+
+      - name: Save build as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-build-${{ matrix.node-version }}
+          path: studio/out/
+          if-no-files-found: ignore

@@ -1,0 +1,34 @@
+{
+  "name": "civictech-peru",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "api:dev": "cargo run -p civictech-api",
+    "bootstrap": "bash ./scripts/bootstrap.sh",
+    "db:migrate": "bash ./scripts/migrate.sh",
+    "db:seed": "bash ./scripts/seed.sh",
+    "obs:up": "docker compose -f infra/docker-compose.yml up -d prometheus grafana",
+    "obs:smoke": "bash ./scripts/observability-smoke.sh",
+    "obs:validate": "bash ./scripts/validate-observability-assets.sh",
+    "hooks:install": "bash ./scripts/setup-githooks.sh",
+    "keycloak:token:admin": "bash ./scripts/keycloak/get-token.sh admin",
+    "keycloak:token:moderator": "bash ./scripts/keycloak/get-token.sh moderator",
+    "keycloak:wait": "bash ./scripts/keycloak/wait-ready.sh 120",
+    "api:wait": "bash ./scripts/wait-for-http.sh http://localhost:8080/health 200 60",
+    "dev:all": "bash ./scripts/dev-all.sh",
+    "dev": "pnpm --parallel --filter ./apps/web --filter ./apps/admin dev",
+    "lint": "pnpm -r --if-present lint",
+    "smoke:rbac": "bash ./scripts/smoke-auth-rbac.sh",
+    "smoke:e2e": "bash ./scripts/smoke-e2e.sh",
+    "smoke:workflow-b": "bash ./scripts/smoke-workflow-b.sh",
+    "test": "pnpm -r --if-present test",
+    "format": "pnpm -r --if-present format",
+    "lint:rust": "cargo fmt --all -- --check && cargo clippy --workspace --all-targets --all-features -- -D warnings",
+    "test:rust": "cargo test --workspace --all-features",
+    "quality:check": "pnpm lint && pnpm test && pnpm lint:rust && pnpm test:rust"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

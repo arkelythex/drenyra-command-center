@@ -1,0 +1,1 @@
+{"version":3,"file":"session-condenser.d.ts","sourceRoot":"","sources":["../src/session-condenser.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,iBAAiB,EAAE,MAAM,SAAS,CAAC;AAEjD,MAAM,WAAW,gBAAgB;IAChC,QAAQ,CAAC,OAAO,EAAE,iBAAiB,EAAE,GAAG,MAAM,CAAC;CAC/C;AAED,qBAAa,sBAAuB,YAAW,gBAAgB;IAC9D,QAAQ,CAAC,OAAO,EAAE,iBAAiB,EAAE,GAAG,MAAM;CAM9C"}

@@ -1,0 +1,9 @@
+{
+  "name": "@civictech/ui",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "lint": "echo 'add ui lint config'",
+    "test": "echo 'add ui tests'"
+  }
+}

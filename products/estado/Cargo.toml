@@ -1,0 +1,43 @@
+[workspace]
+resolver = "2"
+members = [
+  "crates/auth",
+  "crates/api",
+  "crates/domain",
+  "crates/usecases",
+  "crates/adapters_pg",
+  "crates/adapters_s3",
+  "crates/adapters_redis",
+  "crates/audit",
+  "crates/ingest",
+  "crates/verify",
+  "crates/observability",
+]
+
+[workspace.package]
+edition = "2021"
+license = "MIT"
+version = "0.1.0"
+
+[workspace.dependencies]
+anyhow = "1"
+async-trait = "0.1"
+aws-config = "1"
+aws-sdk-s3 = "1"
+aws-smithy-types = "1"
+chrono = { version = "0.4", features = ["serde"] }
+csv = "1"
+hex = "0.4"
+jsonwebtoken = "9"
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+prometheus = "0.13"
+sha2 = "0.10"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres", "uuid", "chrono", "json"] }
+thiserror = "1"
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+uuid = { version = "1", features = ["v4", "serde"] }

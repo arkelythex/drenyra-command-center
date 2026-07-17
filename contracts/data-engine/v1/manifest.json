@@ -1,0 +1,29 @@
+{
+  "contract": "data-engine",
+  "version": "v1",
+  "header": {
+    "name": "X-Contract-Version",
+    "value": "v1"
+  },
+  "endpoints": [
+    { "name": "health", "method": "GET", "path": "/health", "schema": "health.json" },
+    {
+      "name": "sire.compras",
+      "method": "POST",
+      "path": "/api/v1/sire/compras",
+      "schema": "sire-analyze.json"
+    },
+    {
+      "name": "cashflow.analyze",
+      "method": "POST",
+      "path": "/api/v1/cashflow/analyze",
+      "schema": "cashflow-analyze.json"
+    },
+    {
+      "name": "banking.reconcile",
+      "method": "POST",
+      "path": "/api/v1/banking/reconcile",
+      "schema": "banking-reconcile.json"
+    }
+  ]
+}

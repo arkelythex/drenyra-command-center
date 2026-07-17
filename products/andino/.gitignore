@@ -1,0 +1,58 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.env
+.venv
+venv/
+
+# === ROS 2 ===
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+*.pyc
+
+# === PlatformIO ===
+firmware/*/.pio/
+firmware/*/build/
+
+# === Hardware ===
+hardware/pcb/*.bak
+hardware/cad/*.step
+hardware/cad/*.stp
+
+# === Generated / Artifacts ===
+*.egg-info/
+data/
+logs/
+.andino/
+.atl/
+.morphology_output/
+firmware/flight_controller/airframes/
+.vscode/
+.idea/
+*.swp
+*.swo
+generated_urdf/
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === Large binaries ===
+*.stl
+*.STL
+!hardware/cad/*.stl
+*.gcode
+
+# === Secrets ===
+.secrets/
+*.key
+*.pem
+studio/.next/
+studio/node_modules/
+studio/out/
+studio_html_backup/
+studio/~/
+studio/bun.lock

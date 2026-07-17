@@ -1,0 +1,42 @@
+name: ROS 2 CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ros2_ws/**"
+      - "firmware/**"
+  workflow_dispatch:
+
+jobs:
+  ros2-ci:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup ROS 2 Humble
+        uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: humble
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip python3-colcon-common-extensions
+          pip3 install -U setuptools pytest
+
+      - name: Build ROS 2 workspace
+        run: |
+          cd ros2_ws
+          rosdep install --from-paths src --ignore-src -r -y
+          colcon build --symlink-install
+        continue-on-error: true
+
+      - name: Run ROS 2 tests
+        run: |
+          cd ros2_ws
+          source install/setup.bash
+          colcon test
+          colcon test-result --verbose
+        continue-on-error: true

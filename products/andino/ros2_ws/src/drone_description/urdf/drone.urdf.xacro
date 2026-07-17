@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<robot name="andino_drone" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Materiales -->
+  <material name="black">
+    <color rgba="0.1 0.1 0.1 1.0"/>
+  </material>
+  <material name="white">
+    <color rgba="0.9 0.9 0.9 1.0"/>
+  </material>
+  <material name="orange">
+    <color rgba="1.0 0.5 0.0 1.0"/>
+  </material>
+
+  <!-- Base del frame -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.45 0.45 0.02"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <inertial>
+      <mass value="0.5"/>
+      <inertia ixx="0.01" iyy="0.01" izz="0.02" ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
+  </link>
+
+  <!-- Brazos del frame (X config) -->
+  <link name="arm_front_right">
+    <visual>
+      <geometry><cylinder radius="0.005" length="0.25"/></geometry>
+      <origin xyz="0.125 0 0" rpy="0 0 0"/>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <link name="arm_front_left">
+    <visual>
+      <geometry><cylinder radius="0.005" length="0.25"/></geometry>
+      <origin xyz="0.125 0 0" rpy="0 0 0"/>
+      <material name="white"/>
+    </visual>
+  </link>
+
+  <!-- Joints -->
+  <joint name="joint_arm_fr" type="fixed">
+    <parent link="base_link"/>
+    <child link="arm_front_right"/>
+    <origin xyz="0.125 0.125 0" rpy="0 0 0.785"/>
+  </joint>
+
+  <joint name="joint_arm_fl" type="fixed">
+    <parent link="base_link"/>
+    <child link="arm_front_left"/>
+    <origin xyz="-0.125 0.125 0" rpy="0 0 -0.785"/>
+  </joint>
+
+  <!-- Cámara -->
+  <link name="camera_link">
+    <visual>
+      <geometry><box size="0.03 0.03 0.02"/></geometry>
+      <origin xyz="0 0 0"/>
+      <material name="black"/>
+    </visual>
+  </link>
+
+  <joint name="joint_camera" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <origin xyz="0.1 0 0.025" rpy="0 0.3 0"/>
+  </joint>
+
+  <!-- Sensor IMU (simulado) -->
+  <link name="imu_link"/>
+  <joint name="joint_imu" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+
+  <!-- Gazebo plugins -->
+  <gazebo>
+    <plugin name="gazebo_ros_imu" filename="libgazebo_ros_imu.so">
+      <ros>
+        <namespace>/drone</namespace>
+        <argument>~/imu</argument>
+      </ros>
+      <output>sensor_msgs/Imu</output>
+    </plugin>
+  </gazebo>
+
+</robot>

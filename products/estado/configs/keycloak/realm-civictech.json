@@ -1,0 +1,66 @@
+{
+  "realm": "civictech",
+  "enabled": true,
+  "roles": {
+    "realm": [
+      { "name": "ADMIN" },
+      { "name": "MODERATOR" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "civictech-api",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "serviceAccountsEnabled": false,
+      "fullScopeAllowed": true,
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      },
+      "protocolMappers": [
+        {
+          "name": "audience-civictech-api",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "civictech-api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "admin_user",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin_user_pass",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["ADMIN", "MODERATOR"]
+    },
+    {
+      "username": "moderator_user",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "moderator_user_pass",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["MODERATOR"]
+    }
+  ]
+}

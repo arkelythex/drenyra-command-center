@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+message_file="$1"
+header="$(head -n1 "$message_file")"
+
+pattern='^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\([a-z0-9._/-]+\))?!?: .{1,72}$'
+
+if [[ ! "$header" =~ $pattern ]]; then
+  echo "Invalid commit message header: $header" >&2
+  echo "Expected Conventional Commits format, e.g.:" >&2
+  echo "  feat(api): add report submit endpoint" >&2
+  echo "  fix(infra): correct otel collector config" >&2
+  exit 1
+fi

@@ -1,0 +1,77 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <world name="default">
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Pista de aterrizaje simple -->
+    <model name="landing_pad">
+      <static>true</static>
+      <link name="base">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.5</radius>
+              <height>0.05</height>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.5</radius>
+              <height>0.05</height>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.0 0.5 0.0 1</ambient>
+            <diffuse>0.0 0.8 0.0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Túnel minero simulado -->
+    <model name="tunnel">
+      <static>true</static>
+      <link name="wall_1">
+        <pose>0 -2 1 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box size="10 0.2 2"/>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box size="10 0.2 2"/>
+          </geometry>
+          <material>
+            <ambient>0.3 0.2 0.1 1</ambient>
+          </material>
+        </visual>
+      </link>
+      <link name="wall_2">
+        <pose>0 2 1 0 0 0</pose>
+        <collision name="collision">
+          <geometry>
+            <box size="10 0.2 2"/>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box size="10 0.2 2"/>
+          </geometry>
+          <material>
+            <ambient>0.3 0.2 0.1 1</ambient>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>

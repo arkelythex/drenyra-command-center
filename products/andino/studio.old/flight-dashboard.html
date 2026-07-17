@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Andino Studio — Flight Dashboard</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .flight-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      grid-template-rows: var(--topbar-height) auto 1fr auto;
+      height: 100vh;
+      gap: 0;
+    }
+
+    .flight-layout .topbar { grid-column: 1 / -1; }
+
+    .flight-main {
+      grid-column: 1;
+      grid-row: 2 / -1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 12px;
+      gap: 12px;
+    }
+
+    .flight-sidebar {
+      grid-column: 2;
+      grid-row: 2 / -1;
+      background: var(--bg-surface);
+      border-left: 1px solid var(--border-default);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .flight-sidebar .panel-section {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .flight-sidebar .panel-section:last-child {
+      flex: 1;
+      overflow-y: auto;
+      border-bottom: none;
+    }
+
+    .flight-sidebar .panel-section h3 {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .safety-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+    }
+
+    .safety-indicator.safe {
+      background: var(--secondary-glow);
+      color: var(--secondary);
+    }
+
+    .safety-indicator.caution {
+      background: rgba(255, 169, 77, 0.15);
+      color: var(--warning);
+    }
+
+    .safety-indicator .s-icon {
+      font-size: 18px;
+    }
+
+    .emergency-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .tele-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: var(--font-size-xs);
+    }
+
+    .tele-row:last-child { border-bottom: none; }
+    .tele-row .tele-label { color: var(--text-muted); }
+    .tele-row .tele-value { font-family: var(--font-mono); font-weight: 600; }
+
+    .log-container {
+      max-height: 100%;
+      overflow-y: auto;
+    }
+
+    @keyframes scan-line {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100vh); }
+    }
+
+    .video-feed .scan-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+      opacity: 0.3;
+      animation: scan-line 3s linear infinite;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="flight-layout">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="topbar-brand">
+        <div class="logo">A</div>
+        <span>Andino Studio — Flight Dashboard</span>
+      </div>
+      <div class="topbar-nav">
+        <button class="topbar-btn" onclick="window.location='index.html'">⇠ Back to Studio</button>
+        <span class="topbar-status online" style="background:rgba(0,212,170,0.15);color:var(--secondary);">
+          <span class="dot"></span>
+          MISSION ACTIVE
+        </span>
+      </div>
+    </header>
+
+    <!-- Flight Main -->
+    <div class="flight-main">
+
+      <!-- Video Feed -->
+      <div class="video-feed" style="flex:1;min-height:280px;">
+        <div class="scan-line"></div>
+        <div class="feed-overlay">
+          <div class="icon">📡</div>
+          <p>Live Video Feed — Tunnel Inspection Alpha</p>
+          <p style="font-size:10px;margin-top:8px;color:var(--text-muted);">
+            Camera: 4K 60fps · Thermal overlay active · AI object detection enabled
+          </p>
+        </div>
+        <div class="hud-overlay">
+          <div class="crosshair"></div>
+          <div class="hud-corner tl">ALT 45.2m</div>
+          <div class="hud-corner tr">SPD 12.8 m/s</div>
+          <div class="hud-corner bl">TUNNEL INSPECTION · 03:24</div>
+          <div class="hud-corner br">HDG 187°</div>
+        </div>
+      </div>
+
+      <!-- Telemetry Gauges -->
+      <div class="content-card" style="flex-shrink:0;">
+        <div class="content-card-header">
+          <span>Telemetry</span>
+          <span style="font-size:var(--font-size-xs);color:var(--text-muted);font-family:var(--font-mono);">UPD: 250ms</span>
+        </div>
+        <div class="content-card-body">
+          <div class="flex gap-16" style="flex-wrap:wrap;justify-content:center;">
+            <!-- Altitude gauge -->
+            <div class="gauge">
+              <div class="gauge-ring">
+                <svg viewBox="0 0 36 36">
+                  <circle class="bg" cx="18" cy="18" r="15.9"/>
+                  <circle class="fill accent" cx="18" cy="18" r="15.9" stroke-dasharray="100" stroke-dashoffset="55"/>
+                </svg>
+                <div class="gauge-value" style="font-size:16px;color:var(--accent);">45.2</div>
+              </div>
+              <div class="gauge-label">Altitude (m)</div>
+            </div>
+            <!-- Speed -->
+            <div class="gauge">
+              <div class="gauge-ring">
+                <svg viewBox="0 0 36 36">
+                  <circle class="bg" cx="18" cy="18" r="15.9"/>
+                  <circle class="fill warning" cx="18" cy="18" r="15.9" stroke-dasharray="100" stroke-dashoffset="72"/>
+                </svg>
+                <div class="gauge-value" style="font-size:16px;color:var(--warning);">12.8</div>
+              </div>
+              <div class="gauge-label">Speed (m/s)</div>
+            </div>
+            <!-- Battery -->
+            <div class="gauge">
+              <div class="gauge-ring">
+                <svg viewBox="0 0 36 36">
+                  <circle class="bg" cx="18" cy="18" r="15.9"/>
+                  <circle class="fill secondary" cx="18" cy="18" r="15.9" stroke-dasharray="100" stroke-dashoffset="22"/>
+                </svg>
+                <div class="gauge-value" style="font-size:16px;color:var(--secondary);">78%</div>
+              </div>
+              <div class="gauge-label">Battery</div>
+            </div>
+            <!-- GPS -->
+            <div class="gauge">
+              <div class="gauge-ring">
+                <svg viewBox="0 0 36 36">
+                  <circle class="bg" cx="18" cy="18" r="15.9"/>
+                  <circle class="fill" cx="18" cy="18" r="15.9" stroke-dasharray="100" stroke-dashoffset="20" style="stroke:var(--info);"/>
+                </svg>
+                <div class="gauge-value" style="font-size:16px;color:var(--info);">4</div>
+              </div>
+              <div class="gauge-label">GPS Sats</div>
+            </div>
+            <!-- Signal -->
+            <div class="gauge">
+              <div class="gauge-ring">
+                <svg viewBox="0 0 36 36">
+                  <circle class="bg" cx="18" cy="18" r="15.9"/>
+                  <circle class="fill" cx="18" cy="18" r="15.9" stroke-dasharray="100" stroke-dashoffset="38" style="stroke:var(--accent);"/>
+                </svg>
+                <div class="gauge-value" style="font-size:16px;color:var(--accent);">-62</div>
+              </div>
+              <div class="gauge-label">RSSI (dBm)</div>
+            </div>
+            <!-- Temperature -->
+            <div class="gauge">
+              <div class="gauge-ring">
+                <svg viewBox="0 0 36 36">
+                  <circle class="bg" cx="18" cy="18" r="15.9"/>
+                  <circle class="fill warning" cx="18" cy="18" r="15.9" stroke-dasharray="100" stroke-dashoffset="78" style="stroke:var(--warning);"/>
+                </svg>
+                <div class="gauge-value" style="font-size:16px;color:var(--warning);">38.4</div>
+              </div>
+              <div class="gauge-label">Temp (°C)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mission Progress & Emergency -->
+      <div style="display:grid;grid-template-columns:1fr auto;gap:12px;flex-shrink:0;">
+        <div class="content-card">
+          <div class="content-card-header">
+            <span>Mission Progress</span>
+            <span class="tag tag-secondary">03:24 / 15:00</span>
+          </div>
+          <div class="content-card-body">
+            <div class="mission-progress">
+              <div class="mission-step completed"><span class="step-num">✓</span> Takeoff & altitude hold</div>
+              <div class="mission-step completed"><span class="step-num">✓</span> Tunnel entrance navigation</div>
+              <div class="mission-step active"><span class="step-num">3</span> Section A: structural survey</div>
+              <div class="mission-step pending"><span class="step-num">4</span> Section B: thermal scan</div>
+              <div class="mission-step pending"><span class="step-num">5</span> Return to launch point</div>
+              <div class="mission-step pending"><span class="step-num">6</span> Landing & data download</div>
+            </div>
+          </div>
+        </div>
+        <div class="content-card" style="width:320px;">
+          <div class="content-card-header">
+            <span>Emergency</span>
+            <span class="tag tag-error">ARMED</span>
+          </div>
+          <div class="content-card-body">
+            <div class="emergency-section">
+              <div class="emergency-bar">
+                <button class="emergency-btn rtl">RTL</button>
+                <button class="emergency-btn land">LAND</button>
+                <button class="emergency-btn stop">STOP</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Flight Sidebar -->
+    <div class="flight-sidebar">
+
+      <!-- Safety Status -->
+      <div class="panel-section">
+        <div class="safety-indicator safe">
+          <span class="s-icon">✓</span>
+          All systems nominal · 4s latency
+        </div>
+      </div>
+
+      <!-- Telemetry Details -->
+      <div class="panel-section">
+        <h3>Telemetry</h3>
+        <div class="tele-row">
+          <span class="tele-label">Voltage</span>
+          <span class="tele-value" style="color:var(--secondary);">15.6 V</span>
+        </div>
+        <div class="tele-row">
+          <span class="tele-label">Current Draw</span>
+          <span class="tele-value" style="color:var(--accent);">8.2 A</span>
+        </div>
+        <div class="tele-row">
+          <span class="tele-label">Power</span>
+          <span class="tele-value" style="color:var(--warning);">127.9 W</span>
+        </div>
+        <div class="tele-row">
+          <span class="tele-label">RPM (avg)</span>
+          <span class="tele-value">12450</span>
+        </div>
+        <div class="tele-row">
+          <span class="tele-label">Throttle</span>
+          <span class="tele-value">58%</span>
+        </div>
+        <div class="tele-row">
+          <span class="tele-label">Distance</span>
+          <span class="tele-value">142 m</span>
+        </div>
+        <div class="tele-row">
+          <span class="tele-label">Vertical Speed</span>
+          <span class="tele-value" style="color:var(--secondary);">+1.2 m/s</span>
+        </div>
+        <div class="tele-row">
+          <span class="tele-label">Heading</span>
+          <span class="tele-value">187°</span>
+        </div>
+      </div>
+
+      <!-- Agent Reasoning Log -->
+      <div class="panel-section" style="flex:1;display:flex;flex-direction:column;">
+        <h3>Agent Reasoning Log</h3>
+        <div class="log-container" id="flight-log">
+          <div class="log-entry success">
+            <span class="log-time">[14:23:01]</span> Mission started — tunnel inspection protocol v2.1
+          </div>
+          <div class="log-entry info">
+            <span class="log-time">[14:23:04]</span> Optical flow initialized, 12 features tracked
+          </div>
+          <div class="log-entry success">
+            <span class="log-time">[14:23:08]</span> Takeoff successful — altitude hold at 2.0m
+          </div>
+          <div class="log-entry info">
+            <span class="log-time">[14:23:15]</span> Transitioning to autonomous navigation
+          </div>
+          <div class="log-entry info">
+            <span class="log-time">[14:23:22]</span> LiDAR scan active: tunnel width 1.82m ±0.03m
+          </div>
+          <div class="log-entry info">
+            <span class="log-time">[14:23:30]</span> Tunnel entrance detected at bearing 187°, 12m ahead
+          </div>
+          <div class="log-entry success">
+            <span class="log-time">[14:23:38]</span> Entering tunnel — switching to INS+optical flow
+          </div>
+          <div class="log-entry warn">
+            <span class="log-time">[14:23:52]</span> Crosswind detected at ventilation shaft #3: 6.2 m/s
+          </div>
+          <div class="log-entry info">
+            <span class="log-time">[14:24:01]</span> Compensating with differential thrust — RPM delta: +340
+          </div>
+          <div class="log-entry success">
+            <span class="log-time">[14:24:10]</span> Section A structural survey started
+          </div>
+          <div class="log-entry info">
+            <span class="log-time">[14:24:18]</span> Crack detected at coord (12.4, 8.1, 2.3) — logging
+          </div>
+          <div class="log-entry info">
+            <span class="log-time">[14:24:28]</span> Thermal anomaly: +3.2°C at ventilation shaft #2
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const logContainer = document.getElementById('flight-log');
+      const aiMessages = [
+        { type: 'info', msg: 'Evaluating structural integrity index...' },
+        { type: 'info', msg: 'LiDAR point cloud: 98.7% coverage' },
+        { type: 'success', msg: 'Section A complete — 12 cracks logged, 2 critical' },
+        { type: 'info', msg: 'Transitioning to Section B for thermal scan' },
+        { type: 'warn', msg: 'Increasing temperature gradient detected — monitoring' },
+        { type: 'info', msg: 'Optical flow confidence: 94%' },
+        { type: 'info', msg: 'Estimating remaining mission time: 11:42' },
+      ];
+
+      // Simulate live log entries
+      let idx = 0;
+      setInterval(() => {
+        if (idx >= aiMessages.length) {
+          idx = 0;
+        }
+        const entry = aiMessages[idx];
+        const el = document.createElement('div');
+        el.className = `log-entry ${entry.type}`;
+        const now = new Date();
+        const time = now.toTimeString().slice(0, 8);
+        el.innerHTML = `<span class="log-time">[${time}]</span> ${entry.msg}`;
+        logContainer.appendChild(el);
+        logContainer.scrollTop = logContainer.scrollHeight;
+        idx++;
+      }, 4000);
+
+      // ── Emergency button animations ──
+      document.querySelectorAll('.emergency-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const original = this.textContent;
+          this.textContent = '⚠ CONFIRM?';
+          this.style.transform = 'scale(1.05)';
+          setTimeout(() => {
+            this.textContent = original;
+            this.style.transform = 'scale(1)';
+          }, 2000);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

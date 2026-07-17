@@ -1,0 +1,9 @@
+[package]
+name = "civictech-verify"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+civictech-domain = { path = "../domain" }
+thiserror.workspace = true

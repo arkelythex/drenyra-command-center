@@ -1,0 +1,14 @@
+# === Dockerignore para build del Studio ===
+
+# Git
+.git/
+
+# Dependencias (se instalan en el build)
+node_modules/
+
+# Build output (se genera en el build)
+.next/
+
+# Python (todo el pipeline está afuera)
+__pycache__/
+*.pyc
