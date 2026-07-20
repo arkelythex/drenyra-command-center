@@ -84,7 +84,7 @@
     "drizzle-orm": "^0.45.1",
     "fast-xml-parser": "^5.7.1",
     "ioredis": "^5.8.2",
-    "nanoid": "^5.1.6",
+    "nanoid": "^6.0.0",
     "nats": "^2.29.3",
     "postgres": "^3.4.8",
     "uuid": "^14.0.0",
