@@ -18,20 +18,20 @@ La arquitectura es **monolito modular con hexagonal por dominio**, preparado par
 
 ## Stack canónico
 
-| Capa | Tecnología | Rol |
-|------|-----------|-----|
-| Frontend | TypeScript + React + TanStack Start | Experiencia web, routing, loaders, estado URL |
-| Design system | React + Tailwind CSS + Radix | Componentes, tokens, accesibilidad |
-| API de producto | TypeScript + Elysia + Bun | BFF, comandos, queries, autorización |
-| Domain core | TypeScript puro | Entidades, VO, agregados, eventos, reglas |
-| Workflows | Temporal | Procesos largos, retries, pausas humanas |
-| Event bus | NATS JetStream | Eventos de dominio, integración, streaming |
-| Base de datos | PostgreSQL | Verdad central (ledger, docs, policies, evidencia) |
-| Analytics | ClickHouse | Telemetría, históricos, tendencias (futuro) |
-| Cache | Redis / Valkey | Sesiones, rate limiting, locks efímeros |
-| Objetos/evidencia | S3-compatible | XML, PDF, CDR, receipts, artifacts |
-| Search | PostgreSQL FTS → OpenSearch | Búsqueda progresiva |
-| Observabilidad | OpenTelemetry + Grafana | Trazas, métricas, logs |
+| Capa              | Tecnología                          | Rol                                                |
+| ----------------- | ----------------------------------- | -------------------------------------------------- |
+| Frontend          | TypeScript + React + TanStack Start | Experiencia web, routing, loaders, estado URL      |
+| Design system     | React + Tailwind CSS + Radix        | Componentes, tokens, accesibilidad                 |
+| API de producto   | TypeScript + Elysia + Bun           | BFF, comandos, queries, autorización               |
+| Domain core       | TypeScript puro                     | Entidades, VO, agregados, eventos, reglas          |
+| Workflows         | Temporal                            | Procesos largos, retries, pausas humanas           |
+| Event bus         | NATS JetStream                      | Eventos de dominio, integración, streaming         |
+| Base de datos     | PostgreSQL                          | Verdad central (ledger, docs, policies, evidencia) |
+| Analytics         | ClickHouse                          | Telemetría, históricos, tendencias (futuro)        |
+| Cache             | Redis / Valkey                      | Sesiones, rate limiting, locks efímeros            |
+| Objetos/evidencia | S3-compatible                       | XML, PDF, CDR, receipts, artifacts                 |
+| Search            | PostgreSQL FTS → OpenSearch         | Búsqueda progresiva                                |
+| Observabilidad    | OpenTelemetry + Grafana             | Trazas, métricas, logs                             |
 
 ---
 
@@ -55,13 +55,13 @@ TypeScript port → adapter to Rust → compare outputs → shadow traffic → v
 
 **Candidatos específicos:**
 
-| Engine | Propósito | Prioridad |
-|--------|-----------|-----------|
-| Canonical hashing | Normalización + hash determinista + receipt signed | Alta |
-| Ledger validation | Débitos=créditos, precisión decimal, period locking, invariantes | Alta |
-| Receipt verifier | CLI independiente: verificar receipts sin servidor | Media |
-| Fiscal rules evaluator | Reglas aprobadas compiladas a WASM | Media |
-| Bulk document parser | XML/ZIP masivo, validación criptográfica | Baja |
+| Engine                 | Propósito                                                        | Prioridad |
+| ---------------------- | ---------------------------------------------------------------- | --------- |
+| Canonical hashing      | Normalización + hash determinista + receipt signed               | Alta      |
+| Ledger validation      | Débitos=créditos, precisión decimal, period locking, invariantes | Alta      |
+| Receipt verifier       | CLI independiente: verificar receipts sin servidor               | Media     |
+| Fiscal rules evaluator | Reglas aprobadas compiladas a WASM                               | Media     |
+| Bulk document parser   | XML/ZIP masivo, validación criptográfica                         | Baja      |
 
 ### Go — infraestructura distribuida e integraciones
 
@@ -106,13 +106,13 @@ domains/ledger/
 
 ## Comunicación entre lenguajes
 
-| Ruta | Protocolo | Cuándo |
-|------|-----------|--------|
-| TS → Rust | WASM | Validación, reglas, hashing, sandbox |
-| TS → Rust | gRPC/ConnectRPC | Motores grandes o escala |
-| TS → Go | gRPC/ConnectRPC | Comandos entre servicios |
-| TS → Go | NATS JetStream | Eventos |
-| Go ↔ externo | REST/OpenAPI | APIs públicas |
+| Ruta         | Protocolo       | Cuándo                               |
+| ------------ | --------------- | ------------------------------------ |
+| TS → Rust    | WASM            | Validación, reglas, hashing, sandbox |
+| TS → Rust    | gRPC/ConnectRPC | Motores grandes o escala             |
+| TS → Go      | gRPC/ConnectRPC | Comandos entre servicios             |
+| TS → Go      | NATS JetStream  | Eventos                              |
+| Go ↔ externo | REST/OpenAPI    | APIs públicas                        |
 
 **Contratos como fuente de verdad:**
 
@@ -180,12 +180,12 @@ Además: RLS como defensa adicional, autorización en capa de aplicación, crede
 
 ## Evolución por etapas
 
-| Etapa | Stack | Estado |
-|-------|-------|--------|
-| **Actual** | TypeScript + React + Elysia + Bun + PostgreSQL + NATS + Temporal + S3 + OTel | ✅ |
-| **Próxima** | Rust engines (hashing, ledger validation, receipt verifier) | ◌ |
-| **Futura** | Go services (connector gateway, ingestion, enterprise bridge) | ◌ |
-| **Escala** | ClickHouse, OpenSearch, extracción a microservicios | ◌ |
+| Etapa       | Stack                                                                        | Estado |
+| ----------- | ---------------------------------------------------------------------------- | ------ |
+| **Actual**  | TypeScript + React + Elysia + Bun + PostgreSQL + NATS + Temporal + S3 + OTel | ✅     |
+| **Próxima** | Rust engines (hashing, ledger validation, receipt verifier)                  | ◌      |
+| **Futura**  | Go services (connector gateway, ingestion, enterprise bridge)                | ◌      |
+| **Escala**  | ClickHouse, OpenSearch, extracción a microservicios                          | ◌      |
 
 **Principio:** No reescribir. Aplicar strangler pattern en cada extracción.
 

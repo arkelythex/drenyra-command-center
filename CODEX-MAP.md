@@ -29,10 +29,10 @@
 | `packages/ai` | ai | AI facade, gateway, model registry, SUNAT corpus and tool bridge contracts. | ai, gateway, agents | — |
 | `packages/memory` | memory | Unified memory subsystem: agent memory, session storage, context management. | ai, memory | — |
 | `packages/agents` | agents | Unified agent runtime: Mastra orchestration, delegation, harness, approvals. | ai, agents, orchestration | — |
-| `packages/engram` | engram | Go phase-gate evidence sidecar for fiscal audit trails. | go, engram, evidence | — |
+| `services/engram` | engram | Go phase-gate evidence sidecar for fiscal audit trails. | go, engram, evidence | — |
 | `packages/test-utils` | test-utils | Shared fixtures, builders, mocks, database and tenant test helpers. | testing, fixtures | — |
 | `packages/ui` | ui | Shared Glass & Steel design-system components and tokens. | frontend, ui, design-system | — |
-| `packages/rust-core` | rust-core | Rust hot-path fiscal primitives; TypeScript remains source of truth until parity. | rust, fiscal, performance | — |
+| `engines/rust-core` | rust-core | Rust hot-path fiscal primitives; TypeScript remains source of truth until parity. | rust, fiscal, performance | — |
 | `engines/` | rust | Critical verification (ledger validation, canonical hashing, receipt verifier). | rust, engines, critical | `engines/README.md` |
 | `services/` | go | Connector gateway, ingestion, enterprise bridge. | go, services | `services/README.md` |
 | `contracts/` | schema | Canonical multi-language contract schemas (OpenAPI, AsyncAPI, Protobuf). | contracts, api | `contracts/README.md` |

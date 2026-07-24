@@ -4,12 +4,12 @@ Núcleo crítico verificable. Cada engine es un crate independiente en un Cargo 
 
 ## Candidatos actuales
 
-| Engine | Propósito | Prioridad |
-|--------|-----------|-----------|
-| `ledger/` | Ledger validation: débitos=créditos, precision, period locking, compensating entries | Alta |
-| `canonicalization/` | Normalización + hashing determinista + receipt signing | Alta |
-| `fiscal-rules/` | Reglas fiscales compiladas a WASM para ejecución sandboxed | Media |
-| `receipt-verifier/` | CLI independiente para verificar receipts sin servidor | Media |
+| Engine              | Propósito                                                                            | Prioridad |
+| ------------------- | ------------------------------------------------------------------------------------ | --------- |
+| `ledger/`           | Ledger validation: débitos=créditos, precision, period locking, compensating entries | Alta      |
+| `canonicalization/` | Normalización + hashing determinista + receipt signing                               | Alta      |
+| `fiscal-rules/`     | Reglas fiscales compiladas a WASM para ejecución sandboxed                           | Media     |
+| `receipt-verifier/` | CLI independiente para verificar receipts sin servidor                               | Media     |
 
 ## Estrategia
 

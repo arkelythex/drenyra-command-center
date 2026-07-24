@@ -4,11 +4,11 @@ Infraestructura distribuida e integraciones. Cada servicio es un módulo Go inde
 
 ## Candidatos actuales
 
-| Servicio | Propósito | Prioridad |
-|----------|-----------|-----------|
-| `connector-gateway/` | Gateway para SUNAT, bancos, DIAN, SAT, SII, ERP connectors | Alta |
-| `ingestion/` | Workers de ingesta de datos de alta concurrencia | Media |
-| `enterprise-bridge/` | Agente local instalable en clientes para conectar ERPs on-premise | Baja |
+| Servicio             | Propósito                                                         | Prioridad |
+| -------------------- | ----------------------------------------------------------------- | --------- |
+| `connector-gateway/` | Gateway para SUNAT, bancos, DIAN, SAT, SII, ERP connectors        | Alta      |
+| `ingestion/`         | Workers de ingesta de datos de alta concurrencia                  | Media     |
+| `enterprise-bridge/` | Agente local instalable en clientes para conectar ERPs on-premise | Baja      |
 
 ## Criterio
 

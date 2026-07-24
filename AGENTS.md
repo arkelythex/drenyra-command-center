@@ -47,12 +47,12 @@ Each app has a `MAP.md` (e.g. `apps/web/MAP.md`) with its architecture, routes, 
 
 ### Engines, Services & Contracts (multi-lenguaje)
 
-| Directorio | Lenguaje | Propósito |
-|-----------|----------|-----------|
-| `engines/` | Rust | Núcleo crítico verificable (ledger, hashing, fiscal rules) |
-| `services/` | Go | Conectores, ingesta, bridge local |
-| `contracts/` | TS/Protobuf | Schemas canónicos que generan tipos multi-lenguaje |
-| `country-packs/` | TS | Reglas fiscales por país (Perú → LATAM) |
+| Directorio       | Lenguaje    | Propósito                                                  |
+| ---------------- | ----------- | ---------------------------------------------------------- |
+| `engines/`       | Rust        | Núcleo crítico verificable (ledger, hashing, fiscal rules) |
+| `services/`      | Go          | Conectores, ingesta, bridge local                          |
+| `contracts/`     | TS/Protobuf | Schemas canónicos que generan tipos multi-lenguaje         |
+| `country-packs/` | TS          | Reglas fiscales por país (Perú → LATAM)                    |
 
 Ver [Canonical Stack](docs/architecture/canonical-stack.md).
 
