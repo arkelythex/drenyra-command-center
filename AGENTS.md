@@ -45,6 +45,17 @@ Each app has a `MAP.md` (e.g. `apps/web/MAP.md`) with its architecture, routes, 
 - Adapters belong in persistence/infrastructure/ai packages.
 - `packages/core` was removed; its contents (product-surfaces types/registry) moved to `packages/domain/src/types/`.
 
+### Engines, Services & Contracts (multi-lenguaje)
+
+| Directorio | Lenguaje | Propósito |
+|-----------|----------|-----------|
+| `engines/` | Rust | Núcleo crítico verificable (ledger, hashing, fiscal rules) |
+| `services/` | Go | Conectores, ingesta, bridge local |
+| `contracts/` | TS/Protobuf | Schemas canónicos que generan tipos multi-lenguaje |
+| `country-packs/` | TS | Reglas fiscales por país (Perú → LATAM) |
+
+Ver [Canonical Stack](docs/architecture/canonical-stack.md).
+
 ## Product philosophy guardrails
 
 Drenyra is the **verifiable financial operating system for businesses, accountants, and governments** — a Financial Engineering Environment that applies software engineering rigor (Git-like versioning, CI/CD, specialized agents, specs, receipts) to accounting. Web, CLI, agents, and docs must follow the canonical [Drenyra product philosophy](docs/products/drenyra-product-philosophy.md).
@@ -60,6 +71,9 @@ Drenyra is the **verifiable financial operating system for businesses, accountan
 ## Architecture and domain rules
 
 - Use vertical slice + CQRS for feature work.
+- **TypeScript para descubrir y construir. Rust para verificar y proteger. Go para conectar y operar.** Ver el [stack canónico](docs/architecture/canonical-stack.md).
+- **Monolito modular con hexagonal por dominio** — no microservicios prematuros.
+- **Elysia es un adaptador de entrada**, no la arquitectura. No poner lógica de dominio en endpoints.
 - Keep fiscal/domain logic deterministic and covered by tests.
 - Validate all API inputs with schemas at service boundaries.
 - Preserve end-to-end type safety.

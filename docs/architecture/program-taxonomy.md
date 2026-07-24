@@ -152,25 +152,25 @@ Cada dominio tiene un **Capability Map** que lista las capacidades que lo compon
 
 ## 3. Madurez de documentos (L0–L4)
 
-| Nivel | Nombre | Qué contiene | Decisiones |
-|-------|--------|-------------|------------|
-| L0 | Idea | Concepto, problema, enfoque | Seguir o no seguir |
-| L1 | Requirements | Alcance, criterios, escenarios | Priorizar o posponer |
-| L2 | Architecture | Arquitectura, decisiones, riesgos | Aprobar diseño |
-| L3 | Executable Design | APIs, schemas, tests, contratos | Iniciar implementación |
-| L4 | Verified Contract | Implementado, probado, con evidencia | Cerrar capacidad |
+| Nivel | Nombre            | Qué contiene                         | Decisiones             |
+| ----- | ----------------- | ------------------------------------ | ---------------------- |
+| L0    | Idea              | Concepto, problema, enfoque          | Seguir o no seguir     |
+| L1    | Requirements      | Alcance, criterios, escenarios       | Priorizar o posponer   |
+| L2    | Architecture      | Arquitectura, decisiones, riesgos    | Aprobar diseño         |
+| L3    | Executable Design | APIs, schemas, tests, contratos      | Iniciar implementación |
+| L4    | Verified Contract | Implementado, probado, con evidencia | Cerrar capacidad       |
 
 ---
 
 ## 4. Ciclo de fases
 
-| Fase | Objetivo | SDD acumulados | Estado |
-|------|----------|---------------|--------|
-| **F0** — Foundation | Núcleo: tenancy, identity, ledger, jobs, evidence, agent runtime | 20–30 | ● En progreso |
-| **F1** — Peru Close | Cierre contable multiempresa, SIRE, conciliación | 55–85 | ◌ Siguiente |
-| **F2** — Peru AOS | Accounting OS completo: AP/AR, treasury, fixed assets, taxes | 115–175 | ◌ |
-| **F3** — Studio/Platform | Skills, SDK, CLI, marketplace, policy studio | 150–230 | ◌ |
-| **F4** — LATAM | Expansión por país (Colombia, Chile, México, Brasil...) | 250–400+ | ◌ |
+| Fase                     | Objetivo                                                         | SDD acumulados | Estado        |
+| ------------------------ | ---------------------------------------------------------------- | -------------- | ------------- |
+| **F0** — Foundation      | Núcleo: tenancy, identity, ledger, jobs, evidence, agent runtime | 20–30          | ● En progreso |
+| **F1** — Peru Close      | Cierre contable multiempresa, SIRE, conciliación                 | 55–85          | ◌ Siguiente   |
+| **F2** — Peru AOS        | Accounting OS completo: AP/AR, treasury, fixed assets, taxes     | 115–175        | ◌             |
+| **F3** — Studio/Platform | Skills, SDK, CLI, marketplace, policy studio                     | 150–230        | ◌             |
+| **F4** — LATAM           | Expansión por país (Colombia, Chile, México, Brasil...)          | 250–400+       | ◌             |
 
 ---
 
@@ -186,14 +186,14 @@ Cada dominio tiene un **Capability Map** que lista las capacidades que lo compon
 
 ## 6. Relación con la documentación existente
 
-| Clase | Ubicación actual | Estado |
-|-------|-----------------|--------|
-| SDD | `openspec/changes/*/` | ~79 SDDs, varios en L1–L2 |
-| ADR | `docs/adr/` y `docs/02-adr/` | ~12 ADRs |
-| FSD | No existe aún | Crear por país/obligación |
-| WSD | `docs/architecture/` (parcial) | Migrar cuando corresponda |
-| ASD | No existe aún | Crear por agente |
-| Amenaza | No existe aún | Crear por área |
-| Runbook | No existe aún | Crear por incidente |
+| Clase   | Ubicación actual               | Estado                    |
+| ------- | ------------------------------ | ------------------------- |
+| SDD     | `openspec/changes/*/`          | ~79 SDDs, varios en L1–L2 |
+| ADR     | `docs/adr/` y `docs/02-adr/`   | ~12 ADRs                  |
+| FSD     | No existe aún                  | Crear por país/obligación |
+| WSD     | `docs/architecture/` (parcial) | Migrar cuando corresponda |
+| ASD     | No existe aún                  | Crear por agente          |
+| Amenaza | No existe aún                  | Crear por área            |
+| Runbook | No existe aún                  | Crear por incidente       |
 
 **Próximo paso:** crear el [Capability Map](./capability-map.md) inicial con 60–80 capacidades.

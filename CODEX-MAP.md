@@ -33,6 +33,10 @@
 | `packages/test-utils` | test-utils | Shared fixtures, builders, mocks, database and tenant test helpers. | testing, fixtures | — |
 | `packages/ui` | ui | Shared Glass & Steel design-system components and tokens. | frontend, ui, design-system | — |
 | `packages/rust-core` | rust-core | Rust hot-path fiscal primitives; TypeScript remains source of truth until parity. | rust, fiscal, performance | — |
+| `engines/` | rust | Critical verification (ledger validation, canonical hashing, receipt verifier). | rust, engines, critical | `engines/README.md` |
+| `services/` | go | Connector gateway, ingestion, enterprise bridge. | go, services | `services/README.md` |
+| `contracts/` | schema | Canonical multi-language contract schemas (OpenAPI, AsyncAPI, Protobuf). | contracts, api | `contracts/README.md` |
+| `country-packs/` | ts | Fiscal rules and configuration per country (Peru → LATAM). | fiscal, country | `country-packs/README.md` |
 | `docs/` | docs | Canonical architecture, feature, runbook, business, and team docs. | docs | — |
 | `scripts/` | scripts | Bun/TS automation for CI, docs, architecture, security, release, ops. | automation | — |
 | `.github/` | github | CODEOWNERS, PR template, workflows, branch protection metadata. | ci, ownership | — |
@@ -55,7 +59,7 @@ rg "Money|dinero|RUC|SIRE|SUNAT|IGV" apps packages docs
 rg "organizationId|companyId|ruc" apps/api packages/persistence packages/application
 rg "new Elysia|\.get\(|\.post\(" apps/api/src/features
 rg "create.*UseCase|Command|Query" packages/application apps/api/src/features
-fd 'package.json|pyproject.toml|Cargo.toml' apps packages services
+fd 'package.json|pyproject.toml|Cargo.toml' apps packages services engines
 fd 'README.md|AGENTS.md|DESIGN.md' apps packages docs services
 
 # Go CLI specific
