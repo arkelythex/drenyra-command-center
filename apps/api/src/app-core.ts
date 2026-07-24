@@ -59,11 +59,13 @@ import { threadRoutes } from "./features/threads";
 import { vendorRoutes } from "./features/vendors";
 import { createLogger } from "./lib/logger";
 import { metricsMiddleware } from "./middleware/metrics.middleware";
+import { routePermissionGuard } from "./shared/auth/route-permission-guard";
 import {
 	globalErrorHandler,
 	rateLimiter,
 	requestLogger,
 } from "./shared/plugins";
+import { companyScopeGuard } from "./shared/plugins/company-scope-guard";
 import { CANONICAL_SWAGGER_PATH } from "./swagger-docs-routes";
 
 const logger = createLogger({ module: "app-core" });
@@ -326,6 +328,9 @@ const baseApp = new Elysia()
 	.use(metricsMiddleware)
 	.use(globalErrorHandler)
 	.use(rateLimiter({ windowMs: 60_000, max: 100 }))
+	// ── Auth & permission guard (global — applies to all API routes) ──
+	.use(companyScopeGuard({ allowHeaderFallback: true }))
+	.use(routePermissionGuard())
 	.use(apiModules)
 	.use(backwardCompatRedirects)
 	.use(healthModule)
