@@ -66,6 +66,16 @@ Drenyra is the **verifiable financial operating system for businesses, accountan
 - For Peruvian tax flows, preserve SUNAT, UBL 2.1, IGV, retenciones, detracciones, SIRE, RUC checksum, document series, and CDR/audit requirements.
 - Prefer branded IDs or domain value objects for identifiers and money-sensitive data.
 
+## Program Taxonomy & SDD Audit
+
+Drenyra usa 8 clases documentales: SDD, ADR, FSD, WSD, ASD, Contract Specs, Threat Models, Runbooks. Ver:
+
+- **Taxonomía completa:** [`docs/architecture/program-taxonomy.md`](docs/architecture/program-taxonomy.md) — clases, L0–L4, fases F0–F4
+- **Capability Map:** [`docs/architecture/capability-map.md`](docs/architecture/capability-map.md) — 60+ capacidades con estado actual
+- **SDD Audit:** [`docs/architecture/sdd-audit.md`](docs/architecture/sdd-audit.md) — 79 SDDs clasificados por madurez
+
+**Regla:** no crear SDD hasta que la capacidad esté cerca de implementación. El Capability Map mantiene la visión.
+
 ## Working style
 
 - Default Git workflow: create a dedicated branch for every change; keep `main` clean and updated.
