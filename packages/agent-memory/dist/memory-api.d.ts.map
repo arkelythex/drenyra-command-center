@@ -1,1 +1,0 @@
-{"version":3,"file":"memory-api.d.ts","sourceRoot":"","sources":["../src/memory-api.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,gBAAgB,EAAE,MAAM,sBAAsB,CAAC;AAC7D,OAAO,KAAK,EACX,uBAAuB,EACvB,sBAAsB,EACtB,oBAAoB,EACpB,MAAM,SAAS,CAAC;AAEjB,wBAAgB,eAAe,CAAC,KAAK,EAAE,gBAAgB;sBAEnC,oBAAoB;wBAClB,sBAAsB;yBACrB,uBAAuB;EAE7C;AAED,MAAM,MAAM,cAAc,GAAG,UAAU,CAAC,OAAO,eAAe,CAAC,CAAC"}

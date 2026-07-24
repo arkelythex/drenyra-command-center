@@ -8,9 +8,7 @@
   "exports": {
     ".": "./src/index.ts"
   },
-  "dependencies": {
-    "@drenyra/pi": "workspace:*"
-  },
+  "dependencies": {},
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
