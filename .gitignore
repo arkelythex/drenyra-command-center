@@ -34,6 +34,25 @@ apps/web/.mf/
 .pi-subagents/
 **/.pi-lens/
 
+# Git worktrees (must live outside repo)
+/worktrees/
+
+# Local tool caches and state
+.ast-grep/
+.playwright-mcp/
+.codegraph/
+.incident/
+
+# Generated reports and baselines
+reports/
+baseline/
+baseline-flash/
+
+# Logs and temp files
+logs/
+*.log
+duration
+
 # Local build artifacts
 /apps/cli/drenyra
 /apps/cli/drenyra-macos
@@ -44,5 +63,11 @@ apps/web/.mf/
 ~/.bun/
 # Editor / IDE
 .tanstack/
+
+# Local symlinks to external projects
+/projects/
+
+# Test sprite artifacts (ephemeral)
+testsprite_tests/
 # Cross-stack fiscal contracts (generated)
 /contracts/
