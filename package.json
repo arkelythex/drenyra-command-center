@@ -185,13 +185,13 @@
     "ai": "^7.0.15",
     "better-auth": "^1.6.23",
     "drizzle-orm": "^0.45.2",
-    "fast-uri": "4.1.0",
+    "fast-uri": "4.1.1",
     "minimatch": "10.2.5",
     "path-to-regexp": "8.4.2",
     "picomatch": "4.0.5",
     "tailwindcss": "^4.3",
     "undici": "8.7.0",
-    "ws": "8.21.0",
+    "ws": "8.21.1",
     "zod": "^4.4.3"
   },
   "overrides": {
