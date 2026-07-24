@@ -1,9 +1,9 @@
 ---
 title: 'Drenyra Command Envelope 2026'
-description: 'Shared CLI/Web/API output envelope for scoped fiscal commands in Drenyra.'
+description: 'Shared CLI/Web/API output envelope for scoped fiscal commands in Drenyra FEE.'
 version: '1.0'
-last-updated: '2026-05-26'
-tags: ['architecture', 'drenyra', 'cli', 'web', 'command-center']
+last-updated: '2026-07-24'
+tags: ['architecture', 'drenyra', 'fee', 'cli', 'web']
 audience: ['architecture', 'engineering', 'product']
 status: 'active'
 ---
@@ -28,7 +28,7 @@ Framework-free contracts live in:
 Consumers import through:
 
 ```ts
-import { createDrenyraCommandEnvelope } from "@drenyra/domain/drenyra";
+import { createDrenyraCommandEnvelope } from '@drenyra/domain/drenyra'
 ```
 
 ## Supported command IDs
@@ -61,7 +61,6 @@ The factory fails closed when:
 - duplicate evidence IDs are provided;
 - a deterministic check references missing evidence;
 - a command marked `needs_approval` has no approval requirement.
-
 
 ## API producer v0
 

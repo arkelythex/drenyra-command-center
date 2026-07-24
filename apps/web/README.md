@@ -17,7 +17,7 @@ auto-generated: false
 
 ## ⏱ Si solo tenés tres minutos
 
-Drenyra Web es el SPA de Drenyra — la Infraestructura Nacional de Inteligencia Fiscal. Esto es lo que necesitás saber:
+Drenyra Web es el agentic fiscal command center de Drenyra — the verifiable financial operating system. Esto es lo que necesitás saber:
 
 | Si venís por...            | Respuesta corta                                                                                         |
 | -------------------------- | ------------------------------------------------------------------------------------------------------- |

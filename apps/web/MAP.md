@@ -9,7 +9,7 @@
 ## Start here
 
 - **Location:** `apps/web/`
-- **Product philosophy:** agentic fiscal command center. See [`docs/products/drenyra-product-philosophy.md`](../../docs/products/drenyra-product-philosophy.md).
+- **Product philosophy:** Drenyra Financial Engineering Environment. See [`docs/products/drenyra-product-philosophy.md`](../../docs/products/drenyra-product-philosophy.md).
 - **Package:** `@drenyra/web` — React 19 SPA
 - **Language:** TypeScript 6 + React 19 (JSX)
 - **Framework:** React 19 + Vite 8 + TanStack Router 1.103
@@ -22,13 +22,13 @@
 
 ## Product model
 
-The web app is Drenyra’s agentic fiscal command center. Design web work around supervised accounting outcomes, not disconnected ERP pages.
+The web app is Drenyra's Financial Engineering Environment command center. Design web work around supervised accounting outcomes, not disconnected ERP pages.
 
 Use this workspace model:
 
 ```text
 Left: outcome navigation and command entry
-Center: fiscal workspace, accounting artifact, or workflow
+Center: fiscal workspace, accounting artifact, or receipt-driven workflow
 Right: evidence, agent reasoning, approvals, and next actions
 ```
 

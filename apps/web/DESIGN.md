@@ -1,95 +1,95 @@
 ---
-version: "3.0.0"
-name: "Drenyra Fiscal Editorial"
-description: "Operations-first fiscal command center — warm editorial surfaces inspired by Cursor 3, adapted for SUNAT compliance."
+version: '3.0.0'
+name: 'Drenyra Fiscal Editorial'
+description: 'Operations-first fiscal command center — warm editorial surfaces inspired by Cursor 3, adapted for SUNAT compliance.'
 colors:
-  canvas-dark: "#161614"
-  canvas-light: "#f7f7f4"
-  ink-primary: "#e8e6e0"
-  ink-inverse: "#26251e"
-  accent-voltage: "#f54e00"
-  accent-fiscal: "#c45c2a"
-  surface-1: "#242422"
-  surface-2: "#2e2e2b"
-  surface-3: "#3a3a36"
-  hairline-dark: "rgba(255,255,255,0.08)"
-  hairline-light: "rgba(38,37,30,0.12)"
-  success: "oklch(0.65 0.22 150)"
-  warning: "oklch(0.75 0.22 80)"
-  danger: "oklch(0.55 0.25 25)"
-  info: "#c45c2a"
+  canvas-dark: '#161614'
+  canvas-light: '#f7f7f4'
+  ink-primary: '#e8e6e0'
+  ink-inverse: '#26251e'
+  accent-voltage: '#f54e00'
+  accent-fiscal: '#c45c2a'
+  surface-1: '#242422'
+  surface-2: '#2e2e2b'
+  surface-3: '#3a3a36'
+  hairline-dark: 'rgba(255,255,255,0.08)'
+  hairline-light: 'rgba(38,37,30,0.12)'
+  success: 'oklch(0.65 0.22 150)'
+  warning: 'oklch(0.75 0.22 80)'
+  danger: 'oklch(0.55 0.25 25)'
+  info: '#c45c2a'
 typography:
   display:
-    fontFamily: "Geist, Inter, ui-sans-serif"
-    fontSize: "2.25rem"
+    fontFamily: 'Geist, Inter, ui-sans-serif'
+    fontSize: '2.25rem'
     fontWeight: 400
-    lineHeight: "1.1"
-    letterSpacing: "-0.03em"
+    lineHeight: '1.1'
+    letterSpacing: '-0.03em'
   h1:
-    fontFamily: "Geist, Inter, ui-sans-serif"
-    fontSize: "1.875rem"
+    fontFamily: 'Geist, Inter, ui-sans-serif'
+    fontSize: '1.875rem'
     fontWeight: 500
-    lineHeight: "1.15"
-    letterSpacing: "-0.02em"
+    lineHeight: '1.15'
+    letterSpacing: '-0.02em'
   body-md:
-    fontFamily: "Geist, Inter, ui-sans-serif"
-    fontSize: "1rem"
+    fontFamily: 'Geist, Inter, ui-sans-serif'
+    fontSize: '1rem'
     fontWeight: 400
-    lineHeight: "1.5"
+    lineHeight: '1.5'
   data:
-    fontFamily: "Geist Mono, JetBrains Mono, ui-monospace"
-    fontSize: "0.875rem"
+    fontFamily: 'Geist Mono, JetBrains Mono, ui-monospace'
+    fontSize: '0.875rem'
     fontWeight: 400
-    lineHeight: "1.4"
+    lineHeight: '1.4'
 rounded:
-  cta: "8px"
-  panel: "12px"
-  sm: "6px"
+  cta: '8px'
+  panel: '12px'
+  sm: '6px'
 spacing:
-  xs: "4px"
-  sm: "8px"
-  md: "16px"
-  lg: "24px"
-  xl: "32px"
+  xs: '4px'
+  sm: '8px'
+  md: '16px'
+  lg: '24px'
+  xl: '32px'
 components:
   button-primary:
-    backgroundColor: "{colors.accent-voltage}"
-    textColor: "#ffffff"
-    rounded: "{rounded.cta}"
-    padding: "10px 16px"
+    backgroundColor: '{colors.accent-voltage}'
+    textColor: '#ffffff'
+    rounded: '{rounded.cta}'
+    padding: '10px 16px'
   button-secondary:
-    backgroundColor: "transparent"
-    textColor: "{colors.ink-primary}"
-    borderColor: "{colors.hairline-dark}"
-    rounded: "{rounded.cta}"
-    padding: "10px 16px"
+    backgroundColor: 'transparent'
+    textColor: '{colors.ink-primary}'
+    borderColor: '{colors.hairline-dark}'
+    rounded: '{rounded.cta}'
+    padding: '10px 16px'
   surface-panel:
-    backgroundColor: "{colors.surface-1}"
-    textColor: "{colors.ink-primary}"
-    borderColor: "{colors.hairline-dark}"
-    rounded: "{rounded.panel}"
-    padding: "24px"
+    backgroundColor: '{colors.surface-1}'
+    textColor: '{colors.ink-primary}'
+    borderColor: '{colors.hairline-dark}'
+    rounded: '{rounded.panel}'
+    padding: '24px'
   ai-right-rail:
-    backgroundColor: "{colors.surface-2}"
-    textColor: "{colors.ink-primary}"
-    rounded: "{rounded.panel}"
-    padding: "16px"
+    backgroundColor: '{colors.surface-2}'
+    textColor: '{colors.ink-primary}'
+    rounded: '{rounded.panel}'
+    padding: '16px'
 ---
 
 **Última actualización**: 2026-06-30
 
-> Contract for `apps/web` — **Fiscal Editorial** design system (replaces Glass & Steel).
+> Contract for `apps/web` — design system aligned with the **Financial Engineering Environment (FEE)** thesis.
 
 ## Three-minute summary
 
-| Question | Answer |
-|----------|--------|
-| System name | **Fiscal Editorial** |
-| Inspiration | Cursor 3 (editorial clarity), Codex App (command center), Linear (density) |
-| Product model | **Operations-first** — sidebar / workspace / evidence rail |
-| Tokens | `src/lib/design-tokens/tokens.dtcg.json` → `bun tokens:generate` |
-| Primary accent | Voltage `#f54e00` — CTAs, active nav, links only (≤5% pixels) |
-| Fiscal accent | `#c45c2a` — SUNAT/compliance badges only |
+| Question       | Answer                                                                        |
+| -------------- | ----------------------------------------------------------------------------- |
+| System name    | **Drenyra FEE Design** (evolved from Fiscal Editorial)                        |
+| Inspiration    | Cursor 3 (editorial clarity), Codex App (focused execution), Linear (density) |
+| Product model  | **Operations-first** — sidebar / fiscal workspace / evidence rail             |
+| Tokens         | `src/lib/design-tokens/tokens.dtcg.json` → `bun tokens:generate`              |
+| Primary accent | Voltage `#f54e00` — CTAs, active nav, links only (≤5% pixels)                 |
+| Fiscal accent  | `#c45c2a` — SUNAT/compliance badges only                                      |
 
 ## Rules
 
@@ -122,5 +122,5 @@ Before generating UI for Drenyra web:
 ## References
 
 - [Design influences 2026](../../docs/design/design-influences-2026.md)
-- [ADR-2026-FE-001](../../docs/adr/ADR-2026-FE-001-fiscal-editorial-rebrand.md)
-- [Operations-first UX](../../../drenyra/docs/design/operations-first-ai-assisted-2026.md)
+- [Design influences 2026](../../docs/design/design-influences-2026.md)
+- [Drenyra Product Philosophy](../../docs/products/drenyra-product-philosophy.md)

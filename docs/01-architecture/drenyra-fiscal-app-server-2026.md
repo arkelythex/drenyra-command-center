@@ -1,9 +1,9 @@
 ---
 title: 'Drenyra Fiscal App Server (DFAS) 2026'
-description: 'Canonical JSON-RPC protocol for governed fiscal agent threads, turns, evidence-native item streams and approval workflows across Web, CLI and API partners.'
+description: 'Canonical JSON-RPC protocol for governed fiscal agent threads, turns, evidence-native item streams and approval workflows across Web, CLI and API partners — part of the Financial Engineering Environment (FEE).'
 version: '1.0.0'
-last-updated: '2026-06-30'
-tags: ['architecture', 'drenyra', 'dfas', 'protocol', 'codex-inspired']
+last-updated: '2026-07-24'
+tags: ['architecture', 'drenyra', 'dfas', 'protocol', 'fee']
 audience: ['architecture', 'engineering', 'product']
 status: 'active'
 ---
@@ -12,7 +12,7 @@ status: 'active'
 
 ## Purpose
 
-DFAS is Drenyra's answer to the OpenAI Codex App Server — adapted for **governed fiscal decisions**, not code diffs.
+DFAS is Drenyra's JSON-RPC transport and runtime composition layer — adapted for **governed fiscal decisions** in the Financial Engineering Environment.
 
 **Governing principle:**
 
@@ -23,7 +23,7 @@ Decision record: [ADR-034](../02-adr/adr-034-drenyra-fiscal-app-server.md)
 
 ## Why not MCP as primary transport
 
-Codex evaluated MCP as the client protocol and rejected it for the App Server because MCP cannot support:
+The App Server pattern was chosen over MCP as primary transport because MCP cannot support:
 
 - bidirectional streaming item diffs;
 - server-initiated approval requests that pause a turn;
@@ -34,14 +34,14 @@ MCP remains for **external fiscal connectors** (SUNAT SOL, ERPNext, bank APIs) u
 
 ## Protocol overview
 
-| Property | Value |
-|---|---|
-| Wire format | JSON-RPC 2.0 |
-| Version constant | `DFAS_PROTOCOL_VERSION = "1.0.0"` |
-| Primary transport | WebSocket `wss://host/api/drenyra/v1/ws` |
-| Fallback transport | SSE `GET /api/drenyra/v1/threads/:threadId/events` |
-| CLI transport | HTTP long-poll or NDJSON over stdio relay |
-| Auth | Same session/Bearer as REST API + fiscal scope headers |
+| Property           | Value                                                  |
+| ------------------ | ------------------------------------------------------ |
+| Wire format        | JSON-RPC 2.0                                           |
+| Version constant   | `DFAS_PROTOCOL_VERSION = "1.0.0"`                      |
+| Primary transport  | WebSocket `wss://host/api/drenyra/v1/ws`               |
+| Fallback transport | SSE `GET /api/drenyra/v1/threads/:threadId/events`     |
+| CLI transport      | HTTP long-poll or NDJSON over stdio relay              |
+| Auth               | Same session/Bearer as REST API + fiscal scope headers |
 
 ### Required fiscal scope
 
@@ -63,28 +63,28 @@ Incomplete scope → `error.code = DRENYRA_SCOPE_INVALID` (fail-closed).
 
 ### Client → Server (requests)
 
-| Method | Params | Description |
-|---|---|---|
-| `thread/create` | `{ title, fiscalScope, sourceSurface, linkedCaseId? }` | Create scoped fiscal thread |
-| `thread/resume` | `{ threadId, fiscalScope }` | Resume existing thread (scope must match) |
-| `thread/subscribe` | `{ threadId, fiscalScope }` | Subscribe to item stream (multi-client) |
-| `thread/unsubscribe` | `{ threadId, subscriptionId }` | Remove subscription |
-| `turn/start` | `{ threadId, prompt, skillId?, orchestrationMode? }` | Start turn; optional Lexori skill |
-| `turn/cancel` | `{ threadId, turnId, reason? }` | Cancel in-flight turn |
-| `approval/respond` | `{ approvalId, decision, reason?, fiscalScope }` | `allow` \| `deny` \| `cancel` |
+| Method               | Params                                                 | Description                               |
+| -------------------- | ------------------------------------------------------ | ----------------------------------------- |
+| `thread/create`      | `{ title, fiscalScope, sourceSurface, linkedCaseId? }` | Create scoped fiscal thread               |
+| `thread/resume`      | `{ threadId, fiscalScope }`                            | Resume existing thread (scope must match) |
+| `thread/subscribe`   | `{ threadId, fiscalScope }`                            | Subscribe to item stream (multi-client)   |
+| `thread/unsubscribe` | `{ threadId, subscriptionId }`                         | Remove subscription                       |
+| `turn/start`         | `{ threadId, prompt, skillId?, orchestrationMode? }`   | Start turn; optional Lexori skill         |
+| `turn/cancel`        | `{ threadId, turnId, reason? }`                        | Cancel in-flight turn                     |
+| `approval/respond`   | `{ approvalId, decision, reason?, fiscalScope }`       | `allow` \| `deny` \| `cancel`             |
 
 ### Server → Client (notifications)
 
-| Method | Payload | Description |
-|---|---|---|
-| `item/appended` | `DfasItemStreamEntry` | New item on thread stream |
-| `turn/status` | `{ turnId, status, fiscalScope }` | Turn lifecycle update |
-| `thread/status` | `{ threadId, status, fiscalScope }` | Thread lifecycle update |
+| Method          | Payload                             | Description               |
+| --------------- | ----------------------------------- | ------------------------- |
+| `item/appended` | `DfasItemStreamEntry`               | New item on thread stream |
+| `turn/status`   | `{ turnId, status, fiscalScope }`   | Turn lifecycle update     |
+| `thread/status` | `{ threadId, status, fiscalScope }` | Thread lifecycle update   |
 
 ### Server → Client (server-initiated requests)
 
-| Method | Payload | Description |
-|---|---|---|
+| Method              | Payload                                                    | Description                       |
+| ------------------- | ---------------------------------------------------------- | --------------------------------- |
 | `approval/required` | `{ approvalId, turnId, riskLevel, summary, evidenceRefs }` | Pauses turn until client responds |
 
 Client MUST respond to `approval/required` with `approval/respond` or `turn/cancel`.
@@ -93,19 +93,19 @@ Client MUST respond to `approval/required` with `approval/respond` or `turn/canc
 
 DFAS items extend Brain items with fiscal-native types:
 
-| Item type | Payload | UI zone |
-|---|---|---|
-| `user_message` | `{ text }` | Center workspace |
-| `assistant_message` | `{ text }` | Center workspace |
-| `evidence` | `DrenyraCommandEvidenceRef[]` | Right inspector |
-| `gate` | `{ phaseId, passed, reason, evidence? }` | Agent dock |
-| `envelope` | `DrenyraCommandEnvelope` | Review mode |
-| `capability_decision` | `DrenyraCapabilityEvaluation` | Audit panel |
-| `approval_required` | `{ approvalId, riskLevel, summary }` | Review mode |
-| `approval_resolved` | `{ approvalId, status, decidedBy }` | Review mode |
-| `truth_promoted` | `{ eventId, evidenceRootHash, validatorVersion }` | Audit trail |
-| `agent_delegation` | `{ agentId, tier, status, summary }` | Agent dock |
-| `error` | `{ code, message, recoverable }` | Center workspace |
+| Item type             | Payload                                           | UI zone          |
+| --------------------- | ------------------------------------------------- | ---------------- |
+| `user_message`        | `{ text }`                                        | Center workspace |
+| `assistant_message`   | `{ text }`                                        | Center workspace |
+| `evidence`            | `DrenyraCommandEvidenceRef[]`                     | Right inspector  |
+| `gate`                | `{ phaseId, passed, reason, evidence? }`          | Agent dock       |
+| `envelope`            | `DrenyraCommandEnvelope`                          | Review mode      |
+| `capability_decision` | `DrenyraCapabilityEvaluation`                     | Audit panel      |
+| `approval_required`   | `{ approvalId, riskLevel, summary }`              | Review mode      |
+| `approval_resolved`   | `{ approvalId, status, decidedBy }`               | Review mode      |
+| `truth_promoted`      | `{ eventId, evidenceRootHash, validatorVersion }` | Audit trail      |
+| `agent_delegation`    | `{ agentId, tier, status, summary }`              | Agent dock       |
+| `error`               | `{ code, message, recoverable }`                  | Center workspace |
 
 Surfaces MUST NOT drop evidence, checks, risk, approval, diff or trace when rendering envelopes.
 
@@ -283,35 +283,35 @@ sequenceDiagram
 
 ## Error codes
 
-| Code | HTTP equiv | Meaning |
-|---|---|---|
-| `DRENYRA_SCOPE_INVALID` | 400 | Incomplete or invalid fiscal scope |
-| `DRENYRA_SCOPE_MISMATCH` | 403 | Thread scope ≠ request scope |
-| `DRENYRA_THREAD_NOT_FOUND` | 404 | Thread id unknown in scope |
-| `DRENYRA_TURN_IN_PROGRESS` | 409 | Cannot start turn while another runs |
-| `DRENYRA_CAPABILITY_DENIED` | 403 | Capability matrix denied tool |
-| `DRENYRA_APPROVAL_EXPIRED` | 410 | Approval window closed |
-| `DRENYRA_PROTOCOL_VERSION` | 400 | Unsupported protocol version |
+| Code                        | HTTP equiv | Meaning                              |
+| --------------------------- | ---------- | ------------------------------------ |
+| `DRENYRA_SCOPE_INVALID`     | 400        | Incomplete or invalid fiscal scope   |
+| `DRENYRA_SCOPE_MISMATCH`    | 403        | Thread scope ≠ request scope         |
+| `DRENYRA_THREAD_NOT_FOUND`  | 404        | Thread id unknown in scope           |
+| `DRENYRA_TURN_IN_PROGRESS`  | 409        | Cannot start turn while another runs |
+| `DRENYRA_CAPABILITY_DENIED` | 403        | Capability matrix denied tool        |
+| `DRENYRA_APPROVAL_EXPIRED`  | 410        | Approval window closed               |
+| `DRENYRA_PROTOCOL_VERSION`  | 400        | Unsupported protocol version         |
 
 ## Transport mapping
 
-| Surface | Primary | Fallback |
-|---|---|---|
-| Web Command Center | WebSocket | SSE |
-| Go CLI | NDJSON stdio relay or HTTP | REST compat v0 |
-| Automations | WebSocket | REST |
-| Partner API | WebSocket + scoped API key | — |
+| Surface            | Primary                    | Fallback       |
+| ------------------ | -------------------------- | -------------- |
+| Web Command Center | WebSocket                  | SSE            |
+| Go CLI             | NDJSON stdio relay or HTTP | REST compat v0 |
+| Automations        | WebSocket                  | REST           |
+| Partner API        | WebSocket + scoped API key | —              |
 
 ## Compat layer v0
 
 Existing REST endpoints remain until all surfaces migrate:
 
-| Legacy | DFAS equivalent |
-|---|---|
-| `POST /api/drenyra/brain/threads` | `thread/create` |
-| `POST /api/drenyra/brain/threads/:id/turns` | `turn/start` |
-| `GET /api/drenyra/runs/:id/events` | `thread/subscribe` + `item/appended` |
-| `POST /api/drenyra/commands/*` | `turn/start` with command envelope items |
+| Legacy                                      | DFAS equivalent                          |
+| ------------------------------------------- | ---------------------------------------- |
+| `POST /api/drenyra/brain/threads`           | `thread/create`                          |
+| `POST /api/drenyra/brain/threads/:id/turns` | `turn/start`                             |
+| `GET /api/drenyra/runs/:id/events`          | `thread/subscribe` + `item/appended`     |
+| `POST /api/drenyra/commands/*`              | `turn/start` with command envelope items |
 
 Kernel v0 MUST delegate legacy routes to the same TurnController instance used by DFAS v1.
 

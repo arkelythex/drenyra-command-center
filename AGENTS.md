@@ -1,6 +1,6 @@
 # DRENYRA Engineering Rules
 
-DRENYRA builds Drenyra, the Infraestructura Nacional de Inteligencia Fiscal. Treat fiscal correctness, tenant isolation, and auditability as product safety requirements. Product direction lives in [`docs/products/drenyra-product-philosophy.md`](docs/products/drenyra-product-philosophy.md).
+DRENYRA builds Drenyra, the verifiable financial operating system for businesses, accountants, and governments across Latin America. Treat fiscal correctness, tenant isolation, and auditability as product safety requirements. Product direction lives in [`docs/products/drenyra-product-philosophy.md`](docs/products/drenyra-product-philosophy.md).
 
 ## Non-negotiables
 
@@ -47,14 +47,15 @@ Each app has a `MAP.md` (e.g. `apps/web/MAP.md`) with its architecture, routes, 
 
 ## Product philosophy guardrails
 
-Drenyra is an agentic fiscal intelligence platform, not a generic ERP with a chatbot. Web, CLI, agents, and docs must follow the canonical [Drenyra product philosophy](docs/products/drenyra-product-philosophy.md).
+Drenyra is the **verifiable financial operating system for businesses, accountants, and governments** — a Financial Engineering Environment that applies software engineering rigor (Git-like versioning, CI/CD, specialized agents, specs, receipts) to accounting. Web, CLI, agents, and docs must follow the canonical [Drenyra product philosophy](docs/products/drenyra-product-philosophy.md).
 
-- Make fiscal correctness, tenant/RUC scope, auditability, reversibility, and human approval visible product guarantees.
-- Treat external products as references for quality, not interfaces to copy.
-- Require evidence, confidence, fiscal scope, approval state, and reversal path for agentic accounting recommendations.
-- Keep the web app aligned with the agentic fiscal command center model.
-- Keep the CLI aligned with the Gentleman Fiscal Terminal model: terminal-native, scriptable, fiscal-safe, and reviewable.
-- Do not ship vague AI polish without tests, docs, evidence, and reviewable acceptance criteria.
+- Treat fiscal correctness, tenant/RUC scope, auditability, reversibility, and human approval as visible product guarantees.
+- Every material workflow starts with a spec (FSD — Fiscal Specification-Driven Execution).
+- Every action generates an immutable receipt (RED — Receipt-Driven Execution).
+- Use the Ledger-as-Git model: commits = atomic accounting changes, diffs = explained differences, PRs = accounting review packages.
+- Apply CI/CD to accounting: static checks → accounting tests → fiscal tests → risk tests → gated deployment.
+- Risk-based human-in-the-loop: R0 (read, high autonomy) → R3 (irreversible, explicit dual approval).
+- Never ship vague AI polish without tests, docs, evidence, and reviewable acceptance criteria.
 
 ## Architecture and domain rules
 

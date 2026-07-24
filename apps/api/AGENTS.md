@@ -7,7 +7,7 @@
 
 ## 1. Project Overview
 
-Backend for **Drenyra**, the Infraestructura Nacional de Inteligencia Fiscal. Single backend serving the web app (`apps/web`), Drenyra CLI (`apps/cli`), and external integrations (SUNAT, OSE, banking providers). Covers: Peruvian electronic invoicing (UBL 2.1), SIRE electronic books, multi-RUC fiscal compliance, AI document processing, banking reconciliation, and agent swarms. ~630 `.ts` + 290 test files.
+Backend for **Drenyra**, the verifiable financial operating system for businesses, accountants, and governments. Single backend serving the web app (`apps/web`), Drenyra CLI (`apps/cli`), and external integrations (SUNAT, OSE, banking providers). Covers: Peruvian electronic invoicing (UBL 2.1), SIRE electronic books, multi-RUC fiscal compliance, AI document processing, banking reconciliation, and agent swarms. ~630 `.ts` + 290 test files.
 
 ## 2. Stack
 

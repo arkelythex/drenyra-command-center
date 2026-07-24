@@ -19,11 +19,11 @@ bun run dev:web
 bun run dev:check      # infra smoke (add CHECK_API=1 INCLUDE_WEB=1 when app servers are up)
 ```
 
-| Service | URL |
-|---------|-----|
-| Web (Digits / Command Center) | `http://localhost:5174` |
-| API (Codex engine) | `http://localhost:3000` |
-| Engram (evidence sidecar) | `http://localhost:8733/health` |
+| Service                      | URL                            | Purpose                                  |
+| ---------------------------- | ------------------------------ | ---------------------------------------- |
+| Web (Drenyra Command Center) | `http://localhost:5174`        | Fiscal command center SPA                |
+| API (Fiscal API)             | `http://localhost:3000`        | Elysia vertical slices, fiscal workflows |
+| Engram (evidence sidecar)    | `http://localhost:8733/health` | Phase-gate evidence, fiscal audit trails |
 
 ## Cross-repo dev workflow
 
@@ -41,3 +41,4 @@ Open shell at `http://localhost:5173/drenyra` → redirects to Drenyra Command C
 
 - [Product topology](../canon/product-topology.md)
 - [ADR-034 DFAS](../02-adr/adr-034-drenyra-fiscal-app-server.md)
+- [Drenyra Product Philosophy](../products/drenyra-product-philosophy.md)

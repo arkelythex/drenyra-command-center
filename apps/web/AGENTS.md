@@ -6,7 +6,7 @@
 
 ## 1. Overview
 
-React SPA for the Drenyra platform: fiscal dashboards, invoice Kanban, bank reconciliation, cashflow projections, SUNAT compliance, AI agent swarm, and audit trails. ~1,089 source files, 40 feature modules, 47 routes.
+React SPA for the Drenyra Financial Engineering Environment: fiscal dashboards, invoice Kanban, bank reconciliation, cashflow projections, SUNAT compliance, AI agent swarm, and audit trails. ~1,089 source files, 40 feature modules, 47 routes.
 
 ## 2. Stack
 
@@ -96,14 +96,14 @@ apps/web/src/
 - **Money** — never use raw numbers/floats. Use `n()` from design system or domain `Money` value object.
 - **Imports** — barrel files at feature/component index. Path aliases via `@/` → `src/`.
 
-## 6. Design System (Fiscal Editorial v3)
+## 6. Design System (FEE Design)
 
-Editorial command-center theme (Cursor 3–inspired). Tokens at `src/lib/design-tokens/tokens.dtcg.json` v3.0.0.
+Command-center theme aligned with the Financial Engineering Environment. Tokens at `src/lib/design-tokens/tokens.dtcg.json` v3.0.0.
 
 - `--color-voltage-*` / `--accent` — primary CTA accent `#f54e00` (≤5% pixels)
 - `--color-fiscal-*` — SUNAT/compliance secondary `#c45c2a`
 - `--surface-*`, `--text-*` — flat editorial surfaces (no decorative glass)
-- `SurfacePanel` — canonical card surface (replaces GlassCard)
+- `SurfacePanel` — canonical card surface
 - `FiscalEditorialShell` — unified shell (`operational` | `command-center`)
 - Complexity modes: `basic` / `advanced` / `expert` via UXModeToggle
 
@@ -157,22 +157,12 @@ init → explore → propose → spec → design → tasks → apply → verify 
 - `verify` — validate against specs.
 - `archive` — sync delta → main specs, close.
 
-Worktrees at `~/Documents/PROYECTOS/drenyra/worktrees/drenyra/<task-name>`, branch `codex/<task-name>`.
+Worktrees at `~/Documents/PROYECTOS/Drenyra/worktrees/<task-name>`, branch `feat/<task-name>`.
 
 ### Delegation Triggers
 
 When working on web features, delegate to sub-agents when:
-- **4-file rule**: change touches 4+ files across features, routes, or components → use `frontend` or `frontend-builder`
-- **Design system change**: modifying tokens, shadcn components, or layout → pair with `frontend-designer`
-- **Route addition**: new route with loader, search params, and query options → `frontend-builder` with TanStack Router skill
-- **SDD change**: full SDD cycle for fiscal/audit features → `sdd-*` agents
-- **E2E test addition**: new Playwright test for critical fiscal path → `tester` with Playwright skill
 
-> Full reference: [Gentleman Philosophy — Delegation Triggers](../../docs/meta/gentleman-philosophy.md#delegation-triggers-para-agentes)
-
-### Delegation Triggers
-
-When working on web features, delegate to sub-agents when:
 - **4-file rule**: change touches 4+ files across features, routes, or components → use `frontend` or `frontend-builder`
 - **Design system change**: modifying tokens, shadcn components, or layout → pair with `frontend-designer`
 - **Route addition**: new route with loader, search params, and query options → `frontend-builder` with TanStack Router skill

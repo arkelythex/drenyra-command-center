@@ -11,7 +11,7 @@
 
 ## Context
 
-Within the [Platform vs Product split](https://github.com/drenyra/Drenyra/blob/main/docs/02-adr/adr-033-platform-product-split.md), Drenyra is the **Codex App equivalent** — harness + clients ship from this repo. Drenyra is the **ChatGPT Platform equivalent** — shell, IAM, MF host.
+Within the [Platform vs Product split](https://github.com/drenyra/Drenyra/blob/main/docs/02-adr/adr-033-platform-product-split.md), Drenyra ships the Financial Engineering Environment — harness + clients from this repo. Drenyra is the platform shell, IAM, and MF host.
 
 Drenyra today exposes **four parallel runtime entry points**:
 
@@ -20,9 +20,9 @@ Drenyra today exposes **four parallel runtime entry points**:
 - Command envelopes (`/api/drenyra/commands/*`)
 - Harness execution (`/api/fiscal-command-center/harness/*`)
 
-Each surface (Web, CLI, API partners) integrates differently. OpenAI solved this with the **Codex App Server** — bidirectional JSON-RPC, thread management, item streaming, server-initiated approvals.
+Each surface (Web, CLI, API partners) integrates differently. OpenAI solved this with their App Server pattern — bidirectional JSON-RPC, thread management, item streaming, server-initiated approvals. Drenyra adapts this pattern for fiscal domain.
 
-Drenyra cannot copy Codex verbatim: fiscal operations require **mandatory scope**, **evidence chains**, **deterministic promotion boundaries**, and **period-level orchestration**.
+Drenyra's requirements are distinct: fiscal operations require **mandatory scope**, **evidence chains**, **deterministic promotion boundaries**, **receipt-driven execution (RED)**, and **period-level orchestration**.
 
 ## Decision
 
@@ -39,21 +39,21 @@ Introduce the **Drenyra Fiscal App Server (DFAS)** as the canonical transport an
 
 Single composition module at `apps/api/src/features/drenyra/kernel/`:
 
-| Component | Wraps |
-|---|---|
-| `FiscalThreadManager` | Brain threads + run metadata |
-| `TurnController` | Turn lifecycle + approval pause/resume |
-| `DelegationRouter` | `@drenyra/harness` tier graph |
-| `OrchestrationRouter` | Transaction layer (Mastra) + Period layer (phase orchestrator) |
-| `CapabilityGuard` | `evaluateDrenyraCapability` |
-| `SkillInjector` | Lexori skill registry |
-| `TruthPromotionBoundary` | Fiscal Truth Engine only |
+| Component                | Wraps                                                          |
+| ------------------------ | -------------------------------------------------------------- |
+| `FiscalThreadManager`    | Brain threads + run metadata                                   |
+| `TurnController`         | Turn lifecycle + approval pause/resume                         |
+| `DelegationRouter`       | `@drenyra/harness` tier graph                                  |
+| `OrchestrationRouter`    | Transaction layer (Mastra) + Period layer (phase orchestrator) |
+| `CapabilityGuard`        | `evaluateDrenyraCapability`                                    |
+| `SkillInjector`          | Lexori skill registry                                          |
+| `TruthPromotionBoundary` | Fiscal Truth Engine only                                       |
 
 REST endpoints remain **compat layer v0**. DFAS WebSocket at `/api/drenyra/v1/ws` is **v1**.
 
 ### 3. MCP is not the primary transport
 
-MCP remains for **external tool connectors** (SUNAT, ERPNext). Drenyra `os-supervisor` registers Drenyra MCP plugins at platform level. DFAS is for **Drenyra clients** (Digits web, CLI, automations).
+MCP remains for **external tool connectors** (SUNAT, ERPNext). Drenyra `os-supervisor` registers Drenyra MCP plugins at platform level. DFAS is for **Drenyra clients** (Web SPA, CLI, automations).
 
 ### 4. Fiscal Guardian
 
@@ -61,12 +61,12 @@ Auto-approval for low-risk `read` / `explain` / `draft`. `material_action` **nev
 
 ### 5. Repo ownership (aligned with ADR-033)
 
-| Artifact | Canonical location |
-|---|---|
-| DFAS ADR, spec, SDD tasks | **Drenyra** `docs/` |
-| Domain contracts (`dfas-*`, `guardian-*`, `skills-types`) | **Drenyra** `packages/domain/src/drenyra/` |
-| Runtime kernel implementation | **Drenyra** `apps/api/src/features/drenyra/kernel/` |
-| Drenyra copies | **Deprecated mirrors** — no new DFAS code |
+| Artifact                                                  | Canonical location                                  |
+| --------------------------------------------------------- | --------------------------------------------------- |
+| DFAS ADR, spec, SDD tasks                                 | **Drenyra** `docs/`                                 |
+| Domain contracts (`dfas-*`, `guardian-*`, `skills-types`) | **Drenyra** `packages/domain/src/drenyra/`          |
+| Runtime kernel implementation                             | **Drenyra** `apps/api/src/features/drenyra/kernel/` |
+| Drenyra copies                                            | **Deprecated mirrors** — no new DFAS code           |
 
 ## Platform ↔ Product boundary
 
@@ -92,6 +92,5 @@ Fase 1 (platform split): MF remote + REST API. **Fase 2 (this ADR implementation
 - [Product topology](../canon/product-topology.md)
 - [DFAS Protocol Spec](../01-architecture/drenyra-fiscal-app-server-2026.md)
 - [Sync playbook](../05-development/drenyra-repo-sync.md)
-- [SDD Tasks](../superpowers/specs/drenyra-fiscal-app-server-tasks-2026.md)
 - Drenyra [drenyra-connection.md](https://github.com/drenyra/Drenyra/blob/main/docs/cross-repo/drenyra-connection.md)
-- [OpenAI Codex App Server](https://openai.com/index/unlocking-the-codex-harness/)
+- [OpenAI Codex App Server](https://openai.com/index/unlocking-the-codex-harness/) (design reference)

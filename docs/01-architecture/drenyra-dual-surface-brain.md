@@ -2,7 +2,7 @@
 
 **Última actualización**: 2026-06-30
 
-Drenyra is API/domain-first. React Web and Go CLI are UX adapters over the same fiscal command center and Brain timeline.
+Drenyra is API/domain-first. React Web and Go CLI are UX adapters over the same Financial Engineering Environment and Brain timeline.
 
 ## DFAS transport (v1)
 
@@ -47,9 +47,9 @@ REST Brain endpoints (`/api/drenyra/brain/*`) and runtime runs (`/api/drenyra/ru
 - Capability matrix + guardian evaluated before tool execution.
 - Docs updated when behavior changes.
 
-## Fiscal sovereignty positioning
+## FEE positioning
 
-Drenyra is not a CRUD accounting dashboard. It is the Fiscal Agent Command Center over DRENYRA Fiscal Ontology and Fiscal Truth Mesh. See `docs/01-architecture/drenyra-fiscal-sovereignty-platform.md`.
+Drenyra is not a CRUD accounting dashboard. It is the verifiable financial operating system over the Ledger, Evidence Graph, and receipt-driven execution (RED). See `docs/products/drenyra-product-philosophy.md`.
 
 ## Related docs
 

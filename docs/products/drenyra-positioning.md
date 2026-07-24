@@ -1,25 +1,53 @@
 # Drenyra Strategic Positioning
 
-**Última actualización:** 2026-07-06
+**Última actualización:** 2026-07-24
 **Audiencia:** Inversores, partners, estrategia de producto
+**Alineado con:** [Drenyra Product Philosophy — Definitive Thesis](./drenyra-product-philosophy.md)
 
 ---
 
 ## Elevator Pitch
 
-> Drenyra es el **sistema operativo contable con IA** para contadores, estudios contables y pymes de LATAM: automatiza, valida y organiza obligaciones tributarias, evidencias, flujos SUNAT/SIRE/PLE y revisión profesional — **sin cajas negras**.
+> Drenyra es el **sistema operativo financiero verificable** para empresas, contadores y gobiernos de Latinoamérica: una plataforma donde agentes especializados ejecutan, motores deterministas validan, profesionales controlan las decisiones materiales, y toda acción permanece respaldada por evidencia inmutable.
 
 ---
 
-## El ADN: AI + Compliance + Accounting + Evidence + LATAM
+## La Tesis: Financial Engineering Environment
 
-| Fuerza | Qué significa |
-|--------|--------------|
-| **AI** | Agentes que proponen, redactan y preparan; humanos que apruepan. No hay automatización sin supervisión. |
-| **Compliance** | Reglas fiscales deterministas — SUNAT, RUC, IGV, SIRE, CDR, detracciones, PLE — traducidas a lógica testable y replayable. |
-| **Accounting** | Contabilidad real, no solo facturación electrónica. Cash-flow, close, conciliación, libro diario, plan de cuentas. |
-| **Evidence** | Cada decisión con trail completo: `source → normalized → validated → proposed → approved → promoted`. Sin cajas negras. |
-| **LATAM** | Construido desde Perú para la realidad fiscal latinoamericana. No adaptado de un producto US/EU. |
+Drenyra no es una app contable con IA. Es una **nueva disciplina**:
+
+> **Financial Engineering Operations: contabilidad administrada con especificaciones, versiones, agentes, validaciones, revisiones, despliegues y evidencia verificable.**
+
+La inspiración viene de traducir el stack de ingeniería de software moderna al dominio contable:
+
+```text
+Git + GitHub + terminal + IDE + agentes + CI/CD
+         ↓
+Ledger + Evidence Graph + Fiscal Workspace + Agents + Validation Pipeline
+```
+
+| Ingeniería de software | Drenyra                                        |
+| ---------------------- | ---------------------------------------------- |
+| Git repository         | Financial workspace                            |
+| Commit                 | Atomic accounting change                       |
+| Diff                   | Explained financial difference                 |
+| Branch                 | Scenario, draft, or proposal                   |
+| Pull request           | Accounting review package                      |
+| CI/CD pipeline         | Automated fiscal validation + gated deployment |
+| Receipt                | Cryptographic proof of execution               |
+
+---
+
+## El ADN: Financial Engineering × LATAM
+
+| Fuerza             | Qué significa                                                                                |
+| ------------------ | -------------------------------------------------------------------------------------------- |
+| **Spec-Driven**    | Cada workflow material empieza con una especificación fiscal (FSD).                          |
+| **Receipt-Driven** | Cada acción genera un receipt inmutable con input, modelo, reglas, y output hasheados (RED). |
+| **Ledger as Git**  | Branches, diffs, PRs, y merge aplicados a la contabilidad.                                   |
+| **Agent-Native**   | 13 agentes especializados orquestados por un Conductor, no un superagente monolítico.        |
+| **Evidence-First** | Toda decisión con trail completo: `source → validated → proposed → approved → executed`.     |
+| **LATAM-First**    | Country Packs componibles: Perú → Colombia → Chile → Ecuador → México → Brasil.              |
 
 ---
 
@@ -31,74 +59,141 @@ Los contadores, estudios contables y pymes de LATAM operan con herramientas desc
 - Portales SUNAT separados (facturación, SIRE, PLE, detracciones)
 - Hojas de cálculo para seguimiento y conciliación
 - Carpetas compartidas para evidencia
+- WhatsApp y correo para coordinación
 - La IA promete automatización, pero llega en **cajas negras** que ningún contador puede auditar
 
-**Resultado:** errores, multas, horas perdidas en tareas repetitivas, y desconfianza en la automatización.
+**Resultado:** errores, multas, horas perdidas, y desconfianza en la automatización.
 
 ---
 
-## La Tesis: Infraestructura, no App
+## La Solución: Infraestructura, no App
 
-Drenyra no es una app bonita. Es una **infraestructura contable**. La diferencia es fundamental:
-
-| App contable | Drenyra (infraestructura) |
-|---|---|
-| Captura datos | Orquesta obligaciones tributarias |
-| Muestra reportes | Automatiza flujos SUNAT/SIRE/PLE |
-| IA como feature | IA gobernada con evidencia y supervisión |
-| Single-tenant | Multi-RUC, multi-régimen, multi-LATAM |
-| Caja negra | Cada decisión trazable y auditable |
+| App contable tradicional | Drenyra (infraestructura)                                     |
+| ------------------------ | ------------------------------------------------------------- |
+| Captura datos            | Orquesta obligaciones tributarias                             |
+| Muestra reportes         | Automatiza flujos SUNAT/SIRE/PLE con validación determinista  |
+| IA como feature          | Agentes especializados gobernados con evidencia y supervisión |
+| Single-tenant            | Multi-RUC, multi-régimen, multi-país                          |
+| Caja negra               | Cada decisión trazable, versionada y auditable                |
+| Interfaz rígida          | Workspace composable: Explorer                                | Canvas | Agent/Evidence |
 
 ---
 
-## Estrategia de Crecimiento
+## Las 10 Dimensiones de Drenyra
 
-### Principio rector
+Drenyra no es una sola cosa. Es simultáneamente:
 
-> **No busques financiación primero. Buscá validación que te vuelva financiable.**
+1. **Accounting Operating System** — ledger universal, multi-entidad, multi-moneda
+2. **Fiscal Intelligence Platform** — reglas versionadas, detección de riesgo, planeamiento
+3. **Agent Execution Environment** — 13 agentes especializados con modelos y permisos independientes
+4. **Professional Collaboration Network** — revisión, aprobación, delegación entre contadores
+5. **Financial Evidence Infrastructure** — grafo de evidencia inmutable, hashes, firmas
+6. **API & Developer Platform** — DFP (Drenyra Financial Protocol), CLI, SDK
+7. **Accounting Knowledge Marketplace** — skills contables versionadas, firmadas, auditables
+8. **Government Interoperability Layer** — SUNAT, DIAN, SAT, SII, SRI normalizados
+9. **Continuous Audit & Control System** — CI/CD contable, tests de invariantes, detección de fraude
+10. **Latin American Financial Infrastructure** — Country Packs, red de estudios contables, credibilidad institucional
 
-El dinero llega cuando Drenyra demuestra que es una infraestructura contable con:
+---
 
-1. **Clientes reales** — Resolviendo problemas urgentes (multas SUNAT, SIRE deadlines, cierres mensuales)
-2. **Problema urgente** — El compliance fiscal no es opcional; es ley. El dolor es inmediato y recurrente.
-3. **Ventaja técnica** — Determinismo + evidencia + agentes gobernados = moat real contra ERPs legacy y soluciones de IA genérica.
-4. **Potencial LATAM** — Perú es la puerta de entrada a un mercado de millones de contribuyentes y miles de estudios contables en la región.
+## El Moat
 
-### Qué NO hacer
+La interfaz puede copiarse. Los agentes pueden copiarse. El moat de Drenyra es compuesto:
 
-- No pedir financiamiento sin tracción
-- No posicionarse como "una app de contabilidad con IA"
-- No competir por precio con ERPs legacy
-- No prometer automatización total sin supervisión humana
+```text
+Moat =
+  fiscal knowledge graph
++ execution history
++ country packs
++ validated workflows
++ evidence graph
++ accounting firm network
++ trusted integrations
++ proprietary evaluations
++ professional review data
++ institutional credibility
+```
+
+---
+
+## Estrategia de Crecimiento: La Cuña Peruana
+
+No comenzar vendiendo "todo para todas las empresas".
+
+> **Cuña inicial: Drenyra Close & SIRE Workspace para estudios contables multiempresa.**
+
+```text
+1. SIRE + documentos + conciliación      ← cuña inicial
+2. Cierre mensual
+3. General ledger
+4. Facturación y cobranza
+5. Tesorería
+6. Nómina
+7. Planeamiento y reporting
+8. Auditoría continua
+9. ERP completo
+10. Financial network
+```
+
+Promesa inicial: **"Cierra 100 empresas como si fueran un solo sistema."**
+
+---
+
+## Secuencia Estratégica
+
+```text
+Perú-native
+→ accountant-native
+→ workflow-native
+→ agent-native
+→ evidence-native
+→ platform-native
+→ Latin America-native
+→ globally competitive
+```
 
 ---
 
 ## Competencia y Diferenciación
 
-| Competidor | Enfoque | Debilidad |
-|---|---|---|
-| **ERPs legacy** (SAP, Oracle, etc.) | Enterprise, caro, rígido | No resuelven SUNAT/SIRE específico, no tienen IA |
-| **Facturadores electrónicos** (Nubox, etc.) | Solo facturación | No hacen contabilidad ni orquestación fiscal completa |
-| **IA genérica** (ChatGPT, Copilot) | Propósito general | Sin determinismo fiscal, sin evidencia, sin compliance |
-| **Drenyra** | AI + compliance + accounting + evidence + LATAM | — |
+| Competidor                         | Enfoque                       | Debilidad                                              |
+| ---------------------------------- | ----------------------------- | ------------------------------------------------------ |
+| **Digits**                         | AI-native accounting (US)     | Sin profundidad fiscal LATAM, sin multi-RUC            |
+| **QuickBooks/Xero**                | SMB accounting global         | Agentes incipientes, compliance LATAM superficial      |
+| **ERPs legacy** (SAP, Oracle)      | Enterprise, caro, rígido      | No resuelven SUNAT/SIRE, no son agent-natives          |
+| **Facturadores electrónicos**      | Solo facturación              | No hacen contabilidad ni orquestación fiscal           |
+| **IA genérica** (ChatGPT, Copilot) | Propósito general             | Sin determinismo fiscal, sin evidencia, sin compliance |
+| **Drenyra**                        | Financial Engineering × LATAM | —                                                      |
 
 ---
 
-## Qué Drenyra NO es
+## Lo que Drenyra NO es
 
-- ❌ No es un ERP
-- ❌ No es un facturador electrónico
-- ❌ No es un chatbot con esteroides
-- ❌ No es una app de finanzas personales
-- ❌ No es una herramienta de reporting
+- ❌ Un chat flotante pegado a un ERP
+- ❌ Un facturador electrónico
+- ❌ Una colección de dashboards
+- ❌ Un wrapper de modelos LLM
+- ❌ Un RPA frágil de SUNAT
+- ❌ Un ERP genérico que intenta copiar SAP
+- ❌ Un agente autónomo que contabiliza sin evidencia
 
-Drenyra es el **sistema operativo contable con IA** que integra todo lo anterior en una plataforma unificada, determinista, auditable y construida para LATAM.
+---
+
+## Principio Rector
+
+> **No busques financiación primero. Buscá validación que te vuelva financiable.**
+
+El dinero llega cuando Drenyra demuestra:
+
+1. **Clientes reales** — Resolviendo problemas urgentes (multas SUNAT, SIRE deadlines, cierres mensuales)
+2. **Problema urgente** — El compliance fiscal no es opcional; es ley. El dolor es inmediato y recurrente.
+3. **Ventaja técnica** — FSD + RED + Ledger-as-Git + Agent Swarm + Evidence Graph = moat real
+4. **Potencial LATAM** — Perú es la puerta de entrada a millones de contribuyentes y miles de estudios contables
 
 ---
 
 ## Related docs
 
-- [README.md](../../README.md) — Entry point, quickstart, philosophy
+- [Drenyra Product Philosophy — Definitive Thesis](./drenyra-product-philosophy.md)
+- [README.md](../../README.md) — Entry point and quickstart
 - [Product Topology](../canon/product-topology.md) — Technical product architecture
-- [Design Influences 2026](../design/design-influences-2026.md) — Design system and editorial approach
-- [ADR-2026-FE-001: Fiscal Editorial Rebrand](../adr/ADR-2026-FE-001-fiscal-editorial-rebrand.md) — Visual identity decisions

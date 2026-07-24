@@ -1,9 +1,17 @@
 ---
 title: 'Fiscal Intelligence Platform Architecture 2026'
-description: 'Architecture for DRENYRA as a Peru-first/LATAM-ready fiscal intelligence platform with FAL, Fiscal Ontology, Fiscal Truth Engine, Drenyra governance and MCP.'
+description: 'Architecture for DRENYRA as a Peru-first/LATAM-ready verifiable financial operating system — Financial Engineering Environment with FSD, RED, DFP, Ledger-as-Git, Agent Swarm, and Evidence Graph.'
 version: '1.1'
 last-updated: '2026-06-30'
-tags: ['architecture', 'fiscal-intelligence', 'fal', 'fiscal-truth', 'drenyra', 'mcp']
+tags:
+  [
+    'architecture',
+    'fiscal-intelligence',
+    'fal',
+    'fiscal-truth',
+    'drenyra',
+    'mcp',
+  ]
 audience: ['architecture', 'engineering', 'product']
 status: 'active'
 ---
@@ -154,18 +162,18 @@ FAL is not just journal entries. It is the fiscal operating ledger of proposed, 
 
 FAL event envelope:
 
-| Field | Purpose |
-|---|---|
-| `eventId` | immutable event identity |
-| `scope` | organization/company/RUC/period/country |
-| `kind` | classification, reconciliation, ledger entry, SIRE action, CPE/CDR status, risk finding |
-| `sourceEvidence` | evidence node references and hashes |
-| `proposedBy` | human/system/agent identity |
-| `deterministicChecks` | validator IDs, versions and results |
-| `policyDecision` | risk level, approval requirement, allowed/blocked state |
-| `approval` | approver, role, timestamp, snapshot hash |
-| `ledgerImpact` | journal/fiscal impact using Money/value objects |
-| `audit` | trace ID, model/tool context, replay metadata |
+| Field                 | Purpose                                                                                 |
+| --------------------- | --------------------------------------------------------------------------------------- |
+| `eventId`             | immutable event identity                                                                |
+| `scope`               | organization/company/RUC/period/country                                                 |
+| `kind`                | classification, reconciliation, ledger entry, SIRE action, CPE/CDR status, risk finding |
+| `sourceEvidence`      | evidence node references and hashes                                                     |
+| `proposedBy`          | human/system/agent identity                                                             |
+| `deterministicChecks` | validator IDs, versions and results                                                     |
+| `policyDecision`      | risk level, approval requirement, allowed/blocked state                                 |
+| `approval`            | approver, role, timestamp, snapshot hash                                                |
+| `ledgerImpact`        | journal/fiscal impact using Money/value objects                                         |
+| `audit`               | trace ID, model/tool context, replay metadata                                           |
 
 Allowed state transitions:
 
@@ -182,23 +190,23 @@ Drenyra agents are governed operators. They do not own fiscal authority.
 
 Capability matrix:
 
-| Capability | Default | Approval needed | Examples |
-|---|---:|---:|---|
-| Read scoped summary | Denied until scoped | No | RUC health, period blockers |
-| Explain evidence | Denied until scoped | No | Explain CPE/CDR/SIRE chain |
-| Draft recommendation | Denied until scoped | Maybe | Match invoice to bank transaction |
-| Prepare ledger action | Denied until scoped | Yes if material | Proposed journal entry |
-| Promote truth | Denied | Always or explicit low-risk policy | Truth event append |
-| Submit/send external fiscal action | Denied | Always | SUNAT/OSE/SIRE submission |
-| Access secrets/credentials | Denied | Never via agent | SUNAT credentials |
+| Capability                         |             Default |                    Approval needed | Examples                          |
+| ---------------------------------- | ------------------: | ---------------------------------: | --------------------------------- |
+| Read scoped summary                | Denied until scoped |                                 No | RUC health, period blockers       |
+| Explain evidence                   | Denied until scoped |                                 No | Explain CPE/CDR/SIRE chain        |
+| Draft recommendation               | Denied until scoped |                              Maybe | Match invoice to bank transaction |
+| Prepare ledger action              | Denied until scoped |                    Yes if material | Proposed journal entry            |
+| Promote truth                      |              Denied | Always or explicit low-risk policy | Truth event append                |
+| Submit/send external fiscal action |              Denied |                             Always | SUNAT/OSE/SIRE submission         |
+| Access secrets/credentials         |              Denied |                    Never via agent | SUNAT credentials                 |
 
 Risk levels:
 
-| Risk | Meaning | Required controls |
-|---|---|---|
-| Low | read/explain only | scope + audit |
-| Medium | recommendation or draft | scope + evidence + audit |
-| High | fiscal/material state change | validators + approval + audit |
+| Risk     | Meaning                                       | Required controls                                |
+| -------- | --------------------------------------------- | ------------------------------------------------ |
+| Low      | read/explain only                             | scope + audit                                    |
+| Medium   | recommendation or draft                       | scope + evidence + audit                         |
+| High     | fiscal/material state change                  | validators + approval + audit                    |
 | Critical | SUNAT submission, posting, tax/payment impact | explicit policy + human approval + replay packet |
 
 ### 6. Drenyra CLI and Web
@@ -214,13 +222,13 @@ Both call the same scoped API and must show the same fiscal context.
 
 DFAS is the unified transport layer inspired by the OpenAI Codex App Server, adapted for governed fiscal decisions. See [ADR-034](../02-adr/adr-034-drenyra-fiscal-app-server.md) and [DFAS Protocol Spec](./drenyra-fiscal-app-server-2026.md).
 
-| Component | Role |
-|---|---|
-| WebSocket JSON-RPC | Primary bidirectional transport for Web, CLI, automations |
-| Fiscal Thread Manager | Brain thread + run metadata unification |
-| Item Stream | Evidence-native events: gates, envelopes, approvals, truth promotions |
-| Unified Runtime Kernel | Composes harness, orchestrator, capability guard, truth boundary |
-| Fiscal Guardian | Auto-approve low-risk read/explain/draft; material always human |
+| Component              | Role                                                                  |
+| ---------------------- | --------------------------------------------------------------------- |
+| WebSocket JSON-RPC     | Primary bidirectional transport for Web, CLI, automations             |
+| Fiscal Thread Manager  | Brain thread + run metadata unification                               |
+| Item Stream            | Evidence-native events: gates, envelopes, approvals, truth promotions |
+| Unified Runtime Kernel | Composes harness, orchestrator, capability guard, truth boundary      |
+| Fiscal Guardian        | Auto-approve low-risk read/explain/draft; material always human       |
 
 Protocol version: `DFAS_PROTOCOL_VERSION = "1.0.0"` in `packages/domain/src/drenyra/dfas-protocol-types.ts`.
 
@@ -252,13 +260,13 @@ A public MCP server is a strategic AI-native API, not a bypass around the platfo
 
 Initial tool classes:
 
-| Tool class | Examples | Mutability | Gate |
-|---|---|---:|---|
-| Profile/read | `get_company_fiscal_profile`, `list_period_blockers` | read-only | scope + auth |
-| Evidence | `get_evidence_pack`, `explain_truth_claim` | read-only | scope + redaction |
-| Proposal | `propose_reconciliation`, `draft_ledger_entry` | draft-only | policy + audit |
-| Tasking | `create_agent_task`, `get_agent_task_status` | workflow | scoped capability |
-| Material action | `request_approval_for_posting` | no direct execute | human approval |
+| Tool class      | Examples                                             |        Mutability | Gate              |
+| --------------- | ---------------------------------------------------- | ----------------: | ----------------- |
+| Profile/read    | `get_company_fiscal_profile`, `list_period_blockers` |         read-only | scope + auth      |
+| Evidence        | `get_evidence_pack`, `explain_truth_claim`           |         read-only | scope + redaction |
+| Proposal        | `propose_reconciliation`, `draft_ledger_entry`       |        draft-only | policy + audit    |
+| Tasking         | `create_agent_task`, `get_agent_task_status`         |          workflow | scoped capability |
+| Material action | `request_approval_for_posting`                       | no direct execute | human approval    |
 
 MCP server rules:
 
@@ -274,13 +282,13 @@ MCP server rules:
 
 Provider choice is a governed routing decision.
 
-| Workload | Model class | Gate |
-|---|---|---|
-| UI summary / navigation | fast general model | low-risk scoped context |
-| OCR/table extraction | document-specialized model | evidence retention + redaction |
-| fiscal reasoning | strong reasoning model | deterministic validator comparison |
-| sensitive client data | approved/local model | policy + data residency rule |
-| public MCP answer | tool-safe model | redaction + response policy |
+| Workload                | Model class                | Gate                               |
+| ----------------------- | -------------------------- | ---------------------------------- |
+| UI summary / navigation | fast general model         | low-risk scoped context            |
+| OCR/table extraction    | document-specialized model | evidence retention + redaction     |
+| fiscal reasoning        | strong reasoning model     | deterministic validator comparison |
+| sensitive client data   | approved/local model       | policy + data residency rule       |
+| public MCP answer       | tool-safe model            | redaction + response policy        |
 
 Every material recommendation records model/provider/tool/prompt metadata sufficient for audit without storing secrets.
 

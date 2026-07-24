@@ -7,7 +7,7 @@
 ## Start here
 
 - Fast navigation source: this file. Machine-readable source: `.codebase/index.yml`.
-- Product north star: [`docs/products/drenyra-product-philosophy.md`](docs/products/drenyra-product-philosophy.md).
+- Product north star: [Drenyra Financial Engineering Environment](docs/products/drenyra-product-philosophy.md) — verifiable financial OS for LATAM.
 - Update both with `bun run codebase:index`; verify drift with `bun run codebase:index:check`.
 - Canonical path for tools: `/home/dreamcoder08/Documents/PROYECTOS/Drenyra`.
 - Before edits: inspect existing implementation, preserve fiscal correctness, tenant/RUC scope, audit trails.

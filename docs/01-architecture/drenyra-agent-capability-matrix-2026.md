@@ -1,9 +1,9 @@
 ---
 title: 'Drenyra Agent Capability Matrix 2026'
-description: 'Phase 3 deny-by-default capability policy for Drenyra agents, scoped tools, risk levels, approvals, redaction and audit decisions.'
+description: 'Deny-by-default capability policy for Drenyra agents (FEE), scoped tools, risk levels, approvals, redaction and audit decisions.'
 version: '1.0'
-last-updated: '2026-05-26'
-tags: ['architecture', 'drenyra', 'agents', 'capabilities', 'governance']
+last-updated: '2026-07-24'
+tags: ['architecture', 'drenyra', 'fee', 'agents', 'capabilities', 'governance']
 audience: ['architecture', 'engineering', 'security', 'compliance']
 status: 'active'
 ---
@@ -26,7 +26,7 @@ Framework-free domain contracts live in:
 Consumers import through:
 
 ```ts
-import { evaluateDrenyraCapability } from "@drenyra/domain/drenyra";
+import { evaluateDrenyraCapability } from '@drenyra/domain/drenyra'
 ```
 
 ## Deny-by-default rules
@@ -43,28 +43,28 @@ Every evaluation returns an audit event type: `CAPABILITY_ALLOWED` or `CAPABILIT
 
 ## Capability classes
 
-| Action | Purpose | Default risk | Material state? |
-|---|---|---:|---|
-| `read` | read scoped case/profile data | low | no |
-| `explain` | explain evidence or existing state | low | no |
-| `draft` | prepare advisory outputs | medium | no |
-| `propose` | propose ledger/fiscal action | high | no direct posting |
-| `request_approval` | create an approval request | high | no direct posting |
-| `material_action` | promote/post/submit material fiscal state | critical | requires approval and deterministic evidence |
+| Action             | Purpose                                   | Default risk | Material state?                              |
+| ------------------ | ----------------------------------------- | -----------: | -------------------------------------------- |
+| `read`             | read scoped case/profile data             |          low | no                                           |
+| `explain`          | explain evidence or existing state        |          low | no                                           |
+| `draft`            | prepare advisory outputs                  |       medium | no                                           |
+| `propose`          | propose ledger/fiscal action              |         high | no direct posting                            |
+| `request_approval` | create an approval request                |         high | no direct posting                            |
+| `material_action`  | promote/post/submit material fiscal state |     critical | requires approval and deterministic evidence |
 
 ## Initial policy rows
 
-| Agent | Tool | Action | Risk | Approval | Redaction |
-|---|---|---|---:|---:|---:|
-| `FISCAL_REVIEWER_AGENT` | `list_fiscal_cases` | read | low | no | yes |
-| `EVIDENCE_AGENT` | `explain_evidence` | explain | low | no | yes |
-| `SIRE_AGENT` | `run_agent_review` | draft | medium | no | yes |
-| `FISCAL_REVIEWER_AGENT` | `calculate_igv` | explain | low | no | yes |
-| `CPE_AGENT` | `validate_cpe` | draft | medium | no | yes |
-| `FISCAL_REVIEWER_AGENT` | `get_tax_calendar` | read | low | no | yes |
-| `LEDGER_AGENT` | `propose_ledger_entry` | propose | high | yes | yes |
-| `FISCAL_REVIEWER_AGENT` | `request_approval` | request approval | high | no | yes |
-| `FISCAL_REVIEWER_AGENT` | `promote_fiscal_truth` | material action | critical | yes | yes |
+| Agent                   | Tool                   | Action           |     Risk | Approval | Redaction |
+| ----------------------- | ---------------------- | ---------------- | -------: | -------: | --------: |
+| `FISCAL_REVIEWER_AGENT` | `list_fiscal_cases`    | read             |      low |       no |       yes |
+| `EVIDENCE_AGENT`        | `explain_evidence`     | explain          |      low |       no |       yes |
+| `SIRE_AGENT`            | `run_agent_review`     | draft            |   medium |       no |       yes |
+| `FISCAL_REVIEWER_AGENT` | `calculate_igv`        | explain          |      low |       no |       yes |
+| `CPE_AGENT`             | `validate_cpe`         | draft            |   medium |       no |       yes |
+| `FISCAL_REVIEWER_AGENT` | `get_tax_calendar`     | read             |      low |       no |       yes |
+| `LEDGER_AGENT`          | `propose_ledger_entry` | propose          |     high |      yes |       yes |
+| `FISCAL_REVIEWER_AGENT` | `request_approval`     | request approval |     high |       no |       yes |
+| `FISCAL_REVIEWER_AGENT` | `promote_fiscal_truth` | material action  | critical |      yes |       yes |
 
 `submit_sunat_sire` exists as a tool identifier but intentionally has no policy row in v0, so it remains denied until a future SDD defines its deterministic bundle and approval prerequisites.
 
