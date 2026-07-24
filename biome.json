@@ -216,6 +216,16 @@
       }
     },
     {
+      "includes": ["**/routeTree.gen.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noExplicitAny": "off"
+          }
+        }
+      }
+    },
+    {
       "includes": ["src/app/**/*.{ts,tsx}", "src/components/**/*.{ts,tsx}"],
       "linter": {
         "rules": {
