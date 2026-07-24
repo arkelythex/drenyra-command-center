@@ -1,0 +1,18 @@
+change_id: drenyra-sidebar-codex
+phase: applied
+status: applied
+delivery_strategy: single-pr
+created_at: 2026-07-12
+applied_at: 2026-07-12
+branch: design/drenyra-sidebar-codex
+depends_on:
+  - drenyra-global-shell
+  - drenyra-cierre-flow
+completed:
+  - 'Nueva tarea button'
+  - 'Buscar hint'
+  - 'Cierres activos section'
+  - 'Recientes section'
+  - 'Footer with agents and user'
+  - 'DrenyraRecommendations component'
+  - 'Integrated into CierreMensualPage'

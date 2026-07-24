@@ -1,0 +1,15 @@
+change_id: drenyra-global-shell
+phase: applied
+status: applied
+delivery_strategy: single-pr
+created_at: 2026-07-12
+applied_at: 2026-07-12
+branch: design/drenyra-global-shell
+depends_on:
+  - drenyra-agentic-shell
+  - drenyra-frontend-command-center-reset
+completed:
+  - __root.tsx now wraps in AgenticLayout (sidebar + right panel + command palette global)
+  - drenyra.tsx simplified to <Outlet /> (no nested AgenticLayout)
+  - cierre-mensual.tsx: removed FiscalInspectorProvider wrapper
+  - index.tsx: removed FiscalInspectorProvider wrapper

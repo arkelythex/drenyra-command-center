@@ -1,0 +1,149 @@
+# Auto-Healing — Automatic Fix Generation
+#
+# When a post-merge verification fails (issues with label 'bug'),
+# this workflow:
+# 1. Reads the failure report from the issue
+# 2. Uses DeepSeek AI to analyze the error and generate a fix
+# 3. Creates a branch and PR with the suggested fix
+#
+# This closes the healing loop:
+# Merge → Verification fails → Auto-heal creates fix PR → Review → Merge
+
+name: Auto-Healing
+
+on:
+  issues:
+    types: [opened, labeled]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number with failure report'
+        required: true
+        type: number
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+env:
+  DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+
+jobs:
+  heal:
+    name: Analyze failure and generate fix
+    if: >
+      (contains(github.event.issue.labels.*.name, 'bug') &&
+       contains(github.event.issue.labels.*.name, 'auto-generated')) ||
+      github.event.inputs.issue_number != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine issue number
+        id: issue
+        run: |
+          NUM="${{ github.event.inputs.issue_number || github.event.issue.number }}"
+          echo "number=$NUM" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch failure report
+        id: report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const num = '${{ steps.issue.outputs.number }}';
+            const { data: issue } = await github.rest.issues.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: parseInt(num),
+            });
+            core.setOutput('body', issue.body || 'No body');
+            core.setOutput('title', issue.title);
+
+      - name: Generate fix via DeepSeek
+        id: generate
+        run: |
+          mkdir -p output
+
+          cat > /tmp/heal-prompt.json << 'JSONEOF'
+          {
+            "model": "deepseek-chat",
+            "messages": [
+              {
+                "role": "system",
+                "content": "You are an AI that fixes code issues. Given a failure report, generate a fix. Output ONLY a valid JSON object where keys are file paths to fix and values are the complete new file contents. NO markdown, NO explanations."
+              },
+              {
+                "role": "user",
+                "content": "Fix the following issue:\n\nTitle: ${{ steps.report.outputs.title }}\n\nReport:\n${{ steps.report.outputs.body }}\n\nAnalyze the error and generate corrected file(s). Focus on the actual root cause."
+              }
+            ],
+            "temperature": 0.2,
+            "max_tokens": 4000
+          }
+          JSONEOF
+
+          echo "Calling DeepSeek..."
+          RESPONSE=$(curl -s -X POST "https://api.deepseek.com/v1/chat/completions" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $DEEPSEEK_API_KEY" \
+            -d @/tmp/heal-prompt.json 2>&1)
+          echo "$RESPONSE" > /tmp/heal-response.json
+          echo "Response: $(echo "$RESPONSE" | wc -c) bytes"
+
+      - name: Extract and verify fix
+        run: |
+          python3 scripts/ci/parse-ai-response.py /tmp/heal-response.json output 2>&1 || echo "PARSE_FAILED=true"
+          echo "Generated files:"
+          find output -type f 2>/dev/null | sort || echo "No files"
+
+      - name: Commit fix and create PR
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+          ISSUE_NUM="${{ steps.issue.outputs.number }}"
+          BRANCH="fix/auto-heal-issue-${ISSUE_NUM}"
+          git checkout -b "$BRANCH" main
+
+          if [ -d output ] && [ "$(find output -type f | wc -l)" -gt 0 ]; then
+            cp -r output/* . 2>/dev/null || true
+            rm -rf output
+            git add -A
+            git commit -m "fix: auto-heal from issue #${ISSUE_NUM}"
+            git push origin "$BRANCH" --force 2>&1 | tail -3
+            echo "FILES_COMMITTED=true"
+          else
+            echo "No fix generated."
+          fi
+
+      - name: Create PR with fix
+        id: create-pr
+        if: steps.generate.outputs.FILES_COMMITTED == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          B="fix/auto-heal-issue-${{ steps.issue.outputs.number }}"
+          PR_URL=$(/usr/bin/gh pr create \
+            --base main \
+            --head "$B" \
+            --title "[auto-heal] Fix from issue #${{ steps.issue.outputs.number }}" \
+            --body "## Auto-Healing PR\n\nThis PR was auto-generated from [issue #${{ steps.issue.outputs.number }}](${{ github.server_url }}/${{ github.repository }}/issues/${{ steps.issue.outputs.number }}).\n\n**Analysis:** AI (DeepSeek) analyzed the failure and generated a suggested fix.\n\nPlease review before merging." \
+            -R ${{ github.repository }} 2>&1) || true
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+          echo "PR: $PR_URL"
+
+      - name: Comment result on issue
+        run: |
+          PR_URL="${{ steps.create-pr.outputs.pr_url }}"
+          ISSUE_NUM="${{ steps.issue.outputs.number }}"
+
+          if [ -n "$PR_URL" ]; then
+            /usr/bin/gh api "repos/${{ github.repository }}/issues/$ISSUE_NUM/comments" \
+              --field body="## Auto-Healing Applied\n\nA fix PR has been created: $PR_URL\n\nPlease review the changes." 2>/dev/null || true
+          else
+            /usr/bin/gh api "repos/${{ github.repository }}/issues/$ISSUE_NUM/comments" \
+              --field body="## Auto-Healing Attempted\n\nNo automatic fix could be generated. Manual review required." 2>/dev/null || true
+          fi

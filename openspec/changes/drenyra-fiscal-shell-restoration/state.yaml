@@ -1,0 +1,169 @@
+change_id: drenyra-fiscal-shell-restoration
+phase: tasks
+status: completed
+artifact_store: openspec
+execution_mode: automatic
+delivery_strategy: auto-forecast
+review_budget_lines: 400
+created_at: 2026-07-12
+updated_at: 2026-07-12
+tasks:
+  artifact: tasks.md
+  status: completed
+  strict_tdd_required: true
+  prerequisite_gate: isolated-worktree-and-approved-provider-fix-reconciliation
+  stop_condition: >-
+    Stop before any application or test edit when the dirty provider-fix hunks
+    cannot be independently attributed, explicitly approved, and transplanted
+    without unrelated changes or staged files.
+  review_workload_forecast:
+    delivery_strategy: single-pr-within-budget-only
+    estimated_changed_lines: 205-331
+    estimated_files: 7
+    review_budget_lines: 400
+    estimated_review_minutes: 30-45
+    within_review_budget: true
+  next_phase: apply
+spec:
+  artifact: spec.md
+  verified_sidebar_destinations:
+    - /inbox
+    - /cierre-mensual
+    - /firm/clients
+    - /evidence
+    - /review-queue
+    - /banking
+    - /tesoreria/reconciliations
+    - /invoices
+    - /contabilidad/ledger
+    - /taxation
+    - /cumplimiento/expedientes
+    - /compliance
+    - /financials
+    - /reports
+    - /audit
+    - /tools
+    - /configuracion
+  public_route_exclusions:
+    - /login
+    - /auth
+    - /signup
+    - /forgot-password
+    - /reset-password
+    - /verify-email
+    - /onboarding
+  requirements:
+    - exactly-one-private-shell
+    - public-route-exclusion
+    - both-monthly-close-aliases
+    - drenyra-de-nesting
+    - route-source-verified-sidebar-filtering
+    - responsive-accessibility
+  verification_required:
+    - root-and-alias-shell-landmark-tests
+    - drenyra-no-nested-shell-test
+    - sidebar-permitted-set-test
+    - mobile-drawer-accessibility-tests
+  implementation_forecast:
+    estimated_changed_lines: 120-220
+    estimated_files: 4-6
+    within_review_budget: true
+scope:
+  app: apps/web
+  authenticated_routes:
+    - /
+    - /cierre-mensual
+    - /contabilidad/cierre-mensual
+    - /drenyra
+  bounded_outcome: >-
+    Restore one authenticated AgenticLayout shell for both monthly-close aliases,
+    prevent nested shell composition at /drenyra, and expose only verified,
+    fiscal-safe sidebar navigation without placeholder operational data.
+findings:
+  - severity: high
+    summary: Authenticated root does not mount AgenticLayout, so monthly-close routes lack a persistent sidebar.
+    paths:
+      - apps/web/src/routes/__root.tsx
+      - apps/web/src/routes/cierre-mensual.tsx
+      - apps/web/src/routes/contabilidad/cierre-mensual.tsx
+  - severity: high
+    summary: The applied global-shell state is inconsistent with the currently inspected root route source.
+    paths:
+      - openspec/changes/drenyra-global-shell/state.yaml
+      - apps/web/src/routes/__root.tsx
+  - severity: medium
+    summary: /drenyra would nest AgenticLayout if its route-level mount remains after root restoration.
+    paths:
+      - apps/web/src/routes/drenyra.tsx
+      - apps/web/src/components/agentic-shell/AgenticLayout/AgenticLayout.tsx
+  - severity: medium
+    summary: Existing sidebar navigation includes destinations not supported by the route map.
+    paths:
+      - apps/web/src/components/agentic-shell/AgenticSidebar/AgenticSidebar.data.ts
+      - apps/web/MAP.md
+proposal:
+  artifact: proposal.md
+  implementation_forecast:
+    estimated_changed_lines: 120-220
+    estimated_files: 4-6
+    within_review_budget: true
+  acceptance_outcomes:
+    - Both monthly-close aliases render exactly one authenticated AgenticLayout shell.
+    - /drenyra does not mount a nested sidebar, command bar, or inspector boundary.
+    - Public and authentication routes do not receive private shell chrome.
+    - Visible sidebar links resolve only to verified supported destinations; stale destinations are hidden.
+    - No placeholder company, RUC, period, close, approval, agent, or evidence data is displayed.
+    - Responsive drawer behavior remains keyboard-accessible and safely dismissible.
+  fiscal_safety_boundaries:
+    - presentation-and-route-composition-only
+    - no-fiscal-query-mutation-cache-or-contract
+    - no-url-default-fixture-storage-or-unscoped-scope-inference
+    - no-representative-operational-data-when-authoritative-scope-is-absent
+    - future-fiscal-actions-require-scoped-approval-evidence-audit-and-reversal
+  deferred_slice:
+    name: scoped-sidebar-enrichment
+    condition: >-
+      May start only when authoritative tenant-scoped sources for company, RUC,
+      period, active-close, and agent-run state are verified. It must be separately
+      proposed if its scoped data work or tests exceed the remaining 400-line budget.
+non_goals:
+  - No fiscal calculation, SUNAT/SIRE, UBL/CDR, approval, period-lock, or accounting mutation change.
+  - No new global data contract, schema, API endpoint, data hook, or cross-company/RUC query.
+  - No visual Codex clone or replacement of unrelated shell features.
+  - No placeholder scope, agent, close, approval, or evidence data.
+risks:
+  - Root and layout files contain unrelated uncommitted worktree changes that apply must isolate or reconcile.
+  - Prior applied-state claims do not prove current source composition; route tests are the authority.
+  - Existing route presence alone may not establish an adequate tenant/RUC access model; navigation must remain conservative.
+  - Sidebar enrichment is blocked without real scoped data.
+design:
+  artifact: design.md
+  decision: >-
+    Compose exactly one FiscalInspectorProvider and AgenticLayout at the
+    non-public root boundary; make /drenyra outlet-only and retain static,
+    route-source-verified navigation only.
+  root_composition:
+    public: Outlet only
+    private: FiscalInspectorProvider > AgenticLayout > Outlet
+  navigation_allowlist_source: AgenticSidebar.data.ts
+  responsive_repair:
+    - mobile-state-drives-drawer-visibility
+    - trigger-aria-expanded-and-aria-controls
+    - escape-and-backdrop-dismissal
+    - focus-restoration-and-scroll-lock-release
+    - closed-drawer-non-interactive-and-hidden-from-accessibility-tree
+  strict_tdd:
+    - RED-root-alias-and-de-nesting-landmark-tests
+    - GREEN-smallest-root-layout-and-drawer-repair
+    - TRIANGULATE-allowlist-and-accessibility-lifecycle-tests
+    - REFACTOR-after-focused-suite-passes
+  implementation_forecast:
+    estimated_changed_lines: 205-331
+    estimated_files: 7
+    within_review_budget: true
+  apply_worktree: mandatory
+  worktree_reason: >-
+    The current security/w3a-0-auth-tenant-context checkout has unrelated
+    tracked and untracked work, including dirty root, AgenticLayout, and
+    monthly-close route seams required by this change.
+next_recommended: tasks

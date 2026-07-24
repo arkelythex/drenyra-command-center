@@ -1,0 +1,103 @@
+change_id: drenyra-accountant-operating-system
+status: implementation-blocked
+phase: feasibility-gate
+execution_mode: automatic
+artifact_store: openspec
+delivery_strategy: auto-forecast
+review_budget_lines: 400
+strict_tdd: true
+created_at: 2026-07-12
+updated_at: 2026-07-12
+next_recommended: establish-fiscal-scope-authority-port
+implementation_gate: BLOCKED — no authoritative organization/company/membership/permission mapping exists at the authenticated monthly-close API seam; combined safe forecast is 710-960 lines and exceeds the 400-line budget. Do not start RED or application implementation.
+scope:
+  workflow: monthly-close-blocker-review
+  fiscal_scope: organization-company-ruc-period
+  mutation_mode: advisory-only
+artifacts:
+  exploration: exploration.md
+  proposal: proposal.md
+  spec: spec.md
+  design: design.md
+  tasks: tasks.md
+  feasibility: feasibility.md
+proposal:
+  purpose: Bounded server-scoped monthly close blocker review with advisory-only approval.
+  safety_invariants:
+    - server-derived-scope-only
+    - exact-organization-company-ruc-period-match
+    - evidence-and-confidence-fail-closed
+    - approval-is-non-executing
+    - append-only-audit-lineage
+    - no-fiscal-mutation-path
+  affected_seams_to_verify:
+    - packages/domain/src/scope/types.ts
+    - apps/api/src/features/monthly-close/routes.ts
+    - apps/api/src/features/monthly-close/controller.ts
+    - packages/domain/src/repositories/close-checklist.repository.ts
+    - packages/ai/src/control-plane/contracts.ts
+    - packages/ai/src/control-plane/approval-guard.ts
+    - packages/ai/src/control-plane/trace-evidence/types.ts
+    - packages/ai/src/control-plane/trace-evidence/store.ts
+    - apps/web/src/features/cierre-mensual/
+spec:
+  api_seam: apps/api/src/features/monthly-close/routes.ts#createMonthlyCloseRoutes
+  transport_boundary: apps/api/src/features/shared/api-response.ts
+  module_prefix: /api/v1/close
+  verified_constraints:
+    - current-routes-accept-client-company-id
+    - company-scope-guard-header-fallback-is-not-safe-for-review-boundary
+    - close-repository-company-period-only-for-safe-read-adapter
+    - trace-store-upsert-is-not-append-only-audit-proof
+    - approval-guard-handoff-is-prohibited
+  required_outcomes:
+    - no-blocker
+    - blocked-or-request-more-context
+    - actionable-advisory-blocker
+    - recorded-advisory-approval-request
+    - recorded-advisory-rejection
+  required_proofs:
+    - server-derived-organization-company-ruc-period
+    - deterministic-single-blocker
+    - evidence-confidence-fail-closed
+    - correction-preserves-original-lineage
+    - approval-rejection-audit-without-execution
+    - zero-mutation-port-calls
+tasks:
+  slice: read-only-server-derived-monthly-close-blocker-projection
+  hard_feasibility_gate:
+    verdict: blocked
+    required_port: FiscalScopeAuthorityPort
+    must_prove:
+      - authenticated-actor
+      - active-membership
+      - organization-company-ownership
+      - company-ruc-match
+      - monthly-close-review-permission
+      - valid-period
+      - no-header-fallback
+      - no-client-authoritative-scope
+    findings:
+      - tenant-auth-synthesizes-organization-id-from-company-id
+      - companies-has-no-organization-ownership-relation
+      - auth-user-companies-has-no-status-or-permission-grants
+      - monthly-close-review-permission-is-undefined
+      - create-fiscal-scope-validates-period-shape-not-calendar-month
+      - legacy-monthly-close-module-allows-header-fallback
+    measured_forecast_lines: '710-960 combined prerequisite plus Slice 1'
+    line_budget: '<=400'
+    failure_action: stop-implementation-and-propose-establish-fiscal-scope-authority-port
+  excluded:
+    - web-ui
+    - approval-rejection-actions
+    - audit-or-trace-persistence
+    - correction-writes
+    - fiscal-or-close-mutation-paths
+  strict_tdd:
+    - red-authority-denials-before-reader
+    - green-concrete-authority-adapter
+    - red-scoped-reader-and-deterministic-ordering
+    - green-pure-projector
+    - red-evidence-confidence-and-zero-mutations
+    - green-read-only-route
+    - refactor-after-all-green

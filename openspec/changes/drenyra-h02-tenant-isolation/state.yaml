@@ -1,0 +1,44 @@
+change_id: drenyra-h02-tenant-isolation
+phase: tasks
+status: review-pending
+delivery_strategy: ask-on-risk
+created_at: 2026-07-12
+depends_on: []
+risk: critical
+invariants_audited:
+  - tenant-isolation: partial
+estimated_lines: 1200
+estimated_days: 14-18
+estimated_prs: 26
+estimated_tests: 155
+review_budget: 400
+sub_changes:
+  - H02.1 FiscalScope canónico + auth context
+  - H02.2 Repositories scope-first
+  - H02.3 Negative tenant tests
+  - H02.4 RLS selectivo
+tenant_repository_count: 19
+repositories_scope_safe: 3
+repositories_mixed: 5
+repositories_insecure: 11
+insecure_methods_confirmed: 8
+insecure_callers_confirmed: 15
+rollout_waves: 7
+design_deliverables:
+  - auth_flow_diagram: true
+  - entity_scope_matrix: true
+  - repository_inventory: true
+  - insecure_callers_inventory: true
+  - rls_policy_matrix: true
+  - rollout_order: true
+  - rollback_strategy: true
+  - migration_list: true
+  - risks_and_mitigations: true
+task_areas:
+  - wave_0_preparation: 3 PRs
+  - wave_1_auth_and_core: 6 PRs
+  - wave_2_single_caller: 3 PRs
+  - wave_3_rest_group_c: 4 PRs
+  - wave_4_mixed_repos: 3 PRs
+  - wave_5_workers_sse_exports: 4 PRs
+  - wave_6_rls: 3 PRs

@@ -1,0 +1,15 @@
+change_id: drenyra-cierre-flow
+phase: applied
+status: applied
+delivery_strategy: single-pr
+created_at: 2026-07-12
+applied_at: 2026-07-12
+branch: design/drenyra-cierre-flow
+depends_on:
+  - drenyra-global-shell
+completed:
+  - Created ClosePipeline component (connected dot pipeline replacing 8-box grid)
+  - Created P0Hero component (dominant blocker card with evidence + agentic actions)
+  - Created ContextualSidePanel (tabs: Contexto, Agentes, Auditoría)
+  - Reordered CierreMensualPage: P0 hero first, then pipeline, then content
+  - Updated route imports: removed redundant FiscalInspectorProvider wrappers
