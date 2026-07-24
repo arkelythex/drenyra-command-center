@@ -4,5 +4,6 @@ export type {
 } from "./company-scope-guard";
 export { companyScopeGuard } from "./company-scope-guard";
 export { globalErrorHandler } from "./error-handler";
+export { requirePermission, scopedPermission } from "./permission-guard";
 export { rateLimiter } from "./rate-limiter";
 export { requestLogger } from "./request-logger";
