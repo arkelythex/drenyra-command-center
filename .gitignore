@@ -16,7 +16,6 @@ drizzle/meta/
 *.ico
 *.webp
 *.avif
-bun.lock
 pnpm-lock.yaml
 uv.lock
 Cargo.lock
