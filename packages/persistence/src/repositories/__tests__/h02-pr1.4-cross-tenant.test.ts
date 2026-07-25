@@ -31,8 +31,8 @@
  * @module h02-pr1.4-cross-tenant
  */
 
-import { describe, expect, it } from "vitest";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { describe, expect, it } from "vitest";
 import { PostgresAccountRepository } from "../postgres-account.repository";
 import { PostgresJournalEntryRepository } from "../postgres-journal-entry.repository";
 
@@ -70,7 +70,7 @@ runIfDb("AccountRepository — cross-tenant isolation", () => {
 	it("findById — finds account in own company", async () => {
 		const result = await repo.findById(scopeA1, ACCOUNT_A1);
 		expect(result).not.toBeNull();
-		expect(result!.id).toBe(ACCOUNT_A1);
+		expect(result?.id).toBe(ACCOUNT_A1);
 	});
 
 	it("findById — returns null for another company (same org)", async () => {
@@ -138,7 +138,7 @@ runIfDb("JournalEntryRepository — cross-tenant isolation", () => {
 	it("findById — finds entry in own company", async () => {
 		const result = await repo.findById(scopeA1, ENTRY_A1);
 		expect(result).not.toBeNull();
-		expect(result!.id).toBe(ENTRY_A1);
+		expect(result?.id).toBe(ENTRY_A1);
 	});
 
 	it("findById — returns null for another company (same org)", async () => {

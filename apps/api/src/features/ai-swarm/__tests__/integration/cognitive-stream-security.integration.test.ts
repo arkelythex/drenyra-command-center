@@ -2,9 +2,7 @@ import { Elysia } from "elysia";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("@drenyra/ai/openrouter", () => ({
-	OpenRouterService: class OpenRouterService {
-		constructor(_config: unknown) {}
-	},
+	OpenRouterService: class OpenRouterService {},
 }));
 
 vi.mock("@drenyra/ai/model-registry", () => ({

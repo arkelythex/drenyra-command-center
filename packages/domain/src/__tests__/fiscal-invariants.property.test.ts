@@ -11,13 +11,13 @@
  * @module @drenyra/domain/property-tests
  */
 
-import { describe, expect, it } from "vitest";
 import fc from "fast-check";
+import { describe, expect, it } from "vitest";
+import { AccountingPeriod } from "../accounting/accounting-period";
+import { Detraccion } from "../accounting/detraccion";
+import { IGVDomainService } from "../services/igv-calculator";
 import { Money } from "../value-objects/Money";
 import { RUC } from "../value-objects/RUC";
-import { IGVDomainService } from "../services/igv-calculator";
-import { Detraccion } from "../accounting/detraccion";
-import { AccountingPeriod } from "../accounting/accounting-period";
 
 // ─── Arbitraries ───────────────────────────────────────────────────────────
 

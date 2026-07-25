@@ -81,10 +81,7 @@ export class DeleteTransactionUseCase {
 				organizationId: String(organizationId),
 				companyId: input.companyId ?? "",
 			};
-			const existing = await this.transactionRepository.findById(
-				scope,
-				id,
-			);
+			const existing = await this.transactionRepository.findById(scope, id);
 
 			if (!existing) {
 				return {

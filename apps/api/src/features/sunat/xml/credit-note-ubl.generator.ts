@@ -5,7 +5,7 @@
  * Based on: Guía XML Nota de Crédito UBL 2.1 - SUNAT 2026
  */
 
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { create } from "xmlbuilder2";
 import {
 	CUSTOMIZATION_ID,

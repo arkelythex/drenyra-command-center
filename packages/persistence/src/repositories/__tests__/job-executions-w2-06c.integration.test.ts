@@ -13,12 +13,12 @@
  *   - PostgreSQL only (BullMQ is mocked/not required for PG invariants)
  */
 
-import { describe, expect, it, vi } from "vitest";
-import { sql } from "drizzle-orm";
 import { withTransaction } from "@drenyra/test-utils/database";
-import { PostgresJobExecutionRepository } from "../postgres-job-execution.repository";
+import { sql } from "drizzle-orm";
+import { describe, expect, it, vi } from "vitest";
 import { OutboxRelay } from "../job-outbox-relay";
 import { RecoverySweep } from "../job-recovery";
+import { PostgresJobExecutionRepository } from "../postgres-job-execution.repository";
 
 // ─── Constants ─────────────────────────────────────────────────────────────
 

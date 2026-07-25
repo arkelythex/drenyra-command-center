@@ -289,18 +289,16 @@ describe("CreateAccountUseCase", () => {
 			{ level: "5", code: "101111" },
 		] as const;
 
-		it.each(
-			levelCodeMapping,
-		)("should accept level $level with $code.length-digit code", async ({
-			level,
-			code,
-		}) => {
-			const dto = createValidDTO({ level, code });
+		it.each(levelCodeMapping)(
+			"should accept level $level with $code.length-digit code",
+			async ({ level, code }) => {
+				const dto = createValidDTO({ level, code });
 
-			const result = await useCase.execute(dto);
+				const result = await useCase.execute(dto);
 
-			expect(result.level).toBe(level);
-			expect(result.code).toBe(code);
-		});
+				expect(result.level).toBe(level);
+				expect(result.code).toBe(code);
+			},
+		);
 	});
 });

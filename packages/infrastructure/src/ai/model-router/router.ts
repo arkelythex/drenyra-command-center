@@ -23,8 +23,6 @@ export interface RouterOptions {
 }
 
 export class AdaptiveRouter {
-	private readonly fallbackExecutor: FallbackExecutor;
-
 	constructor(
 		private readonly registryService: ModelRegistryService,
 		private readonly routingRuleRepo: CapabilityRoutingRuleRepository,

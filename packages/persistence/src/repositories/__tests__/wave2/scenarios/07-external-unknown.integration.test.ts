@@ -13,13 +13,13 @@
  * Resoluciones: COMPLETED, FAILED RETRYABLE, FAILED TERMINAL
  */
 
-import { describe, expect, it } from "vitest";
 import { withTransaction } from "@drenyra/test-utils/database";
-import { createTenantFixture } from "../fixtures/tenants";
+import { describe, expect, it } from "vitest";
+import { RecoverySweep } from "../../../job-recovery";
+import { PostgresJobExecutionRepository } from "../../../postgres-job-execution.repository";
 import { createFiscalOperationFixture } from "../fixtures/fiscal-operations";
 import { createJobFixture } from "../fixtures/jobs";
-import { PostgresJobExecutionRepository } from "../../../postgres-job-execution.repository";
-import { RecoverySweep } from "../../../job-recovery";
+import { createTenantFixture } from "../fixtures/tenants";
 
 const runIfDb = process.env.DATABASE_URL_TEST ? describe : describe.skip;
 const repo = new PostgresJobExecutionRepository();

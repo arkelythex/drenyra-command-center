@@ -122,7 +122,7 @@ export const backwardCompatRedirects = new Elysia({
 for (const rule of DEPRECATION_RULES) {
 	// Exact root match: /products → /api/products
 	backwardCompatRedirects.all(rule.oldPrefix, ({ set }) => {
-		set.headers["Deprecation"] = "true";
+		set.headers.Deprecation = "true";
 		return new Response(null, {
 			status: 308,
 			headers: { Location: rule.newPrefix, Deprecation: "true" },
@@ -130,7 +130,7 @@ for (const rule of DEPRECATION_RULES) {
 	});
 	// Sub-path match: /products/* → /api/products/*
 	backwardCompatRedirects.all(`${rule.oldPrefix}/*`, ({ params, set }) => {
-		set.headers["Deprecation"] = "true";
+		set.headers.Deprecation = "true";
 		const rest = (params as Record<string, string>)["*"];
 		const location = rest ? `${rule.newPrefix}/${rest}` : rule.newPrefix;
 		return new Response(null, {

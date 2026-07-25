@@ -257,7 +257,7 @@ export class ImportBankTransactionsUseCase {
 			date = row.date;
 		} else if (typeof row.date === "string") {
 			date = this.parseDate(row.date);
-			if (isNaN(date.getTime())) {
+			if (Number.isNaN(date.getTime())) {
 				return { success: false, error: `Fecha inválida: ${row.date}` };
 			}
 		} else {
@@ -272,7 +272,7 @@ export class ImportBankTransactionsUseCase {
 		// Validate amount
 		if (
 			typeof row.amount !== "number" ||
-			isNaN(row.amount) ||
+			Number.isNaN(row.amount) ||
 			row.amount === 0
 		) {
 			return { success: false, error: "Monto inválido o cero" };
@@ -305,31 +305,31 @@ export class ImportBankTransactionsUseCase {
 		// Try common formats
 		// DD/MM/YYYY (Peru standard)
 		let match = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-		if (match && match[1] && match[2] && match[3]) {
+		if (match?.[1] && match[2] && match[3]) {
 			return new Date(
-				parseInt(match[3]),
-				parseInt(match[2]) - 1,
-				parseInt(match[1]),
+				parseInt(match[3], 10),
+				parseInt(match[2], 10) - 1,
+				parseInt(match[1], 10),
 			);
 		}
 
 		// YYYY-MM-DD (ISO)
 		match = dateStr.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
-		if (match && match[1] && match[2] && match[3]) {
+		if (match?.[1] && match[2] && match[3]) {
 			return new Date(
-				parseInt(match[1]),
-				parseInt(match[2]) - 1,
-				parseInt(match[3]),
+				parseInt(match[1], 10),
+				parseInt(match[2], 10) - 1,
+				parseInt(match[3], 10),
 			);
 		}
 
 		// DD-MM-YYYY
 		match = dateStr.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
-		if (match && match[1] && match[2] && match[3]) {
+		if (match?.[1] && match[2] && match[3]) {
 			return new Date(
-				parseInt(match[3]),
-				parseInt(match[2]) - 1,
-				parseInt(match[1]),
+				parseInt(match[3], 10),
+				parseInt(match[2], 10) - 1,
+				parseInt(match[1], 10),
 			);
 		}
 
@@ -424,7 +424,7 @@ export function parseCsvToImportRows(
 			amountStr.replace(/['"]/g, "").replace(/,/g, "").trim(),
 		);
 
-		if (isNaN(amount)) continue;
+		if (Number.isNaN(amount)) continue;
 
 		const row: ImportTransactionRow = {
 			date: dateStr.trim().replace(/['"]/g, ""),

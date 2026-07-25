@@ -7,8 +7,8 @@
  */
 
 import type {
-	Recommendation,
 	AccionFiscal,
+	Recommendation,
 	RecommendationSource,
 } from "./types";
 

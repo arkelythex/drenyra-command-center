@@ -12,9 +12,9 @@
  *   - job_executions + job_outbox tables exist
  */
 
-import { describe, expect, it } from "vitest";
-import { sql } from "drizzle-orm";
 import { withTransaction } from "@drenyra/test-utils/database";
+import { sql } from "drizzle-orm";
+import { describe, expect, it } from "vitest";
 import { PostgresJobExecutionRepository } from "../postgres-job-execution.repository";
 
 // ─── Constants ─────────────────────────────────────────────────────────────

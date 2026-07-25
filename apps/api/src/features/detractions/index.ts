@@ -1,8 +1,8 @@
 import { Elysia } from "elysia";
+import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import { listDetractions } from "./application/queries/list-detractions.query";
 import { ListDetractionsQuerySchema } from "./detractions.schemas";
-import { companyScopeGuard } from "../../shared/plugins";
 
 /**
  * Detractions feature module.

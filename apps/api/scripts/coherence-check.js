@@ -5,7 +5,7 @@
  * Verifica la coherencia lógica entre todos los módulos implementados
  */
 
-import http from "http";
+import http from "node:http";
 
 const BASE_URL = "http://localhost:3000";
 const TIMEOUT = 5000;
@@ -288,7 +288,7 @@ class CoherenceChecker {
 	}
 
 	printSummary() {
-		console.log("\n" + "=".repeat(60));
+		console.log(`\n${"=".repeat(60)}`);
 		console.log("📋 **RESUMEN DE COHERENCIA**");
 		console.log("=".repeat(60));
 

@@ -5,8 +5,8 @@
  * Incluye pares con mismo message_id pero distinto hash (redelivery).
  */
 
-import type { TenantScope } from "./tenants";
 import type { FiscalOperationFixture } from "./fiscal-operations";
+import type { TenantScope } from "./tenants";
 
 export interface MessageFixture {
 	messageId: string;

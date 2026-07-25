@@ -23,7 +23,7 @@ export function getArtifactSummary(artifact: HubArtifact): string {
 		case "dashboard":
 			return `📊 ${artifact.payload.primaryMetric.value} · Score: ${artifact.payload.statusScore}%`;
 		case "explanation":
-			return artifact.content.slice(0, 60) + "...";
+			return `${artifact.content.slice(0, 60)}...`;
 		default:
 			return artifact.type;
 	}

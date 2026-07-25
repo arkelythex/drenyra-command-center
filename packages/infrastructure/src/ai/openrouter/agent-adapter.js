@@ -94,7 +94,7 @@ export function createOpenRouterAgent(baseAgent, options) {
 			const startTime = Date.now();
 			try {
 				const systemPrompt =
-					SYSTEM_PROMPTS[baseAgent.id] || SYSTEM_PROMPTS["default"];
+					SYSTEM_PROMPTS[baseAgent.id] || SYSTEM_PROMPTS.default;
 				const userPrompt =
 					typeof task.data === "string"
 						? task.data

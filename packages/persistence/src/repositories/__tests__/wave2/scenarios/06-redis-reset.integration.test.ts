@@ -7,14 +7,14 @@
  *   c) PENDING con outbox → Redis pierde job → reconciliation repara
  */
 
-import { describe, expect, it } from "vitest";
-import { sql } from "drizzle-orm";
 import { withTransaction } from "@drenyra/test-utils/database";
-import { createTenantFixture } from "../fixtures/tenants";
+import { sql } from "drizzle-orm";
+import { describe, expect, it } from "vitest";
+import { ReconciliationSweep } from "../../../job-reconciliation";
+import { PostgresJobExecutionRepository } from "../../../postgres-job-execution.repository";
 import { createFiscalOperationFixture } from "../fixtures/fiscal-operations";
 import { createJobFixture } from "../fixtures/jobs";
-import { PostgresJobExecutionRepository } from "../../../postgres-job-execution.repository";
-import { ReconciliationSweep } from "../../../job-reconciliation";
+import { createTenantFixture } from "../fixtures/tenants";
 import { TableStateReader } from "../helpers/table-state-reader";
 
 const runIfDb = process.env.DATABASE_URL_TEST ? describe : describe.skip;

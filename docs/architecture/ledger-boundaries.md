@@ -37,11 +37,11 @@ Solo un reapertura explícita (con receipt y aprobación) permite modificaciones
 ```
 
 | Estado del periodo | POST permitido | Compensación permitida |
-|--------------------|:---:|:---:|
-| OPEN | ✅ | ✅ |
-| LOCKED | ❌ | ❌ |
-| CLOSED | ❌ | ❌ |
-| REOPENED | ✅ | ✅ |
+| ------------------ | :------------: | :--------------------: |
+| OPEN               |       ✅       |           ✅           |
+| LOCKED             |       ❌       |           ❌           |
+| CLOSED             |       ❌       |           ❌           |
+| REOPENED           |       ✅       |           ✅           |
 
 ### 1.4 Append-only
 
@@ -70,24 +70,24 @@ Sin scope completo, el asiento es rechazado.
 
 ```typescript
 interface JournalEntry {
-  id: string;
-  scope: TenantScope & { fiscalPeriod: string };
-  entryDate: string;       // ISO 8601
-  description: string;
-  lines: JournalLine[];
-  status: "draft" | "posted" | "corrected";
-  receiptId?: string;      // RED receipt link
-  createdAt: string;
-  postedAt?: string;
-  createdBy: string;
+  id: string
+  scope: TenantScope & { fiscalPeriod: string }
+  entryDate: string // ISO 8601
+  description: string
+  lines: JournalLine[]
+  status: 'draft' | 'posted' | 'corrected'
+  receiptId?: string // RED receipt link
+  createdAt: string
+  postedAt?: string
+  createdBy: string
 }
 
 interface JournalLine {
-  accountCode: string;     // PCGE account
-  debit: Money | null;
-  credit: Money | null;
-  description?: string;
-  costCenter?: string;
+  accountCode: string // PCGE account
+  debit: Money | null
+  credit: Money | null
+  description?: string
+  costCenter?: string
 }
 ```
 
@@ -95,15 +95,15 @@ interface JournalLine {
 
 ## 3. Validaciones
 
-| Regla | ¿Dónde se verifica? | Estado |
-|-------|---------------------|--------|
-| Débitos = Créditos | `packages/domain` | ✅ |
-| Precisión decimal | `Money` VO + DB NUMERIC | ✅ |
-| Period locking | `packages/domain` | ◌ |
-| Append-only (no delete) | DB constraints + API guard | ◌ |
-| Scope obligatorio | `scope-resolver` | ⚡ parcial |
-| Single currency | `JournalLine` | ◌ |
-| Compensating entries | `packages/domain` | ◌ |
+| Regla                   | ¿Dónde se verifica?        | Estado     |
+| ----------------------- | -------------------------- | ---------- |
+| Débitos = Créditos      | `packages/domain`          | ✅         |
+| Precisión decimal       | `Money` VO + DB NUMERIC    | ✅         |
+| Period locking          | `packages/domain`          | ◌          |
+| Append-only (no delete) | DB constraints + API guard | ◌          |
+| Scope obligatorio       | `scope-resolver`           | ⚡ parcial |
+| Single currency         | `JournalLine`              | ◌          |
+| Compensating entries    | `packages/domain`          | ◌          |
 
 ---
 

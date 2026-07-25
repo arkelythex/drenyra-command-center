@@ -95,7 +95,7 @@ async function main() {
 		}
 	}
 
-	console.log("\n" + "=".repeat(50));
+	console.log(`\n${"=".repeat(50)}`);
 	console.log("📊 Seed Summary");
 	console.log("=".repeat(50));
 	console.log(`   Agents registered: ${agentCount}`);

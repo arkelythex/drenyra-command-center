@@ -23,7 +23,7 @@ import {
 import { RUC } from "@drenyra/domain";
 import { Elysia, t } from "elysia";
 import type { DrenyraBrainRepository } from "./brain.repository";
-import { type DrenyraBrainService } from "./brain.service";
+import type { DrenyraBrainService } from "./brain.service";
 
 // ─── Context resolution (shared pattern from brain.routes.ts) ───
 
@@ -136,7 +136,7 @@ export function createBrainChatRoutes(deps: {
 				const thread = await service.createThread({
 					title:
 						body.message.length > 60
-							? body.message.slice(0, 57) + "..."
+							? `${body.message.slice(0, 57)}...`
 							: body.message,
 					sourceSurface: "web",
 					createdBy: context.userId!,

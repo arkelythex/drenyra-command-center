@@ -384,7 +384,7 @@ describe("UploadDocumentSchema", () => {
 				clientId: validClientId,
 				clientName: "Client",
 				file,
-				fileName: "A".repeat(256) + ".pdf",
+				fileName: `${"A".repeat(256)}.pdf`,
 				fileType: "PDF" as const,
 			};
 

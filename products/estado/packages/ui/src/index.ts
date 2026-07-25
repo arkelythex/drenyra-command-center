@@ -1,3 +1,3 @@
 export const uiPackage = {
-  name: "@civictech/ui",
+	name: "@civictech/ui",
 };

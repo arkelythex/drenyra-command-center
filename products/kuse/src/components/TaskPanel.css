@@ -35,7 +35,7 @@
 }
 
 .task-title {
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: "Instrument Serif", Georgia, serif;
   font-weight: 400;
   font-size: 1.125rem;
   color: var(--foreground);
@@ -165,7 +165,7 @@
   padding: 0.5rem 0.75rem;
   border-radius: var(--radius-sm);
   font-size: 0.75rem;
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-family: "SF Mono", "Monaco", "Inconsolata", monospace;
   background: var(--card);
   border: 1px solid var(--border);
 }
@@ -228,6 +228,11 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
 }

@@ -47,6 +47,7 @@ vi.mock("sonner", () => ({
 		error: vi.fn(),
 	},
 }));
+
 import { api } from "@/lib/api-client";
 import { authClient } from "@/lib/auth-client";
 import { readAuthSessionSnapshot } from "../../lib/auth-session-snapshot";

@@ -169,7 +169,6 @@ export function createSafeLikePattern(
 		case "suffix":
 			pattern = `%${sanitized.value}`;
 			break;
-		case "contains":
 		default:
 			pattern = `%${sanitized.value}%`;
 			break;

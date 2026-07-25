@@ -38,14 +38,20 @@ export const IGV_CONTRACT = {
 	lastUpdated: "2026-07-11",
 	rate: IGV_RATE,
 	input: {
-		baseCents: { type: "integer", min: 0, max: 1_000_000_000_00, description: "Base amount in cents" },
+		baseCents: {
+			type: "integer",
+			min: 0,
+			max: 1_000_000_000_00,
+			description: "Base amount in cents",
+		},
 	},
 	output: {
 		baseCents: { type: "integer", description: "Same as input" },
 		igvCents: { type: "integer", description: "IGV amount in cents" },
 		totalCents: { type: "integer", description: "Total in cents" },
 	},
-	formula: "igvCents = round(baseCents * 0.18); totalCents = baseCents + igvCents",
+	formula:
+		"igvCents = round(baseCents * 0.18); totalCents = baseCents + igvCents",
 	invariants: [
 		"totalCents = baseCents + igvCents",
 		"igvCents >= 0 when baseCents >= 0",
@@ -71,11 +77,18 @@ export const RUC_CONTRACT = {
 	jurisdiction: "PE",
 	lastUpdated: "2026-07-11",
 	input: {
-		value: { type: "string", pattern: "^\\d{11}$", description: "11-digit RUC number" },
+		value: {
+			type: "string",
+			pattern: "^\\d{11}$",
+			description: "11-digit RUC number",
+		},
 	},
 	output: {
 		valid: { type: "boolean" },
-		entityType: { type: "string", enum: ["COMPANY", "PERSON", "GOVERNMENT", "UNKNOWN"] },
+		entityType: {
+			type: "string",
+			enum: ["COMPANY", "PERSON", "GOVERNMENT", "UNKNOWN"],
+		},
 		countryCode: { type: "string", const: "PE" },
 	},
 	checksum: {

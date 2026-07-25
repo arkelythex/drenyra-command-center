@@ -1,4 +1,3 @@
-
 export interface SunatToken {
 	accessToken: string;
 	tokenType: string;
@@ -14,7 +13,6 @@ export interface SunatApiResponse<T> {
 		message: string;
 	};
 }
-
 
 export interface SireTicketRequest {
 	ruc: string;

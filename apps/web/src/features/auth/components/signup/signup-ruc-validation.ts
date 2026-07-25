@@ -19,7 +19,7 @@ export function useRucValidation(ruc: string): RucValidationState {
 	});
 
 	useEffect(() => {
-		if (!ruc || ruc.length !== 11) {
+		if (ruc?.length !== 11) {
 			setRucValidation({ status: "idle" });
 			return;
 		}

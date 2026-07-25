@@ -123,7 +123,7 @@ Document: ${document.slice(0, 2000)}`,
 			const score = parseFloat(text.trim());
 
 			// Validate score is in range
-			if (isNaN(score) || score < 0 || score > 1) {
+			if (Number.isNaN(score) || score < 0 || score > 1) {
 				return 0.5; // Default middle score on parse failure
 			}
 

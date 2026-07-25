@@ -202,7 +202,9 @@ function PluginCard({ plugin }: { plugin: Plugin }) {
 				<button
 					className={cn(
 						"flex items-center gap-1.5 text-xs font-bold transition-all",
-						isActive ? "text-[var(--color-info)]" : "text-secondary hover:text-primary",
+						isActive
+							? "text-[var(--color-info)]"
+							: "text-secondary hover:text-primary",
 					)}
 				>
 					{isActive ? "Configurar" : "Instalar"}

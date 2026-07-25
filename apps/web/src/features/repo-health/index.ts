@@ -1,10 +1,10 @@
 // Public API for Repo Health Feature
 
 export { RepoHealthPage } from "./components/RepoHealthPage";
+export { useRepoHealth } from "./hooks/useRepoHealth";
 export { repoHealthKeys } from "./repo-health.query-keys";
 export {
-	repoHealthQueryOptions,
-	mergeHealthIssuesQueryOptions,
 	autoSddProposalsQueryOptions,
+	mergeHealthIssuesQueryOptions,
+	repoHealthQueryOptions,
 } from "./repo-health.query-options";
-export { useRepoHealth } from "./hooks/useRepoHealth";

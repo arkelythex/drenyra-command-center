@@ -9,8 +9,8 @@
  * @module h02-pr4.2-invoice-repository
  */
 
-import { describe, expect, it } from "vitest";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { describe, expect, it } from "vitest";
 import { PostgresInvoiceRepository } from "../postgres-invoice/repository";
 
 // ============================================================

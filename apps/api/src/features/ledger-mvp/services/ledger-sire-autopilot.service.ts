@@ -330,9 +330,6 @@ export class LedgerSireAutopilotService {
 				return "timeout";
 			case "api_mode_disabled":
 				return "not_applicable";
-			case "upstream_error":
-			case "invalid_payload":
-			case "internal_error":
 			default:
 				return "upstream_error";
 		}

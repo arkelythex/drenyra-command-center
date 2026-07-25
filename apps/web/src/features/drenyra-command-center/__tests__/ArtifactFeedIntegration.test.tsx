@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { ArtifactFeed } from "../components/ArtifactFeed/ArtifactFeed";
+import { describe, expect, it } from "vitest";
 import type { CognitiveMessage } from "@/features/cognitive-hub/types/hub.types";
+import { ArtifactFeed } from "../components/ArtifactFeed/ArtifactFeed";
 
 // Integration test: verify ArtifactFeed works with realistic message data
 describe("ArtifactFeed integration", () => {

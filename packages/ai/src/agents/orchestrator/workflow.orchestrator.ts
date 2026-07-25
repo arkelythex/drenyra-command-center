@@ -12,7 +12,7 @@
  * 7. Store CDR
  */
 
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 import { loggers } from "../../logger";
 import type {
 	ArbitratorAgent,
@@ -49,7 +49,6 @@ export class WorkflowOrchestrator {
 
 	// Agents
 	private readerAgent: ReaderAgent;
-	private parserAgent: ParserAgent;
 	private validatorAgent: ValidatorAgent;
 	private arbitratorAgent: ArbitratorAgent;
 

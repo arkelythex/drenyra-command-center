@@ -2,10 +2,7 @@
   "realm": "civictech",
   "enabled": true,
   "roles": {
-    "realm": [
-      { "name": "ADMIN" },
-      { "name": "MODERATOR" }
-    ]
+    "realm": [{ "name": "ADMIN" }, { "name": "MODERATOR" }]
   },
   "clients": [
     {

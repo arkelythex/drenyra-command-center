@@ -48,7 +48,7 @@ export function AccountantLayout({ children }: { children: React.ReactNode }) {
 					{navItems.map((item) => {
 						const isActive =
 							currentPath === item.path ||
-							currentPath.startsWith(item.path + "/");
+							currentPath.startsWith(`${item.path}/`);
 						return (
 							<a
 								key={item.path}

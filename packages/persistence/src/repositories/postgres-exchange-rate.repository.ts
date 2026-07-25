@@ -4,12 +4,12 @@
  * Infrastructure layer — implements domain repository interface.
  */
 
+import { randomUUID } from "node:crypto";
 import { ExchangeRate } from "@drenyra/domain/accounting/exchange-rate";
 import type { ExchangeRateRepository } from "@drenyra/domain/repositories/exchange-rate.repository";
 import type { TenantScope } from "@drenyra/domain/scope";
 import { db } from "@drenyra/persistence/client";
 import { exchangeRates } from "@drenyra/persistence/schema";
-import { randomUUID } from "crypto";
 import { and, desc, eq, gte, lte } from "drizzle-orm";
 
 /**
@@ -40,10 +40,7 @@ export class PostgresExchangeRateRepository implements ExchangeRateRepository {
 		});
 	}
 
-	async findById(
-		scope: TenantScope,
-		id: string,
-	): Promise<ExchangeRate | null> {
+	async findById(scope: TenantScope, id: string): Promise<ExchangeRate | null> {
 		const result = await db
 			.select()
 			.from(exchangeRates)
@@ -58,8 +55,6 @@ export class PostgresExchangeRateRepository implements ExchangeRateRepository {
 		if (!result[0]) return null;
 		return this.mapToDomain(result[0]);
 	}
-
-
 
 	async findByDateAndCurrency(
 		companyId: string,

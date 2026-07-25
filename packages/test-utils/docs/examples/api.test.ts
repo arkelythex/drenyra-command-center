@@ -36,7 +36,7 @@ beforeAll(() => {
 		// --- Journal Entry routes ---
 		.get("/api/v1/journal-entries/:id", ({ params: { id }, headers }) => {
 			// Simulate auth check
-			if (!headers["authorization"]) {
+			if (!headers.authorization) {
 				return new Response(
 					JSON.stringify({ code: "UNAUTHORIZED", message: "No auth token" }),
 					{ status: 401, headers: { "Content-Type": "application/json" } },
@@ -78,7 +78,7 @@ beforeAll(() => {
 			);
 		})
 		.post("/api/v1/journal-entries", ({ body, headers }) => {
-			if (!headers["authorization"]) {
+			if (!headers.authorization) {
 				return new Response(
 					JSON.stringify({ code: "UNAUTHORIZED", message: "No auth token" }),
 					{ status: 401, headers: { "Content-Type": "application/json" } },

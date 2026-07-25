@@ -17,7 +17,7 @@ import type { SessionStore } from "../../src/session/session-store";
 // ============================================================================
 
 function sha256(str: string): string {
-	const { createHash } = require("crypto");
+	const { createHash } = require("node:crypto");
 	return createHash("sha256").update(str).digest("hex");
 }
 

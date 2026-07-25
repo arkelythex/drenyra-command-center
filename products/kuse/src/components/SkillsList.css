@@ -10,7 +10,7 @@
 }
 
 .skills-header h2 {
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: "Instrument Serif", Georgia, serif;
   font-size: 1.75rem;
   margin-bottom: 0.5rem;
   color: var(--foreground);
@@ -94,7 +94,7 @@
 }
 
 .skill-name {
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-family: "SF Mono", "Monaco", "Inconsolata", monospace;
   font-size: 1.125rem;
   font-weight: 600;
   color: var(--foreground);
@@ -176,7 +176,7 @@
 }
 
 .skill-modal-header h3 {
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-family: "SF Mono", "Monaco", "Inconsolata", monospace;
   font-size: 1.125rem;
   font-weight: 600;
   color: var(--foreground);
@@ -227,6 +227,6 @@
 
 .skill-modal-content li {
   margin-bottom: 0.25rem;
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  font-family: "SF Mono", "Monaco", "Inconsolata", monospace;
   font-size: 0.875rem;
 }

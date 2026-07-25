@@ -15,16 +15,16 @@
  */
 
 import { describe, expect, it, vi } from "vitest";
-import { IdempotencyApplicationService } from "../idempotency/idempotency.service";
-import type {
-	AcquireDecision,
-	IdempotencyRepository,
-} from "../idempotency/repository-types";
 import {
 	IdempotencyInProgressError,
 	IdempotencyPayloadMismatchError,
 	IdempotencyTerminalFailureError,
 } from "../idempotency/errors";
+import { IdempotencyApplicationService } from "../idempotency/idempotency.service";
+import type {
+	AcquireDecision,
+	IdempotencyRepository,
+} from "../idempotency/repository-types";
 
 // ─── Fixtures ────────────────────────────────────────────────────────────────
 

@@ -1,4 +1,4 @@
-import { ServerResponse, type IncomingMessage } from "node:http";
+import { type IncomingMessage, ServerResponse } from "node:http";
 import type { Plugin, ProxyOptions } from "vite";
 
 const DEFAULT_API_PROXY_TARGET = "http://localhost:3000";

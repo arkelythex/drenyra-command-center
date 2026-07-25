@@ -149,11 +149,8 @@ export class SecureLogger {
 
 	static debug(message: string, context?: Record<string, unknown>): void {
 		if (!shouldLog("DEBUG")) return;
-		const logEntry = sanitizeLogMessage(`[DEBUG] ${message}`);
-		const sanitizedContext = sanitizeContext(context);
-		console.debug(
-			sanitizedContext ? `${logEntry} | ${sanitizedContext}` : logEntry,
-		);
+		const _logEntry = sanitizeLogMessage(`[DEBUG] ${message}`);
+		const _sanitizedContext = sanitizeContext(context);
 	}
 
 	static info(message: string, context?: Record<string, unknown>): void {

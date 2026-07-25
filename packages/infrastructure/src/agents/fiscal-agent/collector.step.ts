@@ -18,7 +18,7 @@ export class CollectorStep implements FiscalAgentStep<void, CollectOutput> {
 	readonly name = "collect";
 
 	async execute(
-		_input: void,
+		_input: undefined,
 		context: FiscalAgentStepContext,
 	): Promise<StepResult<CollectOutput>> {
 		const startedAt = new Date();

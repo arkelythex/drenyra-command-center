@@ -12,9 +12,9 @@
  * @see https://ai.google.dev/gemini-api/docs
  */
 
+import { createHash } from "node:crypto";
 import type { Part } from "@google/generative-ai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { createHash } from "crypto";
 import { loggers } from "../../../logger";
 import type { AIResponse } from "../../types";
 import type { GeminiConfig, GeminiMultimodalInput } from "./types";

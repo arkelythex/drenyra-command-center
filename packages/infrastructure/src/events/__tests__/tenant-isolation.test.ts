@@ -5,9 +5,9 @@
  * RED phase: these tests fail because tenant filtering is not yet implemented.
  */
 
-import { describe, expect, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
+import type { DomainEvent } from "../event.port";
 import { InMemoryEventBus } from "../in-memory-event-bus";
-import type { DomainEvent, EventMetadata, EventType } from "../event.port";
 
 describe("InMemoryEventBus — tenant isolation", () => {
 	let bus: InMemoryEventBus;
@@ -29,9 +29,13 @@ describe("InMemoryEventBus — tenant isolation", () => {
 			{ organizationId: "org-a" },
 		);
 
-		await bus.publish("agent.task.started", { taskId: "t1" }, {
-			organizationId: "org-a",
-		});
+		await bus.publish(
+			"agent.task.started",
+			{ taskId: "t1" },
+			{
+				organizationId: "org-a",
+			},
+		);
 
 		expect(events).toHaveLength(1);
 	});
@@ -59,9 +63,13 @@ describe("InMemoryEventBus — tenant isolation", () => {
 		);
 
 		// Publish event for org-a
-		await bus.publish("agent.task.started", { taskId: "t1" }, {
-			organizationId: "org-a",
-		});
+		await bus.publish(
+			"agent.task.started",
+			{ taskId: "t1" },
+			{
+				organizationId: "org-a",
+			},
+		);
 
 		expect(eventsA).toHaveLength(1);
 		expect(eventsB).toHaveLength(0);
@@ -75,9 +83,13 @@ describe("InMemoryEventBus — tenant isolation", () => {
 			events.push(event as DomainEvent);
 		});
 
-		await bus.publish("agent.task.started", { taskId: "t1" }, {
-			organizationId: "org-a",
-		});
+		await bus.publish(
+			"agent.task.started",
+			{ taskId: "t1" },
+			{
+				organizationId: "org-a",
+			},
+		);
 
 		expect(events).toHaveLength(1);
 	});
@@ -134,12 +146,20 @@ describe("InMemoryEventBus — tenant isolation", () => {
 			{ organizationId: "org-b" },
 		);
 
-		await bus.publish("agent.task.started", { taskId: "t1" }, {
-			organizationId: "org-a",
-		});
-		await bus.publish("agent.task.completed", { taskId: "t2" }, {
-			organizationId: "org-b",
-		});
+		await bus.publish(
+			"agent.task.started",
+			{ taskId: "t1" },
+			{
+				organizationId: "org-a",
+			},
+		);
+		await bus.publish(
+			"agent.task.completed",
+			{ taskId: "t2" },
+			{
+				organizationId: "org-b",
+			},
+		);
 
 		expect(eventsA).toHaveLength(1);
 		expect(eventsB).toHaveLength(1);
@@ -166,9 +186,13 @@ describe("InMemoryEventBus — tenant isolation", () => {
 			{ organizationId: "org-a" },
 		);
 
-		await bus.publish("agent.task.started", { taskId: "t1" }, {
-			organizationId: "org-a",
-		});
+		await bus.publish(
+			"agent.task.started",
+			{ taskId: "t1" },
+			{
+				organizationId: "org-a",
+			},
+		);
 
 		expect(events).toHaveLength(2);
 	});
@@ -186,9 +210,13 @@ describe("InMemoryEventBus — tenant isolation", () => {
 			{ organizationId: "org-a" },
 		);
 
-		await bus.publish("agent.task.completed", { taskId: "t1" }, {
-			organizationId: "org-a",
-		});
+		await bus.publish(
+			"agent.task.completed",
+			{ taskId: "t1" },
+			{
+				organizationId: "org-a",
+			},
+		);
 
 		expect(events).toHaveLength(0);
 	});
@@ -210,9 +238,13 @@ describe("InMemoryEventBus — tenant isolation", () => {
 		// Reconnect with a fresh bus
 		const newBus = new InMemoryEventBus();
 		await newBus.connect();
-		await newBus.publish("agent.task.started", { taskId: "t1" }, {
-			organizationId: "org-a",
-		});
+		await newBus.publish(
+			"agent.task.started",
+			{ taskId: "t1" },
+			{
+				organizationId: "org-a",
+			},
+		);
 
 		// Old subscription should be gone
 		expect(events).toHaveLength(0);

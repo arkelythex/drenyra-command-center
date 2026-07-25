@@ -9,8 +9,8 @@
  * @module h02-pr2.2-cpe-log-repository
  */
 
-import { describe, expect, it } from "vitest";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { describe, expect, it } from "vitest";
 import { PostgresCpeLogRepository } from "../postgres-cpe-log.repository";
 
 // ============================================================

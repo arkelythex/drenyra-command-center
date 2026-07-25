@@ -9,8 +9,8 @@
  * @module h02-pr3.1-exchange-rate-repository
  */
 
-import { describe, expect, it } from "vitest";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { describe, expect, it } from "vitest";
 import { PostgresExchangeRateRepository } from "../postgres-exchange-rate.repository";
 
 // ============================================================

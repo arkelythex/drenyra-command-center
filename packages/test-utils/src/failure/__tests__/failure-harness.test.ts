@@ -16,13 +16,13 @@
  *   - el harness no aparece en exports productivos
  */
 
+import { NoopFailureProbe } from "@drenyra/persistence/failure";
 import { describe, expect, it, vi } from "vitest";
 import {
+	AsyncBarrier,
 	DeterministicFailureHarness,
 	SimulatedProcessCrash,
-	AsyncBarrier,
 } from "..";
-import { NoopFailureProbe } from "@drenyra/persistence/failure";
 
 // ═══════════════════════════════════════════════════════════════════════════
 // 1. NoopFailureProbe

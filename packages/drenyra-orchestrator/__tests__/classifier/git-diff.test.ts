@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { parseDiffFromText } from "../../src/classifier/git-diff";
 
 // ============================================================================
@@ -20,9 +20,12 @@ describe("git-diff — parseDiffFromText", () => {
 	it("parses modified files from name-status", () => {
 		// -z format: M\0path\0
 		const nameStatus = "M\0packages/fiscal/src/rates.ts\0";
-		const diff = "--- a/rates.ts\n+++ b/rates.ts\n@@ -1 +1 @@\n-const x = 1;\n+const x = 2;\n";
+		const diff =
+			"--- a/rates.ts\n+++ b/rates.ts\n@@ -1 +1 @@\n-const x = 1;\n+const x = 2;\n";
 		const result = parseDiffFromText(nameStatus, diff);
-		expect(result.entry.modifiedFiles).toContain("packages/fiscal/src/rates.ts");
+		expect(result.entry.modifiedFiles).toContain(
+			"packages/fiscal/src/rates.ts",
+		);
 		expect(result.entry.addedLines).toContain("const x = 2;");
 	});
 
@@ -54,7 +57,8 @@ describe("git-diff — parseDiffFromText", () => {
 	// --- Renamed files ---
 	it("parses renamed (R) files", () => {
 		// R100\0src\0dst\0
-		const nameStatus = "R100\0packages/fiscal/src/old.ts\0packages/fiscal/src/new.ts\0";
+		const nameStatus =
+			"R100\0packages/fiscal/src/old.ts\0packages/fiscal/src/new.ts\0";
 		const diff = "";
 		const result = parseDiffFromText(nameStatus, diff);
 		expect(result.entry.renamedFiles).toContain("packages/fiscal/src/old.ts");
@@ -95,7 +99,9 @@ describe("git-diff — parseDiffFromText", () => {
 		const nameStatus = "M\0packages/fiscal/src/old dir/rates.ts\0";
 		const diff = "";
 		const result = parseDiffFromText(nameStatus, diff);
-		expect(result.entry.modifiedFiles).toContain("packages/fiscal/src/old dir/rates.ts");
+		expect(result.entry.modifiedFiles).toContain(
+			"packages/fiscal/src/old dir/rates.ts",
+		);
 	});
 
 	// --- Paths with Unicode ---
@@ -103,7 +109,9 @@ describe("git-diff — parseDiffFromText", () => {
 		const nameStatus = "M\0packages/fiscal/src/año-2026/tasas.ts\0";
 		const diff = "";
 		const result = parseDiffFromText(nameStatus, diff);
-		expect(result.entry.modifiedFiles).toContain("packages/fiscal/src/año-2026/tasas.ts");
+		expect(result.entry.modifiedFiles).toContain(
+			"packages/fiscal/src/año-2026/tasas.ts",
+		);
 	});
 
 	// --- Binary files ---
@@ -150,7 +158,8 @@ describe("git-diff — parseDiffFromText", () => {
 
 	// --- Mixed types ---
 	it("handles mixed A, M, D, R in one diff", () => {
-		const nameStatus = "M\0mod.ts\0A\0add.ts\0D\0del.ts\0R050\0old.ts\0new.ts\0";
+		const nameStatus =
+			"M\0mod.ts\0A\0add.ts\0D\0del.ts\0R050\0old.ts\0new.ts\0";
 		const diff = "";
 		const result = parseDiffFromText(nameStatus, diff);
 		expect(result.entry.modifiedFiles).toContain("mod.ts");

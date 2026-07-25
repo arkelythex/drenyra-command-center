@@ -1,7 +1,7 @@
+import { randomUUID } from "node:crypto";
 import { ExchangeRate } from "@drenyra/domain/accounting/exchange-rate";
 import { db } from "@drenyra/persistence/client";
 import { exchangeRates } from "@drenyra/persistence/schema";
-import { randomUUID } from "crypto";
 import { and, desc, eq, gte, lte } from "drizzle-orm";
 
 function rateToDb(value) {

@@ -125,7 +125,7 @@ export class InboxService {
 				throw new Error("Fecha de emisión no encontrada en el XML");
 			}
 			const issueDate = new Date(issueDateStr);
-			if (isNaN(issueDate.getTime())) {
+			if (Number.isNaN(issueDate.getTime())) {
 				throw new Error(`Fecha de emisión inválida: ${issueDateStr}`);
 			}
 
@@ -261,7 +261,7 @@ export class InboxService {
 				type: "EXPENSE",
 				documentType: "FACTURA",
 				series: "DOC",
-				number: "PEND-" + Date.now().toString().slice(-6),
+				number: `PEND-${Date.now().toString().slice(-6)}`,
 				issueDate: new Date(),
 				totalAmount: "0.00",
 				status: "DRAFT",

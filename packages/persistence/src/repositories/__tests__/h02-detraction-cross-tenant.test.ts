@@ -9,8 +9,8 @@
  * @module h02-pr2.1-detraction-repository
  */
 
-import { describe, expect, it } from "vitest";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { describe, expect, it } from "vitest";
 import { PostgresDetractionRepository } from "../postgres-detraction.repository";
 
 // ============================================================

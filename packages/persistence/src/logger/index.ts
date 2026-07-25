@@ -1,5 +1,5 @@
 export {
 	type JobLogContext,
-	type StructuredLogger,
 	NoopLogger,
+	type StructuredLogger,
 } from "./structured-logger";

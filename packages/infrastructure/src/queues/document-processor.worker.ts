@@ -15,12 +15,12 @@ import { isValidRUC } from "@drenyra/shared/validation/ruc";
 import { type Job, Worker } from "bullmq";
 import { z } from "zod";
 import { loggers } from "../logger";
+import { validateWorkerScope } from "../workers/scope-validator";
 import type {
 	DocumentJobData,
 	DocumentJobResult,
 } from "./document-processor.queue";
 import { getRedisConnection, isRedisConfigured } from "./redis";
-import { validateWorkerScope } from "../workers/scope-validator";
 
 let worker: Worker<DocumentJobData, DocumentJobResult> | null = null;
 
@@ -74,10 +74,7 @@ async function processDocument(
 		documentFetchSchema.parse(job.data);
 
 	// Perimeter security: validate scope before any business logic
-	validateWorkerScope(
-		{ organizationId, companyId },
-		"tenant",
-	);
+	validateWorkerScope({ organizationId, companyId }, "tenant");
 
 	loggers.worker.info("Processing document", { documentId, fileType });
 

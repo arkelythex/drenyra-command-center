@@ -173,7 +173,7 @@ export class OpenRouterService {
 		return promptCost + completionCost;
 	}
 	async executeAgentTask(agentId, systemPrompt, userPrompt, tools) {
-		const models = AGENT_MODEL_MAP[agentId] || AGENT_MODEL_MAP["default"];
+		const models = AGENT_MODEL_MAP[agentId] || AGENT_MODEL_MAP.default;
 		const request = {
 			model: this.config.enableAutoRouting ? "openrouter/auto" : models[0],
 			messages: [

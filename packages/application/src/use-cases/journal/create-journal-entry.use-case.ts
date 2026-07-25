@@ -3,13 +3,13 @@
  * Orchestrates the creation of a new journal entry
  */
 
+import { randomUUID } from "node:crypto";
 import {
 	JournalEntry,
 	JournalLine,
 } from "@drenyra/domain/entities/JournalEntry";
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
 import { Money } from "@drenyra/domain/value-objects/Money";
-import { randomUUID } from "crypto";
 import {
 	type CreateJournalEntryDTO,
 	CreateJournalEntrySchema,

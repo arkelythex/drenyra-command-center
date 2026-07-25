@@ -204,23 +204,18 @@ export class ConsumeOnceWrapper {
 		},
 		handler: (tx: TxClient) => Promise<TBody>,
 	): Promise<ConsumeResult<TBody>> {
-		try {
-			const result = await handler(tx);
+		const result = await handler(tx);
 
-			await this.inboxRepo.markCompleted(tx, {
-				inboxId: acquisition.inboxId,
-				processingToken: acquisition.processingToken,
-			});
+		await this.inboxRepo.markCompleted(tx, {
+			inboxId: acquisition.inboxId,
+			processingToken: acquisition.processingToken,
+		});
 
-			return {
-				kind: "consumed",
-				inboxId: acquisition.inboxId,
-				result,
-				attemptCount: acquisition.attemptCount,
-			};
-		} catch (error) {
-			// Let the transaction rollback — inbox returns to previous state
-			throw error;
-		}
+		return {
+			kind: "consumed",
+			inboxId: acquisition.inboxId,
+			result,
+			attemptCount: acquisition.attemptCount,
+		};
 	}
 }

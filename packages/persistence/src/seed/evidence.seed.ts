@@ -32,7 +32,6 @@ export async function seedEvidence({
 	organizationId,
 	userId,
 }: SeedEvidenceParams): Promise<string[]> {
-	console.log("  📄 Seeding evidence...");
 	const evidenceIds: string[] = [];
 
 	const evidenceData = [
@@ -95,9 +94,6 @@ export async function seedEvidence({
 			actor: userId,
 		});
 	}
-
-	console.log(`    ✅ ${evidenceData.length} evidence records seeded`);
-	console.log(`    ✅ ${evidenceData.length} audit trail entries created`);
 	return evidenceIds;
 }
 
@@ -130,8 +126,6 @@ async function main() {
 			organizationId: 1,
 			userId: company.ownerId,
 		});
-
-		console.log("🎉 Evidence seeding completed!");
 	} catch (error) {
 		console.error("❌ Error seeding evidence:", error);
 		process.exit(1);

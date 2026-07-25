@@ -24,7 +24,7 @@ function configureTestOrchestrator(config?: Record<string, unknown>) {
 		...config,
 	} as Record<string, unknown>);
 
-	orchestrator["modelRouter"].registerProvider("custom", (_model: string) => {
+	orchestrator.modelRouter.registerProvider("custom", (_model: string) => {
 		return async (_s: string, _p: string) => {
 			return JSON.stringify({
 				titulo: "Test",
@@ -66,7 +66,7 @@ function configureTestOrchestrator(config?: Record<string, unknown>) {
 		"auditoria",
 	] as const;
 
-	orchestrator["modelRouter"].updateAssignments(
+	orchestrator.modelRouter.updateAssignments(
 		allPhases.map((fase) => ({
 			fase,
 			provider: "custom" as const,

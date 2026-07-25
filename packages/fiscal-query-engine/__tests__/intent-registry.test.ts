@@ -1,9 +1,9 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
-	extractRuc,
-	extractPeriodo,
-	matchIntentPatterns,
 	buildClarification,
+	extractPeriodo,
+	extractRuc,
+	matchIntentPatterns,
 } from "../src/intent-registry";
 
 describe("intent-registry", () => {

@@ -202,7 +202,7 @@ export function useDrenyraChat(): UseDrenyraChatReturn {
 				while (true) {
 					const { done, value } = await reader.read();
 					if (done) {
-						processEvents(parseSseBuffer(buffer + "\n\n").events);
+						processEvents(parseSseBuffer(`${buffer}\n\n`).events);
 						break;
 					}
 

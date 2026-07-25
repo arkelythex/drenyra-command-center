@@ -14,17 +14,17 @@
  */
 
 import { randomUUID } from "node:crypto";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { TestDatabase } from "@drenyra/test-utils/database";
-import { DeterministicFailureHarness } from "@drenyra/test-utils";
-import { PostgresJobExecutionRepository } from "../../../postgres-job-execution.repository";
-import { OutboxRelay } from "../../../job-outbox-relay";
-import { JobRunner } from "../../../job-runner";
-import { RecoverySweep } from "../../../job-recovery";
-import { ReconciliationSweep } from "../../../job-reconciliation";
 import type { FailureProbe } from "@drenyra/persistence";
-import { TableStateReader } from "./table-state-reader";
+import { DeterministicFailureHarness } from "@drenyra/test-utils";
+import { TestDatabase } from "@drenyra/test-utils/database";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import { OutboxRelay } from "../../../job-outbox-relay";
+import { ReconciliationSweep } from "../../../job-reconciliation";
+import { RecoverySweep } from "../../../job-recovery";
+import { JobRunner } from "../../../job-runner";
+import { PostgresJobExecutionRepository } from "../../../postgres-job-execution.repository";
 import { CrossLayerAssertions } from "./cross-layer-assertions";
+import { TableStateReader } from "./table-state-reader";
 
 // ─── Database session ───────────────────────────────────────────────────────
 

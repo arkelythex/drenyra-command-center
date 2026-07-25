@@ -146,20 +146,22 @@ function countInvoiceLines(xml: string): number {
 
 describe("SUNAT canonical boundary characterization", () => {
 	describe("RUC checksum and format boundaries", () => {
-		it.each(
-			VALID_RUCS,
-		)("keeps SunatService local validation aligned with the domain RUC checksum for %s", (ruc) => {
-			expect(DomainRuc.isValid(ruc)).toBe(true);
-			expect(SunatService.validateRuc(ruc).valid).toBe(true);
-			expect(SunatService.isValidRucFormat(ruc)).toBe(true);
-		});
+		it.each(VALID_RUCS)(
+			"keeps SunatService local validation aligned with the domain RUC checksum for %s",
+			(ruc) => {
+				expect(DomainRuc.isValid(ruc)).toBe(true);
+				expect(SunatService.validateRuc(ruc).valid).toBe(true);
+				expect(SunatService.isValidRucFormat(ruc)).toBe(true);
+			},
+		);
 
-		it.each(
-			INVALID_RUCS,
-		)("keeps SunatService local validation aligned with the domain RUC checksum rejection for %s", (ruc) => {
-			expect(DomainRuc.isValid(ruc)).toBe(false);
-			expect(SunatService.validateRuc(ruc).valid).toBe(false);
-		});
+		it.each(INVALID_RUCS)(
+			"keeps SunatService local validation aligned with the domain RUC checksum rejection for %s",
+			(ruc) => {
+				expect(DomainRuc.isValid(ruc)).toBe(false);
+				expect(SunatService.validateRuc(ruc).valid).toBe(false);
+			},
+		);
 
 		it("documents the current feature XML helper as format-only, not checksum canonical", () => {
 			// Characterization only: future checksum hardening should update this test intentionally.
@@ -183,33 +185,39 @@ describe("SUNAT canonical boundary characterization", () => {
 		it.each([
 			["F001", 1, "F001-00000001"],
 			["B001", 99999999, "B001-99999999"],
-		] as const)("keeps SunatService numbering aligned with legacy InvoiceNumber for %s-%s", (series, correlative, expectedId) => {
-			expect(
-				SunatService.validateInvoiceNumbering(series, correlative),
-			).toMatchObject({
-				valid: true,
-				series,
-				correlative,
-			});
-			expect(InvoiceNumber.create(series, correlative).toString()).toBe(
-				expectedId,
-			);
-			expect(parseInvoiceId(expectedId)).toEqual({
-				series,
-				correlative: String(correlative).padStart(8, "0"),
-			});
-		});
+		] as const)(
+			"keeps SunatService numbering aligned with legacy InvoiceNumber for %s-%s",
+			(series, correlative, expectedId) => {
+				expect(
+					SunatService.validateInvoiceNumbering(series, correlative),
+				).toMatchObject({
+					valid: true,
+					series,
+					correlative,
+				});
+				expect(InvoiceNumber.create(series, correlative).toString()).toBe(
+					expectedId,
+				);
+				expect(parseInvoiceId(expectedId)).toEqual({
+					series,
+					correlative: String(correlative).padStart(8, "0"),
+				});
+			},
+		);
 
 		it.each([
 			["X001", 1],
 			["F001", 0],
 			["F001", 100000000],
-		] as const)("rejects invalid legacy numbering %s-%s", (series, correlative) => {
-			expect(
-				SunatService.validateInvoiceNumbering(series, correlative).valid,
-			).toBe(false);
-			expect(() => InvoiceNumber.create(series, correlative)).toThrow();
-		});
+		] as const)(
+			"rejects invalid legacy numbering %s-%s",
+			(series, correlative) => {
+				expect(
+					SunatService.validateInvoiceNumbering(series, correlative).valid,
+				).toBe(false);
+				expect(() => InvoiceNumber.create(series, correlative)).toThrow();
+			},
+		);
 
 		it("documents current canonical parseInvoiceId as broader than invoice/boleta facade validation", () => {
 			expect(SunatService.validateInvoiceNumbering("X001", 1).valid).toBe(

@@ -9,8 +9,8 @@
  * @module h02-pr4.3-sire-submission-repository
  */
 
-import { describe, expect, it } from "vitest";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { describe, expect, it } from "vitest";
 import { SireSubmissionRepository } from "../sire-submission.repository";
 
 // ============================================================
@@ -54,8 +54,14 @@ describe("SireSubmissionRepository.findByIdempotencyKey — cross-tenant isolati
 	});
 
 	it("does not distinguish foreign submission from nonexistent submission", async () => {
-		const foreignResult = await repo.findByIdempotencyKey(scopeA2, IDEMPOTENCY_KEY);
-		const missingResult = await repo.findByIdempotencyKey(scopeA1, "unknown-key");
+		const foreignResult = await repo.findByIdempotencyKey(
+			scopeA2,
+			IDEMPOTENCY_KEY,
+		);
+		const missingResult = await repo.findByIdempotencyKey(
+			scopeA1,
+			"unknown-key",
+		);
 
 		expect(foreignResult).toBeNull();
 		expect(missingResult).toBeNull();
@@ -64,10 +70,13 @@ describe("SireSubmissionRepository.findByIdempotencyKey — cross-tenant isolati
 
 describe("SireSubmissionRepository.update — cross-tenant isolation", () => {
 	it("updates a submission in the selected company", async () => {
-		const submission = await repo.findByIdempotencyKey(scopeA1, IDEMPOTENCY_KEY);
+		const submission = await repo.findByIdempotencyKey(
+			scopeA1,
+			IDEMPOTENCY_KEY,
+		);
 		expect(submission).not.toBeNull();
 
-		const updated = await repo.update(scopeA1, submission!.id, {
+		const updated = await repo.update(scopeA1, submission?.id, {
 			status: "SUBMITTED",
 		});
 		expect(updated).not.toBeNull();
@@ -75,21 +84,27 @@ describe("SireSubmissionRepository.update — cross-tenant isolation", () => {
 	});
 
 	it("does not update a submission from another company", async () => {
-		const submission = await repo.findByIdempotencyKey(scopeA1, IDEMPOTENCY_KEY);
+		const submission = await repo.findByIdempotencyKey(
+			scopeA1,
+			IDEMPOTENCY_KEY,
+		);
 		expect(submission).not.toBeNull();
 
 		// Attempt update with wrong scope — should return undefined (0 rows matched)
-		const result = await repo.update(scopeA2, submission!.id, {
+		const result = await repo.update(scopeA2, submission?.id, {
 			status: "REJECTED",
 		});
 		expect(result).toBeUndefined();
 	});
 
 	it("does not update a submission from another organization", async () => {
-		const submission = await repo.findByIdempotencyKey(scopeA1, IDEMPOTENCY_KEY);
+		const submission = await repo.findByIdempotencyKey(
+			scopeA1,
+			IDEMPOTENCY_KEY,
+		);
 		expect(submission).not.toBeNull();
 
-		const result = await repo.update(scopeB1, submission!.id, {
+		const result = await repo.update(scopeB1, submission?.id, {
 			status: "REJECTED",
 		});
 		expect(result).toBeUndefined();

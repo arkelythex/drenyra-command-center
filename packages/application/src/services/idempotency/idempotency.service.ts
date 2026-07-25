@@ -17,16 +17,16 @@
  */
 
 import { hashPayload } from "../../shared/idempotency/hash-payload";
-import type {
-	AcquireInput,
-	IdempotencyRepository,
-	TxClient,
-} from "./repository-types";
 import {
 	IdempotencyInProgressError,
 	IdempotencyPayloadMismatchError,
 	IdempotencyTerminalFailureError,
 } from "./errors";
+import type {
+	AcquireInput,
+	IdempotencyRepository,
+	TxClient,
+} from "./repository-types";
 
 // ─── Public types ────────────────────────────────────────────────────────────
 

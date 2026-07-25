@@ -54,8 +54,12 @@ export function AgentTimeline({ steps }: AgentTimelineProps) {
 												: "border-[var(--border-subtle)] bg-[var(--surface-2)]"
 								}`}
 							>
-								{isDone && <span className="text-2xs text-[var(--text-inverse)]">✓</span>}
-								{isFailed && <span className="text-2xs text-[var(--text-inverse)]">✕</span>}
+								{isDone && (
+									<span className="text-2xs text-[var(--text-inverse)]">✓</span>
+								)}
+								{isFailed && (
+									<span className="text-2xs text-[var(--text-inverse)]">✕</span>
+								)}
 								{isCurrent && (
 									<span className="h-2 w-2 animate-pulse rounded-full bg-[var(--color-primary)]" />
 								)}

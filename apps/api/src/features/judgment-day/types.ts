@@ -7,15 +7,15 @@
  */
 
 import type {
+	ListReviewsQuery as AppListReviewsQuery,
+	ListRulesQuery as AppListRulesQuery,
+	PaginatedReviews as AppPaginatedReviews,
 	AuditFindingDTO,
 	AuditReviewDTO,
 	AuditRuleDTO,
 	CreateReviewRequest,
 	CreateRuleRequest,
 	JudgmentDayDashboard,
-	ListReviewsQuery as AppListReviewsQuery,
-	ListRulesQuery as AppListRulesQuery,
-	PaginatedReviews as AppPaginatedReviews,
 	UpdateRuleRequest,
 } from "@drenyra/application/features/judgment-day";
 

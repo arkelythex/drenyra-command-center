@@ -9,8 +9,8 @@
  * @module h02-pr3.4-provider-repository
  */
 
-import { describe, expect, it } from "vitest";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { describe, expect, it } from "vitest";
 import { PostgresProviderRepository } from "../postgres-provider.repository";
 
 // ============================================================

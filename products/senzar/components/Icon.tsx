@@ -1,15 +1,21 @@
-import React from 'react';
+import type React from "react";
 
 interface IconProps {
-  name: string;
-  className?: string;
-  filled?: boolean;
+	name: string;
+	className?: string;
+	filled?: boolean;
 }
 
-export const Icon: React.FC<IconProps> = ({ name, className = "", filled = false }) => {
-  return (
-    <span className={`material-symbols-outlined ${filled ? 'filled' : ''} ${className}`}>
-      {name}
-    </span>
-  );
+export const Icon: React.FC<IconProps> = ({
+	name,
+	className = "",
+	filled = false,
+}) => {
+	return (
+		<span
+			className={`material-symbols-outlined ${filled ? "filled" : ""} ${className}`}
+		>
+			{name}
+		</span>
+	);
 };

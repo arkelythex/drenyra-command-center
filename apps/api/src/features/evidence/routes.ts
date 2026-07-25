@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import { fail, getErrorMessage, ok } from "../../features/shared/api-response";
-import { evidenceController } from "./evidence.controller";
 import { companyScopeGuard } from "../../shared/plugins";
+import { evidenceController } from "./evidence.controller";
 
 export const evidenceRoutes = new Elysia({ prefix: "/api/v1/evidence" })
 	.use(companyScopeGuard({ allowHeaderFallback: true }))

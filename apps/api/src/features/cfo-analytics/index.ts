@@ -1,12 +1,12 @@
-import { Elysia } from "elysia";
-import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
-import { fail, ok } from "../shared/api-response";
 import {
 	CfoPeriodQuerySchema,
 	CfoQuerySchema,
 	GenerateReportSchema,
 	SaveConfigSchema,
 } from "@drenyra/application/features/cfo-analytics/schemas";
+import { Elysia } from "elysia";
+import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
+import { fail, ok } from "../shared/api-response";
 import { ClientAnalyticsService } from "./services/client-analytics.service";
 import { DashboardService } from "./services/dashboard.service";
 import { FinancialKPIsService } from "./services/financial-kpis.service";

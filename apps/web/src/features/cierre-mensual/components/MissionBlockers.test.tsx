@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { MissionBlockers } from "./MissionBlockers";
 import type { MissionBlocker } from "../mission.types";
+import { MissionBlockers } from "./MissionBlockers";
 
 const ACTIVE_BLOCKERS: MissionBlocker[] = [
 	{

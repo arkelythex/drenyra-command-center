@@ -104,7 +104,10 @@ export interface ProviderRepository {
 	 * Find a provider by ID within the given tenant scope.
 	 * Enforces tenant isolation by filtering on companyId from the scope.
 	 */
-	findById(scope: import("../scope").TenantScope, id: string): Promise<Provider | null>;
+	findById(
+		scope: import("../scope").TenantScope,
+		id: string,
+	): Promise<Provider | null>;
 	findAll(
 		organizationId: number,
 		filters?: ProviderFilters,

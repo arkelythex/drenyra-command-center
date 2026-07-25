@@ -3,8 +3,8 @@
  * Tests for high-level invoice signing operations (SUNAT 2026)
  */
 
+import { EventEmitter } from "node:events";
 import fs from "node:fs";
-import { EventEmitter } from "events";
 import forge from "node-forge";
 import {
 	afterEach,

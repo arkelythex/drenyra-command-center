@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { formatAsText, formatAsJson } from "../src/evidence-formatter";
+import { describe, expect, it } from "vitest";
+import { formatAsJson, formatAsText } from "../src/evidence-formatter";
 import type { QueryResult } from "../src/types";
 
 const sampleResult: QueryResult = {

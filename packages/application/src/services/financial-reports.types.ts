@@ -1,4 +1,4 @@
-import { LedgerEntry } from "./financial-reports/types";
+import type { LedgerEntry } from "./financial-reports/types";
 /**
  * Financial Reports types — PCGE report interfaces.
  */
@@ -88,7 +88,6 @@ export interface GeneralLedgerReport {
 		endingBalance: number;
 	}[];
 }
-
 
 export interface ReportGenerationResult {
 	success: boolean;

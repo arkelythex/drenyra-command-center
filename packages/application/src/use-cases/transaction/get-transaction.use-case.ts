@@ -72,10 +72,7 @@ export class GetTransactionUseCase {
 				organizationId: String(organizationId),
 				companyId: input.companyId ?? "",
 			};
-			const transaction = await this.transactionRepository.findById(
-				scope,
-				id,
-			);
+			const transaction = await this.transactionRepository.findById(scope, id);
 
 			if (!transaction) {
 				return {

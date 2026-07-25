@@ -4,7 +4,7 @@
  * Cada feature registra patterns y handlers que llaman a APIs reales.
  * Si la API no está disponible, devuelve error claro en vez de mock data.
  */
-import type { FeatureAdapter, FeatureMatch, ChatMessage } from "./agent-types";
+import type { ChatMessage, FeatureAdapter, FeatureMatch } from "./agent-types";
 
 const API_BASE = "http://localhost:3000/api";
 

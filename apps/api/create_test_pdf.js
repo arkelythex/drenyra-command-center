@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "node:fs";
 import PDFDocument from "pdfkit";
 
 // Crear un PDF simple de prueba

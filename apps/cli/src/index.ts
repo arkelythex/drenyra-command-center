@@ -7,12 +7,12 @@
 
 import { Command } from "commander";
 import { agentsCommand } from "./commands/agents.js";
-import { workflowCommand } from "./commands/workflow.js";
 import { configCommand } from "./commands/config.js";
-import { serveCommand } from "./commands/serve.js";
 import { piCommand } from "./commands/pi.js";
+import { serveCommand } from "./commands/serve.js";
 import { tuiCommand } from "./commands/tui.js";
 import { versionCommand } from "./commands/version.js";
+import { workflowCommand } from "./commands/workflow.js";
 
 const program = new Command();
 

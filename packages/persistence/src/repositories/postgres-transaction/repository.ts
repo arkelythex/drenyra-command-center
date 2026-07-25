@@ -145,10 +145,7 @@ export class PostgresTransactionRepository implements TransactionRepository {
 			);
 	}
 
-	async findById(
-		scope: TenantScope,
-		id: string,
-	): Promise<Transaction | null> {
+	async findById(scope: TenantScope, id: string): Promise<Transaction | null> {
 		// Resolve companyId from scope or fallback to organizationId resolution
 		let companyId = scope.companyId;
 		if (!companyId) {

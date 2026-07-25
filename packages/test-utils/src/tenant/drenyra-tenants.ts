@@ -19,12 +19,12 @@
 
 import type {
 	AuthUser,
-	User,
-	Organization,
-	Company,
 	AuthUserCompany,
+	Company,
+	Organization,
 	OrganizationScope,
 	TenantScope,
+	User,
 } from "./types";
 
 // ============================================================

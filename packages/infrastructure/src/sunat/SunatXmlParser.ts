@@ -299,7 +299,7 @@ export class SunatXmlParser {
 	}
 
 	private validateInvoice(invoice: UblInvoice): void {
-		if (!invoice.emisorRuc || invoice.emisorRuc.length !== 11)
+		if (invoice.emisorRuc?.length !== 11)
 			this.warnings.push("RUC del emisor inválido o ausente");
 		if (!invoice.receptorNumDoc)
 			this.warnings.push("Documento del receptor ausente");

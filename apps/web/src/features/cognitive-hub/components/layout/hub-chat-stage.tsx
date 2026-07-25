@@ -95,78 +95,76 @@ export const HubChatStage = ({
 
 	return (
 		<div className="flex h-full w-full flex-col">
-			<>
-				<motion.div
-					variants={CONTAINER_VARIANTS}
-					initial="hidden"
-					animate="visible"
-					className={cn(
-						"relative z-10 flex-1 overflow-y-auto scrollbar-none @container",
-						messages.length === 0
-							? "flex min-h-0 items-center justify-center p-4 sm:p-6 xl:p-8"
-							: density === "compact"
-								? "space-y-6 p-6"
-								: "space-y-12 p-8 xl:p-10",
-					)}
-				>
-					<AnimatePresence initial={false}>
-						{messages.map((message) => (
-							<HubMessage key={message.id} message={message} />
-						))}
-					</AnimatePresence>
+			<motion.div
+				variants={CONTAINER_VARIANTS}
+				initial="hidden"
+				animate="visible"
+				className={cn(
+					"relative z-10 flex-1 overflow-y-auto scrollbar-none @container",
+					messages.length === 0
+						? "flex min-h-0 items-center justify-center p-4 sm:p-6 xl:p-8"
+						: density === "compact"
+							? "space-y-6 p-6"
+							: "space-y-12 p-8 xl:p-10",
+				)}
+			>
+				<AnimatePresence initial={false}>
+					{messages.map((message) => (
+						<HubMessage key={message.id} message={message} />
+					))}
+				</AnimatePresence>
 
-					{messages.length === 0 ? (
-						<React.Suspense
-							fallback={
-								<HubPanelFallback label="Cargando panel operativo de Drenyra" />
-							}
-						>
-							<HubEmptyState
-								autonomyLevel={autonomyLevel}
-								hasPendingApproval={hasPendingApproval}
-								isSwarmStreaming={isSwarmStreaming}
-								isDiscrepancyComposerOpen={isDiscrepancyComposerOpen}
-								isSuggestionAccepted={isSuggestionAccepted}
-								discrepancyScenario={discrepancyScenario}
-								discrepancyCommitStatus={discrepancyCommitStatus}
-								undoSecondsLeft={undoSecondsLeft}
-								showResolvedEvents={showResolvedEvents}
-								onAutonomyLevelChange={onAutonomyLevelChange}
-								onReviewDiscrepancy={onReviewDiscrepancy}
-								onCloseComposer={onCloseComposer}
-								onAcceptSuggestion={onAcceptSuggestion}
-								onToggleResolvedEvents={onToggleResolvedEvents}
-								onSelectResolvedEvent={onSelectResolvedEvent}
-								onRunQuickAction={onSend}
-							/>
-						</React.Suspense>
-					) : null}
-				</motion.div>
-
-				{isChatBackdropActive ? (
-					<div
-						className="pointer-events-none absolute inset-0 z-10 bg-black/60"
-						aria-hidden
-					/>
+				{messages.length === 0 ? (
+					<React.Suspense
+						fallback={
+							<HubPanelFallback label="Cargando panel operativo de Drenyra" />
+						}
+					>
+						<HubEmptyState
+							autonomyLevel={autonomyLevel}
+							hasPendingApproval={hasPendingApproval}
+							isSwarmStreaming={isSwarmStreaming}
+							isDiscrepancyComposerOpen={isDiscrepancyComposerOpen}
+							isSuggestionAccepted={isSuggestionAccepted}
+							discrepancyScenario={discrepancyScenario}
+							discrepancyCommitStatus={discrepancyCommitStatus}
+							undoSecondsLeft={undoSecondsLeft}
+							showResolvedEvents={showResolvedEvents}
+							onAutonomyLevelChange={onAutonomyLevelChange}
+							onReviewDiscrepancy={onReviewDiscrepancy}
+							onCloseComposer={onCloseComposer}
+							onAcceptSuggestion={onAcceptSuggestion}
+							onToggleResolvedEvents={onToggleResolvedEvents}
+							onSelectResolvedEvent={onSelectResolvedEvent}
+							onRunQuickAction={onSend}
+						/>
+					</React.Suspense>
 				) : null}
+			</motion.div>
 
-				<React.Suspense fallback={<HubCommandDockFallback />}>
-					<HubCommandDock
-						density={density}
-						pendingApproval={pendingApproval}
-						isCommandPaletteActive={isCommandPaletteActive}
-						activityTimeline={activityTimeline}
-						activeRunId={activeRunId}
-						isSwarmActive={isSwarmActive}
-						onApprovePendingTool={onApprovePendingTool}
-						onDenyPendingTool={onDenyPendingTool}
-						onClearTimeline={onClearTimeline}
-						onSend={onSend}
-						onCommandModeChange={onCommandModeChange}
-						onChatBackdropChange={setIsChatBackdropActive}
-					/>
-				</React.Suspense>
-			</>
+			{isChatBackdropActive ? (
+				<div
+					className="pointer-events-none absolute inset-0 z-10 bg-black/60"
+					aria-hidden
+				/>
+			) : null}
+
+			<React.Suspense fallback={<HubCommandDockFallback />}>
+				<HubCommandDock
+					density={density}
+					pendingApproval={pendingApproval}
+					isCommandPaletteActive={isCommandPaletteActive}
+					activityTimeline={activityTimeline}
+					activeRunId={activeRunId}
+					isSwarmActive={isSwarmActive}
+					onApprovePendingTool={onApprovePendingTool}
+					onDenyPendingTool={onDenyPendingTool}
+					onClearTimeline={onClearTimeline}
+					onSend={onSend}
+					onCommandModeChange={onCommandModeChange}
+					onChatBackdropChange={setIsChatBackdropActive}
+				/>
+			</React.Suspense>
 		</div>
 	);
 };

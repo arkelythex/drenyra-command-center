@@ -25,7 +25,9 @@
   gap: 10px;
 }
 
-.add-btn, .refresh-btn, .close-btn {
+.add-btn,
+.refresh-btn,
+.close-btn {
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
@@ -116,7 +118,8 @@
   margin-top: 20px;
 }
 
-.save-btn, .cancel-btn {
+.save-btn,
+.cancel-btn {
   padding: 10px 20px;
   border: none;
   border-radius: 6px;
@@ -313,7 +316,9 @@
   flex-wrap: wrap;
 }
 
-.toggle-btn, .edit-btn, .delete-btn {
+.toggle-btn,
+.edit-btn,
+.delete-btn {
   padding: 6px 12px;
   border: none;
   border-radius: 4px;

@@ -16,18 +16,18 @@
  *   - worker completa 1 vez
  */
 
-import { describe, expect, it } from "vitest";
-import { sql } from "drizzle-orm";
-import { withTransaction } from "@drenyra/test-utils/database";
 import {
 	DeterministicFailureHarness,
 	SimulatedProcessCrash,
 } from "@drenyra/test-utils";
-import { createTenantFixture } from "../fixtures/tenants";
+import { withTransaction } from "@drenyra/test-utils/database";
+import { sql } from "drizzle-orm";
+import { describe, expect, it } from "vitest";
+import { OutboxRelay } from "../../../job-outbox-relay";
+import { PostgresJobExecutionRepository } from "../../../postgres-job-execution.repository";
 import { createFiscalOperationFixture } from "../fixtures/fiscal-operations";
 import { createJobFixture } from "../fixtures/jobs";
-import { PostgresJobExecutionRepository } from "../../../postgres-job-execution.repository";
-import { OutboxRelay } from "../../../job-outbox-relay";
+import { createTenantFixture } from "../fixtures/tenants";
 import { TableStateReader } from "../helpers/table-state-reader";
 
 const runIfDb = process.env.DATABASE_URL_TEST ? describe : describe.skip;

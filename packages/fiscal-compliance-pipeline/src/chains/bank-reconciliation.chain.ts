@@ -56,7 +56,7 @@ const bankReconStage: ComplianceStage = {
 		ctx: ComplianceContext,
 	): Promise<ComplianceStageResult> => {
 		const tcResult = ctx.previousStageResults.get("tipo-cambio-recalculo");
-		if (!tcResult || tcResult.status !== "PASSED") {
+		if (tcResult?.status !== "PASSED") {
 			return {
 				status: "BLOCKED",
 				evidenceId: `recon-blocked-${Date.now()}`,
@@ -103,7 +103,7 @@ const ledgerUpdateStage: ComplianceStage = {
 		ctx: ComplianceContext,
 	): Promise<ComplianceStageResult> => {
 		const reconResult = ctx.previousStageResults.get("conciliacion-bancaria");
-		if (!reconResult || reconResult.status !== "PASSED") {
+		if (reconResult?.status !== "PASSED") {
 			return {
 				status: "BLOCKED",
 				evidenceId: `ledger-blocked-${Date.now()}`,

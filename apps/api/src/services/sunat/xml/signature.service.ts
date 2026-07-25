@@ -6,7 +6,7 @@
  * @standard XMLDSig, XAdES, UBL 2.1
  */
 
-import { createHash, createSign } from "crypto";
+import { createHash, createSign } from "node:crypto";
 
 export interface SignatureConfig {
 	privateKey: string;

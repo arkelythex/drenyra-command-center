@@ -61,7 +61,7 @@ runIfDb("PR-3A-0: Tenant Auth Middleware", () => {
 		it("validateCompanyMembership returns membership for valid user+company", async () => {
 			const membership = await validateCompanyMembership(USER_ALICE, COMPANY_A);
 			expect(membership).not.toBeNull();
-			expect(membership!.companyId).toBe(COMPANY_A);
+			expect(membership?.companyId).toBe(COMPANY_A);
 		});
 
 		it("[RED→GREEN] validateCompanyMembership returns null for wrong company", async () => {
@@ -89,7 +89,7 @@ runIfDb("PR-3A-0: Tenant Auth Middleware", () => {
 
 			const aliceCheck = await validateCompanyMembership(USER_ALICE, COMPANY_A);
 			expect(aliceCheck).not.toBeNull();
-			expect(aliceCheck!.companyId).toBe(COMPANY_A);
+			expect(aliceCheck?.companyId).toBe(COMPANY_A);
 		});
 	});
 

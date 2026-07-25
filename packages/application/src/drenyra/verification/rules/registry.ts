@@ -161,7 +161,7 @@ const detractionRateRule: VerificationRule = (finding, _riskLevel, context) => {
 	return fail(
 		finding,
 		"DETRACTION_RATE_CHECK",
-		validRates.join("% o ") + "%",
+		`${validRates.join("% o ")}%`,
 		`${pct}%`,
 		`Tasa de detracción fuera de rango: ${pct}%. Válidas: ${validRates.join("%, ")}%.`,
 	);

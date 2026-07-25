@@ -30,8 +30,8 @@ export function formatAsText(result: QueryResult): string {
 		}
 	} else {
 		// Render known result fields
-		const monto = result.resultado["monto"];
-		const moneda = result.resultado["moneda"] ?? "PEN";
+		const monto = result.resultado.monto;
+		const moneda = result.resultado.moneda ?? "PEN";
 		if (monto !== undefined) {
 			lines.push(
 				`  Monto: ${moneda} ${Number(monto).toLocaleString("es-PE", { minimumFractionDigits: 2 })}`,

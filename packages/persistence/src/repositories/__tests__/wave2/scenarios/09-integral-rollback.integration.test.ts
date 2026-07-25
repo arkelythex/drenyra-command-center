@@ -8,13 +8,13 @@
  *   9d — Job execution: DB effect + completion
  */
 
-import { describe, expect, it } from "vitest";
-import { sql } from "drizzle-orm";
 import { withTransaction } from "@drenyra/test-utils/database";
-import { createTenantFixture } from "../fixtures/tenants";
+import { sql } from "drizzle-orm";
+import { describe, expect, it } from "vitest";
+import { PostgresJobExecutionRepository } from "../../../postgres-job-execution.repository";
 import { createFiscalOperationFixture } from "../fixtures/fiscal-operations";
 import { createJobFixture } from "../fixtures/jobs";
-import { PostgresJobExecutionRepository } from "../../../postgres-job-execution.repository";
+import { createTenantFixture } from "../fixtures/tenants";
 import { TableStateReader } from "../helpers/table-state-reader";
 
 const runIfDb = process.env.DATABASE_URL_TEST ? describe : describe.skip;
@@ -101,7 +101,7 @@ runIfDb("D6 — Rollbacks por frontera", () => {
 			const execCount = await reader.countJobExecutions(
 				j.sunatSubmit.logicalKey,
 			);
-			const outboxTotal = (await reader.countAllRows())["job_outbox"] ?? 0;
+			const outboxTotal = (await reader.countAllRows()).job_outbox ?? 0;
 			expect(execCount, "9c: 0 job executions tras rollback").toBe(0);
 			expect(
 				outboxTotal,

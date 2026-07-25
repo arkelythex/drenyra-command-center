@@ -5,15 +5,15 @@ describe("CommandPalette — L3 fiscal references", () => {
 	it("includes /cerrar-periodo as a navigable command", () => {
 		const command = NAV_TARGETS.find((n) => n.id === "cerrar-periodo");
 		expect(command).toBeDefined();
-		expect(command!.description).toContain("/cerrar-periodo");
-		expect(command!.path).toBe("/cierre-mensual");
+		expect(command?.description).toContain("/cerrar-periodo");
+		expect(command?.path).toBe("/cierre-mensual");
 	});
 
 	it("includes /revisar-alerta as a navigable command", () => {
 		const command = NAV_TARGETS.find((n) => n.id === "revisar-alerta");
 		expect(command).toBeDefined();
-		expect(command!.description).toContain("/revisar-alerta");
-		expect(command!.path).toBe("/review-queue");
+		expect(command?.description).toContain("/revisar-alerta");
+		expect(command?.path).toBe("/review-queue");
 	});
 
 	it("includes a navigation target for Cierre mensual", () => {

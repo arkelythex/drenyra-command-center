@@ -129,7 +129,7 @@ export class PostgresCpeLogRepository {
 			.from(cpeLog)
 			.where(eq(cpeLog.id, id))
 			.limit(1);
-		if (!result[0] || !result[0].hashValue) return false;
+		if (!result[0]?.hashValue) return false;
 		return result[0].hashValue === xmlHash;
 	}
 	mapToDomain(raw) {

@@ -109,8 +109,6 @@ export class ReviewGuard {
 						`Excepción aprobada: ${forecast.estimatedLines} líneas. ` +
 						`Requiere documentar que es mecánico.`,
 				};
-
-			case "ask-on-risk":
 			default:
 				return this.askOnRiskDecision(forecast);
 		}

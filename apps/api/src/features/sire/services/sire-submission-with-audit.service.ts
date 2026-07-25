@@ -23,8 +23,8 @@
  */
 
 import { randomBytes } from "node:crypto";
-import { sireSubmissionRepository } from "@drenyra/persistence/repositories/sire-submission.repository";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { sireSubmissionRepository } from "@drenyra/persistence/repositories/sire-submission.repository";
 import { createLogger } from "../../../lib/logger";
 import {
 	type SireSubmissionResult,
@@ -303,35 +303,31 @@ export const submitWithAudit = async (
 
 		// Update audit trail with successful result
 		if (auditRecord) {
-			await sireSubmissionRepository.update(
-				scope,
-				auditRecord.id,
-				{
-					status:
-						result.status === "ACCEPTED" || result.status === "SIMULATED"
-							? "ACCEPTED"
-							: result.status === "REJECTED"
-								? "REJECTED"
-								: "SUBMITTED",
-					submissionId: result.submissionId,
-					sunatTicket: result.sunatTicket,
-					trackingId: result.trackingId,
-					sunatMessage: result.message,
-					warnings: mergeAuditWarnings(
-						auditRecord.warnings,
-						options?.governanceTrace,
-						buildSunatAuditTrace({
-							companyId: input.companyId,
-							tenantSunatContext,
-							decision: "allowed",
-							outcome: result.status,
-							suppliedRuc: input.ruc,
-						}),
-					),
-					submittedAt: new Date(result.submittedAt),
-					processedAt: new Date(),
-				},
-			);
+			await sireSubmissionRepository.update(scope, auditRecord.id, {
+				status:
+					result.status === "ACCEPTED" || result.status === "SIMULATED"
+						? "ACCEPTED"
+						: result.status === "REJECTED"
+							? "REJECTED"
+							: "SUBMITTED",
+				submissionId: result.submissionId,
+				sunatTicket: result.sunatTicket,
+				trackingId: result.trackingId,
+				sunatMessage: result.message,
+				warnings: mergeAuditWarnings(
+					auditRecord.warnings,
+					options?.governanceTrace,
+					buildSunatAuditTrace({
+						companyId: input.companyId,
+						tenantSunatContext,
+						decision: "allowed",
+						outcome: result.status,
+						suppliedRuc: input.ruc,
+					}),
+				),
+				submittedAt: new Date(result.submittedAt),
+				processedAt: new Date(),
+			});
 
 			logger.info(
 				{
@@ -367,30 +363,26 @@ export const submitWithAudit = async (
 			const nextRetryMinutes = 2 ** attemptNumber; // 2^1 = 2, 2^2 = 4, 2^3 = 8
 			const nextRetryAt = new Date(Date.now() + nextRetryMinutes * 60 * 1000);
 
-			await sireSubmissionRepository.update(
-				scope,
-				auditRecord.id,
-				{
-					status: "FAILED",
-					sunatMessage: errorMessage,
-					errors: {
-						reason: failureReason,
-						message: errorMessage,
-						sunatTenant: {
-							...buildSunatAuditTrace({
-								companyId: input.companyId,
-								tenantSunatContext,
-								decision: "refused",
-								reason: failureReason,
-								suppliedRuc: input.ruc,
-							}),
-							...getTenantContextErrorTrace(error),
-						},
+			await sireSubmissionRepository.update(scope, auditRecord.id, {
+				status: "FAILED",
+				sunatMessage: errorMessage,
+				errors: {
+					reason: failureReason,
+					message: errorMessage,
+					sunatTenant: {
+						...buildSunatAuditTrace({
+							companyId: input.companyId,
+							tenantSunatContext,
+							decision: "refused",
+							reason: failureReason,
+							suppliedRuc: input.ruc,
+						}),
+						...getTenantContextErrorTrace(error),
 					},
-					processedAt: new Date(),
-					nextRetryAt,
 				},
-			);
+				processedAt: new Date(),
+				nextRetryAt,
+			});
 
 			logger.warn(
 				{
@@ -429,7 +421,10 @@ export const logBlockedSubmissionAttempt = async (
 ): Promise<void> => {
 	const idempotencyKey = buildIdempotencyKey(input);
 	const provider = resolveProvider();
-	const blockedScope: TenantScope = { organizationId: "", companyId: input.companyId };
+	const blockedScope: TenantScope = {
+		organizationId: "",
+		companyId: input.companyId,
+	};
 
 	let submission = await sireSubmissionRepository.findByIdempotencyKey(
 		blockedScope,
@@ -452,17 +447,13 @@ export const logBlockedSubmissionAttempt = async (
 		});
 	}
 
-	await sireSubmissionRepository.update(
-		blockedScope,
-		submission.id,
-		{
-			status: "BLOCKED_POLICY",
-			sunatMessage: message,
-			errors: {
-				governance: governanceTrace,
-				reason: message,
-			},
-			processedAt: new Date(),
+	await sireSubmissionRepository.update(blockedScope, submission.id, {
+		status: "BLOCKED_POLICY",
+		sunatMessage: message,
+		errors: {
+			governance: governanceTrace,
+			reason: message,
 		},
-	);
+		processedAt: new Date(),
+	});
 };

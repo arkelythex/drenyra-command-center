@@ -1,4 +1,4 @@
-import { LedgerEntry } from "./financial-reports/types";
+import type { LedgerEntry } from "./financial-reports/types";
 /**
  * Financial Reports Service
  *

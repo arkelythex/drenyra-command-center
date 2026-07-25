@@ -1,12 +1,12 @@
-import { useState, useRef, useEffect } from "react";
+import { approvalStore } from "@drenyra/fiscal-approval";
+import { useEffect, useRef, useState } from "react";
+import { getSuggestions, parseChatInput } from "./chat-parser";
 import type {
 	ChatMessage,
-	RecommendationData,
 	ConsultaData,
 	EvidenceSource,
+	RecommendationData,
 } from "./chat-types";
-import { parseChatInput, getSuggestions } from "./chat-parser";
-import { approvalStore } from "@drenyra/fiscal-approval";
 
 let msgId = 0;
 function nextId() {
@@ -268,8 +268,6 @@ export function FiscalChat() {
 					},
 				};
 			}
-
-			case "consulta":
 			default: {
 				// Simulate query result
 				await new Promise((r) => setTimeout(r, 500));

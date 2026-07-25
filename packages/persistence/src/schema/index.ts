@@ -527,7 +527,12 @@ export {
 	type NewCircuitBreakerState,
 	type NewFailedAgentItem,
 } from "./error-recovery.schema";
-
+// --- W2-04B: EXTERNAL REFERENCES ---
+export {
+	type ExternalReferenceSource,
+	externalReferences,
+	externalReferencesRelations,
+} from "./external-references.schema";
 // --- FISCAL MEMORY ---
 export {
 	type FiscalMemoryRevisionRow,
@@ -537,7 +542,12 @@ export {
 	type NewFiscalMemoryRevisionRow,
 	type NewFiscalMemoryRow,
 } from "./fiscal-memory.schema";
-
+// --- W2-04: IDEMPOTENCY ---
+export {
+	type IdempotencyRecord,
+	idempotencyRecords,
+	type NewIdempotencyRecord,
+} from "./idempotency.schema";
 // --- JUDGMENT DAY ---
 export {
 	type AuditReviewStatus,
@@ -555,7 +565,6 @@ export {
 	findingSeverities,
 	findingStatuses,
 } from "./judgment-day.schema";
-
 // --- RAG ENTERPRISE ---
 export {
 	type KbChunk,
@@ -575,17 +584,3 @@ export {
 	type NewKbDocument,
 	type NewKbQuery,
 } from "./rag-enterprise.schema";
-
-// --- W2-04: IDEMPOTENCY ---
-export {
-	idempotencyRecords,
-	type IdempotencyRecord,
-	type NewIdempotencyRecord,
-} from "./idempotency.schema";
-
-// --- W2-04B: EXTERNAL REFERENCES ---
-export {
-	externalReferences,
-	externalReferencesRelations,
-	type ExternalReferenceSource,
-} from "./external-references.schema";

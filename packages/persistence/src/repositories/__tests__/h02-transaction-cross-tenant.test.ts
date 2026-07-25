@@ -9,8 +9,8 @@
  * @module h02-pr3.2-transaction-repository
  */
 
-import { describe, expect, it } from "vitest";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { describe, expect, it } from "vitest";
 import { PostgresTransactionRepository } from "../postgres-transaction/repository";
 
 // ============================================================

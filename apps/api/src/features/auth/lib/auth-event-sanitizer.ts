@@ -5,7 +5,7 @@ const FALLBACK_FINGERPRINT = "unavailable";
 export function fingerprintSensitiveValue(
 	value: string | null | undefined,
 ): string {
-	if (!value || !value.trim()) {
+	if (!value?.trim()) {
 		return FALLBACK_FINGERPRINT;
 	}
 
@@ -19,7 +19,7 @@ export function resolveClientIpAddress(
 	const fromRequest =
 		requestHeaders.get("x-forwarded-for") ?? requestHeaders.get("x-real-ip");
 
-	if (fromRequest && fromRequest.trim()) {
+	if (fromRequest?.trim()) {
 		return fromRequest.split(",")[0]?.trim() ?? "unknown";
 	}
 

@@ -3,10 +3,10 @@
  * Orchestrates the creation of a new accounting account
  */
 
+import { randomUUID } from "node:crypto";
 import { Account } from "@drenyra/domain/entities/Account";
 import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
 import { Money } from "@drenyra/domain/value-objects/Money";
-import { randomUUID } from "crypto";
 import {
 	type CreateAccountDTO,
 	createAccountSchema,

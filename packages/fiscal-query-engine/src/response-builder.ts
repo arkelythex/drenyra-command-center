@@ -5,10 +5,10 @@
  */
 
 import type {
+	EvidenceRef,
+	EvidenceSource,
 	IntentClassification,
 	QueryResult,
-	EvidenceSource,
-	EvidenceRef,
 } from "./types";
 
 /**

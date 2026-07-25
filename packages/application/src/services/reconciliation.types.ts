@@ -109,7 +109,7 @@ export function extractDataFromDescription(description: string): ExtractedData {
 	if (amountMatches) {
 		extracted.amounts = amountMatches
 			.map((s) => parseFloat(s.replace(/,/g, "")))
-			.filter((n) => !isNaN(n) && n > 0);
+			.filter((n) => !Number.isNaN(n) && n > 0);
 	}
 	return extracted;
 }

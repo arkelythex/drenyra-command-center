@@ -47,7 +47,7 @@ export async function uploadDocument(
 ): Promise<UploadDocumentResult> {
 	const { store, tenantScope, actorId, file, queueOcrJob } = input;
 
-	if (!file || !file.name) {
+	if (!file?.name) {
 		throw new Error("No file provided");
 	}
 

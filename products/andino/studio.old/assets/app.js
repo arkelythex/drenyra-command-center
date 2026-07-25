@@ -4,99 +4,140 @@
    ═══════════════════════════════════════════════════════════ */
 
 const ANDINO = (() => {
-  'use strict';
+	/* ── State ──────────────────────────────────────────── */
+	const state = {
+		currentPhase: "explore",
+		currentAgent: 0,
+		agents: [
+			{
+				id: 0,
+				name: "Nova",
+				type: "design",
+				status: "busy",
+				task: "Evolving morphology for tunnel inspection",
+				progress: 67,
+			},
+			{
+				id: 1,
+				name: "Pulse",
+				type: "simulate",
+				status: "busy",
+				task: "Running CFD on wing profile v3",
+				progress: 34,
+			},
+			{
+				id: 2,
+				name: "Forge",
+				type: "build",
+				status: "idle",
+				task: "Waiting for design approval",
+				progress: 0,
+			},
+			{
+				id: 3,
+				name: "Horizon",
+				type: "explore",
+				status: "success",
+				task: "Survey complete — 12 tunnel types found",
+				progress: 100,
+			},
+		],
+		phases: [
+			"explore",
+			"propose",
+			"spec",
+			"design",
+			"simulate",
+			"build",
+			"fly",
+			"verify",
+			"archive",
+		],
+		metrics: {
+			payload: { value: 2.4, unit: "kg", trend: "up" },
+			endurance: { value: 38, unit: "min", trend: "up" },
+			twr: { value: 1.8, unit: "", trend: "up" },
+			cost: { value: 1240, unit: "USD", trend: "down" },
+			altitude: { value: 120, unit: "m", trend: "up" },
+		},
+		sidebarTab: "skills",
+		messages: [],
+		chatOpen: true,
+		missionStarted: false,
+	};
 
-  /* ── State ──────────────────────────────────────────── */
-  const state = {
-    currentPhase: 'explore',
-    currentAgent: 0,
-    agents: [
-      { id: 0, name: 'Nova',    type: 'design',   status: 'busy',   task: 'Evolving morphology for tunnel inspection', progress: 67 },
-      { id: 1, name: 'Pulse',   type: 'simulate', status: 'busy',   task: 'Running CFD on wing profile v3',          progress: 34 },
-      { id: 2, name: 'Forge',   type: 'build',    status: 'idle',   task: 'Waiting for design approval',             progress: 0 },
-      { id: 3, name: 'Horizon', type: 'explore',  status: 'success', task: 'Survey complete — 12 tunnel types found', progress: 100 },
-    ],
-    phases: ['explore', 'propose', 'spec', 'design', 'simulate', 'build', 'fly', 'verify', 'archive'],
-    metrics: {
-      payload: { value: 2.4, unit: 'kg', trend: 'up' },
-      endurance: { value: 38, unit: 'min', trend: 'up' },
-      twr: { value: 1.8, unit: '', trend: 'up' },
-      cost: { value: 1240, unit: 'USD', trend: 'down' },
-      altitude: { value: 120, unit: 'm', trend: 'up' },
-    },
-    sidebarTab: 'skills',
-    messages: [],
-    chatOpen: true,
-    missionStarted: false,
-  };
+	/* ── Canned Chat Responses ──────────────────────────── */
+	const responses = [
+		{
+			steps: [
+				"Analyzing mission requirements: tunnel inspection drone with 500m range, 15min flight time, obstacle avoidance.",
+				"Searching morphology database for tunnel-optimized configurations...",
+				"Found 3 candidates: X4 compact, Y6 coaxial, and H-frame with ducted fans.",
+				"Running trade studies on each configuration against your constraints.",
+			],
+			final:
+				"I recommend the **Y6 coaxial configuration**. It provides the best thrust-to-weight ratio for confined spaces while offering redundancy. The smaller footprint vs an X8 makes it ideal for tunnel diameters under 2m. Want me to proceed to the design phase?",
+		},
+		{
+			steps: [
+				"Evaluating Y6 coaxial vs X4 compact tradeoffs for tunnel inspection.",
+				"The Y6 gives you 50% more thrust redundancy at the cost of 12% more drag.",
+				"For tunnel environments with potential debris strikes, redundancy is critical.",
+				"Calculating optimal arm angles for 1.8m diameter tunnel clearance.",
+			],
+			final:
+				"For a **1.8m diameter tunnel**, I recommend a **38° arm angle** with **9-inch propellers**. This yields:\n- Max clearance: 0.4m on each side\n- Thrust-to-weight: 2.1:1\n- Estimated endurance: 22 min with payload\n\nWould you like to see the CAD model?",
+		},
+		{
+			steps: [
+				"Simulating Y6 configuration in tunnel environment with varying airflow.",
+				"Detected vortex ring state risk in high-turbulence sections near ventilation shafts.",
+				"Adjusting motor mixing algorithm to compensate for asymmetric thrust in crosswinds.",
+				"Running Monte Carlo simulation across 10,000 tunnel profiles...",
+			],
+			final:
+				"✅ **Simulation complete.** The Y6 passes all safety margins with:\n- 99.7% stability in turbulent zones\n- 18% vortex ring state margin (above 15% threshold)\n- 32 min average mission time\n\n**Recommended action:** Proceed to build phase. All critical parameters validated.",
+		},
+	];
 
-  /* ── Canned Chat Responses ──────────────────────────── */
-  const responses = [
-    {
-      steps: [
-        'Analyzing mission requirements: tunnel inspection drone with 500m range, 15min flight time, obstacle avoidance.',
-        'Searching morphology database for tunnel-optimized configurations...',
-        'Found 3 candidates: X4 compact, Y6 coaxial, and H-frame with ducted fans.',
-        'Running trade studies on each configuration against your constraints.',
-      ],
-      final: "I recommend the **Y6 coaxial configuration**. It provides the best thrust-to-weight ratio for confined spaces while offering redundancy. The smaller footprint vs an X8 makes it ideal for tunnel diameters under 2m. Want me to proceed to the design phase?",
-    },
-    {
-      steps: [
-        'Evaluating Y6 coaxial vs X4 compact tradeoffs for tunnel inspection.',
-        'The Y6 gives you 50% more thrust redundancy at the cost of 12% more drag.',
-        'For tunnel environments with potential debris strikes, redundancy is critical.',
-        'Calculating optimal arm angles for 1.8m diameter tunnel clearance.',
-      ],
-      final: "For a **1.8m diameter tunnel**, I recommend a **38° arm angle** with **9-inch propellers**. This yields:\n- Max clearance: 0.4m on each side\n- Thrust-to-weight: 2.1:1\n- Estimated endurance: 22 min with payload\n\nWould you like to see the CAD model?",
-    },
-    {
-      steps: [
-        'Simulating Y6 configuration in tunnel environment with varying airflow.',
-        'Detected vortex ring state risk in high-turbulence sections near ventilation shafts.',
-        'Adjusting motor mixing algorithm to compensate for asymmetric thrust in crosswinds.',
-        'Running Monte Carlo simulation across 10,000 tunnel profiles...',
-      ],
-      final: "✅ **Simulation complete.** The Y6 passes all safety margins with:\n- 99.7% stability in turbulent zones\n- 18% vortex ring state margin (above 15% threshold)\n- 32 min average mission time\n\n**Recommended action:** Proceed to build phase. All critical parameters validated.",
-    },
-  ];
+	const _designSuggestions = [
+		"Try increasing arm angle to 42° for better stability in crosswinds.",
+		"Consider 10-inch props — they improve hover efficiency by 15% in this weight class.",
+		"A 4S 2200mAh battery would give you 8% more endurance with only 3% weight penalty.",
+		"Ducted fans could reduce noise by 60% but add 22% drag — tradeoff for urban operations.",
+		"Moving the payload mount 12mm forward improves CG balance by 8%.",
+	];
 
-  const designSuggestions = [
-    'Try increasing arm angle to 42° for better stability in crosswinds.',
-    'Consider 10-inch props — they improve hover efficiency by 15% in this weight class.',
-    'A 4S 2200mAh battery would give you 8% more endurance with only 3% weight penalty.',
-    'Ducted fans could reduce noise by 60% but add 22% drag — tradeoff for urban operations.',
-    'Moving the payload mount 12mm forward improves CG balance by 8%.',
-  ];
+	const _telemetryData = {
+		altitude: 45.2,
+		speed: 12.8,
+		battery: 78,
+		gps: 4,
+		voltage: 15.6,
+		current: 8.2,
+		temp: 38.4,
+		rssi: -62,
+	};
 
-  const telemetryData = {
-    altitude: 45.2,
-    speed: 12.8,
-    battery: 78,
-    gps: 4,
-    voltage: 15.6,
-    current: 8.2,
-    temp: 38.4,
-    rssi: -62,
-  };
+	/* ── DOM Refs ────────────────────────────────────────── */
+	const _els = {};
 
-  /* ── DOM Refs ────────────────────────────────────────── */
-  let els = {};
+	function _init(el, selector) {
+		if (typeof selector === "string") {
+			return el ? el.querySelector(selector) : null;
+		}
+		return null;
+	}
 
-  function init(el, selector) {
-    if (typeof selector === 'string') {
-      return el ? el.querySelector(selector) : null;
-    }
-    return null;
-  }
+	/* ── Rendering ───────────────────────────────────────── */
 
-  /* ── Rendering ───────────────────────────────────────── */
-
-  function renderAgentList() {
-    const list = document.getElementById('agent-list');
-    if (!list) return;
-    list.innerHTML = state.agents.map((a, i) => `
-      <div class="agent-item ${i === state.currentAgent ? 'active' : ''}" data-agent="${i}">
+	function renderAgentList() {
+		const list = document.getElementById("agent-list");
+		if (!list) return;
+		list.innerHTML = state.agents
+			.map(
+				(a, i) => `
+      <div class="agent-item ${i === state.currentAgent ? "active" : ""}" data-agent="${i}">
         <div class="agent-item-header">
           <div class="agent-item-left">
             <span class="agent-status-dot ${a.status}"></span>
@@ -105,7 +146,9 @@ const ANDINO = (() => {
           </div>
         </div>
         <div class="agent-task">${a.task}</div>
-        ${a.status !== 'idle' ? `
+        ${
+					a.status !== "idle"
+						? `
         <div class="agent-progress">
           <div class="progress-bar">
             <div class="progress-bar-fill" style="width:${a.progress}%"></div>
@@ -113,167 +156,183 @@ const ANDINO = (() => {
           <div class="progress-label">
             <span>${a.progress}%</span>
           </div>
-        </div>` : ''}
+        </div>`
+						: ""
+				}
       </div>
-    `).join('');
+    `,
+			)
+			.join("");
 
-    list.querySelectorAll('.agent-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const idx = parseInt(item.dataset.agent);
-        focusAgent(idx);
-      });
-    });
-  }
+		list.querySelectorAll(".agent-item").forEach((item) => {
+			item.addEventListener("click", () => {
+				const idx = parseInt(item.dataset.agent, 10);
+				focusAgent(idx);
+			});
+		});
+	}
 
-  function renderMetrics() {
-    const strip = document.getElementById('metrics-strip');
-    if (!strip) return;
-    strip.innerHTML = Object.entries(state.metrics).map(([k, m]) => `
+	function renderMetrics() {
+		const strip = document.getElementById("metrics-strip");
+		if (!strip) return;
+		strip.innerHTML = Object.entries(state.metrics)
+			.map(
+				([k, m]) => `
       <div class="metric-card">
         <div class="metric-label">${k}</div>
-        <div class="metric-value ${m.trend === 'up' && k !== 'cost' ? 'secondary' : m.trend === 'down' && k === 'cost' ? 'secondary' : ''}">
+        <div class="metric-value ${m.trend === "up" && k !== "cost" ? "secondary" : m.trend === "down" && k === "cost" ? "secondary" : ""}">
           ${m.value}<span class="metric-unit">${m.unit}</span>
         </div>
-        <div class="metric-trend ${m.trend}">${m.trend === 'up' ? '↑' : '↓'} ${m.trend}</div>
+        <div class="metric-trend ${m.trend}">${m.trend === "up" ? "↑" : "↓"} ${m.trend}</div>
       </div>
-    `).join('');
-  }
+    `,
+			)
+			.join("");
+	}
 
-  function renderPhases() {
-    const header = document.getElementById('phase-header');
-    if (!header) return;
-    const idx = state.phases.indexOf(state.currentPhase);
-    header.innerHTML = state.phases.map((p, i) => `
-      ${i > 0 ? '<span class="phase-connector"></span>' : ''}
-      <span class="phase-step ${i < idx ? 'passed' : i === idx ? 'active' : ''}">
-        <span class="step-icon">${i < idx ? '✓' : i === idx ? '●' : '○'}</span>
+	function renderPhases() {
+		const header = document.getElementById("phase-header");
+		if (!header) return;
+		const idx = state.phases.indexOf(state.currentPhase);
+		header.innerHTML = state.phases
+			.map(
+				(p, i) => `
+      ${i > 0 ? '<span class="phase-connector"></span>' : ""}
+      <span class="phase-step ${i < idx ? "passed" : i === idx ? "active" : ""}">
+        <span class="step-icon">${i < idx ? "✓" : i === idx ? "●" : "○"}</span>
         ${p.charAt(0).toUpperCase() + p.slice(1)}
       </span>
-    `).join('');
-  }
+    `,
+			)
+			.join("");
+	}
 
-  function renderChat() {
-    const container = document.getElementById('chat-messages');
-    if (!container) return;
-    container.innerHTML = state.messages.map((m, i) => `
+	function renderChat() {
+		const container = document.getElementById("chat-messages");
+		if (!container) return;
+		container.innerHTML = state.messages
+			.map(
+				(m, _i) => `
       <div class="chat-msg ${m.role}">
-        <div class="chat-avatar">${m.role === 'user' ? 'H' : m.agentName ? m.agentName[0] : 'A'}</div>
+        <div class="chat-avatar">${m.role === "user" ? "H" : m.agentName ? m.agentName[0] : "A"}</div>
         <div class="chat-bubble">${m.text}</div>
       </div>
-    `).join('');
-    container.scrollTop = container.scrollHeight;
-  }
+    `,
+			)
+			.join("");
+		container.scrollTop = container.scrollHeight;
+	}
 
-  function renderPhaseContent() {
-    const sections = document.querySelectorAll('.phase-content');
-    sections.forEach(el => {
-      el.classList.toggle('active', el.dataset.phase === state.currentPhase);
-    });
-  }
+	function renderPhaseContent() {
+		const sections = document.querySelectorAll(".phase-content");
+		sections.forEach((el) => {
+			el.classList.toggle("active", el.dataset.phase === state.currentPhase);
+		});
+	}
 
-  function renderSidebarTab() {
-    const contents = document.querySelectorAll('.sidebar-tab-content');
-    contents.forEach(el => {
-      el.style.display = el.dataset.tab === state.sidebarTab ? 'block' : 'none';
-    });
-    document.querySelectorAll('.sidebar-tab').forEach(el => {
-      el.classList.toggle('active', el.dataset.tab === state.sidebarTab);
-    });
-  }
+	function renderSidebarTab() {
+		const contents = document.querySelectorAll(".sidebar-tab-content");
+		contents.forEach((el) => {
+			el.style.display = el.dataset.tab === state.sidebarTab ? "block" : "none";
+		});
+		document.querySelectorAll(".sidebar-tab").forEach((el) => {
+			el.classList.toggle("active", el.dataset.tab === state.sidebarTab);
+		});
+	}
 
-  /* ── Actions ─────────────────────────────────────────── */
+	/* ── Actions ─────────────────────────────────────────── */
 
-  function goToPhase(phase) {
-    if (!state.phases.includes(phase)) return;
-    state.currentPhase = phase;
-    renderPhases();
-    renderPhaseContent();
-  }
+	function goToPhase(phase) {
+		if (!state.phases.includes(phase)) return;
+		state.currentPhase = phase;
+		renderPhases();
+		renderPhaseContent();
+	}
 
-  function focusAgent(idx) {
-    state.currentAgent = idx;
-    renderAgentList();
-    updateWorkspaceForAgent(idx);
-  }
+	function focusAgent(idx) {
+		state.currentAgent = idx;
+		renderAgentList();
+		updateWorkspaceForAgent(idx);
+	}
 
-  function updateWorkspaceForAgent(idx) {
-    const agent = state.agents[idx];
-    const workspace = document.getElementById('workspace-content');
-    if (!workspace) return;
-    const phaseLabels = {
-      explore: 'Survey Analysis',
-      propose: 'Design Proposals',
-      spec: 'Engineering Spec',
-      design: 'Morphology Evolution',
-      simulate: 'Simulation Stream',
-      build: 'Assembly Instructions',
-      fly: 'Mission Control',
-      verify: 'Verification',
-      archive: 'Documentation',
-    };
-    const phaseHeader = workspace.querySelector('.canvas-header span');
-    if (phaseHeader) {
-      phaseHeader.textContent = `${agent.name}: ${phaseLabels[state.currentPhase] || state.currentPhase}`;
-    }
-  }
+	function updateWorkspaceForAgent(idx) {
+		const agent = state.agents[idx];
+		const workspace = document.getElementById("workspace-content");
+		if (!workspace) return;
+		const phaseLabels = {
+			explore: "Survey Analysis",
+			propose: "Design Proposals",
+			spec: "Engineering Spec",
+			design: "Morphology Evolution",
+			simulate: "Simulation Stream",
+			build: "Assembly Instructions",
+			fly: "Mission Control",
+			verify: "Verification",
+			archive: "Documentation",
+		};
+		const phaseHeader = workspace.querySelector(".canvas-header span");
+		if (phaseHeader) {
+			phaseHeader.textContent = `${agent.name}: ${phaseLabels[state.currentPhase] || state.currentPhase}`;
+		}
+	}
 
-  function sendMessage(text) {
-    if (!text.trim()) return;
-    state.messages.push({ role: 'user', text: text.trim() });
-    renderChat();
-    document.getElementById('chat-input').value = '';
+	function sendMessage(text) {
+		if (!text.trim()) return;
+		state.messages.push({ role: "user", text: text.trim() });
+		renderChat();
+		document.getElementById("chat-input").value = "";
 
-    const thinking = document.createElement('div');
-    thinking.className = 'thinking-indicator';
-    thinking.id = 'thinking-indicator';
-    thinking.innerHTML = `
+		const thinking = document.createElement("div");
+		thinking.className = "thinking-indicator";
+		thinking.id = "thinking-indicator";
+		thinking.innerHTML = `
       <span>Agent thinking</span>
       <div class="thinking-dots">
         <span></span><span></span><span></span>
       </div>
     `;
-    document.getElementById('chat-messages').appendChild(thinking);
-    thinking.scrollIntoView({ behavior: 'smooth' });
+		document.getElementById("chat-messages").appendChild(thinking);
+		thinking.scrollIntoView({ behavior: "smooth" });
 
-    const resp = responses[Math.floor(Math.random() * responses.length)];
-    const delay = 600 + Math.random() * 800;
+		const resp = responses[Math.floor(Math.random() * responses.length)];
+		const delay = 600 + Math.random() * 800;
 
-    setTimeout(() => {
-      const ti = document.getElementById('thinking-indicator');
-      if (ti) ti.remove();
+		setTimeout(() => {
+			const ti = document.getElementById("thinking-indicator");
+			if (ti) ti.remove();
 
-      const steps = resp.steps;
-      let stepIdx = 0;
+			const steps = resp.steps;
+			let stepIdx = 0;
 
-      function showStep() {
-        if (stepIdx < steps.length) {
-          state.messages.push({
-            role: 'agent',
-            agentName: state.agents[0].name,
-            text: `<div class="reasoning-step">${steps[stepIdx]}</div>`,
-          });
-          renderChat();
-          stepIdx++;
-          setTimeout(showStep, 800 + Math.random() * 600);
-        } else {
-          state.messages.push({
-            role: 'agent',
-            agentName: state.agents[0].name,
-            text: resp.final,
-          });
-          renderChat();
-        }
-      }
+			function showStep() {
+				if (stepIdx < steps.length) {
+					state.messages.push({
+						role: "agent",
+						agentName: state.agents[0].name,
+						text: `<div class="reasoning-step">${steps[stepIdx]}</div>`,
+					});
+					renderChat();
+					stepIdx++;
+					setTimeout(showStep, 800 + Math.random() * 600);
+				} else {
+					state.messages.push({
+						role: "agent",
+						agentName: state.agents[0].name,
+						text: resp.final,
+					});
+					renderChat();
+				}
+			}
 
-      showStep();
-    }, delay);
-  }
+			showStep();
+		}, delay);
+	}
 
-  /* ── Phase content generators ────────────────────────── */
+	/* ── Phase content generators ────────────────────────── */
 
-  function generateExploreContent(container) {
-    if (!container) return;
-    container.innerHTML = `
+	function generateExploreContent(container) {
+		if (!container) return;
+		container.innerHTML = `
       <div class="content-card animate-fade-in">
         <div class="content-card-header">
           <span>Mission Analysis</span>
@@ -298,11 +357,11 @@ const ANDINO = (() => {
         </div>
       </div>
     `;
-  }
+	}
 
-  function generateProposeContent(container) {
-    if (!container) return;
-    container.innerHTML = `
+	function generateProposeContent(container) {
+		if (!container) return;
+		container.innerHTML = `
       <div class="content-card animate-fade-in">
         <div class="content-card-header">
           <span>Design Proposals</span>
@@ -347,11 +406,11 @@ const ANDINO = (() => {
         </div>
       </div>
     `;
-  }
+	}
 
-  function generateSpecContent(container) {
-    if (!container) return;
-    container.innerHTML = `
+	function generateSpecContent(container) {
+		if (!container) return;
+		container.innerHTML = `
       <div class="content-card animate-fade-in">
         <div class="content-card-header">
           <span>Engineering Specification — Y6 Coaxial</span>
@@ -376,11 +435,11 @@ const ANDINO = (() => {
         </div>
       </div>
     `;
-  }
+	}
 
-  function generateDesignContent(container) {
-    if (!container) return;
-    container.innerHTML = `
+	function generateDesignContent(container) {
+		if (!container) return;
+		container.innerHTML = `
       <div class="canvas-area" style="flex:1;">
         <div class="canvas-header">
           <span>3D Viewport — Morphology Evolution</span>
@@ -442,11 +501,11 @@ const ANDINO = (() => {
         </div>
       </div>
     `;
-  }
+	}
 
-  function generateSimulateContent(container) {
-    if (!container) return;
-    container.innerHTML = `
+	function generateSimulateContent(container) {
+		if (!container) return;
+		container.innerHTML = `
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
         <div class="canvas-area" style="min-height:200px;">
           <div class="canvas-header">
@@ -464,10 +523,12 @@ const ANDINO = (() => {
                   </linearGradient>
                 </defs>
                 <!-- Airflow lines -->
-                ${[0,1,2,3,4,5,6,7].map(i => {
-                  const y = 20 + i * 17;
-                  return `<line x1="0" y1="${y}" x2="200" y2="${y + (i%2===0 ? 8 : -8)}" stroke="var(--accent)" stroke-opacity="${0.1 + i*0.04}" stroke-width="0.5" stroke-dasharray="${4 + i} ${2 + i}"/>`;
-                }).join('')}
+                ${[0, 1, 2, 3, 4, 5, 6, 7]
+									.map((i) => {
+										const y = 20 + i * 17;
+										return `<line x1="0" y1="${y}" x2="200" y2="${y + (i % 2 === 0 ? 8 : -8)}" stroke="var(--accent)" stroke-opacity="${0.1 + i * 0.04}" stroke-width="0.5" stroke-dasharray="${4 + i} ${2 + i}"/>`;
+									})
+									.join("")}
                 <!-- Drone silhouette -->
                 <ellipse cx="100" cy="80" rx="40" ry="10" fill="none" stroke="var(--text-muted)" stroke-width="1" opacity="0.5"/>
                 <line x1="60" y1="80" x2="140" y2="80" stroke="var(--text-muted)" stroke-width="1.5" opacity="0.5"/>
@@ -503,11 +564,11 @@ const ANDINO = (() => {
         </div>
       </div>
     `;
-  }
+	}
 
-  function generateBuildContent(container) {
-    if (!container) return;
-    container.innerHTML = `
+	function generateBuildContent(container) {
+		if (!container) return;
+		container.innerHTML = `
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
         <div class="content-card">
           <div class="content-card-header">
@@ -552,11 +613,11 @@ const ANDINO = (() => {
         </div>
       </div>
     `;
-  }
+	}
 
-  function generateFlyContent(container) {
-    if (!container) return;
-    container.innerHTML = `
+	function generateFlyContent(container) {
+		if (!container) return;
+		container.innerHTML = `
       <div class="content-card">
         <div class="content-card-header">
           <span>Mission Control — Tunnel Inspection Alpha</span>
@@ -618,11 +679,11 @@ const ANDINO = (() => {
         </div>
       </div>
     `;
-  }
+	}
 
-  function generateVerifyContent(container) {
-    if (!container) return;
-    container.innerHTML = `
+	function generateVerifyContent(container) {
+		if (!container) return;
+		container.innerHTML = `
       <div class="content-card">
         <div class="content-card-header">
           <span>Verification Results</span>
@@ -658,11 +719,11 @@ const ANDINO = (() => {
         </div>
       </div>
     `;
-  }
+	}
 
-  function generateArchiveContent(container) {
-    if (!container) return;
-    container.innerHTML = `
+	function generateArchiveContent(container) {
+		if (!container) return;
+		container.innerHTML = `
       <div class="empty-state">
         <div class="icon">📦</div>
         <p>Mission archived. All artifacts, logs, and simulations saved to project history.</p>
@@ -672,125 +733,133 @@ const ANDINO = (() => {
         </div>
       </div>
     `;
-  }
+	}
 
-  const phaseGenerators = {
-    explore: generateExploreContent,
-    propose: generateProposeContent,
-    spec: generateSpecContent,
-    design: generateDesignContent,
-    simulate: generateSimulateContent,
-    build: generateBuildContent,
-    fly: generateFlyContent,
-    verify: generateVerifyContent,
-    archive: generateArchiveContent,
-  };
+	const phaseGenerators = {
+		explore: generateExploreContent,
+		propose: generateProposeContent,
+		spec: generateSpecContent,
+		design: generateDesignContent,
+		simulate: generateSimulateContent,
+		build: generateBuildContent,
+		fly: generateFlyContent,
+		verify: generateVerifyContent,
+		archive: generateArchiveContent,
+	};
 
-  /* ── WebSocket Simulation ────────────────────────────── */
+	/* ── WebSocket Simulation ────────────────────────────── */
 
-  let wsInterval = null;
+	let wsInterval = null;
 
-  function startSimulation() {
-    // Simulate agent progress
-    wsInterval = setInterval(() => {
-      state.agents.forEach((a, i) => {
-        if (a.status === 'busy') {
-          a.progress = Math.min(100, a.progress + Math.floor(Math.random() * 5) + 1);
-          if (a.progress >= 100) {
-            a.status = Math.random() > 0.2 ? 'success' : 'idle';
-            a.task = a.status === 'success' ? 'Task complete' : 'Waiting for confirmation';
-          }
-        }
-      });
-      renderAgentList();
-    }, 3000);
-  }
+	function startSimulation() {
+		// Simulate agent progress
+		wsInterval = setInterval(() => {
+			state.agents.forEach((a, _i) => {
+				if (a.status === "busy") {
+					a.progress = Math.min(
+						100,
+						a.progress + Math.floor(Math.random() * 5) + 1,
+					);
+					if (a.progress >= 100) {
+						a.status = Math.random() > 0.2 ? "success" : "idle";
+						a.task =
+							a.status === "success"
+								? "Task complete"
+								: "Waiting for confirmation";
+					}
+				}
+			});
+			renderAgentList();
+		}, 3000);
+	}
 
-  function stopSimulation() {
-    if (wsInterval) {
-      clearInterval(wsInterval);
-      wsInterval = null;
-    }
-  }
+	function stopSimulation() {
+		if (wsInterval) {
+			clearInterval(wsInterval);
+			wsInterval = null;
+		}
+	}
 
-  /* ── Init ────────────────────────────────────────────── */
+	/* ── Init ────────────────────────────────────────────── */
 
-  function initApp() {
-    renderAgentList();
-    renderMetrics();
-    renderPhases();
-    renderChat();
-    renderSidebarTab();
+	function initApp() {
+		renderAgentList();
+		renderMetrics();
+		renderPhases();
+		renderChat();
+		renderSidebarTab();
 
-    // Generate all phase content containers
-    document.querySelectorAll('.phase-content').forEach(el => {
-      const phase = el.dataset.phase;
-      if (phaseGenerators[phase]) {
-        phaseGenerators[phase](el);
-      }
-    });
+		// Generate all phase content containers
+		document.querySelectorAll(".phase-content").forEach((el) => {
+			const phase = el.dataset.phase;
+			if (phaseGenerators[phase]) {
+				phaseGenerators[phase](el);
+			}
+		});
 
-    // Sidebar tab switching
-    document.querySelectorAll('.sidebar-tab').forEach(el => {
-      el.addEventListener('click', () => {
-        state.sidebarTab = el.dataset.tab;
-        renderSidebarTab();
-      });
-    });
+		// Sidebar tab switching
+		document.querySelectorAll(".sidebar-tab").forEach((el) => {
+			el.addEventListener("click", () => {
+				state.sidebarTab = el.dataset.tab;
+				renderSidebarTab();
+			});
+		});
 
-    // Phase steps click
-    document.querySelectorAll('.phase-step').forEach(el => {
-      // In a real app this would navigate phases
-    });
+		// Phase steps click
+		document.querySelectorAll(".phase-step").forEach((_el) => {
+			// In a real app this would navigate phases
+		});
 
-    // Chat send
-    const sendBtn = document.getElementById('chat-send');
-    const chatInput = document.getElementById('chat-input');
-    if (sendBtn && chatInput) {
-      sendBtn.addEventListener('click', () => sendMessage(chatInput.value));
-      chatInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendMessage(chatInput.value);
-        }
-      });
-    }
+		// Chat send
+		const sendBtn = document.getElementById("chat-send");
+		const chatInput = document.getElementById("chat-input");
+		if (sendBtn && chatInput) {
+			sendBtn.addEventListener("click", () => sendMessage(chatInput.value));
+			chatInput.addEventListener("keydown", (e) => {
+				if (e.key === "Enter" && !e.shiftKey) {
+					e.preventDefault();
+					sendMessage(chatInput.value);
+				}
+			});
+		}
 
-    // New mission button
-    const newMissionBtn = document.getElementById('new-mission-btn');
-    if (newMissionBtn) {
-      newMissionBtn.addEventListener('click', () => {
-        state.messages.push({
-          role: 'user',
-          text: 'Start new mission: tunnel inspection drone',
-        });
-        renderChat();
-        setTimeout(() => {
-          sendMessage('Design a drone for tunnel inspection with 500m range and 15min flight time');
-        }, 500);
-      });
-    }
+		// New mission button
+		const newMissionBtn = document.getElementById("new-mission-btn");
+		if (newMissionBtn) {
+			newMissionBtn.addEventListener("click", () => {
+				state.messages.push({
+					role: "user",
+					text: "Start new mission: tunnel inspection drone",
+				});
+				renderChat();
+				setTimeout(() => {
+					sendMessage(
+						"Design a drone for tunnel inspection with 500m range and 15min flight time",
+					);
+				}, 500);
+			});
+		}
 
-    // Start WebSocket simulation
-    startSimulation();
+		// Start WebSocket simulation
+		startSimulation();
 
-    // Focus first agent's workspace
-    updateWorkspaceForAgent(0);
-  }
+		// Focus first agent's workspace
+		updateWorkspaceForAgent(0);
+	}
 
-  /* ── Public API ──────────────────────────────────────── */
-  return {
-    init: initApp,
-    goToPhase,
-    focusAgent,
-    sendMessage,
-    startSimulation,
-    stopSimulation,
-    state,
-  };
+	/* ── Public API ──────────────────────────────────────── */
+	return {
+		init: initApp,
+		goToPhase,
+		focusAgent,
+		sendMessage,
+		startSimulation,
+		stopSimulation,
+		state,
+	};
 })();
 
 /* ── Auto-init on DOM ready ────────────────────────────── */
-document.addEventListener('DOMContentLoaded', () => {
-  ANDINO.init();
+document.addEventListener("DOMContentLoaded", () => {
+	ANDINO.init();
 });

@@ -142,7 +142,7 @@ export function createOpenRouterAgent(
 			try {
 				// Get system prompt for this agent
 				const systemPrompt =
-					SYSTEM_PROMPTS[baseAgent.id] || SYSTEM_PROMPTS["default"];
+					SYSTEM_PROMPTS[baseAgent.id] || SYSTEM_PROMPTS.default;
 
 				// Prepare user prompt from task
 				const userPrompt =

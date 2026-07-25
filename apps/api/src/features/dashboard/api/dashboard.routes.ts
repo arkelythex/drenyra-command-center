@@ -1,7 +1,6 @@
 import { Elysia, t } from "elysia";
-import { fail, getErrorMessage, ok } from "../../shared/api-response";
 import { companyScopeGuard } from "../../../shared/plugins";
-import { InboxDashboardService } from "./inbox-dashboard.service";
+import { fail, getErrorMessage, ok } from "../../shared/api-response";
 import { getExpenses } from "../application/queries/get-expenses.query";
 import { getFiscalIndicators } from "../application/queries/get-fiscal-indicators.query";
 import { getIncome } from "../application/queries/get-income.query";
@@ -17,6 +16,7 @@ import {
 	SireStatusQuerySchema,
 	TaxCalendarQuerySchema,
 } from "./dashboard.schemas";
+import { InboxDashboardService } from "./inbox-dashboard.service";
 
 /**
  * dashboardRoutes const.

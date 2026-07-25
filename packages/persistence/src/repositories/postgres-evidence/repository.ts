@@ -121,9 +121,7 @@ export class PostgresEvidenceRepository implements EvidenceRepository {
 		const rows = await db
 			.select()
 			.from(evidence)
-			.where(
-				and(eq(evidence.id, id), eq(evidence.companyId, scope.companyId)),
-			)
+			.where(and(eq(evidence.id, id), eq(evidence.companyId, scope.companyId)))
 			.limit(1);
 
 		if (rows.length === 0) {

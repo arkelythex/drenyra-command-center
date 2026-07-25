@@ -55,7 +55,7 @@ const pleVerifyStage: ComplianceStage = {
 		ctx: ComplianceContext,
 	): Promise<ComplianceStageResult> => {
 		const closeResult = ctx.previousStageResults.get("cierre-inicio");
-		if (!closeResult || closeResult.status !== "PASSED") {
+		if (closeResult?.status !== "PASSED") {
 			return {
 				status: "BLOCKED",
 				evidenceId: `ple-blocked-${Date.now()}`,
@@ -100,7 +100,7 @@ const sireCloseValidationStage: ComplianceStage = {
 		ctx: ComplianceContext,
 	): Promise<ComplianceStageResult> => {
 		const pleResult = ctx.previousStageResults.get("ple-verificacion");
-		if (!pleResult || pleResult.status !== "PASSED") {
+		if (pleResult?.status !== "PASSED") {
 			return {
 				status: "BLOCKED",
 				evidenceId: `sire-blocked-${Date.now()}`,
@@ -146,7 +146,7 @@ const taxDeclarationStage: ComplianceStage = {
 		ctx: ComplianceContext,
 	): Promise<ComplianceStageResult> => {
 		const sireResult = ctx.previousStageResults.get("sire-validacion-cierre");
-		if (!sireResult || sireResult.status !== "PASSED") {
+		if (sireResult?.status !== "PASSED") {
 			return {
 				status: "BLOCKED",
 				evidenceId: `ddjj-blocked-${Date.now()}`,

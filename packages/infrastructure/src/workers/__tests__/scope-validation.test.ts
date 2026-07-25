@@ -6,20 +6,14 @@
  */
 
 import { describe, expect, it } from "vitest";
-import {
-	validateWorkerScope,
-	type WorkerScopeLevel,
-} from "../scope-validator";
+import { validateWorkerScope } from "../scope-validator";
 
 describe("validateWorkerScope", () => {
 	// ── Organization level ──────────────────────────────────────────────
 
 	it("passes when organizationId is present at organization level", () => {
 		expect(() =>
-			validateWorkerScope(
-				{ organizationId: "org-001" },
-				"organization",
-			),
+			validateWorkerScope({ organizationId: "org-001" }, "organization"),
 		).not.toThrow();
 	});
 
@@ -48,7 +42,10 @@ describe("validateWorkerScope", () => {
 
 	it("throws when organizationId is missing at tenant level", () => {
 		expect(() =>
-			validateWorkerScope({ companyId: "cmp-001" } as Record<string, unknown>, "tenant"),
+			validateWorkerScope(
+				{ companyId: "cmp-001" } as Record<string, unknown>,
+				"tenant",
+			),
 		).toThrow(/organizationId/);
 	});
 

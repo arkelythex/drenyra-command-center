@@ -37,7 +37,10 @@ describe("GetInvoiceDetailsUseCase", () => {
 		const result = await useCase.execute(testScope, TEST_IDS.INVOICE_1);
 
 		// Assert
-		expect(mockRepository.findById).toHaveBeenCalledWith(testScope, TEST_IDS.INVOICE_1);
+		expect(mockRepository.findById).toHaveBeenCalledWith(
+			testScope,
+			TEST_IDS.INVOICE_1,
+		);
 		expect(result).toBe(sampleInvoice);
 		expect(result.id).toBe(TEST_IDS.INVOICE_1);
 	});
@@ -47,9 +50,9 @@ describe("GetInvoiceDetailsUseCase", () => {
 		mockRepository.findById = vi.fn().mockResolvedValue(null);
 
 		// Act & Assert
-		await expect(useCase.execute(testScope, TEST_IDS.NON_EXISTENT)).rejects.toThrow(
-			"not found",
-		);
+		await expect(
+			useCase.execute(testScope, TEST_IDS.NON_EXISTENT),
+		).rejects.toThrow("not found");
 	});
 
 	it("should throw error when ID does not match any invoice", async () => {
@@ -57,7 +60,9 @@ describe("GetInvoiceDetailsUseCase", () => {
 		mockRepository.findById = vi.fn().mockResolvedValue(null);
 
 		// Act & Assert
-		await expect(useCase.execute(testScope, "any-id-format")).rejects.toThrow("not found");
+		await expect(useCase.execute(testScope, "any-id-format")).rejects.toThrow(
+			"not found",
+		);
 	});
 });
 

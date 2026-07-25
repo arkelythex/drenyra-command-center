@@ -9,8 +9,8 @@
  * @module features/agents/agents.service
  */
 
-import { SessionManager } from "@drenyra/pi";
 import type { AgentSession } from "@drenyra/pi";
+import { SessionManager } from "@drenyra/pi";
 import { AppError } from "../../lib/errors";
 import type {
 	AgentSessionStatusDTO,

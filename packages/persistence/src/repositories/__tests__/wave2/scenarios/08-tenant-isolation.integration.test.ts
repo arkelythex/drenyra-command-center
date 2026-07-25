@@ -9,11 +9,11 @@
  *   - operaciones hostiles con IDs extranjeros son rechazadas
  */
 
-import { describe, expect, it } from "vitest";
-import { sql } from "drizzle-orm";
 import { withTransaction } from "@drenyra/test-utils/database";
-import { createTenantFixture } from "../fixtures/tenants";
+import { sql } from "drizzle-orm";
+import { describe, expect, it } from "vitest";
 import { PostgresJobExecutionRepository } from "../../../postgres-job-execution.repository";
+import { createTenantFixture } from "../fixtures/tenants";
 import { TableStateReader } from "../helpers/table-state-reader";
 
 const runIfDb = process.env.DATABASE_URL_TEST ? describe : describe.skip;
@@ -140,9 +140,10 @@ runIfDb("D5 — Aislamiento transversal", () => {
 
 			const reader = new TableStateReader(tx);
 			const total = await reader.countInvoices(undefined, "F001-99999");
-			expect(total, "2 invoices con mismo invoice_number (tenant aislado)").toBe(
-				2,
-			);
+			expect(
+				total,
+				"2 invoices con mismo invoice_number (tenant aislado)",
+			).toBe(2);
 		});
 	});
 });

@@ -1,7 +1,7 @@
 import { Outlet } from "@tanstack/react-router";
 import { lazy, Suspense, useMemo, useState } from "react";
-import { cn } from "@/lib/utils";
 import { FiscalInspectorProvider } from "@/context/FiscalInspectorContext";
+import { cn } from "@/lib/utils";
 import { useUIStore } from "@/store/ui-store";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
 import { FiscalEditorialShell } from "../../layout/FiscalEditorialShell";

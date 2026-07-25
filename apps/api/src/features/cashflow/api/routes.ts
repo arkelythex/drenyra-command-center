@@ -7,12 +7,12 @@
  */
 
 import { Elysia, t } from "elysia";
+import { companyScopeGuard } from "../../../shared/plugins";
 import { ok } from "../../shared/api-response";
 import { getActualCashflow } from "../application/queries/get-actual-cashflow.query";
 import { getCashflowForecast } from "../application/queries/get-cashflow-forecast.query";
 import { getCashflowProjection } from "../application/queries/get-cashflow-projection.query";
 import { getCashflowVariance } from "../application/queries/get-cashflow-variance.query";
-import { companyScopeGuard } from "../../../shared/plugins";
 
 /**
  * Cashflow routes

@@ -2,7 +2,7 @@
  * Global test setup file
  * Mocks all external dependencies that are not available in test environment
  */
-import { vi, beforeAll } from "vitest";
+import { beforeAll, vi } from "vitest";
 
 beforeAll(() => {
 	// Mock ALL problematic dependencies globally

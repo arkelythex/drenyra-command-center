@@ -35,7 +35,7 @@ const defaultStore: RateLimitStore = new MemoryStore();
 
 const cleanup = setInterval(() => {
 	const now = Date.now();
-	for (const [key, entry] of (defaultStore as MemoryStore)["store"]) {
+	for (const [key, entry] of (defaultStore as MemoryStore).store) {
 		if (entry.resetTime < now) defaultStore.delete(key);
 	}
 }, 300_000);

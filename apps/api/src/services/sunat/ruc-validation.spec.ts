@@ -97,8 +97,8 @@ describe("RUC Validation", () => {
 			const checkDigit = ruc[ruc.length - 1];
 
 			expect(checkDigit).toBe("0");
-			expect(parseInt(checkDigit)).toBeGreaterThanOrEqual(0);
-			expect(parseInt(checkDigit)).toBeLessThanOrEqual(9);
+			expect(parseInt(checkDigit, 10)).toBeGreaterThanOrEqual(0);
+			expect(parseInt(checkDigit, 10)).toBeLessThanOrEqual(9);
 		});
 
 		it("should verify check digit is numeric", () => {

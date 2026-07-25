@@ -5,10 +5,10 @@
  * The server is in the workspace package @drenyra/pi.
  */
 
+import { spawn } from "node:child_process";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { Command } from "commander";
-import { spawn } from "child_process";
-import { fileURLToPath } from "url";
-import { dirname, resolve } from "path";
 
 export const serveCommand = new Command("serve")
 	.description("Start drenyra-pi HTTP server")

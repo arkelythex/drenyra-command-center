@@ -168,7 +168,7 @@ export const useInvoicesQuery = (filters: Record<string, unknown> = {}) => {
 			queryClient.invalidateQueries({ queryKey: invoiceKeys.all });
 		},
 		onError: (err: Error) => {
-			toast.error("Error al crear factura: " + err.message);
+			toast.error(`Error al crear factura: ${err.message}`);
 		},
 	});
 

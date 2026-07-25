@@ -67,7 +67,7 @@ export const EvidenceTraceBundleSchema = z
 	)
 	.refine((bundle) => {
 		const lineage = bundle.approvalLineage;
-		if (!lineage || !lineage.decisionEvidenceRef) {
+		if (!lineage?.decisionEvidenceRef) {
 			return true;
 		}
 

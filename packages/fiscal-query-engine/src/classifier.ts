@@ -6,9 +6,9 @@
  * 2. AI fallback via orchestrator's ModelRouter (when confidence < 0.4)
  */
 
-import type { IntentClassification, QueryInput } from "./types";
-import { matchIntentPatterns, buildClarification } from "./intent-registry";
 import { classifyWithAI } from "./ai-classifier";
+import { buildClarification, matchIntentPatterns } from "./intent-registry";
+import type { IntentClassification, QueryInput } from "./types";
 
 export interface ClassifierOptions {
 	patternThreshold?: number;

@@ -150,7 +150,7 @@ export class ReferenceMatchingStrategy implements MatchingStrategy {
 		tx: BankTransactionLike,
 		context: MatchContext,
 	): Promise<MatchCandidate | null> {
-		if (!tx.reference || !tx.reference.trim()) return null;
+		if (!tx.reference?.trim()) return null;
 
 		const normalizedRef = context.normalizeReference(tx.reference);
 

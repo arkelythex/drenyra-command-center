@@ -214,7 +214,7 @@ export const VendorForm = ({
 										placeholder="30"
 										className="h-11 bg-background border-border font-mono text-xs"
 										onChange={(e) =>
-											field.onChange(parseInt(e.target.value) || 0)
+											field.onChange(parseInt(e.target.value, 10) || 0)
 										}
 									/>
 								</FormControl>

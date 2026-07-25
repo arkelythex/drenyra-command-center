@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("ChatAgent — flujo completo tipo Codex", () => {
 	test("landing page carga el chat con mensaje de bienvenida", async ({

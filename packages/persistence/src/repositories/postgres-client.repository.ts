@@ -9,6 +9,7 @@
  * - Bridge is resolved by matching legacy `organizations.ruc` to `companies.ruc`
  */
 
+import { randomUUID } from "node:crypto";
 import type {
 	Client,
 	ClientFilters,
@@ -17,7 +18,6 @@ import type {
 	UpdateClientDTO,
 } from "@drenyra/domain/repositories/client.repository";
 import type { TenantScope } from "@drenyra/domain/scope";
-import { randomUUID } from "crypto";
 import { and, eq, ilike, like, sql } from "drizzle-orm";
 import { db } from "../client";
 import { businessPartners, customerProfiles } from "../schema";
@@ -128,10 +128,7 @@ export class PostgresClientRepository implements ClientRepository {
 		await db.delete(businessPartners).where(eq(businessPartners.id, id));
 	}
 
-	async findById(
-		scope: TenantScope,
-		id: string,
-	): Promise<Client | null> {
+	async findById(scope: TenantScope, id: string): Promise<Client | null> {
 		const rows = await db
 			.select({ partner: businessPartners, profile: customerProfiles })
 			.from(customerProfiles)
@@ -150,14 +147,8 @@ export class PostgresClientRepository implements ClientRepository {
 			rows[0].partner.companyId,
 		);
 
-		return this.mapToClient(
-			rows[0].partner,
-			rows[0].profile,
-			organizationId,
-		);
+		return this.mapToClient(rows[0].partner, rows[0].profile, organizationId);
 	}
-
-
 
 	async findAll(
 		organizationId: number,

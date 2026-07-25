@@ -7,8 +7,8 @@
  * @module h02-pr1.2a-account-repository
  */
 
-import { describe, expect, it } from "vitest";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { describe, expect, it } from "vitest";
 import { PostgresAccountRepository } from "../postgres-account.repository";
 
 // ============================================================

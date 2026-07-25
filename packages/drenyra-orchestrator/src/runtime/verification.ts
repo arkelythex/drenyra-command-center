@@ -2,7 +2,7 @@
  * SDD-009D — Verification and Agent Run Evidence types.
  */
 
-import type { TokenObservation, CacheCostBreakdown } from "./budget";
+import type { CacheCostBreakdown, TokenObservation } from "./budget";
 import type { RiskDecision } from "./risk";
 
 // ============================================================================

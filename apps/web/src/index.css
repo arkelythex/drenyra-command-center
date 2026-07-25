@@ -708,7 +708,7 @@
   [data-radix-dialog-content] *,
   [data-radix-dropdown-content] *,
   [data-radix-popover-content] * {
-    transition: none !important;
+    transition: none;
   }
 
   :focus-visible {
@@ -1660,25 +1660,25 @@
    =========================================== */
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {
-    scroll-behavior: auto !important;
+    scroll-behavior: auto;
   }
 
   *,
   *::before,
   *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-delay: 0ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    transition-delay: 0ms !important;
+    scroll-behavior: auto;
+    animation-duration: 0.01ms;
+    animation-delay: 0ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+    transition-delay: 0ms;
   }
 
   [class*="animate-"],
   .animate-on-scroll,
   .scroll-blur {
-    animation: none !important;
-    transform: none !important;
+    animation: none;
+    transform: none;
   }
 }
 
@@ -1704,40 +1704,40 @@
 
   .glass-card,
   .glass-panel {
-    background: hsl(var(--card)) !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    border-color: var(--border-default) !important;
+    background: hsl(var(--card));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-color: var(--border-default);
   }
 
   [class*="backdrop-blur"] {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    background-color: hsl(var(--card)) !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background-color: hsl(var(--card));
   }
 
   .ui-surface,
   .ui-surface-muted,
   .ui-surface-interactive,
   .ui-search-input {
-    border-color: var(--border-default) !important;
-    box-shadow: none !important;
+    border-color: var(--border-default);
+    box-shadow: none;
   }
 
   [class*="text-white/"] {
-    opacity: 1 !important;
+    opacity: 1;
   }
 
   [class*="border-white/"] {
-    border-color: rgba(255, 255, 255, 0.4) !important;
+    border-color: rgba(255, 255, 255, 0.4);
   }
 }
 
 @media (forced-colors: active) {
   :focus-visible {
-    outline: 2px solid Highlight !important;
+    outline: 2px solid Highlight;
     outline-offset: 2px;
-    box-shadow: none !important;
+    box-shadow: none;
   }
 
   .glass-card,
@@ -1749,21 +1749,21 @@
   .ui-keycap,
   .chip {
     forced-color-adjust: auto;
-    background: Canvas !important;
-    color: CanvasText !important;
-    border: 1px solid CanvasText !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
+    background: Canvas;
+    color: CanvasText;
+    border: 1px solid CanvasText;
+    box-shadow: none;
+    text-shadow: none;
   }
 
   .ui-search-input::placeholder {
-    color: GrayText !important;
+    color: GrayText;
   }
 
   [class*="status-badge"],
   [class*="chip-"] {
     forced-color-adjust: auto;
-    border: 1px solid ButtonText !important;
+    border: 1px solid ButtonText;
   }
 }
 

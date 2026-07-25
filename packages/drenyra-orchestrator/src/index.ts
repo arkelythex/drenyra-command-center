@@ -4,69 +4,62 @@
  * Barrel exports for the orchestrator package.
  */
 
-// Types
-export type {
-	WorkRoute,
-	DelegationTrigger,
-	RouteDecision,
-	GatekeeperCheck,
-	GatekeeperVerdict,
-	GatekeeperContext,
-	SkillEntry,
-	SkillRegistry,
-	SkillResolution,
-	MemoryContract,
-	ReviewLens,
-	ReviewLensConfig,
-	DeliveryStrategy,
-	ChainStrategy,
-	ReviewWorkloadForecast,
-	HookConfig,
-} from "./types";
-
-// Constants
-export {
-	DRENYRA_SDD_ARTIFACT_KEYS,
-	ALL_4R_LENSES,
-	DEFAULT_HOOK_CONFIG,
-} from "./types";
-
-// Delegation Router
-export { determineRoute } from "./delegation-router";
-export type {} from "./delegation-router";
-
-// Skills Resolver
-export {
-	parseSkillRegistry,
-	resolveRegistry,
-	matchSkills,
-} from "./skills-resolver";
-export type { TaskContext } from "./skills-resolver";
-
-// Memory Contract
-export {
-	DEFAULT_MEMORY_CONTRACT,
-	buildMemoryInstructions,
-	checkMemoryAvailable,
-} from "./memory-contract";
-
-// Work Routing
-export {
-	forecastReviewWorkload,
-	getWorkflowInstructions,
-} from "./work-routing";
-export type { WorkloadInput } from "./work-routing";
-
+export type { DrenyraOrchestratorConfig, HookBehavior } from "./config";
 // Config
 export {
 	createDefaultConfig,
 	loadConfig,
 	mergeConfig,
 } from "./config";
-export type { DrenyraOrchestratorConfig, HookBehavior } from "./config";
-
+export type {} from "./delegation-router";
+// Delegation Router
+export { determineRoute } from "./delegation-router";
+// Memory Contract
+export {
+	buildMemoryInstructions,
+	checkMemoryAvailable,
+	DEFAULT_MEMORY_CONTRACT,
+} from "./memory-contract";
 // Review Lenses
 export {
 	isHotPath,
 	selectReviewLenses,
 } from "./review-lenses";
+export type { TaskContext } from "./skills-resolver";
+// Skills Resolver
+export {
+	matchSkills,
+	parseSkillRegistry,
+	resolveRegistry,
+} from "./skills-resolver";
+// Types
+export type {
+	ChainStrategy,
+	DelegationTrigger,
+	DeliveryStrategy,
+	GatekeeperCheck,
+	GatekeeperContext,
+	GatekeeperVerdict,
+	HookConfig,
+	MemoryContract,
+	ReviewLens,
+	ReviewLensConfig,
+	ReviewWorkloadForecast,
+	RouteDecision,
+	SkillEntry,
+	SkillRegistry,
+	SkillResolution,
+	WorkRoute,
+} from "./types";
+// Constants
+export {
+	ALL_4R_LENSES,
+	DEFAULT_HOOK_CONFIG,
+	DRENYRA_SDD_ARTIFACT_KEYS,
+} from "./types";
+export type { WorkloadInput } from "./work-routing";
+// Work Routing
+export {
+	forecastReviewWorkload,
+	getWorkflowInstructions,
+} from "./work-routing";

@@ -109,7 +109,6 @@ export class CdrProcessorService {
 				return "ACCEPTED";
 			case "RECHAZADO":
 				return "REJECTED";
-			case "OBSERVADO":
 			default:
 				return "OBSERVED";
 		}

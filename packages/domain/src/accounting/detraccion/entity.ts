@@ -82,10 +82,18 @@ export class Detraccion {
 		return this._spotCode;
 	}
 
-	get spotCodeInfo(): { code: string; description: string; percentage: number } {
+	get spotCodeInfo(): {
+		code: string;
+		description: string;
+		percentage: number;
+	} {
 		const info = SPOT_CODE_REGISTRY[this._spotCode];
 		if (!info) {
-			return { code: this._spotCode, description: "Unknown", percentage: this._percentage };
+			return {
+				code: this._spotCode,
+				description: "Unknown",
+				percentage: this._percentage,
+			};
 		}
 		return info;
 	}

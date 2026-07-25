@@ -17,6 +17,8 @@ export * from "./entities";
 export * from "./errors";
 export * from "./events";
 export * from "./fiscal";
+// --- FISCAL CONTRACTS (Cross-stack source of truth) ---
+export * from "./fiscal-contracts";
 export * from "./fiscal-memory";
 export * from "./fiscal-ontology";
 export * from "./fiscal-truth";
@@ -30,6 +32,3 @@ export { DNI } from "./value-objects/DNI";
 export { DocumentSeries } from "./value-objects/DocumentSeries";
 export { type Currency, Money } from "./value-objects/Money";
 export { RUC } from "./value-objects/RUC";
-
-// --- FISCAL CONTRACTS (Cross-stack source of truth) ---
-export * from "./fiscal-contracts";

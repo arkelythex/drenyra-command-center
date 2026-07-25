@@ -70,7 +70,7 @@ export const VerifyEmailPage = () => {
 		verifyEmail();
 	}, [token]);
 
-	useEffect((): void | (() => void) => {
+	useEffect((): undefined | (() => void) => {
 		if (status === "error" && countdown > 0) {
 			const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
 			return () => clearTimeout(timer);

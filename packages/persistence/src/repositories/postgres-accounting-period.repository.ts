@@ -4,12 +4,12 @@
  * Infrastructure layer — implements domain repository interface.
  */
 
+import { randomUUID } from "node:crypto";
 import { AccountingPeriod } from "@drenyra/domain/accounting/accounting-period";
 import type { AccountingPeriodRepository } from "@drenyra/domain/repositories/accounting-period.repository";
 import type { TenantScope } from "@drenyra/domain/scope";
 import { db } from "@drenyra/persistence/client";
 import { accountingPeriods } from "@drenyra/persistence/schema";
-import { randomUUID } from "crypto";
 import { and, asc, desc, eq, ne, sql } from "drizzle-orm";
 
 export class PostgresAccountingPeriodRepository
@@ -45,8 +45,6 @@ export class PostgresAccountingPeriodRepository
 		if (!result[0]) return null;
 		return this.mapToDomain(result[0]);
 	}
-
-
 
 	async findByCompanyAndPeriod(
 		companyId: string,

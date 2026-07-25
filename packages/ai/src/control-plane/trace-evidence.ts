@@ -71,7 +71,7 @@ export const EvidenceTraceBundleSchema = z
 	)
 	.refine((bundle) => {
 		const lineage = bundle.approvalLineage;
-		if (!lineage || !lineage.decisionEvidenceRef) {
+		if (!lineage?.decisionEvidenceRef) {
 			return true;
 		}
 
@@ -326,7 +326,7 @@ function hydrateCacheFromDb(
 			.then((rows) => {
 				for (const row of rows) {
 					const bundle = row.policyResult as EvidenceTraceBundle | null;
-					if (bundle && bundle.traceId) {
+					if (bundle?.traceId) {
 						cache.set(bundle.traceId, bundle);
 					}
 				}

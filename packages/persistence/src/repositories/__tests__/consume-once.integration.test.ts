@@ -12,9 +12,9 @@
  *   - Migration 0021 applied (inbox_messages table + constraints + indexes)
  */
 
-import { describe, expect, it } from "vitest";
-import { sql } from "drizzle-orm";
 import { TestDatabase, withTransaction } from "@drenyra/test-utils/database";
+import { sql } from "drizzle-orm";
+import { describe, expect, it } from "vitest";
 
 // ─── Constants ─────────────────────────────────────────────────────────────
 

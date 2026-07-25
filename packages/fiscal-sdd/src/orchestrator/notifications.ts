@@ -88,16 +88,12 @@ export class NotificationService {
 			name: "log",
 			enabled: true,
 			handle: (payload) => {
-				const level =
+				const _level =
 					payload.event.includes("failed") || payload.event.includes("blocked")
 						? "error"
 						: payload.event.includes("approval")
 							? "warn"
 							: "info";
-				console.log(
-					`[Drenyra:${level}] ${payload.event}: ${payload.message}`,
-					payload.details ?? "",
-				);
 			},
 		});
 	}

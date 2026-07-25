@@ -85,7 +85,7 @@ vi.mock("@/features/cognitive-hub/logic/artifact-extractor", () => ({
 
 vi.mock("lucide-react", () => {
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-		const React = require("react");
+	const React = require("react");
 	const iconNames = [
 		"AlertTriangle",
 		"BarChart3",
@@ -122,7 +122,7 @@ vi.mock("lucide-react", () => {
 
 vi.mock("@/components/ui/button", () => {
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-		const React = require("react");
+	const React = require("react");
 	return {
 		Button: React.forwardRef(
 			(
@@ -235,7 +235,7 @@ vi.mock(
 
 vi.mock("@/features/drenyra-command-center/components/metric", () => {
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
-		const React = require("react");
+	const React = require("react");
 	return {
 		Metric: ({ label, value }: { label: string; value: string }) =>
 			React.createElement(

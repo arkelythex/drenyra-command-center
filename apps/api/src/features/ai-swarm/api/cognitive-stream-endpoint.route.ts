@@ -257,7 +257,7 @@ export const cognitiveStreamEndpoint = new Elysia({
 
 		set.headers["Content-Type"] = "text/event-stream";
 		set.headers["Cache-Control"] = "no-cache";
-		set.headers["Connection"] = "keep-alive";
+		set.headers.Connection = "keep-alive";
 		set.headers["X-Accel-Buffering"] = "no";
 
 		return new Response(stream);

@@ -4,7 +4,7 @@
  * Enables decoupled, asynchronous agent workflows
  */
 
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 import { loggers } from "../../logger";
 import type {
 	AgentEvent,

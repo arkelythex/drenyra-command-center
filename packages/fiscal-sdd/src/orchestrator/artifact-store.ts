@@ -83,8 +83,8 @@ export class OpenSpecArtifactStore implements ArtifactStore {
 	constructor(private basePath: string) {
 		// Lazy import para evitar errores en entornos browser
 		try {
-			this.fs = require("fs/promises");
-			this.path = require("path");
+			this.fs = require("node:fs/promises");
+			this.path = require("node:path");
 		} catch {
 			// Fallback: no filesystem available
 			this.fs = null as unknown as typeof import("fs/promises");

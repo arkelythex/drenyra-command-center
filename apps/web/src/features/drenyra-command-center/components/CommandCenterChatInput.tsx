@@ -68,8 +68,7 @@ export function CommandCenterChatInput({
 
 			if (triggerPos === -1) return;
 
-			const newValue =
-				input.slice(0, triggerPos) + insertValue + " " + afterTrigger;
+			const newValue = `${input.slice(0, triggerPos) + insertValue} ${afterTrigger}`;
 			onInputChange(newValue);
 
 			// Set cursor position after the inserted value

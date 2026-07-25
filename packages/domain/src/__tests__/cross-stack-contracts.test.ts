@@ -10,15 +10,15 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { IGVDomainService } from "../services/igv-calculator";
-import { RUC } from "../value-objects/RUC";
 import {
 	FISCAL_CONTRACTS,
-	IGV_CONTRACT,
-	RUC_CONTRACT,
-	MONEY_CONTRACT,
 	getFiscalContractsJSON,
+	IGV_CONTRACT,
+	MONEY_CONTRACT,
+	RUC_CONTRACT,
 } from "../fiscal-contracts";
+import { IGVDomainService } from "../services/igv-calculator";
+import { RUC } from "../value-objects/RUC";
 
 // ─── Contract Structure Tests ──────────────────────────────────────────────
 

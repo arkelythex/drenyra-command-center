@@ -9,8 +9,8 @@
  *   - EXTERNAL (email, UNKNOWN scenario)
  */
 
-import type { TenantScope } from "./tenants";
 import type { FiscalOperationFixture } from "./fiscal-operations";
+import type { TenantScope } from "./tenants";
 
 export type PolicyUnderTest =
 	| "PERMANENT"

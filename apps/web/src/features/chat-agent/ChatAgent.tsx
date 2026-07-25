@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from "react";
-import { threadStore, useThreadStore } from "./thread-store";
+import { useEffect, useRef, useState } from "react";
+import type { ChatMessage, RichContent } from "./agent-types";
 import { ChatSidebar } from "./ChatSidebar";
 import { findBestAdapter } from "./feature-adapters";
-import type { ChatMessage, RichContent } from "./agent-types";
+import { threadStore, useThreadStore } from "./thread-store";
 
 let msgCounter = 0;
 function nextId() {

@@ -463,7 +463,7 @@ export class SunatSireService {
 
 		// Step 3: Download file
 		const file = await this.download(request.ruc, downloadRequest.ticket);
-		if (!file || !file.archivo) {
+		if (!file?.archivo) {
 			return {
 				success: false,
 				ticket: downloadRequest.ticket,

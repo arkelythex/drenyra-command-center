@@ -7,17 +7,17 @@
 
 export { canonicalizePayload, serializeCanonical } from "./canonical-payload";
 export {
-	hashPayload,
 	HASH_ALGORITHM,
 	HASH_LENGTH,
 	HASH_PATTERN,
+	hashPayload,
 } from "./hash-payload";
 export {
 	assertHashPayloadInput,
 	CANONICALIZATION_VERSION,
+	type CanonicalizationFailureReason,
+	type HashPayloadInput,
 	HashPayloadValidationError,
 	PayloadCanonicalizationError,
 	PayloadCanonicalizationError as PayloadCanonicalizationErrorAlias,
-	type CanonicalizationFailureReason,
-	type HashPayloadInput,
 } from "./types";

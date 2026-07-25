@@ -26,7 +26,7 @@ export function getCollapsedSummary(artifact: HubArtifact): string | null {
 		}
 		case "explanation": {
 			return artifact.content.length > 80
-				? artifact.content.slice(0, 80) + "..."
+				? `${artifact.content.slice(0, 80)}...`
 				: artifact.content;
 		}
 		default: {

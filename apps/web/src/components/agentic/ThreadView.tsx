@@ -490,7 +490,6 @@ function MessageBubble({
 				}
 			}
 		}
-		 
 	}, [showArtifacts]);
 
 	const handlePin = useCallback(

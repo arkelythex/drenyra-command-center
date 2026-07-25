@@ -38,7 +38,7 @@ Query: ${query}
 Document: ${document.slice(0, 2000)}`,
 			});
 			const score = parseFloat(text.trim());
-			if (isNaN(score) || score < 0 || score > 1) {
+			if (Number.isNaN(score) || score < 0 || score > 1) {
 				return 0.5;
 			}
 			return score;

@@ -110,12 +110,18 @@ export interface TransactionRepository {
 	 * @param id - El ID de la transacción.
 	 * @returns La entidad transacción si existe, o null si no.
 	 */
-	findById(scope: import("../scope").TenantScope, id: string): Promise<Transaction | null>;
+	findById(
+		scope: import("../scope").TenantScope,
+		id: string,
+	): Promise<Transaction | null>;
 
 	/**
 	 * @deprecated Use findById(scope, id) instead.
 	 */
-	_findByIdLegacy(id: string, organizationId: number): Promise<Transaction | null>;
+	_findByIdLegacy(
+		id: string,
+		organizationId: number,
+	): Promise<Transaction | null>;
 
 	/**
 	 * Busca una transacción por su número de referencia.

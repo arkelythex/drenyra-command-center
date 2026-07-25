@@ -47,9 +47,7 @@ const streamWithToolExecutionMock = vi.fn(async function* (
 });
 
 vi.mock("@drenyra/infrastructure/ai/openrouter", () => ({
-	OpenRouterService: class OpenRouterService {
-		constructor(_config: unknown) {}
-	},
+	OpenRouterService: class OpenRouterService {},
 }));
 
 vi.mock("@drenyra/ai/model-registry", () => ({

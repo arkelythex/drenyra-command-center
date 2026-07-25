@@ -22,8 +22,8 @@ export class ContractReporter {
 
 	constructor(
 		private readonly reportPath: string | undefined,
-		private readonly baseUrl: string,
-		private readonly requireContracts: boolean,
+		readonly baseUrl: string,
+		readonly requireContracts: boolean,
 	) {
 		this.report = {
 			generatedAt: new Date().toISOString(),

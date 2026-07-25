@@ -7,10 +7,10 @@
  * Requires DATABASE_URL_TEST and migration 0021 applied.
  */
 
-import { describe, expect, it } from "vitest";
+import { TestDatabase } from "@drenyra/test-utils/database";
 import { sql } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { TestDatabase } from "@drenyra/test-utils/database";
+import { describe, expect, it } from "vitest";
 
 const runIfDb = process.env.DATABASE_URL_TEST ? describe : describe.skip;
 

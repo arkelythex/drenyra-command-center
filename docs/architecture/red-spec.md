@@ -28,33 +28,33 @@ El receipt no es un log. Es un **artifact verificable** que puede ser validado s
 ```typescript
 interface Receipt {
   /** Identificador único del receipt */
-  id: string;
+  id: string
   /** Tipo de acción que generó el receipt */
-  action: string;
+  action: string
   /** Timestamp ISO 8601 */
-  timestamp: string;
+  timestamp: string
   /** Identidad del actor (usuario o agente) */
   actor: {
-    id: string;
-    type: "user" | "agent" | "system";
-  };
+    id: string
+    type: 'user' | 'agent' | 'system'
+  }
   /** Scope fiscal completo */
   scope: {
-    organizationId: string;
-    companyId: string;
-    companyRuc: string;
-    fiscalPeriod: string;
-  };
+    organizationId: string
+    companyId: string
+    companyRuc: string
+    fiscalPeriod: string
+  }
   /** Input hash (SHA-256 del payload original) */
-  inputHash: string;
+  inputHash: string
   /** Output hash (SHA-256 del resultado) */
-  outputHash: string;
+  outputHash: string
   /** Chain hash — SHA-256 del receipt anterior + este receipt */
-  chainHash: string;
+  chainHash: string
   /** Versión del schema de receipt */
-  version: string;
+  version: string
   /** Firma del receipt */
-  signature: string;
+  signature: string
 }
 ```
 
@@ -78,16 +78,16 @@ Action requested
 
 ## 4. ¿Qué acciones generan receipts?
 
-| Acción | Tipo | Prioridad |
-|--------|------|-----------|
-| Journal entry posting | Contable | Alta |
-| SIRE submission | Fiscal | Alta |
-| Document ingestion | Documento | Alta |
-| Month-end close | Contable | Alta |
-| Bank reconciliation | Conciliación | Media |
-| Approval decision | Gobernanza | Alta |
-| Agent action (material) | Agentic | Media |
-| Policy change | Configuración | Alta |
+| Acción                  | Tipo          | Prioridad |
+| ----------------------- | ------------- | --------- |
+| Journal entry posting   | Contable      | Alta      |
+| SIRE submission         | Fiscal        | Alta      |
+| Document ingestion      | Documento     | Alta      |
+| Month-end close         | Contable      | Alta      |
+| Bank reconciliation     | Conciliación  | Media     |
+| Approval decision       | Gobernanza    | Alta      |
+| Agent action (material) | Agentic       | Media     |
+| Policy change           | Configuración | Alta      |
 
 ---
 
@@ -109,21 +109,21 @@ El verifier (Rust — `engines/receipt-verifier/`) es independiente y portátil.
 
 ### Ya existe
 
-| Componente | Estado |
-|------------|--------|
-| Evidence Graph (`evidence-vault`) | ✅ applied |
-| S3-compatible storage | ✅ |
-| Hash chain (SHA-256) | ✅ en infraestructura |
+| Componente                        | Estado                |
+| --------------------------------- | --------------------- |
+| Evidence Graph (`evidence-vault`) | ✅ applied            |
+| S3-compatible storage             | ✅                    |
+| Hash chain (SHA-256)              | ✅ en infraestructura |
 
 ### Por implementar
 
-| Componente | Prioridad | Ubicación |
-|------------|-----------|-----------|
-| Receipt domain types | Alta | `packages/domain/src/receipt/` |
-| Receipt service (generación) | Alta | `packages/application/src/receipt/` |
-| Receipt storage adapter | Alta | `packages/infrastructure/src/receipt/` |
-| Api endpoint (GET receipt) | Media | `apps/api/` |
-| CLI verifier | Baja | `engines/receipt-verifier/` |
+| Componente                   | Prioridad | Ubicación                              |
+| ---------------------------- | --------- | -------------------------------------- |
+| Receipt domain types         | Alta      | `packages/domain/src/receipt/`         |
+| Receipt service (generación) | Alta      | `packages/application/src/receipt/`    |
+| Receipt storage adapter      | Alta      | `packages/infrastructure/src/receipt/` |
+| Api endpoint (GET receipt)   | Media     | `apps/api/`                            |
+| CLI verifier                 | Baja      | `engines/receipt-verifier/`            |
 
 ---
 

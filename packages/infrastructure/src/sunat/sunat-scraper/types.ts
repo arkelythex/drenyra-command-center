@@ -1,5 +1,3 @@
-import type { SunatWebCredentials as SunatCredentials } from "../types";
-
 export interface BuzonNotification {
 	id: string;
 	tipo: "NOTIFICACION" | "COBRANZA" | "FISCALIZACION" | "COMUNICADO" | "OTRO";

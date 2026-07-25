@@ -14,7 +14,7 @@ export class ModelRegistryService {
 	constructor(
 		private readonly modelRepo: ModelRegistrationRepository,
 		private readonly routingRuleRepo: CapabilityRoutingRuleRepository,
-		private readonly config: RouterConfig = {
+		readonly _config: RouterConfig = {
 			defaultStrategy: "capability_match",
 			auditEnabled: true,
 			probeCadenceMs: 60_000,

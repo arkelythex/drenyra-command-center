@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { parseSkillRegistry, matchSkills } from "../src/skills-resolver";
+import { describe, expect, it } from "vitest";
+import { matchSkills, parseSkillRegistry } from "../src/skills-resolver";
 
 const SAMPLE_REGISTRY_MD = `# Drenyra Skill Registry
 

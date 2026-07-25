@@ -27,26 +27,18 @@ export class PostgresDetractionRepository implements DetractionRepository {
 		});
 	}
 
-	async findById(
-		scope: TenantScope,
-		id: string,
-	): Promise<Detraccion | null> {
+	async findById(scope: TenantScope, id: string): Promise<Detraccion | null> {
 		const result = await db
 			.select()
 			.from(detractions)
 			.where(
-				and(
-					eq(detractions.id, id),
-					eq(detractions.companyId, scope.companyId),
-				),
+				and(eq(detractions.id, id), eq(detractions.companyId, scope.companyId)),
 			)
 			.limit(1);
 
 		if (!result[0]) return null;
 		return this.mapToDomain(result[0]);
 	}
-
-
 
 	async findByReference(
 		referenceType: string,

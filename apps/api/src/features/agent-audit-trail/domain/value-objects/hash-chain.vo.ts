@@ -32,7 +32,7 @@ export class HashChain {
 	}
 
 	static create(props: HashChainProps): HashChain {
-		if (!props.hash || props.hash.length !== 64) {
+		if (props.hash?.length !== 64) {
 			throw new Error("Hash must be 64-character hex string");
 		}
 

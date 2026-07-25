@@ -2,9 +2,9 @@
 
 import { Link } from "@tanstack/react-router";
 import { Bell, FileSearch, Pin, ShieldCheck, X } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
-import { useFiscalInspector } from "@/context/FiscalInspectorContext";
+import { type ReactNode, useEffect, useState } from "react";
 import { useAgenticLayout } from "@/components/agentic-shell/AgenticLayout/AgenticLayout.context";
+import { useFiscalInspector } from "@/context/FiscalInspectorContext";
 import { useAccountingStore } from "@/stores/accounting-store";
 import { useArtifactStore } from "@/stores/artifact-store";
 import { useDiffApprovalStore } from "@/stores/diff-approval-store";

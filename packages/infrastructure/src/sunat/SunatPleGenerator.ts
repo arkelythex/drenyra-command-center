@@ -215,7 +215,7 @@ export class SunatPleGenerator {
 	 * Validate configuration
 	 */
 	private validateConfig(): void {
-		if (!this.config.ruc || this.config.ruc.length !== 11) {
+		if (this.config.ruc?.length !== 11) {
 			throw new Error("RUC debe tener 11 dígitos");
 		}
 

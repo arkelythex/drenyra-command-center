@@ -125,7 +125,7 @@ export const rootLogger = pino({
 				url: r.url,
 				path: r.path,
 				headers: {
-					host: r.headers?.["host"],
+					host: r.headers?.host,
 					userAgent: r.headers?.["user-agent"],
 					contentType: r.headers?.["content-type"],
 				},

@@ -5,7 +5,7 @@
  * In production, this is backed by the Evidence Store for audit trail persistence.
  */
 
-import type { Recommendation, ApprovalAction, ApprovalSummary } from "./types";
+import type { ApprovalAction, ApprovalSummary, Recommendation } from "./types";
 
 /**
  * In-memory store. Replace with Evidence Store persistence in production.
@@ -56,7 +56,7 @@ class InMemoryApprovalStore {
 	/** Approve a recommendation. Returns the updated recommendation or undefined if not found. */
 	approve(id: string, userId: string): Recommendation | undefined {
 		const rec = this.recommendations.get(id);
-		if (!rec || rec.status !== "pending") return undefined;
+		if (rec?.status !== "pending") return undefined;
 
 		rec.status = "approved";
 		rec.aprobadoPor = userId;
@@ -80,7 +80,7 @@ class InMemoryApprovalStore {
 		motivo: string,
 	): Recommendation | undefined {
 		const rec = this.recommendations.get(id);
-		if (!rec || rec.status !== "pending") return undefined;
+		if (rec?.status !== "pending") return undefined;
 
 		rec.status = "rejected";
 		rec.aprobadoPor = userId;

@@ -73,7 +73,6 @@ export function MessageBubble({ message }: { message: Message }) {
 				}
 			}
 		}
-		 
 	}, [showArtifacts]);
 
 	const handlePin = useCallback(

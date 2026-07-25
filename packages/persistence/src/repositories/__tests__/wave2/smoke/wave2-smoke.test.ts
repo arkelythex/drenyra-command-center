@@ -7,22 +7,22 @@
  * Obligatorio: todos pasan sin depender del orden de ejecución.
  */
 
-import { describe, expect, it } from "vitest";
+import { NoopFailureProbe } from "@drenyra/persistence";
 import {
 	DeterministicFailureHarness,
 	SimulatedProcessCrash,
 } from "@drenyra/test-utils";
-import { NoopFailureProbe } from "@drenyra/persistence";
-import { createTenantFixture } from "../fixtures/tenants";
+import { describe, expect, it } from "vitest";
+import { OutboxRelay } from "../../../job-outbox-relay";
 import { createFiscalOperationFixture } from "../fixtures/fiscal-operations";
-import { createMessageFixture } from "../fixtures/messages";
 import { createJobFixture } from "../fixtures/jobs";
+import { createMessageFixture } from "../fixtures/messages";
+import { createTenantFixture } from "../fixtures/tenants";
 import {
-	createTwoContenderBarrier,
 	blockAtStage,
 	crash,
+	createTwoContenderBarrier,
 } from "../helpers/transaction-barriers";
-import { OutboxRelay } from "../../../job-outbox-relay";
 
 // ═══════════════════════════════════════════════════════════════════════════
 // 1. Fixtures
@@ -198,7 +198,7 @@ runIfDb("Wave2TestContext — smoke tests", () => {
 			const j = createJobFixture(t.tenantA, t.tenantB, f.invoiceA);
 
 			const created = await ctx.repo.createOrResolve(
-				ctx.tableReader["db"],
+				ctx.tableReader.db,
 				j.sunatSubmit,
 			);
 			expect(created.kind).toBe("created");

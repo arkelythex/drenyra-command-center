@@ -113,7 +113,7 @@ export function sanitizeMonetaryValue(
 
 	const parts = cleaned.split(".");
 	if (parts.length > 2) {
-		cleaned = parts[0] + "." + parts.slice(1).join("");
+		cleaned = `${parts[0]}.${parts.slice(1).join("")}`;
 	}
 
 	const numericPattern = /^-?\d+(\.\d+)?$/;
@@ -129,7 +129,7 @@ export function sanitizeMonetaryValue(
 
 	const num = parseFloat(cleaned);
 
-	if (isNaN(num)) {
+	if (Number.isNaN(num)) {
 		return {
 			value: null,
 			isValid: false,

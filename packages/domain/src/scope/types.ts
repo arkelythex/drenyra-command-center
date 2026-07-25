@@ -94,7 +94,7 @@ export function createFiscalScope(input: FiscalScopeInput): FiscalScope {
 	if (!input.company.id || !input.company.organizationId) {
 		throw new Error("Company must have id and organizationId");
 	}
-	if (!input.company.ruc || input.company.ruc.length !== 11) {
+	if (input.company.ruc?.length !== 11) {
 		throw new Error("Company must have a valid 11-digit RUC");
 	}
 	if (!input.period || !/^\d{4}-\d{2}$/.test(input.period)) {

@@ -3,7 +3,7 @@
  */
 
 import { Command } from "commander";
-import { listSkills, installSkill, uninstallSkill } from "../client.js";
+import { installSkill, listSkills, uninstallSkill } from "../client.js";
 
 export const piCommand = new Command("pi").description(
 	"Manage drenyra-pi skills",

@@ -251,8 +251,6 @@ const SEED_SKILLS: SeedSkill[] = [
 ];
 
 export async function seedSkills(db: NodePgDatabase) {
-	console.log("📦 Seeding skills...");
-
 	for (const seed of SEED_SKILLS) {
 		const existing = await db
 			.select({ id: skills.id })
@@ -261,7 +259,6 @@ export async function seedSkills(db: NodePgDatabase) {
 			.limit(1);
 
 		if (existing.length > 0) {
-			console.log(`  ⏭️  ${seed.name} already exists, skipping`);
 			continue;
 		}
 
@@ -289,9 +286,5 @@ export async function seedSkills(db: NodePgDatabase) {
 				})),
 			);
 		}
-
-		console.log(`  ✅ ${seed.name} — ${seed.capabilities.length} capabilities`);
 	}
-
-	console.log("✅ Skills seeded successfully");
 }

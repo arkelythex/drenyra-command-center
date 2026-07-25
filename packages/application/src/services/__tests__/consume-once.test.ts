@@ -10,8 +10,8 @@ import { ConsumeOnceWrapper } from "../inbox/consume-once";
 import type {
 	InboxAcquisition,
 	InboxRepository,
+	TxClient,
 } from "../inbox/repository-types";
-import type { TxClient } from "../inbox/repository-types";
 
 const CONSUMER = "test-worker";
 const PRODUCER = "SUNAT_CDR";
@@ -234,7 +234,7 @@ describe("ConsumeOnceWrapper.consumeWithTx (internal primitive)", () => {
 // ═══════════════════════════════════════════════════════════════════════════
 
 describe("ConsumeOnceWrapper.consume (public safe API)", () => {
-	function mockTxFactory(result?: { kind: string }) {
+	function mockTxFactory(_result?: { kind: string }) {
 		const commit = vi.fn().mockResolvedValue(undefined);
 		const rollback = vi.fn().mockResolvedValue(undefined);
 		const txFactory = {

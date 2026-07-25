@@ -12,9 +12,9 @@
  * @module h02-attack-cases
  */
 
-import { describe, expect, it, beforeAll, afterAll } from "vitest";
 import { db } from "@drenyra/persistence/client";
 import { drenyraFiscalCases } from "@drenyra/persistence/schema";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 const runIfDb = process.env.DATABASE_URL_TEST ? describe : describe.skip;
 

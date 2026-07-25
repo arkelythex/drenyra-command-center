@@ -73,7 +73,7 @@ export function createUploadHandlers(deps: Partial<UploadHandlersDeps> = {}) {
 	}: UploadHandlerContext) {
 		const { file } = body;
 
-		if (!file || !file.name) {
+		if (!file?.name) {
 			return fail(set, 400, "No file provided", "DOCUMENTS_BAD_REQUEST");
 		}
 

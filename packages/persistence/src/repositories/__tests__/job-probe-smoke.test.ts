@@ -10,16 +10,16 @@
  *   6. Ningún componente productivo importa @drenyra/test-utils.
  */
 
-import { describe, expect, it } from "vitest";
+import { NoopFailureProbe } from "@drenyra/persistence";
 import {
 	DeterministicFailureHarness,
 	SimulatedProcessCrash,
 } from "@drenyra/test-utils";
-import { NoopFailureProbe } from "@drenyra/persistence";
+import { describe, expect, it } from "vitest";
 import { OutboxRelay } from "../job-outbox-relay";
-import { JobRunner } from "../job-runner";
-import { RecoverySweep } from "../job-recovery";
 import { ReconciliationSweep } from "../job-reconciliation";
+import { RecoverySweep } from "../job-recovery";
+import { JobRunner } from "../job-runner";
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Boundaries: imports productivos

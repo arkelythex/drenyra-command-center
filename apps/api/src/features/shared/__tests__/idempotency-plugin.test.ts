@@ -7,11 +7,11 @@
  * These are transport-level tests. Service orchestration is tested in W2-03C.
  */
 
-import { describe, expect, it } from "vitest";
 import { Elysia } from "elysia";
+import { describe, expect, it } from "vitest";
 import {
-	idempotencyPlugin,
 	applyIdempotencyResult,
+	idempotencyPlugin,
 } from "../idempotency-plugin";
 
 // ─── Test app setup ──────────────────────────────────────────────────────────
@@ -140,7 +140,7 @@ describe("applyIdempotencyResult", () => {
 
 		applyIdempotencyResult(set, result);
 
-		expect(set.headers["location"]).toBe("/cases/123");
+		expect(set.headers.location).toBe("/cases/123");
 		expect(set.headers["content-type"]).toBe("application/json");
 	});
 

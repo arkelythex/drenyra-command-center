@@ -13,8 +13,6 @@ import { getTrialBalance } from "../../queries/get-trial-balance.query";
  * ```
  */
 export class LedgerQueryService {
-	constructor() {}
-
 	async getChartOfAccounts(companyId: string): Promise<
 		Array<{
 			code: string;

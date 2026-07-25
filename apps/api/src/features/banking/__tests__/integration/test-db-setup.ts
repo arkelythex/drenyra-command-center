@@ -98,7 +98,7 @@ export async function createTestAccount(
 			id: accountId,
 			companyId: ctx.companyId,
 			accountName: "Test Account",
-			accountNumber: "999-" + createId().slice(0, 8),
+			accountNumber: `999-${createId().slice(0, 8)}`,
 			accountType: "CHECKING",
 			bankName: "Test Bank",
 			bankCode: "TESTBANK",

@@ -254,7 +254,10 @@ export class SireRegisterExportService {
 					: [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 
 			amountFields.forEach((fieldIndex) => {
-				if (fields[fieldIndex] && isNaN(parseFloat(fields[fieldIndex]))) {
+				if (
+					fields[fieldIndex] &&
+					Number.isNaN(parseFloat(fields[fieldIndex]))
+				) {
 					warnings.push({
 						line: lineNumber,
 						field: `field_${fieldIndex}`,

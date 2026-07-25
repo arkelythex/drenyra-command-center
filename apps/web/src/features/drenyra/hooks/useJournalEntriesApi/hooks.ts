@@ -190,7 +190,7 @@ export function useMayorizarJournalEntry() {
 	return useMutation({
 		mutationFn: async (id: string) => {
 			const responseData = await unwrap<unknown>(
-				_jeApi["journal-entries"]({ id })["mayorizar"].post({
+				_jeApi["journal-entries"]({ id }).mayorizar.post({
 					headers: { "X-Company-Id": companyId },
 				}),
 			);
@@ -213,7 +213,7 @@ export function useDeclararJournalEntry() {
 	return useMutation({
 		mutationFn: async (id: string) => {
 			const responseData = await unwrap<unknown>(
-				_jeApi["journal-entries"]({ id })["declarar"].post({
+				_jeApi["journal-entries"]({ id }).declarar.post({
 					headers: { "X-Company-Id": companyId },
 				}),
 			);

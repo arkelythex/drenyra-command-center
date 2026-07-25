@@ -41,7 +41,7 @@ export function sanitizeMonetaryValue(value, options = {}) {
 	let cleaned = strValue.replace(/[^\d.-]/g, "").replace(/(?!^)-/g, "");
 	const parts = cleaned.split(".");
 	if (parts.length > 2) {
-		cleaned = parts[0] + "." + parts.slice(1).join("");
+		cleaned = `${parts[0]}.${parts.slice(1).join("")}`;
 	}
 	const numericPattern = /^-?\d+(\.\d+)?$/;
 	if (!numericPattern.test(cleaned)) {
@@ -54,7 +54,7 @@ export function sanitizeMonetaryValue(value, options = {}) {
 		};
 	}
 	const num = parseFloat(cleaned);
-	if (isNaN(num)) {
+	if (Number.isNaN(num)) {
 		return {
 			value: null,
 			isValid: false,

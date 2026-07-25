@@ -35,7 +35,7 @@ export const costStatsRoute = new Elysia()
 		async ({ query, set }) => {
 			const orgId = query.orgId ? parseInt(query.orgId, 10) : undefined;
 
-			if (orgId && isNaN(orgId)) {
+			if (orgId && Number.isNaN(orgId)) {
 				set.status = 400;
 				return { success: false, message: "orgId debe ser un número entero." };
 			}

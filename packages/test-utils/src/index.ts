@@ -18,8 +18,8 @@ export {
 	withTransaction,
 } from "./database";
 export * from "./e2e";
+export * from "./failure";
 export * from "./fixtures";
 export * from "./helpers";
 export * from "./mocks";
 export * from "./tenant";
-export * from "./failure";

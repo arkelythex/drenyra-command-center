@@ -81,8 +81,8 @@ export class CrossLayerAssertions {
 	 */
 	async expectNoOrphanedOutboxes(): Promise<void> {
 		const allRows = await this.reader.countAllRows();
-		const executions = allRows["job_executions"] ?? 0;
-		const outboxes = allRows["job_outbox"] ?? 0;
+		const executions = allRows.job_executions ?? 0;
+		const outboxes = allRows.job_outbox ?? 0;
 		expect(
 			outboxes,
 			`[outbox] Expected outboxes <= executions (${outboxes} > ${executions})`,

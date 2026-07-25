@@ -1,12 +1,14 @@
+export type {
+	ClassifierConfig,
+	ClassifierResult,
+	DiffEntry,
+} from "./classifier";
 export {
 	classifyDiff,
-	loadClassifierConfig,
 	DEFAULT_CLASSIFIER_CONFIG,
+	loadClassifierConfig,
 } from "./classifier";
-export type { ClassifierConfig, DiffEntry, ClassifierResult } from "./classifier";
-
+export type { FiscalGateOutput, HumanAuthState } from "./fiscal-gate";
 export { evaluateFiscalGate } from "./fiscal-gate";
-export type { HumanAuthState, FiscalGateOutput } from "./fiscal-gate";
-
-export { parseStagedDiff, parseDiffFromText } from "./git-diff";
-export type { ParsedGitDiff, GitDiffError, GitDiffWarning } from "./git-diff";
+export type { GitDiffError, GitDiffWarning, ParsedGitDiff } from "./git-diff";
+export { parseDiffFromText, parseStagedDiff } from "./git-diff";

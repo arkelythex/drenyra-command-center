@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { classifyDiff, loadClassifierConfig } from "../../src/classifier";
 import type { DiffEntry } from "../../src/classifier/classifier";
 
@@ -29,7 +29,9 @@ describe("classifyDiff — positive (R2)", () => {
 		};
 		const result = classifyDiff(diff);
 		expect(result.level).toBe("R2");
-		expect(result.matchedContentPatterns.some((p) => p.includes("SUNAT"))).toBe(true);
+		expect(result.matchedContentPatterns.some((p) => p.includes("SUNAT"))).toBe(
+			true,
+		);
 	});
 
 	it("returns R2 for renamed fiscal file", () => {
@@ -241,10 +243,10 @@ describe("classifyDiff — R3 (highest precedence)", () => {
 
 	it("returns R3 for SUNAT/SIRE API execution (POST/PUT/DELETE)", () => {
 		const diff: DiffEntry = {
-			addedLines: ["const resp = await fetch('https://api.sunat.gob.pe', { method: 'POST' });"],
-			modifiedFiles: [
-				"packages/infrastructure/src/transport/sunat/client.ts",
+			addedLines: [
+				"const resp = await fetch('https://api.sunat.gob.pe', { method: 'POST' });",
 			],
+			modifiedFiles: ["packages/infrastructure/src/transport/sunat/client.ts"],
 			renamedFiles: [],
 			deletedFiles: [],
 		};
@@ -276,7 +278,9 @@ describe("classifyDiff — R3 (highest precedence)", () => {
 
 	it("returns R3 for SIRE production endpoint URL in content", () => {
 		const diff: DiffEntry = {
-			addedLines: ["const sireEndpoint = 'https://api.sire.gob.pe/v2/reporte';"],
+			addedLines: [
+				"const sireEndpoint = 'https://api.sire.gob.pe/v2/reporte';",
+			],
 			modifiedFiles: ["packages/shared/src/endpoints.ts"],
 			renamedFiles: [],
 			deletedFiles: [],

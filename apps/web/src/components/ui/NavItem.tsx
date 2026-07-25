@@ -16,7 +16,7 @@ export interface NavItemProps {
 	isActive: boolean;
 	isCollapsed?: boolean;
 	variant?: NavItemVariant;
-	onClick?: (item: NavigationItem) => void | false;
+	onClick?: (item: NavigationItem) => undefined | false;
 	badge?: string;
 	className?: string;
 }

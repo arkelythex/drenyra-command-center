@@ -12,7 +12,7 @@
  * @see https://docs.x.ai/docs/models/grok-code-fast-1
  */
 
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 import { loggers } from "../../logger";
 import type { AIResponse } from "../types";
 

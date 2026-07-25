@@ -141,7 +141,7 @@ function mapRow(
 	details: unknown,
 ): ArtifactEventAuditRecord | null {
 	const payload = asRawPayload(details);
-	if (!payload || payload.type !== "ARTIFACT_EVENT") return null;
+	if (payload?.type !== "ARTIFACT_EVENT") return null;
 	if (
 		!payload.companyId ||
 		!payload.artifactId ||

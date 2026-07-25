@@ -196,7 +196,7 @@ class ThreadManager {
 		) {
 			thread.title =
 				message.text.length > 40
-					? message.text.slice(0, 40) + "..."
+					? `${message.text.slice(0, 40)}...`
 					: message.text;
 		}
 		this.notify();
@@ -232,7 +232,7 @@ export function useThreadStore() {
 	return snapshot;
 }
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function getSnapshot() {
 	return {

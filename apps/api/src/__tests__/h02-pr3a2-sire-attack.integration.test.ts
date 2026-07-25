@@ -81,7 +81,7 @@ runIfDb("PR-3A-2: SIRE Tenant Boundary Hardening", () => {
 				{ companyId: TENANT_A },
 			);
 			expect(result).not.toBeNull();
-			expect(result!.companyId).toBe(TENANT_A);
+			expect(result?.companyId).toBe(TENANT_A);
 		});
 
 		it("[GREEN] lookup cross-company returns undefined", async () => {
@@ -121,7 +121,7 @@ runIfDb("PR-3A-2: SIRE Tenant Boundary Hardening", () => {
 				{ companyId: TENANT_A },
 			);
 			expect(result).toBeDefined();
-			expect(result!.status).toBe("ACCEPTED");
+			expect(result?.status).toBe("ACCEPTED");
 		});
 
 		it("[GREEN] update cross-company returns undefined (0 rows)", async () => {
@@ -140,7 +140,7 @@ runIfDb("PR-3A-2: SIRE Tenant Boundary Hardening", () => {
 				{ companyId: TENANT_A },
 			);
 			expect(result).toBeDefined();
-			expect(result!.status).toBe("ACCEPTED");
+			expect(result?.status).toBe("ACCEPTED");
 		});
 	});
 
@@ -155,7 +155,7 @@ runIfDb("PR-3A-2: SIRE Tenant Boundary Hardening", () => {
 				TENANT_A,
 			);
 			expect(result).toBeDefined();
-			expect(result!.attemptNumber).toBeGreaterThanOrEqual(1);
+			expect(result?.attemptNumber).toBeGreaterThanOrEqual(1);
 		});
 
 		it("[GREEN] incrementAttempt cross-company returns undefined", async () => {
@@ -194,8 +194,8 @@ runIfDb("PR-3A-2: SIRE Tenant Boundary Hardening", () => {
 				{ companyId: TENANT_A },
 			);
 			expect(result).not.toBeNull();
-			expect(result!.companyId).toBe(TENANT_A);
-			expect(result!.status).toBe("ACCEPTED");
+			expect(result?.companyId).toBe(TENANT_A);
+			expect(result?.status).toBe("ACCEPTED");
 		});
 
 		it("[GREEN] different company + same key returns undefined (scoped)", async () => {
@@ -302,7 +302,7 @@ runIfDb("PR-3A-2: SIRE Tenant Boundary Hardening", () => {
 				{ companyId: TENANT_A },
 			);
 			expect(updated).toBeDefined();
-			expect(updated!.status).toBe("ACCEPTED");
+			expect(updated?.status).toBe("ACCEPTED");
 
 			// Cleanup
 			await db.delete(sireSubmissions).where(eq(sireSubmissions.id, newSub.id));

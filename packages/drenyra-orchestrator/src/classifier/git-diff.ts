@@ -47,18 +47,18 @@ const DIFF_NAME_STATUS_ARGS = [
 	"--diff-filter=AMDR",
 ];
 
-const DIFF_UNIFIED_ARGS = [
-	"diff",
-	"--staged",
-	"-U0",
-];
+const DIFF_UNIFIED_ARGS = ["diff", "--staged", "-U0"];
 
 // ============================================================================
 // Git helpers
 // ============================================================================
 
 function git(args: string[], cwd?: string): string {
-	const opts: { cwd?: string; encoding: string; stdio: ["pipe", "pipe", "pipe"] } = {
+	const opts: {
+		cwd?: string;
+		encoding: string;
+		stdio: ["pipe", "pipe", "pipe"];
+	} = {
 		encoding: "utf-8",
 		stdio: ["pipe", "pipe", "pipe"],
 	};
@@ -74,13 +74,20 @@ type GitStatus = "A" | "M" | "D" | "R" | "C" | "T" | "U" | "X";
 
 function parseStatusChar(ch: string): GitStatus | null {
 	switch (ch) {
-		case "A": return "A";
-		case "M": return "M";
-		case "D": return "D";
-		case "R": return "R";
-		case "C": return "C"; // treated as added
-		case "T": return "M"; // type change = modified
-		default: return null;
+		case "A":
+			return "A";
+		case "M":
+			return "M";
+		case "D":
+			return "D";
+		case "R":
+			return "R";
+		case "C":
+			return "C"; // treated as added
+		case "T":
+			return "M"; // type change = modified
+		default:
+			return null;
 	}
 }
 
@@ -88,9 +95,7 @@ function parseStatusChar(ch: string): GitStatus | null {
 // Parse --name-status -z output
 // ============================================================================
 
-function parseNameStatusZ(
-	raw: string,
-): {
+function parseNameStatusZ(raw: string): {
 	modifiedFiles: string[];
 	renamedFiles: string[];
 	deletedFiles: string[];
@@ -178,14 +183,48 @@ function parseNameStatusZ(
 // ============================================================================
 
 const BINARY_EXTENSIONS = new Set([
-	".png", ".jpg", ".jpeg", ".gif", ".ico", ".svg", ".webp", ".avif",
-	".pdf", ".doc", ".docx", ".xls", ".xlsx",
-	".zip", ".tar", ".gz", ".bz2", ".7z", ".rar",
-	".exe", ".dll", ".so", ".dylib", ".wasm",
-	".mp3", ".mp4", ".avi", ".mov", ".wav", ".flac",
-	".woff", ".woff2", ".ttf", ".eot",
-	".pyc", ".class", ".o", ".a", ".lib",
-	".db", ".sqlite", ".mdb",
+	".png",
+	".jpg",
+	".jpeg",
+	".gif",
+	".ico",
+	".svg",
+	".webp",
+	".avif",
+	".pdf",
+	".doc",
+	".docx",
+	".xls",
+	".xlsx",
+	".zip",
+	".tar",
+	".gz",
+	".bz2",
+	".7z",
+	".rar",
+	".exe",
+	".dll",
+	".so",
+	".dylib",
+	".wasm",
+	".mp3",
+	".mp4",
+	".avi",
+	".mov",
+	".wav",
+	".flac",
+	".woff",
+	".woff2",
+	".ttf",
+	".eot",
+	".pyc",
+	".class",
+	".o",
+	".a",
+	".lib",
+	".db",
+	".sqlite",
+	".mdb",
 ]);
 
 function isLikelyBinary(path: string): boolean {
@@ -218,7 +257,8 @@ function parseAddedLines(raw: string): string[] {
 
 function findBinaryFilesInDiff(raw: string): string[] {
 	const binaries: string[] = [];
-	const binaryRegex = /^Binary\s+files\s+([ab]\/.+?)\s+and\s+([ab]\/.+?)\s+differ$/gmi;
+	const binaryRegex =
+		/^Binary\s+files\s+([ab]\/.+?)\s+and\s+([ab]\/.+?)\s+differ$/gim;
 	for (const line of raw.split("\n")) {
 		const match = binaryRegex.exec(line);
 		if (match?.[2]) {
@@ -282,7 +322,12 @@ export function parseStagedDiff(cwd?: string): ParsedGitDiff {
 				raw: msg,
 			});
 			return {
-				entry: { addedLines: [], modifiedFiles: [], renamedFiles: [], deletedFiles: [] },
+				entry: {
+					addedLines: [],
+					modifiedFiles: [],
+					renamedFiles: [],
+					deletedFiles: [],
+				},
 				errors,
 				warnings,
 				binaryFiles: [],
@@ -311,7 +356,12 @@ export function parseStagedDiff(cwd?: string): ParsedGitDiff {
 				raw: nameStatusRaw,
 			});
 			return {
-				entry: { addedLines: [], modifiedFiles: [], renamedFiles: [], deletedFiles: [] },
+				entry: {
+					addedLines: [],
+					modifiedFiles: [],
+					renamedFiles: [],
+					deletedFiles: [],
+				},
 				errors,
 				warnings,
 				binaryFiles: [],
@@ -347,7 +397,9 @@ export function parseStagedDiff(cwd?: string): ParsedGitDiff {
 
 		// --- Step 5: Detect binary files in diff output ---
 		const binaryFilesFromDiff = findBinaryFilesInDiff(diffRaw);
-		const allBinaryFiles = [...new Set([...binaryFilesFromExtensions, ...binaryFilesFromDiff])];
+		const allBinaryFiles = [
+			...new Set([...binaryFilesFromExtensions, ...binaryFilesFromDiff]),
+		];
 
 		// --- Step 6: Parse added lines ---
 		const addedLines = parseAddedLines(diffRaw);
@@ -377,7 +429,12 @@ export function parseStagedDiff(cwd?: string): ParsedGitDiff {
 			raw: msg,
 		});
 		return {
-			entry: { addedLines: [], modifiedFiles: [], renamedFiles: [], deletedFiles: [] },
+			entry: {
+				addedLines: [],
+				modifiedFiles: [],
+				renamedFiles: [],
+				deletedFiles: [],
+			},
 			errors,
 			warnings,
 			binaryFiles: [],
@@ -390,18 +447,25 @@ export function parseStagedDiff(cwd?: string): ParsedGitDiff {
  * Parse git diff --staged output from raw text (for testing).
  * Useful for testing the parser logic without running git.
  */
-export function parseDiffFromText(rawNameStatus: string, rawDiff: string): ParsedGitDiff {
+export function parseDiffFromText(
+	rawNameStatus: string,
+	rawDiff: string,
+): ParsedGitDiff {
 	const errors: GitDiffError[] = [];
 	const warnings: GitDiffWarning[] = [];
 
 	try {
 		const parsed = parseNameStatusZ(rawNameStatus);
 		const binaryFilesFromDiff = findBinaryFilesInDiff(rawDiff);
-		const allBinaryFiles = [...new Set([...parsed.binaryFiles, ...binaryFilesFromDiff])];
+		const allBinaryFiles = [
+			...new Set([...parsed.binaryFiles, ...binaryFilesFromDiff]),
+		];
 		const addedLines = parseAddedLines(rawDiff);
 
 		const binarySet = new Set(allBinaryFiles);
-		const textModifiedFiles = parsed.modifiedFiles.filter((f) => !binarySet.has(f));
+		const textModifiedFiles = parsed.modifiedFiles.filter(
+			(f) => !binarySet.has(f),
+		);
 
 		return {
 			entry: {
@@ -422,7 +486,12 @@ export function parseDiffFromText(rawNameStatus: string, rawDiff: string): Parse
 			message: `Failed to parse diff from text: ${msg}`,
 		});
 		return {
-			entry: { addedLines: [], modifiedFiles: [], renamedFiles: [], deletedFiles: [] },
+			entry: {
+				addedLines: [],
+				modifiedFiles: [],
+				renamedFiles: [],
+				deletedFiles: [],
+			},
 			errors,
 			warnings,
 			binaryFiles: [],

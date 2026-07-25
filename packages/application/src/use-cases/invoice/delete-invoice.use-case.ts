@@ -24,7 +24,10 @@ export class DeleteInvoiceUseCase {
 			companyId: validatedInput.companyId ?? "",
 		};
 
-		const invoice = await this.invoiceRepository.findById(scope, validatedInput.id);
+		const invoice = await this.invoiceRepository.findById(
+			scope,
+			validatedInput.id,
+		);
 
 		if (!invoice) {
 			throw new NotFoundError("Invoice", validatedInput.id);

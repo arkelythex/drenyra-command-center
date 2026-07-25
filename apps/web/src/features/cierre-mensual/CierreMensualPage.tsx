@@ -1,21 +1,21 @@
 import { useMemo } from "react";
-import { useFiscalInspector } from "@/context/FiscalInspectorContext";
 import {
-	FiscalRiskLayer,
 	type FiscalRiskAlert,
+	FiscalRiskLayer,
 } from "@/components/fiscal/FiscalRiskLayer";
+import { useFiscalInspector } from "@/context/FiscalInspectorContext";
 import { AgentTimeline } from "./components/AgentTimeline";
 import { ChecklistPanel } from "./components/ChecklistPanel";
 import {
-	ClosePhaseStrip,
 	type ClosePhaseState,
+	ClosePhaseStrip,
 } from "./components/ClosePhaseStrip";
 import { MissionBlockers } from "./components/MissionBlockers";
 import { ProgressHeader } from "./components/ProgressHeader";
 import { SidePanel } from "./components/SidePanel";
 import { TaxReviewGate } from "./components/TaxReviewGate";
-import type { MissionBlocker, MissionTimelineEvent } from "./mission.types";
 import { useCierreMensual } from "./hooks/useCierreMensual";
+import type { MissionBlocker, MissionTimelineEvent } from "./mission.types";
 
 const PHASE_NAMES = [
 	"Importación",

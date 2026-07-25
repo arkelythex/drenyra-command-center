@@ -223,14 +223,12 @@ export class ReconciliationEngine {
 		let score = 0;
 		if (
 			extracted.invoiceNumber &&
-			entry.documentNumber &&
-			entry.documentNumber.includes(extracted.invoiceNumber)
+			entry.documentNumber?.includes(extracted.invoiceNumber)
 		)
 			score = Math.max(score, 100);
 		if (
 			extracted.invoiceSeries &&
-			entry.documentNumber &&
-			entry.documentNumber.startsWith(extracted.invoiceSeries)
+			entry.documentNumber?.startsWith(extracted.invoiceSeries)
 		)
 			score = Math.max(score, 70);
 		if (

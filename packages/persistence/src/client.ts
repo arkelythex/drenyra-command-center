@@ -27,10 +27,6 @@ function getConnectionString(): string {
 const connectionString = getConnectionString();
 
 if (!(process.env.VITEST === "true" || process.env.NODE_ENV === "test")) {
-	console.log(
-		"📡 [DB Client] Connection String:",
-		connectionString.replace(/:[^:@]+@/, ":****@"),
-	);
 }
 
 // For long-running apps, we use a single client instance

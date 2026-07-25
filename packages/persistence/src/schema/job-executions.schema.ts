@@ -7,6 +7,7 @@
  * @see docs/adr/W2-06A-job-uniqueness-inventory.md
  */
 
+import { sql } from "drizzle-orm";
 import {
 	index,
 	integer,
@@ -19,7 +20,6 @@ import {
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
 
 // ─── Enums ───────────────────────────────────────────────────────────────────
 

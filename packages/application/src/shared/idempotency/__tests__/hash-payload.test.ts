@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hashPayload, HASH_LENGTH, HASH_PATTERN } from "../hash-payload";
+import { HASH_LENGTH, HASH_PATTERN, hashPayload } from "../hash-payload";
 import { HashPayloadValidationError } from "../types";
 
 describe("hashPayload", () => {

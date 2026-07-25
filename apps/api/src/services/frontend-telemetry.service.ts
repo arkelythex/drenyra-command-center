@@ -71,7 +71,7 @@ function parseBooleanEnv(
 
 const dbWriteEnabled = parseBooleanEnv(
 	process.env.FRONTEND_TELEMETRY_DB_ENABLED,
-	process.env.VITEST === "true" ? false : true,
+	process.env.VITEST !== "true",
 );
 
 function sanitizeString(value: unknown, maxLength: number): string | undefined {

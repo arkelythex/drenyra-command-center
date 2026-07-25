@@ -96,7 +96,7 @@ const storedInput: RunInput = {
 
 function sha256(str: string): string {
 	// Inline minimal hashing — we test actual crypto in integration tests
-	const crypto = require("crypto");
+	const crypto = require("node:crypto");
 	return crypto.createHash("sha256").update(str).digest("hex");
 }
 

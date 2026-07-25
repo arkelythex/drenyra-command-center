@@ -9,16 +9,16 @@
  */
 
 import { createHash } from "node:crypto";
-import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { sql } from "drizzle-orm";
-import { PostgresJobExecutionRepository } from "./postgres-job-execution.repository";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import type { FailureProbe } from "../failure";
 import { NoopFailureProbe } from "../failure";
-import type { JobExecutionMetrics } from "../metrics";
-import { NoopJobExecutionMetrics } from "../metrics";
 import type { StructuredLogger } from "../logger";
 import { NoopLogger } from "../logger";
+import type { JobExecutionMetrics } from "../metrics";
+import { NoopJobExecutionMetrics } from "../metrics";
 import { safeCall } from "../observability-safe";
+import { PostgresJobExecutionRepository } from "./postgres-job-execution.repository";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 

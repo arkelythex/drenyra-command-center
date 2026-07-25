@@ -1,4 +1,5 @@
 #!/usr/bin/env bun
+import { readFileSync } from "node:fs";
 /**
  * Generate forbidden-terms exceptions baseline.
  * Scans all codebase files, runs the same checks as check-forbidden-terms.ts,
@@ -7,7 +8,6 @@
  * Usage: bun scripts/ci/gen-exceptions.ts > scripts/ci/forbidden-terms-exceptions.json
  */
 import { globSync } from "glob";
-import { readFileSync } from "fs";
 
 const FORBIDDEN_TERMS = [
 	{ term: "Swarm", context: "code" as const, message: "" },
@@ -98,7 +98,6 @@ function scanFile(filePath: string): Array<{ term: string; line: number }> {
 					trimmed.startsWith("initial:") ||
 					trimmed.includes("? ")
 				) {
-					continue;
 				}
 			}
 		}

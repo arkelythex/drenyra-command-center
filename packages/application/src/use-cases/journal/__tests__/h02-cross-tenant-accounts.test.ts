@@ -11,9 +11,9 @@
  * @module h02-pr1.4-app-validation
  */
 
-import { describe, expect, it, type Mock, vi } from "vitest";
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { describe, expect, it, type Mock, vi } from "vitest";
 import { UpdateJournalEntryUseCase } from "../update-journal-entry.use-case";
 
 const scopeA1: TenantScope = { organizationId: "1", companyId: "company-a1" };

@@ -1,6 +1,6 @@
-import { createElement } from "react";
 import { useLocation, useNavigate } from "@tanstack/react-router";
 import { Plus, Search } from "lucide-react";
+import { createElement } from "react";
 import { cn } from "@/lib/utils";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
 import { AGENTIC_SECTIONS } from "../AgenticSidebar.data";

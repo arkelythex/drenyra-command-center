@@ -111,7 +111,10 @@ export interface ClientRepository {
 	 * Find a client by ID within the given tenant scope.
 	 * Enforces tenant isolation by filtering on companyId from the scope.
 	 */
-	findById(scope: import("../scope").TenantScope, id: string): Promise<Client | null>;
+	findById(
+		scope: import("../scope").TenantScope,
+		id: string,
+	): Promise<Client | null>;
 	findAll(organizationId: number, filters?: ClientFilters): Promise<Client[]>;
 	count(organizationId: number, filters?: ClientFilters): Promise<number>;
 	findByDocumentNumber(

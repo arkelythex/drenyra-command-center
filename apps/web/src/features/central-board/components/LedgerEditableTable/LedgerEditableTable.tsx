@@ -181,9 +181,7 @@ export function LedgerEditableTable() {
 											<td className="px-4 py-4 align-top text-center">
 												<EditableCell
 													value={entry.cuenta}
-													onSave={(v) =>
-														console.log("update cuenta", entry.id, v)
-													}
+													onSave={(_v) => {}}
 												/>
 											</td>
 											<td className="px-4 py-4 align-top text-center">
@@ -207,18 +205,14 @@ export function LedgerEditableTable() {
 												<EditableCell
 													value={entry.debe}
 													type="money"
-													onSave={(v) =>
-														console.log("update debe", entry.id, v)
-													}
+													onSave={(_v) => {}}
 												/>
 											</td>
 											<td className="px-6 py-4 align-top text-right">
 												<EditableCell
 													value={entry.haber}
 													type="money"
-													onSave={(v) =>
-														console.log("update haber", entry.id, v)
-													}
+													onSave={(_v) => {}}
 												/>
 											</td>
 										</tr>

@@ -43,18 +43,18 @@ describe("MatchingEngine — QueryService wiring", () => {
 
 	it("should successfully inject InvoiceQueryService and BillQueryService", () => {
 		expect(matchingEngine).toBeDefined();
-		expect(matchingEngine["invoiceQueryService"]).toBe(mockInvoiceQueryService);
-		expect(matchingEngine["billQueryService"]).toBe(mockBillQueryService);
+		expect(matchingEngine.invoiceQueryService).toBe(mockInvoiceQueryService);
+		expect(matchingEngine.billQueryService).toBe(mockBillQueryService);
 	});
 
 	it("should use default instances if none provided", () => {
 		const engine = new MatchingEngine();
-		expect(engine["invoiceQueryService"]).toBeInstanceOf(InvoiceQueryService);
-		expect(engine["billQueryService"]).toBeInstanceOf(BillQueryService);
+		expect(engine.invoiceQueryService).toBeInstanceOf(InvoiceQueryService);
+		expect(engine.billQueryService).toBeInstanceOf(BillQueryService);
 	});
 
 	it("buildContext should use InvoiceQueryService methods", () => {
-		const context = matchingEngine["buildContext"]("company-1", "account-1");
+		const context = matchingEngine.buildContext("company-1", "account-1");
 
 		expect(context).toBeDefined();
 		expect(context.findInvoiceByReference).toBeDefined();
@@ -63,7 +63,7 @@ describe("MatchingEngine — QueryService wiring", () => {
 	});
 
 	it("buildContext should use BillQueryService methods", () => {
-		const context = matchingEngine["buildContext"]("company-1", "account-1");
+		const context = matchingEngine.buildContext("company-1", "account-1");
 
 		expect(context).toBeDefined();
 		expect(context.findBillByReference).toBeDefined();
@@ -81,7 +81,7 @@ describe("MatchingEngine — QueryService wiring", () => {
 			dueDate: new Date(),
 		});
 
-		const context = matchingEngine["buildContext"]("company-1", "account-1");
+		const context = matchingEngine.buildContext("company-1", "account-1");
 		const result = await context.findInvoiceByReference(
 			"company-1",
 			"F001-00001",
@@ -105,7 +105,7 @@ describe("MatchingEngine — QueryService wiring", () => {
 			dueDate: new Date(),
 		});
 
-		const context = matchingEngine["buildContext"]("company-1", "account-1");
+		const context = matchingEngine.buildContext("company-1", "account-1");
 		const result = await context.findBillByReference("company-1", "B001-00001");
 
 		expect(mockBillQueryService.findByNumber).toHaveBeenCalledWith(
@@ -132,7 +132,7 @@ describe("MatchingEngine — QueryService wiring", () => {
 			>
 		).mockResolvedValue(mockInvoices);
 
-		const context = matchingEngine["buildContext"]("company-1", "account-1");
+		const context = matchingEngine.buildContext("company-1", "account-1");
 		const start = new Date("2026-02-01");
 		const end = new Date("2026-02-28");
 		const result = await context.findInvoicesByAmountAndDate(
@@ -162,7 +162,7 @@ describe("MatchingEngine — QueryService wiring", () => {
 			mockBillQueryService.findByVendor as ReturnType<typeof vi.fn>
 		).mockResolvedValue(mockBills);
 
-		const context = matchingEngine["buildContext"]("company-1", "account-1");
+		const context = matchingEngine.buildContext("company-1", "account-1");
 		const result = await context.findBillsByAmountAndVendor(
 			"company-1",
 			"vendor-1",

@@ -81,7 +81,7 @@ describeBankingIntegration("Auto-Reconciliation (E2E)", () => {
 		await db.insert(companies).values({
 			id: companyId,
 			ownerId,
-			ruc: "20" + createId().slice(0, 9),
+			ruc: `20${createId().slice(0, 9)}`,
 			businessName: "Test Company SAC",
 			tradeName: "Test Co",
 			address: "Av Test 123",
@@ -99,7 +99,7 @@ describeBankingIntegration("Auto-Reconciliation (E2E)", () => {
 		await db.insert(businessPartners).values({
 			id: customerId,
 			companyId,
-			taxId: "20" + createId().slice(0, 9),
+			taxId: `20${createId().slice(0, 9)}`,
 			legalName: "Test Customer SAC",
 			email: "customer@test.com",
 			createdAt: new Date(),

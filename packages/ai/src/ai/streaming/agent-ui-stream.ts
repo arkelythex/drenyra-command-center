@@ -41,12 +41,11 @@ export function createAgentUIReadableStream(
 
 				for (const step of allSteps) {
 					if (step.text) {
-						const chunk =
-							JSON.stringify({
-								type: "text-delta",
-								content: step.text,
-								stepNumber: step.stepNumber,
-							}) + "\n";
+						const chunk = `${JSON.stringify({
+							type: "text-delta",
+							content: step.text,
+							stepNumber: step.stepNumber,
+						})}\n`;
 						controller.enqueue(new TextEncoder().encode(chunk));
 					}
 
@@ -57,30 +56,27 @@ export function createAgentUIReadableStream(
 					}));
 
 					if (toolCalls.length > 0) {
-						const chunk =
-							JSON.stringify({
-								type: "step-finish",
-								content: step.text,
-								stepNumber: step.stepNumber,
-								toolCalls,
-							}) + "\n";
+						const chunk = `${JSON.stringify({
+							type: "step-finish",
+							content: step.text,
+							stepNumber: step.stepNumber,
+							toolCalls,
+						})}\n`;
 						controller.enqueue(new TextEncoder().encode(chunk));
 					}
 				}
 
-				const doneChunk =
-					JSON.stringify({
-						type: "done",
-						content:
-							allSteps.length > 0 ? allSteps[allSteps.length - 1].text : "",
-					}) + "\n";
+				const doneChunk = `${JSON.stringify({
+					type: "done",
+					content:
+						allSteps.length > 0 ? allSteps[allSteps.length - 1].text : "",
+				})}\n`;
 				controller.enqueue(new TextEncoder().encode(doneChunk));
 			} catch (error) {
-				const errorChunk =
-					JSON.stringify({
-						type: "error",
-						content: String(error),
-					}) + "\n";
+				const errorChunk = `${JSON.stringify({
+					type: "error",
+					content: String(error),
+				})}\n`;
 				controller.enqueue(new TextEncoder().encode(errorChunk));
 			} finally {
 				controller.close();

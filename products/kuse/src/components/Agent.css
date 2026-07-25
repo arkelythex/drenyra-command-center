@@ -18,7 +18,7 @@
 
 .agent-setup h2,
 .empty-agent h2 {
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: "Instrument Serif", Georgia, serif;
   font-size: 2rem;
   margin-bottom: 0.75rem;
   color: var(--foreground);

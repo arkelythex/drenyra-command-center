@@ -241,7 +241,7 @@ export class OpenRouterService {
 		userPrompt: string,
 		tools?: OpenRouterTool[],
 	): Promise<OpenRouterResponse> {
-		const models = AGENT_MODEL_MAP[agentId] || AGENT_MODEL_MAP["default"];
+		const models = AGENT_MODEL_MAP[agentId] || AGENT_MODEL_MAP.default;
 
 		const request: OpenRouterRequest = {
 			model: this.config.enableAutoRouting ? "openrouter/auto" : models[0],

@@ -48,16 +48,16 @@ describe("Text (unified)", () => {
 		},
 		{ variant: "label" as const, expected: ["text-sm", "font-medium"] },
 		{ variant: "meta" as const, expected: ["text-xs"] },
-	])("renders $variant variant with expected classes", ({
-		variant,
-		expected,
-	}) => {
-		const { container } = render(<Text variant={variant}>{variant}</Text>);
-		const el = container.querySelector("p")!;
-		for (const cls of expected) {
-			expect(el.className).toContain(cls);
-		}
-	});
+	])(
+		"renders $variant variant with expected classes",
+		({ variant, expected }) => {
+			const { container } = render(<Text variant={variant}>{variant}</Text>);
+			const el = container.querySelector("p")!;
+			for (const cls of expected) {
+				expect(el.className).toContain(cls);
+			}
+		},
+	);
 
 	it("renders data variant with font-mono and tabular-nums", () => {
 		const { container } = render(<Text variant="data">$1,234</Text>);

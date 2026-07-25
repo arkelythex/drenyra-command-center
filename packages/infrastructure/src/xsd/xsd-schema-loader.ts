@@ -202,7 +202,7 @@ export class XsdSchemaLoader {
 				// The schemaLocation references are relative paths like "../common/UBL-Foo.xsd"
 				// Normalize to just the filename since all UBL files are in the same directory
 				const importedFile = imp["@_schemaLocation"].split("/").pop();
-				if (importedFile && importedFile.endsWith(".xsd")) {
+				if (importedFile?.endsWith(".xsd")) {
 					// Check if this imported file exists in our directory
 					const importPath = resolve(this.xsdDir, importedFile);
 					if (existsSync(importPath)) {
@@ -221,7 +221,7 @@ export class XsdSchemaLoader {
 		for (const inc of includes) {
 			if (inc["@_schemaLocation"]) {
 				const includedFile = inc["@_schemaLocation"].split("/").pop();
-				if (includedFile && includedFile.endsWith(".xsd")) {
+				if (includedFile?.endsWith(".xsd")) {
 					const includePath = resolve(this.xsdDir, includedFile);
 					if (existsSync(includePath)) {
 						this.loadSchemaFile(includedFile);

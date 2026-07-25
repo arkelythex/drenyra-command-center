@@ -28,16 +28,16 @@
 
 import { execSync } from "node:child_process";
 import {
-	readFileSync,
+	chmodSync,
 	existsSync,
 	mkdirSync,
-	chmodSync,
+	readFileSync,
 	writeFileSync,
 } from "node:fs";
 import { join } from "node:path";
-import { parseStagedDiff } from "./git-diff";
-import { classifyDiff } from "./classifier";
 import type { ClassifierResult } from "./classifier";
+import { classifyDiff } from "./classifier";
+import { parseStagedDiff } from "./git-diff";
 
 // ============================================================================
 // Types
@@ -89,7 +89,9 @@ function gitExec(args: string[], cwd: string): string {
 		cwd,
 		encoding: "utf-8",
 		stdio: ["pipe", "pipe", "pipe"],
-	} as never).toString().trim();
+	} as never)
+		.toString()
+		.trim();
 }
 
 function getHeadSha(cwd: string): string {
@@ -114,7 +116,10 @@ function getTreeHash(cwd: string): string {
  */
 function getApprovalDir(cwd: string): string {
 	try {
-		const gitPath = gitExec(["rev-parse", "--git-path", "drenyra/approvals"], cwd);
+		const gitPath = gitExec(
+			["rev-parse", "--git-path", "drenyra/approvals"],
+			cwd,
+		);
 		// git-path returns path relative to worktree root with .git/ prefix
 		// Resolve to absolute path using cwd
 		return join(cwd, gitPath);
@@ -135,7 +140,10 @@ function buildCandidateId(headSha: string, treeHash: string): string {
 // Approval read/write
 // ============================================================================
 
-function readApproval(approvalDir: string, candidateId: string): HumanApproval | null {
+function readApproval(
+	approvalDir: string,
+	candidateId: string,
+): HumanApproval | null {
 	const filePath = join(approvalDir, candidateId);
 	try {
 		const raw = readFileSync(filePath, "utf-8");
@@ -245,9 +253,6 @@ function parseArgs(): {
 			i++;
 			treeHash = args[i]!;
 		} else if (arg === "--help") {
-			console.log(
-				"Usage: classifier-cli --gate pre-commit [--cwd <path>]",
-			);
 			process.exit(0);
 		}
 	}
@@ -261,10 +266,13 @@ function fail(
 	errors: string[],
 	classifierLevel: ClassifierResult["level"] = "R2",
 ): never {
-	const output: CliOutput = {
-		status: exitCode === EXIT_R3_BLOCKED ? "r3-blocked"
-			: exitCode === EXIT_R2_AUTH_REQUIRED ? "r2-auth-required"
-			: "error",
+	const _output: CliOutput = {
+		status:
+			exitCode === EXIT_R3_BLOCKED
+				? "r3-blocked"
+				: exitCode === EXIT_R2_AUTH_REQUIRED
+					? "r2-auth-required"
+					: "error",
 		exitCode,
 		candidateId: "ERROR",
 		headSha: "ERROR",
@@ -289,13 +297,18 @@ function fail(
 		approvalPath: null,
 		errors,
 	};
-	process.stderr.write(message + "\n");
-	console.log(JSON.stringify(output, null, 2));
+	process.stderr.write(`${message}\n`);
 	process.exit(exitCode);
 }
 
 function main(): void {
-	const { gate, cwd, authorize, headSha: argHeadSha, treeHash: argTreeHash } = parseArgs();
+	const {
+		gate,
+		cwd,
+		authorize,
+		headSha: argHeadSha,
+		treeHash: argTreeHash,
+	} = parseArgs();
 
 	// ============================================================
 	// Mode: --authorize (write approval file)
@@ -327,7 +340,7 @@ function main(): void {
 			};
 			writeApproval(approvalDir, candidateId, approval);
 
-			const output: CliOutput = {
+			const _output: CliOutput = {
 				status: "allow",
 				exitCode: EXIT_ALLOW,
 				candidateId,
@@ -353,7 +366,6 @@ function main(): void {
 				approvalPath: join(approvalDir, candidateId),
 				errors: [],
 			};
-			console.log(JSON.stringify(output, null, 2));
 			process.exit(EXIT_ALLOW);
 		} catch (err) {
 			const msg = err instanceof Error ? err.message : String(err);
@@ -397,7 +409,8 @@ function main(): void {
 			classification.ambiguous = true;
 			classification.failClosed = true;
 			classification.blocked = true;
-			classification.reason = "Cambios solo en archivos binarios — modo fail-closed";
+			classification.reason =
+				"Cambios solo en archivos binarios — modo fail-closed";
 		}
 	}
 
@@ -425,9 +438,9 @@ function main(): void {
 		messageLines.push("");
 
 		const msg = messageLines.join("\n");
-		process.stderr.write(msg + "\n");
+		process.stderr.write(`${msg}\n`);
 
-		const output: CliOutput = {
+		const _output: CliOutput = {
 			status: "r3-blocked",
 			exitCode: EXIT_R3_BLOCKED,
 			candidateId,
@@ -438,7 +451,6 @@ function main(): void {
 			approvalPath: null,
 			errors,
 		};
-		console.log(JSON.stringify(output, null, 2));
 		process.exit(EXIT_R3_BLOCKED);
 	}
 
@@ -458,9 +470,9 @@ function main(): void {
 		];
 
 		const msg = messageLines.join("\n");
-		process.stderr.write(msg + "\n");
+		process.stderr.write(`${msg}\n`);
 
-		const output: CliOutput = {
+		const _output: CliOutput = {
 			status: "error",
 			exitCode: EXIT_ERROR,
 			candidateId,
@@ -471,7 +483,6 @@ function main(): void {
 			approvalPath: null,
 			errors,
 		};
-		console.log(JSON.stringify(output, null, 2));
 		process.exit(EXIT_ERROR);
 	}
 
@@ -503,9 +514,9 @@ function main(): void {
 				);
 			}
 			const msg = messageLines.join("\n");
-			process.stderr.write(msg + "\n");
+			process.stderr.write(`${msg}\n`);
 
-			const output: CliOutput = {
+			const _output: CliOutput = {
 				status: "allow",
 				exitCode: EXIT_ALLOW,
 				candidateId,
@@ -516,7 +527,6 @@ function main(): void {
 				approvalPath: join(approvalDir, candidateId),
 				errors,
 			};
-			console.log(JSON.stringify(output, null, 2));
 			process.exit(EXIT_ALLOW);
 		}
 
@@ -540,19 +550,25 @@ function main(): void {
 		messageLines.push("Acción: BLOQUEADO — se requiere autorización humana");
 		messageLines.push("");
 		messageLines.push("Para autorizar este cambio exacto (HEAD + tree hash):");
-		messageLines.push(`  approval_dir="\$(git rev-parse --git-path drenyra/approvals)"`);
-		messageLines.push(`  mkdir -p "\$approval_dir"`);
-		messageLines.push(`  cat > "\$approval_dir/${candidateId}" << 'EOF'`);
-		messageLines.push(`{ "schemaVersion": 1, "baseHead": "${headSha}", "treeHash": "${treeHash}", "authorizedAt": "${new Date().toISOString()}", "authority": "human" }`);
+		messageLines.push(
+			`  approval_dir="$(git rev-parse --git-path drenyra/approvals)"`,
+		);
+		messageLines.push(`  mkdir -p "$approval_dir"`);
+		messageLines.push(`  cat > "$approval_dir/${candidateId}" << 'EOF'`);
+		messageLines.push(
+			`{ "schemaVersion": 1, "baseHead": "${headSha}", "treeHash": "${treeHash}", "authorizedAt": "${new Date().toISOString()}", "authority": "human" }`,
+		);
 		messageLines.push(`EOF`);
-		messageLines.push(`  chmod 600 "\$approval_dir/${candidateId}"`);
+		messageLines.push(`  chmod 600 "$approval_dir/${candidateId}"`);
 		messageLines.push("");
-		messageLines.push("Si cambia el índice o HEAD, la autorización anterior expira.");
+		messageLines.push(
+			"Si cambia el índice o HEAD, la autorización anterior expira.",
+		);
 
 		const msg = messageLines.join("\n");
-		process.stderr.write(msg + "\n");
+		process.stderr.write(`${msg}\n`);
 
-		const output: CliOutput = {
+		const _output: CliOutput = {
 			status: "r2-auth-required",
 			exitCode: EXIT_R2_AUTH_REQUIRED,
 			candidateId,
@@ -563,7 +579,6 @@ function main(): void {
 			approvalPath: join(approvalDir, candidateId),
 			errors,
 		};
-		console.log(JSON.stringify(output, null, 2));
 		process.exit(EXIT_R2_AUTH_REQUIRED);
 	}
 
@@ -576,9 +591,9 @@ function main(): void {
 		"Acción: PERMITIDO",
 	];
 	const msg = messageLines.join("\n");
-	process.stderr.write(msg + "\n");
+	process.stderr.write(`${msg}\n`);
 
-	const output: CliOutput = {
+	const _output: CliOutput = {
 		status: "allow",
 		exitCode: EXIT_ALLOW,
 		candidateId,
@@ -589,7 +604,6 @@ function main(): void {
 		approvalPath: null,
 		errors,
 	};
-	console.log(JSON.stringify(output, null, 2));
 	process.exit(EXIT_ALLOW);
 }
 

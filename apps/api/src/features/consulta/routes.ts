@@ -7,14 +7,14 @@
  * structured results with evidence artifacts.
  */
 
-import { Elysia, t } from "elysia";
+import type { QueryInput } from "@drenyra/fiscal-query-engine";
 import {
+	buildErrorResponse,
+	buildQueryResult,
 	classifyQuery,
 	routeIntent,
-	buildQueryResult,
-	buildErrorResponse,
 } from "@drenyra/fiscal-query-engine";
-import type { QueryInput } from "@drenyra/fiscal-query-engine";
+import { Elysia, t } from "elysia";
 
 // ─── Schemas ───────────────────────────────────────────────────────────
 

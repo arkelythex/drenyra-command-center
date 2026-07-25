@@ -121,7 +121,7 @@ describe("safeApiCall", () => {
 
 	it("returns { ok: false, error: 'Error desconocido' } for non-Error throws", async () => {
 		const result = await safeApiCall<never>(() => {
-			throw "string error";  
+			throw "string error";
 		});
 
 		expect(result).toEqual({ ok: false, error: "Error desconocido" });
@@ -129,7 +129,7 @@ describe("safeApiCall", () => {
 
 	it("returns { ok: false, error: 'Error desconocido' } for null throws", async () => {
 		const result = await safeApiCall<never>(() => {
-			throw null;  
+			throw null;
 		});
 
 		expect(result).toEqual({ ok: false, error: "Error desconocido" });
@@ -144,9 +144,7 @@ describe("safeApiCall", () => {
 	});
 
 	it("returns { ok: false, error: 'Error desconocido' } when the promise rejects with a string", async () => {
-		const result = await safeApiCall<never>(
-			() => Promise.reject("raw"),  
-		);
+		const result = await safeApiCall<never>(() => Promise.reject("raw"));
 
 		expect(result).toEqual({ ok: false, error: "Error desconocido" });
 	});

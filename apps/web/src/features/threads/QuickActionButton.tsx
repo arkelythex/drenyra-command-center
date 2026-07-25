@@ -1,4 +1,3 @@
-import { createElement, type ElementType } from "react";
 import {
 	CalendarCheck,
 	FileSearch,
@@ -6,6 +5,7 @@ import {
 	Loader2,
 	Search,
 } from "lucide-react";
+import { createElement, type ElementType } from "react";
 import type { QuickAction } from "./threads.types";
 
 // ─── Icon resolver ───────────────────────────────────────────────────────────

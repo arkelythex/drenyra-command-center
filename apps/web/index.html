@@ -12,7 +12,7 @@
 
     <!-- Anti-FOUC: Apply theme before React hydrates to prevent flash -->
     <script>
-      ;(function () {
+      ;(() => {
         try {
           var stored = localStorage.getItem('drenyra-ui-storage')
           var mode = stored ? JSON.parse(stored).state?.uxMode : 'dark'

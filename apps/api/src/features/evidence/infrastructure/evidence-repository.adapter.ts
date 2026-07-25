@@ -115,10 +115,7 @@ export const evidenceRepository: EvidenceRepository = {
 
 	async findById(scope: TenantScope, id: string): Promise<Evidence | null> {
 		const row = await db.query.evidence.findFirst({
-			where: and(
-				eq(evidence.id, id),
-				eq(evidence.companyId, scope.companyId),
-			),
+			where: and(eq(evidence.id, id), eq(evidence.companyId, scope.companyId)),
 		});
 		return row ? toDomain(row) : null;
 	},

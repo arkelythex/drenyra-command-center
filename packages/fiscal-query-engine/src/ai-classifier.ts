@@ -8,7 +8,7 @@
  * y soporta múltiples providers (OpenAI, DeepSeek, Anthropic, etc.).
  */
 
-import type { IntentKind, IntentClassification } from "./types";
+import type { IntentClassification, IntentKind } from "./types";
 
 const LLM_API_URL = "http://localhost:3000/api/v1/chat/completions";
 

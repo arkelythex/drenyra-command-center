@@ -1,9 +1,9 @@
+import { randomUUID } from "node:crypto";
 import {
 	JournalEntry,
 	JournalLine,
 } from "@drenyra/domain/entities/JournalEntry";
 import { Money } from "@drenyra/domain/value-objects/Money";
-import { randomUUID } from "crypto";
 import { CreateJournalEntrySchema } from "../../dtos/journal/journal-entry.dto";
 export class CreateJournalEntryUseCase {
 	journalRepository;

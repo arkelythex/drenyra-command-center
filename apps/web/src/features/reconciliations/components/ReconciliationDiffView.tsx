@@ -1,8 +1,8 @@
 import { CheckCircle2, FileSearch, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
-	useReconciliationDiffs,
 	type ReconciliationDiffEntry,
+	useReconciliationDiffs,
 } from "../hooks/useReconciliationDiffs";
 
 const MOCK_DIFFS: ReconciliationDiffEntry[] = [

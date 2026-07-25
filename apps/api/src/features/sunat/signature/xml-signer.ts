@@ -146,7 +146,7 @@ function insertCertificateInSignature(
 			"http://www.w3.org/2000/09/xmldsig#",
 			"SignedInfo",
 		)[0];
-		if (signedInfo && signedInfo.parentNode) {
+		if (signedInfo?.parentNode) {
 			signedInfo.parentNode.insertBefore(keyInfo, signedInfo.nextSibling);
 		} else {
 			signature.appendChild(keyInfo);

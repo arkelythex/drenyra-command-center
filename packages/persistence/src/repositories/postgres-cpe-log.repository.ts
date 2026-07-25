@@ -41,23 +41,16 @@ export class PostgresCpeLogRepository implements CpeLogRepository {
 		});
 	}
 
-	async findById(
-		scope: TenantScope,
-		id: string,
-	): Promise<CPELog | null> {
+	async findById(scope: TenantScope, id: string): Promise<CPELog | null> {
 		const result = await db
 			.select()
 			.from(cpeLog)
-			.where(
-				and(eq(cpeLog.id, id), eq(cpeLog.companyId, scope.companyId)),
-			)
+			.where(and(eq(cpeLog.id, id), eq(cpeLog.companyId, scope.companyId)))
 			.limit(1);
 
 		if (!result[0]) return null;
 		return this.mapToDomain(result[0]);
 	}
-
-
 
 	async findByInvoiceId(invoiceId: string): Promise<CPELog | null> {
 		const result = await db
@@ -184,7 +177,7 @@ export class PostgresCpeLogRepository implements CpeLogRepository {
 			.where(eq(cpeLog.id, id))
 			.limit(1);
 
-		if (!result[0] || !result[0].hashValue) return false;
+		if (!result[0]?.hashValue) return false;
 		return result[0].hashValue === xmlHash;
 	}
 

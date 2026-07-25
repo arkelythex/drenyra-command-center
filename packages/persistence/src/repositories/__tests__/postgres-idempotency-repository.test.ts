@@ -6,15 +6,15 @@
  * Ownership fencing tests verify that processing_token gates all mutations.
  */
 
+import { TestDatabase } from "@drenyra/test-utils/database";
 import { sql } from "drizzle-orm";
 import { describe, expect, it } from "vitest";
-import { TestDatabase } from "@drenyra/test-utils/database";
-import { PostgresIdempotencyRepository } from "../postgres-idempotency.repository";
 import type {
-	AcquireInput,
 	AcquireDecision,
+	AcquireInput,
 	TxClient,
 } from "../idempotency.types";
+import { PostgresIdempotencyRepository } from "../postgres-idempotency.repository";
 
 const runIfDb = describe;
 

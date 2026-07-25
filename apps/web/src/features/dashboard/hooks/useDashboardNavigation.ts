@@ -53,7 +53,7 @@ export const useDashboardNavigation = () => {
 
 	const handleMonthSelect = (monthIndex: string) => {
 		const newDate = new Date(selectedDate);
-		newDate.setMonth(parseInt(monthIndex));
+		newDate.setMonth(parseInt(monthIndex, 10));
 		const { month, year } = extractMonthYear(newDate);
 		navigate({ search: (prev) => ({ ...prev, month, year }) });
 	};

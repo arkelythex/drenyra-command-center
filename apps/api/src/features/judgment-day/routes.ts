@@ -4,6 +4,7 @@ import type {
 	FindingSeverity,
 } from "@drenyra/application/features/judgment-day";
 import { Elysia, t } from "elysia";
+import { companyScopeGuard } from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import {
 	createReview,
@@ -17,13 +18,12 @@ import {
 	updateFindingStatus,
 	updateRule,
 } from "./controller";
-import { companyScopeGuard } from "../../shared/plugins";
 
 export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	.get("/dashboard", async ({ query, set }) => {
 		try {
-			const companyId = query["companyId"];
+			const companyId = query.companyId;
 			if (!companyId || typeof companyId !== "string") {
 				set.status = 400;
 				return fail("companyId is required", "VALIDATION_ERROR");
@@ -71,17 +71,17 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 		"/reviews",
 		async ({ query, set }) => {
 			try {
-				const companyId = query["companyId"];
+				const companyId = query.companyId;
 				if (!companyId || typeof companyId !== "string") {
 					set.status = 400;
 					return fail("companyId is required", "VALIDATION_ERROR");
 				}
 				const result = await listReviews({
 					companyId,
-					status: query["status"] as AuditReviewStatus | undefined,
-					targetType: query["targetType"] as string | undefined,
-					limit: query["limit"] ? Number(query["limit"]) : undefined,
-					offset: query["offset"] ? Number(query["offset"]) : undefined,
+					status: query.status as AuditReviewStatus | undefined,
+					targetType: query.targetType as string | undefined,
+					limit: query.limit ? Number(query.limit) : undefined,
+					offset: query.offset ? Number(query.offset) : undefined,
 				});
 				return ok(result);
 			} catch (error: unknown) {
@@ -178,8 +178,8 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 				const finding = await updateFindingStatus(
 					params.id,
 					"RESOLVED",
-					body["resolvedById"],
-					body["resolutionComment"],
+					body.resolvedById,
+					body.resolutionComment,
 				);
 				if (!finding) {
 					set.status = 404;
@@ -211,8 +211,8 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 				const finding = await updateFindingStatus(
 					params.id,
 					"WAIVED",
-					body["resolvedById"],
-					body["resolutionComment"],
+					body.resolvedById,
+					body.resolutionComment,
 				);
 				if (!finding) {
 					set.status = 404;
@@ -276,18 +276,16 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 		"/rules",
 		async ({ query, set }) => {
 			try {
-				const companyId = query["companyId"];
+				const companyId = query.companyId;
 				if (!companyId || typeof companyId !== "string") {
 					set.status = 400;
 					return fail("companyId is required", "VALIDATION_ERROR");
 				}
 				const rules = await listRules({
 					companyId,
-					category: query["category"] as string | undefined,
+					category: query.category as string | undefined,
 					enabled:
-						query["enabled"] !== undefined
-							? query["enabled"] === "true"
-							: undefined,
+						query.enabled !== undefined ? query.enabled === "true" : undefined,
 				});
 				return ok(rules);
 			} catch (error: unknown) {

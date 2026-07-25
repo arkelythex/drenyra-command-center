@@ -1,5 +1,5 @@
-import { createElement } from "react";
 import { Link } from "@tanstack/react-router";
+import { createElement } from "react";
 import { cn } from "@/lib/utils";
 import { isSettingsNavItemActive, SETTINGS_NAV } from "./constants";
 

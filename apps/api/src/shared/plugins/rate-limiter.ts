@@ -90,7 +90,7 @@ export function rateLimiter(options: RateLimiterOptions = {}) {
 	return (app: Elysia) =>
 		app.onBeforeHandle(async ({ request, store, set }) => {
 			const store_ = store as Record<string, unknown>;
-			const companyContext = store_["companyContext"] as
+			const companyContext = store_.companyContext as
 				| { companyId?: string; userId?: string }
 				| undefined;
 

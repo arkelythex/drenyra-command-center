@@ -102,7 +102,7 @@ function zodToOpenRouterSchema(
  * Infer JSON schema type from Zod type (simplified)
  */
 function inferJsonType(zodType: ZodIntrospectable): OpenRouterJsonType {
-	if (!zodType || !zodType._def) return "string";
+	if (!zodType?._def) return "string";
 
 	const typeName = zodType._def.typeName;
 

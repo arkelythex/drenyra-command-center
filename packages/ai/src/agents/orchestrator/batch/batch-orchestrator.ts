@@ -14,7 +14,7 @@
  * @module ai/agents/orchestrator/batch
  */
 
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 import { loggers } from "../../../logger";
 import { classifyError } from "../../../services/error-recovery";
 import type { SessionStore } from "../../../session/session-store";

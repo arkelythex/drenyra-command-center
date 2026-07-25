@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { createApprovalGate } from "../src/approval-gate";
 import { approvalStore } from "../src/approval-store";
 import {

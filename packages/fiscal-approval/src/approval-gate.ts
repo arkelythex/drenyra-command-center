@@ -9,12 +9,12 @@
 
 import type {
 	GatekeeperCheck,
-	GatekeeperVerdict,
 	GatekeeperContext,
+	GatekeeperVerdict,
 } from "@drenyra/orchestrator";
-import type { Recommendation, ApprovalGateConfig } from "./types";
-import { DEFAULT_APPROVAL_GATE_CONFIG } from "./types";
 import { approvalStore } from "./approval-store";
+import type { ApprovalGateConfig, Recommendation } from "./types";
+import { DEFAULT_APPROVAL_GATE_CONFIG } from "./types";
 
 /** Options for the approval gate. */
 export interface ApprovalGateOptions {

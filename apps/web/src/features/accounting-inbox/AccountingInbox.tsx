@@ -1,24 +1,21 @@
-import { Link } from "@tanstack/react-router";
 import type { FiscalActionContext } from "@drenyra/domain";
-import { useFiscalInspector } from "@/context/FiscalInspectorContext";
-import {
-	useInboxDashboard,
-	type InboxDashboard,
-} from "./hooks/useInboxDashboard";
+import { Link } from "@tanstack/react-router";
 import {
 	ArrowRight,
 	Bot,
-	CheckCircle2,
 	CircleAlert,
 	Clock3,
 	FileCheck2,
 	Landmark,
-	Layers,
-	Loader2,
 	ShieldCheck,
 	Sparkles,
 } from "lucide-react";
+import { useFiscalInspector } from "@/context/FiscalInspectorContext";
 import { cn } from "@/lib/utils";
+import {
+	type InboxDashboard,
+	useInboxDashboard,
+} from "./hooks/useInboxDashboard";
 
 const PRIORITY = { P0: "P0", P1: "P1", P2: "P2", P3: "P3" } as const;
 type Priority = (typeof PRIORITY)[keyof typeof PRIORITY];

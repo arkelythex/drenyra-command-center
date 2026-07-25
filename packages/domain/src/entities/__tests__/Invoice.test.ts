@@ -55,7 +55,7 @@ describe("Invoice Entity", () => {
 
 		it("should enforce Factura requires RUC rule", () => {
 			const props = createValidInvoiceProps();
-			delete props.clientRUC;
+			props.clientRUC = undefined;
 
 			expect(() => Invoice.create(props)).toThrow(/Las facturas requieren RUC/);
 		});
@@ -63,7 +63,7 @@ describe("Invoice Entity", () => {
 		it("should allow Boleta without RUC", () => {
 			const props = createValidInvoiceProps();
 			props.series = DocumentSeries.create("B001");
-			delete props.clientRUC;
+			props.clientRUC = undefined;
 			props.clientDNI = DNI.create("12345678");
 
 			expect(() => Invoice.create(props)).not.toThrow();
@@ -322,7 +322,7 @@ describe("Invoice Entity", () => {
 
 		it("should not mark invoices without due date as overdue", () => {
 			const props = createValidInvoiceProps();
-			delete props.dueDate;
+			props.dueDate = undefined;
 			const invoice = Invoice.create(props);
 
 			expect(invoice.isOverdue()).toBe(false);

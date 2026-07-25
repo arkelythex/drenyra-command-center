@@ -4,12 +4,12 @@
 
 import { Command } from "commander";
 import {
-	listSessions,
+	cancelSession,
 	getSession,
+	getSessionTimeline,
+	listSessions,
 	pauseSession,
 	resumeSession,
-	cancelSession,
-	getSessionTimeline,
 } from "../client.js";
 
 export const agentsCommand = new Command("agents").description(

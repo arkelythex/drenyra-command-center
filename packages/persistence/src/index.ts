@@ -1,8 +1,32 @@
 export { client, db } from "./client";
+export {
+	type FailureContext,
+	type FailureProbe,
+	type FailureStage,
+	NoopFailureProbe,
+} from "./failure";
+export {
+	type JobLogContext,
+	NoopLogger,
+	type StructuredLogger,
+} from "./logger";
+export {
+	type JobExecutionMetrics,
+	type JobMetricLabels,
+	NoopJobExecutionMetrics,
+	type RepairMetricLabels,
+} from "./metrics";
 export { PostgresReportDataSource } from "./PostgresReportDataSource";
 export * from "./query";
 export { ControlTowerPostgresRepository } from "./repositories/control-tower";
 export { DocumentRepositoryImpl } from "./repositories/document.repository";
+export type {
+	AcquireDecision,
+	AcquireInput,
+	IdempotencyRepository,
+	OwnershipToken,
+	TxClient,
+} from "./repositories/idempotency.types";
 export {
 	PostgresCapabilityRoutingRuleRepository,
 	PostgresModelRegistrationRepository,
@@ -24,6 +48,7 @@ export { PostgresEvidenceGraphRepository } from "./repositories/postgres-evidenc
 export { PostgresExchangeRateRepository } from "./repositories/postgres-exchange-rate.repository";
 export { PostgresFiscalMemoryRepository } from "./repositories/postgres-fiscal-memory.repository";
 export { PostgresFiscalTruthRepository } from "./repositories/postgres-fiscal-truth.repository";
+export { PostgresIdempotencyRepository } from "./repositories/postgres-idempotency.repository";
 export { PostgresInvoiceRepository } from "./repositories/postgres-invoice";
 export { PostgresJournalEntryRepository } from "./repositories/postgres-journal-entry.repository";
 export { PostgresOrganizationRepository } from "./repositories/postgres-organization";
@@ -34,29 +59,3 @@ export { PostgresTransactionRepository } from "./repositories/postgres-transacti
 export { SireSubmissionRepository } from "./repositories/sire-submission.repository";
 export * from "./schema";
 export { batchQuery, UnitOfWork, withTransaction } from "./unit-of-work";
-export { PostgresIdempotencyRepository } from "./repositories/postgres-idempotency.repository";
-export type {
-	IdempotencyRepository,
-	AcquireDecision,
-	AcquireInput,
-	OwnershipToken,
-	TxClient,
-} from "./repositories/idempotency.types";
-export {
-	type FailureStage,
-	type FailureContext,
-	type FailureProbe,
-	NoopFailureProbe,
-} from "./failure";
-
-export {
-	type JobMetricLabels,
-	type RepairMetricLabels,
-	type JobExecutionMetrics,
-	NoopJobExecutionMetrics,
-} from "./metrics";
-export {
-	type JobLogContext,
-	type StructuredLogger,
-	NoopLogger,
-} from "./logger";

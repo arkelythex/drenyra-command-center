@@ -9,8 +9,8 @@
  * @module h02-pr2.3-accounting-period-repository
  */
 
-import { describe, expect, it } from "vitest";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { describe, expect, it } from "vitest";
 import { PostgresAccountingPeriodRepository } from "../postgres-accounting-period.repository";
 
 // ============================================================

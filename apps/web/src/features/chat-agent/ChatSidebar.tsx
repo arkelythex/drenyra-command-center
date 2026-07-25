@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { threadStore, type Thread } from "./thread-store";
+import { type Thread, threadStore } from "./thread-store";
 
 interface SidebarProps {
 	activeThreadId: string;

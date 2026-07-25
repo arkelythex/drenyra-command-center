@@ -185,11 +185,7 @@ export function PopOutThread({ threadId }: PopOutThreadProps) {
 						</div>
 					</ScrollArea>
 
-					<Composer
-						onSend={(message, mode) => {
-							console.log("Pop-out send:", message, mode);
-						}}
-					/>
+					<Composer onSend={(_message, _mode) => {}} />
 				</>
 			)}
 		</div>

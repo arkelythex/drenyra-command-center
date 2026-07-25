@@ -7,8 +7,9 @@
  * Uses fc.assert + fc.property directly instead of test.prop
  * for cross-package compatibility.
  */
-import { describe, it } from "vitest";
+
 import * as fc from "fast-check";
+import { describe, it } from "vitest";
 import { Money } from "../Money";
 import { RUC } from "../RUC";
 

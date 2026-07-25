@@ -1,6 +1,6 @@
 import { randomBytes } from "node:crypto";
-import { sireSubmissionRepository } from "@drenyra/persistence/repositories/sire-submission.repository";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { sireSubmissionRepository } from "@drenyra/persistence/repositories/sire-submission.repository";
 import { createLogger } from "../../../../lib/logger";
 import {
 	type SireSubmissionResult,
@@ -350,7 +350,10 @@ export const logBlockedSubmissionAttempt = async (
 	const idempotencyKey = buildIdempotencyKey(input);
 	const provider = resolveProvider();
 
-	const blockedScope: TenantScope = { organizationId: "", companyId: input.companyId };
+	const blockedScope: TenantScope = {
+		organizationId: "",
+		companyId: input.companyId,
+	};
 
 	let submission = await sireSubmissionRepository.findByIdempotencyKey(
 		blockedScope,

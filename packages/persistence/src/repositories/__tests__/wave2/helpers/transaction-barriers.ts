@@ -5,12 +5,12 @@
  * contra tests colgados (5000ms por defecto).
  */
 
-import { AsyncBarrier } from "@drenyra/test-utils";
+import type { FailureContext, FailureStage } from "@drenyra/persistence";
 import {
-	DeterministicFailureHarness,
+	AsyncBarrier,
+	type DeterministicFailureHarness,
 	type FailureAction,
 } from "@drenyra/test-utils";
-import type { FailureStage, FailureContext } from "@drenyra/persistence";
 
 // ─── Barrier helpers ────────────────────────────────────────────────────────
 

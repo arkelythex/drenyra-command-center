@@ -133,7 +133,7 @@ export class MemoryContextProvider {
 			`Run #${run.runId.slice(0, 8)} — ${inputType} — ${workflowState} — ${date}`;
 
 		if (summary.length > this.config.maxSummaryLength) {
-			summary = summary.slice(0, this.config.maxSummaryLength) + "...";
+			summary = `${summary.slice(0, this.config.maxSummaryLength)}...`;
 		}
 
 		return `[Past Run ${index}]\n${summary}`;

@@ -138,7 +138,7 @@ export async function streamChat(
 	while (true) {
 		const { done, value } = await reader.read();
 		if (done) {
-			const { events } = parseSseBuffer(buffer + "\n\n");
+			const { events } = parseSseBuffer(`${buffer}\n\n`);
 			for (const event of events) {
 				processEvent(event, callbacks);
 			}

@@ -59,7 +59,7 @@ const cpeRegenerationStage: ComplianceStage = {
 		ctx: ComplianceContext,
 	): Promise<ComplianceStageResult> => {
 		const detraResult = ctx.previousStageResults.get("detraccion-rates");
-		if (!detraResult || detraResult.status !== "PASSED") {
+		if (detraResult?.status !== "PASSED") {
 			return {
 				status: "BLOCKED",
 				evidenceId: `cpe-blocked-${Date.now()}`,
@@ -105,7 +105,7 @@ const pleValidationStage: ComplianceStage = {
 		ctx: ComplianceContext,
 	): Promise<ComplianceStageResult> => {
 		const cpeResult = ctx.previousStageResults.get("cpe-regen");
-		if (!cpeResult || cpeResult.status !== "PASSED") {
+		if (cpeResult?.status !== "PASSED") {
 			return {
 				status: "BLOCKED",
 				evidenceId: `ple-validate-blocked-${Date.now()}`,

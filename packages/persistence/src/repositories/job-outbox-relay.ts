@@ -8,19 +8,19 @@
  * PostgreSQL is the source of truth. Redis/BullMQ is the transport layer.
  */
 
+import { randomUUID } from "node:crypto";
 import type { Queue } from "bullmq";
 import { sql } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { randomUUID } from "node:crypto";
-import { PostgresJobExecutionRepository } from "./postgres-job-execution.repository";
-import type { DbTransaction } from "../unit-of-work";
 import type { FailureProbe } from "../failure";
 import { NoopFailureProbe } from "../failure";
-import type { JobExecutionMetrics } from "../metrics";
-import { NoopJobExecutionMetrics } from "../metrics";
 import type { StructuredLogger } from "../logger";
 import { NoopLogger } from "../logger";
+import type { JobExecutionMetrics } from "../metrics";
+import { NoopJobExecutionMetrics } from "../metrics";
 import { safeCall } from "../observability-safe";
+import type { DbTransaction } from "../unit-of-work";
+import { PostgresJobExecutionRepository } from "./postgres-job-execution.repository";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 

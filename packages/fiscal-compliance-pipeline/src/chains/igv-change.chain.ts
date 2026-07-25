@@ -56,7 +56,7 @@ const pleRegenerationStage: ComplianceStage = {
 		ctx: ComplianceContext,
 	): Promise<ComplianceStageResult> => {
 		const detraccionResult = ctx.previousStageResults.get("detracciones");
-		if (!detraccionResult || detraccionResult.status !== "PASSED") {
+		if (detraccionResult?.status !== "PASSED") {
 			return {
 				status: "BLOCKED",
 				evidenceId: `ple-blocked-${Date.now()}`,
@@ -102,7 +102,7 @@ const sireValidationStage: ComplianceStage = {
 		ctx: ComplianceContext,
 	): Promise<ComplianceStageResult> => {
 		const pleResult = ctx.previousStageResults.get("ple");
-		if (!pleResult || pleResult.status !== "PASSED") {
+		if (pleResult?.status !== "PASSED") {
 			return {
 				status: "BLOCKED",
 				evidenceId: `sire-blocked-${Date.now()}`,

@@ -41,16 +41,16 @@ Identity (Better Auth)
 
 ### Implementación actual
 
-| Capa | Estado | Responsable |
-|------|--------|-------------|
-| Identity | ✅ better-auth en API + web | `apps/api/src/features/auth/` |
-| Session | ✅ JWT + httpOnly cookies | `apps/api/src/features/auth/` |
-| Organization membership | ✅ scope-resolver | `packages/infrastructure/src/auth/` |
-| Company authorization | ✅ companyScopeGuard | `apps/api/src/shared/plugins/` |
-| Capability matrix | ✅ Agent Capability Matrix | `docs/01-architecture/` |
-| Resource scope (RUC/period) | ⚡ parcial | H02 tenant isolation |
-| Action risk (R0–R3) | ◌ pendiente | SDD futuro |
-| Approval policy | ◌ pendiente | SDD futuro |
+| Capa                        | Estado                      | Responsable                         |
+| --------------------------- | --------------------------- | ----------------------------------- |
+| Identity                    | ✅ better-auth en API + web | `apps/api/src/features/auth/`       |
+| Session                     | ✅ JWT + httpOnly cookies   | `apps/api/src/features/auth/`       |
+| Organization membership     | ✅ scope-resolver           | `packages/infrastructure/src/auth/` |
+| Company authorization       | ✅ companyScopeGuard        | `apps/api/src/shared/plugins/`      |
+| Capability matrix           | ✅ Agent Capability Matrix  | `docs/01-architecture/`             |
+| Resource scope (RUC/period) | ⚡ parcial                  | H02 tenant isolation                |
+| Action risk (R0–R3)         | ◌ pendiente                 | SDD futuro                          |
+| Approval policy             | ◌ pendiente                 | SDD futuro                          |
 
 ---
 
@@ -58,12 +58,12 @@ Identity (Better Auth)
 
 ### RBAC actual
 
-| Rol | Nivel | Acceso |
-|-----|-------|--------|
-| `owner` | Organización | Todo |
+| Rol      | Nivel        | Acceso                |
+| -------- | ------------ | --------------------- |
+| `owner`  | Organización | Todo                  |
 | `senior` | Organización | Operaciones avanzadas |
-| `junior` | Por company | Operaciones básicas |
-| `client` | Por company | Solo lectura básica |
+| `junior` | Por company  | Operaciones básicas   |
+| `client` | Por company  | Solo lectura básica   |
 
 22 permisos definidos en `packages/infrastructure/src/auth/permissions.ts`.
 
@@ -73,33 +73,33 @@ Registro centralizado en `apps/api/src/shared/auth/route-permissions.ts`.
 
 **Todas las rutas `/api/*` requieren autenticación.** Excepciones explícitas:
 
-| Ruta | Método | Motivo |
-|------|--------|--------|
-| `/api/health` | * | Health checks |
-| `/api/swagger` | * | Documentación |
-| `/api/auth/signup` | POST | Registro |
-| `/api/auth/login` | POST | Login |
-| `/api/auth/logout` | POST | Logout |
-| `/api/auth/session` | GET | Sesión |
-| `/api/auth/forgot-password` | POST | Recuperación |
-| `/api/auth/reset-password` | POST | Reset |
-| `/api/auth/verify-email` | POST | Verificación |
-| `/api/auth/send-verification` | POST | Envío verificación |
+| Ruta                          | Método | Motivo             |
+| ----------------------------- | ------ | ------------------ |
+| `/api/health`                 | *      | Health checks      |
+| `/api/swagger`                | *      | Documentación      |
+| `/api/auth/signup`            | POST   | Registro           |
+| `/api/auth/login`             | POST   | Login              |
+| `/api/auth/logout`            | POST   | Logout             |
+| `/api/auth/session`           | GET    | Sesión             |
+| `/api/auth/forgot-password`   | POST   | Recuperación       |
+| `/api/auth/reset-password`    | POST   | Reset              |
+| `/api/auth/verify-email`      | POST   | Verificación       |
+| `/api/auth/send-verification` | POST   | Envío verificación |
 
 ---
 
 ## 4. Data protection
 
-| Tipo | Protección | Estado |
-|------|-----------|--------|
-| Passwords | hash + salt (better-auth) | ✅ |
-| Session tokens | httpOnly cookies, secure | ✅ |
-| API tokens | Bearer auth | ✅ |
-| Tenant isolation | RLS + scope-resolver | ⚡ en progreso |
-| RUC data | scoped por company | ✅ |
-| PII (email, name) | scoped por org | ✅ |
-| Secrets | env vars, vault | ✅ |
-| Evidence | S3 + hash chain | ✅ |
+| Tipo              | Protección                | Estado         |
+| ----------------- | ------------------------- | -------------- |
+| Passwords         | hash + salt (better-auth) | ✅             |
+| Session tokens    | httpOnly cookies, secure  | ✅             |
+| API tokens        | Bearer auth               | ✅             |
+| Tenant isolation  | RLS + scope-resolver      | ⚡ en progreso |
+| RUC data          | scoped por company        | ✅             |
+| PII (email, name) | scoped por org            | ✅             |
+| Secrets           | env vars, vault           | ✅             |
+| Evidence          | S3 + hash chain           | ✅             |
 
 ### RLS (Row-Level Security)
 
@@ -113,61 +113,61 @@ Objetivo: defensa en profundidad. Incluso si la capa de aplicación falla, RLS e
 
 ### 5.1 Autenticación
 
-| Threat | Impacto | Probabilidad | Mitigación | Estado |
-|--------|---------|-------------|------------|--------|
-| Session hijacking | ALTO | Media | httpOnly cookies, secure flag, short expiry | ✅ |
-| Brute force login | MEDIO | Alta | Rate limiting (60 req/min) | ✅ |
-| CSRF | ALTO | Baja | CORS configuration + SameSite cookies | ✅ |
-| Token leakage | ALTO | Baja | Bearer tokens only in Authorization header | ✅ |
+| Threat            | Impacto | Probabilidad | Mitigación                                  | Estado |
+| ----------------- | ------- | ------------ | ------------------------------------------- | ------ |
+| Session hijacking | ALTO    | Media        | httpOnly cookies, secure flag, short expiry | ✅     |
+| Brute force login | MEDIO   | Alta         | Rate limiting (60 req/min)                  | ✅     |
+| CSRF              | ALTO    | Baja         | CORS configuration + SameSite cookies       | ✅     |
+| Token leakage     | ALTO    | Baja         | Bearer tokens only in Authorization header  | ✅     |
 
 ### 5.2 Multi-tenancy
 
-| Threat | Impacto | Probabilidad | Mitigación | Estado |
-|--------|---------|-------------|------------|--------|
-| Cross-company data access | CRÍTICO | Media | scope-resolver, RLS | ⚡ parcial |
-| IDOR (Insecure Direct Object Ref) | CRÍTICO | Alta | TenantScope validation en cada query | ⚡ parcial |
-| Company ID enumeration | MEDIO | Media | UUIDs no secuenciales | ✅ |
+| Threat                            | Impacto | Probabilidad | Mitigación                           | Estado     |
+| --------------------------------- | ------- | ------------ | ------------------------------------ | ---------- |
+| Cross-company data access         | CRÍTICO | Media        | scope-resolver, RLS                  | ⚡ parcial |
+| IDOR (Insecure Direct Object Ref) | CRÍTICO | Alta         | TenantScope validation en cada query | ⚡ parcial |
+| Company ID enumeration            | MEDIO   | Media        | UUIDs no secuenciales                | ✅         |
 
 ### 5.3 API
 
-| Threat | Impacto | Probabilidad | Mitigación | Estado |
-|--------|---------|-------------|------------|--------|
-| Unauthenticated access | ALTO | Baja | Route permission guard + session check | ✅ |
-| Permission escalation | CRÍTICO | Baja | RBAC + requirePermission por endpoint | ✅ nuevo |
-| Rate limiting bypass | MEDIO | Media | rateLimiter (100 req/min default) | ✅ |
-| Injection (SQL, NoSQL) | CRÍTICO | Baja | Drizzle ORM + parameterized queries | ✅ |
-| Mass assignment | MEDIO | Media | Zod schemas en cada endpoint | ✅ |
+| Threat                 | Impacto | Probabilidad | Mitigación                             | Estado   |
+| ---------------------- | ------- | ------------ | -------------------------------------- | -------- |
+| Unauthenticated access | ALTO    | Baja         | Route permission guard + session check | ✅       |
+| Permission escalation  | CRÍTICO | Baja         | RBAC + requirePermission por endpoint  | ✅ nuevo |
+| Rate limiting bypass   | MEDIO   | Media        | rateLimiter (100 req/min default)      | ✅       |
+| Injection (SQL, NoSQL) | CRÍTICO | Baja         | Drizzle ORM + parameterized queries    | ✅       |
+| Mass assignment        | MEDIO   | Media        | Zod schemas en cada endpoint           | ✅       |
 
 ### 5.4 Datos fiscales
 
-| Threat | Impacto | Probabilidad | Mitigación | Estado |
-|--------|---------|-------------|------------|--------|
-| Data leak (RUC, IGV, transactions) | CRÍTICO | Baja | Tenant scope + RLS + encrypted storage | ⚡ parcial |
-| Tampering con evidence | CRÍTICO | Baja | Hash chain + S3 immutability | ✅ |
-| SUNAT credential exposure | CRÍTICO | Media | Vault + per-tenant encryption | ◌ |
+| Threat                             | Impacto | Probabilidad | Mitigación                             | Estado     |
+| ---------------------------------- | ------- | ------------ | -------------------------------------- | ---------- |
+| Data leak (RUC, IGV, transactions) | CRÍTICO | Baja         | Tenant scope + RLS + encrypted storage | ⚡ parcial |
+| Tampering con evidence             | CRÍTICO | Baja         | Hash chain + S3 immutability           | ✅         |
+| SUNAT credential exposure          | CRÍTICO | Media        | Vault + per-tenant encryption          | ◌          |
 
 ### 5.5 Agentes e IA
 
-| Threat | Impacto | Probabilidad | Mitigación | Estado |
-|--------|---------|-------------|------------|--------|
-| Unsanctioned agent action | CRÍTICO | Media | Capability matrix + deny-by-default | ✅ |
-| Tool misuse | ALTO | Media | Per-tool permissions | ✅ |
-| Data leakage via prompts | ALTO | Media | Context filtering, PII redaction | ◌ |
-| Model hallucination (fiscal) | CRÍTICO | Media | Deterministic validation gates | ◌ |
+| Threat                       | Impacto | Probabilidad | Mitigación                          | Estado |
+| ---------------------------- | ------- | ------------ | ----------------------------------- | ------ |
+| Unsanctioned agent action    | CRÍTICO | Media        | Capability matrix + deny-by-default | ✅     |
+| Tool misuse                  | ALTO    | Media        | Per-tool permissions                | ✅     |
+| Data leakage via prompts     | ALTO    | Media        | Context filtering, PII redaction    | ◌      |
+| Model hallucination (fiscal) | CRÍTICO | Media        | Deterministic validation gates      | ◌      |
 
 ---
 
 ## 6. Security testing requirements
 
-| Tipo | Cobertura | Herramienta | Estado |
-|------|-----------|-------------|--------|
-| Unit: permission guards | Todas las rutas | Vitest | ✅ |
-| Integration: auth flow | Login, signup, session | Vitest | ✅ |
-| Integration: tenant isolation | Cross-company access | Vitest | ⚡ parcial |
-| SAST | Código TS | Biome | ✅ |
-| Dependency audit | Supply chain | `bun audit` | ◌ |
-| Secret scanning | Repo | gitleaks | ◌ |
-| RLS validation | DB-level | Tests específicos | ◌ |
+| Tipo                          | Cobertura              | Herramienta       | Estado     |
+| ----------------------------- | ---------------------- | ----------------- | ---------- |
+| Unit: permission guards       | Todas las rutas        | Vitest            | ✅         |
+| Integration: auth flow        | Login, signup, session | Vitest            | ✅         |
+| Integration: tenant isolation | Cross-company access   | Vitest            | ⚡ parcial |
+| SAST                          | Código TS              | Biome             | ✅         |
+| Dependency audit              | Supply chain           | `bun audit`       | ◌          |
+| Secret scanning               | Repo                   | gitleaks          | ◌          |
+| RLS validation                | DB-level               | Tests específicos | ◌          |
 
 ---
 

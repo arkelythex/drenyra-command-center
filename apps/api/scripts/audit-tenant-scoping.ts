@@ -12,8 +12,8 @@
  * y el nivel de riesgo de tenant isolation.
  */
 
-import { readdirSync, readFileSync } from "fs";
-import { join, relative } from "path";
+import { readdirSync, readFileSync } from "node:fs";
+import { join, relative } from "node:path";
 
 const API_SRC = join(import.meta.dir, "../src/features");
 

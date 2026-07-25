@@ -106,20 +106,10 @@ class ConsoleSpan implements LLMSpan {
 		this.attributes[key] = value;
 	}
 
-	addEvent(name: string, eventAttributes?: Record<string, unknown>): void {
-		console.log(
-			`[LLM Gateway Tracing] ${this.name}:event:${name}`,
-			eventAttributes ?? "",
-		);
-	}
+	addEvent(_name: string, _eventAttributes?: Record<string, unknown>): void {}
 
-	end(endAttributes?: LLMGatewaySpanAttributes): void {
-		const duration = Date.now() - this.startTime;
-		console.log(`[LLM Gateway Tracing] ${this.name}:end`, {
-			...this.attributes,
-			...endAttributes,
-			"llm.latency.ms": duration,
-		});
+	end(_endAttributes?: LLMGatewaySpanAttributes): void {
+		const _duration = Date.now() - this.startTime;
 	}
 
 	recordException(error: Error): void {

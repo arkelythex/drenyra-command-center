@@ -9,8 +9,8 @@
  * @module h02-pr4.1-evidence-repository
  */
 
-import { describe, expect, it } from "vitest";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { describe, expect, it } from "vitest";
 import { PostgresEvidenceRepository } from "../postgres-evidence/repository";
 
 // ============================================================

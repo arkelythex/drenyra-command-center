@@ -10,9 +10,9 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { promisify } from "node:util";
 // @ts-expect-error — archiver v8 has no type declarations but `ZipArchive` is a valid named export at runtime
 import { ZipArchive } from "archiver";
-import { promisify } from "util";
 import { createLogger } from "../../../lib/logger";
 import type { CreditNoteData, InvoiceData } from "../types/ubl.types";
 import { generateCreditNoteXml } from "../xml/credit-note-ubl.generator";

@@ -11,14 +11,14 @@
  * Requires DATABASE_URL_TEST environment variable.
  */
 
-import { describe, expect, it } from "vitest";
+import { IdempotencyPayloadMismatchError } from "@drenyra/application/services/idempotency/errors";
+import { IdempotencyApplicationService } from "@drenyra/application/services/idempotency/idempotency.service";
+import { TestDatabase } from "@drenyra/test-utils/database";
 import { sql } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
-import { TestDatabase } from "@drenyra/test-utils/database";
-import { PostgresIdempotencyRepository } from "../postgres-idempotency.repository";
-import { IdempotencyApplicationService } from "@drenyra/application/services/idempotency/idempotency.service";
-import { IdempotencyPayloadMismatchError } from "@drenyra/application/services/idempotency/errors";
+import { describe, expect, it } from "vitest";
 import type { IdempotencyRepository, TxClient } from "../idempotency.types";
+import { PostgresIdempotencyRepository } from "../postgres-idempotency.repository";
 
 // ─── Test table ──────────────────────────────────────────────────────────────
 
@@ -85,7 +85,7 @@ function makeBarrier(count: number): {
 		wait: () => wait,
 		release: () => {
 			remaining--;
-			if (remaining <= 0) resolve!();
+			if (remaining <= 0) resolve?.();
 		},
 	};
 }

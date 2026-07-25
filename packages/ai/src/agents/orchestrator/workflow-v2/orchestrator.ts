@@ -12,7 +12,7 @@
  * @version 2.0.0
  */
 
-import { createHash, randomUUID } from "crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { loggers } from "../../../logger";
 import type {
 	AgentRunStatus,
@@ -90,7 +90,6 @@ export class WorkflowOrchestratorV2 {
 
 	// Config
 	private config: OrchestratorConfig;
-	private prunerSubscriptionId?: string;
 
 	constructor(
 		readerAgent: ReaderAgent,

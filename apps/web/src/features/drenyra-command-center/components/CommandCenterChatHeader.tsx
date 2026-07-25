@@ -120,7 +120,7 @@ export function CommandCenterChatHeader({
 				<span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-warning)]/10 px-2.5 py-0.5 text-2xs font-semibold text-[var(--color-warning)]">
 					{t("thread.indicator")}{" "}
 					{JSON.parse(
-						localStorage.getItem("drenyra:threads:" + companyId) || "{}",
+						localStorage.getItem(`drenyra:threads:${companyId}`) || "{}",
 					)[activeThreadId]?.name || "..."}
 				</span>
 			)}

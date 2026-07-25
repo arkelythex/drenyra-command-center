@@ -183,7 +183,11 @@ describe("DetractionService", () => {
 			);
 			mockRepo.findById.mockResolvedValue(detraction);
 
-			await service.recordDeposit(mockScope, mockDetractionId, {} as DepositInfo);
+			await service.recordDeposit(
+				mockScope,
+				mockDetractionId,
+				{} as DepositInfo,
+			);
 			// Can't deposit again — domain entity is immutable but the mock
 			// returns the original "pendiente" entity each time.
 			// The transition guard within the domain entity handles this.

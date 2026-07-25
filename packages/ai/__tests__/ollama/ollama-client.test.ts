@@ -239,7 +239,7 @@ describe("OllamaClient", () => {
 				start(controller) {
 					const encoder = new TextEncoder();
 					for (const line of mockStreamData) {
-						controller.enqueue(encoder.encode(line + "\n"));
+						controller.enqueue(encoder.encode(`${line}\n`));
 					}
 					controller.close();
 				},
@@ -288,7 +288,7 @@ describe("OllamaClient", () => {
 				start(controller) {
 					const encoder = new TextEncoder();
 					for (const line of mockStreamData) {
-						controller.enqueue(encoder.encode(line + "\n"));
+						controller.enqueue(encoder.encode(`${line}\n`));
 					}
 					controller.close();
 				},

@@ -9,9 +9,9 @@
  *   REDIS_URL          — Redis connection (for D2-D3)
  */
 
-import { describe, expect, it } from "vitest";
-import { sql } from "drizzle-orm";
 import { withTransaction } from "@drenyra/test-utils/database";
+import { sql } from "drizzle-orm";
+import { describe, expect, it } from "vitest";
 
 // ─── Gate constants ────────────────────────────────────────────────────────
 

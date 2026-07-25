@@ -790,13 +790,13 @@ describe("Account Entity", () => {
 
 	describe("ACCOUNT_TYPE_CLASSES Constant", () => {
 		it("should have correct type to class mapping", () => {
-			expect(ACCOUNT_TYPE_CLASSES["Activo"]).toEqual(["1", "2", "3"]);
-			expect(ACCOUNT_TYPE_CLASSES["Pasivo"]).toEqual(["4"]);
-			expect(ACCOUNT_TYPE_CLASSES["Patrimonio"]).toEqual(["5"]);
-			expect(ACCOUNT_TYPE_CLASSES["Gasto"]).toEqual(["6"]);
-			expect(ACCOUNT_TYPE_CLASSES["Ingreso"]).toEqual(["7"]);
-			expect(ACCOUNT_TYPE_CLASSES["Saldo"]).toEqual(["8"]);
-			expect(ACCOUNT_TYPE_CLASSES["Costo"]).toEqual(["9"]);
+			expect(ACCOUNT_TYPE_CLASSES.Activo).toEqual(["1", "2", "3"]);
+			expect(ACCOUNT_TYPE_CLASSES.Pasivo).toEqual(["4"]);
+			expect(ACCOUNT_TYPE_CLASSES.Patrimonio).toEqual(["5"]);
+			expect(ACCOUNT_TYPE_CLASSES.Gasto).toEqual(["6"]);
+			expect(ACCOUNT_TYPE_CLASSES.Ingreso).toEqual(["7"]);
+			expect(ACCOUNT_TYPE_CLASSES.Saldo).toEqual(["8"]);
+			expect(ACCOUNT_TYPE_CLASSES.Costo).toEqual(["9"]);
 		});
 	});
 

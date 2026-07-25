@@ -11,8 +11,8 @@
  * @module events
  */
 
+import { randomUUID } from "node:crypto";
 import type { AgentEvent as CanonicalEvent } from "@drenyra/shared";
-import { randomUUID } from "crypto";
 import type {
 	EventBus,
 	AgentEvent as WorkflowEvent,

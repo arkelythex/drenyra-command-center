@@ -1,8 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { DrenyraCaseLayout } from "@/features/drenyra/components/DrenyraCaseLayout";
-import { DrenyraFlexMain } from "@/components/agentic/DrenyraFlexMain";
-import { useParams } from "@tanstack/react-router";
+import { createFileRoute, useParams } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { DrenyraFlexMain } from "@/components/agentic/DrenyraFlexMain";
+import { DrenyraCaseLayout } from "@/features/drenyra/components/DrenyraCaseLayout";
 import { useThreadStore } from "@/stores/thread-store";
 
 export const Route = createFileRoute("/drenyra/case/$threadId")({

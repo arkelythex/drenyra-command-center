@@ -12,9 +12,9 @@
  * - POST /api/approval/:id/reject         — reject
  */
 
-import { Elysia, t } from "elysia";
-import type { AccountantSummary } from "@drenyra/shared";
 import { approvalStore } from "@drenyra/fiscal-approval";
+import type { AccountantSummary } from "@drenyra/shared";
+import { Elysia, t } from "elysia";
 
 // ─── Summary generator ──────────────────────────────────────────────────
 

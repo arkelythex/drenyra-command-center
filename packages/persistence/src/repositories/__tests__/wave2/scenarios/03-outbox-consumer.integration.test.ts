@@ -11,12 +11,12 @@
  *   PAYLOAD_CONFLICT si mismo message_id con hash distinto
  */
 
-import { describe, expect, it } from "vitest";
-import { sql } from "drizzle-orm";
 import { withTransaction } from "@drenyra/test-utils/database";
-import { createTenantFixture } from "../fixtures/tenants";
+import { sql } from "drizzle-orm";
+import { describe, expect, it } from "vitest";
 import { createFiscalOperationFixture } from "../fixtures/fiscal-operations";
 import { createMessageFixture } from "../fixtures/messages";
+import { createTenantFixture } from "../fixtures/tenants";
 import { TableStateReader } from "../helpers/table-state-reader";
 
 const runIfDb = process.env.DATABASE_URL_TEST ? describe : describe.skip;

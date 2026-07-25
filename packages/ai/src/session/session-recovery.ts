@@ -5,7 +5,7 @@
  * @module ai/session/recovery
  */
 
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 import type { AgentRunStatus } from "./session.types";
 import type { SessionStore } from "./session-store";
 

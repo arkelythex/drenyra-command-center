@@ -110,9 +110,7 @@ function MessageAvatar({ isAssistant }: { isAssistant: boolean }) {
 			)}
 		>
 			{isAssistant ? (
-				<>
-					<Sparkles size={16} className="@md:w-5 @md:h-5 relative z-10" />
-				</>
+				<Sparkles size={16} className="@md:w-5 @md:h-5 relative z-10" />
 			) : (
 				<User size={16} className="@md:w-5 @md:h-5" />
 			)}

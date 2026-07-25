@@ -11,11 +11,11 @@
  * @module h02-pr1.1-auth-scope
  */
 
-import { describe, expect, it } from "vitest";
 import type {
 	AuthenticatedContext,
 	OrganizationMembership,
 } from "@drenyra/domain/scope";
+import { describe, expect, it } from "vitest";
 import { resolveTenantScope } from "../scope-resolver";
 
 // ============================================================

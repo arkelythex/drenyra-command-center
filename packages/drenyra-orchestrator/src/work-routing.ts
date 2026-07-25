@@ -5,7 +5,7 @@
  * forecasting for Drenyra development.
  */
 
-import type { ReviewWorkloadForecast, DeliveryStrategy } from "./types.ts";
+import type { DeliveryStrategy, ReviewWorkloadForecast } from "./types.ts";
 
 // ============================================================================
 // Workload Forecasting

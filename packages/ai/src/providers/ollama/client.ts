@@ -428,7 +428,7 @@ export class OllamaClient {
 		};
 
 		if (this.config.apiKey) {
-			headers["Authorization"] = `Bearer ${this.config.apiKey}`;
+			headers.Authorization = `Bearer ${this.config.apiKey}`;
 		}
 
 		return headers;

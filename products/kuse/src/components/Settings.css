@@ -15,7 +15,7 @@
 }
 
 .settings-header h2 {
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: "Instrument Serif", Georgia, serif;
   font-size: 1.5rem;
   font-weight: 400;
   color: var(--foreground);
@@ -55,7 +55,7 @@
 }
 
 .settings-section h3 {
-  font-family: 'Instrument Serif', Georgia, serif;
+  font-family: "Instrument Serif", Georgia, serif;
   font-size: 1.125rem;
   font-weight: 400;
   margin-bottom: 1.25rem;

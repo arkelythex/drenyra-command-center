@@ -75,7 +75,7 @@ export function usePersistedChat({
 
 			let localId = localThreadIdRef.current;
 			if (!localId) {
-				const title = text.length > 60 ? text.slice(0, 57) + "..." : text;
+				const title = text.length > 60 ? `${text.slice(0, 57)}...` : text;
 				const thread = store.createThread(title);
 				localId = thread.id;
 			}
@@ -96,7 +96,7 @@ export function usePersistedChat({
 			if (!brainId) {
 				setIsLoading(true);
 				try {
-					const title = text.length > 60 ? text.slice(0, 57) + "..." : text;
+					const title = text.length > 60 ? `${text.slice(0, 57)}...` : text;
 					const thread = await createBrainThread(
 						title,
 						linkedCaseId ?? undefined,

@@ -1,7 +1,7 @@
+import { randomUUID } from "node:crypto";
 import { AccountingPeriod } from "@drenyra/domain/accounting/accounting-period";
 import { db } from "@drenyra/persistence/client";
 import { accountingPeriods } from "@drenyra/persistence/schema";
-import { randomUUID } from "crypto";
 import { and, asc, desc, eq, ne, sql } from "drizzle-orm";
 export class PostgresAccountingPeriodRepository {
 	async save(period, companyId) {

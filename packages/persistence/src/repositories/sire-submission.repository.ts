@@ -13,8 +13,8 @@
  * - Retry mechanism (track failed submissions for retry)
  */
 
-import { and, count, desc, eq, gte, sql } from "drizzle-orm";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { and, count, desc, eq, gte, sql } from "drizzle-orm";
 import { db } from "../client";
 import { sireSubmissions } from "../schema";
 
@@ -114,11 +114,7 @@ export class SireSubmissionRepository {
 	 * Wave 4: Scope mandatory and first parameter. companyId filter prevents
 	 * cross-tenant mutation.
 	 */
-	async update(
-		scope: TenantScope,
-		id: string,
-		input: UpdateSubmissionInput,
-	) {
+	async update(scope: TenantScope, id: string, input: UpdateSubmissionInput) {
 		const result = await db
 			.update(sireSubmissions)
 			.set({

@@ -1,4 +1,4 @@
-import { createElement, type ReactNode } from "react";
+import type { FiscalRiskLevel } from "@drenyra/domain/drenyra";
 import {
 	AlertTriangle,
 	ArrowRight,
@@ -7,7 +7,7 @@ import {
 	ShieldAlert,
 	XCircle,
 } from "lucide-react";
-import type { FiscalRiskLevel } from "@drenyra/domain/drenyra";
+import { createElement, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 // ── Types ───────────────────────────────────────────────────────────────────────

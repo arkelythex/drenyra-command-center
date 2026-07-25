@@ -8,15 +8,15 @@
     {
       "title": "Request Rate",
       "type": "timeseries",
-      "targets": [
-        { "expr": "sum(rate(civictech_http_requests_total[5m]))" }
-      ]
+      "targets": [{ "expr": "sum(rate(civictech_http_requests_total[5m]))" }]
     },
     {
       "title": "Error Rate (5xx)",
       "type": "timeseries",
       "targets": [
-        { "expr": "sum(rate(civictech_http_requests_total{status=~\"5..\"}[5m])) / sum(rate(civictech_http_requests_total[5m]))" }
+        {
+          "expr": "sum(rate(civictech_http_requests_total{status=~\"5..\"}[5m])) / sum(rate(civictech_http_requests_total[5m]))"
+        }
       ]
     },
     {
@@ -39,7 +39,9 @@
       "title": "Workflow transitions",
       "type": "timeseries",
       "targets": [
-        { "expr": "sum(rate(civictech_report_transition_total[5m])) by (from_status, to_status, action)" }
+        {
+          "expr": "sum(rate(civictech_report_transition_total[5m])) by (from_status, to_status, action)"
+        }
       ]
     },
     {
@@ -52,22 +54,24 @@
     {
       "title": "Ingest run rate",
       "type": "timeseries",
-      "targets": [
-        { "expr": "sum(rate(civictech_ingest_runs_total[30m])) by (result)" }
-      ]
+      "targets": [{ "expr": "sum(rate(civictech_ingest_runs_total[30m])) by (result)" }]
     },
     {
       "title": "Ingest latency p95",
       "type": "timeseries",
       "targets": [
-        { "expr": "histogram_quantile(0.95, sum(rate(civictech_ingest_duration_seconds_bucket[30m])) by (le, result))" }
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(civictech_ingest_duration_seconds_bucket[30m])) by (le, result))"
+        }
       ]
     },
     {
       "title": "Resolution latency p95",
       "type": "timeseries",
       "targets": [
-        { "expr": "histogram_quantile(0.95, sum(rate(civictech_report_resolution_seconds_bucket[1h])) by (le, outcome))" }
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(civictech_report_resolution_seconds_bucket[1h])) by (le, outcome))"
+        }
       ]
     }
   ]

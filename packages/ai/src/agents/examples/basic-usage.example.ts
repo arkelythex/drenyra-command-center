@@ -64,7 +64,7 @@ export async function example1ProcessInvoiceImage() {
 
 			if (result.xmlContent) {
 				console.log("\n📄 XML Generated (first 200 chars):");
-				console.log(result.xmlContent.substring(0, 200) + "...");
+				console.log(`${result.xmlContent.substring(0, 200)}...`);
 			}
 		} else if (result.status === "manual_review") {
 			console.log("⚠️ Invoice requires manual review");
@@ -293,7 +293,7 @@ export async function runExamples() {
 	// await example3BatchProcessing();
 	// await example4GetStats();
 
-	console.log("\n" + "=".repeat(60));
+	console.log(`\n${"=".repeat(60)}`);
 	console.log("Examples completed!");
 	console.log("=".repeat(60));
 }

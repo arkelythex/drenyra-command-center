@@ -136,6 +136,6 @@ describe("FiscalPipeline — constant mappings", () => {
 	});
 
 	it("FISCAL_ACTION_STATUS_COLORS follows REJECTED as danger", () => {
-		expect(FISCAL_ACTION_STATUS_COLORS["REJECTED"]).toBe("var(--color-danger)");
+		expect(FISCAL_ACTION_STATUS_COLORS.REJECTED).toBe("var(--color-danger)");
 	});
 });

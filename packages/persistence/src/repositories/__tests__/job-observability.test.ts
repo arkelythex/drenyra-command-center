@@ -15,16 +15,14 @@
  *   - Ninguna dependencia productiva importa @drenyra/test-utils
  */
 
-import { describe, expect, it } from "vitest";
 import {
-	NoopJobExecutionMetrics,
-	NoopLogger,
 	type JobLogContext,
 	type JobMetricLabels,
+	NoopJobExecutionMetrics,
+	NoopLogger,
 	type RepairMetricLabels,
-	type JobExecutionMetrics,
 } from "@drenyra/persistence";
-import { safeCall } from "../../observability-safe";
+import { describe, expect, it } from "vitest";
 
 // ═══════════════════════════════════════════════════════════════════════════
 // 1. Noop nunca altera el flujo
@@ -88,7 +86,7 @@ describe("Labels — baja cardinalidad", () => {
 
 describe("Observabilidad — excepciones aisladas", () => {
 	it("un adapter que lanza excepciones no afecta el resultado", () => {
-		const throwing: NoopJobExecutionMetrics = new NoopJobExecutionMetrics();
+		const _throwing: NoopJobExecutionMetrics = new NoopJobExecutionMetrics();
 		// safeCall envuelve en try/catch
 		const { safeCall } = require("../../observability-safe");
 
@@ -158,7 +156,7 @@ describe("Boundaries — imports de observabilidad", () => {
 // ═══════════════════════════════════════════════════════════════════════════
 
 /** Mock Prometheus register que cuenta las inc llamadas */
-function createMockRegister() {
+function _createMockRegister() {
 	const counts: Record<string, number> = {};
 	const calls: Array<{ name: string; labelNames?: string[] }> = [];
 

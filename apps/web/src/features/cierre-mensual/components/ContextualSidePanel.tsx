@@ -1,6 +1,6 @@
-import { useState } from "react";
 import type { CierreMensual } from "@drenyra/domain";
 import { Activity, Bot, FileText } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 type TabId = "detalle" | "agentes" | "auditoria";

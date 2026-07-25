@@ -172,7 +172,7 @@ export function sanitizeDateRange(
 	const start = startDate instanceof Date ? startDate : new Date(startDate);
 	const end = endDate instanceof Date ? endDate : new Date(endDate);
 
-	if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+	if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
 		return {
 			isValid: false,
 			start: null,
@@ -251,13 +251,13 @@ export function sanitizePagination(
 ): { limit: number; offset: number; isValid: boolean } {
 	const parsedLimit = Math.min(
 		Math.max(
-			parseInt(String(limit)) || SECURITY_CONSTANTS.DEFAULT_QUERY_LIMIT,
+			parseInt(String(limit), 10) || SECURITY_CONSTANTS.DEFAULT_QUERY_LIMIT,
 			1,
 		),
 		SECURITY_CONSTANTS.MAX_QUERY_LIMIT,
 	);
 
-	const parsedOffset = Math.max(parseInt(String(offset)) || 0, 0);
+	const parsedOffset = Math.max(parseInt(String(offset), 10) || 0, 0);
 
 	return {
 		limit: parsedLimit,

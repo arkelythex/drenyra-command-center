@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { AgentTimeline } from "./AgentTimeline";
 import type { MissionTimelineEvent } from "../mission.types";
+import { AgentTimeline } from "./AgentTimeline";
 
 const MOCK_EVENTS: MissionTimelineEvent[] = [
 	{

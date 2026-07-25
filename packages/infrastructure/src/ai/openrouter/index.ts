@@ -549,7 +549,7 @@ export class OpenRouterService {
 		tools?: OpenRouterTool[],
 	): Promise<OpenRouterResponse> {
 		// Get optimal models for this agent
-		const models = AGENT_MODEL_MAP[agentId] || AGENT_MODEL_MAP["default"];
+		const models = AGENT_MODEL_MAP[agentId] || AGENT_MODEL_MAP.default;
 
 		const request: OpenRouterRequest = {
 			model: this.config.enableAutoRouting ? "openrouter/auto" : models[0],

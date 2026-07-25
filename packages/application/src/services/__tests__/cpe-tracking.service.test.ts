@@ -124,12 +124,7 @@ describe("CpeTrackingService", () => {
 			mockRepo.findById.mockResolvedValue(cpeLog);
 
 			// First submission works
-			await service.submitCPE(
-				mockScope,
-				mockCpeLogId,
-				"TICKET-001",
-				"hash1",
-			);
+			await service.submitCPE(mockScope, mockCpeLogId, "TICKET-001", "hash1");
 
 			// Reset mock for second attempt — the domain entity is immutable
 			// so the original CPELog is still "pendiente". The second submit

@@ -35,7 +35,7 @@ function zodToOpenRouterSchema(schema) {
 	};
 }
 function inferJsonType(zodType) {
-	if (!zodType || !zodType._def) return "string";
+	if (!zodType?._def) return "string";
 	const typeName = zodType._def.typeName;
 	if (typeName === "ZodOptional" || typeName === "ZodNullable") {
 		return inferJsonType(asZodIntrospectable(zodType._def.innerType));

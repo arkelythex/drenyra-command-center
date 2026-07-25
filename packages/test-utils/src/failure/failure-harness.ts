@@ -14,11 +14,11 @@
  */
 
 import type {
-	FailureStage,
 	FailureContext,
 	FailureProbe,
+	FailureStage,
 } from "@drenyra/persistence";
-import { AsyncBarrier } from "./async-barrier";
+import type { AsyncBarrier } from "./async-barrier";
 
 // ─── SimulatedProcessCrash ──────────────────────────────────────────────────
 
