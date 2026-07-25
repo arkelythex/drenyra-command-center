@@ -1,5 +1,5 @@
 import { db } from "@drenyra/persistence/client";
-import { asc, desc, eq } from "@drenyra/persistence/query";
+import { and, asc, desc, eq } from "@drenyra/persistence/query";
 import { authUserCompanies, companies } from "@drenyra/persistence/schema";
 
 /**
@@ -76,7 +76,12 @@ export async function listUserCompanyMemberships(
 		})
 		.from(authUserCompanies)
 		.innerJoin(companies, eq(authUserCompanies.companyId, companies.id))
-		.where(eq(authUserCompanies.userId, userId))
+		.where(
+			and(
+				eq(authUserCompanies.userId, userId),
+				eq(authUserCompanies.membershipStatus, "active"),
+			),
+		)
 		.orderBy(desc(authUserCompanies.isDefault), asc(companies.businessName));
 
 	return rows.map((row) => ({

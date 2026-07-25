@@ -8,6 +8,7 @@
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
+    "./scope": "./src/scope/index.ts",
     "./entities/*": "./src/entities/*.ts",
     "./entities/organization": "./src/entities/organization/index.ts",
     "./entities/thread": "./src/entities/thread/index.ts",
