@@ -190,7 +190,7 @@
     "path-to-regexp": "8.4.2",
     "picomatch": "4.0.5",
     "tailwindcss": "^4.3.3",
-    "undici": "8.7.0",
+    "undici": "8.9.0",
     "ws": "8.21.1",
     "zod": "^4.4.3"
   },
@@ -232,7 +232,7 @@
     "lint-staged": "^17.1.0",
     "madge": "^8.0.0",
     "marked": "^18.0.7",
-    "react-dom": "19.2.7",
+    "react-dom": "19.2.8",
     "turbo": "^2.10.5",
     "typescript": "~7.0.2",
     "vite": "^8.0.16"
