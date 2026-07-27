@@ -1,7 +1,8 @@
 # SDD Audit — Estado actual
 
-**Última actualización:** 2026-07-24
-**Total SDDs registrados:** 79
+**Última actualización:** 2026-07-25 (audit in progress — 9 new areas being explored)
+**Total SDDs registrados:** 79 (estimado final: 216–316 tras completar las 9 áreas)
+**Estado:** 🟡 En expansión — 3 nuevas secciones agregadas al Capability Map
 **Clasificación por dominio y madurez**
 
 ---
@@ -21,6 +22,8 @@
 ---
 
 ## Foundation & Cross-cutting (17 SDDs)
+
+> GAPS: CAP-FOUND-02 (Auth/RBAC) sin SDD — 52 API files existentes sin documentar. CAP-FOUND-08 (Security baseline) sin SDD — riesgo de compliance. **2 SDDs faltantes.**
 
 | SDD                                                 | Estado         | L-Nivel | Dominio   |
 | --------------------------------------------------- | -------------- | ------- | --------- |
@@ -43,6 +46,8 @@
 | `monorepo-quality-baseline-and-balance-consistency` | ○ draft        | L1      | Quality   |
 
 ## Agent Runtime & AI (8 SDDs)
+
+> GAPS: CAP-AGENT-06 (AI Safety) 🟡 partial. CAP-AGENT-08 (Agent telemetry) 🟡 partial. **2 SDDs para completar.**
 
 | SDD                               | Estado  | L-Nivel | Dominio   |
 | --------------------------------- | ------- | ------- | --------- |
@@ -91,6 +96,8 @@
 | `drenyra-c1-css-modernization`          | ✅ applied            | L3      |
 
 ## Close, Accounting & Financial (5 SDDs)
+
+> GAPS: CAP-CLOSE-02 (Bank reconciliation) ○ draft. Accountant-operating-system ⛔ blocked. **2 SDDs para destrabar/completar.**
 
 | SDD                                   | Estado     | L-Nivel |
 | ------------------------------------- | ---------- | ------- |
@@ -156,9 +163,69 @@
 
 ---
 
+## Áreas nuevas añadidas al Capability Map
+
+### Treasury & Banking (11 capabilities)
+
+- CAP-TREAS-01 a 11: de 4→11 capabilities expandidas
+- Estado: 0 SDDs formales, código existente en 🟡 partial
+- SDDs estimados: 15–25
+
+### Invoicing, Purchases & AP (13 capabilities) — NUEVA
+
+- CAP-AP-01 a 13: sección completamente nueva
+- Estado: código existente parcial, 0 SDDs formales
+- SDDs estimados: 15–25
+
+### Reporting & Financial Statements (15 capabilities) — NUEVA
+
+- CAP-RPT-01 a 15: sección completamente nueva
+- Estado: baseline reporting existe, no es "final accounting authority"
+- SDDs estimados: 12–20
+
+### Risk, Audit & Internal Controls (13 capabilities) — NUEVA
+
+- CAP-RISK-01 a 13: sección completamente nueva
+- Estado: código existente parcial en compliance, audit-trail, control-tower
+- SDDs estimados: 18–30
+
+### Studio & Platform (expandido)
+
+- CAP-STUD-01 a 06: 3 capabilities sin SDD (custom skills, policy studio, admin)
+- SDDs estimados: 15–25
+
+### APIs, CLI, SDK & Developer Platform (nuevo por detallar)
+
+- SDDs estimados: 15–25
+
+### Security, Privacy & Compliance (sección expandida)
+
+- CAP-FOUND-02 y 08 sin SDD — riesgo crítico de compliance
+- SDDs estimados: 20–35
+
+### UX, Design System & Accessibility (expandido)
+
+- 3 capabilities nuevas (component library, onboarding, print layouts)
+- SDDs estimados: 15–25
+
+### Observability, Operations & Support
+
+- CAP-FOUND-07 ✅ existente, pero faltan alerting, incident response, support
+- SDDs estimados: 12–20
+
+## Roadmap total estimado
+
+| Estado                     | SDDs        |
+| -------------------------- | ----------- |
+| Actuales registrados       | 79          |
+| Nuevos estimados (9 áreas) | 137–230     |
+| **Total potencial**        | **216–316** |
+
 ## Próximas acciones
 
-1. Mover los 20 SDDs en L1 a agenda de priorización contra el Capability Map
-2. Los 34 SDDs en L3 necesitan verificación post-implementación (L4)
-3. Los 4 SDDs en L4 son referencia canónica — mantener actualizados
-4. Worktrees legacy (`feat-ux-sdd-program`, `codex-command-center`) — limpiar
+1. 9 exploraciones en curso — esperar resultados para ajustar estimaciones
+2. Priorizar áreas críticas: Security (compliance risk) → Treasury → Invoicing/AP
+3. Mover los 20 SDDs en L1 a agenda de priorización contra el Capability Map
+4. Los 34 SDDs en L3 necesitan verificación post-implementación (L4)
+5. Los 6 SDDs en L4 son referencia canónica — mantener actualizados
+6. Worktrees legacy (`feat-ux-sdd-program`, `codex-command-center`) — limpiar
