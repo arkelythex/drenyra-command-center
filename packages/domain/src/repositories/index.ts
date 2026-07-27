@@ -16,6 +16,8 @@ export type { AISettingsRepository } from "./ai-settings.repository";
 export type { BankAccountRepository } from "./bank-account.repository";
 export type { BankReconciliationRepository } from "./bank-reconciliation.repository";
 export type { BankTransactionRepository } from "./bank-transaction.repository";
+export type { ReconciliationBatchRepository } from "./reconciliation-batch.repository";
+export type { ReconciliationRuleRepository } from "./reconciliation-rule.repository";
 export type { ClientRepository } from "./client.repository";
 export type { CloseChecklistRepository } from "./close-checklist.repository";
 export type {
