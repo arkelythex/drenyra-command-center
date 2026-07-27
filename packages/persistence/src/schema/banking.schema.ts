@@ -8,6 +8,7 @@ import {
 	boolean,
 	date,
 	decimal,
+	integer,
 	pgTable,
 	text,
 	timestamp,
@@ -48,6 +49,10 @@ export const bankAccounts = pgTable("bank_accounts", {
 	isActive: boolean("is_active").default(true),
 	isDefault: boolean("is_default").default(false),
 
+	// Provider
+	providerId: uuid("provider_id"),
+	lastSyncAt: timestamp("last_sync_at"),
+
 	// Metadata
 	createdAt: timestamp("created_at").defaultNow(),
 	updatedAt: timestamp("updated_at").defaultNow(),
@@ -80,6 +85,10 @@ export const bankTransactions = pgTable("bank_transactions", {
 	category: varchar("category", { length: 50 }),
 	tags: text("tags"), // JSON array
 
+	// Source tracking
+	source: varchar("source", { length: 20 }).default("MANUAL"), // MANUAL, CSV_IMPORT, API_FEED
+	externalId: varchar("external_id", { length: 100 }),
+
 	// Reconciliation
 	isReconciled: boolean("is_reconciled").default(false),
 	reconciledAt: timestamp("reconciled_at"),
@@ -89,6 +98,7 @@ export const bankTransactions = pgTable("bank_transactions", {
 	invoiceId: uuid("invoice_id"),
 	billId: uuid("bill_id"),
 	paymentId: uuid("payment_id"),
+	reconciliationBatchId: uuid("reconciliation_batch_id"),
 
 	// Metadata
 	createdAt: timestamp("created_at").defaultNow(),
@@ -127,6 +137,15 @@ export const bankReconciliations = pgTable("bank_reconciliations", {
 	status: varchar("status", { length: 20 }).default("IN_PROGRESS"), // IN_PROGRESS, COMPLETED
 	difference: decimal("difference", { precision: 19, scale: 4 }),
 	notes: text("notes"),
+
+	// Batch tracking (Phase 0)
+	batchReference: varchar("batch_reference", { length: 50 }),
+	mode: varchar("mode", { length: 10 }).default("MANUAL"), // MANUAL, AUTO
+	matchedCount: integer("matched_count").default(0),
+	unmatchedCount: integer("unmatched_count").default(0),
+	discrepancyAmount: decimal("discrepancy_amount", { precision: 19, scale: 4 }),
+	closedAt: timestamp("closed_at"),
+	closedBy: uuid("closed_by"),
 
 	// Metadata
 	createdAt: timestamp("created_at").defaultNow(),

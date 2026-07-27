@@ -27,9 +27,21 @@ export {
 	type ReconciliationStatus,
 } from "./BankReconciliation";
 export { BankTransaction, type BankTransactionProps } from "./BankTransaction";
+export type { TransactionSource } from "./BankTransaction";
+export {
+	ReconciliationBatch,
+	type ReconciliationBatchProps,
+	type ReconciliationBatchStatus,
+	type ReconciliationMode,
+} from "./ReconciliationBatch";
+export {
+	ReconciliationRule,
+	type ReconciliationRuleConditions,
+	type ReconciliationRuleProps,
+	type ReconciliationRuleType,
+} from "./ReconciliationRule";
 export {
 	CreditNote,
-	type CreditNotePrimitiveData,
 	type CreditNoteProps,
 	type CreditNoteStatus,
 	type CreditNoteType,

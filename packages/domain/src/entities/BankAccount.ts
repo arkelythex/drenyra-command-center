@@ -88,6 +88,8 @@ export interface BankAccountProps {
 	currentBalance: Money;
 	cci?: string; // Código de Cuenta Interbancaria (20 digits)
 	swiftCode?: string;
+	providerId?: string | null; // External bank provider reference
+	lastSyncAt?: Date | null; // Last provider sync timestamp
 	isActive: boolean;
 	notes?: string;
 	createdAt: Date;
@@ -324,6 +326,34 @@ export class BankAccount {
 	}
 
 	/**
+	 * Link this bank account to an external provider.
+	 *
+	 * @param providerId - The UUID of the BankProvider to link.
+	 * @returns A new BankAccount with the provider reference.
+	 */
+	linkProvider(providerId: string): BankAccount {
+		return new BankAccount({
+			...this.props,
+			providerId,
+			updatedAt: new Date(),
+		});
+	}
+
+	/**
+	 * Mark the bank account as having been synced with its provider.
+	 * Updates lastSyncAt to the current timestamp.
+	 *
+	 * @returns A new BankAccount with updated sync timestamp.
+	 */
+	markSynced(): BankAccount {
+		return new BankAccount({
+			...this.props,
+			lastSyncAt: new Date(),
+			updatedAt: new Date(),
+		});
+	}
+
+	/**
 	 * Get available balance (for detracciones, this may differ from current balance)
 	 */
 	getAvailableBalance(): Money {
@@ -389,6 +419,14 @@ export class BankAccount {
 		return this.props.isActive;
 	}
 
+	get providerId(): string | null {
+		return this.props.providerId ?? null;
+	}
+
+	get lastSyncAt(): Date | null {
+		return this.props.lastSyncAt ?? null;
+	}
+
 	get notes(): string | undefined {
 		return this.props.notes;
 	}
@@ -417,6 +455,8 @@ export class BankAccount {
 			currentBalance: this.props.currentBalance.toJSON(),
 			cci: this.props.cci,
 			swiftCode: this.props.swiftCode,
+			providerId: this.props.providerId ?? null,
+			lastSyncAt: this.props.lastSyncAt?.toISOString() ?? null,
 			isActive: this.props.isActive,
 			notes: this.props.notes,
 			createdAt: this.props.createdAt.toISOString(),

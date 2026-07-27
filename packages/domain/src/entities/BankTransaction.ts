@@ -31,6 +31,16 @@ export type BankTransactionType =
 	| "OTHER"; // Otro
 
 /**
+ * Source of a bank transaction.
+ *
+ * @example
+ * ```ts
+ * const s: TransactionSource = "API_FEED";
+ * ```
+ */
+export type TransactionSource = "MANUAL" | "CSV_IMPORT" | "API_FEED";
+
+/**
  * Supported currencies for bank transactions.
  *
  * @example
@@ -67,6 +77,9 @@ export interface BankTransactionProps {
 	type: BankTransactionType;
 	amount: Money;
 	balanceAfter?: Money;
+	source?: TransactionSource;
+	externalId?: string | null;
+	reconciliationBatchId?: string | null;
 	isReconciled: boolean;
 	reconciledAt?: Date;
 	reconciliationId?: number;
@@ -115,6 +128,8 @@ export class BankTransaction {
 		amount: Money;
 		reference?: string;
 		balanceAfter?: Money;
+		source?: TransactionSource;
+		externalId?: string | null;
 		importBatch?: string;
 	}): BankTransaction {
 		const now = new Date();
@@ -128,6 +143,9 @@ export class BankTransaction {
 			type: params.type,
 			amount: params.amount,
 			balanceAfter: params.balanceAfter,
+			source: params.source ?? "MANUAL",
+			externalId: params.externalId ?? null,
+			reconciliationBatchId: null,
 			isReconciled: false,
 			importBatch: params.importBatch,
 			createdAt: now,
@@ -201,6 +219,40 @@ export class BankTransaction {
 			reconciledAt: undefined,
 			reconciliationId: undefined,
 			journalEntryId: undefined,
+			updatedAt: new Date(),
+		});
+	}
+
+	/**
+	 * Assign this transaction to a reconciliation batch.
+	 *
+	 * @param batchId - The UUID of the ReconciliationBatch to assign to.
+	 * @returns A new BankTransaction with the batch assignment.
+	 */
+	assignToBatch(batchId: string): BankTransaction {
+		return new BankTransaction({
+			...this.props,
+			reconciliationBatchId: batchId,
+			updatedAt: new Date(),
+		});
+	}
+
+	/**
+	 * Mark as reconciled with batch awareness.
+	 *
+	 * If a reconciliationBatchId is set, the reconciliation is recorded
+	 * within the context of that batch.
+	 */
+	markReconciled(reconciliationId?: number): BankTransaction {
+		if (this.props.isReconciled) {
+			return this; // Idempotent — already reconciled
+		}
+
+		return new BankTransaction({
+			...this.props,
+			isReconciled: true,
+			reconciledAt: new Date(),
+			reconciliationId: reconciliationId ?? this.props.reconciliationId,
 			updatedAt: new Date(),
 		});
 	}
@@ -293,6 +345,18 @@ export class BankTransaction {
 		return this.props.journalEntryId;
 	}
 
+	get source(): TransactionSource {
+		return this.props.source ?? "MANUAL";
+	}
+
+	get externalId(): string | null {
+		return this.props.externalId ?? null;
+	}
+
+	get reconciliationBatchId(): string | null {
+		return this.props.reconciliationBatchId ?? null;
+	}
+
 	get importBatch(): string | undefined {
 		return this.props.importBatch;
 	}
@@ -318,6 +382,9 @@ export class BankTransaction {
 			type: this.props.type,
 			amount: this.props.amount.toJSON(),
 			balanceAfter: this.props.balanceAfter?.toJSON(),
+			source: this.props.source ?? "MANUAL",
+			externalId: this.props.externalId ?? null,
+			reconciliationBatchId: this.props.reconciliationBatchId ?? null,
 			isReconciled: this.props.isReconciled,
 			reconciledAt: this.props.reconciledAt?.toISOString(),
 			reconciliationId: this.props.reconciliationId,
