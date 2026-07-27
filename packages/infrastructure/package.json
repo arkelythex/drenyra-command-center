@@ -93,7 +93,8 @@
     "@drenyra/application": "workspace:*",
     "@drenyra/domain": "workspace:*",
     "@drenyra/persistence": "workspace:*",
-    "@drenyra/shared": "workspace:*"
+    "@drenyra/shared": "workspace:*",
+    "@drenyra/security": "workspace:*"
   },
   "devDependencies": {
     "@types/pg": "^8.16.0",

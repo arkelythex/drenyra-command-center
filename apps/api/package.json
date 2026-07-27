@@ -67,7 +67,8 @@
     "@drenyra/domain": "workspace:*",
     "@drenyra/infrastructure": "workspace:*",
     "@drenyra/pi": "workspace:*",
-    "@drenyra/shared": "workspace:*"
+    "@drenyra/shared": "workspace:*",
+    "@drenyra/security": "workspace:*"
   },
   "devDependencies": {
     "@types/archiver": "^8.0.0",
