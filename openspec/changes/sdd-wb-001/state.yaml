@@ -1,0 +1,35 @@
+change_id: sdd-wb-001
+status: applying
+phase: apply
+execution_mode: auto
+artifact_store: openspec
+delivery_strategy: auto-forecast
+review_budget_lines: 400
+strict_tdd: true
+created_at: 2026-07-27
+updated_at: 2026-07-27
+next_recommended: verify
+applied_prs:
+  PR1: domain types (55 tests, complete)
+  PR2: workspace store + contexts (complete)
+  PR3: sidebar workspace section (complete)
+  PR4: top bar + company/period/intent switchers (complete)
+  PR5: command palette + registry (20 tests, complete)
+  PR6: dynamic pane system (Pane, ResizeHandle, PaneContainer) (complete)
+  PR7: density CSS vars + keyboard model (complete)
+  PR8: workspace route + shell integration (complete)
+artifacts:
+  proposal: proposal.md
+  spec: spec.md
+  design: design.md
+  tasks: tasks.md
+  source:
+    domain_types: packages/domain/src/workbench/
+    workspace_store: apps/web/src/stores/workspace.store.ts
+    contexts: apps/web/src/contexts/
+    workbench_components: apps/web/src/components/workbench/
+    sidebar: apps/web/src/components/agentic-shell/AgenticSidebar/
+    layout: apps/web/src/components/agentic-shell/AgenticLayout/
+    command_registry: apps/web/src/lib/commands/
+    hook: apps/web/src/hooks/useWorkspaceKeyboard.ts
+    route: apps/web/src/routes/workspace.$companyId.$year.$month.$intent.tsx
