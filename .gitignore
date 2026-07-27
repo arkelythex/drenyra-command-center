@@ -70,3 +70,7 @@ duration
 testsprite_tests/
 # Cross-stack fiscal contracts (generated)
 /contracts/
+
+# Tauri build artifacts
+apps/web/src-tauri/target/
+apps/web/src-tauri/gen/
