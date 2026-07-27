@@ -4,11 +4,19 @@
  * @module journal-entries/application
  */
 
-import { PostgresJournalEntryRepository } from "@drenyra/persistence";
+import {
+	PostgresAccountingPeriodRepository,
+	PostgresJournalEntryRepository,
+} from "@drenyra/persistence";
 import { eq } from "drizzle-orm";
 import { db, schema } from "../../../lib/db";
 
 export const journalRepository = new PostgresJournalEntryRepository();
+
+/**
+ * Accounting period repository for period validation when mayorizando.
+ */
+export const periodRepository = new PostgresAccountingPeriodRepository();
 
 /**
  * Resolve organizationId (numeric) from a company UUID.

@@ -5,7 +5,7 @@
  */
 
 import { UpdateJournalEntryStatusUseCase } from "@drenyra/application/use-cases/journal";
-import { journalRepository } from "../_helpers";
+import { journalRepository, periodRepository } from "../_helpers";
 
 export type JournalEntryStatus = "mayorizado" | "declarado";
 
@@ -23,7 +23,10 @@ export async function updateJournalEntryStatus(
 	status: JournalEntryStatus,
 	actorId = "system",
 ) {
-	const useCase = new UpdateJournalEntryStatusUseCase(journalRepository);
+	const useCase = new UpdateJournalEntryStatusUseCase(
+		journalRepository,
+		periodRepository,
+	);
 	const entry = await useCase.execute(id, status, actorId);
 	return entry.toJSON();
 }
