@@ -8,6 +8,9 @@
  * @module @drenyra/pi
  */
 
+// ─── Legacy (temporary) ───────────────────────────
+export { QueueManager, queueManager } from "./legacy/queue-manager";
+
 // ─── Agents module ──────────────────────────────
 export * from "./agents";
 export * from "./fiscal-agentic-ledger";
@@ -17,6 +20,18 @@ export {
 } from "./harness/handlers/defaults";
 // ─── Harness — Delegation, Approval, Execution ─────────────────────────
 export { createDrenyraHarness, DrenyraHarness } from "./harness/harness";
+
+// ─── Pi Adapter — Hexagonal AgentRuntimePort ────────────────────────────
+export type { AgentRuntimePort, SessionHandle, FiscalPrompt, RuntimeEvent, RuntimeEventType, CreateSessionRequest, ForkSessionRequest, Unsubscribe, ShadowComparison } from "@drenyra/pi-adapter";
+export { PiAgentRuntimeAdapter, LegacyMastraRuntimeAdapter, ShadowRunner } from "@drenyra/pi-adapter";
+
+// ─── Fiscal Agent Domain — Pure domain types ────────────────────────────
+export type { AgentDefinition, AgentCapability } from "@drenyra/fiscal-agent-domain/agent-definition";
+export type { DelegationPolicy, DelegationRule } from "@drenyra/fiscal-agent-domain/delegation-policy";
+export type { ApprovalPolicy, ApprovalRequirement, ApprovalLevel } from "@drenyra/fiscal-agent-domain/approval-policy";
+export { compareApprovalLevel, requiresHumanApproval, requiresGovernanceBundle } from "@drenyra/fiscal-agent-domain/approval-policy";
+export type { RiskTier, Jurisdiction } from "@drenyra/fiscal-agent-domain/risk-tier";
+export type { AgentContext } from "@drenyra/fiscal-agent-domain/agent-context";
 export type {
 	AgentHandler,
 	HarnessExecuteResponse,
