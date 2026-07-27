@@ -1,0 +1,23 @@
+{
+  "name": "@drenyra/fiscal-agent-domain",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Fiscal agent domain — pure types for agent definitions, context, delegation policy, risk tiers, and approval policies. Zero infrastructure dependencies.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./agent-definition": "./src/agent-definition.ts",
+    "./delegation-policy": "./src/delegation-policy.ts",
+    "./approval-policy": "./src/approval-policy.ts",
+    "./risk-tier": "./src/risk-tier.ts",
+    "./agent-context": "./src/agent-context.ts"
+  },
+  "scripts": {
+    "typecheck": "bash ../../scripts/tsc7.sh --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}

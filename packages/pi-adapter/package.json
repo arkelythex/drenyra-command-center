@@ -1,0 +1,26 @@
+{
+  "name": "@drenyra/pi-adapter",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Pi SDK adapter — hexagonal port wrapping @earendil-works/pi-coding-agent for Drenyra agent runtime",
+  "exports": {
+    ".": "./src/index.ts",
+    "./port": "./src/port.ts",
+    "./pi-adapter": "./src/pi-adapter.ts"
+  },
+  "scripts": {
+    "typecheck": "bash ../../scripts/tsc7.sh --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@drenyra/fiscal-agent-domain": "workspace:*"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}
