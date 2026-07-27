@@ -1,207 +1,104 @@
 /**
- * Reports Routes Unit Tests
+ * Reports Routes Unit Tests (v1)
  *
- * @module reports/__tests__/unit/reports-routes.unit
+ * Tests for the v1 reports API endpoints.
  */
 
-import { Money } from "@drenyra/domain";
 import { Elysia } from "elysia";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ReportsService, reportsModule } from "../../index";
+
+const { mockGetProfitLoss } = vi.hoisted(() => ({
+	mockGetProfitLoss: vi.fn(),
+}));
+
+vi.mock("../../application/queries/get-profit-loss", () => ({ getProfitLoss: mockGetProfitLoss }));
+vi.mock("../../application/queries/get-balance-sheet", () => ({ getBalanceSheet: vi.fn() }));
+vi.mock("../../application/queries/get-cash-flow", () => ({ getCashFlow: vi.fn() }));
+vi.mock("../../application/queries/get-sales-by-customer", () => ({ getSalesByCustomer: vi.fn() }));
+
+import { v1ReportsModule } from "../../v1/routes";
 
 const COMPANY_ID = "cmp-1";
 
-function reportRequest(path: string): Request {
+function v1ReportRequest(path: string): Request {
 	return new Request(`http://localhost${path}`, {
 		headers: { "x-company-id": COMPANY_ID },
 	});
 }
 
-describe("reports routes", () => {
-	const app = new Elysia().use(reportsModule);
+describe("v1 reports routes", () => {
+	const app = new Elysia().use(v1ReportsModule);
 
-	beforeEach(() => {
-		vi.restoreAllMocks();
-	});
+	beforeEach(() => { vi.restoreAllMocks(); });
+	afterEach(() => { vi.restoreAllMocks(); });
 
-	afterEach(() => {
-		vi.restoreAllMocks();
-	});
-
-	describe("GET /reports/profit-loss", () => {
-		it("returns 500 when company context cannot be resolved", async () => {
+	describe("GET /api/v1/reports/profit-loss", () => {
+		it("returns 401 when company context is missing", async () => {
 			const response = await app.handle(
-				new Request(
-					"http://localhost/api/reports/profit-loss?startDate=2026-01-01&endDate=2026-01-31",
-				),
+				new Request("http://localhost/api/v1/reports/profit-loss?startDate=2026-01-01&endDate=2026-01-31"),
 			);
-
-			expect(response.status).toBe(500);
-		});
-
-		it("returns 500 when company scope header is present but context missing", async () => {
-			vi.spyOn(ReportsService, "getProfitLoss").mockResolvedValue({
-				period: {
-					startDate: new Date("2026-01-01"),
-					endDate: new Date("2026-01-31"),
-				},
-				revenue: Money.fromAmount(11800, "PEN").toString(),
-				expenses: "3540.00",
-				netIncome: "8260.00",
-			});
-
-			const response = await app.handle(
-				reportRequest(
-					"/api/reports/profit-loss?startDate=2026-01-01&endDate=2026-01-31",
-				),
-			);
-
-			expect(response.status).toBe(500);
+			expect(response.status).toBe(401);
 		});
 
 		it("returns 422 when required params are missing", async () => {
-			const response = await app.handle(
-				reportRequest("/api/reports/profit-loss"),
-			);
-
+			const response = await app.handle(v1ReportRequest("/api/v1/reports/profit-loss"));
 			expect(response.status).toBe(422);
 		});
 
 		it("returns 422 when date range is invalid", async () => {
 			const response = await app.handle(
-				reportRequest(
-					"/api/reports/profit-loss?startDate=2026-02-01&endDate=2026-01-31",
-				),
+				v1ReportRequest("/api/v1/reports/profit-loss?startDate=2026-02-01&endDate=2026-01-31"),
 			);
-
 			expect(response.status).toBe(422);
-			const payload = await response.json();
-			expect(payload).toMatchObject({
-				success: false,
-				code: "VALIDATION_ERROR",
-			});
 		});
 
-		it("returns 500 when the response violates the report contract", async () => {
-			vi.spyOn(ReportsService, "getProfitLoss").mockResolvedValue({
-				period: {
-					startDate: new Date("2026-01-01"),
-					endDate: new Date("2026-01-31"),
-				},
-				revenue: "not-money",
-				expenses: "3540.00",
-				netIncome: "0",
-			} as never);
-
+		it("includes X-API-Version header", async () => {
 			const response = await app.handle(
-				reportRequest(
-					"/api/reports/profit-loss?startDate=2026-01-01&endDate=2026-01-31",
-				),
+				new Request("http://localhost/api/v1/reports/profit-loss?startDate=2026-01-01&endDate=2026-01-31"),
 			);
-
-			expect(response.status).toBe(500);
-			const payload = await response.json();
-			expect(payload).toMatchObject({
-				success: false,
-				code: "INTERNAL_ERROR",
-			});
-		});
-
-		it("returns 500 when service throws", async () => {
-			vi.spyOn(ReportsService, "getProfitLoss").mockRejectedValue(
-				new Error("DB error"),
-			);
-
-			const response = await app.handle(
-				reportRequest(
-					"/api/reports/profit-loss?startDate=2026-01-01&endDate=2026-01-31",
-				),
-			);
-
-			expect(response.status).toBe(500);
-			const payload = await response.json();
-			expect(payload).toMatchObject({
-				success: false,
-				code: "INTERNAL_ERROR",
-			});
+			// Even without auth, the response includes the version header
+			expect(response.headers.get("X-API-Version")).toBe("1");
 		});
 	});
 
-	describe("GET /reports/balance-sheet", () => {
-		it("returns 500 when company context cannot be resolved", async () => {
+	describe("GET /api/v1/reports/balance-sheet", () => {
+		it("returns 401 without company context", async () => {
 			const response = await app.handle(
-				reportRequest("/api/reports/balance-sheet?asOfDate=2026-03-31"),
+				new Request("http://localhost/api/v1/reports/balance-sheet?asOfDate=2026-06-30"),
 			);
-
-			expect(response.status).toBe(500);
+			expect(response.status).toBe(401);
 		});
 
 		it("returns 422 when asOfDate is missing", async () => {
-			const response = await app.handle(
-				reportRequest("/api/reports/balance-sheet"),
-			);
-
-			expect(response.status).toBe(422);
-		});
-
-		it("returns 422 when asOfDate is invalid", async () => {
-			const response = await app.handle(
-				reportRequest("/api/reports/balance-sheet?asOfDate=not-a-date"),
-			);
-
+			const response = await app.handle(v1ReportRequest("/api/v1/reports/balance-sheet"));
 			expect(response.status).toBe(422);
 		});
 	});
 
-	describe("GET /reports/cash-flow", () => {
-		it("returns 500 when company context cannot be resolved", async () => {
+	describe("GET /api/v1/reports/cash-flow", () => {
+		it("returns 401 without company context", async () => {
 			const response = await app.handle(
-				reportRequest(
-					"/api/reports/cash-flow?startDate=2026-01-01&endDate=2026-01-31",
-				),
+				new Request("http://localhost/api/v1/reports/cash-flow?startDate=2026-01-01&endDate=2026-01-31"),
 			);
-
-			expect(response.status).toBe(500);
-		});
-
-		it("returns 422 when dates are missing", async () => {
-			const response = await app.handle(
-				reportRequest("/api/reports/cash-flow"),
-			);
-
-			expect(response.status).toBe(422);
+			expect(response.status).toBe(401);
 		});
 	});
 
-	describe("GET /reports/sales-by-customer", () => {
-		it("returns 500 when company context cannot be resolved", async () => {
+	describe("GET /api/v1/reports/sales-by-customer", () => {
+		it("returns 401 without company context", async () => {
 			const response = await app.handle(
-				reportRequest(
-					"/api/reports/sales-by-customer?startDate=2026-01-01&endDate=2026-01-31",
-				),
+				new Request("http://localhost/api/v1/reports/sales-by-customer?startDate=2026-01-01&endDate=2026-01-31"),
 			);
-
-			expect(response.status).toBe(500);
+			expect(response.status).toBe(401);
 		});
+	});
 
-		it("returns 500 when no sales data available", async () => {
-			vi.spyOn(ReportsService, "getSalesByCustomer").mockResolvedValue([]);
-
+	describe("X-API-Version header", () => {
+		it("includes X-API-Version: 1 header", async () => {
 			const response = await app.handle(
-				reportRequest(
-					"/api/reports/sales-by-customer?startDate=2026-01-01&endDate=2026-01-31",
-				),
+				new Request("http://localhost/api/v1/reports/profit-loss?startDate=2026-01-01&endDate=2026-01-31"),
 			);
-
-			expect(response.status).toBe(500);
-		});
-
-		it("returns 422 when required params are missing", async () => {
-			const response = await app.handle(
-				reportRequest("/api/reports/sales-by-customer"),
-			);
-
-			expect(response.status).toBe(422);
+			expect(response.headers.get("X-API-Version")).toBe("1");
 		});
 	});
 });

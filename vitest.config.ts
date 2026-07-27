@@ -118,6 +118,10 @@ export default defineConfig({
 				find: "@drenyra/shared",
 				replacement: path.resolve(__dirname, "./packages/shared/src"),
 			},
+			{
+				find: "@drenyra/security",
+				replacement: path.resolve(__dirname, "./packages/security/src"),
+			},
 
 			{
 				find: "@drenyra/memory",

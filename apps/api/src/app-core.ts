@@ -21,6 +21,7 @@ import { automationStudioRoutes } from "./features/automation-studio";
 import { automationsRoutes } from "./features/automations";
 import { bankingRoutes } from "./features/banking";
 import { bankingProvidersRoutes } from "./features/banking-providers/api/routes";
+import { reportsModule } from "./features/reports";
 import { billRoutes, invoiceRoutes } from "./features/billing";
 import { cashflowRoutes } from "./features/cashflow/api/routes";
 import { clientCommsModule } from "./features/client-comms";
@@ -343,6 +344,7 @@ const baseApp = new Elysia()
 	.use(aiWorkersRoutes)
 	.use(bankingRoutes)
 	.use(bankingProvidersRoutes)
+	.use(reportsModule)
 	.use(customerRoutes)
 	.use(invoiceRoutes)
 	.use(billRoutes)
