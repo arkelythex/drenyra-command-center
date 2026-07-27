@@ -1,10 +1,12 @@
+import {
+	hasPlatformPermission,
+	RBAC_FEATURE_FLAGS,
+	type PlatformPermission,
+	type UnifiedRole,
+} from "@drenyra/security/rbac";
+
 /**
- * Allowed security operations that can be checked through RBAC.
- *
- * @example
- * ```ts
- * const op: SecurityOperation = 'audit:trail:read';
- * ```
+ * @deprecated Use `PlatformPermission` from `@drenyra/security/rbac` instead.
  */
 export type SecurityOperation =
 	| "ai:tool-permissions:manage"
@@ -27,12 +29,7 @@ export type SecurityOperation =
 	| "observability:memory:read";
 
 /**
- * Identity information required to evaluate RBAC rules for a request.
- *
- * @example
- * ```ts
- * const actor: SecurityActor = { userId: 'usr_1', role: 'admin', companyId: 'cmp_1' };
- * ```
+ * @deprecated Use `UnifiedActor` from `@drenyra/security/rbac` instead.
  */
 export interface SecurityActor {
 	userId: string;
@@ -41,6 +38,8 @@ export interface SecurityActor {
 	role: string;
 	companyId: string;
 }
+
+// ── Legacy role-permission map (fallback when unified disabled) ──
 
 const ROLE_PERMISSIONS: Record<string, ReadonlySet<SecurityOperation>> = {
 	superadmin: new Set([
@@ -157,6 +156,17 @@ const ROLE_PERMISSIONS: Record<string, ReadonlySet<SecurityOperation>> = {
 	]),
 };
 
+// ── Mapping helpers ──
+
+/**
+ * Maps a legacy SecurityOperation to a `platform:`-prefixed PlatformPermission.
+ */
+function mapLegacyOperation(operation: string): PlatformPermission {
+	return `platform:${operation}` as PlatformPermission;
+}
+
+// ── Header resolution (unchanged from original) ──
+
 function readHeader(headers: Record<string, unknown>, key: string): string {
 	const direct = headers[key];
 	if (typeof direct === "string" && direct.trim()) return direct.trim();
@@ -168,18 +178,10 @@ function readHeader(headers: Record<string, unknown>, key: string): string {
 }
 
 /**
- * Builds a normalized actor from request headers when the minimum identity context is present.
+ * @deprecated Use `resolveActor()` from `@drenyra/security/rbac` instead.
  *
- * @param headers - Request headers carrying `x-user-id`, `x-user-role`, and optional tenant scope.
- * @returns The resolved actor or `null` when mandatory headers are missing.
- * @example
- * ```ts
- * const actor = resolveSecurityActor({
- *   'x-user-id': 'usr_1',
- *   'x-user-role': 'admin',
- *   'x-company-id': 'cmp_1',
- * });
- * ```
+ * Builds a normalized actor from request headers when the minimum identity
+ * context is present.
  */
 export function resolveSecurityActor(
 	headers: Record<string, unknown>,
@@ -202,21 +204,23 @@ export function resolveSecurityActor(
 }
 
 /**
- * Checks whether a role can perform a given security operation.
+ * @deprecated Use `hasPlatformPermission()` from `@drenyra/security/rbac` instead.
  *
- * @param role - Caller role to evaluate.
- * @param operation - Operation requested by the caller.
- * @returns `true` when the role has permission for the operation.
- * @example
- * ```ts
- * const allowed = hasPermission('admin', 'audit:trail:export');
- * console.log(allowed); // true
- * ```
+ * Checks whether a role can perform a given security operation.
+ * When `UNIFIED_RBAC_ENABLED` is true, delegates to the unified guard.
  */
 export function hasPermission(
 	role: string,
 	operation: SecurityOperation,
 ): boolean {
+	if (RBAC_FEATURE_FLAGS.UNIFIED_RBAC_ENABLED) {
+		return hasPlatformPermission(
+			role.toLowerCase() as UnifiedRole,
+			mapLegacyOperation(operation),
+		);
+	}
+
+	// Fallback: original logic
 	const rolePermissions = ROLE_PERMISSIONS[role.toLowerCase()];
 	if (!rolePermissions) return false;
 	return rolePermissions.has(operation);

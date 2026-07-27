@@ -1,4 +1,5 @@
 import { resolveAuthenticatedCaller } from "./authenticated-caller";
+import type { UnifiedActor, UnifiedRole } from "@drenyra/security/rbac";
 
 export const SESSION_SECURITY_PROFILE = {
 	DEFAULT: "default",
@@ -22,6 +23,28 @@ export interface SessionContext {
 	legacyUserId: string | null;
 	role: string;
 	companyId: string;
+}
+
+/**
+ * Bridges the existing `SessionContext` to the unified `UnifiedActor` type
+ * used by `@drenyra/security/rbac`. This allows incremental adoption of the
+ * unified guard without breaking the 15+ call sites that depend on
+ * `SessionContext`.
+ *
+ * @example
+ * ```ts
+ * const actor = toUnifiedActor(sessionContext);
+ * requireBusinessPermission(actor, BusinessPermission.CompanyRead);
+ * ```
+ */
+export function toUnifiedActor(ctx: SessionContext): UnifiedActor {
+	return {
+		userId: ctx.userId,
+		authUserId: ctx.authUserId,
+		legacyUserId: ctx.legacyUserId,
+		role: ctx.role as UnifiedRole,
+		companyId: ctx.companyId,
+	};
 }
 
 /**

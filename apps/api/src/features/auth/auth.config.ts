@@ -8,6 +8,7 @@ import {
 import { type BetterAuthOptions, betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { customSession } from "better-auth/plugins/custom-session";
+import { mfaPlugin } from "@drenyra/security";
 import { enrichSessionUserWithCompanyContext } from "./handlers/session-company-context";
 import { oauthAuditHooks } from "./lib/oauth-audit-hooks";
 import { resolveSocialProvidersFromEnv } from "./lib/resolve-social-providers";
@@ -43,23 +44,6 @@ import { resolveTrustedOriginsFromEnv } from "./lib/auth-trusted-origins";
  *
  * @module auth/config
  * @constant
- *
- * @throws {ConfigurationError} If BETTER_AUTH_SECRET is missing or too short
- * @throws {ConfigurationError} If database connection fails
- *
- * @example
- * ```ts
- * // Used by auth handlers to process requests
- * import { auth } from './auth.config';
- *
- * const loginRequest = new Request('http://localhost:3000/api/auth/sign-in/email', {
- *   method: 'POST',
- *   body: JSON.stringify({ email: 'user@example.com', password: 'pass' })
- * });
- *
- * const response = await auth.handler(loginRequest);
- * console.log(response.status); // 200 for success, 401 for invalid credentials
- * ```
  */
 const authOptions = {
 	secret: process.env.BETTER_AUTH_SECRET,
@@ -88,6 +72,21 @@ const authOptions = {
 				required: false,
 				defaultValue: "",
 			},
+			mfa_method: {
+				type: "string",
+				required: false,
+				defaultValue: "",
+			},
+			totp_secret: {
+				type: "string",
+				required: false,
+				defaultValue: "",
+			},
+			recovery_codes: {
+				type: "string",
+				required: false,
+				defaultValue: "[]",
+			},
 		},
 	},
 } satisfies BetterAuthOptions;
@@ -95,6 +94,7 @@ const authOptions = {
 export const auth = betterAuth({
 	...authOptions,
 	plugins: [
+		mfaPlugin({ enforced: false }),
 		customSession(
 			async ({ user, session }) => ({
 				session,

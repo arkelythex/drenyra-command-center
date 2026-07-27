@@ -4,12 +4,8 @@
  * Central map of route patterns to required permissions.
  * Applied as a global onBeforeHandle in app-core.ts.
  *
- * Each entry maps a URL pattern to one or more required permissions.
- * The guard checks if the authenticated user's role has at least one
- * of the listed permissions.
- *
- * Order: more specific routes FIRST, wildcards LAST.
- * A route matches the FIRST pattern in the list, not the most specific.
+ * Permission type references now also accept `BusinessPermission` from the
+ * unified module for forward compatibility.
  *
  * @module route-permissions
  */
@@ -36,6 +32,9 @@ export interface RoutePermissionEntry {
  * - Read routes require the matching :read permission
  * - Write routes require the matching :create or :update permission
  * - Delete routes require the matching :delete permission
+ *
+ * Forward-compatible: Permission values match the unified `business:*` prefix
+ * when the feature flag is enabled (mapping happens in the guard).
  */
 export const ROUTE_PERMISSIONS: RoutePermissionEntry[] = [
 	// ── Public routes (no auth required) ──
@@ -215,7 +214,6 @@ export const ROUTE_PERMISSIONS: RoutePermissionEntry[] = [
 
 /**
  * Convert a route pattern string into a RegExp for matching.
- * Patterns are allowlisted in ROUTE_PERMISSIONS — NOT user input.
  */
 function patternToRegex(pattern: string): RegExp {
 	const escaped = pattern
@@ -227,7 +225,6 @@ function patternToRegex(pattern: string): RegExp {
 
 /**
  * Match a request URL + method against the route permission map.
- * Returns the matching entry, or undefined if no match.
  */
 export function matchRoute(
 	url: string,

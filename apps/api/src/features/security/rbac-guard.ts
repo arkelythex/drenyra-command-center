@@ -1,18 +1,14 @@
 import { logSecurityAccess } from "./access-log.service";
 import { hasPermission, type SecurityOperation } from "./rbac-policy";
 import { resolveSessionContext } from "./session-context";
+import {
+	hasPlatformPermission,
+	RBAC_FEATURE_FLAGS,
+	logRbacDiscrepancy,
+} from "@drenyra/security/rbac";
 
 /**
  * Request context required to authorize an operation against Arkelythex security policy.
- *
- * @example
- * ```ts
- * const input: AuthorizationInput = {
- *   headers: {},
- *   operation: 'audit:trail:read',
- *   resource: 'audit-log',
- * };
- * ```
  */
 export interface AuthorizationInput {
 	headers: Record<string, unknown>;
@@ -23,19 +19,7 @@ export interface AuthorizationInput {
 	allowMachineCaller?: boolean;
 }
 
-/**
- * Result of authorizing a secured operation, including the resolved actor on success.
- *
- * @example
- * ```ts
- * const result: AuthorizationResult = {
- *   ok: false,
- *   status: 403,
- *   code: 'FORBIDDEN_ROLE',
- *   error: 'Blocked',
- * };
- * ```
- */
+/** Result of authorizing a secured operation. */
 export type AuthorizationResult =
 	| {
 			ok: true;
@@ -73,28 +57,41 @@ function shouldBypassRbacInTests(): boolean {
 }
 
 /**
+ * Evaluates the unified guard for a given actor + operation and returns the
+ * decision as "ALLOW" | "DENY".
+ */
+function evaluateUnifiedGuard(
+	role: string,
+	operation: string,
+): "ALLOW" | "DENY" {
+	const platformPerm = `platform:${operation}`;
+	return hasPlatformPermission(role, platformPerm) ? "ALLOW" : "DENY";
+}
+
+/**
  * Resolves session context, applies RBAC, and logs the authorization outcome.
  *
- * @param input - Authorization request containing headers, operation, and tenant scope.
- * @returns A successful actor context or a normalized authorization failure.
- * @example
- * ```ts
- * const result = await authorizeOperation({
- *   headers: {},
- *   operation: 'cognitive:state:read',
- *   resource: 'cognitive-session',
- * });
- * ```
+ * Supports dual-write migration: when `UNIFIED_RBAC_ENABLED=false` and
+ * `DUAL_WRITE_SHADOW_MODE=true`, the old guard decides but the unified guard
+ * runs in parallel and discrepancies are logged.
  */
 export async function authorizeOperation(
 	input: AuthorizationInput,
 ): Promise<AuthorizationResult> {
-	const sessionContext = await resolveSessionContext({
+	// Build resolve input respecting exactOptionalPropertyTypes
+	const resolveInput = {
 		headers: input.headers,
-		requestedCompanyId: input.requestedCompanyId,
-		requireSession: input.requireSession,
-		allowMachineCaller: input.allowMachineCaller,
-	});
+		...(input.requestedCompanyId !== undefined
+			? { requestedCompanyId: input.requestedCompanyId }
+			: {}),
+		...(input.requireSession !== undefined
+			? { requireSession: input.requireSession }
+			: {}),
+		...(input.allowMachineCaller !== undefined
+			? { allowMachineCaller: input.allowMachineCaller }
+			: {}),
+	};
+	const sessionContext = await resolveSessionContext(resolveInput);
 
 	if (sessionContext.ok === false) {
 		const failure = {
@@ -126,17 +123,80 @@ export async function authorizeOperation(
 	const actor = sessionContext.context;
 
 	if (shouldBypassRbacInTests()) {
-		return {
-			ok: true,
-			actor,
-		};
+		return { ok: true, actor };
 	}
+
 	const ipAddress =
 		readHeader(input.headers, "x-forwarded-for") ||
 		readHeader(input.headers, "x-real-ip");
 	const userAgent = readHeader(input.headers, "user-agent");
 
-	if (!hasPermission(actor.role, input.operation)) {
+	// ── Unified RBAC path (cutover) ──
+	if (RBAC_FEATURE_FLAGS.UNIFIED_RBAC_ENABLED) {
+		const allowed = evaluateUnifiedGuard(actor.role, input.operation);
+
+		if (!allowed) {
+			await logSecurityAccess({
+				action: input.operation,
+				resource: input.resource,
+				result: "DENY",
+				userId: actor.authUserId,
+				ipAddress,
+				userAgent,
+				details: {
+					role: actor.role,
+					companyId: actor.companyId,
+					legacyUserId: actor.legacyUserId,
+					guard: "unified",
+				},
+			});
+
+			return {
+				ok: false,
+				status: 403,
+				code: "FORBIDDEN_ROLE",
+				error: `Role "${actor.role}" is not allowed for operation ${input.operation}`,
+			};
+		}
+
+		await logSecurityAccess({
+			action: input.operation,
+			resource: input.resource,
+			result: "ALLOW",
+			userId: actor.authUserId,
+			ipAddress,
+			userAgent,
+			details: {
+				role: actor.role,
+				companyId: actor.companyId,
+				legacyUserId: actor.legacyUserId,
+				guard: "unified",
+			},
+		});
+
+		return { ok: true, actor };
+	}
+
+	// ── Legacy path (old guard decides) ──
+	const oldAllowed = hasPermission(actor.role, input.operation);
+
+	// ── Dual-write shadow mode ──
+	if (RBAC_FEATURE_FLAGS.DUAL_WRITE_SHADOW_MODE) {
+		const unifiedResult = evaluateUnifiedGuard(actor.role, input.operation);
+		const oldResult: "ALLOW" | "DENY" = oldAllowed ? "ALLOW" : "DENY";
+
+		if (oldResult !== unifiedResult) {
+			logRbacDiscrepancy(
+				input.resource,
+				input.operation,
+				actor.role,
+				oldResult,
+				unifiedResult,
+			);
+		}
+	}
+
+	if (!oldAllowed) {
 		await logSecurityAccess({
 			action: input.operation,
 			resource: input.resource,
@@ -148,6 +208,7 @@ export async function authorizeOperation(
 				role: actor.role,
 				companyId: actor.companyId,
 				legacyUserId: actor.legacyUserId,
+				guard: "legacy",
 			},
 		});
 
@@ -170,11 +231,9 @@ export async function authorizeOperation(
 			role: actor.role,
 			companyId: actor.companyId,
 			legacyUserId: actor.legacyUserId,
+			guard: "legacy",
 		},
 	});
 
-	return {
-		ok: true,
-		actor,
-	};
+	return { ok: true, actor };
 }
