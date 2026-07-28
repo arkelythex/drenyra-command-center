@@ -1,0 +1,32 @@
+{
+  "artifactId": "0192a4e0-0000-7000-0000-000000000001",
+  "period": "2026-03",
+  "currency": "PEN",
+  "summary": {
+    "matched": 3,
+    "mismatched": 1,
+    "missingOnLedger": 1,
+    "missingOnSunat": 0,
+    "critical": 2,
+    "totalDifference": 650.0
+  },
+  "sunatSource": "upload",
+  "rows": [
+    {
+      "status": "MATCH",
+      "reason": "Consistente entre fuentes",
+      "difference": 0
+    },
+    {
+      "status": "MISMATCH",
+      "reason": "Diferencia de monto entre libros internos y SUNAT",
+      "difference": 150.0
+    },
+    {
+      "status": "MISSING_LOCAL",
+      "reason": "Presente en propuesta SUNAT, ausente en libros internos",
+      "difference": 500.0
+    }
+  ],
+  "generatedAt": "2026-03-15T12:00:00.000Z"
+}

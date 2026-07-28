@@ -1,6 +1,10 @@
 import { Elysia, t } from "elysia";
 import { fail, getErrorMessage, ok } from "../../shared/api-response";
 import { SireDiffCommitService } from "../services/sire-diff-commit.service";
+import {
+	FiscalPeriodValidationError,
+	resolveFiscalPeriodId,
+} from "../services/fiscal-period.service";
 
 const documentRecordSchema = t.Object({
 	documentType: t.String(),
@@ -41,6 +45,9 @@ export const sireDiffCommitRoute = new Elysia().post(
 		}
 
 		try {
+			// Phase A (REQ-A-002): validate fiscal period before business logic
+			await resolveFiscalPeriodId(query.companyId, body.period);
+
 			const result = await SireDiffCommitService.commitResolutions({
 				companyId: query.companyId,
 				period: body.period,
@@ -53,6 +60,10 @@ export const sireDiffCommitRoute = new Elysia().post(
 			});
 			return ok(result);
 		} catch (error) {
+			if (error instanceof FiscalPeriodValidationError) {
+				set.status = 422;
+				return fail(error.message, error.code);
+			}
 			const message = getErrorMessage(error);
 			if (message.includes("pending") || message.includes("Upload")) {
 				set.status = 409;

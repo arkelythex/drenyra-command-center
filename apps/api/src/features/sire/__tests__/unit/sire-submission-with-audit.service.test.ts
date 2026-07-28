@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { SireTimeoutError } from "../../sire-errors";
 
 vi.mock("@drenyra/persistence/repositories/sire-submission.repository", () => ({
 	sireSubmissionRepository: {
@@ -369,5 +370,86 @@ describe("SIRE submission audit idempotency scope", () => {
 				}),
 			}),
 		);
+	});
+
+	describe("Phase D — Durable Execution", () => {
+		// D.2.1 RED: timeout → UNKNOWN
+		it("transitions submission to UNKNOWN when SUNAT API times out (not FAILED)", async () => {
+			process.env.SIRE_SUBMISSION_MODE = "api";
+			process.env.SIRE_API_TOKEN = "api-token";
+			process.env.COMPANY_RUC = "20123456786";
+			vi.mocked(sireSubmissionRepository.findByIdempotencyKey).mockResolvedValue(
+				null,
+			);
+			vi.mocked(sireSubmissionRepository.create).mockResolvedValue(
+				auditRecord as never,
+			);
+			vi.mocked(resolveTenantSunatContext).mockResolvedValue(tenantSunatContext);
+			vi.mocked(SireSubmissionService.submit).mockRejectedValue(
+				new SireTimeoutError("SIRE API timeout after 30000ms"),
+			);
+
+			await expect(submitWithAudit(baseInput)).rejects.toThrow(SireTimeoutError);
+
+			expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+				auditRecord.id,
+				expect.objectContaining({
+					status: "UNKNOWN",
+					sunatStatus: null,
+					sunatMessage: "SIRE API timeout after 30000ms",
+				}),
+			);
+
+			// Verify NOT marked as FAILED
+			const updateCall = vi.mocked(sireSubmissionRepository.update).mock.calls[0][1];
+			expect(updateCall).not.toHaveProperty("nextRetryAt");
+		});
+
+		// D.2.4 RED: non-timeout error → FAILED
+		it("still transitions to FAILED for non-timeout SUNAT errors", async () => {
+			process.env.SIRE_SUBMISSION_MODE = "api";
+			process.env.SIRE_API_TOKEN = "api-token";
+			process.env.COMPANY_RUC = "20123456786";
+			vi.mocked(sireSubmissionRepository.findByIdempotencyKey).mockResolvedValue(
+				null,
+			);
+			vi.mocked(sireSubmissionRepository.create).mockResolvedValue(
+				auditRecord as never,
+			);
+			vi.mocked(resolveTenantSunatContext).mockResolvedValue(tenantSunatContext);
+			vi.mocked(SireSubmissionService.submit).mockRejectedValue(
+				new Error("SIRE API request failed (500): Internal Server Error"),
+			);
+
+			await expect(submitWithAudit(baseInput)).rejects.toThrow(
+				"SIRE API request failed (500)",
+			);
+
+			expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+				auditRecord.id,
+				expect.objectContaining({
+					status: "FAILED",
+				}),
+			);
+		});
+
+		// payload_base64 stored on audit record creation
+		it("stores payloadBase64 on initial submission audit record creation", async () => {
+			process.env.SIRE_SUBMISSION_MODE = "simulation";
+			vi.mocked(sireSubmissionRepository.findByIdempotencyKey).mockResolvedValue(
+				null,
+			);
+			vi.mocked(sireSubmissionRepository.create).mockResolvedValue(
+				auditRecord as never,
+			);
+
+			await submitWithAudit(baseInput);
+
+			expect(sireSubmissionRepository.create).toHaveBeenCalledWith(
+				expect.objectContaining({
+					payloadBase64: baseInput.payloadBase64,
+				}),
+			);
+		});
 	});
 });

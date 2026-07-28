@@ -6,6 +6,7 @@ import {
 	RotateCcw,
 	Sparkles,
 } from "lucide-react";
+import { EvidenceBadge } from "@/components/evidence/EvidenceBadge";
 import { resolveSireExpedienteKind } from "@/features/sire/buildExpedienteEvidenceHref";
 import type { CurrencyCode, SireDiffRow } from "../../types/artifact.types";
 import { useInlineGhostSuggestion } from "../shared/useInlineGhostSuggestion";
@@ -93,6 +94,9 @@ export function SireDiffRowView({
 			</td>
 
 			<td className="px-3 py-3">
+				{row.localRecord ? (
+					<EvidenceBadge source="ledger" status="pending" confidence="medium" />
+				) : null}
 				<SireDiffRecordCard
 					record={row.localRecord}
 					currency={currency}
@@ -100,6 +104,9 @@ export function SireDiffRowView({
 				/>
 			</td>
 			<td className="px-3 py-3">
+				{row.sunatRecord ? (
+					<EvidenceBadge source="SUNAT" status="pending" confidence="medium" />
+				) : null}
 				<SireDiffRecordCard
 					record={row.sunatRecord}
 					currency={currency}
@@ -107,6 +114,9 @@ export function SireDiffRowView({
 				/>
 			</td>
 			<td className="px-3 py-3">
+				{row.cpeRecord ? (
+					<EvidenceBadge source="CPE" status="pending" confidence="medium" />
+				) : null}
 				<SireDiffRecordCard record={row.cpeRecord} currency={currency} />
 			</td>
 

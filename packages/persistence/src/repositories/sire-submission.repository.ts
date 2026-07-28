@@ -31,6 +31,8 @@ export interface CreateSubmissionInput {
 	dryRun: boolean;
 	createdBy?: string;
 	warnings?: unknown;
+	/** Base64-encoded submission payload for retry (REQ-D-003) */
+	payloadBase64?: string;
 }
 
 /**
@@ -41,7 +43,7 @@ export interface UpdateSubmissionInput {
 	submissionId?: string;
 	sunatTicket?: string;
 	trackingId?: string;
-	sunatStatus?: string;
+	sunatStatus?: string | null;
 	sunatCode?: string;
 	sunatMessage?: string;
 	errors?: unknown;
@@ -50,6 +52,8 @@ export interface UpdateSubmissionInput {
 	processedAt?: Date;
 	/** Next retry timestamp for exponential backoff on failed submissions */
 	nextRetryAt?: Date;
+	/** Base64-encoded submission payload for retry (REQ-D-003) */
+	payloadBase64?: string | null;
 }
 
 /**
@@ -79,6 +83,7 @@ export class SireSubmissionRepository {
 				attemptNumber: 1,
 				createdBy: input.createdBy,
 				warnings: input.warnings,
+				payloadBase64: input.payloadBase64,
 			})
 			.returning();
 

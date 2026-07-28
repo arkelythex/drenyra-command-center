@@ -20,6 +20,7 @@ export const sireSubmissions = pgTable("sire_submissions", {
 		.notNull(),
 	attemptNumber: integer("attempt_number").default(1).notNull(),
 	maxRetries: integer("max_retries").default(3).notNull(),
+	payloadBase64: text("payload_base64"),
 	status: varchar("status", { length: 20 }).notNull().default("PENDING"),
 	provider: varchar("provider", { length: 20 }).notNull(),
 	dryRun: boolean("dry_run").default(false),

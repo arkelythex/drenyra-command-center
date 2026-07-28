@@ -55,9 +55,12 @@ export const sireSubmissions = pgTable(
 		attemptNumber: integer("attempt_number").default(1).notNull(),
 		maxRetries: integer("max_retries").default(3).notNull(),
 
+		// Submission payload (for retry)
+		payloadBase64: text("payload_base64"),
+
 		// Submission state
 		status: varchar("status", { length: 20 }).notNull().default("PENDING"),
-		// PENDING, SUBMITTED, ACCEPTED, REJECTED, OBSERVED, SIMULATED, FAILED
+		// PENDING, SUBMITTED, ACCEPTED, REJECTED, OBSERVED, SIMULATED, FAILED, UNKNOWN, RECONCILING
 
 		provider: varchar("provider", { length: 20 }).notNull(), // sunat-api, simulation
 		dryRun: boolean("dry_run").default(false),

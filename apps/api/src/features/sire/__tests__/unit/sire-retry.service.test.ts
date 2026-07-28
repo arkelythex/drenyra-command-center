@@ -37,6 +37,7 @@ describe("SireRetryService", () => {
 				attemptNumber: 1,
 				maxRetries: 3,
 				nextRetryAt: null,
+				payloadBase64: "dGVzdA==",
 			},
 		] as never);
 		vi.mocked(sireSubmissionRepository.incrementAttempt).mockResolvedValue({
@@ -74,9 +75,11 @@ describe("SireRetryService", () => {
 				period: "2026-02",
 				ledgerType: "ventas",
 				payloadFormat: "txt",
+				payloadBase64: "dGVzdA==",
 			}),
 		);
 		expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+			expect.objectContaining({ companyId: "cmp-1" }),
 			"sub-1",
 			expect.objectContaining({
 				status: "ACCEPTED",
@@ -135,6 +138,7 @@ describe("SireRetryService", () => {
 				attemptNumber: 2,
 				maxRetries: 3,
 				nextRetryAt: null,
+				payloadBase64: "Y3N2X2RhdGE=",
 			},
 		] as never);
 		vi.mocked(sireSubmissionRepository.incrementAttempt).mockResolvedValue({
@@ -155,6 +159,7 @@ describe("SireRetryService", () => {
 			{ submissionId: "sub-fail", error: "Temporary SUNAT timeout" },
 		]);
 		expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+			expect.objectContaining({ companyId: "cmp-2" }),
 			"sub-fail",
 			expect.objectContaining({
 				status: "FAILED",
@@ -164,5 +169,40 @@ describe("SireRetryService", () => {
 		);
 
 		vi.useRealTimers();
+	});
+
+	// D.4.3: NULL payload → clear error, marked non-retryable
+	it("skips retry and marks as non-retryable when payloadBase64 is NULL", async () => {
+		vi.mocked(
+			sireSubmissionRepository.getFailedSubmissionsForRetry,
+		).mockResolvedValue([
+			{
+				id: "sub-no-payload",
+				companyId: "cmp-3",
+				period: "2026-04",
+				ledgerType: "ventas",
+				payloadFormat: "txt",
+				dryRun: false,
+				attemptNumber: 1,
+				maxRetries: 3,
+				nextRetryAt: null,
+				payloadBase64: null,
+			},
+		] as never);
+
+		const result = await SireRetryService.processRetryQueue();
+
+		expect(result.processed).toBe(1);
+		expect(result.succeeded).toBe(0);
+		expect(result.skipped).toBe(1);
+		expect(SireSubmissionService.submit).not.toHaveBeenCalled();
+		expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+			expect.objectContaining({ companyId: "cmp-3" }),
+			"sub-no-payload",
+			expect.objectContaining({
+				status: "FAILED",
+				sunatMessage: "No stored payload available for resubmission",
+			}),
+		);
 	});
 });

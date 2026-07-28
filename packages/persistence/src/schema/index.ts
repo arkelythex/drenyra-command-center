@@ -298,6 +298,9 @@ export {
 	evidenceLinks,
 	evidenceLinksRelations,
 } from "./evidence-links.schema";
+// --- SIRE EVIDENCE (CAP-SIRE-01 Phase B) ---
+export { sireEvidenceNodes } from "./evidence-nodes.schema";
+export { sireEvidenceEdges } from "./evidence-edges.schema";
 export {
 	evidenceEdges,
 	evidenceEdgesRelations,

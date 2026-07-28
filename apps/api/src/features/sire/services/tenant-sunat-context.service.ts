@@ -91,6 +91,8 @@ export interface ResolveTenantSunatContextInput {
 	scope: SunatCredentialScope;
 	deprecatedEnvRuc?: string | null;
 	suppliedRuc?: string | null;
+	/** Pre-resolved fiscal period UUID from the company's fiscal calendar. Set by the caller after `resolveFiscalPeriodId` validation. */
+	fiscalPeriodId?: string;
 }
 
 /**
@@ -190,6 +192,7 @@ export const resolveTenantSunatContext = async (
 		companyId: input.companyId,
 		ruc: tenantRuc,
 		credential,
+		...(input.fiscalPeriodId ? { fiscalPeriodId: input.fiscalPeriodId } : {}),
 	};
 };
 

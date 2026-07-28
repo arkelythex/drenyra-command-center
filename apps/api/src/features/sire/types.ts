@@ -74,6 +74,11 @@ export interface TenantSunatContext {
 	companyId: string;
 	ruc: string;
 	credential: SunatCredentialIdentity;
+	/**
+	 * Fiscal period UUID resolved from the company's fiscal calendar (accounting_periods).
+	 * Set by the caller after `resolveFiscalPeriodId` validation; never from user input.
+	 */
+	fiscalPeriodId?: string;
 }
 
 /**
@@ -185,4 +190,45 @@ export interface SireSubmissionConfig {
 		solUsername: string;
 		solPassword: string;
 	};
+}
+
+// ---------------------------------------------------------------------------
+// CAP-SIRE-01 Phase B: Evidence & Provenance types
+// ---------------------------------------------------------------------------
+
+/**
+ * Node type variants for evidence_nodes.type.
+ */
+export type EvidenceNodeType = "DerivedArtifact";
+
+/**
+ * Edge type variants for evidence_edges.edge_type.
+ */
+export type EvidenceEdgeType = "derived_from" | "supersedes";
+
+/**
+ * Evidence node row shape (mirrors evidence_nodes table).
+ */
+export interface EvidenceNode {
+	id: string;
+	type: EvidenceNodeType;
+	artifactId: string | null;
+	period: string;
+	companyId: string;
+	hash: string;
+	previousHash: string | null;
+	metadata: Record<string, unknown> | null;
+	createdAt: Date;
+}
+
+/**
+ * Evidence edge row shape (mirrors evidence_edges table).
+ */
+export interface EvidenceEdge {
+	id: string;
+	fromNodeId: string;
+	toNodeId: string;
+	edgeType: EvidenceEdgeType;
+	metadata: Record<string, unknown> | null;
+	createdAt: Date;
 }

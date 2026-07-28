@@ -34,15 +34,32 @@ export function useSireDiffKeyboardShortcuts({
 			const target = event.target as HTMLElement | null;
 			const isEditableTarget = isEditableElement(target);
 
-			if (!isEditableTarget && event.key === "ArrowDown") {
+			if (
+				!isEditableTarget &&
+				(event.key === "ArrowDown" || event.key === "j")
+			) {
 				event.preventDefault();
 				onMoveSelection("down");
 				return;
 			}
 
-			if (!isEditableTarget && event.key === "ArrowUp") {
+			if (
+				!isEditableTarget &&
+				(event.key === "ArrowUp" || event.key === "k")
+			) {
 				event.preventDefault();
 				onMoveSelection("up");
+				return;
+			}
+
+			// Enter (without Ctrl) toggles selection/editor (REQ-E-003)
+			if (
+				!isEditableTarget &&
+				event.key === "Enter" &&
+				!(event.metaKey || event.ctrlKey)
+			) {
+				event.preventDefault();
+				onToggleInlineEditor(selectedRowId);
 				return;
 			}
 

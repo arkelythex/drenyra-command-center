@@ -11,6 +11,11 @@ export {
 	SireDiffService,
 } from "./services/sire-diff.service";
 export { SireDiffLedgerService } from "./services/sire-diff-ledger.service";
+export { SireRevertService } from "./services/sire-revert.service";
+export {
+	FiscalPeriodValidationError,
+	resolveFiscalPeriodId,
+} from "./services/fiscal-period.service";
 
 import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
 import { enforceSireRateLimit } from "./middleware/rate-limit.middleware";
@@ -19,6 +24,7 @@ import { analyzeSireRoute } from "./routes/analyze.route";
 import { sireDiffRoute } from "./routes/diff.route";
 import { sireDiffCommitRoute } from "./routes/diff-commit.route";
 import { sireReportingRoutes } from "./routes/reporting.route";
+import { sireRevertRoute } from "./routes/revert.route";
 import { submitSireRoute } from "./routes/submit.route";
 
 /**
@@ -93,5 +99,6 @@ export const sireModule = new Elysia({ prefix: "/api/sire" })
 	.use(analyzeSireRoute)
 	.use(sireDiffRoute)
 	.use(sireDiffCommitRoute)
+	.use(sireRevertRoute)
 	.use(submitSireRoute)
 	.use(sireReportingRoutes);

@@ -9,6 +9,10 @@
  * - Retry only transient errors (5xx, timeout, network)
  * - Skip permanent errors (4xx validation, authentication)
  *
+ * **Phase D (REQ-D-003):**
+ * - Uses stored payload_base64 from submission row for retry
+ * - NULL payload → non-retryable, marked FAILED with clear error
+ *
  * **Usage:**
  * ```ts
  * // Manual trigger
@@ -28,12 +32,6 @@ const logger = createLogger({ module: "sire-retry" });
 
 /**
  * RetryResult interface.
- *
- * @example
- * ```ts
- * const value: RetryResult = {} as RetryResult;
- * console.log(value);
- * ```
  */
 export interface RetryResult {
 	processed: number;
@@ -45,12 +43,6 @@ export interface RetryResult {
 
 /**
  * SireRetryService class.
- *
- * @example
- * ```ts
- * const value = new SireRetryService();
- * console.log(value);
- * ```
  */
 export class SireRetryService {
 	/**
@@ -63,6 +55,7 @@ export class SireRetryService {
 	 * - Attempt number < max retries
 	 * - Created within last 24 hours (prevent infinite retry of old submissions)
 	 * - Next retry time has passed (exponential backoff)
+	 * - payload_base64 is non-null (REQ-D-003)
 	 */
 	static async processRetryQueue(): Promise<RetryResult> {
 		const result: RetryResult = {
@@ -100,6 +93,36 @@ export class SireRetryService {
 					continue;
 				}
 
+				// REQ-D-003: Use stored payload_base64 for retry
+				const storedPayload = (
+					submission as Record<string, unknown>
+				).payloadBase64 as string | null | undefined;
+
+				if (!storedPayload) {
+					logger.warn(
+						{ submissionId: submission.id },
+						"No stored payload available for resubmission — marking non-retryable",
+					);
+
+					const noPayloadScope: TenantScope = {
+						organizationId: "",
+						companyId: submission.companyId,
+					};
+					await sireSubmissionRepository.update(
+						noPayloadScope,
+						submission.id,
+						{
+							status: "FAILED",
+							sunatMessage:
+								"No stored payload available for resubmission",
+							processedAt: new Date(),
+						},
+					);
+
+					result.skipped++;
+					continue;
+				}
+
 				// Increment attempt number
 				await sireSubmissionRepository.incrementAttempt(submission.id);
 
@@ -124,7 +147,7 @@ export class SireRetryService {
 						| "csv"
 						| "json"
 						| "xml",
-					payloadBase64: "", // TODO: Store payload for retry
+					payloadBase64: storedPayload,
 					dryRun: submission.dryRun ?? false,
 				});
 
@@ -177,8 +200,11 @@ export class SireRetryService {
 				});
 
 				// Update submission with error and next retry time
-				const nextRetryMinutes = 2 ** ((submission.attemptNumber ?? 1) + 1); // Exponential backoff
-				const nextRetryAt = new Date(Date.now() + nextRetryMinutes * 60 * 1000);
+				const nextRetryMinutes =
+					2 ** ((submission.attemptNumber ?? 1) + 1); // Exponential backoff
+				const nextRetryAt = new Date(
+					Date.now() + nextRetryMinutes * 60 * 1000,
+				);
 
 				const failedScope: TenantScope = {
 					organizationId: "",

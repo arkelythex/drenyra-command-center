@@ -5,6 +5,7 @@ import { and, eq, gte, lte } from "@drenyra/persistence/query";
 import { bills, invoices } from "@drenyra/persistence/schema";
 import { SireService } from "../sire.service";
 import { SirePersistedProposalService } from "./sire-persisted-proposal.service";
+import { SireEvidenceService } from "./sire-evidence.service";
 
 export type SireDiffStatus =
 	| "MATCH"
@@ -242,9 +243,14 @@ export function buildDiffRows(input: {
 
 /**
  * Aggregates diff row statuses into summary counters for the artifact payload.
+ *
+ * When `opts.threshold` is provided, only rows with |difference| >= threshold
+ * are counted as critical. When omitted or undefined, all non-MATCH rows are
+ * critical (backward-compatible default).
  */
 export function buildSummary(
 	rows: SireDiffRow[],
+	opts?: { threshold?: number },
 ): SireDiffArtifactPayload["summary"] {
 	const matched = rows.filter((row) => row.status === "MATCH").length;
 	const mismatched = rows.filter((row) => row.status === "MISMATCH").length;
@@ -254,7 +260,17 @@ export function buildSummary(
 	const missingOnSunat = rows.filter(
 		(row) => row.status === "MISSING_SUNAT",
 	).length;
-	const critical = mismatched + missingOnLedger + missingOnSunat;
+
+	const threshold = opts?.threshold;
+	const critical =
+		threshold != null
+			? rows.filter(
+					(row) =>
+						row.status !== "MATCH" &&
+						Math.abs(row.difference) >= threshold,
+				).length
+			: mismatched + missingOnLedger + missingOnSunat;
+
 	const totalDifference = toMoney(
 		rows.reduce((acc, row) => acc + Math.abs(row.difference), 0),
 	);
@@ -446,12 +462,20 @@ async function resolveSunatRecords(input: {
 }
 
 export class SireDiffService {
-	/** Builds a three-way diff artifact: local ledger vs SUNAT proposal vs optional CPE. */
+	/**
+	 * Builds a three-way diff artifact: local ledger vs SUNAT proposal vs optional CPE.
+	 *
+	 * After the diff is computed, an evidence node is persisted (append-only)
+	 * with the artifact as its canonical payload, linked to any provided source
+	 * evidence nodes via `derived_from` edges.
+	 */
 	static async buildThreeWayDiff(input: {
 		companyId: string;
 		period: string;
 		sireFile?: File;
 		cpeFile?: File;
+		/** Optional evidence node IDs representing source documents (ledger, SUNAT proposal). */
+		sourceEvidenceNodeIds?: string[];
 	}): Promise<SireDiffArtifactPayload> {
 		const { year, month } = parsePeriod(input.period);
 
@@ -476,6 +500,30 @@ export class SireDiffService {
 		const { submitBlocked, submitBlockReason } = computeSubmitBlocked({
 			summary,
 			sunatSource,
+		});
+
+		const artifactId = randomUUID();
+
+		// REQ-B-005: Persist evidence node atomically after diff generation.
+		// Source evidence node IDs link to ledger / SUNAT proposal records when available.
+		await SireEvidenceService.createDerivedArtifactNode({
+			artifactId,
+			period: input.period,
+			companyId: input.companyId,
+			canonicalPayload: {
+				artifactId,
+				period: input.period,
+				currency: "PEN",
+				summary,
+				rows: rows.map((row) => ({
+					status: row.status,
+					reason: row.reason,
+					difference: row.difference,
+				})),
+				sunatSource,
+				generatedAt: new Date().toISOString(),
+			},
+			sourceNodeIds: input.sourceEvidenceNodeIds ?? [],
 		});
 
 		return {

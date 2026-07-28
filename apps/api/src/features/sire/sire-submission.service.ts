@@ -10,6 +10,7 @@ import {
 	resolveAuthToken,
 } from "./services/sire-oauth.service";
 import { evaluateSireSubmissionPolicy } from "./services/sire-policy-2026.service";
+import { SireTimeoutError } from "./sire-errors";
 import type {
 	SireSubmissionConfig,
 	SireSubmissionResult,
@@ -175,7 +176,7 @@ export class SireSubmissionService {
 			return SireSubmissionService.mapApiResponse(input, payload);
 		} catch (error: unknown) {
 			if (error instanceof Error && error.name === "AbortError") {
-				throw new Error(`SIRE API timeout after ${config.timeoutMs}ms`);
+				throw new SireTimeoutError(`SIRE API timeout after ${config.timeoutMs}ms`);
 			}
 			throw error;
 		} finally {

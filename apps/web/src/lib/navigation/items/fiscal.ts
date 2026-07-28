@@ -12,8 +12,8 @@ export const FISCAL_ITEMS: readonly NavigationItem[] = [
 	{
 		id: "sire-diff",
 		section: "compliance",
-		label: "SIRE Diff",
-		description: "Three-way diff: SUNAT vs ledger vs CPE",
+		label: "Conciliación SIRE",
+		description: "Conciliación de tres vías: SUNAT vs ledger vs CPE",
 		to: "/cumplimiento/sire-diff" as NavigationItem["to"],
 		icon: ArrowRightLeft,
 		keywords: ["sire", "diff", "conciliacion", "rvie", "rce", "sunat", "cpe"],

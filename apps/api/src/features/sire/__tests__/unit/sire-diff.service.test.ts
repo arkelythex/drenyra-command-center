@@ -88,6 +88,60 @@ describe("buildSummary", () => {
 		expect(summary.missingOnLedger).toBe(1);
 		expect(summary.critical).toBe(2);
 	});
+
+	// Phase C: threshold parameter tests
+	it("C.2.1: with threshold 500, rows with differences [100,200,500,1000] produce critical=2", () => {
+		const rows = buildDiffRows({
+			local: [
+				record("F001", "1", 100),
+				record("F001", "2", 200),
+				record("F001", "3", 500),
+				record("F001", "4", 1000),
+			],
+			sunat: [
+				record("F001", "1", 200),  // diff -100
+				record("F001", "2", 400),  // diff -200
+				record("F001", "3", 0),    // diff 500
+				record("F001", "4", 0),    // diff 1000
+			],
+			cpe: [],
+		});
+		const summary = buildSummary(rows, { threshold: 500 });
+		// All 4 are MISMATCH, but only diff >= 500 are critical
+		expect(summary.critical).toBe(2);
+	});
+
+	it("C.2.3: without threshold, all non-MATCH rows are critical (backward compat)", () => {
+		const rows = buildDiffRows({
+			local: [record("F001", "1", 100), record("F001", "2", 50)],
+			sunat: [record("F001", "1", 100), record("F001", "3", 30)],
+			cpe: [],
+		});
+		const summary = buildSummary(rows);
+		expect(summary.critical).toBe(2);
+	});
+
+	it("C.2.5: with threshold 0, all non-MATCH rows are critical (>=0 edge case)", () => {
+		const rows = buildDiffRows({
+			local: [record("F001", "1", 100), record("F001", "2", 50)],
+			sunat: [record("F001", "1", 100), record("F001", "3", 30)],
+			cpe: [],
+		});
+		const summary = buildSummary(rows, { threshold: 0 });
+		expect(summary.critical).toBe(2);
+	});
+
+	it("C.2.7: critical count never exceeds total non-MATCH count", () => {
+		const rows = buildDiffRows({
+			local: [record("F001", "1", 100)],
+			sunat: [record("F001", "1", 100)],
+			cpe: [],
+		});
+		const summary = buildSummary(rows, { threshold: 999999 });
+		const nonMatch =
+			summary.mismatched + summary.missingOnLedger + summary.missingOnSunat;
+		expect(summary.critical).toBeLessThanOrEqual(nonMatch);
+	});
 });
 
 describe("computeSubmitBlocked", () => {

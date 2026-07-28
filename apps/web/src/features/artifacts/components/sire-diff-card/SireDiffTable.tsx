@@ -2,6 +2,7 @@ import type { CurrencyCode, SireDiffRow } from "../../types/artifact.types";
 import { SireDiffRowView } from "./SireDiffRow";
 import { SireDiffToolbar } from "./SireDiffToolbar";
 import type { RowDecision, RowDraft, SireStatusFilter } from "./types";
+import { VirtualizedSireDiffTable } from "./VirtualizedSireDiffTable";
 
 interface SireDiffTableProps {
 	visibleRows: SireDiffRow[];
@@ -54,6 +55,37 @@ export function SireDiffTable({
 	onCloseInlineEditor,
 	period,
 }: SireDiffTableProps) {
+	// Delegate to virtualized table for large diffs (>100 rows)
+	if (visibleRows.length > 100) {
+		return (
+			<VirtualizedSireDiffTable
+				visibleRows={visibleRows}
+				currency={currency}
+				statusFilter={statusFilter}
+				showMatches={showMatches}
+				matchRowsHidden={matchRowsHidden}
+				decisions={decisions}
+				draftsByRow={draftsByRow}
+				selectedRowId={selectedRowId}
+				editingRowId={editingRowId}
+				promptsByRow={promptsByRow}
+				onStatusFilterChange={onStatusFilterChange}
+				onToggleMatches={onToggleMatches}
+				onCopyTable={onCopyTable}
+				onExportExcel={onExportExcel}
+				onSelectRow={onSelectRow}
+				onAcceptSunat={onAcceptSunat}
+				onKeepLocal={onKeepLocal}
+				onToggleInlineEditor={onToggleInlineEditor}
+				onPromptChange={onPromptChange}
+				onSuggestInlineEdit={onSuggestInlineEdit}
+				onApplyInlineEdit={onApplyInlineEdit}
+				onCloseInlineEditor={onCloseInlineEditor}
+				period={period}
+			/>
+		);
+	}
+
 	return (
 		<div className="overflow-auto rounded-2xl border border-border">
 			<SireDiffToolbar

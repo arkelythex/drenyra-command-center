@@ -12,6 +12,7 @@ import {
 	index,
 	integer,
 	jsonb,
+	numeric,
 	pgTable,
 	text,
 	timestamp,
@@ -119,6 +120,14 @@ export const companies = pgTable("companies", {
 	settingsShowAmountsInWords: boolean("settings_show_amounts_in_words").default(
 		false,
 	),
+
+	// CAP-SIRE-01 Phase C: Trust Layer — per-company SIRE configuration
+	sireMaterialityThresholdPen: numeric("sire_materiality_threshold_pen", {
+		precision: 18,
+		scale: 2,
+	}),
+	sireReversibilityWindowHours: integer("sire_reversibility_window_hours")
+		.default(24),
 
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),

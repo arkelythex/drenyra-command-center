@@ -156,3 +156,59 @@ Cualquier nuevo caller fuera de esta lista debe fallar en CI.
 | `EvidenceRepository.findByHash(hash)`                | — (sin caller confirmado)                                                                                                                                 | W4                  |
 | `SireSubmissionRepository.findByIdempotencyKey(key)` | — (0 callers)                                                                                                                                             | W4                  |
 | `SireSubmissionRepository.update(id)`                | — (0 callers)                                                                                                                                             | W4                  |
+
+---
+
+## 5. SIRE Route Guard Coverage (Phase A — CAP-SIRE-01)
+
+### Route Inventory
+
+| Method | Path | Period Validation | companyScopeGuard | Auth | Rate Limit |
+|--------|------|-------------------|-------------------|------|------------|
+| `POST` | `/api/sire/diff` | ✅ query.period | ✅ | ✅ `enforceSireAuth` | ✅ |
+| `POST` | `/api/sire/submit` | ✅ body.period | ✅ (vía `tenantAuth`) | ✅ `tenantAuth` | ✅ |
+| `POST` | `/api/sire/diff/commit` | ✅ body.period | ✅ (vía `companyContext`) | ✅ `enforceSireAuth` | ✅ |
+| `GET` | `/api/sire/conciliation` | ✅ query.period (optional) | ✅ | ✅ `enforceSireAuth` | ✅ |
+| `GET` | `/api/sire/dashboard` | ✅ query.period (optional) | ✅ | ✅ `enforceSireAuth` | ✅ |
+| `GET` | `/api/sire/retry-queue` | N/A (period-free) | ✅ | ✅ `enforceSireAuth` | ✅ |
+| `POST` | `/api/sire/analyze` | N/A (period-free) | ✅ | ✅ `enforceSireAuth` | ✅ |
+| `GET` | `/api/sire/comparison/:period` | ✅ params.period | ✅ | ✅ `enforceSireAuth` | ✅ |
+| `GET` | `/api/sire/comparison/:period/discrepancies` | ✅ params.period | ✅ | ✅ `enforceSireAuth` | ✅ |
+| `PATCH` | `/api/sire/comparison/discrepancies/:id/resolve` | ✅ query.period (optional) | ✅ | ✅ `enforceSireAuth` | ✅ |
+| `POST` | `/api/sire/comparison/:period/report` | ✅ params.period | ✅ | ✅ `enforceSireAuth` | ✅ |
+| `GET` | `/api/sire/comparison/dashboard` | N/A (period-free) | ✅ | ✅ `enforceSireAuth` | ✅ |
+
+**Period validation:** All routes that accept a period parameter validate it against the company's fiscal calendar (`accounting_periods`) via `resolveFiscalPeriodId`. Invalid periods return HTTP 422 with error code `FISCAL_PERIOD_INVALID`.
+
+### Role Bindings
+
+- **W2-04A:** `companyScopeGuard` enforces that `query.companyId` matches the authenticated JWT's company claim
+- **W2-05A:** `tenantAuth` derives `companyId` from verified organization membership; `body.companyId` is a client-side selection hint validated against tenant context
+
+### Existing Role Coverage
+
+| Role | sire:submit | sire:read (conciliation/dashboard/diff) | sire:resolve |
+|------|-------------|-----------------------------------------|--------------|
+| `OWNER` | ✅ | ✅ | ✅ |
+| `ADMIN` | ✅ | ✅ | ✅ |
+| `ACCOUNTANT` | ✅ (propias) | ✅ (propias) | ✅ (propias) |
+| `REVIEWER` | ❌ | ✅ (propias) | ❌ |
+| `APPROVER` | ❌ | ❌ | ❌ |
+| `VIEWER` | ❌ | ❌ | ❌ |
+
+---
+
+## 6. Deferred FiscalContext Fields (TODO)
+
+> These fields are part of the full `FiscalContext` type planned for CAP-SIRE-02 through CAP-SIRE-05.
+> They are NOT implemented in Phase A.
+
+| Field | Type | Purpose | Target CAP |
+|-------|------|---------|------------|
+| `actorId` | `string` (UUID) | Authenticated user performing the fiscal operation | CAP-SIRE-02 |
+| `roleBindings` | `string[]` | Role-based permissions for the actor on the current company | CAP-SIRE-02 |
+| `policyVersion` | `string` | Version of the fiscal policy engine used for validation | CAP-SIRE-03 |
+| `fiscalYear` | `number` | Fiscal year derived from the period (e.g., 2026) | CAP-SIRE-02 |
+| `deadlineStatus` | `'OVERDUE' \| 'DUE_SOON' \| 'ON_TRACK'` | Submission deadline compliance status | CAP-SIRE-03 |
+
+**Phase A delivers:** `fiscalPeriodId` (UUID) resolved from `accounting_periods` and attached to `TenantSunatContext`.

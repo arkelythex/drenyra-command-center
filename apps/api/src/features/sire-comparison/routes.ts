@@ -1,6 +1,10 @@
 import { Elysia, t } from "elysia";
 import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
+import {
+	FiscalPeriodValidationError,
+	resolveFiscalPeriodId,
+} from "../sire/services/fiscal-period.service";
 import { SireComparisonService } from "./infrastructure/compare.service";
 
 export const sireComparisonRoutes = new Elysia({
@@ -18,12 +22,19 @@ export const sireComparisonRoutes = new Elysia({
 			}
 
 			try {
+				// Phase A (REQ-A-002): validate fiscal period
+				await resolveFiscalPeriodId(query.companyId, params.period);
+
 				const result = await SireComparisonService.getComparison(
 					query.companyId,
 					params.period,
 				);
 				return ok(result);
 			} catch (error) {
+				if (error instanceof FiscalPeriodValidationError) {
+					set.status = 422;
+					return fail(error.message, error.code);
+				}
 				set.status = 500;
 				return fail(getErrorMessage(error), "SIRE_COMPARISON_ERROR");
 			}
@@ -52,6 +63,9 @@ export const sireComparisonRoutes = new Elysia({
 			}
 
 			try {
+				// Phase A (REQ-A-002): validate fiscal period
+				await resolveFiscalPeriodId(query.companyId, params.period);
+
 				const discrepancies = await SireComparisonService.getDiscrepancies(
 					query.companyId,
 					params.period,
@@ -60,6 +74,10 @@ export const sireComparisonRoutes = new Elysia({
 				);
 				return ok(discrepancies);
 			} catch (error) {
+				if (error instanceof FiscalPeriodValidationError) {
+					set.status = 422;
+					return fail(error.message, error.code);
+				}
 				set.status = 500;
 				return fail(getErrorMessage(error), "SIRE_DISCREPANCIES_ERROR");
 			}
@@ -107,6 +125,11 @@ export const sireComparisonRoutes = new Elysia({
 					return fail("No autorizado", "UNAUTHORIZED");
 				}
 
+				// Phase A (REQ-A-002): validate fiscal period when provided
+				if (query.period) {
+					await resolveFiscalPeriodId(companyId, query.period);
+				}
+
 				const result = await SireComparisonService.resolveDiscrepancy(
 					params.id,
 					companyId,
@@ -116,6 +139,10 @@ export const sireComparisonRoutes = new Elysia({
 				);
 				return ok(result);
 			} catch (error) {
+				if (error instanceof FiscalPeriodValidationError) {
+					set.status = 422;
+					return fail(error.message, error.code);
+				}
 				const message = getErrorMessage(error);
 				if (message.includes("not found")) {
 					set.status = 404;
@@ -159,12 +186,19 @@ export const sireComparisonRoutes = new Elysia({
 			}
 
 			try {
+				// Phase A (REQ-A-002): validate fiscal period
+				await resolveFiscalPeriodId(query.companyId, params.period);
+
 				const result = await SireComparisonService.getReport(
 					query.companyId,
 					params.period,
 				);
 				return ok(result);
 			} catch (error) {
+				if (error instanceof FiscalPeriodValidationError) {
+					set.status = 422;
+					return fail(error.message, error.code);
+				}
 				set.status = 500;
 				return fail(getErrorMessage(error), "SIRE_REPORT_ERROR");
 			}

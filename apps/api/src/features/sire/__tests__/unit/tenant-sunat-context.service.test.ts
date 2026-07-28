@@ -170,4 +170,68 @@ describe("resolveTenantSunatContext", () => {
 			),
 		).rejects.toMatchObject({ code: "SUNAT_CREDENTIAL_RUC_MISMATCH" });
 	});
+
+	// --- REQ-A-001: fiscalPeriodId in TenantSunatContext ---
+
+	it("attaches fiscalPeriodId to context when provided in input", async () => {
+		const fiscalPeriodId = "fp-uuid-abc-123";
+
+		const context = await resolveTenantSunatContext(
+			{
+				companyId,
+				scope: "sire.submit",
+				fiscalPeriodId,
+			},
+			{
+				lookupCompany: createCompanyLookup(tenantRuc),
+				credentialProvider: createCredentialProvider(),
+			},
+		);
+
+		expect(context.fiscalPeriodId).toBe(fiscalPeriodId);
+		expect(context.companyId).toBe(companyId);
+		expect(context.ruc).toBe(tenantRuc);
+		expect(context.credential).toBeDefined();
+	});
+
+	it("does not include fiscalPeriodId in context when not provided", async () => {
+		const context = await resolveTenantSunatContext(
+			{ companyId, scope: "sire.submit" },
+			{
+				lookupCompany: createCompanyLookup(tenantRuc),
+				credentialProvider: createCredentialProvider(),
+			},
+		);
+
+		expect(context.fiscalPeriodId).toBeUndefined();
+	});
+
+	it("credential resolution is unchanged when fiscalPeriodId is present", async () => {
+		const credentialProvider = createCredentialProvider();
+		const fiscalPeriodId = "fp-uuid-abc-123";
+
+		const context = await resolveTenantSunatContext(
+			{
+				companyId,
+				scope: "sire.submit",
+				fiscalPeriodId,
+			},
+			{
+				lookupCompany: createCompanyLookup(tenantRuc),
+				credentialProvider,
+			},
+		);
+
+		// Credential resolution must still work by companyId and scope
+		expect(credentialProvider.resolve).toHaveBeenCalledWith({
+			ruc: tenantRuc,
+			scope: "sire.submit",
+		});
+		expect(context.credential).toEqual({
+			clientId: `client-${tenantRuc}`,
+			fingerprint: `fingerprint-${tenantRuc}`,
+			ruc: tenantRuc,
+			scope: "sire.submit",
+		});
+	});
 });

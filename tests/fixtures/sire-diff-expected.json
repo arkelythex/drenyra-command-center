@@ -1,0 +1,49 @@
+{
+  "totalRows": 5,
+  "byStatus": {
+    "MATCH": 1,
+    "MISMATCH": 1,
+    "MISSING_LOCAL": 1,
+    "MISSING_SUNAT": 2
+  },
+  "summary": {
+    "matched": 1,
+    "mismatched": 1,
+    "missingOnLedger": 1,
+    "missingOnSunat": 2,
+    "critical": 4,
+    "totalDifference": 2700
+  },
+  "rows": [
+    {
+      "status": "MISMATCH",
+      "reason": "Diferencia de monto entre libros internos y SUNAT",
+      "difference": -200,
+      "key": "F001-2"
+    },
+    {
+      "status": "MISSING_LOCAL",
+      "reason": "Presente en propuesta SUNAT, ausente en libros internos",
+      "difference": 1200,
+      "key": "F001-4"
+    },
+    {
+      "status": "MISSING_SUNAT",
+      "reason": "Presente en libros internos, ausente en propuesta SUNAT",
+      "difference": 500,
+      "key": "F001-3"
+    },
+    {
+      "status": "MISSING_SUNAT",
+      "reason": "Presente en libros internos, ausente en propuesta SUNAT",
+      "difference": 800,
+      "key": "E001-1"
+    },
+    {
+      "status": "MATCH",
+      "reason": "Consistente entre fuentes",
+      "difference": 0,
+      "key": "F001-1"
+    }
+  ]
+}

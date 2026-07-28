@@ -2,6 +2,7 @@ import { randomBytes } from "node:crypto";
 import type { TenantScope } from "@drenyra/domain/scope";
 import { sireSubmissionRepository } from "@drenyra/persistence/repositories/sire-submission.repository";
 import { createLogger } from "../../../../lib/logger";
+import { SireTimeoutError } from "../../sire-errors";
 import {
 	type SireSubmissionResult,
 	SireSubmissionService,
@@ -202,6 +203,7 @@ export const submitWithAudit = async (
 				provider,
 				dryRun: input.dryRun ?? false,
 				createdBy: options?.createdBy,
+				payloadBase64: input.payloadBase64,
 				warnings: buildProposalRecordWarnings(
 					input,
 					options?.governanceTrace
@@ -289,6 +291,7 @@ export const submitWithAudit = async (
 		return result;
 	} catch (error: unknown) {
 		const errorMessage = error instanceof Error ? error.message : String(error);
+		const isTimeout = error instanceof SireTimeoutError;
 
 		logger.error(
 			{
@@ -297,44 +300,77 @@ export const submitWithAudit = async (
 				period: input.period,
 				ledgerType: input.ledgerType,
 				idempotencyKey,
+				isTimeout,
 			},
 			"SIRE submission failed",
 		);
 
 		if (auditRecord) {
-			const attemptNumber = auditRecord.attemptNumber ?? 1;
-			const nextRetryMinutes = 2 ** attemptNumber;
-			const nextRetryAt = new Date(Date.now() + nextRetryMinutes * 60 * 1000);
-
-			await sireSubmissionRepository.update(scope, auditRecord.id, {
-				status: "FAILED",
-				sunatMessage: errorMessage,
-				errors: {
-					reason: failureReason,
-					message: errorMessage,
-					sunatTenant: {
-						...buildSunatAuditTrace({
-							companyId: input.companyId,
-							tenantSunatContext,
-							decision: "refused",
-							reason: failureReason,
-							suppliedRuc: input.ruc,
-						}),
-						...getTenantContextErrorTrace(error),
+			if (isTimeout) {
+				// REQ-D-001: Timeout → UNKNOWN (not FAILED)
+				await sireSubmissionRepository.update(scope, auditRecord.id, {
+					status: "UNKNOWN",
+					sunatStatus: null,
+					sunatMessage: errorMessage,
+					errors: {
+						reason: failureReason,
+						message: errorMessage,
+						sunatTenant: {
+							...buildSunatAuditTrace({
+								companyId: input.companyId,
+								tenantSunatContext,
+								decision: "refused",
+								reason: failureReason,
+								suppliedRuc: input.ruc,
+							}),
+							...getTenantContextErrorTrace(error),
+						},
 					},
-				},
-				processedAt: new Date(),
-				nextRetryAt,
-			});
+					processedAt: new Date(),
+				});
 
-			logger.warn(
-				{
-					submissionId: auditRecord.id,
-					nextRetryAt: nextRetryAt.toISOString(),
-					errorMessage,
-				},
-				"Marked SIRE audit record as failed",
-			);
+				logger.warn(
+					{
+						submissionId: auditRecord.id,
+						errorMessage,
+					},
+					"Marked SIRE audit record as UNKNOWN (timeout)",
+				);
+			} else {
+				const attemptNumber = auditRecord.attemptNumber ?? 1;
+				const nextRetryMinutes = 2 ** attemptNumber;
+				const nextRetryAt = new Date(Date.now() + nextRetryMinutes * 60 * 1000);
+
+				await sireSubmissionRepository.update(scope, auditRecord.id, {
+					status: "FAILED",
+					sunatMessage: errorMessage,
+					errors: {
+						reason: failureReason,
+						message: errorMessage,
+						sunatTenant: {
+							...buildSunatAuditTrace({
+								companyId: input.companyId,
+								tenantSunatContext,
+								decision: "refused",
+								reason: failureReason,
+								suppliedRuc: input.ruc,
+							}),
+							...getTenantContextErrorTrace(error),
+						},
+					},
+					processedAt: new Date(),
+					nextRetryAt,
+				});
+
+				logger.warn(
+					{
+						submissionId: auditRecord.id,
+						nextRetryAt: nextRetryAt.toISOString(),
+						errorMessage,
+					},
+					"Marked SIRE audit record as failed",
+				);
+			}
 		}
 
 		throw error;
