@@ -8,7 +8,7 @@ import {
 	RefreshCw,
 	Search,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useDeferredValue, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -152,33 +152,31 @@ export function ThreadList() {
 	const [statusFilter, setStatusFilter] = useState<string | "ALL">("ALL");
 	const [periodFilter, setPeriodFilter] = useState("");
 
-	// Debounce search for the API query
-	const debouncedSearch = useMemo(() => {
-		// Simple client-side debounce for the search filter
-		return search;
-	}, [search]);
+	// Keep typing responsive while the query and list filtering catch up.
+	const deferredSearch = useDeferredValue(search);
 
 	const { data, isLoading, isError, error, refetch } = useQuery(
 		threadsListQueryOptions({
 			...(statusFilter !== "ALL" && { status: statusFilter }),
 			...(periodFilter && { period: periodFilter }),
-			...(debouncedSearch && { search: debouncedSearch }),
+			...(deferredSearch && { search: deferredSearch }),
 			limit: 50,
 		}),
 	);
 
 	const threads = data?.data ?? [];
 
-	// Client-side filtering (for immediate search feel)
-	const filtered = useMemo(() => {
-		if (!search) return threads;
-		const q = search.toLowerCase();
-		return threads.filter(
-			(t) =>
-				t.title.toLowerCase().includes(q) ||
-				t.tags?.some((tag) => tag.toLowerCase().includes(q)),
-		);
-	}, [threads, search]);
+	// Filter from the deferred value so expensive list work does not block typing.
+	const normalizedDeferredSearch = deferredSearch.toLowerCase();
+	const filtered = deferredSearch
+		? threads.filter(
+				(t) =>
+					t.title.toLowerCase().includes(normalizedDeferredSearch) ||
+					t.tags?.some((tag) =>
+						tag.toLowerCase().includes(normalizedDeferredSearch),
+					),
+			)
+		: threads;
 
 	return (
 		<div className="flex-1 overflow-auto custom-scrollbar bg-[var(--surface-1)]">
