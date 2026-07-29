@@ -277,7 +277,7 @@ Chain strategy: pending
 
 ### Task 2.1 — Database migration: add MFA columns to auth schema
 
-- [ ] Modify `packages/persistence/src/schema/auth.schema.ts`:
+- [x] Modify `packages/persistence/src/schema/auth.schema.ts`:
   - Add to `authUsers`: `totpSecret: text("totp_secret")`, `totpEnabled: boolean("totp_enabled").notNull().default(false)`, `totpVerifiedAt: timestamp("totp_verified_at")`, `recoveryCodes: jsonb("recovery_codes").$type<string[]>()`, `mfaFailureCount: integer("mfa_failure_count").notNull().default(0)`, `mfaLastFailureAt: timestamp("mfa_last_failure_at")`
   - Add to `authSessions`: `mfaVerified: boolean("mfa_verified").notNull().default(false)`
 - [ ] Run `bun run db:generate` to produce migration SQL
@@ -288,7 +288,7 @@ Chain strategy: pending
 
 ### Task 2.2 — Implement TOTP generation/verification (RFC 6238)
 
-- [ ] Create `packages/security/src/mfa/totp.ts`:
+- [x] Create `packages/security/src/mfa/totp.ts`:
   - `generateTotpSecret(): string` — 20 random bytes → base32
   - `generateTotpUri(config: TotpConfig): string` — `otpauth://totp/...` URI
   - `verifyTotp(secret: string, code: string, window?: number): boolean` — SHA1 HMAC, 6 digits, 30s period, ±1 window
@@ -300,7 +300,7 @@ Chain strategy: pending
 
 ### Task 2.3 — Implement recovery code generation and hashing
 
-- [ ] Create `packages/security/src/mfa/recovery-codes.ts`:
+- [x] Create `packages/security/src/mfa/recovery-codes.ts`:
   - `generateRecoveryCodes(count?: number): string[]` — 8 codes, 10 chars each (e.g., `A1B2C3D4E5`)
   - `hashRecoveryCode(code: string): Promise<string>` — bcrypt (use `Bun.password.hash` with bcrypt cost 10)
   - `verifyRecoveryCode(code: string, hashes: (string | null)[]): Promise<number | null>` — returns matched index or null; skips null entries (consumed codes)
@@ -311,7 +311,7 @@ Chain strategy: pending
 
 ### Task 2.4 — Implement BetterAuth MFA plugin
 
-- [ ] Create `packages/security/src/mfa/better-auth-mfa-plugin.ts`:
+- [x] Create `packages/security/src/mfa/better-auth-mfa-plugin.ts`:
   - `mfaPlugin(options): BetterAuthPlugin` with `id: "drenyra-mfa"`
   - Hook `before` matcher for `/sign-in/email`: after password validation succeeds → check `totp_enabled` → if enabled, return `{ mfa_required: true, mfa_token: "<jwt>" }` (short-lived, 5min, signed with `BETTER_AUTH_SECRET`)
   - Endpoint handlers (as BetterAuth endpoint callbacks):
@@ -327,7 +327,7 @@ Chain strategy: pending
 
 ### Task 2.5 — Register MFA plugin in auth config
 
-- [ ] Modify `apps/api/src/features/auth/auth.config.ts`:
+- [x] Modify `apps/api/src/features/auth/auth.config.ts`:
   - Import `mfaPlugin` from `@drenyra/security/mfa`
   - Add to `plugins` array: `mfaPlugin({})`
   - Ensure plugin is registered after `customSession` plugin
@@ -337,7 +337,7 @@ Chain strategy: pending
 
 ### Task 2.6 — Implement MFA step-up middleware
 
-- [ ] Create `apps/api/src/features/auth/mfa/mfa-middleware.ts`:
+- [x] Create `apps/api/src/features/auth/mfa/mfa-middleware.ts`:
   - Elysia middleware: checks `RouteProtectionMatrixRow.requireMfa`
   - If `requireMfa: true` and `TOTP_ENABLED=true`: check `session.mfaVerified`; if false → return 401 with `code: "MFA_STEPUP"` and short-lived MFA token
   - If user has `totp_enabled=false` → pass through (user never enrolled)
@@ -348,7 +348,7 @@ Chain strategy: pending
 
 ### Task 2.7 — Add `requireMfa` field to route protection types
 
-- [ ] Modify `apps/api/src/features/security/route-protection/types.ts`:
+- [x] Modify `apps/api/src/features/security/route-protection/types.ts`:
   - Add `readonly requireMfa?: boolean` to `RouteProtectionMatrixRow`
 - [ ] Modify `apps/api/src/features/security/route-protection/matrix.ts`:
   - Set `requireMfa: true` for initial conservative set:
@@ -363,7 +363,7 @@ Chain strategy: pending
 
 ### Task 2.8 — Implement MFA route handlers
 
-- [ ] Create `apps/api/src/features/auth/mfa/mfa-routes.ts`:
+- [x] Create `apps/api/src/features/auth/mfa/mfa-routes.ts`:
   - Elysia route definitions for: POST `/api/auth/mfa/enroll`, POST `/api/auth/mfa/verify-enrollment`, POST `/api/auth/mfa/verify`, POST `/api/auth/mfa/recover`, POST `/api/auth/mfa/disable`
   - Each handler delegates to the MFA plugin endpoints registered in BetterAuth
   - Spanish error messages: "Código TOTP inválido", "Demasiados intentos. Vuelva a iniciar sesión.", etc.
@@ -374,7 +374,7 @@ Chain strategy: pending
 
 ### Task 2.9 — Implement MFA feature flags
 
-- [ ] Create `apps/api/src/features/auth/mfa/feature-flags.ts`:
+- [x] Create `packages/security/src/mfa/feature-flags.ts`:
   - `MFA_FEATURE_FLAGS.TOTP_ENABLED` → `process.env.TOTP_ENABLED !== "false"`
   - `MFA_FEATURE_FLAGS.MFA_OPT_IN` → `process.env.MFA_OPT_IN !== "false"`
 - **AC:** `TOTP_ENABLED=false` → MFA middleware no-op, enrollment endpoint returns "MFA not available".
@@ -391,13 +391,13 @@ Chain strategy: pending
 
 ### Task 2.11 — Write MFA unit tests
 
-- [ ] Create `packages/security/__tests__/mfa/totp.test.ts`:
+- [x] Create `packages/security/__tests__/mfa/totp.test.ts`:
   - `generateTotpSecret` produces base32 string of expected length
   - `generateTotpUri` produces valid `otpauth://` URI with correct params
   - `verifyTotp` with known test vector (RFC 6238 test values)
   - `verifyTotp` rejects wrong code
   - `verifyTotp` rejects expired code (outside window)
-- [ ] Create `packages/security/__tests__/mfa/recovery-codes.test.ts`:
+- [x] Create `packages/security/__tests__/mfa/recovery-codes.test.ts`:
   - `generateRecoveryCodes` produces exactly 8 unique codes of length 10
   - `hashRecoveryCode` produces bcrypt hash
   - `verifyRecoveryCode` matches correct code and returns index
@@ -429,7 +429,7 @@ Chain strategy: pending
 
 ### Task 3.1 — Define SecretProvider interface
 
-- [ ] Create `packages/security/src/secrets/provider.ts`:
+- [x] Create `packages/security/src/secrets/provider.ts`:
   - `SecretProvider` interface:
     - `getSecret(name: string): Promise<string>` — resolves secret, throws `SecretNotFoundError` if missing
     - `validateSecrets(options?: { strict?: boolean }): Promise<ValidationResult>` — validates all known secrets
@@ -442,7 +442,7 @@ Chain strategy: pending
 
 ### Task 3.2 — Implement secrets inventory
 
-- [ ] Create `packages/security/src/secrets/inventory.ts`:
+- [x] Create `packages/security/src/secrets/inventory.ts`:
   - `SECRETS_INVENTORY: SecretMetadata[]` with all secrets from design §3.2 (9 entries):
     `BETTER_AUTH_SECRET`, `DATABASE_URL`, `SUNAT_CLIENT_ID`, `SUNAT_CLIENT_SECRET`, `DRENYRA_MASTER_KEY`, `LLM_GATEWAY_KEY_PASSPHRASE`, `ARKELYTHEX_AES256_KEY`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`
   - `SecretMetadata` interface: `{ name, scope, rotation, blastRadius, minEntropy?, required, notes }`
@@ -453,7 +453,7 @@ Chain strategy: pending
 
 ### Task 3.3 — Implement EnvProvider
 
-- [ ] Create `packages/security/src/secrets/env-provider.ts`:
+- [x] Create `packages/security/src/secrets/env-provider.ts`:
   - `EnvProvider` class implementing `SecretProvider`
   - `getSecret(name)` → reads `process.env[name]`, throws `SecretNotFoundError` if undefined or empty
   - `validateSecrets(options?)` → iterates `SECRETS_INVENTORY`, checks:
@@ -467,7 +467,7 @@ Chain strategy: pending
 
 ### Task 3.4 — Implement startup validation
 
-- [ ] Create `packages/security/src/secrets/validation.ts`:
+- [x] Create `packages/security/src/secrets/validation.ts`:
   - `validateSecrets(provider, options?)` standalone function (can be used without EnvProvider instance)
   - Environment-aware behavior:
     - CI (`process.env.CI=true`): strict mode, `process.exit(1)` on failure
@@ -480,7 +480,7 @@ Chain strategy: pending
 
 ### Task 3.5 — Create barrel export for secrets module
 
-- [ ] Create `packages/security/src/secrets/index.ts`:
+- [x] Create `packages/security/src/secrets/index.ts`:
   - Export `SecretProvider`, `SecretNotFoundError`, `ValidationResult`, `ValidationError`
   - Export `EnvProvider`
   - Export `SECRETS_INVENTORY`, `SecretMetadata`
@@ -505,7 +505,7 @@ Chain strategy: pending
 
 ### Task 3.7 — Create secret management documentation
 
-- [ ] Create `docs/05-security/secret-management.md`:
+- [x] Create `docs/05-security/secret-management.md`:
   - Complete secrets inventory table (mirrors `SECRETS_INVENTORY` in code)
   - Rotation procedures for `BETTER_AUTH_SECRET` and `DRENYRA_MASTER_KEY` (per design §3.6)
   - Infisical migration strategy: Phase A (assessment now) → Phase B (deployment, separate SDD) → Phase C (cleanup, separate SDD)
@@ -516,7 +516,7 @@ Chain strategy: pending
 
 ### Task 3.8 — Write secrets unit tests
 
-- [ ] Create `packages/security/__tests__/secrets/env-provider.test.ts`:
+- [x] Create `packages/security/__tests__/secrets/env-provider.test.ts`:
   - `getSecret` returns env var value
   - `getSecret` throws for undefined var
   - `getSecret` throws for empty var
@@ -552,7 +552,7 @@ Chain strategy: pending
 
 ### Task 4.1 — Create monitoring strategy document
 
-- [ ] Create `docs/05-security/monitoring-strategy.md`:
+- [x] Create `docs/05-security/monitoring-strategy.md`:
   - Current monitoring inventory: access logs (ALLOW/DENY), auth events (login, MFA, lockout), error logs (rate limit, exceptions)
   - Where logs are stored: stdout → Fly.io log aggregation (current); roadmap: structured → Vector/ClickHouse
   - Retention: Fly.io default (document what that is); recommended: 90 days for security events
@@ -566,7 +566,7 @@ Chain strategy: pending
 
 ### Task 4.2 — Create incident response runbook
 
-- [ ] Create `docs/05-security/incident-response-runbook.md`:
+- [x] Create `docs/05-security/incident-response-runbook.md`:
   - 4 playbooks from design §4.3:
     1. **Credential Compromise**: detection → immediate containment (15 min) → investigation (1 hour) → remediation → notification → post-incident review (48h)
     2. **Brute Force / Credential Stuffing**: detection → containment (rate limit adjustments, IP blocking) → investigation (targeted accounts) → remediation (password resets)
@@ -595,7 +595,7 @@ Chain strategy: pending
 
 ### Task 4.4 — Update security docs README with Phase 4 links
 
-- [ ] Modify `docs/05-security/README.md` (created in Task 0.2):
+- [x] Modify `docs/05-security/README.md` (created in Task 0.2):
   - Update `incident-response-runbook.md` and `monitoring-strategy.md` from "forthcoming" to linked
   - Add `secret-management.md` link
   - Ensure all 5 documents are referenced with descriptions

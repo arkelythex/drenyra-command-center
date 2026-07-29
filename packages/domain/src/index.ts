@@ -23,6 +23,7 @@ export * from "./fiscal-memory";
 export * from "./fiscal-ontology";
 export * from "./fiscal-truth";
 export * from "./services";
+export * from "./workbench";
 export type {
 	CountryCode,
 	TaxIdentifier,
