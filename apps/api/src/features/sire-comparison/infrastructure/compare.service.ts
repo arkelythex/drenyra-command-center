@@ -1,3 +1,9 @@
+import { db } from "@drenyra/persistence/client";
+import { and, eq } from "@drenyra/persistence/query";
+import {
+	sireComparisons,
+	sireDiscrepancyResolutions,
+} from "@drenyra/persistence/schema";
 import {
 	buildSummary,
 	SireDiffLedgerService,
@@ -27,6 +33,7 @@ function toDiscrepancyType(status: SireDiffRow["status"]): DiscrepancyType {
 }
 
 function toDiscrepancyDTO(row: SireDiffRow): DiscrepancyDTO {
+	const now = new Date().toISOString();
 	return {
 		id: row.id,
 		type: toDiscrepancyType(row.status),
@@ -37,8 +44,8 @@ function toDiscrepancyDTO(row: SireDiffRow): DiscrepancyDTO {
 			row.resolution === "ACCEPTED_SUNAT" || row.resolution === "KEPT_LOCAL"
 				? "ACCEPTED"
 				: "UNRESOLVED",
-		createdAt: new Date().toISOString(),
-		updatedAt: new Date().toISOString(),
+		createdAt: now,
+		updatedAt: now,
 	};
 }
 
@@ -58,11 +65,9 @@ function buildComparisonSummary(rows: SireDiffRow[]): ComparisonSummary {
 	};
 }
 
-const resolvedDiscrepancies = new Map<string, DiscrepancyDTO>();
-const comparisonResults = new Map<
-	string,
-	{ rows: SireDiffRow[]; generatedAt: string }
->();
+function asDiscrepancyDTO(value: unknown): DiscrepancyDTO {
+	return value as unknown as DiscrepancyDTO;
+}
 
 export class SireComparisonService {
 	static async runComparison(
@@ -73,16 +78,41 @@ export class SireComparisonService {
 			companyId,
 			period,
 		});
-
 		const rows = artifact.rows;
 		const summary = buildComparisonSummary(rows);
+		const generatedAt = new Date();
 
-		comparisonResults.set(`${companyId}:${period}`, {
-			rows,
-			generatedAt: new Date().toISOString(),
-		});
+		await db
+			.insert(sireComparisons)
+			.values({ companyId, period, rows, summary, generatedAt })
+			.onConflictDoUpdate({
+				target: [sireComparisons.companyId, sireComparisons.period],
+				set: { rows, summary, generatedAt },
+			});
 
 		return { rows, summary };
+	}
+
+	private static async getResolvedDiscrepancies(
+		companyId: string,
+		period: string,
+	): Promise<Record<string, DiscrepancyDTO>> {
+		const resolutions = await db
+			.select()
+			.from(sireDiscrepancyResolutions)
+			.where(
+				and(
+					eq(sireDiscrepancyResolutions.companyId, companyId),
+					eq(sireDiscrepancyResolutions.period, period),
+				),
+			);
+
+		return Object.fromEntries(
+			resolutions.map((resolution) => [
+				resolution.discrepancyId,
+				asDiscrepancyDTO(resolution.resolutionData),
+			]),
+		);
 	}
 
 	static async getComparison(
@@ -93,14 +123,11 @@ export class SireComparisonService {
 			companyId,
 			period,
 		);
-
+		const resolvedDiscrepancies =
+			await SireComparisonService.getResolvedDiscrepancies(companyId, period);
 		const discrepancies = rows
 			.filter((row) => row.status !== "MATCH")
-			.map((row) => {
-				const resolved = resolvedDiscrepancies.get(row.id);
-				if (resolved) return resolved;
-				return toDiscrepancyDTO(row);
-			});
+			.map((row) => resolvedDiscrepancies[row.id] ?? toDiscrepancyDTO(row));
 
 		return { summary, discrepancies };
 	}
@@ -115,14 +142,13 @@ export class SireComparisonService {
 			companyId,
 			period,
 		);
-
+		const resolvedDiscrepancies =
+			await SireComparisonService.getResolvedDiscrepancies(companyId, period);
 		let discrepancies = rows
 			.filter((row) => row.status !== "MATCH")
-			.map((row) => resolvedDiscrepancies.get(row.id) ?? toDiscrepancyDTO(row));
+			.map((row) => resolvedDiscrepancies[row.id] ?? toDiscrepancyDTO(row));
 
-		if (type) {
-			discrepancies = discrepancies.filter((d) => d.type === type);
-		}
+		if (type) discrepancies = discrepancies.filter((d) => d.type === type);
 		if (resolutionStatus) {
 			discrepancies = discrepancies.filter(
 				(d) => d.status === resolutionStatus,
@@ -139,69 +165,90 @@ export class SireComparisonService {
 		action: ReconciliationAction,
 		notes?: string,
 	): Promise<DiscrepancyDTO> {
-		const now = new Date().toISOString();
-		let existing: DiscrepancyDTO | undefined;
-
-		for (const [, data] of comparisonResults) {
-			const row = data.rows.find((r) => r.id === id);
-			if (row) {
-				existing = resolvedDiscrepancies.get(id) ?? toDiscrepancyDTO(row);
-				break;
-			}
-		}
-
-		if (!existing) {
+		const [comparison] = await db
+			.select()
+			.from(sireComparisons)
+			.where(
+				and(
+					eq(sireComparisons.companyId, companyId),
+					eq(sireComparisons.period, period),
+				),
+			)
+			.limit(1);
+		const row = (comparison?.rows as SireDiffRow[] | undefined)?.find(
+			(candidate) => candidate.id === id,
+		);
+		if (!row) {
 			throw new Error(`Discrepancy ${id} not found. Run a comparison first.`);
 		}
 
-		let newStatus: DiscrepancyResolution;
-		switch (action) {
-			case "ACCEPT_SUNAT":
-			case "ACCEPT_LOCAL":
-				newStatus = "ACCEPTED";
-				break;
-			case "FLAG_FOR_REVIEW":
-				newStatus = "FLAGGED";
-				break;
-			case "MANUAL_FIX":
-				newStatus = "REVIEWING";
-				break;
-		}
-
+		const [persistedResolution] = await db
+			.select()
+			.from(sireDiscrepancyResolutions)
+			.where(
+				and(
+					eq(sireDiscrepancyResolutions.companyId, companyId),
+					eq(sireDiscrepancyResolutions.period, period),
+					eq(sireDiscrepancyResolutions.discrepancyId, id),
+				),
+			)
+			.limit(1);
+		const existing = persistedResolution
+			? asDiscrepancyDTO(persistedResolution.resolutionData)
+			: toDiscrepancyDTO(row);
+		const now = new Date();
+		const newStatus: DiscrepancyResolution =
+			action === "ACCEPT_SUNAT" || action === "ACCEPT_LOCAL"
+				? "ACCEPTED"
+				: action === "FLAG_FOR_REVIEW"
+					? "FLAGGED"
+					: "REVIEWING";
 		const updated: DiscrepancyDTO = {
 			...existing,
 			status: newStatus,
 			notes: notes ?? existing.notes,
-			updatedAt: now,
+			updatedAt: now.toISOString(),
 		};
 
-		resolvedDiscrepancies.set(id, updated);
+		await db
+			.insert(sireDiscrepancyResolutions)
+			.values({
+				companyId,
+				period,
+				discrepancyId: id,
+				status: newStatus,
+				notes: updated.notes ?? null,
+				resolutionData: updated,
+				updatedAt: now,
+			})
+			.onConflictDoUpdate({
+				target: [
+					sireDiscrepancyResolutions.companyId,
+					sireDiscrepancyResolutions.period,
+					sireDiscrepancyResolutions.discrepancyId,
+				],
+				set: {
+					status: newStatus,
+					notes: updated.notes ?? null,
+					resolutionData: updated,
+					updatedAt: now,
+				},
+			});
 
-		if (action === "ACCEPT_SUNAT") {
-			const resultsArray = Array.from(comparisonResults.entries());
-			const foundEntry = resultsArray.find(
-				([, data]: [string, { rows: SireDiffRow[]; generatedAt: string }]) =>
-					data.rows.some((r: SireDiffRow) => r.id === id),
-			);
-			const key = foundEntry?.[0];
-			const row = foundEntry?.[1]?.rows.find((r: SireDiffRow) => r.id === id);
-			const actualPeriod = key?.split(":")[1] ?? period;
-
-			if (row?.sunatRecord && companyId) {
-				await SireDiffLedgerService.applyResolutions({
-					companyId,
-					period: actualPeriod,
-					rows: [
-						{
-							rowId: row.id,
-							status: row.status,
-							decision: "ACCEPT_SUNAT",
-							localRecord: row.localRecord,
-							sunatRecord: row.sunatRecord,
-						},
-					],
-				}).catch(() => {});
-			}
+		if (action === "ACCEPT_SUNAT" && row.sunatRecord) {
+			await SireDiffLedgerService.applyResolutions({
+				companyId,
+				period,
+				rows: [
+					{
+						rowId: row.id,
+						status: row.status,
+						decision: "ACCEPT_SUNAT",
+						localRecord: row.localRecord,
+						sunatRecord: row.sunatRecord,
+					},
+				],
+			}).catch(() => {});
 		}
 
 		return updated;
@@ -238,22 +285,20 @@ export class SireComparisonService {
 	}> {
 		const currentDate = new Date();
 		const periods: string[] = [];
-
 		for (let i = 0; i < 6; i++) {
 			const d = new Date(
 				currentDate.getFullYear(),
 				currentDate.getMonth() - i,
 				1,
 			);
-			const year = d.getFullYear();
-			const month = String(d.getMonth() + 1).padStart(2, "0");
-			periods.push(`${year}-${month}`);
+			periods.push(
+				`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`,
+			);
 		}
 
 		const stats: DashboardPeriodStat[] = [];
 		let totalMatchSum = 0;
 		let totalWeight = 0;
-
 		for (const period of periods) {
 			try {
 				const { summary } = await SireComparisonService.getComparison(

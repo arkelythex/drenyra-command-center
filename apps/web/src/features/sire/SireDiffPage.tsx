@@ -13,6 +13,7 @@ import type {
 } from "@/features/artifacts/types/artifact.types";
 import { useSireDiffMutation } from "./hooks/useSireDiff";
 import { mapSireDiffResponseToArtifact } from "./mapSireDiffResponseToArtifact";
+import { buildExpedienteEvidenceHref } from "./buildExpedienteEvidenceHref";
 
 export function SireDiffPage() {
 	const [period, setPeriod] = useState("2026-03");

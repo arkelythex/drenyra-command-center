@@ -52,6 +52,7 @@ import {
 import { llmGatewayModule } from "./features/llm-gateway/module";
 import { monthlyCloseModule } from "./features/monthly-close";
 import { platformMcpModule } from "./features/platform";
+import { pleModule } from "./features/ple";
 import { pseComplianceRoutes } from "./features/pse-compliance";
 import { ragEnterpriseRoutes } from "./features/rag-enterprise";
 import { sireComparisonModule } from "./features/sire-comparison";
@@ -365,6 +366,7 @@ const baseApp = new Elysia()
 	.use(contextControlPlaneRoute)
 	.use(sireAuditRoute)
 	.use(cashflowRoutes)
+	.use(pleModule)
 	.use(pseComplianceRoutes)
 	.use(platformMcpModule)
 	.use(companySettingsRoute)
