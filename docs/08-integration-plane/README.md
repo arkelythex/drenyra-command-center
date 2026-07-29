@@ -10,6 +10,42 @@
 
 El Integration Plane define cómo Drenyra se relaciona con SUNAT y otras autoridades, bancos, ERPs, fuentes de documentos, gateways de pago, proveedores de nómina y registros externos. Su identidad es DFP, el **Drenyra Financial Protocol**: una abstracción de dominio que ofrece capacidades consistentes aunque por debajo use APIs, archivos, colas, OCR o adaptadores específicos.
 
+## DFP — Drenyra Financial Protocol
+
+```mermaid
+flowchart LR
+    subgraph Domain["Financial Plane"]
+        REQ["obtener estado CPE
+enviar registro fiscal
+conciliar transacciones"]
+    end
+
+    subgraph DFP["DFP — Domain Abstraction"]
+        C1["Conector SUNAT"]
+        C2["Conector Bancario"]
+        C3["Conector ERP"]
+    end
+
+    subgraph External["External Systems"]
+        S["SUNAT
+API REST"]
+        B["Banco
+SFTP + CSV"]
+        E["ERP
+SOAP + XML"]
+    end
+
+    REQ --> DFP
+    C1 --> S
+    C2 --> B
+    C3 --> E
+
+    style Domain fill:#e3f2fd,color:#1a237e
+    style DFP fill:#fff3e0,color:#e65100
+    style External fill:#f3e5f5,color:#4a148c
+```
+
+DFP evita que la topología del proveedor se filtre al dominio.
 DFP evita que la topología del proveedor se filtre al dominio. El Financial Plane pide “obtener estado de comprobante”, “enviar registro fiscal” o “conciliar transacciones”; el conector traduce esa intención tipada al protocolo de SUNAT, un banco o un ERP. Cada llamada conserva compañía, jurisdicción, credenciales autorizadas, correlación, candidate y receipt cuando corresponda.
 
 ## Qué no es

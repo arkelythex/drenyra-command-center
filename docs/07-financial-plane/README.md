@@ -18,6 +18,35 @@ No es un conjunto de pantallas de facturas ni una base de datos genérica de mov
 
 ## Universal Ledger e invariantes
 
+```mermaid
+flowchart TB
+    subgraph Ledger["Universal Ledger"]
+        direction TB
+        JE["Journal Entry
+id: je_202606_001
+period: 2026-06
+status: proposed"] --> V["Validated"]
+        V --> C["Change Set
+isolated branch"]
+        C -->|Review + Approve| P["Posted
+immutable"]
+        P --> REC["Receipt
+rct_01j5a..."]
+    end
+
+    subgraph Corrections["Compensation Model"]
+        ORIG["Original JE
+je_202606_001"] -->|corrects| COMP["Compensating JE
+je_202606_042
+reference: je_202606_001"]
+    end
+
+    style P fill:#e8f5e9,color:#1b5e20
+    style REC fill:#f3e5f5,color:#4a148c
+    style COMP fill:#fff3e0,color:#e65100
+    style C fill:#e3f2fd,color:#1a237e
+```
+
 El Universal Ledger modela entidades, chart of accounts, journal entries, líneas, moneda, tipos de cambio, períodos, dimensiones y provenance. Es neutral respecto del país en su core, pero admite mappings, documentos y reglas locales por medio de [Country Packs](../09-country-plane/README.md).
 
 Sus invariantes son contratos del dominio, no sugerencias:
