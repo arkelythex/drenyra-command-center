@@ -47,6 +47,29 @@ Ejemplo: un ajuste de S/ 250 puede autoaprobarse según política si sus checks 
 
 El agente de conciliación propone un asiento compensatorio para corregir una diferencia bancaria. [Intelligence](../04-intelligence-plane/README.md) entrega una propuesta estructurada y [Workspace](../03-workspace-plane/README.md) la mantiene en un Change Set. Trust congela el candidate, calcula hash y evidence root, aplica la política vigente y muestra el financial diff. La profesional aprueba ese hash. Antes del posteo, Execution vuelve a verificar hash, política, rol, período abierto y estado bancario. Si el banco informa un movimiento nuevo o cambió la evidencia, el candidate queda invalidado y debe revisarse de nuevo.
 
+## Diagrama de autoridad
+
+```mermaid
+flowchart LR
+    subgraph Candidate["Candidate Lifecycle"]
+        A["Propose"] --> B["Freeze"]
+        B --> C["Hash"]
+        C --> D["Validate"]
+        D --> E["Review"]
+        E --> F["Approve"]
+        F --> G["Revalidate"]
+        G --> H["Execute"]
+        H --> I["Receipt"]
+    end
+
+    E -.->|Reject| A
+    G -.->|Stale invalid| E
+
+    style F fill:#e8f5e9,color:#1b5e20
+    style I fill:#fff3e0,color:#e65100
+    style H fill:#f3e5f5,color:#4a148c
+```
+
 ## Relación con los demás planos
 
 - [Experience](../02-experience-plane/README.md) explica evidencia y autoridad sin ocultar su alcance.

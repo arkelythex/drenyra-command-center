@@ -41,6 +41,30 @@ Receipt      → issue immutable record
 Record       → store in Evidence Graph
 ```
 
+## The RED Lifecycle
+
+```mermaid
+flowchart TB
+    P["Propose"] --> F["Freeze ⛄"]
+    F --> H["Hash 🔑"]
+    H --> V["Validate ✅"]
+    V --> RV["Review 🔍"]
+    RV -->|Approve| AP["Approve ✍️"]
+    RV -->|Reject| P
+    AP --> REV["Revalidate 🔄"]
+    REV -->|Stale| RV
+    REV -->|Valid| EX["Execute ⚙️"]
+    EX --> RC["Receipt 📜"]
+    RC --> RG["Record in
+Evidence Graph"]
+
+    style P fill:#e3f2fd,color:#1a237e
+    style H fill:#fff3e0,color:#e65100
+    style AP fill:#e8f5e9,color:#1b5e20
+    style RC fill:#f3e5f5,color:#4a148c
+    style EX fill:#ffebee,color:#b71c1c
+```
+
 ### Step Details
 
 **1. Propose**
@@ -113,14 +137,14 @@ A receipt references the policy version and period state at the time of approval
 
 ## RED vs Traditional Audit
 
-| Aspect | Traditional | RED |
-|---|---|---|
-| **Proof** | Database says it happened | Cryptographic hash chain says it happened |
-| **Verification** | Requires system access | Independent, offline |
-| **Approval** | "Approved in the UI" | Signed candidate hash |
-| **Integrity** | Database admin can modify | Any modification breaks the chain |
-| **Traceability** | Requires joining multiple logs | Single receipt traverses full chain |
-| **Stale detection** | Manual review | Automatic revalidation before execution |
+| Aspect              | Traditional                    | RED                                       |
+| ------------------- | ------------------------------ | ----------------------------------------- |
+| **Proof**           | Database says it happened      | Cryptographic hash chain says it happened |
+| **Verification**    | Requires system access         | Independent, offline                      |
+| **Approval**        | "Approved in the UI"           | Signed candidate hash                     |
+| **Integrity**       | Database admin can modify      | Any modification breaks the chain         |
+| **Traceability**    | Requires joining multiple logs | Single receipt traverses full chain       |
+| **Stale detection** | Manual review                  | Automatic revalidation before execution   |
 
 ---
 
@@ -128,26 +152,26 @@ A receipt references the policy version and period state at the time of approval
 
 ```typescript
 interface RedReceipt {
-  id: string                     // rct_01j5a...
-  type: string                   // 'journal-entry-post', 'sire-submission', etc.
+  id: string // rct_01j5a...
+  type: string // 'journal-entry-post', 'sire-submission', etc.
   status: 'confirmed' | 'failed' | 'compensated'
 
   // Identity
-  candidateHash: string          // Hash of the frozen candidate
-  evidenceRoot: string           // Merkle root of evidence hashes
+  candidateHash: string // Hash of the frozen candidate
+  evidenceRoot: string // Merkle root of evidence hashes
 
   // Authority
-  policyVersion: string          // Policy version at time of approval
+  policyVersion: string // Policy version at time of approval
   riskLevel: R0 | R1 | R2 | R3
   materiality: number
-  approver: string               // Approver ID
+  approver: string // Approver ID
   approvedAt: string
-  approvalSignature: string      // Approver's signature
+  approvalSignature: string // Approver's signature
 
   // Execution
   workflowId: string
   executedAt: string
-  executionSignature: string     // System signature
+  executionSignature: string // System signature
 
   // Output
   output: {
@@ -159,10 +183,10 @@ interface RedReceipt {
 
 // Verify offline
 const verification = verifyReceipt(receiptFile)
-verification.candidateHashMatch   // true
-verification.evidenceRootMatch    // true
-verification.approvalValid        // true
-verification.executionValid       // true
+verification.candidateHashMatch // true
+verification.evidenceRootMatch // true
+verification.approvalValid // true
+verification.executionValid // true
 ```
 
 ---

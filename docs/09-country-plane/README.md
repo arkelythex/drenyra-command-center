@@ -18,10 +18,47 @@ No es una bandera de idioma, un conjunto de ifs dispersos por la aplicación ni 
 
 ## Shared core y overrides
 
+```mermaid
+flowchart TB
+    subgraph Core["Shared Core"]
+        L["Universal Ledger"]
+        EG["Evidence Graph"]
+        ID["Identity & Permissions"]
+        WF["Workflow Engine"]
+        CS["Change Sets"]
+        RC["Receipts"]
+        IC["Idempotency Contracts"]
+    end
+
+    subgraph Peru["Country Pack Perú"]
+        PE_A["Authority: SUNAT"]
+        PE_D["Docs: CPE, Factura, Boleta"]
+        PE_R["Rules: IGV 18%, Detracciones"]
+        PE_C["Calendar: SUNAT deadlines"]
+        PE_V["Vocabulary: RUC, IGV, SIRE"]
+        PE_I["Connector: SUNAT API"]
+    end
+
+    subgraph Colombia["Country Pack Colombia"]
+        CO_A["Authority: DIAN"]
+        CO_D["Docs: Factura Electrónica"]
+        CO_R["Rules: IVA 19%"]
+        CO_C["Calendar: DIAN deadlines"]
+        CO_V["Vocabulary: NIT, IVA, DIAN"]
+        CO_I["Connector: DIAN API"]
+    end
+
+    Core --> Peru
+    Core --> Colombia
+
+    style Core fill:#1a237e,color:#fff
+    style Peru fill:#e65100,color:#fff
+    style Colombia fill:#4a148c,color:#fff
+```
+
 El core compartido incluye Universal Ledger, Evidence Graph, Identity and Permissions, workflow engine, Change Sets, receipts, idempotencia y contratos de integración. Estos componentes conservan semántica consistente para todas las jurisdicciones.
 
 Cada pack aporta overrides declarativos y ejecutables:
-
 | Área         | Responsabilidad del Country Pack                             |
 | ------------ | ------------------------------------------------------------ |
 | Authority    | organismos, endpoints, credenciales y estados regulatorios   |

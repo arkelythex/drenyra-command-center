@@ -17,13 +17,13 @@ The model ensures that **the level of control matches the risk of the action** �
 
 ### R0 — Read, High Autonomy
 
-| Aspect | Detail |
-|---|---|
-| **Examples** | Read a document, query a ledger balance, list workspaces, search evidence |
-| **Validation** | None (or minimal schema check) |
-| **Approval** | None — the model executes directly |
-| **Output format** | Flexible |
-| **Audit** | Logged but no evidence node required |
+| Aspect            | Detail                                                                    |
+| ----------------- | ------------------------------------------------------------------------- |
+| **Examples**      | Read a document, query a ledger balance, list workspaces, search evidence |
+| **Validation**    | None (or minimal schema check)                                            |
+| **Approval**      | None — the model executes directly                                        |
+| **Output format** | Flexible                                                                  |
+| **Audit**         | Logged but no evidence node required                                      |
 
 **Principle:** Reading never changes state. No material risk.
 
@@ -31,13 +31,13 @@ The model ensures that **the level of control matches the risk of the action** �
 
 ### R1 — Structured, Exception Review
 
-| Aspect | Detail |
-|---|---|
-| **Examples** | Categorize a transaction, suggest a classification, summarize a document |
-| **Validation** | Preferred JSON Schema, not enforced |
-| **Approval** | Exception-based — only if confidence is low or the result is ambiguous |
-| **Output format** | Structured output preferred |
-| **Audit** | Logged with confidence score |
+| Aspect            | Detail                                                                   |
+| ----------------- | ------------------------------------------------------------------------ |
+| **Examples**      | Categorize a transaction, suggest a classification, summarize a document |
+| **Validation**    | Preferred JSON Schema, not enforced                                      |
+| **Approval**      | Exception-based — only if confidence is low or the result is ambiguous   |
+| **Output format** | Structured output preferred                                              |
+| **Audit**         | Logged with confidence score                                             |
 
 **Principle:** Suggestions and proposals that inform human decisions. The model proposes; the system may accept if confidence exceeds threshold.
 
@@ -45,13 +45,13 @@ The model ensures that **the level of control matches the risk of the action** �
 
 ### R2 — Mandatory Schema, Deterministic Validation
 
-| Aspect | Detail |
-|---|---|
-| **Examples** | Propose a journal entry, classify an invoice for ledger, prepare a tax declaration |
-| **Validation** | Mandatory JSON Schema, deterministic validation |
-| **Approval** | Required — one approver with matching role |
-| **Output format** | Strict JSON Schema |
-| **Audit** | Full evidence trail: candidate, validation, approval, execution |
+| Aspect            | Detail                                                                             |
+| ----------------- | ---------------------------------------------------------------------------------- |
+| **Examples**      | Propose a journal entry, classify an invoice for ledger, prepare a tax declaration |
+| **Validation**    | Mandatory JSON Schema, deterministic validation                                    |
+| **Approval**      | Required — one approver with matching role                                         |
+| **Output format** | Strict JSON Schema                                                                 |
+| **Audit**         | Full evidence trail: candidate, validation, approval, execution                    |
 
 **Principle:** Actions that affect financial state. The model proposes a structured candidate; a professional reviews and approves the exact frozen candidate.
 
@@ -59,13 +59,13 @@ The model ensures that **the level of control matches the risk of the action** �
 
 ### R3 — Strict Schema, Dual Control, Step-Up Auth
 
-| Aspect | Detail |
-|---|---|
-| **Examples** | Submit a tax declaration to SUNAT, post a journal entry to a closed period, approve a payment |
-| **Validation** | Strict JSON Schema, deterministic validation, revalidation before execution |
-| **Approval** | Required — dual approval with step-up authentication (MFA, second approver) |
-| **Output format** | Strict JSON Schema + candidate hash + approval token |
-| **Audit** | Full evidence trail: source → normalized → validated → candidate → approval → revalidation → execution → receipt |
+| Aspect            | Detail                                                                                                           |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------- |
+| **Examples**      | Submit a tax declaration to SUNAT, post a journal entry to a closed period, approve a payment                    |
+| **Validation**    | Strict JSON Schema, deterministic validation, revalidation before execution                                      |
+| **Approval**      | Required — dual approval with step-up authentication (MFA, second approver)                                      |
+| **Output format** | Strict JSON Schema + candidate hash + approval token                                                             |
+| **Audit**         | Full evidence trail: source → normalized → validated → candidate → approval → revalidation → execution → receipt |
 
 **Principle:** Irreversible or high-materiality actions. Every step is frozen, hashed, validated, and independently verifiable.
 
@@ -73,14 +73,43 @@ The model ensures that **the level of control matches the risk of the action** �
 
 ## Decision Matrix
 
+```mermaid
+flowchart LR
+    subgraph Levels["R0 – R3 Governance"]
+        R0["R0
+Read-Only
+No approval"]
+        R1["R1
+Structured
+Exception review"]
+        R2["R2
+Schema required
+Single approver"]
+        R3["R3
+Strict schema
+Dual + step-up"]
+    end
+
+    A["Query balance"] --> R0
+    B["Classify invoice"] --> R1
+    C["Propose JE"] --> R2
+    D["Submit to SUNAT"] --> R3
+
+    style R0 fill:#e8f5e9,color:#1b5e20
+    style R1 fill:#fff3e0,color:#e65100
+    style R2 fill:#ffebee,color:#b71c1c
+    style R3 fill:#f3e5f5,color:#4a148c
+    style D fill:#f3e5f5,color:#4a148c
+```
+
 | Risk → | Read-only | Suggestion | Financial impact | Irreversible |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | **Materiality** | None | None | Low-Medium | High |
 | **Level** | R0 | R1 | R2 | R3 |
-| **Schema** | None | Preferred | Mandatory | Strict |
-| **Validation** | None | Exception | Deterministic | Deterministic + Revalidate |
-| **Approval** | None | Exception | Single approver | Dual + step-up auth |
-| **Evidence** | Log | Log + confidence | Full chain | Full chain + receipt |
+| **Schema**      | None      | Preferred        | Mandatory        | Strict                     |
+| **Validation**  | None      | Exception        | Deterministic    | Deterministic + Revalidate |
+| **Approval**    | None      | Exception        | Single approver  | Dual + step-up auth        |
+| **Evidence**    | Log       | Log + confidence | Full chain       | Full chain + receipt       |
 
 ---
 
@@ -94,7 +123,7 @@ Every agent tool declares its R level at design time:
 interface ToolContract {
   name: string
   riskLevel: R0 | R1 | R2 | R3
-  schema: JSONSchema          // R2+ required
+  schema: JSONSchema // R2+ required
   validation: ValidationRule[]
   approvalRequired: boolean
   dualControl: boolean
@@ -105,7 +134,7 @@ interface ToolContract {
 const proposeJournalEntry: ToolContract = {
   name: 'propose-journal-entry',
   riskLevel: 'R2',
-  schema: journalEntrySchema,  // Mandatory
+  schema: journalEntrySchema, // Mandatory
   validation: [validateDebitCredit, validatePeriod, validateAccount],
   approvalRequired: true,
   dualControl: false,
@@ -129,14 +158,14 @@ If any step fails, the action is blocked and the failure is recorded as evidence
 
 ## Examples
 
-| Action | Level | Why |
-|---|---|---|
-| Query company balance | R0 | Read-only, no state change |
-| Suggest invoice classification | R1 | Suggestion, human decides |
-| Propose bank reconciliation adjustment | R2 | Financial impact, needs professional review |
-| Submit SIRE replacement to SUNAT | R3 | Irreversible, external authority, material impact |
-| Post journal entry to closed period | R3 | Requires compensating entry, irreversible without explicit reversal |
-| Delete evidence | R3 | Potential audit impact, irreversible |
+| Action                                 | Level | Why                                                                 |
+| -------------------------------------- | ----- | ------------------------------------------------------------------- |
+| Query company balance                  | R0    | Read-only, no state change                                          |
+| Suggest invoice classification         | R1    | Suggestion, human decides                                           |
+| Propose bank reconciliation adjustment | R2    | Financial impact, needs professional review                         |
+| Submit SIRE replacement to SUNAT       | R3    | Irreversible, external authority, material impact                   |
+| Post journal entry to closed period    | R3    | Requires compensating entry, irreversible without explicit reversal |
+| Delete evidence                        | R3    | Potential audit impact, irreversible                                |
 
 ---
 

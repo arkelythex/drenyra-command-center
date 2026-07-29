@@ -56,6 +56,40 @@ Durante un cierre, la conciliación detecta un movimiento bancario sin comproban
 
 ---
 
+## Diagrama de experiencia
+
+```mermaid
+flowchart TB
+    subgraph Workbench["Drenyra Workbench"]
+        direction LR
+        PE["Portfolio Explorer"] --> OC["Operational Canvas"]
+        OC --> IN["Inspector"]
+    end
+
+    subgraph Planes["FEOS Planes"]
+        WP["Workspace<br/>scope · lifecycle"]
+        IP["Intelligence<br/>agents · events"]
+        TP["Trust<br/>evidence · approvals"]
+        XP["Execution<br/>progress · durability"]
+        FP["Financial<br/>ledger · tax"]
+    end
+
+    PE --> WP
+    OC --> IP
+    OC --> FP
+    IN --> TP
+    OC -.->|progress| XP
+
+    style PE fill:#1a237e,color:#fff
+    style OC fill:#283593,color:#fff
+    style IN fill:#3949ab,color:#fff
+    style WP fill:#1565c0,color:#fff
+    style IP fill:#e65100,color:#fff
+    style TP fill:#1b5e20,color:#fff
+    style XP fill:#4a148c,color:#fff
+    style FP fill:#0d47a1,color:#fff
+```
+
 ## Relación con los demás planos
 
 - [Workspace](../03-workspace-plane/README.md) aporta alcance, lifecycle y rollups que el Workbench proyecta.

@@ -18,6 +18,31 @@ No define reglas fiscales ni el contenido de un asiento: eso pertenece al [Finan
 
 ## Contratos de durabilidad
 
+```mermaid
+flowchart TB
+    subgraph Workflow["Durable Workflow"]
+        direction TB
+        S["Start"] --> I["Idempotency Check"]
+        I --> F["Fencing"]
+        F --> E["Execute"]
+        E --> R["Retry?"]
+        R -->|Yes| F
+        R -->|No| UK["Unknown?"]
+        UK -->|Yes| REC["Reconcile"]
+        UK -->|No| DONE["Complete + Receipt"]
+        REC -->|Confirmed| DONE
+        REC -->|Not confirmed| RETRY["Retry?"]
+        RETRY -->|Yes| F
+        RETRY -->|No| ESC["Escalate"]
+    end
+
+    style I fill:#e3f2fd,color:#1a237e
+    style F fill:#fff3e0,color:#e65100
+    style DONE fill:#e8f5e9,color:#1b5e20
+    style UK fill:#ffebee,color:#b71c1c
+    style ESC fill:#ffebee,color:#b71c1c
+```
+
 Toda operación material requiere una idempotency key ligada a su intención técnica y scope. Una repetición con la misma key devuelve o reconcilia el resultado previo; una key reutilizada con payload distinto es un conflicto, no un reintento. Las actividades externas conservan correlación con candidate, receipt, compañía, período y conector.
 
 El **fencing** evita que dos workers o reintentos actúen simultáneamente sobre el mismo recurso. Un token o versión de lease acompaña cada acción; una ejecución antigua no puede confirmar ni sobrescribir la de quien posee el fence actual. Esto protege, por ejemplo, el posteo de un Change Set cuando un proceso recuperado intenta continuar después de un failover.

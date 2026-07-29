@@ -13,6 +13,38 @@ A receipt does not just say "this happened" — it points to a node in the Evide
 
 ---
 
+## Diagrama del Evidence Graph
+
+```mermaid
+flowchart LR
+    S["📄 Source Document
+Bank Statement PDF"]
+    N["📊 Normalized
+bank_statement.csv"]
+    V["✅ Validated
+reconciliation_report.json"]
+    C["📋 Candidate
+cs-2026-06-042"]
+    A["✍️ Approval
+user_jperez"]
+    E["⚙️ Execution
+je_202606_042 posted"]
+    R["📜 Receipt
+rct_01j5a..."]
+
+    S -->|ingested| N
+    N -->|validated| V
+    V -->|proposed| C
+    C -->|approved| A
+    A -->|revalidated| E
+    E -->|receipt| R
+
+    style S fill:#e3f2fd,color:#1a237e
+    style V fill:#e8f5e9,color:#1b5e20
+    style C fill:#fff3e0,color:#e65100
+    style R fill:#f3e5f5,color:#4a148c
+```
+
 ## Why It Exists
 
 Traditional accounting systems have a fundamental trust problem:
@@ -108,14 +140,21 @@ You can start at `rct_01j5a...` and trace back to the original bank statement PD
 
 ```typescript
 interface EvidenceNode {
-  id: string                    // evi_01j...
-  type: 'source' | 'normalized' | 'validated' | 'candidate' | 'approval' | 'execution' | 'receipt'
-  hash: string                  // SHA-256 of content
-  parentHash: string | null     // Previous node in the chain
-  children: string[]            // Derived nodes
-  content: any                  // The actual data
+  id: string // evi_01j...
+  type:
+    | 'source'
+    | 'normalized'
+    | 'validated'
+    | 'candidate'
+    | 'approval'
+    | 'execution'
+    | 'receipt'
+  hash: string // SHA-256 of content
+  parentHash: string | null // Previous node in the chain
+  children: string[] // Derived nodes
+  content: any // The actual data
   timestamp: string
-  version: string               // Rules version used
+  version: string // Rules version used
 }
 
 // Traverse from receipt to source

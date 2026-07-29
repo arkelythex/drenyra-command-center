@@ -20,6 +20,30 @@ No es una carpeta libre de documentos ni una simple vista de UI. Tampoco es un l
 
 ## Estados operacionales canónicos
 
+```mermaid
+flowchart LR
+    Q["queued"] --> W["working"]
+    W --> V["verifying"]
+    V --> C["completed"]
+    V --> B["blocked"]
+    B --> W
+    W --> WT["waiting"]
+    WT --> W
+    W --> F["failed"]
+    W --> U["unknown"]
+    U --> W
+    U --> C
+
+    style Q fill:#e3f2fd,color:#1a237e
+    style W fill:#fff3e0,color:#e65100
+    style V fill:#e8f5e9,color:#1b5e20
+    style C fill:#e8f5e9,color:#1b5e20
+    style B fill:#ffebee,color:#b71c1c
+    style WT fill:#f3e5f5,color:#4a148c
+    style F fill:#ffebee,color:#b71c1c
+    style U fill:#ffebee,color:#b71c1c
+```
+
 Todo objeto operativo se expresa con un vocabulario común:
 
 | Estado      | Significado                                                     |

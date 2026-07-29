@@ -31,33 +31,63 @@ Todo documento en las demás secciones se alinea con estos principios fundaciona
 
 Drenyra se organiza en **8 planos arquitectónicos** que ninguna capa superior puede saltarse:
 
+```mermaid
+flowchart TB
+    subgraph FEOS["Drenyra FEOS — 8 Planes"]
+        direction TB
+
+        EP["1. EXPERIENCE PLANE
+Workbench · CLI · Mobile · API · Embedded UI"]
+        WP["2. WORKSPACE PLANE
+Portfolio · Companies · Periods · Change Sets · Attention"]
+        IP["3. INTELLIGENCE PLANE
+Pi Runtime · Agents · Skills · Model Routing · Memory"]
+        TP["4. TRUST PLANE
+Evidence · Policy · Materiality · Approval · Receipts"]
+        XP["5. EXECUTION PLANE
+Temporal · Jobs · Idempotency · Fencing · Recovery"]
+        FP["6. FINANCIAL PLANE
+Ledger · Close · Tax · Treasury · AP · AR · Payroll"]
+        AP["7. INTEGRATION PLANE
+SUNAT · Banks · ERPs · Documents · Payments · Authorities"]
+        CP["8. COUNTRY PLANE
+Peru · Colombia · Chile · Ecuador · Mexico · Brazil"]
+
+        EP --> WP --> IP --> TP --> XP --> FP --> AP --> CP
+    end
+
+    style EP fill:#1a237e,color:#fff,stroke:#3949ab
+    style WP fill:#283593,color:#fff,stroke:#5c6bc0
+    style IP fill:#3949ab,color:#fff,stroke:#7986cb
+    style TP fill:#1565c0,color:#fff,stroke:#42a5f5
+    style XP fill:#0d47a1,color:#fff,stroke:#1e88e5
+    style FP fill:#1b5e20,color:#fff,stroke:#43a047
+    style AP fill:#e65100,color:#fff,stroke:#fb8c00
+    style CP fill:#4a148c,color:#fff,stroke:#7b1fa2
 ```
-┌─────────────────────────────────────────────────────────────┐
-│  1. EXPERIENCE PLANE                                       │
-│  Workbench · CLI · Mobile · API · Embedded UI              │
-├─────────────────────────────────────────────────────────────┤
-│  2. WORKSPACE PLANE                                        │
-│  Portfolio · Companies · Periods · Change Sets · Attention  │
-├─────────────────────────────────────────────────────────────┤
-│  3. INTELLIGENCE PLANE                                     │
-│  Pi Runtime · Agents · Skills · Model Routing · Memory      │
-├─────────────────────────────────────────────────────────────┤
-│  4. TRUST PLANE                                            │
-│  Evidence · Policy · Materiality · Approval · Receipts      │
-├─────────────────────────────────────────────────────────────┤
-│  5. EXECUTION PLANE                                        │
-│  Temporal · Jobs · Idempotency · Fencing · Recovery        │
-├─────────────────────────────────────────────────────────────┤
-│  6. FINANCIAL PLANE                                        │
-│  Ledger · Close · Tax · Treasury · AP · AR · Payroll       │
-├─────────────────────────────────────────────────────────────┤
-│  7. INTEGRATION PLANE                                      │
-│  SUNAT · Banks · ERPs · Documents · Payments · Authorities  │
-├─────────────────────────────────────────────────────────────┤
-│  8. COUNTRY PLANE                                          │
-│  Peru · Colombia · Chile · Ecuador · Mexico · Brazil       │
-└─────────────────────────────────────────────────────────────┘
+
+### Flujo de operación material
+
+Un agente no puede llamar directamente a SUNAT. Debe atravesar cada plano:
+
+```mermaid
+flowchart LR
+    A["🤖 Agent Proposal"] --> B["🔧 Typed Tool"]
+    B --> C["📋 Capability Policy"]
+    C --> D["🔒 Tenant Scope"]
+    D --> E["✅ Deterministic Validator"]
+    E --> F["🚪 Approval Gate"]
+    F --> G["⚙️ Durable Workflow"]
+    G --> H["🔌 External Adapter"]
+    H --> I["📜 Evidence Receipt"]
+
+    style A fill:#e3f2fd,color:#1a237e
+    style I fill:#e8f5e9,color:#1b5e20
+    style F fill:#fff3e0,color:#e65100
+    style H fill:#f3e5f5,color:#4a148c
 ```
+
+### Mapa de navegación
 
 Un agente no puede llamar directamente a SUNAT. Debe atravesar:
 
