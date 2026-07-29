@@ -36,6 +36,24 @@ En modo degradado, Drenyra conserva trabajo localmente, limita capacidades no ve
 
 Un workflow de pago recibe un candidate aprobado. Reserva el fence de la instrucción, valida receipt e idempotency key, llama al gateway y pierde conectividad antes de obtener respuesta. El workflow pasa a `unknown`, no crea una segunda transferencia. Un reconciliador consulta el gateway por la referencia externa; si encuentra el pago, publica el resultado y el receipt final. Si no lo encuentra, libera el intento de forma controlada y ejecuta la siguiente actividad. Si nadie puede probarlo, escala a la persona responsable.
 
+## Reglas operativas
+
+### Hacer
+
+- Usar idempotency keys para toda operación material — una key por intención técnica y scope.
+- Implementar fencing para toda actividad externa — un token o lease evita doble ejecución.
+- Clasificar fallos como transitorios o permanentes antes de reintentar.
+- Preservar el estado `unknown` hasta que la reconciliación confirme o descarte el resultado.
+
+### No hacer
+
+- No reintentar ciegamente una operación externa sin verificar si el lado remoto la ejecutó.
+- No pasar de `unknown` a `completed` por timeout — requiere reconciliación.
+- No permitir que un worker recuperado sobrescriba la ejecución de otro — validar el fence actual.
+- No ejecutar en modo degradado sin informar explícitamente al [Experience Plane](../02-experience-plane/README.md) de la incertidumbre.
+
+---
+
 ## Relación con los demás planos
 
 - [Workspace](../03-workspace-plane/README.md) consume estados durables y expone lifecycle y atención.

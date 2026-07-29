@@ -22,16 +22,16 @@ No es una carpeta libre de documentos ni una simple vista de UI. Tampoco es un l
 
 Todo objeto operativo se expresa con un vocabulario común:
 
-| Estado | Significado |
-| --- | --- |
-| `queued` | admitido y esperando capacidad o dependencia previa |
-| `working` | ejecución o investigación activa |
-| `verifying` | validación determinista o revisión en curso |
-| `waiting` | espera datos, evidencia, autoridad o una señal externa |
-| `blocked` | existe un impedimento accionable que requiere intervención |
-| `completed` | resultado confirmado y cerrado para ese objetivo |
-| `failed` | terminó con error no recuperable o requiere reinicio controlado |
-| `unknown` | no se puede afirmar el resultado; requiere reconciliación |
+| Estado      | Significado                                                     |
+| ----------- | --------------------------------------------------------------- |
+| `queued`    | admitido y esperando capacidad o dependencia previa             |
+| `working`   | ejecución o investigación activa                                |
+| `verifying` | validación determinista o revisión en curso                     |
+| `waiting`   | espera datos, evidencia, autoridad o una señal externa          |
+| `blocked`   | existe un impedimento accionable que requiere intervención      |
+| `completed` | resultado confirmado y cerrado para ese objetivo                |
+| `failed`    | terminó con error no recuperable o requiere reinicio controlado |
+| `unknown`   | no se puede afirmar el resultado; requiere reconciliación       |
 
 Las causas refinan el estado sin crear taxonomías incompatibles: `waiting:approval`, `waiting:evidence` o `blocked:period_locked`. `unknown` nunca se convierte en `completed` por timeout o reintento; se conserva hasta que [Execution](../06-execution-plane/README.md) reconcilie el hecho externo.
 
@@ -46,6 +46,24 @@ Los **Change Sets** aíslan propuestas financieras como un branch de Git: un esc
 Un portfolio agrega compañías y workspaces mediante semántica, no sólo conteo. Su Attention Inbox ordena trabajo por riesgo, materialidad, deadline e impacto downstream. Un comprobante inválido puede bloquear una conciliación, que bloquea un cierre y eleva la atención de la compañía; el rollup muestra la causa raíz y evita que un gerente vea únicamente un semáforo rojo.
 
 Ejemplo: un estudio gestiona 200 empresas. Diez cierres están `working`, tres esperan aprobación y una empresa está `blocked` porque falta evidencia de una transacción material antes de SUNAT. El portfolio la prioriza por vencimiento e impacto, mientras cada equipo conserva el workspace específico donde puede resolverla.
+
+## Reglas operativas
+
+### Hacer
+
+- Crear un workspace por combinación única de compañía, período y objetivo.
+- Usar Change Sets para aislar propuestas, ajustes y escenarios antes de autorizar su integración.
+- Resolver `blocked` estados investigando su causa raíz (evidencia faltante, período bloqueado, política que cambió).
+- Componer portfolios con semántica — riesgo, materialidad, deadline — no sólo conteo jerárquico.
+
+### No hacer
+
+- No reutilizar un workspace para un período u objetivo diferente — crea uno nuevo.
+- No operar sin scope explícito — toda acción debe saber qué compañía, período y workspace la contiene.
+- No permitir que un agente cierre un workspace sin un receipt de verificación.
+- No ignorar el estado `unknown` — requiere reconciliación, no transición automática a `completed`.
+
+---
 
 ## Relación con los demás planos
 

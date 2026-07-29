@@ -22,15 +22,15 @@ El core compartido incluye Universal Ledger, Evidence Graph, Identity and Permis
 
 Cada pack aporta overrides declarativos y ejecutables:
 
-| Área | Responsabilidad del Country Pack |
-| --- | --- |
-| Authority | organismos, endpoints, credenciales y estados regulatorios |
-| Documents | comprobantes, formatos, numeración y requisitos de evidencia |
-| Rules | impuestos, validaciones, tasas, retenciones y excepciones |
-| Calendars | vencimientos, períodos, feriados y ventanas de presentación |
-| Declarations | formularios, libros, secuencias y confirmaciones |
-| Vocabulary | términos regulatorios y contables de uso local |
-| Integrations | conectores y capacidades DFP habilitadas |
+| Área         | Responsabilidad del Country Pack                             |
+| ------------ | ------------------------------------------------------------ |
+| Authority    | organismos, endpoints, credenciales y estados regulatorios   |
+| Documents    | comprobantes, formatos, numeración y requisitos de evidencia |
+| Rules        | impuestos, validaciones, tasas, retenciones y excepciones    |
+| Calendars    | vencimientos, períodos, feriados y ventanas de presentación  |
+| Declarations | formularios, libros, secuencias y confirmaciones             |
+| Vocabulary   | términos regulatorios y contables de uso local               |
+| Integrations | conectores y capacidades DFP habilitadas                     |
 
 Las reglas se versionan con fecha de vigencia, fuente legal y fixtures. Una ejecución registra la versión exacta de pack y regla, para que una declaración de junio pueda explicarse aun después de una reforma normativa.
 
@@ -49,6 +49,24 @@ Al sumar Colombia, no se crea un segundo ledger ni un segundo protocolo de recei
 ## Estrategia de expansión
 
 Perú es la cuña porque concentra el aprendizaje de CPE, SUNAT, SIRE y operación fiscal local. Colombia valida la capacidad de abstraer otra autoridad y documentación electrónica. Chile y Ecuador prueban variaciones regulatorias adicionales; México exige alcance e integración mayores; Brasil se aborda cuando capital, partners y madurez operativa justifican la complejidad tributaria y subnacional. La secuencia no es una promesa de fechas: cada país requiere evidencia de product-market fit, conformance y cobertura de pruebas antes de activarse.
+
+## Reglas operativas
+
+### Hacer
+
+- Empezar desde el pack de Perú como referencia — tiene la cobertura más completa.
+- Versionar las reglas con fecha de vigencia, fuente legal y fixtures.
+- Mantener el core compartido independiente de jurisdicción — invariantes universales no se tocan.
+- Probar compatibilidad con casos positivos, negativos y de migración antes de activar un pack.
+
+### No hacer
+
+- No crear un ledger, protocolo de evidencia o sistema de receipts por país.
+- No permitir que un override del pack altere invariantes universales del core.
+- No cambiar la versión de regla de un workspace activo silenciosamente.
+- No agregar un país sin evidencia de product-market fit, conformance y cobertura de pruebas.
+
+---
 
 ## Relación con los demás planos
 

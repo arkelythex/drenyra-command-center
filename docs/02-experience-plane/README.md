@@ -38,6 +38,24 @@ La CLI ofrece el mismo modelo para profesionales expertos e integradores: comand
 
 Durante un cierre, la conciliación detecta un movimiento bancario sin comprobante. El Canvas muestra la excepción; el Inspector expone la transacción, la política aplicable y la evidencia faltante. La persona abre la palette, crea una solicitud de documento y deja el workflow en espera. Cuando llega la evidencia, el estado proyectado cambia a verificación. Si se propone un asiento, la interfaz muestra su impacto y el candidato congelado; la aprobación ocurre bajo el [Trust Plane](../05-trust-plane/README.md), no por haber abierto el panel.
 
+## Reglas operativas
+
+### Hacer
+
+- Usar la Command Palette como entrada principal para acciones — `⌘K` desde cualquier pane.
+- Mostrar evidencia, política y receipt en el Inspector antes de cada decisión material.
+- Respetar los modos de densidad como preferencia de la persona, no como estado global.
+- Diseñar cada vista para que revele contexto sin obligar a abrir otra pantalla.
+
+### No hacer
+
+- No ejecutar acciones irreversibles desde la Command Palette sin confirmación explícita.
+- No permitir que la UI oculte evidencia, riesgo o autoridad por razones estéticas.
+- No simular progreso — el plane proyecta el estado real reportado por [Execution](../06-execution-plane/README.md).
+- No tratar la CLI como un canal privilegiado — debe atravesar las mismas políticas que la UI.
+
+---
+
 ## Relación con los demás planos
 
 - [Workspace](../03-workspace-plane/README.md) aporta alcance, lifecycle y rollups que el Workbench proyecta.

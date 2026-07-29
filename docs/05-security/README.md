@@ -1,28 +1,5 @@
-# Documentación de Seguridad — Drenyra
+# Redirect — Security Docs
 
-Documentos de seguridad del proyecto Drenyra. Revisar periódicamente según el calendario definido en cada documento.
+These documents have moved to [`docs/12-security/`](../12-security/README.md).
 
-## Archivos
-
-| Archivo                                                          | Descripción                                                                                                      |
-| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| [`threat-model.md`](./threat-model.md)                           | Modelo de amenazas STRIDE — 30+ escenarios de amenaza sobre 8 límites de confianza                               |
-| [`nist-csf-baseline.md`](./nist-csf-baseline.md)                 | Línea base NIST CSF 2.0 — autoevaluación de 75 subcategorías con mapa de brechas priorizadas                     |
-| [`incident-response-runbook.md`](./incident-response-runbook.md) | Plan de respuesta a incidentes — 4 playbooks: compromiso de credenciales, fuerza bruta, exfiltración, escalación |
-| [`monitoring-strategy.md`](./monitoring-strategy.md)             | Estrategia de monitoreo de seguridad — 8 disparadores de alerta, inventario de logs y roadmap                    |
-| [`secret-management.md`](./secret-management.md)                 | Gestión de secretos — inventario de 9 secretos, procedimientos de rotación y migración a Infisical               |
-
-## Cadencia de revisión
-
-| Actividad                                   | Frecuencia                                      | Responsable       |
-| ------------------------------------------- | ----------------------------------------------- | ----------------- |
-| Revisión del modelo de amenazas             | Cada 6 meses o ante cambio arquitectónico mayor | Engineering Lead  |
-| Re-baseline NIST CSF                        | Anual                                           | Engineering Lead  |
-| Auditoría de permisos RBAC                  | Trimestral                                      | Security Champion |
-| Auditoría de rotación de secretos           | Mensual                                         | Infrastructure    |
-| Simulacro de respuesta a incidentes         | Cada 6 meses (tabletop)                         | Todo el equipo    |
-| Escaneo de vulnerabilidades en dependencias | Semanal (CI automatizado)                       | CI Pipeline       |
-
----
-
-**Última actualización:** 2026-07-25
+**Why:** Security documentation was consolidated into the canonical `12-security/` section of the FEOS structure. This directory is kept for backwards compatibility. Please update your links to `docs/12-security/`.

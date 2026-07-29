@@ -24,12 +24,12 @@ El model routing selecciona proveedor y capacidad según tarea, riesgo, costo y 
 
 ## Contratos de herramientas R0–R3
 
-| Nivel | Contrato |
-| --- | --- |
-| R0 | salida flexible para ayuda no material |
-| R1 | estructura preferida, revisión por excepción |
-| R2 | JSON Schema obligatorio y validación determinista |
-| R3 | schema estricto, validación determinista, autoridad reforzada y control dual cuando aplique |
+| Nivel | Contrato                                                                                    |
+| ----- | ------------------------------------------------------------------------------------------- |
+| R0    | salida flexible para ayuda no material                                                      |
+| R1    | estructura preferida, revisión por excepción                                                |
+| R2    | JSON Schema obligatorio y validación determinista                                           |
+| R3    | schema estricto, validación determinista, autoridad reforzada y control dual cuando aplique |
 
 Una tool R2 para proponer clasificación recibe IDs, importe, moneda y evidencia; devuelve un schema validado, no una instrucción narrativa. Las tools R3 exigen además candidate y approval token emitidos por Trust. El runtime aplica deny-by-default a herramientas no declaradas.
 
@@ -42,6 +42,24 @@ Pi transmite eventos en streaming; Drenyra los proyecta a objetos profesionales 
 ## Ejemplo operativo
 
 Al cargar una factura, Ingestion normaliza el archivo y Document Intelligence extrae campos. Classification propone cuenta, impuesto y confianza bajo R2. Si el monto supera materialidad, el agente crea un Change Set en [Workspace](../03-workspace-plane/README.md), no un asiento final. Ledger valida invariantes; Trust congela el candidato y solicita aprobación. El Conductor puede explicar el progreso, pero no salta ninguna puerta.
+
+## Reglas operativas
+
+### Hacer
+
+- Declarar tool contracts con nivel R0–R3 explícito y schema validable.
+- Separar memoria por propósito (normativa, organizacional, operacional, episódica) con retención explícita.
+- Proyectar eventos de agentes a objetos profesionales — Findings, Proposed Entries, Activity — antes de mostrarlos.
+- Rutear modelos según capacidad y contrato, no según preferencia.
+
+### No hacer
+
+- No permitir que un agente ejecute herramientas no declaradas en su contrato — deny-by-default.
+- No relajar contratos de herramientas porque el modelo no soporta el schema requerido — degradar a ruta humana.
+- No proyectar tokens en crudo como evidencia — la evidencia es el evento estructurado, no su representación.
+- No almacenar memoria que pueda reemplazar evidencia versionada — la memoria es contexto, no autoridad.
+
+---
 
 ## Relación con los demás planos
 

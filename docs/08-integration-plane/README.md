@@ -46,6 +46,24 @@ Para un banco, la misma disciplina permite importar movimientos, normalizarlos y
 
 La variación regional no convierte cada conector en una bifurcación de plataforma. El [Country Plane](../09-country-plane/README.md) declara autoridades, documentos, calendarios y reglas de cada jurisdicción; Integration resuelve los adaptadores compatibles. Un pack de Perú puede requerir SUNAT, SIRE y CPE; uno de Colombia DIAN y sus documentos electrónicos, pero ambos implementan capacidades DFP compartidas cuando su semántica lo permite.
 
+## Reglas operativas
+
+### Hacer
+
+- Adoptar infraestructura probada antes de construir equivalentes propios — concentrar esfuerzo en semántica fiscal.
+- Implementar el Connector Conformance Framework para cada integración.
+- Normalizar errores externos al vocabulario DFP.
+- Aislar credenciales por tenant — nunca compartir autorizaciones entre compañías.
+
+### No hacer
+
+- No exponer SDKs de proveedores directamente a agentes — siempre a través de una tool tipada.
+- No interpretar una respuesta ambigua como éxito — retornar `unknown` y dejar que Execution reconcilie.
+- No construir conectores sin un contrato versionado y suite de conformidad.
+- No bifurcar la plataforma por variación regional — usar [Country Packs](../09-country-plane/README.md) para declarar diferencias.
+
+---
+
 ## Relación con los demás planos
 
 - [Workspace](../03-workspace-plane/README.md) fija el scope de compañía, período y objetivo de cada llamada.
