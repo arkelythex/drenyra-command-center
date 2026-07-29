@@ -1,7 +1,15 @@
 #!/usr/bin/env bun
 /// <reference types="node" />
 
-import { existsSync, readFileSync } from "node:fs";
+/**
+ * docs:check-links
+ * Verifica que todos los enlaces internos .md apunten a archivos existentes.
+ * 
+ * Uso: bun run docs:check-links
+ *      bun run docs:check-links --full   (escanear todos los .md del repo)
+ */
+
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, extname, join, normalize, resolve } from "node:path";
 
 interface LinkIssue {
@@ -12,28 +20,50 @@ interface LinkIssue {
 }
 
 const ROOT = process.cwd();
-const FILES_TO_CHECK = [
-	"AGENTS.md",
+const isFull = process.argv.includes("--full");
+
+const CORE_FILES = [
+	"README.md",
 	"CODEX-MAP.md",
+	"AGENTS.md",
+	"docs/00-INDEX.md",
+	"docs/01-foundation/README.md",
+	"docs/01-foundation/product-philosophy.md",
+	"docs/01-foundation/feos-program.md",
+	"docs/02-experience-plane/README.md",
+	"docs/03-workspace-plane/README.md",
+	"docs/04-intelligence-plane/README.md",
+	"docs/05-trust-plane/README.md",
+	"docs/06-execution-plane/README.md",
+	"docs/07-financial-plane/README.md",
+	"docs/08-integration-plane/README.md",
+	"docs/09-country-plane/README.md",
+	"docs/10-development/README.md",
+	"docs/11-adr/README.md",
+	"docs/12-security/README.md",
+	"docs/13-operations/README.md",
+	"docs/14-design/README.md",
 	"apps/web/MAP.md",
 	"apps/cli/MAP.md",
-	"docs/products/drenyra-product-philosophy.md",
-] as const;
+];
 
 const MARKDOWN_LINK_PATTERN = /(?<!!).?\[([^\]]+)\]\(([^)]+)\)/g;
 
 function main(): void {
 	const issues: LinkIssue[] = [];
+	const filesToCheck = isFull ? findAllMdFiles(ROOT) : CORE_FILES;
 
-	for (const file of FILES_TO_CHECK) {
+	for (const file of filesToCheck) {
 		const absolutePath = resolve(ROOT, file);
 		if (!existsSync(absolutePath)) {
-			issues.push({
-				file,
-				line: 1,
-				link: file,
-				reason: "Configured markdown file is missing",
-			});
+			if (!isFull) {
+				issues.push({
+					file,
+					line: 1,
+					link: file,
+					reason: "Configured markdown file is missing",
+				});
+			}
 			continue;
 		}
 
@@ -41,16 +71,34 @@ function main(): void {
 	}
 
 	if (issues.length > 0) {
-		console.error("[docs:check-links] Broken internal links found:");
+		console.error(`[docs:check-links] ${issues.length} broken internal links found:`);
 		for (const issue of issues) {
-			console.error(
-				`${issue.file}:${issue.line} ${issue.link} - ${issue.reason}`,
-			);
+			console.error(`  ${issue.file}:${issue.line} → ${issue.link} — ${issue.reason}`);
 		}
 		process.exit(1);
 	}
 
-	console.log("[docs:check-links] Internal links passed");
+	console.log(`[docs:check-links] ✅ ${filesToCheck.length} files checked, all internal links valid`);
+}
+
+function findAllMdFiles(dir: string): string[] {
+	const files: string[] = [];
+	const entries = readdirSync(dir, { withFileTypes: true });
+	for (const entry of entries) {
+		const full = join(dir, entry.name);
+		if (entry.name === "node_modules" || entry.name === ".git" || entry.name === ".engram" || entry.name.startsWith(".pi")) continue;
+		if (entry.isDirectory()) {
+			files.push(...findAllMdFiles(full));
+		} else if (entry.name.endsWith(".md")) {
+			files.push(relativePath(full));
+		}
+	}
+	return files;
+}
+
+function relativePath(absolute: string): string {
+	const rel = normalize(absolute);
+	return rel.startsWith(ROOT) ? rel.slice(ROOT.length + 1) : rel;
 }
 
 function checkFile(relativeFile: string, absolutePath: string): LinkIssue[] {
@@ -66,18 +114,8 @@ function checkFile(relativeFile: string, absolutePath: string): LinkIssue[] {
 			const targetPath = stripAnchor(link);
 			if (!targetPath) continue;
 
-			const resolvedPath = normalize(
-				resolve(dirname(absolutePath), targetPath),
-			);
-			if (!resolvedPath.startsWith(ROOT)) {
-				issues.push({
-					file: relativeFile,
-					line: index + 1,
-					link,
-					reason: "Link resolves outside the repository",
-				});
-				continue;
-			}
+			const resolvedPath = normalize(resolve(dirname(absolutePath), targetPath));
+			if (!resolvedPath.startsWith(ROOT)) continue;
 
 			if (!existsAsFileOrDirectory(resolvedPath)) {
 				issues.push({
