@@ -1,5 +1,6 @@
 import { AlertCircle, Loader2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { EvidenceLineagePanel } from "../evidence/components/EvidenceLineagePanel";
 import { AgentCostDisplay } from "./AgentCostDisplay";
 import { AgentProgressBar } from "./AgentProgressBar";
 import { AgentRiskBadge } from "./AgentRiskBadge";
@@ -126,6 +127,9 @@ export function AgentTabPanel({
 					/>
 				</div>
 			</div>
+
+			{/* Evidence lineage */}
+			<EvidenceLineagePanel entityType="agent_run" entityId={session.id} />
 
 			{/* Steps / Timeline */}
 			{session.steps.length > 0 && (

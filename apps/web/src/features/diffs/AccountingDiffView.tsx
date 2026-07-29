@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearch } from "@tanstack/react-router";
 import type { DiffDetailDTO } from "./diffs.types";
 import { diffDetailQueryOptions } from "./query-options";
+import { EvidenceLineagePanel } from "../evidence/components/EvidenceLineagePanel";
 import { VerificationReportView } from "./VerificationReportView";
 
 const DIFF_TYPE_LABELS: Record<string, string> = {
@@ -148,23 +149,9 @@ function DiffContent({ diff }: { diff: DiffDetailDTO }) {
 			)}
 
 			{/* Evidence */}
-			{diff.evidenceIds.length > 0 && (
-				<div className="mb-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-2)] p-4">
-					<h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)]">
-						Evidencia
-					</h3>
-					<div className="flex flex-wrap gap-2">
-						{diff.evidenceIds.map((id) => (
-							<span
-								key={id}
-								className="rounded-lg bg-[var(--surface-1)] px-2.5 py-1 text-xs text-[var(--text-secondary)]"
-							>
-								{id}
-							</span>
-						))}
-					</div>
-				</div>
-			)}
+			<div className="mb-4">
+				<EvidenceLineagePanel entityType="diff" entityId={diff.id} />
+			</div>
 
 			{/* Decisions */}
 			{diff.decisions.length > 0 && (

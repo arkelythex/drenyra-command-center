@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { EvidenceLineagePanel } from "../evidence/components/EvidenceLineagePanel";
 import {
 	StatusBadge,
 	type StatusBadgeProps,
@@ -462,6 +463,7 @@ export function ThreadDetailPage() {
 							)}
 							{activeTab === "evidence" && (
 								<EvidenceTab
+									threadId={threadId}
 									evidenceIds={thread.evidenceIds}
 									onUnlink={(evId) => unlinkEvidenceMutation.mutate(evId)}
 									isClosed={isClosed}
@@ -749,28 +751,22 @@ function AgentsTab({
 // ─── Evidence Tab ────────────────────────────────────────────────────────────
 
 function EvidenceTab({
+	threadId,
 	evidenceIds,
 	onUnlink,
 	isClosed,
 }: {
+	threadId: string;
 	evidenceIds: string[];
 	onUnlink: (id: string) => void;
 	isClosed: boolean;
 }) {
-	if (evidenceIds.length === 0) {
-		return (
-			<div className="flex flex-col items-center gap-3 py-8 text-center">
-				<Link2 size={20} className="text-[var(--text-tertiary)]" />
-				<p className="text-sm text-[var(--text-tertiary)]">
-					No hay evidencia vinculada a este thread
-				</p>
-			</div>
-		);
-	}
-
 	return (
-		<div className="space-y-2">
-			{evidenceIds.map((evId) => (
+		<div className="space-y-4">
+			<EvidenceLineagePanel entityType="thread" entityId={threadId} />
+			{evidenceIds.length > 0 && (
+				<div className="space-y-2">
+					{evidenceIds.map((evId) => (
 				<div
 					key={evId}
 					className="flex items-center justify-between rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-4"
@@ -795,8 +791,10 @@ function EvidenceTab({
 							Desvincular
 						</button>
 					)}
+						</div>
+					))}
 				</div>
-			))}
+			)}
 		</div>
 	);
 }
