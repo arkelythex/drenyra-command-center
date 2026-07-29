@@ -9,6 +9,7 @@
  */
 
 import { randomBytes } from "node:crypto";
+import { hash as bcryptHash, compare as bcryptCompare } from "bcryptjs";
 
 const RECOVERY_CODE_COUNT = 8;
 const RECOVERY_CODE_LENGTH = 10;
@@ -33,14 +34,11 @@ function generateSingleCode(): string {
 	return code;
 }
 
-/** Hash a recovery code for storage (bcrypt-like simple hash for now). */
+/**
+ * Hash a recovery code for storage using bcrypt (cost 10).
+ */
 export async function hashRecoveryCode(code: string): Promise<string> {
-	// Using SHA-256 as a placeholder; production should use bcrypt
-	const encoder = new TextEncoder();
-	const data = encoder.encode(code);
-	const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-	const hashArray = Array.from(new Uint8Array(hashBuffer));
-	return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+	return bcryptHash(code, 10);
 }
 
 /**
@@ -51,11 +49,11 @@ export async function verifyRecoveryCode(
 	code: string,
 	hashes: (string | null)[],
 ): Promise<number> {
-	const inputHash = await hashRecoveryCode(code);
 	for (let i = 0; i < hashes.length; i++) {
-		const stored = hashes[i];
-		if (stored !== null && stored === inputHash) {
-			return i; // Return the index so caller can null it out
+		const stored: string | null | undefined = hashes[i];
+		if (!stored) continue;
+		if (await bcryptCompare(code, stored)) {
+			return i;
 		}
 	}
 	return -1;

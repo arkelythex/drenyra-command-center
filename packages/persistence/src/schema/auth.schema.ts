@@ -31,6 +31,14 @@ export const authUsers = pgTable("auth_users", {
 	// Rate-limiting fields (used by distributed login guard)
 	failedLoginAttempts: integer("failed_login_attempts").notNull().default(0),
 	lockedUntil: timestamp("locked_until"),
+	// MFA fields (Phase 2)
+	totpSecret: text("totp_secret"),
+	totpEnabled: boolean("totp_enabled").notNull().default(false),
+	totpVerifiedAt: timestamp("totp_verified_at"),
+	recoveryCodes: jsonb("recovery_codes").$type<(string | null)[]>(),
+	mfaFailureCount: integer("mfa_failure_count").notNull().default(0),
+	mfaLastFailureAt: timestamp("mfa_last_failure_at"),
+	mfaMethod: text("mfa_method").default(""),
 	createdAt: timestamp("created_at").notNull().defaultNow(),
 	updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -54,6 +62,8 @@ export const authSessions = pgTable("auth_sessions", {
 	userId: text("user_id")
 		.notNull()
 		.references(() => authUsers.id, { onDelete: "cascade" }),
+	// MFA verification flag (Phase 2)
+	mfaVerified: boolean("mfa_verified").notNull().default(false),
 });
 
 /**

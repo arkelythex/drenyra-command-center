@@ -40,4 +40,6 @@ export interface RouteProtectionMatrixRow {
 	readonly envelope: RouteEnvelopeStyle;
 	readonly rateLimit: RouteRateLimitStatus;
 	readonly notes: string;
+	/** Phase 2: requires MFA step-up verification for this route */
+	readonly requireMfa?: boolean;
 }

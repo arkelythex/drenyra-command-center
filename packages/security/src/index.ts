@@ -9,3 +9,4 @@
 
 export * from "./rbac";
 export * from "./mfa";
+export * from "./secrets";

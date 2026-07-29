@@ -376,6 +376,10 @@ export {
 	sireSubmissions,
 	sireSubmissionsRelations,
 } from "./sire.schema";
+export {
+	sireComparisons,
+	sireDiscrepancyResolutions,
+} from "./sire-comparisons.schema";
 // --- SKILLS ---
 export {
 	companySkills,

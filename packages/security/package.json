@@ -16,5 +16,7 @@
     "./secrets": "./src/secrets/index.ts",
     "./mfa": "./src/mfa/index.ts"
   },
-  "dependencies": {}
+  "dependencies": {
+    "bcryptjs": "^3.0.3"
+  }
 }

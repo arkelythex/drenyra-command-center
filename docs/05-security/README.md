@@ -4,13 +4,13 @@ Documentos de seguridad del proyecto Drenyra. Revisar periódicamente según el 
 
 ## Archivos
 
-| Archivo                                                          | Descripción                                                                                                          |
-| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| [`threat-model.md`](./threat-model.md)                           | Modelo de amenazas STRIDE — 30+ escenarios de amenaza sobre 8 límites de confianza                                   |
-| [`nist-csf-baseline.md`](./nist-csf-baseline.md)                 | Línea base NIST CSF 2.0 — autoevaluación de 75 subcategorías con mapa de brechas priorizadas                         |
-| [`incident-response-runbook.md`](./incident-response-runbook.md) | Plan de respuesta a incidentes — 4 playbooks detallados (próximamente en Fase 4)                                     |
-| [`monitoring-strategy.md`](./monitoring-strategy.md)             | Estrategia de monitoreo de seguridad — inventario de logs, disparadores de alerta y roadmap (próximamente en Fase 4) |
-| [`secret-management.md`](./secret-management.md)                 | Gestión de secretos — inventario, rotación y estrategia de migración a Infisical (próximamente en Fase 3)            |
+| Archivo                                                          | Descripción                                                                                                      |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| [`threat-model.md`](./threat-model.md)                           | Modelo de amenazas STRIDE — 30+ escenarios de amenaza sobre 8 límites de confianza                               |
+| [`nist-csf-baseline.md`](./nist-csf-baseline.md)                 | Línea base NIST CSF 2.0 — autoevaluación de 75 subcategorías con mapa de brechas priorizadas                     |
+| [`incident-response-runbook.md`](./incident-response-runbook.md) | Plan de respuesta a incidentes — 4 playbooks: compromiso de credenciales, fuerza bruta, exfiltración, escalación |
+| [`monitoring-strategy.md`](./monitoring-strategy.md)             | Estrategia de monitoreo de seguridad — 8 disparadores de alerta, inventario de logs y roadmap                    |
+| [`secret-management.md`](./secret-management.md)                 | Gestión de secretos — inventario de 9 secretos, procedimientos de rotación y migración a Infisical               |
 
 ## Cadencia de revisión
 
