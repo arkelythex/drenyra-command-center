@@ -74,3 +74,6 @@ testsprite_tests/
 # Tauri build artifacts
 apps/web/src-tauri/target/
 apps/web/src-tauri/gen/
+
+# Security package vitest cache
+packages/security/node_modules/.vite/
