@@ -1,5 +1,7 @@
-status: applied
+status: archived
+phase: archive
 created: 2026-07-02
 applied: 2026-07-11
 notes: Tenant middleware, rate limiter, y .env.example ya existen. Plan mayormente implementado.
 author: el-gentleman
+archived_at: 2026-07-28

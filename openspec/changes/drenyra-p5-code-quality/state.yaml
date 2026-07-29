@@ -1,4 +1,5 @@
-status: applied
+status: archived
+phase: archive
 applied: 2026-07-07
 author: el Gentleman
 prs: 2
@@ -26,3 +27,4 @@ summary:
     - SunatCredentials: 5->1 canonical types created
     - Type duplication audit completed (reports/type-duplication-audit-2026-07.md)
     - LedgerEntry (6x), RucInfo (5x) identified for future PRs
+archived_at: 2026-07-28

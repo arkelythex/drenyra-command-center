@@ -1,5 +1,7 @@
 change_id: drenyra-accounting-diff
-status: applied
+status: archived
+phase: archive
 created_at: 2026-07-02
 applied_at: 2026-07-11
 author: el-gentleman
+archived_at: 2026-07-28

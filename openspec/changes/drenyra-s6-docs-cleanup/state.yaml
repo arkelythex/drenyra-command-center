@@ -1,5 +1,7 @@
-status: applied
+status: archived
+phase: archive
 created: 2026-07-04
 applied: 2026-07-11
 notes: Generator fue removido, CODEX-MAP se edita directo. No hay duplicados visibles.
 author: el-gentleman
+archived_at: 2026-07-28

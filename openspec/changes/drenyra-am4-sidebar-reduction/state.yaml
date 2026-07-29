@@ -1,5 +1,7 @@
-status: applied
+status: archived
+phase: archive
 created: 2026-07-02
 applied: 2026-07-11
 notes: Sidebar reducida como parte de F1 AgenticShell. Ahora usa AgenticSidebar con 3 secciones.
 author: el-gentleman
+archived_at: 2026-07-28

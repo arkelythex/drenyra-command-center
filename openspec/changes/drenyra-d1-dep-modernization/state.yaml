@@ -1,4 +1,5 @@
-status: applied
+status: archived
+phase: archive
 created: 2026-07-09
 applied: 2026-07-11
 author: el-gentleman
@@ -10,3 +11,4 @@ pending:
   - PR2: Drizzle ORM 0.45 → 1.0 RC migration (breaking, ~400 lines)
   - PR3: AI SDK v6 → v7 migration (breaking, ~300 lines)
   - PR4: Minor updates (Biome, Tailwind, Vitest)
+archived_at: 2026-07-28

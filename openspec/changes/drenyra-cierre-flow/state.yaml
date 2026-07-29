@@ -1,6 +1,6 @@
 change_id: drenyra-cierre-flow
 phase: applied
-status: applied
+status: archived
 delivery_strategy: single-pr
 created_at: 2026-07-12
 applied_at: 2026-07-12
@@ -13,3 +13,4 @@ completed:
   - Created ContextualSidePanel (tabs: Contexto, Agentes, Auditoría)
   - Reordered CierreMensualPage: P0 hero first, then pipeline, then content
   - Updated route imports: removed redundant FiscalInspectorProvider wrappers
+archived_at: 2026-07-28

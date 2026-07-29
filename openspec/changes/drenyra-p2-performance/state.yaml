@@ -1,4 +1,5 @@
-status: applied
+status: archived
+phase: archive
 created: 2026-07-07
 applied: 2026-07-11
 author: el-gentleman
@@ -10,3 +11,4 @@ actions:
 pending:
   - PR2: Query optimization (N+1 queries)
   - PR3: Caching strategy + cold start
+archived_at: 2026-07-28

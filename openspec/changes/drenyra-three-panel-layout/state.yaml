@@ -1,5 +1,5 @@
 change_id: drenyra-three-panel-layout
-status: applied
+status: archived
 phase: applied
 branch: design/drenyra-three-panel-layout
 delivery_strategy: auto-chain
@@ -11,3 +11,4 @@ depends_on:
 rationale: >
   El layout de tres paneles necesita los tokens de color (DS1) y la tipografía (DS2)
   para ser consistente. No bloquea iniciar spec/design, pero apply espera DS1+DS2.
+archived_at: 2026-07-28

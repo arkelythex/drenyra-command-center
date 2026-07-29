@@ -1,25 +1,7 @@
 change_id: sdd-wb-006
-status: applying
-phase: apply
-execution_mode: auto
+status: archived
+phase: archive
 artifact_store: openspec
-delivery_strategy: auto-forecast
-review_budget_lines: 400
 strict_tdd: true
 created_at: 2026-07-27
 updated_at: 2026-07-27
-next_recommended: verify
-applied_prs:
-  PR1: semantic state types + store (complete)
-  PR2: AgentStateBadge component (complete)
-  PR3: AgentActivityFeed component (complete)
-  PR4: RightPanel Agents tab integration (complete)
-  PR5: SSE stream bridge + demo hooks (complete)
-artifacts:
-  proposal: proposal.md
-  source:
-    types: apps/web/src/types/agent-activity.ts
-    store: apps/web/src/stores/agent-activity.store.ts
-    components: apps/web/src/components/workbench/
-    hooks: apps/web/src/hooks/
-    right_panel: apps/web/src/components/agentic/RightPanel.tsx

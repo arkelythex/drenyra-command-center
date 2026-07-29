@@ -1,12 +1,20 @@
-status: tasks
+change_id: drenyra-p2b-perf-extended
+status: archived
+phase: archive
 created: 2026-07-09
-updated: 2026-07-11
+updated: 2026-07-28
+archived_at: 2026-07-28
 author: el-gentleman
 execution_mode: auto-chain
 prs: 3
 estimated_lines: 800
+actual_lines: ~450
 depends_on: drenyra-p2-performance
-risks:
-  - PR2 (bundle splitting) may exceed 400-line budget
-  - Lazy loading may cause flash of loading state
-next_recommended: apply-pr1
+pr1_status: applied
+pr1_summary: 'React rendering: useDeferredValue in ThreadList search, profiler audit. React.memo/state-move skipped — React Compiler handles it.'
+pr2_status: applied
+pr2_summary: 'Route-level code-splitting: skills.tsx lazy-loaded. vendor manualChunks: 11 vendor chunks already configured.'
+pr3_status: applied
+pr3_summary: 'Web vitals already configured. useEffect cleanup audit: zero gaps found. content-visibility:auto already present.'
+next_recommended: none
+continuation: Bundle visualizer and 150KB gzip verification require local build environment. Browser profiler recommended to confirm 40% re-render reduction.

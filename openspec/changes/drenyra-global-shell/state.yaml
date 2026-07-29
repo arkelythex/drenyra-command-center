@@ -1,6 +1,6 @@
 change_id: drenyra-global-shell
 phase: applied
-status: applied
+status: archived
 delivery_strategy: single-pr
 created_at: 2026-07-12
 applied_at: 2026-07-12
@@ -13,3 +13,4 @@ completed:
   - drenyra.tsx simplified to <Outlet /> (no nested AgenticLayout)
   - cierre-mensual.tsx: removed FiscalInspectorProvider wrapper
   - index.tsx: removed FiscalInspectorProvider wrapper
+archived_at: 2026-07-28

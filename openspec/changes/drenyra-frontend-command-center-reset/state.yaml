@@ -1,5 +1,6 @@
 change: drenyra-frontend-command-center-reset
-status: all-applied
+status: archived
+phase: archive
 created: 2026-07-09
 updated: 2026-07-09
 artifact_store: openspec
@@ -102,3 +103,4 @@ risks:
   - id: big-bang-delete
     severity: high
     mitigation: retirement map before deletion and compatibility access until replacement passes
+archived_at: 2026-07-28
