@@ -154,6 +154,46 @@ See the [Security index](./12-security/README.md). Covers threat model, tenant i
 | [Repo Sync](./13-operations/drenyra-repo-sync.md)             | Cross-repo synchronization during Fase 1.    |
 | [Platform Connection](./13-operations/platform-connection.md) | Integration with the Drenyra platform shell. |
 
+### How-to Guides (02)
+
+| Guide                                                                     | What you will learn                                      |
+| ------------------------------------------------------------------------- | -------------------------------------------------------- |
+| [Create a Workspace](./02-guides/how-to-create-a-workspace.md)            | Set up a workspace for company, period, and objective.  |
+| [Review a Change Set](./02-guides/how-to-review-a-change-set.md)          | Navigate a financial diff, check evidence, approve.     |
+| [Interpret a Receipt](./02-guides/how-to-interpret-a-receipt.md)          | Read a receipt, verify integrity, trace to evidence.    |
+| [Configure a Country Pack](./02-guides/how-to-configure-a-country-pack.md) | Add or customize fiscal rules for a jurisdiction.       |
+| [Add a Fiscal Obligation](./02-guides/how-to-add-a-fiscal-obligation.md)  | Model a tax declaration with FSD and tests.             |
+
+### Reference (03)
+
+| Document                                         | What it covers                                   |
+| ------------------------------------------------ | ------------------------------------------------ |
+| [Glossary](./03-reference/glossary.md)           | Unified glossary of Drenyra and fiscal terms.    |
+
+### Explanation (04)
+
+| Document                                                          | What it covers                                      |
+| ----------------------------------------------------------------- | --------------------------------------------------- |
+| [Evidence Graph](./04-explanation/evidence-graph.md)              | How the evidence trail is built and traversed.     |
+| [R0–R3 Governance](./04-explanation/r0-r3-governance.md)          | Risk-based governance model for agent actions.     |
+| [Receipt-Driven Execution](./04-explanation/receipt-driven-execution.md) | The RED protocol for material operations.    |
+| [Materiality](./04-explanation/materiality.md)                    | How risk × amount × deadline drives attention.     |
+| [FSD](./04-explanation/fiscal-spec-driven-execution.md)           | Fiscal Specification-Driven Execution discipline.  |
+
+### Fiscal Domain — Peru (06)
+
+| Document                                         | What it covers                                   |
+| ------------------------------------------------ | ------------------------------------------------ |
+| [Overview](./06-fiscal/peru/README.md)           | Peruvian tax system overview, regimes, roadmap.  |
+| [SUNAT Basics](./06-fiscal/peru/sunat-basics.md) | RUC, SOL, tax regimes, SEE, payment schedules.   |
+| [IGV](./06-fiscal/peru/igv.md)                   | IGV 18%, IPM gradual 2026–2029, credit tax.      |
+| [Detracciones](./06-fiscal/peru/detracciones.md) | SPOT system, percentages, D. Leg. 1713.          |
+| [CPE](./06-fiscal/peru/comprobantes.md)          | Electronic invoices, UBL 2.1, SEE, validation.   |
+| [CDR](./06-fiscal/peru/cdr.md)                   | Receipt confirmation, states, codes, flow.       |
+| [SIRE](./06-fiscal/peru/sire.md)                 | RVIE, RCE, discretionary period until 08/2026.   |
+| [PLE](./06-fiscal/peru/ple.md)                   | Electronic books program, formats, migration.    |
+| [Renta](./06-fiscal/peru/renta.md)               | Income tax, categories, rates, payments.         |
+
 ### Design (14)
 
 | Document                                              | What it covers                                      |
