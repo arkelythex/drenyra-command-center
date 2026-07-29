@@ -1,5 +1,3 @@
-# Redirect — Architecture Decision Records
+# Redirect
 
-These documents have moved to [`docs/11-adr/`](../11-adr/README.md).
-
-**Why:** ADRs were consolidated into the canonical `11-adr/` section of the FEOS documentation structure. This directory is kept for backwards compatibility. Please update your links to `docs/11-adr/`.
+These documents are superseded. See [docs/00-INDEX.md](../00-INDEX.md) for the current documentation map.

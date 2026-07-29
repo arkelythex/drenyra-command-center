@@ -1,5 +1,3 @@
-# Redirect — Canonical Docs
+# Redirect
 
-This document has moved to [`docs/14-design/product-topology.md`](../14-design/product-topology.md).
-
-**Why:** Product topology is a design document that belongs in the `14-design/` section. Please update your links.
+These documents are superseded. See [docs/00-INDEX.md](../00-INDEX.md) for the current documentation map.

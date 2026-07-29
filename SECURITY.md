@@ -4,7 +4,7 @@
 
 ---
 
-*Alineado con la [Filosofía Gentleman](docs/meta/gentleman-philosophy.md) de ARKELYTHEX — documentación clara, progresiva y que trata cada lector como un colega.*
+*Alineado con la [Filosofía de producto](README.md#product-philosophy-guardrails) de ARKELYTHEX — documentación clara, progresiva y que trata cada lector como un colega.*
 
 ## Supported scope
 

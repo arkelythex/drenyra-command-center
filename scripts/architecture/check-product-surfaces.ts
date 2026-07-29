@@ -11,11 +11,11 @@ interface RequiredSurface {
 
 const REQUIRED_SURFACES: RequiredSurface[] = [
 	{
-		path: "docs/canon/product-topology.md",
+		path: "docs/14-design/product-topology.md",
 		description: "canonical product topology document",
 	},
 	{
-		path: "docs/products/drenyra-product-philosophy.md",
+		path: "docs/01-foundation/product-philosophy.md",
 		description: "canonical product philosophy document",
 	},
 	{

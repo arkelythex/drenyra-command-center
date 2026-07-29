@@ -1,5 +1,3 @@
-# Redirect — Cross-Repo Docs
+# Redirect
 
-This document has moved to [`docs/13-operations/platform-connection.md`](../13-operations/platform-connection.md).
-
-**Why:** Cross-repo integration is an operations concern that belongs in the `13-operations/` section. Please update your links.
+These documents are superseded. See [docs/00-INDEX.md](../00-INDEX.md) for the current documentation map.

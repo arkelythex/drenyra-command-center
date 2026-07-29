@@ -1,5 +1,3 @@
-# Redirect — Architecture Decision Records
+# Redirect
 
-This document has moved to [`docs/11-adr/adr-034-drenyra-fiscal-app-server.md`](../11-adr/adr-034-drenyra-fiscal-app-server.md).
-
-**Why:** ADRs were consolidated into the canonical `11-adr/` section. Please update your links.
+These documents are superseded. See [docs/00-INDEX.md](../00-INDEX.md) for the current documentation map.
