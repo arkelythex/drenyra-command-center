@@ -37,8 +37,10 @@ const EVIDENCE_RELATIONSHIPS = {
 } as const;
 
 export type EvidenceType = (typeof EVIDENCE_TYPES)[keyof typeof EVIDENCE_TYPES];
-export type EvidenceSource = (typeof EVIDENCE_SOURCES)[keyof typeof EVIDENCE_SOURCES];
-export type EvidenceStatus = (typeof EVIDENCE_STATUSES)[keyof typeof EVIDENCE_STATUSES];
+export type EvidenceSource =
+	(typeof EVIDENCE_SOURCES)[keyof typeof EVIDENCE_SOURCES];
+export type EvidenceStatus =
+	(typeof EVIDENCE_STATUSES)[keyof typeof EVIDENCE_STATUSES];
 export type EvidenceRelationship =
 	(typeof EVIDENCE_RELATIONSHIPS)[keyof typeof EVIDENCE_RELATIONSHIPS];
 
@@ -113,7 +115,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 	});
 	const envelope = (await response.json()) as ApiEnvelope<T>;
 	if (!response.ok || !envelope.success || envelope.data === undefined) {
-		throw new Error(envelope.error ?? "No se pudo completar la solicitud de evidencia.");
+		throw new Error(
+			envelope.error ?? "No se pudo completar la solicitud de evidencia.",
+		);
 	}
 	return envelope.data;
 }
@@ -137,14 +141,20 @@ export const evidenceKeys = {
 export function useEvidenceList(filters: EvidenceFilters) {
 	return useQuery({
 		queryKey: evidenceKeys.list(filters),
-		queryFn: () => request<EvidenceSearchResult>(`/api/v2/evidence/search?${searchParams(filters)}`),
+		queryFn: () =>
+			request<EvidenceSearchResult>(
+				`/api/v2/evidence/search?${searchParams(filters)}`,
+			),
 	});
 }
 
 export function useEvidenceDetail(id: string) {
 	return useQuery({
 		queryKey: evidenceKeys.detail(id),
-		queryFn: () => request<{ data: EvidenceDetail }>(`/api/v2/evidence/${id}`).then((result) => result.data),
+		queryFn: () =>
+			request<{ data: EvidenceDetail }>(`/api/v2/evidence/${id}`).then(
+				(result) => result.data,
+			),
 		enabled: Boolean(id),
 	});
 }
@@ -152,39 +162,57 @@ export function useEvidenceDetail(id: string) {
 export function useValidateEvidence() {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: (id: string) => request(`/api/v2/evidence/${id}/validate`, { method: "POST" }),
-		onSuccess: (_, id) => queryClient.invalidateQueries({ queryKey: evidenceKeys.detail(id) }),
+		mutationFn: (id: string) =>
+			request(`/api/v2/evidence/${id}/validate`, { method: "POST" }),
+		onSuccess: (_, id) =>
+			queryClient.invalidateQueries({ queryKey: evidenceKeys.detail(id) }),
 	});
 }
 
 export function useBatchValidate() {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: (ids: string[]) => request("/api/v2/evidence/batch-validate", { method: "POST", body: JSON.stringify({ ids }) }),
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: evidenceKeys.all }),
+		mutationFn: (ids: string[]) =>
+			request("/api/v2/evidence/batch-validate", {
+				method: "POST",
+				body: JSON.stringify({ ids }),
+			}),
+		onSuccess: () =>
+			queryClient.invalidateQueries({ queryKey: evidenceKeys.all }),
 	});
 }
 
 export function useLinkEvidence() {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: (input: LinkEvidenceInput) => request("/api/v2/evidence/link", { method: "POST", body: JSON.stringify(input) }),
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: evidenceKeys.all }),
+		mutationFn: (input: LinkEvidenceInput) =>
+			request("/api/v2/evidence/link", {
+				method: "POST",
+				body: JSON.stringify(input),
+			}),
+		onSuccess: () =>
+			queryClient.invalidateQueries({ queryKey: evidenceKeys.all }),
 	});
 }
 
 export function useUnlinkEvidence() {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: (linkId: string) => request("/api/v2/evidence/unlink", { method: "POST", body: JSON.stringify({ linkId }) }),
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: evidenceKeys.all }),
+		mutationFn: (linkId: string) =>
+			request("/api/v2/evidence/unlink", {
+				method: "POST",
+				body: JSON.stringify({ linkId }),
+			}),
+		onSuccess: () =>
+			queryClient.invalidateQueries({ queryKey: evidenceKeys.all }),
 	});
 }
 
 export function useEvidenceLineage(entityType: string, entityId: string) {
 	return useQuery({
 		queryKey: evidenceKeys.lineage(entityType, entityId),
-		queryFn: () => request(`/api/v2/evidence/lineage/${entityType}/${entityId}`),
+		queryFn: () =>
+			request(`/api/v2/evidence/lineage/${entityType}/${entityId}`),
 		enabled: Boolean(entityType && entityId),
 	});
 }
