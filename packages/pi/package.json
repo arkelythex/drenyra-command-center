@@ -24,7 +24,15 @@
     "test:watch": "vitest",
     "prepublishOnly": "pnpm build && pnpm test"
   },
-  "keywords": ["drenyra", "fiscal", "peru", "sunat", "sdd", "ai-agents", "pi"],
+  "keywords": [
+    "drenyra",
+    "fiscal",
+    "peru",
+    "sunat",
+    "sdd",
+    "ai-agents",
+    "pi"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
