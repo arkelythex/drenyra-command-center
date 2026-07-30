@@ -1,1 +1,0 @@
-export { DocumentsList } from "./DocumentsList";

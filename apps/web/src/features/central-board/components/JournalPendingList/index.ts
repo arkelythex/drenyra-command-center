@@ -1,1 +1,0 @@
-export { JournalPendingList } from "./JournalPendingList";

@@ -1,1 +1,0 @@
-export { LedgerEditableTable } from "./LedgerEditableTable";
