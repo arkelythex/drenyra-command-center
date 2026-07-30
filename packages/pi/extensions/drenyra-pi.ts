@@ -19,7 +19,6 @@ import { Type } from "typebox";
 // ─── Constants ──────────────────────────────────────────────────
 
 const VERSION = "1.0.0-alpha.1";
-const STORE_KEY = "@drenyra/pi";
 
 const FISCAL_PHASES = [
 	"captura",
@@ -67,30 +66,13 @@ const PERSONA = [
 	"7. SUNAT/UBL/IGV: Changes require compliance tests.",
 	"8. RED: Every mutation produces an immutable receipt record.",
 	"",
-	"Commands: /fsd:init  /fsd:status  /fsd:advance  /drenyra:status  /drenyra:persona",
+	"Commands: /fsd-init  /fsd-status  /fsd-advance  /drenyra-status  /drenyra-persona",
 	"── ──",
 ].join("\n");
 
-// ─── Helpers ───────────────────────────────────────────────────
+// ─── Module-level state (per-process, survives session_start) ───
 
-function parseState(sessionManager: {
-	getEntry?: (key: string) => { content?: unknown } | undefined;
-}) {
-	const entry = sessionManager.getEntry?.(STORE_KEY);
-	if (!entry?.content) return null;
-	try {
-		return JSON.parse(entry.content as string);
-	} catch {
-		return null;
-	}
-}
-
-function storeState(pi: ExtensionAPI, state: any) {
-	(pi as any).appendEntry?.(STORE_KEY, {
-		role: "custom",
-		content: JSON.stringify(state),
-	});
-}
+let personaDisabled = false;
 
 // ─── Extension Factory ─────────────────────────────────────────
 
@@ -103,11 +85,8 @@ export default function (pi: ExtensionAPI) {
 
 	// ─── Persona Injection ────────────────────────────────────
 
-	pi.on("before_agent_start", async (event, ctx) => {
-		// Read persona toggle from session state
-		const state = parseState(ctx.sessionManager);
-		if (state?.personaDisabled) return; // User turned persona off
-
+	pi.on("before_agent_start", async (event, _ctx) => {
+		if (personaDisabled) return;
 		return {
 			systemPrompt: event.systemPrompt + "\n" + PERSONA,
 		};
@@ -118,103 +97,19 @@ export default function (pi: ExtensionAPI) {
 	pi.registerCommand("drenyra-persona", {
 		description: "Toggle fiscal persona on/off. Usage: /drenyra-persona off",
 		handler: async (args, ctx) => {
-			const state = parseState(ctx.sessionManager) ?? {};
 			const cmd = args?.trim().toLowerCase();
-
 			if (cmd === "off") {
-				state.personaDisabled = true;
-				storeState(pi, state);
+				personaDisabled = true;
 				ctx.ui.notify("Fiscal persona disabled for this session.", "warning");
 			} else if (cmd === "on") {
-				state.personaDisabled = false;
-				storeState(pi, state);
+				personaDisabled = false;
 				ctx.ui.notify("Fiscal persona enabled.", "info");
 			} else {
 				ctx.ui.notify(
-					`Fiscal persona is ${state.personaDisabled ? "OFF" : "ON"}. Use /drenyra-persona on|off`,
+					`Fiscal persona is ${personaDisabled ? "OFF" : "ON"}. Use /drenyra-persona on|off`,
 					"info",
 				);
 			}
-		},
-	});
-
-	// ─── FSD State Management Commands ─────────────────────────
-
-	pi.registerCommand("fsd:init", {
-		description: "Initialize a fiscal period (RUC + periodo)",
-		handler: async (_args, ctx) => {
-			const ruc = await ctx.ui.input("RUC del contribuyente", {
-				placeholder: "20123456789",
-				validate: (v: string) =>
-					v.length === 11 ? undefined : "RUC must be 11 digits",
-			});
-			if (!ruc) return;
-
-			const periodo = await ctx.ui.input("Period (YYYYMM)", {
-				placeholder: "202607",
-				validate: (v: string) =>
-					/^\d{6}$/.test(v) ? undefined : "Format: YYYYMM",
-			});
-			if (!periodo) return;
-
-			storeState(pi, {
-				ruc,
-				periodo,
-				currentPhase: "captura",
-				status: "in_progress",
-				personaDisabled: false,
-				receipts: [],
-				phases: FISCAL_PHASES.map((id) => ({
-					id,
-					label: PHASE_LABELS[id],
-					status: id === "captura" ? "in_progress" : "not_started",
-				})),
-			});
-
-			ctx.ui.notify(`FSD initialized: RUC ${ruc}, periodo ${periodo}`, "info");
-		},
-	});
-
-	pi.registerCommand("fsd:advance", {
-		description: "Validate gates and advance to next fiscal phase",
-		handler: async (_args, ctx) => {
-			const state = parseState(ctx.sessionManager);
-			if (!state?.ruc) {
-				ctx.ui.notify("No active period. Run /fsd:init first.", "error");
-				return;
-			}
-
-			const idx = FISCAL_PHASES.indexOf(state.currentPhase);
-			if (idx === -1 || idx >= FISCAL_PHASES.length - 1) {
-				ctx.ui.notify("Fiscal period already complete.", "info");
-				return;
-			}
-
-			const next = FISCAL_PHASES[idx + 1];
-			const tier = RISK_TIERS[next];
-
-			if (tier === "R2" || tier === "R3") {
-				const ok = await ctx.ui.confirm(
-					`${tier} Approval Required`,
-					`Advance ${PHASE_LABELS[state.currentPhase]} → ${PHASE_LABELS[next]} requires ${tier} approval. Proceed?`,
-				);
-				if (!ok) {
-					ctx.ui.notify("Phase transition cancelled by user.", "warning");
-					return;
-				}
-			}
-
-			state.currentPhase = next;
-			state.phases[idx].status = "completed";
-			state.phases[idx + 1].status = "in_progress";
-			storeState(pi, state);
-
-			const advanceLabel = PHASE_LABELS[FISCAL_PHASES[idx]];
-			const nextLabel = PHASE_LABELS[next];
-			ctx.ui.notify(
-				`✅ Advanced: ${advanceLabel} → ${nextLabel} (${tier})`,
-				"info",
-			);
 		},
 	});
 
@@ -493,32 +388,30 @@ export default function (pi: ExtensionAPI) {
 	// ─── Guards ────────────────────────────────────────────────
 
 	pi.on("tool_call", (event) => {
-		// Guard 1: Money types in write operations
-		if (event.toolName === "edit" || event.toolName === "write") {
-			const input =
-				typeof event.input === "string"
-					? event.input
-					: JSON.stringify(event.input);
+		// Input utility: extract command string from any tool input format
+		const inputStr =
+			typeof event.input === "string"
+				? event.input
+				: JSON.stringify(event.input);
 
-			if (
-				/(number|amount|precio|monto|total|igv|price|value)/i.test(input) &&
-				!/Money|cents|BigInt|whole|\.00|bignumber/i.test(input)
-			) {
-				return {
-					block: true,
-					reason:
-						"@drenyra/pi: Monetary values must use BigInt (cents). Floats are blocked. Use `amount: 1500n` for S/15.00.",
-				};
-			}
+		const rawInput = event.input as Record<string, unknown>;
+
+		// Guard 1: Money types in write operations
+		if (
+			(event.toolName === "edit" || event.toolName === "write") &&
+			/(number|amount|precio|monto|total|igv|price|value)/i.test(inputStr) &&
+			!/Money|cents|BigInt|whole|\.00|bignumber/i.test(inputStr)
+		) {
+			return {
+				block: true,
+				reason:
+					"@drenyra/pi: Monetary values must use BigInt (cents). Floats are blocked. Use `amount: 1500n` for S/15.00.",
+			};
 		}
 
-		// Guard 2: Cross-RUC access in bash
+		// Guard 2: SQL safety in bash
 		if (event.toolName === "bash") {
-			const cmd =
-				typeof event.input === "string"
-					? event.input
-					: ((event.input as any)?.command ?? "");
-
+			const cmd = (rawInput?.command as string) ?? rawInput as string ?? "";
 			if (
 				/WHERE\s+ruc\s*=/i.test(cmd) &&
 				!/WHERE\s+ruc\s*=\s*:currentRuc/i.test(cmd)
@@ -526,52 +419,35 @@ export default function (pi: ExtensionAPI) {
 				return {
 					block: true,
 					reason:
-						"@drenyra/pi: RUC-scoped query must use `:currentRuc` or validated user context. Unsafe RUC filter detected.",
+						"@drenyra/pi: RUC-scoped query must use `:currentRuc`. Unsafe RUC filter.",
 				};
 			}
-
 			if (cmd.includes("DELETE FROM") && !cmd.includes("WHERE")) {
 				return {
 					block: true,
 					reason:
-						"@drenyra/pi: Unconditional DELETE blocked. Must include WHERE clause for audit compliance.",
+						"@drenyra/pi: Unconditional DELETE blocked. WHERE clause required for audit.",
 				};
 			}
-
 			if (cmd.includes("DROP TABLE") || cmd.includes("TRUNCATE")) {
 				return {
 					block: true,
 					reason:
-						"@drenyra/pi: DDL destructive operations blocked. Use reversible migrations.",
+						"@drenyra/pi: Destructive DDL blocked. Use migrations instead.",
 				};
 			}
 		}
 
 		// Guard 3: Cross-RUC reads
 		if (event.toolName === "read" || event.toolName === "edit") {
-			const path =
-				typeof event.input === "string"
-					? event.input
-					: ((event.input as any)?.path ?? "");
-
+			const path = (rawInput?.path as string) ?? rawInput as string ?? "";
 			if (path.includes("/ruc/") && !path.includes(":ruc")) {
 				return {
 					block: true,
 					reason:
-						"@drenyra/pi: RUC-specific path detected without context variable. Use `:ruc` placeholder for tenant isolation.",
+						"@drenyra/pi: RUC path without context variable. Use `:ruc` placeholder.",
 				};
 			}
 		}
 	});
-}
-
-// ─── Inline bash helper for preflight ──────────────────────────
-
-async function bash(cmd: string): Promise<string> {
-	const { execSync } = await import("node:child_process");
-	try {
-		return execSync(cmd, { encoding: "utf-8", timeout: 5000 }).trim();
-	} catch {
-		return "";
-	}
 }
