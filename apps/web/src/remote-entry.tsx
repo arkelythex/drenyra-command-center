@@ -1,6 +1,5 @@
 /**
- * Module Federation remote surface for Drenyra OS shell.
- * Exposes the fiscal Command Center as an embeddable app chunk.
+ * @drenyra/web — Module Federation entry (minimal)
+ * Exposes the router for the Drenyra OS shell.
  */
-export { DrenyraWorkspace as App } from "./features/drenyra-command-center/components/DrenyraWorkspace";
 export { createRouter } from "./router";
