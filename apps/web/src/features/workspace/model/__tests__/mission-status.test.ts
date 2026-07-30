@@ -4,7 +4,7 @@ import {
 	isRunnable,
 	isAwaitingApproval,
 	isTerminal,
-} from "../mission-status";
+} from "@drenyra/mission-domain";
 
 describe("AccountingMissionStatus — state machine", () => {
 	it("DRAFT → QUEUED is valid", () => {

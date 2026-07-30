@@ -39,4 +39,5 @@ export default defineWorkspace([
 	"packages/memory",
 	"packages/ai",
 	"packages/agents",
+	"packages/mission-domain",
 ]);
