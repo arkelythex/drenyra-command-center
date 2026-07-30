@@ -8,7 +8,7 @@ import {
 } from "@/lib/design-tokens/theme-package.schema";
 import { cn } from "@/lib/utils";
 import { THEME_PREFERENCE, type ThemePreference } from "@/lib/ux-mode";
-import { useUIStore } from "@/store/ui-store";
+import { useUIStore } from "@/stores/ui.store";
 
 const MODE_OPTIONS: {
 	value: ThemePreference;

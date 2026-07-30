@@ -7,17 +7,19 @@ const locationState = vi.hoisted(() => ({ pathname: "/login" }));
 vi.mock("@tanstack/react-router", () => ({
 	createRootRoute: <T,>(config: T) => config,
 	Outlet: () => <div data-testid="route-outlet" />,
-	useLocation: ({
-		select,
-	}: {
-		select: (location: { pathname: string }) => string;
-	}) => select({ pathname: locationState.pathname }),
+	useLocation: () => ({ pathname: locationState.pathname }),
 }));
 
-vi.mock("@/context/FiscalInspectorContext", () => ({
-	FiscalInspectorProvider: ({ children }: { children: ReactNode }) => (
-		<div data-testid="fiscal-inspector-provider">{children}</div>
+vi.mock("@/components/agentic-shell/AgenticLayout/AgenticLayout", () => ({
+	AgenticLayout: ({ children }: { children?: ReactNode }) => (
+		<div data-testid="agentic-layout">
+			{children ?? <div data-testid="route-outlet" />}
+		</div>
 	),
+}));
+
+vi.mock("sonner", () => ({
+	Toaster: () => null,
 }));
 
 import { Route } from "../__root";
@@ -25,22 +27,21 @@ import { Route } from "../__root";
 const RootComponent = (Route as unknown as { component: () => ReactNode })
 	.component;
 
-describe("root FiscalInspectorProvider boundary", () => {
-	it("does not mount the fiscal inspector provider for public routes", () => {
+describe("root layout routing boundary", () => {
+	it("renders public routes without the agentic shell", () => {
 		locationState.pathname = "/login";
 
 		render(<RootComponent />);
 
 		expect(screen.getByTestId("route-outlet")).toBeInTheDocument();
-		expect(screen.queryByTestId("fiscal-inspector-provider")).toBeNull();
+		expect(screen.queryByTestId("agentic-layout")).toBeNull();
 	});
 
-	it("mounts one fiscal inspector provider around authenticated routes", () => {
-		locationState.pathname = "/dashboard";
+	it("renders the agentic shell for authenticated workspace routes", () => {
+		locationState.pathname = "/workspace/1/2026/3/close";
 
 		render(<RootComponent />);
 
-		expect(screen.getAllByTestId("fiscal-inspector-provider")).toHaveLength(1);
-		expect(screen.getByTestId("route-outlet")).toBeInTheDocument();
+		expect(screen.getByTestId("agentic-layout")).toBeInTheDocument();
 	});
 });

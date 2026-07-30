@@ -1,8 +1,8 @@
 import { Outlet } from "@tanstack/react-router";
 import { lazy, Suspense, useMemo, useState } from "react";
-import { FiscalInspectorProvider } from "@/context/FiscalInspectorContext";
+import { InspectorProvider } from "@/context/InspectorContext";
 import { cn } from "@/lib/utils";
-import { useUIStore } from "@/store/ui-store";
+import { useUIStore } from "@/stores/ui.store";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
 import { FiscalEditorialShell } from "../../layout/FiscalEditorialShell";
 import { AgenticCommandBar } from "../AgenticCommandBar/AgenticCommandBar";
@@ -128,11 +128,11 @@ export function AgenticLayout({ children }: AgenticLayoutProps) {
 
 					{/* Main content area */}
 					<main className="relative flex min-w-0 flex-1 flex-col">
-						<FiscalInspectorProvider>
+						<InspectorProvider>
 							<Suspense fallback={<AgenticLayoutLoading />}>
 								{children ?? <Outlet />}
 							</Suspense>
-						</FiscalInspectorProvider>
+						</InspectorProvider>
 					</main>
 
 					{/* Right Inspector panel */}

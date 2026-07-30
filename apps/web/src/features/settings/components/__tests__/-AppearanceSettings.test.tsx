@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { SettingsProvider } from "@/context/SettingsContext";
 import { AppearanceSettings } from "@/features/settings/components/AppearanceSettings";
-import { useUIStore } from "@/store/ui-store";
+import { useUIStore } from "@/stores/ui.store";
 
 vi.mock("@/features/settings/components/SettingsShell", () => ({
 	SettingsShell: ({ children }: { children: ReactNode }) => (

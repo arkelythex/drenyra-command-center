@@ -1,60 +1,40 @@
-import { createContext, useContext, useEffect, type ReactNode } from "react";
-import type { Workspace } from "@drenyra/domain";
-import { announce } from "../components/workbench/ScreenReaderAnnouncer";
-import type { WorkspaceStore } from "../stores/workspace.store";
+import { createContext, useContext, type ReactNode } from "react";
 import { useWorkspaceStore } from "../stores/workspace.store";
 
-// ─── Context value ────────────────────────────────────────────────────────────
+// ─── Context value ───────────────────────────────────────────────────────────
 
 export interface WorkspaceContextValue {
-	workspace: Workspace | null;
-	isLoading: boolean;
-	navigateTo: WorkspaceStore["navigateTo"];
-	switchIntent: WorkspaceStore["switchIntent"];
-	switchCompany: WorkspaceStore["switchCompany"];
-	switchPeriod: WorkspaceStore["switchPeriod"];
-	updateLayout: WorkspaceStore["updateLayout"];
-	resetLayout: WorkspaceStore["resetLayout"];
-	setDensity: WorkspaceStore["setDensity"];
+	activePanelId: string | null;
+	setActivePanel: (id: string | null) => void;
+	isReady: boolean;
+	updateLayout: WorkspaceUIState["updateLayout"];
+	resetLayout: WorkspaceUIState["resetLayout"];
+	setDensityOverride: WorkspaceUIState["setDensityOverride"];
 }
+
+import type { WorkspaceUIState } from "../stores/workspace.store";
 
 const WorkspaceContext = createContext<WorkspaceContextValue | null>(null);
 
 // ─── Provider ─────────────────────────────────────────────────────────────────
 
 export function WorkspaceProvider({ children }: { children: ReactNode }) {
-	const current = useWorkspaceStore((s) => s.current);
-
-	// Announce workspace changes for screen readers
-	useEffect(() => {
-		if (current) {
-			announce(
-				`Workspace: ${current.company.name}, ${current.period.label}, ${current.intent}`,
-				"polite",
-			);
-		}
-	}, [current]);
-	const isLoading = useWorkspaceStore((s) => s.isLoading);
-	const navigateTo = useWorkspaceStore((s) => s.navigateTo);
-	const switchIntent = useWorkspaceStore((s) => s.switchIntent);
-	const switchCompany = useWorkspaceStore((s) => s.switchCompany);
-	const switchPeriod = useWorkspaceStore((s) => s.switchPeriod);
+	const activePanelId = useWorkspaceStore((s) => s.activePanelId);
+	const setActivePanel = useWorkspaceStore((s) => s.setActivePanel);
+	const isReady = useWorkspaceStore((s) => s.isReady);
 	const updateLayout = useWorkspaceStore((s) => s.updateLayout);
 	const resetLayout = useWorkspaceStore((s) => s.resetLayout);
-	const setDensity = useWorkspaceStore((s) => s.setDensity);
+	const setDensityOverride = useWorkspaceStore((s) => s.setDensityOverride);
 
 	return (
 		<WorkspaceContext.Provider
 			value={{
-				workspace: current,
-				isLoading,
-				navigateTo,
-				switchIntent,
-				switchCompany,
-				switchPeriod,
+				activePanelId,
+				setActivePanel,
+				isReady,
 				updateLayout,
 				resetLayout,
-				setDensity,
+				setDensityOverride,
 			}}
 		>
 			{children}

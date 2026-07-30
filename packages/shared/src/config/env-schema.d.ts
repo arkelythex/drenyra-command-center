@@ -7,8 +7,8 @@ export declare const EnvSchema: z.ZodObject<{
     }>>;
     PORT: z.ZodDefault<z.ZodCoercedNumber<unknown>>;
     LOG_LEVEL: z.ZodDefault<z.ZodEnum<{
-        info: "info";
         error: "error";
+        info: "info";
         debug: "debug";
         warn: "warn";
     }>>;

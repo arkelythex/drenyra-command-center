@@ -11,7 +11,7 @@ import {
 	THEME_PREFERENCE,
 	type ThemePreference,
 } from "@/lib/ux-mode";
-import { useUIStore } from "@/store/ui-store";
+import { useUIStore } from "@/stores/ui.store";
 import { THEME_PRESETS } from "./AppearanceConstants";
 
 export const AtmosphereGrid = () => {

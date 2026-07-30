@@ -4,8 +4,19 @@ export interface AgenticLayoutProps {
 	children?: ReactNode;
 }
 
+export type InspectorPanelType =
+	| "evidence"
+	| "journal-proposal"
+	| "reconciliation"
+	| "invoice"
+	| "approval"
+	| "fiscal"
+	| "agent"
+	| "diff"
+	| "thread";
+
 export interface InspectorPanel {
-	type: "thread" | "diff" | "agent" | "evidence" | "fiscal";
+	type: InspectorPanelType;
 	id: string;
 	title: string;
 }

@@ -3,7 +3,7 @@ import {
 	type FiscalRiskAlert,
 	FiscalRiskLayer,
 } from "@/components/fiscal/FiscalRiskLayer";
-import { useFiscalInspector } from "@/context/FiscalInspectorContext";
+import { useInspector, type InspectorSubject } from "@/context/InspectorContext";
 import { AgentTimeline } from "./components/AgentTimeline";
 import { ChecklistPanel } from "./components/ChecklistPanel";
 import {
@@ -151,7 +151,7 @@ function buildTaxGateItems(
 
 export function CierreMensualPage() {
 	const { data: cierre, isLoading, isError } = useCierreMensual();
-	const { open: openInspector } = useFiscalInspector();
+	const { open: openInspector } = useInspector();
 
 	const cierreRaw = (cierre ?? {}) as unknown as Record<string, unknown>;
 	const riskAlerts: FiscalRiskAlert[] = useMemo(
@@ -180,40 +180,12 @@ export function CierreMensualPage() {
 		(cierreRaw.blockers as MissionBlocker[])?.some((b) => !b.resolved) ?? false;
 
 	const handleOpenInspector = () => {
-		const base = {
-			traceId: cierre.id,
-			summary: `Cierre Mensual ${cierre.periodo} — ${cierre.companyName}`,
-			status: "PROPOSED" as const,
-			riskLevel: cierre.globalRiskLevel,
-			impact: "Cierre fiscal mensual",
-			proposedBy: "system" as const,
-			requiresApproval: true,
-			module: "cierre" as const,
-			companyRuc: cierre.companyRuc,
-			createdAt: cierre.startedAt,
-			evidence: [],
-			requiredApprovers: Object.keys(cierre.firmas),
+		const subject: InspectorSubject = {
+			type: "fiscal",
+			id: cierre.id,
+			title: `Cierre Mensual ${cierre.periodo} — ${cierre.companyName}`,
 		};
-
-		openInspector(
-			cierre.agentAnalysis
-				? {
-						...base,
-						agentAnalysis: {
-							agentId: cierre.agentAnalysis.agentId,
-							agentName: cierre.agentAnalysis.agentName,
-							confidence: cierre.agentAnalysis.confidence,
-							proposal: cierre.agentAnalysis.summary,
-							rationale: cierre.agentAnalysis.recommendations.join("; "),
-							detectedAt: cierre.startedAt,
-							risks:
-								cierre.agentAnalysis.discrepancies > 0
-									? ["Discrepancias detectadas"]
-									: [],
-						},
-					}
-				: base,
-		);
+		openInspector(subject);
 	};
 
 	return (
