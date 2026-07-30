@@ -30,7 +30,7 @@
     "serve": "bun src/serve.ts",
     "hooks:install": "bash scripts/install-hooks.sh",
     "test:watch": "vitest",
-    "prepublishOnly": "pnpm build && pnpm test"
+    "prepublishOnly": "echo 'Private package — not published to npm'; exit 1"
   },
   "keywords": [
     "drenyra",
@@ -44,10 +44,18 @@
   ],
   "license": "MIT",
   "pi": {
-    "extensions": ["./extensions"],
-    "prompts": ["./prompts"],
-    "skills": ["./skills"],
-    "themes": ["./themes"]
+    "extensions": [
+      "./extensions"
+    ],
+    "prompts": [
+      "./prompts"
+    ],
+    "skills": [
+      "./skills"
+    ],
+    "themes": [
+      "./themes"
+    ]
   },
   "repository": {
     "type": "git",
