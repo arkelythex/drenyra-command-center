@@ -12,6 +12,8 @@
     "prompts",
     "skills",
     "contracts",
+    "themes",
+    "scripts",
     "!src/**/*.test.ts",
     "!src/**/__tests__/**"
   ],
@@ -21,10 +23,12 @@
     "./strategies": "./dist/strategies/index.js"
   },
   "scripts": {
+    "postinstall": "node scripts/postinstall.mjs",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "serve": "bun src/serve.ts",
+    "hooks:install": "bash scripts/install-hooks.sh",
     "test:watch": "vitest",
     "prepublishOnly": "pnpm build && pnpm test"
   },
@@ -42,7 +46,8 @@
   "pi": {
     "extensions": ["./extensions"],
     "prompts": ["./prompts"],
-    "skills": ["./skills"]
+    "skills": ["./skills"],
+    "themes": ["./themes"]
   },
   "repository": {
     "type": "git",

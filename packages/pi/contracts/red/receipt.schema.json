@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RED Receipt",
+  "description": "Receipt-Driven Execution: immutable record of a material accounting action",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "pattern": "^red-[0-9]+-[a-z0-9]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "action": { "type": "string" },
+    "actor": { "type": "string", "enum": ["agent", "user", "system"] },
+    "ruc": { "type": "string", "pattern": "^[0-9]{11}$" },
+    "periodo": { "type": "string", "pattern": "^[0-9]{6}$" },
+    "resource": { "type": "string" },
+    "beforeState": { "type": "string" },
+    "afterState": { "type": "string" },
+    "hash": { "type": "string" },
+    "phaseId": {
+      "type": "string",
+      "enum": ["captura", "clasificacion", "conciliacion", "cierre", "declaracion", "auditoria"]
+    }
+  },
+  "required": ["id", "timestamp", "action", "actor", "ruc", "periodo", "resource", "beforeState", "afterState"],
+  "additionalProperties": false
+}
