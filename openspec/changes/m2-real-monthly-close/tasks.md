@@ -315,7 +315,7 @@ Chain strategy: pending
 - **Acceptance**:
   - `post(tx, params)` method: inserts one row into `journal_entries` (with `entryNumber`, `periodKey`, `date`, `gloss`, `status: "mayorizado"`) and N rows into `journal_entry_lines` (one per line with `accountCode`, `description`, `debitCents`, `creditCents`). Returns the created entry ID. Operates within a passed transaction `tx`.
   - `nextEntryNumber(tx, companyId, periodKey)`: queries MAX(`entry_number`) + 1 for the company and period, or 1 if none.
-- [ ] Implement `JournalEntryPostingService` with `post()` and `nextEntryNumber()`. <!-- sdd-owner: implementation -->
+- [x] Implement `JournalEntryPostingService` with `post()` and `nextEntryNumber()`. <!-- sdd-owner: implementation -->
 
 ### TASK-3.2: Implement PeriodCloseService
 - **Complexity**: S
@@ -325,7 +325,7 @@ Chain strategy: pending
 - **Acceptance**:
   - `closeFinal(tx, { companyId, year, month })`: creates `AccountingPeriod` value object, calls `closeFinal()` for validation, updates `accounting_periods` row status to `cerrado_final` within the passed transaction `tx`.
   - Uses existing `AccountingPeriod` domain VO from `packages/domain/src/accounting/accounting-period.ts`.
-- [ ] Implement `PeriodCloseService.closeFinal()` using `AccountingPeriod` VO. <!-- sdd-owner: implementation -->
+- [x] Implement `PeriodCloseService.closeFinal()` using `AccountingPeriod` VO. <!-- sdd-owner: implementation -->
 
 ### TASK-3.3: Implement TransactionalApplyUseCase (D5 deliverable)
 - **Complexity**: XL
@@ -345,7 +345,7 @@ Chain strategy: pending
     9. **COMMIT** — any failure rolls back entire transaction
   - Returns `{ success: true, receiptHash, postedEntryIds }`.
   - Partial failure: any entry validation fails → entire transaction rolls back, mission → FAILED.
-- [ ] Implement `TransactionalApplyUseCase` with full atomic transaction boundary. <!-- sdd-owner: implementation -->
+- [x] Implement `TransactionalApplyUseCase` with full atomic transaction boundary. <!-- sdd-owner: implementation -->
 
 ### TASK-3.4: Integrate AccountingPR POSTED → Mission APPLY trigger
 - **Complexity**: M
@@ -357,7 +357,7 @@ Chain strategy: pending
   - When an AccountingPR transitions to POSTED (all signers approved), detect if the PR is linked to a `monthly-close` mission via `proposal->>'accountingPrId'`.
   - If linked: update mission status to `APPROVED`, then invoke `MonthlyCloseOrchestrator.applyEntries()` (or directly `TransactionalApplyUseCase.execute()`).
   - Implemented as a direct trigger in the PR approval handler (design §7.2 approach).
-- [ ] Locate AccountingPR approval handler and add POSTED → mission APPLY trigger. <!-- sdd-owner: implementation -->
+- [x] Locate AccountingPR approval handler and add POSTED → mission APPLY trigger. <!-- sdd-owner: implementation -->
 
 ### TASK-3.5: Implement CompensatingEntryGenerator (D6 deliverable)
 - **Complexity**: M
@@ -371,7 +371,7 @@ Chain strategy: pending
     3. Sets `correctionOf: originalEntryId`, `date: lastDayOfMonth(currentOpenPeriod)`, `description: "Corrección del cierre {period}: {gloss}"`
     4. Returns array of `CompensatingEntry` objects ready to post
   - Entries target the **current open period**, never the closed one.
-- [ ] Implement `CompensatingEntryGenerator.generate()` with line inversion and period targeting. <!-- sdd-owner: implementation -->
+- [x] Implement `CompensatingEntryGenerator.generate()` with line inversion and period targeting. <!-- sdd-owner: implementation -->
 
 ### TASK-3.6: Create CorrectionMission intent + handler
 - **Complexity**: M
@@ -387,9 +387,9 @@ Chain strategy: pending
     - `onApproved`: posts compensating entries via `TransactionalApplyUseCase` to current open period.
   - Registered in `INTENT_HANDLERS` map.
   - Correction entry has `correctionOf` field referencing the original `journal_entries.id`.
-- [ ] Add `"correction"` to `MissionIntent` union in mission-domain. <!-- sdd-owner: implementation -->
-- [ ] Implement `CorrectionMissionHandler` with compensating entry generation and apply. <!-- sdd-owner: implementation -->
-- [ ] Register `CorrectionMissionHandler` in `INTENT_HANDLERS`. <!-- sdd-owner: implementation -->
+- [x] Add `"correction"` to `MissionIntent` union in mission-domain. <!-- sdd-owner: implementation -->
+- [x] Implement `CorrectionMissionHandler` with compensating entry generation and apply. <!-- sdd-owner: implementation -->
+- [x] Register `CorrectionMissionHandler` in `INTENT_HANDLERS`. <!-- sdd-owner: implementation -->
 
 ### TASK-3.7: Checklist auto-population from mission steps
 - **Complexity**: M
@@ -438,12 +438,12 @@ Chain strategy: pending
   - **Rollback**: inject failure at posting step 3 of 5 → verify transaction rollback, verify all 5 entries rolled back.
   - **Security**: tenant isolation — mission for company A cannot close period for company B. Gate queries scoped to `companyId`.
   - Tests should use a real PostgreSQL test database (test container or dedicated test DB) since transactional behavior, FOR UPDATE, and JSONB operations need real Postgres.
-- [ ] Write integration tests for `TransactionalApplyUseCase` (success, rollback, duplicate, concurrency). <!-- sdd-owner: implementation -->
-- [ ] Write unit tests for `CompensatingEntryGenerator`. <!-- sdd-owner: implementation -->
-- [ ] Write integration tests for correction mission full cycle. <!-- sdd-owner: implementation -->
-- [ ] Write end-to-end integration test for full close cycle (mission → completed). <!-- sdd-owner: implementation -->
-- [ ] Write integration test for transaction rollback on partial failure. <!-- sdd-owner: implementation -->
-- [ ] Write security test for tenant isolation on close operations. <!-- sdd-owner: implementation -->
+- [x] Write integration tests for `TransactionalApplyUseCase` (success, rollback, duplicate, concurrency). <!-- sdd-owner: implementation -->
+- [x] Write unit tests for `CompensatingEntryGenerator`. <!-- sdd-owner: implementation -->
+- [x] Write integration tests for correction mission full cycle. <!-- sdd-owner: implementation -->
+- [x] Write end-to-end integration test for full close cycle (mission → completed). <!-- sdd-owner: implementation -->
+- [x] Write integration test for transaction rollback on partial failure. <!-- sdd-owner: implementation -->
+- [x] Write security test for tenant isolation on close operations. <!-- sdd-owner: implementation -->
 
 ### TASK-3.10: API routes for snapshot, gate override, and mission SSE extension
 - **Complexity**: M

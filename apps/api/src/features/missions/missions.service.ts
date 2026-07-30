@@ -12,8 +12,10 @@ import {
 } from "@drenyra/mission-domain";
 import { optimisticUpdate } from "./middleware/concurrency.middleware";
 import type { RunIntentCommand, ApproveCommand, RejectCommand, ReconcileCommand, MissionSnapshot } from "@drenyra/mission-domain";
+import { getIntentHandler } from "./intent-handlers/intent-handlers.registry";
+import type { MissionIntentHandler } from "./intent-handlers/mission-intent-handler.interface";
 
-const VALID_INTENTS = new Set(["monthly-close", "reconciliation", "invoice-review", "compliance-check"]);
+const VALID_INTENTS = new Set(["monthly-close", "correction", "reconciliation", "invoice-review", "compliance-check"]);
 const VALID_RECONCILE_TARGETS = new Set(["RUNNING", "FAILED", "COMPLETED"]);
 
 function toSnapshot(row: Record<string, unknown>): MissionSnapshot {
@@ -39,7 +41,10 @@ function toSnapshot(row: Record<string, unknown>): MissionSnapshot {
 }
 
 export class MissionsService {
-  constructor(private readonly db: any) {}
+  constructor(
+    private readonly db: any,
+    private readonly intentHandlers?: Map<string, MissionIntentHandler>,
+  ) {}
 
   async createMission(companyId: string, cmd: RunIntentCommand): Promise<MissionSnapshot> {
     if (!VALID_INTENTS.has(cmd.intent)) {
@@ -96,7 +101,21 @@ export class MissionsService {
       status: AccountingMissionStatus.QUEUED,
     });
 
-    return { ...mission, status: AccountingMissionStatus.QUEUED, version: newVersion };
+    // Transition QUEUED → RUNNING and invoke intent handler
+    validateTransition(AccountingMissionStatus.QUEUED, AccountingMissionStatus.RUNNING);
+    const runningVersion = await optimisticUpdate(this.db, missionId, companyId, newVersion, {
+      status: AccountingMissionStatus.RUNNING,
+    });
+
+    // Dispatch to intent-specific handler (fire-and-forget)
+    const handler = getIntentHandler(mission.intent);
+    if (handler) {
+      handler.onRunning(missionId, companyId).catch((err) => {
+        console.error("[MissionsService] Intent handler crash for", mission.intent, err);
+      });
+    }
+
+    return { ...mission, status: AccountingMissionStatus.RUNNING, version: runningVersion };
   }
 
   async approveMission(
@@ -178,6 +197,14 @@ export class MissionsService {
       receiptId,
       receiptHash,
     });
+
+    // Dispatch onApproved to intent handler (e.g., apply entries)
+    const handler = getIntentHandler(mission.intent);
+    if (handler) {
+      handler.onApproved(missionId, companyId).catch((err) => {
+        console.error("[MissionsService] onApproved handler crash for", mission.intent, err);
+      });
+    }
 
     return {
       ...mission,

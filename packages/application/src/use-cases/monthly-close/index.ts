@@ -99,3 +99,16 @@ export type { BuildEvidenceInput, EvidenceBundle } from "./steps/build-evidence.
 
 export { RequestApprovalStep } from "./steps/request-approval.step";
 export type { RequestApprovalInput, ApprovalRequestResult } from "./steps/request-approval.step";
+
+// ─── PR3: Posting & Correction ───────────────────────────────────────────
+
+export { JournalEntryPostingService } from "./posting/journal-entry-posting.service";
+export type { PostJournalEntryParams, JournalEntryLineInput, PostedJournalEntry } from "./posting/journal-entry-posting.service";
+
+export { PeriodCloseService } from "./posting/period-close.service";
+export type { ClosePeriodParams } from "./posting/period-close.service";
+
+export { TransactionalApplyUseCase, ApplyError } from "./posting/transactional-apply.use-case";
+
+export { CompensatingEntryGenerator } from "./correction/compensating-entry-generator";
+export type { CompensatingEntry, CompensatingLine, CorrectionMissionIntent } from "./types/correction-mission";

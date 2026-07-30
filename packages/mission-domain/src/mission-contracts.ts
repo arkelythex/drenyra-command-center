@@ -11,6 +11,7 @@ import type { AccountingMissionStatus } from "./mission-status.js";
 
 export type MissionIntent =
   | "monthly-close"
+  | "correction"
   | "reconciliation"
   | "invoice-review"
   | "compliance-check";
