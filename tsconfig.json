@@ -58,6 +58,8 @@
 
       "@drenyra/memory": ["./packages/memory/src/index.ts"],
       "@drenyra/memory/*": ["./packages/memory/src/*"],
+      "@drenyra/mission-domain": ["./packages/mission-domain/src/index.ts"],
+      "@drenyra/mission-domain/*": ["./packages/mission-domain/src/*"],
       "@drenyra/pi": ["./packages/pi/src/index.ts"],
       "@drenyra/pi/*": ["./packages/pi/src/*"],
       "@drenyra/test-utils": ["./packages/test-utils/src/index.ts"],
@@ -102,6 +104,7 @@
     { "path": "./packages/infrastructure" },
     { "path": "./packages/shared" },
     { "path": "./packages/memory" },
+    { "path": "./packages/mission-domain" },
 
     { "path": "./apps/api" },
     { "path": "./apps/web" }

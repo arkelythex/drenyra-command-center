@@ -338,6 +338,16 @@ export {
 	routingAuditLog,
 	routingAuditLogRelations,
 } from "./model-router.schema";
+// --- MISSIONS ---
+export {
+	accountingMissions,
+	accountingMissionsRelations,
+	missionEvents,
+	missionEventsRelations,
+	missionIdempotency,
+	missionReceipts,
+	missionReceiptsRelations,
+} from "./mission.schema";
 // --- MONTHLY CLOSE ---
 export {
 	type ChecklistCategory,
