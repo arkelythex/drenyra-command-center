@@ -144,11 +144,8 @@ export {
 	isDrenyraMcpScope,
 } from "./protocol/mcp-contract";
 // ─── Agent Types (from drenyra-orchestrator) ──────────────────────────
-export type { AgentContext } from "./types/agent-context";
 export type {
 	Agent,
-	AgentCapability,
-	AgentDefinition,
 	AgentMetrics,
 	AgentPort,
 	AgentPriority,
@@ -162,7 +159,6 @@ export type {
 } from "./types/agent-tool";
 export type {
 	ApprovalDecision,
-	ApprovalLevel,
 	ApprovalRequest,
 	ApprovalState,
 	GovernanceBundleResult,
@@ -170,8 +166,6 @@ export type {
 export {
 	APPROVAL_LEVEL_ORDER,
 	isFiscalAction,
-	requiresGovernanceBundle,
-	requiresHumanApproval,
 } from "./types/approval-gate";
 export type {
 	AgentId,
