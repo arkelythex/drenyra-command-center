@@ -8,6 +8,10 @@
   "files": [
     "dist",
     "src",
+    "extensions",
+    "prompts",
+    "skills",
+    "contracts",
     "!src/**/*.test.ts",
     "!src/**/__tests__/**"
   ],
@@ -31,9 +35,15 @@
     "sunat",
     "sdd",
     "ai-agents",
-    "pi"
+    "pi",
+    "pi-package"
   ],
   "license": "MIT",
+  "pi": {
+    "extensions": ["./extensions"],
+    "prompts": ["./prompts"],
+    "skills": ["./skills"]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/arkelythex/Drenyra.git"
