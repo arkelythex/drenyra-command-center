@@ -1,0 +1,34 @@
+schema: spec-driven
+
+strict_tdd: true
+
+context: |
+  Stack: TypeScript, Vitest 4.
+  Architecture: Pi agent harness for Drenyra ecosystem.
+  Testing: Vitest (vitest run / vitest for watch).
+  Style: TypeScript strict.
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+  specs:
+    - Use Given/When/Then format for scenarios
+  design:
+    - Document architecture decisions with rationale
+  tasks:
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing code patterns
+  verify:
+    test_command: 'vitest run'
+    build_command: ''
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas
+
+testing:
+  strict_tdd: true
+  detected: '2026-07-30'
+  runner:
+    command: 'vitest run'
+    framework: 'Vitest 4'

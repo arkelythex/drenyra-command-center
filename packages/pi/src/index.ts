@@ -22,8 +22,8 @@ export {
 export { createDrenyraHarness, DrenyraHarness } from "./harness/harness";
 
 // ─── Pi Adapter — Hexagonal AgentRuntimePort ────────────────────────────
-export type { AgentRuntimePort, SessionHandle, FiscalPrompt, RuntimeEvent, RuntimeEventType, CreateSessionRequest, ForkSessionRequest, Unsubscribe, ShadowComparison } from "@drenyra/pi-adapter";
-export { PiAgentRuntimeAdapter, LegacyMastraRuntimeAdapter, ShadowRunner } from "@drenyra/pi-adapter";
+export type { AgentRuntimePort, SessionHandle, FiscalPrompt, RuntimeEvent, RuntimeEventType, CreateSessionRequest, ForkSessionRequest, Unsubscribe, ShadowComparison } from "./adapter";
+export { PiAgentRuntimeAdapter, LegacyMastraRuntimeAdapter, ShadowRunner } from "./adapter";
 
 // ─── Fiscal Agent Domain — Pure domain types ────────────────────────────
 export type { AgentDefinition, AgentCapability } from "@drenyra/fiscal-agent-domain/agent-definition";

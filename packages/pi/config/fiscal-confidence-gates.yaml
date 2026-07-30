@@ -1,0 +1,24 @@
+# Fiscal Phase Confidence Gate Configuration
+# Thresholds for auto-advancing through fiscal close phases.
+phases:
+  captura:
+    confidence_min: 0.9
+    auto_advance: true
+  clasificacion:
+    confidence_min: 0.75
+    auto_advance: true
+  conciliacion:
+    confidence_min: 0.8
+    auto_advance: true
+  cierre:
+    confidence_min: 0.85
+    auto_advance: false
+    human_required: true
+  declaracion:
+    confidence_min: 0.95
+    auto_advance: false
+    human_required: true
+  auditoria:
+    confidence_min: 0.85
+    auto_advance: false
+    human_required: true

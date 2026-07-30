@@ -4,47 +4,66 @@
  */
 
 // ─── Skills Types ──────────────────────────────────────────────────────
+
+export const LEXORI_SKILL_CATEGORY = {
+	SUNAT_CPE: "sunat-cpe",
+	SUNAT_SIRE: "sunat-sire",
+	SUNAT_PLE: "sunat-ple",
+	NIIF_PCGE: "niif-pcge",
+	FISCAL_IGV: "fiscal-igv",
+	FISCAL_DETRACTIONS: "fiscal-detractions",
+	FISCAL_RETENTIONS: "fiscal-retentions",
+} as const;
+export type LexoriSkillCategory =
+	(typeof LEXORI_SKILL_CATEGORY)[keyof typeof LEXORI_SKILL_CATEGORY];
+
+export interface LexoriSkillRule {
+	id: string;
+	description: string;
+	condition?: string;
+	action?: string;
+	references?: readonly string[];
+}
+
 export interface LexoriSkillDefinition {
 	id: string;
 	name: string;
+	category: LexoriSkillCategory;
 	description: string;
-	version?: string;
-	category?: string;
-	context?: Record<string, unknown>;
-	contextTemplate?: string;
+	version: string;
+	rules: readonly LexoriSkillRule[];
+	contextTemplate: string;
+	tags?: readonly string[];
 	modelHint?: string;
-	tags?: string[];
-	rules?: Array<{ id: string; description: string }>;
 }
 
 export interface LexoriSkillContextResult {
-	resolved: boolean;
-	context: Record<string, unknown>;
-	skill: LexoriSkillDefinition;
+	skillId: string;
+	category: LexoriSkillCategory;
+	renderedContext: string;
+	version: string;
 }
 
+/** Renders a skill context template with provided variables. Missing keys fail-closed. */
 export function renderLexoriSkillContext(
 	skill: LexoriSkillDefinition,
-	variables?: Record<string, string>,
+	variables: Record<string, string>,
 ): LexoriSkillContextResult {
-	const rendered =
-		variables && skill.context
-			? Object.entries(variables).reduce(
-					(text, [key, value]) => text.replace(`{{${key}}}`, value),
-					`${skill.name}: ${skill.description}`,
-				)
-			: `${skill.name}: ${skill.description}`;
+	let rendered = skill.contextTemplate;
+	for (const [key, value] of Object.entries(variables)) {
+		rendered = rendered.replaceAll(`{${key}}`, value);
+	}
+	if (/\{[a-zA-Z_]+\}/.test(rendered)) {
+		throw new Error(
+			`Lexori skill ${skill.id}: unresolved template variables remain`,
+		);
+	}
 	return {
-		resolved: true,
-		context: { rendered },
-		skill,
+		skillId: skill.id,
+		category: skill.category,
+		renderedContext: rendered,
+		version: skill.version,
 	};
-}
-
-export function validateLexoriSkillDefinition(
-	skill: Partial<LexoriSkillDefinition>,
-): skill is LexoriSkillDefinition {
-	return !!(skill.id && skill.name);
 }
 
 // ─── Drenyra Base Types ────────────────────────────────────────────────

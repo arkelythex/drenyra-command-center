@@ -1,20 +1,41 @@
 {
   "name": "@drenyra/pi",
-  "version": "0.1.0",
-  "description": "Drenyra Pi — Agent harness for Peruvian fiscal intelligence",
+  "version": "1.0.0-alpha.1",
+  "description": "Drenyra Pi — Agent harness for Peruvian fiscal intelligence. SDK for building fiscal AI agents with SDD, memory, and compliance pipelines.",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src",
+    "!src/**/*.test.ts",
+    "!src/**/__tests__/**"
+  ],
   "exports": {
-    ".": "./src/index.ts",
-    "./serve": "./src/serve.ts",
-    "./strategies": "./src/strategies/index.ts"
+    ".": "./dist/index.js",
+    "./serve": "./dist/serve.js",
+    "./strategies": "./dist/strategies/index.js"
   },
   "scripts": {
+    "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "serve": "bun src/serve.ts",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prepublishOnly": "pnpm build && pnpm test"
+  },
+  "keywords": ["drenyra", "fiscal", "peru", "sunat", "sdd", "ai-agents", "pi"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arkelythex/Drenyra.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arkelythex/Drenyra/issues"
+  },
+  "homepage": "https://github.com/arkelythex/Drenyra#readme",
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.7",

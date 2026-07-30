@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./dist",
+    "types": ["vitest/globals"]
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../workspace-domain" },
+    { "path": "../workspace-application" },
+    { "path": "../workspace-contracts" },
+    { "path": "../workspace-projections" }
+  ]
+}

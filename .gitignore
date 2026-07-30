@@ -60,6 +60,8 @@ duration
 
 # Bun cache (never commit)
 ~/.bun/
+packages/pi/~/
+packages/pi/bun.lock
 # Editor / IDE
 .tanstack/
 
@@ -77,3 +79,9 @@ apps/web/src-tauri/gen/
 
 # Security package vitest cache
 packages/security/node_modules/.vite/
+# Generated artifacts
+test-results/
+testsprite_tests/
+logs/
+data/
+*.log

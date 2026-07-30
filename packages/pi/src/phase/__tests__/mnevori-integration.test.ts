@@ -1,4 +1,4 @@
-import { Mnevori } from "../mnevori";
+import { Mnevori } from "../../mnevori";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createDefaultPhaseGraph } from "../fiscal-phase-graph";
 import { FiscalPhaseOrchestrator } from "../fiscal-phase-orchestrator";

@@ -3,7 +3,7 @@ import {
 	createFiscalOntologyScope,
 	FISCAL_OBJECT_KIND,
 	type FiscalObjectIdentity,
-} from "../../fiscal-ontology";
+} from "../../_domain-types/fiscal-ontology";
 import {
 	DETERMINISTIC_REASON_CODE,
 	GOVERNANCE_REVIEW_STATUS,
@@ -12,8 +12,8 @@ import {
 import type {
 	DeterministicValidatorResultRecord,
 	PolicyDecisionRecord,
-} from "../../fiscal-truth/types";
-import { Money } from "../../value-objects/Money";
+} from "../../_domain-types/fiscal-truth";
+import { Money } from "../../_domain-types/money";
 import {
 	canTransitionFalState,
 	createFiscalAgenticLedgerEvent,
