@@ -6,13 +6,13 @@ set -euo pipefail
 
 HOOK_DIR="$(git rev-parse --git-dir 2>/dev/null)/hooks"
 if [ -z "$HOOK_DIR" ] || [ "$HOOK_DIR" = "/hooks" ]; then
-  echo "❌ Not in a git repository"
-  exit 1
+	echo "❌ Not in a git repository"
+	exit 1
 fi
 
 HOOK_FILE="$HOOK_DIR/pre-commit"
 
-cat > "$HOOK_FILE" << 'HOOK'
+cat >"$HOOK_FILE" <<'HOOK'
 #!/usr/bin/env bash
 # @drenyra/pi — Fiscal pre-commit hook
 # Validates accounting invariants before each commit.

@@ -19,6 +19,16 @@
       "enum": ["captura", "clasificacion", "conciliacion", "cierre", "declaracion", "auditoria"]
     }
   },
-  "required": ["id", "timestamp", "action", "actor", "ruc", "periodo", "resource", "beforeState", "afterState"],
+  "required": [
+    "id",
+    "timestamp",
+    "action",
+    "actor",
+    "ruc",
+    "periodo",
+    "resource",
+    "beforeState",
+    "afterState"
+  ],
   "additionalProperties": false
 }

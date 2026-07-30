@@ -20,41 +20,58 @@ const checks = [];
 // Check 1: Extension file exists
 const extPath = join(PKG_ROOT, "extensions", "drenyra-pi.ts");
 if (existsSync(extPath)) {
-  checks.push("✅ Extension: drenyra-pi.ts");
+	checks.push("✅ Extension: drenyra-pi.ts");
 } else {
-  checks.push("❌ Extension: drenyra-pi.ts MISSING");
-  status = "warn";
+	checks.push("❌ Extension: drenyra-pi.ts MISSING");
+	status = "warn";
 }
 
 // Check 2: Prompts exist
 const promptDir = join(PKG_ROOT, "prompts");
-const promptCount = ["fsd-init", "fsd-status", "fsd-advance", "fsd-propose",
-  "fsd-spec", "fsd-design", "fsd-tasks", "fsd-apply", "fsd-verify",
-  "fsd-archive", "fsd-onboard"].filter(f => existsSync(join(promptDir, `${f}.md`))).length;
+const promptCount = [
+	"fsd-init",
+	"fsd-status",
+	"fsd-advance",
+	"fsd-propose",
+	"fsd-spec",
+	"fsd-design",
+	"fsd-tasks",
+	"fsd-apply",
+	"fsd-verify",
+	"fsd-archive",
+	"fsd-onboard",
+].filter((f) => existsSync(join(promptDir, `${f}.md`))).length;
 checks.push(`✅ Prompts: ${promptCount} FSD templates`);
 
 // Check 3: Skills exist
 const skillDir = join(PKG_ROOT, "skills");
-const skillCount = ["drenyra-sdd", "fiscal-compliance", "fiscal-review",
-  "ruc-scope"].filter(f => existsSync(join(skillDir, f, "SKILL.md"))).length;
+const skillCount = [
+	"drenyra-sdd",
+	"fiscal-compliance",
+	"fiscal-review",
+	"ruc-scope",
+].filter((f) => existsSync(join(skillDir, f, "SKILL.md"))).length;
 checks.push(`✅ Skills: ${skillCount} fiscal skills`);
 
 // Check 4: Contracts exist
 const contractDir = join(PKG_ROOT, "contracts");
-const contractCount = ["receipt.schema.json", "fiscal-lens.schema.json",
-  "phase-state.schema.json"].filter(f => existsSync(join(contractDir, "red", f))).length;
+const contractCount = [
+	"receipt.schema.json",
+	"fiscal-lens.schema.json",
+	"phase-state.schema.json",
+].filter((f) => existsSync(join(contractDir, "red", f))).length;
 checks.push(`✅ Contracts: ${contractCount} RED schemas`);
 
 // Check 5: Theme exists
 if (existsSync(join(PKG_ROOT, "themes", "Drenyra.json"))) {
-  checks.push("✅ Theme: Drenyra.json");
+	checks.push("✅ Theme: Drenyra.json");
 }
 
 console.log(`\n  ╔══════════════════════════════════════╗`);
 console.log(`  ║  @drenyra/pi v${VERSION.padEnd(17)}║`);
 console.log(`  ║  Fiscal Agent Harness                ║`);
 console.log(`  ╚══════════════════════════════════════╝\n`);
-checks.forEach(c => console.log(`  ${c}`));
+checks.forEach((c) => console.log(`  ${c}`));
 console.log(`\n  Install: pi install @drenyra/pi`);
 console.log(`  Docs:    https://github.com/arkelythex/Drenyra\n`);
 

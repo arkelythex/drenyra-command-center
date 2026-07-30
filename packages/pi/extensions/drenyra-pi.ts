@@ -411,7 +411,7 @@ export default function (pi: ExtensionAPI) {
 
 		// Guard 2: SQL safety in bash
 		if (event.toolName === "bash") {
-			const cmd = (rawInput?.command as string) ?? rawInput as string ?? "";
+			const cmd = (rawInput?.command as string) ?? (rawInput as string) ?? "";
 			if (
 				/WHERE\s+ruc\s*=/i.test(cmd) &&
 				!/WHERE\s+ruc\s*=\s*:currentRuc/i.test(cmd)
@@ -440,7 +440,7 @@ export default function (pi: ExtensionAPI) {
 
 		// Guard 3: Cross-RUC reads
 		if (event.toolName === "read" || event.toolName === "edit") {
-			const path = (rawInput?.path as string) ?? rawInput as string ?? "";
+			const path = (rawInput?.path as string) ?? (rawInput as string) ?? "";
 			if (path.includes("/ruc/") && !path.includes(":ruc")) {
 				return {
 					block: true,

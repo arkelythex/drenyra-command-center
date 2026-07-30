@@ -1,15 +1,22 @@
-/**
- * Drenyra Design Tokens entrypoint
- *
- * Public API preserved for all existing imports from `@/lib/design-tokens`.
- */
+// Drenyra Design Tokens — minimal
+export const tokens = {
+	colors: {
+		primary: "#1a73e8",
+		secondary: "#f5a623",
+		background: "#0a0e27",
+		foreground: "#e0e0e0",
+		success: "#34d399",
+		warning: "#fbbf24",
+		error: "#ef4444",
+	},
+	radius: "0.5rem",
+} as const;
 
-export * from "./design-tokens/core-tokens";
-export * from "./design-tokens/motion-tokens";
-export * from "./design-tokens/scale-tokens";
-export * from "./design-tokens/semantic-tokens";
-export * from "./design-tokens/token-helpers";
-export * from "./design-tokens/token-hooks";
-export * from "./design-tokens/token-types";
-export * from "./design-tokens/token-utils";
-export * from "./design-tokens/visual-tokens";
+export const MOTION_VARIANTS = {
+	hidden: { opacity: 0, y: 10 },
+	visible: { opacity: 1, y: 0 },
+};
+
+export function tokensToClasses(token: string) {
+	return token;
+}

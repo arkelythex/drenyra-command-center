@@ -7,9 +7,9 @@ export declare const EnvSchema: z.ZodObject<{
     }>>;
     PORT: z.ZodDefault<z.ZodCoercedNumber<unknown>>;
     LOG_LEVEL: z.ZodDefault<z.ZodEnum<{
-        debug: "debug";
-        error: "error";
         info: "info";
+        error: "error";
+        debug: "debug";
         warn: "warn";
     }>>;
     CORS_ALLOWED_ORIGINS: z.ZodOptional<z.ZodString>;
@@ -31,20 +31,20 @@ export declare const EnvSchema: z.ZodObject<{
     SUNAT_API_TIMEOUT_MS: z.ZodDefault<z.ZodCoercedNumber<unknown>>;
     SUNAT_RUC: z.ZodOptional<z.ZodString>;
     SUNAT_CPE_VALIDATION_MODE: z.ZodDefault<z.ZodEnum<{
-        real: "real";
-        replay: "replay";
         sandbox: "sandbox";
+        replay: "replay";
+        real: "real";
     }>>;
     SUNAT_CPE_API_TOKEN: z.ZodOptional<z.ZodString>;
     OSE_PROVIDER: z.ZodDefault<z.ZodEnum<{
-        bizlinks: "bizlinks";
         custom: "custom";
-        nubefact: "nubefact";
         simulation: "simulation";
+        nubefact: "nubefact";
+        bizlinks: "bizlinks";
     }>>;
     OSE_ENV: z.ZodDefault<z.ZodEnum<{
-        production: "production";
         sandbox: "sandbox";
+        production: "production";
     }>>;
     OSE_API_URL: z.ZodOptional<z.ZodString>;
     OSE_API_TOKEN: z.ZodOptional<z.ZodString>;
@@ -59,8 +59,8 @@ export declare const EnvSchema: z.ZodObject<{
     SMTP_FROM_NAME: z.ZodDefault<z.ZodString>;
     SMTP_FROM_EMAIL: z.ZodOptional<z.ZodString>;
     STORAGE_PROVIDER: z.ZodDefault<z.ZodEnum<{
-        minio: "minio";
         r2: "r2";
+        minio: "minio";
         s3: "s3";
     }>>;
     R2_ENDPOINT: z.ZodOptional<z.ZodString>;

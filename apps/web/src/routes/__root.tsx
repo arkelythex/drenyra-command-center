@@ -1,23 +1,5 @@
-import { createRootRoute, Outlet, useLocation } from "@tanstack/react-router";
-import { FiscalInspectorProvider } from "@/context/FiscalInspectorContext";
-import { isPublicRoute } from "@/lib/router/public-routes";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createRootRoute({
-	component: RootComponent,
+	component: () => <Outlet />,
 });
-
-function RootComponent() {
-	const pathname = useLocation({
-		select: (location) => location.pathname,
-	});
-
-	if (isPublicRoute(pathname)) {
-		return <Outlet />;
-	}
-
-	return (
-		<FiscalInspectorProvider>
-			<Outlet />
-		</FiscalInspectorProvider>
-	);
-}

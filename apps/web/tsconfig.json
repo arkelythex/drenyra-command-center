@@ -5,11 +5,6 @@
     "outDir": "./dist",
     "paths": {
       "@/*": ["./src/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/lib/*": ["./src/lib/*"],
-      "@/hooks/*": ["./src/hooks/*"],
-      "@/context/*": ["./src/context/*"],
-      "@/store/*": ["./src/store/*"],
       "@drenyra/shared": ["../../packages/shared/src/index.ts"],
       "@drenyra/shared/*": ["../../packages/shared/src/*"]
     }

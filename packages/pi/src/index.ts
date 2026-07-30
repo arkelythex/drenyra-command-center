@@ -22,15 +22,46 @@ export {
 export { createDrenyraHarness, DrenyraHarness } from "./harness/harness";
 
 // ─── Pi Adapter — Hexagonal AgentRuntimePort ────────────────────────────
-export type { AgentRuntimePort, SessionHandle, FiscalPrompt, RuntimeEvent, RuntimeEventType, CreateSessionRequest, ForkSessionRequest, Unsubscribe, ShadowComparison } from "./adapter";
-export { PiAgentRuntimeAdapter, LegacyMastraRuntimeAdapter, ShadowRunner } from "./adapter";
+export type {
+	AgentRuntimePort,
+	SessionHandle,
+	FiscalPrompt,
+	RuntimeEvent,
+	RuntimeEventType,
+	CreateSessionRequest,
+	ForkSessionRequest,
+	Unsubscribe,
+	ShadowComparison,
+} from "./adapter";
+export {
+	PiAgentRuntimeAdapter,
+	LegacyMastraRuntimeAdapter,
+	ShadowRunner,
+} from "./adapter";
 
 // ─── Fiscal Agent Domain — Pure domain types ────────────────────────────
-export type { AgentDefinition, AgentCapability } from "@drenyra/fiscal-agent-domain/agent-definition";
-export type { DelegationPolicy, DelegationRule } from "@drenyra/fiscal-agent-domain/delegation-policy";
-export type { ApprovalPolicy, ApprovalRequirement, ApprovalLevel } from "@drenyra/fiscal-agent-domain/approval-policy";
-export { compareApprovalLevel, requiresHumanApproval, requiresGovernanceBundle } from "@drenyra/fiscal-agent-domain/approval-policy";
-export type { RiskTier, Jurisdiction } from "@drenyra/fiscal-agent-domain/risk-tier";
+export type {
+	AgentDefinition,
+	AgentCapability,
+} from "@drenyra/fiscal-agent-domain/agent-definition";
+export type {
+	DelegationPolicy,
+	DelegationRule,
+} from "@drenyra/fiscal-agent-domain/delegation-policy";
+export type {
+	ApprovalPolicy,
+	ApprovalRequirement,
+	ApprovalLevel,
+} from "@drenyra/fiscal-agent-domain/approval-policy";
+export {
+	compareApprovalLevel,
+	requiresHumanApproval,
+	requiresGovernanceBundle,
+} from "@drenyra/fiscal-agent-domain/approval-policy";
+export type {
+	RiskTier,
+	Jurisdiction,
+} from "@drenyra/fiscal-agent-domain/risk-tier";
 export type { AgentContext } from "@drenyra/fiscal-agent-domain/agent-context";
 export type {
 	AgentHandler,
@@ -198,7 +229,7 @@ export type {
 	TaskHandlerResult,
 	TaskStatusDTO,
 	WorkerTaskPriority,
-    WorkerTaskStatus,
+	WorkerTaskStatus,
 } from "./types/worker-task";
 
 // ─── Plugin System ───────────────────────────────────────────────────────
@@ -239,6 +270,4 @@ export {
 	normalizeLegacyCapabilityToolsLookup,
 	normalizeLegacyPolicyPreviewInput,
 } from "./legacy/control-plane-facade";
-export type {
-	NormalizedLegacyPolicyPreview,
-} from "./legacy/control-plane-facade";
+export type { NormalizedLegacyPolicyPreview } from "./legacy/control-plane-facade";

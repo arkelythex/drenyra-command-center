@@ -24,9 +24,22 @@
       "items": {
         "type": "object",
         "properties": {
-          "id": { "type": "string", "enum": ["captura", "clasificacion", "conciliacion", "cierre", "declaracion", "auditoria"] },
+          "id": {
+            "type": "string",
+            "enum": [
+              "captura",
+              "clasificacion",
+              "conciliacion",
+              "cierre",
+              "declaracion",
+              "auditoria"
+            ]
+          },
           "label": { "type": "string" },
-          "status": { "type": "string", "enum": ["not_started", "in_progress", "completed", "blocked", "failed"] }
+          "status": {
+            "type": "string",
+            "enum": ["not_started", "in_progress", "completed", "blocked", "failed"]
+          }
         },
         "required": ["id", "label", "status"]
       }
