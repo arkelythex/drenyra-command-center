@@ -152,7 +152,7 @@ Chain strategy: pending
   - `applyEntries(missionId, companyId): Promise<ApplyResult>` method skeleton.
   - `runStep<TInput, TOutput>(step, input, context): Promise<StepResult<TOutput>>` implements retry logic matching `FiscalNightlyRunUseCase.runStep` pattern (design §2.4): loop up to `maxAttempts`, exponential backoff for `exponential` policy, updates mission step history via `db.update(accountingMissions).set({ steps })`, emits SSE events.
   - Pipeline skeleton compiles but inner steps throw "not implemented" — filled in by TASK-2.2 through TASK-2.8.
-- [ ] Implement `MonthlyCloseOrchestrator` class with constructor DI, `runStep` retry pattern, and 10-step skeleton. <!-- sdd-owner: implementation -->
+- [x] Implement `MonthlyCloseOrchestrator` class with constructor DI, `runStep` retry pattern, and 10-step skeleton. <!-- sdd-owner: implementation -->
 
 ### TASK-2.2: Implement Step 1 (freeze snapshot) integration into orchestrator
 - **Complexity**: S
@@ -160,7 +160,7 @@ Chain strategy: pending
   - `packages/application/src/use-cases/monthly-close/monthly-close-orchestrator.ts`
 - **Dependencies**: TASK-2.1
 - **Acceptance**: `execute()` calls `FreezeSnapshotStep` as first step. On success, populates `context.snapshot`. On failure (non-blocking), continues with null snapshot and warns.
-- [ ] Wire Step 1 into orchestrator `execute()` and populate `PipelineContext.snapshot`. <!-- sdd-owner: implementation -->
+- [x] Wire Step 1 into orchestrator `execute()` and populate `PipelineContext.snapshot`. <!-- sdd-owner: implementation -->
 
 ### TASK-2.3: Implement Step 2 (validate gates) integration with blocking-gate early exit
 - **Complexity**: M
@@ -168,7 +168,7 @@ Chain strategy: pending
   - `packages/application/src/use-cases/monthly-close/monthly-close-orchestrator.ts`
 - **Dependencies**: TASK-2.2
 - **Acceptance**: After Step 1, calls `ValidateGatesStep`. On blocking gate FAIL (`period_open` or `prior_period_closed`): calls `blockMission()`, transitions to `BLOCKED`, returns `{ status: "BLOCKED" }`. Non-blocking FAILs become `context.exceptions`. `context.gateResults` populated.
-- [ ] Wire Step 2 with blocking-gate detection, `blockMission()` helper, and exception accumulation. <!-- sdd-owner: implementation -->
+- [x] Wire Step 2 with blocking-gate detection, `blockMission()` helper, and exception accumulation. <!-- sdd-owner: implementation -->
 
 ### TASK-2.4: Implement Steps 3–4 (FiscalAgent wrapper — AnalyzeLedger, AnalyzeInvoices)
 - **Complexity**: L
@@ -180,9 +180,9 @@ Chain strategy: pending
   - `AnalyzeLedgerStep`: wraps `FiscalNightlyRunUseCase.execute()` with scope limited to Collect + Categorize. Input: `ledgerVersion` from snapshot. Output: `LedgerAnalysis` with transactions, categorizations, confidence scores. `isBlocker: true`, `retryPolicy: { type: "exponential", maxRetries: 3, baseDelayMs: 2000 }`. Persistent failure after retries → mission FAILED.
   - `AnalyzeInvoicesStep`: wraps FiscalAgent invoice analysis. Input: `invoiceDatasetVersion` from snapshot. Output: `InvoiceAnalysis` with matched/unmatched invoices, SUNAT status. `isBlocker: false`, same retry policy.
   - Low-confidence categorizations and SUNAT discrepancies become `AccountingException` objects.
-- [ ] Implement `AnalyzeLedgerStep` wrapping `FiscalNightlyRunUseCase`. <!-- sdd-owner: implementation -->
-- [ ] Implement `AnalyzeInvoicesStep` wrapping FiscalAgent invoice analysis. <!-- sdd-owner: implementation -->
-- [ ] Wire Steps 3–4 into orchestrator pipeline after Step 2. <!-- sdd-owner: implementation -->
+- [x] Implement `AnalyzeLedgerStep` wrapping `FiscalNightlyRunUseCase`. <!-- sdd-owner: implementation -->
+- [x] Implement `AnalyzeInvoicesStep` wrapping FiscalAgent invoice analysis. <!-- sdd-owner: implementation -->
+- [x] Wire Steps 3–4 into orchestrator pipeline after Step 2. <!-- sdd-owner: implementation -->
 
 ### TASK-2.5: Implement Steps 5–6 (AnalyzeReconciliations, AnalyzeCompliance)
 - **Complexity**: L
@@ -193,9 +193,9 @@ Chain strategy: pending
 - **Acceptance**:
   - `AnalyzeReconciliationsStep`: queries `bank_reconciliations` for period, compares totals against ledger, flags unmatched transactions. Output: `ReconciliationAnalysis`. Unmatched transactions → `UNMATCHED_TRANSACTION` exceptions (non-blocking). `isBlocker: false`, `retryPolicy: none`.
   - `AnalyzeComplianceStep`: checks CPE SUNAT statuses, detraction (SPOT) deposits, exchange rate tolerance, tax regime obligations. Output: `ComplianceAnalysis` with violations, warnings, compliance score. Critical violations → potentially blocking exceptions. `isBlocker: false`, `retryPolicy: none`.
-- [ ] Implement `AnalyzeReconciliationsStep` with bank reconciliation verification. <!-- sdd-owner: implementation -->
-- [ ] Implement `AnalyzeComplianceStep` with SUNAT/detraction/exchange-rate checks. <!-- sdd-owner: implementation -->
-- [ ] Wire Steps 5–6 into orchestrator pipeline after Step 4. <!-- sdd-owner: implementation -->
+- [x] Implement `AnalyzeReconciliationsStep` with bank reconciliation verification. <!-- sdd-owner: implementation -->
+- [x] Implement `AnalyzeComplianceStep` with SUNAT/detraction/exchange-rate checks. <!-- sdd-owner: implementation -->
+- [x] Wire Steps 5–6 into orchestrator pipeline after Step 4. <!-- sdd-owner: implementation -->
 
 ### TASK-2.6: Implement Step 7 (DetectBlockers)
 - **Complexity**: M
@@ -205,8 +205,8 @@ Chain strategy: pending
 - **Acceptance**:
   - Consolidates all `context.exceptions` from Steps 2–6. Categorizes by severity. If any `blocking` exceptions exist: compiles `BlockerReport`, calls `blockMission()`, returns `{ status: "BLOCKED" }`. No blockers → passes all non-blocking exceptions forward.
   - `isBlocker: true`, `retryPolicy: none` (pure logic).
-- [ ] Implement `DetectBlockersStep` with exception consolidation and blocking detection. <!-- sdd-owner: implementation -->
-- [ ] Wire Step 7 into pipeline; block mission on blockers, proceed on clear. <!-- sdd-owner: implementation -->
+- [x] Implement `DetectBlockersStep` with exception consolidation and blocking detection. <!-- sdd-owner: implementation -->
+- [x] Wire Step 7 into pipeline; block mission on blockers, proceed on clear. <!-- sdd-owner: implementation -->
 
 ### TASK-2.7: Implement Step 8 (ProduceClosingProposal) with entry generators + validations
 - **Complexity**: XL
@@ -228,12 +228,12 @@ Chain strategy: pending
   - `riskLevel` derived from unresolved exception count/severity.
   - Stores `ClosingProposal` on mission via `db.update(accountingMissions).set({ proposal })`.
   - `isBlocker: true`, `retryPolicy: none`.
-- [ ] Add `ClosingProposal`, `ProposedJournalEntry`, `TaxImpact`, `FinancialImpact` types to types file. <!-- sdd-owner: implementation -->
-- [ ] Implement DepreciationEntryGenerator with straight-line calculation. <!-- sdd-owner: implementation -->
-- [ ] Implement AccrualEntryGenerator for payables/receivables. <!-- sdd-owner: implementation -->
-- [ ] Implement TaxProvisionEntryGenerator for IGV + Renta. <!-- sdd-owner: implementation -->
-- [ ] Implement PLCloseEntryGenerator for revenue/expense summarization. <!-- sdd-owner: implementation -->
-- [ ] Implement `ProduceProposalStep` with generator orchestration, debits=credits validation, and PCGE validation. <!-- sdd-owner: implementation -->
+- [x] Add `ClosingProposal`, `ProposedJournalEntry`, `TaxImpact`, `FinancialImpact` types to types file. <!-- sdd-owner: implementation -->
+- [x] Implement DepreciationEntryGenerator with straight-line calculation. <!-- sdd-owner: implementation -->
+- [x] Implement AccrualEntryGenerator for payables/receivables. <!-- sdd-owner: implementation -->
+- [x] Implement TaxProvisionEntryGenerator for IGV + Renta. <!-- sdd-owner: implementation -->
+- [x] Implement PLCloseEntryGenerator for revenue/expense summarization. <!-- sdd-owner: implementation -->
+- [x] Implement `ProduceProposalStep` with generator orchestration, debits=credits validation, and PCGE validation. <!-- sdd-owner: implementation -->
 
 ### TASK-2.8: Implement Steps 9–10 (BuildEvidence, RequestApproval)
 - **Complexity**: L
@@ -244,9 +244,9 @@ Chain strategy: pending
 - **Acceptance**:
   - `BuildEvidenceStep`: assembles evidence bundle from snapshot, gate results, analysis outputs, proposal. Computes `evidenceHash` via SHA-256. Assigns to `proposal.sourceEvidence` and `proposal.evidenceHash`. `isBlocker: false`, `retryPolicy: none`.
   - `RequestApprovalStep`: creates `AccountingPR` row with `status: "PENDING_REVIEW"`, entries from proposal, evidence IDs, signer IDs from `requiredApprovals`. Updates mission status to `AWAITING_APPROVAL`. Links PR ID in `proposal.accountingPrId`. Emits `PROPOSAL_CREATED` SSE event. `isBlocker: true`, `retryPolicy: none`.
-- [ ] Implement `BuildEvidenceStep` with evidence bundle assembly and hash. <!-- sdd-owner: implementation -->
-- [ ] Implement `RequestApprovalStep` with AccountingPR creation and mission transition. <!-- sdd-owner: implementation -->
-- [ ] Wire Steps 9–10 into orchestrator pipeline after Step 8. <!-- sdd-owner: implementation -->
+- [x] Implement `BuildEvidenceStep` with evidence bundle assembly and hash. <!-- sdd-owner: implementation -->
+- [x] Implement `RequestApprovalStep` with AccountingPR creation and mission transition. <!-- sdd-owner: implementation -->
+- [x] Wire Steps 9–10 into orchestrator pipeline after Step 8. <!-- sdd-owner: implementation -->
 
 ### TASK-2.9: Wire orchestrator into M1 mission system (IntentHandler)
 - **Complexity**: M
@@ -263,8 +263,8 @@ Chain strategy: pending
   - `executeMission()`: after QUEUED→RUNNING transition, looks up handler by `mission.intent` and calls `handler.onRunning()`. If no handler registered, existing no-op behavior.
   - `approveMission()`: after APPROVED transition, calls `handler.onApproved()`.
   - Existing non-monthly-close intents unaffected (no handler registered → no-op).
-- [ ] Create `MissionIntentHandler` interface and `MonthlyCloseIntentHandler` class. <!-- sdd-owner: implementation -->
-- [ ] Create `INTENT_HANDLERS` registry and wire into `executeMission()` and `approveMission()`. <!-- sdd-owner: implementation -->
+- [x] Create `MissionIntentHandler` interface and `MonthlyCloseIntentHandler` class. <!-- sdd-owner: implementation -->
+- [x] Create `INTENT_HANDLERS` registry and wire into `executeMission()` and `approveMission()`. <!-- sdd-owner: implementation -->
 
 ### TASK-2.10: Unit + integration tests for pipeline (PR2)
 - **Complexity**: XL
@@ -288,13 +288,13 @@ Chain strategy: pending
   - **RequestApproval**: AccountingPR created with correct status, mission transitions AWAITING_APPROVAL.
   - **IntentHandler**: `onRunning` invokes orchestrator, `onApproved` invokes `applyEntries`.
   - All tests use mocked `FiscalNightlyRunUseCase`, mocked DB via Drizzle mock or test container.
-- [ ] Write unit tests for AnalyzeLedgerStep and AnalyzeInvoicesStep (FiscalAgent wrapping). <!-- sdd-owner: implementation -->
-- [ ] Write unit tests for AnalyzeReconciliationsStep and AnalyzeComplianceStep. <!-- sdd-owner: implementation -->
-- [ ] Write unit tests for DetectBlockersStep (blocking vs non-blocking). <!-- sdd-owner: implementation -->
-- [ ] Write unit tests for ProduceProposalStep (depreciation, accruals, tax, P&L close, validations). <!-- sdd-owner: implementation -->
-- [ ] Write unit tests for BuildEvidenceStep and RequestApprovalStep. <!-- sdd-owner: implementation -->
-- [ ] Write integration tests for full orchestrator pipeline (happy, blocked, failed, partial paths). <!-- sdd-owner: implementation -->
-- [ ] Write unit tests for IntentHandler wiring. <!-- sdd-owner: implementation -->
+- [x] Write unit tests for AnalyzeLedgerStep and AnalyzeInvoicesStep (FiscalAgent wrapping). <!-- sdd-owner: implementation -->
+- [x] Write unit tests for AnalyzeReconciliationsStep and AnalyzeComplianceStep. <!-- sdd-owner: implementation -->
+- [x] Write unit tests for DetectBlockersStep (blocking vs non-blocking). <!-- sdd-owner: implementation -->
+- [x] Write unit tests for ProduceProposalStep (depreciation, accruals, tax, P&L close, validations). <!-- sdd-owner: implementation -->
+- [x] Write unit tests for BuildEvidenceStep and RequestApprovalStep. <!-- sdd-owner: implementation -->
+- [x] Write integration tests for full orchestrator pipeline (happy, blocked, failed, partial paths). <!-- sdd-owner: implementation -->
+- [x] Write unit tests for IntentHandler wiring. <!-- sdd-owner: implementation -->
 
 ### TASK-2.11: PR2 bounded review
 - **Complexity**: S

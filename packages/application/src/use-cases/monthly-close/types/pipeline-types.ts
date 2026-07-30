@@ -6,11 +6,56 @@
 
 import type { InputSnapshot } from "./input-snapshot";
 import type { AccountingException } from "./accounting-exception";
-import type { ReadinessGate, GateStatus } from "../gates/readiness-gates";
+import type { ReadinessGate, GateStatus, GateType } from "../gates/readiness-gates";
 
 // ─── Step Status ───────────────────────────────────────────────────────────
 
 export type StepStatus = "PENDING" | "STARTED" | "COMPLETED" | "FAILED" | "SKIPPED";
+
+// ─── Retry Policy ──────────────────────────────────────────────────────────
+
+export type RetryPolicy =
+  | { type: "none" }
+  | { type: "fixed"; maxRetries: number; delayMs: number }
+  | { type: "exponential"; maxRetries: number; baseDelayMs: number };
+
+// ─── Step Metrics ──────────────────────────────────────────────────────────
+
+export interface StepMetrics {
+  startedAt: string;
+  completedAt: string;
+  itemsProcessed: number;
+  itemsFailed: number;
+}
+
+// ─── Step Error ────────────────────────────────────────────────────────────
+
+export interface StepError {
+  code: string;
+  message: string;
+  itemId?: string;
+  retryable: boolean;
+}
+
+// ─── StepResult ────────────────────────────────────────────────────────────
+
+export interface StepResult<TOutput = unknown> {
+  success: boolean;
+  data?: TOutput;
+  errors: StepError[];
+  warnings: string[];
+  exceptions: AccountingException[];
+  metrics: StepMetrics;
+}
+
+// ─── MonthlyCloseStep interface ────────────────────────────────────────────
+
+export interface MonthlyCloseStep<TInput = unknown, TOutput = unknown> {
+  readonly name: string;
+  readonly retryPolicy: RetryPolicy;
+  readonly isBlocker: boolean;
+  execute(input: TInput, context: PipelineContext): Promise<StepResult<TOutput>>;
+}
 
 // ─── PipelineStepResult ────────────────────────────────────────────────────
 
@@ -63,6 +108,9 @@ export interface PipelineContext {
 
   /** Errors encountered during pipeline execution */
   errors: string[];
+
+  /** Event emitter for SSE progress events */
+  eventEmitter: MissionEventEmitter | null;
 }
 
 // ─── GateResults ───────────────────────────────────────────────────────────
@@ -98,6 +146,106 @@ export interface BlockerReport {
   blockers: MissionBlocker[];
 }
 
+// ─── CloseExecutionResult ──────────────────────────────────────────────────
+
+export interface CloseExecutionResult {
+  status: "COMPLETED" | "BLOCKED" | "FAILED" | "AWAITING_APPROVAL";
+  missionId: string;
+  blockers?: MissionBlocker[];
+  proposal?: unknown;
+}
+
+// ─── ApplyResult ───────────────────────────────────────────────────────────
+
+export interface ApplyResult {
+  success: boolean;
+  receiptHash: string;
+  postedEntryIds: string[];
+}
+
+// ─── ClosingProposal types ─────────────────────────────────────────────────
+
+export type ProposedEntryType = "DEPRECIATION" | "ACCRUAL" | "TAX_PROVISION" | "PL_CLOSE" | "CORRECTION";
+
+export interface ProposalLine {
+  accountCode: string;
+  accountName: string;
+  description: string;
+  debitCents: number;
+  creditCents: number;
+}
+
+export interface ProposedJournalEntry {
+  id: string;
+  entryType: ProposedEntryType;
+  description: string;
+  date: string;
+  lines: ProposalLine[];
+  totalDebits: number;
+  totalCredits: number;
+  sourceEvidence: string[];
+}
+
+export interface TaxImpact {
+  igvPayableCents: number;
+  rentaPayableCents: number;
+  totalTaxLiabilityCents: number;
+}
+
+export interface FinancialImpact {
+  totalRevenueCents: number;
+  totalExpenseCents: number;
+  netIncomeCents: number;
+}
+
+export interface ClosingProposal {
+  id: string;
+  missionId: string;
+  version: number;
+  fiscalPeriod: string;
+  generatedAt: string;
+  proposedEntries: ProposedJournalEntry[];
+  entryCount: number;
+  totalDebitCents: number;
+  totalCreditCents: number;
+  taxImpact: TaxImpact;
+  financialImpact: FinancialImpact;
+  riskLevel: "LOW" | "MEDIUM" | "HIGH";
+  unresolvedExceptions: AccountingException[];
+  requiredApprovals: string[];
+  sourceEvidence: EvidenceRef[];
+  evidenceHash: string;
+}
+
+export interface EvidenceRef {
+  id: string;
+  type: string;
+  hash: string;
+  uri: string;
+}
+
+// ─── MissionEventEmitter ───────────────────────────────────────────────────
+
+export interface MissionEventEmitter {
+  emitStepProgress(
+    missionId: string,
+    stepNumber: number,
+    stepName: string,
+    status: "STARTED" | "COMPLETED" | "FAILED",
+    metrics?: StepMetrics,
+  ): Promise<void>;
+
+  emitBlockers(missionId: string, blockers: MissionBlocker[]): Promise<void>;
+
+  emitProposalCreated(missionId: string, proposal: ClosingProposal): Promise<void>;
+
+  emitStateTransition(
+    missionId: string,
+    fromStatus: string,
+    toStatus: string,
+  ): Promise<void>;
+}
+
 // ─── Factory ───────────────────────────────────────────────────────────────
 
 /**
@@ -118,6 +266,7 @@ export function createEmptyPipelineContext(
     proposal: null,
     currentStep: "",
     errors: [],
+    eventEmitter: null,
   };
 }
 
