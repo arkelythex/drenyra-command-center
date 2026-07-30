@@ -161,6 +161,10 @@ export default defineConfig({
 				find: "@drenyra/test-utils",
 				replacement: path.resolve(__dirname, "../../packages/test-utils/src"),
 			},
+			{
+				find: "@drenyra/mission-domain",
+				replacement: path.resolve(__dirname, "../../packages/mission-domain/src"),
+			},
 		],
 	},
 });
