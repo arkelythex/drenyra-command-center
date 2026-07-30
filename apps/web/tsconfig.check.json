@@ -26,6 +26,7 @@
       "@drenyra/application": ["../../packages/application/src/index.ts"],
       "@drenyra/application/*": ["../../packages/application/src/*"],
       "@drenyra/domain": ["../../packages/domain/src/index.ts"],
+      "@drenyra/mission-domain": ["../../packages/mission-domain/src/index.ts"],
       "@drenyra/domain/*": ["../../packages/domain/src/*"],
       "@drenyra/infrastructure": ["../../packages/infrastructure/src/index.ts"],
       "@drenyra/infrastructure/*": ["../../packages/infrastructure/src/*"],

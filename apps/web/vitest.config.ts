@@ -7,6 +7,10 @@ export default defineConfig({
 		tsconfigPaths: true,
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
+			"@drenyra/mission-domain": path.resolve(
+				__dirname,
+				"../../packages/mission-domain/src",
+			),
 			"@drenyra/test-utils": path.resolve(
 				__dirname,
 				"../../packages/test-utils/src",

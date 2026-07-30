@@ -5,6 +5,7 @@
     "outDir": "./dist",
     "paths": {
       "@/*": ["./src/*"],
+      "@drenyra/mission-domain": ["../../packages/mission-domain/src/index.ts"],
       "@drenyra/shared": ["../../packages/shared/src/index.ts"],
       "@drenyra/shared/*": ["../../packages/shared/src/*"]
     }

@@ -66,9 +66,9 @@ describe("AccountingMissionStatus — state machine", () => {
 		expect(() => transition("REJECTED", "APPROVED")).toThrow();
 	});
 
-	it("isRunnable returns true for DRAFT, BLOCKED, REVISION_REQUESTED", () => {
+	it("isRunnable returns true for DRAFT, QUEUED, REVISION_REQUESTED", () => {
 		expect(isRunnable("DRAFT")).toBe(true);
-		expect(isRunnable("BLOCKED")).toBe(true);
+		expect(isRunnable("QUEUED")).toBe(true);
 		expect(isRunnable("REVISION_REQUESTED")).toBe(true);
 		expect(isRunnable("RUNNING")).toBe(false);
 		expect(isRunnable("COMPLETED")).toBe(false);
@@ -80,10 +80,10 @@ describe("AccountingMissionStatus — state machine", () => {
 		expect(isAwaitingApproval("APPROVED")).toBe(false);
 	});
 
-	it("isTerminal returns true for COMPLETED, FAILED, REJECTED", () => {
+	it("isTerminal returns true for COMPLETED, FAILED only (REJECTED is NOT terminal)", () => {
 		expect(isTerminal("COMPLETED")).toBe(true);
 		expect(isTerminal("FAILED")).toBe(true);
-		expect(isTerminal("REJECTED")).toBe(true);
+		expect(isTerminal("REJECTED")).toBe(false);
 		expect(isTerminal("RUNNING")).toBe(false);
 		expect(isTerminal("DRAFT")).toBe(false);
 	});
