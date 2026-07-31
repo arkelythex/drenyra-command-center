@@ -1,8 +1,9 @@
-import { useMemo } from "react";
+import { useParams } from "@tanstack/react-router";
 import {
 	type FiscalRiskAlert,
 	FiscalRiskLayer,
 } from "@/components/fiscal/FiscalRiskLayer";
+import { Button } from "@/components/ui/button";
 import { useInspector, type InspectorSubject } from "@/context/InspectorContext";
 import { AgentTimeline } from "./components/AgentTimeline";
 import { ChecklistPanel } from "./components/ChecklistPanel";
@@ -15,7 +16,6 @@ import { ProgressHeader } from "./components/ProgressHeader";
 import { SidePanel } from "./components/SidePanel";
 import { TaxReviewGate } from "./components/TaxReviewGate";
 import { useCierreMensual } from "./hooks/useCierreMensual";
-import type { MissionBlocker, MissionTimelineEvent } from "./mission.types";
 
 const PHASE_NAMES = [
 	"Importación",
@@ -28,11 +28,7 @@ const PHASE_NAMES = [
 	"Archivo",
 ] as const;
 
-function phaseState(
-	index: number,
-	ratio: number,
-	hasBlockers: boolean,
-): ClosePhaseState {
+function phaseState(index: number, ratio: number, hasBlockers: boolean): ClosePhaseState {
 	const phaseProgress = index / (PHASE_NAMES.length - 1);
 	if (phaseProgress <= ratio - 0.15) return "completed";
 	return index <= Math.round(ratio * (PHASE_NAMES.length - 1))
@@ -42,20 +38,12 @@ function phaseState(
 		: "pending";
 }
 
-function derivePhases(cierre: Record<string, unknown>): {
-	phases: Array<{
-		name: string;
-		state: ClosePhaseState;
-		evidenceCount: number;
-	}>;
-	activeIndex: number;
-} {
-	const checklist = (cierre.checklist as Array<{ completado: boolean }>) ?? [];
-	const completed = checklist.filter((c) => c.completado).length;
-	const total = Math.max(1, checklist.length);
-	const ratio = completed / total;
-	const blockers = (cierre.blockers as MissionBlocker[]) ?? [];
-	const hasBlockers = blockers.some((b) => !b.resolved);
+function derivePhases(
+	checklist: Array<{ completado: boolean }>,
+	hasBlockers: boolean,
+) {
+	const completed = checklist.filter((item) => item.completado).length;
+	const ratio = completed / Math.max(1, checklist.length);
 	const lastActive = Math.round(ratio * (PHASE_NAMES.length - 1));
 
 	return {
@@ -68,37 +56,22 @@ function derivePhases(cierre: Record<string, unknown>): {
 	};
 }
 
-function buildRiskAlerts(cierre: Record<string, unknown>): FiscalRiskAlert[] {
-	const blockers =
-		(cierre.blockers as Array<{
-			id: string;
-			reason: string;
-			severity: string;
-			resolved: boolean;
-		}>) ?? [];
+function buildRiskAlerts(
+	blockers: Parameters<typeof MissionBlockers>[0]["blockers"],
+): FiscalRiskAlert[] {
 	return blockers
-		.filter((b) => !b.resolved)
-		.map((b) => ({
-			id: b.id,
-			title: b.reason,
-			riskLevel: (b.severity === "critical"
+		.filter((blocker) => !blocker.resolved)
+		.map((blocker) => ({
+			id: blocker.id,
+			title: blocker.reason,
+			riskLevel: (blocker.severity === "critical"
 				? "CRITICAL"
-				: b.severity === "high"
+				: blocker.severity === "high"
 					? "HIGH"
-					: b.severity === "medium"
+					: blocker.severity === "medium"
 						? "MEDIUM"
 						: "LOW") as FiscalRiskAlert["riskLevel"],
 		}));
-}
-
-function deriveOverallRisk(
-	cierre: Record<string, unknown>,
-): FiscalRiskAlert["riskLevel"] | null {
-	const level = cierre.globalRiskLevel as string;
-	if (level === "CRITICAL") return "CRITICAL";
-	if (level === "HIGH") return "HIGH";
-	if (level === "MEDIUM") return "MEDIUM";
-	return "LOW";
 }
 
 function buildTaxGateItems(
@@ -106,78 +79,34 @@ function buildTaxGateItems(
 	signersCount: number,
 ): Parameters<typeof TaxReviewGate>[0]["items"] {
 	return [
-		{
-			id: "igv",
-			label: "IGV del período",
-			status: "verified" as const,
-			detail: "428 comprobantes validados contra CDR.",
-		},
-		{
-			id: "detracciones",
-			label: "Detracciones",
-			status: hasBlockers ? ("blocked" as const) : ("verified" as const),
-			detail: hasBlockers
-				? "Hay detracciones pendientes."
-				: "Todas las detracciones aplicadas.",
-		},
-		{
-			id: "sire",
-			label: "Conciliación SIRE",
-			status: hasBlockers ? ("blocked" as const) : ("warning" as const),
-			detail: hasBlockers
-				? "3 inconsistencias bloquean."
-				: "Conciliación pendiente de revisión.",
-		},
-		{
-			id: "reportes",
-			label: "Reportes financieros",
-			status: "verified" as const,
-			detail: "Balance y P&L del período generados.",
-		},
-		{
-			id: "firmas",
-			label: "Firmas requeridas",
-			status: "warning" as const,
-			detail: `${signersCount} firmante(s) pendiente(s).`,
-		},
-		{
-			id: "plame",
-			label: "PLAME",
-			status: "verified" as const,
-			detail: "Planilla electrónica presentada.",
-		},
+		{ id: "igv", label: "IGV del período", status: "verified", detail: "Evidencia de la misión disponible." },
+		{ id: "detracciones", label: "Detracciones", status: hasBlockers ? "blocked" : "verified", detail: hasBlockers ? "Hay bloqueos pendientes." : "Sin bloqueos activos." },
+		{ id: "sire", label: "Conciliación SIRE", status: hasBlockers ? "blocked" : "warning", detail: hasBlockers ? "La misión reporta bloqueos." : "Pendiente de revisión." },
+		{ id: "reportes", label: "Reportes financieros", status: "warning", detail: "Se actualiza con el protocolo de misión." },
+		{ id: "firmas", label: "Firmas requeridas", status: "warning", detail: `${signersCount} firma(s) proyectada(s).` },
+		{ id: "plame", label: "PLAME", status: "warning", detail: "Pendiente de evidencia del protocolo." },
 	];
 }
 
 export function CierreMensualPage() {
-	const { data: cierre, isLoading, isError } = useCierreMensual();
+	const params = useParams({ from: "/workspace/$companyId/$year/$month/$intent" });
+	const { data: cierre, isLoading, isError, isAwaitingApproval, receiptId, receiptHash, approve } = useCierreMensual({
+		companyId: params.companyId,
+		companyName: `Empresa ${params.companyId}`,
+		companyRuc: "",
+		fiscalPeriod: `${params.year}-${params.month}`,
+	});
 	const { open: openInspector } = useInspector();
 
-	const cierreRaw = (cierre ?? {}) as unknown as Record<string, unknown>;
-	const riskAlerts: FiscalRiskAlert[] = useMemo(
-		() => (cierre ? buildRiskAlerts(cierreRaw) : []),
-		[cierre, cierreRaw],
-	);
-	const overallRisk = cierre ? deriveOverallRisk(cierreRaw) : null;
-
 	if (isLoading || !cierre) {
-		return (
-			<div className="flex-1 overflow-auto custom-scrollbar bg-[var(--surface-1)] p-10 text-xs text-[var(--text-tertiary)]">
-				{isError
-					? "No se pudo cargar el cierre mensual."
-					: "Cargando cierre mensual…"}
-			</div>
-		);
+		return <div className="flex-1 overflow-auto custom-scrollbar bg-[var(--surface-1)] p-10 text-xs text-[var(--text-tertiary)]">{isError ? "No se pudo cargar el cierre mensual." : "Cargando cierre mensual…"}</div>;
 	}
 
-	const { phases, activeIndex } = derivePhases(cierreRaw);
-	const completedCount =
-		(cierreRaw.checklist as Array<{ completado: boolean }>)?.filter(
-			(c) => c.completado,
-		).length ?? 0;
-	const totalCount = (cierreRaw.checklist as Array<unknown>)?.length ?? 0;
-	const hasBlockers =
-		(cierreRaw.blockers as MissionBlocker[])?.some((b) => !b.resolved) ?? false;
+	const hasBlockers = cierre.blockers.some((blocker) => !blocker.resolved);
+	const { phases, activeIndex } = derivePhases(cierre.checklist, hasBlockers);
+	const completedCount = cierre.checklist.filter((item) => item.completado).length;
+	const riskAlerts = buildRiskAlerts(cierre.blockers);
+	const overallRisk: FiscalRiskAlert["riskLevel"] = cierre.globalRiskLevel;
 
 	const handleOpenInspector = () => {
 		const subject: InspectorSubject = {
@@ -193,47 +122,18 @@ export function CierreMensualPage() {
 			<div className="flex-1 overflow-auto custom-scrollbar bg-[var(--surface-1)]">
 				<div className="mx-auto w-full max-w-[1200px] p-4 sm:p-6 lg:p-10">
 					<div className="min-w-0 space-y-6">
-						<ProgressHeader
-							companyName={cierre.companyName}
-							companyRuc={cierre.companyRuc}
-							periodo={cierre.periodo}
-							completedCount={completedCount}
-							totalCount={totalCount}
-							progress={cierre.progress}
-						/>
-
+						<ProgressHeader companyName={cierre.companyName} companyRuc={cierre.companyRuc} periodo={cierre.periodo} completedCount={completedCount} totalCount={cierre.checklist.length} progress={cierre.progress} />
+						{isAwaitingApproval ? <Button onClick={approve}>Aprobar propuesta</Button> : null}
+						{receiptId && receiptHash ? <p className="text-xs text-[var(--text-tertiary)]">Receipt: {receiptId} · {receiptHash}</p> : null}
 						<ClosePhaseStrip phases={phases} activeIndex={activeIndex} />
-
-						<TaxReviewGate
-							period={cierre.periodo}
-							items={buildTaxGateItems(
-								hasBlockers,
-								Object.keys(cierre.firmas).length,
-							)}
-							verdict={hasBlockers ? "blocked" : "attention"}
-						/>
-
+						<TaxReviewGate period={cierre.periodo} items={buildTaxGateItems(hasBlockers, Object.keys(cierre.firmas).length)} verdict={hasBlockers ? "blocked" : "attention"} />
 						<div className="grid gap-6 lg:grid-cols-[1fr_360px]">
 							<div className="space-y-6">
-								<MissionBlockers
-									blockers={(cierreRaw.blockers ?? []) as MissionBlocker[]}
-								/>
+								<MissionBlockers blockers={cierre.blockers} />
 								<ChecklistPanel checklist={cierre.checklist} />
-								<section>
-									<h2 className="mb-3 text-xs font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]">
-										Línea de tiempo del agente
-									</h2>
-									<AgentTimeline
-										events={
-											(cierreRaw.timeline ?? []) as MissionTimelineEvent[]
-										}
-									/>
-								</section>
+								<section><h2 className="mb-3 text-xs font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]">Línea de tiempo del agente</h2><AgentTimeline events={cierre.timeline} /></section>
 							</div>
-							<SidePanel
-								cierre={cierre}
-								onOpenInspector={handleOpenInspector}
-							/>
+							<SidePanel cierre={cierre} onOpenInspector={handleOpenInspector} />
 						</div>
 					</div>
 				</div>
