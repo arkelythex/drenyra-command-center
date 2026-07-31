@@ -1,135 +1,134 @@
-/**
- * useCierreMensual — hook for monthly close mission data.
- *
- * Returns mock mission data for the vertical slice.
- * Will be replaced with real TanStack Query + backend when the
- * AccountingMission entity is connected.
- */
+import type {
+	CierreMensual,
+	CierreMensualChecklistItem,
+} from "@drenyra/domain";
+import type { MissionSnapshot, MissionStep } from "@drenyra/mission-domain";
+import { useAccountingMission } from "@/features/workspace/hooks/useAccountingMission";
+import type { MissionBlocker, MissionTimelineEvent } from "../mission.types";
 
-export interface CierreMensualMission {
-	id: string;
+export interface CierreMensualParams {
 	companyId: string;
 	companyName: string;
 	companyRuc: string;
-	periodo: string;
-	progress: number;
-	startedAt: string;
-	globalRiskLevel: string;
-	checklist: Array<{ id: string; label: string; completado: boolean }>;
-	blockers: Array<{
-		id: string;
-		reason: string;
-		severity: string;
-		resolved: boolean;
-	}>;
-	firmas: Record<string, { firmado: boolean }>;
-	timeline: Array<{
-		id: string;
-		type: string;
-		label: string;
-		timestamp: string;
-		actor: string;
-	}>;
-	agentAnalysis?: {
-		agentId: string;
-		agentName: string;
-		confidence: number;
-		summary: string;
-		recommendations: string[];
-		discrepancies: number;
+	fiscalPeriod: string;
+}
+
+export interface CierreMensualMission extends CierreMensual {
+	companyId: string;
+	blockers: MissionBlocker[];
+	timeline: MissionTimelineEvent[];
+}
+
+type MissionProjectionSnapshot = Pick<
+	MissionSnapshot,
+	"progress" | "steps" | "blockers" | "proposal" | "receiptId" | "status"
+>;
+
+function projectChecklist(steps: MissionStep[]): CierreMensualChecklistItem[] {
+	return steps.map((step, index) => ({
+		id: step.id,
+		label: step.name,
+		descripcion: step.description ?? step.name,
+		completado: step.status === "COMPLETED" || step.status === "SKIPPED",
+		requiereEvidencia: step.status === "IN_PROGRESS",
+		riesgo: step.status === "FAILED" ? "HIGH" : "LOW",
+		orden: index + 1,
+	}));
+}
+
+function projectBlockers(
+	blockers: MissionSnapshot["blockers"],
+): MissionBlocker[] {
+	return blockers.map((blocker) => ({
+		id: blocker.id,
+		reason: blocker.reason,
+		severity:
+			blocker.severity === "CRITICAL"
+				? "critical"
+				: blocker.severity === "ERROR"
+					? "high"
+					: "medium",
+		resolved: blocker.resolvedAt !== undefined,
+		resolvedAt: blocker.resolvedAt,
+	}));
+}
+
+function projectTimeline(steps: MissionStep[]): MissionTimelineEvent[] {
+	return steps.map((step) => ({
+		id: `step-${step.id}`,
+		timestamp: step.completedAt ?? step.startedAt ?? "",
+		actor: "agent",
+		action: step.name,
+		description: step.error ?? step.description ?? step.name,
+		status:
+			step.status === "FAILED"
+				? "error"
+				: step.status === "IN_PROGRESS"
+					? "info"
+					: step.status === "PENDING"
+						? "warning"
+						: "success",
+	}));
+}
+
+function projectRisk(snapshot: MissionProjectionSnapshot): CierreMensual["globalRiskLevel"] {
+	if (snapshot.blockers.some((blocker) => blocker.severity === "CRITICAL")) {
+		return "CRITICAL";
+	}
+	if (snapshot.blockers.some((blocker) => blocker.severity === "ERROR")) {
+		return "HIGH";
+	}
+	return snapshot.proposal?.riskLevel ?? "LOW";
+}
+
+function projectStatus(snapshot: MissionProjectionSnapshot): CierreMensual["status"] {
+	if (snapshot.receiptId) return "CERRADO";
+	if (snapshot.proposal) return "PENDIENTE_APROBACION";
+	return snapshot.status === "DRAFT" ? "ABIERTO" : "EN_PROCESO";
+}
+
+export function projectCierreMensualMission(
+	snapshot: MissionProjectionSnapshot,
+	params: CierreMensualParams,
+): CierreMensualMission {
+	const checklist = projectChecklist(snapshot.steps);
+
+	return {
+		id: `close-${params.companyId}-${params.fiscalPeriod}`,
+		companyId: params.companyId,
+		companyName: params.companyName,
+		companyRuc: params.companyRuc,
+		periodo: params.fiscalPeriod,
+		status: projectStatus(snapshot),
+		startedAt: snapshot.steps[0]?.startedAt ?? "",
+		checklist,
+		progress: snapshot.progress / 10_000,
+		expedienteId: `mission-${params.companyId}-${params.fiscalPeriod}`,
+		firmas: {
+			contador: { firmado: snapshot.receiptId !== null },
+			revisor: { firmado: snapshot.receiptId !== null },
+			representante: { firmado: snapshot.receiptId !== null },
+		},
+		sireStatus: snapshot.blockers.length > 0 ? "CON_DISCREPANCIAS" : "PENDIENTE",
+		bancosStatus: snapshot.blockers.length > 0 ? "CON_DISCREPANCIAS" : "PENDIENTE",
+		igvStatus: snapshot.receiptId ? "VALIDADO" : "PENDIENTE",
+		globalRiskLevel: projectRisk(snapshot),
+		blockers: projectBlockers(snapshot.blockers),
+		timeline: projectTimeline(snapshot.steps),
 	};
 }
 
-export function useCierreMensual(): {
-	data: CierreMensualMission | null;
-	isLoading: boolean;
-	isError: boolean;
-} {
-	const mockMission: CierreMensualMission = {
-		id: "mission-close-2026-03",
-		companyId: "1",
-		companyName: "Arkelythex SAC",
-		companyRuc: "20123456789",
-		periodo: "Marzo 2026",
-		progress: 0.65,
-		startedAt: "2026-04-01T08:00:00Z",
-		globalRiskLevel: "MEDIUM",
-		checklist: [
-			{ id: "c1", label: "Importar movimientos bancarios", completado: true },
-			{ id: "c2", label: "Conciliar cuenta corriente", completado: true },
-			{ id: "c3", label: "Validar facturas electrónicas", completado: true },
-			{ id: "c4", label: "Calcular IGV del período", completado: false },
-			{ id: "c5", label: "Revisar detracciones", completado: false },
-			{ id: "c6", label: "Conciliar SIRE mensual", completado: false },
-			{ id: "c7", label: "Generar estados financieros", completado: false },
-			{ id: "c8", label: "Obtener firmas de cierre", completado: false },
-		],
-		blockers: [
-			{
-				id: "b1",
-				reason: "3 facturas electrónicas sin CDR de SUNAT",
-				severity: "high",
-				resolved: false,
-			},
-			{
-				id: "b2",
-				reason: "Diferencia en conciliación bancaria: S/ 1,250.00",
-				severity: "medium",
-				resolved: false,
-			},
-		],
-		firmas: {
-			"contador-general": { firmado: true },
-			"gerente-financiero": { firmado: false },
-		},
-		timeline: [
-			{
-				id: "t1",
-				type: "system",
-				label: "Inicio del proceso de cierre",
-				timestamp: "2026-04-01T08:00:00Z",
-				actor: "Sistema",
-			},
-			{
-				id: "t2",
-				type: "agent",
-				label: "Importación de movimientos completada (428 comprobantes)",
-				timestamp: "2026-04-01T08:15:00Z",
-				actor: "@drenyra/pi",
-			},
-			{
-				id: "t3",
-				type: "agent",
-				label: "Conciliación bancaria: 1 diferencia detectada",
-				timestamp: "2026-04-01T08:30:00Z",
-				actor: "@drenyra/pi",
-			},
-			{
-				id: "t4",
-				type: "user",
-				label: "Revisión de facturas pendientes",
-				timestamp: "2026-04-01T09:00:00Z",
-				actor: "Usuario",
-			},
-		],
-		agentAnalysis: {
-			agentId: "pi-close-agent",
-			agentName: "@drenyra/pi",
-			confidence: 0.87,
-			summary:
-				"Proceso de cierre avanzado al 65%. Se detectaron 2 bloqueos y 3 facturas sin CDR. Se recomienda revisar las discrepancias antes de proceder con el cálculo de IGV.",
-			recommendations: [
-				"Revisar facturas electrónicas sin CDR (3 unidades)",
-				"Resolver diferencia bancaria de S/ 1,250.00",
-				"Completar cálculo de IGV después de resolver bloqueos",
-			],
-			discrepancies: 2,
-		},
-	};
+export function useCierreMensual(params: CierreMensualParams) {
+	const mission = useAccountingMission();
+	const data = projectCierreMensualMission(mission, params);
 
 	return {
-		data: mockMission,
-		isLoading: false,
-		isError: false,
+		data,
+		isLoading: !mission.isReady && mission.error === null,
+		isError: mission.error !== null,
+		isAwaitingApproval: mission.isAwaiting,
+		receiptId: mission.receiptId,
+		receiptHash: mission.receiptHash,
+		approve: mission.approve,
 	};
 }
