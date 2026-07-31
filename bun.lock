@@ -347,12 +347,34 @@
         "vitest": "^4.1.10",
       },
     },
+    "packages/mission-client": {
+      "name": "@drenyra/mission-client",
+      "version": "0.1.0",
+      "dependencies": {
+        "@drenyra/mission-domain": "workspace:*",
+        "@drenyra/mission-protocol": "workspace:*",
+      },
+      "devDependencies": {
+        "typescript": "^7.0.2",
+        "vitest": "^4.1.10",
+      },
+    },
     "packages/mission-domain": {
       "name": "@drenyra/mission-domain",
       "version": "1.0.0",
       "devDependencies": {
         "typescript": "^7.0.2",
         "vitest": "^4.1.10",
+      },
+    },
+    "packages/mission-protocol": {
+      "name": "@drenyra/mission-protocol",
+      "version": "0.1.0",
+      "devDependencies": {
+        "vitest": "^4.0.0",
+      },
+      "peerDependencies": {
+        "typescript": "^5.8.0",
       },
     },
     "packages/persistence": {
@@ -773,7 +795,11 @@
 
     "@drenyra/memory": ["@drenyra/memory@workspace:packages/memory"],
 
+    "@drenyra/mission-client": ["@drenyra/mission-client@workspace:packages/mission-client"],
+
     "@drenyra/mission-domain": ["@drenyra/mission-domain@workspace:packages/mission-domain"],
+
+    "@drenyra/mission-protocol": ["@drenyra/mission-protocol@workspace:packages/mission-protocol"],
 
     "@drenyra/orchestrator": ["@drenyra/orchestrator@workspace:packages/drenyra-orchestrator"],
 

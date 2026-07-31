@@ -1,0 +1,15 @@
+{
+  "content": {
+    "missionId": "mis_123",
+    "companyId": "cmp_123",
+    "actorId": "user_456",
+    "decision": "APPROVE",
+    "proposalVersion": 3,
+    "evidenceHash": "TAMPERED_HASH",
+    "previousStatus": "AWAITING_APPROVAL",
+    "newStatus": "APPROVED",
+    "payloadHash": "f6e7d8c9b0",
+    "timestamp": "2026-07-30T12:00:00Z"
+  },
+  "receiptHash": "146c64e2f619fcf470aac96a1c04543178756ea3f655cc6861bc6dec0b22834b"
+}

@@ -30,7 +30,8 @@ type MemoryConfig struct {
 }
 
 type HarnessConfig struct {
-	API string `yaml:"api"`
+	API    string `yaml:"api"`
+	APIKey string `yaml:"api_key,omitempty"`
 }
 
 type FiscalDefaults struct {
@@ -145,6 +146,9 @@ func applyEnv(cfg *Config) {
 	if v := os.Getenv("DRENYRA_API_URL"); v != "" {
 		cfg.Harness.API = v
 	}
+	if v := os.Getenv("DRENYRA_API_TOKEN"); v != "" {
+		cfg.Harness.APIKey = v
+	}
 	if v := os.Getenv("DRENYRA_ORGANIZATION_ID"); v != "" {
 		cfg.Fiscal.OrganizationID = v
 	}
@@ -186,4 +190,9 @@ func WriteGlobal(cfg *Config) error {
 	}
 	header := []byte("# Drenyra CLI — terminal companion config\n# Docs: docs/05-development/drenyra-cli.md\n\n")
 	return os.WriteFile(path, append(header, data...), 0o600)
+}
+
+// Write saves the config to the global path.
+func (cfg *Config) Write() error {
+	return WriteGlobal(cfg)
 }

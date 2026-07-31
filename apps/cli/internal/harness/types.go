@@ -150,3 +150,91 @@ type AuditEvent struct {
 	OccurredAt string         `json:"occurredAt"`
 	Metadata   map[string]any `json:"metadata"`
 }
+
+// ─── Mission types ──────────────────────────────────────────────────────
+
+type MissionStatus string
+
+const (
+	MissionDRAFT              MissionStatus = "DRAFT"
+	MissionQUEUED             MissionStatus = "QUEUED"
+	MissionRUNNING            MissionStatus = "RUNNING"
+	MissionBLOCKED            MissionStatus = "BLOCKED"
+	MissionAWAITING_APPROVAL  MissionStatus = "AWAITING_APPROVAL"
+	MissionAPPROVED           MissionStatus = "APPROVED"
+	MissionREJECTED           MissionStatus = "REJECTED"
+	MissionREVISION_REQUESTED MissionStatus = "REVISION_REQUESTED"
+	MissionCOMPLETED          MissionStatus = "COMPLETED"
+	MissionFAILED             MissionStatus = "FAILED"
+	MissionUNKNOWN            MissionStatus = "UNKNOWN"
+	MissionWAITING_FOR_EVIDENCE  MissionStatus = "WAITING_FOR_EVIDENCE"
+	MissionBLOCKED_BY_GATE      MissionStatus = "BLOCKED_BY_GATE"
+	MissionRETRYING            MissionStatus = "RETRYING"
+)
+
+type MissionSnapshot struct {
+	MissionID         string           `json:"missionId"`
+	Status            MissionStatus    `json:"status"`
+	Progress          int              `json:"progress"`
+	Steps             []MissionStep    `json:"steps"`
+	Blockers          []MissionBlocker `json:"blockers"`
+	Proposal          *MissionProposal `json:"proposal"`
+	Version           int              `json:"version"`
+	ReceiptID         string           `json:"receiptId,omitempty"`
+	ReceiptHash       string           `json:"receiptHash,omitempty"`
+	LastEventSequence int              `json:"lastEventSequence,omitempty"`
+}
+
+type MissionStep struct {
+	ID     string `json:"id"`
+	Label  string `json:"label"`
+	Status string `json:"status"`
+}
+
+type MissionBlocker struct {
+	ID       string `json:"id"`
+	Reason   string `json:"reason"`
+	Severity string `json:"severity"`
+}
+
+type MissionProposal struct {
+	ID               string         `json:"id"`
+	Version          int            `json:"version"`
+	Summary          string         `json:"summary"`
+	RiskLevel        string         `json:"riskLevel"`
+	RequiresApproval bool           `json:"requiresApproval"`
+	ApprovalLevel    string         `json:"approvalLevel"`
+	Evidence         []EvidenceItem `json:"evidence"`
+	EvidenceHash     string         `json:"evidenceHash"`
+}
+
+type EvidenceItem struct {
+	ID    string `json:"id"`
+	Label string `json:"label"`
+	Type  string `json:"type"`
+}
+
+type ReadinessGateResult struct {
+	GateName    string `json:"gateName"`
+	Status      string `json:"status"`
+	Details     string `json:"details,omitempty"`
+	EvaluatedAt string `json:"evaluatedAt,omitempty"`
+}
+
+type AccountingException struct {
+	ID               string   `json:"id"`
+	MissionID        string   `json:"missionId"`
+	Code             string   `json:"code"`
+	Severity         string   `json:"severity"`
+	SubjectRef       string   `json:"subjectRef"`
+	EvidenceRefs     []string `json:"evidenceRefs"`
+	ResolutionStatus string   `json:"resolutionStatus"`
+}
+
+type ApprovalResult struct {
+	ReceiptID   string `json:"receiptId"`
+	ReceiptHash string `json:"receiptHash"`
+	Version     int    `json:"version"`
+}
+
+// ─── Mission types ──────────────────────────────────────────────────────
