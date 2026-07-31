@@ -11,6 +11,8 @@ import (
 // Matches the @drenyra/mission-domain SignedReceipt type.
 type SignedReceipt struct {
 	ProtocolVersion string          `json:"protocolVersion"`
+	ReceiptType     string          `json:"receiptType"`
+	Algorithm       string          `json:"algorithm"`
 	Content         *ReceiptContent `json:"content"`
 	ReceiptHash     string          `json:"receiptHash"`
 	SignerKeyID     string          `json:"signerKeyId"`

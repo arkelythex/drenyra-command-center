@@ -71,7 +71,9 @@ packages/pi/bun.lock
 # Test sprite artifacts (ephemeral)
 testsprite_tests/
 # Cross-stack fiscal contracts (generated)
-/contracts/
+/contracts/*
+# Versioned canonical contracts are tracked deliberately (mirrors contracts/data-engine/v1 precedent)
+!/contracts/receipt-schema/
 
 # Tauri build artifacts
 apps/web/src-tauri/target/
