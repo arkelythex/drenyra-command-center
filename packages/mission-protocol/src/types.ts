@@ -9,6 +9,20 @@
 import type { AccountingMissionStatus } from "./status.js";
 import type { MissionIntent } from "./commands.js";
 
+// ─── Receipt ──────────────────────────────────────────────────────────────
+
+/**
+ * The business purpose of a signed mission receipt.
+ * Receipt type is bundle metadata and is intentionally excluded from the
+ * canonical ReceiptContent payload used for cross-language hashing.
+ */
+export enum ReceiptType {
+  APPROVAL = "APPROVAL",
+  EXECUTION = "EXECUTION",
+  COMPLETION = "COMPLETION",
+  EXTERNAL_SUBMISSION = "EXTERNAL_SUBMISSION",
+}
+
 // ─── Mission Step ────────────────────────────────────────────────────
 
 export interface MissionStep {

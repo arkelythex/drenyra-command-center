@@ -9,6 +9,7 @@
  * confirm both integrity and authenticity without asking the issuing server.
  */
 
+import { ReceiptType } from "@drenyra/mission-protocol";
 import {
 	createHash,
 	generateKeyPairSync,
@@ -57,6 +58,8 @@ export interface ReceiptKeyPair {
  */
 export interface SignedReceipt {
 	protocolVersion: string;
+	receiptType: ReceiptType;
+	algorithm: "Ed25519";
 	content: ReceiptContent;
 	receiptHash: string;
 	signerKeyId: string;
@@ -140,6 +143,7 @@ export function signReceipt(
 	privateKeyBase64: string,
 	keyId: string,
 ): { signature: string; canonicalPayload: string } {
+	void keyId;
 	const canonicalPayload = sortedStringify(
 		content as unknown as Record<string, unknown>,
 	);
@@ -198,12 +202,15 @@ export function buildSignedReceipt(
 	content: ReceiptContent,
 	keyPair: ReceiptKeyPair,
 	protocolVersion = "1.0",
+	receiptType: ReceiptType = ReceiptType.APPROVAL,
 ): SignedReceipt {
 	const receiptHash = generateReceiptHash(content);
 	const { signature } = signReceipt(content, keyPair.privateKey, keyPair.keyId);
 
 	return {
 		protocolVersion,
+		receiptType,
+		algorithm: "Ed25519",
 		content,
 		receiptHash,
 		signerKeyId: keyPair.keyId,
@@ -241,5 +248,100 @@ export function verifySignedReceipt(receipt: SignedReceipt): {
 		signatureValid,
 		keyId: receipt.signerKeyId,
 		protocolVersion: receipt.protocolVersion,
+	};
+}
+
+/** The furthest verification stage reached for a signed receipt. */
+export type ReceiptVerificationStatus =
+	| "CONTENT_VALID"
+	| "SIGNATURE_VALID"
+	| "SIGNER_TRUSTED"
+	| "KEY_EXPIRED"
+	| "KEY_REVOKED"
+	| "UNKNOWN_SIGNER"
+	| "PAYLOAD_TAMPERED";
+
+/** A trusted signing key and its lifecycle metadata. */
+export interface SigningKeyInfo {
+	keyId: string;
+	publicKey: string;
+	issuedAt: string;
+	expiresAt?: string;
+	revokedAt?: string;
+}
+
+/** Resolves trusted signer metadata by stable key ID. */
+export type KeyTrustResolver = (
+	keyId: string,
+) => Promise<SigningKeyInfo | undefined> | SigningKeyInfo | undefined;
+
+/** Individual results for every receipt verification stage. */
+export interface ReceiptVerificationSteps {
+	hashValid: boolean;
+	signatureValid: boolean;
+	signerRecognized: boolean;
+	keyCurrent: boolean;
+	keyRevoked: boolean;
+}
+
+/**
+ * Verifies receipt integrity, signature, and trusted signer lifecycle.
+ * The embedded public key establishes portable signature validity; the
+ * resolved key must match it before the signer can be trusted.
+ */
+export async function verifySignedReceiptTrusted(
+	receipt: SignedReceipt,
+	resolveKey: KeyTrustResolver,
+): Promise<{
+	status: ReceiptVerificationStatus;
+	steps: ReceiptVerificationSteps;
+}> {
+	const hashValid = verifyReceiptIntegrity(receipt.content, receipt.receiptHash);
+	if (!hashValid) {
+		return trustResult("PAYLOAD_TAMPERED", false, false, false, false, false);
+	}
+
+	const signatureValid = verifyReceiptSignature(
+		receipt.content,
+		receipt.signature,
+		receipt.signerPublicKey,
+	);
+	if (!signatureValid) {
+		return trustResult("CONTENT_VALID", true, false, false, false, false);
+	}
+
+	const key = await resolveKey(receipt.signerKeyId);
+	const signerRecognized = key !== undefined && key.publicKey === receipt.signerPublicKey;
+	if (!signerRecognized || key === undefined) {
+		return trustResult("UNKNOWN_SIGNER", true, true, false, false, false);
+	}
+
+	const now = Date.now();
+	const keyCurrent =
+		Date.parse(key.issuedAt) <= now &&
+		(key.expiresAt === undefined || Date.parse(key.expiresAt) > now);
+	if (!keyCurrent) {
+		return trustResult("KEY_EXPIRED", true, true, true, false, false);
+	}
+
+	const keyRevoked = key.revokedAt !== undefined && Date.parse(key.revokedAt) <= now;
+	if (keyRevoked) {
+		return trustResult("KEY_REVOKED", true, true, true, true, true);
+	}
+
+	return trustResult("SIGNER_TRUSTED", true, true, true, true, false);
+}
+
+function trustResult(
+	status: ReceiptVerificationStatus,
+	hashValid: boolean,
+	signatureValid: boolean,
+	signerRecognized: boolean,
+	keyCurrent: boolean,
+	keyRevoked: boolean,
+): { status: ReceiptVerificationStatus; steps: ReceiptVerificationSteps } {
+	return {
+		status,
+		steps: { hashValid, signatureValid, signerRecognized, keyCurrent, keyRevoked },
 	};
 }
