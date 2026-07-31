@@ -36,6 +36,17 @@ export enum AccountingMissionStatus {
 const S = AccountingMissionStatus;
 
 /**
+ * Formal reason a mission is waiting rather than actively progressing.
+ */
+export enum WaitReason {
+	EVIDENCE = "EVIDENCE",
+	APPROVAL = "APPROVAL",
+	POLICY_GATE = "POLICY_GATE",
+	EXTERNAL_SYSTEM = "EXTERNAL_SYSTEM",
+	MANUAL_INTERVENTION = "MANUAL_INTERVENTION",
+}
+
+/**
  * Valid transitions matrix.
  *
  * Key invariants:
@@ -88,6 +99,68 @@ export const TERMINAL_STATES: Set<AccountingMissionStatus> = new Set([
 	S.COMPLETED,
 	S.FAILED,
 ]);
+
+/**
+ * Execution states actively progress mission work. Wait states pause that work
+ * pending the mapped wait reason. Terminal states cannot coexist with another
+ * lifecycle state; execution and wait classifications are mutually exclusive.
+ */
+const EXECUTION_STATES: Set<AccountingMissionStatus> = new Set([
+	S.DRAFT,
+	S.QUEUED,
+	S.RUNNING,
+	S.RECOVERING,
+	S.APPROVED,
+	S.REJECTED,
+	S.REVISION_REQUESTED,
+]);
+
+const WAIT_STATES: Set<AccountingMissionStatus> = new Set([
+	S.WAITING_FOR_EVIDENCE,
+	S.AWAITING_APPROVAL,
+	S.BLOCKED_BY_GATE,
+	S.BLOCKED,
+	S.RETRYING,
+	S.UNKNOWN,
+]);
+
+/**
+ * Returns true when the mission is actively executing or progressing its
+ * lifecycle rather than waiting or terminal.
+ */
+export function isExecutionState(status: AccountingMissionStatus): boolean {
+	return EXECUTION_STATES.has(status);
+}
+
+/**
+ * Returns true when the mission is paused for a human, policy, or external
+ * system condition.
+ */
+export function isWaitState(status: AccountingMissionStatus): boolean {
+	return WAIT_STATES.has(status);
+}
+
+/**
+ * Returns the reason associated with a wait state, or null for states that do
+ * not wait.
+ */
+export function waitReasonFor(status: AccountingMissionStatus): WaitReason | null {
+	switch (status) {
+		case S.WAITING_FOR_EVIDENCE:
+			return WaitReason.EVIDENCE;
+		case S.AWAITING_APPROVAL:
+			return WaitReason.APPROVAL;
+		case S.BLOCKED_BY_GATE:
+			return WaitReason.POLICY_GATE;
+		case S.BLOCKED:
+			return WaitReason.MANUAL_INTERVENTION;
+		case S.RETRYING:
+		case S.UNKNOWN:
+			return WaitReason.EXTERNAL_SYSTEM;
+		default:
+			return null;
+	}
+}
 
 /**
  * Extended states that require human intervention to resolve.

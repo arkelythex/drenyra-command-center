@@ -144,6 +144,14 @@ export const missionReceipts = pgTable(
     newStatus: varchar("new_status", { length: 25 }).notNull(),
     payloadHash: text("payload_hash").notNull(),
     receiptHash: text("receipt_hash").notNull(),
+    receiptType: varchar("receipt_type", { length: 30 }),
+    signature: text("signature"),
+    signatureAlgorithm: varchar("signature_algorithm", { length: 20 }).default(
+      "Ed25519",
+    ),
+    signingKeyId: varchar("signing_key_id", { length: 255 }),
+    issuedAt: timestamp("issued_at", { withTimezone: true }),
+    protocolVersion: varchar("protocol_version", { length: 20 }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
@@ -153,6 +161,9 @@ export const missionReceipts = pgTable(
     companyIdIdx: index("mission_receipts_company_id_idx").on(table.companyId),
     receiptHashUnq: uniqueIndex("mission_receipts_hash_unq").on(
       table.receiptHash,
+    ),
+    signingKeyIdx: index("mission_receipts_signing_key_idx").on(
+      table.signingKeyId,
     ),
   }),
 );
