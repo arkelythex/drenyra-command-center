@@ -4,6 +4,38 @@ on:
   schedule:
     - cron: "0 6 * * 1-5"
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "contracts/receipt-schema/**"
+      - "packages/mission-domain/src/__tests__/conformance/**"
+      - "packages/mission-domain/src/mission-receipt.ts"
+      - "packages/mission-domain/package.json"
+      - "bun.lock"
+      - "apps/cli/internal/harness/**"
+      - "apps/data-engine/src/conformance/**"
+      - "apps/data-engine/tests/conformance/**"
+      - "apps/data-engine/pyproject.toml"
+      - "apps/data-engine/uv.lock"
+      - "fixtures/receipts/**"
+      - "scripts/conformance/**"
+      - ".github/workflows/contracts-nightly.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "contracts/receipt-schema/**"
+      - "packages/mission-domain/src/__tests__/conformance/**"
+      - "packages/mission-domain/src/mission-receipt.ts"
+      - "packages/mission-domain/package.json"
+      - "bun.lock"
+      - "apps/cli/internal/harness/**"
+      - "apps/data-engine/src/conformance/**"
+      - "apps/data-engine/tests/conformance/**"
+      - "apps/data-engine/pyproject.toml"
+      - "apps/data-engine/uv.lock"
+      - "fixtures/receipts/**"
+      - "scripts/conformance/**"
+      - ".github/workflows/contracts-nightly.yml"
 
 concurrency:
   group: contracts-nightly-${{ github.ref }}
@@ -13,6 +45,10 @@ jobs:
   contracts:
     name: Run TS-Python contract tests
     runs-on: [self-hosted, linux, x64]
+    # Guard (design D3): the heavy TS-Python contract suite keeps running only
+    # for scheduled/manual events; the receipt-conformance job below handles
+    # the path-filtered push/pull_request events.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Install git-lfs
@@ -174,3 +210,51 @@ jobs:
           with urllib.request.urlopen(request, timeout=10):
             pass
           PY
+
+  # Design D3 / REQ-HARNESS-005: the cross-language drift guard. One job and
+  # one checkout make the shared committed fixture explicit; named steps keep
+  # per-surface failures diagnosable. Runs for every configured event whose
+  # paths touch the receipt contract, any harness surface, or this workflow.
+  receipt-conformance:
+    name: Receipt conformance (TS + Go + Python)
+    runs-on: [self-hosted, linux, x64]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install workspace dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run TypeScript conformance harness
+        run: bun run --filter @drenyra/mission-domain test
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: apps/cli/go.mod
+
+      - name: Run Go conformance harness
+        working-directory: apps/cli
+        run: go test ./...
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Sync data-engine dev environment
+        working-directory: apps/data-engine
+        run: uv sync --group dev --frozen
+
+      - name: Run Python conformance harness
+        working-directory: apps/data-engine
+        run: uv run pytest tests/conformance
