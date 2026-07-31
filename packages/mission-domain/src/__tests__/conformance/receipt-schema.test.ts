@@ -42,6 +42,14 @@ const LEGACY_FIXTURE_PATH = join(
 	"receipts",
 	"receipt-signed-valid.v1.json",
 );
+const VECTORS_PATH = join(
+	repoRoot,
+	"contracts",
+	"receipt-schema",
+	"v1",
+	"fixtures",
+	"conformance-vectors.v1.json",
+);
 
 function loadJson(filePath: string): unknown {
 	return JSON.parse(readFileSync(filePath, "utf-8")) as unknown;
@@ -64,7 +72,12 @@ function compileValidator(
 	contentSchema: AnySchema,
 	signedReceiptSchema: AnySchema,
 	keyInfoSchema: AnySchema,
-): { validate: ValidateFunction; warnings: string[] } {
+): {
+	validate: ValidateFunction;
+	validateContent: ValidateFunction;
+	validateKey: ValidateFunction;
+	warnings: string[];
+} {
 	const warnings: string[] = [];
 	const ajv = new Ajv({
 		allErrors: true,
@@ -78,8 +91,10 @@ function compileValidator(
 	addFormats(ajv);
 	ajv.addSchema(contentSchema, "receipt-content.schema.json");
 	ajv.addSchema(keyInfoSchema, "signing-key-info.schema.json");
+	const validateContent = ajv.compile(contentSchema);
+	const validateKey = ajv.compile(keyInfoSchema);
 	const validate = ajv.compile(signedReceiptSchema);
-	return { validate, warnings };
+	return { validate, validateContent, validateKey, warnings };
 }
 
 function expectSchemaValid(
@@ -129,7 +144,7 @@ const keyInfoSchema = loadSchema(
 join(SCHEMAS_DIR, "signing-key-info.schema.json"),
 );
 
-	const { validate, warnings } = compileValidator(
+	const { validate, validateContent, validateKey, warnings } = compileValidator(
 		contentSchema,
 		signedReceiptSchema,
 		keyInfoSchema,
@@ -256,5 +271,91 @@ join(SCHEMAS_DIR, "signing-key-info.schema.json"),
 		);
 		expect(completion.receiptType).toBe(ReceiptType.COMPLETION);
 		expectSchemaValid(validate, "typed COMPLETION receipt", completion);
+	});
+
+	describe("canonical vector suite (REQ-HARNESS-004, REQ-VECTOR-001)", () => {
+		interface VectorEntryShape {
+			name: string;
+			receipt: Record<string, unknown>;
+			trustedKeys?: Array<Record<string, unknown>>;
+		}
+
+		interface VectorSuiteShape {
+			contract: string;
+			version: string;
+			vectors: VectorEntryShape[];
+		}
+
+		function isVectorSuite(input: unknown): input is VectorSuiteShape {
+			if (typeof input !== "object" || input === null) {
+				return false;
+			}
+			const record = input as Record<string, unknown>;
+			if (record.contract !== "receipt-schema" || record.version !== "v1") {
+				return false;
+			}
+			return (
+				Array.isArray(record.vectors) &&
+				record.vectors.every(
+					(entry) =>
+						typeof entry === "object" &&
+						entry !== null &&
+						typeof (entry as Record<string, unknown>).name === "string" &&
+						typeof (entry as Record<string, unknown>).receipt === "object",
+				)
+			);
+		}
+
+		function requireVectorSuite(): VectorSuiteShape {
+			const raw = loadJson(VECTORS_PATH);
+			if (!isVectorSuite(raw)) {
+				throw new Error(
+					"conformance-vectors.v1.json does not match the §3.1 vector envelope",
+				);
+			}
+			return raw;
+		}
+
+		it("contains exactly the eight vectors of spec §3.2", () => {
+			const suite = requireVectorSuite();
+			expect(suite.vectors).toHaveLength(8);
+			expect(
+				suite.vectors.filter((entry) => entry.trustedKeys !== undefined),
+			).toHaveLength(5);
+		});
+
+		it("validates every vector receipt and content against the schemas", () => {
+			const suite = requireVectorSuite();
+			expect(suite.vectors).toHaveLength(8);
+			for (const entry of suite.vectors) {
+				expectSchemaValid(
+					validate,
+					`vector ${entry.name} receipt`,
+					entry.receipt,
+				);
+				expectSchemaValid(
+					validateContent,
+					`vector ${entry.name} content`,
+					(entry.receipt as Record<string, unknown>).content,
+				);
+			}
+		});
+
+		it("validates every trustedKeys entry against signing-key-info.schema.json", () => {
+			const suite = requireVectorSuite();
+			const keyedVectors = suite.vectors.filter(
+				(entry) => entry.trustedKeys !== undefined,
+			);
+			expect(keyedVectors).toHaveLength(5);
+			for (const entry of keyedVectors) {
+				for (const key of entry.trustedKeys ?? []) {
+					expectSchemaValid(
+						validateKey,
+						`vector ${entry.name} trusted key`,
+						key,
+					);
+				}
+			}
+		});
 	});
 });
