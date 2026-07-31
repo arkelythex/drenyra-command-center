@@ -345,6 +345,8 @@ export {
 	missionEvents,
 	missionEventsRelations,
 	missionIdempotency,
+	missionLeases,
+	missionLeasesRelations,
 	missionReceipts,
 	missionReceiptsRelations,
 } from "./mission.schema";

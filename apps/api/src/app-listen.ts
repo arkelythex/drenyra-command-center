@@ -3,6 +3,8 @@ import { startFiscalAgentWorker } from "@drenyra/infrastructure/workers/fiscal-a
 import { getApiRootMetadata } from "./api-root-metadata";
 import { baseApp } from "./app-core";
 import { bootstrapTaxationEventSubscriptions } from "./features/taxation/application/handlers/bootstrap-taxation-event-subscriptions";
+import { runMissionRecovery } from "./features/missions/mission-recovery.hook";
+import { db } from "./lib/db";
 import { createLogger } from "./lib/logger";
 import { attachOptionalOpenTelemetry } from "./observability/opentelemetry";
 import {
@@ -15,6 +17,10 @@ const logger = createLogger({ module: "app-listen" });
 const app = await attachOptionalOpenTelemetry(baseApp);
 
 await bootstrapTaxationEventSubscriptions();
+
+runMissionRecovery(db).catch((error: unknown) => {
+	logger.error({ error }, "Mission startup recovery failed");
+});
 
 // Start background workers
 const fiscalWorker = startFiscalAgentWorker();
