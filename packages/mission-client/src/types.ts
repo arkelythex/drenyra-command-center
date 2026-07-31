@@ -1,74 +1,54 @@
-import type { MissionSnapshot, ReadinessGateResult, AccountingException } from "@drenyra/mission-domain";
+/**
+ * @drenyra/mission-client transport types.
+ *
+ * Protocol types are imported from @drenyra/mission-protocol.
+ * Consumers MUST import protocol types directly from @drenyra/mission-protocol,
+ * NOT through this package.
+ */
 
-export interface CreateMissionInput {
-  companyId: string;
-  fiscalPeriod: string;
-  intent: "monthly-close" | "correction";
-  input: { instruction: string };
-}
+import type {
+	MissionSnapshot,
+	ReadinessGateResult,
+	AccountingException,
+	ApprovalResult,
+	ReceiptVerification,
+	MissionSummary,
+	MissionFilter,
+	CreateMissionCommand as CreateMissionInput,
+	ExecuteMissionCommand as ExecuteCommand,
+	ApproveMissionCommand as ApprovalInput,
+	RejectMissionCommand as RejectInput,
+	ReconcileMissionCommand as ReconcileInput,
+} from "@drenyra/mission-protocol";
 
-export interface ExecuteCommand {
-  expectedMissionVersion: number;
-}
+export type {
+	MissionSnapshot,
+	ReadinessGateResult,
+	AccountingException,
+	ApprovalResult,
+	ReceiptVerification,
+	MissionSummary,
+	MissionFilter,
+	CreateMissionInput,
+	ExecuteCommand,
+	ApprovalInput,
+	RejectInput,
+	ReconcileInput,
+};
 
-export interface ApprovalInput {
-  proposalId: string;
-  proposalVersion: number;
-  evidenceHash: string;
-  expectedMissionVersion: number;
-}
-
-export interface RejectInput {
-  proposalId: string;
-  proposalVersion: number;
-  reason: string;
-  expectedMissionVersion: number;
-}
-
-export interface ReconcileInput {
-  resolution: "RUNNING" | "FAILED" | "COMPLETED";
-  reason: string;
-  expectedMissionVersion: number;
-}
-
-export interface ApprovalResult {
-  receiptId: string;
-  receiptHash: string;
-  version: number;
-}
-
-export interface ReceiptVerification {
-  valid: boolean;
-  receiptHash: string;
-  computedHash: string;
-  missionId: string;
-}
-
-export interface MissionSummary {
-  id: string;
-  status: string;
-  intent: string;
-  fiscalPeriod: string;
-  companyId: string;
-  version: number;
-  createdAt: string;
-}
-
-export interface MissionFilter {
-  companyId?: string;
-  status?: string;
-  intent?: string;
-}
-
+/**
+ * MissionClient interface — canonical transport abstraction.
+ * Implemented by HttpMissionClient and mock transports.
+ */
 export interface MissionClient {
-  create(input: CreateMissionInput): Promise<MissionSnapshot>;
-  get(id: string): Promise<MissionSnapshot>;
-  list(filter?: MissionFilter): Promise<MissionSummary[]>;
-  execute(id: string, command: ExecuteCommand): AsyncGenerator<MissionSnapshot>;
-  approve(id: string, approval: ApprovalInput): Promise<ApprovalResult>;
-  reject(id: string, input: RejectInput): Promise<void>;
-  reconcile(id: string, input: ReconcileInput): Promise<MissionSnapshot>;
-  getGates(id: string): Promise<ReadinessGateResult[]>;
-  getExceptions(id: string): Promise<AccountingException[]>;
-  verifyReceipt(missionId: string): Promise<ReceiptVerification>;
+	create(input: CreateMissionInput): Promise<MissionSnapshot>;
+	get(id: string): Promise<MissionSnapshot>;
+	list(filter?: MissionFilter): Promise<MissionSummary[]>;
+	execute(id: string, command: ExecuteCommand): AsyncGenerator<MissionSnapshot>;
+	approve(id: string, approval: ApprovalInput): Promise<ApprovalResult>;
+	reject(id: string, input: RejectInput): Promise<void>;
+	reconcile(id: string, input: ReconcileInput): Promise<MissionSnapshot>;
+	getGates(id: string): Promise<ReadinessGateResult[]>;
+	getExceptions(id: string): Promise<AccountingException[]>;
+	verifyReceipt(missionId: string): Promise<ReceiptVerification>;
 }

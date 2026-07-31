@@ -1,0 +1,19 @@
+{
+  "id": "mis_fixture_001",
+  "companyId": "cmp_fixture_001",
+  "fiscalPeriod": "2026-07",
+  "intent": "monthly-close",
+  "status": "DRAFT",
+  "version": 1,
+  "progress": 0,
+  "steps": [],
+  "currentStep": "",
+  "blockers": [],
+  "proposal": null,
+  "rejection": null,
+  "receiptId": null,
+  "receiptHash": null,
+  "lastEventSequence": 0,
+  "createdAt": "2026-07-30T12:00:00.000Z",
+  "updatedAt": "2026-07-30T12:00:00.000Z"
+}

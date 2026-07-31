@@ -1,89 +1,245 @@
 /**
  * Mission receipts — cryptographic receipt generation, verification,
- * and evidence hashing.
+ * evidence hashing, and Ed25519 signing.
  *
- * Uses SHA-256 with canonical key-sorted serialization for
- * deterministic, content-addressable receipts.
+ * Integrity:  SHA-256 over canonical key-sorted serialization.
+ * Authenticity: Ed25519 signature over the canonical payload.
+ *
+ * A signed receipt is self-verifying: any party with the public key can
+ * confirm both integrity and authenticity without asking the issuing server.
  */
 
-import { createHash, timingSafeEqual } from "node:crypto";
+import {
+	createHash,
+	generateKeyPairSync,
+	timingSafeEqual,
+	randomBytes,
+	sign,
+	verify,
+	createPrivateKey,
+	createPublicKey,
+} from "node:crypto";
 
 /**
  * Content that goes into a receipt hash.
  */
 export interface ReceiptContent {
-  missionId: string;
-  companyId: string;
-  actorId: string;
-  decision: "APPROVE" | "REJECT";
-  proposalVersion: number;
-  evidenceHash: string;
-  previousStatus: string;
-  newStatus: string;
-  payloadHash: string;
-  timestamp: string;
+	missionId: string;
+	companyId: string;
+	actorId: string;
+	decision: "APPROVE" | "REJECT";
+	proposalVersion: number;
+	evidenceHash: string;
+	previousStatus: string;
+	newStatus: string;
+	payloadHash: string;
+	timestamp: string;
 }
 
 /**
  * Evidence item used in computeEvidenceHash.
- * Re-uses the canonical EvidenceItem shape from mission-contracts.
  */
 import type { EvidenceItem } from "./mission-contracts.js";
 
 export type { EvidenceItem };
 
 /**
+ * Ed25519 key pair for receipt signing.
+ */
+export interface ReceiptKeyPair {
+	publicKey: string;
+	privateKey: string;
+	keyId: string;
+}
+
+/**
+ * Complete signed receipt bundle — the portable, self-verifying artifact.
+ */
+export interface SignedReceipt {
+	protocolVersion: string;
+	content: ReceiptContent;
+	receiptHash: string;
+	signerKeyId: string;
+	signerPublicKey: string;
+	signature: string;
+	issuedAt: string;
+}
+
+/**
  * Serialize an object with keys sorted alphabetically.
- *
- * This ensures deterministic output regardless of insertion order.
  */
 function sortedStringify(obj: Record<string, unknown>): string {
-  const sortedKeys = Object.keys(obj).sort();
-  const sorted: Record<string, unknown> = {};
-  for (const key of sortedKeys) {
-    sorted[key] = obj[key];
-  }
-  return JSON.stringify(sorted);
+	const sortedKeys = Object.keys(obj).sort();
+	const sorted: Record<string, unknown> = {};
+	for (const key of sortedKeys) {
+		sorted[key] = obj[key];
+	}
+	return JSON.stringify(sorted);
 }
 
 /**
  * Generate a SHA-256 receipt hash with canonical field ordering.
- *
- * Same inputs always produce the same hash, making receipts
- * content-addressable and independently verifiable.
  */
 export function generateReceiptHash(content: ReceiptContent): string {
-  return createHash("sha256")
-    .update(sortedStringify(content as unknown as Record<string, unknown>))
-    .digest("hex");
+	return createHash("sha256")
+		.update(sortedStringify(content as unknown as Record<string, unknown>))
+		.digest("hex");
 }
 
 /**
  * Verify that a receipt content matches its asserted hash.
- *
- * Uses timing-safe comparison to prevent timing side-channel attacks.
+ * Uses timing-safe comparison.
  */
 export function verifyReceiptIntegrity(
-  content: ReceiptContent,
-  assertedHash: string,
+	content: ReceiptContent,
+	assertedHash: string,
 ): boolean {
-  const computed = generateReceiptHash(content);
-  const computedBuf = Buffer.from(computed, "hex");
-  const assertedBuf = Buffer.from(assertedHash, "hex");
+	const computed = generateReceiptHash(content);
+	const computedBuf = Buffer.from(computed, "hex");
+	const assertedBuf = Buffer.from(assertedHash, "hex");
 
-  if (computedBuf.length !== assertedBuf.length) {
-    return false;
-  }
+	if (computedBuf.length !== assertedBuf.length) {
+		return false;
+	}
 
-  return timingSafeEqual(computedBuf, assertedBuf);
+	return timingSafeEqual(computedBuf, assertedBuf);
 }
 
 /**
  * Compute SHA-256 hash of evidence array, sorted by id.
- *
- * Ensures deterministic evidence hashing regardless of array order.
  */
 export function computeEvidenceHash(evidence: EvidenceItem[]): string {
-  const sorted = [...evidence].sort((a, b) => a.id.localeCompare(b.id));
-  return createHash("sha256").update(JSON.stringify(sorted)).digest("hex");
+	const sorted = [...evidence].sort((a, b) => a.id.localeCompare(b.id));
+	return createHash("sha256").update(JSON.stringify(sorted)).digest("hex");
+}
+
+// ─── Ed25519 signing ─────────────────────────────────────────────────────────
+
+/**
+ * Generate an Ed25519 key pair for receipt signing.
+ */
+export function generateReceiptKeyPair(keyId?: string): ReceiptKeyPair {
+	const { publicKey, privateKey } = generateKeyPairSync("ed25519");
+	return {
+		publicKey: publicKey
+			.export({ type: "spki", format: "der" })
+			.toString("base64"),
+		privateKey: privateKey
+			.export({ type: "pkcs8", format: "der" })
+			.toString("base64"),
+		keyId: keyId ?? "key_" + randomBytes(4).toString("hex"),
+	};
+}
+
+/**
+ * Sign a receipt content with an Ed25519 private key.
+ * The signature covers the canonical payload bytes, stable across languages.
+ */
+export function signReceipt(
+	content: ReceiptContent,
+	privateKeyBase64: string,
+	keyId: string,
+): { signature: string; canonicalPayload: string } {
+	const canonicalPayload = sortedStringify(
+		content as unknown as Record<string, unknown>,
+	);
+	const privateKey = createPrivateKey({
+		key: Buffer.from(privateKeyBase64, "base64"),
+		format: "der",
+		type: "pkcs8",
+	});
+
+	const signature = sign(
+		null,
+		Buffer.from(canonicalPayload, "utf-8"),
+		privateKey,
+	);
+
+	return {
+		signature: signature.toString("base64"),
+		canonicalPayload,
+	};
+}
+
+/**
+ * Verify an Ed25519 signature over a receipt's canonical payload.
+ */
+export function verifyReceiptSignature(
+	content: ReceiptContent,
+	signatureBase64: string,
+	publicKeyBase64: string,
+): boolean {
+	try {
+		const canonicalPayload = sortedStringify(
+			content as unknown as Record<string, unknown>,
+		);
+		const publicKey = createPublicKey({
+			key: Buffer.from(publicKeyBase64, "base64"),
+			format: "der",
+			type: "spki",
+		});
+		const signature = Buffer.from(signatureBase64, "base64");
+
+		return verify(
+			null,
+			Buffer.from(canonicalPayload, "utf-8"),
+			publicKey,
+			signature,
+		);
+	} catch {
+		return false;
+	}
+}
+
+/**
+ * Build a complete signed receipt bundle.
+ */
+export function buildSignedReceipt(
+	content: ReceiptContent,
+	keyPair: ReceiptKeyPair,
+	protocolVersion = "1.0",
+): SignedReceipt {
+	const receiptHash = generateReceiptHash(content);
+	const { signature } = signReceipt(content, keyPair.privateKey, keyPair.keyId);
+
+	return {
+		protocolVersion,
+		content,
+		receiptHash,
+		signerKeyId: keyPair.keyId,
+		signerPublicKey: keyPair.publicKey,
+		signature,
+		issuedAt: new Date().toISOString(),
+	};
+}
+
+/**
+ * Full verification of a signed receipt bundle:
+ * 1. Content hash integrity
+ * 2. Ed25519 signature authenticity
+ */
+export function verifySignedReceipt(receipt: SignedReceipt): {
+	valid: boolean;
+	hashValid: boolean;
+	signatureValid: boolean;
+	keyId: string;
+	protocolVersion: string;
+} {
+	const hashValid = verifyReceiptIntegrity(
+		receipt.content,
+		receipt.receiptHash,
+	);
+	const signatureValid = verifyReceiptSignature(
+		receipt.content,
+		receipt.signature,
+		receipt.signerPublicKey,
+	);
+
+	return {
+		valid: hashValid && signatureValid,
+		hashValid,
+		signatureValid,
+		keyId: receipt.signerKeyId,
+		protocolVersion: receipt.protocolVersion,
+	};
 }
