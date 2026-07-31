@@ -124,6 +124,37 @@ export const missionEvents = pgTable(
   }),
 );
 
+// ─── mission_leases ───────────────────────────────────────────────────────────
+
+export const missionLeases = pgTable(
+  "mission_leases",
+  {
+    missionId: uuid("mission_id")
+      .primaryKey()
+      .references(() => accountingMissions.id, { onDelete: "cascade" }),
+    companyId: uuid("company_id")
+      .references(() => companies.id)
+      .notNull(),
+    expectedVersion: integer("expected_version").notNull(),
+    leaseOwner: varchar("lease_owner", { length: 255 }).notNull(),
+    leaseToken: varchar("lease_token", { length: 64 }).notNull(),
+    leaseExpiresAt: timestamp("lease_expires_at", { withTimezone: true }).notNull(),
+    fencingToken: integer("fencing_token").notNull(),
+    acquiredAt: timestamp("acquired_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => ({
+    companyIdIdx: index("mission_leases_company_id_idx").on(table.companyId),
+    leaseExpiresAtIdx: index("mission_leases_expires_at_idx").on(
+      table.leaseExpiresAt,
+    ),
+  }),
+);
+
 // ─── mission_receipts ─────────────────────────────────────────────────────────
 
 export const missionReceipts = pgTable(
@@ -179,6 +210,7 @@ export const accountingMissionsRelations = relations(
     }),
     events: many(missionEvents),
     receipts: many(missionReceipts),
+    lease: one(missionLeases),
   }),
 );
 
@@ -186,6 +218,17 @@ export const missionEventsRelations = relations(missionEvents, ({ one }) => ({
   mission: one(accountingMissions, {
     fields: [missionEvents.missionId],
     references: [accountingMissions.id],
+  }),
+}));
+
+export const missionLeasesRelations = relations(missionLeases, ({ one }) => ({
+  mission: one(accountingMissions, {
+    fields: [missionLeases.missionId],
+    references: [accountingMissions.id],
+  }),
+  company: one(companies, {
+    fields: [missionLeases.companyId],
+    references: [companies.id],
   }),
 }));
 
