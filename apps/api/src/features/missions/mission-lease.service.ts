@@ -53,7 +53,9 @@ export class MissionLeaseService {
 		ttlMs: number,
 	): Promise<AcquiredLease | null> {
 		const leaseToken = randomBytes(16).toString("hex");
-		const expiresAt = new Date(Date.now() + ttlMs);
+		// ISO string (not Date): postgres-js in this stack fails to serialize
+		// Date objects as timestamptz parameters.
+		const expiresAt = new Date(Date.now() + ttlMs).toISOString();
 
 		const rows = await this.db.execute(sql`
 			INSERT INTO mission_leases (
@@ -161,7 +163,23 @@ export class MissionLeaseService {
 			.limit(1);
 
 		const lease = rows[0] as LeaseState | undefined;
-		if (!lease || lease.leaseOwner !== leaseOwner || lease.leaseToken !== leaseToken) {
+		if (!lease) {
+			throw new MissionError(
+				MissionErrorCode.ALREADY_EXECUTING,
+				409,
+				"Lease is held by another owner",
+				{ missionId },
+			);
+		}
+		if (lease.fencingToken !== fencingToken) {
+			throw new MissionError(
+				MissionErrorCode.VERSION_CONFLICT,
+				409,
+				"Stale fencing token; another runtime owns this mission",
+				{ missionId, expectedFencing: fencingToken, currentFencing: lease.fencingToken },
+			);
+		}
+		if (lease.leaseOwner !== leaseOwner || lease.leaseToken !== leaseToken) {
 			throw new MissionError(
 				MissionErrorCode.ALREADY_EXECUTING,
 				409,
@@ -175,14 +193,6 @@ export class MissionLeaseService {
 				409,
 				"Lease expired; fencing has moved on",
 				{ missionId },
-			);
-		}
-		if (lease.fencingToken !== fencingToken) {
-			throw new MissionError(
-				MissionErrorCode.VERSION_CONFLICT,
-				409,
-				"Stale fencing token; another runtime owns this mission",
-				{ missionId, expectedFencing: fencingToken, currentFencing: lease.fencingToken },
 			);
 		}
 	}
