@@ -93,3 +93,9 @@ markers = [
     "sire_bench: SIRE-bench golden regression tests for deterministic fiscal processing",
 ]
 testpaths = ["tests"]
+
+[tool.uv]
+# Resolution window extended so the lockfile can admit pillow 12.3.0 (patched for
+# CVE-2026-54058/54059/54060, 55379/55380, 59197/59199/59200, 59204/59205), which was
+# uploaded on 2026-07-01. Everything else in uv.lock stays pinned as before.
+exclude-newer = "2026-07-02T00:00:00Z"
