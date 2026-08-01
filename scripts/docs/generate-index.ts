@@ -49,7 +49,7 @@ function extractDescription(filePath: string): string {
 function listDocs(dir: string): string[] {
 	const docs: string[] = [];
 	const entries = readdirSync(dir, { withFileTypes: true });
-	for (const entry of entries.sort()) {
+	for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
 		if (entry.name === "README.md" || entry.name === "00-INDEX.md") continue;
 		if (entry.isFile() && entry.name.endsWith(".md")) {
 			docs.push(entry.name.replace(/\.md$/, ""));
@@ -62,7 +62,7 @@ function scanSections(): DocSection[] {
 	const sections: DocSection[] = [];
 	const entries = readdirSync(DOCS_DIR, { withFileTypes: true });
 
-	for (const entry of entries.sort()) {
+	for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
 		if (!entry.isDirectory()) continue;
 		if (entry.name.startsWith(".") || entry.name === "00-index") continue;
 
