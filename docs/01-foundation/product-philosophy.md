@@ -1,6 +1,6 @@
 # Drenyra Product Philosophy
 
-**Last updated**: 2026-07-27
+**Last updated**: 2026-08-01
 **Content type**: Conceptual — Definitive Thesis
 **Supersedes**: v2 (2026-07-24)
 **FEOS Version**: CAP-FEOS-00 — Drenyra Financial Engineering OS
@@ -1230,6 +1230,20 @@ No estás construyendo únicamente tecnología para contadores.
 Estás creando una nueva disciplina:
 
 > **Financial Engineering Operations: contabilidad administrada con especificaciones, versiones, agentes, validaciones, revisiones, despliegues y evidencia verificable.**
+
+---
+
+## Drenyra-AI — Accounting Agent Operating System
+
+Drenyra-AI ya no es una capa interna de desarrollo: es un **producto independiente** dentro del ecosistema, el sistema operativo verificable para agentes contables. Coordina personas e IA, aplica políticas contables y fiscales, valida cada operación y conserva evidencia auditable antes del registro, cierre o presentación. Drenyra (el producto visual y operativo) lo consume como su command center contable, pero Drenyra-AI funciona también por CLI, API, otros ERPs, otros SaaS, agentes externos e integraciones.
+
+La tesis que gobierna toda la arquitectura:
+
+> **"La IA propone y procesa. Drenyra valida y conserva evidencia. El profesional contable revisa y autoriza."**
+
+El protocolo de producto es **RDA — Receipt-Driven Accounting**, construido sobre el mecanismo de receipts **RED** que el runtime ya implementa (RDA define *qué* evidenciar; RED implementa *cómo* firmarlo y verificarlo). La especificación completa — equivalencia con Gentle AI, AccountingCandidate, niveles de review, tres rutas de trabajo y plan de ejecución — vive en [Drenyra-AI — Accounting Agent Operating System](./drenyra-ai-aos.md).
+
+Completan la familia **Drenyra-Pi**, el harness Pi-native que convierte Pi en un operador contable disciplinado y verificable — persona contable, comandos, panel de contexto empresa/periodo, agentes especializados, skills fiscales con contrato, procedimientos RDA y routing de modelos sobre el runtime de Drenyra-AI, como Gentle Pi ejecuta Gentle AI — y **Drenyra**, la superficie visual donde profesionales y empresas supervisan, revisan y autorizan. La tesis conjunta: Drenyra-AI aporta el protocolo y la autoridad verificable; Drenyra-Pi convierte Pi en la terminal contable disciplinada; Drenyra es el command center visual. Documento completo: [Drenyra-Pi — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md).
 
 ---
 
