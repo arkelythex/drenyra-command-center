@@ -167,19 +167,19 @@ The parent's 4-PR skeleton (contracts+fixtures / harness TS / harness Go+Python 
 
 ### PR7 — Ledger initialization + docs/audits (design §6 rev. 2)
 
-- [ ] **T19 (GREEN)** — Write `docs/audits/README.md`.
+- [x] **T19 (GREEN)** — Write `docs/audits/README.md`.
   - **Files**: new `docs/audits/README.md`.
   - **What**: Documents ledger purpose, entry schema (§6.2), hash-chain rules (§6.5), append/validate CLI usage (§6.9), entryTypes vocabulary (§6.3), signed-mode opt-in (§6.10); includes a "Last updated" line; marks dev keys as TEST-ONLY where referenced.
   - **Done**: README exists with all sections above and a Last updated line.
   - **blockedBy**: T18
 
-- [ ] **T20 (GREEN)** — Initialize the canonical ledger via the CLI and record this phase's events.
+- [x] **T20 (GREEN)** — Initialize the canonical ledger via the CLI and record this phase's events.
   - **Files**: new `docs/audits/data/main.ndjson` (CLI-generated via `drenyra-ledger`, NOT hand-written).
   - **What**: Use `drenyra-ledger init` with a real manifest (protocolVersion, hashAlgorithm SHA-256, trustRoot, jurisdiction PE, createdAt, signingPolicy) then `drenyra-ledger append` for: RECEIPT_RECORDED entries for the receipt contracts + fixtures creation, each conformance surface (TS/Go/Python), the CI conformance job, and the ledger foundation itself; CHECKPOINT_CREATED after the conformance gate. No historical backfill (forward-only). Hash-only mode (no production keys).
   - **Done**: `docs/audits/data/main.ndjson` exists, `drenyra-ledger validate` reports VALID, and the entries reference the real receipt hashes from this phase.
   - **blockedBy**: T19
 
-- [ ] **T21 (TRIANGULATE)** — Append the conformance gate checkpoint and run the full regression.
+- [x] **T21 (TRIANGULATE)** — Append the conformance gate checkpoint and run the full regression.
   - **Files**: extends `docs/audits/data/main.ndjson`.
   - **What**: After all three conformance surfaces pass, append a CHECKPOINT_CREATED entry recording the head hash of the receipt conformance vectors. Run the full regression gate: vitest (mission-domain + scripts/ledger), go test (apps/cli), pytest (data-engine conformance).
   - **Done**: Ledger VALID with checkpoint; all regression surfaces green.
