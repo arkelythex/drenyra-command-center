@@ -6,29 +6,26 @@
  * validation (collects every finding, never stops at the first error),
  * §6.10 signing policy (hash-only vs signed), §6.12 rejection conditions.
  */
-import { generateKeyPairSync, randomUUID } from "node:crypto";
-import { createHash } from "node:crypto";
+import { createHash, generateKeyPairSync, randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { describe, expect, it } from "vitest";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
-
+import { describe, expect, it } from "vitest";
+import type { LedgerEntry, LedgerManifest } from "../ledger-core";
 import {
-	EMPTY_HASH,
-	ENTRY_TYPE,
 	appendEntry,
 	computeEntryHash,
 	createGenesisEntry,
 	createLedgerEntry,
+	EMPTY_HASH,
+	ENTRY_TYPE,
 	extractTrustRootKeys,
 	signEntry,
 	sortedStringify,
 	validateLedger,
 	verifyEntrySignature,
 } from "../ledger-core";
-
-import type { LedgerEntry, LedgerManifest } from "../ledger-core";
 
 const LEDGER_ID = "main";
 const ACTOR = "test-actor";
@@ -454,8 +451,7 @@ describe("validation (§6.8)", () => {
 		expect(report.valid).toBe(false);
 		expect(
 			report.findings.some(
-				(finding) =>
-					finding.code === "entry-hash" && finding.entryIndex === 0,
+				(finding) => finding.code === "entry-hash" && finding.entryIndex === 0,
 			),
 		).toBe(true);
 	});
@@ -539,8 +535,7 @@ describe("validation (§6.8)", () => {
 		expect(report.valid).toBe(false);
 		expect(
 			report.findings.some(
-				(finding) =>
-					finding.code === "entry-hash" && finding.entryIndex === 1,
+				(finding) => finding.code === "entry-hash" && finding.entryIndex === 1,
 			),
 		).toBe(true);
 	});
@@ -577,9 +572,7 @@ describe("validation (§6.8)", () => {
 		]);
 		expect(report.valid).toBe(false);
 		expect(
-			report.findings.some(
-				(finding) => finding.code === "unsupported-version",
-			),
+			report.findings.some((finding) => finding.code === "unsupported-version"),
 		).toBe(true);
 	});
 
@@ -605,9 +598,9 @@ describe("validation (§6.8)", () => {
 		};
 		const report = validateLedger(toLines(notGenesis));
 		expect(report.valid).toBe(false);
-		expect(
-			report.findings.some((finding) => finding.code === "genesis"),
-		).toBe(true);
+		expect(report.findings.some((finding) => finding.code === "genesis")).toBe(
+			true,
+		);
 
 		const badPrevHash: LedgerEntry = {
 			...genesis,
@@ -658,9 +651,9 @@ describe("validation (§6.8)", () => {
 		) as LedgerEntry;
 		const report = validateLedger(toLines(genesis, bad));
 		expect(report.valid).toBe(false);
-		expect(
-			report.findings.some((finding) => finding.code === "schema"),
-		).toBe(true);
+		expect(report.findings.some((finding) => finding.code === "schema")).toBe(
+			true,
+		);
 	});
 
 	it("flags a malformed line as a parse finding and keeps scanning", () => {
@@ -675,22 +668,22 @@ describe("validation (§6.8)", () => {
 			...toLines(entry),
 		]);
 		expect(report.valid).toBe(false);
-		expect(
-			report.findings.some((finding) => finding.code === "parse"),
-		).toBe(true);
+		expect(report.findings.some((finding) => finding.code === "parse")).toBe(
+			true,
+		);
 		expect(report.entriesChecked).toBe(3);
 	});
 });
 
 describe("signing policy (§6.10)", () => {
 	function flipSignatureByte(signatureBase64: string): string {
-	const bytes = Buffer.from(signatureBase64, "base64");
-	const lastByte = bytes.readUInt8(bytes.length - 1);
-	bytes.writeUInt8(lastByte ^ 0x01, bytes.length - 1);
-	return bytes.toString("base64");
-}
+		const bytes = Buffer.from(signatureBase64, "base64");
+		const lastByte = bytes.readUInt8(bytes.length - 1);
+		bytes.writeUInt8(lastByte ^ 0x01, bytes.length - 1);
+		return bytes.toString("base64");
+	}
 
-function keyPair(): { privateKey: string; publicKey: string } {
+	function keyPair(): { privateKey: string; publicKey: string } {
 		const pair = generateKeyPairSync("ed25519");
 		return {
 			privateKey: pair.privateKey
@@ -762,9 +755,9 @@ function keyPair(): { privateKey: string; publicKey: string } {
 			new Map([["dev-ledger-key", keys.publicKey]]),
 		);
 		expect(report.valid).toBe(false);
-		expect(
-			report.findings.some((finding) => finding.code === "trust"),
-		).toBe(true);
+		expect(report.findings.some((finding) => finding.code === "trust")).toBe(
+			true,
+		);
 	});
 
 	it("flags hash-only entries that carry signature fields", () => {

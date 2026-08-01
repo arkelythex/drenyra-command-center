@@ -770,7 +770,14 @@ function checkParsedEntry(
 	if (entry.entryType === ENTRY_TYPE.RECEIPT_RECORDED) {
 		checkReceiptReference(entry, index, findings);
 	}
-	checkSignatureAndTrust(entry, position, index, parsedEntries, trustRootKeys, findings);
+	checkSignatureAndTrust(
+		entry,
+		position,
+		index,
+		parsedEntries,
+		trustRootKeys,
+		findings,
+	);
 	checkDuplicates(slot, position, parsedEntries, findings);
 }
 
@@ -783,7 +790,10 @@ function checkLinkage(
 ): void {
 	const { entry, index } = slot;
 	const prior = parsedEntries[position - 1];
-	if (prior !== undefined && entry.previousEntryHash !== computeEntryHash(prior.entry)) {
+	if (
+		prior !== undefined &&
+		entry.previousEntryHash !== computeEntryHash(prior.entry)
+	) {
 		pushFinding(
 			findings,
 			FINDING.PREVIOUS_HASH,
@@ -971,7 +981,11 @@ function checkReceiptReference(
 		);
 	}
 	const receipt = payload?.receipt;
-	if (receipt === undefined || typeof receipt !== "object" || Array.isArray(receipt)) {
+	if (
+		receipt === undefined ||
+		typeof receipt !== "object" ||
+		Array.isArray(receipt)
+	) {
 		pushFinding(
 			findings,
 			FINDING.RECEIPT_REFERENCE,
@@ -1011,7 +1025,14 @@ function checkSignatureAndTrust(
 		return;
 	}
 	checkEntrySignature(entry, index, findings);
-	checkTrustRoots(entry, position, parsedEntries, trustRootKeys, index, findings);
+	checkTrustRoots(
+		entry,
+		position,
+		parsedEntries,
+		trustRootKeys,
+		index,
+		findings,
+	);
 }
 
 function checkEntrySignature(
@@ -1078,22 +1099,6 @@ function checkTrustRoots(
 	}
 }
 
-export {
-	EMPTY_HASH,
-	ENTRY_TYPE,
-	FINDING,
-	SUPPORTED_SCHEMA_VERSIONS,
-	appendEntry,
-	computeEntryHash,
-	createGenesisEntry,
-	createLedgerEntry,
-	extractTrustRootKeys,
-	signEntry,
-	sortedStringify,
-	validateLedger,
-	verifyEntrySignature,
-};
-
 export type {
 	AppendRequest,
 	AppendResult,
@@ -1105,4 +1110,19 @@ export type {
 	LedgerValidationReport,
 	SigningPolicy,
 	TrustRootPolicy,
+};
+export {
+	appendEntry,
+	computeEntryHash,
+	createGenesisEntry,
+	createLedgerEntry,
+	EMPTY_HASH,
+	ENTRY_TYPE,
+	extractTrustRootKeys,
+	FINDING,
+	SUPPORTED_SCHEMA_VERSIONS,
+	signEntry,
+	sortedStringify,
+	validateLedger,
+	verifyEntrySignature,
 };

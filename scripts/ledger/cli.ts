@@ -15,23 +15,21 @@ import {
 	writeFileSync,
 } from "node:fs";
 import { basename, dirname, join } from "node:path";
-
-import {
-	ENTRY_TYPE,
-	appendEntry,
-	computeEntryHash,
-	createGenesisEntry,
-	createLedgerEntry,
-	extractTrustRootKeys,
-	signEntry,
-	sortedStringify,
-	validateLedger,
-} from "./ledger-core";
-
 import type {
 	LedgerEntry,
 	LedgerManifest,
 	LedgerValidationReport,
+} from "./ledger-core";
+import {
+	appendEntry,
+	computeEntryHash,
+	createGenesisEntry,
+	createLedgerEntry,
+	ENTRY_TYPE,
+	extractTrustRootKeys,
+	signEntry,
+	sortedStringify,
+	validateLedger,
 } from "./ledger-core";
 
 type ExitCode = 0 | 1;
@@ -126,7 +124,9 @@ function writeAtomic(filePath: string, content: string): void {
 
 function renderFindings(report: LedgerValidationReport): void {
 	for (const finding of report.findings) {
-		console.log(`  [line ${finding.entryIndex}] ${finding.code} — ${finding.message}`);
+		console.log(
+			`  [line ${finding.entryIndex}] ${finding.code} — ${finding.message}`,
+		);
 	}
 }
 
@@ -188,7 +188,9 @@ function runAppend(options: Record<string, string>): ExitCode {
 	const lines = splitLines(content);
 	const report = validateLedger(lines);
 	if (!report.valid) {
-		console.log(`ledger ${report.ledgerId}: INVALID — ${report.findings.length} findings`);
+		console.log(
+			`ledger ${report.ledgerId}: INVALID — ${report.findings.length} findings`,
+		);
 		renderFindings(report);
 		return 1;
 	}
@@ -238,7 +240,11 @@ function runAppend(options: Record<string, string>): ExitCode {
 			);
 			return 0;
 		case "duplicate":
-			return renderDuplicate(result.reason, result.existingEntry, idempotencyKey);
+			return renderDuplicate(
+				result.reason,
+				result.existingEntry,
+				idempotencyKey,
+			);
 		case "head-conflict":
 			console.log(
 				`head-conflict: expected head ${result.expectedHeadHash} but the ledger head is ${result.actualHeadHash} (sequence ${result.actualSequence}) — no write`,

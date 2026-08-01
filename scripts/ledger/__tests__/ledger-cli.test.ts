@@ -7,12 +7,7 @@
  */
 import { spawnSync } from "node:child_process";
 import { generateKeyPairSync } from "node:crypto";
-import {
-	existsSync,
-	mkdtempSync,
-	readFileSync,
-	writeFileSync,
-} from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -20,10 +15,7 @@ import { describe, expect, it } from "vitest";
 const ROOT = resolve(__dirname, "../../..");
 const CLI = resolve(__dirname, "../cli.ts");
 
-function runCli(
-	args: readonly string[],
-	env: Record<string, string> = {},
-) {
+function runCli(args: readonly string[], env: Record<string, string> = {}) {
 	const result = spawnSync("bun", [CLI, ...args], {
 		cwd: ROOT,
 		env: { ...process.env, ...env },
@@ -155,13 +147,8 @@ describe("drenyra-ledger CLI", () => {
 		const receiptPath = standardReceipt(dir);
 
 		expect(
-			runCli([
-				"init",
-				"--ledger",
-				ledgerPath,
-				"--manifest",
-				manifestPath,
-			]).status,
+			runCli(["init", "--ledger", ledgerPath, "--manifest", manifestPath])
+				.status,
 		).toBe(0);
 		const appended = runCli([
 			"append",
@@ -407,13 +394,8 @@ describe("drenyra-ledger CLI", () => {
 		const receiptPath = standardReceipt(dir);
 
 		expect(
-			runCli([
-				"init",
-				"--ledger",
-				ledgerPath,
-				"--manifest",
-				manifestPath,
-			]).status,
+			runCli(["init", "--ledger", ledgerPath, "--manifest", manifestPath])
+				.status,
 		).toBe(0);
 		const appended = runCli(
 			[
