@@ -1,6 +1,6 @@
 # Drenyra Strategic Positioning
 
-**Última actualización:** 2026-07-27
+**Última actualización:** 2026-08-01
 **Audiencia:** Inversores, partners, estrategia de producto
 **FEOS Program:** [CAP-FEOS-00 — Drenyra Financial Engineering OS](./product-philosophy.md)
 **Alineado con:** [Drenyra Product Philosophy — Definitive Thesis](./product-philosophy.md)
@@ -10,6 +10,28 @@
 ## Elevator Pitch
 
 > Drenyra es el **sistema operativo financiero verificable** para empresas, contadores y gobiernos de Latinoamérica: una plataforma donde agentes especializados ejecutan, motores deterministas validan, profesionales controlan las decisiones materiales, y toda acción permanece respaldada por evidencia inmutable.
+
+---
+
+## Drenyra-AI — El Sistema Operativo de Agentes Contables
+
+> **EN:** Drenyra-AI is the verifiable operating system for accounting agents. It coordinates humans and AI, enforces accounting and fiscal policies, validates every operation, and preserves auditable evidence before posting, closing, or filing.
+
+> **ES:** Drenyra-AI es el sistema operativo verificable para agentes contables. Coordina personas e IA, aplica políticas contables y fiscales, valida cada operación y conserva evidencia auditable antes del registro, cierre o presentación.
+
+Drenyra-AI ya no es una capa interna de desarrollo: es un **producto independiente** que Drenyra consume. La analogía exacta es Gentle AI → OpenCode/Claude Code: **Drenyra-AI es el ecosistema (framework, runtime, agentes, skills, receipts y autoridad); Drenyra es la superficie visual y operativa**. Drenyra-AI funciona también por CLI, API, otros ERPs, otros SaaS, agentes externos e integraciones.
+
+La tesis central:
+
+> **"La IA propone y procesa. Drenyra valida y conserva evidencia. El profesional contable revisa y autoriza."**
+
+**Lo que lo diferencia de un "Copilot para contadores":** la capa 3 de producto, la **Native Accounting Authority** — candidatos congelados, receipts firmados, firmas, ledger, gates, aprobaciones, separación de funciones, cierre y presentación. Un copilot propone; Drenyra-AI valida, evidencia, gobierna y conserva la autoridad. El protocolo de producto es **RDA (Receipt-Driven Accounting)** sobre el mecanismo **RED** ya implementado en runtime.
+
+**La cuña de entrada:** el primer vertical completo es **Monthly Close Execution** — documentos → conciliaciones → pendientes → ajustes → revisión → aprobación → cierre → receipt final. Documento completo: [Drenyra-AI — Accounting Agent Operating System](./drenyra-ai-aos.md).
+
+**La terminal Pi-native:** **Drenyra-Pi** es el harness que convierte Pi en un operador contable controlado — la terminal agentic que ejecuta el protocolo RDA sobre el runtime de Drenyra-AI, con persona contable, panel de contexto empresa/periodo, agentes especializados, skills fiscales con contrato y routing de modelos. Como Gentle Pi es a Gentle AI, Drenyra-Pi es a Drenyra-AI. Documento completo: [Drenyra-Pi — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md).
+
+**La memoria institucional:** **Drenyra-Engram** es la capa que conserva el conocimiento que la organización sabe y puede demostrar sobre su contabilidad — políticas, criterios, excepciones aprendidas y decisiones aprobadas — con procedencia, vigencia y aislamiento estricto entre empresas. El principio rector: **recordar no significa autorizar**; la memoria orienta el trabajo, pero solo la evidencia, las políticas vigentes y la aprobación profesional permiten ejecutarlo. Documento completo: [Drenyra-Engram — Institutional Accounting Memory](./drenyra-engram.md).
 
 ---
 

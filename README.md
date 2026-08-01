@@ -3,6 +3,12 @@
 > **Drenyra is the verifiable financial operating system for businesses, accountants, and governments across Latin America.**
 >
 > Financial Engineering Environment: agents propose, deterministic validators check, professionals approve material decisions, and every action produces an immutable evidence receipt.
+>
+> Drenyra runs on **Drenyra-AI**, the independent accounting agent operating system it consumes — framework, runtime, agents, skills, receipts, and accounting authority. Drenyra-AI also works standalone via CLI, API, other ERPs, other SaaS, and external integrations. Its product protocol is RDA (Receipt-Driven Accounting) built on the RED receipt mechanism.
+>
+> **Drenyra-Pi** is the Pi-native harness that turns Pi into a disciplined accounting operator — accounting persona, commands, agents, skills, and safety guards layered over the Drenyra-AI runtime, in the same relationship Gentle Pi has to Gentle AI.
+>
+> **Drenyra-Engram** is the institutional accounting memory that preserves what the organization knows and can prove about its accounting — remember is not authorize.
 
 [![Status](https://img.shields.io/badge/Status-Active-22c55e)](#)
 [![Tests](https://img.shields.io/badge/Tests-209_passing-22c55e)](#)
@@ -232,4 +238,4 @@ From Peru. For Latin America.
 
 > Drenyra is infrastructure-first: we seek validation that makes us fundable, not funding that hides the lack of validation.
 >
-> **[Product Philosophy](docs/products/drenyra-product-philosophy.md)** · **[Capability Map](docs/architecture/capability-map.md)** · **[Program Taxonomy](docs/architecture/program-taxonomy.md)**
+> **[Product Philosophy](docs/01-foundation/product-philosophy.md)** · **[Capability Map](docs/01-foundation/capability-map.md)** · **[Program Taxonomy](docs/01-foundation/program-taxonomy.md)**

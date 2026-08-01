@@ -1,6 +1,6 @@
 # 01 — Foundation
 
-**Última actualización:** 2026-07-27
+**Última actualización:** 2026-08-01
 **Propósito:** Documentación fundacional del programa Drenyra FEOS
 **Audiencia:** Todos los contribuyentes — desarrolladores, producto, fiscal, dirección
 
@@ -20,6 +20,9 @@ Todo documento en las demás secciones se alinea con estos principios fundaciona
 | --------------------------------------------------- | ------------------------------------------------------- | ------------ |
 | [Product Philosophy](./product-philosophy.md)       | Tesis definitiva: Drenyra como Financial Engineering OS | Conceptual   |
 | [Strategic Positioning](./strategic-positioning.md) | Elevator pitch, moat, competencia, estrategia de cuña   | Estratégico  |
+| [Drenyra-AI — Accounting Agent OS](./drenyra-ai-aos.md) | Ecosistema y protocolo contable: RDA, candidatos, autoridad | Conceptual   |
+| [Drenyra-Pi — Pi-Native Harness](./drenyra-pi-harness.md) | Harness Pi-native que convierte Pi en operador contable  | Conceptual   |
+| [Drenyra-Engram — Institutional Memory](./drenyra-engram.md) | Memoria institucional contable: procedencia, vigencia, aislamiento | Conceptual   |
 | [Canonical Stack](./canonical-stack.md)             | Stack técnico multi-lenguaje y arquitectura hexagonal   | Arquitectura |
 | [Program Taxonomy](./program-taxonomy.md)           | Clasificación documental: SDD, ADR, FSD, WSD, ASD       | Canónico     |
 | [Capability Map](./capability-map.md)               | 90+ capacidades del programa por dominio                | Canónico     |
@@ -110,6 +113,9 @@ Agent proposal
 | Si buscas...                   | Ve a...                                             |
 | ------------------------------ | --------------------------------------------------- |
 | Entender qué es Drenyra        | [Product Philosophy](./product-philosophy.md)       |
+| Entender el ecosistema Drenyra-AI | [Drenyra-AI AOS](./drenyra-ai-aos.md)            |
+| Entender el harness Drenyra-Pi | [Drenyra-Pi Harness](./drenyra-pi-harness.md)       |
+| Entender la memoria contable    | [Drenyra-Engram](./drenyra-engram.md)              |
 | Conocer el stack técnico       | [Canonical Stack](./canonical-stack.md)             |
 | Ver el roadmap de capacidades  | [Capability Map](./capability-map.md)               |
 | Clasificar un documento nuevo  | [Program Taxonomy](./program-taxonomy.md)           |
@@ -120,13 +126,13 @@ Agent proposal
 
 ## Relación con otras secciones
 
-| Sección                                                 | Dependencia                                 |
-| ------------------------------------------------------- | ------------------------------------------- |
-| [02 — Experience](../02-experience-plane/README.md)     | Hereda principios de UX y filosofía         |
-| [04 — Intelligence](../04-intelligence-plane/README.md) | Hereda taxonomía de agentes (ASD)           |
-| [05 — Trust](../05-trust-plane/README.md)               | Hereda contractos de evidence y receipts    |
-| [07 — Financial](../07-financial-plane/README.md)       | Hereda capability map de ledger, close, tax |
-| [08 — Integration](../08-integration-plane/README.md)   | Hereda principios DFP                       |
+| Sección                                                       | Dependencia                                 |
+| ------------------------------------------------------------- | ------------------------------------------- |
+| [10 — Development](../10-development/README.md)               | Hereda guías de desarrollo y engram          |
+| [11 — ADR](../11-adr/README.md)                               | Registro de decisiones arquitectónicas      |
+| [12 — Security](../12-security/README.md)                     | Controles de seguridad y secretos           |
+| [13 — Operations](../13-operations/README.md)                 | Operación, observabilidad y runbooks        |
+| [14 — Design](../14-design/README.md)                         | Diseño de producto y protocolos (RED, RDA)  |
 
 ---
 
