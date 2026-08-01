@@ -31,6 +31,8 @@ La tesis central:
 
 **La terminal Pi-native:** **Drenyra-Pi** es el harness que convierte Pi en un operador contable controlado — la terminal agentic que ejecuta el protocolo RDA sobre el runtime de Drenyra-AI, con persona contable, panel de contexto empresa/periodo, agentes especializados, skills fiscales con contrato y routing de modelos. Como Gentle Pi es a Gentle AI, Drenyra-Pi es a Drenyra-AI. Documento completo: [Drenyra-Pi — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md).
 
+**La memoria institucional:** **Drenyra-Engram** es la capa que conserva el conocimiento que la organización sabe y puede demostrar sobre su contabilidad — políticas, criterios, excepciones aprendidas y decisiones aprobadas — con procedencia, vigencia y aislamiento estricto entre empresas. El principio rector: **recordar no significa autorizar**; la memoria orienta el trabajo, pero solo la evidencia, las políticas vigentes y la aprobación profesional permiten ejecutarlo. Documento completo: [Drenyra-Engram — Institutional Accounting Memory](./drenyra-engram.md).
+
 ---
 
 ## La Tesis: Financial Engineering Environment

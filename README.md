@@ -7,6 +7,8 @@
 > Drenyra runs on **Drenyra-AI**, the independent accounting agent operating system it consumes — framework, runtime, agents, skills, receipts, and accounting authority. Drenyra-AI also works standalone via CLI, API, other ERPs, other SaaS, and external integrations. Its product protocol is RDA (Receipt-Driven Accounting) built on the RED receipt mechanism.
 >
 > **Drenyra-Pi** is the Pi-native harness that turns Pi into a disciplined accounting operator — accounting persona, commands, agents, skills, and safety guards layered over the Drenyra-AI runtime, in the same relationship Gentle Pi has to Gentle AI.
+>
+> **Drenyra-Engram** is the institutional accounting memory that preserves what the organization knows and can prove about its accounting — remember is not authorize.
 
 [![Status](https://img.shields.io/badge/Status-Active-22c55e)](#)
 [![Tests](https://img.shields.io/badge/Tests-209_passing-22c55e)](#)

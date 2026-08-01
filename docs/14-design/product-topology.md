@@ -25,6 +25,8 @@ Its product protocol is **RDA — Receipt-Driven Accounting**, built on the RED 
 
 **Drenyra-Pi** is the Pi-native harness that executes the RDA protocol — it turns Pi into a disciplined accounting operator (accounting persona, context panel, specialized agents, accounting skills, model routing, and safety guards layered over the Drenyra-AI runtime), exactly as Gentle Pi is the Pi-native harness for Gentle AI. The joint thesis: Drenyra-AI supplies the protocol, operational intelligence, and verifiable authority; Drenyra-Pi turns Pi into the disciplined accounting terminal that executes that protocol; Drenyra is the visual surface where professionals and companies supervise, review, and authorize. See [Drenyra-Pi — Pi-Native Accounting Operations Harness](../01-foundation/drenyra-pi-harness.md).
 
+**Drenyra-Engram** is the institutional accounting memory — the layer that remembers what the organization knows and can prove about its accounting: policies, criteria, learned exceptions, and approved decisions, kept with provenance, validity windows, and strict company isolation. It never replaces the ledger, the evidence store, or the receipt ledger: memory orients the work; only evidence, current policies, and professional approval authorize it. See [Drenyra-Engram — Institutional Accounting Memory](../01-foundation/drenyra-engram.md).
+
 ## FEE model applied to this repo
 
 | Software Engineering | Drenyra                                     |

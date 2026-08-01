@@ -412,8 +412,38 @@ Tesis conjunta:
 
 ---
 
+## Memoria contable (Drenyra-Engram)
+
+Drenyra-Pi opera sobre **Drenyra-Engram**, la memoria institucional contable del ecosistema: la capa que conserva lo que la organización sabe y puede demostrar sobre su contabilidad, con procedencia, vigencia y aislamiento entre empresas. Recordar no significa autorizar — la memoria orienta el trabajo; solo la evidencia, las políticas vigentes y la aprobación profesional permiten ejecutarlo.
+
+Comandos de memoria:
+
+```text
+/drenyra:memory-search /drenyra:memory-save /drenyra:memory-context
+/drenyra:memory-timeline /drenyra:memory-compare /drenyra:memory-review
+/drenyra:memory-promote /drenyra:memory-supersede /drenyra:memory-doctor
+```
+
+Ejemplo:
+
+```text
+/drenyra:memory-context --company arkelythex-sac --period 2026-07 --topic bank-reconciliation
+```
+
+Flujo de inicio de misión:
+
+```text
+seleccionar empresa → seleccionar periodo → iniciar sesión de memoria →
+cargar contexto relevante → ejecutar misión → generar resumen → proponer memorias nuevas
+```
+
+Documento completo: [Drenyra-Engram — Institutional Accounting Memory](./drenyra-engram.md).
+
+---
+
 ## Navegación
 
+- [Drenyra-Engram — Institutional Accounting Memory](./drenyra-engram.md)
 - [Drenyra-AI — Accounting Agent Operating System](./drenyra-ai-aos.md)
 - [Drenyra Product Philosophy — Definitive Thesis](./product-philosophy.md)
 - [Drenyra Strategic Positioning](./strategic-positioning.md)
