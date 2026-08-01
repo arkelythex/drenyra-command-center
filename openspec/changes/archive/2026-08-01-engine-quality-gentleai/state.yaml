@@ -1,6 +1,6 @@
 change_id: engine-quality-gentleai
-status: planning
-phase: apply
+status: archived
+phase: archive
 created: 2026-08-01
 updated: 2026-08-01
 author: el-gentleman
@@ -14,7 +14,9 @@ proposal_status: done
 spec_status: done
 design_status: done
 tasks_status: done
-apply_status: in_progress
-verify_status: pending
-archive_status: pending
-next_recommended: design
+apply_status: done
+verify_status: done
+archive_status: done
+next_recommended: none
+archived_at: 2026-08-01
+archived_path: openspec/changes/archive/2026-08-01-engine-quality-gentleai/
