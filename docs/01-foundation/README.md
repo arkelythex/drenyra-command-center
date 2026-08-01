@@ -126,13 +126,13 @@ Agent proposal
 
 ## Relación con otras secciones
 
-| Sección                                                 | Dependencia                                 |
-| ------------------------------------------------------- | ------------------------------------------- |
-| [02 — Experience](../02-experience-plane/README.md)     | Hereda principios de UX y filosofía         |
-| [04 — Intelligence](../04-intelligence-plane/README.md) | Hereda taxonomía de agentes (ASD)           |
-| [05 — Trust](../05-trust-plane/README.md)               | Hereda contractos de evidence y receipts    |
-| [07 — Financial](../07-financial-plane/README.md)       | Hereda capability map de ledger, close, tax |
-| [08 — Integration](../08-integration-plane/README.md)   | Hereda principios DFP                       |
+| Sección                                                       | Dependencia                                 |
+| ------------------------------------------------------------- | ------------------------------------------- |
+| [10 — Development](../10-development/README.md)               | Hereda guías de desarrollo y engram          |
+| [11 — ADR](../11-adr/README.md)                               | Registro de decisiones arquitectónicas      |
+| [12 — Security](../12-security/README.md)                     | Controles de seguridad y secretos           |
+| [13 — Operations](../13-operations/README.md)                 | Operación, observabilidad y runbooks        |
+| [14 — Design](../14-design/README.md)                         | Diseño de producto y protocolos (RED, RDA)  |
 
 ---
 

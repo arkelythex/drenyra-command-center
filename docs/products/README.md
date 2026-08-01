@@ -1,6 +1,6 @@
 # Redirect — Product Docs
 
-These documents have moved to [`docs/01-foundation/`](../01-foundation/README.md):
+These documents have moved to the `01-foundation/` section (see the redirect table below):
 
 | Old location                                  | New location                                                                               |
 | --------------------------------------------- | ------------------------------------------------------------------------------------------ |

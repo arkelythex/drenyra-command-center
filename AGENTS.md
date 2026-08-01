@@ -54,7 +54,7 @@ Each app has a `MAP.md` (e.g. `apps/web/MAP.md`) with its architecture, routes, 
 | `contracts/`     | TS/Protobuf | Schemas canónicos que generan tipos multi-lenguaje         |
 | `country-packs/` | TS          | Reglas fiscales por país (Perú → LATAM)                    |
 
-Ver [Canonical Stack](docs/architecture/canonical-stack.md).
+Ver [Canonical Stack](docs/01-foundation/canonical-stack.md).
 
 ## Product philosophy guardrails
 
@@ -71,7 +71,7 @@ Drenyra is the **verifiable financial operating system for businesses, accountan
 ## Architecture and domain rules
 
 - Use vertical slice + CQRS for feature work.
-- **TypeScript para descubrir y construir. Rust para verificar y proteger. Go para conectar y operar.** Ver el [stack canónico](docs/architecture/canonical-stack.md).
+- **TypeScript para descubrir y construir. Rust para verificar y proteger. Go para conectar y operar.** Ver el [stack canónico](docs/01-foundation/canonical-stack.md).
 - **Monolito modular con hexagonal por dominio** — no microservicios prematuros.
 - **Elysia es un adaptador de entrada**, no la arquitectura. No poner lógica de dominio en endpoints.
 - Keep fiscal/domain logic deterministic and covered by tests.
@@ -84,9 +84,9 @@ Drenyra is the **verifiable financial operating system for businesses, accountan
 
 Drenyra usa 8 clases documentales: SDD, ADR, FSD, WSD, ASD, Contract Specs, Threat Models, Runbooks. Ver:
 
-- **Taxonomía completa:** [`docs/architecture/program-taxonomy.md`](docs/architecture/program-taxonomy.md) — clases, L0–L4, fases F0–F4
-- **Capability Map:** [`docs/architecture/capability-map.md`](docs/architecture/capability-map.md) — 60+ capacidades con estado actual
-- **SDD Audit:** [`docs/architecture/sdd-audit.md`](docs/architecture/sdd-audit.md) — 79 SDDs clasificados por madurez
+- **Taxonomía completa:** [`docs/01-foundation/program-taxonomy.md`](docs/01-foundation/program-taxonomy.md) — clases, L0–L4, fases F0–F4
+- **Capability Map:** [`docs/01-foundation/capability-map.md`](docs/01-foundation/capability-map.md) — 60+ capacidades con estado actual
+- **SDD Audit:** [`docs/01-foundation/sdd-audit.md`](docs/01-foundation/sdd-audit.md) — 79 SDDs clasificados por madurez
 
 **Regla:** no crear SDD hasta que la capacidad esté cerca de implementación. El Capability Map mantiene la visión.
 
@@ -201,7 +201,7 @@ When reviewing or authoring a PR, design for low cognitive load:
 
 - Proyecto: **`drenyra`** (no `arkonyx` / `ARKONYX`).
 - Config: `~/Documents/PROYECTOS/Drenyra/.engram/config.json`; `Drenyra/.engram` → `../.engram`.
-- Guía: [`docs/05-development/engram-project-canonical.md`](docs/05-development/engram-project-canonical.md).
+- Guía: [`docs/10-development/engram-project-canonical.md`](docs/10-development/engram-project-canonical.md).
 
 ## Agent-specific guidance
 

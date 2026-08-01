@@ -52,10 +52,9 @@ Drenyra maneja datos financieros sensibles, credenciales SUNAT y transacciones f
 
 | Plano                                                   | Relación                       |
 | ------------------------------------------------------- | ------------------------------ |
-| [03 — Workspace](../03-workspace-plane/README.md)       | Tenant isolation               |
-| [04 — Intelligence](../04-intelligence-plane/README.md) | Agent tool authorization       |
-| [05 — Trust](../05-trust-plane/README.md)               | Evidence y receipts inmutables |
-| [07 — Financial](../07-financial-plane/README.md)       | Datos financieros sensibles    |
+| [01 — Foundation](../01-foundation/README.md)           | Tenant isolation, políticas y receipts |
+| [10 — Development](../10-development/README.md)         | Guías de desarrollo seguras            |
+| [14 — Design](../14-design/README.md)                   | Protocolos RED/RDA y trust plane       |
 
 ---
 

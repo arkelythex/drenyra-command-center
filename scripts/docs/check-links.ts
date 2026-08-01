@@ -4,12 +4,12 @@
 /**
  * docs:check-links
  * Verifica que todos los enlaces internos .md apunten a archivos existentes.
- * 
+ *
  * Uso: bun run docs:check-links
  *      bun run docs:check-links --full   (escanear todos los .md del repo)
  */
 
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, extname, join, normalize, resolve } from "node:path";
 
 interface LinkIssue {
@@ -30,14 +30,7 @@ const CORE_FILES = [
 	"docs/01-foundation/README.md",
 	"docs/01-foundation/product-philosophy.md",
 	"docs/01-foundation/feos-program.md",
-	"docs/02-experience-plane/README.md",
-	"docs/03-workspace-plane/README.md",
-	"docs/04-intelligence-plane/README.md",
-	"docs/05-trust-plane/README.md",
-	"docs/06-execution-plane/README.md",
-	"docs/07-financial-plane/README.md",
-	"docs/08-integration-plane/README.md",
-	"docs/09-country-plane/README.md",
+	"docs/01-tutorials/README.md",
 	"docs/10-development/README.md",
 	"docs/11-adr/README.md",
 	"docs/12-security/README.md",
@@ -71,14 +64,20 @@ function main(): void {
 	}
 
 	if (issues.length > 0) {
-		console.error(`[docs:check-links] ${issues.length} broken internal links found:`);
+		console.error(
+			`[docs:check-links] ${issues.length} broken internal links found:`,
+		);
 		for (const issue of issues) {
-			console.error(`  ${issue.file}:${issue.line} → ${issue.link} — ${issue.reason}`);
+			console.error(
+				`  ${issue.file}:${issue.line} → ${issue.link} — ${issue.reason}`,
+			);
 		}
 		process.exit(1);
 	}
 
-	console.log(`[docs:check-links] ✅ ${filesToCheck.length} files checked, all internal links valid`);
+	console.log(
+		`[docs:check-links] ✅ ${filesToCheck.length} files checked, all internal links valid`,
+	);
 }
 
 function findAllMdFiles(dir: string): string[] {
@@ -86,7 +85,13 @@ function findAllMdFiles(dir: string): string[] {
 	const entries = readdirSync(dir, { withFileTypes: true });
 	for (const entry of entries) {
 		const full = join(dir, entry.name);
-		if (entry.name === "node_modules" || entry.name === ".git" || entry.name === ".engram" || entry.name.startsWith(".pi")) continue;
+		if (
+			entry.name === "node_modules" ||
+			entry.name === ".git" ||
+			entry.name === ".engram" ||
+			entry.name.startsWith(".pi")
+		)
+			continue;
 		if (entry.isDirectory()) {
 			files.push(...findAllMdFiles(full));
 		} else if (entry.name.endsWith(".md")) {
@@ -114,7 +119,9 @@ function checkFile(relativeFile: string, absolutePath: string): LinkIssue[] {
 			const targetPath = stripAnchor(link);
 			if (!targetPath) continue;
 
-			const resolvedPath = normalize(resolve(dirname(absolutePath), targetPath));
+			const resolvedPath = normalize(
+				resolve(dirname(absolutePath), targetPath),
+			);
 			if (!resolvedPath.startsWith(ROOT)) continue;
 
 			if (!existsAsFileOrDirectory(resolvedPath)) {

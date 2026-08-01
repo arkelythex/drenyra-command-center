@@ -14,7 +14,7 @@
 | `14-design` | [14 — Design](./14-design/README.md) | | Documento                                                         | Descripción                                        |
 | `01-foundation` | [01 — Foundation](./01-foundation/README.md) | Esta sección contiene la documentación canónica que define qué es Drenyra, cómo se construye, cómo se clasifica su docum |
 | `11-adr` | [11 — Architecture Decision Records](./11-adr/README.md) | Un Architecture Decision Record documenta una decisión que: |
-| `products` | [Redirect — Product Docs](./products/README.md) | These documents have moved to [`docs/01-foundation/`](../01-foundation/README.md): |
+| `products` | [Redirect — Product Docs](./products/README.md) | These documents have moved to the `01-foundation/` section (see the redirect table below): |
 | `01-tutorials` | [Tutorials](./01-tutorials/README.md) | These tutorials guide you through Drenyya step by step. They assume nothing — each command is explained, each screen is  |
 | `13-operations` | [13 — Operations](./13-operations/README.md) | | Documento                                         | Descripción                            | |
 | `audits` | [Drenyra Audit Ledgers](./audits/README.md) | Append-only, cryptographically chained record of Drenyra engineering changes and |
@@ -128,7 +128,7 @@ Un Architecture Decision Record documenta una decisión que:
 
 > `docs/products/`
 
-These documents have moved to [`docs/01-foundation/`](../01-foundation/README.md):
+These documents have moved to the `01-foundation/` section (see the redirect table below):
 
 | Documento | Descripción |
 |-----------|-------------|
