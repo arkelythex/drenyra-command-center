@@ -1,6 +1,6 @@
 # 01 — Foundation
 
-**Última actualización:** 2026-07-27
+**Última actualización:** 2026-08-01
 **Propósito:** Documentación fundacional del programa Drenyra FEOS
 **Audiencia:** Todos los contribuyentes — desarrolladores, producto, fiscal, dirección
 
@@ -20,6 +20,8 @@ Todo documento en las demás secciones se alinea con estos principios fundaciona
 | --------------------------------------------------- | ------------------------------------------------------- | ------------ |
 | [Product Philosophy](./product-philosophy.md)       | Tesis definitiva: Drenyra como Financial Engineering OS | Conceptual   |
 | [Strategic Positioning](./strategic-positioning.md) | Elevator pitch, moat, competencia, estrategia de cuña   | Estratégico  |
+| [Drenyra-AI — Accounting Agent OS](./drenyra-ai-aos.md) | Ecosistema y protocolo contable: RDA, candidatos, autoridad | Conceptual   |
+| [Drenyra-Pi — Pi-Native Harness](./drenyra-pi-harness.md) | Harness Pi-native que convierte Pi en operador contable  | Conceptual   |
 | [Canonical Stack](./canonical-stack.md)             | Stack técnico multi-lenguaje y arquitectura hexagonal   | Arquitectura |
 | [Program Taxonomy](./program-taxonomy.md)           | Clasificación documental: SDD, ADR, FSD, WSD, ASD       | Canónico     |
 | [Capability Map](./capability-map.md)               | 90+ capacidades del programa por dominio                | Canónico     |
@@ -110,6 +112,8 @@ Agent proposal
 | Si buscas...                   | Ve a...                                             |
 | ------------------------------ | --------------------------------------------------- |
 | Entender qué es Drenyra        | [Product Philosophy](./product-philosophy.md)       |
+| Entender el ecosistema Drenyra-AI | [Drenyra-AI AOS](./drenyra-ai-aos.md)            |
+| Entender el harness Drenyra-Pi | [Drenyra-Pi Harness](./drenyra-pi-harness.md)       |
 | Conocer el stack técnico       | [Canonical Stack](./canonical-stack.md)             |
 | Ver el roadmap de capacidades  | [Capability Map](./capability-map.md)               |
 | Clasificar un documento nuevo  | [Program Taxonomy](./program-taxonomy.md)           |

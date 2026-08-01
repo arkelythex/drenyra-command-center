@@ -1,8 +1,12 @@
 # Drenyra Superiority — Estrategia 2026-2027 (Revisada)
 
 > **Basado en investigación de mercado Julio 2026.**
-> Objetivo: Superar a gentle-ai (harness), OpenAI Codex (agentes), Cursor 3.0 (UX), y Digits (accounting AI).
+> Objetivo: Ser el equivalente contable de gentle-ai — el estándar abierto de ejecución contable verificable (Drenyra-AI).
 > Para Perú, con visión a Latinoamérica.
+
+---
+
+> **Nota — pivot Drenyra-AI (agosto 2026):** la comparación cambió de "beat" a "analog". Drenyra-AI no busca superar a gentle-ai como harness de ingeniería: busca ser **el gentle-ai de la contabilidad** — un producto independiente que aplica la misma disciplina (especificaciones, candidatos exactos, receipts, gates, revisión humana, autoridad) al dominio contable, y que Drenyra consume como superficie. La familia se completa con **Drenyra-Pi**, el harness Pi-native que ejecuta el protocolo RDA en Pi (como Gentle Pi ejecuta Gentle AI): Drenyra-AI es el ecosistema y protocolo contable; Drenyra-Pi es la terminal contable disciplinada; Drenyra es la superficie visual. Ver también [Drenyra-Pi — Pi-Native Accounting Operations Harness](../docs/01-foundation/drenyra-pi-harness.md). La investigación de mercado que sigue sigue siendo relevante: Digits, Cursor, Codex y gentle-ai continúan siendo competencia y referencia en sus respectivos dominios. Ver [Drenyra-AI — Accounting Agent Operating System](../docs/01-foundation/drenyra-ai-aos.md).
 
 ---
 
@@ -216,4 +220,4 @@ Con el tiempo, Drenyra tendrá el mejor modelo de compliance fiscal de LATAM.
 
 ---
 
-**Última actualización:** 2026-07-09
+**Última actualización:** 2026-08-01
