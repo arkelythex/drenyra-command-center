@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://drenyra.dev/contracts/ledger-schema/v1/ledger-manifest.schema.json",
+  "title": "Drenyra ledger manifest (GENESIS payload)",
+  "description": "The genesis payload fixes protocol version, hash algorithm, trust root, jurisdiction, creation date, signing policy and an optional free-form manifest (design §6.7).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocolVersion",
+    "hashAlgorithm",
+    "trustRoot",
+    "jurisdiction",
+    "createdAt",
+    "signingPolicy"
+  ],
+  "properties": {
+    "protocolVersion": { "type": "string", "minLength": 1 },
+    "hashAlgorithm": { "type": "string", "const": "SHA-256" },
+    "trustRoot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["keyIds"],
+      "properties": {
+        "keyIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "jurisdiction": { "type": "string", "minLength": 1 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "signingPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "algorithm", "keyIds"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "algorithm": { "type": "string", "const": "Ed25519" },
+        "keyIds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "manifest": { "type": "object" }
+  }
+}

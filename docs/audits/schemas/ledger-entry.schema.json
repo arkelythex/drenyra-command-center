@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://drenyra.dev/contracts/ledger-schema/v1/ledger-entry.schema.json",
+  "title": "Drenyra canonical audit ledger entry",
+  "description": "One canonical NDJSON entry of the append-only audit ledger (design §6). The entry hash and chain linkage are computed by the TS ledger core; this schema owns the shape and vocabularies.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "entryId",
+    "ledgerId",
+    "sequence",
+    "entryType",
+    "previousEntryHash",
+    "payloadHash",
+    "receiptHash",
+    "occurredAt",
+    "recordedAt",
+    "actor",
+    "schemaVersion",
+    "signerKeyId"
+  ],
+  "properties": {
+    "entryId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Global stable identity of the entry (uuid), distinct from the positional sequence"
+    },
+    "ledgerId": { "type": "string", "minLength": 1 },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Position within the ledger; monotonic and unique per ledgerId, never a timestamp"
+    },
+    "entryType": {
+      "type": "string",
+      "enum": [
+        "GENESIS",
+        "RECEIPT_RECORDED",
+        "ATTESTATION_ADDED",
+        "ENTRY_SUPERSEDED",
+        "ENTRY_REVOKED",
+        "CHECKPOINT_CREATED"
+      ]
+    },
+    "previousEntryHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 of the prior entry; genesis uses the canonical empty-string SHA-256"
+    },
+    "payloadHash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "receiptHash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "SHA-256 of the backing receipt, or the canonical empty-string SHA-256 when no receipt backs the entry"
+    },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "recordedAt": { "type": "string", "format": "date-time" },
+    "actor": { "type": "string", "minLength": 1 },
+    "schemaVersion": { "type": "string", "minLength": 1 },
+    "signerKeyId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "hash-only when unsigned, otherwise the signing key id"
+    },
+    "signature": { "type": "string", "minLength": 1 },
+    "signerPublicKey": { "type": "string", "minLength": 1 },
+    "idempotencyKey": { "type": "string", "minLength": 1 },
+    "payload": {
+      "type": "object",
+      "description": "Entry payload: the genesis manifest, the embedded receipt bundle for RECEIPT_RECORDED, or a typed payload per entry type"
+    }
+  },
+  "if": {
+    "properties": { "signerKeyId": { "const": "hash-only" } },
+    "required": ["signerKeyId"]
+  },
+  "then": {
+    "properties": { "signature": false, "signerPublicKey": false }
+  },
+  "else": {
+    "required": ["signature", "signerPublicKey"]
+  }
+}
