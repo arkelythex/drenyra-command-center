@@ -138,7 +138,13 @@ function generateIndex(sections: DocSection[]): string {
 	md += `Para mantenimiento completo:\n\n`;
 	md += `\`\`\`bash\nbun run docs:maintain\n\`\`\`\n`;
 
-	return md;
+	// Normalize trailing whitespace per line so the generated index is
+	// byte-idempotent regardless of formatter passes (markdown-clean trims
+	// trailing spaces; the raw generator must match that exactly).
+	return md
+		.split("\n")
+		.map((line) => line.trimEnd())
+		.join("\n");
 }
 
 function main(): void {
