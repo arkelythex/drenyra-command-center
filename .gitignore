@@ -86,4 +86,6 @@ test-results/
 testsprite_tests/
 logs/
 data/
+# Audit ledgers are canonical append-only evidence — tracked deliberately
+!/docs/audits/data/
 *.log
