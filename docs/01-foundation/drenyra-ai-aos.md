@@ -333,8 +333,21 @@ Documento completo: [Drenyra-Pi — Pi-Native Accounting Operations Harness](./d
 
 ---
 
+## Drenyra-Engram — la memoria institucional
+
+Drenyra-AI consulta la memoria antes de planificar: recupera políticas y aprendizajes, guarda observaciones después de ejecutar, propone nuevas memorias y detecta conflictos. **Drenyra-Engram** persiste, busca, relaciona, versiona, aísla y conserva procedencia — sin cargar toda la memoria indiscriminadamente: pide contexto mínimo por misión (mission type + company + period + accounts + counterparties + policy families).
+
+El principio que rige la integración:
+
+> **Recordar no significa autorizar. Una memoria orienta el trabajo; solo la evidencia, las políticas vigentes y la aprobación profesional permiten ejecutarlo.**
+
+Documento completo: [Drenyra-Engram — Institutional Accounting Memory](./drenyra-engram.md).
+
+---
+
 ## Navegación
 
+- [Drenyra-Engram — Institutional Accounting Memory](./drenyra-engram.md)
 - [Drenyra Product Philosophy — Definitive Thesis](./product-philosophy.md)
 - [Drenyra Strategic Positioning](./strategic-positioning.md)
 - [Product Topology](../14-design/product-topology.md)

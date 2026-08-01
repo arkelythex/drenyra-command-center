@@ -1245,6 +1245,8 @@ El protocolo de producto es **RDA — Receipt-Driven Accounting**, construido so
 
 Completan la familia **Drenyra-Pi**, el harness Pi-native que convierte Pi en un operador contable disciplinado y verificable — persona contable, comandos, panel de contexto empresa/periodo, agentes especializados, skills fiscales con contrato, procedimientos RDA y routing de modelos sobre el runtime de Drenyra-AI, como Gentle Pi ejecuta Gentle AI — y **Drenyra**, la superficie visual donde profesionales y empresas supervisan, revisan y autorizan. La tesis conjunta: Drenyra-AI aporta el protocolo y la autoridad verificable; Drenyra-Pi convierte Pi en la terminal contable disciplinada; Drenyra es el command center visual. Documento completo: [Drenyra-Pi — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md).
 
+**Drenyra-Engram** completa el ecosistema como la memoria institucional contable: la capa que conserva lo que la organización sabe y puede demostrar sobre su contabilidad — políticas, criterios, excepciones aprendidas y decisiones aprobadas — con procedencia, vigencia y aislamiento estricto entre empresas. Su principio rector: **recordar no significa autorizar**; una memoria orienta el trabajo, pero solo la evidencia, las políticas vigentes y la aprobación profesional permiten ejecutarlo. Documento completo: [Drenyra-Engram — Institutional Accounting Memory](./drenyra-engram.md).
+
 ---
 
 ## Product references
