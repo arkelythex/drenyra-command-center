@@ -1,7 +1,6 @@
 # Drenyra Documentation Index
-
-**Auto-generado:** 2026-08-01
-**Arquitectura:** Drenyra Financial Engineering OS (FEOS) — 8 planos
+    
+    **Arquitectura:** Drenyra Financial Engineering OS (FEOS) — 8 planos
 **Programa:** [CAP-FEOS-00 — Drenyra Financial Engineering Operating System](./01-foundation/feos-program.md)
 
 ---

@@ -4,13 +4,13 @@
 /**
  * docs:generate-index
  * Auto-genera docs/00-INDEX.md escaneando la estructura de docs/.
- * 
+ *
  * Lee cada README.md de las subsecciones y extrae título, descripción y docs listados.
- * 
+ *
  * Uso: bun run docs:index
  */
 
-import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const ROOT = process.cwd();
@@ -34,7 +34,12 @@ function extractDescription(filePath: string): string {
 	const lines = content.split("\n");
 	for (let i = 1; i < Math.min(lines.length, 15); i++) {
 		const line = lines[i].trim();
-		if (line && !line.startsWith("#") && !line.startsWith("---") && !line.startsWith("**")) {
+		if (
+			line &&
+			!line.startsWith("#") &&
+			!line.startsWith("---") &&
+			!line.startsWith("**")
+		) {
 			return line.replace(/^>\s*/, "").slice(0, 120);
 		}
 	}
@@ -76,12 +81,9 @@ function scanSections(): DocSection[] {
 }
 
 function generateIndex(sections: DocSection[]): string {
-	const now = new Date().toISOString().split("T")[0];
-
 	let md = `# Drenyra Documentation Index
-
-**Auto-generado:** ${now}
-**Arquitectura:** Drenyra Financial Engineering OS (FEOS) — 8 planos
+    
+    **Arquitectura:** Drenyra Financial Engineering OS (FEOS) — 8 planos
 **Programa:** [CAP-FEOS-00 — Drenyra Financial Engineering Operating System](./01-foundation/feos-program.md)
 
 ---
@@ -101,7 +103,9 @@ function generateIndex(sections: DocSection[]): string {
 	md += `Las secciones de documentación se alinean con los 8 planos FEOS más secciones canónicas:\n\n`;
 
 	for (const section of sections) {
-		const isPlane = section.dir.match(/^\d{2}-(experience|workspace|intelligence|trust|execution|financial|integration|country)-plane$/);
+		const isPlane = section.dir.match(
+			/^\d{2}-(experience|workspace|intelligence|trust|execution|financial|integration|country)-plane$/,
+		);
 		const sectionType = isPlane ? "Plano FEOS" : "Sección canónica";
 		md += `- **\`${section.dir}/\`** — ${sectionType}: ${section.title}\n`;
 	}
@@ -149,7 +153,9 @@ function main(): void {
 	const indexPath = join(DOCS_DIR, "00-INDEX.md");
 	writeFileSync(indexPath, index, "utf-8");
 
-	console.log(`[docs:index] ✅ Generated docs/00-INDEX.md — ${sections.length} sections, ${sections.reduce((a, s) => a + s.docs.length, 0)} documents`);
+	console.log(
+		`[docs:index] ✅ Generated docs/00-INDEX.md — ${sections.length} sections, ${sections.reduce((a, s) => a + s.docs.length, 0)} documents`,
+	);
 }
 
 main();
