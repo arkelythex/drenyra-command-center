@@ -10,8 +10,12 @@
  *
  * Mapping:
  * - topicKey        `fiscal-memory/<memory.id>` (stable handle per memory)
- * - scope           tenantId -> organizationId, companyId, ruc, period
- *                   normalized YYYY-MM -> YYYYMM (engram grammar)
+ * - scope           tenantId -> organizationId, companyId = ruc, PERIOD-LESS.
+ *                   Company identity is the RUC on the engine's HTTP/CLI
+ *                   surfaces; the fiscal period lives in the learned
+ *                   metadata (searchable + exactly reconstructable) so the
+ *                   period-less search/context reads can match every fiscal
+ *                   memory of the company regardless of period.
  * - title           `[<category>] <title>` — category is searchable text
  * - content.what    title (plain)
  * - content.why     summary
@@ -57,6 +61,8 @@ const FISCAL_TOPIC_PREFIX = "fiscal-memory/";
 /** Parseable fiscal metadata embedded in the observation's learned field. */
 interface LearnedMeta {
 	id: string;
+	companyId?: string;
+	period?: string;
 	severity: FiscalMemorySeverity;
 	status: FiscalMemoryStatus;
 	tags: string[];
@@ -94,13 +100,17 @@ export function engramPeriodToFiscal(period: string): string {
 	return `${period.slice(0, 4)}-${period.slice(4, 6)}`;
 }
 
-function scopeToEngram(scope: FiscalMemoryScope, period: string) {
+function scopeToEngram(scope: FiscalMemoryScope) {
+	// Period-less company scope: the engine's HTTP/CLI surfaces derive
+	// companyId from the RUC, and a perioded scope would be invisible to the
+	// period-less search/context reads (the domain query interface provides no
+	// period for most methods). The fiscal period lives in the learned
+	// metadata; findByPeriod filters on it.
 	return {
 		kind: "company" as const,
 		organizationId: scope.tenantId,
-		companyId: scope.companyId,
+		companyId: scope.ruc,
 		ruc: scope.ruc,
-		period,
 	};
 }
 
@@ -124,6 +134,8 @@ function categoryOf(title: string): {
 function learnedFromProps(props: FiscalMemoryProps): string {
 	const meta: LearnedMeta = {
 		id: props.id,
+		companyId: props.companyId,
+		period: props.period,
 		severity: props.severity,
 		status: props.status,
 		tags: [...props.tags],
@@ -152,6 +164,8 @@ function parseLearned(learned: string, id: string): Omit<LearnedMeta, "id"> {
 		relatedMemoryIds: meta.relatedMemoryIds ?? [],
 		updatedAt: meta.updatedAt ?? "",
 	};
+	if (meta.companyId !== undefined) parsed.companyId = meta.companyId;
+	if (meta.period !== undefined) parsed.period = meta.period;
 	if (meta.approvedBy !== undefined) parsed.approvedBy = meta.approvedBy;
 	if (meta.sourceAgentId !== undefined)
 		parsed.sourceAgentId = meta.sourceAgentId;
@@ -189,9 +203,15 @@ export function observationToFiscalMemory(
 	const props: FiscalMemoryProps = {
 		id,
 		tenantId: observation.scope.organizationId ?? "",
-		companyId: observation.scope.companyId ?? "",
+		companyId: meta.companyId ?? observation.scope.companyId ?? "",
 		ruc: observation.scope.ruc ?? "",
-		period: engramPeriodToFiscal(observation.scope.period ?? ""),
+		// meta.period is the DOMAIN shape (YYYY-MM, from learnedFromProps); the
+		// scope fallback is the engram shape (YYYYMM) and needs conversion.
+		period:
+			meta.period ??
+			(observation.scope.period
+				? engramPeriodToFiscal(observation.scope.period)
+				: ""),
 		category,
 		severity: meta.severity,
 		status: meta.status,
@@ -226,10 +246,11 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 
 	async save(memory: FiscalMemory): Promise<void> {
 		const props = memory.toJSON();
-		const engramScope = scopeToEngram(
-			{ tenantId: props.tenantId, companyId: props.companyId, ruc: props.ruc },
-			fiscalPeriodToEngram(props.period),
-		);
+		const engramScope = scopeToEngram({
+			tenantId: props.tenantId,
+			companyId: props.companyId,
+			ruc: props.ruc,
+		});
 		await this.client.save({
 			topicKey: `${FISCAL_TOPIC_PREFIX}${props.id}`,
 			title: `[${props.category}] ${props.title}`,
@@ -280,14 +301,19 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 		scope: FiscalMemoryScope,
 		period: string,
 	): Promise<FiscalMemory[]> {
+		// The domain scope carries no period and the engram scope is
+		// period-less (the period lives in the learned metadata), so the query
+		// returns the company's fiscal memories and filters by the exact
+		// period.
+		const target = fiscalPeriodToEngram(period);
 		const observations = await this.client.context({
 			ruc: scope.ruc,
 			organizationId: scope.tenantId,
-			period: fiscalPeriodToEngram(period),
 		});
 		return observations
 			.filter((observation) => observation.type === "fiscal_memory")
-			.map(observationToFiscalMemory);
+			.map(observationToFiscalMemory)
+			.filter((memory) => fiscalPeriodToEngram(memory.period) === target);
 	}
 
 	async findByCategory(
@@ -361,10 +387,11 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 		const meta = JSON.parse(learnedFromProps(props)) as LearnedMeta;
 		meta.revisionNumber = revision.revisionNumber;
 		meta.changeReason = revision.changeReason;
-		const engramScope = scopeToEngram(
-			{ tenantId: props.tenantId, companyId: props.companyId, ruc: props.ruc },
-			fiscalPeriodToEngram(props.period),
-		);
+		const engramScope = scopeToEngram({
+			tenantId: props.tenantId,
+			companyId: props.companyId,
+			ruc: props.ruc,
+		});
 		await this.client.save({
 			topicKey: `${FISCAL_TOPIC_PREFIX}${props.id}`,
 			title: `[${props.category}] ${props.title}`,

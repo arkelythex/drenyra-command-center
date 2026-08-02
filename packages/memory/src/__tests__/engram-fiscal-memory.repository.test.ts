@@ -63,7 +63,7 @@ function observationOf(memory: FiscalMemory): EngramObservation {
 		scope: {
 			kind: "company",
 			organizationId: TENANT,
-			companyId: COMPANY,
+			companyId: RUC,
 			ruc: RUC,
 			period: "202607",
 		},
@@ -73,6 +73,8 @@ function observationOf(memory: FiscalMemory): EngramObservation {
 			where: props.evidenceRefs.join("\n"),
 			learned: JSON.stringify({
 				id: props.id,
+				companyId: props.companyId,
+				period: props.period,
 				severity: props.severity,
 				status: props.status,
 				tags: [...props.tags],
@@ -124,10 +126,14 @@ describe("save mapping", () => {
 		expect(saved.scope).toEqual({
 			kind: "company",
 			organizationId: TENANT,
-			companyId: COMPANY,
+			companyId: RUC, // engine convention: companyId derived from the RUC
 			ruc: RUC,
-			period: "202607",
+			// PERIOD-LESS scope: the fiscal period lives in learned so the
+			// period-less search/context reads can match (exact-scope rule).
 		});
+		// The domain companyId AND period are preserved in the learned metadata.
+		expect(saved.content.learned).toContain('"companyId":"company-1"');
+		expect(saved.content.learned).toContain('"period":"2026-07"');
 		expect(saved.content.what).toBe("IGV retention criteria");
 		expect(saved.content.why).toBe(
 			"Retention applies at 4% for this supplier class",
@@ -197,15 +203,22 @@ describe("query methods", () => {
 		repo = new EngramFiscalMemoryRepository(client);
 	});
 
-	it("findByPeriod uses context with the exact period scope and filters type", async () => {
-		vi.mocked(client.context).mockResolvedValue([observationOf(makeMemory())]);
+	it("findByPeriod queries the period-less scope and filters by the exact period", async () => {
+		const july = makeMemory();
+		const august = makeMemory({ id: "mem-002", period: "2026-08" });
+		vi.mocked(client.context).mockResolvedValue([
+			observationOf(july),
+			observationOf(august),
+		]);
 		const memories = await repo.findByPeriod(SCOPE, "2026-07");
+		// The domain scope carries no period: context runs period-less and the
+		// exact period is a filter over the learned metadata.
 		expect(client.context).toHaveBeenCalledWith({
 			ruc: RUC,
 			organizationId: TENANT,
-			period: "202607",
 		});
 		expect(memories).toHaveLength(1);
+		expect(memories[0].id).toBe("mem-001");
 		expect(memories[0].period).toBe("2026-07");
 	});
 
