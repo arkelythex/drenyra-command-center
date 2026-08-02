@@ -1,5 +1,5 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { MissionError, MissionErrorCode } from "@drenyra/mission-domain";
+import { isMissionError } from "@drenyra/mission-domain";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mockDb = vi.hoisted(() => ({
 	db: {
@@ -69,39 +69,29 @@ function m(overrides: Record<string, unknown> = {}) {
 }
 function sel(row: Record<string, unknown> | null) {
 	mockDb.db.select.mockReturnValue({
-		from: vi
-			.fn()
-			.mockReturnValue({
-				where: vi
-					.fn()
-					.mockReturnValue({
-						limit: vi.fn().mockResolvedValue(row ? [row] : []),
-					}),
+		from: vi.fn().mockReturnValue({
+			where: vi.fn().mockReturnValue({
+				limit: vi.fn().mockResolvedValue(row ? [row] : []),
 			}),
+		}),
 	} as any);
 }
 function upd(returned: Record<string, unknown>) {
 	mockDb.db.update.mockReturnValue({
-		set: vi
-			.fn()
-			.mockReturnValue({
-				where: vi
-					.fn()
-					.mockReturnValue({
-						returning: vi.fn().mockResolvedValue([returned]),
-					}),
+		set: vi.fn().mockReturnValue({
+			where: vi.fn().mockReturnValue({
+				returning: vi.fn().mockResolvedValue([returned]),
 			}),
+		}),
 	} as any);
 }
 function updFail() {
 	mockDb.db.update.mockReturnValue({
-		set: vi
-			.fn()
-			.mockReturnValue({
-				where: vi
-					.fn()
-					.mockReturnValue({ returning: vi.fn().mockResolvedValue([]) }),
-			}),
+		set: vi.fn().mockReturnValue({
+			where: vi
+				.fn()
+				.mockReturnValue({ returning: vi.fn().mockResolvedValue([]) }),
+		}),
 	} as any);
 }
 
@@ -116,15 +106,11 @@ describe("MissionsService", () => {
 		it("creates in DRAFT with version 1", async () => {
 			mockDb.db.transaction.mockImplementation(async (fn: any) => {
 				const tx = {
-					insert: vi
-						.fn()
-						.mockReturnValue({
-							values: vi
-								.fn()
-								.mockReturnValue({
-									returning: vi.fn().mockResolvedValue([m()]),
-								}),
+					insert: vi.fn().mockReturnValue({
+						values: vi.fn().mockReturnValue({
+							returning: vi.fn().mockResolvedValue([m()]),
 						}),
+					}),
 				};
 				return fn(tx);
 			});
@@ -145,14 +131,15 @@ describe("MissionsService", () => {
 					intent: "bad" as any,
 					input: { instruction: "x" },
 				}),
-			).rejects.toThrow(MissionError);
+			).rejects.toSatisfy(isMissionError);
 		});
 	});
 
 	describe("getMission", () => {
 		it("returns mission for matching company", async () => {
 			sel(m());
-			expect((await svc.getMission(missionId, companyId))!.id).toBe(missionId);
+			const found = await svc.getMission(missionId, companyId);
+			expect(found?.id).toBe(missionId);
 		});
 		it("returns null for wrong company", async () => {
 			sel(null);
@@ -173,31 +160,27 @@ describe("MissionsService", () => {
 			sel(m({ status: "COMPLETED" }));
 			await expect(
 				svc.executeMission(missionId, companyId, { expectedMissionVersion: 1 }),
-			).rejects.toThrow(MissionError);
+			).rejects.toSatisfy(isMissionError);
 		});
 		it("rejects AWAITING_APPROVAL", async () => {
 			sel(m({ status: "AWAITING_APPROVAL" }));
 			await expect(
 				svc.executeMission(missionId, companyId, { expectedMissionVersion: 1 }),
-			).rejects.toThrow(MissionError);
+			).rejects.toSatisfy(isMissionError);
 		});
 		it("rejects stale version", async () => {
 			sel(m({ version: 3 }));
 			updFail();
 			mockDb.db.select.mockReturnValue({
-				from: vi
-					.fn()
-					.mockReturnValue({
-						where: vi
-							.fn()
-							.mockReturnValue({
-								limit: vi.fn().mockResolvedValue([{ version: 3 }]),
-							}),
+				from: vi.fn().mockReturnValue({
+					where: vi.fn().mockReturnValue({
+						limit: vi.fn().mockResolvedValue([{ version: 3 }]),
 					}),
+				}),
 			} as any);
 			await expect(
 				svc.executeMission(missionId, companyId, { expectedMissionVersion: 1 }),
-			).rejects.toThrow(MissionError);
+			).rejects.toSatisfy(isMissionError);
 		});
 	});
 
@@ -247,7 +230,7 @@ describe("MissionsService", () => {
 					evidenceHash: eh,
 					expectedMissionVersion: 1,
 				}),
-			).rejects.toThrow(MissionError);
+			).rejects.toSatisfy(isMissionError);
 		});
 		it("rejects EVIDENCE_MISMATCH", async () => {
 			sel(
@@ -273,7 +256,7 @@ describe("MissionsService", () => {
 					evidenceHash: "other",
 					expectedMissionVersion: 2,
 				}),
-			).rejects.toThrow(MissionError);
+			).rejects.toSatisfy(isMissionError);
 		});
 		it("rejects proposal version mismatch", async () => {
 			sel(
@@ -299,7 +282,7 @@ describe("MissionsService", () => {
 					evidenceHash: eh,
 					expectedMissionVersion: 2,
 				}),
-			).rejects.toThrow(MissionError);
+			).rejects.toSatisfy(isMissionError);
 		});
 	});
 
@@ -352,7 +335,7 @@ describe("MissionsService", () => {
 					reason: "",
 					expectedMissionVersion: 1,
 				}),
-			).rejects.toThrow(MissionError);
+			).rejects.toSatisfy(isMissionError);
 		});
 	});
 
@@ -378,7 +361,7 @@ describe("MissionsService", () => {
 					reason: "x",
 					expectedMissionVersion: 1,
 				}),
-			).rejects.toThrow(MissionError);
+			).rejects.toSatisfy(isMissionError);
 		});
 		it("rejects invalid resolution", async () => {
 			sel(m({ status: "UNKNOWN" }));
@@ -388,7 +371,7 @@ describe("MissionsService", () => {
 					reason: "x",
 					expectedMissionVersion: 1,
 				}),
-			).rejects.toThrow(MissionError);
+			).rejects.toSatisfy(isMissionError);
 		});
 		it("rejects empty reason", async () => {
 			await expect(
@@ -397,7 +380,7 @@ describe("MissionsService", () => {
 					reason: "",
 					expectedMissionVersion: 1,
 				}),
-			).rejects.toThrow(MissionError);
+			).rejects.toSatisfy(isMissionError);
 		});
 	});
 });
