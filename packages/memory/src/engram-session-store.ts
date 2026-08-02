@@ -104,11 +104,20 @@ export class EngramSessionStore implements SessionStore {
 			title: input.type,
 			type: input.type,
 			scope,
+			// The engine requires ALL four content fields non-empty
+			// (AssertValidContent fails closed). why/where/learned carry the
+			// record's provenance-shaped context; learned embeds the full
+			// record as JSON so it is searchable AND exactly reconstructable.
 			content: {
 				what: input.content,
-				why: "",
-				where: "",
-				learned: "",
+				why: "agent memory record",
+				where: this.source,
+				learned: JSON.stringify({
+					agentId: input.agentId,
+					sessionId: input.sessionId,
+					type: input.type,
+					metadata: input.metadata,
+				}),
 			},
 			provenance,
 		});

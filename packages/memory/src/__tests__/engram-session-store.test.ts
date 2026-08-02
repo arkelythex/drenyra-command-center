@@ -74,12 +74,20 @@ describe("EngramSessionStore.save", () => {
 			ruc: RUC,
 			period: PERIOD,
 		});
-		expect(payload.content).toEqual({
-			what: "Analysis complete",
-			why: "",
-			where: "",
-			learned: "",
-		});
+		// The engine requires ALL four content fields non-empty
+		// (AssertValidContent fails closed) — the mapping must never emit
+		// empty why/where/learned (regression: integration test against the
+		// live engine caught the empty-field bug).
+		expect(payload.content.what).toBe("Analysis complete");
+		expect(payload.content.why.length).toBeGreaterThan(0);
+		expect(payload.content.where.length).toBeGreaterThan(0);
+		expect(payload.content.learned.length).toBeGreaterThan(0);
+		const learned = JSON.parse(payload.content.learned) as Record<
+			string,
+			unknown
+		>;
+		expect(learned.agentId).toBe("analysis");
+		expect(learned.sessionId).toBe("sess-1");
 		expect(payload.provenance).toMatchObject({
 			actor: "analysis",
 			source: "drenyra-memory",
