@@ -21,6 +21,8 @@ DRENYRA builds Drenyra, the verifiable financial operating system for businesses
 
 ## Repo shape
 
+**Scope policy (org-level):** this repository is the **Accounting Command Center**. No new non-accounting product or vertical may be added to this repo. Foreign or experimental folders must move to their own repo, be archived, or be relocated to a clearly-labelled experimental space — never grow inside `Drenyra`. Extract, don't accumulate: reusable runtime, harness, and memory concerns belong in `arkelythex/drenyra-ai`, `arkelythex/drenyra-pi`, and `arkelythex/drenyra-engram` respectively.
+
 - Fastest navigation source: start at root `CODEX-MAP.md`, then use `.codebase/index.yml` for machine-readable app/package metadata.
 - Regenerate navigation docs with `bun run codebase:index`; verify with `bun run codebase:index:check`.
 - Runtime/package manager: Bun 1.3.11.
