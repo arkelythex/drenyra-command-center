@@ -68,7 +68,12 @@ export class NoopMissionMemoryRecorder implements MissionMemoryRecorder {
 
 /**
  * Engram-backed recorder. Records a `mission_result` observation scoped to
- * the company RUC + fiscal period when a mission completes.
+ * the company RUC (period-LESS) when a mission completes. The observation is
+ * company-level institutional memory: the observability surface reads
+ * period-less context (GET /v1/context without period), and the engine's
+ * exact-scope rule means a perioded observation would be invisible to it. The
+ * fiscal period travels in the content (searchable), not the scope — fiscal
+ * period-scoped records are the fiscal-memory repository's job.
  */
 export class EngramMissionMemoryRecorder implements MissionMemoryRecorder {
 	private readonly client: EngramClient;
@@ -94,13 +99,12 @@ export class EngramMissionMemoryRecorder implements MissionMemoryRecorder {
 					organizationId === null ? "api" : String(organizationId),
 				companyId: ruc,
 				ruc,
-				period,
 			},
 			content: {
 				what: `Mission ${input.missionId} (${input.intent}) completed for RUC ${ruc}`,
 				why: input.reason || "mission reconciled to COMPLETED",
 				where: "apps/api features/missions",
-				learned: `Completed via reconcile by ${input.actorId || "system"}`,
+				learned: `Completed via reconcile by ${input.actorId || "system"} — fiscal period ${period}`,
 			},
 			provenance: {
 				actor: input.actorId || "system",
