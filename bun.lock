@@ -252,6 +252,7 @@
       "version": "0.1.0",
       "dependencies": {
         "@drenyra/domain": "workspace:*",
+        "drenyra-ai": "https://github.com/arkelythex/drenyra-ai/releases/download/v0.0.1-prealpha.1/drenyra-ai-0.0.1-prealpha.1.tgz",
       },
       "devDependencies": {
         "typescript": "^7.0.2",
@@ -372,6 +373,9 @@
     "packages/mission-protocol": {
       "name": "@drenyra/mission-protocol",
       "version": "0.1.0",
+      "dependencies": {
+        "drenyra-ai": "https://github.com/arkelythex/drenyra-ai/releases/download/v0.0.1-prealpha.1/drenyra-ai-0.0.1-prealpha.1.tgz",
+      },
       "devDependencies": {
         "vitest": "^4.0.0",
       },
@@ -2010,6 +2014,8 @@
     "dom-accessibility-api": ["dom-accessibility-api@0.6.3", "", {}, "sha512-7ZgogeTnjuHbo+ct10G9Ffp0mif17idi0IyWNVA/wcwcm7NPOD/WEHVP3n7n3MhXqxoIYm8d6MuZohYWIZ4T3w=="],
 
     "dotenv": ["dotenv@17.4.2", "", {}, "sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw=="],
+
+    "drenyra-ai": ["drenyra-ai@https://github.com/arkelythex/drenyra-ai/releases/download/v0.0.1-prealpha.1/drenyra-ai-0.0.1-prealpha.1.tgz", { "dependencies": { "ajv": "^8.17.1", "ajv-formats": "^3.0.1" }, "bin": { "drenyra-ai": "./dist/cmd/cli.js" } }, "sha512-x97E4/fbaqShkWtUgb1D1rG6x+MVmkBo5bbsS4yAV9Klr9YnbJKZLfOEzNFKuB/SPbBSxGH5TiAvyhDXGY0Uxw=="],
 
     "drizzle-kit": ["drizzle-kit@0.31.10", "", { "dependencies": { "@drizzle-team/brocli": "^0.10.2", "@esbuild-kit/esm-loader": "^2.5.5", "esbuild": "^0.25.4", "tsx": "^4.21.0" }, "bin": { "drizzle-kit": "bin.cjs" } }, "sha512-7OZcmQUrdGI+DUNNsKBn1aW8qSoKuTH7d0mYgSP8bAzdFzKoovxEFnoGQp2dVs82EOJeYycqRtciopszwUf8bw=="],
 

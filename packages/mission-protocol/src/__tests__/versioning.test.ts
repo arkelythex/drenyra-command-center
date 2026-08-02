@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
-	PROTOCOL_VERSION,
-	MINIMUM_CLIENT_VERSION,
-	SUPPORTED_FEATURES,
 	compareVersions,
-	isClientCompatible,
 	getCapabilities,
 	hasFeature,
-} from "../versioning.js";
+	isClientCompatible,
+	MINIMUM_CLIENT_VERSION,
+	PROTOCOL_VERSION,
+	SUPPORTED_FEATURES,
+} from "../index.js";
 
 describe("versioning", () => {
 	it("exports a protocol version string", () => {

@@ -1,12 +1,14 @@
-import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { MissionError, MissionErrorCode, isMissionError } from "../errors.js";
+import { describe, expect, it } from "vitest";
 import {
 	getCapabilities,
 	hasFeature,
 	isClientCompatible,
-} from "../versioning.js";
+	isMissionError,
+	MissionError,
+	MissionErrorCode,
+} from "../index.js";
 
 interface ErrorFixture {
 	success: boolean;

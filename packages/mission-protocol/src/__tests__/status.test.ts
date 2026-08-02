@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest";
 import {
 	AccountingMissionStatus,
-	isTerminal,
-	isWaitingForHuman,
+	EXTENDED_STATES,
+	isExecutionState,
 	isRecoverable,
 	isResumable,
-	isExecutionState,
+	isTerminal,
+	isWaitingForHuman,
 	isWaitState,
-	waitReasonFor,
-	WaitReason,
 	STATUS_LABELS,
-	EXTENDED_STATES,
 	VALID_TRANSITIONS,
-} from "../status.js";
+	WaitReason,
+	waitReasonFor,
+} from "../index.js";
 
 const S = AccountingMissionStatus;
 

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Drenyra Orchestrator — delegation router, skills resolver, memory contract, and work routing",
+  "description": "Drenyra Orchestrator \u2014 delegation router, skills resolver, memory contract, and work routing",
   "exports": {
     ".": "./src/index.ts",
     "./assets/*": "./assets/*"
@@ -13,7 +13,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@drenyra/domain": "workspace:*"
+    "@drenyra/domain": "workspace:*",
+    "drenyra-ai": "https://github.com/arkelythex/drenyra-ai/releases/download/v0.0.1-prealpha.1/drenyra-ai-0.0.1-prealpha.1.tgz"
   },
   "devDependencies": {
     "typescript": "^7.0.2",

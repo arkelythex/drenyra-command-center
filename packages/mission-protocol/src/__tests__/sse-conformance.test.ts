@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
+	formatSSEEvent,
+	isKeepalive,
 	MissionEventType,
 	parseSSEEvent,
-	isKeepalive,
-	formatSSEEvent,
-} from "../events.js";
+} from "../index.js";
 
 const mockSnapshot = {
 	id: "mission-1",
