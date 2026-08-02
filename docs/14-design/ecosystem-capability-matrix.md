@@ -31,5 +31,5 @@ This matrix tracks which capabilities of the Drenyra monorepo are extracted into
 
 ## Consumption
 
-- `packages/mission-protocol` depends on `drenyra-ai` via the **GitHub Release tarball** (`https://github.com/arkelythex/drenyra-ai/releases/download/v0.0.1-prealpha.1/drenyra-ai-0.0.1-prealpha.1.tgz`). The tarball contains the built `dist/` and passes `verify-packed-install`.
+- `packages/mission-protocol` and `packages/drenyra-orchestrator` depend on `drenyra-ai` via the **GitHub Release tarball** (`https://github.com/arkelythex/drenyra-ai/releases/download/v0.1.0/drenyra-ai-0.1.0.tgz` — first FROZEN-contract release: mission-protocol, candidate, receipt, gate pinned by conformance suites). The tarball contains the built `dist/` and passes `verify-packed-install`.
 - Upgrading the consumed version is a normal dependency bump with a migration note (see `RELEASING.md` in drenyra-ai and the ecosystem integration rules).
