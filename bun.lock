@@ -252,7 +252,7 @@
       "version": "0.1.0",
       "dependencies": {
         "@drenyra/domain": "workspace:*",
-        "drenyra-ai": "https://github.com/arkelythex/drenyra-ai/releases/download/v0.1.0/drenyra-ai-0.1.0.tgz",
+        "drenyra-ai": "https://github.com/arkelythex/drenyra-ai/releases/download/v0.2.0/drenyra-ai-0.2.0.tgz",
       },
       "devDependencies": {
         "typescript": "^7.0.2",
@@ -374,7 +374,7 @@
       "name": "@drenyra/mission-protocol",
       "version": "0.1.0",
       "dependencies": {
-        "drenyra-ai": "https://github.com/arkelythex/drenyra-ai/releases/download/v0.1.0/drenyra-ai-0.1.0.tgz",
+        "drenyra-ai": "https://github.com/arkelythex/drenyra-ai/releases/download/v0.2.0/drenyra-ai-0.2.0.tgz",
       },
       "devDependencies": {
         "vitest": "^4.0.0",
@@ -2015,7 +2015,7 @@
 
     "dotenv": ["dotenv@17.4.2", "", {}, "sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw=="],
 
-    "drenyra-ai": ["drenyra-ai@https://github.com/arkelythex/drenyra-ai/releases/download/v0.1.0/drenyra-ai-0.1.0.tgz", { "dependencies": { "ajv": "^8.17.1", "ajv-formats": "^3.0.1" }, "bin": { "drenyra-ai": "./dist/cmd/cli.js" } }, "sha512-0Cju1j7u3fSMrZxhP3t4Ez7wBlnKKBg0kzQTeWWNWGsNqNehsdzDtEmlrM3d4rVvHwKrdwk9Ai31fPhZ43ef5g=="],
+    "drenyra-ai": ["drenyra-ai@https://github.com/arkelythex/drenyra-ai/releases/download/v0.2.0/drenyra-ai-0.2.0.tgz", { "dependencies": { "ajv": "^8.17.1", "ajv-formats": "^3.0.1" }, "bin": { "drenyra-ai": "./dist/cmd/cli.js" } }, "sha512-AZ/crwRCA5bst2AWQcbAys+AEETLhjL7Su2iCAP3Vu2e5QpqaRdUN3RbOk66ugAlQg+uRDp4wnNh9A4W8MjgGw=="],
 
     "drizzle-kit": ["drizzle-kit@0.31.10", "", { "dependencies": { "@drizzle-team/brocli": "^0.10.2", "@esbuild-kit/esm-loader": "^2.5.5", "esbuild": "^0.25.4", "tsx": "^4.21.0" }, "bin": { "drizzle-kit": "bin.cjs" } }, "sha512-7OZcmQUrdGI+DUNNsKBn1aW8qSoKuTH7d0mYgSP8bAzdFzKoovxEFnoGQp2dVs82EOJeYycqRtciopszwUf8bw=="],
 
