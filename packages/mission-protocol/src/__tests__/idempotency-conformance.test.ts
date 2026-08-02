@@ -1,8 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-	defaultIdempotencyKey,
-	isValidIdempotencyKey,
-} from "../idempotency.js";
+import { defaultIdempotencyKey, isValidIdempotencyKey } from "../index.js";
 
 describe("Idempotency conformance", () => {
 	it("generates a valid idempotency key", () => {

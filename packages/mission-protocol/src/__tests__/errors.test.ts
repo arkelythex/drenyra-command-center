@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MissionError, MissionErrorCode, isMissionError } from "../errors.js";
+import { isMissionError, MissionError, MissionErrorCode } from "../index.js";
 
 describe("MissionError", () => {
 	it("creates error with default status code", () => {
