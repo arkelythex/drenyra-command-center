@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@drenyra/domain": "workspace:*",
-    "drenyra-ai": "https://github.com/arkelythex/drenyra-ai/releases/download/v0.1.0/drenyra-ai-0.1.0.tgz"
+    "drenyra-ai": "https://github.com/arkelythex/drenyra-ai/releases/download/v0.2.0/drenyra-ai-0.2.0.tgz"
   },
   "devDependencies": {
     "typescript": "^7.0.2",
