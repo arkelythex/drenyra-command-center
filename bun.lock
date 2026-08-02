@@ -252,6 +252,7 @@
       "version": "0.1.0",
       "dependencies": {
         "@drenyra/domain": "workspace:*",
+        "drenyra-ai": "https://github.com/arkelythex/drenyra-ai/releases/download/v0.0.1-prealpha.1/drenyra-ai-0.0.1-prealpha.1.tgz",
       },
       "devDependencies": {
         "typescript": "^7.0.2",
