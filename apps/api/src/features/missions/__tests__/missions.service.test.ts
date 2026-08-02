@@ -383,4 +383,110 @@ describe("MissionsService", () => {
 			).rejects.toSatisfy(isMissionError);
 		});
 	});
+
+	describe("mission memory recorder hook", () => {
+		it("records completion when reconciled to COMPLETED", async () => {
+			const recorder = {
+				recordCompletion: vi.fn().mockResolvedValue(undefined),
+			};
+			const hooked = new MissionsService(
+				mockDb.db as any,
+				undefined,
+				undefined,
+				recorder as any,
+			);
+
+			sel(m({ status: "UNKNOWN", version: 2 }));
+			upd(m({ status: "COMPLETED", version: 3 }));
+
+			const result = await hooked.reconcileMission(
+				missionId,
+				companyId,
+				actorId,
+				{
+					resolution: "COMPLETED",
+					reason: "Evidence reviewed",
+					expectedMissionVersion: 2,
+				},
+			);
+
+			expect(result.status).toBe("COMPLETED");
+			expect(recorder.recordCompletion).toHaveBeenCalledTimes(1);
+			const input = recorder.recordCompletion.mock.calls[0][0];
+			expect(input.missionId).toBe(missionId);
+			expect(input.companyId).toBe(companyId);
+			expect(input.intent).toBe("monthly-close");
+			expect(input.fiscalPeriod).toBe("2026-07");
+			expect(input.actorId).toBe(actorId);
+		});
+
+		it("does NOT record for non-COMPLETED resolutions", async () => {
+			const recorder = {
+				recordCompletion: vi.fn().mockResolvedValue(undefined),
+			};
+			const hooked = new MissionsService(
+				mockDb.db as any,
+				undefined,
+				undefined,
+				recorder as any,
+			);
+
+			sel(m({ status: "UNKNOWN", version: 2 }));
+			upd(m({ status: "RUNNING", version: 3 }));
+
+			await hooked.reconcileMission(missionId, companyId, actorId, {
+				resolution: "RUNNING",
+				reason: "Recovered",
+				expectedMissionVersion: 2,
+			});
+
+			expect(recorder.recordCompletion).not.toHaveBeenCalled();
+		});
+
+		it("recorder failure never breaks the mission flow (best-effort)", async () => {
+			const recorder = {
+				recordCompletion: vi
+					.fn()
+					.mockRejectedValue(new Error("ENGINE_UNREACHABLE")),
+			};
+			const hooked = new MissionsService(
+				mockDb.db as any,
+				undefined,
+				undefined,
+				recorder as any,
+			);
+			const warn = vi
+				.spyOn(console, "warn")
+				.mockImplementation(() => undefined);
+
+			sel(m({ status: "UNKNOWN", version: 2 }));
+			upd(m({ status: "COMPLETED", version: 3 }));
+
+			const result = await hooked.reconcileMission(
+				missionId,
+				companyId,
+				actorId,
+				{
+					resolution: "COMPLETED",
+					reason: "Evidence reviewed",
+					expectedMissionVersion: 2,
+				},
+			);
+
+			expect(result.status).toBe("COMPLETED"); // flow unaffected
+			expect(warn).toHaveBeenCalled(); // failure surfaced as a warning
+			warn.mockRestore();
+		});
+
+		it("does nothing when no recorder is injected", async () => {
+			sel(m({ status: "UNKNOWN", version: 2 }));
+			upd(m({ status: "COMPLETED", version: 3 }));
+			const result = await svc.reconcileMission(missionId, companyId, actorId, {
+				resolution: "COMPLETED",
+				reason: "Evidence reviewed",
+				expectedMissionVersion: 2,
+			});
+			expect(result.status).toBe("COMPLETED");
+		});
+	});
 });

@@ -1,18 +1,24 @@
 import { Elysia, t } from "elysia";
 import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
+import { createMissionMemoryRecorder } from "./mission-memory.recorder";
 import { MissionsController } from "./missions.controller";
 import { MissionsService } from "./missions.service";
-import { MissionEventStore } from "./sse/mission-event-store";
 import {
+	ApproveMissionSchema,
 	CreateMissionSchema,
 	ExecuteMissionSchema,
-	ApproveMissionSchema,
-	RejectMissionSchema,
 	ReconcileMissionSchema,
+	RejectMissionSchema,
 } from "./schema/mission.schema";
+import { MissionEventStore } from "./sse/mission-event-store";
 
 export const createMissionsRoutes = (db: any) => {
-	const service = new MissionsService(db);
+	const service = new MissionsService(
+		db,
+		undefined,
+		undefined,
+		createMissionMemoryRecorder(),
+	);
 	const eventStore = new MissionEventStore(db);
 	const ctrl = new MissionsController(service, eventStore);
 
