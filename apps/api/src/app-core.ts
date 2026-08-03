@@ -21,7 +21,6 @@ import { automationStudioRoutes } from "./features/automation-studio";
 import { automationsRoutes } from "./features/automations";
 import { bankingRoutes } from "./features/banking";
 import { bankingProvidersRoutes } from "./features/banking-providers/api/routes";
-import { reportsModule } from "./features/reports";
 import { billRoutes, invoiceRoutes } from "./features/billing";
 import { cashflowRoutes } from "./features/cashflow/api/routes";
 import { clientCommsModule } from "./features/client-comms";
@@ -34,13 +33,14 @@ import { doctorModeModule } from "./features/doctor-mode";
 import { drenyraModule } from "./features/drenyra/drenyra.routes";
 import { evidenceV2Routes } from "./features/evidence-v2";
 import { expedientesModule } from "./features/expedientes";
+import { feosModule } from "./features/feos";
 import { firmRoutes } from "./features/firm";
 import {
 	fiscalCommandCenterModule,
 	fiscalTruthModule,
 } from "./features/fiscal";
-import { feosModule } from "./features/feos";
 import { fiscalAgentRoutes } from "./features/fiscal-agent/routes";
+import { fiscalMemoryRoutes } from "./features/fiscal-memory";
 import { frontendTelemetryModule } from "./features/frontend-telemetry";
 import { healthModule } from "./features/health";
 import { journalEntryRoutes } from "./features/journal-entries";
@@ -51,12 +51,13 @@ import {
 	validateLedgerMvpStartupPolicy,
 } from "./features/ledger-mvp/ledger-mvp-rollout.service";
 import { llmGatewayModule } from "./features/llm-gateway/module";
-import { monthlyCloseModule } from "./features/monthly-close";
 import { missionsModule } from "./features/missions";
+import { monthlyCloseModule } from "./features/monthly-close";
 import { platformMcpModule } from "./features/platform";
 import { pleModule } from "./features/ple";
 import { pseComplianceRoutes } from "./features/pse-compliance";
 import { ragEnterpriseRoutes } from "./features/rag-enterprise";
+import { reportsModule } from "./features/reports";
 import { sireComparisonModule } from "./features/sire-comparison";
 import { skillsRoutes } from "./features/skills";
 import { sunatApiModule } from "./features/sunat";
@@ -396,6 +397,7 @@ const baseApp = new Elysia()
 	.use(evidenceV2Routes)
 	.use(threadRoutes)
 	.use(fiscalAgentRoutes)
+	.use(fiscalMemoryRoutes)
 	.use(feosModule);
 
 /** Public contract for Eden Treaty clients — use `baseApp` so OTEL/listen do not narrow inference. */
