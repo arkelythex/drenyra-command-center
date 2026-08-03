@@ -1,3 +1,12 @@
+---
+name: drenyra-chained-pr
+description: "Trigger: chained-pr, chained pr, stacked prs, split pr, large pr, oversized. Split oversized changes into chained PRs that protect review focus. Run when review workload forecast recommen..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Chained PR Skill
 
 > **Trigger**: chained-pr, chained pr, stacked prs, split pr, large pr, oversized

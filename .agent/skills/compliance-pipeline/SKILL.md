@@ -1,3 +1,12 @@
+---
+name: drenyra-compliance-pipeline
+description: "Trigger: pipeline, compliance, fiscal-pipeline, orchestrator, compliance-pipeline. Guide AI agents working with the Drenyra compliance pipeline — the FiscalSDD system that runs fiscal complianc..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Compliance Pipeline Skill
 
 > **Trigger**: pipeline, compliance, fiscal-pipeline, orchestrator, compliance-pipeline

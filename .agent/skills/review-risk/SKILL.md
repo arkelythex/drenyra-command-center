@@ -1,3 +1,12 @@
+---
+name: drenyra-review-risk
+description: "Trigger: review-risk, risk-review, security-review, security audit, dependency review. Security, permissions, data exposure/loss, architecture, and dependency review lens for Drenyra code changes. ..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Review Lens: Risk
 
 > **Trigger**: review-risk, risk-review, security-review, security audit, dependency review

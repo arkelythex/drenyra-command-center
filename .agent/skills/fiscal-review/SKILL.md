@@ -1,3 +1,12 @@
+---
+name: drenyra-fiscal-review
+description: "Trigger: review, audit, fiscal, compliance, sunat, tax, code review. Guide AI agents performing fiscal-focused code review on Drenyra changes. This is Drenyra's `review-reliabilit..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Fiscal Review Lens Skill
 
 > **Trigger**: review, audit, fiscal, compliance, sunat, tax, code review

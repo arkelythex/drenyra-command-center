@@ -1,3 +1,12 @@
+---
+name: drenyra-auth-review
+description: "Trigger: auth, security, permissions, session, authentication, authorization. Guide AI agents performing security-focused code review on Drenyra changes. This is Drenyra's `review-risk` le..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Auth Review Lens Skill
 
 > **Trigger**: auth, security, permissions, session, authentication, authorization
