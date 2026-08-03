@@ -199,16 +199,16 @@ services:
       - drenyra-network
 
   # 7. Drenyra Engram (phase gate evidence sidecar — Go)
+  # Image published from arkelythex/drenyra-engram (workflow .github/workflows/docker.yml).
   drenyra-engram:
-    build:
-      context: ./packages/engram
-      dockerfile: Dockerfile
+    image: ghcr.io/arkelythex/drenyra-engram:0.2.1
     container_name: drenyra-engram
     ports:
       - '8733:8733'
     environment:
-      - PORT=8733
-      - DB_PATH=/data/engram.db
+      # The engine reads its DB path via DRENYRA_ENGRAM_DB (defaults to
+      # ./engram.db); the container image defaults it to /data/engram.db.
+      - DRENYRA_ENGRAM_DB=/data/engram.db
     volumes:
       - engram_data:/data
     networks:
@@ -221,7 +221,7 @@ services:
           '--quiet',
           '--tries=1',
           '--spider',
-          'http://localhost:8733/health',
+          'http://localhost:8733/v1/doctor',
         ]
       interval: 5s
       timeout: 3s
