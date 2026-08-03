@@ -1,7 +1,17 @@
 import { MemoryContextProvider } from "@drenyra/ai/memory";
 import { PostgresSessionStore } from "@drenyra/ai/session";
+import {
+	EngramClient,
+	type EngramObservation,
+	engramConfig,
+	isEngramEnabled,
+} from "@drenyra/memory";
 import { db } from "@drenyra/persistence/client";
 import { and, asc, desc, eq, sql } from "@drenyra/persistence/query";
+import {
+	resolveCompanyRuc,
+	tryResolveOrganizationIdFromCompany,
+} from "@drenyra/persistence/repositories/support/organization-resolver";
 import {
 	agentRunEvents,
 	agentRunStates,
@@ -12,6 +22,34 @@ import { sanitizeAiObservationPayload } from "../api/ai-observability-sanitizer"
 
 type AgentRunState = typeof agentRunStates.$inferSelect;
 type AgentRunEvent = typeof agentRunEvents.$inferSelect;
+
+// --- Engram memory reads (non-authoritative, graceful fallback) ---
+
+/**
+ * Shared engram client. Construction is inert (no network); the
+ * `isEngramEnabled()` gate prevents any call when the sidecar is off.
+ */
+const engramClient = new EngramClient(engramConfig());
+
+/**
+ * Load the company-scoped engram context, resolving companyId → ruc (and the
+ * organization tenant dimension when mapped).
+ */
+async function loadEngramContext(
+	companyId: string,
+): Promise<EngramObservation[]> {
+	const ruc = await resolveCompanyRuc(companyId);
+	const organizationId = await tryResolveOrganizationIdFromCompany(companyId);
+	return engramClient.context(
+		organizationId === null
+			? { ruc }
+			: { ruc, organizationId: String(organizationId) },
+	);
+}
+
+function errorMessage(error: unknown): string {
+	return error instanceof Error ? error.message : String(error);
+}
 
 export interface RunSummary {
 	total: number;
@@ -150,6 +188,28 @@ export class AiObservabilityService {
 		recentRuns: number;
 		companyId: string;
 	}> {
+		if (isEngramEnabled()) {
+			try {
+				const observations = await loadEngramContext(companyId);
+				const summary = observations
+					.map(
+						(observation) =>
+							observation.content.learned || observation.content.what,
+					)
+					.filter((part) => part.trim().length > 0)
+					.join("\n\n");
+				return {
+					summary: summary.length > 0 ? summary : null,
+					recentRuns: observations.length,
+					companyId,
+				};
+			} catch (error) {
+				console.warn(
+					`[engram] getCompanyMemory fell back to Postgres for company ${companyId}: ${errorMessage(error)}`,
+				);
+			}
+		}
+
 		const sessionStore = new PostgresSessionStore(db);
 		const provider = new MemoryContextProvider(sessionStore);
 		const context = await provider.getContext(companyId);
@@ -182,6 +242,27 @@ export class AiObservabilityService {
 			completedAt: string;
 		}>
 	> {
+		if (isEngramEnabled()) {
+			try {
+				const observations = await loadEngramContext(companyId);
+				return observations
+					.map((observation) => ({
+						runId: observation.provenance.session || observation.identity.id,
+						memorySummary:
+							observation.content.learned || observation.content.what || "",
+						workflowState: observation.type,
+						status: "completed",
+						startedAt: observation.provenance.timestamp,
+						completedAt: observation.provenance.timestamp,
+					}))
+					.sort((left, right) => left.startedAt.localeCompare(right.startedAt));
+			} catch (error) {
+				console.warn(
+					`[engram] getMemoryHistory fell back to Postgres for company ${companyId}: ${errorMessage(error)}`,
+				);
+			}
+		}
+
 		const rows = await db
 			.select()
 			.from(agentRunStates)

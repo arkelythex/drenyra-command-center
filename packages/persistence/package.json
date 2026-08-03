@@ -24,6 +24,7 @@
     "./repositories/postgres-platform-mcp-audit.repository": "./src/repositories/postgres-platform-mcp-audit.repository.ts",
     "./repositories/postgres-evidence-graph.repository": "./src/repositories/postgres-evidence-graph.repository.ts",
     "./repositories/postgres-fiscal-truth.repository": "./src/repositories/postgres-fiscal-truth.repository.ts",
+    "./repositories/support/organization-resolver": "./src/repositories/support/organization-resolver.ts",
     "./repositories/postgres-replay.repository": "./src/repositories/postgres-replay.repository.ts",
     "./repositories/sire-submission.repository": "./src/repositories/sire-submission.repository.ts",
     "./repositories/document.repository": "./src/repositories/document.repository.ts",
