@@ -20,6 +20,7 @@ export const ErrorCodes = {
 	BAD_REQUEST: "BAD_REQUEST",
 	UNPROCESSABLE: "UNPROCESSABLE",
 	TIMEOUT: "TIMEOUT",
+	FISCAL_MEMORY_DISABLED: "FISCAL_MEMORY_DISABLED",
 } as const;
 
 /** Literal union type derived from ErrorCodes. */
