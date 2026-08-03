@@ -26,6 +26,7 @@ import {
 	TransactionalApplyUseCase,
 } from "@drenyra/application/use-cases/monthly-close";
 import type { MissionEventStore } from "../sse/mission-event-store";
+import { createFiscalMemoryRecorder } from "./fiscal-memory.recorder";
 import { registerIntentHandler } from "./intent-handlers.registry";
 import { MissionEventStoreEmitter } from "./monthly-close-emitter";
 import { MonthlyCloseIntentHandler } from "./monthly-close-intent.handler";
@@ -62,7 +63,11 @@ export function wireMonthlyCloseHandler(
 
 	registerIntentHandler(
 		"monthly-close",
-		new MonthlyCloseIntentHandler(orchestrator, db),
+		new MonthlyCloseIntentHandler(
+			orchestrator,
+			db,
+			createFiscalMemoryRecorder(),
+		),
 	);
 	return true;
 }
