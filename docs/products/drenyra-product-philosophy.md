@@ -1,8 +1,12 @@
 # Drenyra Product Philosophy
 
-**Last updated**: 2026-07-24
+**Last updated**: 2026-08-03
 **Content type**: Conceptual — Definitive Thesis
 **Supersedes**: v1 (2026-07-08)
+
+> **Private product policy**: Drenyra is a **private, commercial product** (see
+> [Private Product Policy](./private-product-policy.md)). Repos, releases and
+> container images stay private; distribution is contractual, never public.
 
 ---
 
