@@ -76,7 +76,11 @@ describe("EngramMissionMemoryRecorder", () => {
 		vi.mocked(tryResolveOrganizationIdFromCompany).mockResolvedValue(42);
 	});
 
-	it("records a mission_result observation with ruc + normalized period scope", async () => {
+	it("records a PERIOD-LESS mission_result (observability visibility)", async () => {
+		// The observation must be company-level period-less memory: the
+		// observability surface reads GET /v1/context WITHOUT a period, and the
+		// engine's exact-scope rule means a perioded observation would be
+		// invisible to it. The fiscal period travels in content (searchable).
 		await recorder.recordCompletion(INPUT);
 
 		expect(client.save).toHaveBeenCalledTimes(1);
@@ -88,10 +92,10 @@ describe("EngramMissionMemoryRecorder", () => {
 			organizationId: "42",
 			companyId: RUC,
 			ruc: RUC,
-			period: "202607",
 		});
 		expect(saved.content.what).toContain("monthly-close");
 		expect(saved.content.why).toBe("Reconciled by evidence");
+		expect(saved.content.learned).toContain("202607");
 		expect(saved.provenance.actor).toBe("alice");
 		expect(saved.provenance.session).toBe(missionId);
 		expect(saved.provenance.source).toBe("api");

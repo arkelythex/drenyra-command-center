@@ -221,6 +221,12 @@ export interface EngramSearchParams extends EngramReadParams {
 	q: string;
 }
 
+/** Parameters for GET /v1/chain (full revision history of a topic key). */
+export interface EngramChainParams extends EngramReadParams {
+	/** Topic key of the chain (required by the engine). */
+	topicKey: string;
+}
+
 /** Options for {@link EngramClient} (a subset of {@link EngramConfig}). */
 export interface EngramClientOptions {
 	baseUrl: string;
@@ -289,6 +295,15 @@ export class EngramClient {
 	 */
 	async context(params: EngramReadParams): Promise<EngramObservation[]> {
 		return this.getJson("/v1/context", params, parseObservations);
+	}
+
+	/**
+	 * Full revision history of a (topicKey, exact scope) chain, ordered by
+	 * revision ascending — every revision, not just the current one. Scoped
+	 * like every read (ruc required for company scopes).
+	 */
+	async chain(params: EngramChainParams): Promise<EngramObservation[]> {
+		return this.getJson("/v1/chain", params, parseObservations);
 	}
 
 	// ────────────────────────────────────────────

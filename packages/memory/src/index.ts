@@ -40,6 +40,12 @@ export {
 	type EngramWriteOutcome,
 } from "./engram-client.js";
 export {
+	EngramFiscalMemoryRepository,
+	engramPeriodToFiscal,
+	fiscalPeriodToEngram,
+	observationToFiscalMemory,
+} from "./engram-fiscal-memory.repository.js";
+export {
 	EngramSessionStore,
 	type EngramSessionStoreOptions,
 } from "./engram-session-store.js";
