@@ -1,25 +1,26 @@
-import { and, eq } from "drizzle-orm";
-import { accountingMissions } from "@drenyra/persistence/schema";
+import type {
+	ApproveCommand,
+	MissionSnapshot,
+	ReconcileCommand,
+	RejectCommand,
+	RunIntentCommand,
+} from "@drenyra/mission-domain";
 import {
 	AccountingMissionStatus,
+	generateReceiptHash,
+	guardTerminal,
 	MissionError,
 	MissionErrorCode,
-	validateTransition,
-	guardTerminal,
-	reconcileTransition,
-	generateReceiptHash,
 	type ReceiptContent,
+	reconcileTransition,
+	validateTransition,
 } from "@drenyra/mission-domain";
-import { optimisticUpdate } from "./middleware/concurrency.middleware";
-import type {
-	RunIntentCommand,
-	ApproveCommand,
-	RejectCommand,
-	ReconcileCommand,
-	MissionSnapshot,
-} from "@drenyra/mission-domain";
+import { accountingMissions } from "@drenyra/persistence/schema";
+import { and, eq } from "drizzle-orm";
 import { getIntentHandler } from "./intent-handlers/intent-handlers.registry";
 import type { MissionIntentHandler } from "./intent-handlers/mission-intent-handler.interface";
+import { optimisticUpdate } from "./middleware/concurrency.middleware";
+import type { MissionMemoryRecorder } from "./mission-memory.recorder";
 import { ReceiptSigningService } from "./receipt-signing.service";
 
 const VALID_INTENTS = new Set([
@@ -64,6 +65,7 @@ export class MissionsService {
 		private readonly db: any,
 		private readonly intentHandlers?: Map<string, MissionIntentHandler>,
 		private readonly receiptSigner?: ReceiptSigningService,
+		private readonly missionMemoryRecorder?: MissionMemoryRecorder,
 	) {
 		if (!this.receiptSigner) {
 			try {
@@ -400,7 +402,50 @@ export class MissionsService {
 			},
 		);
 
+		if (newStatus === AccountingMissionStatus.COMPLETED) {
+			await this.recordMissionCompletion(
+				missionId,
+				companyId,
+				mission,
+				cmd.reason,
+				_actorId,
+			);
+		}
+
 		return { ...mission, status: newStatus, version: newVersion };
+	}
+
+	/**
+	 * Best-effort engram write hook: record the completed mission as an
+	 * observation in institutional memory. Recording memory must NEVER break
+	 * the mission flow — failures are logged and swallowed here.
+	 */
+	private async recordMissionCompletion(
+		missionId: string,
+		companyId: string,
+		mission: MissionSnapshot,
+		reason: string,
+		actorId: string,
+	): Promise<void> {
+		if (!this.missionMemoryRecorder) {
+			return;
+		}
+		try {
+			await this.missionMemoryRecorder.recordCompletion({
+				missionId,
+				companyId,
+				intent: mission.intent,
+				fiscalPeriod: mission.fiscalPeriod,
+				reason,
+				actorId: actorId || "system",
+			});
+		} catch (error) {
+			console.warn(
+				`[engram] recordMissionCompletion skipped for ${missionId}: ${
+					error instanceof Error ? error.message : String(error)
+				}`,
+			);
+		}
 	}
 
 	private async getMissionOrThrow(
