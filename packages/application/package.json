@@ -52,7 +52,9 @@
     "./features/products": "./src/features/products/index.ts",
     "./features/reports": "./src/features/reports/index.ts",
     "./features/roi": "./src/features/roi/index.ts",
-    "./features/sire": "./src/features/sire/index.ts"
+    "./features/sire": "./src/features/sire/index.ts",
+    "./use-cases/monthly-close": "./src/use-cases/monthly-close/index.ts",
+    "./use-cases/fiscal-agent/fiscal-nightly-run.use-case": "./src/use-cases/fiscal-agent/fiscal-nightly-run.use-case.ts"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.typecheck.json",
