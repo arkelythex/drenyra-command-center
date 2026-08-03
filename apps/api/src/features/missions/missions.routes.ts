@@ -1,5 +1,6 @@
 import { Elysia, t } from "elysia";
 import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
+import { wireMonthlyCloseHandler } from "./intent-handlers/wire-monthly-close";
 import { createMissionMemoryRecorder } from "./mission-memory.recorder";
 import { MissionsController } from "./missions.controller";
 import { MissionsService } from "./missions.service";
@@ -20,6 +21,9 @@ export const createMissionsRoutes = (db: any) => {
 		createMissionMemoryRecorder(),
 	);
 	const eventStore = new MissionEventStore(db);
+	// Wire the REAL monthly-close pipeline into the intent registry. Fail
+	// closed: stays dormant unless MONTHLY_CLOSE_PIPELINE_ENABLED=true.
+	wireMonthlyCloseHandler(db, eventStore);
 	const ctrl = new MissionsController(service, eventStore);
 
 	return new Elysia({ prefix: "/api/v1/missions" })
