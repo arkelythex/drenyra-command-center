@@ -274,6 +274,59 @@ describe("query methods", () => {
 		const miss = await repo.findByEvidenceRef(SCOPE, "evidence/other");
 		expect(miss).toHaveLength(0);
 	});
+
+	it("mixed search results never crash the query (non-fiscal rows skipped)", async () => {
+		// Regression (live integration): a token-overlap search in a shared
+		// scope returns mission/session observations too; findBySeverity /
+		// findByEvidenceRef / findRelated must skip them, not throw
+		// FISCAL_MEMORY_CORRUPT.
+		const nonFiscal = {
+			identity: { id: "obs-x", topicKey: "mission/m1" },
+			title: "Mission m1 completed",
+			type: "mission_result",
+			scope: {
+				kind: "company",
+				organizationId: TENANT,
+				companyId: RUC,
+				ruc: RUC,
+			},
+			content: { what: "x", why: "y", where: "z", learned: "w" },
+			provenance: {
+				actor: "a",
+				timestamp: "2026-01-01T00:00:00Z",
+				source: "api",
+			},
+			revision: 1,
+		} as EngramObservation;
+		vi.mocked(client.search).mockResolvedValue([
+			{ observation: nonFiscal, score: 2, stale: false },
+			{ observation: observationOf(makeMemory()), score: 1, stale: false },
+		]);
+
+		const bySeverity = await repo.findBySeverity(SCOPE, "high");
+		expect(bySeverity).toHaveLength(1);
+		const byEvidence = await repo.findByEvidenceRef(
+			SCOPE,
+			"evidence/invoice-1",
+		);
+		expect(byEvidence).toHaveLength(1);
+		const related = await repo.findRelated(SCOPE, "mem-000");
+		expect(related).toHaveLength(1);
+	});
+
+	it("a memory with no evidence refs saves with a non-empty where field", async () => {
+		// Regression (live integration): the engine's AssertValidContent
+		// requires all four content fields non-empty; a valid domain memory
+		// with empty evidenceRefs must not produce where = "".
+		// client_explanation does not require evidenceRefs in the domain.
+		const memory = makeMemory({
+			category: "client_explanation",
+			evidenceRefs: [],
+		});
+		await repo.save(memory);
+		const saved = client.save.mock.calls[0][0];
+		expect(saved.content.where.length).toBeGreaterThan(0);
+	});
 });
 
 describe("revisions", () => {
