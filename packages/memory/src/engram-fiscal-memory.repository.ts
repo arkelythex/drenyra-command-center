@@ -259,7 +259,13 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 			content: {
 				what: props.title,
 				why: props.summary,
-				where: props.evidenceRefs.join("\n"),
+				// The engine requires all four content fields non-empty; a valid
+				// domain memory with no evidence refs must not produce an empty
+				// where field.
+				where:
+					props.evidenceRefs.length > 0
+						? props.evidenceRefs.join("\n")
+						: "no evidence refs recorded",
 				learned: learnedFromProps(props),
 			},
 			provenance: {
@@ -340,10 +346,9 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 			ruc: scope.ruc,
 			organizationId: scope.tenantId,
 		});
-		const memories = results.map((result) =>
-			observationToFiscalMemory(result.observation),
-		);
-		return memories.filter((memory) => memory.severity === severity);
+		return this.memoriesFrom(
+			results.map((result) => result.observation),
+		).filter((memory) => memory.severity === severity);
 	}
 
 	async findByEvidenceRef(
@@ -355,12 +360,9 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 			ruc: scope.ruc,
 			organizationId: scope.tenantId,
 		});
-		const memories = results.map((result) =>
-			observationToFiscalMemory(result.observation),
-		);
-		return memories.filter((memory) =>
-			memory.evidenceRefs.includes(evidenceRef),
-		);
+		return this.memoriesFrom(
+			results.map((result) => result.observation),
+		).filter((memory) => memory.evidenceRefs.includes(evidenceRef));
 	}
 
 	async findRelated(
@@ -372,12 +374,9 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 			ruc: scope.ruc,
 			organizationId: scope.tenantId,
 		});
-		const memories = results.map((result) =>
-			observationToFiscalMemory(result.observation),
-		);
-		return memories.filter((memory) =>
-			(memory.relatedMemoryIds ?? []).includes(memoryId),
-		);
+		return this.memoriesFrom(
+			results.map((result) => result.observation),
+		).filter((memory) => (memory.relatedMemoryIds ?? []).includes(memoryId));
 	}
 
 	async saveRevision(revision: FiscalMemoryRevision): Promise<void> {
@@ -400,7 +399,10 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 			content: {
 				what: props.title,
 				why: props.summary,
-				where: props.evidenceRefs.join("\n"),
+				where:
+					props.evidenceRefs.length > 0
+						? props.evidenceRefs.join("\n")
+						: "no evidence refs recorded",
 				learned: JSON.stringify(meta),
 			},
 			provenance: {
@@ -430,22 +432,28 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 		);
 	}
 
+	// memoriesFrom converts search results to fiscal memories, SKIPPING
+	// non-fiscal observations (mission results, session records, etc.) that a
+	// token-overlap search may return in the same scope — a mixed result set
+	// must never crash a query (found by the live integration test).
+	private memoriesFrom(observations: EngramObservation[]): FiscalMemory[] {
+		const memories: FiscalMemory[] = [];
+		for (const observation of observations) {
+			try {
+				memories.push(observationToFiscalMemory(observation));
+			} catch {
+				// Not a fiscal memory (or a corrupt row) — skip, never throw.
+			}
+		}
+		return memories;
+	}
+
 	private filterByCategory(
 		observations: EngramObservation[],
 		category: FiscalMemoryCategory,
 	): FiscalMemory[] {
-		const memories: FiscalMemory[] = [];
-		for (const observation of observations) {
-			try {
-				const memory = observationToFiscalMemory(observation);
-				if (memory.category === category) {
-					memories.push(memory);
-				}
-			} catch {
-				// Non-fiscal observations (or corrupt rows) are skipped by the
-				// exact category filter.
-			}
-		}
-		return memories;
+		return this.memoriesFrom(observations).filter(
+			(memory) => memory.category === category,
+		);
 	}
 }
