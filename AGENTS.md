@@ -21,6 +21,8 @@ DRENYRA builds Drenyra, the verifiable financial operating system for businesses
 
 ## Repo shape
 
+**Private commercial product:** Drenyra and its ecosystem repos (`drenyra-ai`, `drenyra-pi`, `drenyra-engram`) are **private**. Do not make them public, do not publish artifacts (images, packages, docs) to public registries, and do not add public collaborators. Container images publish to private GHCR (`ghcr.io/arkelythex/...`) and require authenticated pulls (`read:packages` PAT or a workflow `GITHUB_TOKEN` with `packages: read`); never switch package visibility to public.
+
 **Scope policy (org-level):** this repository is the **Accounting Command Center**. No new non-accounting product or vertical may be added to this repo. Foreign or experimental folders must move to their own repo, be archived, or be relocated to a clearly-labelled experimental space — never grow inside `Drenyra`. Extract, don't accumulate: reusable runtime, harness, and memory concerns belong in `arkelythex/drenyra-ai`, `arkelythex/drenyra-pi`, and `arkelythex/drenyra-engram` respectively.
 
 - Fastest navigation source: start at root `CODEX-MAP.md`, then use `.codebase/index.yml` for machine-readable app/package metadata.
