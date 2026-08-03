@@ -153,6 +153,11 @@ services:
       - DATA_ENGINE_URL=http://data-engine:8000
       - DRENYRA_ENGRAM_URL=http://drenyra-engram:8733
       - DRENYRA_ENGRAM_ENABLED=true
+      # Institutional fiscal-memory loop: pipeline real (Decidir) + engram
+      # (Registrar/Consultar). Both on → approved monthly closes are recorded
+      # and served at GET /api/v1/fiscal-memory. Fail closed: the pipeline
+      # stays dormant unless this flag is explicitly true.
+      - MONTHLY_CLOSE_PIPELINE_ENABLED=true
       - BETTER_AUTH_URL=http://localhost:${API_PORT:-3000}
       - NATS_URL=nats://nats:4222
       - DRENYRA_BACKUP_DIR=/app/backups/postgres
