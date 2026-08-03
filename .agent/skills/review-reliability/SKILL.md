@@ -1,3 +1,12 @@
+---
+name: drenyra-review-reliability
+description: "Trigger: review-reliability, reliability-review, behavior, tests, determinism, regression. Behavior, state, tests, determinism, and regression review lens. Run on any change that affects application be..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Review Lens: Reliability
 
 > **Trigger**: review-reliability, reliability-review, behavior, tests, determinism, regression

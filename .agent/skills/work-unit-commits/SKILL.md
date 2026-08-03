@@ -1,3 +1,12 @@
+---
+name: drenyra-work-unit-commits
+description: "Trigger: commit, work-unit, commit-splitting, reviewable, conventional-commit. Plan commits as reviewable work units that isolate meaningful changes, keep tests passing, and respect fiscal ..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Work-Unit Commits Skill
 
 > **Trigger**: commit, work-unit, commit-splitting, reviewable, conventional-commit

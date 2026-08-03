@@ -1,3 +1,12 @@
+---
+name: drenyra-ruc-scope
+description: "Trigger: ruc, tenant, scope, organization, company, isolation, multi-tenant. Guide AI agents to maintain proper RUC/tenant isolation across all Drenyra operations. This is a non-negotiabl..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # RUC Scope Skill
 
 > **Trigger**: ruc, tenant, scope, organization, company, isolation, multi-tenant

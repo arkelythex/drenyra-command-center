@@ -1,3 +1,12 @@
+---
+name: drenyra-review-readability
+description: "Trigger: review-readability, readability-review, code-style, naming, structure, maintainability. Naming, structure, maintainability, and code style review lens. Run as advisory on every pre-commit and pre-pu..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Review Lens: Readability
 
 > **Trigger**: review-readability, readability-review, code-style, naming, structure, maintainability

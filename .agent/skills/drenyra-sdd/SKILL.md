@@ -1,3 +1,12 @@
+---
+name: drenyra-drenyra-sdd
+description: "Trigger: sdd, solicitud, proposal, spec, analysis, design, tasks, migration, audit, SDD workflow. Guide AI agents through the Drenyra SDD pipeline — a fiscal-domain adaptation of the Gentlemen SDD lifecycle."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Drenyra SDD Skill
 
 > **Trigger**: sdd, solicitud, proposal, spec, analysis, design, tasks, migration, audit, SDD workflow

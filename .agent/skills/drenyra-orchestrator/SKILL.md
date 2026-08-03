@@ -1,3 +1,12 @@
+---
+name: drenyra-drenyra-orchestrator
+description: "Trigger: orchestrator, delegation, work-routing, review-lens, harness, drenyra-harness. Guide AI agents working with the Drenyra orchestrator — the delegation router, skills resolver, memory contrac..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Drenyra Orchestrator Skill
 
 > **Trigger**: orchestrator, delegation, work-routing, review-lens, harness, drenyra-harness

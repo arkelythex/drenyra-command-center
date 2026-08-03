@@ -1,3 +1,12 @@
+---
+name: drenyra-hooks-config
+description: "Trigger: hooks, pre-commit, pre-push, pre-pr, git-hooks, commit-hooks. Configure and understand Drenyra's pre-commit/pre-push/pre-PR hook gates. These hooks ensure review quality be..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Hooks Configuration Skill
 
 > **Trigger**: hooks, pre-commit, pre-push, pre-pr, git-hooks, commit-hooks

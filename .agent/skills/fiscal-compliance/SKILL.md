@@ -1,3 +1,12 @@
+---
+name: drenyra-fiscal-compliance
+description: "Trigger: fiscal, sunat, compliance, sires, igv, detraccion, retencion, SUNAT flows, SIRE rules. Guide AI agents when working with Peruvian fiscal compliance logic in Drenyra. Ensures SUNAT regulations, SIRE..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Fiscal Compliance Skill
 
 > **Trigger**: fiscal, sunat, compliance, sires, igv, detraccion, retencion, SUNAT flows, SIRE rules

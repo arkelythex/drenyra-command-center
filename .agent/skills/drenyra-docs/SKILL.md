@@ -1,3 +1,12 @@
+---
+name: drenyra-drenyra-docs
+description: "Trigger: docs, documentation, diataxis, cognitive-load, markdown, doc, readme. Drenyra documentation standards following the Gentleman Philosophy: cognitive load reduction, warm teaching, p..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Drenyra Documentation Skill
 
 > **Trigger**: docs, documentation, diataxis, cognitive-load, markdown, doc, readme

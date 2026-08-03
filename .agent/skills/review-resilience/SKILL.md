@@ -1,3 +1,12 @@
+---
+name: drenyra-review-resilience
+description: "Trigger: review-resilience, resilience-review, error-handling, retry, timeout, fallback. Shell/process integration, partial failures, recovery, and degraded dependencies review lens. Run before mergi..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Review Lens: Resilience
 
 > **Trigger**: review-resilience, resilience-review, error-handling, retry, timeout, fallback

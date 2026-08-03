@@ -1,3 +1,12 @@
+---
+name: drenyra-judgment-day
+description: "Trigger: judgment-day, judgement day, adversarial review, dual review, juzgar. Run blind dual review on SDD design or apply phases. Two independent review perspectives compare findings, con..."
+license: MIT
+metadata:
+  author: arkelythex
+  version: "1.0"
+---
+
 # Judgment Day: Adversarial Dual Review
 
 > **Trigger**: judgment-day, judgement day, adversarial review, dual review, juzgar
