@@ -1,0 +1,11 @@
+phase: proposal
+change: engram-fiscal-memory-wiring
+created: 2026-08-02
+updated: 2026-08-02
+decision: deferred until the M-series monthly-close pipeline lands on main (Option B); Option A probe optional
+artifacts:
+  - proposal.md (fork: mission approval vs orchestrator vs audit findings)
+  - design.md (wiring shape: factory, injection points, memory shape, tests)
+blocked_on:
+  - M-series monthly-close merge (gates Option B)
+  - user decision on production-authoritative fiscal flow (open question 1)
