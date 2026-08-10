@@ -88,7 +88,7 @@ export default function (pi: ExtensionAPI) {
 	pi.on("before_agent_start", async (event, _ctx) => {
 		if (personaDisabled) return;
 		return {
-			systemPrompt: event.systemPrompt + "\n" + PERSONA,
+			systemPrompt: `${event.systemPrompt}\n${PERSONA}`,
 		};
 	});
 
@@ -387,67 +387,113 @@ export default function (pi: ExtensionAPI) {
 
 	// ─── Guards ────────────────────────────────────────────────
 
-	pi.on("tool_call", (event) => {
-		// Input utility: extract command string from any tool input format
+	interface BlockDecision {
+		block: true;
+		reason: string;
+	}
+
+	// Guard 1: Money types in write operations.
+	//
+	// Refined 2026-08-10 (owner-approved): a money WORD alone is not evidence
+	// of a monetary value — "highest-value", "period values" and the Go
+	// stdlib identifier `PathValue` are legitimate. The trigger requires the
+	// word to be near a money INDICATOR (digit or currency symbol/ISO code)
+	// within 14 characters (either order), so "amount: 1500n", "total
+	// S/ 22417.80" and "igv 18%" still block, while prose and identifiers
+	// pass. The repo convention escape (Money|cents|BigInt|whole|.00|
+	// bignumber) remains a secondary release valve.
+	const MONEY_TRIGGER =
+		/\b(?:number|amount|precio|monto|total|igv|price|value)\b/i;
+	const MONEY_INDICATOR = /(?:[0-9]|S\/|\$|€|£|\b(?:PEN|USD|EUR|soles)\b)/i;
+	// .source carries no delimiters — embed directly (no slicing).
+	const moneyNearby = new RegExp(
+		`(?:${MONEY_TRIGGER.source}.{0,14}${MONEY_INDICATOR.source})` +
+			`|(?:${MONEY_INDICATOR.source}.{0,14}${MONEY_TRIGGER.source})`,
+		"i",
+	);
+	const guardMoneyWrite = (event: {
+		toolName: string;
+		input: unknown;
+	}): BlockDecision | null => {
+		if (event.toolName !== "edit" && event.toolName !== "write") return null;
 		const inputStr =
 			typeof event.input === "string"
 				? event.input
 				: JSON.stringify(event.input);
+		if (!moneyNearby.test(inputStr)) return null;
+		if (/Money|cents|BigInt|whole|\.00|bignumber/i.test(inputStr)) return null;
+		return {
+			block: true,
+			reason:
+				"@drenyra/pi: Monetary values must use BigInt (cents). Floats are blocked. Use `amount: 1500n` for S/15.00.",
+		};
+	};
 
-		const rawInput = event.input as Record<string, unknown>;
-
-		// Guard 1: Money types in write operations
+	// Guard 2: SQL safety in bash.
+	const guardSQLBash = (event: {
+		toolName: string;
+		input: unknown;
+	}): BlockDecision | null => {
+		if (event.toolName !== "bash") return null;
+		const raw = event.input as Record<string, unknown> | string | undefined;
+		const cmd =
+			typeof raw === "string"
+				? raw
+				: (((raw as Record<string, unknown> | undefined)?.command as
+						| string
+						| undefined) ?? "");
 		if (
-			(event.toolName === "edit" || event.toolName === "write") &&
-			/(number|amount|precio|monto|total|igv|price|value)/i.test(inputStr) &&
-			!/Money|cents|BigInt|whole|\.00|bignumber/i.test(inputStr)
+			/WHERE\s+ruc\s*=/i.test(cmd) &&
+			!/WHERE\s+ruc\s*=\s*:currentRuc/i.test(cmd)
 		) {
 			return {
 				block: true,
 				reason:
-					"@drenyra/pi: Monetary values must use BigInt (cents). Floats are blocked. Use `amount: 1500n` for S/15.00.",
+					"@drenyra/pi: RUC-scoped query must use `:currentRuc`. Unsafe RUC filter.",
 			};
 		}
-
-		// Guard 2: SQL safety in bash
-		if (event.toolName === "bash") {
-			const cmd = (rawInput?.command as string) ?? (rawInput as string) ?? "";
-			if (
-				/WHERE\s+ruc\s*=/i.test(cmd) &&
-				!/WHERE\s+ruc\s*=\s*:currentRuc/i.test(cmd)
-			) {
-				return {
-					block: true,
-					reason:
-						"@drenyra/pi: RUC-scoped query must use `:currentRuc`. Unsafe RUC filter.",
-				};
-			}
-			if (cmd.includes("DELETE FROM") && !cmd.includes("WHERE")) {
-				return {
-					block: true,
-					reason:
-						"@drenyra/pi: Unconditional DELETE blocked. WHERE clause required for audit.",
-				};
-			}
-			if (cmd.includes("DROP TABLE") || cmd.includes("TRUNCATE")) {
-				return {
-					block: true,
-					reason:
-						"@drenyra/pi: Destructive DDL blocked. Use migrations instead.",
-				};
-			}
+		if (cmd.includes("DELETE FROM") && !cmd.includes("WHERE")) {
+			return {
+				block: true,
+				reason:
+					"@drenyra/pi: Unconditional DELETE blocked. WHERE clause required for audit.",
+			};
 		}
-
-		// Guard 3: Cross-RUC reads
-		if (event.toolName === "read" || event.toolName === "edit") {
-			const path = (rawInput?.path as string) ?? (rawInput as string) ?? "";
-			if (path.includes("/ruc/") && !path.includes(":ruc")) {
-				return {
-					block: true,
-					reason:
-						"@drenyra/pi: RUC path without context variable. Use `:ruc` placeholder.",
-				};
-			}
+		if (cmd.includes("DROP TABLE") || cmd.includes("TRUNCATE")) {
+			return {
+				block: true,
+				reason: "@drenyra/pi: Destructive DDL blocked. Use migrations instead.",
+			};
 		}
+		return null;
+	};
+
+	// Guard 3: Cross-RUC reads.
+	const guardRucPath = (event: {
+		toolName: string;
+		input: unknown;
+	}): BlockDecision | null => {
+		if (event.toolName !== "read" && event.toolName !== "edit") return null;
+		const raw = event.input as Record<string, unknown> | string | undefined;
+		const path =
+			typeof raw === "string"
+				? raw
+				: (((raw as Record<string, unknown> | undefined)?.path as
+						| string
+						| undefined) ?? "");
+		if (path.includes("/ruc/") && !path.includes(":ruc")) {
+			return {
+				block: true,
+				reason:
+					"@drenyra/pi: RUC path without context variable. Use `:ruc` placeholder.",
+			};
+		}
+		return null;
+	};
+
+	pi.on("tool_call", (event) => {
+		const blocked =
+			guardMoneyWrite(event) ?? guardSQLBash(event) ?? guardRucPath(event);
+		if (blocked) return blocked;
 	});
 }
