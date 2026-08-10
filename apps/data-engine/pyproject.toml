@@ -66,7 +66,7 @@ warn_unused_configs = true
 
 [dependency-groups]
 dev = [
-    "cryptography>=49.0.0",
+    "cryptography>=50.0.0",
     "pytest>=9.0.3",
 ]
 
@@ -97,5 +97,5 @@ testpaths = ["tests"]
 [tool.uv]
 # Resolution window extended so the lockfile can admit pillow 12.3.0 (patched for
 # CVE-2026-54058/54059/54060, 55379/55380, 59197/59199/59200, 59204/59205), which was
-# uploaded on 2026-07-01. Everything else in uv.lock stays pinned as before.
-exclude-newer = "2026-07-02T00:00:00Z"
+# uploaded on 2026-07-01; also admits cryptography 50.0.0 (GHSA-g6cj-pr64-35w5) uploaded 2026-07-31.
+exclude-newer = "2026-08-01T00:00:00Z"
