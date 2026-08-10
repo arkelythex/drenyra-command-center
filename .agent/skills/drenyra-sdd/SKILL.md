@@ -59,13 +59,13 @@ Guide AI agents through the Drenyra SDD pipeline — a fiscal-domain adaptation 
 ### migración (Apply)
 
 - Implement with fiscal evidence logging
-- Run `compliance:sire-gate` before declaring complete
+- Run the SIRE compliance gate before declaring complete (script `compliance:sire-gate` aún no implementado)
 - Record all phase gate verdicts
 
 ### auditoría (Verify)
 
 - Validate against solicitud acceptance criteria
-- Run `compliance:sire-repro` verification
+- Run SIRE reprocessing verification (script `compliance:sire-repro` aún no implementado)
 - Produce verify report with fiscal evidence
 
 ## Artifact Keys

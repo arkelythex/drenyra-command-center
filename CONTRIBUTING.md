@@ -72,7 +72,7 @@ Para cambios que tocan dominio fiscal, SUNAT, DB schema, tenant isolation, o mon
 
 ```bash
 bun run test                          # Unit + integration
-bun run compliance:sire-gate          # SUNAT compliance
+bun audit                       # dependency vulnerability audit
 bun run docs:verify                   # Docs freshness & links
 ```
 

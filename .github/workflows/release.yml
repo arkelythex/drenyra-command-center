@@ -32,10 +32,9 @@ jobs:
       - name: Run quality gates
         run: |
           bun run lint
-          bun run typecheck:build:domain-core
+          bun run typecheck
           bun run --filter @drenyra/domain test
-          bun run quality:max-lines
-          bun run architecture:check-boundaries
+          bun run architecture:check-product-surfaces
 
       - name: Dry run notice
         if: ${{ github.event.inputs.dry_run == 'true' }}

@@ -162,15 +162,8 @@ bun run lint
 bun run lint:all
 bun run test
 bun run docs:verify
-bun run architecture:check-boundaries
-bun run security:audit
-```
-
-Domain/compliance checks when relevant:
-
-```bash
-bun run compliance:sire-gate
-bun run compliance:sire-repro
+bun run architecture:check-product-surfaces
+bun audit
 ```
 
 If a command does not exist or is too broad for the change, inspect `package.json` scripts and choose the closest targeted check. Do not document or run a root command unless it exists in `package.json`.

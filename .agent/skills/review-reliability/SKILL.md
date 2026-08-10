@@ -33,7 +33,7 @@ Behavior, state, tests, determinism, and regression review lens. Run on any chan
 - [ ] Tests use realistic fiscal data (RUCs, periods, amounts)
 - [ ] No flaky tests (no timeouts, no network in unit tests)
 - [ ] Test cleanup restores state (no test pollution)
-- [ ] Compliance tests run `compliance:sire-repro`
+- [ ] Compliance tests run SIRE reprocessing verification (script aún no implementado)
 
 ### Determinism
 

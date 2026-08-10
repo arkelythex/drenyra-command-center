@@ -94,9 +94,7 @@ bun run codebase:index
 bun run codebase:index:check
 bun run typecheck
 bun run docs:verify
-bun run architecture:check-boundaries
-bun run compliance:sire-gate
-bun run compliance:sire-repro
+bun run architecture:check-product-surfaces
 
 # Go CLI
 cd apps/cli && go build ./...

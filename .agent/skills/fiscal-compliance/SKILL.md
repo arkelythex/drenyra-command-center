@@ -48,4 +48,4 @@ All fiscal changes require:
 
 - Unit tests for IGV/detracción/retención calculations
 - Integration tests mocking SUNAT API responses
-- A `compliance:sire-repro` verification step before merge
+- A SIRE reprocessing verification step before merge (script `compliance:sire-repro` aún no implementado)
