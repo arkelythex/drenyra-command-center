@@ -3,8 +3,8 @@
 # Actualizado: 2026-07-23
 # Modo: agentic-first transformation + structural quality (32 SDD plans: 5 DS + 4 backend + 6 structural + 7 P + 8 new)
 
-version: '1.0'
-project: '@drenyra/main'
+version: "1.0"
+project: "@drenyra/main"
 
 # SDD session preflight choices (2026-07-04)
 execution_mode: interactive
@@ -46,7 +46,90 @@ workspace:
     - packages/drenyra-harness
     - packages/platform-core
 
-# Plans
+# ------------------------------------------------------------------
+# Derived SDD context — bootstrapped 2026-08-08 by sdd-init (OpenSpec store)
+# Auto-generated safe derived context. User-maintained sections below
+# (workspace, plans, strategy) are untouched by tooling.
+# ------------------------------------------------------------------
+
+# Test commands (detected from root package.json, turbo.json, Makefile, bunfig.toml)
+test:
+  runner: bun # Bun 1.3.11
+  strict_tdd: true # inherited from strict_tdd above; enforced by OpenSpec conventions
+  commands:
+    - "bun run test"
+    - "bun run turbo:test"
+    - "bun run typecheck"
+    - "bun run turbo:typecheck"
+    - "bun run lint"
+    - "make test"
+    - "make typecheck"
+    - "make lint"
+    - "make go-test"
+    - "make quality"
+    - "cd apps/data-engine && pytest"
+    - "bun run test --filter <pkg>"
+  tooling:
+    unit: "vitest (28 packages) + @fast-check/vitest property-based tests"
+    e2e: "Playwright (e2e/)"
+    go: "go test ./... via make go-test (golangci-lint optional, go vet fallback)"
+    python: "pytest (apps/data-engine, products/andino)"
+    coverage: "per-package; bunfig [test] coverage = false by default"
+
+# Repository conventions (from AGENTS.md, CLAUDE.md, CODEX-MAP.md, docs/01-foundation/)
+conventions:
+  doc_taxonomy:
+    [SDD, ADR, FSD, WSD, ASD, Contract Specs, Threat Models, Runbooks]
+  rules: "AGENTS.md (root engineering rules), CLAUDE.md"
+  skill_registry: ".atl/skill-registry.md (present, 18+ project skills)"
+  navigation: "CODEX-MAP.md + .codebase/index.yml (bun run codebase:index / :check)"
+  architecture: "vertical slice + CQRS; hexagonal (domain -> application -> infrastructure); Elysia is an input adapter only"
+  fiscal_safety: "fiscal correctness, tenant/RUC isolation, auditability are product safety requirements; Money value object only (no floats/raw numbers for money); no `any`; branded IDs for money-sensitive data"
+  sdd_rule: "no new SDD until a capability is near implementation; Capability Map owns the vision; SDD Audit tracks maturity"
+  git: "dedicated branch per change; isolated worktree for medium/large/fiscal/SUNAT/DB/AI-control/CI work under worktrees/<task-name>; keep main clean"
+  delivery: "changes over 400 lines must pick ask-on-risk | auto-chain | single-pr | exception-ok and document it in the PR body"
+  docs_required: "update docs when public behavior, setup, contracts, or fiscal assumptions change"
+
+# Known current blockers (verified 2026-08-08)
+blockers:
+  - "33+ SDD plans tracked under openspec/changes/; many are proposal/working-draft — broad production/audit readiness still unplanned"
+  - "Risk, Audit & Internal Controls: ~150 files of ad-hoc audit/compliance code across 6 modules, mostly untested; 7 capabilities unimplemented (risk matrix, internal controls, policy engine, audit reports, compliance runbooks, incident response) — see openspec/changes/drenyra-risk-audit/proposal.md"
+  - "Fiscal production/audit readiness gaps (user intent): Money/RUC/SoD/Assurance — audit trail lacks chain-verification endpoint, tamper-detection alerting, and SUNAT bulk export; compliance surface has no policy engine; segregation-of-duties (SoD) planned under CAP-RISK"
+  - "Ecosystem extraction in flight: mission-protocol, mission-domain, and orchestrator review/work-routing are adapter shims over drenyra-ai release tarballs; Migrating items still carry SQL-coupled local copies to retire (docs/14-design/ecosystem-capability-matrix.md)"
+  - "Path discrepancy: AGENTS.md canonical app is apps/cli but root Makefile and openspec workspace.apps reference apps/drenyra-cli (does not exist) — verify and fix"
+  - "bunfig.toml frozenLockfile commented out (temporarily disabled to add deps) — CI reproducibility lock not enforced"
+  - "One recorded incident: .incident/review-lock-20260718-032605 — see .incident/ for resolution state"
+
+# Allowed edit roots for SDD phases
+allowed_edit_roots:
+  roots:
+    - openspec/ # SDD artifacts (config, specs, changes)
+    - docs/ # product/architecture docs (keep in sync with changes)
+    - .atl/skill-registry.md # project skill registry (update only when explicitly intended)
+    - worktrees/<task-name>/ # implementation happens in isolated worktrees per AGENTS.md
+  constraints:
+    - "Planning phases must not modify product source (apps/, packages/, engines/, services/, contracts/, country-packs/), dependencies (bun.lock, package manifests), or runtime configuration (.env, docker-compose.yml)"
+    - "No writes outside the Drenyra repo: sibling repos drenyra-ai, drenyra-engram, drenyra-pi are owned by their own repositories and coordinated from here, never edited from Drenyra phases"
+
+# Ecosystem umbrella fact (user-approved context)
+ecosystem:
+  umbrella_program: true
+  description: "Drenyra is the umbrella/coordinating program — the Accounting Command Center visual surface. It coordinates three related private repositories without owning their codebases: drenyra-ai (verifiable accounting agent OS / RDA protocol runtime), drenyra-engram (institutional accounting memory), drenyra-pi (Pi-native accounting operations harness)."
+  repos:
+    - name: drenyra-ai
+      role: "accounting agent OS — RDA protocol, missions, receipts (Ed25519), candidates, gates, ledger, recovery"
+      relation: "consumed via GitHub Release tarballs (e.g. v0.1.0); Drenyra keeps adapter shims, never a second authority"
+    - name: drenyra-engram
+      role: "institutional accounting memory — policies, criteria, approved decisions with provenance and company isolation"
+      relation: "separate repo (docs/14-design/product-topology.md)"
+    - name: drenyra-pi
+      role: "Pi-native harness executing the RDA protocol — accounting persona, context panel, specialized agents, skills, safety guards"
+      relation: "separate repo (docs/14-design/product-topology.md)"
+  integration_rules: "docs/14-design/ecosystem-capability-matrix.md — once Drenyra consumes a released capability, the internal copy is removed or becomes an adapter; never a second authority"
+  boundary:
+    "Ecosystem-wide production/audit-readiness planning is coordinated from this repo; no writes land in sibling repos from Drenyra phases"
+
+    # Plans
 plans:
   agentic-migration:
     AM1:
