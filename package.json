@@ -33,6 +33,7 @@
     "api:audit-feature-surfaces:strict": "bun scripts/dev/audit-feature-api-surfaces.ts --strict",
     "build": "bun run --filter '*' build",
     "test": "bun run --filter '*' test",
+    "test:coverage": "bun run --filter @drenyra/api test:coverage && bun run --filter @drenyra/web test:coverage",
     "turbo:build": "turbo run build",
     "turbo:test": "turbo run test",
     "turbo:typecheck": "turbo run typecheck",
