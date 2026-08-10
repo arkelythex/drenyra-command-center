@@ -44,6 +44,7 @@ Alternatives: opciones consideradas y por qué se descartaron
 | 010 | [Ecosystem Boundary & Authority](./ADR-010-ecosystem-boundary-authority.md)     | Arquitectura | ✅     |
 | 011 | [Agent Model — AI Proposes, Core Decides](./ADR-011-agent-model-ai-proposes-core-decides.md) | Arquitectura | ✅     |
 | 012 | [Persistence, Security & Recovery](./ADR-012-persistence-security-recovery.md)          | Arquitectura | ✅     |
+| 013 | [Consume Drenyra-AI, remove duplicate authority](./ADR-013-consume-drenyra-ai-remove-duplicate-authority.md) | Arquitectura | 🚧 Propuesto |
 | 034 | [Drenyra Fiscal App Server](./adr-034-drenyra-fiscal-app-server.md)           | Agent        | ✅     |
 | —   | [Descope Decisions](./2026-07-06-descope-decisions.md)                        | Scope        | ✅     |
 | —   | [Natural Uniqueness Inventory](./W2-04A-natural-uniqueness-inventory.md)      | Data         | ✅     |
