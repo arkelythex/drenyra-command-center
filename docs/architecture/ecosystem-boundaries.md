@@ -86,6 +86,8 @@ flowchart TD
 - The UI may go down and rebuild from Core state; a transcript may be lost and the mission recovered from events and evidence.
 - **No consumer may convert a Core rejection into an approval.**
 
+> **Agent model (Design 3):** AI interprets, investigates and proposes; deterministic code computes, validates, authorizes and records. The MissionOrchestrator holds no fiscal authority — the Core remains the only component able to accept a transition. See [ADR-011](../11-adr/ADR-011-agent-model-ai-proposes-core-decides.md).
+
 ## Consumers and producers
 
 | Direction | Party | Relation |
