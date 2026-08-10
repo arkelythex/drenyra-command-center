@@ -1,10 +1,13 @@
 # Drenyra CLI (`apps/cli`)
 
-**Última actualización**: 2026-06-20 · Filosofía: [Gentleman Philosophy](../../docs/meta/gentleman-philosophy.md) — cognitive load reduction, warm teaching, progressive disclosure.
+**Última actualización**: 2026-06-20 · Filosofía: *Gentleman Philosophy* — cognitive load reduction, warm teaching, progressive disclosure.
 
-**Drenyra CLI** — production terminal companion for **Drenyra App** (Go + Charm TUI).
+**Drenyra CLI** — terminal companion for **developers, operators, and integrators** (Go + Charm TUI).
 
-Drenyra App es la aplicación React agente con la UI de producto pulida. Drenyra CLI conecta flujos de terminal al mismo harness vía HTTP: model routing, agentes fiscales, aprobaciones, automation, RPC, y operaciones de command center. El grafo de delegación y los handlers viven en TypeScript (`packages/agents`).
+**Drenyra App** (web/React) is the product UI: the interface of the professional accountant. The Drenyra CLI connects terminal workflows to the same harness over HTTP — model routing, fiscal agents, approvals, automation, RPC, and command-center operations. The delegation graph and handlers live in TypeScript (`packages/agents`).
+
+> [!IMPORTANT]
+> **Role separation (frontier, ADR-010):** the accountant works in **Drenyra App** and asks for outcomes — never a terminal. The CLI is a **developer/operator/early-adopter tool**: diagnosis, integration, automation, and RPC. Agents propose; the deterministic Core and professional approval decide. The golden rule: the professional should never have to learn to operate an agent orchestration — they request an accounting result and receive reviewable candidates, evidence, explicit decisions, and verifiable receipts.
 
 ## Quick start
 
@@ -83,12 +86,8 @@ bun run go:drenyra:test
 
 ## Workflow ownership
 
-Drenyra/Drenyra product workflows live in Drenyra CLI, not project-local Pi commands. Use `drenyra workflow list` and `drenyra workflow run <workflow-id> [context...]` for built-in workflows. See the migration matrix in [drenyra-cli.md](../../../docs/05-development/drenyra-cli.md#migration-from-project-local-pi-customizations). Pi/Gentleman remains the generic agent harness; Drenyra CLI owns product-facing fiscal, review, architecture, and command-center workflows.
+Drenyra/Drenyra product workflows live in Drenyra CLI, not project-local Pi commands. Use `drenyra workflow list` and `drenyra workflow run <workflow-id> [context...]` for built-in workflows. See the migration matrix in `docs/10-development/drenyra-cli.md` (pending publication). Pi/Gentleman remains the generic agent harness; Drenyra CLI owns product-facing fiscal, review, architecture, and command-center workflows.
 
 ## Docs
 
-- [drenyra-cli.md](../../../docs/05-development/drenyra-cli.md)
-- [drenyra-harness-runtime.md](../../../docs/05-development/drenyra-harness-runtime.md)
-- [drenyra-memory-architecture.md](../../../docs/05-development/drenyra-memory-architecture.md)
-- [engram-project-canonical.md](../../../docs/05-development/engram-project-canonical.md)
-- [drenyra-tui-antigravity-audit.md](../../../docs/05-development/drenyra-tui-antigravity-audit.md)
+- [engram-project-canonical.md](../../docs/10-development/engram-project-canonical.md)
