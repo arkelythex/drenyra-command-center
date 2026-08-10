@@ -24,6 +24,23 @@
 
 ---
 
+## Who Uses What
+
+> [!IMPORTANT]
+> **The accountant never operates agents, terminals, or CLIs.** They work in **Drenyra App** (the web Command Center) and ask for outcomes — "prepare the July 2026 close for Company X". The command center consumes Drenyra-AI underneath (library/SDK/MCP); agents (Pi, Codex, Claude, OpenCode) are internal infrastructure the command center invokes. Only developers, operators, and integrators use the [Drenyra CLI](apps/cli/README.md).
+
+| Role | Interface | Never touches |
+| --- | --- | --- |
+| **Accountant / professional** | Drenyra App (web Command Center) | Terminals, CLIs, agents, JSON, mission states |
+| **Drenyra App** (Command Center) | Consumes Drenyra-AI via SDK/MCP | Reimplements gates or mutates authoritative state |
+| **Drenyra-AI** | Headless core underneath | UI; it never proposes — the Core only stages, gates, and receipts |
+| **Operators / developers / integrators** | Drenyra CLI, `drenyra-ai` CLI, MCP | The accountant's day-to-day workflow |
+| **Agents (Pi, Codex, Claude, OpenCode)** | Internal engine invoked by the command center | Self-authorization, approval, external-execution claims |
+
+**Golden rule:** the professional should never have to learn to operate an agent orchestration — they request an accounting result and receive reviewable candidates, evidence, explicit decisions, and verifiable receipts. Agents propose; the deterministic Core and professional approval decide. See [ADR-010](docs/11-adr/ADR-010-ecosystem-boundary-authority.md) for the frozen boundary.
+
+---
+
 ## The Problem
 
 Financial operations across Latin America are fragmented across disconnected tools:

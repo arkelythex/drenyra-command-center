@@ -2,9 +2,12 @@
 
 **Última actualización**: 2026-06-20 · Filosofía: [Gentleman Philosophy](../../docs/meta/gentleman-philosophy.md) — cognitive load reduction, warm teaching, progressive disclosure.
 
-**Drenyra CLI** — production terminal companion for **Drenyra App** (Go + Charm TUI).
+**Drenyra CLI** — terminal companion for **developers, operators, and integrators** (Go + Charm TUI).
 
-Drenyra App es la aplicación React agente con la UI de producto pulida. Drenyra CLI conecta flujos de terminal al mismo harness vía HTTP: model routing, agentes fiscales, aprobaciones, automation, RPC, y operaciones de command center. El grafo de delegación y los handlers viven en TypeScript (`packages/agents`).
+**Drenyra App** (web/React) is the product UI: the interface of the professional accountant. The Drenyra CLI connects terminal workflows to the same harness over HTTP — model routing, fiscal agents, approvals, automation, RPC, and command-center operations. The delegation graph and handlers live in TypeScript (`packages/agents`).
+
+> [!IMPORTANT]
+> **Role separation (frontier, ADR-010):** the accountant works in **Drenyra App** and asks for outcomes — never a terminal. The CLI is a **developer/operator/early-adopter tool**: diagnosis, integration, automation, and RPC. Agents propose; the deterministic Core and professional approval decide. The golden rule: the professional should never have to learn to operate an agent orchestration — they request an accounting result and receive reviewable candidates, evidence, explicit decisions, and verifiable receipts.
 
 ## Quick start
 
