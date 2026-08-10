@@ -1,6 +1,6 @@
 # Drenyra CLI (`apps/cli`)
 
-**Última actualización**: 2026-06-20 · Filosofía: [Gentleman Philosophy](../../docs/meta/gentleman-philosophy.md) — cognitive load reduction, warm teaching, progressive disclosure.
+**Última actualización**: 2026-06-20 · Filosofía: *Gentleman Philosophy* — cognitive load reduction, warm teaching, progressive disclosure.
 
 **Drenyra CLI** — terminal companion for **developers, operators, and integrators** (Go + Charm TUI).
 
@@ -86,12 +86,8 @@ bun run go:drenyra:test
 
 ## Workflow ownership
 
-Drenyra/Drenyra product workflows live in Drenyra CLI, not project-local Pi commands. Use `drenyra workflow list` and `drenyra workflow run <workflow-id> [context...]` for built-in workflows. See the migration matrix in [drenyra-cli.md](../../../docs/05-development/drenyra-cli.md#migration-from-project-local-pi-customizations). Pi/Gentleman remains the generic agent harness; Drenyra CLI owns product-facing fiscal, review, architecture, and command-center workflows.
+Drenyra/Drenyra product workflows live in Drenyra CLI, not project-local Pi commands. Use `drenyra workflow list` and `drenyra workflow run <workflow-id> [context...]` for built-in workflows. See the migration matrix in `docs/10-development/drenyra-cli.md` (pending publication). Pi/Gentleman remains the generic agent harness; Drenyra CLI owns product-facing fiscal, review, architecture, and command-center workflows.
 
 ## Docs
 
-- [drenyra-cli.md](../../../docs/05-development/drenyra-cli.md)
-- [drenyra-harness-runtime.md](../../../docs/05-development/drenyra-harness-runtime.md)
-- [drenyra-memory-architecture.md](../../../docs/05-development/drenyra-memory-architecture.md)
-- [engram-project-canonical.md](../../../docs/05-development/engram-project-canonical.md)
-- [drenyra-tui-antigravity-audit.md](../../../docs/05-development/drenyra-tui-antigravity-audit.md)
+- [engram-project-canonical.md](../../docs/10-development/engram-project-canonical.md)
