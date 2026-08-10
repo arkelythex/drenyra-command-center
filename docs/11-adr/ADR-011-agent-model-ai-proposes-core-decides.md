@@ -99,3 +99,5 @@ el texto libre acompaña pero nunca reemplaza importes, referencias, hashes o es
 ---
 
 **Fuente canónica:** [Design 03 — drenyra-ai](https://github.com/arkelythex/drenyra-ai/blob/main/docs/design/design-03-agents-skills-integrations.md) · Ver también [ADR-010](./ADR-010-ecosystem-boundary-authority.md) (frontera del ecosistema).
+
+**Ver también:** [ADR-012 — Persistencia, Seguridad y Recuperación](./ADR-012-persistence-security-recovery.md) (Design 4) — almacenamiento autoritativo, idempotencia y estados desconocidos.

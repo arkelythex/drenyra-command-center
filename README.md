@@ -10,7 +10,7 @@
 >
 > **Drenyra-Engram** is the institutional accounting memory that preserves what the organization knows and can prove about its accounting — remember is not authorize.
 >
-> **Ecosystem contract:** the approved boundary & authority separation (component responsibilities, chain of authority, dependency rule) is formalized in [ADR-010](docs/11-adr/ADR-010-ecosystem-boundary-authority.md) and mirrored in [Ecosystem Boundaries](docs/architecture/ecosystem-boundaries.md) across `drenyra-ai`, `drenyra-pi` and `drenyra-engram`. The agent model — AI proposes, deterministic Core decides ([ADR-011](docs/11-adr/ADR-011-agent-model-ai-proposes-core-decides.md), Design 3) — governs how missions, agents and skills execute.
+> **Ecosystem contract:** the approved boundary & authority separation (component responsibilities, chain of authority, dependency rule) is formalized in [ADR-010](docs/11-adr/ADR-010-ecosystem-boundary-authority.md) and mirrored in [Ecosystem Boundaries](docs/architecture/ecosystem-boundaries.md) across `drenyra-ai`, `drenyra-pi` and `drenyra-engram`. The agent model — AI proposes, deterministic Core decides ([ADR-011](docs/11-adr/ADR-011-agent-model-ai-proposes-core-decides.md), Design 3) — governs how missions, agents and skills execute. Persistence, security and recovery ([ADR-012](docs/11-adr/ADR-012-persistence-security-recovery.md), Design 4) keeps authoritative state in events, evidence and receipts — never in conversation or model memory.
 
 [![Status](https://img.shields.io/badge/Status-Active-22c55e)](#)
 [![Tests](https://img.shields.io/badge/Tests-209_passing-22c55e)](#)
