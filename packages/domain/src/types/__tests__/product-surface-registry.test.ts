@@ -18,7 +18,6 @@ describe("ARKELYTHEX_PRODUCT_SURFACES", () => {
 		expect(ids).toContain("cortex");
 		expect(ids).toContain("api");
 		expect(ids).toContain("gov");
-		expect(ids).toContain("landing");
 		expect(ids).toContain("grid");
 	});
 

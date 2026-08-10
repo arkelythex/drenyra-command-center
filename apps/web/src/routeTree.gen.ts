@@ -8,247 +8,268 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as VerifyEmailRouteImport } from './routes/verify-email'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as WorkspaceCompanyIdYearMonthIntentRouteImport } from './routes/workspace.$companyId.$year.$month.$intent'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as AuthRouteImport } from "./routes/auth";
+import { Route as ForgotPasswordRouteImport } from "./routes/forgot-password";
+import { Route as IndexRouteImport } from "./routes/index";
+import { Route as LoginRouteImport } from "./routes/login";
+import { Route as OnboardingRouteImport } from "./routes/onboarding";
+import { Route as ProductSurfacesRouteImport } from "./routes/product-surfaces";
+import { Route as ResetPasswordRouteImport } from "./routes/reset-password";
+import { Route as SettingsRouteImport } from "./routes/settings";
+import { Route as SignupRouteImport } from "./routes/signup";
+import { Route as VerifyEmailRouteImport } from "./routes/verify-email";
+import { Route as WorkspaceCompanyIdYearMonthIntentRouteImport } from "./routes/workspace.$companyId.$year.$month.$intent";
 
 const VerifyEmailRoute = VerifyEmailRouteImport.update({
-  id: '/verify-email',
-  path: '/verify-email',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/verify-email",
+	path: "/verify-email",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/signup",
+	path: "/signup",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/settings",
+	path: "/settings",
+	getParentRoute: () => rootRouteImport,
+} as any);
+const ProductSurfacesRoute = ProductSurfacesRouteImport.update({
+	id: "/product-surfaces",
+	path: "/product-surfaces",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/reset-password",
+	path: "/reset-password",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const OnboardingRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/onboarding",
+	path: "/onboarding",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/login",
+	path: "/login",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/forgot-password",
+	path: "/forgot-password",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/auth",
+	path: "/auth",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
+	id: "/",
+	path: "/",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const WorkspaceCompanyIdYearMonthIntentRoute =
-  WorkspaceCompanyIdYearMonthIntentRouteImport.update({
-    id: '/workspace/$companyId/$year/$month/$intent',
-    path: '/workspace/$companyId/$year/$month/$intent',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+	WorkspaceCompanyIdYearMonthIntentRouteImport.update({
+		id: "/workspace/$companyId/$year/$month/$intent",
+		path: "/workspace/$companyId/$year/$month/$intent",
+		getParentRoute: () => rootRouteImport,
+	} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/forgot-password': typeof ForgotPasswordRoute
-  '/login': typeof LoginRoute
-  '/onboarding': typeof OnboardingRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/settings': typeof SettingsRoute
-  '/signup': typeof SignupRoute
-  '/verify-email': typeof VerifyEmailRoute
-  '/workspace/$companyId/$year/$month/$intent': typeof WorkspaceCompanyIdYearMonthIntentRoute
+	"/": typeof IndexRoute;
+	"/auth": typeof AuthRoute;
+	"/forgot-password": typeof ForgotPasswordRoute;
+	"/login": typeof LoginRoute;
+	"/onboarding": typeof OnboardingRoute;
+	"/reset-password": typeof ResetPasswordRoute;
+	"/settings": typeof SettingsRoute;
+	"/signup": typeof SignupRoute;
+	"/product-surfaces": typeof ProductSurfacesRoute;
+	"/verify-email": typeof VerifyEmailRoute;
+	"/workspace/$companyId/$year/$month/$intent": typeof WorkspaceCompanyIdYearMonthIntentRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/forgot-password': typeof ForgotPasswordRoute
-  '/login': typeof LoginRoute
-  '/onboarding': typeof OnboardingRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/settings': typeof SettingsRoute
-  '/signup': typeof SignupRoute
-  '/verify-email': typeof VerifyEmailRoute
-  '/workspace/$companyId/$year/$month/$intent': typeof WorkspaceCompanyIdYearMonthIntentRoute
+	"/": typeof IndexRoute;
+	"/auth": typeof AuthRoute;
+	"/forgot-password": typeof ForgotPasswordRoute;
+	"/login": typeof LoginRoute;
+	"/onboarding": typeof OnboardingRoute;
+	"/reset-password": typeof ResetPasswordRoute;
+	"/settings": typeof SettingsRoute;
+	"/signup": typeof SignupRoute;
+	"/product-surfaces": typeof ProductSurfacesRoute;
+	"/verify-email": typeof VerifyEmailRoute;
+	"/workspace/$companyId/$year/$month/$intent": typeof WorkspaceCompanyIdYearMonthIntentRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/forgot-password': typeof ForgotPasswordRoute
-  '/login': typeof LoginRoute
-  '/onboarding': typeof OnboardingRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/settings': typeof SettingsRoute
-  '/signup': typeof SignupRoute
-  '/verify-email': typeof VerifyEmailRoute
-  '/workspace/$companyId/$year/$month/$intent': typeof WorkspaceCompanyIdYearMonthIntentRoute
+	__root__: typeof rootRouteImport;
+	"/": typeof IndexRoute;
+	"/auth": typeof AuthRoute;
+	"/forgot-password": typeof ForgotPasswordRoute;
+	"/login": typeof LoginRoute;
+	"/onboarding": typeof OnboardingRoute;
+	"/reset-password": typeof ResetPasswordRoute;
+	"/settings": typeof SettingsRoute;
+	"/signup": typeof SignupRoute;
+	"/product-surfaces": typeof ProductSurfacesRoute;
+	"/verify-email": typeof VerifyEmailRoute;
+	"/workspace/$companyId/$year/$month/$intent": typeof WorkspaceCompanyIdYearMonthIntentRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/auth'
-    | '/forgot-password'
-    | '/login'
-    | '/onboarding'
-    | '/reset-password'
-    | '/settings'
-    | '/signup'
-    | '/verify-email'
-    | '/workspace/$companyId/$year/$month/$intent'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/auth'
-    | '/forgot-password'
-    | '/login'
-    | '/onboarding'
-    | '/reset-password'
-    | '/settings'
-    | '/signup'
-    | '/verify-email'
-    | '/workspace/$companyId/$year/$month/$intent'
-  id:
-    | '__root__'
-    | '/'
-    | '/auth'
-    | '/forgot-password'
-    | '/login'
-    | '/onboarding'
-    | '/reset-password'
-    | '/settings'
-    | '/signup'
-    | '/verify-email'
-    | '/workspace/$companyId/$year/$month/$intent'
-  fileRoutesById: FileRoutesById
+	fileRoutesByFullPath: FileRoutesByFullPath;
+	fullPaths:
+		| "/"
+		| "/auth"
+		| "/forgot-password"
+		| "/login"
+		| "/onboarding"
+		| "/reset-password"
+		| "/settings"
+		| "/signup"
+		| "/product-surfaces"
+		| "/verify-email"
+		| "/workspace/$companyId/$year/$month/$intent";
+	fileRoutesByTo: FileRoutesByTo;
+	to:
+		| "/"
+		| "/auth"
+		| "/forgot-password"
+		| "/login"
+		| "/onboarding"
+		| "/reset-password"
+		| "/settings"
+		| "/signup"
+		| "/product-surfaces"
+		| "/verify-email"
+		| "/workspace/$companyId/$year/$month/$intent";
+	id:
+		| "__root__"
+		| "/"
+		| "/auth"
+		| "/forgot-password"
+		| "/login"
+		| "/onboarding"
+		| "/reset-password"
+		| "/settings"
+		| "/signup"
+		| "/product-surfaces"
+		| "/verify-email"
+		| "/workspace/$companyId/$year/$month/$intent";
+	fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRoute
-  ForgotPasswordRoute: typeof ForgotPasswordRoute
-  LoginRoute: typeof LoginRoute
-  OnboardingRoute: typeof OnboardingRoute
-  ResetPasswordRoute: typeof ResetPasswordRoute
-  SettingsRoute: typeof SettingsRoute
-  SignupRoute: typeof SignupRoute
-  VerifyEmailRoute: typeof VerifyEmailRoute
-  WorkspaceCompanyIdYearMonthIntentRoute: typeof WorkspaceCompanyIdYearMonthIntentRoute
+	IndexRoute: typeof IndexRoute;
+	AuthRoute: typeof AuthRoute;
+	ForgotPasswordRoute: typeof ForgotPasswordRoute;
+	LoginRoute: typeof LoginRoute;
+	OnboardingRoute: typeof OnboardingRoute;
+	ResetPasswordRoute: typeof ResetPasswordRoute;
+	SettingsRoute: typeof SettingsRoute;
+	SignupRoute: typeof SignupRoute;
+	ProductSurfacesRoute: typeof ProductSurfacesRoute;
+	VerifyEmailRoute: typeof VerifyEmailRoute;
+	WorkspaceCompanyIdYearMonthIntentRoute: typeof WorkspaceCompanyIdYearMonthIntentRoute;
 }
 
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/verify-email': {
-      id: '/verify-email'
-      path: '/verify-email'
-      fullPath: '/verify-email'
-      preLoaderRoute: typeof VerifyEmailRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/onboarding': {
-      id: '/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-password': {
-      id: '/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof ForgotPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/workspace/$companyId/$year/$month/$intent': {
-      id: '/workspace/$companyId/$year/$month/$intent'
-      path: '/workspace/$companyId/$year/$month/$intent'
-      fullPath: '/workspace/$companyId/$year/$month/$intent'
-      preLoaderRoute: typeof WorkspaceCompanyIdYearMonthIntentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-  }
+declare module "@tanstack/react-router" {
+	interface FileRoutesByPath {
+		"/verify-email": {
+			id: "/verify-email";
+			path: "/verify-email";
+			fullPath: "/verify-email";
+			preLoaderRoute: typeof VerifyEmailRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/signup": {
+			id: "/signup";
+			path: "/signup";
+			fullPath: "/signup";
+			preLoaderRoute: typeof SignupRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/product-surfaces": {
+			id: "/product-surfaces";
+			path: "/product-surfaces";
+			fullPath: "/product-surfaces";
+			preLoaderRoute: typeof ProductSurfacesRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/settings": {
+			id: "/settings";
+			path: "/settings";
+			fullPath: "/settings";
+			preLoaderRoute: typeof SettingsRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/reset-password": {
+			id: "/reset-password";
+			path: "/reset-password";
+			fullPath: "/reset-password";
+			preLoaderRoute: typeof ResetPasswordRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/onboarding": {
+			id: "/onboarding";
+			path: "/onboarding";
+			fullPath: "/onboarding";
+			preLoaderRoute: typeof OnboardingRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/login": {
+			id: "/login";
+			path: "/login";
+			fullPath: "/login";
+			preLoaderRoute: typeof LoginRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/forgot-password": {
+			id: "/forgot-password";
+			path: "/forgot-password";
+			fullPath: "/forgot-password";
+			preLoaderRoute: typeof ForgotPasswordRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/auth": {
+			id: "/auth";
+			path: "/auth";
+			fullPath: "/auth";
+			preLoaderRoute: typeof AuthRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/": {
+			id: "/";
+			path: "/";
+			fullPath: "/";
+			preLoaderRoute: typeof IndexRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/workspace/$companyId/$year/$month/$intent": {
+			id: "/workspace/$companyId/$year/$month/$intent";
+			path: "/workspace/$companyId/$year/$month/$intent";
+			fullPath: "/workspace/$companyId/$year/$month/$intent";
+			preLoaderRoute: typeof WorkspaceCompanyIdYearMonthIntentRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+	}
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AuthRoute: AuthRoute,
-  ForgotPasswordRoute: ForgotPasswordRoute,
-  LoginRoute: LoginRoute,
-  OnboardingRoute: OnboardingRoute,
-  ResetPasswordRoute: ResetPasswordRoute,
-  SettingsRoute: SettingsRoute,
-  SignupRoute: SignupRoute,
-  VerifyEmailRoute: VerifyEmailRoute,
-  WorkspaceCompanyIdYearMonthIntentRoute:
-    WorkspaceCompanyIdYearMonthIntentRoute,
-}
+	IndexRoute: IndexRoute,
+	AuthRoute: AuthRoute,
+	ForgotPasswordRoute: ForgotPasswordRoute,
+	LoginRoute: LoginRoute,
+	OnboardingRoute: OnboardingRoute,
+	ResetPasswordRoute: ResetPasswordRoute,
+	SettingsRoute: SettingsRoute,
+	SignupRoute: SignupRoute,
+	ProductSurfacesRoute: ProductSurfacesRoute,
+	VerifyEmailRoute: VerifyEmailRoute,
+	WorkspaceCompanyIdYearMonthIntentRoute:
+		WorkspaceCompanyIdYearMonthIntentRoute,
+};
 export const routeTree = rootRouteImport
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+	._addFileChildren(rootRouteChildren)
+	._addFileTypes<FileRouteTypes>();
