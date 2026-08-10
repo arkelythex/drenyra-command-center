@@ -4,6 +4,7 @@
 // Mastra-compatible implementations while maintaining the same
 // public API for backward compatibility.
 
+export type { AgentSession } from "../types/erp-types";
 export type {
 	AuditEvent,
 	AuditReport,
@@ -103,6 +104,7 @@ export type {
 	SubSwarmTask,
 } from "./domain-agent";
 export { DomainAgent } from "./domain-agent";
+export * from "./drenyra-gate-validator";
 export type {
 	FiscalEvent,
 	FiscalEventHandler,
@@ -132,7 +134,6 @@ export type { OrchestrationResult } from "./orchestrator";
 export { createDrenyraOrchestrator, DrenyraOrchestrator } from "./orchestrator";
 export type { Conflict, MergeResult } from "./result-merger";
 export { ResultMerger } from "./result-merger";
-export type { AgentSession } from "../types/erp-types";
 export { SessionManager } from "./session-manager";
 export type { PhaseTiming, SwarmMode } from "./supervisor";
 export { Supervisor } from "./supervisor";
