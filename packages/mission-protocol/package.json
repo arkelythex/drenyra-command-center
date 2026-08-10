@@ -22,7 +22,7 @@
     "vitest": "^4.0.0"
   },
   "dependencies": {
-    "drenyra-ai": "https://github.com/arkelythex/drenyra-ai/releases/download/v0.2.0/drenyra-ai-0.2.0.tgz"
+    "drenyra-ai": "file:../../vendored/drenyra-ai-0.2.0.tgz"
   },
   "files": [
     "src"
