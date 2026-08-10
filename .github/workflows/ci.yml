@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 env:
-  BUN_VERSION: '1.3.11'
+  BUN_VERSION: "1.3.11"
 
 jobs:
   go:
@@ -128,7 +128,7 @@ jobs:
       - uses: actions/setup-python@v5
         if: steps.changes.outputs.run == 'true'
         with:
-          python-version: '3.12'
+          python-version: "3.12"
       - if: steps.changes.outputs.run == 'true'
         run: pip install uv && uv sync --extra dev
       - if: steps.changes.outputs.run == 'true'
@@ -162,7 +162,7 @@ jobs:
         run: bun run --filter @drenyra/domain typecheck
       - if: steps.changes.outputs.run == 'true'
         run: bun run --filter @drenyra/domain test -- --run
-    
+
   wave2-static-gate:
     name: Wave 2 — Static Gate
     runs-on: ubuntu-latest
