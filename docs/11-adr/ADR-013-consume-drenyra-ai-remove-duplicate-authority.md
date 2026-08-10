@@ -1,7 +1,7 @@
 # ADR-013: Consumir Drenyra-AI publicado y eliminar la autoridad duplicada
 
 **Fecha:** 2026-08-11
-**Estado:** Propuesto — dirección y plan de migración; la ejecución es trabajo futuro por slices
+**Estado:** En ejecución — la migración ya está en curso; quedan residuos acotados
 **Alcance:** Drenyra (Command Center)
 **Referencia:** [Drenyra AI — Gap Analysis](https://github.com/arkelythex/drenyra-ai/blob/main/docs/roadmaps/2026-08-10-v1-gap-analysis.md) (criterio v1.0 #1), [ADR-010](ADR-010-ecosystem-boundary-authority.md), [ADR-011](ADR-011-agent-model-ai-proposes-core-decides.md)
 
@@ -9,66 +9,62 @@
 
 ## Context
 
-Drenyra (el Command Center) mantiene hoy **autoridad duplicada** del core de Drenyra-AI:
-`packages/mission-protocol`, `packages/mission-domain`, `packages/domain` y
-`packages/persistence` replican esquemas y lógica (protocolo de misiones, materialidad,
-transiciones, schemas de almacenamiento) que ya existen como **contratos congelados y
-verificados** en `drenyra-ai` (6 contratos FROZEN, 624 tests, conformance suites en CI).
+La frontera aprobada (ADR-010) exige que Drenyra consuma Drenyra-AI como runtime headless
+independiente (librería/SDK/MCP) — nunca reimplementar gates ni mutar estado autoritativo.
 
-La frontera aprobada (ADR-010) es explícita: **Drenyra consume Drenyra-AI como runtime
-headless independiente (librería/SDK/MCP)**; nunca reimplementa gates ni muta estado
-autoritativo. La duplicación actual viola esa frontera y crea un riesgo real: dos fuentes
-de verdad para la misma regla fiscal, con drift posible entre ellas.
+**Estado verificado (2026-08-11):** la migración del core ya está **en curso y mayormente
+completa**. `packages/mission-domain` y `packages/mission-protocol` ya consumen
+`drenyra-ai` v0.2.0 como **tarball vendored** (`vendored/drenyra-ai-0.2.0.tgz`,
+`file:../../vendored/...`), y el core de receipts/events/transitions/status/errors es un
+**adapter shim** hacia `drenyra-ai/receipts` y `drenyra-ai/missions`. El orquestador
+(`packages/drenyra-orchestrator`) también consume `drenyra-ai`.
 
-El criterio v1.0 #1 del gap analysis de drenyra-ai lo formaliza:
-> *"Drenyra consumes the published package and removes its duplicate internal authority."*
+Quedan **dos residuos acotados** de duplicación:
+
+| Residuo | Contraparte en drenyra-ai |
+| --- | --- |
+| `packages/shared/src/kernel/lifecycle.ts` (transiciones propias) | `drenyra-ai/missions` (`VALID_TRANSITIONS`, runtime) |
+| `packages/pi/src/mastra/approval-gate.ts` (ApprovalGate propio) | `drenyra-ai/gates` (aprobación R2/R3, fail-closed) |
 
 ## Decision
 
-Migrar el Command Center a consumir **drenyra-ai publicado** (versión releaseada,
-nunca un checkout), eliminando la autoridad duplicada por **slices verticales** — no un
-movimiento masivo.
+Completar la migración por **slices acotados** — no un movimiento masivo:
 
-### 1. Inventario de duplicación (paso 0)
+### Slices restantes
 
-Antes de migrar, mapear cada pieza duplicada contra su contraparte en drenyra-ai:
+1. **`shared/kernel/lifecycle.ts`**: reemplazar las transiciones propias por
+   `drenyra-ai/missions` (mismo comportamiento antes/después; la suite de `shared`
+   debe pasar contra el subpath).
+2. **`pi/mastra/approval-gate.ts`**: reemplazar el `ApprovalGate` propio por
+   `drenyra-ai/gates` (R2 single / R3 dual distinct, fail-closed runner).
+3. **Publicar en npm**: sustituir el tarball vendored por la dependencia de registry
+   (`drenyra-ai` publicada); el tarball vendored fue el paso transitorio correcto.
 
-| Pieza en Drenyra | Contraparte congelada en drenyra-ai | Subpath |
-| --- | --- | --- |
-| `packages/mission-protocol` (estados, transiciones) | `mission-protocol` contract + `missions/` | `drenyra-ai/missions` |
-| `packages/mission-domain` / `packages/domain` (materialidad) | `candidate` contract + `candidates/materiality` | `drenyra-ai/candidates` |
-| `packages/persistence` schemas (misión, eventos) | `recovery`/`ledger` contracts | `drenyra-ai/ledger`, `drenyra-ai/recovery` |
-| Lógica de gates/aprobaciones propia | `gate` contract + `gates/` | `drenyra-ai/gates` |
+### Reglas de consumo
 
-### 2. Contrato de consumo
-
-- Drenyra consume **la versión publicada** de `drenyra-ai` vía sus subpaths — nunca un checkout ni un copy-paste.
+- Drenyra consume **el artefacto empaquetado** (tarball → registry) — nunca un checkout
+  ni un copy-paste del fuente.
 - Los contratos congelados (v0.1) son la superficie de coordinación entre ambos repos.
-- Las versiones se coordinan por release; Drenyra fija la versión que consume.
+- Versiones coordinadas por release; Drenyra fija la versión que consume.
 
-### 3. Slices verticales de migración
+### Criterios de finalización (verificables)
 
-1. **Receipts + ledger**: reemplazar la verificación de receipts y la validación del ledger propias por `drenyra-ai/receipts` y `drenyra-ai/ledger`.
-2. **Materialidad de candidatos**: reemplazar la derivación propia por `drenyra-ai/candidates` (BigInt cents, reglas del contrato).
-3. **Protocolo de misiones**: reemplazar `packages/mission-protocol` por `drenyra-ai/missions` (`MissionRuntime`, estados, transiciones).
-4. **Gates y aprobaciones**: reemplazar la lógica propia por `drenyra-ai/gates` (R2/R3, fail-closed).
-5. **Persistence**: los schemas de almacenamiento pasan a ser proyecciones del estado autoritativo de drenyra-ai (los adapters PostgreSQL de drenyra-ai son la implementación de referencia).
-
-Cada slice: **mismo comportamiento antes/después** (los tests de Drenyra que ejercen la regla deben pasar contra el subpath de drenyra-ai), luego **eliminar la copia interna**.
-
-### 4. Criterios de finalización (verificables)
-
-- [ ] `drenyra-ai` aparece como dependencia publicada (nunca un checkout) en el manifest de Drenyra.
-- [ ] Cero código duplicado del core: los paquetes `mission-protocol`, `mission-domain` y los schemas duplicados en `persistence` son eliminados o convertidos en adaptadores.
+- [ ] `shared/kernel/lifecycle` y `pi/mastra/approval-gate` migrados a subpaths de drenyra-ai.
+- [ ] Cero implementaciones locales de transiciones/gates/materiality/receipts/ledger
+      (grep de `export function validateLedger|deriveMateriality|signReceipt` y
+      `export class .*Gate` fuera de shims = vacío).
 - [ ] La suite de Drenyra pasa íntegra contra los subpaths de drenyra-ai.
-- [ ] `drenyra-ai capabilities show` (o el MCP `capabilities`) es la fuente de verdad de contratos/skills/jurisdicciones que Drenyra declara.
+- [ ] `drenyra-ai` consumida desde el registry npm (no el tarball vendored) cuando se publique.
 - [ ] Ningún path de ejecución del Command Center muta estado autoritativo fuera de drenyra-ai.
 
 ## Consecuencias
 
-- **Beneficio**: una sola autoridad fiscal; los contratos congelados y sus conformance suites gobiernan; drift entre repos imposible por construcción.
-- **Costo**: coordinación de versiones entre repos y trabajo de migración por slice (no un big-bang).
-- **No-goal**: este ADR no cambia la UI, el dominio de producto de Drenyra (dashboards, bandejas, aprobaciones de UX) ni el Command Center como superficie del contador — solo la autoridad fiscal subyacente.
+- **Beneficio**: una sola autoridad fiscal; los contratos congelados y sus conformance suites
+  gobiernan; drift entre repos imposible por construcción.
+- **Costo**: coordinación de versiones entre repos y la publicación de `drenyra-ai` en npm.
+- **No-goal**: este ADR no cambia la UI, el dominio de producto de Drenyra ni el Command
+  Center como superficie del contador — solo la autoridad fiscal subyacente (ya migrada en
+  su mayor parte).
 
 ## Referencias
 
