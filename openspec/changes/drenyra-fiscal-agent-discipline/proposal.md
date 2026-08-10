@@ -18,7 +18,7 @@ SDD dinámico, flujos encadenados, lenses contables, gatekeepers entre fases, y 
 | FiscalTruthEvent                  | `packages/domain/src/fiscal-truth/entities/FiscalTruthEvent.ts`   | Append-only fiscal event                      |
 | HashChain VO                      | `packages/domain/src/audit-ledger/hash-chain.vo.ts`               | SHA-256 chain validation                      |
 | Capability system                 | `packages/domain/src/drenyra/capabilities.ts`                     | Policy-based grants with scope                |
-| Engram (Go sidecar)               | `packages/engram/`                                                | Evidence record persistence with phases       |
+| Engram (Go sidecar)               | `drenyra-engram` (standalone repo)                               | Evidence record persistence with phases       |
 | Audit ledger                      | `packages/domain/src/audit-ledger/`                               | Hash computation + normalization              |
 
 ### What's missing (the 5 gaps)
@@ -95,7 +95,7 @@ Cited law (spec) → Implemented rule → Passing test → Saved evidence → Au
 | `packages/domain/src/fiscal-review-lenses/`                  | CREATE — Review lenses                |
 | `packages/phase-gatekeeper/`                                 | CREATE — Phase gatekeepers            |
 | `packages/domain/src/fiscal-truth/evidence-artifact-bridge/` | CREATE — Evidence → artifact store    |
-| `packages/engram/`                                           | MODIFY — Add evidence phase bridge    |
+| `drenyra-engram` (standalone repo)                         | MODIFY — Add evidence phase bridge    |
 | `packages/domain/src/drenyra/`                               | MODIFY — Add types if needed          |
 
 ## Non-Goals
