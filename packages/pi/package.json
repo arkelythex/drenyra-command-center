@@ -59,12 +59,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arkelythex/Drenyra.git"
+    "url": "git+https://github.com/arkelythex/drenyra-command-center.git"
   },
   "bugs": {
-    "url": "https://github.com/arkelythex/Drenyra/issues"
+    "url": "https://github.com/arkelythex/drenyra-command-center/issues"
   },
-  "homepage": "https://github.com/arkelythex/Drenyra#readme",
+  "homepage": "https://github.com/arkelythex/drenyra-command-center#readme",
   "engines": {
     "node": ">=18"
   },
