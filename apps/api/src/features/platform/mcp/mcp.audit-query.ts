@@ -37,5 +37,10 @@ export function readAuditQuery(
 			? (query.outcome as DrenyraMcpAuditOutcome)
 			: undefined;
 	const toolName = query.toolName?.trim() || undefined;
-	return { scope, limit, outcome, toolName };
+    	return {
+    		scope,
+    		limit,
+    		...(outcome !== undefined ? { outcome } : {}),
+    		...(toolName !== undefined ? { toolName } : {}),
+    	};
 }

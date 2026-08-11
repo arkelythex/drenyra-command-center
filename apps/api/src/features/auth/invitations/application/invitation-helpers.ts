@@ -37,7 +37,10 @@ export async function hasInvitePermission(
 
 	if (rows.length === 0) return false;
 
-	const role = rows[0].membershipRole as MembershipRole;
+	const first = rows[0];
+	if (!first) return false;
+
+	const role = first.membershipRole as MembershipRole;
 	return (
 		(ROLE_PERMISSIONS[role] as Permission[] | undefined)?.includes("user:invite") ??
 		false

@@ -104,17 +104,21 @@ export const automationsRoutes = new Elysia({
 				// Create workflow
 				const wf = await automationsService.createWorkflow(companyId, {
 					name: body.name,
-					description: body.description,
+					...(body.description !== undefined ? { description: body.description } : {}),
 					triggerType: body.triggerType,
 					triggerConfig: body.triggerConfig,
 					autonomy: body.autonomy,
 				});
+				if (!wf) {
+					set.status = 500;
+					return fail("Error al crear la automatización", "INTERNAL_ERROR");
+				}
 
 				// Create steps for each skill
-				for (let i = 0; i < body.skillIds.length; i++) {
+				for (const [index, skillId] of body.skillIds.entries()) {
 					await automationsService.createStep(wf.id, {
-						stepOrder: i + 1,
-						skillId: body.skillIds[i],
+						stepOrder: index + 1,
+						skillId,
 					});
 				}
 
@@ -235,6 +239,10 @@ export const automationsRoutes = new Elysia({
 					body.automationId,
 					companyId,
 				);
+				if (!exec) {
+					set.status = 500;
+					return fail("Error al ejecutar la automatización", "INTERNAL_ERROR");
+				}
 				set.status = 202;
 				return ok({ executionId: exec.id });
 			} catch (error) {

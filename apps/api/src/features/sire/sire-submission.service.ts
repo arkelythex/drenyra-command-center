@@ -45,8 +45,10 @@ export class SireSubmissionService {
 		const config = buildSireConfig();
 		const policy = evaluateSireSubmissionPolicy({
 			period: input.period,
-			companyAnnualIncomePen: input.companyAnnualIncomePen,
-			isPrico: input.isPrico,
+			...(input.companyAnnualIncomePen !== undefined
+				? { companyAnnualIncomePen: input.companyAnnualIncomePen }
+				: {}),
+			...(input.isPrico !== undefined ? { isPrico: input.isPrico } : {}),
 		});
 
 		if (policy.isDeferred) {
@@ -132,7 +134,7 @@ export class SireSubmissionService {
 			ledgerType: input.ledgerType,
 			dryRun: input.dryRun ?? false,
 			message: `SIRE submission simulated (${reason})`,
-			policy,
+			...(policy !== undefined ? { policy } : {}),
 		};
 	}
 
@@ -293,6 +295,15 @@ export class SireSubmissionService {
 				"ticket",
 				"numeroTicket",
 			]) ?? `SUNAT-${Date.now()}`;
+		const trackingId = SireSubmissionService.readStr(obj, [
+			"trackingId",
+			"tracking_id",
+			"jobId",
+		]);
+		const sunatTicket = SireSubmissionService.readStr(obj, [
+			"ticket",
+			"numeroTicket",
+		]);
 
 		return {
 			submissionId,
@@ -310,15 +321,8 @@ export class SireSubmissionService {
 			message:
 				SireSubmissionService.readStr(obj, ["message", "mensaje"]) ??
 				"Submission accepted by SIRE API",
-			trackingId: SireSubmissionService.readStr(obj, [
-				"trackingId",
-				"tracking_id",
-				"jobId",
-			]),
-			sunatTicket: SireSubmissionService.readStr(obj, [
-				"ticket",
-				"numeroTicket",
-			]),
+			...(trackingId !== undefined ? { trackingId } : {}),
+			...(sunatTicket !== undefined ? { sunatTicket } : {}),
 		};
 	}
 

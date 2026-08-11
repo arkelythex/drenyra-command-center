@@ -42,7 +42,10 @@ export class TransactionService {
 	constructor(private readonly repository = bankingRepository) {}
 
 	async listTransactions(accountId: string, startDate?: Date, endDate?: Date) {
-		return this.repository.findTransactions(accountId, { startDate, endDate });
+		return this.repository.findTransactions(accountId, {
+			...(startDate !== undefined ? { startDate } : {}),
+			...(endDate !== undefined ? { endDate } : {}),
+		});
 	}
 
 	async createTransaction(companyId: string, data: CreateTransactionDTO) {
@@ -117,7 +120,7 @@ export class TransactionService {
 					accountId,
 					transactionDate: tx.date,
 					description: tx.description,
-					reference: tx.reference,
+					...(tx.reference !== undefined ? { reference: tx.reference } : {}),
 					type: tx.type,
 					amount: tx.amount,
 				});

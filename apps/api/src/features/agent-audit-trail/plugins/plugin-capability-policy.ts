@@ -82,8 +82,13 @@ export function sanitizeFindingTemplate(
 		...finding,
 		code: trimField(finding.code, 80),
 		message: trimField(finding.message, MAX_FINDING_FIELD_LENGTH),
-		recommendedAction: finding.recommendedAction
-			? trimField(finding.recommendedAction, MAX_FINDING_FIELD_LENGTH)
-			: undefined,
+		...(finding.recommendedAction
+			? {
+					recommendedAction: trimField(
+						finding.recommendedAction,
+						MAX_FINDING_FIELD_LENGTH,
+					),
+			  }
+			: {}),
 	};
 }

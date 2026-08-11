@@ -76,7 +76,7 @@ export class SkillRegistry {
 			output: output as TOutput,
 			durationMs: Date.now() - start,
 			timestamp: new Date(),
-			traceId: ctx?.traceId,
+			...(ctx?.traceId !== undefined ? { traceId: ctx.traceId } : {}),
 		};
 	}
 

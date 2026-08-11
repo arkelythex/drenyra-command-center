@@ -74,7 +74,10 @@ export const latencyStatsModule = new Elysia({
 			}
 
 			try {
-				const data = await LatencyStatsService.getSummary(parsed.data);
+				const data = await LatencyStatsService.getSummary({
+					...(parsed.data.since !== undefined ? { since: parsed.data.since } : {}),
+					companyId: parsed.data.companyId,
+				});
 				return ok(data);
 			} catch (error: unknown) {
 				set.status = 500;
@@ -116,7 +119,10 @@ export const latencyStatsModule = new Elysia({
 			}
 
 			try {
-				const data = await LatencyStatsService.getTrend(parsed.data);
+				const data = await LatencyStatsService.getTrend({
+					...(parsed.data.since !== undefined ? { since: parsed.data.since } : {}),
+					companyId: parsed.data.companyId,
+				});
 				return ok(data);
 			} catch (error: unknown) {
 				set.status = 500;

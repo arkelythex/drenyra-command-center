@@ -12,6 +12,9 @@ export function resolveLedgerPeriodRange(period: string): LedgerPeriodRange {
 	}
 
 	const [yearValue, monthValue] = period.split("-");
+	if (yearValue === undefined || monthValue === undefined) {
+		throw new Error("Invalid period format. Expected YYYY-MM");
+	}
 	const year = Number.parseInt(yearValue, 10);
 	const month = Number.parseInt(monthValue, 10);
 

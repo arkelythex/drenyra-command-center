@@ -112,9 +112,15 @@ export class LedgerSireAutopilotService {
 			companyId: input.companyId,
 			year: periodRange.year,
 			month: periodRange.month,
-			totalTolerance: input.totalTolerance,
-			igvTolerance: input.igvTolerance,
-			recordTolerance: input.recordTolerance,
+			...(input.totalTolerance !== undefined
+				? { totalTolerance: input.totalTolerance }
+				: {}),
+			...(input.igvTolerance !== undefined
+				? { igvTolerance: input.igvTolerance }
+				: {}),
+			...(input.recordTolerance !== undefined
+				? { recordTolerance: input.recordTolerance }
+				: {}),
 		});
 
 		const igvSummary = await this.ports.getIgvSummary(

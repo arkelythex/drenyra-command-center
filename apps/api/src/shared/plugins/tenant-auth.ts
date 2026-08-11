@@ -236,7 +236,7 @@ export async function resolveTenantAuth(
 
 		// Fallback: usar la membership default
 		if (!activeMembership) {
-			activeMembership = memberships.find((m) => m.isDefault) ?? null;
+			activeMembership = memberships.find((m) => m.isDefault) ?? undefined;
 		}
 
 		// Si no hay ninguna membership, denegar

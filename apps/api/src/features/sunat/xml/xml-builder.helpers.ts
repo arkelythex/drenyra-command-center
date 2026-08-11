@@ -33,9 +33,9 @@ export function formatAmount(amount: number): string {
  */
 export function formatDate(date: Date | string): string {
 	if (typeof date === "string") {
-		return date.split("T")[0]; // Remove time if ISO string
+		return date.split("T")[0] ?? ""; // Remove time if ISO string
 	}
-	return date.toISOString().split("T")[0];
+	return date.toISOString().split("T")[0] ?? "";
 }
 
 /**

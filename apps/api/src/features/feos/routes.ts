@@ -10,6 +10,7 @@ import { Elysia, t } from "elysia";
 import { fail, getErrorMessage, ok } from "../../features/shared/api-response";
 import { companyScopeGuard } from "../../shared/plugins";
 import { feosController } from "./feos.controller";
+import type { CompanyId, OrganizationId } from "@drenyra/domain";
 
 export const feosRoutes = new Elysia({ prefix: "/api/v1/feos" })
   .use(companyScopeGuard({ allowHeaderFallback: true }))
@@ -172,7 +173,14 @@ export const feosRoutes = new Elysia({ prefix: "/api/v1/feos" })
     "/events",
     async ({ body }) => {
       try {
-        const result = feosController.publishEvent(body);
+        const result = feosController.publishEvent({
+          ...body,
+          scope: {
+            ...body.scope,
+            organizationId: body.scope.organizationId as OrganizationId,
+            companyId: body.scope.companyId as CompanyId,
+          },
+        });
         return ok(result);
       } catch (error) {
         return fail("Failed to publish event", "EVENT_PUBLISH_ERROR", {
@@ -296,7 +304,14 @@ export const feosRoutes = new Elysia({ prefix: "/api/v1/feos" })
     "/receipts",
     async ({ body }) => {
       try {
-        const result = feosController.createReceipt(body);
+        const result = feosController.createReceipt({
+          ...body,
+          scope: {
+            ...body.scope,
+            organizationId: body.scope.organizationId as OrganizationId,
+            companyId: body.scope.companyId as CompanyId,
+          },
+        });
         return ok(result);
       } catch (error) {
         return fail("Failed to create receipt", "RECEIPT_CREATE_ERROR", {

@@ -94,10 +94,13 @@ export const vendorRoutes = new Elysia({ prefix: "/api/vendors" })
 		async ({ query }) => {
 			const vendors = await listVendors({
 				companyId: query.companyId,
-				includeInactive: query.includeInactive,
-				minRating:
-					query.minRating !== undefined ? Number(query.minRating) : undefined,
-				category: query.category,
+				...(query.includeInactive !== undefined
+					? { includeInactive: query.includeInactive }
+					: {}),
+				...(query.minRating !== undefined
+					? { minRating: Number(query.minRating) }
+					: {}),
+				...(query.category !== undefined ? { category: query.category } : {}),
 			});
 
 			return ok(vendors.map((v) => v.toJSON()));

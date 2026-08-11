@@ -12,10 +12,7 @@
 import type { MissionEventStore } from "./sse/mission-event-store";
 import type { MissionsService } from "./missions.service";
 import type { MonthlyCloseOrchestrator } from "@drenyra/application/use-cases/monthly-close";
-import {
-	AccountingMissionStatus,
-	type MissionStep,
-} from "@drenyra/mission-protocol";
+import { AccountingMissionStatus } from "@drenyra/mission-protocol";
 
 export class MissionRuntime {
 	constructor(
@@ -46,14 +43,14 @@ export class MissionRuntime {
 			} else if (result.status === "BLOCKED") {
 				await this.emitEvent(missionId, "BLOCKER_ADDED", {
 					status: AccountingMissionStatus.BLOCKED_BY_GATE,
-					progress: result.progress ?? 0,
+					progress: 0,
 					blockers: result.blockers ?? [],
 				});
 			} else {
 				await this.emitEvent(missionId, "FAILED", {
 					status: AccountingMissionStatus.FAILED,
-					progress: result.progress ?? 0,
-					error: result.error ?? "Unknown failure",
+					progress: 0,
+					error: "Unknown failure",
 				});
 			}
 		} catch (err) {

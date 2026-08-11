@@ -11,14 +11,14 @@ export interface AutomationDTO {
 	id: string;
 	companyId: string;
 	name: string;
-	description?: string;
+	description?: string | undefined;
 	triggerType: string;
 	triggerConfig: Record<string, unknown>;
 	status: string;
 	skills: Array<{ id: string; name: string }>;
 	autonomy: string;
-	lastRunAt?: string;
-	lastRunStatus?: string;
+	lastRunAt?: string | undefined;
+	lastRunStatus?: string | undefined;
 	runCount: number;
 }
 
@@ -27,9 +27,9 @@ export interface AutomationLogEntry {
 	automationId: string;
 	status: string;
 	startedAt: string;
-	completedAt?: string;
-	resultSummary?: string;
-	error?: string;
+	completedAt?: string | undefined;
+	resultSummary?: string | undefined;
+	error?: string | undefined;
 }
 
 // ─── WORKFLOW ≅ AUTOMATION ───

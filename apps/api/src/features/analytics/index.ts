@@ -145,8 +145,8 @@ export const analyticsModule = new Elysia({ prefix: "/api/analytics" })
 		({ query }) => {
 			return getDashboardAnalytics({
 				companyId: query.companyId,
-				startDate: query.startDate ? new Date(query.startDate) : undefined,
-				endDate: query.endDate ? new Date(query.endDate) : undefined,
+				...(query.startDate ? { startDate: new Date(query.startDate) } : {}),
+				...(query.endDate ? { endDate: new Date(query.endDate) } : {}),
 				currency: query.currency as "PEN" | "USD",
 			});
 		},

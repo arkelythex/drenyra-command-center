@@ -39,8 +39,12 @@ export async function authorizeAiSurface(
 		headers: input.headers,
 		operation: input.operation,
 		resource: input.resource,
-		requestedCompanyId: input.requestedCompanyId,
-		requireSession: input.requireSession,
+		...(input.requestedCompanyId !== undefined
+			? { requestedCompanyId: input.requestedCompanyId }
+			: {}),
+		...(input.requireSession !== undefined
+			? { requireSession: input.requireSession }
+			: {}),
 		allowMachineCaller: true,
 	});
 

@@ -142,7 +142,7 @@ export class SunatFallbackOrchestrator {
 				fallbackActivated: true,
 				fallbackReason:
 					error instanceof Error ? error.message : "sunat_api_unavailable",
-				hitl: fallback.hitl,
+				...(fallback.hitl !== undefined ? { hitl: fallback.hitl } : {}),
 				traceSteps: [
 					"sunat_api:error",
 					...fallback.trace.steps.map((step) => `visual_subagent:${step}`),

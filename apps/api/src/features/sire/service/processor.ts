@@ -192,7 +192,7 @@ export class SireService {
 				companyId: input.companyId,
 				scope: "sire.live-summary",
 				deprecatedEnvRuc: config.deprecatedCompanyRuc,
-				suppliedRuc: input.ruc,
+				...(input.ruc !== undefined ? { suppliedRuc: input.ruc } : {}),
 			});
 		} catch (error: unknown) {
 			logger.warn(

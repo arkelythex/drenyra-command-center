@@ -42,8 +42,8 @@ export const transactionsRoutes = new Elysia({ prefix: "/api/transactions" })
 			try {
 				const result = await listTransactions({
 					companyId: companyContext.companyId,
-					type: query.type,
-					partnerId: query.partnerId,
+					...(query.type !== undefined ? { type: query.type } : {}),
+					...(query.partnerId !== undefined ? { partnerId: query.partnerId } : {}),
 				});
 				return ok(result);
 			} catch (error: unknown) {

@@ -43,7 +43,7 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 					companyId: body.companyId,
 					targetType: body.targetType as any,
 					targetId: body.targetId,
-					createdById: body.createdById,
+					...(body.createdById !== undefined ? { createdById: body.createdById } : {}),
 				});
 				set.status = 201;
 				return ok(review);
@@ -78,10 +78,12 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 				}
 				const result = await listReviews({
 					companyId,
-					status: query.status as AuditReviewStatus | undefined,
-					targetType: query.targetType as string | undefined,
-					limit: query.limit ? Number(query.limit) : undefined,
-					offset: query.offset ? Number(query.offset) : undefined,
+					...(query.status !== undefined
+						? { status: query.status as AuditReviewStatus }
+						: {}),
+					...(query.targetType !== undefined ? { targetType: query.targetType } : {}),
+					...(query.limit ? { limit: Number(query.limit) } : {}),
+					...(query.offset ? { offset: Number(query.offset) } : {}),
 				});
 				return ok(result);
 			} catch (error: unknown) {
@@ -247,7 +249,7 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 					category: body.category as FindingCategory,
 					severity: body.severity as FindingSeverity,
 					condition: body.condition as Record<string, unknown>,
-					createdById: body.createdById,
+					...(body.createdById !== undefined ? { createdById: body.createdById } : {}),
 				});
 				set.status = 201;
 				return ok(rule);
@@ -283,9 +285,8 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 				}
 				const rules = await listRules({
 					companyId,
-					category: query.category as string | undefined,
-					enabled:
-						query.enabled !== undefined ? query.enabled === "true" : undefined,
+					...(query.category !== undefined ? { category: query.category } : {}),
+					...(query.enabled !== undefined ? { enabled: query.enabled === "true" } : {}),
 				});
 				return ok(rules);
 			} catch (error: unknown) {
@@ -307,11 +308,17 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 		async ({ params, body, set }) => {
 			try {
 				const rule = await updateRule(params.id, {
-					name: body.name,
-					category: body.category as FindingCategory | undefined,
-					severity: body.severity as FindingSeverity | undefined,
-					condition: body.condition as Record<string, unknown> | undefined,
-					enabled: body.enabled,
+					...(body.name !== undefined ? { name: body.name } : {}),
+					...(body.category !== undefined
+						? { category: body.category as FindingCategory }
+						: {}),
+					...(body.severity !== undefined
+						? { severity: body.severity as FindingSeverity }
+						: {}),
+					...(body.condition !== undefined
+						? { condition: body.condition as Record<string, unknown> }
+						: {}),
+					...(body.enabled !== undefined ? { enabled: body.enabled } : {}),
 				});
 				if (!rule) {
 					set.status = 404;

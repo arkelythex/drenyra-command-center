@@ -147,9 +147,15 @@ export class GovernanceAuditService {
 						readString(trace?.reason) ??
 						row.sunatMessage ??
 						"Governance decision registered for SIRE submission",
-					objective: readString(trace?.objective) ?? undefined,
-					hash: readString(trace?.hash) ?? undefined,
-					decisionId: readString(trace?.decisionId) ?? undefined,
+					...(readString(trace?.objective) !== undefined
+						? { objective: readString(trace?.objective) }
+						: {}),
+					...(readString(trace?.hash) !== undefined
+						? { hash: readString(trace?.hash) }
+						: {}),
+					...(readString(trace?.decisionId) !== undefined
+						? { decisionId: readString(trace?.decisionId) }
+						: {}),
 					timestamp,
 					source: "sire_submissions",
 				});
@@ -207,9 +213,15 @@ export class GovernanceAuditService {
 							readString(trace?.reason) ??
 							readString(event.message) ??
 							"Governance decision registered for electronic invoicing",
-						objective: readString(trace?.objective) ?? undefined,
-						hash: readString(trace?.hash) ?? undefined,
-						decisionId: readString(trace?.decisionId) ?? undefined,
+						...(readString(trace?.objective) !== undefined
+							? { objective: readString(trace?.objective) }
+							: {}),
+						...(readString(trace?.hash) !== undefined
+							? { hash: readString(trace?.hash) }
+							: {}),
+						...(readString(trace?.decisionId) !== undefined
+							? { decisionId: readString(trace?.decisionId) }
+							: {}),
 						timestamp,
 						source: "transactions.tags.electronicInvoicingTrail",
 					});

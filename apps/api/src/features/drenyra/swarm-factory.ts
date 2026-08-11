@@ -20,7 +20,6 @@
 import type { Agent, LatinAgentId } from "@drenyra/pi";
 import {
 	ApprovalGateEngine,
-	ApprovalStore,
 	DomainAgent,
 	getAllRegisteredAgents,
 	LatinModernoOrchestrator,
@@ -497,16 +496,3 @@ export function getLatinAgentMapping(): Array<{
 
 // ---------------------------------------------------------------------------
 // Helpers
-// ---------------------------------------------------------------------------
-
-/**
- * Create a permissive ApprovalGateEngine that auto-approves all actions.
- * Used as default when no explicit engine is provided (e.g., in tests).
- */
-function _createPermissiveApprovalGate(): ApprovalGateEngine {
-	return new ApprovalGateEngine(new ApprovalStore(), async () => ({
-		valid: true,
-		reasons: [],
-		evidenceRefs: [],
-	}));
-}

@@ -206,7 +206,9 @@ export function getAccountingJobs(
 
 		return {
 			...job,
-			surfaceId: metadata?.surfaceId,
+			...(metadata?.surfaceId !== undefined
+				? { surfaceId: metadata.surfaceId }
+				: {}),
 			approvalRequired: metadata
 				? metadata.approvalsRequired.length > 0
 				: job.approvalRequired,

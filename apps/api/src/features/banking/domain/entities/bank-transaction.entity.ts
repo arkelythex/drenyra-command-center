@@ -366,17 +366,25 @@ export class BankTransaction {
 			accountId: this.accountId,
 			transactionDate: this.transactionDate,
 			description: this.description,
-			reference: this._reference?.getValue(),
+			...(this._reference !== undefined
+				? { reference: this._reference.getValue() }
+				: {}),
 			type: this.type,
 			amount: this._amount.getAmount().toFixed(2),
-			balance: this._balance?.getAmount().toFixed(2),
-			category: this.category,
-			tags: this.tags,
+			...(this._balance !== undefined
+				? { balance: this._balance.getAmount().toFixed(2) }
+				: {}),
+			...(this.category !== undefined ? { category: this.category } : {}),
+			...(this.tags !== undefined ? { tags: this.tags } : {}),
 			isReconciled: this._isReconciled,
-			reconciledAt: this._reconciledAt,
-			reconciledBy: this._reconciledBy,
-			invoiceId: this._invoiceId,
-			billId: this._billId,
+			...(this._reconciledAt !== undefined
+				? { reconciledAt: this._reconciledAt }
+				: {}),
+			...(this._reconciledBy !== undefined
+				? { reconciledBy: this._reconciledBy }
+				: {}),
+			...(this._invoiceId !== undefined ? { invoiceId: this._invoiceId } : {}),
+			...(this._billId !== undefined ? { billId: this._billId } : {}),
 			importedFrom: this.importedFrom,
 			createdAt: this.createdAt,
 		};

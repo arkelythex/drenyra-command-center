@@ -25,6 +25,7 @@ import {
 	PeriodCloseService,
 	TransactionalApplyUseCase,
 } from "@drenyra/application/use-cases/monthly-close";
+import type { db as DrenyraDb } from "@drenyra/persistence";
 import type { MissionEventStore } from "../sse/mission-event-store";
 import { createFiscalMemoryRecorder } from "./fiscal-memory.recorder";
 import { registerIntentHandler } from "./intent-handlers.registry";
@@ -41,7 +42,7 @@ export const MONTHLY_CLOSE_PIPELINE_FLAG = "MONTHLY_CLOSE_PIPELINE_ENABLED";
  *          (pipeline stays dormant).
  */
 export function wireMonthlyCloseHandler(
-	db: unknown,
+	db: typeof DrenyraDb,
 	eventStore: MissionEventStore,
 ): boolean {
 	if (process.env[MONTHLY_CLOSE_PIPELINE_FLAG] !== "true") {

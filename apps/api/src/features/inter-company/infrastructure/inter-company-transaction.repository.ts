@@ -133,6 +133,12 @@ class InterCompanyTransactionRepository
 				})
 				.returning();
 
+			if (!expense || !income) {
+				throw new Error(
+					"Inter-company transaction insert failed to return rows",
+				);
+			}
+
 			const [link] = await tx
 				.insert(interCompanyTransactions)
 				.values({

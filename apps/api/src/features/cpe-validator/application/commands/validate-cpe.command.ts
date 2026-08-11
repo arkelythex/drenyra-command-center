@@ -52,7 +52,7 @@ export interface ValidateCpeOutput {
 	warnings: string[];
 	durationMs: number;
 	breachDetected: boolean;
-	breachType?: string;
+	breachType?: string | undefined;
 	cacheHit: boolean;
 	targetMs: number;
 	withinTarget: boolean;
@@ -63,14 +63,14 @@ export interface ValidateCpeOutput {
 		| "sunat_replay"
 		| "visual_subagent";
 	fallbackActivated: boolean;
-	fallbackReason?: string;
+	fallbackReason?: string | undefined;
 	hitlRequired: boolean;
 	hitl?: {
 		challengeType: "captcha" | "unexpected_popup";
 		channel: "whatsapp";
 		message: string;
 		screenshotRef: string;
-	};
+	} | undefined;
 	traceSteps: string[];
 	incident: CpeIncidentInfo;
 }
@@ -116,6 +116,8 @@ export async function validateCpe(
 	if (!input.skipCache) {
 		const cached = cache.get(cpeNumber);
 		if (cached) {
+			const cachedBreachType =
+				cached.status === "BREACH_DETECTED" ? cached.errors[0]?.code : undefined;
 			return {
 				isValid: cached.isValid,
 				status: cached.status,
@@ -135,10 +137,9 @@ export async function validateCpe(
 					status: cached.status,
 					errors: cached.errors,
 					breachDetected: cached.status === "BREACH_DETECTED",
-					breachType:
-						cached.status === "BREACH_DETECTED"
-							? cached.errors[0]?.code
-							: undefined,
+					...(cachedBreachType !== undefined
+						? { breachType: cachedBreachType }
+						: {}),
 					fallbackActivated: false,
 					hitlRequired: false,
 				}),
@@ -225,10 +226,14 @@ export async function validateCpe(
 			errors: validationResult.errors,
 			sunatState: sunatValidation.response.estado,
 			breachDetected: breachDetection.detected,
-			breachType: breachDetection.type,
+			...(breachDetection.type !== undefined
+				? { breachType: breachDetection.type }
+				: {}),
 			fallbackActivated: sunatValidation.fallbackActivated,
 			hitlRequired: Boolean(sunatValidation.hitl),
-			fallbackReason: sunatValidation.fallbackReason,
+			...(sunatValidation.fallbackReason !== undefined
+				? { fallbackReason: sunatValidation.fallbackReason }
+				: {}),
 		}),
 	};
 }
@@ -247,7 +252,11 @@ function extractRucFromXml(xml: string): Ruc {
 	for (const pattern of patterns) {
 		const match = xml.match(pattern);
 		if (match) {
-			return Ruc.create(match[1]);
+			const ruc = match[1];
+			if (!ruc) {
+				throw new Error("Cannot extract RUC from XML");
+			}
+			return Ruc.create(ruc);
 		}
 	}
 

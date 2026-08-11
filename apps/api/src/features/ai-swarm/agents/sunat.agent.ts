@@ -15,7 +15,7 @@
  */
 
 import { RUC } from "@drenyra/domain";
-import { generateObject } from "ai";
+import { generateObject, type LanguageModel } from "ai";
 import { z } from "zod";
 import { createLogger } from "../../../lib/logger";
 import {
@@ -286,7 +286,7 @@ export class SUNATAgent {
 		}
 
 		const modelId = getModelForAgent("sunat");
-		const model = openrouter(modelId);
+		const model = openrouter(modelId) as unknown as LanguageModel;
 		const ragContext = buildSunatRagContext(invoice);
 
 		const prompt = `
@@ -326,7 +326,16 @@ Devuelve SOLO JSON válido, sin texto adicional.
 				temperature: 0.1,
 			});
 
-			const validation = result.object;
+			const rawValidation = result.object;
+			const validation: ValidationResult = {
+				...rawValidation,
+				warnings: rawValidation.warnings.map((w) => ({
+					field: w.field,
+					code: w.code,
+					message: w.message,
+					...(w.suggestion !== undefined ? { suggestion: w.suggestion } : {}),
+				})),
+			};
 			const tokensUsed = result.usage.totalTokens ?? 0;
 			const costUsd = estimateCost("sunat", tokensUsed);
 

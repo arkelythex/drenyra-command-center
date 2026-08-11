@@ -92,7 +92,7 @@ export function createReviewHandlers(deps: Partial<ReviewHandlersDeps> = {}) {
 				tenantScope: access.access.tenantScope,
 				id,
 				actorId,
-				correctedData,
+				...(correctedData !== undefined ? { correctedData } : {}),
 				status,
 				parseStoredExtractedData: resolvedDeps.parseStoredExtractedData,
 			});
@@ -181,7 +181,7 @@ export function createReviewHandlers(deps: Partial<ReviewHandlersDeps> = {}) {
 				id,
 				actorId,
 				status,
-				reason,
+				...(reason !== undefined ? { reason } : {}),
 			});
 
 			return {

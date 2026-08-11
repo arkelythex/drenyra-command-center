@@ -43,7 +43,9 @@ export const updateInvoiceStatusRoute = new Elysia()
 				await updateInvoiceStatus({
 					id: params.id,
 					status: body.status,
-					legacyUserId: sessionContext.context.legacyUserId ?? undefined,
+					...(sessionContext.context.legacyUserId !== undefined
+						? { legacyUserId: sessionContext.context.legacyUserId }
+						: {}),
 				});
 
 				return ok({ updated: true });

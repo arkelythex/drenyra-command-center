@@ -1,5 +1,11 @@
 import { and, desc, eq, sql } from "@drenyra/persistence/query";
-import type { ActionType } from "@drenyra/persistence/schema/automation-studio.schema";
+import type {
+	ActionType,
+	StepStatus,
+	StepType,
+	TriggerType,
+	WorkflowCategory,
+} from "@drenyra/persistence/schema/automation-studio.schema";
 import {
 	automationExecutions,
 	automationSteps,
@@ -64,7 +70,9 @@ export async function getWorkflow(
 		.limit(1);
 
 	if (row.length === 0) return null;
-	return enrichWorkflowWithSteps(row[0]);
+	const first = row[0];
+	if (!first) return null;
+	return enrichWorkflowWithSteps(first);
 }
 
 export async function createWorkflow(
@@ -76,13 +84,14 @@ export async function createWorkflow(
 		.values({
 			companyId,
 			name: body.name,
-			description: body.description,
-			category: body.category,
-			triggerType: body.triggerType,
+			description: body.description ?? null,
+			category: body.category as WorkflowCategory,
+			triggerType: body.triggerType as TriggerType,
 			triggerConfig: body.triggerConfig,
 		})
 		.returning();
 
+	if (!row) throw new Error("Failed to create workflow");
 	return enrichWorkflowWithSteps(row);
 }
 
@@ -93,7 +102,11 @@ export async function updateWorkflow(
 	const [row] = await db
 		.update(automationWorkflows)
 		.set({
-			...body,
+			name: body.name,
+			description: body.description,
+			category: body.category as WorkflowCategory,
+			triggerType: body.triggerType as TriggerType,
+			triggerConfig: body.triggerConfig,
 			updatedAt: new Date().toISOString() as unknown as Date,
 		})
 		.where(eq(automationWorkflows.id, id))
@@ -157,6 +170,7 @@ export async function duplicateWorkflow(
 	if (original.length === 0) return null;
 
 	const src = original[0];
+	if (!src) return null;
 
 	const [newWf] = await db
 		.insert(automationWorkflows)
@@ -169,6 +183,7 @@ export async function duplicateWorkflow(
 			triggerConfig: src.triggerConfig,
 		})
 		.returning();
+	if (!newWf) throw new Error("Failed to create workflow");
 
 	const steps = await db
 		.select()
@@ -207,6 +222,7 @@ export async function testWorkflow(
 			log: `[${new Date().toISOString()}] Test run started for workflow "${wf.name}"\n`,
 		})
 		.returning();
+	if (!exec) throw new Error("Failed to create execution");
 
 	const logLines: string[] = [];
 	logLines.push(
@@ -226,7 +242,7 @@ export async function testWorkflow(
 			.where(eq(automationExecutions.id, exec.id));
 
 		try {
-			const result = await executeAction(step.actionType, step.config);
+			const result = await executeAction(step.actionType as ActionType, step.config);
 			if (result.ok) {
 				logLines.push(`[${new Date().toISOString()}]   ✓ ${result.message}`);
 			} else {
@@ -293,8 +309,8 @@ export async function createStep(
 		.values({
 			workflowId: body.workflowId,
 			stepOrder: body.stepOrder,
-			stepType: body.stepType,
-			actionType: body.actionType,
+			stepType: body.stepType as StepType,
+			actionType: body.actionType as ActionType,
 			config: body.config,
 		})
 		.returning();
@@ -308,7 +324,13 @@ export async function updateStep(
 ): Promise<StepResponse | null> {
 	const [row] = await db
 		.update(automationSteps)
-		.set(body)
+		.set({
+			stepOrder: body.stepOrder,
+			stepType: body.stepType as StepType,
+			actionType: body.actionType as ActionType,
+			config: body.config,
+			status: body.status as StepStatus,
+		})
 		.where(eq(automationSteps.id, id))
 		.returning();
 
@@ -330,12 +352,14 @@ export async function reorderSteps(
 	const rows: StepResponse[] = [];
 
 	for (let i = 0; i < body.stepIds.length; i++) {
+		const stepId = body.stepIds[i];
+		if (!stepId) continue;
 		const [row] = await db
 			.update(automationSteps)
 			.set({ stepOrder: i })
 			.where(
 				and(
-					eq(automationSteps.id, body.stepIds[i]),
+					eq(automationSteps.id, stepId),
 					eq(automationSteps.workflowId, body.workflowId),
 				),
 			)
@@ -410,10 +434,10 @@ export async function getDashboardStats(
 			sql`workflow_id IN (SELECT id FROM automation_workflows WHERE company_id = ${companyId})`,
 		);
 
-	const totalExecs = Number(totalExecRows.count);
+	const totalExecs = Number(totalExecRows?.count ?? 0);
 	const successRate =
 		totalExecs > 0
-			? Math.round((Number(successRows.count) / totalExecs) * 100)
+			? Math.round((Number(successRows?.count ?? 0) / totalExecs) * 100)
 			: 0;
 
 	const recent = await db
@@ -439,7 +463,9 @@ export async function getDashboardStats(
 		workflowsByCategory[r.category] = Number(r.count);
 	}
 
+	// count rows by category below
 	const weekAgo = SEVEN_DAYS_AGO();
+	// day rows computed below
 	const dayRows = await db
 		.select({
 			date: sql<string>`DATE(started_at)`,
@@ -456,8 +482,8 @@ export async function getDashboardStats(
 		.orderBy(sql`DATE(started_at)`);
 
 	return {
-		activeWorkflows: Number(activeCount.count),
-		totalRuns: Number(totalRuns.count),
+		activeWorkflows: Number(activeCount?.count ?? 0),
+		totalRuns: Number(totalRuns?.count ?? 0),
 		successRate,
 		recentExecutions: recent.map(mapExecution),
 		workflowsByCategory,
@@ -530,13 +556,13 @@ function mapWorkflow(
 		id: row.id,
 		companyId: row.companyId,
 		name: row.name,
-		description: row.description ?? undefined,
+		...(row.description ? { description: row.description } : {}),
 		category: row.category,
 		triggerType: row.triggerType,
 		triggerConfig: row.triggerConfig,
 		status: row.status,
-		lastRunAt: row.lastRunAt?.toISOString(),
-		lastRunStatus: row.lastRunStatus ?? undefined,
+		...(row.lastRunAt ? { lastRunAt: row.lastRunAt.toISOString() } : {}),
+		...(row.lastRunStatus ? { lastRunStatus: row.lastRunStatus } : {}),
 		runCount: row.runCount,
 		errorCount: row.errorCount,
 		createdAt: row.createdAt.toISOString(),
@@ -563,13 +589,13 @@ function mapExecution(
 	return {
 		id: row.id,
 		workflowId: row.workflowId,
-		stepId: row.stepId ?? undefined,
+		...(row.stepId ? { stepId: row.stepId } : {}),
 		triggeredBy: row.triggeredBy,
 		status: row.status,
 		startedAt: row.startedAt.toISOString(),
-		completedAt: row.completedAt?.toISOString(),
-		resultSummary: row.resultSummary ?? undefined,
-		error: row.error ?? undefined,
-		log: row.log ?? undefined,
+		...(row.completedAt ? { completedAt: row.completedAt.toISOString() } : {}),
+		...(row.resultSummary ? { resultSummary: row.resultSummary } : {}),
+		...(row.error ? { error: row.error } : {}),
+		...(row.log ? { log: row.log } : {}),
 	};
 }

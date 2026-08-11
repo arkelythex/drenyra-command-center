@@ -68,14 +68,15 @@ export class ComplianceService {
 				and(eq(invoices.companyId, companyId), PENDING_SUNAT_STATUS_CLAUSE),
 			);
 
-		if (pendingSUNAT[0]?.count > 0) {
+		const pendingSUNATCount = pendingSUNAT[0]?.count ?? 0;
+		if (pendingSUNATCount > 0) {
 			issues.push({
 				id: crypto.randomUUID(),
 				companyId,
 				type: "MISSING_SUNAT",
 				severity: "HIGH",
 				title: "Invoices pending SUNAT submission",
-				description: `${pendingSUNAT[0].count} invoices have not been submitted to SUNAT`,
+				description: `${pendingSUNATCount} invoices have not been submitted to SUNAT`,
 				createdAt: new Date(),
 			});
 		}
@@ -88,14 +89,15 @@ export class ComplianceService {
 				and(eq(invoices.companyId, companyId), eq(invoices.status, "OVERDUE")),
 			);
 
-		if (overdue[0]?.count > 0) {
+		const overdueCount = overdue[0]?.count ?? 0;
+		if (overdueCount > 0) {
 			issues.push({
 				id: crypto.randomUUID(),
 				companyId,
 				type: "OVERDUE_INVOICE",
 				severity: "MEDIUM",
 				title: "Overdue invoices",
-				description: `${overdue[0].count} invoices are overdue`,
+				description: `${overdueCount} invoices are overdue`,
 				createdAt: new Date(),
 			});
 		}
@@ -111,14 +113,15 @@ export class ComplianceService {
 				),
 			);
 
-		if (invalidRUCs[0]?.count > 0) {
+		const invalidRUCCount = invalidRUCs[0]?.count ?? 0;
+		if (invalidRUCCount > 0) {
 			issues.push({
 				id: crypto.randomUUID(),
 				companyId,
 				type: "INVALID_RUC",
 				severity: "LOW",
 				title: "Invalid RUC numbers",
-				description: `${invalidRUCs[0].count} customers have invalid RUC format`,
+				description: `${invalidRUCCount} customers have invalid RUC format`,
 				createdAt: new Date(),
 			});
 		}

@@ -142,7 +142,7 @@ export function parsePeruHeaderCsv(
 			description: desc.trim(),
 			amount,
 			type,
-			reference: ref || undefined,
+			...(ref ? { reference: ref } : {}),
 		});
 	}
 

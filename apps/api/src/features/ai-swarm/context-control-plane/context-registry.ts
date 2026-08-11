@@ -36,7 +36,8 @@ function buildSurface(
 		jobId: job.id,
 		title: job.title,
 		description: job.description,
-		tenantScope: seed.tenantScope,
+		tenantScope:
+			seed.tenantScope === "portfolio" ? "portfolio" : "organization",
 		approvalsRequired: [...seed.approvalsRequired],
 		allowedTools: [...seed.allowedTools],
 		allowedCorpora: [...seed.allowedCorpora],

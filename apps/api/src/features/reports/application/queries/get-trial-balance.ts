@@ -7,13 +7,20 @@
 import { db as globalDb } from "@drenyra/persistence/client";
 import { and, eq, lte, sql } from "@drenyra/persistence/query";
 import { invoices, bills } from "@drenyra/persistence/schema";
-import type { TrialBalanceReport } from "../../reports.schemas";
 
 interface AccountEntry {
 	accountCode: string;
 	accountName: string;
 	debitBalance: string;
 	creditBalance: string;
+}
+
+interface TrialBalanceReport {
+	asOfDate: Date;
+	accounts: AccountEntry[];
+	totalDebits: string;
+	totalCredits: string;
+	generatedAt: string;
 }
 
 /**

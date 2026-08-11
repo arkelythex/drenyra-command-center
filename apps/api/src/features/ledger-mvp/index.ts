@@ -179,7 +179,18 @@ export const ledgerMvpModule = new Elysia({ prefix: "/api/ledger-mvp" })
 			}
 
 			try {
-				const result = await ledgerMvpService.runSireAutopilot(parsed.data);
+				const result = await ledgerMvpService.runSireAutopilot({
+					...parsed.data,
+					...(parsed.data.totalTolerance !== undefined
+						? { totalTolerance: parsed.data.totalTolerance }
+						: {}),
+					...(parsed.data.igvTolerance !== undefined
+						? { igvTolerance: parsed.data.igvTolerance }
+						: {}),
+					...(parsed.data.recordTolerance !== undefined
+						? { recordTolerance: parsed.data.recordTolerance }
+						: {}),
+				});
 				if (result.evidence.sunatLiveSummary.status === "unavailable") {
 					recordLedgerMvpSunatUnavailableMetric({
 						endpoint: "sire_autopilot_run",
@@ -372,7 +383,20 @@ export const ledgerMvpModule = new Elysia({ prefix: "/api/ledger-mvp" })
 			}
 
 			try {
-				const result = await ledgerMvpService.runMonitorFiscal(parsed.data);
+				const result = await ledgerMvpService.runMonitorFiscal({
+					...parsed.data,
+					...(parsed.data.sire !== undefined
+						? {
+								sire: {
+									rvieRecords: parsed.data.sire.rvieRecords,
+									rceRecords: parsed.data.sire.rceRecords,
+									...(parsed.data.sire.accepted !== undefined
+										? { accepted: parsed.data.sire.accepted }
+										: {}),
+								},
+							}
+						: {}),
+				});
 				recordLedgerMvpRequestMetric({
 					endpoint: "monitor_fiscal_run",
 					outcome: "success",

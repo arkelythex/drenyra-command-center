@@ -222,7 +222,7 @@ export async function createInvoice(input: {
 		currency: command.currency,
 		exchangeRate: command.exchangeRate,
 		items,
-		notes: command.notes,
+		...(command.notes !== undefined ? { notes: command.notes } : {}),
 	});
 
 	const savedInvoice = await invoiceRepository.create(invoice);

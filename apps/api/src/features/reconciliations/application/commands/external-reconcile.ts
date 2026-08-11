@@ -23,6 +23,8 @@ export async function externalReconcile(input: ExternalReconcileInput) {
 	return ReconciliationWorkerClient.reconcile({
 		sourceA: input.sourceA,
 		sourceB: input.sourceB,
-		toleranceCents: input.toleranceCents,
+		...(input.toleranceCents !== undefined
+			? { toleranceCents: input.toleranceCents }
+			: {}),
 	});
 }

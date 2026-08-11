@@ -1,7 +1,6 @@
 import type { Agent, LatinAgentId } from "@drenyra/pi";
 import {
 	ApprovalGateEngine,
-	ApprovalStore,
 	DomainAgent,
 	getAllRegisteredAgents,
 	LatinModernoOrchestrator,
@@ -115,13 +114,12 @@ export function createSwarmOrchestrator(
 
 export function createSwarmOrchestratorFromAgents(
 	agents: Agent[],
-	approvalGate?: ApprovalGateEngine,
+	_approvalGate?: ApprovalGateEngine,
 ): LatinModernoOrchestrator {
 	const assigned = new Set<string>();
 	const phase1DomainAgents = new Map<LatinAgentId, Agent[]>();
 	const orchestrator = new LatinModernoOrchestrator({ mode: "hierarchy" });
-	const _resolvedGate = approvalGate ?? createPermissiveApprovalGate();
-
+    
 	for (const [agentId, domainId] of Object.entries(FINANCIAL_AGENT_MAP)) {
 		const agent = agents.find((a) => a.id === agentId);
 		if (agent) {
@@ -204,12 +202,4 @@ export function getLatinAgentMapping(): Array<{
 	}
 
 	return mapping;
-}
-
-function createPermissiveApprovalGate(): ApprovalGateEngine {
-	return new ApprovalGateEngine(new ApprovalStore(), async () => ({
-		valid: true,
-		reasons: [],
-		evidenceRefs: [],
-	}));
 }

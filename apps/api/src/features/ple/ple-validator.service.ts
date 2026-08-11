@@ -14,6 +14,7 @@ import type {
 	PleValidationWarning,
 } from "./ple.types";
 
+
 // ─── Validation Options ────────────────────────────────────────────
 
 export interface PleValidationOptions {
@@ -48,6 +49,9 @@ function parseAmount(value: string): number | null {
 
 function getPeriodMonths(period: string): { start: Date; end: Date } {
 	const [year, month] = period.split("-").map(Number);
+	if (year === undefined || month === undefined) {
+		throw new Error(`Invalid period format: ${period}`);
+	}
 	const start = new Date(Date.UTC(year, month - 1, 1));
 	const end = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
 	return { start, end };
@@ -79,6 +83,13 @@ function validateHeader(
 	}
 
 	const [ruc, period, headerBookType] = parts;
+	if (ruc === undefined || period === undefined || headerBookType === undefined) {
+		errors.push({
+			code: "MISSING_HEADER",
+			message: `Header must have at least 3 pipe-delimited fields (RUC|period|bookType), got ${parts.length}`,
+		});
+		return { errors, headerRuc: "", headerPeriod: "" };
+	}
 	const headerRuc = ruc.trim();
 	const headerPeriod = period.trim();
 
@@ -123,7 +134,9 @@ function validateDiario(lines: string[], period: string): PleValidationResult {
 	let totalCredit = 0;
 
 	for (let i = 1; i < lines.length; i++) {
-		const parts = lines[i].split("|");
+		const line = lines[i];
+		if (line === undefined) continue;
+		const parts = line.split("|");
 		const lineNum = i + 1;
 
 		if (parts.length < 5) {
@@ -135,7 +148,11 @@ function validateDiario(lines: string[], period: string): PleValidationResult {
 			continue;
 		}
 
-		const [date, , accountCode, debitStr, creditStr] = parts;
+		const [dateRaw, , accountCodeRaw, debitStrRaw, creditStrRaw] = parts;
+		const date = dateRaw ?? "";
+		const accountCode = accountCodeRaw ?? "";
+		const debitStr = debitStrRaw ?? "";
+		const creditStr = creditStrRaw ?? "";
 
 		// Date validation
 		if (!isValidDate(date.trim())) {
@@ -227,7 +244,9 @@ function validateMayor(lines: string[]): PleValidationResult {
 	const warnings: PleValidationWarning[] = [];
 
 	for (let i = 1; i < lines.length; i++) {
-		const parts = lines[i].split("|");
+		const line = lines[i];
+		if (line === undefined) continue;
+		const parts = line.split("|");
 		const lineNum = i + 1;
 
 		if (parts.length < 6) {
@@ -240,13 +259,18 @@ function validateMayor(lines: string[]): PleValidationResult {
 		}
 
 		const [
-			accountCode,
+			accountCodeRaw,
 			,
-			saldoAnteriorStr,
-			debitStr,
-			creditStr,
-			saldoActualStr,
+			saldoAnteriorStrRaw,
+			debitStrRaw,
+			creditStrRaw,
+			saldoActualStrRaw,
 		] = parts;
+		const accountCode = accountCodeRaw ?? "";
+		const saldoAnteriorStr = saldoAnteriorStrRaw ?? "";
+		const debitStr = debitStrRaw ?? "";
+		const creditStr = creditStrRaw ?? "";
+		const saldoActualStr = saldoActualStrRaw ?? "";
 
 		if (!accountCode.trim()) {
 			errors.push({
@@ -305,7 +329,9 @@ function validateComprasVentas(
 	const warnings: PleValidationWarning[] = [];
 
 	for (let i = 1; i < lines.length; i++) {
-		const parts = lines[i].split("|");
+		const line = lines[i];
+		if (line === undefined) continue;
+		const parts = line.split("|");
 		const lineNum = i + 1;
 
 		if (parts.length < 9) {
@@ -317,7 +343,12 @@ function validateComprasVentas(
 			continue;
 		}
 
-		const [ruc, , , , , date, baseStr, igvStr, totalStr] = parts;
+		const [rucRaw, , , , , dateRaw, baseStrRaw, igvStrRaw, totalStrRaw] = parts;
+		const ruc = rucRaw ?? "";
+		const date = dateRaw ?? "";
+		const baseStr = baseStrRaw ?? "";
+		const igvStr = igvStrRaw ?? "";
+		const totalStr = totalStrRaw ?? "";
 
 		// RUC validation
 		if (!/^\d{11}$/.test(ruc.trim())) {
@@ -433,6 +464,13 @@ export class PleValidator {
 
 		const lines = trimmed.split("\n");
 		const headerLine = lines[0];
+		if (headerLine === undefined) {
+			return {
+				valid: false,
+				errors: [{ code: "EMPTY_CONTENT", message: "Content is empty" }],
+				warnings: [],
+			};
+		}
 
 		// Validate header
 		const headerResult = validateHeader(headerLine, bookType, options);

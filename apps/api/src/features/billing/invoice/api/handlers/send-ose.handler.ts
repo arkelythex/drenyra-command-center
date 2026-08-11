@@ -42,7 +42,16 @@ export async function handleSendInvoiceToOse(
 			);
 		}
 
-		const xmlContent = buildSendOseInvoiceXml(invoice);
+		const xmlContent = buildSendOseInvoiceXml({
+			customerId: invoice.customerId,
+			series: invoice.series,
+			correlative: invoice.correlative,
+			issueDate: invoice.issueDate,
+			dueDate: invoice.dueDate,
+			currency: invoice.currency,
+			items: invoice.items,
+			...(invoice.notes !== undefined ? { notes: invoice.notes } : {}),
+		});
 		const transactionId =
 			await ElectronicInvoicingService.resolveTransactionIdForInvoice(
 				invoiceId,

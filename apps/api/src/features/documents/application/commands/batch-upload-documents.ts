@@ -85,8 +85,12 @@ export async function batchUploadDocuments(
 			const storageUrl = await persistIncomingDocument({
 				documentStore: store,
 				documentId,
-				organizationId: tenantScope.organizationId,
-				companyId: tenantScope.companyId,
+				...(tenantScope.organizationId !== undefined
+					? { organizationId: tenantScope.organizationId }
+					: {}),
+				...(tenantScope.companyId !== undefined
+					? { companyId: tenantScope.companyId }
+					: {}),
 				file,
 				fileType,
 			});
@@ -107,8 +111,12 @@ export async function batchUploadDocuments(
 			await queueOcrJob({
 				documentId,
 				storageUrl,
-				organizationId: tenantScope.organizationId,
-				companyId: tenantScope.companyId,
+				...(tenantScope.organizationId !== undefined
+					? { organizationId: tenantScope.organizationId }
+					: {}),
+				...(tenantScope.companyId !== undefined
+					? { companyId: tenantScope.companyId }
+					: {}),
 				actorId,
 			});
 			results.push({

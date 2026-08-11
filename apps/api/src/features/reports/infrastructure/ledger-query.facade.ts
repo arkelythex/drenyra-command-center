@@ -72,18 +72,57 @@ class LedgerDbFallback implements LedgerQuery {
 		accountCode?: string,
 	): Promise<LedgerEntry[]> {
 		const { db } = await import("@drenyra/persistence/client");
-		const { eq, and, gte, lte } = await import("@drenyra/persistence/query");
+		const { and, eq, gte, lte } = await import("@drenyra/persistence/query");
+		const { journalEntries, journalEntryLines, pcgeAccounts } = await import(
+			"@drenyra/persistence/schema"
+		);
 
 		const conditions = [
-			eq(db.ledgerEntries.companyId, companyId),
-			gte(db.ledgerEntries.entryDate, startDate),
-			lte(db.ledgerEntries.entryDate, endDate),
+			eq(journalEntries.companyId, companyId),
+			gte(journalEntries.date, new Date(startDate)),
+			lte(journalEntries.date, new Date(endDate)),
 		];
-		if (accountCode) conditions.push(eq(db.ledgerEntries.accountCode, accountCode));
+		if (accountCode) {
+			conditions.push(eq(journalEntryLines.accountCode, accountCode));
+		}
 
-		return (await db.query.ledgerEntries.findMany({
-			where: and(...conditions),
-		})) as LedgerEntry[];
+		const rows = await db
+			.select({
+				id: journalEntryLines.id,
+				companyId: journalEntries.companyId,
+				accountCode: journalEntryLines.accountCode,
+				accountName: pcgeAccounts.name,
+				debitCents: journalEntryLines.debitCents,
+				creditCents: journalEntryLines.creditCents,
+				entryDate: journalEntries.date,
+				period: journalEntries.periodKey,
+				description: journalEntryLines.description,
+			})
+			.from(journalEntryLines)
+			.innerJoin(
+				journalEntries,
+				eq(journalEntryLines.journalEntryId, journalEntries.id),
+			)
+			.leftJoin(
+				pcgeAccounts,
+				and(
+					eq(pcgeAccounts.companyId, journalEntries.companyId),
+					eq(pcgeAccounts.code, journalEntryLines.accountCode),
+				),
+			)
+			.where(and(...conditions));
+
+		return rows.map((row) => ({
+			id: row.id,
+			companyId: row.companyId,
+			accountCode: row.accountCode,
+			accountName: row.accountName ?? "",
+			debitCents: row.debitCents,
+			creditCents: row.creditCents,
+			entryDate: row.entryDate.toISOString(),
+			period: row.period,
+			description: row.description,
+		}));
 	}
 
 	async getAccountBalances(
@@ -91,14 +130,45 @@ class LedgerDbFallback implements LedgerQuery {
 		asOfDate: string,
 	): Promise<AccountBalance[]> {
 		const { db } = await import("@drenyra/persistence/client");
+		const { and, eq, lte, sql } = await import("@drenyra/persistence/query");
+		const { journalEntries, journalEntryLines, pcgeAccounts } = await import(
+			"@drenyra/persistence/schema"
+		);
 
-		return (await db.query.ledgerEntries.findMany({
-			where: (t: any, { eq }: any) => eq(t.companyId, companyId),
-			columns: {
-				accountCode: true,
-				accountName: true,
-			},
-		})) as AccountBalance[];
+		const rows = await db
+			.select({
+				accountCode: journalEntryLines.accountCode,
+				accountName: pcgeAccounts.name,
+				debitBalanceCents: sql<number>`COALESCE(SUM(${journalEntryLines.debitCents}), 0)`,
+				creditBalanceCents: sql<number>`COALESCE(SUM(${journalEntryLines.creditCents}), 0)`,
+			})
+			.from(journalEntryLines)
+			.innerJoin(
+				journalEntries,
+				eq(journalEntryLines.journalEntryId, journalEntries.id),
+			)
+			.leftJoin(
+				pcgeAccounts,
+				and(
+					eq(pcgeAccounts.companyId, journalEntries.companyId),
+					eq(pcgeAccounts.code, journalEntryLines.accountCode),
+				),
+			)
+			.where(
+				and(
+					eq(journalEntries.companyId, companyId),
+					lte(journalEntries.date, new Date(asOfDate)),
+				),
+			)
+			.groupBy(journalEntryLines.accountCode, pcgeAccounts.name);
+
+		return rows.map((row) => ({
+			accountCode: row.accountCode,
+			accountName: row.accountName ?? "",
+			debitBalanceCents: row.debitBalanceCents,
+			creditBalanceCents: row.creditBalanceCents,
+			netBalanceCents: row.debitBalanceCents - row.creditBalanceCents,
+		}));
 	}
 
 	async getInterCompanyEntries(

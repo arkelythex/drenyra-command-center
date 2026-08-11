@@ -23,6 +23,10 @@ export class ReportsService {
 			})
 			.returning();
 
+		if (!report) {
+			throw new Error("Failed to generate report: no row returned");
+		}
+
 		await db
 			.update(analyticsReports)
 			.set({ status: "READY", generatedAt: new Date() })
@@ -32,7 +36,7 @@ export class ReportsService {
 			id: report.id,
 			type: report.type,
 			status: "READY",
-			period: report.period || undefined,
+			...(report.period ? { period: report.period } : {}),
 			generatedAt: new Date().toISOString(),
 			createdAt: report.createdAt.toISOString(),
 		};
@@ -50,9 +54,9 @@ export class ReportsService {
 			id: r.id,
 			type: r.type,
 			status: r.status,
-			period: r.period || undefined,
-			fileUrl: r.fileUrl || undefined,
-			generatedAt: r.generatedAt?.toISOString(),
+			...(r.period ? { period: r.period } : {}),
+			...(r.fileUrl ? { fileUrl: r.fileUrl } : {}),
+			...(r.generatedAt ? { generatedAt: r.generatedAt.toISOString() } : {}),
 			createdAt: r.createdAt.toISOString(),
 		}));
 	}

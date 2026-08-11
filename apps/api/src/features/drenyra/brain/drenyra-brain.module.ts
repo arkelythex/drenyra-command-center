@@ -85,8 +85,12 @@ export const drenyraBrainModule = new Elysia({
 				fiscalScope: scopeResolution.scope,
 				sourceSurface: body.sourceSurface as DrenyraBrainSourceSurface,
 				createdBy: headers["x-user-id"]?.trim() ?? "unknown",
-				linkedCaseId: body.linkedCaseId,
-				linkedMissionId: body.linkedMissionId,
+				...(body.linkedCaseId !== undefined
+					? { linkedCaseId: body.linkedCaseId }
+					: {}),
+				...(body.linkedMissionId !== undefined
+					? { linkedMissionId: body.linkedMissionId }
+					: {}),
 			});
 			set.status = 201;
 			return ok(thread);

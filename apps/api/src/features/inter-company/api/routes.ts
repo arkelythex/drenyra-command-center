@@ -65,9 +65,11 @@ export const interCompanyRoutes = new Elysia({ prefix: "/api/inter-company" })
 					toCompanyId: body.toCompanyId,
 					concept: body.concept,
 					amount: body.amount,
-					taxType: body.taxType,
-					detractionProfile: body.detractionProfile,
-				});
+    					taxType: body.taxType,
+    					...(body.detractionProfile !== undefined
+    						? { detractionProfile: body.detractionProfile }
+    						: {}),
+    				});
 				return ok({
 					...result,
 					message: "✅ Transacciones inter-compañía creadas automáticamente",
@@ -96,33 +98,41 @@ export const interCompanyRoutes = new Elysia({ prefix: "/api/inter-company" })
 				const offset =
 					query.offset !== undefined ? Number(query.offset) : undefined;
 				const { dateFrom, dateTo } = parseAuditDateRange({
-					dateFrom: query.dateFrom,
-					dateTo: query.dateTo,
+					...(query.dateFrom !== undefined ? { dateFrom: query.dateFrom } : {}),
+					...(query.dateTo !== undefined ? { dateTo: query.dateTo } : {}),
 				});
 
-				const audit = await getDetractionAuditHandler.execute({
-					economicGroupId: query.economicGroupId,
-					detractionProfile: query.detractionProfile,
-					detractionRuleCode: query.detractionRuleCode,
-					dateFrom,
-					dateTo,
-					limit,
-					offset,
-					sortBy: query.sortBy,
-					sortDir: query.sortDir,
-				});
+    				const audit = await getDetractionAuditHandler.execute({
+    					economicGroupId: query.economicGroupId,
+    					...(query.detractionProfile !== undefined
+    						? { detractionProfile: query.detractionProfile }
+    						: {}),
+    					...(query.detractionRuleCode !== undefined
+    						? { detractionRuleCode: query.detractionRuleCode }
+    						: {}),
+    					...(dateFrom !== undefined ? { dateFrom } : {}),
+    					...(dateTo !== undefined ? { dateTo } : {}),
+    					...(limit !== undefined ? { limit } : {}),
+    					...(offset !== undefined ? { offset } : {}),
+    					...(query.sortBy !== undefined ? { sortBy: query.sortBy } : {}),
+    					...(query.sortDir !== undefined ? { sortDir: query.sortDir } : {}),
+    				});
 
-				const fingerprint = buildAuditQueryFingerprint({
-					economicGroupId: query.economicGroupId,
-					detractionProfile: query.detractionProfile,
-					detractionRuleCode: query.detractionRuleCode,
-					dateFrom: query.dateFrom,
-					dateTo: query.dateTo,
-					limit,
-					offset,
-					sortBy: query.sortBy,
-					sortDir: query.sortDir,
-				});
+    				const fingerprint = buildAuditQueryFingerprint({
+    					economicGroupId: query.economicGroupId,
+    					...(query.detractionProfile !== undefined
+    						? { detractionProfile: query.detractionProfile }
+    						: {}),
+    					...(query.detractionRuleCode !== undefined
+    						? { detractionRuleCode: query.detractionRuleCode }
+    						: {}),
+    					...(query.dateFrom !== undefined ? { dateFrom: query.dateFrom } : {}),
+    					...(query.dateTo !== undefined ? { dateTo: query.dateTo } : {}),
+    					...(limit !== undefined ? { limit } : {}),
+    					...(offset !== undefined ? { offset } : {}),
+    					...(query.sortBy !== undefined ? { sortBy: query.sortBy } : {}),
+    					...(query.sortDir !== undefined ? { sortDir: query.sortDir } : {}),
+    				});
 
 				if (query.format === "csv") {
 					const csv = buildDetractionAuditCsv(

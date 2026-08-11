@@ -41,7 +41,24 @@ export const pseComplianceRoutes = new Elysia({
 }).post(
 	"/validate",
 	async ({ body }) => {
-		const result = await service.validate(body);
+		const result = await service.validate({
+			companyId: body.companyId,
+			period: body.period,
+			ruc: body.ruc,
+			ple: body.ple,
+			pdt: body.pdt,
+			...(body.sire !== undefined
+				? {
+						sire: {
+							rvieRecords: body.sire.rvieRecords,
+							rceRecords: body.sire.rceRecords,
+							...(body.sire.accepted !== undefined
+								? { accepted: body.sire.accepted }
+								: {}),
+						},
+				  }
+				: {}),
+		});
 		return {
 			success: true,
 			data: result,

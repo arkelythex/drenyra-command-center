@@ -67,8 +67,12 @@ export async function uploadDocument(
 	const storageUrl = await persistIncomingDocument({
 		documentStore: store,
 		documentId,
-		organizationId: tenantScope.organizationId,
-		companyId: tenantScope.companyId,
+		...(tenantScope.organizationId !== undefined
+			? { organizationId: tenantScope.organizationId }
+			: {}),
+		...(tenantScope.companyId !== undefined
+			? { companyId: tenantScope.companyId }
+			: {}),
 		file,
 		fileType,
 	});
@@ -92,8 +96,12 @@ export async function uploadDocument(
 	await queueOcrJob({
 		documentId,
 		storageUrl,
-		organizationId: tenantScope.organizationId,
-		companyId: tenantScope.companyId,
+		...(tenantScope.organizationId !== undefined
+			? { organizationId: tenantScope.organizationId }
+			: {}),
+		...(tenantScope.companyId !== undefined
+			? { companyId: tenantScope.companyId }
+			: {}),
 		actorId,
 	});
 

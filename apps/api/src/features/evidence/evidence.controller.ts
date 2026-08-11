@@ -1,7 +1,6 @@
 import {
 	GetEvidenceHandler,
 	GetEvidenceTimelineHandler,
-	ListPendingClassificationHandler,
 	RegisterEvidenceHandler,
 } from "@drenyra/application/features/evidence";
 import { evidenceRepository } from "./infrastructure/evidence-repository.adapter";
@@ -14,7 +13,6 @@ import type {
 const registerHandler = new RegisterEvidenceHandler(evidenceRepository);
 const getEvidenceHandler = new GetEvidenceHandler(evidenceRepository);
 const timelineHandler = new GetEvidenceTimelineHandler(evidenceRepository);
-const _listHandler = new ListPendingClassificationHandler(evidenceRepository);
 
 export const evidenceController = {
 	async upload(body: UploadEvidenceBody) {
@@ -24,21 +22,21 @@ export const evidenceController = {
 	async list(query: EvidenceListQuery) {
 		const all = await evidenceRepository.findAll({
 			organizationId: query.organizationId,
-			status: query.status,
-			evidenceType: query.evidenceType,
-			source: query.source,
-			dateFrom: query.dateFrom ? new Date(query.dateFrom) : undefined,
-			dateTo: query.dateTo ? new Date(query.dateTo) : undefined,
-			limit: query.limit,
-			offset: query.offset,
+			...(query.status !== undefined ? { status: query.status } : {}),
+			...(query.evidenceType !== undefined ? { evidenceType: query.evidenceType } : {}),
+			...(query.source !== undefined ? { source: query.source } : {}),
+			...(query.dateFrom ? { dateFrom: new Date(query.dateFrom) } : {}),
+			...(query.dateTo ? { dateTo: new Date(query.dateTo) } : {}),
+			...(query.limit !== undefined ? { limit: query.limit } : {}),
+			...(query.offset !== undefined ? { offset: query.offset } : {}),
 		});
 		const total = await evidenceRepository.count({
 			organizationId: query.organizationId,
-			status: query.status,
-			evidenceType: query.evidenceType,
-			source: query.source,
-			dateFrom: query.dateFrom ? new Date(query.dateFrom) : undefined,
-			dateTo: query.dateTo ? new Date(query.dateTo) : undefined,
+			...(query.status !== undefined ? { status: query.status } : {}),
+			...(query.evidenceType !== undefined ? { evidenceType: query.evidenceType } : {}),
+			...(query.source !== undefined ? { source: query.source } : {}),
+			...(query.dateFrom ? { dateFrom: new Date(query.dateFrom) } : {}),
+			...(query.dateTo ? { dateTo: new Date(query.dateTo) } : {}),
 		});
 		const items = all.map((e) => ({
 			id: e.id,

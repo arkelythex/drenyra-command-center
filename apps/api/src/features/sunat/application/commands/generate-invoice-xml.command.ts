@@ -48,11 +48,13 @@ export async function generateInvoiceXml(
 				businessName: invoice.company.businessName,
 				address: invoice.company.address || "Sin dirección",
 			},
-			customer: {
-				taxId: invoice.customer.taxId,
-				legalName: invoice.customer.legalName,
-				address: undefined,
-			},
+    			customer: {
+    				taxId: invoice.customer.taxId,
+    				legalName: invoice.customer.legalName,
+    				...(invoice.customer.address != null
+    					? { address: invoice.customer.address }
+    					: {}),
+    			},
 			items: invoice.items.map((item) => ({
 				description: item.description,
 				quantity: Number(item.quantity),

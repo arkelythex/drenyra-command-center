@@ -198,11 +198,13 @@ export class BankAccount {
 			accountNumber: this._accountNumber.getValue(),
 			accountType: this.accountType,
 			bankName: this.bankName,
-			bankCode: this.bankCode,
-			branch: this.branch,
+			...(this.bankCode !== undefined ? { bankCode: this.bankCode } : {}),
+			...(this.branch !== undefined ? { branch: this.branch } : {}),
 			currency: this.currency,
 			currentBalance: this._currentBalance.getAmount().toFixed(2),
-			availableBalance: this._availableBalance?.getAmount().toFixed(2),
+			...(this._availableBalance !== undefined
+				? { availableBalance: this._availableBalance.getAmount().toFixed(2) }
+				: {}),
 			isActive: this._isActive,
 			isDefault: this._isDefault,
 			createdAt: this.createdAt,

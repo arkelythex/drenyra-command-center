@@ -153,7 +153,9 @@ export const taxationModule = new Elysia({ prefix: "/api/taxation" })
 			try {
 				const result = await getPendingRetentions({
 					companyId: query.companyId,
-					declarationPeriod: query.declarationPeriod,
+					...(query.declarationPeriod !== undefined
+						? { declarationPeriod: query.declarationPeriod }
+						: {}),
 				});
 				return ok(result);
 			} catch (error: unknown) {
@@ -328,7 +330,9 @@ export const taxationModule = new Elysia({ prefix: "/api/taxation" })
 			try {
 				const result = await getPendingPercepciones({
 					companyId: query.companyId,
-					declarationPeriod: query.declarationPeriod,
+					...(query.declarationPeriod !== undefined
+						? { declarationPeriod: query.declarationPeriod }
+						: {}),
 				});
 				return ok(result);
 			} catch (error: unknown) {

@@ -106,7 +106,7 @@ export class ElectronicInvoicingService {
 			status,
 			source: "SUNAT",
 			message: sunatMessage,
-			at: payload.occurredAt,
+			...(payload.occurredAt !== undefined ? { at: payload.occurredAt } : {}),
 			metadata: {
 				invoiceNumber: payload.invoiceNumber,
 				sunatCode: payload.sunatCode,
@@ -115,8 +115,10 @@ export class ElectronicInvoicingService {
 			},
 		});
 		await CpeLifecycleService.updateStatus(transaction.id, status, {
-			cdrContent: payload.cdrContent,
-			sunatCode: payload.sunatCode,
+			...(payload.cdrContent !== undefined
+				? { cdrContent: payload.cdrContent }
+				: {}),
+			...(payload.sunatCode !== undefined ? { sunatCode: payload.sunatCode } : {}),
 			sunatMessage,
 		});
 
@@ -218,11 +220,14 @@ export class ElectronicInvoicingService {
 			companyId,
 		);
 		if (invoiceCandidates.length === 1) {
-			const scopedMatch =
-				await ElectronicInvoicingService.findTransactionForInvoiceMatch(
-					invoiceCandidates[0],
-				);
-			if (scopedMatch) return scopedMatch;
+			const candidate = invoiceCandidates[0];
+			if (candidate) {
+				const scopedMatch =
+					await ElectronicInvoicingService.findTransactionForInvoiceMatch(
+						candidate,
+					);
+				if (scopedMatch) return scopedMatch;
+			}
 		}
 		if (invoiceCandidates.length > 1) return null;
 		const candidates = await CpeRepository.findTransactionsByCompanyAndSeries(

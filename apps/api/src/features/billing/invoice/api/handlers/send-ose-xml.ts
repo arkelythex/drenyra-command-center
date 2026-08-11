@@ -71,7 +71,7 @@ export function buildSendOseInvoiceXml(
 					),
 				),
 		),
-		notes: invoice.notes,
+		...(invoice.notes !== undefined ? { notes: invoice.notes } : {}),
 	});
 }
 

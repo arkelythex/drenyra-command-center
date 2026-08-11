@@ -182,6 +182,10 @@ export async function createInvitation(
 		})
 		.returning();
 
+	if (!invitation) {
+		return fail("Failed to create invitation", "INTERNAL_ERROR");
+	}
+
 	ctx.set.status = 201;
 	logger.info({ invitationId: invitation.id, companyId }, "Invitation created");
 

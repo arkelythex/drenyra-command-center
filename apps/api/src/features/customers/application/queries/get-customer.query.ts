@@ -46,7 +46,7 @@ export interface GetCustomerResult {
 		dueDate: Date;
 		totalAmount: number;
 		status: string;
-	}>;
+	}> | undefined;
 }
 
 /**

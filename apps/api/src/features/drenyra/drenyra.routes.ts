@@ -27,16 +27,6 @@ import { createAllAgents } from "./agents";
 import { drenyraBrainModule } from "./brain";
 import { createDrenyraCommandEnvelopeRoutes } from "./drenyra-command-envelope.routes";
 
-interface DrenyraToolAuthorizationInput {
-	agent: string;
-	toolName: string;
-	context: AgentContext & {
-		fiscalPeriod?: string;
-		capabilityGrant?: string;
-		redactionOk?: boolean;
-	};
-}
-
 const approvalStore = new ApprovalStore();
 const eventBus = new AgentEventBus();
 const intentDetector = new IntentDetector();
@@ -302,7 +292,9 @@ function evaluateRouteCapability(input: {
 			},
 			redactionOk:
 				readOptionalHeader(input.headers, "x-drenyra-redaction-ok") === "true",
-			approvalId: input.approvalId,
+			...(input.approvalId !== undefined
+				? { approvalId: input.approvalId }
+				: {}),
 		},
 		grants: resolveDrenyraCapabilityGrant(
 			input.headers,
@@ -329,86 +321,6 @@ function assertRouteCapability(
 	}
 	set.status = 403;
 	return { ok: false, response: capabilityDenied(evaluation) };
-}
-
-function mapChatToolCapability(input: {
-	agent: string;
-	toolName: string;
-}): { agentType: DrenyraAgentType; toolId: DrenyraToolId } | null {
-	if (input.agent !== "compliance") return null;
-	if (input.toolName === "calculate_igv") {
-		return { agentType: "FISCAL_REVIEWER_AGENT", toolId: "calculate_igv" };
-	}
-	if (input.toolName === "validate_cpe") {
-		return { agentType: "CPE_AGENT", toolId: "validate_cpe" };
-	}
-	if (input.toolName === "get_tax_calendar") {
-		return { agentType: "FISCAL_REVIEWER_AGENT", toolId: "get_tax_calendar" };
-	}
-	if (input.toolName === "submit_sire") {
-		return { agentType: "SIRE_AGENT", toolId: "submit_sunat_sire" };
-	}
-	return { agentType: "FISCAL_REVIEWER_AGENT", toolId: "promote_fiscal_truth" };
-}
-
-function _authorizeDrenyraChatTool(input: DrenyraToolAuthorizationInput) {
-	const capability = mapChatToolCapability({
-		agent: input.agent,
-		toolName: input.toolName,
-	});
-	if (!capability) return { ok: true as const, data: undefined };
-	const period = input.context.fiscalPeriod;
-	if (!input.context.ruc || !period) {
-		return {
-			ok: false as const,
-			error: "Drenyra chat fiscal tools require RUC and fiscal period",
-			code: "TENANT_CONTEXT_REQUIRED",
-		};
-	}
-	const evaluation = evaluateDrenyraCapability({
-		request: {
-			agentType: capability.agentType,
-			toolId: capability.toolId,
-			scope: {
-				companyId: input.context.companyId,
-				companyRuc: input.context.ruc,
-				organizationId: input.context.organizationId,
-				period,
-				countryCode: "PE",
-			},
-			redactionOk: input.context.redactionOk === true,
-		},
-		grants:
-			input.context.capabilityGrant === "scoped"
-				? [
-						{
-							agentType: capability.agentType,
-							toolId: capability.toolId,
-							scope: {
-								companyId: input.context.companyId,
-								companyRuc: input.context.ruc,
-								organizationId: input.context.organizationId,
-								period,
-								countryCode: "PE",
-							},
-							grantedBy: input.context.userId,
-							grantedAt: new Date(0).toISOString(),
-						},
-					]
-				: [],
-	});
-	if (evaluation.decision === "allowed")
-		return { ok: true as const, data: undefined };
-	return {
-		ok: false as const,
-		error: "Drenyra capability denied",
-		code: "DRENYRA_CAPABILITY_DENIED",
-		details: {
-			reason: evaluation.reason,
-			auditEventType: evaluation.auditEventType,
-			policy: evaluation.policy,
-		},
-	};
 }
 
 function commandCenterError(error: unknown) {

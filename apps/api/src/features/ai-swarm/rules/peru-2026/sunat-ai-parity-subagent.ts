@@ -323,7 +323,7 @@ export function mapParityAlertsToValidation(alerts: SunatParityAlert[]): {
 			field: alert.field,
 			code: alert.code,
 			message: `${alert.message} Reglas: ${alert.relatedRuleIds.join(", ") || "N/A"}`,
-			suggestion: alert.suggestion,
+			...(alert.suggestion !== undefined ? { suggestion: alert.suggestion } : {}),
 		});
 	}
 

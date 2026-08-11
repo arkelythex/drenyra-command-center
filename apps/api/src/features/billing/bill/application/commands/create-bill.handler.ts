@@ -69,8 +69,8 @@ export class CreateBillHandler {
 			currency: command.currency,
 			exchangeRate: command.exchangeRate,
 			items,
-			notes: command.notes,
-			tags: command.tags,
+			...(command.notes !== undefined ? { notes: command.notes } : {}),
+			...(command.tags !== undefined ? { tags: command.tags } : {}),
 		});
 
 		const savedBill = await this.billRepository.create(bill);
@@ -118,7 +118,7 @@ export class CreateBillHandler {
 
 			return {
 				id: randomUUID(),
-				productId: input.productId,
+				...(input.productId !== undefined ? { productId: input.productId } : {}),
 				description: input.description,
 				quantity,
 				unitPrice,

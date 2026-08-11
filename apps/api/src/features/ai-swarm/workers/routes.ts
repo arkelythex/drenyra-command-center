@@ -4,7 +4,7 @@
  * @module apps/api/src/features/ai-swarm/workers/routes
  */
 
-import { type CreateTaskDTO, queueManager } from "@drenyra/pi";
+import { queueManager } from "@drenyra/pi";
 import { Elysia, t } from "elysia";
 import { authorizeAiSurface } from "../../security/ai-surface-access";
 import type { SecurityOperation } from "../../security/rbac-policy";
@@ -46,7 +46,9 @@ async function authorizeAiWorkerRequest(input: {
 		headers: input.headers,
 		operation: input.operation,
 		resource: input.resource,
-		requestedCompanyId: input.requestedCompanyId,
+		...(input.requestedCompanyId !== undefined
+			? { requestedCompanyId: input.requestedCompanyId }
+			: {}),
 	});
 
 	if (!access.ok) {
@@ -85,7 +87,7 @@ const enqueueRoute = new Elysia().post(
 				headers: headers as Record<string, unknown>,
 				operation: "cognitive:approval:resolve",
 				resource: "/api/ai-workers/enqueue",
-				requestedCompanyId: body.companyId,
+				...(body.companyId !== undefined ? { requestedCompanyId: body.companyId } : {}),
 				set,
 			});
 			if (isAuthFailure(access)) return access;
@@ -95,7 +97,7 @@ const enqueueRoute = new Elysia().post(
 				return failTenantMismatch();
 			}
 
-			const taskDTO: CreateTaskDTO = {
+			const taskDTO = {
 				companyId: access.companyId,
 				userId: body.userId || access.userId,
 				type: body.type,
@@ -195,7 +197,7 @@ const listRoute = new Elysia().get(
 				headers: headers as Record<string, unknown>,
 				operation: "cognitive:state:read",
 				resource: "/api/ai-workers/list",
-				requestedCompanyId: query.companyId,
+				...(query.companyId !== undefined ? { requestedCompanyId: query.companyId } : {}),
 				set,
 			});
 			if (isAuthFailure(access)) return access;

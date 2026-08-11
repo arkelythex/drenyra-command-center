@@ -11,6 +11,18 @@ import type {
 
 const ERROR_PREFIX = "DIFF";
 
+// Map legacy entity statuses onto the FEOS DiffStatus vocabulary used by DTOs.
+function toDtoStatus(status: AccountingDiff["status"]): DiffDTO["status"] {
+	switch (status) {
+		case "approved":
+			return "approved";
+		case "rejected":
+			return "rejected";
+		case "pending":
+		case "info_requested":
+			return "under_review";
+	}
+}
 const ErrorCodes = {
 	NOT_FOUND: `${ERROR_PREFIX}_NOT_FOUND`,
 	INVALID_TRANSITION: `${ERROR_PREFIX}_INVALID_TRANSITION`,
@@ -82,7 +94,11 @@ class InMemoryStore {
 			this.decisions.get(id)?.push({
 				action: updated.status,
 				reviewerId: updated.reviewerId ?? "unknown",
-				comment: updated.rejectionReason ?? updated.pendingQuestion,
+				...(updated.rejectionReason !== undefined
+					? { comment: updated.rejectionReason }
+					: updated.pendingQuestion !== undefined
+						? { comment: updated.pendingQuestion }
+						: {}),
 				timestamp: updated.updatedAt.toISOString(),
 			});
 		}
@@ -245,7 +261,7 @@ export class DiffsService {
 			threadId: diff.threadId,
 			title: diff.title,
 			type: diff.type,
-			status: diff.status,
+			status: toDtoStatus(diff.status),
 			priority: store.getQueueById(diff.id)?.priority ?? "medium",
 			riskScore: diff.impact.riskScore,
 			confidence: diff.impact.confidence,
@@ -261,9 +277,13 @@ export class DiffsService {
 			changes: diff.changes as DiffChangeDTO[],
 			impact: diff.impact as DiffImpactDTO,
 			evidenceIds: [...diff.evidenceIds],
-			reviewerId: diff.reviewerId,
-			rejectionReason: diff.rejectionReason,
-			pendingQuestion: diff.pendingQuestion,
+			...(diff.reviewerId !== undefined ? { reviewerId: diff.reviewerId } : {}),
+			...(diff.rejectionReason !== undefined
+				? { rejectionReason: diff.rejectionReason }
+				: {}),
+			...(diff.pendingQuestion !== undefined
+				? { pendingQuestion: diff.pendingQuestion }
+				: {}),
 			decisions: store.getDecisions(diff.id),
 		};
 	}

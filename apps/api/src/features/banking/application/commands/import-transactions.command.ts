@@ -42,7 +42,7 @@ export async function importTransactions(
 				accountId: cmd.accountId,
 				transactionDate: row.date,
 				description: row.description,
-				reference: row.reference,
+				...(row.reference !== undefined ? { reference: row.reference } : {}),
 				type: row.type,
 				amount: row.amount,
 				importedFrom: cmd.source,

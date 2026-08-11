@@ -327,7 +327,7 @@ export class BankingRepository implements IBankingRepository {
 	}
 
 	private formatDate(date: Date): string {
-		return date.toISOString().split("T")[0];
+		return date.toISOString().split("T")[0] ?? "";
 	}
 
 	private async resolveCompanyIdByAccountId(

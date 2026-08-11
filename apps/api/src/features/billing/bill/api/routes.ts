@@ -79,10 +79,12 @@ export const billRoutes = new Elysia({ prefix: "/api/bills" })
 					dueDate: new Date(body.dueDate),
 					currency: body.currency ?? "PEN",
 					exchangeRate: body.exchangeRate ?? 1.0,
-					notes: body.notes,
-					tags: body.tags,
+					...(body.notes !== undefined ? { notes: body.notes } : {}),
+					...(body.tags !== undefined ? { tags: body.tags } : {}),
 					items: body.items.map((item) => ({
-						productId: item.productId,
+						...(item.productId !== undefined
+							? { productId: item.productId }
+							: {}),
 						description: item.description,
 						quantity: item.quantity,
 						unitPrice: item.unitPrice,
@@ -134,11 +136,11 @@ export const billRoutes = new Elysia({ prefix: "/api/bills" })
 			try {
 				const result = await listBills({
 					companyId: query.companyId,
-					status: query.status,
-					vendorId: query.vendorId,
-					startDate: query.startDate ? new Date(query.startDate) : undefined,
-					endDate: query.endDate ? new Date(query.endDate) : undefined,
-					search: query.search,
+					...(query.status !== undefined ? { status: query.status } : {}),
+					...(query.vendorId !== undefined ? { vendorId: query.vendorId } : {}),
+					...(query.startDate ? { startDate: new Date(query.startDate) } : {}),
+					...(query.endDate ? { endDate: new Date(query.endDate) } : {}),
+					...(query.search !== undefined ? { search: query.search } : {}),
 					limit: query.limit ? Number(query.limit) : 20,
 					offset: query.offset ? Number(query.offset) : 0,
 				});
@@ -253,9 +255,9 @@ export const billRoutes = new Elysia({ prefix: "/api/bills" })
 					at: new Date().toISOString(),
 					from: existing.status,
 					to: body.status,
-					actorId: legacyUserId,
-					actorName: body.actorName,
-					reason: body.reason,
+					...(legacyUserId !== undefined ? { actorId: legacyUserId } : {}),
+					...(body.actorName !== undefined ? { actorName: body.actorName } : {}),
+					...(body.reason !== undefined ? { reason: body.reason } : {}),
 					approvalState: deriveApprovalState(body.status),
 				});
 
@@ -358,9 +360,9 @@ export const billRoutes = new Elysia({ prefix: "/api/bills" })
 					billId: params.id,
 					amount: body.amount,
 					currency: body.currency,
-					legacyUserId,
-					actorName: body.actorName,
-					reason: body.reason,
+					...(legacyUserId !== undefined ? { legacyUserId } : {}),
+					...(body.actorName !== undefined ? { actorName: body.actorName } : {}),
+					...(body.reason !== undefined ? { reason: body.reason } : {}),
 				});
 
 				const persisted = await repository.findById(updated.id);

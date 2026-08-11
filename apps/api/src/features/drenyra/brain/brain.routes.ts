@@ -117,7 +117,7 @@ export function createDrenyraBrainModule(
 		repository,
 		now: () => new Date().toISOString(),
 		id: (prefix) => `${prefix}_${crypto.randomUUID()}`,
-		evidenceBridge,
+		...(evidenceBridge !== undefined ? { evidenceBridge } : {}),
 	});
 
 	return new Elysia({ prefix: "/api/drenyra/brain", name: "drenyra-brain" })
@@ -147,12 +147,16 @@ export function createDrenyraBrainModule(
 					return tenantContextRequired(context);
 				}
 
-				const thread = await service.createThread({
-					title: body.title,
-					sourceSurface: body.sourceSurface,
-					linkedCaseId: body.linkedCaseId,
-					linkedMissionId: body.linkedMissionId,
-					createdBy: context.userId!,
+    				const thread = await service.createThread({
+    					title: body.title,
+    					sourceSurface: body.sourceSurface,
+    					...(body.linkedCaseId !== undefined
+    						? { linkedCaseId: body.linkedCaseId }
+    						: {}),
+    					...(body.linkedMissionId !== undefined
+    						? { linkedMissionId: body.linkedMissionId }
+    						: {}),
+    					createdBy: context.userId!,
 					fiscalScope: {
 						organizationId: context.organizationId!,
 						companyId: context.companyId!,

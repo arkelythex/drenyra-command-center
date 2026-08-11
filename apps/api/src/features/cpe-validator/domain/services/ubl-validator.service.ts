@@ -74,8 +74,8 @@ export interface UblValidationResult {
 	isValid: boolean;
 	errors: ValidationError[];
 	warnings: string[];
-	xsdValid?: boolean;
-	xsdErrors?: Array<{ code: string; message: string; path: string }>;
+	xsdValid?: boolean | undefined;
+	xsdErrors?: Array<{ code: string; message: string; path: string }> | undefined;
 }
 
 /**

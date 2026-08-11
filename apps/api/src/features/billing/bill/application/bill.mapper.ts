@@ -55,8 +55,8 @@ export class BillMapper {
 			items: bill.items.map((item) =>
 				BillMapper.toItemDTO(item, bill.currency),
 			),
-			notes: bill.notes,
-			tags: bill.tags,
+			...(bill.notes !== undefined ? { notes: bill.notes } : {}),
+			...(bill.tags !== undefined ? { tags: bill.tags } : {}),
 			createdAt: bill.createdAt,
 			updatedAt: bill.updatedAt,
 		};
@@ -68,7 +68,7 @@ export class BillMapper {
 	private static toItemDTO(item: BillItem, currency: Currency): BillItemDTO {
 		return {
 			id: item.id,
-			productId: item.productId,
+			...(item.productId !== undefined ? { productId: item.productId } : {}),
 			description: item.description,
 			quantity: item.quantity,
 			unitPrice: {

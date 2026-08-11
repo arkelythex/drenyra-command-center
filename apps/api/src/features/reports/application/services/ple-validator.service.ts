@@ -19,7 +19,9 @@ export function validateStructural(
 	const expectedFields = getExpectedFieldCount(bookType);
 
 	for (let i = 0; i < dataLines.length; i++) {
-		const fields = dataLines[i].split("|");
+		const line = dataLines[i];
+		if (line === undefined) continue;
+		const fields = line.split("|");
 
 		if (fields.length !== expectedFields) {
 			errors.push({
@@ -59,7 +61,9 @@ export function validateAccounting(
 	const dataLines = lines.filter((l) => !l.startsWith("|") && !l.startsWith("TOTAL"));
 
 	for (let i = 0; i < dataLines.length; i++) {
-		const fields = dataLines[i].split("|");
+		const line = dataLines[i];
+		if (line === undefined) continue;
+		const fields = line.split("|");
 		if (fields.length >= 12) {
 			const debit = parseInt(fields[10]?.replace(/\D/g, "") || "0", 10);
 			const credit = parseInt(fields[11]?.replace(/\D/g, "") || "0", 10);

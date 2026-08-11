@@ -48,7 +48,8 @@ export async function verifyHashChain(
 	// Verify each log's hash
 	for (let i = 0; i < logs.length; i++) {
 		const log = logs[i];
-
+		if (!log) continue;
+    
 		const isValid = await verifyHash(
 			{
 				id: log.id,
@@ -69,7 +70,7 @@ export async function verifyHashChain(
 		}
 
 		// Verify chain link
-		if (i > 0 && log.hashChain.prevHash !== logs[i - 1].hashChain.hash) {
+		if (i > 0 && log.hashChain.prevHash !== logs[i - 1]!.hashChain.hash) {
 			return {
 				isValid: false,
 				brokenAt: i,

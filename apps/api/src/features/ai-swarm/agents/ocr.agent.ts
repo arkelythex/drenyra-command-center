@@ -7,7 +7,7 @@
  * @module ai-swarm/agents
  */
 
-import { generateObject } from "ai";
+import { generateObject, type LanguageModel } from "ai";
 import { z } from "zod";
 import {
 	estimateCost,
@@ -88,7 +88,7 @@ export class OCRAgent {
 
 		try {
 			const modelId = getModelForAgent("ocr");
-			const model = openrouter(modelId);
+			const model = openrouter(modelId) as unknown as LanguageModel;
 
 			const prompt = `
 Eres un experto en OCR de facturas electrónicas peruanas.

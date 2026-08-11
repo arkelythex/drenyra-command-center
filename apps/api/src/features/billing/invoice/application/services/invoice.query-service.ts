@@ -284,6 +284,7 @@ export class InvoiceQueryService {
 		if (!match) return null;
 
 		const series = match[1];
+		if (!series) return null;
 		const correlative = Number.parseInt(match[2] ?? "", 10);
 		if (!Number.isFinite(correlative)) return null;
 

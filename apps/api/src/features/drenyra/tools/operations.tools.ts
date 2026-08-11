@@ -44,9 +44,9 @@ export const createCustomerTool: AgentTool = {
 			companyId: context.companyId,
 			legalName: inp.legalName,
 			taxId: inp.taxId,
-			email: inp.email,
-			phone: inp.phone,
-			address: inp.address,
+			...(inp.email !== undefined ? { email: inp.email } : {}),
+			...(inp.phone !== undefined ? { phone: inp.phone } : {}),
+			...(inp.address !== undefined ? { address: inp.address } : {}),
 			creditDays: inp.creditDays,
 			creditLimit: inp.creditLimit,
 		});
@@ -136,7 +136,7 @@ export const createVendorTool: AgentTool = {
 			companyId: context.companyId,
 			legalName: inp.legalName,
 			taxId: inp.taxId,
-			email: inp.email,
+			...(inp.email !== undefined ? { email: inp.email } : {}),
 		});
 		return { id: vendor.id, legalName: vendor.legalName, taxId: vendor.taxId };
 	},
@@ -208,7 +208,7 @@ export const createProductTool: AgentTool = {
 			name: inp.name,
 			sku: inp.sku,
 			unitPrice: String(inp.unitPrice),
-			category: inp.category,
+			...(inp.category !== undefined ? { category: inp.category } : {}),
 		});
 		return { id: product.id, name: product.name, sku: String(product.sku) };
 	},

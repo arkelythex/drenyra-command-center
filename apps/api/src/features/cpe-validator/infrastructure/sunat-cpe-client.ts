@@ -43,10 +43,10 @@ export interface SunatCpeValidationRequest {
 export interface SunatCpeValidationResponse {
 	success: boolean;
 	estado: "ACEPTADO" | "OBSERVADO" | "RECHAZADO" | "ANULADO" | "NO_EXISTE";
-	mensaje?: string;
-	codigoRespuesta?: string;
-	observaciones?: string[];
-	mode?: SunatCpeValidationMode;
+	mensaje?: string | undefined;
+	codigoRespuesta?: string | undefined;
+	observaciones?: string[] | undefined;
+	mode?: SunatCpeValidationMode | undefined;
 }
 
 type SunatCpeValidationMode = "sandbox" | "replay" | "real";

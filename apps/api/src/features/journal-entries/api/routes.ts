@@ -45,9 +45,11 @@ export const journalEntryRoutes = new Elysia({
 							| "declarado"
 							| "all"
 							| undefined) ?? "all",
-					dateFrom: query.dateFrom ? new Date(query.dateFrom) : undefined,
-					dateTo: query.dateTo ? new Date(query.dateTo) : undefined,
-					documentNumber: query.documentNumber,
+					...(query.dateFrom ? { dateFrom: new Date(query.dateFrom) } : {}),
+					...(query.dateTo ? { dateTo: new Date(query.dateTo) } : {}),
+					...(query.documentNumber !== undefined
+						? { documentNumber: query.documentNumber }
+						: {}),
 				});
 
 				return ok(entries);
@@ -82,9 +84,13 @@ export const journalEntryRoutes = new Elysia({
 						description: line.description,
 						debit: line.debit,
 						credit: line.credit,
-						documentType: line.documentType,
-						documentNumber: line.documentNumber,
-						dueDate: line.dueDate ? new Date(line.dueDate) : undefined,
+						...(line.documentType !== undefined
+							? { documentType: line.documentType }
+							: {}),
+						...(line.documentNumber !== undefined
+							? { documentNumber: line.documentNumber }
+							: {}),
+						...(line.dueDate ? { dueDate: new Date(line.dueDate) } : {}),
 					})),
 				});
 
@@ -115,7 +121,7 @@ export const journalEntryRoutes = new Elysia({
 	// ---- GET BY ID ----
 	.get(
 		"/:id",
-		async ({ params, companyContext, set }) => {
+		async ({ params, set }) => {
 			try {
 				const entry = await getJournalEntry({ id: params.id });
 				if (!entry) {
@@ -140,20 +146,28 @@ export const journalEntryRoutes = new Elysia({
 	// ---- UPDATE ----
 	.patch(
 		"/:id",
-		async ({ params, body, companyContext, set }) => {
+		async ({ params, body, set }) => {
 			try {
 				const entry = await updateJournalEntry(params.id, {
-					date: body.date ? new Date(body.date) : undefined,
-					gloss: body.gloss,
-					lines: body.lines?.map((line) => ({
-						accountId: line.accountId,
-						description: line.description,
-						debit: line.debit,
-						credit: line.credit,
-						documentType: line.documentType,
-						documentNumber: line.documentNumber,
-						dueDate: line.dueDate ? new Date(line.dueDate) : undefined,
-					})),
+					...(body.date ? { date: new Date(body.date) } : {}),
+					...(body.gloss !== undefined ? { gloss: body.gloss } : {}),
+					...(body.lines
+						? {
+								lines: body.lines.map((line) => ({
+									accountId: line.accountId,
+									description: line.description,
+									debit: line.debit,
+									credit: line.credit,
+									...(line.documentType !== undefined
+										? { documentType: line.documentType }
+										: {}),
+									...(line.documentNumber !== undefined
+										? { documentNumber: line.documentNumber }
+										: {}),
+									...(line.dueDate ? { dueDate: new Date(line.dueDate) } : {}),
+								})),
+						  }
+						: {}),
 				});
 
 				return ok(entry);
@@ -179,7 +193,7 @@ export const journalEntryRoutes = new Elysia({
 	// ---- DELETE ----
 	.delete(
 		"/:id",
-		async ({ params, companyContext, set }) => {
+		async ({ params, set }) => {
 			try {
 				await deleteJournalEntry(params.id);
 
@@ -205,7 +219,7 @@ export const journalEntryRoutes = new Elysia({
 	// ---- MAYORIZAR (post) ----
 	.post(
 		"/:id/mayorizar",
-		async ({ params, companyContext, set }) => {
+		async ({ params, set }) => {
 			try {
 				const entry = await updateJournalEntryStatus(
 					params.id,
@@ -235,7 +249,7 @@ export const journalEntryRoutes = new Elysia({
 	// ---- DECLARAR ----
 	.post(
 		"/:id/declarar",
-		async ({ params, companyContext, set }) => {
+		async ({ params, set }) => {
 			try {
 				const entry = await updateJournalEntryStatus(
 					params.id,

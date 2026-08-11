@@ -48,7 +48,9 @@ export function createProposeLedgerEntryCommandEnvelope(
 				id: evidenceId,
 				type: "LEDGER_ENTRY",
 				title: "Proposed ledger entry draft",
-				sourceRef: input.sourceRef,
+				...(input.sourceRef !== undefined
+					? { sourceRef: input.sourceRef }
+					: {}),
 			},
 		],
 		deterministicChecks: [
@@ -101,7 +103,7 @@ export function createProposeLedgerEntryCommandEnvelope(
 		},
 		trace: {
 			traceId: input.traceId,
-			caseId: input.caseId,
+			...(input.caseId !== undefined ? { caseId: input.caseId } : {}),
 			createdAt: new Date().toISOString(),
 		},
 	});

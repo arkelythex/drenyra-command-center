@@ -140,10 +140,9 @@ export class ExpedienteService {
 		const updated: ExpedienteFiscal = {
 			...existing,
 			status: input.status,
-			closedAt:
-				input.status === "CERRADO"
-					? new Date().toISOString()
-					: existing.closedAt,
+			...(input.status === "CERRADO"
+				? { closedAt: new Date().toISOString() }
+				: {}),
 		};
 
 		return this.repository.saveExpediente(updated, input.scope, defaultTrace());

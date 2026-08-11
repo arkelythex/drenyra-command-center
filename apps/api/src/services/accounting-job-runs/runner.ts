@@ -78,8 +78,10 @@ export class AccountingJobRunsService {
 			const policy = contextPolicyService.resolve({
 				surfaceId: metadata.surfaceId,
 				tenantId: input.companyId,
-				traceId: input.traceId,
-				requestedTools: input.requestedTools,
+				...(input.traceId !== undefined ? { traceId: input.traceId } : {}),
+				...(input.requestedTools !== undefined
+					? { requestedTools: input.requestedTools }
+					: {}),
 				requestedCorpora,
 			});
 
@@ -91,8 +93,10 @@ export class AccountingJobRunsService {
 				request: {
 					surfaceId: metadata.surfaceId,
 					tenantId: input.companyId,
-					traceId: input.traceId,
-					requestedTools: input.requestedTools,
+					...(input.traceId !== undefined ? { traceId: input.traceId } : {}),
+					...(input.requestedTools !== undefined
+						? { requestedTools: input.requestedTools }
+						: {}),
 					requestedCorpora,
 				},
 				response: policy,

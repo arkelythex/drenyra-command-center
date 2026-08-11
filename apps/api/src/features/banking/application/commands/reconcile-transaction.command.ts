@@ -30,15 +30,15 @@ export async function reconcileTransaction(
 			accountId: record.accountId,
 			transactionDate: new Date(record.transactionDate),
 			description: record.description,
-			reference: record.reference ?? undefined,
+			...(record.reference != null ? { reference: record.reference } : {}),
 			type: record.type as "DEBIT" | "CREDIT",
 			amount: record.amount,
-			balance: record.balance ?? undefined,
+			...(record.balance != null ? { balance: record.balance } : {}),
 			isReconciled: record.isReconciled ?? false,
-			reconciledAt: record.reconciledAt ?? undefined,
-			reconciledBy: record.reconciledBy ?? undefined,
-			invoiceId: record.invoiceId ?? undefined,
-			billId: record.billId ?? undefined,
+			...(record.reconciledAt != null ? { reconciledAt: record.reconciledAt } : {}),
+			...(record.reconciledBy != null ? { reconciledBy: record.reconciledBy } : {}),
+			...(record.invoiceId != null ? { invoiceId: record.invoiceId } : {}),
+			...(record.billId != null ? { billId: record.billId } : {}),
 			importedFrom: (record.importedFrom ?? "MANUAL") as
 				| "MANUAL"
 				| "CSV"

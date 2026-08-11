@@ -161,10 +161,10 @@ function mapRow(
 		traceId: payload.traceId,
 		actionId: payload.actionId?.trim() || "artifact-event",
 		message: payload.message,
-		nextStatus: payload.nextStatus,
+		...(payload.nextStatus !== undefined ? { nextStatus: payload.nextStatus } : {}),
 		createdAt: payload.createdAt?.trim() || timestamp.toISOString(),
 		source: payload.source,
-		payload: payload.payload,
+		...(payload.payload !== undefined ? { payload: payload.payload } : {}),
 	};
 }
 

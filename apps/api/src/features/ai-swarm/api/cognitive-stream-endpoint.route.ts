@@ -154,7 +154,7 @@ export const cognitiveStreamEndpoint = new Elysia({
 					const request = {
 						model,
 						messages: messagesWithSystem,
-						tools: tools ? getOpenRouterTools() : undefined,
+						...(tools ? { tools: getOpenRouterTools() } : {}),
 						temperature: 0.4,
 					};
 
@@ -196,21 +196,29 @@ export const cognitiveStreamEndpoint = new Elysia({
 									expiresAt,
 								});
 
-								const decision = await cognitiveApprovalStore.createAndWait(
-									{
-										runId,
-										toolCallId: approval.toolCallId,
-										name: approval.name,
-										args: approval.args,
-										requestedAt,
-										pairingRequired: pairing?.metadata.required ?? false,
-										pairingSessionId: pairing?.metadata.sessionId,
-										pairingHint: pairing?.metadata.hint,
-										pairingChallenge: pairing?.metadata.challenge,
-										pairingCodeHash: pairing?.metadata.codeHash,
-									},
-									approvalTimeoutMs,
-								);
+    						const decision = await cognitiveApprovalStore.createAndWait(
+    							{
+    								runId,
+    								toolCallId: approval.toolCallId,
+    								name: approval.name,
+    								args: approval.args,
+    								requestedAt,
+    								pairingRequired: pairing?.metadata.required ?? false,
+    								...(pairing?.metadata.sessionId !== undefined
+    									? { pairingSessionId: pairing.metadata.sessionId }
+    									: {}),
+    								...(pairing?.metadata.hint !== undefined
+    									? { pairingHint: pairing.metadata.hint }
+    									: {}),
+    								...(pairing?.metadata.challenge !== undefined
+    									? { pairingChallenge: pairing.metadata.challenge }
+    									: {}),
+    								...(pairing?.metadata.codeHash !== undefined
+    									? { pairingCodeHash: pairing.metadata.codeHash }
+    									: {}),
+    							},
+    							approvalTimeoutMs,
+    						);
 
 								if (decision.resolution === "timeout") {
 									await cognitiveApprovalPersistence.markExpired(

@@ -84,8 +84,12 @@ export function createUploadHandlers(deps: Partial<UploadHandlersDeps> = {}) {
 				resource: "/documents/upload",
 				resolveOrganizationIdFromCompanyId:
 					resolvedDeps.resolveOrganizationIdFromCompanyId,
-				assertedCompanyId: body.companyId,
-				assertedOrganizationId: body.organizationId,
+				...(body.companyId !== undefined
+					? { assertedCompanyId: body.companyId }
+					: {}),
+				...(body.organizationId !== undefined
+					? { assertedOrganizationId: body.organizationId }
+					: {}),
 			});
 			if (!access.ok) {
 				return fail(set, access.status, access.error, access.code as never);
@@ -169,8 +173,12 @@ export function createUploadHandlers(deps: Partial<UploadHandlersDeps> = {}) {
 				resource: "/documents/batch-upload",
 				resolveOrganizationIdFromCompanyId:
 					resolvedDeps.resolveOrganizationIdFromCompanyId,
-				assertedCompanyId: body.companyId,
-				assertedOrganizationId: body.organizationId,
+				...(body.companyId !== undefined
+					? { assertedCompanyId: body.companyId }
+					: {}),
+				...(body.organizationId !== undefined
+					? { assertedOrganizationId: body.organizationId }
+					: {}),
 			});
 			if (!access.ok) {
 				return fail(set, access.status, access.error, access.code as never);

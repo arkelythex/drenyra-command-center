@@ -225,7 +225,9 @@ export function evaluateAuditPlugins(
 			code: plugin.finding.code,
 			message: plugin.finding.message,
 			severity: plugin.finding.severity,
-			recommendedAction: plugin.finding.recommendedAction,
+			...(plugin.finding.recommendedAction !== undefined
+				? { recommendedAction: plugin.finding.recommendedAction }
+				: {}),
 			matchedAt: new Date().toISOString(),
 		});
 	}

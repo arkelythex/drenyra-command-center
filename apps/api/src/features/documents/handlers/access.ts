@@ -50,7 +50,7 @@ function resolveAssertedOrganizationId(
 	headers: HeaderContainer,
 	assertedOrganizationId?: number,
 ):
-	| { ok: true; organizationId?: number }
+	| { ok: true; organizationId?: number | undefined }
 	| { ok: false; status: 403; code: string; error: string } {
 	const headerScope = readTenantScopeFromHeaders(headers);
 	const headerOrganizationId = headerScope.organizationId;
@@ -90,9 +90,15 @@ export async function authorizeDocumentAccess(
 		headers: (input.headers ?? {}) as Record<string, unknown>,
 		operation: input.operation as SecurityOperation,
 		resource: input.resource,
-		requestedCompanyId: input.assertedCompanyId,
-		requireSession: input.requireSession,
-		allowMachineCaller: input.allowMachineCaller,
+		...(input.assertedCompanyId !== undefined
+			? { requestedCompanyId: input.assertedCompanyId }
+			: {}),
+		...(input.requireSession !== undefined
+			? { requireSession: input.requireSession }
+			: {}),
+		...(input.allowMachineCaller !== undefined
+			? { allowMachineCaller: input.allowMachineCaller }
+			: {}),
 	});
 
 	if (!authz.ok) {

@@ -15,7 +15,7 @@ type ContextResolution =
 	| { ok: false; missingHeaders: string[] };
 
 export interface CapabilityAuditInput {
-	caseId?: string;
+	caseId?: string | undefined;
 	commandId: string;
 	evaluation: DrenyraCapabilityEvaluation;
 	traceId: string;
@@ -114,7 +114,7 @@ function evaluate(input: {
 	context: DrenyraActorContext;
 	agentType: DrenyraAgentType;
 	toolId: DrenyraToolId;
-	approvalId?: string;
+	approvalId?: string | undefined;
 }): DrenyraCapabilityEvaluation {
 	return evaluateDrenyraCapability({
 		request: {
@@ -123,7 +123,9 @@ function evaluate(input: {
 			scope: { ...input.context, countryCode: "PE" },
 			redactionOk:
 				readHeader(input.headers, "x-drenyra-redaction-ok") === "true",
-			approvalId: input.approvalId,
+			...(input.approvalId !== undefined
+				? { approvalId: input.approvalId }
+				: {}),
 		},
 		grants: scopedGrants(
 			input.headers,

@@ -64,8 +64,10 @@ export function createQueryHandlers(deps: Partial<QueryHandlersDeps> = {}) {
 				operation: DOCUMENTS_SECURITY_OPERATION.QUERY_READ,
 				resource: "/documents",
 				resolveOrganizationIdFromCompanyId,
-				assertedCompanyId: companyId,
-				assertedOrganizationId: organizationId,
+				...(companyId !== undefined ? { assertedCompanyId: companyId } : {}),
+				...(organizationId !== undefined
+					? { assertedOrganizationId: organizationId }
+					: {}),
 			});
 			if (!access.ok) {
 				return fail(set, access.status, access.error, access.code as never);
@@ -74,8 +76,8 @@ export function createQueryHandlers(deps: Partial<QueryHandlersDeps> = {}) {
 			const result = await listDocuments({
 				store,
 				tenantScope: access.access.tenantScope,
-				status,
-				search,
+				...(status !== undefined ? { status } : {}),
+				...(search !== undefined ? { search } : {}),
 				limit,
 				offset,
 			});

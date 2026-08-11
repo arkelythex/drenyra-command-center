@@ -30,9 +30,9 @@ function parsePeruCivilDate(value: string, boundary: "start" | "end"): Date {
 		throw new Error(`Invalid date format: ${value}`);
 	}
 
-	const year = Number.parseInt(match[1], 10);
-	const month = Number.parseInt(match[2], 10);
-	const day = Number.parseInt(match[3], 10);
+	const year = Number.parseInt(match[1] ?? "", 10);
+	const month = Number.parseInt(match[2] ?? "", 10);
+	const day = Number.parseInt(match[3] ?? "", 10);
 
 	const validationDate = new Date(Date.UTC(year, month - 1, day));
 	if (
@@ -166,7 +166,10 @@ export function parseAuditDateRange(input: {
 		);
 	}
 
-	return { dateFrom, dateTo };
+	return {
+		...(dateFrom ? { dateFrom } : {}),
+		...(dateTo ? { dateTo } : {}),
+	};
 }
 
 /**

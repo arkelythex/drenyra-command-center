@@ -59,10 +59,10 @@ export const firmRoutes = new Elysia({ prefix: "/api/firm" })
 			try {
 				return ok(
 					await getClients(firmTenant.organizationId, {
-						search: query.search,
-						status: query.status,
-						limit: query.limit ? Number(query.limit) : undefined,
-						offset: query.offset ? Number(query.offset) : undefined,
+						...(query.search !== undefined ? { search: query.search } : {}),
+						...(query.status !== undefined ? { status: query.status } : {}),
+						...(query.limit ? { limit: Number(query.limit) } : {}),
+						...(query.offset ? { offset: Number(query.offset) } : {}),
 					}),
 				);
 			} catch (error) {
@@ -183,7 +183,9 @@ export const firmRoutes = new Elysia({ prefix: "/api/firm" })
 					name: body.name,
 					ruc: body.ruc,
 					slug: body.slug,
-					settings: body.settings as Record<string, unknown> | undefined,
+					...(body.settings !== undefined
+						? { settings: body.settings as Record<string, unknown> }
+						: {}),
 				});
 				if (!result.success) {
 					const err = result;
@@ -227,7 +229,7 @@ export const firmRoutes = new Elysia({ prefix: "/api/firm" })
 
 			try {
 				const result = await suspendOrganization(firmTenant, id, {
-					reason: body.reason,
+					...(body.reason !== undefined ? { reason: body.reason } : {}),
 				});
 				if (!result.success) {
 					const err = result;

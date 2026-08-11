@@ -67,14 +67,6 @@ export const chatHistoryRoutes = new Elysia({
 				return fail("messages array cannot be empty", "VALIDATION_ERROR");
 			}
 
-			const timestamps = incomingMessages.map((m) => new Date(m.timestamp));
-			const _minTime = new Date(
-				Math.min(...timestamps.map((t) => t.getTime())),
-			);
-			const _maxTime = new Date(
-				Math.max(...timestamps.map((t) => t.getTime())),
-			);
-
 			let sessionId: string;
 
 			const existing = await db
@@ -90,8 +82,10 @@ export const chatHistoryRoutes = new Elysia({
 				.limit(1)
 				.execute();
 
-			if (existing.length > 0) {
-				sessionId = existing[0].id;
+			const existingSession = existing[0];
+
+			if (existingSession) {
+				sessionId = existingSession.id;
 				await db
 					.update(chatSessions)
 					.set({ updatedAt: new Date() })
@@ -109,7 +103,11 @@ export const chatHistoryRoutes = new Elysia({
 					})
 					.returning({ id: chatSessions.id })
 					.execute();
-				sessionId = inserted[0].id;
+				const insertedRow = inserted[0];
+				if (!insertedRow) {
+					throw new Error("Failed to create chat session");
+				}
+				sessionId = insertedRow.id;
 			}
 
 			if (incomingMessages.length > 0) {
@@ -172,11 +170,13 @@ export const chatHistoryRoutes = new Elysia({
 				.limit(1)
 				.execute();
 
-			if (session.length === 0) {
+			const firstSession = session[0];
+
+			if (!firstSession) {
 				return ok({ messages: [], sessionId: null });
 			}
 
-			const sessionId = session[0].id;
+			const sessionId = firstSession.id;
 
 			const rows = await db
 				.select({

@@ -29,14 +29,16 @@ export function createPrepareEvidenceCommandEnvelope(
 		title: "Prepare fiscal evidence",
 		summary: "Evidence bundle envelope prepared for fiscal review",
 		riskLevel: "LOW",
-		evidence: [
-			{
-				id: evidenceId,
-				type: "DOCUMENT",
-				title: "Fiscal evidence bundle draft",
-				sourceRef: input.sourceRef,
-			},
-		],
+    		evidence: [
+    			{
+    				id: evidenceId,
+    				type: "DOCUMENT",
+    				title: "Fiscal evidence bundle draft",
+    				...(input.sourceRef !== undefined
+    					? { sourceRef: input.sourceRef }
+    					: {}),
+    			},
+    		],
 		deterministicChecks: [
 			{
 				id: "evidence-scope",
@@ -66,7 +68,7 @@ export function createPrepareEvidenceCommandEnvelope(
 		},
 		trace: {
 			traceId: input.traceId,
-			caseId: input.caseId,
+			...(input.caseId !== undefined ? { caseId: input.caseId } : {}),
 			createdAt: new Date().toISOString(),
 		},
 	});

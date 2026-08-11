@@ -56,17 +56,21 @@ export class ApplyPaymentCommand {
 		const updated = bill.applyPayment(payment);
 
 		if (updated.status !== bill.status) {
-			const nextNotes = appendWorkflowEventToNotes(bill.notes, {
-				at: new Date().toISOString(),
-				from: bill.status,
-				to: updated.status,
-				actorId: input.legacyUserId,
-				actorName: input.actorName,
-				reason: input.reason ?? "Pago registrado",
-				approvalState: deriveApprovalState(updated.status),
-			});
+    		const nextNotes = appendWorkflowEventToNotes(bill.notes, {
+    			at: new Date().toISOString(),
+    			from: bill.status,
+    			to: updated.status,
+    			...(input.legacyUserId !== undefined
+    				? { actorId: input.legacyUserId }
+    				: {}),
+    			...(input.actorName !== undefined
+    				? { actorName: input.actorName }
+    				: {}),
+    			reason: input.reason ?? "Pago registrado",
+    			approvalState: deriveApprovalState(updated.status),
+    		});
 
-			await this.repository.updateStatus(
+    		await this.repository.updateStatus(
 				updated.id,
 				updated.status,
 				nextNotes,
@@ -105,17 +109,21 @@ export async function applyPayment(
 	const updated = bill.applyPayment(payment);
 
 	if (updated.status !== bill.status) {
-		const nextNotes = appendWorkflowEventToNotes(bill.notes, {
-			at: new Date().toISOString(),
-			from: bill.status,
-			to: updated.status,
-			actorId: input.legacyUserId,
-			actorName: input.actorName,
-			reason: input.reason ?? "Pago registrado",
-			approvalState: deriveApprovalState(updated.status),
-		});
+    		const nextNotes = appendWorkflowEventToNotes(bill.notes, {
+    			at: new Date().toISOString(),
+    			from: bill.status,
+    			to: updated.status,
+    			...(input.legacyUserId !== undefined
+    				? { actorId: input.legacyUserId }
+    				: {}),
+    			...(input.actorName !== undefined
+    				? { actorName: input.actorName }
+    				: {}),
+    			reason: input.reason ?? "Pago registrado",
+    			approvalState: deriveApprovalState(updated.status),
+    		});
 
-		await repository.updateStatus(
+    		await repository.updateStatus(
 			updated.id,
 			updated.status,
 			nextNotes,

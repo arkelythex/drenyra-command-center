@@ -26,10 +26,19 @@ type BuildDocumentsRoutesDeps = DocumentsHandlersDeps;
 export function buildDocumentsModule(deps: BuildDocumentsRoutesDeps = {}) {
 	const handlers = createDocumentsHandlers({
 		documentStore: deps.documentStore ?? documentStore,
-		resolveActorIdFromHeaders: deps.resolveActorIdFromHeaders,
-		parseStoredExtractedData: deps.parseStoredExtractedData,
-		queueOcrJob: deps.queueOcrJob,
-		resolveOrganizationIdFromCompanyId: deps.resolveOrganizationIdFromCompanyId,
+		...(deps.resolveActorIdFromHeaders !== undefined
+			? { resolveActorIdFromHeaders: deps.resolveActorIdFromHeaders }
+			: {}),
+		...(deps.parseStoredExtractedData !== undefined
+			? { parseStoredExtractedData: deps.parseStoredExtractedData }
+			: {}),
+		...(deps.queueOcrJob !== undefined ? { queueOcrJob: deps.queueOcrJob } : {}),
+		...(deps.resolveOrganizationIdFromCompanyId !== undefined
+			? {
+					resolveOrganizationIdFromCompanyId:
+						deps.resolveOrganizationIdFromCompanyId,
+				}
+			: {}),
 	});
 
 	return new Elysia({ prefix: "/api/documents" })

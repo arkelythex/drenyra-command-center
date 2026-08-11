@@ -78,9 +78,13 @@ export const agentAuditTrailRoutes = new Elysia({ prefix: "/audit-trail" })
 
 			const result = await getAuditTrail({
 				organizationId: Number(query.organizationId),
-				agentName: query.agentName,
-				decisionType: query.decisionType,
-				limit: query.limit ? Number(query.limit) : undefined,
+				...(query.agentName !== undefined
+					? { agentName: query.agentName }
+					: {}),
+				...(query.decisionType !== undefined
+					? { decisionType: query.decisionType }
+					: {}),
+				...(query.limit ? { limit: Number(query.limit) } : {}),
 			});
 			return { success: true, data: result };
 		},
@@ -223,9 +227,13 @@ export const agentAuditTrailRoutes = new Elysia({ prefix: "/audit-trail" })
 
 			const trail = await getAuditTrail({
 				organizationId: Number(query.organizationId),
-				agentName: query.agentName,
-				decisionType: query.decisionType,
-				limit: query.limit ? Number(query.limit) : undefined,
+				...(query.agentName !== undefined
+					? { agentName: query.agentName }
+					: {}),
+				...(query.decisionType !== undefined
+					? { decisionType: query.decisionType }
+					: {}),
+				...(query.limit ? { limit: Number(query.limit) } : {}),
 			});
 
 			const xml = await exportToXml(trail, {
@@ -272,14 +280,20 @@ export const agentAuditTrailRoutes = new Elysia({ prefix: "/audit-trail" })
 
 			const trail = await getAuditTrail({
 				organizationId: Number(query.organizationId),
-				agentName: query.agentName,
-				decisionType: query.decisionType,
-				limit: query.limit ? Number(query.limit) : undefined,
+				...(query.agentName !== undefined
+					? { agentName: query.agentName }
+					: {}),
+				...(query.decisionType !== undefined
+					? { decisionType: query.decisionType }
+					: {}),
+				...(query.limit ? { limit: Number(query.limit) } : {}),
 			});
 
 			const pdfBuffer = await exportToPdf(trail, {
 				companyName: query.companyName,
-				companyRuc: query.companyRuc,
+				...(query.companyRuc !== undefined
+					? { companyRuc: query.companyRuc }
+					: {}),
 				reportDate: new Date(),
 			});
 

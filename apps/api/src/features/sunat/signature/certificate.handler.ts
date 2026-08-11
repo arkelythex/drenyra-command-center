@@ -66,7 +66,11 @@ export function loadCertificateFromPfx(
 		const keyBags = p12.getBags({
 			bagType: forge.pki.oids.pkcs8ShroudedKeyBag,
 		});
-		const keyBag = keyBags[forge.pki.oids.pkcs8ShroudedKeyBag]?.[0];
+		const keyBagOid = forge.pki.oids.pkcs8ShroudedKeyBag;
+		if (!keyBagOid) {
+			throw new Error("No private key found in certificate");
+		}
+		const keyBag = keyBags[keyBagOid]?.[0];
 		if (!keyBag) {
 			throw new Error("No private key found in certificate");
 		}
@@ -76,7 +80,11 @@ export function loadCertificateFromPfx(
 
 		// Extract certificate
 		const certBags = p12.getBags({ bagType: forge.pki.oids.certBag });
-		const certBag = certBags[forge.pki.oids.certBag]?.[0];
+		const certBagOid = forge.pki.oids.certBag;
+		if (!certBagOid) {
+			throw new Error("No certificate found in PFX");
+		}
+		const certBag = certBags[certBagOid]?.[0];
 		if (!certBag) {
 			throw new Error("No certificate found in PFX");
 		}
@@ -230,8 +238,8 @@ export function getCertificateInfo(cert: Certificate): {
 	return {
 		subject: cert.subject,
 		issuer: cert.issuer,
-		validFrom: cert.validFrom.toISOString().split("T")[0],
-		validTo: cert.validTo.toISOString().split("T")[0],
+		validFrom: cert.validFrom.toISOString().slice(0, 10),
+		validTo: cert.validTo.toISOString().slice(0, 10),
 		daysRemaining,
 	};
 }

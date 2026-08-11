@@ -12,7 +12,17 @@ const correctionUseCase = new CorrectionUseCase();
 export const fiscalAgentCorrectionRoute = new Elysia().post(
 	"/fiscal-agent/corrections",
 	async ({ body }) => {
-		const result = await correctionUseCase.execute(body.corrections);
+		const result = await correctionUseCase.execute(
+			body.corrections.map((correction) => ({
+				transactionId: correction.transactionId,
+				originalCategory: correction.originalCategory,
+				correctedCategory: correction.correctedCategory,
+				userId: correction.userId,
+				...(correction.reason !== undefined
+					? { reason: correction.reason }
+					: {}),
+			})),
+		);
 		return ok(result);
 	},
 	{

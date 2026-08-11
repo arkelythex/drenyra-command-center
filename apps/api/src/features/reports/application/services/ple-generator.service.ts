@@ -76,16 +76,18 @@ export class PleGeneratorService {
 				})
 				.where(eq(pleGenerations.id, existing.id));
 
-			return {
-				generationId: existing.id,
-				bookType,
-				period,
-				ruc,
-				status,
-				cdrHash: validationPassed ? cdrHash : undefined,
-				downloadUrl: `/api/v1/reports/ple/download/${existing.id}`,
-				fileSizeBytes: validationPassed ? Buffer.byteLength(formattedContent, "utf-8") : undefined,
-			};
+    			return {
+    				generationId: existing.id,
+    				bookType,
+    				period,
+    				ruc,
+    				status,
+    				...(validationPassed ? { cdrHash } : {}),
+    				downloadUrl: `/api/v1/reports/ple/download/${existing.id}`,
+    				...(validationPassed
+    					? { fileSizeBytes: Buffer.byteLength(formattedContent, "utf-8") }
+    					: {}),
+    			};
 		}
 
 		// 2. New generation
@@ -114,18 +116,24 @@ export class PleGeneratorService {
 				validationErrors: allErrors.length > 0 ? JSON.parse(JSON.stringify(allErrors)) : null,
 				validatedAt: validationPassed ? new Date() : null,
 			})
-			.returning();
+    			.returning();
 
-		return {
-			generationId: saved.id,
-			bookType,
-			period,
-			ruc,
-			status,
-			cdrHash: validationPassed ? cdrHash : undefined,
-			downloadUrl: `/api/v1/reports/ple/download/${saved.id}`,
-			fileSizeBytes: validationPassed ? Buffer.byteLength(formattedContent, "utf-8") : undefined,
-		};
+    		if (!saved) {
+    			throw new Error("Failed to persist PLE generation");
+    		}
+
+    		return {
+    			generationId: saved.id,
+    			bookType,
+    			period,
+    			ruc,
+    			status,
+    			...(validationPassed ? { cdrHash } : {}),
+    			downloadUrl: `/api/v1/reports/ple/download/${saved.id}`,
+    			...(validationPassed
+    				? { fileSizeBytes: Buffer.byteLength(formattedContent, "utf-8") }
+    				: {}),
+    		};
 	}
 
 	/**

@@ -58,7 +58,9 @@ export class SireDiffCommitService {
 			eventId: audit.eventId,
 			storedAt: audit.storedAt,
 			submitBlocked: gate.submitBlocked,
-			submitBlockReason: gate.submitBlockReason,
+			...(gate.submitBlockReason !== undefined
+				? { submitBlockReason: gate.submitBlockReason }
+				: {}),
 			ledgerMutation,
 		};
 	}

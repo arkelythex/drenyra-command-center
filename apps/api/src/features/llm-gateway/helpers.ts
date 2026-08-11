@@ -16,8 +16,8 @@ export function handleLLMError(error: unknown): {
 	error: {
 		code: string;
 		message: string;
-		provider?: string;
-		details?: Record<string, unknown>;
+		provider?: string | undefined;
+		details?: Record<string, unknown> | undefined;
 	};
 	status: number;
 } {

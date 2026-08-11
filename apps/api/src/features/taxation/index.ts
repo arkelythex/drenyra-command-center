@@ -194,18 +194,28 @@ export const taxationModule = new Elysia({ prefix: "/api/taxation" })
 
 	.get(
 		"/retenciones",
-		async ({ companyContext, query, set }) => {
-			try {
-				const result = await getPendingRetentions({
-					companyId: companyContext?.companyId,
-					declarationPeriod: query.declarationPeriod,
-				});
-				return ok(result);
-			} catch (error: unknown) {
-				set.status = 500;
-				return safeFail(error, "INTERNAL_ERROR");
-			}
-		},
+    		async ({ companyContext, query, set }) => {
+    			try {
+    				const companyId = companyContext?.companyId;
+    				if (!companyId) {
+    					set.status = 401;
+    					return fail(
+    						"Company context is required for retenciones",
+    						"COMPANY_CONTEXT_REQUIRED",
+    					);
+    				}
+    				const result = await getPendingRetentions({
+    					companyId,
+    					...(query.declarationPeriod !== undefined
+    						? { declarationPeriod: query.declarationPeriod }
+    						: {}),
+    				});
+    				return ok(result);
+    			} catch (error: unknown) {
+    				set.status = 500;
+    				return safeFail(error, "INTERNAL_ERROR");
+    			}
+    		},
 		{
 			query: z.object({
 				declarationPeriod: z
@@ -366,18 +376,28 @@ export const taxationModule = new Elysia({ prefix: "/api/taxation" })
 
 	.get(
 		"/percepciones",
-		async ({ companyContext, query, set }) => {
-			try {
-				const result = await getPendingPercepciones({
-					companyId: companyContext?.companyId,
-					declarationPeriod: query.declarationPeriod,
-				});
-				return ok(result);
-			} catch (error: unknown) {
-				set.status = 500;
-				return safeFail(error, "INTERNAL_ERROR");
-			}
-		},
+    		async ({ companyContext, query, set }) => {
+    			try {
+    				const companyId = companyContext?.companyId;
+    				if (!companyId) {
+    					set.status = 401;
+    					return fail(
+    						"Company context is required for percepciones",
+    						"COMPANY_CONTEXT_REQUIRED",
+    					);
+    				}
+    				const result = await getPendingPercepciones({
+    					companyId,
+    					...(query.declarationPeriod !== undefined
+    						? { declarationPeriod: query.declarationPeriod }
+    						: {}),
+    				});
+    				return ok(result);
+    			} catch (error: unknown) {
+    				set.status = 500;
+    				return safeFail(error, "INTERNAL_ERROR");
+    			}
+    		},
 		{
 			query: z.object({
 				declarationPeriod: z

@@ -18,10 +18,6 @@ const CHECK_CATEGORIES = [
 	"external",
 ] as const;
 
-const CHECK_STATUSES = ["healthy", "degraded", "down", "unknown"] as const;
-
-type CheckStatus = (typeof CHECK_STATUSES)[number];
-
 const SYSTEM_CHECKS: Array<{
 	name: string;
 	category: (typeof CHECK_CATEGORIES)[number];
@@ -180,12 +176,13 @@ async function persistCheckResult(
 		};
 
 		let checkId: string;
-		if (checks.length > 0) {
+		const existing = checks[0];
+		if (existing) {
 			await db
 				.update(systemChecks)
 				.set(data as Record<string, unknown>)
-				.where(eq(systemChecks.id, checks[0].id));
-			checkId = checks[0].id;
+				.where(eq(systemChecks.id, existing.id));
+			checkId = existing.id;
 		} else {
 			const inserted = await db
 				.insert(systemChecks)
@@ -199,7 +196,11 @@ async function persistCheckResult(
 					updatedAt: data.updatedAt,
 				})
 				.returning({ id: systemChecks.id });
-			checkId = inserted[0].id;
+			const insertedRow = inserted[0];
+			if (insertedRow === undefined) {
+				throw new Error("Failed to create system check record");
+			}
+			checkId = insertedRow.id;
 		}
 
 		await db.insert(checkHistory).values({
@@ -288,6 +289,10 @@ export const doctorModeModule = new Elysia({ prefix: "/api/v1/doctor" })
 				}
 
 				const check = checks[0];
+				if (check === undefined) {
+					set.status = 404;
+					return fail("Check not found", "NOT_FOUND");
+				}
 				const runner = CHECK_RUNNERS[check.name];
 				if (!runner) {
 					set.status = 400;

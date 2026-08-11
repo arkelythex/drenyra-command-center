@@ -34,8 +34,8 @@ export const cashflowRoutes = new Elysia({ prefix: "/api/cashflow" })
 		async ({ query }) => {
 			const projection = await getCashflowProjection({
 				companyId: query.companyId,
-				days: query.days ? Number(query.days) : undefined,
-				currency: query.currency,
+				...(query.days !== undefined ? { days: query.days } : {}),
+				...(query.currency !== undefined ? { currency: query.currency } : {}),
 			});
 
 			return ok(projection.toJSON());
@@ -83,7 +83,7 @@ Returns projected cash inflows and outflows for a period.
 				companyId: query.companyId,
 				startDate: new Date(query.startDate),
 				endDate: new Date(query.endDate),
-				currency: query.currency,
+				...(query.currency !== undefined ? { currency: query.currency } : {}),
 			});
 
 			return ok(actual);
@@ -116,8 +116,8 @@ Returns projected cash inflows and outflows for a period.
 		async ({ query }) => {
 			const forecast = await getCashflowForecast({
 				companyId: query.companyId,
-				months: query.months ? Number(query.months) : undefined,
-				currency: query.currency,
+				...(query.months !== undefined ? { months: query.months } : {}),
+				...(query.currency !== undefined ? { currency: query.currency } : {}),
 			});
 
 			return ok(forecast);
@@ -159,7 +159,7 @@ Returns cashflow forecast based on historical bank transaction trends.
 				companyId: query.companyId,
 				startDate: new Date(query.startDate),
 				endDate: new Date(query.endDate),
-				currency: query.currency,
+				...(query.currency !== undefined ? { currency: query.currency } : {}),
 			});
 
 			return ok(variance);

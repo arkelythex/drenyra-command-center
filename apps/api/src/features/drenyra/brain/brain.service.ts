@@ -65,8 +65,8 @@ export function createDrenyraBrainService(
 		const event = await deps.repository.appendEvent({
 			id: deps.id("event"),
 			threadId: input.threadId,
-			turnId: input.turnId,
-			itemId: input.itemId,
+			...(input.turnId !== undefined ? { turnId: input.turnId } : {}),
+			...(input.itemId !== undefined ? { itemId: input.itemId } : {}),
 			fiscalScope: input.fiscalScope,
 			type: input.type,
 			sequence: nextSequence,
@@ -88,8 +88,12 @@ export function createDrenyraBrainService(
 				fiscalScope: input.fiscalScope,
 				status: "active",
 				sourceSurface: input.sourceSurface,
-				linkedCaseId: input.linkedCaseId,
-				linkedMissionId: input.linkedMissionId,
+				...(input.linkedCaseId !== undefined
+					? { linkedCaseId: input.linkedCaseId }
+					: {}),
+				...(input.linkedMissionId !== undefined
+					? { linkedMissionId: input.linkedMissionId }
+					: {}),
 				createdBy: input.createdBy,
 				createdAt: timestamp,
 				updatedAt: timestamp,

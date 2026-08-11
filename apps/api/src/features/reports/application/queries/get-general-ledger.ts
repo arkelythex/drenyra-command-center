@@ -5,9 +5,11 @@
  */
 
 import { db as globalDb } from "@drenyra/persistence/client";
-import { and, desc, eq, gte, lte, sql } from "@drenyra/persistence/query";
+import { and, desc, eq, gte, lte } from "@drenyra/persistence/query";
 import { invoices, bills } from "@drenyra/persistence/schema";
-import type { GeneralLedgerReport } from "../../reports.schemas";
+import type { GeneralLedgerReportSchema } from "../../v1/schemas/reports.schemas";
+
+type GeneralLedgerReport = (typeof GeneralLedgerReportSchema)["_output"];
 
 interface LedgerEntry {
 	date: string;
@@ -40,28 +42,25 @@ export async function getGeneralLedger(
 	let seq = 0;
 
 	// Invoice entries (revenue / AR)
-	const invoiceEntries = await db
-		.select({
-			id: invoices.id,
-			date: invoices.issueDate,
-			number: invoices.invoiceNumber,
-			amount: invoices.totalAmount,
-			status: invoices.status,
-			customerName: invoices.customerName,
-		})
-		.from(invoices)
-		.where(
-			and(
-				eq(invoices.companyId, companyId),
-				eq(invoices.currency, "PEN"),
-				gte(invoices.issueDate, startDate),
-				lte(invoices.issueDate, endDate),
-				accountCode
-					? sql`1=1` // We'll filter by account type below
-					: sql`1=1`,
-			),
-		)
-		.orderBy(desc(invoices.issueDate));
+	const invoiceEntries = await db.query.invoices.findMany({
+		columns: {
+			id: true,
+			issueDate: true,
+			invoiceNumber: true,
+			totalAmount: true,
+			status: true,
+		},
+		with: {
+			customer: { columns: { legalName: true } },
+		},
+		where: and(
+			eq(invoices.companyId, companyId),
+			eq(invoices.currency, "PEN"),
+			gte(invoices.issueDate, startDate),
+			lte(invoices.issueDate, endDate),
+		),
+		orderBy: desc(invoices.issueDate),
+	});
 
 	for (const inv of invoiceEntries) {
 		seq++;
@@ -73,7 +72,7 @@ export async function getGeneralLedger(
 			date: inv.date.toISOString().slice(0, 10),
 			voucherNo: `INV-${inv.number}`,
 			accountCode: accountCode ?? "701",
-			description: `FACTURA ${inv.number} - ${inv.customerName ?? ""}`,
+			description: `FACTURA ${inv.number} - ${inv.customer?.legalName ?? ""}`,
 			debit: "0.00",
 			credit: amount.toFixed(2),
 			balance: runningBalance.toFixed(2),
@@ -82,25 +81,25 @@ export async function getGeneralLedger(
 
 	// Bill entries (expenses / AP)
 	if (!accountCode || accountCode.startsWith("6")) {
-		const billEntries = await db
-			.select({
-				id: bills.id,
-				date: bills.issueDate,
-				number: bills.billNumber,
-				amount: bills.totalAmount,
-				status: bills.status,
-				supplierName: bills.supplierName,
-			})
-			.from(bills)
-			.where(
-				and(
-					eq(bills.companyId, companyId),
-					eq(bills.currency, "PEN"),
-					gte(bills.issueDate, startDate),
-					lte(bills.issueDate, endDate),
-				),
-			)
-			.orderBy(desc(bills.issueDate));
+		const billEntries = await db.query.bills.findMany({
+			columns: {
+				id: true,
+				issueDate: true,
+				billNumber: true,
+				totalAmount: true,
+				status: true,
+			},
+			with: {
+				vendor: { columns: { legalName: true } },
+			},
+			where: and(
+				eq(bills.companyId, companyId),
+				eq(bills.currency, "PEN"),
+				gte(bills.issueDate, startDate),
+				lte(bills.issueDate, endDate),
+			),
+			orderBy: desc(bills.issueDate),
+		});
 
 		for (const bill of billEntries) {
 			seq++;
@@ -111,7 +110,7 @@ export async function getGeneralLedger(
 				date: bill.date.toISOString().slice(0, 10),
 				voucherNo: `BILL-${bill.number}`,
 				accountCode: accountCode ?? "601",
-				description: `COMPRA ${bill.number} - ${bill.supplierName ?? ""}`,
+				description: `COMPRA ${bill.number} - ${bill.vendor?.legalName ?? ""}`,
 				debit: amount.toFixed(2),
 				credit: "0.00",
 				balance: runningBalance.toFixed(2),

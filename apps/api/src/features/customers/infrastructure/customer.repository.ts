@@ -63,6 +63,9 @@ export class CustomerRepository implements ICustomerRepository {
 						createdAt: now,
 					})
 					.returning();
+					if (partner === undefined) {
+						throw new Error("Failed to create customer partner");
+					}
 
 				const [profile] = await tx
 					.insert(customerProfiles)
@@ -83,6 +86,9 @@ export class CustomerRepository implements ICustomerRepository {
 			},
 		);
 
+		if (created.partner === undefined || created.profile === undefined) {
+			throw new Error("Failed to create customer");
+		}
 		return this.mapToDomain(created.partner, created.profile);
 	}
 
@@ -125,6 +131,9 @@ export class CustomerRepository implements ICustomerRepository {
 			},
 		);
 
+		if (updated.partner === undefined || updated.profile === undefined) {
+			throw new Error("Failed to update customer");
+		}
 		return this.mapToDomain(updated.partner, updated.profile);
 	}
 
@@ -161,6 +170,9 @@ export class CustomerRepository implements ICustomerRepository {
 			},
 		);
 
+		if (partner === undefined || profile === undefined) {
+			throw new Error("Failed to soft-delete customer");
+		}
 		return this.mapToDomain(partner, profile);
 	}
 
@@ -284,18 +296,18 @@ export class CustomerRepository implements ICustomerRepository {
 			companyId: partner.companyId,
 			taxId: partner.taxId,
 			legalName: partner.legalName,
-			email: partner.email ?? undefined,
-			address: undefined,
-			phone: undefined,
+			...(partner.email != null ? { email: partner.email } : {}),
+			...(partner.address != null ? { address: partner.address } : {}),
+			...(partner.phone != null ? { phone: partner.phone } : {}),
 			creditLimit: Number.isFinite(creditLimit) ? creditLimit : 0,
 			creditDays: profile.creditDays ?? 30,
 			customerSegment: normalizeSegment(profile.customerSegment),
 			paymentBehaviorScore: profile.paymentBehaviorScore ?? 100,
-			lastPurchaseDate: profile.lastPurchaseDate ?? undefined,
+			...(profile.lastPurchaseDate != null ? { lastPurchaseDate: profile.lastPurchaseDate } : {}),
 			totalPurchases: Number.isFinite(totalPurchases) ? totalPurchases : 0,
 			complianceScore: partner.complianceScore ?? 100,
 			sunatCondition: partner.sunatCondition ?? "HABIDO",
-			logoUrl: partner.logoUrl ?? undefined,
+			...(partner.logoUrl != null ? { logoUrl: partner.logoUrl } : {}),
 			createdAt: partner.createdAt,
 			updatedAt: profile.updatedAt ?? partner.createdAt,
 		});

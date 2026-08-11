@@ -7,7 +7,7 @@
  * @module ai-swarm/orchestrator
  */
 
-import { generateText } from "ai";
+import { generateText, type LanguageModel } from "ai";
 import { createLogger } from "../../../lib/logger";
 import {
 	getModelForAgent,
@@ -138,7 +138,9 @@ export class OrchestratorService {
 		}
 
 		try {
-			const model = openrouter(getModelForAgent("orchestrator"));
+			const model = openrouter(
+				getModelForAgent("orchestrator"),
+			) as unknown as LanguageModel;
 
 			const prompt = `
 You are the orchestrator for ARKELYTHEX financial automation system.

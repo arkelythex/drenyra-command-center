@@ -38,18 +38,20 @@ export async function logAgentDecision(input: LogDecisionInput): Promise<{
 	pluginFindings: ReturnType<typeof evaluateAuditPlugins>["findings"];
 }> {
 	const repository = new AgentDecisionLogRepository();
-	const pluginResult = evaluateAuditPlugins(
-		{
-			organizationId: input.organizationId,
-			agentName: input.agentName,
-			decisionType: input.decisionType,
-			reasoning: input.reasoning,
-			inputs: input.inputs,
-			outputs: input.outputs,
-			occurredAt: new Date(),
-		},
-		input.pluginIds,
-	);
+    	const pluginResult = evaluateAuditPlugins(
+    		{
+    			organizationId: input.organizationId,
+    			agentName: input.agentName,
+    			decisionType: input.decisionType,
+    			...(input.reasoning !== undefined
+    				? { reasoning: input.reasoning }
+    				: {}),
+    			inputs: input.inputs,
+    			outputs: input.outputs,
+    			occurredAt: new Date(),
+    		},
+    		input.pluginIds,
+    	);
 
 	const outputsWithPluginAudit: Record<string, unknown> = {
 		...input.outputs,

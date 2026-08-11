@@ -89,7 +89,30 @@ export const productsModule = new Elysia({ prefix: "/api/products" })
 			}
 
 			try {
-				const data = await ProductsService.create(parsedBody.data);
+				const data = await ProductsService.create({
+					companyId: parsedBody.data.companyId,
+					sku: parsedBody.data.sku,
+					name: parsedBody.data.name,
+					...(parsedBody.data.description !== undefined
+						? { description: parsedBody.data.description }
+						: {}),
+					...(parsedBody.data.category !== undefined
+						? { category: parsedBody.data.category }
+						: {}),
+					unitPrice: parsedBody.data.unitPrice,
+					...(parsedBody.data.costPrice !== undefined
+						? { costPrice: parsedBody.data.costPrice }
+						: {}),
+					...(parsedBody.data.taxType !== undefined
+						? { taxType: parsedBody.data.taxType }
+						: {}),
+					...(parsedBody.data.unit !== undefined
+						? { unit: parsedBody.data.unit }
+						: {}),
+					...(parsedBody.data.stockQuantity !== undefined
+						? { stockQuantity: parsedBody.data.stockQuantity }
+						: {}),
+				});
 				const contract = ProductRecordSchema.safeParse(data);
 				if (!contract.success) {
 					set.status = 500;
@@ -151,10 +174,33 @@ export const productsModule = new Elysia({ prefix: "/api/products" })
 			}
 
 			try {
-				const data = await ProductsService.update(
-					parsedParams.data.id,
-					parsedBody.data,
-				);
+				const data = await ProductsService.update(parsedParams.data.id, {
+					...(parsedBody.data.sku !== undefined ? { sku: parsedBody.data.sku } : {}),
+					...(parsedBody.data.name !== undefined
+						? { name: parsedBody.data.name }
+						: {}),
+					...(parsedBody.data.description !== undefined
+						? { description: parsedBody.data.description }
+						: {}),
+					...(parsedBody.data.category !== undefined
+						? { category: parsedBody.data.category }
+						: {}),
+					...(parsedBody.data.unitPrice !== undefined
+						? { unitPrice: parsedBody.data.unitPrice }
+						: {}),
+					...(parsedBody.data.costPrice !== undefined
+						? { costPrice: parsedBody.data.costPrice }
+						: {}),
+					...(parsedBody.data.taxType !== undefined
+						? { taxType: parsedBody.data.taxType }
+						: {}),
+					...(parsedBody.data.unit !== undefined
+						? { unit: parsedBody.data.unit }
+						: {}),
+					...(parsedBody.data.stockQuantity !== undefined
+						? { stockQuantity: parsedBody.data.stockQuantity }
+						: {}),
+				});
 				const contract = ProductRecordSchema.safeParse(data);
 				if (!contract.success) {
 					set.status = 500;

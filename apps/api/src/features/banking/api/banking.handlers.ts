@@ -119,7 +119,18 @@ export const bankingHandlers = {
 		}
 	},
 	createAccount: async ({ body }: CreateAccountCtx) => {
-		const account = await createAccount(body.companyId, body);
+		const account = await createAccount(body.companyId, {
+			accountName: body.accountName,
+			accountNumber: body.accountNumber,
+			accountType: body.accountType,
+			bankName: body.bankName,
+			...(body.bankCode !== undefined ? { bankCode: body.bankCode } : {}),
+			...(body.branch !== undefined ? { branch: body.branch } : {}),
+			...(body.currency !== undefined ? { currency: body.currency } : {}),
+			...(body.currentBalance !== undefined
+				? { currentBalance: body.currentBalance }
+				: {}),
+		});
 		return ok(account);
 	},
 	deleteAccount: async ({
@@ -170,7 +181,16 @@ export const bankingHandlers = {
 		return ok(transactions);
 	},
 	createTransaction: async ({ body }: CreateTransactionCtx) => {
-		const result = await service.createTransaction(body.companyId, body);
+		const result = await service.createTransaction(body.companyId, {
+			accountId: body.accountId,
+			transactionDate: body.transactionDate,
+			description: body.description,
+			...(body.reference !== undefined ? { reference: body.reference } : {}),
+			type: body.type,
+			amount: body.amount,
+			...(body.category !== undefined ? { category: body.category } : {}),
+			...(body.tags !== undefined ? { tags: body.tags } : {}),
+		});
 		return ok({
 			id: result.id,
 			accountId: body.accountId,
@@ -230,7 +250,13 @@ export const bankingHandlers = {
 		const imported = await service.importTransactions(
 			body.companyId,
 			body.accountId,
-			body.transactions,
+			body.transactions.map((row) => ({
+				date: row.date,
+				description: row.description,
+				amount: row.amount,
+				type: row.type,
+				...(row.reference !== undefined ? { reference: row.reference } : {}),
+			})),
 		);
 		return ok(imported);
 	},
@@ -254,7 +280,13 @@ export const bankingHandlers = {
 		);
 	},
 	getAirlineTicketReport: async ({ query }: AirlineTicketReportCtx) => {
-		const report = await airlineReportService.generate(query);
+		const report = await airlineReportService.generate({
+			companyId: query.companyId,
+			period: query.period,
+			...(query.minAmountPen !== undefined
+				? { minAmountPen: query.minAmountPen }
+				: {}),
+		});
 		return ok(report);
 	},
 };

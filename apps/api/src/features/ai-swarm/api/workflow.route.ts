@@ -12,6 +12,7 @@ import { fail } from "../../shared/api-response";
 import {
 	enforceGovernancePolicy,
 	GovernanceSchema,
+	type GovernanceInput,
 } from "../../shared/governance";
 import { ReconciliationAgent } from "../agents/reconciliation.agent";
 import { hasOpenRouterKey } from "../config/openrouter.config";
@@ -20,6 +21,29 @@ import { CompleteInvoiceProcessingWorkflow } from "../workflows/complete-invoice
 import { MultiRucProcessingWorkflow } from "../workflows/multi-ruc-processing.workflow";
 import { enqueueSwarmAuditLog } from "./audit-log-bridge";
 import { resolveOrganizationContextForRequest } from "./organization-context";
+
+function toGovernanceInput(
+	value: NonNullable<z.infer<typeof GovernanceSchema>>,
+): GovernanceInput {
+	return {
+		...(value.objective !== undefined ? { objective: value.objective } : {}),
+		...(value.estimatedAmountPen !== undefined
+			? { estimatedAmountPen: value.estimatedAmountPen }
+			: {}),
+		...(value.riskScore !== undefined ? { riskScore: value.riskScore } : {}),
+		...(value.approval !== undefined
+			? {
+					approval: {
+						approvedBy: value.approval.approvedBy,
+						reason: value.approval.reason,
+						...(value.approval.approvedAt !== undefined
+							? { approvedAt: value.approval.approvedAt }
+							: {}),
+					},
+				}
+			: {}),
+	};
+}
 
 function resolveWorkflowOrganizationId(
 	request: Request,
@@ -143,7 +167,7 @@ Returns:
 			const governance = await enforceGovernancePolicy({
 				action: "process_invoices",
 				priority: body.priority ?? "medium",
-				governance: body.governance,
+				...(body.governance !== undefined ? { governance: toGovernanceInput(body.governance) } : {}),
 				set,
 			});
 
@@ -175,7 +199,10 @@ Returns:
 			}
 
 			const workflow = new CompleteInvoiceProcessingWorkflow();
-			const result = await workflow.execute(body);
+			const result = await workflow.execute({
+				documents: body.documents,
+				...(body.priority !== undefined ? { priority: body.priority } : {}),
+			});
 
 			enqueueSwarmAuditLog({
 				organizationId,
@@ -260,7 +287,7 @@ SUNAT validation works without API key (rule-based only).
 			const governance = await enforceGovernancePolicy({
 				action: "multi_ruc_process",
 				priority: body.priority ?? "medium",
-				governance: body.governance,
+				...(body.governance !== undefined ? { governance: toGovernanceInput(body.governance) } : {}),
 				set,
 			});
 
@@ -291,7 +318,10 @@ SUNAT validation works without API key (rule-based only).
 			}
 
 			const workflow = new MultiRucProcessingWorkflow();
-			const result = await workflow.execute(body);
+			const result = await workflow.execute({
+				companies: body.companies,
+				...(body.priority !== undefined ? { priority: body.priority } : {}),
+			});
 			const report = workflow.generateReport(result);
 
 			enqueueSwarmAuditLog({
@@ -391,7 +421,7 @@ Returns consolidated report with:
 			const governance = await enforceGovernancePolicy({
 				action: "reconcile",
 				priority: body.priority ?? "medium",
-				governance: body.governance,
+				...(body.governance !== undefined ? { governance: toGovernanceInput(body.governance) } : {}),
 				set,
 			});
 
@@ -423,7 +453,17 @@ Returns consolidated report with:
 			}
 
 			const agent = new ReconciliationAgent();
-			const result = await agent.reconcile(body.transactions, body.documents);
+			const result = await agent.reconcile(
+				body.transactions.map((t) => ({
+					id: t.id,
+					date: t.date,
+					description: t.description,
+					amount: t.amount,
+					type: t.type,
+					...(t.reference !== undefined ? { reference: t.reference } : {}),
+				})),
+				body.documents,
+			);
 
 			if (!result.success) {
 				set.status = 500;

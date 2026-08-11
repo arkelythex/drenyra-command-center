@@ -53,7 +53,11 @@ export class BankingApplicationService {
 	}
 
 	async listTransactions(accountId: string, startDate?: Date, endDate?: Date) {
-		return getTransactions({ accountId, startDate, endDate });
+		return getTransactions({
+			accountId,
+			...(startDate !== undefined ? { startDate } : {}),
+			...(endDate !== undefined ? { endDate } : {}),
+		});
 	}
 
 	async createTransaction(companyId: string, data: CreateTransactionDTO) {
@@ -62,11 +66,11 @@ export class BankingApplicationService {
 			accountId: data.accountId,
 			transactionDate: data.transactionDate,
 			description: data.description,
-			reference: data.reference,
+			...(data.reference !== undefined ? { reference: data.reference } : {}),
 			type: data.type,
 			amount: data.amount,
-			category: data.category,
-			tags: data.tags,
+			...(data.category !== undefined ? { category: data.category } : {}),
+			...(data.tags !== undefined ? { tags: data.tags } : {}),
 		});
 		return { id: result.transactionId, balance: result.newBalance };
 	}
@@ -80,8 +84,8 @@ export class BankingApplicationService {
 		await reconcileTransaction({
 			transactionId,
 			userId,
-			documentId,
-			documentType,
+			...(documentId !== undefined ? { documentId } : {}),
+			...(documentType !== undefined ? { documentType } : {}),
 		});
 	}
 

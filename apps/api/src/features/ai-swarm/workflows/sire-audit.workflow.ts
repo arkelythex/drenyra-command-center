@@ -209,7 +209,22 @@ export async function runSireAuditWorkflow(
 	// Step 1: Parallel validation (3 subagents)
 	onStep({ step: "validation", status: "started" });
 	const step1Start = Date.now();
-	const readiness = await readinessService.runFull(input);
+	const readiness = await readinessService.runFull({
+		companyId: input.companyId,
+		period: input.period,
+		declaredIgvPen: input.declaredIgvPen,
+		salesTotalPen: input.salesTotalPen,
+		rvieRecords: input.rvieRecords,
+		rceRecords: input.rceRecords,
+		pleSalesRecords: input.pleSalesRecords,
+		plePurchaseRecords: input.plePurchaseRecords,
+		...(input.detractionAmountPen !== undefined
+			? { detractionAmountPen: input.detractionAmountPen }
+			: {}),
+		...(input.detractionableBasePen !== undefined
+			? { detractionableBasePen: input.detractionableBasePen }
+			: {}),
+	});
 	onStep({
 		step: "validation",
 		status: "completed",
@@ -241,8 +256,10 @@ export async function runSireAuditWorkflow(
 			xmlContent: input.cpeValidation.xmlContent,
 			issueDate: input.cpeValidation.issueDate,
 			totalAmount: input.cpeValidation.totalAmount,
-			skipCache: input.cpeValidation.skipCache,
-		});
+    				...(input.cpeValidation.skipCache !== undefined
+    					? { skipCache: input.cpeValidation.skipCache }
+    					: {}),
+    			});
 		const cpeBlocked = !cpeResult.isValid || cpeResult.breachDetected;
 		if (cpeBlocked) {
 			overallStatus = "blocked";
@@ -266,8 +283,10 @@ export async function runSireAuditWorkflow(
 	onStep({ step: "policy-check", status: "started" });
 	const policy = evaluateSireSubmissionPolicy({
 		period: input.period,
-		companyAnnualIncomePen: input.companyAnnualIncomePen,
-		isPrico: input.isPrico,
+		...(input.companyAnnualIncomePen !== undefined
+			? { companyAnnualIncomePen: input.companyAnnualIncomePen }
+			: {}),
+		...(input.isPrico !== undefined ? { isPrico: input.isPrico } : {}),
 	});
 	onStep({
 		step: "policy-check",

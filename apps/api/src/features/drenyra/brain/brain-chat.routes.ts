@@ -162,7 +162,7 @@ export function createBrainChatRoutes(deps: {
 				fiscalScope,
 				type: "user_message",
 				content: { text: body.message },
-				actorId: context.userId,
+				...(context.userId !== undefined ? { actorId: context.userId } : {}),
 				sourceSurface: "web",
 				createdAt: now(),
 			});

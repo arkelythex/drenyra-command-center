@@ -24,12 +24,14 @@ function rowToEntity(row: PercepcionRow): Percepcion {
 		status: row.status as PercepcionStatus,
 		declarationPeriod: row.declarationPeriod,
 		sunatDueDate: new Date(row.sunatDueDate),
-		pdtReference: row.pdtReference ?? undefined,
-		cancellationReason: row.cancellationReason ?? undefined,
+		...(row.pdtReference != null ? { pdtReference: row.pdtReference } : {}),
+		...(row.cancellationReason != null
+			? { cancellationReason: row.cancellationReason }
+			: {}),
 		createdAt: row.createdAt,
-		declaredAt: row.declaredAt ?? undefined,
-		paidAt: row.paidAt ?? undefined,
-		cancelledAt: row.cancelledAt ?? undefined,
+		...(row.declaredAt != null ? { declaredAt: row.declaredAt } : {}),
+		...(row.paidAt != null ? { paidAt: row.paidAt } : {}),
+		...(row.cancelledAt != null ? { cancelledAt: row.cancelledAt } : {}),
 	});
 }
 

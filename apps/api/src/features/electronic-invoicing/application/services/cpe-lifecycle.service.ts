@@ -69,7 +69,7 @@ export class CpeLifecycleService {
 			latestProviderReference,
 			lastEventAt:
 				nonDraftEvents.length > 0
-					? new Date(nonDraftEvents[nonDraftEvents.length - 1]?.at)
+					? new Date(nonDraftEvents[nonDraftEvents.length - 1]?.at ?? "")
 					: null,
 		};
 
@@ -223,7 +223,7 @@ export class CpeLifecycleService {
 				at: new Date(event.at),
 				source: event.source,
 				message: event.message,
-				metadata: event.metadata,
+				...(event.metadata !== undefined ? { metadata: event.metadata } : {}),
 			});
 		}
 		if (transaction.status && transaction.status !== "DRAFT") {
@@ -246,7 +246,9 @@ export class CpeLifecycleService {
 		});
 		const cdrContent = CpeLifecycleService.readString(electronic.cdrContent);
 		const traceability = CpeLifecycleService.assessTraceability({
-			invoiceId: resolvedInvoice?.id,
+			...(resolvedInvoice?.id !== undefined
+				? { invoiceId: resolvedInvoice.id }
+				: {}),
 			currentStatus,
 			sunatStatus: CpeLifecycleService.readString(electronic.sunatStatus),
 			timeline,
@@ -254,7 +256,9 @@ export class CpeLifecycleService {
 		});
 
 		return {
-			invoiceId: resolvedInvoice?.id,
+			...(resolvedInvoice?.id !== undefined
+				? { invoiceId: resolvedInvoice.id }
+				: {}),
 			transactionId: transaction.id,
 			invoiceNumber: `${transaction.series ?? "N/A"}-${transaction.number ?? "N/A"}`,
 			currentStatus,
@@ -263,7 +267,7 @@ export class CpeLifecycleService {
 			sunatMessage: CpeLifecycleService.readString(electronic.sunatMessage),
 			createdAt: transaction.createdAt,
 			updatedAt: transaction.updatedAt,
-			runbook,
+			...(runbook !== undefined ? { runbook } : {}),
 			evidence: {
 				invoiceLinked: traceability.invoiceLinked,
 				oseSubmissionRecorded: traceability.oseSubmissionRecorded,

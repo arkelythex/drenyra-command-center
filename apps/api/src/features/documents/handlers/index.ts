@@ -56,23 +56,49 @@ export interface DocumentsHandlersDeps {
 export function createDocumentsHandlers(deps: DocumentsHandlersDeps = {}) {
 	return {
 		...createUploadHandlers({
-			documentStore: deps.documentStore,
-			resolveActorIdFromHeaders: deps.resolveActorIdFromHeaders,
-			queueOcrJob: deps.queueOcrJob,
-			resolveOrganizationIdFromCompanyId:
-				deps.resolveOrganizationIdFromCompanyId,
+			...(deps.documentStore !== undefined
+				? { documentStore: deps.documentStore }
+				: {}),
+			...(deps.resolveActorIdFromHeaders !== undefined
+				? { resolveActorIdFromHeaders: deps.resolveActorIdFromHeaders }
+				: {}),
+			...(deps.queueOcrJob !== undefined
+				? { queueOcrJob: deps.queueOcrJob }
+				: {}),
+			...(deps.resolveOrganizationIdFromCompanyId !== undefined
+				? {
+						resolveOrganizationIdFromCompanyId:
+							deps.resolveOrganizationIdFromCompanyId,
+					}
+				: {}),
 		}),
 		...createReviewHandlers({
-			documentStore: deps.documentStore,
-			resolveActorIdFromHeaders: deps.resolveActorIdFromHeaders,
-			parseStoredExtractedData: deps.parseStoredExtractedData,
-			resolveOrganizationIdFromCompanyId:
-				deps.resolveOrganizationIdFromCompanyId,
+			...(deps.documentStore !== undefined
+				? { documentStore: deps.documentStore }
+				: {}),
+			...(deps.resolveActorIdFromHeaders !== undefined
+				? { resolveActorIdFromHeaders: deps.resolveActorIdFromHeaders }
+				: {}),
+			...(deps.parseStoredExtractedData !== undefined
+				? { parseStoredExtractedData: deps.parseStoredExtractedData }
+				: {}),
+			...(deps.resolveOrganizationIdFromCompanyId !== undefined
+				? {
+						resolveOrganizationIdFromCompanyId:
+							deps.resolveOrganizationIdFromCompanyId,
+					}
+				: {}),
 		}),
 		...createQueryHandlers({
-			documentStore: deps.documentStore,
-			resolveOrganizationIdFromCompanyId:
-				deps.resolveOrganizationIdFromCompanyId,
+			...(deps.documentStore !== undefined
+				? { documentStore: deps.documentStore }
+				: {}),
+			...(deps.resolveOrganizationIdFromCompanyId !== undefined
+				? {
+						resolveOrganizationIdFromCompanyId:
+							deps.resolveOrganizationIdFromCompanyId,
+					}
+				: {}),
 		}),
 	};
 }

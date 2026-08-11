@@ -6,12 +6,12 @@
  * POST /api/fiscal/ledger/batch      — clasifica múltiples transacciones
  */
 
-import { FiscalClassificationEngine } from "@drenyra/application/src/fiscal/fiscal-classification-engine";
+import { FiscalClassificationEngine } from "@drenyra/application/fiscal/fiscal-classification-engine";
 import { Elysia } from "elysia";
 import { z } from "zod";
 import { resolveSessionContext } from "../security/session-context";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
-import { companyScopeGuard } from "../shared/plugins/company-scope-guard";
+import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
 
 // ============================================================================
 // Schemas
@@ -60,7 +60,24 @@ export const fiscalLedgerRoute = new Elysia({ prefix: "/ledger" })
 					return fail(context.error, context.code);
 				}
 
-				const classification = engine.classify(body);
+				const classification = engine.classify({
+					tipoComprobante: body.tipoComprobante,
+					serie: body.serie,
+					montoTotal: body.montoTotal,
+					moneda: body.moneda,
+					descripcion: body.descripcion,
+					tipo: body.tipo,
+					fechaEmision: body.fechaEmision,
+					...(body.numero !== undefined ? { numero: body.numero } : {}),
+					...(body.rucEmisor !== undefined ? { rucEmisor: body.rucEmisor } : {}),
+					...(body.rucCliente !== undefined ? { rucCliente: body.rucCliente } : {}),
+					...(body.razonSocial !== undefined
+						? { razonSocial: body.razonSocial }
+						: {}),
+					...(body.tipoCambio !== undefined
+						? { tipoCambio: body.tipoCambio }
+						: {}),
+				});
 
 				return ok({
 					input: {
@@ -111,7 +128,24 @@ export const fiscalLedgerRoute = new Elysia({ prefix: "/ledger" })
 				}
 
 				const results = body.transactions.map((t) => {
-					const classification = engine.classify(t);
+					const classification = engine.classify({
+						tipoComprobante: t.tipoComprobante,
+						serie: t.serie,
+						montoTotal: t.montoTotal,
+						moneda: t.moneda,
+						descripcion: t.descripcion,
+						tipo: t.tipo,
+						fechaEmision: t.fechaEmision,
+						...(t.numero !== undefined ? { numero: t.numero } : {}),
+						...(t.rucEmisor !== undefined ? { rucEmisor: t.rucEmisor } : {}),
+						...(t.rucCliente !== undefined ? { rucCliente: t.rucCliente } : {}),
+						...(t.razonSocial !== undefined
+							? { razonSocial: t.razonSocial }
+							: {}),
+						...(t.tipoCambio !== undefined
+							? { tipoCambio: t.tipoCambio }
+							: {}),
+					});
 					return {
 						input: {
 							tipoComprobante: t.tipoComprobante,

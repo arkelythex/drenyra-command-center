@@ -34,7 +34,7 @@ export function createAnalyzeInvoiceCommandEnvelope(
 				id: evidenceId,
 				type: "DOCUMENT",
 				title: "Invoice analysis source document",
-				sourceRef: input.sourceRef,
+				...(input.sourceRef !== undefined ? { sourceRef: input.sourceRef } : {}),
 			},
 		],
 		deterministicChecks: [
@@ -68,7 +68,7 @@ export function createAnalyzeInvoiceCommandEnvelope(
 		},
 		trace: {
 			traceId: input.traceId,
-			caseId: input.caseId,
+			...(input.caseId !== undefined ? { caseId: input.caseId } : {}),
 			createdAt: new Date().toISOString(),
 		},
 	});

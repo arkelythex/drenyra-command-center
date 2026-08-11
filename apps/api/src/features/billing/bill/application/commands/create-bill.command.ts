@@ -138,7 +138,7 @@ function calculateBillItems(
 
 		return {
 			id: randomUUID(),
-			productId: input.productId,
+			...(input.productId !== undefined ? { productId: input.productId } : {}),
 			description: input.description,
 			quantity,
 			unitPrice,
@@ -195,8 +195,8 @@ export async function createBill(input: {
 		currency: input.currency,
 		exchangeRate: input.exchangeRate ?? 1.0,
 		items,
-		notes: input.notes,
-		tags: input.tags,
+		...(input.notes !== undefined ? { notes: input.notes } : {}),
+		...(input.tags !== undefined ? { tags: input.tags } : {}),
 	});
 
 	const savedBill = await billRepository.create(bill);

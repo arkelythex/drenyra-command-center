@@ -109,8 +109,12 @@ export const bankingProvidersRoutes = new Elysia({
 		async ({ body, set }) => {
 			const validationError = validateProviderSpecificFields({
 				provider: body.provider,
-				documentType: body.documentType,
-				documentNumber: body.documentNumber,
+				...(body.documentType !== undefined
+					? { documentType: body.documentType }
+					: {}),
+				...(body.documentNumber !== undefined
+					? { documentNumber: body.documentNumber }
+					: {}),
 			});
 			if (validationError) {
 				set.status = 400;
@@ -124,9 +128,13 @@ export const bankingProvidersRoutes = new Elysia({
 						provider: body.provider,
 						username: body.username,
 						password: body.password,
-						documentType: body.documentType,
-						documentNumber: body.documentNumber,
-						otpToken: body.otpToken,
+						...(body.documentType !== undefined
+							? { documentType: body.documentType }
+							: {}),
+						...(body.documentNumber !== undefined
+							? { documentNumber: body.documentNumber }
+							: {}),
+						...(body.otpToken !== undefined ? { otpToken: body.otpToken } : {}),
 					},
 				});
 
@@ -240,8 +248,8 @@ Retorna lista de cuentas bancarias del usuario.
 					sessionKey,
 					provider: query.provider,
 					accountId: query.accountId,
-					dateStart: query.dateStart,
-					dateEnd: query.dateEnd,
+					...(query.dateStart !== undefined ? { dateStart: query.dateStart } : {}),
+					...(query.dateEnd !== undefined ? { dateEnd: query.dateEnd } : {}),
 				});
 
 				return ok({ movements });

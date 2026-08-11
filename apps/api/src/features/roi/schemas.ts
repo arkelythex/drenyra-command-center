@@ -7,7 +7,6 @@ import { z } from "zod";
 // ── Shared ─────────────────────────────────────────────────────────
 
 const Currency = z.enum(["PEN", "USD"]);
-const _Percentage = z.number().min(-10000).max(100000); // -10000% to 100000%
 
 const MoneyInput = z.object({
 	amount: z.number().nonnegative("Amount must be non-negative"),

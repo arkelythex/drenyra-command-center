@@ -183,7 +183,9 @@ export const roadmapMvpRoute = new Elysia({ prefix: "/roadmap-mvp" })
 					month: body.month,
 					actionId: params.actionId,
 					traceId: body.traceId,
-					countryCode: body.countryCode,
+					...(body.countryCode !== undefined
+						? { countryCode: body.countryCode }
+						: {}),
 				});
 				return ok(result);
 			} catch (error: unknown) {
@@ -223,8 +225,14 @@ export const roadmapMvpRoute = new Elysia({ prefix: "/roadmap-mvp" })
 					traceId: body.traceId,
 					decision: body.decision,
 					reason: body.reason,
-					countryCode: body.countryCode,
-					decidedBy: body.decidedBy ?? fallbackDecidedBy ?? undefined,
+					...(body.countryCode !== undefined
+						? { countryCode: body.countryCode }
+						: {}),
+					...(body.decidedBy != null
+						? { decidedBy: body.decidedBy }
+						: fallbackDecidedBy != null
+							? { decidedBy: fallbackDecidedBy }
+							: {}),
 				});
 				return ok(result);
 			} catch (error: unknown) {

@@ -119,7 +119,7 @@ export async function updateClientSettings(
 			};
 		}
 
-		const updated = client.updateSettings(settings);
+		const updated = client.updateSettings({ ...settings });
 		const saved = await repo.update(updated);
 
 		return ok(mapToClientDetail(saved));

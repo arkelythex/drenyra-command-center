@@ -64,7 +64,10 @@ export function buildAccountantPanelModule() {
 			.get(
 				"/approval/pending",
 				({ query: { ruc, periodo } }) => {
-					const all = approvalStore.list({ ruc, periodo });
+					const all = approvalStore.list({
+						...(ruc !== undefined ? { ruc } : {}),
+						...(periodo !== undefined ? { periodo } : {}),
+					});
 					const pending = all.filter((r) => r.status === "pending");
 					const approved = all.filter((r) => r.status === "approved");
 					const rejected = all.filter((r) => r.status === "rejected");

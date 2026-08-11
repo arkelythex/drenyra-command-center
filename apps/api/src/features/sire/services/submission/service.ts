@@ -52,28 +52,32 @@ async function resolveSubmissionTenantContext(
 		companyId: input.companyId,
 		scope: "sire.submit",
 		deprecatedEnvRuc: config.deprecatedCompanyRuc,
-		suppliedRuc: input.ruc,
+		...(input.ruc !== undefined ? { suppliedRuc: input.ruc } : {}),
 	});
 }
 
 function buildSunatAuditTrace(input: {
 	companyId: string;
-	tenantSunatContext?: TenantSunatContext;
+	tenantSunatContext?: TenantSunatContext | undefined;
 	decision: SunatAuditTrace["decision"];
-	outcome?: string;
-	reason?: string;
-	suppliedRuc?: string;
-	comparedRuc?: string;
+	outcome?: string | undefined;
+	reason?: string | undefined;
+	suppliedRuc?: string | undefined;
+	comparedRuc?: string | undefined;
 }): SunatAuditTrace {
 	return {
 		companyId: input.companyId,
-		resolvedRuc: input.tenantSunatContext?.ruc,
-		credentialFingerprint: input.tenantSunatContext?.credential.fingerprint,
+		...(input.tenantSunatContext?.ruc !== undefined
+			? { resolvedRuc: input.tenantSunatContext.ruc }
+			: {}),
+		...(input.tenantSunatContext?.credential.fingerprint !== undefined
+			? { credentialFingerprint: input.tenantSunatContext.credential.fingerprint }
+			: {}),
 		decision: input.decision,
-		outcome: input.outcome,
-		reason: input.reason,
-		suppliedRuc: input.suppliedRuc,
-		comparedRuc: input.comparedRuc,
+		...(input.outcome !== undefined ? { outcome: input.outcome } : {}),
+		...(input.reason !== undefined ? { reason: input.reason } : {}),
+		...(input.suppliedRuc !== undefined ? { suppliedRuc: input.suppliedRuc } : {}),
+		...(input.comparedRuc !== undefined ? { comparedRuc: input.comparedRuc } : {}),
 	};
 }
 
@@ -85,8 +89,12 @@ function getTenantContextErrorTrace(
 	}
 
 	return {
-		resolvedRuc: error.details.tenantRuc,
-		comparedRuc: error.details.comparedRuc,
+		...(error.details.tenantRuc !== undefined
+			? { resolvedRuc: error.details.tenantRuc }
+			: {}),
+		...(error.details.comparedRuc !== undefined
+			? { comparedRuc: error.details.comparedRuc }
+			: {}),
 	};
 }
 
@@ -159,8 +167,12 @@ export const submitWithAudit = async (
 				message:
 					existingSubmission.sunatMessage ||
 					"Previously submitted (idempotent response)",
-				trackingId: existingSubmission.trackingId || undefined,
-				sunatTicket: existingSubmission.sunatTicket || undefined,
+				...(existingSubmission.trackingId
+					? { trackingId: existingSubmission.trackingId }
+					: {}),
+				...(existingSubmission.sunatTicket
+					? { sunatTicket: existingSubmission.sunatTicket }
+					: {}),
 			};
 		}
 	}
@@ -169,31 +181,34 @@ export const submitWithAudit = async (
 
 	let auditRecord = existingSubmission ?? null;
 	if (auditRecord) {
+		const auditRecordId = auditRecord.id;
 		try {
-			auditRecord = await sireSubmissionRepository.incrementAttempt(
-				auditRecord.id,
-			);
-			logger.info(
-				{
-					idempotencyKey,
-					submissionId: auditRecord.id,
-					attemptNumber: auditRecord.attemptNumber,
-				},
-				"Reused existing SIRE audit record",
-			);
+			auditRecord =
+				(await sireSubmissionRepository.incrementAttempt(auditRecordId)) ??
+				null;
+			if (auditRecord) {
+				logger.info(
+					{
+						idempotencyKey,
+						submissionId: auditRecord.id,
+						attemptNumber: auditRecord.attemptNumber,
+					},
+					"Reused existing SIRE audit record",
+				);
+			}
 		} catch (error: unknown) {
 			logger.warn(
 				{
 					error,
 					idempotencyKey,
-					submissionId: auditRecord.id,
+					submissionId: auditRecordId,
 				},
 				"Failed to increment attempt for existing SIRE audit record",
 			);
 		}
 	} else {
 		try {
-			auditRecord = await sireSubmissionRepository.create({
+			auditRecord = (await sireSubmissionRepository.create({
 				companyId: input.companyId,
 				period: input.period,
 				ledgerType: input.ledgerType,
@@ -201,25 +216,28 @@ export const submitWithAudit = async (
 				idempotencyKey,
 				provider,
 				dryRun: input.dryRun ?? false,
-				createdBy: options?.createdBy,
+				...(options?.createdBy !== undefined
+					? { createdBy: options.createdBy }
+					: {}),
 				warnings: buildProposalRecordWarnings(
 					input,
 					options?.governanceTrace
 						? { governance: options.governanceTrace }
 						: undefined,
 				),
-			});
-
-			logger.info(
-				{
-					idempotencyKey,
-					submissionId: auditRecord.id,
-					companyId: input.companyId,
-					period: input.period,
-					ledgerType: input.ledgerType,
-				},
-				"Created SIRE audit record",
-			);
+			})) ?? null;
+			if (auditRecord) {
+				logger.info(
+					{
+						idempotencyKey,
+						submissionId: auditRecord.id,
+						companyId: input.companyId,
+						period: input.period,
+						ledgerType: input.ledgerType,
+					},
+					"Created SIRE audit record",
+				);
+			}
 		} catch (error: unknown) {
 			logger.warn(
 				{
@@ -256,8 +274,12 @@ export const submitWithAudit = async (
 							? "REJECTED"
 							: "SUBMITTED",
 				submissionId: result.submissionId,
-				sunatTicket: result.sunatTicket,
-				trackingId: result.trackingId,
+				...(result.sunatTicket !== undefined
+					? { sunatTicket: result.sunatTicket }
+					: {}),
+				...(result.trackingId !== undefined
+					? { trackingId: result.trackingId }
+					: {}),
 				sunatMessage: result.message,
 				warnings: mergeAuditWarnings(
 					auditRecord.warnings,
@@ -361,7 +383,7 @@ export const logBlockedSubmissionAttempt = async (
 	);
 
 	if (!submission) {
-		submission = await sireSubmissionRepository.create({
+		submission = (await sireSubmissionRepository.create({
 			companyId: input.companyId,
 			period: input.period,
 			ledgerType: input.ledgerType,
@@ -369,20 +391,24 @@ export const logBlockedSubmissionAttempt = async (
 			idempotencyKey,
 			provider,
 			dryRun: input.dryRun ?? false,
-			createdBy: options?.createdBy,
+			...(options?.createdBy !== undefined
+				? { createdBy: options.createdBy }
+				: {}),
 			warnings: {
 				governance: governanceTrace,
 			},
-		});
+		})) ?? null;
 	}
 
-	await sireSubmissionRepository.update(blockedScope, submission.id, {
-		status: "BLOCKED_POLICY",
-		sunatMessage: message,
-		errors: {
-			governance: governanceTrace,
-			reason: message,
-		},
-		processedAt: new Date(),
-	});
+	if (submission) {
+		await sireSubmissionRepository.update(blockedScope, submission.id, {
+			status: "BLOCKED_POLICY",
+			sunatMessage: message,
+			errors: {
+				governance: governanceTrace,
+				reason: message,
+			},
+			processedAt: new Date(),
+		});
+	}
 };

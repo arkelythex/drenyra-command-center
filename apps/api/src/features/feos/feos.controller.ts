@@ -8,22 +8,17 @@
 
 import {
   type Actor,
-  type CompanyRef,
   type FiscalScope,
   type PeriodRef,
   type WorkspaceProps,
-  type WorkspaceState,
+  type WorkspaceId,
+  type CompanyId,
+  type OrganizationId,
   type ToolContractRegistry,
-  type ToolContract,
   type ToolRiskLevel,
   type EvidenceItem,
   type EvidenceRoot,
   Workspace,
-  WORKSPACE_INTENT,
-  WORKSPACE_STATE,
-  computePortfolioRollup,
-  generateAttentionItems,
-  sortAttentionItems,
   buildAttentionInbox,
   buildPortfolioStatus,
   registerDrenyraContracts,
@@ -33,7 +28,6 @@ import {
   verifyEvidenceRoot,
   createFeosReceipt,
   verifyFeosReceipt,
-  hashEvidenceContent,
   generateId,
 } from "@drenyra/domain";
 
@@ -122,9 +116,9 @@ export const feosController = {
       period: { year: input.period.year, month: input.period.month, label: "" } as PeriodRef,
       intent: input.intent as any,
       label: input.label,
-      description: input.description,
+      ...(input.description !== undefined ? { description: input.description } : {}),
       createdBy: input.createdBy as Actor,
-      metadata: input.metadata,
+      ...(input.metadata !== undefined ? { metadata: input.metadata } : {}),
     });
 
     workspaceStore.set(workspace);
@@ -179,7 +173,7 @@ export const feosController = {
         case "block":
           ws = ws.block(
             params?.reason as string ?? "No reason",
-            (params?.blockedBy as string[]) ?? [],
+            (params?.blockedBy as WorkspaceId[] | undefined) ?? [],
             params?.actor as Actor | undefined,
           );
           break;
@@ -206,7 +200,7 @@ export const feosController = {
 
   getPortfolioStatus(organizationId: string) {
     const all = workspaceStore.all();
-    const companies = new Map<string, { companyId: string; companyRuc: string; companyName: string; workspaces: WorkspaceProps[] }>();
+    const companies = new Map<CompanyId, { companyId: CompanyId; companyRuc: string; companyName: string; workspaces: WorkspaceProps[] }>();
 
     for (const ws of all) {
       const key = ws.companyId;
@@ -270,7 +264,7 @@ export const feosController = {
         contractVersion: contract.version,
         input: {},
         actor: { id: "system", type: "system", label: "System validation" },
-        scope: { organizationId: "unknown", companyId: "unknown", companyRuc: "00000000000", fiscalPeriod: "2026-01" },
+        scope: { organizationId: "unknown" as OrganizationId, companyId: "unknown" as CompanyId, companyRuc: "00000000000", fiscalPeriod: "2026-01" },
         traceId: "validation",
         timestamp: new Date().toISOString(),
       });
@@ -302,8 +296,8 @@ export const feosController = {
       scope: event.scope,
       timestamp: { iso: new Date().toISOString(), unix: Date.now() },
       traceId: event.traceId,
-      workspaceId: event.workspaceId,
-      toolName: event.toolName,
+      ...(event.workspaceId !== undefined ? { workspaceId: event.workspaceId } : {}),
+      ...(event.toolName !== undefined ? { toolName: event.toolName } : {}),
       tags: [],
     };
 
@@ -329,7 +323,7 @@ export const feosController = {
     const root = createEvidenceRoot({
       items,
       computedBy: { id: "system", type: "system", label: "API" },
-      scope: { organizationId: "unknown", companyId: "unknown", companyRuc: "00000000000", fiscalPeriod: "2026-01" },
+      scope: { organizationId: "unknown" as OrganizationId, companyId: "unknown" as CompanyId, companyRuc: "00000000000", fiscalPeriod: "2026-01" },
     });
     evidenceRoots.set(root.id, root);
     return root;
@@ -358,7 +352,7 @@ export const feosController = {
       evidenceItems: input.evidenceItems,
       actionInput: input.actionInput,
       actionOutput: input.actionOutput,
-      previousChainHash: input.previousChainHash,
+      ...(input.previousChainHash !== undefined ? { previousChainHash: input.previousChainHash } : {}),
     });
     return receipt;
   },

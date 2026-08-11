@@ -213,9 +213,10 @@ export class AmountDateMatchingStrategy implements MatchingStrategy {
 				start,
 				end,
 			);
-			if (invoices.length > 0) {
+			const firstInvoice = invoices[0];
+			if (firstInvoice) {
 				return {
-					documentId: invoices[0].id,
+					documentId: firstInvoice.id,
 					documentType: "INVOICE",
 					score: 80,
 					criteria: "AMOUNT_DATE",
@@ -230,9 +231,10 @@ export class AmountDateMatchingStrategy implements MatchingStrategy {
 			start,
 			end,
 		);
-		if (bills.length > 0) {
+		const firstBill = bills[0];
+		if (firstBill) {
 			return {
-				documentId: bills[0].id,
+				documentId: firstBill.id,
 				documentType: "BILL",
 				score: 80,
 				criteria: "AMOUNT_DATE",
@@ -274,9 +276,10 @@ export class AmountEntityMatchingStrategy implements MatchingStrategy {
 					partner.id,
 					tx.amount,
 				);
-				if (invoices.length > 0) {
+				const firstInvoice = invoices[0];
+				if (firstInvoice) {
 					return {
-						documentId: invoices[0].id,
+						documentId: firstInvoice.id,
 						documentType: "INVOICE",
 						score: 60,
 						criteria: "AMOUNT_ENTITY",
@@ -295,9 +298,10 @@ export class AmountEntityMatchingStrategy implements MatchingStrategy {
 				partner.id,
 				tx.amount,
 			);
-			if (bills.length > 0) {
+			const firstBill = bills[0];
+			if (firstBill) {
 				return {
-					documentId: bills[0].id,
+					documentId: firstBill.id,
 					documentType: "BILL",
 					score: 60,
 					criteria: "AMOUNT_ENTITY",
@@ -360,9 +364,10 @@ export class FuzzyEntityMatchingStrategy implements MatchingStrategy {
 				bestPartner.id,
 				tx.amount,
 			);
-			if (invoices.length > 0) {
+			const firstInvoice = invoices[0];
+			if (firstInvoice) {
 				return {
-					documentId: invoices[0].id,
+					documentId: firstInvoice.id,
 					documentType: "INVOICE",
 					score,
 					criteria: "FUZZY_ENTITY",
@@ -376,9 +381,10 @@ export class FuzzyEntityMatchingStrategy implements MatchingStrategy {
 			bestPartner.id,
 			tx.amount,
 		);
-		if (bills.length > 0) {
+		const firstBill = bills[0];
+		if (firstBill) {
 			return {
-				documentId: bills[0].id,
+				documentId: firstBill.id,
 				documentType: "BILL",
 				score,
 				criteria: "FUZZY_ENTITY",

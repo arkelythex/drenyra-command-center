@@ -314,7 +314,7 @@ export const cfoAnalyticsModule = new Elysia({ prefix: "/api/cfo" })
 
 	.get(
 		"/reports/:id/download",
-		async ({ params, companyContext, query, set }) => {
+		async ({ params, set }) => {
 			const report = await ReportsService.getReportDownload(params.id);
 
 			if (!report) {

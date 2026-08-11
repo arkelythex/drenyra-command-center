@@ -114,10 +114,22 @@ export async function enforceGovernancePolicy(options: {
 	const decision = AutonomyPolicyService.evaluate({
 		action: options.action,
 		priority: options.priority,
-		objective: options.governance?.objective ?? options.fallbackObjective,
-		estimatedAmountPen: options.governance?.estimatedAmountPen,
-		riskScore: options.governance?.riskScore,
-		approval: options.governance?.approval,
+		...(options.governance?.objective !== undefined ||
+		options.fallbackObjective !== undefined
+			? {
+					objective:
+						options.governance?.objective ?? options.fallbackObjective,
+				}
+			: {}),
+		...(options.governance?.estimatedAmountPen !== undefined
+			? { estimatedAmountPen: options.governance.estimatedAmountPen }
+			: {}),
+		...(options.governance?.riskScore !== undefined
+			? { riskScore: options.governance.riskScore }
+			: {}),
+		...(options.governance?.approval !== undefined
+			? { approval: options.governance.approval }
+			: {}),
 	});
 
 	if (!decision.allowed) {

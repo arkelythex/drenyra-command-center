@@ -100,7 +100,7 @@ export class LedgerMonitorFiscalService {
 				declaredIgvPen: centsToPen(input.pdt.declaredIgvCents),
 				declaredNetSalesPen: centsToPen(input.pdt.declaredNetSalesCents),
 			},
-			sire: input.sire,
+			...(input.sire !== undefined ? { sire: input.sire } : {}),
 		};
 
 		const [proactiveValidation, complianceDashboard, openIssues] =

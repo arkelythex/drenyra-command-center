@@ -175,7 +175,7 @@ export const dashboardRoutes = new Elysia({ prefix: "/api/dashboard" })
 				return ok(
 					await ControlTowerService.getPortfolio({
 						ownerCompanyId: query.companyId,
-						period: query.period,
+						...(query.period !== undefined ? { period: query.period } : {}),
 					}),
 				);
 			} catch (error) {

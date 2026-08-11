@@ -19,8 +19,8 @@ export interface SireDocumentRecord {
 	issueDate: string;
 	total: number;
 	currency: Currency;
-	ruc?: string;
-	reasonSocial?: string;
+	ruc?: string | undefined;
+	reasonSocial?: string | undefined;
 }
 
 export interface SireDiffRow {
@@ -28,9 +28,9 @@ export interface SireDiffRow {
 	status: SireDiffStatus;
 	reason: string;
 	difference: number;
-	localRecord?: SireDocumentRecord;
-	sunatRecord?: SireDocumentRecord;
-	cpeRecord?: SireDocumentRecord;
+	localRecord?: SireDocumentRecord | undefined;
+	sunatRecord?: SireDocumentRecord | undefined;
+	cpeRecord?: SireDocumentRecord | undefined;
 	resolution?: "ACCEPTED_SUNAT" | "KEPT_LOCAL" | "PENDING";
 }
 
@@ -50,10 +50,10 @@ export interface SireDiffArtifactPayload {
 	};
 	rows: SireDiffRow[];
 	sunatSource: SireDiffSunatSource;
-	sunatMessage?: string;
+	sunatMessage?: string | undefined;
 	approvable: boolean;
 	submitBlocked: boolean;
-	submitBlockReason?: string;
+	submitBlockReason?: string | undefined;
 }
 
 interface NormalizedRecord {
@@ -397,7 +397,7 @@ export function computeSubmitBlockedAfterCommit(input: {
 async function resolveSunatRecords(input: {
 	companyId: string;
 	period: string;
-	sireFile?: File;
+	sireFile?: File | undefined;
 }): Promise<{
 	sunat: NormalizedRecord[];
 	sunatSource: SireDiffSunatSource;
@@ -450,8 +450,8 @@ export class SireDiffService {
 	static async buildThreeWayDiff(input: {
 		companyId: string;
 		period: string;
-		sireFile?: File;
-		cpeFile?: File;
+		sireFile?: File | undefined;
+		cpeFile?: File | undefined;
 	}): Promise<SireDiffArtifactPayload> {
 		const { year, month } = parsePeriod(input.period);
 

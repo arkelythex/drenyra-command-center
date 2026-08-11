@@ -88,6 +88,10 @@ export async function createReview(
 		})
 		.returning();
 
+	if (!row) {
+		throw new Error("Failed to create audit review");
+	}
+
 	return toAuditReview(row);
 }
 
@@ -96,7 +100,13 @@ export async function listReviews(query: ListReviewsQuery): Promise<{
 	total: number;
 }> {
 	const conditions = [eq(auditReviews.companyId, query.companyId)];
-	if (query.status) conditions.push(eq(auditReviews.status, query.status));
+	if (query.status)
+		conditions.push(
+			eq(
+				auditReviews.status,
+				query.status as (typeof auditReviews.$inferSelect)["status"],
+			),
+		);
 	if (query.targetType)
 		conditions.push(eq(auditReviews.targetType, query.targetType));
 
@@ -216,7 +226,7 @@ export async function updateFindingStatus(
 	const [row] = await db
 		.update(auditFindings)
 		.set({
-			status,
+			status: status as (typeof auditFindings.$inferSelect)["status"],
 			resolvedById: resolvedById ?? null,
 			resolvedAt: shouldSetResolved ? now : undefined,
 			resolutionComment: resolutionComment ?? null,
@@ -305,12 +315,16 @@ export async function createRule(input: CreateRuleInput): Promise<AuditRule> {
 		.values({
 			companyId: input.companyId,
 			name: input.name,
-			category: input.category,
-			severity: input.severity,
+			category: input.category as (typeof auditRules.$inferInsert)["category"],
+			severity: input.severity as (typeof auditRules.$inferInsert)["severity"],
 			condition: input.condition,
-			createdById: input.createdById,
+			createdById: input.createdById ?? null,
 		})
 		.returning();
+
+	if (!row) {
+		throw new Error("Failed to create audit rule");
+	}
 
 	return toAuditRule(row);
 }
@@ -318,7 +332,12 @@ export async function createRule(input: CreateRuleInput): Promise<AuditRule> {
 export async function listRules(query: ListRulesQuery): Promise<AuditRule[]> {
 	const conditions = [eq(auditRules.companyId, query.companyId)];
 	if (query.category)
-		conditions.push(eq(auditRules.category, query.category as any));
+		conditions.push(
+			eq(
+				auditRules.category,
+				query.category as (typeof auditRules.$inferSelect)["category"],
+			),
+		);
 	if (query.enabled !== undefined)
 		conditions.push(eq(auditRules.enabled, query.enabled ? 1 : 0));
 

@@ -1,4 +1,4 @@
-import type { AgentDefinition, DrenyraSubagentName } from "@drenyra/pi";
+import type { AgentId, AgentTool, DrenyraSubagentName } from "@drenyra/pi";
 import {
 	complianceTools,
 	financeTools,
@@ -8,6 +8,20 @@ import {
 
 type AgentMeta = {
 	drenyraSubagent: DrenyraSubagentName;
+};
+
+/**
+ * Declarative definition of an API agent, matching the ERP agent contract.
+ * (The `AgentDefinition` exported by `@drenyra/pi` is the fiscal-agent-domain
+ * shape, which does not include `systemPrompt`/`tools`/`drenyraSubagent`.)
+ */
+type AgentDefinition = {
+	id: AgentId;
+	name: string;
+	description: string;
+	systemPrompt: string;
+	tools: AgentTool[];
+	drenyraSubagent?: DrenyraSubagentName;
 };
 
 /**

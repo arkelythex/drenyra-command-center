@@ -70,13 +70,6 @@ function successResponse<T>(data: T, meta?: Record<string, unknown>) {
 	};
 }
 
-function _errorResponse(code: string, message: string, details?: unknown) {
-	return {
-		success: false,
-		error: { code, message, details },
-	};
-}
-
 /**
  * SUNAT Knowledge API routes
  *
@@ -129,10 +122,14 @@ export const knowledgeBaseRoutes = new Elysia({ name: "knowledge-base" })
 				contextWindow: 0,
 			};
 
-			const results = await sunatKnowledgeService.hybridSearch(
-				{ query, categories, limit },
-				options,
-			);
+    			const results = await sunatKnowledgeService.hybridSearch(
+    				{
+    					query,
+    					...(categories !== undefined ? { categories } : {}),
+    					limit,
+    				},
+    				options,
+    			);
 
 			const searchTimeMs = Date.now() - startTime;
 
@@ -237,7 +234,7 @@ export const knowledgeBaseRoutes = new Elysia({ name: "knowledge-base" })
 
 			const context = await sunatKnowledgeService.buildContext({
 				query,
-				categories,
+				...(categories !== undefined ? { categories } : {}),
 				limit,
 			});
 

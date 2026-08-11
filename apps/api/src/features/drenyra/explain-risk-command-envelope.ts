@@ -36,7 +36,7 @@ export function createExplainRiskCommandEnvelope(
 				id: evidenceId,
 				type: "AGENT_OUTPUT",
 				title: "Fiscal risk explanation",
-				sourceRef: input.sourceRef,
+				...(input.sourceRef !== undefined ? { sourceRef: input.sourceRef } : {}),
 			},
 		],
 		deterministicChecks: [
@@ -72,7 +72,7 @@ export function createExplainRiskCommandEnvelope(
 		},
 		trace: {
 			traceId: input.traceId,
-			caseId: input.caseId,
+			...(input.caseId !== undefined ? { caseId: input.caseId } : {}),
 			createdAt: new Date().toISOString(),
 		},
 	});

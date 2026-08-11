@@ -60,29 +60,29 @@ export interface DocumentResult {
 	documentId: string;
 	ocr: {
 		success: boolean;
-		data?: InvoiceData;
-		error?: string;
+		data?: InvoiceData | undefined;
+		error?: string | undefined;
 		durationMs: number;
 		costUsd: number;
 	};
 	sunat: {
 		success: boolean;
-		data?: ValidationResult;
-		error?: string;
+		data?: ValidationResult | undefined;
+		error?: string | undefined;
 		durationMs: number;
 		costUsd: number;
 	};
 	pcge: {
 		success: boolean;
-		data?: PCGEClassification[];
-		error?: string;
+		data?: PCGEClassification[] | undefined;
+		error?: string | undefined;
 		durationMs: number;
 		costUsd: number;
 	};
 	evidence: {
 		success: boolean;
-		data?: EvidenceMetadata;
-		error?: string;
+		data?: EvidenceMetadata | undefined;
+		error?: string | undefined;
 		durationMs: number;
 	};
 }

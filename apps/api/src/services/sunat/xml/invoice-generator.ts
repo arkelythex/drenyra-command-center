@@ -77,7 +77,6 @@ export class UBLInvoiceGenerator {
 
 	private generateAdditionalMonetaryTotals(data: InvoiceData): string {
 		const subtotal = this.calculateSubtotal(data);
-		const _igv = this.calculateIGV(data);
 
 		return `
       <sac:AdditionalMonetaryTotal>
@@ -205,7 +204,6 @@ export class UBLInvoiceGenerator {
 
 	private generateLegalMonetaryTotal(data: InvoiceData): string {
 		const subtotal = this.calculateSubtotal(data);
-		const _igv = this.calculateIGV(data);
 		const total = this.calculateTotal(data);
 
 		return `
@@ -290,7 +288,7 @@ export class UBLInvoiceGenerator {
 	}
 
 	private formatDate(date: Date): string {
-		return date.toISOString().split("T")[0];
+		return date.toISOString().split("T")[0] ?? "";
 	}
 
 	private numberToWords(amount: MonetaryAmount): string {

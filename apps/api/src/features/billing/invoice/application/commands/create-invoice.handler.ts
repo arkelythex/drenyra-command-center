@@ -133,7 +133,7 @@ export class CreateInvoiceHandler {
 			currency: command.currency,
 			exchangeRate: command.exchangeRate,
 			items,
-			notes: command.notes,
+			...(command.notes !== undefined ? { notes: command.notes } : {}),
 		});
 
 		// 6. Persist invoice

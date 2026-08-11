@@ -47,7 +47,7 @@ export class ExpedienteEvidenceRepository {
 			companyId: scope.companyId,
 			companyRuc: scope.companyRuc,
 			organizationId: scope.organizationId,
-			period: scope.period,
+			...(scope.period !== undefined ? { period: scope.period } : {}),
 			countryCode: "PE",
 		});
 

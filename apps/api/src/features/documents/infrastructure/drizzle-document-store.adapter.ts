@@ -150,14 +150,20 @@ export class DrizzleDocumentStoreAdapter implements DocumentStorePort {
 			confidenceLevel: dbDoc.confidenceLevel,
 			extractedData: dbDoc.extractedData,
 			validatedBy: dbDoc.validatedBy,
-			validatedAt: dbDoc.validatedAt?.toISOString(),
+			...(dbDoc.validatedAt !== null && dbDoc.validatedAt !== undefined
+				? { validatedAt: dbDoc.validatedAt.toISOString() }
+				: {}),
 			validationNotes: dbDoc.validationNotes,
 			rejectionReason: isRejected ? dbDoc.validationNotes : null,
 			rejectedBy: isRejected ? dbDoc.validatedBy : null,
-			rejectedAt: isRejected ? dbDoc.validatedAt?.toISOString() : undefined,
+			...(isRejected && dbDoc.validatedAt !== null && dbDoc.validatedAt !== undefined
+				? { rejectedAt: dbDoc.validatedAt.toISOString() }
+				: {}),
 			uploadedAt:
 				dbDoc.uploadedAt?.toISOString() || dbDoc.createdAt?.toISOString(),
-			processedAt: dbDoc.processedAt?.toISOString(),
+			...(dbDoc.processedAt !== null && dbDoc.processedAt !== undefined
+				? { processedAt: dbDoc.processedAt.toISOString() }
+				: {}),
 		};
 	}
 }

@@ -35,11 +35,11 @@ export class ListBillsQuery {
 	async execute(input: ListBillsInput): Promise<BillListResult> {
 		return await this.repository.list({
 			companyId: input.companyId,
-			status: input.status,
-			vendorId: input.vendorId,
-			startDate: input.startDate,
-			endDate: input.endDate,
-			search: input.search,
+			...(input.status !== undefined ? { status: input.status } : {}),
+			...(input.vendorId !== undefined ? { vendorId: input.vendorId } : {}),
+			...(input.startDate !== undefined ? { startDate: input.startDate } : {}),
+			...(input.endDate !== undefined ? { endDate: input.endDate } : {}),
+			...(input.search !== undefined ? { search: input.search } : {}),
 			limit: input.limit ?? 20,
 			offset: input.offset ?? 0,
 		});
@@ -52,11 +52,11 @@ export async function listBills(
 	const repository = new BillRepository();
 	return await repository.list({
 		companyId: input.companyId,
-		status: input.status,
-		vendorId: input.vendorId,
-		startDate: input.startDate,
-		endDate: input.endDate,
-		search: input.search,
+		...(input.status !== undefined ? { status: input.status } : {}),
+		...(input.vendorId !== undefined ? { vendorId: input.vendorId } : {}),
+		...(input.startDate !== undefined ? { startDate: input.startDate } : {}),
+		...(input.endDate !== undefined ? { endDate: input.endDate } : {}),
+		...(input.search !== undefined ? { search: input.search } : {}),
 		limit: input.limit ?? 20,
 		offset: input.offset ?? 0,
 	});

@@ -226,6 +226,7 @@ export class DashboardService {
 		if (dashboards.length === 0) return null;
 
 		const dashboard = dashboards[0];
+		if (!dashboard) return null;
 		const widgets = await db
 			.select()
 			.from(analyticsWidgets)

@@ -92,13 +92,6 @@ const VALID_STATUSES: Set<InvitationStatus> = new Set([
 	INVITATION_STATUS.CANCELLED,
 ]);
 
-const TERMINAL_STATUSES: Set<InvitationStatus> = new Set([
-	INVITATION_STATUS.ACCEPTED,
-	INVITATION_STATUS.REJECTED,
-	INVITATION_STATUS.EXPIRED,
-	INVITATION_STATUS.CANCELLED,
-]);
-
 /**
  * Validate that a status transition is allowed.
  *

@@ -12,12 +12,12 @@ import { db, schema } from "../../lib/db";
 // ---------------------------------------------------------------------------
 
 export interface ThreadFilters {
-	status?: string;
-	period?: string;
-	priority?: string;
-	search?: string;
-	limit?: number;
-	offset?: number;
+	status?: string | undefined;
+	period?: string | undefined;
+	priority?: string | undefined;
+	search?: string | undefined;
+	limit?: number | undefined;
+	offset?: number | undefined;
 }
 
 export interface PaginatedResult<T> {
@@ -33,7 +33,7 @@ export interface ThreadSummary {
 	title: string;
 	status: string;
 	environment: string;
-	period?: string;
+	period?: string | undefined;
 	priority: string;
 	tags: string[];
 	taskCount: number;
@@ -47,33 +47,33 @@ export interface ThreadDetail {
 	id: string;
 	companyId: string;
 	title: string;
-	description?: string;
+	description?: string | undefined;
 	status: string;
 	environment: string;
-	period?: string;
+	period?: string | undefined;
 	priority: string;
 	tags: string[];
 	tasks: ThreadTaskDTO[];
 	agents: ThreadAgentDTO[];
 	evidenceIds: string[];
-	createdById?: string;
+	createdById?: string | undefined;
 	createdAt: string;
 	updatedAt: string;
-	closedAt?: string;
-	closedById?: string;
-	closeNote?: string;
+	closedAt?: string | undefined;
+	closedById?: string | undefined;
+	closeNote?: string | undefined;
 }
 
 export interface ThreadTaskDTO {
 	id: string;
 	title: string;
-	description?: string;
+	description?: string | undefined;
 	status: string;
-	agentId?: string;
-	assignedAt?: string;
-	completedAt?: string;
-	completedById?: string;
-	resultSummary?: string;
+	agentId?: string | undefined;
+	assignedAt?: string | undefined;
+	completedAt?: string | undefined;
+	completedById?: string | undefined;
+	resultSummary?: string | undefined;
 	sortOrder: number;
 	createdAt: string;
 	updatedAt: string;
@@ -90,23 +90,23 @@ export interface ThreadAgentDTO {
 export interface CreateThreadData {
 	companyId: string;
 	title: string;
-	description?: string;
-	environment?: string;
-	period?: string;
-	priority?: string;
-	tags?: string[];
-	tasks: { title: string; description?: string; order: number }[];
-	createdById?: string;
+	description?: string | undefined;
+	environment?: string | undefined;
+	period?: string | undefined;
+	priority?: string | undefined;
+	tags?: string[] | undefined;
+	tasks: { title: string; description?: string | undefined; order: number }[];
+	createdById?: string | undefined;
 }
 
 export interface UpdateThreadData {
-	title?: string;
-	description?: string;
-	status?: string;
-	priority?: string;
-	environment?: string;
-	tags?: string[];
-	period?: string;
+	title?: string | undefined;
+	description?: string | undefined;
+	status?: string | undefined;
+	priority?: string | undefined;
+	environment?: string | undefined;
+	tags?: string[] | undefined;
+	period?: string | undefined;
 }
 
 export interface AssignAgentData {
@@ -117,17 +117,17 @@ export interface AssignAgentData {
 
 export interface CreateTaskData {
 	title: string;
-	description?: string;
-	order?: number;
+	description?: string | undefined;
+	order?: number | undefined;
 }
 
 export interface UpdateTaskData {
-	title?: string;
-	description?: string;
-	status?: string;
-	agentId?: string;
-	resultSummary?: string;
-	completedById?: string;
+	title?: string | undefined;
+	description?: string | undefined;
+	status?: string | undefined;
+	agentId?: string | undefined;
+	resultSummary?: string | undefined;
+	completedById?: string | undefined;
 }
 
 // ---------------------------------------------------------------------------
@@ -340,7 +340,7 @@ export class ThreadsService {
 		const taskProps = data.tasks.map((t, i) => ({
 			id: crypto.randomUUID(),
 			title: t.title,
-			description: t.description,
+			...(t.description !== undefined ? { description: t.description } : {}),
 			status: "PENDING" as TaskStatus,
 			evidenceIds: [],
 			order: t.order ?? i + 1,
@@ -383,6 +383,10 @@ export class ThreadsService {
 				updatedAt: now,
 			})
 			.returning();
+
+		if (!inserted) {
+			throw new Error("Failed to insert thread");
+		}
 
 		if (taskProps.length > 0) {
 			await db.insert(schema.threadTasks).values(
@@ -459,6 +463,10 @@ export class ThreadsService {
 			.set(updateValues)
 			.where(eq(schema.threads.id, id))
 			.returning();
+
+		if (!updated) {
+			throw new Error("Failed to update thread");
+		}
 
 		return {
 			id: updated.id,
@@ -572,6 +580,10 @@ export class ThreadsService {
 			.where(eq(schema.threads.id, id))
 			.returning();
 
+		if (!updated) {
+			throw new Error("Failed to update thread status");
+		}
+
 		return {
 			id: updated.id,
 			companyId: updated.companyId,
@@ -626,6 +638,10 @@ export class ThreadsService {
 				isActive: true,
 			})
 			.returning();
+
+		if (!inserted) {
+			throw new Error("Failed to assign agent");
+		}
 
 		return {
 			agentId: inserted.agentId,
@@ -763,6 +779,10 @@ export class ThreadsService {
 			})
 			.returning();
 
+		if (!inserted) {
+			throw new Error("Failed to create task");
+		}
+
 		return {
 			id: inserted.id,
 			title: inserted.title,
@@ -838,6 +858,10 @@ export class ThreadsService {
 			.set(updateValues)
 			.where(eq(schema.threadTasks.id, taskId))
 			.returning();
+
+		if (!updated) {
+			throw new Error("Failed to update task");
+		}
 
 		return {
 			id: updated.id,

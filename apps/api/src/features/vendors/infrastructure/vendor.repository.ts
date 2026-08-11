@@ -65,6 +65,10 @@ export class VendorRepository implements IVendorRepository {
 					})
 					.returning();
 
+				if (!partner) {
+					throw new Error("Failed to create business partner");
+				}
+
 				const [profile] = await tx
 					.insert(vendorProfiles)
 					.values({
@@ -78,6 +82,10 @@ export class VendorRepository implements IVendorRepository {
 						updatedAt: now,
 					})
 					.returning();
+
+				if (!profile) {
+					throw new Error("Failed to create vendor profile");
+				}
 
 				return { partner, profile };
 			},
@@ -110,6 +118,10 @@ export class VendorRepository implements IVendorRepository {
 					)
 					.returning();
 
+				if (!partner) {
+					throw new Error("Failed to update business partner");
+				}
+
 				const [profile] = await tx
 					.update(vendorProfiles)
 					.set({
@@ -124,6 +136,10 @@ export class VendorRepository implements IVendorRepository {
 					})
 					.where(eq(vendorProfiles.id, input.id))
 					.returning();
+
+				if (!profile) {
+					throw new Error("Failed to update vendor profile");
+				}
 
 				return { partner, profile };
 			},
@@ -152,11 +168,19 @@ export class VendorRepository implements IVendorRepository {
 					)
 					.returning();
 
+				if (!updatedPartner) {
+					throw new Error("Failed to update business partner");
+				}
+
 				const [updatedProfile] = await tx
 					.update(vendorProfiles)
 					.set({ updatedAt: now })
 					.where(eq(vendorProfiles.id, id))
 					.returning();
+
+				if (!updatedProfile) {
+					throw new Error("Failed to update vendor profile");
+				}
 
 				return {
 					partner: updatedPartner,
@@ -296,13 +320,13 @@ export class VendorRepository implements IVendorRepository {
 			companyId: partner.companyId,
 			taxId: partner.taxId,
 			legalName: partner.legalName,
-			email: partner.email ?? undefined,
+			...(partner.email ? { email: partner.email } : {}),
 			sunatCondition: partner.sunatCondition ?? "HABIDO",
 			vendorRating: profile.vendorRating ?? 100,
 			paymentTermDays: profile.paymentTermDays ?? 30,
 			preferredPaymentMethod: (profile.preferredPaymentMethod ??
 				"TRANSFER") as PreferredPaymentMethod,
-			bankAccount: profile.bankAccount ?? undefined,
+			...(profile.bankAccount ? { bankAccount: profile.bankAccount } : {}),
 			purchaseCategories: normalizeCategories(profile.purchaseCategories),
 			createdAt: partner.createdAt,
 			updatedAt: profile.updatedAt ?? partner.createdAt,

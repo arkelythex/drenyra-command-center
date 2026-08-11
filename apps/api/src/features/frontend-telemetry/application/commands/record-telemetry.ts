@@ -9,6 +9,7 @@
 
 import {
 	type FrontendTelemetryInput,
+	type FrontendTelemetryRating,
 	FrontendTelemetryService,
 } from "../../../../services/frontend-telemetry.service";
 
@@ -52,16 +53,18 @@ export async function recordTelemetry(
 ): Promise<RecordTelemetryResult> {
 	const serviceInput: FrontendTelemetryInput = {
 		kind: input.kind as FrontendTelemetryInput["kind"],
-		name: input.name,
-		path: input.path,
-		value: input.value,
-		rating: input.rating as FrontendTelemetryInput["rating"],
-		message: input.message,
-		stack: input.stack,
-		context: input.context,
+		...(input.name !== undefined ? { name: input.name } : {}),
+		...(input.path !== undefined ? { path: input.path } : {}),
+		...(input.value !== undefined ? { value: input.value } : {}),
+		...(input.rating !== undefined
+			? { rating: input.rating as FrontendTelemetryRating }
+			: {}),
+		...(input.message !== undefined ? { message: input.message } : {}),
+		...(input.stack !== undefined ? { stack: input.stack } : {}),
+		...(input.context !== undefined ? { context: input.context } : {}),
 		timestamp: input.timestamp,
-		userAgent: input.userAgent ?? undefined,
-		ipAddress: input.ipAddress ?? undefined,
+		userAgent: input.userAgent ?? null,
+		ipAddress: input.ipAddress ?? null,
 	};
 
 	const entry = await FrontendTelemetryService.record(serviceInput);

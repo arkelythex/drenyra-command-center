@@ -9,7 +9,7 @@
  * @module ai-swarm/agents
  */
 
-import { generateObject } from "ai";
+import { generateObject, type LanguageModel } from "ai";
 import { z } from "zod";
 import {
 	estimateCost,
@@ -121,7 +121,7 @@ export class PCGEAgent {
 
 		try {
 			const modelId = getModelForAgent("pcge");
-			const model = openrouter(modelId);
+			const model = openrouter(modelId) as unknown as LanguageModel;
 
 			const prompt = `
 Eres un contador experto en PCGE (Plan Contable General Empresarial) de Perú.
@@ -170,7 +170,9 @@ Devuelve SOLO JSON válido, sin texto adicional.
 					debe: asiento.debe,
 					haber: asiento.haber,
 					confidence: asiento.confidence,
-					evidence: asiento.evidence,
+					...(asiento.evidence !== undefined
+						? { evidence: asiento.evidence }
+						: {}),
 				}),
 			);
 

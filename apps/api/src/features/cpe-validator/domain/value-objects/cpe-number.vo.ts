@@ -49,6 +49,11 @@ export class CpeNumber {
 		}
 
 		const [, serie, numero] = match;
+		if (!serie || !numero) {
+			throw new Error(
+				"CPE number format invalid (expected: XXXX-NNNNNNNN, e.g., F001-00001234)",
+			);
+		}
 		const type = CpeNumber.inferType(serie);
 
 		return new CpeNumber(serie, numero, type);

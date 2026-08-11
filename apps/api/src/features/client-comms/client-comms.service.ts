@@ -22,7 +22,7 @@ export function substituteVariables(
 	variables: Record<string, string>,
 ): string {
 	return template.replace(VARIABLE_RE, (_, name: string) => {
-		return name in variables ? variables[name] : `{{${name}}}`;
+		return variables[name] ?? `{{${name}}}`;
 	});
 }
 
@@ -38,7 +38,8 @@ export function getMissingVariables(
 	let match: RegExpExecArray | null;
 	const re = new RegExp(VARIABLE_RE.source);
 	while ((match = re.exec(template)) !== null) {
-		usedInBody.add(match[1]);
+		const variableName = match[1];
+		if (variableName) usedInBody.add(variableName);
 	}
 
 	const declared = new Set(declaredVariables);

@@ -136,7 +136,7 @@ export class MultiRucProcessingWorkflow {
 
 				const processing = await this.processingWorkflow.execute({
 					documents: company.documents,
-					priority: input.priority,
+					...(input.priority !== undefined ? { priority: input.priority } : {}),
 				});
 
 				return {

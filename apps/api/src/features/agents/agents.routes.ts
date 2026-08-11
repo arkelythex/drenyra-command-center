@@ -50,13 +50,13 @@ export const agentsRoutes = new Elysia({
 				const offset = query.offset ? parseInt(query.offset, 10) : undefined;
 
 				const result = agentsService.listSessions(companyId, {
-					client: query.client,
-					period: query.period,
-					status: query.status,
-					risk: query.risk,
-					agentType: query.agentType,
-					limit,
-					offset,
+					...(query.client !== undefined ? { client: query.client } : {}),
+					...(query.period !== undefined ? { period: query.period } : {}),
+					...(query.status !== undefined ? { status: query.status } : {}),
+					...(query.risk !== undefined ? { risk: query.risk } : {}),
+					...(query.agentType !== undefined ? { agentType: query.agentType } : {}),
+					...(limit !== undefined ? { limit } : {}),
+					...(offset !== undefined ? { offset } : {}),
 				});
 
 				return ok(result);

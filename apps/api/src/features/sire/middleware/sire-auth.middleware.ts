@@ -44,8 +44,11 @@ function verifyHs256(token: string, secret: string): SireJwtClaims {
 		throw new Error("JWT malformed");
 	}
 
-	const [encodedHeader, encodedPayload, encodedSignature] = segments;
-	const header = parseJson<JwtHeader>(encodedHeader);
+    	const [encodedHeader, encodedPayload, encodedSignature] = segments;
+    	if (!encodedHeader || !encodedPayload || !encodedSignature) {
+    		throw new Error("JWT malformed");
+    	}
+    	const header = parseJson<JwtHeader>(encodedHeader);
 
 	if (header.alg !== "HS256") {
 		throw new Error("JWT must use HS256");

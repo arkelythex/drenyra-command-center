@@ -31,7 +31,7 @@ interface TraceAuditInput {
 	record: ContextTraceRecordDTO;
 	decisionType: string;
 	payload: unknown;
-	organizationId?: number | null;
+	organizationId?: number | null | undefined;
 }
 
 export class ContextAuditService {

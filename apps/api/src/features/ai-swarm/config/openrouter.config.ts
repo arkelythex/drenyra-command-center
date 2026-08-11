@@ -129,7 +129,8 @@ function getRetryAfterMs(response: Response): number | null {
 	return null;
 }
 
-const openrouterFetch: typeof fetch = async (input, init) => {
+const openrouterFetch: typeof fetch = Object.assign(
+	async (input, init) => {
 	const retryable = new Set([429, 500, 502, 503, 504]);
 	let attempt = 0;
 
@@ -159,10 +160,14 @@ const openrouterFetch: typeof fetch = async (input, init) => {
 		attempt += 1;
 		await sleep(waitMs);
 	}
-};
+},
+	{ preconnect: fetch.preconnect },
+);
 
 const openrouterProvider = createOpenRouter({
-	apiKey: OPENROUTER_CONFIG.apiKey,
+	...(OPENROUTER_CONFIG.apiKey !== undefined
+		? { apiKey: OPENROUTER_CONFIG.apiKey }
+		: {}),
 	baseURL: OPENROUTER_CONFIG.baseURL,
 	compatibility: "strict",
 	fetch: openrouterFetch,

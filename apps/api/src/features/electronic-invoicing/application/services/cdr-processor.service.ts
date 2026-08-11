@@ -81,20 +81,24 @@ export class CdrProcessorService {
 		}
 
 		await updateTransactionStatus(transactionId, status, {
-			cdrContent: oseResult.cdrContent,
-			sunatCode,
-			sunatMessage,
+			...(oseResult.cdrContent !== undefined
+				? { cdrContent: oseResult.cdrContent }
+				: {}),
+			...(sunatCode !== undefined ? { sunatCode } : {}),
+			...(sunatMessage !== undefined ? { sunatMessage } : {}),
 		});
 
 		return {
 			success: oseResult.success,
 			transactionId,
 			status,
-			cdrContent: oseResult.cdrContent,
-			sunatCode,
-			sunatMessage,
+			...(oseResult.cdrContent !== undefined
+				? { cdrContent: oseResult.cdrContent }
+				: {}),
+			...(sunatCode !== undefined ? { sunatCode } : {}),
+			...(sunatMessage !== undefined ? { sunatMessage } : {}),
 			processingTime: 0,
-			runbook,
+			...(runbook !== undefined ? { runbook } : {}),
 		};
 	}
 

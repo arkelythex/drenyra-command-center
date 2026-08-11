@@ -417,8 +417,11 @@ ragEnterpriseRoutes.post(
 			.returning()
 			.execute();
 
+		if (!document) {
+			throw new Error("Failed to create knowledge base document");
+		}
+
 		const text = document.content || "";
-		const _words = text.split(/\s+/).filter(Boolean);
 		const avgTokensPerWord = 1.3;
 		const maxChunkSize = 1000;
 		const chunks: (typeof kbChunks.$inferInsert)[] = [];
@@ -552,11 +555,12 @@ ragEnterpriseRoutes.get(
 			.offset(query.offset ?? 0)
 			.execute();
 
-		const [{ count: total }] = await db
+		const [totalRow] = await db
 			.select({ count: count() })
 			.from(kbDocuments)
 			.where(and(...conditions))
 			.execute();
+		const total = totalRow?.count ?? 0;
 
 		return ok({
 			documents: docs,
@@ -856,6 +860,10 @@ ragEnterpriseRoutes.post(
 				.returning()
 				.execute();
 
+			if (!qb) {
+				throw new Error("Failed to persist query");
+			}
+
 			return ok({ results: [], queryId: qb.id, latencyMs });
 		}
 
@@ -918,6 +926,10 @@ ragEnterpriseRoutes.post(
 			})
 			.returning()
 			.execute();
+
+		if (!qb) {
+			throw new Error("Failed to persist query");
+		}
 
 		return ok({
 			results: scored.map((c) => ({
@@ -1025,7 +1037,7 @@ ragEnterpriseRoutes.get(
 			return fail("Collection not found", "NOT_FOUND");
 		}
 
-		const [{ count: chunkCount }] = await db
+		const [chunkCountRow] = await db
 			.select({ count: count() })
 			.from(kbChunks)
 			.where(
@@ -1038,6 +1050,7 @@ ragEnterpriseRoutes.get(
 				),
 			)
 			.execute();
+		const chunkCount = chunkCountRow?.count ?? 0;
 
 		const docs = await db
 			.select({ fileSize: kbDocuments.fileSize })
@@ -1047,11 +1060,12 @@ ragEnterpriseRoutes.get(
 
 		const totalSizeBytes = docs.reduce((acc, d) => acc + d.fileSize, 0);
 
-		const [{ count: queryCount }] = await db
+		const [queryCountRow] = await db
 			.select({ count: count() })
 			.from(kbQueries)
 			.where(eq(kbQueries.collectionId, params.id))
 			.execute();
+		const queryCount = queryCountRow?.count ?? 0;
 
 		return ok({
 			collectionId: collection.id,
@@ -1081,7 +1095,7 @@ ragEnterpriseRoutes.get(
 			return ctx.error;
 		}
 
-		const [{ count: totalCollections }] = await db
+		const [totalCollectionsRow] = await db
 			.select({ count: count() })
 			.from(kbCollections)
 			.where(
@@ -1091,14 +1105,16 @@ ragEnterpriseRoutes.get(
 				),
 			)
 			.execute();
+		const totalCollections = totalCollectionsRow?.count ?? 0;
 
-		const [{ count: totalDocuments }] = await db
+		const [totalDocumentsRow] = await db
 			.select({ count: count() })
 			.from(kbDocuments)
 			.where(eq(kbDocuments.companyId, ctx.companyId))
 			.execute();
+		const totalDocuments = totalDocumentsRow?.count ?? 0;
 
-		const [{ count: totalChunks }] = await db
+		const [totalChunksRow] = await db
 			.select({ count: count() })
 			.from(kbChunks)
 			.where(
@@ -1111,12 +1127,14 @@ ragEnterpriseRoutes.get(
 				),
 			)
 			.execute();
+		const totalChunks = totalChunksRow?.count ?? 0;
 
-		const [{ count: totalQueries }] = await db
+		const [totalQueriesRow] = await db
 			.select({ count: count() })
 			.from(kbQueries)
 			.where(eq(kbQueries.companyId, ctx.companyId))
 			.execute();
+		const totalQueries = totalQueriesRow?.count ?? 0;
 
 		const recentQueries = await db
 			.select()

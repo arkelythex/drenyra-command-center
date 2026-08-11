@@ -61,13 +61,13 @@ export function createDrenyraCommandEnvelopeRoutes(
 					"FISCAL_REVIEWER_AGENT",
 					"list_fiscal_cases",
 					{
-						auditCaseId: query.caseId,
+						...(query.caseId !== undefined ? { auditCaseId: query.caseId } : {}),
 						commandId: "command-audit-events",
 						createEnvelope: (context) =>
 							listCommandEnvelopeAuditEvents(commandCenter, context, {
-								caseId: query.caseId,
-								commandId: query.commandId,
-								eventType: query.eventType,
+								...(query.caseId !== undefined ? { caseId: query.caseId } : {}),
+								...(query.commandId !== undefined ? { commandId: query.commandId } : {}),
+								...(query.eventType !== undefined ? { eventType: query.eventType } : {}),
 							}),
 						onCapabilityEvaluated: audit,
 					},
@@ -89,12 +89,12 @@ export function createDrenyraCommandEnvelopeRoutes(
 			"/review-sunat",
 			({ body, headers, set }) =>
 				guardedEnvelope(set, headers, "SIRE_AGENT", "run_agent_review", {
-					auditCaseId: body.caseId,
+					...(body.caseId !== undefined ? { auditCaseId: body.caseId } : {}),
 					commandId: "review-sunat",
 					createEnvelope: (context, traceId) =>
 						createReviewSunatCommandEnvelope(context, {
-							caseId: body.caseId,
-							sourceRef: body.sourceRef,
+							...(body.caseId !== undefined ? { caseId: body.caseId } : {}),
+							...(body.sourceRef !== undefined ? { sourceRef: body.sourceRef } : {}),
 							traceId,
 						}),
 					onCapabilityEvaluated: audit,
@@ -105,13 +105,13 @@ export function createDrenyraCommandEnvelopeRoutes(
 			"/prepare-evidence",
 			({ body, headers, set }) =>
 				guardedEnvelope(set, headers, "EVIDENCE_AGENT", "explain_evidence", {
-					auditCaseId: body.caseId,
+					...(body.caseId !== undefined ? { auditCaseId: body.caseId } : {}),
 					commandId: "prepare-evidence",
 					createEnvelope: (context, traceId) =>
 						createPrepareEvidenceCommandEnvelope(context, {
-							caseId: body.caseId,
-							documentId: body.documentId,
-							sourceRef: body.sourceRef,
+							...(body.caseId !== undefined ? { caseId: body.caseId } : {}),
+							...(body.documentId !== undefined ? { documentId: body.documentId } : {}),
+							...(body.sourceRef !== undefined ? { sourceRef: body.sourceRef } : {}),
 							traceId,
 						}),
 					onCapabilityEvaluated: audit,
@@ -128,13 +128,13 @@ export function createDrenyraCommandEnvelopeRoutes(
 			"/analyze-invoice",
 			({ body, headers, set }) =>
 				guardedEnvelope(set, headers, "CPE_AGENT", "validate_cpe", {
-					auditCaseId: body.caseId,
+					...(body.caseId !== undefined ? { auditCaseId: body.caseId } : {}),
 					commandId: "analyze-invoice",
 					createEnvelope: (context, traceId) =>
 						createAnalyzeInvoiceCommandEnvelope(context, {
-							caseId: body.caseId,
-							invoiceId: body.invoiceId,
-							sourceRef: body.sourceRef,
+							...(body.caseId !== undefined ? { caseId: body.caseId } : {}),
+							...(body.invoiceId !== undefined ? { invoiceId: body.invoiceId } : {}),
+							...(body.sourceRef !== undefined ? { sourceRef: body.sourceRef } : {}),
 							traceId,
 						}),
 					onCapabilityEvaluated: audit,
@@ -151,7 +151,7 @@ export function createDrenyraCommandEnvelopeRoutes(
 			"/explain-risk",
 			({ body, headers, set }) =>
 				guardedEnvelope(set, headers, "FISCAL_REVIEWER_AGENT", "explain_risk", {
-					auditCaseId: body.caseId,
+					...(body.caseId !== undefined ? { auditCaseId: body.caseId } : {}),
 					commandId: "explain-risk",
 					createEnvelope: async (context, traceId) => {
 						const sourceScopeVerified = await verifyExplainRiskSource(
@@ -170,9 +170,9 @@ export function createDrenyraCommandEnvelopeRoutes(
 							);
 						}
 						return createExplainRiskCommandEnvelope(context, {
-							caseId: body.caseId,
-							riskRef: body.riskRef,
-							sourceRef: body.sourceRef,
+							...(body.caseId !== undefined ? { caseId: body.caseId } : {}),
+							...(body.riskRef !== undefined ? { riskRef: body.riskRef } : {}),
+							...(body.sourceRef !== undefined ? { sourceRef: body.sourceRef } : {}),
 							sourceScopeVerified,
 							traceId,
 						});
@@ -192,14 +192,14 @@ export function createDrenyraCommandEnvelopeRoutes(
 			({ body, headers, set }) =>
 				guardedEnvelope(set, headers, "LEDGER_AGENT", "propose_ledger_entry", {
 					approvalId: body.approvalId,
-					auditCaseId: body.caseId,
+					...(body.caseId !== undefined ? { auditCaseId: body.caseId } : {}),
 					commandId: "propose-ledger-entry",
 					createEnvelope: (context, traceId) =>
 						createProposeLedgerEntryCommandEnvelope(context, {
 							approvalId: body.approvalId,
-							caseId: body.caseId,
-							ledgerDraftId: body.ledgerDraftId,
-							sourceRef: body.sourceRef,
+							...(body.caseId !== undefined ? { caseId: body.caseId } : {}),
+							...(body.ledgerDraftId !== undefined ? { ledgerDraftId: body.ledgerDraftId } : {}),
+							...(body.sourceRef !== undefined ? { sourceRef: body.sourceRef } : {}),
 							traceId,
 						}),
 					onCapabilityEvaluated: audit,

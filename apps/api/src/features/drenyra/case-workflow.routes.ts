@@ -40,10 +40,14 @@ export function createCaseWorkflowRoutes({
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
+					const idempotencyKey = readIdempotencyKey(headers, body);
 					const evidence = await commandCenter.addEvidenceItem(
 						contextResolution.context,
 						params.id,
-						{ ...body, idempotencyKey: readIdempotencyKey(headers, body) },
+						{
+							...body,
+							...(idempotencyKey !== undefined ? { idempotencyKey } : {}),
+						},
 					);
 					set.status = 201;
 					return ok(evidence);
@@ -137,10 +141,14 @@ export function createCaseWorkflowRoutes({
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
+					const idempotencyKey = readIdempotencyKey(headers, body);
 					const approval = await commandCenter.requestApproval(
 						contextResolution.context,
 						params.id,
-						{ ...body, idempotencyKey: readIdempotencyKey(headers, body) },
+						{
+							...body,
+							...(idempotencyKey !== undefined ? { idempotencyKey } : {}),
+						},
 					);
 					set.status = 201;
 					return ok(approval);

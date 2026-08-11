@@ -29,8 +29,12 @@ export const detractionsModule = new Elysia({ prefix: "/api/detractions" })
 				}
 
 				const result = await listDetractions({
-					companyId: parsed.data.companyId,
-					status: parsed.data.status,
+					...(parsed.data.companyId !== undefined
+						? { companyId: parsed.data.companyId }
+						: {}),
+					...(parsed.data.status !== undefined
+						? { status: parsed.data.status }
+						: {}),
 				});
 
 				return ok(result);

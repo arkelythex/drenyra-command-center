@@ -49,6 +49,9 @@ class AccountingPrController {
 			})
 			.returning();
 
+		if (record === undefined) {
+			throw new Error("Failed to create PR record");
+		}
 		return record;
 	}
 
@@ -76,6 +79,9 @@ class AccountingPrController {
 			})
 			.returning();
 
+		if (record === undefined) {
+			throw new Error("Failed to create PR record");
+		}
 		return record;
 	}
 
@@ -219,7 +225,7 @@ class AccountingPrController {
 				],
 				approveSignatures: [
 					...(existing.approveSignatures ?? []),
-					{ signerId, signedAt: now.toISOString(), comment },
+					{ signerId, signedAt: now.toISOString(), ...(comment !== undefined ? { comment } : {}) },
 				],
 				updatedAt: now,
 			})
@@ -290,7 +296,7 @@ class AccountingPrController {
 				],
 				approveSignatures: [
 					...(existing.approveSignatures ?? []),
-					{ signerId, signedAt: now.toISOString(), comment },
+					{ signerId, signedAt: now.toISOString(), ...(comment !== undefined ? { comment } : {}) },
 				],
 				updatedAt: now,
 			})

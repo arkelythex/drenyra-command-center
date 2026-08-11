@@ -98,7 +98,7 @@ export const agentStreamRoute = new Elysia({ prefix: "/api/ai-swarm" })
 			const generatedDocumentId = `DOC-${randomUUID().slice(0, 8)}`;
 			const streamInput = buildStreamInput(query, generatedDocumentId);
 			const organizationContext = resolveOrganizationContextForRequest({
-				queryOrgId: query.orgId,
+				...(query.orgId !== undefined ? { queryOrgId: query.orgId } : {}),
 				headers: request.headers,
 			});
 

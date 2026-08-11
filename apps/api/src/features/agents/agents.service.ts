@@ -94,7 +94,7 @@ function toStepDTO(s: AgentSession["steps"][0]): AgentStepDTO {
 		id: s.id,
 		label: stepLabel(s.domain),
 		status: s.status,
-		duration,
+		...(duration !== undefined ? { duration } : {}),
 	};
 }
 
@@ -175,10 +175,9 @@ export class AgentsService {
 				typeof session.metadata.agentName === "string"
 					? session.metadata.agentName
 					: "Drenyra",
-			threadId:
-				typeof session.metadata.threadId === "string"
-					? session.metadata.threadId
-					: undefined,
+			...(typeof session.metadata.threadId === "string"
+				? { threadId: session.metadata.threadId }
+				: {}),
 			clientName:
 				typeof session.metadata.clientName === "string"
 					? session.metadata.clientName
@@ -228,9 +227,10 @@ export class AgentsService {
 		let filtered = sessions.map((s) => this.toDTO(s));
 
 		// Apply filters
-		if (filters?.client) {
+		const clientFilter = filters?.client;
+		if (clientFilter) {
 			filtered = filtered.filter((s) =>
-				s.clientName.toLowerCase().includes(filters.client?.toLowerCase()),
+				s.clientName.toLowerCase().includes(clientFilter.toLowerCase()),
 			);
 		}
 		if (filters?.period) {

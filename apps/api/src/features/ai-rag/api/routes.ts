@@ -174,19 +174,22 @@ export const aiRagRoutes = new Elysia({ name: "ai-rag-routes" })
 				const results = await sunatKnowledgeService.hybridSearch(
 					{
 						query,
-						categories: filters?.documentTypes as unknown as
-							| (
-									| "igv"
-									| "detraccion"
-									| "sire"
-									| "ruc"
-									| "bancarizacion"
-									| "pcge"
-									| "uit"
-									| "retencion"
-									| "percepcion"
-							  )[]
-							| undefined,
+												...(filters?.documentTypes !== undefined
+							? {
+								categories: filters.documentTypes as unknown as
+									| (
+										| "igv"
+										| "detraccion"
+										| "sire"
+										| "ruc"
+										| "bancarizacion"
+										| "pcge"
+										| "uit"
+										| "retencion"
+										| "percepcion"
+									)[],
+								}
+							: {}),
 						limit: searchOptions.topK,
 					},
 					searchOptions,
@@ -214,13 +217,15 @@ export const aiRagRoutes = new Elysia({ name: "ai-rag-routes" })
 						bm25Score: r.scores?.bm25Score ?? 0,
 						denseScore: r.scores?.denseScore ?? 0,
 						hybridScore: r.scores?.hybridScore ?? 0,
-						rerankScore: r.scores?.rerankScore,
+						...(r.scores?.rerankScore !== undefined
+						? { rerankScore: r.scores.rerankScore }
+						: {}),
 						finalScore: r.scores?.finalScore ?? 0,
 					},
 					citation: {
 						text: `${r.source}${r.section ? ` - ${r.section}` : ""}`,
 						reference: r.source,
-						section: r.section ?? undefined,
+						...(r.section !== undefined && r.section !== null ? { section: r.section } : {}),
 						chunkId: r.id,
 					},
 				}));
@@ -234,7 +239,11 @@ export const aiRagRoutes = new Elysia({ name: "ai-rag-routes" })
 				};
 
 				const response: RAGSearchResponse = {
-					query: { query, filters, options: searchOptions },
+					query: {
+						query,
+						...(filters !== undefined ? { filters } : {}),
+						options: searchOptions,
+					},
 					results: ragResults,
 					metadata,
 				};
@@ -402,7 +411,7 @@ Responde basándote únicamente en el contexto proporcionado.`,
 					citation: {
 						text: `${r.source}${r.section ? ` - ${r.section}` : ""}`,
 						reference: r.source,
-						section: r.section ?? undefined,
+						...(r.section !== undefined && r.section !== null ? { section: r.section } : {}),
 						chunkId: r.id,
 					},
 				}));

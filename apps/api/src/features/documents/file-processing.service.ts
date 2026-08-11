@@ -252,8 +252,12 @@ export async function uploadToStorage(
 ): Promise<string> {
 	const { storageService } = await import("../../services/storage.service");
 	const result = await storageService.upload(file, {
-		organizationId: tenantScope.organizationId,
-		companyId: tenantScope.companyId,
+		...(tenantScope.organizationId !== undefined
+			? { organizationId: tenantScope.organizationId }
+			: {}),
+		...(tenantScope.companyId !== undefined
+			? { companyId: tenantScope.companyId }
+			: {}),
 		folder: "documents",
 		contentType: file.type,
 		isPublic: false,

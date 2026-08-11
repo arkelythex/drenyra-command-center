@@ -128,7 +128,7 @@ const CLOUDFLARE_IP_RANGES = [
  */
 function isIpInCidr(ip: string, cidr: string): boolean {
 	// Simplified check - for production use ip-cidr npm package
-	return ip.startsWith(cidr.split("/")[0].split(".").slice(0, 2).join("."));
+	return ip.startsWith((cidr.split("/")[0] ?? "").split(".").slice(0, 2).join("."));
 }
 
 /**
@@ -169,7 +169,7 @@ function getClientId(request: Request): string {
 		const forwardedFor = request.headers.get("x-forwarded-for");
 		if (forwardedFor) {
 			// Take first IP (original client)
-			return forwardedFor.split(",")[0].trim();
+			return (forwardedFor.split(",")[0] ?? "").trim();
 		}
 	}
 
@@ -177,7 +177,7 @@ function getClientId(request: Request): string {
 	// In production, this is intentionally ignored unless coming from a trusted proxy.
 	if ((process.env.NODE_ENV ?? "development") !== "production") {
 		const forwardedFor = request.headers.get("x-forwarded-for");
-		if (forwardedFor) return forwardedFor.split(",")[0].trim();
+		if (forwardedFor) return (forwardedFor.split(",")[0] ?? "").trim();
 	}
 
 	// Fallback: use direct connection IP (or proxy IP if no forwarding)

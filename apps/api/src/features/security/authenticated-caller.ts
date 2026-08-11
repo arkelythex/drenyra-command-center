@@ -56,8 +56,8 @@ interface SignedMachineCaller {
 }
 
 export interface TrustedMachineCallerAllowlistInput {
-	allowlist?: readonly string[];
-	envVarName?: string;
+	allowlist?: readonly string[] | undefined;
+	envVarName?: string | undefined;
 }
 
 function normalizeRole(value: string): string {

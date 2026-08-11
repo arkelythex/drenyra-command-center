@@ -62,7 +62,7 @@ export class ComplianceRoadmapTimelineService {
 						traceId: recommendation.traceId,
 						status: decision ?? "UNKNOWN",
 						summary: `Operator decision: ${decision ?? "UNKNOWN"}`,
-						reason: reason ?? undefined,
+						...(reason != null ? { reason } : {}),
 						runId: run.id,
 					},
 					{
@@ -72,7 +72,7 @@ export class ComplianceRoadmapTimelineService {
 						traceId: recommendation.traceId,
 						status: run.status,
 						summary: run.summary ?? "Run status updated",
-						reason: reason ?? undefined,
+						...(reason != null ? { reason } : {}),
 						runId: run.id,
 					},
 				];

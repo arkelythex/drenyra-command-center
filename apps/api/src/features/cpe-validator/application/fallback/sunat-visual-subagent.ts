@@ -49,7 +49,7 @@ export interface SunatFallbackHitlRequest {
 export interface SunatVisualFallbackResult {
 	response: SunatCpeValidationResponse;
 	trace: SunatVisualFallbackTrace;
-	hitl?: SunatFallbackHitlRequest;
+	hitl?: SunatFallbackHitlRequest | undefined;
 }
 
 function parseBoolEnv(raw: string | undefined): boolean {
@@ -139,14 +139,13 @@ function parseTxtResponse(txtPayload: string): SunatCpeValidationResponse {
 		.map((item) => item.trim())
 		.filter(Boolean);
 
-	return {
-		success: estado === "ACEPTADO" || estado === "ANULADO",
-		estado,
-		mensaje,
-		codigoRespuesta: codigo,
-		observaciones:
-			observaciones && observaciones.length > 0 ? observaciones : undefined,
-	};
+    	return {
+    		success: estado === "ACEPTADO" || estado === "ANULADO",
+    		estado,
+    		...(mensaje !== undefined ? { mensaje } : {}),
+    		...(codigo !== undefined ? { codigoRespuesta: codigo } : {}),
+    		...(observaciones && observaciones.length > 0 ? { observaciones } : {}),
+    	};
 }
 
 /**

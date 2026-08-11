@@ -37,7 +37,9 @@ export function createDrenyraFiscalWorkRoutes(
 					{
 						workItemId: params.id,
 						capabilityGranted: hasInspectCapabilityGrant(headers),
-						traceId: resolveInspectTraceId(headers),
+						...(resolveInspectTraceId(headers) !== undefined
+							? { traceId: resolveInspectTraceId(headers) }
+							: {}),
 						sourceSurface: resolveInspectSourceSurface(headers),
 					},
 				);

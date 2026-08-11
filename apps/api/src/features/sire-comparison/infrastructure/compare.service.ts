@@ -37,8 +37,8 @@ function toDiscrepancyDTO(row: SireDiffRow): DiscrepancyDTO {
 	return {
 		id: row.id,
 		type: toDiscrepancyType(row.status),
-		sunatRecord: row.sunatRecord,
-		localRecord: row.localRecord,
+		...(row.sunatRecord !== undefined ? { sunatRecord: row.sunatRecord } : {}),
+		...(row.localRecord !== undefined ? { localRecord: row.localRecord } : {}),
 		diffAmount: Math.abs(row.difference),
 		status:
 			row.resolution === "ACCEPTED_SUNAT" || row.resolution === "KEPT_LOCAL"
@@ -203,10 +203,11 @@ export class SireComparisonService {
 				: action === "FLAG_FOR_REVIEW"
 					? "FLAGGED"
 					: "REVIEWING";
+		const updatedNotes = notes ?? existing.notes;
 		const updated: DiscrepancyDTO = {
 			...existing,
 			status: newStatus,
-			notes: notes ?? existing.notes,
+			...(updatedNotes !== undefined ? { notes: updatedNotes } : {}),
 			updatedAt: now.toISOString(),
 		};
 
@@ -244,7 +245,9 @@ export class SireComparisonService {
 						rowId: row.id,
 						status: row.status,
 						decision: "ACCEPT_SUNAT",
-						localRecord: row.localRecord,
+						...(row.localRecord !== undefined
+							? { localRecord: row.localRecord }
+							: {}),
 						sunatRecord: row.sunatRecord,
 					},
 				],

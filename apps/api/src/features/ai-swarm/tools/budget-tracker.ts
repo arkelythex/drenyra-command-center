@@ -95,7 +95,7 @@ export class BudgetTracker {
 				promptTokens: 0, // UsageRecord only has total — prompt/completion split requires upstream
 				completionTokens: record.tokensUsed,
 				costUsd: record.costUsd,
-				taskId: record.taskId,
+				...(record.taskId !== undefined ? { taskId: record.taskId } : {}),
 			})
 			.catch((err) => console.warn("[budget-tracker] DB persist failed:", err));
 	}
@@ -122,22 +122,22 @@ export class BudgetTracker {
 		// By agent
 		const byAgent: BudgetUsage["byAgent"] = {};
 		for (const record of this.records) {
-			if (!byAgent[record.agentType]) {
-				byAgent[record.agentType] = {
-					calls: 0,
-					totalCost: 0,
-					averageCost: 0,
-				};
-			}
-
-			byAgent[record.agentType].calls++;
-			byAgent[record.agentType].totalCost += record.costUsd;
+			const agent = record.agentType;
+			const current = byAgent[agent] ?? {
+				calls: 0,
+				totalCost: 0,
+				averageCost: 0,
+			};
+			current.calls++;
+			current.totalCost += record.costUsd;
+			byAgent[agent] = current;
 		}
 
 		// Calculate averages
 		for (const agent of Object.keys(byAgent)) {
-			byAgent[agent].averageCost =
-				byAgent[agent].totalCost / byAgent[agent].calls;
+			const entry = byAgent[agent];
+			if (!entry) continue;
+			entry.averageCost = entry.totalCost / entry.calls;
 		}
 
 		return {
@@ -202,14 +202,11 @@ export class BudgetTracker {
 		const relevantRecords = this.records.filter((r) => r.timestamp >= daysAgo);
 
 		for (const record of relevantRecords) {
-			const dateKey = record.timestamp.toISOString().split("T")[0];
-
-			if (!trend[dateKey]) {
-				trend[dateKey] = { spent: 0, calls: 0 };
-			}
-
-			trend[dateKey].spent += record.costUsd;
-			trend[dateKey].calls++;
+			const dateKey = record.timestamp.toISOString().split("T")[0] ?? "";
+			const current = trend[dateKey] ?? { spent: 0, calls: 0 };
+			current.spent += record.costUsd;
+			current.calls++;
+			trend[dateKey] = current;
 		}
 
 		return Object.entries(trend)

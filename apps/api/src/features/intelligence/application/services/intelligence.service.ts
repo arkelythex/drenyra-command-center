@@ -93,7 +93,9 @@ export async function runAnomalyDetection(
 ): Promise<AnomalyDetectionOutput> {
 	const start = performance.now();
 	const engine = new FiscalAnomalyEngine([], undefined, {
-		publishThreshold: input.minSeverity,
+		...(input.minSeverity !== undefined
+			? { publishThreshold: input.minSeverity }
+			: {}),
 	});
 	const context = buildAgentContext();
 
@@ -154,7 +156,6 @@ export interface CashflowAnalysisOutput {
 export async function runCashflowAnalysis(
 	input: CashflowAnalysisInput,
 ): Promise<CashflowAnalysisOutput> {
-	const _start = performance.now();
 	const context = buildAgentContext();
 	const strategy = createCashflowPredictorStrategy(input.options);
 
@@ -285,7 +286,7 @@ export interface DocumentClassificationOutput {
 export async function runDocumentClassification(
 	input: DocumentClassificationInput,
 ): Promise<DocumentClassificationOutput> {
-	const { results, anomalies: docAnomalies } = classifyDocuments(
+	const { results } = classifyDocuments(
 		input.documents,
 	);
 

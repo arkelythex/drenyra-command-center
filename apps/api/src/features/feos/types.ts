@@ -6,22 +6,13 @@
 
 import type {
   Actor,
-  CompanyRef,
-  EvidenceCategory,
   EvidenceItem,
   FiscalScope,
   PeriodRef,
   WorkspaceId,
   WorkspaceIntent,
   WorkspaceState,
-  AttentionItem,
-  AttentionInbox,
-  PortfolioStatus,
-  ToolContract,
   ToolRiskLevel,
-  AgentEvent,
-  EvidenceRoot,
-  FeosReceipt,
 } from "@drenyra/domain";
 
 // ── Workspace ────────────────────────────────────────────────────────────

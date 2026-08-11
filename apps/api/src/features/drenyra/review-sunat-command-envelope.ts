@@ -32,7 +32,7 @@ export function createReviewSunatCommandEnvelope(
 				id: evidenceId,
 				type: "SUNAT_RECORD",
 				title: "SUNAT scoped review snapshot",
-				sourceRef: input.sourceRef,
+				...(input.sourceRef !== undefined ? { sourceRef: input.sourceRef } : {}),
 			},
 		],
 		deterministicChecks: [
@@ -62,7 +62,7 @@ export function createReviewSunatCommandEnvelope(
 		},
 		trace: {
 			traceId: input.traceId,
-			caseId: input.caseId,
+			...(input.caseId !== undefined ? { caseId: input.caseId } : {}),
 			createdAt: new Date().toISOString(),
 		},
 	});

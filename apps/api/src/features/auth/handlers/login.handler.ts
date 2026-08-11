@@ -43,7 +43,11 @@ async function findDurableLockoutState(
 		return null;
 	}
 
-	const [row] = rows;
+	const row = rows[0];
+	if (!row) {
+		return null;
+	}
+
 	return {
 		userId: row.userId,
 		failedLoginAttempts: row.failedLoginAttempts,
@@ -84,7 +88,10 @@ async function recordFailedLogin(
 		})
 		.where(eq(authUsers.id, state.userId));
 
-	return { locked: isLocked, lockedUntil };
+    	return {
+    		locked: isLocked,
+    		...(lockedUntil !== undefined ? { lockedUntil } : {}),
+    	};
 }
 
 async function recordSuccessfulLogin(email: string): Promise<void> {

@@ -66,15 +66,15 @@ export async function getClients(
 	filters: ClientFilterParams,
 ): Promise<{ clients: ClientSummaryResponse[]; total: number }> {
 	const orgs = await repo.findAll({
-		search: filters.search,
-		status: filters.status,
+		...(filters.search !== undefined ? { search: filters.search } : {}),
+		...(filters.status !== undefined ? { status: filters.status } : {}),
 		limit: filters.limit ?? 50,
 		offset: filters.offset ?? 0,
 	});
 
 	const total = await repo.count({
-		search: filters.search,
-		status: filters.status,
+		...(filters.search !== undefined ? { search: filters.search } : {}),
+		...(filters.status !== undefined ? { status: filters.status } : {}),
 	});
 
 	return {

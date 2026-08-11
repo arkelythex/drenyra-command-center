@@ -87,7 +87,6 @@ export async function checkDoctor(
 ): Promise<DoctorCheckResult> {
 	const {
 		dbExecute,
-		loggerInfo,
 		readBackupReadiness,
 		readOpenTelemetryReadiness,
 		readRlsReadiness,
