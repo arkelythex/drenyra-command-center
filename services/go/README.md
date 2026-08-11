@@ -20,7 +20,7 @@ Los servicios en Go cubren **workers de alto throughput** y rutas muy acotadas d
 
 - **Transporte**: HTTP JSON (rutas versionadas bajo el prefijo del worker).
 - **Descubrimiento**: el API Bun orquesta llamadas; los contratos de request/response deben alinearse con los DTOs o tests de contrato del lado TS donde existan.
-- **CI**: `bun run architecture:check-polyglot` ejecuta `go test ./...` en este servicio; también corre en el workflow nocturno.
+- **CI**: el job Go del workflow principal ejecuta `go test ./...` en `apps/cli`; este servicio no tiene gate automático propio por el momento.
 
 ## Comandos
 

@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 env:
-  BUN_VERSION: '1.3.11'
+  BUN_VERSION: "1.3.11"
 
 jobs:
   go:
@@ -34,7 +34,7 @@ jobs:
         working-directory: .
         run: |
           files=$(git diff --name-only HEAD^ HEAD || git diff --name-only)
-          if echo "$files" | grep -Eq '^(apps/cli/|packages/engram/)'; then
+          if echo "$files" | grep -Eq '^apps/cli/'; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
@@ -128,7 +128,7 @@ jobs:
       - uses: actions/setup-python@v5
         if: steps.changes.outputs.run == 'true'
         with:
-          python-version: '3.12'
+          python-version: "3.12"
       - if: steps.changes.outputs.run == 'true'
         run: pip install uv && uv sync --extra dev
       - if: steps.changes.outputs.run == 'true'
@@ -160,65 +160,11 @@ jobs:
         run: bun install --frozen-lockfile
       - if: steps.changes.outputs.run == 'true'
         run: bun run --filter @drenyra/domain typecheck
-          - if: steps.changes.outputs.run == 'true'
-            run: bun run --filter @drenyra/domain test -- --run
-    
-      wave2-static-gate:
-        name: Wave 2 — Static Gate
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v4
-            with:
-              fetch-depth: 2
-          - uses: oven-sh/setup-bun@v2
-            with:
-              bun-version: ${{ env.BUN_VERSION }}
-          - run: bun install --frozen-lockfile
-          - name: Wave 2 Static Gate
-            run: bash scripts/gate/wave2-static-gate.sh
+      - if: steps.changes.outputs.run == 'true'
+        run: bun run --filter @drenyra/domain test -- --run
 
-      wave2-integration-gate:
-        name: Wave 2 — Integration Gate
-        runs-on: ubuntu-latest
-        services:
-          postgres:
-            image: postgres:17
-            env:
-              POSTGRES_USER: user
-              POSTGRES_PASSWORD: password
-              POSTGRES_DB: w2_gate_test
-            options: >-
-              --health-cmd pg_isready
-              --health-interval 5s
-              --health-timeout 5s
-              --health-retries 5
-            ports:
-              - 5432:5432
-          redis:
-            image: redis:7
-            options: >-
-              --health-cmd "redis-cli PING"
-              --health-interval 5s
-              --health-timeout 5s
-              --health-retries 5
-            ports:
-              - 6379:6379
-        steps:
-          - uses: actions/checkout@v4
-            with:
-              fetch-depth: 2
-          - uses: oven-sh/setup-bun@v2
-            with:
-              bun-version: ${{ env.BUN_VERSION }}
-          - run: bun install --frozen-lockfile
-          - name: Wave 2 Integration Gate
-            run: bash scripts/gate/wave2-gate.sh
-            env:
-              DATABASE_URL_TEST: postgresql://user:password@localhost:5432/w2_gate_test
-              REDIS_URL: redis://localhost:6379
-
-      quality-checks:
-    name: Quality — import health + lint
+  wave2-static-gate:
+    name: Wave 2 — Static Gate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -228,4 +174,59 @@ jobs:
         with:
           bun-version: ${{ env.BUN_VERSION }}
       - run: bun install --frozen-lockfile
-      - run: bash scripts/ci/check-import-health.sh
+      - name: Wave 2 Static Gate
+        run: bash scripts/gate/wave2-static-gate.sh
+
+  wave2-integration-gate:
+    name: Wave 2 — Integration Gate
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: w2_gate_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli PING"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - name: Wave 2 Integration Gate
+        run: bash scripts/gate/wave2-gate.sh
+        env:
+          DATABASE_URL_TEST: postgresql://user:password@localhost:5432/w2_gate_test
+          REDIS_URL: redis://localhost:6379
+
+  quality-checks:
+    name: Quality — lint checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
+      - name: Forbidden terms
+        run: bun run ci:forbidden-terms

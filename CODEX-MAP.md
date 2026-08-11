@@ -18,7 +18,6 @@
 |---|---|---|---|
 | `apps/api` | api | Backend API: Bun + Elysia vertical slices, contracts, fiscal workflows. | backend, fiscal, api, elysia | `apps/api/MAP.md` |
 | `apps/web` | web | Agentic fiscal command center for supervised accounting operations. | frontend, drenyra, react | `apps/web/MAP.md` |
-| `apps/landing` | landing | Public marketing and product documentation surface. | frontend, marketing, nextjs | `apps/landing/MAP.md` |
 | `apps/data-engine` | data-engine | Python analytical microservice for high-throughput financial data processing. | python, analytics, data-engine | `apps/data-engine/MAP.md` |
 | `apps/cli` | cli | Gentleman Fiscal Terminal for scriptable fiscal operations, agent orchestration, and TUI. | go, cli, tui, terminal | `apps/cli/MAP.md` |
 | `packages/domain` | domain | Framework-free entities, value objects, fiscal rules, Money/RUC primitives. | domain, fiscal, money, ruc | — |
@@ -29,7 +28,6 @@
 | `packages/ai` | ai | AI facade, gateway, model registry, SUNAT corpus and tool bridge contracts. | ai, gateway, agents | — |
 | `packages/memory` | memory | Unified memory subsystem: agent memory, session storage, context management. | ai, memory | — |
 | `packages/agents` | agents | Unified agent runtime: Mastra orchestration, delegation, harness, approvals. | ai, agents, orchestration | — |
-| `services/engram` | engram | Go phase-gate evidence sidecar for fiscal audit trails. | go, engram, evidence | — |
 | `packages/test-utils` | test-utils | Shared fixtures, builders, mocks, database and tenant test helpers. | testing, fixtures | — |
 | `packages/ui` | ui | Shared Glass & Steel design-system components and tokens. | frontend, ui, design-system | — |
 | `engines/rust-core` | rust-core | Rust hot-path fiscal primitives; TypeScript remains source of truth until parity. | rust, fiscal, performance | — |
@@ -85,7 +83,7 @@ Default `rg` and `fd` searches use root `.rgignore` and `.fdignore` to skip nois
 | Update DB schema/repository    | `packages/persistence/src/schema/`, `packages/persistence/src/repositories/` |
 | Update SUNAT/UBL adapters      | `packages/infrastructure/src/sunat/`, `packages/infrastructure/src/xml/`     |
 | Update AI gateway/agents       | `packages/ai/src/`, `packages/drenyra-orchestrator/src/`                     |
-| Update shared UI               | `packages/ui/src/`, consumers in `apps/web`/`apps/landing`                   |
+| Update shared UI               | `packages/ui/src/`, consumers in `apps/web`                                   |
 | Update docs navigation         | `CODEX-MAP.md`, `.codebase/index.yml`, `docs/CODEBASE-GUIDE.md`              |
 | Update Go CLI (TUI/Tax/Config) | `apps/cli/` see `MAP.md`                                                     |
 
@@ -96,9 +94,7 @@ bun run codebase:index
 bun run codebase:index:check
 bun run typecheck
 bun run docs:verify
-bun run architecture:check-boundaries
-bun run compliance:sire-gate
-bun run compliance:sire-repro
+bun run architecture:check-product-surfaces
 
 # Go CLI
 cd apps/cli && go build ./...

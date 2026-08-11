@@ -72,18 +72,4 @@ Este directorio documenta las reglas fiscales peruanas que Drenyra modela, valid
 
 ## Verificación
 
-Drenyra incluye comandos para verificar el cumplimiento fiscal:
-
-```bash
-# Verificar configuración SUNAT
-bun run compliance:sunat-check
-
-# Validar SIRE
-bun run compliance:sire-gate
-
-# Reprocesar SIRE con datos actualizados
-bun run compliance:sire-repro
-
-# Verificar RUC
-bun run compliance:ruc-validate
-```
+Los gates de cumplimiento fiscal (SIRE, SUNAT, RUC) están planificados como parte del programa FSD pero **aún no están implementados** — no existen scripts `compliance:*` en `package.json`. Ver el Capability Map (`docs/01-foundation/capability-map.md`).

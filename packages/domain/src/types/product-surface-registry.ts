@@ -82,17 +82,6 @@ export const ARKELYTHEX_PRODUCT_SURFACES: DrenyraProductSurface[] = [
 		],
 	},
 	{
-		id: "landing",
-		name: "ARKELYTHEX Landing",
-		summary: "Public marketing site",
-		status: "separate-runtime",
-		canonicalHome: "/",
-		documentationRefs: ["apps/landing"],
-		modules: [
-			{ kind: "app", path: "apps/landing", role: "Next.js landing page" },
-		],
-	},
-	{
 		id: "grid",
 		name: "ARKELYTHEX Grid",
 		summary: "Distributed data processing grid",

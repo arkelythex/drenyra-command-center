@@ -127,8 +127,8 @@
 
 ### Tasks
 
-- [ ] `packages/engram/pkg/client/client.go` — Add `StoreEvidenceArtifact(ctx, artifact)` method
-- [ ] `packages/engram/internal/api/handler.go` — Add `POST /api/v1/evidence/artifact` endpoint
+- [ ] `drenyra-engram` (standalone repo) — client: evidence artifact store/get (`StoreEvidenceArtifact(ctx, artifact)`)
+- [ ] `drenyra-engram` (standalone repo) — evidence objects exposed via MCP/HTTP/CLI surfaces (v0.7.0 Evidence Objects; not the old `POST /api/v1/evidence/artifact` REST design)
 
 ---
 

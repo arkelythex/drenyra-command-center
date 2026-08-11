@@ -11,15 +11,10 @@ CI/CD pipelines for ARKELYTHEX. El **gate principal** para merge en PR está en 
 **Job `lint-and-typecheck` (bloqueante):**
 
 - ESLint (`bun run lint`)
-- ESLint design-tokens plugin (`bun run lint:design-tokens`) — **bloquea off-brand colors, inline money format, imports deprecados**
 - Biome (`bunx @biomejs/biome@2.3.11 biome check`)
 - TypeScript: `bun run typecheck` (`tsc -p tsconfig.check.json`) — **falla el job si hay errores**
-- `bun run architecture:check-tsconfig-features`
-- `bun run architecture:check-boundaries`
-- `bun run architecture:check-framework-isolation`
 - `bun run architecture:check-product-surfaces`
-- En PR: `architecture:check-policy` (contra la rama base)
-- Comprobaciones de docs: `docs:check-links`, `docs:check-pmo-canon`, `docs:check-index-coherence`
+- Comprobaciones de docs: `docs:check-links`
 - Verificación de `fetch()` legacy en web
 
 **Job `build`:**
@@ -72,7 +67,7 @@ CI/CD pipelines for ARKELYTHEX. El **gate principal** para merge en PR está en 
 
 ## Nightly (`nightly.yml`)
 
-Incluye cobertura, benchmarks, contratos, E2E, seguridad y un job **`nightly-polyglot`** que ejecuta `scripts/architecture/check-polyglot-runtime.sh` (tests Rust en `packages/rust-core` y Go en `services/go/reconciliation-worker`) con toolchains configuradas en el runner.
+Incluye cobertura (api + web), contratos, E2E, seguridad (`bun audit`) y un job resumen. Los jobs de benchmarks y polyglot fueron removidos porque sus scripts nunca existieron en el repo.
 
 ---
 
@@ -108,9 +103,6 @@ Canonical runner maintenance docs:
 ```bash
 bun install --frozen-lockfile
 bun run typecheck
-bun run architecture:check-tsconfig-features
-bun run architecture:check-boundaries
-bun run architecture:check-framework-isolation
 bun run architecture:check-product-surfaces
 bun run docs:check-links
 ```

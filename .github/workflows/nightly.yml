@@ -23,7 +23,7 @@ jobs:
           curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
           cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
           ~/.local/bin/git-lfs install --skip-repo --force
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -47,53 +47,13 @@ jobs:
         with:
           files: |-
             apps/api/coverage/coverage-final.json
-            apps/landing/coverage/coverage-final.json
-            packages/domain/coverage/coverage-final.json
-            packages/application/coverage/coverage-final.json
-            packages/ai/coverage/coverage-final.json
-            packages/drenyra-core/coverage/coverage-final.json
-            packages/ai/coverage/coverage-final.json
+            apps/web/coverage/coverage-final.json
           flags: nightly
           
       - name: Comment coverage trend on slack
         if: success()
         run: |
           echo "Coverage trend uploaded to Codecov"
-          
-  nightly-benchmarks:
-    name: Performance Benchmarks
-    runs-on: [self-hosted, linux, x64]
-    
-    steps:
-      - name: Install git-lfs
-        run: |
-          mkdir -p ~/.local/bin
-          curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
-          cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
-          ~/.local/bin/git-lfs install --skip-repo --force
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-      - name: Checkout code
-        uses: actions/checkout@v6
-        with:
-          lfs: true
-        
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-          
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-        
-      - name: Run benchmarks
-        run: |
-          bun run test:bench
-          
-      - name: Upload benchmark results
-        uses: actions/upload-artifact@v7
-        with:
-          name: benchmark-results
-          path: bench-results/
           
   nightly-contracts:
     name: API Contract Tests
@@ -106,7 +66,7 @@ jobs:
           curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
           cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
           ~/.local/bin/git-lfs install --skip-repo --force
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -120,13 +80,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
         
-      - name: Validate OpenAPI spec
+      - name: Validate API contracts
         run: |
-          bun run test:contracts
-          
-      - name: Check for breaking changes
-        run: |
-          bun run test:contracts:breaking
+          bun run --filter @drenyra/api test:contracts
           
   nightly-full-e2e:
     name: Full E2E Suite
@@ -139,7 +95,7 @@ jobs:
           curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
           cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
           ~/.local/bin/git-lfs install --skip-repo --force
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -173,50 +129,6 @@ jobs:
           path: test-results/
           retention-days: 7
           
-  nightly-polyglot:
-    name: Polyglot runtime checks (Rust + Go)
-    runs-on: [self-hosted, linux, x64]
-
-    steps:
-      - name: Install git-lfs
-        run: |
-          mkdir -p ~/.local/bin
-          curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
-          cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
-          ~/.local/bin/git-lfs install --skip-repo --force
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-      - name: Checkout code
-        uses: actions/checkout@v6
-        with:
-          lfs: true
-
-      - name: Setup Go
-        uses: actions/setup-go@v6
-        with:
-          go-version: "1.22"
-
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Cache Rust build artifacts
-        uses: actions/cache@v5
-        with:
-          path: |
-            packages/rust-core/target
-            ~/.cargo/registry
-            ~/.cargo/git
-          key: ${{ runner.os }}-rust-${{ hashFiles('packages/rust-core/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-rust-
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Run polyglot architecture gate
-        run: bash ./scripts/architecture/check-polyglot-runtime.sh
-
   nightly-security:
     name: Nightly Security Scan
     runs-on: [self-hosted, linux, x64]
@@ -228,7 +140,7 @@ jobs:
           curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
           cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
           ~/.local/bin/git-lfs install --skip-repo --force
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -243,24 +155,14 @@ jobs:
         run: |
           bun audit
           
-      - name: Run dependency check
-        run: |
-          bun run security:check-deps
-          
-      - name: Run vulnerability scan
-        run: |
-          bun run security:audit
-          
   nightly-summary:
     name: Nightly Summary
     runs-on: [self-hosted, linux, x64]
     needs:
       [
         nightly-coverage,
-        nightly-benchmarks,
         nightly-contracts,
         nightly-full-e2e,
-        nightly-polyglot,
         nightly-security,
       ]
     if: always()
@@ -268,11 +170,9 @@ jobs:
     steps:
       - name: Generate summary
         run: |
-          echo "## 🌙 Nightly Quality Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Coverage:** ${{ needs.nightly-coverage.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Benchmarks:** ${{ needs.nightly-benchmarks.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Contracts:** ${{ needs.nightly-contracts.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "**E2E:** ${{ needs.nightly-full-e2e.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Polyglot:** ${{ needs.nightly-polyglot.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Security:** ${{ needs.nightly-security.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "## 🌙 Nightly Quality Summary" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Coverage:** ${{ needs.nightly-coverage.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Contracts:** ${{ needs.nightly-contracts.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "**E2E:** ${{ needs.nightly-full-e2e.result }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Security:** ${{ needs.nightly-security.result }}" >> "$GITHUB_STEP_SUMMARY"

@@ -45,6 +45,7 @@ import { BORDER_RADIUS } from '@/lib/design-tokens';
 ```
 
 **Tokens disponibles:**
+
 - `card`: 2rem (tarjetas principales)
 - `modal`: 2.5rem (modales y overlays)
 - `button`: 0.75rem (botones)
@@ -70,21 +71,25 @@ import { GRADIENTS } from '@/lib/design-tokens';
 **Tokens disponibles:**
 
 #### Ambient backgrounds
+
 - `ambient`: Header horizontal (blue/purple)
 - `ambientVertical`: Header vertical
 
 #### Icon backgrounds
+
 - `iconBlue`: from-blue-600/10 to-purple-600/10
 - `iconEmerald`: from-emerald-500/20 to-emerald-900/20
 - `iconAmber`: Ámbar/dorado
 - `iconRed`: Rojo/rosa
 
 #### Hover effects
+
 - `hoverBlue`: Gradiente sólido azul → índigo
 - `hoverEmerald`: Emerald → teal
 - `hoverOverlay`: Para `group-hover` en cards
 
 #### Premium
+
 - `premiumGlass`: Superficie destacada
 - `radialBlue`: Spotlight radial
 
@@ -105,6 +110,7 @@ import { BACKDROP_BLUR } from '@/lib/design-tokens';
 ```
 
 **Tokens semánticos:**
+
 - `glass`: backdrop-blur-xl (cards, componentes)
 - `modal`: backdrop-blur-2xl (modales)
 - `header`: backdrop-blur-xl (headers sticky)
@@ -127,6 +133,7 @@ import { GLASS_EFFECTS } from '@/lib/design-tokens';
 ```
 
 **Tokens disponibles:**
+
 - `card`: Tarjeta glass estándar
 - `cardPremium`: Tarjeta destacada
 - `panel`: Panel grande (sidebars)
@@ -151,6 +158,7 @@ import { ANIMATIONS } from '@/lib/design-tokens';
 ```
 
 **Tokens disponibles:**
+
 - `entrance`: Fade + translateY (aparición suave)
 - `zoom`: Scale up
 - `spin`, `spinSlow`: Rotación
@@ -181,6 +189,7 @@ import { MOTION_VARIANTS } from '@/lib/design-tokens';
 ```
 
 **Variants disponibles:**
+
 - `spring`: iOS-like (300 stiffness, 20 damping)
 - `springGentle`: Más suave
 - `springBouncy`: Más rebote
@@ -510,7 +519,7 @@ Ember (default), cocoa, terracotta, teal, steel, sage, lavender, maple.
 
 compact, normal, spacious.
 
-> Las variables CSS en `apps/landing/app/globals.css` son la fuente de verdad para tokens de tema. Los tokens de utilería en `design-tokens.ts` se consumen desde componentes React.
+> Los tokens de tema viven en `apps/web/src/lib/design-tokens.ts` (TypeScript) y en el CSS generado `apps/web/src/lib/design-tokens/generated/tokens.css`. Los tokens de utilería en `design-tokens.ts` se consumen desde componentes React.
 
 ---
 

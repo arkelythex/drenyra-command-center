@@ -53,7 +53,7 @@ jobs:
           verify-native-deps: false
 
       - name: Dependency vulnerability audit
-        run: bun run security:audit
+        run: bun audit
 
   coverage-check:
     name: Coverage Thresholds

@@ -9,7 +9,6 @@ export type DrenyraProductSurfaceId =
 	| "cortex"
 	| "api"
 	| "gov"
-	| "landing"
 	| "grid";
 
 export type SurfaceStatus =

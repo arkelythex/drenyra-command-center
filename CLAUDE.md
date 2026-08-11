@@ -40,7 +40,7 @@
 
 1. **Protocolo:** Leer `.claude/agents/_protocol.md` antes de cada sesión.
 2. **Memoria:** Consultar `.claude/memory/active_plan.md` para el estado del tablero.
-3. **Explore:** Analizar `@packages/domain` antes de proponer cambios. `packages/rust-core` no existe aún (Phase 2).
+3. **Explore:** Analizar `@packages/domain` antes de proponer cambios. el núcleo Rust vive en `engines/rust-core`.
 4. **Plan (Architect):** Escribir en `active_plan.md` el split de tareas paralelo.
 5. **Implement:** Agentes de Backend y Frontend trabajan sobre sus respectivos slices.
 6. **Finalize:** El Auditor valida y cierra la fase en el plan.
