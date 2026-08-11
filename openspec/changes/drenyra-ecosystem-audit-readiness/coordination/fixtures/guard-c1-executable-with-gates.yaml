@@ -1,0 +1,91 @@
+# H02/C1 guard fixture (U3a, criterion 5): H02 has advanced (observed verified) and C1 is recorded
+# executable WITH exact-unit forecast evidence AND pre-apply gate evidence — the claim is valid.
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 2
+repositories:
+  {
+    drenyra:
+      {
+        identity: drenyra,
+        authority_kind: umbrella-owner,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  C1:
+    {
+      owner: drenyra,
+      authority_mode: existing,
+      change_id: drenyra-h02-tenant-isolation,
+      state_path: openspec/changes/drenyra-h02-tenant-isolation/state.yaml,
+      revision: "93bc8e1ae081d9ca567f75eeb00f5b91e01ad9e4",
+      observed_phase: implemented,
+      observed_status: verified,
+      program_state: executable,
+      blockers: [],
+      mandatory: true,
+      conditional: false,
+      units: [W0],
+    }
+evidence:
+  evt-c1-forecast:
+    {
+      kind: forecast,
+      child: C1,
+      unit: W0,
+      owner: drenyra,
+      authority_path: openspec/changes/drenyra-h02-tenant-isolation/state.yaml,
+      revision: "93bc8e1ae081d9ca567f75eeb00f5b91e01ad9e4",
+      timestamp: "2026-08-09T01:00:00Z",
+      result: passed,
+      check_result: "exact-unit forecast: W0 = 170-270 lines",
+    }
+  evt-c1-gates:
+    {
+      kind: verification,
+      child: C1,
+      owner: drenyra,
+      authority_path: openspec/changes/drenyra-h02-tenant-isolation/state.yaml,
+      revision: "93bc8e1ae081d9ca567f75eeb00f5b91e01ad9e4",
+      timestamp: "2026-08-09T01:00:00Z",
+      result: passed,
+      check_result: "pre-apply gates passed for unit W0",
+    }
+research: {}
+exceptions: {}
+events:
+  - {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    }
+  - {
+      id: evt-2,
+      kind: transition,
+      child: C1,
+      revision: 2,
+      timestamp: "2026-08-09T01:00:00Z",
+      prior_state: blocked,
+      new_state: executable,
+      evidence_refs: [evt-c1-forecast, evt-c1-gates],
+    }
+program_status:
+  {
+    revision: 2,
+    derived_at: "2026-08-09T01:00:00Z",
+    readiness_scope: fixture,
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

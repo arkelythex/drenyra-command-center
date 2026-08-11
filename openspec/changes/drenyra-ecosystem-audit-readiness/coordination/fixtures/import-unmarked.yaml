@@ -1,0 +1,74 @@
+# Compatibility-import fixture (U3f, NEGATIVE, design "Migration and compatibility"): an import event that is NOT
+# marked legacy-import. Bootstrap imports must carry the legacy-import marker, so an unmarked import event fails
+# closed and the ledger derives nothing.
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 2
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories:
+  {
+    drenyra:
+      {
+        identity: drenyra,
+        authority_kind: umbrella-owner,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  {
+    C2:
+      {
+        owner: drenyra,
+        authority_mode: external-reference,
+        change_id: drenyra-c2-legacy,
+        state_path: openspec/changes/drenyra-c2-legacy/state.yaml,
+        revision: "r-c2-5d44",
+        observed_phase: tasks,
+        observed_status: review-pending,
+        program_state: blocked,
+        blockers: [LIFECYCLE_NOT_EXECUTABLE],
+        mandatory: true,
+        conditional: false,
+        dependencies: [C1],
+      },
+  }
+evidence: {}
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+    {
+      id: evt-i-c2,
+      kind: import,
+      child: C2,
+      revision: 2,
+      timestamp: "2026-08-09T04:00:00Z",
+      prior_state: imported,
+      new_state: imported,
+      evidence_refs: [],
+      reason: "import: observed=review-pending; interpretation=blocked; source-version=1.0.0; source=openspec/changes/drenyra-c2-legacy/state.yaml",
+    },
+  ]
+program_status:
+  {
+    revision: 2,
+    derived_at: "2026-08-09T04:00:00Z",
+    readiness_scope: "fixture: unmarked import event fails closed — legacy-import marker required",
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

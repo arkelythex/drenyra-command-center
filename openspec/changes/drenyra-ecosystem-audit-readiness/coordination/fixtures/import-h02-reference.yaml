@@ -1,0 +1,75 @@
+# Compatibility-import fixture (U3f, design "Migration and compatibility"): H02 is imported by reference as C1,
+# preserving review-pending — existing drenyra-h02-tenant-isolation authority, blocked/H02_REVIEW_PENDING. Importing
+# H02 is read-only: the fixture never mutates openspec/changes/drenyra-h02-tenant-isolation/* (the child artifact
+# stays authoritative in its own change).
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 2
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories:
+  {
+    drenyra:
+      {
+        identity: drenyra,
+        authority_kind: umbrella-owner,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  {
+    C1:
+      {
+        owner: drenyra,
+        authority_mode: existing,
+        change_id: drenyra-h02-tenant-isolation,
+        state_path: openspec/changes/drenyra-h02-tenant-isolation/state.yaml,
+        revision: "93bc8e1ae081d9ca567f75eeb00f5b91e01ad9e4",
+        observed_phase: tasks,
+        observed_status: review-pending,
+        program_state: blocked,
+        blockers: [H02_REVIEW_PENDING],
+        mandatory: true,
+        conditional: false,
+        units: [W0, W1, W2, W3, W4, W5, W6],
+      },
+  }
+evidence: {}
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+    {
+      id: evt-i-c1,
+      kind: import,
+      child: C1,
+      revision: 2,
+      timestamp: "2026-08-09T04:00:00Z",
+      prior_state: imported,
+      new_state: imported,
+      evidence_refs: [],
+      reason: "legacy-import: observed=review-pending; interpretation=blocked; source-version=1.0.0; source=openspec/changes/drenyra-h02-tenant-isolation/state.yaml",
+    },
+  ]
+program_status:
+  {
+    revision: 2,
+    derived_at: "2026-08-09T04:00:00Z",
+    readiness_scope: "fixture: H02 imported by reference preserving review-pending — C1 blocked",
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

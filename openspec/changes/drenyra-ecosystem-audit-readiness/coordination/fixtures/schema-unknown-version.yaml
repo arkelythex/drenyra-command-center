@@ -1,0 +1,34 @@
+# Schema-failure (U1b): unknown schema_version (version gating, enum).
+schema_version: "9.9.9"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 1
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories: {}
+children: {}
+evidence: {}
+research: {}
+exceptions: {}
+events:
+  - {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    }
+program_status:
+  {
+    revision: 1,
+    derived_at: "2026-08-09T00:00:00Z",
+    readiness_scope: fixture,
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

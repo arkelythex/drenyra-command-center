@@ -1,0 +1,191 @@
+# C7-gate fixture (U3c, criterion 13): all seven proofs PLUS core-owner authority evidence — C7 may open atomically,
+# but only as far as `planning` from the umbrella (never executable); the core owner still owns the child SDD.
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 2
+repositories:
+  {
+    drenyra:
+      {
+        identity: drenyra,
+        authority_kind: umbrella-owner,
+        allowed_child_prefix: openspec/changes/,
+      },
+    drenyra-ai:
+      {
+        identity: drenyra-ai,
+        authority_kind: sibling,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  {
+    C1:
+      {
+        owner: drenyra,
+        authority_mode: existing,
+        change_id: drenyra-h02-tenant-isolation,
+        state_path: openspec/changes/drenyra-h02-tenant-isolation/state.yaml,
+        revision: "93bc8e1ae081d9ca567f75eeb00f5b91e01ad9e4",
+        observed_phase: tasks,
+        observed_status: review-pending,
+        program_state: blocked,
+        blockers: [H02_REVIEW_PENDING],
+        mandatory: true,
+        conditional: false,
+      },
+    C7:
+      {
+        owner: drenyra-ai,
+        authority_mode: external-reference,
+        change_id: c7-core-opening,
+        state_path: openspec/changes/c7-core-opening/state.yaml,
+        revision: "r-full",
+        observed_phase: planning,
+        observed_status: planned,
+        program_state: planning,
+        blockers: [],
+        mandatory: false,
+        conditional: true,
+      },
+  }
+evidence:
+  {
+    evt-c7-proof-1:
+      {
+        kind: verification,
+        child: C7,
+        owner: drenyra-ai,
+        authority_path: openspec/changes/c7-core-opening/state.yaml,
+        revision: "r-full",
+        result: passed,
+        timestamp: "2026-08-09T02:00:00Z",
+        check_result: "c7-proof: reproducible-case",
+      },
+    evt-c7-proof-2:
+      {
+        kind: verification,
+        child: C7,
+        owner: drenyra-ai,
+        authority_path: openspec/changes/c7-core-opening/state.yaml,
+        revision: "r-full",
+        result: passed,
+        timestamp: "2026-08-09T02:00:00Z",
+        check_result: "c7-proof: contract-behavior",
+      },
+    evt-c7-proof-3:
+      {
+        kind: verification,
+        child: C7,
+        owner: drenyra-ai,
+        authority_path: openspec/changes/c7-core-opening/state.yaml,
+        revision: "r-full",
+        result: passed,
+        timestamp: "2026-08-09T02:00:00Z",
+        check_result: "c7-proof: ownership-rationale",
+      },
+    evt-c7-proof-4:
+      {
+        kind: verification,
+        child: C7,
+        owner: drenyra-ai,
+        authority_path: openspec/changes/c7-core-opening/state.yaml,
+        revision: "r-full",
+        result: passed,
+        timestamp: "2026-08-09T02:00:00Z",
+        check_result: "c7-proof: smallest-correction",
+      },
+    evt-c7-proof-5:
+      {
+        kind: verification,
+        child: C7,
+        owner: drenyra-ai,
+        authority_path: openspec/changes/c7-core-opening/state.yaml,
+        revision: "r-full",
+        result: passed,
+        timestamp: "2026-08-09T02:00:00Z",
+        check_result: "c7-proof: independent-child-sdd",
+      },
+    evt-c7-proof-6:
+      {
+        kind: verification,
+        child: C7,
+        owner: drenyra-ai,
+        authority_path: openspec/changes/c7-core-opening/state.yaml,
+        revision: "r-full",
+        result: passed,
+        timestamp: "2026-08-09T02:00:00Z",
+        check_result: "c7-proof: versioning-policy",
+      },
+    evt-c7-proof-7:
+      {
+        kind: verification,
+        child: C7,
+        owner: drenyra-ai,
+        authority_path: openspec/changes/c7-core-opening/state.yaml,
+        revision: "r-full",
+        result: passed,
+        timestamp: "2026-08-09T02:00:00Z",
+        check_result: "c7-proof: release-pin-verify",
+      },
+    evt-c7-authority:
+      {
+        kind: verification,
+        child: C7,
+        owner: drenyra-ai,
+        authority_path: openspec/changes/c7-core-opening/state.yaml,
+        revision: "r-full",
+        result: passed,
+        timestamp: "2026-08-09T02:00:00Z",
+        check_result: "c7-authority: core-owner",
+      },
+  }
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+    {
+      id: evt-2,
+      kind: transition,
+      child: C7,
+      revision: 2,
+      timestamp: "2026-08-09T02:00:00Z",
+      prior_state: not-required,
+      new_state: planning,
+      evidence_refs:
+        [
+          evt-c7-proof-1,
+          evt-c7-proof-2,
+          evt-c7-proof-3,
+          evt-c7-proof-4,
+          evt-c7-proof-5,
+          evt-c7-proof-6,
+          evt-c7-proof-7,
+          evt-c7-authority,
+        ],
+    },
+  ]
+program_status:
+  {
+    revision: 2,
+    derived_at: "2026-08-09T02:00:00Z",
+    readiness_scope: "fixture: C7 atomic opening at most planning; core owner still owns the child SDD",
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

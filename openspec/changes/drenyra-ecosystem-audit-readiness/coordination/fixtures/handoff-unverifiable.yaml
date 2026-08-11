@@ -1,0 +1,84 @@
+# Handoff-protocol fixture (U3e): unverifiable authority blocks — the owner's returned reference carries a
+# mutable revision ("latest"), so even an accepted handoff cannot advance. Negative fixture: C5 claims planning
+# on an unverifiable authority; the ledger fails closed and derives nothing.
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 3
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories:
+  {
+    drenyra-pi:
+      {
+        identity: drenyra-pi,
+        authority_kind: sibling,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  {
+    C5:
+      {
+        owner: drenyra-pi,
+        authority_mode: external-reference,
+        change_id: drenyra-c5-baseline,
+        state_path: openspec/changes/drenyra-c5-baseline/state.yaml,
+        revision: "latest",
+        observed_phase: planning,
+        observed_status: planned,
+        program_state: planning,
+        blockers: [],
+        mandatory: true,
+        conditional: false,
+      },
+  }
+evidence: {}
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+    {
+      id: evt-h-c5,
+      kind: child-handoff-requested,
+      child: C5,
+      revision: 2,
+      timestamp: "2026-08-09T03:00:00Z",
+      prior_state: requested,
+      new_state: requested,
+      evidence_refs: [],
+      reason: "handoff: baseline-defect=tenant isolation baseline gap; scope=coordination-only; non-goals=product-source edits; dependencies=none; executability=blocked; acceptance=h02-acceptance-criteria; evidence-contract=immutable-repository-local; unit-limit=300; suggested-change-id=drenyra-c5-baseline; collision=required; expiry=2026-09-01T00:00:00Z",
+    },
+    {
+      id: evt-d-c5-accepted,
+      kind: decision,
+      child: C5,
+      revision: 3,
+      timestamp: "2026-08-09T03:30:00Z",
+      prior_state: requested,
+      new_state: decided,
+      evidence_refs: [],
+      reason: "handoff: accepted",
+    },
+  ]
+program_status:
+  {
+    revision: 3,
+    derived_at: "2026-08-09T03:30:00Z",
+    readiness_scope: "fixture: unverifiable authority blocks — no advance",
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

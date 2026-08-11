@@ -1,0 +1,58 @@
+# Graph-safety fixture (U2b, criterion 7): alternate C1 authority — C1 change_id must stay drenyra-h02-tenant-isolation.
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 1
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories:
+  {
+    drenyra:
+      {
+        identity: drenyra,
+        authority_kind: umbrella-owner,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  C1:
+    {
+      owner: drenyra,
+      authority_mode: existing,
+      change_id: drenyra-tenant-isolation-v2,
+      state_path: openspec/changes/drenyra-tenant-isolation-v2/state.yaml,
+      revision: unlinked,
+      observed_phase: unobserved,
+      observed_status: unlinked,
+      program_state: eligible,
+      blockers: [],
+      mandatory: true,
+      conditional: false,
+    }
+evidence: {}
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+  ]
+program_status:
+  {
+    revision: 1,
+    derived_at: "2026-08-09T00:00:00Z",
+    readiness_scope: fixture,
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

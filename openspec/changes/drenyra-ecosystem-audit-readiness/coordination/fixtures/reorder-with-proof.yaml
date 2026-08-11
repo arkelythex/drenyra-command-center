@@ -1,0 +1,112 @@
+# Reorder-rule fixture (U2c, criterion 8): C2/C3 reorder WITH no-overlap evidence AND a ledger decision — reorder rule passes; C1 precedence intact.
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 2
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories:
+  {
+    drenyra:
+      {
+        identity: drenyra,
+        authority_kind: umbrella-owner,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  C1:
+    {
+      owner: drenyra,
+      authority_mode: existing,
+      change_id: drenyra-h02-tenant-isolation,
+      state_path: openspec/changes/drenyra-h02-tenant-isolation/state.yaml,
+      revision: "93bc8e1ae081d9ca567f75eeb00f5b91e01ad9e4",
+      observed_phase: tasks,
+      observed_status: review-pending,
+      program_state: blocked,
+      blockers: [H02_REVIEW_PENDING],
+      mandatory: true,
+      conditional: false,
+    }
+  C2:
+    {
+      owner: drenyra,
+      authority_mode: new-local,
+      change_id: pending,
+      state_path: openspec/changes/pending/state.yaml,
+      revision: unlinked,
+      observed_phase: unobserved,
+      observed_status: unlinked,
+      program_state: blocked,
+      blockers: [],
+      mandatory: true,
+      conditional: false,
+      dependencies: [C1],
+    }
+  C3:
+    {
+      owner: drenyra,
+      authority_mode: new-local,
+      change_id: pending,
+      state_path: openspec/changes/pending/state.yaml,
+      revision: unlinked,
+      observed_phase: unobserved,
+      observed_status: unlinked,
+      program_state: blocked,
+      blockers: [],
+      mandatory: true,
+      conditional: false,
+      dependencies: [C2],
+    }
+evidence:
+  evt-e-no-overlap-c2-c3:
+    {
+      kind: dependency,
+      child: C2,
+      owner: drenyra,
+      authority_path: openspec/changes/drenyra-ecosystem-audit-readiness/coordination/ledger.yaml,
+      revision: "93bc8e1ae081d9ca567f75eeb00f5b91e01ad9e4",
+      timestamp: "2026-08-09T01:00:00Z",
+      collector_role: drenyra-program-owner,
+      result: passed,
+      check_result: "no-overlap: C2 and C3 affect disjoint areas and behavior",
+      acceptance_refs: [criterion-8],
+    }
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+    {
+      id: evt-2,
+      kind: decision,
+      child: C2,
+      revision: 2,
+      timestamp: "2026-08-09T01:00:00Z",
+      prior_state: blocked,
+      new_state: reorder-approved,
+      evidence_refs: [evt-e-no-overlap-c2-c3],
+      reason: "reorder C2 relative to C3",
+    },
+  ]
+program_status:
+  {
+    revision: 2,
+    derived_at: "2026-08-09T01:00:00Z",
+    readiness_scope: fixture,
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

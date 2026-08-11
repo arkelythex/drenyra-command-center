@@ -1,0 +1,9 @@
+# Schema-failure (U1b): missing required top-level fields (policy, events, program_status).
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 1
+repositories: {}
+children: {}
+evidence: {}
+research: {}
+exceptions: {}

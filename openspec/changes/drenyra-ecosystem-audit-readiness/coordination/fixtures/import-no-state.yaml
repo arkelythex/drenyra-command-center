@@ -1,0 +1,74 @@
+# Compatibility-import fixture (U3f, design "Migration and compatibility"): a legacy change with NO state.yaml is
+# imported read-only and maps to planning evidence only — non-executable. The import event is marked legacy-import
+# and records the observed legacy state plus its program interpretation per the design table.
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 2
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories:
+  {
+    drenyra:
+      {
+        identity: drenyra,
+        authority_kind: umbrella-owner,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  {
+    C2:
+      {
+        owner: drenyra,
+        authority_mode: external-reference,
+        change_id: drenyra-risk-audit,
+        state_path: openspec/changes/drenyra-risk-audit/state.yaml,
+        revision: "r-risk-4c11",
+        observed_phase: planning,
+        observed_status: no-state.yaml,
+        program_state: planning,
+        blockers: [],
+        mandatory: true,
+        conditional: false,
+        dependencies: [C1],
+      },
+  }
+evidence: {}
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+    {
+      id: evt-i-c2,
+      kind: import,
+      child: C2,
+      revision: 2,
+      timestamp: "2026-08-09T04:00:00Z",
+      prior_state: imported,
+      new_state: imported,
+      evidence_refs: [],
+      reason: "legacy-import: observed=no-state.yaml; interpretation=planning; source-version=1.0.0; source=openspec/changes/drenyra-risk-audit/state.yaml",
+    },
+  ]
+program_status:
+  {
+    revision: 2,
+    derived_at: "2026-08-09T04:00:00Z",
+    readiness_scope: "fixture: no state.yaml maps to planning — non-executable",
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

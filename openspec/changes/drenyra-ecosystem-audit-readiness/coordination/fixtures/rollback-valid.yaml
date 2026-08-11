@@ -1,0 +1,113 @@
+# U4 rollback fixture (criterion 15): C5 delivered then rolled back via verifiable proof (passed rollback-kind evidence at an immutable revision); C6 (deps C1+C5) derives blocked/ROLLBACK_INVALIDATED_DEPENDENCY; history append-only, nothing deleted.
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 3
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories:
+  {
+    drenyra-pi:
+      {
+        identity: drenyra-pi,
+        authority_kind: sibling,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  C5:
+    {
+      owner: drenyra-pi,
+      authority_mode: external-reference,
+      change_id: drenyra-c5-baseline,
+      state_path: openspec/changes/drenyra-c5-baseline/state.yaml,
+      revision: "r-c5-9f2a",
+      observed_phase: delivered,
+      observed_status: delivered,
+      program_state: rolled-back,
+      blockers: [],
+      mandatory: true,
+      conditional: false,
+    }
+  C6:
+    {
+      owner: drenyra,
+      authority_mode: new-local,
+      change_id: pending,
+      state_path: openspec/changes/pending/state.yaml,
+      revision: "r-c6",
+      observed_phase: planning,
+      observed_status: planned,
+      program_state: eligible,
+      blockers: [],
+      mandatory: true,
+      conditional: false,
+      dependencies: [C1, C5],
+    }
+evidence:
+  evt-e-c5-dep:
+    {
+      kind: dependency,
+      child: C5,
+      owner: drenyra-pi,
+      authority_path: openspec/changes/drenyra-c5-baseline/state.yaml,
+      revision: "r-c5-9f2a",
+      timestamp: "2026-08-09T06:00:00Z",
+      result: passed,
+      check_result: "dependency proof for C5 delivery",
+    }
+  evt-e-c5-rollback:
+    {
+      kind: rollback,
+      child: C5,
+      owner: drenyra-pi,
+      authority_path: openspec/changes/drenyra-c5-baseline/state.yaml,
+      revision: "r-c5-9f2a",
+      timestamp: "2026-08-09T07:00:00Z",
+      result: passed,
+      check_result: "rollback proof for C5 delivery",
+    }
+research: {}
+exceptions: {}
+events:
+  - {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T05:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    }
+  - {
+      id: evt-c5-delivered,
+      kind: transition,
+      child: C5,
+      revision: 2,
+      timestamp: "2026-08-09T06:30:00Z",
+      prior_state: eligible,
+      new_state: delivered,
+      evidence_refs: [evt-e-c5-dep],
+    }
+  - {
+      id: evt-rollback-c5,
+      kind: rollback,
+      child: C5,
+      revision: 3,
+      timestamp: "2026-08-09T07:30:00Z",
+      prior_state: delivered,
+      new_state: rolled-back,
+      evidence_refs: [evt-e-c5-rollback],
+    }
+program_status:
+  {
+    revision: 3,
+    derived_at: "2026-08-09T07:30:00Z",
+    readiness_scope: "fixture: C5 rolled back; C6 invalidated",
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

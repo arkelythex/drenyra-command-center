@@ -1,0 +1,146 @@
+# Drenyra Ecosystem Audit Readiness — Umbrella Ledger (bootstrap rev 1, U1b).
+# Capability-scoped: C1 blocked pending H02 review, C7 not-required, no child executable.
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 1
+policy:
+  program_owner: drenyra-program-owner
+  effective_unit_limit: 300
+  config_default_unit_limit: 400
+  chain_strategy: feature-branch-chain
+  exceptions_allowed: true
+repositories:
+  drenyra:
+    identity: drenyra
+    authority_kind: umbrella-owner
+    allowed_child_prefix: openspec/changes/
+  drenyra-pi:
+    identity: drenyra-pi
+    authority_kind: sibling
+    allowed_child_prefix: openspec/changes/
+  drenyra-ai:
+    identity: drenyra-ai
+    authority_kind: sibling
+    allowed_child_prefix: openspec/changes/
+  drenyra-engram:
+    identity: drenyra-engram
+    authority_kind: sibling
+    allowed_child_prefix: openspec/changes/
+children:
+  C1:
+    owner: drenyra
+    authority_mode: existing
+    change_id: drenyra-h02-tenant-isolation
+    state_path: openspec/changes/drenyra-h02-tenant-isolation/state.yaml
+    revision: "93bc8e1ae081d9ca567f75eeb00f5b91e01ad9e4"
+    observed_phase: tasks
+    observed_status: review-pending
+    program_state: blocked
+    blockers: [H02_REVIEW_PENDING]
+    mandatory: true
+    conditional: false
+    dependencies: []
+    units: [W0, W1, W2, W3, W4, W5, W6]
+    acceptance_refs: [h02-acceptance-criteria]
+    last_event_id: evt-1
+  C2:
+    owner: drenyra
+    authority_mode: new-local
+    change_id: pending
+    state_path: openspec/changes/pending/state.yaml
+    revision: unlinked
+    observed_phase: unobserved
+    observed_status: unlinked
+    program_state: blocked
+    blockers: [DEPENDENCY_UNSATISFIED]
+    mandatory: true
+    conditional: false
+    dependencies: [C1]
+  C3:
+    owner: drenyra
+    authority_mode: new-local
+    change_id: pending
+    state_path: openspec/changes/pending/state.yaml
+    revision: unlinked
+    observed_phase: unobserved
+    observed_status: unlinked
+    program_state: blocked
+    blockers: [DEPENDENCY_UNSATISFIED]
+    mandatory: true
+    conditional: false
+    dependencies: [C2]
+  C4:
+    owner: drenyra
+    authority_mode: new-local
+    change_id: pending
+    state_path: openspec/changes/pending/state.yaml
+    revision: unlinked
+    observed_phase: unobserved
+    observed_status: unlinked
+    program_state: blocked
+    blockers: [DEPENDENCY_UNSATISFIED]
+    mandatory: true
+    conditional: false
+    dependencies: [C3]
+  C5:
+    owner: drenyra-pi
+    authority_mode: external-reference
+    change_id: pending
+    state_path: openspec/changes/pending/state.yaml
+    revision: unlinked
+    observed_phase: unobserved
+    observed_status: unlinked
+    program_state: declared
+    blockers: []
+    mandatory: true
+    conditional: false
+  C6:
+    owner: drenyra
+    authority_mode: new-local
+    change_id: pending
+    state_path: openspec/changes/pending/state.yaml
+    revision: unlinked
+    observed_phase: unobserved
+    observed_status: unlinked
+    program_state: blocked
+    blockers: [DEPENDENCY_UNSATISFIED]
+    mandatory: true
+    conditional: false
+    dependencies: [C1, C5]
+  C7:
+    owner: drenyra-ai
+    authority_mode: external-reference
+    change_id: pending
+    state_path: openspec/changes/pending/state.yaml
+    revision: unlinked
+    observed_phase: unobserved
+    observed_status: unlinked
+    program_state: not-required
+    blockers: []
+    mandatory: false
+    conditional: true
+evidence: {}
+research: {}
+exceptions: {}
+events:
+  - id: evt-1
+    kind: program-initialized
+    revision: 1
+    timestamp: "2026-08-09T05:38:17Z"
+    prior_state: not-started
+    new_state: initialized
+    evidence_refs: []
+program_status:
+  revision: 1
+  derived_at: "2026-08-09T05:38:17Z"
+  readiness_scope: "capability-scoped: program initialized; C1 blocked pending H02 review; C5 declared (no linked sibling authority); C7 not-required; ecosystem-wide readiness not claimed"
+  ecosystem_ready: false
+  next_safe_action: "Resume H02 review within drenyra-h02-tenant-isolation (its own lifecycle)"
+  children_derived:
+    C1: blocked
+    C2: blocked
+    C3: blocked
+    C4: blocked
+    C5: declared
+    C6: blocked
+    C7: not-required

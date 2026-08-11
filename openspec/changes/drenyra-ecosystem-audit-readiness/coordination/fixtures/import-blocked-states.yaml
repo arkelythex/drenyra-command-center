@@ -1,0 +1,101 @@
+# Compatibility-import fixture (U3f, design "Migration and compatibility"): legacy changes observed in
+# review-pending and implementation-blocked states are imported read-only and map to blocked. Two children in one
+# fixture exercise both blocking observations; each import event is marked legacy-import and records the observed
+# state plus its program interpretation per the design table.
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 3
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories:
+  {
+    drenyra:
+      {
+        identity: drenyra,
+        authority_kind: umbrella-owner,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  {
+    C2:
+      {
+        owner: drenyra,
+        authority_mode: external-reference,
+        change_id: drenyra-accountant-operating-system,
+        state_path: openspec/changes/drenyra-accountant-operating-system/state.yaml,
+        revision: "r-acc-8d02",
+        observed_phase: implementation,
+        observed_status: implementation-blocked,
+        program_state: blocked,
+        blockers: [LIFECYCLE_NOT_EXECUTABLE],
+        mandatory: true,
+        conditional: false,
+        dependencies: [C1],
+      },
+    C3:
+      {
+        owner: drenyra,
+        authority_mode: external-reference,
+        change_id: drenyra-c3-legacy,
+        state_path: openspec/changes/drenyra-c3-legacy/state.yaml,
+        revision: "r-c3-6f31",
+        observed_phase: tasks,
+        observed_status: review-pending,
+        program_state: blocked,
+        blockers: [LIFECYCLE_NOT_EXECUTABLE],
+        mandatory: true,
+        conditional: false,
+        dependencies: [C2],
+      },
+  }
+evidence: {}
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+    {
+      id: evt-i-c2,
+      kind: import,
+      child: C2,
+      revision: 2,
+      timestamp: "2026-08-09T04:00:00Z",
+      prior_state: imported,
+      new_state: imported,
+      evidence_refs: [],
+      reason: "legacy-import: observed=implementation-blocked; interpretation=blocked; source-version=1.0.0; source=openspec/changes/drenyra-accountant-operating-system/state.yaml",
+    },
+    {
+      id: evt-i-c3,
+      kind: import,
+      child: C3,
+      revision: 3,
+      timestamp: "2026-08-09T04:15:00Z",
+      prior_state: imported,
+      new_state: imported,
+      evidence_refs: [],
+      reason: "legacy-import: observed=review-pending; interpretation=blocked; source-version=1.0.0; source=openspec/changes/drenyra-c3-legacy/state.yaml",
+    },
+  ]
+program_status:
+  {
+    revision: 3,
+    derived_at: "2026-08-09T04:15:00Z",
+    readiness_scope: "fixture: review-pending and implementation-blocked map to blocked",
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

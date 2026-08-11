@@ -1,0 +1,85 @@
+# Handoff-protocol fixture (U3e): C1 (H02) handoff takes the resume path — existing authority resumed, no new
+# tenant-isolation child; the umbrella links repository-relative references at an immutable revision. H02 remains
+# blocked/H02_REVIEW_PENDING while its own review is pending.
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 3
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories:
+  {
+    drenyra:
+      {
+        identity: drenyra,
+        authority_kind: umbrella-owner,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  {
+    C1:
+      {
+        owner: drenyra,
+        authority_mode: existing,
+        change_id: drenyra-h02-tenant-isolation,
+        state_path: openspec/changes/drenyra-h02-tenant-isolation/state.yaml,
+        revision: "93bc8e1ae081d9ca567f75eeb00f5b91e01ad9e4",
+        observed_phase: tasks,
+        observed_status: review-pending,
+        program_state: blocked,
+        blockers: [H02_REVIEW_PENDING],
+        mandatory: true,
+        conditional: false,
+        units: [W0, W1, W2, W3, W4, W5, W6],
+      },
+  }
+evidence: {}
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+    {
+      id: evt-h-c1,
+      kind: child-handoff-requested,
+      child: C1,
+      revision: 2,
+      timestamp: "2026-08-09T03:00:00Z",
+      prior_state: requested,
+      new_state: requested,
+      evidence_refs: [],
+      reason: "handoff: baseline-defect=tenant isolation baseline gap; scope=coordination-only; non-goals=product-source edits; dependencies=W0-W6; executability=blocked; acceptance=h02-acceptance-criteria; evidence-contract=immutable-repository-local; unit-limit=300; suggested-change-id=drenyra-h02-tenant-isolation; collision=required; expiry=2026-09-01T00:00:00Z",
+    },
+    {
+      id: evt-d-c1-resumed,
+      kind: decision,
+      child: C1,
+      revision: 3,
+      timestamp: "2026-08-09T03:30:00Z",
+      prior_state: requested,
+      new_state: decided,
+      evidence_refs: [],
+      reason: "handoff: resumed",
+    },
+  ]
+program_status:
+  {
+    revision: 3,
+    derived_at: "2026-08-09T03:30:00Z",
+    readiness_scope: "fixture: H02 resumed at its review gate; C1 stays blocked",
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

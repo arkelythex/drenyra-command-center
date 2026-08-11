@@ -1,0 +1,83 @@
+# Handoff-protocol fixture (U3e): the owner declines the C5 handoff — a declined handoff stays blocked
+# (AUTHORITY_MISSING) and never advances. Positive fixture: derived state is blocked.
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 3
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories:
+  {
+    drenyra-pi:
+      {
+        identity: drenyra-pi,
+        authority_kind: sibling,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  {
+    C5:
+      {
+        owner: drenyra-pi,
+        authority_mode: external-reference,
+        change_id: drenyra-c5-baseline,
+        state_path: openspec/changes/drenyra-c5-baseline/state.yaml,
+        revision: "unlinked",
+        observed_phase: unobserved,
+        observed_status: unlinked,
+        program_state: blocked,
+        blockers: [AUTHORITY_MISSING],
+        mandatory: true,
+        conditional: false,
+      },
+  }
+evidence: {}
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+    {
+      id: evt-h-c5,
+      kind: child-handoff-requested,
+      child: C5,
+      revision: 2,
+      timestamp: "2026-08-09T03:00:00Z",
+      prior_state: requested,
+      new_state: requested,
+      evidence_refs: [],
+      reason: "handoff: baseline-defect=tenant isolation baseline gap; scope=coordination-only; non-goals=product-source edits; dependencies=none; executability=blocked; acceptance=h02-acceptance-criteria; evidence-contract=immutable-repository-local; unit-limit=300; suggested-change-id=drenyra-c5-baseline; collision=required; expiry=2026-09-01T00:00:00Z",
+    },
+    {
+      id: evt-d-c5-declined,
+      kind: decision,
+      child: C5,
+      revision: 3,
+      timestamp: "2026-08-09T03:30:00Z",
+      prior_state: requested,
+      new_state: decided,
+      evidence_refs: [],
+      reason: "handoff: declined",
+    },
+  ]
+program_status:
+  {
+    revision: 3,
+    derived_at: "2026-08-09T03:30:00Z",
+    readiness_scope: "fixture: declined handoff stays blocked",
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

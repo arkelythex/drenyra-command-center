@@ -1,0 +1,74 @@
+# Compatibility-import fixture (U3f, design "Migration and compatibility"): an applied legacy state (completed) is
+# imported read-only as observed progress — closure proof is still required, so the child can never be imported as
+# program-closed. The import event is marked legacy-import and records observed=completed, interpretation=progress.
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 2
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories:
+  {
+    drenyra:
+      {
+        identity: drenyra,
+        authority_kind: umbrella-owner,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  {
+    C4:
+      {
+        owner: drenyra,
+        authority_mode: external-reference,
+        change_id: drenyra-c4-legacy,
+        state_path: openspec/changes/drenyra-c4-legacy/state.yaml,
+        revision: "r-c4-9e77",
+        observed_phase: completed,
+        observed_status: completed,
+        program_state: eligible,
+        blockers: [],
+        mandatory: true,
+        conditional: false,
+        dependencies: [C3],
+      },
+  }
+evidence: {}
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+    {
+      id: evt-i-c4,
+      kind: import,
+      child: C4,
+      revision: 2,
+      timestamp: "2026-08-09T04:00:00Z",
+      prior_state: imported,
+      new_state: imported,
+      evidence_refs: [],
+      reason: "legacy-import: observed=completed; interpretation=progress; source-version=1.0.0; source=openspec/changes/drenyra-c4-legacy/state.yaml",
+    },
+  ]
+program_status:
+  {
+    revision: 2,
+    derived_at: "2026-08-09T04:00:00Z",
+    readiness_scope: "fixture: completed maps to observed progress — closure proof still required",
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

@@ -1,0 +1,75 @@
+# Line-policy fixture (U3b, criterion 10): unit W0 forecasts exactly 300 changed lines — at the effective limit, the size gate passes.
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 1
+repositories:
+  {
+    drenyra:
+      {
+        identity: drenyra,
+        authority_kind: umbrella-owner,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  {
+    C1:
+      {
+        owner: drenyra,
+        authority_mode: existing,
+        change_id: drenyra-h02-tenant-isolation,
+        state_path: openspec/changes/drenyra-h02-tenant-isolation/state.yaml,
+        revision: "93bc8e1ae081d9ca567f75eeb00f5b91e01ad9e4",
+        observed_phase: tasks,
+        observed_status: review-pending,
+        program_state: blocked,
+        blockers: [H02_REVIEW_PENDING],
+        mandatory: true,
+        conditional: false,
+        units: [W0],
+      },
+  }
+evidence:
+  {
+    evt-w0-forecast:
+      {
+        kind: forecast,
+        child: C1,
+        unit: W0,
+        owner: drenyra,
+        authority_path: openspec/changes/drenyra-h02-tenant-isolation/state.yaml,
+        revision: "93bc8e1ae081d9ca567f75eeb00f5b91e01ad9e4",
+        timestamp: "2026-08-09T01:00:00Z",
+        result: passed,
+        check_result: "forecast: 300 changed lines for unit W0",
+      },
+  }
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+  ]
+program_status:
+  {
+    revision: 1,
+    derived_at: "2026-08-09T01:00:00Z",
+    readiness_scope: fixture,
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }

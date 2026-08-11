@@ -1,0 +1,98 @@
+# Compatibility-import fixture (U3f, design "Migration and compatibility"): a sibling (drenyra-pi) legacy change
+# archived with acceptance proof is imported read-only and maps to eligible for program closure evaluation. The
+# import references umbrella-local evidence (metadata boundary): sibling OpenSpec/hybrid differences are normalized
+# only in the umbrella evidence metadata, never by rewriting the sibling's artifacts.
+schema_version: "1.0.0"
+program_id: drenyra-ecosystem-audit-readiness
+ledger_revision: 3
+policy:
+  {
+    program_owner: drenyra-program-owner,
+    effective_unit_limit: 300,
+    config_default_unit_limit: 400,
+    chain_strategy: feature-branch-chain,
+  }
+repositories:
+  {
+    drenyra-pi:
+      {
+        identity: drenyra-pi,
+        authority_kind: sibling,
+        allowed_child_prefix: openspec/changes/,
+      },
+  }
+children:
+  {
+    C5:
+      {
+        owner: drenyra-pi,
+        authority_mode: external-reference,
+        change_id: drenyra-pi-c5-archived,
+        state_path: openspec/changes/drenyra-pi-c5-archived/state.yaml,
+        revision: "r-c5-archived-7b21",
+        observed_phase: archived,
+        observed_status: archived,
+        program_state: eligible,
+        blockers: [],
+        mandatory: true,
+        conditional: false,
+      },
+  }
+evidence:
+  {
+    evt-ev-c5-archived:
+      {
+        kind: review,
+        child: C5,
+        owner: drenyra-pi,
+        authority_path: openspec/changes/drenyra-pi-c5-archived/state.yaml,
+        revision: "r-c5-archived-7b21",
+        result: passed,
+        timestamp: "2026-08-09T03:45:00Z",
+        acceptance_refs: [c5-acceptance-criteria],
+      },
+  }
+research: {}
+exceptions: {}
+events:
+  [
+    {
+      id: evt-1,
+      kind: program-initialized,
+      revision: 1,
+      timestamp: "2026-08-09T00:00:00Z",
+      prior_state: not-started,
+      new_state: initialized,
+      evidence_refs: [],
+    },
+    {
+      id: evt-i-c5,
+      kind: import,
+      child: C5,
+      revision: 2,
+      timestamp: "2026-08-09T04:00:00Z",
+      prior_state: imported,
+      new_state: imported,
+      evidence_refs: [evt-ev-c5-archived],
+      reason: "legacy-import: observed=archived; interpretation=eligible; acceptance=proof; source-version=1.0.0; source=openspec/changes/drenyra-pi-c5-archived/state.yaml",
+    },
+    {
+      id: evt-m-c5,
+      kind: migration,
+      child: C5,
+      revision: 3,
+      timestamp: "2026-08-09T04:05:00Z",
+      prior_state: imported,
+      new_state: imported,
+      evidence_refs: [],
+      reason: "migration: source=1.0.0; target=1.0.0; tool=umbrella-import-v1; before=0000000000000000000000000000000000000000; after=0000000000000000000000000000000000000000; validation=passed",
+    },
+  ]
+program_status:
+  {
+    revision: 3,
+    derived_at: "2026-08-09T04:05:00Z",
+    readiness_scope: "fixture: archived with acceptance proof maps to eligible for closure evaluation",
+    ecosystem_ready: false,
+    next_safe_action: fixture,
+  }
