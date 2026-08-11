@@ -59,7 +59,10 @@ function observationOf(memory: FiscalMemory): EngramObservation {
 	return {
 		identity: { id: "obs-1", topicKey: `fiscal-memory/${props.id}` },
 		title: `[${props.category}] ${props.title}`,
-		type: "fiscal_memory",
+		kind: "decision",
+		status: "active",
+		fiscalEffect: "none",
+		recordedAt: props.updatedAt.toISOString(),
 		scope: {
 			kind: "company",
 			organizationId: TENANT,
@@ -84,11 +87,10 @@ function observationOf(memory: FiscalMemory): EngramObservation {
 				updatedAt: props.updatedAt.toISOString(),
 			}),
 		},
-		authorityStatus: "draft",
-		provenance: {
-			actor: props.createdBy,
-			timestamp: props.createdAt.toISOString(),
-			source: "api",
+		source: {
+			system: "drenyra-api",
+			actorId: props.createdBy,
+			actorKind: "human",
 			session: props.sourceAgentId,
 		},
 		revision: 1,
@@ -121,7 +123,7 @@ describe("save mapping", () => {
 		expect(client.save).toHaveBeenCalledTimes(1);
 		const saved = client.save.mock.calls[0][0];
 		expect(saved.topicKey).toBe(`fiscal-memory/${MEMORY_ID}`);
-		expect(saved.type).toBe("fiscal_memory");
+		expect(saved.kind).toBe("decision");
 		expect(saved.title).toBe("[tax_decision] IGV retention criteria");
 		expect(saved.scope).toEqual({
 			kind: "company",
@@ -140,8 +142,8 @@ describe("save mapping", () => {
 		);
 		expect(saved.content.where).toBe("evidence/invoice-1");
 		expect(saved.content.learned).toContain('"severity":"high"');
-		expect(saved.provenance.actor).toBe("user-1");
-		expect(saved.provenance.session).toBe("agent-1");
+		expect(saved.source.actorId).toBe("user-1");
+		expect(saved.source.session).toBe("agent-1");
 	});
 });
 
@@ -369,6 +371,6 @@ describe("revisions", () => {
 		expect(saved.content.learned).toContain(
 			'"changeReason":"Criteria updated"',
 		);
-		expect(saved.provenance.actor).toBe("user-2");
+		expect(saved.source.actorId).toBe("user-2");
 	});
 });
