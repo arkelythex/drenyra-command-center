@@ -73,6 +73,6 @@ console.log(`  ║  Fiscal Agent Harness                ║`);
 console.log(`  ╚══════════════════════════════════════╝\n`);
 checks.forEach((c) => console.log(`  ${c}`));
 console.log(`\n  Install: pi install @drenyra/pi`);
-console.log(`  Docs:    https://github.com/arkelythex/Drenyra\n`);
+console.log(`  Docs:    https://github.com/arkelythex/drenyra-command-center\n`);
 
 process.exit(status === "ok" ? 0 : 0); // Warnings are non-fatal
