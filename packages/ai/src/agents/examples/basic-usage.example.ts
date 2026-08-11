@@ -1,16 +1,11 @@
 // @ts-nocheck
-/* eslint-disable @typescript-eslint/ban-ts-comment */ — Example file, not production code. Types may drift from AgentEvent
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /**
  * Basic Usage Example - AI Agent Swarm
  * Demonstrates how to process invoices using the agent system
  */
 
-interface.import;
-{
-	createAgentSwarm;
-}
-from;
-("../index");
+import { createAgentSwarm } from "../index";
 
 // Example 1: Process a single invoice image
 // @ts-nocheck — Example file, not production code. Types may drift from AgentEvent interface.
