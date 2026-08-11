@@ -359,7 +359,7 @@ Git sigue útil para versionar código y políticas, pero **no es la fuente úni
 
 ## Estructura de repositorios recomendada
 
-Opción recomendada: **repositorios separados** — `arkelythex/Drenyra` (producto web), `arkelythex/drenyra-ai` (runtime, protocolos, contracts, agents, authority), `arkelythex/drenyra-pi` (paquete Pi-native), `arkelythex/drenyra-skills` (skills y policies versionadas).
+Opción recomendada: **repositorios separados** — `arkelythex/drenyra-command-center` (producto web), `arkelythex/drenyra-ai` (runtime, protocolos, contracts, agents, authority), `arkelythex/drenyra-pi` (paquete Pi-native), `arkelythex/drenyra-skills` (skills y policies versionadas).
 
 Inicialmente pueden vivir en el monorepo, pero con boundaries diseñados como productos independientes:
 

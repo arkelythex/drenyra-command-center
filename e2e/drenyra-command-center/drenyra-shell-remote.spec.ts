@@ -2,7 +2,7 @@
  * Arkelythex shell — Drenyra Module Federation / dev redirect smoke test.
  *
  * Full Command Center E2E lives in the Drenyra product repo:
- * github.com/arkelythex/Drenyra — e2e/drenyra-command-center/
+ * github.com/arkelythex/drenyra-command-center — e2e/drenyra-command-center/
  */
 import { expect, test } from "../base-test";
 
