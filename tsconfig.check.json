@@ -20,7 +20,8 @@
     "packages/persistence/src/schema/**/*",
     "packages/persistence/src/unit-of-work.ts",
     "packages/persistence/src/repositories/postgres-organization/**/*",
-    "packages/infrastructure/src/index.ts"
+    "packages/infrastructure/src/index.ts",
+    "packages/pi/src/types/**/*.d.ts"
   ],
   "exclude": [
     "**/__tests__/**",
