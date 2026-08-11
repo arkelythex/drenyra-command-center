@@ -55,7 +55,7 @@ export class Document {
 			status: "VALIDATED",
 			validatedBy,
 			validatedAt: new Date(),
-			validationNotes: notes,
+			...(notes !== undefined ? { validationNotes: notes } : {}),
 			updatedAt: new Date(),
 		});
 	}

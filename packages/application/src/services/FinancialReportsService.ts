@@ -374,8 +374,8 @@ export interface ReportDataSource
 export class FinancialReportsService {
 	private readonly balanceDataSource: BalanceReportDataSource;
 	private readonly organizationDataSource: OrganizationReportDataSource;
-	private readonly ledgerDataSource?: LedgerReportDataSource;
-	private readonly openingBalanceDataSource?: OpeningBalanceDataSource;
+	private readonly ledgerDataSource?: LedgerReportDataSource | undefined;
+	private readonly openingBalanceDataSource?: OpeningBalanceDataSource | undefined;
 
 	constructor() {
 		// Dependency injection via container (DIP compliance)

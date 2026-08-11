@@ -34,13 +34,15 @@ export class BankAccount {
 			accountNumber: params.accountNumber,
 			accountType: params.accountType,
 			currency,
-			accountingAccountId: params.accountingAccountId,
+			...(params.accountingAccountId !== undefined
+				? { accountingAccountId: params.accountingAccountId }
+				: {}),
 			initialBalance: balance,
 			currentBalance: balance,
-			cci: params.cci,
-			swiftCode: params.swiftCode,
+			...(params.cci !== undefined ? { cci: params.cci } : {}),
+			...(params.swiftCode !== undefined ? { swiftCode: params.swiftCode } : {}),
 			isActive: true,
-			notes: params.notes,
+			...(params.notes !== undefined ? { notes: params.notes } : {}),
 			createdAt: now,
 			updatedAt: now,
 		});
@@ -156,19 +158,21 @@ export class BankAccount {
 		swiftCode?: string;
 		notes?: string;
 	}): BankAccount {
-		return new BankAccount({
+		const next: BankAccountProps = {
 			...this.props,
 			bankName: params.bankName ?? this.props.bankName,
 			accountType: params.accountType ?? this.props.accountType,
-			accountingAccountId:
-				params.accountingAccountId === null
-					? undefined
-					: (params.accountingAccountId ?? this.props.accountingAccountId),
-			cci: params.cci ?? this.props.cci,
-			swiftCode: params.swiftCode ?? this.props.swiftCode,
-			notes: params.notes ?? this.props.notes,
+			...(params.cci !== undefined ? { cci: params.cci } : {}),
+			...(params.swiftCode !== undefined ? { swiftCode: params.swiftCode } : {}),
+			...(params.notes !== undefined ? { notes: params.notes } : {}),
 			updatedAt: new Date(),
-		});
+		};
+		if (params.accountingAccountId === null) {
+			delete next.accountingAccountId;
+		} else if (params.accountingAccountId !== undefined) {
+			next.accountingAccountId = params.accountingAccountId;
+		}
+		return new BankAccount(next);
 	}
 
 	isDetracciones(): boolean {

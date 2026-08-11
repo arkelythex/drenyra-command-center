@@ -30,7 +30,9 @@ export class ApprovalRequest {
 			scope: {
 				companyId: data.scope.companyId,
 				companyRuc: data.scope.companyRuc,
-				organizationId: data.scope.organizationId,
+				...(data.scope.organizationId !== undefined
+					? { organizationId: data.scope.organizationId }
+					: {}),
 				period: data.scope.period,
 				countryCode: data.scope.countryCode as "PE",
 			},
@@ -43,13 +45,13 @@ export class ApprovalRequest {
 				data.requestedAt instanceof Date
 					? data.requestedAt
 					: new Date(data.requestedAt),
-			decidedBy: data.decidedBy,
-			decidedAt: data.decidedAt
+			...(data.decidedBy !== undefined ? { decidedBy: data.decidedBy } : {}),
+			...(data.decidedAt
 				? data.decidedAt instanceof Date
-					? data.decidedAt
-					: new Date(data.decidedAt)
-				: undefined,
-			decisionReason: data.decisionReason,
+					? { decidedAt: data.decidedAt }
+					: { decidedAt: new Date(data.decidedAt) }
+				: {}),
+			...(data.decisionReason !== undefined ? { decisionReason: data.decisionReason } : {}),
 			diff: data.diff,
 			metadata: data.metadata ?? {},
 		};
@@ -63,7 +65,7 @@ export class ApprovalRequest {
 			status: "APPROVED",
 			decidedBy,
 			decidedAt: new Date(),
-			decisionReason: reason,
+			...(reason !== undefined ? { decisionReason: reason } : {}),
 		});
 	}
 

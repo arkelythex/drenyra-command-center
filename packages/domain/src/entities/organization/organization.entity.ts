@@ -26,10 +26,10 @@ export class Organization {
 			name: plainData.name,
 			ruc: plainData.ruc,
 			slug: plainData.slug,
-			settings: plainData.settings,
+			...(plainData.settings !== undefined ? { settings: plainData.settings } : {}),
 			status: plainData.status as OrganizationStatus,
-			healthScore: plainData.healthScore,
-			metrics: plainData.metrics,
+			...(plainData.healthScore !== undefined ? { healthScore: plainData.healthScore } : {}),
+			...(plainData.metrics !== undefined ? { metrics: plainData.metrics } : {}),
 			createdAt:
 				typeof plainData.createdAt === "string"
 					? new Date(plainData.createdAt)
@@ -49,9 +49,9 @@ export class Organization {
 		return new Organization({
 			...this.props,
 			status: "SUSPENDED",
-			settings: reason
-				? { ...this.props.settings, ...{ suspensionReason: reason } }
-				: this.props.settings,
+			...(reason
+				? { settings: { ...this.props.settings, suspensionReason: reason } }
+				: {}),
 			updatedAt: new Date(),
 		});
 	}
@@ -78,9 +78,9 @@ export class Organization {
 		return new Organization({
 			...this.props,
 			healthScore: score,
-			metrics: this.props.metrics
-				? { ...this.props.metrics, healthPercentage: score }
-				: undefined,
+			...(this.props.metrics
+				? { metrics: { ...this.props.metrics, healthPercentage: score } }
+				: {}),
 			updatedAt: new Date(),
 		});
 	}

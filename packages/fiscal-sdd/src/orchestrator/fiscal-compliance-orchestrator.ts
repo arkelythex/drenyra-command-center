@@ -76,10 +76,14 @@ export class FiscalComplianceOrchestrator {
 			mode: config.mode ?? "auto",
 			artifactStore: config.artifactStore ?? "none",
 			reviewBudget: config.reviewBudget ?? 400,
-			modelAssignments: config.modelAssignments,
+			...(config.modelAssignments !== undefined
+				? { modelAssignments: config.modelAssignments }
+				: {}),
 			subAgents: config.subAgents ?? false,
 			strictTdd: config.strictTdd ?? false,
-			openspecBasePath: config.openspecBasePath,
+			...(config.openspecBasePath !== undefined
+				? { openspecBasePath: config.openspecBasePath }
+				: {}),
 		};
 
 		this.runner = new FiscalSDDRunner();

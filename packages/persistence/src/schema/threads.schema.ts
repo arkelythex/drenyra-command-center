@@ -75,7 +75,7 @@ export const threads = pgTable(
 	}),
 );
 
-export const threadsRelations = relations(threads, ({ one, many }) => ({
+export const threadsRelations = relations(threads, ({ one }) => ({
 	company: one(companies, {
 		fields: [threads.companyId],
 		references: [companies.id],

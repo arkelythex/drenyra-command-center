@@ -20,10 +20,9 @@ import type {
   WorkspaceId,
   Timestamp,
 } from "./types";
-import type { WorkspaceState, PortfolioRollup } from "./workspace";
-import { getStateGroup, computePortfolioRollup } from "./workspace";
+import type { PortfolioRollup } from "./workspace";
+import { computePortfolioRollup } from "./workspace";
 import type { WorkspaceProps } from "./workspace";
-import { FeosError } from "./types";
 
 // ============================================================================
 // Attention Item
@@ -52,10 +51,10 @@ export interface AttentionItem {
   companyId: CompanyId;
   periodLabel: string;
   timestamp: Timestamp;
-  deadline?: Timestamp;
-  downstreamImpact?: string; // Description of what else is blocked
-  resolutionHint?: string;   // What to do to resolve
-  actionUrl?: string;        // Deep link to resolve
+  deadline?: Timestamp | undefined;
+  downstreamImpact?: string | undefined; // Description of what else is blocked
+  resolutionHint?: string | undefined;   // What to do to resolve
+  actionUrl?: string | undefined;        // Deep link to resolve
   metadata?: Record<string, unknown>;
 }
 

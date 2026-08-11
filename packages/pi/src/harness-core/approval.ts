@@ -87,8 +87,12 @@ export class ApprovalWorkflow {
 	 */
 	async evaluate(
 		request: ApprovalRequest,
-	): Promise<{ gate: string; approved: boolean; reason?: string }[]> {
-		const results: { gate: string; approved: boolean; reason?: string }[] = [];
+	): Promise<{ gate: string; approved: boolean; reason?: string | undefined }[]> {
+		const results: {
+			gate: string;
+			approved: boolean;
+			reason?: string | undefined;
+		}[] = [];
 
 		for (const gate of this.gates) {
 			if (!gate.condition(request.task)) continue;

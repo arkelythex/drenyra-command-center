@@ -29,13 +29,25 @@ export class GetJournalEntriesUseCase {
 		// 2. Fetch entries from repository
 		const entries = await this.journalRepository.findWithFilters({
 			organizationId: validatedFilters.organizationId,
-			status:
-				validatedFilters.status === "all" ? undefined : validatedFilters.status,
-			dateFrom: validatedFilters.dateFrom,
-			dateTo: validatedFilters.dateTo,
-			minAmount: validatedFilters.minAmount,
-			maxAmount: validatedFilters.maxAmount,
-			documentNumber: validatedFilters.documentNumber,
+			...(validatedFilters.status !== undefined &&
+			validatedFilters.status !== "all"
+				? { status: validatedFilters.status }
+				: {}),
+			...(validatedFilters.dateFrom !== undefined
+				? { dateFrom: validatedFilters.dateFrom }
+				: {}),
+			...(validatedFilters.dateTo !== undefined
+				? { dateTo: validatedFilters.dateTo }
+				: {}),
+			...(validatedFilters.minAmount !== undefined
+				? { minAmount: validatedFilters.minAmount }
+				: {}),
+			...(validatedFilters.maxAmount !== undefined
+				? { maxAmount: validatedFilters.maxAmount }
+				: {}),
+			...(validatedFilters.documentNumber !== undefined
+				? { documentNumber: validatedFilters.documentNumber }
+				: {}),
 		});
 
 		return entries;

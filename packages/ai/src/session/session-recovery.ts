@@ -82,7 +82,9 @@ export class SessionRecovery {
 				recoverable: false,
 				runId,
 				status: state.status,
-				workflowState: state.workflowState ?? undefined,
+				...(state.workflowState !== undefined && state.workflowState !== null
+				? { workflowState: state.workflowState }
+				: {}),
 				reason: "still_running",
 			};
 		}
@@ -92,7 +94,9 @@ export class SessionRecovery {
 				recoverable: false,
 				runId,
 				status: state.status,
-				workflowState: state.workflowState ?? undefined,
+				...(state.workflowState !== undefined && state.workflowState !== null
+				? { workflowState: state.workflowState }
+				: {}),
 				reason: "already_completed",
 			};
 		}
@@ -110,7 +114,9 @@ export class SessionRecovery {
 			recoverable: false,
 			runId,
 			status: state.status,
-			workflowState: state.workflowState ?? undefined,
+			...(state.workflowState !== undefined && state.workflowState !== null
+			? { workflowState: state.workflowState }
+			: {}),
 			reason: `unrecoverable_status: ${state.status}`,
 		};
 	}

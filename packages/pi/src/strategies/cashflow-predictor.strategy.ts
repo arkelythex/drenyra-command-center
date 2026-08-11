@@ -143,7 +143,7 @@ export function createCashflowPredictorStrategy(
 
 function aggregateDaily(
 	transactions: CashflowTransaction[],
-	windowDays: number,
+	_windowDays: number,
 ): DailyAggregate[] {
 	// Group by date
 	const dateMap = new Map<string, { income: number; expense: number }>();
@@ -263,6 +263,12 @@ function detectTrendReversalAnomalies(daily: DailyAggregate[]): Anomaly[] {
 	const priorHalf = daily.slice(0, mid);
 	const recentHalf = daily.slice(mid);
 
+	const first = daily[0];
+	const last = daily[daily.length - 1];
+	const prevMid = daily[mid - 1];
+	const midDay = daily[mid];
+	if (!first || !last || !prevMid || !midDay) return [];
+
 	const priorAvgNet = mean(priorHalf.map((d) => d.net));
 	const recentAvgNet = mean(recentHalf.map((d) => d.net));
 
@@ -293,7 +299,7 @@ function detectTrendReversalAnomalies(daily: DailyAggregate[]): Anomaly[] {
 			: "bajista→alcista (negative→positive)";
 
 	anomalies.push({
-		id: `cashflow-trend-reversal-${daily[mid].date}`,
+		id: `cashflow-trend-reversal-${midDay.date}`,
 		timestamp: new Date().toISOString(),
 		entityType: "cashflow_trend",
 		entityId: "trend",
@@ -305,20 +311,20 @@ function detectTrendReversalAnomalies(daily: DailyAggregate[]): Anomaly[] {
 		confidence,
 		reasoning:
 			`Cambio de tendencia: ${reversed}. ` +
-			`Promedio neto previo (${daily[0].date}–${daily[mid - 1].date}): ` +
+			`Promedio neto previo (${first.date}–${prevMid.date}): ` +
 			`S/ ${round2(priorAvgNet).toLocaleString("es-PE")}. ` +
-			`Promedio neto reciente (${daily[mid].date}–${daily[daily.length - 1].date}): ` +
+			`Promedio neto reciente (${midDay.date}–${last.date}): ` +
 			`S/ ${round2(recentAvgNet).toLocaleString("es-PE")}.`,
 		detectionMethod: "cashflow_trend_reversal",
 		context: {
 			priorPeriod: {
-				start: daily[0].date,
-				end: daily[mid - 1].date,
+				start: first.date,
+				end: prevMid.date,
 				avgNet: round2(priorAvgNet),
 			},
 			recentPeriod: {
-				start: daily[mid].date,
-				end: daily[daily.length - 1].date,
+				start: midDay.date,
+				end: last.date,
 				avgNet: round2(recentAvgNet),
 			},
 			change: round2(recentAvgNet - priorAvgNet),
@@ -335,42 +341,45 @@ function detectIncomeDrops(
 	const anomalies: Anomaly[] = [];
 
 	for (let i = 0; i < daily.length; i++) {
+		const day = daily[i];
+		if (!day) continue;
+
 		const stats = computeRollingStats(daily, i, ROLLING_WINDOW_DAYS);
 		if (stats.avgIncome === null || stats.avgIncome <= 0) continue;
 
 		// Only flag if the day has income below threshold of rolling average
-		if (daily[i].income >= stats.avgIncome * dropRatio) continue;
+		if (day.income >= stats.avgIncome * dropRatio) continue;
 
-		const incomeBelowAvg = stats.avgIncome - daily[i].income;
+		const incomeBelowAvg = stats.avgIncome - day.income;
 		const dropPct = round2((incomeBelowAvg / stats.avgIncome) * 100);
 
 		const severity: AnomalySeverity = dropPct > 50 ? "high" : "medium";
 		const confidence = round2(
 			Math.min(
-				0.7 + (stats.stdIncome ? daily[i].income / (stats.avgIncome * 2) : 0),
+				0.7 + (stats.stdIncome ? day.income / (stats.avgIncome * 2) : 0),
 				0.95,
 			),
 		);
 
 		anomalies.push({
-			id: `cashflow-income-drop-${daily[i].date}`,
+			id: `cashflow-income-drop-${day.date}`,
 			timestamp: new Date().toISOString(),
 			entityType: "cashflow_day",
-			entityId: daily[i].date,
+			entityId: day.date,
 			metric: "cashflow_income_drop",
 			expectedValue: round2(stats.avgIncome),
-			actualValue: round2(daily[i].income),
+			actualValue: round2(day.income),
 			deviation: round2(dropPct / 100),
 			severity,
 			confidence,
 			reasoning:
-				`Ingreso del día ${daily[i].date}: S/ ${round2(daily[i].income).toLocaleString("es-PE")}. ` +
+				`Ingreso del día ${day.date}: S/ ${round2(day.income).toLocaleString("es-PE")}. ` +
 				`Promedio ${ROLLING_WINDOW_DAYS} días: S/ ${round2(stats.avgIncome).toLocaleString("es-PE")}. ` +
 				`Caída: ${dropPct.toFixed(1)}%.`,
 			detectionMethod: "cashflow_income_drop_rolling",
 			context: {
-				date: daily[i].date,
-				dailyIncome: round2(daily[i].income),
+				date: day.date,
+				dailyIncome: round2(day.income),
 				rollingAvgIncome: round2(stats.avgIncome),
 				rollingStdIncome: stats.stdIncome ? round2(stats.stdIncome) : null,
 				dropPercent: dropPct,
@@ -390,42 +399,45 @@ function detectExpenseSpikes(
 	const anomalies: Anomaly[] = [];
 
 	for (let i = 0; i < daily.length; i++) {
+		const day = daily[i];
+		if (!day) continue;
+
 		const stats = computeRollingStats(daily, i, ROLLING_WINDOW_DAYS);
 		if (stats.avgExpense === null || stats.avgExpense <= 0) continue;
 
 		// Only flag if expense exceeds threshold
-		if (daily[i].expense <= stats.avgExpense * spikeRatio) continue;
+		if (day.expense <= stats.avgExpense * spikeRatio) continue;
 
-		const expenseAboveAvg = daily[i].expense - stats.avgExpense;
+		const expenseAboveAvg = day.expense - stats.avgExpense;
 		const spikePct = round2((expenseAboveAvg / stats.avgExpense) * 100);
 
 		const severity: AnomalySeverity = spikePct > 100 ? "high" : "medium";
 		const confidence = round2(
 			Math.min(
-				0.7 + (daily[i].expense - stats.avgExpense) / (stats.avgExpense * 3),
+				0.7 + (day.expense - stats.avgExpense) / (stats.avgExpense * 3),
 				0.95,
 			),
 		);
 
 		anomalies.push({
-			id: `cashflow-expense-spike-${daily[i].date}`,
+			id: `cashflow-expense-spike-${day.date}`,
 			timestamp: new Date().toISOString(),
 			entityType: "cashflow_day",
-			entityId: daily[i].date,
+			entityId: day.date,
 			metric: "cashflow_expense_spike",
 			expectedValue: round2(stats.avgExpense),
-			actualValue: round2(daily[i].expense),
+			actualValue: round2(day.expense),
 			deviation: round2(spikePct / 100),
 			severity,
 			confidence,
 			reasoning:
-				`Egreso del día ${daily[i].date}: S/ ${round2(daily[i].expense).toLocaleString("es-PE")}. ` +
+				`Egreso del día ${day.date}: S/ ${round2(day.expense).toLocaleString("es-PE")}. ` +
 				`Promedio ${ROLLING_WINDOW_DAYS} días: S/ ${round2(stats.avgExpense).toLocaleString("es-PE")}. ` +
 				`Pico: ${spikePct.toFixed(1)}%.`,
 			detectionMethod: "cashflow_expense_spike_rolling",
 			context: {
-				date: daily[i].date,
-				dailyExpense: round2(daily[i].expense),
+				date: day.date,
+				dailyExpense: round2(day.expense),
 				rollingAvgExpense: round2(stats.avgExpense),
 				rollingStdExpense: stats.stdExpense ? round2(stats.stdExpense) : null,
 				spikePercent: spikePct,

@@ -150,6 +150,7 @@ export class DelegationGraph {
 
 			while (stack.length > 0) {
 				const frame = stack[stack.length - 1];
+				if (frame === undefined) break;
 				const result = frame.iterator.next();
 
 				if (result.done) {

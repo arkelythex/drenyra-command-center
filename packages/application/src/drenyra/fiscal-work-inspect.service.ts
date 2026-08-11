@@ -70,6 +70,7 @@ export class DrenyraFiscalWorkInspectService {
 			this.repository.listEvidence(fiscalCase.id, scope),
 			this.repository.listApprovalRequests(fiscalCase.id, scope),
 		]);
+		const proposalState = approvals[0]?.status;
 		return {
 			status: "success",
 			reason: "ALLOWED",
@@ -81,7 +82,9 @@ export class DrenyraFiscalWorkInspectService {
 				workItemStatus: fiscalCase.status,
 				riskLevel: fiscalCase.riskLevel,
 				evidenceRefs: evidence.map((item) => item.id),
-				proposalOrApprovalState: approvals[0]?.status,
+				...(proposalState !== undefined
+					? { proposalOrApprovalState: proposalState }
+					: {}),
 				accountantSummary: `${fiscalCase.title}: ${fiscalCase.description}`,
 			},
 			redactedDetail: "Fiscal work item inspected through backend authority.",

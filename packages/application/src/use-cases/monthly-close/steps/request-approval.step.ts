@@ -28,7 +28,7 @@ export class RequestApprovalStep
   readonly isBlocker = true;
 
   async execute(
-    input: RequestApprovalInput,
+    _input: RequestApprovalInput,
     context: PipelineContext,
   ): Promise<StepResult<ApprovalRequestResult>> {
     const startedAt = new Date().toISOString();

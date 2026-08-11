@@ -73,15 +73,15 @@ export interface AgentEvent {
   /** Trace ID for correlation across events. */
   traceId: string;
   /** Workspace ID this event belongs to, if any. */
-  workspaceId?: string;
+  workspaceId?: string | undefined;
   /** Tool name if this is a tool-related event. */
-  toolName?: string;
+  toolName?: string | undefined;
   /** Tool risk level if applicable. */
-  toolRiskLevel?: ToolRiskLevel;
+  toolRiskLevel?: ToolRiskLevel | undefined;
   /** Progress information (for tool_progress). */
-  progress?: EventProgress;
+  progress?: EventProgress | undefined;
   /** Structured payload with event-specific data. */
-  payload?: Record<string, unknown>;
+  payload?: Record<string, unknown> | undefined;
   /** Related event IDs (causality chain). */
   relatedEventIds?: string[];
   /** Tags for filtering. */
@@ -104,8 +104,8 @@ export interface EventProgress {
 export interface WorkflowState {
   workspaceId: string;
   status: "running" | "waiting" | "completed" | "failed" | "unknown";
-  currentTool?: string;
-  progress?: EventProgress;
+  currentTool?: string | undefined;
+  progress?: EventProgress | undefined;
   lastEvent: AgentEvent;
   events: AgentEvent[];
   warnings: number;
@@ -132,7 +132,7 @@ export interface AgentEventStore {
 }
 
 export interface EventFilter {
-  workspaceId?: string;
+  workspaceId?: string | undefined;
   traceId?: string;
   kind?: AgentEventKind;
   severity?: EventSeverity;
@@ -156,7 +156,7 @@ export function createToolEvent(input: {
   actor: Actor;
   scope: FiscalScope;
   traceId: string;
-  workspaceId?: string;
+  workspaceId?: string | undefined;
   toolName: string;
   toolRiskLevel?: ToolRiskLevel;
   progress?: EventProgress;
@@ -198,7 +198,7 @@ export function createWorkflowEvent(input: {
   actor: Actor;
   scope: FiscalScope;
   traceId: string;
-  workspaceId?: string;
+  workspaceId?: string | undefined;
   payload?: Record<string, unknown>;
 }): AgentEvent {
   return {
@@ -226,7 +226,7 @@ export function createApprovalEvent(input: {
   actor: Actor;
   scope: FiscalScope;
   traceId: string;
-  workspaceId?: string;
+  workspaceId?: string | undefined;
   payload?: Record<string, unknown>;
 }): AgentEvent {
   const severityMap: Record<string, EventSeverity> = {
@@ -262,9 +262,13 @@ export function projectWorkflowState(events: AgentEvent[]): WorkflowState {
     throw new Error("Cannot project state from empty event list");
   }
 
-  const sorted = [...events].sort((a, b) => a.timestamp.unix - b.timestamp.unix);
-  const last = sorted[sorted.length - 1];
-  const hasErrors = sorted.some((e) => e.severity === "error" || e.severity === "critical");
+      const sorted = [...events].sort((a, b) => a.timestamp.unix - b.timestamp.unix);
+      const last = sorted[sorted.length - 1];
+      const first = sorted[0];
+      if (last === undefined || first === undefined) {
+        throw new Error("Cannot project state from empty event list");
+      }
+      const hasErrors = sorted.some((e) => e.severity === "error" || e.severity === "critical");
   const hasApprovalRequest = sorted.some((e) => e.kind === "approval_requested");
 
   // Determine status
@@ -294,7 +298,7 @@ export function projectWorkflowState(events: AgentEvent[]): WorkflowState {
     events: sorted,
     warnings: sorted.filter((e) => e.severity === "warning").length,
     errors: hasErrors ? sorted.filter((e) => e.severity === "error" || e.severity === "critical").length : 0,
-    startedAt: sorted[0].timestamp,
+    startedAt: first.timestamp,
     lastUpdated: last.timestamp,
   };
 }

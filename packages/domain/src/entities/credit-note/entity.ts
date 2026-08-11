@@ -65,7 +65,9 @@ export class CreditNote {
 		const props: CreditNoteProps = {
 			id: data.id,
 			referenceInvoiceId: data.referenceInvoiceId,
-			referenceInvoiceTotal: data.referenceInvoiceTotal,
+			...(data.referenceInvoiceTotal !== undefined
+				? { referenceInvoiceTotal: data.referenceInvoiceTotal }
+				: {}),
 			creditNoteType: data.creditNoteType as CreditNoteType,
 			reason: data.reason,
 			series: DocumentSeries.create(data.series),
@@ -75,10 +77,12 @@ export class CreditNote {
 			igvAmount: Money.fromCents(data.igvAmount, currency),
 			currency,
 			status: data.status as CreditNoteStatus,
-			sunatResponseCode: data.sunatResponseCode,
-			sentToSunatAt: data.sentToSunatAt
-				? new Date(data.sentToSunatAt)
-				: undefined,
+			...(data.sunatResponseCode !== undefined
+				? { sunatResponseCode: data.sunatResponseCode }
+				: {}),
+			...(data.sentToSunatAt
+				? { sentToSunatAt: new Date(data.sentToSunatAt) }
+				: {}),
 			issueDate: new Date(data.issueDate),
 			createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
 			updatedAt: data.updatedAt ? new Date(data.updatedAt) : new Date(),

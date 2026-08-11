@@ -53,8 +53,8 @@ function mapRowToEvent(
 		approvalId: row.approvalId,
 		occurredAt: row.occurredAt.toISOString(),
 		payload: row.payload as Record<string, unknown>,
-		prevHash: row.prevHash ?? undefined,
-		chainHash: row.chainHash || undefined,
+		...(row.prevHash !== null ? { prevHash: row.prevHash } : {}),
+		...(row.chainHash ? { chainHash: row.chainHash } : {}),
 	};
 }
 
@@ -82,7 +82,7 @@ export class PostgresFiscalTruthRepository implements FiscalTruthRepository {
 			.limit(1);
 
 		const prevHash: string | null =
-			lastEvent.length > 0 ? lastEvent[0].chainHash : null;
+			lastEvent.length > 0 ? (lastEvent[0]?.chainHash ?? null) : null;
 
 		// 2. Compute the cryptographic chain hash
 		const chainHash = await computeAuditHash(event.payload, prevHash);
@@ -171,10 +171,15 @@ export class PostgresFiscalTruthRepository implements FiscalTruthRepository {
 		let previousChainHash: string | null = null;
 		let validCount = 0;
 
-		for (let i = 0; i < rows.length; i++) {
-			const row = rows[i];
-
-			// Skip pre-migration events (empty-chain markers)
+    		for (let i = 0; i < rows.length; i++) {
+    			const row = rows[i];
+    
+    			// rows[i] is guaranteed present while i < rows.length
+    			if (row === undefined) {
+    				throw new Error(`Missing fiscal truth event row at index ${i}`);
+    			}
+    
+    			// Skip pre-migration events (empty-chain markers)
 			if (!row.chainHash) {
 				previousChainHash = null;
 				continue;

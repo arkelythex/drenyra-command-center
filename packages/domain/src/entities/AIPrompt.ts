@@ -405,7 +405,7 @@ export class AIPrompt {
 	 */
 	getFullPrompt(userInput?: Record<string, string>): {
 		system: string;
-		user?: string;
+		user?: string | undefined;
 	} {
 		let userPrompt: string | undefined;
 

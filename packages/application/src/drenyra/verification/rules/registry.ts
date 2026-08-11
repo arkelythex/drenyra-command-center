@@ -41,7 +41,10 @@ const PCT_RE = /(\d+(?:\.\d+)?)%/g;
 function extractPercentage(text: string): number | null {
 	const matches = [...text.matchAll(PCT_RE)];
 	if (matches.length === 0) return null;
-	return Number.parseFloat(matches[matches.length - 1][1]);
+	const lastMatch = matches[matches.length - 1];
+	if (!lastMatch) return null;
+	const pct = lastMatch[1];
+	return pct !== undefined ? Number.parseFloat(pct) : null;
 }
 
 function pass(
@@ -294,17 +297,23 @@ const debitCreditBalanceRule: VerificationRule = (finding, _riskLevel) => {
 	// Encontrar débitos y créditos
 	const debitMatch = finding.match(/d[ée]bito.*?S\/\s?([\d,]+(?:\.\d{2})?)/i);
 	const creditMatch = finding.match(/cr[eé]dito.*?S\/\s?([\d,]+(?:\.\d{2})?)/i);
-	let debit = debitMatch
-		? Number.parseFloat(debitMatch[1].replace(/,/g, ""))
-		: null;
-	let credit = creditMatch
-		? Number.parseFloat(creditMatch[1].replace(/,/g, ""))
-		: null;
+	const debitValue = debitMatch?.[1];
+	let debit =
+		debitValue !== undefined
+			? Number.parseFloat(debitValue.replace(/,/g, ""))
+			: null;
+	const creditValue = creditMatch?.[1];
+	let credit =
+		creditValue !== undefined
+			? Number.parseFloat(creditValue.replace(/,/g, ""))
+			: null;
 
 	// Fallback: si no se pudo extraer por etiqueta, usar los dos últimos montos significativos
 	if (debit === null && credit === null && amounts.length >= 2) {
-		debit = amounts[0];
-		credit = amounts[amounts.length - 1];
+		const debitAmount = amounts[0];
+		const creditAmount = amounts[amounts.length - 1];
+		if (debitAmount !== undefined) debit = debitAmount;
+		if (creditAmount !== undefined) credit = creditAmount;
 	}
 
 	if (debit === null || credit === null) {
@@ -350,7 +359,7 @@ const riskConfidenceConsistencyRule: VerificationRule = (
 
 	// Extraer porcentajes del finding
 	const pcts = [...finding.matchAll(PCT_RE)].map((m) =>
-		Number.parseFloat(m[1]),
+		Number.parseFloat(m[1] ?? ""),
 	);
 	if (pcts.length === 0) return null;
 
@@ -397,7 +406,9 @@ const intentActionConsistencyRule: VerificationRule = (
 		.toLowerCase();
 
 	const mentionedAccounts = new Set(
-		[...narrativeText.matchAll(/\b(\d{2,4})\b/g)].map((m) => m[1]),
+		[...narrativeText.matchAll(/\b(\d{2,4})\b/g)]
+			.map((m) => m[1])
+			.filter((account): account is string => account !== undefined),
 	);
 
 	const changedFields = new Set(

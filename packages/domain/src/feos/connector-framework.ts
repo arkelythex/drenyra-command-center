@@ -8,7 +8,7 @@
  */
 
 import type { Timestamp } from "./types";
-import { generateId, nowTimestamp } from "./types";
+import { nowTimestamp } from "./types";
 
 export type ConnectorCategory = "tax_authority" | "bank" | "erp" | "document" | "payment" | "identity_provider";
 

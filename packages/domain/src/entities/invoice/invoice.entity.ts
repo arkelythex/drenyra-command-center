@@ -67,15 +67,15 @@ export class Invoice {
 			series: DocumentSeries.create(plainData.series),
 			number: Number(plainData.number),
 			issueDate: new Date(plainData.issueDate),
-			dueDate: plainData.dueDate ? new Date(plainData.dueDate) : undefined,
+			...(plainData.dueDate ? { dueDate: new Date(plainData.dueDate) } : {}),
 			clientName: plainData.clientName,
-			clientRUC: plainData.clientRUC
-				? RUC.create(plainData.clientRUC)
-				: undefined,
-			clientDNI: plainData.clientDNI
-				? DNI.create(plainData.clientDNI)
-				: undefined,
-			clientAddress: plainData.clientAddress,
+			...(plainData.clientRUC
+				? { clientRUC: RUC.create(plainData.clientRUC) }
+				: {}),
+			...(plainData.clientDNI
+				? { clientDNI: DNI.create(plainData.clientDNI) }
+				: {}),
+			...(plainData.clientAddress !== undefined ? { clientAddress: plainData.clientAddress } : {}),
 			baseAmount: Money.fromCents(plainData.baseAmount, currency),
 			igvAmount: Money.fromCents(plainData.igvAmount, currency),
 			totalAmount: Money.fromCents(plainData.totalAmount, currency),
@@ -89,11 +89,13 @@ export class Invoice {
 				igv: Money.fromCents(item.igv, currency),
 				total: Money.fromCents(item.total, currency),
 			})),
-			notes: plainData.notes,
-			sunatResponseCode: plainData.sunatResponseCode,
-			sentToSunatAt: plainData.sentToSunatAt
-				? new Date(plainData.sentToSunatAt)
-				: undefined,
+			...(plainData.notes !== undefined ? { notes: plainData.notes } : {}),
+			...(plainData.sunatResponseCode !== undefined
+				? { sunatResponseCode: plainData.sunatResponseCode }
+				: {}),
+			...(plainData.sentToSunatAt
+				? { sentToSunatAt: new Date(plainData.sentToSunatAt) }
+				: {}),
 			createdAt: plainData.createdAt
 				? new Date(plainData.createdAt)
 				: new Date(),

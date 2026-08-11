@@ -36,7 +36,7 @@ export async function runToolLoop(
 		model,
 		instructions: system,
 		tools: tools as Record<string, any>,
-		maxOutputTokens: maxTokens,
+		...(maxTokens !== undefined ? { maxOutputTokens: maxTokens } : {}),
 		stopWhen: stepCountIs(maxSteps),
 		onStepFinish: (step) => {
 			steps.push({

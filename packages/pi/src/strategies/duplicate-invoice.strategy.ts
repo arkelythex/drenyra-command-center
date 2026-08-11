@@ -73,7 +73,7 @@ export function createDuplicateInvoiceStrategy(): AnomalyStrategy {
 			const allInvs = Array.from(seen.values());
 			for (let i = 0; i < allInvs.length; i++) {
 				for (let j = i + 1; j < allInvs.length; j++) {
-					checkSuspiciousPair(allInvs[i], allInvs[j], anomalies);
+					checkSuspiciousPair(allInvs[i]!, allInvs[j]!, anomalies);
 				}
 			}
 

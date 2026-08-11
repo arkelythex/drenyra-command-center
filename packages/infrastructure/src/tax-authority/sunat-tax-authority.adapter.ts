@@ -27,7 +27,7 @@ import type {
 import type { CountryCode } from "@drenyra/domain";
 import { XMLValidator } from "fast-xml-parser";
 import { OSEService } from "../ose/ose.service";
-import type { RucInfo } from "../sunat/SunatApiClient";
+import type { RucInfo } from "../sunat/types";
 import { SunatApiClient } from "../sunat/SunatApiClient";
 import type { SireRecord, SireSyncRequest } from "../sunat/SunatSireService";
 import { SunatSireService } from "../sunat/SunatSireService";
@@ -53,12 +53,6 @@ function mapRegisterType(tipo: "SALES" | "PURCHASES"): "COMPRAS" | "VENTAS" {
 /**
  * Map SUNAT register type to generic.
  */
-function _mapFromSunatRegisterType(
-	tipo: "COMPRAS" | "VENTAS",
-): "SALES" | "PURCHASES" {
-	return tipo === "VENTAS" ? "SALES" : "PURCHASES";
-}
-
 /**
  * Convert a SUNAT SireRecord to a generic FiscalRecord.
  */
@@ -172,14 +166,20 @@ export class SunatTaxAuthorityAdapter implements TaxAuthorityPort {
 			? this.parseCDR(oseResult.cdrContent)
 			: undefined;
 
-		return {
-			success: oseResult.success,
-			cdr,
-			authorityCode: oseResult.sunatCode,
-			authorityDescription: oseResult.sunatDescription,
-			error: oseResult.error,
-			attemptsCount: oseResult.attemptsCount ?? 1,
-		};
+    		return {
+    			success: oseResult.success,
+    			...(cdr !== undefined ? { cdr } : {}),
+    			...(oseResult.sunatCode !== undefined
+    				? { authorityCode: oseResult.sunatCode }
+    				: {}),
+    			...(oseResult.sunatDescription !== undefined
+    				? { authorityDescription: oseResult.sunatDescription }
+    				: {}),
+    			...(oseResult.error !== undefined
+    				? { error: oseResult.error }
+    				: {}),
+    			attemptsCount: oseResult.attemptsCount ?? 1,
+    		};
 	}
 
 	parseCDR(cdrBase64: string): CDRInfo {
@@ -316,12 +316,16 @@ export class SunatTaxAuthorityAdapter implements TaxAuthorityPort {
 			ERROR: "ERROR",
 		};
 
-		return {
-			ticket,
-			status: syncStatusMap[status.estado] ?? "ERROR",
-			message: status.mensaje,
-			progress: status.progreso,
-		};
+    		return {
+    			ticket,
+    			status: syncStatusMap[status.estado] ?? "ERROR",
+    			...(status.mensaje !== undefined
+    				? { message: status.mensaje }
+    				: {}),
+    			...(status.progreso !== undefined
+    				? { progress: status.progreso }
+    				: {}),
+    		};
 	}
 
 	async downloadRegisterFile(
@@ -451,12 +455,16 @@ export class SunatTaxAuthorityAdapter implements TaxAuthorityPort {
 						LISTO: "READY",
 						ERROR: "ERROR",
 					};
-					onProgress({
-						ticket: status.ticket,
-						status: syncStatusMap[status.estado] ?? "ERROR",
-						message: status.mensaje,
-						progress: status.progreso,
-					});
+    					onProgress({
+    						ticket: status.ticket,
+    						status: syncStatusMap[status.estado] ?? "ERROR",
+    						...(status.mensaje !== undefined
+    							? { message: status.mensaje }
+    							: {}),
+    						...(status.progreso !== undefined
+    							? { progress: status.progreso }
+    							: {}),
+    					});
 				}
 			: undefined;
 
@@ -474,8 +482,12 @@ export class SunatTaxAuthorityAdapter implements TaxAuthorityPort {
 			discrepancies: result.discrepancies?.map((d) => ({
 				type: this.mapDiscrepancyType(d.tipo),
 				documentKey: d.comprobante,
-				localValue: d.detalleLocal,
-				authorityValue: d.detalleSunat,
+				...(d.detalleLocal !== undefined
+					? { localValue: d.detalleLocal }
+					: {}),
+				...(d.detalleSunat !== undefined
+					? { authorityValue: d.detalleSunat }
+					: {}),
 			})),
 			error: result.error,
 		};

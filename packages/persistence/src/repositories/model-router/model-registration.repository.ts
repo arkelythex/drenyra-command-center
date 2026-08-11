@@ -2,7 +2,6 @@ import type { ModelRegistration } from "@drenyra/ai/providers/model-router-types
 import type {
 	CapabilityScoringParams,
 	ModelFilters,
-	ModelRegistrationRepository,
 } from "@drenyra/domain/repositories/model-registration.repository";
 import { and, asc, eq, inArray, sql } from "drizzle-orm";
 import { db } from "../../client";
@@ -20,15 +19,23 @@ function mapRowToDomain(row: ModelRegistrationRow): ModelRegistration {
 		priority: row.priority,
 		costPer1KInput: row.costPer1KInput,
 		costPer1KOutput: row.costPer1KOutput,
-		maxTokens: row.maxTokens,
-		avgLatencyMs: row.avgLatencyMs ?? undefined,
-		reliability: row.reliability ?? undefined,
-		metadata: row.metadata as Record<string, unknown> | undefined,
-		healthProbeUrl: row.healthProbeUrl ?? undefined,
-		tags: row.tags ?? undefined,
-		createdAt: row.createdAt,
-		updatedAt: row.updatedAt,
-	};
+    		maxTokens: row.maxTokens,
+    		...(row.avgLatencyMs !== null
+    			? { avgLatencyMs: row.avgLatencyMs }
+    			: {}),
+    		...(row.reliability !== null
+    			? { reliability: row.reliability }
+    			: {}),
+    		...(row.metadata !== null
+    			? { metadata: row.metadata as Record<string, unknown> }
+    			: {}),
+    		...(row.healthProbeUrl !== null
+    			? { healthProbeUrl: row.healthProbeUrl }
+    			: {}),
+    		...(row.tags !== null ? { tags: row.tags } : {}),
+    		createdAt: row.createdAt,
+    		updatedAt: row.updatedAt,
+    	};
 }
 
 function mapDomainToRow(domain: ModelRegistration): NewModelRegistrationRow {
@@ -73,9 +80,7 @@ function mapDomainToUpdateRow(
 	};
 }
 
-export class PostgresModelRegistrationRepository
-	implements ModelRegistrationRepository
-{
+export class PostgresModelRegistrationRepository {
 	async save(model: ModelRegistration): Promise<ModelRegistration> {
 		const rows = await db
 			.insert(modelRegistrations)
@@ -83,7 +88,8 @@ export class PostgresModelRegistrationRepository
 			.onConflictDoNothing()
 			.returning();
 
-		return mapRowToDomain(rows[0] ?? model);
+		const row = rows[0];
+		return row ? mapRowToDomain(row) : model;
 	}
 
 	async update(model: ModelRegistration): Promise<ModelRegistration> {

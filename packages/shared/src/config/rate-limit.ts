@@ -15,6 +15,7 @@ interface RateLimitStore {
 	get(key: string): RateLimitEntry | null;
 	set(key: string, entry: RateLimitEntry): void;
 	delete(key: string): void;
+	entries(): IterableIterator<[string, RateLimitEntry]>;
 }
 
 class MemoryStore implements RateLimitStore {
@@ -29,13 +30,16 @@ class MemoryStore implements RateLimitStore {
 	delete(key: string) {
 		this.store.delete(key);
 	}
+	entries() {
+		return this.store.entries();
+	}
 }
 
 const defaultStore: RateLimitStore = new MemoryStore();
 
 const cleanup = setInterval(() => {
 	const now = Date.now();
-	for (const [key, entry] of (defaultStore as MemoryStore).store) {
+	for (const [key, entry] of defaultStore.entries()) {
 		if (entry.resetTime < now) defaultStore.delete(key);
 	}
 }, 300_000);
@@ -44,7 +48,10 @@ cleanup.unref?.();
 function getClientIp(request: Request): string {
 	const realIp = request.headers.get("x-real-ip");
 	const forwardedFor = request.headers.get("x-forwarded-for");
-	if (forwardedFor) return forwardedFor.split(",")[0].trim();
+	if (forwardedFor) {
+		const first = forwardedFor.split(",")[0];
+		if (first !== undefined) return first.trim();
+	}
 	return realIp || "unknown";
 }
 

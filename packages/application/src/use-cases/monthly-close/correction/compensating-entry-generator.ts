@@ -7,8 +7,10 @@
  */
 import { journalEntries, journalEntryLines } from "@drenyra/persistence/schema";
 import { eq } from "drizzle-orm";
-import type { DrizzleClient } from "@drenyra/persistence";
+import type { db } from "@drenyra/persistence";
 import type { CompensatingEntry, CompensatingLine } from "../types/correction-mission";
+
+type DrizzleClient = typeof db;
 
 export class CompensatingEntryGenerator {
   constructor(private readonly db: DrizzleClient) {}
@@ -69,7 +71,7 @@ export class CompensatingEntryGenerator {
 
   private lastDayOfMonth(period: string): string {
     const [y, m] = period.split("-").map(Number);
-    const lastDay = new Date(y, m, 0); // day 0 of next month = last day of current
-    return lastDay.toISOString().split("T")[0];
+    const lastDay = new Date(y ?? 0, m ?? 0, 0); // day 0 of next month = last day of current
+    return lastDay.toISOString().split("T")[0] ?? "";
   }
 }

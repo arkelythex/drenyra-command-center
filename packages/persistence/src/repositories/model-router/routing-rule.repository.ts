@@ -1,5 +1,4 @@
 import type { CapabilityRoutingRule } from "@drenyra/ai/providers/model-router-types";
-import type { CapabilityRoutingRuleRepository } from "@drenyra/domain/repositories/model-registration.repository";
 import { eq } from "drizzle-orm";
 import { db } from "../../client";
 import { capabilityRoutingRules } from "../../schema/model-router.schema";
@@ -16,13 +15,21 @@ function mapRowToDomain(row: CapabilityRoutingRuleRow): CapabilityRoutingRule {
 		allowedModelIds: row.allowedModelIds ?? [],
 		excludedModelIds: row.excludedModelIds ?? [],
 		maxRetries: row.maxRetries,
-		costCapCents: row.costCapCents ?? undefined,
-		latencyCapMs: row.latencyCapMs ?? undefined,
-		minReliability: row.minReliability ?? undefined,
+		...(row.costCapCents !== null
+			? { costCapCents: row.costCapCents }
+			: {}),
+		...(row.latencyCapMs !== null
+			? { latencyCapMs: row.latencyCapMs }
+			: {}),
+		...(row.minReliability !== null
+			? { minReliability: row.minReliability }
+			: {}),
 		requiresAudit: row.requiresAudit,
 		fallbackStrategy: (row.fallbackStrategy ??
 			"fallback_chain") as CapabilityRoutingRule["fallbackStrategy"],
-		metadata: row.metadata as Record<string, unknown> | undefined,
+		...(row.metadata !== null
+			? { metadata: row.metadata as Record<string, unknown> }
+			: {}),
 	};
 }
 
@@ -47,17 +54,16 @@ function mapDomainToRow(
 	};
 }
 
-export class PostgresCapabilityRoutingRuleRepository
-	implements CapabilityRoutingRuleRepository
-{
+export class PostgresCapabilityRoutingRuleRepository {
 	async save(rule: CapabilityRoutingRule): Promise<CapabilityRoutingRule> {
 		const rows = await db
 			.insert(capabilityRoutingRules)
 			.values(mapDomainToRow(rule))
 			.onConflictDoNothing()
 			.returning();
-
-		return mapRowToDomain(rows[0] ?? rule);
+    
+		const row = rows[0];
+		return row ? mapRowToDomain(row) : rule;
 	}
 
 	async findByCapability(

@@ -19,7 +19,9 @@ export class EvidenceItem {
 			scope: {
 				companyId: data.scope.companyId,
 				companyRuc: data.scope.companyRuc,
-				organizationId: data.scope.organizationId,
+				...(data.scope.organizationId !== undefined
+					? { organizationId: data.scope.organizationId }
+					: {}),
 				period: data.scope.period,
 				countryCode: data.scope.countryCode as "PE",
 			},
@@ -27,7 +29,7 @@ export class EvidenceItem {
 			title: data.title,
 			summary: data.summary,
 			source: data.source,
-			sourceRef: data.sourceRef,
+			...(data.sourceRef !== undefined ? { sourceRef: data.sourceRef } : {}),
 			contentHash: data.contentHash,
 			addedBy: data.addedBy,
 			createdAt:

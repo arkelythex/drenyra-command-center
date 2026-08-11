@@ -16,7 +16,7 @@
  */
 
 import type { Timestamp } from "./types";
-import { FeosError, generateId, nowTimestamp } from "./types";
+import { nowTimestamp } from "./types";
 
 // ============================================================================
 // Service Status
@@ -61,7 +61,7 @@ export interface CircuitBreakerState {
   successCount: number;
   lastFailureAt?: Timestamp;
   lastSuccessAt?: Timestamp;
-  openedAt?: Timestamp;
+  openedAt?: Timestamp | undefined;
   config: CircuitBreakerConfig;
 }
 

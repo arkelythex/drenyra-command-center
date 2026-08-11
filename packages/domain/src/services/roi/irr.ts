@@ -60,9 +60,11 @@ export function calculateIrr(input: IrrInput): IrrResult {
 		let npvDerivative = 0;
 
 		for (let t = 0; t < cashFlowCents.length; t++) {
+			const cf = cashFlowCents[t];
+			if (cf === undefined) continue;
 			const denominator = (1 + guess) ** t;
-			npv += cashFlowCents[t] / denominator;
-			npvDerivative += (-t * cashFlowCents[t]) / (1 + guess) ** (t + 1);
+			npv += cf / denominator;
+			npvDerivative += (-t * cf) / (1 + guess) ** (t + 1);
 		}
 
 		if (Math.abs(npvDerivative) < 1e-15) {

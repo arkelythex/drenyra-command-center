@@ -70,14 +70,20 @@ export class PostgresClientRepository implements ClientRepository {
 				})
 				.returning();
 
-			return { partner, profile };
-		});
-
-		return this.mapToClient(
-			created.partner,
-			created.profile,
-			data.organizationId,
-		);
+    			return { partner, profile };
+    		});
+    
+    		if (created.partner === undefined || created.profile === undefined) {
+    			throw new Error(
+    				`Failed to create client ${id}: missing partner/profile row`,
+    			);
+    		}
+    
+    		return this.mapToClient(
+    			created.partner,
+    			created.profile,
+    			data.organizationId,
+    		);
 	}
 
 	async update(id: string, data: UpdateClientDTO): Promise<Client> {
@@ -114,14 +120,20 @@ export class PostgresClientRepository implements ClientRepository {
 				.where(eq(customerProfiles.id, id))
 				.returning();
 
-			return { partner, profile };
-		});
-
-		return this.mapToClient(
-			updated.partner,
-			updated.profile,
-			existing.organizationId,
-		);
+    			return { partner, profile };
+    		});
+    
+    		if (updated.partner === undefined || updated.profile === undefined) {
+    			throw new Error(
+    				`Failed to update client ${id}: missing partner/profile row`,
+    			);
+    		}
+    
+    		return this.mapToClient(
+    			updated.partner,
+    			updated.profile,
+    			existing.organizationId,
+    		);
 	}
 
 	async delete(id: string): Promise<void> {
@@ -142,12 +154,14 @@ export class PostgresClientRepository implements ClientRepository {
 			.limit(1);
 
 		if (rows.length === 0) return null;
-
+		const row = rows[0];
+		if (row === undefined) return null;
+    
 		const organizationId = await resolveOrganizationIdFromCompany(
-			rows[0].partner.companyId,
+			row.partner.companyId,
 		);
-
-		return this.mapToClient(rows[0].partner, rows[0].profile, organizationId);
+    
+		return this.mapToClient(row.partner, row.profile, organizationId);
 	}
 
 	async findAll(
@@ -238,8 +252,10 @@ export class PostgresClientRepository implements ClientRepository {
 			.limit(1);
 
 		if (rows.length === 0) return null;
-
-		return this.mapToClient(rows[0].partner, rows[0].profile, organizationId);
+		const row = rows[0];
+		if (row === undefined) return null;
+    
+		return this.mapToClient(row.partner, row.profile, organizationId);
 	}
 
 	private async findClientContext(id: string) {
@@ -251,14 +267,16 @@ export class PostgresClientRepository implements ClientRepository {
 			.limit(1);
 
 		if (rows.length === 0) return null;
-
+		const row = rows[0];
+		if (row === undefined) return null;
+    
 		const organizationId = await resolveOrganizationIdFromCompany(
-			rows[0].partner.companyId,
+			row.partner.companyId,
 		);
-
+    
 		return {
-			partner: rows[0].partner,
-			profile: rows[0].profile,
+			partner: row.partner,
+			profile: row.profile,
 			organizationId,
 		};
 	}
@@ -277,11 +295,15 @@ export class PostgresClientRepository implements ClientRepository {
 				| "DNI"
 				| "CE",
 			documentNumber: partner.taxId,
-			email: partner.email ?? undefined,
-			phone: partner.phone ?? undefined,
-			address: partner.address ?? undefined,
-			creditLimit: profile.creditLimit ?? undefined,
-			creditDays: profile.creditDays ?? undefined,
+			...(partner.email !== null ? { email: partner.email } : {}),
+			...(partner.phone !== null ? { phone: partner.phone } : {}),
+			...(partner.address !== null ? { address: partner.address } : {}),
+    			...(profile.creditLimit !== null
+    				? { creditLimit: profile.creditLimit }
+    				: {}),
+    			...(profile.creditDays !== null
+    				? { creditDays: profile.creditDays }
+    				: {}),
 			createdAt: partner.createdAt,
 			updatedAt: profile.updatedAt,
 		};

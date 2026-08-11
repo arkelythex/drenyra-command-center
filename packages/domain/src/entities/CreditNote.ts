@@ -48,7 +48,7 @@ export type CreditNoteStatus = "DRAFT" | "SENT" | "ACCEPTED" | "REJECTED";
 export interface CreditNoteProps {
 	id: string;
 	referenceInvoiceId: string;
-	referenceInvoiceTotal?: number;
+	referenceInvoiceTotal?: number | undefined;
 	creditNoteType: CreditNoteType;
 	reason: string;
 	series: DocumentSeries;
@@ -58,8 +58,8 @@ export interface CreditNoteProps {
 	igvAmount: Money;
 	currency: Currency;
 	status: CreditNoteStatus;
-	sunatResponseCode?: string;
-	sentToSunatAt?: Date;
+	sunatResponseCode?: string | undefined;
+	sentToSunatAt?: Date | undefined;
 	issueDate: Date;
 	createdAt: Date;
 	updatedAt: Date;

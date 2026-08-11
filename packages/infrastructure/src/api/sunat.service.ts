@@ -19,7 +19,7 @@
  * ```
  */
 
-import type { RucInfo } from "../../sunat/types";
+import type { RucInfo } from "../sunat/types";
 
 /**
  * Resultado de verificación (básica) de un comprobante en SUNAT.

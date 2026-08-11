@@ -17,7 +17,12 @@ export function createMessage(
 	name?: string,
 	toolCallId?: string,
 ): ChatMessage {
-	return { role, content, name, toolCallId };
+	return {
+		role,
+		content,
+		...(name !== undefined ? { name } : {}),
+		...(toolCallId !== undefined ? { toolCallId } : {}),
+	};
 }
 
 export function systemMessage(content: string): ChatMessage {

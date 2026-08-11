@@ -88,7 +88,7 @@ export interface Actor {
 
 export class FeosError extends Error {
   public readonly code: string;
-  public readonly details?: Record<string, unknown>;
+  public readonly details?: Record<string, unknown> | undefined;
 
   constructor(code: string, message: string, details?: Record<string, unknown>) {
     super(message);

@@ -65,10 +65,13 @@ class AgentMetricsCollector {
 		status: "success" | "failed" | "timeout",
 		error?: Error,
 	): void {
-		metric.endTime = Date.now();
-		metric.duration = metric.endTime - metric.startTime;
-		metric.status = status;
-		if (error) metric.error = error;
+		const endTime = Date.now();
+		Object.assign(metric, {
+			endTime,
+			duration: endTime - metric.startTime,
+			status,
+			...(error !== undefined ? { error } : {}),
+		});
 
 		const agentMetrics = this.metrics.get(metric.agentName) || [];
 		agentMetrics.push(metric);

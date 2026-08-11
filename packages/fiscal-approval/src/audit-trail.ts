@@ -13,7 +13,7 @@ export interface AuditEntry {
 	recommendationId: string;
 	action: "approve" | "reject" | "escalate" | "timeout";
 	userId: string;
-	motivo?: string;
+	motivo?: string | undefined;
 	timestamp: string;
 	ruc: string;
 	periodo: string;

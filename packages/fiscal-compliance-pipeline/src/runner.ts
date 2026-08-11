@@ -62,9 +62,11 @@ export class CompliancePipelineRunner {
 		const orderedStages = this.resolveDependencyOrder(chain.stages);
 
 		const ctx: ComplianceContext = {
-			evidenceStore: context.evidenceStore,
+			...(context.evidenceStore !== undefined
+				? { evidenceStore: context.evidenceStore }
+				: {}),
 			previousStageResults: new Map(),
-			lenses: context.lenses,
+			...(context.lenses !== undefined ? { lenses: context.lenses } : {}),
 		};
 
 		for (const stage of orderedStages) {

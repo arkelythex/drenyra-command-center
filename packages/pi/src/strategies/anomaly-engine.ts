@@ -22,10 +22,11 @@ import type {
 import { compareSeverity, meetsThreshold } from "./types";
 
 // ─── Engine ────────────────────────────────────────────────────────
+// probe:may
 
 export class FiscalAnomalyEngine {
 	private readonly strategies = new Map<string, AnomalyStrategy>();
-	private readonly eventBus?: AgentEventBus;
+	private readonly eventBus?: AgentEventBus | undefined;
 	private readonly publishThreshold: AnomalySeverity;
 	private readonly trackPerformance: boolean;
 

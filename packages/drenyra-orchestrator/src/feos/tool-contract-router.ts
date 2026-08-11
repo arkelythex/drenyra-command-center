@@ -12,7 +12,6 @@
 
 import type {
   ToolCall,
-  ToolContract,
   ToolContractRegistry,
   ToolRiskLevel,
   ContractValidationResult,
@@ -21,7 +20,6 @@ import {
   validateToolCall,
   riskLevelOrder,
 } from "@drenyra/domain";
-import { FeosError } from "@drenyra/domain";
 
 // ============================================================================
 // Routing Decision

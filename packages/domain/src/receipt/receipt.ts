@@ -76,7 +76,12 @@ export function hashContent(value: unknown): string {
 	const serialized =
 		typeof value === "string"
 			? value
-			: JSON.stringify(value, Object.keys(value).sort());
+			: JSON.stringify(
+					value,
+					value !== null && typeof value === "object"
+						? Object.keys(value).sort()
+						: null,
+				);
 	return createHash("sha256").update(serialized).digest("hex");
 }
 

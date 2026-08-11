@@ -52,7 +52,7 @@ export class LLMGatewayService {
 	private failoverService: FailoverService;
 	private costTracker: CostTracker;
 	private budgetEnforcer: BudgetEnforcer;
-	private contextMonitor?: ContextMonitor;
+	private contextMonitor?: ContextMonitor | undefined;
 	private metrics: RequestMetrics[] = [];
 
 	constructor(config?: Partial<LLMGatewayConfig>) {
@@ -373,7 +373,7 @@ export class LLMGatewayService {
 			completionTokens: response?.usage.completionTokens ?? 0,
 			totalTokens: response?.usage.totalTokens ?? 0,
 			costUsd: costResult.costUsd,
-			errorCode: error?.code,
+			...(error?.code !== undefined ? { errorCode: error.code } : {}),
 		};
 
 		this.metrics.push(metric);

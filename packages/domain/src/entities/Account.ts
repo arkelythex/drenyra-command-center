@@ -143,24 +143,21 @@ export class Account {
 				);
 		}
 
-		return new Account({
+		const next: AccountProps = {
 			...this.props,
 			code: this.props.isSystem
 				? this.props.code
 				: (data.code ?? this.props.code),
 			name: data.name ?? this.props.name,
-			description: data.description ?? this.props.description,
+			...(data.description !== undefined
+				? { description: data.description }
+				: {}),
 			level: this.props.isSystem
 				? this.props.level
 				: (data.level ?? this.props.level),
 			type: this.props.isSystem
 				? this.props.type
 				: (data.type ?? this.props.type),
-			parentId: this.props.isSystem
-				? this.props.parentId
-				: "parentId" in data
-					? data.parentId
-					: this.props.parentId,
 			isGroup: this.props.isSystem
 				? this.props.isGroup
 				: (data.isGroup ?? this.props.isGroup),
@@ -168,9 +165,21 @@ export class Account {
 			currency: this.props.isSystem
 				? this.props.currency
 				: (data.currency ?? this.props.currency),
-			destination: data.destination ?? this.props.destination,
+			...(data.destination !== undefined
+				? { destination: data.destination }
+				: {}),
 			updatedAt: new Date(),
-		});
+		};
+
+		if (!this.props.isSystem && "parentId" in data) {
+			if (data.parentId !== undefined) {
+				next.parentId = data.parentId;
+			} else {
+				delete next.parentId;
+			}
+		}
+
+		return new Account(next);
 	}
 
 	updateBalance(newBalance: Money, newBalanceUSD?: Money): Account {
@@ -178,12 +187,14 @@ export class Account {
 			throw new Error("El balance principal debe estar en PEN");
 		if (newBalanceUSD && newBalanceUSD.getCurrency() !== "USD")
 			throw new Error("El balance USD debe estar en dólares");
-		return new Account({
-			...this.props,
-			balance: newBalance,
-			balanceUSD: newBalanceUSD ?? this.props.balanceUSD,
-			updatedAt: new Date(),
-		});
+    		return new Account({
+    			...this.props,
+    			balance: newBalance,
+    			...(newBalanceUSD !== undefined
+    				? { balanceUSD: newBalanceUSD }
+    				: {}),
+    			updatedAt: new Date(),
+    		});
 	}
 
 	equals(other: Account | null | undefined): boolean {

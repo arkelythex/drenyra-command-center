@@ -39,7 +39,7 @@ interface EvidenceNodeInput {
 		companyId: string;
 		companyRuc: string;
 		period: string;
-	};
+	} | undefined;
 }
 
 /** Minimal engram client interface. */
@@ -100,7 +100,7 @@ export class DrenyraEvidenceArtifactStore implements EvidenceArtifactStore {
 			const existingChain = this.chainCache.get(artifact.pipelineRunId) ?? [];
 			if (existingChain.length > 0) {
 				const lastArtifact = existingChain[existingChain.length - 1];
-				hashChainVerified = lastArtifact.hash === artifact.parentHash;
+				hashChainVerified = lastArtifact?.hash === artifact.parentHash;
 			}
 		}
 
@@ -225,6 +225,9 @@ export class DrenyraEvidenceArtifactStore implements EvidenceArtifactStore {
 		for (let i = 1; i < chain.length; i++) {
 			const current = chain[i];
 			const previous = chain[i - 1];
+			if (current === undefined || previous === undefined) {
+				return false;
+			}
 
 			// Validate parentHash matches previous hash
 			if (current.parentHash !== previous.hash) {

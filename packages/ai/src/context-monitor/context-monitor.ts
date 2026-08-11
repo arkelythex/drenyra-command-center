@@ -47,7 +47,7 @@ const DEFAULT_CONFIG: ContextMonitorConfig = {
 export class ContextMonitor {
 	private runs: Map<string, InternalRunUsage> = new Map();
 	private config: ContextMonitorConfig;
-	private sessionStore?: SessionStore;
+	private sessionStore?: SessionStore | undefined;
 
 	constructor(
 		sessionStore?: SessionStore,

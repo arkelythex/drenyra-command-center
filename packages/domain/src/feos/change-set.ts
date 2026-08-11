@@ -69,18 +69,18 @@ export interface ChangeSetProps {
   workspaceId: string;
   status: ChangeSetStatus;
   entries: ChangeEntry[];
-  parentId?: string;      // For branching
+  parentId?: string | undefined;      // For branching
   childIds: string[];     // For merge tracking
-  evidenceRootId?: string;
+  evidenceRootId?: string | undefined;
   scope: FiscalScope;
   createdBy: Actor;
   traceId: string;
   createdAt: Timestamp;
   updatedAt: Timestamp;
-  appliedAt?: Timestamp;
-  rolledBackAt?: Timestamp;
-  tags?: string[];
-  metadata?: Record<string, unknown>;
+  appliedAt?: Timestamp | undefined;
+  rolledBackAt?: Timestamp | undefined;
+  tags?: string[] | undefined;
+  metadata?: Record<string, unknown> | undefined;
 }
 
 export class ChangeSet {

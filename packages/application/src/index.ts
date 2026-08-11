@@ -24,6 +24,10 @@ export * from "./fiscal-truth";
 export * from "./ports/ai-provider.port";
 export * from "./ports/document-processing.port";
 // ─── Ports ─────────────────────────────────────────────────────────
+// TenantScope is exported by both the context-registry DTO (string union)
+// and storage.port (interface). The storage.port shape matches the
+// `@drenyra/domain/scope` contract consumers use, so it wins explicitly.
+export { TenantScope } from "./ports/storage.port";
 export * from "./ports/storage.port";
 export * from "./ports/tax-authority.port";
 // ─── Services ──────────────────────────────────────────────────────

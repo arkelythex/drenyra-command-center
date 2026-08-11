@@ -24,7 +24,9 @@ export class AgentRun {
 			scope: {
 				companyId: data.scope.companyId,
 				companyRuc: data.scope.companyRuc,
-				organizationId: data.scope.organizationId,
+				...(data.scope.organizationId !== undefined
+					? { organizationId: data.scope.organizationId }
+					: {}),
 				period: data.scope.period,
 				countryCode: data.scope.countryCode as "PE",
 			},
@@ -35,12 +37,12 @@ export class AgentRun {
 				data.startedAt instanceof Date
 					? data.startedAt
 					: new Date(data.startedAt),
-			completedAt: data.completedAt
+			...(data.completedAt
 				? data.completedAt instanceof Date
-					? data.completedAt
-					: new Date(data.completedAt)
-				: undefined,
-			output: data.output,
+					? { completedAt: data.completedAt }
+					: { completedAt: new Date(data.completedAt) }
+				: {}),
+			...(data.output !== undefined ? { output: data.output } : {}),
 			metadata: data.metadata ?? {},
 			updatedAt: data.updatedAt
 				? data.updatedAt instanceof Date

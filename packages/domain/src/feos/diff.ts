@@ -136,15 +136,15 @@ export interface FinancialDiffProps {
   /** Who created the diff. */
   createdBy: Actor;
   /** Workspace ID this diff belongs to. */
-  workspaceId?: string;
+  workspaceId?: string | undefined;
   /** Trace ID for correlation. */
   traceId: string;
   /** Timestamps. */
   createdAt: Timestamp;
   updatedAt: Timestamp;
-  appliedAt?: Timestamp;
-  tags?: string[];
-  metadata?: Record<string, unknown>;
+  appliedAt?: Timestamp | undefined;
+  tags?: string[] | undefined;
+  metadata?: Record<string, unknown> | undefined;
 }
 
 export class FinancialDiff {

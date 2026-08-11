@@ -67,9 +67,15 @@ export class UpdateJournalEntryUseCase {
 						description: lineDTO.description,
 						debit: Money.fromAmount(lineDTO.debit, "PEN"),
 						credit: Money.fromAmount(lineDTO.credit, "PEN"),
-						documentType: lineDTO.documentType,
-						documentNumber: lineDTO.documentNumber,
-						dueDate: lineDTO.dueDate,
+						...(lineDTO.documentType !== undefined
+							? { documentType: lineDTO.documentType }
+							: {}),
+						...(lineDTO.documentNumber !== undefined
+							? { documentNumber: lineDTO.documentNumber }
+							: {}),
+						...(lineDTO.dueDate !== undefined
+							? { dueDate: lineDTO.dueDate }
+							: {}),
 					});
 				}),
 			);
@@ -77,9 +83,13 @@ export class UpdateJournalEntryUseCase {
 
 		// 5. Update entry using domain method
 		const updatedEntry = existingEntry.update({
-			date: validatedInput.date,
-			gloss: validatedInput.gloss,
-			lines: updatedLines,
+			...(validatedInput.date !== undefined
+				? { date: validatedInput.date }
+				: {}),
+			...(validatedInput.gloss !== undefined
+				? { gloss: validatedInput.gloss }
+				: {}),
+			...(updatedLines !== undefined ? { lines: updatedLines } : {}),
 		});
 
 		// 6. Persist changes

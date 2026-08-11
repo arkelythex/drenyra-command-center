@@ -36,9 +36,15 @@ export class RequestExecutor {
 		request: ChatCompletionRequest,
 	): Promise<ChatCompletionResponse> {
 		const client = new OllamaClient({
-			baseUrl: process.env.OLLAMA_BASE_URL,
-			defaultModel: process.env.OLLAMA_DEFAULT_MODEL,
-			apiKey: process.env.OLLAMA_API_KEY,
+			...(process.env.OLLAMA_BASE_URL !== undefined
+				? { baseUrl: process.env.OLLAMA_BASE_URL }
+				: {}),
+			...(process.env.OLLAMA_DEFAULT_MODEL !== undefined
+				? { defaultModel: process.env.OLLAMA_DEFAULT_MODEL }
+				: {}),
+			...(process.env.OLLAMA_API_KEY !== undefined
+				? { apiKey: process.env.OLLAMA_API_KEY }
+				: {}),
 		});
 		return client.chat(request);
 	}

@@ -38,10 +38,14 @@ export class Thread {
 			id: data.id as string,
 			companyId: data.companyId as string,
 			title: data.title as string,
-			description: data.description as string | undefined,
+			...(data.description !== undefined
+				? { description: data.description as string }
+				: {}),
 			status: (data.status ?? "DRAFT") as ThreadStatus,
 			environment: (data.environment ?? "local") as ThreadEnvironment,
-			period: data.period as string | undefined,
+			...(data.period !== undefined
+				? { period: data.period as string }
+				: {}),
 			priority: (data.priority ?? "MEDIUM") as ThreadPriority,
 			tags: (data.tags ?? []) as string[],
 			tasks: (data.tasks ?? []) as ThreadTaskProps[],
@@ -51,11 +55,15 @@ export class Thread {
 			createdById: data.createdById as string,
 			createdAt: assertValidDate(data.createdAt as string, "createdAt"),
 			updatedAt: assertValidDate(data.updatedAt as string, "updatedAt"),
-			closedAt: data.closedAt
-				? assertValidDate(data.closedAt as string, "closedAt")
-				: undefined,
-			closedById: data.closedById as string | undefined,
-			closeNote: data.closeNote as string | undefined,
+			...(data.closedAt
+				? { closedAt: assertValidDate(data.closedAt as string, "closedAt") }
+				: {}),
+			...(data.closedById !== undefined
+				? { closedById: data.closedById as string }
+				: {}),
+			...(data.closeNote !== undefined
+				? { closeNote: data.closeNote as string }
+				: {}),
 		});
 	}
 
@@ -159,7 +167,7 @@ export class Thread {
 			...this.props,
 			status: "CLOSED",
 			closedById: userId,
-			closeNote: note,
+			...(note !== undefined ? { closeNote: note } : {}),
 			closedAt: new Date(),
 			updatedAt: new Date(),
 		});

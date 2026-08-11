@@ -212,7 +212,7 @@ export interface FeosReceipt {
   /** Chain hash linking to previous receipt. */
   chainHash: string;
   /** Previous receipt's chain hash (for linking). */
-  previousChainHash?: string;
+  previousChainHash?: string | undefined;
   /** Schema version. */
   version: string;
 }

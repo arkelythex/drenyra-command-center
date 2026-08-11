@@ -66,14 +66,20 @@ export class PostgresProviderRepository implements ProviderRepository {
 				})
 				.returning();
 
-			return { partner, profile };
-		});
-
-		return this.mapToProvider(
-			created.partner,
-			created.profile,
-			data.organizationId,
-		);
+    			return { partner, profile };
+    		});
+    
+    		if (created.partner === undefined || created.profile === undefined) {
+    			throw new Error(
+    				`Failed to create provider ${id}: missing partner/profile row`,
+    			);
+    		}
+    
+    		return this.mapToProvider(
+    			created.partner,
+    			created.profile,
+    			data.organizationId,
+    		);
 	}
 
 	async update(id: string, data: UpdateProviderDTO): Promise<Provider> {
@@ -106,14 +112,20 @@ export class PostgresProviderRepository implements ProviderRepository {
 				.where(eq(vendorProfiles.id, id))
 				.returning();
 
-			return { partner, profile };
-		});
-
-		return this.mapToProvider(
-			updated.partner,
-			updated.profile,
-			existing.organizationId,
-		);
+    			return { partner, profile };
+    		});
+    
+    		if (updated.partner === undefined || updated.profile === undefined) {
+    			throw new Error(
+    				`Failed to update provider ${id}: missing partner/profile row`,
+    			);
+    		}
+    
+    		return this.mapToProvider(
+    			updated.partner,
+    			updated.profile,
+    			existing.organizationId,
+    		);
 	}
 
 	async delete(id: string): Promise<void> {
@@ -134,12 +146,14 @@ export class PostgresProviderRepository implements ProviderRepository {
 			.limit(1);
 
 		if (rows.length === 0) return null;
-
+		const row = rows[0];
+		if (row === undefined) return null;
+    
 		const organizationId = await resolveOrganizationIdFromCompany(
-			rows[0].partner.companyId,
+			row.partner.companyId,
 		);
-
-		return this.mapToProvider(rows[0].partner, rows[0].profile, organizationId);
+    
+		return this.mapToProvider(row.partner, row.profile, organizationId);
 	}
 
 	async findAll(
@@ -216,8 +230,10 @@ export class PostgresProviderRepository implements ProviderRepository {
 			.limit(1);
 
 		if (rows.length === 0) return null;
-
-		return this.mapToProvider(rows[0].partner, rows[0].profile, organizationId);
+		const row = rows[0];
+		if (row === undefined) return null;
+    
+		return this.mapToProvider(row.partner, row.profile, organizationId);
 	}
 
 	private async findProviderContext(id: string) {
@@ -229,14 +245,16 @@ export class PostgresProviderRepository implements ProviderRepository {
 			.limit(1);
 
 		if (rows.length === 0) return null;
-
+		const row = rows[0];
+		if (row === undefined) return null;
+    
 		const organizationId = await resolveOrganizationIdFromCompany(
-			rows[0].partner.companyId,
+			row.partner.companyId,
 		);
-
+    
 		return {
-			partner: rows[0].partner,
-			profile: rows[0].profile,
+			partner: row.partner,
+			profile: row.profile,
 			organizationId,
 		};
 	}
@@ -250,7 +268,7 @@ export class PostgresProviderRepository implements ProviderRepository {
 			organizationId,
 			name: partner.legalName,
 			ruc: partner.taxId,
-			email: partner.email ?? undefined,
+			...(partner.email !== null ? { email: partner.email } : {}),
 			paymentTerms: profile.paymentTermDays ?? 30,
 			createdAt: partner.createdAt,
 			updatedAt: profile.updatedAt,

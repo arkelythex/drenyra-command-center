@@ -33,7 +33,7 @@ export class BuildEvidenceStep
   readonly isBlocker = false;
 
   async execute(
-    input: BuildEvidenceInput,
+    _input: BuildEvidenceInput,
     context: PipelineContext,
   ): Promise<StepResult<EvidenceBundle>> {
     const startedAt = new Date().toISOString();

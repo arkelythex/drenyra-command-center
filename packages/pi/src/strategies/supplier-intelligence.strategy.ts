@@ -267,7 +267,11 @@ function detectDebtAging(
 
 	for (const [supplierId, data] of unpaidBySupplier) {
 		// Calculate total past-due and bucket counts
-		const buckets: Record<string, { count: number; total: number }> = {
+		const buckets: {
+			"30": { count: number; total: number };
+			"60": { count: number; total: number };
+			"90+": { count: number; total: number };
+		} = {
 			"30": { count: 0, total: 0 },
 			"60": { count: 0, total: 0 },
 			"90+": { count: 0, total: 0 },
@@ -370,7 +374,7 @@ function detectDuplicateSupplier(
 				id: `dup-ruc-${ruc}`,
 				timestamp: now.toISOString(),
 				entityType: "supplier",
-				entityId: data.ids[0],
+				entityId: data.ids[0]!,
 				metric: "duplicate_ruc",
 				expectedValue: 1,
 				actualValue: data.names.size,
@@ -408,7 +412,7 @@ function detectDuplicateSupplier(
 				id: `dup-acct-${account.replace(/\s+/g, "-")}`,
 				timestamp: now.toISOString(),
 				entityType: "supplier",
-				entityId: data.names[0],
+				entityId: data.names[0]!,
 				metric: "shared_bank_account",
 				expectedValue: 1,
 				actualValue: data.rucs.size,
@@ -433,22 +437,13 @@ function detectDuplicateSupplier(
 // ─── Strategy factory ─────────────────────────────────────────────
 
 export function createSupplierIntelligenceStrategy(
-	options: {
+	_options: {
 		concentrationThresholdPct?: number;
 		paymentDelayDaysThreshold?: number;
 		newSupplierHighValueThreshold?: number;
 		newSupplierLookbackDays?: number;
 	} = {},
 ): AnomalyStrategy {
-	const concentrationThresholdPct =
-		options.concentrationThresholdPct ?? CONCENTRATION_THRESHOLD_PCT;
-	const paymentDelayDaysThreshold =
-		options.paymentDelayDaysThreshold ?? PAYMENT_DELAY_DAYS_THRESHOLD;
-	const newSupplierHighValueThreshold =
-		options.newSupplierHighValueThreshold ?? NEW_SUPPLIER_HIGH_VALUE_THRESHOLD;
-	const newSupplierLookbackDays =
-		options.newSupplierLookbackDays ?? NEW_SUPPLIER_LOOKBACK_DAYS;
-
 	return {
 		id: "supplier-intelligence",
 		name: "Supplier Intelligence",

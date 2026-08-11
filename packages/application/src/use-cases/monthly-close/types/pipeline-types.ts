@@ -6,7 +6,7 @@
 
 import type { InputSnapshot } from "./input-snapshot";
 import type { AccountingException } from "./accounting-exception";
-import type { ReadinessGate, GateStatus, GateType } from "../gates/readiness-gates";
+import type { ReadinessGate, GateStatus } from "../gates/readiness-gates";
 
 // ─── Step Status ───────────────────────────────────────────────────────────
 

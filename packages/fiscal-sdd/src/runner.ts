@@ -121,8 +121,10 @@ export class FiscalSDDRunner {
 	): Promise<PhaseResult> {
 		const ctx: PhaseContext = {
 			runId: context.runId ?? "unknown",
-			scope: context.scope,
-			evidenceStore: context.evidenceStore,
+			...(context.scope !== undefined ? { scope: context.scope } : {}),
+			...(context.evidenceStore !== undefined
+				? { evidenceStore: context.evidenceStore }
+				: {}),
 			previousPhaseResults: context.previousPhaseResults ?? new Map(),
 			metadata: context.metadata ?? {},
 		};

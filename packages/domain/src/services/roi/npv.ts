@@ -54,6 +54,7 @@ export function calculateNpv(input: NpvInput): NpvResult {
 
 	for (let t = 0; t < cashFlows.length; t++) {
 		const cf = cashFlows[t];
+		if (cf === undefined) continue;
 		const denominator = (1 + rate) ** (t + 1);
 		presentValueCents += Math.round(cf.getCents() / denominator);
 	}

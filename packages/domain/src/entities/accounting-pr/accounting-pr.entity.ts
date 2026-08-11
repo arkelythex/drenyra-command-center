@@ -30,20 +30,28 @@ export class AccountingPr {
 			companyId: data.companyId as string,
 			prNumber: data.prNumber as number,
 			title: data.title as string,
-			description: data.description as string | undefined,
+			...(data.description !== undefined
+				? { description: data.description as string }
+				: {}),
 			status: (data.status ?? "DRAFT") as AccountingPrStatus,
 			entries: (data.entries ?? []) as string[],
 			evidenceIds: (data.evidenceIds ?? []) as string[],
 			totalDebitCents: (data.totalDebitCents as number) ?? 0,
 			totalCreditCents: (data.totalCreditCents as number) ?? 0,
-			reviewerId: data.reviewerId as string | undefined,
-			reviewedAt: data.reviewedAt
-				? new Date(data.reviewedAt as string)
-				: undefined,
-			reviewComment: data.reviewComment as string | undefined,
+			...(data.reviewerId !== undefined
+				? { reviewerId: data.reviewerId as string }
+				: {}),
+			...(data.reviewedAt
+				? { reviewedAt: new Date(data.reviewedAt as string) }
+				: {}),
+			...(data.reviewComment !== undefined
+				? { reviewComment: data.reviewComment as string }
+				: {}),
 			approveSignerIds: (data.approveSignerIds ?? []) as string[],
 			approveSignatures: (data.approveSignatures ?? []) as PrSignature[],
-			createdById: data.createdById as string | undefined,
+			...(data.createdById !== undefined
+				? { createdById: data.createdById as string }
+				: {}),
 			createdAt: new Date(data.createdAt as string),
 			updatedAt: new Date(data.updatedAt as string),
 		});
@@ -57,7 +65,7 @@ export class AccountingPr {
 		return new AccountingPr({
 			...this.props,
 			status: "PENDING_REVIEW",
-			reviewerId: reviewerId ?? this.props.reviewerId,
+			...(reviewerId !== undefined ? { reviewerId } : {}),
 			updatedAt: new Date(),
 		});
 	}
@@ -68,14 +76,14 @@ export class AccountingPr {
 		const signature: PrSignature = {
 			signerId,
 			signedAt: new Date().toISOString(),
-			comment,
+			...(comment !== undefined ? { comment } : {}),
 		};
 
 		return new AccountingPr({
 			...this.props,
 			status: "APPROVED",
 			reviewedAt: new Date(),
-			reviewComment: comment ?? this.props.reviewComment,
+			...(comment !== undefined ? { reviewComment: comment } : {}),
 			approveSignerIds: [
 				...new Set([...this.props.approveSignerIds, signerId]),
 			],
@@ -118,7 +126,7 @@ export class AccountingPr {
 		const signature: PrSignature = {
 			signerId,
 			signedAt: new Date().toISOString(),
-			comment,
+			...(comment !== undefined ? { comment } : {}),
 		};
 
 		return new AccountingPr({

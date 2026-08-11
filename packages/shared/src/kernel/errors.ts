@@ -26,7 +26,7 @@ export class AgenticOSError extends Error {
 export class PluginValidationError extends AgenticOSError {
 	override name = "PluginValidationError";
 	/** Name of the plugin that failed validation */
-	pluginName?: string;
+	pluginName?: string | undefined;
 
 	constructor(message: string, pluginName?: string) {
 		super(message);
@@ -40,9 +40,9 @@ export class PluginValidationError extends AgenticOSError {
 export class AgentError extends AgenticOSError {
 	override name = "AgentError";
 	/** The ID of the agent that failed */
-	agentId?: string;
+	agentId?: string | undefined;
 	/** The underlying error that caused this failure */
-	cause?: Error;
+	cause?: Error | undefined;
 
 	constructor(message: string, agentId?: string, cause?: Error) {
 		super(message);
@@ -57,7 +57,7 @@ export class AgentError extends AgenticOSError {
 export class TaskError extends AgenticOSError {
 	override name = "TaskError";
 	/** The ID of the task that failed */
-	taskId?: string;
+	taskId?: string | undefined;
 
 	constructor(message: string, taskId?: string) {
 		super(message);

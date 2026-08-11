@@ -120,7 +120,7 @@ const CHAIN_TRIGGER_SUBSYSTEMS = [
  * las cadenas correspondientes respetando dependencias.
  */
 export class ComplianceChainAdapter {
-	private artifactStore?: ArtifactStore;
+	private artifactStore?: ArtifactStore | undefined;
 
 	constructor(artifactStore?: ArtifactStore) {
 		this.artifactStore = artifactStore;
@@ -304,21 +304,23 @@ export class ComplianceChainAdapter {
 			oldValue: cambio.oldValue,
 			newValue: cambio.newValue,
 			effectiveDate:
-				cambio.effectiveDate ?? new Date().toISOString().split("T")[0],
-			description: cambio.description,
+				cambio.effectiveDate ?? new Date().toISOString().split("T")[0] ?? "",
+			...(cambio.description !== undefined ? { description: cambio.description } : {}),
 		};
 
 		const result = await runner.runChain(chain, change, {
-			evidenceStore: this.artifactStore
+			...(this.artifactStore
 				? {
-						store: async (artifact: unknown) => {
-							await this.artifactStore?.save(
-								cambio.changeId,
-								artifact as FaseArtifact,
-							);
+						evidenceStore: {
+							store: async (artifact: unknown) => {
+								await this.artifactStore?.save(
+									cambio.changeId,
+									artifact as FaseArtifact,
+								);
+							},
 						},
 					}
-				: undefined,
+				: {}),
 		});
 
 		return result as unknown as ComplianceChainResult;

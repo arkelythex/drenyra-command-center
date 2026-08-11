@@ -104,7 +104,7 @@ export class InMemoryEvidenceStore implements EvidenceStore {
 	async deleteByRun(runId: string): Promise<void> {
 		let i = 0;
 		while (i < this.records.length) {
-			if (this.records[i].runId === runId) {
+			if (this.records[i]!.runId === runId) {
 				this.records.splice(i, 1);
 			} else {
 				i++;

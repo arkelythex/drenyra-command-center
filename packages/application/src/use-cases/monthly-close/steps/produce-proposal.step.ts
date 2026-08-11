@@ -19,11 +19,9 @@ import type {
   ClosingProposal,
   ProposedJournalEntry,
   ProposedEntryType,
-  ProposalLine,
   TaxImpact,
   FinancialImpact,
 } from "../types/pipeline-types";
-import { createAccountingException } from "../types/accounting-exception";
 
 // ─── Input ─────────────────────────────────────────────────────────────────
 
@@ -170,7 +168,7 @@ export class ProduceProposalStep
   readonly isBlocker = true;
 
   async execute(
-    input: ProduceProposalInput,
+    _input: ProduceProposalInput,
     context: PipelineContext,
   ): Promise<StepResult<ClosingProposal>> {
     const startedAt = new Date().toISOString();

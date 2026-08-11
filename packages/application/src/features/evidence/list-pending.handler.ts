@@ -15,7 +15,9 @@ export class ListPendingClassificationHandler {
 			.map((evidence) => ({
 				id: evidence.id,
 				organizationId: evidence.organizationId,
-				companyId: evidence.companyId,
+				...(evidence.companyId !== undefined
+					? { companyId: evidence.companyId }
+					: {}),
 				filename: evidence.filename,
 				mimeType: evidence.mimeType,
 				sizeBytes: evidence.sizeBytes,
@@ -23,13 +25,25 @@ export class ListPendingClassificationHandler {
 				evidenceType: evidence.evidenceType,
 				source: evidence.source,
 				status: evidence.status,
-				metadata: evidence.metadata,
-				extractedData: evidence.extractedData,
-				classifierResult: evidence.classifierResult,
-				validatedAt: evidence.validatedAt?.toISOString(),
-				validatedBy: evidence.validatedBy,
-				errorMessage: evidence.errorMessage,
-				tags: evidence.tags ? [...evidence.tags] : undefined,
+				...(evidence.metadata !== undefined
+					? { metadata: evidence.metadata }
+					: {}),
+				...(evidence.extractedData !== undefined
+					? { extractedData: evidence.extractedData }
+					: {}),
+				...(evidence.classifierResult !== undefined
+					? { classifierResult: evidence.classifierResult }
+					: {}),
+				...(evidence.validatedAt !== undefined
+					? { validatedAt: evidence.validatedAt.toISOString() }
+					: {}),
+				...(evidence.validatedBy !== undefined
+					? { validatedBy: evidence.validatedBy }
+					: {}),
+				...(evidence.errorMessage !== undefined
+					? { errorMessage: evidence.errorMessage }
+					: {}),
+				...(evidence.tags !== undefined ? { tags: [...evidence.tags] } : {}),
 				createdAt: evidence.createdAt.toISOString(),
 				updatedAt: evidence.updatedAt.toISOString(),
 			}));

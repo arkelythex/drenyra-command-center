@@ -175,8 +175,12 @@ export class FiscalMemoryService {
 			evidenceRefs: input.evidenceRefs ?? [],
 			tags: input.tags ?? [],
 			createdBy: input.createdBy,
-			approvedBy: input.approvedBy,
-			sourceAgentId: input.sourceAgentId,
+			...(input.approvedBy !== undefined
+				? { approvedBy: input.approvedBy }
+				: {}),
+			...(input.sourceAgentId !== undefined
+				? { sourceAgentId: input.sourceAgentId }
+				: {}),
 			relatedMemoryIds: input.relatedMemoryIds ?? [],
 			createdAt: now,
 			updatedAt: now,

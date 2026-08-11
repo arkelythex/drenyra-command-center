@@ -122,7 +122,8 @@ export function extractPeriodo(text: string): string | undefined {
 			noviembre: "11",
 			diciembre: "12",
 		};
-		const month = monthNames[monthMatch[1]?.toLowerCase()];
+		const monthKey = monthMatch[1]?.toLowerCase();
+		const month = monthKey !== undefined ? monthNames[monthKey] : undefined;
 		if (month) {
 			return `${monthMatch[2]}-${month}`;
 		}
@@ -225,7 +226,11 @@ export function matchIntentPatterns(text: string): {
 	return {
 		kind: bestKind,
 		confidence: Math.round(bestScore * 100) / 100,
-		extracted: { ruc, periodo, keywords },
+		extracted: {
+			...(ruc !== undefined ? { ruc } : {}),
+			...(periodo !== undefined ? { periodo } : {}),
+			keywords,
+		},
 	};
 }
 

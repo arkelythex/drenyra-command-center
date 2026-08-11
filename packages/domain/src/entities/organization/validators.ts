@@ -8,7 +8,7 @@ function validateRUCChecksum(ruc: string): boolean {
 	const multiplicadores = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
 	let suma = 0;
 	for (let i = 0; i < 10; i++) {
-		suma += Number(ruc[i]) * multiplicadores[i];
+		suma += Number(ruc[i] ?? "") * (multiplicadores[i] ?? 0);
 	}
 	const residuo = suma % 11;
 	const digitoVerificador = residuo === 0 ? 0 : 11 - residuo;

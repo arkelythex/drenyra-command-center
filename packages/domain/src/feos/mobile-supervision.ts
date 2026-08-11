@@ -7,10 +7,8 @@
  * @module @drenyra/domain/feos/mobile-supervision
  */
 
-import type { Actor, FiscalScope, Timestamp } from "./types";
-import { generateId, nowTimestamp } from "./types";
-import type { ApprovalStatus } from "./approval";
-
+import type { Actor, Timestamp } from "./types";
+    
 export type NotificationPriority = "urgent" | "high" | "normal" | "low";
 
 export interface MobileNotification {

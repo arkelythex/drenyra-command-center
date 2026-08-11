@@ -27,7 +27,7 @@ import { solveCaptcha } from "./captcha-solver";
  * console.log(value);
  * ```
  */
-import type { SunatWebCredentials as SunatCredentials } from "../types";
+import type { SunatWebCredentials as SunatCredentials } from "./types";
 
 /**
  * BuzonNotification interface.

@@ -65,8 +65,8 @@ export type SummarizeFn = (messages: ChatMessage[]) => Promise<string>;
  */
 export class ContextPruner {
 	public config: ContextPrunerConfig;
-	private onPruneApplied?: OnPruneApplied;
-	private summarizeFn?: SummarizeFn;
+	private onPruneApplied?: OnPruneApplied | undefined;
+	private summarizeFn?: SummarizeFn | undefined;
 
 	constructor(
 		config?: Partial<ContextPrunerConfig>,
@@ -223,11 +223,9 @@ export class ContextPruner {
 		}
 
 		// Identify messages to keep verbatim: system messages + last N/2 non-system
-		const _systemMessages = messages.filter((m) => m.role === "system");
 		const nonSystemMessages = messages.filter((m) => m.role !== "system");
 
 		const keepCount = Math.max(1, Math.floor(maxMessages / 2));
-		const _keptNonSystem = nonSystemMessages.slice(-keepCount);
 
 		// Messages to summarize: non-system messages not in the kept tail
 		const toSummarize = nonSystemMessages.slice(0, -keepCount);
@@ -238,12 +236,9 @@ export class ContextPruner {
 		}
 
 		// Build summary prompt
-		const _contextStr = toSummarize
-			.map((m) => `[${m.role}]: ${m.content}`)
-			.join("\n");
 
 		// Attempt LLM summarization (sync-style with Promise)
-		const _summaryPromise = this.summarizeFn(toSummarize);
+		void this.summarizeFn(toSummarize);
 
 		// We need to handle this carefully — the method signature says it's sync
 		// but summarizeFn returns a Promise. We'll use a trick: if the promise

@@ -31,10 +31,10 @@ export class MonthlyCloseOrchestrator {
   constructor(
     private readonly db: unknown,
     private readonly fiscalAgent: unknown,
-    private readonly journalEntryPosting: unknown,
-    private readonly periodClose: unknown,
-    private readonly transactionalApply: unknown,
-    private readonly compensatingGenerator: unknown,
+    protected readonly journalEntryPosting: unknown,
+    protected readonly periodClose: unknown,
+    protected readonly transactionalApply: unknown,
+    protected readonly compensatingGenerator: unknown,
     private readonly eventEmitter: MissionEventEmitter,
   ) {}
 

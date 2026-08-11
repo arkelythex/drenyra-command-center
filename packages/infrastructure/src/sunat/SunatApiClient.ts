@@ -25,7 +25,7 @@
  * console.log(value);
  * ```
  */
-import type { SunatApiCredentials as SunatCredentials } from "../types";
+import type { SunatApiCredentials as SunatCredentials } from "./types";
 
 /**
  * SunatToken interface.
@@ -72,7 +72,7 @@ export interface SunatApiResponse<T> {
  * console.log(value);
  * ```
  */
-import type { RucInfo } from "../types";
+import type { RucInfo } from "./types";
 
 /**
  * SireTicketRequest interface.

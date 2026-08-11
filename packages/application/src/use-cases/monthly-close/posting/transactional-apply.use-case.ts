@@ -14,8 +14,10 @@
 import { accountingPeriods, accountingMissions, missionReceipts, closeGates } from "@drenyra/persistence/schema";
 import { eq, and } from "drizzle-orm";
 import { createHash } from "node:crypto";
-import type { DrizzleClient } from "@drenyra/persistence";
+import type { db } from "@drenyra/persistence";
 import type { ClosingProposal, ApplyResult } from "../types/pipeline-types";
+
+type DrizzleClient = typeof db;
 import { JournalEntryPostingService } from "./journal-entry-posting.service";
 import { PeriodCloseService } from "./period-close.service";
 
@@ -75,7 +77,9 @@ export class TransactionalApplyUseCase {
 
     return this.db.transaction(async (tx) => {
       // ─── 2. Period guard: SELECT FOR UPDATE ───────────────────────
-      const [y, m] = proposal.fiscalPeriod.split("-").map(Number);
+      const [yRaw, mRaw] = proposal.fiscalPeriod.split("-").map(Number);
+      const y = yRaw ?? 0;
+      const m = mRaw ?? 0;
       const [period] = await tx
         .select()
         .from(accountingPeriods)
@@ -129,7 +133,7 @@ export class TransactionalApplyUseCase {
       });
 
       // ─── 5. Resolve close gates ───────────────────────────────────
-      const gatesResolved = await tx
+      await tx
         .update(closeGates)
         .set({ status: "PASSED", updatedAt: new Date() } as any)
         .where(
@@ -176,10 +180,6 @@ export class TransactionalApplyUseCase {
       };
 
       const receiptHash = generateReceiptHash(receiptContent);
-      const receiptId = receiptHash.substring(0, 36).replace(
-        /(.{8})(.{4})(.{4})(.{4})(.{12})/,
-        "$1-$2-$3-$4-$5",
-      );
 
       await tx.insert(missionReceipts).values({
         missionId,

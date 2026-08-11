@@ -21,7 +21,7 @@ export class AgentError extends Error {
 		message: string;
 		type: "TRANSIENT" | "PERMANENT" | "UNKNOWN";
 		agentName: string;
-		details?: Record<string, unknown>;
+		details?: Record<string, unknown> | undefined;
 	}) {
 		super(opts.message);
 		this.name = "AgentError";
@@ -46,7 +46,7 @@ export class TimeoutError extends AgentError {
 	constructor(opts: {
 		message?: string;
 		agentName: string;
-		details?: Record<string, unknown>;
+		details?: Record<string, unknown> | undefined;
 	}) {
 		super({
 			message: opts.message ?? `Agent ${opts.agentName} timed out`,
@@ -63,7 +63,7 @@ export class TimeoutError extends AgentError {
  */
 export class RateLimitError extends AgentError {
 	override readonly type: "TRANSIENT" = "TRANSIENT";
-	readonly retryAfter?: number;
+	readonly retryAfter?: number | undefined;
 
 	constructor(opts: {
 		message?: string;
@@ -110,7 +110,7 @@ export class NetworkError extends AgentError {
 export class ProviderError extends AgentError {
 	override readonly type: "TRANSIENT" = "TRANSIENT";
 	readonly provider: string;
-	readonly statusCode?: number;
+	readonly statusCode?: number | undefined;
 
 	constructor(opts: {
 		message?: string;

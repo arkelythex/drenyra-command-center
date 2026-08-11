@@ -68,8 +68,7 @@ export function createAgentUIReadableStream(
 
 				const doneChunk = `${JSON.stringify({
 					type: "done",
-					content:
-						allSteps.length > 0 ? allSteps[allSteps.length - 1].text : "",
+					content: allSteps.length > 0 ? (allSteps.at(-1)?.text ?? "") : "",
 				})}\n`;
 				controller.enqueue(new TextEncoder().encode(doneChunk));
 			} catch (error) {

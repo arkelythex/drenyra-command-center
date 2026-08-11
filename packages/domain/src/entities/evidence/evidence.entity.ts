@@ -26,28 +26,28 @@ export class Evidence {
 		const props: EvidenceProps = {
 			id: data.id,
 			organizationId: data.organizationId,
-			companyId: data.companyId,
+			...(data.companyId !== undefined ? { companyId: data.companyId } : {}),
 			filename: data.filename,
 			mimeType: data.mimeType,
 			sizeBytes: Number(data.sizeBytes),
 			hash: data.hash,
-			hashChain: data.hashChain
+			...(data.hashChain
 				? {
 						hash: data.hashChain.hash,
 						prevHash: data.hashChain.prevHash,
 						timestamp: data.hashChain.timestamp,
 					}
-				: undefined,
+				: {}),
 			evidenceType: data.evidenceType as EvidenceType,
 			source: data.source as EvidenceSource,
 			status: data.status as EvidenceStatus,
-			metadata: data.metadata,
-			extractedData: data.extractedData,
-			classifierResult: data.classifierResult,
-			validatedAt: data.validatedAt ? new Date(data.validatedAt) : undefined,
-			validatedBy: data.validatedBy,
-			errorMessage: data.errorMessage,
-			tags: data.tags,
+			...(data.metadata !== undefined ? { metadata: data.metadata } : {}),
+			...(data.extractedData !== undefined ? { extractedData: data.extractedData } : {}),
+			...(data.classifierResult !== undefined ? { classifierResult: data.classifierResult } : {}),
+			...(data.validatedAt ? { validatedAt: new Date(data.validatedAt) } : {}),
+			...(data.validatedBy !== undefined ? { validatedBy: data.validatedBy } : {}),
+			...(data.errorMessage !== undefined ? { errorMessage: data.errorMessage } : {}),
+			...(data.tags !== undefined ? { tags: data.tags } : {}),
 			createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
 			updatedAt: data.updatedAt ? new Date(data.updatedAt) : new Date(),
 		};

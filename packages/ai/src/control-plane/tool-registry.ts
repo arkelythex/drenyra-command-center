@@ -78,6 +78,10 @@ export class ToolRegistry {
 			})
 			.returning();
 
+		if (!row) {
+			throw new Error("Failed to register tool: insert returned no row");
+		}
+
 		const tool = this.mapRow(row);
 		this.cache.set(tool.name, tool);
 		return tool;

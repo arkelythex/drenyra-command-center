@@ -13,9 +13,7 @@ import type {
   OrganizationId,
   PortfolioId,
   WorkspaceId,
-  CompanyRef,
   PeriodRef,
-  PortfolioRef,
   Actor,
   FiscalScope,
   Timestamp,
@@ -139,9 +137,9 @@ export interface BlockingInfo {
   reason: string;
   blockedBy: WorkspaceId[];
   blockedSince: Timestamp;
-  blockedByActor?: Actor;
-  unblockInstructions?: string;
-  unblockUrl?: string;
+  blockedByActor?: Actor | undefined;
+  unblockInstructions?: string | undefined;
+  unblockUrl?: string | undefined;
 }
 
 // ============================================================================
@@ -156,14 +154,14 @@ export interface WorkspaceProps {
   period: PeriodRef;
   intent: WorkspaceIntent;
   label: string;
-  description?: string;
+  description?: string | undefined;
   state: WorkspaceState;
-  blocking?: BlockingInfo;
+  blocking?: BlockingInfo | undefined;
   createdBy: Actor;
   createdAt: Timestamp;
   updatedAt: Timestamp;
-  completedAt?: Timestamp;
-  metadata?: Record<string, unknown>;
+  completedAt?: Timestamp | undefined;
+  metadata?: Record<string, unknown> | undefined;
 }
 
 // ============================================================================
@@ -287,7 +285,7 @@ export class Workspace {
     return this.transition("completed");
   }
 
-  markFailed(error?: string): Workspace {
+  markFailed(_error?: string): Workspace {
     return this.transition("failed");
   }
 
@@ -315,7 +313,7 @@ export class Workspace {
     });
   }
 
-  unblock(actor?: Actor): Workspace {
+  unblock(_actor?: Actor): Workspace {
     // Unblocking goes back to queued for re-processing
     return this.transition("queued", {
       blocking: undefined,

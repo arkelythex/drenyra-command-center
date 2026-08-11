@@ -17,15 +17,41 @@ export * from "./entities";
 export * from "./errors";
 export * from "./events";
 export * from "./fiscal";
-// --- FISCAL CONTRACTS (Cross-stack source of truth) ---
-export * from "./fiscal-contracts";
-export * from "./fiscal-memory";
-export * from "./fiscal-ontology";
-export * from "./fiscal-truth";
-export * from "./services";
-export * from "./workbench";
-// --- FEOS CORE (Financial Engineering OS) ---
-export * from "./feos";
+    // --- FISCAL CONTRACTS (Cross-stack source of truth) ---
+    export * from "./fiscal-contracts";
+    export * from "./fiscal-memory";
+    export * from "./fiscal-ontology";
+    export * from "./fiscal-truth";
+    export * from "./services";
+    export * from "./workbench";
+    // --- FEOS CORE (Financial Engineering OS) ---
+    // Names shared with legacy modules are re-exported explicitly from FEOS so
+    // the modern definitions win over `export *` ambiguity (TS2308).
+    export * from "./feos";
+    export {
+    	ApprovalRequest,
+    	ApprovalRequestProps,
+    	CompanyRef,
+    	createPeriodRef,
+    	DensityMode,
+    	DENSITY_MODE,
+    	DiffChange,
+    	DiffStatus,
+    	EvidenceItem,
+    	FiscalPeriod,
+    	OrganizationRef,
+    	PaneConfig,
+    	PanePosition,
+    	PANE_POSITION,
+    	PaneType,
+    	PANE_TYPE,
+    	PeriodRef,
+    	PortfolioRef,
+    	Workspace,
+    	WorkspaceId,
+    	WorkspaceIntent,
+    	WORKSPACE_INTENT,
+    } from "./feos";
 export type {
 	CountryCode,
 	TaxIdentifier,

@@ -94,12 +94,10 @@ class NoOpSpan implements LLMSpan {
 class ConsoleSpan implements LLMSpan {
 	private name: string;
 	private attributes: Record<string, unknown>;
-	private startTime: number;
 
 	constructor(name: string, attributes: Record<string, unknown> = {}) {
 		this.name = name;
 		this.attributes = attributes;
-		this.startTime = Date.now();
 	}
 
 	setAttribute(key: string, value: unknown): void {
@@ -108,9 +106,7 @@ class ConsoleSpan implements LLMSpan {
 
 	addEvent(_name: string, _eventAttributes?: Record<string, unknown>): void {}
 
-	end(_endAttributes?: LLMGatewaySpanAttributes): void {
-		const _duration = Date.now() - this.startTime;
-	}
+	end(_endAttributes?: LLMGatewaySpanAttributes): void {}
 
 	recordException(error: Error): void {
 		console.error(`[LLM Gateway Tracing] ${this.name}:error`, {

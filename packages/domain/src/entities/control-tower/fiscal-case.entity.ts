@@ -27,7 +27,9 @@ export class FiscalCase {
 			scope: {
 				companyId: data.scope.companyId,
 				companyRuc: data.scope.companyRuc,
-				organizationId: data.scope.organizationId,
+				...(data.scope.organizationId !== undefined
+					? { organizationId: data.scope.organizationId }
+					: {}),
 				period: data.scope.period,
 				countryCode: data.scope.countryCode as "PE",
 			},

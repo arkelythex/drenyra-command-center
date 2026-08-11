@@ -327,7 +327,9 @@ export class DrenyraFiscalCommandCenterService {
 		const baseEnvelope = {
 			traceId,
 			capabilityId: DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY,
-			sourceSurface: input.sourceSurface,
+			...(input.sourceSurface !== undefined
+				? { sourceSurface: input.sourceSurface }
+				: {}),
 		};
 
 		if (!hasCompleteInspectContext(context) || !input.workItemId.trim()) {
@@ -442,7 +444,7 @@ export class DrenyraFiscalCommandCenterService {
 			title: input.title,
 			summary: input.summary,
 			source: input.source,
-			sourceRef: input.sourceRef,
+			...(input.sourceRef !== undefined ? { sourceRef: input.sourceRef } : {}),
 			contentHash,
 			addedBy: context.userId,
 			createdAt: nowIso(),
@@ -664,7 +666,7 @@ export class DrenyraFiscalCommandCenterService {
 		input: RecordCapabilityDecisionInput,
 	): Promise<AuditEvent> {
 		return this.writeAuditEvent(context, {
-			caseId: input.caseId,
+			...(input.caseId !== undefined ? { caseId: input.caseId } : {}),
 			eventType:
 				input.decision === "allowed"
 					? "CAPABILITY_ALLOWED"
@@ -698,7 +700,7 @@ export class DrenyraFiscalCommandCenterService {
 	): Promise<AuditEvent> {
 		const event: AuditEvent = {
 			id: newId("audit"),
-			caseId: input.caseId,
+			...(input.caseId !== undefined ? { caseId: input.caseId } : {}),
 			scope: makeScope(context),
 			eventType: input.eventType,
 			actorId: context.userId,

@@ -83,15 +83,15 @@ export interface BankAccountProps {
 	accountNumber: string;
 	accountType: BankAccountType;
 	currency: Currency;
-	accountingAccountId?: string; // Link to chart of accounts
+	accountingAccountId?: string | undefined; // Link to chart of accounts
 	initialBalance: Money;
 	currentBalance: Money;
-	cci?: string; // Código de Cuenta Interbancaria (20 digits)
-	swiftCode?: string;
+	cci?: string | undefined; // Código de Cuenta Interbancaria (20 digits)
+	swiftCode?: string | undefined;
 	providerId?: string | null; // External bank provider reference
 	lastSyncAt?: Date | null; // Last provider sync timestamp
 	isActive: boolean;
-	notes?: string;
+	notes?: string | undefined;
 	createdAt: Date;
 	updatedAt: Date;
 }

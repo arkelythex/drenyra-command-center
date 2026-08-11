@@ -76,7 +76,7 @@ export const resolvePolicyDecision = ({
 	const allowedTools = lookupAllowedToolsForCapability({
 		registryEntry,
 		requestedCapability,
-		capabilityToolMatrix,
+		...(capabilityToolMatrix !== undefined ? { capabilityToolMatrix } : {}),
 	});
 
 	if (!allowedTools.includes(requestedTool)) {

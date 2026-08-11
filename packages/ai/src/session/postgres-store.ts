@@ -92,9 +92,10 @@ export class PostgresSessionStore implements SessionStore {
 				.where(eq(agentRunStates.runId, runId))
 				.limit(1);
 
-			if (rows.length === 0) return null;
+			const row = rows[0];
+			if (!row) return null;
 
-			return this.mapToAgentRunState(rows[0]);
+			return this.mapToAgentRunState(row);
 		} catch (cause) {
 			throw new SessionStoreError(`Failed to get run state: ${runId}`, cause);
 		}
@@ -293,9 +294,9 @@ export class PostgresSessionStore implements SessionStore {
 				.where(eq(agentRunInputs.runId, runId))
 				.limit(1);
 
-			if (rows.length === 0) return null;
-
 			const row = rows[0];
+			if (!row) return null;
+
 			return {
 				runId: row.runId,
 				inputType: row.inputType,

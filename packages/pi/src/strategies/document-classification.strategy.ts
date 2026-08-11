@@ -41,7 +41,7 @@ export interface ClassificationResult {
 	documentId: string;
 	detectedType: DetectedDocType;
 	detectedFormat: DetectedFormat;
-	sunatType?: string;
+	sunatType?: string | undefined;
 	confidence: number;
 	completenessScore: number;
 	missingFields: string[];
@@ -163,9 +163,12 @@ function detectSunatType(
 			const matches = Object.entries(SUNAT_SERIES_PATTERNS)
 				.filter(([key]) => prefix.startsWith(key))
 				.sort(([a], [b]) => b.length - a.length);
-			if (matches.length > 0) {
-				return { type: matches[0][1], confidence: 0.9 };
+		if (matches.length > 0) {
+			const bestMatch = matches[0];
+			if (bestMatch) {
+				return { type: bestMatch[1], confidence: 0.9 };
 			}
+		}
 		}
 	}
 
@@ -225,24 +228,30 @@ function classifyByContent(text: string): {
 	// Sort by score descending
 	scores.sort((a, b) => b.score - a.score);
 
+	const top = scores[0];
+	if (!top) {
+		return { type: "unknown", confidence: 0, method: "no_keywords_matched" };
+	}
+
 	// If top score is 0, unknown
-	if (scores[0].score === 0) {
+	if (top.score === 0) {
 		return { type: "unknown", confidence: 0, method: "no_keywords_matched" };
 	}
 
 	// Check if top score clearly beats second
-	if (scores.length > 1 && scores[0].score > scores[1].score * 1.5) {
+	const second = scores[1];
+	if (second && top.score > second.score * 1.5) {
 		return {
-			type: scores[0].type,
-			confidence: scores[0].score,
+			type: top.type,
+			confidence: top.score,
 			method: "keyword_match",
 		};
 	}
 
 	// Close race — return top but lower confidence
 	return {
-		type: scores[0].type,
-		confidence: scores[0].score * 0.7,
+		type: top.type,
+		confidence: top.score * 0.7,
 		method: "keyword_match_low_confidence",
 	};
 }

@@ -12,7 +12,7 @@
  */
 
 import type { Actor, FiscalScope, Timestamp } from "./types";
-import { FeosError, generateId, nowTimestamp } from "./types";
+import { generateId, nowTimestamp } from "./types";
 import type { ToolRiskLevel } from "./tool-contract";
 
 // ============================================================================
@@ -83,15 +83,15 @@ export interface AutomationProps {
   /** Who created the automation. */
   createdBy: Actor;
   /** Execution parameters. */
-  params?: Record<string, unknown>;
+  params?: Record<string, unknown> | undefined;
   /** Notification recipients on failure. */
-  notifyOnFailure?: string[];
+  notifyOnFailure?: string[] | undefined;
   /** Maximum retries on failure. */
   maxRetries: number;
   /** Last execution timestamp. */
-  lastExecutedAt?: Timestamp;
+  lastExecutedAt?: Timestamp | undefined;
   /** Last error message. */
-  lastError?: string;
+  lastError?: string | undefined;
   /** Timestamps. */
   createdAt: Timestamp;
   updatedAt: Timestamp;

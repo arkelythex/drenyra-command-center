@@ -68,7 +68,7 @@ export interface LayoutProps {
   rightPanelOpen: boolean;
   densityMode: DensityMode;
   isTemplate: boolean;
-  workspaceId?: string;
+  workspaceId?: string | undefined;
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }

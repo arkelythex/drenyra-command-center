@@ -6,8 +6,8 @@
  * Validates: debits = credits per entry.
  */
 import { journalEntries, journalEntryLines } from "@drenyra/persistence/schema";
-import { eq, and, sql } from "drizzle-orm";
-import type { DrizzleClient } from "@drenyra/persistence";
+import { eq, and } from "drizzle-orm";
+import type { DbTransaction } from "@drenyra/persistence/unit-of-work";
 
 // ─── Input types ────────────────────────────────────────────────────────────
 
@@ -49,7 +49,7 @@ export class JournalEntryPostingService {
    * @throws Error if debits != credits
    */
   async post(
-    tx: DrizzleClient,
+    tx: DbTransaction,
     params: PostJournalEntryParams,
   ): Promise<PostedJournalEntry> {
     // ─── Validate debits = credits ──────────────────────────────────
@@ -70,7 +70,7 @@ export class JournalEntryPostingService {
     const [entry] = await tx
       .insert(journalEntries)
       .values({
-        companyId: params.companyId as any,
+        companyId: params.companyId,
         entryNumber: params.entryNumber,
         periodKey: params.periodKey,
         date: new Date(params.date),
@@ -98,7 +98,7 @@ export class JournalEntryPostingService {
       id: entry.id,
       entryNumber: entry.entryNumber,
       periodKey: entry.periodKey,
-      date: entry.date instanceof Date ? entry.date.toISOString().split("T")[0] : String(entry.date),
+      date: entry.date instanceof Date ? entry.date.toISOString().slice(0, 10) : String(entry.date),
       gloss: entry.gloss,
       status: entry.status,
     };
@@ -113,7 +113,7 @@ export class JournalEntryPostingService {
    * @returns The next entry number (MAX(entry_number) + 1 or 1 if no entries)
    */
   async nextEntryNumber(
-    tx: DrizzleClient,
+    tx: DbTransaction,
     companyId: string,
     periodKey: string,
   ): Promise<string> {
@@ -122,7 +122,7 @@ export class JournalEntryPostingService {
       .from(journalEntries)
       .where(
         and(
-          eq(journalEntries.companyId, companyId as any),
+          eq(journalEntries.companyId, companyId),
           eq(journalEntries.periodKey, periodKey),
         ),
       );
@@ -135,7 +135,7 @@ export class JournalEntryPostingService {
     let maxNum = 0;
     for (const row of rows) {
       const match = row.entryNumber.match(/AS-(\d+)/);
-      if (match) {
+      if (match && match[1]) {
         const num = parseInt(match[1], 10);
         if (num > maxNum) maxNum = num;
       }

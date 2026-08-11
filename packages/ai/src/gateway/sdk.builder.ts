@@ -21,7 +21,11 @@ export class ChatRequestBuilder {
 		userId: string,
 		provider?: ChatCompletionRequest["provider"],
 	) {
-		this.request = { model, messages: [], provider };
+		this.request = {
+			model,
+			messages: [],
+			...(provider !== undefined ? { provider } : {}),
+		};
 		this.organizationId = organizationId;
 		this.userId = userId;
 	}

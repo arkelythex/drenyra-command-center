@@ -60,12 +60,12 @@ export function createDfasItemStreamEntry(
 	return {
 		id: input.id,
 		threadId: input.threadId,
-		turnId: input.turnId,
+		...(input.turnId !== undefined ? { turnId: input.turnId } : {}),
 		sequence: input.sequence,
 		itemType: input.itemType,
 		fiscalScope: input.fiscalScope,
 		payload: input.payload,
-		traceId: input.traceId,
+		...(input.traceId !== undefined ? { traceId: input.traceId } : {}),
 		protocolVersion: DFAS_PROTOCOL_VERSION,
 		createdAt: input.createdAt ?? new Date().toISOString(),
 	};

@@ -7,7 +7,7 @@
 import { accountingPeriods } from "@drenyra/persistence/schema";
 import { AccountingPeriod } from "@drenyra/domain/accounting/accounting-period";
 import { eq, and } from "drizzle-orm";
-import type { DrizzleClient } from "@drenyra/persistence";
+import type { DbTransaction } from "@drenyra/persistence/unit-of-work";
 
 export interface ClosePeriodParams {
   companyId: string;
@@ -24,7 +24,7 @@ export class PeriodCloseService {
    * @throws InvalidAccountingPeriodError if params are invalid
    */
   async closeFinal(
-    tx: DrizzleClient,
+    tx: DbTransaction,
     params: ClosePeriodParams,
   ): Promise<void> {
     // Uses AccountingPeriod VO for validation

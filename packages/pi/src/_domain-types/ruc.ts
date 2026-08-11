@@ -21,7 +21,6 @@
  */
 
 import { InvalidRUCError } from "../errors/InvalidRUCError";
-import type { TaxIdentifier } from "../types/domain/tax-identifier";
 
 /**
  * Clase inmutable que encapsula un RUC válido.

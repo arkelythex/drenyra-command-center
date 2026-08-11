@@ -34,8 +34,8 @@ export function buildQueryResult(
 		confianza: classification.confidence,
 		fuentes: options?.fuentes ?? [],
 		evidenceArtifacts: options?.evidenceRefs ?? [],
-		error: options?.error,
-		sugerencia: options?.sugerencia,
+		...(options?.error !== undefined ? { error: options.error } : {}),
+		...(options?.sugerencia !== undefined ? { sugerencia: options.sugerencia } : {}),
 	};
 }
 
@@ -56,6 +56,6 @@ export function buildErrorResponse(
 		fuentes: [],
 		evidenceArtifacts: [],
 		error,
-		sugerencia,
+		...(sugerencia !== undefined ? { sugerencia } : {}),
 	};
 }

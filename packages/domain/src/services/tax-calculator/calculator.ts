@@ -155,7 +155,7 @@ export function calculateInvoiceBreakdown(params: {
 		base: baseAmount,
 		igv,
 		total,
-		detraccion,
+		...(detraccion !== undefined ? { detraccion } : {}),
 		netToPay,
 	};
 }

@@ -40,17 +40,29 @@ export interface Organization {
 export interface User {
 	id: string;
 	organizationId: number;
+	email: string;
+	password: string;
+	name: string;
+	role: string;
+	companyId: string | null;
+	avatarUrl: string | null;
+	isActive: boolean | null;
+	createdAt: Date;
+	updatedAt: Date;
 	[key: string]: unknown;
 }
 
 async function loadAuthDeps() {
 	const [clerk, drizzle, nextNav, dbModule, schemaModule, errorsModule] =
 		await Promise.all([
+			// @ts-expect-error — Clerk/Next.js modules are web-app-only and absent from this repo; loaded lazily at runtime.
 			import("@clerk/nextjs/server"),
 			import("drizzle-orm"),
+			// @ts-expect-error — Next.js module is web-app-only and absent from this repo; loaded lazily at runtime.
 			import("next/navigation"),
 			import("@drenyra/persistence"),
 			import("@drenyra/persistence/schema"),
+			// @ts-expect-error — Web alias `@/shared/errors` is web-app-only and absent from this repo; loaded lazily at runtime.
 			import("@/shared/errors"),
 		]);
 
@@ -209,7 +221,8 @@ export async function syncUserFromClerk(clerkUserId: string) {
 
 	const email =
 		clerkUser.emailAddresses.find(
-			(e) => e.id === clerkUser.primaryEmailAddressId,
+			(e: { id: string; emailAddress: string }) =>
+				e.id === clerkUser.primaryEmailAddressId,
 		)?.emailAddress || "";
 
 	const name =
@@ -225,7 +238,6 @@ export async function syncUserFromClerk(clerkUserId: string) {
 			.set({
 				email,
 				name,
-				lastLoginAt: new Date(),
 			})
 			.where(eq(users.id, clerkUserId))
 			.returning();
@@ -251,7 +263,7 @@ export async function syncUserFromClerk(clerkUserId: string) {
  */
 export async function createUserWithOrganization(
 	clerkUserId: string,
-	organizationId: number,
+	_organizationId: number,
 	role: "owner" | "senior" | "junior" | "client" = "owner",
 ) {
 	const { db, users } = await loadAuthDeps();
@@ -259,7 +271,8 @@ export async function createUserWithOrganization(
 
 	const email =
 		clerkUser.emailAddresses.find(
-			(e) => e.id === clerkUser.primaryEmailAddressId,
+			(e: { id: string; emailAddress: string }) =>
+				e.id === clerkUser.primaryEmailAddressId,
 		)?.emailAddress || "";
 
 	const name =
@@ -269,11 +282,9 @@ export async function createUserWithOrganization(
 		.insert(users)
 		.values({
 			id: clerkUserId,
-			organizationId,
 			email,
 			name,
 			role,
-			lastLoginAt: new Date(),
 		})
 		.returning();
 

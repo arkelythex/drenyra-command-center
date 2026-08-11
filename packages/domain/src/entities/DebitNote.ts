@@ -46,8 +46,8 @@ export interface DebitNoteProps {
 	series: DocumentSeries;
 	number: number;
 	status: DebitNoteStatus;
-	sunatResponseCode?: string;
-	sentToSunatAt?: Date;
+	sunatResponseCode?: string | undefined;
+	sentToSunatAt?: Date | undefined;
 	issueDate: Date;
 	createdAt: Date;
 	updatedAt: Date;

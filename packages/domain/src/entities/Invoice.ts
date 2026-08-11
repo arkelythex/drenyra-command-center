@@ -100,18 +100,18 @@ export interface InvoiceProps {
 	series: DocumentSeries;
 	number: number;
 	issueDate: Date;
-	dueDate?: Date;
+	dueDate?: Date | undefined;
 	clientName: string;
 
 	// ── Generic buyer tax ID (country-agnostic) ──
 	/** Generic buyer tax identifier. Preferred over clientRUC/clientDNI. */
-	buyerTaxId?: TaxIdentifier;
+	buyerTaxId?: TaxIdentifier | undefined;
 	/** @deprecated Use buyerTaxId instead. */
-	clientRUC?: RUC;
+	clientRUC?: RUC | undefined;
 	/** @deprecated Use buyerTaxId instead. */
-	clientDNI?: DNI;
+	clientDNI?: DNI | undefined;
 
-	clientAddress?: string;
+	clientAddress?: string | undefined;
 	baseAmount: Money;
 
 	// ── Generic tax amount (IGV in PE, IVA in MX/AR, VAT in CL) ──
@@ -128,13 +128,13 @@ export interface InvoiceProps {
 	fiscalStatus?: FiscalStatus;
 
 	items: InvoiceItem[];
-	notes?: string;
+	notes?: string | undefined;
 
 	// ── Legacy SUNAT fields ──
 	/** @deprecated Will be abstracted behind TaxAuthorityPort. */
-	sunatResponseCode?: string;
+	sunatResponseCode?: string | undefined;
 	/** @deprecated Will be abstracted behind TaxAuthorityPort. */
-	sentToSunatAt?: Date;
+	sentToSunatAt?: Date | undefined;
 
 	createdAt: Date;
 	updatedAt: Date;

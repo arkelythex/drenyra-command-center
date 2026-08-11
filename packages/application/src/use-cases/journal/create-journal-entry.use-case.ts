@@ -74,9 +74,15 @@ export class CreateJournalEntryUseCase {
 					description: lineDTO.description,
 					debit: Money.fromAmount(lineDTO.debit, "PEN"),
 					credit: Money.fromAmount(lineDTO.credit, "PEN"),
-					documentType: lineDTO.documentType,
-					documentNumber: lineDTO.documentNumber,
-					dueDate: lineDTO.dueDate,
+					...(lineDTO.documentType !== undefined
+						? { documentType: lineDTO.documentType }
+						: {}),
+					...(lineDTO.documentNumber !== undefined
+						? { documentNumber: lineDTO.documentNumber }
+						: {}),
+					...(lineDTO.dueDate !== undefined
+						? { dueDate: lineDTO.dueDate }
+						: {}),
 				});
 			}),
 		);

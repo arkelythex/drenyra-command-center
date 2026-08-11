@@ -302,8 +302,16 @@ export class ModelRouter {
       return tierOrder[a.tier] - tierOrder[b.tier];
     });
 
-    const selected = sorted[0];
-
+        const selected = sorted[0];
+        if (selected === undefined) {
+          // Unreachable: candidates.length === 0 throws above and sorted is a copy.
+          throw new FeosError(
+            "NO_SUITABLE_MODEL",
+            `No available model supports risk level "${input.riskLevel}"`,
+            { riskLevel: input.riskLevel },
+          );
+        }
+    
     // Check budget
     const inputCost = selected.pricing.costPer1MInput;
     const outputCost = selected.pricing.costPer1MOutput;

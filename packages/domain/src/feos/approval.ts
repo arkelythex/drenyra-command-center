@@ -92,7 +92,7 @@ export interface ApprovalRequestProps {
   /** The candidate input that was reviewed (frozen at request time). */
   candidateInput: unknown;
   /** The expected output (optional, for verification). */
-  expectedOutput?: unknown;
+  expectedOutput?: unknown | undefined;
   /** Fiscal scope. */
   scope: FiscalScope;
   /** Who requested the approval. */
@@ -102,27 +102,27 @@ export interface ApprovalRequestProps {
   /** Approval steps (single or multi-step). */
   steps: ApprovalStep[];
   /** Evidence root ID if evidence was attached. */
-  evidenceRootId?: string;
+  evidenceRootId?: string | undefined;
   /** Trace ID for correlation. */
   traceId: string;
   /** Materiality amount if applicable. */
-  amount?: number;
+  amount?: number | undefined;
   /** Currency for amount. */
-  currency?: string;
+  currency?: string | undefined;
   /** Deadline for approval. */
-  deadline?: Timestamp;
+  deadline?: Timestamp | undefined;
   /** When the request was created. */
   createdAt: Timestamp;
   /** When the request was last updated. */
   updatedAt: Timestamp;
   /** When the request was resolved (approved/rejected). */
-  resolvedAt?: Timestamp;
+  resolvedAt?: Timestamp | undefined;
   /** Whether this request has expired. */
   expired: boolean;
   /** Tags for filtering. */
-  tags?: string[];
+  tags?: string[] | undefined;
   /** Metadata. */
-  metadata?: Record<string, unknown>;
+  metadata?: Record<string, unknown> | undefined;
 }
 
 // ============================================================================
@@ -164,7 +164,7 @@ export class ApprovalRequest {
       assignedTo: input.assignedTo,
     };
 
-    const steps = input.riskLevel === "R3" && input.amount && input.amount > 10000
+    const steps: ApprovalStep[] = input.riskLevel === "R3" && input.amount && input.amount > 10000
       ? [
           step,
           {
@@ -323,7 +323,7 @@ export class ApprovalRequest {
   /**
    * Cancel the approval request (only possible if still pending).
    */
-  cancel(actor: Actor): ApprovalRequest {
+  cancel(_actor: Actor): ApprovalRequest {
     if (this.props.status !== "pending") {
       throw new FeosError(
         "APPROVAL_NOT_PENDING",

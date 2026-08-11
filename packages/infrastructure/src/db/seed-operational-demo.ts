@@ -112,6 +112,13 @@ function buildInvoiceNumber(correlative: number) {
 	return `F001-${String(correlative).padStart(8, "0")}`;
 }
 
+function requiredSeedRow<T>(value: T | undefined, what: string): T {
+	if (value === undefined) {
+		throw new Error(`Seed data missing: ${what}`);
+	}
+	return value;
+}
+
 /**
  * seedOperationalDemoData operation.
  *
@@ -244,7 +251,7 @@ export async function seedOperationalDemoData(
 			products.map((product) => ({
 				companyId,
 				productId: product.id,
-				warehouseId: warehouses[0].id,
+				warehouseId: requiredSeedRow(warehouses[0], "warehouse CO-001").id,
 				quantity: product.stockQuantity ?? "0",
 				minStock: product.minStock ?? "6",
 				maxStock: product.maxStock ?? "48",
@@ -259,8 +266,8 @@ export async function seedOperationalDemoData(
 		await tx.insert(schema.inventoryMovements).values([
 			{
 				companyId,
-				productId: productByKey.scanner.id,
-				warehouseId: warehouses[0].id,
+				productId: requiredSeedRow(productByKey.scanner, "product scanner").id,
+				warehouseId: requiredSeedRow(warehouses[0], "warehouse CO-001").id,
 				type: "IN",
 				quantity: "24",
 				unitCost: "1190.00",
@@ -272,8 +279,8 @@ export async function seedOperationalDemoData(
 			},
 			{
 				companyId,
-				productId: productByKey.scanner.id,
-				warehouseId: warehouses[1].id,
+				productId: requiredSeedRow(productByKey.scanner, "product scanner").id,
+				warehouseId: requiredSeedRow(warehouses[1], "warehouse CO-002").id,
 				type: "OUT",
 				quantity: "4",
 				unitCost: "1190.00",
@@ -388,7 +395,10 @@ export async function seedOperationalDemoData(
 
 					return {
 						companyId,
-						customerId: partnerByKey[invoice.customerKey].id,
+						customerId: requiredSeedRow(
+						partnerByKey[invoice.customerKey],
+						`partner ${invoice.customerKey}`,
+					).id,
 						invoiceNumber: buildInvoiceNumber(invoice.correlative),
 						series: "F001",
 						correlative: invoice.correlative,
@@ -422,8 +432,14 @@ export async function seedOperationalDemoData(
 
 		await tx.insert(schema.invoiceItems).values(
 			invoices.map((invoice, index) => {
-				const blueprint = invoiceBlueprints[index];
-				const product = productByKey[blueprint.productKey];
+				const blueprint = requiredSeedRow(
+					invoiceBlueprints[index],
+					`invoice blueprint at index ${index}`,
+				);
+				const product = requiredSeedRow(
+					productByKey[blueprint.productKey],
+					`product ${blueprint.productKey}`,
+				);
 				const totals = totalsFromSubtotal(blueprint.subtotal);
 
 				return {
@@ -452,7 +468,10 @@ export async function seedOperationalDemoData(
 
 				const transaction: TransactionInsert = {
 					companyId,
-					partnerId: partnerByKey[invoice.customerKey].id,
+					partnerId: requiredSeedRow(
+					partnerByKey[invoice.customerKey],
+					`partner ${invoice.customerKey}`,
+				).id,
 					type: "INCOME" as const,
 					documentType: "FACTURA" as const,
 					series: "F001",
@@ -524,7 +543,10 @@ export async function seedOperationalDemoData(
 
 					return {
 						companyId,
-						vendorId: partnerByKey[bill.vendorKey].id,
+						vendorId: requiredSeedRow(
+						partnerByKey[bill.vendorKey],
+						`partner ${bill.vendorKey}`,
+					).id,
 						billNumber: bill.billNumber,
 						issueDate,
 						dueDate: monthDate(now, bill.monthOffset, bill.day + 10),
@@ -542,8 +564,14 @@ export async function seedOperationalDemoData(
 
 		await tx.insert(schema.billItems).values(
 			bills.map((bill, index) => {
-				const blueprint = billBlueprints[index];
-				const product = productByKey[blueprint.productKey];
+				const blueprint = requiredSeedRow(
+					billBlueprints[index],
+					`bill blueprint at index ${index}`,
+				);
+				const product = requiredSeedRow(
+					productByKey[blueprint.productKey],
+					`product ${blueprint.productKey}`,
+				);
 				const totals = totalsFromSubtotal(blueprint.subtotal);
 
 				return {
@@ -590,7 +618,7 @@ export async function seedOperationalDemoData(
 			isDefault: false,
 		});
 
-		const primaryAccountId = mainAccount[0].id;
+		const primaryAccountId = requiredSeedRow(mainAccount[0], "main bank account").id;
 		let runningBalance = 92400.4;
 		const bankTransactionBlueprints = [
 			{
@@ -665,19 +693,20 @@ export async function seedOperationalDemoData(
 					entry.type === "CREDIT" ? entry.amount : -entry.amount;
 				const invoiceId =
 					"invoiceIndex" in entry && entry.invoiceIndex !== null
-						? invoices[entry.invoiceIndex].id
+						? requiredSeedRow(invoices[entry.invoiceIndex], "invoice row").id
 						: null;
 				const billId =
 					"billIndex" in entry && entry.billIndex !== null
-						? bills[entry.billIndex].id
+						? requiredSeedRow(bills[entry.billIndex], "bill row").id
 						: null;
 
 				return {
 					companyId,
 					accountId: primaryAccountId,
-					transactionDate: monthDate(now, entry.monthOffset, entry.day)
-						.toISOString()
-						.split("T")[0],
+					transactionDate:
+						monthDate(now, entry.monthOffset, entry.day)
+							.toISOString()
+							.split("T")[0] ?? "",
 					description: entry.description,
 					reference: `BTX-${entry.day}-${entry.type}`,
 					type: entry.type,

@@ -105,9 +105,9 @@ export interface DocumentProps {
 	confidenceLevel?: ConfidenceLevel;
 
 	// Validation
-	validatedBy?: string; // User ID of accountant
-	validatedAt?: Date;
-	validationNotes?: string;
+	validatedBy?: string | undefined; // User ID of accountant
+	validatedAt?: Date | undefined;
+	validationNotes?: string | undefined;
 
 	// Accounting
 	accountingEntryId?: string;

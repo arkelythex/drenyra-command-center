@@ -94,8 +94,8 @@ export async function classifyWithAI(
 			kind: parsed.kind ?? "unknown",
 			confidence: parsed.confidence ?? 0.5,
 			extracted: {
-				ruc: parsed.ruc ?? undefined,
-				periodo: parsed.periodo ?? undefined,
+				...(parsed.ruc != null ? { ruc: parsed.ruc } : {}),
+				...(parsed.periodo != null ? { periodo: parsed.periodo } : {}),
 				keywords: parsed.keywords ?? [],
 			},
 		};

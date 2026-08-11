@@ -73,18 +73,18 @@ export interface BankTransactionProps {
 	bankAccountId: number;
 	transactionDate: Date;
 	description: string;
-	reference?: string;
+	reference?: string | undefined;
 	type: BankTransactionType;
 	amount: Money;
-	balanceAfter?: Money;
+	balanceAfter?: Money | undefined;
 	source?: TransactionSource;
 	externalId?: string | null;
 	reconciliationBatchId?: string | null;
 	isReconciled: boolean;
-	reconciledAt?: Date;
-	reconciliationId?: number;
-	journalEntryId?: string;
-	importBatch?: string;
+	reconciledAt?: Date | undefined;
+	reconciliationId?: number | undefined;
+	journalEntryId?: string | undefined;
+	importBatch?: string | undefined;
 	createdAt: Date;
 	updatedAt: Date;
 }

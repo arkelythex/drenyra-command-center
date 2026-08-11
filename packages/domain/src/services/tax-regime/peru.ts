@@ -292,6 +292,12 @@ export class PeruGeneralRegime implements TaxRegime {
 
 		const netToPay = detraccion ? total.subtract(detraccion) : total;
 
-		return { base: baseAmount, igv, total, detraccion, netToPay };
+		return {
+			base: baseAmount,
+			igv,
+			total,
+			...(detraccion !== undefined ? { detraccion } : {}),
+			netToPay,
+		};
 	}
 }

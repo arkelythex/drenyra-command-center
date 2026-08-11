@@ -136,7 +136,7 @@ export interface ProviderHealth {
 	totalRequests: number;
 	failedRequests: number;
 	avgLatencyMs: number;
-	lastUsed?: Date;
+	lastUsed?: Date | undefined;
 }
 
 /**
