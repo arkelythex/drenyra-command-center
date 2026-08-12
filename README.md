@@ -13,12 +13,26 @@
 [![Status](https://img.shields.io/badge/Status-Active-22c55e)](#)
 [![Tests](https://img.shields.io/badge/Tests-209_passing-22c55e)](#)
 [![Stack](https://img.shields.io/badge/TypeScript-Bun-3178c6)](#)
-[![License](https://img.shields.io/badge/License-MIT-yellow)](#)
+[![License](https://img.shields.io/badge/License-Proprietary-red)](#)
 
 > **Private commercial product.** This repository and the Drenyra ecosystem
 > (`drenyra-engram`, `drenyra-ai`, `drenyra-pi`) are **private**. Distribution
 > of artifacts (container images, releases, packages) is contractual, never
 > public. See [Private Product Policy](docs/products/private-product-policy.md).
+
+---
+
+### Drenyra Dominion Program
+
+The ecosystem is governed by the **Drenyra Dominion Program**, a federated program master: one master SDD fixes vision, authority, contracts, dependencies, gates, and sequencing, while vertical SDDs deliver complete capabilities across the repositories they need. Each repository keeps its own implementation, versioning, and tests, and holds only its local changes plus a reference to the master — full specs are never copied into participant repos, so they never diverge. See the [program master](https://github.com/arkelythex/drenyra-ai/tree/main/openspec/programs/drenyra-dominion).
+
+| SDD | Role for Command Center |
+| --- | --- |
+| SDD-100 — Professional Command Center | Web UI projection of the Core (Wave 3 flagship product) |
+| SDD-060 — Multi-Operator Control Plane | Org-scoped views and approval chains for firms and internal teams |
+| SDD-050 — Peruvian Monthly Close | The first complete vertical the UI projects: ERP/SIRE/banks → verifiable close |
+
+**Command Center is a projection of the Core — never a second authority.** It renders only `status` and `nextTransition` from `drenyra-ai` and never reconstructs the state machine.
 
 ---
 
