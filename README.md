@@ -1,3 +1,11 @@
+<div align="center">
+
+<img width="1200" alt="Drenyra flow — operator → command-center planes → dual approval → receipt" src="assets/branding/drenyra-command-center-flow-banner.svg" />
+
+<p><code>operator → command-center planes → dual approval → receipt</code></p>
+
+</div>
+
 # Drenyra — Verifiable Financial Engineering Operating System
 
 > **Drenyra is the verifiable financial operating system for businesses, accountants, and governments across Latin America.**
