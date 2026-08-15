@@ -15,10 +15,12 @@
 [![Stack](https://img.shields.io/badge/TypeScript-Bun-3178c6)](#)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](#)
 
-> **Private commercial product.** This repository and the Drenyra ecosystem
-> (`drenyra-engram`, `drenyra-ai`, `drenyra-pi`) are **private**. Distribution
-> of artifacts (container images, releases, packages) is contractual, never
-> public. See [Private Product Policy](docs/products/private-product-policy.md).
+> **Private commercial product.** This repository is **private**. The ecosystem
+> members `drenyra-engram`, `drenyra-ai`, and `drenyra-pi` are **publicly
+> visible** source under the Drenyra open-core transition intention (intention,
+> not contractual promise), while commercial artifacts (container images,
+> releases, packages) and services remain contractual and never public. See
+> [Private Product Policy](docs/products/private-product-policy.md).
 
 ---
 
