@@ -138,7 +138,7 @@ export function generateReceiptKeyPair(keyId?: string): ReceiptKeyPair {
 export function signReceipt(
 	content: ReceiptContent,
 	privateKeyBase64: string,
-	keyId: string,
+	_keyId: string,
 ): { signature: string; canonicalPayload: string } {
 	const canonicalPayload = sortedStringify(
 		content as unknown as Record<string, unknown>,
