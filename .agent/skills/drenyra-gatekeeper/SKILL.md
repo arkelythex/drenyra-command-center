@@ -1,5 +1,5 @@
 ---
-name: drenyra-drenyra-gatekeeper
+name: drenyra-gatekeeper
 description: "Trigger: gatekeeper, phase-gate, validation, pipeline-gate, gate. Guide AI agents when working with phase gatekeepers in Drenyra's fiscal compliance pipeline. Gatekeepers valid..."
 license: MIT
 metadata:

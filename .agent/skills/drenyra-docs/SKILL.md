@@ -1,5 +1,5 @@
 ---
-name: drenyra-drenyra-docs
+name: drenyra-docs
 description: "Trigger: docs, documentation, diataxis, cognitive-load, markdown, doc, readme. Drenyra documentation standards following the Gentleman Philosophy: cognitive load reduction, warm teaching, p..."
 license: MIT
 metadata:
