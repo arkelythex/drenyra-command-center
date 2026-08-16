@@ -1,18 +1,13 @@
 {
   "name": "@drenyra/pi",
   "version": "1.0.0-alpha.1",
-  "description": "Drenyra Pi \u2014 Agent harness for Peruvian fiscal intelligence. SDK for building fiscal AI agents with SDD, memory, and compliance pipelines.",
+  "description": "Drenyra fiscal intelligence SDK — FSD phase engine, strategies, Mastra agents, and HTTP serve. The Pi agent harness ships separately as the standalone drenyra-pi package.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "src",
-    "extensions",
-    "prompts",
-    "skills",
-    "contracts",
-    "themes",
     "scripts",
     "!src/**/*.test.ts",
     "!src/**/__tests__/**"
@@ -23,14 +18,13 @@
     "./strategies": "./dist/strategies/index.js"
   },
   "scripts": {
-    "postinstall": "node scripts/postinstall.mjs",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "serve": "bun src/serve.ts",
     "hooks:install": "bash scripts/install-hooks.sh",
     "test:watch": "vitest",
-    "prepublishOnly": "echo 'Private package \u2014 not published to npm'; exit 1"
+    "prepublishOnly": "echo 'Private package — not published to npm'; exit 1"
   },
   "keywords": [
     "drenyra",
@@ -43,20 +37,6 @@
     "pi-package"
   ],
   "license": "MIT",
-  "pi": {
-    "extensions": [
-      "./extensions"
-    ],
-    "prompts": [
-      "./prompts"
-    ],
-    "skills": [
-      "./skills"
-    ],
-    "themes": [
-      "./themes"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/arkelythex/drenyra-command-center.git"
@@ -76,7 +56,7 @@
     "hono": "^4.12.27",
     "yaml": "^2.9.0",
     "zod": "^4.3.5",
-    "drenyra-ai": "file:../../vendored/drenyra-ai-0.2.0.tgz"
+    "drenyra-ai": "file:../../vendored/drenyra-ai-0.4.1.tgz"
   },
   "devDependencies": {
     "@types/bun": "^1.3.14",
