@@ -51,6 +51,7 @@ Esta sección contiene la documentación canónica que define qué es Drenyra, c
 | [canonical-stack](./01-foundation/canonical-stack.md) | Drenyra no se construye con un solo lenguaje ni con microservicios desde el día uno. |
 | [capability-map](./01-foundation/capability-map.md) | Cada capability es un nodo en el roadmap. Solo recibe un SDD cuando está cerca de ejecución. |
 | [drenyra-ai-aos](./01-foundation/drenyra-ai-aos.md) | **Drenyra-AI es el sistema operativo verificable para agentes contables. Coordina personas e IA, aplica políticas contab |
+| [drenyra-ecosystem-constitution](./01-foundation/drenyra-ecosystem-constitution.md) | Constitución de gobernanza del ecosistema Drenyra: taxonomía de repos, autoridad financiera, contratos versionados, calidad, seguridad y roadmap con gates. |
 | [drenyra-engram](./01-foundation/drenyra-engram.md) | **Drenyra-Engram es la memoria institucional y contable verificable de una empresa. Conserva conocimiento operativo: qué |
 | [drenyra-pi-harness](./01-foundation/drenyra-pi-harness.md) | **Drenyra-Pi es el harness Pi-native que convierte Pi en un operador contable disciplinado y verificable.** |
 | [feos-program](./01-foundation/feos-program.md) | CAP-FEOS-00 es el programa paraguas que define Drenyra como el **Financial Engineering Operating System de Latinoamérica |

@@ -49,7 +49,7 @@ export interface FiscalCasePrimitiveData {
 	scope: {
 		companyId: string;
 		companyRuc: string;
-		organizationId?: string;
+		organizationId?: string | undefined;
 		period: string;
 		countryCode: string;
 	};
@@ -87,7 +87,7 @@ export interface EvidenceItemPrimitiveData {
 	scope: {
 		companyId: string;
 		companyRuc: string;
-		organizationId?: string;
+		organizationId?: string | undefined;
 		period: string;
 		countryCode: string;
 	};
@@ -122,7 +122,7 @@ export interface AgentRunPrimitiveData {
 	scope: {
 		companyId: string;
 		companyRuc: string;
-		organizationId?: string;
+		organizationId?: string | undefined;
 		period: string;
 		countryCode: string;
 	};
@@ -159,7 +159,7 @@ export interface ApprovalRequestPrimitiveData {
 	scope: {
 		companyId: string;
 		companyRuc: string;
-		organizationId?: string;
+		organizationId?: string | undefined;
 		period: string;
 		countryCode: string;
 	};
@@ -193,7 +193,7 @@ export interface AuditEventPrimitiveData {
 	scope: {
 		companyId: string;
 		companyRuc: string;
-		organizationId?: string;
+		organizationId?: string | undefined;
 		period: string;
 		countryCode: string;
 	};

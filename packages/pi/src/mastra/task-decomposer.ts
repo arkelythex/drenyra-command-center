@@ -70,12 +70,13 @@ export class TaskDecomposer {
 				goalLower.includes("sunat") ||
 				goalLower.includes("fiscal"))
 		) {
+			const prevStep = steps[steps.length - 1];
 			steps.push({
 				id: stepId(),
 				goal: `Compliance check for: ${goal}`,
 				domain: "regula",
 				tools: ["comply"],
-				dependencies: [steps[steps.length - 1].id],
+				dependencies: prevStep ? [prevStep.id] : [],
 			});
 		}
 
@@ -86,12 +87,13 @@ export class TaskDecomposer {
 			goalLower.includes("insight") ||
 			goalLower.includes("compare")
 		) {
+			const prevStep = steps[steps.length - 1];
 			steps.push({
 				id: stepId(),
 				goal: `Analyze: ${goal}`,
 				domain: "lumen",
 				tools: ["analyze"],
-				dependencies: [steps[steps.length - 1].id],
+				dependencies: prevStep ? [prevStep.id] : [],
 			});
 		}
 
@@ -140,7 +142,8 @@ export class TaskDecomposer {
 					parallelGroups.push(remaining.map((s) => s.id));
 					for (const r of remaining) processed.add(r.id);
 				} else if (remaining.length === 1) {
-					processed.add(remaining[0].id);
+					const only = remaining[0];
+					if (only) processed.add(only.id);
 				}
 			}
 		}

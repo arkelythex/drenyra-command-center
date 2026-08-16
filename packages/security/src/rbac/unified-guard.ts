@@ -10,7 +10,6 @@
 import type { UnifiedRole } from "./unified-roles";
 import {
 	ROLE_HIERARCHY,
-	SPECIAL_ROLE_MAPPINGS,
 	getRoleLevel,
 } from "./unified-roles";
 import type {

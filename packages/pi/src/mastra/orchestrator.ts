@@ -17,7 +17,7 @@ export interface OrchestrationResult {
 		| { success: boolean; error: string };
 	agent: string;
 	/** Lexori regulatory context for fiscal agents */
-	lexoriContext?: LexoriSkillContextResult[];
+	lexoriContext?: LexoriSkillContextResult[] | undefined;
 }
 
 /**
@@ -38,7 +38,7 @@ export class DrenyraOrchestrator {
 	private readonly approvalGate: ApprovalGateEngine;
 	private readonly eventBus: AgentEventBus;
 	private readonly detectIntent: IntentHandler;
-	private swarmOrchestrator?: LatinModernoOrchestrator;
+	private swarmOrchestrator?: LatinModernoOrchestrator | undefined;
 	private swarmMode: "flat" | "hierarchy" = "flat";
 
 	constructor(
@@ -185,8 +185,8 @@ export function createDrenyraOrchestrator(
 	approvalGate: ApprovalGateEngine;
 	eventBus: AgentEventBus;
 	intentDetector: IntentDetector;
-	latinOrchestrator?: LatinModernoOrchestrator;
-	lexoriResolver?: LexoriSkillResolver;
+	latinOrchestrator?: LatinModernoOrchestrator | undefined;
+	lexoriResolver?: LexoriSkillResolver | undefined;
 } {
 	const approvalStore = new ApprovalStore();
 	const eventBus = new AgentEventBus();

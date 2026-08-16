@@ -89,6 +89,11 @@ export class PostgresCloseChecklistRepository
 				notes: data.notes,
 			})
 			.returning();
+		if (row === undefined) {
+			throw new Error(
+				"Failed to persist close checklist: insert returned no row",
+			);
+		}
 		return rowToRecord(row);
 	}
 
@@ -212,6 +217,11 @@ export class PostgresCloseChecklistRepository
 				sortOrder: data.sortOrder,
 			})
 			.returning();
+		if (row === undefined) {
+			throw new Error(
+				"Failed to persist close checklist item: insert returned no row",
+			);
+		}
 		return itemRowToRecord(row);
 	}
 
@@ -261,6 +271,11 @@ export class PostgresCloseChecklistRepository
 				readOnly: data.readOnly,
 			})
 			.returning();
+		if (row === undefined) {
+			throw new Error(
+				"Failed to persist close gate: insert returned no row",
+			);
+		}
 		return gateRowToRecord(row);
 	}
 

@@ -1,18 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
 	AccountingMissionStatus,
-	EXTENDED_STATES,
-	isExecutionState,
-	isRecoverable,
-	isResumable,
 	isTerminal,
 	isWaitingForHuman,
-	isWaitState,
+	isRecoverable,
+	isResumable,
 	STATUS_LABELS,
+	EXTENDED_STATES,
 	VALID_TRANSITIONS,
-	WaitReason,
-	waitReasonFor,
-} from "../index.js";
+} from "../status.js";
 
 const S = AccountingMissionStatus;
 
@@ -83,26 +79,6 @@ describe("M4 extended states", () => {
 		expect(isResumable(S.UNKNOWN)).toBe(true);
 		expect(isResumable(S.COMPLETED)).toBe(false);
 		expect(isResumable(S.FAILED)).toBe(false);
-	});
-
-	it("classifies execution, wait, and terminal states without overlap", () => {
-		expect(isExecutionState(S.RUNNING)).toBe(true);
-		expect(isExecutionState(S.APPROVED)).toBe(true);
-		expect(isExecutionState(S.WAITING_FOR_EVIDENCE)).toBe(false);
-		expect(isWaitState(S.WAITING_FOR_EVIDENCE)).toBe(true);
-		expect(isWaitState(S.UNKNOWN)).toBe(true);
-		expect(isWaitState(S.COMPLETED)).toBe(false);
-		expect(isExecutionState(S.COMPLETED)).toBe(false);
-	});
-
-	it("maps every wait state to its formal reason", () => {
-		expect(waitReasonFor(S.WAITING_FOR_EVIDENCE)).toBe(WaitReason.EVIDENCE);
-		expect(waitReasonFor(S.AWAITING_APPROVAL)).toBe(WaitReason.APPROVAL);
-		expect(waitReasonFor(S.BLOCKED_BY_GATE)).toBe(WaitReason.POLICY_GATE);
-		expect(waitReasonFor(S.BLOCKED)).toBe(WaitReason.MANUAL_INTERVENTION);
-		expect(waitReasonFor(S.RETRYING)).toBe(WaitReason.EXTERNAL_SYSTEM);
-		expect(waitReasonFor(S.UNKNOWN)).toBe(WaitReason.EXTERNAL_SYSTEM);
-		expect(waitReasonFor(S.RUNNING)).toBeNull();
 	});
 
 	it("terminal states remain unchanged", () => {

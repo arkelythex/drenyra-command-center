@@ -16,12 +16,12 @@ export interface ComplianceFinding {
 }
 
 export interface ComplianceContext {
-	readonly tenantId?: string;
-	readonly companyId?: string;
-	readonly ruc?: string;
-	readonly userId?: string;
-	readonly period?: string;
-	readonly traceId?: string;
+	readonly tenantId?: string | undefined;
+	readonly companyId?: string | undefined;
+	readonly ruc?: string | undefined;
+	readonly userId?: string | undefined;
+	readonly period?: string | undefined;
+	readonly traceId?: string | undefined;
 }
 
 export interface ComplianceReportBase {

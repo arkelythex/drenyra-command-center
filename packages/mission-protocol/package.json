@@ -1,7 +1,7 @@
 {
   "name": "@drenyra/mission-protocol",
   "version": "0.1.0",
-  "description": "Canonical mission protocol — ADAPTER SHIM re-exporting drenyra-ai/missions (single authority). Types, schemas, states, commands, events, errors, and versioning. Transport-agnostic.",
+  "description": "Canonical mission protocol — types, schemas, states, commands, events, errors, and versioning. Transport-agnostic.",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -21,9 +21,7 @@
   "devDependencies": {
     "vitest": "^4.0.0"
   },
-  "dependencies": {
-    "drenyra-ai": "file:../../vendored/drenyra-ai-0.2.0.tgz"
-  },
+  "dependencies": {},
   "files": [
     "src"
   ]

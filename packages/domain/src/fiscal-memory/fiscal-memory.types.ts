@@ -164,9 +164,9 @@ export interface FiscalMemoryProps extends FiscalMemoryScope {
 	readonly evidenceRefs: readonly string[];
 	readonly tags: readonly string[];
 	readonly createdBy: string;
-	readonly approvedBy?: string;
-	readonly sourceAgentId?: string;
-	readonly relatedMemoryIds?: readonly string[];
+	readonly approvedBy?: string | undefined;
+	readonly sourceAgentId?: string | undefined;
+	readonly relatedMemoryIds?: readonly string[] | undefined;
 	readonly createdAt: Date;
 	readonly updatedAt: Date;
 }

@@ -124,11 +124,12 @@ export class PostgresEvidenceRepository implements EvidenceRepository {
 			.where(and(eq(evidence.id, id), eq(evidence.companyId, scope.companyId)))
 			.limit(1);
 
-		if (rows.length === 0) {
+		const row = rows[0];
+		if (row === undefined) {
 			return null;
 		}
 
-		return mapRowToDomain(rows[0]);
+		return mapRowToDomain(row);
 	}
 
 	async findForOrganization(
@@ -141,16 +142,17 @@ export class PostgresEvidenceRepository implements EvidenceRepository {
 			.where(
 				and(
 					eq(evidence.id, id),
-					eq(evidence.organizationId, String(organizationId)),
+						eq(evidence.organizationId, String(organizationId)),
 				),
 			)
 			.limit(1);
 
-		if (rows.length === 0) {
+		const row = rows[0];
+		if (row === undefined) {
 			return null;
 		}
 
-		return mapRowToDomain(rows[0]);
+		return mapRowToDomain(row);
 	}
 
 	async findAll(filters?: EvidenceFilters): Promise<Evidence[]> {
@@ -193,18 +195,19 @@ export class PostgresEvidenceRepository implements EvidenceRepository {
 		return rows.map(mapRowToDomain);
 	}
 
-	async findByHash(hash: string): Promise<Evidence | null> {
+		async findByHash(hash: string): Promise<Evidence | null> {
 		const rows = await db
 			.select()
 			.from(evidence)
 			.where(eq(evidence.hash, hash))
 			.limit(1);
 
-		if (rows.length === 0) {
+		const row = rows[0];
+		if (row === undefined) {
 			return null;
 		}
 
-		return mapRowToDomain(rows[0]);
+		return mapRowToDomain(row);
 	}
 
 	async findPendingClassification(limit?: number): Promise<Evidence[]> {

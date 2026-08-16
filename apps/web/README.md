@@ -1,17 +1,17 @@
 ---
-last-verified: 2026-06-20
+last-verified: 2026-08-14
 source-of-truth: apps/web/package.json
 auto-generated: false
 ---
 
-# Drenyra Web — Financial Intelligence SPA
+# Drenyra Web — Financial Command Center SPA
 
-**Última actualización**: 2026-06-20
+**Última actualización**: 2026-08-14
 **Versión**: 0.1.0 | **Stack**: React 19 + Vite + TanStack Router
 
 ---
 
-> 📖 **Referencias**: [Gentleman Philosophy](../../docs/meta/gentleman-philosophy.md) · [Documentation Standards 2026](../../docs/meta/documentation-standards-2026.md)
+> 📖 **Referencias**: [Drenyra Product Philosophy](../../docs/products/drenyra-product-philosophy.md) · [Drenyra Documentation Standards](../../AGENTS.md#documentation-standards-2026-best-practices)
 
 ---
 
@@ -19,16 +19,16 @@ auto-generated: false
 
 Drenyra Web es el agentic fiscal command center de Drenyra — the verifiable financial operating system. Esto es lo que necesitás saber:
 
-| Si venís por...            | Respuesta corta                                                                                         |
-| -------------------------- | ------------------------------------------------------------------------------------------------------- |
-| **¿Qué es?**               | SPA en React 19 para dashboards financieros, facturación, conciliación bancaria e inteligencia fiscal   |
-| **Stack clave**            | React 19 + Vite 8 + TanStack Router + TanStack Query + Tailwind CSS v4 + shadcn/ui                      |
-| **¿Dónde está el código?** | `apps/web/src/` — features en `src/features/`, rutas en `src/routes/`, componentes en `src/components/` |
-| **¿Cómo lo ejecuto?**      | `cd apps/web && bun run dev`                                                                            |
-| **¿Cómo se prueba?**       | `bun run test:run` (Vitest + Testing Library)                                                           |
-| **API**                    | Eden Treaty — tipado extremo a extremo con `@drenyra/api`                                               |
-| **Auth**                   | Better Auth — login en `/login`, session-based con refresh automático                                   |
-| **Diseño**                 | Glass & Steel — dark mode, tokens DTCG en `src/lib/design-tokens/`                                      |
+| Si venís por...            | Respuesta corta                                                                                                 |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **¿Qué es?**               | SPA en React 19 — workspace de misiones contables, evidencia fiscal, firmas/clientes y cumplimiento SUNAT       |
+| **Stack clave**            | React 19 + Vite 8 + TanStack Router + TanStack Query + Tailwind CSS v4 + shadcn/ui                              |
+| **¿Dónde está el código?** | `apps/web/src/` — features en `src/features/` (14 slices), rutas en `src/routes/`, componentes en `src/components/` |
+| **¿Cómo lo ejecuto?**      | `cd apps/web && bun run dev`                                                                                    |
+| **¿Cómo se prueba?**       | `bun run test:run` (Vitest + Testing Library), `bun run test:e2e` (Playwright)                                  |
+| **API**                    | Eden Treaty — tipado extremo a extremo; misiones montadas en `/api/v1/missions`                                 |
+| **Auth**                   | Better Auth — login en `/login`, session-based con refresh automático                                           |
+| **Diseño**                 | Command-center editorial — dark mode, tokens DTCG en `src/lib/design-tokens/generated/tokens.css`              |
 
 Profundizá abajo según tu interés. Cada sección es independiente.
 
@@ -36,9 +36,11 @@ Profundizá abajo según tu interés. Cada sección es independiente.
 
 ## 🎯 Purpose
 
-The **Drenyra Web** app is the browser-based SPA for Drenyra, Peru's National Tax Intelligence Infrastructure. It provides financial dashboards, tax compliance tools, invoice management, banking reconciliation, and AI-powered fiscal insights — all in a responsive dark-mode interface built with the **Glass & Steel** design system.
+The **Drenyra Web** app is the browser-based command center for Drenyra, Peru's National Tax Intelligence Infrastructure. Its current surface is the **mission workspace** — a supervised monthly-close flow where the agent prepares, evidences, and routes fiscal work through explicit human approval — surrounded by auth, onboarding, and the fiscal product model (evidence vault, firm/client 360, fiscal chat, compliance) that defines the roadmap.
 
 > **Warm take**: Think of this as the cockpit for Peru's tax intelligence infrastructure. Every pixel exists to help fiscal professionals make better decisions — faster, with more context, and less friction.
+
+**Fiscal guardrails:** tenant/RUC scope, source evidence, approval state, and reversal path must stay visible next to every high-risk agentic recommendation. No unsupervised fiscal mutations; no magical AI claims.
 
 ---
 
@@ -46,84 +48,61 @@ The **Drenyra Web** app is the browser-based SPA for Drenyra, Peru's National Ta
 
 ```text
 apps/web/src/
-├── features/          # Vertical feature slices (41 features)
-├── routes/            # TanStack Router route definitions
-├── components/        # UI components (atomic design)
-│   ├── atoms/         #   Basic building blocks
-│   ├── molecules/     #   Composed units
-│   ├── ui/            #   shadcn/ui primitives
-│   └── layout/        #   Layout shells
-├── hooks/             # Custom React hooks
+├── features/          # Vertical feature slices (14)
+│   ├── workspace/     #   Mission workspace — command-center projection
+│   ├── evidence/      #   Evidence vault (vault/browser/detail pages)
+│   ├── firm/          #   Firm dashboard + client 360
+│   ├── cierre-mensual/#   Monthly close page + mission components
+│   ├── invoices/      #   Invoice board, OSE lifecycle, PDF
+│   ├── compliance/    #   SIRE, CPE validator, detracciones
+│   └── ...            #   auth, onboarding, settings, ledger, reconciliations, fiscal-chat, chat-agent, approval-hub
+├── routes/            # TanStack Router route files (11 modules + 1 test, 10 paths)
+├── components/        # UI components (agentic-shell, workbench, fiscal, ui, atoms)
 ├── stores/            # Zustand stores
-├── services/          # Service modules (PDF, etc.)
-├── lib/               # Utilities, clients, design tokens
-├── styles/            # Global CSS (scroll-animations, view-transitions)
-├── context/           # React context providers
+├── lib/               # Utilities, api-factory, crud-api, clients, design tokens
+├── styles/            # Global CSS (index.css, Tailwind 4 entry)
+├── context/ + contexts/  # React context providers (FiscalInspector, Inspector, density, workspace)
 └── types/             # TypeScript type definitions
 ```
 
 ### Routing (TanStack Router)
 
-All routes live in `src/routes/` — type-safe, file-based lazy loading with built-in search params and loaders.
+All routes live in `src/routes/` — type-safe, file-based lazy loading. The router is intentionally narrow: auth flows, onboarding, a settings stub, and the mission workspace.
 
-| Route                       | Description                     |
-| --------------------------- | ------------------------------- |
-| `/`                         | Dashboard                       |
-| `/login`                    | Authentication                  |
-| `/forgot-password`          | Password recovery               |
-| `/invoices`                 | Invoice management              |
-| `/banking`                  | Banking & reconciliation        |
-| `/cashflow`                 | Cash flow management            |
-| `/customers`                | Customer management             |
-| `/bills`                    | Bills payable                   |
-| `/inventory`                | Inventory / kardex              |
-| `/taxation`                 | Tax compliance                  |
-| `/compliance`               | Regulatory compliance           |
-| `/audit`                    | Audit trail                     |
-| `/settings`                 | User & company settings         |
-| `/reports`                  | Financial reports               |
-| `/ledger`                   | General ledger                  |
-| `/cierre-mensual`           | Monthly close                   |
-| `/documents`                | Document management             |
-| `/expedientes`              | File/record management          |
-| `/intelligence`             | AI insights                     |
-| `/onboarding`               | User onboarding                 |
-| `/payroll`                  | Payroll management              |
-| `/entities`                 | Entity management               |
-| `/products`                 | Product catalog                 |
-| `/assets`                   | Asset management                |
-| `/approvals`                | Approval hub                    |
-| `/automations`              | Automation workflows            |
-| `/connections`              | Third-party connections         |
-| `/drenyra`                  | Drenyra command center          |
-| `/chat`                     | AI chat assistant               |
-| `/neural-grid`              | Neural analytics grid           |
-| `/economic-groups/:groupId` | Economic group detail           |
-| `/compare`                  | Multi-period comparison         |
-| `/inbox`                    | Notification inbox              |
-| `/reconciliations`          | Bank reconciliation             |
-| `/review`                   | Document review                 |
-| `/profile`                  | User profile                    |
-| `/mobile-summary`           | Mobile-optimized summary        |
-| `/cognitive-hub`            | AI cognitive dashboard          |
-| `/financials`               | Financial overview              |
-| + more                      | See `src/routes/` for full list |
+| Route                       | Description                                              |
+| --------------------------- | -------------------------------------------------------- |
+| `/`                         | Redirect → `/workspace/1/2026/3/close`                   |
+| `/login`                    | Authentication                                          |
+| `/signup`                   | Registration                                            |
+| `/forgot-password`          | Password recovery                                       |
+| `/reset-password`           | Password reset                                          |
+| `/verify-email`             | Email verification                                      |
+| `/auth`                     | Legacy auth shell (redirects to `/login`)               |
+| `/onboarding`               | User onboarding wizard                                  |
+| `/settings`                 | Settings stub ("Coming soon")                           |
+| `/workspace/$companyId/$year/$month/$intent` | **Mission workspace** — the command-center surface (monthly-close intent) |
+
+> The sidebar (`AgenticSidebar.data.ts`) defines the outcome-first nav model (Bandeja, Misiones, Empresas, Evidencia, Cola de revisión, Bancos, Conciliaciones, Comprobantes, Libro Mayor, Impuestos, SIRE/SUNAT, Cumplimiento). Only the workspace and auth paths are wired in the router today; the rest are planned surfaces backed by feature modules.
 
 ### Feature Catalog (src/features/)
 
-41 features organized as vertical slices:
+14 feature slices:
 
-**Core Financial:** `invoices`, `bills`, `banking`, `cashflow`, `ledger`, `financials`, `reconciliations`, `cierre-mensual`, `payroll`
+**Command center:** `workspace` (missions), `evidence` (vault), `firm` (client 360), `approval-hub`, `cierre-mensual`
 
-**Tax & Compliance:** `taxation`, `compliance`, `audit`, `entities`, `economic-groups`, `expedientes`
+**Fiscal & AI:** `fiscal-chat`, `chat-agent`, `compliance` (SIRE / CPE / detracciones)
 
-**Intelligence & AI:** `intelligence`, `cognitive-hub`, `drenyra-command-center`, `agents`, `agent-swarm`
+**Accounting:** `invoices`, `ledger`, `reconciliations`
 
-**Operations:** `inventory`, `products`, `documents`, `assets`, `vendors`, `customers`, `bills`, `orders`, `onboarding`
+**Platform:** `auth`, `onboarding`, `settings`
 
-**Platform:** `auth`, `settings`, `profile`, `approval-hub`, `automations`, `connections`, `inbox`, `review`
+### API posture
 
-**Cross-cutting:** `dashboard`, `artifacts`, `compare`, `plugins`, `product-surfaces`
+| Posture | Path / location | Status |
+| ------- | --------------- | ------ |
+| **(a) Mounted production mission flow** | `apps/api/src/features/missions` → `/api/v1/missions` | Mounted in `app-core.ts`; web consumes via `http-mission-transport.ts` + `sse-mission-stream.ts` |
+| **(b) Planned/unmounted contracts** | `apps/api/src/features/drenyra-runtime` | Contract-only ("Drenyra Runtime / Brain Service") — NOT mounted; planned `/runtime/*` endpoints |
+| **(c) Mock/demo transports** | `mock-mission-transport.ts` | Enabled only by `VITE_DRENYRA_MISSION_TRANSPORT=mock`; default is production HTTP transport |
 
 ---
 
@@ -131,39 +110,44 @@ All routes live in `src/routes/` — type-safe, file-based lazy loading with bui
 
 | Layer             | Technology                              |
 | ----------------- | --------------------------------------- |
-| **Framework**     | React 19 with React Compiler            |
+| **Framework**     | React 19 (^19.2.7) with React Compiler  |
 | **Build**         | Vite 8 + @vitejs/plugin-react           |
-| **Routing**       | TanStack Router (type-safe routes)      |
-| **Data Fetching** | TanStack Query                          |
+| **Routing**       | TanStack Router 1.103 (type-safe routes)|
+| **Data Fetching** | TanStack Query 5.90                     |
 | **HTTP Client**   | Eden Treaty (type-safe API consumption) |
-| **State**         | Zustand 5 + XState (complex workflows)  |
-| **Forms**         | React Hook Form + Zod 4                 |
+| **State**         | Zustand 5 + XState 5 (process-machine, fiscal flows) |
+| **Forms**         | React Hook Form 7.71 + Zod 4.3          |
 | **Styling**       | Tailwind CSS v4 + shadcn/ui             |
-| **Animation**     | Framer Motion                           |
-| **PDF**           | @react-pdf/renderer                     |
-| **Charts**        | Recharts                                |
-| **Auth**          | Better Auth (client)                    |
+| **Animation**     | Framer Motion 12.27                     |
+| **PDF**           | @react-pdf/renderer (invoices)          |
+| **Charts**        | Recharts 3.8                            |
+| **Auth**          | Better Auth ^1.6.16 (client)            |
 | **DnD**           | dnd-kit                                 |
-| **Testing**       | Vitest + Testing Library                |
-| **Package**       | @drenyra/* (workspace deps)             |
+| **Testing**       | Vitest 4.1.10 + Testing Library + Playwright |
+| **Package**       | @drenyra/* (workspace deps, incl. @drenyra/mission-domain) |
 
 ### Design System
 
-The **Glass & Steel** design system powers the UI:
+The command-center editorial design system powers the UI:
 
 - Dark mode by default with `--text-*` CSS custom property tokens
-- Design tokens in `src/lib/design-tokens/` (DTCG format as source of truth)
-- Generated from `tokens.dtcg.json` via `bun tokens:generate`
-- Atomic design: `atoms/` → `molecules/` → `organisms/` → layouts
+- Design tokens: checked-in generated CSS at `src/lib/design-tokens/generated/tokens.css` (DTCG source + generator via root `bun run tokens:generate`)
+- `SurfacePanel` / `SurfaceCard` as canonical card surfaces, `FiscalEditorialShell` for the unified shell
+- Atomic primitives: `atoms/` (text) + `ui/` (shadcn + custom)
 - Custom scroll animations and view transitions in `src/styles/`
 
 ### API Integration
 
-All API requests flow through Eden Treaty for end-to-end type safety:
+All API requests flow through Eden Treaty for end-to-end type safety, with the mission flow calling the mounted `/api/v1/missions` endpoints directly:
 
 ```typescript
 import { eden } from '@/lib/api-client'
 // Fully typed — matches @drenyra/api routes exactly
+```
+
+```typescript
+// Mission workspace transport (production path)
+import { createMission, getMission, approveMission } from '@/features/workspace/services/http-mission-transport'
 ```
 
 ---
@@ -184,10 +168,10 @@ bun run test            # Watch mode
 bun run test:run        # Single run
 bun run test:coverage   # With coverage
 bun run test:ui         # Vitest UI
+bun run test:e2e        # Playwright (incl. missions specs)
 
 # Quality
 bun run lint            # ESLint
-bun run lint:fix        # Auto-fix
 bun run typecheck       # TypeScript check
 bun run check:bundle    # Bundle size budget
 bun run quality         # test + build + bundle check
@@ -202,7 +186,7 @@ bun run check:classnames # Template literal detection
 - Better Auth client configured in `src/lib/auth-client.ts`
 - Login route at `/login` with email/password
 - Session-based auth with automatic token refresh
-- Route guards via TanStack Router loaders
+- Route guard via public-route set in `src/routes/__root.tsx`
 - Company context switching for multi-RUC operations
 
 ---
@@ -218,7 +202,12 @@ bun run test:run src/components/
 
 # Feature tests
 bun run test:run src/features/
+
+# E2E (Playwright)
+bun run test:e2e
 ```
+
+Coverage thresholds: lines 70%, functions 65%, branches 60%, statements 70%.
 
 ---
 
@@ -229,6 +218,7 @@ bun run test:run src/features/
 | `@drenyra/api`         | Backend API (Elysia) — consumed via Eden Treaty |
 | `@drenyra/application` | Use cases & business logic                      |
 | `@drenyra/domain`      | Domain entities & value objects                 |
+| `@drenyra/mission-domain` | Mission domain contract (shared with API)    |
 | `@drenyra/shared`      | Shared utilities & validation                   |
 | `@drenyra/ui`          | Shared UI components                            |
 
@@ -236,4 +226,4 @@ bun run test:run src/features/
 
 **Stack**: React 19 + Vite 8 + TanStack Router + TanStack Query + Tailwind CSS v4 + shadcn/ui  
 **Auth**: Better Auth | **API**: Eden Treaty | **State**: Zustand 5 + XState  
-**Design System**: Glass & Steel | **Última actualización**: 2026-06-20
+**Design System**: Command-center editorial | **Última actualización**: 2026-08-14

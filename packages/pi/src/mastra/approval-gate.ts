@@ -20,13 +20,13 @@ type ActionResult<T> =
  * - "fiscal_gate" → governance bundle + human approval
  */
 export class ApprovalGateEngine {
-	private governanceValidator?(
-		toolName: string,
-		input: unknown,
-		context: AgentContext,
-	): Promise<GovernanceBundleResult>;
+	private governanceValidator?: (
+		(toolName: string, input: unknown, context: AgentContext) => Promise<GovernanceBundleResult>
+	) | undefined;
 
-	private notifyCallback?: (request: ApprovalRequest) => Promise<void>;
+	private notifyCallback?: (
+		(request: ApprovalRequest) => Promise<void>
+	) | undefined;
 
 	constructor(
 		private store: ApprovalStore,

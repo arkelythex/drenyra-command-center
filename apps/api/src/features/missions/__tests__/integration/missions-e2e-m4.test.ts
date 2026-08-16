@@ -315,16 +315,14 @@ describe("M4 E2E — Monthly close with signed receipts", () => {
 		expect(parsed.signature).toBeTruthy();
 		expect(parsed.content.missionId).toBe(missionId);
 
-		// The JSON shape remains parseable by the CLI Go SignedReceipt struct;
-		// Go ignores the typed bundle metadata it does not yet consume.
+		// The JSON shape matches the CLI Go SignedReceipt struct
+		// (protocolVersion, content, receiptHash, signerKeyId, signerPublicKey, signature, issuedAt)
 		const keys = Object.keys(parsed).sort();
 		expect(keys).toEqual([
-			"algorithm",
 			"content",
 			"issuedAt",
 			"protocolVersion",
 			"receiptHash",
-			"receiptType",
 			"signature",
 			"signerKeyId",
 			"signerPublicKey",

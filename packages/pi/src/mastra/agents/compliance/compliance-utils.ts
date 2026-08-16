@@ -27,9 +27,9 @@ export function createFinding(input: {
 	readonly severity: ComplianceSeverity;
 	readonly category: string;
 	readonly message: string;
-	readonly evidenceRefs?: readonly string[];
+	readonly evidenceRefs?: readonly string[] | undefined;
 	readonly recommendedAction: string;
-	readonly requiresApproval?: boolean;
+	readonly requiresApproval?: boolean | undefined;
 }): ComplianceFinding {
 	const evidenceRefs = [...(input.evidenceRefs ?? [])].sort();
 	const stableKey = [
@@ -67,9 +67,9 @@ export function riskScoreFromFindings(
 }
 
 export function pickComplianceContext(input: {
-	readonly payload?: Record<string, unknown>;
-	readonly metadata?: Record<string, unknown>;
-	readonly traceId?: string;
+	readonly payload?: Record<string, unknown> | undefined;
+	readonly metadata?: Record<string, unknown> | undefined;
+	readonly traceId?: string | undefined;
 }): ComplianceContext {
 	const source = readRecord(input.payload?.context) ?? input.payload ?? {};
 	const metadata = input.metadata ?? {};
@@ -88,9 +88,9 @@ export function pickComplianceContext(input: {
 }
 
 export function requireComplianceScope(input: {
-	readonly payload?: Record<string, unknown>;
-	readonly metadata?: Record<string, unknown>;
-	readonly traceId?: string;
+	readonly payload?: Record<string, unknown> | undefined;
+	readonly metadata?: Record<string, unknown> | undefined;
+	readonly traceId?: string | undefined;
 }): ComplianceContext {
 	const context = pickComplianceContext(input);
 	assertScopedContext(context);

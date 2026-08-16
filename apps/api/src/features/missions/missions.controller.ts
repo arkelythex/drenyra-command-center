@@ -4,11 +4,11 @@ import type { MissionEventStore } from "./sse/mission-event-store";
 import { missionSSEStream } from "./sse/mission-sse.stream";
 import { isMissionError } from "@drenyra/mission-domain";
 import type {
-	ApproveMissionCommand,
-	CreateMissionCommand,
-	ReconcileMissionCommand,
-	RejectMissionCommand,
-} from "drenyra-ai/missions";
+	RunIntentCommand,
+	ApproveCommand,
+	RejectCommand,
+	ReconcileCommand,
+} from "@drenyra/mission-domain";
 
 export class MissionsController {
 	constructor(
@@ -17,7 +17,7 @@ export class MissionsController {
 	) {}
 
 	async create(
-		body: CreateMissionCommand & { idempotencyKey?: string },
+		body: RunIntentCommand & { idempotencyKey?: string },
 		ctx: CompanyContext,
 	) {
 		try {
@@ -76,7 +76,7 @@ export class MissionsController {
 
 	async approve(
 		id: string,
-		body: ApproveMissionCommand & { idempotencyKey?: string },
+		body: ApproveCommand & { idempotencyKey?: string },
 		ctx: CompanyContext,
 	) {
 		try {
@@ -99,7 +99,7 @@ export class MissionsController {
 
 	async reject(
 		id: string,
-		body: RejectMissionCommand & { idempotencyKey?: string },
+		body: RejectCommand & { idempotencyKey?: string },
 		ctx: CompanyContext,
 	) {
 		try {
@@ -122,7 +122,7 @@ export class MissionsController {
 
 	async reconcile(
 		id: string,
-		body: ReconcileMissionCommand & { idempotencyKey?: string },
+		body: ReconcileCommand & { idempotencyKey?: string },
 		ctx: CompanyContext,
 	) {
 		try {

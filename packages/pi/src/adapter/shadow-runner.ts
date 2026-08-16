@@ -21,8 +21,8 @@ import type {
  */
 export interface ShadowComparison {
 	sessionId: string;
-	legacy: { success: boolean; durationMs: number; error?: string };
-	pi: { success: boolean; durationMs: number; error?: string };
+	legacy: { success: boolean; durationMs: number; error?: string | undefined };
+	pi: { success: boolean; durationMs: number; error?: string | undefined };
 	match: boolean;
 }
 
@@ -98,8 +98,8 @@ export class ShadowRunner {
 		sessionId: string,
 		input: FiscalPrompt,
 	): Promise<{
-		legacy: { durationMs: number; error?: string };
-		pi: { durationMs: number; error?: string };
+		legacy: { durationMs: number; error?: string | undefined };
+		pi: { durationMs: number; error?: string | undefined };
 		match: boolean;
 	}> {
 		const legacyStart = performance.now();

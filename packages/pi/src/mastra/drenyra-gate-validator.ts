@@ -73,7 +73,9 @@ export function createDrenyraGateValidator(
 			approval: (fiscal.approvals ?? []).map((approval) => ({
 				approverId: approval.approverId,
 				at: approval.at,
-				reason: approval.reason,
+				...(approval.reason !== undefined
+					? { reason: approval.reason }
+					: {}),
 			})),
 		});
 

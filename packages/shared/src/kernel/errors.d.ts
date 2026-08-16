@@ -4,18 +4,18 @@ export declare class AgenticOSError extends Error {
 }
 export declare class PluginValidationError extends AgenticOSError {
     name: string;
-    pluginName?: string;
+    pluginName?: string | undefined;
     constructor(message: string, pluginName?: string);
 }
 export declare class AgentError extends AgenticOSError {
     name: string;
-    agentId?: string;
-    cause?: Error;
+    agentId?: string | undefined;
+    cause?: Error | undefined;
     constructor(message: string, agentId?: string, cause?: Error);
 }
 export declare class TaskError extends AgenticOSError {
     name: string;
-    taskId?: string;
+    taskId?: string | undefined;
     constructor(message: string, taskId?: string);
 }
 export declare function isPluginValidationError(error: unknown): error is PluginValidationError;

@@ -2,7 +2,7 @@
 
 # WEB-MAP — Drenyra Web App Navigation
 
-**Última actualización**: 2026-07-08
+**Última actualización**: 2026-08-14
 
 > 🗺️ Este mapa es tu guía de navegación del web app de Drenyra. No necesitás leerlo completo — usalo como referencia cuando necesités encontrar algo. Cada sección es independiente: saltá directo a lo que te interese.
 
@@ -13,12 +13,14 @@
 - **Package:** `@drenyra/web` — React 19 SPA
 - **Language:** TypeScript 6 + React 19 (JSX)
 - **Framework:** React 19 + Vite 8 + TanStack Router 1.103
-- **Source files:** 1,089 `.ts`/`.tsx` files
-- **Test files:** 125 `.test.*`/`.spec.*` files
-- **Test runner:** Vitest 4.1.5 (jsdom, coverage v8, threshold: lines 60%, functions 60%, branches 55%, statements 60%)
+- **Source files:** 568 `.ts`/`.tsx` files (verified count, `apps/web/src`)
+- **Test files:** 75 `.test.*`/`.spec.*` files (69 in `src/`, 5 Playwright e2e in `e2e/`, 1 root-level Vite proxy test)
+- **Route files:** 12 files in `src/routes/` — 11 route modules + 1 test (10 registered paths)
+- **Feature slices:** 14 directories under `src/features/`
+- **Test runner:** Vitest 4.1.10 (jsdom, coverage v8, thresholds: lines 70%, functions 65%, branches 60%, statements 70%)
 - **Entry point:** `src/client.tsx`
 - **Build:** `bun run build` (Vite), `bun run typecheck` (tsc), `bun run lint` (eslint)
-- **Auth:** better-auth 1.4.15 with Eden Treaty client
+- **Auth:** better-auth ^1.6.16 with Eden Treaty client
 
 ## Product model
 
@@ -135,371 +137,302 @@ Reviewers should verify these areas in order:
 - **Reversal clarity:** accepted changes show audit metadata and correction
   path.
 
+## Current command-center projection (verified 2026-08-14)
+
+The live web surface is intentionally narrow: one routed command-center
+workspace plus auth flows. The rest of the product model is carried by
+unrouted feature modules and by planned contracts — do not assume a route
+exists because a feature folder or sidebar entry exists.
+
+### Routed surfaces
+
+| Route | Surface | Notes |
+| ----- | ------- | ----- |
+| `/` | Redirect | → `/workspace/1/2026/3/close` |
+| `/login`, `/signup`, `/forgot-password`, `/reset-password`, `/verify-email`, `/auth` | Auth flows | `/auth` is a legacy shell that redirects to `/login` |
+| `/onboarding` | OnboardingWizard | First-time user flow + demos |
+| `/settings` | Placeholder | Stub ("Coming soon") — not a real surface |
+| `/workspace/$companyId/$year/$month/$intent` | **Mission workspace** | The command-center projection: mission header, state view, actions, approval gate, evidence bundle, progress, receipt, blockers; renders `CierreMensualPage` for the `close` intent |
+
+Sidebar navigation (`src/components/agentic-shell/AgenticSidebar/AgenticSidebar.data.ts`)
+defines the outcome-first model (Bandeja, Misiones, Empresas, Evidencia, Cola de
+revisión, Bancos, Conciliaciones, Comprobantes, Libro Mayor, Impuestos,
+SIRE/SUNAT, Cumplimiento, Reportes, Settings). Only `/settings` and the
+workspace route are currently wired in the router; the other destinations are
+planned surfaces backed by feature modules (`evidence`, `firm`, `inbox`,
+`review-queue`, `cierre-mensual`) or not yet implemented.
+
+### API posture — mounted vs contract-only vs mock
+
+| Posture | Where | Status |
+| ------- | ----- | ------ |
+| **(a) Mounted production mission flow** | `apps/api/src/features/missions`, mounted in `apps/api/src/app-core.ts` at prefix `/api/v1/missions` | Production-ready module: `POST /api/v1/missions`, `GET /api/v1/missions/:id`, `POST .../approve`, `POST .../reject`, `POST .../reconcile`, capabilities routes, SSE event stream. Web consumes it via `src/features/workspace/services/http-mission-transport.ts` + `sse-mission-stream.ts` (base `VITE_DRENYRA_API_URL` or `http://localhost:3000`). Approvals return `receiptId`/`receiptHash`. |
+| **(b) Planned/unmounted contracts** | `apps/api/src/features/drenyra-runtime` | **Contract-only, NOT mounted in `app-core.ts`.** "Drenyra Runtime / Brain Service" owns schemas for threads, turns, items, runs, approvals, web-search audit. Planned endpoints `/runtime/threads`, `/runtime/threads/:id/turns`, `/runtime/approvals`, `/runtime/runs` do not exist at runtime. Do not route production traffic here. |
+| **(c) Mock/demo transports** | `apps/web/src/features/workspace/services/mock-mission-transport.ts` | Demo transport (`mockExecuteRunIntent`) activated by `VITE_DRENYRA_MISSION_TRANSPORT=mock`. `VITE_FRONTEND_MOCK_MODE=false` is the default in `.env.example`; `src/lib/api-mock.ts` + `simulated-latency.ts` back the frontend mock mode. Mock mode must never be the default for fiscal work. |
+
+Domain contract for missions is shared via the `@drenyra/mission-domain` workspace
+package (`packages/mission-domain`); the web re-exports its types through
+`src/features/workspace/services/mission-contracts.ts`.
+
+### Unrouted feature modules (not yet mounted in the router)
+
+These feature folders exist with components/pages but have **no route file**:
+
+- `evidence/` — `EvidenceVaultPage`, `EvidenceBrowserPage`, `EvidenceDetailPage` (evidence vault 2.0 projection)
+- `firm/` — `FirmDashboard`, `ClientList`, `ClientDetail`, `AlertsPanel` (client 360 / RUC scope)
+- `fiscal-chat/` — `FiscalChat` + chat parser/types
+- `chat-agent/` — chat agent UI
+- `approval-hub/` — approval components
+- `cierre-mensual/` — `CierreMensualPage` (currently lazy-loaded from the mission workspace, not a standalone route)
+
 ## Tech stack
 
 | Layer             | Technology                                                                          |
 | ----------------- | ----------------------------------------------------------------------------------- |
-| **UI Framework**  | React 19.2.5 + React Compiler (production only)                                     |
+| **UI Framework**  | React 19.2.x (^19.2.7) + React Compiler (production only)                           |
 | **Build**         | Vite 8.0.10 + TanStack Router Vite plugin (auto-generates `routeTree.gen.ts`)       |
 | **Routing**       | TanStack Router 1.103 (type-safe, file-based)                                       |
-| **State**         | Zustand 5.0.10 (persisted), XState 5.28 (state machines for fiscal flows)           |
+| **State**         | Zustand 5.0.10 (persisted), XState 5.28 (process-machine + fiscal flows)            |
 | **Data Fetching** | TanStack Query 5.90 (server cache, optimistic updates)                              |
-| **API Client**    | Eden Treaty (`@elysiajs/eden`) — type-safe Elysia consumption                       |
+| **API Client**    | Eden Treaty (`@elysiajs/eden` ^1.4.6) — type-safe Elysia consumption                |
 | **Styling**       | Tailwind CSS 4.1.18 + `@tailwindcss/vite`, Container Queries, `tailwindcss-animate` |
-| **Design Tokens** | Custom `lib/design-tokens/` system — DTCG JSON → generated CSS                      |
-| **UI Primitives** | shadcn/ui + Radix UI (dialog, dropdown, popover, select, checkbox, etc.)            |
+| **Design Tokens** | Checked-in generated CSS at `src/lib/design-tokens/generated/tokens.css` (DTCG → CSS via root `bun run tokens:generate`) |
+| **UI Primitives** | shadcn/ui + Radix UI (dialog, dropdown, popover, select, checkbox, tooltip, etc.)   |
 | **Animations**    | Framer Motion 12.27 + CSS view-transitions                                          |
 | **Charts**        | Recharts 3.8                                                                        |
-| **Forms**         | React Hook Form 7.71 + Zod 4.3 + `@hookform/resolvers`                              |
-| **Icons**         | Lucide React                                                                        |
-| **PDF**           | @react-pdf/renderer 4.3                                                             |
-| **QR**            | qrcode 1.5                                                                          |
+| **Forms**         | React Hook Form 7.71 + Zod 4.3 + `@hookform/resolvers` ^5.2                        |
+| **Icons**         | Lucide React 1.25.0                                                                 |
+| **PDF**           | @react-pdf/renderer 4.3 (invoices feature)                                          |
+| **QR**            | qrcode 1.5.4                                                                        |
 | **DnD**           | @dnd-kit (core, sortable, modifiers, utilities)                                     |
 | **Toast**         | sonner 2.0                                                                          |
-| **Notifications** | cmdk (command palette)                                                              |
+| **Command UI**    | cmdk 1.1 + `AgenticCommandBar`                                                      |
+| **XState React**  | @xstate/react 6.1                                                                   |
 
 ## Architecture layers
 
 ```
 src/client.tsx                       ← Entry point (React root, QueryClient, RouterProvider)
     |
-    +-- src/router.tsx               ← TanStack Router factory
+    +-- src/router.tsx               ← TanStack Router factory (context, preload, view transitions)
+    +-- src/remote-entry.tsx         ← Module Federation entry (exposes createRouter for Drenyra OS shell)
     +-- src/routeTree.gen.ts         ← Auto-generated by TanStack Router Vite plugin
     |
-    +-- src/routes/                  ← 47 flat route files
-    |   +-- __root.tsx               ← Root layout: auth guard, MainLayout, providers
-    |   +-- index.tsx                ← Redirects to /dashboard
-    |   +-- login.tsx, signup.tsx, forgot-password.tsx, ...
-    |   +-- dashboard.tsx, reports.tsx, financials.tsx, ...
-    |   +-- settings/                ← 7 settings sub-routes
-    |   +-- workspace/               ← 4 workspace sub-routes
+    +-- src/routes/                  ← 12 files (11 route modules + 1 test)
+    |   +-- __root.tsx               ← Root: public-route guard (PUBLIC_ROUTES), AgenticLayout, Toaster
+    |   +-- index.tsx                ← Redirects to /workspace/1/2026/3/close
+    |   +-- login.tsx, signup.tsx, forgot-password.tsx, reset-password.tsx,
+    |   |   verify-email.tsx, auth.tsx (→ /login), onboarding.tsx, settings.tsx (stub)
+    |   +-- workspace.$companyId.$year.$month.$intent.tsx ← MissionWorkspace (command center)
     |
-    +-- src/features/                ← 40 vertical-slice feature modules
-    |   +-- auth/                    ← Login, signup, session, auth guards
-    |   +-- dashboard/               ← Home dashboard with KPIs, charts, widgets
-    |   +-- invoices/                ← Kanban board, create/edit/delete, PDF, filters
-    |   +-- banking/                 ← Accounts, reconciliation, transactions, CBDC
-    |   +-- cashflow/                ← Cashflow board, projections
-    |   +-- compliance/              ← SIRE, CPE validator, fiscal health map
-    |   +-- cognitive-hub/           ← AI workspace, event system, anomaly detection
-    |   +-- drenyra-command-center/  ← Drenyra AI command center UI
-    |   +-- drenyra-workspace/       ← Drenyra workspace pages
-    |   +-- settings/                ← Org, billing, notifications, integrations
-    |   +-- ledger/                  ← General ledger view
-    |   +-- reconciliations/         ← Bank reconciliation
-    |   +-- products/                ← Product catalog + surfaces
-    |   +-- ... (28 more)
+    +-- src/features/                ← 14 vertical-slice feature modules
+    |   +-- workspace/               ← Mission workspace: mission components, hooks, transports
+    |   +-- evidence/                ← Evidence vault: vault/browser/detail pages
+    |   +-- firm/                    ← Firm dashboard, client 360
+    |   +-- cierre-mensual/          ← Monthly close page + mission components
+    |   +-- fiscal-chat/             ← Fiscal chat UI + parser
+    |   +-- chat-agent/              ← Chat agent UI
+    |   +-- invoices/                ← Invoice board, create/edit, OSE lifecycle, PDF
+    |   +-- compliance/              ← SIRE, CPE validator, detracciones, fiscal health
+    |   +-- ledger/                  ← General ledger API + view models
+    |   +-- reconciliations/         ← Bank reconciliation data/types
+    |   +-- approval-hub/            ← Approval components
+    |   +-- auth/                    ← Login/signup/verify forms, session hooks, OAuth
+    |   +-- onboarding/              ← Onboarding wizard + interactive demos
+    |   +-- settings/                ← Settings view
     |
     +-- src/components/              ← Shared UI component tree
-    |   +-- atoms/                   ← icon, button, text, spinner, badge, dot
-    |   +-- molecules/               ← OmniAgent, stat-card, metric-card
-    |   +-- ui/                      ← shadcn + custom: glass-card, table, dialog
-    |   +-- layout/                  ← MainLayout, Sidebar, TopBar, BottomNav
-    |   +-- agentic/                 ← AgentPulse, ConfidenceBadge, ConflictDiffView
+    |   +-- agentic-shell/           ← AgenticLayout, AgenticSidebar, AgenticCommandBar, WorkspaceSelector
+    |   +-- workbench/               ← Pane system, ApprovalGate, EvidenceInspector, WorkspaceTopBar
+    |   +-- fiscal/                  ← AgentMissionTimeline, FiscalRiskLayer
+    |   +-- agentic/                 ← CommandPalette, RightPanel
+    |   +-- layout/                  ← FiscalEditorialShell
+    |   +-- notifications/           ← NotificationSidebar
+    |   +-- atoms/ + ui/             ← primitives (text) + shadcn/custom (SurfaceCard, PageShell, ...)
     |
     +-- src/lib/                     ← Core shared library
-    |   +-- router/                  ← Route definitions, public routes, fallbacks
-    |   +-- navigation/              ← Nav item definitions (compact + full)
-    |   +-- design-tokens/           ← DTCG token system → generated CSS
-    |   +-- schemas/                 ← Zod schemas (customer, vendor, product, invoice)
-    |   +-- api-client.ts            ← HTTP/API/Eden Treaty clients
-    |   +-- auth-client.ts           ← Better Auth client
-    |   +-- query-client.ts          ← TanStack Query client factory
+    |   +-- api-factory*             ← safeApiCall, queryApi, mutateApi, createCrudApi
+    |   +-- crud-api.ts              ← createCrudHooks (TanStack Query CRUD)
+    |   +-- http-client.ts, api-helpers.ts, auth-client.ts, query-client.ts
+    |   +-- commands/                ← command-registry.ts, default-commands.ts
+    |   +-- process-machine/         ← XState process/analyze/resolve machines
+    |   +-- export-service.ts        ← CSV/TSV/JSON/PDF/XLSX export
+    |   +-- design-tokens/           ← generated/tokens.css (checked-in)
+    |   +-- money.ts, date-utils.ts, fiscal-period.ts, legibility.ts, ...
     |
-    +-- src/hooks/                   ← useFiscalAction, useUndoRedo, ...
-    +-- src/store/ + src/stores/     ← Zustand stores
-    +-- src/context/                 ← Sidebar, Simulation, ArtifactEvent, Settings
-    +-- src/services/                ← pdf.service.ts
-    +-- src/styles/                  ← view-transitions.css, scroll-animations.css
+    +-- src/stores/                  ← Zustand stores: ui.store.ts, workspace.store.ts, agentic-shell.store.ts
+    +-- src/context/ + src/contexts/ ← FiscalInspectorContext, InspectorContext, density, workspace
+    +-- src/types/                   ← agent-activity, approval-gate, change-set, financial-diff, ...
+    +-- src/styles/                  ← index.css (Tailwind 4 entry) + theme
 ```
 
 ## Route structure
 
-All routes are flat under `src/routes/` except `settings/` and `workspace/` which have sub-routes. Auto-registered by TanStack Router Vite plugin to `src/routeTree.gen.ts`.
+Routes are flat files under `src/routes/`. The only dynamic route is the
+workspace mission route; `settings/` and `workspace/` sub-directory routes no
+longer exist. Auto-registered by the TanStack Router Vite plugin to
+`src/routeTree.gen.ts` (10 registered paths).
 
-| Route file             | Path                | Purpose                                              |
-| ---------------------- | ------------------- | ---------------------------------------------------- |
-| `__root.tsx`           | `/` (layout)        | Auth guard, MainLayout, global providers, Toaster    |
-| `index.tsx`            | `/`                 | Redirect to `/dashboard`                             |
-| `login.tsx`            | `/login`            | Login page                                           |
-| `signup.tsx`           | `/signup`           | Registration                                         |
-| `auth.tsx`             | `/auth`             | Auth page (social OAuth callback)                    |
-| `forgot-password.tsx`  | `/forgot-password`  | Password reset request                               |
-| `reset-password.tsx`   | `/reset-password`   | Password reset form                                  |
-| `verify-email.tsx`     | `/verify-email`     | Email verification                                   |
-| `onboarding.tsx`       | `/onboarding`       | First-time user onboarding flow                      |
-| `onboarding.demos.tsx` | `/onboarding/demos` | Interactive demos during onboarding                  |
-| `dashboard.tsx`        | `/dashboard`        | Main operational dashboard (KPIs, charts, liquidity) |
-| `financials.tsx`       | `/financials`       | Financial overview, drill-down                       |
-| `cashflow.tsx`         | `/cashflow`         | Cashflow board, projections                          |
-| `banking.tsx`          | `/banking`          | Bank accounts, reconciliation, transactions          |
-| `reconciliations.tsx`  | `/reconciliations`  | Reconciliation management                            |
-| `ledger.tsx`           | `/ledger`           | General ledger                                       |
-| `cierre-mensual.tsx`   | `/cierre-mensual`   | Monthly close process                                |
-| `invoices.tsx`         | `/invoices`         | Invoice Kanban, create/edit, PDF preview             |
-| `bills.tsx`            | `/bills`            | Bills/Payables management                            |
-| `payroll.tsx`          | `/payroll`          | Payroll processing                                   |
-| `products.tsx`         | `/products`         | Product catalog                                      |
-| `product-surfaces.tsx` | `/product-surfaces` | Product surface registry                             |
-| `inventory.tsx`        | `/inventory`        | Inventory management                                 |
-| `assets.tsx`           | `/assets`           | Fixed assets                                         |
-| `vendors.tsx`          | `/vendors`          | Vendor management                                    |
-| `customers.tsx`        | `/customers`        | Customer management                                  |
-| `entities.tsx`         | `/entities`         | Entity registry                                      |
-| `economic-groups..tsx` | `/economic-groups/` | Economic group detail                                |
-| `taxation.tsx`         | `/taxation`         | Tax dashboard (IGV, renta, detracciones)             |
-| `compliance.tsx`       | `/compliance`       | SUNAT compliance, SIRE, CPE validator                |
-| `audit.tsx`            | `/audit`            | Audit trail                                          |
-| `reports.tsx`          | `/reports`          | Custom reports                                       |
-| `compare.tsx`          | `/compare`          | Period comparison                                    |
-| `review.tsx`           | `/review`           | Document review                                      |
-| `review-queue.tsx`     | `/review-queue`     | Review queue                                         |
-| `approvals.tsx`        | `/approvals`        | Approval hub                                         |
-| `inbox.tsx`            | `/inbox`            | Notification/action inbox                            |
-| `chat.tsx`             | `/chat`             | AI chat (cognitive hub)                              |
-| `drenyra.tsx`          | `/drenyra`          | Drenyra AI assistant                                 |
-| `neural-grid.tsx`      | `/neural-grid`      | Neural grid visualization                            |
-| `documents.tsx`        | `/documents`        | Document management                                  |
-| `connections.tsx`      | `/connections`      | Third-party connections                              |
-| `plugins.tsx`          | `/plugins`          | Plugin management                                    |
-| `automations.tsx`      | `/automations`      | Automation rules                                     |
-| `scanner.tsx`          | `/scanner`          | Document scanner                                     |
-| `mobile-summary.tsx`   | `/mobile-summary`   | Mobile-optimized summary                             |
-| `profile.tsx`          | `/profile`          | User profile                                         |
-| `settings.tsx`         | `/settings`         | Settings layout (redirect to index)                  |
-
-### Settings sub-routes (`src/routes/settings/`)
-
-| File                | Path                      | Purpose                    |
-| ------------------- | ------------------------- | -------------------------- |
-| `index.tsx`         | `/settings`               | Settings home              |
-| `organization.tsx`  | `/settings/organization`  | Org profile, RUC, settings |
-| `security.tsx`      | `/settings/security`      | Security, 2FA, sessions    |
-| `notifications.tsx` | `/settings/notifications` | Notification preferences   |
-| `appearance.tsx`    | `/settings/appearance`    | Theme, complexity level    |
-| `integrations.tsx`  | `/settings/integrations`  | API integrations           |
-| `billing.tsx`       | `/settings/billing`       | Billing and subscriptions  |
-
-### Workspace sub-routes (`src/routes/workspace/`)
-
-| File               | Path                      | Purpose                |
-| ------------------ | ------------------------- | ---------------------- |
-| `operations.tsx`   | `/workspace/operations`   | Operations workspace   |
-| `finance.tsx`      | `/workspace/finance`      | Finance workspace      |
-| `compliance.tsx`   | `/workspace/compliance`   | Compliance workspace   |
-| `system-admin.tsx` | `/workspace/system-admin` | System admin workspace |
+| Route file                          | Path                                  | Purpose                                              |
+| ----------------------------------- | ------------------------------------- | ---------------------------------------------------- |
+| `__root.tsx`                        | — (layout)                            | Public-route guard, AgenticLayout, providers, Toaster |
+| `index.tsx`                         | `/`                                   | Redirect → `/workspace/1/2026/3/close`               |
+| `auth.tsx`                          | `/auth`                               | Legacy auth shell — redirects to `/login`            |
+| `login.tsx`                         | `/login`                              | Login page (`LoginForm`)                             |
+| `signup.tsx`                        | `/signup`                             | Registration (`SignupForm`)                          |
+| `forgot-password.tsx`               | `/forgot-password`                    | Password reset request                               |
+| `reset-password.tsx`                | `/reset-password`                     | Password reset form                                  |
+| `verify-email.tsx`                  | `/verify-email`                       | Email verification                                   |
+| `onboarding.tsx`                    | `/onboarding`                         | OnboardingWizard (+ Outlet)                          |
+| `settings.tsx`                      | `/settings`                           | Placeholder stub ("Coming soon")                     |
+| `workspace.$companyId.$year.$month.$intent.tsx` | `/workspace/$companyId/$year/$month/$intent` | **Mission workspace** (command-center projection) |
+| `__tests__/root-fiscal-inspector-provider.test.tsx` | —                     | Route-layer test                                     |
 
 ## Features (by directory)
 
-| Feature                | Path                                 | Purpose                                                                    |
-| ---------------------- | ------------------------------------ | -------------------------------------------------------------------------- |
-| auth                   | src/features/auth/                   | Auth: login, signup, session Mgmt, guards, OAuth                           |
-| dashboard              | src/features/dashboard/              | Home: KPIs, income/expense tabs, liquidity widget, mobile summary          |
-| invoices               | src/features/invoices/               | Invoice Kanban, create/edit, PDF, filters, mobile scanner, XState machines |
-| banking                | src/features/banking/                | Bank accounts, reconciliation, transactions, CBDC module                   |
-| cashflow               | src/features/cashflow/               | Cashflow board, projections                                                |
-| compliance             | src/features/compliance/             | SIRE management, CPE validator, fiscal health map, hitl decisions          |
-| cognitive-hub          | src/features/cognitive-hub/          | AI workspace: events, anomalies, cost dashboard, message views             |
-| drenyra-command-center | src/features/drenyra-command-center/ | Drenyra AI command center UI                                               |
-| drenyra-workspace      | src/features/drenyra-workspace/      | Drenyra workspace pages                                                    |
-| central-board          | src/features/central-board/          | Área Central: ledger editable, pending journal review, document upload     |
-| drenyra [hooks]        | src/features/drenyra/hooks/          | Journal entries TanStack Query hooks (useJournalEntriesApi)                |
-| settings               | src/features/settings/               | Settings UI views (appearance, shell)                                      |
-| ledger                 | src/features/ledger/                 | General ledger view                                                        |
-| reconciliations        | src/features/reconciliations/        | Reconciliation data, types, utils                                          |
-| products               | src/features/products/               | Product catalog, product form, SKU management                              |
-| product-surfaces       | src/features/product-surfaces/       | Product surface registry components                                        |
-| vendors                | src/features/vendors/                | Vendor management, tabs, widgets                                           |
-| customers              | src/features/customers/              | Customer management, tabs, widgets                                         |
-| entities               | src/features/entities/               | Entity registry, details, table                                            |
-| bills                  | src/features/bills/                  | Bills/payables, tabs, sections, widgets                                    |
-| payroll                | src/features/payroll/                | Payroll processing                                                         |
-| assets                 | src/features/assets/                 | Fixed asset management                                                     |
-| inventory              | src/features/inventory/              | Inventory management                                                       |
-| taxation               | src/features/taxation/               | Tax dashboard, widgets                                                     |
-| expedientes            | src/features/expedientes/            | Docket/file management                                                     |
-| economic-groups        | src/features/economic-groups/        | Economic group dashboard                                                   |
-| financials             | src/features/financials/             | Financial drill-down, widgets                                              |
-| onboarding             | src/features/onboarding/             | First-time user onboarding, interactive demos                              |
-| audit                  | src/features/audit/                  | Audit trail components                                                     |
-| artifacts              | src/features/artifacts/              | Artifact system: registry, factories, patches, policy                      |
-| agent-swarm            | src/features/agent-swarm/            | Agent swarms: types, hooks, components                                     |
-| approval-hub           | src/features/approval-hub/           | Approval hub page                                                          |
-| inbox                  | src/features/inbox/                  | Action inbox, config, schema, types                                        |
-| intelligence           | src/features/intelligence/           | Business intelligence, stores, hooks                                       |
-| review                 | src/features/review/                 | Document review, API, data                                                 |
-| review-queue           | src/features/review-queue/           | Review queue data                                                          |
-| compare                | src/features/compare/                | Period comparison components                                               |
-| reports                | src/features/reports/                | Custom reporting, components                                               |
-| documents              | src/features/documents/              | Document management                                                        |
-| connections            | src/features/connections/            | Third-party connections                                                    |
-| profile                | src/features/profile/                | User profile components                                                    |
-| plugins                | src/features/plugins/                | Plugin management components                                               |
-| automations            | src/features/automations/            | Automation rules components                                                |
-| cierre-mensual         | src/features/cierre-mensual/         | Monthly close page                                                         |
+| Feature         | Path                                | Purpose                                                                  |
+| --------------- | ----------------------------------- | ------------------------------------------------------------------------ |
+| workspace       | src/features/workspace/             | Mission workspace: `MissionWorkspace`, mission state/actions/approval/evidence/receipt components, reducer + 6 hooks, transports (http/SSE/mock), contracts |
+| evidence        | src/features/evidence/              | Evidence vault: `EvidenceVaultPage`, `EvidenceBrowserPage`, `EvidenceDetailPage`, `useEvidence`, lineage/upload/table components |
+| firm            | src/features/firm/                  | Firm dashboard, client list/detail (client 360, RUC scope), alerts panel  |
+| cierre-mensual  | src/features/cierre-mensual/        | Monthly close page (`CierreMensualPage`), mission timeline, blockers, `useCierreMensual` |
+| fiscal-chat     | src/features/fiscal-chat/           | Fiscal chat UI + chat parser/types                                       |
+| chat-agent      | src/features/chat-agent/            | Chat agent UI                                                            |
+| invoices        | src/features/invoices/              | Invoice board, create/edit form, OSE lifecycle + status tone, PDF preview, artifacts |
+| compliance      | src/features/compliance/            | SIRE management, CPE validator, detracciones, roadmap MVP, `useSireReconciliation` |
+| ledger          | src/features/ledger/                | General ledger API response + view models                                |
+| reconciliations | src/features/reconciliations/       | Bank reconciliation data, types, utils                                   |
+| approval-hub    | src/features/approval-hub/          | Approval hub components                                                  |
+| auth            | src/features/auth/                  | Login/signup/verify forms, UserMenu, session hooks, corporate registration |
+| onboarding      | src/features/onboarding/            | Onboarding wizard + interactive demos                                    |
+| settings        | src/features/settings/              | Settings view + general settings hook                                    |
 
 ## Common tasks
 
-| Task                                    | Location                                                                                               |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| Add a ledger tab entry in CentralBoard  | `src/features/central-board/components/CentralBoard.tsx`                                               |
-| Wire inline edit save to PATCH mutation | `src/features/central-board/components/LedgerEditableTable.tsx` (EditableCell → useUpdateJournalEntry) |
-| Upload a document via drag-and-drop     | `src/features/central-board/components/DocumentsList.tsx` → POST `/api/documents/upload`               |
-| Preview a document                      | `src/features/central-board/components/DocumentsList.tsx` (click to open DocumentPreviewModal)         |
-| Review pending agent proposals          | `src/features/central-board/components/JournalPendingList.tsx`                                         |
-| Add a journal-entries API query filter  | `src/features/drenyra/hooks/useJournalEntriesApi.ts`                                                   |
-| Export general ledger to PDF/XLSX       | `src/features/central-board/components/LedgerEditableTable.tsx` → POST `/api/ledger/export`            |
+| Task                                     | Location                                                                        |
+| ---------------------------------------- | ------------------------------------------------------------------------------- |
+| Work on the mission workspace (command center) | `src/features/workspace/` — `MissionWorkspace.tsx`, `components/mission/`, `hooks/`, `services/` |
+| Add a mission transport or API call      | `src/features/workspace/services/http-mission-transport.ts`, `sse-mission-stream.ts`, `mission-client.ts` |
+| Switch to the mock mission transport     | Set `VITE_DRENYRA_MISSION_TRANSPORT=mock` (uses `mock-mission-transport.ts`)     |
+| Monthly close page and timeline           | `src/features/cierre-mensual/` (`CierreMensualPage`, `AgentTimeline`, `MissionBlockers`) |
+| Evidence vault surfaces                   | `src/features/evidence/` (`EvidenceVaultPage`, `EvidenceBrowserPage`, `EvidenceDetailPage`) |
+| Client 360 / firm surfaces                | `src/features/firm/` (`FirmDashboard`, `ClientList`, `ClientDetail`)             |
+| Invoice board / OSE lifecycle             | `src/features/invoices/` (board, create-invoice form, OSE widgets/hooks)         |
+| SIRE / CPE / detracciones                 | `src/features/compliance/` (tabs + hooks)                                        |
+| Navigation model (sidebar sections/items) | `src/components/agentic-shell/AgenticSidebar/AgenticSidebar.data.ts`             |
+| Command palette / command bar             | `src/components/agentic-shell/AgenticCommandBar/`, `src/lib/commands/command-registry.ts` |
+| Approval gate UI                          | `src/components/workbench/ApprovalGate.tsx`                                      |
 
 ## Component tree
 
-### Atoms (`src/components/atoms/`)
+### Agentic shell (`src/components/agentic-shell/`)
 
-| File              | Purpose                |
-| ----------------- | ---------------------- |
-| button.tsx        | Button stories (Ladle) |
-| spinner.tsx       | Loading spinner        |
-| icon.tsx          | Icon wrapper           |
-| text.tsx          | Typography primitive   |
-| badge.stories.tsx | Badge stories          |
-| dot.tsx           | Status dot             |
-| ai-indicator.tsx  | AI activity indicator  |
-| index.ts          | Barrel exports         |
+| Component           | Purpose                                         |
+| ------------------- | ----------------------------------------------- |
+| AgenticLayout       | App shell: sidebar + workspace + context rail   |
+| AgenticSidebar      | Outcome-first navigation (17 items, 5 sections) |
+| AgenticCommandBar   | Command entry                                   |
+| WorkspaceSelector   | Company/workspace switching                     |
 
-### Molecules (`src/components/molecules/`)
+### Workbench (`src/components/workbench/`)
 
-| File                      | Purpose                        |
-| ------------------------- | ------------------------------ |
-| OmniAgent.tsx             | OmniAgent status component     |
-| omni-agent/               | OmniAgent sub-components       |
-| status-card.tsx           | Status display card            |
-| ai-confidence-display.tsx | AI confidence visual indicator |
-| stat-card.tsx             | Statistic display card         |
-| metric-card.tsx           | Metric display card            |
+| File                       | Purpose                            |
+| -------------------------- | ---------------------------------- |
+| PaneContainer / Pane       | Resizable command-center panes     |
+| ResizeHandle               | Pane resize                        |
+| WorkspaceTopBar            | Workspace top bar                  |
+| WorkspaceIntentSwitcher    | Intent switching (close, etc.)     |
+| PeriodSwitcher             | Fiscal period switching            |
+| CompanySwitcher            | Company/RUC switching              |
+| ApprovalGate               | Explicit human approval gate       |
+| EvidenceInspector          | Evidence inspection panel          |
+| AttentionInbox             | Action/attention inbox             |
+| AgentActivityFeed/View     | Agent activity stream              |
+| AgentStateBadge            | Agent state badge                  |
+| ChangeSetCard              | Change-set display                 |
+| FinancialDiffCard          | Financial diff display             |
+| SkillsBrowserPane          | Skills browser                     |
+| ScreenReaderAnnouncer      | Accessibility announcer            |
 
-### UI (`src/components/ui/`) — shadcn + custom
+### Fiscal (`src/components/fiscal/`)
 
-| File                        | Purpose                                   |
-| --------------------------- | ----------------------------------------- |
-| button.tsx                  | shadcn button (cva variants)              |
-| badge.tsx                   | Badge (default + secondary + outline)     |
-| card.tsx                    | Card, CardHeader, CardContent, CardFooter |
-| dialog.tsx                  | Dialog modal                              |
-| alert-dialog.tsx            | Alert/confirm dialog                      |
-| dropdown-menu.tsx           | Dropdown menu                             |
-| popover.tsx                 | Popover                                   |
-| select.tsx                  | Select dropdown                           |
-| checkbox.tsx                | Checkbox                                  |
-| input.tsx                   | Text input                                |
-| textarea.tsx                | Textarea                                  |
-| label.tsx                   | Label                                     |
-| form.tsx                    | Form wrapper (RHF)                        |
-| table.tsx                   | Table, Thead, Tbody, Tr, Th, Td           |
-| tabs.tsx                    | Tabs                                      |
-| tooltip.tsx                 | Tooltip                                   |
-| command.tsx                 | Command palette                           |
-| calendar.tsx                | Date picker calendar                      |
-| skeleton.tsx                | Loading skeleton                          |
-| panel.tsx                   | Panel container                           |
-| typography.tsx              | Typography components                     |
-| glass-card.tsx              | Glassmorphism card                        |
-| liquid-glass.tsx            | Liquid glass effect                       |
-| PageShell.tsx               | Page shell wrapper                        |
-| PageHeader.tsx              | Page header                               |
-| RightRail.tsx               | Right side panel                          |
-| StatusBadge.tsx             | Status badge (with color maps)            |
-| NavSection.tsx              | Nav section group                         |
-| NavItem.tsx                 | Nav item                                  |
-| SearchField.tsx             | Search input field                        |
-| page-transition.tsx         | Page transition wrapper                   |
-| motion-primitives.tsx       | Motion primitive components               |
-| floating-action-button.tsx  | FAB component                             |
-| keyboard-shortcuts-help.tsx | Keyboard shortcuts dialog                 |
-| ComplexityModeToggle.tsx    | Complexity level toggle                   |
-| UXModeToggle.tsx            | UX mode toggle                            |
-| agent-status.tsx            | Agent status indicator                    |
-| SurfaceCard.tsx             | Surface card                              |
+| File                  | Purpose                          |
+| --------------------- | -------------------------------- |
+| AgentMissionTimeline  | Mission step timeline           |
+| FiscalRiskLayer       | Fiscal risk overlay             |
 
 ### Layout (`src/components/layout/`)
 
-| File                      | Purpose                                                 |
-| ------------------------- | ------------------------------------------------------- |
-| MainLayout.tsx            | Main app shell: sidebar + topbar + content + right rail |
-| Sidebar.tsx               | Sidebar navigation                                      |
-| sidebar/                  | Sidebar theme, expanded state, navigation click         |
-| TopBar.tsx                | Top bar                                                 |
-| BottomNavigationBar.tsx   | Mobile bottom nav                                       |
-| MobileTabNavigation.tsx   | Mobile tab navigation                                   |
-| UserProfileDropdown.tsx   | User profile dropdown                                   |
-| SidebarAccountMenu.tsx    | Sidebar account menu                                    |
-| ActiveCompanySwitcher.tsx | Company/RUC switcher                                    |
-| FiscalInspector.tsx       | Fiscal inspector panel                                  |
-| HeaderSupportMenu.tsx     | Header support menu                                     |
-| HeaderActivityCluster.tsx | Activity cluster in header                              |
-| notifications/            | Notification sidebar                                    |
-| hooks/                    | Layout-specific hooks                                   |
-| utils/                    | Layout utilities (policy-context)                       |
+| File                 | Purpose              |
+| -------------------- | -------------------- |
+| FiscalEditorialShell | Unified editorial shell (`operational` \| `command-center`) |
 
 ### Agentic (`src/components/agentic/`)
 
-| File                 | Purpose                         |
-| -------------------- | ------------------------------- |
-| AgentPulse.tsx       | Agent pulse animation           |
-| AgentHeartbeat.tsx   | Agent heartbeat indicator       |
-| ConfidenceBadge.tsx  | AI confidence badge             |
-| ConfidenceBadge/     | Confidence badge sub-components |
-| ConflictDiffView.tsx | Conflict diff visualizer        |
-| conflict-diff/       | Conflict diff sub-components    |
-| agent-pulse/         | Agent pulse sub-components      |
-| command-bar/         | Command bar (with hooks)        |
+| File            | Purpose              |
+| --------------- | -------------------- |
+| CommandPalette  | Command palette      |
+| RightPanel      | Right context rail   |
+
+### UI (`src/components/ui/`) — shadcn + custom
+
+Atoms: `text.tsx` (only atom left).
+
+Primitives: `alert-dialog`, `badge`, `button`, `calendar`, `card`, `checkbox`, `command`, `data-state-wrapper`, `dialog`, `dropdown-menu`, `form`, `input`, `label`, `popover`, `scroll-area`, `select`, `skeleton`, `switch`, `tabs`, `textarea`, `tooltip`, `typography`.
+
+Surfaces & shell: `SurfaceCard`, `SurfacePanel`, `glass-card`, `liquid-glass`, `panel`, `PageShell`, `PageHeader`, `StatusBadge`, `NavItem`, `NavSection`, `metric-card`, `empty-state`, `error-state`, `loading-state`, `page-transition`, `motion-primitives`, `floating-action-button/`, `keyboard-shortcuts-help`, `UXModeToggle`.
+
+### Notifications (`src/components/notifications/`)
+
+| File                 | Purpose               |
+| -------------------- | --------------------- |
+| NotificationSidebar  | Notification sidebar  |
 
 ## State management
 
-### Zustand stores
+### Zustand stores (`src/stores/`)
 
-| Store                 | File                               | Purpose                                                                            |
-| --------------------- | ---------------------------------- | ---------------------------------------------------------------------------------- |
-| useUIStore            | src/store/ui-store.ts              | Theme preference, complexity level, sidebar/rail state. Persisted to localStorage. |
-| useSidebarLayoutStore | src/stores/sidebar-layout.store.ts | Sidebar collapsed/mobile/focus/notifications state                                 |
+| Store                  | File                               | Purpose                                                                  |
+| ---------------------- | ---------------------------------- | ------------------------------------------------------------------------ |
+| useUIStore             | src/stores/ui.store.ts             | Theme preference, complexity level, sidebar/rail state. Persisted.        |
+| useWorkspaceStore      | src/stores/workspace.store.ts      | Workspace state (company, period, intent)                                |
+| useAgenticShellStore   | src/stores/agentic-shell.store.ts  | Agentic shell layout state                                               |
 
-### XState machines (within features)
+### XState machines
 
-| Feature    | Use                                  |
-| ---------- | ------------------------------------ |
-| invoices   | Invoice creation/editing workflows   |
-| compliance | SIRE compliance flow, CPE validation |
+| Location                 | Use                                                     |
+| ------------------------ | ------------------------------------------------------- |
+| `src/lib/process-machine/` | Generic process → analyze → resolve machines           |
+| `src/features/compliance/hooks/useSireReconciliation.ts` | SIRE reconciliation flow   |
 
 ### TanStack Query
 
 - Global client config: `src/lib/query-client.ts`
-- Feature-level query keys/options: each feature has `api/`, `*.query.ts`, `*.query-keys.ts`, `*.query-options.ts`
+- Feature-level query keys/options: `*.query.ts`, `*.query-keys.ts`, `*.query-options.ts` within features
 
 ## React Context providers
 
-| Provider                | File                                    | Purpose                    |
-| ----------------------- | --------------------------------------- | -------------------------- |
-| SidebarProvider         | src/context/SidebarContext.tsx          | Sidebar open/close state   |
-| SidebarLayoutContext    | src/context/SidebarLayoutContext.tsx    | Sidebar layout config      |
-| SidebarWorkspaceContext | src/context/SidebarWorkspaceContext.tsx | Workspace-specific sidebar |
-| SettingsProvider        | src/context/SettingsContext.tsx         | App settings               |
-| SimulationProvider      | src/context/SimulationContext.tsx       | Simulation mode            |
-| ArtifactEventContext    | src/context/ArtifactEventContext.tsx    | Artifact event bus         |
-| FiscalInspectorProvider | src/context/FiscalInspectorContext.tsx  | Fiscal inspector state     |
-| AgentAwareProvider      | src/context/AgentAwareContext.tsx       | Agent awareness context    |
-| MotionProvider          | src/components/ui/motion-primitives     | Framer Motion config       |
+| Provider                | File                                    | Purpose                       |
+| ----------------------- | --------------------------------------- | ----------------------------- |
+| FiscalInspectorProvider | src/context/FiscalInspectorContext.tsx  | Fiscal inspector state       |
+| InspectorProvider       | src/context/InspectorContext.tsx        | Inspector state              |
+| DensityProvider         | src/contexts/density-context.tsx        | UI density mode              |
+| WorkspaceProvider       | src/contexts/workspace-context.tsx      | Workspace context            |
 
 ## Key entrypoints
 
 | File                    | Role                                                                                 |
 | ----------------------- | ------------------------------------------------------------------------------------ |
 | src/client.tsx          | React root mount, QueryClient init, RouterProvider, theme bootstrap, monitoring init |
-| src/router.tsx          | TanStack Router factory (context, preload, defaults, error components)               |
+| src/router.tsx          | TanStack Router factory (context, preload, error components)                         |
+| src/remote-entry.tsx    | Module Federation entry — exposes `createRouter` for the Drenyra OS shell            |
 | src/routeTree.gen.ts    | Auto-generated route tree (do NOT edit)                                              |
-| src/routes/__root.tsx   | Root layout: auth guard, MainLayout (lazy), global providers                         |
+| src/routes/__root.tsx   | Root layout: public-route guard, AgenticLayout, global providers, Toaster            |
 | src/lib/query-client.ts | TanStack Query client (retry, stale time, cache config)                              |
 | src/lib/auth-client.ts  | Better Auth client (Eden Treaty)                                                     |
 | src/index.css           | Tailwind 4 entry + custom @theme variables                                           |
 | vite.config.ts          | Vite config: React Compiler, TanStack Router, Tailwind, dev proxy, chunk splitting   |
-| vitest.config.ts        | Test config: jsdom, coverage thresholds, setup                                       |
+| vitest.config.ts        | Test config: jsdom, coverage thresholds (70/65/60/70), setup                         |
 
 ## Fast search recipes
 
@@ -514,67 +447,63 @@ ls src/features/ | sort
 fd store src/ -tf -e ts
 
 # Find test files by feature
-fd _test\. src/features/invoices/ -tf
-fd _test\. src/features/banking/ -tf
+fd __tests__ src/features/invoices/ -tf
 
 # Find context providers
-rg createContext src/context/
+rg createContext src/context/ src/contexts/
 
 # Find API query options (TanStack Query)
 rg queryOptions src/features/ -l
 
 # Find XState machines
-fd machine src/features/ -tf
+rg createProcessMachine src/lib/process-machine/
 
 # Find Eden Treaty route calls
 rg treaty src/ -l
 
-# Find all hooks
-fd use[A-Z] src/hooks/ -tf
-
 # Find all Zustand stores
-rg create\( src/ -g *.ts --type ts
+rg 'create\(' src/stores/ -g *.ts
 
 # Find design token references
-fd token src/lib/design-tokens/ -tf
+rg 'var\(--' src/ | head
 ```
 
 ## Common tasks to exact paths
 
-| Task                   | Start path                                                          |
-| ---------------------- | ------------------------------------------------------------------- |
-| Add new route          | src/routes/<name>.tsx then add feature in src/features/<name>/      |
-| Create new feature     | src/features/<name>/ (components/, hooks/, api/, types/, index.ts)  |
-| Add Zod schema         | src/lib/schemas/<entity>.schema.ts                                  |
-| Change design tokens   | src/lib/design-tokens/tokens.dtcg.json then run bun tokens:generate |
-| Edit sidebar nav items | src/lib/navigation/items/types.ts or src/lib/navigation/            |
-| Change auth guard      | src/routes/__root.tsx (beforeLoad)                                  |
-| Add UI component       | src/components/ui/<name>.tsx                                        |
-| Add layout component   | src/components/layout/<name>.tsx                                    |
-| Add global hook        | src/hooks/use<hook>.ts                                              |
-| Change Zustand store   | src/store/ui-store.ts or src/stores/<name>.store.ts                 |
-| Change API client      | src/lib/api-client.ts or src/lib/treaty-route-client.ts             |
-| Add PDF generation     | src/services/pdf.service.ts                                         |
-| Add test               | src/**tests**/ (setup), feature-level **tests**/ dirs               |
-| Change ESLint          | eslint.config.js                                                    |
-| Change Docker/nginx    | Dockerfile, nginx.conf                                              |
-| Change dev proxy       | vite.config.ts (server.proxy) + vite.dev-api-proxy.ts               |
-| Change chunk splitting | vite.config.ts (resolveManualChunk)                                 |
-| Change test config     | vitest.config.ts                                                    |
-| Change TS config       | tsconfig.json, tsconfig.check.json                                  |
-| Add dependency         | bun add <pkg> (check if already in workspace)                       |
+| Task                          | Start path                                                            |
+| ----------------------------- | --------------------------------------------------------------------- |
+| Add new route                 | src/routes/<name>.tsx then add feature in src/features/<name>/        |
+| Work on mission workspace     | src/features/workspace/components/MissionWorkspace.tsx                |
+| Add mission UI component      | src/features/workspace/components/mission/                            |
+| Add mission hook              | src/features/workspace/hooks/ (missionReducer + useMission* hooks)    |
+| Change mission transport      | src/features/workspace/services/http-mission-transport.ts             |
+| Change sidebar nav items      | src/components/agentic-shell/AgenticSidebar/AgenticSidebar.data.ts    |
+| Add command to palette        | src/lib/commands/command-registry.ts + default-commands.ts            |
+| Change auth guard             | src/routes/__root.tsx (PUBLIC_ROUTES)                                 |
+| Add UI component              | src/components/ui/<name>.tsx                                          |
+| Change Zustand store          | src/stores/<name>.store.ts                                            |
+| Change API client             | src/lib/api-factory*.ts or src/lib/http-client.ts                     |
+| Change design tokens          | `tokens.dtcg.json` (expected source) → `bun run tokens:generate` at repo root; checked-in output is `src/lib/design-tokens/generated/tokens.css` |
+| Add test                      | src/**tests**/ (setup), feature-level **tests**/ dirs                 |
+| Change ESLint                 | eslint.config.js                                                      |
+| Change dev proxy              | vite.config.ts (server.proxy) + vite.dev-api-proxy.ts                 |
+| Change chunk splitting        | vite.config.ts (resolveManualChunk)                                   |
+| Change test config            | vitest.config.ts                                                      |
+| Change TS config              | tsconfig.json, tsconfig.check.json                                    |
+| Add dependency                | bun add <pkg> (check if already in workspace)                         |
 
 ## Dependencies (core)
 
 | Package                | Version  | Purpose                  |
 | ---------------------- | -------- | ------------------------ |
-| react                  | ^19.2.5  | UI framework             |
+| react                  | ^19.2.7  | UI framework             |
 | @tanstack/react-router | ^1.103.3 | Type-safe routing        |
 | @tanstack/react-query  | ^5.90.19 | Server state             |
 | zustand                | ^5.0.10  | Client state             |
 | xstate                 | ^5.28.0  | State machines           |
+| @xstate/react          | ^6.1.0   | XState React bindings    |
 | @elysiajs/eden         | ^1.4.6   | Type-safe API client     |
-| better-auth            | ^1.4.15  | Authentication           |
+| better-auth            | ^1.6.16  | Authentication           |
 | zod                    | ^4.3.5   | Schema validation        |
 | react-hook-form        | ^7.71.1  | Forms                    |
 | tailwindcss            | ^4.1.18  | CSS utility framework    |
@@ -583,8 +512,10 @@ fd token src/lib/design-tokens/ -tf
 | @react-pdf/renderer    | ^4.3.2   | PDF generation           |
 | @dnd-kit/core          | ^6.3.1   | Drag and drop            |
 | @radix-ui/*            | --       | Accessible UI primitives |
-| lucide-react           | 0.562.0  | Icons                    |
+| lucide-react           | 1.25.0   | Icons                    |
 | sonner                 | ^2.0.7   | Toast notifications      |
+| cmdk                   | ^1.1.1   | Command palette          |
+| @drenyra/mission-domain| workspace:* | Mission domain contract (shared types) |
 
 ## CI gates
 
@@ -592,8 +523,9 @@ fd token src/lib/design-tokens/ -tf
 bun install --frozen-lockfile           # Install deps
 bun run typecheck                        # TypeScript strict check (tsc -p tsconfig.check.json)
 bun run lint                             # ESLint on src/
-bun run test:run                         # Vitest (coverage: lines 60%, functions 60%, branches 55%)
+bun run test:run                         # Vitest (coverage: lines 70%, functions 65%, branches 60%, statements 70%)
 bun run build                            # Vite production build
 bun run check:bundle                     # Bundle budget check
 bun run check:classnames                 # Classname template literal check
+bun run test:e2e                         # Playwright (e2e/ incl. missions specs)
 ```

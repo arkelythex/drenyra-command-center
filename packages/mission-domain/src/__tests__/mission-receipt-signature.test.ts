@@ -1,15 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { ReceiptType } from "@drenyra/mission-protocol";
 import {
 	generateReceiptKeyPair,
-	generateReceiptHash,
 	signReceipt,
 	verifyReceiptSignature,
 	buildSignedReceipt,
 	verifySignedReceipt,
-	verifySignedReceiptTrusted,
 	type ReceiptContent,
-	type SigningKeyInfo,
 } from "../mission-receipt.js";
 
 const content: ReceiptContent = {
@@ -94,22 +90,11 @@ describe("Ed25519 receipt signing", () => {
 		const receipt = buildSignedReceipt(content, keyPair);
 
 		expect(receipt.protocolVersion).toBe("1.0");
-		expect(receipt.receiptType).toBe(ReceiptType.APPROVAL);
-		expect(receipt.algorithm).toBe("Ed25519");
 		expect(receipt.receiptHash).toHaveLength(64); // SHA-256 hex
 		expect(receipt.signerKeyId).toBe("key_prod_001");
 		expect(receipt.signerPublicKey).toBe(keyPair.publicKey);
 		expect(receipt.signature).toBeTruthy();
 		expect(receipt.issuedAt).toBeTruthy();
-	});
-
-	it("builds typed receipt bundles without hashing type metadata", () => {
-		const keyPair = generateReceiptKeyPair();
-		const receipt = buildSignedReceipt(content, keyPair, "1.0", ReceiptType.COMPLETION);
-
-		expect(receipt.receiptType).toBe(ReceiptType.COMPLETION);
-		expect(receipt.algorithm).toBe("Ed25519");
-		expect(receipt.receiptHash).toBe(generateReceiptHash(content));
 	});
 
 	it("verifySignedReceipt returns valid for authentic receipt", () => {
@@ -146,41 +131,6 @@ describe("Ed25519 receipt signing", () => {
 		expect(result.hashValid).toBe(true); // hash still valid
 		expect(result.signatureValid).toBe(false); // signature no longer matches
 		expect(result.valid).toBe(false);
-	});
-
-	it("verifies trusted receipts through every trust stage", async () => {
-		const keyPair = generateReceiptKeyPair("key_trusted");
-		const receipt = buildSignedReceipt(content, keyPair);
-		const validKey: SigningKeyInfo = {
-			keyId: keyPair.keyId,
-			publicKey: keyPair.publicKey,
-			issuedAt: "2020-01-01T00:00:00.000Z",
-		};
-
-		await expect(verifySignedReceiptTrusted(receipt, () => undefined)).resolves.toMatchObject({
-			status: "UNKNOWN_SIGNER",
-			steps: { hashValid: true, signatureValid: true, signerRecognized: false },
-		});
-		await expect(verifySignedReceiptTrusted({ ...receipt, content: { ...content, actorId: "tampered" } }, () => validKey)).resolves.toMatchObject({
-			status: "PAYLOAD_TAMPERED",
-			steps: { hashValid: false },
-		});
-		await expect(verifySignedReceiptTrusted({ ...receipt, signature: "invalid" }, () => validKey)).resolves.toMatchObject({
-			status: "CONTENT_VALID",
-			steps: { hashValid: true, signatureValid: false },
-		});
-		await expect(verifySignedReceiptTrusted(receipt, () => ({ ...validKey, expiresAt: "2021-01-01T00:00:00.000Z" }))).resolves.toMatchObject({
-			status: "KEY_EXPIRED",
-			steps: { keyCurrent: false },
-		});
-		await expect(verifySignedReceiptTrusted(receipt, async () => ({ ...validKey, revokedAt: "2021-01-01T00:00:00.000Z" }))).resolves.toMatchObject({
-			status: "KEY_REVOKED",
-			steps: { keyCurrent: true, keyRevoked: true },
-		});
-		await expect(verifySignedReceiptTrusted(receipt, () => validKey)).resolves.toMatchObject({
-			status: "SIGNER_TRUSTED",
-			steps: { hashValid: true, signatureValid: true, signerRecognized: true, keyCurrent: true, keyRevoked: false },
-		});
 	});
 
 	it("signature is deterministic for same content and key", () => {

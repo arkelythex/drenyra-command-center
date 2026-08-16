@@ -73,9 +73,9 @@ export interface DelegationNode {
 	/** List of agent IDs this node is allowed to spawn */
 	maySpawn: readonly string[];
 	/** Whether this node's actions require approval */
-	requiresApproval?: boolean;
+	requiresApproval?: boolean | undefined;
 	/** Parent node ID (for hierarchical validation) */
-	parent?: string;
+	parent?: string | undefined;
 	/** Whether this is a leaf node (no further delegation) */
 	leaf?: boolean;
 }

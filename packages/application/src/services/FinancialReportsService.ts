@@ -1,4 +1,5 @@
 import type { LedgerEntry } from "./financial-reports/types";
+export type { LedgerEntry };
 /**
  * Financial Reports Service
  *

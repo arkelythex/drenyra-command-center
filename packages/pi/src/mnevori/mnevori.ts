@@ -11,7 +11,6 @@ import type {
 	MnevoriArtifact,
 	MnevoriPhaseSnapshot,
 	MnevoriResumePoint,
-	RegulationVersion,
 } from "./types";
 
 const CURRENT_REGULATION_VERSION = "2026.1";
@@ -106,6 +105,7 @@ export class Mnevori {
 		if (phases.length === 0) return null;
 
 		const last = phases[phases.length - 1];
+		if (last === undefined) return null;
 
 		return {
 			ruc,

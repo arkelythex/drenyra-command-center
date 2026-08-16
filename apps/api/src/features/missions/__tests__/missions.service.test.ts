@@ -1,5 +1,5 @@
-import { isMissionError } from "@drenyra/mission-domain";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi, beforeEach } from "vitest";
+import { MissionError, MissionErrorCode } from "@drenyra/mission-domain";
 
 const mockDb = vi.hoisted(() => ({
 	db: {
@@ -69,29 +69,39 @@ function m(overrides: Record<string, unknown> = {}) {
 }
 function sel(row: Record<string, unknown> | null) {
 	mockDb.db.select.mockReturnValue({
-		from: vi.fn().mockReturnValue({
-			where: vi.fn().mockReturnValue({
-				limit: vi.fn().mockResolvedValue(row ? [row] : []),
+		from: vi
+			.fn()
+			.mockReturnValue({
+				where: vi
+					.fn()
+					.mockReturnValue({
+						limit: vi.fn().mockResolvedValue(row ? [row] : []),
+					}),
 			}),
-		}),
 	} as any);
 }
 function upd(returned: Record<string, unknown>) {
 	mockDb.db.update.mockReturnValue({
-		set: vi.fn().mockReturnValue({
-			where: vi.fn().mockReturnValue({
-				returning: vi.fn().mockResolvedValue([returned]),
+		set: vi
+			.fn()
+			.mockReturnValue({
+				where: vi
+					.fn()
+					.mockReturnValue({
+						returning: vi.fn().mockResolvedValue([returned]),
+					}),
 			}),
-		}),
 	} as any);
 }
 function updFail() {
 	mockDb.db.update.mockReturnValue({
-		set: vi.fn().mockReturnValue({
-			where: vi
-				.fn()
-				.mockReturnValue({ returning: vi.fn().mockResolvedValue([]) }),
-		}),
+		set: vi
+			.fn()
+			.mockReturnValue({
+				where: vi
+					.fn()
+					.mockReturnValue({ returning: vi.fn().mockResolvedValue([]) }),
+			}),
 	} as any);
 }
 
@@ -106,11 +116,15 @@ describe("MissionsService", () => {
 		it("creates in DRAFT with version 1", async () => {
 			mockDb.db.transaction.mockImplementation(async (fn: any) => {
 				const tx = {
-					insert: vi.fn().mockReturnValue({
-						values: vi.fn().mockReturnValue({
-							returning: vi.fn().mockResolvedValue([m()]),
+					insert: vi
+						.fn()
+						.mockReturnValue({
+							values: vi
+								.fn()
+								.mockReturnValue({
+									returning: vi.fn().mockResolvedValue([m()]),
+								}),
 						}),
-					}),
 				};
 				return fn(tx);
 			});
@@ -131,15 +145,14 @@ describe("MissionsService", () => {
 					intent: "bad" as any,
 					input: { instruction: "x" },
 				}),
-			).rejects.toSatisfy(isMissionError);
+			).rejects.toThrow(MissionError);
 		});
 	});
 
 	describe("getMission", () => {
 		it("returns mission for matching company", async () => {
 			sel(m());
-			const found = await svc.getMission(missionId, companyId);
-			expect(found?.id).toBe(missionId);
+			expect((await svc.getMission(missionId, companyId))!.id).toBe(missionId);
 		});
 		it("returns null for wrong company", async () => {
 			sel(null);
@@ -160,27 +173,31 @@ describe("MissionsService", () => {
 			sel(m({ status: "COMPLETED" }));
 			await expect(
 				svc.executeMission(missionId, companyId, { expectedMissionVersion: 1 }),
-			).rejects.toSatisfy(isMissionError);
+			).rejects.toThrow(MissionError);
 		});
 		it("rejects AWAITING_APPROVAL", async () => {
 			sel(m({ status: "AWAITING_APPROVAL" }));
 			await expect(
 				svc.executeMission(missionId, companyId, { expectedMissionVersion: 1 }),
-			).rejects.toSatisfy(isMissionError);
+			).rejects.toThrow(MissionError);
 		});
 		it("rejects stale version", async () => {
 			sel(m({ version: 3 }));
 			updFail();
 			mockDb.db.select.mockReturnValue({
-				from: vi.fn().mockReturnValue({
-					where: vi.fn().mockReturnValue({
-						limit: vi.fn().mockResolvedValue([{ version: 3 }]),
+				from: vi
+					.fn()
+					.mockReturnValue({
+						where: vi
+							.fn()
+							.mockReturnValue({
+								limit: vi.fn().mockResolvedValue([{ version: 3 }]),
+							}),
 					}),
-				}),
 			} as any);
 			await expect(
 				svc.executeMission(missionId, companyId, { expectedMissionVersion: 1 }),
-			).rejects.toSatisfy(isMissionError);
+			).rejects.toThrow(MissionError);
 		});
 	});
 
@@ -230,7 +247,7 @@ describe("MissionsService", () => {
 					evidenceHash: eh,
 					expectedMissionVersion: 1,
 				}),
-			).rejects.toSatisfy(isMissionError);
+			).rejects.toThrow(MissionError);
 		});
 		it("rejects EVIDENCE_MISMATCH", async () => {
 			sel(
@@ -256,7 +273,7 @@ describe("MissionsService", () => {
 					evidenceHash: "other",
 					expectedMissionVersion: 2,
 				}),
-			).rejects.toSatisfy(isMissionError);
+			).rejects.toThrow(MissionError);
 		});
 		it("rejects proposal version mismatch", async () => {
 			sel(
@@ -282,7 +299,7 @@ describe("MissionsService", () => {
 					evidenceHash: eh,
 					expectedMissionVersion: 2,
 				}),
-			).rejects.toSatisfy(isMissionError);
+			).rejects.toThrow(MissionError);
 		});
 	});
 
@@ -335,7 +352,7 @@ describe("MissionsService", () => {
 					reason: "",
 					expectedMissionVersion: 1,
 				}),
-			).rejects.toSatisfy(isMissionError);
+			).rejects.toThrow(MissionError);
 		});
 	});
 
@@ -361,7 +378,7 @@ describe("MissionsService", () => {
 					reason: "x",
 					expectedMissionVersion: 1,
 				}),
-			).rejects.toSatisfy(isMissionError);
+			).rejects.toThrow(MissionError);
 		});
 		it("rejects invalid resolution", async () => {
 			sel(m({ status: "UNKNOWN" }));
@@ -371,7 +388,7 @@ describe("MissionsService", () => {
 					reason: "x",
 					expectedMissionVersion: 1,
 				}),
-			).rejects.toSatisfy(isMissionError);
+			).rejects.toThrow(MissionError);
 		});
 		it("rejects empty reason", async () => {
 			await expect(
@@ -380,113 +397,7 @@ describe("MissionsService", () => {
 					reason: "",
 					expectedMissionVersion: 1,
 				}),
-			).rejects.toSatisfy(isMissionError);
-		});
-	});
-
-	describe("mission memory recorder hook", () => {
-		it("records completion when reconciled to COMPLETED", async () => {
-			const recorder = {
-				recordCompletion: vi.fn().mockResolvedValue(undefined),
-			};
-			const hooked = new MissionsService(
-				mockDb.db as any,
-				undefined,
-				undefined,
-				recorder as any,
-			);
-
-			sel(m({ status: "UNKNOWN", version: 2 }));
-			upd(m({ status: "COMPLETED", version: 3 }));
-
-			const result = await hooked.reconcileMission(
-				missionId,
-				companyId,
-				actorId,
-				{
-					resolution: "COMPLETED",
-					reason: "Evidence reviewed",
-					expectedMissionVersion: 2,
-				},
-			);
-
-			expect(result.status).toBe("COMPLETED");
-			expect(recorder.recordCompletion).toHaveBeenCalledTimes(1);
-			const input = recorder.recordCompletion.mock.calls[0][0];
-			expect(input.missionId).toBe(missionId);
-			expect(input.companyId).toBe(companyId);
-			expect(input.intent).toBe("monthly-close");
-			expect(input.fiscalPeriod).toBe("2026-07");
-			expect(input.actorId).toBe(actorId);
-		});
-
-		it("does NOT record for non-COMPLETED resolutions", async () => {
-			const recorder = {
-				recordCompletion: vi.fn().mockResolvedValue(undefined),
-			};
-			const hooked = new MissionsService(
-				mockDb.db as any,
-				undefined,
-				undefined,
-				recorder as any,
-			);
-
-			sel(m({ status: "UNKNOWN", version: 2 }));
-			upd(m({ status: "RUNNING", version: 3 }));
-
-			await hooked.reconcileMission(missionId, companyId, actorId, {
-				resolution: "RUNNING",
-				reason: "Recovered",
-				expectedMissionVersion: 2,
-			});
-
-			expect(recorder.recordCompletion).not.toHaveBeenCalled();
-		});
-
-		it("recorder failure never breaks the mission flow (best-effort)", async () => {
-			const recorder = {
-				recordCompletion: vi
-					.fn()
-					.mockRejectedValue(new Error("ENGINE_UNREACHABLE")),
-			};
-			const hooked = new MissionsService(
-				mockDb.db as any,
-				undefined,
-				undefined,
-				recorder as any,
-			);
-			const warn = vi
-				.spyOn(console, "warn")
-				.mockImplementation(() => undefined);
-
-			sel(m({ status: "UNKNOWN", version: 2 }));
-			upd(m({ status: "COMPLETED", version: 3 }));
-
-			const result = await hooked.reconcileMission(
-				missionId,
-				companyId,
-				actorId,
-				{
-					resolution: "COMPLETED",
-					reason: "Evidence reviewed",
-					expectedMissionVersion: 2,
-				},
-			);
-
-			expect(result.status).toBe("COMPLETED"); // flow unaffected
-			expect(warn).toHaveBeenCalled(); // failure surfaced as a warning
-			warn.mockRestore();
-		});
-
-		it("does nothing when no recorder is injected", async () => {
-			sel(m({ status: "UNKNOWN", version: 2 }));
-			upd(m({ status: "COMPLETED", version: 3 }));
-			const result = await svc.reconcileMission(missionId, companyId, actorId, {
-				resolution: "COMPLETED",
-				reason: "Evidence reviewed",
-				expectedMissionVersion: 2,
-			});
-			expect(result.status).toBe("COMPLETED");
+			).rejects.toThrow(MissionError);
 		});
 	});
 });

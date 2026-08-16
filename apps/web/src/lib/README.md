@@ -1,6 +1,6 @@
 # `@/lib` — Utility Libraries Reference
 
-**Last updated**: 2026-06-10
+**Last updated**: 2026-08-14
 
 > Auto-generated from source. Keep in sync when changing APIs in `lib/`.
 
@@ -12,9 +12,9 @@
 |---------|---------------|--------|
 | `api-factory.ts` | `safeApiCall`, `queryApi`, `mutateApi`, `createCrudApi` | Type-safe Eden Treaty calls with tenant context injection, error normalization |
 | `crud-api.ts` | `createCrudHooks` | TanStack Query hooks for list/get/create/update/delete with auto-invalidation |
-| `treaty-route-client.ts` | `getTreatyRouteClient` | Runtime resolution of Eden Treaty route clients + error message extraction |
+| `http-client.ts` | `requestJson`, `buildApiUrl`, `getHttpStatusCode` | Typed JSON fetch with API base URL resolution and error mapping |
 | `export-service.ts` | `exportData`, `downloadExport` | Multi-format (CSV/TSV/JSON/PDF/XLSX/Encrypted) data export with plugin system |
-| `process-machine.ts` | `createProcessMachine` | XState process/analyze/resolve/error machines with typed context |
+| `process-machine/` | `createProcessMachine` | XState process/analyze/resolve/error machines with typed context |
 | `import-utils.ts` | `parseCSV`, `parseFile`, `parseDateLoose`, `parseAmountLoose` | CSV/delimited-file parsing, bank-format detection, field normalization |
 
 ---
@@ -107,37 +107,31 @@ const mutation = productsApi.useCreate()
 
 ---
 
-### `lib/treaty-route-client.ts`
+### `lib/http-client.ts`
 
-**Purpose**: Resolves Eden Treaty route clients at runtime by key, with a client registry for reuse and a helper to extract user-facing error messages from Treaty error shapes.
+**Purpose**: Typed JSON fetch helper that resolves the API base URL and maps HTTP errors to a normalized `HttpClientError`.
 
 **Entry points**:
 
 ```ts
-getTreatyRouteClient<TClient>(routeKey: string): TClient
-registerClient<T>(name: string, client: T): T
-getClient<T>(name: string): T | undefined
-listClients(): string[]
-getTreatyErrorMessage(error: TreatyErrorShape | null | undefined, fallback: string): string
+class HttpClientError extends Error
+function getHttpStatusCode(error: unknown): number | undefined
+function buildApiUrl(path: string): string
+async function requestJson<T>(...): Promise<T>
 ```
 
-**Key types**: `TreatyErrorShape`, `TreatyResponse<TData>`
+**Key types**: `HttpClientError`
 
-**`getTreatyRouteClient`** — Looks up `treatyRoot[routeKey]` or `treatyRoot.api[routeKey]` and auto-registers the found client. Throws if not found.
+**`buildApiUrl`** — Resolves a relative API path against the configured base URL (env-driven), so callers never hardcode hosts.
 
-**`getTreatyErrorMessage`** — Extracts a string message from `TreatyErrorShape.value` (handles strings, Errors, and `{ message, error }` objects), falling back to your default.
+**`requestJson`** — `fetch` wrapper with JSON serialization/parsing, error normalization, and typed responses. Used by API clients and mission transports.
 
 **Usage example**:
 
 ```ts
-import { getTreatyRouteClient, getTreatyErrorMessage } from "@/lib/treaty-route-client"
+import { requestJson } from "@/lib/http-client"
 
-const bankingClient = getTreatyRouteClient("banking")
-
-const res = await bankingClient.accounts.get()
-if (res.error) {
-  throw new Error(getTreatyErrorMessage(res.error, "Error al cargar cuentas"))
-}
+const mission = await requestJson<MissionSnapshot>("/api/v1/missions/abc", { method: "GET" })
 ```
 
 ---
@@ -180,7 +174,7 @@ downloadExport(blob, "reporte.csv")
 
 ---
 
-### `lib/process-machine.ts`
+### `lib/process-machine/`
 
 **Purpose**: Creates XState (v5) state machines for multi-step processing workflows (process → analyze → resolve / error).
 
@@ -299,7 +293,7 @@ if (result.errors.length > 0) {
 | Call an API with tenant scoping and error normalization | `queryApi` / `mutateApi` |
 | Wrap a call without throwing exceptions | `safeApiCall` |
 | Get typed CRUD hooks with TanStack Query | `createCrudHooks` (`crud-api.ts`) |
-| Resolve an Eden Treaty client by key at runtime | `getTreatyRouteClient` |
+| Fetch typed JSON against the API base URL | `requestJson` (`http-client.ts`) |
 | Parse a bank CSV/TSV file from upload | `parseFile` / `parseCSV` (`import-utils.ts`) |
 | Normalize a date/amount/transaction-type string | `parseDateLoose` / `parseAmountLoose` / `normalizeTxType` |
 | Export tabular data to a downloadable file | `exportData` + `downloadExport` |

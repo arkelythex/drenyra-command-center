@@ -13,15 +13,15 @@ export type DocumentStatus =
 export type ConfidenceLevel = "HIGH" | "MEDIUM" | "LOW";
 
 export interface ExtractedData {
-	providerRUC?: string;
-	providerName?: string;
-	issueDate?: Date;
-	documentNumber?: string;
-	baseAmount?: number;
-	igvAmount?: number;
-	totalAmount?: number;
-	currency?: "PEN" | "USD";
-	confidenceScore?: number;
+	providerRUC?: string | undefined;
+	providerName?: string | undefined;
+	issueDate?: Date | undefined;
+	documentNumber?: string | undefined;
+	baseAmount?: number | undefined;
+	igvAmount?: number | undefined;
+	totalAmount?: number | undefined;
+	currency?: "PEN" | "USD" | undefined;
+	confidenceScore?: number | undefined;
 }
 
 export interface DocumentProps {
@@ -33,14 +33,14 @@ export interface DocumentProps {
 	fileType: DocumentType;
 	fileSize: number;
 	status: DocumentStatus;
-	extractedData?: ExtractedData;
-	confidenceLevel?: ConfidenceLevel;
-	validatedBy?: string;
-	validatedAt?: Date;
-	validationNotes?: string;
-	accountingEntryId?: string;
+	extractedData?: ExtractedData | undefined;
+	confidenceLevel?: ConfidenceLevel | undefined;
+	validatedBy?: string | undefined;
+	validatedAt?: Date | undefined;
+	validationNotes?: string | undefined;
+	accountingEntryId?: string | undefined;
 	uploadedAt: Date;
-	processedAt?: Date;
+	processedAt?: Date | undefined;
 	createdAt: Date;
 	updatedAt: Date;
 }

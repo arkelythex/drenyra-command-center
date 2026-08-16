@@ -167,7 +167,10 @@ export class PostgresTransactionRepository implements TransactionRepository {
 
 		if (rows.length === 0) return null;
 
-		return this.mapToDomain(rows[0]);
+		const row = rows[0];
+		if (row === undefined) return null;
+
+		return this.mapToDomain(row);
 	}
 
 	async _findByIdLegacy(
@@ -188,7 +191,10 @@ export class PostgresTransactionRepository implements TransactionRepository {
 
 		if (rows.length === 0) return null;
 
-		return this.mapToDomain(rows[0]);
+		const row = rows[0];
+		if (row === undefined) return null;
+
+		return this.mapToDomain(row);
 	}
 
 	async findByReferenceNumber(
@@ -209,14 +215,17 @@ export class PostgresTransactionRepository implements TransactionRepository {
 				and(
 					eq(transactions.companyId, companyId),
 					eq(transactions.series, series),
-					eq(transactions.number, number),
+						eq(transactions.number, number),
 				),
 			)
 			.limit(1);
 
 		if (rows.length === 0) return null;
 
-		return this.mapToDomain(rows[0]);
+		const row = rows[0];
+		if (row === undefined) return null;
+
+		return this.mapToDomain(row);
 	}
 
 	async findAll(

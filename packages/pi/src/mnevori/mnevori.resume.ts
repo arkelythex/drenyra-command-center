@@ -42,7 +42,7 @@ export class MnevoriResumeService {
 				point.lastPhaseId as (typeof PHASE_SEQUENCE)[number],
 			);
 			if (idx === -1 || idx >= PHASE_SEQUENCE.length - 1) return null;
-			return PHASE_SEQUENCE[idx + 1];
+			return PHASE_SEQUENCE[idx + 1] ?? null;
 		}
 
 		if (point.lastStatus === "blocked" || point.lastStatus === "in_progress") {

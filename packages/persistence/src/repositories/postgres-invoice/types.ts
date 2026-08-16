@@ -11,8 +11,8 @@ export type NormalizedInvoiceFilters = Omit<
 	InvoiceFilters,
 	"startDate" | "endDate"
 > & {
-	startDate?: Date;
-	endDate?: Date;
+	startDate?: Date | undefined;
+	endDate?: Date | undefined;
 };
 
 export type ModularInvoiceReadStatus = "DRAFT" | "SENT" | "CANCELLED";

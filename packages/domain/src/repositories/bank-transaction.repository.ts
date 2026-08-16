@@ -17,14 +17,14 @@ import type {
  * ```
  */
 export interface BankTransactionFilters {
-	bankAccountId?: number;
-	type?: BankTransactionType;
-	isReconciled?: boolean;
-	dateFrom?: Date;
-	dateTo?: Date;
-	minAmount?: number;
-	maxAmount?: number;
-	importBatch?: string;
+	bankAccountId?: number | undefined;
+	type?: BankTransactionType | undefined;
+	isReconciled?: boolean | undefined;
+	dateFrom?: Date | undefined;
+	dateTo?: Date | undefined;
+	minAmount?: number | undefined;
+	maxAmount?: number | undefined;
+	importBatch?: string | undefined;
 }
 
 /**

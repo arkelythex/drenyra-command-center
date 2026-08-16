@@ -61,14 +61,14 @@ export interface TransactionProps {
 	type: TransactionType;
 	date: Date;
 	description: string;
-	referenceNumber?: string;
+	referenceNumber?: string | undefined;
 	entries: TransactionEntry[];
 	status: TransactionStatus;
-	postedAt?: Date;
-	postedBy?: string;
-	voidedAt?: Date;
-	voidedBy?: string;
-	voidReason?: string;
+	postedAt?: Date | undefined;
+	postedBy?: string | undefined;
+	voidedAt?: Date | undefined;
+	voidedBy?: string | undefined;
+	voidReason?: string | undefined;
 	createdAt: Date;
 	updatedAt: Date;
 }

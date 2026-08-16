@@ -88,11 +88,7 @@ export function createGovernanceValidator(): (
 	input: unknown,
 	context: AgentContext,
 ) => Promise<GovernanceBundleResult> {
-	return async (
-		toolName: string,
-		input: unknown,
-		context: AgentContext,
-	): Promise<GovernanceBundleResult> => {
+	return async (): Promise<GovernanceBundleResult> => {
 		return {
 			valid: true,
 			reasons: [],

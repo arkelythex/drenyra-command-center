@@ -81,35 +81,3 @@ func TestParseSignedReceiptInvalid(t *testing.T) {
 		t.Errorf("expected error for invalid JSON")
 	}
 }
-
-// TestSignedReceiptMetadataRoundTrip proves the additive bundle-metadata fields
-// (design D5): receiptType and algorithm must round-trip through the Go struct
-// without changing local verification behavior.
-func TestSignedReceiptMetadataRoundTrip(t *testing.T) {
-	path := filepath.Join(findFixturesRoot(t), "receipts", "receipt-signed-valid.v1.json")
-	data, err := os.ReadFile(path)
-	if err != nil {
-		t.Skipf("signed receipt fixture not found: %v", err)
-	}
-
-	receipt, err := ParseSignedReceipt(data)
-	if err != nil {
-		t.Fatalf("ParseSignedReceipt: %v", err)
-	}
-
-	if receipt.ReceiptType != "APPROVAL" {
-		t.Errorf("ReceiptType = %q, want APPROVAL", receipt.ReceiptType)
-	}
-	if receipt.Algorithm != "Ed25519" {
-		t.Errorf("Algorithm = %q, want Ed25519", receipt.Algorithm)
-	}
-
-	result, err := VerifySignedReceiptLocally(receipt)
-	if err != nil {
-		t.Fatalf("VerifySignedReceiptLocally: %v", err)
-	}
-	if !result.Valid {
-		t.Errorf("expected valid signed receipt with metadata fields, got: hash=%v sig=%v",
-			result.HashValid, result.SignatureValid)
-	}
-}

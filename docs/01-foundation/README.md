@@ -1,6 +1,6 @@
 # 01 — Foundation
 
-**Última actualización:** 2026-08-01
+**Última actualización:** 2026-08-14
 **Propósito:** Documentación fundacional del programa Drenyra FEOS
 **Audiencia:** Todos los contribuyentes — desarrolladores, producto, fiscal, dirección
 
@@ -27,6 +27,7 @@ Todo documento en las demás secciones se alinea con estos principios fundaciona
 | [Program Taxonomy](./program-taxonomy.md)           | Clasificación documental: SDD, ADR, FSD, WSD, ASD       | Canónico     |
 | [Capability Map](./capability-map.md)               | 90+ capacidades del programa por dominio                | Canónico     |
 | [SDD Audit](./sdd-audit.md)                         | Estado actual de 79 SDDs contra la taxonomía            | Canónico     |
+| [Ecosystem Constitution](./drenyra-ecosystem-constitution.md) | Gobernanza del ecosistema: taxonomía de repos, autoridad financiera, calidad, seguridad y roadmap | Canónico     |
 
 ---
 
@@ -120,6 +121,7 @@ Agent proposal
 | Ver el roadmap de capacidades  | [Capability Map](./capability-map.md)               |
 | Clasificar un documento nuevo  | [Program Taxonomy](./program-taxonomy.md)           |
 | Evaluar el estado del programa | [SDD Audit](./sdd-audit.md)                         |
+| Entender la gobernanza del ecosistema | [Ecosystem Constitution](./drenyra-ecosystem-constitution.md) |
 | Presentar Drenyra a inversores | [Strategic Positioning](./strategic-positioning.md) |
 
 ---

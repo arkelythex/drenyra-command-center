@@ -18,19 +18,14 @@ export interface PhaseCacheInfo {
 
 export class MnevoriRegulationTracker {
 	private regulations: Map<string, RegulationVersion> = new Map();
-	private currentVersion: string;
 
-	constructor(currentVersion: string = "2026.1") {
-		this.currentVersion = currentVersion;
-	}
+	constructor(_currentVersion: string = "2026.1") {}
 
 	register(regulation: RegulationVersion): void {
 		this.regulations.set(regulation.regulationId, regulation);
 	}
 
-	updateCurrentVersion(version: string): void {
-		this.currentVersion = version;
-	}
+	updateCurrentVersion(_version: string): void {}
 
 	evaluateArtifactCache(artifact: MnevoriArtifact): CacheStatus {
 		if (artifact.version === 0) return "needs_review";

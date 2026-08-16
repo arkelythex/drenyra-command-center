@@ -61,24 +61,24 @@ export interface EvidenceAuditTrailEntry {
 export interface EvidencePrimitiveData {
 	id: string;
 	organizationId: string;
-	companyId?: string;
+	companyId?: string | undefined;
 	filename: string;
 	mimeType: string;
 	sizeBytes: number;
 	hash: string;
-	hashChain?: HashChainEntry;
+	hashChain?: HashChainEntry | undefined;
 	evidenceType: string;
 	source: string;
 	status: string;
-	metadata?: Record<string, unknown>;
-	extractedData?: Record<string, unknown>;
-	classifierResult?: Record<string, unknown>;
-	validatedAt?: string | Date;
-	validatedBy?: string;
-	errorMessage?: string;
-	tags?: string[];
-	createdAt?: string | Date;
-	updatedAt?: string | Date;
+	metadata?: Record<string, unknown> | undefined;
+	extractedData?: Record<string, unknown> | undefined;
+	classifierResult?: Record<string, unknown> | undefined;
+	validatedAt?: string | Date | undefined;
+	validatedBy?: string | undefined;
+	errorMessage?: string | undefined;
+	tags?: string[] | undefined;
+	createdAt?: string | Date | undefined;
+	updatedAt?: string | Date | undefined;
 }
 
 export interface EvidenceFilters {

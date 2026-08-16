@@ -25,17 +25,17 @@ export interface AccountProps {
 	organizationId: number;
 	code: string;
 	name: string;
-	description?: string;
+	description?: string | undefined;
 	level: AccountLevel;
 	type: ChartAccountType;
-	parentId?: string;
+	parentId?: string | undefined;
 	isGroup: boolean;
 	isActive: boolean;
 	isSystem: boolean;
 	currency: Currency;
-	destination?: string;
+	destination?: string | undefined;
 	balance: Money;
-	balanceUSD?: Money;
+	balanceUSD?: Money | undefined;
 	createdAt: Date;
 	updatedAt: Date;
 }

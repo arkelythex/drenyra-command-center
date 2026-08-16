@@ -39,11 +39,11 @@ export interface ApprovalRequest {
 	approvalLevel: ApprovalLevel;
 	state: ApprovalState;
 	proposedAt: Date;
-	decidedAt?: Date;
-	reviewerId?: string;
-	reviewerRole?: string;
-	governanceResult?: GovernanceBundleResult;
-	rationale?: string;
+	decidedAt?: Date | undefined;
+	reviewerId?: string | undefined;
+	reviewerRole?: string | undefined;
+	governanceResult?: GovernanceBundleResult | undefined;
+	rationale?: string | undefined;
 }
 
 export interface GovernanceBundleResult {

@@ -222,7 +222,7 @@ export type AuditEventType = (typeof AUDIT_EVENT_TYPES)[number];
 export interface FiscalScope {
 	companyId: string;
 	companyRuc: string;
-	organizationId?: string;
+	organizationId?: string | undefined;
 	period: string;
 	countryCode: "PE";
 }
@@ -263,7 +263,7 @@ export interface EvidenceItem {
 	title: string;
 	summary: string;
 	source: string;
-	sourceRef?: string;
+	sourceRef?: string | undefined;
 	contentHash: string;
 	addedBy: string;
 	createdAt: string;
@@ -302,7 +302,7 @@ export interface AgentRun {
 	status: AgentRunStatus;
 	startedBy: string;
 	startedAt: string;
-	completedAt?: string;
+	completedAt?: string | undefined;
 	output?: AgentRunOutput;
 	metadata: Record<string, unknown>;
 }
@@ -335,9 +335,9 @@ export interface ApprovalRequest {
 	autonomyLevel: AutonomyLevel;
 	requestedBy: string;
 	requestedAt: string;
-	decidedBy?: string;
-	decidedAt?: string;
-	decisionReason?: string;
+	decidedBy?: string | undefined;
+	decidedAt?: string | undefined;
+	decisionReason?: string | undefined;
 	diff: ApprovalDiffPayload;
 	metadata: Record<string, unknown>;
 }
@@ -350,7 +350,7 @@ export interface ApprovalRequest {
  */
 export interface AuditEvent {
 	id: string;
-	caseId?: string;
+	caseId?: string | undefined;
 	scope: FiscalScope;
 	eventType: AuditEventType;
 	actorId: string;

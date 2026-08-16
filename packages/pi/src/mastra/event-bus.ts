@@ -29,7 +29,7 @@ export interface FiscalEvent<T = unknown> {
 	context: AgentContext;
 	timestamp: Date;
 	correlationId: string;
-	causationId?: string;
+	causationId?: string | undefined;
 	source: string;
 }
 

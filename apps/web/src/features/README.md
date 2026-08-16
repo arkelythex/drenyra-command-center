@@ -1,4 +1,4 @@
-**Última actualización**: 2026-06-10
+**Última actualización**: 2026-08-14
 
 # Feature Template — Vertical Slice Architecture
 
@@ -121,6 +121,7 @@ export const {
 ```
 
 Esto genera automáticamente:
+
 - `useFeatureList()` — query con company context + query keys tipadas
 - `useFeature(id)` — query individual por ID
 - `useCreateFeature()` — mutation que invalida `featureKeys.all`
@@ -128,7 +129,7 @@ Esto genera automáticamente:
 - `useDeleteFeature()` — mutation que invalida `featureKeys.all`
 - `featureKeys` — factory `{ all, list(companyId), detail(id) }`
 
-Usa `createCrudHooks` cuando el feature no requiera normalización extra, UI state local (search, tabs), o lógica de negocio en el hook. Para features complejos (como customers con search/stats/tabs), implementa el hook manualmente siguiendo el patrón de `useCustomers`.
+Usa `createCrudHooks` cuando el feature no requiera normalización extra, UI state local (search, tabs), o lógica de negocio en el hook. Para features complejos, implementa el hook manualmente siguiendo el patrón de `workspace` o `invoices`.
 
 ## Componentes
 
@@ -159,21 +160,21 @@ interface FeatureFormProps {
 
 ## Comandos
 
-```bash
-# Scaffold un nuevo feature
-bun run scaffold:feature -- customers
+No existe script de scaffold — creá la estructura manualmente:
 
-# O manualmente:
-mkdir -p features/{name}/{api,components,hooks,types}
+```bash
+mkdir -p features/{name}/{components,hooks,services,__tests__}
 ```
 
-## Features existentes de referencia
+## Features actuales de referencia
 
-| Feature | Hook principal | Normalización | UI State | Treaty Client |
+> Los slices actuales son más livianos que la plantilla clásica: `workspace` y `evidence` no usan `api/` + `types/` genéricos — definen servicios (`services/`) y contratos propios. La plantilla CRUD de arriba sigue siendo el patrón recomendado para features CRUD simples; copiá un slice real para ver el patrón vigente.
+
+| Feature actual | Hook principal | Normalización | UI State | Servicios |
 |---|---|---|---|---|
-| customers | `useCustomers` | Sí (mapper fn) | search, tabs, expand | `customer-treaty-client.ts` |
-| vendors | `useVendors` | Sí (mapper fn) | search, expand | `vendor-treaty-client.ts` |
-| products | `useProducts` | En API | No | Directo (`api.products`) |
-| bills | Hook modular | En mappers | Sí (complejo) | `bill-treaty-client.ts` |
+| invoices | `useInvoicesBoard`, `useInvoiceOseLifecycle` | Sí (mappers) | board, tabs, filtros | `invoices/api/` (Eden Treaty) |
+| compliance | `useCompliance`, `useSireReconciliation` | Sí | tabs (SIRE, CPE, detracciones) | `compliance/api/` |
+| workspace | `useAccountingMission` + reducer | Sí (mission contracts) | misión completa (XState-style reducer) | `workspace/services/` (http, SSE, mock) |
+| evidence | `useEvidence` | En API | search, tabla, detalle | `evidence/hooks/` |
 
-Para features simples: copia `products`. Para features con UI state: copia `customers` o `vendors`. Para features complejos con workflow: mira `bills`.
+Para features simples con CRUD: seguí la plantilla `createCrudHooks` de esta página. Para features complejos con workflow: mirá `workspace` (misiones) o `invoices` (OSE lifecycle).

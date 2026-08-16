@@ -281,9 +281,14 @@ export class PostgresInvoiceRepository implements InvoiceRepository {
 			.from(invoiceItems)
 			.where(eq(invoiceItems.invoiceId, persistedId));
 
+		const first = rows[0];
+		if (first === undefined) {
+			return null;
+		}
+
 		return {
-			invoice: rows[0].invoice,
-			customer: rows[0].customer,
+			invoice: first.invoice,
+			customer: first.customer,
 			items,
 		};
 	}

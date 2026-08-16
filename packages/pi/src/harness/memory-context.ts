@@ -3,10 +3,10 @@
  * Treated as active instructions — not background reference (see Hermes #17251).
  */
 export type CliMemorySnapshot = {
-	persistentMemory?: string;
-	userContext?: string;
-	memoryPct?: number;
-	userPct?: number;
+	persistentMemory?: string | undefined;
+	userContext?: string | undefined;
+	memoryPct?: number | undefined;
+	userPct?: number | undefined;
 };
 
 const MEMORY_PCT_WARN = 80;

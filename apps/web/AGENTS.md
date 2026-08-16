@@ -1,90 +1,101 @@
 # Web App — AI Agent Index
 
-**Last updated:** 2026-06-20
+**Last updated:** 2026-08-14
 
-**Last updated:** 2026-06-20 · **Package:** `@drenyra/web` — Drenyra fiscal intelligence command center SPA.
+**Last updated:** 2026-08-14 · **Package:** `@drenyra/web` — Drenyra fiscal command center SPA.
 
 ## 1. Overview
 
-React SPA for the Drenyra Financial Engineering Environment: fiscal dashboards, invoice Kanban, bank reconciliation, cashflow projections, SUNAT compliance, AI agent swarm, and audit trails. ~1,089 source files, 40 feature modules, 47 routes.
+React SPA for the Drenyra Financial Engineering Environment command center: a mission workspace for the supervised monthly-close flow, an evidence vault, firm/client 360 surfaces, fiscal chat, and SUNAT compliance modules. **568 source files** (`.ts`/`.tsx` in `src/`), **14 feature slices**, **11 route modules** (12 route files, 10 registered paths).
 
 ## 2. Stack
 
 | Layer         | Choice                                        |
 | ------------- | --------------------------------------------- |
-| UI            | React 19.2 + React Compiler (prod only)       |
+| UI            | React 19.2 (^19.2.7) + React Compiler (prod only) |
 | Build         | Vite 8 + TanStack Router Vite plugin          |
 | Routing       | TanStack Router 1.103 (type-safe, file-based) |
 | Server state  | TanStack Query 5.90                           |
-| Client state  | Zustand 5 + XState 5 (fiscal flows)           |
+| Client state  | Zustand 5 + XState 5 (process-machine, fiscal flows) |
 | API client    | Eden Treaty (`@elysiajs/eden`)                |
 | Styling       | Tailwind CSS 4.1                              |
-| Design tokens | DTCG JSON → generated CSS                     |
+| Design tokens | DTCG → checked-in generated CSS               |
 | Primitives    | shadcn/ui + Radix UI                          |
 | Forms         | React Hook Form 7.71 + Zod 4                  |
-| Auth          | better-auth 1.4 + Eden Treaty client          |
+| Auth          | better-auth ^1.6.16 + Eden Treaty client      |
 
 ## 3. Architecture
 
-Container-Presentational pattern + collaborative agents + vertical slices.
+Command-center shell (agentic layout) + vertical slices + workbench surfaces.
 
 ```
 src/
   client.tsx          — React root mount, QueryClient, RouterProvider
   router.tsx          — TanStack Router factory
+  remote-entry.tsx    — Module Federation entry (exposes createRouter)
   routeTree.gen.ts    — Auto-generated (do NOT edit)
-  routes/             — 47 flat route files (settings/ and workspace/ have sub-routes)
-  features/           — 40 vertical-slice feature modules
-  components/         — Shared components (atoms/, molecules/, ui/, layout/, agentic/)
-  lib/                — Core lib (router, navigation, design-tokens, schemas, clients)
-  hooks/              — Global hooks
-  store/ + stores/    — Zustand stores
-  context/            — React context providers
-  services/           — PDF, etc.
-  styles/             — view-transitions.css, scroll-animations.css
+  routes/             — 11 route modules + 1 test (10 registered paths)
+  features/           — 14 vertical-slice feature modules
+  components/         — agentic-shell/, workbench/, fiscal/, agentic/, layout/, ui/, atoms/
+  lib/                — api-factory, crud-api, http-client, commands, process-machine, design-tokens
+  stores/             — Zustand stores (ui, workspace, agentic-shell)
+  context/ + contexts/— React context providers
+  styles/             — index.css (Tailwind 4 entry)
+  types/              — Shared type definitions
 ```
 
-Feature slice anatomy: `features/<name>/` has `components/`, `hooks/`, `api/`, `types/`, `index.ts`.
+Feature slice anatomy: `features/<name>/` keeps `components/`, `hooks/`, `services/`, and tests co-located (see `workspace/`, `evidence/`, `cierre-mensual/` for the current pattern).
 
 ## 4. Directory Structure
 
 ```
 apps/web/src/
-  routes/                47 flat route files
-    __root.tsx           Root layout: auth guard, MainLayout, providers
-    index.tsx            Redirects to /dashboard
-    login.tsx, dashboard.tsx, invoices.tsx, banking.tsx, ...
-    settings/            Organization, security, notifications, appearance, billing, integrations
-    workspace/           Operations, finance, compliance, system-admin
+  routes/                11 route modules + 1 test
+    __root.tsx           Root layout: public-route guard, AgenticLayout, Toaster
+    index.tsx            Redirects to /workspace/1/2026/3/close
+    login.tsx, signup.tsx, forgot-password.tsx, reset-password.tsx, verify-email.tsx, auth.tsx (→ /login)
+    onboarding.tsx       OnboardingWizard
+    settings.tsx         Settings stub ("Coming soon")
+    workspace.$companyId.$year.$month.$intent.tsx   Mission workspace (command center)
 
-  features/              40 vertical-slice modules
-    auth/, dashboard/, invoices/, banking/, cashflow/, compliance/
-    cognitive-hub/, drenyra-command-center/, taxation/, ledger/
-    reconciliations/, products/, settings/, payroll/, assets/
-    inventory/, bills/, audit/, reports/, agent-swarm/, approval-hub/
-    inbox/, artifacts/, cierre-mensual/, + 17 more
+  features/              14 vertical-slice modules
+    workspace/           Mission workspace: components/mission/, hooks/, services/ (http, SSE, mock transports)
+    evidence/            Evidence vault: EvidenceVaultPage, EvidenceBrowserPage, EvidenceDetailPage
+    firm/                FirmDashboard, ClientList, ClientDetail, AlertsPanel
+    cierre-mensual/      CierreMensualPage, AgentTimeline, MissionBlockers
+    fiscal-chat/         FiscalChat + parser
+    chat-agent/          Chat agent UI
+    invoices/            Invoice board, create-invoice form, OSE lifecycle, PDF
+    compliance/          SIRE, CPE validator, detracciones
+    ledger/              Ledger API + view models
+    reconciliations/     Bank reconciliation data
+    approval-hub/        Approval components
+    auth/                Login/signup/verify forms, session hooks
+    onboarding/          Wizard + interactive demos
+    settings/            Settings view
 
   components/
-    atoms/               button, spinner, icon, text, badge, dot, ai-indicator
-    molecules/           OmniAgent, stat-card, metric-card, status-card
-    ui/                  shadcn + custom (glass-card, table, dialog, panel, PageShell, etc.)
-    layout/              MainLayout, Sidebar, TopBar, BottomNav, FiscalInspector
-    agentic/             AgentPulse, ConfidenceBadge, ConflictDiffView
+    agentic-shell/       AgenticLayout, AgenticSidebar (nav data), AgenticCommandBar, WorkspaceSelector
+    workbench/           PaneContainer/Pane, ApprovalGate, EvidenceInspector, WorkspaceTopBar, ...
+    fiscal/              AgentMissionTimeline, FiscalRiskLayer
+    agentic/             CommandPalette, RightPanel
+    layout/              FiscalEditorialShell
+    notifications/       NotificationSidebar
+    atoms/ + ui/         text (atom) + shadcn/custom (SurfaceCard, SurfacePanel, PageShell, ...)
 
   lib/
-    api-client.ts, http-client.ts, treaty-route-client.ts
-    auth-client.ts, query-client.ts
-    design-tokens/       DTCG JSON → CSS pipeline
-    schemas/             Zod schemas (customer, vendor, product, invoice)
-    router/              Route definitions, public routes, fallbacks
-    navigation/          Nav items (compact + full), types
+    api-factory*.ts      safeApiCall, queryApi, mutateApi, createCrudApi
+    crud-api.ts          createCrudHooks
+    http-client.ts, auth-client.ts, query-client.ts
+    commands/            command-registry.ts, default-commands.ts
+    process-machine/     XState process/analyze/resolve machines
+    design-tokens/       generated/tokens.css (checked-in)
+    money.ts, date-utils.ts, fiscal-period.ts, legibility.ts, ...
 
-  hooks/                 useFiscalAction, useUndoRedo, useKeyboardShortcuts, usePerformance
-  store/                 ui-store.ts (theme, complexity, sidebar state)
-  stores/                sidebar-layout.store.ts
-  context/               Sidebar, Settings, Simulation, ArtifactEvent, FiscalInspector, AgentAware
-  services/              pdf.service.ts
-  styles/                view-transitions.css, scroll-animations.css
+  stores/                ui.store.ts, workspace.store.ts, agentic-shell.store.ts
+  context/               FiscalInspectorContext.tsx, InspectorContext.tsx
+  contexts/              density-context.tsx, workspace-context.tsx
+  styles/                index.css (Tailwind 4 entry + custom theme)
 ```
 
 ## 5. Coding Conventions
@@ -96,14 +107,14 @@ apps/web/src/
 - **Money** — never use raw numbers/floats. Use `n()` from design system or domain `Money` value object.
 - **Imports** — barrel files at feature/component index. Path aliases via `@/` → `src/`.
 
-## 6. Design System (FEE Design)
+## 6. Design System (FEE Command Center)
 
-Command-center theme aligned with the Financial Engineering Environment. Tokens at `src/lib/design-tokens/tokens.dtcg.json` v3.0.0.
+Command-center theme aligned with the Financial Engineering Environment. Generated tokens at `src/lib/design-tokens/generated/tokens.css` (source DTCG JSON + root `bun run tokens:generate`).
 
 - `--color-voltage-*` / `--accent` — primary CTA accent `#f54e00` (≤5% pixels)
 - `--color-fiscal-*` — SUNAT/compliance secondary `#c45c2a`
 - `--surface-*`, `--text-*` — flat editorial surfaces (no decorative glass)
-- `SurfacePanel` — canonical card surface
+- `SurfacePanel` / `SurfaceCard` — canonical card surfaces
 - `FiscalEditorialShell` — unified shell (`operational` | `command-center`)
 - Complexity modes: `basic` / `advanced` / `expert` via UXModeToggle
 
@@ -114,16 +125,16 @@ See `apps/web/DESIGN.md` and `docs/design/design-influences-2026.md`.
 TanStack Router 1.103 with file-based code splitting via Vite plugin.
 
 - Routes auto-registered to `routeTree.gen.ts` from `src/routes/`.
-- Root layout (`__root.tsx`): auth guard via `beforeLoad`, MainLayout, global providers, Toaster.
-- All routes are lazy-loaded by default.
-- Search params for filters (invoice status, date ranges, etc.).
-- Preload route data with TanStack Router loaders + Query client prefetch.
+- Root layout (`__root.tsx`): public-route guard (`PUBLIC_ROUTES` set), `AgenticLayout` for authed surfaces, Toaster.
+- The live command-center surface is `/workspace/$companyId/$year/$month/$intent` (MissionWorkspace).
+- Sidebar nav data (`AgenticSidebar.data.ts`) defines the outcome-first model — many destinations are planned, not yet routed.
 
 ## 8. State Management
 
 - **Server state** → TanStack Query. Global config in `src/lib/query-client.ts`. Feature-level: `*.query-options.ts`, `*.query-keys.ts`.
-- **Client state** → Zustand 5 (`src/store/ui-store.ts` persisted to localStorage; `src/stores/` for rest). XState 5 for complex fiscal workflows (invoices, compliance).
-- **Context** → React Context for layout-level state (sidebar, settings, simulation mode).
+- **Client state** → Zustand 5 (`src/stores/ui.store.ts`, `workspace.store.ts`, `agentic-shell.store.ts`). XState 5 for `process-machine` flows and `useSireReconciliation`.
+- **Mission flow** → reducer + hooks in `src/features/workspace/hooks/` (`missionReducer.ts`, `useMissionExecution`, `useMissionSnapshot`, `useMissionDecision`, `useMissionRecovery`, ...).
+- **Context** → React Context for fiscal inspector and workspace-level state.
 
 ## 9. Testing
 
@@ -131,13 +142,13 @@ TanStack Router 1.103 with file-based code splitting via Vite plugin.
 | --------- | ------------------------------- | ---------------------------------------------- |
 | Unit      | Vitest + jsdom                  | Domain logic, helpers, hooks, feature services |
 | Component | Vitest + @testing-library/react | Component rendering, interactions              |
-| E2E       | Playwright                      | Critical user paths, auth, fiscal flows        |
+| E2E       | Playwright                      | Critical user paths, auth, mission flows       |
 
 **80/100/0 rule:** 80% unit, 100% integration for fiscal/audit paths, 0% flaky E2E.
 
-Coverage thresholds: lines 60%, functions 60%, branches 55%, statements 60%.
+Coverage thresholds: lines 70%, functions 65%, branches 60%, statements 70%.
 
-Test files co-located in `__tests__/` dirs at feature level or `src/__tests__/` for global setup.
+Test files co-located in `__tests__/` dirs at feature level or `src/__tests__/` for global setup. E2E specs in `e2e/` (incl. `e2e/missions/`).
 
 ## 10. SDD Workflow
 
@@ -174,16 +185,17 @@ When working on web features, delegate to sub-agents when:
 ## Quick Reference
 
 ```bash
-# Build & dev
+# Build & dev (from apps/web)
 bun run dev              # Vite dev server
 bun run build            # Production build
 bun run typecheck        # tsc --noEmit (strict mode)
 bun run lint             # ESLint src/
 bun run test:run         # Vitest with coverage
+bun run test:e2e         # Playwright e2e
 
-# Navigation
+# Repo-wide docs/nav commands (run from monorepo root)
 bun run codebase:index   # Regenerate CODEX-MAP.md
-bun run docs:verify      # Check docs freshness & links
+bun run docs:verify      # Check docs links & product surfaces
 
 # Find routes
 ls src/routes/ | grep .tsx
@@ -192,10 +204,7 @@ ls src/routes/ | grep .tsx
 ls src/features/ | sort
 
 # Find stores
-rg create\( src/ -g *.ts
-
-# Find Zo d schemas
-fd schema src/lib/schemas/
+ls src/stores/
 
 # Find query options
 rg queryOptions src/features/ -l

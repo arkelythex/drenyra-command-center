@@ -5,7 +5,7 @@ export declare class SecureLogger {
         warn: (message: string, context?: Record<string, unknown>) => void;
         error: (message: string, error?: unknown, context?: Record<string, unknown>) => void;
     };
-    static debug(message: string, context?: Record<string, unknown>): void;
+    static debug(_message: string, _context?: Record<string, unknown>): void;
     static info(message: string, context?: Record<string, unknown>): void;
     static warn(message: string, context?: Record<string, unknown>): void;
     static error(message: string, error?: unknown, context?: Record<string, unknown>): void;
