@@ -7,14 +7,28 @@
 
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { PluginRegistry } from "./plugin/registry.js";
+import { AGENT_REGISTRY } from "./agents/registry.js";
 import { SessionManager } from "./mastra/session-manager.js";
+import { PluginRegistry } from "./plugin/registry.js";
 import type { AgentSession } from "./types/erp-types.js";
 
 const app = new Hono();
 const sessionManager = new SessionManager();
 
-app.use("/*", cors());
+const allowedOrigins = (
+	process.env.DRENYRA_ALLOWED_ORIGINS ??
+	"http://localhost:5173,http://localhost:5174,http://localhost:7377"
+)
+	.split(",")
+	.map((origin) => origin.trim())
+	.filter(Boolean);
+
+app.use(
+	"/*",
+	cors({
+		origin: (origin) => (allowedOrigins.includes(origin) ? origin : undefined),
+	}),
+);
 
 // ─── Health ──────────────────────────────────────────────────────────────
 
@@ -176,6 +190,27 @@ app.post("/api/v1/agents/:id/run", async (c) => {
 		task: Record<string, unknown>;
 		context: Record<string, unknown>;
 	}>();
+	if (!AGENT_REGISTRY.some((agent) => agent.id === agentId)) {
+		return c.json(
+			{
+				success: false,
+				error: {
+					code: "AGENT_NOT_FOUND",
+					message: `Unknown agent: ${agentId}`,
+				},
+			},
+			404,
+		);
+	}
+	if (!body.task || typeof body.task !== "object") {
+		return c.json(
+			{
+				success: false,
+				error: { code: "INVALID_PAYLOAD", message: "task is required" },
+			},
+			400,
+		);
+	}
 	const executionId = crypto.randomUUID();
 	return c.json(
 		{
@@ -193,6 +228,15 @@ app.post("/api/v1/workflows/run", async (c) => {
 		workflow: string;
 		input?: Record<string, unknown>;
 	}>();
+	if (!body.workflow || typeof body.workflow !== "string") {
+		return c.json(
+			{
+				success: false,
+				error: { code: "INVALID_PAYLOAD", message: "workflow is required" },
+			},
+			400,
+		);
+	}
 	const workflowId = crypto.randomUUID();
 	return c.json(
 		{
@@ -286,7 +330,10 @@ app.post("/api/v1/skills/:id/uninstall", (c) => {
 			404,
 		);
 	}
-	return c.json({ success: true, data: { id: c.req.param("id"), status: "uninstalled" } });
+	return c.json({
+		success: true,
+		data: { id: c.req.param("id"), status: "uninstalled" },
+	});
 });
 
 // ─── Helpers ─────────────────────────────────────────────────────────────
@@ -329,14 +376,12 @@ function toSessionDTO(session: AgentSession) {
 
 const PORT = parseInt(process.env.PORT ?? "7377", 10);
 
-console.log(`drenyra-pi server starting on port ${PORT}`);
-console.log(`Health: http://localhost:${PORT}/api/v1/health`);
+console.info(`drenyra-pi server starting on port ${PORT}`);
+console.info(`Health: http://localhost:${PORT}/api/v1/health`);
 
-export default {
-	port: PORT,
-	fetch: app.fetch,
-};
-
+// Single Bun.serve: exporting a `default` server config AND calling Bun.serve
+// explicitly would both bind PORT, so the second one fails with EADDRINUSE.
+// Keep only the explicit serve (guarded so tests never bind a port).
 if (process.env.NODE_ENV !== "test") {
 	Bun.serve({
 		port: PORT,
