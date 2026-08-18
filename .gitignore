@@ -16,6 +16,10 @@ drizzle/meta/
 *.ico
 *.webp
 *.avif
+# README branding is a source asset, not a generated image.
+!assets/
+!assets/branding/
+!assets/branding/*.svg
 pnpm-lock.yaml
 uv.lock
 Cargo.lock

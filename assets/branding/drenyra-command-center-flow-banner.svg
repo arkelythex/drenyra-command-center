@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="460" viewBox="0 0 1400 460" role="img" aria-label="Drenyra flow — operator, command-center planes, dual approval, receipt">
+  <!-- brand-system v0.2 flow banner: theme-aware (dark + light via prefers-color-scheme),
+       canonical tokens only (contracts/brand-system/tokens.json), zero embedded text.
+       Flow motif: operator -> command-center planes -> dual approval -> receipt. -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop class="g-bg1" offset="0%"/>
+      <stop class="g-bg2" offset="55%"/>
+      <stop class="g-bg3" offset="100%"/>
+    </linearGradient>
+    <linearGradient id="flow-c" x1="0" y1="0" x2="1" y2="0">
+      <stop class="g-c1" offset="0%"/>
+      <stop class="g-c2" offset="100%"/>
+    </linearGradient>
+    <linearGradient id="flow-v" x1="0" y1="0" x2="1" y2="0">
+      <stop class="g-v1" offset="0%"/>
+      <stop class="g-v2" offset="100%"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop class="g-card1" offset="0%"/>
+      <stop class="g-card2" offset="100%"/>
+    </linearGradient>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M 44 0 L 0 0 0 44" fill="none" stroke="var(--grid)" stroke-opacity="0.04" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <style>
+    :root {
+      --bg1: #0B0E11; --bg2: #12161B; --bg3: #1A1F26;
+      --grid: #FFFFFF;
+      --glow-c: #3CE6D8; --glow-v: #9B7FE8;
+      --c: #3CE6D8; --c-bright: #6AEFE4;
+      --v: #9B7FE8; --v-bright: #B8A2F0;
+      --ok: #4ADE94;
+      --n1: #12161B; --n2: #1A1F26; --n3: #20262E;
+      --border: #323A44; --border-subtle: #262C34;
+      --muted: #A8B0BC; --muted-dim: #6B7480;
+      --pending: #6B9FE8;
+      --spark: #6AEFE4;
+    }
+    .g-bg1 { stop-color: var(--bg1); }
+    .g-bg2 { stop-color: var(--bg2); }
+    .g-bg3 { stop-color: var(--bg3); }
+    .g-c1 { stop-color: var(--c); }
+    .g-c2 { stop-color: var(--c-bright); }
+    .g-v1 { stop-color: var(--v); }
+    .g-v2 { stop-color: var(--v-bright); }
+    .g-card1 { stop-color: var(--n1); }
+    .g-card2 { stop-color: var(--n2); }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg1: #FAFAF9; --bg2: #FFFFFF; --bg3: #F2F2F0;
+        --grid: #000000;
+        --glow-c: #2ECFC2; --glow-v: #6B54A8;
+        --c: #2ECFC2; --c-bright: #1F8A80;
+        --v: #6B54A8; --v-bright: #7B66C0;
+        --ok: #1A8F52;
+        --n1: #FFFFFF; --n2: #F2F2F0; --n3: #FFFFFF;
+        --border: #D4D4D0; --border-subtle: #E5E5E2;
+        --muted: #52565D; --muted-dim: #7A7F87;
+        --pending: #2E5FB8;
+        --spark: #1F8A80;
+      }
+    }
+  </style>
+
+  <!-- Background: canvas gradient + blueprint grid + cyan/violet aurora glows -->
+  <rect width="1400" height="460" fill="url(#bg)"/>
+  <rect width="1400" height="460" fill="url(#grid)"/>
+  <circle cx="1150" cy="90" r="280" fill="var(--glow-c)" opacity="0.06"/>
+  <circle cx="150" cy="410" r="320" fill="var(--glow-v)" opacity="0.05"/>
+
+  <!-- Node 1: operator (ring + core) -->
+  <g>
+    <circle cx="140" cy="235" r="36" fill="none" stroke="var(--c)" stroke-width="3"/>
+    <circle cx="140" cy="235" r="26" fill="none" stroke="var(--c)" stroke-opacity="0.35" stroke-width="1.5"/>
+    <circle cx="140" cy="235" r="9" fill="var(--c)"/>
+    <circle cx="140" cy="199" r="3.5" fill="var(--spark)"/>
+  </g>
+
+  <!-- Flow: operator -> planes (cyan) -->
+  <path d="M 180 235 C 250 235 320 235 382 235" fill="none" stroke="url(#flow-c)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 372 229 L 383 235 L 372 241 Z" fill="var(--c)"/>
+  <circle cx="280" cy="235" r="3" fill="var(--spark)" opacity="0.9"/>
+
+  <!-- Node 2: command-center planes (three layered translucent consoles) -->
+  <g>
+    <rect x="410" y="140" width="170" height="190" rx="12" fill="var(--n3)" opacity="0.55" stroke="var(--border-subtle)" stroke-opacity="0.9"/>
+    <rect x="430" y="160" width="170" height="190" rx="12" fill="var(--n2)" opacity="0.75" stroke="var(--border-subtle)" stroke-opacity="0.9"/>
+    <rect x="450" y="180" width="170" height="190" rx="12" fill="var(--n1)" stroke="var(--border)" stroke-width="1.5"/>
+    <rect x="450" y="180" width="170" height="4" rx="2" fill="var(--c)" opacity="0.5"/>
+    <circle cx="472" cy="202" r="5" fill="var(--c)"/>
+    <!-- rising ledger bars -->
+    <rect x="472" y="326" width="10" height="30" rx="2" fill="var(--c)" opacity="0.9"/>
+    <rect x="490" y="310" width="10" height="46" rx="2" fill="var(--muted)" opacity="0.75"/>
+    <rect x="508" y="336" width="10" height="20" rx="2" fill="var(--v)" opacity="0.85"/>
+    <rect x="526" y="304" width="10" height="52" rx="2" fill="var(--c)" opacity="0.55"/>
+    <rect x="544" y="322" width="10" height="34" rx="2" fill="var(--muted)" opacity="0.55"/>
+    <rect x="562" y="330" width="10" height="26" rx="2" fill="var(--v)" opacity="0.6"/>
+    <rect x="470" y="358" width="106" height="2" rx="1" fill="var(--border-subtle)"/>
+  </g>
+
+  <!-- Flow: planes -> dual approval (cyan + violet dual streams) -->
+  <path d="M 620 216 C 690 206 740 208 786 216" fill="none" stroke="url(#flow-c)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 778 210 L 792 216 L 778 222 Z" fill="var(--c)"/>
+  <path d="M 620 254 C 690 264 760 262 836 254" fill="none" stroke="url(#flow-v)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 828 248 L 842 254 L 828 260 Z" fill="var(--v)"/>
+  <circle cx="700" cy="211" r="3" fill="var(--c-bright)" opacity="0.85"/>
+  <circle cx="700" cy="259" r="3" fill="var(--v-bright)" opacity="0.85"/>
+
+  <!-- Node 3: dual-approval seal (two interlocking arcs + point of light) -->
+  <g>
+    <circle cx="860" cy="235" r="64" fill="none" stroke="var(--border-subtle)" stroke-opacity="0.85"/>
+    <circle cx="838" cy="226" r="44" fill="none" stroke="var(--c)" stroke-width="9"/>
+    <circle cx="884" cy="244" r="44" fill="none" stroke="var(--v)" stroke-width="9"/>
+    <circle cx="860" cy="235" r="6" fill="var(--spark)"/>
+    <circle cx="852" cy="260" r="3" fill="var(--spark)" opacity="0.8"/>
+  </g>
+
+  <!-- Flow: dual approval -> receipt (green, verified) -->
+  <path d="M 924 235 C 980 235 1030 235 1086 235" fill="none" stroke="var(--ok)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M 1078 228 L 1092 235 L 1078 242 Z" fill="var(--ok)"/>
+  <circle cx="1000" cy="235" r="3" fill="var(--ok)"/>
+
+  <!-- Node 4: verified receipt endpoint (green seal + checkmark) -->
+  <g>
+    <rect x="1120" y="170" width="190" height="130" rx="12" fill="url(#card)" stroke="var(--border)" stroke-width="1.5"/>
+    <rect x="1132" y="182" width="166" height="8" rx="4" fill="var(--ok)" opacity="0.4"/>
+    <circle cx="1215" cy="250" r="34" fill="var(--ok)" opacity="0.14" stroke="var(--ok)" stroke-width="2"/>
+    <path d="M 1198 250 L 1210 262 L 1233 237" fill="none" stroke="var(--ok)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="1140" y="286" width="2" height="6" rx="1" fill="var(--muted-dim)" opacity="0.6"/>
+    <rect x="1215" y="286" width="2" height="6" rx="1" fill="var(--muted-dim)" opacity="0.6"/>
+    <rect x="1290" y="286" width="2" height="6" rx="1" fill="var(--muted-dim)" opacity="0.6"/>
+    <circle cx="1296" cy="178" r="3.5" fill="var(--spark)"/>
+  </g>
+</svg>
