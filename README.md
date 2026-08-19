@@ -17,10 +17,11 @@
 [![Stack](https://img.shields.io/badge/TypeScript-Bun-3178c6)](#)
 [![License](https://img.shields.io/badge/License-Proprietary-red)](#)
 
-> **Private commercial product.** This repository and the Drenyra ecosystem
-> (`drenyra-engram`, `drenyra-ai`, `drenyra-pi`) are **private**. Distribution
+> **Public source under the open-core transition intention.** This repository
+> and the Drenyra ecosystem (`drenyra-ai`, `drenyra-pi`, `drenyra-engram`,
+> `drenyra-skills`, `drenyra-guardian-angel`) are publicly visible. Distribution
 > of artifacts (container images, releases, packages) is contractual, never
-> public. See [Private Product Policy](docs/products/private-product-policy.md).
+> public by default. See [Product and Visibility Policy](docs/products/private-product-policy.md).
 
 ---
 

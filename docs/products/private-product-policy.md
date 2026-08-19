@@ -1,29 +1,31 @@
 # Política de Producto Privado — Drenyra
 
-> **Última actualización:** 2026-08-03.
+> **Última actualización:** 2026-08-19.
 >
 > Regla fiscal: los valores monetarios en el ecosistema Drenyra son BigInt centavos; nunca floats.
 
 ## Declaración
 
-Drenyra es un **producto comercial privado**: un sistema operativo financiero verificable para empresas, contadores y gobiernos de LATAM. El código del producto y de su motor NO es público, y los artefactos que genera (binarios, imágenes, SBOMs) se distribuyen **solo bajo contrato y NDA** — nunca como descargas públicas.
+Drenyra es un **producto comercial con fuente pública** bajo la intención de transición open-core: un sistema operativo financiero verificable para empresas, contadores y gobiernos de LATAM. El código fuente de los repos del ecosistema es **público** (decisión del propietario); los artefactos que genera (binarios, imágenes, SBOMs) se distribuyen **solo bajo contrato y NDA** — nunca como descargas públicas por defecto.
 
-Esta política es una decisión de negocio del propietario (2026-08-03): *"Drenyra su objetivo es ser privada y ganar dinero."* Los agentes, docs y CIs deben respetarla como una restricción de seguridad de producto.
+La política original (2026-08-03) fijó el ecosistema como privado: *"Drenyra su objetivo es ser privada y ganar dinero."* En 2026-08 la visibilidad cambió a **fuente pública (open-core transition intention)**, manteniendo el modelo comercial en los artefactos y servicios. Los agentes, docs y CIs deben respetar esta versión como restricción de seguridad de producto.
 
 ## Visibilidad de los repos
 
 | Repo                          | Visibilidad | Rol                                        |
 | ----------------------------- | ----------- | ------------------------------------------ |
-| `arkelythex/drenyra-command-center`          | **private** | Producto (Accounting Command Center)       |
-| `arkelythex/drenyra-engram`   | **private** | Motor Go (ledger, fiscal, memoria)         |
-| `arkelythex/drenyra-ai`       | **private** | Extracción AI de la casa                   |
-| `arkelythex/drenyra-pi`       | **private** | Harness Pi de la casa                      |
+| `arkelythex/drenyra-command-center`          | **public**  | Producto (Accounting Command Center)       |
+| `arkelythex/drenyra-engram`   | **public**  | Memoria institucional (Apache-2.0)         |
+| `arkelythex/drenyra-ai`       | **public**  | Núcleo verificable (contratos congelados)  |
+| `arkelythex/drenyra-pi`       | **public**  | Harness Pi (pineado)                       |
+| `arkelythex/drenyra-skills`   | **public**  | Conocimiento versionado (contenido)        |
+| `arkelythex/drenyra-guardian-angel` | **public** | Verificación adversarial independiente    |
 
 Reglas:
 
-- No cambiar un repo a **public** sin decisión explícita del propietario.
-- No agregar colaboradores públicos ni abrir issues/PRs externos.
-- No publicar artefactos (imágenes, paquetes, releases, docs compiladas) en registries públicos.
+- No revertir un repo de fuente a **private** sin decisión explícita del propietario.
+- El acceso de colaboradores y la apertura de issues/PRs externos se mantienen bajo control del propietario.
+- No publicar artefactos (imágenes, paquetes, releases, docs compiladas) en registries públicos por defecto — la distribución de artefactos es contractual.
 
 ## Distribución de artefactos
 
@@ -41,7 +43,7 @@ Privado no significa opaco. Drenyra vende *verificabilidad*; la confianza se dem
 | Contract specs de API (schemas, endpoints)     | Sí (en planes) | Clientes e integradores diseñan contra la superficie pública        |
 | SBOM por release                               | No (privado, evidencia bajo NDA) | Respuesta de supply chain para procurement                     |
 | Checksums de binarios                          | No (privado) | Verificación de integridad para clientes bajo contrato                |
-| Código del motor                               | **No, nunca** | Es el activo que se vende                                              |
+| Código fuente del motor                      | Sí (open-core) | Fuente pública; el valor comercial está en artefactos y servicios      |
 
 ## Escrow y auditoría para clientes gobierno
 
