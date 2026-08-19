@@ -127,7 +127,7 @@ Testing conventions:
 ## Read next
 
 - [Documentation Index](00-INDEX.md) — full map of `docs/`.
-- [ARCHITECTURE.md](ARCHITECTURE.md) — org-level 5-layer model.
+- [arkelythex-architecture.md](arkelythex-architecture.md) — org-level 5-layer model.
 - [architecture/](architecture/) — ecosystem boundaries, dependency direction, trust model, orchestration roles.
 - [Getting Started](10-development/getting-started.md) — local setup walkthrough.
 - [Canonical Stack](01-foundation/canonical-stack.md) — TypeScript to discover/build, Rust to verify/protect, Go to connect/operate.

@@ -7,7 +7,7 @@
 | Doc | What it covers |
 | --- | --- |
 | [00-INDEX.md](00-INDEX.md) | Full documentation index and navigation |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Org-level 5-layer model (Arkelythex fabric → edge) |
+| [arkelythex-architecture.md](arkelythex-architecture.md) | Org-level 5-layer model (Arkelythex fabric → edge) |
 | [architecture/ecosystem-boundaries.md](architecture/ecosystem-boundaries.md) | Approved boundary & authority contract (Design 1) |
 | [architecture/dependency-direction.md](architecture/dependency-direction.md) | Ecosystem dependency graph and direction rules |
 | [architecture/trust-model.md](architecture/trust-model.md) | Who may authorize what; fail-closed default |
