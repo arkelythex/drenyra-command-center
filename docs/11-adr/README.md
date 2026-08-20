@@ -41,6 +41,7 @@ Alternatives: opciones consideradas y por qué se descartaron
 | 007 | [Go CLI — Fiscal Terminal](./ADR-007-go-cli-fiscal-terminal.md)               | CLI          | ✅     |
 | 008 | [Property-Based Testing](./ADR-008-property-based-testing.md)                 | Testing      | ✅     |
 | 009 | [Canonical Idempotency Contract](./ADR-009-canonical-idempotency-contract.md) | Data         | ✅     |
+| 010 | [Ecosystem Boundary & Authority](./ADR-010-ecosystem-boundary-authority.md)     | Arquitectura | ✅     |
 | 034 | [Drenyra Fiscal App Server](./adr-034-drenyra-fiscal-app-server.md)           | Agent        | ✅     |
 | —   | [Descope Decisions](./2026-07-06-descope-decisions.md)                        | Scope        | ✅     |
 | —   | [Natural Uniqueness Inventory](./W2-04A-natural-uniqueness-inventory.md)      | Data         | ✅     |
