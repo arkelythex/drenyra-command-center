@@ -4,32 +4,30 @@
 > [`drenyra-ai/contracts/brand-system.md`](https://github.com/arkelythex/drenyra-ai/blob/main/contracts/brand-system.md)
 > (v0.2 DRAFT) and canonical tokens at `contracts/brand-system/tokens.json`.
 >
-> The ecosystem design system is **the same system as Drenyra apps/web**: dark
-> + light themes and the cyan/violet accent system (DTCG token pipeline), with
-> the Dreamcoder-inspired compositional language (elevation, aurora glows,
-> curved geometry, spark accents). The Command Center must **not** invent its
-> own palette — in either theme.
+> The ecosystem design system is **the same system as Drenyra apps/web**:
+> Black Dark OLED (pure `#000000`) + Dreamcoder Light (warm ivory) themes and
+> the cyan/violet accent system (DTCG token pipeline), with the Dreamcoder-
+> inspired compositional language (elevation, aurora glows, curved geometry,
+> spark accents). The Command Center must **not** invent its own palette — in
+> either theme.
 
 ## Regeneration prompt (ChatGPT Images 2.0)
 
-> **Art direction (2026-08-11):** the Shared DNA block was upgraded to the premium minimal-maximal direction — see [creative-brief.md](https://github.com/arkelythex/drenyra-ai/blob/main/docs/assets/brand/creative-brief.md). Combine the product section below with the **current** Shared DNA from [gpt-image-prompts.md](https://github.com/arkelythex/drenyra-ai/blob/main/docs/assets/brand/gpt-image-prompts.md); the embedded prompt is the product section only and may trail the canonical file.
+> **Art direction (v2, Dreamcoder Light + Black Dark OLED):** see
+> [gpt-image-prompts.md](https://github.com/arkelythex/drenyra-ai/blob/main/docs/assets/brand/gpt-image-prompts.md).
+> Combine the Shared DNA block (section 4) with the product section below; the
+> embedded prompt is the product section only and may trail the canonical file.
 
 The canonical set lives in
 [`drenyra-ai/docs/assets/brand/gpt-image-prompts.md`](https://github.com/arkelythex/drenyra-ai/blob/main/docs/assets/brand/gpt-image-prompts.md).
-The Command Center prompt is the **accounting command console** motif:
+The Command Center prompt is the **institutional control artifact** motif:
 
 ```text
-Subject: an abstract accounting command center. Focal point on the right
-third: three stacked translucent console panels (surfaces #12161B, #1A1F26,
-#20262E) with rising ledger bars in cyan #3CE6D8, success green #4ADE94 and
-muted blue-gray #A8B0BC. Wrapped around the console: two concentric orbital
-rings — one cyan #3CE6D8, one violet #9B7FE8 — tilted in 3D, with small
-spark dots at the points where a sweeping Bézier curve crosses each ring. At
-the console center: a dual-approval seal (two interlocking arcs, cyan and
-violet) with a checkmark in success green #4ADE94, surrounded by a soft focus
-halo. Signature detail: the seal's engraving catches a rim light. Light
-variant (optional): canvas #FAFAF9, panels #FFFFFF/#F2F2F0, rings cyan
-#2ECFC2 and violet #6B54A8, checkmark #1A8F52, sparks #1F8A80.
+Subject: an accounting command center rendered as a premium institutional control artifact, not as a software dashboard. The hero on the right third is a circular command dais made of layered smoked glass and matte anthracite ceramic, with three raised translucent slabs emerging from it like disciplined strata rather than floating interface cards. Inside the slabs, only minimal abstract signals are visible: elegant ledger pulses, a restrained approval rhythm, and a verification cadence — never a literal app screen.
+
+Around the core, two tilted orbital rings wrap the object: one cyan for validation, one violet for intelligence. At the center sits a dual-approval seal formed by two interlocking arcs, with a subtle success-green verification mark engraved into the inner surface, catching rim light like a machined emblem. Tiny spark points appear only where orbital paths intersect, suggesting moments of verified truth.
+
+The object must feel calm, exact, and elite — like the operating altar of a fiscal intelligence system. No generic charts, no obvious business intelligence dashboard, no startup analytics vibe. Signature detail: the engraved approval seal and the precision edge-lighting on the layered slabs.
 ```
 
 ## Validate
