@@ -12,7 +12,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
-  "dependencies": {},
+  "dependencies": {
+    "drenyra-ai": "file:../../vendored/drenyra-ai-0.2.0.tgz"
+  },
   "devDependencies": {
     "ajv": "^8",
     "ajv-formats": "^3",
