@@ -5,16 +5,16 @@
  */
 
 export {
-	ProviderCredentials,
-	type ProviderCredentialsProps,
-	type EncryptedPayload,
-} from "./provider-credentials.value-object";
-export {
+	type AccountBalances,
 	BankProviderAdapter,
-	ProviderError,
 	type NormalizedAccount,
 	type NormalizedMovement,
-	type AccountBalances,
+	ProviderError,
 	type ProviderSession,
 	type RawCredentials,
 } from "./bank-provider-adapter.interface";
+export {
+	type EncryptedPayload,
+	ProviderCredentials,
+	type ProviderCredentialsProps,
+} from "./provider-credentials.value-object";
