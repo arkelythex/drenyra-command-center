@@ -14,9 +14,9 @@ import {
 	roleHasPermission,
 } from "@drenyra/infrastructure/auth";
 import {
+	type BusinessPermission,
 	hasBusinessPermission,
 	RBAC_FEATURE_FLAGS,
-	type BusinessPermission,
 } from "@drenyra/security/rbac";
 import type { Elysia } from "elysia";
 import type { CompanyContext } from "./company-scope-guard";
