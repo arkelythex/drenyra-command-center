@@ -17,7 +17,7 @@ interface SessionUserLike {
 	email?: string;
 	name?: string;
 	role?: string;
-	ruc?: string | null;
+	ruc?: string | null | undefined;
 	countryCode?: string;
 	companyId?: string;
 	companyName?: string;
