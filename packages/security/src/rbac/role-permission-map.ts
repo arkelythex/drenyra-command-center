@@ -11,8 +11,8 @@
  * @module role-permission-map
  */
 
-import type { UnifiedRole } from "./unified-roles";
 import { BusinessPermission, PlatformPermission } from "./unified-permissions";
+import type { UnifiedRole } from "./unified-roles";
 
 // ── Helper ──
 
