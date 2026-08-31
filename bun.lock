@@ -64,6 +64,7 @@
         "@drenyra/application": "workspace:*",
         "@drenyra/domain": "workspace:*",
         "@drenyra/infrastructure": "workspace:*",
+        "@drenyra/persistence": "workspace:*",
         "@drenyra/pi": "workspace:*",
         "@drenyra/security": "workspace:*",
         "@drenyra/shared": "workspace:*",
