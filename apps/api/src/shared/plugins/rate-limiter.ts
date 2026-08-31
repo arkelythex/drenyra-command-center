@@ -40,10 +40,14 @@ interface RateLimitEntry {
 const stores = new Map<string, Map<string, RateLimitEntry>>();
 
 function getStore(prefix: string): Map<string, RateLimitEntry> {
-	if (!stores.has(prefix)) {
-		stores.set(prefix, new Map());
+	const existingStore = stores.get(prefix);
+	if (existingStore) {
+		return existingStore;
 	}
-	return stores.get(prefix)!;
+
+	const newStore = new Map<string, RateLimitEntry>();
+	stores.set(prefix, newStore);
+	return newStore;
 }
 
 function cleanup() {
