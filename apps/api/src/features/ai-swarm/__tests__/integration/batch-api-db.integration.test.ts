@@ -100,7 +100,9 @@ describeDb("Batch API (DB integration)", () => {
 			.orderBy(batchRuns.createdAt);
 
 		expect(rows).toHaveLength(2);
-		rows.forEach((r) => expect(r.companyId).toBe(companyId));
+		rows.forEach((r) => {
+			expect(r.companyId).toBe(companyId);
+		});
 	});
 
 	it("should order batches by creation date descending", async () => {
@@ -181,7 +183,9 @@ describeDb("Batch API (DB integration)", () => {
 			)
 			.returning({ id: batchRunItems.id, status: batchRunItems.status });
 
-		updateResult.forEach((r) => expect(r.status).toBe("cancelled"));
+		updateResult.forEach((r) => {
+			expect(r.status).toBe("cancelled");
+		});
 	});
 
 	it("should not cancel completed items", async () => {
