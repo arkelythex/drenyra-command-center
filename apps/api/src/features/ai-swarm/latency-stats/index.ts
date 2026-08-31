@@ -75,7 +75,9 @@ export const latencyStatsModule = new Elysia({
 
 			try {
 				const data = await LatencyStatsService.getSummary({
-					...(parsed.data.since !== undefined ? { since: parsed.data.since } : {}),
+					...(parsed.data.since !== undefined
+						? { since: parsed.data.since }
+						: {}),
 					companyId: parsed.data.companyId,
 				});
 				return ok(data);
@@ -120,7 +122,9 @@ export const latencyStatsModule = new Elysia({
 
 			try {
 				const data = await LatencyStatsService.getTrend({
-					...(parsed.data.since !== undefined ? { since: parsed.data.since } : {}),
+					...(parsed.data.since !== undefined
+						? { since: parsed.data.since }
+						: {}),
 					companyId: parsed.data.companyId,
 				});
 				return ok(data);
