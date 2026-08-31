@@ -175,7 +175,9 @@ export const productsModule = new Elysia({ prefix: "/api/products" })
 
 			try {
 				const data = await ProductsService.update(parsedParams.data.id, {
-					...(parsedBody.data.sku !== undefined ? { sku: parsedBody.data.sku } : {}),
+					...(parsedBody.data.sku !== undefined
+						? { sku: parsedBody.data.sku }
+						: {}),
 					...(parsedBody.data.name !== undefined
 						? { name: parsedBody.data.name }
 						: {}),
