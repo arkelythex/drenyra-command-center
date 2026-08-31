@@ -24,8 +24,8 @@ export interface ReconciliationWorkerResult {
 	totalDiscrepancies: number;
 }
 
-export class ReconciliationWorkerClient {
-	static async healthCheck(): Promise<{ status: string; service?: string }> {
+export const ReconciliationWorkerClient = {
+	async healthCheck(): Promise<{ status: string; service?: string }> {
 		try {
 			const response = await fetch(`${RECONCILIATION_WORKER_URL}/health`);
 			if (!response.ok) {
@@ -35,9 +35,9 @@ export class ReconciliationWorkerClient {
 		} catch (_error) {
 			return { status: "offline" };
 		}
-	}
+	},
 
-	static async reconcile(
+	async reconcile(
 		payload: ReconciliationWorkerRequest,
 	): Promise<ReconciliationWorkerResult> {
 		const response = await fetch(`${RECONCILIATION_WORKER_URL}/v1/reconcile`, {
@@ -56,6 +56,6 @@ export class ReconciliationWorkerClient {
 			throw new Error(`Reconciliation Worker Error: ${response.status}`);
 		}
 
-		return await response.json();
-	}
-}
+		return response.json();
+	},
+};
