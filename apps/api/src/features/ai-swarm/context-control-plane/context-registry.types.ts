@@ -1,17 +1,19 @@
 import {
+	CONTEXT_RETRIEVAL_MODES,
+	type ContextRetrievalMode,
+} from "@drenyra/application/dtos/ai-context-control-plane/context-policy.dto";
+import type { DeterministicFallbackDTO } from "@drenyra/application/dtos/ai-context-control-plane/context-registry.dto";
+import {
 	APPROVAL_REQUIREMENTS,
 	type ApprovalRequirement,
 	CONTEXT_CORPUS_KINDS,
 	CONTEXT_CORPUS_USAGES,
-	CONTEXT_RETRIEVAL_MODES,
 	type ContextCorpusConstraintDTO,
 	type ContextRegistrySurfaceDTO,
-	type ContextRetrievalMode,
-	type ContextWindowDTO,
-	type DeterministicFallbackDTO,
 	TENANT_SCOPES,
 	type TenantScope,
-} from "@drenyra/application";
+} from "@drenyra/application/dtos/ai-context-control-plane/context-registry.dto";
+import type { ContextWindowDTO } from "@drenyra/application/dtos/ai-context-control-plane/context-run.dto";
 import { getControlPlaneJobMetadata } from "./control-plane-job-metadata";
 
 export const CONTROL_PLANE_SURFACE_IDS = {
