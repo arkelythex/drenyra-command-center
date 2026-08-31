@@ -69,6 +69,154 @@ function extractTableNameRows(value: unknown): Array<{ table_name: string }> {
 		.map((table_name) => ({ table_name }));
 }
 
+type DatabaseCheck = { status: "ok" } | { status: "error"; error: string };
+
+type TablesCheck =
+	| { status: "ok" | "missing"; missing: string[] }
+	| { status: "error" | "skipped"; error?: string };
+
+function buildEnvironment(): Record<string, unknown> {
+	return {
+		NODE_ENV: process.env.NODE_ENV ?? "development",
+		PORT: process.env.PORT ?? "3000",
+		API_ENTRYPOINT: "standard (app-core)",
+		BETTER_AUTH_URL: process.env.BETTER_AUTH_URL ?? "(missing)",
+		DATABASE_URL_SET: Boolean(process.env.DATABASE_URL),
+		NATS_URL_SET: Boolean(process.env.NATS_URL),
+		BETTER_AUTH_SECRET_LEN: (process.env.BETTER_AUTH_SECRET ?? "").length,
+	};
+}
+
+function buildConfigurationHints(): string[] {
+	const hints: string[] = [];
+	if (!process.env.DATABASE_URL) {
+		hints.push("Missing DATABASE_URL (API will not be able to query Postgres)");
+	}
+	if ((process.env.BETTER_AUTH_SECRET ?? "").length < 32) {
+		hints.push("BETTER_AUTH_SECRET should be at least 32 chars");
+	}
+	if ((process.env.BETTER_AUTH_SECRET ?? "").includes("$(")) {
+		hints.push(
+			"BETTER_AUTH_SECRET contains '$(' (shell expansion won't run in .env parsing)",
+		);
+	}
+	return hints;
+}
+
+async function readDatabaseCheck(
+	dbExecute: DoctorCheckDeps["dbExecute"],
+): Promise<DatabaseCheck> {
+	return dbExecute(sql`SELECT 1 as ok`)
+		.then(() => ({ status: "ok" as const }))
+		.catch((error: unknown) => ({
+			status: "error" as const,
+			error: error instanceof Error ? error.message : String(error),
+		}));
+}
+
+async function readTablesCheck(
+	dbExecute: DoctorCheckDeps["dbExecute"],
+): Promise<TablesCheck> {
+	return dbExecute(
+		sql`SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name IN (${sql.join(
+			REQUIRED_TABLES.map((table) => sql`${table}`),
+			sql`,`,
+		)})`,
+	)
+		.then((result: unknown) => {
+			const rows = extractTableNameRows(result);
+			const present = new Set(rows.map((row) => row.table_name));
+			const missing = REQUIRED_TABLES.filter((table) => !present.has(table));
+			return {
+				status: missing.length === 0 ? ("ok" as const) : ("missing" as const),
+				missing,
+			};
+		})
+		.catch((error: unknown) => ({
+			status: "error" as const,
+			error: error instanceof Error ? error.message : String(error),
+		}));
+}
+
+function appendDatabaseHints(
+	hints: string[],
+	database: DatabaseCheck,
+	tables: TablesCheck,
+): void {
+	if (tables.status === "missing") {
+		hints.push("Database schema missing tables. Run: `bun run db:push`");
+	}
+	if (database.status !== "ok") {
+		hints.push(
+			"Postgres not reachable. Try: `docker compose up -d postgres` and verify DATABASE_URL",
+		);
+	}
+}
+
+function appendReadinessHints(
+	hints: string[],
+	backup: BackupReadinessStatus,
+	otel: OpenTelemetryReadiness,
+	rls: RlsReadinessStatus,
+	taxation: TaxationBootstrapStatus,
+): void {
+	if (backup.status === "missing") {
+		hints.push(
+			"No PostgreSQL backup evidence found. Run: `bun run ops:db:backup` and verify with `bun run ops:db:restore:verify -- <dump>`",
+		);
+	}
+	if (backup.status === "warning") {
+		hints.push(
+			`PostgreSQL backup is older than ${backup.thresholdHours}h. Create a fresh backup before risky changes.`,
+		);
+	}
+	if (backup.status === "error") {
+		hints.push(
+			"Unable to inspect backup directory. Verify ARKELYTHEX_BACKUP_DIR permissions and contents.",
+		);
+	}
+	if (otel.status === "disabled") {
+		hints.push(
+			"OpenTelemetry is disabled. Set ARKELYTHEX_ENABLE_OTEL=true and OTEL_EXPORTER_OTLP_ENDPOINT to enable production tracing.",
+		);
+	}
+	if (otel.status === "config_invalid") {
+		hints.push(
+			"OpenTelemetry is enabled but OTEL_EXPORTER_OTLP_ENDPOINT is missing. Configure an OTLP endpoint before relying on traces.",
+		);
+	}
+	if (rls.status === "staged") {
+		hints.push(
+			`Tenant RLS policies are staged for ${rls.policyCount}/${rls.targetCount} tables but PostgreSQL RLS is still disabled on: ${rls.pendingEnablement.join(", ")}`,
+		);
+	}
+	if (rls.status === "partial") {
+		hints.push(
+			`Tenant RLS staging is incomplete. Missing policies on: ${rls.missingPolicies.join(", ")}`,
+		);
+	}
+	if (rls.status === "missing") {
+		hints.push(
+			"Tenant RLS policies have not been staged yet. Apply the next RLS migration before enabling row-level security.",
+		);
+	}
+	if (rls.status === "error") {
+		hints.push(
+			"Unable to inspect PostgreSQL RLS readiness. Verify database permissions and pg_catalog access.",
+		);
+	}
+	if (taxation.status === "not_configured") {
+		hints.push(
+			"NATS_URL is not configured. Taxation retention event subscriptions are skipped and event-driven observability remains disabled.",
+		);
+	}
+	if (taxation.status === "disabled") {
+		hints.push(
+			`Taxation retention event subscriptions failed to bootstrap: ${taxation.error}`,
+		);
+	}
+}
+
 /**
  * Performs the health diagnostic (doctor) check.
  *
@@ -93,142 +241,28 @@ export async function checkDoctor(
 		readTaxationBootstrapStatus,
 	} = deps;
 
-	const env = {
-		NODE_ENV: process.env.NODE_ENV ?? "development",
-		PORT: process.env.PORT ?? "3000",
-		API_ENTRYPOINT: "standard (app-core)",
-		BETTER_AUTH_URL: process.env.BETTER_AUTH_URL ?? "(missing)",
-		DATABASE_URL_SET: Boolean(process.env.DATABASE_URL),
-		NATS_URL_SET: Boolean(process.env.NATS_URL),
-		BETTER_AUTH_SECRET_LEN: (process.env.BETTER_AUTH_SECRET ?? "").length,
-	};
-
-	const hints: string[] = [];
-	if (!process.env.DATABASE_URL) {
-		hints.push("Missing DATABASE_URL (API will not be able to query Postgres)");
-	}
-	if ((process.env.BETTER_AUTH_SECRET ?? "").length < 32) {
-		hints.push("BETTER_AUTH_SECRET should be at least 32 chars");
-	}
-	if ((process.env.BETTER_AUTH_SECRET ?? "").includes("$(")) {
-		hints.push(
-			"BETTER_AUTH_SECRET contains '$(' (shell expansion won't run in .env parsing)",
-		);
-	}
-
-	const dbCheck = await dbExecute(sql`SELECT 1 as ok`)
-		.then(() => ({ status: "ok" as const }))
-		.catch((error: unknown) => ({
-			status: "error" as const,
-			error: error instanceof Error ? error.message : String(error),
-		}));
-
-	const tableCheck =
+	const env = buildEnvironment();
+	const hints = buildConfigurationHints();
+	const dbCheck = await readDatabaseCheck(dbExecute);
+	const tableCheck: TablesCheck =
 		dbCheck.status === "ok"
-			? await dbExecute(
-					sql`SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name IN (${sql.join(
-						REQUIRED_TABLES.map((table) => sql`${table}`),
-						sql`,`,
-					)})`,
-				)
-					.then((result: unknown) => {
-						const rows = extractTableNameRows(result);
-						const present = new Set(rows.map((row) => row.table_name));
-						const missing = REQUIRED_TABLES.filter(
-							(table) => !present.has(table),
-						);
-						return {
-							status:
-								missing.length === 0 ? ("ok" as const) : ("missing" as const),
-							missing,
-						};
-					})
-					.catch((error: unknown) => ({
-						status: "error" as const,
-						error: error instanceof Error ? error.message : String(error),
-					}))
+			? await readTablesCheck(dbExecute)
 			: { status: "skipped" as const };
 
-	if (tableCheck.status === "missing") {
-		hints.push("Database schema missing tables. Run: `bun run db:push`");
-	}
-
-	if (dbCheck.status !== "ok") {
-		hints.push(
-			"Postgres not reachable. Try: `docker compose up -d postgres` and verify DATABASE_URL",
-		);
-	}
+	appendDatabaseHints(hints, dbCheck, tableCheck);
 
 	const backupReadiness = await readBackupReadiness();
 	const otelReadiness = readOpenTelemetryReadiness();
 	const rlsReadiness = await readRlsReadiness();
 	const taxationEvents = readTaxationBootstrapStatus();
 
-	if (backupReadiness.status === "missing") {
-		hints.push(
-			"No PostgreSQL backup evidence found. Run: `bun run ops:db:backup` and verify with `bun run ops:db:restore:verify -- <dump>`",
-		);
-	}
-
-	if (backupReadiness.status === "warning") {
-		hints.push(
-			`PostgreSQL backup is older than ${backupReadiness.thresholdHours}h. Create a fresh backup before risky changes.`,
-		);
-	}
-
-	if (backupReadiness.status === "error") {
-		hints.push(
-			"Unable to inspect backup directory. Verify ARKELYTHEX_BACKUP_DIR permissions and contents.",
-		);
-	}
-
-	if (otelReadiness.status === "disabled") {
-		hints.push(
-			"OpenTelemetry is disabled. Set ARKELYTHEX_ENABLE_OTEL=true and OTEL_EXPORTER_OTLP_ENDPOINT to enable production tracing.",
-		);
-	}
-
-	if (otelReadiness.status === "config_invalid") {
-		hints.push(
-			"OpenTelemetry is enabled but OTEL_EXPORTER_OTLP_ENDPOINT is missing. Configure an OTLP endpoint before relying on traces.",
-		);
-	}
-
-	if (rlsReadiness.status === "staged") {
-		hints.push(
-			`Tenant RLS policies are staged for ${rlsReadiness.policyCount}/${rlsReadiness.targetCount} tables but PostgreSQL RLS is still disabled on: ${rlsReadiness.pendingEnablement.join(", ")}`,
-		);
-	}
-
-	if (rlsReadiness.status === "partial") {
-		hints.push(
-			`Tenant RLS staging is incomplete. Missing policies on: ${rlsReadiness.missingPolicies.join(", ")}`,
-		);
-	}
-
-	if (rlsReadiness.status === "missing") {
-		hints.push(
-			"Tenant RLS policies have not been staged yet. Apply the next RLS migration before enabling row-level security.",
-		);
-	}
-
-	if (rlsReadiness.status === "error") {
-		hints.push(
-			"Unable to inspect PostgreSQL RLS readiness. Verify database permissions and pg_catalog access.",
-		);
-	}
-
-	if (taxationEvents.status === "not_configured") {
-		hints.push(
-			"NATS_URL is not configured. Taxation retention event subscriptions are skipped and event-driven observability remains disabled.",
-		);
-	}
-
-	if (taxationEvents.status === "disabled") {
-		hints.push(
-			`Taxation retention event subscriptions failed to bootstrap: ${taxationEvents.error}`,
-		);
-	}
+	appendReadinessHints(
+		hints,
+		backupReadiness,
+		otelReadiness,
+		rlsReadiness,
+		taxationEvents,
+	);
 
 	return {
 		status: dbCheck.status === "ok" ? "ok" : "degraded",
