@@ -49,7 +49,7 @@ export async function verifyHashChain(
 	for (let i = 0; i < logs.length; i++) {
 		const log = logs[i];
 		if (!log) continue;
-    
+
 		const isValid = await verifyHash(
 			{
 				id: log.id,
@@ -70,12 +70,18 @@ export async function verifyHashChain(
 		}
 
 		// Verify chain link
-		if (i > 0 && log.hashChain.prevHash !== logs[i - 1]!.hashChain.hash) {
-			return {
-				isValid: false,
-				brokenAt: i,
-				error: `Chain broken at log #${i} (prevHash mismatch)`,
-			};
+		if (i > 0) {
+			const previousLog = logs[i - 1];
+			if (
+				!previousLog ||
+				log.hashChain.prevHash !== previousLog.hashChain.hash
+			) {
+				return {
+					isValid: false,
+					brokenAt: i,
+					error: `Chain broken at log #${i} (prevHash mismatch)`,
+				};
+			}
 		}
 	}
 
