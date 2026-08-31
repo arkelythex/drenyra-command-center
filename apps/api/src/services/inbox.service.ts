@@ -214,6 +214,10 @@ export class InboxService {
 				})
 				.returning();
 
+			if (!transaction) {
+				throw new Error("Error crítico al guardar transacción");
+			}
+
 			return transaction;
 		} catch (error) {
 			logger.error(
@@ -270,11 +274,15 @@ export class InboxService {
 			})
 			.returning();
 
+		if (!transaction) {
+			throw new Error("Error crítico al crear transacción pendiente");
+		}
+
 		logger.info(
 			{
 				companyId,
 				fileName,
-				transactionId: transaction?.id,
+				transactionId: transaction.id,
 				uploadType: type,
 			},
 			"Created pending inbox transaction",

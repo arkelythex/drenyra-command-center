@@ -352,10 +352,12 @@ export class ThreadsService {
 			id: threadId,
 			companyId: data.companyId,
 			title: data.title,
-			description: data.description,
+			...(data.description !== undefined
+				? { description: data.description }
+				: {}),
 			status: "DRAFT",
 			environment: (data.environment ?? "local") as Thread["environment"],
-			period: data.period,
+			...(data.period !== undefined ? { period: data.period } : {}),
 			priority: (data.priority ?? "MEDIUM") as Thread["priority"],
 			tags: data.tags ?? [],
 			tasks: taskProps,

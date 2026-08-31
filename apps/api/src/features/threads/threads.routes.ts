@@ -140,23 +140,6 @@ function handleServiceError(
 }
 
 // ---------------------------------------------------------------------------
-// Company guard helper
-// ---------------------------------------------------------------------------
-
-function _assertCompanyId(
-	companyContext: { companyId: string } | undefined | null,
-	set: { status: number },
-): string | null {
-	const companyId = companyContext?.companyId;
-	if (!companyId) {
-		set.status = 401;
-		fail("No autorizado", "UNAUTHORIZED");
-		return null;
-	}
-	return companyId;
-}
-
-// ---------------------------------------------------------------------------
 // Routes
 // ---------------------------------------------------------------------------
 

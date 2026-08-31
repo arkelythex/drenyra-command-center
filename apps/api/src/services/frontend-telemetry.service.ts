@@ -141,16 +141,23 @@ function sanitizeTimestamp(timestamp: unknown): string {
 function createEntry(
 	input: FrontendTelemetryInput,
 ): StoredFrontendTelemetryEvent {
+	const name = sanitizeString(input.name, MAX_NAME_LENGTH);
+	const path = sanitizeString(input.path, MAX_PATH_LENGTH);
+	const value = sanitizeNumber(input.value);
+	const message = sanitizeString(input.message, MAX_MESSAGE_LENGTH);
+	const stack = sanitizeString(input.stack, MAX_STACK_LENGTH);
+	const context = sanitizeContext(input.context);
+
 	return {
 		id: randomUUID(),
 		kind: input.kind,
-		name: sanitizeString(input.name, MAX_NAME_LENGTH),
-		path: sanitizeString(input.path, MAX_PATH_LENGTH),
-		value: sanitizeNumber(input.value),
-		rating: input.rating,
-		message: sanitizeString(input.message, MAX_MESSAGE_LENGTH),
-		stack: sanitizeString(input.stack, MAX_STACK_LENGTH),
-		context: sanitizeContext(input.context),
+		...(name !== undefined ? { name } : {}),
+		...(path !== undefined ? { path } : {}),
+		...(value !== undefined ? { value } : {}),
+		...(input.rating !== undefined ? { rating: input.rating } : {}),
+		...(message !== undefined ? { message } : {}),
+		...(stack !== undefined ? { stack } : {}),
+		...(context !== undefined ? { context } : {}),
 		timestamp: sanitizeTimestamp(input.timestamp),
 		receivedAt: new Date().toISOString(),
 		userAgent: sanitizeString(input.userAgent, 300) ?? null,
