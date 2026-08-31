@@ -77,6 +77,299 @@ function mapStepStatusToRuntimeStatus(status: string): AgentRuntimeStatus {
 	return "failed";
 }
 
+type WorkflowRun = Awaited<
+	ReturnType<typeof mastraInvoiceProcessingWorkflow.createRun>
+>;
+type WorkflowEventHandler = Parameters<WorkflowRun["watch"]>[0];
+type StreamEmitter = (event: string, payload: unknown) => void;
+
+interface WorkflowHandlerContext {
+	run: WorkflowRun;
+	streamInput: MastraInvoiceWorkflowInput;
+	organizationId: number | null;
+	emit: StreamEmitter;
+}
+
+function handleWorkflowStepStart(
+	context: WorkflowHandlerContext,
+	stepId: string,
+): void {
+	const agentId = mapWorkflowStepToAgent(stepId);
+	if (!agentId) return;
+
+	context.emit("agent-status", {
+		runId: context.run.runId,
+		workflowId: context.run.workflowId,
+		documentId: context.streamInput.documentId,
+		agentId,
+		agentLabel: AGENT_LABELS[agentId],
+		status: "running" as AgentRuntimeStatus,
+		message: AGENT_MESSAGES[agentId].start,
+		timestamp: new Date().toISOString(),
+	});
+}
+
+function handleWorkflowStepResult(
+	context: WorkflowHandlerContext,
+	stepId: string,
+	stepStatus: string,
+): void {
+	const agentId = mapWorkflowStepToAgent(stepId);
+	if (!agentId) return;
+
+	const status = mapStepStatusToRuntimeStatus(stepStatus);
+	context.emit("agent-status", {
+		runId: context.run.runId,
+		workflowId: context.run.workflowId,
+		documentId: context.streamInput.documentId,
+		agentId,
+		agentLabel: AGENT_LABELS[agentId],
+		status,
+		message:
+			status === "completed"
+				? AGENT_MESSAGES[agentId].complete
+				: AGENT_MESSAGES[agentId].failed,
+		timestamp: new Date().toISOString(),
+	});
+
+	enqueueSwarmAuditLog({
+		organizationId: context.organizationId,
+		agentName: `${agentId}-agent`,
+		decisionType:
+			status === "completed"
+				? "WORKFLOW_STEP_COMPLETED"
+				: "WORKFLOW_STEP_FAILED",
+		reasoning:
+			status === "completed"
+				? `${agentId} finalizo correctamente.`
+				: `${agentId} reporto falla en workflow-step-result.`,
+		inputs: {
+			runId: context.run.runId,
+			workflowId: context.run.workflowId,
+			stepId,
+			documentId: context.streamInput.documentId,
+		},
+		outputs: {
+			status,
+			stepStatus,
+		},
+	});
+}
+
+function handleWorkflowStepFinish(
+	context: WorkflowHandlerContext,
+	stepId: string,
+): void {
+	const agentId = mapWorkflowStepToAgent(stepId);
+	if (!agentId) return;
+
+	context.emit("agent-status", {
+		runId: context.run.runId,
+		workflowId: context.run.workflowId,
+		documentId: context.streamInput.documentId,
+		agentId,
+		agentLabel: AGENT_LABELS[agentId],
+		status: "completed" as AgentRuntimeStatus,
+		message: AGENT_MESSAGES[agentId].complete,
+		timestamp: new Date().toISOString(),
+	});
+}
+
+function createWorkflowEventHandler(
+	context: WorkflowHandlerContext,
+): WorkflowEventHandler {
+	return (workflowEvent) => {
+		if (workflowEvent.type === "workflow-step-start") {
+			handleWorkflowStepStart(context, workflowEvent.payload.id);
+			return;
+		}
+
+		if (workflowEvent.type === "workflow-step-result") {
+			handleWorkflowStepResult(
+				context,
+				workflowEvent.payload.id,
+				workflowEvent.payload.status,
+			);
+			return;
+		}
+
+		if (workflowEvent.type === "workflow-step-finish") {
+			handleWorkflowStepFinish(context, workflowEvent.payload.id);
+		}
+	};
+}
+
+async function handleConsensusAlert(
+	context: WorkflowHandlerContext,
+	result: MastraInvoiceWorkflowOutput,
+): Promise<void> {
+	if (result.decision === "approved") return;
+
+	if (context.organizationId === null) {
+		context.emit("anomaly-alert-skipped", {
+			runId: context.run.runId,
+			documentId: context.streamInput.documentId,
+			reason: "missing-organization-context",
+			timestamp: new Date().toISOString(),
+		});
+		return;
+	}
+
+	try {
+		const alertResult = await Promise.race([
+			triggerWorkflowConsensusAlert(result, context.organizationId),
+			new Promise<null>((resolve) => setTimeout(() => resolve(null), 2_000)),
+		]);
+		if (!alertResult?.shouldTriggerAlert) return;
+
+		context.emit("anomaly-alert", {
+			runId: context.run.runId,
+			documentId: context.streamInput.documentId,
+			alertId: alertResult.alertId,
+			severity: alertResult.severity,
+			consensusScore: alertResult.consensusScore,
+			threshold: alertResult.threshold,
+			timestamp: new Date().toISOString(),
+		});
+
+		enqueueSwarmAuditLog({
+			organizationId: context.organizationId,
+			agentName: "consensus-detector-agent",
+			decisionType: "ANOMALY_ALERT_TRIGGERED",
+			reasoning:
+				"Consenso dinamico supero el umbral y genero alerta de anomalia.",
+			inputs: {
+				runId: context.run.runId,
+				workflowId: context.run.workflowId,
+				documentId: context.streamInput.documentId,
+			},
+			outputs: {
+				alertId: alertResult.alertId,
+				severity: alertResult.severity,
+				consensusScore: alertResult.consensusScore,
+				threshold: alertResult.threshold,
+			},
+		});
+	} catch (err: unknown) {
+		logger.error(
+			{
+				error: err,
+				runId: context.run.runId,
+				workflowId: context.run.workflowId,
+				documentId: context.streamInput.documentId,
+			},
+			"[consensus-alert] Failed to create alert",
+		);
+	}
+}
+
+async function handleWorkflowSuccess(
+	context: WorkflowHandlerContext,
+	result: MastraInvoiceWorkflowOutput,
+): Promise<void> {
+	context.emit("workflow-complete", {
+		runId: context.run.runId,
+		workflowId: context.run.workflowId,
+		documentId: context.streamInput.documentId,
+		status: "success",
+		result,
+		timestamp: new Date().toISOString(),
+	});
+
+	enqueueSwarmAuditLog({
+		organizationId: context.organizationId,
+		agentName: "arbitro-agent",
+		decisionType: result.decision.toUpperCase(),
+		reasoning: result.reason,
+		inputs: {
+			runId: context.run.runId,
+			workflowId: context.run.workflowId,
+			documentId: context.streamInput.documentId,
+			decisionConfidence: result.confidence,
+		},
+		outputs: {
+			decision: result.decision,
+			confidence: result.confidence,
+			validation: result.validation,
+		},
+	});
+
+	// Await consensus alert with 2s guard before close() runs.
+	// This ensures anomaly-alert is emitted while the stream is still open.
+	// Any error or timeout is swallowed — alert failure must NOT block the SSE response.
+	await handleConsensusAlert(context, result);
+}
+
+function handleWorkflowNonSuccess(
+	context: WorkflowHandlerContext,
+	status: string,
+): void {
+	context.emit("workflow-complete", {
+		runId: context.run.runId,
+		workflowId: context.run.workflowId,
+		documentId: context.streamInput.documentId,
+		status,
+		error: "El workflow no finalizó en estado success.",
+		timestamp: new Date().toISOString(),
+	});
+
+	enqueueSwarmAuditLog({
+		organizationId: context.organizationId,
+		agentName: "orchestrator-agent",
+		decisionType: "WORKFLOW_FAILED",
+		reasoning: "El workflow no finalizo con status success.",
+		inputs: {
+			runId: context.run.runId,
+			workflowId: context.run.workflowId,
+			documentId: context.streamInput.documentId,
+		},
+		outputs: { status },
+	});
+}
+
+async function executeWorkflow(context: WorkflowHandlerContext): Promise<void> {
+	const workflowResult = await context.run.start({
+		inputData: context.streamInput,
+	});
+
+	if (workflowResult.status !== "success") {
+		handleWorkflowNonSuccess(context, workflowResult.status);
+		return;
+	}
+
+	await handleWorkflowSuccess(
+		context,
+		workflowResult.result as MastraInvoiceWorkflowOutput,
+	);
+}
+
+function handleWorkflowError(
+	context: WorkflowHandlerContext,
+	error: unknown,
+): void {
+	context.emit("workflow-error", {
+		runId: context.run.runId,
+		workflowId: context.run.workflowId,
+		documentId: context.streamInput.documentId,
+		error:
+			error instanceof Error ? error.message : "Error desconocido en el stream",
+		timestamp: new Date().toISOString(),
+	});
+
+	enqueueSwarmAuditLog({
+		organizationId: context.organizationId,
+		agentName: "orchestrator-agent",
+		decisionType: "WORKFLOW_ERROR",
+		reasoning: error instanceof Error ? error.message : "Error desconocido",
+		inputs: {
+			runId: context.run.runId,
+			workflowId: context.run.workflowId,
+			documentId: context.streamInput.documentId,
+		},
+		outputs: { status: "error" },
+	});
+}
+
 /**
  * AI Swarm routes
  * @example
@@ -131,84 +424,15 @@ export const agentStreamRoute = new Elysia({ prefix: "/api/ai-swarm" })
 						controller.close();
 					};
 
-					const unsubscribe = run.watch((workflowEvent) => {
-						if (workflowEvent.type === "workflow-step-start") {
-							const agentId = mapWorkflowStepToAgent(workflowEvent.payload.id);
-							if (!agentId) return;
-
-							emit("agent-status", {
-								runId: run.runId,
-								workflowId: run.workflowId,
-								documentId: streamInput.documentId,
-								agentId,
-								agentLabel: AGENT_LABELS[agentId],
-								status: "running" as AgentRuntimeStatus,
-								message: AGENT_MESSAGES[agentId].start,
-								timestamp: new Date().toISOString(),
-							});
-						}
-
-						if (workflowEvent.type === "workflow-step-result") {
-							const agentId = mapWorkflowStepToAgent(workflowEvent.payload.id);
-							if (!agentId) return;
-
-							const status = mapStepStatusToRuntimeStatus(
-								workflowEvent.payload.status,
-							);
-							emit("agent-status", {
-								runId: run.runId,
-								workflowId: run.workflowId,
-								documentId: streamInput.documentId,
-								agentId,
-								agentLabel: AGENT_LABELS[agentId],
-								status,
-								message:
-									status === "completed"
-										? AGENT_MESSAGES[agentId].complete
-										: AGENT_MESSAGES[agentId].failed,
-								timestamp: new Date().toISOString(),
-							});
-
-							enqueueSwarmAuditLog({
-								organizationId,
-								agentName: `${agentId}-agent`,
-								decisionType:
-									status === "completed"
-										? "WORKFLOW_STEP_COMPLETED"
-										: "WORKFLOW_STEP_FAILED",
-								reasoning:
-									status === "completed"
-										? `${agentId} finalizo correctamente.`
-										: `${agentId} reporto falla en workflow-step-result.`,
-								inputs: {
-									runId: run.runId,
-									workflowId: run.workflowId,
-									stepId: workflowEvent.payload.id,
-									documentId: streamInput.documentId,
-								},
-								outputs: {
-									status,
-									stepStatus: workflowEvent.payload.status,
-								},
-							});
-						}
-
-						if (workflowEvent.type === "workflow-step-finish") {
-							const agentId = mapWorkflowStepToAgent(workflowEvent.payload.id);
-							if (!agentId) return;
-
-							emit("agent-status", {
-								runId: run.runId,
-								workflowId: run.workflowId,
-								documentId: streamInput.documentId,
-								agentId,
-								agentLabel: AGENT_LABELS[agentId],
-								status: "completed" as AgentRuntimeStatus,
-								message: AGENT_MESSAGES[agentId].complete,
-								timestamp: new Date().toISOString(),
-							});
-						}
-					});
+					const workflowContext: WorkflowHandlerContext = {
+						run,
+						streamInput,
+						organizationId,
+						emit,
+					};
+					const unsubscribe = run.watch(
+						createWorkflowEventHandler(workflowContext),
+					);
 
 					const heartbeatId = setInterval(() => {
 						emit("heartbeat", {
@@ -246,153 +470,9 @@ export const agentStreamRoute = new Elysia({ prefix: "/api/ai-swarm" })
 					});
 
 					try {
-						const workflowResult = await run.start({ inputData: streamInput });
-
-						if (workflowResult.status === "success") {
-							const result =
-								workflowResult.result as MastraInvoiceWorkflowOutput;
-
-							emit("workflow-complete", {
-								runId: run.runId,
-								workflowId: run.workflowId,
-								documentId: streamInput.documentId,
-								status: "success",
-								result,
-								timestamp: new Date().toISOString(),
-							});
-
-							enqueueSwarmAuditLog({
-								organizationId,
-								agentName: "arbitro-agent",
-								decisionType: result.decision.toUpperCase(),
-								reasoning: result.reason,
-								inputs: {
-									runId: run.runId,
-									workflowId: run.workflowId,
-									documentId: streamInput.documentId,
-									decisionConfidence: result.confidence,
-								},
-								outputs: {
-									decision: result.decision,
-									confidence: result.confidence,
-									validation: result.validation,
-								},
-							});
-
-							// Await consensus alert with 2s guard before close() runs.
-							// This ensures anomaly-alert is emitted while the stream is still open.
-							// Any error or timeout is swallowed — alert failure must NOT block the SSE response.
-							if (result.decision !== "approved") {
-								if (organizationId === null) {
-									emit("anomaly-alert-skipped", {
-										runId: run.runId,
-										documentId: streamInput.documentId,
-										reason: "missing-organization-context",
-										timestamp: new Date().toISOString(),
-									});
-								} else {
-									try {
-										const alertResult = await Promise.race([
-											triggerWorkflowConsensusAlert(result, organizationId),
-											new Promise<null>((resolve) =>
-												setTimeout(() => resolve(null), 2_000),
-											),
-										]);
-										if (alertResult?.shouldTriggerAlert) {
-											emit("anomaly-alert", {
-												runId: run.runId,
-												documentId: streamInput.documentId,
-												alertId: alertResult.alertId,
-												severity: alertResult.severity,
-												consensusScore: alertResult.consensusScore,
-												threshold: alertResult.threshold,
-												timestamp: new Date().toISOString(),
-											});
-
-											enqueueSwarmAuditLog({
-												organizationId,
-												agentName: "consensus-detector-agent",
-												decisionType: "ANOMALY_ALERT_TRIGGERED",
-												reasoning:
-													"Consenso dinamico supero el umbral y genero alerta de anomalia.",
-												inputs: {
-													runId: run.runId,
-													workflowId: run.workflowId,
-													documentId: streamInput.documentId,
-												},
-												outputs: {
-													alertId: alertResult.alertId,
-													severity: alertResult.severity,
-													consensusScore: alertResult.consensusScore,
-													threshold: alertResult.threshold,
-												},
-											});
-										}
-									} catch (err: unknown) {
-										logger.error(
-											{
-												error: err,
-												runId: run.runId,
-												workflowId: run.workflowId,
-												documentId: streamInput.documentId,
-											},
-											"[consensus-alert] Failed to create alert",
-										);
-									}
-								}
-							}
-						} else {
-							emit("workflow-complete", {
-								runId: run.runId,
-								workflowId: run.workflowId,
-								documentId: streamInput.documentId,
-								status: workflowResult.status,
-								error: "El workflow no finalizó en estado success.",
-								timestamp: new Date().toISOString(),
-							});
-
-							enqueueSwarmAuditLog({
-								organizationId,
-								agentName: "orchestrator-agent",
-								decisionType: "WORKFLOW_FAILED",
-								reasoning: "El workflow no finalizo con status success.",
-								inputs: {
-									runId: run.runId,
-									workflowId: run.workflowId,
-									documentId: streamInput.documentId,
-								},
-								outputs: {
-									status: workflowResult.status,
-								},
-							});
-						}
+						await executeWorkflow(workflowContext);
 					} catch (error) {
-						emit("workflow-error", {
-							runId: run.runId,
-							workflowId: run.workflowId,
-							documentId: streamInput.documentId,
-							error:
-								error instanceof Error
-									? error.message
-									: "Error desconocido en el stream",
-							timestamp: new Date().toISOString(),
-						});
-
-						enqueueSwarmAuditLog({
-							organizationId,
-							agentName: "orchestrator-agent",
-							decisionType: "WORKFLOW_ERROR",
-							reasoning:
-								error instanceof Error ? error.message : "Error desconocido",
-							inputs: {
-								runId: run.runId,
-								workflowId: run.workflowId,
-								documentId: streamInput.documentId,
-							},
-							outputs: {
-								status: "error",
-							},
-						});
+						handleWorkflowError(workflowContext, error);
 					} finally {
 						close();
 					}
