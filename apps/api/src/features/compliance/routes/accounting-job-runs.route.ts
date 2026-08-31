@@ -86,9 +86,11 @@ export const accountingJobRunsRoute = new Elysia()
 
 				const runs = await AccountingJobRunsService.listRuns({
 					companyId: query.companyId,
-					countryCode: query.countryCode,
-					status: query.status,
-					limit: query.limit,
+					...(query.countryCode !== undefined
+						? { countryCode: query.countryCode }
+						: {}),
+					...(query.status !== undefined ? { status: query.status } : {}),
+					...(query.limit !== undefined ? { limit: query.limit } : {}),
 				});
 
 				return ok({
@@ -128,7 +130,17 @@ export const accountingJobRunsRoute = new Elysia()
 				}
 
 				const run = await AccountingJobRunsService.createRun({
-					...body,
+					companyId: body.companyId,
+					jobId: body.jobId,
+					...(body.countryCode !== undefined
+						? { countryCode: body.countryCode }
+						: {}),
+					requestedBy: body.requestedBy ?? callerContext.legacyUserId,
+					...(body.prompt !== undefined ? { prompt: body.prompt } : {}),
+					...(body.summary !== undefined ? { summary: body.summary } : {}),
+					...(body.inputPayload !== undefined
+						? { inputPayload: body.inputPayload }
+						: {}),
 					traceId:
 						body.traceId ??
 						buildFiscalTruthAdvisoryTrace({
@@ -137,7 +149,12 @@ export const accountingJobRunsRoute = new Elysia()
 							aggregateId: body.jobId,
 							companyId: body.companyId,
 						}).traceId,
-					requestedBy: body.requestedBy ?? callerContext.legacyUserId,
+					...(body.requestedTools !== undefined
+						? { requestedTools: body.requestedTools }
+						: {}),
+					...(body.requestedCorpora !== undefined
+						? { requestedCorpora: body.requestedCorpora }
+						: {}),
 				});
 				set.status = 201;
 				return ok(run);
@@ -204,10 +221,14 @@ export const accountingJobRunsRoute = new Elysia()
 					id: params.id,
 					companyId: body.companyId,
 					status: body.status,
-					summary: body.summary,
+					...(body.summary !== undefined ? { summary: body.summary } : {}),
 					approvedBy: body.approvedBy ?? callerContext.legacyUserId,
-					resultPayload: body.resultPayload,
-					evidencePayload: body.evidencePayload,
+					...(body.resultPayload !== undefined
+						? { resultPayload: body.resultPayload }
+						: {}),
+					...(body.evidencePayload !== undefined
+						? { evidencePayload: body.evidencePayload }
+						: {}),
 				});
 
 				return ok(run);
@@ -273,7 +294,7 @@ export const accountingJobRunsRoute = new Elysia()
 					await AccountingJobRunsService.executeRepresentativeSupervisedRun({
 						id: params.id,
 						companyId: body.companyId,
-						period: body.period,
+						...(body.period !== undefined ? { period: body.period } : {}),
 						approvedBy: callerContext.legacyUserId,
 					});
 

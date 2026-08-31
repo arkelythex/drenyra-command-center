@@ -78,9 +78,15 @@ export const complianceModule = new Elysia({ prefix: "/api/compliance" })
 					companyId: query.companyId,
 					year: query.year,
 					month: query.month,
-					totalTolerance: query.totalTolerance,
-					igvTolerance: query.igvTolerance,
-					recordTolerance: query.recordTolerance,
+					...(query.totalTolerance !== undefined
+						? { totalTolerance: query.totalTolerance }
+						: {}),
+					...(query.igvTolerance !== undefined
+						? { igvTolerance: query.igvTolerance }
+						: {}),
+					...(query.recordTolerance !== undefined
+						? { recordTolerance: query.recordTolerance }
+						: {}),
 				});
 
 				if (!result.reproducible) {
