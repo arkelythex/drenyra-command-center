@@ -15,7 +15,7 @@ jobs:
   nightly-coverage:
     name: Nightly Coverage Report
     runs-on: [self-hosted, linux, x64]
-    
+
     steps:
       - name: Install git-lfs
         run: |
@@ -23,7 +23,7 @@ jobs:
           curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
           cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
           ~/.local/bin/git-lfs install --skip-repo --force
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -63,7 +63,7 @@ jobs:
   nightly-benchmarks:
     name: Performance Benchmarks
     runs-on: [self-hosted, linux, x64]
-    
+
     steps:
       - name: Install git-lfs
         run: |
@@ -71,7 +71,7 @@ jobs:
           curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
           cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
           ~/.local/bin/git-lfs install --skip-repo --force
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -98,7 +98,7 @@ jobs:
   nightly-contracts:
     name: API Contract Tests
     runs-on: [self-hosted, linux, x64]
-    
+
     steps:
       - name: Install git-lfs
         run: |
@@ -106,7 +106,7 @@ jobs:
           curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
           cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
           ~/.local/bin/git-lfs install --skip-repo --force
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -131,7 +131,7 @@ jobs:
   nightly-full-e2e:
     name: Full E2E Suite
     runs-on: [self-hosted, linux, x64]
-    
+
     steps:
       - name: Install git-lfs
         run: |
@@ -139,7 +139,7 @@ jobs:
           curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
           cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
           ~/.local/bin/git-lfs install --skip-repo --force
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -184,7 +184,7 @@ jobs:
           curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
           cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
           ~/.local/bin/git-lfs install --skip-repo --force
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -220,7 +220,7 @@ jobs:
   nightly-security:
     name: Nightly Security Scan
     runs-on: [self-hosted, linux, x64]
-    
+
     steps:
       - name: Install git-lfs
         run: |
@@ -228,7 +228,7 @@ jobs:
           curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
           cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
           ~/.local/bin/git-lfs install --skip-repo --force
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: Checkout code
         uses: actions/checkout@v6
         with:
@@ -268,11 +268,13 @@ jobs:
     steps:
       - name: Generate summary
         run: |
-          echo "## 🌙 Nightly Quality Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Coverage:** ${{ needs.nightly-coverage.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Benchmarks:** ${{ needs.nightly-benchmarks.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Contracts:** ${{ needs.nightly-contracts.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "**E2E:** ${{ needs.nightly-full-e2e.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Polyglot:** ${{ needs.nightly-polyglot.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Security:** ${{ needs.nightly-security.result }}" >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## 🌙 Nightly Quality Summary"
+            echo ""
+            echo "**Coverage:** ${{ needs.nightly-coverage.result }}"
+            echo "**Benchmarks:** ${{ needs.nightly-benchmarks.result }}"
+            echo "**Contracts:** ${{ needs.nightly-contracts.result }}"
+            echo "**E2E:** ${{ needs.nightly-full-e2e.result }}"
+            echo "**Polyglot:** ${{ needs.nightly-polyglot.result }}"
+            echo "**Security:** ${{ needs.nightly-security.result }}"
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -39,10 +39,14 @@ jobs:
 
       - name: Dry run notice
         if: ${{ github.event.inputs.dry_run == 'true' }}
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
         run: |
-          echo "### 🏗️ DRY RUN — No release created" >> $GITHUB_STEP_SUMMARY
-          echo "Quality gates passed for version bump: ${{ github.event.inputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "Run again with dry_run=false to create the actual release." >> $GITHUB_STEP_SUMMARY
+          {
+            echo "### 🏗️ DRY RUN — No release created"
+            echo "Quality gates passed for version bump: $RELEASE_VERSION"
+            echo "Run again with dry_run=false to create the actual release."
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Bump version and create tag
         if: ${{ github.event.inputs.dry_run == 'false' }}
