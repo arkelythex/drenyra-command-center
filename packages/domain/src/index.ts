@@ -16,42 +16,41 @@ export * from "./country-pack";
 export * from "./entities";
 export * from "./errors";
 export * from "./events";
+// --- FEOS CORE (Financial Engineering OS) ---
+// Names shared with legacy modules are re-exported explicitly from FEOS so
+// the modern definitions win over `export *` ambiguity (TS2308).
+export * from "./feos";
+export {
+	ApprovalRequest,
+	ApprovalRequestProps,
+	CompanyRef,
+	createPeriodRef,
+	DENSITY_MODE,
+	DensityMode,
+	DiffChange,
+	DiffStatus,
+	EvidenceItem,
+	FiscalPeriod,
+	OrganizationRef,
+	PANE_POSITION,
+	PANE_TYPE,
+	PaneConfig,
+	PanePosition,
+	PaneType,
+	PeriodRef,
+	PortfolioRef,
+	WORKSPACE_INTENT,
+	Workspace,
+	WorkspaceId,
+	WorkspaceIntent,
+} from "./feos";
 export * from "./fiscal";
-    // --- FISCAL CONTRACTS (Cross-stack source of truth) ---
-    export * from "./fiscal-contracts";
-    export * from "./fiscal-memory";
-    export * from "./fiscal-ontology";
-    export * from "./fiscal-truth";
-    export * from "./services";
-    export * from "./workbench";
-    // --- FEOS CORE (Financial Engineering OS) ---
-    // Names shared with legacy modules are re-exported explicitly from FEOS so
-    // the modern definitions win over `export *` ambiguity (TS2308).
-    export * from "./feos";
-    export {
-    	ApprovalRequest,
-    	ApprovalRequestProps,
-    	CompanyRef,
-    	createPeriodRef,
-    	DensityMode,
-    	DENSITY_MODE,
-    	DiffChange,
-    	DiffStatus,
-    	EvidenceItem,
-    	FiscalPeriod,
-    	OrganizationRef,
-    	PaneConfig,
-    	PanePosition,
-    	PANE_POSITION,
-    	PaneType,
-    	PANE_TYPE,
-    	PeriodRef,
-    	PortfolioRef,
-    	Workspace,
-    	WorkspaceId,
-    	WorkspaceIntent,
-    	WORKSPACE_INTENT,
-    } from "./feos";
+// --- FISCAL CONTRACTS (Cross-stack source of truth) ---
+export * from "./fiscal-contracts";
+export * from "./fiscal-memory";
+export * from "./fiscal-ontology";
+export * from "./fiscal-truth";
+export * from "./services";
 export type {
 	CountryCode,
 	TaxIdentifier,
@@ -61,3 +60,4 @@ export { DNI } from "./value-objects/DNI";
 export { DocumentSeries } from "./value-objects/DocumentSeries";
 export { type Currency, Money } from "./value-objects/Money";
 export { RUC } from "./value-objects/RUC";
+export * from "./workbench";
