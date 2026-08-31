@@ -1,5 +1,6 @@
 import { startCsvBatchWorker } from "@drenyra/infrastructure/workers/csv-batch.worker";
 import { startFiscalAgentWorker } from "@drenyra/infrastructure/workers/fiscal-agent.worker";
+import type { Elysia } from "elysia";
 import { getApiRootMetadata } from "./api-root-metadata";
 import { baseApp } from "./app-core";
 import { runMissionRecovery } from "./features/missions/mission-recovery.hook";
@@ -14,7 +15,9 @@ import {
 
 const logger = createLogger({ module: "app-listen" });
 
-const app = await attachOptionalOpenTelemetry(baseApp);
+// SAFETY: attachOptionalOpenTelemetry preserves the runtime Elysia instance;
+// app-core.ts remains the precise exported contract for API consumers.
+const app = await attachOptionalOpenTelemetry(baseApp as unknown as Elysia);
 
 await bootstrapTaxationEventSubscriptions();
 
