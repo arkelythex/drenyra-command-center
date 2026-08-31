@@ -14,11 +14,7 @@ CI/CD pipelines for ARKELYTHEX. El **gate principal** para merge en PR está en 
 - ESLint design-tokens plugin (`bun run lint:design-tokens`) — **bloquea off-brand colors, inline money format, imports deprecados**
 - Biome (`bunx @biomejs/biome@2.3.11 biome check`)
 - TypeScript: `bun run typecheck` (`tsc -p tsconfig.check.json`) — **falla el job si hay errores**
-- `bun run architecture:check-tsconfig-features`
-- `bun run architecture:check-boundaries`
-- `bun run architecture:check-framework-isolation`
 - `bun run architecture:check-product-surfaces`
-- En PR: `architecture:check-policy` (contra la rama base)
 - Comprobaciones de docs: `docs:check-links`, `docs:check-pmo-canon`, `docs:check-index-coherence`
 - Verificación de `fetch()` legacy en web
 
@@ -72,7 +68,7 @@ CI/CD pipelines for ARKELYTHEX. El **gate principal** para merge en PR está en 
 
 ## Nightly (`nightly.yml`)
 
-Incluye cobertura, benchmarks, contratos, E2E, seguridad y un job **`nightly-polyglot`** que ejecuta `scripts/architecture/check-polyglot-runtime.sh` (tests Rust en `packages/rust-core` y Go en `services/go/reconciliation-worker`) con toolchains configuradas en el runner.
+Incluye cobertura, benchmarks, contratos, E2E y seguridad.
 
 ---
 
@@ -108,9 +104,6 @@ Canonical runner maintenance docs:
 ```bash
 bun install --frozen-lockfile
 bun run typecheck
-bun run architecture:check-tsconfig-features
-bun run architecture:check-boundaries
-bun run architecture:check-framework-isolation
 bun run architecture:check-product-surfaces
 bun run docs:check-links
 ```

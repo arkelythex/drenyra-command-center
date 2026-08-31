@@ -1,6 +1,6 @@
 # Drenyra Command Center — Codebase Guide
 
-> **Last updated:** 2026-08-19.
+> **Last updated:** 2026-08-31.
 
 ## Repository map
 
@@ -107,7 +107,7 @@ Run the narrowest relevant check first, then broader checks when risk justifies 
 | `bun run test` (or `bun run turbo:test`) | Workspace tests (`--filter '*'`) |
 | `bun run test:e2e` | Playwright product smoke tests |
 | `bun run docs:verify` | Link checks + product-surface checks (docs-as-code) |
-| `bun run architecture:check-boundaries` | Package boundaries, framework isolation, enforcement pack |
+| `bun run architecture:check-product-surfaces` | Required canonical product documentation, navigation, and workspace route surfaces |
 
 Testing conventions:
 

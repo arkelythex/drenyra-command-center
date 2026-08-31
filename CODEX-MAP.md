@@ -96,7 +96,7 @@ bun run codebase:index
 bun run codebase:index:check
 bun run typecheck
 bun run docs:verify
-bun run architecture:check-boundaries
+bun run architecture:check-product-surfaces
 bun run compliance:sire-gate
 bun run compliance:sire-repro
 

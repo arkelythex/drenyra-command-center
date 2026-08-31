@@ -1,6 +1,6 @@
 # Drenyra Command Center — Architecture
 
-> **Last updated:** 2026-08-19.
+> **Last updated:** 2026-08-31.
 
 ## Documentation index
 
@@ -131,4 +131,4 @@ The Command Center consumes `drenyra-ai` as **released, versioned artifacts** �
 
 **In scope (this repo):** product UI and surfaces, workspaces/companies/periods, documents and closure workflows, reconciliation, approval chains, SUNAT integration flows, country packs, evidence-graph visualization, and the developer/automation surface (API, CLI, SDK).
 
-**Out of scope (owned elsewhere):** mission/candidate/review/gate runtime → `drenyra-ai`; memory storage and search → `drenyra-engram`; Pi-specific operator behavior → `drenyra-pi`; standalone receipt verification for external ERPs → `drenyra-ai`. Long-term, these must not be re-created here; boundary violations are caught in review and by `architecture:check-boundaries`.
+**Out of scope (owned elsewhere):** mission/candidate/review/gate runtime → `drenyra-ai`; memory storage and search → `drenyra-engram`; Pi-specific operator behavior → `drenyra-pi`; standalone receipt verification for external ERPs → `drenyra-ai`. Long-term, these must not be re-created here; boundary violations are caught in review, while canonical product surfaces are checked by `bun run architecture:check-product-surfaces`.

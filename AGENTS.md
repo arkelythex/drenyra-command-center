@@ -163,7 +163,7 @@ bun run lint
 bun run lint:all
 bun run test
 bun run docs:verify
-bun run architecture:check-boundaries
+bun run architecture:check-product-surfaces
 bun run security:audit
 ```
 

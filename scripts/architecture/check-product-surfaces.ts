@@ -27,8 +27,8 @@ const REQUIRED_SURFACES: RequiredSurface[] = [
 		description: "CLI navigation and product model",
 	},
 	{
-		path: "apps/web/src/routes/product-surfaces.tsx",
-		description: "web product surfaces route",
+		path: "apps/web/src/routes/workspace.$companyId.$year.$month.$intent.tsx",
+		description: "canonical accounting workspace route",
 	},
 ];
 

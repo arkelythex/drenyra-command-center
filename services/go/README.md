@@ -20,7 +20,7 @@ Los servicios en Go cubren **workers de alto throughput** y rutas muy acotadas d
 
 - **Transporte**: HTTP JSON (rutas versionadas bajo el prefijo del worker).
 - **Descubrimiento**: el API Bun orquesta llamadas; los contratos de request/response deben alinearse con los DTOs o tests de contrato del lado TS donde existan.
-- **CI**: `bun run architecture:check-polyglot` ejecuta `go test ./...` en este servicio; también corre en el workflow nocturno.
+- **CI**: `cd services/go/reconciliation-worker && go test ./...` ejecuta los tests directamente; el workflow nocturno también los corre.
 
 ## Comandos
 
@@ -31,6 +31,6 @@ bun run go:reconcile:test  # tests
 
 ---
 
-**Última actualización**: 2026-06-20
+**Última actualización**: 2026-08-31
 
 *Alineado con la [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md) de ARKELYTHEX — documentación que reduce carga cognitiva y enseña con calidez.*
