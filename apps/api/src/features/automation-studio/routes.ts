@@ -140,9 +140,14 @@ export const automationStudioRoutes = new Elysia({
 
 	.get(
 		"/workflows/:id",
-		async ({ params, set }) => {
+		async ({ params, companyContext, set }) => {
 			try {
-				const wf = await controller.getWorkflow(params.id);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const wf = await controller.getWorkflow(companyId, params.id);
 				if (!wf) {
 					set.status = 404;
 					return fail("Workflow no encontrado", "NOT_FOUND");
@@ -190,9 +195,14 @@ export const automationStudioRoutes = new Elysia({
 
 	.patch(
 		"/workflows/:id",
-		async ({ params, body, set }) => {
+		async ({ params, body, companyContext, set }) => {
 			try {
-				const wf = await controller.updateWorkflow(params.id, body);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const wf = await controller.updateWorkflow(companyId, params.id, body);
 				if (!wf) {
 					set.status = 404;
 					return fail("Workflow no encontrado", "NOT_FOUND");
@@ -215,9 +225,14 @@ export const automationStudioRoutes = new Elysia({
 
 	.delete(
 		"/workflows/:id",
-		async ({ params, set }) => {
+		async ({ params, companyContext, set }) => {
 			try {
-				const deleted = await controller.deleteWorkflow(params.id);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const deleted = await controller.deleteWorkflow(companyId, params.id);
 				if (!deleted) {
 					set.status = 404;
 					return fail("Workflow no encontrado", "NOT_FOUND");
@@ -240,9 +255,14 @@ export const automationStudioRoutes = new Elysia({
 	// --- Workflow actions ---
 	.post(
 		"/workflows/:id/activate",
-		async ({ params, set }) => {
+		async ({ params, companyContext, set }) => {
 			try {
-				const wf = await controller.activateWorkflow(params.id);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const wf = await controller.activateWorkflow(companyId, params.id);
 				if (!wf) {
 					set.status = 404;
 					return fail("Workflow no encontrado", "NOT_FOUND");
@@ -264,9 +284,14 @@ export const automationStudioRoutes = new Elysia({
 
 	.post(
 		"/workflows/:id/pause",
-		async ({ params, set }) => {
+		async ({ params, companyContext, set }) => {
 			try {
-				const wf = await controller.pauseWorkflow(params.id);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const wf = await controller.pauseWorkflow(companyId, params.id);
 				if (!wf) {
 					set.status = 404;
 					return fail("Workflow no encontrado", "NOT_FOUND");
@@ -288,9 +313,14 @@ export const automationStudioRoutes = new Elysia({
 
 	.post(
 		"/workflows/:id/test",
-		async ({ params, set }) => {
+		async ({ params, companyContext, set }) => {
 			try {
-				const result = await controller.testWorkflow(params.id);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const result = await controller.testWorkflow(companyId, params.id);
 				return ok(result);
 			} catch (error) {
 				set.status = 500;

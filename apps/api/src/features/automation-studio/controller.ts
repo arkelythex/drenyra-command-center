@@ -61,12 +61,18 @@ export async function listWorkflows(
 }
 
 export async function getWorkflow(
+	companyId: string,
 	id: string,
 ): Promise<WorkflowResponse | null> {
 	const row = await db
 		.select()
 		.from(automationWorkflows)
-		.where(eq(automationWorkflows.id, id))
+		.where(
+			and(
+				eq(automationWorkflows.id, id),
+				eq(automationWorkflows.companyId, companyId),
+			),
+		)
 		.limit(1);
 
 	if (row.length === 0) return null;
@@ -96,6 +102,7 @@ export async function createWorkflow(
 }
 
 export async function updateWorkflow(
+	companyId: string,
 	id: string,
 	body: UpdateWorkflowBody,
 ): Promise<WorkflowResponse | null> {
@@ -107,34 +114,53 @@ export async function updateWorkflow(
 			category: body.category as WorkflowCategory,
 			triggerType: body.triggerType as TriggerType,
 			triggerConfig: body.triggerConfig,
-			updatedAt: new Date().toISOString() as unknown as Date,
+			updatedAt: new Date(),
 		})
-		.where(eq(automationWorkflows.id, id))
+		.where(
+			and(
+				eq(automationWorkflows.id, id),
+				eq(automationWorkflows.companyId, companyId),
+			),
+		)
 		.returning();
 
 	if (!row) return null;
 	return enrichWorkflowWithSteps(row);
 }
 
-export async function deleteWorkflow(id: string): Promise<boolean> {
+export async function deleteWorkflow(
+	companyId: string,
+	id: string,
+): Promise<boolean> {
 	const [row] = await db
 		.delete(automationWorkflows)
-		.where(eq(automationWorkflows.id, id))
+		.where(
+			and(
+				eq(automationWorkflows.id, id),
+				eq(automationWorkflows.companyId, companyId),
+			),
+		)
 		.returning({ id: automationWorkflows.id });
 
 	return !!row;
 }
 
 export async function activateWorkflow(
+	companyId: string,
 	id: string,
 ): Promise<WorkflowResponse | null> {
 	const [row] = await db
 		.update(automationWorkflows)
 		.set({
 			status: "active",
-			updatedAt: new Date().toISOString() as unknown as Date,
+			updatedAt: new Date(),
 		})
-		.where(eq(automationWorkflows.id, id))
+		.where(
+			and(
+				eq(automationWorkflows.id, id),
+				eq(automationWorkflows.companyId, companyId),
+			),
+		)
 		.returning();
 
 	if (!row) return null;
@@ -142,15 +168,21 @@ export async function activateWorkflow(
 }
 
 export async function pauseWorkflow(
+	companyId: string,
 	id: string,
 ): Promise<WorkflowResponse | null> {
 	const [row] = await db
 		.update(automationWorkflows)
 		.set({
 			status: "paused",
-			updatedAt: new Date().toISOString() as unknown as Date,
+			updatedAt: new Date(),
 		})
-		.where(eq(automationWorkflows.id, id))
+		.where(
+			and(
+				eq(automationWorkflows.id, id),
+				eq(automationWorkflows.companyId, companyId),
+			),
+		)
 		.returning();
 
 	if (!row) return null;
@@ -164,7 +196,12 @@ export async function duplicateWorkflow(
 	const original = await db
 		.select()
 		.from(automationWorkflows)
-		.where(eq(automationWorkflows.id, id))
+		.where(
+			and(
+				eq(automationWorkflows.id, id),
+				eq(automationWorkflows.companyId, companyId),
+			),
+		)
 		.limit(1);
 
 	if (original.length === 0) return null;
@@ -204,13 +241,14 @@ export async function duplicateWorkflow(
 		);
 	}
 
-	return getWorkflow(newWf.id);
+	return getWorkflow(companyId, newWf.id);
 }
 
 export async function testWorkflow(
+	companyId: string,
 	id: string,
 ): Promise<{ executionId: string }> {
-	const wf = await getWorkflow(id);
+	const wf = await getWorkflow(companyId, id);
 	if (!wf) throw new Error("Workflow not found");
 
 	const [exec] = await db
@@ -242,7 +280,10 @@ export async function testWorkflow(
 			.where(eq(automationExecutions.id, exec.id));
 
 		try {
-			const result = await executeAction(step.actionType as ActionType, step.config);
+			const result = await executeAction(
+				step.actionType as ActionType,
+				step.config,
+			);
 			if (result.ok) {
 				logLines.push(`[${new Date().toISOString()}]   ✓ ${result.message}`);
 			} else {
@@ -258,14 +299,14 @@ export async function testWorkflow(
 		}
 	}
 
-	const completedAt = new Date().toISOString();
-	logLines.push(`[${completedAt}] Test run ${execStatus}`);
+	const completedAt = new Date();
+	logLines.push(`[${completedAt.toISOString()}] Test run ${execStatus}`);
 
 	await db
 		.update(automationExecutions)
 		.set({
 			status: execStatus,
-			completedAt: completedAt as unknown as Date,
+			completedAt,
 			log: logLines.join("\n"),
 			resultSummary:
 				execStatus === "success"
