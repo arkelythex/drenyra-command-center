@@ -13,7 +13,13 @@
 
 import { Elysia } from "elysia";
 import { fail, getErrorMessage, ok } from "../../shared/api-response";
-import type { DocumentClassificationInput } from "../application/services/intelligence.service";
+import type {
+	AnomalyDetectionInput,
+	CashflowAnalysisInput,
+	ComplianceCheckInput,
+	DocumentClassificationInput,
+	SupplierAnalysisInput,
+} from "../application/services/intelligence.service";
 import {
 	runAnomalyDetection,
 	runCashflowAnalysis,
@@ -49,7 +55,27 @@ export const intelligenceModule = new Elysia({ prefix: "/api/intelligence" })
 		"/anomalies/detect",
 		async ({ body, set }) => {
 			try {
-				const result = await runAnomalyDetection(body);
+				const input: AnomalyDetectionInput = {
+					...(body.transactions !== undefined
+						? { transactions: body.transactions }
+						: {}),
+					...(body.invoices !== undefined ? { invoices: body.invoices } : {}),
+					...(body.duplicateInvoices !== undefined
+						? {
+								duplicateInvoices: body.duplicateInvoices.map(
+									({ tipoNota, moneda, ...invoice }) => ({
+										...invoice,
+										...(tipoNota !== undefined ? { tipoNota } : {}),
+										...(moneda !== undefined ? { moneda } : {}),
+									}),
+								),
+							}
+						: {}),
+					...(body.minSeverity !== undefined
+						? { minSeverity: body.minSeverity }
+						: {}),
+				};
+				const result = await runAnomalyDetection(input);
 				return ok(result);
 			} catch (error: unknown) {
 				set.status = 500;
@@ -75,7 +101,38 @@ export const intelligenceModule = new Elysia({ prefix: "/api/intelligence" })
 		"/cashflow/analyze",
 		async ({ body, set }) => {
 			try {
-				const result = await runCashflowAnalysis(body);
+				const options =
+					body.options === undefined
+						? undefined
+						: {
+								...(body.options.zscoreThreshold !== undefined
+									? { zscoreThreshold: body.options.zscoreThreshold }
+									: {}),
+								...(body.options.detectTrendReversal !== undefined
+									? {
+											detectTrendReversal: body.options.detectTrendReversal,
+										}
+									: {}),
+								...(body.options.detectIncomeDrop !== undefined
+									? { detectIncomeDrop: body.options.detectIncomeDrop }
+									: {}),
+								...(body.options.detectExpenseSpike !== undefined
+									? { detectExpenseSpike: body.options.detectExpenseSpike }
+									: {}),
+								...(body.options.detectZscore !== undefined
+									? { detectZscore: body.options.detectZscore }
+									: {}),
+							};
+				const input: CashflowAnalysisInput = {
+					transactions: body.transactions.map(
+						({ description, ...transaction }) => ({
+							...transaction,
+							...(description !== undefined ? { description } : {}),
+						}),
+					),
+					...(options !== undefined ? { options } : {}),
+				};
+				const result = await runCashflowAnalysis(input);
 				return ok(result);
 			} catch (error: unknown) {
 				set.status = 500;
@@ -101,7 +158,39 @@ export const intelligenceModule = new Elysia({ prefix: "/api/intelligence" })
 		"/compliance/check",
 		async ({ body, set }) => {
 			try {
-				const result = await runComplianceCheck(body);
+				const input: ComplianceCheckInput = {
+					...(body.sireRecords !== undefined
+						? {
+								sireRecords: body.sireRecords.map(
+									({ receptorRuc, cdrDate, ...record }) => ({
+										...record,
+										...(receptorRuc !== undefined ? { receptorRuc } : {}),
+										...(cdrDate !== undefined ? { cdrDate } : {}),
+									}),
+								),
+							}
+						: {}),
+					...(body.detraccionInvoices !== undefined
+						? { detraccionInvoices: body.detraccionInvoices }
+						: {}),
+					...(body.taxObligations !== undefined
+						? {
+								taxObligations: {
+									tenantRuc: body.taxObligations.tenantRuc,
+									rucType: body.taxObligations.rucType,
+									taxRegime: body.taxObligations.taxRegime,
+									obligations: body.taxObligations.obligations.map(
+										({ amount, period, ...obligation }) => ({
+											...obligation,
+											...(amount !== undefined ? { amount } : {}),
+											...(period !== undefined ? { period } : {}),
+										}),
+									),
+								},
+							}
+						: {}),
+				};
+				const result = await runComplianceCheck(input);
 				return ok(result);
 			} catch (error: unknown) {
 				set.status = 500;
@@ -127,7 +216,14 @@ export const intelligenceModule = new Elysia({ prefix: "/api/intelligence" })
 		"/suppliers/analyze",
 		async ({ body, set }) => {
 			try {
-				const result = await runSupplierAnalysis(body);
+				const input: SupplierAnalysisInput = {
+					suppliers: body.suppliers.map(({ bankAccount, ...supplier }) => ({
+						...supplier,
+						...(bankAccount !== undefined ? { bankAccount } : {}),
+					})),
+					transactions: body.transactions,
+				};
+				const result = await runSupplierAnalysis(input);
 				return ok(result);
 			} catch (error: unknown) {
 				set.status = 500;
