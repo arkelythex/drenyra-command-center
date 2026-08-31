@@ -1,5 +1,5 @@
-import { resolveAuthenticatedCaller } from "./authenticated-caller";
 import type { UnifiedActor, UnifiedRole } from "@drenyra/security/rbac";
+import { resolveAuthenticatedCaller } from "./authenticated-caller";
 
 export const SESSION_SECURITY_PROFILE = {
 	DEFAULT: "default",
@@ -131,11 +131,17 @@ export async function resolveSessionContext(
 	const allowHeaderFallback = resolveAllowHeaderFallback(input, requireSession);
 	const caller = await resolveAuthenticatedCaller({
 		headers: input.headers,
-		requestedCompanyId: input.requestedCompanyId,
+		...(input.requestedCompanyId === undefined
+			? {}
+			: { requestedCompanyId: input.requestedCompanyId }),
 		requireSession,
 		allowHeaderFallback,
-		allowMachineCaller: input.allowMachineCaller,
-		machineCallerAllowlist: input.machineCallerAllowlist,
+		...(input.allowMachineCaller === undefined
+			? {}
+			: { allowMachineCaller: input.allowMachineCaller }),
+		...(input.machineCallerAllowlist === undefined
+			? {}
+			: { machineCallerAllowlist: input.machineCallerAllowlist }),
 		requireTenant: true,
 		requireRole: true,
 	});

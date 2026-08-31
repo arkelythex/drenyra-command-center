@@ -47,7 +47,7 @@ function resolveMachineCallerAllowlist(
 ): ReadonlySet<string> {
 	return new Set(
 		resolveTrustedMachineCallerAllowlist({
-			allowlist: inputAllowlist,
+			...(inputAllowlist === undefined ? {} : { allowlist: inputAllowlist }),
 			envVarName: "ARKELYTHEX_MACHINE_CALLER_ALLOWLIST",
 		}),
 	);
