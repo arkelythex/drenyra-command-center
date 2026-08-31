@@ -43,7 +43,7 @@ export interface DataEngineHealthCheckResult {
 	[key: string]: unknown;
 }
 
-export class DataEngineClient {
+export const DataEngineClient = {
 	/**
 	 * Check Data Engine health status.
 	 *
@@ -88,7 +88,7 @@ export class DataEngineClient {
 	 * });
 	 * ```
 	 */
-	static async healthCheck(): Promise<DataEngineHealthCheckResult> {
+	async healthCheck(): Promise<DataEngineHealthCheckResult> {
 		try {
 			const response = await fetch(`${DATA_ENGINE_URL}/health`, {
 				headers: {
@@ -99,13 +99,13 @@ export class DataEngineClient {
 		} catch (_error) {
 			return { status: "offline", error: "Data Engine unreachable" };
 		}
-	}
+	},
 
 	/**
 	 * Delegate SIRE analysis to the Data Engine microservice.
 	 * Uploads a CSV/Excel file for Polars (Rust-accelerated) processing.
 	 */
-	static async analyzeSire(file: File): Promise<Record<string, unknown>> {
+	async analyzeSire(file: File): Promise<Record<string, unknown>> {
 		try {
 			const formData = new FormData();
 			formData.append("file", file);
@@ -129,5 +129,5 @@ export class DataEngineClient {
 			logger.error({ error }, "Data Engine SIRE analysis failed");
 			throw error;
 		}
-	}
-}
+	},
+};
