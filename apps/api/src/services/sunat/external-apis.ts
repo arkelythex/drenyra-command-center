@@ -102,7 +102,7 @@ export async function validateRucWithAPI(
 export async function getExchangeRateFromAPI(
 	date?: string,
 ): Promise<ExchangeRateResult> {
-	const queryDate = date || new Date().toISOString().split("T")[0];
+	const queryDate = date || new Date().toISOString().slice(0, 10);
 	const cacheKey = `exchange_${queryDate}`;
 
 	// Check cache first

@@ -59,7 +59,7 @@ export async function getExchangeRate(
 
 		// Fallback to mock data
 		return {
-			date: date || new Date().toISOString().split("T")[0],
+			date: date || new Date().toISOString().slice(0, 10),
 			purchase: 3.75,
 			sale: 3.76,
 			source: "Fallback - API Error",

@@ -26,7 +26,9 @@ export type DrenyraFiscalWorkInspectReason =
 	| "CAPABILITY_DENIED"
 	| "WORK_ITEM_NOT_FOUND_OR_OUT_OF_SCOPE";
 
-export interface DrenyraFiscalWorkInspectScope extends Required<FiscalScope> {
+export interface DrenyraFiscalWorkInspectScope
+	extends Omit<Required<FiscalScope>, "organizationId"> {
+	organizationId: string;
 	actorId: string;
 }
 

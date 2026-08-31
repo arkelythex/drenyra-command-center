@@ -215,7 +215,7 @@ export class PostgresTransactionRepository implements TransactionRepository {
 				and(
 					eq(transactions.companyId, companyId),
 					eq(transactions.series, series),
-						eq(transactions.number, number),
+					eq(transactions.number, number),
 				),
 			)
 			.limit(1);
@@ -392,12 +392,12 @@ export class PostgresTransactionRepository implements TransactionRepository {
 			),
 			date: raw.issueDate,
 			description: raw.notes || referenceNumber || "Movimiento fiscal",
-			referenceNumber,
+			...(referenceNumber !== undefined ? { referenceNumber } : {}),
 			entries: buildSyntheticEntries(raw, totalAmount),
 			status: mapDbStatusToDomain(
 				raw.status as import("./types").DbTransactionStatus | null,
 			),
-			postedAt: raw.status === "ACCEPTED" ? raw.updatedAt : undefined,
+			...(raw.status === "ACCEPTED" ? { postedAt: raw.updatedAt } : {}),
 			createdAt: raw.createdAt,
 			updatedAt: raw.updatedAt,
 		});
