@@ -16,33 +16,35 @@ export * from "./country-pack";
 export * from "./entities";
 export * from "./errors";
 export * from "./events";
-// --- FEOS CORE (Financial Engineering OS) ---
-// Names shared with legacy modules are re-exported explicitly from FEOS so
-// the modern definitions win over `export *` ambiguity (TS2308).
-export * from "./feos";
-export {
-	ApprovalRequest,
+export type {
 	ApprovalRequestProps,
 	CompanyRef,
-	createPeriodRef,
-	DENSITY_MODE,
 	DensityMode,
 	DiffChange,
 	DiffStatus,
 	EvidenceItem,
 	FiscalPeriod,
 	OrganizationRef,
-	PANE_POSITION,
-	PANE_TYPE,
 	PaneConfig,
 	PanePosition,
 	PaneType,
 	PeriodRef,
 	PortfolioRef,
-	WORKSPACE_INTENT,
-	Workspace,
 	WorkspaceId,
 	WorkspaceIntent,
+} from "./feos";
+// --- FEOS CORE (Financial Engineering OS) ---
+// Names shared with legacy modules are re-exported explicitly from FEOS so
+// the modern definitions win over `export *` ambiguity (TS2308).
+export * from "./feos";
+export {
+	ApprovalRequest,
+	createPeriodRef,
+	DENSITY_MODE,
+	PANE_POSITION,
+	PANE_TYPE,
+	WORKSPACE_INTENT,
+	Workspace,
 } from "./feos";
 export * from "./fiscal";
 // --- FISCAL CONTRACTS (Cross-stack source of truth) ---
