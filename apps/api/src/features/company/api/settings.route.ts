@@ -13,7 +13,7 @@ const settingsBody = t.Object({
 	showAmountsInWords: t.Optional(t.Boolean()),
 });
 
-interface CompanySettingsAuthFailure {
+export interface CompanySettingsAuthFailure {
 	readonly error: string;
 	readonly code: string;
 }

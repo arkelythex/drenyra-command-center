@@ -1,7 +1,7 @@
 import { RUC } from "@drenyra/domain";
 import { openRouterChatJson } from "../../lib/llm/openrouter-client";
 
-type CheckStatus = "pass" | "warn" | "fail";
+export type CheckStatus = "pass" | "warn" | "fail";
 
 /**
  * PseComplianceInput interface.
@@ -34,7 +34,7 @@ export interface PseComplianceInput {
 	};
 }
 
-interface SubagentCheck {
+export interface SubagentCheck {
 	subagent: "igv-subagent" | "rce-subagent" | "pdt-subagent";
 	status: CheckStatus;
 	confidence: number;
@@ -42,7 +42,7 @@ interface SubagentCheck {
 	evidence: Record<string, unknown>;
 }
 
-interface AiAlert {
+export interface AiAlert {
 	level: "info" | "warning" | "critical";
 	message: string;
 	action: string;

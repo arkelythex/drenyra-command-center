@@ -6,7 +6,7 @@ interface InboxPhase {
 	evidenceCount: number;
 }
 
-interface InboxDashboardResponse {
+export interface InboxDashboardResponse {
 	companyName: string;
 	companyRuc: string;
 	period: string;

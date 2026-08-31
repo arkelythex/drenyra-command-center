@@ -7,7 +7,7 @@ interface UnlinkProviderInput {
 	providerId: string;
 }
 
-interface UnlinkProviderResult {
+export interface UnlinkProviderResult {
 	success: boolean;
 }
 
