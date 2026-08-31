@@ -4,6 +4,8 @@ import {
 	automationExecutions,
 	automationSteps,
 	automationWorkflows,
+	type TriggerType,
+	type WorkflowStatus,
 } from "@drenyra/persistence/schema/automation-studio.schema";
 import { db } from "../../lib/db";
 
@@ -40,7 +42,9 @@ export async function listCompanyAutomations(
 ): Promise<AutomationDTO[]> {
 	const conditions = [eq(automationWorkflows.companyId, companyId)];
 	if (status) {
-		conditions.push(eq(automationWorkflows.status, status as any));
+		// SAFETY: This is a read-only varchar comparison; invalid query values
+		// preserve the previous behavior by matching zero workflow rows.
+		conditions.push(eq(automationWorkflows.status, status as WorkflowStatus));
 	}
 
 	const workflows = await db
@@ -98,9 +102,7 @@ export async function listCompanyAutomations(
 			triggerConfig: wf.triggerConfig as Record<string, unknown>,
 			status: wf.status,
 			skills: skillNames,
-			autonomy:
-				(((wf as any).metadata as Record<string, unknown>)
-					?.autonomy as string) ?? "suggest",
+			autonomy: "suggest",
 			lastRunAt:
 				lastExec?.completedAt?.toISOString() ??
 				lastExec?.startedAt?.toISOString(),
@@ -137,7 +139,10 @@ export async function createWorkflow(
 			name: data.name,
 			description: data.description ?? null,
 			category: "other",
-			triggerType: data.triggerType as any,
+			// SAFETY: The API contract currently permits `manual` while the
+			// persistence type models historical stored trigger values only; the
+			// backing column is varchar and runtime behavior is unchanged.
+			triggerType: data.triggerType as TriggerType,
 			triggerConfig: data.triggerConfig,
 			status: "draft",
 			// autonomy stored in a dedicated column or triggerConfig when available
@@ -167,10 +172,13 @@ export async function createStep(
 	return step;
 }
 
-export async function updateWorkflowStatus(workflowId: string, status: string) {
+export async function updateWorkflowStatus(
+	workflowId: string,
+	status: WorkflowStatus,
+) {
 	const [wf] = await db
 		.update(automationWorkflows)
-		.set({ status: status as any, updatedAt: new Date() })
+		.set({ status, updatedAt: new Date() })
 		.where(eq(automationWorkflows.id, workflowId))
 		.returning();
 	return wf ?? null;
