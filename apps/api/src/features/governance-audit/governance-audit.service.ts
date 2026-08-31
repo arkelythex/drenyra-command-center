@@ -56,9 +56,9 @@ export interface GovernanceAuditRecord {
 	decision: GovernanceDecision;
 	action: string;
 	reason: string;
-	objective?: string;
-	hash?: string;
-	decisionId?: string;
+	objective?: string | null;
+	hash?: string | null;
+	decisionId?: string | null;
 	timestamp: string;
 	source: "sire_submissions" | "transactions.tags.electronicInvoicingTrail";
 }

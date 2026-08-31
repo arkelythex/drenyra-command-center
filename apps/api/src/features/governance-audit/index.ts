@@ -40,7 +40,13 @@ export const governanceAuditModule = new Elysia({
 			}
 
 			try {
-				const result = await GovernanceAuditService.listDecisions(query);
+				const result = await GovernanceAuditService.listDecisions({
+					companyId: query.companyId,
+					...(query.feature !== undefined ? { feature: query.feature } : {}),
+					...(query.decision !== undefined ? { decision: query.decision } : {}),
+					...(query.limit !== undefined ? { limit: query.limit } : {}),
+					...(query.offset !== undefined ? { offset: query.offset } : {}),
+				});
 				return ok({
 					...result,
 					access: access.context,
@@ -100,8 +106,12 @@ export const governanceAuditModule = new Elysia({
 					artifactType: body.event.artifactType,
 					traceId: body.event.traceId,
 					message: body.event.message,
-					nextStatus: body.event.nextStatus,
-					payload: body.event.payload,
+					...(body.event.nextStatus !== undefined
+						? { nextStatus: body.event.nextStatus }
+						: {}),
+					...(body.event.payload !== undefined
+						? { payload: body.event.payload }
+						: {}),
 					source: "workspace-artifact",
 					ipAddress: readHeader(
 						headers as Record<string, unknown>,
@@ -160,7 +170,16 @@ export const governanceAuditModule = new Elysia({
 			}
 
 			try {
-				const result = await ArtifactEventQueryService.list(query);
+				const result = await ArtifactEventQueryService.list({
+					companyId: query.companyId,
+					...(query.traceId !== undefined ? { traceId: query.traceId } : {}),
+					...(query.artifactType !== undefined
+						? { artifactType: query.artifactType }
+						: {}),
+					...(query.actionId !== undefined ? { actionId: query.actionId } : {}),
+					...(query.limit !== undefined ? { limit: query.limit } : {}),
+					...(query.offset !== undefined ? { offset: query.offset } : {}),
+				});
 				return ok({
 					...result,
 					access: access.context,
