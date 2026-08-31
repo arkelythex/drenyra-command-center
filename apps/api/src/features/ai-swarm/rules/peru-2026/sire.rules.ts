@@ -15,10 +15,10 @@ export const SIRE_RULES_2026: PeruRule2026[] = [
 		domain: "sire",
 		status: "active",
 		severity: "high",
-		summary: "SIRE opera con periodicidad mensual para RVIE y RCE.",
+		summary: "SIRE genera mensualmente las propuestas del RVIE y del RCE.",
 		effectiveFrom: "2026-01-01",
 		tags: ["rvie", "rce", "periodicidad"],
-		sources: [SOURCES_2026.sirePortal],
+		sources: [SOURCES_2026.sireInformationPage],
 	},
 	{
 		id: "SIRE-002",
@@ -26,10 +26,10 @@ export const SIRE_RULES_2026: PeruRule2026[] = [
 		status: "active",
 		severity: "high",
 		summary:
-			"Los PRICOS no exceptuados con ingresos >= 2,300 UIT inician SIRE obligatorio en periodo junio 2026.",
-		effectiveFrom: "2026-06-01",
+			"Los PRICOS no exceptuados con ingresos > 2,300 UIT inician SIRE obligatorio en el periodo octubre 2026.",
+		effectiveFrom: "2026-10-01",
 		tags: ["prico", "2300-uit", "obligatoriedad"],
-		sources: [SOURCES_2026.sireRs3922025],
+		sources: [SOURCES_2026.sireRs1252026],
 	},
 	{
 		id: "SIRE-003",
@@ -37,10 +37,10 @@ export const SIRE_RULES_2026: PeruRule2026[] = [
 		status: "active",
 		severity: "high",
 		summary:
-			"La clasificación PRICO aplicable se valida al 31 de enero de 2026 para determinar obligación.",
-		effectiveFrom: "2026-01-31",
+			"La obligación SIRE aplicable a los PRICOS se determina según la designación al 31/12/2024 y los ingresos netos del ejercicio 2024.",
+		effectiveFrom: "2026-01-01",
 		tags: ["prico", "clasificacion"],
-		sources: [SOURCES_2026.sireRs3922025],
+		sources: [SOURCES_2026.sireInformationPage],
 	},
 	{
 		id: "SIRE-004",
@@ -51,7 +51,7 @@ export const SIRE_RULES_2026: PeruRule2026[] = [
 			"La propuesta RVIE/RCE debe aceptarse, reemplazarse o complementarse antes del cierre mensual.",
 		effectiveFrom: "2026-01-01",
 		tags: ["propuesta", "cierre", "control-mensual"],
-		sources: [SOURCES_2026.sirePortal],
+		sources: [SOURCES_2026.sireInformationPage],
 	},
 	{
 		id: "SIRE-005",
@@ -92,10 +92,10 @@ export const SIRE_RULES_2026: PeruRule2026[] = [
 		status: "active",
 		severity: "high",
 		summary:
-			"Al aproximarse junio 2026, contribuyentes cercanos al umbral 2,300 UIT deben marcarse como riesgo de transición.",
-		effectiveFrom: "2026-02-01",
+			"Los PRICOS con ingresos > 2,300 UIT continúan con SLE-PLE o SLE-Portal, según corresponda, hasta septiembre de 2026 y transitan a SIRE desde octubre de 2026.",
+		effectiveFrom: "2026-10-01",
 		tags: ["transicion", "umbral", "riesgo"],
-		sources: [SOURCES_2026.sireRs3922025],
+		sources: [SOURCES_2026.sireRs1252026],
 	},
 	{
 		id: "SIRE-009",
