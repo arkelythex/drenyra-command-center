@@ -30,11 +30,11 @@ export interface AiToolPermissionUpdateInput {
  * const permissions = await AiToolPermissionService.list('cmp_123');
  * ```
  */
-export class AiToolPermissionService {
+export const AiToolPermissionService = {
 	/**
 	 * Creates a new AI tool permission.
 	 */
-	static async create(
+	async create(
 		data: AiToolPermissionCreateInput,
 	): Promise<AiToolPermissionRow> {
 		const values: NewAiToolPermission = {
@@ -54,36 +54,36 @@ export class AiToolPermissionService {
 		}
 
 		return newPermission;
-	}
+	},
 
 	/**
 	 * Lists AI tool permissions with optional company filter.
 	 */
-	static async list(companyId?: string): Promise<AiToolPermissionRow[]> {
+	async list(companyId?: string): Promise<AiToolPermissionRow[]> {
 		const whereClause = companyId
 			? eq(aiToolPermissions.companyId, companyId)
 			: undefined;
 
-		return await db.query.aiToolPermissions.findMany({
+		return db.query.aiToolPermissions.findMany({
 			where: whereClause,
 			orderBy: [desc(aiToolPermissions.createdAt)],
 		});
-	}
+	},
 
 	/**
 	 * Gets an AI tool permission by ID.
 	 */
-	static async getById(id: string): Promise<AiToolPermissionRow | null> {
+	async getById(id: string): Promise<AiToolPermissionRow | null> {
 		const row = await db.query.aiToolPermissions.findFirst({
 			where: eq(aiToolPermissions.id, id),
 		});
 		return row ?? null;
-	}
+	},
 
 	/**
 	 * Updates an AI tool permission.
 	 */
-	static async update(
+	async update(
 		id: string,
 		data: AiToolPermissionUpdateInput,
 	): Promise<AiToolPermissionRow> {
@@ -101,12 +101,12 @@ export class AiToolPermissionService {
 		}
 
 		return updatedPermission;
-	}
+	},
 
 	/**
 	 * Deletes an AI tool permission (hard delete).
 	 */
-	static async delete(id: string): Promise<AiToolPermissionRow> {
+	async delete(id: string): Promise<AiToolPermissionRow> {
 		const [deletedPermission] = await db
 			.delete(aiToolPermissions)
 			.where(eq(aiToolPermissions.id, id))
@@ -117,5 +117,5 @@ export class AiToolPermissionService {
 		}
 
 		return deletedPermission;
-	}
-}
+	},
+};
