@@ -63,9 +63,9 @@ export class CustomerRepository implements ICustomerRepository {
 						createdAt: now,
 					})
 					.returning();
-					if (partner === undefined) {
-						throw new Error("Failed to create customer partner");
-					}
+				if (partner === undefined) {
+					throw new Error("Failed to create customer partner");
+				}
 
 				const [profile] = await tx
 					.insert(customerProfiles)
@@ -303,7 +303,9 @@ export class CustomerRepository implements ICustomerRepository {
 			creditDays: profile.creditDays ?? 30,
 			customerSegment: normalizeSegment(profile.customerSegment),
 			paymentBehaviorScore: profile.paymentBehaviorScore ?? 100,
-			...(profile.lastPurchaseDate != null ? { lastPurchaseDate: profile.lastPurchaseDate } : {}),
+			...(profile.lastPurchaseDate != null
+				? { lastPurchaseDate: profile.lastPurchaseDate }
+				: {}),
 			totalPurchases: Number.isFinite(totalPurchases) ? totalPurchases : 0,
 			complianceScore: partner.complianceScore ?? 100,
 			sunatCondition: partner.sunatCondition ?? "HABIDO",

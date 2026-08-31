@@ -39,14 +39,16 @@ export interface GetCustomerInput {
  */
 export interface GetCustomerResult {
 	customer: Customer;
-	invoices?: Array<{
-		id: string;
-		invoiceNumber: string;
-		issueDate: Date;
-		dueDate: Date;
-		totalAmount: number;
-		status: string;
-	}> | undefined;
+	invoices?:
+		| Array<{
+				id: string;
+				invoiceNumber: string;
+				issueDate: Date;
+				dueDate: Date;
+				totalAmount: number;
+				status: string;
+		  }>
+		| undefined;
 }
 
 /**
