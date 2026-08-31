@@ -25,8 +25,7 @@ const mocks = vi.hoisted(() => {
 });
 
 vi.mock("../../../handlers/session-identity", () => ({
-	resolveSessionIdentityFromHeaders:
-		mocks.resolveSessionIdentity,
+	resolveSessionIdentityFromHeaders: mocks.resolveSessionIdentity,
 }));
 
 vi.mock("@drenyra/persistence/client", () => ({
@@ -38,7 +37,10 @@ vi.mock("@drenyra/persistence/client", () => ({
 
 vi.mock("@drenyra/persistence/query", () => {
 	const eqFn = vi.fn((col: unknown, val: unknown) => ({ col, val, _op: "eq" }));
-	const andFn = vi.fn((...conditions: unknown[]) => ({ conditions, _op: "and" }));
+	const andFn = vi.fn((...conditions: unknown[]) => ({
+		conditions,
+		_op: "and",
+	}));
 	return { eq: eqFn, and: andFn };
 });
 
@@ -97,8 +99,13 @@ function chainableSelectOnce(rows: unknown[]): void {
 			innerJoin: () => makeThenable() as unknown,
 			where: () => makeThenable() as unknown,
 		} as unknown as Promise<unknown[]> & Record<string, () => unknown>;
-		(result as unknown as { then: (r: (v: unknown) => void) => void }).then =
-			(resolve: (v: unknown) => void) => resolve(rows);
+		// biome-ignore lint/suspicious/noThenProperty: This mock intentionally implements a thenable query result.
+		Object.defineProperty(result, "then", {
+			value: (resolve: (v: unknown) => void) => resolve(rows),
+			enumerable: true,
+			writable: true,
+			configurable: true,
+		});
 		return result;
 	}
 
@@ -145,7 +152,10 @@ describe("createInvitation", () => {
 		});
 
 		const result = await createInvitation(
-			{ companyId: "company-1", body: { email: "test@firm.com", role: "ACCOUNTANT" } },
+			{
+				companyId: "company-1",
+				body: { email: "test@firm.com", role: "ACCOUNTANT" },
+			},
 			ctx(200),
 		);
 
@@ -171,7 +181,10 @@ describe("createInvitation", () => {
 		chainableSelectOnce([]);
 
 		const result = await createInvitation(
-			{ companyId: "company-1", body: { email: "test@firm.com", role: "ACCOUNTANT" } },
+			{
+				companyId: "company-1",
+				body: { email: "test@firm.com", role: "ACCOUNTANT" },
+			},
 			ctx(200),
 		);
 
@@ -197,7 +210,10 @@ describe("createInvitation", () => {
 		chainableSelectOnce([{ membershipRole: "OWNER" }]);
 
 		const result = await createInvitation(
-			{ companyId: "company-1", body: { email: "test@firm.com", role: "OWNER" } },
+			{
+				companyId: "company-1",
+				body: { email: "test@firm.com", role: "OWNER" },
+			},
 			ctx(200),
 		);
 
@@ -225,7 +241,10 @@ describe("createInvitation", () => {
 		chainableSelectOnce([{ email: "admin@firm.com" }]);
 
 		const result = await createInvitation(
-			{ companyId: "company-1", body: { email: "admin@firm.com", role: "ADMIN" } },
+			{
+				companyId: "company-1",
+				body: { email: "admin@firm.com", role: "ADMIN" },
+			},
 			ctx(200),
 		);
 
@@ -250,7 +269,10 @@ describe("createInvitation", () => {
 		chainableSelectOnce([{ membershipRole: "OWNER" }]);
 
 		const result = await createInvitation(
-			{ companyId: "company-1", body: { email: "test@firm.com", role: "SUPERHERO" } },
+			{
+				companyId: "company-1",
+				body: { email: "test@firm.com", role: "SUPERHERO" },
+			},
 			ctx(200),
 		);
 
@@ -280,7 +302,10 @@ describe("createInvitation", () => {
 		chainableSelectOnce([{ email: "existing@firm.com" }]);
 
 		const result = await createInvitation(
-			{ companyId: "company-1", body: { email: "existing@firm.com", role: "ACCOUNTANT" } },
+			{
+				companyId: "company-1",
+				body: { email: "existing@firm.com", role: "ACCOUNTANT" },
+			},
 			ctx(200),
 		);
 
@@ -330,7 +355,10 @@ describe("createInvitation", () => {
 		]);
 
 		const result = await createInvitation(
-			{ companyId: "company-1", body: { email: "colleague@firm.com", role: "ACCOUNTANT" } },
+			{
+				companyId: "company-1",
+				body: { email: "colleague@firm.com", role: "ACCOUNTANT" },
+			},
 			ctx(200),
 		);
 
@@ -378,7 +406,10 @@ describe("createInvitation", () => {
 		]);
 
 		const result = await createInvitation(
-			{ companyId: "company-1", body: { email: "  COLLEAGUE@Firm.COM  ", role: "ACCOUNTANT" } },
+			{
+				companyId: "company-1",
+				body: { email: "  COLLEAGUE@Firm.COM  ", role: "ACCOUNTANT" },
+			},
 			ctx(200),
 		);
 
@@ -426,7 +457,10 @@ describe("createInvitation", () => {
 		chainableSelectOnce([existingInvitation]);
 
 		const result = await createInvitation(
-			{ companyId: "company-1", body: { email: "colleague@firm.com", role: "ACCOUNTANT" } },
+			{
+				companyId: "company-1",
+				body: { email: "colleague@firm.com", role: "ACCOUNTANT" },
+			},
 			ctx(200),
 		);
 
@@ -456,7 +490,10 @@ describe("createInvitation", () => {
 		chainableSelectOnce([{ membershipRole: "ADMIN" }]);
 
 		const result = await createInvitation(
-			{ companyId: "company-1", body: { email: "test@firm.com", role: "OWNER" } },
+			{
+				companyId: "company-1",
+				body: { email: "test@firm.com", role: "OWNER" },
+			},
 			ctx(200),
 		);
 
@@ -477,7 +514,10 @@ describe("createInvitation", () => {
 		chainableSelectOnce([{ membershipRole: "OWNER" }]);
 
 		const result = await createInvitation(
-			{ companyId: "company-1", body: { email: "test@firm.com", role: "INVALID_ROLE" } },
+			{
+				companyId: "company-1",
+				body: { email: "test@firm.com", role: "INVALID_ROLE" },
+			},
 			ctx(200),
 		);
 

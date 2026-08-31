@@ -23,7 +23,10 @@ vi.mock("@drenyra/persistence/client", () => ({
 
 vi.mock("@drenyra/persistence/query", () => {
 	const eqFn = vi.fn((col: unknown, val: unknown) => ({ col, val, _op: "eq" }));
-	const andFn = vi.fn((...conditions: unknown[]) => ({ conditions, _op: "and" }));
+	const andFn = vi.fn((...conditions: unknown[]) => ({
+		conditions,
+		_op: "and",
+	}));
 	return { eq: eqFn, and: andFn };
 });
 
@@ -70,8 +73,17 @@ function chainableSelectOnce(rows: unknown[]): void {
 	const queryResult = {
 		limit: () => Promise.resolve(rows),
 		orderBy: () => Promise.resolve(rows),
-		then: (resolve: (v: unknown) => void) => resolve(rows),
-	} as Promise<unknown[]> & { limit: () => Promise<unknown[]>; orderBy: () => Promise<unknown[]> };
+	} as Promise<unknown[]> & {
+		limit: () => Promise<unknown[]>;
+		orderBy: () => Promise<unknown[]>;
+	};
+	// biome-ignore lint/suspicious/noThenProperty: This mock intentionally implements a thenable query result.
+	Object.defineProperty(queryResult, "then", {
+		value: (resolve: (v: unknown) => void) => resolve(rows),
+		enumerable: true,
+		writable: true,
+		configurable: true,
+	});
 	mocks.dbSelect.mockImplementationOnce(() => ({
 		from: () => ({
 			where: () => queryResult,
@@ -95,10 +107,7 @@ describe("listInvitations", () => {
 			authUserId: "",
 		} as never);
 
-		const result = await listInvitations(
-			{ companyId: "company-1" },
-			ctx(200),
-		);
+		const result = await listInvitations({ companyId: "company-1" }, ctx(200));
 
 		expect(result).toEqual({
 			success: false,
@@ -114,10 +123,7 @@ describe("listInvitations", () => {
 
 		chainableSelectOnce([]);
 
-		const result = await listInvitations(
-			{ companyId: "company-1" },
-			ctx(200),
-		);
+		const result = await listInvitations({ companyId: "company-1" }, ctx(200));
 
 		expect(result).toEqual({
 			success: false,
@@ -136,10 +142,7 @@ describe("listInvitations", () => {
 		// Invitations list
 		chainableSelectOnce([]);
 
-		const result = await listInvitations(
-			{ companyId: "company-1" },
-			ctx(200),
-		);
+		const result = await listInvitations({ companyId: "company-1" }, ctx(200));
 
 		expect(result).toEqual({
 			success: true,
@@ -181,10 +184,7 @@ describe("listInvitations", () => {
 
 		chainableSelectOnce(invitations);
 
-		const result = await listInvitations(
-			{ companyId: "company-1" },
-			ctx(200),
-		);
+		const result = await listInvitations({ companyId: "company-1" }, ctx(200));
 
 		expect(result).toMatchObject({
 			success: true,
@@ -220,10 +220,7 @@ describe("listInvitations", () => {
 
 		chainableSelectOnce([{ membershipRole: "VIEWER" }]);
 
-		const result = await listInvitations(
-			{ companyId: "company-1" },
-			ctx(200),
-		);
+		const result = await listInvitations({ companyId: "company-1" }, ctx(200));
 
 		expect(result.success).toBe(false);
 		expect(result.code).toBe("FORBIDDEN");
