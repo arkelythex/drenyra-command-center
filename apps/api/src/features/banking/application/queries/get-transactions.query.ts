@@ -15,9 +15,11 @@ export async function getTransactions(
 	input: GetTransactionsInput,
 ): Promise<BankTransactionRecord[]> {
 	const filters: TransactionFilters = {
-		startDate: input.startDate,
-		endDate: input.endDate,
-		isReconciled: input.isReconciled,
+		...(input.startDate !== undefined && { startDate: input.startDate }),
+		...(input.endDate !== undefined && { endDate: input.endDate }),
+		...(input.isReconciled !== undefined && {
+			isReconciled: input.isReconciled,
+		}),
 		limit: input.limit ?? 100,
 		offset: input.offset ?? 0,
 	};

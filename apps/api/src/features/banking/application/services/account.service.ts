@@ -44,17 +44,22 @@ export class AccountService {
 
 	async updateAccount(id: string, data: Partial<CreateAccountDTO>) {
 		const update: Partial<BankAccountRecord> = {
-			accountName: data.accountName,
-			accountNumber: data.accountNumber,
-			accountType: data.accountType,
-			bankName: data.bankName,
-			bankCode: data.bankCode ?? undefined,
-			branch: data.branch ?? undefined,
-			currency: data.currency ?? undefined,
-			currentBalance:
-				data.currentBalance !== undefined
-					? data.currentBalance.toString()
-					: undefined,
+			...(data.accountName !== undefined && {
+				accountName: data.accountName,
+			}),
+			...(data.accountNumber !== undefined && {
+				accountNumber: data.accountNumber,
+			}),
+			...(data.accountType !== undefined && {
+				accountType: data.accountType,
+			}),
+			...(data.bankName !== undefined && { bankName: data.bankName }),
+			...(data.bankCode !== undefined && { bankCode: data.bankCode }),
+			...(data.branch !== undefined && { branch: data.branch }),
+			...(data.currency !== undefined && { currency: data.currency }),
+			...(data.currentBalance !== undefined && {
+				currentBalance: data.currentBalance.toString(),
+			}),
 		};
 		await this.repository.updateAccount(id, update);
 	}
