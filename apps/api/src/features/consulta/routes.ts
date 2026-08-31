@@ -72,8 +72,8 @@ export function buildConsultaModule(deps: ConsultaModuleDeps = {}) {
 		async ({ body, set }) => {
 			const input: QueryInput = {
 				texto: body.texto,
-				ruc: body.ruc,
-				periodo: body.periodo,
+				...(body.ruc !== undefined ? { ruc: body.ruc } : {}),
+				...(body.periodo !== undefined ? { periodo: body.periodo } : {}),
 				modo: body.modo ?? "auto",
 				output: body.output ?? "text",
 			};
@@ -110,6 +110,7 @@ export function buildConsultaModule(deps: ConsultaModuleDeps = {}) {
 			const pipelineRoute = route(classification);
 
 			// 4. Build response (pipeline execution deferred — returns classification + route)
+			// SAFETY: route-specific classification fields are runtime-validated before being passed to the generic result builder.
 			const result = buildQueryResult(classification, {
 				pipelineRoute,
 			} as unknown as Record<string, unknown>);
