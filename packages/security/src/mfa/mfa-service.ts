@@ -8,13 +8,13 @@
  * @module mfa/mfa-service
  */
 
-import { generateTotpSecret, generateTotpUri, verifyTotp } from "./totp";
+import { MFA_FEATURE_FLAGS } from "./feature-flags";
 import {
 	generateRecoveryCodes,
 	hashRecoveryCode,
 	verifyRecoveryCode,
 } from "./recovery-codes";
-import { MFA_FEATURE_FLAGS } from "./feature-flags";
+import { generateTotpSecret, generateTotpUri, verifyTotp } from "./totp";
 
 /** User record subset needed for MFA operations. */
 export interface MfaUser {
