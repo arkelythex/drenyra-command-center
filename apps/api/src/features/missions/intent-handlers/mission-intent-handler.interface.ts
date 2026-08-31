@@ -6,9 +6,9 @@
  * and when the AccountingPR is fully approved.
  */
 export interface MissionIntentHandler {
-  /** Called when mission transitions QUEUED → RUNNING. */
-  onRunning(missionId: string, companyId: string): Promise<void>;
+	/** Called when mission transitions QUEUED → RUNNING. */
+	onRunning(missionId: string, companyId: string): Promise<void>;
 
-  /** Called when AccountingPR reaches POSTED (all signers approved). */
-  onApproved(missionId: string, companyId: string): Promise<void>;
+	/** Called when AccountingPR reaches POSTED (all signers approved). */
+	onApproved(missionId: string, companyId: string): Promise<void>;
 }
