@@ -2,6 +2,30 @@ import type { ThreadProps, ThreadStatus } from "./types";
 
 const PERIOD_PATTERN = /^\d{4}-(0[1-9]|1[0-2])$/;
 
+function assertValidTags(tags: unknown): void {
+	if (!tags) return;
+	if (!Array.isArray(tags)) {
+		throw new Error("Thread tags must be an array");
+	}
+	if (tags.length > 10) {
+		throw new Error("Thread tags must have at most 10 items");
+	}
+	for (const tag of tags) {
+		if (typeof tag !== "string" || tag.trim().length === 0) {
+			throw new Error("Each tag must be a non-empty string");
+		}
+		if (tag.length > 50) {
+			throw new Error("Each tag must be at most 50 characters");
+		}
+	}
+}
+
+function assertArray(value: unknown, message: string): void {
+	if (!Array.isArray(value)) {
+		throw new Error(message);
+	}
+}
+
 export function assertValidThreadProps(props: ThreadProps): void {
 	if (!props.id || typeof props.id !== "string") {
 		throw new Error("Thread id is required and must be a string");
@@ -29,34 +53,13 @@ export function assertValidThreadProps(props: ThreadProps): void {
 		);
 	}
 
-	if (props.tags) {
-		if (!Array.isArray(props.tags)) {
-			throw new Error("Thread tags must be an array");
-		}
-		if (props.tags.length > 10) {
-			throw new Error("Thread tags must have at most 10 items");
-		}
-		for (const tag of props.tags) {
-			if (typeof tag !== "string" || tag.trim().length === 0) {
-				throw new Error("Each tag must be a non-empty string");
-			}
-			if (tag.length > 50) {
-				throw new Error("Each tag must be at most 50 characters");
-			}
-		}
-	}
-
-	if (!Array.isArray(props.tasks)) {
-		throw new Error("Thread tasks must be an array");
-	}
-
-	if (!Array.isArray(props.agentAssignments)) {
-		throw new Error("Thread agentAssignments must be an array");
-	}
-
-	if (!Array.isArray(props.evidenceIds)) {
-		throw new Error("Thread evidenceIds must be an array");
-	}
+	assertValidTags(props.tags);
+	assertArray(props.tasks, "Thread tasks must be an array");
+	assertArray(
+		props.agentAssignments,
+		"Thread agentAssignments must be an array",
+	);
+	assertArray(props.evidenceIds, "Thread evidenceIds must be an array");
 }
 
 export function assertValidTransition(
