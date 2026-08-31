@@ -10,7 +10,7 @@ interface SocialProviderEnv {
 	clientSecret: string;
 }
 
-interface SocialProvidersConfig {
+export interface SocialProvidersConfig {
 	google?: SocialProviderEnv;
 	github?: SocialProviderEnv;
 }

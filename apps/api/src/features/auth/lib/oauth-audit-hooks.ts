@@ -1,7 +1,7 @@
 import { db } from "@drenyra/persistence/client";
 import { authAuditLogs } from "@drenyra/persistence/schema";
 
-interface AccountCreatedPayload {
+export interface AccountCreatedPayload {
 	id: string;
 	userId: string;
 	providerId: string;
