@@ -19,8 +19,8 @@
  * ```
  */
 
-import { Money } from "../value-objects/Money";
 import type { Currency } from "../types/currency";
+import { Money } from "../value-objects/Money";
 
 // ---------------------------------------------------------------------------
 // Types
