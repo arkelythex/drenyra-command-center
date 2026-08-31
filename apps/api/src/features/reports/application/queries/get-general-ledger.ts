@@ -64,15 +64,15 @@ export async function getGeneralLedger(
 
 	for (const inv of invoiceEntries) {
 		seq++;
-		const amount = parseFloat(inv.amount ?? "0");
+		const amount = parseFloat(inv.totalAmount ?? "0");
 		runningBalance += amount;
 
 		// Sales entry (credit)
 		entries.push({
-			date: inv.date.toISOString().slice(0, 10),
-			voucherNo: `INV-${inv.number}`,
+			date: inv.issueDate.toISOString().slice(0, 10),
+			voucherNo: `INV-${inv.invoiceNumber}`,
 			accountCode: accountCode ?? "701",
-			description: `FACTURA ${inv.number} - ${inv.customer?.legalName ?? ""}`,
+			description: `FACTURA ${inv.invoiceNumber} - ${inv.customer?.legalName ?? ""}`,
 			debit: "0.00",
 			credit: amount.toFixed(2),
 			balance: runningBalance.toFixed(2),
@@ -103,14 +103,14 @@ export async function getGeneralLedger(
 
 		for (const bill of billEntries) {
 			seq++;
-			const amount = parseFloat(bill.amount ?? "0");
+			const amount = parseFloat(bill.totalAmount ?? "0");
 			runningBalance -= amount;
 
 			entries.push({
-				date: bill.date.toISOString().slice(0, 10),
-				voucherNo: `BILL-${bill.number}`,
+				date: bill.issueDate.toISOString().slice(0, 10),
+				voucherNo: `BILL-${bill.billNumber}`,
 				accountCode: accountCode ?? "601",
-				description: `COMPRA ${bill.number} - ${bill.vendor?.legalName ?? ""}`,
+				description: `COMPRA ${bill.billNumber} - ${bill.vendor?.legalName ?? ""}`,
 				debit: amount.toFixed(2),
 				credit: "0.00",
 				balance: runningBalance.toFixed(2),
