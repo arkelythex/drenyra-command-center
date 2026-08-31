@@ -8,7 +8,10 @@
  * @module ai-swarm/config
  */
 
-import { createOpenRouter } from "@openrouter/ai-sdk-provider";
+import {
+	createOpenRouter,
+	type LanguageModelV4,
+} from "@openrouter/ai-sdk-provider";
 
 /**
  * OpenRouter API configuration
@@ -130,37 +133,37 @@ function getRetryAfterMs(response: Response): number | null {
 }
 
 const openrouterFetch: typeof fetch = Object.assign(
-	async (input, init) => {
-	const retryable = new Set([429, 500, 502, 503, 504]);
-	let attempt = 0;
+	async (input: RequestInfo | URL, init?: RequestInit) => {
+		const retryable = new Set([429, 500, 502, 503, 504]);
+		let attempt = 0;
 
-	// We do exponential backoff with jitter, respecting Retry-After when present.
-	while (true) {
-		const response = await fetch(input, init);
+		// We do exponential backoff with jitter, respecting Retry-After when present.
+		while (true) {
+			const response = await fetch(input, init);
 
-		if (
-			!retryable.has(response.status) ||
-			attempt >= RATE_LIMITS.retryAttempts
-		) {
-			return response;
+			if (
+				!retryable.has(response.status) ||
+				attempt >= RATE_LIMITS.retryAttempts
+			) {
+				return response;
+			}
+
+			// Free resources before retrying.
+			try {
+				await response.arrayBuffer();
+			} catch {
+				// Ignore.
+			}
+
+			const retryAfterMs = getRetryAfterMs(response);
+			const jitterMs = Math.floor(Math.random() * 250);
+			const backoffMs = RATE_LIMITS.retryDelay * 2 ** attempt + jitterMs;
+			const waitMs = Math.min(retryAfterMs ?? backoffMs, RATE_LIMITS.timeoutMs);
+
+			attempt += 1;
+			await sleep(waitMs);
 		}
-
-		// Free resources before retrying.
-		try {
-			await response.arrayBuffer();
-		} catch {
-			// Ignore.
-		}
-
-		const retryAfterMs = getRetryAfterMs(response);
-		const jitterMs = Math.floor(Math.random() * 250);
-		const backoffMs = RATE_LIMITS.retryDelay * 2 ** attempt + jitterMs;
-		const waitMs = Math.min(retryAfterMs ?? backoffMs, RATE_LIMITS.timeoutMs);
-
-		attempt += 1;
-		await sleep(waitMs);
-	}
-},
+	},
 	{ preconnect: fetch.preconnect },
 );
 
@@ -194,7 +197,8 @@ const openrouterProvider = createOpenRouter({
  * console.log(result);
  * ```
  */
-export const openrouter = (modelId: string) => openrouterProvider(modelId);
+export const openrouter = (modelId: string): LanguageModelV4 =>
+	openrouterProvider(modelId);
 
 /**
  * Get model for specific agent type
