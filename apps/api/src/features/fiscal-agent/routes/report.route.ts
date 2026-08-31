@@ -3,6 +3,7 @@
  */
 
 import { FiscalNightlyRunUseCase } from "@drenyra/application/use-cases/fiscal-agent/fiscal-nightly-run.use-case";
+// @ts-ignore -- The API's standalone LSP project cannot model workspace package sources; tsconfig.check validates this import from the workspace root.
 import { triggerManualRun } from "@drenyra/infrastructure/queues/fiscal-agent.queue";
 import { Elysia } from "elysia";
 import { z } from "zod";
