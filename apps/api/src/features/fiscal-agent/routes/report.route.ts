@@ -14,7 +14,13 @@ export const fiscalAgentReportRoute = new Elysia()
 	.post(
 		"/fiscal-agent/run",
 		async ({ body }) => {
-			const report = await useCase.execute(body);
+			const report = await useCase.execute({
+				organizationId: body.organizationId,
+				companyId: body.companyId,
+				period: body.period,
+				countryCode: body.countryCode,
+				...(body.userId !== undefined ? { userId: body.userId } : {}),
+			});
 			return ok(report);
 		},
 		{
