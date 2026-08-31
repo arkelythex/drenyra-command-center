@@ -7,6 +7,6 @@
  * - Secrets: provider abstraction, env-var implementation, validation
  */
 
-export * from "./rbac";
 export * from "./mfa";
+export * from "./rbac";
 export * from "./secrets";
