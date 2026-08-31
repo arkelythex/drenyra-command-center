@@ -100,9 +100,35 @@ export const inventoryModule = new Elysia({ prefix: "/api/inventory" })
 			}
 
 			try {
+				const movement = parsedBody.data;
 				const data = await InventoryService.recordMovement(
 					companyContext?.companyId,
-					parsedBody.data,
+					{
+						productId: movement.productId,
+						type: movement.type,
+						quantity: movement.quantity,
+						...(movement.warehouseId !== undefined && {
+							warehouseId: movement.warehouseId,
+						}),
+						...(movement.unitCost !== undefined && {
+							unitCost: movement.unitCost,
+						}),
+						...(movement.reference !== undefined && {
+							reference: movement.reference,
+						}),
+						...(movement.referenceId !== undefined && {
+							referenceId: movement.referenceId,
+						}),
+						...(movement.referenceNumber !== undefined && {
+							referenceNumber: movement.referenceNumber,
+						}),
+						...(movement.notes !== undefined && {
+							notes: movement.notes,
+						}),
+						...(movement.reason !== undefined && {
+							reason: movement.reason,
+						}),
+					},
 				);
 				const contract = InventoryMovementResponseSchema.safeParse(data);
 				if (!contract.success) {
@@ -220,9 +246,21 @@ export const inventoryModule = new Elysia({ prefix: "/api/inventory" })
 			}
 
 			try {
+				const warehouse = parsedBody.data;
 				const data = await InventoryService.createWarehouse(
 					companyContext?.companyId,
-					parsedBody.data,
+					{
+						name: warehouse.name,
+						...(warehouse.address !== undefined && {
+							address: warehouse.address,
+						}),
+						...(warehouse.isDefault !== undefined && {
+							isDefault: warehouse.isDefault,
+						}),
+						...(warehouse.description !== undefined && {
+							description: warehouse.description,
+						}),
+					},
 				);
 				const contract = WarehouseResponseSchema.safeParse(data);
 				if (!contract.success) {

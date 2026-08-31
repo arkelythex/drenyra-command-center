@@ -89,8 +89,13 @@ function parseScaledDecimal(value: string | number | null | undefined): bigint {
 		throw new Error(`Invalid decimal value: ${String(value)}`);
 	}
 
+	const wholeRaw = match[2];
+	if (wholeRaw === undefined) {
+		throw new Error(`Invalid decimal value: ${String(value)}`);
+	}
+
 	const sign = match[1] === "-" ? -1n : 1n;
-	const whole = BigInt(match[2]);
+	const whole = BigInt(wholeRaw);
 	const fractionRaw = match[3] ?? "";
 
 	if (fractionRaw.length > SCALE) {
