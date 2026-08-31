@@ -1,8 +1,11 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
+type AuditInsertResult = { returning: () => unknown };
 const { dbInsert, dbValues } = vi.hoisted(() => {
 	const insert = vi.fn();
-	const values = vi.fn(() => ({ returning: vi.fn() }));
+	const values = vi.fn<(input: Record<string, unknown>) => AuditInsertResult>(
+		() => ({ returning: vi.fn() }),
+	);
 	insert.mockReturnValue({ values });
 	return { dbInsert: insert, dbValues: values };
 });
@@ -35,7 +38,7 @@ describe("oauthAuditHooks", () => {
 
 			expect(dbInsert).toHaveBeenCalled();
 			const valuesArg = dbValues.mock.calls[0]?.[0];
-			expect(valuesArg).toBeDefined();
+			if (!valuesArg) throw new Error("Expected audit values");
 			expect(valuesArg.userId).toBe("user-1");
 			expect(valuesArg.action).toBe("login_oauth");
 			expect(valuesArg.details).toEqual({ providerId: "google" });
@@ -56,6 +59,7 @@ describe("oauthAuditHooks", () => {
 			await hook(account);
 
 			const valuesArg = dbValues.mock.calls[0]?.[0];
+			if (!valuesArg) throw new Error("Expected audit values");
 			expect(valuesArg.action).toBe("login_oauth");
 			expect(valuesArg.details).toEqual({ providerId: "github" });
 		});

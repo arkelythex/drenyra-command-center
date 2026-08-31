@@ -1,15 +1,24 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { dbSelect, dbFrom, dbWhere, dbDelete, dbUpdate, dbSet } = vi.hoisted(() => {
-	const select = vi.fn();
-	const from = vi.fn(() => ({ where: vi.fn() }));
-	const where = vi.fn();
-	const del = vi.fn(() => ({ where: vi.fn() }));
-	const update = vi.fn(() => ({ set: vi.fn() }));
-	const set = vi.fn(() => ({ where: vi.fn() }));
-	select.mockReturnValue({ from });
-	return { dbSelect: select, dbFrom: from, dbWhere: where, dbDelete: del, dbUpdate: update, dbSet: set };
-});
+const { dbSelect, dbFrom, dbWhere, dbDelete, dbUpdate, dbSet } = vi.hoisted(
+	() => {
+		const select = vi.fn();
+		const from = vi.fn(() => ({ where: vi.fn() }));
+		const where = vi.fn();
+		const del = vi.fn(() => ({ where: vi.fn() }));
+		const update = vi.fn(() => ({ set: vi.fn() }));
+		const set = vi.fn(() => ({ where: vi.fn() }));
+		select.mockReturnValue({ from });
+		return {
+			dbSelect: select,
+			dbFrom: from,
+			dbWhere: where,
+			dbDelete: del,
+			dbUpdate: update,
+			dbSet: set,
+		};
+	},
+);
 
 vi.mock("@drenyra/persistence/client", () => ({
 	db: {
