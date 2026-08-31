@@ -53,10 +53,12 @@ export const customerObjectRoutes = new Elysia()
 				const result = await queryHandler.execute({
 					id: params.id,
 					companyId,
-					includeInvoices: query.includeInvoices,
-					invoiceLimit: query.invoiceLimit
-						? Number(query.invoiceLimit)
-						: undefined,
+					...(query.includeInvoices !== undefined
+						? { includeInvoices: query.includeInvoices }
+						: {}),
+					...(query.invoiceLimit !== undefined
+						? { invoiceLimit: Number(query.invoiceLimit) }
+						: {}),
 				});
 
 				return ok({
@@ -100,7 +102,22 @@ Returns a single customer with optional invoice history.
 				const customer = await command.execute({
 					id: params.id,
 					companyId,
-					...body,
+					...(body.taxId !== undefined ? { taxId: body.taxId } : {}),
+					...(body.legalName !== undefined
+						? { legalName: body.legalName }
+						: {}),
+					...(body.email !== undefined ? { email: body.email } : {}),
+					...(body.address !== undefined ? { address: body.address } : {}),
+					...(body.phone !== undefined ? { phone: body.phone } : {}),
+					...(body.creditLimit !== undefined
+						? { creditLimit: body.creditLimit }
+						: {}),
+					...(body.creditDays !== undefined
+						? { creditDays: body.creditDays }
+						: {}),
+					...(body.customerSegment !== undefined
+						? { customerSegment: body.customerSegment }
+						: {}),
 				});
 
 				return ok(customer.toJSON());

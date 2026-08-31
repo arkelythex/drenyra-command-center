@@ -33,7 +33,23 @@ export const customerRoutes = new Elysia({ prefix: "/api/customers" })
 		"/",
 		async ({ body }) => {
 			const command = new CreateCustomerCommand();
-			const customer = await command.execute(body);
+			const customer = await command.execute({
+				companyId: body.companyId,
+				taxId: body.taxId,
+				legalName: body.legalName,
+				...(body.email !== undefined ? { email: body.email } : {}),
+				...(body.address !== undefined ? { address: body.address } : {}),
+				...(body.phone !== undefined ? { phone: body.phone } : {}),
+				...(body.creditLimit !== undefined
+					? { creditLimit: body.creditLimit }
+					: {}),
+				...(body.creditDays !== undefined
+					? { creditDays: body.creditDays }
+					: {}),
+				...(body.customerSegment !== undefined
+					? { customerSegment: body.customerSegment }
+					: {}),
+			});
 
 			return ok(customer.toJSON());
 		},
@@ -85,12 +101,13 @@ Creates a new customer with RUC validation (SUNAT Módulo 11).
 			const queryHandler = new ListCustomersQuery();
 			const customers = await queryHandler.execute({
 				companyId: query.companyId,
-				includeInactive: query.includeInactive,
-				minPaymentScore:
-					query.minPaymentScore !== undefined
-						? Number(query.minPaymentScore)
-						: undefined,
-				segment: query.segment,
+				...(query.includeInactive !== undefined
+					? { includeInactive: query.includeInactive }
+					: {}),
+				...(query.minPaymentScore !== undefined
+					? { minPaymentScore: Number(query.minPaymentScore) }
+					: {}),
+				...(query.segment !== undefined ? { segment: query.segment } : {}),
 			});
 
 			return ok(customers.map((c) => c.toJSON()));
