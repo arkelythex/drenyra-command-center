@@ -9,7 +9,7 @@
  */
 
 import { randomBytes } from "node:crypto";
-import { hash as bcryptHash, compare as bcryptCompare } from "bcryptjs";
+import { compare as bcryptCompare, hash as bcryptHash } from "bcryptjs";
 
 const RECOVERY_CODE_COUNT = 8;
 const RECOVERY_CODE_LENGTH = 10;
