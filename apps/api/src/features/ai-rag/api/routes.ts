@@ -174,10 +174,10 @@ export const aiRagRoutes = new Elysia({ name: "ai-rag-routes" })
 				const results = await sunatKnowledgeService.hybridSearch(
 					{
 						query,
-												...(filters?.documentTypes !== undefined
+						...(filters?.documentTypes !== undefined
 							? {
-								categories: filters.documentTypes as unknown as
-									| (
+									// SAFETY: The downstream adapter exposes a finite category union, while this public schema currently accepts string values; preserve the validated request values at this typed boundary.
+									categories: filters.documentTypes as unknown as (
 										| "igv"
 										| "detraccion"
 										| "sire"
@@ -218,14 +218,16 @@ export const aiRagRoutes = new Elysia({ name: "ai-rag-routes" })
 						denseScore: r.scores?.denseScore ?? 0,
 						hybridScore: r.scores?.hybridScore ?? 0,
 						...(r.scores?.rerankScore !== undefined
-						? { rerankScore: r.scores.rerankScore }
-						: {}),
+							? { rerankScore: r.scores.rerankScore }
+							: {}),
 						finalScore: r.scores?.finalScore ?? 0,
 					},
 					citation: {
 						text: `${r.source}${r.section ? ` - ${r.section}` : ""}`,
 						reference: r.source,
-						...(r.section !== undefined && r.section !== null ? { section: r.section } : {}),
+						...(r.section !== undefined && r.section !== null
+							? { section: r.section }
+							: {}),
 						chunkId: r.id,
 					},
 				}));
@@ -411,7 +413,9 @@ Responde basándote únicamente en el contexto proporcionado.`,
 					citation: {
 						text: `${r.source}${r.section ? ` - ${r.section}` : ""}`,
 						reference: r.source,
-						...(r.section !== undefined && r.section !== null ? { section: r.section } : {}),
+						...(r.section !== undefined && r.section !== null
+							? { section: r.section }
+							: {}),
 						chunkId: r.id,
 					},
 				}));
