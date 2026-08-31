@@ -73,6 +73,7 @@ export async function recordCommandEnvelopeCapability(
 	context: DrenyraActorContext,
 	input: CapabilityAuditInput,
 ): Promise<void> {
+	// SAFETY: the command-center service is intentionally adapted to this optional capability recorder contract.
 	const recorder = commandCenter as unknown as CapabilityDecisionRecorder;
 	if (typeof recorder.recordCapabilityDecision === "function") {
 		await recorder.recordCapabilityDecision(context, {
@@ -86,6 +87,7 @@ export async function recordCommandEnvelopeCapability(
 		});
 		return;
 	}
+	// SAFETY: the command-center service may expose its repository through this legacy-compatible structural contract.
 	const repository = (commandCenter as unknown as RepositoryOwner).repository;
 	if (!repository)
 		throw new Error("DRENYRA_COMMAND_AUDIT_REPOSITORY_UNAVAILABLE");
@@ -97,10 +99,12 @@ export async function listCommandEnvelopeAuditEvents(
 	context: DrenyraActorContext,
 	filter: DrenyraAuditEventFilter = {},
 ): Promise<AuditEvent[]> {
+	// SAFETY: the command-center service is intentionally adapted to this optional command-audit reader contract.
 	const reader = commandCenter as unknown as CommandAuditReader;
 	if (typeof reader.listCommandAuditEvents === "function") {
 		return reader.listCommandAuditEvents(context, filter);
 	}
+	// SAFETY: the command-center service may expose its repository through this legacy-compatible structural contract.
 	const repository = (commandCenter as unknown as RepositoryOwner).repository;
 	if (!repository)
 		throw new Error("DRENYRA_COMMAND_AUDIT_REPOSITORY_UNAVAILABLE");
