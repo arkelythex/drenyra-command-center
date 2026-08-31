@@ -76,14 +76,14 @@ export function isValidLayout(value: unknown): value is WorkspaceLayout {
 
 	const candidate = value as Record<string, unknown>;
 
-	if (!Array.isArray(candidate["panes"])) return false;
-	for (const pane of candidate["panes"]) {
+	if (!Array.isArray(candidate.panes)) return false;
+	for (const pane of candidate.panes) {
 		if (!validatePaneConfig(pane)) return false;
 	}
 
-	if (typeof candidate["sidebarCollapsed"] !== "boolean") return false;
-	if (typeof candidate["rightPanelOpen"] !== "boolean") return false;
-	if (!VALID_DENSITY_MODES.has(candidate["densityMode"] as string)) return false;
+	if (typeof candidate.sidebarCollapsed !== "boolean") return false;
+	if (typeof candidate.rightPanelOpen !== "boolean") return false;
+	if (!VALID_DENSITY_MODES.has(candidate.densityMode as string)) return false;
 
 	return true;
 }
