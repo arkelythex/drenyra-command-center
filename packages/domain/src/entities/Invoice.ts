@@ -231,6 +231,27 @@ export interface InvoicePrimitiveData {
 	updatedAt?: string | Date;
 }
 
+function resolveBuyerTaxId(
+	data: InvoicePrimitiveData,
+): TaxIdentifier | undefined {
+	if (data.buyerTaxId && data.buyerTaxType) {
+		if (data.buyerTaxType === "RUC") {
+			return RUC.create(data.buyerTaxId);
+		}
+		if (data.buyerTaxType === "DNI") {
+			return DNI.create(data.buyerTaxId);
+		}
+		return undefined;
+	}
+	if (data.clientRUC) {
+		return RUC.create(data.clientRUC);
+	}
+	if (data.clientDNI) {
+		return DNI.create(data.clientDNI);
+	}
+	return undefined;
+}
+
 /**
  * Clase que representa una Factura y encapsula su lógica de negocio.
  *
@@ -265,18 +286,7 @@ export class Invoice {
 		const currency = plainData.currency as Currency;
 
 		// Resolve buyer tax ID: prefer buyerTaxId, fall back to clientRUC/clientDNI
-		let buyerTaxId: TaxIdentifier | undefined;
-		if (plainData.buyerTaxId && plainData.buyerTaxType) {
-			if (plainData.buyerTaxType === "RUC") {
-				buyerTaxId = RUC.create(plainData.buyerTaxId);
-			} else if (plainData.buyerTaxType === "DNI") {
-				buyerTaxId = DNI.create(plainData.buyerTaxId);
-			}
-		} else if (plainData.clientRUC) {
-			buyerTaxId = RUC.create(plainData.clientRUC);
-		} else if (plainData.clientDNI) {
-			buyerTaxId = DNI.create(plainData.clientDNI);
-		}
+		const buyerTaxId = resolveBuyerTaxId(plainData);
 
 		const props: InvoiceProps = {
 			id: plainData.id,
