@@ -19,8 +19,10 @@ export const ledgerExportRoutes = new Elysia({ prefix: "/api/ledger/export" })
 				}
 				const result = await exportGeneralLedgerPdf({
 					companyId: companyContext.companyId,
-					startDate: body.startDate,
-					endDate: body.endDate,
+					...(body.startDate !== undefined
+						? { startDate: body.startDate }
+						: {}),
+					...(body.endDate !== undefined ? { endDate: body.endDate } : {}),
 				});
 				if (!result.ok) {
 					set.status = result.status;
@@ -54,8 +56,10 @@ export const ledgerExportRoutes = new Elysia({ prefix: "/api/ledger/export" })
 				}
 				const result = await exportGeneralLedgerXlsx({
 					companyId: companyContext.companyId,
-					startDate: body.startDate,
-					endDate: body.endDate,
+					...(body.startDate !== undefined
+						? { startDate: body.startDate }
+						: {}),
+					...(body.endDate !== undefined ? { endDate: body.endDate } : {}),
 				});
 				if (!result.ok) {
 					set.status = result.status;

@@ -180,7 +180,12 @@ export const ledgerMvpModule = new Elysia({ prefix: "/api/ledger-mvp" })
 
 			try {
 				const result = await ledgerMvpService.runSireAutopilot({
-					...parsed.data,
+					companyId: parsed.data.companyId,
+					period: parsed.data.period,
+					ruc: parsed.data.ruc,
+					razonSocial: parsed.data.razonSocial,
+					percepcionesCents: parsed.data.percepcionesCents,
+					retencionesCents: parsed.data.retencionesCents,
 					...(parsed.data.totalTolerance !== undefined
 						? { totalTolerance: parsed.data.totalTolerance }
 						: {}),
@@ -384,7 +389,11 @@ export const ledgerMvpModule = new Elysia({ prefix: "/api/ledger-mvp" })
 
 			try {
 				const result = await ledgerMvpService.runMonitorFiscal({
-					...parsed.data,
+					companyId: parsed.data.companyId,
+					period: parsed.data.period,
+					ruc: parsed.data.ruc,
+					ple: parsed.data.ple,
+					pdt: parsed.data.pdt,
 					...(parsed.data.sire !== undefined
 						? {
 								sire: {
