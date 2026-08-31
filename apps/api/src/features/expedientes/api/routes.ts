@@ -32,8 +32,8 @@ export const expedienteRoutes = new Elysia({ prefix: "/api/expedientes" })
 					companyId: companyContext?.companyId,
 					companyRuc,
 					organizationId,
-					period: query.periodo,
-					kind: query.kind,
+					...(query.periodo !== undefined ? { period: query.periodo } : {}),
+					...(query.kind !== undefined ? { kind: query.kind } : {}),
 				});
 
 				return ok(expedientes);
@@ -127,7 +127,9 @@ export const expedienteRoutes = new Elysia({ prefix: "/api/expedientes" })
 					periodo: body.periodo,
 					kind: body.kind,
 					titulo: body.titulo,
-					descripcion: body.descripcion,
+					...(body.descripcion !== undefined
+						? { descripcion: body.descripcion }
+						: {}),
 				});
 				set.status = 201;
 				return ok(expediente);

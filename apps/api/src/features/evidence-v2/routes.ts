@@ -22,6 +22,7 @@ function handleError(error: unknown, set: { status: number }) {
 }
 
 function s(set: { status?: number | string }): { status: number } {
+	// SAFETY: route handlers assign numeric HTTP status codes through this adapter.
 	return set as unknown as { status: number };
 }
 
@@ -37,14 +38,16 @@ export const evidenceV2Routes = new Elysia({
 		async ({ query, set }) => {
 			try {
 				const result = await service.searchEvidence({
-					companyId: query.companyId,
-					type: query.type,
-					source: query.source,
-					status: query.status,
-					period: query.period,
-					q: query.q,
-					limit: query.limit,
-					offset: query.offset,
+					...(query.companyId !== undefined
+						? { companyId: query.companyId }
+						: {}),
+					...(query.type !== undefined ? { type: query.type } : {}),
+					...(query.source !== undefined ? { source: query.source } : {}),
+					...(query.status !== undefined ? { status: query.status } : {}),
+					...(query.period !== undefined ? { period: query.period } : {}),
+					...(query.q !== undefined ? { q: query.q } : {}),
+					...(query.limit !== undefined ? { limit: query.limit } : {}),
+					...(query.offset !== undefined ? { offset: query.offset } : {}),
 				});
 				return ok(result);
 			} catch (error) {
