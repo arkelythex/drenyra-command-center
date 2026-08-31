@@ -16,7 +16,7 @@ import {
 } from "./automations.schemas";
 import * as automationsService from "./automations.service";
 
-function handleError(error: unknown, set: { status: number }) {
+function handleError(error: unknown, set: { status?: number | string }) {
 	if (error instanceof AppError) {
 		set.status = error.statusCode;
 		return fail(error.message, error.errorCode);
@@ -47,7 +47,7 @@ export const automationsRoutes = new Elysia({
 				);
 				return ok({ data });
 			} catch (error) {
-				return handleError(error, s(set));
+				return handleError(error, set);
 			}
 		},
 		{
@@ -78,7 +78,7 @@ export const automationsRoutes = new Elysia({
 				}
 				return ok({ ...wf, executionLogs: logs });
 			} catch (error) {
-				return handleError(error, s(set));
+				return handleError(error, set);
 			}
 		},
 		{
@@ -104,7 +104,9 @@ export const automationsRoutes = new Elysia({
 				// Create workflow
 				const wf = await automationsService.createWorkflow(companyId, {
 					name: body.name,
-					...(body.description !== undefined ? { description: body.description } : {}),
+					...(body.description !== undefined
+						? { description: body.description }
+						: {}),
 					triggerType: body.triggerType,
 					triggerConfig: body.triggerConfig,
 					autonomy: body.autonomy,
@@ -125,7 +127,7 @@ export const automationsRoutes = new Elysia({
 				set.status = 201;
 				return ok({ id: wf.id, name: wf.name });
 			} catch (error) {
-				return handleError(error, s(set));
+				return handleError(error, set);
 			}
 		},
 		{
@@ -153,7 +155,7 @@ export const automationsRoutes = new Elysia({
 
 				return ok({ id: params.id, updated: true });
 			} catch (error) {
-				return handleError(error, s(set));
+				return handleError(error, set);
 			}
 		},
 		{
@@ -187,7 +189,7 @@ export const automationsRoutes = new Elysia({
 					active: wf.status === "active",
 				});
 			} catch (error) {
-				return handleError(error, s(set));
+				return handleError(error, set);
 			}
 		},
 		{
@@ -212,7 +214,7 @@ export const automationsRoutes = new Elysia({
 				);
 				return ok({ data: logs });
 			} catch (error) {
-				return handleError(error, s(set));
+				return handleError(error, set);
 			}
 		},
 		{
@@ -246,7 +248,7 @@ export const automationsRoutes = new Elysia({
 				set.status = 202;
 				return ok({ executionId: exec.id });
 			} catch (error) {
-				return handleError(error, s(set));
+				return handleError(error, set);
 			}
 		},
 		{
@@ -257,7 +259,3 @@ export const automationsRoutes = new Elysia({
 			},
 		},
 	);
-
-function s(set: { status?: number | string }): { status: number } {
-	return set as unknown as { status: number };
-}
