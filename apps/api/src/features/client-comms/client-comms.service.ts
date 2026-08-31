@@ -37,7 +37,10 @@ export function getMissingVariables(
 	const usedInBody = new Set<string>();
 	let match: RegExpExecArray | null;
 	const re = new RegExp(VARIABLE_RE.source);
-	while ((match = re.exec(template)) !== null) {
+	while (true) {
+		match = re.exec(template);
+		if (match === null) break;
+
 		const variableName = match[1];
 		if (variableName) usedInBody.add(variableName);
 	}
