@@ -128,7 +128,9 @@ const CLOUDFLARE_IP_RANGES = [
  */
 function isIpInCidr(ip: string, cidr: string): boolean {
 	// Simplified check - for production use ip-cidr npm package
-	return ip.startsWith((cidr.split("/")[0] ?? "").split(".").slice(0, 2).join("."));
+	return ip.startsWith(
+		(cidr.split("/")[0] ?? "").split(".").slice(0, 2).join("."),
+	);
 }
 
 /**
