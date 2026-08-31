@@ -57,9 +57,11 @@ export function enqueueSwarmAuditLog(
 	void logAgentDecision({
 		organizationId: input.organizationId,
 		agentName: input.agentName,
-		agentVersion: input.agentVersion,
+		...(input.agentVersion !== undefined && {
+			agentVersion: input.agentVersion,
+		}),
 		decisionType: input.decisionType,
-		reasoning: input.reasoning,
+		...(input.reasoning !== undefined && { reasoning: input.reasoning }),
 		inputs: sanitizeAiObservationPayload(input.inputs) as Record<
 			string,
 			unknown
@@ -68,7 +70,7 @@ export function enqueueSwarmAuditLog(
 			string,
 			unknown
 		>,
-		pluginIds: input.pluginIds,
+		...(input.pluginIds !== undefined && { pluginIds: input.pluginIds }),
 	}).catch((error) => {
 		logger.error(
 			{
