@@ -65,7 +65,9 @@ export const knowledgeRetrievalSkill: Skill<KnowledgeRetrievalInput> = {
 		if (input.corpusId) {
 			return sunatKnowledgeService.buildDocumentaryContext({
 				query: input.query,
-				categories: input.categories,
+				...(input.categories === undefined
+					? {}
+					: { categories: input.categories }),
 				limit: input.limit,
 				corpusId: input.corpusId,
 			});
@@ -73,7 +75,9 @@ export const knowledgeRetrievalSkill: Skill<KnowledgeRetrievalInput> = {
 
 		return sunatKnowledgeService.buildContext({
 			query: input.query,
-			categories: input.categories,
+			...(input.categories === undefined
+				? {}
+				: { categories: input.categories }),
 			limit: input.limit,
 		});
 	},

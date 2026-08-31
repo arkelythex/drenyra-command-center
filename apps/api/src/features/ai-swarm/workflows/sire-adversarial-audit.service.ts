@@ -30,8 +30,12 @@ export class SireAdversarialAuditService {
 			rceRecords: input.rceRecords,
 			pleSalesRecords: input.pleSalesRecords,
 			plePurchaseRecords: input.plePurchaseRecords,
-			detractionAmountPen: input.detractionAmountPen,
-			detractionableBasePen: input.detractionableBasePen,
+			...(input.detractionAmountPen === undefined
+				? {}
+				: { detractionAmountPen: input.detractionAmountPen }),
+			...(input.detractionableBasePen === undefined
+				? {}
+				: { detractionableBasePen: input.detractionableBasePen }),
 		});
 
 		const creator = runSireCreatorAgent(input);
@@ -40,7 +44,9 @@ export class SireAdversarialAuditService {
 			creator,
 			destructor,
 			checks: readiness.checks,
-			falsePositiveRate: input.falsePositiveRate,
+			...(input.falsePositiveRate === undefined
+				? {}
+				: { falsePositiveRate: input.falsePositiveRate }),
 		});
 
 		return {
