@@ -64,7 +64,9 @@ export class AppendFiscalTruthApiCommand {
 			validatorResults: input.validatorResults,
 			policyDecision: input.policyDecision,
 			hasRequiredApproval: input.hasRequiredApproval,
-			approvalId: input.event.approvalId ?? undefined,
+			...(input.event.approvalId !== null
+				? { approvalId: input.event.approvalId }
+				: {}),
 		});
 
 		const eventWithProvenance: FiscalTruthEvent = {

@@ -52,8 +52,10 @@ export function createAuditEventsRoutes(
 							entityType: input.entityType,
 							entityId: input.entityId,
 							action: input.action,
-							changes: input.changes,
-							occurredAt,
+							...(input.changes !== undefined
+								? { changes: input.changes }
+								: {}),
+							...(occurredAt !== undefined ? { occurredAt } : {}),
 						},
 						resolved.context,
 					),

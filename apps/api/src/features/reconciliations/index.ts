@@ -168,7 +168,9 @@ export const reconciliationsModule = new Elysia({
 				const result = await externalReconcile({
 					sourceA: body.sourceA,
 					sourceB: body.sourceB,
-					toleranceCents: body.toleranceCents,
+					...(body.toleranceCents !== undefined
+						? { toleranceCents: body.toleranceCents }
+						: {}),
 				});
 
 				return ok(result);
