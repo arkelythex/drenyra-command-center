@@ -38,10 +38,10 @@ vi.mock("@drenyra/persistence", () => ({
 	},
 }));
 
-vi.mock("../../shared/api-response", async () => {
+vi.mock("../../../shared/api-response", async () => {
 	const actual = await vi.importActual<
-		typeof import("../../shared/api-response")
-	>("../../shared/api-response");
+		typeof import("../../../shared/api-response")
+	>("../../../shared/api-response");
 	return actual;
 });
 
