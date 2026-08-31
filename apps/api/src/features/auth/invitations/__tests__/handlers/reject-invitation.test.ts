@@ -33,7 +33,10 @@ vi.mock("@drenyra/persistence/client", () => ({
 
 vi.mock("@drenyra/persistence/query", () => {
 	const eqFn = vi.fn((col: unknown, val: unknown) => ({ col, val, _op: "eq" }));
-	const andFn = vi.fn((...conditions: unknown[]) => ({ conditions, _op: "and" }));
+	const andFn = vi.fn((...conditions: unknown[]) => ({
+		conditions,
+		_op: "and",
+	}));
 	return { eq: eqFn, and: andFn };
 });
 
@@ -106,10 +109,7 @@ describe("rejectInvitation", () => {
 			authUserId: "",
 		} as never);
 
-		const result = await rejectInvitation(
-			{ token: "some-token" },
-			ctx(200),
-		);
+		const result = await rejectInvitation({ token: "some-token" }, ctx(200));
 
 		expect(result).toEqual({
 			success: false,
@@ -125,10 +125,7 @@ describe("rejectInvitation", () => {
 
 		chainableSelectOnce([]);
 
-		const result = await rejectInvitation(
-			{ token: "bad-token" },
-			ctx(200),
-		);
+		const result = await rejectInvitation({ token: "bad-token" }, ctx(200));
 
 		expect(result.success).toBe(false);
 		expect(result.code).toBe("INVITATION_NOT_FOUND");
@@ -151,10 +148,7 @@ describe("rejectInvitation", () => {
 		chainableSelectOnce([{ email: "colleague@firm.com" }]);
 		chainableUpdateOnce();
 
-		const result = await rejectInvitation(
-			{ token: "valid-token" },
-			ctx(200),
-		);
+		const result = await rejectInvitation({ token: "valid-token" }, ctx(200));
 
 		expect(result).toMatchObject({
 			success: true,
@@ -182,10 +176,7 @@ describe("rejectInvitation", () => {
 		chainableSelectOnce([invitation]);
 		chainableUpdateOnce(); // lazy-expire update
 
-		const result = await rejectInvitation(
-			{ token: "expired-token" },
-			ctx(200),
-		);
+		const result = await rejectInvitation({ token: "expired-token" }, ctx(200));
 
 		expect(result.success).toBe(false);
 		expect(result.code).toBe("INVITATION_NOT_FOUND");
@@ -206,10 +197,7 @@ describe("rejectInvitation", () => {
 		chainableSelectOnce([invitation]);
 		chainableSelectOnce([{ email: "other@firm.com" }]);
 
-		const result = await rejectInvitation(
-			{ token: "valid-token" },
-			ctx(200),
-		);
+		const result = await rejectInvitation({ token: "valid-token" }, ctx(200));
 
 		expect(result).toEqual({
 			success: false,
@@ -232,10 +220,7 @@ describe("rejectInvitation", () => {
 
 		chainableSelectOnce([invitation]);
 
-		const result = await rejectInvitation(
-			{ token: "acc-token" },
-			ctx(200),
-		);
+		const result = await rejectInvitation({ token: "acc-token" }, ctx(200));
 
 		expect(result.success).toBe(false);
 		expect(result.code).toBe("INVITATION_ALREADY_ACCEPTED");

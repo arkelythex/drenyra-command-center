@@ -40,7 +40,10 @@ vi.mock("@drenyra/persistence/client", () => ({
 
 vi.mock("@drenyra/persistence/query", () => {
 	const eqFn = vi.fn((col: unknown, val: unknown) => ({ col, val, _op: "eq" }));
-	const andFn = vi.fn((...conditions: unknown[]) => ({ conditions, _op: "and" }));
+	const andFn = vi.fn((...conditions: unknown[]) => ({
+		conditions,
+		_op: "and",
+	}));
 	return { eq: eqFn, and: andFn };
 });
 
@@ -135,10 +138,7 @@ describe("acceptInvitation", () => {
 			sessionId: null,
 		} as never);
 
-		const result = await acceptInvitation(
-			{ token: "some-token" },
-			ctx(200),
-		);
+		const result = await acceptInvitation({ token: "some-token" }, ctx(200));
 
 		expect(result).toEqual({
 			success: false,
@@ -190,10 +190,7 @@ describe("acceptInvitation", () => {
 		chainableSelectOnce([expiredInvitation]);
 		chainableUpdateOnce(); // lazy-expire update
 
-		const result = await acceptInvitation(
-			{ token: "expired-token" },
-			ctx(200),
-		);
+		const result = await acceptInvitation({ token: "expired-token" }, ctx(200));
 
 		expect(result.success).toBe(false);
 		expect(result.code).toBe("INVITATION_NOT_FOUND");
@@ -219,10 +216,7 @@ describe("acceptInvitation", () => {
 
 		chainableSelectOnce([acceptedInvitation]);
 
-		const result = await acceptInvitation(
-			{ token: "acc-token" },
-			ctx(200),
-		);
+		const result = await acceptInvitation({ token: "acc-token" }, ctx(200));
 
 		expect(result.success).toBe(false);
 		expect(result.code).toBe("INVITATION_NOT_FOUND");
@@ -248,10 +242,7 @@ describe("acceptInvitation", () => {
 
 		chainableSelectOnce([rejectedInvitation]);
 
-		const result = await acceptInvitation(
-			{ token: "rej-token" },
-			ctx(200),
-		);
+		const result = await acceptInvitation({ token: "rej-token" }, ctx(200));
 
 		expect(result.success).toBe(false);
 		expect(result.code).toBe("INVITATION_NOT_FOUND");
@@ -280,10 +271,7 @@ describe("acceptInvitation", () => {
 		// User email lookup: returns different email
 		chainableSelectOnce([{ email: "attacker@evil.com" }]);
 
-		const result = await acceptInvitation(
-			{ token: "valid-token" },
-			ctx(200),
-		);
+		const result = await acceptInvitation({ token: "valid-token" }, ctx(200));
 
 		expect(result).toEqual({
 			success: false,
@@ -329,10 +317,7 @@ describe("acceptInvitation", () => {
 			},
 		]);
 
-		const result = await acceptInvitation(
-			{ token: "valid-token" },
-			ctx(200),
-		);
+		const result = await acceptInvitation({ token: "valid-token" }, ctx(200));
 
 		expect(result).toMatchObject({
 			success: true,
@@ -370,10 +355,7 @@ describe("acceptInvitation", () => {
 		// Already a member
 		chainableSelectOnce([{ id: "existing-member" }]);
 
-		const result = await acceptInvitation(
-			{ token: "valid-token" },
-			ctx(200),
-		);
+		const result = await acceptInvitation({ token: "valid-token" }, ctx(200));
 
 		expect(result.success).toBe(false);
 		expect(result.code).toBe("ALREADY_MEMBER");
@@ -411,10 +393,7 @@ describe("acceptInvitation", () => {
 			},
 		]);
 
-		const result = await acceptInvitation(
-			{ token: "valid-token" },
-			ctx(200),
-		);
+		const result = await acceptInvitation({ token: "valid-token" }, ctx(200));
 
 		expect(result).toMatchObject({
 			success: true,

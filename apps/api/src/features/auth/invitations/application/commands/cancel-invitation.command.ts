@@ -53,7 +53,10 @@ export async function cancelInvitation(
 	const { companyId, invitationId } = input;
 
 	// 2. Permission check
-	const hasPermission = await hasInvitePermission(identity.authUserId, companyId);
+	const hasPermission = await hasInvitePermission(
+		identity.authUserId,
+		companyId,
+	);
 	if (!hasPermission) {
 		ctx.set.status = 403;
 		return fail("Insufficient permissions", "FORBIDDEN");
@@ -74,7 +77,10 @@ export async function cancelInvitation(
 	const invitation = rows[0] ?? null;
 	if (!invitation) {
 		ctx.set.status = 404;
-		return fail("Invitation not found", INVITATION_ERROR_CODES.INVITATION_NOT_FOUND);
+		return fail(
+			"Invitation not found",
+			INVITATION_ERROR_CODES.INVITATION_NOT_FOUND,
+		);
 	}
 
 	// 4. Only pending can be cancelled

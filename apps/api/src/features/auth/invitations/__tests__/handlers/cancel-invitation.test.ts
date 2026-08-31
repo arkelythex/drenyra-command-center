@@ -25,7 +25,10 @@ vi.mock("@drenyra/persistence/client", () => ({
 
 vi.mock("@drenyra/persistence/query", () => {
 	const eqFn = vi.fn((col: unknown, val: unknown) => ({ col, val, _op: "eq" }));
-	const andFn = vi.fn((...conditions: unknown[]) => ({ conditions, _op: "and" }));
+	const andFn = vi.fn((...conditions: unknown[]) => ({
+		conditions,
+		_op: "and",
+	}));
 	return { eq: eqFn, and: andFn };
 });
 
@@ -137,7 +140,9 @@ describe("cancelInvitation", () => {
 		// Permission check → OWNER
 		chainableSelectOnce([{ membershipRole: "OWNER" }]);
 		// Find invitation
-		chainableSelectOnce([{ id: "inv-1", companyId: "company-1", status: "pending" }]);
+		chainableSelectOnce([
+			{ id: "inv-1", companyId: "company-1", status: "pending" },
+		]);
 		// Update
 		chainableUpdateOnce();
 
@@ -163,7 +168,9 @@ describe("cancelInvitation", () => {
 		} as never);
 
 		chainableSelectOnce([{ membershipRole: "OWNER" }]);
-		chainableSelectOnce([{ id: "inv-1", companyId: "company-1", status: "accepted" }]);
+		chainableSelectOnce([
+			{ id: "inv-1", companyId: "company-1", status: "accepted" },
+		]);
 
 		const result = await cancelInvitation(
 			{ companyId: "company-1", invitationId: "inv-1" },

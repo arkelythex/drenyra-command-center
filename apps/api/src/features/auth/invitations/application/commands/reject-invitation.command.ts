@@ -98,7 +98,10 @@ export async function rejectInvitation(
 		normalizeEmail(userEmail) !== normalizeEmail(invitation.inviteeEmail)
 	) {
 		ctx.set.status = 403;
-		return fail("Email does not match invitation", INVITATION_ERROR_CODES.EMAIL_MISMATCH);
+		return fail(
+			"Email does not match invitation",
+			INVITATION_ERROR_CODES.EMAIL_MISMATCH,
+		);
 	}
 
 	// 6. Reject

@@ -50,7 +50,10 @@ export async function listInvitations(
 	const { companyId } = input;
 
 	// 2. Permission check
-	const hasPermission = await hasInvitePermission(identity.authUserId, companyId);
+	const hasPermission = await hasInvitePermission(
+		identity.authUserId,
+		companyId,
+	);
 	if (!hasPermission) {
 		ctx.set.status = 403;
 		return fail("Insufficient permissions", "FORBIDDEN");

@@ -8,7 +8,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-
+import type { InvitationStatus } from "../../domain/invitation.entity";
 // RED: imports target code that does not exist yet
 import {
 	generateInvitationToken,
@@ -18,7 +18,6 @@ import {
 	isValidStatusTransition,
 	normalizeEmail,
 } from "../../domain/invitation.entity";
-import type { InvitationStatus } from "../../domain/invitation.entity";
 
 // ============================================================
 // normalizeEmail
@@ -228,7 +227,13 @@ describe("isValidStatusTransition", () => {
 	];
 
 	for (const source of terminalStates) {
-		for (const target of ["pending", "accepted", "rejected", "expired", "cancelled"] as InvitationStatus[]) {
+		for (const target of [
+			"pending",
+			"accepted",
+			"rejected",
+			"expired",
+			"cancelled",
+		] as InvitationStatus[]) {
 			it(`rejects ${source} → ${target} (terminal state)`, () => {
 				expect(isValidStatusTransition(source, target)).toBe(false);
 			});
