@@ -1,5 +1,6 @@
 import type {
 	AuditReviewStatus,
+	AuditTargetType,
 	FindingCategory,
 	FindingSeverity,
 } from "@drenyra/application/features/judgment-day";
@@ -41,9 +42,11 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 			try {
 				const review = await createReview({
 					companyId: body.companyId,
-					targetType: body.targetType as any,
+					targetType: body.targetType as AuditTargetType,
 					targetId: body.targetId,
-					...(body.createdById !== undefined ? { createdById: body.createdById } : {}),
+					...(body.createdById !== undefined
+						? { createdById: body.createdById }
+						: {}),
 				});
 				set.status = 201;
 				return ok(review);
@@ -81,7 +84,9 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 					...(query.status !== undefined
 						? { status: query.status as AuditReviewStatus }
 						: {}),
-					...(query.targetType !== undefined ? { targetType: query.targetType } : {}),
+					...(query.targetType !== undefined
+						? { targetType: query.targetType }
+						: {}),
 					...(query.limit ? { limit: Number(query.limit) } : {}),
 					...(query.offset ? { offset: Number(query.offset) } : {}),
 				});
@@ -249,7 +254,9 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 					category: body.category as FindingCategory,
 					severity: body.severity as FindingSeverity,
 					condition: body.condition as Record<string, unknown>,
-					...(body.createdById !== undefined ? { createdById: body.createdById } : {}),
+					...(body.createdById !== undefined
+						? { createdById: body.createdById }
+						: {}),
 				});
 				set.status = 201;
 				return ok(rule);
@@ -264,7 +271,7 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 				name: t.String({ minLength: 1 }),
 				category: t.String({ minLength: 1 }),
 				severity: t.String({ minLength: 1 }),
-				condition: t.Any(),
+				condition: t.Record(t.String(), t.Unknown()),
 				createdById: t.Optional(t.String()),
 			}),
 			detail: {
@@ -286,7 +293,9 @@ export const judgmentDayRoutes = new Elysia({ prefix: "/api/v1/judgment" })
 				const rules = await listRules({
 					companyId,
 					...(query.category !== undefined ? { category: query.category } : {}),
-					...(query.enabled !== undefined ? { enabled: query.enabled === "true" } : {}),
+					...(query.enabled !== undefined
+						? { enabled: query.enabled === "true" }
+						: {}),
 				});
 				return ok(rules);
 			} catch (error: unknown) {
