@@ -7,44 +7,41 @@
  * ```
  */
 
+export { RBAC_FEATURE_FLAGS } from "./feature-flags";
+export type { RbacDiscrepancy } from "./migration-audit";
+export { logRbacDiscrepancy } from "./migration-audit";
 export {
-	UNIFIED_ROLES,
-	ROLE_HIERARCHY,
-	SPECIAL_ROLE_MAPPINGS,
-	isRoleHigher,
-	getRoleLevel,
-	resolveUnifiedRole,
-} from "./unified-roles";
-export type { UnifiedRole } from "./unified-roles";
-
-export {
-	BusinessPermission,
-	PlatformPermission,
-	ALL_BUSINESS_PERMISSIONS,
-	ALL_PLATFORM_PERMISSIONS,
-} from "./unified-permissions";
-export type { Permission } from "./unified-permissions";
-
-export {
+	AUDITOR_ROLE_OVERRIDE,
 	BUSINESS_ROLE_PERMISSION_MAP,
 	PLATFORM_ROLE_PERMISSION_MAP,
 	SERVICE_ROLE_OVERRIDE,
-	AUDITOR_ROLE_OVERRIDE,
 } from "./role-permission-map";
+export type { UnifiedActor } from "./unified-guard";
 
 export {
 	ForbiddenError,
+	getPermissionsForRole,
 	hasBusinessPermission,
 	hasPlatformPermission,
 	requireBusinessPermission,
+	requireMfa,
 	requirePlatformPermission,
 	requireRole,
-	requireMfa,
-	getPermissionsForRole,
 	resolveActor,
 } from "./unified-guard";
-export type { UnifiedActor } from "./unified-guard";
-
-export { RBAC_FEATURE_FLAGS } from "./feature-flags";
-export { logRbacDiscrepancy } from "./migration-audit";
-export type { RbacDiscrepancy } from "./migration-audit";
+export type { Permission } from "./unified-permissions";
+export {
+	ALL_BUSINESS_PERMISSIONS,
+	ALL_PLATFORM_PERMISSIONS,
+	BusinessPermission,
+	PlatformPermission,
+} from "./unified-permissions";
+export type { UnifiedRole } from "./unified-roles";
+export {
+	getRoleLevel,
+	isRoleHigher,
+	ROLE_HIERARCHY,
+	resolveUnifiedRole,
+	SPECIAL_ROLE_MAPPINGS,
+	UNIFIED_ROLES,
+} from "./unified-roles";
