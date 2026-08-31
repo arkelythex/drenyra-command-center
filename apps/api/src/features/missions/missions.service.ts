@@ -1,25 +1,25 @@
-import { and, eq } from "drizzle-orm";
-import { accountingMissions } from "@drenyra/persistence/schema";
+import type {
+	ApproveCommand,
+	MissionSnapshot,
+	ReconcileCommand,
+	RejectCommand,
+	RunIntentCommand,
+} from "@drenyra/mission-domain";
 import {
 	AccountingMissionStatus,
+	generateReceiptHash,
+	guardTerminal,
 	MissionError,
 	MissionErrorCode,
-	validateTransition,
-	guardTerminal,
-	reconcileTransition,
-	generateReceiptHash,
 	type ReceiptContent,
+	reconcileTransition,
+	validateTransition,
 } from "@drenyra/mission-domain";
-import { optimisticUpdate } from "./middleware/concurrency.middleware";
-import type {
-	RunIntentCommand,
-	ApproveCommand,
-	RejectCommand,
-	ReconcileCommand,
-	MissionSnapshot,
-} from "@drenyra/mission-domain";
+import { accountingMissions } from "@drenyra/persistence/schema";
+import { and, eq } from "drizzle-orm";
 import { getIntentHandler } from "./intent-handlers/intent-handlers.registry";
 import type { MissionIntentHandler } from "./intent-handlers/mission-intent-handler.interface";
+import { optimisticUpdate } from "./middleware/concurrency.middleware";
 import { ReceiptSigningService } from "./receipt-signing.service";
 
 const VALID_INTENTS = new Set([
@@ -62,7 +62,7 @@ function toSnapshot(row: Record<string, unknown>): MissionSnapshot {
 export class MissionsService {
 	constructor(
 		private readonly db: any,
-		private readonly intentHandlers?: Map<string, MissionIntentHandler>,
+		_intentHandlers?: Map<string, MissionIntentHandler>,
 		private readonly receiptSigner?: ReceiptSigningService,
 	) {
 		if (!this.receiptSigner) {
@@ -387,6 +387,7 @@ export class MissionsService {
 
 		const mission = await this.getMissionOrThrow(missionId, companyId);
 
+		// SAFETY: VALID_RECONCILE_TARGETS validates the resolution literals before adapting them to the accounting status union.
 		const newStatus = cmd.resolution as unknown as AccountingMissionStatus;
 		reconcileTransition(mission.status as AccountingMissionStatus, newStatus);
 

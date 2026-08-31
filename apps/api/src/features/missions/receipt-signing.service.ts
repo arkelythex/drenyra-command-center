@@ -14,13 +14,13 @@
  * self-verifying for anyone holding the receipt.
  */
 
+import { generateKeyPairSync } from "node:crypto";
 import {
 	buildSignedReceipt,
 	generateReceiptKeyPair,
 	type ReceiptContent,
 	type SignedReceipt,
 } from "@drenyra/mission-domain";
-import { generateKeyPairSync } from "node:crypto";
 
 export class ReceiptSigningService {
 	private readonly keyPair: {
@@ -34,7 +34,6 @@ export class ReceiptSigningService {
 		const envPrivateKey = process.env.DRENYRA_RECEIPT_SIGNING_PRIVATE_KEY;
 		if (envPrivateKey) {
 			// Reconstruct key pair from env (private key + derived public)
-			const privateKey = Buffer.from(envPrivateKey, "base64");
 			const { publicKey } = generateKeyPairSync("ed25519", {
 				privateKeyEncoding: { type: "pkcs8", format: "der" },
 				publicKeyEncoding: { type: "spki", format: "der" },
