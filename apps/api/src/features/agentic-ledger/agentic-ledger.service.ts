@@ -163,7 +163,7 @@ function normalizeTransactions(
 		description: r.description,
 		amount: r.amount,
 		type: r.type,
-		reference: r.reference,
+		...(r.reference === undefined ? {} : { reference: r.reference }),
 	}));
 }
 

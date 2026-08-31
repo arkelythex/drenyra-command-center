@@ -62,7 +62,7 @@ function parseGenericCsv(csvText: string): ImportTransactionInput[] {
 			description,
 			amount: parsedAmount,
 			type,
-			reference: reference || undefined,
+			...(reference ? { reference } : {}),
 		});
 	}
 
