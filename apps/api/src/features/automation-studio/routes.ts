@@ -369,9 +369,14 @@ export const automationStudioRoutes = new Elysia({
 	// --- Executions ---
 	.get(
 		"/workflows/:id/executions",
-		async ({ params, set }) => {
+		async ({ params, companyContext, set }) => {
 			try {
-				const result = await controller.listExecutions(params.id);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const result = await controller.listExecutions(companyId, params.id);
 				return ok(result);
 			} catch (error) {
 				set.status = 500;
@@ -389,9 +394,14 @@ export const automationStudioRoutes = new Elysia({
 
 	.get(
 		"/workflows/:id/executions/:execId",
-		async ({ params, set }) => {
+		async ({ params, companyContext, set }) => {
 			try {
-				const exec = await controller.getExecution(params.execId);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const exec = await controller.getExecution(companyId, params.execId);
 				if (!exec) {
 					set.status = 404;
 					return fail("Ejecución no encontrada", "NOT_FOUND");
@@ -414,9 +424,14 @@ export const automationStudioRoutes = new Elysia({
 	// --- Steps ---
 	.get(
 		"/steps",
-		async ({ query, set }) => {
+		async ({ query, companyContext, set }) => {
 			try {
-				const result = await controller.listSteps(query.workflowId);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const result = await controller.listSteps(companyId, query.workflowId);
 				return ok(result);
 			} catch (error) {
 				set.status = 500;
@@ -434,9 +449,14 @@ export const automationStudioRoutes = new Elysia({
 
 	.get(
 		"/steps/:id",
-		async ({ params, set }) => {
+		async ({ params, companyContext, set }) => {
 			try {
-				const step = await controller.getStep(params.id);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const step = await controller.getStep(companyId, params.id);
 				if (!step) {
 					set.status = 404;
 					return fail("Step no encontrado", "NOT_FOUND");
@@ -458,9 +478,14 @@ export const automationStudioRoutes = new Elysia({
 
 	.post(
 		"/steps",
-		async ({ body, set }) => {
+		async ({ body, companyContext, set }) => {
 			try {
-				const step = await controller.createStep(body);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const step = await controller.createStep(companyId, body);
 				if (!step) {
 					set.status = 400;
 					return fail("No se pudo crear el step", "VALIDATION_ERROR");
@@ -483,9 +508,14 @@ export const automationStudioRoutes = new Elysia({
 
 	.patch(
 		"/steps/:id",
-		async ({ params, body, set }) => {
+		async ({ params, body, companyContext, set }) => {
 			try {
-				const step = await controller.updateStep(params.id, body);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const step = await controller.updateStep(companyId, params.id, body);
 				if (!step) {
 					set.status = 404;
 					return fail("Step no encontrado", "NOT_FOUND");
@@ -508,9 +538,14 @@ export const automationStudioRoutes = new Elysia({
 
 	.delete(
 		"/steps/:id",
-		async ({ params, set }) => {
+		async ({ params, companyContext, set }) => {
 			try {
-				const deleted = await controller.deleteStep(params.id);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const deleted = await controller.deleteStep(companyId, params.id);
 				if (!deleted) {
 					set.status = 404;
 					return fail("Step no encontrado", "NOT_FOUND");
@@ -532,9 +567,14 @@ export const automationStudioRoutes = new Elysia({
 
 	.post(
 		"/steps/reorder",
-		async ({ body, set }) => {
+		async ({ body, companyContext, set }) => {
 			try {
-				const steps = await controller.reorderSteps(body);
+				const companyId = companyContext?.companyId;
+				if (!companyId) {
+					set.status = 401;
+					return fail("No autorizado", "UNAUTHORIZED");
+				}
+				const steps = await controller.reorderSteps(companyId, body);
 				return ok({ data: steps });
 			} catch (error) {
 				set.status = 500;

@@ -1,4 +1,4 @@
-import { and, desc, eq, sql } from "@drenyra/persistence/query";
+import { and, desc, eq, inArray, sql } from "@drenyra/persistence/query";
 import type {
 	ActionType,
 	StepStatus,
@@ -321,30 +321,62 @@ export async function testWorkflow(
 // --- Steps ---
 
 export async function listSteps(
+	companyId: string,
 	workflowId: string,
 ): Promise<{ data: StepResponse[] }> {
 	const rows = await db
-		.select()
+		.select({ step: automationSteps })
 		.from(automationSteps)
+		.innerJoin(
+			automationWorkflows,
+			and(
+				eq(automationSteps.workflowId, automationWorkflows.id),
+				eq(automationWorkflows.companyId, companyId),
+			),
+		)
 		.where(eq(automationSteps.workflowId, workflowId))
 		.orderBy(automationSteps.stepOrder);
 
-	return { data: rows.map(mapStep) };
+	return { data: rows.map(({ step }) => mapStep(step)) };
 }
 
-export async function getStep(id: string): Promise<StepResponse | null> {
+export async function getStep(
+	companyId: string,
+	id: string,
+): Promise<StepResponse | null> {
 	const [row] = await db
-		.select()
+		.select({ step: automationSteps })
 		.from(automationSteps)
+		.innerJoin(
+			automationWorkflows,
+			and(
+				eq(automationSteps.workflowId, automationWorkflows.id),
+				eq(automationWorkflows.companyId, companyId),
+			),
+		)
 		.where(eq(automationSteps.id, id))
 		.limit(1);
 
-	return row ? mapStep(row) : null;
+	return row ? mapStep(row.step) : null;
 }
 
 export async function createStep(
+	companyId: string,
 	body: CreateStepBody,
 ): Promise<StepResponse | null> {
+	const [workflow] = await db
+		.select({ id: automationWorkflows.id })
+		.from(automationWorkflows)
+		.where(
+			and(
+				eq(automationWorkflows.id, body.workflowId),
+				eq(automationWorkflows.companyId, companyId),
+			),
+		)
+		.limit(1);
+
+	if (!workflow) return null;
+
 	const [row] = await db
 		.insert(automationSteps)
 		.values({
@@ -360,9 +392,14 @@ export async function createStep(
 }
 
 export async function updateStep(
+	companyId: string,
 	id: string,
 	body: UpdateStepBody,
 ): Promise<StepResponse | null> {
+	const ownedWorkflowIds = db
+		.select({ id: automationWorkflows.id })
+		.from(automationWorkflows)
+		.where(eq(automationWorkflows.companyId, companyId));
 	const [row] = await db
 		.update(automationSteps)
 		.set({
@@ -372,24 +409,55 @@ export async function updateStep(
 			config: body.config,
 			status: body.status as StepStatus,
 		})
-		.where(eq(automationSteps.id, id))
+		.where(
+			and(
+				eq(automationSteps.id, id),
+				inArray(automationSteps.workflowId, ownedWorkflowIds),
+			),
+		)
 		.returning();
 
 	return row ? mapStep(row) : null;
 }
 
-export async function deleteStep(id: string): Promise<boolean> {
+export async function deleteStep(
+	companyId: string,
+	id: string,
+): Promise<boolean> {
+	const ownedWorkflowIds = db
+		.select({ id: automationWorkflows.id })
+		.from(automationWorkflows)
+		.where(eq(automationWorkflows.companyId, companyId));
 	const [row] = await db
 		.delete(automationSteps)
-		.where(eq(automationSteps.id, id))
+		.where(
+			and(
+				eq(automationSteps.id, id),
+				inArray(automationSteps.workflowId, ownedWorkflowIds),
+			),
+		)
 		.returning({ id: automationSteps.id });
 
 	return !!row;
 }
 
 export async function reorderSteps(
+	companyId: string,
 	body: ReorderStepsBody,
 ): Promise<StepResponse[]> {
+	const [workflow] = await db
+		.select({ id: automationWorkflows.id })
+		.from(automationWorkflows)
+		.where(
+			and(
+				eq(automationWorkflows.id, body.workflowId),
+				eq(automationWorkflows.companyId, companyId),
+			),
+		)
+		.limit(1);
+
+	if (!workflow) return [];
+
 	const rows: StepResponse[] = [];
 
 	for (let i = 0; i < body.stepIds.length; i++) {
@@ -415,27 +483,43 @@ export async function reorderSteps(
 // --- Executions ---
 
 export async function listExecutions(
+	companyId: string,
 	workflowId: string,
 ): Promise<{ data: ExecutionResponse[] }> {
 	const rows = await db
-		.select()
+		.select({ execution: automationExecutions })
 		.from(automationExecutions)
+		.innerJoin(
+			automationWorkflows,
+			and(
+				eq(automationExecutions.workflowId, automationWorkflows.id),
+				eq(automationWorkflows.companyId, companyId),
+			),
+		)
 		.where(eq(automationExecutions.workflowId, workflowId))
 		.orderBy(desc(automationExecutions.startedAt));
 
-	return { data: rows.map(mapExecution) };
+	return { data: rows.map(({ execution }) => mapExecution(execution)) };
 }
 
 export async function getExecution(
+	companyId: string,
 	id: string,
 ): Promise<ExecutionResponse | null> {
 	const [row] = await db
-		.select()
+		.select({ execution: automationExecutions })
 		.from(automationExecutions)
+		.innerJoin(
+			automationWorkflows,
+			and(
+				eq(automationExecutions.workflowId, automationWorkflows.id),
+				eq(automationWorkflows.companyId, companyId),
+			),
+		)
 		.where(eq(automationExecutions.id, id))
 		.limit(1);
 
-	return row ? mapExecution(row) : null;
+	return row ? mapExecution(row.execution) : null;
 }
 
 // --- Dashboard ---
