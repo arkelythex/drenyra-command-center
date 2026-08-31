@@ -50,7 +50,8 @@ export const WORKSPACE_INTENT = {
 	REPORT: "report",
 } as const;
 
-export type WorkspaceIntent = (typeof WORKSPACE_INTENT)[keyof typeof WORKSPACE_INTENT];
+export type WorkspaceIntent =
+	(typeof WORKSPACE_INTENT)[keyof typeof WORKSPACE_INTENT];
 
 export const DENSITY_MODE = {
 	COMFORTABLE: "comfortable",
@@ -119,8 +120,18 @@ export interface Workspace {
 // ─── Month Labels ──────────────────────────────────────────────────────────
 
 const MONTH_LABELS: ReadonlyArray<string> = [
-	"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-	"Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+	"Enero",
+	"Febrero",
+	"Marzo",
+	"Abril",
+	"Mayo",
+	"Junio",
+	"Julio",
+	"Agosto",
+	"Septiembre",
+	"Octubre",
+	"Noviembre",
+	"Diciembre",
 ] as const;
 
 // ─── Factory Functions ─────────────────────────────────────────────────────
@@ -158,10 +169,14 @@ export function createPaneId(): PaneId {
  */
 export function createPeriodRef(year: number, month: number): PeriodRef {
 	if (!Number.isInteger(year) || year < 2020 || year > 2100) {
-		throw new Error(`Invalid year: ${year}. Must be an integer between 2020 and 2100.`);
+		throw new Error(
+			`Invalid year: ${year}. Must be an integer between 2020 and 2100.`,
+		);
 	}
 	if (!Number.isInteger(month) || month < 1 || month > 12) {
-		throw new Error(`Invalid month: ${month}. Must be an integer between 1 and 12.`);
+		throw new Error(
+			`Invalid month: ${month}. Must be an integer between 1 and 12.`,
+		);
 	}
 	const label = `${MONTH_LABELS[month - 1]} ${year}`;
 	return { year, month, label };
@@ -180,16 +195,18 @@ export function createCompanyRef(
 	organizationId: string,
 ): CompanyRef {
 	if (!RUC_PATTERN.test(ruc)) {
-		throw new Error(
-			`Invalid RUC: "${ruc}". Must be exactly 11 digits (0-9).`,
-		);
+		throw new Error(`Invalid RUC: "${ruc}". Must be exactly 11 digits (0-9).`);
 	}
 	return { id, name, ruc, organizationId };
 }
 
 // ─── Validation ────────────────────────────────────────────────────────────
 
-const VALID_POSITIONS = new Set<string>([PANE_POSITION.LEFT, PANE_POSITION.CENTER, PANE_POSITION.RIGHT]);
+const VALID_POSITIONS = new Set<string>([
+	PANE_POSITION.LEFT,
+	PANE_POSITION.CENTER,
+	PANE_POSITION.RIGHT,
+]);
 const VALID_PANE_TYPES = new Set<string>(Object.values(PANE_TYPE));
 
 /**
