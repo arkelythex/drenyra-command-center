@@ -35,7 +35,7 @@ export interface SireRegistro {
 	documentType: string; // 01=Factura, 03=Boleta, 07=Nota Crédito
 	documentNumber: string; // F001-12345678
 	issueDate: Date;
-	supplierCustomerRuc?: string;
+	supplierCustomerRuc: string | undefined;
 	supplierCustomerName: string;
 	baseAmount: Money;
 	igvAmount: Money;
@@ -43,7 +43,7 @@ export interface SireRegistro {
 	currency: "PEN" | "USD";
 	exchangeRate: number;
 	status: "PENDIENTE" | "ACEPTADO" | "RECHAZADO";
-	sunatObservation?: string;
+	sunatObservation: string | undefined;
 }
 
 /**
@@ -74,7 +74,7 @@ export class RegistroCompras implements SireRegistro {
 			| "PENDIENTE"
 			| "ACEPTADO"
 			| "RECHAZADO" = "PENDIENTE",
-		public readonly sunatObservation?: string,
+		public readonly sunatObservation: string | undefined = undefined,
 		public readonly deductionType?: string, // Tipo de deducción para compras
 	) {}
 
@@ -128,7 +128,7 @@ export class RegistroVentas implements SireRegistro {
 			| "PENDIENTE"
 			| "ACEPTADO"
 			| "RECHAZADO" = "PENDIENTE",
-		public readonly sunatObservation?: string,
+		public readonly sunatObservation: string | undefined = undefined,
 		public readonly tipoOperacion?: string, // 1=Ventas internas, 2=Exportación
 	) {}
 

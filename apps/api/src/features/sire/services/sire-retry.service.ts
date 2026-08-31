@@ -140,8 +140,12 @@ export class SireRetryService {
 							? "ACCEPTED"
 							: "FAILED",
 					submissionId: retryResult.submissionId,
-					sunatTicket: retryResult.sunatTicket,
-					trackingId: retryResult.trackingId,
+					...(retryResult.sunatTicket !== undefined
+						? { sunatTicket: retryResult.sunatTicket }
+						: {}),
+					...(retryResult.trackingId !== undefined
+						? { trackingId: retryResult.trackingId }
+						: {}),
 					sunatMessage: retryResult.message,
 					processedAt: new Date(),
 				});

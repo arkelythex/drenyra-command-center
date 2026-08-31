@@ -240,7 +240,8 @@ export class SireRegisterExportService {
 				});
 			}
 
-			if (!/^\d{8}$/.test(fields[0])) {
+			const period = fields[0];
+			if (!period || !/^\d{8}$/.test(period)) {
 				errors.push({
 					line: lineNumber,
 					field: "periodo",
