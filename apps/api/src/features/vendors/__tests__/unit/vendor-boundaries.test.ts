@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { Vendor } from "../../domain/vendor";
 
-function createVendor(overrides: Partial<ConstructorParameters<typeof Vendor>[0]> = {}) {
+function createVendor(
+	overrides: Partial<ConstructorParameters<typeof Vendor>[0]> = {},
+) {
 	return new Vendor({
 		id: "ven-1",
 		companyId: "cmp-1",
@@ -33,7 +35,9 @@ describe("Vendor boundary rules", () => {
 		const vendor = createVendor({ paymentTermDays: 30 });
 		const billDate = new Date("2026-01-01T00:00:00.000Z");
 
-		expect(vendor.isPaymentOverdue(billDate, new Date("2026-01-31T00:00:00.000Z"))).toBe(false);
+		expect(
+			vendor.isPaymentOverdue(billDate, new Date("2026-01-31T00:00:00.000Z")),
+		).toBe(false);
 	});
 
 	it("marks a zero-term bill overdue only after its issue date", () => {
@@ -41,11 +45,16 @@ describe("Vendor boundary rules", () => {
 		const billDate = new Date("2026-01-01T00:00:00.000Z");
 
 		expect(vendor.isPaymentOverdue(billDate, billDate)).toBe(false);
-		expect(vendor.isPaymentOverdue(billDate, new Date("2026-01-01T00:00:00.001Z"))).toBe(true);
+		expect(
+			vendor.isPaymentOverdue(billDate, new Date("2026-01-01T00:00:00.001Z")),
+		).toBe(true);
 	});
 
 	it("serializes derived activity and rating state", () => {
-		const payload = createVendor({ sunatCondition: "INACTIVO", vendorRating: 79 }).toJSON();
+		const payload = createVendor({
+			sunatCondition: "INACTIVO",
+			vendorRating: 79,
+		}).toJSON();
 
 		expect(payload).toMatchObject({
 			id: "ven-1",
