@@ -82,7 +82,7 @@ export function fail(
 	return {
 		success: false,
 		error,
-		code,
+		...(code !== undefined ? { code } : {}),
 		...(options?.runbook ? { runbook: options.runbook } : {}),
 		...(options?.field ? { field: options.field } : {}),
 		...(typeof options?.details !== "undefined"
