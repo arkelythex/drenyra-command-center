@@ -202,14 +202,18 @@ export async function persistIncomingDocument(input: {
 	fileType: "IMAGE" | "XML" | "PDF";
 }): Promise<string> {
 	const storageUrl = await uploadToStorage(input.file, {
-		organizationId: input.organizationId,
-		companyId: input.companyId,
+		...(input.organizationId !== undefined
+			? { organizationId: input.organizationId }
+			: {}),
+		...(input.companyId !== undefined ? { companyId: input.companyId } : {}),
 	});
 	await createDocumentRecord({
 		documentStore: input.documentStore,
 		documentId: input.documentId,
-		organizationId: input.organizationId,
-		companyId: input.companyId,
+		...(input.organizationId !== undefined
+			? { organizationId: input.organizationId }
+			: {}),
+		...(input.companyId !== undefined ? { companyId: input.companyId } : {}),
 		file: input.file,
 		storageUrl,
 		status: input.fileType === "XML" ? "procesando" : "por_procesar",

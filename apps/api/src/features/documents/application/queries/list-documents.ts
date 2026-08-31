@@ -40,11 +40,22 @@ export async function listDocuments(
 ): Promise<ListDocumentsResult> {
 	const { store, tenantScope, status, search, limit = 100, offset = 0 } = input;
 
+	if (
+		tenantScope.companyId === undefined &&
+		tenantScope.organizationId === undefined
+	) {
+		throw new Error("Tenant scope is required");
+	}
+
 	const documents = await store.list({
-		companyId: tenantScope.companyId,
-		organizationId: tenantScope.organizationId,
-		status,
-		search,
+		...(tenantScope.companyId !== undefined
+			? { companyId: tenantScope.companyId }
+			: {}),
+		...(tenantScope.organizationId !== undefined
+			? { organizationId: tenantScope.organizationId }
+			: {}),
+		...(status !== undefined ? { status } : {}),
+		...(search !== undefined ? { search } : {}),
 		limit,
 		offset,
 	});

@@ -78,8 +78,8 @@ export function readTenantScopeFromHeaders(
 			: undefined;
 
 	return {
-		organizationId,
-		companyId: companyId || undefined,
+		...(organizationId !== undefined ? { organizationId } : {}),
+		...(companyId ? { companyId } : {}),
 	};
 }
 
@@ -159,10 +159,14 @@ export async function normalizeTenantScope(
 			: undefined;
 
 	if (companyId) {
+		const resolvedOrganizationId =
+			organizationId ?? (await resolveOrganizationId(companyId)) ?? undefined;
+
 		return {
 			companyId,
-			organizationId:
-				organizationId ?? (await resolveOrganizationId(companyId)) ?? undefined,
+			...(resolvedOrganizationId !== undefined
+				? { organizationId: resolvedOrganizationId }
+				: {}),
 		};
 	}
 
