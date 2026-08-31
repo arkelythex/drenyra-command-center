@@ -29,6 +29,82 @@ export type {
 } from "./account.types";
 export { ACCOUNT_LEVEL_NAMES, ACCOUNT_TYPE_CLASSES } from "./account.types";
 
+type AccountUpdate = {
+	name?: string;
+	description?: string;
+	destination?: string;
+	isActive?: boolean;
+	code?: string;
+	type?: ChartAccountType;
+	level?: AccountLevel;
+	isGroup?: boolean;
+	currency?: Currency;
+	parentId?: string;
+};
+
+const SYSTEM_RESTRICTED_FIELDS = [
+	"code",
+	"type",
+	"level",
+	"isGroup",
+	"currency",
+	"parentId",
+] as const;
+
+function assertSystemUpdateAllowed(
+	props: AccountProps,
+	data: AccountUpdate,
+): void {
+	if (!props.isSystem) return;
+
+	const attemptedRestricted = SYSTEM_RESTRICTED_FIELDS.filter(
+		(field) => data[field] !== undefined && data[field] !== props[field],
+	);
+	if (attemptedRestricted.length > 0)
+		throw new Error(
+			`No se pueden modificar los campos ${attemptedRestricted.join(", ")} de una cuenta del sistema`,
+		);
+}
+
+function applyParentIdUpdate(
+	props: AccountProps,
+	data: AccountUpdate,
+): AccountProps {
+	if (props.isSystem || !("parentId" in data)) return props;
+
+	const { parentId: _omittedParentId, ...propsWithoutParentId } = props;
+	return data.parentId === undefined
+		? propsWithoutParentId
+		: { ...propsWithoutParentId, parentId: data.parentId };
+}
+
+function buildUpdatedProps(
+	props: AccountProps,
+	data: AccountUpdate,
+): AccountProps {
+	const next = {
+		...props,
+		code: props.isSystem ? props.code : (data.code ?? props.code),
+		name: data.name ?? props.name,
+		...(data.description !== undefined
+			? { description: data.description }
+			: {}),
+		level: props.isSystem ? props.level : (data.level ?? props.level),
+		type: props.isSystem ? props.type : (data.type ?? props.type),
+		isGroup: props.isSystem ? props.isGroup : (data.isGroup ?? props.isGroup),
+		isActive: data.isActive ?? props.isActive,
+		currency: props.isSystem
+			? props.currency
+			: (data.currency ?? props.currency),
+		...(data.destination !== undefined
+			? { destination: data.destination }
+			: {}),
+		updatedAt: new Date(),
+	};
+
+	return applyParentIdUpdate(next, data);
+}
+
 /**
  * Account aggregate root for the Chart of Accounts (PCGE).
  */
@@ -112,74 +188,9 @@ export class Account {
 		});
 	}
 
-	update(data: {
-		name?: string;
-		description?: string;
-		destination?: string;
-		isActive?: boolean;
-		code?: string;
-		type?: ChartAccountType;
-		level?: AccountLevel;
-		isGroup?: boolean;
-		currency?: Currency;
-		parentId?: string;
-	}): Account {
-		if (this.props.isSystem) {
-			const restrictedFields = [
-				"code",
-				"type",
-				"level",
-				"isGroup",
-				"currency",
-				"parentId",
-			] as const;
-			const attemptedRestricted = restrictedFields.filter(
-				(field) =>
-					data[field] !== undefined && data[field] !== this.props[field],
-			);
-			if (attemptedRestricted.length > 0)
-				throw new Error(
-					`No se pueden modificar los campos ${attemptedRestricted.join(", ")} de una cuenta del sistema`,
-				);
-		}
-
-		const next: AccountProps = {
-			...this.props,
-			code: this.props.isSystem
-				? this.props.code
-				: (data.code ?? this.props.code),
-			name: data.name ?? this.props.name,
-			...(data.description !== undefined
-				? { description: data.description }
-				: {}),
-			level: this.props.isSystem
-				? this.props.level
-				: (data.level ?? this.props.level),
-			type: this.props.isSystem
-				? this.props.type
-				: (data.type ?? this.props.type),
-			isGroup: this.props.isSystem
-				? this.props.isGroup
-				: (data.isGroup ?? this.props.isGroup),
-			isActive: data.isActive ?? this.props.isActive,
-			currency: this.props.isSystem
-				? this.props.currency
-				: (data.currency ?? this.props.currency),
-			...(data.destination !== undefined
-				? { destination: data.destination }
-				: {}),
-			updatedAt: new Date(),
-		};
-
-		if (!this.props.isSystem && "parentId" in data) {
-			if (data.parentId !== undefined) {
-				next.parentId = data.parentId;
-			} else {
-				delete next.parentId;
-			}
-		}
-
-		return new Account(next);
+	update(data: AccountUpdate): Account {
+		assertSystemUpdateAllowed(this.props, data);
+		return new Account(buildUpdatedProps(this.props, data));
 	}
 
 	updateBalance(newBalance: Money, newBalanceUSD?: Money): Account {
@@ -187,14 +198,12 @@ export class Account {
 			throw new Error("El balance principal debe estar en PEN");
 		if (newBalanceUSD && newBalanceUSD.getCurrency() !== "USD")
 			throw new Error("El balance USD debe estar en dólares");
-    		return new Account({
-    			...this.props,
-    			balance: newBalance,
-    			...(newBalanceUSD !== undefined
-    				? { balanceUSD: newBalanceUSD }
-    				: {}),
-    			updatedAt: new Date(),
-    		});
+		return new Account({
+			...this.props,
+			balance: newBalance,
+			...(newBalanceUSD !== undefined ? { balanceUSD: newBalanceUSD } : {}),
+			updatedAt: new Date(),
+		});
 	}
 
 	equals(other: Account | null | undefined): boolean {
