@@ -122,14 +122,14 @@ export const knowledgeBaseRoutes = new Elysia({ name: "knowledge-base" })
 				contextWindow: 0,
 			};
 
-    			const results = await sunatKnowledgeService.hybridSearch(
-    				{
-    					query,
-    					...(categories !== undefined ? { categories } : {}),
-    					limit,
-    				},
-    				options,
-    			);
+			const results = await sunatKnowledgeService.hybridSearch(
+				{
+					query,
+					...(categories !== undefined ? { categories } : {}),
+					limit,
+				},
+				options,
+			);
 
 			const searchTimeMs = Date.now() - startTime;
 
