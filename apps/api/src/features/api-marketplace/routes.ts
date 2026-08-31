@@ -92,7 +92,7 @@ export const apiMarketplaceRoutes = new Elysia({
 
 	.post(
 		"/:id/install",
-		async ({ params, body, set }) => {
+		async ({ params, set }) => {
 			try {
 				const integration = await db.query.marketplaceIntegrations.findFirst({
 					where: eq(marketplaceIntegrations.id, params.id),
