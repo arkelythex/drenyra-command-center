@@ -58,9 +58,18 @@ describe("createPeriodRef", () => {
 	it("generates correct labels for all months", async () => {
 		const { createPeriodRef } = await import("./types");
 		const expectedLabels = [
-			"Enero 2026", "Febrero 2026", "Marzo 2026", "Abril 2026",
-			"Mayo 2026", "Junio 2026", "Julio 2026", "Agosto 2026",
-			"Septiembre 2026", "Octubre 2026", "Noviembre 2026", "Diciembre 2026",
+			"Enero 2026",
+			"Febrero 2026",
+			"Marzo 2026",
+			"Abril 2026",
+			"Mayo 2026",
+			"Junio 2026",
+			"Julio 2026",
+			"Agosto 2026",
+			"Septiembre 2026",
+			"Octubre 2026",
+			"Noviembre 2026",
+			"Diciembre 2026",
 		];
 		for (let m = 1; m <= 12; m++) {
 			const period = createPeriodRef(2026, m);
@@ -100,7 +109,12 @@ describe("createPeriodRef", () => {
 describe("createCompanyRef", () => {
 	it("creates a valid company ref", async () => {
 		const { createCompanyRef } = await import("./types");
-		const company = createCompanyRef("c1", "Arkelythex SAC", "20546296564", "org1");
+		const company = createCompanyRef(
+			"c1",
+			"Arkelythex SAC",
+			"20546296564",
+			"org1",
+		);
 		expect(company.id).toBe("c1");
 		expect(company.name).toBe("Arkelythex SAC");
 		expect(company.ruc).toBe("20546296564");
@@ -110,18 +124,26 @@ describe("createCompanyRef", () => {
 	it("rejects RUC that is not 11 digits", async () => {
 		const { createCompanyRef } = await import("./types");
 		expect(() => createCompanyRef("c1", "Test", "123", "org1")).toThrow();
-		expect(() => createCompanyRef("c1", "Test", "123456789012", "org1")).toThrow();
+		expect(() =>
+			createCompanyRef("c1", "Test", "123456789012", "org1"),
+		).toThrow();
 	});
 
 	it("rejects RUC with non-digit characters", async () => {
 		const { createCompanyRef } = await import("./types");
-		expect(() => createCompanyRef("c1", "Test", "2054629656A", "org1")).toThrow();
+		expect(() =>
+			createCompanyRef("c1", "Test", "2054629656A", "org1"),
+		).toThrow();
 	});
 
 	it("accepts valid 11-digit RUC", async () => {
 		const { createCompanyRef } = await import("./types");
-		expect(() => createCompanyRef("c1", "Test", "20546296564", "org1")).not.toThrow();
-		expect(() => createCompanyRef("c1", "Test", "10456789012", "org1")).not.toThrow();
+		expect(() =>
+			createCompanyRef("c1", "Test", "20546296564", "org1"),
+		).not.toThrow();
+		expect(() =>
+			createCompanyRef("c1", "Test", "10456789012", "org1"),
+		).not.toThrow();
 	});
 });
 
@@ -207,7 +229,9 @@ describe("defaultWorkspaceLayout", () => {
 	});
 
 	it("all default panes are valid", async () => {
-		const { defaultWorkspaceLayout, validatePaneConfig } = await import("./types");
+		const { defaultWorkspaceLayout, validatePaneConfig } = await import(
+			"./types"
+		);
 		const layout = defaultWorkspaceLayout();
 		for (const pane of layout.panes) {
 			expect(validatePaneConfig(pane)).toBe(true);
@@ -233,16 +257,19 @@ describe("defaultPaneConfigs", () => {
 describe("serializeLayout / deserializeLayout", () => {
 	it("roundtrips a layout without loss", async () => {
 		const { defaultWorkspaceLayout } = await import("./types");
-		const { serializeLayout, deserializeLayout } = await import("./layout-utils");
+		const { serializeLayout, deserializeLayout } = await import(
+			"./layout-utils"
+		);
 		const original = defaultWorkspaceLayout();
 		const serialized = serializeLayout(original);
 		expect(typeof serialized).toBe("string");
 		const restored = deserializeLayout(serialized);
 		expect(restored).not.toBeNull();
-		expect(restored!.sidebarCollapsed).toBe(original.sidebarCollapsed);
-		expect(restored!.rightPanelOpen).toBe(original.rightPanelOpen);
-		expect(restored!.densityMode).toBe(original.densityMode);
-		expect(restored!.panes).toHaveLength(original.panes.length);
+		if (!restored) throw new Error("Expected a deserialized layout");
+		expect(restored.sidebarCollapsed).toBe(original.sidebarCollapsed);
+		expect(restored.rightPanelOpen).toBe(original.rightPanelOpen);
+		expect(restored.densityMode).toBe(original.densityMode);
+		expect(restored.panes).toHaveLength(original.panes.length);
 	});
 
 	it("deserializeLayout returns null for invalid JSON", async () => {
@@ -263,7 +290,16 @@ describe("serializeLayout / deserializeLayout", () => {
 	it("deserializeLayout returns null for layout with invalid panes", async () => {
 		const { deserializeLayout } = await import("./layout-utils");
 		const bad = JSON.stringify({
-			panes: [{ id: "p1", type: "invalid", label: "X", position: "left", size: 100, minSize: 50 }],
+			panes: [
+				{
+					id: "p1",
+					type: "invalid",
+					label: "X",
+					position: "left",
+					size: 100,
+					minSize: 50,
+				},
+			],
 			sidebarCollapsed: false,
 			rightPanelOpen: true,
 			densityMode: "default",
@@ -279,7 +315,10 @@ describe("mergeLayouts", () => {
 		const { defaultWorkspaceLayout } = await import("./types");
 		const { mergeLayouts } = await import("./layout-utils");
 		const base = defaultWorkspaceLayout();
-		const merged = mergeLayouts(base, { sidebarCollapsed: true, densityMode: "compact" as const });
+		const merged = mergeLayouts(base, {
+			sidebarCollapsed: true,
+			densityMode: "compact" as const,
+		});
 		expect(merged.sidebarCollapsed).toBe(true);
 		expect(merged.densityMode).toBe("compact");
 		// Fields not in override remain unchanged
@@ -291,14 +330,16 @@ describe("mergeLayouts", () => {
 		const { defaultWorkspaceLayout, createPaneId } = await import("./types");
 		const { mergeLayouts } = await import("./layout-utils");
 		const base = defaultWorkspaceLayout();
-		const newPanes = [{
-			id: createPaneId(),
-			type: "generic" as const,
-			label: "Single",
-			position: "center" as const,
-			size: 800,
-			minSize: 400,
-		}];
+		const newPanes = [
+			{
+				id: createPaneId(),
+				type: "generic" as const,
+				label: "Single",
+				position: "center" as const,
+				size: 800,
+				minSize: 400,
+			},
+		];
 		const merged = mergeLayouts(base, { panes: newPanes });
 		expect(merged.panes).toHaveLength(1);
 		expect(merged.panes[0].label).toBe("Single");
@@ -368,7 +409,12 @@ describe("isValidLayout", () => {
 
 describe("Workspace creation", () => {
 	it("creates a valid workspace with all required fields", async () => {
-		const { createWorkspaceId, createCompanyRef, createPeriodRef, defaultWorkspaceLayout } = await import("./types");
+		const {
+			createWorkspaceId,
+			createCompanyRef,
+			createPeriodRef,
+			defaultWorkspaceLayout,
+		} = await import("./types");
 		const workspace = {
 			id: createWorkspaceId(),
 			company: createCompanyRef("c1", "Arkelythex SAC", "20546296564", "org1"),
@@ -386,7 +432,14 @@ describe("Workspace creation", () => {
 	});
 
 	it("WorkspaceIntent covers all 6 values", async () => {
-		const intents = ["close", "reconcile", "review", "investigate", "configure", "report"];
+		const intents = [
+			"close",
+			"reconcile",
+			"review",
+			"investigate",
+			"configure",
+			"report",
+		];
 		expect(intents).toHaveLength(6);
 		for (const intent of intents) {
 			expect(typeof intent).toBe("string");
@@ -400,8 +453,15 @@ describe("Workspace creation", () => {
 
 	it("PaneType covers all 9 values", async () => {
 		const types = [
-			"ledger", "sire-diff", "evidence", "agent-activity", "siar",
-			"approval", "reconciliation", "report", "generic",
+			"ledger",
+			"sire-diff",
+			"evidence",
+			"agent-activity",
+			"siar",
+			"approval",
+			"reconciliation",
+			"report",
+			"generic",
 		];
 		expect(types).toHaveLength(9);
 	});
@@ -430,34 +490,52 @@ describe("TRIANGULATE — createPeriodRef edge cases", () => {
 describe("TRIANGULATE — createCompanyRef edge cases", () => {
 	it("accepts empty id (domain leaves ownership validation to higher layers)", async () => {
 		const { createCompanyRef } = await import("./types");
-		expect(() => createCompanyRef("", "Name", "20546296564", "org1")).not.toThrow();
+		expect(() =>
+			createCompanyRef("", "Name", "20546296564", "org1"),
+		).not.toThrow();
 	});
 
 	it("accepts empty name", async () => {
 		const { createCompanyRef } = await import("./types");
-		expect(() => createCompanyRef("c1", "", "20546296564", "org1")).not.toThrow();
+		expect(() =>
+			createCompanyRef("c1", "", "20546296564", "org1"),
+		).not.toThrow();
 	});
 
 	it("rejects RUC with spaces", async () => {
 		const { createCompanyRef } = await import("./types");
-		expect(() => createCompanyRef("c1", "Test", "2054629656 ", "org1")).toThrow();
-		expect(() => createCompanyRef("c1", "Test", " 20546296564", "org1")).toThrow();
+		expect(() =>
+			createCompanyRef("c1", "Test", "2054629656 ", "org1"),
+		).toThrow();
+		expect(() =>
+			createCompanyRef("c1", "Test", " 20546296564", "org1"),
+		).toThrow();
 	});
 
 	it("rejects RUC with hyphens or dots", async () => {
 		const { createCompanyRef } = await import("./types");
-		expect(() => createCompanyRef("c1", "Test", "2054629656-4", "org1")).toThrow();
-		expect(() => createCompanyRef("c1", "Test", "20.546296564", "org1")).toThrow();
+		expect(() =>
+			createCompanyRef("c1", "Test", "2054629656-4", "org1"),
+		).toThrow();
+		expect(() =>
+			createCompanyRef("c1", "Test", "20.546296564", "org1"),
+		).toThrow();
 	});
 });
 
 describe("TRIANGULATE — validatePaneConfig edge cases", () => {
 	it("rejects config with zero size", async () => {
 		const { validatePaneConfig, createPaneId } = await import("./types");
-		expect(validatePaneConfig({
-			id: createPaneId(), type: "generic", label: "Z",
-			position: "center", size: 0, minSize: 0,
-		})).toBe(true); // minSize <= size holds (0 <= 0)
+		expect(
+			validatePaneConfig({
+				id: createPaneId(),
+				type: "generic",
+				label: "Z",
+				position: "center",
+				size: 0,
+				minSize: 0,
+			}),
+		).toBe(true); // minSize <= size holds (0 <= 0)
 	});
 
 	it("rejects config with negative size", async () => {
@@ -465,36 +543,60 @@ describe("TRIANGULATE — validatePaneConfig edge cases", () => {
 		// Negative size with a less-negative minSize technically passes the size check
 		// but negative sizes are unreasonable; domain doesn't guard for negative on purpose
 		// (UI layer enforces positive). Still minSize > size catches it.
-		expect(validatePaneConfig({
-			id: createPaneId(), type: "generic", label: "Neg",
-			position: "center", size: -100, minSize: 0,
-		})).toBe(false); // minSize (0) > size (-100)
+		expect(
+			validatePaneConfig({
+				id: createPaneId(),
+				type: "generic",
+				label: "Neg",
+				position: "center",
+				size: -100,
+				minSize: 0,
+			}),
+		).toBe(false); // minSize (0) > size (-100)
 	});
 });
 
 describe("TRIANGULATE — deserializeLayout edge cases", () => {
 	it("returns null for layout with null panes", async () => {
 		const { deserializeLayout } = await import("./layout-utils");
-		expect(deserializeLayout(JSON.stringify({
-			panes: null, sidebarCollapsed: false, rightPanelOpen: true, densityMode: "default",
-		}))).toBeNull();
+		expect(
+			deserializeLayout(
+				JSON.stringify({
+					panes: null,
+					sidebarCollapsed: false,
+					rightPanelOpen: true,
+					densityMode: "default",
+				}),
+			),
+		).toBeNull();
 	});
 
 	it("returns null for layout with missing boolean fields", async () => {
 		const { deserializeLayout } = await import("./layout-utils");
-		expect(deserializeLayout(JSON.stringify({
-			panes: [], sidebarCollapsed: "yes", rightPanelOpen: true, densityMode: "default",
-		}))).toBeNull();
+		expect(
+			deserializeLayout(
+				JSON.stringify({
+					panes: [],
+					sidebarCollapsed: "yes",
+					rightPanelOpen: true,
+					densityMode: "default",
+				}),
+			),
+		).toBeNull();
 	});
 
 	it("returns null for layout with a pane missing required fields", async () => {
 		const { deserializeLayout } = await import("./layout-utils");
-		expect(deserializeLayout(JSON.stringify({
-			panes: [{ id: "p1", label: "Broken" }],
-			sidebarCollapsed: false,
-			rightPanelOpen: true,
-			densityMode: "default",
-		}))).toBeNull();
+		expect(
+			deserializeLayout(
+				JSON.stringify({
+					panes: [{ id: "p1", label: "Broken" }],
+					sidebarCollapsed: false,
+					rightPanelOpen: true,
+					densityMode: "default",
+				}),
+			),
+		).toBeNull();
 	});
 });
 
