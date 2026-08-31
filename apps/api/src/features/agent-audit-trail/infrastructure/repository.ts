@@ -103,13 +103,13 @@ export class AgentDecisionLogRepository {
 				organizationId: row.organizationId,
 				agentContext: AgentContext.create({
 					name: row.agentName,
-					version: row.agentVersion ?? undefined,
+					...(row.agentVersion !== null && { version: row.agentVersion }),
 				}),
 				decisionData: DecisionData.create({
 					type: row.decisionType,
 					inputs: row.inputs as Record<string, unknown>,
 					outputs: row.outputs as Record<string, unknown>,
-					reasoning: row.reasoning ?? undefined,
+					...(row.reasoning !== null && { reasoning: row.reasoning }),
 				}),
 				hashChain: HashChain.create({
 					hash: row.hash,

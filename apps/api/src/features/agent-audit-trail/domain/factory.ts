@@ -49,14 +49,14 @@ export async function createAgentDecisionLog(
 
 	const agentContext = AgentContext.create({
 		name: input.agentName,
-		version: input.agentVersion,
+		...(input.agentVersion !== undefined && { version: input.agentVersion }),
 	});
 
 	const decisionData = DecisionData.create({
 		type: input.decisionType,
 		inputs: input.inputs,
 		outputs: input.outputs,
-		reasoning: input.reasoning,
+		...(input.reasoning !== undefined && { reasoning: input.reasoning }),
 	});
 
 	const hash = await computeHash({
