@@ -415,7 +415,9 @@ export class SireRegisterExportService {
 			{ header: "T.C.", key: "tipoCambio", width: 10 },
 			{ header: "Estado", key: "estado", width: 10 },
 		];
-		records.forEach((record) => worksheet.addRow(record));
+		records.forEach((record) => {
+			worksheet.addRow(record);
+		});
 		worksheet.getRow(1).font = { bold: true };
 		worksheet.getRow(1).fill = {
 			type: "pattern",
@@ -452,7 +454,9 @@ export class SireRegisterExportService {
 			{ header: "Moneda", key: "tipoMoneda", width: 10 },
 			{ header: "Estado", key: "estado", width: 10 },
 		];
-		records.forEach((record) => worksheet.addRow(record));
+		records.forEach((record) => {
+			worksheet.addRow(record);
+		});
 		worksheet.getRow(1).font = { bold: true };
 		worksheet.getRow(1).fill = {
 			type: "pattern",

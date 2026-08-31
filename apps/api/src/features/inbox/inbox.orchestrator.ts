@@ -178,6 +178,7 @@ export class InvoiceOrchestrator {
 						payload: { processed, total, percent },
 					});
 				}
+				return undefined;
 			}),
 		);
 
