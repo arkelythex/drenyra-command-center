@@ -154,20 +154,16 @@ export class SkillsService {
 			);
 		}
 
-    		const installation = await repo.installSkill(
-    			companyId,
-    			skillId,
-    			installedBy,
-    		);
-    		if (!installation) {
-    			throw new AppError(
-    				500,
-    				"INTERNAL_ERROR",
-    				"Failed to install skill",
-    			);
-    		}
+		const installation = await repo.installSkill(
+			companyId,
+			skillId,
+			installedBy,
+		);
+		if (!installation) {
+			throw new AppError(500, "INTERNAL_ERROR", "Failed to install skill");
+		}
 
-    		return {
+		return {
 			id: installation.id,
 			skillId: installation.skillId,
 			companyId: installation.companyId,
