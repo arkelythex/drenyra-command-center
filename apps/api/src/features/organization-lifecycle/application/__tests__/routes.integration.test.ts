@@ -60,7 +60,7 @@ const firmTenant: FirmTenantContext = {
 
 describe("Organization Lifecycle — Integration Tests", () => {
 	beforeAll(() => {
-		vi.spyOn(console, "log").mockImplementation(() => {});
+		vi.spyOn(console, "log").mockImplementation(() => undefined);
 	});
 
 	it("POST /api/firm/clients — creates organization and returns 201", async () => {
