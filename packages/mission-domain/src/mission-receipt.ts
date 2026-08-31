@@ -111,12 +111,10 @@ export interface SignedReceipt {
 /**
  * Serialize an object with keys sorted alphabetically.
  */
-function sortedStringify(obj: Record<string, unknown>): string {
-	const sortedKeys = Object.keys(obj).sort();
-	const sorted: Record<string, unknown> = {};
-	for (const key of sortedKeys) {
-		sorted[key] = obj[key];
-	}
+function sortedStringify(obj: ReceiptContent): string {
+	const sorted = Object.fromEntries(
+		Object.entries(obj).sort(([left], [right]) => left.localeCompare(right)),
+	);
 	return JSON.stringify(sorted);
 }
 
@@ -124,9 +122,7 @@ function sortedStringify(obj: Record<string, unknown>): string {
  * Generate a SHA-256 receipt hash with canonical field ordering.
  */
 export function generateReceiptHash(content: ReceiptContent): string {
-	return createHash("sha256")
-		.update(sortedStringify(content as unknown as Record<string, unknown>))
-		.digest("hex");
+	return createHash("sha256").update(sortedStringify(content)).digest("hex");
 }
 
 /**
@@ -183,9 +179,7 @@ export function signReceipt(
 	privateKeyBase64: string,
 	_keyId: string,
 ): { signature: string; canonicalPayload: string } {
-	const canonicalPayload = sortedStringify(
-		content as unknown as Record<string, unknown>,
-	);
+	const canonicalPayload = sortedStringify(content);
 	const privateKey = createPrivateKey({
 		key: Buffer.from(privateKeyBase64, "base64"),
 		format: "der",
@@ -213,9 +207,7 @@ export function verifyReceiptSignature(
 	publicKeyBase64: string,
 ): boolean {
 	try {
-		const canonicalPayload = sortedStringify(
-			content as unknown as Record<string, unknown>,
-		);
+		const canonicalPayload = sortedStringify(content);
 		const publicKey = createPublicKey({
 			key: Buffer.from(publicKeyBase64, "base64"),
 			format: "der",
