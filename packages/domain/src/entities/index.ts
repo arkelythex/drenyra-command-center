@@ -26,20 +26,8 @@ export {
 	type BankReconciliationProps,
 	type ReconciliationStatus,
 } from "./BankReconciliation";
-export { BankTransaction, type BankTransactionProps } from "./BankTransaction";
 export type { TransactionSource } from "./BankTransaction";
-export {
-	ReconciliationBatch,
-	type ReconciliationBatchProps,
-	type ReconciliationBatchStatus,
-	type ReconciliationMode,
-} from "./ReconciliationBatch";
-export {
-	ReconciliationRule,
-	type ReconciliationRuleConditions,
-	type ReconciliationRuleProps,
-	type ReconciliationRuleType,
-} from "./ReconciliationRule";
+export { BankTransaction, type BankTransactionProps } from "./BankTransaction";
 export {
 	CreditNote,
 	type CreditNoteProps,
@@ -151,6 +139,18 @@ export {
 	type OrganizationSettings,
 	type OrganizationStatus,
 } from "./organization";
+export {
+	ReconciliationBatch,
+	type ReconciliationBatchProps,
+	type ReconciliationBatchStatus,
+	type ReconciliationMode,
+} from "./ReconciliationBatch";
+export {
+	ReconciliationRule,
+	type ReconciliationRuleConditions,
+	type ReconciliationRuleProps,
+	type ReconciliationRuleType,
+} from "./ReconciliationRule";
 export type {
 	QueuePriority,
 	QueueStatus,
