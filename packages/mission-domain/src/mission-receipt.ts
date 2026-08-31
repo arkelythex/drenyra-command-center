@@ -11,14 +11,35 @@
 
 import {
 	createHash,
-	generateKeyPairSync,
-	timingSafeEqual,
-	randomBytes,
-	sign,
-	verify,
 	createPrivateKey,
 	createPublicKey,
+	generateKeyPairSync,
+	randomBytes,
+	sign,
+	timingSafeEqual,
+	verify,
 } from "node:crypto";
+
+export const ReceiptType = {
+	APPROVAL: "APPROVAL",
+	EXECUTION: "EXECUTION",
+	COMPLETION: "COMPLETION",
+	EXTERNAL_SUBMISSION: "EXTERNAL_SUBMISSION",
+} as const;
+
+export type ReceiptType = (typeof ReceiptType)[keyof typeof ReceiptType];
+
+export const ReceiptVerificationStatus = {
+	SIGNER_TRUSTED: "SIGNER_TRUSTED",
+	UNKNOWN_SIGNER: "UNKNOWN_SIGNER",
+	KEY_EXPIRED: "KEY_EXPIRED",
+	KEY_REVOKED: "KEY_REVOKED",
+	CONTENT_VALID: "CONTENT_VALID",
+	PAYLOAD_TAMPERED: "PAYLOAD_TAMPERED",
+} as const;
+
+export type ReceiptVerificationStatus =
+	(typeof ReceiptVerificationStatus)[keyof typeof ReceiptVerificationStatus];
 
 /**
  * Content that goes into a receipt hash.
@@ -52,11 +73,33 @@ export interface ReceiptKeyPair {
 	keyId: string;
 }
 
+export interface SigningKeyInfo {
+	keyId: string;
+	publicKey: string;
+	issuedAt: string;
+	expiresAt?: string;
+	revokedAt?: string;
+}
+
+export type KeyTrustResolver = (
+	keyId: string,
+) => SigningKeyInfo | undefined | Promise<SigningKeyInfo | undefined>;
+
+export interface ReceiptVerificationSteps {
+	hashValid: boolean;
+	signatureValid: boolean;
+	signerRecognized: boolean;
+	keyCurrent: boolean;
+	keyRevoked: boolean;
+}
+
 /**
  * Complete signed receipt bundle — the portable, self-verifying artifact.
  */
 export interface SignedReceipt {
 	protocolVersion: string;
+	receiptType: ReceiptType;
+	algorithm: "Ed25519";
 	content: ReceiptContent;
 	receiptHash: string;
 	signerKeyId: string;
@@ -198,12 +241,15 @@ export function buildSignedReceipt(
 	content: ReceiptContent,
 	keyPair: ReceiptKeyPair,
 	protocolVersion = "1.0",
+	receiptType: ReceiptType = ReceiptType.APPROVAL,
 ): SignedReceipt {
 	const receiptHash = generateReceiptHash(content);
 	const { signature } = signReceipt(content, keyPair.privateKey, keyPair.keyId);
 
 	return {
 		protocolVersion,
+		receiptType,
+		algorithm: "Ed25519",
 		content,
 		receiptHash,
 		signerKeyId: keyPair.keyId,
@@ -241,5 +287,90 @@ export function verifySignedReceipt(receipt: SignedReceipt): {
 		signatureValid,
 		keyId: receipt.signerKeyId,
 		protocolVersion: receipt.protocolVersion,
+	};
+}
+
+export async function verifySignedReceiptTrusted(
+	receipt: SignedReceipt,
+	resolveKey: KeyTrustResolver,
+): Promise<{
+	status: ReceiptVerificationStatus;
+	steps: ReceiptVerificationSteps;
+}> {
+	const failedSteps: ReceiptVerificationSteps = {
+		hashValid: false,
+		signatureValid: false,
+		signerRecognized: false,
+		keyCurrent: false,
+		keyRevoked: false,
+	};
+
+	if (!verifyReceiptIntegrity(receipt.content, receipt.receiptHash)) {
+		return {
+			status: ReceiptVerificationStatus.PAYLOAD_TAMPERED,
+			steps: failedSteps,
+		};
+	}
+
+	const signatureValid = verifyReceiptSignature(
+		receipt.content,
+		receipt.signature,
+		receipt.signerPublicKey,
+	);
+	if (!signatureValid) {
+		return {
+			status: ReceiptVerificationStatus.CONTENT_VALID,
+			steps: { ...failedSteps, hashValid: true },
+		};
+	}
+
+	const key = await resolveKey(receipt.signerKeyId);
+	if (key === undefined || key.publicKey !== receipt.signerPublicKey) {
+		return {
+			status: ReceiptVerificationStatus.UNKNOWN_SIGNER,
+			steps: {
+				...failedSteps,
+				hashValid: true,
+				signatureValid: true,
+			},
+		};
+	}
+
+	const now = Date.now();
+	if (key.expiresAt !== undefined && Date.parse(key.expiresAt) <= now) {
+		return {
+			status: ReceiptVerificationStatus.KEY_EXPIRED,
+			steps: {
+				hashValid: true,
+				signatureValid: true,
+				signerRecognized: true,
+				keyCurrent: false,
+				keyRevoked: false,
+			},
+		};
+	}
+
+	if (key.revokedAt !== undefined && Date.parse(key.revokedAt) <= now) {
+		return {
+			status: ReceiptVerificationStatus.KEY_REVOKED,
+			steps: {
+				hashValid: true,
+				signatureValid: true,
+				signerRecognized: true,
+				keyCurrent: true,
+				keyRevoked: true,
+			},
+		};
+	}
+
+	return {
+		status: ReceiptVerificationStatus.SIGNER_TRUSTED,
+		steps: {
+			hashValid: true,
+			signatureValid: true,
+			signerRecognized: true,
+			keyCurrent: true,
+			keyRevoked: false,
+		},
 	};
 }

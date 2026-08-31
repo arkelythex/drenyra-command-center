@@ -6,112 +6,121 @@
  * (API, web, CLI, MCP, mobile).
  */
 
-import type { AccountingMissionStatus } from "./status.js";
 import type { MissionIntent } from "./commands.js";
+import type { AccountingMissionStatus } from "./status.js";
+
+export const ReceiptType = {
+	APPROVAL: "APPROVAL",
+	EXECUTION: "EXECUTION",
+	COMPLETION: "COMPLETION",
+	EXTERNAL_SUBMISSION: "EXTERNAL_SUBMISSION",
+} as const;
+
+export type ReceiptType = (typeof ReceiptType)[keyof typeof ReceiptType];
 
 // ─── Mission Step ────────────────────────────────────────────────────
 
 export interface MissionStep {
-  id: string;
-  name: string;
-  description?: string;
-  status: "PENDING" | "IN_PROGRESS" | "COMPLETED" | "FAILED" | "SKIPPED";
-  startedAt?: string;
-  completedAt?: string;
-  error?: string;
-  evidenceIds?: string[];
+	id: string;
+	name: string;
+	description?: string;
+	status: "PENDING" | "IN_PROGRESS" | "COMPLETED" | "FAILED" | "SKIPPED";
+	startedAt?: string;
+	completedAt?: string;
+	error?: string;
+	evidenceIds?: string[];
 }
 
 // ─── Evidence Item ───────────────────────────────────────────────────
 
 export interface EvidenceItem {
-  id: string;
-  label: string;
-  type: string;
+	id: string;
+	label: string;
+	type: string;
 }
 
 // ─── Proposal ─────────────────────────────────────────────────────────
 
 export interface MissionProposal {
-  id: string;
-  missionId: string;
-  version: number;
-  evidence: EvidenceItem[];
-  evidenceHash: string;
-  summary: string;
-  riskLevel: "LOW" | "MEDIUM" | "HIGH";
-  generatedAt: string;
-  expiresAt?: string;
+	id: string;
+	missionId: string;
+	version: number;
+	evidence: EvidenceItem[];
+	evidenceHash: string;
+	summary: string;
+	riskLevel: "LOW" | "MEDIUM" | "HIGH";
+	generatedAt: string;
+	expiresAt?: string;
 }
 
 // ─── Rejection ────────────────────────────────────────────────────────
 
 export interface MissionRejection {
-  reason: string;
-  rejectedBy: string;
-  rejectedAt: string;
-  proposalVersion: number;
+	reason: string;
+	rejectedBy: string;
+	rejectedAt: string;
+	proposalVersion: number;
 }
 
 // ─── Blocker ──────────────────────────────────────────────────────────
 
 export interface MissionBlocker {
-  id: string;
-  reason: string;
-  severity: "WARNING" | "ERROR" | "CRITICAL";
-  occurredAt: string;
-  resolvedAt?: string;
+	id: string;
+	reason: string;
+	severity: "WARNING" | "ERROR" | "CRITICAL";
+	occurredAt: string;
+	resolvedAt?: string;
 }
 
 // ─── Snapshot ─────────────────────────────────────────────────────────
 
 export interface MissionSnapshot {
-  id: string;
-  companyId: string;
-  fiscalPeriod: string;
-  intent: MissionIntent;
-  status: AccountingMissionStatus;
-  version: number;
-  progress: number;
-  steps: MissionStep[];
-  currentStep: string;
-  blockers: MissionBlocker[];
-  proposal: MissionProposal | null;
-  rejection: MissionRejection | null;
-  receiptId: string | null;
-  receiptHash: string | null;
-  lastEventSequence: number;
-  createdAt: string;
-  updatedAt: string;
+	id: string;
+	companyId: string;
+	fiscalPeriod: string;
+	intent: MissionIntent;
+	status: AccountingMissionStatus;
+	version: number;
+	progress: number;
+	steps: MissionStep[];
+	currentStep: string;
+	blockers: MissionBlocker[];
+	proposal: MissionProposal | null;
+	rejection: MissionRejection | null;
+	receiptId: string | null;
+	receiptHash: string | null;
+	lastEventSequence: number;
+	createdAt: string;
+	updatedAt: string;
 }
 
 // ─── Readiness Gates ─────────────────────────────────────────────────
 
 export interface ReadinessGateResult {
-  gateName: string;
-  status: string;
-  details?: string;
-  evaluatedAt?: string;
+	gateName: string;
+	status: string;
+	details?: string;
+	evaluatedAt?: string;
 }
 
 // ─── Accounting Exceptions ───────────────────────────────────────────
 
 export interface AccountingException {
-  id: string;
-  missionId: string;
-  code: string;
-  severity: string;
-  subjectRef: string;
-  evidenceRefs: string[];
-  resolutionStatus: string;
+	id: string;
+	missionId: string;
+	code: string;
+	severity: string;
+	subjectRef: string;
+	evidenceRefs: string[];
+	resolutionStatus: string;
 }
 
 // ─── Harness Error ──────────────────────────────────────────────────
 
 export interface HarnessError {
-  code: string;
-  message: string;
-  statusCode: number;
-  details?: Record<string, unknown>;
-  isTimeout: boolean;
+	code: string;
+	message: string;
+	statusCode: number;
+	details?: Record<string, unknown>;
+	isTimeout: boolean;
 }
