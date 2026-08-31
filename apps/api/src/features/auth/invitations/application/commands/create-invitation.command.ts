@@ -8,10 +8,14 @@
  * @module invitations/application/commands/create-invitation.command
  */
 
+import type { MembershipRole } from "@drenyra/domain/scope";
 import { db } from "@drenyra/persistence/client";
 import { and, eq } from "@drenyra/persistence/query";
-import { authInvitations, authUserCompanies, authUsers } from "@drenyra/persistence/schema";
-import type { MembershipRole } from "@drenyra/domain/scope";
+import {
+	authInvitations,
+	authUserCompanies,
+	authUsers,
+} from "@drenyra/persistence/schema";
 import { createLogger } from "../../../../../lib/logger";
 import { fail, ok } from "../../../../shared/api-response";
 import { resolveSessionIdentityFromHeaders } from "../../../handlers/session-identity";
@@ -22,7 +26,7 @@ import {
 	normalizeEmail,
 } from "../../domain/invitation.entity";
 import { INVITATION_ERROR_CODES } from "../../domain/invitation.errors";
-import { hasInvitePermission, getUserEmail } from "../invitation-helpers";
+import { getUserEmail, hasInvitePermission } from "../invitation-helpers";
 
 const logger = createLogger({ feature: "auth", handler: "create-invitation" });
 
@@ -69,10 +73,7 @@ async function findExistingMemberByEmail(
 	);
 }
 
-async function findExistingPendingInvitation(
-	email: string,
-	companyId: string,
-) {
+async function findExistingPendingInvitation(email: string, companyId: string) {
 	const normalizedEmail = normalizeEmail(email);
 	const rows = await db
 		.select()
@@ -116,11 +117,17 @@ export async function createInvitation(
 
 	if (!isInvitableRole(role as MembershipRole)) {
 		ctx.set.status = 422;
-		return fail("Cannot invite with OWNER role", INVITATION_ERROR_CODES.CANNOT_INVITE_OWNER);
+		return fail(
+			"Cannot invite with OWNER role",
+			INVITATION_ERROR_CODES.CANNOT_INVITE_OWNER,
+		);
 	}
 
 	// 3. Validate permission
-	const hasPermission = await hasInvitePermission(identity.authUserId, companyId);
+	const hasPermission = await hasInvitePermission(
+		identity.authUserId,
+		companyId,
+	);
 	if (!hasPermission) {
 		ctx.set.status = 403;
 		return fail("Insufficient permissions", "FORBIDDEN");
@@ -132,11 +139,17 @@ export async function createInvitation(
 	const sessionEmail = await getUserEmail(identity.authUserId);
 	if (sessionEmail && normalizeEmail(sessionEmail) === normalizedEmail) {
 		ctx.set.status = 422;
-		return fail("Cannot invite yourself", INVITATION_ERROR_CODES.CANNOT_INVITE_SELF);
+		return fail(
+			"Cannot invite yourself",
+			INVITATION_ERROR_CODES.CANNOT_INVITE_SELF,
+		);
 	}
 
 	// 5. Check already member
-	const isAlreadyMember = await findExistingMemberByEmail(normalizedEmail, companyId);
+	const isAlreadyMember = await findExistingMemberByEmail(
+		normalizedEmail,
+		companyId,
+	);
 	if (isAlreadyMember) {
 		ctx.set.status = 409;
 		return fail(
@@ -146,7 +159,10 @@ export async function createInvitation(
 	}
 
 	// 6. Idempotency: check existing pending invitation
-	const existing = await findExistingPendingInvitation(normalizedEmail, companyId);
+	const existing = await findExistingPendingInvitation(
+		normalizedEmail,
+		companyId,
+	);
 	if (existing) {
 		ctx.set.status = 200;
 		return ok({
