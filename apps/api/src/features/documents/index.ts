@@ -32,7 +32,9 @@ export function buildDocumentsModule(deps: BuildDocumentsRoutesDeps = {}) {
 		...(deps.parseStoredExtractedData !== undefined
 			? { parseStoredExtractedData: deps.parseStoredExtractedData }
 			: {}),
-		...(deps.queueOcrJob !== undefined ? { queueOcrJob: deps.queueOcrJob } : {}),
+		...(deps.queueOcrJob !== undefined
+			? { queueOcrJob: deps.queueOcrJob }
+			: {}),
 		...(deps.resolveOrganizationIdFromCompanyId !== undefined
 			? {
 					resolveOrganizationIdFromCompanyId:
