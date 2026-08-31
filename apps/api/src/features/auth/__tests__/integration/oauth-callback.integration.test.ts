@@ -101,9 +101,10 @@ describe("DELETE /api/auth/unlink-provider (integration)", () => {
 describe("resolveSocialProviders wired into auth.config", () => {
 	it("socialProviders and databaseHooks are defined in auth options", async () => {
 		// Re-import to get the actual module with env-based resolution
-		const { auth } = await vi.importActual<
-			typeof import("../../auth.config")
-		>("../../auth.config");
+		const { auth } =
+			await vi.importActual<typeof import("../../auth.config")>(
+				"../../auth.config",
+			);
 
 		expect(auth).toBeDefined();
 		// auth.options should contain socialProviders and databaseHooks

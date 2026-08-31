@@ -88,10 +88,10 @@ async function recordFailedLogin(
 		})
 		.where(eq(authUsers.id, state.userId));
 
-    	return {
-    		locked: isLocked,
-    		...(lockedUntil !== undefined ? { lockedUntil } : {}),
-    	};
+	return {
+		locked: isLocked,
+		...(lockedUntil !== undefined ? { lockedUntil } : {}),
+	};
 }
 
 async function recordSuccessfulLogin(email: string): Promise<void> {
@@ -247,12 +247,33 @@ export async function handleLogin(
 	}
 }
 
+type BetterAuthError =
+	| string
+	| number
+	| boolean
+	| null
+	| unknown[]
+	| Record<string, unknown>;
+
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return typeof value === "object" && value !== null;
 }
 
-function getBetterAuthError(payload: unknown): unknown {
-	if (!isRecord(payload)) return undefined;
+function isBetterAuthError(value: unknown): value is BetterAuthError {
+	return (
+		value === null ||
+		typeof value === "string" ||
+		typeof value === "number" ||
+		typeof value === "boolean" ||
+		Array.isArray(value) ||
+		isRecord(value)
+	);
+}
+
+function getBetterAuthError(payload: unknown): BetterAuthError | undefined {
+	if (!isRecord(payload) || !isBetterAuthError(payload.error)) {
+		return undefined;
+	}
 	return payload.error;
 }
 

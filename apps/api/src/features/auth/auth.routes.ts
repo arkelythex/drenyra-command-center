@@ -130,7 +130,7 @@ async function buildNativeAuthResponse(
  *   headers: { 'Content-Type': 'application/json' },
  *   body: JSON.stringify({
  *     email: 'user@example.com',
- *     password: 'SecureP@ss2026',
+ *     password: '<redacted>',
  *     name: 'Juan Pérez',
  *     ruc: '20123456789'
  *   })
@@ -239,26 +239,32 @@ export const authRoutes = new Elysia({ prefix: "/api/auth" })
 	.get("/session", (ctx) => getSession(ctx))
 
 	// Account Unlinking
-	.delete("/unlink-provider", async ({ body, set }) => {
-		try {
-			const result = await unlinkProvider({
-				userId: body.userId,
-				providerId: body.providerId,
-			});
-			return result;
-		} catch (error) {
-			set.status = 400;
-			return {
-				error:
-					error instanceof Error ? error.message : "Failed to unlink provider",
-			};
-		}
-	}, {
-		body: t.Object({
-			userId: t.String(),
-			providerId: t.String(),
-		}),
-	})
+	.delete(
+		"/unlink-provider",
+		async ({ body, set }) => {
+			try {
+				const result = await unlinkProvider({
+					userId: body.userId,
+					providerId: body.providerId,
+				});
+				return result;
+			} catch (error) {
+				set.status = 400;
+				return {
+					error:
+						error instanceof Error
+							? error.message
+							: "Failed to unlink provider",
+				};
+			}
+		},
+		{
+			body: t.Object({
+				userId: t.String(),
+				providerId: t.String(),
+			}),
+		},
+	)
 
 	// BetterAuth Native Routes - mounted at root to handle standard BetterAuth paths
 	.all("/*", async ({ request, set }) => {
