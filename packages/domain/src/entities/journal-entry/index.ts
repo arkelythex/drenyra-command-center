@@ -1,9 +1,9 @@
-export { JournalEntry, JournalLine } from "./entity";
-export { CompensatingEntry } from "./compensating-entry";
 export type {
-	CompensatingEntryType,
 	CompensatingEntryProps,
+	CompensatingEntryType,
 } from "./compensating-entry";
+export { CompensatingEntry } from "./compensating-entry";
+export { JournalEntry, JournalLine } from "./entity";
 export type {
 	JournalEntryProps,
 	JournalEntryStatus,
