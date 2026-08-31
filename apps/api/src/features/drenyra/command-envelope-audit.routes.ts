@@ -48,7 +48,7 @@ export function createCommandEnvelopeAuditRoutes({
 			const events = await commandCenter.listAuditEvents(
 				contextResolution.context,
 				{
-					caseId: query.caseId,
+					...(query.caseId !== undefined ? { caseId: query.caseId } : {}),
 					eventTypes: commandEnvelopeEventTypes[decision],
 					limit: readLimit(query.limit),
 				},

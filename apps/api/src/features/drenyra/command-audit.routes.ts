@@ -116,12 +116,13 @@ async function listCommandAudit(
 			"DRENYRA_CAPABILITY_DENIED",
 		);
 	}
+	const eventType = query.eventType ?? eventTypeForDecision(query.decision);
 	const events = await commandCenter.listCommandAuditEvents(
 		contextResolution.context,
 		{
-			caseId: query.caseId,
-			commandId: query.commandId,
-			eventType: query.eventType ?? eventTypeForDecision(query.decision),
+			...(query.caseId !== undefined ? { caseId: query.caseId } : {}),
+			...(query.commandId !== undefined ? { commandId: query.commandId } : {}),
+			...(eventType !== undefined ? { eventType } : {}),
 		},
 	);
 	return {
@@ -158,7 +159,7 @@ function limitFromQuery(rawLimit?: string): number {
 function auditEventView(event: AuditEvent): CommandAuditEventView {
 	return {
 		id: event.id,
-		caseId: event.caseId,
+		...(event.caseId !== undefined ? { caseId: event.caseId } : {}),
 		eventType: event.eventType as CommandAuditEventType,
 		actorId: event.actorId,
 		message: event.message,

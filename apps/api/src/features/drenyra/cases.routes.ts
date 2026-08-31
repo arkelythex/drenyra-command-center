@@ -53,9 +53,13 @@ export function createCasesRoutes({ commandCenter }: CasesRoutesDeps) {
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
+					const idempotencyKey = readIdempotencyKey(headers, body);
 					const fiscalCase = await commandCenter.createFiscalCase(
 						contextResolution.context,
-						{ ...body, idempotencyKey: readIdempotencyKey(headers, body) },
+						{
+							...body,
+							...(idempotencyKey !== undefined ? { idempotencyKey } : {}),
+						},
 					);
 					set.status = 201;
 					return ok(fiscalCase);

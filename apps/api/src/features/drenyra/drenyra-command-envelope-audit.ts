@@ -77,7 +77,7 @@ export async function recordCommandEnvelopeCapability(
 	if (typeof recorder.recordCapabilityDecision === "function") {
 		await recorder.recordCapabilityDecision(context, {
 			agentType: input.evaluation.policy.agentType,
-			caseId: input.caseId,
+			...(input.caseId !== undefined ? { caseId: input.caseId } : {}),
 			commandId: input.commandId,
 			decision: input.evaluation.decision,
 			reason: input.evaluation.reason,

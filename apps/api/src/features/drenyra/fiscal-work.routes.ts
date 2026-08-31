@@ -32,14 +32,13 @@ export function createDrenyraFiscalWorkRoutes(
 					contextResolution.missingHeaders,
 				);
 			} else {
+				const traceId = resolveInspectTraceId(headers);
 				envelope = await commandCenter.inspectFiscalWorkItem(
 					contextResolution.context,
 					{
 						workItemId: params.id,
 						capabilityGranted: hasInspectCapabilityGrant(headers),
-						...(resolveInspectTraceId(headers) !== undefined
-							? { traceId: resolveInspectTraceId(headers) }
-							: {}),
+						...(traceId !== undefined ? { traceId } : {}),
 						sourceSurface: resolveInspectSourceSurface(headers),
 					},
 				);
