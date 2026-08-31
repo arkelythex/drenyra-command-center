@@ -88,7 +88,7 @@ export function sanitizeFindingTemplate(
 						finding.recommendedAction,
 						MAX_FINDING_FIELD_LENGTH,
 					),
-			  }
+				}
 			: {}),
 	};
 }
