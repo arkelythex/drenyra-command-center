@@ -54,7 +54,9 @@ export const agentsRoutes = new Elysia({
 					...(query.period !== undefined ? { period: query.period } : {}),
 					...(query.status !== undefined ? { status: query.status } : {}),
 					...(query.risk !== undefined ? { risk: query.risk } : {}),
-					...(query.agentType !== undefined ? { agentType: query.agentType } : {}),
+					...(query.agentType !== undefined
+						? { agentType: query.agentType }
+						: {}),
 					...(limit !== undefined ? { limit } : {}),
 					...(offset !== undefined ? { offset } : {}),
 				});
@@ -87,6 +89,7 @@ export const agentsRoutes = new Elysia({
 				const result = agentsService.getSession(companyId, params.id);
 				return ok(result);
 			} catch (error) {
+				// SAFETY: Elysia's response status setter accepts numeric status codes at runtime.
 				return handleServiceError(error, set as unknown as { status: number });
 			}
 		},
@@ -109,6 +112,7 @@ export const agentsRoutes = new Elysia({
 				const result = agentsService.getTimeline(companyId, params.id);
 				return ok(result);
 			} catch (error) {
+				// SAFETY: Elysia's response status setter accepts numeric status codes at runtime.
 				return handleServiceError(error, set as unknown as { status: number });
 			}
 		},
@@ -131,6 +135,7 @@ export const agentsRoutes = new Elysia({
 				const result = agentsService.pauseSession(companyId, params.id);
 				return ok(result);
 			} catch (error) {
+				// SAFETY: Elysia's response status setter accepts numeric status codes at runtime.
 				return handleServiceError(error, set as unknown as { status: number });
 			}
 		},
@@ -154,6 +159,7 @@ export const agentsRoutes = new Elysia({
 				const result = agentsService.resumeSession(companyId, params.id);
 				return ok(result);
 			} catch (error) {
+				// SAFETY: Elysia's response status setter accepts numeric status codes at runtime.
 				return handleServiceError(error, set as unknown as { status: number });
 			}
 		},
@@ -177,6 +183,7 @@ export const agentsRoutes = new Elysia({
 				const result = agentsService.cancelSession(companyId, params.id);
 				return ok(result);
 			} catch (error) {
+				// SAFETY: Elysia's response status setter accepts numeric status codes at runtime.
 				return handleServiceError(error, set as unknown as { status: number });
 			}
 		},
