@@ -64,12 +64,12 @@ export const aiToolPermissionsModule = new Elysia({
 				return validationErrorResponse(parsedQuery.error);
 			}
 
-    			try {
-    				const data = await listPermissions(
-    					parsedQuery.data.companyId !== undefined
-    						? { companyId: parsedQuery.data.companyId }
-    						: {},
-    				);
+			try {
+				const data = await listPermissions(
+					parsedQuery.data.companyId !== undefined
+						? { companyId: parsedQuery.data.companyId }
+						: {},
+				);
 				const contract = AiToolPermissionListResponseSchema.safeParse(data);
 				if (!contract.success) {
 					set.status = 500;
@@ -99,17 +99,17 @@ export const aiToolPermissionsModule = new Elysia({
 				return validationErrorResponse(parsedBody.error);
 			}
 
-    			try {
-    				const data = await createPermission({
-    					toolName: parsedBody.data.toolName,
-    					effect: parsedBody.data.effect,
-    					...(parsedBody.data.companyId !== undefined
-    						? { companyId: parsedBody.data.companyId }
-    						: {}),
-    					...(parsedBody.data.organizationId !== undefined
-    						? { organizationId: parsedBody.data.organizationId }
-    						: {}),
-    				});
+			try {
+				const data = await createPermission({
+					toolName: parsedBody.data.toolName,
+					effect: parsedBody.data.effect,
+					...(parsedBody.data.companyId !== undefined
+						? { companyId: parsedBody.data.companyId }
+						: {}),
+					...(parsedBody.data.organizationId !== undefined
+						? { organizationId: parsedBody.data.organizationId }
+						: {}),
+				});
 				const contract = AiToolPermissionRecordSchema.safeParse(data);
 				if (!contract.success) {
 					set.status = 500;
@@ -176,24 +176,24 @@ export const aiToolPermissionsModule = new Elysia({
 				return validationErrorResponse(parsedBody.error);
 			}
 
-    			try {
-    				const data = await updatePermission({
-    					id: parsedParams.data.id,
-    					data: {
-    						...(parsedBody.data.toolName !== undefined
-    							? { toolName: parsedBody.data.toolName }
-    							: {}),
-    						...(parsedBody.data.effect !== undefined
-    							? { effect: parsedBody.data.effect }
-    							: {}),
-    						...(parsedBody.data.companyId !== undefined
-    							? { companyId: parsedBody.data.companyId }
-    							: {}),
-    						...(parsedBody.data.organizationId !== undefined
-    							? { organizationId: parsedBody.data.organizationId }
-    							: {}),
-    					},
-    				});
+			try {
+				const data = await updatePermission({
+					id: parsedParams.data.id,
+					data: {
+						...(parsedBody.data.toolName !== undefined
+							? { toolName: parsedBody.data.toolName }
+							: {}),
+						...(parsedBody.data.effect !== undefined
+							? { effect: parsedBody.data.effect }
+							: {}),
+						...(parsedBody.data.companyId !== undefined
+							? { companyId: parsedBody.data.companyId }
+							: {}),
+						...(parsedBody.data.organizationId !== undefined
+							? { organizationId: parsedBody.data.organizationId }
+							: {}),
+					},
+				});
 				const contract = AiToolPermissionRecordSchema.safeParse(data);
 				if (!contract.success) {
 					set.status = 500;
