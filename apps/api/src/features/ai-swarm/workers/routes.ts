@@ -87,7 +87,9 @@ const enqueueRoute = new Elysia().post(
 				headers: headers as Record<string, unknown>,
 				operation: "cognitive:approval:resolve",
 				resource: "/api/ai-workers/enqueue",
-				...(body.companyId !== undefined ? { requestedCompanyId: body.companyId } : {}),
+				...(body.companyId !== undefined
+					? { requestedCompanyId: body.companyId }
+					: {}),
 				set,
 			});
 			if (isAuthFailure(access)) return access;
@@ -197,7 +199,9 @@ const listRoute = new Elysia().get(
 				headers: headers as Record<string, unknown>,
 				operation: "cognitive:state:read",
 				resource: "/api/ai-workers/list",
-				...(query.companyId !== undefined ? { requestedCompanyId: query.companyId } : {}),
+				...(query.companyId !== undefined
+					? { requestedCompanyId: query.companyId }
+					: {}),
 				set,
 			});
 			if (isAuthFailure(access)) return access;
@@ -337,9 +341,14 @@ const cancelRoute = new Elysia().delete(
  * console.log(aiWorkersRoutes);
  * ```
  */
-export const aiWorkersRoutes = new Elysia({ prefix: "/api/ai-workers" })
+// SAFETY: The plugin boundary intentionally publishes Elysia's base contract;
+// generated route internals include a private queue Task type that cannot appear
+// in the emitted declaration.
+export const aiWorkersRoutes = new Elysia({
+	prefix: "/api/ai-workers",
+})
 	.use(enqueueRoute)
 	.use(statusRoute)
 	.use(listRoute)
 	.use(metricsRoute)
-	.use(cancelRoute);
+	.use(cancelRoute) as unknown as Elysia<"/api/ai-workers">;
