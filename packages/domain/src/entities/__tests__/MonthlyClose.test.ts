@@ -8,22 +8,6 @@ type CloseStatus =
 	| "LOCKED";
 type ItemStatus = "PENDING" | "IN_PROGRESS" | "COMPLETED" | "WAIVED";
 type GateStatus = "OPEN" | "PASSED" | "FAILED" | "WAIVED";
-type GateType =
-	| "open_prs"
-	| "unverified_evidence"
-	| "bank_not_reconciled"
-	| "missing_depreciation"
-	| "pending_tax"
-	| "prior_period_unlocked";
-type ChecklistCategory =
-	| "bank_reconciliation"
-	| "depreciation"
-	| "tax_provision"
-	| "accrual"
-	| "deferral"
-	| "inventory"
-	| "intercompany"
-	| "other";
 
 const VALID_TRANSITIONS: Record<CloseStatus, CloseStatus[]> = {
 	PENDING: ["IN_PROGRESS"],
