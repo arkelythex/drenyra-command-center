@@ -24,7 +24,9 @@ export function forwardSetCookiesFromHeaders(
 	const cookies = getSetCookieValues(upstream);
 	if (cookies.length === 0) return;
 	if (cookies.length === 1) {
-		set.headers["set-cookie"] = cookies[0]!;
+		const [firstCookie] = cookies;
+		if (firstCookie === undefined) return;
+		set.headers["set-cookie"] = firstCookie;
 	} else {
 		set.headers["set-cookie"] = cookies;
 	}
