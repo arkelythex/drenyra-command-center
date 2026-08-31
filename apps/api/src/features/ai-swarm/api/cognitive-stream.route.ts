@@ -38,7 +38,9 @@ export const cognitiveStreamRoute = new Elysia({ prefix: "/api/ai-swarm" })
 				headers: headers as Record<string, unknown>,
 				operation: "cognitive:state:read",
 				resource: "/api/ai-swarm/cognitive-stream/runs/:runId/state",
-				requestedCompanyId: query.companyId,
+				...(query.companyId !== undefined && {
+					requestedCompanyId: query.companyId,
+				}),
 			});
 			if (!authz.ok) {
 				set.status = authz.status;
@@ -76,7 +78,9 @@ export const cognitiveStreamRoute = new Elysia({ prefix: "/api/ai-swarm" })
 				body.toolCallId,
 				body.approved,
 				{
-					pairingCode: body.pairingCode,
+					...(body.pairingCode !== undefined && {
+						pairingCode: body.pairingCode,
+					}),
 				},
 			);
 			const deliveredToLiveStream = liveResolution.ok;
@@ -86,8 +90,10 @@ export const cognitiveStreamRoute = new Elysia({ prefix: "/api/ai-swarm" })
 					runId: body.runId,
 					toolCallId: body.toolCallId,
 					approved: body.approved,
-					pairingCode: body.pairingCode,
-					reason: body.reason,
+					...(body.pairingCode !== undefined && {
+						pairingCode: body.pairingCode,
+					}),
+					...(body.reason !== undefined && { reason: body.reason }),
 					decidedBy: body.decidedBy ?? authz.actor.authUserId,
 				});
 
@@ -142,7 +148,7 @@ export const cognitiveStreamRoute = new Elysia({ prefix: "/api/ai-swarm" })
 				agentName: "cognitive_approval_gate",
 				agentVersion: "2026.02",
 				decisionType: body.approved ? "approval_granted" : "approval_rejected",
-				reasoning: body.reason?.trim() || undefined,
+				...(body.reason?.trim() ? { reasoning: body.reason.trim() } : {}),
 				inputs: {
 					traceId: body.runId,
 					runId: body.runId,
