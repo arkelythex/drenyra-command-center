@@ -7,6 +7,10 @@
 
 import { fail } from "../../shared/api-response";
 
+type ReportErrorOptions = NonNullable<Parameters<typeof fail>[2]> & {
+	status?: number;
+};
+
 /**
  * Create a standardized reports API error response.
  */
@@ -16,7 +20,11 @@ export function reportError(
 	details?: unknown,
 	status?: number,
 ): ReturnType<typeof fail> {
-	return fail(message, code, { details, status });
+	const options: ReportErrorOptions = {
+		details,
+		...(status !== undefined ? { status } : {}),
+	};
+	return fail(message, code, options);
 }
 
 /**

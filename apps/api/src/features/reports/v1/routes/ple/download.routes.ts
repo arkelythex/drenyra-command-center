@@ -7,12 +7,10 @@
 
 import { Elysia } from "elysia";
 import { companyScopeGuard } from "../../../../../shared/plugins";
-import { fail, ok } from "../../../../shared/api-response";
+import { fail } from "../../../../shared/api-response";
 import { PleGeneratorService } from "../../../application/services/ple-generator.service";
-import { z } from "zod";
 
 const pleGenerator = new PleGeneratorService();
-const IdParamSchema = z.object({ generationId: z.string().uuid() });
 
 export const pleDownloadRoute = new Elysia()
 	.use(companyScopeGuard({ allowHeaderFallback: true }))

@@ -9,8 +9,13 @@ function decimalStringToCents(value: string): number {
 		throw new Error(`Invalid decimal amount: ${value}`);
 	}
 
+	const wholeDigits = match[2];
+	if (wholeDigits === undefined) {
+		throw new Error(`Invalid decimal amount: ${value}`);
+	}
+
 	const sign = match[1] === "-" ? -1 : 1;
-	const whole = Number.parseInt(match[2], 10);
+	const whole = Number.parseInt(wholeDigits, 10);
 	const fraction = (match[3] ?? "").padEnd(2, "0");
 	const cents = Number.parseInt(fraction || "0", 10);
 
