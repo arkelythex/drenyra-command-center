@@ -17,6 +17,38 @@ import type {
 	TransactionType,
 } from "./types";
 
+function validateTransactionEntry(entry: TransactionEntry): void {
+	const hasDebit = entry.debit.isPositive();
+	const hasCredit = entry.credit.isPositive();
+
+	if (hasDebit && hasCredit) {
+		throw new Error(
+			`El asiento ${entry.id} no puede tener débito y crédito simultáneamente`,
+		);
+	}
+
+	if (!hasDebit && !hasCredit) {
+		throw new Error(`El asiento ${entry.id} debe tener débito o crédito`);
+	}
+}
+
+function validateCurrencyConsistency(
+	entries: readonly TransactionEntry[],
+): void {
+	if (entries.length === 0) return;
+
+	const firstCurrency =
+		entries[0]?.debit.getCurrency() ?? entries[0]?.credit.getCurrency();
+	for (const entry of entries) {
+		if (
+			entry.debit.getCurrency() !== firstCurrency ||
+			entry.credit.getCurrency() !== firstCurrency
+		) {
+			throw new Error("Todos los asientos deben usar la misma moneda");
+		}
+	}
+}
+
 /**
  * Accounting transaction aggregate (double-entry bookkeeping).
  *
@@ -57,34 +89,11 @@ export class Transaction {
 
 		// Rule 3: Each entry must have either debit or credit (not both non-zero)
 		for (const entry of this.props.entries) {
-			const hasDebit = entry.debit.isPositive();
-			const hasCredit = entry.credit.isPositive();
-
-			if (hasDebit && hasCredit) {
-				throw new Error(
-					`El asiento ${entry.id} no puede tener débito y crédito simultáneamente`,
-				);
-			}
-
-			if (!hasDebit && !hasCredit) {
-				throw new Error(`El asiento ${entry.id} debe tener débito o crédito`);
-			}
+			validateTransactionEntry(entry);
 		}
 
 		// Rule 4: All entries must use the same currency
-		if (this.props.entries.length > 0) {
-			const firstCurrency =
-				this.props.entries[0]?.debit.getCurrency() ??
-				this.props.entries[0]?.credit.getCurrency();
-			for (const entry of this.props.entries) {
-				if (
-					entry.debit.getCurrency() !== firstCurrency ||
-					entry.credit.getCurrency() !== firstCurrency
-				) {
-					throw new Error("Todos los asientos deben usar la misma moneda");
-				}
-			}
-		}
+		validateCurrencyConsistency(this.props.entries);
 
 		// Rule 5: Debits must equal credits (checked last after currency validation)
 		const totalDebits = this.calculateTotalDebits();
