@@ -11,30 +11,29 @@
  * @module auth/mfa/routes
  */
 
-import { Elysia, t } from "elysia";
 import {
-	initiateEnrollment,
 	completeEnrollment,
-	verifyMfaChallenge,
-	redeemRecoveryCode,
 	disableMfa,
-	MfaNotAvailableError,
-	MfaAlreadyEnabledError,
-	MfaNotEnabledError,
-	MfaEnrollmentNotStartedError,
 	InvalidTotpCodeError,
+	initiateEnrollment,
+	MfaAlreadyEnabledError,
+	MfaEnrollmentNotStartedError,
+	MfaNotAvailableError,
+	MfaNotEnabledError,
+	redeemRecoveryCode,
+	verifyMfaChallenge,
 } from "@drenyra/security/mfa";
-import { createMfaDbAdapter } from "./mfa-db-adapter";
+import { type Context, Elysia, t } from "elysia";
 import { createLogger } from "../../../lib/logger";
+import { createMfaDbAdapter } from "./mfa-db-adapter";
 
 const logger = createLogger({ feature: "auth", handler: "mfa-routes" });
 const mfaDb = createMfaDbAdapter();
 
 /** Extract authenticated user ID from session/context. */
-async function getAuthenticatedUserId(ctx: {
-	request: Request;
-	set: { status: number };
-}): Promise<string | null> {
+async function getAuthenticatedUserId(
+	ctx: Pick<Context, "request" | "set">,
+): Promise<string | null> {
 	// Read session from BetterAuth cookie
 	const cookieHeader = ctx.request.headers.get("cookie") ?? "";
 	const sessionToken = extractSessionToken(cookieHeader);
