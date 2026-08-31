@@ -74,6 +74,10 @@ export class BillRepository implements IBillRepository {
 				.from(billItems)
 				.where(eq(billItems.billId, bill.id));
 
+			if (!savedBill) {
+				throw new Error("Failed to create bill");
+			}
+
 			return this.mapToDomain(savedBill, items);
 		});
 	}
@@ -224,6 +228,10 @@ export class BillRepository implements IBillRepository {
 				.select()
 				.from(billItems)
 				.where(eq(billItems.billId, bill.id));
+
+			if (!updated) {
+				throw new Error("Failed to update bill");
+			}
 
 			return this.mapToDomain(updated, persistedItems);
 		});
@@ -376,7 +384,7 @@ export class BillRepository implements IBillRepository {
 
 		const domainItems: BillItem[] = items.map((item) => ({
 			id: item.id,
-			productId: item.productId ?? undefined,
+			...(item.productId !== null ? { productId: item.productId } : {}),
 			description: item.description,
 			quantity: Number(item.quantity),
 			unitPrice: Money.fromAmount(Number(item.unitPrice), currency),

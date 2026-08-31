@@ -9,6 +9,7 @@
 import type { InvoiceStatus } from "../../domain/invoice.entity";
 import type {
 	IInvoiceRepository,
+	InvoiceListFilters,
 	InvoiceListResult,
 } from "../../domain/invoice.repository.interface";
 import { InvoiceRepository } from "../../infrastructure/invoice.repository";
@@ -26,6 +27,21 @@ export interface ListInvoicesInput {
 	offset?: number;
 }
 
+function toInvoiceListFilters(input: ListInvoicesInput): InvoiceListFilters {
+	return {
+		companyId: input.companyId,
+		...(input.status !== undefined ? { status: input.status } : {}),
+		...(input.customerId !== undefined ? { customerId: input.customerId } : {}),
+		...(input.startDate !== undefined ? { startDate: input.startDate } : {}),
+		...(input.endDate !== undefined ? { endDate: input.endDate } : {}),
+		...(input.minAmount !== undefined ? { minAmount: input.minAmount } : {}),
+		...(input.maxAmount !== undefined ? { maxAmount: input.maxAmount } : {}),
+		...(input.search !== undefined ? { search: input.search } : {}),
+		limit: input.limit ?? 20,
+		offset: input.offset ?? 0,
+	};
+}
+
 /**
  * @deprecated Use listInvoices() function instead.
  */
@@ -35,18 +51,7 @@ export class ListInvoicesQuery {
 	) {}
 
 	async execute(input: ListInvoicesInput): Promise<InvoiceListResult> {
-		return await this.repository.list({
-			companyId: input.companyId,
-			status: input.status,
-			customerId: input.customerId,
-			startDate: input.startDate,
-			endDate: input.endDate,
-			minAmount: input.minAmount,
-			maxAmount: input.maxAmount,
-			search: input.search,
-			limit: input.limit ?? 20,
-			offset: input.offset ?? 0,
-		});
+		return await this.repository.list(toInvoiceListFilters(input));
 	}
 }
 
@@ -54,16 +59,5 @@ export async function listInvoices(
 	input: ListInvoicesInput,
 ): Promise<InvoiceListResult> {
 	const repository = new InvoiceRepository();
-	return await repository.list({
-		companyId: input.companyId,
-		status: input.status,
-		customerId: input.customerId,
-		startDate: input.startDate,
-		endDate: input.endDate,
-		minAmount: input.minAmount,
-		maxAmount: input.maxAmount,
-		search: input.search,
-		limit: input.limit ?? 20,
-		offset: input.offset ?? 0,
-	});
+	return await repository.list(toInvoiceListFilters(input));
 }

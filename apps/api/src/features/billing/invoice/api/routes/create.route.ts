@@ -35,9 +35,11 @@ export const createInvoiceRoute = new Elysia().post(
 				dueDate: new Date(body.dueDate),
 				currency: body.currency,
 				exchangeRate: body.exchangeRate ?? 1,
-				notes: body.notes,
+				...(body.notes !== undefined ? { notes: body.notes } : {}),
 				items: body.items.map((item) => ({
-					productId: item.productId,
+					...(item.productId !== undefined
+						? { productId: item.productId }
+						: {}),
 					description: item.description,
 					quantity: item.quantity,
 					unitPrice: item.unitPrice,

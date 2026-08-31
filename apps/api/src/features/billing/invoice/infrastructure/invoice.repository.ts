@@ -108,6 +108,10 @@ export class InvoiceRepository implements IInvoiceRepository {
 				.from(invoiceItems)
 				.where(eq(invoiceItems.invoiceId, invoice.id));
 
+			if (!savedInvoice) {
+				throw new Error("Failed to create invoice");
+			}
+
 			return this.mapToDomain(savedInvoice, items);
 		});
 	}
@@ -291,6 +295,10 @@ export class InvoiceRepository implements IInvoiceRepository {
 				})
 				.where(eq(invoices.id, invoice.id))
 				.returning();
+
+			if (!updated) {
+				throw new Error("Failed to update invoice");
+			}
 
 			await tx
 				.delete(invoiceItems)
@@ -534,7 +542,7 @@ export class InvoiceRepository implements IInvoiceRepository {
 
 		const domainItems: InvoiceItem[] = items.map((item) => ({
 			id: item.id,
-			productId: item.productId ?? undefined,
+			...(item.productId !== null ? { productId: item.productId } : {}),
 			description: item.description,
 			quantity: Number(item.quantity),
 			unitPrice: Money.fromAmount(parseFloat(item.unitPrice), currency),

@@ -67,7 +67,7 @@ export class UpdateInvoiceCommand {
 			currency: input.currency,
 			exchangeRate: input.exchangeRate ?? existing.exchangeRate,
 			items,
-			notes: input.notes,
+			...(input.notes !== undefined ? { notes: input.notes } : {}),
 		});
 
 		const updated = new Invoice(
@@ -158,7 +158,9 @@ export class UpdateInvoiceCommand {
 
 			return {
 				id: randomUUID(),
-				productId: input.productId,
+				...(input.productId !== undefined
+					? { productId: input.productId }
+					: {}),
 				description: input.description,
 				quantity,
 				unitPrice,
@@ -167,7 +169,7 @@ export class UpdateInvoiceCommand {
 				subtotal: subtotalWithoutTax,
 				igvAmount,
 				totalAmount,
-			} as InvoiceItem;
+			} satisfies InvoiceItem;
 		});
 	}
 }
@@ -228,7 +230,7 @@ function calculateUpdateInvoiceItems(
 
 		return {
 			id: randomUUID(),
-			productId: input.productId,
+			...(input.productId !== undefined ? { productId: input.productId } : {}),
 			description: input.description,
 			quantity,
 			unitPrice,
@@ -237,7 +239,7 @@ function calculateUpdateInvoiceItems(
 			subtotal: subtotalWithoutTax,
 			igvAmount,
 			totalAmount,
-		} as InvoiceItem;
+		} satisfies InvoiceItem;
 	});
 }
 
@@ -277,7 +279,7 @@ export async function updateInvoice(
 		currency: input.currency,
 		exchangeRate: input.exchangeRate ?? existing.exchangeRate,
 		items,
-		notes: input.notes,
+		...(input.notes !== undefined ? { notes: input.notes } : {}),
 	});
 
 	const updated = new Invoice(

@@ -18,13 +18,15 @@ export const listInvoicesRoute = new Elysia().get(
 		try {
 			const result = await listInvoices({
 				companyId: query.companyId,
-				status: query.status,
-				customerId: query.customerId,
-				startDate: query.startDate ? new Date(query.startDate) : undefined,
-				endDate: query.endDate ? new Date(query.endDate) : undefined,
-				minAmount: query.minAmount ? Number(query.minAmount) : undefined,
-				maxAmount: query.maxAmount ? Number(query.maxAmount) : undefined,
-				search: query.search,
+				...(query.status !== undefined ? { status: query.status } : {}),
+				...(query.customerId !== undefined
+					? { customerId: query.customerId }
+					: {}),
+				...(query.startDate ? { startDate: new Date(query.startDate) } : {}),
+				...(query.endDate ? { endDate: new Date(query.endDate) } : {}),
+				...(query.minAmount ? { minAmount: Number(query.minAmount) } : {}),
+				...(query.maxAmount ? { maxAmount: Number(query.maxAmount) } : {}),
+				...(query.search !== undefined ? { search: query.search } : {}),
 				limit: query.limit ? Number(query.limit) : 20,
 				offset: query.offset ? Number(query.offset) : 0,
 			});

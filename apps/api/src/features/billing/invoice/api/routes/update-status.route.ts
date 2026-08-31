@@ -18,7 +18,7 @@ export const updateInvoiceStatusRoute = new Elysia()
 	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	.patch(
 		"/:id/status",
-		async ({ params, body, headers, companyContext, set }: any) => {
+		async ({ params, body, headers, companyContext, set }) => {
 			try {
 				const scopedInvoice = await loadScopedInvoice(
 					params.id,
@@ -43,7 +43,7 @@ export const updateInvoiceStatusRoute = new Elysia()
 				await updateInvoiceStatus({
 					id: params.id,
 					status: body.status,
-					...(sessionContext.context.legacyUserId !== undefined
+					...(typeof sessionContext.context.legacyUserId === "string"
 						? { legacyUserId: sessionContext.context.legacyUserId }
 						: {}),
 				});
