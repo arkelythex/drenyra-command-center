@@ -7,21 +7,18 @@
  * @module unified-guard
  */
 
-import type { UnifiedRole } from "./unified-roles";
 import {
-	ROLE_HIERARCHY,
-	getRoleLevel,
-} from "./unified-roles";
+	AUDITOR_ROLE_OVERRIDE,
+	BUSINESS_ROLE_PERMISSION_MAP,
+	PLATFORM_ROLE_PERMISSION_MAP,
+	SERVICE_ROLE_OVERRIDE,
+} from "./role-permission-map";
 import type {
 	BusinessPermission,
 	PlatformPermission,
 } from "./unified-permissions";
-import {
-	BUSINESS_ROLE_PERMISSION_MAP,
-	PLATFORM_ROLE_PERMISSION_MAP,
-	SERVICE_ROLE_OVERRIDE,
-	AUDITOR_ROLE_OVERRIDE,
-} from "./role-permission-map";
+import type { UnifiedRole } from "./unified-roles";
+import { getRoleLevel, ROLE_HIERARCHY } from "./unified-roles";
 
 // ── ForbiddenError ──
 
