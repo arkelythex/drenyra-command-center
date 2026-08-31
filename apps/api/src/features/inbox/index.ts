@@ -45,7 +45,10 @@ export const inboxModule = new Elysia({ prefix: "/api/inbox" })
 	.post(
 		"/process",
 		async ({ body, request, set }) => {
-			const files = collectFiles(body);
+			const files = collectFiles({
+				...(body.file !== undefined ? { file: body.file } : {}),
+				...(body.files !== undefined ? { files: body.files } : {}),
+			});
 			if (files.length === 0) {
 				set.status = 400;
 				return fail("No files uploaded", "INBOX_FILES_REQUIRED");

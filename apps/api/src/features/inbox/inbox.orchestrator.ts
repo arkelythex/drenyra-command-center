@@ -59,12 +59,13 @@ function parseInvoiceHint(file: File, text: string): ParsedInvoiceHint {
 			? total - igv
 			: undefined;
 
+	const ruc = rucMatch?.[1];
 	return {
 		isXml: true,
-		ruc: rucMatch?.[1],
-		subtotal,
-		igv,
-		total,
+		...(ruc !== undefined ? { ruc } : {}),
+		...(subtotal !== undefined ? { subtotal } : {}),
+		...(igv !== undefined ? { igv } : {}),
+		...(total !== undefined ? { total } : {}),
 	};
 }
 
@@ -241,8 +242,8 @@ export class InvoiceOrchestrator {
 				invoiceId: seed.invoiceId,
 				filename: seed.filename,
 				status: "needs-review",
-				total: hint.total,
-				igv: hint.igv,
+				...(hint.total !== undefined ? { total: hint.total } : {}),
+				...(hint.igv !== undefined ? { igv: hint.igv } : {}),
 				accountingLabel: "Gasto · Servicios",
 				reason,
 			};
@@ -267,8 +268,8 @@ export class InvoiceOrchestrator {
 			invoiceId: seed.invoiceId,
 			filename: seed.filename,
 			status: "ready",
-			total: hint.total,
-			igv: hint.igv,
+			...(hint.total !== undefined ? { total: hint.total } : {}),
+			...(hint.igv !== undefined ? { igv: hint.igv } : {}),
 			accountingLabel: "Gasto · Servicios",
 		};
 
