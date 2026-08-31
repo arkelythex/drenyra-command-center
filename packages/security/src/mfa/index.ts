@@ -1,28 +1,28 @@
-export { generateTotpSecret, generateTotpUri, verifyTotp } from "./totp";
+export { mfaPlugin } from "./better-auth-mfa-plugin";
+export { MFA_FEATURE_FLAGS } from "./feature-flags";
+export type {
+	EnrollmentComplete,
+	EnrollmentInit,
+	MfaDbAdapter,
+	MfaUser,
+	MfaVerificationResult,
+} from "./mfa-service";
+export {
+	completeEnrollment,
+	disableMfa,
+	InvalidTotpCodeError,
+	initiateEnrollment,
+	MfaAlreadyEnabledError,
+	MfaEnrollmentNotStartedError,
+	MfaNotAvailableError,
+	MfaNotEnabledError,
+	redeemRecoveryCode,
+	verifyMfaChallenge,
+} from "./mfa-service";
 export {
 	generateRecoveryCodes,
 	hashRecoveryCode,
 	verifyRecoveryCode,
 } from "./recovery-codes";
-export { MFA_FEATURE_FLAGS } from "./feature-flags";
-export {
-	initiateEnrollment,
-	completeEnrollment,
-	verifyMfaChallenge,
-	redeemRecoveryCode,
-	disableMfa,
-	MfaNotAvailableError,
-	MfaAlreadyEnabledError,
-	MfaNotEnabledError,
-	MfaEnrollmentNotStartedError,
-	InvalidTotpCodeError,
-} from "./mfa-service";
-export type {
-	MfaUser,
-	MfaDbAdapter,
-	EnrollmentInit,
-	EnrollmentComplete,
-	MfaVerificationResult,
-} from "./mfa-service";
-export { mfaPlugin } from "./better-auth-mfa-plugin";
-export type { MfaMethod, MfaEnrollment, MfaChallenge } from "./types";
+export { generateTotpSecret, generateTotpUri, verifyTotp } from "./totp";
+export type { MfaChallenge, MfaEnrollment, MfaMethod } from "./types";
