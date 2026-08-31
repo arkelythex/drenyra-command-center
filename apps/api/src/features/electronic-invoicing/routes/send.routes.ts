@@ -20,7 +20,20 @@ export const electronicInvoicingSendRoutes = new Elysia()
 	.post(
 		"/send",
 		({ body, companyContext, set }) =>
-			sendElectronicInvoice(body, companyContext, set),
+			sendElectronicInvoice(
+				{
+					transactionId: body.transactionId,
+					xmlContent: body.xmlContent,
+					invoiceNumber: body.invoiceNumber,
+					invoiceType: body.invoiceType,
+					...(body.priority !== undefined ? { priority: body.priority } : {}),
+					...(body.governance !== undefined
+						? { governance: body.governance }
+						: {}),
+				},
+				companyContext,
+				set,
+			),
 		{
 			body: sendElectronicInvoiceBodySchema,
 			detail: {
@@ -33,7 +46,33 @@ export const electronicInvoicingSendRoutes = new Elysia()
 	)
 	.post(
 		"/webhooks/cdr",
-		({ body, headers, set }) => processCdrWebhook(body, headers, set),
+		({ body, headers, set }) =>
+			processCdrWebhook(
+				{
+					invoiceNumber: body.invoiceNumber,
+					cdrStatus: body.cdrStatus,
+					...(body.transactionId !== undefined
+						? { transactionId: body.transactionId }
+						: {}),
+					...(body.sunatCode !== undefined
+						? { sunatCode: body.sunatCode }
+						: {}),
+					...(body.sunatDescription !== undefined
+						? { sunatDescription: body.sunatDescription }
+						: {}),
+					...(body.cdrContent !== undefined
+						? { cdrContent: body.cdrContent }
+						: {}),
+					...(body.providerReference !== undefined
+						? { providerReference: body.providerReference }
+						: {}),
+					...(body.occurredAt !== undefined
+						? { occurredAt: body.occurredAt }
+						: {}),
+				},
+				headers,
+				set,
+			),
 		{
 			body: cdrWebhookBodySchema,
 			detail: {

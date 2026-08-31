@@ -36,7 +36,7 @@ export async function handleSendElectronicInvoice(
 	const governance = await enforceGovernancePolicy({
 		action: "electronic_invoice_send",
 		priority: body.priority ?? "high",
-		governance: body.governance,
+		...(body.governance !== undefined ? { governance: body.governance } : {}),
 		fallbackObjective: `electronic_invoicing_${body.invoiceType}`,
 		set,
 		onBlocked: async (decision) => {

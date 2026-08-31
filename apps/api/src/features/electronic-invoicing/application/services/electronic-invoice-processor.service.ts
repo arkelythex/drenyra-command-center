@@ -233,13 +233,23 @@ function mapSubmissionToOseResult(
 		OBSERVED: "OBSERVADO",
 	};
 
+	const cdrStatus = result.cdr ? cdrStatusMap[result.cdr.status] : undefined;
+
 	return {
 		success: result.success,
-		cdrContent: result.cdr?.rawContent,
-		cdrStatus: result.cdr ? cdrStatusMap[result.cdr.status] : undefined,
-		cdrMessage: result.cdr?.message,
-		sunatCode: result.authorityCode,
-		sunatDescription: result.authorityDescription,
-		error: result.error,
+		...(result.cdr?.rawContent !== undefined
+			? { cdrContent: result.cdr.rawContent }
+			: {}),
+		...(cdrStatus !== undefined ? { cdrStatus } : {}),
+		...(result.cdr?.message !== undefined
+			? { cdrMessage: result.cdr.message }
+			: {}),
+		...(result.authorityCode !== undefined
+			? { sunatCode: result.authorityCode }
+			: {}),
+		...(result.authorityDescription !== undefined
+			? { sunatDescription: result.authorityDescription }
+			: {}),
+		...(result.error !== undefined ? { error: result.error } : {}),
 	};
 }
