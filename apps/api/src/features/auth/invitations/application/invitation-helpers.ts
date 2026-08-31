@@ -6,6 +6,8 @@
  * @module invitations/application/invitation-helpers
  */
 
+import type { MembershipRole, Permission } from "@drenyra/domain/scope";
+import { ROLE_PERMISSIONS } from "@drenyra/domain/scope";
 import { db } from "@drenyra/persistence/client";
 import { and, eq } from "@drenyra/persistence/query";
 import {
@@ -13,8 +15,6 @@ import {
 	authUserCompanies,
 	authUsers,
 } from "@drenyra/persistence/schema";
-import type { MembershipRole, Permission } from "@drenyra/domain/scope";
-import { ROLE_PERMISSIONS } from "@drenyra/domain/scope";
 
 /**
  * Check if a user has user:invite permission in a company.
@@ -42,17 +42,16 @@ export async function hasInvitePermission(
 
 	const role = first.membershipRole as MembershipRole;
 	return (
-		(ROLE_PERMISSIONS[role] as Permission[] | undefined)?.includes("user:invite") ??
-		false
+		(ROLE_PERMISSIONS[role] as Permission[] | undefined)?.includes(
+			"user:invite",
+		) ?? false
 	);
 }
 
 /**
  * Find an invitation by its token.
  */
-export async function findInvitationByToken(
-	token: string,
-) {
+export async function findInvitationByToken(token: string) {
 	const rows = await db
 		.select()
 		.from(authInvitations)
@@ -64,9 +63,7 @@ export async function findInvitationByToken(
 /**
  * Get the email for a user by their ID.
  */
-export async function getUserEmail(
-	userId: string,
-): Promise<string | null> {
+export async function getUserEmail(userId: string): Promise<string | null> {
 	const rows = await db
 		.select({ email: authUsers.email })
 		.from(authUsers)

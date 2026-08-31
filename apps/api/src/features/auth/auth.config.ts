@@ -5,14 +5,14 @@ import {
 	authUsers,
 	authVerifications,
 } from "@drenyra/persistence/schema";
+import { mfaPlugin } from "@drenyra/security";
 import { type BetterAuthOptions, betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { customSession } from "better-auth/plugins/custom-session";
-import { mfaPlugin } from "@drenyra/security";
 import { enrichSessionUserWithCompanyContext } from "./handlers/session-company-context";
+import { resolveTrustedOriginsFromEnv } from "./lib/auth-trusted-origins";
 import { oauthAuditHooks } from "./lib/oauth-audit-hooks";
 import { resolveSocialProvidersFromEnv } from "./lib/resolve-social-providers";
-import { resolveTrustedOriginsFromEnv } from "./lib/auth-trusted-origins";
 
 /**
  * BetterAuth Configuration

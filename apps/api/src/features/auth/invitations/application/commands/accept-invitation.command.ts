@@ -10,16 +10,23 @@
  * @module invitations/application/commands/accept-invitation.command
  */
 
+import type { MembershipRole } from "@drenyra/domain/scope";
 import { db } from "@drenyra/persistence/client";
 import { eq } from "@drenyra/persistence/query";
-import { authInvitations, authUserCompanies } from "@drenyra/persistence/schema";
-import type { MembershipRole } from "@drenyra/domain/scope";
+import {
+	authInvitations,
+	authUserCompanies,
+} from "@drenyra/persistence/schema";
 import { createLogger } from "../../../../../lib/logger";
 import { fail, ok } from "../../../../shared/api-response";
 import { resolveSessionIdentityFromHeaders } from "../../../handlers/session-identity";
 import { isExpired, normalizeEmail } from "../../domain/invitation.entity";
 import { INVITATION_ERROR_CODES } from "../../domain/invitation.errors";
-import { findInvitationByToken, getUserEmail, isExistingMember } from "../invitation-helpers";
+import {
+	findInvitationByToken,
+	getUserEmail,
+	isExistingMember,
+} from "../invitation-helpers";
 
 const logger = createLogger({ feature: "auth", handler: "accept-invitation" });
 
@@ -92,7 +99,10 @@ export async function acceptInvitation(
 		normalizeEmail(userEmail) !== normalizeEmail(invitation.inviteeEmail)
 	) {
 		ctx.set.status = 403;
-		return fail("Email does not match invitation", INVITATION_ERROR_CODES.EMAIL_MISMATCH);
+		return fail(
+			"Email does not match invitation",
+			INVITATION_ERROR_CODES.EMAIL_MISMATCH,
+		);
 	}
 
 	// 6. Belt-and-suspenders: check not already member
