@@ -11,8 +11,8 @@ import { z } from "zod";
 import { fail } from "../../shared/api-response";
 import {
 	enforceGovernancePolicy,
-	GovernanceSchema,
 	type GovernanceInput,
+	GovernanceSchema,
 } from "../../shared/governance";
 import { ReconciliationAgent } from "../agents/reconciliation.agent";
 import { hasOpenRouterKey } from "../config/openrouter.config";
@@ -167,7 +167,9 @@ Returns:
 			const governance = await enforceGovernancePolicy({
 				action: "process_invoices",
 				priority: body.priority ?? "medium",
-				...(body.governance !== undefined ? { governance: toGovernanceInput(body.governance) } : {}),
+				...(body.governance !== undefined
+					? { governance: toGovernanceInput(body.governance) }
+					: {}),
 				set,
 			});
 
@@ -287,7 +289,9 @@ SUNAT validation works without API key (rule-based only).
 			const governance = await enforceGovernancePolicy({
 				action: "multi_ruc_process",
 				priority: body.priority ?? "medium",
-				...(body.governance !== undefined ? { governance: toGovernanceInput(body.governance) } : {}),
+				...(body.governance !== undefined
+					? { governance: toGovernanceInput(body.governance) }
+					: {}),
 				set,
 			});
 
@@ -421,7 +425,9 @@ Returns consolidated report with:
 			const governance = await enforceGovernancePolicy({
 				action: "reconcile",
 				priority: body.priority ?? "medium",
-				...(body.governance !== undefined ? { governance: toGovernanceInput(body.governance) } : {}),
+				...(body.governance !== undefined
+					? { governance: toGovernanceInput(body.governance) }
+					: {}),
 				set,
 			});
 
@@ -473,7 +479,15 @@ Returns consolidated report with:
 				};
 			}
 
-			const stats = agent.calculateStats(result.data!);
+			if (!result.data) {
+				set.status = 500;
+				return {
+					success: false,
+					error: "Reconciliation returned no data.",
+				};
+			}
+
+			const stats = agent.calculateStats(result.data);
 
 			enqueueSwarmAuditLog({
 				organizationId,
