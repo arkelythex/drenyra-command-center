@@ -127,10 +127,7 @@ const UpdateTaskBody = t.Object({
 // Helper to handle service errors
 // ---------------------------------------------------------------------------
 
-function handleServiceError(
-	error: unknown,
-	set: { status: number; [key: string]: unknown },
-) {
+function handleServiceError(error: unknown, set: { status?: number | string }) {
 	if (error instanceof ThreadServiceError) {
 		set.status = error.httpStatus;
 		return fail(error.message, error.code);
@@ -171,7 +168,7 @@ export const threadRoutes = new Elysia({
 
 				return ok(result);
 			} catch (error) {
-				return handleServiceError(error, set as unknown as { status: number });
+				return handleServiceError(error, set);
 			}
 		},
 		{
@@ -214,7 +211,7 @@ export const threadRoutes = new Elysia({
 				set.status = 201;
 				return ok(result);
 			} catch (error) {
-				return handleServiceError(error, set as unknown as { status: number });
+				return handleServiceError(error, set);
 			}
 		},
 		{
@@ -238,7 +235,7 @@ export const threadRoutes = new Elysia({
 				);
 				return ok(result);
 			} catch (error) {
-				return handleServiceError(error, set as unknown as { status: number });
+				return handleServiceError(error, set);
 			}
 		},
 		{
@@ -259,7 +256,7 @@ export const threadRoutes = new Elysia({
 				const result = await threadsService.update(params.id, body);
 				return ok(result);
 			} catch (error) {
-				return handleServiceError(error, set as unknown as { status: number });
+				return handleServiceError(error, set);
 			}
 		},
 		{
@@ -286,7 +283,7 @@ export const threadRoutes = new Elysia({
 				);
 				return ok(result);
 			} catch (error) {
-				return handleServiceError(error, set as unknown as { status: number });
+				return handleServiceError(error, set);
 			}
 		},
 		{
@@ -309,7 +306,7 @@ export const threadRoutes = new Elysia({
 				set.status = 204;
 				return;
 			} catch (error) {
-				return handleServiceError(error, set as unknown as { status: number });
+				return handleServiceError(error, set);
 			}
 		},
 		{
@@ -335,7 +332,7 @@ export const threadRoutes = new Elysia({
 				set.status = 201;
 				return ok({ linked: true });
 			} catch (error) {
-				return handleServiceError(error, set as unknown as { status: number });
+				return handleServiceError(error, set);
 			}
 		},
 		{
@@ -358,7 +355,7 @@ export const threadRoutes = new Elysia({
 				set.status = 204;
 				return;
 			} catch (error) {
-				return handleServiceError(error, set as unknown as { status: number });
+				return handleServiceError(error, set);
 			}
 		},
 		{
@@ -389,7 +386,7 @@ export const threadRoutes = new Elysia({
 				);
 				return ok(result);
 			} catch (error) {
-				return handleServiceError(error, set as unknown as { status: number });
+				return handleServiceError(error, set);
 			}
 		},
 		{
@@ -412,7 +409,7 @@ export const threadRoutes = new Elysia({
 				set.status = 201;
 				return ok(result);
 			} catch (error) {
-				return handleServiceError(error, set as unknown as { status: number });
+				return handleServiceError(error, set);
 			}
 		},
 		{
@@ -438,7 +435,7 @@ export const threadRoutes = new Elysia({
 				);
 				return ok(result);
 			} catch (error) {
-				return handleServiceError(error, set as unknown as { status: number });
+				return handleServiceError(error, set);
 			}
 		},
 		{

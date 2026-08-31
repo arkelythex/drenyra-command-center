@@ -86,7 +86,15 @@ function sanitizeNumber(value: unknown): number | undefined {
 	return value;
 }
 
-function sanitizeUnknown(value: unknown, depth = 0): unknown {
+type SanitizedContextValue =
+	| null
+	| boolean
+	| number
+	| string
+	| SanitizedContextValue[]
+	| { [key: string]: SanitizedContextValue };
+
+function sanitizeUnknown(value: unknown, depth = 0): SanitizedContextValue {
 	if (value === null || typeof value === "boolean") return value;
 
 	if (typeof value === "number") {
