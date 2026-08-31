@@ -5,8 +5,8 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { CompensatingEntry } from "../compensating-entry";
 import type { CompensatingEntryType } from "../compensating-entry";
+import { CompensatingEntry } from "../compensating-entry";
 
 const VALID_ID = "cmp-entry-001";
 const VALID_ORG = 42;
