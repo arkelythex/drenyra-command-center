@@ -13,7 +13,9 @@ import {
 import { diffsService } from "./diffs.service";
 
 // Elysia's set type is complex; this helper casts it for our use
+// SAFETY: all callers assign numeric HTTP status codes through this adapter.
 function s(set: { status?: number | string }): { status: number } {
+	// SAFETY: all callers assign numeric HTTP status codes through this adapter.
 	return set as unknown as { status: number };
 }
 
@@ -50,9 +52,9 @@ export const diffsRoutes = new Elysia({ prefix: "/api/diffs", name: "diffs" })
 				const companyId = assertCompanyId(companyContext, ms);
 				if (!companyId) return;
 				const result = diffsService.listDiffs(companyId, {
-					status: query.status,
-					type: query.type,
-					priority: query.priority,
+					...(query.status !== undefined ? { status: query.status } : {}),
+					...(query.type !== undefined ? { type: query.type } : {}),
+					...(query.priority !== undefined ? { priority: query.priority } : {}),
 				});
 				return ok(result);
 			} catch (error) {
