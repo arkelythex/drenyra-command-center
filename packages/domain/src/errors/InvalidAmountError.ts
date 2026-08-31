@@ -18,10 +18,7 @@ export class InvalidAmountError extends Error {
 
 		// V8-specific stack trace capture (safe to call)
 		const ErrorWithCapture = Error as typeof Error & {
-			captureStackTrace?: (
-				target: object,
-				constructor?: { prototype: unknown },
-			) => void;
+			captureStackTrace?: (target: Error, ...args: unknown[]) => void;
 		};
 		if (ErrorWithCapture.captureStackTrace) {
 			ErrorWithCapture.captureStackTrace(
