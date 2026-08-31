@@ -286,7 +286,7 @@ rg '^\.(get|post|put|patch|delete)\(' src/features/ -g '*.ts' | cut -d/ -f3 | so
 | `@elysiajs/cors`                | ^1.4.1    | CORS                  |
 | `@elysiajs/swagger`             | ^1.3.1    | Swagger docs          |
 | `@elysiajs/opentelemetry`       | ^1.4.0    | OpenTelemetry         |
-| `pino`                          | ^10.3.1   | Logging               |
+| `@drenyra/shared`              | workspace:* | Shared utilities; owns Pino logging |
 | `postgres`                      | ^3.4.5    | PostgreSQL driver     |
 | `ai` + `@ai-sdk/google`         | ^6.0.39+  | AI SDK                |
 | `@openrouter/ai-sdk-provider`   | ^2.1.1    | OpenRouter            |

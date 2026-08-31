@@ -92,7 +92,6 @@
         "node-forge": "^1.4.0",
         "nodemailer": "^9.0.1",
         "pdfkit": "^0.19.1",
-        "pino": "^10.3.1",
         "postgres": "^3.4.5",
         "prom-client": "^15.0.0",
         "qrcode": "^1.5.4",
@@ -445,6 +444,7 @@
       "dependencies": {
         "@drenyra/domain": "workspace:*",
         "clsx": "^2.1.1",
+        "pino": "^10.3.1",
       },
       "devDependencies": {
         "typescript": "^7.0.2",
