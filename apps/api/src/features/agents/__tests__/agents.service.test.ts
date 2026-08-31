@@ -81,8 +81,6 @@ vi.mock("@drenyra/pi", () => {
 	return { SessionManager };
 });
 
-vi.mock("@drenyra/pi", () => ({}));
-
 // ---------------------------------------------------------------------------
 // Module under test
 // ---------------------------------------------------------------------------
@@ -279,7 +277,7 @@ describe("AgentsService", () => {
 		it("pauses an active session", () => {
 			// First get() returns active session (for getSessionOrThrow), second returns paused
 			mockSessionManager.get.mockReturnValueOnce(session1);
-			mockSessionManager.update.mockImplementation(() => {});
+			mockSessionManager.update.mockImplementation(() => undefined);
 			mockSessionManager.get.mockReturnValue({
 				...session1,
 				metadata: { ...session1.metadata, internalStatus: "paused" },
@@ -302,7 +300,7 @@ describe("AgentsService", () => {
 			});
 			// First get() returns paused (for getSessionOrThrow), second get() returns normal
 			mockSessionManager.get.mockReturnValueOnce(pausedSession);
-			mockSessionManager.update.mockImplementation(() => {});
+			mockSessionManager.update.mockImplementation(() => undefined);
 			mockSessionManager.get.mockReturnValue(session1);
 
 			const result = service.resumeSession("company-1", "session-1");
@@ -316,7 +314,7 @@ describe("AgentsService", () => {
 		it("cancels an active session", () => {
 			// First get() returns active (for getSessionOrThrow), second get() returns failed
 			mockSessionManager.get.mockReturnValueOnce(session1);
-			mockSessionManager.update.mockImplementation(() => {});
+			mockSessionManager.update.mockImplementation(() => undefined);
 			mockSessionManager.get.mockReturnValue({
 				...session1,
 				status: "failed",

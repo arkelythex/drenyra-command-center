@@ -304,8 +304,7 @@ export class AgentsService {
 		});
 
 		// Re-fetch to get the updated session
-		const updated = this.sessionManager.get(id);
-		return this.toDTO(updated!);
+		return this.toDTO(this.getSessionOrThrow(id));
 	}
 
 	/**
@@ -335,8 +334,7 @@ export class AgentsService {
 			},
 		});
 
-		const updated = this.sessionManager.get(id);
-		return this.toDTO(updated!);
+		return this.toDTO(this.getSessionOrThrow(id));
 	}
 
 	/**
@@ -365,8 +363,7 @@ export class AgentsService {
 			},
 		});
 
-		const updated = this.sessionManager.get(id);
-		return this.toDTO(updated!);
+		return this.toDTO(this.getSessionOrThrow(id));
 	}
 }
 
