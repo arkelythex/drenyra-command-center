@@ -50,7 +50,9 @@ export const cognitiveStreamRecoveryEndpoint = new Elysia({
 			headers: headers as Record<string, unknown>,
 			operation: "cognitive:recover" as SecurityOperation,
 			resource: "/api/ai-swarm/cognitive-stream/runs/:runId/recover",
-			requestedCompanyId: runState?.companyId,
+			...(runState?.companyId !== undefined && {
+				requestedCompanyId: runState.companyId,
+			}),
 		});
 		if (!authz.ok) {
 			set.status = authz.status;
