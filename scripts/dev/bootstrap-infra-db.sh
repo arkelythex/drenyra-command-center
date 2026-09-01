@@ -78,3 +78,59 @@ bunx --no-install drizzle-kit export --sql \
   --schema "${ROOT_DIR}/packages/persistence/src/schema/index.ts" \
   --dialect postgresql \
   | psql "${DATABASE_URL}" -v ON_ERROR_STOP=1
+
+psql "${DATABASE_URL}" -v ON_ERROR_STOP=1 <<'SQL'
+DO $$
+DECLARE
+  missing text;
+BEGIN
+  SELECT string_agg(required_object, ', ' ORDER BY required_object)
+  INTO missing
+  FROM (
+    VALUES
+      ('table:public.users'),
+      ('table:public.companies'),
+      ('table:public.business_partners'),
+      ('table:public.invoices'),
+      ('table:public.bills'),
+      ('table:public.transactions'),
+      ('table:public.system_checks'),
+      ('table:public.check_history'),
+      ('extension:vector')
+  ) AS required(required_object)
+  WHERE CASE
+    WHEN required_object LIKE 'table:%' THEN
+      to_regclass(substr(required_object, 7)) IS NULL
+    ELSE NOT EXISTS (
+      SELECT 1
+      FROM pg_extension
+      WHERE extname = substr(required_object, 11)
+    )
+  END;
+
+  IF missing IS NOT NULL THEN
+    RAISE EXCEPTION 'Current schema verification failed; missing %', missing;
+  END IF;
+
+  SELECT string_agg(required_column, ', ' ORDER BY required_column)
+  INTO missing
+  FROM (
+    VALUES
+      ('invoices.buyer_tax_id'),
+      ('companies.settings_language')
+  ) AS required(required_column)
+  WHERE NOT EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = split_part(required_column, '.', 1)
+      AND column_name = split_part(required_column, '.', 2)
+  );
+
+  IF missing IS NOT NULL THEN
+    RAISE EXCEPTION 'Current schema verification failed; missing columns %', missing;
+  END IF;
+END $$;
+SQL
+
+echo "[infra-db:bootstrap] Current schema bootstrap and verification completed."
