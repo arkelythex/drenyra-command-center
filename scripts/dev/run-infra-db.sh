@@ -31,4 +31,7 @@ if [[ -z "${DATABASE_URL:-}" || "${DATABASE_URL}" == *'$'* ]]; then
 fi
 
 cd "${ROOT_DIR}/packages/infrastructure"
+if [[ "${command_name}" == "db:migrate" ]]; then
+  bun "${ROOT_DIR}/scripts/dev/validate-infra-migration-inventory.ts"
+fi
 exec bun run "${command_name}" "$@"
