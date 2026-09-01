@@ -171,6 +171,8 @@ export {
 	type SunatKnowledgeChunk,
 	sunatKnowledgeChunks,
 } from "./auxiliary.schema";
+// --- BANKING PROVIDERS ---
+export { bankProviders } from "./bank-providers.schema";
 export {
 	bankAccounts,
 	bankAccountsRelations,
@@ -194,11 +196,6 @@ export {
 	transactionReconciliationMatches,
 	transactionReconciliationMatchesRelations,
 } from "./banking-reconciliation-matches.schema";
-// --- BANKING PROVIDERS ---
-export { bankProviders } from "./bank-providers.schema";
-// --- RECONCILIATION RULES ---
-export { reconciliationRules } from "./reconciliation-rules.schema";
-export { pleGenerations, pleGenerationsRelations } from "./ple.schema";
 // --- AGENT BATCH RUNS ---
 export {
 	type BatchRun,
@@ -254,7 +251,9 @@ export {
 // --- DOCTOR MODE ---
 export {
 	type CheckHistoryEntry,
+	checkCategoryEnum,
 	checkHistory,
+	checkStatusEnum,
 	type NewCheckHistoryEntry,
 	type NewSystemCheck,
 	type SystemCheck,
@@ -331,13 +330,6 @@ export {
 	payments,
 	paymentsRelations,
 } from "./invoicing.schema";
-// --- MODEL ROUTER ---
-export {
-	capabilityRoutingRules,
-	modelRegistrations,
-	routingAuditLog,
-	routingAuditLogRelations,
-} from "./model-router.schema";
 // --- MISSIONS ---
 export {
 	accountingMissions,
@@ -350,6 +342,13 @@ export {
 	missionReceipts,
 	missionReceiptsRelations,
 } from "./mission.schema";
+// --- MODEL ROUTER ---
+export {
+	capabilityRoutingRules,
+	modelRegistrations,
+	routingAuditLog,
+	routingAuditLogRelations,
+} from "./model-router.schema";
 // --- MONTHLY CLOSE ---
 export {
 	type ChecklistCategory,
@@ -370,11 +369,14 @@ export {
 	gateTypeEnum,
 } from "./monthly-close.schema";
 export { platformMcpAuditEvents } from "./platform-mcp.schema";
+export { pleGenerations, pleGenerationsRelations } from "./ple.schema";
 // --- PRODUCTS ---
 export {
 	products,
 	productsRelations,
 } from "./products.schema";
+// --- RECONCILIATION RULES ---
+export { reconciliationRules } from "./reconciliation-rules.schema";
 // --- SECURITY ---
 export {
 	accessLogs,
