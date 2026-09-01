@@ -38,10 +38,6 @@ export {
 	ublInvoiceParserAdapter,
 } from "./adapters/document-processing.adapter";
 export { createAIProvider } from "./ai/ai-provider.factory";
-export {
-	createDigitalPublicPeruProxy,
-	getDefaultDigitalPublicPeruProxy,
-} from "./civic/digital-public-peru.proxy";
 export { seedDatabase } from "./db/seed";
 export { logger, loggers } from "./logger";
 export { PostgresChatRepository } from "./repositories/chat.repository";
