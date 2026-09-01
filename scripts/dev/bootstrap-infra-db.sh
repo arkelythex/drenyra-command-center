@@ -68,6 +68,10 @@ if ! command -v psql >/dev/null 2>&1; then
   exit 1
 fi
 
+psql "${DATABASE_URL}" -v ON_ERROR_STOP=1 \
+  -c 'CREATE EXTENSION IF NOT EXISTS vector;' \
+  >/dev/null
+
 cd "${ROOT_DIR}/packages/infrastructure"
 bunx --no-install drizzle-kit export --sql \
   --schema "${ROOT_DIR}/packages/persistence/src/schema/index.ts" \
