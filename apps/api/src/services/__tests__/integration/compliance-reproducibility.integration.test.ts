@@ -42,7 +42,7 @@ describeDb("ComplianceService.verifySireReproducibility (integration)", () => {
 	});
 
 	it("returns reproducible=true with COMPLETE_DATA when SIRE and ledger totals match", async () => {
-		const fixture = await createFixture();
+		const fixture = await createFixture(fixtures);
 
 		const issueDate = new Date("2026-02-15T10:00:00.000Z");
 
@@ -99,7 +99,7 @@ describeDb("ComplianceService.verifySireReproducibility (integration)", () => {
 	});
 
 	it("returns reproducible=false with PARTIAL_DATA and runbook when only SIRE side has records", async () => {
-		const fixture = await createFixture();
+		const fixture = await createFixture(fixtures);
 
 		await db.insert(invoices).values({
 			id: randomUUID(),
@@ -136,7 +136,7 @@ describeDb("ComplianceService.verifySireReproducibility (integration)", () => {
 	});
 
 	it("does not count RCE bills in the current RVIE reproducibility report", async () => {
-		const fixture = await createFixture();
+		const fixture = await createFixture(fixtures);
 
 		await db.insert(bills).values({
 			id: randomUUID(),
@@ -165,7 +165,7 @@ describeDb("ComplianceService.verifySireReproducibility (integration)", () => {
 	});
 
 	it("returns NO_DATA for periods without records", async () => {
-		const fixture = await createFixture();
+		const fixture = await createFixture(fixtures);
 
 		const report = await ComplianceService.verifySireReproducibility({
 			companyId: fixture.companyId,
@@ -181,11 +181,13 @@ describeDb("ComplianceService.verifySireReproducibility (integration)", () => {
 	});
 });
 
-async function createFixture(): Promise<Fixture> {
+async function createFixture(fixtures: Fixture[]): Promise<Fixture> {
 	const userId = randomUUID();
 	const companyId = randomUUID();
 	const customerId = randomUUID();
 	const unique = randomUUID().replace(/-/g, "").slice(0, 9);
+	const fixture: Fixture = { userId, companyId, customerId };
+	fixtures.push(fixture);
 
 	await db.insert(users).values({
 		id: userId,
@@ -212,5 +214,5 @@ async function createFixture(): Promise<Fixture> {
 		legalName: "Integration Customer SAC",
 	});
 
-	return { userId, companyId, customerId };
+	return fixture;
 }
