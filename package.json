@@ -12,6 +12,7 @@
     "dev:api": "bun run --filter @drenyra/api dev",
     "dev:web": "WEB_PORT=${WEB_PORT:-5174} bun run --filter @drenyra/web dev",
     "db:push": "./scripts/dev/run-infra-db.sh db:push",
+    "db:bootstrap": "./scripts/dev/bootstrap-infra-db.sh",
     "db:check": "./scripts/dev/run-infra-db.sh db:check",
     "db:generate": "./scripts/dev/run-infra-db.sh db:generate",
     "db:migrate": "./scripts/dev/run-infra-db.sh db:migrate",
