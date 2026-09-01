@@ -1,42 +1,43 @@
 import { readdir, readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
-interface JournalEntry {
+export interface JournalEntry {
 	idx: number;
 	tag: string;
 }
 
-interface MissingJournalFile extends JournalEntry {
+export interface MissingJournalFile extends JournalEntry {
 	file: string;
 }
 
-interface NumericMigrationFile {
+export interface NumericMigrationFile {
 	file: string;
 	idx: number;
 }
 
-interface DuplicateIndex {
+export interface DuplicateIndex {
 	idx: number;
 	tags: string[];
 }
 
-interface DuplicateTag {
+export interface DuplicateTag {
 	indexes: number[];
 	tag: string;
 }
 
-interface NumericPrefixTagMismatch extends JournalEntry {
+export interface NumericPrefixTagMismatch extends JournalEntry {
 	numericPrefix: number;
 }
 
-const INVENTORY_STATUS = {
+export const INVENTORY_STATUS = {
 	COHERENT: "coherent",
 	DRIFT: "drift",
 } as const;
 
-type InventoryStatus = (typeof INVENTORY_STATUS)[keyof typeof INVENTORY_STATUS];
+export type InventoryStatus =
+	(typeof INVENTORY_STATUS)[keyof typeof INVENTORY_STATUS];
 
-interface InventoryReport {
+export interface InventoryReport {
 	duplicateIndexes: DuplicateIndex[];
 	duplicateTags: DuplicateTag[];
 	message: string;
@@ -46,7 +47,7 @@ interface InventoryReport {
 	unjournaledNumericFiles: NumericMigrationFile[];
 }
 
-class InventoryInputError extends Error {
+export class InventoryInputError extends Error {
 	constructor(readonly code: string) {
 		super(code);
 	}
@@ -63,32 +64,45 @@ const NUMERIC_TAG_PATTERN = /^(\d+)_/;
 const REPAIR_MESSAGE =
 	"Historical migration files and journal were not changed. Repair requires a controlled forward migration.";
 
-try {
-	const report = await buildInventoryReport();
-	console.log(JSON.stringify(report, null, 2));
-	process.exitCode = report.status === INVENTORY_STATUS.COHERENT ? 0 : 1;
-} catch (error) {
-	const code =
-		error instanceof InventoryInputError
-			? error.code
-			: "unexpected_input_error";
-	console.error(
-		JSON.stringify(
-			{
-				status: "malformed_or_unreadable",
-				error: code,
-				message: REPAIR_MESSAGE,
-			},
-			null,
-			2,
-		),
-	);
-	process.exitCode = 2;
+if (import.meta.main) {
+	await runCli();
+}
+
+async function runCli(): Promise<void> {
+	try {
+		const report = await buildInventoryReport();
+		console.log(JSON.stringify(report, null, 2));
+		process.exitCode = report.status === INVENTORY_STATUS.COHERENT ? 0 : 1;
+	} catch (error) {
+		const code =
+			error instanceof InventoryInputError
+				? error.code
+				: "unexpected_input_error";
+		console.error(
+			JSON.stringify(
+				{
+					status: "malformed_or_unreadable",
+					error: code,
+					message: REPAIR_MESSAGE,
+				},
+				null,
+				2,
+			),
+		);
+		process.exitCode = 2;
+	}
 }
 
 async function buildInventoryReport(): Promise<InventoryReport> {
 	const entries = await readJournalEntries();
 	const migrationFiles = await readNumericMigrationFiles();
+	return classifyMigrationInventory(entries, migrationFiles);
+}
+
+export function classifyMigrationInventory(
+	entries: JournalEntry[],
+	migrationFiles: NumericMigrationFile[],
+): InventoryReport {
 	const migrationFileNames = new Set(migrationFiles.map(({ file }) => file));
 	const journalFileNames = new Set(entries.map(({ tag }) => `${tag}.sql`));
 	const missingJournalFiles = entries
@@ -130,6 +144,10 @@ async function readJournalEntries(): Promise<JournalEntry[]> {
 		throw new InventoryInputError("journal_unreadable");
 	}
 
+	return parseJournalContents(contents);
+}
+
+export function parseJournalContents(contents: string): JournalEntry[] {
 	let parsed: unknown;
 	try {
 		parsed = JSON.parse(contents);
