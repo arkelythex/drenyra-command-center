@@ -214,6 +214,8 @@ bun run dev:check
 
 For an empty local or test database, use `DRENYRA_FRESH_DB=1 bun run db:bootstrap` to provision the current schema without replaying historical migrations. Fresh bootstrap requires PostgreSQL with the `vector` extension (pgvector). Use `bun run db:migrate` only for upgrades; migration-history reconciliation remains a separate maintenance task.
 
+For an existing local database, run `DRENYRA_UPGRADE_PREFLIGHT=1 bun run db:upgrade:preflight` before any upgrade. The preflight is read-only, and `db:migrate` stops if it detects migration inventory drift.
+
 **Expected services:**
 
 | Service              | URL                             |

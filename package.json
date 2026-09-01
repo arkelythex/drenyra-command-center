@@ -16,6 +16,7 @@
     "db:check": "./scripts/dev/run-infra-db.sh db:check",
     "db:generate": "./scripts/dev/run-infra-db.sh db:generate",
     "db:migrate": "./scripts/dev/run-infra-db.sh db:migrate",
+    "db:upgrade:preflight": "bun scripts/dev/preflight-infra-db-upgrade.ts",
     "db:migrate:smoke": "./scripts/dev/db-migrate-smoke.sh",
     "generate:web-feature": "bun scripts/generate-crud-feature.ts",
     "generate:api-feature": "bun scripts/generate-api-feature.ts",
