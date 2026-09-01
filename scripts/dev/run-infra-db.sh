@@ -20,6 +20,7 @@ shift
 if [[ -z "${DATABASE_URL:-}" && -f "${ROOT_DIR}/.env" ]]; then
   # shellcheck source=/dev/null
   set -a
+  # shellcheck disable=SC1091
   source "${ROOT_DIR}/.env"
   set +a
 fi

@@ -7,6 +7,7 @@ FRESH_DB_OPT_IN="${DRENYRA_FRESH_DB:-}"
 if [[ -z "${DATABASE_URL:-}" && -f "${ROOT_DIR}/.env" ]]; then
   # shellcheck source=/dev/null
   set -a
+  # shellcheck disable=SC1091
   source "${ROOT_DIR}/.env"
   set +a
 fi
