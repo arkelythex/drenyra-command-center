@@ -62,6 +62,7 @@ export type JobFailureClass = (typeof jobFailureClassEnum.enumValues)[number];
  * This is a compile-time constant, never stored as an actual company_id value.
  */
 const NULL_COMPANY_SENTINEL = "00000000-0000-0000-0000-000000000000";
+const NULL_COMPANY_SENTINEL_SQL = sql.raw(`'${NULL_COMPANY_SENTINEL}'::uuid`);
 
 export const jobExecutions = pgTable(
 	"job_executions",
@@ -149,7 +150,7 @@ export const jobExecutions = pgTable(
 				table.jobType,
 				table.logicalKey,
 				table.organizationId,
-				sql`COALESCE(${table.companyId}, ${NULL_COMPANY_SENTINEL}::uuid)`,
+				sql`COALESCE(${table.companyId}, ${NULL_COMPANY_SENTINEL_SQL})`,
 			)
 			.where(
 				sql`uniqueness_policy = 'ACTIVE_ONLY'::job_uniqueness_policy
@@ -164,7 +165,7 @@ export const jobExecutions = pgTable(
 				table.jobType,
 				table.logicalKey,
 				table.organizationId,
-				sql`COALESCE(${table.companyId}, ${NULL_COMPANY_SENTINEL}::uuid)`,
+				sql`COALESCE(${table.companyId}, ${NULL_COMPANY_SENTINEL_SQL})`,
 			)
 			.where(
 				sql`uniqueness_policy IN ('PERMANENT'::job_uniqueness_policy, 'PERMANENT_BY_INPUT'::job_uniqueness_policy)
@@ -179,7 +180,7 @@ export const jobExecutions = pgTable(
 				table.logicalKey,
 				table.executionWindow,
 				table.organizationId,
-				sql`COALESCE(${table.companyId}, ${NULL_COMPANY_SENTINEL}::uuid)`,
+				sql`COALESCE(${table.companyId}, ${NULL_COMPANY_SENTINEL_SQL})`,
 			)
 			.where(
 				sql`uniqueness_policy = 'WINDOWED'::job_uniqueness_policy
@@ -193,7 +194,7 @@ export const jobExecutions = pgTable(
 				table.jobType,
 				table.logicalKey,
 				table.organizationId,
-				sql`COALESCE(${table.companyId}, ${NULL_COMPANY_SENTINEL}::uuid)`,
+				sql`COALESCE(${table.companyId}, ${NULL_COMPANY_SENTINEL_SQL})`,
 			)
 			.where(
 				sql`uniqueness_policy = 'REPLACEABLE'::job_uniqueness_policy
