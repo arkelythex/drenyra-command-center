@@ -125,6 +125,8 @@ export {
 	marketplaceIntegrations,
 	marketplaceIntegrationsRelations,
 } from "./api-marketplace.schema";
+// --- ASSETS ---
+export { fixedAssets } from "./assets.schema";
 export {
 	authAccounts,
 	authAccountsRelations,
@@ -282,6 +284,7 @@ export {
 	accountingJobRunStatusEnum,
 	currencyEnum,
 	documentTypeEnum,
+	fiscalStatusEnum,
 	invoiceStatusEnum,
 	sunatStatusEnum,
 	taxTypeEnum,
@@ -310,6 +313,12 @@ export {
 	fiscalTruthEvents,
 	fiscalTruthEventsRelations,
 } from "./fiscal-truth.schema";
+// --- INBOX ---
+export {
+	inboxFailureClassEnum,
+	inboxMessages,
+	inboxStatusEnum,
+} from "./inbox.schema";
 export {
 	inventory,
 	inventoryMovements,
@@ -330,6 +339,14 @@ export {
 	payments,
 	paymentsRelations,
 } from "./invoicing.schema";
+// --- JOB EXECUTIONS ---
+export {
+	jobExecutionStatusEnum,
+	jobExecutions,
+	jobFailureClassEnum,
+	jobOutbox,
+	jobUniquenessPolicyEnum,
+} from "./job-executions.schema";
 // --- MISSIONS ---
 export {
 	accountingMissions,
@@ -368,6 +385,11 @@ export {
 	gateStatusEnum,
 	gateTypeEnum,
 } from "./monthly-close.schema";
+// --- PAYROLL ---
+export {
+	employees,
+	payrolls,
+} from "./payroll.schema";
 export { platformMcpAuditEvents } from "./platform-mcp.schema";
 export { pleGenerations, pleGenerationsRelations } from "./ple.schema";
 // --- PRODUCTS ---
@@ -569,8 +591,10 @@ export {
 } from "./fiscal-memory.schema";
 // --- W2-04: IDEMPOTENCY ---
 export {
+	failureClassEnum,
 	type IdempotencyRecord,
 	idempotencyRecords,
+	idempotencyStatusEnum,
 	type NewIdempotencyRecord,
 } from "./idempotency.schema";
 // --- JUDGMENT DAY ---
