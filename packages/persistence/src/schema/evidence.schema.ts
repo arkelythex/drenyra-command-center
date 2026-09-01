@@ -10,7 +10,7 @@ import {
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
-import { companies, organizations } from "./core.schema";
+import { companies } from "./core.schema";
 
 export const evidenceStatusEnum = pgEnum("evidence_status", [
 	"UPLOADED",
@@ -41,9 +41,9 @@ export const evidence = pgTable(
 	"evidence",
 	{
 		id: uuid("id").primaryKey().defaultRandom(),
-		organizationId: uuid("organization_id")
-			.references(() => organizations.id)
-			.notNull(),
+		// Organization identifiers use the UUID tenant contract in this schema.
+		// The legacy organizations table uses integer IDs, so no incompatible FK.
+		organizationId: uuid("organization_id").notNull(),
 		companyId: uuid("company_id").references(() => companies.id),
 
 		filename: varchar("filename", { length: 500 }).notNull(),
@@ -113,10 +113,6 @@ export const evidenceAuditTrail = pgTable(
 );
 
 export const evidenceRelations = relations(evidence, ({ one, many }) => ({
-	organization: one(organizations, {
-		fields: [evidence.organizationId],
-		references: [organizations.id],
-	}),
 	company: one(companies, {
 		fields: [evidence.companyId],
 		references: [companies.id],
