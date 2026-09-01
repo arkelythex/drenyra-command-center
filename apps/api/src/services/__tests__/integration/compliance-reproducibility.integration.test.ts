@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import {
+	bills,
 	businessPartners,
 	companies,
 	db,
@@ -31,6 +32,7 @@ describeDb("ComplianceService.verifySireReproducibility (integration)", () => {
 			await db
 				.delete(transactions)
 				.where(eq(transactions.companyId, fixture.companyId));
+			await db.delete(bills).where(eq(bills.companyId, fixture.companyId));
 			await db
 				.delete(businessPartners)
 				.where(eq(businessPartners.companyId, fixture.companyId));
@@ -131,6 +133,35 @@ describeDb("ComplianceService.verifySireReproducibility (integration)", () => {
 		expect(report.differences.recordCount).toBe(1);
 		expect(report.differences.totalAmount).toBe(236);
 		expect(report.differences.totalIGV).toBe(36);
+	});
+
+	it("does not count RCE bills in the current RVIE reproducibility report", async () => {
+		const fixture = await createFixture();
+
+		await db.insert(bills).values({
+			id: randomUUID(),
+			companyId: fixture.companyId,
+			vendorId: fixture.customerId,
+			billNumber: "F001-00000001",
+			issueDate: new Date("2026-04-15T10:00:00.000Z"),
+			dueDate: new Date("2026-05-15T10:00:00.000Z"),
+			currency: "PEN",
+			exchangeRate: "1.0000",
+			subtotalAmount: "100.00",
+			igvAmount: "18.00",
+			totalAmount: "118.00",
+			status: "SENT",
+		});
+
+		const report = await ComplianceService.verifySireReproducibility({
+			companyId: fixture.companyId,
+			year: 2026,
+			month: 4,
+		});
+
+		expect(report.coverage).toBe("NO_DATA");
+		expect(report.sire.recordCount).toBe(0);
+		expect(report.ledger.recordCount).toBe(0);
 	});
 
 	it("returns NO_DATA for periods without records", async () => {
