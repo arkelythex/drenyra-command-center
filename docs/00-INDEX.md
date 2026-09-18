@@ -52,6 +52,7 @@ Esta sección contiene la documentación canónica que define qué es Drenyra, c
 | [capability-map](./01-foundation/capability-map.md) | Cada capability es un nodo en el roadmap. Solo recibe un SDD cuando está cerca de ejecución. |
 | [drenyra-ai-aos](./01-foundation/drenyra-ai-aos.md) | **Drenyra-AI es el sistema operativo verificable para agentes contables. Coordina personas e IA, aplica políticas contab |
 | [drenyra-engram](./01-foundation/drenyra-engram.md) | **Drenyra-Engram es la memoria institucional y contable verificable de una empresa. Conserva conocimiento operativo: qué |
+| [drenyra-operating-model](./01-foundation/drenyra-operating-model.md) | Drenyra no compite copiando funciones aisladas de Codex, Cursor, Digits, Intuit o Xero. Compite con un **modelo operativ |
 | [drenyra-pi-harness](./01-foundation/drenyra-pi-harness.md) | **Drenyra-Pi es el harness Pi-native que convierte Pi en un operador contable disciplinado y verificable.** |
 | [feos-program](./01-foundation/feos-program.md) | CAP-FEOS-00 es el programa paraguas que define Drenyra como el **Financial Engineering Operating System de Latinoamérica |
 | [product-philosophy](./01-foundation/product-philosophy.md) | Drenyra no debe limitarse a ser "un software contable con IA". Esa categoría ya está siendo ocupada por Digits, QuickBoo |
@@ -183,7 +184,8 @@ These documents have moved to the `01-foundation/` section (see the redirect tab
 | Documento | Descripción |
 |-----------|-------------|
 | [drenyra-positioning](./products/drenyra-positioning.md) | Drenyra es el **sistema operativo financiero verificable** para empresas, contadores y gobiernos de Latinoamérica: una p |
-| [drenyra-product-philosophy](./products/drenyra-product-philosophy.md) | Drenyra no debe limitarse a ser "un software contable con IA". Esa categoría ya está siendo ocupada por Digits, QuickBoo |
+| [drenyra-product-philosophy](./products/drenyra-product-philosophy.md) | **Private product policy**: Drenyra is a **private, commercial product** (see |
+| [private-product-policy](./products/private-product-policy.md) | **Última actualización:** 2026-08-03. |
 | [sire-bench](./products/sire-bench.md) | SIRE-bench validates the **code/LLM boundary** in Drenyra: fiscal arithmetic and SIRE processing are deterministic, vers |
 
 ---

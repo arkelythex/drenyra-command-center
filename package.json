@@ -136,7 +136,6 @@
     "tokens:watch": "bun --watch scripts/generate-tokens.ts",
     "docs:check-p3-status-vocabulary": "bun scripts/docs/check-p3-status-vocabulary.ts",
     "docs:check-p3-final-closure-note": "bun scripts/docs/check-p3-final-closure-note.ts",
-    "docs:check-stale": "bun run scripts/docs/check-stale.ts",
     "design:lint": "bunx @google/design.md lint DESIGN.md",
     "design:diff": "bunx @google/design.md diff",
     "design:export:tailwind": "bunx @google/design.md export --format tailwind DESIGN.md",
