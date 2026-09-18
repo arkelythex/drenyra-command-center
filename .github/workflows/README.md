@@ -19,7 +19,6 @@ CI/CD pipelines for ARKELYTHEX. El **gate principal** para merge en PR está en 
 - `bun run architecture:check-framework-isolation`
 - `bun run architecture:check-product-surfaces`
 - En PR: `architecture:check-policy` (contra la rama base)
-- Comprobaciones de docs: `docs:check-links`, `docs:check-pmo-canon`, `docs:check-index-coherence`
 - Verificación de `fetch()` legacy en web
 
 **Job `build`:**
@@ -45,9 +44,15 @@ CI/CD pipelines for ARKELYTHEX. El **gate principal** para merge en PR está en 
 
 ## Documentation Quality (`documentation-quality.yml`)
 
-**Checks:** cobertura JSDoc, READMEs de features, diagramas Mermaid, archivos críticos.
+**Checks:** archivos críticos (`docs/00-INDEX.md` y `CHANGELOG.md`), READMEs de features y diagramas Mermaid.
 
-**Umbrales:** JSDoc &lt; 60% puede bloquear según configuración del workflow.
+El workflow ejecuta únicamente comprobaciones respaldadas por archivos y comandos vigentes en el repositorio.
+
+---
+
+## Docs Maintenance (`docs-maintenance.yml`)
+
+Ejecuta `bun run docs:check-links`. En pull requests se activa únicamente cuando cambian archivos bajo `docs/**`, archivos Markdown en la raíz (`*.md`) o scripts bajo `scripts/docs/**`.
 
 ---
 
@@ -76,33 +81,6 @@ Incluye cobertura, benchmarks, contratos, E2E, seguridad y un job **`nightly-pol
 
 ---
 
-## Variante manual `ci-optimized.yml`
-
-Pipeline alternativo/optimizado para ejecuciones manuales (`workflow_dispatch`). Decisión vigente: mantenerlo como diagnóstico bajo demanda, pero **no ejecutarlo automáticamente ni convertirlo en el gate canónico de PR** mientras duplique jobs de `ci.yml`.
-
-Reglas de mantenimiento:
-
-- `ci.yml` sigue siendo el source of truth para PRs y branch protection.
-- `ci-optimized.yml` puede ejecutarse manualmente para diagnósticos post-merge, pero sus comandos deben mantenerse alineados con `ci.yml` cuando validen el mismo contrato.
-- No ejecutar linters/formatters sobre todo el baseline histórico si el repositorio todavía tiene deuda fuera del diff; usar rangos de archivos cambiados.
-- Si un job optimizado falla por drift con `ci.yml`, corregir el drift o retirar el job duplicado antes de hacerlo required.
-- Si la capacidad de runners vuelve a ser cuello de botella, preferir reducir duplicación en `ci-optimized.yml` antes que desactivar checks requeridos.
-
-
----
-
-## Self-hosted pilot workflows
-
-`quality-gates-self-hosted-pilot.yml` and `ci-self-hosted-pilot.yml` are **experimental runner-readiness workflows**. They validate host connectivity, labels, and native dependencies before promoting any broader self-hosted migration. They are not branch-protection gates and must not be treated as substitutes for `ci.yml`.
-
-Use them when changing runner host images, service registration, Docker/native packages, or uv/Python availability. If their checks duplicate `ci.yml`, keep the pilot scoped to proving the runner host can execute the canonical commands instead of adding a second required signal.
-
-Canonical runner maintenance docs:
-
-- [Self-hosted runner host runbook](../../docs/06-runbooks/self-hosted-runner-host-runbook-2026.md) — provisioning and standard operations.
-- [Self-hosted runner troubleshooting index](../../docs/09-troubleshooting/self-hosted-runner-host-runbook-2026.md) — quick triage path that points back to the canonical runbook.
----
-
 ## Uso local (antes de push)
 
 ```bash
@@ -115,7 +93,7 @@ bun run architecture:check-product-surfaces
 bun run docs:check-links
 ```
 
-Ver también [CONTRIBUTING.md](../../CONTRIBUTING.md) y [docs/01-architecture/monorepo-pipeline.md](../../docs/01-architecture/monorepo-pipeline.md).
+Ver también [CONTRIBUTING.md](../../CONTRIBUTING.md) y [Canonical Stack](../../docs/01-foundation/canonical-stack.md).
 
 ---
 
@@ -125,7 +103,7 @@ Ver también [CONTRIBUTING.md](../../CONTRIBUTING.md) y [docs/01-architecture/mo
 |------|-----------------------------|--------|
 | TypeScript (`tsc`) | Error → falla el job | No es “solo warning” |
 | Architecture scripts | Fallo → falla el job | Ver lista arriba |
-| JSDoc / docs quality | Workflow dedicado | `documentation-quality.yml` |
+| Documentation quality | Workflow dedicado | `documentation-quality.yml` |
 | Biome (PR principal) | Incluido en `lint-and-typecheck` | Además en `quality-gates.yml` |
 
 ---
@@ -136,8 +114,8 @@ Ver también [CONTRIBUTING.md](../../CONTRIBUTING.md) y [docs/01-architecture/mo
 - [Bun en CI](https://bun.sh/docs/test/ci)
 - [Turborepo — CI](https://turbo.build/repo/docs/ci)
 
-**Last updated:** 2026-06-14
+**Last updated:** 2026-08-30
 
 ---
 
-*Alineado con la [Filosofía Gentleman](../../docs/meta/gentleman-philosophy.md) de ARKELYTHEX — documentación que reduce carga cognitiva y enseña con calidez.*
+*Alineado con la [filosofía de producto de Drenyra](../../docs/products/drenyra-product-philosophy.md) — documentación que reduce carga cognitiva y enseña con calidez.*

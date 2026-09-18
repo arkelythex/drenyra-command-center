@@ -47,7 +47,7 @@
 ## Documentation Maintenance
 
 - [ ] I updated `last-verified` in any README I modified
-- [ ] I ran `bun run docs:check-stale` and it passes
+- [ ] I ran `bun run docs:check-links` and it passes
 - [ ] If I added a new package, I added a README with frontmatter
 - [ ] If I changed `exports` in package.json, I updated the README Key Exports table
 
