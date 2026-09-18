@@ -374,7 +374,7 @@ Drenyra-Engram
 ## Estructura de productos (5 repos)
 
 ```text
-arkelythex/Drenyra (command center)
+arkelythex/drenyra-command-center (command center)
 arkelythex/drenyra-ai (runtime y protocolo contable)
 arkelythex/drenyra-pi (harness Pi-native)
 arkelythex/drenyra-engram (memoria institucional contable)

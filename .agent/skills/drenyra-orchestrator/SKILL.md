@@ -1,5 +1,5 @@
 ---
-name: drenyra-drenyra-orchestrator
+name: drenyra-orchestrator
 description: "Trigger: orchestrator, delegation, work-routing, review-lens, harness, drenyra-harness. Guide AI agents working with the Drenyra orchestrator — the delegation router, skills resolver, memory contrac..."
 license: MIT
 metadata:
