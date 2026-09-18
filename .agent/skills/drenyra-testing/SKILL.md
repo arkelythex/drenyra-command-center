@@ -1,5 +1,5 @@
 ---
-name: drenyra-drenyra-testing
+name: drenyra-testing
 description: "Trigger: test, vitest, playwright, compliance-repro, sire-repro, testing. Drenyra testing conventions for vitest (unit/integration), playwright (E2E), and compliance verification."
 license: MIT
 metadata:
