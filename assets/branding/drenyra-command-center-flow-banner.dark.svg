@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="460" viewBox="0 0 1400 460" role="img" aria-label="Drenyra flow — operator, command-center planes, dual approval, receipt">
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="460" viewBox="0 0 1400 460" role="img" aria-label="Drenyra flow — operator, command-center planes, dual approval, receipt" data-theme="dark">
   <!-- brand-system v0.2 flow banner: theme-aware (dark + light via prefers-color-scheme),
        canonical tokens only (contracts/brand-system/tokens.json), zero embedded text.
        Flow motif: operator -> command-center planes -> dual approval -> receipt. -->
@@ -62,6 +62,32 @@
         --pending: #2E5FB8;
         --spark: #1F8A80;
       }
+    }
+    svg[data-theme="light"] {
+      --bg1: #FAFAF9; --bg2: #FFFFFF; --bg3: #F2F2F0;
+      --grid: #000000;
+      --glow-c: #2ECFC2; --glow-v: #6B54A8;
+      --c: #2ECFC2; --c-bright: #1F8A80;
+      --v: #6B54A8; --v-bright: #7B66C0;
+      --ok: #1A8F52;
+      --n1: #FFFFFF; --n2: #F2F2F0; --n3: #FFFFFF;
+      --border: #D4D4D0; --border-subtle: #E5E5E2;
+      --muted: #52565D; --muted-dim: #7A7F87;
+      --pending: #2E5FB8;
+      --spark: #1F8A80;
+    }
+    svg[data-theme="dark"] {
+      --bg1: #0B0E11; --bg2: #12161B; --bg3: #1A1F26;
+      --grid: #FFFFFF;
+      --glow-c: #3CE6D8; --glow-v: #9B7FE8;
+      --c: #3CE6D8; --c-bright: #6AEFE4;
+      --v: #9B7FE8; --v-bright: #B8A2F0;
+      --ok: #4ADE94;
+      --n1: #12161B; --n2: #1A1F26; --n3: #20262E;
+      --border: #323A44; --border-subtle: #262C34;
+      --muted: #A8B0BC; --muted-dim: #6B7480;
+      --pending: #6B9FE8;
+      --spark: #6AEFE4;
     }
   </style>
 

@@ -1,6 +1,7 @@
 <div align="center">
 
-<img width="1200" alt="Drenyra flow — operator → command-center planes → dual approval → receipt" src="assets/branding/drenyra-command-center-flow-banner.svg" />
+<img width="1200" alt="Drenyra flow — operator → command-center planes → dual approval → receipt" src="assets/branding/drenyra-command-center-flow-banner.light.svg#gh-light-mode-only" />
+<img width="1200" alt="Drenyra flow — operator → command-center planes → dual approval → receipt" src="assets/branding/drenyra-command-center-flow-banner.dark.svg#gh-dark-mode-only" />
 
 <p><code>operator → command-center planes → dual approval → receipt</code></p>
 
