@@ -21,6 +21,7 @@ drizzle/meta/
 !assets/branding/
 !assets/branding/*.svg
 pnpm-lock.yaml
+!products/estado/pnpm-lock.yaml
 uv.lock
 Cargo.lock
 *.sum
