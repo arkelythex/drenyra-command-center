@@ -1,5 +1,6 @@
 import type { Currency } from "@drenyra/domain";
 import { Info, Receipt, ShieldCheck } from "lucide-react";
+import { getActiveTaxRate } from "@/lib/latam-country-packs";
 import { n } from "@/lib/utils";
 
 interface Props {
@@ -12,6 +13,10 @@ interface Props {
 }
 
 export const InvoiceTotals = ({ totals, currency }: Props) => {
+	// PE's IGV rule is always populated (`PERU_TAX_RULES`); a static fallback
+	// keeps this label total-safe if that ever changed.
+	const igvRatePercent = getActiveTaxRate("pe", "IGV") ?? 18;
+
 	return (
 		<div className="relative group/totals overflow-hidden">
 			{/* Background Ambience: Kinetic Glow */}
@@ -60,7 +65,7 @@ export const InvoiceTotals = ({ totals, currency }: Props) => {
 						<div className="flex items-center gap-2">
 							<div className="w-1 h-1 rounded-full bg-muted-foreground/30 group-hover/row:bg-[var(--premium-action-blue)] transition-colors" />
 							<span className="text-label font-black uppercase tracking-[0.15em] text-muted-foreground/60">
-								I.G.V. Aplicado (18%)
+								I.G.V. Aplicado ({igvRatePercent}%)
 							</span>
 						</div>
 						<span className="text-sm font-mono font-bold tracking-tight text-foreground/90 tabular-nums">

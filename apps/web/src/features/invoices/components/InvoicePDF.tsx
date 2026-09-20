@@ -6,6 +6,7 @@ import {
 	Text,
 	View,
 } from "@react-pdf/renderer";
+import { getActiveTaxRate } from "@/lib/latam-country-packs";
 
 interface InvoicePdfItem {
 	description: string;
@@ -151,6 +152,9 @@ export const InvoicePDF = ({ invoice, qrCodeDataUrl }: InvoicePDFProps) => {
 	const subtotal = parseFloat(invoice.subtotal.toString());
 	const tax = parseFloat(invoice.tax.toString());
 	const total = parseFloat(invoice.total.toString());
+	// PE's IGV rule is always populated (`PERU_TAX_RULES`); a static fallback
+	// keeps this label total-safe if that ever changed.
+	const igvRatePercent = getActiveTaxRate("pe", "IGV") ?? 18;
 
 	return (
 		<Document>
@@ -240,7 +244,7 @@ export const InvoicePDF = ({ invoice, qrCodeDataUrl }: InvoicePDFProps) => {
 						<Text>S/ {subtotal.toFixed(2)}</Text>
 					</View>
 					<View style={styles.totalRow}>
-						<Text style={styles.totalLabel}>IGV (18%):</Text>
+						<Text style={styles.totalLabel}>IGV ({igvRatePercent}%):</Text>
 						<Text>S/ {tax.toFixed(2)}</Text>
 					</View>
 					<View style={styles.totalRow}>
