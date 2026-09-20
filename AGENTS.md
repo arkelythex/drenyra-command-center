@@ -142,6 +142,7 @@ DRENYRA documentation follows the **Gentleman Philosophy** — cognitive load re
 - **Cognitive load patterns**: every doc must follow at least 3 of 6 patterns — lead with answer, progressive disclosure, chunking, signposting, recognition over recall, review empathy.
 - **Docs-as-Code**: update docs in the SAME PR as code changes. Atomic commits include docs. Treat stale docs as a bug.
 - **CI for docs**: `markdownlint` for formatting, `lychee` for link checking — fail on broken internal links.
+- **Diagram convention**: durable architecture, workflow, sequence, data-flow and state diagrams are Archify artifacts, authored from repository evidence and accepted mechanically — see [documentation-standard.md §5](https://github.com/arkelythex/drenyra-ai/blob/main/docs/documentation-standard.md#5-diagrams).
 - **AI agent-consumable docs**: 50% of doc traffic is now AI agents. Write clear section headers, direct answers, structured data. AI agents read your docs — treat them as users.
 - **Date freshness**: every doc has a `**Última actualización**` / `**Last updated**` line at the top. Update it when content changes. If content is inherently time-bound, note the period explicitly.
 - **MAP.md first**: before exploring inside any app, read its `apps/<app>/MAP.md` — saves tokens, gives architecture at a glance.
