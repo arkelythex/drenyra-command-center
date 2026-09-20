@@ -87,11 +87,24 @@ green. Runner: `bun run --cwd apps/web test:run` / `test:coverage`.
   only special-cases `"PE"`/`"CO"` (CL/EC/MX/BR return `[]`) — that gap is in
   `packages/domain` (out of scope here); apps/web code must handle an empty
   result gracefully rather than assuming PE. Route: delegated writer.
-- [ ] **T3. Refactor `money.ts`** — remove hardcoded `LOCALE = "es-PE"` and
+- [x] **T3. Refactor `money.ts`** — remove hardcoded `LOCALE = "es-PE"` and
   default `"PEN"`; resolve locale/currency from the active country pack
   (`CountryRuntime.getPack(code).locale/defaultCurrency` via T2's adapter).
   Remove `@deprecated formatPEN` alias once call sites are migrated to the
   resolved-locale formatter. Route: delegated writer.
+- [ ] **T3b. NEW — Fix `lib/utils.ts`'s separate hardcoded currency
+  formatters** (discovered during T3): `apps/web/src/lib/utils.ts` has its
+  own independent `formatPEN`/`formatPENCompact`/`formatCurrency`, hardcoded
+  to `es-PE`, **completely separate from `money.ts`**. These, not `money.ts`,
+  are what real invoice/compliance UI actually calls (`DetraccionesTab.tsx`,
+  `CpeValidatorTab.tsx`, `InvoiceCard.tsx`, `InvoiceLineItems.tsx`,
+  `InvoiceTotals.tsx`, `InvoicesAgingTab.tsx`, `SireDashboard.tsx`,
+  `demo-card.tsx`, `fiscal-health-map/widgets.tsx`) — so T3 alone does not
+  fix the user-visible "amounts always render as PEN/es-PE" bug. Redirect
+  `utils.ts`'s formatters to delegate to `money.ts`'s now country-aware `n()`
+  (keep `utils.ts`'s function names/signatures for its many existing callers;
+  change only the implementation). Combine with T4/T5 below — same files.
+  Route: delegated writer.
 - [ ] **T4. Kill the duplicated IGV 0.18 literal** — source from T2's
   `getActiveTaxRate()` (backed by `PERU_TAX_RULES`, rate is `18` meaning
   18%, so divide by 100 at the call site consistently) in:
@@ -165,3 +178,21 @@ crosses ~400.
   `bunx biome check` on changed files as the substitute gate per task and
   will flag this to the user as a separate decision. T10 will record this
   limitation rather than claim false-green.
+- 2026-09-20: T3 applied (commit `af5e690`). `money.ts` now resolves locale
+  per-call from the country pack (default Peru, backward compatible for all
+  9 existing untouched call sites); removed unused `formatPEN` (0 real
+  callers). Discovered `Currency` type in `@drenyra/domain` is
+  `"PEN"|"USD"|"EUR"` only — MX/CO/CL/BR currencies aren't representable yet;
+  decoupled locale resolution (country-driven) from currency typing (stays
+  `Currency`-typed) rather than casting around this domain gap. Flagged, not
+  fixed (packages/domain, out of scope).
+  **New T3b task added above** — `lib/utils.ts` has its own separate
+  hardcoded `formatPEN`/`formatCurrency`, and it (not `money.ts`) is what real
+  invoice/compliance UI actually calls.
+  **Separate flagged finding**: `bun scripts/sire-ledger-repro-check.ts` (the
+  script CLAUDE.md mandates for any change touching facturación/libros)
+  **does not exist on `main` or this branch** — confirmed via git log across
+  branches; it only exists on unrelated, unmerged feature branches. This is a
+  pre-existing repo gap predating this task, not something to silently import
+  from an unrelated branch. Flagging to the user; T10 cannot run this gate
+  until it exists on main.
