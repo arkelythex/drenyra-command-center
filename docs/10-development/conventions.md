@@ -49,7 +49,7 @@ export { DNI } from './DNI'
 **Reglas:**
 
 - No imports a archivos `.ts` directamente si hay un `index.ts` en el mismo directorio
-- Los barrel exports se verifican en CI (`check-import-health`)
+- El gate automatizado de salud de imports está planificado en `openspec/changes/drenyra-x4-import-health/`; todavía no se aplica en CI
 
 ### Orden de imports
 
