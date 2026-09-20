@@ -74,7 +74,7 @@ green. Runner: `bun run --cwd apps/web test:run` / `test:coverage`.
 - [x] **T1. Fix stale `knip.json` entry point** — `apps/web/src/main.tsx` (does
   not exist) → `apps/web/src/client.tsx` (actual entry). 1 file, mechanical.
   Route: direct inline.
-- [ ] **T2. Make `latam-country-packs.ts` a thin adapter over
+- [x] **T2. Make `latam-country-packs.ts` a thin adapter over
   `@drenyra/domain`'s `CountryRuntime`** instead of a second parallel config.
   Import `CountryRuntime`/`DRENYRA_COUNTRY_PACKS`/`PERU_TAX_RULES`/
   `COLOMBIA_TAX_RULES` from `@drenyra/domain`. Keep in `latam-country-packs.ts`
@@ -147,3 +147,21 @@ crosses ~400.
   implements the country-pack/tax-rule source of truth apps/web needs (0
   existing apps/web usages). Revised T2-T6 to consume it instead of building
   a parallel config.
+- 2026-09-20: T2 applied (commit `868dd54`). `latam-country-packs.ts` now
+  sources name/currency/locale/taxIdRegex from `CountryRuntime`, adds
+  `getActiveTaxRate(countryCode, taxName)`. 13 new tests, all passing.
+  Findings: (a) only 1 real prior usage of this module existed
+  (`compliance-client.types.ts`, type-only) — `getCountryPack`/
+  `resolveCountryCode`/`LATAM_COUNTRY_PACKS` had **zero runtime callers**
+  before this task, confirming the value of T3/T4 wiring real call sites next.
+  (b) **Repo-wide tooling is broken independent of this change**:
+  `apps/web typecheck` fails on TS5102 (`baseUrl` removed in pinned
+  TypeScript 7.0.2, but `apps/web/tsconfig.check.json:14` still sets it), and
+  `apps/web lint` fails on a `typescript-eslint`/TS 7.0.2 incompatibility
+  (`Cannot read properties of undefined (reading 'Cjs')`). Verified
+  pre-existing by reverting the change and rerunning — identical failures.
+  This blocks a fully green typecheck/lint for *any* apps/web change right
+  now. Out of scope to fix here (repo-wide TS pin, not apps/web-local); used
+  `bunx biome check` on changed files as the substitute gate per task and
+  will flag this to the user as a separate decision. T10 will record this
+  limitation rather than claim false-green.
