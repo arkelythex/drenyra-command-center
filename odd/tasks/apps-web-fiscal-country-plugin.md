@@ -151,8 +151,14 @@ green. Runner: `bun run --cwd apps/web test:run` / `test:coverage`.
 Work-unit commits on `codex/apps-web-fiscal-country-plugin`
 (worktree: `/home/dreamcoder08/Documents/PROYECTOS/Drenyra/worktrees/apps-web-fiscal-country-plugin`,
 branched from `origin/main` at `7c87151d2`). Delivery strategy: ask-on-risk
-(default) — will ask before chaining PRs if the running authored-line count
-crosses ~400.
+(default) — asked at ~728 lines. **User chose: feature-branch-chain** — one
+PR per slice, stacked on the previous PR's branch, merged in order.
+
+Chain plan (slice boundaries = commits already made):
+- PR1: T1+T2 (`e687c75`, `868dd54`, doc commits `dfd23df2`/`5d2fdd13`)
+- PR2 (base: PR1 branch): T3 (`af5e690`) + doc commit `44616f0e`
+- PR3 (base: PR2 branch): T3b+T4+T5 (`2286145`, `d2f0efd`) + doc commit `ad6dc609`
+- PR4+ (base: PR3 branch): T6-T8-T10, sliced further if needed
 
 ## Progress log
 - 2026-09-20: Task doc created after reconciliation. T1 applied (commit e687c75).
