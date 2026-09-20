@@ -1,5 +1,6 @@
 import { isValidRUC } from "@drenyra/shared";
 import * as z from "zod";
+import { getCountryPack } from "@/lib/latam-country-packs";
 
 export interface PasswordStrength {
 	score: number;
@@ -41,15 +42,29 @@ export function calculatePasswordStrength(password: string): PasswordStrength {
 // Re-export for backwards compatibility
 export { isValidRUC as validateRucLocal } from "@drenyra/shared";
 
+// Signup is Peru-only today (RUC field). Length/label are sourced from the
+// country pack (T2's adapter over @drenyra/domain's CountryRuntime) instead
+// of a hardcoded `11`/"RUC" literal — `taxIdLength` falls back to `11` only
+// as a defensive default; Peru's pack always resolves it (fixed "\\d{11}").
+const peCountryPack = getCountryPack("pe");
+const PE_TAX_ID_LENGTH = peCountryPack.taxIdLength ?? 11;
+const PE_TAX_ID_LABEL = peCountryPack.taxIdLabel;
+
 export const signupSchema = z
 	.object({
 		name: z.string().min(3, "Mínimo 3 caracteres"),
 		email: z.string().email("Email inválido"),
 		ruc: z
 			.string()
-			.length(11, "RUC debe tener 11 dígitos")
-			.regex(/^\d{11}$/, "RUC debe contener solo números")
-			.refine(isValidRUC, "RUC inválido (verificación módulo 11)"),
+			.length(
+				PE_TAX_ID_LENGTH,
+				`${PE_TAX_ID_LABEL} debe tener ${PE_TAX_ID_LENGTH} dígitos`,
+			)
+			.regex(/^\d+$/, `${PE_TAX_ID_LABEL} debe contener solo números`)
+			.refine(
+				isValidRUC,
+				`${PE_TAX_ID_LABEL} inválido (verificación módulo 11)`,
+			),
 		password: z
 			.string()
 			.min(8, "Mínimo 8 caracteres")
