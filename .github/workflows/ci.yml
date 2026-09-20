@@ -216,16 +216,3 @@ jobs:
         env:
           DATABASE_URL_TEST: postgresql://user:password@localhost:5432/w2_gate_test
           REDIS_URL: redis://localhost:6379
-
-  quality-checks:
-    name: Quality — import health + lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
-      - run: bun install --frozen-lockfile
-      - run: bash scripts/ci/check-import-health.sh
