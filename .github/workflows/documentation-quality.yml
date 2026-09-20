@@ -12,7 +12,7 @@ permissions:
 jobs:
   documentation-lint:
     name: Documentation Linting
-    runs-on: [self-hosted, linux, x64]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Ensure git-lfs binary available
@@ -22,7 +22,7 @@ jobs:
             curl -sL "https://github.com/git-lfs/git-lfs/releases/download/v3.6.1/git-lfs-linux-amd64-v3.6.1.tar.gz" | tar -xz -C /tmp
             cp /tmp/git-lfs-3.6.1/git-lfs ~/.local/bin/
             chmod +x ~/.local/bin/git-lfs
-            echo "$HOME/.local/bin" >> $GITHUB_PATH
+            echo "$HOME/.local/bin" >> "$GITHUB_PATH"
           fi
       - name: Checkout code
         uses: actions/checkout@v6
@@ -30,6 +30,11 @@ jobs:
           lfs: false
       - name: Remove broken husky hooks
         run: rm -rf .git/hooks .husky/_/
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.11'
 
       - name: Verify Bun runtime
         run: |
