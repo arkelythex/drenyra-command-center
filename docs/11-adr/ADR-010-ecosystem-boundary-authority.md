@@ -89,3 +89,5 @@ Aprobado el Diseño 1 — Frontera y autoridad del ecosistema, con tres piezas n
 ---
 
 **Fuente canónica de esta decisión:** [Ecosystem Boundaries — Drenyra](../architecture/ecosystem-boundaries.md) y sus espejos en `drenyra-ai`, `drenyra-pi` y `drenyra-engram`.
+
+**Ver también:** [ADR-011 — Agent Model (Design 3)](./ADR-011-agent-model-ai-proposes-core-decides.md) — cómo los agentes proponen y el Core determinista decide.

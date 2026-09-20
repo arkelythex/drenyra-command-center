@@ -110,6 +110,9 @@ Un Architecture Decision Record documenta una decisión que:
 | [ADR-008-property-based-testing](./11-adr/ADR-008-property-based-testing.md) | Las reglas fiscales (IGV, detracciones, RUC checksum, operaciones Money) tienen invariantes que deben cumplirse para TOD |
 | [ADR-009-canonical-idempotency-contract](./11-adr/ADR-009-canonical-idempotency-contract.md) | Drenyra maneja múltiples mecanismos de idempotencia que evolucionaron orgánicamente y |
 | [ADR-010-ecosystem-boundary-authority](./11-adr/ADR-010-ecosystem-boundary-authority.md) | El ecosistema Drenyra creció con componentes superpuestos: el Command Center llegó a |
+| [ADR-011-agent-model-ai-proposes-core-decides](./11-adr/ADR-011-agent-model-ai-proposes-core-decides.md) | La tentación de convertir cada función contable en un "agente" produce sistemas donde |
+| [ADR-012-persistence-security-recovery](./11-adr/ADR-012-persistence-security-recovery.md) | El estado autoritativo no puede vivir en la conversación ni en la memoria del modelo: |
+| [ADR-013-consume-drenyra-ai-remove-duplicate-authority](./11-adr/ADR-013-consume-drenyra-ai-remove-duplicate-authority.md) | La frontera aprobada (ADR-010) exige que Drenyra consuma Drenyra-AI como runtime headless |
 | [adr-034-drenyra-fiscal-app-server](./11-adr/adr-034-drenyra-fiscal-app-server.md) | **Note:** ADR-032 = Korveth. ADR-033 = Platform vs Product split (Drenyra). **ADR-034 = DFAS** (Drenyra product harness  |
 | [W2-04A-natural-uniqueness-inventory](./11-adr/W2-04A-natural-uniqueness-inventory.md) | Identificar para cada agregado de dominio su **clave natural permanente** y decidir la política de conflicto, asegurando |
 | [W2-05A-consumer-dedup-inventory](./11-adr/W2-05A-consumer-dedup-inventory.md) | Definir un inbox pattern transaccional que garantice procesamiento exactamente una vez por mensaje, independientemente d |

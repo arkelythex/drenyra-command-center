@@ -1,7 +1,7 @@
 {
   "name": "@drenyra/pi",
   "version": "1.0.0-alpha.1",
-  "description": "Drenyra Pi — Agent harness for Peruvian fiscal intelligence. SDK for building fiscal AI agents with SDD, memory, and compliance pipelines.",
+  "description": "Drenyra Pi \u2014 Agent harness for Peruvian fiscal intelligence. SDK for building fiscal AI agents with SDD, memory, and compliance pipelines.",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -30,7 +30,7 @@
     "serve": "bun src/serve.ts",
     "hooks:install": "bash scripts/install-hooks.sh",
     "test:watch": "vitest",
-    "prepublishOnly": "echo 'Private package — not published to npm'; exit 1"
+    "prepublishOnly": "echo 'Private package \u2014 not published to npm'; exit 1"
   },
   "keywords": [
     "drenyra",
@@ -75,7 +75,8 @@
     "ai": "^6.0.39",
     "hono": "^4.12.27",
     "yaml": "^2.9.0",
-    "zod": "^4.3.5"
+    "zod": "^4.3.5",
+    "drenyra-ai": "file:../../vendored/drenyra-ai-0.2.0.tgz"
   },
   "devDependencies": {
     "@types/bun": "^1.3.14",
