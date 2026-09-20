@@ -92,7 +92,7 @@ green. Runner: `bun run --cwd apps/web test:run` / `test:coverage`.
   (`CountryRuntime.getPack(code).locale/defaultCurrency` via T2's adapter).
   Remove `@deprecated formatPEN` alias once call sites are migrated to the
   resolved-locale formatter. Route: delegated writer.
-- [ ] **T3b. NEW — Fix `lib/utils.ts`'s separate hardcoded currency
+- [x] **T3b. NEW — Fix `lib/utils.ts`'s separate hardcoded currency
   formatters** (discovered during T3): `apps/web/src/lib/utils.ts` has its
   own independent `formatPEN`/`formatPENCompact`/`formatCurrency`, hardcoded
   to `es-PE`, **completely separate from `money.ts`**. These, not `money.ts`,
@@ -105,7 +105,7 @@ green. Runner: `bun run --cwd apps/web test:run` / `test:coverage`.
   (keep `utils.ts`'s function names/signatures for its many existing callers;
   change only the implementation). Combine with T4/T5 below — same files.
   Route: delegated writer.
-- [ ] **T4. Kill the duplicated IGV 0.18 literal** — source from T2's
+- [x] **T4. Kill the duplicated IGV 0.18 literal** — source from T2's
   `getActiveTaxRate()` (backed by `PERU_TAX_RULES`, rate is `18` meaning
   18%, so divide by 100 at the call site consistently) in:
   `features/invoices/components/create-invoice/InvoiceLineItems.tsx:72`,
@@ -113,7 +113,7 @@ green. Runner: `bun run --cwd apps/web test:run` / `test:coverage`.
   `features/compliance/components/tabs/cpe-validator/cpe-validation-request.ts:76`,
   `InvoiceTotals.tsx` (create + edit, hardcoded `"18%"` text), `InvoicePDF.tsx:243`.
   Route: delegated writer (7+ files).
-- [ ] **T5. Centralize `taxType === "GRAVADO"` conditionals** — `CountryRuntime`
+- [x] **T5. Centralize `taxType === "GRAVADO"` conditionals** — `CountryRuntime`
   has no tax-type enum today (only named `TaxRule`s like IGV/Renta/Detraccion);
   keep the GRAVADO/EXONERADO/INAFECTO enum apps/web-local (it's a SUNAT
   document-line concept, not in `feos/country-runtime.ts`), but move it out of
@@ -196,3 +196,22 @@ crosses ~400.
   pre-existing repo gap predating this task, not something to silently import
   from an unrelated branch. Flagging to the user; T10 cannot run this gate
   until it exists on main.
+- 2026-09-20: T3b applied (commit `2286145`) — `utils.ts`'s
+  `formatPEN`/`formatPENCompact`/`formatCurrency`/`formatPercent`/`formatDate`
+  now delegate to `money.ts` instead of re-hardcoding `es-PE`. Finding: by
+  implementation time these had **zero real callers** (UI already used `n`
+  re-exported from `money.ts`) — fixed anyway as dead public-API debt.
+  T4+T5 applied (commit `d2f0efd`) — real `0.18`/`"18%"` literals killed
+  across `InvoiceLineItems.tsx`, `useInvoiceCalculations.ts`,
+  `EditInvoiceModal.tsx` (x2), `cpe-validation-request.ts`, both
+  `InvoiceTotals.tsx` variants, `InvoicePDF.tsx`, all reading
+  `getActiveTaxRate("pe","IGV") ?? 18`. New `features/invoices/lib/tax-type.ts`
+  centralizes GRAVADO/EXONERADO/INAFECTO. Incidental fix: pre-existing
+  `a11y/noLabelWithoutControl` in `EditInvoiceModal.tsx` (biome lints whole
+  files, blocked the commit) — noted in that commit's message as incidental,
+  not part of T4/T5 scope. Full suite: 18 failed/21 failed tests, identical
+  to established pre-existing baseline — no new regressions; 514 passing
+  (up from 503, new tests added).
+  **Delivery budget crossed**: cumulative authored lines T1–T5/T3b ≈ 728,
+  past the ~400 heuristic. Per the ask-on-risk delivery strategy set above,
+  pausing to ask the user for a chain strategy before T6–T8.
