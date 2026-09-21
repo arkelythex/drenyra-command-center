@@ -33,9 +33,6 @@
 /apps/api/src/features/ai-swarm/ @dreamcoder08
 /apps/api/src/features/agent-audit-trail/ @dreamcoder08
 
-# CLI — Gentleman Fiscal Terminal
-/packages/engram/ @dreamcoder08
-
 # Compliance pipeline — fiscal compliance orchestrator, phase gates, SDD
 /packages/fiscal-compliance-pipeline/ @dreamcoder08
 /packages/fiscal-sdd/ @dreamcoder08
