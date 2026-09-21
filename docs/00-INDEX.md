@@ -2,6 +2,7 @@
 
     **Arquitectura:** Drenyra Financial Engineering OS (FEOS) — 8 planos
 **Programa:** [CAP-FEOS-00 — Drenyra Financial Engineering Operating System](./01-foundation/feos-program.md)
+**Programa maestro:** [Drenyra Dominion](https://github.com/arkelythex/drenyra-ai/tree/main/openspec/programs/drenyra-dominion) — programa federado que fija autoridad, contratos, dependencias, gates y waves de todo el ecosistema. Command Center sirve a **SDD-100** (proyección Web UI profesional del Core), **SDD-060** (control multi-operador) y **SDD-050** (cierre mensual). Este repo conserva solo sus cambios locales + la referencia al maestro.
 
 ---
 
