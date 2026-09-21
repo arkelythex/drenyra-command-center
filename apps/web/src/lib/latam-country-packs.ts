@@ -30,6 +30,13 @@ export interface CountryPack {
 	 * Peru's RUC). Falls back to an always-matching pattern if the domain
 	 * runtime has no pack for this code. */
 	taxIdRegex: string;
+	/** Exact digit count for the country's tax identifier, derived from
+	 * `taxIdRegex` via {@link getFixedTaxIdLength} when the regex encodes a
+	 * single fixed length (e.g. "\\d{11}" → 11 for Peru's RUC). `undefined`
+	 * for a variable-length or non-purely-numeric format (Colombia's NIT is
+	 * "\\d{9,10}", Mexico's RFC is alphanumeric) — callers must not assume a
+	 * fallback length for those and should handle `undefined` explicitly. */
+	taxIdLength: number | undefined;
 	defaultCurrency: string;
 	locale: string;
 	assistantPlaceholder: string;
@@ -226,14 +233,38 @@ const FALLBACK_LOCALE_BY_COUNTRY_CODE: Record<CountryCode, string> = {
 // instance is safe and avoids rebuilding that map on every call.
 const countryRuntime = new CountryRuntime(DRENYRA_COUNTRY_PACKS);
 
+// Matches a `taxIdRegex` string that encodes exactly one fixed digit count,
+// e.g. "\\d{11}" (Peru's RUC). Deliberately does NOT match a range like
+// "\\d{9,10}" (Colombia) or an alphanumeric format like Mexico's RFC — those
+// have no single "length" to extract, and guessing one would be wrong.
+const FIXED_DIGIT_LENGTH_PATTERN = /^\\d\{(\d+)\}$/;
+
+/**
+ * Extracts the exact digit count from a country's `taxIdRegex` when it
+ * encodes exactly one fixed length. Returns `undefined` for a variable-length
+ * or non-purely-numeric format rather than guessing.
+ *
+ * @example
+ * ```ts
+ * getFixedTaxIdLength("\\d{11}"); // 11 (Peru's RUC)
+ * getFixedTaxIdLength("\\d{9,10}"); // undefined (Colombia's NIT — a range)
+ * ```
+ */
+export function getFixedTaxIdLength(taxIdRegex: string): number | undefined {
+	const match = FIXED_DIGIT_LENGTH_PATTERN.exec(taxIdRegex);
+	return match ? Number(match[1]) : undefined;
+}
+
 function buildCountryPack(code: CountryCode): CountryPack {
 	const domainPack = countryRuntime.getPack(DOMAIN_CODE_BY_COUNTRY_CODE[code]);
 	const copy = ASSISTANT_COPY_BY_COUNTRY_CODE[code];
+	const taxIdRegex = domainPack?.taxIdentifierFormat ?? ".*";
 	return {
 		code,
 		name: domainPack?.name ?? FALLBACK_NAME_BY_COUNTRY_CODE[code],
 		taxIdLabel: TAX_ID_LABEL_BY_COUNTRY_CODE[code],
-		taxIdRegex: domainPack?.taxIdentifierFormat ?? ".*",
+		taxIdRegex,
+		taxIdLength: getFixedTaxIdLength(taxIdRegex),
 		defaultCurrency:
 			domainPack?.defaultCurrency ?? FALLBACK_CURRENCY_BY_COUNTRY_CODE[code],
 		locale: domainPack?.locale ?? FALLBACK_LOCALE_BY_COUNTRY_CODE[code],

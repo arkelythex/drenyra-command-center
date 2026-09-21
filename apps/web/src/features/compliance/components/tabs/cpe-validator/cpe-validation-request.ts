@@ -1,3 +1,4 @@
+import { getActiveTaxRate } from "@/lib/latam-country-packs";
 import type { MockCpeRow } from "./cpe-validator.mock";
 
 interface CpeValidationRequestBody {
@@ -73,7 +74,11 @@ function buildDemoCpeXml(input: {
 	issueDate: string;
 	totalAmount: number;
 }): string {
-	const taxAmount = Math.max(input.totalAmount * 0.18, 0).toFixed(2);
+	// `getActiveTaxRate` returns a whole-number percentage (18, not 0.18); PE's
+	// IGV rule is always populated (`PERU_TAX_RULES`), but a static fallback
+	// keeps this demo XML total-safe if that ever changed.
+	const igvRateFraction = (getActiveTaxRate("pe", "IGV") ?? 18) / 100;
+	const taxAmount = Math.max(input.totalAmount * igvRateFraction, 0).toFixed(2);
 	const payableAmount = input.totalAmount.toFixed(2);
 
 	return `<?xml version="1.0" encoding="UTF-8"?>

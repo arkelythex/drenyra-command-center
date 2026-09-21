@@ -8,6 +8,7 @@ import {
 	DEFAULT_COUNTRY_CODE,
 	getActiveTaxRate,
 	getCountryPack,
+	getFixedTaxIdLength,
 	LATAM_COUNTRY_PACKS,
 	resolveCountryCode,
 } from "../latam-country-packs";
@@ -90,5 +91,33 @@ describe("getCountryPack()", () => {
 			expect(pack.commandHint.length).toBeGreaterThan(0);
 			expect(pack.assistantQuickActions.length).toBeGreaterThan(0);
 		}
+	});
+
+	it("resolves Peru's fixed RUC length (11) instead of a hardcoded literal", () => {
+		expect(getCountryPack("pe").taxIdLength).toBe(11);
+	});
+
+	it("leaves taxIdLength undefined for a variable-length tax-ID format (Colombia's NIT)", () => {
+		expect(getCountryPack("co").taxIdLength).toBeUndefined();
+	});
+});
+
+// ─── getFixedTaxIdLength() ───────────────────────────────────────────────────
+
+describe("getFixedTaxIdLength()", () => {
+	it("extracts the digit count from a single fixed-length regex", () => {
+		expect(getFixedTaxIdLength("\\d{11}")).toBe(11);
+	});
+
+	it("returns undefined for a range (variable-length) regex", () => {
+		expect(getFixedTaxIdLength("\\d{9,10}")).toBeUndefined();
+	});
+
+	it("returns undefined for a non-purely-numeric format", () => {
+		expect(getFixedTaxIdLength("[A-ZÑ&]{3,4}\\d{6}")).toBeUndefined();
+	});
+
+	it("returns undefined for an always-matching fallback pattern", () => {
+		expect(getFixedTaxIdLength(".*")).toBeUndefined();
 	});
 });
