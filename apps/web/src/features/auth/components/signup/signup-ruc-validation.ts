@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getCountryPack } from "@/lib/latam-country-packs";
 import { simulateLatency } from "@/lib/simulated-latency";
 import { validateRucLocal } from "./signup-form.validation";
 
@@ -8,10 +9,58 @@ export interface RucValidationState {
 	error?: string;
 }
 
-const MOCK_COMPANY_NAMES: Record<string, string> = {
-	"20512345678": "EMPRESA DEMO SAC",
-	"20100070970": "TELEFONICA DEL PERU SAA",
-};
+// Peru-only today — see signup-form.validation.ts. `taxIdLength` falls back
+// to `11` only as a defensive default; Peru's pack always resolves it.
+const PE_TAX_ID_LENGTH = getCountryPack("pe").taxIdLength ?? 11;
+
+interface RucOnlineLookupResponse {
+	success: boolean;
+	data?: {
+		valid: boolean;
+		razonSocial?: string;
+		message?: string;
+	};
+}
+
+/**
+ * Looks up a RUC's registered business name via the real SUNAT-backed
+ * `/api/sunat/validate-ruc-online` endpoint (apps/api → apis.net.pe, with a
+ * local-validation fallback server-side if that external API is unreachable
+ * or `APIS_NET_PE_TOKEN` is unset).
+ *
+ * Returns `undefined` on any network/API failure or when the lookup has no
+ * `razonSocial` (e.g. the server-side local-validation fallback) — callers
+ * must supply their own generic fallback label rather than treating
+ * `undefined` as an error.
+ */
+async function lookupCompanyName(ruc: string): Promise<string | undefined> {
+	try {
+		const response = await fetch("/api/sunat/validate-ruc-online", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+			},
+			credentials: "include",
+			body: JSON.stringify({ ruc }),
+		});
+
+		const payload = (await response
+			.json()
+			.catch(() => null)) as RucOnlineLookupResponse | null;
+
+		const razonSocial = payload?.success
+			? payload.data?.razonSocial
+			: undefined;
+		return typeof razonSocial === "string" && razonSocial.trim()
+			? razonSocial
+			: undefined;
+	} catch {
+		// Network failure (offline, API down, dev proxy misconfigured, ...) —
+		// the caller falls back to a generic "valid" label.
+		return undefined;
+	}
+}
 
 export function useRucValidation(ruc: string): RucValidationState {
 	const [rucValidation, setRucValidation] = useState<RucValidationState>({
@@ -19,7 +68,7 @@ export function useRucValidation(ruc: string): RucValidationState {
 	});
 
 	useEffect(() => {
-		if (ruc?.length !== 11) {
+		if (ruc?.length !== PE_TAX_ID_LENGTH) {
 			setRucValidation({ status: "idle" });
 			return;
 		}
@@ -30,9 +79,10 @@ export function useRucValidation(ruc: string): RucValidationState {
 
 			const isValid = validateRucLocal(ruc);
 			if (isValid) {
+				const companyName = await lookupCompanyName(ruc);
 				setRucValidation({
 					status: "valid",
-					companyName: MOCK_COMPANY_NAMES[ruc] ?? "Empresa Válida",
+					companyName: companyName ?? "Empresa Válida",
 				});
 				return;
 			}

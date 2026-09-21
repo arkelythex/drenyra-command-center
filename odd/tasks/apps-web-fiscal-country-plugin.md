@@ -121,20 +121,20 @@ green. Runner: `bun run --cwd apps/web test:run` / `test:coverage`.
   `EditInvoiceModal.tsx`, `useInvoiceCalculations.ts` import one definition
   instead of repeating string literals. Route: delegated writer (combine with
   T4 — same files).
-- [ ] **T6. De-hardcode RUC length/label in signup** —
+- [x] **T6. De-hardcode RUC length/label in signup** —
   `features/auth/components/signup/signup-ruc-validation.ts` and
   `signup-form.validation.ts:42` should derive tax-ID length from
   `CountryRuntime.getPack("PE").taxIdentifierFormat` (regex `\d{11}`) instead
   of a literal `11`, and label from T2's adapter. Keep using canonical
   `isValidRUC` from `@drenyra/shared` unchanged. Route: delegated writer.
-- [ ] **T7. Investigate `MOCK_COMPANY_NAMES` stub** in
+- [x] **T7. Investigate `MOCK_COMPANY_NAMES` stub** in
   `signup-ruc-validation.ts` — confirm whether a real lookup endpoint exists
   in `apps/api`. If yes, wire it. If no real endpoint exists, do not fabricate
   one (out of scope to build a new API) — leave the stub but make it
   unmistakably a demo fallback (explicit naming/comment/guard), never
   presented as real data. Route: delegated writer, report finding before
   deciding.
-- [ ] **T8. Remove unused `i18next`/`react-i18next`** — 0 usages found in
+- [x] **T8. Remove unused `i18next`/`react-i18next`** — 0 usages found in
   `apps/web/src`. Confirm zero usages again at implementation time, then
   remove the dependency and any dead config. Route: direct inline once
   confirmed (dependency removal + 1-2 file touch).
@@ -142,7 +142,7 @@ green. Runner: `bun run --cwd apps/web test:run` / `test:coverage`.
   rate-change-over-time scenario), updated tests for T3's locale/currency
   resolution, T6's RUC length/label resolution. Route: bundled with each
   writer task above, not a separate pass.
-- [ ] **T10. Quality gates** — for apps/web: `bun run --cwd apps/web typecheck`,
+- [x] **T10. Quality gates** — for apps/web: `bun run --cwd apps/web typecheck`,
   `lint`, `test:run` (coverage thresholds must stay green), plus root
   `bun scripts/sire-ledger-repro-check.ts` (mandatory — this touches
   facturación). Record actual results here, not assumed.
@@ -155,10 +155,19 @@ branched from `origin/main` at `7c87151d2`). Delivery strategy: ask-on-risk
 PR per slice, stacked on the previous PR's branch, merged in order.
 
 Chain plan (slice boundaries = commits already made):
-- PR1: T1+T2 (`e687c75`, `868dd54`, doc commits `dfd23df2`/`5d2fdd13`)
-- PR2 (base: PR1 branch): T3 (`af5e690`) + doc commit `44616f0e`
-- PR3 (base: PR2 branch): T3b+T4+T5 (`2286145`, `d2f0efd`) + doc commit `ad6dc609`
-- PR4+ (base: PR3 branch): T6-T8-T10, sliced further if needed
+- Tracker: [PR #218](https://github.com/arkelythex/drenyra-command-center/pull/218) (draft, DO NOT MERGE)
+- PR1: [PR #219](https://github.com/arkelythex/drenyra-command-center/pull/219) — T1+T2 (`e687c75`, `868dd54`, doc commits `dfd23df2`/`5d2fdd13`)
+- PR2: [PR #220](https://github.com/arkelythex/drenyra-command-center/pull/220) — T3 (`af5e690`) + doc commit `44616f0e`
+- PR3: [PR #221](https://github.com/arkelythex/drenyra-command-center/pull/221) — T3b+T4+T5 (`2286145`, `d2f0efd`) + doc commits `ad6dc609`/`ec331f60`
+- PR4: [PR #222](https://github.com/arkelythex/drenyra-command-center/pull/222) — T6-T8-T10 (`5c4236e`, `7c61c04`, `9720941`) + doc commits `ce984ce9`/`4711c3f8`
+
+Merge order: PR1 → PR2 → PR3 → PR4 → tracker. PR1 (#219) has a minor,
+disclosed `size:exception` (409 lines, 9 over budget, one cohesive slicing
+pass already applied — see PR comment).
+
+All pushed and opened 2026-09-20. Nothing merged yet — merge authority for
+actually landing these stays a separate user decision per this repo's ODD
+rules; opening the PRs themselves was explicitly authorized.
 
 ## Progress log
 - 2026-09-20: Task doc created after reconciliation. T1 applied (commit e687c75).
@@ -221,3 +230,57 @@ Chain plan (slice boundaries = commits already made):
   **Delivery budget crossed**: cumulative authored lines T1–T5/T3b ≈ 728,
   past the ~400 heuristic. Per the ask-on-risk delivery strategy set above,
   pausing to ask the user for a chain strategy before T6–T8.
+- 2026-09-20: User chose feature-branch-chain. Recorded slice plan in the
+  Delivery section above. Push/PR creation held pending explicit user
+  go-ahead — this project's ODD rule keeps push/PR/merge separate human
+  decisions from choosing a delivery strategy.
+- 2026-09-20: T6 applied (commits `5c4236e`, `7c61c04`) — RUC length/label
+  now derived from `latam-country-packs.ts`'s new `taxIdLength` field
+  (extracted from `taxIdRegex` via `getFixedTaxIdLength()`, `undefined` for
+  variable-length formats like CO/MX rather than guessing) instead of a
+  literal `11`/"RUC". `isValidRUC` checksum algorithm untouched.
+  T7 finding, better than expected: a real RUC lookup endpoint already
+  exists and is deployed (`POST /api/sunat/validate-ruc-online`, via
+  `SunatService.validateRucOnline` calling apis.net.pe with a server-side
+  Módulo-11 fallback), reachable unauthenticated via
+  `companyScopeGuard({ allowHeaderFallback: true })`. Wired signup to it and
+  removed `MOCK_COMPANY_NAMES` entirely; failure/no-name case now falls back
+  to a generic label, never a fabricated company name.
+  T8 applied (commit `9720941`) — removed `i18next`/`react-i18next` and the
+  orphaned `i18next-browser-languagedetector` (0 usages, reconfirmed).
+  Full suite: 18 failed/21 failed (baseline, unchanged), 525 passing
+  (+11 new). No new typecheck error beyond the known pre-existing TS5102.
+- 2026-09-20: **T10 closed with honest, not false-green, results.**
+  - `bun run --cwd apps/web test:run`: 18 failed test files / 21 failed
+    tests (established pre-existing baseline, none touch files this feature
+    changed), 525 passing.
+  - `bun run --cwd apps/web typecheck` / `lint`: fail on pre-existing,
+    unrelated breakage (TS5102 `baseUrl` removed by pinned TypeScript 7.0.2;
+    `typescript-eslint` incompatible with TS 7.0.2). Confirmed pre-existing
+    by three independent writer passes (T2, T3, T3b+T4+T5), each reverting
+    their own change and reproducing byte-identical failures. Not fixed here
+    — repo-wide TS/tooling pin, out of this feature's scope.
+  - `bun run architecture:check-boundaries`: fails —
+    `scripts/architecture/check-package-boundaries.ts` **does not exist** on
+    this branch/main. Independently consistent with an unrelated prior
+    session's memory (`architecture:check-boundaries and security:audit
+    failed because their referenced scripts are absent`) — long-standing,
+    pre-existing repo gap, not caused by this feature.
+  - `bun scripts/sire-ledger-repro-check.ts` (CLAUDE.md-mandated for any
+    change touching facturación/libros): **script does not exist** on main
+    or this branch (confirmed in T3). Cannot be run. This feature does touch
+    invoice-adjacent files (IGV rate sourcing, tax-type labels, RUC lookup),
+    so by CLAUDE.md's own rule this gate is required but currently
+    unsatisfiable repo-wide — flagging to the user as a real project gap,
+    not something to silently skip or fake.
+  - `bunx biome check` (this repo's priority linter per CLAUDE.md): clean on
+    every file changed across all commits in this feature.
+
+## Summary for user
+All 10 tasks (T1-T8, T10; T9 was folded into each writer pass) are complete
+and committed locally on `codex/apps-web-fiscal-country-plugin`
+(9 work commits + 8 doc commits, ~728+ authored lines). Nothing pushed, no
+PR opened — pending explicit go-ahead, plus three repo-wide gaps to disclose
+that predate this feature and were not fixed here: (1) apps/web
+typecheck/lint broken (TS 7.0.2 pin), (2) architecture:check-boundaries
+script missing, (3) sire-ledger-repro-check.ts (CLAUDE.md-mandated) missing.
