@@ -16,10 +16,10 @@ odd/tasks/web-tooling-health.md's flagged follow-ups.
   false positive on `signup-form.validation.ts` (legitimately delegates to
   `@drenyra/shared`, was being flagged only because of the stale scope
   string).
-- [ ] **Rule 2 real violation**: `apps/api/src/features/sire/services/sire-diff-ledger.service.ts:33`
+- [x] **Rule 2 real violation**: `apps/api/src/features/sire/services/sire-diff-ledger.service.ts:33`
   hardcodes `total.divide(1.18).multiply(0.18)` instead of sourcing the
   IGV rate from domain.
-- [ ] **Rule 4 real violation**: `packages/ai/src/ai/tools/index.ts`'s
+- [x] **Rule 4 real violation**: `packages/ai/src/ai/tools/index.ts`'s
   `calculateIGV(baseAmount: number, includesIGV): {base,igv,total}` (raw
   numbers) duplicates IGV math instead of delegating to
   `packages/domain/src/services/TaxCalculator.ts`'s
@@ -66,3 +66,31 @@ odd/tasks/web-tooling-health.md's flagged follow-ups.
   attempted**: running `bun audit fix` — could bump major versions and
   break things; needs deliberate review per package, not a blind
   autonomous fix. Flagging for the user.
+- 2026-09-21: Rule 2 + Rule 4 real violations fixed by delegated writer:
+  - `f8fbdcfa3` — `packages/ai/src/ai/tools/index.ts`'s `calculateIGV` now
+    delegates to `@drenyra/domain`'s `TaxCalculator` (both directions had
+    direct domain equivalents: `calculateIGV` for exclusive-of-tax,
+    `calculateBaseFromTotal` for inclusive-of-tax — no new domain methods
+    needed). Added `@drenyra/domain` as an explicit `packages/ai`
+    dependency (was previously phantom/undeclared, only resolved via
+    bun's hoisted root node_modules). 4 new tests (2 regression, 2
+    delegation-proof via spies). 14→18 tests passing, 0 fail.
+  - `6fe7f2af4` — `apps/api/.../sire-diff-ledger.service.ts`'s
+    `splitTaxAmounts` now uses `TaxCalculator.calculateBaseFromTotal`
+    instead of hardcoded `divide(1.18).multiply(0.18)`.
+    **Important, flagging clearly**: this changes from 2 rounding
+    operations to 1, which can shift the computed base/IGV split by up to
+    ±0.01 on some totals — a precision *improvement* (matches the same
+    canonical domain math used everywhere else now), not a regression,
+    but it IS a real change in computed SIRE ledger numbers. The existing
+    test for this file only asserts mutation counts, not exact tax
+    amounts (verified passes identically before/after), so this precision
+    change has real, if narrow, unverified surface. **Could not run
+    `bun scripts/sire-ledger-repro-check.ts` against this change** — needs
+    a live `DATABASE_URL` and real company/period data unavailable in this
+    sandbox. Recommend running it for real before this ships, given
+    CLAUDE.md's SIRE compliance priority.
+  - Both Rule 2 and Rule 4 regexes verified no longer match locally.
+    Biome clean. Full monorepo typecheck not run (known pre-existing
+    broken); targeted `bun test` runs are the verification signal per
+    this session's established pattern.
