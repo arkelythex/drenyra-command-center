@@ -96,7 +96,7 @@ blockers:
   - "Risk, Audit & Internal Controls: ~150 files of ad-hoc audit/compliance code across 6 modules, mostly untested; 7 capabilities unimplemented (risk matrix, internal controls, policy engine, audit reports, compliance runbooks, incident response) — see openspec/changes/drenyra-risk-audit/proposal.md"
   - "Fiscal production/audit readiness gaps (user intent): Money/RUC/SoD/Assurance — audit trail lacks chain-verification endpoint, tamper-detection alerting, and SUNAT bulk export; compliance surface has no policy engine; segregation-of-duties (SoD) planned under CAP-RISK"
   - "Ecosystem extraction in flight: mission-protocol, mission-domain, and orchestrator review/work-routing are adapter shims over drenyra-ai release tarballs; Migrating items still carry SQL-coupled local copies to retire (docs/14-design/ecosystem-capability-matrix.md)"
-  - "Path discrepancy: AGENTS.md canonical app is apps/cli but root Makefile and openspec workspace.apps reference apps/drenyra-cli (does not exist) — verify and fix"
+  - "Resolved 2026-09-21: apps/cli was removed from the repo by explicit user decision (in-repo Go CLI retired in favor of the external drenyra-pi CLI/harness product); the prior path discrepancy (AGENTS.md canonical app apps/cli vs. root Makefile/openspec workspace.apps referencing nonexistent apps/drenyra-cli) is now moot for apps/cli specifically — verify whether root Makefile/openspec workspace.apps still reference apps/drenyra-cli for any other purpose"
   - "bunfig.toml frozenLockfile commented out (temporarily disabled to add deps) — CI reproducibility lock not enforced"
   - "One recorded incident: .incident/review-lock-20260718-032605 — see .incident/ for resolution state"
 

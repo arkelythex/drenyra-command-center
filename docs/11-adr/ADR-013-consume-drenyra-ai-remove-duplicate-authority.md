@@ -17,6 +17,8 @@ independiente (librería/SDK/MCP) — nunca reimplementar gates ni mutar estado 
 
 **Addendum (2026-09-21):** el repositorio vendorizaba dos versiones distintas de `drenyra-ai` en paralelo — `0.2.0` (usada aquí por `mission-protocol`, `mission-domain` y `drenyra-orchestrator`) y `0.4.1` (usada solo por `packages/pi`). Se verificó que el diff de `0.2.0` a `0.4.1` es aditivo o solo de comentarios para cada subpath que estos tres consumidores realmente importan (`missions`, `receipts`, `review`) — sin símbolos removidos ni cambiados — y se unificaron los tres en `drenyra-ai@0.4.1`, eliminando el tarball `0.2.0`. Las referencias a "v0.2.0" más abajo en este documento describen el estado histórico de ese primer corte y no se reescriben; el estado actual es v0.4.1 para las cuatro consumidoras del monorepo.
 
+**Addendum (2026-09-21):** `apps/cli` (el terminal fiscal en Go) fue eliminado de este repositorio por decisión explícita del usuario, en favor del producto externo `drenyra-pi` como CLI/harness separado. Esta eliminación es independiente del alcance de este ADR (mission-protocol) y no lo modifica; se documenta aquí solo porque la sección "Límite de este corte" más abajo menciona `apps/cli` como fuera de alcance de esa migración — esa mención describe el estado en la fecha original de este ADR y no se reescribe. El estado actual de `apps/cli` (eliminado) se registra en `docs/14-design/ecosystem-reduction-plan.md`.
+
 ## Estado verificado
 
 ### Consumo del core — estado por capacidad

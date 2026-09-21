@@ -79,15 +79,6 @@ docker exec -it drenyra-db psql -U user -d drenyra
 docker exec -it drenyra-db psql -U user -d arkelythex
 ```
 
-## CLI (Go)
-
-```bash
-cd apps/cli
-go run . --debug   # Modo debug si está implementado
-# o build + ejecutar con delve:
-go build -o drenyra && dlv exec ./drenyra
-```
-
 ## Data Engine (Python)
 
 ```bash

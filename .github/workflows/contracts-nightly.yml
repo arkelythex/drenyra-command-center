@@ -12,7 +12,6 @@ on:
       - "packages/mission-domain/src/mission-receipt.ts"
       - "packages/mission-domain/package.json"
       - "bun.lock"
-      - "apps/cli/internal/harness/**"
       - "apps/data-engine/src/conformance/**"
       - "apps/data-engine/tests/conformance/**"
       - "apps/data-engine/pyproject.toml"
@@ -28,7 +27,6 @@ on:
       - "packages/mission-domain/src/mission-receipt.ts"
       - "packages/mission-domain/package.json"
       - "bun.lock"
-      - "apps/cli/internal/harness/**"
       - "apps/data-engine/src/conformance/**"
       - "apps/data-engine/tests/conformance/**"
       - "apps/data-engine/pyproject.toml"
@@ -216,7 +214,7 @@ jobs:
   # per-surface failures diagnosable. Runs for every configured event whose
   # paths touch the receipt contract, any harness surface, or this workflow.
   receipt-conformance:
-    name: Receipt conformance (TS + Go + Python)
+    name: Receipt conformance (TS + Python)
     runs-on: [self-hosted, linux, x64]
 
     steps:
@@ -233,15 +231,6 @@ jobs:
 
       - name: Run TypeScript conformance harness
         run: bun run --filter @drenyra/mission-domain test
-
-      - name: Setup Go
-        uses: actions/setup-go@v6
-        with:
-          go-version-file: apps/cli/go.mod
-
-      - name: Run Go conformance harness
-        working-directory: apps/cli
-        run: go test ./...
 
       - name: Setup Python
         uses: actions/setup-python@v6

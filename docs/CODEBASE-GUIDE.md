@@ -11,7 +11,6 @@ Monorepo managed with **Bun 1.3.11** (`bun.lock`, `bunfig.toml`) and **Turborepo
 | `apps/web/` | Command Center UI — React 19 + TanStack Router (`MAP.md`). |
 | `apps/api/` | Fiscal API — Bun + ElysiaJS, vertical slices, CQRS (`MAP.md`). |
 | `apps/data-engine/` | SIRE & analytics — Python + FastAPI + Polars (`MAP.md`). |
-| `apps/cli/` | Fiscal terminal — Go + Bubbletea (`MAP.md`, `README.md`). |
 | `packages/domain/` | Framework-free entities, value objects, fiscal rules. |
 | `packages/application/` | Use cases, DTOs, validators, ports. |
 | `packages/persistence/` | Drizzle schemas, repositories, tenant-scoped queries. |
@@ -114,7 +113,7 @@ Testing conventions:
 - Property-based testing for domain/fiscal logic (ADR-008).
 - Keep fiscal/domain logic deterministic and covered by tests; validate API inputs with schemas at service boundaries.
 - SUNAT/UBL/IGV behavior changes require compliance-focused tests.
-- Cross-language: `engines/` (Rust) and `apps/cli` (Go) have their own test entry points (`rust:core:test`, `go:drenyra:test`).
+- Cross-language: `engines/` (Rust) and `services/go/reconciliation-worker/` (Go) have their own test entry points (`rust:core:test`, `go:reconcile:test`).
 
 ## Conventions
 

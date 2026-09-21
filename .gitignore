@@ -52,12 +52,6 @@ logs/
 *.log
 duration
 
-# Local build artifacts
-/apps/cli/drenyra
-/apps/cli/drenyra-macos
-/apps/cli/dist-bundle/
-/apps/cli/homebrew/
-
 # Bun cache (never commit)
 ~/.bun/
 packages/pi/~/

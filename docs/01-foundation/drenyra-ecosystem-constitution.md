@@ -51,13 +51,13 @@ This constitution is **not**:
 
 | Repository | Status | Role | Responsibilities | Must never |
 | --- | --- | --- | --- | --- |
-| `drenyra-command-center` (this repo) | **Current** — private, mature product surface | Accounting Command Center: `apps/web` (primary fiscal web surface), `apps/api`, `apps/data-engine`, `apps/cli` (Go fiscal terminal), workspaces, companies/RUC, fiscal periods, documents, SUNAT flows, human-in-the-loop approval, evidence-graph UI | Own the professional product experience; represent only the authoritative state returned by the Core; consume published contracts | Re-implement Core gates or mutate authoritative state; duplicate financial domain logic; vendor runtime checkouts; treat `packages/pi/src/serve.ts` stubs as product contracts |
+| `drenyra-command-center` (this repo) | **Current** — private, mature product surface | Accounting Command Center: `apps/web` (primary fiscal web surface), `apps/api`, `apps/data-engine`, workspaces, companies/RUC, fiscal periods, documents, SUNAT flows, human-in-the-loop approval, evidence-graph UI | Own the professional product experience; represent only the authoritative state returned by the Core; consume published contracts | Re-implement Core gates or mutate authoritative state; duplicate financial domain logic; vendor runtime checkouts; treat `packages/pi/src/serve.ts` stubs as product contracts |
 | `drenyra-pi` (external repo, `~/Documents/PROYECTOS/drenyra-pi`) | **Current** — separate CLI/harness product | Pi-native accounting harness: accounting persona, commands, operational panel, specialized agents, accounting skills, RDA procedures, model routing, safety guards over the Core runtime | Convert Pi into a disciplined, verifiable accounting operator; consume **published** Core versions | Resolve runtime versions from `PATH`; bypass the Core; be re-implemented inside `drenyra-command-center` |
 
 > **Local fact anchors (verified in this repo):**
 >
 > - `packages/pi/src/serve.ts` exposes **stub execution routes** and is development scaffolding, **not** the canonical GUI backend. A future GUI must consume real adapter/DFAS contracts.
-> - `apps/cli` exists in this repo, but the user identifies the external `drenyra-pi` repository as the separate CLI/harness product. Harness behavior must not be duplicated here.
+> - `apps/cli` (the in-repo Go fiscal terminal) was removed from this repo on 2026-09-21; the external `drenyra-pi` repository is the separate CLI/harness product. Harness behavior must not be duplicated here.
 > - `apps/landing` is documented in `AGENTS.md` but **absent** from this repo — it remains conditional (§2.3).
 > - `products/kuse` is an existing **fork precedent**, not an automatic production base (§7).
 
@@ -227,7 +227,7 @@ Adoption is staged so each phase is verified before the next begins. **No stage 
 
 | Stage | Scope | Exit gate (who decides, what evidence) |
 | --- | --- | --- |
-| **0 — Baseline** | Ratify this constitution; inventory current surfaces (`apps/web`, `apps/api`, `apps/data-engine`, `apps/cli`, external `drenyra-pi`) and stubs (`packages/pi/src/serve.ts`). | Owner review: constitution accepted; inventory recorded. |
+| **0 — Baseline** | Ratify this constitution; inventory current surfaces (`apps/web`, `apps/api`, `apps/data-engine`, external `drenyra-pi`; `apps/cli` was inventoried here and removed 2026-09-21) and stubs (`packages/pi/src/serve.ts`). | Owner review: constitution accepted; inventory recorded. |
 | **1 — Boundary enforcement** | Finish extraction of Core/memory/harness logic; remove duplicated contract types; enforce version pins and CI boundary checks; review gates reference ADR-010. | Owner + maintainers: zero duplicate contract types in surfaces; CI boundary checks green; dependency-direction verified. |
 | **2 — Surface adapters** | Build any new surface against real adapter/DFAS contracts; retire or gate stub routes; adapter conformance tests prove fiscal scope, approvals, evidence, and receipts are preserved. | Owner + architecture review: conformance suite green; no stub route is a product contract; receipts/evidence verified in a full-loop test. |
 | **3 — Conditional repositories** | A future repo (`drenyra-command-code`, mobile, remote web, landing) may be **created** only when the creation gate passes. | **Creation gate:** (1) explicit owner decision, (2) an approved SDD with scope and owner, (3) published contracts the repo will consume, (4) this constitution's boundary and quality rules adopted by the new repo. |

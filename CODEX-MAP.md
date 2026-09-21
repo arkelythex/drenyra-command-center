@@ -20,7 +20,6 @@
 | `apps/web` | web | Agentic fiscal command center for supervised accounting operations. | frontend, drenyra, react | `apps/web/MAP.md` |
 | `apps/landing` | landing | Public marketing and product documentation surface. | frontend, marketing, nextjs | `apps/landing/MAP.md` |
 | `apps/data-engine` | data-engine | Python analytical microservice for high-throughput financial data processing. | python, analytics, data-engine | `apps/data-engine/MAP.md` |
-| `apps/cli` | cli | Gentleman Fiscal Terminal for scriptable fiscal operations, agent orchestration, and TUI. | go, cli, tui, terminal | `apps/cli/MAP.md` |
 | `packages/domain` | domain | Framework-free entities, value objects, fiscal rules, Money/RUC primitives. | domain, fiscal, money, ruc | — |
 | `packages/shared` | shared | Low-dependency cross-cutting helpers, validation, secure logging, schemas. | shared, validation, security | — |
 | `packages/application` | application | Use cases, DTOs, validators, and ports that depend on domain. | application, cqrs, use-cases | — |
@@ -60,14 +59,6 @@ rg "new Elysia|\.get\(|\.post\(" apps/api/src/features
 rg "create.*UseCase|Command|Query" packages/application apps/api/src/features
 fd 'package.json|pyproject.toml|Cargo.toml' apps packages services engines
 fd 'README.md|AGENTS.md|DESIGN.md' apps packages docs services
-
-# Go CLI specific
-rg "func (Init|Update|View|Execute)" apps/cli/internal
-rg "screenMenu|screenHelp|screenResult" apps/cli/internal/tui/app
-rg "DefaultPalette|Palette" apps/cli/internal/tui
-rg "renderSidebar|renderStatusBar|contextPanel" apps/cli/internal/tui/app
-rg "fiscal|SUNAT|RUC|detraccion" apps/cli
-fd '.go' apps/cli --type f | sort
 ```
 
 ## Do not search first
@@ -86,7 +77,6 @@ Default `rg` and `fd` searches use root `.rgignore` and `.fdignore` to skip nois
 | Update AI gateway/agents       | `packages/ai/src/`, `packages/drenyra-orchestrator/src/`                     |
 | Update shared UI               | `packages/ui/src/`, consumers in `apps/web`/`apps/landing`                   |
 | Update docs navigation         | `CODEX-MAP.md`, `.codebase/index.yml`, `docs/CODEBASE-GUIDE.md`              |
-| Update Go CLI (TUI/Tax/Config) | `apps/cli/` see `MAP.md`                                                     |
 
 ## Key commands
 
@@ -98,8 +88,4 @@ bun run docs:verify
 bun run architecture:check-product-surfaces
 bun run compliance:sire-gate
 bun run compliance:sire-repro
-
-# Go CLI
-cd apps/cli && go build ./...
-cd apps/cli && go test ./...
 ```

@@ -24,7 +24,7 @@ This matrix tracks which capabilities of the Drenyra monorepo are extracted into
 
 ## Scope of the current migration slice
 
-This slice migrates **only** `packages/mission-protocol` from a local implementation to a compatibility adapter. It does not remove `apps/cli`, `packages/ai`, the fiscal packages, `packages/pi`, or `data-engine`; their current repository roles and any future migration decisions remain separate work.
+This slice migrates **only** `packages/mission-protocol` from a local implementation to a compatibility adapter. It does not remove `packages/ai`, the fiscal packages, `packages/pi`, or `data-engine`; their current repository roles and any future migration decisions remain separate work. (`apps/cli` was in scope for this same statement when written; it was subsequently removed by a separate, explicit user decision on 2026-09-21 — see `docs/14-design/ecosystem-reduction-plan.md`.)
 
 Authority migration and physical repository reduction are different milestones:
 

@@ -40,7 +40,7 @@ The ecosystem is governed by the **Drenyra Dominion Program**, a federated progr
 ## Who Uses What
 
 > [!IMPORTANT]
-> **The accountant never operates agents, terminals, or CLIs.** They work in **Drenyra App** (the web Command Center) and ask for outcomes — "prepare the July 2026 close for Company X". The command center consumes Drenyra-AI underneath (library/SDK/MCP); agents (Pi, Codex, Claude, OpenCode) are internal infrastructure the command center invokes. Only developers, operators, and integrators use the [Drenyra CLI](apps/cli/README.md).
+> **The accountant never operates agents, terminals, or CLIs.** They work in **Drenyra App** (the web Command Center) and ask for outcomes — "prepare the July 2026 close for Company X". The command center consumes Drenyra-AI underneath (library/SDK/MCP); agents (Pi, Codex, Claude, OpenCode) are internal infrastructure the command center invokes. Only developers, operators, and integrators use the Drenyra CLI (the in-repo Go CLI at `apps/cli` was removed on 2026-09-21; CLI/harness workflows now live in the external `drenyra-pi` repository).
 
 | Role | Interface | Never touches |
 | --- | --- | --- |
@@ -224,13 +224,6 @@ For an existing local database, run `DRENYRA_UPGRADE_PREFLIGHT=1 bun run db:upgr
 | API                  | `http://localhost:3000`         |
 | Swagger              | `http://localhost:3000/swagger` |
 | Data Engine          | `http://localhost:8000/health`  |
-
-**CLI:**
-
-```bash
-cd apps/cli
-go run cmd/drenyra/main.go
-```
 
 ---
 

@@ -17,7 +17,7 @@ Bienvenido. En esta guía vas a tener tu entorno de desarrollo funcionando de 0 
 
 Opcional (solo si trabajás en esas áreas):
 
-- **Go 1.21+** — para `apps/cli/`
+- **Go 1.21+** — para `services/go/reconciliation-worker/`
 - **Python 3.11+** — para `apps/data-engine/`
 
 ## Setup rápido

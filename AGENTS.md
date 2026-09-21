@@ -37,7 +37,6 @@ DRENYRA builds Drenyra, the verifiable financial operating system for businesses
 | Web app     | `apps/web/`         | React 19 + TanStack Router |
 | Landing     | `apps/landing/`     | Next.js                    |
 | Data Engine | `apps/data-engine/` | Python + FastAPI + Polars  |
-| CLI         | `apps/cli/`         | Go                         |
 
 Each app has a `MAP.md` (e.g. `apps/web/MAP.md`) with its architecture, routes, features, fast-search recipes, and common tasks mapped to exact file paths. Start there before exploring inside an app — saves tokens.
 
