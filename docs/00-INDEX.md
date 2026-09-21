@@ -159,6 +159,7 @@ Drenyra maneja datos financieros sensibles, credenciales SUNAT y transacciones f
 | [design-influences](./14-design/design-influences.md) | Document external design references that inform Drenyra's **Financial Engineering Environment** command center without c |
 | [dual-surface-brain](./14-design/dual-surface-brain.md) | Drenyra is API/domain-first. React Web and Go CLI are UX adapters over the same Financial Engineering Environment and Br |
 | [ecosystem-capability-matrix](./14-design/ecosystem-capability-matrix.md) | **Last updated:** 2026-08-02. |
+| [ecosystem-reduction-plan](./14-design/ecosystem-reduction-plan.md) | Executable capability-by-capability migration plan with ownership, gates, rollback, and zero-consumer deletion rules. |
 | [fiscal-app-server](./14-design/fiscal-app-server.md) | title: 'Drenyra Fiscal App Server (DFAS) 2026' |
 | [fiscal-intelligence-platform](./14-design/fiscal-intelligence-platform.md) | title: 'Fiscal Intelligence Platform Architecture 2026' |
 | [fiscal-seams-design](./14-design/fiscal-seams-design.md) | Peru-first, architectured for LATAM scalability. |

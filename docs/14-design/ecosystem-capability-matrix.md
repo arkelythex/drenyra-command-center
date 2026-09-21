@@ -1,6 +1,6 @@
 # Ecosystem Capability Matrix — Drenyra ↔ drenyra-ai
 
-> **Last updated:** 2026-08-02.
+> **Last updated:** 2026-09-01.
 >
 > Fiscal convention: monetary values in the Drenyra ecosystem are BigInt cents; no float is ever used for money; version numbers are JSON integers, never floats.
 
@@ -10,7 +10,7 @@ This matrix tracks which capabilities of the Drenyra monorepo are extracted into
 
 | Capability | Current source (Drenyra) | Future source | Status |
 | --- | --- | --- | --- |
-| Mission protocol (types, states, commands, events, errors, versioning, idempotency) | `packages/mission-protocol/src/*` | `drenyra-ai/missions` | **Extracted** — `mission-protocol` is now an adapter shim re-exporting `drenyra-ai/missions` (release tarball `v0.0.1-prealpha.1`) |
+| Mission protocol (types, states, commands, events, errors, versioning, idempotency) | `packages/mission-protocol` compatibility adapter | `drenyra-ai/missions` | **Extracted — migrated in this slice.** The package root re-exports the complete canonical mission contract from vendored `drenyra-ai` v0.2.0; compatibility source modules re-export their existing surfaces from the same entry point, with no local protocol logic |
 | Mission state machine (transitions, guards, recovery paths) | `packages/mission-domain` (uses protocol) | `drenyra-ai/missions/transitions` | **Extracted — fully migrated.** All six `mission-domain` source modules are adapter shims re-exporting `drenyra-ai/missions` / `drenyra-ai/receipts` (status, transitions, contracts, events, errors, receipt). The legacy divergent command types and the local 13-code taxonomy (domain-only `FORBIDDEN`, HARNESS_TIMEOUT→500) were **retired**; consumers aligned to the canonical 30-code set (`apps/web` label map keeps `FORBIDDEN` as a plain string for older API responses) |
 | Mission receipts (Ed25519, canonical vectors, trusted verification) | `packages/mission-domain/src/mission-receipt.ts` | `drenyra-ai/receipts` | **Extracted** — `mission-receipt.ts` is an adapter shim re-exporting `drenyra-ai/receipts` (the original source of the port); `EvidenceItem` stays local to avoid duplicate export |
 | Receipt schemas + conformance vectors | `contracts/receipt-schema/v1` | `drenyra-ai/contracts/receipt-schema` (verbatim copy) | Migrating — canonical source of truth now published with drenyra-ai |
@@ -22,6 +22,33 @@ This matrix tracks which capabilities of the Drenyra monorepo are extracted into
 | Tenant persistence | `apps/api` + `packages/persistence` | Drenyra | **Canonical** — stays |
 | Gates (approval R2/R3, receipt, mission-state) | none (in drenyra-ai) | `drenyra-ai/gates` | Extracted — new capability lives in drenyra-ai |
 
+## Scope of the current migration slice
+
+This slice migrates **only** `packages/mission-protocol` from a local implementation to a compatibility adapter. It does not remove `apps/cli`, `packages/ai`, the fiscal packages, `packages/pi`, or `data-engine`; their current repository roles and any future migration decisions remain separate work.
+
+Authority migration and physical repository reduction are different milestones:
+
+- **Authority migration** is complete for a capability when Drenyra delegates to the released `drenyra-ai` contract and retains at most a compatibility adapter.
+- **Physical repository reduction** removes packages or applications only after their remaining responsibilities and consumers have been evaluated. That broader reduction is **pending** and is not implied by an **Extracted** row.
+
+## Orchestrator boundary audit
+
+The following `packages/drenyra-orchestrator` modules were compared with the
+vendored `drenyra-ai` candidates, gates, review, receipts, and recovery APIs:
+
+| Module | Decision | Reason |
+| --- | --- | --- |
+| `classifier/classifier.ts` | **Keep locally** | Classifies changed paths/content, SUNAT/SIRE/IGV/RUC patterns, self-modification, and ambiguity; this is Command Center delivery policy, not accounting materiality. |
+| `classifier/fiscal-gate.ts` | **Keep locally** | Binds R2 authorization to a Git tree hash and intentionally blocks R3 in the local pre-commit workflow; this differs from `drenyra-ai/gates` lifecycle approval semantics. |
+| `runtime/risk.ts` | **Keep locally** | Composes diff statistics, classifier provenance, receipt state, and local authorization into delivery-facing types. |
+| `runtime/verification.ts` | **Keep locally** | Represents staged verification and candidate projection state; it is not a replacement for signed `drenyra-ai/receipts`. |
+| `review-lenses.ts`, `work-routing.ts` | **Adapter** | These modules already re-export canonical review workload and lens selection from `drenyra-ai/review`. |
+
+No safe replacement was found for the first four modules. Removing them or
+redirecting them to `drenyra-ai` would lose Git-diff policy, fail-closed
+behavior, provenance, or tree-hash binding. They remain candidates for a
+future contract-level redesign, not for mechanical extraction.
+
 ## Migration rules
 
 1. A capability is marked **Extracted** when Drenyra consumes the released drenyra-ai artifact and its internal copy is removed or shimmed.
@@ -31,5 +58,6 @@ This matrix tracks which capabilities of the Drenyra monorepo are extracted into
 
 ## Consumption
 
-- `packages/mission-protocol` and `packages/drenyra-orchestrator` depend on `drenyra-ai` via the **GitHub Release tarball** (`https://github.com/arkelythex/drenyra-ai/releases/download/v0.1.0/drenyra-ai-0.1.0.tgz` — first FROZEN-contract release: mission-protocol, candidate, receipt, gate pinned by conformance suites). The tarball contains the built `dist/` and passes `verify-packed-install`.
-- Upgrading the consumed version is a normal dependency bump with a migration note (see `RELEASING.md` in drenyra-ai and the ecosystem integration rules).
+- `packages/mission-protocol`, `packages/mission-domain`, and `packages/drenyra-orchestrator` declare `drenyra-ai` through the vendored v0.2.0 artifact: `file:../../vendored/drenyra-ai-0.2.0.tgz`.
+- Other packages may consume a different vendored release for capabilities outside this bounded slice; those migrations are tracked independently.
+- Upgrading a consumed version is a normal dependency bump with a migration note (see `RELEASING.md` in drenyra-ai and the ecosystem integration rules).
