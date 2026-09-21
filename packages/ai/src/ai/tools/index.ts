@@ -1,3 +1,4 @@
+import { Money, TaxCalculator } from "@drenyra/domain";
 import { tool } from "ai";
 import { z } from "zod";
 
@@ -37,24 +38,40 @@ export function suggestPCGEAccount(_description: string): {
 	};
 }
 
+/**
+ * Calculate IGV (18% Peruvian VAT) for a base amount, delegating the actual
+ * fiscal math to `@drenyra/domain`'s `TaxCalculator` (Fiscal Boundary Rule 4:
+ * `packages/ai` must not duplicate IGV/detracción calculations inline).
+ *
+ * Both directions this function supports have a direct domain equivalent:
+ * - `includesIGV=false`: amount excludes IGV → `TaxCalculator.calculateIGV`.
+ * - `includesIGV=true`: amount already includes IGV, decompose it →
+ *   `TaxCalculator.calculateBaseFromTotal` (domain's "reverse IGV
+ *   calculation").
+ *
+ * Numbers cross the domain boundary as `Money` (cents pattern), so rounding
+ * is done once by the VO instead of the previous double-rounding
+ * (`Math.round` on an already-rounded intermediate).
+ */
 export function calculateIGV(
 	baseAmount: number,
 	includesIGV = false,
 ): { base: number; igv: number; total: number } {
 	if (includesIGV) {
-		const base = baseAmount / 1.18;
-		const igv = baseAmount - base;
+		const total = Money.fromAmount(baseAmount, "PEN");
+		const result = TaxCalculator.calculateBaseFromTotal(total);
 		return {
-			base: Math.round(base * 100) / 100,
-			igv: Math.round(igv * 100) / 100,
-			total: baseAmount,
+			base: result.baseAmount.toNumber(),
+			igv: result.taxAmount.toNumber(),
+			total: result.totalAmount.toNumber(),
 		};
 	}
-	const igv = baseAmount * 0.18;
+	const base = Money.fromAmount(baseAmount, "PEN");
+	const result = TaxCalculator.calculateIGV(base);
 	return {
-		base: baseAmount,
-		igv: Math.round(igv * 100) / 100,
-		total: Math.round((baseAmount + igv) * 100) / 100,
+		base: result.baseAmount.toNumber(),
+		igv: result.taxAmount.toNumber(),
+		total: result.totalAmount.toNumber(),
 	};
 }
 

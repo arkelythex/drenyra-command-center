@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { type Currency, Money } from "@drenyra/domain";
+import { type Currency, Money, TaxCalculator } from "@drenyra/domain";
 import { and, eq } from "@drenyra/persistence/query";
 import {
 	bills,
@@ -25,16 +25,23 @@ function documentNumber(series: string, number: string): string {
 	return `${series}-${number}`;
 }
 
+/**
+ * Splits a tax-inclusive total into subtotal/IGV components.
+ *
+ * Sources the IGV rate from `@drenyra/domain`'s `TaxCalculator` (Fiscal
+ * Boundary Rule 2: fiscal CALCULATION logic must live in domain, not be
+ * duplicated in the API layer) instead of hardcoding the divisor/multiplier
+ * pair inline.
+ */
 function splitTaxAmounts(total: Money): {
 	subtotal: string;
 	igv: string;
 	total: string;
 } {
-	const igv = total.divide(1.18).multiply(0.18);
-	const subtotal = total.subtract(igv);
+	const { baseAmount, taxAmount } = TaxCalculator.calculateBaseFromTotal(total);
 	return {
-		subtotal: subtotal.toString(),
-		igv: igv.toString(),
+		subtotal: baseAmount.toString(),
+		igv: taxAmount.toString(),
 		total: total.toString(),
 	};
 }

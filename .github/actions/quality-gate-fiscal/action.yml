@@ -34,7 +34,7 @@ runs:
         # throughout the API layer (features/sunat/, features/sire/, features/ai-swarm/).
         # This rule only catches IGV/SPOT fiscal CALCULATION logic, not references.
         echo "  Rule 2: Fiscal CALCULATION logic must not be duplicated in API..."
-        FISCAL_CALC_API=$(grep -rnE 'igvRate\s*=\s*0\.18|1\.18\)|igvRate.*0\.18' apps/api/src/ --include='*.ts' 2>/dev/null | grep -v '__tests__/' | grep -v '@arkelythex/domain' | grep -v '\.test\.\|\.spec\.' | grep -v 'apps/api/src/services/sunat/' | grep -v 'apps/api/src/features/ai-swarm/rules/' | grep -v 'apps/api/src/features/sunat/' || true)
+        FISCAL_CALC_API=$(grep -rnE 'igvRate\s*=\s*0\.18|1\.18\)|igvRate.*0\.18' apps/api/src/ --include='*.ts' 2>/dev/null | grep -v '__tests__/' | grep -v '@drenyra/domain' | grep -v '\.test\.\|\.spec\.' | grep -v 'apps/api/src/services/sunat/' | grep -v 'apps/api/src/features/ai-swarm/rules/' | grep -v 'apps/api/src/features/sunat/' || true)
         if [[ -n "$FISCAL_CALC_API" ]]; then
           echo "  ❌ IGV rate/calc duplicates found in API layer (should be in domain):"
           echo "$FISCAL_CALC_API"
@@ -43,18 +43,18 @@ runs:
 
         # Rule 3: RUC/DNI validation must be in domain
         echo "  Rule 3: RUC/DNI validation must be in domain..."
-        RUC_IN_WEB=$(grep -rnE 'validarRuc|validateRuc|rucChecksum' apps/web/src/ --include='*.ts' --include='*.tsx' 2>/dev/null | grep -v '@arkelythex/shared' | grep -v 'signup-ruc-validation.ts' || true)
+        RUC_IN_WEB=$(grep -rnE 'validarRuc|validateRuc|rucChecksum' apps/web/src/ --include='*.ts' --include='*.tsx' 2>/dev/null | grep -v '@drenyra/shared' | grep -v 'signup-ruc-validation.ts' || true)
         if [[ -n "$RUC_IN_WEB" ]]; then
           echo "  ❌ RUC validation found outside domain layer:"
           echo "$RUC_IN_WEB"
           VIOLATIONS=$((VIOLATIONS + 1))
         fi
 
-        # Rule 4: LLM fiscal tools must delegate to @arkelythex/domain (no inline IGV math)
+        # Rule 4: LLM fiscal tools must delegate to @drenyra/domain (no inline IGV math)
         echo "  Rule 4: packages/ai must not duplicate IGV/detracción calculations..."
-        AI_INLINE_IGV=$(grep -rnE '0\.18|/ 1\.18|\* 0\.18' packages/ai/src/ai/tools/ --include='*.ts' 2>/dev/null | grep -v '@arkelythex/domain' || true)
+        AI_INLINE_IGV=$(grep -rnE '0\.18|/ 1\.18|\* 0\.18' packages/ai/src/ai/tools/ --include='*.ts' 2>/dev/null | grep -v '@drenyra/domain' || true)
         if [[ -n "$AI_INLINE_IGV" ]]; then
-          echo "  ❌ Inline IGV math found in packages/ai (must use @arkelythex/domain):"
+          echo "  ❌ Inline IGV math found in packages/ai (must use @drenyra/domain):"
           echo "$AI_INLINE_IGV"
           VIOLATIONS=$((VIOLATIONS + 1))
         fi

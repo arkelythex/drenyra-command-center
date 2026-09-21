@@ -44,6 +44,7 @@
     "@google/generative-ai": "^0.24.1",
     "ai": "^7.0.15",
     "@drenyra/application": "workspace:*",
+    "@drenyra/domain": "workspace:*",
     "@drenyra/infrastructure": "workspace:*",
     "@drenyra/persistence": "workspace:*",
     "@drenyra/shared": "workspace:*"
