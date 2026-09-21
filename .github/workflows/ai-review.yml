@@ -20,10 +20,12 @@ jobs:
           fetch-depth: 0
 
       - name: Ensure GGA is installed
+        env:
+          GGA_PINNED_TAG: v2.10.1
         run: |
           if ! command -v gga &> /dev/null; then
-            echo "Installing GGA from GitHub..."
-            git clone https://github.com/Gentleman-Programming/gentleman-guardian-angel.git /tmp/gga
+            echo "Installing GGA ${GGA_PINNED_TAG} from GitHub..."
+            git clone --branch "$GGA_PINNED_TAG" --depth 1 https://github.com/Gentleman-Programming/gentleman-guardian-angel.git /tmp/gga
             bash /tmp/gga/install.sh
           fi
           gga version
