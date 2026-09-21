@@ -38,7 +38,7 @@ for every future apps/web change.
   `baseUrl` and leave lint's remaining failure documented.
 
 ## Tasks
-- [ ] **A. Restore `scripts/sire-ledger-repro-check.ts`** — cherry-pick
+- [x] **A. Restore `scripts/sire-ledger-repro-check.ts`** — cherry-pick
   commit `5affb78d4` (feat(sire): add ledger reproducibility check) onto
   main. Verify both its dependencies exist and match on current main:
   `ComplianceReproducibilityReport` type (`packages/domain/src/fiscal/compliance.types.ts`)
@@ -67,3 +67,11 @@ existing test/typecheck/lint commands rather than a RED-GREEN ceremony.
 ## Progress log
 - 2026-09-20: Task doc created after investigating all 3 gaps via a
   dedicated research agent. Gap 2 explicitly excluded (see above).
+- 2026-09-20: Task A done (commit `7cf9b755`, cherry-picked verbatim from
+  origin commit `5affb78d4` on branch `feature/command-center-plugin-host-slice1`,
+  clean cherry-pick, no conflicts). Verified: its own test suite
+  (`sire-ledger-repro-check.test.ts`, 15 tests, mocked DB) passes against
+  current main's `ComplianceService`/domain types; direct execution fails
+  cleanly on missing `DATABASE_URL` (expected — no real DB in this
+  environment, not a bug). Structural/dependency correctness confirmed;
+  full functional run against real SIRE data not possible here.
