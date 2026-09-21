@@ -361,6 +361,9 @@
     "packages/mission-domain": {
       "name": "@drenyra/mission-domain",
       "version": "1.0.0",
+      "dependencies": {
+        "drenyra-ai": "file:../../vendored/drenyra-ai-0.2.0.tgz",
+      },
       "devDependencies": {
         "ajv": "^8",
         "ajv-formats": "^3",
