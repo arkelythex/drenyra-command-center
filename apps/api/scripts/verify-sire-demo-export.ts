@@ -1,5 +1,5 @@
 import { db, desc, eq, invoices } from "@drenyra/infrastructure";
-import { SIREService } from "../src/services/sire.service";
+import { SireRegisterExportService as SIREService } from "../src/features/sire/services/sire-register-export.service";
 
 const DEMO_COMPANY_ID = "00000000-0000-0000-0000-000000000001";
 
