@@ -56,7 +56,10 @@ export function createDrenyraGateValidator(
 		try {
 			materiality = deriveMateriality({
 				value: BigInt(fiscal.amountCents ?? "0"),
-				reversibility: fiscal.reversibility ?? "reversible",
+				// Fail-closed: a fiscal_gate tool that doesn't declare its
+				// reversibility is treated as irreversible (forces R3 / dual
+				// approval) rather than the permissive "reversible" default.
+				reversibility: fiscal.reversibility ?? "irreversible",
 				jurisdiction: fiscal.jurisdiction ?? "PE",
 			});
 		} catch {
@@ -73,9 +76,7 @@ export function createDrenyraGateValidator(
 			approval: (fiscal.approvals ?? []).map((approval) => ({
 				approverId: approval.approverId,
 				at: approval.at,
-				...(approval.reason !== undefined
-					? { reason: approval.reason }
-					: {}),
+				...(approval.reason !== undefined ? { reason: approval.reason } : {}),
 			})),
 		});
 

@@ -20,13 +20,17 @@ type ActionResult<T> =
  * - "fiscal_gate" → governance bundle + human approval
  */
 export class ApprovalGateEngine {
-	private governanceValidator?: (
-		(toolName: string, input: unknown, context: AgentContext) => Promise<GovernanceBundleResult>
-	) | undefined;
+	private governanceValidator?:
+		| ((
+				toolName: string,
+				input: unknown,
+				context: AgentContext,
+		  ) => Promise<GovernanceBundleResult>)
+		| undefined;
 
-	private notifyCallback?: (
-		(request: ApprovalRequest) => Promise<void>
-	) | undefined;
+	private notifyCallback?:
+		| ((request: ApprovalRequest) => Promise<void>)
+		| undefined;
 
 	constructor(
 		private store: ApprovalStore,
@@ -113,10 +117,20 @@ export class ApprovalGateEngine {
 		}
 	}
 
+	/**
+	 * Approve a pending request. For a `fiscal_gate` request with a
+	 * governance validator configured, this does NOT finalize on the first
+	 * call: it accumulates the approval, re-asks the Core gate whether the
+	 * accumulated approvals are sufficient (e.g. two distinct approvers at
+	 * R3), and only transitions to `"approved"` when the gate agrees. Until
+	 * then the request stays `"validated"`, allowing further `approve()`
+	 * calls from additional reviewers.
+	 */
 	async approve(
 		approvalId: string,
 		reviewerId: string,
 		reviewerRole: string,
+		reason?: string,
 	): Promise<ActionResult<ApprovalRequest>> {
 		const request = this.store.get(approvalId);
 
@@ -131,14 +145,82 @@ export class ApprovalGateEngine {
 			};
 		}
 
-		this.store.update(approvalId, {
+		const isFiscal = request.approvalLevel === "fiscal_gate";
+
+		if (isFiscal && this.governanceValidator) {
+			const updatedApprovals: ApprovalRequest["approvals"] = [
+				...(request.approvals ?? []),
+				{
+					approverId: reviewerId,
+					reviewerRole,
+					at: new Date().toISOString(),
+					reason,
+				},
+			];
+
+			const mergedInput =
+				typeof request.input === "object" && request.input !== null
+					? {
+							...request.input,
+							approvals: updatedApprovals.map(
+								({ approverId, at, reason: approvalReason }) => ({
+									approverId,
+									at,
+									...(approvalReason !== undefined
+										? { reason: approvalReason }
+										: {}),
+								}),
+							),
+						}
+					: request.input;
+
+			const governanceResult = await this.governanceValidator(
+				request.toolName,
+				mergedInput,
+				request.context,
+			);
+
+			if (!governanceResult.valid) {
+				const validated: ApprovalRequest = {
+					...request,
+					state: "validated",
+					approvals: updatedApprovals,
+					governanceResult,
+				};
+				this.store.update(approvalId, validated);
+				return {
+					success: false,
+					error: `Additional approval required: ${
+						governanceResult.reasons.join("; ") ||
+						"governance gate not satisfied"
+					}`,
+				};
+			}
+
+			const approved: ApprovalRequest = {
+				...request,
+				state: "approved",
+				decidedAt: new Date(),
+				reviewerId,
+				reviewerRole,
+				approvals: updatedApprovals,
+				governanceResult,
+			};
+			this.store.update(approvalId, approved);
+
+			return { success: true, data: approved };
+		}
+
+		const approved: ApprovalRequest = {
+			...request,
 			state: "approved",
 			decidedAt: new Date(),
 			reviewerId,
 			reviewerRole,
-		});
+		};
+		this.store.update(approvalId, approved);
 
-		return { success: true, data: this.store.get(approvalId)! };
+		return { success: true, data: approved };
 	}
 
 	async reject(
@@ -152,14 +234,16 @@ export class ApprovalGateEngine {
 			return { success: false, error: `Approval ${approvalId} not found` };
 		}
 
-		this.store.update(approvalId, {
+		const rejected: ApprovalRequest = {
+			...request,
 			state: "rejected",
 			decidedAt: new Date(),
 			reviewerId,
 			rationale,
-		});
+		};
+		this.store.update(approvalId, rejected);
 
-		return { success: true, data: this.store.get(approvalId)! };
+		return { success: true, data: rejected };
 	}
 
 	getPendingApprovals(context?: AgentContext): ApprovalRequest[] {

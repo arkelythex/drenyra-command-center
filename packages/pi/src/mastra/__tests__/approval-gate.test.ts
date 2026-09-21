@@ -248,6 +248,110 @@ describe("ApprovalGateEngine", () => {
 		});
 	});
 
+	describe("fiscal_gate dual-approval enforcement", () => {
+		it("does not finalize on a single approver when the gate requires two distinct approvers", async () => {
+			// First call comes from executeTool's initial proposal (0 approvers);
+			// second call comes from approve()'s re-check after reviewer-1.
+			const governanceValidator = vi.fn().mockResolvedValue({
+				valid: false,
+				reasons: [
+					"dual approval required at R3: 1 distinct approver(s), need 2",
+				],
+				evidenceRefs: [],
+			});
+			engine = new ApprovalGateEngine(store, governanceValidator);
+
+			const tool = createTool({ approvalLevel: "fiscal_gate" });
+			await engine.executeTool(tool, { amount: 5000 }, mockContext);
+			const approvalId = store.getAll()[0].id;
+
+			const result = await engine.approve(
+				approvalId,
+				"reviewer-1",
+				"compliance-officer",
+			);
+
+			expect(result.success).toBe(false);
+			if (!result.success) {
+				expect(result.error).toContain("Additional approval required");
+			}
+			const updated = store.get(approvalId);
+			expect(updated?.state).toBe("validated");
+			expect(updated?.approvals).toHaveLength(1);
+			expect(updated?.approvals?.[0]?.approverId).toBe("reviewer-1");
+		});
+
+		it("finalizes as approved once the gate confirms two distinct approvers", async () => {
+			// Call order: executeTool's initial proposal (0 approvers, invalid),
+			// approve() re-check after reviewer-1 (1 approver, still invalid),
+			// approve() re-check after reviewer-2 (2 distinct approvers, valid).
+			const governanceValidator = vi
+				.fn()
+				.mockResolvedValueOnce({
+					valid: false,
+					reasons: [
+						"dual approval required at R3: 0 distinct approver(s), need 2",
+					],
+					evidenceRefs: [],
+				})
+				.mockResolvedValueOnce({
+					valid: false,
+					reasons: [
+						"dual approval required at R3: 1 distinct approver(s), need 2",
+					],
+					evidenceRefs: [],
+				})
+				.mockResolvedValueOnce({
+					valid: true,
+					reasons: [],
+					evidenceRefs: [],
+				});
+			engine = new ApprovalGateEngine(store, governanceValidator);
+
+			const tool = createTool({ approvalLevel: "fiscal_gate" });
+			await engine.executeTool(tool, { amount: 5000 }, mockContext);
+			const approvalId = store.getAll()[0].id;
+
+			await engine.approve(approvalId, "reviewer-1", "compliance-officer");
+			const result = await engine.approve(
+				approvalId,
+				"reviewer-2",
+				"controller",
+			);
+
+			expect(result.success).toBe(true);
+			const updated = store.get(approvalId);
+			expect(updated?.state).toBe("approved");
+			expect(updated?.approvals).toHaveLength(2);
+			expect(updated?.approvals?.map((a) => a.approverId)).toEqual([
+				"reviewer-1",
+				"reviewer-2",
+			]);
+			expect(governanceValidator).toHaveBeenLastCalledWith(
+				"test-tool",
+				expect.objectContaining({
+					approvals: [
+						expect.objectContaining({ approverId: "reviewer-1" }),
+						expect.objectContaining({ approverId: "reviewer-2" }),
+					],
+				}),
+				mockContext,
+			);
+		});
+
+		it("finalizes immediately on the first approval when no governance validator is configured (unchanged behavior)", async () => {
+			const tool = createTool({ approvalLevel: "fiscal_gate" });
+			// `engine` from beforeEach has no governanceValidator wired.
+			await engine.executeTool(tool, { amount: 5000 }, mockContext);
+			const approvalId = store.getAll()[0].id;
+
+			const result = await engine.approve(approvalId, "reviewer-1", "admin");
+
+			expect(result.success).toBe(true);
+			expect(store.get(approvalId)?.state).toBe("approved");
+		});
+	});
+
 	describe("getPendingApprovals", () => {
 		it("should return all pending requests without context filter", async () => {
 			const tool = createTool({ approvalLevel: "gate" });

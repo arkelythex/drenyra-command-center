@@ -31,6 +31,14 @@ export function requiresGovernanceBundle(level: ApprovalLevel): boolean {
 
 export type ApprovalState = "proposed" | "validated" | "approved" | "rejected";
 
+/** A single recorded human approval, accumulated toward a fiscal_gate's dual-approval requirement. */
+export interface ApprovalRecord {
+	approverId: string;
+	reviewerRole: string;
+	at: string;
+	reason?: string | undefined;
+}
+
 export interface ApprovalRequest {
 	id: string;
 	toolName: string;
@@ -44,6 +52,13 @@ export interface ApprovalRequest {
 	reviewerRole?: string | undefined;
 	governanceResult?: GovernanceBundleResult | undefined;
 	rationale?: string | undefined;
+	/**
+	 * Distinct human approvals accumulated so far for a fiscal_gate request.
+	 * Re-checked against the governance validator on every `approve()` call;
+	 * the request only reaches `"approved"` once the gate's verdict is valid
+	 * (e.g. two distinct approvers at R3) — see ApprovalGateEngine.approve().
+	 */
+	approvals?: ApprovalRecord[] | undefined;
 }
 
 export interface GovernanceBundleResult {

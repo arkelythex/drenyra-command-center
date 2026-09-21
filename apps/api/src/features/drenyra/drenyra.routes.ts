@@ -11,6 +11,7 @@ import {
 	AgentEventBus,
 	ApprovalGateEngine,
 	ApprovalStore,
+	createDrenyraGateValidator,
 	MastraDrenyraOrchestrator as DrenyraOrchestrator,
 	IntentDetector,
 } from "@drenyra/pi";
@@ -30,7 +31,13 @@ import { createDrenyraCommandEnvelopeRoutes } from "./drenyra-command-envelope.r
 const approvalStore = new ApprovalStore();
 const eventBus = new AgentEventBus();
 const intentDetector = new IntentDetector();
-const approvalGate = new ApprovalGateEngine(approvalStore);
+// Fiscal actions (approvalLevel: "fiscal_gate", e.g. submit_sire) are governed
+// by the Core's deterministic materiality/approval gate (drenyra-ai/gates),
+// not just this engine's approvalLevel check — see ApprovalGateEngine.approve().
+const approvalGate = new ApprovalGateEngine(
+	approvalStore,
+	createDrenyraGateValidator(),
+);
 
 const drenyra = new DrenyraOrchestrator(approvalGate, eventBus, (input, ctx) =>
 	intentDetector.detectIntent(input, ctx),
@@ -1146,6 +1153,7 @@ export const drenyraModule = new Elysia({
 
 					emitSnapshot();
 
+					// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: pre-existing SSE polling loop, unrelated to this change; not refactoring fiscal-adjacent SSE logic under this commit's scope.
 					const pollTimer = setInterval(() => {
 						if (isClosed) {
 							clearInterval(pollTimer);

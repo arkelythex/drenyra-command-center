@@ -47,4 +47,17 @@ describe("createDrenyraGateValidator", () => {
 		expect(result.valid).toBe(false);
 		expect(result.reasons[0]).toContain("amountCents");
 	});
+
+	it("fails closed to R3 dual-approval when a fiscal_gate tool omits reversibility entirely", async () => {
+		// A tool like submit_sire declares no reversibility/jurisdiction on its
+		// input schema. The validator must not silently default to
+		// "reversible" (which would derive R0/no-approval) — it must treat an
+		// undeclared reversibility as irreversible.
+		const result = await validator("submit_sire", {
+			companyId: "comp-1",
+			period: "2026-08",
+		});
+		expect(result.valid).toBe(false);
+		expect(result.reasons.some((r) => r.includes("dual approval"))).toBe(true);
+	});
 });

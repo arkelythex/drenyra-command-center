@@ -8,9 +8,47 @@
  * @module @drenyra/pi
  */
 
-// ─── Legacy (temporary) ───────────────────────────
-export { QueueManager, queueManager } from "./legacy/queue-manager";
-
+export type { AgentContext } from "@drenyra/fiscal-agent-domain/agent-context";
+// ─── Fiscal Agent Domain — Pure domain types ────────────────────────────
+export type {
+	AgentCapability,
+	AgentDefinition,
+} from "@drenyra/fiscal-agent-domain/agent-definition";
+export type {
+	ApprovalLevel,
+	ApprovalPolicy,
+	ApprovalRequirement,
+} from "@drenyra/fiscal-agent-domain/approval-policy";
+export {
+	compareApprovalLevel,
+	requiresGovernanceBundle,
+	requiresHumanApproval,
+} from "@drenyra/fiscal-agent-domain/approval-policy";
+export type {
+	DelegationPolicy,
+	DelegationRule,
+} from "@drenyra/fiscal-agent-domain/delegation-policy";
+export type {
+	Jurisdiction,
+	RiskTier,
+} from "@drenyra/fiscal-agent-domain/risk-tier";
+// ─── Pi Adapter — Hexagonal AgentRuntimePort ────────────────────────────
+export type {
+	AgentRuntimePort,
+	CreateSessionRequest,
+	FiscalPrompt,
+	ForkSessionRequest,
+	RuntimeEvent,
+	RuntimeEventType,
+	SessionHandle,
+	ShadowComparison,
+	Unsubscribe,
+} from "./adapter";
+export {
+	LegacyMastraRuntimeAdapter,
+	PiAgentRuntimeAdapter,
+	ShadowRunner,
+} from "./adapter";
 // ─── Agents module ──────────────────────────────
 export * from "./agents";
 export * from "./fiscal-agentic-ledger";
@@ -20,54 +58,30 @@ export {
 } from "./harness/handlers/defaults";
 // ─── Harness — Delegation, Approval, Execution ─────────────────────────
 export { createDrenyraHarness, DrenyraHarness } from "./harness/harness";
-
-// ─── Pi Adapter — Hexagonal AgentRuntimePort ────────────────────────────
-export type {
-	AgentRuntimePort,
-	SessionHandle,
-	FiscalPrompt,
-	RuntimeEvent,
-	RuntimeEventType,
-	CreateSessionRequest,
-	ForkSessionRequest,
-	Unsubscribe,
-	ShadowComparison,
-} from "./adapter";
-export {
-	PiAgentRuntimeAdapter,
-	LegacyMastraRuntimeAdapter,
-	ShadowRunner,
-} from "./adapter";
-
-// ─── Fiscal Agent Domain — Pure domain types ────────────────────────────
-export type {
-	AgentDefinition,
-	AgentCapability,
-} from "@drenyra/fiscal-agent-domain/agent-definition";
-export type {
-	DelegationPolicy,
-	DelegationRule,
-} from "@drenyra/fiscal-agent-domain/delegation-policy";
-export type {
-	ApprovalPolicy,
-	ApprovalRequirement,
-	ApprovalLevel,
-} from "@drenyra/fiscal-agent-domain/approval-policy";
-export {
-	compareApprovalLevel,
-	requiresHumanApproval,
-	requiresGovernanceBundle,
-} from "@drenyra/fiscal-agent-domain/approval-policy";
-export type {
-	RiskTier,
-	Jurisdiction,
-} from "@drenyra/fiscal-agent-domain/risk-tier";
-export type { AgentContext } from "@drenyra/fiscal-agent-domain/agent-context";
 export type {
 	AgentHandler,
 	HarnessExecuteResponse,
 	HarnessOptions,
 } from "./harness/types";
+// ─── Legacy compatibility layer ──────────────────────────────
+export {
+	clearRegisteredAgents,
+	getAllRegisteredAgents,
+	getRegisteredAgent,
+} from "./legacy/agent-registry";
+export type {
+	LegacyCapabilityToolsLookupInput,
+	LegacyPolicyPreviewInput,
+	NormalizedLegacyCapabilityToolsLookup,
+	NormalizedLegacyPolicyPreview,
+} from "./legacy/control-plane-facade";
+export {
+	createGovernanceValidator,
+	normalizeLegacyCapabilityToolsLookup,
+	normalizeLegacyPolicyPreviewInput,
+} from "./legacy/control-plane-facade";
+// ─── Legacy (temporary) ───────────────────────────
+export { QueueManager, queueManager } from "./legacy/queue-manager";
 // ─── Lexori — Fiscal/Regulatory Skill Registry ────────────────────────
 export * from "./lexori";
 // ─── Mastra Implementations ───────────────────────────────────────────
@@ -127,6 +141,7 @@ export {
 	consentManagerAgent,
 	consentManagerPort,
 	createAuditLoggerMemoryCandidates,
+	createDrenyraGateValidator,
 	createDrenyraOrchestrator,
 	createFindingTool,
 	createFiscalMemoryCandidate,
@@ -156,6 +171,27 @@ export {
 } from "./mastra";
 // ─── Mnevori — Per-Node Artifact Persistence ──────────────────────────
 export * from "./mnevori";
+// ─── Plugin System ───────────────────────────────────────────────────────
+export type {
+	AgenticOSPlugin,
+	AgentRegistry,
+	ApprovalEvidence,
+	ApprovalGate,
+	ApprovalGateRegistry,
+	ApprovalVerdict,
+	DomainRegistry,
+	DrenyraSkill,
+	PolicyContext,
+	PolicyDefinition,
+	PolicyRegistry,
+	PolicyResult,
+	SkillContext,
+} from "./plugin/interface";
+export { PluginRegistry } from "./plugin/registry";
+export type {
+	PluginLifecycleConfig,
+	RegisteredPlugin,
+} from "./plugin/types";
 // ─── MCP Protocol ─────────────────────────────────────────────────────
 export type {
 	DrenyraMcpAuditEvent,
@@ -231,43 +267,3 @@ export type {
 	WorkerTaskPriority,
 	WorkerTaskStatus,
 } from "./types/worker-task";
-
-// ─── Plugin System ───────────────────────────────────────────────────────
-export type {
-	AgenticOSPlugin,
-	AgentRegistry,
-	ApprovalEvidence,
-	ApprovalGate,
-	ApprovalGateRegistry,
-	ApprovalVerdict,
-	DomainRegistry,
-	DrenyraSkill,
-	PolicyContext,
-	PolicyDefinition,
-	PolicyRegistry,
-	PolicyResult,
-	SkillContext,
-} from "./plugin/interface";
-export { PluginRegistry } from "./plugin/registry";
-export type {
-	PluginLifecycleConfig,
-	RegisteredPlugin,
-} from "./plugin/types";
-
-// ─── Legacy compatibility layer ──────────────────────────────
-export {
-	clearRegisteredAgents,
-	getAllRegisteredAgents,
-	getRegisteredAgent,
-} from "./legacy/agent-registry";
-export type {
-	LegacyCapabilityToolsLookupInput,
-	LegacyPolicyPreviewInput,
-	NormalizedLegacyCapabilityToolsLookup,
-} from "./legacy/control-plane-facade";
-export {
-	createGovernanceValidator,
-	normalizeLegacyCapabilityToolsLookup,
-	normalizeLegacyPolicyPreviewInput,
-} from "./legacy/control-plane-facade";
-export type { NormalizedLegacyPolicyPreview } from "./legacy/control-plane-facade";
