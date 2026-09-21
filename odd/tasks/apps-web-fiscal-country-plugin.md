@@ -142,7 +142,7 @@ green. Runner: `bun run --cwd apps/web test:run` / `test:coverage`.
   rate-change-over-time scenario), updated tests for T3's locale/currency
   resolution, T6's RUC length/label resolution. Route: bundled with each
   writer task above, not a separate pass.
-- [ ] **T10. Quality gates** — for apps/web: `bun run --cwd apps/web typecheck`,
+- [x] **T10. Quality gates** — for apps/web: `bun run --cwd apps/web typecheck`,
   `lint`, `test:run` (coverage thresholds must stay green), plus root
   `bun scripts/sire-ledger-repro-check.ts` (mandatory — this touches
   facturación). Record actual results here, not assumed.
@@ -241,3 +241,37 @@ Chain plan (slice boundaries = commits already made):
   orphaned `i18next-browser-languagedetector` (0 usages, reconfirmed).
   Full suite: 18 failed/21 failed (baseline, unchanged), 525 passing
   (+11 new). No new typecheck error beyond the known pre-existing TS5102.
+- 2026-09-20: **T10 closed with honest, not false-green, results.**
+  - `bun run --cwd apps/web test:run`: 18 failed test files / 21 failed
+    tests (established pre-existing baseline, none touch files this feature
+    changed), 525 passing.
+  - `bun run --cwd apps/web typecheck` / `lint`: fail on pre-existing,
+    unrelated breakage (TS5102 `baseUrl` removed by pinned TypeScript 7.0.2;
+    `typescript-eslint` incompatible with TS 7.0.2). Confirmed pre-existing
+    by three independent writer passes (T2, T3, T3b+T4+T5), each reverting
+    their own change and reproducing byte-identical failures. Not fixed here
+    — repo-wide TS/tooling pin, out of this feature's scope.
+  - `bun run architecture:check-boundaries`: fails —
+    `scripts/architecture/check-package-boundaries.ts` **does not exist** on
+    this branch/main. Independently consistent with an unrelated prior
+    session's memory (`architecture:check-boundaries and security:audit
+    failed because their referenced scripts are absent`) — long-standing,
+    pre-existing repo gap, not caused by this feature.
+  - `bun scripts/sire-ledger-repro-check.ts` (CLAUDE.md-mandated for any
+    change touching facturación/libros): **script does not exist** on main
+    or this branch (confirmed in T3). Cannot be run. This feature does touch
+    invoice-adjacent files (IGV rate sourcing, tax-type labels, RUC lookup),
+    so by CLAUDE.md's own rule this gate is required but currently
+    unsatisfiable repo-wide — flagging to the user as a real project gap,
+    not something to silently skip or fake.
+  - `bunx biome check` (this repo's priority linter per CLAUDE.md): clean on
+    every file changed across all commits in this feature.
+
+## Summary for user
+All 10 tasks (T1-T8, T10; T9 was folded into each writer pass) are complete
+and committed locally on `codex/apps-web-fiscal-country-plugin`
+(9 work commits + 8 doc commits, ~728+ authored lines). Nothing pushed, no
+PR opened — pending explicit go-ahead, plus three repo-wide gaps to disclose
+that predate this feature and were not fixed here: (1) apps/web
+typecheck/lint broken (TS 7.0.2 pin), (2) architecture:check-boundaries
+script missing, (3) sire-ledger-repro-check.ts (CLAUDE.md-mandated) missing.
