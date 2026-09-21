@@ -1,3 +1,5 @@
+import { getActiveTaxRate } from "@/lib/latam-country-packs";
+
 interface InvoiceTotalsProps {
 	totals: {
 		subtotal: number;
@@ -8,6 +10,10 @@ interface InvoiceTotalsProps {
 }
 
 export const InvoiceTotals = ({ totals, currency }: InvoiceTotalsProps) => {
+	// PE's IGV rule is always populated (`PERU_TAX_RULES`); a static fallback
+	// keeps this label total-safe if that ever changed.
+	const igvRatePercent = getActiveTaxRate("pe", "IGV") ?? 18;
+
 	return (
 		<div className="bg-background border-2 border-border rounded-lg p-6 space-y-3">
 			<div className="flex justify-between items-center font-mono text-sm">
@@ -17,7 +23,7 @@ export const InvoiceTotals = ({ totals, currency }: InvoiceTotalsProps) => {
 				</span>
 			</div>
 			<div className="flex justify-between items-center font-mono text-sm">
-				<span className="text-muted-foreground">IGV (18%):</span>
+				<span className="text-muted-foreground">IGV ({igvRatePercent}%):</span>
 				<span className="text-foreground font-bold">
 					{currency} {totals.igv.toFixed(2)}
 				</span>

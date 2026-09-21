@@ -2,7 +2,13 @@ import { Package, Plus, Tag, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+	isTaxable,
+	TAX_TYPE,
+	TAX_TYPE_LABELS,
+} from "@/features/invoices/lib/tax-type";
 import { useHaptics } from "@/hooks/useHaptics";
+import { getActiveTaxRate } from "@/lib/latam-country-packs";
 import { LEGIBILITY } from "@/lib/legibility";
 import { cn, n } from "@/lib/utils";
 import type { InvoiceItem } from "./hooks/useInvoiceCalculations";
@@ -27,6 +33,12 @@ export const InvoiceLineItems = ({
 	currency,
 }: Props) => {
 	const { trigger } = useHaptics();
+
+	// `getActiveTaxRate` returns a whole-number percentage (18, not 0.18); PE's
+	// IGV rule is always populated (`PERU_TAX_RULES`), but a static fallback
+	// keeps this total-safe if that ever changed.
+	const igvRatePercent = getActiveTaxRate("pe", "IGV") ?? 18;
+	const igvRateFraction = igvRatePercent / 100;
 
 	const handleAdd = () => {
 		trigger("light");
@@ -69,7 +81,7 @@ export const InvoiceLineItems = ({
 			<div className="space-y-8">
 				{items.map((item) => {
 					const subtotal = item.quantity * item.unitPrice;
-					const igv = item.taxType === "GRAVADO" ? subtotal * 0.18 : 0;
+					const igv = isTaxable(item.taxType) ? subtotal * igvRateFraction : 0;
 					const total = subtotal + igv;
 
 					return (
@@ -147,9 +159,15 @@ export const InvoiceLineItems = ({
 											onFocus={() => trigger("light")}
 											className="h-14 w-full cursor-pointer appearance-none rounded-2xl border border-border bg-card/70 px-5 font-mono text-label font-black text-foreground shadow-inner transition-[background-color,border-color,box-shadow,color] focus:outline-none focus:border-primary/40 hover:bg-muted/70"
 										>
-											<option value="GRAVADO">Gravado (18%)</option>
-											<option value="EXONERADO">Exonerado</option>
-											<option value="INAFECTO">Inafecto</option>
+											<option value={TAX_TYPE.GRAVADO}>
+												{TAX_TYPE_LABELS.GRAVADO} ({igvRatePercent}%)
+											</option>
+											<option value={TAX_TYPE.EXONERADO}>
+												{TAX_TYPE_LABELS.EXONERADO}
+											</option>
+											<option value={TAX_TYPE.INAFECTO}>
+												{TAX_TYPE_LABELS.INAFECTO}
+											</option>
 										</select>
 										<div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-30 text-primary">
 											<svg

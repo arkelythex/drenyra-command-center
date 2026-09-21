@@ -1,0 +1,286 @@
+# apps/web — Fiscal Country Plugin (DeepSeek-style: everything swappable)
+
+## Objective
+Adopt DeepSeek Harness's "minimal core, everything is a config-driven swappable
+plugin" philosophy inside `apps/web`, for Peru-first fiscal rules with a real
+LatAm extension seam. Fix the concrete duplication bugs this created, clean up
+dead weight, without touching `packages/domain`/`fiscal-*` internals or other
+products (andino/estado/kuse/senzar).
+
+## Why (user request + reconciliation)
+User asked for DeepSeek "everything is a plugin" philosophy applied to the
+Drenyra web app, adapted to Peru accounting with LatAm scale, plus cleanup and
+good practices (2026-09-20).
+
+Reconciliation before starting (see Engram `sdd/command-center-plugin-host/*`
+and `openspec/changes/drenyra-h3-multi-country`, `drenyra-r1-eliminate-redundancy`,
+`drenyra-r2-deep-refactoring`, `drenyra-p5-code-quality`):
+- `drenyra-h3-multi-country` already designed the target shape — a
+  `FiscalCountry` interface (`taxIdRegex`, `currency`, `taxTypes`,
+  `complianceChains`, `validators`) — but it's proposal-only, depends on
+  unfinished H0/H2 backend orchestrator work, and is scoped to
+  `packages/domain`/compliance-chain level, not apps/web.
+- **Superseding discovery**: `packages/domain/src/feos/country-runtime.ts`
+  (FEOS-014, already implemented + tested, exported via
+  `packages/domain/src/index.ts` → `export * from "./feos"`) already provides
+  almost exactly this shape today: `CountryRuntime` class,
+  `DRENYRA_COUNTRY_PACKS` (PE/CO/CL/EC/MX/BR — code, name, taxAuthority,
+  defaultCurrency, locale, timezone, taxIdentifierFormat), and
+  `PERU_TAX_RULES`/`COLOMBIA_TAX_RULES` (`TaxRule` with `rate`, `validFrom`,
+  `validUntil`, `active` — directly supports the IGV 18%→19% rate-change
+  scenario). **`apps/web` has zero usages of any of this today** (grep
+  confirmed) — it re-hardcodes IGV/locale/RUC-length instead of consuming the
+  domain source of truth. Plan below is revised to make apps/web a consumer
+  of `@drenyra/domain`'s `CountryRuntime`, not a second, parallel config.
+  `drenyra-h3-multi-country`'s proposal stays the reference for extending
+  `CountryRuntime` itself (compliance chains, validators) later — out of
+  scope here since that's `packages/domain`, not `apps/web`.
+- `drenyra-r1-eliminate-redundancy` / `drenyra-r2-deep-refactoring` are marked
+  `archived` in `state.yaml` but have no `tasks.md`/apply evidence, and already
+  flagged "3 implementaciones de RUC check" and duplicated IGV calculations as
+  a problem in 2026-07. Confirmed still present in current code — the
+  "archived" label there is not reliable evidence of completion.
+- `command-center-plugin-host` (separate worktree, mid-apply) assumes canonical
+  fiscal logic moves to an external accounting runtime. User explicitly
+  decided (2026-09-20): fiscal logic **stays in this repo**. Treat
+  `command-center-plugin-host` as a separate, not-followed-here initiative;
+  do not extract invoice/compliance code out of apps/web as part of this task.
+
+## Scope
+In scope: `apps/web` only (features: invoices, compliance, auth/signup;
+`src/lib/latam-country-packs.ts`, `src/lib/money.ts`; `knip.json`'s apps/web
+entry; `i18next`/`react-i18next` dependency).
+Out of scope: `packages/domain`, `packages/fiscal-*`, `apps/api`, other
+products, H0/H2/H3 backend orchestrator work.
+
+## Constraints
+- CLAUDE.md priority #1: cero errores en dominio / SUNAT compliance.
+- Any change touching facturación/libros MUST pass
+  `bun scripts/sire-ledger-repro-check.ts` before this task is considered done.
+- No dinero.js. Use existing `Money`/`Currency` from `@drenyra/domain` as-is.
+- Biome `noExplicitAny`/`noNonNullAssertion` stay `error` for apps/web feature
+  code — no suppressions.
+
+## TDD mode resolution
+No repo-wide TDD gate/marker found for apps/web (only Vitest coverage
+thresholds: lines 70 / functions 65 / branches 60 / statements 70, lower than
+CLAUDE.md's 100%/80% domain/infra bar — apps/web is explicitly not held to
+fiscal-domain rigor). Resolved mode: **write/extend tests alongside each
+behavior change** (not full RED-GREEN ceremony), keep coverage thresholds
+green. Runner: `bun run --cwd apps/web test:run` / `test:coverage`.
+
+## Tasks
+
+- [x] **T1. Fix stale `knip.json` entry point** — `apps/web/src/main.tsx` (does
+  not exist) → `apps/web/src/client.tsx` (actual entry). 1 file, mechanical.
+  Route: direct inline.
+- [x] **T2. Make `latam-country-packs.ts` a thin adapter over
+  `@drenyra/domain`'s `CountryRuntime`** instead of a second parallel config.
+  Import `CountryRuntime`/`DRENYRA_COUNTRY_PACKS`/`PERU_TAX_RULES`/
+  `COLOMBIA_TAX_RULES` from `@drenyra/domain`. Keep in `latam-country-packs.ts`
+  only what's genuinely apps/web-specific (assistant copy, quick-action
+  labels); derive `taxIdLabel`, tax-ID regex/length, currency, locale, and
+  active tax rate from `CountryRuntime.getPack()`/`getTaxRules()` instead of
+  hand-maintained fields. Add a small `getActiveTaxRate(countryCode, name)`
+  helper (e.g. `getTaxRules("PE").find(r => r.name === "IGV").rate`) so call
+  sites never touch raw literals. Note: `CountryRuntime.getTaxRules` currently
+  only special-cases `"PE"`/`"CO"` (CL/EC/MX/BR return `[]`) — that gap is in
+  `packages/domain` (out of scope here); apps/web code must handle an empty
+  result gracefully rather than assuming PE. Route: delegated writer.
+- [x] **T3. Refactor `money.ts`** — remove hardcoded `LOCALE = "es-PE"` and
+  default `"PEN"`; resolve locale/currency from the active country pack
+  (`CountryRuntime.getPack(code).locale/defaultCurrency` via T2's adapter).
+  Remove `@deprecated formatPEN` alias once call sites are migrated to the
+  resolved-locale formatter. Route: delegated writer.
+- [x] **T3b. NEW — Fix `lib/utils.ts`'s separate hardcoded currency
+  formatters** (discovered during T3): `apps/web/src/lib/utils.ts` has its
+  own independent `formatPEN`/`formatPENCompact`/`formatCurrency`, hardcoded
+  to `es-PE`, **completely separate from `money.ts`**. These, not `money.ts`,
+  are what real invoice/compliance UI actually calls (`DetraccionesTab.tsx`,
+  `CpeValidatorTab.tsx`, `InvoiceCard.tsx`, `InvoiceLineItems.tsx`,
+  `InvoiceTotals.tsx`, `InvoicesAgingTab.tsx`, `SireDashboard.tsx`,
+  `demo-card.tsx`, `fiscal-health-map/widgets.tsx`) — so T3 alone does not
+  fix the user-visible "amounts always render as PEN/es-PE" bug. Redirect
+  `utils.ts`'s formatters to delegate to `money.ts`'s now country-aware `n()`
+  (keep `utils.ts`'s function names/signatures for its many existing callers;
+  change only the implementation). Combine with T4/T5 below — same files.
+  Route: delegated writer.
+- [x] **T4. Kill the duplicated IGV 0.18 literal** — source from T2's
+  `getActiveTaxRate()` (backed by `PERU_TAX_RULES`, rate is `18` meaning
+  18%, so divide by 100 at the call site consistently) in:
+  `features/invoices/components/create-invoice/InvoiceLineItems.tsx:72`,
+  `.../hooks/useInvoiceCalculations.ts:19`, `EditInvoiceModal.tsx:65,125`,
+  `features/compliance/components/tabs/cpe-validator/cpe-validation-request.ts:76`,
+  `InvoiceTotals.tsx` (create + edit, hardcoded `"18%"` text), `InvoicePDF.tsx:243`.
+  Route: delegated writer (7+ files).
+- [x] **T5. Centralize `taxType === "GRAVADO"` conditionals** — `CountryRuntime`
+  has no tax-type enum today (only named `TaxRule`s like IGV/Renta/Detraccion);
+  keep the GRAVADO/EXONERADO/INAFECTO enum apps/web-local (it's a SUNAT
+  document-line concept, not in `feos/country-runtime.ts`), but move it out of
+  inline JSX into one shared `apps/web` module so `InvoiceLineItems.tsx`,
+  `EditInvoiceModal.tsx`, `useInvoiceCalculations.ts` import one definition
+  instead of repeating string literals. Route: delegated writer (combine with
+  T4 — same files).
+- [x] **T6. De-hardcode RUC length/label in signup** —
+  `features/auth/components/signup/signup-ruc-validation.ts` and
+  `signup-form.validation.ts:42` should derive tax-ID length from
+  `CountryRuntime.getPack("PE").taxIdentifierFormat` (regex `\d{11}`) instead
+  of a literal `11`, and label from T2's adapter. Keep using canonical
+  `isValidRUC` from `@drenyra/shared` unchanged. Route: delegated writer.
+- [x] **T7. Investigate `MOCK_COMPANY_NAMES` stub** in
+  `signup-ruc-validation.ts` — confirm whether a real lookup endpoint exists
+  in `apps/api`. If yes, wire it. If no real endpoint exists, do not fabricate
+  one (out of scope to build a new API) — leave the stub but make it
+  unmistakably a demo fallback (explicit naming/comment/guard), never
+  presented as real data. Route: delegated writer, report finding before
+  deciding.
+- [x] **T8. Remove unused `i18next`/`react-i18next`** — 0 usages found in
+  `apps/web/src`. Confirm zero usages again at implementation time, then
+  remove the dependency and any dead config. Route: direct inline once
+  confirmed (dependency removal + 1-2 file touch).
+- [ ] **T9. Tests** — unit tests for T2's tax-rate resolution (must cover a
+  rate-change-over-time scenario), updated tests for T3's locale/currency
+  resolution, T6's RUC length/label resolution. Route: bundled with each
+  writer task above, not a separate pass.
+- [x] **T10. Quality gates** — for apps/web: `bun run --cwd apps/web typecheck`,
+  `lint`, `test:run` (coverage thresholds must stay green), plus root
+  `bun scripts/sire-ledger-repro-check.ts` (mandatory — this touches
+  facturación). Record actual results here, not assumed.
+
+## Delivery
+Work-unit commits on `codex/apps-web-fiscal-country-plugin`
+(worktree: `/home/dreamcoder08/Documents/PROYECTOS/Drenyra/worktrees/apps-web-fiscal-country-plugin`,
+branched from `origin/main` at `7c87151d2`). Delivery strategy: ask-on-risk
+(default) — asked at ~728 lines. **User chose: feature-branch-chain** — one
+PR per slice, stacked on the previous PR's branch, merged in order.
+
+Chain plan (slice boundaries = commits already made):
+- Tracker: [PR #218](https://github.com/arkelythex/drenyra-command-center/pull/218) (draft, DO NOT MERGE)
+- PR1: [PR #219](https://github.com/arkelythex/drenyra-command-center/pull/219) — T1+T2 (`e687c75`, `868dd54`, doc commits `dfd23df2`/`5d2fdd13`)
+- PR2: [PR #220](https://github.com/arkelythex/drenyra-command-center/pull/220) — T3 (`af5e690`) + doc commit `44616f0e`
+- PR3: [PR #221](https://github.com/arkelythex/drenyra-command-center/pull/221) — T3b+T4+T5 (`2286145`, `d2f0efd`) + doc commits `ad6dc609`/`ec331f60`
+- PR4: [PR #222](https://github.com/arkelythex/drenyra-command-center/pull/222) — T6-T8-T10 (`5c4236e`, `7c61c04`, `9720941`) + doc commits `ce984ce9`/`4711c3f8`
+
+Merge order: PR1 → PR2 → PR3 → PR4 → tracker. PR1 (#219) has a minor,
+disclosed `size:exception` (409 lines, 9 over budget, one cohesive slicing
+pass already applied — see PR comment).
+
+All pushed and opened 2026-09-20. Nothing merged yet — merge authority for
+actually landing these stays a separate user decision per this repo's ODD
+rules; opening the PRs themselves was explicitly authorized.
+
+## Progress log
+- 2026-09-20: Task doc created after reconciliation. T1 applied (commit e687c75).
+- 2026-09-20: Discovered `packages/domain/src/feos/country-runtime.ts` already
+  implements the country-pack/tax-rule source of truth apps/web needs (0
+  existing apps/web usages). Revised T2-T6 to consume it instead of building
+  a parallel config.
+- 2026-09-20: T2 applied (commit `868dd54`). `latam-country-packs.ts` now
+  sources name/currency/locale/taxIdRegex from `CountryRuntime`, adds
+  `getActiveTaxRate(countryCode, taxName)`. 13 new tests, all passing.
+  Findings: (a) only 1 real prior usage of this module existed
+  (`compliance-client.types.ts`, type-only) — `getCountryPack`/
+  `resolveCountryCode`/`LATAM_COUNTRY_PACKS` had **zero runtime callers**
+  before this task, confirming the value of T3/T4 wiring real call sites next.
+  (b) **Repo-wide tooling is broken independent of this change**:
+  `apps/web typecheck` fails on TS5102 (`baseUrl` removed in pinned
+  TypeScript 7.0.2, but `apps/web/tsconfig.check.json:14` still sets it), and
+  `apps/web lint` fails on a `typescript-eslint`/TS 7.0.2 incompatibility
+  (`Cannot read properties of undefined (reading 'Cjs')`). Verified
+  pre-existing by reverting the change and rerunning — identical failures.
+  This blocks a fully green typecheck/lint for *any* apps/web change right
+  now. Out of scope to fix here (repo-wide TS pin, not apps/web-local); used
+  `bunx biome check` on changed files as the substitute gate per task and
+  will flag this to the user as a separate decision. T10 will record this
+  limitation rather than claim false-green.
+- 2026-09-20: T3 applied (commit `af5e690`). `money.ts` now resolves locale
+  per-call from the country pack (default Peru, backward compatible for all
+  9 existing untouched call sites); removed unused `formatPEN` (0 real
+  callers). Discovered `Currency` type in `@drenyra/domain` is
+  `"PEN"|"USD"|"EUR"` only — MX/CO/CL/BR currencies aren't representable yet;
+  decoupled locale resolution (country-driven) from currency typing (stays
+  `Currency`-typed) rather than casting around this domain gap. Flagged, not
+  fixed (packages/domain, out of scope).
+  **New T3b task added above** — `lib/utils.ts` has its own separate
+  hardcoded `formatPEN`/`formatCurrency`, and it (not `money.ts`) is what real
+  invoice/compliance UI actually calls.
+  **Separate flagged finding**: `bun scripts/sire-ledger-repro-check.ts` (the
+  script CLAUDE.md mandates for any change touching facturación/libros)
+  **does not exist on `main` or this branch** — confirmed via git log across
+  branches; it only exists on unrelated, unmerged feature branches. This is a
+  pre-existing repo gap predating this task, not something to silently import
+  from an unrelated branch. Flagging to the user; T10 cannot run this gate
+  until it exists on main.
+- 2026-09-20: T3b applied (commit `2286145`) — `utils.ts`'s
+  `formatPEN`/`formatPENCompact`/`formatCurrency`/`formatPercent`/`formatDate`
+  now delegate to `money.ts` instead of re-hardcoding `es-PE`. Finding: by
+  implementation time these had **zero real callers** (UI already used `n`
+  re-exported from `money.ts`) — fixed anyway as dead public-API debt.
+  T4+T5 applied (commit `d2f0efd`) — real `0.18`/`"18%"` literals killed
+  across `InvoiceLineItems.tsx`, `useInvoiceCalculations.ts`,
+  `EditInvoiceModal.tsx` (x2), `cpe-validation-request.ts`, both
+  `InvoiceTotals.tsx` variants, `InvoicePDF.tsx`, all reading
+  `getActiveTaxRate("pe","IGV") ?? 18`. New `features/invoices/lib/tax-type.ts`
+  centralizes GRAVADO/EXONERADO/INAFECTO. Incidental fix: pre-existing
+  `a11y/noLabelWithoutControl` in `EditInvoiceModal.tsx` (biome lints whole
+  files, blocked the commit) — noted in that commit's message as incidental,
+  not part of T4/T5 scope. Full suite: 18 failed/21 failed tests, identical
+  to established pre-existing baseline — no new regressions; 514 passing
+  (up from 503, new tests added).
+  **Delivery budget crossed**: cumulative authored lines T1–T5/T3b ≈ 728,
+  past the ~400 heuristic. Per the ask-on-risk delivery strategy set above,
+  pausing to ask the user for a chain strategy before T6–T8.
+- 2026-09-20: User chose feature-branch-chain. Recorded slice plan in the
+  Delivery section above. Push/PR creation held pending explicit user
+  go-ahead — this project's ODD rule keeps push/PR/merge separate human
+  decisions from choosing a delivery strategy.
+- 2026-09-20: T6 applied (commits `5c4236e`, `7c61c04`) — RUC length/label
+  now derived from `latam-country-packs.ts`'s new `taxIdLength` field
+  (extracted from `taxIdRegex` via `getFixedTaxIdLength()`, `undefined` for
+  variable-length formats like CO/MX rather than guessing) instead of a
+  literal `11`/"RUC". `isValidRUC` checksum algorithm untouched.
+  T7 finding, better than expected: a real RUC lookup endpoint already
+  exists and is deployed (`POST /api/sunat/validate-ruc-online`, via
+  `SunatService.validateRucOnline` calling apis.net.pe with a server-side
+  Módulo-11 fallback), reachable unauthenticated via
+  `companyScopeGuard({ allowHeaderFallback: true })`. Wired signup to it and
+  removed `MOCK_COMPANY_NAMES` entirely; failure/no-name case now falls back
+  to a generic label, never a fabricated company name.
+  T8 applied (commit `9720941`) — removed `i18next`/`react-i18next` and the
+  orphaned `i18next-browser-languagedetector` (0 usages, reconfirmed).
+  Full suite: 18 failed/21 failed (baseline, unchanged), 525 passing
+  (+11 new). No new typecheck error beyond the known pre-existing TS5102.
+- 2026-09-20: **T10 closed with honest, not false-green, results.**
+  - `bun run --cwd apps/web test:run`: 18 failed test files / 21 failed
+    tests (established pre-existing baseline, none touch files this feature
+    changed), 525 passing.
+  - `bun run --cwd apps/web typecheck` / `lint`: fail on pre-existing,
+    unrelated breakage (TS5102 `baseUrl` removed by pinned TypeScript 7.0.2;
+    `typescript-eslint` incompatible with TS 7.0.2). Confirmed pre-existing
+    by three independent writer passes (T2, T3, T3b+T4+T5), each reverting
+    their own change and reproducing byte-identical failures. Not fixed here
+    — repo-wide TS/tooling pin, out of this feature's scope.
+  - `bun run architecture:check-boundaries`: fails —
+    `scripts/architecture/check-package-boundaries.ts` **does not exist** on
+    this branch/main. Independently consistent with an unrelated prior
+    session's memory (`architecture:check-boundaries and security:audit
+    failed because their referenced scripts are absent`) — long-standing,
+    pre-existing repo gap, not caused by this feature.
+  - `bun scripts/sire-ledger-repro-check.ts` (CLAUDE.md-mandated for any
+    change touching facturación/libros): **script does not exist** on main
+    or this branch (confirmed in T3). Cannot be run. This feature does touch
+    invoice-adjacent files (IGV rate sourcing, tax-type labels, RUC lookup),
+    so by CLAUDE.md's own rule this gate is required but currently
+    unsatisfiable repo-wide — flagging to the user as a real project gap,
+    not something to silently skip or fake.
+  - `bunx biome check` (this repo's priority linter per CLAUDE.md): clean on
+    every file changed across all commits in this feature.
+
+## Summary for user
+All 10 tasks (T1-T8, T10; T9 was folded into each writer pass) are complete
+and committed locally on `codex/apps-web-fiscal-country-plugin`
+(9 work commits + 8 doc commits, ~728+ authored lines). Nothing pushed, no
+PR opened — pending explicit go-ahead, plus three repo-wide gaps to disclose
+that predate this feature and were not fixed here: (1) apps/web
+typecheck/lint broken (TS 7.0.2 pin), (2) architecture:check-boundaries
+script missing, (3) sire-ledger-repro-check.ts (CLAUDE.md-mandated) missing.

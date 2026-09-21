@@ -8,6 +8,12 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import {
+	isTaxable,
+	TAX_TYPE,
+	type TaxType,
+} from "@/features/invoices/lib/tax-type";
+import { getActiveTaxRate } from "@/lib/latam-country-packs";
 import { useEditInvoice } from "../hooks/useEditInvoice";
 import type { Invoice } from "../hooks/useInvoices";
 import { InvoiceHeaderFields } from "./edit-invoice/InvoiceHeaderFields";
@@ -30,7 +36,20 @@ interface EditableInvoiceItem {
 	description: string;
 	quantity: string;
 	unitPrice: string;
-	taxType?: "GRAVADO" | "EXONERADO" | "INAFECTO";
+	taxType?: TaxType;
+}
+
+/**
+ * Resolves PE's current IGV rate as a fraction (e.g. `0.18`).
+ *
+ * `getActiveTaxRate` returns a whole-number percentage (18, not 0.18); PE's
+ * IGV rule is always populated (`PERU_TAX_RULES`), but a static fallback
+ * keeps callers total-safe if that ever changed. Resolved fresh on every
+ * call rather than cached, so a future rate change (e.g. 18% → 19%) is
+ * picked up without a stale module-level value.
+ */
+function getIgvRateFraction(): number {
+	return (getActiveTaxRate("pe", "IGV") ?? 18) / 100;
 }
 
 const _DEFAULT_COMPANY_ID = "00000000-0000-0000-0000-000000000001";
@@ -45,7 +64,7 @@ function createEmptyInvoiceItem(id: string): InvoiceItem {
 		description: "",
 		quantity: "1",
 		unitPrice: "0",
-		taxType: "GRAVADO",
+		taxType: TAX_TYPE.GRAVADO,
 		subtotal: 0,
 		igv: 0,
 		total: 0,
@@ -58,11 +77,11 @@ function mapEditableItemToInvoiceItem(
 ): InvoiceItem {
 	const quantity = item.quantity || "0";
 	const unitPrice = item.unitPrice || "0";
-	const taxType = item.taxType || "GRAVADO";
+	const taxType = item.taxType || TAX_TYPE.GRAVADO;
 	const qty = parseFloat(quantity) || 0;
 	const price = parseFloat(unitPrice) || 0;
 	const subtotal = qty * price;
-	const igv = taxType === "GRAVADO" ? subtotal * 0.18 : 0;
+	const igv = isTaxable(taxType) ? subtotal * getIgvRateFraction() : 0;
 	const total = subtotal + igv;
 
 	return {
@@ -117,12 +136,12 @@ export const EditInvoiceModal = ({
 	const calculateItemTotals = (
 		quantity: string,
 		unitPrice: string,
-		taxType: "GRAVADO" | "EXONERADO" | "INAFECTO",
+		taxType: TaxType,
 	) => {
 		const qty = parseFloat(quantity) || 0;
 		const price = parseFloat(unitPrice) || 0;
 		const subtotal = qty * price;
-		const igv = taxType === "GRAVADO" ? subtotal * 0.18 : 0;
+		const igv = isTaxable(taxType) ? subtotal * getIgvRateFraction() : 0;
 		const total = subtotal + igv;
 		return { subtotal, igv, total };
 	};
@@ -235,10 +254,14 @@ export const EditInvoiceModal = ({
 
 					{/* Notes */}
 					<div className="space-y-2">
-						<label className="text-label font-black uppercase tracking-widest text-muted-foreground">
+						<label
+							htmlFor="edit-invoice-notes"
+							className="text-label font-black uppercase tracking-widest text-muted-foreground"
+						>
 							Notas / Observaciones
 						</label>
 						<Textarea
+							id="edit-invoice-notes"
 							placeholder="Agrega notas adicionales..."
 							value={notes}
 							onChange={(e) => setNotes(e.target.value)}

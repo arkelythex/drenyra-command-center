@@ -3,7 +3,7 @@
 // ============================================================================
 
 import { describe, expect, it } from "vitest";
-import { createFormatter, formatPEN, n, nCompact, nPEN, nUSD } from "../money";
+import { createFormatter, n, nCompact, nPEN, nUSD } from "../money";
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -127,15 +127,53 @@ describe("createFormatter", () => {
 	});
 });
 
-// ─── formatPEN (legacy alias) ──────────────────────────────────────────────
+// ─── Country-code resolution (T3) ───────────────────────────────────────────
+//
+// `n()`/`nCompact()` resolve the display *locale* from the active country
+// pack (`latam-country-packs.ts`'s adapter over `@drenyra/domain`'s
+// `CountryRuntime`) instead of a hardcoded `"es-PE"` constant. Peru stays the
+// default when `countryCode` is omitted (regression-covered above); this
+// block covers the new explicit-country-code path.
+//
+// Expected strings below were verified against real `Intl.NumberFormat`
+// output (`new Intl.NumberFormat("es-CO", { style: "currency", currency:
+// "PEN", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(...)`),
+// not assumed.
 
-describe("formatPEN (legacy)", () => {
-	it("is identical to nPEN", () => {
-		expect(formatPEN(1234.56)).toBe(nPEN(1234.56));
+describe("n() with explicit countryCode", () => {
+	it("defaults to Peru's locale when countryCode is omitted (regression)", () => {
+		expect(normalize(n(1234.56))).toBe("S/ 1,234.56");
 	});
 
-	it("formats correctly", () => {
-		expect(normalize(formatPEN(100))).toBe("S/ 100.00");
+	it("formats with Colombia's locale when countryCode='co' is passed", () => {
+		// es-CO uses "." as the thousands separator and "," as the decimal
+		// separator — the opposite of es-PE — and has no special symbol
+		// mapping for PEN, so it prints the ISO code instead of "S/".
+		expect(normalize(n(1234.56, "PEN", "co"))).toBe("PEN 1.234,56");
+	});
+
+	it("Colombia-locale output differs from the Peru-locale output for the same amount", () => {
+		expect(n(1234.56, "PEN", "co")).not.toBe(n(1234.56, "PEN", "pe"));
+	});
+
+	it("falls back to the default country when countryCode is unrecognized", () => {
+		expect(normalize(n(1234.56, "PEN", "zz"))).toBe(
+			normalize(n(1234.56, "PEN", "pe")),
+		);
+	});
+});
+
+describe("nCompact() with explicit countryCode", () => {
+	it("formats with Colombia's locale", () => {
+		const result = normalize(nCompact(1_200, "PEN", "co"));
+		expect(result).toContain("1,2");
+		expect(result).toContain("K");
+	});
+});
+
+describe("nPEN() with explicit countryCode", () => {
+	it("still formats PEN, but with the passed country's locale", () => {
+		expect(normalize(nPEN(1234.56, "co"))).toBe("PEN 1.234,56");
 	});
 });
 
