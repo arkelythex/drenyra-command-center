@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { Money, TaxCalculator } from "@drenyra/domain";
+import { describe, expect, it, vi } from "vitest";
 import {
 	calculateDetraction,
 	calculateIGV,
@@ -96,5 +97,44 @@ describe("Tool pure implementations", () => {
 		expect(mod.fiscalTools.calculateIGV).toBeDefined();
 		expect(mod.fiscalTools.calculateDetraction).toBeDefined();
 		expect(mod.fiscalTools.validateRUC).toBeDefined();
+	});
+
+	describe("calculateIGV — delegates to @drenyra/domain (Fiscal Boundary Rule 4)", () => {
+		it("matches the pre-refactor numeric output for an exclusive amount (regression)", () => {
+			// Pre-refactor inline math for baseAmount=100, includesIGV=false:
+			//   igv = round(100 * 0.18 * 100) / 100 = 18
+			//   total = round((100 + 18) * 100) / 100 = 118
+			const result = calculateIGV(100);
+			expect(result).toEqual({ base: 100, igv: 18, total: 118 });
+		});
+
+		it("matches the pre-refactor numeric output for an inclusive amount (regression)", () => {
+			// Pre-refactor inline math for baseAmount=100, includesIGV=true:
+			//   base = round((100 / 1.18) * 100) / 100 = 84.75
+			//   igv = round((100 - 100/1.18) * 100) / 100 = 15.25
+			//   total = 100 (unchanged)
+			const result = calculateIGV(100, true);
+			expect(result).toEqual({ base: 84.75, igv: 15.25, total: 100 });
+		});
+
+		it("actually delegates to TaxCalculator.calculateIGV for the exclusive branch", () => {
+			const spy = vi.spyOn(TaxCalculator, "calculateIGV");
+			calculateIGV(250);
+			expect(spy).toHaveBeenCalledTimes(1);
+			const [arg] = spy.mock.calls[0] ?? [];
+			expect(arg).toBeInstanceOf(Money);
+			expect((arg as Money).toNumber()).toBe(250);
+			spy.mockRestore();
+		});
+
+		it("actually delegates to TaxCalculator.calculateBaseFromTotal for the inclusive branch", () => {
+			const spy = vi.spyOn(TaxCalculator, "calculateBaseFromTotal");
+			calculateIGV(250, true);
+			expect(spy).toHaveBeenCalledTimes(1);
+			const [arg] = spy.mock.calls[0] ?? [];
+			expect(arg).toBeInstanceOf(Money);
+			expect((arg as Money).toNumber()).toBe(250);
+			spy.mockRestore();
+		});
 	});
 });
