@@ -145,3 +145,38 @@ after the earlier fiscal-plugin tracker merge):
   Not investigated further or fixed here — flagging for the user, same as
   Gap 2, rather than expanding scope a third time in one session.
 - No new CI failure was introduced by either merged PR.
+
+## Round 2 (2026-09-20, same day, mem_search surfaced prior work)
+A pending Engram memory-conflict review on the save above surfaced 3 prior
+observations from 2026-08-31 (`quality/missing-sire-compliance-gates`,
+`quality/sire-import-blocked`, `quality/sire-reproducibility-gates`) showing
+a **prior session already built more than Task A restored**: the SIRE
+repro-check (`5affb78d4`, restored above) plus two more commits never
+checked before making the "5 sibling scripts, unverified, out of scope"
+call:
+- `cc21fba26` — `scripts/sire-ledger-gate-evaluate.ts` (+ test), the
+  `compliance:sire-gate` script. Imports from `sire-ledger-repro-check.ts`
+  (now on main) and `ComplianceReproducibilityReport` from `@drenyra/domain`
+  (already on main) — dependency-safe.
+- `952bd06f2` — fixes `apps/api/scripts/verify-sire-demo-export.ts`, which
+  **is currently broken on main right now**: it imports
+  `SIREService` from `../src/services/sire.service`, a path confirmed to
+  **not exist** on main (the service moved to
+  `features/sire/services/sire-register-export.service.ts`). This isn't a
+  hypothetical gap — running this script on main today throws a module-not-
+  found error.
+
+Cherry-picked both (clean, no conflicts). Verified: `sire-ledger-gate-evaluate.test.ts`
+4/4 passing; combined with Task A's suite, 19/19 passing; the import fix's
+target module resolves cleanly (smoke-tested — fails only on missing
+`DATABASE_URL`, the same expected non-bug as Task A); Biome clean.
+`compliance:sire-repro` and `compliance:sire-gate` are now both fully
+functional on main. The other 3 sibling scripts
+(`sire-ledger-repro-batch.ts`, `sire-governance-cohort-run.ts`,
+`sire-governance-signoff-run.ts`, `p3-sire-signoff-summary.ts`) — still no
+evidence of a built/verified version anywhere; still flagged, still out of
+scope.
+
+**Process note**: should have run `mem_search` for prior SIRE-related work
+*before* Task A/the original "out of scope" call, not after. Caught via the
+mandatory conflict-review step on a later `mem_save`, not proactively.
