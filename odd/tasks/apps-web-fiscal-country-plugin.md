@@ -121,20 +121,20 @@ green. Runner: `bun run --cwd apps/web test:run` / `test:coverage`.
   `EditInvoiceModal.tsx`, `useInvoiceCalculations.ts` import one definition
   instead of repeating string literals. Route: delegated writer (combine with
   T4 — same files).
-- [ ] **T6. De-hardcode RUC length/label in signup** —
+- [x] **T6. De-hardcode RUC length/label in signup** —
   `features/auth/components/signup/signup-ruc-validation.ts` and
   `signup-form.validation.ts:42` should derive tax-ID length from
   `CountryRuntime.getPack("PE").taxIdentifierFormat` (regex `\d{11}`) instead
   of a literal `11`, and label from T2's adapter. Keep using canonical
   `isValidRUC` from `@drenyra/shared` unchanged. Route: delegated writer.
-- [ ] **T7. Investigate `MOCK_COMPANY_NAMES` stub** in
+- [x] **T7. Investigate `MOCK_COMPANY_NAMES` stub** in
   `signup-ruc-validation.ts` — confirm whether a real lookup endpoint exists
   in `apps/api`. If yes, wire it. If no real endpoint exists, do not fabricate
   one (out of scope to build a new API) — leave the stub but make it
   unmistakably a demo fallback (explicit naming/comment/guard), never
   presented as real data. Route: delegated writer, report finding before
   deciding.
-- [ ] **T8. Remove unused `i18next`/`react-i18next`** — 0 usages found in
+- [x] **T8. Remove unused `i18next`/`react-i18next`** — 0 usages found in
   `apps/web/src`. Confirm zero usages again at implementation time, then
   remove the dependency and any dead config. Route: direct inline once
   confirmed (dependency removal + 1-2 file touch).
@@ -221,3 +221,23 @@ Chain plan (slice boundaries = commits already made):
   **Delivery budget crossed**: cumulative authored lines T1–T5/T3b ≈ 728,
   past the ~400 heuristic. Per the ask-on-risk delivery strategy set above,
   pausing to ask the user for a chain strategy before T6–T8.
+- 2026-09-20: User chose feature-branch-chain. Recorded slice plan in the
+  Delivery section above. Push/PR creation held pending explicit user
+  go-ahead — this project's ODD rule keeps push/PR/merge separate human
+  decisions from choosing a delivery strategy.
+- 2026-09-20: T6 applied (commits `5c4236e`, `7c61c04`) — RUC length/label
+  now derived from `latam-country-packs.ts`'s new `taxIdLength` field
+  (extracted from `taxIdRegex` via `getFixedTaxIdLength()`, `undefined` for
+  variable-length formats like CO/MX rather than guessing) instead of a
+  literal `11`/"RUC". `isValidRUC` checksum algorithm untouched.
+  T7 finding, better than expected: a real RUC lookup endpoint already
+  exists and is deployed (`POST /api/sunat/validate-ruc-online`, via
+  `SunatService.validateRucOnline` calling apis.net.pe with a server-side
+  Módulo-11 fallback), reachable unauthenticated via
+  `companyScopeGuard({ allowHeaderFallback: true })`. Wired signup to it and
+  removed `MOCK_COMPANY_NAMES` entirely; failure/no-name case now falls back
+  to a generic label, never a fabricated company name.
+  T8 applied (commit `9720941`) — removed `i18next`/`react-i18next` and the
+  orphaned `i18next-browser-languagedetector` (0 usages, reconfirmed).
+  Full suite: 18 failed/21 failed (baseline, unchanged), 525 passing
+  (+11 new). No new typecheck error beyond the known pre-existing TS5102.
