@@ -29,7 +29,6 @@
 | `packages/ai` | ai | AI facade, gateway, model registry, SUNAT corpus and tool bridge contracts. | ai, gateway, agents | — |
 | `packages/memory` | memory | Unified memory subsystem: agent memory, session storage, context management. | ai, memory | — |
 | `packages/agents` | agents | Unified agent runtime: Mastra orchestration, delegation, harness, approvals. | ai, agents, orchestration | — |
-| `services/engram` | engram | Go phase-gate evidence sidecar for fiscal audit trails. | go, engram, evidence | — |
 | `packages/test-utils` | test-utils | Shared fixtures, builders, mocks, database and tenant test helpers. | testing, fixtures | — |
 | `packages/ui` | ui | Shared Glass & Steel design-system components and tokens. | frontend, ui, design-system | — |
 | `engines/rust-core` | rust-core | Rust hot-path fiscal primitives; TypeScript remains source of truth until parity. | rust, fiscal, performance | — |
