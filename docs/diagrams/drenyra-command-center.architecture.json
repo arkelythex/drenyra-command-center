@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Drenyra Command Center — 8 FEOS Planes",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/arkelythex/drenyra-command-center",
+      "provider": "github",
+      "revision": "0ea07dff869324db54817514def425e5fce0dab1"
+    },
+    "views": [
+      {
+        "id": "full-stack",
+        "label": "Full stack",
+        "focus": [
+          "experience",
+          "workspace",
+          "intelligence",
+          "trust",
+          "execution",
+          "financial",
+          "integration",
+          "country"
+        ],
+        "note": "No upper plane bypasses a lower one — an agent cannot call SUNAT directly, it must traverse the full stack."
+      },
+      {
+        "id": "material-path",
+        "label": "Material operation path",
+        "focus": [
+          "intelligence",
+          "trust",
+          "execution",
+          "financial"
+        ],
+        "note": "Agent proposal → typed tool → deterministic validator → approval gate → durable workflow → evidence receipt."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "experience",
+      "type": "frontend",
+      "label": "1. Experience Plane",
+      "sublabel": "Workbench, CLI, API",
+      "sources": [
+        { "path": "apps/web/package.json", "label": "web workbench" },
+        { "path": "apps/cli/package.json", "label": "CLI" },
+        { "path": "apps/api/package.json", "label": "API" }
+      ],
+      "pos": [40, 140],
+      "size": [190, 120]
+    },
+    {
+      "id": "workspace",
+      "type": "backend",
+      "label": "2. Workspace Plane",
+      "sublabel": "Portfolio, companies, periods",
+      "sources": [
+        { "path": "packages/workspace-domain/package.json", "label": "workspace domain" }
+      ],
+      "pos": [300, 140],
+      "size": [190, 120]
+    },
+    {
+      "id": "intelligence",
+      "type": "backend",
+      "label": "3. Intelligence Plane",
+      "sublabel": "Pi runtime, agents, memory",
+      "sources": [
+        { "path": "packages/pi/package.json", "label": "Pi runtime" },
+        { "path": "packages/drenyra-orchestrator/package.json", "label": "orchestrator" }
+      ],
+      "pos": [560, 140],
+      "size": [190, 120]
+    },
+    {
+      "id": "trust",
+      "type": "security",
+      "label": "4. Trust Plane",
+      "sublabel": "Evidence, policy, approval",
+      "sources": [
+        { "path": "packages/fiscal-approval/package.json", "label": "approval control plane" },
+        { "path": "packages/phase-gatekeeper/package.json", "label": "phase gates" }
+      ],
+      "pos": [820, 140],
+      "size": [190, 120]
+    },
+    {
+      "id": "execution",
+      "type": "messagebus",
+      "label": "5. Execution Plane",
+      "sublabel": "Jobs, idempotency, recovery",
+      "sources": [
+        { "path": "packages/persistence/src/schema/job-executions.schema.ts", "label": "job execution ledger" }
+      ],
+      "pos": [40, 320],
+      "size": [190, 120]
+    },
+    {
+      "id": "financial",
+      "type": "database",
+      "label": "6. Financial Plane",
+      "sublabel": "Ledger, tax, treasury",
+      "sources": [
+        { "path": "packages/fiscal-agent-domain/package.json", "label": "fiscal domain" },
+        { "path": "packages/fiscal-query-engine/package.json", "label": "fiscal query engine" }
+      ],
+      "pos": [300, 320],
+      "size": [190, 120]
+    },
+    {
+      "id": "integration",
+      "type": "external",
+      "label": "7. Integration Plane",
+      "sublabel": "SUNAT, banks, documents",
+      "sources": [
+        { "path": "contracts/data-engine/v1/manifest.json", "label": "data-engine contract" },
+        { "path": "apps/data-engine/pyproject.toml", "label": "data-engine app" }
+      ],
+      "pos": [560, 320],
+      "size": [190, 120]
+    },
+    {
+      "id": "country",
+      "type": "cloud",
+      "label": "8. Country Plane",
+      "sublabel": "Peru first, then LATAM",
+      "sources": [
+        { "path": "country-packs/README.md", "label": "country packs" }
+      ],
+      "pos": [820, 320],
+      "size": [190, 120]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Material operation flow traverses every plane top to bottom",
+      "wraps": [
+        "experience",
+        "workspace",
+        "intelligence",
+        "trust",
+        "execution",
+        "financial",
+        "integration",
+        "country"
+      ]
+    }
+  ]
+}

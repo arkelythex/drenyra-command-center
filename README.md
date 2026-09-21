@@ -77,33 +77,8 @@ Professional Review → Controlled Execution → Immutable Receipt
 
 Drenyra is organized into **8 architectural planes**. No upper plane bypasses a lower one — an agent cannot call SUNAT directly; it must traverse the full stack.
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  1. EXPERIENCE PLANE                                         │
-│  Workbench · CLI · Mobile · API · Embedded UI                │
-├──────────────────────────────────────────────────────────────┤
-│  2. WORKSPACE PLANE                                          │
-│  Portfolio · Companies · Periods · Change Sets · Attention    │
-├──────────────────────────────────────────────────────────────┤
-│  3. INTELLIGENCE PLANE                                       │
-│  Pi Runtime · Agents · Skills · Model Routing · Memory        │
-├──────────────────────────────────────────────────────────────┤
-│  4. TRUST PLANE                                              │
-│  Evidence · Policy · Materiality · Approval · Receipts        │
-├──────────────────────────────────────────────────────────────┤
-│  5. EXECUTION PLANE                                          │
-│  Temporal · Jobs · Idempotency · Fencing · Recovery          │
-├──────────────────────────────────────────────────────────────┤
-│  6. FINANCIAL PLANE                                          │
-│  Ledger · Close · Tax · Treasury · AP · AR · Payroll         │
-├──────────────────────────────────────────────────────────────┤
-│  7. INTEGRATION PLANE                                        │
-│  SUNAT · Banks · ERPs · Documents · Payments · Authorities    │
-├──────────────────────────────────────────────────────────────┤
-│  8. COUNTRY PLANE                                            │
-│  Peru · Colombia · Chile · Ecuador · Mexico · Brazil          │
-└──────────────────────────────────────────────────────────────┘
-```
+![Drenyra Command Center — 8 FEOS Planes](docs/diagrams/drenyra-command-center.architecture.light.svg#gh-light-mode-only)
+![Drenyra Command Center — 8 FEOS Planes](docs/diagrams/drenyra-command-center.architecture.dark.svg#gh-dark-mode-only)
 
 **Material operation flow:**
 
