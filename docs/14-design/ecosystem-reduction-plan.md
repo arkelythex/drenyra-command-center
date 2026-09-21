@@ -65,6 +65,15 @@ The `packages/drenyra-orchestrator` comparison produced a mixed boundary, not a 
 
 Future work must compare module contracts, not infer ownership from the package name.
 
+## Wave 2 candidate assessment (2026-09-20)
+
+Evaluated `packages/ai`, `packages/memory`, `packages/pi`, and `services/engram` for the next Wave 2 unit. Result: no candidate is ready for a code migration yet; two produced actionable gap evidence instead.
+
+- **`packages/ai`**: no external contract exists. `drenyra-ai@0.5.0`'s published exports (`./missions`, `./receipts`, `./gates`, `./ledger`, `./candidates`, `./cdr`, `./review`, `./evidence`, `./policy`, `./routing`, `./security`, `./skills`, `./tenant`) do not cover agent-orchestration, model-routing, or swarm-consensus. Not ready.
+- **`packages/pi`**: has an existing but **unused** `"drenyra-ai": "file:../../vendored/drenyra-ai-0.4.1.tgz"` dependency (zero imports in `packages/pi/src`), ~40 fiscal-critical consumers, and 1102 source files. Too large and too high-risk for a first slice; the unused vendored dependency itself is a smaller, separate cleanup candidate.
+- **`packages/memory`**: attempted the migration. `drenyra-engram`'s released `v0.2.1` npm exports (`.`, `./core`, `./store`, `./search`, `./lifecycle`, `./authority`) are an **in-process TypeScript library** (in-memory store, scope-first search, lifecycle transitions) — they are **not** the HTTP wire contract that `packages/memory/src/engram-client.ts` actually consumes. The real `/v1/observations`, `/v1/search`, `/v1/context`, `/v1/chain`, `/v1/doctor` routes and their request/response shapes live only in Go (`internal/server/http.go`, `internal/core/types.go`) and are never compiled to JS or exported from the npm package. Concretely, the npm `MemoryScope` is a discriminated union requiring `organizationId`/`companyId`/`ruc` for `company` scope, while the actual wire `Scope` struct (and the hand-mirrored `EngramScope` in this repo) makes those fields optional and derives `companyId` server-side — a real behavioral divergence, not a naming difference. **Contract parity gate fails**: keep the existing hand-mirrored types in `engram-client.ts` as intentional bridge code, not tech debt to remove. The gap to file with the `drenyra-engram` owning repository is a published HTTP wire-types/OpenAPI client — until one exists, this row cannot progress past its current adapter shape.
+- **`services/engram`**: repo-wide consumer search is empty and runtime consumers are absent (docker-compose.yml runs only the published `ghcr.io/arkelythex/drenyra-engram:0.2.1` image; this directory is never built; last substantive edit 2026-07-07). Persisted-data duties appear discharged (its own SQLite schema is unused) but this is inferred from source inspection, not confirmed operationally. The mandatory gate prerequisites — a released service/client contract, a migration/rollback procedure, a provenance parity check, and a named operational owner — do not exist as documents yet. **Deletion does not proceed**; this row stays `MIGRATE`, not `DELETE`, until those artifacts are produced.
+
 ## Migration waves
 
 ### Wave 0 — Freeze the inventory
