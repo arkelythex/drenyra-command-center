@@ -10,6 +10,8 @@ This plan is executable migration guidance, not evidence that any future wave ha
 
 ## Target ownership rule
 
+Restates the boundary approved in [ADR-010 — Ecosystem boundary authority](../11-adr/ADR-010-ecosystem-boundary-authority.md) as executable migration guidance; ADR-010 is the decision of record — if the two ever disagree, ADR-010 governs and this section must be corrected to match it, not the other way around.
+
 **Repositories own behavior; consumers own adapters.** The target boundary is:
 
 - `drenyra-ai` remains the Core authority for missions, candidates, materiality, gates, receipts, ledger, and recovery contracts.
