@@ -30,7 +30,7 @@ odd/tasks/web-tooling-health.md's flagged follow-ups.
   `packages/domain/src/fiscal/{fiscal-general-ledger,sire.types,compliance.types}.ts`
   — explicitly NOT touching this without a domain-owner decision on which
   DTO/report fields are legitimately non-Money vs. should be Money.
-- [ ] **Security Audit**: `bun run security:audit` → `scripts/security/audit-dependencies.ts`,
+- [x] **Security Audit**: `bun run security:audit` → `scripts/security/audit-dependencies.ts`,
   confirmed never implemented anywhere in history (same class of gap as
   the 4 removed sire scripts). Investigate whether `bun`'s built-in audit
   command can be wired in as a substitute, or whether this needs a real
@@ -51,3 +51,18 @@ odd/tasks/web-tooling-health.md's flagged follow-ups.
 ## Progress log
 - 2026-09-21: Task doc created. Mechanical fixes (dead scripts, stale
   package refs) applied and committed (`286adb39`).
+- 2026-09-21: Security Audit fixed (commit `d8f02335`) — `security:audit`
+  now runs `bun audit` (bun's native vulnerability scanner, confirmed
+  fail-closed: exit 1 when vulnerabilities found) instead of the
+  never-implemented `scripts/security/audit-dependencies.ts`.
+  `security:sbom` removed (same missing script backed it; `bun audit` has
+  no SBOM-generation equivalent — genuinely gone, not faked).
+  **Real finding, not introduced by this fix**: 68 vulnerabilities (38
+  high, 26 moderate, 4 low, 0 critical) in current dependencies —
+  `@xmldom/xmldom` (11 advisories — relevant here since it's used for SIRE
+  XML parsing), `fast-uri` (8), `js-yaml`/`postcss`/`browserslist`/
+  `nanoid`/`brace-expansion`/`adm-zip`/`ip-address`/`nodemailer`/`undici`/
+  `smol-toml` (mostly transitive build/test tooling deps). **Not
+  attempted**: running `bun audit fix` — could bump major versions and
+  break things; needs deliberate review per package, not a blind
+  autonomous fix. Flagging for the user.
