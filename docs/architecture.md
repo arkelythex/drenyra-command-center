@@ -117,7 +117,7 @@ Chain of authority (from [ecosystem-boundaries.md](architecture/ecosystem-bounda
 
 ## Consumer contract
 
-The Command Center consumes `drenyra-ai` as **released, versioned artifacts** — today a vendored tarball (`vendored/drenyra-ai-0.2.0.tgz`), moving to the npm registry when published (ADR-013); never a checkout and never copy-pasted source.
+The Command Center consumes `drenyra-ai` as **released, versioned artifacts** — today a single unified vendored tarball (`vendored/drenyra-ai-0.4.1.tgz`), moving to the npm registry when published (ADR-013); never a checkout and never copy-pasted source.
 
 | Rule | Detail |
 | --- | --- |

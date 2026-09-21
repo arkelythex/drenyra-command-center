@@ -58,7 +58,7 @@ This repo **consumes** `drenyra-ai` and `drenyra-engram`; neither may ever depen
 
 | Repo | How | Constraint |
 | --- | --- | --- |
-| `drenyra-ai` | released, versioned artifacts — today a vendored tarball (`vendored/drenyra-ai-0.2.0.tgz`), npm registry when published (ADR-013) | never a checkout; no copy-paste of source |
+| `drenyra-ai` | released, versioned artifacts — today a single unified vendored tarball (`vendored/drenyra-ai-0.4.1.tgz`), npm registry when published (ADR-013) | never a checkout; no copy-paste of source |
 | `drenyra-engram` | memory reads/context through its surfaces | memory never authorizes |
 
 The canonical contract types live in `drenyra-ai` / `drenyra-engram`; this repo imports them and does not fork them ([dependency-direction.md](architecture/dependency-direction.md)).

@@ -1,7 +1,7 @@
 # ADR-013: Consumir Drenyra-AI publicado y eliminar la autoridad duplicada
 
 **Fecha:** 2026-08-11
-**Última actualización:** 2026-09-01
+**Última actualización:** 2026-09-21
 **Estado:** En progreso — autoridad migrada por capacidad; reducción física pendiente
 **Alcance:** Drenyra (Command Center)
 **Referencia:** [Drenyra AI — Gap Analysis](https://github.com/arkelythex/drenyra-ai/blob/main/docs/roadmaps/2026-08-10-v1-gap-analysis.md) (criterio v1.0 #1), [ADR-010](ADR-010-ecosystem-boundary-authority.md), [ADR-011](ADR-011-agent-model-ai-proposes-core-decides.md)
@@ -14,6 +14,8 @@ La frontera aprobada (ADR-010) exige que Drenyra consuma Drenyra-AI como runtime
 independiente (librería/SDK/MCP) — nunca reimplementar gates ni mutar estado autoritativo.
 
 **Estado verificado (2026-09-01):** este primer corte completa la migración de autoridad de `packages/mission-protocol`. Otras capacidades ya usan adaptadores, pero la reducción física del repositorio y las integraciones pendientes se evalúan por separado.
+
+**Addendum (2026-09-21):** el repositorio vendorizaba dos versiones distintas de `drenyra-ai` en paralelo — `0.2.0` (usada aquí por `mission-protocol`, `mission-domain` y `drenyra-orchestrator`) y `0.4.1` (usada solo por `packages/pi`). Se verificó que el diff de `0.2.0` a `0.4.1` es aditivo o solo de comentarios para cada subpath que estos tres consumidores realmente importan (`missions`, `receipts`, `review`) — sin símbolos removidos ni cambiados — y se unificaron los tres en `drenyra-ai@0.4.1`, eliminando el tarball `0.2.0`. Las referencias a "v0.2.0" más abajo en este documento describen el estado histórico de ese primer corte y no se reescriben; el estado actual es v0.4.1 para las cuatro consumidoras del monorepo.
 
 ## Estado verificado
 

@@ -22,7 +22,7 @@
     "vitest": "^4.0.0"
   },
   "dependencies": {
-    "drenyra-ai": "file:../../vendored/drenyra-ai-0.2.0.tgz"
+    "drenyra-ai": "file:../../vendored/drenyra-ai-0.4.1.tgz"
   },
   "files": [
     "src"

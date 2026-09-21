@@ -10,7 +10,7 @@ This matrix tracks which capabilities of the Drenyra monorepo are extracted into
 
 | Capability | Current source (Drenyra) | Future source | Status |
 | --- | --- | --- | --- |
-| Mission protocol (types, states, commands, events, errors, versioning, idempotency) | `packages/mission-protocol` compatibility adapter | `drenyra-ai/missions` | **Extracted — migrated in this slice.** The package root re-exports the complete canonical mission contract from vendored `drenyra-ai` v0.2.0; compatibility source modules re-export their existing surfaces from the same entry point, with no local protocol logic |
+| Mission protocol (types, states, commands, events, errors, versioning, idempotency) | `packages/mission-protocol` compatibility adapter | `drenyra-ai/missions` | **Extracted — migrated in this slice.** The package root re-exports the complete canonical mission contract from vendored `drenyra-ai` v0.4.1; compatibility source modules re-export their existing surfaces from the same entry point, with no local protocol logic |
 | Mission state machine (transitions, guards, recovery paths) | `packages/mission-domain` (uses protocol) | `drenyra-ai/missions/transitions` | **Extracted — fully migrated.** All six `mission-domain` source modules are adapter shims re-exporting `drenyra-ai/missions` / `drenyra-ai/receipts` (status, transitions, contracts, events, errors, receipt). The legacy divergent command types and the local 13-code taxonomy (domain-only `FORBIDDEN`, HARNESS_TIMEOUT→500) were **retired**; consumers aligned to the canonical 30-code set (`apps/web` label map keeps `FORBIDDEN` as a plain string for older API responses) |
 | Mission receipts (Ed25519, canonical vectors, trusted verification) | `packages/mission-domain/src/mission-receipt.ts` | `drenyra-ai/receipts` | **Extracted** — `mission-receipt.ts` is an adapter shim re-exporting `drenyra-ai/receipts` (the original source of the port); `EvidenceItem` stays local to avoid duplicate export |
 | Receipt schemas + conformance vectors | `contracts/receipt-schema/v1` | `drenyra-ai/contracts/receipt-schema` (verbatim copy) | Migrating — canonical source of truth now published with drenyra-ai |
@@ -58,6 +58,6 @@ future contract-level redesign, not for mechanical extraction.
 
 ## Consumption
 
-- `packages/mission-protocol`, `packages/mission-domain`, and `packages/drenyra-orchestrator` declare `drenyra-ai` through the vendored v0.2.0 artifact: `file:../../vendored/drenyra-ai-0.2.0.tgz`.
+- `packages/mission-protocol`, `packages/mission-domain`, `packages/drenyra-orchestrator`, and `packages/pi` all declare `drenyra-ai` through a single unified vendored artifact: `file:../../vendored/drenyra-ai-0.4.1.tgz`. The repo previously vendored two different snapshots (0.2.0 and 0.4.1) side by side; the diff was verified additive/comment-only for every subpath the three non-`pi` consumers import (`missions`, `receipts`, `review`), so all four were unified on 0.4.1 and the 0.2.0 tarball was removed.
 - Other packages may consume a different vendored release for capabilities outside this bounded slice; those migrations are tracked independently.
 - Upgrading a consumed version is a normal dependency bump with a migration note (see `RELEASING.md` in drenyra-ai and the ecosystem integration rules).
