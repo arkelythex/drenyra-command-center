@@ -155,10 +155,19 @@ branched from `origin/main` at `7c87151d2`). Delivery strategy: ask-on-risk
 PR per slice, stacked on the previous PR's branch, merged in order.
 
 Chain plan (slice boundaries = commits already made):
-- PR1: T1+T2 (`e687c75`, `868dd54`, doc commits `dfd23df2`/`5d2fdd13`)
-- PR2 (base: PR1 branch): T3 (`af5e690`) + doc commit `44616f0e`
-- PR3 (base: PR2 branch): T3b+T4+T5 (`2286145`, `d2f0efd`) + doc commit `ad6dc609`
-- PR4+ (base: PR3 branch): T6-T8-T10, sliced further if needed
+- Tracker: [PR #218](https://github.com/arkelythex/drenyra-command-center/pull/218) (draft, DO NOT MERGE)
+- PR1: [PR #219](https://github.com/arkelythex/drenyra-command-center/pull/219) — T1+T2 (`e687c75`, `868dd54`, doc commits `dfd23df2`/`5d2fdd13`)
+- PR2: [PR #220](https://github.com/arkelythex/drenyra-command-center/pull/220) — T3 (`af5e690`) + doc commit `44616f0e`
+- PR3: [PR #221](https://github.com/arkelythex/drenyra-command-center/pull/221) — T3b+T4+T5 (`2286145`, `d2f0efd`) + doc commits `ad6dc609`/`ec331f60`
+- PR4: [PR #222](https://github.com/arkelythex/drenyra-command-center/pull/222) — T6-T8-T10 (`5c4236e`, `7c61c04`, `9720941`) + doc commits `ce984ce9`/`4711c3f8`
+
+Merge order: PR1 → PR2 → PR3 → PR4 → tracker. PR1 (#219) has a minor,
+disclosed `size:exception` (409 lines, 9 over budget, one cohesive slicing
+pass already applied — see PR comment).
+
+All pushed and opened 2026-09-20. Nothing merged yet — merge authority for
+actually landing these stays a separate user decision per this repo's ODD
+rules; opening the PRs themselves was explicitly authorized.
 
 ## Progress log
 - 2026-09-20: Task doc created after reconciliation. T1 applied (commit e687c75).
