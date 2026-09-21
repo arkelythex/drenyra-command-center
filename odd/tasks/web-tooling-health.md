@@ -120,3 +120,28 @@ pre-existing errors — deliberately not fixed here, flagging
 Task C: researched, confirmed no clean fix exists upstream for
 typescript-eslint/TS 7.0.2; documented the available workaround without
 applying it.
+
+## Post-merge CI verification (2026-09-20)
+Split into 2 independent stacked PRs (not a chain — these fixes don't
+depend on each other): PR#224 (SIRE restore) merged first, PR#225
+(baseUrl fix) merged second, both to `main`.
+
+**PR#225 was merged before its CI checks finished** — caught this
+immediately after and verified real CI results rather than assuming
+success. Findings, compared against `main` at multiple points *before*
+this session touched anything (`7c87151d2`, the original tip; `380375f8e`,
+after the earlier fiscal-plugin tracker merge):
+- `Node — web typecheck`: failing before (`TS5102` baseUrl crash, confirmed
+  in CI logs, byte-identical to the local finding) and still failing after
+  (688 real errors now visible instead) — same status, different/more
+  useful reason, exactly as documented in PR#225's description. Not a
+  regression.
+- `Fiscal Boundary Check`, `Lint Check`, `Security Audit`: confirmed
+  failing on `7c87151d2` (before this entire session) and on `380375f8e`
+  (before this branch) — pre-existing, unrelated to anything in this task.
+  **New finding**: these two additional broken gates (Fiscal Boundary
+  Check, Security Audit) weren't previously flagged in this session — the
+  earlier gap list only covered typecheck/lint/architecture-boundaries/SIRE.
+  Not investigated further or fixed here — flagging for the user, same as
+  Gap 2, rather than expanding scope a third time in one session.
+- No new CI failure was introduced by either merged PR.
