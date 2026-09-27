@@ -1,0 +1,71 @@
+import type { Money } from "../value-objects/Money";
+export type BankTransactionType = "DEPOSIT" | "WITHDRAWAL" | "TRANSFER_IN" | "TRANSFER_OUT" | "FEE" | "INTEREST" | "CHECK" | "OTHER";
+export type TransactionSource = "MANUAL" | "CSV_IMPORT" | "API_FEED";
+export type Currency = import("../types/currency").Currency;
+export interface BankTransactionProps {
+    id: number;
+    bankAccountId: number;
+    transactionDate: Date;
+    description: string;
+    reference?: string;
+    type: BankTransactionType;
+    amount: Money;
+    balanceAfter?: Money;
+    source?: TransactionSource;
+    externalId?: string | null;
+    reconciliationBatchId?: string | null;
+    isReconciled: boolean;
+    reconciledAt?: Date;
+    reconciliationId?: number;
+    journalEntryId?: string;
+    importBatch?: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+export declare class BankTransaction {
+    private readonly props;
+    private constructor();
+    static create(props: BankTransactionProps): BankTransaction;
+    static createNew(params: {
+        bankAccountId: number;
+        transactionDate: Date;
+        description: string;
+        type: BankTransactionType;
+        amount: Money;
+        reference?: string;
+        balanceAfter?: Money;
+        source?: TransactionSource;
+        externalId?: string | null;
+        importBatch?: string;
+    }): BankTransaction;
+    private validateBusinessRules;
+    reconcile(reconciliationId: number, journalEntryId?: string): BankTransaction;
+    unreconcile(): BankTransaction;
+    assignToBatch(batchId: string): BankTransaction;
+    markReconciled(reconciliationId?: number): BankTransaction;
+    isInflow(): boolean;
+    isOutflow(): boolean;
+    getSignedAmount(): number;
+    canBeModified(): boolean;
+    equals(other: BankTransaction | null | undefined): boolean;
+    get id(): number;
+    get bankAccountId(): number;
+    get transactionDate(): Date;
+    get description(): string;
+    get reference(): string | undefined;
+    get type(): BankTransactionType;
+    get amount(): Money;
+    get balanceAfter(): Money | undefined;
+    get isReconciled(): boolean;
+    get reconciledAt(): Date | undefined;
+    get reconciliationId(): number | undefined;
+    get journalEntryId(): string | undefined;
+    get source(): TransactionSource;
+    get externalId(): string | null;
+    get reconciliationBatchId(): string | null;
+    get importBatch(): string | undefined;
+    get createdAt(): Date;
+    get updatedAt(): Date;
+    toJSON(): Record<string, unknown>;
+}
+//# sourceMappingURL=BankTransaction.d.ts.map

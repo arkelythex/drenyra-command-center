@@ -1,0 +1,55 @@
+import type { Money } from "../value-objects/Money";
+import type { AccountLevel, AccountProps, ChartAccountType, Currency } from "./account.types";
+export type { AccountLevel, AccountProps, AccountType, ChartAccountType, Currency, } from "./account.types";
+export { ACCOUNT_LEVEL_NAMES, ACCOUNT_TYPE_CLASSES } from "./account.types";
+export declare class Account {
+    private props;
+    private constructor();
+    static create(props: AccountProps): Account;
+    private validateBusinessRules;
+    canBeDeleted(): boolean;
+    canModifyCoreFields(): boolean;
+    canHaveChildren(): boolean;
+    canHaveTransactions(): boolean;
+    isMovementAccount(): boolean;
+    isDebitNature(): boolean;
+    isCreditNature(): boolean;
+    deactivate(): Account;
+    activate(): Account;
+    toggleStatus(): Account;
+    update(data: {
+        name?: string;
+        description?: string;
+        destination?: string;
+        isActive?: boolean;
+        code?: string;
+        type?: ChartAccountType;
+        level?: AccountLevel;
+        isGroup?: boolean;
+        currency?: Currency;
+        parentId?: string;
+    }): Account;
+    updateBalance(newBalance: Money, newBalanceUSD?: Money): Account;
+    equals(other: Account | null | undefined): boolean;
+    isAncestorOf(childCode: string): boolean;
+    getLevelName(): string;
+    get id(): string;
+    get organizationId(): number;
+    get code(): string;
+    get name(): string;
+    get description(): string | undefined;
+    get level(): AccountLevel;
+    get type(): ChartAccountType;
+    get parentId(): string | undefined;
+    get isGroup(): boolean;
+    get isActive(): boolean;
+    get isSystem(): boolean;
+    get currency(): Currency;
+    get destination(): string | undefined;
+    get balance(): Money;
+    get balanceUSD(): Money | undefined;
+    get createdAt(): Date;
+    get updatedAt(): Date;
+    toJSON(): Record<string, unknown>;
+}
+//# sourceMappingURL=Account.d.ts.map

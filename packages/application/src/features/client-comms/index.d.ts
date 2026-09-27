@@ -1,0 +1,2 @@
+export type { AutomationDTO, AutomationTrigger, BatchSendRequest, CommsChannel, CreateAutomationRequest, CreateTemplateRequest, SendMessageRequest, SendMessageResponse, TemplateDTO, UpdateAutomationRequest, UpdateTemplateRequest, } from "./types";
+//# sourceMappingURL=index.d.ts.map

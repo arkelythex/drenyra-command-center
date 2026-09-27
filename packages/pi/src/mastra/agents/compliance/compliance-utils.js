@@ -1,0 +1,84 @@
+const severityWeights = {
+    info: 0,
+    low: 10,
+    medium: 30,
+    high: 65,
+    critical: 100,
+};
+export function assertScopedContext(context) {
+    const hasTenantScope = Boolean(context.tenantId || context.companyId || context.ruc);
+    if (!hasTenantScope && !context.userId) {
+        throw new Error("Compliance context requires tenant, company, RUC, or user scope");
+    }
+}
+export function createFinding(input) {
+    const evidenceRefs = [...(input.evidenceRefs ?? [])].sort();
+    const stableKey = [
+        input.severity,
+        input.category,
+        input.message,
+        input.recommendedAction,
+        evidenceRefs.join("|"),
+    ].join("::");
+    return {
+        id: `finding-${stableHash(stableKey)}`,
+        severity: input.severity,
+        category: input.category,
+        message: input.message,
+        evidenceRefs,
+        recommendedAction: input.recommendedAction,
+        requiresApproval: input.requiresApproval ?? input.severity === "critical",
+    };
+}
+export function riskScoreFromFindings(findings) {
+    if (findings.length === 0) {
+        return 0;
+    }
+    const score = findings.reduce((total, finding) => total + severityWeights[finding.severity], 0);
+    return Math.min(100, Math.round(score / Math.max(1, findings.length)));
+}
+export function pickComplianceContext(input) {
+    const source = readRecord(input.payload?.context) ?? input.payload ?? {};
+    const metadata = input.metadata ?? {};
+    return {
+        tenantId: readString(source.tenantId) ?? readString(metadata.tenantId),
+        companyId: readString(source.companyId) ?? readString(metadata.companyId),
+        ruc: readString(source.ruc) ?? readString(metadata.ruc),
+        userId: readString(source.userId) ?? readString(metadata.userId),
+        period: readString(source.period) ?? readString(metadata.period),
+        traceId: readString(source.traceId) ??
+            readString(input.payload?.traceId) ??
+            readString(input.traceId),
+    };
+}
+export function requireComplianceScope(input) {
+    const context = pickComplianceContext(input);
+    assertScopedContext(context);
+    return context;
+}
+export function readRecord(value) {
+    if (typeof value === "object" && value !== null && !Array.isArray(value)) {
+        return value;
+    }
+    return undefined;
+}
+export function readString(value) {
+    return typeof value === "string" && value.trim().length > 0
+        ? value
+        : undefined;
+}
+export function readStringArray(value) {
+    if (!Array.isArray(value)) {
+        return [];
+    }
+    return value.filter((item) => typeof item === "string");
+}
+export function stableHash(value) {
+    let hash = 0x811c9dc5;
+    for (let index = 0; index < value.length; index += 1) {
+        hash ^= value.charCodeAt(index);
+        hash = Math.imul(hash, 0x01000193);
+    }
+    return (hash >>> 0).toString(16).padStart(8, "0");
+}
+//# sourceMappingURL=compliance-utils.js.map

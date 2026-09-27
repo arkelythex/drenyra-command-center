@@ -1,0 +1,2 @@
+export type { ConnectionDTO, ConnectionStatus, CreateConnectionRequest, CreateWebhookRequest, InstallIntegrationRequest, IntegrationCategory, IntegrationDTO, IntegrationProvider, UpdateConnectionRequest, WebhookDTO, } from "./types";
+//# sourceMappingURL=index.d.ts.map

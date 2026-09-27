@@ -1,0 +1,154 @@
+import { relations } from "drizzle-orm";
+import { index, integer, jsonb, pgTable, text, timestamp, uniqueIndex, uuid, varchar, } from "drizzle-orm/pg-core";
+import { companies } from "./core.schema";
+export const accountingMissions = pgTable("accounting_missions", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+        .references(() => companies.id)
+        .notNull(),
+    fiscalPeriod: varchar("fiscal_period", { length: 7 }).notNull(),
+    intent: varchar("intent", { length: 30 }).notNull(),
+    status: varchar("status", { length: 25 }).default("DRAFT").notNull(),
+    version: integer("version").default(1).notNull(),
+    progress: integer("progress").default(0).notNull(),
+    input: jsonb("input").$type(),
+    proposal: jsonb("proposal").$type(),
+    rejection: jsonb("rejection").$type(),
+    receiptId: uuid("receipt_id"),
+    receiptHash: text("receipt_hash"),
+    lastEventSequence: integer("last_event_sequence").default(0).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+        .defaultNow()
+        .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+        .defaultNow()
+        .notNull(),
+}, (table) => ({
+    companyFiscalIntentUnq: uniqueIndex("acct_missions_company_period_intent_unq").on(table.companyId, table.fiscalPeriod, table.intent),
+    companyStatusIdx: index("acct_missions_company_status_idx").on(table.companyId, table.status),
+    statusIdx: index("acct_missions_status_idx").on(table.status),
+}));
+export const missionIdempotency = pgTable("mission_idempotency", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    companyId: uuid("company_id")
+        .references(() => companies.id)
+        .notNull(),
+    commandType: varchar("command_type", { length: 30 }).notNull(),
+    idempotencyKey: varchar("idempotency_key", { length: 255 }).notNull(),
+    payloadHash: text("payload_hash").notNull(),
+    missionId: uuid("mission_id"),
+    executionStatus: varchar("execution_status", { length: 20 }).notNull(),
+    response: jsonb("response").$type(),
+    responseStatusCode: integer("response_status_code"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+        .defaultNow()
+        .notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+}, (table) => ({
+    companyKeyUnq: uniqueIndex("mission_idempotency_company_key_unq").on(table.companyId, table.idempotencyKey),
+    expiresAtIdx: index("mission_idempotency_expires_at_idx").on(table.expiresAt),
+}));
+export const missionEvents = pgTable("mission_events", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    missionId: uuid("mission_id")
+        .references(() => accountingMissions.id, { onDelete: "cascade" })
+        .notNull(),
+    sequence: integer("sequence").notNull(),
+    eventType: varchar("event_type", { length: 30 }).notNull(),
+    snapshot: jsonb("snapshot").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+        .defaultNow()
+        .notNull(),
+}, (table) => ({
+    missionSequenceUnq: uniqueIndex("mission_events_mission_sequence_unq").on(table.missionId, table.sequence),
+    missionSequenceIdx: index("mission_events_mission_sequence_idx").on(table.missionId, table.sequence),
+}));
+export const missionLeases = pgTable("mission_leases", {
+    missionId: uuid("mission_id")
+        .primaryKey()
+        .references(() => accountingMissions.id, { onDelete: "cascade" }),
+    companyId: uuid("company_id")
+        .references(() => companies.id)
+        .notNull(),
+    expectedVersion: integer("expected_version").notNull(),
+    leaseOwner: varchar("lease_owner", { length: 255 }).notNull(),
+    leaseToken: varchar("lease_token", { length: 64 }).notNull(),
+    leaseExpiresAt: timestamp("lease_expires_at", { withTimezone: true }).notNull(),
+    fencingToken: integer("fencing_token").notNull(),
+    acquiredAt: timestamp("acquired_at", { withTimezone: true })
+        .defaultNow()
+        .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+        .defaultNow()
+        .notNull(),
+}, (table) => ({
+    companyIdIdx: index("mission_leases_company_id_idx").on(table.companyId),
+    leaseExpiresAtIdx: index("mission_leases_expires_at_idx").on(table.leaseExpiresAt),
+}));
+export const missionReceipts = pgTable("mission_receipts", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    missionId: uuid("mission_id")
+        .references(() => accountingMissions.id)
+        .notNull(),
+    companyId: uuid("company_id")
+        .references(() => companies.id)
+        .notNull(),
+    actorId: varchar("actor_id", { length: 255 }).notNull(),
+    decision: varchar("decision", { length: 10 }).notNull(),
+    proposalVersion: integer("proposal_version").notNull(),
+    evidenceHash: text("evidence_hash").notNull(),
+    previousStatus: varchar("previous_status", { length: 25 }).notNull(),
+    newStatus: varchar("new_status", { length: 25 }).notNull(),
+    payloadHash: text("payload_hash").notNull(),
+    receiptHash: text("receipt_hash").notNull(),
+    receiptType: varchar("receipt_type", { length: 30 }),
+    signature: text("signature"),
+    signatureAlgorithm: varchar("signature_algorithm", { length: 20 }).default("Ed25519"),
+    signingKeyId: varchar("signing_key_id", { length: 255 }),
+    issuedAt: timestamp("issued_at", { withTimezone: true }),
+    protocolVersion: varchar("protocol_version", { length: 20 }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+        .defaultNow()
+        .notNull(),
+}, (table) => ({
+    missionIdIdx: index("mission_receipts_mission_id_idx").on(table.missionId),
+    companyIdIdx: index("mission_receipts_company_id_idx").on(table.companyId),
+    receiptHashUnq: uniqueIndex("mission_receipts_hash_unq").on(table.receiptHash),
+    signingKeyIdx: index("mission_receipts_signing_key_idx").on(table.signingKeyId),
+}));
+export const accountingMissionsRelations = relations(accountingMissions, ({ one, many }) => ({
+    company: one(companies, {
+        fields: [accountingMissions.companyId],
+        references: [companies.id],
+    }),
+    events: many(missionEvents),
+    receipts: many(missionReceipts),
+    lease: one(missionLeases),
+}));
+export const missionEventsRelations = relations(missionEvents, ({ one }) => ({
+    mission: one(accountingMissions, {
+        fields: [missionEvents.missionId],
+        references: [accountingMissions.id],
+    }),
+}));
+export const missionLeasesRelations = relations(missionLeases, ({ one }) => ({
+    mission: one(accountingMissions, {
+        fields: [missionLeases.missionId],
+        references: [accountingMissions.id],
+    }),
+    company: one(companies, {
+        fields: [missionLeases.companyId],
+        references: [companies.id],
+    }),
+}));
+export const missionReceiptsRelations = relations(missionReceipts, ({ one }) => ({
+    mission: one(accountingMissions, {
+        fields: [missionReceipts.missionId],
+        references: [accountingMissions.id],
+    }),
+    company: one(companies, {
+        fields: [missionReceipts.companyId],
+        references: [companies.id],
+    }),
+}));
+//# sourceMappingURL=mission.schema.js.map

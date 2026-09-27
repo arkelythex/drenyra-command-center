@@ -1,0 +1,115 @@
+import type { TaxIdentifier } from "../types/tax-identifier";
+import { DNI } from "../value-objects/DNI";
+import { DocumentSeries } from "../value-objects/DocumentSeries";
+import { Money } from "../value-objects/Money";
+import { RUC } from "../value-objects/RUC";
+export type InvoiceStatus = "DRAFT" | "PENDING" | "SENT" | "ACCEPTED" | "REJECTED" | "CANCELLED";
+export type FiscalStatus = "DRAFT" | "PENDING_REVIEW" | "SUBMITTED" | "ACCEPTED" | "REJECTED" | "CANCELLED";
+export type Currency = import("../types/currency").Currency;
+export interface InvoiceProps {
+    id: string;
+    series: DocumentSeries;
+    number: number;
+    issueDate: Date;
+    dueDate?: Date;
+    clientName: string;
+    buyerTaxId?: TaxIdentifier;
+    clientRUC?: RUC;
+    clientDNI?: DNI;
+    clientAddress?: string;
+    baseAmount: Money;
+    taxAmount?: Money;
+    igvAmount: Money;
+    totalAmount: Money;
+    status: InvoiceStatus;
+    fiscalStatus?: FiscalStatus;
+    items: InvoiceItem[];
+    notes?: string;
+    sunatResponseCode?: string;
+    sentToSunatAt?: Date;
+    createdAt: Date;
+    updatedAt: Date;
+}
+export interface InvoiceItem {
+    id: string;
+    description: string;
+    quantity: number;
+    unitPrice: Money;
+    subtotal: Money;
+    igv: Money;
+    total: Money;
+}
+export interface InvoicePrimitiveData {
+    id: string;
+    series: string;
+    number: string | number;
+    issueDate: string | Date;
+    dueDate?: string | Date;
+    clientName: string;
+    buyerTaxId?: string;
+    buyerTaxType?: string;
+    clientRUC?: string;
+    clientDNI?: string;
+    clientAddress?: string;
+    baseAmount: number;
+    igvAmount: number;
+    taxAmount?: number;
+    totalAmount: number;
+    currency: string;
+    status: string;
+    fiscalStatus?: string;
+    items?: Array<{
+        id: string;
+        description: string;
+        quantity: string | number;
+        unitPrice: number;
+        subtotal: number;
+        igv: number;
+        total: number;
+    }>;
+    notes?: string;
+    sunatResponseCode?: string;
+    sentToSunatAt?: string | Date;
+    createdAt?: string | Date;
+    updatedAt?: string | Date;
+}
+export declare class Invoice {
+    private props;
+    private constructor();
+    static create(props: InvoiceProps): Invoice;
+    static fromPrimitives(plainData: InvoicePrimitiveData): Invoice;
+    private validateBusinessRules;
+    private calculateItemsTotal;
+    getFullNumber(): string;
+    markAsSent(authorityResponseCode?: string): Invoice;
+    markAsAccepted(): Invoice;
+    markAsRejected(reason: string): Invoice;
+    cancel(): Invoice;
+    canBeModified(): boolean;
+    isOverdue(): boolean;
+    equals(other: Invoice | null | undefined): boolean;
+    get id(): string;
+    get series(): DocumentSeries;
+    get number(): number;
+    get issueDate(): Date;
+    get dueDate(): Date | undefined;
+    get clientName(): string;
+    get clientRUC(): RUC | undefined;
+    get clientDNI(): DNI | undefined;
+    get clientAddress(): string | undefined;
+    get baseAmount(): Money;
+    get igvAmount(): Money;
+    get totalAmount(): Money;
+    get status(): InvoiceStatus;
+    get items(): readonly InvoiceItem[];
+    get notes(): string | undefined;
+    get createdAt(): Date;
+    get sentToSunatAt(): Date | undefined;
+    get sunatResponseCode(): string | undefined;
+    get updatedAt(): Date;
+    get buyerTaxId(): TaxIdentifier | undefined;
+    get taxAmount(): Money | undefined;
+    get fiscalStatus(): FiscalStatus | undefined;
+    toJSON(): Record<string, unknown>;
+}
+//# sourceMappingURL=Invoice.d.ts.map

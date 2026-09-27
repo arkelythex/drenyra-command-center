@@ -1,0 +1,95 @@
+export declare const agentRunInputs: import("drizzle-orm/pg-core").PgTableWithColumns<{
+    name: "agent_run_inputs";
+    schema: undefined;
+    columns: {
+        runId: import("drizzle-orm/pg-core").PgColumn<{
+            name: "run_id";
+            tableName: "agent_run_inputs";
+            dataType: "string";
+            columnType: "PgText";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: true;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        inputType: import("drizzle-orm/pg-core").PgColumn<{
+            name: "input_type";
+            tableName: "agent_run_inputs";
+            dataType: "string";
+            columnType: "PgText";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        inputData: import("drizzle-orm/pg-core").PgColumn<{
+            name: "input_data";
+            tableName: "agent_run_inputs";
+            dataType: "string";
+            columnType: "PgText";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        checksum: import("drizzle-orm/pg-core").PgColumn<{
+            name: "checksum";
+            tableName: "agent_run_inputs";
+            dataType: "string";
+            columnType: "PgText";
+            data: string;
+            driverParam: string;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: [string, ...string[]];
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        createdAt: import("drizzle-orm/pg-core").PgColumn<{
+            name: "created_at";
+            tableName: "agent_run_inputs";
+            dataType: "date";
+            columnType: "PgTimestamp";
+            data: Date;
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+    };
+    dialect: "pg";
+}>;
+export type AgentRunInput = typeof agentRunInputs.$inferSelect;
+export type NewAgentRunInput = typeof agentRunInputs.$inferInsert;
+//# sourceMappingURL=agent-run-inputs.schema.d.ts.map

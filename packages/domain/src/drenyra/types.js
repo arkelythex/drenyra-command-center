@@ -1,0 +1,73 @@
+export const AUTONOMY_LEVELS = [
+    "ADVISORY",
+    "DRAFT_ONLY",
+    "PREPARE_WITH_APPROVAL",
+    "EXECUTE_AFTER_APPROVAL",
+];
+export const FISCAL_CASE_STATUSES = [
+    "OPEN",
+    "IN_REVIEW",
+    "APPROVAL_PENDING",
+    "RESOLVED",
+    "ARCHIVED",
+];
+export const FISCAL_CASE_TYPES = [
+    "MONTHLY_CLOSE",
+    "CPE_REVIEW",
+    "SIRE_REVIEW",
+    "LEDGER_REVIEW",
+    "CONCILIATION",
+    "EVIDENCE_REVIEW",
+];
+export const FISCAL_RISK_LEVELS = [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL",
+];
+export const EVIDENCE_TYPES = [
+    "DOCUMENT",
+    "SUNAT_RECORD",
+    "LEDGER_ENTRY",
+    "BANK_STATEMENT",
+    "USER_NOTE",
+    "AGENT_OUTPUT",
+];
+export const AGENT_TYPES = [
+    "CPE_AGENT",
+    "SIRE_AGENT",
+    "LEDGER_AGENT",
+    "CONCILIATION_AGENT",
+    "FISCAL_REVIEWER_AGENT",
+    "EVIDENCE_AGENT",
+];
+export const AGENT_RUN_STATUSES = ["STARTED", "COMPLETED", "FAILED"];
+export const APPROVAL_STATUSES = ["PENDING", "APPROVED", "REJECTED"];
+export const AUDIT_EVENT_TYPES = [
+    "FISCAL_CASE_CREATED",
+    "FISCAL_CASE_STATUS_CHANGED",
+    "EVIDENCE_ADDED",
+    "AGENT_RUN_STARTED",
+    "AGENT_RUN_COMPLETED",
+    "APPROVAL_REQUESTED",
+    "APPROVAL_APPROVED",
+    "APPROVAL_REJECTED",
+    "CAPABILITY_ALLOWED",
+    "CAPABILITY_DENIED",
+];
+export const DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY = "drenyra.fiscal-work.inspect";
+export const DRENYRA_FISCAL_WORK_INSPECT_STATUSES = [
+    "success",
+    "denied",
+    "not_found",
+    "validation_failed",
+];
+export const DRENYRA_FISCAL_WORK_INSPECT_REASON_CODES = [
+    "OK",
+    "TENANT_CONTEXT_REQUIRED",
+    "DRENYRA_CAPABILITY_DENIED",
+    "SCOPE_MISMATCH",
+    "NOT_FOUND",
+    "VALIDATION_FAILED",
+];
+//# sourceMappingURL=types.js.map

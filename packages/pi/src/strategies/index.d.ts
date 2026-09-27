@@ -1,0 +1,22 @@
+export { FiscalAnomalyEngine } from "./anomaly-engine";
+export type { CashflowPredictorOptions, CashflowTransaction, } from "./cashflow-predictor.strategy";
+export { createCashflowPredictorStrategy, DEFAULT_ZSCORE_THRESHOLD, EXPENSE_SPIKE_RATIO, INCOME_DROP_RATIO, MIN_DATA_POINTS, ROLLING_WINDOW_DAYS, TREND_WINDOW_DAYS, } from "./cashflow-predictor.strategy";
+export type { DetraccionInvoice } from "./detracciones.strategy";
+export { createDetraccionesStrategy, SPOT_RATES, } from "./detracciones.strategy";
+export type { ClassificationResult, DetectedDocType, DetectedFormat, DocumentClassificationOptions, DocumentToClassify, } from "./document-classification.strategy";
+export { classifyDocument, classifyDocuments, createDocumentClassificationStrategy, DOCUMENT_TYPE_KEYWORDS, MIN_UNREADABLE_CHARS, SUNAT_SERIES_PATTERNS, } from "./document-classification.strategy";
+export type { DuplicateInvoiceCheck } from "./duplicate-invoice.strategy";
+export { createDuplicateInvoiceStrategy } from "./duplicate-invoice.strategy";
+export type { IgvMismatchInvoice } from "./igv-mismatch.strategy";
+export { createIgvMismatchStrategy, EXONERATED_TIPOS, IGV_RATE, IGV_TOLERANCE_PEN, } from "./igv-mismatch.strategy";
+export type { RucBreachTransaction } from "./ruc-breach.strategy";
+export { detectRucBreachAnomalies, RUC_BREACH_THRESHOLD_PEN, } from "./ruc-breach.strategy";
+export type { SireFilingRecord } from "./sire-filing.strategy";
+export { CRITICAL_OVERDUE_DAYS, createSireFilingStrategy, SIRE_DEADLINE_DAYS, } from "./sire-filing.strategy";
+export type { SupplierIntelligenceInput, SupplierRecord, TransactionRecord, } from "./supplier-intelligence.strategy";
+export { CONCENTRATION_THRESHOLD_PCT, createSupplierIntelligenceStrategy, DEBT_AGING_BUCKETS, NEW_SUPPLIER_HIGH_VALUE_THRESHOLD, NEW_SUPPLIER_LOOKBACK_DAYS, PAYMENT_DELAY_DAYS_THRESHOLD, } from "./supplier-intelligence.strategy";
+export type { TaxCalendarInput, TaxObligation } from "./tax-calendar.strategy";
+export { createTaxCalendarStrategy } from "./tax-calendar.strategy";
+export type { Anomaly, AnomalySeverity, AnomalyStrategy, FiscalAnomalyEngineOptions, StrategyRunResult, } from "./types";
+export { compareSeverity, meetsThreshold } from "./types";
+//# sourceMappingURL=index.d.ts.map

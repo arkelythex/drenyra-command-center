@@ -1,16 +1,16 @@
 import { z } from "zod";
 export declare const EnvSchema: z.ZodObject<{
     NODE_ENV: z.ZodDefault<z.ZodEnum<{
-        development: "development";
-        production: "production";
         test: "test";
+        production: "production";
+        development: "development";
     }>>;
     PORT: z.ZodDefault<z.ZodCoercedNumber<unknown>>;
     LOG_LEVEL: z.ZodDefault<z.ZodEnum<{
         error: "error";
+        warn: "warn";
         info: "info";
         debug: "debug";
-        warn: "warn";
     }>>;
     CORS_ALLOWED_ORIGINS: z.ZodOptional<z.ZodString>;
     DATABASE_URL: z.ZodOptional<z.ZodString>;
