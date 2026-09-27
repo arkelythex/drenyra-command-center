@@ -1,8 +1,8 @@
 ---
 title: 'Drenyra Fiscal App Server (DFAS) 2026'
-description: 'Canonical JSON-RPC protocol for governed fiscal agent threads, turns, evidence-native item streams and approval workflows across Web, CLI and API partners — part of the Financial Engineering Environment (FEE).'
+description: 'Canonical JSON-RPC protocol for governed fiscal agent threads, turns, evidence-native item streams and approval workflows across Command Center Web/API and external operator clients — part of the Financial Engineering Environment (FEE).'
 version: '1.0.0'
-last-updated: '2026-07-24'
+last-updated: '2026-09-01'
 tags: ['architecture', 'drenyra', 'dfas', 'protocol', 'fee']
 audience: ['architecture', 'engineering', 'product']
 status: 'active'
@@ -30,7 +30,7 @@ The App Server pattern was chosen over MCP as primary transport because MCP cann
 - multi-client subscription to the same thread;
 - persistent thread/turn state with replay.
 
-MCP remains for **external fiscal connectors** (SUNAT SOL, ERPNext, bank APIs) under the capability matrix. DFAS is for **Drenyra clients** (Web, CLI, automations).
+MCP remains for **external fiscal connectors** (SUNAT SOL, ERPNext, bank APIs) under the capability matrix. DFAS is for the **Command Center Web/API and external operator clients**, including automations.
 
 ## Protocol overview
 
@@ -40,7 +40,7 @@ MCP remains for **external fiscal connectors** (SUNAT SOL, ERPNext, bank APIs) u
 | Version constant   | `DFAS_PROTOCOL_VERSION = "1.0.0"`                      |
 | Primary transport  | WebSocket `wss://host/api/drenyra/v1/ws`               |
 | Fallback transport | SSE `GET /api/drenyra/v1/threads/:threadId/events`     |
-| CLI transport      | HTTP long-poll or NDJSON over stdio relay              |
+| Operator transport | HTTP long-poll or NDJSON over stdio relay              |
 | Auth               | Same session/Bearer as REST API + fiscal scope headers |
 
 ### Required fiscal scope
@@ -270,15 +270,15 @@ sequenceDiagram
 
 ```mermaid
 sequenceDiagram
-  participant Web as WebClient
-  participant CLI as CLIClient
+  participant Web as CommandCenterClient
+  participant Operator as ExternalOperatorClient
   participant DFAS as FiscalAppServer
 
   Web->>DFAS: thread/subscribe thread-1
-  CLI->>DFAS: thread/subscribe thread-1
+  Operator->>DFAS: thread/subscribe thread-1
   DFAS-->>Web: item/appended seq=42
-  DFAS-->>CLI: item/appended seq=42
-  Note over Web,CLI: Same item stream, same scope
+  DFAS-->>Operator: item/appended seq=42
+  Note over Web,Operator: Same item stream, same scope
 ```
 
 ## Error codes
@@ -295,12 +295,12 @@ sequenceDiagram
 
 ## Transport mapping
 
-| Surface            | Primary                    | Fallback       |
+| Surface | Primary | Fallback |
 | ------------------ | -------------------------- | -------------- |
-| Web Command Center | WebSocket                  | SSE            |
-| Go CLI             | NDJSON stdio relay or HTTP | REST compat v0 |
-| Automations        | WebSocket                  | REST           |
-| Partner API        | WebSocket + scoped API key | —              |
+| Command Center Web/API | WebSocket | SSE |
+| External operator client | NDJSON stdio relay or HTTP | REST compat v0 |
+| Automations | WebSocket | REST |
+| Partner API | WebSocket + scoped API key | — |
 
 ## Compat layer v0
 

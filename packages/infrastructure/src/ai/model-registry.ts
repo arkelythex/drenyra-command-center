@@ -227,15 +227,15 @@ function instantiateModel(modelKey: string): LanguageModel {
 
 	switch (def.provider) {
 		case "google":
-			return google(def.id as Parameters<typeof google>[0]);
+			return google(def.id as Parameters<typeof google>[0]) as unknown as LanguageModel;
 		case "anthropic":
-			return anthropic(def.id as Parameters<typeof anthropic>[0]);
+			return anthropic(def.id as Parameters<typeof anthropic>[0]) as unknown as LanguageModel;
 		case "openai":
 			// OpenAI SDK not installed - fallback to Google
 			console.warn(
 				`[ModelRegistry] OpenAI not available, using Google fallback`,
 			);
-			return google("gemini-3-flash");
+			return google("gemini-3-flash") as unknown as LanguageModel;
 		default:
 			throw new Error(`Unknown provider: ${def.provider}`);
 	}
@@ -619,7 +619,7 @@ export function getOpenRouterModelForTier(tierId: string): string {
 			`Unknown OpenRouter tier: ${tierId}. Available: ${Object.keys(OPENROUTER_MODEL_TIERS).join(", ")}`,
 		);
 	}
-	return tier.models[0]; // First in list is preferred
+	return tier.models[0] ?? ""; // First in list is preferred
 }
 
 /**

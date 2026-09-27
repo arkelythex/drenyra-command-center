@@ -9,7 +9,7 @@
  * cents (repo-wide rule) and nothing here touches them.
  */
 
-import type { EngramObservation } from "@drenyra/memory";
+import type { EngramObservation } from "@drenyra/infrastructure/memory";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { AiObservabilityService } from "../../observability/observability.service";
 
@@ -21,7 +21,7 @@ const mocks = vi.hoisted(() => ({
 	tryResolveOrganizationIdFromCompany: vi.fn(),
 }));
 
-vi.mock("@drenyra/memory", () => ({
+vi.mock("@drenyra/infrastructure/memory", () => ({
 	EngramClient: class {
 		context = mocks.context;
 		search = mocks.search;

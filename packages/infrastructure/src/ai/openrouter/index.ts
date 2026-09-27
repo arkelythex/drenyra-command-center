@@ -95,7 +95,7 @@ export interface OpenRouterRequest {
 		| { type: "function"; function: { name: string } };
 	provider?: OpenRouterProviderConfig;
 	transforms?: string[];
-	models?: string[]; // For model fallbacks
+	models?: string[] | undefined; // For model fallbacks
 	route?: "fallback" | "routing-shuffle";
 }
 
@@ -135,8 +135,8 @@ export interface OpenRouterProviderConfig {
 	allow_fallbacks?: boolean;
 	require_parameters?: boolean;
 	data_collection?: "allow" | "deny";
-	only?: string[];
-	ignore?: string[];
+	only?: string[] | undefined;
+	ignore?: string[] | undefined;
 	sort?: "price" | "throughput" | "latency";
 }
 
@@ -360,7 +360,7 @@ export class OpenRouterService {
 
 				// If we have fallback models, try next one
 				if (request.models && request.models.length > attempt + 1) {
-					request.model = request.models[attempt + 1];
+					request.model = request.models[attempt + 1] ?? request.model;
 					loggers.ai.warn(`Fallback to model: ${request.model}`, {
 						previousError: lastError.message,
 						attempt: attempt + 1,
@@ -552,7 +552,9 @@ export class OpenRouterService {
 		const models = AGENT_MODEL_MAP[agentId] || AGENT_MODEL_MAP.default;
 
 		const request: OpenRouterRequest = {
-			model: this.config.enableAutoRouting ? "openrouter/auto" : models[0],
+			model: this.config.enableAutoRouting
+				? "openrouter/auto"
+				: (models?.[0] ?? ""),
 			messages: [
 				{ role: "system", content: systemPrompt },
 				{ role: "user", content: userPrompt },
@@ -719,7 +721,7 @@ class CostTracker {
 		this.modelBreakdown.set(model, modelStats);
 
 		// Provider breakdown (extract provider from model id)
-		const provider = model.split("/")[0];
+		const provider = model.split("/")[0] ?? "unknown";
 		const providerStats = this.providerBreakdown.get(provider) || {
 			requests: 0,
 			cost: 0,

@@ -18,22 +18,22 @@ export interface XsdSchema {
 
 export interface XsdElementDef {
 	name: string;
-	type?: string;
-	ref?: string;
+	type?: string | undefined;
+	ref?: string | undefined;
 	minOccurs: number;
 	maxOccurs: number | "unbounded";
-	nillable?: boolean;
-	children?: XsdElementDef[];
-	attributes?: XsdAttributeDef[];
+	nillable?: boolean | undefined;
+	children?: XsdElementDef[] | undefined;
+	attributes?: XsdAttributeDef[] | undefined;
 }
 
 export interface XsdComplexType {
 	name: string;
-	mixed?: boolean;
-	sequence?: XsdElementDef[];
-	choice?: XsdElementDef[];
-	all?: XsdElementDef[];
-	attributes?: XsdAttributeDef[];
+	mixed?: boolean | undefined;
+	sequence?: XsdElementDef[] | undefined;
+	choice?: XsdElementDef[] | undefined;
+	all?: XsdElementDef[] | undefined;
+	attributes?: XsdAttributeDef[] | undefined;
 }
 
 export interface XsdSimpleType {
@@ -46,8 +46,8 @@ export interface XsdSimpleType {
 
 export interface XsdAttributeDef {
 	name: string;
-	type?: string;
-	use?: "required" | "optional" | "prohibited";
+	type?: string | undefined;
+	use?: "required" | "optional" | "prohibited" | undefined;
 }
 
 export interface XsdValidationResult {

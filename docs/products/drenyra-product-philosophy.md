@@ -1,6 +1,6 @@
 # Drenyra Product Philosophy
 
-**Last updated**: 2026-08-03
+**Last updated**: 2026-09-01
 **Content type**: Conceptual — Definitive Thesis
 **Supersedes**: v1 (2026-07-08)
 
@@ -53,6 +53,13 @@ Su definición:
 
 Pero el orden importa. Intentar construir "todo" desde el primer día destruiría el proyecto. La estrategia correcta es diseñar el núcleo para soportarlo todo y conquistar el mercado mediante una cuña extremadamente fuerte.
 
+### Límite de propiedad del ecosistema
+
+- `drenyra-ai` posee el runtime y el control plane verificable.
+- `drenyra-pi` posee el harness operador Pi-native.
+- Este repositorio posee la superficie de producto Command Center web/API.
+- Una CLI de operador adicional puede existir como cliente externo, pero no se implementa en este repositorio.
+
 ```text
 Diseñar para el mundo
 → construir para Perú
@@ -90,7 +97,7 @@ El flujo de desarrollo puede traducirse casi literalmente.
 | Artifact               | Reporte, declaración o evidencia       |
 | Secrets                | Credenciales SUNAT/bancarias           |
 | IDE                    | Fiscal Workspace                       |
-| CLI                    | Drenyra CLI                            |
+| CLI                    | Cliente operador externo              |
 | MCP                    | Conectores contables normalizados      |
 | AGENTS.md              | Políticas contables de la organización |
 | SDD                    | Accounting/Fiscal Specification        |
@@ -610,9 +617,11 @@ Enviar a SUNAT, pagar, cerrar un periodo o emitir estados financieros no son "bo
 
 ---
 
-## 9. Drenyra CLI
+## 9. CLI de operador externa
 
-Sí deberías construir una CLI. No será el producto principal para todos los contadores, pero puede ser fundamental para:
+Una CLI de operador sigue siendo una superficie válida del ecosistema, pero **este repositorio no la implementa**. Si un producto externo la construye, debe consumir los contratos y el runtime de `drenyra-ai`; el harness operador Pi-native pertenece a `drenyra-pi`, mientras este repositorio mantiene el Command Center web/API.
+
+Esa CLI externa no será el producto principal para todos los contadores, pero puede ser fundamental para:
 
 - equipos técnicos;
 - grandes estudios;
@@ -652,7 +661,7 @@ drenyra workflow run monthly-close \
   --require-review
 ```
 
-La CLI debe actuar sobre el mismo Execution Engine de la interfaz web. Nunca crear un segundo backend.
+La CLI externa debe actuar sobre el mismo Execution Engine gobernado por `drenyra-ai`. Nunca debe crear un segundo backend ni presentarse como una aplicación incluida en este repositorio.
 
 ---
 
@@ -1095,7 +1104,7 @@ Drenyra
 ├── Studio
 │   └── workflows, skills and automations
 └── Platform
-    └── APIs, CLI, connectors and marketplace
+    └── APIs, external operator clients, connectors and marketplace
 ```
 
 ---
@@ -1170,7 +1179,7 @@ These products are references, not templates to copy:
 
 ## Review checklist
 
-Use this checklist for product, web, CLI, and agentic accounting changes:
+Use this checklist for product, web/API, external operator, and agentic accounting changes:
 
 - [ ] The change preserves SUNAT, UBL 2.1, SIRE, IGV, retenciones, detracciones, and audit invariants
 - [ ] The change preserves tenant, company, and RUC scoping
@@ -1178,7 +1187,7 @@ Use this checklist for product, web, CLI, and agentic accounting changes:
 - [ ] Risky fiscal mutations require human approval and audit output
 - [ ] Every execution generates an immutable receipt (RED)
 - [ ] Workflows are specification-driven (FSD) when material
-- [ ] The web and CLI use compatible fiscal concepts
+- [ ] The Command Center web/API and external operator clients use compatible fiscal concepts
 - [ ] The pull request stays under the 400-line review budget or documents an exception
 - [ ] Documentation explains the why, the non-goals, and the verification path
 - [ ] Country-specific logic is isolated in Country Packs, not hardcoded in core
@@ -1191,7 +1200,7 @@ Use this checklist for product, web, CLI, and agentic accounting changes:
 | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
 | [`drenyra-north-star-philosophy`](../../openspec/changes/drenyra-north-star-philosophy/proposal.md)                         | Parent strategy and product guardrails |
 | [`drenyra-web-agentic-accounting-philosophy`](../../openspec/changes/drenyra-web-agentic-accounting-philosophy/proposal.md) | Web command center model               |
-| [`drenyra-cli-gentleman-fiscal-terminal`](../../openspec/changes/drenyra-cli-gentleman-fiscal-terminal/proposal.md)         | CLI fiscal terminal model              |
+| [`drenyra-cli-gentleman-fiscal-terminal`](../../openspec/changes/drenyra-cli-gentleman-fiscal-terminal/proposal.md)         | Archived external/operator CLI fiscal-terminal model |
 | [`drenyra-philosophy-docs-alignment`](../../openspec/changes/drenyra-philosophy-docs-alignment/proposal.md)                 | Documentation and guidance rollout     |
 | [`drenyra-accountant-operating-system`](../../openspec/changes/drenyra-accountant-operating-system/proposal.md)             | Accounting OS design                   |
 | [`drenyra-cierre-flow`](../../openspec/changes/drenyra-cierre-flow/proposal.md)                                             | Monthly close workflow                 |

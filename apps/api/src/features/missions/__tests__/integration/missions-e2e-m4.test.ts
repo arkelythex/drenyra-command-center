@@ -116,28 +116,20 @@ function m(overrides: Record<string, unknown> = {}) {
 
 function sel(row: any) {
 	mockDb.db.select.mockReturnValue({
-		from: vi
-			.fn()
-			.mockReturnValue({
-				where: vi
-					.fn()
-					.mockReturnValue({
-						limit: vi.fn().mockResolvedValue(row ? [row] : []),
-					}),
+		from: vi.fn().mockReturnValue({
+			where: vi.fn().mockReturnValue({
+				limit: vi.fn().mockResolvedValue(row ? [row] : []),
 			}),
+		}),
 	} as any);
 }
 function upd(returned: any) {
 	mockDb.db.update.mockReturnValue({
-		set: vi
-			.fn()
-			.mockReturnValue({
-				where: vi
-					.fn()
-					.mockReturnValue({
-						returning: vi.fn().mockResolvedValue([returned]),
-					}),
+		set: vi.fn().mockReturnValue({
+			where: vi.fn().mockReturnValue({
+				returning: vi.fn().mockResolvedValue([returned]),
 			}),
+		}),
 	} as any);
 }
 
@@ -153,17 +145,15 @@ describe("M4 E2E — Monthly close with signed receipts", () => {
 		ctrl = new MissionsController(svc, new MissionEventStore(mockDb.db as any));
 	});
 
-	it("Step 1-2: CLI/Web creates mission, executes to RUNNING", async () => {
+	it("Step 1-2: client surface creates mission, executes to RUNNING", async () => {
 		// Create
 		mockDb.db.transaction.mockImplementation(async (fn: any) => {
 			const tx = {
-				insert: vi
-					.fn()
-					.mockReturnValue({
-						values: vi
-							.fn()
-							.mockReturnValue({ returning: vi.fn().mockResolvedValue([m()]) }),
-					}),
+				insert: vi.fn().mockReturnValue({
+					values: vi
+						.fn()
+						.mockReturnValue({ returning: vi.fn().mockResolvedValue([m()]) }),
+				}),
 			};
 			return fn(tx);
 		});
@@ -292,7 +282,7 @@ describe("M4 E2E — Monthly close with signed receipts", () => {
 		expect(verifyReceiptIntegrity(tampered, signed.receiptHash)).toBe(false);
 	});
 
-	it("Step 10: Signed receipt is portable JSON (exportable for offline CLI verify)", () => {
+	it("Step 10: Signed receipt is portable JSON for offline external verification", () => {
 		const receiptContent: ReceiptContent = {
 			missionId,
 			companyId,
@@ -315,14 +305,16 @@ describe("M4 E2E — Monthly close with signed receipts", () => {
 		expect(parsed.signature).toBeTruthy();
 		expect(parsed.content.missionId).toBe(missionId);
 
-		// The JSON shape matches the CLI Go SignedReceipt struct
-		// (protocolVersion, content, receiptHash, signerKeyId, signerPublicKey, signature, issuedAt)
+		// The JSON shape preserves the portable receipt contract consumed by external operator clients
+		// (protocolVersion, receiptType, algorithm, content, receiptHash, signerKeyId, signerPublicKey, signature, issuedAt)
 		const keys = Object.keys(parsed).sort();
 		expect(keys).toEqual([
+			"algorithm",
 			"content",
 			"issuedAt",
 			"protocolVersion",
 			"receiptHash",
+			"receiptType",
 			"signature",
 			"signerKeyId",
 			"signerPublicKey",

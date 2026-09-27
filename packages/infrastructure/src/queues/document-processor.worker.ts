@@ -92,18 +92,18 @@ async function processDocument(
 		await repository.updateForCompany(extractingDoc, companyId);
 
 		interface ExtractedDocumentData {
-			providerRUC?: string;
-			providerName?: string;
-			issueDate?: Date;
-			documentNumber?: string;
-			baseAmount?: Money;
-			igvAmount?: Money;
-			totalAmount?: Money;
-			currency?: "PEN" | "USD";
-			confidenceScore?: number;
-			suggestedAccount?: string;
-			suggestedAccountName?: string;
-			classificationConfidence?: number;
+			providerRUC?: string | undefined;
+			providerName?: string | undefined;
+			issueDate?: Date | undefined;
+			documentNumber?: string | undefined;
+			baseAmount?: Money | undefined;
+			igvAmount?: Money | undefined;
+			totalAmount?: Money | undefined;
+			currency?: "PEN" | "USD" | undefined;
+			confidenceScore?: number | undefined;
+			suggestedAccount?: string | undefined;
+			suggestedAccountName?: string | undefined;
+			classificationConfidence?: number | undefined;
 		}
 
 		function toMoney(

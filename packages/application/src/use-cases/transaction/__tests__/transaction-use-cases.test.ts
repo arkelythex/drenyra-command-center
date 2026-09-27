@@ -63,6 +63,7 @@ function createMockRepository(): TransactionRepository {
 		update: vi.fn(),
 		delete: vi.fn(),
 		findById: vi.fn(),
+		_findByIdLegacy: vi.fn(),
 		findByReferenceNumber: vi.fn(),
 		findAll: vi.fn(),
 		findByAccount: vi.fn(),
@@ -188,7 +189,10 @@ describe("GetTransactionUseCase", () => {
 
 		expect(result.success).toBe(true);
 		expect(result.data?.id).toBe("123");
-		expect(mockRepository.findById).toHaveBeenCalledWith("123", 1);
+		expect(mockRepository.findById).toHaveBeenCalledWith(
+			{ organizationId: "1", companyId: "" },
+			"123",
+		);
 	});
 
 	it("should return error when transaction not found", async () => {

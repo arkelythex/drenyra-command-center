@@ -8,7 +8,7 @@
  * - Clean separation between domain and infrastructure
  */
 
-import type { AgentContext } from "@drenyra/fiscal-agent-domain/agent-context";
+import type { AgentContext } from "../_domain-types/fiscal-agent-domain";
 
 /**
  * Opaque handle to an active agent session.

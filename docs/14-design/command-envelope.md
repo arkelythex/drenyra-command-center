@@ -1,9 +1,9 @@
 ---
 title: 'Drenyra Command Envelope 2026'
-description: 'Shared CLI/Web/API output envelope for scoped fiscal commands in Drenyra FEE.'
+description: 'Shared output envelope for scoped fiscal commands across Command Center Web/API and external operator clients.'
 version: '1.0'
-last-updated: '2026-07-24'
-tags: ['architecture', 'drenyra', 'fee', 'cli', 'web']
+last-updated: '2026-09-01'
+tags: ['architecture', 'drenyra', 'fee', 'operator-clients', 'web']
 audience: ['architecture', 'engineering', 'product']
 status: 'active'
 ---
@@ -12,7 +12,7 @@ status: 'active'
 
 ## Purpose
 
-Phase 4 needs CLI and Web to show the same fiscal truth for every operator command.
+Phase 4 needs Command Center Web/API and external operator clients to show the same fiscal truth for every operator command.
 The command envelope is the shared output contract: evidence, deterministic checks,
 risk, approval state, diff and trace travel together instead of being rendered as
 surface-specific fragments.
@@ -75,7 +75,7 @@ POST /api/drenyra/commands/propose-ledger-entry
 GET /api/drenyra/commands/audit-events
 ```
 
-It returns a scoped `review-sunat` envelope for CLI/Web rendering and is guarded by
+It returns a scoped `review-sunat` envelope for Command Center Web/API and external operator client rendering and is guarded by
 the Drenyra capability matrix using `SIRE_AGENT.run_agent_review`. It does not submit
 to SUNAT and it returns `approval.required=false`; it only prepares advisory review
 state with evidence refs, deterministic checks and trace context.
@@ -84,13 +84,13 @@ state with evidence refs, deterministic checks and trace context.
 
 `analyze-invoice` is guarded by `CPE_AGENT.validate_cpe`. It prepares an advisory invoice risk-profile envelope with a CPE/UBL warning check; it does not create ledger entries or approve fiscal use.
 
-`explain-risk` is guarded by `FISCAL_REVIEWER_AGENT.explain_risk`. It prepares an advisory high-risk risk-profile explanation envelope and explicitly records that the command cannot approve, post, or submit fiscal state. It verifies `riskRef`/`sourceRef` ownership against the scoped fiscal case before marking its source-scope deterministic check as `passed`; out-of-period or missing sources fail closed. Command producers propagate a valid incoming `x-trace-id` or generate a UUID trace for CLI/Web/audit correlation. Capability decisions for these producers are persisted as scoped `CAPABILITY_ALLOWED` / `CAPABILITY_DENIED` Drenyra audit events with command, tool, reason and trace metadata. `GET /commands/audit-events` reads those command-level events by fiscal scope and optional `caseId`, `commandId` or `eventType`, including events that intentionally have no case id.
+`explain-risk` is guarded by `FISCAL_REVIEWER_AGENT.explain_risk`. It prepares an advisory high-risk risk-profile explanation envelope and explicitly records that the command cannot approve, post, or submit fiscal state. It verifies `riskRef`/`sourceRef` ownership against the scoped fiscal case before marking its source-scope deterministic check as `passed`; out-of-period or missing sources fail closed. Command producers propagate a valid incoming `x-trace-id` or generate a UUID trace for Command Center, external operator client, and audit correlation. Capability decisions for these producers are persisted as scoped `CAPABILITY_ALLOWED` / `CAPABILITY_DENIED` Drenyra audit events with command, tool, reason and trace metadata. `GET /commands/audit-events` reads those command-level events by fiscal scope and optional `caseId`, `commandId` or `eventType`, including events that intentionally have no case id.
 
 `propose-ledger-entry` is guarded by `LEDGER_AGENT.propose_ledger_entry` and requires an existing approval context. It returns `status=needs_approval`, never posts ledger state, and only carries a proposed `ledger_entry` diff for fiscal reviewer approval.
 
 ## Surface contract
 
-CLI and Web should render this envelope directly. They may add surface-specific
+Command Center Web/API and external operator clients should render this envelope directly. They may add surface-specific
 layout, but must not drop evidence, deterministic checks, risk, approval state,
 diff or trace context.
 

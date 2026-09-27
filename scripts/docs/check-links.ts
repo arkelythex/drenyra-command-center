@@ -37,7 +37,6 @@ const CORE_FILES = [
 	"docs/13-operations/README.md",
 	"docs/14-design/README.md",
 	"apps/web/MAP.md",
-	"apps/cli/MAP.md",
 ];
 
 const MARKDOWN_LINK_PATTERN = /(?<!!).?\[([^\]]+)\]\(([^)]+)\)/g;

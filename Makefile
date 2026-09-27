@@ -20,8 +20,7 @@ SHELL := /usr/bin/env bash
 .ONESHELL:
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := up
-MAKEFLAGS += --warn-undefined-variables
-MAKEFLAGS += --no-builtin-rules
+MAKEFLAGS := $(MAKEFLAGS) --warn-undefined-variables --no-builtin-rules
 
 ROOT_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 
@@ -54,12 +53,7 @@ setup: ## Bootstrap from scratch (fresh clone onboarding)
 reset-db: ## Wipe database, re-run migrations, and reseed
 	@echo "⚠️  WARNING: This will DESTROY all local data!"
 	@read -p "Are you sure? (y/N): " confirm
-	@if [ "$$confirm" = "y" ] || [ "$$confirm" = "Y" ]; then
-		cd "$(ROOT_DIR)" && bash scripts/dev/rebuild-db-baseline.sh
-		@echo "✅ Database reset complete"
-	else
-		@echo "Cancelled."
-	fi
+	if [ "$$confirm" = "y" ] || [ "$$confirm" = "Y" ]; then cd "$(ROOT_DIR)" && bash scripts/dev/rebuild-db-baseline.sh && echo "✅ Database reset complete"; else echo "Cancelled."; fi
 
 # ── Logs ──────────────────────────────────────────────────
 
@@ -95,36 +89,10 @@ db-migrate: ## Apply pending migrations
 db-seed: ## Seed development data + admin user
 	@cd "$(ROOT_DIR)" && ./scripts/dev/seed-dev-bootstrap.sh
 
-# ── Go ────────────────────────────────────────────────────
-
-.PHONY: go-build
-go-build: ## Build all Go apps
-	@cd "$(ROOT_DIR)/apps/drenyra-cli" && go build ./...
-
-.PHONY: go-test
-go-test: ## Test all Go apps
-	@cd "$(ROOT_DIR)/apps/drenyra-cli" && go test ./...
-
-.PHONY: go-vet
-go-vet: ## Vet all Go apps
-	@cd "$(ROOT_DIR)/apps/drenyra-cli" && go vet ./...
-
-.PHONY: go-lint
-go-lint: ## Lint Go code (golangci-lint if available)
-	@if command -v golangci-lint &>/dev/null; then \
-		cd "$(ROOT_DIR)/apps/drenyra-cli" && golangci-lint run ./...; \
-	else \
-		echo "golangci-lint not installed, running go vet instead"; \
-		$(MAKE) go-vet; \
-	fi
-
-.PHONY: go-all
-go-all: go-vet go-build go-test ## Run all Go checks (vet + build + test)
-
 # ── All-in-one ────────────────────────────────────────────
 
 .PHONY: all
-all: typecheck lint go-all ## Full local quality gate (TS + Go)
+all: typecheck lint ## Full local quality gate
 
 # ── Quality ───────────────────────────────────────────────
 

@@ -50,6 +50,11 @@ const baseInput = {
 	idempotencyKey: "shared-client-key",
 };
 
+const tenantScope = {
+	organizationId: "",
+	companyId: baseInput.companyId,
+};
+
 const tenantSunatContext: TenantSunatContext = {
 	companyId: baseInput.companyId,
 	ruc: "20123456786",
@@ -71,22 +76,6 @@ const auditRecord = {
 	},
 };
 
-const crossCompanySubmission = {
-	id: "sub-existing-other-company",
-	companyId: "cmp-other",
-	status: "ACCEPTED",
-	submissionId: "SIM-OTHER",
-	provider: "simulation",
-	submittedAt: new Date("2026-02-13T00:00:00.000Z"),
-	createdAt: new Date("2026-02-13T00:00:00.000Z"),
-	period: "2026-02",
-	ledgerType: "ventas",
-	dryRun: false,
-	sunatMessage: "Previously submitted by another company",
-	trackingId: null,
-	sunatTicket: null,
-};
-
 describe("SIRE submission audit idempotency scope", () => {
 	const originalEnv = { ...process.env };
 
@@ -106,44 +95,81 @@ describe("SIRE submission audit idempotency scope", () => {
 		process.env = { ...originalEnv };
 	});
 
-	it("rejects submitWithAudit when an idempotency key belongs to another company", async () => {
+	it("does not disclose another company's submission for the same idempotency key", async () => {
 		vi.mocked(sireSubmissionRepository.findByIdempotencyKey).mockResolvedValue(
-			crossCompanySubmission as never,
+			null,
 		);
+		vi.mocked(sireSubmissionRepository.create).mockResolvedValue(
+			auditRecord as never,
+		);
+		vi.mocked(SireSubmissionService.submit).mockResolvedValue({
+			submissionId: "SIM-REQUESTING",
+			status: "SIMULATED",
+			provider: "simulation",
+			submittedAt: "2026-02-13T00:00:00.000Z",
+			period: baseInput.period,
+			ledgerType: baseInput.ledgerType,
+			dryRun: false,
+			message: "Simulated for requesting company",
+		});
 
-		await expect(submitWithAudit(baseInput)).rejects.toThrow(
-			"Forbidden SIRE idempotency key belongs to another company",
-		);
+		const result = await submitWithAudit(baseInput);
 
 		expect(sireSubmissionRepository.findByIdempotencyKey).toHaveBeenCalledWith(
+			tenantScope,
 			"shared-client-key",
 		);
+		expect(result.submissionId).toBe("SIM-REQUESTING");
 		expect(sireSubmissionRepository.incrementAttempt).not.toHaveBeenCalled();
-		expect(sireSubmissionRepository.create).not.toHaveBeenCalled();
-		expect(sireSubmissionRepository.update).not.toHaveBeenCalled();
-		expect(SireSubmissionService.submit).not.toHaveBeenCalled();
+		expect(sireSubmissionRepository.create).toHaveBeenCalledWith(
+			expect.objectContaining({
+				companyId: baseInput.companyId,
+				idempotencyKey: baseInput.idempotencyKey,
+			}),
+		);
+		expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+			tenantScope,
+			auditRecord.id,
+			expect.objectContaining({ status: "ACCEPTED" }),
+		);
 	});
 
-	it("does not update another company submission when logging a blocked attempt", async () => {
+	it("creates a tenant-scoped audit record when a foreign idempotency key is not visible", async () => {
 		vi.mocked(sireSubmissionRepository.findByIdempotencyKey).mockResolvedValue(
-			crossCompanySubmission as never,
+			null,
+		);
+		vi.mocked(sireSubmissionRepository.create).mockResolvedValue(
+			auditRecord as never,
 		);
 
-		await expect(
-			logBlockedSubmissionAttempt(
-				baseInput,
-				{ policy: "sire-governance" },
-				"Execution blocked by autonomy policy",
-			),
-		).rejects.toThrow(
-			"Forbidden SIRE idempotency key belongs to another company",
+		await logBlockedSubmissionAttempt(
+			baseInput,
+			{ policy: "sire-governance" },
+			"Execution blocked by autonomy policy",
 		);
 
 		expect(sireSubmissionRepository.findByIdempotencyKey).toHaveBeenCalledWith(
+			tenantScope,
 			"shared-client-key",
 		);
-		expect(sireSubmissionRepository.create).not.toHaveBeenCalled();
-		expect(sireSubmissionRepository.update).not.toHaveBeenCalled();
+		expect(sireSubmissionRepository.create).toHaveBeenCalledWith(
+			expect.objectContaining({
+				companyId: baseInput.companyId,
+				idempotencyKey: baseInput.idempotencyKey,
+				warnings: { governance: { policy: "sire-governance" } },
+			}),
+		);
+		expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+			tenantScope,
+			auditRecord.id,
+			expect.objectContaining({
+				status: "BLOCKED_POLICY",
+				errors: {
+					governance: { policy: "sire-governance" },
+					reason: "Execution blocked by autonomy policy",
+				},
+			}),
+		);
 	});
 
 	it("resolves tenant SUNAT context before API submission and passes it to submission service", async () => {
@@ -182,6 +208,7 @@ describe("SIRE submission audit idempotency scope", () => {
 			{ tenantSunatContext },
 		);
 		expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+			tenantScope,
 			auditRecord.id,
 			expect.objectContaining({
 				warnings: {
@@ -218,6 +245,7 @@ describe("SIRE submission audit idempotency scope", () => {
 
 		expect(SireSubmissionService.submit).not.toHaveBeenCalled();
 		expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+			tenantScope,
 			auditRecord.id,
 			expect.objectContaining({
 				status: "FAILED",
@@ -310,6 +338,7 @@ describe("SIRE submission audit idempotency scope", () => {
 		});
 		expect(SireSubmissionService.submit).not.toHaveBeenCalled();
 		expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+			tenantScope,
 			auditRecord.id,
 			expect.objectContaining({
 				status: "FAILED",
@@ -353,6 +382,7 @@ describe("SIRE submission audit idempotency scope", () => {
 		);
 
 		expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+			tenantScope,
 			auditRecord.id,
 			expect.objectContaining({
 				status: "FAILED",

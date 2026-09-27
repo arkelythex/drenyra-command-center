@@ -27,8 +27,6 @@ elif echo "$STAGED_FILES" | grep -qiE 'api/'; then
 	SCOPE="api"
 elif echo "$STAGED_FILES" | grep -qiE 'web/'; then
 	SCOPE="web"
-elif echo "$STAGED_FILES" | grep -qiE 'cli/'; then
-	SCOPE="cli"
 elif echo "$STAGED_FILES" | grep -qiE 'domain|application|persistence'; then
 	SCOPE="domain"
 fi

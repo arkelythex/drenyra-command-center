@@ -144,7 +144,7 @@ export class SunatTaxAuthorityAdapter implements TaxAuthorityPort {
 		return {
 			taxId: rucInfo.ruc,
 			legalName: rucInfo.razonSocial,
-			status: mapRucStatus(rucInfo.estado, rucInfo.condicion),
+			status: mapRucStatus(rucInfo.estado ?? "", rucInfo.condicion ?? ""),
 			taxIdType: "RUC",
 			countryCode: "PE",
 			address: rucInfo.direccion,

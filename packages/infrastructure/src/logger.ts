@@ -18,8 +18,8 @@ interface LogEntry {
 	timestamp: string;
 	level: LogLevel;
 	message: string;
-	context?: LogContext;
-	source?: string;
+	context?: LogContext | undefined;
+	source?: string | undefined;
 }
 
 // Environment detection

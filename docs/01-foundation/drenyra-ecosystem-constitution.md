@@ -1,6 +1,6 @@
 # Drenyra Ecosystem Constitution
 
-**Last updated:** 2026-08-14
+**Last updated:** 2026-09-01
 **Status:** Active — ratified governance baseline
 **Applies to:** `drenyra-command-center` and every repository it integrates with in the Drenyra ecosystem
 **Alineado con:** [Product Philosophy](./product-philosophy.md) · [Strategic Positioning](./strategic-positioning.md) · [Ecosystem Boundaries](../architecture/ecosystem-boundaries.md) · [ADR-010 Ecosystem Boundary & Authority](../11-adr/ADR-010-ecosystem-boundary-authority.md) · [Private Product Policy](../products/private-product-policy.md) · [Arkelythex Doctrine](../DOCTRINE.md)
@@ -9,7 +9,7 @@
 
 ## Executive summary
 
-> Drenyra is a private commercial ecosystem: one financial authority (the Core), one product surface family (web, CLI, and future adapters), and zero duplicate financial domain logic outside the Core. This constitution is the durable governance contract that fixes **which repositories exist or may exist, what each may and may not do, where financial authority lives, and the quality, security, documentation, and fork rules every repository must honor.**
+> Drenyra is a private commercial ecosystem: one financial authority and runtime/control plane (`drenyra-ai`), one external operator harness (`drenyra-pi`), one Command Center Web/API surface (`drenyra-command-center`), future contract-bound adapters, and zero duplicate financial domain logic outside the Core. This constitution is the durable governance contract that fixes **which repositories exist or may exist, what each may and may not do, where financial authority lives, and the quality, security, documentation, and fork rules every repository must honor.**
 
 It binds human maintainers, AI agents, and CI. Any PR, SDD, or repository decision that contradicts it must be rejected with a reference to this document. This document is the navigation layer between the [Operating Model](./drenyra-operating-model.md) (how Drenyra operates) and the [Program Taxonomy](./program-taxonomy.md) (how work is classified).
 
@@ -51,13 +51,13 @@ This constitution is **not**:
 
 | Repository | Status | Role | Responsibilities | Must never |
 | --- | --- | --- | --- | --- |
-| `drenyra-command-center` (this repo) | **Current** — private, mature product surface | Accounting Command Center: `apps/web` (primary fiscal web surface), `apps/api`, `apps/data-engine`, `apps/cli` (Go fiscal terminal), workspaces, companies/RUC, fiscal periods, documents, SUNAT flows, human-in-the-loop approval, evidence-graph UI | Own the professional product experience; represent only the authoritative state returned by the Core; consume published contracts | Re-implement Core gates or mutate authoritative state; duplicate financial domain logic; vendor runtime checkouts; treat `packages/pi/src/serve.ts` stubs as product contracts |
+| `drenyra-command-center` (this repo) | **Current** — private, mature product surface | Accounting Command Center: `apps/web` (primary fiscal web surface), `apps/api`, `apps/data-engine`, workspaces, companies/RUC, fiscal periods, documents, SUNAT flows, human-in-the-loop approval, evidence-graph UI | Own the professional product experience; represent only the authoritative state returned by the Core; consume published contracts | Re-implement Core gates or mutate authoritative state; duplicate financial domain logic; vendor runtime checkouts; treat `packages/pi/src/serve.ts` stubs as product contracts |
 | `drenyra-pi` (external repo, `~/Documents/PROYECTOS/drenyra-pi`) | **Current** — separate CLI/harness product | Pi-native accounting harness: accounting persona, commands, operational panel, specialized agents, accounting skills, RDA procedures, model routing, safety guards over the Core runtime | Convert Pi into a disciplined, verifiable accounting operator; consume **published** Core versions | Resolve runtime versions from `PATH`; bypass the Core; be re-implemented inside `drenyra-command-center` |
 
 > **Local fact anchors (verified in this repo):**
 >
 > - `packages/pi/src/serve.ts` exposes **stub execution routes** and is development scaffolding, **not** the canonical GUI backend. A future GUI must consume real adapter/DFAS contracts.
-> - `apps/cli` exists in this repo, but the user identifies the external `drenyra-pi` repository as the separate CLI/harness product. Harness behavior must not be duplicated here.
+> - The legacy `apps/cli` surface has been retired. Runtime/control-plane operations belong to `drenyra-ai`, and the operator harness belongs to the external `drenyra-pi` repository. Harness behavior must not be duplicated here.
 > - `apps/landing` is documented in `AGENTS.md` but **absent** from this repo — it remains conditional (§2.3).
 > - `products/kuse` is an existing **fork precedent**, not an automatic production base (§7).
 
@@ -130,8 +130,8 @@ These constraints apply to every repository and surface and are **never relaxed*
 
 ## 4. Product-surface adapter rules
 
-1. **Every surface is an adapter.** Web, CLI, mobile, remote web, and landing surfaces all traverse the same canonical loop (`Agent proposal → Typed tool → Capability policy → Tenant scope → Deterministic validator → Approval gate → Durable workflow → External adapter → Evidence receipt`). No surface skips a step; no agent calls SUNAT directly.
-2. **Reuse, don't duplicate.** Surfaces share types through published contracts; desktop reuses the web UI rather than shipping a second implementation; new surfaces never re-implement financial domain logic.
+1. **Every client surface is an adapter.** Command Center Web/API, the external `drenyra-pi` operator harness, and any future mobile, remote web, or landing surface traverse the same canonical loop (`Agent proposal → Typed tool → Capability policy → Tenant scope → Deterministic validator → Approval gate → Durable workflow → External adapter → Evidence receipt`). No surface skips a step; no agent calls SUNAT directly.
+2. **Reuse, don't duplicate.** Command Center surfaces and external operator clients share types through published `drenyra-ai` contracts; desktop reuses the web UI rather than shipping a second implementation; new surfaces never re-implement financial domain logic or harness behavior.
 3. **A new GUI must consume real adapter/DFAS contracts** and preserve fiscal scope, approvals, evidence, and receipts. Stub routes (`packages/pi/src/serve.ts`) are scaffolding and must be retired or gated before becoming a backend.
 4. **Constrained Fiscal Computer Use only.** Level 1 — official API/connector (always preferred); Level 2 — deterministic browser playbook (versioned selectors, capture-before/after, receipt per action); Level 3 — read-only vision fallback with explicit approval for any submission. No unrestricted computer use.
 5. **Credential broker rule.** The model never receives SOL passwords, certificates, or bank secrets directly; a credential broker authenticates and delivers only the authorized session or action.
@@ -142,10 +142,10 @@ These constraints apply to every repository and surface and are **never relaxed*
 
 | Rule | Requirement |
 | --- | --- |
-| Product surface and professional experience | Owned by `drenyra-command-center` |
-| Runtime contracts, gates, receipts, ledger | Owned by `drenyra-ai` |
+| Command Center Web/API surface and professional experience | Owned by `drenyra-command-center` |
+| Runtime/control-plane contracts, gates, receipts, ledger | Owned by `drenyra-ai` |
 | Memory contracts and lifecycle | Owned by `drenyra-engram` |
-| Harness behavior | Owned by `drenyra-pi` |
+| Operator harness behavior | Owned by `drenyra-pi` |
 | Defects | Filed in the owning repo with the consumer's evidence attached — never fixed by duplicating logic in the consumer |
 | Boundary enforcement | A PR that re-implements Core or memory logic inside a surface is rejected and redirected to the owning repo |
 
@@ -227,7 +227,7 @@ Adoption is staged so each phase is verified before the next begins. **No stage 
 
 | Stage | Scope | Exit gate (who decides, what evidence) |
 | --- | --- | --- |
-| **0 — Baseline** | Ratify this constitution; inventory current surfaces (`apps/web`, `apps/api`, `apps/data-engine`, `apps/cli`, external `drenyra-pi`) and stubs (`packages/pi/src/serve.ts`). | Owner review: constitution accepted; inventory recorded. |
+| **0 — Baseline** | Ratify this constitution; inventory current surfaces (`apps/web`, `apps/api`, `apps/data-engine`, external `drenyra-pi`) and stubs (`packages/pi/src/serve.ts`). | Owner review: constitution accepted; inventory recorded. |
 | **1 — Boundary enforcement** | Finish extraction of Core/memory/harness logic; remove duplicated contract types; enforce version pins and CI boundary checks; review gates reference ADR-010. | Owner + maintainers: zero duplicate contract types in surfaces; CI boundary checks green; dependency-direction verified. |
 | **2 — Surface adapters** | Build any new surface against real adapter/DFAS contracts; retire or gate stub routes; adapter conformance tests prove fiscal scope, approvals, evidence, and receipts are preserved. | Owner + architecture review: conformance suite green; no stub route is a product contract; receipts/evidence verified in a full-loop test. |
 | **3 — Conditional repositories** | A future repo (`drenyra-command-code`, mobile, remote web, landing) may be **created** only when the creation gate passes. | **Creation gate:** (1) explicit owner decision, (2) an approved SDD with scope and owner, (3) published contracts the repo will consume, (4) this constitution's boundary and quality rules adopted by the new repo. |

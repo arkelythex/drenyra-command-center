@@ -4,12 +4,12 @@
 
 ## Definition
 
-Drenyra Command Center (this repository) is the **product surface of the Drenyra ecosystem**: the web application, API, and terminal through which accountants and operators run fiscal workflows — workspaces, companies (RUC), fiscal periods, documents, closure, reconciliation, and approvals — against a headless core that lives in `drenyra-ai`.
+Drenyra Command Center (this repository) is the **product surface of the Drenyra ecosystem**: the web application and API through which accountants and operators run fiscal workflows — workspaces, companies (RUC), fiscal periods, documents, closure, reconciliation, and approvals — against a headless core that lives in `drenyra-ai`.
 
 It is a **projection of the Core, never a second authority**. The Command Center renders only the `status` and `nextTransition` returned by `drenyra-ai` and never reconstructs the state machine.
 
 - **Status:** in development (public repository).
-- **Surface:** `apps/web` (React 19 + TanStack Router), `apps/api` (Bun + Elysia), `apps/cli` (Go terminal), `apps/data-engine` (Python analytics).
+- **Surface:** `apps/web` (React 19 + TanStack Router), `apps/api` (Bun + Elysia), `apps/data-engine` (Python analytics).
 - **Consumes:** released, versioned `drenyra-ai` artifacts (missions, candidates, gates, receipts, ledger) and `drenyra-engram` for institutional context.
 
 ## The philosophy, translated
@@ -29,8 +29,6 @@ Two ideas carry the product:
 ## The golden rule
 
 The accountant never operates agents, terminals, or CLIs. They work in the web Command Center and ask for outcomes — "prepare the July 2026 close for Company X". The Command Center invokes agents (Pi, Codex, Claude, OpenCode) as internal infrastructure, and the professional receives reviewable candidates, evidence, explicit decisions, and verifiable receipts.
-
-Only developers, operators, and integrators use the Drenyra CLI (`apps/cli`).
 
 ## What the Command Center is not
 

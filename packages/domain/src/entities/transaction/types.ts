@@ -36,7 +36,7 @@ export interface TransactionEntry {
 	accountName: string;
 	debit: Money;
 	credit: Money;
-	description?: string;
+	description?: string | undefined;
 }
 
 /**
@@ -61,14 +61,14 @@ export interface TransactionProps {
 	type: TransactionType;
 	date: Date;
 	description: string;
-	referenceNumber?: string | undefined;
+	referenceNumber?: string | undefined | undefined;
 	entries: TransactionEntry[];
 	status: TransactionStatus;
-	postedAt?: Date | undefined;
-	postedBy?: string | undefined;
-	voidedAt?: Date | undefined;
-	voidedBy?: string | undefined;
-	voidReason?: string | undefined;
+	postedAt?: Date | undefined | undefined;
+	postedBy?: string | undefined | undefined;
+	voidedAt?: Date | undefined | undefined;
+	voidedBy?: string | undefined | undefined;
+	voidReason?: string | undefined | undefined;
 	createdAt: Date;
 	updatedAt: Date;
 }

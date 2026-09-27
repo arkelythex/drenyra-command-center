@@ -1,4 +1,4 @@
-import { approvalStore } from "@drenyra/fiscal-approval";
+import { approvalStore } from "@drenyra/infrastructure/fiscal-approval";
 import { useEffect, useRef, useState } from "react";
 import { getSuggestions, parseChatInput } from "./chat-parser";
 import type {

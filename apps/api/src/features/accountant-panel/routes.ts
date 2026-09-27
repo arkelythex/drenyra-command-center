@@ -12,7 +12,7 @@
  * - POST /api/approval/:id/reject         — reject
  */
 
-import { approvalStore } from "@drenyra/fiscal-approval";
+import { approvalStore } from "@drenyra/infrastructure/fiscal-approval";
 import type { AccountantSummary } from "@drenyra/shared";
 import { Elysia, t } from "elysia";
 

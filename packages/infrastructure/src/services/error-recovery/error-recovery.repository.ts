@@ -77,6 +77,9 @@ export const circuitBreakerRepo = {
 			})
 			.returning();
 
+		if (!row) {
+			throw new Error("Failed to upsert circuit breaker state");
+		}
 		return row;
 	},
 
@@ -130,6 +133,9 @@ export const dlqRepo = {
 			.values({ ...item, status: "pending" })
 			.returning();
 
+		if (!row) {
+			throw new Error("Failed to enqueue failed agent item");
+		}
 		return row;
 	},
 

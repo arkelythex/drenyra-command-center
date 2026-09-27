@@ -49,7 +49,7 @@ export interface FiscalCasePrimitiveData {
 	scope: {
 		companyId: string;
 		companyRuc: string;
-		organizationId?: string | undefined;
+		organizationId?: string | undefined | undefined;
 		period: string;
 		countryCode: string;
 	};
@@ -74,7 +74,7 @@ export interface EvidenceItemProps {
 	title: string;
 	summary: string;
 	source: string;
-	sourceRef?: string;
+	sourceRef?: string | undefined;
 	contentHash: string;
 	addedBy: string;
 	createdAt: Date;
@@ -87,7 +87,7 @@ export interface EvidenceItemPrimitiveData {
 	scope: {
 		companyId: string;
 		companyRuc: string;
-		organizationId?: string | undefined;
+		organizationId?: string | undefined | undefined;
 		period: string;
 		countryCode: string;
 	};
@@ -95,7 +95,7 @@ export interface EvidenceItemPrimitiveData {
 	title: string;
 	summary: string;
 	source: string;
-	sourceRef?: string;
+	sourceRef?: string | undefined;
 	contentHash: string;
 	addedBy: string;
 	createdAt: string | Date;
@@ -110,8 +110,8 @@ export interface AgentRunProps {
 	status: AgentRunStatus;
 	startedBy: string;
 	startedAt: Date;
-	completedAt?: Date;
-	output?: AgentRunOutput;
+	completedAt?: Date | undefined;
+	output?: AgentRunOutput | undefined;
 	metadata: Record<string, unknown>;
 	updatedAt: Date;
 }
@@ -122,7 +122,7 @@ export interface AgentRunPrimitiveData {
 	scope: {
 		companyId: string;
 		companyRuc: string;
-		organizationId?: string | undefined;
+		organizationId?: string | undefined | undefined;
 		period: string;
 		countryCode: string;
 	};
@@ -130,10 +130,10 @@ export interface AgentRunPrimitiveData {
 	status: string;
 	startedBy: string;
 	startedAt: string | Date;
-	completedAt?: string | Date;
-	output?: AgentRunOutput;
+	completedAt?: string | Date | undefined;
+	output?: AgentRunOutput | undefined;
 	metadata?: Record<string, unknown>;
-	updatedAt?: string | Date;
+	updatedAt?: string | Date | undefined;
 }
 
 export interface ApprovalRequestProps {
@@ -146,9 +146,9 @@ export interface ApprovalRequestProps {
 	autonomyLevel: AutonomyLevel;
 	requestedBy: string;
 	requestedAt: Date;
-	decidedBy?: string;
-	decidedAt?: Date;
-	decisionReason?: string;
+	decidedBy?: string | undefined;
+	decidedAt?: Date | undefined;
+	decisionReason?: string | undefined;
 	diff: ApprovalDiffPayload;
 	metadata: Record<string, unknown>;
 }
@@ -159,7 +159,7 @@ export interface ApprovalRequestPrimitiveData {
 	scope: {
 		companyId: string;
 		companyRuc: string;
-		organizationId?: string | undefined;
+		organizationId?: string | undefined | undefined;
 		period: string;
 		countryCode: string;
 	};
@@ -169,16 +169,16 @@ export interface ApprovalRequestPrimitiveData {
 	autonomyLevel: string;
 	requestedBy: string;
 	requestedAt: string | Date;
-	decidedBy?: string;
-	decidedAt?: string | Date;
-	decisionReason?: string;
+	decidedBy?: string | undefined;
+	decidedAt?: string | Date | undefined;
+	decisionReason?: string | undefined;
 	diff: ApprovalDiffPayload;
 	metadata?: Record<string, unknown>;
 }
 
 export interface AuditEventProps {
 	id: string;
-	caseId?: string;
+	caseId?: string | undefined;
 	scope: FiscalScope;
 	eventType: AuditEventType;
 	actorId: string;
@@ -189,11 +189,11 @@ export interface AuditEventProps {
 
 export interface AuditEventPrimitiveData {
 	id: string;
-	caseId?: string;
+	caseId?: string | undefined;
 	scope: {
 		companyId: string;
 		companyRuc: string;
-		organizationId?: string | undefined;
+		organizationId?: string | undefined | undefined;
 		period: string;
 		countryCode: string;
 	};

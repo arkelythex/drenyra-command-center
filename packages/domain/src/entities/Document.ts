@@ -57,13 +57,13 @@ export type ConfidenceLevel = "HIGH" | "MEDIUM" | "LOW";
  * ```
  */
 export interface ExtractedData {
-	providerRUC?: string;
-	providerName?: string;
-	issueDate?: Date;
-	documentNumber?: string;
-	baseAmount?: number;
-	igvAmount?: number;
-	totalAmount?: number;
+	providerRUC?: string | undefined;
+	providerName?: string | undefined;
+	issueDate?: Date | undefined;
+	documentNumber?: string | undefined;
+	baseAmount?: number | undefined;
+	igvAmount?: number | undefined;
+	totalAmount?: number | undefined;
 	currency?: "PEN" | "USD";
 	confidenceScore?: number; // 0-100
 }
@@ -101,20 +101,20 @@ export interface DocumentProps {
 
 	// Processing
 	status: DocumentStatus;
-	extractedData?: ExtractedData;
-	confidenceLevel?: ConfidenceLevel;
+	extractedData?: ExtractedData | undefined;
+	confidenceLevel?: ConfidenceLevel | undefined;
 
 	// Validation
 	validatedBy?: string | undefined; // User ID of accountant
-	validatedAt?: Date | undefined;
-	validationNotes?: string | undefined;
+	validatedAt?: Date | undefined | undefined;
+	validationNotes?: string | undefined | undefined;
 
 	// Accounting
-	accountingEntryId?: string;
+	accountingEntryId?: string | undefined;
 
 	// Metadata
 	uploadedAt: Date;
-	processedAt?: Date;
+	processedAt?: Date | undefined;
 	createdAt: Date;
 	updatedAt: Date;
 }

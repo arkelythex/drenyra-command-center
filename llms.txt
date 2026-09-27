@@ -25,7 +25,6 @@
 > /apps/web/MAP.md - Web app (React 19 + TanStack Router) architecture map
 > /apps/landing/README.md - Marketing landing page (Next.js)
 > /apps/data-engine/README.md - Data engine (Python + FastAPI + Polars)
-> /apps/drenyra-cli/README.md - CLI (Go)
 
 ## 🗺️ Navigation
 > /CODEX-MAP.md - Full repository navigation map

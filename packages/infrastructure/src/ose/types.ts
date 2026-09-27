@@ -13,14 +13,14 @@ export interface SendInvoiceData {
 
 export interface OSEResponse {
 	success: boolean;
-	cdrContent?: string;
-	cdrStatus?: "ACEPTADO" | "RECHAZADO" | "OBSERVADO";
-	cdrMessage?: string;
-	sunatCode?: string;
-	sunatDescription?: string;
-	error?: string;
-	attemptsCount?: number;
-	attemptTrace?: AttemptTrace[];
+	cdrContent?: string | undefined;
+	cdrStatus?: "ACEPTADO" | "RECHAZADO" | "OBSERVADO" | undefined;
+	cdrMessage?: string | undefined;
+	sunatCode?: string | undefined;
+	sunatDescription?: string | undefined;
+	error?: string | undefined;
+	attemptsCount?: number | undefined;
+	attemptTrace?: AttemptTrace[] | undefined;
 }
 
 export interface AttemptTrace {

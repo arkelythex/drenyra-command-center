@@ -13,15 +13,15 @@ export type DocumentStatus =
 export type ConfidenceLevel = "HIGH" | "MEDIUM" | "LOW";
 
 export interface ExtractedData {
-	providerRUC?: string | undefined;
-	providerName?: string | undefined;
-	issueDate?: Date | undefined;
-	documentNumber?: string | undefined;
-	baseAmount?: number | undefined;
-	igvAmount?: number | undefined;
-	totalAmount?: number | undefined;
+	providerRUC?: string | undefined | undefined;
+	providerName?: string | undefined | undefined;
+	issueDate?: Date | undefined | undefined;
+	documentNumber?: string | undefined | undefined;
+	baseAmount?: number | undefined | undefined;
+	igvAmount?: number | undefined | undefined;
+	totalAmount?: number | undefined | undefined;
 	currency?: "PEN" | "USD" | undefined;
-	confidenceScore?: number | undefined;
+	confidenceScore?: number | undefined | undefined;
 }
 
 export interface DocumentProps {
@@ -33,14 +33,14 @@ export interface DocumentProps {
 	fileType: DocumentType;
 	fileSize: number;
 	status: DocumentStatus;
-	extractedData?: ExtractedData | undefined;
-	confidenceLevel?: ConfidenceLevel | undefined;
-	validatedBy?: string | undefined;
-	validatedAt?: Date | undefined;
-	validationNotes?: string | undefined;
-	accountingEntryId?: string | undefined;
+	extractedData?: ExtractedData | undefined | undefined;
+	confidenceLevel?: ConfidenceLevel | undefined | undefined;
+	validatedBy?: string | undefined | undefined;
+	validatedAt?: Date | undefined | undefined;
+	validationNotes?: string | undefined | undefined;
+	accountingEntryId?: string | undefined | undefined;
 	uploadedAt: Date;
-	processedAt?: Date | undefined;
+	processedAt?: Date | undefined | undefined;
 	createdAt: Date;
 	updatedAt: Date;
 }

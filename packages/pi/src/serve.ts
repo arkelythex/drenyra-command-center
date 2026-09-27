@@ -1,8 +1,9 @@
 /**
  * Drenyra Pi — HTTP Server
  *
- * Exposes agent session management, workflow execution, and health
- * endpoints for the drenyra CLI and other HTTP clients.
+ * Exposes the Drenyra-Pi operator harness through agent session management,
+ * workflow execution, and health endpoints. Runtime/control-plane authority
+ * remains in drenyra-ai; any additional operator CLI is an external client.
  */
 
 import { Hono } from "hono";

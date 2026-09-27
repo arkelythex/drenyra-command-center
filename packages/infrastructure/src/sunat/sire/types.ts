@@ -32,10 +32,10 @@ export interface SireRecord {
 	igv: number;
 	total: number;
 	moneda: Currency;
-	tipoCambio?: number;
-	estado?: string;
-	hashSunat?: string;
-	fechaRecepcion?: Date;
+	tipoCambio?: number | undefined;
+	estado?: string | undefined;
+	hashSunat?: string | undefined;
+	fechaRecepcion?: Date | undefined;
 }
 
 export interface SireSyncResult {

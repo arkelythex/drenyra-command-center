@@ -10,7 +10,7 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --ext .ts,.tsx,.js,.jsx --fix",
     "check:bundle": "bun ./scripts/check-bundle-budget.ts",
-    "test": "vitest",
+    "test": "vitest run",
     "test:run": "vitest --run",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",

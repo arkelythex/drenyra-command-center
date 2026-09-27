@@ -12,11 +12,8 @@
  */
 
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
-import type { TenantScope } from "@drenyra/domain/scope";
 import { describe, expect, it, type Mock, vi } from "vitest";
 import { UpdateJournalEntryUseCase } from "../update-journal-entry.use-case";
-
-const scopeA1: TenantScope = { organizationId: "1", companyId: "company-a1" };
 
 const mockAccountService = {
 	getById: vi.fn(),
@@ -51,7 +48,7 @@ describe("UpdateJournalEntry — cross-tenant account validation", () => {
 		const useCase = new UpdateJournalEntryUseCase(repo, mockAccountService);
 
 		await expect(
-			useCase.execute(scopeA1, "entry-1", {
+			useCase.execute("entry-1", {
 				lines: [
 					{
 						accountId: "550e8400-e29b-41d4-a716-446655440001",
@@ -87,7 +84,7 @@ describe("UpdateJournalEntry — cross-tenant account validation", () => {
 		const useCase = new UpdateJournalEntryUseCase(repo, mockAccountService);
 
 		await expect(
-			useCase.execute(scopeA1, "entry-1", {
+			useCase.execute("entry-1", {
 				lines: [
 					{
 						accountId: "550e8400-e29b-41d4-a716-446655440001",

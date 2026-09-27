@@ -34,7 +34,7 @@ import {
 	engramConfig,
 	isEngramEnabled,
 	observationToFiscalMemory,
-} from "@drenyra/memory";
+} from "@drenyra/infrastructure/memory";
 
 /** Optional filters for listing fiscal memories of a company scope. */
 export interface FiscalMemoryListFilters {

@@ -3,7 +3,7 @@
  *
  * @example Preserve tenant, company RUC and fiscal-period scope before invoking this module.
  * @example Keep fiscal evidence append-only and auditable when wiring this module into routes.
- * @example Prefer typed command envelopes instead of raw objects at API, Web and CLI boundaries.
+ * @example Prefer typed command envelopes instead of raw objects at Command Center Web/API and external operator client boundaries.
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
@@ -75,7 +75,8 @@ export interface DrenyraMcpAuthorizationDecision {
 const mcpTools = [
 	{
 		name: "drenyra.contract.read",
-		description: "Read the Drenyra dual-surface API/Web/CLI contract.",
+		description:
+			"Read the Drenyra client-surface contract for Command Center Web/API and external operator clients.",
 		mode: "read_only",
 		requiredScopeHeaders: DRENYRA_MCP_SCOPE_HEADERS,
 		returnsSensitiveData: false,

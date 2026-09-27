@@ -125,8 +125,26 @@ export default defineConfig({
 				replacement: path.resolve(__dirname, "../../packages/shared/src"),
 			},
 			{
+				find: /^@drenyra\/persistence$/,
+				replacement: path.resolve(
+					__dirname,
+					"../../packages/persistence/src/index.ts",
+				),
+			},
+			{
 				find: "@drenyra/persistence",
 				replacement: path.resolve(__dirname, "../../packages/persistence/src"),
+			},
+			{
+				find: /^@drenyra\/pi$/,
+				replacement: path.resolve(__dirname, "../../packages/pi/src/index.ts"),
+			},
+			{
+				find: /^@drenyra\/pi\/strategies$/,
+				replacement: path.resolve(
+					__dirname,
+					"../../packages/pi/src/strategies/index.ts",
+				),
 			},
 			{
 				find: "@drenyra/infrastructure",
@@ -163,7 +181,10 @@ export default defineConfig({
 			},
 			{
 				find: "@drenyra/mission-domain",
-				replacement: path.resolve(__dirname, "../../packages/mission-domain/src"),
+				replacement: path.resolve(
+					__dirname,
+					"../../packages/mission-domain/src",
+				),
 			},
 		],
 	},

@@ -68,10 +68,11 @@ export class GeminiAdapter implements IAIProvider {
 		images: string[],
 		systemContext?: string,
 	): Promise<string> {
-		const model = this.genAI.getGenerativeModel({
-			model: "gemini-2.5-flash",
-			systemInstruction: systemContext,
-		});
+    		const model = this.genAI.getGenerativeModel(
+    			systemContext
+    				? { model: "gemini-2.5-flash", systemInstruction: systemContext }
+    				: { model: "gemini-2.5-flash" },
+    		);
 
 		try {
 			const parts: Part[] = [];

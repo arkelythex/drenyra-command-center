@@ -3,7 +3,7 @@
  *
  * These interfaces define the shape of snapshots, proposals, evidence,
  * gates, exceptions, and other data structures consumed by all surfaces
- * (API, web, CLI, MCP, mobile).
+ * (Command Center Web/API, external operator clients, MCP, mobile).
  */
 
 import type { MissionIntent } from "./commands.js";

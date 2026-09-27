@@ -1,10 +1,32 @@
 import { Elysia } from "elysia";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SireRegisterExportService as SIREService } from "../../../sire/services/sire-register-export.service";
+import { auth } from "../../../auth/auth.config";
 import { complianceModule } from "../../index";
+
+const authenticatedHeaders = {
+	"content-type": "application/json",
+	cookie: "better-auth.session_token=test-session",
+	"x-auth-user-id": "auth-user-1",
+	"x-user-id": "11111111-1111-1111-1111-111111111111",
+	"x-user-role": "admin",
+	"x-company-id": "cmp-1",
+};
 
 describe("compliance sire demo export route", () => {
 	const app = new Elysia().use(complianceModule);
+
+	beforeEach(() => {
+		vi.spyOn(auth.api, "getSession").mockResolvedValue({
+			session: { id: "sess-1" },
+			user: {
+				id: "auth-user-1",
+				legacyUserId: "11111111-1111-1111-1111-111111111111",
+				role: "admin",
+				activeCompanyId: "cmp-1",
+			},
+		} as never);
+	});
 
 	afterEach(() => {
 		vi.restoreAllMocks();
@@ -18,6 +40,7 @@ describe("compliance sire demo export route", () => {
 		const response = await app.handle(
 			new Request(
 				"http://localhost/api/compliance/sire-demo-export?companyId=cmp-1&ledgerType=ventas&format=TXT&period=2026-03",
+				{ headers: authenticatedHeaders },
 			),
 		);
 
@@ -37,6 +60,7 @@ describe("compliance sire demo export route", () => {
 		const response = await app.handle(
 			new Request(
 				"http://localhost/api/compliance/sire-demo-export?companyId=cmp-1&ledgerType=compras&format=EXCEL&period=2026-03",
+				{ headers: authenticatedHeaders },
 			),
 		);
 

@@ -65,7 +65,11 @@ runs:
       shell: bash
       run: |
         command -v bun
-        bun --version
+        actual_version="$(bun --version)"
+        test "$actual_version" = "1.4.0" || {
+          echo "Expected Bun 1.4.0, found $actual_version"
+          exit 1
+        }
 
     - name: Verify self-hosted native deps
       shell: bash

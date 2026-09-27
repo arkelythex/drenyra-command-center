@@ -19,8 +19,8 @@ const WINDOW_MINUTES = 15;
  */
 export interface LoginAttemptResult {
 	allowed: boolean;
-	reason?: string;
-	lockedUntil?: Date;
+	reason?: string | undefined;
+	lockedUntil?: Date | undefined;
 	attemptCount: number;
 }
 
@@ -60,7 +60,7 @@ export async function recordFailedLogin(
 		.orderBy(desc(failedLoginAttempts.createdAt))
 		.limit(1);
 
-	const currentCount = existing.length > 0 ? existing[0].attemptCount + 1 : 1;
+	const currentCount = existing.length > 0 ? (existing[0]?.attemptCount ?? 0) + 1 : 1;
 	const isLocked = currentCount >= MAX_ATTEMPTS;
 
 	const lockedUntil = isLocked

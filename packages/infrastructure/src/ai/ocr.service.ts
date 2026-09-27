@@ -23,27 +23,27 @@ export interface OCROptions {
 	/**
 	 * Image URL or base64 data
 	 */
-	imageUrl?: string;
+	imageUrl?: string | undefined;
 
 	/**
 	 * PDF URL
 	 */
-	pdfUrl?: string;
+	pdfUrl?: string | undefined;
 
 	/**
 	 * Base64 encoded image/PDF
 	 */
-	base64Data?: string;
+	base64Data?: string | undefined;
 
 	/**
 	 * MIME type (for base64 data)
 	 */
-	mimeType?: string;
+	mimeType?: string | undefined;
 
 	/**
 	 * Organization ID (for context)
 	 */
-	organizationId?: number;
+	organizationId?: number | undefined;
 }
 
 /**

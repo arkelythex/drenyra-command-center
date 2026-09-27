@@ -1,7 +1,7 @@
 /**
  * Quick connectivity test for DeepSeek V4 Flash via the model registry.
  *
- * Run: bun run packages/infrastructure/src/ai/__tests__/deepseek-connectivity.test.ts
+ * Run: RUN_DEEPSEEK_CONNECTIVITY_TESTS=1 bun run packages/infrastructure/src/ai/__tests__/deepseek-connectivity.test.ts
  */
 
 import { getModel, selectModelForTask } from "../model-registry";
@@ -83,4 +83,6 @@ async function main() {
 	console.log("\n=== ✅ DeepSeek V4 Flash is operational ===");
 }
 
-main().catch(console.error);
+if (process.env.RUN_DEEPSEEK_CONNECTIVITY_TESTS === "1") {
+	main().catch(console.error);
+}

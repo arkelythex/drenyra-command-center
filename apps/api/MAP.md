@@ -2,7 +2,7 @@
 
 **Última actualización**: 2026-06-20
 
-> Manual navigation map for the DRENYRA API (Bun + ElysiaJS). See `CODEX-MAP.md` for monorepo root, `apps/cli/MAP.md` for CLI companion.
+> Manual navigation map for the DRENYRA API (Bun + ElysiaJS). See `CODEX-MAP.md` for the monorepo root.
 
 ---
 
@@ -97,7 +97,7 @@ features/<name>/
 | 3   | **ai-rag**               | `features/ai-rag/`               | —                       | RAG: hybrid search + LLM for SUNAT knowledge                                   |
 | 4   | **ai-swarm**             | `features/ai-swarm/`             | —                       | Multi-agent orchestration, workflows, consensus, control-plane                 |
 | 5   | **analytics**            | `features/analytics/`            | —                       | Financial/tax/customer/operational KPIs                                        |
-| 6   | **drenyra-harness**      | `features/drenyra-harness/`      | —                       | Harness API for Drenyra CLI agent delegation                                   |
+| 6   | **drenyra-harness**      | `features/drenyra-harness/`      | —                       | Harness API for external runtime and operator integrations                    |
 | 7   | **auth**                 | `features/auth/`                 | `/api/auth`             | BetterAuth: signup/login/session/email-verification/password-reset             |
 | 8   | **banking**              | `features/banking/`              | —                       | Accounts, transactions, reconciliation, reports                                |
 | 9   | **banking-providers**    | `features/banking-providers/`    | —                       | Prometeo API bank connections                                                  |

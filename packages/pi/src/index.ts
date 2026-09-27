@@ -43,26 +43,26 @@ export {
 export type {
 	AgentDefinition,
 	AgentCapability,
-} from "@drenyra/fiscal-agent-domain/agent-definition";
+} from "./_domain-types/fiscal-agent-domain";
 export type {
 	DelegationPolicy,
 	DelegationRule,
-} from "@drenyra/fiscal-agent-domain/delegation-policy";
+} from "./_domain-types/fiscal-agent-domain";
 export type {
 	ApprovalPolicy,
 	ApprovalRequirement,
 	ApprovalLevel,
-} from "@drenyra/fiscal-agent-domain/approval-policy";
+} from "./_domain-types/fiscal-agent-domain";
 export {
 	compareApprovalLevel,
 	requiresHumanApproval,
 	requiresGovernanceBundle,
-} from "@drenyra/fiscal-agent-domain/approval-policy";
+} from "./_domain-types/fiscal-agent-domain";
 export type {
 	RiskTier,
 	Jurisdiction,
-} from "@drenyra/fiscal-agent-domain/risk-tier";
-export type { AgentContext } from "@drenyra/fiscal-agent-domain/agent-context";
+} from "./_domain-types/fiscal-agent-domain";
+export type { AgentContext } from "./_domain-types/fiscal-agent-domain";
 export type {
 	AgentHandler,
 	HarnessExecuteResponse,

@@ -1,6 +1,6 @@
 # Drenyra Capability Map
 
-**Última actualización:** 2026-07-25 (expanded: +3 new areas, Treasury & Banking expanded from 4→11 capabilities)
+**Última actualización:** 2026-09-01 (expanded: +3 new areas, Treasury & Banking expanded from 4→11 capabilities)
 **Content type:** Canonical — Capability Roadmap
 **North star:** [Drenyra Product Philosophy](../products/drenyra-product-philosophy.md)
 **Taxonomy:** [Program Taxonomy](./program-taxonomy.md)
@@ -107,7 +107,7 @@ Capacidades base que no deben romperse.
 
 | ID          | Capability                | SDD existente                           | Estado      |
 | ----------- | ------------------------- | --------------------------------------- | ----------- |
-| CAP-STUD-01 | CLI — Fiscal Terminal     | `drenyra-cli-gentleman-fiscal-terminal` | ✅ archived |
+| CAP-STUD-01 | External operator terminal — Fiscal Terminal | `drenyra-cli-gentleman-fiscal-terminal` | ✅ archived |
 | CAP-STUD-02 | API developer platform    | `drenyra-api-contracts`                 | ○ draft     |
 | CAP-STUD-03 | Custom skills & workflows | —                                       | ◌           |
 | CAP-STUD-04 | Model routing & providers | `drenyra-x3-provider-architecture`      | ✅ applied  |

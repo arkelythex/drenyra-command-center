@@ -5,12 +5,13 @@ import type { AgentSystem, AgentTier, UnifiedAgentEntry } from "./types";
  * all Drenyra / Drenyra systems.
  *
  * This is the SINGLE SOURCE OF TRUTH for agent metadata.
- * Phase 2+ consumers (API endpoint, CLI graph, swarm discovery)
+ * Phase 2+ consumers (API endpoint, operator graph, swarm discovery)
  * will import this array directly.
  */
 export const AGENT_REGISTRY = [
 	// ═══════════════════════════════════════════════
-	// CLI Delegation (apps/drenyra-cli/internal/delegation/graph.go)
+	// Pi-native operator delegation (runtime registry owned by drenyra-ai)
+	// "cli" is an external operator surface; this repository has no local CLI app.
 	// ═══════════════════════════════════════════════
 	{
 		id: "drenyra-orchestrator",
@@ -24,8 +25,8 @@ export const AGENT_REGISTRY = [
 		approvalClass: "not-required" as const,
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
-		description: "Mother orchestrator for all Drenyra CLI operations",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		description: "Mother orchestrator for Drenyra-Pi operator workflows",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "kuntur-sdd-orchestrator",
@@ -41,7 +42,7 @@ export const AGENT_REGISTRY = [
 		drenyraSubagent: null,
 		description:
 			"Kuntur SDD orchestrator — coordinates subsidiary task decomposition",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "drenyra-sdd-orchestrator",
@@ -61,7 +62,7 @@ export const AGENT_REGISTRY = [
 		drenyraSubagent: null,
 		description:
 			"Drenyra SDD coordinator — decomposes complex tasks into sub-tasks",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "fiscal-command-orchestrator",
@@ -85,7 +86,7 @@ export const AGENT_REGISTRY = [
 		drenyraSubagent: null,
 		description:
 			"Fiscal command orchestrator — coordinates SUNAT, ledger and reconciliation specialists",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "ai-swarm-orchestrator",
@@ -101,7 +102,7 @@ export const AGENT_REGISTRY = [
 		drenyraSubagent: null,
 		description:
 			"AI swarm orchestrator — coordinates codegen, test and review agent swarms",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "drenyra-hr-orchestrator",
@@ -117,7 +118,7 @@ export const AGENT_REGISTRY = [
 		drenyraSubagent: null,
 		description:
 			"HR orchestrator — coordinates payroll and HR compliance specialists",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "fiscal-sunat-agent",
@@ -137,7 +138,7 @@ export const AGENT_REGISTRY = [
 		drenyraSubagent: null,
 		description:
 			"SUNAT specialist — validates invoices and tax submissions against SUNAT regulations",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "fiscal-sunat-payload-agent",
@@ -153,7 +154,7 @@ export const AGENT_REGISTRY = [
 		drenyraSubagent: null,
 		description:
 			"SUNAT payload drafter — prepares and formats SUNAT submission payloads",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "fiscal-ledger-agent",
@@ -169,7 +170,7 @@ export const AGENT_REGISTRY = [
 		drenyraSubagent: null,
 		description:
 			"Ledger specialist — reviews and validates ledger entries for fiscal compliance",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "fiscal-reconcile-agent",
@@ -185,7 +186,7 @@ export const AGENT_REGISTRY = [
 		drenyraSubagent: null,
 		description:
 			"Reconciliation specialist — matches bank transactions with ledger entries",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "hr-payroll-agent",
@@ -201,7 +202,7 @@ export const AGENT_REGISTRY = [
 		drenyraSubagent: null,
 		description:
 			"Payroll specialist — processes payroll calculations and compliance",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "hr-compliance-agent",
@@ -217,7 +218,7 @@ export const AGENT_REGISTRY = [
 		drenyraSubagent: null,
 		description:
 			"HR compliance specialist — ensures HR operations meet regulatory requirements",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "swarm-codegen-agent",
@@ -233,7 +234,7 @@ export const AGENT_REGISTRY = [
 		drenyraSubagent: null,
 		description:
 			"Codegen leaf — generates code scaffolding and boilerplate implementation",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "swarm-test-agent",
@@ -248,7 +249,7 @@ export const AGENT_REGISTRY = [
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
 		description: "Test leaf — generates and runs tests for code changes",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 	{
 		id: "swarm-review-agent",
@@ -263,7 +264,7 @@ export const AGENT_REGISTRY = [
 		supportedSurfaces: ["cli"] as const,
 		drenyraSubagent: null,
 		description: "Review leaf — performs code review and security analysis",
-		sourcePath: "apps/drenyra-cli/internal/delegation/graph.go",
+		sourcePath: "drenyra-ai: published agent registry",
 	},
 
 	// ═══════════════════════════════════════════════

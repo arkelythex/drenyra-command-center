@@ -371,8 +371,8 @@ export class XsdSchemaLoader {
 			element.attributes = parsed.attributes;
 		}
 
-		// Inline simpleType
-		const _inlineSt = raw["xsd:simpleType"] ?? raw["xs:simpleType"];
+		// Inline simpleType is intentionally not expanded further: the raw
+		// simpleType node is preserved on the element for downstream consumers.
 
 		return element;
 	}
@@ -552,7 +552,7 @@ export function extractNamespaceMap(xmlContent: string): Map<string, string> {
 
 	while ((match = xmlnsRegex.exec(xmlContent)) !== null) {
 		const prefix = match[1] || "";
-		const uri = match[2];
+		const uri = match[2] ?? "";
 		map.set(prefix, uri);
 	}
 

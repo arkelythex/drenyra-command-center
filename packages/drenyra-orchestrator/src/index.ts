@@ -14,6 +14,21 @@ export {
 export type {} from "./delegation-router";
 // Delegation Router
 export { determineRoute } from "./delegation-router";
+// Runtime Budget
+export type {
+	AgentRuntimeBudget,
+	TokenObservation,
+} from "./runtime/budget";
+export {
+	calculateCacheHitRate,
+	DEEPSEEK_V4_PRO_OPENCODE_PRICING,
+	GLM_52_CLOUDFLARE_PRICING,
+	validateBudget,
+} from "./runtime/budget";
+export {
+	buildTokenObservation,
+	calculateCostFromTokens,
+} from "./runtime/cost-tracker";
 // Memory Contract
 export {
 	buildMemoryInstructions,

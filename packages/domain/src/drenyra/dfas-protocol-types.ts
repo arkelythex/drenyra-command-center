@@ -1,6 +1,6 @@
 /**
  * Drenyra Fiscal App Server (DFAS) — protocol types.
- * Framework-free contracts for JSON-RPC messages across Web, CLI and API.
+ * Framework-free contracts for JSON-RPC messages across Command Center Web/API and external operator clients.
  */
 
 import type { DrenyraCapabilityEvaluation } from "./capability-types";

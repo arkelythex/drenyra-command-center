@@ -10,7 +10,9 @@
  *   5. Streams AI response via SSE
  *   6. Appends AI response as item
  *
- * This is the SAME core used by Drenyra CLI, Drenyra Web, and the LLM Gateway.
+ * This endpoint serves the Command Center web/API surface owned by this repository.
+ * Runtime and control-plane behavior belongs to drenyra-ai; the Pi-native operator
+ * harness belongs to drenyra-pi. Any additional operator CLI is an external client.
  */
 
 import {
@@ -27,16 +29,24 @@ import type { DrenyraBrainService } from "./brain.service";
 
 // ─── Context resolution (shared pattern from brain.routes.ts) ───
 
-interface ContextResolution {
-	ok: boolean;
+interface ContextFailure {
+	ok: false;
 	missingHeaders: string[];
 	invalidHeaders?: string[];
-	organizationId?: string;
-	companyId?: string;
-	companyRuc?: string;
-	period?: string;
-	userId?: string;
 }
+
+interface ContextSuccess {
+	ok: true;
+	missingHeaders: [];
+	invalidHeaders?: never;
+	organizationId: string;
+	companyId: string;
+	companyRuc: string;
+	period: string;
+	userId: string;
+}
+
+type ContextResolution = ContextFailure | ContextSuccess;
 
 function readHeader(
 	headers: Record<string, string | undefined>,
@@ -123,10 +133,10 @@ export function createBrainChatRoutes(deps: {
 			}
 
 			const fiscalScope = {
-				organizationId: context.organizationId!,
-				companyId: context.companyId!,
-				companyRuc: context.companyRuc!,
-				period: context.period!,
+				organizationId: context.organizationId,
+				companyId: context.companyId,
+				companyRuc: context.companyRuc,
+				period: context.period,
 				countryCode: "PE" as const,
 			};
 
@@ -139,7 +149,7 @@ export function createBrainChatRoutes(deps: {
 							? `${body.message.slice(0, 57)}...`
 							: body.message,
 					sourceSurface: "web",
-					createdBy: context.userId!,
+					createdBy: context.userId,
 					fiscalScope,
 				});
 				threadId = thread.id;
@@ -150,7 +160,7 @@ export function createBrainChatRoutes(deps: {
 				threadId,
 				prompt: body.message,
 				sourceSurface: "web",
-				createdBy: context.userId!,
+				createdBy: context.userId,
 				fiscalScope,
 			});
 
@@ -182,8 +192,8 @@ export function createBrainChatRoutes(deps: {
 				temperature: 0.3,
 				maxTokens: 4096,
 				stream: true,
-				organizationId: Number(context.organizationId!) || 1,
-				userId: context.userId!,
+				organizationId: Number(context.organizationId) || 1,
+				userId: context.userId,
 			});
 
 			// 5. Stream response via SSE + collect full response

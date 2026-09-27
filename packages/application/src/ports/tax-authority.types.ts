@@ -19,8 +19,8 @@ export interface TaxIdInfo {
 	status: TaxIdStatus;
 	taxIdType: string;
 	countryCode: CountryCode;
-	address?: string;
-	registeredAt?: string;
+	address?: string | undefined;
+	registeredAt?: string | undefined;
 }
 
 // ─── Invoice submission ───────────────────────────────────────────────
@@ -114,9 +114,9 @@ export interface RegisterDiscrepancy {
 
 export interface RegisterSyncResult {
 	success: boolean;
-	ticket?: string;
-	records?: FiscalRecord[];
-	totalRecords?: number;
-	discrepancies?: RegisterDiscrepancy[];
-	error?: string;
+	ticket?: string | undefined;
+	records?: FiscalRecord[] | undefined;
+	totalRecords?: number | undefined;
+	discrepancies?: RegisterDiscrepancy[] | undefined;
+	error?: string | undefined;
 }

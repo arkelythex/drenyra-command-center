@@ -54,21 +54,24 @@ async function seed() {
 			economicGroupId = existingGroup.id;
 			economicGroup = existingGroup;
 		} else {
-			const [newGroup] = await db
-				.insert(economicGroups)
-				.values({
-					ownerId: adminUserId,
-					groupName: "GRUPO EMPRESARIAL INTERAMERICANA",
-					groupCode: "GEI-2026",
-					subscriptionTier: "PROFESSIONAL",
-					monthlyFee: "350.00",
-					maxCompanies: -1,
-					isActive: true,
-				})
-				.returning();
-			economicGroupId = newGroup.id;
-			economicGroup = newGroup;
-			console.log("✅ Economic Group created:", newGroup.groupName);
+    		const [newGroup] = await db
+    			.insert(economicGroups)
+    			.values({
+    				ownerId: adminUserId,
+    				groupName: "GRUPO EMPRESARIAL INTERAMERICANA",
+    				groupCode: "GEI-2026",
+    				subscriptionTier: "PROFESSIONAL",
+    				monthlyFee: "350.00",
+    				maxCompanies: -1,
+    				isActive: true,
+    			})
+    			.returning();
+    		if (!newGroup) {
+    			throw new Error("Seeding failed: economic group insert returned no row");
+    		}
+    			economicGroupId = newGroup.id;
+    			economicGroup = newGroup;
+    			console.log("✅ Economic Group created:", newGroup.groupName);
 		}
 
 		// 7. Create additional companies in the group
@@ -171,10 +174,14 @@ async function seed() {
 		});
 
 		if (!existingInterTx && insertedAdditionalCompanies.length > 0) {
+			const additionalTarget = insertedAdditionalCompanies[0];
+			if (!additionalTarget) {
+				throw new Error("Seeding failed: additional company row missing");
+			}
 			await db.insert(interCompanyTransactions).values({
 				economicGroupId: economicGroupId,
 				fromCompanyId: companyId, // Main company pays
-				toCompanyId: insertedAdditionalCompanies[0].id, // Inmobiliaria receives
+				toCompanyId: additionalTarget.id, // Inmobiliaria receives
 				concept: "Alquiler Oficina - Mes Enero 2026",
 				amount: "5000.00",
 				taxType: "GRAVADO",

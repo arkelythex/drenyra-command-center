@@ -173,6 +173,7 @@ export class PostgresReportDataSource
 			runningBalance += nature === "DEBIT" ? debit - credit : credit - debit;
 			return {
 				date: row.date,
+				reference: row.entryNumber,
 				journalEntryNumber: row.entryNumber,
 				description: row.description,
 				debit,

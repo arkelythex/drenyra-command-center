@@ -68,13 +68,6 @@ export interface LatencyTrend {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function _daysAgo(n: number): Date {
-	const d = new Date();
-	d.setDate(d.getDate() - n);
-	d.setHours(0, 0, 0, 0);
-	return d;
-}
-
 // ─── Repository ───────────────────────────────────────────────────────────────
 
 /**

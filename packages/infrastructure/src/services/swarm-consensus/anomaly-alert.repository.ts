@@ -20,14 +20,14 @@ export const anomalyAlertRepository = {
 		severity: AlertSeverity;
 		detectorAgentId: string;
 		detectorConfidence: string;
-		lectorConfidence?: string;
-		lectorReasoning?: string;
-		validadorConfidence?: string;
-		validadorReasoning?: string;
+		lectorConfidence?: string | undefined;
+		lectorReasoning?: string | undefined;
+		validadorConfidence?: string | undefined;
+		validadorReasoning?: string | undefined;
 		swarmConsensusThreshold: string;
-		swarmConsensusScore?: string;
+		swarmConsensusScore?: string | undefined;
 		alertReasoning: string;
-		alertContext?: Record<string, unknown>;
+		alertContext?: Record<string, unknown> | undefined;
 	}) {
 		const id = `alert-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 		const [alert] = await db

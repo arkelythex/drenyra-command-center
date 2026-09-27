@@ -1,10 +1,32 @@
 import { Elysia } from "elysia";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ComplianceService } from "../../../../services/compliance.service";
+import { auth } from "../../../auth/auth.config";
 import { complianceModule } from "../../index";
+
+const authenticatedHeaders = {
+	"content-type": "application/json",
+	cookie: "better-auth.session_token=test-session",
+	"x-auth-user-id": "auth-user-1",
+	"x-user-id": "11111111-1111-1111-1111-111111111111",
+	"x-user-role": "admin",
+	"x-company-id": "cmp-1",
+};
 
 describe("compliance sire reproducibility route", () => {
 	const app = new Elysia().use(complianceModule);
+
+	beforeEach(() => {
+		vi.spyOn(auth.api, "getSession").mockResolvedValue({
+			session: { id: "sess-1" },
+			user: {
+				id: "auth-user-1",
+				legacyUserId: "11111111-1111-1111-1111-111111111111",
+				role: "admin",
+				activeCompanyId: "cmp-1",
+			},
+		} as never);
+	});
 
 	afterEach(() => {
 		vi.restoreAllMocks();
@@ -25,6 +47,7 @@ describe("compliance sire reproducibility route", () => {
 		const response = await app.handle(
 			new Request(
 				"http://localhost/api/compliance/sire-reproducibility?companyId=cmp-1&year=2026&month=2",
+				{ headers: authenticatedHeaders },
 			),
 		);
 
@@ -56,6 +79,7 @@ describe("compliance sire reproducibility route", () => {
 		const response = await app.handle(
 			new Request(
 				"http://localhost/api/compliance/sire-reproducibility?companyId=cmp-1&year=2026&month=2",
+				{ headers: authenticatedHeaders },
 			),
 		);
 
@@ -79,6 +103,7 @@ describe("compliance sire reproducibility route", () => {
 		const response = await app.handle(
 			new Request(
 				"http://localhost/api/compliance/sire-reproducibility?companyId=cmp-1&year=2026&month=2",
+				{ headers: authenticatedHeaders },
 			),
 		);
 

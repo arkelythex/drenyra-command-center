@@ -1,6 +1,6 @@
 # Drenyra-Engram — Institutional Accounting Memory
 
-**Last updated**: 2026-08-01
+**Last updated**: 2026-09-01
 **Content type**: Conceptual — Product Thesis (Drenyra-Engram)
 **North star:** [Drenyra-AI — Accounting Agent Operating System](./drenyra-ai-aos.md)
 **Alineado con:** [Drenyra Product Philosophy](./product-philosophy.md) · [Drenyra Strategic Positioning](./strategic-positioning.md) · [Product Topology](../14-design/product-topology.md)
@@ -353,7 +353,7 @@ Drenyra-Engram
 ├── Memory Store (PostgreSQL metadata, FTS/BM25, optional vector index, relation graph)
 ├── Provenance Layer (source references, content hashes, receipts, revisions)
 ├── Lifecycle (candidate, review, approve, supersede, retire)
-└── Clients (Drenyra-AI, Drenyra-Pi, Drenyra Web, CLI, MCP)
+└── Clients (Drenyra-AI, Drenyra-Pi, Command Center Web/API, external operator clients, MCP)
 ```
 
 ---

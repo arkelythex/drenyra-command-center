@@ -18,7 +18,7 @@ const mocks = vi.hoisted(() => ({
 	findById: vi.fn(),
 }));
 
-vi.mock("@drenyra/memory", () => ({
+vi.mock("@drenyra/infrastructure/memory", () => ({
 	isEngramEnabled: mocks.isEngramEnabled,
 	EngramClient: class {
 		context = mocks.context;

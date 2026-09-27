@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { CircuitBreaker, generateRecoveryPlan } from "../degraded";
 
 describe("CircuitBreaker", () => {
@@ -25,20 +25,28 @@ describe("CircuitBreaker", () => {
 		expect(cb.allowsRequest()).toBe(false);
 	});
 
-	it("allows request through after reset timeout", () => {
-		const cb = new CircuitBreaker("test-api", {
-			failureThreshold: 1,
-			resetTimeoutMs: 1, // Very short timeout
-			halfOpenSuccessThreshold: 1,
-		});
+	it("holds open before reset timeout and allows a probe after it", () => {
+		vi.useFakeTimers();
+		vi.setSystemTime(new Date("2026-01-01T00:00:00.000Z"));
 
-		cb.recordFailure();
-		expect(cb.currentState).toBe("open");
-		expect(cb.allowsRequest()).toBe(false);
+		try {
+			const cb = new CircuitBreaker("test-api", {
+				failureThreshold: 1,
+				resetTimeoutMs: 1,
+				halfOpenSuccessThreshold: 1,
+			});
 
-		// Verify that allowsRequest checks the openedAt timestamp
-		const state = cb.toJSON();
-		expect(state.openedAt).toBeDefined();
+			cb.recordFailure();
+			expect(cb.currentState).toBe("open");
+			expect(cb.allowsRequest()).toBe(false);
+
+			vi.advanceTimersByTime(1);
+			expect(cb.allowsRequest()).toBe(true);
+			expect(cb.currentState).toBe("half_open");
+			expect(cb.toJSON().openedAt).toBeDefined();
+		} finally {
+			vi.useRealTimers();
+		}
 	});
 
 	it("closes after successes in half-open", () => {

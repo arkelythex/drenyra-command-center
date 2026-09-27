@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+
 /**
  * AuthContext interface.
  *
@@ -285,6 +287,8 @@ export async function createUserWithOrganization(
 			email,
 			name,
 			role,
+			// Legacy Clerk-compat users have no password; store an unguessable placeholder.
+			password: randomUUID(),
 		})
 		.returning();
 

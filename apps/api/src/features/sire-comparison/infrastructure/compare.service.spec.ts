@@ -12,6 +12,139 @@ const mocks = vi.hoisted(() => ({
 	}),
 }));
 
+const persistence = vi.hoisted(() => {
+	interface ComparisonRecord {
+		companyId: string;
+		period: string;
+		rows: unknown[];
+		summary: unknown;
+		generatedAt: Date;
+	}
+
+	interface ResolutionRecord {
+		companyId: string;
+		period: string;
+		discrepancyId: string;
+		status: string;
+		notes: string | null;
+		resolutionData: unknown;
+		updatedAt: Date;
+	}
+
+	const comparisons = new Map<string, ComparisonRecord>();
+	const resolutions = new Map<string, ResolutionRecord>();
+
+	function isRecord(value: unknown): value is Record<string, unknown> {
+		return typeof value === "object" && value !== null;
+	}
+
+	function isComparisonRecord(value: unknown): value is ComparisonRecord {
+		return (
+			isRecord(value) &&
+			typeof value.companyId === "string" &&
+			typeof value.period === "string" &&
+			Array.isArray(value.rows) &&
+			value.generatedAt instanceof Date
+		);
+	}
+
+	function isResolutionRecord(value: unknown): value is ResolutionRecord {
+		return (
+			isRecord(value) &&
+			typeof value.companyId === "string" &&
+			typeof value.period === "string" &&
+			typeof value.discrepancyId === "string" &&
+			typeof value.status === "string" &&
+			(value.notes === null || typeof value.notes === "string") &&
+			value.updatedAt instanceof Date
+		);
+	}
+
+	function comparisonKey(record: Pick<ComparisonRecord, "companyId" | "period">) {
+		return `${record.companyId}:${record.period}`;
+	}
+
+	function resolutionKey(
+		record: Pick<
+			ResolutionRecord,
+			"companyId" | "period" | "discrepancyId"
+		>,
+	) {
+		return `${record.companyId}:${record.period}:${record.discrepancyId}`;
+	}
+
+	function collectBoundStrings(
+		value: unknown,
+		result: string[] = [],
+		seen: Set<object> = new Set(),
+	): string[] {
+		if (!isRecord(value) || seen.has(value)) return result;
+		seen.add(value);
+		if (typeof value.value === "string") result.push(value.value);
+		if (Array.isArray(value.queryChunks)) {
+			for (const chunk of value.queryChunks) {
+				collectBoundStrings(chunk, result, seen);
+			}
+		}
+		return result;
+	}
+
+	function matchesCriteria(fields: string[], criteria: string[]): boolean {
+		return criteria.every((criterion) => fields.includes(criterion));
+	}
+
+	const db = {
+		insert: vi.fn((_table: unknown) => ({
+			values: vi.fn((value: unknown) => ({
+				onConflictDoUpdate: vi.fn(async () => {
+					if (isResolutionRecord(value)) {
+						resolutions.set(resolutionKey(value), value);
+						return;
+					}
+					if (isComparisonRecord(value)) {
+						comparisons.set(comparisonKey(value), value);
+						return;
+					}
+					throw new Error("Unexpected SIRE persistence record");
+				}),
+			})),
+		})),
+		select: vi.fn(() => ({
+			from: vi.fn((table: unknown) => {
+				const selectsResolutions =
+					isRecord(table) && "discrepancyId" in table;
+				return {
+					where: vi.fn((condition: unknown) => {
+						const criteria = collectBoundStrings(condition);
+						const records = selectsResolutions
+							? [...resolutions.values()].filter((record) =>
+									matchesCriteria(
+										[record.companyId, record.period, record.discrepancyId],
+										criteria,
+									),
+								)
+							: [...comparisons.values()].filter((record) =>
+									matchesCriteria(
+										[record.companyId, record.period],
+										criteria,
+									),
+								);
+						return Object.assign(Promise.resolve(records), {
+							limit: vi.fn(async (count: number) => records.slice(0, count)),
+						});
+					}),
+				};
+			}),
+		})),
+	};
+
+	return { comparisons, db, resolutions };
+});
+
+vi.mock("@drenyra/persistence/client", () => ({
+	db: persistence.db,
+}));
+
 vi.mock("../../sire/services/sire-diff.service", () => ({
 	SireDiffService: { buildThreeWayDiff: mocks.buildThreeWayDiff },
 	buildDiffRows: vi.fn(),
@@ -91,6 +224,8 @@ const defaultArtifact = {
 
 beforeEach(() => {
 	vi.clearAllMocks();
+	persistence.comparisons.clear();
+	persistence.resolutions.clear();
 	mocks.buildThreeWayDiff.mockResolvedValue(defaultArtifact);
 	mocks.buildSummary.mockReturnValue(defaultArtifact.summary);
 });
@@ -227,6 +362,8 @@ describe("SireComparisonService", () => {
 
 			const result = await SireComparisonService.resolveDiscrepancy(
 				"row-sunat-only",
+				"company-2",
+				"2024-01",
 				"ACCEPT_SUNAT",
 				"Accepted SUNAT record",
 			);
@@ -240,6 +377,8 @@ describe("SireComparisonService", () => {
 			await expect(
 				SireComparisonService.resolveDiscrepancy(
 					"nonexistent-id",
+					"company-2",
+					"2024-01",
 					"FLAG_FOR_REVIEW",
 				),
 			).rejects.toThrow("not found");
@@ -250,6 +389,8 @@ describe("SireComparisonService", () => {
 
 			const result = await SireComparisonService.resolveDiscrepancy(
 				"row-sunat-only",
+				"company-2",
+				"2024-01",
 				"FLAG_FOR_REVIEW",
 			);
 
@@ -261,6 +402,8 @@ describe("SireComparisonService", () => {
 
 			const result = await SireComparisonService.resolveDiscrepancy(
 				"row-mismatch",
+				"company-2",
+				"2024-01",
 				"MANUAL_FIX",
 				"Fixing manually",
 			);

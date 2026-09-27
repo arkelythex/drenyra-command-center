@@ -76,7 +76,7 @@ export type Invoice = z.infer<typeof InvoiceSchema>;
  */
 export function validateInvoice(input: unknown): {
 	isValid: boolean;
-	errors?: z.ZodIssue[];
+	errors?: z.ZodIssue[] | undefined;
 } {
 	const result = InvoiceSchema.safeParse(input);
 	return {

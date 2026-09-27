@@ -2,7 +2,7 @@
 title: 'Fiscal Intelligence Platform Architecture 2026'
 description: 'Architecture for DRENYRA as a Peru-first/LATAM-ready verifiable financial operating system — Financial Engineering Environment with FSD, RED, DFP, Ledger-as-Git, Agent Swarm, and Evidence Graph.'
 version: '1.1'
-last-updated: '2026-06-30'
+last-updated: '2026-09-01'
 tags:
   [
     'architecture',
@@ -22,7 +22,7 @@ status: 'active'
 
 This document translates the strategic doctrine into an executable architecture.
 
-DRENYRA is the platform. Drenyra is the command center. The Fiscal Agentic Ledger (FAL) is the governed operating model where agents prepare fiscal/accounting actions, deterministic systems validate them, humans approve material changes, and the Fiscal Truth Engine promotes only evidenced, scoped, replayable state.
+The ecosystem has three explicit owners: `drenyra-ai` owns runtime and control-plane behavior, `drenyra-pi` owns the Pi-native operator harness, and this repository owns the Drenyra Command Center web/API product surface. An additional operator CLI may exist as an external client, but this repository does not implement one. The Fiscal Agentic Ledger (FAL) is the governed operating model where agents prepare fiscal/accounting actions, deterministic systems validate them, humans approve material changes, and the Fiscal Truth Engine promotes only evidenced, scoped, replayable state.
 
 ## Architecture invariants
 
@@ -45,7 +45,7 @@ flowchart TB
     Docs[Contracts / receipts / evidence files]
   end
 
-  subgraph Platform[DRENYRA Platform]
+  subgraph Platform[drenyra-ai runtime and control plane]
     Ontology[Fiscal Ontology]
     Truth[Fiscal Truth Engine]
     Evidence[Evidence Graph]
@@ -55,10 +55,10 @@ flowchart TB
     MCP[Public/Partner MCP Server]
   end
 
-  subgraph Surfaces[Drenyra surfaces]
-    CLI[Drenyra CLI]
-    Web[Drenyra Web Command Center]
-    API[Scoped API]
+  subgraph Surfaces[Product and operator surfaces]
+    Pi[Drenyra-Pi operator harness]
+    Web[Drenyra Command Center Web]
+    API[Drenyra Command Center API]
   end
 
   subgraph DFAS[Drenyra Fiscal App Server]
@@ -76,7 +76,7 @@ flowchart TB
   AI --> FAL
   AI --> MCP
   MCP --> Gov
-  CLI --> WS
+  Pi --> WS
   Web --> WS
   API --> WS
   WS --> ThreadMgr
@@ -209,14 +209,15 @@ Risk levels:
 | High     | fiscal/material state change                  | validators + approval + audit                    |
 | Critical | SUNAT submission, posting, tax/payment impact | explicit policy + human approval + replay packet |
 
-### 6. Drenyra CLI and Web
+### 6. Command Center and operator surfaces
 
-Drenyra is dual-surface by design.
+Ownership is split by product boundary, not duplicated inside this repository.
 
-- **CLI** is the expert/power-user surface for fiscalistas, automations and rapid command execution.
-- **Web** is the visual command center for timelines, agents, diffs, evidence and approvals.
+- **Command Center Web/API**, owned here, provides timelines, agents, diffs, evidence, approvals and scoped product APIs.
+- **Drenyra-Pi**, owned by `drenyra-pi`, is the Pi-native operator harness for expert workflows.
+- **External operator clients**, including a possible CLI, consume governed contracts but are not implemented here.
 
-Both call the same scoped API and must show the same fiscal context.
+All surfaces rely on the runtime and control plane owned by `drenyra-ai` and must preserve the same fiscal context.
 
 ### 6.1 Drenyra Fiscal App Server (DFAS)
 
@@ -224,7 +225,7 @@ DFAS is the unified transport layer inspired by the OpenAI Codex App Server, ada
 
 | Component              | Role                                                                  |
 | ---------------------- | --------------------------------------------------------------------- |
-| WebSocket JSON-RPC     | Primary bidirectional transport for Web, CLI, automations             |
+| WebSocket JSON-RPC     | Primary bidirectional transport for Command Center, Drenyra-Pi and automations |
 | Fiscal Thread Manager  | Brain thread + run metadata unification                               |
 | Item Stream            | Evidence-native events: gates, envelopes, approvals, truth promotions |
 | Unified Runtime Kernel | Composes harness, orchestrator, capability guard, truth boundary      |
@@ -297,7 +298,7 @@ Every material recommendation records model/provider/tool/prompt metadata suffic
 ```mermaid
 sequenceDiagram
   actor Operator
-  participant CLI as Drenyra CLI/Web
+  participant Surface as Drenyra-Pi / Command Center
   participant API as Scoped API
   participant ONT as Fiscal Ontology
   participant AI as AI Control Plane
@@ -306,8 +307,8 @@ sequenceDiagram
   participant EVD as Evidence Graph
   participant FAL as Fiscal Agentic Ledger
 
-  Operator->>CLI: analiza esta factura
-  CLI->>API: request with company/RUC/period scope
+  Operator->>Surface: analiza esta factura
+  Surface->>API: request with company/RUC/period scope
   API->>ONT: normalize CPE/CDR/SIRE/bank context
   ONT->>EVD: create/read evidence bundle
   API->>AI: ask scoped agent for recommendation
@@ -317,8 +318,8 @@ sequenceDiagram
   API->>GOV: evaluate capability + materiality
   GOV-->>API: approval required
   API->>FAL: append draft proposal event
-  API-->>CLI: evidence + risk + approval request
-  Operator->>CLI: approve/reject
+  API-->>Surface: evidence + risk + approval request
+  Operator->>Surface: approve/reject
 ```
 
 ## Phase implementation plan
@@ -347,10 +348,10 @@ sequenceDiagram
 - Attach risk level and approval requirement to every fiscal tool.
 - Canonical contract: [Drenyra Agent Capability Matrix 2026](./drenyra-agent-capability-matrix-2026.md), implemented in `packages/domain/src/drenyra/capabilities.ts`.
 
-### Phase 4 — Drenyra CLI/Web command loops
+### Phase 4 — Command Center and operator command loops
 
-- CLI commands return evidence-rich envelopes.
-- Web displays same trace, diffs and approval state.
+- Command Center web/API returns evidence-rich envelopes and displays trace, diffs and approval state.
+- Drenyra-Pi and any external operator client consume the same governed contracts without creating a second runtime.
 
 ### Phase 5 — MCP read-only pilot
 
@@ -373,5 +374,6 @@ sequenceDiagram
 - [ADR-020: Evidence Graph Relational Model](../02-adr/adr-020-evidence-graph-relational-model.md)
 - [ADR-021: AI Control Plane Governance Boundaries](../02-adr/adr-021-ai-control-plane-governance-boundaries.md)
 - [ADR-025: Fiscal Intelligence Platform and FAL](../02-adr/adr-025-fiscal-intelligence-platform.md)
-- [Drenyra CLI](../05-development/drenyra-cli.md)
+- [Ecosystem boundaries](../architecture/ecosystem-boundaries.md)
+- [Drenyra-Pi — Pi-Native Accounting Operations Harness](../01-foundation/drenyra-pi-harness.md)
 - [Drenyra Agentic Fiscal Command Center Vision](../products/drenyra-agentic-fiscal-command-center-vision-2026.md)

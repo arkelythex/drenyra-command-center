@@ -23,11 +23,11 @@ if [[ "${FRESH_DB_OPT_IN}" != "1" ]]; then
 fi
 
 case "${DATABASE_URL}" in
-  postgres://* | postgresql://*) ;;
-  *)
-    echo "[infra-db:bootstrap] DATABASE_URL must use the postgres or postgresql scheme." >&2
-    exit 1
-    ;;
+postgres://* | postgresql://*) ;;
+*)
+  echo "[infra-db:bootstrap] DATABASE_URL must use the postgres or postgresql scheme." >&2
+  exit 1
+  ;;
 esac
 
 authority_and_path="${DATABASE_URL#*://}"
@@ -76,8 +76,8 @@ psql "${DATABASE_URL}" -v ON_ERROR_STOP=1 \
 cd "${ROOT_DIR}/packages/infrastructure"
 bunx --no-install drizzle-kit export --sql \
   --schema "${ROOT_DIR}/packages/persistence/src/schema/index.ts" \
-  --dialect postgresql \
-  | psql "${DATABASE_URL}" -v ON_ERROR_STOP=1
+  --dialect postgresql |
+  psql "${DATABASE_URL}" -v ON_ERROR_STOP=1
 
 psql "${DATABASE_URL}" -v ON_ERROR_STOP=1 <<'SQL'
 DO $$

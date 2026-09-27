@@ -1,8 +1,8 @@
-# Drenyra dual-surface Brain architecture
+# Drenyra client-surface Brain architecture
 
-**Última actualización**: 2026-06-30
+**Última actualización**: 2026-09-01
 
-Drenyra is API/domain-first. React Web and Go CLI are UX adapters over the same Financial Engineering Environment and Brain timeline.
+Drenyra is API/domain-first. Command Center Web and external Drenyra-Pi operator clients are UX adapters over the same Financial Engineering Environment and Brain timeline.
 
 ## DFAS transport (v1)
 
@@ -19,7 +19,7 @@ REST Brain endpoints (`/api/drenyra/brain/*`) and runtime runs (`/api/drenyra/ru
 
 - `apps/api` is the runtime source of truth.
 - `packages/domain/src/drenyra` owns shared contracts.
-- CLI local SQLite is an operational cache/outbox only; it is not fiscal source of truth.
+- Any external operator client cache or outbox is operational only; it is not the fiscal source of truth.
 - All writes and streams require organization, company, RUC, fiscal period and user scope.
 - RUC is validated with SUNAT Módulo 11 at API boundary.
 - Brain thread/turn/item actions append scoped audit events.
@@ -29,19 +29,19 @@ REST Brain endpoints (`/api/drenyra/brain/*`) and runtime runs (`/api/drenyra/ru
 
 ## Flow
 
-1. CLI/Web resolves explicit fiscal scope.
+1. Command Center Web/API or an external operator client resolves explicit fiscal scope.
 2. Client creates or resumes a Brain thread (`thread/create` or REST compat).
 3. Client starts a Brain turn before harness/tool execution (`turn/start`).
 4. Harness/API output links back to Brain metadata (`brainThreadId`, `brainTurnId`).
 5. Item stream delivers evidence, gates, envelopes, approvals to all subscribed clients.
-6. Web and CLI render the same timeline from `item/appended` notifications.
+6. Command Center Web and external operator clients render the same timeline from `item/appended` notifications.
 
 ## Parity checklist
 
 - API route and contract updated.
 - DFAS protocol version pinned (`DFAS_PROTOCOL_VERSION`).
 - Web adapter updated (WebSocket or SSE).
-- CLI contract/types updated (NDJSON or HTTP).
+- External operator client contracts/types updated (NDJSON or HTTP).
 - Tenant/RUC/period tests added.
 - Audit event assertion added.
 - Capability matrix + guardian evaluated before tool execution.

@@ -74,3 +74,8 @@ export {
 	SunatKnowledgeService,
 	sunatKnowledgeService,
 } from "./services/sunat-knowledge";
+
+// Memory facade (canonical owner: drenyra-engram)
+export * as memory from "./memory";
+// Fiscal approval facade (canonical owner: drenyra-ai)
+export * as fiscalApproval from "./fiscal-approval";

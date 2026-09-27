@@ -236,7 +236,7 @@ export class XsdValidator {
 
 		// UBL types use prefixed types like "cbc:IDType" or unqualified like "InvoiceType"
 		const localName = typeName.includes(":")
-			? typeName.split(":")[1]
+			? (typeName.split(":")[1] ?? typeName)
 			: typeName;
 
 		// Check current schema first
@@ -377,7 +377,7 @@ export class XsdValidator {
 		if (!elementDef.type || !this.schemas) return;
 
 		const localName = elementDef.type.includes(":")
-			? elementDef.type.split(":")[1]
+			? (elementDef.type.split(":")[1] ?? elementDef.type)
 			: elementDef.type;
 
 		// Search for the type in all schemas

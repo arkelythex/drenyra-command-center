@@ -31,7 +31,7 @@ async function createInspectableCase(): Promise<string> {
 }
 
 describe("Drenyra fiscal work inspect route", () => {
-	it("returns a shared CLI/Web inspect envelope", async () => {
+	it("returns a shared client-surface inspect envelope", async () => {
 		const id = await createInspectableCase();
 		const app = new Elysia().use(drenyraModule);
 		const response = await app.handle(

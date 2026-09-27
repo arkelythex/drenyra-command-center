@@ -9,6 +9,7 @@
  */
 
 import { google } from "@ai-sdk/google";
+import type { LanguageModel } from "ai";
 
 /**
  * Gemini 3 Flash - Fast & Cheap (78% SWE-bench Verified)
@@ -20,7 +21,7 @@ import { google } from "@ai-sdk/google";
  * ```
  */
 
-export const modelFlash = google("gemini-3-flash");
+export const modelFlash = google("gemini-3-flash") as unknown as LanguageModel;
 
 /**
  * Gemini 3 Pro - Reasoning Engine
@@ -32,7 +33,7 @@ export const modelFlash = google("gemini-3-flash");
  * ```
  */
 
-export const modelReasoning = google("gemini-3-pro");
+export const modelReasoning = google("gemini-3-pro") as unknown as LanguageModel;
 
 /**
  * Gemini 3 Pro - Heavy Analysis (Alias for consistency)
@@ -43,7 +44,7 @@ export const modelReasoning = google("gemini-3-pro");
  * ```
  */
 
-export const modelOpus = google("gemini-3-pro");
+export const modelOpus = google("gemini-3-pro") as unknown as LanguageModel;
 
 /**
  * Model Selection Strategy

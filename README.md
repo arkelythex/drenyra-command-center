@@ -40,14 +40,14 @@ The ecosystem is governed by the **Drenyra Dominion Program**, a federated progr
 ## Who Uses What
 
 > [!IMPORTANT]
-> **The accountant never operates agents, terminals, or CLIs.** They work in **Drenyra App** (the web Command Center) and ask for outcomes — "prepare the July 2026 close for Company X". The command center consumes Drenyra-AI underneath (library/SDK/MCP); agents (Pi, Codex, Claude, OpenCode) are internal infrastructure the command center invokes. Only developers, operators, and integrators use the [Drenyra CLI](apps/cli/README.md).
+> **The accountant never operates agents, terminals, or CLIs.** They work in **Drenyra App** (the web Command Center) and ask for outcomes — "prepare the July 2026 close for Company X". The command center consumes Drenyra-AI underneath (library/SDK/MCP); agents (Pi, Codex, Claude, OpenCode) are internal infrastructure the command center invokes. Developers, operators, and integrators use the `drenyra-ai` CLI, `drenyra-pi`, or MCP directly when needed.
 
 | Role | Interface | Never touches |
 | --- | --- | --- |
 | **Accountant / professional** | Drenyra App (web Command Center) | Terminals, CLIs, agents, JSON, mission states |
 | **Drenyra App** (Command Center) | Consumes Drenyra-AI via SDK/MCP | Reimplements gates or mutates authoritative state |
 | **Drenyra-AI** | Headless core underneath | UI; it never proposes — the Core only stages, gates, and receipts |
-| **Operators / developers / integrators** | Drenyra CLI, `drenyra-ai` CLI, MCP | The accountant's day-to-day workflow |
+| **Operators / developers / integrators** | `drenyra-ai` CLI, `drenyra-pi`, MCP | The accountant's day-to-day workflow |
 | **Agents (Pi, Codex, Claude, OpenCode)** | Internal engine invoked by the command center | Self-authorization, approval, external-execution claims |
 
 **Golden rule:** the professional should never have to learn to operate an agent orchestration — they request an accounting result and receive reviewable candidates, evidence, explicit decisions, and verifiable receipts. Agents propose; the deterministic Core and professional approval decide. See [ADR-010](docs/11-adr/ADR-010-ecosystem-boundary-authority.md) for the frozen boundary.
@@ -101,7 +101,7 @@ Drenyra is organized into **8 architectural planes**. No upper plane bypasses a 
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │  1. EXPERIENCE PLANE                                         │
-│  Workbench · CLI · Mobile · API · Embedded UI                │
+│  Workbench · Mobile · API · Embedded UI                     │
 ├──────────────────────────────────────────────────────────────┤
 │  2. WORKSPACE PLANE                                          │
 │  Portfolio · Companies · Periods · Change Sets · Attention    │
@@ -177,8 +177,7 @@ drenyra/
 ├── apps/
 │   ├── web/              → Fiscal command center — React 19 + TanStack Router
 │   ├── api/              → Fiscal API — Bun + Elysia, vertical slices, CQRS
-│   ├── data-engine/      → SIRE & analytics — Python + FastAPI + Polars
-│   └── cli/              → Fiscal Terminal — Go + Bubbletea
+│   └── data-engine/      → SIRE & analytics — Python + FastAPI + Polars
 ├── packages/
 │   ├── domain/           → Framework-free entities, value objects, fiscal rules
 │   ├── application/      → Use cases, DTOs, validators, ports
@@ -224,13 +223,6 @@ For an existing local database, run `DRENYRA_UPGRADE_PREFLIGHT=1 bun run db:upgr
 | API                  | `http://localhost:3000`         |
 | Swagger              | `http://localhost:3000/swagger` |
 | Data Engine          | `http://localhost:8000/health`  |
-
-**CLI:**
-
-```bash
-cd apps/cli
-go run cmd/drenyra/main.go
-```
 
 ---
 

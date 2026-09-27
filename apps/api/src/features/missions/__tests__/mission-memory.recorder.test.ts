@@ -5,7 +5,7 @@
  * values are BigInt cents (repo-wide rule) and nothing here touches them.
  */
 
-import type { EngramClient, EngramSaveInput } from "@drenyra/memory";
+import type { EngramClient, EngramSaveInput } from "@drenyra/infrastructure/memory";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
 	createMissionMemoryRecorder,

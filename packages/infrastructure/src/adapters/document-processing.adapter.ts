@@ -2,7 +2,7 @@ import type {
 	IDocumentSyncProcessor,
 	IExpenseClassifier,
 	IInvoiceOCRService,
-	IUBLInvoiceParser,
+	IUBLInvoiceParser,OCRInvoiceExtractionResult,
 } from "@drenyra/application";
 import {
 	classifyExpense,
@@ -22,7 +22,9 @@ class UBLInvoiceParserAdapter implements IUBLInvoiceParser {
 
 class InvoiceOCRServiceAdapter implements IInvoiceOCRService {
 	async extractInvoiceData(options: { imageUrl?: string; pdfUrl?: string }) {
-		return extractInvoiceData(options);
+		// Adapter boundary: infra OCR result (zod-inferred, optional props may be
+		// explicitly undefined) is adapted to the application port type.
+		return extractInvoiceData(options) as unknown as OCRInvoiceExtractionResult;
 	}
 }
 

@@ -11,7 +11,7 @@
     "start": "bun src/index.ts",
     "build:binary": "bash ../../scripts/build-api-binary.sh",
     "deploy:fly": "bash ../../scripts/deploy/deploy-api-fly.sh",
-    "test": "vitest",
+    "test": "vitest run",
     "test:db": "bun ./scripts/run-db-tests.mjs",
     "test:db:compliance": "bun ./scripts/run-db-tests.mjs src/services/__tests__/integration/compliance-reproducibility.integration.test.ts",
     "test:db:taxation": "bun ./scripts/run-db-tests.mjs src/features/taxation/__tests__/integration/retenciones.integration.test.ts",

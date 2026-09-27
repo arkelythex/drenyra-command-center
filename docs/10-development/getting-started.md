@@ -17,7 +17,6 @@ Bienvenido. En esta guía vas a tener tu entorno de desarrollo funcionando de 0 
 
 Opcional (solo si trabajás en esas áreas):
 
-- **Go 1.21+** — para `apps/cli/`
 - **Python 3.11+** — para `apps/data-engine/`
 
 ## Setup rápido
@@ -78,7 +77,6 @@ Drenyra/
 ├── apps/
 │   ├── api/          # Backend (Bun + ElysiaJS)
 │   ├── web/          # Frontend (React 19 + TanStack Router)
-│   ├── cli/          # CLI (Go)
 │   ├── landing/      # Landing page (Next.js)
 │   └── data-engine/  # Data engine (Python + FastAPI)
 ├── packages/

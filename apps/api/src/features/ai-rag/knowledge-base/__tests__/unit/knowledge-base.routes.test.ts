@@ -223,11 +223,10 @@ describe("knowledge-base module", () => {
 			);
 
 			expect(mockHybridSearch).toHaveBeenCalledWith(
-				expect.objectContaining({
+				{
 					query: "detracciones",
-					categories: undefined,
 					limit: 20,
-				}),
+				},
 				expect.objectContaining({
 					topK: 20,
 					finalK: 5,
@@ -235,6 +234,8 @@ describe("knowledge-base module", () => {
 					hybridSearch: true,
 					denseWeight: 0.7,
 					rerank: true,
+					contextWindow: 0,
+					includeContext: false,
 				}),
 			);
 		});

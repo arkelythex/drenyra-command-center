@@ -96,10 +96,10 @@ export interface SireRecord {
 	total: number;
 	moneda: import("@drenyra/domain").Currency;
 	/** Exchange rate (decimal, NOT in cents). E.g. 3.75 = S/ 3.75 per USD. */
-	tipoCambio?: number;
+	tipoCambio?: number | undefined;
 
 	// Purchase-specific
-	estado?: string;
+	estado?: string | undefined;
 
 	// Metadata
 	hashSunat?: string;

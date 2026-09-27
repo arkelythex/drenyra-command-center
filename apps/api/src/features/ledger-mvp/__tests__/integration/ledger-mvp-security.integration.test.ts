@@ -4,6 +4,21 @@ import { register } from "prom-client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ledgerMvpModule, ledgerMvpService } from "../../index";
 
+const { originalEnv, testEnv } = vi.hoisted(() => {
+	const originalEnv = { ...process.env };
+	const testEnv = {
+		...originalEnv,
+		NODE_ENV: "test",
+		LEDGER_MVP_REQUIRE_AUTH: "false",
+		LEDGER_MVP_ALLOWED_COMPANY_IDS: "cmp-1",
+		LEDGER_MVP_ALLOWED_ROLES_SIRE_AUTOPILOT: "admin",
+		ARKELYTHEX_MACHINE_CALLER_SECRET: "machine-secret",
+		LEDGER_MVP_MACHINE_CALLER_ALLOWLIST: "ledger-orchestrator",
+	};
+	process.env = { ...testEnv };
+	return { originalEnv, testEnv };
+});
+
 function buildSireAutopilotPayload(companyId: string): Record<string, unknown> {
 	return {
 		companyId,
@@ -16,19 +31,9 @@ function buildSireAutopilotPayload(companyId: string): Record<string, unknown> {
 }
 
 describe("ledger-mvp routes security integration", () => {
-	const originalEnv = { ...process.env };
-
 	beforeEach(() => {
 		vi.restoreAllMocks();
-		process.env = {
-			...originalEnv,
-			NODE_ENV: "test",
-			LEDGER_MVP_REQUIRE_AUTH: "false",
-			LEDGER_MVP_ALLOWED_COMPANY_IDS: "cmp-1",
-			LEDGER_MVP_ALLOWED_ROLES_SIRE_AUTOPILOT: "admin",
-			DRENYRA_MACHINE_CALLER_SECRET: "machine-secret",
-			LEDGER_MVP_MACHINE_CALLER_ALLOWLIST: "ledger-orchestrator",
-		};
+		process.env = { ...testEnv };
 	});
 
 	afterEach(() => {
@@ -211,7 +216,7 @@ describe("ledger-mvp routes security integration", () => {
 		const now = Date.now().toString();
 		const signature = createHmac(
 			"sha256",
-			process.env.DRENYRA_MACHINE_CALLER_SECRET as string,
+			process.env.ARKELYTHEX_MACHINE_CALLER_SECRET as string,
 		)
 			.update(["ledger-orchestrator", now, "cmp-1", "admin"].join("."))
 			.digest("hex");
@@ -333,7 +338,7 @@ describe("ledger-mvp routes security integration", () => {
 		const now = Date.now().toString();
 		const signature = createHmac(
 			"sha256",
-			process.env.DRENYRA_MACHINE_CALLER_SECRET as string,
+			process.env.ARKELYTHEX_MACHINE_CALLER_SECRET as string,
 		)
 			.update(["ledger-orchestrator", now, "cmp-1", "admin"].join("."))
 			.digest("hex");

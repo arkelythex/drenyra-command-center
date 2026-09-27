@@ -1,6 +1,6 @@
 # Drenyra Command Center — Architecture
 
-> **Last updated:** 2026-08-31.
+> **Last updated:** 2026-09-01.
 
 ## Documentation index
 
@@ -20,7 +20,7 @@
 
 ## Position in the ecosystem
 
-Drenyra Command Center is the **mature product surface** of the Drenyra ecosystem: the web application, API, and terminal through which professionals run fiscal workflows, review candidates, approve material decisions, and operate the accounting ledger. **Status: in development (public).**
+Drenyra Command Center is the **mature product surface** of the Drenyra ecosystem: the web application and API through which professionals run fiscal workflows, review candidates, approve material decisions, and operate the accounting ledger. External terminal workflows belong to operator clients such as the separate `drenyra-pi` harness. **Status: in development (public).**
 
 It is a **consumer, never a producer of core logic**. The ecosystem dependency graph is one-way:
 
@@ -64,7 +64,7 @@ Product programs this repo delivers (per the Drenyra Dominion Program master in 
 The product is organized across the 8 FEOS planes; no upper plane bypasses a lower one (an agent cannot call SUNAT directly):
 
 ```
-1. Experience    — web, CLI, API, embedded UI
+1. Experience    — Command Center Web/API, embedded UI, external operator clients
 2. Workspace     — portfolio, companies, periods, change sets
 3. Intelligence  — agent runtime, skills, model routing, memory
 4. Trust         — evidence, policy, materiality, approval, receipts
@@ -129,6 +129,6 @@ The Command Center consumes `drenyra-ai` as **released, versioned artifacts** �
 
 ## Repository scope
 
-**In scope (this repo):** product UI and surfaces, workspaces/companies/periods, documents and closure workflows, reconciliation, approval chains, SUNAT integration flows, country packs, evidence-graph visualization, and the developer/automation surface (API, CLI, SDK).
+**In scope (this repo):** product UI and surfaces, workspaces/companies/periods, documents and closure workflows, reconciliation, approval chains, SUNAT integration flows, country packs, evidence-graph visualization, and developer/automation contracts (API and SDK) consumed by external clients.
 
 **Out of scope (owned elsewhere):** mission/candidate/review/gate runtime → `drenyra-ai`; memory storage and search → `drenyra-engram`; Pi-specific operator behavior → `drenyra-pi`; standalone receipt verification for external ERPs → `drenyra-ai`. Long-term, these must not be re-created here; boundary violations are caught in review, while canonical product surfaces are checked by `bun run architecture:check-product-surfaces`.

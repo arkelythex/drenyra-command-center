@@ -3,7 +3,7 @@
  *
  * @example Preserve tenant, company RUC and fiscal-period scope before invoking this module.
  * @example Keep fiscal evidence append-only and auditable when wiring this module into routes.
- * @example Prefer typed command envelopes instead of raw objects at API, Web and CLI boundaries.
+ * @example Prefer typed command envelopes instead of raw objects at Command Center and external operator boundaries.
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
@@ -303,7 +303,7 @@ export interface AgentRun {
 	startedBy: string;
 	startedAt: string;
 	completedAt?: string | undefined;
-	output?: AgentRunOutput;
+	output?: AgentRunOutput | undefined;
 	metadata: Record<string, unknown>;
 }
 
@@ -374,7 +374,7 @@ export interface FiscalCaseDetails {
 }
 
 /**
- * Stable capability id for the first shared CLI/Web fiscal work inspection contract.
+ * Stable capability id for fiscal work inspection shared by the Command Center and external operator clients.
  *
  * @example
  * const capability = DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY;
@@ -398,7 +398,7 @@ export type DrenyraFiscalWorkInspectStatus =
 	(typeof DRENYRA_FISCAL_WORK_INSPECT_STATUSES)[number];
 
 /**
- * Machine-readable reason codes for CLI/Web handling of fiscal work inspect responses.
+ * Machine-readable reason codes for Command Center and external operator handling of fiscal work inspect responses.
  *
  * @example
  * const reason: DrenyraFiscalWorkInspectReasonCode = "DRENYRA_CAPABILITY_DENIED";
@@ -427,7 +427,7 @@ export type DrenyraFiscalWorkInspectSourceSurface =
 	| "automation";
 
 /**
- * Shared read-only inspect envelope consumed by Drenyra CLI and Web.
+ * Shared read-only inspect envelope consumed by this repository's Command Center and by external operator clients such as Drenyra-Pi.
  *
  * @example
  * const okEnvelope: DrenyraFiscalWorkInspectEnvelope = {
@@ -578,7 +578,3 @@ export interface DrenyraBrainEvent {
 	createdAt: string;
 	metadata: Record<string, unknown>;
 }
-
-import type { DrenyraSubagentName } from "@drenyra/pi";
-
-export type { DrenyraSubagentName };

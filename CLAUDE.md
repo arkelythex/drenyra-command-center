@@ -48,7 +48,7 @@
 ## Skills (Organización Socrática)
 
 | Contexto | Ruta |
-|----------|------|
+| ---------- | ------ |
 | Core Logic, Rust, WASM | `.agents/skills/core/` |
 | API, DB, SUNAT Compliance | `.agents/skills/backend/` |
 | React 19, Tailwind 4, UI | `.agents/skills/frontend/` |

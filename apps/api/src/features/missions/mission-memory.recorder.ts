@@ -28,7 +28,7 @@ import {
 	type EngramSaveInput,
 	engramConfig,
 	isEngramEnabled,
-} from "@drenyra/memory";
+} from "@drenyra/infrastructure/memory";
 import {
 	resolveCompanyRuc,
 	tryResolveOrganizationIdFromCompany,

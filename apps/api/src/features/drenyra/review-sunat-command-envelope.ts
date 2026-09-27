@@ -25,14 +25,17 @@ export function createReviewSunatCommandEnvelope(
 		status: DRENYRA_COMMAND_STATUS.READY,
 		scope: toDrenyraCommandScope(context),
 		title: "SUNAT fiscal review",
-		summary: "Scoped SUNAT review envelope prepared for CLI/Web rendering",
+		summary:
+			"Scoped SUNAT review envelope prepared for Command Center and external operator client rendering",
 		riskLevel: "MEDIUM",
 		evidence: [
 			{
 				id: evidenceId,
 				type: "SUNAT_RECORD",
 				title: "SUNAT scoped review snapshot",
-				...(input.sourceRef !== undefined ? { sourceRef: input.sourceRef } : {}),
+				...(input.sourceRef !== undefined
+					? { sourceRef: input.sourceRef }
+					: {}),
 			},
 		],
 		deterministicChecks: [

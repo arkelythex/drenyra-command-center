@@ -47,11 +47,11 @@ export interface BankReconciliationProps {
 	difference: number;
 	status: ReconciliationStatus;
 	reconciledTransactionIds: number[];
-	reconciledByUserId?: string;
-	notes?: string;
+	reconciledByUserId?: string | undefined;
+	notes?: string | undefined;
 	createdAt: Date;
 	updatedAt: Date;
-	completedAt?: Date;
+	completedAt?: Date | undefined;
 }
 
 /**

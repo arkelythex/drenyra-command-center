@@ -2,9 +2,9 @@
 
 **Document type:** Threat Model (STRIDE)
 **Status:** Draft — Phase 0 of `drenyra-security-foundation`
-**Last updated:** 2026-07-25
+**Last updated:** 2026-09-01
 **Review cadence:** Quarterly or on significant architectural change
-**Scope:** Drenyra financial OS — API, Web, CLi, AI agents, SUNAT integration, ledger
+**Scope:** Drenyra financial OS — Command Center Web/API, external operator clients, AI agents, SUNAT integration, ledger
 
 > This document is a live threat model. It MUST be consulted before any security-relevant architectural change.
 
@@ -24,8 +24,8 @@ Drenyra is a multi-tenant financial OS serving Peruvian businesses. It handles:
 
 ```
 ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐
-│  Browser  │   │  Mobile   │   │   CLI    │   │   API    │
-│  (React)  │   │  (Future) │   │   (Go)   │   │ Consumers│
+│  Browser  │   │  Mobile   │   │ Operator │   │   API    │
+│  (React)  │   │  (Future) │   │ (External)│  │ Consumers│
 └─────┬────┘   └─────┬────┘   └─────┬────┘   └─────┬────┘
       │ HTTPS        │ HTTPS        │ HTTPS        │ HTTPS
       ▼              ▼              ▼              ▼
@@ -68,7 +68,7 @@ Drenyra is a multi-tenant financial OS serving Peruvian businesses. It handles:
 
 | #   | Boundary                   | Type             | Description                                         |
 | --- | -------------------------- | ---------------- | --------------------------------------------------- |
-| B1  | Client ↔ API               | Network (HTTPS)  | Browser/mobile/CLI communicates with API over TLS   |
+| B1  | Client ↔ API               | Network (HTTPS)  | Browser, mobile, and external operator clients communicate with API over TLS |
 | B2  | API ↔ Database             | Internal Network | PostgreSQL accessed via Drizzle ORM                 |
 | B3  | API ↔ SUNAT                | Network (HTTPS)  | SUNAT OSE/API/SOL integrations                      |
 | B4  | API ↔ AI Providers         | Network (HTTPS)  | LLM API calls (OpenAI, Anthropic, Gemini)           |

@@ -20,7 +20,7 @@ Drenyra today exposes **four parallel runtime entry points**:
 - Command envelopes (`/api/drenyra/commands/*`)
 - Harness execution (`/api/fiscal-command-center/harness/*`)
 
-Each surface (Web, CLI, API partners) integrates differently. OpenAI solved this with their App Server pattern — bidirectional JSON-RPC, thread management, item streaming, server-initiated approvals. Drenyra adapts this pattern for fiscal domain.
+Each surface (Command Center Web/API and external operator clients) integrates differently. OpenAI solved this with their App Server pattern — bidirectional JSON-RPC, thread management, item streaming, server-initiated approvals. Drenyra adapts this pattern for fiscal domain.
 
 Drenyra's requirements are distinct: fiscal operations require **mandatory scope**, **evidence chains**, **deterministic promotion boundaries**, **receipt-driven execution (RED)**, and **period-level orchestration**.
 
@@ -30,7 +30,7 @@ Introduce the **Drenyra Fiscal App Server (DFAS)** as the canonical transport an
 
 ### 1. Protocol
 
-- **Wire format:** JSON-RPC 2.0 over WebSocket (primary), SSE (fallback), NDJSON stdio (CLI).
+- **Wire format:** JSON-RPC 2.0 over WebSocket (primary), SSE (fallback), NDJSON stdio (external operator clients).
 - **Version:** `DFAS_PROTOCOL_VERSION = "1.0.0"` in `packages/domain/src/drenyra/dfas-protocol-types.ts`.
 - **Messages:** `thread/*`, `turn/*`, `item/*`, `approval/*` — see [DFAS Spec](../01-architecture/drenyra-fiscal-app-server-2026.md).
 - **Item stream:** Evidence-native items: evidence, gates, envelopes, capability decisions, approvals, truth promotions.
@@ -53,7 +53,7 @@ REST endpoints remain **compat layer v0**. DFAS WebSocket at `/api/drenyra/v1/ws
 
 ### 3. MCP is not the primary transport
 
-MCP remains for **external tool connectors** (SUNAT, ERPNext). Drenyra `os-supervisor` registers Drenyra MCP plugins at platform level. DFAS is for **Drenyra clients** (Web SPA, CLI, automations).
+MCP remains for **external tool connectors** (SUNAT, ERPNext). Drenyra `os-supervisor` registers Drenyra MCP plugins at platform level. DFAS is for the **Command Center Web/API and external operator clients**, including automations.
 
 ### 4. Fiscal Guardian
 
@@ -72,7 +72,7 @@ Auto-approval for low-risk `read` / `explain` / `draft`. `material_action` **nev
 
 ```text
 Drenyra shell (MF host)  →  loads Drenyra remoteEntry.js
-Drenyra web/CLI (clients)   →  DFAS / REST v0  →  kernel  →  orchestrator + engram
+Command Center Web/API + external operator clients  →  DFAS / REST v0  →  kernel  →  orchestrator + engram
 Drenyra os-supervisor    →  OPA gates / approvals policy (cross-repo)
 ```
 
@@ -83,7 +83,7 @@ Fase 1 (platform split): MF remote + REST API. **Fase 2 (this ADR implementation
 1. **Phase 0:** Spec + domain contracts + kernel design — ✅ complete
 2. **Phase 1:** Domain contracts hardened + Lexori TS loader
 3. **Phase 2:** Kernel v0 + WebSocket endpoint
-4. **Phase 3:** Web/CLI DFAS clients
+4. **Phase 3:** Command Center Web/API and external operator DFAS clients
 5. **Phase 4:** Guardian + replay API
 6. **Phase 5:** Public MCP surface (platform registers plugin)
 

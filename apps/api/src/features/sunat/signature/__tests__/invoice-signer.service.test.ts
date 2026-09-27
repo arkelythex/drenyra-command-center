@@ -70,6 +70,7 @@ describe("Invoice Signer Service", () => {
 		},
 		customer: {
 			ruc: "20100070971",
+			documentType: "6",
 			legalName: "Test Customer S.A.C.",
 			address: {
 				country: "PE",
@@ -127,6 +128,7 @@ describe("Invoice Signer Service", () => {
 		},
 		customer: {
 			ruc: "20100070971",
+			documentType: "6",
 			legalName: "Test Customer S.A.C.",
 			address: {
 				country: "PE",

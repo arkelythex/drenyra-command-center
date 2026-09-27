@@ -5,7 +5,7 @@ import {
 	type EngramObservation,
 	engramConfig,
 	isEngramEnabled,
-} from "@drenyra/memory";
+} from "@drenyra/infrastructure/memory";
 import { db } from "@drenyra/persistence/client";
 import { and, asc, desc, eq, sql } from "@drenyra/persistence/query";
 import {
@@ -70,6 +70,7 @@ export interface RunSummary {
  * const events = await AiObservabilityService.getRunEvents(runId);
  * ```
  */
+// biome-ignore lint/complexity/noStaticOnlyClass: Preserve the public static service API used by route adapters and tests.
 export class AiObservabilityService {
 	/**
 	 * Returns a summary of agent run states for a given company, grouped by status.

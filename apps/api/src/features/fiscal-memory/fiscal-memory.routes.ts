@@ -26,7 +26,7 @@ import {
 	type FiscalMemoryCategory,
 	type FiscalMemorySeverity,
 } from "@drenyra/domain/fiscal-memory";
-import { EngramError } from "@drenyra/memory";
+import { EngramError } from "@drenyra/infrastructure/memory";
 import { Elysia, t } from "elysia";
 
 /** t.Enum record built from the canonical category list. */

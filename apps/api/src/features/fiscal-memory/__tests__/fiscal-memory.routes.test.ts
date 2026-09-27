@@ -29,7 +29,7 @@ const mocks = vi.hoisted(() => ({
 	},
 }));
 
-vi.mock("@drenyra/memory", () => ({
+vi.mock("@drenyra/infrastructure/memory", () => ({
 	isEngramEnabled: mocks.isEngramEnabled,
 	EngramError: mocks.EngramError,
 	EngramClient: class {

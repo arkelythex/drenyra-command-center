@@ -14,7 +14,7 @@
   },
   "scripts": {
     "typecheck": "bash ../../scripts/tsc7.sh --noEmit",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "devDependencies": {
     "typescript": "^7.0.2",

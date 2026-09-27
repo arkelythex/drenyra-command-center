@@ -1,6 +1,6 @@
 # 13 — Operations
 
-**Última actualización:** 2026-07-27
+**Última actualización:** 2026-09-01
 **Propósito:** Runbooks, sincronización entre repos, deploy, monitoreo
 **Audiencia:** DevOps, SRE, infraestructura
 
@@ -8,10 +8,15 @@
 
 ## Documentos existentes
 
-| Documento                                         | Descripción                            |
-| ------------------------------------------------- | -------------------------------------- |
-| [Drenyra Repo Sync](./drenyra-repo-sync.md)       | Sincronización entre worktrees y repos |
-| [Platform Connection](./platform-connection.md)   | Conexión cross-repo                    |
+| Documento                                                                          | Descripción                                                |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| [Drenyra Repo Sync](./drenyra-repo-sync.md)                                        | Sincronización entre worktrees y repos                     |
+| [Platform Connection](./platform-connection.md)                                    | Conexión cross-repo                                        |
+| [Reparación hacia adelante de base de datos](./database-upgrade-forward-repair.md) | Estado operativo y bloqueo de la actualización persistente |
+| [Propuesta de reparación hacia adelante](./database-forward-repair-proposal.md)    | Diseño por fases para una futura unidad de trabajo         |
+| [Contratos de comandos operativos de base de datos](./db-ops-command-contracts.md) | Controles requeridos antes de implementar `ops:db:*`       |
+| [Contratos de comandos de seed](./seed-command-contracts.md)                       | Controles requeridos antes de restaurar `db:seed`          |
+| [Contratos de comandos de cumplimiento](./compliance-command-contracts.md)         | Controles requeridos antes de restaurar `compliance:*`     |
 
 ## Documentos planificados
 

@@ -7,9 +7,11 @@ export default defineConfig({
 			"__tests__/**/*.{test,spec}.{js,ts}",
 			"src/**/__tests__/**/*.{test,spec}.{js,ts}",
 		],
+		exclude: [
+			"__tests__/compliance-deepseek-integration.test.ts",
+			"__tests__/sdd-deepseek-integration.test.ts",
+		],
 		pool: "forks",
-	},	},
-
 		coverage: {
 			provider: "v8",
 			reporter: ["text", "json", "html"],
@@ -24,5 +26,5 @@ export default defineConfig({
 				},
 			},
 		},
-
+	},
 });

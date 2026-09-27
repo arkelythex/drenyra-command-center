@@ -37,7 +37,6 @@ DRENYRA builds Drenyra, the verifiable financial operating system for businesses
 | Web app     | `apps/web/`         | React 19 + TanStack Router |
 | Landing     | `apps/landing/`     | Next.js                    |
 | Data Engine | `apps/data-engine/` | Python + FastAPI + Polars  |
-| CLI         | `apps/cli/`         | Go                         |
 
 Each app has a `MAP.md` (e.g. `apps/web/MAP.md`) with its architecture, routes, features, fast-search recipes, and common tasks mapped to exact file paths. Start there before exploring inside an app — saves tokens.
 
@@ -62,7 +61,7 @@ Ver [Canonical Stack](docs/01-foundation/canonical-stack.md).
 
 ## Product philosophy guardrails
 
-Drenyra is the **verifiable financial operating system for businesses, accountants, and governments** — a Financial Engineering Environment that applies software engineering rigor (Git-like versioning, CI/CD, specialized agents, specs, receipts) to accounting. Web, CLI, agents, and docs must follow the canonical [Drenyra product philosophy](docs/products/drenyra-product-philosophy.md).
+Drenyra is the **verifiable financial operating system for businesses, accountants, and governments** — a Financial Engineering Environment that applies software engineering rigor (Git-like versioning, CI/CD, specialized agents, specs, receipts) to accounting. Web, agents, and docs must follow the canonical [Drenyra product philosophy](docs/products/drenyra-product-philosophy.md).
 
 - Treat fiscal correctness, tenant/RUC scope, auditability, reversibility, and human approval as visible product guarantees.
 - Every material workflow starts with a spec (FSD — Fiscal Specification-Driven Execution).

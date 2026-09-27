@@ -9,11 +9,11 @@ usage() {
 
 command_name="${1:-}"
 case "${command_name}" in
-  db:push | db:check | db:generate | db:migrate | db:studio) ;;
-  *)
-    usage
-    exit 2
-    ;;
+db:push | db:check | db:generate | db:migrate | db:studio) ;;
+*)
+  usage
+  exit 2
+  ;;
 esac
 shift
 
