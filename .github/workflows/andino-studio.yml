@@ -1,0 +1,100 @@
+name: Andino Studio CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "products/andino/studio/**"
+      - "products/andino/Dockerfile.studio"
+      - ".github/workflows/andino-studio.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "products/andino/studio/**"
+      - "products/andino/Dockerfile.studio"
+      - ".github/workflows/andino-studio.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Node.js ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22]
+    defaults:
+      run:
+        working-directory: products/andino/studio
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: products/andino/studio/package-lock.json
+
+      - name: Use declared npm version
+        run: |
+          declared_npm="$({
+            node -p "require('./package.json').packageManager.split('@')[1]"
+          })"
+          npm install --global "npm@${declared_npm}"
+          test "$(npm --version)" = "${declared_npm}"
+
+      - name: Clean install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build standalone application
+        run: |
+          npm run build
+          test -f .next/standalone/server.js
+
+  docker:
+    name: Docker build and startup smoke
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: >-
+          docker build
+          --file products/andino/Dockerfile.studio
+          --tag andino-studio-ci
+          products/andino/studio
+
+      - name: Run HTTP smoke test as non-root
+        run: |
+          docker run --detach --rm \
+            --name andino-studio-ci \
+            --publish 127.0.0.1:3000:3000 \
+            andino-studio-ci
+
+          trap 'docker stop andino-studio-ci || true' EXIT
+
+          configured_user="$(
+            docker inspect --format '{{.Config.User}}' andino-studio-ci
+          )"
+          test "${configured_user}" = "nextjs"
+          test "$(docker exec andino-studio-ci id -u)" = "1001"
+
+          for _ in $(seq 1 30); do
+            if curl \
+              --fail \
+              --silent \
+              --show-error \
+              http://127.0.0.1:3000/ > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+
+          exit 1
