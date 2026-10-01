@@ -18,15 +18,17 @@ Medir y clasificar por qué `bun run typecheck` está rojo y reparar solo lo no 
 - [x] `packages/shared/src/secure-logger.ts`: se eliminan variables muertas en `debug` (mismo comportamiento: no emite nada).
 
 ## Fuera de alcance (decisión pendiente)
-- [ ] `packages/shared/src/validation/ruc.ts:68` (`RUC_WEIGHTS[i]` posiblemente `undefined`): checksum de RUC, es fiscal. Requiere Strict TDD y revisión RDD de riesgo alto.
+- [x] `packages/shared/src/validation/ruc.ts:68` (`RUC_WEIGHTS[i]` posiblemente `undefined`): checksum de RUC, es fiscal. Requiere Strict TDD y revisión RDD de riesgo alto.
 - [ ] `apps/api/src/features/**`, `packages/persistence/**`, `packages/domain/**`: ~1300 errores en código fiscal y de persistencia. Decidir política: reparar por fases o relajar flags en `tsconfig.check.json`.
 - [ ] `packages/infrastructure/src/ai`: lo repara otra sesión local.
 - [ ] TS6305 en `shared`: falta compilar `packages/domain` (`typecheck:build:domain-core`); es de orden de build, no de código.
 
-- [ ] `packages/shared/src/__tests__/env.test.ts`: 4 tests de `getDrenyraApiKey` (`ARKELYTHEX_API_KEY` / `ARKALYTHIX_API_KEY`) fallan también sin estos cambios (86/90 pasan). Parecen de un renombre de marca a medias.
+- [x] Los 4 tests de `getDrenyraApiKey` que fallaban no eran un renombre a medias: Vitest resolvía `.js` compilados y viejos que están trackeados junto a los `.ts`. Se corrigió con `resolve.extensions` en `packages/shared/vitest.config.ts`; ahora 90/90 (RUC: 33).
+- [ ] **Artefactos compilados trackeados en `src/`**: 290 `.js`/`.d.ts` (shared 49, infrastructure 118, application 72, persistence 48, web 3). Pueden hacer que los tests de esos paquetes ejecuten código viejo. Verificado en `shared` (un mutante en `ruc.ts` pasaba los tests). Falta revisar los otros paquetes y decidir si se eliminan del índice y se agregan a `.gitignore`.
+- [ ] `.husky/pre-push` usa `set -o pipefail` y `[[ ]]` con `sh`; falla en dash. Cambio propuesto: `#!/usr/bin/env sh`, `set -eu` y `[ ]`. Pendiente de autorización explícita para editar el hook.
 
 ## Verificación
-- `@drenyra/shared` typecheck: de 10 a 2 errores (`ruc.ts` fiscal y TS6305 de build). Tests de shared: 86/90, igual que antes.
+- `@drenyra/shared` typecheck: de 10 a 1 error (solo TS6305 de build). Tests de shared: 90/90. RUC: 33 tests; un mutante en los pesos (swap de dos posiciones o un peso cambiado) hace fallar 12 y 8 tests respectivamente.
 
 ## Hallazgo
 `SecureLogger.debug` nunca emite salida, y `CURRENT_LOG_LEVEL` está fijo en `DEBUG` aunque el comentario dice que respeta `LOG_LEVEL`. Activar `debug` hoy lo habilitaría en producción. No lo cambié: decidir primero cómo leer `LOG_LEVEL`.
