@@ -25,7 +25,7 @@ Medir y clasificar por qué `bun run typecheck` está rojo y reparar solo lo no 
 
 - [x] Los 4 tests de `getDrenyraApiKey` que fallaban no eran un renombre a medias: Vitest resolvía `.js` compilados y viejos que están trackeados junto a los `.ts`. Se corrigió con `resolve.extensions` en `packages/shared/vitest.config.ts`; ahora 90/90 (RUC: 33).
 - [ ] **Artefactos compilados trackeados en `src/`**: 290 `.js`/`.d.ts` (shared 49, infrastructure 118, application 72, persistence 48, web 3). Pueden hacer que los tests de esos paquetes ejecuten código viejo. Verificado en `shared` (un mutante en `ruc.ts` pasaba los tests). Falta revisar los otros paquetes y decidir si se eliminan del índice y se agregan a `.gitignore`.
-- [ ] `.husky/pre-push` usa `set -o pipefail` y `[[ ]]` con `sh`; falla en dash. Cambio propuesto: `#!/usr/bin/env sh`, `set -eu` y `[ ]`. Pendiente de autorización explícita para editar el hook.
+- [x] `.husky/pre-push` usaba `set -o pipefail` y `[[ ]]` con `sh`; falla en dash. Cambio propuesto: `#!/usr/bin/env sh`, `set -eu` y `[ ]`. Aplicado y probado con dash.
 
 ## Verificación
 - `@drenyra/shared` typecheck: de 10 a 1 error (solo TS6305 de build). Tests de shared: 90/90. RUC: 33 tests; un mutante en los pesos (swap de dos posiciones o un peso cambiado) hace fallar 12 y 8 tests respectivamente.
