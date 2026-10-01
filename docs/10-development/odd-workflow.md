@@ -1,51 +1,89 @@
-# Flujo ODD por niveles
+# Flujo ODD (único)
 
 **Última actualización**: 2026-10-01
 **Tipo de contenido**: Explicación + How-to
 
-**Respuesta corta:** usa ODD (Organic Driven Development, de [gentle-ai](https://github.com/Gentleman-Programming/gentle-ai)) para trabajo no fiscal y mantén SDD estricto para todo lo fiscal, sin importar el tamaño del cambio.
+**Respuesta corta:** todo cambio en Drenyra sigue **ODD (Organic Driven Development)** de [gentle-ai](https://github.com/Gentleman-Programming/gentle-ai). No hay un segundo flujo. Lo que cambia es el tamaño del trabajo y su riesgo, no el método.
 
-## Por qué niveles
+> Principio de ODD: *los cambios pequeños no necesitan un pipeline de planificación, y el trabajo grande no debe perder su contexto entre sesiones.*
 
-El riesgo fiscal (SUNAT, ledger, tenant/RUC) no depende de cuántas líneas cambias. Un fix de una línea en IGV puede ser más peligroso que un refactor de UI de 400 líneas. Por eso el nivel se decide por **qué tocas**, no por cuánto.
+## Los cuatro estados
 
-## Elegir el nivel
+El agente avanza por estados deterministas, leídos del disco (no adivinados por el modelo):
 
-| Si tocas… | Nivel |
-|-----------|-------|
-| `packages/domain`, SUNAT/SIRE/UBL/IGV, libros, migraciones DB, AI-control, workflows de CI | **Strict (SDD)** |
-| UI, infra no fiscal, refactor acotado, 4+ archivos | **ODD estándar** |
-| Docs, typos, config menor, un archivo | **ODD ligero** |
+| Estado | Qué ocurre |
+|--------|-----------|
+| **Working** | Explora e implementa. |
+| **Checking** | Verifica con tests y comprobaciones funcionales. |
+| **Ready** | El trabajo espera tu decisión. |
+| **Needs your decision** | Requiere autorización explícita antes de seguir. |
 
-Ante la duda, sube un nivel.
+## Pequeño vs. sustancial
 
-## Qué exige cada nivel
+| | Pequeño | Sustancial |
+|---|---------|-----------|
+| **Ejemplos** | Docs, typo, fix de un archivo, config menor | UI nueva, refactor de varios archivos, infraestructura, cualquier cambio de contrato |
+| **Autorización** | Inmediata | Explícita, antes de implementar |
+| **Documento** | Ninguno | Uno solo: `odd/tasks/<tarea>.md` |
+| **Cierre** | Commit atómico con el *por qué* | Documento actualizado + evidencia en el PR |
 
-**Strict (SDD):** worktree aislado; spec en `openspec/` (`strict_tdd: true`); tests primero; `bun scripts/sire-ledger-repro-check.ts` si hay facturación o libros; revisión independiente (skills `lens-*`, `fiscal-review`); evidencia en el PR.
+El *feature document* lleva: **Objetivo**, **Alcance** (checklist), **Fuera de alcance** y **Restricciones**. Ejemplos reales: `odd/tasks/ci-gate-fixes.md`, `odd/tasks/web-tooling-health.md`. Anota lo que decidiste NO tocar y por qué.
 
-**ODD estándar:** branch dedicada y una nota `odd/tasks/<tarea>.md` con *Objetivo*, *Alcance* (checklist), *Fuera de alcance* y *Restricciones*. Ejemplos reales: `odd/tasks/ci-gate-fixes.md`, `odd/tasks/web-tooling-health.md`. Marca los ítems según avanzas y deja anotado lo que decidiste NO tocar.
+## Regla de riesgo fiscal (parte de ODD, no un flujo aparte)
 
-**ODD ligero:** branch dedicada, commit atómico con el mensaje que explica el *por qué*.
+Tocar cualquiera de estos **siempre se trata como sustancial**, sin importar las líneas cambiadas:
 
-## Piloto de gentle-ai (opcional)
+`packages/domain`, SUNAT/SIRE/UBL/IGV, libros y facturación, migraciones DB, AI-control, workflows de CI.
 
-gentle-ai **configura** los agentes que ya usas; no los reemplaza. Este repo ya adoptó parte del ecosistema (Engram, `.gga`, `openspec/`, `odd/`, CodeGraph), así que el piloto solo valida si estandarizar la configuración aporta algo.
+Para esos cambios, además:
 
-Haz el piloto **en tu máquina**, en un worktree aislado (`worktrees/gentle-ai-pilot`, branch `codex/gentle-ai-pilot`):
+1. **Strict TDD activado:** test que falla → pasa → refactor en verde. Tener tests no activa Strict TDD por sí solo; se activa explícitamente.
+2. **Revisión RDD de riesgo alto:** el candidato se congela antes de revisar, se permite como máximo una corrección acotada y la evidencia queda ligada a esa versión exacta.
+3. `bun scripts/sire-ledger-repro-check.ts` si hay facturación o libros.
+4. Aislamiento: worktree propio (`~/Documents/PROYECTOS/Drenyra/worktrees/<task-name>`) y una branch por cambio.
+5. Lentes de revisión de `.agent/skills/` (`lens-sunat-compliance`, `lens-tenant-isolation`, `lens-ledger-integrity`, `fiscal-review`).
 
-1. Haz backup de tu config actual de agentes (`~/.claude`, `~/.codex`, `~/.gemini`) y confirma que el árbol git está limpio.
-2. Instala el CLI y ejecútalo **solo para Claude Code**. Si ofrece dry-run, úsalo primero y lee exactamente qué archivos escribiría.
-3. No aceptes cambios sobre `.gga`, `openspec/config.yaml` ni `AGENTS.md`.
-4. Revisa el diff: qué MCP servers registra, qué deny-list instala, dónde guarda la memoria (debe ser local; ver reglas de [engram-guide.md](engram-guide.md)).
-5. Verifica que los hooks de `.husky/` y `.hooks/` sigan funcionando y que `bun run typecheck` no cambie de resultado.
-6. Úsalo en 2–3 tareas reales (una ODD ligera, una ODD estándar). Registra fricción y ahorro en `odd/tasks/gentle-ai-pilot.md`.
+Ante la duda sobre el tamaño, trátalo como sustancial.
 
-**Criterios para adoptarlo:** no pisa archivos canónicos, no manda datos fuera de tu máquina, los hooks existentes siguen verdes y la tarea ODD estándar se hizo con menos ceremonia sin perder evidencia.
+## RDD en todo PR
 
-**Criterios para descartarlo:** duplica Engram/`.gga`/`openspec` sin ganancia clara, o exige aceptar escrituras sobre archivos canónicos.
+Revisión proporcional al riesgo: **pasiva** (docs, config), **media** (código no fiscal), **alta** (lista anterior). La profundidad la fija el riesgo, no el tamaño del diff.
+
+## Memoria, contexto y herramientas
+
+- **Engram** (proyecto `drenyra`): memoria persistente; guía en [engram-guide.md](engram-guide.md). Nunca guardes secretos, datos de clientes ni registros fiscales crudos.
+- **CodeGraph** (`.codegraph/`) y `CODEX-MAP.md` → `apps/<app>/MAP.md` para navegar sin releer todo.
+- **`.gga`** como revisor previo al commit.
+- Delegación a sub-agentes: tabla de triggers en [`AGENTS.md`](../../AGENTS.md).
+
+## Ciclo de trabajo
+
+1. Clasifica: pequeño o sustancial (¿toca la lista fiscal? → sustancial).
+2. Branch dedicada (`codex/<task-name>`); worktree aislado si es sustancial o fiscal.
+3. Sustancial: crea/actualiza `odd/tasks/<tarea>.md` y espera autorización.
+4. Implementa (Strict TDD si aplica) y verifica con lo más acotado: `bun run typecheck`, `bun run lint`, tests del paquete.
+5. Revisión RDD según riesgo; pasa los gates (`docs:verify`, `architecture:check-boundaries`, repro SIRE).
+6. Commit atómico, PR con *qué toco y qué no*; al mergear, borra worktree y rama.
+
+## Estado heredado de SDD
+
+Los artefactos previos (`openspec/`, `packages/fiscal-sdd`, skill `drenyra-sdd`, workflows `auto-sdd` y `sdd-auto-implement`) **ya no definen el flujo de trabajo**. Siguen en el repo como material histórico y código hasta que se decida retirarlos en una tarea ODD propia. No crees specs nuevas en `openspec/`: usa `odd/tasks/`.
+
+## Adopción de gentle-ai (piloto local, opcional)
+
+gentle-ai **configura** los agentes que ya usas; no los reemplaza. Ejecútalo en tu máquina, en un worktree aislado:
+
+1. Respalda `~/.claude`, `~/.codex`, `~/.gemini` y verifica árbol git limpio.
+2. Instálalo solo para Claude Code; usa dry-run si existe y lee qué escribiría.
+3. No aceptes cambios sobre `.gga` ni `AGENTS.md`.
+4. Revisa el diff: MCP servers registrados, deny-list y dónde guarda la memoria (debe ser local).
+5. Confirma que `.husky/` y `.hooks/` siguen verdes y `bun run typecheck` no cambia.
+6. Úsalo en 2–3 tareas reales y registra la fricción en `odd/tasks/gentle-ai-pilot.md`.
+
+Adóptalo si no pisa archivos canónicos, no envía datos fuera de tu máquina y los hooks siguen verdes. Descártalo si duplica Engram/`.gga` sin ganancia.
 
 ## Referencias
 
 - [`AGENTS.md`](../../AGENTS.md) — reglas canónicas
 - [`engram-guide.md`](engram-guide.md) — memoria persistente
-- [`openspec/config.yaml`](../../openspec/config.yaml) — configuración SDD
+- [gentle-ai](https://github.com/Gentleman-Programming/gentle-ai) — ODD, RDD y Strict TDD

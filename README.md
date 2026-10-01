@@ -204,7 +204,7 @@ Inspired by and built upon ideas or infrastructure from:
 
 | Project       | Influence on Drenyra                                                                     |
 | ------------- | ---------------------------------------------------------------------------------------- |
-| **Gentle-AI** | Work discipline: SDD, context-bound review, evidence receipts, authority-first lifecycle |
+| **Gentle-AI** | Work discipline: ODD, context-bound review (RDD), evidence receipts, authority-first lifecycle |
 | **Pi SDK**    | Agent runtime, tool contracts, session management                                        |
 | **Herdr**     | Persistence, workspace composition, semantic supervision                                 |
 | **Ghostty**   | Speed, progressive depth, zero-friction ergonomics                                       |

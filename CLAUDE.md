@@ -17,21 +17,19 @@
 - **Money:** `Money` VO de `@drenyra/domain` (cents). Nunca floats ni `number` crudo. `dinero.js` NO está instalado.
 - **Navegación rápida:** `CODEX-MAP.md` → `apps/<app>/MAP.md` → `.codebase/index.yml`.
 
-## Flujo de trabajo por niveles (ODD)
+## Flujo de trabajo: ODD (único)
 
-Ceremonia proporcional al riesgo. Detalle en [`docs/10-development/odd-workflow.md`](docs/10-development/odd-workflow.md).
+**Siempre ODD (Organic Driven Development).** No hay otro flujo. Detalle en [`docs/10-development/odd-workflow.md`](docs/10-development/odd-workflow.md).
 
-| Nivel | Cuándo | Flujo |
-|-------|--------|-------|
-| **Strict (SDD)** | Toca `packages/domain`, SUNAT/SIRE, facturación, libros, DB/migraciones, AI-control o CI | Worktree aislado, spec en `openspec/`, strict TDD, `scripts/sire-ledger-repro-check.ts` si aplica, revisión independiente. **Sin importar el tamaño.** |
-| **ODD estándar** | UI, infraestructura no fiscal, refactors acotados, 4+ archivos | Branch dedicada + nota de tarea en `odd/tasks/<tarea>.md` (objetivo, alcance, fuera de alcance). |
-| **ODD ligero** | Docs, typos, fix de un archivo, config menor | Branch dedicada, commit atómico, sin nota previa. |
-
-Ante la duda, sube de nivel.
+- **Pequeño:** autoriza, implementa y cierra sin documento intermedio. Commit atómico con el *por qué*.
+- **Sustancial:** un feature document en `odd/tasks/<tarea>.md` (objetivo, alcance, fuera de alcance, restricciones) y autorización explícita antes de implementar.
+- **Estados:** Working → Checking → Ready → Needs your decision.
+- **Riesgo fiscal (siempre sustancial, sin importar el tamaño):** `packages/domain`, SUNAT/SIRE/UBL/IGV, facturación, libros, DB/migraciones, AI-control, CI. Exige **Strict TDD**, revisión **RDD de riesgo alto**, worktree aislado y `scripts/sire-ledger-repro-check.ts` si aplica.
+- Ante la duda, trátalo como sustancial.
 
 ## Reglas de Git
 
-- Una branch por cambio; `main` limpio. Worktree aislado en el nivel Strict o en trabajo paralelo: `~/Documents/PROYECTOS/Drenyra/worktrees/<task-name>`.
+- Una branch por cambio; `main` limpio. Worktree aislado en trabajo sustancial, fiscal o paralelo: `~/Documents/PROYECTOS/Drenyra/worktrees/<task-name>`.
 - No mezclar fases no relacionadas en la misma branch/worktree. Cambios >400 líneas: ver estrategias de entrega en `AGENTS.md`.
 - Tras mergear, borrar worktree y ramas fusionadas.
 
@@ -57,7 +55,7 @@ Los scripts `compliance:sire-*` del `package.json` fueron eliminados (nunca exis
 ## Memoria y agentes
 
 - **Memoria persistente:** Engram, proyecto `drenyra` ([guía](docs/10-development/engram-guide.md)). No guardar secretos, datos de clientes ni registros fiscales crudos. Si Engram no está disponible, continúa con los archivos del repo y repórtalo.
-- **Estado del trabajo:** `odd/tasks/` (ODD), `openspec/` (SDD). El directorio `.claude/` no existe en el repo; no dependas de `.claude/agents/_protocol.md` ni `.claude/memory/active_plan.md`.
+- **Estado del trabajo:** `odd/tasks/`. `openspec/` y `fiscal-sdd` son material histórico: no crear specs nuevas ahí. El directorio `.claude/` no existe en el repo; no dependas de `.claude/agents/_protocol.md` ni `.claude/memory/active_plan.md`.
 - **Skills:** `.agent/skills/` (revisión, SUNAT, tenant isolation, ledger, SDD, etc.). Delegación a sub-agentes: ver tabla de triggers en `AGENTS.md`.
 - **Seguridad:** OWASP Top 10, prohibido hardcodear credenciales, usar `SecureLogger`. Funciones cortas, JSDoc en API pública.
 
