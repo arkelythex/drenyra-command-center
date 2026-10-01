@@ -1,6 +1,6 @@
 # FiscalComplianceOrchestrator — Diseño
 
-> **Contexto:** El `FiscalSDDRunner` actual es un ejecutor secuencial genérico con gates.
+> **Contexto:** El `FiscalFSDRunner` actual es un ejecutor secuencial genérico con gates.
 > Hace bien lo básico, pero carece de las capacidades de gobierno que tiene el orquestador
 > de gentle-pi: routing de modelos, sub-agentes por fase, artefactos persistentes,
 > gates post-fase con decisión auto/interactivo, y protección de carga de revisión.
@@ -23,7 +23,7 @@
 │         ▼                   ▼                    ▼              │
 │  ┌─────────────────────────────────────────────────────────┐   │
 │  │                  Artifact Store                          │   │
-│  │  openspec (files) | engram (memoria) | hybrid (ambos)   │   │
+│  │  files         | engram (memoria) | hybrid (ambos)   │   │
 │  └─────────────────────────────────────────────────────────┘   │
 │                                                                  │
 │  ┌─────────────────────────────────────────────────────────┐   │
@@ -37,8 +37,8 @@
 
 | Capa                  | Responsabilidad                                    | Package                               |
 | --------------------- | -------------------------------------------------- | ------------------------------------- |
-| **Orchestrator**      | Coordinación, routing, decisiones auto/interactive | `fiscal-sdd` (nuevo)                  |
-| **Phase Runner**      | Ejecución secuencial con gates (existente)         | `fiscal-sdd` (existe)                 |
+| **Orchestrator**      | Coordinación, routing, decisiones auto/interactive | `fiscal-fsd` (nuevo)                  |
+| **Phase Runner**      | Ejecución secuencial con gates (existente)         | `fiscal-fsd` (existe)                 |
 | **Compliance Chains** | DAG de subsistemas para cambios normativos         | `fiscal-compliance-pipeline` (existe) |
 | **Artifact Store**    | Persistencia de artefactos por fase                | Nuevo adapter                         |
 | **Sub-agent Pool**    | Ejecución delegada por fase                        | Nuevo (vía intercom o sub-agent)      |
@@ -51,7 +51,7 @@
 | ------------------ | ------------------------------------------------- | --------------------------------- | ------------------------------------------- |
 | **Model routing**  | Model Assignments por fase                        | `LLMCaller` único unificado       | `ModelRouter` por fase con fallback         |
 | **Sub-agentes**    | Cada fase es un agente separado                   | Mismo proceso                     | Sub-agentes vía `intercom` o `subagent_run` |
-| **Artifact store** | openspec / engram / hybrid                        | `evidenceStore` callback opcional | 3 backends: openspec, engram, hybrid        |
+| **Artifact store** | files / engram / hybrid                        | `evidenceStore` callback opcional | 3 backends: openspec, engram, hybrid        |
 | **Gate post-fase** | Gatekeeper validación + decisión auto/interactive | `FiscalPhaseGate` solo valida     | Gate + DecisionGate (auto/manual/escalate)  |
 | **Review guard**   | Límite 400 líneas, chained PRs                    | No existe                         | `ReviewGuard` antes de migración            |
 | **Pre-flight**     | SDD Init, DAG de dependencias                     | No existe                         | `PreflightValidator`                        |
@@ -65,7 +65,7 @@
 ### 3.1 Model Router
 
 ```typescript
-// packages/fiscal-sdd/src/orchestrator/model-router.ts
+// packages/fiscal-fsd/src/orchestrator/model-router.ts
 
 export type ModelProvider =
   'deepseek' | 'gemini' | 'claude' | 'openai' | 'custom'
@@ -152,9 +152,9 @@ export class ModelRouter {
 ### 3.2 Artifact Store
 
 ```typescript
-// packages/fiscal-sdd/src/orchestrator/artifact-store.ts
+// packages/fiscal-fsd/src/orchestrator/artifact-store.ts
 
-export type ArtifactStoreMode = 'openspec' | 'engram' | 'hybrid' | 'none'
+export type ArtifactStoreMode = 'files' | 'engram' | 'hybrid' | 'none'
 
 export interface FaseArtifact {
   fase: FaseName
@@ -175,7 +175,7 @@ export interface ArtifactStore {
   loadAll(changeId: string): Promise<Map<FaseName, FaseArtifact>>
 }
 
-export class OpenSpecArtifactStore implements ArtifactStore {
+export class FileArtifactStore implements ArtifactStore {
   constructor(private basePath: string) {}
 
   async save(changeId: string, artifact: FaseArtifact): Promise<void> {
@@ -204,7 +204,7 @@ export class OpenSpecArtifactStore implements ArtifactStore {
 ### 3.3 Preflight Validator
 
 ```typescript
-// packages/fiscal-sdd/src/orchestrator/preflight.ts
+// packages/fiscal-fsd/src/orchestrator/preflight.ts
 
 export interface PreflightCheck {
   name: string
@@ -250,7 +250,7 @@ export const PREFLIGHT_CHECKS: PreflightCheck[] = [
 ### 3.4 Review Guard
 
 ```typescript
-// packages/fiscal-sdd/src/orchestrator/review-guard.ts
+// packages/fiscal-fsd/src/orchestrator/review-guard.ts
 
 export interface ReviewForecast {
   /** Líneas estimadas que modificará migración */
@@ -289,7 +289,7 @@ export class ReviewGuard {
 ### 3.5 Decision Gate
 
 ```typescript
-// packages/fiscal-sdd/src/orchestrator/decision-gate.ts
+// packages/fiscal-fsd/src/orchestrator/decision-gate.ts
 
 export type DecisionMode = 'auto' | 'interactive'
 
@@ -335,7 +335,7 @@ export class DecisionGate {
 ### 3.6 Sub-agent Delegation
 
 ```typescript
-// packages/fiscal-sdd/src/orchestrator/subagent-runner.ts
+// packages/fiscal-fsd/src/orchestrator/subagent-runner.ts
 
 export interface SubAgentConfig {
   enabled: boolean
@@ -441,7 +441,7 @@ FiscalComplianceOrchestrator.run(changeId, scope, mode)
 ### 5.1 Package Structure
 
 ```
-packages/fiscal-sdd/src/
+packages/fiscal-fsd/src/
   orchestrator/
     fiscal-compliance-orchestrator.ts   ← Clase principal
     model-router.ts                     ← Routing de modelos por fase
@@ -452,10 +452,10 @@ packages/fiscal-sdd/src/
     subagent-runner.ts                  ← Delegación a sub-agentes
     types.ts                            ← Tipos específicos del orchestrator
   phases/
-    sdd-phases.ts                       ← Phase factories (existentes)
+    fsd-phases.ts                       ← Phase factories (existentes)
   pipelines/
-    sdd-fiscal-pipeline.ts              ← Pipeline definition (existente)
-  runner.ts                             ← FiscalSDDRunner (existente)
+    fsd-fiscal-pipeline.ts              ← Pipeline definition (existente)
+  runner.ts                             ← FiscalFSDRunner (existente)
   types.ts                              ← Core types (existentes)
   index.ts                              ← Barrel exports
 ```
@@ -463,7 +463,7 @@ packages/fiscal-sdd/src/
 ### 5.2 Clase Principal
 
 ```typescript
-// packages/fiscal-sdd/src/orchestrator/fiscal-compliance-orchestrator.ts
+// packages/fiscal-fsd/src/orchestrator/fiscal-compliance-orchestrator.ts
 
 export interface OrchestratorConfig {
   mode: 'auto' | 'interactive'
@@ -476,7 +476,7 @@ export interface OrchestratorConfig {
 
 export class FiscalComplianceOrchestrator {
   private preflight: PreflightValidator
-  private runner: FiscalSDDRunner
+  private runner: FiscalFSDRunner
   private modelRouter: ModelRouter
   private artifactStore: ArtifactStore
   private decisionGate: DecisionGate
@@ -486,7 +486,7 @@ export class FiscalComplianceOrchestrator {
 
   constructor(private config: OrchestratorConfig) {
     this.preflight = new PreflightValidator()
-    this.runner = new FiscalSDDRunner()
+    this.runner = new FiscalFSDRunner()
     this.modelRouter = new ModelRouter(
       config.modelAssignments ?? DEFAULT_ASSIGNMENTS
     )
@@ -613,7 +613,7 @@ if (change.affectedSubsystems?.includes('detracciones')) {
 ### Fase 1: Core Orchestrator (este PR)
 
 - [ ] `ModelRouter` con assignments configurables
-- [ ] `ArtifactStore` (openspec file-based primero)
+- [ ] `ArtifactStore` (file-based primero)
 - [ ] `PreflightValidator` con checks básicos
 - [ ] `DecisionGate` (auto/interactive)
 
@@ -634,7 +634,7 @@ if (change.affectedSubsystems?.includes('detracciones')) {
 
 ## 8. Próximos Pasos
 
-1. Implementar `ModelRouter` y `ArtifactStore` (openspec)
+1. Implementar `ModelRouter` y `ArtifactStore` (files)
 2. Refactorizar `FiscalComplianceOrchestrator.run()` con el loop de fases
 3. Migrar los tests existentes al nuevo orchestrator
 4. Agregar `ReviewGuard` antes de migración

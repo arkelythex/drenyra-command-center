@@ -1,5 +1,5 @@
 {
-  "name": "@drenyra/fiscal-sdd",
+  "name": "@drenyra/fiscal-fsd",
   "version": "1.0.0",
   "description": "Pipeline dinámico de cumplimiento fiscal — solicitud→análisis→diseño→plan→migración→auditoría",
   "type": "module",

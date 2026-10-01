@@ -16,7 +16,7 @@
  * ```
  */
 
-import type { LLMCaller } from "../phases/sdd-phases";
+import type { LLMCaller } from "../phases/fsd-phases";
 import type { FaseName, ModelAssignment, ModelProvider } from "./types";
 
 // ============================================================================

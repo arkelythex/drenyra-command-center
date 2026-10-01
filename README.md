@@ -190,7 +190,7 @@ go run cmd/drenyra/main.go
 | ---------------- | -------------------------------------------------------------------------- |
 | **Status**       | Active development                                                         |
 | **FEOS Phase**   | Fase 1 complete (9/18 SDDs), Fase 2 in progress                            |
-| **Source files** | 29 across 3 verified packages (orchestrator, phase-gatekeeper, fiscal-sdd) |
+| **Source files** | 29 across 3 verified packages (orchestrator, phase-gatekeeper, fiscal-fsd) |
 | **Tests**        | 209 passing across 3 packages                                              |
 | **SDDs**         | 18 FEOS SDDs defined, 9 implemented                                        |
 | **Capabilities** | 90+ mapped across 12 domains                                               |

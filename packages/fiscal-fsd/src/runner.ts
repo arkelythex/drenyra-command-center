@@ -1,5 +1,5 @@
 /**
- * FiscalSDDRunner — generic, sequential phase pipeline executor.
+ * FiscalFSDRunner — generic, sequential phase pipeline executor.
  *
  * Runs phases one at a time in order. After each phase execution:
  * 1. Runs the phase's gate (if defined)
@@ -8,7 +8,7 @@
  *
  * @example
  * ```ts
- * const runner = new FiscalSDDRunner();
+ * const runner = new FiscalFSDRunner();
  * const result = await runner.runPipeline(myPipeline, initialInput, {
  *   runId: "run-001",
  *   scope: { organizationId: "org-1", companyId: "comp-1", ... },
@@ -17,8 +17,8 @@
  */
 
 import type {
+	FiscalFSDPipeline,
 	FiscalPhaseDef,
-	FiscalSDDPipeline,
 	NewEvidenceArtifact,
 	PhaseContext,
 	PhaseResult,
@@ -44,14 +44,14 @@ export class PhaseExecutionError extends Error {
 }
 
 /**
- * Generic SDD pipeline runner.
+ * Generic FSD pipeline runner.
  *
  * Executes phases sequentially, passing output of each phase as input
  * to the next phase. Gates validate phase output before proceeding.
  */
-export class FiscalSDDRunner {
+export class FiscalFSDRunner {
 	/**
-	 * Run a complete SDD pipeline.
+	 * Run a complete FSD pipeline.
 	 *
 	 * @param pipeline - The pipeline definition
 	 * @param initialInput - Input for the first phase
@@ -59,7 +59,7 @@ export class FiscalSDDRunner {
 	 * @returns Complete pipeline result
 	 */
 	async runPipeline(
-		pipeline: FiscalSDDPipeline,
+		pipeline: FiscalFSDPipeline,
 		initialInput: unknown,
 		context: Partial<PhaseContext>,
 	): Promise<PipelineResult> {
@@ -112,6 +112,7 @@ export class FiscalSDDRunner {
 	/**
 	 * Run a single phase with gate validation.
 	 */
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the fiscal-sdd -> fiscal-fsd rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	private async runPhase(
 		phase: FiscalPhaseDef,
 		input: unknown,

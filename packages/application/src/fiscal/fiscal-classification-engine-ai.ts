@@ -17,7 +17,7 @@
  */
 
 import type { FiscalClassification } from "@drenyra/domain/fiscal";
-import type { LLMCaller } from "@drenyra/fiscal-sdd";
+import type { LLMCaller } from "@drenyra/fiscal-fsd";
 import type {
 	ClassificationInput,
 	FiscalClassificationEngine,
@@ -157,6 +157,7 @@ export class FiscalClassificationEngineAI {
 	/**
 	 * Clasifica usando LLM.
 	 */
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the fiscal-sdd -> fiscal-fsd rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	private async classifyWithLLM(
 		input: ClassificationInput,
 		fallback: FiscalClassification,

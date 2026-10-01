@@ -1,18 +1,18 @@
 /**
- * Integration test: SDD pipeline with DeepSeek V4 Flash.
+ * Integration test: Fiscal Compliance Pipeline con DeepSeek V4 Flash.
  *
- * Run: bun run packages/fiscal-sdd/__tests__/sdd-deepseek-integration.test.ts
+ * Run: bun run packages/fiscal-fsd/__tests__/compliance-deepseek-integration.test.ts
  */
 
-import type { LLMCaller } from "../src/phases/sdd-phases";
+import type { LLMCaller } from "../src/phases/fsd-phases";
 import {
 	createAnalisisPhase,
 	createDisenioPhase,
 	createPlanPhase,
 	createSolicitudPhase,
-} from "../src/phases/sdd-phases";
-import { FiscalSDDRunner } from "../src/runner";
-import type { FiscalSDDPipeline } from "../src/types";
+} from "../src/phases/fsd-phases";
+import { FiscalFSDRunner } from "../src/runner";
+import type { FiscalFSDPipeline } from "../src/types";
 
 /** Model-agnostic: swap this function to change provider. */
 const deepseekCaller: LLMCaller = async (system: string, prompt: string) => {
@@ -46,12 +46,11 @@ const deepseekCaller: LLMCaller = async (system: string, prompt: string) => {
 async function main() {
 	console.log("=== Pipeline de Cumplimiento Fiscal × DeepSeek V4 Flash ===\n");
 
-	// Build pipeline with real LLM phases (fiscal naming)
-	const pipeline: FiscalSDDPipeline = {
-		id: "demo-igv-change",
-		name: "Cambio de Tasa IGV — Demo",
-		description:
-			"Pipeline de cumplimiento fiscal: solicitud→análisis→diseño→plan",
+	// Pipeline con fases fiscales reales
+	const pipeline: FiscalFSDPipeline = {
+		id: "demo-cambio-igv",
+		name: "Cambio de Tasa IGV",
+		description: "Pipeline demo: cambio de tasa IGV de 18% a 19%",
 		onGateBlocked: "STOP",
 		phases: [
 			createSolicitudPhase(deepseekCaller),
@@ -61,23 +60,23 @@ async function main() {
 		],
 	};
 
-	const runner = new FiscalSDDRunner();
+	const runner = new FiscalFSDRunner();
 
 	console.log("Ejecutando pipeline con DeepSeek V4 Flash...\n");
 
 	const result = await runner.runPipeline(
 		pipeline,
 		{
-			ruleType: "RATE",
-			oldValue: 0.18,
-			newValue: 0.19,
-			regulation: "Ley N° 12345",
-			description: "IGV rate change from 18% to 19%",
+			tipoCambio: "RATE",
+			valorAnterior: 0.18,
+			valorNuevo: 0.19,
+			normativa: "Ley N° 12345",
+			descripcion: "Cambio de tasa IGV de 18% a 19%",
 		},
 		{
 			runId: `demo-${Date.now()}`,
 			metadata: {
-				title: "IGV Rate Change 18% → 19%",
+				title: "Cambio de Tasa IGV 18% → 19%",
 				regulationRef: "Ley N° 12345 - Artículo 7°",
 				description:
 					"Actualización de la tasa IGV del 18% al 19% según nueva norma tributaria",
@@ -86,27 +85,29 @@ async function main() {
 	);
 
 	console.log(
-		`\nPipeline status: ${result.status} (${result.totalDurationMs}ms)`,
+		`\nEstado del pipeline: ${result.status} (${result.totalDurationMs}ms)`,
 	);
 
 	const phaseNames = pipeline.phases.map((p) => p.name);
 	for (let i = 0; i < result.phaseResults.length; i++) {
 		const phase = result.phaseResults[i];
-		const phName = phaseNames[i] ?? `phase-${i}`;
+		const phName = phaseNames[i] ?? `fase-${i}`;
 		const output = phase.output as Record<string, unknown> | null;
-		const preview = output ? JSON.stringify(output).slice(0, 200) : "(empty)";
+		const preview = output ? JSON.stringify(output).slice(0, 200) : "(vacío)";
 		console.log(`\n  [${phase.status}] ${phName}:`);
 		console.log(`    ${preview}...`);
-		console.log(`    Confidence: ${phase.confidence}`);
+		console.log(`    Confianza: ${phase.confidence}`);
 		if (phase.errors.length > 0) {
-			console.log(`    Errors: ${phase.errors.join("; ")}`);
+			console.log(`    Errores: ${phase.errors.join("; ")}`);
 		}
 	}
 
-	console.log("\n=== ✅ Pipeline ejecutado correctamente ===");
+	console.log(
+		"\n=== ✅ Pipeline de Cumplimiento Fiscal ejecutado correctamente ===",
+	);
 }
 
 main().catch((err) => {
-	console.error("Pipeline failed:", err);
+	console.error("Pipeline falló:", err);
 	process.exit(1);
 });

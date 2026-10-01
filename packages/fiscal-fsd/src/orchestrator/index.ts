@@ -4,8 +4,8 @@
 
 export {
 	createArtifactStore,
+	FileArtifactStore,
 	InMemoryArtifactStore,
-	OpenSpecArtifactStore,
 } from "./artifact-store";
 export { EngramArtifactStore } from "./artifact-store-engram";
 export type { ChainReport } from "./compliance-chain-adapter";

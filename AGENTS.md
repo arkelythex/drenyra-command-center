@@ -253,7 +253,7 @@ Drenyra now has its own orchestrator and harness system, modeled after the Gentl
 
 - `packages/drenyra-orchestrator`: 39 tests passing
 - `packages/phase-gatekeeper`: 18 tests passing
-- `packages/fiscal-sdd`: 97 tests passing
+- `packages/fiscal-fsd`: 100 tests passing
 - **Total: 154 tests, all passing**
 
 ### Usage

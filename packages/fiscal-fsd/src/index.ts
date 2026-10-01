@@ -1,11 +1,11 @@
 /**
- * Fiscal SDD — barrel exports
+ * Fiscal FSD — barrel exports
  */
 
 export {
 	createArtifactStore,
+	FileArtifactStore,
 	InMemoryArtifactStore,
-	OpenSpecArtifactStore,
 } from "./orchestrator/artifact-store";
 export { DecisionGate } from "./orchestrator/decision-gate";
 export { FiscalComplianceOrchestrator } from "./orchestrator/fiscal-compliance-orchestrator";
@@ -40,7 +40,7 @@ export type {
 	ReviewStrategy,
 } from "./orchestrator/types";
 export { FASES_ORDEN } from "./orchestrator/types";
-export type { FiscalChangeMetadata, LLMCaller } from "./phases/sdd-phases";
+export type { FiscalChangeMetadata, LLMCaller } from "./phases/fsd-phases";
 export {
 	createAnalisisPhase,
 	createAuditoriaPhase,
@@ -48,18 +48,18 @@ export {
 	createMigracionPhase,
 	createPlanPhase,
 	createSolicitudPhase,
-} from "./phases/sdd-phases";
+} from "./phases/fsd-phases";
+export { FISCAL_COMPLIANCE_PIPELINE } from "./pipelines/fsd-fiscal-pipeline";
 export { INVOICE_PIPELINE } from "./pipelines/invoice-pipeline";
-export { FISCAL_COMPLIANCE_PIPELINE } from "./pipelines/sdd-fiscal-pipeline";
 export {
-	FiscalSDDRunner,
+	FiscalFSDRunner,
 	PhaseExecutionError,
 	PhaseGateBlockedError,
 } from "./runner";
 export type {
+	FiscalFSDPipeline,
 	FiscalPhaseDef,
 	FiscalPhaseGate,
-	FiscalSDDPipeline,
 	GatekeeperVerdict,
 	NewEvidenceArtifact,
 	PhaseContext,

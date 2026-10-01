@@ -69,7 +69,7 @@ Qué cambia al sincronizar (según las notas de la release):
 | Elemento | Estado |
 |----------|--------|
 | Workflows `auto-sdd`, `sdd-auto-implement`, `cursor-gentle-ai-sync`; todo `openspec/` | **Eliminados** (historial en git: `git show d428534:openspec/<ruta>`) |
-| `packages/fiscal-sdd` y la skill `drenyra-sdd` | **No son legado:** son **FSD**, la ejecución fiscal guiada por especificación del *producto* (fases captura → clasificación → conciliación → cierre). Usa la API de compliance. Su nombre «SDD» es heredado y se renombra en una tarea aparte. |
+| `packages/fiscal-fsd` (ex `fiscal-sdd`) y la skill `drenyra-fsd` (ex `drenyra-sdd`) | **No son legado:** son **FSD**, la ejecución fiscal guiada por especificación del *producto* (fases captura → clasificación → conciliación → cierre). Usa la API de compliance. Renombrados desde SDD; el prefijo de tópicos de Engram `sdd/…` y el ID de agente `drenyra-sdd-orchestrator` se conservan por ser contratos persistidos/compartidos. |
 
 ## Memoria, contexto y herramientas
 

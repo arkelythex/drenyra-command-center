@@ -1,7 +1,7 @@
 /**
  * FiscalComplianceOrchestrator — tipos específicos del orquestador.
  *
- * Extiende los tipos base de FiscalSDD con capacidades de gobierno:
+ * Extiende los tipos base de FiscalFSD con capacidades de gobierno:
  * routing de modelos, persistencia de artefactos, modos de ejecución,
  * y protección de carga de revisión.
  */
@@ -71,7 +71,7 @@ export interface ModelAssignment {
 // Artifact Store
 // ============================================================================
 
-export type ArtifactStoreMode = "openspec" | "engram" | "hybrid" | "none";
+export type ArtifactStoreMode = "files" | "engram" | "hybrid" | "none";
 
 export interface FaseArtifact {
 	/** Nombre de la fase. */
@@ -192,8 +192,8 @@ export interface OrchestratorConfig {
 	subAgents?: boolean;
 	/** Si se habilita Strict TDD mode. */
 	strictTdd?: boolean;
-	/** Directorio base para artifact store openspec. */
-	openspecBasePath?: string;
+	/** Directorio base para el artifact store de archivos (modo "files"). */
+	artifactBasePath?: string;
 }
 
 export type OrchestratorStatus =

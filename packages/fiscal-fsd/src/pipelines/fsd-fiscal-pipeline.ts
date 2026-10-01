@@ -7,15 +7,15 @@
  *
  * @example
  * ```ts
- * import { FiscalSDDRunner } from '@drenyra/fiscal-sdd';
- * import { FISCAL_COMPLIANCE_PIPELINE } from '@drenyra/fiscal-sdd';
+ * import { FiscalFSDRunner } from '@drenyra/fiscal-fsd';
+ * import { FISCAL_COMPLIANCE_PIPELINE } from '@drenyra/fiscal-fsd';
  *
- * const runner = new FiscalSDDRunner();
+ * const runner = new FiscalFSDRunner();
  * const result = await runner.runPipeline(FISCAL_COMPLIANCE_PIPELINE, solicitudInput, ctx);
  * ```
  */
 
-import type { FiscalSDDPipeline, PhaseContext, PhaseResult } from "../types";
+import type { FiscalFSDPipeline, PhaseContext, PhaseResult } from "../types";
 
 /** Placeholder phase — usado cuando no se inyecta un LLM caller. */
 function placeholderPhase(name: string, description: string) {
@@ -49,7 +49,7 @@ function placeholderPhase(name: string, description: string) {
  * Cuando se configura con LLM caller via createSolicitudPhase() etc.,
  * cada fase genera contenido real vía el modelo.
  */
-export const FISCAL_COMPLIANCE_PIPELINE: FiscalSDDPipeline = {
+export const FISCAL_COMPLIANCE_PIPELINE: FiscalFSDPipeline = {
 	id: "fiscal-compliance-pipeline",
 	name: "Pipeline de Cumplimiento Fiscal",
 	description:

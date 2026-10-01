@@ -17,7 +17,7 @@
  * ```ts
  * const caller = async (system: string, prompt: string) => { /* ... *\/ };
  *
- * const pipeline: FiscalSDDPipeline = {
+ * const pipeline: FiscalFSDPipeline = {
  *   id: "igv-rate-change",
  *   phases: [
  *     createSolicitudPhase(caller),
@@ -189,6 +189,7 @@ function createLLMPhase(
 		execute: async (
 			input: unknown,
 			ctx: PhaseContext,
+			// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the fiscal-sdd -> fiscal-fsd rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 		): Promise<PhaseResult> => {
 			const metadata = (ctx.metadata ?? {}) as FiscalChangeMetadata;
 			const previousOutput = input ?? {};

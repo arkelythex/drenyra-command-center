@@ -1,12 +1,12 @@
 /**
- * Core types for FiscalSDD — a generic, declarative phase pipeline engine.
+ * Core types for FiscalFSD — a generic, declarative phase pipeline engine.
  *
  * Unlike the fixed WorkflowOrchestrator pipeline (Reader→Parser→Validator→Arbitrator),
- * FiscalSDD lets you define, compose, and run arbitrary phase pipelines.
+ * FiscalFSD lets you define, compose, and run arbitrary phase pipelines.
  *
  * @example
  * ```ts
- * const fiscalPipeline: FiscalSDDPipeline = {
+ * const fiscalPipeline: FiscalFSDPipeline = {
  *   id: "igv-rate-change",
  *   name: "IGV Rate Change",
  *   phases: [
@@ -31,7 +31,7 @@ export interface GatekeeperVerdict {
 // Phase and Pipeline
 // ============================================================================
 
-/** A single phase in a FiscalSDD pipeline. */
+/** A single phase in a FiscalFSD pipeline. */
 export interface FiscalPhaseDef<I = unknown, R = unknown> {
 	/** Unique phase name. */
 	name: string;
@@ -45,7 +45,7 @@ export interface FiscalPhaseDef<I = unknown, R = unknown> {
 	gate?: FiscalPhaseGate<I, R>;
 }
 
-/** A gatekeeper for a fiscal SDD phase. */
+/** A gatekeeper for a fiscal FSD phase. */
 export interface FiscalPhaseGate<I, R> {
 	name: string;
 	description: string;
@@ -114,8 +114,8 @@ export interface NewEvidenceArtifact {
 	createdAt: string;
 }
 
-/** A complete SDD pipeline definition. */
-export interface FiscalSDDPipeline {
+/** A complete FSD pipeline definition. */
+export interface FiscalFSDPipeline {
 	/** Unique pipeline ID. */
 	id: string;
 	/** Human-readable name. */
@@ -128,7 +128,7 @@ export interface FiscalSDDPipeline {
 	description?: string;
 }
 
-/** Complete result of running an SDD pipeline. */
+/** Complete result of running an FSD pipeline. */
 export interface PipelineResult {
 	/** Pipeline ID. */
 	pipelineId: string;

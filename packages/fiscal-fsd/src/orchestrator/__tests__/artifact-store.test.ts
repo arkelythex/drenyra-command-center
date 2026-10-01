@@ -1,5 +1,12 @@
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { beforeEach, describe, expect, it } from "vitest";
-import { InMemoryArtifactStore } from "../artifact-store";
+import {
+	createArtifactStore,
+	FileArtifactStore,
+	InMemoryArtifactStore,
+} from "../artifact-store";
 import type { FaseArtifact } from "../types";
 
 function makeArtifact(fase: string, status = "SUCCESS"): FaseArtifact {
@@ -89,5 +96,36 @@ describe("InMemoryArtifactStore", () => {
 	it("health check always returns true", async () => {
 		const healthy = await store.healthCheck();
 		expect(healthy).toBe(true);
+	});
+});
+
+describe('FileArtifactStore (mode "files")', () => {
+	let dir: string;
+	beforeEach(async () => {
+		dir = await mkdtemp(join(tmpdir(), "fsd-artifacts-"));
+	});
+
+	it('is what createArtifactStore returns for mode "files"', async () => {
+		const store = createArtifactStore("files", dir);
+		expect(store).toBeInstanceOf(FileArtifactStore);
+		await rm(dir, { recursive: true, force: true });
+	});
+
+	it("round-trips an artifact under cambios/{changeId}/{fase}.json", async () => {
+		const store = createArtifactStore("files", dir);
+		const artifact = {
+			fase: "solicitud",
+			changeId: "chg-1",
+		} as unknown as FaseArtifact;
+		await store.save("chg-1", artifact);
+		expect(await store.load("chg-1", "solicitud")).toEqual(artifact);
+		expect(await store.listChanges()).toContain("chg-1");
+		await rm(dir, { recursive: true, force: true });
+	});
+
+	it('rejects the retired "openspec" mode instead of silently using memory', () => {
+		expect(() => createArtifactStore("openspec" as never, dir)).toThrow(
+			/renamed to "files"/,
+		);
 	});
 });

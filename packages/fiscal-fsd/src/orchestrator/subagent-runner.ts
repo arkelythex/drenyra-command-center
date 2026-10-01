@@ -13,7 +13,7 @@
  * ```
  */
 
-import type { LLMCaller } from "../phases/sdd-phases";
+import type { LLMCaller } from "../phases/fsd-phases";
 import type { FaseName, FiscalScope } from "./types";
 
 // ============================================================================
@@ -62,9 +62,9 @@ import {
 	createMigracionPhase,
 	createPlanPhase,
 	createSolicitudPhase,
-} from "../phases/sdd-phases";
+} from "../phases/fsd-phases";
 
-import { FiscalSDDRunner } from "../runner";
+import { FiscalFSDRunner } from "../runner";
 import type { PhaseContext, PhaseResult } from "../types";
 
 /**
@@ -97,7 +97,7 @@ async function executePhaseInline(
 		phases: [phase],
 	};
 
-	const runner = new FiscalSDDRunner();
+	const runner = new FiscalFSDRunner();
 	const ctx: Partial<PhaseContext> = {
 		runId: `${changeId}-${fase}-${Date.now()}`,
 		scope,

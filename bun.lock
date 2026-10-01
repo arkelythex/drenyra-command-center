@@ -304,21 +304,21 @@
         "vitest": "^4.1.10",
       },
     },
-    "packages/fiscal-query-engine": {
-      "name": "@drenyra/fiscal-query-engine",
-      "version": "0.1.0",
-      "dependencies": {
-        "@drenyra/fiscal-sdd": "workspace:*",
-        "@drenyra/orchestrator": "workspace:*",
-      },
+    "packages/fiscal-fsd": {
+      "name": "@drenyra/fiscal-fsd",
+      "version": "1.0.0",
       "devDependencies": {
         "typescript": "^7.0.2",
         "vitest": "^4.1.10",
       },
     },
-    "packages/fiscal-sdd": {
-      "name": "@drenyra/fiscal-sdd",
-      "version": "1.0.0",
+    "packages/fiscal-query-engine": {
+      "name": "@drenyra/fiscal-query-engine",
+      "version": "0.1.0",
+      "dependencies": {
+        "@drenyra/fiscal-fsd": "workspace:*",
+        "@drenyra/orchestrator": "workspace:*",
+      },
       "devDependencies": {
         "typescript": "^7.0.2",
         "vitest": "^4.1.10",
@@ -791,9 +791,9 @@
 
     "@drenyra/fiscal-compliance-pipeline": ["@drenyra/fiscal-compliance-pipeline@workspace:packages/fiscal-compliance-pipeline"],
 
-    "@drenyra/fiscal-query-engine": ["@drenyra/fiscal-query-engine@workspace:packages/fiscal-query-engine"],
+    "@drenyra/fiscal-fsd": ["@drenyra/fiscal-fsd@workspace:packages/fiscal-fsd"],
 
-    "@drenyra/fiscal-sdd": ["@drenyra/fiscal-sdd@workspace:packages/fiscal-sdd"],
+    "@drenyra/fiscal-query-engine": ["@drenyra/fiscal-query-engine@workspace:packages/fiscal-query-engine"],
 
     "@drenyra/infrastructure": ["@drenyra/infrastructure@workspace:packages/infrastructure"],
 

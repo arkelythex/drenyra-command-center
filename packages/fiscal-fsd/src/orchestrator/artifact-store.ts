@@ -2,7 +2,7 @@
  * ArtifactStore — persistencia de artefactos de fase.
  *
  * Backends soportados:
- * - openspec: archivos JSON en disco (default)
+ * - files: archivos JSON en disco (default)
  * - engram: memoria persistente (futuro)
  * - hybrid: ambos (futuro)
  * - none: en memoria (solo para tests)
@@ -59,7 +59,7 @@ export class InMemoryArtifactStore implements ArtifactStore {
 }
 
 // ============================================================================
-// OpenSpec File Store
+// File Store
 // ============================================================================
 
 /**
@@ -76,7 +76,7 @@ export class InMemoryArtifactStore implements ArtifactStore {
  *         migracion.json
  *         auditoria.json
  */
-export class OpenSpecArtifactStore implements ArtifactStore {
+export class FileArtifactStore implements ArtifactStore {
 	private fs: typeof import("fs/promises");
 	private path: typeof import("path");
 
@@ -180,14 +180,18 @@ export function createArtifactStore(
 	basePath?: string,
 ): ArtifactStore {
 	switch (mode) {
-		case "openspec":
-			return new OpenSpecArtifactStore(basePath ?? process.cwd());
+		case "files":
+			return new FileArtifactStore(basePath ?? process.cwd());
+		case "openspec" as string:
+			throw new Error(
+				'ArtifactStoreMode "openspec" was renamed to "files" (OpenSpec is retired). Use "files".',
+			);
 		case "none":
 			return new InMemoryArtifactStore();
 		case "engram":
 			return new EngramArtifactStore(basePath ?? "drenyra");
 		case "hybrid":
-			// Futura implementación: openspec + engram
+			// Futura implementación: files + engram
 			return new EngramArtifactStore(basePath ?? "drenyra");
 		default:
 			return new InMemoryArtifactStore();

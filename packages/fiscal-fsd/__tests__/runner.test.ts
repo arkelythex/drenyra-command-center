@@ -1,17 +1,17 @@
 /**
- * Tests for FiscalSDDRunner
+ * Tests for FiscalFSDRunner
  */
 
 import { describe, expect, it } from "vitest";
-import { FiscalSDDRunner } from "../src/runner";
+import { FiscalFSDRunner } from "../src/runner";
 import type {
-	FiscalSDDPipeline,
+	FiscalFSDPipeline,
 	PhaseContext,
 	PhaseResult,
 } from "../src/types";
 
-describe("FiscalSDDRunner", () => {
-	const runner = new FiscalSDDRunner();
+describe("FiscalFSDRunner", () => {
+	const runner = new FiscalFSDRunner();
 	const ctx: Partial<PhaseContext> = {
 		runId: "test-run-001",
 		scope: {
@@ -25,7 +25,7 @@ describe("FiscalSDDRunner", () => {
 
 	describe("runPipeline", () => {
 		it("executes phases sequentially and passes output between them", async () => {
-			const pipeline: FiscalSDDPipeline = {
+			const pipeline: FiscalFSDPipeline = {
 				id: "test-pipeline",
 				name: "Test Pipeline",
 				onGateBlocked: "STOP",
@@ -77,7 +77,7 @@ describe("FiscalSDDRunner", () => {
 		});
 
 		it("blocks on gate failure with STOP mode", async () => {
-			const pipeline: FiscalSDDPipeline = {
+			const pipeline: FiscalFSDPipeline = {
 				id: "test-blocked",
 				name: "Blocked Pipeline",
 				onGateBlocked: "STOP",
@@ -129,7 +129,7 @@ describe("FiscalSDDRunner", () => {
 		});
 
 		it("continues on gate failure with WARN_CONTINUE mode", async () => {
-			const pipeline: FiscalSDDPipeline = {
+			const pipeline: FiscalFSDPipeline = {
 				id: "test-warn",
 				name: "Warn Pipeline",
 				onGateBlocked: "WARN_CONTINUE",
@@ -183,7 +183,7 @@ describe("FiscalSDDRunner", () => {
 		});
 
 		it("fails on phase execution error", async () => {
-			const pipeline: FiscalSDDPipeline = {
+			const pipeline: FiscalFSDPipeline = {
 				id: "test-fail",
 				name: "Failing Pipeline",
 				onGateBlocked: "STOP",
@@ -207,7 +207,7 @@ describe("FiscalSDDRunner", () => {
 		});
 
 		it("produces evidence artifacts for each phase", async () => {
-			const pipeline: FiscalSDDPipeline = {
+			const pipeline: FiscalFSDPipeline = {
 				id: "test-evidence",
 				name: "Evidence Pipeline",
 				onGateBlocked: "STOP",
@@ -252,7 +252,7 @@ describe("FiscalSDDRunner", () => {
 
 	describe("single phase with gate", () => {
 		it("includes gate results in phase result", async () => {
-			const pipeline: FiscalSDDPipeline = {
+			const pipeline: FiscalFSDPipeline = {
 				id: "gate-test",
 				name: "Gate Test",
 				onGateBlocked: "STOP",

@@ -26,9 +26,9 @@ import {
 	createMigracionPhase,
 	createPlanPhase,
 	createSolicitudPhase,
-} from "../phases/sdd-phases";
-import { FiscalSDDRunner } from "../runner";
-import type { FiscalSDDPipeline, PhaseContext, PhaseResult } from "../types";
+} from "../phases/fsd-phases";
+import { FiscalFSDRunner } from "../runner";
+import type { FiscalFSDPipeline, PhaseContext, PhaseResult } from "../types";
 import { createArtifactStore } from "./artifact-store";
 import { ComplianceChainAdapter } from "./compliance-chain-adapter";
 import { DecisionGate } from "./decision-gate";
@@ -61,7 +61,7 @@ interface RunContext {
 // ============================================================================
 
 export class FiscalComplianceOrchestrator {
-	private runner: FiscalSDDRunner;
+	private runner: FiscalFSDRunner;
 	private modelRouter: ModelRouter;
 	private artifactStore: ArtifactStore;
 	private preflight: PreflightValidator;
@@ -79,14 +79,14 @@ export class FiscalComplianceOrchestrator {
 			modelAssignments: config.modelAssignments,
 			subAgents: config.subAgents ?? false,
 			strictTdd: config.strictTdd ?? false,
-			openspecBasePath: config.openspecBasePath,
+			artifactBasePath: config.artifactBasePath,
 		};
 
-		this.runner = new FiscalSDDRunner();
+		this.runner = new FiscalFSDRunner();
 		this.modelRouter = new ModelRouter(this.config.modelAssignments);
 		this.artifactStore = createArtifactStore(
 			this.config.artifactStore,
-			this.config.openspecBasePath,
+			this.config.artifactBasePath,
 		);
 		this.preflight = new PreflightValidator(this.artifactStore);
 		this.decisionGate = new DecisionGate(this.config.mode);
@@ -104,6 +104,7 @@ export class FiscalComplianceOrchestrator {
 	/**
 	 * Ejecuta el pipeline completo de cumplimiento fiscal.
 	 */
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the fiscal-sdd -> fiscal-fsd rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	async run(
 		changeId: string,
 		scope: FiscalScope,
@@ -220,6 +221,7 @@ export class FiscalComplianceOrchestrator {
 	/**
 	 * Reanuda un pipeline desde la última fase completada.
 	 */
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the fiscal-sdd -> fiscal-fsd rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	async resume(
 		changeId: string,
 		scope: FiscalScope,
@@ -418,6 +420,7 @@ export class FiscalComplianceOrchestrator {
 	/**
 	 * Extrae subsistemas afectados del output de migración.
 	 */
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the fiscal-sdd -> fiscal-fsd rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	private extractSubsystems(output: Record<string, unknown>): string[] {
 		const explicit = output.subsistemasAfectados;
 		if (Array.isArray(explicit)) {
@@ -495,7 +498,7 @@ export class FiscalComplianceOrchestrator {
 	private buildSinglePhasePipeline(
 		fase: FaseName,
 		caller: (system: string, prompt: string) => Promise<string>,
-	): FiscalSDDPipeline {
+	): FiscalFSDPipeline {
 		const phaseFactories: Record<
 			FaseName,
 			(c: typeof caller) => ReturnType<typeof createSolicitudPhase>

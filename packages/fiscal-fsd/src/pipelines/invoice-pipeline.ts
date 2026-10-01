@@ -2,21 +2,21 @@
  * Invoice Processing Pipeline — reader → parser → validator → arbitrator.
  *
  * Mirrors the existing WorkflowOrchestratorV2 pipeline as a named
- * FiscalSDDPipeline. When using this pipeline with FiscalSDDRunner,
+ * FiscalFSDPipeline. When using this pipeline with FiscalFSDRunner,
  * each phase produces evidence artifacts and gates validate output.
  *
  * @example
  * ```ts
- * import { FiscalSDDRunner } from '@drenyra/fiscal-sdd';
- * import { INVOICE_PIPELINE } from '@drenyra/fiscal-sdd/pipelines/invoice-pipeline';
+ * import { FiscalFSDRunner } from '@drenyra/fiscal-fsd';
+ * import { INVOICE_PIPELINE } from '@drenyra/fiscal-fsd/pipelines/invoice-pipeline';
  *
- * const runner = new FiscalSDDRunner();
+ * const runner = new FiscalFSDRunner();
  * const result = await runner.runPipeline(INVOICE_PIPELINE, { type: "invoice_xml", data: xml }, ctx);
  * ```
  */
 
 import type {
-	FiscalSDDPipeline,
+	FiscalFSDPipeline,
 	GatekeeperVerdict,
 	PhaseContext,
 	PhaseResult,
@@ -50,10 +50,10 @@ function invoicePhase(name: string, description: string) {
 /**
  * Invoice Processing Pipeline.
  *
- * Mirrors the existing WorkflowOrchestratorV2 phases as a declarative SDD pipeline.
+ * Mirrors the existing WorkflowOrchestratorV2 phases as a declarative FSD pipeline.
  * Can be used standalone or as a reference for the orchestrator's internal flow.
  */
-export const INVOICE_PIPELINE: FiscalSDDPipeline = {
+export const INVOICE_PIPELINE: FiscalFSDPipeline = {
 	id: "invoice-pipeline",
 	name: "Invoice Processing Pipeline",
 	description:

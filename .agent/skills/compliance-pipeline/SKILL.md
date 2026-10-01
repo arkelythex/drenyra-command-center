@@ -1,6 +1,6 @@
 ---
 name: drenyra-compliance-pipeline
-description: "Trigger: pipeline, compliance, fiscal-pipeline, orchestrator, compliance-pipeline. Guide AI agents working with the Drenyra compliance pipeline — the FiscalSDD system that runs fiscal complianc..."
+description: "Trigger: pipeline, compliance, fiscal-pipeline, orchestrator, compliance-pipeline. Guide AI agents working with the Drenyra compliance pipeline — the FiscalFSD system that runs fiscal complianc..."
 license: MIT
 metadata:
   author: arkelythex
@@ -14,7 +14,7 @@ metadata:
 
 ## Purpose
 
-Guide AI agents working with the Drenyra compliance pipeline — the FiscalSDD system that runs fiscal compliance checks through a gated phase pipeline.
+Guide AI agents working with the Drenyra compliance pipeline — the FiscalFSD system that runs fiscal compliance checks through a gated phase pipeline.
 
 ## Pipeline Architecture
 
@@ -26,12 +26,12 @@ Each phase has optional pre-execution and post-execution gates.
 
 ## Key Components
 
-### FiscalSDDPipeline
+### FiscalFSDPipeline
 
 The pipeline definition with sequential phases and gate configuration.
 
 ```typescript
-const pipeline: FiscalSDDPipeline = {
+const pipeline: FiscalFSDPipeline = {
   id: 'igv-compliance-check',
   name: 'IGV Rate Compliance',
   phases: [

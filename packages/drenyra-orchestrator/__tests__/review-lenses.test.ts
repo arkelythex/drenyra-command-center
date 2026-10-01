@@ -4,7 +4,7 @@ import { isHotPath, selectReviewLenses } from "../src/review-lenses";
 describe("review-lenses", () => {
 	describe("isHotPath", () => {
 		it("detects fiscal hot path", () => {
-			expect(isHotPath("packages/fiscal-sdd/src/types.ts")).toBe(true);
+			expect(isHotPath("packages/fiscal-fsd/src/types.ts")).toBe(true);
 		});
 
 		it("detects auth hot path", () => {
@@ -57,7 +57,7 @@ describe("review-lenses", () => {
 
 		it("returns full 4R for hot path on pre-PR", () => {
 			const result = selectReviewLenses({
-				filePaths: ["packages/fiscal-sdd/src/types.ts"],
+				filePaths: ["packages/fiscal-fsd/src/types.ts"],
 				changedLines: 50,
 				isPreCommit: false,
 				isPrePR: true,
@@ -97,7 +97,7 @@ describe("review-lenses", () => {
 
 		it("returns judgment-day for post-SDD phase", () => {
 			const result = selectReviewLenses({
-				filePaths: ["packages/fiscal-sdd/src/types.ts"],
+				filePaths: ["packages/fiscal-fsd/src/types.ts"],
 				changedLines: 200,
 				isPreCommit: false,
 				isPrePR: false,

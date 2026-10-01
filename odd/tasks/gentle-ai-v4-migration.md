@@ -44,7 +44,7 @@ Verifica: `gentle-ai --version` (4.x), `gentle-ai sync` sin avisos, doctor de En
 
 ## Decisiones pendientes
 
-1. **Renombrar `packages/fiscal-sdd` → FSD** (paquete, imports, tests, skill `drenyra-sdd`): tarea crítica aparte, con test-first.
+1. ~~Renombrar `packages/fiscal-sdd` → FSD~~ **Hecho** (ver abajo). Pendiente relacionado: el ID de agente `drenyra-sdd-orchestrator` (runtime TS, CLI Go y `docs/10-development/go-ts-contracts.md`) es un contrato compartido; renombrarlo exige un cambio coordinado y migración de datos.
 2. **`drenyra-shell`** (antes `drenyra-pi`): alinear su runtime pin con Gentle AI 4.0 y retirar sus rutas SDD/OpenSpec si las trae. Cambio en otro repo; aquí solo hay lectura.
 3. **`vendored/drenyra-ai-0.2.0.tgz`** vs `drenyra-ai` v0.5.0: actualización crítica y separada.
 4. **`.gga` (`PROVIDER="codex"`):** confirmar que sigue siendo el proveedor de review deseado con el review nativo de v4.
@@ -69,6 +69,12 @@ git push git@github.com:arkelythex/<nuevo-repo>.git extract/<nombre>:main
 ```
 
   `91e116b` es el último commit que contiene `products/`. Yo no creé los repos: crear repositorios nuevos en tu cuenta queda fuera del alcance de esta sesión.
+
+### Hecho: `fiscal-sdd` → FSD (test-first)
+- [x] `packages/fiscal-sdd` → **`packages/fiscal-fsd`** (`@drenyra/fiscal-fsd`), `FiscalSDDRunner/Pipeline` → `FiscalFSDRunner/Pipeline`, `sdd-phases.ts`/`sdd-fiscal-pipeline.ts` → `fsd-*`, skill `drenyra-sdd` → `drenyra-fsd`; consumidores actualizados (`fiscal-query-engine`, `application`, ruta de compliance de la API, CODEOWNERS, skills, docs).
+- [x] Modo del almacén de artefactos `"openspec"` → `"files"` (`FileArtifactStore`, `artifactBasePath`); el modo viejo ahora **lanza un error explícito** en vez de caer en memoria sin avisar.
+- [x] Se conservan por ser datos/contratos persistidos o compartidos: el prefijo de tópicos de Engram `sdd/{changeId}/…`, la estructura en disco `cambios/{changeId}/{fase}.json` y el ID de agente `drenyra-sdd-orchestrator`.
+- Verificación: tests nuevos primero (RED) y luego verde: 100/100 en `fiscal-fsd` (97 + 3); typecheck 1346; los fallos de `drenyra-orchestrator` (15, `runtime/budget.test.ts`) y de la API de compliance (20) son idénticos en un worktree del commit anterior, es decir, preexistentes.
 
 ## Fuera de alcance
 

@@ -41,6 +41,19 @@ Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en en
 | `packages/agent-runtime/src/strategies/supplier-intelligence.strategy.ts:242` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/strategies/tax-calendar.strategy.ts:84` | noExcessiveCognitiveComplexity |
 
+## Deuda adicional en código fiscal (6 supresiones, destapada por el renombre a FSD)
+
+Más prioritaria que el runtime: es lógica de cumplimiento fiscal. Refactorizar **test-first** (extraer pasos de `run`/`resume`/`runPhase` sin cambiar el orden de fases ni de gates).
+
+| Archivo | Regla |
+|---------|-------|
+| `packages/application/src/fiscal/fiscal-classification-engine-ai.ts` | complejidad cognitiva |
+| `packages/fiscal-fsd/src/orchestrator/fiscal-compliance-orchestrator.ts` | complejidad cognitiva |
+| `packages/fiscal-fsd/src/orchestrator/fiscal-compliance-orchestrator.ts` | complejidad cognitiva |
+| `packages/fiscal-fsd/src/orchestrator/fiscal-compliance-orchestrator.ts` | complejidad cognitiva |
+| `packages/fiscal-fsd/src/phases/fsd-phases.ts` | complejidad cognitiva |
+| `packages/fiscal-fsd/src/runner.ts` | complejidad cognitiva |
+
 ## Siguiente paso
 
 Refactorizar por archivo, empezando por el código vivo de la API/web (`accounting-mission.service.ts`, rutas SSE de `drenyra`). Parte del runtime (`mastra/`, `swarm-core/`, `plugin/`) se eliminará con la Fase 6 de `docs/14-design/pi-migration-cleanup-plan.md`; no vale la pena refactorizarla antes de que el shadow-run confirme paridad.

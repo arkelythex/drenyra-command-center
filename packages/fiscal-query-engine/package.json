@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@drenyra/orchestrator": "workspace:*",
-    "@drenyra/fiscal-sdd": "workspace:*"
+    "@drenyra/fiscal-fsd": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^7.0.2",
