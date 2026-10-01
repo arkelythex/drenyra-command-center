@@ -39,6 +39,16 @@ if [ -n "$(git ls-files products 2>/dev/null | head -1)" ]; then
     "  - or archive it outside this repo; never grow inside drenyra-command-center"
 fi
 
+# 2c. No tracked symlink may dangle (a moved/deleted target silently drops skills or config).
+broken=""
+for f in $(git ls-files -s 2>/dev/null | awk '$1=="120000"{print $4}'); do
+  [ -e "$f" ] || broken="$broken $f"
+done
+if [ -n "$broken" ]; then
+  report "Tracked symlinks point to missing targets:" $broken \
+    "Restore the target, or replace the symlink with the real file (git show <commit>:<path>)."
+fi
+
 # 3. No compiled output committed next to TypeScript sources (it shadows .ts in tests).
 shadow=""
 for f in $(git ls-files 'packages/*/src/*' 'packages/*/src/**/*' 'apps/*/src/*' 'apps/*/src/**/*' 2>/dev/null | grep -E '\.(js|d\.ts)$' || true); do
