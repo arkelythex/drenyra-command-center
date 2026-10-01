@@ -27,8 +27,8 @@ Consecuencia: quien conozca (o adivine) el id de un asiento o de una cuenta de o
 ## Pendiente
 - [x] **Verificado contra Postgres 16**: `postgres-journal-entry.tenant-scope.test.ts` (5/5). Se omite salvo que `DATABASE_URL_TEST` exista y sea igual a `DATABASE_URL`, para no escribir fixtures en una base que no sea de test. Mutantes sin filtro en `findById` (2 fallan) y sin comprobación de pertenencia en `delete` (1 falla) se detectan.
 - [ ] Cómo reproducir la base local: `bunx drizzle-kit push` completo falla (`type "check_status" does not exist`, enum de `doctor-mode.schema.ts` no exportado) y `scripts/dev/run-infra-db.sh`, referenciado por `db:push`, no existe. Se generó DDL solo de `enums.ts`, `core.schema.ts` y `accounting.schema.ts` con `drizzle-kit generate` y se aplicó con `psql`.
-- [ ] `apps/api/vitest.config.ts` excluye `journal-routes.test.ts`; las rutas no tienen test automático activo.
-- [ ] Las rutas devuelven 500 para "Asiento no encontrado"; conviene mapearlo a 404.
+- [x] Rutas con test activo: `journal-routes-tenant.test.ts` (9/9) sustituye el guard por un stub; `journal-routes.test.ts` sigue excluido (espera 500 en todo porque su mock de sesión no se propaga).
+- [x] "Asiento no encontrado" → 404 y "Contexto de empresa requerido" → 403 en las 8 rutas. **Cambio de contrato:** `approve` y `reject` devolvían 400 para "no encontrado"; ahora 404.
 - [x] `GetTransactionUseCase`: `companyId` ahora es obligatorio en el input y se rechaza vacío sin consultar el repositorio (sin llamadores en producción). `application`: 749/749.
 - [ ] Revisar otros repositorios con `findById(id)` sin scope (cuentas, detracciones; ver `packages/test-utils/src/tenant/__tests__/h02-characterization.test.ts`).
 

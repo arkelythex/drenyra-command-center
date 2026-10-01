@@ -22,6 +22,26 @@ import {
 	UpdateJournalEntryBody,
 } from "./schemas";
 
+/**
+ * Maps tenant-related domain errors to HTTP failures.
+ *
+ * A missing company context is a 403 (fail closed) and an entry outside the
+ * caller's scope is a 404, indistinguishable from a nonexistent one.
+ *
+ * @returns The failure body when the error was mapped, otherwise `null`.
+ */
+function mapTenantError(message: string, set: { status?: number | string }) {
+	if (message.includes("Contexto de empresa requerido")) {
+		set.status = 403;
+		return fail(message, "FORBIDDEN");
+	}
+	if (message.includes("Asiento no encontrado")) {
+		set.status = 404;
+		return fail(message, "NOT_FOUND");
+	}
+	return null;
+}
+
 // ---------------------------------------------------------------------------
 // Routes
 // ---------------------------------------------------------------------------
@@ -55,8 +75,11 @@ export const journalEntryRoutes = new Elysia({
 
 				return ok(entries);
 			} catch (error) {
+				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				set.status = 500;
-				return fail(getErrorMessage(error), "INTERNAL_ERROR");
+				return fail(message, "INTERNAL_ERROR");
 			}
 		},
 		{
@@ -96,6 +119,8 @@ export const journalEntryRoutes = new Elysia({
 				return ok(entry);
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (
 					message.includes("no encontrada") ||
 					message.includes("balanceado") ||
@@ -130,8 +155,11 @@ export const journalEntryRoutes = new Elysia({
 
 				return ok(entry);
 			} catch (error) {
+				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				set.status = 500;
-				return fail(getErrorMessage(error), "INTERNAL_ERROR");
+				return fail(message, "INTERNAL_ERROR");
 			}
 		},
 		{
@@ -165,6 +193,8 @@ export const journalEntryRoutes = new Elysia({
 				return ok(entry);
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (message.includes("Solo se pueden editar")) {
 					set.status = 400;
 					return fail(message, "VALIDATION_ERROR");
@@ -193,6 +223,8 @@ export const journalEntryRoutes = new Elysia({
 				return ok({ deleted: true });
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (message.includes("Solo se pueden eliminar")) {
 					set.status = 400;
 					return fail(message, "VALIDATION_ERROR");
@@ -225,6 +257,8 @@ export const journalEntryRoutes = new Elysia({
 				return ok(entry);
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (message.includes("Solo se pueden mayorizar")) {
 					set.status = 400;
 					return fail(message, "VALIDATION_ERROR");
@@ -257,6 +291,8 @@ export const journalEntryRoutes = new Elysia({
 				return ok(entry);
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (message.includes("Solo se pueden declarar")) {
 					set.status = 400;
 					return fail(message, "VALIDATION_ERROR");
@@ -287,6 +323,8 @@ export const journalEntryRoutes = new Elysia({
 				return ok(entry);
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (
 					message.includes("Solo se pueden mayorizar") ||
 					message.includes("no encontrado")
@@ -320,6 +358,8 @@ export const journalEntryRoutes = new Elysia({
 				return ok(result);
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (
 					message.includes("Solo se pueden rechazar") ||
 					message.includes("no encontrado")
