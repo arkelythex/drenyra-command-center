@@ -233,4 +233,4 @@ All 4 AM plans applied. 25+ features now accessible through chat/agents. Sidebar
 
 ## Config
 
-Ver `openspec/config.yaml` para configuración completa del proyecto.
+> Archivado: SDD/OpenSpec se retiró (ODD es el único flujo). La antigua `config.yaml` se eliminó; ver [`README.md`](./README.md).

@@ -58,7 +58,7 @@ body:
         - CI / Workflows
         - Infrastructure / Ops
         - SUNAT / Fiscal / Compliance
-        - SDD / OpenSpec
+        - ODD / Tooling de agentes
         - Repo / Tooling
         - Other
     validations:

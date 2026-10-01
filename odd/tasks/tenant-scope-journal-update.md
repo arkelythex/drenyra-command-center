@@ -1,7 +1,7 @@
 # UpdateJournalEntry sin aislamiento por tenant
 
 **Última actualización**: 2026-10-01
-**Nivel**: sustancial, riesgo fiscal/tenant (Strict TDD + RDD de riesgo alto). Estado: implementado en dominio, aplicación, API y adaptador Postgres; **adaptador verificado contra Postgres 16 local**.
+**Nivel**: sustancial, riesgo fiscal/tenant (test-first + RDD de riesgo alto). Estado: implementado en dominio, aplicación, API y adaptador Postgres; **adaptador verificado contra Postgres 16 local**.
 
 ## Hallazgo
 `packages/application/src/use-cases/journal/update-journal-entry.use-case.ts` no recibe `TenantScope`:

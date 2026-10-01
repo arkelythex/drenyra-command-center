@@ -84,13 +84,15 @@ Drenyra is the **verifiable financial operating system for businesses, accountan
 - For Peruvian tax flows, preserve SUNAT, UBL 2.1, IGV, retenciones, detracciones, SIRE, RUC checksum, document series, and CDR/audit requirements.
 - Prefer branded IDs or domain value objects for identifiers and money-sensitive data.
 
-## ODD — flujo único de trabajo
+## ODD — flujo único de trabajo (Gentle AI v4)
 
-Drenyra usa **ODD (Organic Driven Development)** para todo cambio; no existe otro flujo. Guía completa: [`docs/10-development/odd-workflow.md`](docs/10-development/odd-workflow.md).
+Drenyra usa **ODD (Organic Driven Development)** para todo cambio. **SDD y OpenSpec están retirados**; no existe otro flujo. Guía completa: [`docs/10-development/odd-workflow.md`](docs/10-development/odd-workflow.md).
 
-- **Pequeño:** se autoriza, se implementa y se cierra sin documento intermedio.
-- **Sustancial:** un único *feature document* en `odd/tasks/<tarea>.md` (objetivo, alcance, fuera de alcance, restricciones), autorización explícita antes de implementar y progreso recuperable entre sesiones.
-- **Fiscal/SUNAT/dominio/DB/AI-control/CI:** siempre cuenta como sustancial, con **Strict TDD** y revisión **RDD de riesgo alto**, sin importar el tamaño.
+- **Simple:** se hace directo y se cierra sin documento intermedio.
+- **Incierto:** se investiga primero y se anota lo aprendido.
+- **Grande:** un único *feature document* en `odd/tasks/<tarea>.md` (objetivo, alcance, fuera de alcance, restricciones), autorización explícita antes de implementar y progreso recuperable entre sesiones.
+- **Crítico (fiscal/SUNAT/dominio/DB/AI-control/CI/tenant):** se verifica siempre, sin importar el tamaño: test-first y revisión **RDD de riesgo alto**. Review y test-first son independientes de cualquier flujo; en lo crítico no son opcionales.
+- `openspec/` es archivo histórico de solo lectura (ver [`openspec/README.md`](openspec/README.md)).
 - Taxonomía documental y estado de capacidades: [`program-taxonomy.md`](docs/01-foundation/program-taxonomy.md), [`capability-map.md`](docs/01-foundation/capability-map.md).
 
 ## Working style
@@ -210,7 +212,7 @@ When reviewing or authoring a PR, design for low cognitive load:
 ## Agent-specific guidance
 
 - Root `AGENTS.md` is shared guidance for all coding agents.
-- Codex-only sub-agent, memory, and model-routing rules live in `.codex/AGENTS.md` when present; the workflow itself is always ODD.
+- Codex-only sub-agent, memory, and model-routing rules live in `.codex/AGENTS.md` when present; the workflow itself is always ODD (Gentle AI v4).
 - Subdirectory `AGENTS.md` files may add stricter local rules for their package or app.
 
 ## Final response format
@@ -236,7 +238,7 @@ Drenyra now has its own orchestrator and harness system, modeled after the Gentl
 | -------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | Orchestrator package | `packages/drenyra-orchestrator/` | Core types, delegation router, skills resolver, memory contract, review lenses, work routing           |
 | Skill registry       | `.atl/skill-registry.md`         | Index of all 18 Drenyra-specific skills                                                                |
-| Drenyra skills       | `.agent/skills/*/SKILL.md`       | 18 skills: fiscal compliance, ODD/legacy SDD, gatekeeper, 4R review lenses, judgment-day, chained PR, hooks, etc. |
+| Drenyra skills       | `.agent/skills/*/SKILL.md`       | 18 skills: fiscal compliance, FSD fiscal, gatekeeper, 4R review lenses, judgment-day, chained PR, hooks, etc. |
 
 ### Orchestrator Capabilities
 

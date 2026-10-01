@@ -122,7 +122,7 @@ docs/<descripcion-corta>
 
 - PRs < 400 líneas (si excede, dividir en chained PRs)
 - Template con: Summary, Scope, Fiscal correctness, Review path
-- Siempre linkear al plan SDD si aplica
+- Siempre linkear el documento ODD (`odd/tasks/`) si el cambio es sustancial
 
 ## TypeScript Strict Mode
 

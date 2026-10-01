@@ -10,7 +10,7 @@ body:
 
         Antes de continuar:
         - Revisá si ya existe un issue similar abierto
-        - Las funcionalidades nuevas pasan por el flujo SDD: propuesta → specs → diseño → tareas → implementación
+        - Las funcionalidades nuevas siguen ODD: lo simple se hace directo, lo incierto se investiga, lo grande arma su documento en `odd/tasks/` y lo crítico se verifica
         - Este issue necesita `status:approved` antes de abrir un PR
 
   - type: checkboxes

@@ -42,7 +42,7 @@ Changes matching these paths trigger blocking 4R review:
 
 The orchestrator config lives in:
 
-- `openspec/config.yaml` (project-wide)
+- `odd/tasks/` (documento ODD de la tarea)
 - `.agent/settings.json` (agent-specific overrides)
 - `packages/drenyra-orchestrator/src/config.ts` (defaults)
 
