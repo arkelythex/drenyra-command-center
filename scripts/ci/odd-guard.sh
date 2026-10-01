@@ -49,6 +49,13 @@ if [ -n "$broken" ]; then
     "Restore the target, or replace the symlink with the real file (git show <commit>:<path>)."
 fi
 
+# 2d. Ecosystem packages come from the registry, never from committed tarballs.
+tarballs="$(git ls-files 'vendored/*' '*.tgz' 2>/dev/null | grep -E '\.tgz$' || true)"
+if [ -n "$tarballs" ]; then
+  report "Committed package tarballs are not allowed (use the published version):" $tarballs \
+    "Depend on the registry version, e.g. \"drenyra-ai\": \"0.5.0\", and run bun install."
+fi
+
 # 3. No compiled output committed next to TypeScript sources (it shadows .ts in tests).
 shadow=""
 for f in $(git ls-files 'packages/*/src/*' 'packages/*/src/**/*' 'apps/*/src/*' 'apps/*/src/**/*' 2>/dev/null | grep -E '\.(js|d\.ts)$' || true); do

@@ -12,7 +12,9 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
   },
-  "dependencies": {},
+  "dependencies": {
+    "drenyra-ai": "0.5.0"
+  },
   "devDependencies": {
     "ajv": "^8",
     "ajv-formats": "^3",

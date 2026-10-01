@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Drenyra Orchestrator \u2014 delegation router, skills resolver, memory contract, and work routing",
+  "description": "Drenyra Orchestrator — delegation router, skills resolver, memory contract, and work routing",
   "exports": {
     ".": "./src/index.ts",
     "./assets/*": "./assets/*"
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@drenyra/domain": "workspace:*",
-    "drenyra-ai": "file:../../vendored/drenyra-ai-0.2.0.tgz"
+    "drenyra-ai": "0.5.0"
   },
   "devDependencies": {
     "typescript": "^7.0.2",

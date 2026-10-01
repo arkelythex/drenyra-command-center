@@ -46,7 +46,7 @@ Verifica: `gentle-ai --version` (4.x), `gentle-ai sync` sin avisos, doctor de En
 
 1. ~~Renombrar `packages/fiscal-sdd` → FSD~~ **Hecho** (ver abajo). Pendiente relacionado: el ID de agente `drenyra-sdd-orchestrator` (runtime TS, CLI Go y `docs/10-development/go-ts-contracts.md`) es un contrato compartido; renombrarlo exige un cambio coordinado y migración de datos.
 2. **`drenyra-shell`** (antes `drenyra-pi`): alinear su runtime pin con Gentle AI 4.0 y retirar sus rutas SDD/OpenSpec si las trae. Cambio en otro repo; aquí solo hay lectura.
-3. **`vendored/drenyra-ai-0.2.0.tgz`** vs `drenyra-ai` v0.5.0: actualización crítica y separada.
+3. ~~Actualizar `drenyra-ai` 0.2.0 → v0.5.0~~ **Hecho** (ver abajo). Pendiente: migrar `apps/api/src/features/missions` a los nombres canónicos de comando (tu sesión local lo está tocando; evitar choque).
 4. **`.gga` (`PROVIDER="codex"`):** confirmar que sigue siendo el proveedor de review deseado con el review nativo de v4.
 
 5. **Crear los repos de `products/`** (ver abajo): el código ya salió de este repo; falta que publiques cada historial en su propio repositorio.
@@ -83,6 +83,13 @@ Reemplazada por `drenyra-shell` (comandos `/drenyra:*` sobre Pi) y la CLI de `dr
 - [x] **Gate reparado:** `docs:verify` estaba en rojo desde antes porque exigía `apps/web/src/routes/product-surfaces.tsx`, una ruta que nunca existió; se retiró ese requisito y el de `apps/cli/MAP.md`. Ahora pasa.
 - Efecto en conformidad de recibos (`contracts-nightly`): se pierde la pata Go (`go test ./...` del harness); quedan TS (`mission-domain`) y Python (`data-engine`). El esquema de recibo lo congela `drenyra-ai`.
 - Consecuencias abiertas: los campos `sourcePath: "apps/drenyra-cli/…"` de `packages/agent-runtime/src/agents/{registry.ts,data/cli-delegation.ts}` apuntan a un archivo que ya no existe (y que ya tenía ruta vieja); y, sin la CLI, **renombrar el ID `drenyra-sdd-orchestrator` ya solo exige migrar datos y docs**, no coordinar con Go.
+
+### Hecho: `drenyra-ai` 0.2.0 (tarball vendorizado) → 0.5.0 (npm)
+- [x] `drenyra-orchestrator`, `mission-protocol` y `mission-domain` (que importaba sin declararlo) dependen ahora de **`drenyra-ai@0.5.0`** del registro (con hash de integridad en `bun.lock`); eliminado `vendored/drenyra-ai-0.2.0.tgz`. Comentarios y matriz de capacidades actualizados (ya no dicen `v0.0.1-prealpha.1`).
+- [x] Compatibilidad: tests de `mission-protocol` (62), `mission-domain` (163), `mission-client` (25), API de misiones (93) y `drenyra-orchestrator` (121 + los mismos 15 fallos previos de `runtime/budget`) **idénticos a la línea base**.
+- [x] **Typecheck 1346 → 1338:** `mission-domain` exporta los comandos canónicos de 0.5.0 (`CreateMissionCommand`, `ApproveMissionCommand`, `RejectMissionCommand`, `ReconcileMissionCommand`, `ExecuteMissionCommand`, `MissionCommand`) y deja `RunIntentCommand`/`ApproveCommand`/`RejectCommand`/`ReconcileCommand` como **alias deprecados** (la API aún los usa; el comentario del shim decía erróneamente que estaban retirados). Las formas coinciden con los campos que lee `missions.service`.
+- [x] **Conexión verificable:** `bun run ecosystem:doctor` ejecuta `capabilities show` y `doctor run` de `drenyra-ai` en un HOME aislado y falla si la versión instalada difiere del pin, algún contrato no está FROZEN o el doctor no está sano. Resultado hoy: 0.5.0, 6 contratos FROZEN, healthy. Probado el caso de deriva (pin 0.4.0 → falla).
+- [x] `odd:guard` rechaza tarballs de paquetes commiteados (`*.tgz`): los paquetes del ecosistema salen del registro.
 
 ## Fuera de alcance
 

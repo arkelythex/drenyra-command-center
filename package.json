@@ -60,6 +60,7 @@
     "opencode:validate": "./scripts/opencode/validate-opencode-setup.sh",
     "docs:check-links": "bun scripts/docs/check-links.ts",
     "odd:guard": "sh scripts/ci/odd-guard.sh",
+    "ecosystem:doctor": "bun scripts/ci/ecosystem-doctor.ts",
     "docs:verify": "bun run odd:guard && bun run docs:verify:canon",
     "docs:verify:canon": "bun run docs:check-links && bun run architecture:check-product-surfaces",
     "codebase:index": "bun scripts/docs/generate-index.ts",
