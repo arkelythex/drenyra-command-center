@@ -28,7 +28,7 @@ Consecuencia: quien conozca (o adivine) el id de un asiento o de una cuenta de o
 - [ ] **Verificar contra Postgres** `PostgresJournalEntryRepository.findById/delete` (no hay DB en esta sesión) y agregar su test de integración cross-tenant.
 - [ ] `apps/api/vitest.config.ts` excluye `journal-routes.test.ts`; las rutas no tienen test automático activo.
 - [ ] Las rutas devuelven 500 para "Asiento no encontrado"; conviene mapearlo a 404.
-- [ ] `GetTransactionUseCase`: exigir `companyId` (sin `?? ""`) y actualizar su test (único fallo de `application`, 745/746).
+- [x] `GetTransactionUseCase`: `companyId` ahora es obligatorio en el input y se rechaza vacío sin consultar el repositorio (sin llamadores en producción). `application`: 749/749.
 - [ ] Revisar otros repositorios con `findById(id)` sin scope (cuentas, detracciones; ver `packages/test-utils/src/tenant/__tests__/h02-characterization.test.ts`).
 
 ## Fuera de alcance

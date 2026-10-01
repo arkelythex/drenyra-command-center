@@ -19,6 +19,8 @@ import type { TransactionRepository } from "@drenyra/domain/repositories/transac
 export interface GetTransactionInput {
 	id: string;
 	organizationId: number;
+	/** Company (RUC-level tenant) that owns the transaction. Required. */
+	companyId: string;
 }
 
 /**
@@ -67,10 +69,17 @@ export class GetTransactionUseCase {
 				};
 			}
 
+			if (!input.companyId) {
+				return {
+					success: false,
+					error: "ID de empresa requerido",
+				};
+			}
+
 			// Fetch transaction with tenant scope
 			const scope: TenantScope = {
 				organizationId: String(organizationId),
-				companyId: input.companyId ?? "",
+				companyId: input.companyId,
 			};
 			const transaction = await this.transactionRepository.findById(scope, id);
 
