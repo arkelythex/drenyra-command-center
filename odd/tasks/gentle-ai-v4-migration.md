@@ -91,6 +91,13 @@ Reemplazada por `drenyra-shell` (comandos `/drenyra:*` sobre Pi) y la CLI de `dr
 - [x] **Conexión verificable:** `bun run ecosystem:doctor` ejecuta `capabilities show` y `doctor run` de `drenyra-ai` en un HOME aislado y falla si la versión instalada difiere del pin, algún contrato no está FROZEN o el doctor no está sano. Resultado hoy: 0.5.0, 6 contratos FROZEN, healthy. Probado el caso de deriva (pin 0.4.0 → falla).
 - [x] `odd:guard` rechaza tarballs de paquetes commiteados (`*.tgz`): los paquetes del ecosistema salen del registro.
 
+### Hecho: seguridad de dependencias (`bun audit` 45 → 3, todas bajas)
+- [x] **45 vulnerabilidades (16 altas) → 3 de severidad baja.** Siguiendo el patrón existente de `overrides` en la raíz: `fast-uri >=4.1.4`, `undici >=8.10.2`, `hono >=4.13.7`, `brace-expansion >=5.0.11`, `adm-zip >=0.6.0`, `ip-address >=10.5.1`, `esbuild >=0.25.0`, `@ai-sdk/provider-utils >=5.0.1`, `@vitest/ui` y `@vitest/coverage-v8` en 4.1.11, y `nodemailer >=10.0.5` (la 9.x también era vulnerable: DoS y **divulgación de credenciales SMTP entre tenants**; `apps/api` usa solo `createTransport`/`sendMail`).
+- [x] `vitest` a `^4.1.11` en 17 `package.json` y en los 6 paquetes `workspace-*` que aún fijaban `^3` (parche del `@vitest/mocker`: lectura arbitraria de archivos).
+- [x] Verificado **idéntico a la línea base**: shared 96, application 753, fiscal-fsd 100, agent-runtime 558, mission-* (62/163/25), infrastructure 74, workspace-* (35/45/140/94/97/80), API (journal, misiones, compliance), **web 18 archivos / 21 tests fallidos exactamente los mismos**, typecheck 1338, `drizzle-kit check` y 27/27 de aislamiento por tenant contra Postgres.
+- Quedan 3 avisos bajos: alias interno `@ai-sdk/provider-utils-v7` (→ 5.0.0) dentro de `ai`; no se puede subir con `overrides`, se resolverá al actualizar `ai`.
+- [x] **Test intermitente corregido** (`domain/cpe-log`, propiedad de `fast-check`): asumía que toda cadena no vacía era válida, pero el dominio rechaza ticket/hash en blanco (correcto). Corregida la propiedad y fijados los contraejemplos; 0 fallos en 30 ejecuciones (antes ~1 de cada 3).
+
 ## Fuera de alcance
 
 - Borrar historial o código de producto; reescribir registros históricos.
