@@ -157,52 +157,18 @@ export class FiscalClassificationEngineAI {
 	/**
 	 * Clasifica usando LLM.
 	 */
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the fiscal-sdd -> fiscal-fsd rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	private async classifyWithLLM(
 		input: ClassificationInput,
 		fallback: FiscalClassification,
 		caller: LLMCaller,
 	): Promise<AiClassificationResult> {
-		const tipoLabel =
-			input.tipoComprobante === "01"
-				? "Factura"
-				: input.tipoComprobante === "03"
-					? "Boleta"
-					: input.tipoComprobante === "07"
-						? "Nota de Crédito"
-						: input.tipoComprobante === "08"
-							? "Nota de Débito"
-							: input.tipoComprobante;
-
-		const userPrompt = FISCAL_CLASSIFICATION_USER_PROMPT.replace(
-			"{tipoComprobante}",
-			input.tipoComprobante,
-		)
-			.replace("{tipoComprobanteLabel}", tipoLabel)
-			.replace("{serie}", input.serie)
-			.replace("{numero}", input.numero ?? "-")
-			.replace("{montoTotal}", String(input.montoTotal))
-			.replace("{moneda}", input.moneda)
-			.replace("{descripcion}", input.descripcion)
-			.replace("{tipo}", input.tipo)
-			.replace("{rucEmisor}", input.rucEmisor ?? "-")
-			.replace("{rucCliente}", input.rucCliente ?? "-")
-			.replace("{fechaEmision}", input.fechaEmision);
-
 		const response = await caller(
 			FISCAL_CLASSIFICATION_SYSTEM_PROMPT,
-			userPrompt,
+			buildUserPrompt(input),
 		);
 
-		// Parsear respuesta
-		let aiResult: Record<string, unknown>;
-		try {
-			const cleaned = response
-				.replace(/^```(?:json)?\s*/i, "")
-				.replace(/\s*```$/i, "")
-				.trim();
-			aiResult = JSON.parse(cleaned);
-		} catch {
+		const aiResult = parseAiResult(response);
+		if (aiResult === null) {
 			return {
 				classification: fallback,
 				source: "DETERMINISTIC",
@@ -210,36 +176,85 @@ export class FiscalClassificationEngineAI {
 			};
 		}
 
-		// Fusionar con resultado determinístico
-		const merged: FiscalClassification = {
-			...fallback,
-			igvTreatment:
-				(aiResult.igvTreatment as FiscalClassification["igvTreatment"]) ??
-				fallback.igvTreatment,
-			confidence: 0.85,
-			classificationSource: "AI",
-		};
-
-		// Si el AI detectó detracción, actualizar
-		if (aiResult.detraccionAplica === true) {
-			const codigo = String(aiResult.detraccionCodigo ?? "");
-			const porcentaje = Number(aiResult.detraccionPorcentaje) || 0;
-			merged.detraccion = {
-				...merged.detraccion,
-				aplica: true,
-				codigo,
-				porcentaje,
-				monto:
-					Math.round(merged.baseImponible * (porcentaje / 100) * 100) / 100,
-				estado: "PENDIENTE",
-			};
-		}
-
 		return {
-			classification: merged,
+			classification: mergeAiResult(fallback, aiResult),
 			source: "DETERMINISTIC_AI",
 			aiJustification: String(aiResult.justificacion ?? ""),
 			aiRawResponse: response,
 		};
 	}
+}
+
+// ============================================================================
+// Prompt / response helpers
+// ============================================================================
+
+const TIPO_COMPROBANTE_LABELS = new Map<string, string>([
+	["01", "Factura"],
+	["03", "Boleta"],
+	["07", "Nota de Crédito"],
+	["08", "Nota de Débito"],
+]);
+
+function buildUserPrompt(input: ClassificationInput): string {
+	const tipoLabel =
+		TIPO_COMPROBANTE_LABELS.get(input.tipoComprobante) ?? input.tipoComprobante;
+
+	return FISCAL_CLASSIFICATION_USER_PROMPT.replace(
+		"{tipoComprobante}",
+		input.tipoComprobante,
+	)
+		.replace("{tipoComprobanteLabel}", tipoLabel)
+		.replace("{serie}", input.serie)
+		.replace("{numero}", input.numero ?? "-")
+		.replace("{montoTotal}", String(input.montoTotal))
+		.replace("{moneda}", input.moneda)
+		.replace("{descripcion}", input.descripcion)
+		.replace("{tipo}", input.tipo)
+		.replace("{rucEmisor}", input.rucEmisor ?? "-")
+		.replace("{rucCliente}", input.rucCliente ?? "-")
+		.replace("{fechaEmision}", input.fechaEmision);
+}
+
+/** Parse the LLM reply (tolerating ``` fences); null when it is not valid JSON. */
+function parseAiResult(response: string): Record<string, unknown> | null {
+	try {
+		const cleaned = response
+			.replace(/^```(?:json)?\s*/i, "")
+			.replace(/\s*```$/i, "")
+			.trim();
+		return JSON.parse(cleaned) as Record<string, unknown>;
+	} catch {
+		return null;
+	}
+}
+
+/** Merge the AI answer into the deterministic classification (never mutates it). */
+function mergeAiResult(
+	fallback: FiscalClassification,
+	aiResult: Record<string, unknown>,
+): FiscalClassification {
+	const merged: FiscalClassification = {
+		...fallback,
+		igvTreatment:
+			(aiResult.igvTreatment as FiscalClassification["igvTreatment"]) ??
+			fallback.igvTreatment,
+		confidence: 0.85,
+		classificationSource: "AI",
+	};
+
+	// Si el AI detectó detracción, actualizar
+	if (aiResult.detraccionAplica === true) {
+		const porcentaje = Number(aiResult.detraccionPorcentaje) || 0;
+		merged.detraccion = {
+			...merged.detraccion,
+			aplica: true,
+			codigo: String(aiResult.detraccionCodigo ?? ""),
+			porcentaje,
+			monto: Math.round(merged.baseImponible * (porcentaje / 100) * 100) / 100,
+			estado: "PENDIENTE",
+		};
+	}
+
+	return merged;
 }

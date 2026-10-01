@@ -60,6 +60,24 @@ interface RunContext {
 // FiscalComplianceOrchestrator
 // ============================================================================
 
+/** Mensajes de parada: difieren entre una ejecución nueva y una reanudación. */
+type PhaseMessages = {
+	awaiting: (fase: FaseName, reason: string) => string;
+	stopped: (fase: FaseName, errors: string[]) => string;
+};
+
+const RUN_MESSAGES: PhaseMessages = {
+	awaiting: (fase, reason) => `Fase "${fase}" completada. ${reason}`,
+	stopped: (fase, errors) =>
+		`Pipeline detenido en fase "${fase}": ${errors.join("; ")}`,
+};
+
+const RESUME_MESSAGES: PhaseMessages = {
+	awaiting: (fase, reason) =>
+		`Reanudación: fase "${fase}" completada. ${reason}`,
+	stopped: (fase) => `Reanudación detenida en fase "${fase}"`,
+};
+
 export class FiscalComplianceOrchestrator {
 	private runner: FiscalFSDRunner;
 	private modelRouter: ModelRouter;
@@ -104,7 +122,6 @@ export class FiscalComplianceOrchestrator {
 	/**
 	 * Ejecuta el pipeline completo de cumplimiento fiscal.
 	 */
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the fiscal-sdd -> fiscal-fsd rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	async run(
 		changeId: string,
 		scope: FiscalScope,
@@ -144,69 +161,15 @@ export class FiscalComplianceOrchestrator {
 				}
 			}
 
-			// Ejecutar fase
-			const phaseResult = await this.executeFase(
+			const step = await this.advancePhase(
 				fase,
 				currentInput,
 				ctx,
 				metadata,
+				RUN_MESSAGES,
 			);
-
-			// ComplianceChainAdapter: durante migración, ejecutar chains
-			if (fase === "migracion" && phaseResult.status === "SUCCESS") {
-				const chainResult = await this.runComplianceChains(
-					phaseResult.output,
-					changeId,
-					scope,
-					ctx,
-				);
-				if (chainResult) return chainResult;
-			}
-
-			// Guardar artefacto
-			const artifact: FaseArtifact = {
-				fase,
-				status: phaseResult.status,
-				input: currentInput,
-				output: phaseResult.output,
-				gateResults: phaseResult.gatesPassed,
-				evidence: phaseResult.evidenceArtifacts,
-				errors: phaseResult.errors,
-				confidence: phaseResult.confidence,
-				ejecutadoEn: new Date().toISOString(),
-				duracionMs: 0,
-			};
-
-			ctx.phaseArtifacts.set(fase, artifact);
-			await this.trySaveArtifact(changeId, artifact);
-
-			// DecisionGate
-			const decision = await this.decisionGate.evaluate(fase, phaseResult);
-			if (decision.requiresApproval && this.config.mode !== "auto") {
-				return {
-					status: "AWAITING_APPROVAL",
-					changeId,
-					scope,
-					blockedAtFase: fase,
-					phaseArtifacts: ctx.phaseArtifacts,
-					message: `Fase "${fase}" completada. ${decision.reason}`,
-				};
-			}
-
-			// Si falló o fue bloqueada, detener
-			if (phaseResult.status === "FAILED" || phaseResult.status === "BLOCKED") {
-				return {
-					status: phaseResult.status === "BLOCKED" ? "BLOCKED" : "FAILED",
-					changeId,
-					scope,
-					blockedAtFase: fase,
-					phaseArtifacts: ctx.phaseArtifacts,
-					message: `Pipeline detenido en fase "${fase}": ${phaseResult.errors.join("; ")}`,
-					reasons: phaseResult.errors,
-				};
-			}
-
-			currentInput = phaseResult.output;
+			if ("stop" in step) return step.stop;
+			currentInput = step.output;
 		}
 
 		return {
@@ -221,7 +184,6 @@ export class FiscalComplianceOrchestrator {
 	/**
 	 * Reanuda un pipeline desde la última fase completada.
 	 */
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the fiscal-sdd -> fiscal-fsd rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	async resume(
 		changeId: string,
 		scope: FiscalScope,
@@ -230,20 +192,12 @@ export class FiscalComplianceOrchestrator {
 		const existing = await this.artifactStore.loadAll(changeId);
 		const ctx: RunContext = { changeId, scope, phaseArtifacts: existing };
 
-		let currentInput: unknown = { changeId, scope, metadata };
-		let startFrom: FaseName | null = null;
-
-		for (const fase of FASES_ORDEN) {
-			const artifact = existing.get(fase);
-			if (artifact?.status === "SUCCESS") {
-				currentInput = artifact.output;
-			} else {
-				startFrom = fase;
-				break;
-			}
-		}
-
-		if (startFrom === null) {
+		const resumePoint = this.findResumePoint(existing, {
+			changeId,
+			scope,
+			metadata,
+		});
+		if (resumePoint === null) {
 			return {
 				status: "COMPLETED",
 				changeId,
@@ -253,67 +207,19 @@ export class FiscalComplianceOrchestrator {
 			};
 		}
 
+		let currentInput = resumePoint.input;
 		for (const fase of FASES_ORDEN) {
 			if (existing.get(fase)?.status === "SUCCESS") continue;
 
-			const phaseResult = await this.executeFase(
+			const step = await this.advancePhase(
 				fase,
 				currentInput,
 				ctx,
 				metadata,
+				RESUME_MESSAGES,
 			);
-
-			if (fase === "migracion" && phaseResult.status === "SUCCESS") {
-				const chainResult = await this.runComplianceChains(
-					phaseResult.output,
-					changeId,
-					scope,
-					ctx,
-				);
-				if (chainResult) return chainResult;
-			}
-
-			const artifact: FaseArtifact = {
-				fase,
-				status: phaseResult.status,
-				input: currentInput,
-				output: phaseResult.output,
-				gateResults: phaseResult.gatesPassed,
-				evidence: phaseResult.evidenceArtifacts,
-				errors: phaseResult.errors,
-				confidence: phaseResult.confidence,
-				ejecutadoEn: new Date().toISOString(),
-				duracionMs: 0,
-			};
-
-			ctx.phaseArtifacts.set(fase, artifact);
-			await this.trySaveArtifact(changeId, artifact);
-
-			const decision = await this.decisionGate.evaluate(fase, phaseResult);
-			if (decision.requiresApproval && this.config.mode !== "auto") {
-				return {
-					status: "AWAITING_APPROVAL",
-					changeId,
-					scope,
-					blockedAtFase: fase,
-					phaseArtifacts: ctx.phaseArtifacts,
-					message: `Reanudación: fase "${fase}" completada. ${decision.reason}`,
-				};
-			}
-
-			if (phaseResult.status === "FAILED" || phaseResult.status === "BLOCKED") {
-				return {
-					status: phaseResult.status === "BLOCKED" ? "BLOCKED" : "FAILED",
-					changeId,
-					scope,
-					blockedAtFase: fase,
-					phaseArtifacts: ctx.phaseArtifacts,
-					message: `Reanudación detenida en fase "${fase}"`,
-					reasons: phaseResult.errors,
-				};
-			}
-
-			currentInput = phaseResult.output;
+			if ("stop" in step) return step.stop;
+			currentInput = step.output;
 		}
 
 		return {
@@ -323,6 +229,102 @@ export class FiscalComplianceOrchestrator {
 			phaseArtifacts: ctx.phaseArtifacts,
 			message: "Pipeline reanudado y completado exitosamente",
 		};
+	}
+
+	/**
+	 * Determina desde qué fase reanudar y con qué input (el output de la última
+	 * fase exitosa). Devuelve null si todas las fases ya fueron exitosas.
+	 */
+	private findResumePoint(
+		existing: Map<FaseName, FaseArtifact>,
+		initial: {
+			changeId: string;
+			scope: FiscalScope;
+			metadata: Record<string, unknown>;
+		},
+	): { startFrom: FaseName; input: unknown } | null {
+		let input: unknown = initial;
+		for (const fase of FASES_ORDEN) {
+			const artifact = existing.get(fase);
+			if (artifact?.status !== "SUCCESS") return { startFrom: fase, input };
+			input = artifact.output;
+		}
+		return null;
+	}
+
+	/**
+	 * Ejecuta una fase, ejecuta las compliance chains (migración), guarda su
+	 * artefacto y aplica el DecisionGate. Devuelve el output para la siguiente fase
+	 * o el resultado final si el pipeline debe detenerse.
+	 */
+	private async advancePhase(
+		fase: FaseName,
+		input: unknown,
+		ctx: RunContext,
+		metadata: Record<string, unknown>,
+		messages: PhaseMessages,
+	): Promise<{ stop: OrchestratorResult } | { output: unknown }> {
+		const { changeId, scope } = ctx;
+		const phaseResult = await this.executeFase(fase, input, ctx, metadata);
+
+		// ComplianceChainAdapter: durante migración, ejecutar chains
+		if (fase === "migracion" && phaseResult.status === "SUCCESS") {
+			const chainResult = await this.runComplianceChains(
+				phaseResult.output,
+				changeId,
+				scope,
+				ctx,
+			);
+			if (chainResult) return { stop: chainResult };
+		}
+
+		// Guardar artefacto
+		const artifact: FaseArtifact = {
+			fase,
+			status: phaseResult.status,
+			input,
+			output: phaseResult.output,
+			gateResults: phaseResult.gatesPassed,
+			evidence: phaseResult.evidenceArtifacts,
+			errors: phaseResult.errors,
+			confidence: phaseResult.confidence,
+			ejecutadoEn: new Date().toISOString(),
+			duracionMs: 0,
+		};
+		ctx.phaseArtifacts.set(fase, artifact);
+		await this.trySaveArtifact(changeId, artifact);
+
+		// DecisionGate
+		const decision = await this.decisionGate.evaluate(fase, phaseResult);
+		if (decision.requiresApproval && this.config.mode !== "auto") {
+			return {
+				stop: {
+					status: "AWAITING_APPROVAL",
+					changeId,
+					scope,
+					blockedAtFase: fase,
+					phaseArtifacts: ctx.phaseArtifacts,
+					message: messages.awaiting(fase, decision.reason),
+				},
+			};
+		}
+
+		// Si falló o fue bloqueada, detener
+		if (phaseResult.status === "FAILED" || phaseResult.status === "BLOCKED") {
+			return {
+				stop: {
+					status: phaseResult.status === "BLOCKED" ? "BLOCKED" : "FAILED",
+					changeId,
+					scope,
+					blockedAtFase: fase,
+					phaseArtifacts: ctx.phaseArtifacts,
+					message: messages.stopped(fase, phaseResult.errors),
+					reasons: phaseResult.errors,
+				},
+			};
+		}
+
+		return { output: phaseResult.output };
 	}
 
 	// ─── ReviewGuard ─────────────────────────────────────────────────
@@ -420,28 +422,26 @@ export class FiscalComplianceOrchestrator {
 	/**
 	 * Extrae subsistemas afectados del output de migración.
 	 */
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the fiscal-sdd -> fiscal-fsd rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	private extractSubsystems(output: Record<string, unknown>): string[] {
 		const explicit = output.subsistemasAfectados;
 		if (Array.isArray(explicit)) {
 			return explicit.map(String);
 		}
 
-		// Buscar en tareasImplementadas
 		const tareas = output.tareasImplementadas;
-		if (Array.isArray(tareas)) {
-			const subsystems = new Set<string>();
-			for (const tarea of tareas) {
-				if (typeof tarea === "object" && tarea !== null) {
-					const t = tarea as Record<string, unknown>;
-					if (t.subsistema) subsystems.add(String(t.subsistema));
-					if (t.afecta) subsystems.add(String(t.afecta));
-				}
-			}
-			return Array.from(subsystems);
-		}
+		return Array.isArray(tareas) ? this.subsystemsFromTasks(tareas) : [];
+	}
 
-		return [];
+	/** Subsistemas (`subsistema`/`afecta`) de las tareas implementadas, sin duplicados. */
+	private subsystemsFromTasks(tareas: unknown[]): string[] {
+		const subsystems = new Set<string>();
+		for (const tarea of tareas) {
+			if (typeof tarea !== "object" || tarea === null) continue;
+			const t = tarea as Record<string, unknown>;
+			if (t.subsistema) subsystems.add(String(t.subsistema));
+			if (t.afecta) subsystems.add(String(t.afecta));
+		}
+		return Array.from(subsystems);
 	}
 
 	// ─── Ejecución de fases ──────────────────────────────────────────

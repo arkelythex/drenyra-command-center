@@ -41,18 +41,24 @@ Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en en
 | `packages/agent-runtime/src/strategies/supplier-intelligence.strategy.ts:242` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/strategies/tax-calendar.strategy.ts:84` | noExcessiveCognitiveComplexity |
 
-## Deuda adicional en código fiscal (6 supresiones, destapada por el renombre a FSD)
+## Código fiscal: deuda saldada (6 supresiones eliminadas, test-first)
 
-Más prioritaria que el runtime: es lógica de cumplimiento fiscal. Refactorizar **test-first** (extraer pasos de `run`/`resume`/`runPhase` sin cambiar el orden de fases ni de gates).
+Refactorizadas con tests de caracterización escritos **antes** y comprobados con mutantes (cada rama relevante tiene un mutante que hace fallar un test):
 
-| Archivo | Regla |
-|---------|-------|
-| `packages/application/src/fiscal/fiscal-classification-engine-ai.ts` | complejidad cognitiva |
-| `packages/fiscal-fsd/src/orchestrator/fiscal-compliance-orchestrator.ts` | complejidad cognitiva |
-| `packages/fiscal-fsd/src/orchestrator/fiscal-compliance-orchestrator.ts` | complejidad cognitiva |
-| `packages/fiscal-fsd/src/orchestrator/fiscal-compliance-orchestrator.ts` | complejidad cognitiva |
-| `packages/fiscal-fsd/src/phases/fsd-phases.ts` | complejidad cognitiva |
-| `packages/fiscal-fsd/src/runner.ts` | complejidad cognitiva |
+| Función | Antes | Ahora |
+|---------|-------|-------|
+| `FiscalFSDRunner.runPhase` | complejidad 24 | `buildContext`, `makeArtifact`, `failedPhaseResult`, `applyGate`; +6 tests |
+| `createLLMPhase` (fsd-phases) | 18 | `buildContextBlock`, `buildUserPrompt`, `parseLLMOutput`, `llmFailure`; +11 tests |
+| `FiscalComplianceOrchestrator.run` / `resume` | 22 / 23 | un solo `advancePhase` + `findResumePoint` con mensajes parametrizados; +12 tests |
+| `extractSubsystems` | 16 | `subsystemsFromTasks` |
+| `FiscalClassificationEngineAI.classifyWithLLM` | 19 | `buildUserPrompt`, `parseAiResult`, `mergeAiResult` (+ `Map` de etiquetas); +17 tests |
+
+`fiscal-fsd`: 100 → 129 tests; `application`: 753 → 770. Sin ninguna supresión de complejidad en `fiscal-fsd` ni en el clasificador.
+
+### Hallazgos de comportamiento (preservados, a decidir)
+- **`ESCALATE` no escala nada:** con `onGateBlocked: "ESCALATE"` y un gate `BLOCKING` fallido, el pipeline termina `COMPLETED` sin errores ni marca (el comentario dice «el llamador lo maneja», pero nadie lo recibe). Fijado en `runner.test.ts`. Probable defecto: debería devolver un estado propio o registrar el bloqueo.
+- **`resume()` no pasa por `ReviewGuard`** (solo `run()` lo ejecuta antes de `migracion`): una migración reanudada se salta la guarda de presupuesto de revisión.
+- `fiscal-summary-service.ts` (application) tiene complejidad 18 y `noStaticOnlyClass`: deuda previa, aún sin tocar.
 
 ## Siguiente paso
 

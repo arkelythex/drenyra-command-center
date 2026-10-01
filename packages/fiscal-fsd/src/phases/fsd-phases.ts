@@ -175,6 +175,70 @@ function fillTemplate(template: string, vars: Record<string, string>): string {
 	return result;
 }
 
+const SYSTEM_PROMPT =
+	"Eres un asistente fiscal. Responde solo con JSON válido, sin markdown.";
+
+/** Context block with only the metadata and scope that are present. */
+function buildContextBlock(
+	metadata: FiscalChangeMetadata,
+	ctx: PhaseContext,
+): string {
+	return [
+		metadata.title ? `Título: ${metadata.title}` : "",
+		metadata.regulationRef ? `Normativa: ${metadata.regulationRef}` : "",
+		metadata.description ? `Descripción: ${metadata.description}` : "",
+		`Run ID: ${ctx.runId}`,
+		ctx.scope
+			? `Alcance: ${ctx.scope.organizationId}/${ctx.scope.companyRuc}`
+			: "",
+	]
+		.filter(Boolean)
+		.join("\n");
+}
+
+function buildUserPrompt(
+	template: string,
+	input: unknown,
+	ctx: PhaseContext,
+): string {
+	const metadata = (ctx.metadata ?? {}) as FiscalChangeMetadata;
+	return fillTemplate(template, {
+		context: buildContextBlock(metadata, ctx),
+		previousOutput: JSON.stringify(input ?? {}, null, 2),
+		specOutput: JSON.stringify(
+			ctx.previousPhaseResults.get("analisis") ?? {},
+			null,
+			2,
+		),
+	});
+}
+
+/** Parse the LLM reply as JSON (tolerating ``` fences); keep the raw text otherwise. */
+function parseLLMOutput(content: string): unknown {
+	try {
+		const cleaned = content
+			.replace(/^```(?:json)?\s*/, "")
+			.replace(/\s*```$/, "")
+			.trim();
+		return JSON.parse(cleaned);
+	} catch {
+		return { raw: content };
+	}
+}
+
+function llmFailure(err: unknown): PhaseResult {
+	return {
+		status: "FAILED",
+		output: null,
+		gatesPassed: [],
+		evidenceArtifacts: [],
+		errors: [
+			`LLM call failed: ${err instanceof Error ? err.message : String(err)}`,
+		],
+		confidence: 0,
+	};
+}
+
 /** Create a phase that calls the LLM with prompt templates and context. */
 function createLLMPhase(
 	name: string,
@@ -189,67 +253,19 @@ function createLLMPhase(
 		execute: async (
 			input: unknown,
 			ctx: PhaseContext,
-			// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the fiscal-sdd -> fiscal-fsd rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 		): Promise<PhaseResult> => {
-			const metadata = (ctx.metadata ?? {}) as FiscalChangeMetadata;
-			const previousOutput = input ?? {};
-
-			const contextStr = [
-				metadata.title ? `Título: ${metadata.title}` : "",
-				metadata.regulationRef ? `Normativa: ${metadata.regulationRef}` : "",
-				metadata.description ? `Descripción: ${metadata.description}` : "",
-				`Run ID: ${ctx.runId}`,
-				ctx.scope
-					? `Alcance: ${ctx.scope.organizationId}/${ctx.scope.companyRuc}`
-					: "",
-			]
-				.filter(Boolean)
-				.join("\n");
-
-			const systemPrompt =
-				"Eres un asistente fiscal. Responde solo con JSON válido, sin markdown.";
-
-			const userPrompt = fillTemplate(promptTemplate, {
-				context: contextStr,
-				previousOutput: JSON.stringify(previousOutput, null, 2),
-				specOutput: JSON.stringify(
-					ctx.previousPhaseResults.get("analisis") ?? {},
-					null,
-					2,
-				),
-			});
+			const userPrompt = buildUserPrompt(promptTemplate, input, ctx);
 
 			let content: string;
 			try {
-				content = await caller(systemPrompt, userPrompt);
+				content = await caller(SYSTEM_PROMPT, userPrompt);
 			} catch (err) {
-				return {
-					status: "FAILED",
-					output: null,
-					gatesPassed: [],
-					evidenceArtifacts: [],
-					errors: [
-						`LLM call failed: ${err instanceof Error ? err.message : String(err)}`,
-					],
-					confidence: 0,
-				};
-			}
-
-			// Try to parse as JSON
-			let output: unknown;
-			try {
-				const cleaned = content
-					.replace(/^```(?:json)?\s*/, "")
-					.replace(/\s*```$/, "")
-					.trim();
-				output = JSON.parse(cleaned);
-			} catch {
-				output = { raw: content };
+				return llmFailure(err);
 			}
 
 			return {
 				status: "SUCCESS",
-				output,
+				output: parseLLMOutput(content),
 				gatesPassed: [],
 				evidenceArtifacts: [],
 				errors: [],

@@ -112,7 +112,6 @@ export class FiscalFSDRunner {
 	/**
 	 * Run a single phase with gate validation.
 	 */
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the fiscal-sdd -> fiscal-fsd rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	private async runPhase(
 		phase: FiscalPhaseDef,
 		input: unknown,
@@ -120,26 +119,19 @@ export class FiscalFSDRunner {
 		onGateBlocked: "STOP" | "WARN_CONTINUE" | "ESCALATE",
 		_phaseIndex?: number,
 	): Promise<PhaseResult> {
-		const ctx: PhaseContext = {
-			runId: context.runId ?? "unknown",
-			scope: context.scope,
-			evidenceStore: context.evidenceStore,
-			previousPhaseResults: context.previousPhaseResults ?? new Map(),
-			metadata: context.metadata ?? {},
-		};
+		const ctx = this.buildContext(context);
+		const runId = context.runId ?? "unknown";
 
 		// Store input as evidence artifact
-		const inputArtifact: NewEvidenceArtifact = {
-			artifactId: `${phase.name}-input-${Date.now()}`,
+		const inputArtifact = this.makeArtifact({
 			phase: phase.name,
-			pipelineRunId: context.runId ?? "unknown",
-			evidenceKind: "PHASE_INPUT",
+			runId,
+			suffix: "input",
+			kind: "PHASE_INPUT",
 			content: input,
 			hash: "",
 			parentHash: null,
-			createdAt: new Date().toISOString(),
-		};
-
+		});
 		this.storeIfAvailable(ctx, inputArtifact);
 
 		// Execute phase
@@ -147,30 +139,20 @@ export class FiscalFSDRunner {
 		try {
 			phaseResult = await phase.execute(input, ctx);
 		} catch (err) {
-			const errorMsg = err instanceof Error ? err.message : String(err);
-			return {
-				status: "FAILED",
-				output: null,
-				gatesPassed: [],
-				evidenceArtifacts: [inputArtifact],
-				errors: [errorMsg],
-				confidence: 0,
-			};
+			return this.failedPhaseResult(err, inputArtifact);
 		}
 
 		// Store output as evidence artifact
 		const outputHash = simpleHash(JSON.stringify(phaseResult.output));
-		const outputArtifact: NewEvidenceArtifact = {
-			artifactId: `${phase.name}-output-${Date.now()}`,
+		const outputArtifact = this.makeArtifact({
 			phase: phase.name,
-			pipelineRunId: context.runId ?? "unknown",
-			evidenceKind: "PHASE_OUTPUT",
+			runId,
+			suffix: "output",
+			kind: "PHASE_OUTPUT",
 			content: phaseResult.output,
 			hash: outputHash,
 			parentHash: inputArtifact.artifactId,
-			createdAt: new Date().toISOString(),
-		};
-
+		});
 		this.storeIfAvailable(ctx, outputArtifact);
 
 		const evidenceArtifacts: NewEvidenceArtifact[] = [
@@ -180,59 +162,132 @@ export class FiscalFSDRunner {
 
 		// Run phase gate
 		if (phase.gate) {
-			try {
-				const verdict = await phase.gate.validate(
-					input,
-					phaseResult.output,
-					ctx,
-				);
-				phaseResult.gatesPassed = [verdict];
-
-				// Store gate result as evidence
-				const gateArtifact: NewEvidenceArtifact = {
-					artifactId: `${phase.name}-gate-${Date.now()}`,
-					phase: phase.name,
-					pipelineRunId: context.runId ?? "unknown",
-					evidenceKind: "GATE_RESULT",
-					content: verdict,
-					hash: simpleHash(JSON.stringify(verdict)),
-					parentHash: outputHash,
-					createdAt: new Date().toISOString(),
-				};
-
-				this.storeIfAvailable(ctx, gateArtifact);
-				evidenceArtifacts.push(gateArtifact);
-
-				if (!verdict.passed && verdict.severity === "BLOCKING") {
-					if (onGateBlocked === "STOP") {
-						return {
-							status: "BLOCKED",
-							output: phaseResult.output,
-							gatesPassed: [verdict],
-							evidenceArtifacts,
-							errors: [
-								`Gate "${phase.gate.name}" blocked: ${verdict.reasons.join("; ")}`,
-							],
-							confidence: 0,
-						};
-					}
-					if (onGateBlocked === "WARN_CONTINUE") {
-						phaseResult.errors.push(
-							`Gate warning: ${verdict.reasons.join("; ")}`,
-						);
-					}
-					// ESCALATE: caller handles
-				}
-			} catch (err) {
-				const errorMsg = err instanceof Error ? err.message : String(err);
-				phaseResult.errors.push(`Gate threw: ${errorMsg}`);
-			}
+			const blocked = await this.applyGate({
+				phase,
+				gate: phase.gate,
+				input,
+				phaseResult,
+				ctx,
+				runId,
+				outputHash,
+				evidenceArtifacts,
+				onGateBlocked,
+			});
+			if (blocked) return blocked;
 		}
 
 		return {
 			...phaseResult,
 			evidenceArtifacts,
 		};
+	}
+
+	private buildContext(context: Partial<PhaseContext>): PhaseContext {
+		return {
+			runId: context.runId ?? "unknown",
+			scope: context.scope,
+			evidenceStore: context.evidenceStore,
+			previousPhaseResults: context.previousPhaseResults ?? new Map(),
+			metadata: context.metadata ?? {},
+		};
+	}
+
+	private makeArtifact(args: {
+		phase: string;
+		runId: string;
+		suffix: "input" | "output" | "gate";
+		kind: NewEvidenceArtifact["evidenceKind"];
+		content: unknown;
+		hash: string;
+		parentHash: string | null;
+	}): NewEvidenceArtifact {
+		return {
+			artifactId: `${args.phase}-${args.suffix}-${Date.now()}`,
+			phase: args.phase,
+			pipelineRunId: args.runId,
+			evidenceKind: args.kind,
+			content: args.content,
+			hash: args.hash,
+			parentHash: args.parentHash,
+			createdAt: new Date().toISOString(),
+		};
+	}
+
+	private failedPhaseResult(
+		err: unknown,
+		inputArtifact: NewEvidenceArtifact,
+	): PhaseResult {
+		const errorMsg = err instanceof Error ? err.message : String(err);
+		return {
+			status: "FAILED",
+			output: null,
+			gatesPassed: [],
+			evidenceArtifacts: [inputArtifact],
+			errors: [errorMsg],
+			confidence: 0,
+		};
+	}
+
+	/**
+	 * Validate the phase gate and record its evidence. Returns a BLOCKED result when
+	 * the gate blocks in STOP mode; otherwise mutates `phaseResult` and returns null.
+	 */
+	private async applyGate(args: {
+		phase: FiscalPhaseDef;
+		gate: NonNullable<FiscalPhaseDef["gate"]>;
+		input: unknown;
+		phaseResult: PhaseResult;
+		ctx: PhaseContext;
+		runId: string;
+		outputHash: string;
+		evidenceArtifacts: NewEvidenceArtifact[];
+		onGateBlocked: "STOP" | "WARN_CONTINUE" | "ESCALATE";
+	}): Promise<PhaseResult | null> {
+		const { phase, gate, phaseResult, evidenceArtifacts, onGateBlocked } = args;
+		try {
+			const verdict = await gate.validate(
+				args.input,
+				phaseResult.output,
+				args.ctx,
+			);
+			phaseResult.gatesPassed = [verdict];
+
+			// Store gate result as evidence
+			const gateArtifact = this.makeArtifact({
+				phase: phase.name,
+				runId: args.runId,
+				suffix: "gate",
+				kind: "GATE_RESULT",
+				content: verdict,
+				hash: simpleHash(JSON.stringify(verdict)),
+				parentHash: args.outputHash,
+			});
+			this.storeIfAvailable(args.ctx, gateArtifact);
+			evidenceArtifacts.push(gateArtifact);
+
+			if (verdict.passed || verdict.severity !== "BLOCKING") return null;
+
+			if (onGateBlocked === "STOP") {
+				return {
+					status: "BLOCKED",
+					output: phaseResult.output,
+					gatesPassed: [verdict],
+					evidenceArtifacts,
+					errors: [
+						`Gate "${gate.name}" blocked: ${verdict.reasons.join("; ")}`,
+					],
+					confidence: 0,
+				};
+			}
+			if (onGateBlocked === "WARN_CONTINUE") {
+				phaseResult.errors.push(`Gate warning: ${verdict.reasons.join("; ")}`);
+			}
+			// ESCALATE: caller handles
+		} catch (err) {
+			const errorMsg = err instanceof Error ? err.message : String(err);
+			phaseResult.errors.push(`Gate threw: ${errorMsg}`);
+		}
+		return null;
 	}
 
 	/** Fire-and-forget evidence store. */

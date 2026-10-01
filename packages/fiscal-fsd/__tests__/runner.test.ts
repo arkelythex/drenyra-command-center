@@ -288,4 +288,112 @@ describe("FiscalFSDRunner", () => {
 			expect(result.phaseResults[0].gatesPassed[0].passed).toBe(true);
 		});
 	});
+
+	describe("runPhase characterization (frozen before refactoring)", () => {
+		const phase = (gate?: FiscalFSDPipeline["phases"][number]["gate"]) => ({
+			name: "p",
+			description: "d",
+			version: "1.0.0",
+			execute: async (): Promise<PhaseResult> => ({
+				status: "SUCCESS",
+				output: { a: 1 },
+				gatesPassed: [],
+				evidenceArtifacts: [],
+				errors: [],
+				confidence: 1,
+			}),
+			...(gate ? { gate } : {}),
+		});
+		const blocking = {
+			name: "G",
+			description: "d",
+			validate: async () => ({
+				passed: false,
+				reasons: ["r1", "r2"],
+				severity: "BLOCKING" as const,
+				details: {},
+			}),
+		};
+		const run = (
+			onGateBlocked: FiscalFSDPipeline["onGateBlocked"],
+			gate?: FiscalFSDPipeline["phases"][number]["gate"],
+		) =>
+			runner.runPipeline(
+				{ id: "x", name: "x", onGateBlocked, phases: [phase(gate)] },
+				{},
+				ctx,
+			);
+
+		it("keeps the phase result and records the error when the gate throws", async () => {
+			const result = await run("STOP", {
+				name: "G",
+				description: "d",
+				validate: async () => {
+					throw new Error("boom");
+				},
+			});
+			const phaseResult = result.phaseResults[0];
+			expect(result.status).toBe("COMPLETED");
+			expect(phaseResult.status).toBe("SUCCESS");
+			expect(phaseResult.errors).toEqual(["Gate threw: boom"]);
+			expect(phaseResult.gatesPassed).toHaveLength(0);
+			expect(phaseResult.evidenceArtifacts.map((a) => a.evidenceKind)).toEqual([
+				"PHASE_INPUT",
+				"PHASE_OUTPUT",
+			]);
+		});
+
+		it("STOP returns BLOCKED with the joined gate reasons and gate evidence", async () => {
+			const result = await run("STOP", blocking);
+			const phaseResult = result.phaseResults[0];
+			expect(result.status).toBe("BLOCKED");
+			expect(result.blockedAtPhase).toBe("p");
+			expect(phaseResult.status).toBe("BLOCKED");
+			expect(phaseResult.errors).toEqual(['Gate "G" blocked: r1; r2']);
+			expect(phaseResult.confidence).toBe(0);
+			expect(phaseResult.evidenceArtifacts.map((a) => a.evidenceKind)).toEqual([
+				"PHASE_INPUT",
+				"PHASE_OUTPUT",
+				"GATE_RESULT",
+			]);
+		});
+
+		it("WARN_CONTINUE completes and appends a gate warning", async () => {
+			const result = await run("WARN_CONTINUE", blocking);
+			expect(result.status).toBe("COMPLETED");
+			expect(result.phaseResults[0].errors).toEqual(["Gate warning: r1; r2"]);
+		});
+
+		it("ESCALATE currently completes silently (caller is expected to handle it)", async () => {
+			const result = await run("ESCALATE", blocking);
+			expect(result.status).toBe("COMPLETED");
+			expect(result.phaseResults[0].errors).toEqual([]);
+			expect(result.phaseResults[0].gatesPassed).toHaveLength(1);
+		});
+
+		it("does not block on a failed gate whose severity is not BLOCKING", async () => {
+			const result = await run("STOP", {
+				name: "G",
+				description: "d",
+				validate: async () => ({
+					passed: false,
+					reasons: ["advisory"],
+					severity: "WARNING" as const,
+					details: {},
+				}),
+			});
+			expect(result.status).toBe("COMPLETED");
+			expect(result.phaseResults[0].errors).toEqual([]);
+			expect(result.phaseResults[0].gatesPassed).toHaveLength(1);
+		});
+
+		it("chains evidence: output -> input id, gate -> output hash", async () => {
+			const result = await run("STOP", blocking);
+			const [input, output, gate] = result.phaseResults[0].evidenceArtifacts;
+			expect(input.parentHash).toBeNull();
+			expect(output.parentHash).toBe(input.artifactId);
+			expect(gate.parentHash).toBe(output.hash);
+			expect(output.hash).not.toBe("");
+		});
+	});
 });
