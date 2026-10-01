@@ -24,6 +24,8 @@ Medir y clasificar por qué `bun run typecheck` está rojo y reparar solo lo no 
 - [ ] TS6305 en `shared`: falta compilar `packages/domain` (`typecheck:build:domain-core`); es de orden de build, no de código.
 
 - [x] Los 4 tests de `getDrenyraApiKey` que fallaban no eran un renombre a medias: Vitest resolvía `.js` compilados y viejos que están trackeados junto a los `.ts`. Se corrigió con `resolve.extensions` en `packages/shared/vitest.config.ts`; ahora 90/90 (RUC: 33).
+- [x] Se aplicó la preferencia `.ts` en `application`, `persistence` e `infrastructure`: resultados idénticos antes y después (application 739/741, persistence 61 pasan y 141 fallan por falta de Postgres, infrastructure 74/74 con 10 archivos que no cargan). Sin efecto medible hoy, pero evita el mismo problema que ocurrió en `shared`.
+- [ ] Fallas reales en `application`: ver `odd/tasks/tenant-scope-journal-update.md`.
 - [ ] **Artefactos compilados trackeados en `src/`**: 290 `.js`/`.d.ts` (shared 49, infrastructure 118, application 72, persistence 48, web 3). Pueden hacer que los tests de esos paquetes ejecuten código viejo. Verificado en `shared` (un mutante en `ruc.ts` pasaba los tests). Falta revisar los otros paquetes y decidir si se eliminan del índice y se agregan a `.gitignore`.
 - [x] `.husky/pre-push` usaba `set -o pipefail` y `[[ ]]` con `sh`; falla en dash. Cambio propuesto: `#!/usr/bin/env sh`, `set -eu` y `[ ]`. Aplicado y probado con dash.
 
