@@ -74,7 +74,7 @@ export class PostgresJournalEntryRepository implements JournalEntryRepository {
 				)
 				.returning({ id: journalEntries.id });
 			if (updated.length === 0) {
-				throw new Error(`Journal entry ${entry.id} not found`);
+				throw new Error("Journal entry not found");
 			}
 			await tx
 				.delete(journalEntryLines)
@@ -171,7 +171,7 @@ export class PostgresJournalEntryRepository implements JournalEntryRepository {
 				)
 				.limit(1);
 			if (owned.length === 0) {
-				throw new Error(`Journal entry ${id} not found`);
+				throw new Error("Journal entry not found");
 			}
 			await tx
 				.delete(journalEntryLines)

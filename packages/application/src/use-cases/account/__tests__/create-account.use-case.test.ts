@@ -7,6 +7,7 @@
 
 import { Account } from "@drenyra/domain/entities/Account";
 import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import type { CreateAccountDTO } from "../../../dtos/account/account.dto";
@@ -56,6 +57,8 @@ function createMockParentAccount(
 	});
 }
 
+const scope: TenantScope = { organizationId: "1", companyId: "company-a1" };
+
 describe("CreateAccountUseCase", () => {
 	let useCase: CreateAccountUseCase;
 	let mockRepository: { [K in keyof AccountRepository]: Mock };
@@ -63,7 +66,8 @@ describe("CreateAccountUseCase", () => {
 	beforeEach(() => {
 		// Create mock repository
 		mockRepository = {
-			save: vi.fn().mockResolvedValue(undefined),
+			create: vi.fn().mockResolvedValue(undefined),
+			update: vi.fn().mockResolvedValue(undefined),
 			findById: vi.fn().mockResolvedValue(null),
 			findByCode: vi.fn().mockResolvedValue(null),
 			findAll: vi.fn().mockResolvedValue([]),
@@ -85,14 +89,18 @@ describe("CreateAccountUseCase", () => {
 		it("should create a valid account", async () => {
 			const dto = createValidDTO();
 
-			const result = await useCase.execute(dto);
+			const result = await useCase.execute(scope, dto);
 
 			expect(result).toBeDefined();
 			expect(result.code).toBe("10");
 			expect(result.name).toBe("Efectivo y Equivalentes");
 			expect(result.type).toBe("Activo");
 			expect(result.isActive).toBe(true);
-			expect(mockRepository.save).toHaveBeenCalledTimes(1);
+			expect(mockRepository.create).toHaveBeenCalledTimes(1);
+			expect(mockRepository.create).toHaveBeenCalledWith(
+				scope,
+				expect.anything(),
+			);
 		});
 
 		it("should create account with parent", async () => {
@@ -109,11 +117,11 @@ describe("CreateAccountUseCase", () => {
 				parentId: parentId,
 			});
 
-			const result = await useCase.execute(dto);
+			const result = await useCase.execute(scope, dto);
 
 			expect(result.code).toBe("101");
-			expect(mockRepository.findById).toHaveBeenCalledWith(parentId);
-			expect(mockRepository.save).toHaveBeenCalled();
+			expect(mockRepository.findById).toHaveBeenCalledWith(scope, parentId);
+			expect(mockRepository.create).toHaveBeenCalled();
 		});
 
 		it("should create account with all optional fields", async () => {
@@ -122,7 +130,7 @@ describe("CreateAccountUseCase", () => {
 				destination: "Destino especial",
 			});
 
-			const result = await useCase.execute(dto);
+			const result = await useCase.execute(scope, dto);
 
 			expect(result.description).toBe("Descripción detallada");
 		});
@@ -134,7 +142,7 @@ describe("CreateAccountUseCase", () => {
 
 			const dto = createValidDTO();
 
-			await expect(useCase.execute(dto)).rejects.toThrow(
+			await expect(useCase.execute(scope, dto)).rejects.toThrow(
 				/Ya existe una cuenta con el código 10/,
 			);
 		});
@@ -142,7 +150,7 @@ describe("CreateAccountUseCase", () => {
 		it("should throw error for invalid code format (non-numeric)", async () => {
 			const dto = createValidDTO({ code: "10A" });
 
-			await expect(useCase.execute(dto)).rejects.toThrow();
+			await expect(useCase.execute(scope, dto)).rejects.toThrow();
 		});
 
 		it("should throw error when code length does not match level", async () => {
@@ -151,7 +159,7 @@ describe("CreateAccountUseCase", () => {
 				level: "1", // Level 1 requires 2 digits
 			});
 
-			await expect(useCase.execute(dto)).rejects.toThrow();
+			await expect(useCase.execute(scope, dto)).rejects.toThrow();
 		});
 
 		it("should throw error when type does not match code", async () => {
@@ -160,13 +168,13 @@ describe("CreateAccountUseCase", () => {
 				type: "Pasivo", // Should be Activo for code starting with 1
 			});
 
-			await expect(useCase.execute(dto)).rejects.toThrow();
+			await expect(useCase.execute(scope, dto)).rejects.toThrow();
 		});
 
 		it("should throw error for empty name", async () => {
 			const dto = createValidDTO({ name: "" });
 
-			await expect(useCase.execute(dto)).rejects.toThrow();
+			await expect(useCase.execute(scope, dto)).rejects.toThrow();
 		});
 	});
 
@@ -180,7 +188,7 @@ describe("CreateAccountUseCase", () => {
 				parentId: "660e8400-e29b-41d4-a716-446655440001",
 			});
 
-			await expect(useCase.execute(dto)).rejects.toThrow(
+			await expect(useCase.execute(scope, dto)).rejects.toThrow(
 				"La cuenta padre no existe",
 			);
 		});
@@ -200,7 +208,7 @@ describe("CreateAccountUseCase", () => {
 				parentId: parentId,
 			});
 
-			await expect(useCase.execute(dto)).rejects.toThrow(
+			await expect(useCase.execute(scope, dto)).rejects.toThrow(
 				"La cuenta padre no puede tener subcuentas",
 			);
 		});
@@ -220,7 +228,7 @@ describe("CreateAccountUseCase", () => {
 				parentId: parentId,
 			});
 
-			await expect(useCase.execute(dto)).rejects.toThrow(
+			await expect(useCase.execute(scope, dto)).rejects.toThrow(
 				"El código debe comenzar con el código de la cuenta padre",
 			);
 		});
@@ -239,7 +247,7 @@ describe("CreateAccountUseCase", () => {
 				currency: "PEN",
 			};
 
-			const result = await useCase.execute(dto);
+			const result = await useCase.execute(scope, dto);
 
 			expect(result.description).toBeUndefined();
 		});
@@ -247,7 +255,7 @@ describe("CreateAccountUseCase", () => {
 		it("should handle account with USD currency", async () => {
 			const dto = createValidDTO({ currency: "USD" });
 
-			const result = await useCase.execute(dto);
+			const result = await useCase.execute(scope, dto);
 
 			expect(result.currency).toBe("USD");
 		});
@@ -255,7 +263,7 @@ describe("CreateAccountUseCase", () => {
 		it("should handle system account creation", async () => {
 			const dto = createValidDTO({ isSystem: true });
 
-			const result = await useCase.execute(dto);
+			const result = await useCase.execute(scope, dto);
 
 			expect(result.isSystem).toBe(true);
 		});
@@ -266,7 +274,7 @@ describe("CreateAccountUseCase", () => {
 				code: "20",
 			});
 
-			await useCase.execute(dto);
+			await useCase.execute(scope, dto);
 
 			expect(mockRepository.codeExists).toHaveBeenCalledWith(5, "20");
 		});
@@ -274,7 +282,7 @@ describe("CreateAccountUseCase", () => {
 		it("should always set balance to zero for new accounts", async () => {
 			const dto = createValidDTO();
 
-			const result = await useCase.execute(dto);
+			const result = await useCase.execute(scope, dto);
 
 			expect(result.balance.getAmount()).toBe(0);
 		});
@@ -294,7 +302,7 @@ describe("CreateAccountUseCase", () => {
 			async ({ level, code }) => {
 				const dto = createValidDTO({ level, code });
 
-				const result = await useCase.execute(dto);
+				const result = await useCase.execute(scope, dto);
 
 				expect(result.level).toBe(level);
 				expect(result.code).toBe(code);

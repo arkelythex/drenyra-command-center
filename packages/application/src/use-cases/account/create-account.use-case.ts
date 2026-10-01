@@ -6,6 +6,7 @@
 import { randomUUID } from "node:crypto";
 import { Account } from "@drenyra/domain/entities/Account";
 import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import {
 	type CreateAccountDTO,
@@ -24,7 +25,7 @@ import {
 export class CreateAccountUseCase {
 	constructor(private readonly accountRepository: AccountRepository) {}
 
-	async execute(input: CreateAccountDTO): Promise<Account> {
+	async execute(scope: TenantScope, input: CreateAccountDTO): Promise<Account> {
 		// 1. Validate input with Zod schema
 		const validatedInput = createAccountSchema.parse(input);
 
@@ -43,6 +44,7 @@ export class CreateAccountUseCase {
 		// 3. If parentId provided, verify parent exists and can have children
 		if (validatedInput.parentId) {
 			const parent = await this.accountRepository.findById(
+				scope,
 				validatedInput.parentId,
 			);
 			if (!parent) {
@@ -81,7 +83,7 @@ export class CreateAccountUseCase {
 		});
 
 		// 5. Persist to database
-		await this.accountRepository.save(account);
+		await this.accountRepository.create(scope, account);
 
 		return account;
 	}
