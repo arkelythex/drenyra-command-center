@@ -9,6 +9,7 @@ import {
 	JournalLine,
 } from "@drenyra/domain/entities/JournalEntry";
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import {
 	type UpdateJournalEntryDTO,
@@ -32,6 +33,7 @@ export class UpdateJournalEntryUseCase {
 	) {}
 
 	async execute(
+		scope: TenantScope,
 		id: string,
 		input: UpdateJournalEntryDTO,
 	): Promise<JournalEntry> {
@@ -39,7 +41,7 @@ export class UpdateJournalEntryUseCase {
 		const validatedInput = UpdateJournalEntrySchema.parse(input);
 
 		// 2. Find existing entry
-		const existingEntry = await this.journalRepository.findById(id);
+		const existingEntry = await this.journalRepository.findById(scope, id);
 		if (!existingEntry) {
 			throw new Error("Asiento no encontrado");
 		}
@@ -54,7 +56,10 @@ export class UpdateJournalEntryUseCase {
 		if (validatedInput.lines) {
 			updatedLines = await Promise.all(
 				validatedInput.lines.map(async (lineDTO) => {
-					const account = await this.accountService.getById(lineDTO.accountId);
+					const account = await this.accountService.getById(
+						scope,
+						lineDTO.accountId,
+					);
 					if (!account) {
 						throw new Error(`Cuenta no encontrada: ${lineDTO.accountId}`);
 					}

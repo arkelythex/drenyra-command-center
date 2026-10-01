@@ -9,6 +9,7 @@
  */
 
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import type { CreateJournalEntryDTO } from "../../../dtos/journal/journal-entry.dto";
 import { CreateJournalEntryUseCase } from "../create-journal-entry.use-case";
@@ -46,6 +47,8 @@ function createValidDTO(
 	};
 }
 
+const scope: TenantScope = { organizationId: "1", companyId: "company-a1" };
+
 describe("CreateJournalEntryUseCase", () => {
 	let useCase: CreateJournalEntryUseCase;
 	let mockJournalRepository: { [K in keyof JournalEntryRepository]: Mock };
@@ -64,7 +67,7 @@ describe("CreateJournalEntryUseCase", () => {
 		} as unknown as { [K in keyof JournalEntryRepository]: Mock };
 
 		mockAccountService = {
-			getById: vi.fn().mockImplementation((id: string) =>
+			getById: vi.fn().mockImplementation((_scope: TenantScope, id: string) =>
 				Promise.resolve({
 					code: id === TEST_UUID_1 ? "10" : "70",
 					name: id === TEST_UUID_1 ? "Efectivo" : "Ventas",
@@ -82,7 +85,7 @@ describe("CreateJournalEntryUseCase", () => {
 		it("should create a valid journal entry", async () => {
 			const dto = createValidDTO();
 
-			const result = await useCase.execute(dto, "user-123");
+			const result = await useCase.execute(scope, dto, "user-123");
 
 			expect(result).toBeDefined();
 			expect(result.gloss).toBe("Asiento de prueba");
@@ -96,7 +99,7 @@ describe("CreateJournalEntryUseCase", () => {
 
 			const dto = createValidDTO();
 
-			const result = await useCase.execute(dto, "user-123");
+			const result = await useCase.execute(scope, dto, "user-123");
 
 			expect(result.entryNumber).toBe("2024-00042");
 			expect(mockJournalRepository.getNextEntryNumber).toHaveBeenCalledWith(
@@ -108,7 +111,7 @@ describe("CreateJournalEntryUseCase", () => {
 		it("should create journal lines with account details", async () => {
 			const dto = createValidDTO();
 
-			const result = await useCase.execute(dto, "user-123");
+			const result = await useCase.execute(scope, dto, "user-123");
 
 			expect(result.lines[0]?.accountCode).toBe("10");
 			expect(result.lines[0]?.accountName).toBe("Efectivo");
@@ -140,10 +143,23 @@ describe("CreateJournalEntryUseCase", () => {
 				],
 			});
 
-			const result = await useCase.execute(dto, "user-123");
+			const result = await useCase.execute(scope, dto, "user-123");
 
 			expect(result.lines).toHaveLength(3);
 			expect(result.isBalanced()).toBe(true);
+		});
+	});
+
+	describe("Tenant isolation", () => {
+		it("resolves every account inside the caller's tenant scope", async () => {
+			const dto = createValidDTO();
+
+			await useCase.execute(scope, dto, "user-123");
+
+			expect(mockAccountService.getById).toHaveBeenCalledTimes(2);
+			for (const call of mockAccountService.getById.mock.calls) {
+				expect(call[0]).toEqual(scope);
+			}
 		});
 	});
 
@@ -153,7 +169,7 @@ describe("CreateJournalEntryUseCase", () => {
 
 			const dto = createValidDTO();
 
-			await expect(useCase.execute(dto, "user-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, dto, "user-123")).rejects.toThrow(
 				/Cuenta no encontrada/,
 			);
 		});
@@ -176,7 +192,7 @@ describe("CreateJournalEntryUseCase", () => {
 				],
 			});
 
-			await expect(useCase.execute(dto, "user-123")).rejects.toThrow();
+			await expect(useCase.execute(scope, dto, "user-123")).rejects.toThrow();
 		});
 
 		it("should throw error when less than 2 lines", async () => {
@@ -191,13 +207,13 @@ describe("CreateJournalEntryUseCase", () => {
 				],
 			});
 
-			await expect(useCase.execute(dto, "user-123")).rejects.toThrow();
+			await expect(useCase.execute(scope, dto, "user-123")).rejects.toThrow();
 		});
 
 		it("should throw error when gloss is empty", async () => {
 			const dto = createValidDTO({ gloss: "" });
 
-			await expect(useCase.execute(dto, "user-123")).rejects.toThrow();
+			await expect(useCase.execute(scope, dto, "user-123")).rejects.toThrow();
 		});
 
 		it("should throw error when line has both debit and credit", async () => {
@@ -218,7 +234,7 @@ describe("CreateJournalEntryUseCase", () => {
 				],
 			});
 
-			await expect(useCase.execute(dto, "user-123")).rejects.toThrow();
+			await expect(useCase.execute(scope, dto, "user-123")).rejects.toThrow();
 		});
 	});
 
@@ -241,7 +257,7 @@ describe("CreateJournalEntryUseCase", () => {
 				],
 			});
 
-			const result = await useCase.execute(dto, "user-123");
+			const result = await useCase.execute(scope, dto, "user-123");
 
 			expect(result.getTotalDebit().getAmount()).toBe(0.01);
 		});
@@ -264,7 +280,7 @@ describe("CreateJournalEntryUseCase", () => {
 				],
 			});
 
-			const result = await useCase.execute(dto, "user-123");
+			const result = await useCase.execute(scope, dto, "user-123");
 
 			expect(result.getTotalDebit().getAmount()).toBe(999999999.99);
 		});
@@ -290,7 +306,7 @@ describe("CreateJournalEntryUseCase", () => {
 				],
 			});
 
-			const result = await useCase.execute(dto, "user-123");
+			const result = await useCase.execute(scope, dto, "user-123");
 
 			expect(result.lines[0]?.documentType).toBe("FACTURA");
 			expect(result.lines[0]?.documentNumber).toBe("F001-00001");
@@ -302,7 +318,7 @@ describe("CreateJournalEntryUseCase", () => {
 				date: new Date("2025-06-15"),
 			});
 
-			await useCase.execute(dto, "user-123");
+			await useCase.execute(scope, dto, "user-123");
 
 			expect(mockJournalRepository.getNextEntryNumber).toHaveBeenCalledWith(
 				1,
@@ -313,7 +329,7 @@ describe("CreateJournalEntryUseCase", () => {
 		it("should always create entry in borrador status", async () => {
 			const dto = createValidDTO();
 
-			const result = await useCase.execute(dto, "user-123");
+			const result = await useCase.execute(scope, dto, "user-123");
 
 			expect(result.status).toBe("borrador");
 			expect(result.canBeModified()).toBe(true);
@@ -331,17 +347,30 @@ describe("CreateJournalEntryUseCase", () => {
 				],
 			});
 
-			mockAccountService.getById.mockImplementation((id: string) =>
-				Promise.resolve({ code: id, name: `Account ${id}` }),
+			mockAccountService.getById.mockImplementation(
+				(_scope: TenantScope, id: string) =>
+					Promise.resolve({ code: id, name: `Account ${id}` }),
 			);
 
-			await useCase.execute(dto, "user-123");
+			await useCase.execute(scope, dto, "user-123");
 
 			expect(mockAccountService.getById).toHaveBeenCalledTimes(4);
-			expect(mockAccountService.getById).toHaveBeenCalledWith(TEST_UUID_1);
-			expect(mockAccountService.getById).toHaveBeenCalledWith(TEST_UUID_2);
-			expect(mockAccountService.getById).toHaveBeenCalledWith(TEST_UUID_3);
-			expect(mockAccountService.getById).toHaveBeenCalledWith(TEST_UUID_4);
+			expect(mockAccountService.getById).toHaveBeenCalledWith(
+				scope,
+				TEST_UUID_1,
+			);
+			expect(mockAccountService.getById).toHaveBeenCalledWith(
+				scope,
+				TEST_UUID_2,
+			);
+			expect(mockAccountService.getById).toHaveBeenCalledWith(
+				scope,
+				TEST_UUID_3,
+			);
+			expect(mockAccountService.getById).toHaveBeenCalledWith(
+				scope,
+				TEST_UUID_4,
+			);
 		});
 
 		it("should fail on first missing account", async () => {
@@ -358,13 +387,14 @@ describe("CreateJournalEntryUseCase", () => {
 				],
 			});
 
-			mockAccountService.getById.mockImplementation((id: string) =>
-				id === TEST_UUID_INVALID
-					? Promise.resolve(null)
-					: Promise.resolve({ code: id, name: id }),
+			mockAccountService.getById.mockImplementation(
+				(_scope: TenantScope, id: string) =>
+					id === TEST_UUID_INVALID
+						? Promise.resolve(null)
+						: Promise.resolve({ code: id, name: id }),
 			);
 
-			await expect(useCase.execute(dto, "user-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, dto, "user-123")).rejects.toThrow(
 				/Cuenta no encontrada/,
 			);
 		});

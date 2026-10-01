@@ -9,6 +9,7 @@ import {
 	JournalLine,
 } from "@drenyra/domain/entities/JournalEntry";
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import {
 	type CreateJournalEntryDTO,
@@ -26,7 +27,10 @@ import {
  * ```
  */
 export interface AccountService {
-	getById(id: string): Promise<{ code: string; name: string } | null>;
+	getById(
+		scope: TenantScope,
+		id: string,
+	): Promise<{ code: string; name: string } | null>;
 }
 
 /**
@@ -45,6 +49,7 @@ export class CreateJournalEntryUseCase {
 	) {}
 
 	async execute(
+		scope: TenantScope,
 		input: CreateJournalEntryDTO,
 		_userId: string,
 	): Promise<JournalEntry> {
@@ -61,7 +66,10 @@ export class CreateJournalEntryUseCase {
 		// 3. Create journal lines with account details
 		const lines = await Promise.all(
 			validatedInput.lines.map(async (lineDTO) => {
-				const account = await this.accountService.getById(lineDTO.accountId);
+				const account = await this.accountService.getById(
+					scope,
+					lineDTO.accountId,
+				);
 				if (!account) {
 					throw new Error(`Cuenta no encontrada: ${lineDTO.accountId}`);
 				}

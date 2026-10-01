@@ -8,6 +8,7 @@ import type {
 	JournalEntryFilters,
 	JournalEntryRepository,
 } from "@drenyra/domain/repositories/journal-entry.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import {
 	and,
@@ -84,9 +85,12 @@ export class PostgresJournalEntryRepository implements JournalEntryRepository {
 		});
 	}
 
-	async findById(id: string): Promise<JournalEntry | null> {
+	async findById(scope: TenantScope, id: string): Promise<JournalEntry | null> {
 		const row = await db.query.journalEntries.findFirst({
-			where: eq(journalEntries.id, id),
+			where: and(
+				eq(journalEntries.id, id),
+				eq(journalEntries.companyId, scope.companyId),
+			),
 		});
 		if (!row) return null;
 		return this.mapToDomain(row, await this.getLines(id, row.companyId));
@@ -141,12 +145,32 @@ export class PostgresJournalEntryRepository implements JournalEntryRepository {
 		return entries;
 	}
 
-	async delete(id: string): Promise<void> {
+	async delete(scope: TenantScope, id: string): Promise<void> {
 		await db.transaction(async (tx) => {
+			const owned = await tx
+				.select({ id: journalEntries.id })
+				.from(journalEntries)
+				.where(
+					and(
+						eq(journalEntries.id, id),
+						eq(journalEntries.companyId, scope.companyId),
+					),
+				)
+				.limit(1);
+			if (owned.length === 0) {
+				throw new Error(`Journal entry ${id} not found`);
+			}
 			await tx
 				.delete(journalEntryLines)
 				.where(eq(journalEntryLines.journalEntryId, id));
-			await tx.delete(journalEntries).where(eq(journalEntries.id, id));
+			await tx
+				.delete(journalEntries)
+				.where(
+					and(
+						eq(journalEntries.id, id),
+						eq(journalEntries.companyId, scope.companyId),
+					),
+				);
 		});
 	}
 

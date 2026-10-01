@@ -3,29 +3,32 @@
  */
 
 import { UpdateJournalEntryStatusUseCase } from "@drenyra/application/use-cases/journal";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { journalRepository } from "../_helpers";
 
 export async function approveJournalEntryProposal(
+	scope: TenantScope,
 	id: string,
 	actorId = "system",
 ) {
 	const useCase = new UpdateJournalEntryStatusUseCase(journalRepository);
 	return useCase
-		.execute(id, "mayorizado", actorId)
+		.execute(scope, id, "mayorizado", actorId)
 		.then((entry) => entry.toJSON());
 }
 
 export async function rejectJournalEntryProposal(
+	scope: TenantScope,
 	id: string,
 	actorId = "system",
 ) {
-	const entry = await journalRepository.findById(id);
+	const entry = await journalRepository.findById(scope, id);
 	if (!entry) {
 		throw new Error("Asiento no encontrado");
 	}
 	if (entry.status !== "borrador") {
 		throw new Error("Solo se pueden rechazar asientos en borrador");
 	}
-	await journalRepository.delete(id);
+	await journalRepository.delete(scope, id);
 	return { id, rejected: true, rejectedBy: actorId };
 }

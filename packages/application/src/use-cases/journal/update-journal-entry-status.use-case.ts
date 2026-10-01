@@ -9,6 +9,7 @@
 import type { JournalEntry } from "@drenyra/domain/entities/JournalEntry";
 import type { AccountingPeriodRepository } from "@drenyra/domain/repositories/accounting-period.repository";
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 
 /**
  * Error thrown when a journal entry cannot be posted because the accounting
@@ -38,12 +39,13 @@ export class UpdateJournalEntryStatusUseCase {
 	) {}
 
 	async execute(
+		scope: TenantScope,
 		id: string,
 		newStatus: "mayorizado" | "declarado",
 		userId: string,
 	): Promise<JournalEntry> {
 		// 1. Find existing entry
-		const entry = await this.journalRepository.findById(id);
+		const entry = await this.journalRepository.findById(scope, id);
 		if (!entry) {
 			throw new Error("Asiento no encontrado");
 		}
