@@ -17,6 +17,14 @@ env:
   BUN_VERSION: '1.3.11'
 
 jobs:
+  odd-guard:
+    name: ODD guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject legacy SDD/OpenSpec and shadowing build output
+        run: sh scripts/ci/odd-guard.sh
+
   go:
     name: Go — build + test
     runs-on: ubuntu-latest

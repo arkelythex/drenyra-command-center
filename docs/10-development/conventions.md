@@ -49,7 +49,7 @@ export { DNI } from './DNI'
 **Reglas:**
 
 - No imports a archivos `.ts` directamente si hay un `index.ts` en el mismo directorio
-- El gate automatizado de salud de imports está planificado en `openspec/changes/drenyra-x4-import-health/`; todavía no se aplica en CI
+- El gate automatizado de salud de imports estuvo planificado en el plan SDD `drenyra-x4-import-health` (archivado en git, commit `d428534`); todavía no se aplica en CI
 
 ### Orden de imports
 

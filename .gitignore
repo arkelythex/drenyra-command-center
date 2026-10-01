@@ -94,3 +94,14 @@ data/
 # Audit ledgers are canonical append-only evidence — tracked deliberately
 !/docs/audits/data/
 *.log
+
+# Build output goes to dist/, never next to TypeScript sources: committed .js/.d.ts shadow the
+# real .ts in tests (see scripts/ci/odd-guard.sh).
+packages/shared/src/**/*.js
+packages/shared/src/**/*.d.ts
+packages/application/src/**/*.js
+packages/application/src/**/*.d.ts
+packages/infrastructure/src/**/*.js
+packages/infrastructure/src/**/*.d.ts
+packages/persistence/src/**/*.js
+packages/persistence/src/**/*.d.ts

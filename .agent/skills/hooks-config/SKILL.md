@@ -52,7 +52,7 @@ If pre-PR blocks (hot path or >400 lines):
 
 1. The orchestrator selects the Full 4R lens set
 2. Fresh-context review agents run on the diff
-3. Findings are persisted to `openspec/changes/{change}/review-ledger.md`
+3. Findings are persisted to `odd/tasks/{task}.review.md`
 4. Only BLOCKER/CRITICAL findings must be fixed before retry
 5. After fixes, a scoped re-review validates the fix-touched lines
 6. If clean, the PR gate passes

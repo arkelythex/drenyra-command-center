@@ -55,7 +55,7 @@ Los scripts `compliance:sire-*` del `package.json` fueron eliminados (nunca exis
 ## Memoria y agentes
 
 - **Memoria persistente:** Engram, proyecto `drenyra` ([guía](docs/10-development/engram-guide.md)). No guardar secretos, datos de clientes ni registros fiscales crudos. Si Engram no está disponible, continúa con los archivos del repo y repórtalo.
-- **Estado del trabajo:** `odd/tasks/`. `openspec/` y `fiscal-sdd` son material histórico: no crear specs nuevas ahí. El directorio `.claude/` no existe en el repo; no dependas de `.claude/agents/_protocol.md` ni `.claude/memory/active_plan.md`.
+- **Estado del trabajo:** `odd/tasks/`. `openspec/` fue eliminado (historial en git, commit `d428534`); `fiscal-sdd` es FSD de producto, no flujo de trabajo. El directorio `.claude/` no existe en el repo; no dependas de `.claude/agents/_protocol.md` ni `.claude/memory/active_plan.md`.
 - **Skills:** `.agent/skills/` (revisión, SUNAT, tenant isolation, ledger, FSD fiscal, etc.). Delegación a sub-agentes: ver tabla de triggers en `AGENTS.md`.
 - **Seguridad:** OWASP Top 10, prohibido hardcodear credenciales, usar `SecureLogger`. Funciones cortas, JSDoc en API pública.
 

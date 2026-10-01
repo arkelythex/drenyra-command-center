@@ -92,7 +92,7 @@ Drenyra usa **ODD (Organic Driven Development)** para todo cambio. **SDD y OpenS
 - **Incierto:** se investiga primero y se anota lo aprendido.
 - **Grande:** un único *feature document* en `odd/tasks/<tarea>.md` (objetivo, alcance, fuera de alcance, restricciones), autorización explícita antes de implementar y progreso recuperable entre sesiones.
 - **Crítico (fiscal/SUNAT/dominio/DB/AI-control/CI/tenant):** se verifica siempre, sin importar el tamaño: test-first y revisión **RDD de riesgo alto**. Review y test-first son independientes de cualquier flujo; en lo crítico no son opcionales.
-- `openspec/` es archivo histórico de solo lectura (ver [`openspec/README.md`](openspec/README.md)).
+- `openspec/` **ya no existe** (retirado con SDD). Su historial vive en git: `git show d428534:openspec/<ruta>`, y la documentación enlaza permalinks a ese commit.
 - Taxonomía documental y estado de capacidades: [`program-taxonomy.md`](docs/01-foundation/program-taxonomy.md), [`capability-map.md`](docs/01-foundation/capability-map.md).
 
 ## Working style

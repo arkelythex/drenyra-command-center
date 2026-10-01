@@ -1,1 +1,0 @@
-export { PostgresTransactionRepository } from "./repository";

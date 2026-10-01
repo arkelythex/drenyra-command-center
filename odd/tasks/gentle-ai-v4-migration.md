@@ -18,9 +18,12 @@ Dejar Drenyra alineado con **Gentle AI v4.0.0** y **Gentle Shell 4.0** (`gentle-
 
 ### Hecho en el repo
 - [x] Eliminados los workflows `auto-sdd.yml`, `sdd-auto-implement.yml` (generaban y auto-implementaban propuestas SDD con IA) y `cursor-gentle-ai-sync.yml` (re-vendoreaba `sdd-orchestrator`; `.cursor/` ni existe).
-- [x] Eliminadas las configs SDD: `openspec/config.yaml` y `packages/pi/openspec/config.yaml`.
-- [x] `openspec/` marcado como **archivo histórico** de solo lectura (`openspec/README.md`); `master-index.md` actualizado.
+- [x] Eliminadas las configs SDD (`openspec/config.yaml`, `packages/pi/openspec/config.yaml`).
+- [x] **`openspec/` completo eliminado (410 archivos, 5.5 MB).** El plan H02 que seguía vivo pasó a `odd/tasks/h02-tenant-isolation.md`; los enlaces de la documentación son permalinks al commit `d428534` (`git show d428534:openspec/<ruta>`). También `apps/web/docs/sdd/` (5 archivos).
 - [x] `.superpowers/` retirado; su único documento pasó a `odd/archive/phase5-audit-2026-07-06.md`.
+- [x] **Limpieza de peso:** 287 `.js`/`.d.ts` compilados trackeados en `src/` de `shared`, `application`, `infrastructure` y `persistence` (sombreaban a los `.ts` en tests; incluye 4 restos de un vertical electoral eliminado), el video `products/kuse/docs/cowoker-demo.mp4` (27.5 MB), `geist-1.7.2.tgz` y `fontsource-inter-5.2.8.tgz` (8.7 MB, sin referencias) y la caché `apps/cli/.pi-lens/` (ya ignorada). Resultados de tests y typecheck idénticos a la línea base.
+- [x] **Guardarraíl `odd:guard`** (`scripts/ci/odd-guard.sh`, en `docs:verify` y en el job `ODD guard` de CI): si reaparece `openspec/`, un workflow SDD o build compilado junto a los `.ts`, falla con un mensaje que lista los caminos para seguir (equivalente Drenyra del «nada queda trabado» de v4).
+- [x] `packages/fiscal-sdd/vitest.config.ts` tenía un error de sintaxis (llave sobrante): sus tests no arrancaban. Corregido; 97/97 pasan.
 - [x] Plantillas de issue/PR y `hooks-config` ya no mencionan SDD/OpenSpec.
 - [x] `CLAUDE.md`, `AGENTS.md` y `docs/10-development/odd-workflow.md` reescritos para v4: ODD escala solo (simple/incierto/grande/crítico), RDD y test-first independientes, rechazo claro si algo llama a SDD, y guía de actualización con comandos verificados.
 
@@ -41,11 +44,13 @@ Verifica: `gentle-ai --version` (4.x), `gentle-ai sync` sin avisos, doctor de En
 
 ## Decisiones pendientes
 
-1. **`openspec/changes/` (148 archivos):** ¿se conserva como archivo (hoy) o se borra del árbol? El historial de git los preserva igual. Algunos documentos aún los citan.
-2. **Renombrar `packages/fiscal-sdd` → FSD** (paquete, imports, tests, skill `drenyra-sdd`): tarea crítica aparte, con test-first.
-3. **`drenyra-shell`** (antes `drenyra-pi`): alinear su runtime pin con Gentle AI 4.0 y retirar sus rutas SDD/OpenSpec si las trae. Cambio en otro repo; aquí solo hay lectura.
-4. **`vendored/drenyra-ai-0.2.0.tgz`** vs `drenyra-ai` v0.5.0: actualización crítica y separada.
-5. **`.gga` (`PROVIDER="codex"`):** confirmar que sigue siendo el proveedor de review deseado con el review nativo de v4.
+1. **Renombrar `packages/fiscal-sdd` → FSD** (paquete, imports, tests, skill `drenyra-sdd`): tarea crítica aparte, con test-first.
+2. **`drenyra-shell`** (antes `drenyra-pi`): alinear su runtime pin con Gentle AI 4.0 y retirar sus rutas SDD/OpenSpec si las trae. Cambio en otro repo; aquí solo hay lectura.
+3. **`vendored/drenyra-ai-0.2.0.tgz`** vs `drenyra-ai` v0.5.0: actualización crítica y separada.
+4. **`.gga` (`PROVIDER="codex"`):** confirmar que sigue siendo el proveedor de review deseado con el review nativo de v4.
+
+5. **`products/` (andino, estado, kuse, senzar; 31 MB):** la política de alcance de `AGENTS.md` pide mover los productos ajenos a la contabilidad a su propio repo. `andino` tiene workflow de CI propio. Falta decidir destino de cada uno.
+6. **`packages/pi` (224 archivos):** el harness se extrajo a `drenyra-shell` (antes `drenyra-pi`), pero `apps/api`, `apps/web` y `apps/cli` aún lo importan. Retirarlo exige migrar esos consumidores (tarea crítica aparte).
 
 ## Fuera de alcance
 

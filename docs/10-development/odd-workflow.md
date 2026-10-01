@@ -42,7 +42,7 @@ Ante la duda, trátalo como crítico. La profundidad del review la fija el riesg
 
 ## Si algo todavía llama a SDD
 
-Gentle AI v4 responde con un **rechazo claro** que lista los caminos para seguir (trabajo directo, investigar, documento ODD, verificar). No queda nada trabado: sigue ese camino, no recrees `openspec/`.
+Gentle AI v4 responde con un **rechazo claro** que lista los caminos para seguir (trabajo directo, investigar, documento ODD, verificar). No queda nada trabado: sigue ese camino, no recrees `openspec/`. En Drenyra lo hace cumplir `bun run odd:guard` (parte de `docs:verify`): si reaparece `openspec/`, un workflow SDD o `.js`/`.d.ts` compilado junto a los `.ts`, falla con un mensaje que lista los caminos disponibles.
 
 ## Actualizar a Gentle AI v4 y Gentle Shell 4.0 (en tu máquina)
 
@@ -68,8 +68,7 @@ Qué cambia al sincronizar (según las notas de la release):
 
 | Elemento | Estado |
 |----------|--------|
-| Workflows `auto-sdd`, `sdd-auto-implement`, `cursor-gentle-ai-sync`; `openspec/config.yaml` | **Eliminados** |
-| `openspec/changes/` y el resto de `openspec/` | **Archivo histórico** de solo lectura (ver `openspec/README.md`) |
+| Workflows `auto-sdd`, `sdd-auto-implement`, `cursor-gentle-ai-sync`; todo `openspec/` | **Eliminados** (historial en git: `git show d428534:openspec/<ruta>`) |
 | `packages/fiscal-sdd` y la skill `drenyra-sdd` | **No son legado:** son **FSD**, la ejecución fiscal guiada por especificación del *producto* (fases captura → clasificación → conciliación → cierre). Usa la API de compliance. Su nombre «SDD» es heredado y se renombra en una tarea aparte. |
 
 ## Memoria, contexto y herramientas

@@ -87,8 +87,7 @@ Drenyra/
 │   ├── persistence/  # Drizzle schemas, repos
 │   └── ...
 ├── docs/             # Documentación
-├── odd/              # Flujo ODD: documentos de tareas
-└── openspec/         # Archivo histórico (SDD retirado)
+└── odd/              # Flujo ODD: documentos de tareas
 ```
 
 ## Troubleshooting

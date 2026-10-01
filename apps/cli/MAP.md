@@ -43,11 +43,11 @@ CLI changes must follow these rules:
 
 ### Philosophy links and related plans
 
-- [North Star Philosophy](../../openspec/changes/drenyra-north-star-philosophy/proposal.md)
+- [North Star Philosophy](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-north-star-philosophy/proposal.md)
   defines Drenyra's shared fiscal operating contract.
-- [P1 Fiscal Terminal](../../openspec/changes/drenyra-p1-fiscal-terminal/proposal.md)
+- [P1 Fiscal Terminal](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-p1-fiscal-terminal/proposal.md)
   owns the fiscal terminal implementation roadmap.
-- [S5 Go CLI Alignment](../../openspec/changes/drenyra-s5-go-cli-alignment/proposal.md)
+- [S5 Go CLI Alignment](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-s5-go-cli-alignment/proposal.md)
   aligns Go contracts, memory, delegation, and workflow semantics.
 
 ### Usage boundaries

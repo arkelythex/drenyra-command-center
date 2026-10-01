@@ -188,7 +188,7 @@ Cada dominio tiene un **Capability Map** que lista las capacidades que lo compon
 
 | Clase   | Ubicación actual               | Estado                    |
 | ------- | ------------------------------ | ------------------------- |
-| SDD     | `openspec/changes/*/`          | ~79 SDDs, varios en L1–L2 |
+| SDD     | _retirado_ (historial: `d428534:openspec/changes/`) | ~79 SDDs históricos |
 | ADR     | `docs/adr/` y `docs/02-adr/`   | ~12 ADRs                  |
 | FSD     | No existe aún                  | Crear por país/obligación |
 | WSD     | `docs/architecture/` (parcial) | Migrar cuando corresponda |
