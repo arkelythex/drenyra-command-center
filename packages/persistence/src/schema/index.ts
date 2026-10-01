@@ -171,6 +171,8 @@ export {
 	type SunatKnowledgeChunk,
 	sunatKnowledgeChunks,
 } from "./auxiliary.schema";
+// --- BANKING PROVIDERS ---
+export { bankProviders } from "./bank-providers.schema";
 export {
 	bankAccounts,
 	bankAccountsRelations,
@@ -194,11 +196,6 @@ export {
 	transactionReconciliationMatches,
 	transactionReconciliationMatchesRelations,
 } from "./banking-reconciliation-matches.schema";
-// --- BANKING PROVIDERS ---
-export { bankProviders } from "./bank-providers.schema";
-// --- RECONCILIATION RULES ---
-export { reconciliationRules } from "./reconciliation-rules.schema";
-export { pleGenerations, pleGenerationsRelations } from "./ple.schema";
 // --- AGENT BATCH RUNS ---
 export {
 	type BatchRun,
@@ -255,6 +252,7 @@ export {
 export {
 	type CheckHistoryEntry,
 	checkHistory,
+	checkStatusEnum,
 	type NewCheckHistoryEntry,
 	type NewSystemCheck,
 	type SystemCheck,
@@ -331,13 +329,6 @@ export {
 	payments,
 	paymentsRelations,
 } from "./invoicing.schema";
-// --- MODEL ROUTER ---
-export {
-	capabilityRoutingRules,
-	modelRegistrations,
-	routingAuditLog,
-	routingAuditLogRelations,
-} from "./model-router.schema";
 // --- MISSIONS ---
 export {
 	accountingMissions,
@@ -350,6 +341,13 @@ export {
 	missionReceipts,
 	missionReceiptsRelations,
 } from "./mission.schema";
+// --- MODEL ROUTER ---
+export {
+	capabilityRoutingRules,
+	modelRegistrations,
+	routingAuditLog,
+	routingAuditLogRelations,
+} from "./model-router.schema";
 // --- MONTHLY CLOSE ---
 export {
 	type ChecklistCategory,
@@ -370,11 +368,14 @@ export {
 	gateTypeEnum,
 } from "./monthly-close.schema";
 export { platformMcpAuditEvents } from "./platform-mcp.schema";
+export { pleGenerations, pleGenerationsRelations } from "./ple.schema";
 // --- PRODUCTS ---
 export {
 	products,
 	productsRelations,
 } from "./products.schema";
+// --- RECONCILIATION RULES ---
+export { reconciliationRules } from "./reconciliation-rules.schema";
 // --- SECURITY ---
 export {
 	accessLogs,
@@ -541,6 +542,11 @@ export const customerProfilesRelations = relations(
 	}),
 );
 
+// --- ENUMS NOT RE-EXPORTED ABOVE ---
+// drizzle-kit only creates enum types that are reachable from the schema index,
+// so every pgEnum must be exported here or `db:push` fails on a fresh database.
+export { checkCategoryEnum } from "./doctor-mode.schema";
+export { fiscalStatusEnum } from "./enums";
 // --- ERROR RECOVERY ---
 export {
 	type CircuitBreakerState,
@@ -567,10 +573,18 @@ export {
 } from "./fiscal-memory.schema";
 // --- W2-04: IDEMPOTENCY ---
 export {
+	failureClassEnum,
 	type IdempotencyRecord,
 	idempotencyRecords,
+	idempotencyStatusEnum,
 	type NewIdempotencyRecord,
 } from "./idempotency.schema";
+export { inboxFailureClassEnum, inboxStatusEnum } from "./inbox.schema";
+export {
+	jobExecutionStatusEnum,
+	jobFailureClassEnum,
+	jobUniquenessPolicyEnum,
+} from "./job-executions.schema";
 // --- JUDGMENT DAY ---
 export {
 	type AuditReviewStatus,
