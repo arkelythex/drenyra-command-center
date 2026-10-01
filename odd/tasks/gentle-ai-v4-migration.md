@@ -49,7 +49,7 @@ Verifica: `gentle-ai --version` (4.x), `gentle-ai sync` sin avisos, doctor de En
 3. **`vendored/drenyra-ai-0.2.0.tgz`** vs `drenyra-ai` v0.5.0: actualización crítica y separada.
 4. **`.gga` (`PROVIDER="codex"`):** confirmar que sigue siendo el proveedor de review deseado con el review nativo de v4.
 
-5. **`products/` (andino, estado, kuse, senzar; 31 MB):** la política de alcance de `AGENTS.md` pide mover los productos ajenos a la contabilidad a su propio repo. `andino` tiene workflow de CI propio. Falta decidir destino de cada uno.
+5. **Crear los repos de `products/`** (ver abajo): el código ya salió de este repo; falta que publiques cada historial en su propio repositorio.
 6. **Reemplazo del runtime por el SDK de Pi:** `packages/agent-runtime` (ex `packages/pi`) es el runtime de agentes que usa la API (`Agent`, `DomainAgent`, `ApprovalGateEngine`, `SessionManager`, `queueManager`, estrategias, MCP; ~40 importadores). **`drenyra-shell` no ofrece ninguno de esos 19 símbolos** (verificado por búsqueda). El plan `docs/14-design/pi-migration-cleanup-plan.md` lo sustituye por adaptadores del SDK de Pi **solo cuando el shadow-run confirme paridad**; hasta entonces no se borra.
 
 ### Hecho: `packages/pi` → `packages/agent-runtime`
@@ -57,6 +57,18 @@ Verifica: `gentle-ai --version` (4.x), `gentle-ai sync` sin avisos, doctor de En
 - [x] Renombrado el paquete a **`@drenyra/agent-runtime`** (61 archivos, `tsconfig`, `bun.lock`, script `drenyra:serve`). Resultados idénticos a la línea base: runtime 558/558, tests de la API que lo usan sin cambios, typecheck 1349, `bun install --frozen-lockfile` correcto.
 - El renombre destapó deuda de lint latente en 32 archivos: se corrigió lo mecánico y se inventarió el resto en `odd/tasks/agent-runtime-lint-debt.md` (sin saltarse el hook).
 - Pendiente: `apps/cli` (Go/TS) y `apps/web` aún usan «pi» en comandos y textos de cara al usuario (`drenyra pi`), y `docs/diagrams/drenyra-command-center.architecture.html` es un artefacto generado con la ruta vieja; se regenera con Archify.
+
+### Hecho: `products/` retirado (política de alcance)
+- [x] Eliminados `products/andino` (drones, 170 archivos), `products/estado` (civic tech, 184), `products/kuse` (app Tauri de cowork, 129) y `products/senzar` (trazabilidad agro, 24), más el workflow `andino-studio.yml`: 31 MB y 509 archivos. Ningún código contable los importaba (verificado: sin workspaces, `turbo`, `knip` ni imports); el único acoplamiento era ese workflow.
+- [x] El guardarraíl `odd:guard` rechaza ahora un `products/` nuevo con los pasos para extraerlo.
+- **Extraer con historial** (probado con `senzar`: 24 archivos, historial intacto). Desde un clon de este repo:
+
+```bash
+git subtree split -P products/<andino|estado|kuse|senzar> -b extract/<nombre> 91e116b
+git push git@github.com:arkelythex/<nuevo-repo>.git extract/<nombre>:main
+```
+
+  `91e116b` es el último commit que contiene `products/`. Yo no creé los repos: crear repositorios nuevos en tu cuenta queda fuera del alcance de esta sesión.
 
 ## Fuera de alcance
 

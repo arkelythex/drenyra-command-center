@@ -30,6 +30,15 @@ if [ -n "$sdd_workflows" ]; then
     "Use ODD: odd/tasks/<task>.md documents the work; CI gates stay in ci.yml and quality-gates.yml."
 fi
 
+# 2b. Scope policy: this repo is the Accounting Command Center (see AGENTS.md).
+if [ -n "$(git ls-files products 2>/dev/null | head -1)" ]; then
+  report "products/ is not allowed: non-accounting products must live in their own repo." \
+    "Do this instead:" \
+    "  - extract it with history: git subtree split -P products/<name> -b extract/<name>" \
+    "    then push that branch to a new repository (see odd/tasks/gentle-ai-v4-migration.md)" \
+    "  - or archive it outside this repo; never grow inside drenyra-command-center"
+fi
+
 # 3. No compiled output committed next to TypeScript sources (it shadows .ts in tests).
 shadow=""
 for f in $(git ls-files 'packages/*/src/*' 'packages/*/src/**/*' 'apps/*/src/*' 'apps/*/src/**/*' 2>/dev/null | grep -E '\.(js|d\.ts)$' || true); do
