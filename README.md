@@ -175,12 +175,7 @@ bun run dev:check
 | Swagger              | `http://localhost:3000/swagger` |
 | Data Engine          | `http://localhost:8000/health`  |
 
-**CLI:**
-
-```bash
-cd apps/cli
-go run cmd/drenyra/main.go
-```
+**Terminal:** la antigua CLI en Go se retiró; se opera con [`drenyra-shell`](https://github.com/arkelythex/drenyra-shell) (comandos `/drenyra:*` sobre Pi) y la CLI de [`drenyra-ai`](https://github.com/arkelythex/drenyra-ai) (`drenyra-ai doctor run`, `mission`, `receipt`).
 
 ---
 

@@ -38,7 +38,6 @@ jobs:
     name: Detect affected subsystems
     runs-on: ubuntu-latest
     outputs:
-      run_go: ${{ steps.changes.outputs.go }}
       run_web: ${{ steps.changes.outputs.web }}
       run_api: ${{ steps.changes.outputs.api }}
       run_scripts: ${{ steps.changes.outputs.scripts }}
@@ -64,7 +63,6 @@ jobs:
             DEL=$(echo "$STAT" | grep -oP '\d+(?= deletion)' || echo "0")
             echo "insertions=$INS"
             echo "deletions=$DEL"
-            if echo "$FILES" | grep -qE '^apps/cli/'; then echo "go=true"; else echo "go=false"; fi
             if echo "$FILES" | grep -qE '^apps/web/'; then echo "web=true"; else echo "web=false"; fi
             if echo "$FILES" | grep -qE '^apps/api/|^packages/'; then echo "api=true"; else echo "api=false"; fi
             if echo "$FILES" | grep -qE '^scripts/'; then echo "scripts=true"; else echo "scripts=false"; fi
@@ -83,23 +81,8 @@ jobs:
         with:
           bun-version: ${{ env.BUN_VERSION }}
 
-      - name: Setup Go
-        if: needs.detect.outputs.run_go == 'true'
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: apps/cli/go.mod
-
       - name: Install dependencies
         run: bun install --frozen-lockfile 2>&1 || echo "bun_install_exit=$?" >> "$GITHUB_OUTPUT"
-
-      - name: Verify Go build + test
-        if: needs.detect.outputs.run_go == 'true'
-        id: go-check
-        working-directory: apps/cli
-        run: |
-          O="$GITHUB_OUTPUT"
-          go build -buildvcs=false ./... 2>&1 && echo "go_build=pass" >> "$O" || echo "go_build=fail" >> "$O"
-          go test -buildvcs=false ./... 2>&1 && echo "go_test=pass" >> "$O" || echo "go_test=fail" >> "$O"
 
       - name: Verify Web typecheck
         if: needs.detect.outputs.run_web == 'true'
@@ -118,14 +101,10 @@ jobs:
         id: report
         run: |
           O="$GITHUB_OUTPUT"
-          GO_BUILD="${{ steps.go-check.outputs.go_build }}"
-          GO_TEST="${{ steps.go-check.outputs.go_test }}"
           WEB_TC="${{ steps.web-check.outputs.web_typecheck }}"
           API_TC="${{ steps.api-check.outputs.api_typecheck }}"
 
           REPORT="## Post-Merge Verification\n\n**Commit:** ${{ github.sha }}\n\n| Subsystem | Result |\n|-----------|--------|\n"
-          [ -n "$GO_BUILD" ] && REPORT+="| Go Build | $GO_BUILD |\n"
-          [ -n "$GO_TEST" ] && REPORT+="| Go Test | $GO_TEST |\n"
           [ -n "$WEB_TC" ] && REPORT+="| Web TypeCheck | $WEB_TC |\n"
           [ -n "$API_TC" ] && REPORT+="| API TypeCheck | $API_TC |\n"
 

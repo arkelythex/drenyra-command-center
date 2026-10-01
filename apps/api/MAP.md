@@ -2,7 +2,7 @@
 
 **Última actualización**: 2026-06-20
 
-> Manual navigation map for the DRENYRA API (Bun + ElysiaJS). See `CODEX-MAP.md` for monorepo root, `apps/cli/MAP.md` for CLI companion.
+> Manual navigation map for the DRENYRA API (Bun + ElysiaJS). See `CODEX-MAP.md` for monorepo root; the terminal companion is `drenyra-shell`.
 
 ---
 

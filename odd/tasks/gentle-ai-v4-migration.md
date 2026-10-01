@@ -76,6 +76,14 @@ git push git@github.com:arkelythex/<nuevo-repo>.git extract/<nombre>:main
 - [x] Se conservan por ser datos/contratos persistidos o compartidos: el prefijo de tópicos de Engram `sdd/{changeId}/…`, la estructura en disco `cambios/{changeId}/{fase}.json` y el ID de agente `drenyra-sdd-orchestrator`.
 - Verificación: tests nuevos primero (RED) y luego verde: 100/100 en `fiscal-fsd` (97 + 3); typecheck 1346; los fallos de `drenyra-orchestrator` (15, `runtime/budget.test.ts`) y de la API de compliance (20) son idénticos en un worktree del commit anterior, es decir, preexistentes.
 
+### Hecho: CLI en Go (`apps/cli`) retirada
+Reemplazada por `drenyra-shell` (comandos `/drenyra:*` sobre Pi) y la CLI de `drenyra-ai`; la estrategia previa del repo ya decía «CLI → gentle-pi terminal».
+- [x] Eliminados `apps/cli` (168 archivos: Go + Bubble Tea TUI y 7 comandos TS) y todo su cableado: job `go` de `ci.yml`, pasos Go de `post-merge-verification.yml` y `contracts-nightly.yml`, entrada de Dependabot, CODEOWNERS, scripts `go:drenyra:*`, targets Go del `Makefile` (apuntaban a una ruta inexistente), `.gitignore`, `CODEX-MAP`, `README`, guías y plantillas de issue.
+- [x] `docs/10-development/go-ts-contracts.md` eliminado (contratos Go↔TS ya sin parte Go); ADR-007 marcado **Reemplazado**.
+- [x] **Gate reparado:** `docs:verify` estaba en rojo desde antes porque exigía `apps/web/src/routes/product-surfaces.tsx`, una ruta que nunca existió; se retiró ese requisito y el de `apps/cli/MAP.md`. Ahora pasa.
+- Efecto en conformidad de recibos (`contracts-nightly`): se pierde la pata Go (`go test ./...` del harness); quedan TS (`mission-domain`) y Python (`data-engine`). El esquema de recibo lo congela `drenyra-ai`.
+- Consecuencias abiertas: los campos `sourcePath: "apps/drenyra-cli/…"` de `packages/agent-runtime/src/agents/{registry.ts,data/cli-delegation.ts}` apuntan a un archivo que ya no existe (y que ya tenía ruta vieja); y, sin la CLI, **renombrar el ID `drenyra-sdd-orchestrator` ya solo exige migrar datos y docs**, no coordinar con Go.
+
 ## Fuera de alcance
 
 - Borrar historial o código de producto; reescribir registros históricos.

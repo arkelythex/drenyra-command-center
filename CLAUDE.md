@@ -13,7 +13,7 @@
 ## Stack real (resumen)
 
 - **TypeScript (Bun):** `packages/domain` (VO, Entities, Events; sin frameworks), `packages/application`, `apps/api` (Elysia = adaptador de entrada), `apps/web` (React 19). Vertical Slice + CQRS.
-- **Rust:** `engines/rust-core` (núcleo verificable). **Go:** `services/` (conectores, `services/engram`), `apps/cli`. Ver [stack canónico](docs/01-foundation/canonical-stack.md).
+- **Rust:** `engines/rust-core` (núcleo verificable). **Go:** `services/` (conectores, `services/engram`). La antigua CLI en Go (`apps/cli`) fue reemplazada por `drenyra-shell` + `drenyra-ai`. Ver [stack canónico](docs/01-foundation/canonical-stack.md).
 - **Money:** `Money` VO de `@drenyra/domain` (cents). Nunca floats ni `number` crudo. `dinero.js` NO está instalado.
 - **Navegación rápida:** `CODEX-MAP.md` → `apps/<app>/MAP.md` → `.codebase/index.yml`.
 

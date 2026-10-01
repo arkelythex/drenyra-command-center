@@ -2,7 +2,7 @@
 
 **Última actualización**: 2026-06-30
 
-Drenyra is API/domain-first. React Web and Go CLI are UX adapters over the same Financial Engineering Environment and Brain timeline.
+Drenyra is API/domain-first. React Web and the terminal surface (`drenyra-shell`, which replaced the Go CLI) are UX adapters over the same Financial Engineering Environment and Brain timeline.
 
 ## DFAS transport (v1)
 

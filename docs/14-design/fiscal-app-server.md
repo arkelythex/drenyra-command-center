@@ -298,7 +298,7 @@ sequenceDiagram
 | Surface            | Primary                    | Fallback       |
 | ------------------ | -------------------------- | -------------- |
 | Web Command Center | WebSocket                  | SSE            |
-| Go CLI             | NDJSON stdio relay or HTTP | REST compat v0 |
+| drenyra-shell / CLI | NDJSON stdio relay or HTTP | REST compat v0 |
 | Automations        | WebSocket                  | REST           |
 | Partner API        | WebSocket + scoped API key | —              |
 

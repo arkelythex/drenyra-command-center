@@ -16,7 +16,6 @@
 | [How to Write a Test](./how-to-write-a-test.md)   | Testing patterns, property-based        |
 | [Test Patterns](./test-patterns.md)               | Patrones específicos de testing         |
 | [How to Debug](./how-to-debug.md)                 | Debugging tools, techniques             |
-| [Go-TS Contracts](./go-ts-contracts.md)           | Contratos entre Go y TypeScript         |
 | [Engram Guide](./engram-guide.md)                 | Uso de memoria persistente Engram       |
 
 ---
@@ -72,6 +71,5 @@ bun run docs:verify
 | `docs/development/how-to-write-a-test.md`         | `./how-to-write-a-test.md`  |
 | `docs/development/test-patterns.md`               | `./test-patterns.md`        |
 | `docs/development/how-to-debug.md`                | `./how-to-debug.md`         |
-| `docs/05-development/go-ts-contracts.md`          | `./go-ts-contracts.md`      |
 | `docs/05-development/engram-project-canonical.md` | `./engram-guide.md`         |
 | `docs/05-development/drenyra-repo-sync.md`        | `./drenyra-repo-sync.md`    |

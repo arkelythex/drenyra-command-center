@@ -1,6 +1,6 @@
 # ADR-007: Go para CLI (Fiscal Terminal)
 
-**Estado:** Aceptado
+**Estado:** Reemplazado (2026-10-01) por `drenyra-shell` + `drenyra-ai` — la CLI en Go (`apps/cli`) se retiró; ver `odd/tasks/gentle-ai-v4-migration.md`.
 **Fecha:** 2026-05-10
 **Decisores:** Equipo Drenyra
 
