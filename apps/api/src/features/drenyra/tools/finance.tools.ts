@@ -1,4 +1,4 @@
-import type { AgentContext, AgentTool } from "@drenyra/pi";
+import type { AgentContext, AgentTool } from "@drenyra/agent-runtime";
 import { z } from "zod";
 
 const CurrencySchema = z.enum(["PEN", "USD"]);

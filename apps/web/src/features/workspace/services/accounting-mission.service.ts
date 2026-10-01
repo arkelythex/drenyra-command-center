@@ -1,7 +1,7 @@
 /**
- * AccountingMissionService — client for @drenyra/pi harness API.
+ * AccountingMissionService — client for @drenyra/agent-runtime harness API.
  *
- * @drenyra/pi runs as its own agent runtime, separate from gentle-pi.
+ * @drenyra/agent-runtime runs as its own agent runtime, separate from gentle-pi.
  * Mock mode: only when VITE_DRENYRA_MISSION_TRANSPORT=mock.
  */
 
@@ -166,6 +166,7 @@ async function* mockGenerator(
 
 // ─── SSE stream with sequence tracking ──────────────────────────────────────
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 async function* streamHarnessEvents(
 	response: Response,
 	fromSequence = 0,

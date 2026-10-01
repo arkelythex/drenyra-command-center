@@ -50,7 +50,13 @@ Verifica: `gentle-ai --version` (4.x), `gentle-ai sync` sin avisos, doctor de En
 4. **`.gga` (`PROVIDER="codex"`):** confirmar que sigue siendo el proveedor de review deseado con el review nativo de v4.
 
 5. **`products/` (andino, estado, kuse, senzar; 31 MB):** la política de alcance de `AGENTS.md` pide mover los productos ajenos a la contabilidad a su propio repo. `andino` tiene workflow de CI propio. Falta decidir destino de cada uno.
-6. **`packages/pi` (224 archivos):** el harness se extrajo a `drenyra-shell` (antes `drenyra-pi`), pero `apps/api`, `apps/web` y `apps/cli` aún lo importan. Retirarlo exige migrar esos consumidores (tarea crítica aparte).
+6. **Reemplazo del runtime por el SDK de Pi:** `packages/agent-runtime` (ex `packages/pi`) es el runtime de agentes que usa la API (`Agent`, `DomainAgent`, `ApprovalGateEngine`, `SessionManager`, `queueManager`, estrategias, MCP; ~40 importadores). **`drenyra-shell` no ofrece ninguno de esos 19 símbolos** (verificado por búsqueda). El plan `docs/14-design/pi-migration-cleanup-plan.md` lo sustituye por adaptadores del SDK de Pi **solo cuando el shadow-run confirme paridad**; hasta entonces no se borra.
+
+### Hecho: `packages/pi` → `packages/agent-runtime`
+- [x] Retirado el harness duplicado de `drenyra-shell`: `prompts/` (11/11 idénticos), `skills/`, `contracts/`, `extensions/`, `themes/` y `scripts/` (incluido el `postinstall` que instalaba la extensión en Pi); manifiesto sin `pi`, `postinstall` ni `hooks:install`.
+- [x] Renombrado el paquete a **`@drenyra/agent-runtime`** (61 archivos, `tsconfig`, `bun.lock`, script `drenyra:serve`). Resultados idénticos a la línea base: runtime 558/558, tests de la API que lo usan sin cambios, typecheck 1349, `bun install --frozen-lockfile` correcto.
+- El renombre destapó deuda de lint latente en 32 archivos: se corrigió lo mecánico y se inventarió el resto en `odd/tasks/agent-runtime-lint-debt.md` (sin saltarse el hook).
+- Pendiente: `apps/cli` (Go/TS) y `apps/web` aún usan «pi» en comandos y textos de cara al usuario (`drenyra pi`), y `docs/diagrams/drenyra-command-center.architecture.html` es un artefacto generado con la ruta vieja; se regenera con Archify.
 
 ## Fuera de alcance
 

@@ -9,8 +9,8 @@
  * @module features/agents/agents.service
  */
 
-import type { AgentSession } from "@drenyra/pi";
-import { SessionManager } from "@drenyra/pi";
+import type { AgentSession } from "@drenyra/agent-runtime";
+import { SessionManager } from "@drenyra/agent-runtime";
 import { AppError } from "../../lib/errors";
 import type {
 	AgentSessionStatusDTO,
@@ -305,7 +305,8 @@ export class AgentsService {
 
 		// Re-fetch to get the updated session
 		const updated = this.sessionManager.get(id);
-		return this.toDTO(updated!);
+		if (!updated) throw new Error(`Agent session ${id} not found after update`);
+		return this.toDTO(updated);
 	}
 
 	/**
@@ -336,7 +337,8 @@ export class AgentsService {
 		});
 
 		const updated = this.sessionManager.get(id);
-		return this.toDTO(updated!);
+		if (!updated) throw new Error(`Agent session ${id} not found after update`);
+		return this.toDTO(updated);
 	}
 
 	/**
@@ -366,7 +368,8 @@ export class AgentsService {
 		});
 
 		const updated = this.sessionManager.get(id);
-		return this.toDTO(updated!);
+		if (!updated) throw new Error(`Agent session ${id} not found after update`);
+		return this.toDTO(updated);
 	}
 }
 

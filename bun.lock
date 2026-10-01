@@ -60,11 +60,11 @@
       "dependencies": {
         "@aws-sdk/client-s3": "^3.1048.0",
         "@aws-sdk/s3-request-presigner": "^3.1048.0",
+        "@drenyra/agent-runtime": "workspace:*",
         "@drenyra/ai": "workspace:*",
         "@drenyra/application": "workspace:*",
         "@drenyra/domain": "workspace:*",
         "@drenyra/infrastructure": "workspace:*",
-        "@drenyra/pi": "workspace:*",
         "@drenyra/security": "workspace:*",
         "@drenyra/shared": "workspace:*",
         "@elysiajs/cors": "^1.4.1",
@@ -118,7 +118,7 @@
         "drenyra": "./dist/index.js",
       },
       "dependencies": {
-        "@drenyra/pi": "workspace:*",
+        "@drenyra/agent-runtime": "workspace:*",
         "@types/react": "^19.2.17",
         "commander": "^15.0.0",
         "ink": "^7.1.0",
@@ -135,11 +135,11 @@
       "version": "0.1.0",
       "dependencies": {
         "@dnd-kit/core": "^6.3.1",
+        "@drenyra/agent-runtime": "workspace:*",
         "@drenyra/api": "workspace:*",
         "@drenyra/application": "workspace:*",
         "@drenyra/domain": "workspace:*",
         "@drenyra/mission-domain": "workspace:*",
-        "@drenyra/pi": "workspace:*",
         "@drenyra/shared": "workspace:*",
         "@drenyra/ui": "workspace:*",
         "@elysiajs/eden": "^1.4.6",
@@ -206,6 +206,25 @@
         "typescript-eslint": "^8.59.0",
         "vite": "^8.0.10",
         "vitest": "4.1.11",
+      },
+    },
+    "packages/agent-runtime": {
+      "name": "@drenyra/agent-runtime",
+      "version": "1.0.0-alpha.1",
+      "dependencies": {
+        "@ai-sdk/openai": "^4.0.7",
+        "@mastra/core": "^1.4.0",
+        "@paralleldrive/cuid2": "^3.0.6",
+        "ai": "^6.0.39",
+        "hono": "^4.12.27",
+        "yaml": "^2.9.0",
+        "zod": "^4.3.5",
+      },
+      "devDependencies": {
+        "@types/bun": "^1.3.14",
+        "@types/node": "^22.0.0",
+        "typescript": "^5.8.0",
+        "vitest": "^4.1.0",
       },
     },
     "packages/ai": {
@@ -402,25 +421,6 @@
       "devDependencies": {
         "typescript": "^7.0.2",
         "vitest": "^4.1.10",
-      },
-    },
-    "packages/pi": {
-      "name": "@drenyra/pi",
-      "version": "1.0.0-alpha.1",
-      "dependencies": {
-        "@ai-sdk/openai": "^4.0.7",
-        "@mastra/core": "^1.4.0",
-        "@paralleldrive/cuid2": "^3.0.6",
-        "ai": "^6.0.39",
-        "hono": "^4.12.27",
-        "yaml": "^2.9.0",
-        "zod": "^4.3.5",
-      },
-      "devDependencies": {
-        "@types/bun": "^1.3.14",
-        "@types/node": "^22.0.0",
-        "typescript": "^5.8.0",
-        "vitest": "^4.1.0",
       },
     },
     "packages/security": {
@@ -773,6 +773,8 @@
 
     "@dnd-kit/utilities": ["@dnd-kit/utilities@3.2.2", "", { "dependencies": { "tslib": "^2.0.0" }, "peerDependencies": { "react": ">=16.8.0" } }, "sha512-+MKAJEOfaBe5SmV6t34p80MMKhjvUz0vRrvVJbPT0WElzaOJ/1xs+D+KDv+tD/NE5ujfrChEcshd4fLn0wpiqg=="],
 
+    "@drenyra/agent-runtime": ["@drenyra/agent-runtime@workspace:packages/agent-runtime"],
+
     "@drenyra/ai": ["@drenyra/ai@workspace:packages/ai"],
 
     "@drenyra/api": ["@drenyra/api@workspace:apps/api"],
@@ -808,8 +810,6 @@
     "@drenyra/persistence": ["@drenyra/persistence@workspace:packages/persistence"],
 
     "@drenyra/phase-gatekeeper": ["@drenyra/phase-gatekeeper@workspace:packages/phase-gatekeeper"],
-
-    "@drenyra/pi": ["@drenyra/pi@workspace:packages/pi"],
 
     "@drenyra/security": ["@drenyra/security@workspace:packages/security"],
 
@@ -3409,11 +3409,11 @@
 
     "@babel/helper-compilation-targets/semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
 
-    "@drenyra/pi/@types/node": ["@types/node@22.20.1", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q=="],
+    "@drenyra/agent-runtime/@types/node": ["@types/node@22.20.1", "", { "dependencies": { "undici-types": "~6.21.0" } }, "sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q=="],
 
-    "@drenyra/pi/ai": ["ai@6.0.221", "", { "dependencies": { "@ai-sdk/gateway": "3.0.145", "@ai-sdk/provider": "3.0.13", "@ai-sdk/provider-utils": "4.0.37", "@opentelemetry/api": "^1.9.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-cB7qJbNTMuD5spdJEo+guejX0rkjhSQpc4PHITNB+iBFBnGYHLUZOM+uSeIkY4mS4sVVKBKm3kSQQoI5cUwU3g=="],
+    "@drenyra/agent-runtime/ai": ["ai@6.0.221", "", { "dependencies": { "@ai-sdk/gateway": "3.0.145", "@ai-sdk/provider": "3.0.13", "@ai-sdk/provider-utils": "4.0.37", "@opentelemetry/api": "^1.9.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-cB7qJbNTMuD5spdJEo+guejX0rkjhSQpc4PHITNB+iBFBnGYHLUZOM+uSeIkY4mS4sVVKBKm3kSQQoI5cUwU3g=="],
 
-    "@drenyra/pi/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
+    "@drenyra/agent-runtime/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "@drenyra/workspace-application/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
@@ -3711,13 +3711,13 @@
 
     "@ai-sdk/ui-utils-v5/@ai-sdk/provider-utils/nanoid": ["nanoid@3.3.18", "", { "bin": { "nanoid": "bin/nanoid.cjs" } }, "sha512-DTg4MJbGMWkfi6VZFdNt2/caMbQy4Ou+Op/hJQvGEWcnVfoA1QA+xzRKAzw9jD6+GVOOeYr/mIcuDSdug6F6+w=="],
 
-    "@drenyra/pi/@types/node/undici-types": ["undici-types@6.21.0", "", {}, "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="],
+    "@drenyra/agent-runtime/@types/node/undici-types": ["undici-types@6.21.0", "", {}, "sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ=="],
 
-    "@drenyra/pi/ai/@ai-sdk/gateway": ["@ai-sdk/gateway@3.0.145", "", { "dependencies": { "@ai-sdk/provider": "3.0.13", "@ai-sdk/provider-utils": "4.0.37", "@vercel/oidc": "3.2.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-cqSQ+I0Bjj2W9g1oFyE1O1mSowsWXb+U1wK9vtg5kRQqB95iWVIKbtdr14gGf46cueJSiBlKfPTT24gDDVuFmw=="],
+    "@drenyra/agent-runtime/ai/@ai-sdk/gateway": ["@ai-sdk/gateway@3.0.145", "", { "dependencies": { "@ai-sdk/provider": "3.0.13", "@ai-sdk/provider-utils": "4.0.37", "@vercel/oidc": "3.2.0" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-cqSQ+I0Bjj2W9g1oFyE1O1mSowsWXb+U1wK9vtg5kRQqB95iWVIKbtdr14gGf46cueJSiBlKfPTT24gDDVuFmw=="],
 
-    "@drenyra/pi/ai/@ai-sdk/provider": ["@ai-sdk/provider@3.0.13", "", { "dependencies": { "json-schema": "^0.4.0" } }, "sha512-ZPtVYt5QIJzOta1kdUiDuCx4HhFkvNPv/rvmZ2b1iXwybYjJsCnNYR4PAw4kW7rgVfDARvHXcU64efWuqNp6bw=="],
+    "@drenyra/agent-runtime/ai/@ai-sdk/provider": ["@ai-sdk/provider@3.0.13", "", { "dependencies": { "json-schema": "^0.4.0" } }, "sha512-ZPtVYt5QIJzOta1kdUiDuCx4HhFkvNPv/rvmZ2b1iXwybYjJsCnNYR4PAw4kW7rgVfDARvHXcU64efWuqNp6bw=="],
 
-    "@drenyra/pi/ai/@ai-sdk/provider-utils": ["@ai-sdk/provider-utils@4.0.37", "", { "dependencies": { "@ai-sdk/provider": "3.0.13", "@standard-schema/spec": "^1.1.0", "eventsource-parser": "^3.0.8" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-VG4tpVXCuzm21U9xjg05BCMZnjZOazC72+MxBkLAa7hCKsnqNt542GYWUUqwmHSczJwgbSXN8UvaNgSerUaKdw=="],
+    "@drenyra/agent-runtime/ai/@ai-sdk/provider-utils": ["@ai-sdk/provider-utils@4.0.37", "", { "dependencies": { "@ai-sdk/provider": "3.0.13", "@standard-schema/spec": "^1.1.0", "eventsource-parser": "^3.0.8" }, "peerDependencies": { "zod": "^3.25.76 || ^4.1.8" } }, "sha512-VG4tpVXCuzm21U9xjg05BCMZnjZOazC72+MxBkLAa7hCKsnqNt542GYWUUqwmHSczJwgbSXN8UvaNgSerUaKdw=="],
 
     "@drenyra/workspace-application/vitest/@vitest/expect": ["@vitest/expect@3.2.7", "", { "dependencies": { "@types/chai": "^5.2.2", "@vitest/spy": "3.2.7", "@vitest/utils": "3.2.7", "chai": "^5.2.0", "tinyrainbow": "^2.0.0" } }, "sha512-E8eBXaKibuvH2pSZErOjdVb5vF4PbKYcrnluBTYxEk1l/VhhwZg1kZQsdtjq+CsF5CFydf2Rdkz7jDHKSisi3w=="],
 

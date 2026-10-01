@@ -65,8 +65,8 @@ duration
 
 # Bun cache (never commit)
 ~/.bun/
-packages/pi/~/
-packages/pi/bun.lock
+packages/agent-runtime/~/
+packages/agent-runtime/bun.lock
 # Editor / IDE
 .tanstack/
 
@@ -93,6 +93,7 @@ logs/
 data/
 # Audit ledgers are canonical append-only evidence — tracked deliberately
 !/docs/audits/data/
+!/packages/agent-runtime/src/agents/data/
 *.log
 
 # Build output goes to dist/, never next to TypeScript sources: committed .js/.d.ts shadow the

@@ -15,7 +15,7 @@
     "dev": "bun src/index.ts"
   },
   "dependencies": {
-    "@drenyra/pi": "workspace:*",
+    "@drenyra/agent-runtime": "workspace:*",
     "@types/react": "^19.2.17",
     "commander": "^15.0.0",
     "ink": "^7.1.0",

@@ -1,5 +1,5 @@
-import type { AgentContext, ApprovalRequest } from "@drenyra/pi";
-import { ApprovalGateEngine, ApprovalStore } from "@drenyra/pi";
+import type { AgentContext, ApprovalRequest } from "@drenyra/agent-runtime";
+import { ApprovalGateEngine, ApprovalStore } from "@drenyra/agent-runtime";
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
 import { resolveAgentContextFromHeaders } from "../drenyra.routes";

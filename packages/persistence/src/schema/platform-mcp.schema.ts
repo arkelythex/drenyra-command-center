@@ -1,4 +1,4 @@
-import type { DrenyraMcpAuditEvent } from "@drenyra/pi";
+import type { DrenyraMcpAuditEvent } from "@drenyra/agent-runtime";
 import {
 	index,
 	jsonb,

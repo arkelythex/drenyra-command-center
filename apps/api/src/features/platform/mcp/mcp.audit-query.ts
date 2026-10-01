@@ -11,7 +11,7 @@ import type {
 	DrenyraMcpAuditOutcome,
 	DrenyraMcpAuditQuery,
 	DrenyraMcpScope,
-} from "@drenyra/pi";
+} from "@drenyra/agent-runtime";
 
 const auditRoles = new Set(["admin", "auditor", "owner", "compliance"]);
 const outcomes = new Set<DrenyraMcpAuditOutcome>([

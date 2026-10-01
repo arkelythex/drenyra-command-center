@@ -1,4 +1,4 @@
-import type { AgentContext } from "@drenyra/pi";
+import type { AgentContext } from "@drenyra/agent-runtime";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 

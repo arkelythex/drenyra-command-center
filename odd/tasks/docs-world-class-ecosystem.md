@@ -18,7 +18,7 @@ Que la documentación de `drenyra-command-center` sea (a) **verdadera** (cada af
 | D4 | `docs/00-INDEX.md` tiene tabla mal formada (celdas truncadas a media frase, bloque con sangría) y no lista todo `docs/`. | lectura directa |
 | D5 | **Idioma mixto**: 71 documentos con tildes/ñ (español) y 23 sin ellas. El estándar del ecosistema pide inglés para lo público. | `grep` por caracteres |
 | D6 | **Contradicción de visibilidad**: `AGENTS.md` dice «privado, no hacer público»; el estándar del ecosistema y GitHub dicen que **los repos son públicos** (command-center incluido). | `AGENTS.md` vs `drenyra-ai/docs/documentation-standard.md` §3 vs `list_repos` |
-| D7 | **Nombre desactualizado**: `drenyra-pi` es hoy `drenyra-shell` (mismo repo y commit `71a0097`, paquete `drenyra-shell` v0.1.0). Quedan menciones a `drenyra-pi` en `README.md`, `AGENTS.md`, `docs/14-design/product-topology.md`, `apps/cli`, `packages/pi`. El propio estándar del ecosistema aún dice «drenyra-pi». | `grep` en los 4 repos |
+| D7 | **Nombre desactualizado**: `drenyra-pi` es hoy `drenyra-shell` (mismo repo y commit `71a0097`, paquete `drenyra-shell` v0.1.0). Quedan menciones a `drenyra-pi` en `README.md`, `AGENTS.md`, `docs/14-design/product-topology.md`, `apps/cli`, `packages/agent-runtime`. El propio estándar del ecosistema aún dice «drenyra-pi». | `grep` en los 4 repos |
 | D8 | **Versión de integración desfasada**: `packages/mission-protocol` y `packages/drenyra-orchestrator` consumen `vendored/drenyra-ai-0.2.0.tgz`; `drenyra-ai` está en **v0.5.0** con los seis contratos congelados. Ninguna doc explica cómo migrar. | `package.json` vs `drenyra-ai/README.md` |
 | D9 | Hay referencias a `docs/meta/gentleman-philosophy.md` y `docs/meta/documentation-standards-2026.md` que **no existen** (`CONTRIBUTING.md`, `AGENTS.md`). | verificador de enlaces |
 | D10 | Falta el «kit de repo» del estándar del ecosistema: `AI_POLICY.md`, `docs/intended-usage.md`, `docs/CODEBASE-GUIDE.md`, bloque «Position in the ecosystem» homogéneo. | checklist §2 del estándar |
@@ -44,7 +44,7 @@ Dirección de dependencia (del estándar): los satélites **consumen** los contr
 | Repo | Rol | Estado declarado | Punto de integración en este repo |
 |------|-----|------------------|-----------------------------------|
 | `drenyra-ai` | Runtime y CLI verificables; contratos congelados (`mission-protocol`, `candidate`, `receipt`, `gate`, `ledger`…); recibos firmados Ed25519 | Alpha v0.5.0 | `packages/mission-protocol`, `mission-domain`, `mission-client`, `drenyra-orchestrator`, `contracts/receipt-schema` |
-| `drenyra-shell` (ex `drenyra-pi`) | Harness para operar Drenyra AI desde Pi (skills, prompts FSD, contratos RED, fiscal-guard) | Pre-release v0.1.0 | `packages/pi` (extracción hecha), `apps/cli/src/commands/pi.ts` |
+| `drenyra-shell` (ex `drenyra-pi`) | Harness para operar Drenyra AI desde Pi (skills, prompts FSD, contratos RED, fiscal-guard) | Pre-release v0.1.0 | `packages/agent-runtime` (extracción hecha), `apps/cli/src/commands/pi.ts` |
 | `drenyra-engram` | Memoria institucional con alcance RUC/período; **informa, nunca autoriza** (Apache-2.0) | Alpha v0.2.x | `services/engram` (Go + SQLite), `packages/memory`, `docs/10-development/engram-guide.md` |
 | `drenyra-skills` | Capa de contenido: conocimiento contable/tributario versionado (jurisdicción PE) | En desarrollo | `.agent/skills/` (consumo) |
 | `drenyra-guardian-angel` | Verificación adversarial independiente (`.gga`) | En desarrollo | `.gga`, `scripts/ai/review.sh` |
@@ -79,7 +79,7 @@ Modelo de autoridad a documentar tal cual: **base de datos contable = verdad tra
 
 ## 7. Fuera de alcance
 
-- Cambiar código de producción (renombrar `packages/pi` o `apps/cli/src/commands/pi.ts` es una tarea ODD aparte; aquí solo se documenta el nombre vigente).
+- Cambiar código de producción (renombrar el comando `drenyra pi` o `apps/cli/src/commands/pi.ts` es una tarea ODD aparte; aquí solo se documenta el nombre vigente).
 - Editar los otros repos: cada cambio allí será una tarea ODD propia en ese repo (se proponen en U0/U3, no se aplican desde aquí).
 - Borrar documentación histórica (`openspec/`, ADRs): se marca como histórica, no se elimina.
 - No se inventa comportamiento: si algo no está implementado se etiqueta *Planned*.

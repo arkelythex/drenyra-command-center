@@ -2,7 +2,7 @@
  * `drenyra serve` command — starts the drenyra-pi HTTP server.
  *
  * Spawns the drenyra-pi server as a child process.
- * The server is in the workspace package @drenyra/pi.
+ * The server is in the workspace package @drenyra/agent-runtime.
  */
 
 import { spawn } from "node:child_process";
