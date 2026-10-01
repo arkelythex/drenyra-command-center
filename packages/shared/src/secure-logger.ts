@@ -148,9 +148,10 @@ export class SecureLogger {
 	}
 
 	static debug(message: string, context?: Record<string, unknown>): void {
-		if (!shouldLog("DEBUG")) return;
-		const _logEntry = sanitizeLogMessage(`[DEBUG] ${message}`);
-		const _sanitizedContext = sanitizeContext(context);
+		// Intentionally emits nothing: debug output is disabled. Parameters are
+		// kept so the public API matches the other levels.
+		void message;
+		void context;
 	}
 
 	static info(message: string, context?: Record<string, unknown>): void {
