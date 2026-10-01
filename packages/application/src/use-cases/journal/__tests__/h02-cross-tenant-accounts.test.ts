@@ -25,7 +25,6 @@ const mockAccountService = {
 function createMockRepo(): { [K in keyof JournalEntryRepository]: Mock } {
 	return {
 		findById: vi.fn(),
-		save: vi.fn(),
 		create: vi.fn(),
 		update: vi.fn(),
 		delete: vi.fn(),
@@ -120,7 +119,7 @@ describe("UpdateJournalEntry — cross-tenant account validation", () => {
 		).rejects.toThrow("Asiento no encontrado");
 
 		expect(repo.findById).toHaveBeenCalledWith(scopeA1, "foreign-entry");
-		expect(repo.save).not.toHaveBeenCalled();
+		expect(repo.update).not.toHaveBeenCalled();
 	});
 
 	it("resolves each account inside the caller's tenant scope", async () => {

@@ -8,7 +8,9 @@
  * a foreign entry is indistinguishable from a nonexistent one.
  */
 
+import { JournalEntry } from "@drenyra/domain/entities/JournalEntry";
 import type { TenantScope } from "@drenyra/domain/scope";
+import { Money } from "@drenyra/domain/value-objects/Money";
 import { eq, inArray } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { db } from "../../client";
@@ -30,6 +32,7 @@ const USER_B = "f0000000-0000-0000-0000-0000000000b1";
 const COMPANY_A = "f1000000-0000-0000-0000-0000000000a1";
 const COMPANY_B = "f1000000-0000-0000-0000-0000000000b1";
 const ENTRY_A = "f2000000-0000-0000-0000-0000000000a1";
+const ENTRY_NEW = "f2000000-0000-0000-0000-0000000000c1";
 const RUC_A = "20900000001";
 const RUC_B = "20900000002";
 
@@ -37,15 +40,53 @@ const scopeA: TenantScope = { organizationId: "9001", companyId: COMPANY_A };
 const scopeB: TenantScope = { organizationId: "9002", companyId: COMPANY_B };
 
 async function cleanup(): Promise<void> {
+	const ids = [ENTRY_A, ENTRY_NEW];
 	await db
 		.delete(journalEntryLines)
-		.where(eq(journalEntryLines.journalEntryId, ENTRY_A));
-	await db.delete(journalEntries).where(eq(journalEntries.id, ENTRY_A));
+		.where(inArray(journalEntryLines.journalEntryId, ids));
+	await db.delete(journalEntries).where(inArray(journalEntries.id, ids));
 	await db
 		.delete(companies)
 		.where(inArray(companies.id, [COMPANY_A, COMPANY_B]));
 	await db.delete(users).where(inArray(users.id, [USER_A, USER_B]));
 	await db.delete(organizations).where(inArray(organizations.id, [9001, 9002]));
+}
+
+function draft(
+	id: string,
+	organizationId: string,
+	gloss: string,
+): JournalEntry {
+	return JournalEntry.create({
+		id,
+		organizationId,
+		entryNumber: `2025-${id.slice(-5)}`,
+		date: new Date("2025-02-10"),
+		description: gloss,
+		reference: "REF",
+		gloss,
+		status: "borrador",
+		lines: [
+			{
+				accountId: "10",
+				accountCode: "10",
+				accountName: "Caja",
+				debit: Money.fromAmount(50, "PEN"),
+				credit: Money.zero("PEN"),
+				description: "d",
+			},
+			{
+				accountId: "70",
+				accountCode: "70",
+				accountName: "Ventas",
+				debit: Money.zero("PEN"),
+				credit: Money.fromAmount(50, "PEN"),
+				description: "c",
+			},
+		],
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	});
 }
 
 describe.skipIf(!hasTestDb)(
@@ -115,6 +156,46 @@ describe.skipIf(!hasTestDb)(
 				"f2000000-0000-0000-0000-0000000000ff",
 			);
 			expect(foreign).toEqual(missing);
+		});
+
+		it("create stores the entry under the scope's company, not the entry's organization", async () => {
+			// The entry claims organization 9002, but the caller's scope is company A.
+			await repo.create(scopeA, draft(ENTRY_NEW, "9002", "created"));
+
+			const [row] = await db
+				.select({ companyId: journalEntries.companyId })
+				.from(journalEntries)
+				.where(eq(journalEntries.id, ENTRY_NEW));
+			expect(row?.companyId).toBe(COMPANY_A);
+			expect(await repo.findById(scopeB, ENTRY_NEW)).toBeNull();
+		});
+
+		it("create refuses an id that already exists in another company and keeps it intact", async () => {
+			await expect(
+				repo.create(scopeB, draft(ENTRY_A, "9002", "hijack")),
+			).rejects.toThrow();
+
+			const original = await repo.findById(scopeA, ENTRY_A);
+			expect(original?.gloss).toBe("Fixture entry");
+			expect(original?.lines).toHaveLength(2);
+		});
+
+		it("update rejects another company's entry and leaves it unchanged", async () => {
+			await expect(
+				repo.update(scopeB, draft(ENTRY_A, "9002", "overwrite")),
+			).rejects.toThrow(/not found/i);
+
+			const original = await repo.findById(scopeA, ENTRY_A);
+			expect(original?.gloss).toBe("Fixture entry");
+			expect(original?.lines).toHaveLength(2);
+		});
+
+		it("update changes the entry and replaces its lines inside the owning company", async () => {
+			await repo.update(scopeA, draft(ENTRY_A, "9001", "updated"));
+
+			const updated = await repo.findById(scopeA, ENTRY_A);
+			expect(updated?.gloss).toBe("updated");
+			expect(updated?.lines).toHaveLength(2);
 		});
 
 		it("delete rejects another company's entry and keeps it intact", async () => {

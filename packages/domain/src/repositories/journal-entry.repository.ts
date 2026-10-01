@@ -80,11 +80,17 @@ export interface SortOptions {
  */
 export interface JournalEntryRepository {
 	/**
-	 * Save a journal entry (create or update)
-	 * @throws {ValidationError} if entry data is invalid
-	 * @throws {PersistenceError} if database operation fails
+	 * Create a journal entry owned by the caller's company.
+	 * The owning company comes from the scope, never from the entry itself.
+	 * @throws {PersistenceError} if the id already exists or the operation fails
 	 */
-	save(entry: JournalEntry): Promise<void>;
+	create(scope: TenantScope, entry: JournalEntry): Promise<void>;
+
+	/**
+	 * Update a journal entry (header and lines) inside the caller's tenant scope.
+	 * @throws {NotFoundError} if the entry does not exist in that scope
+	 */
+	update(scope: TenantScope, entry: JournalEntry): Promise<void>;
 
 	/**
 	 * Find a journal entry by ID inside the caller's tenant scope.

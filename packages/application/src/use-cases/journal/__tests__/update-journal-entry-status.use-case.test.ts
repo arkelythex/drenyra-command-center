@@ -53,7 +53,7 @@ describe("UpdateJournalEntryStatusUseCase — tenant isolation", () => {
 
 	beforeEach(() => {
 		repo = {
-			save: vi.fn().mockResolvedValue(undefined),
+			update: vi.fn().mockResolvedValue(undefined),
 			findById: vi.fn(),
 		} as unknown as typeof repo;
 		useCase = new UpdateJournalEntryStatusUseCase(
@@ -67,6 +67,7 @@ describe("UpdateJournalEntryStatusUseCase — tenant isolation", () => {
 		await useCase.execute(scope, "entry-1", "mayorizado", "user-1");
 
 		expect(repo.findById).toHaveBeenCalledWith(scope, "entry-1");
+		expect(repo.update).toHaveBeenCalledWith(scope, expect.anything());
 	});
 
 	it("does not change the status of an entry the scope cannot see", async () => {
@@ -75,6 +76,6 @@ describe("UpdateJournalEntryStatusUseCase — tenant isolation", () => {
 		await expect(
 			useCase.execute(scope, "foreign-entry", "mayorizado", "user-1"),
 		).rejects.toThrow("Asiento no encontrado");
-		expect(repo.save).not.toHaveBeenCalled();
+		expect(repo.update).not.toHaveBeenCalled();
 	});
 });

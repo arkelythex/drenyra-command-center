@@ -89,7 +89,7 @@ export class UpdateJournalEntryStatusUseCase {
 		}
 
 		// 4. Persist changes
-		await this.journalRepository.save(updatedEntry);
+		await this.journalRepository.update(scope, updatedEntry);
 
 		return updatedEntry;
 	}

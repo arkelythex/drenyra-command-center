@@ -103,7 +103,7 @@ export class CreateJournalEntryUseCase {
 		});
 
 		// 5. Persist to database
-		await this.journalRepository.save(journalEntry);
+		await this.journalRepository.create(scope, journalEntry);
 
 		return journalEntry;
 	}

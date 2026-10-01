@@ -56,7 +56,7 @@ describe("CreateJournalEntryUseCase", () => {
 
 	beforeEach(() => {
 		mockJournalRepository = {
-			save: vi.fn().mockResolvedValue(undefined),
+			create: vi.fn().mockResolvedValue(undefined),
 			findById: vi.fn().mockResolvedValue(null),
 			findAll: vi.fn().mockResolvedValue([]),
 			findWithFilters: vi.fn().mockResolvedValue([]),
@@ -91,7 +91,11 @@ describe("CreateJournalEntryUseCase", () => {
 			expect(result.gloss).toBe("Asiento de prueba");
 			expect(result.status).toBe("borrador");
 			expect(result.lines).toHaveLength(2);
-			expect(mockJournalRepository.save).toHaveBeenCalledTimes(1);
+			expect(mockJournalRepository.create).toHaveBeenCalledTimes(1);
+			expect(mockJournalRepository.create).toHaveBeenCalledWith(
+				scope,
+				expect.anything(),
+			);
 		});
 
 		it("should generate entry number from repository", async () => {

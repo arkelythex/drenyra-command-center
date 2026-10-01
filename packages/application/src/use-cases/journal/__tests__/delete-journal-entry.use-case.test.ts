@@ -18,7 +18,6 @@ describe("DeleteJournalEntryUseCase", () => {
 
 	beforeEach(() => {
 		mockJournalRepository = {
-			save: vi.fn(),
 			findById: vi.fn(),
 			findByOrganizationId: vi.fn(),
 			findByDateRange: vi.fn(),
