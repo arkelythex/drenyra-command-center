@@ -1,6 +1,6 @@
 # Typecheck baseline and phased repair
 
-**Última actualización**: 2026-10-01
+**Última actualización**: 2026-10-02
 
 ## Objective
 Medir y clasificar por qué `bun run typecheck` está rojo y reparar solo lo no fiscal, sin tocar el código que otra sesión ya está corrigiendo.
@@ -28,6 +28,44 @@ Medir y clasificar por qué `bun run typecheck` está rojo y reparar solo lo no 
 - [ ] Fallas reales en `application`: ver `odd/tasks/tenant-scope-journal-update.md`.
 - [ ] **Artefactos compilados trackeados en `src/`**: 290 `.js`/`.d.ts` (shared 49, infrastructure 118, application 72, persistence 48, web 3). Pueden hacer que los tests de esos paquetes ejecuten código viejo. Verificado en `shared` (un mutante en `ruc.ts` pasaba los tests). Falta revisar los otros paquetes y decidir si se eliminan del índice y se agregan a `.gitignore`.
 - [x] `.husky/pre-push` usaba `set -o pipefail` y `[[ ]]` con `sh`; falla en dash. Cambio propuesto: `#!/usr/bin/env sh`, `set -eu` y `[ ]`. Aplicado y probado con dash.
+
+## Plan por fases (propuesta — estado ODD: `Needs your decision`)
+
+**Por qué ahora:** PR #248 activa los jobs `Node — web/api typecheck` y `Domain — typecheck + test` (filtrados por rutas, así que en `main` se «omitían»). Los tres fallan **igual en `main`**; la rama tiene menos errores (web 688→681, domain 377→373, api/raíz 1353→1334). Ningún cambio de comportamiento se esconde aquí: es deuda de configuración estricta.
+
+**Medición (2026-10-02, raíz: 1334):**
+
+| Código | Errores | Qué es |
+|--------|---------|--------|
+| TS2379 + TS2375 | 524 | `exactOptionalPropertyTypes`: se pasa `T \| undefined` a una propiedad opcional `T` |
+| TS18048 + TS2532 | 340 | `noUncheckedIndexedAccess`: acceso a índice posiblemente `undefined` |
+| TS2345 + TS2322 | 190 | asignaciones/argumentos incompatibles |
+| TS6133 + TS6196 | 89 | variables/tipos sin usar |
+| TS2307 + TS2308 + TS2339 | 71 | módulos/exports inexistentes: **defectos reales** |
+
+| Dónde | Errores |
+|-------|---------|
+| `apps/api` | 787 |
+| `packages/domain` | 132 |
+| `packages/persistence` | 103 |
+| `packages/agent-runtime` | 98 |
+| `packages/infrastructure` | 80 |
+| `packages/application` | 57 |
+| `packages/ai` | 49 |
+| resto | 28 |
+
+**Fases (cada una = un PR, un paquete o un código de error a la vez):**
+
+0. **Ratchet en CI** (recomendado primero): un script que compara el conteo de errores por paquete con un archivo de línea base versionado, falla si **sube** y exige actualizarlo si **baja**. Deja el CI verde hoy sin ocultar deuda y evita que crezca. *Toca CI → crítico → necesita tu autorización.*
+1. **Mecánica sin riesgo** (≈160): TS6133/TS6196 (código sin usar) y los TS2307/TS2308/TS2339 (módulos o exports que no existen: defectos reales, se corrigen o se eliminan con su referencia).
+2. **`noUncheckedIndexedAccess`** (≈340): guardas explícitas. En `domain`/`persistence`/RUC es fiscal → **test-first, review de riesgo alto**.
+3. **`exactOptionalPropertyTypes`** (≈524): añadir `| undefined` a los tipos o no asignar la clave cuando falta. Mecánico pero ancho; en `persistence` y `domain` fijar el comportamiento con snapshots antes.
+4. **Configuración de `domain`**: que `tsc --noEmit` no arrastre `agent-runtime`/`fiscal-agent-domain` a su programa (hoy 373 vs 132 en la raíz; TS6059/TS6307 `rootDir`/`composite`).
+5. **Retirar el ratchet** cuando el conteo llegue a 0 y dejar el typecheck estricto como gate.
+
+**Alternativa a evaluar (política, no técnica):** relajar `exactOptionalPropertyTypes` en `tsconfig.check.json`. Elimina ~524 errores al instante, pero pierde una garantía que hoy el repo eligió. No la recomiendo sin decisión explícita.
+
+**Decisiones que necesito:** (1) ¿Autorizas la fase 0 (ratchet en CI)? (2) ¿Orden 1→2→3→4 o prefieres empezar por `apps/api` (787)? (3) ¿Mantener `exactOptionalPropertyTypes`?
 
 ## Verificación
 - `@drenyra/shared` typecheck: de 10 a 1 error (solo TS6305 de build). Tests de shared: 90/90. RUC: 33 tests; un mutante en los pesos (swap de dos posiciones o un peso cambiado) hace fallar 12 y 8 tests respectivamente.
