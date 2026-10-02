@@ -1,9 +1,9 @@
 import type {
-	ApproveCommand,
+	ApproveMissionCommand,
+	CreateMissionCommand,
 	MissionSnapshot,
-	ReconcileCommand,
-	RejectCommand,
-	RunIntentCommand,
+	ReconcileMissionCommand,
+	RejectMissionCommand,
 } from "@drenyra/mission-domain";
 import {
 	AccountingMissionStatus,
@@ -78,7 +78,7 @@ export class MissionsService {
 
 	async createMission(
 		companyId: string,
-		cmd: RunIntentCommand,
+		cmd: CreateMissionCommand,
 	): Promise<MissionSnapshot> {
 		if (!VALID_INTENTS.has(cmd.intent)) {
 			throw new MissionError(
@@ -188,7 +188,7 @@ export class MissionsService {
 		missionId: string,
 		companyId: string,
 		actorId: string,
-		cmd: ApproveCommand,
+		cmd: ApproveMissionCommand,
 	): Promise<MissionSnapshot> {
 		const mission = await this.getMissionOrThrow(missionId, companyId);
 
@@ -314,7 +314,7 @@ export class MissionsService {
 		missionId: string,
 		companyId: string,
 		actorId: string,
-		cmd: RejectCommand,
+		cmd: RejectMissionCommand,
 	): Promise<MissionSnapshot> {
 		if (!cmd.reason || cmd.reason.trim().length === 0) {
 			throw new MissionError(
@@ -369,7 +369,7 @@ export class MissionsService {
 		missionId: string,
 		companyId: string,
 		_actorId: string,
-		cmd: ReconcileCommand,
+		cmd: ReconcileMissionCommand,
 	): Promise<MissionSnapshot> {
 		if (!cmd.reason || cmd.reason.trim().length === 0) {
 			throw new MissionError(

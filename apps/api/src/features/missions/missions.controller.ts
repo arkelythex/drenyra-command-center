@@ -1,14 +1,14 @@
+import type {
+	ApproveMissionCommand,
+	CreateMissionCommand,
+	ReconcileMissionCommand,
+	RejectMissionCommand,
+} from "@drenyra/mission-domain";
+import { isMissionError } from "@drenyra/mission-domain";
 import type { CompanyContext } from "../../shared/plugins/company-scope-guard";
 import type { MissionsService } from "./missions.service";
 import type { MissionEventStore } from "./sse/mission-event-store";
 import { missionSSEStream } from "./sse/mission-sse.stream";
-import { isMissionError } from "@drenyra/mission-domain";
-import type {
-	RunIntentCommand,
-	ApproveCommand,
-	RejectCommand,
-	ReconcileCommand,
-} from "@drenyra/mission-domain";
 
 export class MissionsController {
 	constructor(
@@ -17,7 +17,7 @@ export class MissionsController {
 	) {}
 
 	async create(
-		body: RunIntentCommand & { idempotencyKey?: string },
+		body: CreateMissionCommand & { idempotencyKey?: string },
 		ctx: CompanyContext,
 	) {
 		try {
@@ -76,7 +76,7 @@ export class MissionsController {
 
 	async approve(
 		id: string,
-		body: ApproveCommand & { idempotencyKey?: string },
+		body: ApproveMissionCommand & { idempotencyKey?: string },
 		ctx: CompanyContext,
 	) {
 		try {
@@ -99,7 +99,7 @@ export class MissionsController {
 
 	async reject(
 		id: string,
-		body: RejectCommand & { idempotencyKey?: string },
+		body: RejectMissionCommand & { idempotencyKey?: string },
 		ctx: CompanyContext,
 	) {
 		try {
@@ -122,7 +122,7 @@ export class MissionsController {
 
 	async reconcile(
 		id: string,
-		body: ReconcileCommand & { idempotencyKey?: string },
+		body: ReconcileMissionCommand & { idempotencyKey?: string },
 		ctx: CompanyContext,
 	) {
 		try {

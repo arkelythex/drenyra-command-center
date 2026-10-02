@@ -48,11 +48,10 @@ Tarea ODD **crítica** (toca contratos de misión y recibos): test-first, review
 
 - Antes: tarball vendorizado `drenyra-ai-0.2.0.tgz`. Ahora: paquete del registro, tarball eliminado.
 - `mission-domain` exporta los comandos canónicos de 0.5.0 (`CreateMissionCommand`, `ApproveMissionCommand`, `RejectMissionCommand`, `ReconcileMissionCommand`, `ExecuteMissionCommand`, `MissionCommand`).
-- Alias **deprecados** que siguen exportados mientras la API los use: `RunIntentCommand`, `ApproveCommand`, `RejectCommand`, `ReconcileCommand`.
+- `apps/api/src/features/missions` usa ya los nombres canónicos; los alias `RunIntentCommand`, `ApproveCommand`, `RejectCommand` y `ReconcileCommand` se retiraron de `mission-domain`.
 
 ## Pendiente (*Planned*)
 
-- Migrar `apps/api/src/features/missions` a los nombres canónicos y retirar los alias deprecados.
 - El identificador de agente `drenyra-sdd-orchestrator` y el prefijo de temas de Engram `sdd/` se conservan por compatibilidad de datos; renombrarlos exige migrar datos y documentación.
 
 Ver también: [`odd/tasks/gentle-ai-v4-migration.md`](../../odd/tasks/gentle-ai-v4-migration.md) y [`engram-guide.md`](engram-guide.md).
