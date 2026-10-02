@@ -108,3 +108,4 @@ Reemplazada por `drenyra-shell` (comandos `/drenyra:*` sobre Pi) y la CLI de `dr
 
 - Ningún secreto ni dato de cliente; docs en el mismo PR que el cambio.
 - [x] Eliminado `vitest.workspace.ts` (código muerto: usaba `defineWorkspace`, removido en Vitest 4, listaba paquetes inexistentes y los tests corren por paquete con `bun run --filter`). Typecheck 1338, `odd:guard` verde.
+- [x] `FiscalSummaryService.computeSummary` (complejidad 18 → <15): acumulación extraída a `accumulate`; 23 snapshots fiscales (resumen y health score) idénticos antes/después y 3 mutantes muertos (confianza 0.7, estado PENDIENTE, base exonerada). Conservado: `ventasGravadas` suma toda la base de ventas, incluidas exoneradas/inafectas (decidir con el equipo fiscal si es intencional).
