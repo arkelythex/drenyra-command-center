@@ -150,8 +150,7 @@ export class PluginRegistry {
 			sessionManager: sessionManager ?? new SessionManager(),
 			logger: {
 				info: (msg: string) => {
-					process.stdout.write(`[skill:${skill.id}] ${msg}
-`);
+					process.stdout.write(`[skill:${skill.id}] ${msg}\n`);
 				},
 				warn: (msg: string) => console.warn(`[skill:${skill.id}] ${msg}`),
 				error: (msg: string) => console.error(`[skill:${skill.id}] ${msg}`),
