@@ -1,0 +1,381 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`sire-filing (characterization) > honours custom deadline and critical thresholds 1`] = `
+[
+  {
+    "actualValue": 1,
+    "confidence": 0.86,
+    "context": {
+      "cdrReceived": false,
+      "daysOverdue": 1,
+      "daysSinceEmission": 4,
+      "deadlineDays": 3,
+      "emisionDate": "2026-06-27T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "filingDate": null,
+      "legalReference": "R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
+      "numero": "42",
+      "overdueType": "not_filed",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "total": 1234.5,
+    },
+    "detectionMethod": "sire_filing_deadline",
+    "deviation": 1,
+    "entityId": "R",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "sire-filing-R",
+    "metric": "sire_filing_overdue",
+    "reasoning": "01 F001-00000042: No enviado a SUNAT (1 días de retraso). Venció el plazo de 7 días calendario según R.S. 000155-2021/SUNAT. Monto: S/ 1234.50. Sujeto a multa si supera 30 días.",
+    "severity": "critical",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`sire-filing (characterization) > pins anomalies: CDR without filing date 1`] = `
+[
+  {
+    "actualValue": 13,
+    "confidence": 0.92,
+    "context": {
+      "cdrReceived": true,
+      "daysOverdue": 13,
+      "daysSinceEmission": 20,
+      "deadlineDays": 7,
+      "emisionDate": "2026-06-11T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "filingDate": null,
+      "legalReference": "R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
+      "numero": "42",
+      "overdueType": "not_filed",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "total": 1234.5,
+    },
+    "detectionMethod": "sire_filing_deadline",
+    "deviation": 13,
+    "entityId": "R",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "sire-filing-R",
+    "metric": "sire_filing_overdue",
+    "reasoning": "01 F001-00000042: No enviado a SUNAT (13 días de retraso). Venció el plazo de 7 días calendario según R.S. 000155-2021/SUNAT. Monto: S/ 1234.50. Sujeto a multa si supera 30 días.",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`sire-filing (characterization) > pins anomalies: compliant: filed with CDR 1`] = `[]`;
+
+exports[`sire-filing (characterization) > pins anomalies: daysOverdue 6 (medium) 1`] = `
+[
+  {
+    "actualValue": 6,
+    "confidence": 0.88,
+    "context": {
+      "cdrReceived": false,
+      "daysOverdue": 6,
+      "daysSinceEmission": 13,
+      "deadlineDays": 7,
+      "emisionDate": "2026-06-18T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "filingDate": null,
+      "legalReference": "R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
+      "numero": "42",
+      "overdueType": "not_filed",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "total": 1234.5,
+    },
+    "detectionMethod": "sire_filing_deadline",
+    "deviation": 6,
+    "entityId": "R",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "sire-filing-R",
+    "metric": "sire_filing_overdue",
+    "reasoning": "01 F001-00000042: No enviado a SUNAT (6 días de retraso). Venció el plazo de 7 días calendario según R.S. 000155-2021/SUNAT. Monto: S/ 1234.50. Sujeto a multa si supera 30 días.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`sire-filing (characterization) > pins anomalies: daysOverdue 7 (high) 1`] = `
+[
+  {
+    "actualValue": 7,
+    "confidence": 0.89,
+    "context": {
+      "cdrReceived": false,
+      "daysOverdue": 7,
+      "daysSinceEmission": 14,
+      "deadlineDays": 7,
+      "emisionDate": "2026-06-17T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "filingDate": null,
+      "legalReference": "R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
+      "numero": "42",
+      "overdueType": "not_filed",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "total": 1234.5,
+    },
+    "detectionMethod": "sire_filing_deadline",
+    "deviation": 7,
+    "entityId": "R",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "sire-filing-R",
+    "metric": "sire_filing_overdue",
+    "reasoning": "01 F001-00000042: No enviado a SUNAT (7 días de retraso). Venció el plazo de 7 días calendario según R.S. 000155-2021/SUNAT. Monto: S/ 1234.50. Sujeto a multa si supera 30 días.",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`sire-filing (characterization) > pins anomalies: daysOverdue 29 (high) 1`] = `
+[
+  {
+    "actualValue": 29,
+    "confidence": 0.98,
+    "context": {
+      "cdrReceived": false,
+      "daysOverdue": 29,
+      "daysSinceEmission": 36,
+      "deadlineDays": 7,
+      "emisionDate": "2026-05-26T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "filingDate": null,
+      "legalReference": "R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
+      "numero": "42",
+      "overdueType": "not_filed",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "total": 1234.5,
+    },
+    "detectionMethod": "sire_filing_deadline",
+    "deviation": 29,
+    "entityId": "R",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "sire-filing-R",
+    "metric": "sire_filing_overdue",
+    "reasoning": "01 F001-00000042: No enviado a SUNAT (29 días de retraso). Venció el plazo de 7 días calendario según R.S. 000155-2021/SUNAT. Monto: S/ 1234.50. Sujeto a multa si supera 30 días.",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`sire-filing (characterization) > pins anomalies: daysOverdue 30 (critical) 1`] = `
+[
+  {
+    "actualValue": 30,
+    "confidence": 0.98,
+    "context": {
+      "cdrReceived": false,
+      "daysOverdue": 30,
+      "daysSinceEmission": 37,
+      "deadlineDays": 7,
+      "emisionDate": "2026-05-25T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "filingDate": null,
+      "legalReference": "R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
+      "numero": "42",
+      "overdueType": "not_filed",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "total": 1234.5,
+    },
+    "detectionMethod": "sire_filing_deadline",
+    "deviation": 30,
+    "entityId": "R",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "sire-filing-R",
+    "metric": "sire_filing_overdue",
+    "reasoning": "01 F001-00000042: No enviado a SUNAT (30 días de retraso). Venció el plazo de 7 días calendario según R.S. 000155-2021/SUNAT. Monto: S/ 1234.50. Sujeto a multa si supera 30 días.",
+    "severity": "critical",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`sire-filing (characterization) > pins anomalies: filed without CDR 1`] = `
+[
+  {
+    "actualValue": 13,
+    "confidence": 0.83,
+    "context": {
+      "cdrReceived": false,
+      "daysOverdue": 13,
+      "daysSinceEmission": 20,
+      "deadlineDays": 7,
+      "emisionDate": "2026-06-11T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "filingDate": "2026-06-16T12:00:00.000Z",
+      "legalReference": "R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
+      "numero": "42",
+      "overdueType": "cdr_pending",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "total": 1234.5,
+    },
+    "detectionMethod": "sire_filing_deadline",
+    "deviation": 13,
+    "entityId": "R",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "sire-filing-R",
+    "metric": "sire_filing_overdue",
+    "reasoning": "01 F001-00000042: Enviado a SUNAT pero sin CDR de recepción (13 días de retraso). El comprobante podría no estar registrado en SUNAT.",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`sire-filing (characterization) > pins anomalies: filed without CDR, long overdue (confidence cap) 1`] = `
+[
+  {
+    "actualValue": 193,
+    "confidence": 0.92,
+    "context": {
+      "cdrReceived": false,
+      "daysOverdue": 193,
+      "daysSinceEmission": 200,
+      "deadlineDays": 7,
+      "emisionDate": "2025-12-13T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "filingDate": "2026-02-01T12:00:00.000Z",
+      "legalReference": "R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
+      "numero": "42",
+      "overdueType": "cdr_pending",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "total": 1234.5,
+    },
+    "detectionMethod": "sire_filing_deadline",
+    "deviation": 193,
+    "entityId": "R",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "sire-filing-R",
+    "metric": "sire_filing_overdue",
+    "reasoning": "01 F001-00000042: Enviado a SUNAT pero sin CDR de recepción (193 días de retraso). El comprobante podría no estar registrado en SUNAT.",
+    "severity": "critical",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`sire-filing (characterization) > pins anomalies: inside window (7 days) 1`] = `[]`;
+
+exports[`sire-filing (characterization) > pins anomalies: invalid emission date 1`] = `[]`;
+
+exports[`sire-filing (characterization) > pins anomalies: just overdue (8 days, daysOverdue 1) 1`] = `
+[
+  {
+    "actualValue": 1,
+    "confidence": 0.86,
+    "context": {
+      "cdrReceived": false,
+      "daysOverdue": 1,
+      "daysSinceEmission": 8,
+      "deadlineDays": 7,
+      "emisionDate": "2026-06-23T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "filingDate": null,
+      "legalReference": "R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
+      "numero": "42",
+      "overdueType": "not_filed",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "total": 1234.5,
+    },
+    "detectionMethod": "sire_filing_deadline",
+    "deviation": 1,
+    "entityId": "R",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "sire-filing-R",
+    "metric": "sire_filing_overdue",
+    "reasoning": "01 F001-00000042: No enviado a SUNAT (1 días de retraso). Venció el plazo de 7 días calendario según R.S. 000155-2021/SUNAT. Monto: S/ 1234.50. Sujeto a multa si supera 30 días.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`sire-filing (characterization) > pins anomalies: not filed, long overdue (confidence cap) 1`] = `
+[
+  {
+    "actualValue": 193,
+    "confidence": 0.98,
+    "context": {
+      "cdrReceived": false,
+      "daysOverdue": 193,
+      "daysSinceEmission": 200,
+      "deadlineDays": 7,
+      "emisionDate": "2025-12-13T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "filingDate": null,
+      "legalReference": "R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
+      "numero": "42",
+      "overdueType": "not_filed",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "total": 1234.5,
+    },
+    "detectionMethod": "sire_filing_deadline",
+    "deviation": 193,
+    "entityId": "R",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "sire-filing-R",
+    "metric": "sire_filing_overdue",
+    "reasoning": "01 F001-00000042: No enviado a SUNAT (193 días de retraso). Venció el plazo de 7 días calendario según R.S. 000155-2021/SUNAT. Monto: S/ 1234.50. Sujeto a multa si supera 30 días.",
+    "severity": "critical",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`sire-filing (characterization) > pins anomalies: numero padded 1`] = `
+[
+  {
+    "actualValue": 13,
+    "confidence": 0.92,
+    "context": {
+      "cdrReceived": false,
+      "daysOverdue": 13,
+      "daysSinceEmission": 20,
+      "deadlineDays": 7,
+      "emisionDate": "2026-06-11T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "filingDate": null,
+      "legalReference": "R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
+      "numero": "5",
+      "overdueType": "not_filed",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "total": 1234.5,
+    },
+    "detectionMethod": "sire_filing_deadline",
+    "deviation": 13,
+    "entityId": "R",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "sire-filing-R",
+    "metric": "sire_filing_overdue",
+    "reasoning": "01 F001-00000005: No enviado a SUNAT (13 días de retraso). Venció el plazo de 7 días calendario según R.S. 000155-2021/SUNAT. Monto: S/ 1234.50. Sujeto a multa si supera 30 días.",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;

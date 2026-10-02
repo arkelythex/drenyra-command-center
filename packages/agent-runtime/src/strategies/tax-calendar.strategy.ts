@@ -81,7 +81,6 @@ export function createTaxCalendarStrategy(): AnomalyStrategy {
 			"Monitors upcoming SUNAT tax obligation deadlines and alerts based on the tenant's tax profile and regime.",
 		minSeverity: "low",
 
-		// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 		execute(data: unknown, _context: AgentContext): Anomaly[] {
 			if (!data || typeof data !== "object") return [];
 
@@ -91,81 +90,95 @@ export function createTaxCalendarStrategy(): AnomalyStrategy {
 			const now = new Date();
 			const anomalies: Anomaly[] = [];
 
-			// Generate calendar alerts for upcoming obligations
+			// Calendar alerts for upcoming obligations
 			for (const obligation of input.obligations) {
-				// Skip filed/exempt obligations
-				if (obligation.status === "filed" || obligation.status === "exempt")
-					continue;
-
-				const dueDate = new Date(obligation.dueDate);
-				if (Number.isNaN(dueDate.getTime())) continue;
-
-				const daysUntilDue = Math.ceil(
-					(dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
-				);
-
-				// Not yet in alert range
-				if (daysUntilDue > ALERT_DAYS.low) continue;
-
-				const severity = classifyCalendarSeverity(daysUntilDue);
-
-				anomalies.push({
-					id: `tax-calendar-${obligation.id}`,
-					timestamp: now.toISOString(),
-					entityType: "tax_obligation",
-					entityId: obligation.id,
-					metric: "tax_deadline_approaching",
-					expectedValue: 0,
-					actualValue: daysUntilDue,
-					deviation: -daysUntilDue,
-					severity,
-					confidence: calculateCalendarConfidence(daysUntilDue),
-					reasoning: buildCalendarReasoning(obligation, daysUntilDue),
-					detectionMethod: "tax_obligation_calendar",
-					context: {
-						obligationCode: obligation.code,
-						obligationName: obligation.name,
-						dueDate: obligation.dueDate,
-						daysUntilDue,
-						period: obligation.period,
-						amount: obligation.amount,
-						tenantRuc: input.tenantRuc,
-						taxRegime: input.taxRegime,
-						rucType: input.rucType,
-						legalReference: obligation.legalReference,
-					},
-				});
+				const alert = deadlineAlert(obligation, input, now);
+				if (alert) anomalies.push(alert);
 			}
 
-			// Check for missing obligations (standard obligations not in list)
-			const missingStandard = detectMissingObligations(input);
-			for (const missing of missingStandard) {
-				anomalies.push({
-					id: `tax-calendar-missing-${missing.code}`,
-					timestamp: now.toISOString(),
-					entityType: "tax_obligation",
-					entityId: missing.code,
-					metric: "tax_obligation_missing",
-					expectedValue: 1,
-					actualValue: 0,
-					deviation: -1,
-					severity: "medium",
-					confidence: 0.85,
-					reasoning:
-						`Obligación ${missing.code} (${missing.name}) no encontrada en el calendario. ` +
-						`Es obligatoria para régimen ${input.taxRegime} según SUNAT. Verificar si fue registrada.`,
-					detectionMethod: "tax_obligation_missing",
-					context: {
-						obligationCode: missing.code,
-						obligationName: missing.name,
-						tenantRuc: input.tenantRuc,
-						taxRegime: input.taxRegime,
-						legalReference: missing.legalReference,
-					},
-				});
+			// Standard obligations for the regime that are not in the list
+			for (const missing of detectMissingObligations(input)) {
+				anomalies.push(missingObligationAnomaly(missing, input, now));
 			}
 
 			return anomalies;
+		},
+	};
+}
+
+/** Alert for a pending obligation within the alert window (≤ 15 days, overdue included). */
+function deadlineAlert(
+	obligation: TaxObligation,
+	input: TaxCalendarInput,
+	now: Date,
+): Anomaly | null {
+	// Skip filed/exempt obligations
+	if (obligation.status === "filed" || obligation.status === "exempt")
+		return null;
+
+	const dueDate = new Date(obligation.dueDate);
+	if (Number.isNaN(dueDate.getTime())) return null;
+
+	const daysUntilDue = Math.ceil(
+		(dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+	);
+	// Not yet in alert range
+	if (daysUntilDue > ALERT_DAYS.low) return null;
+
+	return {
+		id: `tax-calendar-${obligation.id}`,
+		timestamp: now.toISOString(),
+		entityType: "tax_obligation",
+		entityId: obligation.id,
+		metric: "tax_deadline_approaching",
+		expectedValue: 0,
+		actualValue: daysUntilDue,
+		deviation: -daysUntilDue,
+		severity: classifyCalendarSeverity(daysUntilDue),
+		confidence: calculateCalendarConfidence(daysUntilDue),
+		reasoning: buildCalendarReasoning(obligation, daysUntilDue),
+		detectionMethod: "tax_obligation_calendar",
+		context: {
+			obligationCode: obligation.code,
+			obligationName: obligation.name,
+			dueDate: obligation.dueDate,
+			daysUntilDue,
+			period: obligation.period,
+			amount: obligation.amount,
+			tenantRuc: input.tenantRuc,
+			taxRegime: input.taxRegime,
+			rucType: input.rucType,
+			legalReference: obligation.legalReference,
+		},
+	};
+}
+
+function missingObligationAnomaly(
+	missing: StandardObligation,
+	input: TaxCalendarInput,
+	now: Date,
+): Anomaly {
+	return {
+		id: `tax-calendar-missing-${missing.code}`,
+		timestamp: now.toISOString(),
+		entityType: "tax_obligation",
+		entityId: missing.code,
+		metric: "tax_obligation_missing",
+		expectedValue: 1,
+		actualValue: 0,
+		deviation: -1,
+		severity: "medium",
+		confidence: 0.85,
+		reasoning:
+			`Obligación ${missing.code} (${missing.name}) no encontrada en el calendario. ` +
+			`Es obligatoria para régimen ${input.taxRegime} según SUNAT. Verificar si fue registrada.`,
+		detectionMethod: "tax_obligation_missing",
+		context: {
+			obligationCode: missing.code,
+			obligationName: missing.name,
+			tenantRuc: input.tenantRuc,
+			taxRegime: input.taxRegime,
+			legalReference: missing.legalReference,
 		},
 	};
 }

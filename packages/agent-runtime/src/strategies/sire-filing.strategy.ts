@@ -60,7 +60,6 @@ export function createSireFilingStrategy(
 			"Monitors CPE submission deadlines to SUNAT (R.S. 000155-2021/SUNAT). Alerts on overdue invoices past the 7-day filing window.",
 		minSeverity: "low",
 
-		// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 		execute(data: unknown, _context: AgentContext): Anomaly[] {
 			if (!Array.isArray(data)) return [];
 
@@ -69,63 +68,72 @@ export function createSireFilingStrategy(
 			const anomalies: Anomaly[] = [];
 
 			for (const record of records) {
-				const emissionDate = new Date(record.emisionDate);
-				if (Number.isNaN(emissionDate.getTime())) continue;
-
-				// If filing exists and CDR received — compliant
-				if (record.filingDate && record.cdrReceived) continue;
-
-				const daysSinceEmission = daysBetween(emissionDate, now);
-				const deadlineDate = addDays(emissionDate, deadlineDays);
-				const daysOverdue = daysBetween(deadlineDate, now);
-
-				// Within the 7-day window — not yet overdue
-				if (daysSinceEmission <= deadlineDays) continue;
-
-				const severity = classifySireSeverity(daysOverdue, criticalOverdueDays);
-				const confidence = calculateSireConfidence(
-					daysOverdue,
-					record.cdrReceived,
-					record.filingDate,
+				const anomaly = evaluateRecord(
+					record,
+					now,
+					deadlineDays,
+					criticalOverdueDays,
 				);
-
-				const overdueType = record.filingDate ? "cdr_pending" : "not_filed";
-
-				const reasoning = buildReasoning(record, daysOverdue, overdueType);
-
-				anomalies.push({
-					id: `sire-filing-${record.id}`,
-					timestamp: now.toISOString(),
-					entityType: "cpe",
-					entityId: record.id,
-					metric: "sire_filing_overdue",
-					expectedValue: 0,
-					actualValue: daysOverdue,
-					deviation: daysOverdue,
-					severity,
-					confidence,
-					reasoning,
-					detectionMethod: "sire_filing_deadline",
-					context: {
-						serie: record.serie,
-						numero: record.numero,
-						tipoDocumento: record.tipoDocumento,
-						emisorRuc: record.emisorRuc,
-						emisionDate: record.emisionDate,
-						filingDate: record.filingDate,
-						cdrReceived: record.cdrReceived,
-						daysSinceEmission,
-						daysOverdue,
-						deadlineDays,
-						overdueType,
-						total: record.total,
-						legalReference:
-							"R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
-					},
-				});
+				if (anomaly) anomalies.push(anomaly);
 			}
 
 			return anomalies;
+		},
+	};
+}
+
+/** Overdue-filing anomaly for one CPE, or null when compliant / still inside the window. */
+function evaluateRecord(
+	record: SireFilingRecord,
+	now: Date,
+	deadlineDays: number,
+	criticalOverdueDays: number,
+): Anomaly | null {
+	const emissionDate = new Date(record.emisionDate);
+	if (Number.isNaN(emissionDate.getTime())) return null;
+
+	// If filing exists and CDR received — compliant
+	if (record.filingDate && record.cdrReceived) return null;
+
+	const daysSinceEmission = daysBetween(emissionDate, now);
+	// Within the filing window — not yet overdue
+	if (daysSinceEmission <= deadlineDays) return null;
+
+	const daysOverdue = daysBetween(addDays(emissionDate, deadlineDays), now);
+	const overdueType = record.filingDate ? "cdr_pending" : "not_filed";
+
+	return {
+		id: `sire-filing-${record.id}`,
+		timestamp: now.toISOString(),
+		entityType: "cpe",
+		entityId: record.id,
+		metric: "sire_filing_overdue",
+		expectedValue: 0,
+		actualValue: daysOverdue,
+		deviation: daysOverdue,
+		severity: classifySireSeverity(daysOverdue, criticalOverdueDays),
+		confidence: calculateSireConfidence(
+			daysOverdue,
+			record.cdrReceived,
+			record.filingDate,
+		),
+		reasoning: buildReasoning(record, daysOverdue, overdueType),
+		detectionMethod: "sire_filing_deadline",
+		context: {
+			serie: record.serie,
+			numero: record.numero,
+			tipoDocumento: record.tipoDocumento,
+			emisorRuc: record.emisorRuc,
+			emisionDate: record.emisionDate,
+			filingDate: record.filingDate,
+			cdrReceived: record.cdrReceived,
+			daysSinceEmission,
+			daysOverdue,
+			deadlineDays,
+			overdueType,
+			total: record.total,
+			legalReference:
+				"R.S. 000155-2021/SUNAT — Plazo de 7 días para envío de CPE a SUNAT",
 		},
 	};
 }

@@ -14,7 +14,7 @@ Renombrar `packages/pi` → `packages/agent-runtime` tocó 241 archivos y el pre
 - 12 aserciones no nulas (`x!`) reemplazadas por guardas explícitas (`agents.service`, `delegation`, `approval-gate`, `domain-agent`, `event-bus`, `batch-orchestrator`, `worker-pool`). En `batch-orchestrator.onPhaseComplete` se conservó el comportamiento previo con un tipo explícito.
 - Variable sin uso en `intelligence.service.ts`.
 
-## Deuda estructural pendiente (9 supresiones `biome-ignore` con motivo)
+## Deuda estructural pendiente (7 supresiones `biome-ignore` con motivo)
 
 Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en entrypoints. Cada fila es una supresión que debe **eliminarse refactorizando**, no ampliarse.
 
@@ -27,8 +27,6 @@ Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en en
 | `packages/agent-runtime/src/plugin/registry.ts:152` | noConsole |
 | `packages/agent-runtime/src/serve.ts:335` | noConsole |
 | `packages/agent-runtime/src/serve.ts:336` | noConsole |
-| `packages/agent-runtime/src/strategies/sire-filing.strategy.ts:63` | noExcessiveCognitiveComplexity |
-| `packages/agent-runtime/src/strategies/tax-calendar.strategy.ts:84` | noExcessiveCognitiveComplexity |
 
 - ✅ Saldadas también: `ResultMerger.merge` y `TaskDecomposer.decompose` (extracción de helpers; 110 tests de `mastra` intactos y prueba diferencial vieja-vs-nueva en 12 288 combinaciones de objetivo/dominios).
 - ✅ Saldadas: `DelegationGraph.detectCycle` (helpers; equivalencia verificada en 5 000 grafos aleatorios) y `LatinModernoOrchestrator.handleRequest` (`executeStep` extraído; test de caracterización nuevo).
@@ -37,6 +35,8 @@ Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en en
 - ✅ Saldadas (test-first, snapshots fiscales idénticos antes/después): `AuditoriaAgent.execute` (4 checks + acumulador que conserva el orden de sumas de punto flotante), `CierreAgent.execute` (`closeAccount`) y `DeclaracionAgent.execute` (camino real vs mock). 25 tests de caracterización nuevos.
 - ⚠️ **Hallazgo (conservado, no corregido):** en `DeclaracionAgent` con `FiscalDocumentService` las `observaciones` de validación (sin PLE, detracciones sin constancia) se calculan pero se descartan; solo el camino mock las devuelve. Decidir con el equipo fiscal si deben viajar en el reporte.
 - ✅ Saldadas (test-first): `classifyDocument` (etapas + 4 constructores de anomalía; matriz 17 documentos × 4 conjuntos de opciones) y `detracciones.execute` (SPOT: `evaluateInvoice` + 3 casos; 18 snapshots y 5 mutantes de umbral muertos: 700, 1 pt, 15 días, 5 días, 50 000).
+- ✅ Saldadas (test-first): `sire-filing` (`evaluateRecord`; 14 snapshots, 4 mutantes: 7 días, 30 días, ventana, confianza) y `tax-calendar` (`deadlineAlert` + `missingObligationAnomaly`; 17 snapshots, 3 mutantes de ventana de alerta).
+- **Con esto, todas las supresiones de lógica fiscal en estrategias y phase-agents quedan saldadas.** Quedan 7: orquestación de fases (`fiscal-phase-orchestrator`, `fiscal-phase-graph`, `batch-orchestrator`), `console` de entrypoints (`serve.ts` ×2, `plugin/registry.ts`), la mission service de web y la clase estática intencional de `inbox.service.ts`.
 
 ## Código fiscal: deuda saldada (6 supresiones eliminadas, test-first)
 
