@@ -121,7 +121,7 @@ jobs:
 
       - name: Create verification issue
         if: always()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const report = `${{ steps.report.outputs.report }}`;
@@ -156,7 +156,7 @@ jobs:
 
       - name: Create remediation issue on failure
         if: steps.report.outputs.status == 'fail'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
                 await github.rest.issues.create({
