@@ -332,10 +332,8 @@ function toSessionDTO(session: AgentSession) {
 
 const PORT = parseInt(process.env.PORT ?? "7377", 10);
 
-// biome-ignore lint/suspicious/noConsole: Server/process entrypoint log (pre-existing); tracked in odd/tasks/agent-runtime-lint-debt.md
-console.log(`drenyra-pi server starting on port ${PORT}`);
-// biome-ignore lint/suspicious/noConsole: Server/process entrypoint log (pre-existing); tracked in odd/tasks/agent-runtime-lint-debt.md
-console.log(`Health: http://localhost:${PORT}/api/v1/health`);
+process.stdout.write(`drenyra agent-runtime server starting on port ${PORT}\n`);
+process.stdout.write(`Health: http://localhost:${PORT}/api/v1/health\n`);
 
 export default {
 	port: PORT,

@@ -149,8 +149,10 @@ export class PluginRegistry {
 		const ctx: SkillContext = {
 			sessionManager: sessionManager ?? new SessionManager(),
 			logger: {
-				// biome-ignore lint/suspicious/noConsole: Server/process entrypoint log (pre-existing); tracked in odd/tasks/agent-runtime-lint-debt.md
-				info: (msg: string) => console.log(`[skill:${skill.id}] ${msg}`),
+				info: (msg: string) => {
+					process.stdout.write(`[skill:${skill.id}] ${msg}
+`);
+				},
 				warn: (msg: string) => console.warn(`[skill:${skill.id}] ${msg}`),
 				error: (msg: string) => console.error(`[skill:${skill.id}] ${msg}`),
 			},
