@@ -112,3 +112,5 @@ Reemplazada por `drenyra-shell` (comandos `/drenyra:*` sobre Pi) y la CLI de `dr
 - [x] Restos de nombre `drenyra-pi`/`gentle-pi`/`packages/pi` en código, comentarios y skill `drenyra-fsd` corregidos; el alias raíz `@drenyra/agent-runtime` de `vitest.config.ts` apuntaba a `../../drenyra-pi/src` (inexistente) y ahora a `packages/agent-runtime/src`. Pendiente (depende de decisiones del ODD de documentación): `README.md` y `AGENTS.md`.
 
 - [x] `apps/api/src/features/missions` migrado a `CreateMissionCommand`/`ApproveMissionCommand`/`RejectMissionCommand`/`ReconcileMissionCommand`; alias deprecados retirados de `mission-domain`. API misiones 93, `mission-domain` 163, typecheck 1334 (sin cambios).
+
+- [x] Aviso alto nuevo `node-forge` (GHSA-86w9-cpqp-85rv, sin versión corregida): aceptado con justificación de no alcanzabilidad y condición de salida en `docs/12-security/accepted-advisories.md`; `security:audit` lo ignora explícitamente (exit 0 con el aviso, 1 sin el ignore).

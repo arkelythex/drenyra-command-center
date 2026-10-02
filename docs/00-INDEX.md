@@ -140,6 +140,7 @@ Drenyra maneja datos financieros sensibles, credenciales SUNAT y transacciones f
 
 | Documento | Descripción |
 |-----------|-------------|
+| [accepted-advisories](./12-security/accepted-advisories.md) | El gate bloquea severidad **alta o crítica**. Un aviso solo se acepta aquí si (1) no existe versión corregida, (2) se… |
 | [incident-response-runbook](./12-security/incident-response-runbook.md) | Este runbook define los procedimientos de respuesta a incidentes de seguridad para la plataforma Drenyra. Cada playbook… |
 | [incident-response](./12-security/incident-response.md) | Este runbook define los procedimientos de respuesta a incidentes de seguridad para la plataforma Drenyra. Cada playbook… |
 | [monitoring-strategy](./12-security/monitoring-strategy.md) | Document the current security monitoring posture and define security-relevant alert triggers for the Drenyra platform.… |
