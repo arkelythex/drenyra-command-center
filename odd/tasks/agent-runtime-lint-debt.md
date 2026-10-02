@@ -56,8 +56,10 @@ Refactorizadas con tests de caracterización escritos **antes** y comprobados co
 `fiscal-fsd`: 100 → 129 tests; `application`: 753 → 770. Sin ninguna supresión de complejidad en `fiscal-fsd` ni en el clasificador.
 
 ### Hallazgos de comportamiento (preservados, a decidir)
-- **`ESCALATE` no escala nada:** con `onGateBlocked: "ESCALATE"` y un gate `BLOCKING` fallido, el pipeline termina `COMPLETED` sin errores ni marca (el comentario dice «el llamador lo maneja», pero nadie lo recibe). Fijado en `runner.test.ts`. Probable defecto: debería devolver un estado propio o registrar el bloqueo.
-- **`resume()` no pasa por `ReviewGuard`** (solo `run()` lo ejecuta antes de `migracion`): una migración reanudada se salta la guarda de presupuesto de revisión.
+- ✅ **Resuelto — `ESCALATE` ahora escala:** con un gate `BLOCKING` fallido el pipeline devuelve `BLOCKED` (`Gate "G" escalated for human review: …`) en `fiscal-fsd` y en `phase-gatekeeper` (pre-gate: la fase no se ejecuta; post-gate: devuelve el output). Antes terminaba `COMPLETED` en silencio. Tests: `runner.test.ts`, `pipeline.test.ts`.
+- ✅ **Resuelto — `resume()` pasa por `ReviewGuard`:** la guarda vive en `advancePhase`, compartida por `run()` y `resume()`; una migración reanudada ya no se salta la guarda de revisión. Verificado con mutante (sin guarda fallan 2 tests).
+- ✅ **Configs de vitest rotas** (`},\t},` sin cerrar) en `fiscal-approval`, `fiscal-query-engine`, `phase-gatekeeper`: arregladas; sus suites (20 / 37 / 20) vuelven a ejecutarse.
+- ✅ **`GatedPhasePipeline.runPhase` (complejidad 43 → <15):** pre y post-gates comparten `evaluateGates`; sin suprimir, 20 tests intactos.
 - `fiscal-summary-service.ts` (application) tiene complejidad 18 y `noStaticOnlyClass`: deuda previa, aún sin tocar.
 
 ## Siguiente paso

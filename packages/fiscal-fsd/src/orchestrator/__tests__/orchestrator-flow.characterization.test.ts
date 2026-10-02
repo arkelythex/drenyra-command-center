@@ -31,7 +31,11 @@ const OK = JSON.stringify({
 	estadoGeneral: "COMPLETO",
 });
 
-type Opts = { mode?: "auto" | "interactive"; failOn?: FaseName };
+type Opts = {
+	mode?: "auto" | "interactive";
+	failOn?: FaseName;
+	replies?: Partial<Record<FaseName, string>>;
+};
 
 function make(opts: Opts = {}) {
 	const o = new FiscalComplianceOrchestrator({
@@ -44,7 +48,7 @@ function make(opts: Opts = {}) {
 	orch.modelRouter.registerProvider("custom", (model: string) => {
 		return async () => {
 			if (model === opts.failOn) throw new Error(`down:${model}`);
-			return OK;
+			return opts.replies?.[model as FaseName] ?? OK;
 		};
 	});
 	orch.modelRouter.updateAssignments(
@@ -127,6 +131,51 @@ describe("run() stop mapping", () => {
 			'Pipeline detenido en fase "analisis": gate said no',
 		);
 		expect(result.reasons).toEqual(["gate said no"]);
+	});
+});
+
+// A MEDIUM-risk plan (200 < lines <= 400, no critical subsystem) makes ReviewGuard ask.
+const MEDIUM_RISK_PLAN = JSON.stringify({
+	subsistemasAfectados: [],
+	lineasEstimadasTotal: 300,
+});
+
+describe("ReviewGuard before migracion", () => {
+	it("run() asks for a review when the plan is medium risk", async () => {
+		const result = await make({ replies: { plan: MEDIUM_RISK_PLAN } }).run(
+			"chg-guard-run",
+			SCOPE,
+			{},
+		);
+		expect(result.status).toBe("REVIEW_NEEDED");
+		expect(result.message).toMatch(
+			/^Carga de revisión alta: 300 líneas estimadas\. /,
+		);
+		expect(result.reviewDecision?.action).toBe("ask");
+	});
+
+	it("resume() applies the same guard before running migracion", async () => {
+		const o = make();
+		// biome-ignore lint/suspicious/noExplicitAny: seed saved phases up to plan
+		const store = (o as any).artifactStore;
+		for (const fase of FASES.slice(0, 4)) {
+			await store.save("chg-guard-resume", {
+				fase,
+				status: "SUCCESS",
+				input: {},
+				output: fase === "plan" ? JSON.parse(MEDIUM_RISK_PLAN) : {},
+				gateResults: [],
+				evidence: [],
+				errors: [],
+				confidence: 1,
+				ejecutadoEn: new Date().toISOString(),
+				duracionMs: 0,
+			});
+		}
+		const result = await o.resume("chg-guard-resume", SCOPE, {});
+		expect(result.status).toBe("REVIEW_NEEDED");
+		expect(result.reviewDecision?.action).toBe("ask");
+		expect(result.phaseArtifacts).toBeUndefined();
 	});
 });
 

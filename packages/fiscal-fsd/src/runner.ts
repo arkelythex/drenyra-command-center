@@ -267,22 +267,25 @@ export class FiscalFSDRunner {
 
 			if (verdict.passed || verdict.severity !== "BLOCKING") return null;
 
-			if (onGateBlocked === "STOP") {
-				return {
-					status: "BLOCKED",
-					output: phaseResult.output,
-					gatesPassed: [verdict],
-					evidenceArtifacts,
-					errors: [
-						`Gate "${gate.name}" blocked: ${verdict.reasons.join("; ")}`,
-					],
-					confidence: 0,
-				};
-			}
 			if (onGateBlocked === "WARN_CONTINUE") {
 				phaseResult.errors.push(`Gate warning: ${verdict.reasons.join("; ")}`);
+				return null;
 			}
-			// ESCALATE: caller handles
+
+			// STOP blocks; ESCALATE pauses the pipeline and flags it for human review.
+			const reasons = verdict.reasons.join("; ");
+			return {
+				status: "BLOCKED",
+				output: phaseResult.output,
+				gatesPassed: [verdict],
+				evidenceArtifacts,
+				errors: [
+					onGateBlocked === "ESCALATE"
+						? `Gate "${gate.name}" escalated for human review: ${reasons}`
+						: `Gate "${gate.name}" blocked: ${reasons}`,
+				],
+				confidence: 0,
+			};
 		} catch (err) {
 			const errorMsg = err instanceof Error ? err.message : String(err);
 			phaseResult.errors.push(`Gate threw: ${errorMsg}`);

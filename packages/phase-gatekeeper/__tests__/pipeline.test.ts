@@ -129,6 +129,58 @@ describe("GatedPhasePipeline", () => {
 			expect(result.errors[0]).toContain("warning");
 		});
 
+		describe("ESCALATE pauses for human review", () => {
+			const blockingGate = (name: string) => ({
+				name,
+				description: "Always blocks",
+				check: () => ({
+					passed: false,
+					reasons: ["needs a human"],
+					severity: "BLOCKING" as const,
+					details: {},
+				}),
+			});
+
+			it("does not execute the phase when a pre-gate escalates", async () => {
+				const pipeline = new GatedPhasePipeline({ onGateBlocked: "ESCALATE" });
+				let executed = false;
+
+				const result = await pipeline.runPhase(
+					"escalate-pre",
+					{ value: 1 },
+					async (input: { value: number }) => {
+						executed = true;
+						return { result: input.value };
+					},
+					{ preGates: [blockingGate("PreG")], postGates: [] },
+				);
+
+				expect(executed).toBe(false);
+				expect(result.status).toBe("BLOCKED");
+				expect(result.output).toBeNull();
+				expect(result.errors).toEqual([
+					'Pre-gate "PreG" escalated for human review: needs a human',
+				]);
+			});
+
+			it("returns the output but BLOCKED, with the reason, when a post-gate escalates", async () => {
+				const pipeline = new GatedPhasePipeline({ onGateBlocked: "ESCALATE" });
+
+				const result = await pipeline.runPhase(
+					"escalate-post",
+					{ value: 2 },
+					async (input: { value: number }) => ({ result: input.value }),
+					{ preGates: [], postGates: [blockingGate("PostG")] },
+				);
+
+				expect(result.status).toBe("BLOCKED");
+				expect(result.output).toEqual({ result: 2 });
+				expect(result.errors).toEqual([
+					'Post-gate "PostG" escalated for human review: needs a human',
+				]);
+			});
+		});
+
 		it("handles phase execution failure", async () => {
 			const pipeline = new GatedPhasePipeline();
 

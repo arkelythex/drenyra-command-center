@@ -364,11 +364,21 @@ describe("FiscalFSDRunner", () => {
 			expect(result.phaseResults[0].errors).toEqual(["Gate warning: r1; r2"]);
 		});
 
-		it("ESCALATE currently completes silently (caller is expected to handle it)", async () => {
+		it("ESCALATE pauses the pipeline for human review instead of continuing", async () => {
 			const result = await run("ESCALATE", blocking);
-			expect(result.status).toBe("COMPLETED");
-			expect(result.phaseResults[0].errors).toEqual([]);
-			expect(result.phaseResults[0].gatesPassed).toHaveLength(1);
+			const phaseResult = result.phaseResults[0];
+			expect(result.status).toBe("BLOCKED");
+			expect(result.blockedAtPhase).toBe("p");
+			expect(phaseResult.status).toBe("BLOCKED");
+			expect(phaseResult.errors).toEqual([
+				'Gate "G" escalated for human review: r1; r2',
+			]);
+			expect(phaseResult.gatesPassed).toHaveLength(1);
+			expect(phaseResult.evidenceArtifacts.map((a) => a.evidenceKind)).toEqual([
+				"PHASE_INPUT",
+				"PHASE_OUTPUT",
+				"GATE_RESULT",
+			]);
 		});
 
 		it("does not block on a failed gate whose severity is not BLOCKING", async () => {

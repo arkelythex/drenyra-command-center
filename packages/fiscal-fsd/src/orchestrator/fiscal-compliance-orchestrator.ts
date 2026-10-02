@@ -149,18 +149,6 @@ export class FiscalComplianceOrchestrator {
 		let currentInput: unknown = { changeId, scope, metadata };
 
 		for (const fase of FASES_ORDEN) {
-			// ReviewGuard: antes de migración, analizar el plan
-			if (fase === "migracion") {
-				const guardResult = await this.runReviewGuard(
-					currentInput,
-					changeId,
-					scope,
-				);
-				if (guardResult) {
-					return guardResult;
-				}
-			}
-
 			const step = await this.advancePhase(
 				fase,
 				currentInput,
@@ -265,6 +253,13 @@ export class FiscalComplianceOrchestrator {
 		messages: PhaseMessages,
 	): Promise<{ stop: OrchestratorResult } | { output: unknown }> {
 		const { changeId, scope } = ctx;
+
+		// ReviewGuard: antes de migración, analizar el plan (en run y en resume)
+		if (fase === "migracion") {
+			const guardResult = await this.runReviewGuard(input, changeId, scope);
+			if (guardResult) return { stop: guardResult };
+		}
+
 		const phaseResult = await this.executeFase(fase, input, ctx, metadata);
 
 		// ComplianceChainAdapter: durante migración, ejecutar chains
