@@ -618,7 +618,6 @@
     "apps/api/src/features/threads/threads.routes.ts|TS2322": 1,
     "apps/api/src/features/threads/threads.routes.ts|TS2379": 1,
     "apps/api/src/features/threads/threads.routes.ts|TS6133": 1,
-    "apps/api/src/features/threads/threads.service.ts|TS18048": 57,
     "apps/api/src/features/threads/threads.service.ts|TS2322": 3,
     "apps/api/src/features/threads/threads.service.ts|TS2375": 5,
     "apps/api/src/features/transactions/api/routes.ts|TS2379": 1,
