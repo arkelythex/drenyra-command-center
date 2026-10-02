@@ -1,0 +1,141 @@
+# Generado por `bun run docs:agent-index`. No editar a mano.
+# Fuente: package.json de cada app/paquete/servicio. Navegación humana: CODEX-MAP.md.
+version: 1
+units:
+  - path: "apps/api"
+    kind: app
+    name: "@drenyra/api"
+    docs: ["apps/api/README.md", "apps/api/MAP.md", "apps/api/AGENTS.md"]
+  - path: "apps/data-engine"
+    kind: app
+    name: "data-engine"
+    docs: ["apps/data-engine/README.md", "apps/data-engine/MAP.md"]
+  - path: "apps/web"
+    kind: app
+    name: "@drenyra/web"
+    docs: ["apps/web/README.md", "apps/web/MAP.md", "apps/web/AGENTS.md"]
+  - path: "engines/rust-core"
+    kind: engine
+    name: "rust-core"
+    docs: ["engines/rust-core/README.md"]
+  - path: "packages/agent-runtime"
+    kind: package
+    name: "@drenyra/agent-runtime"
+    description: "Drenyra agent runtime — agent swarm, approval gates, sessions, task queues and MCP for Peruvian fiscal intelligence. The Pi operator harness lives in drenyra-shell."
+  - path: "packages/ai"
+    kind: package
+    name: "@drenyra/ai"
+    description: "AI facade package for Drenyra"
+    docs: ["packages/ai/README.md", "packages/ai/MAP.md"]
+  - path: "packages/application"
+    kind: package
+    name: "@drenyra/application"
+    description: "Application layer - use cases, DTOs, and ports"
+    docs: ["packages/application/README.md"]
+  - path: "packages/domain"
+    kind: package
+    name: "@drenyra/domain"
+    description: "Domain layer - entities, value objects, and domain logic"
+    docs: ["packages/domain/README.md", "packages/domain/AGENTS.md"]
+  - path: "packages/drenyra-orchestrator"
+    kind: package
+    name: "@drenyra/orchestrator"
+    description: "Drenyra Orchestrator — delegation router, skills resolver, memory contract, and work routing"
+  - path: "packages/fiscal-agent-domain"
+    kind: package
+    name: "@drenyra/fiscal-agent-domain"
+    description: "Fiscal agent domain — pure types for agent definitions, context, delegation policy, risk tiers, and approval policies. Zero infrastructure dependencies."
+  - path: "packages/fiscal-approval"
+    kind: package
+    name: "@drenyra/fiscal-approval"
+    description: "Fiscal recommendation + approval workflow engine"
+  - path: "packages/fiscal-compliance-pipeline"
+    kind: package
+    name: "@drenyra/fiscal-compliance-pipeline"
+    description: "Chained compliance workflows — cascading fiscal rule changes through dependent subsystems with review gates"
+  - path: "packages/fiscal-fsd"
+    kind: package
+    name: "@drenyra/fiscal-fsd"
+    description: "Pipeline dinámico de cumplimiento fiscal — solicitud→análisis→diseño→plan→migración→auditoría"
+  - path: "packages/fiscal-query-engine"
+    kind: package
+    name: "@drenyra/fiscal-query-engine"
+    description: "Natural language fiscal query engine — classifier, pipeline router, evidence formatter"
+  - path: "packages/infrastructure"
+    kind: package
+    name: "@drenyra/infrastructure"
+    docs: ["packages/infrastructure/README.md"]
+  - path: "packages/memory"
+    kind: package
+    name: "@drenyra/memory"
+    description: "Unified memory subsystem — agent memory, session storage, and context management"
+    docs: ["packages/memory/README.md"]
+  - path: "packages/mission-client"
+    kind: package
+    name: "@drenyra/mission-client"
+    description: "TypeScript HTTP client for Drenyra accounting missions"
+  - path: "packages/mission-domain"
+    kind: package
+    name: "@drenyra/mission-domain"
+    description: "Canonical mission domain — state machine, transitions, errors, contracts, events, and receipts"
+  - path: "packages/mission-protocol"
+    kind: package
+    name: "@drenyra/mission-protocol"
+    description: "Canonical mission protocol — ADAPTER SHIM re-exporting drenyra-ai/missions (single authority). Types, schemas, states, commands, events, errors, and versioning. Transport-agnostic."
+  - path: "packages/persistence"
+    kind: package
+    name: "@drenyra/persistence"
+    description: "Database persistence layer — Drizzle ORM schemas, repositories, and query helpers"
+    docs: ["packages/persistence/README.md"]
+  - path: "packages/phase-gatekeeper"
+    kind: package
+    name: "@drenyra/phase-gatekeeper"
+    description: "Phase gatekeepers for orchestrator pipeline — validates phase outputs before passing to next phase"
+  - path: "packages/security"
+    kind: package
+    name: "@drenyra/security"
+  - path: "packages/shared"
+    kind: package
+    name: "@drenyra/shared"
+    description: "Shared utilities and helpers"
+    docs: ["packages/shared/README.md"]
+  - path: "packages/skill-sire-filing"
+    kind: package
+    name: "@drenyra/skill-sire-filing"
+    description: "SIRE Filing skill for Drenyra — electronic books (SIRE) SUNAT compliance"
+  - path: "packages/test-utils"
+    kind: package
+    name: "@drenyra/test-utils"
+    description: "Shared testing utilities for ARKELYTHEX monorepo — builders, fixtures, mocks, helpers"
+    docs: ["packages/test-utils/README.md"]
+  - path: "packages/ui"
+    kind: package
+    name: "@drenyra/ui"
+    description: "Drenyra shared design system UI components"
+    docs: ["packages/ui/README.md"]
+  - path: "packages/workspace-application"
+    kind: package
+    name: "@drenyra/workspace-application"
+  - path: "packages/workspace-contracts"
+    kind: package
+    name: "@drenyra/workspace-contracts"
+  - path: "packages/workspace-control"
+    kind: package
+    name: "@drenyra/workspace-control"
+  - path: "packages/workspace-domain"
+    kind: package
+    name: "@drenyra/workspace-domain"
+  - path: "packages/workspace-layout"
+    kind: package
+    name: "@drenyra/workspace-layout"
+  - path: "packages/workspace-projections"
+    kind: package
+    name: "@drenyra/workspace-projections"
+  - path: "services/engram"
+    kind: service
+    name: "engram"
+    docs: ["services/engram/README.md"]
+  - path: "services/go"
+    kind: service
+    name: "go"
+    docs: ["services/go/README.md"]

@@ -6,7 +6,7 @@
 
 ## Start here
 
-- Fast navigation source: this file. Machine-readable source: `.codebase/index.yml`.
+- Fast navigation source: this file. Machine-readable source: `.codebase/index.yml` (generated: `bun run docs:agent-index`).
 - Product north star: [Drenyra Financial Engineering Environment](docs/products/drenyra-product-philosophy.md) — verifiable financial OS for LATAM.
 - Update both with `bun run codebase:index`; verify drift with `bun run codebase:index:check`.
 - Canonical path for tools: `/home/dreamcoder08/Documents/PROYECTOS/Drenyra`.
@@ -78,7 +78,7 @@ Default `rg` and `fd` searches use root `.rgignore` and `.fdignore` to skip nois
 | Update SUNAT/UBL adapters      | `packages/infrastructure/src/sunat/`, `packages/infrastructure/src/xml/`     |
 | Update AI gateway/agents       | `packages/ai/src/`, `packages/drenyra-orchestrator/src/`                     |
 | Update shared UI               | `packages/ui/src/`, consumers in `apps/web`/`apps/landing`                   |
-| Update docs navigation         | `CODEX-MAP.md`, `.codebase/index.yml`, `docs/CODEBASE-GUIDE.md`              |
+| Update docs navigation         | `CODEX-MAP.md`, `.codebase/index.yml`, `docs/00-INDEX.md`                  |
 
 ## Key commands
 
