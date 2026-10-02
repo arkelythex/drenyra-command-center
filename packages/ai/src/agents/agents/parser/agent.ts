@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { loggers } from "../../../logger";
+import { loggers } from "../../../services/logger";
 import type { GeminiMultiAdapter, RouterAdapter } from "../../adapters";
 import type {
 	BaseAgent,

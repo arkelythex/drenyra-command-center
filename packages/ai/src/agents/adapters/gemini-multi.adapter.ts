@@ -15,7 +15,7 @@
 import { createHash } from "node:crypto";
 import type { Part } from "@google/generative-ai";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { loggers } from "../../logger";
+import { loggers } from "../../services/logger";
 import type { AIResponse } from "../types";
 
 /**
@@ -97,6 +97,8 @@ export class GeminiMultiAdapter {
 	/**
 	 * Generate content (text or multimodal)
 	 */
+
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 	async generate(input: GeminiMultimodalInput): Promise<AIResponse> {
 		const startTime = Date.now();
 
@@ -360,6 +362,7 @@ export class GeminiInstanceFactory {
 		config?: Partial<GeminiConfig>,
 	): GeminiMultiAdapter {
 		if (this.instances.has(instanceId)) {
+			// biome-ignore lint/style/noNonNullAssertion: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 			return this.instances.get(instanceId)!;
 		}
 

@@ -10,7 +10,7 @@
  */
 
 import type { ContextMonitor } from "../context-monitor";
-import { loggers } from "../logger";
+import { loggers } from "../services/logger";
 import { type BudgetEnforcer, budgetEnforcer } from "./budget-enforcer";
 import { type CostTracker, costTracker } from "./cost-tracker";
 import {

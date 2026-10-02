@@ -1,6 +1,6 @@
 import type { ModelCapability } from "@drenyra/ai";
 import type { AdaptiveRouter } from "@drenyra/infrastructure/ai/model-router/router";
-import { loggers } from "../../logger";
+import { loggers } from "../../services/logger";
 import type { AIResponse } from "../types";
 
 export interface RouterAdapterOptions {

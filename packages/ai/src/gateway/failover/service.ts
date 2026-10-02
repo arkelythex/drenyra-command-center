@@ -1,4 +1,4 @@
-import { loggers } from "../../logger";
+import { loggers } from "../../services/logger";
 import type { FailoverAttempt, LLMProvider } from "../types";
 import { LLMGatewayError } from "../types";
 import { ProviderCircuit } from "./strategies";
@@ -68,6 +68,7 @@ export class FailoverService {
 	}
 
 	getChain(provider: LLMProvider): FailoverChain {
+		// biome-ignore lint/style/noNonNullAssertion: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 		return this.defaultChains.get(provider)!;
 	}
 
