@@ -304,8 +304,10 @@ export class ComplianceChainAdapter {
 			oldValue: cambio.oldValue,
 			newValue: cambio.newValue,
 			effectiveDate:
-				cambio.effectiveDate ?? new Date().toISOString().split("T")[0],
-			description: cambio.description,
+				cambio.effectiveDate ?? new Date().toISOString().slice(0, 10),
+			...(cambio.description !== undefined && {
+				description: cambio.description,
+			}),
 		};
 
 		const result = await runner.runChain(chain, change, {
