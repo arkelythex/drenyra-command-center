@@ -274,7 +274,6 @@ function generateDocAnomalyId(type: string, idx: number): string {
  * Returns classification result + anomalies.
  */
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 export function classifyDocument(
 	doc: DocumentToClassify,
 	options?: DocumentClassificationOptions,
@@ -297,71 +296,30 @@ export function classifyDocument(
 	const sunatInfo = detectSunatType(doc.serie, doc.text);
 
 	// 3. Content-based classification
-	let detectedType: DetectedDocType = "unknown";
-	let confidence = 0;
-	let classificationMethod = "format_only";
-
-	if (format === "XML" && sunatInfo) {
-		// XML with SUNAT content → sunat_xml
-		detectedType = "sunat_xml";
-		confidence = 0.95;
-		classificationMethod = "xml_format_with_sunat_type";
-	} else if (format === "XML" && doc.text.includes("UBL")) {
-		detectedType = "sunat_xml";
-		confidence = 0.85;
-		classificationMethod = "xml_format_with_ubl";
-	} else if (opts.classifyByContent && doc.text.length > MIN_UNREADABLE_CHARS) {
-		const contentResult = classifyByContent(doc.text);
-		detectedType = contentResult.type;
-		confidence = contentResult.confidence;
-		classificationMethod = contentResult.method;
-	} else if (doc.text.length <= MIN_UNREADABLE_CHARS && doc.text.length > 0) {
-		// Text too short — low confidence
-		detectedType = "unknown";
-		confidence = 0.1;
-		classificationMethod = "unreadable";
-	}
+	const { detectedType, confidence, classificationMethod } = resolveType(
+		doc,
+		format,
+		sunatInfo,
+		opts.classifyByContent,
+	);
 
 	// 4. Anomaly: unreadable document
-	if (doc.text.length <= MIN_UNREADABLE_CHARS && doc.text.length > 0) {
-		anomalies.push({
-			id: generateDocAnomalyId("unreadable", anomalies.length),
-			timestamp,
-			entityType: "document",
-			entityId: doc.id,
-			metric: "text_length",
-			expectedValue: MIN_UNREADABLE_CHARS,
-			actualValue: doc.text.length,
-			deviation: MIN_UNREADABLE_CHARS - doc.text.length,
-			severity: "medium",
-			confidence: 0.8,
-			reasoning: `Document text has only ${doc.text.length} characters (minimum ${MIN_UNREADABLE_CHARS} for reliable classification)`,
-			detectionMethod: "content_length_check",
-			context: { filename: doc.filename, textLength: doc.text.length },
-		});
+	if (isUnreadable(doc.text)) {
+		anomalies.push(unreadableAnomaly(doc, timestamp, anomalies.length));
 	}
 
 	// 5. Anomaly: not classifiable
 	if (detectedType === "unknown" && confidence < opts.minConfidence) {
-		anomalies.push({
-			id: generateDocAnomalyId("not_classified", anomalies.length),
-			timestamp,
-			entityType: "document",
-			entityId: doc.id,
-			metric: "classification_confidence",
-			expectedValue: opts.minConfidence,
-			actualValue: confidence,
-			deviation: opts.minConfidence - confidence,
-			severity: "high",
-			confidence: 0.9,
-			reasoning: `Document could not be classified (confidence ${(confidence * 100).toFixed(0)}%, minimum ${(opts.minConfidence * 100).toFixed(0)}%)`,
-			detectionMethod: "content_classification",
-			context: {
-				filename: doc.filename,
+		anomalies.push(
+			notClassifiedAnomaly(
+				doc,
 				format,
-				textPreview: doc.text.slice(0, 100),
-			},
-		});
+				confidence,
+				opts.minConfidence,
+				timestamp,
+				anomalies.length,
+			),
+		);
 	}
 
 	// 6. Completeness check
@@ -374,31 +332,15 @@ export function classifyDocument(
 		missingFields = completeness.missing;
 
 		if (completeness.missing.length > 0) {
-			const severity =
-				completeness.missing.length >= 3
-					? "high"
-					: completeness.missing.length >= 2
-						? "medium"
-						: "low";
-			anomalies.push({
-				id: generateDocAnomalyId("missing_fields", anomalies.length),
-				timestamp,
-				entityType: "document",
-				entityId: doc.id,
-				metric: "completeness_score",
-				expectedValue: 1,
-				actualValue: completenessScore,
-				deviation: 1 - completenessScore,
-				severity,
-				confidence: 0.75,
-				reasoning: `Document classified as ${detectedType} but missing fields: ${completeness.missing.join(", ")}`,
-				detectionMethod: "completeness_check",
-				context: {
-					filename: doc.filename,
+			anomalies.push(
+				missingFieldsAnomaly(
+					doc,
 					detectedType,
-					missingFields: completeness.missing,
-				},
-			});
+					completeness,
+					timestamp,
+					anomalies.length,
+				),
+			);
 		}
 	}
 
@@ -406,29 +348,18 @@ export function classifyDocument(
 	if (
 		opts.checkTypeMismatch &&
 		doc.declaredType &&
-		detectedType !== "unknown"
+		detectedType !== "unknown" &&
+		doc.declaredType !== detectedType
 	) {
-		if (doc.declaredType !== detectedType) {
-			anomalies.push({
-				id: generateDocAnomalyId("type_mismatch", anomalies.length),
+		anomalies.push(
+			typeMismatchAnomaly(
+				doc,
+				doc.declaredType,
+				detectedType,
 				timestamp,
-				entityType: "document",
-				entityId: doc.id,
-				metric: "type_match",
-				expectedValue: 1,
-				actualValue: 0,
-				deviation: 1,
-				severity: "medium",
-				confidence: 0.85,
-				reasoning: `Declared type "${doc.declaredType}" does not match detected type "${detectedType}"`,
-				detectionMethod: "type_mismatch_check",
-				context: {
-					filename: doc.filename,
-					declaredType: doc.declaredType,
-					detectedType,
-				},
-			});
-		}
+				anomalies.length,
+			),
+		);
 	}
 
 	const result: ClassificationResult = {
@@ -443,6 +374,163 @@ export function classifyDocument(
 	};
 
 	return { result, anomalies };
+}
+
+/** Text with content, but too short for reliable classification. */
+function isUnreadable(text: string): boolean {
+	return text.length <= MIN_UNREADABLE_CHARS && text.length > 0;
+}
+
+/** Decide the document type: XML hints first, then content keywords, else unreadable/format-only. */
+function resolveType(
+	doc: DocumentToClassify,
+	format: DetectedFormat,
+	sunatInfo: ReturnType<typeof detectSunatType>,
+	classifyContent: boolean,
+): {
+	detectedType: DetectedDocType;
+	confidence: number;
+	classificationMethod: string;
+} {
+	if (format === "XML" && sunatInfo) {
+		return {
+			detectedType: "sunat_xml",
+			confidence: 0.95,
+			classificationMethod: "xml_format_with_sunat_type",
+		};
+	}
+	if (format === "XML" && doc.text.includes("UBL")) {
+		return {
+			detectedType: "sunat_xml",
+			confidence: 0.85,
+			classificationMethod: "xml_format_with_ubl",
+		};
+	}
+	if (classifyContent && doc.text.length > MIN_UNREADABLE_CHARS) {
+		const content = classifyByContent(doc.text);
+		return {
+			detectedType: content.type,
+			confidence: content.confidence,
+			classificationMethod: content.method,
+		};
+	}
+	if (isUnreadable(doc.text)) {
+		return {
+			detectedType: "unknown",
+			confidence: 0.1,
+			classificationMethod: "unreadable",
+		};
+	}
+	return {
+		detectedType: "unknown",
+		confidence: 0,
+		classificationMethod: "format_only",
+	};
+}
+
+function unreadableAnomaly(
+	doc: DocumentToClassify,
+	timestamp: string,
+	idx: number,
+): Anomaly {
+	return {
+		id: generateDocAnomalyId("unreadable", idx),
+		timestamp,
+		entityType: "document",
+		entityId: doc.id,
+		metric: "text_length",
+		expectedValue: MIN_UNREADABLE_CHARS,
+		actualValue: doc.text.length,
+		deviation: MIN_UNREADABLE_CHARS - doc.text.length,
+		severity: "medium",
+		confidence: 0.8,
+		reasoning: `Document text has only ${doc.text.length} characters (minimum ${MIN_UNREADABLE_CHARS} for reliable classification)`,
+		detectionMethod: "content_length_check",
+		context: { filename: doc.filename, textLength: doc.text.length },
+	};
+}
+
+function notClassifiedAnomaly(
+	doc: DocumentToClassify,
+	format: DetectedFormat,
+	confidence: number,
+	minConfidence: number,
+	timestamp: string,
+	idx: number,
+): Anomaly {
+	return {
+		id: generateDocAnomalyId("not_classified", idx),
+		timestamp,
+		entityType: "document",
+		entityId: doc.id,
+		metric: "classification_confidence",
+		expectedValue: minConfidence,
+		actualValue: confidence,
+		deviation: minConfidence - confidence,
+		severity: "high",
+		confidence: 0.9,
+		reasoning: `Document could not be classified (confidence ${(confidence * 100).toFixed(0)}%, minimum ${(minConfidence * 100).toFixed(0)}%)`,
+		detectionMethod: "content_classification",
+		context: {
+			filename: doc.filename,
+			format,
+			textPreview: doc.text.slice(0, 100),
+		},
+	};
+}
+
+function missingFieldsAnomaly(
+	doc: DocumentToClassify,
+	detectedType: DetectedDocType,
+	completeness: { score: number; missing: string[] },
+	timestamp: string,
+	idx: number,
+): Anomaly {
+	const count = completeness.missing.length;
+	const severity = count >= 3 ? "high" : count >= 2 ? "medium" : "low";
+	return {
+		id: generateDocAnomalyId("missing_fields", idx),
+		timestamp,
+		entityType: "document",
+		entityId: doc.id,
+		metric: "completeness_score",
+		expectedValue: 1,
+		actualValue: completeness.score,
+		deviation: 1 - completeness.score,
+		severity,
+		confidence: 0.75,
+		reasoning: `Document classified as ${detectedType} but missing fields: ${completeness.missing.join(", ")}`,
+		detectionMethod: "completeness_check",
+		context: {
+			filename: doc.filename,
+			detectedType,
+			missingFields: completeness.missing,
+		},
+	};
+}
+
+function typeMismatchAnomaly(
+	doc: DocumentToClassify,
+	declaredType: DetectedDocType,
+	detectedType: DetectedDocType,
+	timestamp: string,
+	idx: number,
+): Anomaly {
+	return {
+		id: generateDocAnomalyId("type_mismatch", idx),
+		timestamp,
+		entityType: "document",
+		entityId: doc.id,
+		metric: "type_match",
+		expectedValue: 1,
+		actualValue: 0,
+		deviation: 1,
+		severity: "medium",
+		confidence: 0.85,
+		reasoning: `Declared type "${declaredType}" does not match detected type "${detectedType}"`,
+		detectionMethod: "type_mismatch_check",
+		context: { filename: doc.filename, declaredType, detectedType },
+	};
 }
 
 // ─── Batch classification ──────────────────────────────────────────

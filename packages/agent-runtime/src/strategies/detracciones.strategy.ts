@@ -122,7 +122,6 @@ export function createDetraccionesStrategy(): AnomalyStrategy {
 			"Validates SPOT system compliance (D.S. 155-2007-EF). Detects missing or incorrect detracciones on eligible invoices.",
 		minSeverity: "low",
 
-		// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 		execute(data: unknown, _context: AgentContext): Anomaly[] {
 			if (!Array.isArray(data)) return [];
 
@@ -131,107 +130,116 @@ export function createDetraccionesStrategy(): AnomalyStrategy {
 			const anomalies: Anomaly[] = [];
 
 			for (const inv of invoices) {
-				const spotRate = SPOT_RATES.get(inv.operationCode);
-				const isCashPayment = CASH_PAYMENT_TYPES.includes(
-					inv.paymentType.toUpperCase(),
-				);
-
-				// Check if SPOT applies
-				const meetsThreshold =
-					inv.totalAmount >=
-					(isCashPayment ? SPOT_MIN_CASH_AMOUNT : SPOT_MIN_AMOUNT);
-
-				if (!meetsThreshold || !spotRate) continue;
-
-				// ── Case 1: No detracción applied ──
-				if (inv.detraccionAmount === null || inv.detraccionAmount === 0) {
-					const severity = classifyMissingDetraccion(inv.totalAmount);
-					anomalies.push(
-						createDetAnomaly(inv, {
-							metric: "detraccion_missing",
-							severity,
-							reasoning:
-								`${inv.tipoDocumento} ${inv.serie}-${String(inv.numero).padStart(8, "0")}: ` +
-								`No se aplicó detracción. Operación código ${inv.operationCode} ` +
-								`(${spotRate.description}) requiere ${spotRate.rate}% de detracción. ` +
-								`Monto S/ ${inv.totalAmount.toFixed(2)} > umbral S/ ${SPOT_MIN_AMOUNT}.`,
-							context: {
-								expectedRate: spotRate.rate,
-								expectedAmount: roundToCentesimos(
-									inv.totalAmount * (spotRate.rate / 100),
-								),
-								operationDescription: spotRate.description,
-								legalReference:
-									"D.S. 155-2007-EF — SPOT rates by operation code",
-							},
-						}),
-					);
-					continue;
-				}
-
-				// ── Case 2: Wrong percentage ──
-				const expectedAmount = roundToCentesimos(
-					inv.totalAmount * (spotRate.rate / 100),
-				);
-				const expectedPercentage = spotRate.rate;
-				const diffPct = Math.abs(
-					expectedPercentage - (inv.detraccionPercentage ?? 0),
-				);
-
-				if (diffPct > 1) {
-					anomalies.push(
-						createDetAnomaly(inv, {
-							metric: "detraccion_wrong_percentage",
-							severity: "medium",
-							reasoning:
-								`${inv.tipoDocumento} ${inv.serie}-${String(inv.numero).padStart(8, "0")}: ` +
-								`Porcentaje de detracción incorrecto. ` +
-								`Aplicado: ${inv.detraccionPercentage}%. Esperado: ${expectedPercentage}% ` +
-								`(código ${inv.operationCode}: ${spotRate.description}). ` +
-								`Monto S/ ${inv.detraccionAmount?.toFixed(2)} ≠ esperado S/ ${expectedAmount.toFixed(2)}.`,
-							context: {
-								expectedRate: expectedPercentage,
-								appliedRate: inv.detraccionPercentage,
-								expectedAmount,
-								appliedAmount: inv.detraccionAmount,
-								operationDescription: spotRate.description,
-							},
-						}),
-					);
-					continue;
-				}
-
-				// ── Case 3: Deposited late or not deposited ──
-				if (!inv.detraccionDeposited) {
-					const emissionDate = new Date(inv.emisionDate);
-					const daysSinceEmission = daysBetween(emissionDate, now);
-					const depositDeadline = SPOT_DEPOSIT_DAYS;
-					const daysLate = daysSinceEmission - depositDeadline;
-
-					if (daysSinceEmission > depositDeadline) {
-						anomalies.push(
-							createDetAnomaly(inv, {
-								metric: "detraccion_not_deposited",
-								severity: daysLate > 15 ? "high" : "low",
-								reasoning:
-									`Detracción aplicada (S/ ${inv.detraccionAmount?.toFixed(2)}) pero no depositada ` +
-									`(${daysLate} días después del plazo de ${depositDeadline} días). ` +
-									`Debe depositarse en cuenta de detracciones de SUNAT.`,
-								context: {
-									detraccionAmount: inv.detraccionAmount,
-									daysLate,
-									depositDeadline,
-									emisionDate: inv.emisionDate,
-								},
-							}),
-						);
-					}
-				}
+				const anomaly = evaluateInvoice(inv, now);
+				if (anomaly) anomalies.push(anomaly);
 			}
 
 			return anomalies;
 		},
 	};
+}
+
+/** First SPOT issue found on the invoice (missing → wrong percentage → not deposited), if any. */
+function evaluateInvoice(inv: DetraccionInvoice, now: Date): Anomaly | null {
+	const spotRate = SPOT_RATES.get(inv.operationCode);
+	const isCashPayment = CASH_PAYMENT_TYPES.includes(
+		inv.paymentType.toUpperCase(),
+	);
+	const meetsThreshold =
+		inv.totalAmount >= (isCashPayment ? SPOT_MIN_CASH_AMOUNT : SPOT_MIN_AMOUNT);
+	if (!meetsThreshold || !spotRate) return null;
+
+	if (inv.detraccionAmount === null || inv.detraccionAmount === 0) {
+		return missingDetraccion(inv, spotRate);
+	}
+	const wrongPct = wrongPercentage(inv, spotRate);
+	if (wrongPct) return wrongPct;
+	if (!inv.detraccionDeposited) return notDeposited(inv, now);
+	return null;
+}
+
+function docLabel(inv: DetraccionInvoice): string {
+	return `${inv.tipoDocumento} ${inv.serie}-${String(inv.numero).padStart(8, "0")}`;
+}
+
+/** Case 1: no detracción applied. */
+function missingDetraccion(
+	inv: DetraccionInvoice,
+	spotRate: SpotRateEntry,
+): Anomaly {
+	return createDetAnomaly(inv, {
+		metric: "detraccion_missing",
+		severity: classifyMissingDetraccion(inv.totalAmount),
+		reasoning:
+			`${docLabel(inv)}: ` +
+			`No se aplicó detracción. Operación código ${inv.operationCode} ` +
+			`(${spotRate.description}) requiere ${spotRate.rate}% de detracción. ` +
+			`Monto S/ ${inv.totalAmount.toFixed(2)} > umbral S/ ${SPOT_MIN_AMOUNT}.`,
+		context: {
+			expectedRate: spotRate.rate,
+			expectedAmount: roundToCentesimos(
+				inv.totalAmount * (spotRate.rate / 100),
+			),
+			operationDescription: spotRate.description,
+			legalReference: "D.S. 155-2007-EF — SPOT rates by operation code",
+		},
+	});
+}
+
+/** Case 2: applied percentage differs from the SPOT rate by more than one point. */
+function wrongPercentage(
+	inv: DetraccionInvoice,
+	spotRate: SpotRateEntry,
+): Anomaly | null {
+	const expectedAmount = roundToCentesimos(
+		inv.totalAmount * (spotRate.rate / 100),
+	);
+	const expectedPercentage = spotRate.rate;
+	const diffPct = Math.abs(
+		expectedPercentage - (inv.detraccionPercentage ?? 0),
+	);
+	if (diffPct <= 1) return null;
+
+	return createDetAnomaly(inv, {
+		metric: "detraccion_wrong_percentage",
+		severity: "medium",
+		reasoning:
+			`${docLabel(inv)}: ` +
+			`Porcentaje de detracción incorrecto. ` +
+			`Aplicado: ${inv.detraccionPercentage}%. Esperado: ${expectedPercentage}% ` +
+			`(código ${inv.operationCode}: ${spotRate.description}). ` +
+			`Monto S/ ${inv.detraccionAmount?.toFixed(2)} ≠ esperado S/ ${expectedAmount.toFixed(2)}.`,
+		context: {
+			expectedRate: expectedPercentage,
+			appliedRate: inv.detraccionPercentage,
+			expectedAmount,
+			appliedAmount: inv.detraccionAmount,
+			operationDescription: spotRate.description,
+		},
+	});
+}
+
+/** Case 3: detracción applied but not deposited within the SPOT deadline. */
+function notDeposited(inv: DetraccionInvoice, now: Date): Anomaly | null {
+	const daysSinceEmission = daysBetween(new Date(inv.emisionDate), now);
+	const depositDeadline = SPOT_DEPOSIT_DAYS;
+	if (daysSinceEmission <= depositDeadline) return null;
+	const daysLate = daysSinceEmission - depositDeadline;
+
+	return createDetAnomaly(inv, {
+		metric: "detraccion_not_deposited",
+		severity: daysLate > 15 ? "high" : "low",
+		reasoning:
+			`Detracción aplicada (S/ ${inv.detraccionAmount?.toFixed(2)}) pero no depositada ` +
+			`(${daysLate} días después del plazo de ${depositDeadline} días). ` +
+			`Debe depositarse en cuenta de detracciones de SUNAT.`,
+		context: {
+			detraccionAmount: inv.detraccionAmount,
+			daysLate,
+			depositDeadline,
+			emisionDate: inv.emisionDate,
+		},
+	});
 }
 
 // ─── Helpers ───────────────────────────────────────────────────────
