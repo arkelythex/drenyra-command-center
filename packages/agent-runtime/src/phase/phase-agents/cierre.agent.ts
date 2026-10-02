@@ -49,41 +49,10 @@ export class CierreAgent {
 		const adjustmentsApplied = input.ajustes?.length ?? 0;
 		const pendingItems: string[] = [];
 
-		// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 		const saldosFinales = input.cuentas.map((cuenta) => {
-			let debe = cuenta.movimientosDebe;
-			let haber = cuenta.movimientosHaber;
-
-			// Apply adjustments
-			if (input.ajustes) {
-				for (const ajuste of input.ajustes) {
-					if (ajuste.cuentaPCGE === cuenta.cuentaPCGE) {
-						if (ajuste.monto >= 0) {
-							debe += ajuste.monto;
-						} else {
-							haber += Math.abs(ajuste.monto);
-						}
-					}
-				}
-			}
-
-			const saldo = cuenta.saldoInicial + debe - haber;
-
-			// Flag accounts with residual balances as pending
-			if (cuenta.cuentaPCGE.startsWith("3") && Math.abs(saldo) > 0.01) {
-				// Inventory accounts shouldn't have pending close
-				pendingItems.push(
-					`${cuenta.cuentaPCGE}: ${cuenta.nombre} — saldo residual ${saldo}`,
-				);
-			}
-
-			return {
-				cuentaPCGE: cuenta.cuentaPCGE,
-				nombre: cuenta.nombre,
-				debe,
-				haber,
-				saldo: Math.round(saldo * 100) / 100,
-			};
+			const closed = closeAccount(cuenta, input.ajustes ?? []);
+			if (closed.pending) pendingItems.push(closed.pending);
+			return closed.saldoFinal;
 		});
 
 		return {
@@ -101,4 +70,53 @@ export class CierreAgent {
 			},
 		};
 	}
+}
+
+type CierreCuenta = CierreAgentInput["cuentas"][number];
+type CierreAjuste = NonNullable<CierreAgentInput["ajustes"]>[number];
+
+/** Apply the account's adjustments and compute its final balance (and pending note). */
+function closeAccount(
+	cuenta: CierreCuenta,
+	ajustes: CierreAjuste[],
+): {
+	saldoFinal: {
+		cuentaPCGE: string;
+		nombre: string;
+		debe: number;
+		haber: number;
+		saldo: number;
+	};
+	pending: string | null;
+} {
+	let debe = cuenta.movimientosDebe;
+	let haber = cuenta.movimientosHaber;
+
+	for (const ajuste of ajustes) {
+		if (ajuste.cuentaPCGE !== cuenta.cuentaPCGE) continue;
+		if (ajuste.monto >= 0) {
+			debe += ajuste.monto;
+		} else {
+			haber += Math.abs(ajuste.monto);
+		}
+	}
+
+	const saldo = cuenta.saldoInicial + debe - haber;
+
+	// Inventory accounts (class 3) shouldn't have a residual balance after close
+	const pending =
+		cuenta.cuentaPCGE.startsWith("3") && Math.abs(saldo) > 0.01
+			? `${cuenta.cuentaPCGE}: ${cuenta.nombre} — saldo residual ${saldo}`
+			: null;
+
+	return {
+		saldoFinal: {
+			cuentaPCGE: cuenta.cuentaPCGE,
+			nombre: cuenta.nombre,
+			debe,
+			haber,
+			saldo: Math.round(saldo * 100) / 100,
+		},
+		pending,
+	};
 }

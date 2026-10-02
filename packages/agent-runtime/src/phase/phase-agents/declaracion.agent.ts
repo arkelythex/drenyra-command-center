@@ -47,103 +47,121 @@ export class DeclaracionAgent {
 	 * Execute the declaration phase.
 	 */
 
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	async execute(
 		input: DeclaracionAgentInput & { xmlContent?: string },
 	): Promise<DeclaracionReport> {
-		const observaciones: string[] = [];
+		const observaciones = collectObservaciones(input);
 
-		// Validate inputs
-		if (!input.resumenPLE) {
-			observaciones.push(
-				"No se proporcionó resumen PLE — la declaración será parcial",
-			);
-		}
-
-		if (input.detracciones && input.detracciones.length > 0) {
-			const sinConstancia = input.detracciones.filter((d) => !d.constancia);
-			if (sinConstancia.length > 0) {
-				observaciones.push(
-					`${sinConstancia.length} detracciones sin constancia de pago`,
-				);
-			}
-		}
-
-		// ── Real SUNAT submission path ──────────────────────────────
 		if (this.fiscalService) {
-			const declaration = await this.fiscalService.submitPeriodDeclaration({
-				ruc: input.ruc,
-				periodo: input.periodo,
-				tipoDeclaracion: input.tipoDeclaracion as "SIRE" | "PDT621" | "PLAME",
-				xmlContent: input.xmlContent,
-				summary: {
-					totalInvoiceCount: input.resumenPLE?.cantidadComprobantes ?? 0,
-					totalSalesAmount: input.resumenPLE?.totalVentas ?? 0,
-					totalPurchaseAmount: input.resumenPLE?.totalCompras ?? 0,
-					totalIgv:
-						(input.resumenPLE?.igvVentas ?? 0) +
-						(input.resumenPLE?.igvCompras ?? 0),
-				},
-			});
-
-			return {
-				phaseId: "declaracion",
-				ruc: input.ruc,
-				periodo: input.periodo,
-				success: declaration.success,
-				summary: declaration.success
-					? `Declaración ${input.tipoDeclaracion} presentada exitosamente. CDR: ${declaration.cdrId}`
-					: `Error en declaración: ${declaration.error}`,
-				data: {
-					presentada: declaration.success,
-					numeroComprobante:
-						declaration.ticketNumber ??
-						`D${input.periodo.replace("-", "")}-${input.ruc.slice(-6)}`,
-					cdrId: declaration.cdrId,
-					codigoSUNAT:
-						declaration.cdrStatus === "ACEPTADO"
-							? "0"
-							: declaration.cdrStatus === "OBSERVADO"
-								? "5"
-								: "1",
-					observaciones: declaration.error ? [declaration.error] : [],
-					fechaPresentacion: declaration.acceptedAt ?? new Date().toISOString(),
-					tipoDeclaracion: input.tipoDeclaracion as
-						| "SIRE"
-						| "PDT"
-						| "PLAME"
-						| "DET",
-				},
-			};
+			return this.submitToService(this.fiscalService, input);
 		}
+		return mockDeclaration(input, observaciones);
+	}
 
-		// ── Mock path (no FiscalDocumentService injected) ───────────
-		// Simulate SUNAT submission — stub mode: auto-accept
-		const hasCriticalIssues = !input.resumenPLE;
-		const numeroComprobante = hasCriticalIssues
-			? ""
-			: `D${input.periodo.replace("-", "")}-${input.ruc.slice(-6)}`;
-		const cdrId = hasCriticalIssues
-			? ""
-			: `CDR-${numeroComprobante}-${Date.now().toString(36).toUpperCase()}`;
+	/** Real SUNAT OSE submission path. */
+	private async submitToService(
+		service: FiscalDocumentService,
+		input: DeclaracionAgentInput & { xmlContent?: string },
+	): Promise<DeclaracionReport> {
+		const declaration = await service.submitPeriodDeclaration({
+			ruc: input.ruc,
+			periodo: input.periodo,
+			tipoDeclaracion: input.tipoDeclaracion as "SIRE" | "PDT621" | "PLAME",
+			xmlContent: input.xmlContent,
+			summary: {
+				totalInvoiceCount: input.resumenPLE?.cantidadComprobantes ?? 0,
+				totalSalesAmount: input.resumenPLE?.totalVentas ?? 0,
+				totalPurchaseAmount: input.resumenPLE?.totalCompras ?? 0,
+				totalIgv:
+					(input.resumenPLE?.igvVentas ?? 0) +
+					(input.resumenPLE?.igvCompras ?? 0),
+			},
+		});
 
 		return {
 			phaseId: "declaracion",
 			ruc: input.ruc,
 			periodo: input.periodo,
-			success: !hasCriticalIssues,
-			summary: hasCriticalIssues
-				? `Declaración ${input.tipoDeclaracion} incompleta: falta resumen PLE`
-				: `Declaración ${input.tipoDeclaracion} presentada exitosamente. CDR: ${cdrId}`,
+			success: declaration.success,
+			summary: declaration.success
+				? `Declaración ${input.tipoDeclaracion} presentada exitosamente. CDR: ${declaration.cdrId}`
+				: `Error en declaración: ${declaration.error}`,
 			data: {
-				presentada: !hasCriticalIssues,
-				numeroComprobante,
-				cdrId,
-				codigoSUNAT: hasCriticalIssues ? "1" : "0",
-				observaciones: hasCriticalIssues ? observaciones : [],
-				fechaPresentacion: new Date().toISOString(),
-				tipoDeclaracion: input.tipoDeclaracion,
+				presentada: declaration.success,
+				numeroComprobante:
+					declaration.ticketNumber ?? defaultNumeroComprobante(input),
+				cdrId: declaration.cdrId,
+				codigoSUNAT: codigoSunatFor(declaration.cdrStatus),
+				observaciones: declaration.error ? [declaration.error] : [],
+				fechaPresentacion: declaration.acceptedAt ?? new Date().toISOString(),
+				tipoDeclaracion: input.tipoDeclaracion as
+					| "SIRE"
+					| "PDT"
+					| "PLAME"
+					| "DET",
 			},
 		};
 	}
+}
+
+type DeclaracionInput = DeclaracionAgentInput & { xmlContent?: string };
+
+/** Input warnings: partial declaration (no PLE) and detracciones without constancia. */
+function collectObservaciones(input: DeclaracionInput): string[] {
+	const observaciones: string[] = [];
+	if (!input.resumenPLE) {
+		observaciones.push(
+			"No se proporcionó resumen PLE — la declaración será parcial",
+		);
+	}
+	const sinConstancia = (input.detracciones ?? []).filter((d) => !d.constancia);
+	if (sinConstancia.length > 0) {
+		observaciones.push(
+			`${sinConstancia.length} detracciones sin constancia de pago`,
+		);
+	}
+	return observaciones;
+}
+
+function defaultNumeroComprobante(input: DeclaracionInput): string {
+	return `D${input.periodo.replace("-", "")}-${input.ruc.slice(-6)}`;
+}
+
+/** SUNAT code: 0 accepted, 5 observed, 1 anything else. */
+function codigoSunatFor(cdrStatus: string | undefined): "0" | "5" | "1" {
+	if (cdrStatus === "ACEPTADO") return "0";
+	return cdrStatus === "OBSERVADO" ? "5" : "1";
+}
+
+/** Stub mode (no FiscalDocumentService): auto-accept unless the PLE summary is missing. */
+function mockDeclaration(
+	input: DeclaracionInput,
+	observaciones: string[],
+): DeclaracionReport {
+	const hasCriticalIssues = !input.resumenPLE;
+	const numeroComprobante = hasCriticalIssues
+		? ""
+		: defaultNumeroComprobante(input);
+	const cdrId = hasCriticalIssues
+		? ""
+		: `CDR-${numeroComprobante}-${Date.now().toString(36).toUpperCase()}`;
+
+	return {
+		phaseId: "declaracion",
+		ruc: input.ruc,
+		periodo: input.periodo,
+		success: !hasCriticalIssues,
+		summary: hasCriticalIssues
+			? `Declaración ${input.tipoDeclaracion} incompleta: falta resumen PLE`
+			: `Declaración ${input.tipoDeclaracion} presentada exitosamente. CDR: ${cdrId}`,
+		data: {
+			presentada: !hasCriticalIssues,
+			numeroComprobante,
+			cdrId,
+			codigoSUNAT: hasCriticalIssues ? "1" : "0",
+			observaciones: hasCriticalIssues ? observaciones : [],
+			fechaPresentacion: new Date().toISOString(),
+			tipoDeclaracion: input.tipoDeclaracion,
+		},
+	};
 }

@@ -45,122 +45,18 @@ export class AuditoriaAgent {
 	 * Execute the audit phase.
 	 */
 
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	async execute(input: AuditoriaAgentInput): Promise<AuditoriaReport> {
-		const hallazgos: AuditoriaReport["data"]["hallazgos"] = [];
-		const recomendaciones: string[] = [];
-		let confidencePenalty = 0;
+		const acc: AuditAccumulator = { hallazgos: [], penalty: 0 };
 
-		// Check 1: All preceding phases completed (exclude auditoria itself — it's running now)
-		const expectedPhases: FiscalPhaseId[] = [
-			"captura",
-			"clasificacion",
-			"conciliacion",
-			"cierre",
-			"declaracion",
-		];
-		const completedPhases = input.periodState.phaseHistory.filter(
-			(e) => e.status === "completed",
-		);
-		const completedIds = new Set(completedPhases.map((e) => e.phaseId));
+		this.checkPhaseCompleteness(input, acc);
+		const failedGates = this.checkGateHealth(input, acc);
+		this.checkTimeline(input, acc);
+		this.checkExternal(input, acc);
 
-		for (const phaseId of expectedPhases) {
-			if (!completedIds.has(phaseId)) {
-				hallazgos.push({
-					id: `phase-${phaseId}-missing`,
-					tipo: "error",
-					descripcion: `La fase ${phaseId} no está completada (status: ${this.getPhaseStatus(input.periodState, phaseId)})`,
-					fase: phaseId as AuditoriaReport["data"]["hallazgos"][0]["fase"],
-					recomendacion: `Completar la fase ${phaseId} antes de cerrar el período`,
-				});
-				confidencePenalty += 0.15;
-			}
-		}
-
-		// Check 2: Gate health
-		const allGateResults = input.periodState.phaseHistory.flatMap(
-			(e) => e.gateResults,
-		);
-		const failedGates = allGateResults.filter(
-			(g) => !g.passed && (g.severity === "error" || g.severity === "critical"),
-		);
-		if (failedGates.length > 0) {
-			hallazgos.push({
-				id: "gates-failed",
-				tipo: "warning",
-				descripcion: `${failedGates.length} gate(s) con fallo crítico durante el ciclo`,
-				fase: "auditoria",
-				recomendacion:
-					"Revisar cada gate fallido y corregir antes del próximo período",
-			});
-			confidencePenalty += 0.1 * failedGates.length;
-		}
-
-		// Check 3: Timeline consistency
-		const historyChronological = [...input.periodState.phaseHistory].sort(
-			(a, b) => a.startedAt.getTime() - b.startedAt.getTime(),
-		);
-		const actualOrder = historyChronological.map((e) => e.phaseId);
-		const expectedOrder = expectedPhases.filter((p) => actualOrder.includes(p));
-		for (
-			let i = 0;
-			i < Math.min(actualOrder.length, expectedOrder.length);
-			i++
-		) {
-			if (actualOrder[i] !== expectedOrder[i]) {
-				hallazgos.push({
-					id: "order-anomaly",
-					tipo: "warning",
-					descripcion: `Fases ejecutadas en orden no secuencial: esperaba ${expectedOrder[i]}, obtuvo ${actualOrder[i]}`,
-					fase: actualOrder[
-						i
-					] as AuditoriaReport["data"]["hallazgos"][0]["fase"],
-					recomendacion: "Verificar que el ciclo fiscal siga el orden estándar",
-				});
-				confidencePenalty += 0.1;
-				break;
-			}
-		}
-
-		// Check 4: External checks
-		if (input.externalChecks) {
-			for (const check of input.externalChecks) {
-				if (!check.passed) {
-					hallazgos.push({
-						id: `external-${check.name.toLowerCase().replace(/\s+/g, "-")}`,
-						tipo: "warning",
-						descripcion: check.detail,
-						fase: "auditoria",
-						recomendacion: `Resolver: ${check.name}`,
-					});
-					confidencePenalty += 0.1;
-				}
-			}
-		}
-
-		// Compute final confidence score
-		const confianza = Math.max(0, Math.min(1, 1 - confidencePenalty));
-
-		// Generate memo
+		const { hallazgos } = acc;
+		const confianza = Math.max(0, Math.min(1, 1 - acc.penalty));
 		const memo = this.generateMemo(input, hallazgos, confianza);
-
-		// Recommendations
-		if (confianza < 0.7) {
-			recomendaciones.push(
-				"Revisar el período con un contador antes de cerrar definitivamente",
-			);
-		}
-		if (failedGates.length > 0) {
-			recomendaciones.push("Corregir los gates fallidos en el próximo ciclo");
-		}
-		if (confianza >= 0.95) {
-			recomendaciones.push(
-				"Período con alta confianza — proceder con cierre definitivo",
-			);
-		}
-		recomendaciones.push(
-			"Archivar documentación de soporte para fiscalización SUNAT",
-		);
+		const recomendaciones = buildRecomendaciones(confianza, failedGates);
 
 		const periodoCerrado =
 			confianza >= 0.7 &&
@@ -180,6 +76,98 @@ export class AuditoriaAgent {
 				periodoCerrado,
 			},
 		};
+	}
+
+	/** Check 1: all preceding phases completed (auditoria itself is running now). */
+	private checkPhaseCompleteness(
+		input: AuditoriaAgentInput,
+		acc: AuditAccumulator,
+	): void {
+		const completedIds = new Set(
+			input.periodState.phaseHistory
+				.filter((e) => e.status === "completed")
+				.map((e) => e.phaseId),
+		);
+		for (const phaseId of EXPECTED_PHASES) {
+			if (completedIds.has(phaseId)) continue;
+			acc.hallazgos.push({
+				id: `phase-${phaseId}-missing`,
+				tipo: "error",
+				descripcion: `La fase ${phaseId} no está completada (status: ${this.getPhaseStatus(input.periodState, phaseId)})`,
+				fase: phaseId as AuditFase,
+				recomendacion: `Completar la fase ${phaseId} antes de cerrar el período`,
+			});
+			acc.penalty += 0.15;
+		}
+	}
+
+	/** Check 2: gate health. Returns the number of failed error/critical gates. */
+	private checkGateHealth(
+		input: AuditoriaAgentInput,
+		acc: AuditAccumulator,
+	): number {
+		const failedGates = input.periodState.phaseHistory
+			.flatMap((e) => e.gateResults)
+			.filter(
+				(g) =>
+					!g.passed && (g.severity === "error" || g.severity === "critical"),
+			);
+		if (failedGates.length > 0) {
+			acc.hallazgos.push({
+				id: "gates-failed",
+				tipo: "warning",
+				descripcion: `${failedGates.length} gate(s) con fallo crítico durante el ciclo`,
+				fase: "auditoria",
+				recomendacion:
+					"Revisar cada gate fallido y corregir antes del próximo período",
+			});
+			acc.penalty += 0.1 * failedGates.length;
+		}
+		return failedGates.length;
+	}
+
+	/** Check 3: phases ran in the standard chronological order (first anomaly only). */
+	private checkTimeline(
+		input: AuditoriaAgentInput,
+		acc: AuditAccumulator,
+	): void {
+		const actualOrder = [...input.periodState.phaseHistory]
+			.sort((a, b) => a.startedAt.getTime() - b.startedAt.getTime())
+			.map((e) => e.phaseId);
+		const expectedOrder = EXPECTED_PHASES.filter((p) =>
+			actualOrder.includes(p),
+		);
+		const limit = Math.min(actualOrder.length, expectedOrder.length);
+		for (let i = 0; i < limit; i++) {
+			if (actualOrder[i] === expectedOrder[i]) continue;
+			acc.hallazgos.push({
+				id: "order-anomaly",
+				tipo: "warning",
+				descripcion: `Fases ejecutadas en orden no secuencial: esperaba ${expectedOrder[i]}, obtuvo ${actualOrder[i]}`,
+				fase: actualOrder[i] as AuditFase,
+				recomendacion: "Verificar que el ciclo fiscal siga el orden estándar",
+			});
+			acc.penalty += 0.1;
+			break;
+		}
+	}
+
+	/** Check 4: externally supplied cross-checks. */
+	private checkExternal(
+		input: AuditoriaAgentInput,
+		acc: AuditAccumulator,
+	): void {
+		for (const check of input.externalChecks ?? []) {
+			if (check.passed) continue;
+			acc.hallazgos.push({
+				id: `external-${check.name.toLowerCase().replace(/\s+/g, "-")}`,
+				tipo: "warning",
+				descripcion: check.detail,
+				fase: "auditoria",
+				recomendacion: `Resolver: ${check.name}`,
+			});
+			acc.penalty += 0.1;
+		}
 	}
 
 	private getPhaseStatus(state: FiscalPeriodState, phaseId: string): string {
@@ -218,4 +206,45 @@ export class AuditoriaAgent {
 		);
 		return lines.join("\n");
 	}
+}
+
+type AuditHallazgo = AuditoriaReport["data"]["hallazgos"][0];
+type AuditFase = AuditHallazgo["fase"];
+
+/** Findings and confidence penalty gathered across checks (order matters for float sums). */
+interface AuditAccumulator {
+	hallazgos: AuditoriaReport["data"]["hallazgos"];
+	penalty: number;
+}
+
+const EXPECTED_PHASES: FiscalPhaseId[] = [
+	"captura",
+	"clasificacion",
+	"conciliacion",
+	"cierre",
+	"declaracion",
+];
+
+function buildRecomendaciones(
+	confianza: number,
+	failedGates: number,
+): string[] {
+	const recomendaciones: string[] = [];
+	if (confianza < 0.7) {
+		recomendaciones.push(
+			"Revisar el período con un contador antes de cerrar definitivamente",
+		);
+	}
+	if (failedGates > 0) {
+		recomendaciones.push("Corregir los gates fallidos en el próximo ciclo");
+	}
+	if (confianza >= 0.95) {
+		recomendaciones.push(
+			"Período con alta confianza — proceder con cierre definitivo",
+		);
+	}
+	recomendaciones.push(
+		"Archivar documentación de soporte para fiscalización SUNAT",
+	);
+	return recomendaciones;
 }
