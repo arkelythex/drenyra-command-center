@@ -221,10 +221,10 @@ export interface SkillContext {
 }
 
 /**
- * A fiscal skill that can be loaded dynamically by drenyra-pi.
+ * A fiscal skill that can be loaded dynamically by the agent runtime.
  *
  * Skills are npm packages that implement this interface and register
- * themselves with the PluginRegistry via `drenyra pi install`.
+ * themselves with the PluginRegistry (`PluginRegistry.installSkill`).
  *
  * @example
  * ```ts

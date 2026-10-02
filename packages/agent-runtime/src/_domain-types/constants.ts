@@ -61,7 +61,7 @@ export const PHASE_1_REQUIRED_ADR_IDS = [
 	"ADR-035",
 ] as const;
 
-// Additional constants used across drenyra-pi
+// Additional constants used across agent-runtime
 export const PI_VERSION = "0.1.0";
 export const VALIDATION_OK = "VALIDATION_OK";
 export const RUC_INVALID = "RUC_INVALID";

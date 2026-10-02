@@ -1,5 +1,5 @@
 /**
- * Drenyra domain types — minimal set needed by drenyra-pi.
+ * Drenyra domain types — minimal set needed by agent-runtime.
  * Extracted from @drenyra/domain/drenyra.
  */
 

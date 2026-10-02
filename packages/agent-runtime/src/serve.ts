@@ -1,8 +1,8 @@
 /**
- * Drenyra Pi — HTTP Server
+ * Drenyra Agent Runtime — HTTP Server
  *
  * Exposes agent session management, workflow execution, and health
- * endpoints for the drenyra CLI and other HTTP clients.
+ * endpoints for drenyra-shell and other HTTP clients.
  */
 
 import { Hono } from "hono";

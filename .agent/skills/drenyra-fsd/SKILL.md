@@ -31,4 +31,4 @@ FSD is the Drenyra execution model for accounting (it is product behavior, not a
 ## Related
 
 - `packages/fiscal-fsd/` — 100 tests, full pipeline
-- `packages/pi/src/phase/` — Phase engine with gates
+- `packages/agent-runtime/src/phase/` — Phase engine with gates

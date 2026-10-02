@@ -129,7 +129,7 @@ export default defineConfig({
 			},
 			{
 				find: "@drenyra/agent-runtime",
-				replacement: path.resolve(__dirname, "../../drenyra-pi/src"),
+				replacement: path.resolve(__dirname, "./packages/agent-runtime/src"),
 			},
 
 			{},

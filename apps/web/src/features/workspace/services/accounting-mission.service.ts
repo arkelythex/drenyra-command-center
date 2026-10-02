@@ -1,7 +1,7 @@
 /**
  * AccountingMissionService — client for @drenyra/agent-runtime harness API.
  *
- * @drenyra/agent-runtime runs as its own agent runtime, separate from gentle-pi.
+ * @drenyra/agent-runtime runs as its own agent runtime, separate from drenyra-shell.
  * Mock mode: only when VITE_DRENYRA_MISSION_TRANSPORT=mock.
  */
 
