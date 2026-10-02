@@ -169,12 +169,13 @@ export class XsdSchemaLoader {
 	/**
 	 * Load and parse a single XSD file (and its imports recursively).
 	 */
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: pre-existing; refactor tracked separately from the strict-index phase
 	loadSchemaFile(fileName: string): XsdSchema {
 		const cacheKey = fileName;
 
-		if (this.parsedSchemas.has(cacheKey)) {
-			// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-			return this.parsedSchemas.get(cacheKey)!;
+		const cached = this.parsedSchemas.get(cacheKey);
+		if (cached) {
+			return cached;
 		}
 
 		const filePath = resolve(this.xsdDir, fileName);
@@ -550,10 +551,11 @@ export function extractNamespaceMap(xmlContent: string): Map<string, string> {
 	const xmlnsRegex = /xmlns:?(\w*)\s*=\s*"([^"]+)"/g;
 	let match: RegExpExecArray | null;
 
+	// biome-ignore lint/suspicious/noAssignInExpressions: pre-existing; refactor tracked separately from the strict-index phase
 	while ((match = xmlnsRegex.exec(xmlContent)) !== null) {
 		const prefix = match[1] || "";
 		const uri = match[2];
-		map.set(prefix, uri);
+		if (uri !== undefined) map.set(prefix, uri);
 	}
 
 	return map;

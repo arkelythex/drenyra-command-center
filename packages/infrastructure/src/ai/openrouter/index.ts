@@ -359,8 +359,9 @@ export class OpenRouterService {
 				lastError = error instanceof Error ? error : new Error(String(error));
 
 				// If we have fallback models, try next one
-				if (request.models && request.models.length > attempt + 1) {
-					request.model = request.models[attempt + 1];
+				const nextModel = request.models?.[attempt + 1];
+				if (nextModel) {
+					request.model = nextModel;
 					loggers.ai.warn(`Fallback to model: ${request.model}`, {
 						previousError: lastError.message,
 						attempt: attempt + 1,
@@ -382,6 +383,7 @@ export class OpenRouterService {
 	 * Stream chat completion with token-level granularity
 	 * OpenRouter supports OpenAI-compatible streaming via `stream: true`
 	 */
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: pre-existing; refactor tracked separately from the strict-index phase
 	async *chatCompletionStream(
 		request: OpenRouterRequest,
 	): AsyncGenerator<StreamChunk> {
@@ -549,10 +551,12 @@ export class OpenRouterService {
 		tools?: OpenRouterTool[],
 	): Promise<OpenRouterResponse> {
 		// Get optimal models for this agent
-		const models = AGENT_MODEL_MAP[agentId] || AGENT_MODEL_MAP.default;
+		const models = AGENT_MODEL_MAP[agentId] || AGENT_MODEL_MAP.default || [];
 
 		const request: OpenRouterRequest = {
-			model: this.config.enableAutoRouting ? "openrouter/auto" : models[0],
+			model: this.config.enableAutoRouting
+				? "openrouter/auto"
+				: (models[0] ?? "openrouter/auto"),
 			messages: [
 				{ role: "system", content: systemPrompt },
 				{ role: "user", content: userPrompt },
@@ -626,7 +630,9 @@ export class OpenRouterService {
 
 		// Update cache
 		this.modelCache.clear();
-		models.forEach((model) => this.modelCache.set(model.id, model));
+		for (const model of models) {
+			this.modelCache.set(model.id, model);
+		}
 		this.lastFetch = new Date();
 
 		return models;
@@ -719,7 +725,7 @@ class CostTracker {
 		this.modelBreakdown.set(model, modelStats);
 
 		// Provider breakdown (extract provider from model id)
-		const provider = model.split("/")[0];
+		const provider = model.split("/")[0] ?? model;
 		const providerStats = this.providerBreakdown.get(provider) || {
 			requests: 0,
 			cost: 0,

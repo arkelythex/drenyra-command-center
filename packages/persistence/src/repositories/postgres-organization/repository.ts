@@ -46,7 +46,7 @@ export class PostgresOrganizationRepository implements OrganizationRepository {
 			.from(organizations)
 			.where(conditions.length > 0 ? and(...conditions) : undefined);
 
-		return Number(result[0].count);
+		return Number(result[0]?.count ?? 0);
 	}
 
 	async save(entity: Organization): Promise<Organization> {
@@ -118,7 +118,7 @@ export class PostgresOrganizationRepository implements OrganizationRepository {
 			.from(organizations)
 			.where(and(...conditions));
 
-		return Number(result[0].count);
+		return Number(result[0]?.count ?? 0);
 	}
 
 	async deleteForOrganization(
@@ -179,8 +179,8 @@ export class PostgresOrganizationRepository implements OrganizationRepository {
 			.orderBy(organizationMetrics.periodStart)
 			.limit(1);
 
-		if (latestMetrics.length > 0) {
-			const m = latestMetrics[0];
+		const m = latestMetrics[0];
+		if (m) {
 			return {
 				totalCompanies: m.totalCompanies,
 				activeCompanies: m.activeCompanies,
