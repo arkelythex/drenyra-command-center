@@ -4,11 +4,12 @@
  * @module journal-entries/application
  */
 
+import type { TenantScope } from "@drenyra/domain/scope";
 import {
 	PostgresAccountingPeriodRepository,
 	PostgresJournalEntryRepository,
 } from "@drenyra/persistence";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db, schema } from "../../../lib/db";
 
 export const journalRepository = new PostgresJournalEntryRepository();
@@ -41,13 +42,34 @@ export async function resolveOrganizationId(
 }
 
 /**
+ * Build the tenant scope for a request from its authenticated company.
+ *
+ * @throws Error if the request carries no company context.
+ */
+export async function resolveTenantScope(
+	companyId: string | undefined,
+): Promise<TenantScope> {
+	if (!companyId) {
+		throw new Error("Contexto de empresa requerido");
+	}
+	const organizationId = await resolveOrganizationId(companyId);
+	return { organizationId: String(organizationId), companyId };
+}
+
+/**
  * Inline AccountService for journal entry creation.
  * Queries the PCGE accounts table to resolve account codes/names.
  */
 export const accountService = {
-	async getById(id: string): Promise<{ code: string; name: string } | null> {
+	async getById(
+		scope: TenantScope,
+		id: string,
+	): Promise<{ code: string; name: string } | null> {
 		const row = await db.query.pcgeAccounts.findFirst({
-			where: eq(schema.pcgeAccounts.id, id),
+			where: and(
+				eq(schema.pcgeAccounts.id, id),
+				eq(schema.pcgeAccounts.companyId, scope.companyId),
+			),
 		});
 		if (!row) return null;
 		return { code: row.code, name: row.name };

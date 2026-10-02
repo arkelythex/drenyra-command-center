@@ -88,5 +88,5 @@ bun test apps/api/src/features/products/__tests__/unit/products-service.test.ts 
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 ```

@@ -1,5 +1,7 @@
 # Drenyra-Pi — Pi-Native Accounting Operations Harness
 
+> **Renombrado (2026-10):** «Drenyra-Pi» es hoy **`drenyra-shell`** (mismo producto y repo). Este documento conserva el nombre histórico de la tesis; el nombre vigente está en [`docs/meta/documentation-standards-2026.md`](../meta/documentation-standards-2026.md).
+
 **Last updated**: 2026-08-01
 **Content type**: Conceptual — Product Thesis (Drenyra-Pi)
 **North star:** [Drenyra-AI — Accounting Agent Operating System](./drenyra-ai-aos.md)

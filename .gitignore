@@ -21,7 +21,6 @@ drizzle/meta/
 !assets/branding/
 !assets/branding/*.svg
 pnpm-lock.yaml
-!products/estado/pnpm-lock.yaml
 uv.lock
 Cargo.lock
 *.sum
@@ -58,15 +57,11 @@ logs/
 duration
 
 # Local build artifacts
-/apps/cli/drenyra
-/apps/cli/drenyra-macos
-/apps/cli/dist-bundle/
-/apps/cli/homebrew/
 
 # Bun cache (never commit)
 ~/.bun/
-packages/pi/~/
-packages/pi/bun.lock
+packages/agent-runtime/~/
+packages/agent-runtime/bun.lock
 # Editor / IDE
 .tanstack/
 
@@ -93,4 +88,16 @@ logs/
 data/
 # Audit ledgers are canonical append-only evidence — tracked deliberately
 !/docs/audits/data/
+!/packages/agent-runtime/src/agents/data/
 *.log
+
+# Build output goes to dist/, never next to TypeScript sources: committed .js/.d.ts shadow the
+# real .ts in tests (see scripts/ci/odd-guard.sh).
+packages/shared/src/**/*.js
+packages/shared/src/**/*.d.ts
+packages/application/src/**/*.js
+packages/application/src/**/*.d.ts
+packages/infrastructure/src/**/*.js
+packages/infrastructure/src/**/*.d.ts
+packages/persistence/src/**/*.js
+packages/persistence/src/**/*.d.ts

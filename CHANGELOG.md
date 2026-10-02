@@ -9,6 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed — ODD single workflow and ecosystem alignment (2026-10)
+
+- **ODD is the only development workflow.** SDD and OpenSpec are retired (`openspec/` removed; `odd:guard` rejects their return). See `docs/10-development/odd-workflow.md`.
+- `drenyra-ai` 0.2.0 (vendored tarball) → **0.5.0** from the registry; `bun run ecosystem:doctor` verifies the pin, frozen contracts and doctor health (also in CI).
+- `packages/pi` → `packages/agent-runtime`; `fiscal-sdd` → `fiscal-fsd`. `drenyra-pi` is now `drenyra-shell` in the operational docs.
+- The Go CLI (`apps/cli`) is retired in favour of `drenyra-shell` + `drenyra-ai`.
+- Unrelated product directories (`products/`) extracted out of the accounting repo.
+
+### Security
+
+- Dependency advisories 45 → 3 (all low) through root `overrides`; CI blocks high/critical (`bun audit --audit-level=high`).
+- Tenant isolation for journals and accounts enforced by `TenantScope` with Postgres-backed tests (27/27) and mutation checks.
+
+### Fixed
+
+- `FiscalFSDRunner` and `GatedPhasePipeline`: `ESCALATE` now returns `BLOCKED` for human review instead of completing silently.
+- `FiscalComplianceOrchestrator.resume()` applies `ReviewGuard` before `migracion`, like `run()`.
+- `TaskDecomposer` scheduled only the first step, so the Latin orchestrator never ran validation or compliance; parallel groups are now topological levels.
+- Broken `vitest.config.ts` in three packages; dead `vitest.workspace.ts` removed; dangling `@drenyra/agent-runtime` alias.
+- Documentation: 0 broken internal links; `llms.txt` and `.codebase/index.yml` generated from the repo (`bun run docs:agent-index`).
+
+### Quality
+
+- All tracked complexity/console lint suppressions removed by test-first refactors (snapshot characterization + threshold mutation checks on SPOT, SIRE filing, tax calendar and phase agents).
+- New guards in `docs:verify`: link check over every Markdown file, update-date check, generated-index check.
+
 ### Added
 
 #### Post-Release Hardening — Auth, API Contracts & Test Alignment (2026-03-21)

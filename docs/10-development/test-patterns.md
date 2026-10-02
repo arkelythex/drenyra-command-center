@@ -7,6 +7,8 @@ audience: developer
 
 # Test Patterns
 
+**Última actualización**: 2026-08-02
+
 ## Object Mothers / Builders
 
 Para entidades fiscales complejas, usamos el patrón Object Mother (builder con defaults).

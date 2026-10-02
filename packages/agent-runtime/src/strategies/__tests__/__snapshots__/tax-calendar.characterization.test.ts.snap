@@ -1,0 +1,489 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`tax-calendar (characterization) > pins anomalies: due in 3 days (high) 1`] = `
+[
+  {
+    "actualValue": 3,
+    "confidence": 0.95,
+    "context": {
+      "amount": undefined,
+      "daysUntilDue": 3,
+      "dueDate": "2026-07-04T12:00:00.000Z",
+      "legalReference": "Ref X",
+      "obligationCode": "0621",
+      "obligationName": "Obligación 0621",
+      "period": undefined,
+      "rucType": "persona_juridica",
+      "taxRegime": "ruta",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_calendar",
+    "deviation": -3,
+    "entityId": "0621",
+    "entityType": "tax_obligation",
+    "expectedValue": 0,
+    "id": "tax-calendar-0621",
+    "metric": "tax_deadline_approaching",
+    "reasoning": "Obligación 0621: Vence en 3 día(s) (4 de julio, período período no especificado). Monto estimado: monto no definido. Preparar declaración. Ref: Ref X",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`tax-calendar (characterization) > pins anomalies: due in 4 days (medium) 1`] = `
+[
+  {
+    "actualValue": 4,
+    "confidence": 0.9,
+    "context": {
+      "amount": undefined,
+      "daysUntilDue": 4,
+      "dueDate": "2026-07-05T12:00:00.000Z",
+      "legalReference": "Ref X",
+      "obligationCode": "0621",
+      "obligationName": "Obligación 0621",
+      "period": undefined,
+      "rucType": "persona_juridica",
+      "taxRegime": "ruta",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_calendar",
+    "deviation": -4,
+    "entityId": "0621",
+    "entityType": "tax_obligation",
+    "expectedValue": 0,
+    "id": "tax-calendar-0621",
+    "metric": "tax_deadline_approaching",
+    "reasoning": "Obligación 0621: Vence en 4 día(s) (5 de julio, período período no especificado). Monto estimado: monto no definido. Preparar declaración. Ref: Ref X",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`tax-calendar (characterization) > pins anomalies: due in 7 days (medium) 1`] = `
+[
+  {
+    "actualValue": 7,
+    "confidence": 0.9,
+    "context": {
+      "amount": undefined,
+      "daysUntilDue": 7,
+      "dueDate": "2026-07-08T12:00:00.000Z",
+      "legalReference": "Ref X",
+      "obligationCode": "0621",
+      "obligationName": "Obligación 0621",
+      "period": undefined,
+      "rucType": "persona_juridica",
+      "taxRegime": "ruta",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_calendar",
+    "deviation": -7,
+    "entityId": "0621",
+    "entityType": "tax_obligation",
+    "expectedValue": 0,
+    "id": "tax-calendar-0621",
+    "metric": "tax_deadline_approaching",
+    "reasoning": "Obligación 0621: Vence en 7 día(s) (8 de julio, período período no especificado). Monto estimado: monto no definido. Preparar declaración. Ref: Ref X",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`tax-calendar (characterization) > pins anomalies: due in 8 days (low) 1`] = `
+[
+  {
+    "actualValue": 8,
+    "confidence": 0.8,
+    "context": {
+      "amount": undefined,
+      "daysUntilDue": 8,
+      "dueDate": "2026-07-09T12:00:00.000Z",
+      "legalReference": "Ref X",
+      "obligationCode": "0621",
+      "obligationName": "Obligación 0621",
+      "period": undefined,
+      "rucType": "persona_juridica",
+      "taxRegime": "ruta",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_calendar",
+    "deviation": -8,
+    "entityId": "0621",
+    "entityType": "tax_obligation",
+    "expectedValue": 0,
+    "id": "tax-calendar-0621",
+    "metric": "tax_deadline_approaching",
+    "reasoning": "Obligación 0621: Vence en 8 día(s) (9 de julio, período período no especificado). Monto estimado: monto no definido. Preparar declaración. Ref: Ref X",
+    "severity": "low",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`tax-calendar (characterization) > pins anomalies: due in 15 days (low) 1`] = `
+[
+  {
+    "actualValue": 15,
+    "confidence": 0.8,
+    "context": {
+      "amount": undefined,
+      "daysUntilDue": 15,
+      "dueDate": "2026-07-16T12:00:00.000Z",
+      "legalReference": "Ref X",
+      "obligationCode": "0621",
+      "obligationName": "Obligación 0621",
+      "period": undefined,
+      "rucType": "persona_juridica",
+      "taxRegime": "ruta",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_calendar",
+    "deviation": -15,
+    "entityId": "0621",
+    "entityType": "tax_obligation",
+    "expectedValue": 0,
+    "id": "tax-calendar-0621",
+    "metric": "tax_deadline_approaching",
+    "reasoning": "Obligación 0621: Vence en 15 día(s) (16 de julio, período período no especificado). Monto estimado: monto no definido. Preparar declaración. Ref: Ref X",
+    "severity": "low",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`tax-calendar (characterization) > pins anomalies: due in 16 days (not alerted) 1`] = `[]`;
+
+exports[`tax-calendar (characterization) > pins anomalies: due in half a day (ceil 1) 1`] = `
+[
+  {
+    "actualValue": 1,
+    "confidence": 0.95,
+    "context": {
+      "amount": 0,
+      "daysUntilDue": 1,
+      "dueDate": "2026-07-02T00:00:00.000Z",
+      "legalReference": "Ref X",
+      "obligationCode": "0621",
+      "obligationName": "Obligación 0621",
+      "period": undefined,
+      "rucType": "persona_juridica",
+      "taxRegime": "ruta",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_calendar",
+    "deviation": -1,
+    "entityId": "0621",
+    "entityType": "tax_obligation",
+    "expectedValue": 0,
+    "id": "tax-calendar-0621",
+    "metric": "tax_deadline_approaching",
+    "reasoning": "Obligación 0621: Vence en 1 día(s) (2 de julio, período período no especificado). Monto estimado: monto no definido. Preparar declaración. Ref: Ref X",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`tax-calendar (characterization) > pins anomalies: due now (0 days) 1`] = `
+[
+  {
+    "actualValue": 0,
+    "confidence": 0.99,
+    "context": {
+      "amount": undefined,
+      "daysUntilDue": 0,
+      "dueDate": "2026-07-01T12:00:00.000Z",
+      "legalReference": "Ref X",
+      "obligationCode": "0621",
+      "obligationName": "Obligación 0621",
+      "period": undefined,
+      "rucType": "persona_juridica",
+      "taxRegime": "ruta",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_calendar",
+    "deviation": -0,
+    "entityId": "0621",
+    "entityType": "tax_obligation",
+    "expectedValue": 0,
+    "id": "tax-calendar-0621",
+    "metric": "tax_deadline_approaching",
+    "reasoning": "Obligación 0621: VENCE HOY (período período no especificado). Monto estimado: monto no definido. Realizar declaración antes del cierre de operaciones. Ref: Ref X",
+    "severity": "critical",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`tax-calendar (characterization) > pins anomalies: exempt 1`] = `[]`;
+
+exports[`tax-calendar (characterization) > pins anomalies: filed 1`] = `[]`;
+
+exports[`tax-calendar (characterization) > pins anomalies: invalid due date 1`] = `[]`;
+
+exports[`tax-calendar (characterization) > pins anomalies: overdue 5 days 1`] = `
+[
+  {
+    "actualValue": -5,
+    "confidence": 0.99,
+    "context": {
+      "amount": 250.5,
+      "daysUntilDue": -5,
+      "dueDate": "2026-06-26T12:00:00.000Z",
+      "legalReference": "Ref X",
+      "obligationCode": "0621",
+      "obligationName": "Obligación 0621",
+      "period": "2026-05",
+      "rucType": "persona_juridica",
+      "taxRegime": "ruta",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_calendar",
+    "deviation": 5,
+    "entityId": "0621",
+    "entityType": "tax_obligation",
+    "expectedValue": 0,
+    "id": "tax-calendar-0621",
+    "metric": "tax_deadline_approaching",
+    "reasoning": "Obligación 0621: VENCIDA hace 5 día(s) (período 2026-05). Monto estimado: S/ 250.50. Regularizar inmediatamente para evitar multas e intereses. Ref: Ref X",
+    "severity": "critical",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`tax-calendar (characterization) > pins missing standard obligations for regime especial 1`] = `
+[
+  {
+    "actualValue": 0,
+    "confidence": 0.85,
+    "context": {
+      "legalReference": "Art. 65 TUO IGV",
+      "obligationCode": "0621",
+      "obligationName": "IGV — Declaración Mensual (Formulario 621)",
+      "taxRegime": "especial",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_missing",
+    "deviation": -1,
+    "entityId": "0621",
+    "entityType": "tax_obligation",
+    "expectedValue": 1,
+    "id": "tax-calendar-missing-0621",
+    "metric": "tax_obligation_missing",
+    "reasoning": "Obligación 0621 (IGV — Declaración Mensual (Formulario 621)) no encontrada en el calendario. Es obligatoria para régimen especial según SUNAT. Verificar si fue registrada.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+  {
+    "actualValue": 0,
+    "confidence": 0.85,
+    "context": {
+      "legalReference": "R.S. 245-2016/SUNAT",
+      "obligationCode": "0601",
+      "obligationName": "PLAME — Declaración Mensual de Remuneraciones",
+      "taxRegime": "especial",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_missing",
+    "deviation": -1,
+    "entityId": "0601",
+    "entityType": "tax_obligation",
+    "expectedValue": 1,
+    "id": "tax-calendar-missing-0601",
+    "metric": "tax_obligation_missing",
+    "reasoning": "Obligación 0601 (PLAME — Declaración Mensual de Remuneraciones) no encontrada en el calendario. Es obligatoria para régimen especial según SUNAT. Verificar si fue registrada.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`tax-calendar (characterization) > pins missing standard obligations for regime general 1`] = `
+[
+  {
+    "actualValue": 0,
+    "confidence": 0.85,
+    "context": {
+      "legalReference": "R.S. 245-2016/SUNAT",
+      "obligationCode": "0601",
+      "obligationName": "PLAME — Declaración Mensual de Remuneraciones",
+      "taxRegime": "general",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_missing",
+    "deviation": -1,
+    "entityId": "0601",
+    "entityType": "tax_obligation",
+    "expectedValue": 1,
+    "id": "tax-calendar-missing-0601",
+    "metric": "tax_obligation_missing",
+    "reasoning": "Obligación 0601 (PLAME — Declaración Mensual de Remuneraciones) no encontrada en el calendario. Es obligatoria para régimen general según SUNAT. Verificar si fue registrada.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+  {
+    "actualValue": 0,
+    "confidence": 0.85,
+    "context": {
+      "legalReference": "Art. 65 TUO IGV",
+      "obligationCode": "0621",
+      "obligationName": "IGV — Declaración Mensual (Formulario 621)",
+      "taxRegime": "general",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_missing",
+    "deviation": -1,
+    "entityId": "0621",
+    "entityType": "tax_obligation",
+    "expectedValue": 1,
+    "id": "tax-calendar-missing-0621",
+    "metric": "tax_obligation_missing",
+    "reasoning": "Obligación 0621 (IGV — Declaración Mensual (Formulario 621)) no encontrada en el calendario. Es obligatoria para régimen general según SUNAT. Verificar si fue registrada.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+  {
+    "actualValue": 0,
+    "confidence": 0.85,
+    "context": {
+      "legalReference": "Ley del Impuesto a la Renta Art. 71",
+      "obligationCode": "0616",
+      "obligationName": "Renta Mensual — Retenciones 1ra/2da categoría",
+      "taxRegime": "general",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_missing",
+    "deviation": -1,
+    "entityId": "0616",
+    "entityType": "tax_obligation",
+    "expectedValue": 1,
+    "id": "tax-calendar-missing-0616",
+    "metric": "tax_obligation_missing",
+    "reasoning": "Obligación 0616 (Renta Mensual — Retenciones 1ra/2da categoría) no encontrada en el calendario. Es obligatoria para régimen general según SUNAT. Verificar si fue registrada.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+  {
+    "actualValue": 0,
+    "confidence": 0.85,
+    "context": {
+      "legalReference": "Ley del Impuesto a la Renta Art. 77",
+      "obligationCode": "0710",
+      "obligationName": "DJ Anual — Declaración Jurada Anual del Impuesto a la Renta",
+      "taxRegime": "general",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_missing",
+    "deviation": -1,
+    "entityId": "0710",
+    "entityType": "tax_obligation",
+    "expectedValue": 1,
+    "id": "tax-calendar-missing-0710",
+    "metric": "tax_obligation_missing",
+    "reasoning": "Obligación 0710 (DJ Anual — Declaración Jurada Anual del Impuesto a la Renta) no encontrada en el calendario. Es obligatoria para régimen general según SUNAT. Verificar si fue registrada.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`tax-calendar (characterization) > pins missing standard obligations for regime mype 1`] = `
+[
+  {
+    "actualValue": 0,
+    "confidence": 0.85,
+    "context": {
+      "legalReference": "Art. 65 TUO IGV",
+      "obligationCode": "0621",
+      "obligationName": "IGV — Declaración Mensual (Formulario 621)",
+      "taxRegime": "mype",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_missing",
+    "deviation": -1,
+    "entityId": "0621",
+    "entityType": "tax_obligation",
+    "expectedValue": 1,
+    "id": "tax-calendar-missing-0621",
+    "metric": "tax_obligation_missing",
+    "reasoning": "Obligación 0621 (IGV — Declaración Mensual (Formulario 621)) no encontrada en el calendario. Es obligatoria para régimen mype según SUNAT. Verificar si fue registrada.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+  {
+    "actualValue": 0,
+    "confidence": 0.85,
+    "context": {
+      "legalReference": "R.S. 245-2016/SUNAT",
+      "obligationCode": "0601",
+      "obligationName": "PLAME — Declaración Mensual de Remuneraciones",
+      "taxRegime": "mype",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_missing",
+    "deviation": -1,
+    "entityId": "0601",
+    "entityType": "tax_obligation",
+    "expectedValue": 1,
+    "id": "tax-calendar-missing-0601",
+    "metric": "tax_obligation_missing",
+    "reasoning": "Obligación 0601 (PLAME — Declaración Mensual de Remuneraciones) no encontrada en el calendario. Es obligatoria para régimen mype según SUNAT. Verificar si fue registrada.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+  {
+    "actualValue": 0,
+    "confidence": 0.85,
+    "context": {
+      "legalReference": "Ley del Impuesto a la Renta Art. 77",
+      "obligationCode": "0710",
+      "obligationName": "DJ Anual — Declaración Jurada Anual del Impuesto a la Renta",
+      "taxRegime": "mype",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_missing",
+    "deviation": -1,
+    "entityId": "0710",
+    "entityType": "tax_obligation",
+    "expectedValue": 1,
+    "id": "tax-calendar-missing-0710",
+    "metric": "tax_obligation_missing",
+    "reasoning": "Obligación 0710 (DJ Anual — Declaración Jurada Anual del Impuesto a la Renta) no encontrada en el calendario. Es obligatoria para régimen mype según SUNAT. Verificar si fue registrada.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`tax-calendar (characterization) > pins missing standard obligations for regime ruta 1`] = `
+[
+  {
+    "actualValue": 0,
+    "confidence": 0.85,
+    "context": {
+      "legalReference": "Art. 65 TUO IGV",
+      "obligationCode": "0621",
+      "obligationName": "IGV — Declaración Mensual (Formulario 621)",
+      "taxRegime": "ruta",
+      "tenantRuc": "20123456789",
+    },
+    "detectionMethod": "tax_obligation_missing",
+    "deviation": -1,
+    "entityId": "0621",
+    "entityType": "tax_obligation",
+    "expectedValue": 1,
+    "id": "tax-calendar-missing-0621",
+    "metric": "tax_obligation_missing",
+    "reasoning": "Obligación 0621 (IGV — Declaración Mensual (Formulario 621)) no encontrada en el calendario. Es obligatoria para régimen ruta según SUNAT. Verificar si fue registrada.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`tax-calendar (characterization) > pins missing standard obligations for regime unknown-regime 1`] = `[]`;

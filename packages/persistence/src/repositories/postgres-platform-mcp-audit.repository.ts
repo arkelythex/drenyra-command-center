@@ -3,7 +3,7 @@ import type {
 	DrenyraMcpAuditQuery,
 	DrenyraMcpAuditReader,
 	DrenyraMcpAuditSink,
-} from "@drenyra/pi";
+} from "@drenyra/agent-runtime";
 import { and, desc, eq } from "drizzle-orm";
 import { db } from "../client";
 import { platformMcpAuditEvents } from "../schema/platform-mcp.schema";

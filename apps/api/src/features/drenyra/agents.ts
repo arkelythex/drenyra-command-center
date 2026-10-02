@@ -1,4 +1,7 @@
-import type { AgentDefinition, DrenyraSubagentName } from "@drenyra/pi";
+import type {
+	AgentDefinition,
+	DrenyraSubagentName,
+} from "@drenyra/agent-runtime";
 import {
 	complianceTools,
 	financeTools,

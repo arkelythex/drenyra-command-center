@@ -1,5 +1,7 @@
 # Fiscal Seams — Technical Design
 
+**Última actualización**: 2026-08-02
+
 > Peru-first, architectured for LATAM scalability.
 > Each seam introduces an abstraction without moving everything to `country-packs/` today.
 

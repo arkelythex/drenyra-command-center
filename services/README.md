@@ -14,4 +14,4 @@ Infraestructura distribuida e integraciones. Cada servicio es un módulo Go inde
 
 Mucho networking e I/O → Go. Criptografía o parsing duro → Rust. Lógica de producto → TypeScript.
 
-Ver [Canonical Stack](../docs/architecture/canonical-stack.md).
+Ver [Canonical Stack](../docs/01-foundation/canonical-stack.md).

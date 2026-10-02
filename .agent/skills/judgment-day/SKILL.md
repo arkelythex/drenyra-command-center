@@ -65,6 +65,6 @@ Focus on: type safety, test coverage, architecture boundaries, error handling, p
 
 ## Persistence
 
-- **openspec**: write to `openspec/changes/{change-name}/review-ledger.md`
+- **odd**: write to `odd/tasks/{task-name}.review.md`
 - **engram**: upsert topic `sdd/{change-name}/review-ledger`
 - **none**: keep inline, complete loop in session

@@ -33,4 +33,4 @@ It is **not** part of the canonical mounted runtime baseline today, so it should
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)

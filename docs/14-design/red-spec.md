@@ -3,7 +3,7 @@
 **Última actualización:** 2026-07-24
 **Content type:** Specification — F0 Foundation
 **North star:** [Drenyra Product Philosophy](../products/drenyra-product-philosophy.md)
-**Taxonomía:** [Program Taxonomy](../architecture/program-taxonomy.md)
+**Taxonomía:** [Program Taxonomy](../01-foundation/program-taxonomy.md)
 
 ---
 

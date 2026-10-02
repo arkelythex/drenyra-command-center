@@ -29,7 +29,7 @@ Fixing requires either:
 ### 2. Domain imports from Pi package
 
 **File:** `packages/domain/src/drenyra/types.ts`
-**Import:** `@drenyra/pi`
+**Import:** `@drenyra/agent-runtime`
 
 Domain references Pi subagent types for the Drenyra orchestrator.
 Fixing requires extracting shared types to domain or a neutral package.

@@ -1,9 +1,0 @@
-phase: archived
-completed_at: '2026-07-11'
-status: implemented
-verified: true
-evidence:
-  - evidence-links.schema.ts exists
-  - evidence-lifecycle integration test exists
-created: 2026-07-02
-updated: 2026-07-11

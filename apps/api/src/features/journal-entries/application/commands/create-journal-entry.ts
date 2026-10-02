@@ -5,6 +5,7 @@
  */
 
 import { CreateJournalEntryUseCase } from "@drenyra/application/use-cases/journal";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { accountService, journalRepository } from "../_helpers";
 
 export interface CreateJournalEntryInput {
@@ -31,6 +32,7 @@ export interface CreateJournalEntryInput {
  * @throws Error if validation fails (e.g., unbalanced entry, missing account)
  */
 export async function createJournalEntry(
+	scope: TenantScope,
 	input: CreateJournalEntryInput,
 	actorId = "system",
 ) {
@@ -39,6 +41,7 @@ export async function createJournalEntry(
 		accountService,
 	);
 	const entry = await useCase.execute(
+		scope,
 		{
 			organizationId: input.organizationId,
 			date: input.date,

@@ -6,7 +6,7 @@ const SAMPLE_REGISTRY_MD = `# Drenyra Skill Registry
 | Skill | Description | Trigger | Path |
 |-------|-------------|---------|------|
 | fiscal-compliance | Fiscal compliance review | fiscal, sunat, compliance, sires | .agent/skills/fiscal-compliance/SKILL.md |
-| drenyra-sdd | Drenyra SDD pipeline | sdd, proposal, spec, design, tasks | .agent/skills/drenyra-sdd/SKILL.md |
+| drenyra-fsd | Drenyra FSD pipeline | fsd, proposal, spec, design, tasks | .agent/skills/drenyra-fsd/SKILL.md |
 | drenyra-gatekeeper | Phase gatekeeper validation | gatekeeper, phase-gate, validation | .agent/skills/drenyra-gatekeeper/SKILL.md |
 | fiscal-review | Fiscal code review lens | review, audit, fiscal, compliance | .agent/skills/fiscal-review/SKILL.md |
 | ruc-scope | RUC scoping and tenant isolation | ruc, tenant, scope, organization | .agent/skills/ruc-scope/SKILL.md |
@@ -62,11 +62,11 @@ describe("skills-resolver", () => {
 					fileExtensions: [".ts"],
 					targetPaths: [],
 					intent: [],
-					skillNames: ["drenyra-sdd"],
+					skillNames: ["drenyra-fsd"],
 				},
 				registry,
 			);
-			expect(result.names).toContain("drenyra-sdd");
+			expect(result.names).toContain("drenyra-fsd");
 		});
 
 		it("matches by file path", () => {

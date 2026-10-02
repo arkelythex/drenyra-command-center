@@ -11,6 +11,7 @@ import type {
 	AccountRepository,
 	AccountWithChildren,
 } from "@drenyra/domain/repositories/account.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import { and, asc, count, eq, like, ne, or, type SQL } from "drizzle-orm";
 import { db } from "../client";
@@ -33,40 +34,50 @@ const levelFromCode = (code: string): AccountLevel => {
 };
 
 export class PostgresAccountRepository implements AccountRepository {
-	async save(account: Account): Promise<void> {
-		const companyId = await resolveCompanyIdFromOrganization(
-			account.organizationId,
-		);
-		await db
-			.insert(pcgeAccounts)
-			.values({
-				id: account.id,
-				companyId,
-				code: account.code,
+	async create(scope: TenantScope, account: Account): Promise<void> {
+		await db.insert(pcgeAccounts).values({
+			id: account.id,
+			companyId: scope.companyId,
+			code: account.code,
+			name: account.name,
+			level: account.level,
+			type: account.type,
+			parentId: account.parentId ?? null,
+			isActive: account.isActive ? "S" : "N",
+			createdAt: account.createdAt,
+			updatedAt: account.updatedAt,
+		});
+	}
+
+	async update(scope: TenantScope, account: Account): Promise<void> {
+		const updated = await db
+			.update(pcgeAccounts)
+			.set({
 				name: account.name,
 				level: account.level,
 				type: account.type,
 				parentId: account.parentId ?? null,
 				isActive: account.isActive ? "S" : "N",
-				createdAt: account.createdAt,
 				updatedAt: account.updatedAt,
 			})
-			.onConflictDoUpdate({
-				target: pcgeAccounts.id,
-				set: {
-					name: account.name,
-					level: account.level,
-					type: account.type,
-					parentId: account.parentId ?? null,
-					isActive: account.isActive ? "S" : "N",
-					updatedAt: account.updatedAt,
-				},
-			});
+			.where(
+				and(
+					eq(pcgeAccounts.id, account.id),
+					eq(pcgeAccounts.companyId, scope.companyId),
+				),
+			)
+			.returning({ id: pcgeAccounts.id });
+		if (updated.length === 0) {
+			throw new Error("Account not found");
+		}
 	}
 
-	async findById(id: string): Promise<Account | null> {
+	async findById(scope: TenantScope, id: string): Promise<Account | null> {
 		const row = await db.query.pcgeAccounts.findFirst({
-			where: eq(pcgeAccounts.id, id),
+			where: and(
+				eq(pcgeAccounts.id, id),
+				eq(pcgeAccounts.companyId, scope.companyId),
+			),
 		});
 		return row ? this.mapToDomain(row) : null;
 	}
@@ -109,9 +120,12 @@ export class PostgresAccountRepository implements AccountRepository {
 		);
 	}
 
-	async findChildren(parentId: string): Promise<Account[]> {
+	async findChildren(scope: TenantScope, parentId: string): Promise<Account[]> {
 		const rows = await db.query.pcgeAccounts.findMany({
-			where: eq(pcgeAccounts.parentId, parentId),
+			where: and(
+				eq(pcgeAccounts.parentId, parentId),
+				eq(pcgeAccounts.companyId, scope.companyId),
+			),
 			orderBy: [asc(pcgeAccounts.code)],
 		});
 		return Promise.all(rows.map((row) => this.mapToDomain(row)));
@@ -142,15 +156,31 @@ export class PostgresAccountRepository implements AccountRepository {
 		return roots;
 	}
 
-	async delete(id: string): Promise<void> {
-		await db.delete(pcgeAccounts).where(eq(pcgeAccounts.id, id));
+	async delete(scope: TenantScope, id: string): Promise<void> {
+		const deleted = await db
+			.delete(pcgeAccounts)
+			.where(
+				and(
+					eq(pcgeAccounts.id, id),
+					eq(pcgeAccounts.companyId, scope.companyId),
+				),
+			)
+			.returning({ id: pcgeAccounts.id });
+		if (deleted.length === 0) {
+			throw new Error("Account not found");
+		}
 	}
 
-	async hasChildren(id: string): Promise<boolean> {
+	async hasChildren(scope: TenantScope, id: string): Promise<boolean> {
 		const [result] = await db
 			.select({ value: count() })
 			.from(pcgeAccounts)
-			.where(eq(pcgeAccounts.parentId, id));
+			.where(
+				and(
+					eq(pcgeAccounts.parentId, id),
+					eq(pcgeAccounts.companyId, scope.companyId),
+				),
+			);
 		return (result?.value ?? 0) > 0;
 	}
 
@@ -187,10 +217,13 @@ export class PostgresAccountRepository implements AccountRepository {
 		return result?.value ?? 0;
 	}
 
-	async getNextChildCode(parentId: string): Promise<string> {
-		const parent = await this.findById(parentId);
+	async getNextChildCode(
+		scope: TenantScope,
+		parentId: string,
+	): Promise<string> {
+		const parent = await this.findById(scope, parentId);
 		if (!parent) throw new Error("Parent account not found");
-		const children = await this.findChildren(parentId);
+		const children = await this.findChildren(scope, parentId);
 		if (children.length === 0) return `${parent.code}1`;
 		const suffixes = children
 			.map((child) => Number.parseInt(child.code.slice(parent.code.length), 10))

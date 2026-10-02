@@ -115,5 +115,5 @@ You cannot accidentally create a Change Set for a different company or period fr
 ## Next Steps
 
 - [Tutorial: Review a Change Set](./your-first-review.md) — learn how financial changes are reviewed and approved
-- Read the [Workspace Plane](../03-workspace-plane/README.md) — deeper understanding of the model
-- [How to Create a Workspace (Reference)](../02-guides/how-to-create-a-workspace.md) — API reference
+- Read the Workspace Plane _(no disponible)_ — deeper understanding of the model
+- How to Create a Workspace (Reference) _(no disponible)_ — API reference

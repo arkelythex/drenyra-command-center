@@ -5,7 +5,6 @@ export default defineConfig({
 		globals: true,
 		include: ["__tests__/**/*.{test,spec}.{js,ts}"],
 		pool: "forks",
-	},	},
 
 		coverage: {
 			provider: "v8",
@@ -21,5 +20,5 @@ export default defineConfig({
 				},
 			},
 		},
-
+	},
 });

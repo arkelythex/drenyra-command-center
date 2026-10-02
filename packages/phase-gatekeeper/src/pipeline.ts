@@ -59,53 +59,34 @@ export class GatedPhasePipeline {
 		const startTime = Date.now();
 		const previousGates = new Map<string, GatekeeperVerdict>();
 		const errors: string[] = [];
+		const gateCtx: GatekeeperContext = {
+			previousGates,
+			...(ctx?.scope ? { scope: ctx.scope } : {}),
+			...(ctx?.evidenceStore ? { evidenceStore: ctx.evidenceStore } : {}),
+		};
+		const gating = !this.config.gatesDisabled;
 
 		// --- Pre-gates ---
-		const preGateResults: GatekeeperVerdict[] = [];
-		if (!this.config.gatesDisabled) {
-			for (const gate of gates.preGates) {
-				try {
-					const gateCtx: GatekeeperContext = {
-						previousGates,
-						scope: ctx?.scope,
-						evidenceStore: ctx?.evidenceStore,
-					};
-					const verdict = await gate.check(input, gateCtx);
-					previousGates.set(gate.name, verdict);
-					preGateResults.push(verdict);
-
-					if (!verdict.passed && verdict.severity === "BLOCKING") {
-						if (this.config.onGateBlocked === "STOP") {
-							return {
-								phaseName,
-								status: "BLOCKED",
-								output: null,
-								preGateResults,
-								postGateResults: [],
-								errors: [
-									`Pre-gate "${gate.name}" blocked: ${verdict.reasons.join("; ")}`,
-								],
-								durationMs: Date.now() - startTime,
-							};
-						}
-						if (this.config.onGateBlocked === "WARN_CONTINUE") {
-							errors.push(
-								`Pre-gate "${gate.name}" warning: ${verdict.reasons.join("; ")}`,
-							);
-						}
-						// ESCALATE: caller handles; we continue and let the caller decide
-					}
-				} catch (err) {
-					const msg = `Pre-gate "${gate.name}" threw: ${err instanceof Error ? err.message : String(err)}`;
-					errors.push(msg);
-					preGateResults.push({
-						passed: false,
-						reasons: [msg],
-						severity: "BLOCKING",
-						details: { error: String(err) },
-					});
-				}
-			}
+		const pre = gating
+			? await this.evaluateGates(
+					"Pre-gate",
+					gates.preGates,
+					input,
+					gateCtx,
+					errors,
+				)
+			: { results: [], blocked: null };
+		if (pre.blocked) {
+			// STOP blocks; ESCALATE pauses for human review. Neither runs the phase.
+			return {
+				phaseName,
+				status: "BLOCKED",
+				output: null,
+				preGateResults: pre.results,
+				postGateResults: [],
+				errors: [pre.blocked],
+				durationMs: Date.now() - startTime,
+			};
 		}
 
 		// --- Execute phase ---
@@ -119,84 +100,90 @@ export class GatedPhasePipeline {
 		}
 
 		// --- Post-gates ---
-		const postGateResults: GatekeeperVerdict[] = [];
-		if (!this.config.gatesDisabled && output !== null) {
-			for (const gate of gates.postGates) {
-				try {
-					const gateCtx: GatekeeperContext = {
-						previousGates,
-						scope: ctx?.scope,
-						evidenceStore: ctx?.evidenceStore,
-					};
-					const verdict = await gate.check(output, gateCtx);
-					previousGates.set(gate.name, verdict);
-					postGateResults.push(verdict);
-
-					if (!verdict.passed && verdict.severity === "BLOCKING") {
-						if (this.config.onGateBlocked === "STOP") {
-							return {
-								phaseName,
-								status: "BLOCKED",
-								output,
-								preGateResults,
-								postGateResults,
-								errors: [
-									...errors,
-									`Post-gate "${gate.name}" blocked: ${verdict.reasons.join("; ")}`,
-								],
-								durationMs: Date.now() - startTime,
-							};
-						}
-						if (this.config.onGateBlocked === "WARN_CONTINUE") {
-							errors.push(
-								`Post-gate "${gate.name}" warning: ${verdict.reasons.join("; ")}`,
-							);
-						}
-					}
-				} catch (err) {
-					const msg = `Post-gate "${gate.name}" threw: ${err instanceof Error ? err.message : String(err)}`;
-					errors.push(msg);
-					postGateResults.push({
-						passed: false,
-						reasons: [msg],
-						severity: "BLOCKING",
-						details: { error: String(err) },
-					});
-				}
-			}
+		const post =
+			gating && output !== null
+				? await this.evaluateGates(
+						"Post-gate",
+						gates.postGates,
+						output,
+						gateCtx,
+						errors,
+					)
+				: { results: [], blocked: null };
+		if (post.blocked) {
+			return {
+				phaseName,
+				status: "BLOCKED",
+				output,
+				preGateResults: pre.results,
+				postGateResults: post.results,
+				errors: [...errors, post.blocked],
+				durationMs: Date.now() - startTime,
+			};
 		}
 
 		// --- Determine status ---
-		const isGateBlockedDuringExecution =
-			this.config.onGateBlocked !== "WARN_CONTINUE";
-		const hasBlockingPre = preGateResults.some(
-			(r) => !r.passed && r.severity === "BLOCKING",
+		const anyBlocking = [...pre.results, ...post.results].some(
+			isBlockingFailure,
 		);
-		const hasBlockingPost = postGateResults.some(
-			(r) => !r.passed && r.severity === "BLOCKING",
-		);
-
-		let status: "SUCCESS" | "BLOCKED" | "FAILED";
-		if (executionError) {
-			status = "FAILED";
-		} else if (
-			isGateBlockedDuringExecution &&
-			(hasBlockingPre || hasBlockingPost)
-		) {
+		let status: "SUCCESS" | "BLOCKED" | "FAILED" = "SUCCESS";
+		if (executionError) status = "FAILED";
+		else if (this.config.onGateBlocked !== "WARN_CONTINUE" && anyBlocking)
 			status = "BLOCKED";
-		} else {
-			status = "SUCCESS";
-		}
 
 		return {
 			phaseName,
 			status,
 			output,
-			preGateResults,
-			postGateResults,
+			preGateResults: pre.results,
+			postGateResults: post.results,
 			errors,
 			durationMs: Date.now() - startTime,
 		};
+	}
+
+	/**
+	 * Run gates in order. A throwing gate becomes a BLOCKING verdict; a blocking
+	 * failure either records a warning (WARN_CONTINUE) or stops evaluation and
+	 * returns the blocking message (STOP / ESCALATE).
+	 */
+	private async evaluateGates<T>(
+		kind: "Pre-gate" | "Post-gate",
+		gates: GatekeeperCheck<T>[],
+		value: T,
+		gateCtx: GatekeeperContext,
+		errors: string[],
+	): Promise<{ results: GatekeeperVerdict[]; blocked: string | null }> {
+		const results: GatekeeperVerdict[] = [];
+		const mode = this.config.onGateBlocked;
+		for (const gate of gates) {
+			try {
+				const verdict = await gate.check(value, gateCtx);
+				gateCtx.previousGates.set(gate.name, verdict);
+				results.push(verdict);
+				if (!isBlockingFailure(verdict)) continue;
+				if (mode === "WARN_CONTINUE") {
+					errors.push(
+						`${kind} "${gate.name}" warning: ${verdict.reasons.join("; ")}`,
+					);
+				} else {
+					return {
+						results,
+						blocked: blockedMessage(kind, gate.name, verdict.reasons, mode),
+					};
+				}
+			} catch (err) {
+				const msg = `${kind} "${gate.name}" threw: ${err instanceof Error ? err.message : String(err)}`;
+				errors.push(msg);
+				results.push({
+					passed: false,
+					reasons: [msg],
+					severity: "BLOCKING",
+					details: { error: String(err) },
+				});
+			}
+		}
+		return { results, blocked: null };
 	}
 
 	/**
@@ -275,3 +262,18 @@ export class GatedPhasePipeline {
 }
 
 export { DEFAULT_GATED_PIPELINE_CONFIG } from "./types";
+
+/** Message for a blocking gate: STOP blocks, ESCALATE hands the phase to a human. */
+function blockedMessage(
+	kind: "Pre-gate" | "Post-gate",
+	gateName: string,
+	reasons: string[],
+	mode: "STOP" | "ESCALATE",
+): string {
+	const verb = mode === "ESCALATE" ? "escalated for human review" : "blocked";
+	return `${kind} "${gateName}" ${verb}: ${reasons.join("; ")}`;
+}
+
+function isBlockingFailure(verdict: GatekeeperVerdict): boolean {
+	return !verdict.passed && verdict.severity === "BLOCKING";
+}

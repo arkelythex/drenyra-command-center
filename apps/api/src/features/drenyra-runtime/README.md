@@ -39,4 +39,4 @@ These schemas are the **source of truth** for CLI/API/UI payload validation and 
 
 ## References
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)

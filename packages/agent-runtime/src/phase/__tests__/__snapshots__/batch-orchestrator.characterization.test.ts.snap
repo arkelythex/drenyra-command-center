@@ -1,0 +1,514 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: complete fails, no period state 1`] = `
+{
+  "counts": [
+    0,
+    0,
+    0,
+    1,
+    0,
+  ],
+  "entry": {
+    "currentPhase": "captura",
+    "lastError": "nope",
+    "periodo": "2026-06",
+    "phasesCompleted": 0,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "failed",
+  },
+  "log": [
+    "startPhase:captura",
+    "completePhase:captura:{"autoAdvance":true}:Auto-processed captura for 20123456789/2026-06",
+    "blocked:captura:",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: complete fails, period state blocked 1`] = `
+{
+  "counts": [
+    0,
+    0,
+    1,
+    0,
+    0,
+  ],
+  "entry": {
+    "currentPhase": "clasificacion",
+    "lastError": "exit gate",
+    "periodo": "2026-06",
+    "phasesCompleted": 1,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "blocked",
+  },
+  "log": [
+    "startPhase:captura",
+    "completePhase:captura:{"autoAdvance":true}:Auto-processed captura for 20123456789/2026-06",
+    "complete:captura",
+    "startPhase:clasificacion",
+    "completePhase:clasificacion:{"autoAdvance":true}:Auto-processed clasificacion for 20123456789/2026-06",
+    "blocked:clasificacion:x",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: complete fails, period state failed 1`] = `
+{
+  "counts": [
+    0,
+    0,
+    0,
+    1,
+    0,
+  ],
+  "entry": {
+    "currentPhase": "clasificacion",
+    "lastError": "exit gate",
+    "periodo": "2026-06",
+    "phasesCompleted": 1,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "failed",
+  },
+  "log": [
+    "startPhase:captura",
+    "completePhase:captura:{"autoAdvance":true}:Auto-processed captura for 20123456789/2026-06",
+    "complete:captura",
+    "startPhase:clasificacion",
+    "completePhase:clasificacion:{"autoAdvance":true}:Auto-processed clasificacion for 20123456789/2026-06",
+    "blocked:clasificacion:",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: entry blocked without gate result 1`] = `
+{
+  "counts": [
+    0,
+    0,
+    1,
+    0,
+    0,
+  ],
+  "entry": {
+    "currentPhase": "captura",
+    "lastError": "gate x",
+    "periodo": "2026-06",
+    "phasesCompleted": 0,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "blocked",
+  },
+  "log": [
+    "startPhase:captura",
+    "blocked:captura:",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: first phase blocked at entry 1`] = `
+{
+  "counts": [
+    0,
+    0,
+    1,
+    0,
+    0,
+  ],
+  "entry": {
+    "currentPhase": "captura",
+    "lastError": "gate x",
+    "periodo": "2026-06",
+    "phasesCompleted": 0,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "blocked",
+  },
+  "log": [
+    "startPhase:captura",
+    "blocked:captura:b1|b2",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: happy path but final state not completed 1`] = `
+{
+  "counts": [
+    0,
+    1,
+    0,
+    0,
+    0,
+  ],
+  "entry": {
+    "currentPhase": "auditoria",
+    "periodo": "2026-06",
+    "phasesCompleted": 6,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "in_progress",
+  },
+  "log": [
+    "startPhase:captura",
+    "completePhase:captura:{"autoAdvance":true}:Auto-processed captura for 20123456789/2026-06",
+    "complete:captura",
+    "startPhase:clasificacion",
+    "completePhase:clasificacion:{"autoAdvance":true}:Auto-processed clasificacion for 20123456789/2026-06",
+    "complete:clasificacion",
+    "startPhase:conciliacion",
+    "completePhase:conciliacion:{"autoAdvance":true}:Auto-processed conciliacion for 20123456789/2026-06",
+    "complete:conciliacion",
+    "startPhase:cierre",
+    "completePhase:cierre:{"autoAdvance":true}:Auto-processed cierre for 20123456789/2026-06",
+    "complete:cierre",
+    "startPhase:declaracion",
+    "completePhase:declaracion:{"autoAdvance":true}:Auto-processed declaracion for 20123456789/2026-06",
+    "complete:declaracion",
+    "startPhase:auditoria",
+    "completePhase:auditoria:{"autoAdvance":true}:Auto-processed auditoria for 20123456789/2026-06",
+    "complete:auditoria",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: happy path but no final state 1`] = `
+{
+  "counts": [
+    0,
+    1,
+    0,
+    0,
+    0,
+  ],
+  "entry": {
+    "currentPhase": "auditoria",
+    "periodo": "2026-06",
+    "phasesCompleted": 6,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "in_progress",
+  },
+  "log": [
+    "startPhase:captura",
+    "completePhase:captura:{"autoAdvance":true}:Auto-processed captura for 20123456789/2026-06",
+    "complete:captura",
+    "startPhase:clasificacion",
+    "completePhase:clasificacion:{"autoAdvance":true}:Auto-processed clasificacion for 20123456789/2026-06",
+    "complete:clasificacion",
+    "startPhase:conciliacion",
+    "completePhase:conciliacion:{"autoAdvance":true}:Auto-processed conciliacion for 20123456789/2026-06",
+    "complete:conciliacion",
+    "startPhase:cierre",
+    "completePhase:cierre:{"autoAdvance":true}:Auto-processed cierre for 20123456789/2026-06",
+    "complete:cierre",
+    "startPhase:declaracion",
+    "completePhase:declaracion:{"autoAdvance":true}:Auto-processed declaracion for 20123456789/2026-06",
+    "complete:declaracion",
+    "startPhase:auditoria",
+    "completePhase:auditoria:{"autoAdvance":true}:Auto-processed auditoria for 20123456789/2026-06",
+    "complete:auditoria",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: happy path through all six phases 1`] = `
+{
+  "counts": [
+    1,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "entry": {
+    "completedAt": 2026-07-01T00:00:00.000Z,
+    "currentPhase": "auditoria",
+    "periodo": "2026-06",
+    "phasesCompleted": 6,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "completed",
+  },
+  "log": [
+    "startPhase:captura",
+    "completePhase:captura:{"autoAdvance":true}:Auto-processed captura for 20123456789/2026-06",
+    "complete:captura",
+    "startPhase:clasificacion",
+    "completePhase:clasificacion:{"autoAdvance":true}:Auto-processed clasificacion for 20123456789/2026-06",
+    "complete:clasificacion",
+    "startPhase:conciliacion",
+    "completePhase:conciliacion:{"autoAdvance":true}:Auto-processed conciliacion for 20123456789/2026-06",
+    "complete:conciliacion",
+    "startPhase:cierre",
+    "completePhase:cierre:{"autoAdvance":true}:Auto-processed cierre for 20123456789/2026-06",
+    "complete:cierre",
+    "startPhase:declaracion",
+    "completePhase:declaracion:{"autoAdvance":true}:Auto-processed declaracion for 20123456789/2026-06",
+    "complete:declaracion",
+    "startPhase:auditoria",
+    "completePhase:auditoria:{"autoAdvance":true}:Auto-processed auditoria for 20123456789/2026-06",
+    "complete:auditoria",
+    "periodComplete",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: paused for all 1`] = `
+{
+  "counts": [
+    1,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "entry": {
+    "completedAt": 2026-07-01T00:00:00.000Z,
+    "currentPhase": "auditoria",
+    "periodo": "2026-06",
+    "phasesCompleted": 6,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "completed",
+  },
+  "log": [
+    "startPhase:captura",
+    "completePhase:captura:{"autoAdvance":true}:Auto-processed captura for 20123456789/2026-06",
+    "complete:captura",
+    "startPhase:clasificacion",
+    "completePhase:clasificacion:{"autoAdvance":true}:Auto-processed clasificacion for 20123456789/2026-06",
+    "complete:clasificacion",
+    "startPhase:conciliacion",
+    "completePhase:conciliacion:{"autoAdvance":true}:Auto-processed conciliacion for 20123456789/2026-06",
+    "complete:conciliacion",
+    "startPhase:cierre",
+    "completePhase:cierre:{"autoAdvance":true}:Auto-processed cierre for 20123456789/2026-06",
+    "complete:cierre",
+    "startPhase:declaracion",
+    "completePhase:declaracion:{"autoAdvance":true}:Auto-processed declaracion for 20123456789/2026-06",
+    "complete:declaracion",
+    "startPhase:auditoria",
+    "completePhase:auditoria:{"autoAdvance":true}:Auto-processed auditoria for 20123456789/2026-06",
+    "complete:auditoria",
+    "periodComplete",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: paused for the ruc 1`] = `
+{
+  "counts": [
+    1,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "entry": {
+    "completedAt": 2026-07-01T00:00:00.000Z,
+    "currentPhase": "auditoria",
+    "periodo": "2026-06",
+    "phasesCompleted": 6,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "completed",
+  },
+  "log": [
+    "startPhase:captura",
+    "completePhase:captura:{"autoAdvance":true}:Auto-processed captura for 20123456789/2026-06",
+    "complete:captura",
+    "startPhase:clasificacion",
+    "completePhase:clasificacion:{"autoAdvance":true}:Auto-processed clasificacion for 20123456789/2026-06",
+    "complete:clasificacion",
+    "startPhase:conciliacion",
+    "completePhase:conciliacion:{"autoAdvance":true}:Auto-processed conciliacion for 20123456789/2026-06",
+    "complete:conciliacion",
+    "startPhase:cierre",
+    "completePhase:cierre:{"autoAdvance":true}:Auto-processed cierre for 20123456789/2026-06",
+    "complete:cierre",
+    "startPhase:declaracion",
+    "completePhase:declaracion:{"autoAdvance":true}:Auto-processed declaracion for 20123456789/2026-06",
+    "complete:declaracion",
+    "startPhase:auditoria",
+    "completePhase:auditoria:{"autoAdvance":true}:Auto-processed auditoria for 20123456789/2026-06",
+    "complete:auditoria",
+    "periodComplete",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: phase start failed 1`] = `
+{
+  "counts": [
+    0,
+    0,
+    0,
+    1,
+    0,
+  ],
+  "entry": {
+    "currentPhase": "conciliacion",
+    "lastError": "boom",
+    "periodo": "2026-06",
+    "phasesCompleted": 2,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "failed",
+  },
+  "log": [
+    "startPhase:captura",
+    "completePhase:captura:{"autoAdvance":true}:Auto-processed captura for 20123456789/2026-06",
+    "complete:captura",
+    "startPhase:clasificacion",
+    "completePhase:clasificacion:{"autoAdvance":true}:Auto-processed clasificacion for 20123456789/2026-06",
+    "complete:clasificacion",
+    "startPhase:conciliacion",
+    "error:conciliacion:boom",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: phase start failed without message 1`] = `
+{
+  "counts": [
+    0,
+    0,
+    0,
+    1,
+    0,
+  ],
+  "entry": {
+    "currentPhase": "clasificacion",
+    "lastError": undefined,
+    "periodo": "2026-06",
+    "phasesCompleted": 1,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "failed",
+  },
+  "log": [
+    "startPhase:captura",
+    "completePhase:captura:{"autoAdvance":true}:Auto-processed captura for 20123456789/2026-06",
+    "complete:captura",
+    "startPhase:clasificacion",
+    "error:clasificacion:Phase start failed",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: startPeriod already exists is tolerated 1`] = `
+{
+  "counts": [
+    1,
+    0,
+    0,
+    0,
+    0,
+  ],
+  "entry": {
+    "completedAt": 2026-07-01T00:00:00.000Z,
+    "currentPhase": "auditoria",
+    "periodo": "2026-06",
+    "phasesCompleted": 6,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "completed",
+  },
+  "log": [
+    "startPhase:captura",
+    "completePhase:captura:{"autoAdvance":true}:Auto-processed captura for 20123456789/2026-06",
+    "complete:captura",
+    "startPhase:clasificacion",
+    "completePhase:clasificacion:{"autoAdvance":true}:Auto-processed clasificacion for 20123456789/2026-06",
+    "complete:clasificacion",
+    "startPhase:conciliacion",
+    "completePhase:conciliacion:{"autoAdvance":true}:Auto-processed conciliacion for 20123456789/2026-06",
+    "complete:conciliacion",
+    "startPhase:cierre",
+    "completePhase:cierre:{"autoAdvance":true}:Auto-processed cierre for 20123456789/2026-06",
+    "complete:cierre",
+    "startPhase:declaracion",
+    "completePhase:declaracion:{"autoAdvance":true}:Auto-processed declaracion for 20123456789/2026-06",
+    "complete:declaracion",
+    "startPhase:auditoria",
+    "completePhase:auditoria:{"autoAdvance":true}:Auto-processed auditoria for 20123456789/2026-06",
+    "complete:auditoria",
+    "periodComplete",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: startPeriod fails 1`] = `
+{
+  "counts": [
+    0,
+    0,
+    0,
+    1,
+    0,
+  ],
+  "entry": {
+    "currentPhase": "captura",
+    "lastError": "no db",
+    "periodo": "2026-06",
+    "phasesCompleted": 0,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "failed",
+  },
+  "log": [
+    "error:2026-06:no db",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: startPeriod fails without message 1`] = `
+{
+  "counts": [
+    0,
+    0,
+    0,
+    1,
+    0,
+  ],
+  "entry": {
+    "currentPhase": "captura",
+    "lastError": "Failed to start period",
+    "periodo": "2026-06",
+    "phasesCompleted": 0,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "failed",
+  },
+  "log": [
+    "error:2026-06:Failed to start period",
+  ],
+}
+`;
+
+exports[`BatchOrchestrator.processSingleEntry (characterization) > pins entry status, counts and callbacks: startPeriod throws 1`] = `
+{
+  "counts": [
+    0,
+    0,
+    0,
+    1,
+    0,
+  ],
+  "entry": {
+    "currentPhase": "captura",
+    "lastError": "kaboom",
+    "periodo": "2026-06",
+    "phasesCompleted": 0,
+    "ruc": "20123456789",
+    "startedAt": undefined,
+    "status": "failed",
+  },
+  "log": [
+    "error:2026-06:kaboom",
+  ],
+}
+`;

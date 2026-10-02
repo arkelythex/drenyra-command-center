@@ -1,16 +1,15 @@
 {
-  "apps/api/src": 801,
+  "apps/api/src": 787,
+  "packages/agent-runtime/src": 98,
   "packages/ai/src": 49,
   "packages/application/src": 57,
   "packages/domain/src": 132,
   "packages/drenyra-orchestrator/src": 10,
   "packages/fiscal-approval/src": 1,
   "packages/fiscal-compliance-pipeline/src": 1,
+  "packages/fiscal-fsd/src": 10,
   "packages/fiscal-query-engine/src": 5,
-  "packages/fiscal-sdd/src": 10,
   "packages/infrastructure/src": 80,
   "packages/persistence/src": 103,
-  "packages/pi/src": 104,
-  "packages/security/src": 1,
-  "packages/shared/src": 9
+  "packages/security/src": 1
 }

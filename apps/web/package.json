@@ -64,7 +64,7 @@
     "@drenyra/application": "workspace:*",
     "@drenyra/domain": "workspace:*",
     "@drenyra/mission-domain": "workspace:*",
-    "@drenyra/pi": "workspace:*",
+    "@drenyra/agent-runtime": "workspace:*",
     "@drenyra/shared": "workspace:*",
     "@drenyra/ui": "workspace:*"
   },

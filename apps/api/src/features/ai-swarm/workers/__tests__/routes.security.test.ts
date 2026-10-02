@@ -17,7 +17,7 @@ const authMocks = vi.hoisted(() => ({
 	authorizeAiSurface: vi.fn(),
 }));
 
-vi.mock("@drenyra/pi", () => ({
+vi.mock("@drenyra/agent-runtime", () => ({
 	queueManager: queueMocks,
 }));
 

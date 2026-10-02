@@ -2,7 +2,7 @@
  * @drenyra/mission-domain — mission-status ADAPTER SHIM.
  *
  * The canonical mission status logic now lives in `drenyra-ai` (released
- * v0.0.1-prealpha.1, consumed via the `mission-protocol` dependency).
+ * v0.5.0, consumed via the `mission-protocol` dependency).
  * This file re-exports the status vocabulary from the single authority.
  * Explicit names only — the divergent legacy types (mission-contracts,
  * mission-events, mission-errors) stay local until consumers are aligned.

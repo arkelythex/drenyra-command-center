@@ -7,6 +7,7 @@
 
 import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 
 /**
  * DeleteAccountResult interface.
@@ -38,9 +39,12 @@ export class DeleteAccountUseCase {
 		private readonly journalRepository?: JournalEntryRepository,
 	) {}
 
-	async execute(accountId: string): Promise<DeleteAccountResult> {
+	async execute(
+		scope: TenantScope,
+		accountId: string,
+	): Promise<DeleteAccountResult> {
 		// 1. Find existing account
-		const account = await this.accountRepository.findById(accountId);
+		const account = await this.accountRepository.findById(scope, accountId);
 		if (!account) {
 			throw new Error("Cuenta no encontrada");
 		}
@@ -51,7 +55,10 @@ export class DeleteAccountUseCase {
 		}
 
 		// 3. Check if account has children
-		const hasChildren = await this.accountRepository.hasChildren(accountId);
+		const hasChildren = await this.accountRepository.hasChildren(
+			scope,
+			accountId,
+		);
 		if (hasChildren) {
 			throw new Error("No se puede eliminar una cuenta que tiene subcuentas");
 		}
@@ -75,7 +82,7 @@ export class DeleteAccountUseCase {
 		}
 
 		// 6. Delete the account
-		await this.accountRepository.delete(accountId);
+		await this.accountRepository.delete(scope, accountId);
 
 		return {
 			success: true,

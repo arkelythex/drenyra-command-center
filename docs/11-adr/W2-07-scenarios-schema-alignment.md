@@ -1,5 +1,7 @@
 # ADR: W2-07 Cross-Layer Scenarios — Schema Alignment Gap
 
+**Última actualización**: 2026-08-02
+
 **Status:** Accepted · **Owner:** Drenyra Core · **Follow-up:** W2-08
 
 ## Context

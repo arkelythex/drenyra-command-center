@@ -1,8 +1,8 @@
 # Drenyra Unified Runtime Kernel
 
 **Status:** Design specification (Phase 2 implementation)  
-**ADR:** [ADR-034](../../../../docs/02-adr/adr-034-drenyra-fiscal-app-server.md)  
-**Protocol:** [DFAS Spec](../../../../docs/01-architecture/drenyra-fiscal-app-server-2026.md)
+**ADR:** [ADR-034](../../../../../../docs/11-adr/adr-034-drenyra-fiscal-app-server.md)  
+**Protocol:** [DFAS Spec](../../../../../../docs/14-design/fiscal-app-server.md)
 
 ## Purpose
 
@@ -238,6 +238,6 @@ Run: `cd apps/api && bun run test src/features/drenyra/kernel`
 
 ## Related docs
 
-- [DFAS Protocol Spec](../../../../docs/01-architecture/drenyra-fiscal-app-server-2026.md)
-- [Drenyra Dual-Surface Brain](../../../../docs/01-architecture/drenyra-dual-surface-brain.md)
-- [SDD Tasks](../../../../docs/superpowers/specs/drenyra-fiscal-app-server-tasks-2026.md)
+- [DFAS Protocol Spec](../../../../../../docs/14-design/fiscal-app-server.md)
+- [Drenyra Dual-Surface Brain](../../../../../../docs/14-design/dual-surface-brain.md)
+- SDD Tasks _(no disponible)_

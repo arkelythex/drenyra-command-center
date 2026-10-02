@@ -1,5 +1,7 @@
 # Matriz de acceso multi-tenant — Drenyra
 
+**Última actualización**: 2026-08-02
+
 > Documento de referencia para H02 (Tenant Isolation Hardening).
 > Define qué scope requiere cada entidad y qué roles pueden operar sobre ella.
 > Creado: 2026-07-12. Actualizar cuando se agreguen nuevas entidades tenant-owned.

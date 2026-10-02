@@ -44,4 +44,4 @@ flowchart TD
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)

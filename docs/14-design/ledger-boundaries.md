@@ -118,6 +118,6 @@ interface JournalLine {
 
 ## 5. Referencias
 
-- [Program Taxonomy](../architecture/program-taxonomy.md)
-- [Capability Map](../architecture/capability-map.md) — CAP-LEDGER-*
+- [Program Taxonomy](../01-foundation/program-taxonomy.md)
+- [Capability Map](../01-foundation/capability-map.md) — CAP-LEDGER-*
 - [Accounting core](../../packages/domain/src/) — domain types existentes

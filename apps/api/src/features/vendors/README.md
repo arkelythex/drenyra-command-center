@@ -64,5 +64,5 @@ bun run --cwd apps/api test
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 ```

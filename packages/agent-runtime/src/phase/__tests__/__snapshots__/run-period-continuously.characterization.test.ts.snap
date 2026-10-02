@@ -1,0 +1,240 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FiscalPhaseOrchestrator.runPeriodContinuously (characterization) > pins result and call sequence: agent returns an error 1`] = `
+{
+  "log": [
+    "startPhase:captura",
+    "agent:captura",
+    "completePhase:captura:{"phase":"captura"}:{"autoAdvance":true}",
+    "startPhase:clasificacion",
+    "agent:clasificacion",
+    "completePhase:clasificacion:{"phase":"clasificacion"}:{"autoAdvance":true}",
+    "startPhase:conciliacion",
+    "agent:conciliacion",
+    "completePhase:conciliacion:{"phase":"conciliacion"}:{"autoAdvance":true}",
+    "startPhase:cierre",
+    "agent:cierre",
+    "failPhase:cierre:agent cierre",
+  ],
+  "result": {
+    "error": "agent cierre",
+    "gateResult": {
+      "allPassed": false,
+      "blockers": [],
+      "gates": [],
+      "summary": "agent cierre",
+      "transition": {
+        "from": "cierre",
+        "to": "cierre",
+      },
+    },
+    "phaseId": "cierre",
+    "success": false,
+  },
+  "stateReads": 7,
+}
+`;
+
+exports[`FiscalPhaseOrchestrator.runPeriodContinuously (characterization) > pins result and call sequence: entry gate blocks phase 3 1`] = `
+{
+  "log": [
+    "startPhase:captura",
+    "agent:captura",
+    "completePhase:captura:{"phase":"captura"}:{"autoAdvance":true}",
+    "startPhase:clasificacion",
+    "agent:clasificacion",
+    "completePhase:clasificacion:{"phase":"clasificacion"}:{"autoAdvance":true}",
+    "startPhase:conciliacion",
+    "failPhase:conciliacion:entry conciliacion",
+  ],
+  "result": {
+    "error": "entry conciliacion",
+    "gateResult": {
+      "allPassed": false,
+      "blockers": [],
+      "gates": [],
+      "summary": "entry conciliacion",
+      "transition": {
+        "from": "conciliacion",
+        "to": "conciliacion",
+      },
+    },
+    "phaseId": "conciliacion",
+    "success": false,
+  },
+  "stateReads": 4,
+}
+`;
+
+exports[`FiscalPhaseOrchestrator.runPeriodContinuously (characterization) > pins result and call sequence: exit gate blocks phase 2 1`] = `
+{
+  "log": [
+    "startPhase:captura",
+    "agent:captura",
+    "completePhase:captura:{"phase":"captura"}:{"autoAdvance":true}",
+    "startPhase:clasificacion",
+    "agent:clasificacion",
+    "completePhase:clasificacion:{"phase":"clasificacion"}:{"autoAdvance":true}",
+  ],
+  "result": {
+    "error": "exit clasificacion",
+    "gateResult": {
+      "allPassed": true,
+      "blockers": [],
+      "gates": [],
+      "summary": "ok",
+      "transition": {
+        "from": "clasificacion",
+        "to": "clasificacion",
+      },
+    },
+    "phaseId": "clasificacion",
+    "success": false,
+  },
+  "stateReads": 3,
+}
+`;
+
+exports[`FiscalPhaseOrchestrator.runPeriodContinuously (characterization) > pins result and call sequence: full cycle reaches auditoria 1`] = `
+{
+  "log": [
+    "startPhase:captura",
+    "agent:captura",
+    "completePhase:captura:{"phase":"captura"}:{"autoAdvance":true}",
+    "startPhase:clasificacion",
+    "agent:clasificacion",
+    "completePhase:clasificacion:{"phase":"clasificacion"}:{"autoAdvance":true}",
+    "startPhase:conciliacion",
+    "agent:conciliacion",
+    "completePhase:conciliacion:{"phase":"conciliacion"}:{"autoAdvance":true}",
+    "startPhase:cierre",
+    "agent:cierre",
+    "completePhase:cierre:{"phase":"cierre"}:{"autoAdvance":true}",
+    "startPhase:declaracion",
+    "agent:declaracion",
+    "completePhase:declaracion:{"phase":"declaracion"}:{"autoAdvance":true}",
+    "startPhase:auditoria",
+    "agent:auditoria",
+    "completePhase:auditoria:{"phase":"auditoria"}:{"autoAdvance":true}",
+  ],
+  "result": {
+    "gateResult": {
+      "allPassed": true,
+      "blockers": [],
+      "gates": [],
+      "summary": "ok",
+      "transition": {
+        "from": "auditoria",
+        "to": "auditoria",
+      },
+    },
+    "phaseId": "auditoria",
+    "success": true,
+  },
+  "stateReads": 12,
+}
+`;
+
+exports[`FiscalPhaseOrchestrator.runPeriodContinuously (characterization) > pins result and call sequence: period state missing before agent 1`] = `
+{
+  "log": [
+    "startPhase:captura",
+    "agent:captura",
+    "completePhase:captura:{"phase":"captura"}:{"autoAdvance":true}",
+    "startPhase:clasificacion",
+  ],
+  "result": {
+    "gateResult": {
+      "allPassed": true,
+      "blockers": [],
+      "gates": [],
+      "summary": "ok",
+      "transition": {
+        "from": "captura",
+        "to": "captura",
+      },
+    },
+    "phaseId": "captura",
+    "success": true,
+  },
+  "stateReads": 3,
+}
+`;
+
+exports[`FiscalPhaseOrchestrator.runPeriodContinuously (characterization) > pins result and call sequence: startPeriod fails 1`] = `
+{
+  "log": [],
+  "result": {
+    "error": "no db",
+    "gateResult": {
+      "allPassed": false,
+      "blockers": [],
+      "gates": [],
+      "summary": "Failed to start period: no db",
+      "transition": {
+        "from": "captura",
+        "to": "captura",
+      },
+    },
+    "phaseId": "captura",
+    "success": false,
+  },
+  "stateReads": 0,
+}
+`;
+
+exports[`FiscalPhaseOrchestrator.runPeriodContinuously (characterization) > pins result and call sequence: startPeriod fails without error 1`] = `
+{
+  "log": [],
+  "result": {
+    "error": undefined,
+    "gateResult": {
+      "allPassed": false,
+      "blockers": [],
+      "gates": [],
+      "summary": "Failed to start period: undefined",
+      "transition": {
+        "from": "captura",
+        "to": "captura",
+      },
+    },
+    "phaseId": "captura",
+    "success": false,
+  },
+  "stateReads": 0,
+}
+`;
+
+exports[`FiscalPhaseOrchestrator.runPeriodContinuously (characterization) > pins result and call sequence: state vanishes after completing phase 4 1`] = `
+{
+  "log": [
+    "startPhase:captura",
+    "agent:captura",
+    "completePhase:captura:{"phase":"captura"}:{"autoAdvance":true}",
+    "startPhase:clasificacion",
+    "agent:clasificacion",
+    "completePhase:clasificacion:{"phase":"clasificacion"}:{"autoAdvance":true}",
+    "startPhase:conciliacion",
+    "agent:conciliacion",
+    "completePhase:conciliacion:{"phase":"conciliacion"}:{"autoAdvance":true}",
+    "startPhase:cierre",
+    "agent:cierre",
+    "completePhase:cierre:{"phase":"cierre"}:{"autoAdvance":true}",
+  ],
+  "result": {
+    "gateResult": {
+      "allPassed": true,
+      "blockers": [],
+      "gates": [],
+      "summary": "ok",
+      "transition": {
+        "from": "cierre",
+        "to": "cierre",
+      },
+    },
+    "phaseId": "cierre",
+    "success": true,
+  },
+  "stateReads": 8,
+}
+`;

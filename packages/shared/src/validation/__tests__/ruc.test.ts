@@ -128,3 +128,26 @@ describe("isNumericString", () => {
 		expect(isNumericString("123456789!")).toBe(false);
 	});
 });
+
+describe("isValidRUC - Módulo 11 special cases and weights", () => {
+	it("maps expected check digit 10 to 0", () => {
+		expect(isValidRUC("20123450010")).toBe(true);
+		expect(isValidRUC("20123450011")).toBe(false);
+	});
+
+	it("maps expected check digit 11 to 1", () => {
+		expect(isValidRUC("20123450061")).toBe(true);
+		expect(isValidRUC("20123450060")).toBe(false);
+	});
+
+	it.each(["20123456786", "20492928373", "20123450010", "20123450061"])(
+		"rejects %s when any one of the first 10 digits changes by one",
+		(valid) => {
+			for (let i = 0; i < 10; i++) {
+				const digit = Number(valid[i]);
+				const changed = `${valid.slice(0, i)}${(digit + 1) % 10}${valid.slice(i + 1)}`;
+				expect(isValidRUC(changed), `position ${i}`).toBe(false);
+			}
+		},
+	);
+});

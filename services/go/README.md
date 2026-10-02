@@ -2,7 +2,7 @@
 
 ## Por qué existe Go aquí
 
-Los servicios en Go cubren **workers de alto throughput** y rutas muy acotadas donde el runtime y el ecosistema estándar aportan más que Bun/TS para el mismo coste operativo. La decisión de capas está en [ADR-015](../../docs/02-adr/adr-015-layered-language-placement-ts-go-rust.md).
+Los servicios en Go cubren **workers de alto throughput** y rutas muy acotadas donde el runtime y el ecosistema estándar aportan más que Bun/TS para el mismo coste operativo. La decisión de capas está en ADR-015 _(no disponible)_.
 
 ## Criterio de permanencia
 

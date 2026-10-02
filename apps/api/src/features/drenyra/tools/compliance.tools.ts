@@ -7,8 +7,9 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
+
+import type { AgentContext, AgentTool } from "@drenyra/agent-runtime";
 import { Money, TaxCalculator } from "@drenyra/domain";
-import type { AgentContext, AgentTool } from "@drenyra/pi";
 import { z } from "zod";
 
 /**

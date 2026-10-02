@@ -378,4 +378,4 @@ Telemetría de producto que alimenta directamente el roadmap.
 - [Product Philosophy](./product-philosophy.md) — Tesis definitiva
 - [Capability Map](./capability-map.md) — Capacidades del programa
 - [SDD Audit](./sdd-audit.md) — Estado actual de SDDs
-- [OpenSpec Changes](../../openspec/changes/) — SDDs en ejecución
+- [OpenSpec Changes](https://github.com/arkelythex/drenyra-command-center/tree/d428534/openspec/changes/) — SDDs en ejecución

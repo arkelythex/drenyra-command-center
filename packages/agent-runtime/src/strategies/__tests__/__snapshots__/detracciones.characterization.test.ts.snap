@@ -1,0 +1,399 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`detracciones (characterization) > pins anomalies: at credit threshold, missing 1`] = `
+[
+  {
+    "actualValue": 700,
+    "confidence": 0.95,
+    "context": {
+      "emisorRuc": "20123456789",
+      "expectedAmount": 105,
+      "expectedRate": 15,
+      "legalReference": "D.S. 155-2007-EF — SPOT rates by operation code",
+      "numero": "7",
+      "operationCode": "022",
+      "operationDescription": "Servicios de construcción",
+      "receptorRuc": "20123456788",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "totalAmount": 700,
+    },
+    "detectionMethod": "detraccion_missing",
+    "deviation": 0,
+    "entityId": "INV",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "detraccion_missing-INV",
+    "metric": "detraccion_missing",
+    "reasoning": "01 F001-00000007: No se aplicó detracción. Operación código 022 (Servicios de construcción) requiere 15% de detracción. Monto S/ 700.00 > umbral S/ 700.",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`detracciones (characterization) > pins anomalies: below credit threshold 1`] = `[]`;
+
+exports[`detracciones (characterization) > pins anomalies: cash payment CONT below threshold 1`] = `[]`;
+
+exports[`detracciones (characterization) > pins anomalies: cash payment lowercase cont at threshold 1`] = `
+[
+  {
+    "actualValue": 700,
+    "confidence": 0.95,
+    "context": {
+      "emisorRuc": "20123456789",
+      "expectedAmount": 105,
+      "expectedRate": 15,
+      "legalReference": "D.S. 155-2007-EF — SPOT rates by operation code",
+      "numero": "7",
+      "operationCode": "022",
+      "operationDescription": "Servicios de construcción",
+      "receptorRuc": "20123456788",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "totalAmount": 700,
+    },
+    "detectionMethod": "detraccion_missing",
+    "deviation": 0,
+    "entityId": "INV",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "detraccion_missing-INV",
+    "metric": "detraccion_missing",
+    "reasoning": "01 F001-00000007: No se aplicó detracción. Operación código 022 (Servicios de construcción) requiere 15% de detracción. Monto S/ 700.00 > umbral S/ 700.",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`detracciones (characterization) > pins anomalies: missing (null) 1`] = `
+[
+  {
+    "actualValue": 10000,
+    "confidence": 0.95,
+    "context": {
+      "emisorRuc": "20123456789",
+      "expectedAmount": 1500,
+      "expectedRate": 15,
+      "legalReference": "D.S. 155-2007-EF — SPOT rates by operation code",
+      "numero": "7",
+      "operationCode": "022",
+      "operationDescription": "Servicios de construcción",
+      "receptorRuc": "20123456788",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "totalAmount": 10000,
+    },
+    "detectionMethod": "detraccion_missing",
+    "deviation": 0,
+    "entityId": "INV",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "detraccion_missing-INV",
+    "metric": "detraccion_missing",
+    "reasoning": "01 F001-00000007: No se aplicó detracción. Operación código 022 (Servicios de construcción) requiere 15% de detracción. Monto S/ 10000.00 > umbral S/ 700.",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`detracciones (characterization) > pins anomalies: missing (zero) 1`] = `
+[
+  {
+    "actualValue": 10000,
+    "confidence": 0.95,
+    "context": {
+      "emisorRuc": "20123456789",
+      "expectedAmount": 1500,
+      "expectedRate": 15,
+      "legalReference": "D.S. 155-2007-EF — SPOT rates by operation code",
+      "numero": "7",
+      "operationCode": "022",
+      "operationDescription": "Servicios de construcción",
+      "receptorRuc": "20123456788",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "totalAmount": 10000,
+    },
+    "detectionMethod": "detraccion_missing",
+    "deviation": 0,
+    "entityId": "INV",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "detraccion_missing-INV",
+    "metric": "detraccion_missing",
+    "reasoning": "01 F001-00000007: No se aplicó detracción. Operación código 022 (Servicios de construcción) requiere 15% de detracción. Monto S/ 10000.00 > umbral S/ 700.",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`detracciones (characterization) > pins anomalies: missing at 49999.99 (high) 1`] = `
+[
+  {
+    "actualValue": 49999.99,
+    "confidence": 0.95,
+    "context": {
+      "emisorRuc": "20123456789",
+      "expectedAmount": 7500,
+      "expectedRate": 15,
+      "legalReference": "D.S. 155-2007-EF — SPOT rates by operation code",
+      "numero": "7",
+      "operationCode": "022",
+      "operationDescription": "Servicios de construcción",
+      "receptorRuc": "20123456788",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "totalAmount": 49999.99,
+    },
+    "detectionMethod": "detraccion_missing",
+    "deviation": 0,
+    "entityId": "INV",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "detraccion_missing-INV",
+    "metric": "detraccion_missing",
+    "reasoning": "01 F001-00000007: No se aplicó detracción. Operación código 022 (Servicios de construcción) requiere 15% de detracción. Monto S/ 49999.99 > umbral S/ 700.",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`detracciones (characterization) > pins anomalies: missing at 50000 (critical) 1`] = `
+[
+  {
+    "actualValue": 50000,
+    "confidence": 0.95,
+    "context": {
+      "emisorRuc": "20123456789",
+      "expectedAmount": 7500,
+      "expectedRate": 15,
+      "legalReference": "D.S. 155-2007-EF — SPOT rates by operation code",
+      "numero": "7",
+      "operationCode": "022",
+      "operationDescription": "Servicios de construcción",
+      "receptorRuc": "20123456788",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "totalAmount": 50000,
+    },
+    "detectionMethod": "detraccion_missing",
+    "deviation": 0,
+    "entityId": "INV",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "detraccion_missing-INV",
+    "metric": "detraccion_missing",
+    "reasoning": "01 F001-00000007: No se aplicó detracción. Operación código 022 (Servicios de construcción) requiere 15% de detracción. Monto S/ 50000.00 > umbral S/ 700.",
+    "severity": "critical",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`detracciones (characterization) > pins anomalies: numero padded in message 1`] = `
+[
+  {
+    "actualValue": 10000,
+    "confidence": 0.95,
+    "context": {
+      "emisorRuc": "20123456789",
+      "expectedAmount": 1500,
+      "expectedRate": 15,
+      "legalReference": "D.S. 155-2007-EF — SPOT rates by operation code",
+      "numero": "123",
+      "operationCode": "022",
+      "operationDescription": "Servicios de construcción",
+      "receptorRuc": "20123456788",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "totalAmount": 10000,
+    },
+    "detectionMethod": "detraccion_missing",
+    "deviation": 0,
+    "entityId": "INV",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "detraccion_missing-INV",
+    "metric": "detraccion_missing",
+    "reasoning": "01 F001-00000123: No se aplicó detracción. Operación código 022 (Servicios de construcción) requiere 15% de detracción. Monto S/ 10000.00 > umbral S/ 700.",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`detracciones (characterization) > pins anomalies: right pct, deposited 1`] = `[]`;
+
+exports[`detracciones (characterization) > pins anomalies: right pct, not deposited 20 days since (daysLate 15, low) 1`] = `
+[
+  {
+    "actualValue": 10000,
+    "confidence": 0.95,
+    "context": {
+      "daysLate": 15,
+      "depositDeadline": 5,
+      "detraccionAmount": 1500,
+      "emisionDate": "2026-06-11T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "numero": "7",
+      "operationCode": "022",
+      "receptorRuc": "20123456788",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "totalAmount": 10000,
+    },
+    "detectionMethod": "detraccion_not_deposited",
+    "deviation": 0,
+    "entityId": "INV",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "detraccion_not_deposited-INV",
+    "metric": "detraccion_not_deposited",
+    "reasoning": "Detracción aplicada (S/ 1500.00) pero no depositada (15 días después del plazo de 5 días). Debe depositarse en cuenta de detracciones de SUNAT.",
+    "severity": "low",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`detracciones (characterization) > pins anomalies: right pct, not deposited 21 days since (daysLate 16, high) 1`] = `
+[
+  {
+    "actualValue": 10000,
+    "confidence": 0.95,
+    "context": {
+      "daysLate": 16,
+      "depositDeadline": 5,
+      "detraccionAmount": 1500,
+      "emisionDate": "2026-06-10T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "numero": "7",
+      "operationCode": "022",
+      "receptorRuc": "20123456788",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "totalAmount": 10000,
+    },
+    "detectionMethod": "detraccion_not_deposited",
+    "deviation": 0,
+    "entityId": "INV",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "detraccion_not_deposited-INV",
+    "metric": "detraccion_not_deposited",
+    "reasoning": "Detracción aplicada (S/ 1500.00) pero no depositada (16 días después del plazo de 5 días). Debe depositarse en cuenta de detracciones de SUNAT.",
+    "severity": "high",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`detracciones (characterization) > pins anomalies: right pct, not deposited day 5 1`] = `[]`;
+
+exports[`detracciones (characterization) > pins anomalies: right pct, not deposited day 6 (low) 1`] = `
+[
+  {
+    "actualValue": 10000,
+    "confidence": 0.95,
+    "context": {
+      "daysLate": 1,
+      "depositDeadline": 5,
+      "detraccionAmount": 1500,
+      "emisionDate": "2026-06-25T12:00:00.000Z",
+      "emisorRuc": "20123456789",
+      "numero": "7",
+      "operationCode": "022",
+      "receptorRuc": "20123456788",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "totalAmount": 10000,
+    },
+    "detectionMethod": "detraccion_not_deposited",
+    "deviation": 0,
+    "entityId": "INV",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "detraccion_not_deposited-INV",
+    "metric": "detraccion_not_deposited",
+    "reasoning": "Detracción aplicada (S/ 1500.00) pero no depositada (1 días después del plazo de 5 días). Debe depositarse en cuenta de detracciones de SUNAT.",
+    "severity": "low",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`detracciones (characterization) > pins anomalies: unknown operation code 1`] = `[]`;
+
+exports[`detracciones (characterization) > pins anomalies: wrong pct diff exactly 1 1`] = `[]`;
+
+exports[`detracciones (characterization) > pins anomalies: wrong pct diff just over 1 1`] = `
+[
+  {
+    "actualValue": 10000,
+    "confidence": 0.95,
+    "context": {
+      "appliedAmount": 1,
+      "appliedRate": 13.99,
+      "emisorRuc": "20123456789",
+      "expectedAmount": 1500,
+      "expectedRate": 15,
+      "numero": "7",
+      "operationCode": "022",
+      "operationDescription": "Servicios de construcción",
+      "receptorRuc": "20123456788",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "totalAmount": 10000,
+    },
+    "detectionMethod": "detraccion_wrong_percentage",
+    "deviation": 0,
+    "entityId": "INV",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "detraccion_wrong_percentage-INV",
+    "metric": "detraccion_wrong_percentage",
+    "reasoning": "01 F001-00000007: Porcentaje de detracción incorrecto. Aplicado: 13.99%. Esperado: 15% (código 022: Servicios de construcción). Monto S/ 1.00 ≠ esperado S/ 1500.00.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;
+
+exports[`detracciones (characterization) > pins anomalies: wrong pct null percentage 1`] = `
+[
+  {
+    "actualValue": 10000,
+    "confidence": 0.95,
+    "context": {
+      "appliedAmount": 5,
+      "appliedRate": null,
+      "emisorRuc": "20123456789",
+      "expectedAmount": 1500,
+      "expectedRate": 15,
+      "numero": "7",
+      "operationCode": "022",
+      "operationDescription": "Servicios de construcción",
+      "receptorRuc": "20123456788",
+      "serie": "F001",
+      "tipoDocumento": "01",
+      "totalAmount": 10000,
+    },
+    "detectionMethod": "detraccion_wrong_percentage",
+    "deviation": 0,
+    "entityId": "INV",
+    "entityType": "cpe",
+    "expectedValue": 0,
+    "id": "detraccion_wrong_percentage-INV",
+    "metric": "detraccion_wrong_percentage",
+    "reasoning": "01 F001-00000007: Porcentaje de detracción incorrecto. Aplicado: null%. Esperado: 15% (código 022: Servicios de construcción). Monto S/ 5.00 ≠ esperado S/ 1500.00.",
+    "severity": "medium",
+    "timestamp": "2026-07-01T12:00:00.000Z",
+  },
+]
+`;

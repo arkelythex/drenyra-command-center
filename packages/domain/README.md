@@ -143,7 +143,7 @@ packages/domain/ NO debe importar de:
 - Cualquier paquete externo (runtime)
 - Capas de infraestructura (DB, HTTP, filesystem)
 - Paquetes de aplicación (@drenyra/application, apps/api)
-- Paquetes de AI/agentes (@drenyra/ai, @drenyra/pi)
+- Paquetes de AI/agentes (@drenyra/ai, @drenyra/agent-runtime)
 ```
 
 ---

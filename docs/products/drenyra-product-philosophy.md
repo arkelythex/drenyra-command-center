@@ -1189,11 +1189,11 @@ Use this checklist for product, web, CLI, and agentic accounting changes:
 
 | Plan                                                                                                                        | Purpose                                |
 | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| [`drenyra-north-star-philosophy`](../../openspec/changes/drenyra-north-star-philosophy/proposal.md)                         | Parent strategy and product guardrails |
-| [`drenyra-web-agentic-accounting-philosophy`](../../openspec/changes/drenyra-web-agentic-accounting-philosophy/proposal.md) | Web command center model               |
-| [`drenyra-cli-gentleman-fiscal-terminal`](../../openspec/changes/drenyra-cli-gentleman-fiscal-terminal/proposal.md)         | CLI fiscal terminal model              |
-| [`drenyra-philosophy-docs-alignment`](../../openspec/changes/drenyra-philosophy-docs-alignment/proposal.md)                 | Documentation and guidance rollout     |
-| [`drenyra-accountant-operating-system`](../../openspec/changes/drenyra-accountant-operating-system/proposal.md)             | Accounting OS design                   |
-| [`drenyra-cierre-flow`](../../openspec/changes/drenyra-cierre-flow/proposal.md)                                             | Monthly close workflow                 |
-| [`drenyra-global-shell`](../../openspec/changes/drenyra-global-shell/proposal.md)                                           | Application shell architecture         |
-| [`drenyra-h02-tenant-isolation`](../../openspec/changes/drenyra-h02-tenant-isolation/design.md)                             | Tenant isolation design                |
+| [`drenyra-north-star-philosophy`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-north-star-philosophy/proposal.md)                         | Parent strategy and product guardrails |
+| [`drenyra-web-agentic-accounting-philosophy`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-web-agentic-accounting-philosophy/proposal.md) | Web command center model               |
+| [`drenyra-cli-gentleman-fiscal-terminal`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-cli-gentleman-fiscal-terminal/proposal.md)         | CLI fiscal terminal model              |
+| [`drenyra-philosophy-docs-alignment`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-philosophy-docs-alignment/proposal.md)                 | Documentation and guidance rollout     |
+| [`drenyra-accountant-operating-system`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-accountant-operating-system/proposal.md)             | Accounting OS design                   |
+| [`drenyra-cierre-flow`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-cierre-flow/proposal.md)                                             | Monthly close workflow                 |
+| [`drenyra-global-shell`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-global-shell/proposal.md)                                           | Application shell architecture         |
+| [`drenyra-h02-tenant-isolation`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-h02-tenant-isolation/design.md)                             | Tenant isolation design                |

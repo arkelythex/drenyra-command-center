@@ -1,0 +1,268 @@
+/**
+ * @drenyra/agent-runtime — Drenyra Agent Harness
+ *
+ * Standalone agent runtime extracted from @drenyra/agents.
+ * Provides orchestration, harness, delegation, approval gates,
+ * fiscal strategies, and agent type definitions.
+ *
+ * @module @drenyra/agent-runtime
+ */
+
+export type { AgentContext } from "@drenyra/fiscal-agent-domain/agent-context";
+// ─── Fiscal Agent Domain — Pure domain types ────────────────────────────
+export type {
+	AgentCapability,
+	AgentDefinition,
+} from "@drenyra/fiscal-agent-domain/agent-definition";
+export type {
+	ApprovalLevel,
+	ApprovalPolicy,
+	ApprovalRequirement,
+} from "@drenyra/fiscal-agent-domain/approval-policy";
+export {
+	compareApprovalLevel,
+	requiresGovernanceBundle,
+	requiresHumanApproval,
+} from "@drenyra/fiscal-agent-domain/approval-policy";
+export type {
+	DelegationPolicy,
+	DelegationRule,
+} from "@drenyra/fiscal-agent-domain/delegation-policy";
+export type {
+	Jurisdiction,
+	RiskTier,
+} from "@drenyra/fiscal-agent-domain/risk-tier";
+// ─── Pi Adapter — Hexagonal AgentRuntimePort ────────────────────────────
+export type {
+	AgentRuntimePort,
+	CreateSessionRequest,
+	FiscalPrompt,
+	ForkSessionRequest,
+	RuntimeEvent,
+	RuntimeEventType,
+	SessionHandle,
+	ShadowComparison,
+	Unsubscribe,
+} from "./adapter";
+export {
+	LegacyMastraRuntimeAdapter,
+	PiAgentRuntimeAdapter,
+	ShadowRunner,
+} from "./adapter";
+// ─── Agents module ──────────────────────────────
+export * from "./agents";
+export * from "./fiscal-agentic-ledger";
+export {
+	createDefaultHandler,
+	registerDefaultHandlers,
+} from "./harness/handlers/defaults";
+// ─── Harness — Delegation, Approval, Execution ─────────────────────────
+export { createDrenyraHarness, DrenyraHarness } from "./harness/harness";
+export type {
+	AgentHandler,
+	HarnessExecuteResponse,
+	HarnessOptions,
+} from "./harness/types";
+// ─── Legacy compatibility layer ──────────────────────────────
+export {
+	clearRegisteredAgents,
+	getAllRegisteredAgents,
+	getRegisteredAgent,
+} from "./legacy/agent-registry";
+export type {
+	LegacyCapabilityToolsLookupInput,
+	LegacyPolicyPreviewInput,
+	NormalizedLegacyCapabilityToolsLookup,
+	NormalizedLegacyPolicyPreview,
+} from "./legacy/control-plane-facade";
+export {
+	createGovernanceValidator,
+	normalizeLegacyCapabilityToolsLookup,
+	normalizeLegacyPolicyPreviewInput,
+} from "./legacy/control-plane-facade";
+// ─── Legacy (temporary) ───────────────────────────
+export { QueueManager, queueManager } from "./legacy/queue-manager";
+// ─── Lexori — Fiscal/Regulatory Skill Registry ────────────────────────
+export * from "./lexori";
+// ─── Mastra Implementations ───────────────────────────────────────────
+export type {
+	ApprovalResult,
+	AuditEvent,
+	AuditReport,
+	Classification,
+	ClassificationRisk,
+	ClassifierReport,
+	ComplianceAssessmentResult,
+	ComplianceContext,
+	ComplianceEvidenceRef,
+	ComplianceFinding,
+	ComplianceReportBase,
+	ComplianceSeverity,
+	Conflict,
+	ConsentRecord,
+	ConsentReport,
+	DataCategory,
+	FiscalEvent,
+	FiscalEventHandler,
+	FiscalEventType,
+	FiscalMemoryCandidate,
+	FiscalMemoryCandidateCategory,
+	FiscalMemoryCandidateSeverity,
+	GDPRCheck,
+	GDPRReport,
+	GDPRSeverity,
+	GDPRStatus,
+	GDPRViolation,
+	IntentHandler,
+	IntentRule,
+	LatinOrchestrationResult,
+	MaterialAction,
+	MergeResult,
+	OrchestrationResult,
+	PhaseTiming,
+	PrivacyReport,
+	Regulation,
+	RegulationReport,
+	RegulationStatus,
+	RetentionAction,
+	RetentionPolicy,
+	RetentionReport,
+	SubAgentResult,
+	TaskStep,
+} from "./mastra";
+export {
+	AgentEventBus,
+	ApprovalGateEngine,
+	ApprovalStore,
+	auditLoggerAgent,
+	auditLoggerPort,
+	complianceAssessmentAgent,
+	complianceCheckWorkflow,
+	consentManagerAgent,
+	consentManagerPort,
+	createAuditLoggerMemoryCandidates,
+	createDrenyraOrchestrator,
+	createFindingTool,
+	createFiscalMemoryCandidate,
+	createPrivacyMemoryCandidates,
+	createRegulationMemoryCandidates,
+	DomainAgent,
+	DrenyraOrchestrator as MastraDrenyraOrchestrator,
+	dataClassifierAgent,
+	dataClassifierPort,
+	dataRetentionAgent,
+	dataRetentionPort,
+	gdprCheckerAgent,
+	gdprCheckerPort,
+	IntentDetector,
+	LatinModernoOrchestrator,
+	privacyAssessorAgent,
+	privacyAssessorPort,
+	ResultMerger,
+	redactTool,
+	regulationTrackerAgent,
+	regulationTrackerPort,
+	riskScoreTool,
+	runComplianceAssessment,
+	SessionManager,
+	Supervisor,
+	TaskDecomposer,
+} from "./mastra";
+// ─── Mnevori — Per-Node Artifact Persistence ──────────────────────────
+export * from "./mnevori";
+// ─── Plugin System ───────────────────────────────────────────────────────
+export type {
+	AgenticOSPlugin,
+	AgentRegistry,
+	ApprovalEvidence,
+	ApprovalGate,
+	ApprovalGateRegistry,
+	ApprovalVerdict,
+	DomainRegistry,
+	DrenyraSkill,
+	PolicyContext,
+	PolicyDefinition,
+	PolicyRegistry,
+	PolicyResult,
+	SkillContext,
+} from "./plugin/interface";
+export { PluginRegistry } from "./plugin/registry";
+export type {
+	PluginLifecycleConfig,
+	RegisteredPlugin,
+} from "./plugin/types";
+// ─── MCP Protocol ─────────────────────────────────────────────────────
+export type {
+	DrenyraMcpAuditEvent,
+	DrenyraMcpAuditOutcome,
+	DrenyraMcpAuditQuery,
+	DrenyraMcpAuditReader,
+	DrenyraMcpAuditSink,
+	DrenyraMcpAuthorizationDecision,
+	DrenyraMcpAuthorizationInput,
+	DrenyraMcpManifest,
+	DrenyraMcpScope,
+	DrenyraMcpToolContract,
+} from "./protocol/mcp-contract";
+export {
+	authorizeDrenyraMcpTool,
+	buildDrenyraMcpManifest,
+	isDrenyraMcpScope,
+} from "./protocol/mcp-contract";
+// ─── Agent Types (from drenyra-orchestrator) ──────────────────────────
+export type {
+	Agent,
+	AgentMetrics,
+	AgentPort,
+	AgentPriority,
+	AgentResult,
+	Task,
+} from "./types/agent-core";
+export type {
+	ActionResult,
+	AgentTool,
+	AgentToolExecution,
+} from "./types/agent-tool";
+export type {
+	ApprovalDecision,
+	ApprovalRequest,
+	ApprovalState,
+	GovernanceBundleResult,
+} from "./types/approval-gate";
+export {
+	APPROVAL_LEVEL_ORDER,
+	isFiscalAction,
+} from "./types/approval-gate";
+export type {
+	AgentId,
+	AgentIntent,
+	AgentSession,
+	DomainAgentConfig,
+	LatinModernoAgentId,
+	SessionContext,
+	SwarmMode,
+} from "./types/erp-types";
+export { LATIN_AGENTS } from "./types/erp-types";
+export type {
+	DomainResult,
+	EscalationContext,
+	EscalationResolution,
+	LatinAgentId,
+	SubSwarmContext,
+	SubSwarmTask,
+	SwarmContext,
+	SwarmTask,
+	TaskDecompositionResult,
+	TaskPlanType,
+} from "./types/latin-agent";
+export type {
+	AIWorkerTask,
+	CreateTaskDTO,
+	QueueStatsDTO,
+	TaskHandlerFunction,
+	TaskHandlerRegistry,
+	TaskHandlerResult,
+	TaskStatusDTO,
+	WorkerTaskPriority,
+	WorkerTaskStatus,
+} from "./types/worker-task";

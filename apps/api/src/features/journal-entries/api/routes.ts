@@ -1,7 +1,10 @@
 import { Elysia } from "elysia";
 import { companyScopeGuard } from "../../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../../shared/api-response";
-import { resolveOrganizationId } from "../application/_helpers";
+import {
+	resolveOrganizationId,
+	resolveTenantScope,
+} from "../application/_helpers";
 import {
 	approveJournalEntryProposal,
 	rejectJournalEntryProposal,
@@ -18,6 +21,26 @@ import {
 	ListJournalEntriesQuery,
 	UpdateJournalEntryBody,
 } from "./schemas";
+
+/**
+ * Maps tenant-related domain errors to HTTP failures.
+ *
+ * A missing company context is a 403 (fail closed) and an entry outside the
+ * caller's scope is a 404, indistinguishable from a nonexistent one.
+ *
+ * @returns The failure body when the error was mapped, otherwise `null`.
+ */
+function mapTenantError(message: string, set: { status?: number | string }) {
+	if (message.includes("Contexto de empresa requerido")) {
+		set.status = 403;
+		return fail(message, "FORBIDDEN");
+	}
+	if (message.includes("Asiento no encontrado")) {
+		set.status = 404;
+		return fail(message, "NOT_FOUND");
+	}
+	return null;
+}
 
 // ---------------------------------------------------------------------------
 // Routes
@@ -52,8 +75,11 @@ export const journalEntryRoutes = new Elysia({
 
 				return ok(entries);
 			} catch (error) {
+				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				set.status = 500;
-				return fail(getErrorMessage(error), "INTERNAL_ERROR");
+				return fail(message, "INTERNAL_ERROR");
 			}
 		},
 		{
@@ -73,7 +99,8 @@ export const journalEntryRoutes = new Elysia({
 					companyContext?.companyId,
 				);
 
-				const entry = await createJournalEntry({
+				const scope = await resolveTenantScope(companyContext?.companyId);
+				const entry = await createJournalEntry(scope, {
 					organizationId,
 					date: new Date(body.date),
 					gloss: body.gloss,
@@ -92,6 +119,8 @@ export const journalEntryRoutes = new Elysia({
 				return ok(entry);
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (
 					message.includes("no encontrada") ||
 					message.includes("balanceado") ||
@@ -117,7 +146,8 @@ export const journalEntryRoutes = new Elysia({
 		"/:id",
 		async ({ params, companyContext, set }) => {
 			try {
-				const entry = await getJournalEntry({ id: params.id });
+				const scope = await resolveTenantScope(companyContext?.companyId);
+				const entry = await getJournalEntry(scope, { id: params.id });
 				if (!entry) {
 					set.status = 404;
 					return fail("Asiento no encontrado", "NOT_FOUND");
@@ -125,8 +155,11 @@ export const journalEntryRoutes = new Elysia({
 
 				return ok(entry);
 			} catch (error) {
+				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				set.status = 500;
-				return fail(getErrorMessage(error), "INTERNAL_ERROR");
+				return fail(message, "INTERNAL_ERROR");
 			}
 		},
 		{
@@ -142,7 +175,8 @@ export const journalEntryRoutes = new Elysia({
 		"/:id",
 		async ({ params, body, companyContext, set }) => {
 			try {
-				const entry = await updateJournalEntry(params.id, {
+				const scope = await resolveTenantScope(companyContext?.companyId);
+				const entry = await updateJournalEntry(scope, params.id, {
 					date: body.date ? new Date(body.date) : undefined,
 					gloss: body.gloss,
 					lines: body.lines?.map((line) => ({
@@ -159,6 +193,8 @@ export const journalEntryRoutes = new Elysia({
 				return ok(entry);
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (message.includes("Solo se pueden editar")) {
 					set.status = 400;
 					return fail(message, "VALIDATION_ERROR");
@@ -181,11 +217,14 @@ export const journalEntryRoutes = new Elysia({
 		"/:id",
 		async ({ params, companyContext, set }) => {
 			try {
-				await deleteJournalEntry(params.id);
+				const scope = await resolveTenantScope(companyContext?.companyId);
+				await deleteJournalEntry(scope, params.id);
 
 				return ok({ deleted: true });
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (message.includes("Solo se pueden eliminar")) {
 					set.status = 400;
 					return fail(message, "VALIDATION_ERROR");
@@ -207,7 +246,9 @@ export const journalEntryRoutes = new Elysia({
 		"/:id/mayorizar",
 		async ({ params, companyContext, set }) => {
 			try {
+				const scope = await resolveTenantScope(companyContext?.companyId);
 				const entry = await updateJournalEntryStatus(
+					scope,
 					params.id,
 					"mayorizado",
 					"system",
@@ -216,6 +257,8 @@ export const journalEntryRoutes = new Elysia({
 				return ok(entry);
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (message.includes("Solo se pueden mayorizar")) {
 					set.status = 400;
 					return fail(message, "VALIDATION_ERROR");
@@ -237,7 +280,9 @@ export const journalEntryRoutes = new Elysia({
 		"/:id/declarar",
 		async ({ params, companyContext, set }) => {
 			try {
+				const scope = await resolveTenantScope(companyContext?.companyId);
 				const entry = await updateJournalEntryStatus(
+					scope,
 					params.id,
 					"declarado",
 					"system",
@@ -246,6 +291,8 @@ export const journalEntryRoutes = new Elysia({
 				return ok(entry);
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (message.includes("Solo se pueden declarar")) {
 					set.status = 400;
 					return fail(message, "VALIDATION_ERROR");
@@ -267,13 +314,17 @@ export const journalEntryRoutes = new Elysia({
 		"/:id/approve",
 		async ({ params, companyContext, set }) => {
 			try {
+				const scope = await resolveTenantScope(companyContext?.companyId);
 				const entry = await approveJournalEntryProposal(
+					scope,
 					params.id,
 					companyContext?.userId ?? "system",
 				);
 				return ok(entry);
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (
 					message.includes("Solo se pueden mayorizar") ||
 					message.includes("no encontrado")
@@ -298,13 +349,17 @@ export const journalEntryRoutes = new Elysia({
 		"/:id/reject",
 		async ({ params, companyContext, set }) => {
 			try {
+				const scope = await resolveTenantScope(companyContext?.companyId);
 				const result = await rejectJournalEntryProposal(
+					scope,
 					params.id,
 					companyContext?.userId ?? "system",
 				);
 				return ok(result);
 			} catch (error) {
 				const message = getErrorMessage(error);
+				const mapped = mapTenantError(message, set);
+				if (mapped) return mapped;
 				if (
 					message.includes("Solo se pueden rechazar") ||
 					message.includes("no encontrado")

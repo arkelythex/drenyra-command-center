@@ -149,14 +149,24 @@ describe("CPELog", () => {
 					fc.string({ minLength: 0, maxLength: 10 }),
 					(ticket: string, hash: string) => {
 						const log = CPELog.create("cpe-pbt", "inv-pbt");
+						// Blank (whitespace-only) values are as invalid as empty ones.
+						const valid = ticket.trim().length > 0 && hash.trim().length > 0;
 						try {
 							log.submit(ticket, hash);
-							return ticket.length > 0 && hash.length > 0;
+							return valid;
 						} catch {
-							return ticket.length === 0 || hash.length === 0;
+							return !valid;
 						}
 					},
 				),
+				// Pinned counterexamples: whitespace-only values must always be rejected.
+				{
+					examples: [
+						[" ", " "],
+						["  ", "hash"],
+						["ticket", "\t"],
+					],
+				},
 			);
 		});
 	});

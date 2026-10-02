@@ -22,14 +22,6 @@ const REQUIRED_SURFACES: RequiredSurface[] = [
 		path: "apps/web/MAP.md",
 		description: "web navigation and product model",
 	},
-	{
-		path: "apps/cli/MAP.md",
-		description: "CLI navigation and product model",
-	},
-	{
-		path: "apps/web/src/routes/product-surfaces.tsx",
-		description: "web product surfaces route",
-	},
 ];
 
 function main(): void {

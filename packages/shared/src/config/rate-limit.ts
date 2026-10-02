@@ -29,22 +29,25 @@ class MemoryStore implements RateLimitStore {
 	delete(key: string) {
 		this.store.delete(key);
 	}
+	/** Removes every entry whose window has already elapsed. */
+	deleteExpired(now: number) {
+		for (const [key, entry] of this.store) {
+			if (entry.resetTime < now) this.store.delete(key);
+		}
+	}
 }
 
-const defaultStore: RateLimitStore = new MemoryStore();
+const defaultStore = new MemoryStore();
 
 const cleanup = setInterval(() => {
-	const now = Date.now();
-	for (const [key, entry] of (defaultStore as MemoryStore).store) {
-		if (entry.resetTime < now) defaultStore.delete(key);
-	}
+	defaultStore.deleteExpired(Date.now());
 }, 300_000);
 cleanup.unref?.();
 
 function getClientIp(request: Request): string {
 	const realIp = request.headers.get("x-real-ip");
 	const forwardedFor = request.headers.get("x-forwarded-for");
-	if (forwardedFor) return forwardedFor.split(",")[0].trim();
+	if (forwardedFor) return forwardedFor.split(",")[0]?.trim() ?? "unknown";
 	return realIp || "unknown";
 }
 

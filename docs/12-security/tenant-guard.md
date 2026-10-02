@@ -1,5 +1,7 @@
 # CI Guardrail — H02 Tenant Isolation Hardening
 
+**Última actualización**: 2026-08-02
+
 Este guardrail impide que aparezcan NUEVOS usos de métodos repository sin scope
 durante la migración H02. Solo los callers en la allowlist temporal están permitidos.
 

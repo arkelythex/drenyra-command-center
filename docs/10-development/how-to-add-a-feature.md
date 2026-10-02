@@ -7,6 +7,8 @@ audience: developer
 
 # Cómo agregar una feature
 
+**Última actualización**: 2026-08-02
+
 Este documento describe el pipeline para agregar una nueva feature a Drenyra, desde el dominio hasta la interfaz de usuario.
 
 ## Pipeline

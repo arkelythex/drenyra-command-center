@@ -163,6 +163,6 @@ The auditor does not need access to Drenyra. They do not need a database connect
 
 ## Next Steps
 
-- Read [RED — Receipt-Driven Execution](../04-explanation/receipt-driven-execution.md) — the full protocol
-- [Evidence Graph](../04-explanation/evidence-graph.md) — how receipts connect to evidence
-- [Canonical Hashing](../04-explanation/canonical-hashing.md) — how hashes work
+- Read RED — Receipt-Driven Execution _(no disponible)_ — the full protocol
+- Evidence Graph _(no disponible)_ — how receipts connect to evidence
+- Canonical Hashing _(no disponible)_ — how hashes work

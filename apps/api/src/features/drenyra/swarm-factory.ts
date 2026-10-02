@@ -17,14 +17,14 @@
  * (i.e., the defineAgent() calls at module level have executed).
  */
 
-import type { Agent, LatinAgentId } from "@drenyra/pi";
+import type { Agent, LatinAgentId } from "@drenyra/agent-runtime";
 import {
 	ApprovalGateEngine,
 	ApprovalStore,
 	DomainAgent,
 	getAllRegisteredAgents,
 	LatinModernoOrchestrator,
-} from "@drenyra/pi";
+} from "@drenyra/agent-runtime";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -314,6 +314,7 @@ function findBestAgentForDomain(
  * @param approvalGate — The ApprovalGateEngine instance (from Drenyra bootstrap)
  * @returns A configured LatinModernoOrchestrator ready for `enableSwarmMode()`.
  */
+
 export function createSwarmOrchestrator(
 	_approvalGate: ApprovalGateEngine,
 ): LatinModernoOrchestrator {
@@ -396,6 +397,7 @@ export function createSwarmOrchestrator(
  * @param approvalGate — ApprovalGateEngine (defaults to a new instance with empty store if omitted)
  * @returns A configured LatinModernoOrchestrator
  */
+
 export function createSwarmOrchestratorFromAgents(
 	agents: Agent[],
 	_approvalGate?: ApprovalGateEngine,

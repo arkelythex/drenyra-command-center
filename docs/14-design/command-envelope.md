@@ -10,6 +10,8 @@ status: 'active'
 
 # Drenyra Command Envelope 2026
 
+**Última actualización**: 2026-10-02
+
 ## Purpose
 
 Phase 4 needs CLI and Web to show the same fiscal truth for every operator command.
@@ -96,6 +98,6 @@ diff or trace context.
 
 ## Related docs
 
-- [Drenyra Agent Capability Matrix](./drenyra-agent-capability-matrix-2026.md)
-- [Fiscal Agentic Ledger Event Envelope](./fiscal-agentic-ledger-event-envelope-2026.md)
-- [Fiscal Intelligence Platform Architecture](./fiscal-intelligence-platform-architecture-2026.md)
+- [Drenyra Agent Capability Matrix](./agent-capability-matrix.md)
+- Fiscal Agentic Ledger Event Envelope _(no disponible)_
+- [Fiscal Intelligence Platform Architecture](./fiscal-intelligence-platform.md)

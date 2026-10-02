@@ -7,6 +7,8 @@ audience: developer
 
 # Cómo debuggear
 
+**Última actualización**: 2026-10-01
+
 ## API (Bun + Elysia)
 
 ### Logs estructurados (pino)
@@ -77,15 +79,6 @@ bun run db:studio
 docker exec -it drenyra-db psql -U user -d drenyra
 # o con el nombre legacy:
 docker exec -it drenyra-db psql -U user -d arkelythex
-```
-
-## CLI (Go)
-
-```bash
-cd apps/cli
-go run . --debug   # Modo debug si está implementado
-# o build + ejecutar con delve:
-go build -o drenyra && dlv exec ./drenyra
 ```
 
 ## Data Engine (Python)
