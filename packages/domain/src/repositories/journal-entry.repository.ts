@@ -5,6 +5,7 @@
  */
 
 import type { JournalEntry } from "../entities/JournalEntry";
+import type { TenantScope } from "../scope";
 
 // ===== TYPES =====
 
@@ -79,17 +80,26 @@ export interface SortOptions {
  */
 export interface JournalEntryRepository {
 	/**
-	 * Save a journal entry (create or update)
-	 * @throws {ValidationError} if entry data is invalid
-	 * @throws {PersistenceError} if database operation fails
+	 * Create a journal entry owned by the caller's company.
+	 * The owning company comes from the scope, never from the entry itself.
+	 * @throws {PersistenceError} if the id already exists or the operation fails
 	 */
-	save(entry: JournalEntry): Promise<void>;
+	create(scope: TenantScope, entry: JournalEntry): Promise<void>;
 
 	/**
-	 * Find journal entry by ID
-	 * @returns The journal entry or null if not found
+	 * Update a journal entry (header and lines) inside the caller's tenant scope.
+	 * @throws {NotFoundError} if the entry does not exist in that scope
 	 */
-	findById(id: string): Promise<JournalEntry | null>;
+	update(scope: TenantScope, entry: JournalEntry): Promise<void>;
+
+	/**
+	 * Find a journal entry by ID inside the caller's tenant scope.
+	 * Enforces tenant isolation: an entry owned by another company is
+	 * indistinguishable from a nonexistent one.
+	 * @param scope - Tenant scope (organization and company) of the caller
+	 * @returns The journal entry or null if not found in that scope
+	 */
+	findById(scope: TenantScope, id: string): Promise<JournalEntry | null>;
 
 	/**
 	 * Find all journal entries for an organization
@@ -104,11 +114,11 @@ export interface JournalEntryRepository {
 	findWithFilters(filters: JournalEntryFilters): Promise<JournalEntry[]>;
 
 	/**
-	 * Delete a journal entry
+	 * Delete a journal entry inside the caller's tenant scope
 	 * @throws {BusinessRuleError} if entry status is not 'borrador'
-	 * @throws {NotFoundError} if entry does not exist
+	 * @throws {NotFoundError} if the entry does not exist in that scope
 	 */
-	delete(id: string): Promise<void>;
+	delete(scope: TenantScope, id: string): Promise<void>;
 
 	/**
 	 * Get next entry number for an organization

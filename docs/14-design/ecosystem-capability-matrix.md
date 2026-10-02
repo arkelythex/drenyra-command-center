@@ -10,7 +10,7 @@ This matrix tracks which capabilities of the Drenyra monorepo are extracted into
 
 | Capability | Current source (Drenyra) | Future source | Status |
 | --- | --- | --- | --- |
-| Mission protocol (types, states, commands, events, errors, versioning, idempotency) | `packages/mission-protocol/src/*` | `drenyra-ai/missions` | **Extracted** — `mission-protocol` is now an adapter shim re-exporting `drenyra-ai/missions` (release tarball `v0.0.1-prealpha.1`) |
+| Mission protocol (types, states, commands, events, errors, versioning, idempotency) | `packages/mission-protocol/src/*` | `drenyra-ai/missions` | **Extracted** — `mission-protocol` is now an adapter shim re-exporting `drenyra-ai/missions` (npm `drenyra-ai@0.5.0`, contracts frozen) |
 | Mission state machine (transitions, guards, recovery paths) | `packages/mission-domain` (uses protocol) | `drenyra-ai/missions/transitions` | **Extracted — fully migrated.** All six `mission-domain` source modules are adapter shims re-exporting `drenyra-ai/missions` / `drenyra-ai/receipts` (status, transitions, contracts, events, errors, receipt). The legacy divergent command types and the local 13-code taxonomy (domain-only `FORBIDDEN`, HARNESS_TIMEOUT→500) were **retired**; consumers aligned to the canonical 30-code set (`apps/web` label map keeps `FORBIDDEN` as a plain string for older API responses) |
 | Mission receipts (Ed25519, canonical vectors, trusted verification) | `packages/mission-domain/src/mission-receipt.ts` | `drenyra-ai/receipts` | **Extracted** — `mission-receipt.ts` is an adapter shim re-exporting `drenyra-ai/receipts` (the original source of the port); `EvidenceItem` stays local to avoid duplicate export |
 | Receipt schemas + conformance vectors | `contracts/receipt-schema/v1` | `drenyra-ai/contracts/receipt-schema` (verbatim copy) | Migrating — canonical source of truth now published with drenyra-ai |
@@ -31,5 +31,5 @@ This matrix tracks which capabilities of the Drenyra monorepo are extracted into
 
 ## Consumption
 
-- `packages/mission-protocol` and `packages/drenyra-orchestrator` depend on `drenyra-ai` via the **GitHub Release tarball** (`https://github.com/arkelythex/drenyra-ai/releases/download/v0.1.0/drenyra-ai-0.1.0.tgz` — first FROZEN-contract release: mission-protocol, candidate, receipt, gate pinned by conformance suites). The tarball contains the built `dist/` and passes `verify-packed-install`.
+- `packages/mission-protocol`, `packages/mission-domain` and `packages/drenyra-orchestrator` depend on the published **`drenyra-ai@0.5.0`** (npm; first release line with all six contracts FROZEN: mission-protocol, candidate, receipt, gate, ledger, recovery). The old vendored tarball (`vendored/drenyra-ai-0.2.0.tgz`) was removed; no binary of an ecosystem package may be committed.
 - Upgrading the consumed version is a normal dependency bump with a migration note (see `RELEASING.md` in drenyra-ai and the ecosystem integration rules).

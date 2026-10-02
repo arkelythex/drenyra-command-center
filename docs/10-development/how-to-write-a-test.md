@@ -7,6 +7,8 @@ audience: developer
 
 # Cómo escribir tests
 
+**Última actualización**: 2026-08-02
+
 Drenyra usa **Vitest** para TypeScript, **pytest** para Python y **go test** para Go. Esta guía cubre los patrones comunes.
 
 ## Stack de testing

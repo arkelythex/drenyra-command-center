@@ -10,6 +10,7 @@
 
 import { Account, type AccountLevel } from "@drenyra/domain/entities/Account";
 import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import type { UpdateAccountDTO } from "../../../dtos/account/account.dto";
@@ -46,13 +47,16 @@ function createMockAccount(
 	});
 }
 
+const scope: TenantScope = { organizationId: "1", companyId: "company-a1" };
+
 describe("UpdateAccountUseCase", () => {
 	let useCase: UpdateAccountUseCase;
 	let mockRepository: { [K in keyof AccountRepository]: Mock };
 
 	beforeEach(() => {
 		mockRepository = {
-			save: vi.fn().mockResolvedValue(undefined),
+			create: vi.fn().mockResolvedValue(undefined),
+			update: vi.fn().mockResolvedValue(undefined),
 			findById: vi.fn().mockResolvedValue(null),
 			findByCode: vi.fn().mockResolvedValue(null),
 			findAll: vi.fn().mockResolvedValue([]),
@@ -77,10 +81,10 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { name: "New Name" };
 
-			const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute(scope, "acc-123", dto);
 
 			expect(result.name).toBe("New Name");
-			expect(mockRepository.save).toHaveBeenCalled();
+			expect(mockRepository.update).toHaveBeenCalled();
 		});
 
 		it("should update account description", async () => {
@@ -89,9 +93,9 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { description: "Nueva descripción" };
 
-			const _result = await useCase.execute("acc-123", dto);
+			const _result = await useCase.execute(scope, "acc-123", dto);
 
-			expect(mockRepository.save).toHaveBeenCalled();
+			expect(mockRepository.update).toHaveBeenCalled();
 		});
 
 		it("should update multiple fields at once", async () => {
@@ -104,10 +108,10 @@ describe("UpdateAccountUseCase", () => {
 				destination: "New Destination",
 			};
 
-			const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute(scope, "acc-123", dto);
 
 			expect(result.name).toBe("Updated Name");
-			expect(mockRepository.save).toHaveBeenCalled();
+			expect(mockRepository.update).toHaveBeenCalled();
 		});
 
 		it("should update account code when valid", async () => {
@@ -121,7 +125,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { code: "20" };
 
-			const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute(scope, "acc-123", dto);
 
 			expect(result.code).toBe("20");
 		});
@@ -133,7 +137,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { name: "New Name" };
 
-			await expect(useCase.execute("non-existent", dto)).rejects.toThrow(
+			await expect(useCase.execute(scope, "non-existent", dto)).rejects.toThrow(
 				"Cuenta no encontrada",
 			);
 		});
@@ -145,7 +149,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { code: "20" };
 
-			await expect(useCase.execute("acc-123", dto)).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123", dto)).rejects.toThrow(
 				/Ya existe una cuenta con el código 20/,
 			);
 		});
@@ -157,7 +161,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { isGroup: false };
 
-			await expect(useCase.execute("acc-123", dto)).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123", dto)).rejects.toThrow(
 				"No se puede convertir en cuenta de movimiento porque tiene subcuentas",
 			);
 		});
@@ -175,7 +179,7 @@ describe("UpdateAccountUseCase", () => {
 				parentId: "123e4567-e89b-12d3-a456-426614174000",
 			};
 
-			await expect(useCase.execute("acc-123", dto)).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123", dto)).rejects.toThrow(
 				"La nueva cuenta padre no existe",
 			);
 		});
@@ -201,7 +205,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { parentId: parentUuid };
 
-			await expect(useCase.execute("acc-123", dto)).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123", dto)).rejects.toThrow(
 				"La nueva cuenta padre no puede tener subcuentas",
 			);
 		});
@@ -227,7 +231,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { parentId: childUuid };
 
-			await expect(useCase.execute("acc-123", dto)).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123", dto)).rejects.toThrow(
 				"No se puede asignar como padre a una subcuenta",
 			);
 		});
@@ -254,9 +258,9 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { parentId: newParentUuid };
 
-			const _result = await useCase.execute("acc-123", dto);
+			const _result = await useCase.execute(scope, "acc-123", dto);
 
-			expect(mockRepository.save).toHaveBeenCalled();
+			expect(mockRepository.update).toHaveBeenCalled();
 		});
 	});
 
@@ -267,7 +271,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { code: "20" };
 
-			await expect(useCase.execute("acc-123", dto)).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123", dto)).rejects.toThrow(
 				/No se pueden modificar los campos code/,
 			);
 		});
@@ -278,7 +282,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { type: "Pasivo" };
 
-			await expect(useCase.execute("acc-123", dto)).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123", dto)).rejects.toThrow(
 				/No se pueden modificar los campos type/,
 			);
 		});
@@ -292,7 +296,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { name: "Updated System Account Name" };
 
-			const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute(scope, "acc-123", dto);
 
 			expect(result.name).toBe("Updated System Account Name");
 		});
@@ -303,7 +307,9 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { description: "New description" };
 
-			await expect(useCase.execute("acc-123", dto)).resolves.toBeDefined();
+			await expect(
+				useCase.execute(scope, "acc-123", dto),
+			).resolves.toBeDefined();
 		});
 	});
 
@@ -314,9 +320,9 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = {};
 
-			const _result = await useCase.execute("acc-123", dto);
+			const _result = await useCase.execute(scope, "acc-123", dto);
 
-			expect(mockRepository.save).toHaveBeenCalled();
+			expect(mockRepository.update).toHaveBeenCalled();
 		});
 
 		it("should handle null description", async () => {
@@ -325,7 +331,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { description: null };
 
-			const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute(scope, "acc-123", dto);
 
 			expect(result.description).toBeUndefined();
 		});
@@ -336,7 +342,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { parentId: null };
 
-			const result = await useCase.execute("acc-123", dto);
+			const result = await useCase.execute(scope, "acc-123", dto);
 
 			expect(result.parentId).toBeUndefined();
 		});
@@ -347,7 +353,7 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { code: "10", name: "Updated Name" };
 
-			const _result = await useCase.execute("acc-123", dto);
+			const _result = await useCase.execute(scope, "acc-123", dto);
 
 			expect(mockRepository.codeExists).not.toHaveBeenCalled();
 		});
@@ -359,13 +365,36 @@ describe("UpdateAccountUseCase", () => {
 
 			const dto: UpdateAccountDTO = { code: "20" };
 
-			const _result = await useCase.execute("acc-123", dto);
+			const _result = await useCase.execute(scope, "acc-123", dto);
 
 			expect(mockRepository.codeExists).toHaveBeenCalledWith(
 				expect.any(Number),
 				"20",
 				"acc-123", // excludeId
 			);
+		});
+	});
+
+	describe("tenant isolation", () => {
+		it("looks the account up and persists it inside the caller's scope", async () => {
+			mockRepository.findById.mockResolvedValue(createMockAccount());
+
+			await useCase.execute(scope, "acc-123", { name: "Nuevo" });
+
+			expect(mockRepository.findById).toHaveBeenCalledWith(scope, "acc-123");
+			expect(mockRepository.update).toHaveBeenCalledWith(
+				scope,
+				expect.anything(),
+			);
+		});
+
+		it("does not update an account the scope cannot see (cross-tenant)", async () => {
+			mockRepository.findById.mockResolvedValue(null);
+
+			await expect(
+				useCase.execute(scope, "foreign-acc", { name: "Hijack" }),
+			).rejects.toThrow();
+			expect(mockRepository.update).not.toHaveBeenCalled();
 		});
 	});
 });

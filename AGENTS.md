@@ -21,9 +21,9 @@ DRENYRA builds Drenyra, the verifiable financial operating system for businesses
 
 ## Repo shape
 
-**Private commercial product:** Drenyra and its ecosystem repos (`drenyra-ai`, `drenyra-pi`, `drenyra-engram`) are **private**. Do not make them public, do not publish artifacts (images, packages, docs) to public registries, and do not add public collaborators. Container images publish to private GHCR (`ghcr.io/arkelythex/...`) and require authenticated pulls (`read:packages` PAT or a workflow `GITHUB_TOKEN` with `packages: read`); never switch package visibility to public.
+**Private commercial product:** Drenyra and its ecosystem repos (`drenyra-ai`, `drenyra-shell`, `drenyra-engram`) are **private**. Do not make them public, do not publish artifacts (images, packages, docs) to public registries, and do not add public collaborators. Container images publish to private GHCR (`ghcr.io/arkelythex/...`) and require authenticated pulls (`read:packages` PAT or a workflow `GITHUB_TOKEN` with `packages: read`); never switch package visibility to public.
 
-**Scope policy (org-level):** this repository is the **Accounting Command Center**. No new non-accounting product or vertical may be added to this repo. Foreign or experimental folders must move to their own repo, be archived, or be relocated to a clearly-labelled experimental space — never grow inside `Drenyra`. Extract, don't accumulate: reusable runtime, harness, and memory concerns belong in `arkelythex/drenyra-ai`, `arkelythex/drenyra-pi`, and `arkelythex/drenyra-engram` respectively.
+**Scope policy (org-level):** this repository is the **Accounting Command Center**. No new non-accounting product or vertical may be added to this repo. Foreign or experimental folders must move to their own repo, be archived, or be relocated to a clearly-labelled experimental space — never grow inside `Drenyra`. Extract, don't accumulate (`products/andino`, `estado`, `kuse` and `senzar` were extracted on 2026-10-01; last tree with them: commit `91e116b`; `bun run odd:guard` now rejects a new `products/`): reusable runtime, harness, and memory concerns belong in `arkelythex/drenyra-ai`, `arkelythex/drenyra-shell`, and `arkelythex/drenyra-engram` respectively.
 
 - Fastest navigation source: start at root `CODEX-MAP.md`, then use `.codebase/index.yml` for machine-readable app/package metadata.
 - Regenerate navigation docs with `bun run codebase:index`; verify with `bun run codebase:index:check`.
@@ -37,7 +37,6 @@ DRENYRA builds Drenyra, the verifiable financial operating system for businesses
 | Web app     | `apps/web/`         | React 19 + TanStack Router |
 | Landing     | `apps/landing/`     | Next.js                    |
 | Data Engine | `apps/data-engine/` | Python + FastAPI + Polars  |
-| CLI         | `apps/cli/`         | Go                         |
 
 Each app has a `MAP.md` (e.g. `apps/web/MAP.md`) with its architecture, routes, features, fast-search recipes, and common tasks mapped to exact file paths. Start there before exploring inside an app — saves tokens.
 
@@ -84,15 +83,16 @@ Drenyra is the **verifiable financial operating system for businesses, accountan
 - For Peruvian tax flows, preserve SUNAT, UBL 2.1, IGV, retenciones, detracciones, SIRE, RUC checksum, document series, and CDR/audit requirements.
 - Prefer branded IDs or domain value objects for identifiers and money-sensitive data.
 
-## Program Taxonomy & SDD Audit
+## ODD — flujo único de trabajo (Gentle AI v4)
 
-Drenyra usa 8 clases documentales: SDD, ADR, FSD, WSD, ASD, Contract Specs, Threat Models, Runbooks. Ver:
+Drenyra usa **ODD (Organic Driven Development)** para todo cambio. **SDD y OpenSpec están retirados**; no existe otro flujo. Guía completa: [`docs/10-development/odd-workflow.md`](docs/10-development/odd-workflow.md).
 
-- **Taxonomía completa:** [`docs/01-foundation/program-taxonomy.md`](docs/01-foundation/program-taxonomy.md) — clases, L0–L4, fases F0–F4
-- **Capability Map:** [`docs/01-foundation/capability-map.md`](docs/01-foundation/capability-map.md) — 60+ capacidades con estado actual
-- **SDD Audit:** [`docs/01-foundation/sdd-audit.md`](docs/01-foundation/sdd-audit.md) — 79 SDDs clasificados por madurez
-
-**Regla:** no crear SDD hasta que la capacidad esté cerca de implementación. El Capability Map mantiene la visión.
+- **Simple:** se hace directo y se cierra sin documento intermedio.
+- **Incierto:** se investiga primero y se anota lo aprendido.
+- **Grande:** un único *feature document* en `odd/tasks/<tarea>.md` (objetivo, alcance, fuera de alcance, restricciones), autorización explícita antes de implementar y progreso recuperable entre sesiones.
+- **Crítico (fiscal/SUNAT/dominio/DB/AI-control/CI/tenant):** se verifica siempre, sin importar el tamaño: test-first y revisión **RDD de riesgo alto**. Review y test-first son independientes de cualquier flujo; en lo crítico no son opcionales.
+- `openspec/` **ya no existe** (retirado con SDD). Su historial vive en git: `git show d428534:openspec/<ruta>`, y la documentación enlaza permalinks a ese commit.
+- Taxonomía documental y estado de capacidades: [`program-taxonomy.md`](docs/01-foundation/program-taxonomy.md), [`capability-map.md`](docs/01-foundation/capability-map.md).
 
 ## Working style
 
@@ -211,7 +211,7 @@ When reviewing or authoring a PR, design for low cognitive load:
 ## Agent-specific guidance
 
 - Root `AGENTS.md` is shared guidance for all coding agents.
-- Codex-only workflow, SDD, sub-agent, memory, and model-routing rules live in `.codex/AGENTS.md`.
+- Codex-only sub-agent, memory, and model-routing rules live in `.codex/AGENTS.md` when present; the workflow itself is always ODD (Gentle AI v4).
 - Subdirectory `AGENTS.md` files may add stricter local rules for their package or app.
 
 ## Final response format
@@ -237,11 +237,11 @@ Drenyra now has its own orchestrator and harness system, modeled after the Gentl
 | -------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | Orchestrator package | `packages/drenyra-orchestrator/` | Core types, delegation router, skills resolver, memory contract, review lenses, work routing           |
 | Skill registry       | `.atl/skill-registry.md`         | Index of all 18 Drenyra-specific skills                                                                |
-| Drenyra skills       | `.agent/skills/*/SKILL.md`       | 18 skills: fiscal compliance, SDD, gatekeeper, 4R review lenses, judgment-day, chained PR, hooks, etc. |
+| Drenyra skills       | `.agent/skills/*/SKILL.md`       | 18 skills: fiscal compliance, FSD fiscal, gatekeeper, 4R review lenses, judgment-day, chained PR, hooks, etc. |
 
 ### Orchestrator Capabilities
 
-- **Delegation Router**: Determines inline/simple-delegation/SDD routes based on task profile (file count, session state, incident recovery)
+- **Delegation Router**: Determines inline/simple-delegation/substantial-ODD routes based on task profile (file count, session state, incident recovery)
 - **Skills Resolver**: Reads `.atl/skill-registry.md`, matches task context against triggers, returns exact SKILL.md paths
 - **Memory Contract**: Defines who reads/writes memory (orchestrator-read, subagent-write)
 - **Review Lenses**: `review-risk`, `review-resilience`, `review-readability`, `review-reliability`, `judgment-day`
@@ -252,7 +252,7 @@ Drenyra now has its own orchestrator and harness system, modeled after the Gentl
 
 - `packages/drenyra-orchestrator`: 39 tests passing
 - `packages/phase-gatekeeper`: 18 tests passing
-- `packages/fiscal-sdd`: 97 tests passing
+- `packages/fiscal-fsd`: 100 tests passing
 - **Total: 154 tests, all passing**
 
 ### Usage

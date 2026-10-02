@@ -1,9 +1,0 @@
-phase: archived
-completed_at: '2026-07-11'
-status: implemented
-verified: true
-evidence:
-  - globalErrorHandler in apps/api/src/shared/plugins/error-handler.ts
-  - requestLogger in app-core middleware chain
-created: 2026-07-02
-updated: 2026-07-11

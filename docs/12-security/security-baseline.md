@@ -3,7 +3,7 @@
 **Última actualización:** 2026-07-24
 **Content type:** Security — F0 Foundation
 **Audiencia:** Arquitectura, seguridad, ingeniería
-**Taxonomía:** [Program Taxonomy](../architecture/program-taxonomy.md)
+**Taxonomía:** [Program Taxonomy](../01-foundation/program-taxonomy.md)
 
 ---
 
@@ -186,5 +186,5 @@ Objetivo: defensa en profundidad. Incluso si la capa de aplicación falla, RLS e
 
 - [Route Permission Registry](../../apps/api/src/shared/auth/route-permissions.ts) — implementación
 - [Permission Guard](../../apps/api/src/shared/plugins/permission-guard.ts) — middleware
-- [Capability Map](./capability-map.md) — capacidades F0
-- [Canonical Stack](./canonical-stack.md) — arquitectura
+- [Capability Map](../01-foundation/capability-map.md) — capacidades F0
+- [Canonical Stack](../01-foundation/canonical-stack.md) — arquitectura

@@ -1,5 +1,7 @@
 # Secret Management — Drenyra Security Foundation
 
+**Última actualización**: 2026-08-02
+
 **Version:** 1.0.0
 **Last Reviewed:** 2026-07-25
 **Author:** Drenyra Security Team

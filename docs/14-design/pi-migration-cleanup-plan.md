@@ -1,5 +1,7 @@
 # Phase 6 — Dead Code Cleanup Plan
 
+**Última actualización**: 2026-10-01
+
 ## Status: PLANNED — do NOT execute until shadow execution confirms parity
 
 After `ShadowRunner` confirms parity between `LegacyMastraRuntimeAdapter` and
@@ -106,12 +108,12 @@ After `ShadowRunner` confirms parity between `LegacyMastraRuntimeAdapter` and
 
 ```
 Before cleanup (Phase 5 complete):
-  @drenyra/pi LOC:          ~31,766
+  @drenyra/agent-runtime LOC:          ~31,766
   @drenyra/pi-adapter LOC:   ~1,100
   @drenyra/fiscal-agent-domain LOC: ~700
 
 After cleanup:
-  @drenyra/pi LOC:          ~18,000  (domain + adapted)
+  @drenyra/agent-runtime LOC:          ~18,000  (domain + adapted)
   @drenyra/pi-adapter LOC:   ~1,100  (port + adapter + shadow)
   @drenyra/fiscal-agent-domain LOC: ~700   (pure domain types)
 

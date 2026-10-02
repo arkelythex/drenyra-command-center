@@ -5,6 +5,7 @@
  */
 
 import { UpdateJournalEntryUseCase } from "@drenyra/application/use-cases/journal";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { accountService, journalRepository } from "../_helpers";
 
 export interface UpdateJournalEntryInput {
@@ -30,6 +31,7 @@ export interface UpdateJournalEntryInput {
  * @throws Error if the entry cannot be edited (e.g., already posted)
  */
 export async function updateJournalEntry(
+	scope: TenantScope,
 	id: string,
 	input: UpdateJournalEntryInput,
 ) {
@@ -37,7 +39,7 @@ export async function updateJournalEntry(
 		journalRepository,
 		accountService,
 	);
-	const entry = await useCase.execute(id, {
+	const entry = await useCase.execute(scope, id, {
 		date: input.date,
 		gloss: input.gloss,
 		lines: input.lines?.map((line) => ({

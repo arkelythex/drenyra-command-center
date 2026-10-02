@@ -184,11 +184,29 @@ describe("GetTransactionUseCase", () => {
 		const result = await useCase.execute({
 			id: "123",
 			organizationId: 1,
+			companyId: "company-a1",
 		});
 
 		expect(result.success).toBe(true);
 		expect(result.data?.id).toBe("123");
-		expect(mockRepository.findById).toHaveBeenCalledWith("123", 1);
+		expect(mockRepository.findById).toHaveBeenCalledWith(
+			{ organizationId: "1", companyId: "company-a1" },
+			"123",
+		);
+	});
+
+	it("should reject a missing company scope without querying the repository", async () => {
+		mockRepository.findById = vi.fn();
+
+		const result = await useCase.execute({
+			id: "123",
+			organizationId: 1,
+			companyId: "",
+		});
+
+		expect(result.success).toBe(false);
+		expect(result.error).toBe("ID de empresa requerido");
+		expect(mockRepository.findById).not.toHaveBeenCalled();
 	});
 
 	it("should return error when transaction not found", async () => {
@@ -197,6 +215,7 @@ describe("GetTransactionUseCase", () => {
 		const result = await useCase.execute({
 			id: "999",
 			organizationId: 1,
+			companyId: "company-a1",
 		});
 
 		expect(result.success).toBe(false);
@@ -207,6 +226,7 @@ describe("GetTransactionUseCase", () => {
 		const result = await useCase.execute({
 			id: "",
 			organizationId: 1,
+			companyId: "company-a1",
 		});
 
 		expect(result.success).toBe(false);

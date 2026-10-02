@@ -350,9 +350,9 @@ curl -s 'http://localhost:9090/api/v1/query?query=rate(arkelythex_ocr_documents_
 ## 📚 Documentación Adicional
 
 - [Monitoring README](./README.md) - Documentación completa
-- [Integration Guide](../services/arkelythex-api/docs/MONITORING_INTEGRATION.md) - Cómo agregar métricas
+- Integration Guide _(no disponible)_ - Cómo agregar métricas
 - [Deployment Summary](./DEPLOYMENT_SUMMARY.md) - Resumen de implementación
-- [Walkthrough](../../.gemini/antigravity/brain/a6ae5fcd-40e9-4a0c-88b1-f4893f753317/walkthrough.md) - Implementación completa
+- Walkthrough _(no disponible)_ - Implementación completa
 
 ---
 

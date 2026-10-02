@@ -7,6 +7,8 @@ audience: developer
 
 # Getting Started — Drenyra Development
 
+**Última actualización**: 2026-10-01
+
 Bienvenido. En esta guía vas a tener tu entorno de desarrollo funcionando de 0 a servidor corriendo.
 
 ## Prerequisitos
@@ -17,7 +19,7 @@ Bienvenido. En esta guía vas a tener tu entorno de desarrollo funcionando de 0 
 
 Opcional (solo si trabajás en esas áreas):
 
-- **Go 1.21+** — para `apps/cli/`
+- **Go 1.21+** — para `services/go/` (conectores)
 - **Python 3.11+** — para `apps/data-engine/`
 
 ## Setup rápido
@@ -78,7 +80,6 @@ Drenyra/
 ├── apps/
 │   ├── api/          # Backend (Bun + ElysiaJS)
 │   ├── web/          # Frontend (React 19 + TanStack Router)
-│   ├── cli/          # CLI (Go)
 │   ├── landing/      # Landing page (Next.js)
 │   └── data-engine/  # Data engine (Python + FastAPI)
 ├── packages/
@@ -87,7 +88,7 @@ Drenyra/
 │   ├── persistence/  # Drizzle schemas, repos
 │   └── ...
 ├── docs/             # Documentación
-└── openspec/         # SDD plans
+└── odd/              # Flujo ODD: documentos de tareas
 ```
 
 ## Troubleshooting

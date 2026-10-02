@@ -1,72 +1,66 @@
 # Instrucciones para Claude Code / Gemini CLI en DRENYRA (@drenyra/main)
 
-## Objetivos Generales
+**Última actualización**: 2026-10-01
 
-- **War Architecture:** Ecosistema FinTech híbrido para cumplimiento SUNAT y atracción de inversión ProInnóvate.
-- **Soberanía Técnica:** Core TypeScript (Vertical Slice + CQRS). Rust/WASM planificado para Phase 2 (Q2-Q4 2026, solo hot paths: tax engine, Money VO, XML).
-- **Estabilidad Fiscal:** Cero errores en dominio. El cumplimiento de SUNAT (SIRE, facturación) es la prioridad #1.
+> **Fuente canónica:** [`AGENTS.md`](AGENTS.md). Este archivo solo agrega lo específico de Claude Code / Gemini CLI y define el flujo de trabajo por niveles. Si algo aquí contradice `AGENTS.md`, gana `AGENTS.md`.
 
-## Arquitectura General
+## Prioridades
 
-- **Core (TypeScript):** Vertical Slice Architecture (VSA) + CQRS. `packages/domain` con Value Objects, Entities, Events.
-- **Infraestructura (TS/Bun):** Clean Architecture (Entities → Use Cases → Controllers → Adapters).
-- **Monorepo:** `packages/` (lógica desacoplada), `apps/` (API Elysia, Web React 19).
-- **Invariantes:** Validación explícita de reglas de negocio en TypeScript. Rust PLANNED para Phase 2 con TS fallback obligatorio.
-- **Money:** `Money` VO en `@drenyra/domain` (cents pattern). dinero.js NO está instalado — no usar.
+1. **Estabilidad fiscal:** cero errores en dominio. SUNAT (SIRE, facturación) es la prioridad #1.
+2. **Aislamiento y auditoría:** scoping por organización/empresa/RUC y trazabilidad en todo.
+3. **Cambios pequeños, verificables y reversibles.**
 
-## Buenas Prácticas Obligatorias
+## Stack real (resumen)
 
-- **SOLID + DDD:** Uso estricto de Aggregates, Entities y Value Objects.
-- **Clean Code:** Funciones < 30 líneas, nombres expresivos, JSDoc mandatorio.
-- **Seguridad:** OWASP Top 10. Prohibido hardcodear credenciales. Uso de `SecureLogger`.
-- **SIRE Compliance:** Si el código toca facturación o libros, **DEBE** pasar `bun scripts/sire-ledger-repro-check.ts`.
+- **TypeScript (Bun):** `packages/domain` (VO, Entities, Events; sin frameworks), `packages/application`, `apps/api` (Elysia = adaptador de entrada), `apps/web` (React 19). Vertical Slice + CQRS.
+- **Rust:** `engines/rust-core` (núcleo verificable). **Go:** `services/` (conectores, `services/engram`). La antigua CLI en Go (`apps/cli`) fue reemplazada por `drenyra-shell` + `drenyra-ai`. Ver [stack canónico](docs/01-foundation/canonical-stack.md).
+- **Money:** `Money` VO de `@drenyra/domain` (cents). Nunca floats ni `number` crudo. `dinero.js` NO está instalado.
+- **Navegación rápida:** `CODEX-MAP.md` → `apps/<app>/MAP.md` → `.codebase/index.yml`.
 
-## Pruebas y Calidad (Regla 80/100/0)
+## Flujo de trabajo: ODD (único, Gentle AI v4)
 
-- **100% Cobertura:** Domain TypeScript (Vitest). Invariantes fiscales auditados.
-- **80% Cobertura:** Integración y adaptadores de infraestructura.
-- **Calidad:** Mutation testing en el Core para asegurar que los tests detectan cambios en la lógica fiscal.
-- **Linters:** Biome (prioritario) + ESLint para tokens de diseño.
+**Siempre ODD (Organic Driven Development).** SDD y OpenSpec están retirados. Detalle y actualización a v4 en [`docs/10-development/odd-workflow.md`](docs/10-development/odd-workflow.md).
 
-## Git worktrees y aislamiento
+- **ODD escala solo:** lo **simple** se hace directo; lo **incierto** se investiga; lo **grande** arma su documento de tareas en `odd/tasks/<tarea>.md` (objetivo, alcance, fuera de alcance, restricciones) y espera autorización; lo **crítico** se verifica.
+- **Estados:** Working → Checking → Ready → Needs your decision.
+- **Review (RDD) y test-first son independientes** y se prenden/apagan por separado. En lo crítico van **siempre encendidos**.
+- **Crítico (sin importar el tamaño):** `packages/domain`, SUNAT/SIRE/UBL/IGV, facturación, libros, DB/migraciones, AI-control, CI, aislamiento por tenant. Exige test-first, review de riesgo alto, worktree aislado y `scripts/sire-ledger-repro-check.ts` si aplica.
+- Si algo llama a SDD, la herramienta lo rechaza con los caminos para seguir: no recrees `openspec/`. Ante la duda, trátalo como crítico.
 
-- Preferencia de directorio para worktrees: `~/Documents/PROYECTOS/drenyra/worktrees/drenyra/<task-name>`.
-- Usar branch dedicada para cada cambio: `codex/<task-name>`.
-- Usar worktree aislado para cambios medianos/grandes, fases SDD, trabajo paralelo o cualquier cambio fiscal/SUNAT/DB/AI-control/CI.
-- No mezclar fases no relacionadas en la misma branch/worktree.
-- Mantener `main` limpio y actualizado; después de mergear, borrar worktree y ramas ya fusionadas.
+## Reglas de Git
 
-## Workflow de Ingeniería Autónoma
+- Una branch por cambio; `main` limpio. Worktree aislado en trabajo sustancial, fiscal o paralelo: `~/Documents/PROYECTOS/Drenyra/worktrees/<task-name>`.
+- No mezclar fases no relacionadas en la misma branch/worktree. Cambios >400 líneas: ver estrategias de entrega en `AGENTS.md`.
+- Tras mergear, borrar worktree y ramas fusionadas.
 
-1. **Protocolo:** Leer `.claude/agents/_protocol.md` antes de cada sesión.
-2. **Memoria:** Consultar `.claude/memory/active_plan.md` para el estado del tablero.
-3. **Explore:** Analizar `@packages/domain` antes de proponer cambios. `packages/rust-core` no existe aún (Phase 2).
-4. **Plan (Architect):** Escribir en `active_plan.md` el split de tareas paralelo.
-5. **Implement:** Agentes de Backend y Frontend trabajan sobre sus respectivos slices.
-6. **Finalize:** El Auditor valida y cierra la fase en el plan.
+## Calidad (Regla 80/100/0)
 
-## Skills (Organización Socrática)
+- **100%:** domain TypeScript (Vitest), invariantes fiscales auditados. **80%:** integración y adaptadores.
+- Mutation testing en el core fiscal. Linters: Biome (prioritario) + ESLint para design tokens.
 
-| Contexto | Ruta |
-|----------|------|
-| Core Logic, Rust, WASM | `.agents/skills/core/` |
-| API, DB, SUNAT Compliance | `.agents/skills/backend/` |
-| React 19, Tailwind 4, UI | `.agents/skills/frontend/` |
-| CI/CD, Tests, Security | `.agents/skills/ops/` |
+## Verificación
 
----
+Ejecuta primero lo más acotado y amplía según el riesgo. Solo usa comandos que existan en `package.json`.
 
-**Última actualización**: 2026-06-20
+```bash
+bun run typecheck          # post-cambio (nunca npm)
+bun run lint               # o `biome check <rutas>` antes de editar
+bun scripts/sire-ledger-repro-check.ts   # OBLIGATORIO si tocas facturación o libros
+bun run architecture:check-boundaries
+bun run docs:verify
+```
 
-*Alineado con la [Filosofía de producto](README.md#product-philosophy-guardrails) de DRENYRA — documentación que prioriza la claridad y el respeto por tu tiempo.*
+Los scripts `compliance:sire-*` del `package.json` fueron eliminados (nunca existieron); invoca los scripts de `scripts/` directamente.
 
-## Hooks de Control
+## Memoria y agentes
 
-- **Pre-command:** `biome check .` (no `cargo check` — Rust no está activo en el repo).
-- **Post-command:** `bun run typecheck` (NUNCA npm).
+- **Memoria persistente:** Engram, proyecto `drenyra` ([guía](docs/10-development/engram-guide.md)). No guardar secretos, datos de clientes ni registros fiscales crudos. Si Engram no está disponible, continúa con los archivos del repo y repórtalo.
+- **Estado del trabajo:** `odd/tasks/`. `openspec/` fue eliminado (historial en git, commit `d428534`); `packages/fiscal-fsd` es FSD de producto (ex `fiscal-sdd`), no flujo de trabajo. El directorio `.claude/` no existe en el repo; no dependas de `.claude/agents/_protocol.md` ni `.claude/memory/active_plan.md`.
+- **Skills:** `.agent/skills/` (revisión, SUNAT, tenant isolation, ledger, FSD fiscal, etc.). Delegación a sub-agentes: ver tabla de triggers en `AGENTS.md`.
+- **Seguridad:** OWASP Top 10, prohibido hardcodear credenciales, usar `SecureLogger`. Funciones cortas, JSDoc en API pública.
 
-## Integraciones y Modelos (Estrategia Híbrida 2026)
+## Modelos
 
-- **Lógica y Arquitectura:** Claude 4.6 Opus / 4.5 Sonnet para todo lo referente a `@.claude/` y lógica fiscal (Hexagonal/Rust).
-- **Infraestructura y Multimodal:** Gemini 3 Flash/Pro para OCR de facturas, análisis de logs masivos y orquestación de Kubernetes/Fly.io.
-- **Soberanía:** El enjambre agéntico en `.claude/` opera exclusivamente sobre Anthropic 4.5.
+- **Lógica fiscal y arquitectura:** modelos Claude.
+- **Multimodal / logs masivos / OCR de facturas:** Gemini.
+- Sin datos fiscales reales ni de clientes en servicios externos de memoria o de terceros.

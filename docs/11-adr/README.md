@@ -38,7 +38,7 @@ Alternatives: opciones consideradas y por qué se descartaron
 | 004 | [Vertical Slices + CQRS](./ADR-004-vertical-slices-cqrs.md)                   | Arquitectura | ✅     |
 | 005 | [Domain Package Framework-Free](./ADR-005-domain-package-framework-free.md)   | Domain       | ✅     |
 | 006 | [React Context + Zustand](./ADR-006-react-context-zustand.md)                 | Frontend     | ✅     |
-| 007 | [Go CLI — Fiscal Terminal](./ADR-007-go-cli-fiscal-terminal.md)               | CLI          | ✅     |
+| 007 | [Go CLI — Fiscal Terminal](./ADR-007-go-cli-fiscal-terminal.md)               | CLI          | ⛔ Reemplazado |
 | 008 | [Property-Based Testing](./ADR-008-property-based-testing.md)                 | Testing      | ✅     |
 | 009 | [Canonical Idempotency Contract](./ADR-009-canonical-idempotency-contract.md) | Data         | ✅     |
 | 034 | [Drenyra Fiscal App Server](./adr-034-drenyra-fiscal-app-server.md)           | Agent        | ✅     |

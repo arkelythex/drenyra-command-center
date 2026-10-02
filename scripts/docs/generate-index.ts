@@ -29,21 +29,27 @@ function extractTitle(filePath: string): string {
 	return firstLine.replace(/^#\s*/, "").trim();
 }
 
+/** First prose line of a README: skips headings, tables, code, metadata and rules. */
 function extractDescription(filePath: string): string {
-	const content = readFileSync(filePath, "utf-8");
-	const lines = content.split("\n");
-	for (let i = 1; i < Math.min(lines.length, 15); i++) {
-		const line = lines[i].trim();
-		if (
-			line &&
-			!line.startsWith("#") &&
-			!line.startsWith("---") &&
-			!line.startsWith("**")
-		) {
-			return line.replace(/^>\s*/, "").slice(0, 120);
-		}
+	const lines = readFileSync(filePath, "utf-8").split("\n");
+	for (let i = 1; i < Math.min(lines.length, 25); i++) {
+		const raw = lines[i];
+		const line = raw.trim().replace(/^>\s*/, "");
+		if (!line || raw.startsWith("    ") || raw.startsWith("\t")) continue;
+		if (/^(#|---|\*\*|\||```|!\[)/.test(line)) continue;
+		const text = line
+			.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+			.replace(/\|/g, "/");
+		if (text.includes(")") && !text.includes("(")) continue; // mid-sentence fragment
+		return truncate(text, 120);
 	}
 	return "";
+}
+
+function truncate(text: string, max: number): string {
+	if (text.length <= max) return text;
+	const cut = text.slice(0, max);
+	return `${cut.slice(0, cut.lastIndexOf(" ")).replace(/[,;:\s]+$/, "")}…`;
 }
 
 function listDocs(dir: string): string[] {
@@ -80,10 +86,61 @@ function scanSections(): DocSection[] {
 	return sections;
 }
 
+/** Primary Diátaxis quadrant of each docs folder (https://diataxis.fr/). */
+const DIATAXIS: Array<[string, string, string]> = [
+	["Tutorial (aprender)", "01-tutorials", "Pasos guiados desde cero"],
+	[
+		"How-to (lograr algo)",
+		"10-development",
+		"Guías de desarrollo: añadir una feature, depurar, escribir un test",
+	],
+	[
+		"How-to (lograr algo)",
+		"13-operations",
+		"Operación y conexión de la plataforma",
+	],
+	["Referencia (consultar)", "06-fiscal", "Reglas fiscales por país"],
+	[
+		"Referencia (consultar)",
+		"12-security",
+		"Línea base, matrices y runbooks de seguridad",
+	],
+	[
+		"Explicación (entender)",
+		"01-foundation",
+		"Filosofía, posicionamiento y stack canónico",
+	],
+	[
+		"Explicación (entender)",
+		"11-adr",
+		"Decisiones de arquitectura y su porqué",
+	],
+	["Explicación (entender)", "14-design", "Diseño de producto y plataforma"],
+	[
+		"Explicación (entender)",
+		"architecture",
+		"Fronteras del ecosistema y modelo de confianza",
+	],
+];
+
+function diataxisTable(): string {
+	const rows = DIATAXIS.filter(([, dir]) =>
+		existsSync(join(DOCS_DIR, dir)),
+	).map(
+		([quadrant, dir, note]) =>
+			`| ${quadrant} | [\`${dir}/\`](./${dir}/) | ${note} |`,
+	);
+	return [
+		"| Cuadrante | Carpeta | Contenido |",
+		"|-----------|---------|-----------|",
+		...rows,
+	].join("\n");
+}
+
 function generateIndex(sections: DocSection[]): string {
 	let md = `# Drenyra Documentation Index
-    
-    **Arquitectura:** Drenyra Financial Engineering OS (FEOS) — 8 planos
+
+**Arquitectura:** Drenyra Financial Engineering OS (FEOS) — 8 planos
 **Programa:** [CAP-FEOS-00 — Drenyra Financial Engineering Operating System](./01-foundation/feos-program.md)
 
 ---
@@ -110,6 +167,7 @@ function generateIndex(sections: DocSection[]): string {
 		md += `- **\`${section.dir}/\`** — ${sectionType}: ${section.title}\n`;
 	}
 
+	md += `\n---\n\n## Mapa Diátaxis\n\n${diataxisTable()}\n`;
 	md += `\n---\n\n## Documentos por sección\n\n`;
 
 	for (const section of sections) {

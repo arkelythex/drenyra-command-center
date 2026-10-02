@@ -410,10 +410,10 @@ If AI validation confidence is <0.7:
 
 ## References
 
-- [ADR-009: OpenRouter + LangGraph](../../../../docs/02-adr/adr-009-agent-swarm-openrouter.md)
-- [Technical Spec](../../../../docs/03-features/ai-agent-swarm/README.md)
-- [Architecture Diagrams](../../../../docs/03-features/ai-agent-swarm/architecture-diagram.md)
-- [Implementation Guide](../../../../docs/03-features/ai-agent-swarm/implementation-guide.md)
+- ADR-009: OpenRouter + LangGraph _(no disponible)_
+- Technical Spec _(no disponible)_
+- Architecture Diagrams _(no disponible)_
+- Implementation Guide _(no disponible)_
 - [OpenRouter Docs](https://openrouter.ai/docs)
 
 ---
@@ -422,4 +422,4 @@ If AI validation confidence is <0.7:
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)

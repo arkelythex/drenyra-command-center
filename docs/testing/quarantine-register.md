@@ -1,5 +1,7 @@
 # Quarantine Register
 
+**Última actualización**: 2026-08-02
+
 Tests temporarily disabled with explicit reason and deadline. Every quarantined test MUST have a deadline within the current milestone. Tests exceeding deadline SHALL be fixed or deleted — never left indefinitely.
 
 | Test ID | File | Reason | Quarantined date | Deadline | Owner |

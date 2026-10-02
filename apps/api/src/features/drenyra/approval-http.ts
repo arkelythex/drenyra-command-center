@@ -1,4 +1,4 @@
-import type { AgentContext, ApprovalRequest } from "@drenyra/pi";
+import type { AgentContext, ApprovalRequest } from "@drenyra/agent-runtime";
 
 export interface SseApprovalEvent {
 	id: string;

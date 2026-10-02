@@ -8,6 +8,7 @@ import type {
 	JournalEntryFilters,
 	JournalEntryRepository,
 } from "@drenyra/domain/repositories/journal-entry.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import {
 	and,
@@ -27,6 +28,7 @@ import {
 	resolveOrganizationIdFromCompany,
 } from "./support/organization-resolver";
 
+type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
 type JournalEntryRow = typeof journalEntries.$inferSelect;
 type JournalLineRow = typeof journalEntryLines.$inferSelect;
 
@@ -35,58 +37,73 @@ const centsToMoney = (cents: number): Money => Money.fromCents(cents, "PEN");
 const moneyToCents = (money: Money): number => money.getCents();
 
 export class PostgresJournalEntryRepository implements JournalEntryRepository {
-	async save(entry: JournalEntry): Promise<void> {
-		const companyId = await resolveCompanyIdFromOrganization(
-			entry.organizationId,
-		);
+	async create(scope: TenantScope, entry: JournalEntry): Promise<void> {
 		await db.transaction(async (tx) => {
-			await tx
-				.insert(journalEntries)
-				.values({
-					id: entry.id,
-					companyId,
+			await tx.insert(journalEntries).values({
+				id: entry.id,
+				companyId: scope.companyId,
+				entryNumber: entry.entryNumber,
+				periodKey: periodKey(entry.date),
+				date: entry.date,
+				gloss: entry.gloss,
+				status: entry.status,
+				createdAt: entry.createdAt,
+				updatedAt: entry.updatedAt,
+			});
+			await this.insertLines(tx, entry);
+		});
+	}
+
+	async update(scope: TenantScope, entry: JournalEntry): Promise<void> {
+		await db.transaction(async (tx) => {
+			const updated = await tx
+				.update(journalEntries)
+				.set({
 					entryNumber: entry.entryNumber,
 					periodKey: periodKey(entry.date),
 					date: entry.date,
 					gloss: entry.gloss,
 					status: entry.status,
-					createdAt: entry.createdAt,
 					updatedAt: entry.updatedAt,
 				})
-				.onConflictDoUpdate({
-					target: journalEntries.id,
-					set: {
-						entryNumber: entry.entryNumber,
-						periodKey: periodKey(entry.date),
-						date: entry.date,
-						gloss: entry.gloss,
-						status: entry.status,
-						updatedAt: entry.updatedAt,
-					},
-				});
-
+				.where(
+					and(
+						eq(journalEntries.id, entry.id),
+						eq(journalEntries.companyId, scope.companyId),
+					),
+				)
+				.returning({ id: journalEntries.id });
+			if (updated.length === 0) {
+				throw new Error("Journal entry not found");
+			}
 			await tx
 				.delete(journalEntryLines)
 				.where(eq(journalEntryLines.journalEntryId, entry.id));
-			if (entry.lines.length > 0) {
-				await tx.insert(journalEntryLines).values(
-					entry.lines.map((line) => ({
-						id: line.id,
-						journalEntryId: entry.id,
-						accountCode: line.accountCode,
-						description: line.description,
-						debitCents: moneyToCents(line.debit),
-						creditCents: moneyToCents(line.credit),
-						createdAt: new Date(),
-					})),
-				);
-			}
+			await this.insertLines(tx, entry);
 		});
 	}
 
-	async findById(id: string): Promise<JournalEntry | null> {
+	private async insertLines(tx: Tx, entry: JournalEntry): Promise<void> {
+		if (entry.lines.length === 0) return;
+		await tx.insert(journalEntryLines).values(
+			entry.lines.map((line) => ({
+				id: line.id,
+				journalEntryId: entry.id,
+				accountCode: line.accountCode,
+				description: line.description,
+				debitCents: moneyToCents(line.debit),
+				creditCents: moneyToCents(line.credit),
+				createdAt: new Date(),
+			})),
+		);
+	}
+
+	async findById(scope: TenantScope, id: string): Promise<JournalEntry | null> {
 		const row = await db.query.journalEntries.findFirst({
-			where: eq(journalEntries.id, id),
+			where: and(
+				eq(journalEntries.id, id),
+				eq(journalEntries.companyId, scope.companyId),
+			),
 		});
 		if (!row) return null;
 		return this.mapToDomain(row, await this.getLines(id, row.companyId));
@@ -141,12 +158,32 @@ export class PostgresJournalEntryRepository implements JournalEntryRepository {
 		return entries;
 	}
 
-	async delete(id: string): Promise<void> {
+	async delete(scope: TenantScope, id: string): Promise<void> {
 		await db.transaction(async (tx) => {
+			const owned = await tx
+				.select({ id: journalEntries.id })
+				.from(journalEntries)
+				.where(
+					and(
+						eq(journalEntries.id, id),
+						eq(journalEntries.companyId, scope.companyId),
+					),
+				)
+				.limit(1);
+			if (owned.length === 0) {
+				throw new Error("Journal entry not found");
+			}
 			await tx
 				.delete(journalEntryLines)
 				.where(eq(journalEntryLines.journalEntryId, id));
-			await tx.delete(journalEntries).where(eq(journalEntries.id, id));
+			await tx
+				.delete(journalEntries)
+				.where(
+					and(
+						eq(journalEntries.id, id),
+						eq(journalEntries.companyId, scope.companyId),
+					),
+				);
 		});
 	}
 

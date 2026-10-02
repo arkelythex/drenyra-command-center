@@ -52,8 +52,17 @@ jobs:
         with:
           verify-native-deps: false
 
-      - name: Dependency vulnerability audit
+      # Policy: block high/critical advisories. Low/moderate ones are tracked in
+      # odd/tasks/gentle-ai-v4-migration.md until their upstream fix lands.
+      - name: Dependency vulnerability audit (high and critical block)
         run: bun run security:audit
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Ecosystem connection (drenyra-ai contracts frozen, doctor healthy)
+        run: bun run ecosystem:doctor
 
   coverage-check:
     name: Coverage Thresholds

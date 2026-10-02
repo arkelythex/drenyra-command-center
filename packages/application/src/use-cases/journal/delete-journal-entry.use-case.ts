@@ -4,6 +4,7 @@
  */
 
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 
 /**
  * DeleteJournalEntryUseCase class.
@@ -17,9 +18,9 @@ import type { JournalEntryRepository } from "@drenyra/domain/repositories/journa
 export class DeleteJournalEntryUseCase {
 	constructor(private readonly journalRepository: JournalEntryRepository) {}
 
-	async execute(id: string): Promise<void> {
+	async execute(scope: TenantScope, id: string): Promise<void> {
 		// 1. Find existing entry
-		const entry = await this.journalRepository.findById(id);
+		const entry = await this.journalRepository.findById(scope, id);
 		if (!entry) {
 			throw new Error("Asiento no encontrado");
 		}
@@ -30,6 +31,6 @@ export class DeleteJournalEntryUseCase {
 		}
 
 		// 3. Delete entry
-		await this.journalRepository.delete(id);
+		await this.journalRepository.delete(scope, id);
 	}
 }

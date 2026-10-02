@@ -27,6 +27,7 @@ Drenyra maneja datos financieros sensibles, credenciales SUNAT y transacciones f
 | Documento                                       | Descripción                                 |
 | ----------------------------------------------- | ------------------------------------------- |
 | [Security Baseline](./security-baseline.md)     | Postura de seguridad, principios, checklist |
+| [Accepted Advisories](./accepted-advisories.md) | Avisos de dependencias aceptados, con justificación y salida |
 | [Threat Model](./threat-model.md)               | Amenazas por plano FEOS                     |
 | [Secret Management](./secret-management.md)     | Vault, KMS, credenciales SUNAT              |
 | [Incident Response](./incident-response.md)     | Runbook de respuesta a incidentes           |

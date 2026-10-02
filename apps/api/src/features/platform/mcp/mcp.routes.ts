@@ -12,7 +12,7 @@ import {
 	buildDrenyraMcpManifest,
 	type DrenyraMcpScope,
 	isDrenyraMcpScope,
-} from "@drenyra/pi";
+} from "@drenyra/agent-runtime";
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../../shared/api-response";
 import type {

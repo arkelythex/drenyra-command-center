@@ -12,7 +12,7 @@ import type {
 	DrenyraMcpAuditQuery,
 	DrenyraMcpAuditReader,
 	DrenyraMcpAuditSink,
-} from "@drenyra/pi";
+} from "@drenyra/agent-runtime";
 
 export type PlatformMcpAuditOperation = DrenyraMcpAuditEvent["operation"];
 export type PlatformMcpAuditOutcome = DrenyraMcpAuditEvent["outcome"];

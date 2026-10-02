@@ -113,4 +113,4 @@ Alerts defined in `monitoring/prometheus/alerts/arkelythex-api.yml` are automati
 
 **Última actualización**: 2026-06-20
 
-*Alineado con la [Filosofía Gentleman](../../../docs/meta/gentleman-philosophy.md) de ARKELYTHEX — documentación que reduce carga cognitiva y enseña con calidez.*
+*Alineado con la [Filosofía Gentleman](../../../../docs/meta/gentleman-philosophy.md) de ARKELYTHEX — documentación que reduce carga cognitiva y enseña con calidez.*

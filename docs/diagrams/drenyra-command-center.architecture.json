@@ -69,7 +69,7 @@
       "label": "3. Intelligence Plane",
       "sublabel": "Pi runtime, agents, memory",
       "sources": [
-        { "path": "packages/pi/package.json", "label": "Pi runtime" },
+        { "path": "packages/agent-runtime/package.json", "label": "Pi runtime" },
         { "path": "packages/drenyra-orchestrator/package.json", "label": "orchestrator" }
       ],
       "pos": [560, 140],

@@ -18,6 +18,8 @@ status: 'active'
 
 # Fiscal Intelligence Platform Architecture 2026
 
+**Última actualización**: 2026-10-02
+
 ## Purpose
 
 This document translates the strategic doctrine into an executable architecture.
@@ -93,7 +95,7 @@ flowchart TB
 
 Semantic layer for fiscal-operational concepts. It prevents the system from treating SUNAT concepts as generic rows.
 
-Canonical v0 contract: [Fiscal Ontology v0 2026](./fiscal-ontology-v0-2026.md), implemented in `packages/domain/src/fiscal-ontology`.
+Canonical v0 contract: Fiscal Ontology v0 2026 _(no disponible)_, implemented in `packages/domain/src/fiscal-ontology`.
 
 Canonical concepts:
 
@@ -220,7 +222,7 @@ Both call the same scoped API and must show the same fiscal context.
 
 ### 6.1 Drenyra Fiscal App Server (DFAS)
 
-DFAS is the unified transport layer inspired by the OpenAI Codex App Server, adapted for governed fiscal decisions. See [ADR-034](../02-adr/adr-034-drenyra-fiscal-app-server.md) and [DFAS Protocol Spec](./drenyra-fiscal-app-server-2026.md).
+DFAS is the unified transport layer inspired by the OpenAI Codex App Server, adapted for governed fiscal decisions. See [ADR-034](../11-adr/adr-034-drenyra-fiscal-app-server.md) and [DFAS Protocol Spec](./fiscal-app-server.md).
 
 | Component              | Role                                                                  |
 | ---------------------- | --------------------------------------------------------------------- |
@@ -339,13 +341,13 @@ sequenceDiagram
 
 - Define event states, transition policy and evidence requirements.
 - Add tests for immutable-style envelope creation, scope and approval transitions.
-- Canonical contract: [Fiscal Agentic Ledger Event Envelope 2026](./fiscal-agentic-ledger-event-envelope-2026.md), implemented in `packages/domain/src/fiscal-agentic-ledger`.
+- Canonical contract: Fiscal Agentic Ledger Event Envelope 2026 _(no disponible)_, implemented in `packages/domain/src/fiscal-agentic-ledger`.
 
 ### Phase 3 — Agent capability matrix
 
 - Implement deny-by-default tool capability policy.
 - Attach risk level and approval requirement to every fiscal tool.
-- Canonical contract: [Drenyra Agent Capability Matrix 2026](./drenyra-agent-capability-matrix-2026.md), implemented in `packages/domain/src/drenyra/capabilities.ts`.
+- Canonical contract: [Drenyra Agent Capability Matrix 2026](./agent-capability-matrix.md), implemented in `packages/domain/src/drenyra/capabilities.ts`.
 
 ### Phase 4 — Drenyra CLI/Web command loops
 
@@ -364,14 +366,14 @@ sequenceDiagram
 
 ## Related canon
 
-- [Frontier Fiscal Intelligence Platform Thesis](../business/frontier-fiscal-intelligence-platform-thesis-2026.md)
-- [Fiscal Truth Engine + Evidence Graph](./fiscal-truth-engine-evidence-graph-phase-1.md)
-- [Fiscal Ontology v0 2026](./fiscal-ontology-v0-2026.md)
-- [Fiscal Agentic Ledger Event Envelope 2026](./fiscal-agentic-ledger-event-envelope-2026.md)
-- [Drenyra Agent Capability Matrix 2026](./drenyra-agent-capability-matrix-2026.md)
-- [ADR-019: Fiscal Truth Boundary](../02-adr/adr-019-fiscal-truth-boundary.md)
-- [ADR-020: Evidence Graph Relational Model](../02-adr/adr-020-evidence-graph-relational-model.md)
-- [ADR-021: AI Control Plane Governance Boundaries](../02-adr/adr-021-ai-control-plane-governance-boundaries.md)
-- [ADR-025: Fiscal Intelligence Platform and FAL](../02-adr/adr-025-fiscal-intelligence-platform.md)
-- [Drenyra CLI](../05-development/drenyra-cli.md)
-- [Drenyra Agentic Fiscal Command Center Vision](../products/drenyra-agentic-fiscal-command-center-vision-2026.md)
+- Frontier Fiscal Intelligence Platform Thesis _(no disponible)_
+- Fiscal Truth Engine + Evidence Graph _(no disponible)_
+- Fiscal Ontology v0 2026 _(no disponible)_
+- Fiscal Agentic Ledger Event Envelope 2026 _(no disponible)_
+- [Drenyra Agent Capability Matrix 2026](./agent-capability-matrix.md)
+- ADR-019: Fiscal Truth Boundary _(no disponible)_
+- ADR-020: Evidence Graph Relational Model _(no disponible)_
+- ADR-021: AI Control Plane Governance Boundaries _(no disponible)_
+- ADR-025: Fiscal Intelligence Platform and FAL _(no disponible)_
+- Drenyra CLI _(no disponible)_
+- Drenyra Agentic Fiscal Command Center Vision _(no disponible)_

@@ -5,6 +5,7 @@
 
 import type { Account } from "@drenyra/domain/entities/Account";
 import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 
 /**
  * ToggleAccountStatusResult interface.
@@ -33,9 +34,12 @@ export interface ToggleAccountStatusResult {
 export class ToggleAccountStatusUseCase {
 	constructor(private readonly accountRepository: AccountRepository) {}
 
-	async execute(accountId: string): Promise<ToggleAccountStatusResult> {
+	async execute(
+		scope: TenantScope,
+		accountId: string,
+	): Promise<ToggleAccountStatusResult> {
 		// 1. Find existing account
-		const account = await this.accountRepository.findById(accountId);
+		const account = await this.accountRepository.findById(scope, accountId);
 		if (!account) {
 			throw new Error("Cuenta no encontrada");
 		}
@@ -45,7 +49,10 @@ export class ToggleAccountStatusUseCase {
 
 		// 3. If deactivating, check if account has active children
 		if (account.isActive) {
-			const children = await this.accountRepository.findChildren(accountId);
+			const children = await this.accountRepository.findChildren(
+				scope,
+				accountId,
+			);
 			const activeChildren = children.filter((child) => child.isActive);
 
 			if (activeChildren.length > 0) {
@@ -57,7 +64,10 @@ export class ToggleAccountStatusUseCase {
 
 		// 4. If activating, check if parent is active (if has parent)
 		if (!account.isActive && account.parentId) {
-			const parent = await this.accountRepository.findById(account.parentId);
+			const parent = await this.accountRepository.findById(
+				scope,
+				account.parentId,
+			);
 			if (parent && !parent.isActive) {
 				throw new Error(
 					"No se puede activar una cuenta cuya cuenta padre está inactiva",
@@ -69,7 +79,7 @@ export class ToggleAccountStatusUseCase {
 		const updatedAccount = account.toggleStatus();
 
 		// 6. Persist changes
-		await this.accountRepository.save(updatedAccount);
+		await this.accountRepository.update(scope, updatedAccount);
 
 		return {
 			account: updatedAccount,
@@ -81,8 +91,8 @@ export class ToggleAccountStatusUseCase {
 	/**
 	 * Activate an account
 	 */
-	async activate(accountId: string): Promise<Account> {
-		const account = await this.accountRepository.findById(accountId);
+	async activate(scope: TenantScope, accountId: string): Promise<Account> {
+		const account = await this.accountRepository.findById(scope, accountId);
 		if (!account) {
 			throw new Error("Cuenta no encontrada");
 		}
@@ -93,7 +103,10 @@ export class ToggleAccountStatusUseCase {
 
 		// Check parent is active
 		if (account.parentId) {
-			const parent = await this.accountRepository.findById(account.parentId);
+			const parent = await this.accountRepository.findById(
+				scope,
+				account.parentId,
+			);
 			if (parent && !parent.isActive) {
 				throw new Error(
 					"No se puede activar una cuenta cuya cuenta padre está inactiva",
@@ -102,7 +115,7 @@ export class ToggleAccountStatusUseCase {
 		}
 
 		const activatedAccount = account.activate();
-		await this.accountRepository.save(activatedAccount);
+		await this.accountRepository.update(scope, activatedAccount);
 
 		return activatedAccount;
 	}
@@ -110,8 +123,8 @@ export class ToggleAccountStatusUseCase {
 	/**
 	 * Deactivate an account
 	 */
-	async deactivate(accountId: string): Promise<Account> {
-		const account = await this.accountRepository.findById(accountId);
+	async deactivate(scope: TenantScope, accountId: string): Promise<Account> {
+		const account = await this.accountRepository.findById(scope, accountId);
 		if (!account) {
 			throw new Error("Cuenta no encontrada");
 		}
@@ -121,7 +134,10 @@ export class ToggleAccountStatusUseCase {
 		}
 
 		// Check no active children
-		const children = await this.accountRepository.findChildren(accountId);
+		const children = await this.accountRepository.findChildren(
+			scope,
+			accountId,
+		);
 		const activeChildren = children.filter((child) => child.isActive);
 
 		if (activeChildren.length > 0) {
@@ -131,7 +147,7 @@ export class ToggleAccountStatusUseCase {
 		}
 
 		const deactivatedAccount = account.deactivate();
-		await this.accountRepository.save(deactivatedAccount);
+		await this.accountRepository.update(scope, deactivatedAccount);
 
 		return deactivatedAccount;
 	}

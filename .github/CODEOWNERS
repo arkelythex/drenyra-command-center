@@ -34,12 +34,11 @@
 /apps/api/src/features/agent-audit-trail/ @dreamcoder08
 
 # CLI — Gentleman Fiscal Terminal
-/apps/cli/ @dreamcoder08
 /packages/engram/ @dreamcoder08
 
 # Compliance pipeline — fiscal compliance orchestrator, phase gates, SDD
 /packages/fiscal-compliance-pipeline/ @dreamcoder08
-/packages/fiscal-sdd/ @dreamcoder08
+/packages/fiscal-fsd/ @dreamcoder08
 /packages/phase-gatekeeper/ @dreamcoder08
 
 # Docs — canonical docs, codebase map, generated index

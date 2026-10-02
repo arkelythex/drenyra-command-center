@@ -108,4 +108,52 @@ describe("UpdateJournalEntry — cross-tenant account validation", () => {
 		expect(repo.update).not.toHaveBeenCalled();
 		expect(repo.create).not.toHaveBeenCalled();
 	});
+
+	it("looks the entry up inside the caller's tenant scope", async () => {
+		const repo = createMockRepo();
+		repo.findById.mockResolvedValue(null);
+		const useCase = new UpdateJournalEntryUseCase(repo, mockAccountService);
+
+		await expect(
+			useCase.execute(scopeA1, "foreign-entry", { gloss: "x" }),
+		).rejects.toThrow("Asiento no encontrado");
+
+		expect(repo.findById).toHaveBeenCalledWith(scopeA1, "foreign-entry");
+		expect(repo.update).not.toHaveBeenCalled();
+	});
+
+	it("resolves each account inside the caller's tenant scope", async () => {
+		const repo = createMockRepo();
+		repo.findById.mockResolvedValue({
+			id: "entry-1",
+			canBeModified: () => true,
+			update: vi.fn(),
+		});
+		mockAccountService.getById.mockResolvedValue(null);
+		const useCase = new UpdateJournalEntryUseCase(repo, mockAccountService);
+
+		await expect(
+			useCase.execute(scopeA1, "entry-1", {
+				lines: [
+					{
+						accountId: "550e8400-e29b-41d4-a716-446655440001",
+						description: "d",
+						debit: 100,
+						credit: 0,
+					},
+					{
+						accountId: "550e8400-e29b-41d4-a716-446655440002",
+						description: "c",
+						debit: 0,
+						credit: 100,
+					},
+				],
+			}),
+		).rejects.toThrow(/Cuenta no encontrada/);
+
+		expect(mockAccountService.getById).toHaveBeenCalledWith(
+			scopeA1,
+			"550e8400-e29b-41d4-a716-446655440001",
+		);
+	});
 });

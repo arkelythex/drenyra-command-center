@@ -693,8 +693,8 @@ export async function signAndSendInvoice(
 ## References
 
 ### Internal Documentation
-- Product-level overview: [docs/SUNAT_CAPABILITIES_2026.md](../../../../../docs/SUNAT_CAPABILITIES_2026.md)
-- Full API docs: [docs/04-api/sunat.md](../../../../../docs/04-api/sunat.md) (future)
+- Product-level overview: docs/SUNAT_CAPABILITIES_2026.md _(no disponible)_
+- Full API docs: docs/04-api/sunat.md _(no disponible)_ (future)
 
 ### External Standards
 - [SUNAT CPE Portal](https://cpe.sunat.gob.pe/)
@@ -829,4 +829,4 @@ Body:
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)

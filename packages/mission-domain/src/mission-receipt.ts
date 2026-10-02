@@ -2,7 +2,7 @@
  * @drenyra/mission-domain — mission-receipt ADAPTER SHIM.
  *
  * The canonical receipt crypto layer lives in `drenyra-ai/receipts` (released
- * v0.0.1-prealpha.1; this file was the original source of the port). Explicit
+ * v0.5.0; this file was the original source of the port). Explicit
  * names only — `EvidenceItem` stays local (re-exported from mission-contracts)
  * to avoid a duplicate with the legacy contracts types.
  *

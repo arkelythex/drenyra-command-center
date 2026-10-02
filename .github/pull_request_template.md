@@ -40,9 +40,9 @@
 
 <!-- ~XXX líneas, ~XX min de review estimado -->
 
-## OpenSpec / enlaces
+## ODD / enlaces
 
-<!-- Si el cambio sigue un change en `openspec/changes/`, enlázalo. Issues: Closes # -->
+<!-- Si el cambio es sustancial, enlaza su documento en `odd/tasks/`. Issues: Closes # -->
 
 ## Documentation Maintenance
 

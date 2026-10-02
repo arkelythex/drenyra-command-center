@@ -7,7 +7,7 @@
  * @module @drenyra/skill-sire-filing
  */
 
-import type { DrenyraSkill, SkillContext } from "@drenyra/pi";
+import type { DrenyraSkill, SkillContext } from "@drenyra/agent-runtime";
 
 export interface SireFilingRecord {
 	/** RUC del emisor */

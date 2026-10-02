@@ -379,9 +379,9 @@ bun test src/features/cashflow/__tests__/unit/
 ## References
 
 - [Banking Feature](../banking/README.md) - Similar Vertical Slice pattern
-- [Invoice Feature](../invoice/README.md) - Inflows source
-- [Bill Feature](../bill/README.md) - Outflows source
-- [Vertical Slice Guide](../../../docs/technical/vertical-slice-migration-guide.md)
+- Invoice Feature _(no disponible)_ - Inflows source
+- Bill Feature _(no disponible)_ - Outflows source
+- Vertical Slice Guide _(no disponible)_
 
 ---
 
@@ -389,4 +389,4 @@ bun test src/features/cashflow/__tests__/unit/
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)

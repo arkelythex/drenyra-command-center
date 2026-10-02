@@ -21,6 +21,65 @@ import type {
 } from "@drenyra/domain/fiscal";
 
 // ============================================================================
+// Acumulación de totales (una transacción a la vez, en orden)
+// ============================================================================
+
+type Classification = FiscalTransaction["classification"];
+
+interface Totals {
+	ventasGravadas: number;
+	ventasExoneradas: number;
+	ventasInafectas: number;
+	igvVentas: number;
+	comprasGravadas: number;
+	igvCompras: number;
+	totalDetracciones: number;
+	detraccionesPendientes: number;
+	totalPercepciones: number;
+	totalRetenciones: number;
+	pendingReview: number;
+}
+
+function emptyTotals(): Totals {
+	return {
+		ventasGravadas: 0,
+		ventasExoneradas: 0,
+		ventasInafectas: 0,
+		igvVentas: 0,
+		comprasGravadas: 0,
+		igvCompras: 0,
+		totalDetracciones: 0,
+		detraccionesPendientes: 0,
+		totalPercepciones: 0,
+		totalRetenciones: 0,
+		pendingReview: 0,
+	};
+}
+
+/** Nota: `ventasGravadas` suma toda la base de ventas (incluye exoneradas e inafectas). */
+function accumulate(t: Totals, c: Classification): void {
+	if (c.sireCategory === "VENTAS") {
+		t.ventasGravadas += c.baseImponible;
+		t.igvVentas += c.igvAmount;
+		if (c.igvTreatment === "EXONERADO") t.ventasExoneradas += c.baseImponible;
+		if (c.igvTreatment === "INAFECTO") t.ventasInafectas += c.baseImponible;
+	} else {
+		t.comprasGravadas += c.baseImponible;
+		t.igvCompras += c.igvAmount;
+	}
+
+	if (c.detraccion.aplica) {
+		t.totalDetracciones += c.detraccion.monto;
+		if (c.detraccion.estado === "PENDIENTE") {
+			t.detraccionesPendientes += c.detraccion.monto;
+		}
+	}
+	if (c.percepcion.aplica) t.totalPercepciones += c.percepcion.monto;
+	if (c.retencion.aplica) t.totalRetenciones += c.retencion.monto;
+	if (c.confidence < 0.7) t.pendingReview++;
+}
+
+// ============================================================================
 // FiscalSummaryService
 // ============================================================================
 
@@ -35,44 +94,24 @@ export class FiscalSummaryService {
 		const periodo = firstTx?.classification.periodo ?? "";
 		const companyRuc = firstTx?.companyRuc ?? "";
 
-		let ventasGravadas = 0;
-		let ventasExoneradas = 0;
-		let ventasInafectas = 0;
-		let igvVentas = 0;
-		let comprasGravadas = 0;
-		let igvCompras = 0;
-		let totalDetracciones = 0;
-		let detraccionesPendientes = 0;
-		let totalPercepciones = 0;
-		let totalRetenciones = 0;
-		let pendingReview = 0;
-
+		const totals = emptyTotals();
 		for (const tx of transactions) {
-			const c = tx.classification;
-
-			if (c.sireCategory === "VENTAS") {
-				ventasGravadas += c.baseImponible;
-				igvVentas += c.igvAmount;
-
-				if (c.igvTreatment === "EXONERADO") ventasExoneradas += c.baseImponible;
-				if (c.igvTreatment === "INAFECTO") ventasInafectas += c.baseImponible;
-			} else {
-				comprasGravadas += c.baseImponible;
-				igvCompras += c.igvAmount;
-			}
-
-			if (c.detraccion.aplica) {
-				totalDetracciones += c.detraccion.monto;
-				if (c.detraccion.estado === "PENDIENTE") {
-					detraccionesPendientes += c.detraccion.monto;
-				}
-			}
-
-			if (c.percepcion.aplica) totalPercepciones += c.percepcion.monto;
-			if (c.retencion.aplica) totalRetenciones += c.retencion.monto;
-
-			if (c.confidence < 0.7) pendingReview++;
+			accumulate(totals, tx.classification);
 		}
+
+		const {
+			ventasGravadas,
+			ventasExoneradas,
+			ventasInafectas,
+			igvVentas,
+			comprasGravadas,
+			igvCompras,
+			totalDetracciones,
+			detraccionesPendientes,
+			totalPercepciones,
+			totalRetenciones,
+			pendingReview,
+		} = totals;
 
 		const igvAPagar = Math.max(0, igvVentas - igvCompras);
 		const igvAFavor = Math.max(0, igvCompras - igvVentas);

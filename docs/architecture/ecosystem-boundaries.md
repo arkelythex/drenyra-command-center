@@ -29,7 +29,7 @@ Drenyra is **not**:
 
 - An independent agent runtime. Missions, candidates, review lenses, gates, receipts, and the ledger core belong to `drenyra-ai`.
 - A memory engine. Observations, scope-first search, relations, lifecycle, and provenance belong to `drenyra-engram`.
-- A Pi extension. The Pi-native harness belongs to `drenyra-pi`.
+- A Pi extension. The Pi-native harness belongs to `drenyra-shell`.
 - A standalone receipt verifier for external ERPs. That is `drenyra-ai`'s public surface.
 
 ## What Drenyra must NOT contain long-term
@@ -38,7 +38,7 @@ These are extraction targets. They already live (or are being extracted into) ot
 
 - **Mission / candidate / review / gate runtime logic** → `drenyra-ai`. Drenyra consumes released, versioned artifacts; it never vendors a checkout.
 - **Memory storage and search** → `drenyra-engram`. Drenyra reads memory through its surfaces.
-- **Pi-specific operator behavior** → `drenyra-pi`.
+- **Pi-specific operator behavior** → `drenyra-shell`.
 - **Duplicated contract types** → contracts are canonical in `drenyra-ai` and `drenyra-engram`; Drenyra imports them, it does not fork them.
 
 ## Consumers and producers

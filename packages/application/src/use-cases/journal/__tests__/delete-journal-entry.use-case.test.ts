@@ -5,9 +5,12 @@
 
 import { JournalEntry } from "@drenyra/domain/entities/JournalEntry";
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { DeleteJournalEntryUseCase } from "../delete-journal-entry.use-case";
+
+const scope: TenantScope = { organizationId: "1", companyId: "company-a1" };
 
 describe("DeleteJournalEntryUseCase", () => {
 	let useCase: DeleteJournalEntryUseCase;
@@ -15,7 +18,6 @@ describe("DeleteJournalEntryUseCase", () => {
 
 	beforeEach(() => {
 		mockJournalRepository = {
-			save: vi.fn(),
 			findById: vi.fn(),
 			findByOrganizationId: vi.fn(),
 			findByDateRange: vi.fn(),
@@ -68,12 +70,16 @@ describe("DeleteJournalEntryUseCase", () => {
 			vi.mocked(mockJournalRepository.findById).mockResolvedValue(draftEntry);
 			vi.mocked(mockJournalRepository.delete).mockResolvedValue(undefined);
 
-			await useCase.execute("journal-123");
+			await useCase.execute(scope, "journal-123");
 
 			expect(mockJournalRepository.findById).toHaveBeenCalledWith(
+				scope,
 				"journal-123",
 			);
-			expect(mockJournalRepository.delete).toHaveBeenCalledWith("journal-123");
+			expect(mockJournalRepository.delete).toHaveBeenCalledWith(
+				scope,
+				"journal-123",
+			);
 			expect(mockJournalRepository.delete).toHaveBeenCalledTimes(1);
 		});
 
@@ -83,7 +89,7 @@ describe("DeleteJournalEntryUseCase", () => {
 			vi.mocked(mockJournalRepository.findById).mockResolvedValue(draftEntry);
 			vi.mocked(mockJournalRepository.delete).mockResolvedValue(undefined);
 
-			await useCase.execute("journal-123");
+			await useCase.execute(scope, "journal-123");
 
 			const findByIdCall = vi.mocked(mockJournalRepository.findById).mock
 				.invocationCallOrder[0];
@@ -99,12 +105,14 @@ describe("DeleteJournalEntryUseCase", () => {
 			vi.mocked(mockJournalRepository.findById).mockResolvedValue(draftEntry);
 			vi.mocked(mockJournalRepository.delete).mockResolvedValue(undefined);
 
-			await useCase.execute("different-id-789");
+			await useCase.execute(scope, "different-id-789");
 
 			expect(mockJournalRepository.findById).toHaveBeenCalledWith(
+				scope,
 				"different-id-789",
 			);
 			expect(mockJournalRepository.delete).toHaveBeenCalledWith(
+				scope,
 				"different-id-789",
 			);
 		});
@@ -114,11 +122,12 @@ describe("DeleteJournalEntryUseCase", () => {
 		it("should throw error when journal entry not found", async () => {
 			vi.mocked(mockJournalRepository.findById).mockResolvedValue(null);
 
-			await expect(useCase.execute("non-existent-id")).rejects.toThrow(
+			await expect(useCase.execute(scope, "non-existent-id")).rejects.toThrow(
 				"Asiento no encontrado",
 			);
 
 			expect(mockJournalRepository.findById).toHaveBeenCalledWith(
+				scope,
 				"non-existent-id",
 			);
 			expect(mockJournalRepository.delete).not.toHaveBeenCalled();
@@ -131,7 +140,7 @@ describe("DeleteJournalEntryUseCase", () => {
 				>,
 			);
 
-			await expect(useCase.execute("non-existent-id")).rejects.toThrow(
+			await expect(useCase.execute(scope, "non-existent-id")).rejects.toThrow(
 				"Asiento no encontrado",
 			);
 
@@ -143,11 +152,12 @@ describe("DeleteJournalEntryUseCase", () => {
 
 			vi.mocked(mockJournalRepository.findById).mockResolvedValue(postedEntry);
 
-			await expect(useCase.execute("journal-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, "journal-123")).rejects.toThrow(
 				"Solo se pueden eliminar asientos en borrador",
 			);
 
 			expect(mockJournalRepository.findById).toHaveBeenCalledWith(
+				scope,
 				"journal-123",
 			);
 			expect(mockJournalRepository.delete).not.toHaveBeenCalled();
@@ -158,7 +168,7 @@ describe("DeleteJournalEntryUseCase", () => {
 				new Error("Database connection failed"),
 			);
 
-			await expect(useCase.execute("journal-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, "journal-123")).rejects.toThrow(
 				"Database connection failed",
 			);
 
@@ -173,7 +183,7 @@ describe("DeleteJournalEntryUseCase", () => {
 				new Error("Foreign key constraint violation"),
 			);
 
-			await expect(useCase.execute("journal-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, "journal-123")).rejects.toThrow(
 				"Foreign key constraint violation",
 			);
 
@@ -192,7 +202,9 @@ describe("DeleteJournalEntryUseCase", () => {
 			vi.mocked(mockJournalRepository.findById).mockResolvedValue(draftEntry);
 			vi.mocked(mockJournalRepository.delete).mockResolvedValue(undefined);
 
-			await expect(useCase.execute("journal-123")).resolves.not.toThrow();
+			await expect(
+				useCase.execute(scope, "journal-123"),
+			).resolves.not.toThrow();
 		});
 
 		it("should prevent deletion of posted entries via business rule", async () => {
@@ -203,7 +215,7 @@ describe("DeleteJournalEntryUseCase", () => {
 
 			vi.mocked(mockJournalRepository.findById).mockResolvedValue(postedEntry);
 
-			await expect(useCase.execute("journal-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, "journal-123")).rejects.toThrow(
 				"Solo se pueden eliminar asientos en borrador",
 			);
 		});
@@ -217,7 +229,7 @@ describe("DeleteJournalEntryUseCase", () => {
 			vi.mocked(mockJournalRepository.delete).mockResolvedValue(undefined);
 
 			// Should not throw
-			await useCase.execute("journal-123");
+			await useCase.execute(scope, "journal-123");
 
 			// Verify complete workflow executed
 			expect(mockJournalRepository.findById).toHaveBeenCalledTimes(1);
@@ -233,12 +245,43 @@ describe("DeleteJournalEntryUseCase", () => {
 				.mockResolvedValueOnce(draftEntry2);
 			vi.mocked(mockJournalRepository.delete).mockResolvedValue(undefined);
 
-			await useCase.execute("journal-1");
-			await useCase.execute("journal-2");
+			await useCase.execute(scope, "journal-1");
+			await useCase.execute(scope, "journal-2");
 
 			expect(mockJournalRepository.delete).toHaveBeenCalledTimes(2);
-			expect(mockJournalRepository.delete).toHaveBeenCalledWith("journal-1");
-			expect(mockJournalRepository.delete).toHaveBeenCalledWith("journal-2");
+			expect(mockJournalRepository.delete).toHaveBeenCalledWith(
+				scope,
+				"journal-1",
+			);
+			expect(mockJournalRepository.delete).toHaveBeenCalledWith(
+				scope,
+				"journal-2",
+			);
+		});
+	});
+
+	describe("tenant isolation", () => {
+		it("looks the entry up inside the caller's tenant scope", async () => {
+			vi.mocked(mockJournalRepository.findById).mockResolvedValue(
+				createMockJournalEntry("borrador"),
+			);
+			vi.mocked(mockJournalRepository.delete).mockResolvedValue(undefined);
+
+			await useCase.execute(scope, "journal-123");
+
+			expect(mockJournalRepository.findById).toHaveBeenCalledWith(
+				scope,
+				"journal-123",
+			);
+		});
+
+		it("does not delete an entry the scope cannot see (cross-tenant)", async () => {
+			vi.mocked(mockJournalRepository.findById).mockResolvedValue(null);
+
+			await expect(useCase.execute(scope, "foreign-entry")).rejects.toThrow(
+				"Asiento no encontrado",
+			);
+			expect(mockJournalRepository.delete).not.toHaveBeenCalled();
 		});
 	});
 });

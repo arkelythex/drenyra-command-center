@@ -1,0 +1,470 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: anomalies 2 1`] = `
+{
+  "alerts": [],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 20,
+    "compliance": 5,
+    "sireReproducibility": 40,
+    "timeliness": 20,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 85,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: anomalies 6 floors at 0 1`] = `
+{
+  "alerts": [],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 0,
+    "compliance": 5,
+    "sireReproducibility": 40,
+    "timeliness": 20,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 65,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: clean, no igv 1`] = `
+{
+  "alerts": [],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 30,
+    "compliance": 5,
+    "sireReproducibility": 40,
+    "timeliness": 20,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 95,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: detracciones 99 1`] = `
+{
+  "alerts": [],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 30,
+    "compliance": 5,
+    "sireReproducibility": 40,
+    "timeliness": 20,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 95,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: detracciones 1000 (no alert) 1`] = `
+{
+  "alerts": [],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 30,
+    "compliance": 5,
+    "sireReproducibility": 40,
+    "timeliness": 10,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 85,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: detracciones 1000.01 (critical) 1`] = `
+{
+  "alerts": [
+    {
+      "affectedArea": "detracciones",
+      "message": "Detracciones pendientes: S/ 1000.01",
+      "severity": "CRITICAL",
+    },
+  ],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 30,
+    "compliance": 5,
+    "sireReproducibility": 40,
+    "timeliness": 10,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 85,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: detracciones 2500 floors timeliness 1`] = `
+{
+  "alerts": [
+    {
+      "affectedArea": "detracciones",
+      "message": "Detracciones pendientes: S/ 2500.00",
+      "severity": "CRITICAL",
+    },
+  ],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 30,
+    "compliance": 5,
+    "sireReproducibility": 40,
+    "timeliness": 0,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 75,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: everything bad 1`] = `
+{
+  "alerts": [
+    {
+      "affectedArea": "classification",
+      "message": "20 transacciones requieren revisión",
+      "severity": "WARNING",
+    },
+    {
+      "affectedArea": "detracciones",
+      "message": "Detracciones pendientes: S/ 5000.00",
+      "severity": "CRITICAL",
+    },
+  ],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 0,
+    "compliance": 5,
+    "sireReproducibility": 0,
+    "timeliness": 0,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 5,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: igv a favor 1`] = `
+{
+  "alerts": [],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 30,
+    "compliance": 10,
+    "sireReproducibility": 40,
+    "timeliness": 20,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 100,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: igv a pagar 1`] = `
+{
+  "alerts": [],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 30,
+    "compliance": 10,
+    "sireReproducibility": 40,
+    "timeliness": 20,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 100,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: pending 3 1`] = `
+{
+  "alerts": [
+    {
+      "affectedArea": "classification",
+      "message": "3 transacción(es) por revisar",
+      "severity": "INFO",
+    },
+  ],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 30,
+    "compliance": 5,
+    "sireReproducibility": 25,
+    "timeliness": 20,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 80,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: pending 8 floors at 0 1`] = `
+{
+  "alerts": [
+    {
+      "affectedArea": "classification",
+      "message": "8 transacción(es) por revisar",
+      "severity": "INFO",
+    },
+  ],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 30,
+    "compliance": 5,
+    "sireReproducibility": 0,
+    "timeliness": 20,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 55,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: pending 10 (info alert) 1`] = `
+{
+  "alerts": [
+    {
+      "affectedArea": "classification",
+      "message": "10 transacción(es) por revisar",
+      "severity": "INFO",
+    },
+  ],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 30,
+    "compliance": 5,
+    "sireReproducibility": 0,
+    "timeliness": 20,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 55,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeHealthScore: pending 11 (warning alert) 1`] = `
+{
+  "alerts": [
+    {
+      "affectedArea": "classification",
+      "message": "11 transacciones requieren revisión",
+      "severity": "WARNING",
+    },
+  ],
+  "companyRuc": "20123456786",
+  "components": {
+    "anomaliesScore": 30,
+    "compliance": 5,
+    "sireReproducibility": 0,
+    "timeliness": 20,
+  },
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "overall": 55,
+  "periodo": "2026-07",
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeSummary: confidence boundary 0.7 1`] = `
+{
+  "companyRuc": "20123456786",
+  "comprasGravadas": 0,
+  "detraccionesPendientes": 0,
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "igvAFavor": 0,
+  "igvAPagar": 54,
+  "igvCompras": 0,
+  "igvVentas": 54,
+  "pendingReview": 2,
+  "periodo": "2026-07",
+  "totalDetracciones": 0,
+  "totalPercepciones": 0,
+  "totalRetenciones": 0,
+  "transactionCount": 3,
+  "ventasExoneradas": 0,
+  "ventasGravadas": 300,
+  "ventasInafectas": 0,
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeSummary: detracciones pendientes and paid 1`] = `
+{
+  "companyRuc": "20123456786",
+  "comprasGravadas": 0,
+  "detraccionesPendientes": 120.55,
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "igvAFavor": 0,
+  "igvAPagar": 54,
+  "igvCompras": 0,
+  "igvVentas": 54,
+  "pendingReview": 0,
+  "periodo": "2026-07",
+  "totalDetracciones": 200.55,
+  "totalPercepciones": 0,
+  "totalRetenciones": 0,
+  "transactionCount": 3,
+  "ventasExoneradas": 0,
+  "ventasGravadas": 300,
+  "ventasInafectas": 0,
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeSummary: empty 1`] = `
+{
+  "companyRuc": "",
+  "comprasGravadas": 0,
+  "detraccionesPendientes": 0,
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "igvAFavor": 0,
+  "igvAPagar": 0,
+  "igvCompras": 0,
+  "igvVentas": 0,
+  "pendingReview": 0,
+  "periodo": "",
+  "totalDetracciones": 0,
+  "totalPercepciones": 0,
+  "totalRetenciones": 0,
+  "transactionCount": 0,
+  "ventasExoneradas": 0,
+  "ventasGravadas": 0,
+  "ventasInafectas": 0,
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeSummary: float accumulation 1`] = `
+{
+  "companyRuc": "20123456786",
+  "comprasGravadas": 0,
+  "detraccionesPendientes": 0,
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "igvAFavor": 0,
+  "igvAPagar": 0.9999999999999999,
+  "igvCompras": 0,
+  "igvVentas": 0.9999999999999999,
+  "pendingReview": 0,
+  "periodo": "2026-07",
+  "totalDetracciones": 0,
+  "totalPercepciones": 0,
+  "totalRetenciones": 0,
+  "transactionCount": 10,
+  "ventasExoneradas": 0,
+  "ventasGravadas": 0.9999999999999999,
+  "ventasInafectas": 0,
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeSummary: igv a favor 1`] = `
+{
+  "companyRuc": "20123456786",
+  "comprasGravadas": 100,
+  "detraccionesPendientes": 0,
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "igvAFavor": 89.99,
+  "igvAPagar": 0,
+  "igvCompras": 99.99,
+  "igvVentas": 10,
+  "pendingReview": 0,
+  "periodo": "2026-07",
+  "totalDetracciones": 0,
+  "totalPercepciones": 0,
+  "totalRetenciones": 0,
+  "transactionCount": 2,
+  "ventasExoneradas": 0,
+  "ventasGravadas": 100,
+  "ventasInafectas": 0,
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeSummary: percepciones and retenciones 1`] = `
+{
+  "companyRuc": "20123456786",
+  "comprasGravadas": 0,
+  "detraccionesPendientes": 0,
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "igvAFavor": 0,
+  "igvAPagar": 36,
+  "igvCompras": 0,
+  "igvVentas": 36,
+  "pendingReview": 0,
+  "periodo": "2026-07",
+  "totalDetracciones": 0,
+  "totalPercepciones": 3.3,
+  "totalRetenciones": 1.1,
+  "transactionCount": 2,
+  "ventasExoneradas": 0,
+  "ventasGravadas": 200,
+  "ventasInafectas": 0,
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeSummary: sales mix incl. exonerado and inafecto 1`] = `
+{
+  "companyRuc": "20123456786",
+  "comprasGravadas": 30,
+  "detraccionesPendientes": 0,
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "igvAFavor": 0,
+  "igvAPagar": 12.6,
+  "igvCompras": 5.4,
+  "igvVentas": 18,
+  "pendingReview": 0,
+  "periodo": "2026-07",
+  "totalDetracciones": 0,
+  "totalPercepciones": 0,
+  "totalRetenciones": 0,
+  "transactionCount": 4,
+  "ventasExoneradas": 40,
+  "ventasGravadas": 200,
+  "ventasInafectas": 60,
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeSummary: single purchase 1`] = `
+{
+  "companyRuc": "20123456786",
+  "comprasGravadas": 250.5,
+  "detraccionesPendientes": 0,
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "igvAFavor": 45.09,
+  "igvAPagar": 0,
+  "igvCompras": 45.09,
+  "igvVentas": 0,
+  "pendingReview": 0,
+  "periodo": "2026-07",
+  "totalDetracciones": 0,
+  "totalPercepciones": 0,
+  "totalRetenciones": 0,
+  "transactionCount": 1,
+  "ventasExoneradas": 0,
+  "ventasGravadas": 0,
+  "ventasInafectas": 0,
+}
+`;
+
+exports[`FiscalSummaryService (characterization) > pins computeSummary: single sale 1`] = `
+{
+  "companyRuc": "20123456786",
+  "comprasGravadas": 0,
+  "detraccionesPendientes": 0,
+  "generatedAt": "2026-08-01T00:00:00.000Z",
+  "igvAFavor": 0,
+  "igvAPagar": 18,
+  "igvCompras": 0,
+  "igvVentas": 18,
+  "pendingReview": 0,
+  "periodo": "2026-07",
+  "totalDetracciones": 0,
+  "totalPercepciones": 0,
+  "totalRetenciones": 0,
+  "transactionCount": 1,
+  "ventasExoneradas": 0,
+  "ventasGravadas": 100,
+  "ventasInafectas": 0,
+}
+`;

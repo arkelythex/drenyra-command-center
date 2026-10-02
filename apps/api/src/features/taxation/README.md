@@ -83,9 +83,9 @@ bun run --cwd apps/api validate:taxation:retentions
 
 See:
 
-- [Taxation Retentions Summary](../../../../../DOCS/TAXATION_RETENTIONS_SUMMARY.md)
-- [Debt Log](../../../../../docs/DEBT_LOG.md)
+- Taxation Retentions Summary _(no disponible)_
+- Debt Log _(no disponible)_
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)

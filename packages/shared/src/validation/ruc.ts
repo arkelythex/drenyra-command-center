@@ -65,7 +65,7 @@ function calculateExpectedCheckDigit(ruc: string): number {
 
 	for (let i = 0; i < 10; i++) {
 		const digit = Number.parseInt(ruc[i] ?? "0", 10);
-		sum += digit * RUC_WEIGHTS[i];
+		sum += digit * (RUC_WEIGHTS[i] ?? 0);
 	}
 
 	const remainder = sum % 11;

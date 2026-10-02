@@ -1,0 +1,160 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DeclaracionAgent (characterization) > pins the report with the real service: accepted with ticket 1`] = `
+{
+  "data": {
+    "cdrId": "CDR-9",
+    "codigoSUNAT": "0",
+    "fechaPresentacion": "2026-06-30T00:00:00.000Z",
+    "numeroComprobante": "T-1",
+    "observaciones": [],
+    "presentada": true,
+    "tipoDeclaracion": "SIRE",
+  },
+  "periodo": "2026-06",
+  "phaseId": "declaracion",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Declaración SIRE presentada exitosamente. CDR: CDR-9",
+}
+`;
+
+exports[`DeclaracionAgent (characterization) > pins the report with the real service: failure without error text 1`] = `
+{
+  "data": {
+    "cdrId": undefined,
+    "codigoSUNAT": "1",
+    "fechaPresentacion": "2026-07-01T10:00:00.000Z",
+    "numeroComprobante": "D202606-456789",
+    "observaciones": [],
+    "presentada": false,
+    "tipoDeclaracion": "SIRE",
+  },
+  "periodo": "2026-06",
+  "phaseId": "declaracion",
+  "ruc": "20123456789",
+  "success": false,
+  "summary": "Error en declaración: undefined",
+}
+`;
+
+exports[`DeclaracionAgent (characterization) > pins the report with the real service: observed, no ticket, no acceptedAt 1`] = `
+{
+  "data": {
+    "cdrId": "CDR-8",
+    "codigoSUNAT": "5",
+    "fechaPresentacion": "2026-07-01T10:00:00.000Z",
+    "numeroComprobante": "D202606-456789",
+    "observaciones": [],
+    "presentada": true,
+    "tipoDeclaracion": "SIRE",
+  },
+  "periodo": "2026-06",
+  "phaseId": "declaracion",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Declaración SIRE presentada exitosamente. CDR: CDR-8",
+}
+`;
+
+exports[`DeclaracionAgent (characterization) > pins the report with the real service: rejected with error 1`] = `
+{
+  "data": {
+    "cdrId": undefined,
+    "codigoSUNAT": "1",
+    "fechaPresentacion": "2026-07-01T10:00:00.000Z",
+    "numeroComprobante": "D202606-456789",
+    "observaciones": [
+      "boom",
+    ],
+    "presentada": false,
+    "tipoDeclaracion": "SIRE",
+  },
+  "periodo": "2026-06",
+  "phaseId": "declaracion",
+  "ruc": "20123456789",
+  "success": false,
+  "summary": "Error en declaración: boom",
+}
+`;
+
+exports[`DeclaracionAgent (characterization) > pins the report: mock: complete 1`] = `
+{
+  "data": {
+    "cdrId": "CDR-D202606-456789-MR1WMKG0",
+    "codigoSUNAT": "0",
+    "fechaPresentacion": "2026-07-01T10:00:00.000Z",
+    "numeroComprobante": "D202606-456789",
+    "observaciones": [],
+    "presentada": true,
+    "tipoDeclaracion": "SIRE",
+  },
+  "periodo": "2026-06",
+  "phaseId": "declaracion",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Declaración SIRE presentada exitosamente. CDR: CDR-D202606-456789-MR1WMKG0",
+}
+`;
+
+exports[`DeclaracionAgent (characterization) > pins the report: mock: complete with detracciones 1`] = `
+{
+  "data": {
+    "cdrId": "CDR-D202606-456789-MR1WMKG0",
+    "codigoSUNAT": "0",
+    "fechaPresentacion": "2026-07-01T10:00:00.000Z",
+    "numeroComprobante": "D202606-456789",
+    "observaciones": [],
+    "presentada": true,
+    "tipoDeclaracion": "SIRE",
+  },
+  "periodo": "2026-06",
+  "phaseId": "declaracion",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Declaración SIRE presentada exitosamente. CDR: CDR-D202606-456789-MR1WMKG0",
+}
+`;
+
+exports[`DeclaracionAgent (characterization) > pins the report: mock: without PLE 1`] = `
+{
+  "data": {
+    "cdrId": "",
+    "codigoSUNAT": "1",
+    "fechaPresentacion": "2026-07-01T10:00:00.000Z",
+    "numeroComprobante": "",
+    "observaciones": [
+      "No se proporcionó resumen PLE — la declaración será parcial",
+    ],
+    "presentada": false,
+    "tipoDeclaracion": "SIRE",
+  },
+  "periodo": "2026-06",
+  "phaseId": "declaracion",
+  "ruc": "20123456789",
+  "success": false,
+  "summary": "Declaración SIRE incompleta: falta resumen PLE",
+}
+`;
+
+exports[`DeclaracionAgent (characterization) > pins the report: mock: without PLE and detracciones missing constancia 1`] = `
+{
+  "data": {
+    "cdrId": "",
+    "codigoSUNAT": "1",
+    "fechaPresentacion": "2026-07-01T10:00:00.000Z",
+    "numeroComprobante": "",
+    "observaciones": [
+      "No se proporcionó resumen PLE — la declaración será parcial",
+      "1 detracciones sin constancia de pago",
+    ],
+    "presentada": false,
+    "tipoDeclaracion": "SIRE",
+  },
+  "periodo": "2026-06",
+  "phaseId": "declaracion",
+  "ruc": "20123456789",
+  "success": false,
+  "summary": "Declaración SIRE incompleta: falta resumen PLE",
+}
+`;

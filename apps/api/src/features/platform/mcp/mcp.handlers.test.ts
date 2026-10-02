@@ -1,9 +1,9 @@
-import type { DrenyraMcpScope } from "@drenyra/pi";
+import type { DrenyraMcpScope } from "@drenyra/agent-runtime";
 import {
 	EVIDENCE_EDGE_KIND,
 	EVIDENCE_NODE_KIND,
 	type EvidenceNode,
-} from "@drenyra/pi";
+} from "@drenyra/agent-runtime";
 import { describe, expect, it, vi } from "vitest";
 import { createPlatformMcpHandlers } from "./mcp.handlers";
 

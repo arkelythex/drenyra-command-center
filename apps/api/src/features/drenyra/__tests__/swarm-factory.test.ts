@@ -1,5 +1,5 @@
-import type { Agent, LatinAgentId } from "@drenyra/pi";
-import { DomainAgent } from "@drenyra/pi";
+import type { Agent, LatinAgentId } from "@drenyra/agent-runtime";
+import { DomainAgent } from "@drenyra/agent-runtime";
 import { describe, expect, it } from "vitest";
 import { createSwarmOrchestratorFromAgents } from "../swarm-factory";
 

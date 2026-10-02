@@ -128,8 +128,8 @@ export default defineConfig({
 				replacement: path.resolve(__dirname, "./packages/memory/src"),
 			},
 			{
-				find: "@drenyra/pi",
-				replacement: path.resolve(__dirname, "../../drenyra-pi/src"),
+				find: "@drenyra/agent-runtime",
+				replacement: path.resolve(__dirname, "./packages/agent-runtime/src"),
 			},
 
 			{},

@@ -121,6 +121,6 @@ Before generating UI for Drenyra web:
 
 ## References
 
-- [Design influences 2026](../../docs/design/design-influences-2026.md)
-- [Design influences 2026](../../docs/design/design-influences-2026.md)
+- [Design influences 2026](../../docs/14-design/design-influences.md)
+- [Design influences 2026](../../docs/14-design/design-influences.md)
 - [Drenyra Product Philosophy](../../docs/products/drenyra-product-philosophy.md)

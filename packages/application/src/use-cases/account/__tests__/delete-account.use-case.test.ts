@@ -12,6 +12,7 @@
 import { Account } from "@drenyra/domain/entities/Account";
 import type { AccountRepository } from "@drenyra/domain/repositories/account.repository";
 import type { JournalEntryRepository } from "@drenyra/domain/repositories/journal-entry.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { Money } from "@drenyra/domain/value-objects/Money";
 import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 import { DeleteAccountUseCase } from "../delete-account.use-case";
@@ -43,6 +44,8 @@ function createMockAccount(
 	});
 }
 
+const scope: TenantScope = { organizationId: "1", companyId: "company-a1" };
+
 describe("DeleteAccountUseCase", () => {
 	let useCase: DeleteAccountUseCase;
 	let mockAccountRepository: { [K in keyof AccountRepository]: Mock };
@@ -50,7 +53,8 @@ describe("DeleteAccountUseCase", () => {
 
 	beforeEach(() => {
 		mockAccountRepository = {
-			save: vi.fn().mockResolvedValue(undefined),
+			create: vi.fn().mockResolvedValue(undefined),
+			update: vi.fn().mockResolvedValue(undefined),
 			findById: vi.fn().mockResolvedValue(null),
 			findByCode: vi.fn().mockResolvedValue(null),
 			findAll: vi.fn().mockResolvedValue([]),
@@ -87,12 +91,15 @@ describe("DeleteAccountUseCase", () => {
 			mockAccountRepository.hasChildren.mockResolvedValue(false);
 			mockJournalRepository.countByAccountId.mockResolvedValue(0);
 
-			const result = await useCase.execute("acc-123");
+			const result = await useCase.execute(scope, "acc-123");
 
 			expect(result.success).toBe(true);
 			expect(result.deletedAccountId).toBe("acc-123");
 			expect(result.deletedCode).toBe("10");
-			expect(mockAccountRepository.delete).toHaveBeenCalledWith("acc-123");
+			expect(mockAccountRepository.delete).toHaveBeenCalledWith(
+				scope,
+				"acc-123",
+			);
 		});
 
 		it("should work without journal repository", async () => {
@@ -108,7 +115,7 @@ describe("DeleteAccountUseCase", () => {
 			mockAccountRepository.findById.mockResolvedValue(account);
 			mockAccountRepository.hasChildren.mockResolvedValue(false);
 
-			const result = await useCaseWithoutJournal.execute("acc-123");
+			const result = await useCaseWithoutJournal.execute(scope, "acc-123");
 
 			expect(result.success).toBe(true);
 			expect(mockJournalRepository.countByAccountId).not.toHaveBeenCalled();
@@ -119,7 +126,7 @@ describe("DeleteAccountUseCase", () => {
 		it("should throw error when account not found", async () => {
 			mockAccountRepository.findById.mockResolvedValue(null);
 
-			await expect(useCase.execute("non-existent")).rejects.toThrow(
+			await expect(useCase.execute(scope, "non-existent")).rejects.toThrow(
 				"Cuenta no encontrada",
 			);
 		});
@@ -128,7 +135,7 @@ describe("DeleteAccountUseCase", () => {
 			const systemAccount = createMockAccount({ isSystem: true });
 			mockAccountRepository.findById.mockResolvedValue(systemAccount);
 
-			await expect(useCase.execute("acc-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123")).rejects.toThrow(
 				"No se puede eliminar una cuenta del sistema",
 			);
 		});
@@ -138,7 +145,7 @@ describe("DeleteAccountUseCase", () => {
 			mockAccountRepository.findById.mockResolvedValue(account);
 			mockAccountRepository.hasChildren.mockResolvedValue(true);
 
-			await expect(useCase.execute("acc-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123")).rejects.toThrow(
 				"No se puede eliminar una cuenta que tiene subcuentas",
 			);
 		});
@@ -149,7 +156,7 @@ describe("DeleteAccountUseCase", () => {
 			mockAccountRepository.hasChildren.mockResolvedValue(false);
 			mockJournalRepository.countByAccountId.mockResolvedValue(5);
 
-			await expect(useCase.execute("acc-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123")).rejects.toThrow(
 				/No se puede eliminar la cuenta porque tiene 5 asiento\(s\) contable\(s\)/,
 			);
 		});
@@ -163,7 +170,7 @@ describe("DeleteAccountUseCase", () => {
 			mockAccountRepository.hasChildren.mockResolvedValue(false);
 			mockJournalRepository.countByAccountId.mockResolvedValue(0);
 
-			await expect(useCase.execute("acc-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123")).rejects.toThrow(
 				"No se puede eliminar una cuenta con saldo diferente de cero",
 			);
 		});
@@ -174,7 +181,7 @@ describe("DeleteAccountUseCase", () => {
 			const systemAccount = createMockAccount({ isSystem: true });
 			mockAccountRepository.findById.mockResolvedValue(systemAccount);
 
-			await expect(useCase.execute("acc-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123")).rejects.toThrow(
 				"No se puede eliminar una cuenta del sistema",
 			);
 
@@ -187,7 +194,7 @@ describe("DeleteAccountUseCase", () => {
 			mockAccountRepository.findById.mockResolvedValue(account);
 			mockAccountRepository.hasChildren.mockResolvedValue(true);
 
-			await expect(useCase.execute("acc-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123")).rejects.toThrow(
 				/tiene subcuentas/,
 			);
 
@@ -204,7 +211,7 @@ describe("DeleteAccountUseCase", () => {
 			mockAccountRepository.hasChildren.mockResolvedValue(false);
 			mockJournalRepository.countByAccountId.mockResolvedValue(3); // Fails first
 
-			await expect(useCase.execute("acc-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123")).rejects.toThrow(
 				/asiento\(s\) contable\(s\)/,
 			);
 		});
@@ -220,7 +227,7 @@ describe("DeleteAccountUseCase", () => {
 			mockAccountRepository.hasChildren.mockResolvedValue(false);
 			mockJournalRepository.countByAccountId.mockResolvedValue(0);
 
-			const result = await useCase.execute("acc-123");
+			const result = await useCase.execute(scope, "acc-123");
 
 			expect(result.success).toBe(true);
 		});
@@ -231,7 +238,7 @@ describe("DeleteAccountUseCase", () => {
 			mockAccountRepository.hasChildren.mockResolvedValue(false);
 			mockJournalRepository.countByAccountId.mockResolvedValue(1);
 
-			await expect(useCase.execute("acc-123")).rejects.toThrow(
+			await expect(useCase.execute(scope, "acc-123")).rejects.toThrow(
 				/1 asiento\(s\) contable\(s\)/,
 			);
 		});
@@ -239,7 +246,9 @@ describe("DeleteAccountUseCase", () => {
 		it("should handle empty string account ID", async () => {
 			mockAccountRepository.findById.mockResolvedValue(null);
 
-			await expect(useCase.execute("")).rejects.toThrow("Cuenta no encontrada");
+			await expect(useCase.execute(scope, "")).rejects.toThrow(
+				"Cuenta no encontrada",
+			);
 		});
 
 		it("should return correct deleted code in result", async () => {
@@ -264,10 +273,44 @@ describe("DeleteAccountUseCase", () => {
 			mockAccountRepository.hasChildren.mockResolvedValue(false);
 			mockJournalRepository.countByAccountId.mockResolvedValue(0);
 
-			const result = await useCase.execute("acc-456");
+			const result = await useCase.execute(scope, "acc-456");
 
 			expect(result.deletedCode).toBe("12345");
 			expect(result.deletedAccountId).toBe("acc-456");
+		});
+	});
+
+	describe("tenant isolation", () => {
+		it("resolves the account and its children inside the caller's scope", async () => {
+			mockAccountRepository.findById.mockResolvedValue(
+				createMockAccount({
+					id: "acc-123",
+					code: "10",
+					isSystem: false,
+					balance: 0,
+				}),
+			);
+			mockJournalRepository.countByAccountId.mockResolvedValue(0);
+
+			await useCase.execute(scope, "acc-123");
+
+			expect(mockAccountRepository.findById).toHaveBeenCalledWith(
+				scope,
+				"acc-123",
+			);
+			expect(mockAccountRepository.hasChildren).toHaveBeenCalledWith(
+				scope,
+				"acc-123",
+			);
+		});
+
+		it("does not delete an account the scope cannot see (cross-tenant)", async () => {
+			mockAccountRepository.findById.mockResolvedValue(null);
+
+			await expect(useCase.execute(scope, "foreign-acc")).rejects.toThrow(
+				"Cuenta no encontrada",
+			);
+			expect(mockAccountRepository.delete).not.toHaveBeenCalled();
 		});
 	});
 });

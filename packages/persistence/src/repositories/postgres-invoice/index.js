@@ -1,1 +1,0 @@
-export { PostgresInvoiceRepository } from "./repository";

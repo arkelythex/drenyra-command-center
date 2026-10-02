@@ -9,6 +9,7 @@ import type {
 	AccountRepository,
 	AccountWithChildren,
 } from "@drenyra/domain/repositories/account.repository";
+import type { TenantScope } from "@drenyra/domain/scope";
 import {
 	type AccountFiltersDTO,
 	type AccountHierarchyDTO,
@@ -70,8 +71,11 @@ export class GetAccountsUseCase {
 	/**
 	 * Get a single account by ID
 	 */
-	async executeById(accountId: string): Promise<AccountResponseDTO | null> {
-		const account = await this.accountRepository.findById(accountId);
+	async executeById(
+		scope: TenantScope,
+		accountId: string,
+	): Promise<AccountResponseDTO | null> {
+		const account = await this.accountRepository.findById(scope, accountId);
 		if (!account) return null;
 		return this.toResponseDTO(account);
 	}
@@ -105,8 +109,11 @@ export class GetAccountsUseCase {
 	/**
 	 * Get children of an account
 	 */
-	async executeChildren(parentId: string): Promise<AccountResponseDTO[]> {
-		const accounts = await this.accountRepository.findChildren(parentId);
+	async executeChildren(
+		scope: TenantScope,
+		parentId: string,
+	): Promise<AccountResponseDTO[]> {
+		const accounts = await this.accountRepository.findChildren(scope, parentId);
 		return accounts.map((account) => this.toResponseDTO(account));
 	}
 

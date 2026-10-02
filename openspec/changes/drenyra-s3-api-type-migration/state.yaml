@@ -1,9 +1,0 @@
-phase: archived
-completed_at: '2026-07-11'
-status: implemented
-verified: true
-evidence:
-  - type exports exist in packages/application/src/features/*/types.ts
-  - api-response.ts used by 134 features
-created: 2026-07-04
-updated: 2026-07-11

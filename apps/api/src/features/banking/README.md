@@ -59,39 +59,39 @@ Transactions are matched against invoices/bills using multiple strategies:
 | Strategy | Score | Description |
 |---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ------
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ------
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ----|---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ------
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ----|---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ------
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ------
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ------
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ----|
 | Reference | 100 | Exact match on invoice/bill number |
@@ -170,35 +170,35 @@ const newBalance = balance.add(new Money('500.00', 'PEN'));
 | Method | Path | Description |
 |---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ------
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 -----|---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ------
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ---|---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ------
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ------
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ------
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ----|
 | GET | `/api/banking/accounts` | List accounts |
@@ -213,7 +213,7 @@ const newBalance = balance.add(new Money('500.00', 'PEN'));
 | POST | `/api/banking/import` | Import (normalized transactions) |
 | GET | `/api/banking/summary` | Get summary |
 
-Full API docs: [docs/04-api/banking.md](../../../../../docs/04-api/banking.md)
+Full API docs: docs/04-api/banking.md _(no disponible)_
 
 ## Extending
 
@@ -297,7 +297,7 @@ Environment variables:
 
 ## ADRs
 
-- [ADR-008: Banking Reconciliation Strategy Pattern](../../../../../docs/02-adr/adr-008-banking-reconciliation.md)
+- ADR-008: Banking Reconciliation Strategy Pattern _(no disponible)_
 
 ## Edge Cases Covered
 
@@ -327,7 +327,7 @@ This feature migrates from:
 - `apps/api/src/services/banking.service.ts` (481 lines)
 - `apps/api/src/types/banking.types.ts`
 
-See: [Vertical Slice Migration Guide](../../../../../docs/technical/vertical-slice-migration-guide.md)
+See: Vertical Slice Migration Guide _(no disponible)_
 
 ## Roadmap
 
@@ -342,6 +342,6 @@ See: [Vertical Slice Migration Guide](../../../../../docs/technical/vertical-sli
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 ---

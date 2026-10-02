@@ -12,6 +12,7 @@ import type {
 	AccountType,
 	Currency,
 } from "../entities/Account";
+import type { TenantScope } from "../scope";
 
 /**
  * Filters for querying accounts
@@ -61,14 +62,22 @@ export interface AccountWithChildren extends Account {
  */
 export interface AccountRepository {
 	/**
-	 * Save an account (create or update)
+	 * Create an account owned by the caller's company.
+	 * The owning company comes from the scope, never from the entity.
 	 */
-	save(account: Account): Promise<void>;
+	create(scope: TenantScope, account: Account): Promise<void>;
 
 	/**
-	 * Find an account by ID
+	 * Update an account inside the caller's tenant scope
+	 * @throws {NotFoundError} if the account does not exist in that scope
 	 */
-	findById(id: string): Promise<Account | null>;
+	update(scope: TenantScope, account: Account): Promise<void>;
+
+	/**
+	 * Find an account by ID inside the caller's tenant scope.
+	 * A foreign account is indistinguishable from a nonexistent one.
+	 */
+	findById(scope: TenantScope, id: string): Promise<Account | null>;
 
 	/**
 	 * Find an account by code within an organization
@@ -88,7 +97,7 @@ export interface AccountRepository {
 	/**
 	 * Find children of an account
 	 */
-	findChildren(parentId: string): Promise<Account[]>;
+	findChildren(scope: TenantScope, parentId: string): Promise<Account[]>;
 
 	/**
 	 * Find only movement accounts (non-group accounts)
@@ -102,14 +111,15 @@ export interface AccountRepository {
 	getHierarchy(organizationId: number): Promise<AccountWithChildren[]>;
 
 	/**
-	 * Delete an account
+	 * Delete an account inside the caller's tenant scope
+	 * @throws {NotFoundError} if the account does not exist in that scope
 	 */
-	delete(id: string): Promise<void>;
+	delete(scope: TenantScope, id: string): Promise<void>;
 
 	/**
-	 * Check if an account has children
+	 * Check if an account has children inside the caller's tenant scope
 	 */
-	hasChildren(id: string): Promise<boolean>;
+	hasChildren(scope: TenantScope, id: string): Promise<boolean>;
 
 	/**
 	 * Check if a code exists in an organization
@@ -129,5 +139,5 @@ export interface AccountRepository {
 	 * Get the next available code for a given parent
 	 * Useful for auto-generating account codes
 	 */
-	getNextChildCode(parentId: string): Promise<string>;
+	getNextChildCode(scope: TenantScope, parentId: string): Promise<string>;
 }

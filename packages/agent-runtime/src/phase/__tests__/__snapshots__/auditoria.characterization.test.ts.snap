@@ -1,0 +1,382 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AuditoriaAgent (characterization) > pins the full report: all phases complete, no findings 1`] = `
+{
+  "data": {
+    "confianza": 1,
+    "hallazgos": [],
+    "memo": "== INFORME DE AUDITORÍA FISCAL ==
+RUC: 20123456789
+Período: 2026-06
+Fecha: 2026-07-01T00:00:00.000Z
+Confianza: 100%
+
+Resumen:
+Se auditaron 5 fases del ciclo fiscal.
+Se encontraron 0 hallazgos (0 errores, 0 advertencias).
+
+Hallazgos:
+
+Estado del período: APROBADO",
+    "periodoCerrado": true,
+    "recomendaciones": [
+      "Período con alta confianza — proceder con cierre definitivo",
+      "Archivar documentación de soporte para fiscalización SUNAT",
+    ],
+  },
+  "periodo": "2026-06",
+  "phaseId": "auditoria",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Auditoría completada: 0 hallazgos, confianza 100%, período cerrado",
+}
+`;
+
+exports[`AuditoriaAgent (characterization) > pins the full report: everything wrong 1`] = `
+{
+  "data": {
+    "confianza": 0.2500000000000001,
+    "hallazgos": [
+      {
+        "descripcion": "La fase clasificacion no está completada (status: not_started)",
+        "fase": "clasificacion",
+        "id": "phase-clasificacion-missing",
+        "recomendacion": "Completar la fase clasificacion antes de cerrar el período",
+        "tipo": "error",
+      },
+      {
+        "descripcion": "La fase conciliacion no está completada (status: not_started)",
+        "fase": "conciliacion",
+        "id": "phase-conciliacion-missing",
+        "recomendacion": "Completar la fase conciliacion antes de cerrar el período",
+        "tipo": "error",
+      },
+      {
+        "descripcion": "La fase declaracion no está completada (status: not_started)",
+        "fase": "declaracion",
+        "id": "phase-declaracion-missing",
+        "recomendacion": "Completar la fase declaracion antes de cerrar el período",
+        "tipo": "error",
+      },
+      {
+        "descripcion": "1 gate(s) con fallo crítico durante el ciclo",
+        "fase": "auditoria",
+        "id": "gates-failed",
+        "recomendacion": "Revisar cada gate fallido y corregir antes del próximo período",
+        "tipo": "warning",
+      },
+      {
+        "descripcion": "Fases ejecutadas en orden no secuencial: esperaba captura, obtuvo cierre",
+        "fase": "cierre",
+        "id": "order-anomaly",
+        "recomendacion": "Verificar que el ciclo fiscal siga el orden estándar",
+        "tipo": "warning",
+      },
+      {
+        "descripcion": "d",
+        "fase": "auditoria",
+        "id": "external-x",
+        "recomendacion": "Resolver: X",
+        "tipo": "warning",
+      },
+    ],
+    "memo": "== INFORME DE AUDITORÍA FISCAL ==
+RUC: 20123456789
+Período: 2026-06
+Fecha: 2026-07-01T00:00:00.000Z
+Confianza: 25%
+
+Resumen:
+Se auditaron 2 fases del ciclo fiscal.
+Se encontraron 6 hallazgos (3 errores, 3 advertencias).
+
+Hallazgos:
+  [ERROR] La fase clasificacion no está completada (status: not_started)
+         → Completar la fase clasificacion antes de cerrar el período
+  [ERROR] La fase conciliacion no está completada (status: not_started)
+         → Completar la fase conciliacion antes de cerrar el período
+  [ERROR] La fase declaracion no está completada (status: not_started)
+         → Completar la fase declaracion antes de cerrar el período
+  [WARNING] 1 gate(s) con fallo crítico durante el ciclo
+         → Revisar cada gate fallido y corregir antes del próximo período
+  [WARNING] Fases ejecutadas en orden no secuencial: esperaba captura, obtuvo cierre
+         → Verificar que el ciclo fiscal siga el orden estándar
+  [WARNING] d
+         → Resolver: X
+
+Estado del período: REVISIÓN REQUERIDA",
+    "periodoCerrado": false,
+    "recomendaciones": [
+      "Revisar el período con un contador antes de cerrar definitivamente",
+      "Corregir los gates fallidos en el próximo ciclo",
+      "Archivar documentación de soporte para fiscalización SUNAT",
+    ],
+  },
+  "periodo": "2026-06",
+  "phaseId": "auditoria",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Auditoría completada: 6 hallazgos, confianza 25%, período pendiente de revisión",
+}
+`;
+
+exports[`AuditoriaAgent (characterization) > pins the full report: external checks failing and passing 1`] = `
+{
+  "data": {
+    "confianza": 0.8,
+    "hallazgos": [
+      {
+        "descripcion": "Diferencia de S/ 120",
+        "fase": "auditoria",
+        "id": "external-sire-vs-libro",
+        "recomendacion": "Resolver: SIRE vs Libro",
+        "tipo": "warning",
+      },
+      {
+        "descripcion": "Falta archivo",
+        "fase": "auditoria",
+        "id": "external-ple-ventas",
+        "recomendacion": "Resolver: PLE  Ventas",
+        "tipo": "warning",
+      },
+    ],
+    "memo": "== INFORME DE AUDITORÍA FISCAL ==
+RUC: 20123456789
+Período: 2026-06
+Fecha: 2026-07-01T00:00:00.000Z
+Confianza: 80%
+
+Resumen:
+Se auditaron 5 fases del ciclo fiscal.
+Se encontraron 2 hallazgos (0 errores, 2 advertencias).
+
+Hallazgos:
+  [WARNING] Diferencia de S/ 120
+         → Resolver: SIRE vs Libro
+  [WARNING] Falta archivo
+         → Resolver: PLE  Ventas
+
+Estado del período: APROBADO",
+    "periodoCerrado": true,
+    "recomendaciones": [
+      "Archivar documentación de soporte para fiscalización SUNAT",
+    ],
+  },
+  "periodo": "2026-06",
+  "phaseId": "auditoria",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Auditoría completada: 2 hallazgos, confianza 80%, período cerrado",
+}
+`;
+
+exports[`AuditoriaAgent (characterization) > pins the full report: failed critical and error gates 1`] = `
+{
+  "data": {
+    "confianza": 0.8,
+    "hallazgos": [
+      {
+        "descripcion": "2 gate(s) con fallo crítico durante el ciclo",
+        "fase": "auditoria",
+        "id": "gates-failed",
+        "recomendacion": "Revisar cada gate fallido y corregir antes del próximo período",
+        "tipo": "warning",
+      },
+    ],
+    "memo": "== INFORME DE AUDITORÍA FISCAL ==
+RUC: 20123456789
+Período: 2026-06
+Fecha: 2026-07-01T00:00:00.000Z
+Confianza: 80%
+
+Resumen:
+Se auditaron 5 fases del ciclo fiscal.
+Se encontraron 1 hallazgos (0 errores, 1 advertencias).
+
+Hallazgos:
+  [WARNING] 2 gate(s) con fallo crítico durante el ciclo
+         → Revisar cada gate fallido y corregir antes del próximo período
+
+Estado del período: APROBADO",
+    "periodoCerrado": true,
+    "recomendaciones": [
+      "Corregir los gates fallidos en el próximo ciclo",
+      "Archivar documentación de soporte para fiscalización SUNAT",
+    ],
+  },
+  "periodo": "2026-06",
+  "phaseId": "auditoria",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Auditoría completada: 1 hallazgos, confianza 80%, período cerrado",
+}
+`;
+
+exports[`AuditoriaAgent (characterization) > pins the full report: nothing completed 1`] = `
+{
+  "data": {
+    "confianza": 0.25,
+    "hallazgos": [
+      {
+        "descripcion": "La fase captura no está completada (status: pending)",
+        "fase": "captura",
+        "id": "phase-captura-missing",
+        "recomendacion": "Completar la fase captura antes de cerrar el período",
+        "tipo": "error",
+      },
+      {
+        "descripcion": "La fase clasificacion no está completada (status: pending)",
+        "fase": "clasificacion",
+        "id": "phase-clasificacion-missing",
+        "recomendacion": "Completar la fase clasificacion antes de cerrar el período",
+        "tipo": "error",
+      },
+      {
+        "descripcion": "La fase conciliacion no está completada (status: pending)",
+        "fase": "conciliacion",
+        "id": "phase-conciliacion-missing",
+        "recomendacion": "Completar la fase conciliacion antes de cerrar el período",
+        "tipo": "error",
+      },
+      {
+        "descripcion": "La fase cierre no está completada (status: pending)",
+        "fase": "cierre",
+        "id": "phase-cierre-missing",
+        "recomendacion": "Completar la fase cierre antes de cerrar el período",
+        "tipo": "error",
+      },
+      {
+        "descripcion": "La fase declaracion no está completada (status: pending)",
+        "fase": "declaracion",
+        "id": "phase-declaracion-missing",
+        "recomendacion": "Completar la fase declaracion antes de cerrar el período",
+        "tipo": "error",
+      },
+    ],
+    "memo": "== INFORME DE AUDITORÍA FISCAL ==
+RUC: 20123456789
+Período: 2026-06
+Fecha: 2026-07-01T00:00:00.000Z
+Confianza: 25%
+
+Resumen:
+Se auditaron 5 fases del ciclo fiscal.
+Se encontraron 5 hallazgos (5 errores, 0 advertencias).
+
+Hallazgos:
+  [ERROR] La fase captura no está completada (status: pending)
+         → Completar la fase captura antes de cerrar el período
+  [ERROR] La fase clasificacion no está completada (status: pending)
+         → Completar la fase clasificacion antes de cerrar el período
+  [ERROR] La fase conciliacion no está completada (status: pending)
+         → Completar la fase conciliacion antes de cerrar el período
+  [ERROR] La fase cierre no está completada (status: pending)
+         → Completar la fase cierre antes de cerrar el período
+  [ERROR] La fase declaracion no está completada (status: pending)
+         → Completar la fase declaracion antes de cerrar el período
+
+Estado del período: REVISIÓN REQUERIDA",
+    "periodoCerrado": false,
+    "recomendaciones": [
+      "Revisar el período con un contador antes de cerrar definitivamente",
+      "Archivar documentación de soporte para fiscalización SUNAT",
+    ],
+  },
+  "periodo": "2026-06",
+  "phaseId": "auditoria",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Auditoría completada: 5 hallazgos, confianza 25%, período pendiente de revisión",
+}
+`;
+
+exports[`AuditoriaAgent (characterization) > pins the full report: out-of-order execution 1`] = `
+{
+  "data": {
+    "confianza": 0.9,
+    "hallazgos": [
+      {
+        "descripcion": "Fases ejecutadas en orden no secuencial: esperaba captura, obtuvo clasificacion",
+        "fase": "clasificacion",
+        "id": "order-anomaly",
+        "recomendacion": "Verificar que el ciclo fiscal siga el orden estándar",
+        "tipo": "warning",
+      },
+    ],
+    "memo": "== INFORME DE AUDITORÍA FISCAL ==
+RUC: 20123456789
+Período: 2026-06
+Fecha: 2026-07-01T00:00:00.000Z
+Confianza: 90%
+
+Resumen:
+Se auditaron 5 fases del ciclo fiscal.
+Se encontraron 1 hallazgos (0 errores, 1 advertencias).
+
+Hallazgos:
+  [WARNING] Fases ejecutadas en orden no secuencial: esperaba captura, obtuvo clasificacion
+         → Verificar que el ciclo fiscal siga el orden estándar
+
+Estado del período: APROBADO",
+    "periodoCerrado": true,
+    "recomendaciones": [
+      "Archivar documentación de soporte para fiscalización SUNAT",
+    ],
+  },
+  "periodo": "2026-06",
+  "phaseId": "auditoria",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Auditoría completada: 1 hallazgos, confianza 90%, período cerrado",
+}
+`;
+
+exports[`AuditoriaAgent (characterization) > pins the full report: two phases missing 1`] = `
+{
+  "data": {
+    "confianza": 0.7,
+    "hallazgos": [
+      {
+        "descripcion": "La fase cierre no está completada (status: not_started)",
+        "fase": "cierre",
+        "id": "phase-cierre-missing",
+        "recomendacion": "Completar la fase cierre antes de cerrar el período",
+        "tipo": "error",
+      },
+      {
+        "descripcion": "La fase declaracion no está completada (status: not_started)",
+        "fase": "declaracion",
+        "id": "phase-declaracion-missing",
+        "recomendacion": "Completar la fase declaracion antes de cerrar el período",
+        "tipo": "error",
+      },
+    ],
+    "memo": "== INFORME DE AUDITORÍA FISCAL ==
+RUC: 20123456789
+Período: 2026-06
+Fecha: 2026-07-01T00:00:00.000Z
+Confianza: 70%
+
+Resumen:
+Se auditaron 3 fases del ciclo fiscal.
+Se encontraron 2 hallazgos (2 errores, 0 advertencias).
+
+Hallazgos:
+  [ERROR] La fase cierre no está completada (status: not_started)
+         → Completar la fase cierre antes de cerrar el período
+  [ERROR] La fase declaracion no está completada (status: not_started)
+         → Completar la fase declaracion antes de cerrar el período
+
+Estado del período: APROBADO",
+    "periodoCerrado": false,
+    "recomendaciones": [
+      "Archivar documentación de soporte para fiscalización SUNAT",
+    ],
+  },
+  "periodo": "2026-06",
+  "phaseId": "auditoria",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Auditoría completada: 2 hallazgos, confianza 70%, período pendiente de revisión",
+}
+`;

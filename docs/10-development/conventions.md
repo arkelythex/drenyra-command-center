@@ -7,6 +7,8 @@ audience: developer
 
 # Convenciones de desarrollo
 
+**Última actualización**: 2026-10-01
+
 ## Naming
 
 | Contexto             | Convention    | Ejemplo                               |
@@ -49,7 +51,7 @@ export { DNI } from './DNI'
 **Reglas:**
 
 - No imports a archivos `.ts` directamente si hay un `index.ts` en el mismo directorio
-- El gate automatizado de salud de imports está planificado en `openspec/changes/drenyra-x4-import-health/`; todavía no se aplica en CI
+- El gate automatizado de salud de imports estuvo planificado en el plan SDD `drenyra-x4-import-health` (archivado en git, commit `d428534`); todavía no se aplica en CI
 
 ### Orden de imports
 
@@ -122,7 +124,7 @@ docs/<descripcion-corta>
 
 - PRs < 400 líneas (si excede, dividir en chained PRs)
 - Template con: Summary, Scope, Fiscal correctness, Review path
-- Siempre linkear al plan SDD si aplica
+- Siempre linkear el documento ODD (`odd/tasks/`) si el cambio es sustancial
 
 ## TypeScript Strict Mode
 

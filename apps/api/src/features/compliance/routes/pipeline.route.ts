@@ -106,13 +106,13 @@ export const pipelineRoute = new Elysia({ prefix: "/pipeline" }).post(
 			// (encolado en un job). Por ahora, ejecutamos sincrónicamente
 			// con un timeout razonable.
 			//
-			// El import dinámico evita que esta ruta dependa de fiscal-sdd
+			// El import dinámico evita que esta ruta dependa de fiscal-fsd
 			// si el paquete no está disponible en el bundle del worker.
 			//
 			// ================================================================
 
 			const { FiscalComplianceOrchestrator } = await import(
-				"@drenyra/fiscal-sdd"
+				"@drenyra/fiscal-fsd"
 			);
 
 			const orchestrator = new FiscalComplianceOrchestrator({

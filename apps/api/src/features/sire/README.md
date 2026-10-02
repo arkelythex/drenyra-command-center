@@ -145,5 +145,5 @@ bun run --cwd apps/api test:run src/features/sire/__tests__/unit/sire-dashboard-
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 ```

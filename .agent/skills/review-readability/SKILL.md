@@ -21,7 +21,7 @@ Naming, structure, maintainability, and code style review lens. Run as advisory 
 ### Naming
 
 - [ ] Functions/methods are verbs (getName, calculateTotal)
-- [ ] Classes/interfaces are nouns (Invoice, FiscalSDDPipeline)
+- [ ] Classes/interfaces are nouns (Invoice, FiscalFSDPipeline)
 - [ ] Booleans are predicates (isValid, hasAccess, canProcess)
 - [ ] No single-letter variables except loop indices
 - [ ] Fiscal domain terms use correct Spanish/Tax nomenclature (ruc, igv, detraccion, sunat)

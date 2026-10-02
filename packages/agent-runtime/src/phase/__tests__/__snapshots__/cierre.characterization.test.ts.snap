@@ -1,0 +1,110 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CierreAgent (characterization) > pins the full report: empty accounts 1`] = `
+{
+  "data": {
+    "ajustes": 5,
+    "fechaCierre": "2026-07-01",
+    "pendientes": 0,
+    "saldosFinales": [],
+    "totalCuentas": 0,
+  },
+  "periodo": "2026-06",
+  "phaseId": "cierre",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Cierre contable completado: 0 cuentas procesadas, 5 ajustes aplicados, 0 pendientes",
+}
+`;
+
+exports[`CierreAgent (characterization) > pins the full report: with adjustments 1`] = `
+{
+  "data": {
+    "ajustes": 5,
+    "fechaCierre": "2026-07-01",
+    "pendientes": 1,
+    "saldosFinales": [
+      {
+        "cuentaPCGE": "10",
+        "debe": 600.49,
+        "haber": 240.26,
+        "nombre": "Caja",
+        "saldo": 1360.23,
+      },
+      {
+        "cuentaPCGE": "33",
+        "debe": 100.004,
+        "haber": 0,
+        "nombre": "Inmuebles",
+        "saldo": 100,
+      },
+      {
+        "cuentaPCGE": "30",
+        "debe": 0.005,
+        "haber": 50,
+        "nombre": "Inversiones",
+        "saldo": 0.01,
+      },
+      {
+        "cuentaPCGE": "60",
+        "debe": 0.1,
+        "haber": 0.2,
+        "nombre": "Compras",
+        "saldo": -0.1,
+      },
+    ],
+    "totalCuentas": 4,
+  },
+  "periodo": "2026-06",
+  "phaseId": "cierre",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Cierre contable completado: 4 cuentas procesadas, 5 ajustes aplicados, 1 pendientes",
+}
+`;
+
+exports[`CierreAgent (characterization) > pins the full report: without adjustments 1`] = `
+{
+  "data": {
+    "ajustes": 0,
+    "fechaCierre": "2026-07-01",
+    "pendientes": 1,
+    "saldosFinales": [
+      {
+        "cuentaPCGE": "10",
+        "debe": 500.5,
+        "haber": 200.25,
+        "nombre": "Caja",
+        "saldo": 1300.25,
+      },
+      {
+        "cuentaPCGE": "33",
+        "debe": 100.004,
+        "haber": 0,
+        "nombre": "Inmuebles",
+        "saldo": 100,
+      },
+      {
+        "cuentaPCGE": "30",
+        "debe": 0,
+        "haber": 50,
+        "nombre": "Inversiones",
+        "saldo": 0,
+      },
+      {
+        "cuentaPCGE": "60",
+        "debe": 0.1,
+        "haber": 0.2,
+        "nombre": "Compras",
+        "saldo": -0.1,
+      },
+    ],
+    "totalCuentas": 4,
+  },
+  "periodo": "2026-06",
+  "phaseId": "cierre",
+  "ruc": "20123456789",
+  "success": true,
+  "summary": "Cierre contable completado: 4 cuentas procesadas, 0 ajustes aplicados, 1 pendientes",
+}
+`;

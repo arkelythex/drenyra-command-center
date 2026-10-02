@@ -3,7 +3,7 @@
 **Última actualización:** 2026-07-27
 **Content type:** Canonical — Capability Program
 **North star:** [Drenyra Product Philosophy](../products/drenyra-product-philosophy.md)
-**Taxonomy:** [Program Taxonomy](./program-taxonomy.md)
+**Taxonomy:** [Program Taxonomy](../01-foundation/program-taxonomy.md)
 **Status:** ⚡ active — Wave A (Shell) in progress
 
 ---
@@ -191,4 +191,4 @@ A 98% AI prediction does NOT earn green until validators (and professional revie
 
 ---
 
-_Next: [SDD-WB-001](./sdd-wb-001-proposal.md)_
+_Next: SDD-WB-001 _(no disponible)__

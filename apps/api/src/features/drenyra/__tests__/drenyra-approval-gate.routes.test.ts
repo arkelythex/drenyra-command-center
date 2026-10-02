@@ -1,4 +1,4 @@
-import type { AgentContext, ApprovalRequest } from "@drenyra/pi";
+import type { AgentContext, ApprovalRequest } from "@drenyra/agent-runtime";
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
 import { createApprovalGateRoutes } from "../approval-gate.routes";

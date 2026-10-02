@@ -10,6 +10,8 @@ status: 'active'
 
 # Drenyra Agent Capability Matrix 2026
 
+**Última actualización**: 2026-10-02
+
 ## Purpose
 
 Drenyra agents are governed operators, not free actors. Phase 3 defines the canonical deny-by-default contract for agent tool use before it can be wired into app routes, `agent-swarm`, `ai-swarm`, MCP or FAL flows.
@@ -126,7 +128,7 @@ even when scoped grant and redaction proof are present.
 
 ## Related docs
 
-- [Fiscal Intelligence Platform Architecture](./fiscal-intelligence-platform-architecture-2026.md)
-- [FAL Non-Negotiable Controls](./fiscal-agentic-ledger-controls-2026.md)
-- [Fiscal Agentic Ledger Event Envelope](./fiscal-agentic-ledger-event-envelope-2026.md)
-- [ADR-025: Fiscal Intelligence Platform and FAL](../02-adr/adr-025-fiscal-intelligence-platform.md)
+- [Fiscal Intelligence Platform Architecture](./fiscal-intelligence-platform.md)
+- FAL Non-Negotiable Controls _(no disponible)_
+- Fiscal Agentic Ledger Event Envelope _(no disponible)_
+- ADR-025: Fiscal Intelligence Platform and FAL _(no disponible)_

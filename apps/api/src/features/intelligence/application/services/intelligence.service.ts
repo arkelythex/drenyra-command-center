@@ -5,7 +5,7 @@
  * @module intelligence/service
  */
 
-import type { AgentContext } from "@drenyra/pi";
+import type { AgentContext } from "@drenyra/agent-runtime";
 
 import type {
 	Anomaly,
@@ -22,7 +22,7 @@ import type {
 	SupplierRecord,
 	TaxCalendarInput,
 	TransactionRecord,
-} from "@drenyra/pi/strategies";
+} from "@drenyra/agent-runtime/strategies";
 import {
 	classifyDocuments,
 	createCashflowPredictorStrategy,
@@ -35,7 +35,7 @@ import {
 	detectRucBreachAnomalies,
 	FiscalAnomalyEngine,
 	RUC_BREACH_THRESHOLD_PEN,
-} from "@drenyra/pi/strategies";
+} from "@drenyra/agent-runtime/strategies";
 
 // ─── Helpers ─────────────────────────────────────────────────────────
 
@@ -285,9 +285,7 @@ export interface DocumentClassificationOutput {
 export async function runDocumentClassification(
 	input: DocumentClassificationInput,
 ): Promise<DocumentClassificationOutput> {
-	const { results, anomalies: docAnomalies } = classifyDocuments(
-		input.documents,
-	);
+	const { results } = classifyDocuments(input.documents);
 
 	return {
 		results,

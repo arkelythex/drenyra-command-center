@@ -5,6 +5,7 @@
  */
 
 import { UpdateJournalEntryStatusUseCase } from "@drenyra/application/use-cases/journal";
+import type { TenantScope } from "@drenyra/domain/scope";
 import { journalRepository, periodRepository } from "../_helpers";
 
 export type JournalEntryStatus = "mayorizado" | "declarado";
@@ -12,6 +13,7 @@ export type JournalEntryStatus = "mayorizado" | "declarado";
 /**
  * Updates the status of a journal entry.
  *
+ * @param scope - Tenant scope of the caller
  * @param id - The ID of the journal entry
  * @param status - The target status
  * @param actorId - The ID of the actor (default: "system")
@@ -19,6 +21,7 @@ export type JournalEntryStatus = "mayorizado" | "declarado";
  * @throws Error if the status transition is invalid
  */
 export async function updateJournalEntryStatus(
+	scope: TenantScope,
 	id: string,
 	status: JournalEntryStatus,
 	actorId = "system",
@@ -27,6 +30,6 @@ export async function updateJournalEntryStatus(
 		journalRepository,
 		periodRepository,
 	);
-	const entry = await useCase.execute(id, status, actorId);
+	const entry = await useCase.execute(scope, id, status, actorId);
 	return entry.toJSON();
 }
