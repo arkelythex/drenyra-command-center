@@ -15,7 +15,7 @@
 >
 > Drenyra runs on **Drenyra-AI**, the independent accounting agent operating system it consumes — framework, runtime, agents, skills, receipts, and accounting authority. Drenyra-AI also works standalone via CLI, API, other ERPs, other SaaS, and external integrations. Its product protocol is RDA (Receipt-Driven Accounting) built on the RED receipt mechanism.
 >
-> **Drenyra-Pi** is the Pi-native harness that turns Pi into a disciplined accounting operator — accounting persona, commands, agents, skills, and safety guards layered over the Drenyra-AI runtime, in the same relationship Gentle Pi has to Gentle AI.
+> **Drenyra-Shell** is the Pi-native harness that turns Pi into a disciplined accounting operator — accounting persona, commands, agents, skills, and safety guards layered over the Drenyra-AI runtime, in the same relationship Gentle Pi has to Gentle AI.
 >
 > **Drenyra-Engram** is the institutional accounting memory that preserves what the organization knows and can prove about its accounting — remember is not authorize.
 
@@ -25,7 +25,7 @@
 [![License](https://img.shields.io/badge/License-MIT-yellow)](#)
 
 > **Private commercial product.** This repository is **private**. The ecosystem
-> members `drenyra-engram`, `drenyra-ai`, and `drenyra-pi` are **publicly
+> members `drenyra-engram`, `drenyra-ai`, and `drenyra-shell` are **publicly
 > visible** source under the Drenyra open-core transition intention (intention,
 > not contractual promise), while commercial artifacts (container images,
 > releases, packages) and services remain contractual and never public. See

@@ -15,7 +15,7 @@
                     ┌─────────────┴─────────────┐
                     │                           │
            ┌────────┴────────┐        ┌─────────┴─────────┐
-           │ Drenyra-AI      │        │ Drenyra-Pi       │
+           │ Drenyra-AI      │        │ Drenyra-Shell       │
            │ Agent Ecosystem │◄───────│ Pi-native Harness│
            └────────▲────────┘        └───────────────────┘
                     │
@@ -25,7 +25,7 @@
            └─────────────────┘
 ```
 
-Arrows point toward the dependency. `Drenyra-AI` is consumed by both Drenyra and Drenyra-Pi; `Drenyra-Engram` is read by the others and depends on nothing.
+Arrows point toward the dependency. `Drenyra-AI` is consumed by both Drenyra and Drenyra-Shell; `Drenyra-Engram` is read by the others and depends on nothing.
 
 ## Direction rules applied to Drenyra
 
@@ -39,7 +39,7 @@ Arrows point toward the dependency. `Drenyra-AI` is consumed by both Drenyra and
 ### Drenyra must NEVER be depended on
 
 - **`drenyra-ai` must never depend on Drenyra.** It is standalone by design; its contracts never import Drenyra types, UI, or SUNAT flows.
-- **`drenyra-pi` must never depend on Drenyra.** The harness layers over `drenyra-ai` only.
+- **`drenyra-shell` must never depend on Drenyra.** The harness layers over `drenyra-ai` only.
 - **`drenyra-engram` must never depend on Drenyra.** It is independent.
 - Extracted code moves **out of** Drenyra into `drenyra-ai` and is consumed back as a released artifact — one direction only.
 
