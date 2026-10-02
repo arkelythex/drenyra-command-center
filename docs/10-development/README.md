@@ -17,6 +17,7 @@
 | [Test Patterns](./test-patterns.md)               | Patrones específicos de testing         |
 | [How to Debug](./how-to-debug.md)                 | Debugging tools, techniques             |
 | [Engram Guide](./engram-guide.md)                 | Uso de memoria persistente Engram       |
+| [drenyra-ai Integration](./drenyra-ai-integration.md) | Pin, comprobación y actualización de `drenyra-ai` |
 
 ---
 

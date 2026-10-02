@@ -80,6 +80,7 @@ These tutorials guide you through Drenyya step by step. They assume nothing — 
 | Documento | Descripción |
 |-----------|-------------|
 | [conventions](./10-development/conventions.md) | title: Convenciones de desarrollo |
+| [drenyra-ai-integration](./10-development/drenyra-ai-integration.md) | `drenyra-ai` publica los contratos (misión, candidato, recibo, gate, ledger, recuperación). Este repo los **consume**… |
 | [drenyra-repo-sync](./10-development/drenyra-repo-sync.md) | During Fase 1 transition, Drenyra retains **read-only mirrors** of Drenyra packages. Historical drift (phase layer… |
 | [engram-guide](./10-development/engram-guide.md) | Drenyra uses the `drenyra` Engram project name for persistent agent memory. Use this page to confirm the canonical… |
 | [engram-project-canonical](./10-development/engram-project-canonical.md) | Drenyra uses the `drenyra` Engram project name for persistent agent memory. Use this page to confirm the canonical… |
