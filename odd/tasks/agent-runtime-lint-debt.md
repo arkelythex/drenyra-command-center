@@ -14,13 +14,12 @@ Renombrar `packages/pi` → `packages/agent-runtime` tocó 241 archivos y el pre
 - 12 aserciones no nulas (`x!`) reemplazadas por guardas explícitas (`agents.service`, `delegation`, `approval-gate`, `domain-agent`, `event-bus`, `batch-orchestrator`, `worker-pool`). En `batch-orchestrator.onPhaseComplete` se conservó el comportamiento previo con un tipo explícito.
 - Variable sin uso en `intelligence.service.ts`.
 
-## Deuda estructural pendiente (1 supresión `biome-ignore` con motivo)
+## Deuda estructural pendiente (0 supresiones — saldada)
 
 Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en entrypoints. Cada fila es una supresión que debe **eliminarse refactorizando**, no ampliarse.
 
 | Ubicación | Regla |
 |-----------|-------|
-| `apps/web/src/features/workspace/services/accounting-mission.service.ts:169` | noExcessiveCognitiveComplexity |
 
 - ✅ Saldadas también: `ResultMerger.merge` y `TaskDecomposer.decompose` (extracción de helpers; 110 tests de `mastra` intactos y prueba diferencial vieja-vs-nueva en 12 288 combinaciones de objetivo/dominios).
 - ✅ Saldadas: `DelegationGraph.detectCycle` (helpers; equivalencia verificada en 5 000 grafos aleatorios) y `LatinModernoOrchestrator.handleRequest` (`executeStep` extraído; test de caracterización nuevo).
@@ -34,7 +33,7 @@ Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en en
 - ✅ Saldadas las tres de orquestación de fases (test-first): `validateGraph` (3 chequeos; test de orden de errores validado contra la implementación vieja y la nueva), `BatchOrchestrator.processSingleEntry` (16 escenarios con orquestador/store simulados) y `runPeriodContinuously` (8 escenarios con secuencia de llamadas).
 - ⚠️ **Hallazgo (conservado):** `BatchOrchestrator.start()` reinicia `pauseRequested` y `pausedRucs`, por lo que `pause()` invocado antes de `start()` no tiene efecto.
 - ✅ Los 3 `console` de entrypoint (`serve.ts` ×2, `plugin/registry.ts`) pasan a `process.stdout.write` (sin añadir dependencia de `@drenyra/shared` a `agent-runtime`); el banner ya no dice «drenyra-pi».
-- **Queda 1 supresión:** la complejidad de `accounting-mission.service.ts` (web). La clase estática de `inbox.service.ts` es una decisión de diseño documentada y no figura en este inventario.
+- ✅ `streamHarnessEvents` (web): `parseSseLine` extraída y exportada, con 5 tests nuevos (frames ajenos, JSON inválido, secuencias vistas, sin secuencia). **Deuda de supresiones `biome-ignore` rastreadas aquí: 0.** La clase estática de `inbox.service.ts` es una decisión de diseño documentada y no figura en este inventario.
 
 ## Código fiscal: deuda saldada (6 supresiones eliminadas, test-first)
 

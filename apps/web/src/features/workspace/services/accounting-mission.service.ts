@@ -166,7 +166,27 @@ async function* mockGenerator(
 
 // ─── SSE stream with sequence tracking ──────────────────────────────────────
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
+/**
+ * Parse one SSE line. Returns the snapshot of a `data:` frame, or null when the
+ * line is not a data frame, is not valid JSON, or was already seen
+ * (`lastEventSequence` <= `fromSequence`).
+ */
+export function parseSseLine(
+	line: string,
+	fromSequence: number,
+): MissionSnapshot | null {
+	if (!line.startsWith("data: ")) return null;
+	try {
+		const parsed = JSON.parse(line.slice(6)) as MissionSnapshot;
+		if (parsed.lastEventSequence && parsed.lastEventSequence <= fromSequence) {
+			return null; // skip already-seen
+		}
+		return parsed;
+	} catch {
+		return null;
+	}
+}
+
 async function* streamHarnessEvents(
 	response: Response,
 	fromSequence = 0,
@@ -182,19 +202,8 @@ async function* streamHarnessEvents(
 		const lines = buffer.split("\n");
 		buffer = lines.pop() ?? "";
 		for (const line of lines) {
-			if (line.startsWith("data: ")) {
-				try {
-					const parsed = JSON.parse(line.slice(6)) as MissionSnapshot;
-					if (
-						parsed.lastEventSequence &&
-						parsed.lastEventSequence <= fromSequence
-					)
-						continue; // skip already-seen
-					yield parsed;
-				} catch {
-					/* skip */
-				}
-			}
+			const snapshot = parseSseLine(line, fromSequence);
+			if (snapshot) yield snapshot;
 		}
 	}
 }
