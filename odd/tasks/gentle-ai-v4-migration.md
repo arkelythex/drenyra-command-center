@@ -107,3 +107,4 @@ Reemplazada por `drenyra-shell` (comandos `/drenyra:*` sobre Pi) y la CLI de `dr
 ## Constraints
 
 - Ningún secreto ni dato de cliente; docs en el mismo PR que el cambio.
+- [x] Eliminado `vitest.workspace.ts` (código muerto: usaba `defineWorkspace`, removido en Vitest 4, listaba paquetes inexistentes y los tests corren por paquete con `bun run --filter`). Typecheck 1338, `odd:guard` verde.
