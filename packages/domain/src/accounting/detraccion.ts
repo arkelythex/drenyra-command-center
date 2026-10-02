@@ -152,7 +152,11 @@ export class Detraccion {
 	}
 
 	get spotCodeInfo(): { code: string; description: string } {
-		return SPOT_CODE_REGISTRY[this._spotCode];
+		const info = SPOT_CODE_REGISTRY[this._spotCode];
+		if (!info) {
+			throw new Error(`Código SPOT no registrado: ${this._spotCode}`);
+		}
+		return info;
 	}
 
 	get percentage(): number {
