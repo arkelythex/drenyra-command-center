@@ -14,7 +14,7 @@ Renombrar `packages/pi` → `packages/agent-runtime` tocó 241 archivos y el pre
 - 12 aserciones no nulas (`x!`) reemplazadas por guardas explícitas (`agents.service`, `delegation`, `approval-gate`, `domain-agent`, `event-bus`, `batch-orchestrator`, `worker-pool`). En `batch-orchestrator.onPhaseComplete` se conservó el comportamiento previo con un tipo explícito.
 - Variable sin uso en `intelligence.service.ts`.
 
-## Deuda estructural pendiente (16 supresiones `biome-ignore` con motivo)
+## Deuda estructural pendiente (14 supresiones `biome-ignore` con motivo)
 
 Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en entrypoints. Cada fila es una supresión que debe **eliminarse refactorizando**, no ampliarse.
 
@@ -33,13 +33,12 @@ Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en en
 | `packages/agent-runtime/src/strategies/detracciones.strategy.ts:125` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/strategies/document-classification.strategy.ts:277` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/strategies/sire-filing.strategy.ts:63` | noExcessiveCognitiveComplexity |
-| `packages/agent-runtime/src/strategies/supplier-intelligence.strategy.ts:127` | noExcessiveCognitiveComplexity |
-| `packages/agent-runtime/src/strategies/supplier-intelligence.strategy.ts:242` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/strategies/tax-calendar.strategy.ts:84` | noExcessiveCognitiveComplexity |
 
 - ✅ Saldadas también: `ResultMerger.merge` y `TaskDecomposer.decompose` (extracción de helpers; 110 tests de `mastra` intactos y prueba diferencial vieja-vs-nueva en 12 288 combinaciones de objetivo/dominios).
 - ✅ Saldadas: `DelegationGraph.detectCycle` (helpers; equivalencia verificada en 5 000 grafos aleatorios) y `LatinModernoOrchestrator.handleRequest` (`executeStep` extraído; test de caracterización nuevo).
 - ✅ **Defecto corregido — el orquestador solo ejecutaba `step-1`:** `TaskDecomposer` marcaba como procesados los pasos con dependencias sin meterlos en ningún grupo paralelo, así que validación, clasificación y compliance nunca corrían. Ahora los grupos son niveles topológicos (cada paso exactamente una vez, tras sus dependencias). Tests nuevos en `task-decomposer.test.ts`.
+- ✅ Saldadas: `detectPaymentDelayTrend` y `detectDebtAging` (`supplier-intelligence`): helpers de agrupación/bucketing; +8 tests de frontera (59/60/89/90 días, 20/21/30/31 de retraso) y 4 mutantes de umbral muertos.
 
 ## Código fiscal: deuda saldada (6 supresiones eliminadas, test-first)
 

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { AgentContext } from "../../types/agent-context";
 import type { SupplierIntelligenceInput } from "../supplier-intelligence.strategy";
 import {
@@ -989,5 +989,82 @@ describe("constants", () => {
 		expect(PAYMENT_DELAY_DAYS_THRESHOLD).toBe(15);
 		expect(NEW_SUPPLIER_HIGH_VALUE_THRESHOLD).toBe(10_000);
 		expect(NEW_SUPPLIER_LOOKBACK_DAYS).toBe(90);
+	});
+});
+
+// ─── Severity boundaries (pinned) ─────────────────────────────────
+
+describe("severity boundaries", () => {
+	const NOW = new Date("2026-06-30T12:00:00.000Z");
+	const DAY = 24 * 60 * 60 * 1000;
+	beforeEach(() => {
+		vi.useFakeTimers();
+		vi.setSystemTime(NOW);
+	});
+	afterEach(() => vi.useRealTimers());
+
+	const run = (transactions: SupplierIntelligenceInput["transactions"]) =>
+		createSupplierIntelligenceStrategy().execute(
+			{
+				suppliers: [
+					{ id: "s1", name: "S", ruc: "20111111111", createdAt: "2020-01-01" },
+				],
+				transactions,
+			},
+			baseContext,
+		) as import("../types").Anomaly[];
+
+	const tx = (over: Record<string, unknown>) =>
+		({
+			id: "t",
+			supplierId: "s1",
+			supplierName: "S",
+			supplierRuc: "20111111111",
+			documentType: "01",
+			serie: "F001",
+			numero: "1",
+			amount: 100,
+			currency: "PEN",
+			issueDate: "2026-01-01T00:00:00.000Z",
+			paid: false,
+			...over,
+		}) as SupplierIntelligenceInput["transactions"][number];
+
+	it.each([
+		[59, "medium"],
+		[60, "high"],
+		[89, "high"],
+		[90, "critical"],
+	])("debt overdue %i days is %s", (days, severity) => {
+		const due = new Date(NOW.getTime() - days * DAY).toISOString();
+		const found = run([tx({ dueDate: due })]).filter(
+			(a) => a.detectionMethod === "debt_aging",
+		);
+		expect(found).toHaveLength(1);
+		expect(found[0].severity).toBe(severity);
+	});
+
+	it.each([
+		[20, "medium"],
+		[21, "high"],
+		[30, "high"],
+		[31, "critical"],
+	])("average payment delay of %i days is %s", (days, severity) => {
+		const due = new Date("2026-03-01T00:00:00.000Z");
+		const paid = new Date(due.getTime() + days * DAY).toISOString();
+		const payments = [1, 2, 3].map((n) =>
+			tx({
+				id: `t${n}`,
+				numero: `${n}`,
+				paid: true,
+				dueDate: due.toISOString(),
+				paymentDate: paid,
+			}),
+		);
+		const found = run(payments).filter(
+			(a) => a.detectionMethod === "payment_delay_trend",
+		);
+		expect(found).toHaveLength(1);
+		expect(found[0].severity).toBe(severity);
 	});
 });

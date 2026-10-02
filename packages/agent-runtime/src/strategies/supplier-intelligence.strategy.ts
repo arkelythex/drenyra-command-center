@@ -124,32 +124,13 @@ function detectConcentrationRisk(
 
 // ─── Detection: Payment Delay Trend ──────────────────────────────
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 function detectPaymentDelayTrend(
 	input: SupplierIntelligenceInput,
 	now: Date,
 ): Anomaly[] {
 	const anomalies: Anomaly[] = [];
 
-	// Group paid transactions by supplier, calculate avg delay
-	const supplierDelays = new Map<string, { name: string; delays: number[] }>();
-
-	for (const tx of input.transactions) {
-		if (!tx.paid || !tx.paymentDate) continue;
-
-		const due = new Date(tx.dueDate);
-		const paid = new Date(tx.paymentDate);
-		const delayDays = (paid.getTime() - due.getTime()) / (1000 * 60 * 60 * 24);
-
-		if (delayDays <= 0) continue; // paid on time or early
-
-		const current = supplierDelays.get(tx.supplierId) ?? {
-			name: tx.supplierName,
-			delays: [],
-		};
-		current.delays.push(delayDays);
-		supplierDelays.set(tx.supplierId, current);
-	}
+	const supplierDelays = collectPaymentDelays(input.transactions);
 
 	for (const [supplierId, data] of supplierDelays) {
 		if (data.delays.length < 3) continue; // need at least 3 payments for trend
@@ -159,8 +140,7 @@ function detectPaymentDelayTrend(
 		const maxDelay = Math.max(...data.delays);
 
 		if (avgDelay > PAYMENT_DELAY_DAYS_THRESHOLD) {
-			const delaySeverity: AnomalySeverity =
-				avgDelay > 30 ? "critical" : avgDelay > 20 ? "high" : "medium";
+			const delaySeverity = delaySeverityFor(avgDelay);
 
 			anomalies.push({
 				id: `delay-${supplierId}`,
@@ -187,6 +167,36 @@ function detectPaymentDelayTrend(
 	}
 
 	return anomalies;
+}
+
+/** Paid-late transactions grouped by supplier (delay in days, only positive delays). */
+function collectPaymentDelays(
+	transactions: TransactionRecord[],
+): Map<string, { name: string; delays: number[] }> {
+	const supplierDelays = new Map<string, { name: string; delays: number[] }>();
+
+	for (const tx of transactions) {
+		if (!tx.paid || !tx.paymentDate) continue;
+
+		const due = new Date(tx.dueDate);
+		const paid = new Date(tx.paymentDate);
+		const delayDays = (paid.getTime() - due.getTime()) / (1000 * 60 * 60 * 24);
+
+		if (delayDays <= 0) continue; // paid on time or early
+
+		const current = supplierDelays.get(tx.supplierId) ?? {
+			name: tx.supplierName,
+			delays: [],
+		};
+		current.delays.push(delayDays);
+		supplierDelays.set(tx.supplierId, current);
+	}
+	return supplierDelays;
+}
+
+function delaySeverityFor(avgDelay: number): AnomalySeverity {
+	if (avgDelay > 30) return "critical";
+	return avgDelay > 20 ? "high" : "medium";
 }
 
 // ─── Detection: New Supplier High-Value ──────────────────────────
@@ -240,65 +250,19 @@ function detectNewSupplierHighValue(
 
 // ─── Detection: Debt Aging ───────────────────────────────────────
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 function detectDebtAging(
 	input: SupplierIntelligenceInput,
 	now: Date,
 ): Anomaly[] {
 	const anomalies: Anomaly[] = [];
 
-	// Group unpaid transactions by supplier
-	const unpaidBySupplier = new Map<
-		string,
-		{ name: string; unpaid: TransactionRecord[] }
-	>();
-
-	for (const tx of input.transactions) {
-		if (tx.paid || tx.paymentDate) continue;
-
-		const dueDate = new Date(tx.dueDate);
-		if (dueDate > now) continue; // not yet past due
-
-		const current = unpaidBySupplier.get(tx.supplierId) ?? {
-			name: tx.supplierName,
-			unpaid: [],
-		};
-		current.unpaid.push(tx);
-		unpaidBySupplier.set(tx.supplierId, current);
-	}
+	const unpaidBySupplier = collectPastDue(input.transactions, now);
 
 	for (const [supplierId, data] of unpaidBySupplier) {
-		// Calculate total past-due and bucket counts
-		const buckets: Record<string, { count: number; total: number }> = {
-			"30": { count: 0, total: 0 },
-			"60": { count: 0, total: 0 },
-			"90+": { count: 0, total: 0 },
-		};
-
-		let totalPastDue = 0;
-		let maxDaysOverdue = 0;
-
-		for (const tx of data.unpaid) {
-			const dueDate = new Date(tx.dueDate);
-			const daysOverdue =
-				(now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24);
-			const amount = Math.abs(tx.amount);
-
-			totalPastDue += amount;
-			maxDaysOverdue = Math.max(maxDaysOverdue, daysOverdue);
-
-			if (daysOverdue >= 90) {
-				buckets["90+"].count++;
-				buckets["90+"].total += amount;
-			} else if (daysOverdue >= 60) {
-				buckets["60"].count++;
-				buckets["60"].total += amount;
-			} else {
-				// 30+ days overdue
-				buckets["30"].count++;
-				buckets["30"].total += amount;
-			}
-		}
+		const { buckets, totalPastDue, maxDaysOverdue } = bucketPastDue(
+			data.unpaid,
+			now,
+		);
 
 		if (totalPastDue > 0) {
 			const bucketSummary = Object.entries(buckets)
@@ -308,12 +272,7 @@ function detectDebtAging(
 				)
 				.join("; ");
 
-			const severity: AnomalySeverity =
-				buckets["90+"].count > 0
-					? "critical"
-					: buckets["60"].count > 0
-						? "high"
-						: "medium";
+			const severity = debtSeverityFor(buckets);
 
 			anomalies.push({
 				id: `debt-${supplierId}`,
@@ -344,6 +303,68 @@ function detectDebtAging(
 	}
 
 	return anomalies;
+}
+
+type AgingBuckets = Record<string, { count: number; total: number }>;
+
+/** Unpaid transactions already past due, grouped by supplier. */
+function collectPastDue(
+	transactions: TransactionRecord[],
+	now: Date,
+): Map<string, { name: string; unpaid: TransactionRecord[] }> {
+	const unpaidBySupplier = new Map<
+		string,
+		{ name: string; unpaid: TransactionRecord[] }
+	>();
+
+	for (const tx of transactions) {
+		if (tx.paid || tx.paymentDate) continue;
+
+		const dueDate = new Date(tx.dueDate);
+		if (dueDate > now) continue; // not yet past due
+
+		const current = unpaidBySupplier.get(tx.supplierId) ?? {
+			name: tx.supplierName,
+			unpaid: [],
+		};
+		current.unpaid.push(tx);
+		unpaidBySupplier.set(tx.supplierId, current);
+	}
+	return unpaidBySupplier;
+}
+
+/** Total past-due amount, worst overdue age and 30/60/90+ day buckets. */
+function bucketPastDue(
+	unpaid: TransactionRecord[],
+	now: Date,
+): { buckets: AgingBuckets; totalPastDue: number; maxDaysOverdue: number } {
+	const buckets: AgingBuckets = {
+		"30": { count: 0, total: 0 },
+		"60": { count: 0, total: 0 },
+		"90+": { count: 0, total: 0 },
+	};
+	let totalPastDue = 0;
+	let maxDaysOverdue = 0;
+
+	for (const tx of unpaid) {
+		const dueDate = new Date(tx.dueDate);
+		const daysOverdue =
+			(now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24);
+		const amount = Math.abs(tx.amount);
+
+		totalPastDue += amount;
+		maxDaysOverdue = Math.max(maxDaysOverdue, daysOverdue);
+
+		const key = daysOverdue >= 90 ? "90+" : daysOverdue >= 60 ? "60" : "30";
+		buckets[key].count++;
+		buckets[key].total += amount;
+	}
+	return { buckets, totalPastDue, maxDaysOverdue };
+}
+
+function debtSeverityFor(buckets: AgingBuckets): AnomalySeverity {
+	if (buckets["90+"].count > 0) return "critical";
+	return buckets["60"].count > 0 ? "high" : "medium";
 }
 
 // ─── Detection: Duplicate Supplier (RUC-based) ───────────────────
