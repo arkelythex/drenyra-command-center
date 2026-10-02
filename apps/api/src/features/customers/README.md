@@ -364,9 +364,9 @@ bun test src/features/customer/__tests__/unit/
 
 ## References
 
-- [Invoice Feature](../invoice/README.md) - Uses Customer
-- [Bill Feature](../bill/README.md) - Uses Vendor (same table)
-- [Vertical Slice Guide](../../../../docs/technical/vertical-slice-migration-guide.md)
+- Invoice Feature _(no disponible)_ - Uses Customer
+- Bill Feature _(no disponible)_ - Uses Vendor (same table)
+- Vertical Slice Guide _(no disponible)_
 
 ---
 
@@ -374,4 +374,4 @@ bun test src/features/customer/__tests__/unit/
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)

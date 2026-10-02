@@ -198,14 +198,14 @@ Cada capa del stack canónico se asigna a uno o más planos FEOS:
 
 | Plano FEOS                                              | Capas del stack                                            |
 | ------------------------------------------------------- | ---------------------------------------------------------- |
-| [02 — Experience](../02-experience-plane/README.md)     | Frontend (React + TanStack Start), Design System, CLI      |
-| [03 — Workspace](../03-workspace-plane/README.md)       | Application layer (workspace commands/queries), PostgreSQL |
-| [04 — Intelligence](../04-intelligence-plane/README.md) | Agent runtime, model gateway, context assembly             |
-| [05 — Trust](../05-trust-plane/README.md)               | Evidence graph, hashing (Rust), receipt schema             |
-| [06 — Execution](../06-execution-plane/README.md)       | Temporal, NATS JetStream, outbox, idempotency              |
-| [07 — Financial](../07-financial-plane/README.md)       | Domain core (ledger, tax, close, treasury), application    |
-| [08 — Integration](../08-integration-plane/README.md)   | Go services, connectors, DFP adapters                      |
-| [09 — Country](../09-country-plane/README.md)           | Country packs, fiscal rules (Rust/WASM)                    |
+| 02 — Experience _(no disponible)_     | Frontend (React + TanStack Start), Design System, CLI      |
+| 03 — Workspace _(no disponible)_       | Application layer (workspace commands/queries), PostgreSQL |
+| 04 — Intelligence _(no disponible)_ | Agent runtime, model gateway, context assembly             |
+| 05 — Trust _(no disponible)_               | Evidence graph, hashing (Rust), receipt schema             |
+| 06 — Execution _(no disponible)_       | Temporal, NATS JetStream, outbox, idempotency              |
+| 07 — Financial _(no disponible)_       | Domain core (ledger, tax, close, treasury), application    |
+| 08 — Integration _(no disponible)_   | Go services, connectors, DFP adapters                      |
+| 09 — Country _(no disponible)_           | Country packs, fiscal rules (Rust/WASM)                    |
 
 ## Relación con documentación
 

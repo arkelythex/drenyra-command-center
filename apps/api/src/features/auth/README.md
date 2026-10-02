@@ -169,7 +169,7 @@ flowchart TD
 | POST | `/api/auth/forget-password` | Request password reset | No |
 | POST | `/api/auth/reset-password` | Reset password with token | No |
 
-Full API docs: [docs/04-api/auth.md](../../../../../docs/04-api/auth.md)
+Full API docs: docs/04-api/auth.md _(no disponible)_
 
 ## Error Handling
 
@@ -436,10 +436,10 @@ export const auth = betterAuth({
 ---
 
 **Related Docs:**
-- [API Reference](../../../../../docs/04-api/auth.md)
+- API Reference _(no disponible)_
 - [BetterAuth Docs](https://better-auth.com/)
-- [SUNAT RUC Validation](../../../../../docs/technical/sunat-ruc-validation.md)
+- SUNAT RUC Validation _(no disponible)_
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)

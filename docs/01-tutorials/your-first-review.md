@@ -149,5 +149,5 @@ The journal entry has been posted. A receipt is available for verification.
 ## Next Steps
 
 - [Tutorial: Interpret a Receipt](./interpret-a-receipt.md) — read the result of an execution
-- Read the [How to Review a Change Set (Reference)](../02-guides/how-to-review-a-change-set.md) — more detail
-- [Trust Plane](../05-trust-plane/README.md) — understand the full approval model
+- Read the How to Review a Change Set (Reference) _(no disponible)_ — more detail
+- Trust Plane _(no disponible)_ — understand the full approval model

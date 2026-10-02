@@ -21,4 +21,4 @@ Extracción progresiva vía strangler pattern:
 4. Verification
 5. Gradual cutover
 
-Ver [Canonical Stack](../docs/architecture/canonical-stack.md).
+Ver [Canonical Stack](../docs/01-foundation/canonical-stack.md).

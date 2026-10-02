@@ -63,7 +63,7 @@ sequenceDiagram
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 
 - **Amount <= 0**  
   **Handling:** request validation fails  
@@ -71,5 +71,5 @@ sequenceDiagram
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 

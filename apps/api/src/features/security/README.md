@@ -38,4 +38,4 @@ Do not count this directory as an active runtime feature unless a dedicated moun
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)

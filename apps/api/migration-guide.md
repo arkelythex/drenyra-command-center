@@ -2,7 +2,7 @@
 
 > **⚠️ IMPORTANTE**: Esta guía está obsoleta. El proyecto ha adoptado **Vertical Slice Architecture con Clean Architecture** como estándar.
 > 
-> **Consultar**: [Guía oficial de migración](../../docs/technical/VERTICAL_SLICE_MIGRATION_GUIDE.md)
+> **Consultar**: Guía oficial de migración _(no disponible)_
 >
 > Esta guía se mantiene solo para referencia histórica de módulos legacy.
 

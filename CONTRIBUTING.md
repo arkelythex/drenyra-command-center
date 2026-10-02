@@ -153,12 +153,12 @@ This repository configures several AI/IDE surfaces (Cursor, Claude Code, Codex, 
 
 **Canonical architecture and governance text** lives under `docs/`, especially:
 
-- [docs/01-architecture/README.md](docs/01-architecture/README.md) — architecture index and "source of truth" order.
-- [docs/01-architecture/agent-tooling.md](docs/01-architecture/agent-tooling.md) — how agent rules should relate to docs.
-- [docs/01-architecture/package-dependency-graph.md](docs/01-architecture/package-dependency-graph.md) — allowed package dependency directions.
-- [docs/01-architecture/monorepo-pipeline.md](docs/01-architecture/monorepo-pipeline.md) — Bun + Turborepo task graph and CI caching.
+- docs/01-architecture/README.md _(no disponible)_ — architecture index and "source of truth" order.
+- docs/01-architecture/agent-tooling.md _(no disponible)_ — how agent rules should relate to docs.
+- docs/01-architecture/package-dependency-graph.md _(no disponible)_ — allowed package dependency directions.
+- docs/01-architecture/monorepo-pipeline.md _(no disponible)_ — Bun + Turborepo task graph and CI caching.
 
-When adding or changing a rule for agents, **update docs or shared skills first**, then add a short pointer in `.cursor/`, `.claude/`, or `.codex/` rather than duplicating long policy blocks. For the layout of `.cursor/` (Project rules, vendored SDD, sync from Gentle AI), read [.cursor/README.md](.cursor/README.md).
+When adding or changing a rule for agents, **update docs or shared skills first**, then add a short pointer in `.cursor/`, `.claude/`, or `.codex/` rather than duplicating long policy blocks. For the layout of `.cursor/` (Project rules, vendored SDD, sync from Gentle AI), read .cursor/README.md _(no disponible)_.
 
 ### AI Agent Delegation Triggers
 

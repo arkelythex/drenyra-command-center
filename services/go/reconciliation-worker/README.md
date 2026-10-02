@@ -10,7 +10,7 @@ High-throughput reconciliation worker for reference/amount matching.
 
 ## Why Go (not only TypeScript)
 
-Throughput and simple concurrency for batch matching without pulling the full Elysia stack. See [ADR-015](../../../docs/02-adr/adr-015-layered-language-placement-ts-go-rust.md) and the parent [services/go README](../README.md).
+Throughput and simple concurrency for batch matching without pulling the full Elysia stack. See ADR-015 _(no disponible)_ and the parent [services/go README](../README.md).
 
 ## Permanence
 

@@ -5,8 +5,8 @@
  * docs:check-links
  * Verifica que todos los enlaces internos .md apunten a archivos existentes.
  *
- * Uso: bun run docs:check-links
- *      bun run docs:check-links --full   (escanear todos los .md del repo)
+ * Uso: bun run docs:check-links          (escanea todos los .md del repo; por defecto)
+ *      bun run docs:check-links --core   (solo los archivos núcleo, más rápido)
  */
 
 import { existsSync, readdirSync, readFileSync } from "node:fs";
@@ -20,7 +20,7 @@ interface LinkIssue {
 }
 
 const ROOT = process.cwd();
-const isFull = process.argv.includes("--full");
+const isFull = !process.argv.includes("--core");
 
 const CORE_FILES = [
 	"README.md",
@@ -105,32 +105,42 @@ function relativePath(absolute: string): string {
 	return rel.startsWith(ROOT) ? rel.slice(ROOT.length + 1) : rel;
 }
 
+/** Prose lines only: skips fenced code blocks and strips inline code spans. */
+function* proseLines(lines: string[]): Generator<[number, string]> {
+	let inFence = false;
+	for (let index = 0; index < lines.length; index += 1) {
+		if (/^\s*(```|~~~)/.test(lines[index])) {
+			inFence = !inFence;
+			continue;
+		}
+		if (inFence) continue; // code samples are not links
+		yield [index, lines[index].replace(/`[^`]*`/g, "")]; // nor are inline spans
+	}
+}
+
+/** True when an internal link resolves inside the repo to a missing target. */
+function isBrokenInternalLink(link: string, absolutePath: string): boolean {
+	if (shouldSkipLink(link)) return false;
+	const targetPath = stripAnchor(link);
+	if (!targetPath) return false;
+	const resolvedPath = normalize(resolve(dirname(absolutePath), targetPath));
+	if (!resolvedPath.startsWith(ROOT)) return false;
+	return !existsAsFileOrDirectory(resolvedPath);
+}
+
 function checkFile(relativeFile: string, absolutePath: string): LinkIssue[] {
 	const issues: LinkIssue[] = [];
-	const content = readFileSync(absolutePath, "utf-8");
-	const lines = content.split("\n");
+	const lines = readFileSync(absolutePath, "utf-8").split("\n");
 
-	for (let index = 0; index < lines.length; index += 1) {
-		const line = lines[index];
+	for (const [index, line] of proseLines(lines)) {
 		for (const link of extractLinks(line)) {
-			if (shouldSkipLink(link)) continue;
-
-			const targetPath = stripAnchor(link);
-			if (!targetPath) continue;
-
-			const resolvedPath = normalize(
-				resolve(dirname(absolutePath), targetPath),
-			);
-			if (!resolvedPath.startsWith(ROOT)) continue;
-
-			if (!existsAsFileOrDirectory(resolvedPath)) {
-				issues.push({
-					file: relativeFile,
-					line: index + 1,
-					link,
-					reason: "Target does not exist",
-				});
-			}
+			if (!isBrokenInternalLink(link, absolutePath)) continue;
+			issues.push({
+				file: relativeFile,
+				line: index + 1,
+				link,
+				reason: "Target does not exist",
+			});
 		}
 	}
 

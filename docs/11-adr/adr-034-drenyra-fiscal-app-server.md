@@ -32,7 +32,7 @@ Introduce the **Drenyra Fiscal App Server (DFAS)** as the canonical transport an
 
 - **Wire format:** JSON-RPC 2.0 over WebSocket (primary), SSE (fallback), NDJSON stdio (CLI).
 - **Version:** `DFAS_PROTOCOL_VERSION = "1.0.0"` in `packages/domain/src/drenyra/dfas-protocol-types.ts`.
-- **Messages:** `thread/*`, `turn/*`, `item/*`, `approval/*` — see [DFAS Spec](../01-architecture/drenyra-fiscal-app-server-2026.md).
+- **Messages:** `thread/*`, `turn/*`, `item/*`, `approval/*` — see [DFAS Spec](../14-design/fiscal-app-server.md).
 - **Item stream:** Evidence-native items: evidence, gates, envelopes, capability decisions, approvals, truth promotions.
 
 ### 2. Unified Runtime Kernel
@@ -89,8 +89,8 @@ Fase 1 (platform split): MF remote + REST API. **Fase 2 (this ADR implementation
 
 ## References
 
-- [Product topology](../canon/product-topology.md)
-- [DFAS Protocol Spec](../01-architecture/drenyra-fiscal-app-server-2026.md)
-- [Sync playbook](../05-development/drenyra-repo-sync.md)
+- [Product topology](../14-design/product-topology.md)
+- [DFAS Protocol Spec](../14-design/fiscal-app-server.md)
+- [Sync playbook](../10-development/drenyra-repo-sync.md)
 - Drenyra [drenyra-connection.md](https://github.com/drenyra/Drenyra/blob/main/docs/cross-repo/drenyra-connection.md)
 - [OpenAI Codex App Server](https://openai.com/index/unlocking-the-codex-harness/) (design reference)

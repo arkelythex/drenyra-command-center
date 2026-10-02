@@ -39,6 +39,6 @@ Open shell at `http://localhost:5173/drenyra` → redirects to Drenyra Command C
 
 ## Related
 
-- [Product topology](../canon/product-topology.md)
-- [ADR-034 DFAS](../02-adr/adr-034-drenyra-fiscal-app-server.md)
+- [Product topology](../14-design/product-topology.md)
+- [ADR-034 DFAS](../11-adr/adr-034-drenyra-fiscal-app-server.md)
 - [Drenyra Product Philosophy](../products/drenyra-product-philosophy.md)

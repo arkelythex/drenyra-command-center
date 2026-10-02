@@ -126,7 +126,7 @@ even when scoped grant and redaction proof are present.
 
 ## Related docs
 
-- [Fiscal Intelligence Platform Architecture](./fiscal-intelligence-platform-architecture-2026.md)
-- [FAL Non-Negotiable Controls](./fiscal-agentic-ledger-controls-2026.md)
-- [Fiscal Agentic Ledger Event Envelope](./fiscal-agentic-ledger-event-envelope-2026.md)
-- [ADR-025: Fiscal Intelligence Platform and FAL](../02-adr/adr-025-fiscal-intelligence-platform.md)
+- [Fiscal Intelligence Platform Architecture](./fiscal-intelligence-platform.md)
+- FAL Non-Negotiable Controls _(no disponible)_
+- Fiscal Agentic Ledger Event Envelope _(no disponible)_
+- ADR-025: Fiscal Intelligence Platform and FAL _(no disponible)_

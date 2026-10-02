@@ -1,7 +1,7 @@
 # Perú — Fiscal Domain
 
 **Última actualización:** 2026-07-29
-**FEOS Plano:** [09 — Country Plane](../09-country-plane/README.md)
+**FEOS Plano:** 09 — Country Plane _(no disponible)_
 **Country Pack:** `country-packs/peru/`
 
 ---

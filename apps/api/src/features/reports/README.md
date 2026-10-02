@@ -38,4 +38,4 @@ The surface is part of the active API module surface. Treat it as a baseline rep
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)

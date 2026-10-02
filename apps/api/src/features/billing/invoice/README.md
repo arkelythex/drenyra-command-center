@@ -357,4 +357,4 @@ const invoices = await repo.list({
 
 ---
 
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../../docs/meta/gentleman-philosophy.md)

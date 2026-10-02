@@ -310,4 +310,4 @@ These are expected for Phase 1 POC and will be addressed in Phase 2.
 
 ---
 
-- [Gentleman Philosophy](../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)

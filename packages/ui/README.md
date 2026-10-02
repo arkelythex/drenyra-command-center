@@ -10,7 +10,7 @@ auto-generated: false
 
 **Shared UI component library** para el monorepo ARKELYTHEX. Proporciona componentes consistentes, accesibles y temáticos con la identidad de marca.
 
-> **Relacionado:** [Sistema de Color 2026](../docs/design/color-system-2026.md) | [Identidad Visual](../docs/design/visual-identity-2026.md) | [Reglas ESLint](../docs/05-development/linting-configuration.md)
+> **Relacionado:** Sistema de Color 2026 _(no disponible)_ | Identidad Visual _(no disponible)_ | Reglas ESLint _(no disponible)_
 
 ---
 

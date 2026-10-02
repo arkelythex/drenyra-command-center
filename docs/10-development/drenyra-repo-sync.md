@@ -3,7 +3,7 @@
 **Canonical product repo:** `Drenyra/`  
 **Platform repo:** `drenyra/Drenyra`  
 **Platform ADR:** [ADR-033 Platform-Product Split](https://github.com/drenyra/Drenyra/blob/main/docs/02-adr/adr-033-platform-product-split.md) (Drenyra)  
-**Product harness ADR:** [ADR-034 DFAS](../02-adr/adr-034-drenyra-fiscal-app-server.md) (this repo)
+**Product harness ADR:** [ADR-034 DFAS](../11-adr/adr-034-drenyra-fiscal-app-server.md) (this repo)
 
 ## Why sync exists
 
@@ -62,6 +62,6 @@ bun run test:sire-bench
 
 ## Related
 
-- [ADR-034: Drenyra Fiscal App Server](../02-adr/adr-034-drenyra-fiscal-app-server.md)
-- [Product topology](../canon/product-topology.md)
+- [ADR-034: Drenyra Fiscal App Server](../11-adr/adr-034-drenyra-fiscal-app-server.md)
+- [Product topology](../14-design/product-topology.md)
 - [Drenyra drenyra-connection.md](https://github.com/drenyra/Drenyra/blob/main/docs/cross-repo/drenyra-connection.md)

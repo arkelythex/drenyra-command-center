@@ -8,7 +8,7 @@ Drenyra is API/domain-first. React Web and the terminal surface (`drenyra-shell`
 
 As of ADR-034, Brain threads and runtime runs converge under the **Drenyra Fiscal App Server (DFAS)**:
 
-- Canonical protocol: [drenyra-fiscal-app-server-2026.md](./drenyra-fiscal-app-server-2026.md)
+- Canonical protocol: [drenyra-fiscal-app-server-2026.md](./fiscal-app-server.md)
 - WebSocket: `WS /api/drenyra/v1/ws` (JSON-RPC 2.0)
 - SSE fallback: `GET /api/drenyra/v1/threads/:threadId/events`
 - Domain contracts: `packages/domain/src/drenyra/dfas-protocol-types.ts`
@@ -53,5 +53,5 @@ Drenyra is not a CRUD accounting dashboard. It is the verifiable financial opera
 
 ## Related docs
 
-- [ADR-034: Drenyra Fiscal App Server](../02-adr/adr-034-drenyra-fiscal-app-server.md)
-- [Drenyra Repo Sync Playbook](../05-development/drenyra-repo-sync.md)
+- [ADR-034: Drenyra Fiscal App Server](../11-adr/adr-034-drenyra-fiscal-app-server.md)
+- [Drenyra Repo Sync Playbook](../10-development/drenyra-repo-sync.md)

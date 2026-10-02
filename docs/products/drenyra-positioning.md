@@ -196,4 +196,4 @@ El dinero llega cuando Drenyra demuestra:
 
 - [Drenyra Product Philosophy — Definitive Thesis](./drenyra-product-philosophy.md)
 - [README.md](../../README.md) — Entry point and quickstart
-- [Product Topology](../canon/product-topology.md) — Technical product architecture
+- [Product Topology](../14-design/product-topology.md) — Technical product architecture

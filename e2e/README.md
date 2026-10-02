@@ -422,6 +422,6 @@ ls test-results/html/  # Open index.html in browser
 ## References
 
 - [Playwright Docs](https://playwright.dev/)
-- [Testing Architecture Skill](./../.opencode/skills/testing-architecture/SKILL.md)
-- [Playwright Best Practices Skill](./../.agents/skills/playwright-best-practices/SKILL.md)
+- Testing Architecture Skill _(no disponible)_
+- Playwright Best Practices Skill _(no disponible)_
 - [@arkelythex/test-utils](./../packages/test-utils/src/e2e/index.ts)

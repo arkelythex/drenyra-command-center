@@ -76,6 +76,6 @@ Golden Python cases also validate compatibility with [`contracts/data-engine/v1/
 
 ## Gate evidence (Engram)
 
-Phase gate evaluations emit condensed T2/T3 summaries via [`gate-evidence-recorder.ts`](../../packages/drenyra-orchestrator/src/phase/gate-evidence-recorder.ts). Wire `PhaseGateEngine({ evidenceRecorder })` to persist to `drenyra-engram` sidecar in production.
+Phase gate evaluations emit condensed T2/T3 summaries via [`gate-evidence-recorder.ts`](../../packages/agent-runtime/src/phase/gate-evidence-recorder.ts). Wire `PhaseGateEngine({ evidenceRecorder })` to persist to `drenyra-engram` sidecar in production.
 
-Thresholds live in [`packages/drenyra-orchestrator/config/fiscal-confidence-gates.yaml`](../../packages/drenyra-orchestrator/config/fiscal-confidence-gates.yaml). Calibrate only with bench evidence — not ad hoc.
+Thresholds live in [`packages/drenyra-orchestrator/config/fiscal-confidence-gates.yaml`](../../packages/agent-runtime/config/fiscal-confidence-gates.yaml). Calibrate only with bench evidence — not ad hoc.

@@ -96,6 +96,6 @@ diff or trace context.
 
 ## Related docs
 
-- [Drenyra Agent Capability Matrix](./drenyra-agent-capability-matrix-2026.md)
-- [Fiscal Agentic Ledger Event Envelope](./fiscal-agentic-ledger-event-envelope-2026.md)
-- [Fiscal Intelligence Platform Architecture](./fiscal-intelligence-platform-architecture-2026.md)
+- [Drenyra Agent Capability Matrix](./agent-capability-matrix.md)
+- Fiscal Agentic Ledger Event Envelope _(no disponible)_
+- [Fiscal Intelligence Platform Architecture](./fiscal-intelligence-platform.md)

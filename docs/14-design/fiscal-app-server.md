@@ -19,7 +19,7 @@ DFAS is Drenyra's JSON-RPC transport and runtime composition layer — adapted f
 > One fiscal thread, one scope, one item stream, one deterministic truth.
 
 Canonical domain types: `packages/domain/src/drenyra/dfas-protocol-types.ts`  
-Decision record: [ADR-034](../02-adr/adr-034-drenyra-fiscal-app-server.md)
+Decision record: [ADR-034](../11-adr/adr-034-drenyra-fiscal-app-server.md)
 
 ## Why not MCP as primary transport
 
@@ -317,8 +317,8 @@ Kernel v0 MUST delegate legacy routes to the same TurnController instance used b
 
 ## Related docs
 
-- [Drenyra Dual-Surface Brain](./drenyra-dual-surface-brain.md)
-- [Drenyra Command Envelope](./drenyra-command-envelope-2026.md)
-- [Drenyra Runtime Contract](../08-ai-automation/drenyra-runtime-contract.md)
+- [Drenyra Dual-Surface Brain](./dual-surface-brain.md)
+- [Drenyra Command Envelope](./command-envelope.md)
+- Drenyra Runtime Contract _(no disponible)_
 - [Kernel Module Design](../../apps/api/src/features/drenyra/kernel/README.md)
-- [SDD Tasks](../superpowers/specs/drenyra-fiscal-app-server-tasks-2026.md)
+- SDD Tasks _(no disponible)_

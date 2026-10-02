@@ -21,4 +21,4 @@ country-packs/
 - Mapeo de cuentas PCGE local
 - Configuración de conectores
 
-Ver [Program Taxonomy](../docs/architecture/program-taxonomy.md).
+Ver [Program Taxonomy](../docs/01-foundation/program-taxonomy.md).

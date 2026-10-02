@@ -91,5 +91,5 @@ bun test apps/api/src/features/inventory/__tests__/unit/inventory-service.test.t
 
 ---
 
-- [Gentleman Philosophy](../../../../docs/meta/gentleman-philosophy.md)
+- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
 ```

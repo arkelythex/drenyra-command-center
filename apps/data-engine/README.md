@@ -137,7 +137,7 @@ docker run -d -p 8000:8000 --name data-engine drenyra-data-engine:latest
 
 ## Permanence and integration (monorepo)
 
-**Why FastAPI lives outside the Bun API:** data-heavy paths (Polars, large SIRE files, batch analytics) are isolated for CPU/memory and dependency hygiene, aligned with [ADR-015](../../docs/02-adr/adr-015-layered-language-placement-ts-go-rust.md).
+**Why FastAPI lives outside the Bun API:** data-heavy paths (Polars, large SIRE files, batch analytics) are isolated for CPU/memory and dependency hygiene, aligned with ADR-015 _(no disponible)_.
 
 **Keep this service** while those workloads need vectorized Python/Rust-core dataframe work or ML-adjacent stacks that are costly to replicate in Elysia.
 
