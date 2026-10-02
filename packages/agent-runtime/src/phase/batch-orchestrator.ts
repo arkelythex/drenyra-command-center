@@ -242,23 +242,20 @@ export class BatchOrchestrator {
 		this.processing = false;
 	}
 
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	private async processSingleEntry(entry: BatchEntry): Promise<void> {
 		const key = this.entryKey(entry.ruc, entry.periodo);
 		const currentEntry = this.entries.get(key);
 		if (!currentEntry) return;
 
 		// Check if paused
-		if (this.pauseRequested || this.pausedRucs.has(entry.ruc)) {
+		if (this.isPaused(entry)) {
 			currentEntry.status = "not_started";
 			return;
 		}
 
-		// Update status
 		currentEntry.status = "in_progress";
 		currentEntry.currentPhase = "captura";
 
-		// Start the period
 		const startResult = await this.orchestrator.startPeriod(
 			entry.ruc,
 			entry.periodo,
@@ -274,114 +271,48 @@ export class BatchOrchestrator {
 			return;
 		}
 
-		// Process phases sequentially with auto-advance
+		const outcome = await this.runPhases(entry, currentEntry);
+		if (outcome.stopped) return;
+
+		if (outcome.completed || outcome.lastPhase === "auditoria") {
+			await this.finalizeEntry(entry, currentEntry);
+		}
+	}
+
+	private isPaused(entry: BatchEntry): boolean {
+		return this.pauseRequested || this.pausedRucs.has(entry.ruc);
+	}
+
+	/**
+	 * Run phases sequentially with auto-advance. `stopped` means a phase was
+	 * blocked/failed (the entry and callbacks are already updated).
+	 */
+	private async runPhases(
+		entry: BatchEntry,
+		currentEntry: BatchEntryStatus,
+	): Promise<{
+		stopped: boolean;
+		completed: boolean;
+		lastPhase: FiscalPhaseId;
+	}> {
 		let currentPhase: FiscalPhaseId = "captura";
 		let completed = false;
 
-		while (
-			!completed &&
-			!this.pauseRequested &&
-			!this.pausedRucs.has(entry.ruc)
-		) {
+		while (!completed && !this.isPaused(entry)) {
 			currentEntry.currentPhase = currentPhase;
 
-			// Start the phase (evaluates entry gates)
-			const phaseStart = await this.orchestrator.startPhase(
-				entry.ruc,
-				entry.periodo,
-				currentPhase,
-			);
-
-			if (!phaseStart.success) {
-				if (phaseStart.status === "blocked") {
-					currentEntry.status = "blocked";
-					currentEntry.lastError = phaseStart.error;
-
-					await this.callbacks?.onPhaseBlocked?.(
-						entry.ruc,
-						entry.periodo,
-						currentPhase,
-						phaseStart.gateResult?.blockers ?? [],
-					);
-				} else {
-					currentEntry.status = "failed";
-					currentEntry.lastError = phaseStart.error;
-
-					await this.callbacks?.onError?.(
-						entry.ruc,
-						entry.periodo,
-						currentPhase,
-						phaseStart.error ?? "Phase start failed",
-					);
-				}
-				return;
+			if (!(await this.startPhaseOrStop(entry, currentEntry, currentPhase))) {
+				return { stopped: true, completed, lastPhase: currentPhase };
+			}
+			if (
+				!(await this.completePhaseOrStop(entry, currentEntry, currentPhase))
+			) {
+				return { stopped: true, completed, lastPhase: currentPhase };
 			}
 
-			// Phase started successfully — mark as running agents automatically
-			// In a real scenario, this is where you'd invoke the actual phase agent
-			// (OCR, classification, etc.) via the agent runner.
-			// For auto-advance mode, we simulate a successful agent run.
-			const agentOutput = {
-				phaseId: currentPhase,
-				ruc: entry.ruc,
-				periodo: entry.periodo,
-				success: true,
-				summary: `Auto-processed ${currentPhase} for ${entry.ruc}/${entry.periodo}`,
-				data: {},
-			};
-
-			// Complete the phase (evaluates exit gates, auto-advances)
-			const completeResult = await this.orchestrator.completePhase(
-				entry.ruc,
-				entry.periodo,
-				currentPhase,
-				agentOutput,
-				{ autoAdvance: this.config.autoAdvance },
-			);
-
-			if (!completeResult.success) {
-				// Phase blocked or failed
-				const periodState = await this.store.getPeriodState(
-					entry.ruc,
-					entry.periodo,
-				);
-				const status = periodState?.status ?? "failed";
-
-				if (status === "blocked") {
-					currentEntry.status = "blocked";
-				} else {
-					currentEntry.status = "failed";
-				}
-				currentEntry.lastError = completeResult.error;
-
-				await this.callbacks?.onPhaseBlocked?.(
-					entry.ruc,
-					entry.periodo,
-					currentPhase,
-					completeResult.gateResult?.blockers ?? [],
-				);
-				return;
-			}
-
-			// Phase completed
 			currentEntry.phasesCompleted++;
+			await this.notifyPhaseComplete(entry, currentPhase);
 
-			if (this.callbacks?.onPhaseComplete) {
-				const periodState = await this.store.getPeriodState(
-					entry.ruc,
-					entry.periodo,
-				);
-				// Behavior preserved from the previous non-null assertion: the store is
-				// expected to hold the state after a phase completes.
-				await this.callbacks.onPhaseComplete(
-					entry.ruc,
-					entry.periodo,
-					currentPhase,
-					periodState as NonNullable<typeof periodState>,
-				);
-			}
-
-			// Move to next phase
 			const next = getNextPhase(currentPhase);
 			if (!next) {
 				completed = true;
@@ -389,28 +320,130 @@ export class BatchOrchestrator {
 				currentPhase = next;
 			}
 		}
+		return { stopped: false, completed, lastPhase: currentPhase };
+	}
 
-		if (completed || currentPhase === "auditoria") {
-			// Check if we actually reached the end
-			const finalState = await this.store.getPeriodState(
+	/** Start the phase (evaluates entry gates). Returns false when the entry must stop. */
+	private async startPhaseOrStop(
+		entry: BatchEntry,
+		currentEntry: BatchEntryStatus,
+		phase: FiscalPhaseId,
+	): Promise<boolean> {
+		const phaseStart = await this.orchestrator.startPhase(
+			entry.ruc,
+			entry.periodo,
+			phase,
+		);
+		if (phaseStart.success) return true;
+
+		currentEntry.lastError = phaseStart.error;
+		if (phaseStart.status === "blocked") {
+			currentEntry.status = "blocked";
+			await this.callbacks?.onPhaseBlocked?.(
 				entry.ruc,
 				entry.periodo,
+				phase,
+				phaseStart.gateResult?.blockers ?? [],
 			);
-			if (
-				finalState?.currentPhase === "auditoria" &&
-				finalState.status === "completed"
-			) {
-				currentEntry.status = "completed";
-				currentEntry.completedAt = finalState.updatedAt;
+		} else {
+			currentEntry.status = "failed";
+			await this.callbacks?.onError?.(
+				entry.ruc,
+				entry.periodo,
+				phase,
+				phaseStart.error ?? "Phase start failed",
+			);
+		}
+		return false;
+	}
 
-				await this.callbacks?.onPeriodComplete?.(
-					entry.ruc,
-					entry.periodo,
-					finalState,
-				);
-			} else {
-				currentEntry.status = "in_progress";
-			}
+	/**
+	 * Run the phase agent (simulated in auto-advance mode) and complete it
+	 * (evaluates exit gates, auto-advances). Returns false when the entry must stop.
+	 */
+	private async completePhaseOrStop(
+		entry: BatchEntry,
+		currentEntry: BatchEntryStatus,
+		phase: FiscalPhaseId,
+	): Promise<boolean> {
+		// In a real scenario this is where the actual phase agent (OCR,
+		// classification, etc.) would run; auto-advance simulates success.
+		const agentOutput = {
+			phaseId: phase,
+			ruc: entry.ruc,
+			periodo: entry.periodo,
+			success: true,
+			summary: `Auto-processed ${phase} for ${entry.ruc}/${entry.periodo}`,
+			data: {},
+		};
+		const completeResult = await this.orchestrator.completePhase(
+			entry.ruc,
+			entry.periodo,
+			phase,
+			agentOutput,
+			{ autoAdvance: this.config.autoAdvance },
+		);
+		if (completeResult.success) return true;
+
+		// Phase blocked or failed
+		const periodState = await this.store.getPeriodState(
+			entry.ruc,
+			entry.periodo,
+		);
+		currentEntry.status =
+			(periodState?.status ?? "failed") === "blocked" ? "blocked" : "failed";
+		currentEntry.lastError = completeResult.error;
+
+		await this.callbacks?.onPhaseBlocked?.(
+			entry.ruc,
+			entry.periodo,
+			phase,
+			completeResult.gateResult?.blockers ?? [],
+		);
+		return false;
+	}
+
+	private async notifyPhaseComplete(
+		entry: BatchEntry,
+		phase: FiscalPhaseId,
+	): Promise<void> {
+		if (!this.callbacks?.onPhaseComplete) return;
+		const periodState = await this.store.getPeriodState(
+			entry.ruc,
+			entry.periodo,
+		);
+		// Behavior preserved from the previous non-null assertion: the store is
+		// expected to hold the state after a phase completes.
+		await this.callbacks.onPhaseComplete(
+			entry.ruc,
+			entry.periodo,
+			phase,
+			periodState as NonNullable<typeof periodState>,
+		);
+	}
+
+	/** Check we actually reached the end of the cycle and mark the entry accordingly. */
+	private async finalizeEntry(
+		entry: BatchEntry,
+		currentEntry: BatchEntryStatus,
+	): Promise<void> {
+		const finalState = await this.store.getPeriodState(
+			entry.ruc,
+			entry.periodo,
+		);
+		if (
+			finalState?.currentPhase === "auditoria" &&
+			finalState.status === "completed"
+		) {
+			currentEntry.status = "completed";
+			currentEntry.completedAt = finalState.updatedAt;
+			await this.callbacks?.onPeriodComplete?.(
+				entry.ruc,
+				entry.periodo,
+				finalState,
+			);
+		} else {
+			currentEntry.status = "in_progress";
 		}
 	}
 

@@ -14,16 +14,13 @@ Renombrar `packages/pi` → `packages/agent-runtime` tocó 241 archivos y el pre
 - 12 aserciones no nulas (`x!`) reemplazadas por guardas explícitas (`agents.service`, `delegation`, `approval-gate`, `domain-agent`, `event-bus`, `batch-orchestrator`, `worker-pool`). En `batch-orchestrator.onPhaseComplete` se conservó el comportamiento previo con un tipo explícito.
 - Variable sin uso en `intelligence.service.ts`.
 
-## Deuda estructural pendiente (7 supresiones `biome-ignore` con motivo)
+## Deuda estructural pendiente (4 supresiones `biome-ignore` con motivo)
 
 Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en entrypoints. Cada fila es una supresión que debe **eliminarse refactorizando**, no ampliarse.
 
 | Ubicación | Regla |
 |-----------|-------|
 | `apps/web/src/features/workspace/services/accounting-mission.service.ts:169` | noExcessiveCognitiveComplexity |
-| `packages/agent-runtime/src/phase/batch-orchestrator.ts:245` | noExcessiveCognitiveComplexity |
-| `packages/agent-runtime/src/phase/fiscal-phase-graph.ts:181` | noExcessiveCognitiveComplexity |
-| `packages/agent-runtime/src/phase/fiscal-phase-orchestrator.ts:549` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/plugin/registry.ts:152` | noConsole |
 | `packages/agent-runtime/src/serve.ts:335` | noConsole |
 | `packages/agent-runtime/src/serve.ts:336` | noConsole |
@@ -37,6 +34,9 @@ Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en en
 - ✅ Saldadas (test-first): `classifyDocument` (etapas + 4 constructores de anomalía; matriz 17 documentos × 4 conjuntos de opciones) y `detracciones.execute` (SPOT: `evaluateInvoice` + 3 casos; 18 snapshots y 5 mutantes de umbral muertos: 700, 1 pt, 15 días, 5 días, 50 000).
 - ✅ Saldadas (test-first): `sire-filing` (`evaluateRecord`; 14 snapshots, 4 mutantes: 7 días, 30 días, ventana, confianza) y `tax-calendar` (`deadlineAlert` + `missingObligationAnomaly`; 17 snapshots, 3 mutantes de ventana de alerta).
 - **Con esto, todas las supresiones de lógica fiscal en estrategias y phase-agents quedan saldadas.** Quedan 7: orquestación de fases (`fiscal-phase-orchestrator`, `fiscal-phase-graph`, `batch-orchestrator`), `console` de entrypoints (`serve.ts` ×2, `plugin/registry.ts`), la mission service de web y la clase estática intencional de `inbox.service.ts`.
+- ✅ Saldadas las tres de orquestación de fases (test-first): `validateGraph` (3 chequeos; test de orden de errores validado contra la implementación vieja y la nueva), `BatchOrchestrator.processSingleEntry` (16 escenarios con orquestador/store simulados) y `runPeriodContinuously` (8 escenarios con secuencia de llamadas).
+- ⚠️ **Hallazgo (conservado):** `BatchOrchestrator.start()` reinicia `pauseRequested` y `pausedRucs`, por lo que `pause()` invocado antes de `start()` no tiene efecto.
+- **Quedan 4 supresiones:** 3 de `console` en entrypoints (`serve.ts` ×2, `plugin/registry.ts`; deberían pasar a `SecureLogger`) y la complejidad de `accounting-mission.service.ts` (web). La clase estática de `inbox.service.ts` es una decisión de diseño documentada y no figura en este inventario.
 
 ## Código fiscal: deuda saldada (6 supresiones eliminadas, test-first)
 

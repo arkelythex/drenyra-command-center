@@ -178,17 +178,20 @@ export function createDefaultPhaseGraph(): FiscalPhaseGraph {
  * Returns errors if the graph has issues.
  */
 
-// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 export function validateGraph(graph: FiscalPhaseGraph): string[] {
-	const errors: string[] = [];
-
-	// Check all phase IDs are unique
 	const ids = graph.phases.map((p) => p.id);
-	if (new Set(ids).size !== ids.length) {
-		errors.push("Duplicate phase IDs detected");
-	}
+	return [
+		...(new Set(ids).size !== ids.length
+			? ["Duplicate phase IDs detected"]
+			: []),
+		...transitionErrors(graph, ids),
+		...gateErrors(graph),
+	];
+}
 
-	// Check all transitions reference valid phases
+/** Every transition must reference known phases. */
+function transitionErrors(graph: FiscalPhaseGraph, ids: string[]): string[] {
+	const errors: string[] = [];
 	for (const t of graph.transitions) {
 		if (!ids.includes(t.from)) {
 			errors.push(`Transition references unknown from-phase: ${t.from}`);
@@ -197,20 +200,19 @@ export function validateGraph(graph: FiscalPhaseGraph): string[] {
 			errors.push(`Transition references unknown to-phase: ${t.to}`);
 		}
 	}
+	return errors;
+}
 
-	// Check all gates reference valid phases
+/** Every declared entry/exit gate must be defined. */
+function gateErrors(graph: FiscalPhaseGraph): string[] {
+	const errors: string[] = [];
 	for (const p of graph.phases) {
 		for (const gate of p.entryGates) {
-			if (!gate) {
-				errors.push(`Phase ${p.id} has undefined entry gate`);
-			}
+			if (!gate) errors.push(`Phase ${p.id} has undefined entry gate`);
 		}
 		for (const gate of p.exitGates) {
-			if (!gate) {
-				errors.push(`Phase ${p.id} has undefined exit gate`);
-			}
+			if (!gate) errors.push(`Phase ${p.id} has undefined exit gate`);
 		}
 	}
-
 	return errors;
 }

@@ -545,8 +545,6 @@ export class FiscalPhaseOrchestrator {
 	 * agent logic (OCR, classification, reconciliation, etc.) while the orchestrator
 	 * handles all state management and gate evaluation.
 	 */
-
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	async runPeriodContinuously(
 		ruc: string,
 		periodo: string,
@@ -584,79 +582,74 @@ export class FiscalPhaseOrchestrator {
 			},
 		};
 
-		while (currentPhase) {
-			// Start the phase (evaluates entry gates)
-			const phaseStart = await this.startPhase(ruc, periodo, currentPhase);
-
-			if (!phaseStart.success) {
-				await this.failPhase(
-					ruc,
-					periodo,
-					currentPhase,
-					phaseStart.error ?? "Phase start failed",
-				);
-				lastResult = {
-					success: false,
-					phaseId: currentPhase,
-					gateResult: {
-						transition: { from: currentPhase, to: currentPhase },
-						allPassed: false,
-						gates: [],
-						blockers: [],
-						summary: phaseStart.error ?? "Phase start failed",
-					},
-					error: phaseStart.error,
-				};
-				break;
-			}
-
-			// Run the phase agent
-			const periodState = await this.store.getPeriodState(ruc, periodo);
-			if (!periodState) break;
-
-			const agentResult = await agentRunner(currentPhase, periodState);
-
-			if (agentResult.error) {
-				await this.failPhase(ruc, periodo, currentPhase, agentResult.error);
-				lastResult = {
-					success: false,
-					phaseId: currentPhase,
-					gateResult: {
-						transition: { from: currentPhase, to: currentPhase },
-						allPassed: false,
-						gates: [],
-						blockers: [],
-						summary: agentResult.error,
-					},
-					error: agentResult.error,
-				};
-				break;
-			}
-
-			// Complete the phase (evaluates exit gates, auto-advances)
-			lastResult = await this.completePhase(
+		while (true) {
+			const step = await this.runPhaseStep(
 				ruc,
 				periodo,
 				currentPhase,
-				agentResult.output,
-				{ autoAdvance: true },
+				agentRunner,
 			);
-
-			if (!lastResult.success) {
-				break; // Blocked or failed
-			}
-
-			// Get next phase from the updated state
-			const updatedState = await this.store.getPeriodState(ruc, periodo);
-			if (!updatedState) break;
+			if (step.result) lastResult = step.result;
+			if (!step.proceed) break;
 
 			const next = getNextPhase(currentPhase);
 			if (!next) break; // Period complete (reached Auditoría)
-
 			currentPhase = next;
 		}
 
 		return lastResult;
+	}
+
+	/**
+	 * One phase of the continuous run: start (entry gates) → agent → complete
+	 * (exit gates, auto-advance). `proceed` is false when the run must stop;
+	 * `result` is null when it stops without a new result (missing state).
+	 */
+	private async runPhaseStep(
+		ruc: string,
+		periodo: string,
+		phase: FiscalPhaseId,
+		agentRunner: (
+			phaseId: FiscalPhaseId,
+			state: FiscalPeriodState,
+		) => Promise<{ output: unknown; error?: string }>,
+	): Promise<{ result: PhaseExecutionResult | null; proceed: boolean }> {
+		const phaseStart = await this.startPhase(ruc, periodo, phase);
+		if (!phaseStart.success) {
+			const message = phaseStart.error ?? "Phase start failed";
+			await this.failPhase(ruc, periodo, phase, message);
+			return {
+				result: phaseFailureResult(phase, message, phaseStart.error),
+				proceed: false,
+			};
+		}
+
+		const periodState = await this.store.getPeriodState(ruc, periodo);
+		if (!periodState) return { result: null, proceed: false };
+
+		const agentResult = await agentRunner(phase, periodState);
+		if (agentResult.error) {
+			await this.failPhase(ruc, periodo, phase, agentResult.error);
+			return {
+				result: phaseFailureResult(phase, agentResult.error, agentResult.error),
+				proceed: false,
+			};
+		}
+
+		const result = await this.completePhase(
+			ruc,
+			periodo,
+			phase,
+			agentResult.output,
+			{ autoAdvance: true },
+		);
+		if (!result.success) return { result, proceed: false }; // Blocked or failed
+
+		const updatedState = await this.store.getPeriodState(ruc, periodo);
+		return {
+			result,
+			proceed: updatedState !== null && updatedState !== undefined,
+		};
 	}
 
 	/**
@@ -834,4 +827,24 @@ export class FiscalPhaseOrchestrator {
 			await this.eventBus.publish(eventType, payload);
 		}
 	}
+}
+
+/** Failed-phase result with a self-transition gate summary. */
+function phaseFailureResult(
+	phaseId: FiscalPhaseId,
+	summary: string,
+	error: string | undefined,
+): PhaseExecutionResult {
+	return {
+		success: false,
+		phaseId,
+		gateResult: {
+			transition: { from: phaseId, to: phaseId },
+			allPassed: false,
+			gates: [],
+			blockers: [],
+			summary,
+		},
+		error,
+	};
 }

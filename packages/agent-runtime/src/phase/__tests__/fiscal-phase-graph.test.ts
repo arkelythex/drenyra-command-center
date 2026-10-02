@@ -151,5 +151,24 @@ describe("FiscalPhaseGraph", () => {
 			const errors = validateGraph(graph);
 			expect(errors.some((e) => e.includes("nonexistent"))).toBe(true);
 		});
+
+		it("reports every kind of problem, in a stable order", () => {
+			const graph = createDefaultPhaseGraph();
+			graph.phases.push({ ...graph.phases[0] });
+			graph.transitions.push(
+				{ ...graph.transitions[0], from: "ghost" as never },
+				{ ...graph.transitions[0], to: "phantom" as never },
+			);
+			graph.phases[1].entryGates = [undefined as never];
+			graph.phases[2].exitGates = [undefined as never, undefined as never];
+			expect(validateGraph(graph)).toEqual([
+				"Duplicate phase IDs detected",
+				"Transition references unknown from-phase: ghost",
+				"Transition references unknown to-phase: phantom",
+				`Phase ${graph.phases[1].id} has undefined entry gate`,
+				`Phase ${graph.phases[2].id} has undefined exit gate`,
+				`Phase ${graph.phases[2].id} has undefined exit gate`,
+			]);
+		});
 	});
 });
