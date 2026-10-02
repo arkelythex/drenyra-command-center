@@ -570,7 +570,6 @@
     "apps/api/src/features/reports/_internal/error-shapes.ts|TS2353": 1,
     "apps/api/src/features/reports/_internal/money-utils.ts|TS2345": 1,
     "apps/api/src/features/reports/application/queries/get-general-ledger.ts|TS2305": 1,
-    "apps/api/src/features/reports/application/queries/get-general-ledger.ts|TS2339": 2,
     "apps/api/src/features/reports/application/queries/get-trial-balance.ts|TS2305": 1,
     "apps/api/src/features/reports/application/services/ple-generator.service.ts|TS18048": 2,
     "apps/api/src/features/reports/application/services/ple-generator.service.ts|TS2375": 2,
