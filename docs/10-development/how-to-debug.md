@@ -7,6 +7,8 @@ audience: developer
 
 # Cómo debuggear
 
+**Última actualización**: 2026-10-01
+
 ## API (Bun + Elysia)
 
 ### Logs estructurados (pino)

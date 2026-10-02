@@ -18,6 +18,8 @@ status: 'active'
 
 # Fiscal Intelligence Platform Architecture 2026
 
+**Última actualización**: 2026-10-02
+
 ## Purpose
 
 This document translates the strategic doctrine into an executable architecture.

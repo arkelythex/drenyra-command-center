@@ -1,5 +1,7 @@
 # Phase 6 — Dead Code Cleanup Plan
 
+**Última actualización**: 2026-10-01
+
 ## Status: PLANNED — do NOT execute until shadow execution confirms parity
 
 After `ShadowRunner` confirms parity between `LegacyMastraRuntimeAdapter` and

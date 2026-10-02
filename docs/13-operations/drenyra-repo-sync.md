@@ -1,5 +1,7 @@
 # Drenyra Repository Sync Playbook
 
+**Última actualización**: 2026-10-02
+
 **Canonical product repo:** `Drenyra/`  
 **Platform repo:** `drenyra/Drenyra`  
 **Platform ADR:** [ADR-033 Platform-Product Split](https://github.com/drenyra/Drenyra/blob/main/docs/02-adr/adr-033-platform-product-split.md) (Drenyra)  

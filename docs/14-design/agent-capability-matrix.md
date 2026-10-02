@@ -10,6 +10,8 @@ status: 'active'
 
 # Drenyra Agent Capability Matrix 2026
 
+**Última actualización**: 2026-10-02
+
 ## Purpose
 
 Drenyra agents are governed operators, not free actors. Phase 3 defines the canonical deny-by-default contract for agent tool use before it can be wired into app routes, `agent-swarm`, `ai-swarm`, MCP or FAL flows.

@@ -10,6 +10,8 @@ status: 'active'
 
 # Drenyra Fiscal App Server (DFAS) 2026
 
+**Última actualización**: 2026-10-02
+
 ## Purpose
 
 DFAS is Drenyra's JSON-RPC transport and runtime composition layer — adapted for **governed fiscal decisions** in the Financial Engineering Environment.

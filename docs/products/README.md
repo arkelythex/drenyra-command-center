@@ -1,5 +1,7 @@
 # Redirect — Product Docs
 
+**Última actualización**: 2026-08-02
+
 These documents have moved to the `01-foundation/` section (see the redirect table below):
 
 | Old location                                  | New location                                                                               |

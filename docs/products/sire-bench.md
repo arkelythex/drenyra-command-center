@@ -1,5 +1,7 @@
 # SIRE-bench — Deterministic Fiscal Regression Suite
 
+**Última actualización**: 2026-10-02
+
 SIRE-bench validates the **code/LLM boundary** in Drenyra: fiscal arithmetic and SIRE processing are deterministic, versioned, and auditable. LLM agents invoke Korveth (`packages/domain`) and `SireProcessor` — they never compute IGV or detracciones inline.
 
 ## Why it matters (moat)

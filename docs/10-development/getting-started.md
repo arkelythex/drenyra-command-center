@@ -7,6 +7,8 @@ audience: developer
 
 # Getting Started — Drenyra Development
 
+**Última actualización**: 2026-10-01
+
 Bienvenido. En esta guía vas a tener tu entorno de desarrollo funcionando de 0 a servidor corriendo.
 
 ## Prerequisitos

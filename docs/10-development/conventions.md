@@ -7,6 +7,8 @@ audience: developer
 
 # Convenciones de desarrollo
 
+**Última actualización**: 2026-10-01
+
 ## Naming
 
 | Contexto             | Convention    | Ejemplo                               |

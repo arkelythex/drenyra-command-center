@@ -29,21 +29,27 @@ function extractTitle(filePath: string): string {
 	return firstLine.replace(/^#\s*/, "").trim();
 }
 
+/** First prose line of a README: skips headings, tables, code, metadata and rules. */
 function extractDescription(filePath: string): string {
-	const content = readFileSync(filePath, "utf-8");
-	const lines = content.split("\n");
-	for (let i = 1; i < Math.min(lines.length, 15); i++) {
-		const line = lines[i].trim();
-		if (
-			line &&
-			!line.startsWith("#") &&
-			!line.startsWith("---") &&
-			!line.startsWith("**")
-		) {
-			return line.replace(/^>\s*/, "").slice(0, 120);
-		}
+	const lines = readFileSync(filePath, "utf-8").split("\n");
+	for (let i = 1; i < Math.min(lines.length, 25); i++) {
+		const raw = lines[i];
+		const line = raw.trim().replace(/^>\s*/, "");
+		if (!line || raw.startsWith("    ") || raw.startsWith("\t")) continue;
+		if (/^(#|---|\*\*|\||```|!\[)/.test(line)) continue;
+		const text = line
+			.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+			.replace(/\|/g, "/");
+		if (text.includes(")") && !text.includes("(")) continue; // mid-sentence fragment
+		return truncate(text, 120);
 	}
 	return "";
+}
+
+function truncate(text: string, max: number): string {
+	if (text.length <= max) return text;
+	const cut = text.slice(0, max);
+	return `${cut.slice(0, cut.lastIndexOf(" ")).replace(/[,;:\s]+$/, "")}…`;
 }
 
 function listDocs(dir: string): string[] {
@@ -82,8 +88,8 @@ function scanSections(): DocSection[] {
 
 function generateIndex(sections: DocSection[]): string {
 	let md = `# Drenyra Documentation Index
-    
-    **Arquitectura:** Drenyra Financial Engineering OS (FEOS) — 8 planos
+
+**Arquitectura:** Drenyra Financial Engineering OS (FEOS) — 8 planos
 **Programa:** [CAP-FEOS-00 — Drenyra Financial Engineering Operating System](./01-foundation/feos-program.md)
 
 ---

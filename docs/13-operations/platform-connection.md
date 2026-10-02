@@ -1,5 +1,7 @@
 # Platform connection (Drenyra product repo)
 
+**Última actualización**: 2026-10-02
+
 Cross-repo integration is documented in the **Drenyra platform repo**:
 
 [docs/cross-repo/drenyra-connection.md](https://github.com/drenyra/Drenyra/blob/main/docs/cross-repo/drenyra-connection.md)

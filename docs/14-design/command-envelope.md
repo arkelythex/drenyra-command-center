@@ -10,6 +10,8 @@ status: 'active'
 
 # Drenyra Command Envelope 2026
 
+**Última actualización**: 2026-10-02
+
 ## Purpose
 
 Phase 4 needs CLI and Web to show the same fiscal truth for every operator command.
