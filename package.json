@@ -39,6 +39,7 @@
     "turbo:lint": "turbo run lint",
     "typecheck": "tsc -p tsconfig.check.json",
     "typecheck:build:domain-core": "tsc -b tsconfig.domain-core-build.json --pretty",
+    "quality:typecheck-ratchet": "bun scripts/quality/typecheck-ratchet.ts",
     "quality:max-lines": "bun scripts/quality/check-max-lines.ts",
     "quality:baseline:probe": "bun scripts/quality/quality-baseline.ts",
     "quality:dead-code": "knip",
