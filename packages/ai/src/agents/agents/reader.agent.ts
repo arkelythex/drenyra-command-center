@@ -10,7 +10,7 @@
  */
 
 import { randomUUID } from "node:crypto";
-import { loggers } from "../../logger";
+import { loggers } from "../../services/logger";
 import type { GeminiMultiAdapter } from "../adapters";
 import type {
 	BaseAgent,

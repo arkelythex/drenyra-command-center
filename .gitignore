@@ -48,6 +48,9 @@ apps/web/.mf/
 
 # Generated reports and baselines
 reports/
+!/apps/api/src/features/reports/
+!/packages/application/src/features/reports/
+!/e2e/reports/
 baseline/
 baseline-flash/
 

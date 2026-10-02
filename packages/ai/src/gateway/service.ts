@@ -5,7 +5,7 @@
  */
 
 import type { ContextMonitor, ContextPruner } from "../context-monitor";
-import { loggers } from "../logger";
+import { loggers } from "../services/logger";
 import { type CostTracker, costTracker } from "./cost-tracker";
 import {
 	type FailoverChain,
@@ -62,6 +62,7 @@ export class LLMGatewayService {
 		return this.config.defaultProvider;
 	}
 
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 	async chat(
 		request: AuthenticatedChatCompletionRequest,
 		runId?: string,
@@ -245,6 +246,7 @@ export class LLMGatewayService {
 		}
 	}
 
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 	async *streamChat(
 		request: AuthenticatedChatCompletionRequest,
 		runId?: string,

@@ -5,7 +5,6 @@
  * fiscal agent runtime. Each session maps to a Pi AgentSession.
  */
 
-import type { AgentSession } from "@earendil-works/pi-coding-agent";
 import type {
 	AgentRuntimePort,
 	CreateSessionRequest,
@@ -18,9 +17,51 @@ import type {
 	Unsubscribe,
 } from "./port";
 
+/**
+ * The slice of the Pi SDK this adapter uses. Declared structurally so the package
+ * is not needed at build time: `@earendil-works/pi-coding-agent` is an optional,
+ * runtime-only dependency, loaded on demand (see {@link loadPiSdk}).
+ */
+export interface PiAgentSession {
+	sessionId: string;
+	isStreaming: boolean;
+	messages: unknown[];
+	prompt(text: string): Promise<void>;
+	subscribe(listener: (event: { type: string }) => void): Unsubscribe;
+	abort(): Promise<void>;
+	dispose(): void;
+}
+
+export interface PiSdk {
+	createAgentSession(options: {
+		sessionManager: unknown;
+		tools?: string[];
+	}): Promise<{ session: PiAgentSession }>;
+	SessionManager: { inMemory(): unknown };
+}
+
+const PI_SDK_PACKAGE = "@earendil-works/pi-coding-agent";
+
+/** Default loader: imports the Pi SDK only when a session is first needed. */
+async function loadPiSdk(): Promise<PiSdk> {
+	try {
+		return (await import(/* @vite-ignore */ PI_SDK_PACKAGE)) as PiSdk;
+	} catch (cause) {
+		throw new Error(
+			`PiAgentRuntimeAdapter needs the Pi SDK. Install ${PI_SDK_PACKAGE} to use it.`,
+			{ cause },
+		);
+	}
+}
+
+export interface PiAgentRuntimeAdapterOptions {
+	/** Override how the Pi SDK is loaded (tests, alternative installs). */
+	loadSdk?: () => Promise<PiSdk>;
+}
+
 /** Internal handle wrapping a Pi AgentSession */
 interface PiSessionHandle {
-	session: AgentSession;
+	session: PiAgentSession;
 	createdAt: Date;
 }
 
@@ -30,11 +71,14 @@ interface PiSessionHandle {
  */
 export class PiAgentRuntimeAdapter implements AgentRuntimePort {
 	private sessions = new Map<string, PiSessionHandle>();
+	private readonly loadSdk: () => Promise<PiSdk>;
+
+	constructor(options: PiAgentRuntimeAdapterOptions = {}) {
+		this.loadSdk = options.loadSdk ?? loadPiSdk;
+	}
 
 	async createSession(_request: CreateSessionRequest): Promise<SessionHandle> {
-		const { createAgentSession, SessionManager } = await import(
-			"@earendil-works/pi-coding-agent"
-		);
+		const { createAgentSession, SessionManager } = await this.loadSdk();
 
 		const { session } = await createAgentSession({
 			sessionManager: SessionManager.inMemory(),
@@ -76,9 +120,7 @@ export class PiAgentRuntimeAdapter implements AgentRuntimePort {
 			throw new Error(`Source session not found: ${request.sourceSessionId}`);
 		}
 
-		const { createAgentSession, SessionManager } = await import(
-			"@earendil-works/pi-coding-agent"
-		);
+		const { createAgentSession, SessionManager } = await this.loadSdk();
 
 		const { session } = await createAgentSession({
 			sessionManager: SessionManager.inMemory(),
