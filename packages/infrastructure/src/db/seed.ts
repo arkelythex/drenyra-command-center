@@ -10,6 +10,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { ensureDemoSeedContext } from "./seed-demo-context";
 import { seedOperationalDemoData } from "./seed-operational-demo";
+import { required } from "./seed-utils";
 
 // Ensure DATABASE_URL is loaded from .env (Bun auto-loads from project root)
 const connectionString =
@@ -54,7 +55,7 @@ async function seed() {
 			economicGroupId = existingGroup.id;
 			economicGroup = existingGroup;
 		} else {
-			const [newGroup] = await db
+			const [insertedGroup] = await db
 				.insert(economicGroups)
 				.values({
 					ownerId: adminUserId,
@@ -66,6 +67,7 @@ async function seed() {
 					isActive: true,
 				})
 				.returning();
+			const newGroup = required(insertedGroup, "inserted economic group");
 			economicGroupId = newGroup.id;
 			economicGroup = newGroup;
 			console.log("✅ Economic Group created:", newGroup.groupName);
@@ -174,7 +176,10 @@ async function seed() {
 			await db.insert(interCompanyTransactions).values({
 				economicGroupId: economicGroupId,
 				fromCompanyId: companyId, // Main company pays
-				toCompanyId: insertedAdditionalCompanies[0].id, // Inmobiliaria receives
+				toCompanyId: required(
+					insertedAdditionalCompanies[0],
+					"additional company",
+				).id, // Inmobiliaria receives
 				concept: "Alquiler Oficina - Mes Enero 2026",
 				amount: "5000.00",
 				taxType: "GRAVADO",

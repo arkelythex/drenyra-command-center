@@ -272,9 +272,8 @@ export class PostgresInvoiceRepository implements InvoiceRepository {
 			.where(and(...conditions))
 			.limit(1);
 
-		if (rows.length === 0) {
-			return null;
-		}
+		const row = rows[0];
+		if (!row) return null;
 
 		const items = await db
 			.select()
@@ -282,12 +281,13 @@ export class PostgresInvoiceRepository implements InvoiceRepository {
 			.where(eq(invoiceItems.invoiceId, persistedId));
 
 		return {
-			invoice: rows[0].invoice,
-			customer: rows[0].customer,
+			invoice: row.invoice,
+			customer: row.customer,
 			items,
 		};
 	}
 
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: pre-existing; refactor tracked separately from the strict-index phase
 	private async findAllModular(
 		filters: NormalizedInvoiceFilters,
 	): Promise<Invoice[]> {
