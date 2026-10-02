@@ -22,8 +22,6 @@ export class ResultMerger {
 	 * Merge results from multiple domain agents.
 	 * Each domain produces a partial result; this combines them.
 	 */
-
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	merge(
 		results: Array<{ domainId: string; data: unknown; confidence: number }>,
 	): MergeResult {
@@ -31,33 +29,18 @@ export class ResultMerger {
 		const conflicts: Conflict[] = [];
 
 		for (const result of results) {
-			if (typeof result.data === "object" && result.data !== null) {
-				for (const [key, value] of Object.entries(
-					result.data as Record<string, unknown>,
-				)) {
-					if (key in data) {
-						// Conflict detected — keep higher-confidence value
-						conflicts.push({
-							between: [
-								result.domainId,
-								results.find(
-									(r) =>
-										r.data &&
-										(r.data as Record<string, unknown>)[key] !== undefined,
-								)?.domainId ?? "unknown",
-							],
-							field: key,
-							values: [data[key], value],
-							resolvedBy:
-								result.confidence > 0.8 ? result.domainId : "lower-confidence",
-						});
-						// Keep existing value if higher confidence
-						if (result.confidence > 0.85) {
-							data[key] = value;
-						}
-					} else {
-						data[key] = value;
-					}
+			if (typeof result.data !== "object" || result.data === null) continue;
+			for (const [key, value] of Object.entries(
+				result.data as Record<string, unknown>,
+			)) {
+				if (!(key in data)) {
+					data[key] = value;
+					continue;
+				}
+				// Conflict detected — keep higher-confidence value
+				conflicts.push(buildConflict(results, result, key, data[key], value));
+				if (result.confidence > 0.85) {
+					data[key] = value;
 				}
 			}
 		}
@@ -70,4 +53,23 @@ export class ResultMerger {
 			conflicts,
 		};
 	}
+}
+
+function buildConflict(
+	results: Array<{ domainId: string; data: unknown }>,
+	current: { domainId: string; confidence: number },
+	field: string,
+	kept: unknown,
+	incoming: unknown,
+): Conflict {
+	const firstOwner = results.find(
+		(r) => r.data && (r.data as Record<string, unknown>)[field] !== undefined,
+	);
+	return {
+		between: [current.domainId, firstOwner?.domainId ?? "unknown"],
+		field,
+		values: [kept, incoming],
+		resolvedBy:
+			current.confidence > 0.8 ? current.domainId : "lower-confidence",
+	};
 }

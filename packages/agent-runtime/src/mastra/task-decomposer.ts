@@ -25,13 +25,23 @@ export class TaskDecomposer {
 	 * Decompose a high-level goal into granular steps.
 	 * Follows the FD workflow phases.
 	 */
-
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	decompose(
 		goal: string,
 		_context: AgentContext,
 		availableDomains: string[],
 	): TaskDecompositionResult {
+		const steps = this.buildSteps(goal, availableDomains);
+		const parallelGroups = this.buildParallelGroups(steps);
+
+		return {
+			goal,
+			steps,
+			parallelGroups,
+		};
+	}
+
+	/** Linear step plan for the goal (extract → validate → optional stages). */
+	private buildSteps(goal: string, availableDomains: string[]): TaskStep[] {
 		const goalLower = goal.toLowerCase();
 		const steps: TaskStep[] = [];
 		const stepId = () => `step-${steps.length + 1}`;
@@ -113,38 +123,21 @@ export class TaskDecomposer {
 			});
 		}
 
-		// Build parallel groups
+		return steps;
+	}
+
+	/** Group steps whose dependencies are satisfied so they can run in parallel. */
+	private buildParallelGroups(steps: TaskStep[]): string[][] {
 		const parallelGroups: string[][] = [];
 		const processed = new Set<string>();
 
 		for (const step of steps) {
 			if (processed.has(step.id)) continue;
-
-			if (step.dependencies.length === 0) {
-				// Find all steps with no dependencies → parallel group
-				const parallel = steps
-					.filter((s) => s.dependencies.length === 0 && !processed.has(s.id))
-					.map((s) => s.id);
-
-				if (parallel.length > 0) {
-					parallelGroups.push(parallel);
-					for (const p of parallel) processed.add(p);
-				}
-			} else {
-				processed.add(step.id);
-				// Check if we should run remaining steps in parallel
-				const remaining = steps.filter(
-					(s) =>
-						!processed.has(s.id) &&
-						s.dependencies.every((d) => processed.has(d)),
-				);
-				if (remaining.length > 1) {
-					parallelGroups.push(remaining.map((s) => s.id));
-					for (const r of remaining) processed.add(r.id);
-				} else if (remaining.length === 1) {
-					processed.add(remaining[0].id);
-				}
-			}
+			const group =
+				step.dependencies.length === 0
+					? rootGroup(steps, processed)
+					: readyGroup(step, steps, processed);
+			if (group) parallelGroups.push(group);
 		}
 
 		// Ensure all steps are accounted for
@@ -155,10 +148,31 @@ export class TaskDecomposer {
 			}
 		}
 
-		return {
-			goal,
-			steps,
-			parallelGroups,
-		};
+		return parallelGroups;
 	}
+}
+
+/** All still-unprocessed steps with no dependencies form one parallel group. */
+function rootGroup(steps: TaskStep[], processed: Set<string>): string[] | null {
+	const parallel = steps
+		.filter((s) => s.dependencies.length === 0 && !processed.has(s.id))
+		.map((s) => s.id);
+	if (parallel.length === 0) return null;
+	for (const id of parallel) processed.add(id);
+	return parallel;
+}
+
+/** Mark the step done; if several others became ready, they run in parallel. */
+function readyGroup(
+	step: TaskStep,
+	steps: TaskStep[],
+	processed: Set<string>,
+): string[] | null {
+	processed.add(step.id);
+	const remaining = steps.filter(
+		(s) =>
+			!processed.has(s.id) && s.dependencies.every((d) => processed.has(d)),
+	);
+	for (const r of remaining) processed.add(r.id);
+	return remaining.length > 1 ? remaining.map((r) => r.id) : null;
 }

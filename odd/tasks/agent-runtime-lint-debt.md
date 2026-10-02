@@ -14,7 +14,7 @@ Renombrar `packages/pi` → `packages/agent-runtime` tocó 241 archivos y el pre
 - 12 aserciones no nulas (`x!`) reemplazadas por guardas explícitas (`agents.service`, `delegation`, `approval-gate`, `domain-agent`, `event-bus`, `batch-orchestrator`, `worker-pool`). En `batch-orchestrator.onPhaseComplete` se conservó el comportamiento previo con un tipo explícito.
 - Variable sin uso en `intelligence.service.ts`.
 
-## Deuda estructural pendiente (20 supresiones `biome-ignore` con motivo)
+## Deuda estructural pendiente (18 supresiones `biome-ignore` con motivo)
 
 Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en entrypoints. Cada fila es una supresión que debe **eliminarse refactorizando**, no ampliarse.
 
@@ -23,8 +23,6 @@ Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en en
 | `apps/web/src/features/workspace/services/accounting-mission.service.ts:169` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/harness-core/delegation.ts:133` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/mastra/latin-orchestrator.ts:99` | noExcessiveCognitiveComplexity |
-| `packages/agent-runtime/src/mastra/result-merger.ts:26` | noExcessiveCognitiveComplexity |
-| `packages/agent-runtime/src/mastra/task-decomposer.ts:29` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/phase/batch-orchestrator.ts:245` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/phase/fiscal-phase-graph.ts:181` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/phase/fiscal-phase-orchestrator.ts:549` | noExcessiveCognitiveComplexity |
@@ -40,6 +38,8 @@ Complejidad cognitiva > 15 (política: funciones < 30 líneas) y `console` en en
 | `packages/agent-runtime/src/strategies/supplier-intelligence.strategy.ts:127` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/strategies/supplier-intelligence.strategy.ts:242` | noExcessiveCognitiveComplexity |
 | `packages/agent-runtime/src/strategies/tax-calendar.strategy.ts:84` | noExcessiveCognitiveComplexity |
+
+- ✅ Saldadas también: `ResultMerger.merge` y `TaskDecomposer.decompose` (extracción de helpers; 110 tests de `mastra` intactos y prueba diferencial vieja-vs-nueva en 12 288 combinaciones de objetivo/dominios).
 
 ## Código fiscal: deuda saldada (6 supresiones eliminadas, test-first)
 
