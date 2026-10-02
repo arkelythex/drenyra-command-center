@@ -29,7 +29,7 @@ Medir y clasificar por qué `bun run typecheck` está rojo y reparar solo lo no 
 - [ ] **Artefactos compilados trackeados en `src/`**: 290 `.js`/`.d.ts` (shared 49, infrastructure 118, application 72, persistence 48, web 3). Pueden hacer que los tests de esos paquetes ejecuten código viejo. Verificado en `shared` (un mutante en `ruc.ts` pasaba los tests). Falta revisar los otros paquetes y decidir si se eliminan del índice y se agregan a `.gitignore`.
 - [x] `.husky/pre-push` usaba `set -o pipefail` y `[[ ]]` con `sh`; falla en dash. Cambio propuesto: `#!/usr/bin/env sh`, `set -eu` y `[ ]`. Aplicado y probado con dash.
 
-## Plan por fases (propuesta — estado ODD: `Needs your decision`)
+## Plan por fases (propuesta — estado ODD: fase 0 hecha; fases 1–4 autorizadas)
 
 **Por qué ahora:** PR #248 activa los jobs `Node — web/api typecheck` y `Domain — typecheck + test` (filtrados por rutas, así que en `main` se «omitían»). Los tres fallan **igual en `main`**; la rama tiene menos errores (web 688→681, domain 377→373, api/raíz 1353→1334). Ningún cambio de comportamiento se esconde aquí: es deuda de configuración estricta.
 
@@ -56,7 +56,7 @@ Medir y clasificar por qué `bun run typecheck` está rojo y reparar solo lo no 
 
 **Fases (cada una = un PR, un paquete o un código de error a la vez):**
 
-0. **Ratchet en CI** (recomendado primero): un script que compara el conteo de errores por paquete con un archivo de línea base versionado, falla si **sube** y exige actualizarlo si **baja**. Deja el CI verde hoy sin ocultar deuda y evita que crezca. *Toca CI → crítico → necesita tu autorización.*
+0. ✅ **Hecha — Ratchet en CI:** un script que compara el conteo de errores por paquete con un archivo de línea base versionado, falla si **sube** y exige actualizarlo si **baja**. Deja el CI verde hoy sin ocultar deuda y evita que crezca. Implementado con TDD (`scripts/ci/typecheck-ratchet.ts`, 18 tests, mutantes de `>`, bucket nuevo y `canUpdate` muertos); línea base en `.ci/typecheck-baseline.json` (web 681, api 1334, domain 373, por archivo+código). Uso: `bun run typecheck:ratchet <web|api|domain> [--update]`; los tres jobs de `ci.yml` lo ejecutan en lugar de `typecheck`. Probado de extremo a extremo: un error nuevo falla (exit 1), quitarlo vuelve a verde.
 1. **Mecánica sin riesgo** (≈160): TS6133/TS6196 (código sin usar) y los TS2307/TS2308/TS2339 (módulos o exports que no existen: defectos reales, se corrigen o se eliminan con su referencia).
 2. **`noUncheckedIndexedAccess`** (≈340): guardas explícitas. En `domain`/`persistence`/RUC es fiscal → **test-first, review de riesgo alto**.
 3. **`exactOptionalPropertyTypes`** (≈524): añadir `| undefined` a los tipos o no asignar la clave cuando falta. Mecánico pero ancho; en `persistence` y `domain` fijar el comportamiento con snapshots antes.
@@ -65,7 +65,7 @@ Medir y clasificar por qué `bun run typecheck` está rojo y reparar solo lo no 
 
 **Alternativa a evaluar (política, no técnica):** relajar `exactOptionalPropertyTypes` en `tsconfig.check.json`. Elimina ~524 errores al instante, pero pierde una garantía que hoy el repo eligió. No la recomiendo sin decisión explícita.
 
-**Decisiones que necesito:** (1) ¿Autorizas la fase 0 (ratchet en CI)? (2) ¿Orden 1→2→3→4 o prefieres empezar por `apps/api` (787)? (3) ¿Mantener `exactOptionalPropertyTypes`?
+**Regla operativa:** al arreglar errores, ejecutar `bun run typecheck:ratchet <job> --update` en el mismo PR para fijar la mejora; nunca editar la línea base a mano para subirla.
 
 ## Verificación
 - `@drenyra/shared` typecheck: de 10 a 1 error (solo TS6305 de build). Tests de shared: 90/90. RUC: 33 tests; un mutante en los pesos (swap de dos posiciones o un peso cambiado) hace fallar 12 y 8 tests respectivamente.

@@ -63,6 +63,8 @@
     "docs:regen": "bun run codebase:index && bun run docs:agent-index",
     "docs:agent-index": "bun scripts/docs/generate-agent-index.ts",
     "odd:guard": "sh scripts/ci/odd-guard.sh",
+    "typecheck:ratchet": "bun scripts/ci/typecheck-ratchet.ts",
+    "test:ci-scripts": "cd scripts/ci && bunx vitest run",
     "ecosystem:doctor": "bun scripts/ci/ecosystem-doctor.ts",
     "docs:verify": "bun run odd:guard && bun run docs:verify:canon",
     "docs:verify:canon": "bun run docs:check-links && bun run docs:check-freshness && bun scripts/docs/generate-agent-index.ts --check && bun run architecture:check-product-surfaces",

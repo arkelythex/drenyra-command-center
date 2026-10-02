@@ -38,7 +38,7 @@ jobs:
         id: changes
         run: |
           files=$(git diff --name-only HEAD^ HEAD || git diff --name-only)
-          if echo "$files" | grep -Eq '^(apps/api/|packages/|tsconfig|package\.json)'; then
+          if echo "$files" | grep -Eq '^(apps/api/|packages/|tsconfig|package\.json|\.ci/|scripts/ci/typecheck-ratchet)'; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
@@ -50,7 +50,7 @@ jobs:
       - if: steps.changes.outputs.run == 'true'
         run: bun install --frozen-lockfile
       - if: steps.changes.outputs.run == 'true'
-        run: bun run --filter @drenyra/api typecheck
+        run: bun scripts/ci/typecheck-ratchet.ts api
 
   node-web:
     name: Node — web typecheck
@@ -65,7 +65,7 @@ jobs:
         id: changes
         run: |
           files=$(git diff --name-only HEAD^ HEAD || git diff --name-only)
-          if echo "$files" | grep -Eq '^(apps/web/|packages/|tsconfig|package\.json)'; then
+          if echo "$files" | grep -Eq '^(apps/web/|packages/|tsconfig|package\.json|\.ci/|scripts/ci/typecheck-ratchet)'; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
@@ -77,7 +77,7 @@ jobs:
       - if: steps.changes.outputs.run == 'true'
         run: bun install --frozen-lockfile
       - if: steps.changes.outputs.run == 'true'
-        run: bun run --filter @drenyra/web typecheck
+        run: bun scripts/ci/typecheck-ratchet.ts web
 
   python:
     name: Python — data-engine lint
@@ -123,7 +123,7 @@ jobs:
         id: changes
         run: |
           files=$(git diff --name-only HEAD^ HEAD || git diff --name-only)
-          if echo "$files" | grep -Eq '^(packages/domain/|packages/application/)'; then
+          if echo "$files" | grep -Eq '^(packages/domain/|packages/application/|\.ci/|scripts/ci/typecheck-ratchet)'; then
             echo "run=true" >> "$GITHUB_OUTPUT"
           else
             echo "run=false" >> "$GITHUB_OUTPUT"
@@ -135,7 +135,7 @@ jobs:
       - if: steps.changes.outputs.run == 'true'
         run: bun install --frozen-lockfile
       - if: steps.changes.outputs.run == 'true'
-        run: bun run --filter @drenyra/domain typecheck
+        run: bun scripts/ci/typecheck-ratchet.ts domain
       - if: steps.changes.outputs.run == 'true'
         run: bun run --filter @drenyra/domain test -- --run
 
