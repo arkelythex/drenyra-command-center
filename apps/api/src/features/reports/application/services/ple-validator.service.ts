@@ -7,19 +7,27 @@ export function validateStructural(
 	const errors: Array<{ field: string; message: string; line?: number }> = [];
 
 	if (!content || content.trim().length === 0) {
-		return { valid: false, errors: [{ field: "content", message: "PLE content is empty" }] };
+		return {
+			valid: false,
+			errors: [{ field: "content", message: "PLE content is empty" }],
+		};
 	}
 
 	const lines = content.split("\n").filter((l) => l.trim().length > 0);
 	if (lines.length === 0) {
-		return { valid: false, errors: [{ field: "content", message: "PLE content has no data lines" }] };
+		return {
+			valid: false,
+			errors: [{ field: "content", message: "PLE content has no data lines" }],
+		};
 	}
 
-	const dataLines = lines.filter((l) => !l.startsWith("|") && !l.startsWith("TOTAL"));
+	const dataLines = lines.filter(
+		(l) => !l.startsWith("|") && !l.startsWith("TOTAL"),
+	);
 	const expectedFields = getExpectedFieldCount(bookType);
 
 	for (let i = 0; i < dataLines.length; i++) {
-		const fields = dataLines[i].split("|");
+		const fields = (dataLines[i] ?? "").split("|");
 
 		if (fields.length !== expectedFields) {
 			errors.push({
@@ -56,10 +64,12 @@ export function validateAccounting(
 	}
 
 	const lines = content.split("\n").filter((l) => l.trim().length > 0);
-	const dataLines = lines.filter((l) => !l.startsWith("|") && !l.startsWith("TOTAL"));
+	const dataLines = lines.filter(
+		(l) => !l.startsWith("|") && !l.startsWith("TOTAL"),
+	);
 
 	for (let i = 0; i < dataLines.length; i++) {
-		const fields = dataLines[i].split("|");
+		const fields = (dataLines[i] ?? "").split("|");
 		if (fields.length >= 12) {
 			const debit = parseInt(fields[10]?.replace(/\D/g, "") || "0", 10);
 			const credit = parseInt(fields[11]?.replace(/\D/g, "") || "0", 10);
@@ -78,9 +88,13 @@ export function validateAccounting(
 
 function getExpectedFieldCount(bookType: PleBookType): number {
 	switch (bookType) {
-		case "LE-DIARIO": return 21;
-		case "LE-MAYOR": return 12;
-		case "LE-COMPRAS": return 23;
-		case "LE-VENTAS": return 22;
+		case "LE-DIARIO":
+			return 21;
+		case "LE-MAYOR":
+			return 12;
+		case "LE-COMPRAS":
+			return 23;
+		case "LE-VENTAS":
+			return 22;
 	}
 }
