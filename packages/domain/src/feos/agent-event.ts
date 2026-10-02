@@ -10,8 +10,9 @@
  * @module @drenyra/domain/feos/agent-event
  */
 
-import type { ToolRiskLevel } from "./tool-contract";
+// biome-ignore assist/source/organizeImports: import order affects which file tsc reports TS6059 on (ratchet buckets are per file)
 import type { Actor, FiscalScope, Timestamp } from "./types";
+import type { ToolRiskLevel } from "./tool-contract";
 
 // ============================================================================
 // Event Severity
