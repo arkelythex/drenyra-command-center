@@ -21,7 +21,8 @@
 
 ```bash
 bun run docs:verify            # guardas ODD + enlaces del núcleo + superficies de producto
-bun run docs:check-links --full  # todos los .md del repo
+bun run docs:check-links      # todos los .md del repo (--core: solo el núcleo)
+bun run docs:regen            # regenera índice, llms.txt, llms-full.txt y .codebase/index.yml
 ```
 
 Filosofía y motivos: [`gentleman-philosophy.md`](gentleman-philosophy.md).

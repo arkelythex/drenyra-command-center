@@ -60,6 +60,7 @@
     "opencode:validate": "./scripts/opencode/validate-opencode-setup.sh",
     "docs:check-links": "bun scripts/docs/check-links.ts",
     "docs:check-freshness": "bun scripts/docs/check-freshness.ts",
+    "docs:regen": "bun run codebase:index && bun run docs:agent-index",
     "docs:agent-index": "bun scripts/docs/generate-agent-index.ts",
     "odd:guard": "sh scripts/ci/odd-guard.sh",
     "ecosystem:doctor": "bun scripts/ci/ecosystem-doctor.ts",

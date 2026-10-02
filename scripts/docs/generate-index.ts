@@ -86,6 +86,57 @@ function scanSections(): DocSection[] {
 	return sections;
 }
 
+/** Primary Diátaxis quadrant of each docs folder (https://diataxis.fr/). */
+const DIATAXIS: Array<[string, string, string]> = [
+	["Tutorial (aprender)", "01-tutorials", "Pasos guiados desde cero"],
+	[
+		"How-to (lograr algo)",
+		"10-development",
+		"Guías de desarrollo: añadir una feature, depurar, escribir un test",
+	],
+	[
+		"How-to (lograr algo)",
+		"13-operations",
+		"Operación y conexión de la plataforma",
+	],
+	["Referencia (consultar)", "06-fiscal", "Reglas fiscales por país"],
+	[
+		"Referencia (consultar)",
+		"12-security",
+		"Línea base, matrices y runbooks de seguridad",
+	],
+	[
+		"Explicación (entender)",
+		"01-foundation",
+		"Filosofía, posicionamiento y stack canónico",
+	],
+	[
+		"Explicación (entender)",
+		"11-adr",
+		"Decisiones de arquitectura y su porqué",
+	],
+	["Explicación (entender)", "14-design", "Diseño de producto y plataforma"],
+	[
+		"Explicación (entender)",
+		"architecture",
+		"Fronteras del ecosistema y modelo de confianza",
+	],
+];
+
+function diataxisTable(): string {
+	const rows = DIATAXIS.filter(([, dir]) =>
+		existsSync(join(DOCS_DIR, dir)),
+	).map(
+		([quadrant, dir, note]) =>
+			`| ${quadrant} | [\`${dir}/\`](./${dir}/) | ${note} |`,
+	);
+	return [
+		"| Cuadrante | Carpeta | Contenido |",
+		"|-----------|---------|-----------|",
+		...rows,
+	].join("\n");
+}
+
 function generateIndex(sections: DocSection[]): string {
 	let md = `# Drenyra Documentation Index
 
@@ -116,6 +167,7 @@ function generateIndex(sections: DocSection[]): string {
 		md += `- **\`${section.dir}/\`** — ${sectionType}: ${section.title}\n`;
 	}
 
+	md += `\n---\n\n## Mapa Diátaxis\n\n${diataxisTable()}\n`;
 	md += `\n---\n\n## Documentos por sección\n\n`;
 
 	for (const section of sections) {

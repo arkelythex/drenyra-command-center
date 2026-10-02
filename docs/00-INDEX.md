@@ -37,6 +37,22 @@ Las secciones de documentación se alinean con los 8 planos FEOS más secciones 
 
 ---
 
+## Mapa Diátaxis
+
+| Cuadrante | Carpeta | Contenido |
+|-----------|---------|-----------|
+| Tutorial (aprender) | [`01-tutorials/`](./01-tutorials/) | Pasos guiados desde cero |
+| How-to (lograr algo) | [`10-development/`](./10-development/) | Guías de desarrollo: añadir una feature, depurar, escribir un test |
+| How-to (lograr algo) | [`13-operations/`](./13-operations/) | Operación y conexión de la plataforma |
+| Referencia (consultar) | [`06-fiscal/`](./06-fiscal/) | Reglas fiscales por país |
+| Referencia (consultar) | [`12-security/`](./12-security/) | Línea base, matrices y runbooks de seguridad |
+| Explicación (entender) | [`01-foundation/`](./01-foundation/) | Filosofía, posicionamiento y stack canónico |
+| Explicación (entender) | [`11-adr/`](./11-adr/) | Decisiones de arquitectura y su porqué |
+| Explicación (entender) | [`14-design/`](./14-design/) | Diseño de producto y plataforma |
+| Explicación (entender) | [`architecture/`](./architecture/) | Fronteras del ecosistema y modelo de confianza |
+
+---
+
 ## Documentos por sección
 
 ### 01 — Foundation
