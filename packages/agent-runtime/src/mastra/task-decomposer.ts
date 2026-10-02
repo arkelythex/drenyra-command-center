@@ -126,53 +126,27 @@ export class TaskDecomposer {
 		return steps;
 	}
 
-	/** Group steps whose dependencies are satisfied so they can run in parallel. */
+	/**
+	 * Group steps into topological levels: every step in a group has all its
+	 * dependencies in earlier groups, so a group can run in parallel.
+	 * Each step appears in exactly one group.
+	 */
 	private buildParallelGroups(steps: TaskStep[]): string[][] {
-		const parallelGroups: string[][] = [];
-		const processed = new Set<string>();
+		const groups: string[][] = [];
+		const done = new Set<string>();
+		let pending = [...steps];
 
-		for (const step of steps) {
-			if (processed.has(step.id)) continue;
-			const group =
-				step.dependencies.length === 0
-					? rootGroup(steps, processed)
-					: readyGroup(step, steps, processed);
-			if (group) parallelGroups.push(group);
+		while (pending.length > 0) {
+			const ready = pending.filter((s) =>
+				s.dependencies.every((d) => done.has(d)),
+			);
+			// Unresolvable dependencies: schedule the next step alone instead of looping forever.
+			const level = ready.length > 0 ? ready : [pending[0]];
+			groups.push(level.map((s) => s.id));
+			for (const s of level) done.add(s.id);
+			pending = pending.filter((s) => !done.has(s.id));
 		}
 
-		// Ensure all steps are accounted for
-		for (const step of steps) {
-			if (!processed.has(step.id)) {
-				parallelGroups.push([step.id]);
-				processed.add(step.id);
-			}
-		}
-
-		return parallelGroups;
+		return groups;
 	}
-}
-
-/** All still-unprocessed steps with no dependencies form one parallel group. */
-function rootGroup(steps: TaskStep[], processed: Set<string>): string[] | null {
-	const parallel = steps
-		.filter((s) => s.dependencies.length === 0 && !processed.has(s.id))
-		.map((s) => s.id);
-	if (parallel.length === 0) return null;
-	for (const id of parallel) processed.add(id);
-	return parallel;
-}
-
-/** Mark the step done; if several others became ready, they run in parallel. */
-function readyGroup(
-	step: TaskStep,
-	steps: TaskStep[],
-	processed: Set<string>,
-): string[] | null {
-	processed.add(step.id);
-	const remaining = steps.filter(
-		(s) =>
-			!processed.has(s.id) && s.dependencies.every((d) => processed.has(d)),
-	);
-	for (const r of remaining) processed.add(r.id);
-	return remaining.length > 1 ? remaining.map((r) => r.id) : null;
 }

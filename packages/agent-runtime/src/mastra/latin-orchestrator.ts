@@ -4,7 +4,14 @@ import type { DomainAgent } from "./domain-agent";
 import { ResultMerger } from "./result-merger";
 import { SessionManager } from "./session-manager";
 import { type PhaseTiming, Supervisor, type SwarmMode } from "./supervisor";
-import { TaskDecomposer } from "./task-decomposer";
+import { TaskDecomposer, type TaskStep } from "./task-decomposer";
+
+/** Output of one executed step. */
+interface StepResult {
+	domainId: string;
+	data: unknown;
+	confidence: number;
+}
 
 /** Result from a Latin Moderno orchestration request */
 export interface LatinOrchestrationResult {
@@ -96,71 +103,14 @@ export class LatinModernoOrchestrator {
 
 		for (const group of decomposition.parallelGroups) {
 			const groupResults = await Promise.all(
-				// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
-				group.map(async (stepId) => {
-					const step = decomposition.steps.find((s) => s.id === stepId);
-					if (!step) return [];
-
-					const domainAgent = this.domainAgents.get(
-						step.domain as LatinAgentId,
-					);
-					if (!domainAgent) return [];
-
-					const startTime = new Date();
-					this.sessionManager.addStep(actualSessionId, step.domain);
-
-					try {
-						const result = await domainAgent.receiveTask({
-							id: stepId,
-							goal: step.goal,
-							context,
-							tools: step.tools,
-						});
-
-						this.sessionManager.updateStep(
-							actualSessionId,
-							`${actualSessionId}-${step.domain}`,
-							{
-								status: "completed",
-								result: result.data,
-								startedAt: startTime,
-								completedAt: new Date(),
-							},
-						);
-
-						this.supervisor.recordTiming(step.domain, startTime, new Date());
-
-						return [
-							{
-								domainId: step.domain,
-								data: result.data,
-								confidence: result.confidence,
-							},
-						];
-					} catch (error) {
-						this.sessionManager.updateStep(
-							actualSessionId,
-							`${actualSessionId}-${step.domain}`,
-							{
-								status: "failed",
-								error: error instanceof Error ? error.message : "Unknown error",
-								startedAt: startTime,
-								completedAt: new Date(),
-							},
-						);
-
-						return [
-							{
-								domainId: step.domain,
-								data: {
-									error:
-										error instanceof Error ? error.message : "Unknown error",
-								},
-								confidence: 0,
-							},
-						];
-					}
-				}),
+				group.map((stepId) =>
+					this.executeStep(
+						stepId,
+						decomposition.steps,
+						context,
+						actualSessionId,
+					),
+				),
 			);
 
 			for (const grp of groupResults) {
@@ -207,5 +157,56 @@ export class LatinModernoOrchestrator {
 			sessionId: actualSessionId,
 			timings: this.supervisor.getTimings(),
 		};
+	}
+
+	/** Run one decomposed step on its domain agent; failures become zero-confidence results. */
+	private async executeStep(
+		stepId: string,
+		steps: TaskStep[],
+		context: AgentContext,
+		sessionId: string,
+	): Promise<StepResult[]> {
+		const step = steps.find((s) => s.id === stepId);
+		if (!step) return [];
+		const domainAgent = this.domainAgents.get(step.domain as LatinAgentId);
+		if (!domainAgent) return [];
+
+		const startTime = new Date();
+		const stepKey = `${sessionId}-${step.domain}`;
+		this.sessionManager.addStep(sessionId, step.domain);
+
+		try {
+			const result = await domainAgent.receiveTask({
+				id: stepId,
+				goal: step.goal,
+				context,
+				tools: step.tools,
+			});
+			this.sessionManager.updateStep(sessionId, stepKey, {
+				status: "completed",
+				result: result.data,
+				startedAt: startTime,
+				completedAt: new Date(),
+			});
+			this.supervisor.recordTiming(step.domain, startTime, new Date());
+			return [
+				{
+					domainId: step.domain,
+					data: result.data,
+					confidence: result.confidence,
+				},
+			];
+		} catch (error) {
+			const message = error instanceof Error ? error.message : "Unknown error";
+			this.sessionManager.updateStep(sessionId, stepKey, {
+				status: "failed",
+				error: message,
+				startedAt: startTime,
+				completedAt: new Date(),
+			});
+			return [
+				{ domainId: step.domain, data: { error: message }, confidence: 0 },
+			];
+		}
 	}
 }

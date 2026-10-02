@@ -154,4 +154,48 @@ describe("TaskDecomposer", () => {
 		// Should still produce basic extract + validate steps
 		expect(result.steps.length).toBeGreaterThanOrEqual(2);
 	});
+
+	describe("parallel groups schedule the whole plan", () => {
+		const goals = [
+			"extract invoices",
+			"procesar factura",
+			"igv report compare",
+			"full fiscal analysis",
+			"merge consolidate sunat",
+		];
+		const domains = ["scripta", "regula", "cerno", "lumen", "fusio"];
+
+		it.each(goals)(
+			"every step appears exactly once, after its dependencies: %s",
+			(goal) => {
+				const { steps, parallelGroups } = decomposer.decompose(
+					goal,
+					mockContext,
+					domains,
+				);
+				const flat = parallelGroups.flat();
+				expect([...flat].sort()).toEqual(steps.map((s) => s.id).sort());
+
+				const seen = new Set<string>();
+				for (const group of parallelGroups) {
+					for (const id of group) {
+						const step = steps.find((s) => s.id === id);
+						for (const dep of step?.dependencies ?? []) {
+							expect(seen.has(dep)).toBe(true);
+						}
+					}
+					for (const id of group) seen.add(id);
+				}
+			},
+		);
+
+		it("runs a linear extract -> validate chain as two sequential groups", () => {
+			const { parallelGroups } = decomposer.decompose(
+				"extract invoices",
+				mockContext,
+				domains,
+			);
+			expect(parallelGroups).toEqual([["step-1"], ["step-2"]]);
+		});
+	});
 });

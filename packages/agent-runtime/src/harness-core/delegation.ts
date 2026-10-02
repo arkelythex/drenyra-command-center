@@ -129,13 +129,8 @@ export class DelegationGraph {
 	 * Detect if the graph has any cycles using DFS.
 	 * Returns the first cycle found, or null if the graph is acyclic.
 	 */
-
-	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by the packages/pi -> agent-runtime rename. Tracked in odd/tasks/agent-runtime-lint-debt.md
 	detectCycle(): string[] | null {
 		const WHITE = 0; // unvisited
-		const GRAY = 1; // in current DFS path
-		const BLACK = 2; // fully explored
-
 		const color = new Map<string, number>();
 		const parent = new Map<string, string | null>();
 
@@ -146,53 +141,54 @@ export class DelegationGraph {
 
 		for (const startId of this.nodes.keys()) {
 			if (color.get(startId) !== WHITE) continue;
-
-			const stack: { id: string; iterator: Iterator<string> }[] = [];
-			const startNode = this.nodes.get(startId);
-			if (startNode === undefined) continue;
-			const initialIter = startNode.maySpawn[Symbol.iterator]();
-			color.set(startId, GRAY);
-			stack.push({ id: startId, iterator: initialIter });
-
-			while (stack.length > 0) {
-				const frame = stack[stack.length - 1];
-				const result = frame.iterator.next();
-
-				if (result.done) {
-					color.set(frame.id, BLACK);
-					stack.pop();
-					continue;
-				}
-
-				const neighbor = result.value;
-
-				if (color.get(neighbor) === GRAY) {
-					// Cycle found — reconstruct
-					const cycle: string[] = [neighbor, frame.id];
-					let current = frame.id;
-					while (current !== neighbor) {
-						const p = parent.get(current);
-						if (p === null || p === undefined) break;
-						cycle.push(p);
-						current = p;
-					}
-					return cycle.reverse();
-				}
-
-				if (color.get(neighbor) === WHITE) {
-					const neighborNode = this.nodes.get(neighbor);
-					if (neighborNode !== undefined) {
-						parent.set(neighbor, frame.id);
-						color.set(neighbor, GRAY);
-						stack.push({
-							id: neighbor,
-							iterator: neighborNode.maySpawn[Symbol.iterator](),
-						});
-					}
-				}
-			}
+			const cycle = this.searchFrom(startId, color, parent);
+			if (cycle) return cycle;
 		}
 
+		return null;
+	}
+
+	/** Iterative DFS from `startId`; returns the first cycle reachable from it. */
+	private searchFrom(
+		startId: string,
+		color: Map<string, number>,
+		parent: Map<string, string | null>,
+	): string[] | null {
+		const WHITE = 0;
+		const GRAY = 1; // in current DFS path
+		const BLACK = 2; // fully explored
+
+		const startNode = this.nodes.get(startId);
+		if (startNode === undefined) return null;
+		const stack: { id: string; iterator: Iterator<string> }[] = [
+			{ id: startId, iterator: startNode.maySpawn[Symbol.iterator]() },
+		];
+		color.set(startId, GRAY);
+
+		while (stack.length > 0) {
+			const frame = stack[stack.length - 1];
+			const result = frame.iterator.next();
+
+			if (result.done) {
+				color.set(frame.id, BLACK);
+				stack.pop();
+				continue;
+			}
+
+			const neighbor = result.value;
+			if (color.get(neighbor) === GRAY) {
+				return reconstructCycle(parent, frame.id, neighbor);
+			}
+			const neighborNode = this.nodes.get(neighbor);
+			if (color.get(neighbor) === WHITE && neighborNode !== undefined) {
+				parent.set(neighbor, frame.id);
+				color.set(neighbor, GRAY);
+				stack.push({
+					id: neighbor,
+					iterator: neighborNode.maySpawn[Symbol.iterator](),
+				});
+			}
+		}
 		return null;
 	}
 
@@ -232,4 +228,21 @@ export class DelegationGraph {
 	clear(): void {
 		this.nodes.clear();
 	}
+}
+
+/** Walk parent links back from `frameId` to `neighbor` and return the cycle in order. */
+function reconstructCycle(
+	parent: Map<string, string | null>,
+	frameId: string,
+	neighbor: string,
+): string[] {
+	const cycle: string[] = [neighbor, frameId];
+	let current = frameId;
+	while (current !== neighbor) {
+		const p = parent.get(current);
+		if (p === null || p === undefined) break;
+		cycle.push(p);
+		current = p;
+	}
+	return cycle.reverse();
 }
