@@ -62,6 +62,20 @@ describe("parseTscErrors", () => {
 		expect(buckets).toEqual({ "apps/web/src/a.ts|TS2345": 1 });
 	});
 
+	it("ignores project-configuration errors that move with the import graph (TS6059, TS6307, TS6305)", () => {
+		const buckets = parseTscErrors(
+			out(
+				"src/a.ts(1,1): error TS6059: File '/x/y.ts' is not under 'rootDir' '/z'.",
+				"src/a.ts(2,1): error TS6307: File '/x/y.ts' is not listed within the file list of project.",
+				"src/a.ts(3,1): error TS6305: Output file '/x/y.d.ts' has not been built from source file.",
+				"src/a.ts(4,1): error TS2322: real code error",
+			),
+			CWD,
+			ROOT,
+		);
+		expect(buckets).toEqual({ "apps/web/src/a.ts|TS2322": 1 });
+	});
+
 	it("returns an empty object for clean output", () => {
 		expect(parseTscErrors("", CWD, ROOT)).toEqual({});
 	});

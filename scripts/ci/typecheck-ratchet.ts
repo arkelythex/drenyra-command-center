@@ -39,6 +39,14 @@ export interface Verdict {
 	canUpdate: boolean;
 }
 
+/**
+ * Project-configuration errors (rootDir / composite / not built). They are reported
+ * once per file in the program, so they move to another file whenever an import is
+ * added or removed, which says nothing about code quality. Phase 4 of
+ * odd/tasks/typecheck-baseline.md fixes them at the source.
+ */
+const IGNORED_CODES = new Set(["TS6059", "TS6307", "TS6305"]);
+
 const ERROR_LINE = /^(?:\S+ typecheck: )?(.+?)\((\d+),(\d+)\): error (TS\d+):/;
 
 /** Bucket tsc output by `repo-relative-file|TScode`. `cwd` is where tsc ran. */
@@ -50,7 +58,7 @@ export function parseTscErrors(
 	const buckets: Buckets = {};
 	for (const line of output.split("\n")) {
 		const match = ERROR_LINE.exec(line);
-		if (!match) continue;
+		if (!match || IGNORED_CODES.has(match[4])) continue;
 		const file = relative(root, resolve(cwd, match[1])).split("\\").join("/");
 		const key = `${file}|${match[4]}`;
 		buckets[key] = (buckets[key] ?? 0) + 1;
