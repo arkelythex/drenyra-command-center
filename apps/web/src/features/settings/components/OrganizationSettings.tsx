@@ -1,7 +1,7 @@
 import { Building2, Plus } from "lucide-react";
 import { useState } from "react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import { MemberCard, OrganizationIdentity } from "./appearance/OrganizationUI";
 import { SettingsButton } from "./appearance/SettingsUI";
 import { SettingsSection } from "./SettingsPrimitives";
@@ -86,7 +86,7 @@ export const OrganizationSettings = () => {
 							</div>
 						</SettingsSection>
 
-						<SurfaceCard
+						<SurfacePanel
 							variant="interactive"
 							padding="lg"
 							className="rounded-2xl border-[var(--accent)]/10 bg-[var(--accent)]/[0.02]"
@@ -95,7 +95,7 @@ export const OrganizationSettings = () => {
 								"La configuración de la organización se replica en todos los
 								nodos regionales para preservar disponibilidad y trazabilidad."
 							</p>
-						</SurfaceCard>
+						</SurfacePanel>
 					</div>
 				</div>
 			</div>

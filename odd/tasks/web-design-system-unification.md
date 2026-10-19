@@ -29,10 +29,10 @@ Un solo sistema de diseño, con una sola fuente de valores, sin componentes dupl
 - [x] **2. Borrar componentes UI sin importadores** (lista arriba, más `layout/command-deck`). Build y tests sin cambios; ratchet web 412→395.
 - [x] **3. Una sola API de tema:** `ui.store` reescrito al modelo de `ux-mode` (`themePreference`/`accentPreference`/`densityPreference`), con los tipos del esquema y la misma clave de persistencia; se eliminó el modelo viejo (`theme`, `accentPreset`, `density`, `complexityLevel`, sidebar duplicado, sin consumidores). Hallazgo: **el tema nunca se aplicaba al arrancar**; `client.tsx` ahora llama `applyPersistedTheme()`. 4 tests nuevos.
 - [ ] **4. Colapsar capas CSS:** fusionar `tokens.css` y `design-system.css` en `index.css` (o separar `index.css` en archivos por responsabilidad), eliminando valores repetidos.
-- [ ] **5. Unificar superficies:** migrar usos de `card` a `SurfaceCard`/`SurfacePanel` o al revés (22 vs 13 importadores; decidir con el diseño).
+- [x] **5. Unificar superficies (parcial):** `SurfacePanel` es el primitivo único; absorbe `muted`, `interactive` (teclado accesible) y padding `xl`, y `SurfaceCard` se eliminó (7 archivos de ajustes migrados, 5 tests nuevos). **Pendiente:** `card.tsx` (reexporta `@drenyra/ui`, 22 importadores) y `ui/panel.tsx` (1 importador). Cambio visual leve en ajustes: borde/sombra pasan a los tokens de `SurfacePanel`; no pude verificarlo con capturas.
 - [x] **6. Módulos fantasma:** `hooks/useHaptics` (respeta `prefers-reduced-motion`, sin excepciones) y `components/layout/MobileTabNavigation` escritos con tests. Tablero de facturas, tarjeta y controlador vuelven a cargar; ratchet web 395→386.
 - [x] **6b.** `@/stores/sidebar-layout.store` (fantasma) sustituido por `useAgenticShell.setSidebarMobileOpen` en ComplianceView, LedgerView y ReconciliationView.
-- [ ] **7. `design-system/DESIGN.md`:** reemplazar el placeholder por un enlace al canon (una sola copia).
+- [x] **7. `design-system/DESIGN.md`:** ahora apunta al canon.
 
 ## Fuera de alcance
 Cambiar la paleta o la marca; tocar lógica fiscal.

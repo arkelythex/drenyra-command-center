@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import { cn } from "@/lib/utils";
 
 interface SettingsSectionProps {
@@ -16,7 +16,7 @@ export const SettingsSection = ({
 	className,
 }: SettingsSectionProps): ReactNode => {
 	return (
-		<SurfaceCard
+		<SurfacePanel
 			variant="muted"
 			padding="lg"
 			className={cn(
@@ -40,7 +40,7 @@ export const SettingsSection = ({
 				) : null}
 			</div>
 			<div className="relative space-y-4">{children}</div>
-		</SurfaceCard>
+		</SurfacePanel>
 	);
 };
 

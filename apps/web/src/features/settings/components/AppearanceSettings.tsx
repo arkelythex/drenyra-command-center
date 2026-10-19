@@ -1,6 +1,6 @@
 import { ChevronDown, Monitor, Moon, Sun, Type } from "lucide-react";
 import { createElement } from "react";
-import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import { useSettings } from "@/context/SettingsContext";
 import { cn } from "@/lib/utils";
 import { CodeDiffPreview } from "./appearance/CodeDiffPreview";
@@ -223,7 +223,7 @@ export const AppearanceSettings = () => {
 						<h3 className="text-sm font-bold text-[var(--text-primary)]">
 							Compañero
 						</h3>
-						<SurfaceCard
+						<SurfacePanel
 							variant="interactive"
 							padding="md"
 							className="flex items-center justify-between px-4 py-3 rounded-xl border-[var(--border-default)] group"
@@ -232,7 +232,7 @@ export const AppearanceSettings = () => {
 								Seleccionar compañero
 							</span>
 							<ChevronDown size={16} className="text-[var(--text-secondary)]" />
-						</SurfaceCard>
+						</SurfacePanel>
 					</div>
 				</SettingsSection>
 			</div>
