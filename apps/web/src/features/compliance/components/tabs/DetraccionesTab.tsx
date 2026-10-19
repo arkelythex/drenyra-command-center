@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "@/lib/api";
+import { extractOkData, unwrap } from "@/lib/api-helpers";
 import { cn, n } from "@/lib/utils";
 
 interface DetractionItem {
@@ -143,9 +144,11 @@ export const DetraccionesTab = () => {
 	const { data: items = [], isLoading } = useQuery<DetractionItem[]>({
 		queryKey: ["detractions"],
 		queryFn: async () => {
-			const res = await api.api.detractions.get();
-			const body = await res.json();
-			return (body as { data: DetractionItem[] })?.data ?? [];
+			const envelope = await unwrap(api.api.detractions.get());
+			return extractOkData<DetractionItem[]>(
+				envelope,
+				"No se pudieron cargar las detracciones",
+			);
 		},
 		refetchInterval: 30_000,
 	});

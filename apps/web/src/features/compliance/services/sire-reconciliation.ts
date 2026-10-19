@@ -86,6 +86,21 @@ function assertTolerance(toleranceCents: number): void {
 
 type PairDiscrepancy = Omit<SireDiscrepancy, "id">;
 
+/**
+ * SIRE files have no status column; SUNAT reports an annulled document with
+ * zero amounts. Read such a row as ANULADO when the books say it was cancelled.
+ */
+function sunatEstado(
+	sunat: SireRecord,
+	local: SireRecord,
+): SireRecord["estado"] {
+	const zeroed =
+		toCents(sunat.baseImponible) === 0 &&
+		toCents(sunat.igv) === 0 &&
+		toCents(sunat.total) === 0;
+	return local.estado === "ANULADO" && zeroed ? "ANULADO" : sunat.estado;
+}
+
 /** Compares one document present on both sides; null means they agree. */
 function comparePair(
 	sunat: SireRecord,
@@ -97,9 +112,11 @@ function comparePair(
 	if (currencyOf(sunat) !== currencyOf(local)) {
 		return { type: "CURRENCY_MISMATCH", severity: "HIGH", ...pair };
 	}
-	if (sunat.estado !== local.estado) {
+	if (sunatEstado(sunat, local) !== local.estado) {
 		return { type: "STATUS_MISMATCH", severity: "HIGH", ...pair };
 	}
+	// Both annulled: amounts no longer apply (SUNAT zeroes them, the books may not).
+	if (local.estado === "ANULADO") return null;
 
 	const totalGap = Math.abs(toCents(sunat.total) - toCents(local.total));
 	if (totalGap > toleranceCents) {
