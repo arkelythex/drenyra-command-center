@@ -154,9 +154,8 @@ export async function duplicateWorkflow(
 		.where(eq(automationWorkflows.id, id))
 		.limit(1);
 
-	if (original.length === 0) return null;
-
 	const src = original[0];
+	if (!src) return null;
 
 	const [newWf] = await db
 		.insert(automationWorkflows)
@@ -169,6 +168,8 @@ export async function duplicateWorkflow(
 			triggerConfig: src.triggerConfig,
 		})
 		.returning();
+
+	if (!newWf) throw new Error("No se pudo duplicar el workflow");
 
 	const steps = await db
 		.select()
@@ -207,6 +208,8 @@ export async function testWorkflow(
 			log: `[${new Date().toISOString()}] Test run started for workflow "${wf.name}"\n`,
 		})
 		.returning();
+
+	if (!exec) throw new Error("No se pudo registrar la ejecución de prueba");
 
 	const logLines: string[] = [];
 	logLines.push(
@@ -410,10 +413,10 @@ export async function getDashboardStats(
 			sql`workflow_id IN (SELECT id FROM automation_workflows WHERE company_id = ${companyId})`,
 		);
 
-	const totalExecs = Number(totalExecRows.count);
+	const totalExecs = Number(totalExecRows?.count ?? 0);
 	const successRate =
 		totalExecs > 0
-			? Math.round((Number(successRows.count) / totalExecs) * 100)
+			? Math.round((Number(successRows?.count ?? 0) / totalExecs) * 100)
 			: 0;
 
 	const recent = await db
@@ -456,8 +459,8 @@ export async function getDashboardStats(
 		.orderBy(sql`DATE(started_at)`);
 
 	return {
-		activeWorkflows: Number(activeCount.count),
-		totalRuns: Number(totalRuns.count),
+		activeWorkflows: Number(activeCount?.count ?? 0),
+		totalRuns: Number(totalRuns?.count ?? 0),
 		successRate,
 		recentExecutions: recent.map(mapExecution),
 		workflowsByCategory,

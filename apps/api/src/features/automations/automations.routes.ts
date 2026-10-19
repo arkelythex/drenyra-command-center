@@ -111,10 +111,10 @@ export const automationsRoutes = new Elysia({
 				});
 
 				// Create steps for each skill
-				for (let i = 0; i < body.skillIds.length; i++) {
+				for (const [i, skillId] of body.skillIds.entries()) {
 					await automationsService.createStep(wf.id, {
 						stepOrder: i + 1,
-						skillId: body.skillIds[i],
+						skillId,
 					});
 				}
 

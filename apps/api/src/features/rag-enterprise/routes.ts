@@ -416,6 +416,7 @@ ragEnterpriseRoutes.post(
 			})
 			.returning()
 			.execute();
+		if (!document) throw new Error("No se pudo crear el documento");
 
 		const text = document.content || "";
 		const _words = text.split(/\s+/).filter(Boolean);
@@ -552,7 +553,7 @@ ragEnterpriseRoutes.get(
 			.offset(query.offset ?? 0)
 			.execute();
 
-		const [{ count: total }] = await db
+		const [{ count: total } = { count: 0 }] = await db
 			.select({ count: count() })
 			.from(kbDocuments)
 			.where(and(...conditions))
@@ -855,6 +856,7 @@ ragEnterpriseRoutes.post(
 				})
 				.returning()
 				.execute();
+			if (!qb) throw new Error("No se pudo registrar la consulta");
 
 			return ok({ results: [], queryId: qb.id, latencyMs });
 		}
@@ -918,6 +920,7 @@ ragEnterpriseRoutes.post(
 			})
 			.returning()
 			.execute();
+		if (!qb) throw new Error("No se pudo registrar la consulta");
 
 		return ok({
 			results: scored.map((c) => ({
@@ -1025,7 +1028,7 @@ ragEnterpriseRoutes.get(
 			return fail("Collection not found", "NOT_FOUND");
 		}
 
-		const [{ count: chunkCount }] = await db
+		const [{ count: chunkCount } = { count: 0 }] = await db
 			.select({ count: count() })
 			.from(kbChunks)
 			.where(
@@ -1047,7 +1050,7 @@ ragEnterpriseRoutes.get(
 
 		const totalSizeBytes = docs.reduce((acc, d) => acc + d.fileSize, 0);
 
-		const [{ count: queryCount }] = await db
+		const [{ count: queryCount } = { count: 0 }] = await db
 			.select({ count: count() })
 			.from(kbQueries)
 			.where(eq(kbQueries.collectionId, params.id))
@@ -1081,7 +1084,7 @@ ragEnterpriseRoutes.get(
 			return ctx.error;
 		}
 
-		const [{ count: totalCollections }] = await db
+		const [{ count: totalCollections } = { count: 0 }] = await db
 			.select({ count: count() })
 			.from(kbCollections)
 			.where(
@@ -1092,13 +1095,13 @@ ragEnterpriseRoutes.get(
 			)
 			.execute();
 
-		const [{ count: totalDocuments }] = await db
+		const [{ count: totalDocuments } = { count: 0 }] = await db
 			.select({ count: count() })
 			.from(kbDocuments)
 			.where(eq(kbDocuments.companyId, ctx.companyId))
 			.execute();
 
-		const [{ count: totalChunks }] = await db
+		const [{ count: totalChunks } = { count: 0 }] = await db
 			.select({ count: count() })
 			.from(kbChunks)
 			.where(
@@ -1112,7 +1115,7 @@ ragEnterpriseRoutes.get(
 			)
 			.execute();
 
-		const [{ count: totalQueries }] = await db
+		const [{ count: totalQueries } = { count: 0 }] = await db
 			.select({ count: count() })
 			.from(kbQueries)
 			.where(eq(kbQueries.companyId, ctx.companyId))

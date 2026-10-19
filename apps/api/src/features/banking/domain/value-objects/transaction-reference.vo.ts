@@ -52,8 +52,8 @@ export class TransactionReference {
 			if (match) {
 				const prefix =
 					type === "INVOICE" ? "F" : type === "BOLETA" ? "BV" : "B";
-				const series = match[1].padStart(3, "0");
-				const number = match[2].padStart(5, "0");
+				const series = (match[1] ?? "").padStart(3, "0");
+				const number = (match[2] ?? "").padStart(5, "0");
 				return `${prefix}${series}-${number}`;
 			}
 		}

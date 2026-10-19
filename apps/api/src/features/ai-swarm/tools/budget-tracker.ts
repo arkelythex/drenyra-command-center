@@ -122,22 +122,20 @@ export class BudgetTracker {
 		// By agent
 		const byAgent: BudgetUsage["byAgent"] = {};
 		for (const record of this.records) {
-			if (!byAgent[record.agentType]) {
-				byAgent[record.agentType] = {
-					calls: 0,
-					totalCost: 0,
-					averageCost: 0,
-				};
-			}
+			const entry = byAgent[record.agentType] ?? {
+				calls: 0,
+				totalCost: 0,
+				averageCost: 0,
+			};
+			byAgent[record.agentType] = entry;
 
-			byAgent[record.agentType].calls++;
-			byAgent[record.agentType].totalCost += record.costUsd;
+			entry.calls++;
+			entry.totalCost += record.costUsd;
 		}
 
 		// Calculate averages
-		for (const agent of Object.keys(byAgent)) {
-			byAgent[agent].averageCost =
-				byAgent[agent].totalCost / byAgent[agent].calls;
+		for (const entry of Object.values(byAgent)) {
+			entry.averageCost = entry.totalCost / entry.calls;
 		}
 
 		return {
@@ -202,14 +200,13 @@ export class BudgetTracker {
 		const relevantRecords = this.records.filter((r) => r.timestamp >= daysAgo);
 
 		for (const record of relevantRecords) {
-			const dateKey = record.timestamp.toISOString().split("T")[0];
+			const dateKey = record.timestamp.toISOString().slice(0, 10);
 
-			if (!trend[dateKey]) {
-				trend[dateKey] = { spent: 0, calls: 0 };
-			}
+			const day = trend[dateKey] ?? { spent: 0, calls: 0 };
+			trend[dateKey] = day;
 
-			trend[dateKey].spent += record.costUsd;
-			trend[dateKey].calls++;
+			day.spent += record.costUsd;
+			day.calls++;
 		}
 
 		return Object.entries(trend)

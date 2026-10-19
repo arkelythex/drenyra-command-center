@@ -159,6 +159,9 @@ export class SkillsService {
 			skillId,
 			installedBy,
 		);
+		if (!installation) {
+			throw new AppError(500, "INTERNAL_ERROR", "Failed to install skill");
+		}
 
 		return {
 			id: installation.id,
@@ -222,6 +225,13 @@ export class SkillsService {
 		}
 
 		const skill = await repo.findSkillById(skillId);
+		if (!skill) {
+			throw new AppError(
+				404,
+				ErrorCodes.NOT_FOUND,
+				`Skill not found: ${skillId}`,
+			);
+		}
 
 		return {
 			id: updated.id,
@@ -232,13 +242,13 @@ export class SkillsService {
 			installedAt: updated.installedAt.toISOString(),
 			installedBy: updated.installedBy,
 			skill: {
-				id: skill?.id,
-				name: skill?.name,
-				description: skill?.description,
-				category: skill?.category,
-				version: skill?.version,
-				author: skill?.author,
-				status: skill?.status,
+				id: skill.id,
+				name: skill.name,
+				description: skill.description,
+				category: skill.category,
+				version: skill.version,
+				author: skill.author,
+				status: skill.status,
 				installed: true,
 			},
 		};

@@ -63,6 +63,7 @@ export class CustomerRepository implements ICustomerRepository {
 						createdAt: now,
 					})
 					.returning();
+				if (!partner) throw new Error("Cliente no encontrado");
 
 				const [profile] = await tx
 					.insert(customerProfiles)
@@ -78,6 +79,7 @@ export class CustomerRepository implements ICustomerRepository {
 						updatedAt: now,
 					})
 					.returning();
+				if (!profile) throw new Error("Cliente no encontrado");
 
 				return { partner, profile };
 			},
@@ -109,6 +111,7 @@ export class CustomerRepository implements ICustomerRepository {
 						),
 					)
 					.returning();
+				if (!partner) throw new Error("Cliente no encontrado");
 
 				const [profile] = await tx
 					.update(customerProfiles)
@@ -120,6 +123,7 @@ export class CustomerRepository implements ICustomerRepository {
 					})
 					.where(eq(customerProfiles.id, input.id))
 					.returning();
+				if (!profile) throw new Error("Cliente no encontrado");
 
 				return { partner, profile };
 			},
@@ -147,12 +151,14 @@ export class CustomerRepository implements ICustomerRepository {
 						),
 					)
 					.returning();
+				if (!updatedPartner) throw new Error("Cliente no encontrado");
 
 				const [updatedProfile] = await tx
 					.update(customerProfiles)
 					.set({ updatedAt: now })
 					.where(eq(customerProfiles.id, id))
 					.returning();
+				if (!updatedProfile) throw new Error("Cliente no encontrado");
 
 				return {
 					partner: updatedPartner,

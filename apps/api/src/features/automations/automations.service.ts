@@ -143,6 +143,7 @@ export async function createWorkflow(
 			// autonomy stored in a dedicated column or triggerConfig when available
 		})
 		.returning();
+	if (!wf) throw new Error("No se pudo crear el workflow");
 	return wf;
 }
 
@@ -213,5 +214,6 @@ export async function triggerExecution(
 			startedAt: new Date(),
 		})
 		.returning();
+	if (!exec) throw new Error("No se pudo registrar la ejecución");
 	return exec;
 }
