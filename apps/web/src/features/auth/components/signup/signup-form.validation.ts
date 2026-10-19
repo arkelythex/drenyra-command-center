@@ -1,4 +1,4 @@
-import { isValidRUC } from "@drenyra/shared";
+import { isValidRUC } from "@drenyra/shared/validation/ruc";
 import * as z from "zod";
 import { getCountryPack } from "@/lib/latam-country-packs";
 
@@ -40,7 +40,7 @@ export function calculatePasswordStrength(password: string): PasswordStrength {
 }
 
 // Re-export for backwards compatibility
-export { isValidRUC as validateRucLocal } from "@drenyra/shared";
+export { isValidRUC as validateRucLocal } from "@drenyra/shared/validation/ruc";
 
 // Signup is Peru-only today (RUC field). Length/label are sourced from the
 // country pack (T2's adapter over @drenyra/domain's CountryRuntime) instead
