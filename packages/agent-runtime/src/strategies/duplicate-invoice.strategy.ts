@@ -70,12 +70,7 @@ export function createDuplicateInvoiceStrategy(): AnomalyStrategy {
 			}
 
 			// Second pass: check all pairs for suspicious duplicates
-			const allInvs = Array.from(seen.values());
-			for (let i = 0; i < allInvs.length; i++) {
-				for (let j = i + 1; j < allInvs.length; j++) {
-					checkSuspiciousPair(allInvs[i], allInvs[j], anomalies);
-				}
-			}
+			checkAllPairs(Array.from(seen.values()), anomalies);
 
 			return anomalies;
 		},
@@ -83,6 +78,19 @@ export function createDuplicateInvoiceStrategy(): AnomalyStrategy {
 }
 
 // ─── Helper functions ─────────────────────────────────────────────
+
+function checkAllPairs(
+	invs: DuplicateInvoiceCheck[],
+	anomalies: Anomaly[],
+): void {
+	for (let i = 0; i < invs.length; i++) {
+		for (let j = i + 1; j < invs.length; j++) {
+			const first = invs[i];
+			const other = invs[j];
+			if (first && other) checkSuspiciousPair(first, other, anomalies);
+		}
+	}
+}
 
 function makeKey(inv: DuplicateInvoiceCheck): string {
 	return `${inv.emisorRuc}:${inv.serie}:${inv.numero}`;

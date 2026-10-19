@@ -274,7 +274,7 @@ export async function seedOperationalDemoData(
 			{
 				companyId,
 				productId: required(productByKey.scanner, "product scanner").id,
-				warehouseId: warehouses[1].id,
+				warehouseId: required(warehouses[1], "warehouse 2").id,
 				type: "OUT",
 				quantity: "4",
 				unitCost: "1190.00",

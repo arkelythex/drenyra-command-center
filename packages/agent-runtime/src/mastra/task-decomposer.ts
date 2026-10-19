@@ -87,7 +87,8 @@ export class TaskDecomposer {
 				goal: `Compliance check for: ${goal}`,
 				domain: "regula",
 				tools: ["comply"],
-				dependencies: [steps[steps.length - 1].id],
+				dependencies:
+					steps.length > 0 ? [steps[steps.length - 1]?.id ?? ""] : [],
 			});
 		}
 
@@ -103,7 +104,8 @@ export class TaskDecomposer {
 				goal: `Analyze: ${goal}`,
 				domain: "lumen",
 				tools: ["analyze"],
-				dependencies: [steps[steps.length - 1].id],
+				dependencies:
+					steps.length > 0 ? [steps[steps.length - 1]?.id ?? ""] : [],
 			});
 		}
 
@@ -141,7 +143,8 @@ export class TaskDecomposer {
 				s.dependencies.every((d) => done.has(d)),
 			);
 			// Unresolvable dependencies: schedule the next step alone instead of looping forever.
-			const level = ready.length > 0 ? ready : [pending[0]];
+			const first = pending[0];
+			const level = ready.length > 0 ? ready : first ? [first] : [];
 			groups.push(level.map((s) => s.id));
 			for (const s of level) done.add(s.id);
 			pending = pending.filter((s) => !done.has(s.id));
