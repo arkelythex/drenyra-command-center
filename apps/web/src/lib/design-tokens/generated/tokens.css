@@ -1,19 +1,26 @@
-/* Drenyra Design Tokens — generated (minimal) */
-/* See packages/design-system for the full token system */
-
-@theme {
-  --color-primary: #1a73e8;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #f5a623;
-  --color-secondary-foreground: #000000;
-  --color-background: #0a0e27;
-  --color-foreground: #e0e0e0;
-  --color-muted: #4a5568;
-  --color-muted-foreground: #8892b0;
-  --color-border: #1e3a5f;
-  --color-destructive: #ef4444;
-  --color-destructive-foreground: #ffffff;
-  --color-success: #34d399;
-  --color-warning: #fbbf24;
-  --radius: 0.5rem;
+/* Bridge: shadcn/Tailwind semantic color names → Fiscal Editorial theme variables.
+ *
+ * Values are NOT defined here. src/index.css owns the per-theme palette
+ * (--background, --card, --muted, …); `inline` makes utilities such as
+ * `bg-card` or `text-muted-foreground` read those variables at use time, so
+ * they follow the active theme and accent. --color-border/primary/success/warning
+ * are already provided by styles/design-system.css and are intentionally not
+ * redefined here.
+ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }

@@ -289,35 +289,38 @@
 
 /* ── Shared primitive overrides ────────────────────────────── */
 
-button,
-.btn {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  transition:
-    background var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard);
-}
+/* Element resets live in @layer base so Tailwind utilities (layer utilities) can override them. */
+@layer base {
+  button,
+  .btn {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    transition:
+      background var(--duration-fast) var(--ease-standard),
+      color var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard);
+  }
 
-input,
-textarea,
-select {
-  font-family: var(--font-sans);
-  background: var(--input-bg);
-  border: 1px solid var(--input-border);
-  border-radius: var(--radius-md);
-  color: var(--text-primary);
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  transition: border-color var(--duration-fast) var(--ease-standard);
-}
+  input,
+  textarea,
+  select {
+    font-family: var(--font-sans);
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    transition: border-color var(--duration-fast) var(--ease-standard);
+  }
 
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-  border-color: var(--input-focus-border);
-  outline: 2px solid var(--border-focus);
-  outline-offset: 1px;
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    border-color: var(--input-focus-border);
+    outline: 2px solid var(--border-focus);
+    outline-offset: 1px;
+  }
 }
 
 /* ── Accounting number formatting ──────────────────────────── */
