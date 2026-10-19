@@ -141,13 +141,14 @@ export class PostgresClientRepository implements ClientRepository {
 			)
 			.limit(1);
 
-		if (rows.length === 0) return null;
+		const row = rows[0];
+		if (!row) return null;
 
 		const organizationId = await resolveOrganizationIdFromCompany(
-			rows[0].partner.companyId,
+			row.partner.companyId,
 		);
 
-		return this.mapToClient(rows[0].partner, rows[0].profile, organizationId);
+		return this.mapToClient(row.partner, row.profile, organizationId);
 	}
 
 	async findAll(
@@ -237,9 +238,10 @@ export class PostgresClientRepository implements ClientRepository {
 			)
 			.limit(1);
 
-		if (rows.length === 0) return null;
+		const row = rows[0];
+		if (!row) return null;
 
-		return this.mapToClient(rows[0].partner, rows[0].profile, organizationId);
+		return this.mapToClient(row.partner, row.profile, organizationId);
 	}
 
 	private async findClientContext(id: string) {
@@ -250,15 +252,16 @@ export class PostgresClientRepository implements ClientRepository {
 			.where(eq(businessPartners.id, id))
 			.limit(1);
 
-		if (rows.length === 0) return null;
+		const row = rows[0];
+		if (!row) return null;
 
 		const organizationId = await resolveOrganizationIdFromCompany(
-			rows[0].partner.companyId,
+			row.partner.companyId,
 		);
 
 		return {
-			partner: rows[0].partner,
-			profile: rows[0].profile,
+			partner: row.partner,
+			profile: row.profile,
 			organizationId,
 		};
 	}

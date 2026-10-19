@@ -370,6 +370,7 @@ export function getCheapestFlashModel(): ModelSelection {
 	return {
 		model: instantiateModel(key),
 		modelKey: key,
+		// biome-ignore lint/style/noNonNullAssertion: pre-existing; the fallback tuple above always defines it
 		definition: def!,
 		selectionReason: "Cheapest flash model for high-volume processing",
 	};
@@ -400,6 +401,7 @@ export function getComplianceModel(): ModelSelection {
 	return {
 		model: instantiateModel("gemini-3-pro"),
 		modelKey: "gemini-3-pro",
+		// biome-ignore lint/style/noNonNullAssertion: pre-existing; "gemini-3-pro" is a registered model key
 		definition: AVAILABLE_MODELS["gemini-3-pro"]!,
 		selectionReason: "Gemini Pro as fallback for compliance reasoning",
 	};
@@ -619,7 +621,11 @@ export function getOpenRouterModelForTier(tierId: string): string {
 			`Unknown OpenRouter tier: ${tierId}. Available: ${Object.keys(OPENROUTER_MODEL_TIERS).join(", ")}`,
 		);
 	}
-	return tier.models[0]; // First in list is preferred
+	const preferred = tier.models[0]; // First in list is preferred
+	if (preferred === undefined) {
+		throw new Error(`OpenRouter tier ${tierId} has no models`);
+	}
+	return preferred;
 }
 
 /**

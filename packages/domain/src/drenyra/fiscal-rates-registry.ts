@@ -86,7 +86,7 @@ export function getFiscalRate(
 
 	// Ordenar por effectiveFrom descendente y tomar el más reciente
 	applicable.sort((a, b) => b.effectiveFrom.localeCompare(a.effectiveFrom));
-	return applicable[0];
+	return applicable[0] ?? null;
 }
 
 /**

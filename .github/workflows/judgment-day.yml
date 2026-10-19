@@ -101,7 +101,7 @@ jobs:
 
       - name: Create issue on findings
         if: steps.analysis.outputs.count != '0'
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             await github.rest.issues.create({
