@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const { triggerMock } = vi.hoisted(() => ({
@@ -15,6 +16,12 @@ const { toastSuccessMock } = vi.hoisted(() => ({
 
 const { useSireDemoSummaryMock } = vi.hoisted(() => ({
 	useSireDemoSummaryMock: vi.fn(),
+}));
+
+vi.mock("@tanstack/react-router", () => ({
+	Link: ({ children, to }: { children: ReactNode; to: string }) => (
+		<a href={to}>{children}</a>
+	),
 }));
 
 vi.mock("@/hooks/useHaptics", () => ({
