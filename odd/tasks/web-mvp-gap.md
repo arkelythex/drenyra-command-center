@@ -66,3 +66,11 @@ Medido con Chromium (Playwright) sobre `vite build` + `vite preview`: pantalla e
 3. **`import "node:crypto"` en el bundle** (de `@drenyra/shared`/`domain`, imports de efecto sin uso): `treeshake.moduleSideEffects` descarta los externos sin uso. (Importar `@drenyra/shared/validation/ruc` en vez del barril también era buena idea, pero cambia el grafo de tipos del ratchet —carga `@types/node` distinto— y se deja para una fase de tsconfig.)
 Resultado: `/login` y `/signup` renderizan en el build de producción (captura verificada). Sin estos cambios ningún usuario podía ver la app.
 Pendiente visible en la captura: campos de formulario blancos sobre fondo oscuro, iconos superpuestos al texto (capa de color; ver ODD de sistema de diseño, fase 4).
+
+## Hallazgo (2026-10-19): el contexto de empresa era un stub
+`lib/company-context.ts` y `lib/use-active-company-context.ts` devolvían siempre la empresa demo (`demo-1`) y no exportaban `AUTH_STORAGE_KEYS` (que `auth-storage.ts` itera: fallaba en tiempo de ejecución). Facturas, libro mayor y cumplimiento se consultaban siempre con la empresa demo, sin importar la sesión.
+Ahora: persistencia real de la empresa activa, cambio solo entre empresas concedidas por la sesión (`availableCompanies`), limpieza al cerrar sesión, y tests de aislamiento (`lib/__tests__/company-context.test.ts`). Pendiente: que la API entregue `availableCompanies` en la sesión y que el selector de empresa de la UI use `setActiveCompanyById`.
+
+## Deuda de tests (2026-10-19): cerrada en web
+`vitest` en `apps/web`: 82 archivos, 660 tests en verde (antes 18 archivos fallaban). Además: `monitoring.ts` pasa de stub a Sentry/Plausible reales (inicializado en `client.tsx`), `web-vitals` instalado, y `SelectTrigger` de `@drenyra/ui` ahora reenvía `aria-label` (los filtros no tenían nombre accesible).
+Queda para la fase C: `useSireReconciliation` no tiene registros locales (se llenan desde la API) y compara importes `number`; hay que pasar a `Money` en centavos con test-first.
