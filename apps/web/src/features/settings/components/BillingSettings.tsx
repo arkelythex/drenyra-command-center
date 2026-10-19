@@ -1,6 +1,6 @@
 import { CreditCard, Download, TrendingUp, Zap } from "lucide-react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import { SettingsButton } from "./appearance/SettingsUI";
 import { SettingsSection } from "./SettingsPrimitives";
 import { SettingsShell } from "./SettingsShell";
@@ -42,7 +42,7 @@ export const BillingSettings = () => {
 			<div className="space-y-10">
 				{/* Subscription Overview Bento */}
 				<div className="grid gap-4 md:grid-cols-3">
-					<SurfaceCard
+					<SurfacePanel
 						variant="muted"
 						padding="lg"
 						className="group relative overflow-hidden rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)] transition-all hover:bg-[var(--surface-2)]"
@@ -59,9 +59,9 @@ export const BillingSettings = () => {
 						<p className="mt-2 text-xs font-bold text-[var(--accent)] uppercase tracking-tighter">
 							Unlimited Neural Memory
 						</p>
-					</SurfaceCard>
+					</SurfacePanel>
 
-					<SurfaceCard
+					<SurfacePanel
 						variant="muted"
 						padding="lg"
 						className="group relative overflow-hidden rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)] transition-all hover:bg-[var(--surface-2)]"
@@ -81,9 +81,9 @@ export const BillingSettings = () => {
 								<div className="h-full w-[66%] rounded-full bg-[var(--accent)] shadow-[0_0_10px_var(--accent)]" />
 							</div>
 						</div>
-					</SurfaceCard>
+					</SurfacePanel>
 
-					<SurfaceCard
+					<SurfacePanel
 						variant="muted"
 						padding="lg"
 						className="group relative overflow-hidden rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)] transition-all hover:bg-[var(--surface-2)]"
@@ -101,7 +101,7 @@ export const BillingSettings = () => {
 						<p className="mt-2 text-xs font-bold text-[var(--text-tertiary)] uppercase tracking-tighter">
 							Monthly Cycle
 						</p>
-					</SurfaceCard>
+					</SurfacePanel>
 				</div>
 
 				{/* Payment Method Card */}
@@ -109,7 +109,7 @@ export const BillingSettings = () => {
 					title="Arquitectura de Pagos"
 					description="Active credit matrix and billing scheduled events."
 				>
-					<SurfaceCard
+					<SurfacePanel
 						variant="muted"
 						padding="xl"
 						className="flex flex-col gap-6 rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)]/50 md:flex-row md:items-center md:justify-between"
@@ -133,7 +133,7 @@ export const BillingSettings = () => {
 						<SettingsButton variant="secondary" size="sm">
 							Change Method
 						</SettingsButton>
-					</SurfaceCard>
+					</SurfacePanel>
 				</SettingsSection>
 
 				{/* Invoice Ledger */}
@@ -141,7 +141,7 @@ export const BillingSettings = () => {
 					title="Libro de Facturas"
 					description="Verifiable billing artifacts for audit compliance."
 				>
-					<SurfaceCard
+					<SurfacePanel
 						variant="muted"
 						padding="none"
 						className="overflow-hidden rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)]/20"
@@ -194,7 +194,7 @@ export const BillingSettings = () => {
 								))}
 							</tbody>
 						</table>
-					</SurfaceCard>
+					</SurfacePanel>
 				</SettingsSection>
 			</div>
 		</SettingsShell>

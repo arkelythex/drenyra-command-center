@@ -1,7 +1,7 @@
 import { Bell, Globe, Mail, ShieldAlert, Zap } from "lucide-react";
 import { createElement, useState } from "react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import { cn } from "@/lib/utils";
 import {
 	SettingSwitch,
@@ -167,7 +167,7 @@ export const NotificationsSettings = () => {
 									color: "text-[var(--color-danger)]",
 								},
 							].map((item, idx) => (
-								<SurfaceCard
+								<SurfacePanel
 									key={idx}
 									variant="muted"
 									padding="lg"
@@ -192,7 +192,7 @@ export const NotificationsSettings = () => {
 											{item.msg}
 										</p>
 									</div>
-								</SurfaceCard>
+								</SurfacePanel>
 							))}
 						</div>
 					</div>

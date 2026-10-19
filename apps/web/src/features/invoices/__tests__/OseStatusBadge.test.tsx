@@ -15,6 +15,6 @@ describe("OseStatusBadge", () => {
 
 	it("falls back for an absent status", () => {
 		render(<OseStatusBadge status={null} className="custom-status" />);
-		expect(screen.getByText(/pendiente/i)).toHaveClass("custom-status");
+		expect(screen.getByText(/revision/i)).toHaveClass("custom-status");
 	});
 });

@@ -7,7 +7,7 @@
  * @module @drenyra/ai/gateway
  */
 
-import { loggers } from "../logger";
+import { loggers } from "../services/logger";
 import type { LLMProvider, RateLimitCheck } from "./types";
 
 /**
@@ -74,6 +74,7 @@ export class RateLimiter {
 
 		// Initialize state if not exists
 		if (!state) {
+			// biome-ignore lint/style/noNonNullAssertion: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 			const config = this.config.get(provider)!;
 			state = {
 				requestsPerMinute: config.requestsPerMinute,
@@ -159,6 +160,7 @@ export class RateLimiter {
 		provider: LLMProvider,
 	): { remainingRpm: number; remainingRpd: number } {
 		const check = this.check(organizationId, provider);
+		// biome-ignore lint/style/noNonNullAssertion: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 		const config = this.config.get(provider)!;
 
 		return {
@@ -202,6 +204,7 @@ export class RateLimiter {
 	 * Get rate limit configuration for a provider.
 	 */
 	getConfig(provider: LLMProvider): RateLimiterConfig {
+		// biome-ignore lint/style/noNonNullAssertion: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 		return this.config.get(provider)!;
 	}
 

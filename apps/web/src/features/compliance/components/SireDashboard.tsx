@@ -10,7 +10,11 @@ import { type ChangeEvent, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { cn, n } from "@/lib/utils";
 import { useSireReconciliation } from "../hooks/useSireReconciliation";
-import type { ReconciliationStats, SireDiscrepancy } from "../types/sire.types";
+import {
+	type ReconciliationStats,
+	SIRE_DISCREPANCY_LABELS,
+	type SireDiscrepancy,
+} from "../types/sire.types";
 
 const EMPTY_STATS: ReconciliationStats = {
 	totalSunat: 0,
@@ -21,8 +25,14 @@ const EMPTY_STATS: ReconciliationStats = {
 };
 
 export const SireDashboard = () => {
-	const { processFile, isProcessing, discrepancies, stats, sunatRecords } =
-		useSireReconciliation();
+	const {
+		processFile,
+		isProcessing,
+		discrepancies,
+		stats,
+		sunatRecords,
+		error,
+	} = useSireReconciliation();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const resolvedStats = stats ?? EMPTY_STATS;
 
@@ -74,18 +84,19 @@ export const SireDashboard = () => {
 
 			<div className="flex-1 overflow-y-auto p-6 sm:p-10 lg:p-14 bg-muted/5 custom-scrollbar pb-40">
 				<div className="max-w-7xl mx-auto space-y-12">
-					{sunatRecords.length === 0 ? (
+					{error && (
 						<div
-							className="group flex cursor-pointer flex-col items-center justify-center rounded-4xl border-2 border-dashed border-border bg-card py-40 shadow-lg transition-[background-color,border-color] duration-150 hover:bg-muted/30"
+							role="alert"
+							className="rounded-2xl border border-destructive/30 bg-destructive/10 px-6 py-4 text-sm text-destructive"
+						>
+							{error}
+						</div>
+					)}
+					{sunatRecords.length === 0 ? (
+						<button
+							type="button"
+							className="group flex w-full cursor-pointer flex-col items-center justify-center rounded-4xl border-2 border-dashed border-border bg-card py-40 shadow-lg transition-[background-color,border-color] duration-150 hover:bg-muted/30"
 							onClick={() => fileInputRef.current?.click()}
-							role="button"
-							tabIndex={0}
-							onKeyDown={(e) => {
-								if (e.key === "Enter" || e.key === " ") {
-									e.preventDefault();
-									fileInputRef.current?.click();
-								}
-							}}
 						>
 							<div className="text-center space-y-8 max-w-lg">
 								<div className="h-24 w-24 bg-primary/5 border border-primary/20 rounded-2xl flex items-center justify-center mx-auto text-primary shadow-lg group-hover:scale-105 transition-transform duration-150">
@@ -100,14 +111,11 @@ export const SireDashboard = () => {
 										la conciliación entre ARKELYTHEX y SUNAT.
 									</p>
 								</div>
-								<Button
-									variant="outline"
-									className="h-11 px-8 rounded-2xl text-2xs font-black uppercase tracking-widest mt-4 border-border hover:bg-muted/70"
-								>
+								<span className="mt-4 inline-flex h-11 items-center rounded-2xl border border-border px-8 text-2xs font-black uppercase tracking-widest group-hover:bg-muted/70">
 									+ Explorar Almacenamiento
-								</Button>
+								</span>
 							</div>
-						</div>
+						</button>
 					) : (
 						<>
 							{/* Stats Grid: High Precision */}
@@ -156,12 +164,7 @@ export const SireDashboard = () => {
 												</div>
 												<div>
 													<p className="font-black text-sm uppercase tracking-tight text-foreground/90">
-														{diff.type === "MISSING_IN_ARKELYTHEX" &&
-															"Omisión: Comprobante en SUNAT no registrado"}
-														{diff.type === "MISSING_IN_SUNAT" &&
-															"Riesgo: No figura en Portal SIRE"}
-														{diff.type === "AMOUNT_MISMATCH" &&
-															"Discrepancia: Diferencia de importes"}
+														{SIRE_DISCREPANCY_LABELS[diff.type]}
 													</p>
 													<p className="text-xs text-muted-foreground font-mono mt-1.5 opacity-70 tracking-widest uppercase">
 														{diff.recordSunat

@@ -13,7 +13,7 @@
  */
 
 import { createHash, randomUUID } from "node:crypto";
-import { loggers } from "../../../logger";
+import { loggers } from "../../../services/logger";
 import type {
 	AgentRunStatus,
 	AgentWorkflowState,
@@ -46,6 +46,7 @@ import type {
 } from "./types";
 
 /** Minimal OSE service client shape used by the orchestrator (no hard dependency on infrastructure) */
+// biome-ignore lint/correctness/noUnusedVariables: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 interface OSEServiceClient {
 	sendInvoice: (data: {
 		xmlContent: string;
@@ -168,6 +169,8 @@ export class WorkflowOrchestratorV2 {
 	 * @param phaseSkip - Optional phase skip options for session recovery.
 	 *                    When provided, the listed phases are skipped using prebuilt data.
 	 */
+
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 	async processInvoice(
 		input: ReaderInput,
 		runId?: string,
@@ -443,6 +446,8 @@ export class WorkflowOrchestratorV2 {
 	 *                    When skipPhases includes a phase, the corresponding
 	 *                    prebuilt data is used instead of running the agent.
 	 */
+
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 	private async executeAgentsInParallel(
 		processId: string,
 		input: ReaderInput,
@@ -761,6 +766,7 @@ export class WorkflowOrchestratorV2 {
 				});
 
 				const result = await this.validatorAgent.process({
+					// biome-ignore lint/style/noNonNullAssertion: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 					proposedInvoice: bestSource!,
 					complianceYear: 2026,
 					invoiceType: bestSource?.invoiceType || "01",
@@ -856,6 +862,8 @@ export class WorkflowOrchestratorV2 {
 	/**
 	 * Detect conflicts from parallel execution results
 	 */
+
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 	private detectConflictsFromResults(
 		results: ParallelExecutionResult,
 	): Conflict[] {
@@ -1044,6 +1052,8 @@ export class WorkflowOrchestratorV2 {
 	 * @throws SessionNotFoundError if the run has no persisted state
 	 * @throws SessionStoreError if the run is still active or already completed
 	 */
+
+	// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 	async recoverRun(
 		runId: string,
 		input: ReaderInput,

@@ -8,6 +8,9 @@ import {
 	resolveColumns,
 } from "../export-service";
 
+/** Exports start with a UTF-8 BOM for Excel; content assertions ignore it. */
+const stripBom = (text: string) => text.replace(/^\uFEFF/, "");
+
 describe("resolveColumns", () => {
 	it("uses provided columns when given", () => {
 		const columns = [
@@ -68,7 +71,7 @@ describe("CSV export", () => {
 			data: sampleData,
 		});
 
-		const text = await blob.text();
+		const text = stripBom(await blob.text());
 		const lines = text.split("\n");
 
 		expect(lines[0]).toBe("name,age,city");
@@ -87,7 +90,7 @@ describe("CSV export", () => {
 			],
 		});
 
-		const text = await blob.text();
+		const text = stripBom(await blob.text());
 		const lines = text.split("\n");
 
 		expect(lines[0]).toBe("Ciudad,Nombre");
@@ -102,7 +105,7 @@ describe("CSV export", () => {
 			format: "csv",
 			data,
 		});
-		const text = await blob.text();
+		const text = stripBom(await blob.text());
 		expect(text).toContain('"Alice ""The Great"""');
 	});
 
@@ -113,7 +116,7 @@ describe("CSV export", () => {
 			format: "csv",
 			data,
 		});
-		const text = await blob.text();
+		const text = stripBom(await blob.text());
 		expect(text).toContain('"Hello, World"');
 	});
 
@@ -124,7 +127,7 @@ describe("CSV export", () => {
 			format: "csv",
 			data,
 		});
-		const text = await blob.text();
+		const text = stripBom(await blob.text());
 		expect(text).toContain("Alice,,");
 	});
 
@@ -156,7 +159,7 @@ describe("TSV export", () => {
 			data: sampleData,
 		});
 
-		const text = await blob.text();
+		const text = stripBom(await blob.text());
 		const lines = text.split("\n");
 
 		expect(lines[0]).toBe("name\tage");
@@ -189,7 +192,7 @@ describe("JSON export", () => {
 		});
 
 		expect(blob.type).toBe("application/json;charset=utf-8");
-		const text = await blob.text();
+		const text = stripBom(await blob.text());
 		const parsed = JSON.parse(text);
 		expect(parsed).toEqual(sampleData);
 	});
@@ -200,7 +203,7 @@ describe("JSON export", () => {
 			format: "json",
 			data: sampleData,
 		});
-		const text = await blob.text();
+		const text = stripBom(await blob.text());
 		expect(text).toContain("\n");
 	});
 });
@@ -226,7 +229,7 @@ describe("plugin registration", () => {
 			data: [{ x: 1 }],
 		});
 
-		const text = await blob.text();
+		const text = stripBom(await blob.text());
 		expect(text).toBe("count:1");
 	});
 });
