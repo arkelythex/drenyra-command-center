@@ -25,8 +25,14 @@ const EMPTY_STATS: ReconciliationStats = {
 };
 
 export const SireDashboard = () => {
-	const { processFile, isProcessing, discrepancies, stats, sunatRecords } =
-		useSireReconciliation();
+	const {
+		processFile,
+		isProcessing,
+		discrepancies,
+		stats,
+		sunatRecords,
+		error,
+	} = useSireReconciliation();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const resolvedStats = stats ?? EMPTY_STATS;
 
@@ -78,6 +84,14 @@ export const SireDashboard = () => {
 
 			<div className="flex-1 overflow-y-auto p-6 sm:p-10 lg:p-14 bg-muted/5 custom-scrollbar pb-40">
 				<div className="max-w-7xl mx-auto space-y-12">
+					{error && (
+						<div
+							role="alert"
+							className="rounded-2xl border border-destructive/30 bg-destructive/10 px-6 py-4 text-sm text-destructive"
+						>
+							{error}
+						</div>
+					)}
 					{sunatRecords.length === 0 ? (
 						<button
 							type="button"
