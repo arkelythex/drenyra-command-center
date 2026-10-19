@@ -30,7 +30,8 @@ Un solo sistema de diseño, con una sola fuente de valores, sin componentes dupl
 - [ ] **3. Una sola API de tema:** que `ui.store` exponga lo que usan `ux-mode`/`UXModeToggle` (o al revés), un solo tipo `AccentPreset`/`DensityLevel` (hoy duplicado en el store y el esquema).
 - [ ] **4. Colapsar capas CSS:** fusionar `tokens.css` y `design-system.css` en `index.css` (o separar `index.css` en archivos por responsabilidad), eliminando valores repetidos.
 - [ ] **5. Unificar superficies:** migrar usos de `card` a `SurfaceCard`/`SurfacePanel` o al revés (22 vs 13 importadores; decidir con el diseño).
-- [ ] **6. Módulos fantasma:** escribir `useHaptics` y `MobileTabNavigation` mínimos con tests, o quitar sus usos en facturas y SIRE.
+- [x] **6. Módulos fantasma:** `hooks/useHaptics` (respeta `prefers-reduced-motion`, sin excepciones) y `components/layout/MobileTabNavigation` escritos con tests. Tablero de facturas, tarjeta y controlador vuelven a cargar; ratchet web 395→386.
+- [ ] **6b. Otro fantasma detectado:** `@/stores/sidebar-layout.store` (importado por ComplianceView, LedgerView, ReconciliationView) tampoco existe en git.
 - [ ] **7. `design-system/DESIGN.md`:** reemplazar el placeholder por un enlace al canon (una sola copia).
 
 ## Fuera de alcance
