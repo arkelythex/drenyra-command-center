@@ -41,7 +41,9 @@ const PCT_RE = /(\d+(?:\.\d+)?)%/g;
 function extractPercentage(text: string): number | null {
 	const matches = [...text.matchAll(PCT_RE)];
 	if (matches.length === 0) return null;
-	return Number.parseFloat(matches[matches.length - 1][1]);
+	const lastPct = matches[matches.length - 1]?.[1];
+	if (lastPct === undefined) return null;
+	return Number.parseFloat(lastPct);
 }
 
 function pass(
@@ -294,17 +296,21 @@ const debitCreditBalanceRule: VerificationRule = (finding, _riskLevel) => {
 	// Encontrar débitos y créditos
 	const debitMatch = finding.match(/d[ée]bito.*?S\/\s?([\d,]+(?:\.\d{2})?)/i);
 	const creditMatch = finding.match(/cr[eé]dito.*?S\/\s?([\d,]+(?:\.\d{2})?)/i);
-	let debit = debitMatch
-		? Number.parseFloat(debitMatch[1].replace(/,/g, ""))
-		: null;
-	let credit = creditMatch
-		? Number.parseFloat(creditMatch[1].replace(/,/g, ""))
-		: null;
+	const debitText = debitMatch?.[1];
+	const creditText = creditMatch?.[1];
+	let debit =
+		debitText !== undefined
+			? Number.parseFloat(debitText.replace(/,/g, ""))
+			: null;
+	let credit =
+		creditText !== undefined
+			? Number.parseFloat(creditText.replace(/,/g, ""))
+			: null;
 
 	// Fallback: si no se pudo extraer por etiqueta, usar los dos últimos montos significativos
 	if (debit === null && credit === null && amounts.length >= 2) {
-		debit = amounts[0];
-		credit = amounts[amounts.length - 1];
+		debit = amounts[0] ?? null;
+		credit = amounts[amounts.length - 1] ?? null;
 	}
 
 	if (debit === null || credit === null) {
@@ -350,7 +356,7 @@ const riskConfidenceConsistencyRule: VerificationRule = (
 
 	// Extraer porcentajes del finding
 	const pcts = [...finding.matchAll(PCT_RE)].map((m) =>
-		Number.parseFloat(m[1]),
+		Number.parseFloat(m[1] ?? ""),
 	);
 	if (pcts.length === 0) return null;
 

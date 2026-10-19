@@ -31,6 +31,7 @@ export function createAgentUIReadableStream(
 				const agent = new ToolLoopAgent({
 					model,
 					instructions: system,
+					// biome-ignore lint/suspicious/noExplicitAny: pre-existing; tool map is provider-defined
 					tools: tools as Record<string, any>,
 					stopWhen: stepCountIs(maxSteps),
 				});
@@ -68,8 +69,7 @@ export function createAgentUIReadableStream(
 
 				const doneChunk = `${JSON.stringify({
 					type: "done",
-					content:
-						allSteps.length > 0 ? allSteps[allSteps.length - 1].text : "",
+					content: allSteps[allSteps.length - 1]?.text ?? "",
 				})}\n`;
 				controller.enqueue(new TextEncoder().encode(doneChunk));
 			} catch (error) {
