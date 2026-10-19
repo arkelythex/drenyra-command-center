@@ -1,80 +1,92 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export type Theme = "dark" | "light";
-export type AccentPreset =
-	| "voltage"
-	| "ember"
-	| "cocoa"
-	| "terracotta"
-	| "teal"
-	| "steel"
-	| "sage"
-	| "lavender"
-	| "maple";
-export type Density = "compact" | "normal" | "spacious";
+import type {
+	AccentPreset,
+	DensityLevel,
+} from "@/lib/design-tokens/theme-package.schema";
+import {
+	normalizeThemePreference,
+	syncThemeDocumentState,
+	THEME_PREFERENCE,
+	type ThemePreference,
+	UI_STORAGE_KEY,
+} from "@/lib/ux-mode";
 
 interface UIState {
-	// Theme
-	theme: Theme;
-	accentPreset: AccentPreset;
-	setTheme: (theme: Theme) => void;
-	setAccentPreset: (preset: AccentPreset) => void;
+	/** Colour scheme choice, including "system". */
+	themePreference: ThemePreference;
+	/** `null` keeps the default accent defined in CSS. */
+	accentPreference: AccentPreset | null;
+	/** `null` keeps the default (normal) density defined in CSS. */
+	densityPreference: DensityLevel | null;
+	setThemePreference: (preference: ThemePreference) => void;
+	setAccentPreference: (accent: AccentPreset | null) => void;
+	setDensityPreference: (density: DensityLevel | null) => void;
 
-	// Layout
 	isRightRailOpen: boolean;
 	toggleRightRail: () => void;
 	setRightRailOpen: (open: boolean) => void;
-
-	// Density
-	density: Density;
-	setDensity: (density: Density) => void;
-
-	// Complexity
-	complexityLevel: "basic" | "intermediate" | "advanced";
-	setComplexityLevel: (level: "basic" | "intermediate" | "advanced") => void;
-
-	// Sidebar
-	isSidebarCollapsed: boolean;
-	toggleSidebar: () => void;
-	setSidebarCollapsed: (collapsed: boolean) => void;
 }
 
+/** Projects the three appearance preferences onto `<html>`. */
+function applyAppearance(
+	state: Pick<
+		UIState,
+		"themePreference" | "accentPreference" | "densityPreference"
+	>,
+): void {
+	syncThemeDocumentState(
+		state.themePreference,
+		undefined,
+		state.accentPreference,
+		state.densityPreference,
+	);
+}
+
+/**
+ * Single owner of appearance state. Persistence uses `UI_STORAGE_KEY`, the same
+ * key `ux-mode` reads before React mounts, so first paint matches the store.
+ */
 export const useUIStore = create<UIState>()(
 	persist(
-		(set) => ({
-			theme: "dark",
-			accentPreset: "ember",
-			setTheme: (theme) => {
-				document.documentElement.classList.toggle("light", theme === "light");
-				document.documentElement.classList.toggle("dark", theme === "dark");
-				set({ theme });
+		(set, get) => ({
+			themePreference: THEME_PREFERENCE.SYSTEM,
+			accentPreference: null,
+			densityPreference: null,
+			setThemePreference: (themePreference) => {
+				set({ themePreference });
+				applyAppearance(get());
 			},
-			setAccentPreset: (preset) => {
-				document.documentElement.setAttribute("data-accent", preset);
-				set({ accentPreset: preset });
+			setAccentPreference: (accentPreference) => {
+				set({ accentPreference });
+				applyAppearance(get());
+			},
+			setDensityPreference: (densityPreference) => {
+				set({ densityPreference });
+				applyAppearance(get());
 			},
 
 			isRightRailOpen: false,
 			toggleRightRail: () =>
 				set((s) => ({ isRightRailOpen: !s.isRightRailOpen })),
-			setRightRailOpen: (open) => set({ isRightRailOpen: open }),
-
-			density: "normal",
-			setDensity: (density) => {
-				document.documentElement.setAttribute("data-density", density);
-				set({ density });
-			},
-
-			complexityLevel: "advanced",
-			setComplexityLevel: (level) => set({ complexityLevel: level }),
-
-			isSidebarCollapsed: false,
-			toggleSidebar: () =>
-				set((s) => ({ isSidebarCollapsed: !s.isSidebarCollapsed })),
-			setSidebarCollapsed: (collapsed) =>
-				set({ isSidebarCollapsed: collapsed }),
+			setRightRailOpen: (isRightRailOpen) => set({ isRightRailOpen }),
 		}),
-		{ name: "drenyra-ui-store" },
+		{
+			name: UI_STORAGE_KEY,
+			partialize: (s) => ({
+				themePreference: s.themePreference,
+				accentPreference: s.accentPreference,
+				densityPreference: s.densityPreference,
+			}),
+			merge: (persisted, current) => {
+				const saved = (persisted ?? {}) as Partial<UIState>;
+				return {
+					...current,
+					themePreference: normalizeThemePreference(saved.themePreference),
+					accentPreference: saved.accentPreference ?? null,
+					densityPreference: saved.densityPreference ?? null,
+				};
+			},
+		},
 	),
 );

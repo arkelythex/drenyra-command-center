@@ -23,7 +23,9 @@ export interface WorkspaceUIState {
 
 	// Density override (null = follows global preference)
 	densityOverride: "compact" | "normal" | "spacious" | null;
-	setDensityOverride: (density: "compact" | "normal" | "spacious" | null) => void;
+	setDensityOverride: (
+		density: "compact" | "normal" | "spacious" | null,
+	) => void;
 }
 
 export const useWorkspaceStore = create<WorkspaceUIState>()((set) => ({
