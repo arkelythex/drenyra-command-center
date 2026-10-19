@@ -9,40 +9,21 @@ import {
 	createApiDevServerPlugin,
 	createApiProxyConfig,
 } from "./vite.dev-api-proxy";
+import {
+	isServerOnlyModule,
+	resolveManualChunk,
+} from "./vite-plugins/bundle-rules";
 import { cspPlugin } from "./vite-plugins/csp";
 
 const enableReactCompiler =
 	process.env.NODE_ENV === "production" || process.env.REACT_COMPILER === "1";
 
-function resolveManualChunk(id: string): string | undefined {
-	if (!id.includes("node_modules")) return undefined;
-
-	// IMPORTANT: @sentry/react would match /react/ — check Sentry FIRST
-	if (id.includes("/@sentry/")) return "vendor-sentry";
-	if (id.includes("/react/") || id.includes("/react-dom/"))
-		return "vendor-react";
-	if (id.includes("/xstate/")) return "vendor-xstate";
-	if (id.includes("/nanostores/")) return "vendor-misc";
-	if (id.includes("/@tanstack/")) return "vendor-tanstack";
-	if (id.includes("/@radix-ui/")) return "vendor-radix";
-	if (id.includes("/@dnd-kit/")) return undefined;
-	if (id.includes("/recharts/") || id.includes("/d3-")) return undefined;
-	if (
-		id.includes("/react-hook-form/") ||
-		id.includes("/zod/") ||
-		id.includes("/@hookform/")
-	)
-		return "vendor-forms";
-	if (id.includes("/@react-pdf/") || id.includes("/qrcode/"))
-		return "vendor-docs";
-	if (id.includes("/tailwind-merge/")) return "vendor-utils";
-	if (id.includes("/framer-motion/") || id.includes("/motion-dom/"))
-		return "vendor-animation";
-	if (id.includes("/lucide-react/") || id.includes("/sonner/"))
-		return "vendor-ui";
-
-	return undefined;
-}
+/**
+ * Module Federation is opt-in (`MF_REMOTE=1`). The federation plugin emits
+ * shared-dependency chunks that import raw `/node_modules/...` paths, so a
+ * federated build renders a blank page when served standalone.
+ */
+const buildFederatedRemote = process.env.MF_REMOTE === "1";
 
 export default defineConfig({
 	// React Compiler configuration for 2026 - automatic memoization
@@ -77,7 +58,7 @@ export default defineConfig({
 				: undefined,
 		),
 		tailwindcss(),
-		...(process.env.NODE_ENV === "production"
+		...(buildFederatedRemote
 			? [
 					federation({
 						name: "drenyra",
@@ -133,9 +114,7 @@ export default defineConfig({
 		include: ["@tanstack/react-query-devtools"],
 		exclude: [
 			"@drenyra/infrastructure",
-			...(process.env.NODE_ENV === "production"
-				? ["@module-federation/vite"]
-				: []),
+			...(buildFederatedRemote ? ["@module-federation/vite"] : []),
 		],
 	},
 	build: {
@@ -145,20 +124,11 @@ export default defineConfig({
 					return resolveManualChunk(id);
 				},
 			},
-			external: (id) => {
-				// Externalize Node.js modules that shouldn't be in frontend bundle
-				if (
-					id.includes("crypto") ||
-					id.includes("fs") ||
-					id.includes("path") ||
-					id.includes("os") ||
-					id.includes("stream") ||
-					id.includes("redis") ||
-					id.includes("postgres")
-				) {
-					return true;
-				}
-				return false;
+			external: isServerOnlyModule,
+			// An unused server-only import must vanish instead of surviving as a bare
+			// `import "node:crypto"` that the browser cannot resolve.
+			treeshake: {
+				moduleSideEffects: (_id, external) => (external ? false : undefined),
 			},
 		},
 	},

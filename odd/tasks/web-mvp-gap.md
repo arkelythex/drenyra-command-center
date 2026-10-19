@@ -58,3 +58,11 @@ Antes de C/D, insertar **A3: arreglar lo que impide cargar** (tokens de motion e
 - `apps/web/src/lib/design-tokens.ts` es un **stub «minimal»** (solo `tokens`, `MOTION_VARIANTS = {hidden, visible}`, `tokensToClasses`). Los consumidores esperan `MOTION_VARIANTS.spring/springGentle/modal`, `Z_INDEX`, `BORDER_RADIUS`, `useDesignTokens` y `design-tokens/theme-package(.schema)`. Eso rompe `motion-primitives` y, con él, login/registro.
 - `src/hooks/useHaptics` y `components/layout/MobileTabNavigation` **nunca existieron en git** (`git log --all` sin rastro): no se pueden restaurar, hay que escribirlos o quitar sus usos.
 - Decisión pendiente: restaurar un módulo de tokens real (alineado con `apps/web/DESIGN.md` y `design-system/`) en vez de parchear cada consumidor.
+
+## Hallazgo A2 (2026-10-19): el build de producción renderizaba una página en blanco
+Medido con Chromium (Playwright) sobre `vite build` + `vite preview`: pantalla en blanco, `Failed to fetch dynamically imported module`. Tres causas independientes, todas en `apps/web/vite.config.ts` y su entorno:
+1. **Module Federation** emitía chunks `loadShare` con rutas crudas `/node_modules/...` (404). Ahora es opt-in (`MF_REMOTE=1`); el build estándar no lo usa. Nadie en el repo consume `remoteEntry.js` (solo lo menciona el ADR-034).
+2. **`external` por subcadena:** `id.includes("fs"|"os"|"path"|"stream"…)` externalizaba `@radix-ui/react-compose-refs` («re**fs**»), `react-popover` («p**os**t»…), etc., dejando imports desnudos. Ahora es coincidencia exacta (`vite-plugins/bundle-rules.ts`, con tests).
+3. **`import "node:crypto"` en el bundle** (de `@drenyra/shared`/`domain`, imports de efecto sin uso): `treeshake.moduleSideEffects` descarta los externos sin uso. (Importar `@drenyra/shared/validation/ruc` en vez del barril también era buena idea, pero cambia el grafo de tipos del ratchet —carga `@types/node` distinto— y se deja para una fase de tsconfig.)
+Resultado: `/login` y `/signup` renderizan en el build de producción (captura verificada). Sin estos cambios ningún usuario podía ver la app.
+Pendiente visible en la captura: campos de formulario blancos sobre fondo oscuro, iconos superpuestos al texto (capa de color; ver ODD de sistema de diseño, fase 4).
