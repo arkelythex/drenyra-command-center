@@ -21,16 +21,13 @@
  * marked failed — fencing guarantees exactly one owner per mission.
  */
 
-import { and, eq, inArray } from "drizzle-orm";
+import { AccountingMissionStatus } from "@drenyra/mission-protocol";
 import { accountingMissions, missionEvents } from "@drenyra/persistence/schema";
-import {
-	AccountingMissionStatus,
-	MissionErrorCode,
-} from "@drenyra/mission-protocol";
-import { MissionsService } from "./missions.service";
-import { MissionLeaseService } from "./mission-lease.service";
-import { getIntentHandler } from "./intent-handlers/intent-handlers.registry";
+import { and, eq, inArray } from "drizzle-orm";
 import { createLogger } from "../../lib/logger";
+import { getIntentHandler } from "./intent-handlers/intent-handlers.registry";
+import { MissionLeaseService } from "./mission-lease.service";
+import { MissionsService } from "./missions.service";
 
 const logger = createLogger({ module: "mission-recovery" });
 
@@ -108,15 +105,13 @@ export async function runMissionRecovery(
 			// left claimed and RUNNING for an external executor.
 			const handler = getIntentHandler(mission.intent as string);
 			if (handler) {
-				handler
-					.onRunning(missionId, companyId)
-					.catch((err: unknown) => {
-						logger.error(
-							{ missionId, err: String(err) },
-							"Recovery re-dispatch failed",
-						);
-						result.failed += 1;
-					});
+				handler.onRunning(missionId, companyId).catch((err: unknown) => {
+					logger.error(
+						{ missionId, err: String(err) },
+						"Recovery re-dispatch failed",
+					);
+					result.failed += 1;
+				});
 				result.recovered += 1;
 			} else {
 				result.skipped += 1;

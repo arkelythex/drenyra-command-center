@@ -48,7 +48,6 @@ export { NavSection, type NavSectionProps } from "./NavSection";
 export { PageHeader, type PageHeaderProps } from "./PageHeader";
 export { PageShell, type PageShellProps } from "./PageShell";
 export { StatusBadge, type StatusBadgeProps } from "./StatusBadge";
-export { SurfaceCard, type SurfaceCardProps } from "./SurfaceCard";
 export {
 	SurfacePanel,
 	type SurfacePanelProps,

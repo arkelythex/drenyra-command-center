@@ -1,0 +1,271 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ModelRouter.route (characterization) > pins the decision for every risk level x required capabilities on the default registry 1`] = `
+{
+  "R0 | ["does_not_exist"]": {
+    "error": "NO_SUITABLE_MODEL",
+  },
+  "R0 | ["extraction"]": {
+    "alternatives": [
+      "deepseek-v4-flash",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R0 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R0 | ["judgment_day"]": {
+    "alternatives": [],
+    "estimatedCost": 0.1,
+    "provider": "deepseek",
+    "reasoning": "Selected deepseek-v4-pro (opus) for R0 — supports constrained output",
+    "selectedModel": "deepseek-v4-pro",
+    "tier": "opus",
+  },
+  "R0 | ["ocr","normative_reasoning"]": {
+    "error": "NO_SUITABLE_MODEL",
+  },
+  "R0 | ["validation","analysis"]": {
+    "alternatives": [],
+    "estimatedCost": 0.0075,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.5-flash (reasoning) for R0 — supports constrained output",
+    "selectedModel": "gemini-2.5-flash",
+    "tier": "reasoning",
+  },
+  "R0 | []": {
+    "alternatives": [
+      "deepseek-v4-flash",
+      "gemini-2.5-flash",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R0 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R0 | undefined": {
+    "alternatives": [
+      "deepseek-v4-flash",
+      "gemini-2.5-flash",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R0 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R1 | ["does_not_exist"]": {
+    "error": "NO_SUITABLE_MODEL",
+  },
+  "R1 | ["extraction"]": {
+    "alternatives": [
+      "deepseek-v4-flash",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R1 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R1 | ["judgment_day"]": {
+    "alternatives": [],
+    "estimatedCost": 0.1,
+    "provider": "deepseek",
+    "reasoning": "Selected deepseek-v4-pro (opus) for R1 — supports constrained output",
+    "selectedModel": "deepseek-v4-pro",
+    "tier": "opus",
+  },
+  "R1 | ["ocr","normative_reasoning"]": {
+    "error": "NO_SUITABLE_MODEL",
+  },
+  "R1 | ["validation","analysis"]": {
+    "alternatives": [],
+    "estimatedCost": 0.0075,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.5-flash (reasoning) for R1 — supports constrained output",
+    "selectedModel": "gemini-2.5-flash",
+    "tier": "reasoning",
+  },
+  "R1 | []": {
+    "alternatives": [
+      "deepseek-v4-flash",
+      "gemini-2.5-flash",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R1 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R1 | undefined": {
+    "alternatives": [
+      "deepseek-v4-flash",
+      "gemini-2.5-flash",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R1 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R2 | ["does_not_exist"]": {
+    "error": "NO_SUITABLE_MODEL",
+  },
+  "R2 | ["extraction"]": {
+    "alternatives": [
+      "deepseek-v4-flash",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R2 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R2 | ["judgment_day"]": {
+    "alternatives": [],
+    "estimatedCost": 0.1,
+    "provider": "deepseek",
+    "reasoning": "Selected deepseek-v4-pro (opus) for R2 — supports constrained output",
+    "selectedModel": "deepseek-v4-pro",
+    "tier": "opus",
+  },
+  "R2 | ["ocr","normative_reasoning"]": {
+    "error": "NO_SUITABLE_MODEL",
+  },
+  "R2 | ["validation","analysis"]": {
+    "alternatives": [],
+    "estimatedCost": 0.0075,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.5-flash (reasoning) for R2 — supports constrained output",
+    "selectedModel": "gemini-2.5-flash",
+    "tier": "reasoning",
+  },
+  "R2 | []": {
+    "alternatives": [
+      "deepseek-v4-flash",
+      "gemini-2.5-flash",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R2 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R2 | undefined": {
+    "alternatives": [
+      "deepseek-v4-flash",
+      "gemini-2.5-flash",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R2 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R3 | ["does_not_exist"]": {
+    "error": "NO_SUITABLE_MODEL",
+  },
+  "R3 | ["extraction"]": {
+    "alternatives": [
+      "deepseek-v4-flash",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R3 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R3 | ["judgment_day"]": {
+    "alternatives": [],
+    "estimatedCost": 0.1,
+    "provider": "deepseek",
+    "reasoning": "Selected deepseek-v4-pro (opus) for R3 — supports constrained output",
+    "selectedModel": "deepseek-v4-pro",
+    "tier": "opus",
+  },
+  "R3 | ["ocr","normative_reasoning"]": {
+    "error": "NO_SUITABLE_MODEL",
+  },
+  "R3 | ["validation","analysis"]": {
+    "alternatives": [],
+    "estimatedCost": 0.0075,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.5-flash (reasoning) for R3 — supports constrained output",
+    "selectedModel": "gemini-2.5-flash",
+    "tier": "reasoning",
+  },
+  "R3 | []": {
+    "alternatives": [
+      "deepseek-v4-flash",
+      "gemini-2.5-flash",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R3 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R3 | undefined": {
+    "alternatives": [
+      "deepseek-v4-flash",
+      "gemini-2.5-flash",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R3 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+}
+`;
+
+exports[`ModelRouter.route (characterization) > skips unavailable models 1`] = `
+{
+  "R0": {
+    "alternatives": [
+      "deepseek-v4-flash",
+      "claude-sonnet-4",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R0 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R1": {
+    "alternatives": [
+      "deepseek-v4-flash",
+      "claude-sonnet-4",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R1 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R2": {
+    "alternatives": [
+      "deepseek-v4-flash",
+      "claude-sonnet-4",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R2 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+  "R3": {
+    "alternatives": [
+      "deepseek-v4-flash",
+      "claude-sonnet-4",
+    ],
+    "estimatedCost": 0.005,
+    "provider": "google",
+    "reasoning": "Selected gemini-2.0-flash (flash) for R3 — supports constrained output",
+    "selectedModel": "gemini-2.0-flash",
+    "tier": "flash",
+  },
+}
+`;

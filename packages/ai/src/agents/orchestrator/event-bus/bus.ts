@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { loggers } from "../../../logger";
+import { loggers } from "../../../services/logger";
 import type {
 	AgentEvent,
 	AgentEventHandler,
@@ -64,6 +64,7 @@ export class EventBus implements IEventBus {
 			this.subscriptions.set(eventType, new Map());
 		}
 
+		// biome-ignore lint/style/noNonNullAssertion: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 		const subscribers = this.subscriptions.get(eventType)!;
 		subscribers.set(subscriptionId, handler as AgentEventHandler);
 

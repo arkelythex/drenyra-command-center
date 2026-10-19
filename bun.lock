@@ -148,6 +148,7 @@
         "cmdk": "^1.1.1",
         "date-fns": "^4.1.0",
         "diff": "^9.0.0",
+        "fflate": "^0.8.2",
         "framer-motion": "^12.27.3",
         "lucide-react": "1.25.0",
         "qrcode": "^1.5.4",
@@ -157,6 +158,7 @@
         "react-hook-form": "^7.71.1",
         "recharts": "^3.8.1",
         "sonner": "^2.0.7",
+        "web-vitals": "^6.2.3",
         "xstate": "^5.28.0",
         "zod": "^4.3.5",
         "zustand": "^5.0.10",
@@ -3248,6 +3250,8 @@
     "walkdir": ["walkdir@0.4.1", "", {}, "sha512-3eBwRyEln6E1MSzcxcVpQIhRG8Q1jLvEqRmCZqS3dsfXEDR/AhOF4d+jHg1qvDCpYaVRZjENPQyrVxAkQqxPgQ=="],
 
     "wcwidth": ["wcwidth@1.0.1", "", { "dependencies": { "defaults": "^1.0.3" } }, "sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg=="],
+
+    "web-vitals": ["web-vitals@6.2.3", "", {}, "sha512-Dmy+vdO1UPMqXiAtZSNayhl4f794Bxfd94W4HIj2HlYtczEQfEOon969memlcpcHrTuOKLa5baFjX7WbgmOq+A=="],
 
     "webidl-conversions": ["webidl-conversions@8.0.1", "", {}, "sha512-BMhLD/Sw+GbJC21C/UgyaZX41nPt8bUTg+jWyDeg7e7YN4xOM05YPSIXceACnXVtqyEw/LMClUQMtMZ+PGGpqQ=="],
 

@@ -7,12 +7,12 @@
 
 import { ContextMonitor, ContextPruner } from "../context-monitor";
 import { PermissionService } from "../governance/permission-service";
-import { loggers } from "../logger";
 import { MemoryContextProvider } from "../memory";
 import {
 	PersistentCircuitBreaker,
 	RetryEngine,
 } from "../services/error-recovery";
+import { loggers } from "../services/logger";
 import { SessionRecovery } from "../session/session-recovery";
 import type { SessionStore } from "../session/session-store";
 import {

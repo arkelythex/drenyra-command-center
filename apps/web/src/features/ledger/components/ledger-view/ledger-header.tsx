@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 interface LedgerHeaderProps {
 	/** Periodo del libro (mes calendario actual), mostrado en el encabezado. */
 	periodLabel: string;
-	stickyZIndex: number;
+	stickyZIndex: number | string;
 	iconBorderRadius: string;
 	onOpenMobileSidebar: () => void;
 	onExport: () => void;

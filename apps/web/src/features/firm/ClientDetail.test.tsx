@@ -38,19 +38,26 @@ describe("ClientDetail", () => {
 		expect(labels[0]).toBeInTheDocument();
 	});
 
-	it("shows all 4 tabs", () => {
+	it("shows all detail tabs", () => {
 		render(<ClientDetail clientId="client-1" />);
 
-		expect(screen.getByText("Resumen")).toBeInTheDocument();
-		expect(screen.getByText("Misiones")).toBeInTheDocument();
-		expect(screen.getByText("Evidencia")).toBeInTheDocument();
-		expect(screen.getByText("Historial")).toBeInTheDocument();
+		for (const label of [
+			"Resumen",
+			"Comprobantes",
+			"Bancos",
+			"Impuestos",
+			"Reportes",
+			"Evidencia",
+			"Historial",
+		]) {
+			expect(screen.getByText(label)).toBeInTheDocument();
+		}
 	});
 
 	it("shows back link to client list", () => {
 		render(<ClientDetail clientId="client-1" />);
 
-		const backLink = screen.getByText("Volver a clientes");
+		const backLink = screen.getByText("Volver a empresas");
 		expect(backLink).toBeInTheDocument();
 		expect(backLink.closest("a")).toHaveAttribute("href", "/firm/clients");
 	});

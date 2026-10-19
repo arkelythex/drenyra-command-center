@@ -9,13 +9,10 @@
  * event emission through SSE, and recovery after restart.
  */
 
-import type { MissionEventStore } from "./sse/mission-event-store";
-import type { MissionsService } from "./missions.service";
 import type { MonthlyCloseOrchestrator } from "@drenyra/application/use-cases/monthly-close";
-import {
-	AccountingMissionStatus,
-	type MissionStep,
-} from "@drenyra/mission-protocol";
+import { AccountingMissionStatus } from "@drenyra/mission-protocol";
+import type { MissionsService } from "./missions.service";
+import type { MissionEventStore } from "./sse/mission-event-store";
 
 export class MissionRuntime {
 	constructor(

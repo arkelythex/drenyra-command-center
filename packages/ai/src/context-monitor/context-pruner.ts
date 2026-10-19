@@ -14,7 +14,7 @@
 
 import { AVAILABLE_MODELS } from "../ai/model-registry";
 import type { ChatMessage } from "../gateway/types";
-import { loggers } from "../logger";
+import { loggers } from "../services/logger";
 import type {
 	ContextPrunerConfig,
 	PruneResult,
@@ -108,6 +108,7 @@ export class ContextPruner {
 			}
 
 			// ── Execute strategy ─────────────────────────────────────────────
+			// biome-ignore lint/style/useConst: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 			let pruned: ChatMessage[];
 			const strategyUsed = this.executeStrategy(messages);
 

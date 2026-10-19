@@ -1,9 +1,11 @@
 import pino from "pino";
 
-const isDevelopment = process.env.NODE_ENV !== "production";
-const isBun = Boolean(process.versions?.bun);
+// The web bundle imports this barrel too, where `process` does not exist.
+const runtime = typeof process === "undefined" ? undefined : process;
+const isDevelopment = runtime?.env?.NODE_ENV !== "production";
+const isBun = Boolean(runtime?.versions?.bun);
 const enablePretty =
-	isDevelopment && !isBun && process.env.LOG_PRETTY?.toLowerCase() === "true";
+	isDevelopment && !isBun && runtime?.env?.LOG_PRETTY?.toLowerCase() === "true";
 
 export const REDACTION_PLACEHOLDER = "[REDACTED]";
 
@@ -89,7 +91,7 @@ export function redactLogPayload(payload: unknown): unknown {
 }
 
 export const rootLogger = pino({
-	level: process.env.LOG_LEVEL ?? (isDevelopment ? "debug" : "info"),
+	level: runtime?.env?.LOG_LEVEL ?? (isDevelopment ? "debug" : "info"),
 	formatters: {
 		level: (label) => ({ level: label }),
 		bindings: (bindings) => ({

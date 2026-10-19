@@ -6,7 +6,7 @@
 
 import { db as globalDb } from "@drenyra/persistence/client";
 import { and, desc, eq, gte, lte, sql } from "@drenyra/persistence/query";
-import { invoices, bills } from "@drenyra/persistence/schema";
+import { bills, businessPartners, invoices } from "@drenyra/persistence/schema";
 import type { GeneralLedgerReport } from "../../reports.schemas";
 
 interface LedgerEntry {
@@ -37,7 +37,6 @@ export async function getGeneralLedger(
 ): Promise<GeneralLedgerReport> {
 	const entries: LedgerEntry[] = [];
 	let runningBalance = 0;
-	let seq = 0;
 
 	// Invoice entries (revenue / AR)
 	const invoiceEntries = await db
@@ -47,9 +46,11 @@ export async function getGeneralLedger(
 			number: invoices.invoiceNumber,
 			amount: invoices.totalAmount,
 			status: invoices.status,
-			customerName: invoices.customerName,
+			// The name lives on the business partner (invoices only store customerId)
+			customerName: businessPartners.legalName,
 		})
 		.from(invoices)
+		.leftJoin(businessPartners, eq(invoices.customerId, businessPartners.id))
 		.where(
 			and(
 				eq(invoices.companyId, companyId),
@@ -64,7 +65,6 @@ export async function getGeneralLedger(
 		.orderBy(desc(invoices.issueDate));
 
 	for (const inv of invoiceEntries) {
-		seq++;
 		const amount = parseFloat(inv.amount ?? "0");
 		runningBalance += amount;
 
@@ -89,9 +89,11 @@ export async function getGeneralLedger(
 				number: bills.billNumber,
 				amount: bills.totalAmount,
 				status: bills.status,
-				supplierName: bills.supplierName,
+				// The name lives on the business partner (bills only store vendorId)
+				supplierName: businessPartners.legalName,
 			})
 			.from(bills)
+			.leftJoin(businessPartners, eq(bills.vendorId, businessPartners.id))
 			.where(
 				and(
 					eq(bills.companyId, companyId),
@@ -103,7 +105,6 @@ export async function getGeneralLedger(
 			.orderBy(desc(bills.issueDate));
 
 		for (const bill of billEntries) {
-			seq++;
 			const amount = parseFloat(bill.amount ?? "0");
 			runningBalance -= amount;
 

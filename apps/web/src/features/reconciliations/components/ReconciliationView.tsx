@@ -1,6 +1,6 @@
 import { ChevronDown, Landmark } from "lucide-react";
 import { useFinancialHaptics, useHaptics } from "@/hooks/useHaptics";
-import { useSidebarLayout } from "@/stores/sidebar-layout.store";
+import { useAgenticShell } from "@/stores/agentic-shell.store";
 import { useReconciliationWorkspace } from "../hooks/use-reconciliation-workspace";
 import { RECONCILIATION_LEDGER_ENTRIES } from "../reconciliation.data";
 import {
@@ -15,7 +15,7 @@ import { ReconciliationMatchWorkspace } from "./sections/ReconciliationMatchWork
 import { ReconciliationQueuePanel } from "./sections/ReconciliationQueuePanel";
 
 export const ReconciliationView = () => {
-	const { setIsMobileOpen } = useSidebarLayout();
+	const setIsMobileOpen = useAgenticShell((s) => s.setSidebarMobileOpen);
 	const { trigger } = useHaptics();
 	const financialHaptics = useFinancialHaptics();
 	const {
@@ -45,6 +45,7 @@ export const ReconciliationView = () => {
 						Cuenta activa
 					</span>
 					<button
+						type="button"
 						onClick={() => trigger("light")}
 						className="flex items-center gap-2 rounded-lg border border-border/60 bg-background px-3 py-1.5 text-sm font-black text-foreground shadow-sm transition-colors hover:border-info-subtle hover:text-info hover:shadow-md"
 					>
