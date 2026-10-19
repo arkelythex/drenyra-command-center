@@ -77,18 +77,17 @@ function computeMetrics(
 	// Desglose por regla
 	const perRuleMetrics: VerificationMetrics["perRuleMetrics"] = {};
 	for (const f of findings) {
-		if (!perRuleMetrics[f.rule]) {
-			perRuleMetrics[f.rule] = {
-				passed: 0,
-				failed: 0,
-				inconclusive: 0,
-				total: 0,
-			};
-		}
-		perRuleMetrics[f.rule].total++;
-		if (f.status === "pass") perRuleMetrics[f.rule].passed++;
-		else if (f.status === "fail") perRuleMetrics[f.rule].failed++;
-		else if (f.status === "inconclusive") perRuleMetrics[f.rule].inconclusive++;
+		const metrics = perRuleMetrics[f.rule] ?? {
+			passed: 0,
+			failed: 0,
+			inconclusive: 0,
+			total: 0,
+		};
+		perRuleMetrics[f.rule] = metrics;
+		metrics.total++;
+		if (f.status === "pass") metrics.passed++;
+		else if (f.status === "fail") metrics.failed++;
+		else if (f.status === "inconclusive") metrics.inconclusive++;
 	}
 
 	return {

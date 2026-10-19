@@ -30,6 +30,7 @@ import type { SessionStore } from "./session-store";
  * Drizzle database client shape.
  * We accept any Drizzle instance that supports standard query operations.
  */
+// biome-ignore lint/suspicious/noExplicitAny: pre-existing; Drizzle generics are intentionally open
 type DrizzleClient = PgDatabase<any, any, any>;
 
 /**
@@ -293,9 +294,9 @@ export class PostgresSessionStore implements SessionStore {
 				.where(eq(agentRunInputs.runId, runId))
 				.limit(1);
 
-			if (rows.length === 0) return null;
-
 			const row = rows[0];
+			if (!row) return null;
+
 			return {
 				runId: row.runId,
 				inputType: row.inputType,
