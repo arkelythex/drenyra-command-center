@@ -35,10 +35,11 @@ export async function resolveOrganizationId(
 		.where(eq(schema.companies.id, companyId))
 		.limit(1);
 
-	if (!row.length) {
+	const first = row[0];
+	if (!first) {
 		throw new Error(`No se encontró organización para company ${companyId}`);
 	}
-	return row[0].id;
+	return first.id;
 }
 
 /**

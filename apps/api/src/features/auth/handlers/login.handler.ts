@@ -39,11 +39,11 @@ async function findDurableLockoutState(
 		.where(eq(authUsers.email, email))
 		.limit(1);
 
-	if (rows.length === 0) {
+	const [row] = rows;
+	if (!row) {
 		return null;
 	}
 
-	const [row] = rows;
 	return {
 		userId: row.userId,
 		failedLoginAttempts: row.failedLoginAttempts,

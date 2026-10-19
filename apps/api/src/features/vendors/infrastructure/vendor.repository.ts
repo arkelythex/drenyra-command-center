@@ -64,6 +64,7 @@ export class VendorRepository implements IVendorRepository {
 						createdAt: now,
 					})
 					.returning();
+				if (!partner) throw new Error("Proveedor no encontrado");
 
 				const [profile] = await tx
 					.insert(vendorProfiles)
@@ -78,6 +79,7 @@ export class VendorRepository implements IVendorRepository {
 						updatedAt: now,
 					})
 					.returning();
+				if (!profile) throw new Error("Proveedor no encontrado");
 
 				return { partner, profile };
 			},
@@ -109,6 +111,7 @@ export class VendorRepository implements IVendorRepository {
 						),
 					)
 					.returning();
+				if (!partner) throw new Error("Proveedor no encontrado");
 
 				const [profile] = await tx
 					.update(vendorProfiles)
@@ -124,6 +127,7 @@ export class VendorRepository implements IVendorRepository {
 					})
 					.where(eq(vendorProfiles.id, input.id))
 					.returning();
+				if (!profile) throw new Error("Proveedor no encontrado");
 
 				return { partner, profile };
 			},
@@ -151,12 +155,14 @@ export class VendorRepository implements IVendorRepository {
 						),
 					)
 					.returning();
+				if (!updatedPartner) throw new Error("Proveedor no encontrado");
 
 				const [updatedProfile] = await tx
 					.update(vendorProfiles)
 					.set({ updatedAt: now })
 					.where(eq(vendorProfiles.id, id))
 					.returning();
+				if (!updatedProfile) throw new Error("Proveedor no encontrado");
 
 				return {
 					partner: updatedPartner,

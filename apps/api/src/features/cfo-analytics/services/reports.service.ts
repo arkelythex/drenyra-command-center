@@ -23,6 +23,8 @@ export class ReportsService {
 			})
 			.returning();
 
+		if (!report) throw new Error("No se pudo crear el reporte");
+
 		await db
 			.update(analyticsReports)
 			.set({ status: "READY", generatedAt: new Date() })

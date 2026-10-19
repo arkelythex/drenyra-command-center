@@ -113,6 +113,8 @@ class InterCompanyTransactionRepository
 					currency: "PEN",
 				})
 				.returning();
+			if (!expense)
+				throw new Error("No se pudo registrar la transacción inter-company");
 
 			const [income] = await tx
 				.insert(transactions)
@@ -132,6 +134,8 @@ class InterCompanyTransactionRepository
 					currency: "PEN",
 				})
 				.returning();
+			if (!income)
+				throw new Error("No se pudo registrar la transacción inter-company");
 
 			const [link] = await tx
 				.insert(interCompanyTransactions)
@@ -153,6 +157,8 @@ class InterCompanyTransactionRepository
 					reconciledAt: new Date(),
 				})
 				.returning();
+			if (!link)
+				throw new Error("No se pudo registrar la transacción inter-company");
 
 			return { interCompany: link, expense, income, calculations };
 		}) as Promise<CreateInterCompanyTransactionResult>;

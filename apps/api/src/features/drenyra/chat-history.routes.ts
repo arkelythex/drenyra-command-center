@@ -90,8 +90,9 @@ export const chatHistoryRoutes = new Elysia({
 				.limit(1)
 				.execute();
 
-			if (existing.length > 0) {
-				sessionId = existing[0].id;
+			const existingSession = existing[0];
+			if (existingSession) {
+				sessionId = existingSession.id;
 				await db
 					.update(chatSessions)
 					.set({ updatedAt: new Date() })
@@ -109,7 +110,10 @@ export const chatHistoryRoutes = new Elysia({
 					})
 					.returning({ id: chatSessions.id })
 					.execute();
-				sessionId = inserted[0].id;
+				const insertedSession = inserted[0];
+				if (!insertedSession)
+					throw new Error("No se pudo crear la sesión de chat");
+				sessionId = insertedSession.id;
 			}
 
 			if (incomingMessages.length > 0) {
@@ -172,11 +176,12 @@ export const chatHistoryRoutes = new Elysia({
 				.limit(1)
 				.execute();
 
-			if (session.length === 0) {
+			const latestSession = session[0];
+			if (!latestSession) {
 				return ok({ messages: [], sessionId: null });
 			}
 
-			const sessionId = session[0].id;
+			const sessionId = latestSession.id;
 
 			const rows = await db
 				.select({
