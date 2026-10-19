@@ -19,7 +19,7 @@
  */
 
 import * as SelectPrimitive from "@radix-ui/react-select";
-import type { ReactNode } from "react";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import { cn } from "../lib/utils";
 
 /**
@@ -70,7 +70,11 @@ export function Select({
 	);
 }
 
-export interface SelectTriggerProps {
+export interface SelectTriggerProps
+	extends Omit<
+		ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>,
+		"children" | "className" | "disabled"
+	> {
 	/** Trigger content */
 	children?: ReactNode;
 	/** Placeholder text when no value selected */
@@ -89,9 +93,11 @@ export function SelectTrigger({
 	placeholder,
 	className,
 	disabled,
+	...props
 }: SelectTriggerProps) {
 	return (
 		<SelectPrimitive.Trigger
+			{...props}
 			className={cn(
 				"flex h-density-row w-full items-center justify-between",
 				"rounded-[var(--radius-md)]",

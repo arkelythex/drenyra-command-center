@@ -16,16 +16,17 @@ describe("useSireReconciliation", () => {
 		vi.clearAllMocks();
 	});
 
-	it("starts with local records loaded and empty SUNAT file state", () => {
+	it("starts with no local records and an empty SUNAT file state", () => {
 		const { result } = renderHook(() => useSireReconciliation());
 
-		expect(result.current.localRecords).toHaveLength(2);
+		// Local records come from the books once wired to the API (MVP phase C).
+		expect(result.current.localRecords).toEqual([]);
 		expect(result.current.sunatRecords).toEqual([]);
 		expect(result.current.discrepancies).toEqual([]);
 		expect(result.current.stats).toBeNull();
 	});
 
-	it("detects missing-in-Drenyra and amount mismatch discrepancies after processing", async () => {
+	it("flags every SUNAT record as missing in Drenyra when there are no local records", async () => {
 		parseSireFileMock.mockResolvedValue([
 			{
 				periodo: "202501",
@@ -89,27 +90,27 @@ describe("useSireReconciliation", () => {
 		});
 
 		expect(result.current.sunatRecords).toHaveLength(3);
-		expect(result.current.discrepancies).toHaveLength(2);
+		// Nothing registered locally yet: every SUNAT record is missing in Drenyra.
+		expect(result.current.discrepancies).toHaveLength(3);
 		expect(result.current.discrepancies).toEqual(
 			expect.arrayContaining([
 				expect.objectContaining({
 					type: "MISSING_IN_ARKELYTHEX",
 					severity: "HIGH",
 				}),
-				expect.objectContaining({
-					type: "AMOUNT_MISMATCH",
-					severity: "MEDIUM",
-					diffAmount: 118,
-				}),
 			]),
 		);
-		expect(result.current.stats).not.toBeNull();
-		if (result.current.stats) {
-			expect(result.current.stats.totalSunat).toBe(2124);
-			expect(result.current.stats.totalLocal).toBe(1416);
-			expect(result.current.stats.discrepancyCount).toBe(2);
-			expect(result.current.stats.igvGap).toBe(108);
-		}
+		expect(
+			result.current.discrepancies.every(
+				(d) => d.type === "MISSING_IN_ARKELYTHEX",
+			),
+		).toBe(true);
+		expect(result.current.stats).toMatchObject({
+			totalSunat: 2124,
+			totalLocal: 0,
+			discrepancyCount: 3,
+			igvGap: 324,
+		});
 	});
 
 	it("handles parser errors and resets processing state", async () => {
