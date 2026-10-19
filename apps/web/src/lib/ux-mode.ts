@@ -107,7 +107,7 @@ let systemThemeListener: (() => void) | null = null;
 export function subscribeToSystemTheme(
 	callback: (isDark: boolean) => void,
 ): () => void {
-	if (typeof window === "undefined") return () => {};
+	if (typeof window === "undefined") return () => undefined;
 
 	if (systemThemeListener) {
 		systemThemeListener();
@@ -275,4 +275,14 @@ export function bootstrapPersistedTheme(): void {
 
 export function bootstrapPersistedUXMode(): void {
 	bootstrapPersistedTheme();
+}
+
+/** Applies the persisted appearance to `<html>`; call once before first render. */
+export function applyPersistedTheme(): void {
+	syncThemeDocumentState(
+		readPersistedThemePreference(),
+		undefined,
+		readPersistedAccent(),
+		readPersistedDensity(),
+	);
 }

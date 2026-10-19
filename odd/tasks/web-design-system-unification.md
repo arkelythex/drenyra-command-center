@@ -27,11 +27,11 @@ Un solo sistema de diseño, con una sola fuente de valores, sin componentes dupl
 ## Fases (un PR cada una)
 - [x] **1. Módulo de tokens real:** `design-tokens.ts` (Z_INDEX, BORDER_RADIUS, MOTION_VARIANTS, `useDesignTokens`, `tokensToClasses`) + `design-tokens/theme-package(.schema).ts`. 12 tests nuevos. Efecto medido: `vitest` web 18→13 archivos fallidos, login/registro/UserMenu/InvoicesSummaryBoard vuelven a pasar; ratchet web 432→412.
 - [x] **2. Borrar componentes UI sin importadores** (lista arriba, más `layout/command-deck`). Build y tests sin cambios; ratchet web 412→395.
-- [ ] **3. Una sola API de tema:** que `ui.store` exponga lo que usan `ux-mode`/`UXModeToggle` (o al revés), un solo tipo `AccentPreset`/`DensityLevel` (hoy duplicado en el store y el esquema).
+- [x] **3. Una sola API de tema:** `ui.store` reescrito al modelo de `ux-mode` (`themePreference`/`accentPreference`/`densityPreference`), con los tipos del esquema y la misma clave de persistencia; se eliminó el modelo viejo (`theme`, `accentPreset`, `density`, `complexityLevel`, sidebar duplicado, sin consumidores). Hallazgo: **el tema nunca se aplicaba al arrancar**; `client.tsx` ahora llama `applyPersistedTheme()`. 4 tests nuevos.
 - [ ] **4. Colapsar capas CSS:** fusionar `tokens.css` y `design-system.css` en `index.css` (o separar `index.css` en archivos por responsabilidad), eliminando valores repetidos.
 - [ ] **5. Unificar superficies:** migrar usos de `card` a `SurfaceCard`/`SurfacePanel` o al revés (22 vs 13 importadores; decidir con el diseño).
 - [x] **6. Módulos fantasma:** `hooks/useHaptics` (respeta `prefers-reduced-motion`, sin excepciones) y `components/layout/MobileTabNavigation` escritos con tests. Tablero de facturas, tarjeta y controlador vuelven a cargar; ratchet web 395→386.
-- [ ] **6b. Otro fantasma detectado:** `@/stores/sidebar-layout.store` (importado por ComplianceView, LedgerView, ReconciliationView) tampoco existe en git.
+- [x] **6b.** `@/stores/sidebar-layout.store` (fantasma) sustituido por `useAgenticShell.setSidebarMobileOpen` en ComplianceView, LedgerView y ReconciliationView.
 - [ ] **7. `design-system/DESIGN.md`:** reemplazar el placeholder por un enlace al canon (una sola copia).
 
 ## Fuera de alcance
