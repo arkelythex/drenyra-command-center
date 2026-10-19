@@ -106,10 +106,11 @@ describe("useSireReconciliation", () => {
 			),
 		).toBe(true);
 		expect(result.current.stats).toMatchObject({
-			totalSunat: 2124,
+			// Totals count PEN only; the USD record is excluded.
+			totalSunat: 1534,
 			totalLocal: 0,
 			discrepancyCount: 3,
-			igvGap: 324,
+			igvGap: 234,
 		});
 	});
 
