@@ -53,3 +53,8 @@ Fiscal/libros/domain = crítico (CLAUDE.md): test-first, review alto, `scripts/s
 
 ## Cambio al plan
 Antes de C/D, insertar **A3: arreglar lo que impide cargar** (tokens de motion en auth, módulos inexistentes, rutas de facturas y SIRE) con tests; es lo mínimo para que un usuario entre y vea facturas.
+
+## Causa raíz de A3 (investigada 2026-10-19)
+- `apps/web/src/lib/design-tokens.ts` es un **stub «minimal»** (solo `tokens`, `MOTION_VARIANTS = {hidden, visible}`, `tokensToClasses`). Los consumidores esperan `MOTION_VARIANTS.spring/springGentle/modal`, `Z_INDEX`, `BORDER_RADIUS`, `useDesignTokens` y `design-tokens/theme-package(.schema)`. Eso rompe `motion-primitives` y, con él, login/registro.
+- `src/hooks/useHaptics` y `components/layout/MobileTabNavigation` **nunca existieron en git** (`git log --all` sin rastro): no se pueden restaurar, hay que escribirlos o quitar sus usos.
+- Decisión pendiente: restaurar un módulo de tokens real (alineado con `apps/web/DESIGN.md` y `design-system/`) en vez de parchear cada consumidor.
