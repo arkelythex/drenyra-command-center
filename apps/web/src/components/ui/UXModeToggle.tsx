@@ -33,6 +33,7 @@ const MODE_OPTIONS: {
 ];
 
 const ACCENT_LABELS: Record<AccentPreset, string> = {
+	voltage: "Voltage",
 	ember: "Ember",
 	cocoa: "Cocoa",
 	terracotta: "Terracotta",
@@ -44,6 +45,7 @@ const ACCENT_LABELS: Record<AccentPreset, string> = {
 };
 
 const ACCENT_COLORS: Record<AccentPreset, string> = {
+	voltage: "#f54e00",
 	ember: "#d99555",
 	cocoa: "#824f16",
 	terracotta: "#c96a45",

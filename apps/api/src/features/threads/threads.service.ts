@@ -145,6 +145,23 @@ export class ThreadServiceError extends Error {
 	}
 }
 
+/** First row of a write's RETURNING, or a typed error when the database returned none. */
+function requireRow<T>(
+	rows: readonly T[],
+	missing: () => ThreadServiceError,
+): T {
+	const row = rows[0];
+	if (row === undefined) throw missing();
+	return row;
+}
+
+const writeFailed = (what: string) => () =>
+	new ThreadServiceError(`${what} returned no row`, "THREAD_WRITE_FAILED", 500);
+const threadGone = () =>
+	new ThreadServiceError("Thread not found", "THREAD_NOT_FOUND", 404);
+const taskGone = () =>
+	new ThreadServiceError("Task not found", "THREAD_NOT_FOUND", 404);
+
 // ---------------------------------------------------------------------------
 // Service
 // ---------------------------------------------------------------------------
@@ -366,7 +383,7 @@ export class ThreadsService {
 			updatedAt: now,
 		});
 
-		const [inserted] = await db
+		const insertedRows = await db
 			.insert(schema.threads)
 			.values({
 				id: thread.id,
@@ -383,6 +400,7 @@ export class ThreadsService {
 				updatedAt: now,
 			})
 			.returning();
+		const inserted = requireRow(insertedRows, writeFailed("Thread insert"));
 
 		if (taskProps.length > 0) {
 			await db.insert(schema.threadTasks).values(
@@ -454,11 +472,12 @@ export class ThreadsService {
 			updateValues.status = data.status;
 		}
 
-		const [updated] = await db
+		const updatedRows = await db
 			.update(schema.threads)
 			.set(updateValues)
 			.where(eq(schema.threads.id, id))
 			.returning();
+		const updated = requireRow(updatedRows, threadGone);
 
 		return {
 			id: updated.id,
@@ -566,11 +585,12 @@ export class ThreadsService {
 			updateValues.closedAt = new Date();
 		}
 
-		const [updated] = await db
+		const updatedRows = await db
 			.update(schema.threads)
 			.set(updateValues)
 			.where(eq(schema.threads.id, id))
 			.returning();
+		const updated = requireRow(updatedRows, threadGone);
 
 		return {
 			id: updated.id,
@@ -615,7 +635,7 @@ export class ThreadsService {
 		}
 
 		const now = new Date();
-		const [inserted] = await db
+		const insertedRows = await db
 			.insert(schema.threadAgents)
 			.values({
 				threadId,
@@ -626,6 +646,10 @@ export class ThreadsService {
 				isActive: true,
 			})
 			.returning();
+		const inserted = requireRow(
+			insertedRows,
+			writeFailed("Thread agent insert"),
+		);
 
 		return {
 			agentId: inserted.agentId,
@@ -750,7 +774,7 @@ export class ThreadsService {
 		}
 
 		const now = new Date();
-		const [inserted] = await db
+		const insertedRows = await db
 			.insert(schema.threadTasks)
 			.values({
 				threadId,
@@ -762,6 +786,10 @@ export class ThreadsService {
 				updatedAt: now,
 			})
 			.returning();
+		const inserted = requireRow(
+			insertedRows,
+			writeFailed("Thread task insert"),
+		);
 
 		return {
 			id: inserted.id,
@@ -833,11 +861,12 @@ export class ThreadsService {
 			}
 		}
 
-		const [updated] = await db
+		const updatedRows = await db
 			.update(schema.threadTasks)
 			.set(updateValues)
 			.where(eq(schema.threadTasks.id, taskId))
 			.returning();
+		const updated = requireRow(updatedRows, taskGone);
 
 		return {
 			id: updated.id,

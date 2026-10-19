@@ -10,7 +10,7 @@
  */
 
 import { AVAILABLE_MODELS } from "../ai/model-registry";
-import { loggers } from "../logger";
+import { loggers } from "../services/logger";
 import type { SessionStore } from "../session/session-store";
 import type {
 	ContextMonitorConfig,

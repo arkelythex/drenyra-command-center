@@ -17,7 +17,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { useSidebarLayout } from "@/stores/sidebar-layout.store";
+import { useAgenticShell } from "@/stores/agentic-shell.store";
 import { type ComplianceTab, useCompliance } from "../hooks/useCompliance";
 import { ComplianceActionCenter } from "./compliance-view/ComplianceActionCenter";
 import { ComplianceSidebar } from "./compliance-view/ComplianceSidebar";
@@ -63,7 +63,7 @@ export function ComplianceView(): JSX.Element {
 		runGlobalSync,
 		syncStats,
 	} = useCompliance();
-	const { setIsMobileOpen } = useSidebarLayout();
+	const setIsMobileOpen = useAgenticShell((s) => s.setSidebarMobileOpen);
 
 	const ActiveTabComponent = {
 		sire: SireManagementTab,
@@ -305,9 +305,9 @@ function ComplianceTabSkeleton({ tab }: { tab: ComplianceTab }): JSX.Element {
 				<div className="h-8 w-56 rounded-xl bg-muted/45" />
 			</div>
 			<div className="grid gap-3 md:grid-cols-3">
-				{Array.from({ length: 3 }).map((_, index) => (
+				{(["a", "b", "c"] as const).map((slot) => (
 					<div
-						key={`${tab}-kpi-${index}`}
+						key={`${tab}-kpi-${slot}`}
 						className="h-24 rounded-2xl border border-border/50 bg-muted/25"
 					/>
 				))}

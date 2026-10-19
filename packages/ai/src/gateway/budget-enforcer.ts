@@ -12,7 +12,7 @@
  * @module @drenyra/ai/gateway
  */
 
-import { loggers } from "../logger";
+import { loggers } from "../services/logger";
 import { LLMGatewayError } from "./types";
 
 // ─── Types ────────────────────────────────────────────────────────────────────

@@ -14,6 +14,7 @@
  * @module @drenyra/domain/feos/model-routing
  */
 
+import { firstOf } from "./non-empty";
 import type { ToolRiskLevel } from "./tool-contract";
 import { FeosError } from "./types";
 
@@ -214,6 +215,29 @@ export const DRENYRA_MODEL_REGISTRY: ModelEntry[] = [
 // Router
 // ============================================================================
 
+/** Whether a model satisfies the risk level's capability floor and the required tags. */
+function meetsRequirements(
+	model: ModelEntry,
+	input: { riskLevel: ToolRiskLevel; requiredCapabilities?: string[] },
+): boolean {
+	const caps = model.capabilities;
+
+	// R2+ requires constrained output
+	if (input.riskLevel === "R2" || input.riskLevel === "R3") {
+		if (!caps.supportsConstrainedOutput || !caps.supportsJsonSchema)
+			return false;
+	}
+
+	// R3 additionally requires tool calling
+	if (input.riskLevel === "R3" && !caps.supportsToolCalling) return false;
+
+	// Specific required capabilities via tags
+	if (input.requiredCapabilities) {
+		return input.requiredCapabilities.every((cap) => model.tags.includes(cap));
+	}
+	return true;
+}
+
 export class ModelRouter {
 	private registry: Map<string, ModelEntry> = new Map();
 	private costTracker: CostEntry[] = [];
@@ -255,31 +279,7 @@ export class ModelRouter {
 		const available = this.listAvailable();
 
 		// Filter by model capability requirements
-		// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: pre-existing; refactor tracked separately from the strict-index phase
-		const candidates = available.filter((m) => {
-			const caps = m.capabilities;
-
-			// R2+ requires constrained output
-			if (input.riskLevel === "R2" || input.riskLevel === "R3") {
-				if (!caps.supportsConstrainedOutput || !caps.supportsJsonSchema)
-					return false;
-			}
-
-			// R3 additionally requires tool calling
-			if (input.riskLevel === "R3") {
-				if (!caps.supportsToolCalling) return false;
-			}
-
-			// Check specific required capabilities via tags
-			if (input.requiredCapabilities) {
-				const hasTag = input.requiredCapabilities.every((cap) =>
-					m.tags.includes(cap),
-				);
-				if (!hasTag) return false;
-			}
-
-			return true;
-		});
+		const candidates = available.filter((m) => meetsRequirements(m, input));
 
 		if (candidates.length === 0) {
 			throw new FeosError(
@@ -317,10 +317,7 @@ export class ModelRouter {
 			return tierOrder[a.tier] - tierOrder[b.tier];
 		});
 
-		const selected = sorted[0];
-		if (!selected) {
-			throw new Error("No model candidates available for routing");
-		}
+		const selected = firstOf(sorted, "candidate models");
 
 		// Check budget
 		const inputCost = selected.pricing.costPer1MInput;

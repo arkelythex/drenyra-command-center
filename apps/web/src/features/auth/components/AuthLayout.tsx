@@ -11,7 +11,7 @@ interface AuthLayoutProps {
 
 export const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
 	return (
-		<div className="min-h-screen w-full overflow-hidden bg-[#050606] font-sans selection:bg-primary/30">
+		<div className="force-dark min-h-screen w-full overflow-hidden bg-[#050606] font-sans selection:bg-primary/30">
 			<div className="pointer-events-none fixed inset-0">
 				<div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_84%,rgba(15,42,57,0.5),transparent_34%),radial-gradient(circle_at_35%_12%,rgba(255,255,255,0.045),transparent_28%)]" />
 				<div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.035),transparent_22%,transparent_70%,rgba(255,255,255,0.025))]" />

@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Panel, PanelBody } from "@/components/ui/panel";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import { useSireDemoSummary } from "@/features/compliance/hooks/useSireDemoSummary";
 import {
 	SIRE_DEMO_EXPORT_PERIOD,
@@ -160,8 +160,11 @@ export const SireManagementTab = () => {
 				))}
 			</div>
 
-			<Panel className="overflow-hidden rounded-2xl border-border/70 bg-card/95">
-				<PanelBody className="px-6 pb-4 pt-6 md:px-8 md:pt-7">
+			<SurfacePanel
+				padding="none"
+				className="overflow-hidden rounded-2xl border-border/70 bg-card/95"
+			>
+				<div className="px-6 pb-4 pt-6 md:px-8 md:pt-7">
 					<div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
 						<div>
 							<div className="mb-2 flex items-center gap-3">
@@ -291,14 +294,14 @@ export const SireManagementTab = () => {
 							) : null}
 						</div>
 					</div>
-				</PanelBody>
+				</div>
 
 				<SirePreviewTable
 					rows={tableRows}
 					isLoading={isSummaryLoading}
 					hasError={isSummaryError}
 				/>
-			</Panel>
+			</SurfacePanel>
 		</div>
 	);
 };

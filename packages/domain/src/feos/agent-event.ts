@@ -10,9 +10,9 @@
  * @module @drenyra/domain/feos/agent-event
  */
 
-// biome-ignore assist/source/organizeImports: import order affects which file tsc reports TS6059 on (ratchet buckets are per file)
-import type { Actor, FiscalScope, Timestamp } from "./types";
+import { firstOf, lastOf } from "./non-empty";
 import type { ToolRiskLevel } from "./tool-contract";
+import type { Actor, FiscalScope, Timestamp } from "./types";
 
 // ============================================================================
 // Event Severity
@@ -105,8 +105,8 @@ export interface EventProgress {
 export interface WorkflowState {
 	workspaceId: string;
 	status: "running" | "waiting" | "completed" | "failed" | "unknown";
-	currentTool?: string;
-	progress?: EventProgress;
+	currentTool?: string | undefined;
+	progress?: EventProgress | undefined;
 	lastEvent: AgentEvent;
 	events: AgentEvent[];
 	warnings: number;
@@ -272,11 +272,7 @@ export function projectWorkflowState(events: AgentEvent[]): WorkflowState {
 	const sorted = [...events].sort(
 		(a, b) => a.timestamp.unix - b.timestamp.unix,
 	);
-	const first = sorted[0];
-	const last = sorted[sorted.length - 1];
-	if (!first || !last) {
-		throw new Error("Cannot project state from empty event list");
-	}
+	const last = lastOf(sorted, "events");
 	const hasErrors = sorted.some(
 		(e) => e.severity === "error" || e.severity === "critical",
 	);
@@ -308,10 +304,8 @@ export function projectWorkflowState(events: AgentEvent[]): WorkflowState {
 	return {
 		workspaceId: last.workspaceId ?? "unknown",
 		status,
-		...(lastToolEvent?.toolName !== undefined && {
-			currentTool: lastToolEvent.toolName,
-		}),
-		...(last.progress !== undefined && { progress: last.progress }),
+		currentTool: lastToolEvent?.toolName,
+		progress: last.progress,
 		lastEvent: last,
 		events: sorted,
 		warnings: sorted.filter((e) => e.severity === "warning").length,
@@ -320,7 +314,7 @@ export function projectWorkflowState(events: AgentEvent[]): WorkflowState {
 					(e) => e.severity === "error" || e.severity === "critical",
 				).length
 			: 0,
-		startedAt: first.timestamp,
+		startedAt: firstOf(sorted, "events").timestamp,
 		lastUpdated: last.timestamp,
 	};
 }

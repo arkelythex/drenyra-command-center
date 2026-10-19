@@ -2,7 +2,7 @@ import { entranceVariants, MotionDiv } from "@/components/ui/motion-primitives";
 import { useFinancialHaptics, useHaptics } from "@/hooks/useHaptics";
 import { useDesignTokens } from "@/lib/design-tokens";
 import { n } from "@/lib/utils";
-import { useSidebarLayout } from "@/stores/sidebar-layout.store";
+import { useAgenticShell } from "@/stores/agentic-shell.store";
 import { useLedgerViewModel } from "../hooks/useLedgerViewModel";
 import { LedgerAccountsSidebar } from "./ledger-view/accounts-sidebar";
 import { LedgerGovernanceStrip } from "./ledger-view/governance-strip";
@@ -10,7 +10,7 @@ import { LedgerHeader } from "./ledger-view/ledger-header";
 import { LedgerTransactionsTable } from "./ledger-view/transactions-table";
 
 export const LedgerView = () => {
-	const { setIsMobileOpen } = useSidebarLayout();
+	const setIsMobileOpen = useAgenticShell((s) => s.setSidebarMobileOpen);
 	const { borderRadius, zIndex } = useDesignTokens();
 	const { trigger } = useHaptics();
 	const financialHaptics = useFinancialHaptics();
