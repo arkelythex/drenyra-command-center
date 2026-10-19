@@ -81,3 +81,20 @@ Sigue pendiente (no se inventó): `parseSireFile` es un mock que ignora el archi
 
 ## Fase C, parte 2 (2026-10-19): lector SIRE real
 `parseSireFile` deja de ser un mock. Lee .txt o el .zip de SUNAT con el formato oficial publicado en https://cpe.sunat.gob.pe/estructura-de-archivos: RVIE = Anexo 3 de la RS 112-2021/SUNAT y RCE = Anexo 11 de la RS 40-2022/SUNAT, separados por «|». Reconoce el registro por la fila de títulos (RCE tiene «Año» en el campo 9) o por el nombre oficial (`LE…140400…` ventas, `LE…080400…` compras). Si no lo puede saber, no adivina. Los importes se leen directo a centavos, con validación de RUC, periodo y fecha y error con número de línea; también acepta Latin-1. Limitaciones: el formato no trae estado, así que todo entra como ACTIVO (los anulados vienen en cero); sin un archivo real de SUNAT no se confirmó si la descarga trae fila de títulos (el lector acepta ambos casos).
+
+## Hallazgo (2026-10-19): el cliente API de la web era un stub
+`lib/api-client.ts` no tenía `api.api`. Por eso el login real y las llamadas de facturas, OSE y detracciones fallaban con TypeError antes de salir del navegador; solo el modo demo funcionaba. Ahora es Eden Treaty sobre `runtimeConfig.apiUrl`, con la cookie de sesión y los headers de la empresa activa (PR #280). `DetraccionesTab` leía la respuesta como si fuera `fetch` (`res.json()`); ahora usa `unwrap` y `extractOkData`.
+
+## Fase C, parte 3 (2026-10-19): libros de la empresa en la conciliación SIRE
+Nuevo `GET /api/sire/comparison/:period/local-records?companyId&kind=RVIE|RCE`, protegido por `companyScopeGuard` y bajo RLS de la empresa. Devuelve las ventas (RVIE, con el RUC de la empresa como emisor) o las compras (RCE, con el RUC del proveedor) emitidas en el mes. Los importes van en centavos enteros, leídos del decimal de la BD sin pasar por float. Se excluyen los borradores; CANCELLED cuenta como ANULADO; las series B se tratan como boleta (03) y el resto como factura (01).
+La web toma el periodo y el registro del archivo SUNAT, carga esos libros y pasa los centavos de la API a soles, como los del lector, con validación de entero. Si no hay empresa activa o la API falla, muestra el error en lugar de marcar todo como "falta en Drenyra".
+La revisión adversarial encontró dos defectos bloqueantes, ya corregidos con test:
+- **Unidades distintas:** la API entrega centavos y el lector soles, así que todo salía con diferencia de monto.
+- **Anulados:** los cancelados locales chocaban con la fila en cero que SUNAT usa para los anulados. Ahora esa fila cuenta como ANULADO, y dos anulados no comparan montos.
+Limitaciones:
+- Notas de crédito y débito no están modeladas en `invoices` ni en `bills`.
+- El RCE se filtra por fecha de emisión. SUNAT lo agrupa por periodo de anotación, que puede ser hasta 12 meses después, y `bills` no guarda ese periodo.
+- Un `billNumber` sin guion queda con serie vacía y no va a casar.
+- Con un archivo SUNAT vacío no se cargan libros, porque no hay periodo del cual partir.
+- El mes se corta en UTC: las fechas se guardan como `YYYY-MM-DD` a medianoche UTC.
+- `scripts/sire-ledger-repro-check.ts` necesita `DATABASE_URL` y no se pudo correr aquí. El cambio solo lee: no escribe en libros.

@@ -1,8 +1,13 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { parseSireFileMock } = vi.hoisted(() => ({
+const { parseSireFileMock, loadLocalSireRecordsMock } = vi.hoisted(() => ({
 	parseSireFileMock: vi.fn(),
+	loadLocalSireRecordsMock: vi.fn(),
+}));
+
+vi.mock("../../services/sire-local-records", () => ({
+	loadLocalSireRecords: loadLocalSireRecordsMock,
 }));
 
 vi.mock("../../services/sire-parser", () => ({
@@ -14,19 +19,75 @@ import { useSireReconciliation } from "../useSireReconciliation";
 describe("useSireReconciliation", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
+		loadLocalSireRecordsMock.mockResolvedValue([]);
 	});
 
 	it("starts with no local records and an empty SUNAT file state", () => {
 		const { result } = renderHook(() => useSireReconciliation());
 
-		// Local records come from the books once wired to the API (MVP phase C).
 		expect(result.current.localRecords).toEqual([]);
 		expect(result.current.sunatRecords).toEqual([]);
 		expect(result.current.discrepancies).toEqual([]);
 		expect(result.current.stats).toBeNull();
 	});
 
-	it("flags every SUNAT record as missing in Drenyra when there are no local records", async () => {
+	it("reconciles the SUNAT file against the company's books from the API", async () => {
+		const sunatRecord = {
+			periodo: "202501",
+			caratula: "RCE",
+			rucEmisor: "20100000001",
+			razonSocial: "PROVEEDOR A S.A.C.",
+			tipoComprobante: "01",
+			serie: "F001",
+			numero: "00001234",
+			fechaEmision: "2025-01-10",
+			moneda: "PEN",
+			baseImponible: 1000,
+			igv: 180,
+			total: 1180,
+			estado: "ACTIVO",
+			origen: "SUNAT",
+		};
+		const localRecord = {
+			...sunatRecord,
+			origen: "ARKELYTHEX",
+			numero: "1234",
+		};
+		parseSireFileMock.mockResolvedValue([sunatRecord]);
+		loadLocalSireRecordsMock.mockResolvedValue([localRecord]);
+
+		const { result } = renderHook(() => useSireReconciliation());
+		await act(async () => {
+			await result.current.processFile(new File(["x"], "rce.txt"));
+		});
+		await waitFor(() => {
+			expect(result.current.stats).not.toBeNull();
+		});
+
+		expect(loadLocalSireRecordsMock).toHaveBeenCalledWith([sunatRecord]);
+		expect(result.current.localRecords).toEqual([localRecord]);
+		expect(result.current.discrepancies).toEqual([]);
+		expect(result.current.stats).toMatchObject({ matchCount: 1 });
+	});
+
+	it("shows the error when the company's books cannot be loaded", async () => {
+		parseSireFileMock.mockResolvedValue([]);
+		loadLocalSireRecordsMock.mockRejectedValue(
+			new Error("No hay una empresa activa"),
+		);
+
+		const { result } = renderHook(() => useSireReconciliation());
+		await act(async () => {
+			await result.current.processFile(new File(["x"], "rce.txt"));
+		});
+
+		await waitFor(() => {
+			expect(result.current.error).toBe("No hay una empresa activa");
+		});
+		expect(result.current.stats).toBeNull();
+	});
+
+	it("flags every SUNAT record as missing in Drenyra when the books are empty", async () => {
 		parseSireFileMock.mockResolvedValue([
 			{
 				periodo: "202501",

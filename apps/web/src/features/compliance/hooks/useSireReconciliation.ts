@@ -1,6 +1,7 @@
 import { useMachine } from "@xstate/react";
 import { assign } from "xstate";
 import { createProcessMachine } from "@/lib/process-machine";
+import { loadLocalSireRecords } from "../services/sire-local-records";
 import { parseSireFile } from "../services/sire-parser";
 import { reconcileSire } from "../services/sire-reconciliation";
 import type {
@@ -23,7 +24,8 @@ const sireReconciliationMachine = createProcessMachine({
 	onProcess: async (context) => {
 		if (!context.pendingFile) throw new Error("No file provided");
 		const sunatRecords = await parseSireFile(context.pendingFile);
-		return { sunatRecords, pendingFile: null as File | null };
+		const localRecords = await loadLocalSireRecords(sunatRecords);
+		return { sunatRecords, localRecords, pendingFile: null as File | null };
 	},
 	onAnalyze: async (context) => {
 		const { discrepancies, stats } = reconcileSire(

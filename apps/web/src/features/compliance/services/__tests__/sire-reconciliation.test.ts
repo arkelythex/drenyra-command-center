@@ -235,6 +235,26 @@ describe("reconcileSire", () => {
 		expect(stats.totalLocal).toBe(1180);
 	});
 
+	it("accepts SUNAT's zeroed row as the annulment of a cancelled local document", () => {
+		// SIRE files carry no status column: SUNAT reports annulled documents with zero amounts.
+		const { discrepancies, stats } = reconcileSire(
+			[record({ baseImponible: 0, igv: 0, total: 0 })],
+			[record({ origen: "ARKELYTHEX", estado: "ANULADO" })],
+		);
+		expect(discrepancies).toEqual([]);
+		expect(stats.matchCount).toBe(1);
+	});
+
+	it("still flags a cancelled local document that SUNAT reports with amounts", () => {
+		const { discrepancies } = reconcileSire(
+			[record()],
+			[record({ origen: "ARKELYTHEX", estado: "ANULADO" })],
+		);
+		expect(discrepancies).toEqual([
+			expect.objectContaining({ type: "STATUS_MISMATCH", severity: "HIGH" }),
+		]);
+	});
+
 	it("rejects tolerances that would hide discrepancies", () => {
 		for (const toleranceCents of [Number.NaN, -5, 0.5]) {
 			expect(() => reconcileSire([], [], { toleranceCents })).toThrow(

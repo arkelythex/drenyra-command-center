@@ -2,6 +2,7 @@ import { Elysia, t } from "elysia";
 import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import { SireComparisonService } from "./infrastructure/compare.service";
+import { listLocalSireRecords } from "./local-records/local-sire-records.repository";
 
 export const sireComparisonRoutes = new Elysia({
 	prefix: "/api/sire/comparison",
@@ -92,6 +93,44 @@ export const sireComparisonRoutes = new Elysia({
 				summary: "List discrepancies for a period",
 				description:
 					"Filtered list of discrepancies by type and/or resolution status.",
+			},
+		},
+	)
+	.get(
+		"/:period/local-records",
+		async ({ params, query, set, companyContext }) => {
+			if (
+				query.companyId !== (companyContext as { companyId: string }).companyId
+			) {
+				set.status = 403;
+				return fail("Company scope mismatch", "COMPANY_SCOPE_MISMATCH");
+			}
+
+			try {
+				const records = await listLocalSireRecords(
+					query.companyId,
+					params.period,
+					query.kind,
+				);
+				return ok(records);
+			} catch (error) {
+				set.status = 500;
+				return fail(getErrorMessage(error), "SIRE_LOCAL_RECORDS_ERROR");
+			}
+		},
+		{
+			params: t.Object({
+				period: t.String({ pattern: "^\\d{4}-(0[1-9]|1[0-2])$" }),
+			}),
+			query: t.Object({
+				companyId: t.String({ minLength: 1 }),
+				kind: t.Union([t.Literal("RVIE"), t.Literal("RCE")]),
+			}),
+			detail: {
+				tags: ["SIRE Comparison"],
+				summary: "Company books for a SIRE register",
+				description:
+					"Issued sales (RVIE) or purchases (RCE) of the period, amounts in integer cents, to reconcile against the SUNAT file.",
 			},
 		},
 	)
