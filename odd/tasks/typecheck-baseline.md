@@ -79,3 +79,7 @@ Medir y clasificar por qué `bun run typecheck` está rojo y reparar solo lo no 
 
 ## Constraints
 - No tocar fiscal ni `infrastructure/src/ai` en esta tarea.
+
+## Supresiones de lint registradas durante el plan
+
+- `apps/api/src/features/auth/invitations/__tests__/handlers/create-invitation.test.ts` — `noThenProperty`: el mock del query builder de drizzle debe ser *awaitable*. Deuda latente previa; se resuelve al migrar estos mocks a un helper compartido.
