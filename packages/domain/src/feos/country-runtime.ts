@@ -204,14 +204,14 @@ export class CountryRuntime {
 	}
 
 	/** Generate fiscal periods for a given year and country. */
-	generatePeriods(year: number, countryCode: string): FiscalPeriod[] {
+	generatePeriods(year: number, _countryCode: string): FiscalPeriod[] {
 		const months = Array.from({ length: 12 }, (_, i) => i + 1);
 		return months.map((month) => ({
 			year,
 			month,
 			label: `${String(month).padStart(2, "0")}/${year}`,
 			startDate: `${year}-${String(month).padStart(2, "0")}-01`,
-			endDate: new Date(year, month, 0).toISOString().split("T")[0],
+			endDate: new Date(year, month, 0).toISOString().slice(0, 10),
 			taxDeadlines: [],
 		}));
 	}

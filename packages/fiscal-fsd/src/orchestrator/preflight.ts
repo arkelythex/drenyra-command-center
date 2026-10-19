@@ -39,14 +39,14 @@ export function isValidRuc(ruc: string): boolean {
 	const pesos = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
 	let suma = 0;
 	for (let i = 0; i < 10; i++) {
-		suma += parseInt(ruc[i], 10) * pesos[i];
+		suma += Number.parseInt(ruc[i] ?? "0", 10) * (pesos[i] ?? 0);
 	}
 
 	const resto = suma % 11;
 	const digitoVerificador = resto === 0 ? 0 : 11 - resto;
 	const digitoEsperado = digitoVerificador === 10 ? 0 : digitoVerificador;
 
-	return digitoEsperado === parseInt(ruc[10], 10);
+	return digitoEsperado === Number.parseInt(ruc[10] ?? "", 10);
 }
 
 /**

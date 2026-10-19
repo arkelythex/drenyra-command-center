@@ -134,8 +134,11 @@ export class EngramArtifactStore implements ArtifactStore {
 
 		if (observations.length === 0) return null;
 
+		const first = observations[0];
+		if (!first) return null;
+
 		try {
-			return JSON.parse(observations[0].content) as FaseArtifact;
+			return JSON.parse(first.content) as FaseArtifact;
 		} catch {
 			return null;
 		}
@@ -168,7 +171,7 @@ export class EngramArtifactStore implements ArtifactStore {
 			if (obs.topic_key?.startsWith(TOPIC_PREFIX)) {
 				const parts = obs.topic_key.split("/");
 				if (parts.length >= 2) {
-					changes.add(parts[1]);
+					changes.add(parts[1] as string);
 				}
 			}
 		}
