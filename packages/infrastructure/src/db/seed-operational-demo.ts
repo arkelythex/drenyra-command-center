@@ -1,6 +1,7 @@
 import * as schema from "@drenyra/persistence/schema";
 import { eq } from "drizzle-orm";
 import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import { required } from "./seed-utils";
 
 type SeedDb = PostgresJsDatabase<typeof schema>;
 
@@ -244,7 +245,7 @@ export async function seedOperationalDemoData(
 			products.map((product) => ({
 				companyId,
 				productId: product.id,
-				warehouseId: warehouses[0].id,
+				warehouseId: required(warehouses[0], "warehouse").id,
 				quantity: product.stockQuantity ?? "0",
 				minStock: product.minStock ?? "6",
 				maxStock: product.maxStock ?? "48",
@@ -259,8 +260,8 @@ export async function seedOperationalDemoData(
 		await tx.insert(schema.inventoryMovements).values([
 			{
 				companyId,
-				productId: productByKey.scanner.id,
-				warehouseId: warehouses[0].id,
+				productId: required(productByKey.scanner, "product scanner").id,
+				warehouseId: required(warehouses[0], "warehouse").id,
 				type: "IN",
 				quantity: "24",
 				unitCost: "1190.00",
@@ -272,7 +273,7 @@ export async function seedOperationalDemoData(
 			},
 			{
 				companyId,
-				productId: productByKey.scanner.id,
+				productId: required(productByKey.scanner, "product scanner").id,
 				warehouseId: warehouses[1].id,
 				type: "OUT",
 				quantity: "4",
@@ -388,7 +389,10 @@ export async function seedOperationalDemoData(
 
 					return {
 						companyId,
-						customerId: partnerByKey[invoice.customerKey].id,
+						customerId: required(
+							partnerByKey[invoice.customerKey],
+							`partner ${invoice.customerKey}`,
+						).id,
 						invoiceNumber: buildInvoiceNumber(invoice.correlative),
 						series: "F001",
 						correlative: invoice.correlative,
@@ -422,8 +426,14 @@ export async function seedOperationalDemoData(
 
 		await tx.insert(schema.invoiceItems).values(
 			invoices.map((invoice, index) => {
-				const blueprint = invoiceBlueprints[index];
-				const product = productByKey[blueprint.productKey];
+				const blueprint = required(
+					invoiceBlueprints[index],
+					`invoice blueprint ${index}`,
+				);
+				const product = required(
+					productByKey[blueprint.productKey],
+					`product ${blueprint.productKey}`,
+				);
 				const totals = totalsFromSubtotal(blueprint.subtotal);
 
 				return {
@@ -452,7 +462,10 @@ export async function seedOperationalDemoData(
 
 				const transaction: TransactionInsert = {
 					companyId,
-					partnerId: partnerByKey[invoice.customerKey].id,
+					partnerId: required(
+						partnerByKey[invoice.customerKey],
+						`partner ${invoice.customerKey}`,
+					).id,
 					type: "INCOME" as const,
 					documentType: "FACTURA" as const,
 					series: "F001",
@@ -524,7 +537,10 @@ export async function seedOperationalDemoData(
 
 					return {
 						companyId,
-						vendorId: partnerByKey[bill.vendorKey].id,
+						vendorId: required(
+							partnerByKey[bill.vendorKey],
+							`partner ${bill.vendorKey}`,
+						).id,
 						billNumber: bill.billNumber,
 						issueDate,
 						dueDate: monthDate(now, bill.monthOffset, bill.day + 10),
@@ -542,8 +558,14 @@ export async function seedOperationalDemoData(
 
 		await tx.insert(schema.billItems).values(
 			bills.map((bill, index) => {
-				const blueprint = billBlueprints[index];
-				const product = productByKey[blueprint.productKey];
+				const blueprint = required(
+					billBlueprints[index],
+					`bill blueprint ${index}`,
+				);
+				const product = required(
+					productByKey[blueprint.productKey],
+					`product ${blueprint.productKey}`,
+				);
 				const totals = totalsFromSubtotal(blueprint.subtotal);
 
 				return {
@@ -590,7 +612,7 @@ export async function seedOperationalDemoData(
 			isDefault: false,
 		});
 
-		const primaryAccountId = mainAccount[0].id;
+		const primaryAccountId = required(mainAccount[0], "main account").id;
 		let runningBalance = 92400.4;
 		const bankTransactionBlueprints = [
 			{
@@ -665,11 +687,14 @@ export async function seedOperationalDemoData(
 					entry.type === "CREDIT" ? entry.amount : -entry.amount;
 				const invoiceId =
 					"invoiceIndex" in entry && entry.invoiceIndex !== null
-						? invoices[entry.invoiceIndex].id
+						? required(
+								invoices[entry.invoiceIndex],
+								`invoice ${entry.invoiceIndex}`,
+							).id
 						: null;
 				const billId =
 					"billIndex" in entry && entry.billIndex !== null
-						? bills[entry.billIndex].id
+						? required(bills[entry.billIndex], `bill ${entry.billIndex}`).id
 						: null;
 
 				return {

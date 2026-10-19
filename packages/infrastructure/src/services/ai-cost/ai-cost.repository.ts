@@ -156,9 +156,9 @@ export const aiCostRepository = {
       WHERE ${baseWhere}
     `);
 
-		const dailySpent = parseFloat(totals.daily_spent ?? "0");
-		const monthlySpent = parseFloat(totals.monthly_spent ?? "0");
-		const totalEvents = parseInt(totals.total_events ?? "0", 10);
+		const dailySpent = parseFloat(totals?.daily_spent ?? "0");
+		const monthlySpent = parseFloat(totals?.monthly_spent ?? "0");
+		const totalEvents = parseInt(totals?.total_events ?? "0", 10);
 
 		// ── By agent (last 30 days) ───────────────────────────────────────────────
 		const agentRows = await db.execute<{

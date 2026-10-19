@@ -60,7 +60,7 @@ export async function recordFailedLogin(
 		.orderBy(desc(failedLoginAttempts.createdAt))
 		.limit(1);
 
-	const currentCount = existing.length > 0 ? existing[0].attemptCount + 1 : 1;
+	const currentCount = (existing[0]?.attemptCount ?? 0) + 1;
 	const isLocked = currentCount >= MAX_ATTEMPTS;
 
 	const lockedUntil = isLocked
