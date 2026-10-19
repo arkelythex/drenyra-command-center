@@ -8,7 +8,7 @@
 import { Plus, ShieldCheck, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import type {
 	CreateToolPermissionDTO,
 	ToolPermission,
@@ -190,7 +190,7 @@ export const ToolPermissionsSettings = () => {
 			}
 		>
 			<SettingsSection title="Permisos configurados" className="max-w-3xl">
-				<SurfaceCard
+				<SurfacePanel
 					variant="default"
 					padding="none"
 					className="divide-y divide-[var(--border-subtle)]"
@@ -255,7 +255,7 @@ export const ToolPermissionsSettings = () => {
 								onDelete={handleDelete}
 							/>
 						))}
-				</SurfaceCard>
+				</SurfacePanel>
 
 				<p className="mt-3 text-xs text-[var(--text-tertiary)]">
 					Los cambios surten efecto inmediatamente en el PermissionService al

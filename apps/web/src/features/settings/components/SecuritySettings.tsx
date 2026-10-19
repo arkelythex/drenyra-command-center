@@ -1,7 +1,7 @@
 import { KeyRound, Shield, ShieldAlert } from "lucide-react";
 import { useState } from "react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { SurfaceCard } from "@/components/ui/SurfaceCard";
+import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import { SecurityHealth, SessionCard } from "./appearance/SecurityUI";
 import { SettingsButton } from "./appearance/SettingsUI";
 import {
@@ -106,7 +106,7 @@ export const SecuritySettings = () => {
 							<StatusBadge status="success" label="ACTIVAS" />
 						</div>
 
-						<SurfaceCard
+						<SurfacePanel
 							variant="muted"
 							padding="md"
 							className="space-y-3 border-[var(--border-default)] bg-[var(--surface-2)]/40"
@@ -118,7 +118,7 @@ export const SecuritySettings = () => {
 							/>
 							<SessionCard device="iPhone 15 · Safari" location="Lima, PE" />
 							<SessionCard device="Windows 11 · Edge" location="Bogotá, CO" />
-						</SurfaceCard>
+						</SurfacePanel>
 
 						<SettingsButton variant="danger" size="sm" className="w-full">
 							<ShieldAlert className="mr-2 h-3.5 w-3.5" />
