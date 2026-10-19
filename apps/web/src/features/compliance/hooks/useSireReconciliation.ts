@@ -2,75 +2,12 @@ import { useMachine } from "@xstate/react";
 import { assign } from "xstate";
 import { createProcessMachine } from "@/lib/process-machine";
 import { parseSireFile } from "../services/sire-parser";
+import { reconcileSire } from "../services/sire-reconciliation";
 import type {
 	ReconciliationStats,
 	SireDiscrepancy,
 	SireRecord,
 } from "../types/sire.types";
-
-function calculateDiscrepancies(
-	sunatRecords: SireRecord[],
-	localRecords: SireRecord[],
-): { discrepancies: SireDiscrepancy[]; stats: ReconciliationStats } {
-	const diffs: SireDiscrepancy[] = [];
-
-	sunatRecords.forEach((sunat) => {
-		const match = localRecords.find(
-			(local) =>
-				local.rucEmisor === sunat.rucEmisor &&
-				local.serie === sunat.serie &&
-				local.numero === sunat.numero,
-		);
-
-		if (!match) {
-			diffs.push({
-				id: `diff_${sunat.serie}_${sunat.numero}`,
-				type: "MISSING_IN_ARKELYTHEX",
-				severity: "HIGH",
-				recordSunat: sunat,
-			});
-		} else if (Math.abs(match.total - sunat.total) > 0.1) {
-			diffs.push({
-				id: `diff_${sunat.serie}_${sunat.numero}`,
-				type: "AMOUNT_MISMATCH",
-				severity: "MEDIUM",
-				recordSunat: sunat,
-				recordLocal: match,
-				diffAmount: Math.abs(match.total - sunat.total),
-			});
-		}
-	});
-
-	localRecords.forEach((local) => {
-		const match = sunatRecords.find(
-			(sunat) =>
-				sunat.rucEmisor === local.rucEmisor &&
-				sunat.serie === local.serie &&
-				sunat.numero === local.numero,
-		);
-
-		if (!match && sunatRecords.length > 0) {
-			diffs.push({
-				id: `diff_${local.serie}_${local.numero}`,
-				type: "MISSING_IN_SUNAT",
-				severity: "MEDIUM",
-				recordLocal: local,
-			});
-		}
-	});
-
-	const stats: ReconciliationStats = {
-		totalSunat: sunatRecords.reduce((sum, r) => sum + r.total, 0),
-		totalLocal: localRecords.reduce((sum, r) => sum + r.total, 0),
-		matchCount: sunatRecords.length + localRecords.length - diffs.length,
-		discrepancyCount: diffs.length,
-		igvGap:
-			sunatRecords.reduce((sum, r) => sum + r.igv, 0) -
-			localRecords.reduce((sum, r) => sum + r.igv, 0),
-	};
-
-	return { discrepancies: diffs, stats };
-}
 
 const sireReconciliationMachine = createProcessMachine({
 	id: "sireReconciliation",
@@ -89,7 +26,7 @@ const sireReconciliationMachine = createProcessMachine({
 		return { sunatRecords, pendingFile: null as File | null };
 	},
 	onAnalyze: async (context) => {
-		const { discrepancies, stats } = calculateDiscrepancies(
+		const { discrepancies, stats } = reconcileSire(
 			context.sunatRecords,
 			context.localRecords,
 		);
