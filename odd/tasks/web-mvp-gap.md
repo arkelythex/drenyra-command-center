@@ -40,4 +40,16 @@ Fiscal/libros/domain = crítico (CLAUDE.md): test-first, review alto, `scripts/s
 
 ## Estado
 - [x] Evaluación inicial (esta nota)
-- [ ] A. Medir con la app corriendo
+- [x] A1. Medición automática (2026-10-19, `main` en 0fc4525): `bun install` ok; `vite build` de `apps/web` **pasa**; `vitest run` en `apps/web`: **18 de 75 archivos fallan (21 tests de 551)**.
+- [ ] A2. Levantar API + Postgres y correr e2e de Playwright (necesita base de datos; pendiente)
+
+## Resultado de A1: causas de los fallos de `vitest` (web)
+| Causa | Archivos | Lectura |
+|-------|----------|---------|
+| Import a módulos que **no existen**: `@/hooks/useHaptics` (carpeta `src/hooks` no existe), `@/components/layout/MobileTabNavigation`, `@/lib/design-tokens/theme-package.schema` | InvoicesBoard, InvoiceCard, useInvoicesBoardController, SireManagementTab, UserMenu | Tablero de facturas y pestaña SIRE **no cargan**; el build pasa porque ninguna ruta las alcanza (las únicas rutas son auth, onboarding, settings y workspace). Bloquea el MVP. |
+| `motion-primitives` lee `stiffness` de un token indefinido | LoginForm, SignupForm, auth-flow, InvoicesSummaryBoard (`modal`) | **Login y registro revientan en test**; hay que confirmar si también en el navegador. Bloquea el MVP. |
+| Dependencia ausente: `web-vitals` | web-vitals.test | Higiene. |
+| Tests desalineados (BOM en CSV, textos, `QueryClientProvider` faltante, monitoring) | export-service, ClientDetail, ChatAgent, OseStatusBadge, EvidencePages, useAuthSession, useSireReconciliation, monitoring | Mantenimiento de pruebas. |
+
+## Cambio al plan
+Antes de C/D, insertar **A3: arreglar lo que impide cargar** (tokens de motion en auth, módulos inexistentes, rutas de facturas y SIRE) con tests; es lo mínimo para que un usuario entre y vea facturas.
