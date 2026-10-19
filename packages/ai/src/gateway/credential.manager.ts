@@ -14,7 +14,7 @@ import {
 	type EncryptedData,
 	encryptWithPassphrase,
 } from "@drenyra/shared/security";
-import { loggers } from "../logger";
+import { loggers } from "../services/logger";
 import type { DecryptedCredential, LLMProvider } from "./types";
 
 /**

@@ -161,6 +161,16 @@ export interface CloseExecutionResult {
 	missionId: string;
 	blockers?: MissionBlocker[];
 	proposal?: unknown;
+	/**
+	 * Basis points (0-10000) reached before the run stopped. Not populated by the
+	 * orchestrator yet: MissionRuntime falls back to 0.
+	 */
+	progress?: number;
+	/**
+	 * Failure reason. Not populated by the orchestrator yet: MissionRuntime falls
+	 * back to "Unknown failure".
+	 */
+	error?: string;
 }
 
 // ─── ApplyResult ───────────────────────────────────────────────────────────

@@ -15,8 +15,8 @@
  */
 
 import { randomUUID } from "node:crypto";
-import { loggers } from "../../../logger";
 import { classifyError } from "../../../services/error-recovery";
+import { loggers } from "../../../services/logger";
 import type { SessionStore } from "../../../session/session-store";
 import type { ReaderInput } from "../../types/agent.types";
 import type { WorkflowOrchestratorV2 } from "../workflow-v2";
@@ -148,6 +148,7 @@ export class BatchOrchestrator {
 			: [];
 
 		// ── Process each input with semaphore ───────────────────────
+		// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 		const processingPromises = inputs.map(async (input, index) => {
 			await this.acquire();
 
@@ -155,11 +156,13 @@ export class BatchOrchestrator {
 			if (this.cancelled.has(batchId)) {
 				const itemResult: BatchItemResult = {
 					index,
+					// biome-ignore lint/suspicious/noExplicitAny: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 					status: "cancelled" as any,
 				};
 				items[index] = itemResult;
 				if (this.config.enablePersistence && dbItems[index]) {
 					await this.sessionStore.updateBatchItem(dbItems[index].id, {
+						// biome-ignore lint/suspicious/noExplicitAny: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 						status: "cancelled" as any,
 					});
 				}
@@ -169,6 +172,7 @@ export class BatchOrchestrator {
 
 			const itemResult: BatchItemResult = {
 				index,
+				// biome-ignore lint/suspicious/noExplicitAny: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 				status: "running" as any,
 			};
 
@@ -178,6 +182,7 @@ export class BatchOrchestrator {
 				// Update item status to running
 				if (this.config.enablePersistence && dbItems[index]) {
 					await this.sessionStore.updateBatchItem(dbItems[index].id, {
+						// biome-ignore lint/suspicious/noExplicitAny: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 						status: "running" as any,
 					});
 				}
@@ -193,6 +198,7 @@ export class BatchOrchestrator {
 
 				if (this.config.enablePersistence && dbItems[index]) {
 					await this.sessionStore.updateBatchItem(dbItems[index].id, {
+						// biome-ignore lint/suspicious/noExplicitAny: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 						status: "completed" as any,
 					});
 				}
@@ -211,6 +217,7 @@ export class BatchOrchestrator {
 
 				if (this.config.enablePersistence && dbItems[index]) {
 					await this.sessionStore.updateBatchItem(dbItems[index].id, {
+						// biome-ignore lint/suspicious/noExplicitAny: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 						status: "failed" as any,
 						error: errorMessage,
 					});
@@ -270,6 +277,7 @@ export class BatchOrchestrator {
 		// ── Persist final batch state ───────────────────────────────
 		if (this.config.enablePersistence) {
 			await this.sessionStore.updateBatch(batchId, {
+				// biome-ignore lint/suspicious/noExplicitAny: Pre-existing; surfaced by fixing the nonexistent ../logger import in packages/ai. Tracked in odd/tasks/ai-lint-debt.md
 				status: finalStatus as any,
 				completed: completedCount,
 				failed: failedCount,
