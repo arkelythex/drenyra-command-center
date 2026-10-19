@@ -81,8 +81,8 @@ export class PostgresFiscalTruthRepository implements FiscalTruthRepository {
 			.orderBy(desc(fiscalTruthEvents.occurredAt))
 			.limit(1);
 
-		const prevHash: string | null =
-			lastEvent.length > 0 ? lastEvent[0].chainHash : null;
+		const last = lastEvent[0];
+		const prevHash: string | null = last ? last.chainHash : null;
 
 		// 2. Compute the cryptographic chain hash
 		const chainHash = await computeAuditHash(event.payload, prevHash);
@@ -171,9 +171,7 @@ export class PostgresFiscalTruthRepository implements FiscalTruthRepository {
 		let previousChainHash: string | null = null;
 		let validCount = 0;
 
-		for (let i = 0; i < rows.length; i++) {
-			const row = rows[i];
-
+		for (const [i, row] of rows.entries()) {
 			// Skip pre-migration events (empty-chain markers)
 			if (!row.chainHash) {
 				previousChainHash = null;

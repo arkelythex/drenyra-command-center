@@ -47,7 +47,7 @@ function parseAmount(value: string): number | null {
 }
 
 function getPeriodMonths(period: string): { start: Date; end: Date } {
-	const [year, month] = period.split("-").map(Number);
+	const [year = Number.NaN, month = Number.NaN] = period.split("-").map(Number);
 	const start = new Date(Date.UTC(year, month - 1, 1));
 	const end = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
 	return { start, end };
@@ -78,7 +78,7 @@ function validateHeader(
 		return { errors, headerRuc: "", headerPeriod: "" };
 	}
 
-	const [ruc, period, headerBookType] = parts;
+	const [ruc = "", period = "", headerBookType] = parts;
 	const headerRuc = ruc.trim();
 	const headerPeriod = period.trim();
 
@@ -123,7 +123,7 @@ function validateDiario(lines: string[], period: string): PleValidationResult {
 	let totalCredit = 0;
 
 	for (let i = 1; i < lines.length; i++) {
-		const parts = lines[i].split("|");
+		const parts = (lines[i] ?? "").split("|");
 		const lineNum = i + 1;
 
 		if (parts.length < 5) {
@@ -135,7 +135,8 @@ function validateDiario(lines: string[], period: string): PleValidationResult {
 			continue;
 		}
 
-		const [date, , accountCode, debitStr, creditStr] = parts;
+		const [date = "", , accountCode = "", debitStr = "", creditStr = ""] =
+			parts;
 
 		// Date validation
 		if (!isValidDate(date.trim())) {
@@ -227,7 +228,7 @@ function validateMayor(lines: string[]): PleValidationResult {
 	const warnings: PleValidationWarning[] = [];
 
 	for (let i = 1; i < lines.length; i++) {
-		const parts = lines[i].split("|");
+		const parts = (lines[i] ?? "").split("|");
 		const lineNum = i + 1;
 
 		if (parts.length < 6) {
@@ -240,12 +241,12 @@ function validateMayor(lines: string[]): PleValidationResult {
 		}
 
 		const [
-			accountCode,
+			accountCode = "",
 			,
-			saldoAnteriorStr,
-			debitStr,
-			creditStr,
-			saldoActualStr,
+			saldoAnteriorStr = "",
+			debitStr = "",
+			creditStr = "",
+			saldoActualStr = "",
 		] = parts;
 
 		if (!accountCode.trim()) {
@@ -305,7 +306,7 @@ function validateComprasVentas(
 	const warnings: PleValidationWarning[] = [];
 
 	for (let i = 1; i < lines.length; i++) {
-		const parts = lines[i].split("|");
+		const parts = (lines[i] ?? "").split("|");
 		const lineNum = i + 1;
 
 		if (parts.length < 9) {
@@ -317,7 +318,17 @@ function validateComprasVentas(
 			continue;
 		}
 
-		const [ruc, , , , , date, baseStr, igvStr, totalStr] = parts;
+		const [
+			ruc = "",
+			,
+			,
+			,
+			,
+			date = "",
+			baseStr = "",
+			igvStr = "",
+			totalStr = "",
+		] = parts;
 
 		// RUC validation
 		if (!/^\d{11}$/.test(ruc.trim())) {
@@ -432,7 +443,7 @@ export class PleValidator {
 		}
 
 		const lines = trimmed.split("\n");
-		const headerLine = lines[0];
+		const headerLine = lines[0] ?? "";
 
 		// Validate header
 		const headerResult = validateHeader(headerLine, bookType, options);

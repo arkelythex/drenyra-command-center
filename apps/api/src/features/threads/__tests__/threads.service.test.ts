@@ -379,6 +379,82 @@ describe("ThreadsService", () => {
 	});
 });
 
+describe("ThreadsService — a write that returns no row fails with a typed error", () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
+
+	const selects = (...results: unknown[][]) => {
+		let i = 0;
+		mockDb.select.mockImplementation(() =>
+			stubDbChain(results[i++] ?? results[results.length - 1]),
+		);
+	};
+
+	it("create: insert returns nothing -> THREAD_WRITE_FAILED (500)", async () => {
+		mockDb.insert.mockImplementation(() => stubDbChain([]));
+		await expect(
+			threadsService.create({
+				companyId: "company-1",
+				title: "Cierre",
+				period: "2026-06",
+				priority: "HIGH",
+				tags: [],
+				tasks: [],
+			}),
+		).rejects.toMatchObject({ code: "THREAD_WRITE_FAILED", httpStatus: 500 });
+	});
+
+	it("update: update returns nothing (row vanished) -> THREAD_NOT_FOUND (404)", async () => {
+		selects([makeThreadRow({ status: "DRAFT" })]);
+		mockDb.update.mockImplementation(() => stubDbChain([]));
+		await expect(
+			threadsService.update("thread-1", { title: "x" }),
+		).rejects.toMatchObject({ code: "THREAD_NOT_FOUND", httpStatus: 404 });
+	});
+
+	it("updateStatus: update returns nothing -> THREAD_NOT_FOUND (404)", async () => {
+		selects([makeThreadRow({ status: "DRAFT" })], [makeTaskRow()]);
+		mockDb.update.mockImplementation(() => stubDbChain([]));
+		await expect(
+			threadsService.updateStatus("thread-1", "ACTIVE"),
+		).rejects.toMatchObject({ code: "THREAD_NOT_FOUND", httpStatus: 404 });
+	});
+
+	it("assignAgent: insert returns nothing -> THREAD_WRITE_FAILED (500)", async () => {
+		selects([makeThreadRow({ status: "ACTIVE" })]);
+		mockDb.insert.mockImplementation(() => stubDbChain([]));
+		await expect(
+			threadsService.assignAgent(
+				"thread-1",
+				"agent-1",
+				"SIRE Agent",
+				"PRIMARY",
+			),
+		).rejects.toMatchObject({ code: "THREAD_WRITE_FAILED", httpStatus: 500 });
+	});
+
+	it("createTask: insert returns nothing -> THREAD_WRITE_FAILED (500)", async () => {
+		selects([makeThreadRow({ status: "ACTIVE" })]);
+		mockDb.insert.mockImplementation(() => stubDbChain([]));
+		await expect(
+			threadsService.createTask("thread-1", { title: "Validar", order: 1 }),
+		).rejects.toMatchObject({ code: "THREAD_WRITE_FAILED", httpStatus: 500 });
+	});
+
+	it("updateTask: update returns nothing -> THREAD_NOT_FOUND (404)", async () => {
+		selects([makeThreadRow({ status: "ACTIVE" })], [makeTaskRow()]);
+		mockDb.update.mockImplementation(() => stubDbChain([]));
+		await expect(
+			threadsService.updateTask("thread-1", "task-1", { title: "y" }),
+		).rejects.toMatchObject({
+			code: "THREAD_NOT_FOUND",
+			httpStatus: 404,
+			message: "Task not found",
+		});
+	});
+});
+
 describe("QuickActionsService", () => {
 	it("returns 4 quick actions", async () => {
 		const { quickActionsService } = await import("../quick-actions.service");

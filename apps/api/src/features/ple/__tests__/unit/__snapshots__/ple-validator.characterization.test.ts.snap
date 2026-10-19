@@ -1,0 +1,641 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PleValidator (characterization) > pins LE-COMPRAS rules 1`] = `
+{
+  "badDate": {
+    "errors": [],
+    "valid": true,
+    "warnings": [
+      {
+        "code": "DATE_OUTSIDE_PERIOD",
+        "line": 2,
+        "message": "Line 2: date "2026-02-30" is outside period 2026-06",
+      },
+    ],
+  },
+  "badRuc": {
+    "errors": [
+      {
+        "code": "INVALID_RUC",
+        "field": "ruc",
+        "line": 2,
+        "message": "Line 2: invalid RUC "123"",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "bothWrong": {
+    "errors": [
+      {
+        "code": "IGV_CONSISTENCY_ERROR",
+        "field": "igv",
+        "line": 2,
+        "message": "Line 2: IGV 0.00 does not match expected 18.00 (base × 18%)",
+      },
+      {
+        "code": "TOTAL_CONSISTENCY_ERROR",
+        "field": "total",
+        "line": 2,
+        "message": "Line 2: total 0.00 does not equal base + IGV (100.00)",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "igvWithinTolerance": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "igvWrong": {
+    "errors": [
+      {
+        "code": "IGV_CONSISTENCY_ERROR",
+        "field": "igv",
+        "line": 2,
+        "message": "Line 2: IGV 20.00 does not match expected 18.00 (base × 18%)",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "invalidAmount": {
+    "errors": [
+      {
+        "code": "INVALID_AMOUNT",
+        "line": 2,
+        "message": "Line 2: one or more invalid amounts",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "multipleLines": {
+    "errors": [
+      {
+        "code": "INVALID_DATE",
+        "field": "date",
+        "line": 4,
+        "message": "Line 4: invalid date "bad"",
+      },
+      {
+        "code": "INVALID_LINE_FORMAT",
+        "line": 5,
+        "message": "Line 5: expected 9 fields, got 1",
+      },
+    ],
+    "valid": false,
+    "warnings": [
+      {
+        "code": "DATE_OUTSIDE_PERIOD",
+        "line": 3,
+        "message": "Line 3: date "2026-05-01" is outside period 2026-06",
+      },
+    ],
+  },
+  "negative": {
+    "errors": [
+      {
+        "code": "NEGATIVE_AMOUNT",
+        "line": 2,
+        "message": "Line 2: negative amounts detected",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "ok": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "outsidePeriod": {
+    "errors": [],
+    "valid": true,
+    "warnings": [
+      {
+        "code": "DATE_OUTSIDE_PERIOD",
+        "line": 2,
+        "message": "Line 2: date "2026-07-01" is outside period 2026-06",
+      },
+    ],
+  },
+  "shortLine": {
+    "errors": [
+      {
+        "code": "INVALID_LINE_FORMAT",
+        "line": 2,
+        "message": "Line 2: expected 9 fields, got 8",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "totalWrong": {
+    "errors": [
+      {
+        "code": "TOTAL_CONSISTENCY_ERROR",
+        "field": "total",
+        "line": 2,
+        "message": "Line 2: total 150.00 does not equal base + IGV (118.00)",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "zero": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+}
+`;
+
+exports[`PleValidator (characterization) > pins LE-DIARIO rules 1`] = `
+{
+  "badDate": {
+    "errors": [
+      {
+        "code": "INVALID_DATE",
+        "field": "date",
+        "line": 2,
+        "message": "Line 2: invalid date "2026-13-45"",
+      },
+      {
+        "code": "INVALID_DATE",
+        "field": "date",
+        "line": 3,
+        "message": "Line 3: invalid date "10/06/2026"",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "balanced": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "emptyBody": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "extraFields": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "invalidAmounts": {
+    "errors": [
+      {
+        "code": "INVALID_AMOUNT",
+        "field": "debit",
+        "line": 2,
+        "message": "Line 2: invalid debit amount "abc"",
+      },
+      {
+        "code": "INVALID_AMOUNT",
+        "field": "credit",
+        "line": 2,
+        "message": "Line 2: invalid credit amount """,
+      },
+      {
+        "code": "INVALID_AMOUNT",
+        "field": "debit",
+        "line": 3,
+        "message": "Line 3: invalid debit amount "Infinity"",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "missingAccount": {
+    "errors": [
+      {
+        "code": "MISSING_ACCOUNT_CODE",
+        "field": "accountCode",
+        "line": 2,
+        "message": "Line 2: account code is required",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "negatives": {
+    "errors": [
+      {
+        "code": "NEGATIVE_AMOUNT",
+        "field": "debit",
+        "line": 2,
+        "message": "Line 2: negative debit amount -5",
+      },
+      {
+        "code": "NEGATIVE_AMOUNT",
+        "field": "credit",
+        "line": 2,
+        "message": "Line 2: negative credit amount -1",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "outsidePeriod": {
+    "errors": [],
+    "valid": true,
+    "warnings": [
+      {
+        "code": "DATE_OUTSIDE_PERIOD",
+        "line": 2,
+        "message": "Line 2: date "2026-05-31" is outside period 2026-06",
+      },
+    ],
+  },
+  "paddedValues": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "shortLine": {
+    "errors": [
+      {
+        "code": "INVALID_LINE_FORMAT",
+        "line": 2,
+        "message": "Line 2: expected 5 fields (date|glosa|cuenta|debe|haber), got 4",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "unbalanced": {
+    "errors": [
+      {
+        "code": "DEBIT_CREDIT_MISMATCH",
+        "message": "Total debit (100.00) does not equal total credit (99.00)",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "withinTolerance": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+}
+`;
+
+exports[`PleValidator (characterization) > pins LE-MAYOR rules 1`] = `
+{
+  "invalidAmount": {
+    "errors": [
+      {
+        "code": "INVALID_AMOUNT",
+        "line": 2,
+        "message": "Line 2: one or more invalid amounts",
+      },
+      {
+        "code": "INVALID_AMOUNT",
+        "line": 3,
+        "message": "Line 3: one or more invalid amounts",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "mismatch": {
+    "errors": [
+      {
+        "code": "BALANCE_MISMATCH",
+        "line": 2,
+        "message": "Line 2: balance mismatch — expected 130.00, got 131.00",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "missingAccount": {
+    "errors": [
+      {
+        "code": "MISSING_ACCOUNT_CODE",
+        "field": "accountCode",
+        "line": 2,
+        "message": "Line 2: account code is required",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "missingAccountAndInvalid": {
+    "errors": [
+      {
+        "code": "MISSING_ACCOUNT_CODE",
+        "field": "accountCode",
+        "line": 2,
+        "message": "Line 2: account code is required",
+      },
+      {
+        "code": "INVALID_AMOUNT",
+        "line": 2,
+        "message": "Line 2: one or more invalid amounts",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "negativeBalances": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "ok": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "shortLine": {
+    "errors": [
+      {
+        "code": "INVALID_LINE_FORMAT",
+        "line": 2,
+        "message": "Line 2: expected 6 fields, got 5",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "withinTolerance": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+}
+`;
+
+exports[`PleValidator (characterization) > pins LE-VENTAS rules 1`] = `
+{
+  "badDate": {
+    "errors": [],
+    "valid": true,
+    "warnings": [
+      {
+        "code": "DATE_OUTSIDE_PERIOD",
+        "line": 2,
+        "message": "Line 2: date "2026-02-30" is outside period 2026-06",
+      },
+    ],
+  },
+  "badRuc": {
+    "errors": [
+      {
+        "code": "INVALID_RUC",
+        "field": "ruc",
+        "line": 2,
+        "message": "Line 2: invalid RUC "123"",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "bothWrong": {
+    "errors": [
+      {
+        "code": "IGV_CONSISTENCY_ERROR",
+        "field": "igv",
+        "line": 2,
+        "message": "Line 2: IGV 0.00 does not match expected 18.00 (base × 18%)",
+      },
+      {
+        "code": "TOTAL_CONSISTENCY_ERROR",
+        "field": "total",
+        "line": 2,
+        "message": "Line 2: total 0.00 does not equal base + IGV (100.00)",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "igvWithinTolerance": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "igvWrong": {
+    "errors": [
+      {
+        "code": "IGV_CONSISTENCY_ERROR",
+        "field": "igv",
+        "line": 2,
+        "message": "Line 2: IGV 20.00 does not match expected 18.00 (base × 18%)",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "invalidAmount": {
+    "errors": [
+      {
+        "code": "INVALID_AMOUNT",
+        "line": 2,
+        "message": "Line 2: one or more invalid amounts",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "multipleLines": {
+    "errors": [
+      {
+        "code": "INVALID_DATE",
+        "field": "date",
+        "line": 4,
+        "message": "Line 4: invalid date "bad"",
+      },
+      {
+        "code": "INVALID_LINE_FORMAT",
+        "line": 5,
+        "message": "Line 5: expected 9 fields, got 1",
+      },
+    ],
+    "valid": false,
+    "warnings": [
+      {
+        "code": "DATE_OUTSIDE_PERIOD",
+        "line": 3,
+        "message": "Line 3: date "2026-05-01" is outside period 2026-06",
+      },
+    ],
+  },
+  "negative": {
+    "errors": [
+      {
+        "code": "NEGATIVE_AMOUNT",
+        "line": 2,
+        "message": "Line 2: negative amounts detected",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "ok": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "outsidePeriod": {
+    "errors": [],
+    "valid": true,
+    "warnings": [
+      {
+        "code": "DATE_OUTSIDE_PERIOD",
+        "line": 2,
+        "message": "Line 2: date "2026-07-01" is outside period 2026-06",
+      },
+    ],
+  },
+  "shortLine": {
+    "errors": [
+      {
+        "code": "INVALID_LINE_FORMAT",
+        "line": 2,
+        "message": "Line 2: expected 9 fields, got 8",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "totalWrong": {
+    "errors": [
+      {
+        "code": "TOTAL_CONSISTENCY_ERROR",
+        "field": "total",
+        "line": 2,
+        "message": "Line 2: total 150.00 does not equal base + IGV (118.00)",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "zero": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+}
+`;
+
+exports[`PleValidator (characterization) > pins header validation 1`] = `
+{
+  "badPeriod": {
+    "errors": [
+      {
+        "code": "INVALID_PERIOD",
+        "message": "Invalid period format "2026/06", expected YYYY-MM",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "bookMismatch": {
+    "errors": [
+      {
+        "code": "BOOK_TYPE_MISMATCH",
+        "message": "Header book type "LE-MAYOR" does not match expected "LE-DIARIO"",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "empty": {
+    "errors": [
+      {
+        "code": "EMPTY_CONTENT",
+        "message": "Content is empty",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "emptyHeaderFields": {
+    "errors": [
+      {
+        "code": "MISSING_HEADER",
+        "message": "Header first field must be an 11-digit RUC, got """,
+      },
+      {
+        "code": "BOOK_TYPE_MISMATCH",
+        "message": "Header book type "" does not match expected "LE-DIARIO"",
+      },
+      {
+        "code": "INVALID_PERIOD",
+        "message": "Invalid period format "", expected YYYY-MM",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "everythingWrong": {
+    "errors": [
+      {
+        "code": "MISSING_HEADER",
+        "message": "Header first field must be an 11-digit RUC, got "abc"",
+      },
+      {
+        "code": "RUC_MISMATCH",
+        "message": "Header RUC "abc" does not match expected "20123456789"",
+      },
+      {
+        "code": "BOOK_TYPE_MISMATCH",
+        "message": "Header book type "LE-DIARIO" does not match expected "LE-VENTAS"",
+      },
+      {
+        "code": "INVALID_PERIOD",
+        "message": "Invalid period format "xx", expected YYYY-MM",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "rucMatch": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "rucMismatch": {
+    "errors": [
+      {
+        "code": "RUC_MISMATCH",
+        "message": "Header RUC "20123456789" does not match expected "20999999999"",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "shortRuc": {
+    "errors": [
+      {
+        "code": "MISSING_HEADER",
+        "message": "Header first field must be an 11-digit RUC, got "1234567890"",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+  "spacesAroundFields": {
+    "errors": [],
+    "valid": true,
+    "warnings": [],
+  },
+  "tooFewFields": {
+    "errors": [
+      {
+        "code": "MISSING_HEADER",
+        "message": "Header must have at least 3 pipe-delimited fields (RUC|period|bookType), got 2",
+      },
+    ],
+    "valid": false,
+    "warnings": [],
+  },
+}
+`;
