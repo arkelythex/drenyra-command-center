@@ -2,6 +2,7 @@ import { createRootRoute, Outlet, useLocation } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
 import { AgenticLayout } from "@/components/agentic-shell/AgenticLayout/AgenticLayout";
+import { WorkspaceProvider } from "@/contexts/workspace-context";
 
 const PUBLIC_ROUTES = new Set([
 	"/login",
@@ -34,7 +35,9 @@ function RootLayout() {
 						<Outlet />
 					</div>
 				) : (
-					<AgenticLayout />
+					<WorkspaceProvider>
+						<AgenticLayout />
+					</WorkspaceProvider>
 				)}
 			</Suspense>
 			<Toaster
