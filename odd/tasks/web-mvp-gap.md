@@ -98,3 +98,8 @@ Limitaciones:
 - Con un archivo SUNAT vacío no se cargan libros, porque no hay periodo del cual partir.
 - El mes se corta en UTC: las fechas se guardan como `YYYY-MM-DD` a medianoche UTC.
 - `scripts/sire-ledger-repro-check.ts` necesita `DATABASE_URL` y no se pudo correr aquí. El cambio solo lee: no escribe en libros.
+
+## Hallazgo de seguridad (2026-10-20): `companyId` ajeno aceptado por la API
+`companyScopeGuard` resuelve la empresa de la sesión, pero `reconciliations`, `analytics`, `compliance` (dashboard, issues, sire-reproducibility) y `evidence-v2` usaban el `companyId` del query o del body sin compararlo con ella. Cualquier usuario con sesión podía leer los movimientos bancarios, KPIs, issues o evidencias de otra empresa, y conciliar o desconciliar sus transacciones. Se verificó con test: `/api/analytics/dashboard?companyId=<otra>` respondía 200.
+Ahora existe `rejectForeignCompanyId` en `shared/plugins/company-scope-guard.ts`, aplicado como `onBeforeHandle` en esos módulos. Responde 403 `COMPANY_SCOPE_MISMATCH` si el `companyId` pedido no es el de la sesión.
+`governance-audit` y `sire-comparison` ya validaban por su cuenta. En `compliance` el hook va después de las sub-rutas, porque estas tienen su propio control de llamadores, incluidas las máquinas.

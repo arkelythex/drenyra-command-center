@@ -3,7 +3,10 @@ import { z } from "zod";
 import { SIRE_LEDGER_REPRO_RUNBOOK } from "../../lib/compliance-runbooks";
 import { logger } from "../../lib/logger";
 import { ComplianceService } from "../../services/compliance.service";
-import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
+import {
+	companyScopeGuard,
+	rejectForeignCompanyId,
+} from "../../shared/plugins/company-scope-guard";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import { accountingJobRunsRoute } from "./routes/accounting-job-runs.route";
 import { accountingJobsRoute } from "./routes/accounting-jobs.route";
@@ -28,6 +31,8 @@ export const complianceModule = new Elysia({ prefix: "/api/compliance" })
 	.use(roadmapMvpRoute)
 	.use(sireDemoExportRoute)
 	.use(sireDemoSummaryRoute)
+	// After the sub-routes: they run their own caller checks (incl. machine callers).
+	.onBeforeHandle(rejectForeignCompanyId)
 	.get(
 		"/dashboard",
 		async ({ query, set }) => {

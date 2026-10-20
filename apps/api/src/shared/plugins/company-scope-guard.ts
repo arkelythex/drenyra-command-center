@@ -33,6 +33,7 @@
 
 import type { Elysia } from "elysia";
 import { resolveSessionContext } from "../../features/security/session-context";
+import { fail } from "../../features/shared/api-response";
 
 /**
  * Company-scoped context injected into Elysia's store by the guard.
@@ -160,4 +161,31 @@ export function companyScopeGuard(options: CompanyScopeGuardOptions = {}) {
 				throw error;
 			}
 		});
+}
+
+/**
+ * `onBeforeHandle` hook for modules that take `companyId` in the query or
+ * body: it must be the session's company. Without it, any signed-in user
+ * could read or change another company's data by changing that parameter.
+ *
+ * @example
+ * new Elysia({ prefix: "/api/x" })
+ *   .use(companyScopeGuard())
+ *   .onBeforeHandle(rejectForeignCompanyId)
+ */
+export function rejectForeignCompanyId(context: {
+	query?: unknown;
+	body?: unknown;
+	companyContext?: CompanyContext;
+	set: { status?: number | string };
+}) {
+	const requested =
+		(context.query as { companyId?: unknown } | undefined)?.companyId ??
+		(context.body as { companyId?: unknown } | null | undefined)?.companyId;
+	if (requested === undefined) return;
+	if (requested !== context.companyContext?.companyId) {
+		context.set.status = 403;
+		return fail("Company scope mismatch", "COMPANY_SCOPE_MISMATCH");
+	}
+	return undefined;
 }

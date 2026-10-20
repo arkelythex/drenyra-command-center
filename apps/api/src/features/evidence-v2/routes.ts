@@ -1,6 +1,9 @@
 import { Elysia } from "elysia";
 import { AppError } from "../../lib/errors";
-import { companyScopeGuard } from "../../shared/plugins";
+import {
+	companyScopeGuard,
+	rejectForeignCompanyId,
+} from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import {
 	BatchValidateBody,
@@ -30,6 +33,7 @@ export const evidenceV2Routes = new Elysia({
 	name: "evidence-v2",
 })
 	.use(companyScopeGuard())
+	.onBeforeHandle(rejectForeignCompanyId)
 
 	// ─── Search evidence ───
 	.get(
