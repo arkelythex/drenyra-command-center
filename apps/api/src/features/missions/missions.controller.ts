@@ -5,10 +5,31 @@ import type {
 	RejectMissionCommand,
 } from "@drenyra/mission-domain";
 import { isMissionError } from "@drenyra/mission-domain";
+import { SecureLogger } from "@drenyra/shared/secure-logger";
 import type { CompanyContext } from "../../shared/plugins/company-scope-guard";
 import type { MissionsService } from "./missions.service";
 import type { MissionEventStore } from "./sse/mission-event-store";
 import { missionSSEStream } from "./sse/mission-sse.stream";
+
+const logger = SecureLogger.namespace("MissionsController");
+
+/**
+ * Error result of a controller call. `status` is the HTTP status the route
+ * must answer with; `sendMissionResult` moves it out of the body.
+ */
+export interface MissionFailure {
+	success: false;
+	status: number;
+	error: { code: string; message: string; details?: unknown };
+}
+
+function notFound(): MissionFailure {
+	return {
+		success: false,
+		status: 404,
+		error: { code: "MISSION_NOT_FOUND", message: "Mission not found" },
+	};
+}
 
 export class MissionsController {
 	constructor(
@@ -17,7 +38,10 @@ export class MissionsController {
 	) {}
 
 	async create(
-		body: CreateMissionCommand & { idempotencyKey?: string },
+		body: Omit<CreateMissionCommand, "companyId"> & {
+			companyId?: string | undefined;
+			idempotencyKey?: string | undefined;
+		},
 		ctx: CompanyContext,
 	) {
 		try {
@@ -27,7 +51,7 @@ export class MissionsController {
 				intent: body.intent,
 				input: body.input,
 			});
-			return { success: true, data: mission };
+			return { success: true as const, data: mission };
 		} catch (error) {
 			return this.handleError(error);
 		}
@@ -37,12 +61,9 @@ export class MissionsController {
 		try {
 			const mission = await this.service.getMission(id, ctx.companyId);
 			if (!mission) {
-				return {
-					success: false,
-					error: { code: "MISSION_NOT_FOUND", message: "Mission not found" },
-				};
+				return notFound();
 			}
-			return { success: true, data: mission };
+			return { success: true as const, data: mission };
 		} catch (error) {
 			return this.handleError(error);
 		}
@@ -68,7 +89,7 @@ export class MissionsController {
 				() => this.service.getMission(id, ctx.companyId),
 			);
 
-			return { success: true, data: mission, stream };
+			return { success: true as const, data: mission, stream };
 		} catch (error) {
 			return this.handleError(error);
 		}
@@ -91,7 +112,7 @@ export class MissionsController {
 					expectedMissionVersion: body.expectedMissionVersion,
 				},
 			);
-			return { success: true, data: mission };
+			return { success: true as const, data: mission };
 		} catch (error) {
 			return this.handleError(error);
 		}
@@ -114,7 +135,7 @@ export class MissionsController {
 					expectedMissionVersion: body.expectedMissionVersion,
 				},
 			);
-			return { success: true, data: mission };
+			return { success: true as const, data: mission };
 		} catch (error) {
 			return this.handleError(error);
 		}
@@ -136,7 +157,7 @@ export class MissionsController {
 					expectedMissionVersion: body.expectedMissionVersion,
 				},
 			);
-			return { success: true, data: mission };
+			return { success: true as const, data: mission };
 		} catch (error) {
 			return this.handleError(error);
 		}
@@ -146,12 +167,9 @@ export class MissionsController {
 		try {
 			const mission = await this.service.getMission(id, ctx.companyId);
 			if (!mission) {
-				return {
-					success: false,
-					error: { code: "MISSION_NOT_FOUND", message: "Mission not found" },
-				};
+				return notFound();
 			}
-			return { success: true, data: (mission as any).gates ?? [] };
+			return { success: true as const, data: (mission as any).gates ?? [] };
 		} catch (error) {
 			return this.handleError(error);
 		}
@@ -161,12 +179,12 @@ export class MissionsController {
 		try {
 			const mission = await this.service.getMission(id, ctx.companyId);
 			if (!mission) {
-				return {
-					success: false,
-					error: { code: "MISSION_NOT_FOUND", message: "Mission not found" },
-				};
+				return notFound();
 			}
-			return { success: true, data: (mission as any).exceptions ?? [] };
+			return {
+				success: true as const,
+				data: (mission as any).exceptions ?? [],
+			};
 		} catch (error) {
 			return this.handleError(error);
 		}
@@ -176,10 +194,7 @@ export class MissionsController {
 		try {
 			const mission = await this.service.getMission(id, ctx.companyId);
 			if (!mission) {
-				return {
-					success: false,
-					error: { code: "MISSION_NOT_FOUND", message: "Mission not found" },
-				};
+				return notFound();
 			}
 			const receipt = (mission as any).receiptHash
 				? {
@@ -188,16 +203,17 @@ export class MissionsController {
 						missionId: id,
 					}
 				: { valid: false, receiptHash: null, missionId: id };
-			return { success: true, data: receipt };
+			return { success: true as const, data: receipt };
 		} catch (error) {
 			return this.handleError(error);
 		}
 	}
 
-	private handleError(error: unknown) {
+	private handleError(error: unknown): MissionFailure {
 		if (isMissionError(error)) {
 			return {
 				success: false,
+				status: error.statusCode,
 				error: {
 					code: error.code,
 					message: error.message,
@@ -205,13 +221,13 @@ export class MissionsController {
 				},
 			};
 		}
+		// Unexpected errors (DB, driver, bugs) are logged, never echoed: their
+		// messages can expose table names or query details.
+		logger.error("Unexpected mission error", error);
 		return {
 			success: false,
-			error: {
-				code: "INTERNAL_ERROR",
-				message:
-					error instanceof Error ? error.message : "Internal server error",
-			},
+			status: 500,
+			error: { code: "INTERNAL_ERROR", message: "Internal server error" },
 		};
 	}
 }

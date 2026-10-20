@@ -1,12 +1,14 @@
+import { db } from "@drenyra/persistence/client";
 import { Elysia } from "elysia";
-import { createMissionsRoutes } from "./missions.routes";
 import { capabilitiesRoutes } from "./capabilities.routes";
+import { createMissionsRoutes } from "./missions.routes";
 
-export function createMissionsModule(db: any) {
-	return new Elysia().use(createMissionsRoutes(db)).use(capabilitiesRoutes);
+export function createMissionsModule(database: any) {
+	return new Elysia()
+		.use(createMissionsRoutes(database))
+		.use(capabilitiesRoutes);
 }
 
-// Default module using a placeholder — actual DB is injected at registration time
-export const missionsModule = new Elysia()
-	.use(createMissionsRoutes(null as any))
-	.use(capabilitiesRoutes);
+// Mounted by app-core on the shared Postgres client. It used to receive
+// `null`, so every mission call failed and answered 200 with success:false.
+export const missionsModule = createMissionsModule(db);
