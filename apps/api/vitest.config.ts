@@ -28,7 +28,7 @@ export default defineConfig({
 			...(RUN_DB_TESTS
 				? []
 				: ["src/features/banking/__tests__/integration/**"]),
-			// Reconciliation/** tests excluded — matching logic tested via MatchingEngine integration tests
+			// Reconciliation/** test folders excluded (matching strategies: banking/__tests__/unit/matching-strategy.test.ts)
 			"**/reconciliation/**/*.test.ts",
 			// Skip vendor tests that have external dependencies
 			"**/vendors-compat/**/*.test.ts",

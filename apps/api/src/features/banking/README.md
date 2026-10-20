@@ -1,6 +1,6 @@
 # 🏦 Banking Feature
 
-Bank account management and transaction reconciliation for ARKELYTHEX.
+Bank account management, transactions and statement import for ARKELYTHEX.
 
 **Status:** ✅ Migrated (Vertical Slice) | Modular Split April 2026  
 **Last Updated:** 2026-06-20  
@@ -11,7 +11,7 @@ Bank account management and transaction reconciliation for ARKELYTHEX.
 This feature handles:
 - Bank account CRUD (PEN/USD)
 - Transaction recording and listing
-- Manual and automatic reconciliation
+- Reconciliation shadow metrics (read-only) and reconciliation batches/rules
 - Bulk import (normalized transactions; CSV parsing is client-side)
 - Balance summaries
 
@@ -29,7 +29,7 @@ banking/
 │       ├── banking.application-service.ts
 │       ├── account.service.ts
 │       ├── transaction.service.ts
-│       ├── reconciliation.service.ts
+│       ├── reconciliation.service.ts   # shadow metrics facade (read-only)
 │       └── summary.service.ts
 │
 ├── domain/                       # Business logic
@@ -41,7 +41,7 @@ banking/
 │   │   ├── transaction-reference.vo.ts
 │   │   └── match-score.vo.ts
 │   └── services/
-│       └── matching-strategy.ts  # Strategy Pattern (4 strategies)
+│       └── matching-strategy.ts  # Strategies reused by packages/infrastructure
 │   └── types.ts
 │
 ├── infrastructure/               # External concerns
@@ -52,95 +52,17 @@ banking/
 
 ## Key Concepts
 
-### Auto-Reconciliation
+### Reconciliation lives in `features/reconciliations`
 
-Transactions are matched against invoices/bills using multiple strategies:
+Linking a bank movement to an invoice or bill goes **only** through
+`/api/reconciliations` (`/:id/matches` and `/:id/reconcile`). That path
+re-checks the proposal and locks the document row, so one invoice is linked
+once. Banking no longer links documents: the legacy
+`POST /api/banking/auto-reconcile` and `POST /api/banking/transactions/:id/reconcile`
+were removed (see `odd/tasks/bank-reconciliation-mvp.md`, steps 1 and 5).
 
-| Strategy | Score | Description |
-|---
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-------
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-------
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-----|---
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-------
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-----|---
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-------
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-------
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-------
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-----|
-| Reference | 100 | Exact match on invoice/bill number |
-| Amount+Date | 80 | Same amount within ±3 days of due date |
-| Amount+Entity | 60 | Same amount + customer/vendor name in description |
-| Partial Payment | 60 | Multiple transactions summing to invoice/bill amount |
-
-Threshold: `MIN_MATCH_SCORE = 60`
-
-### Flow (Mermaid)
-
-```mermaid
-flowchart TD
-  A[Unreconciled bank tx] --> B{Strategy loop}
-  B --> C[Reference match\nscore=100]
-  B --> D[Amount+Date\nscore=80]
-  B --> E[Amount+Entity\nscore=60]
-  B --> F[Partial payment\nscore=60]
-  C --> G{score >= 60?}
-  D --> G
-  E --> G
-  F --> G
-  G -->|Yes| H[Mark tx reconciled + link invoice/bill]
-  G -->|No| I[Leave tx unreconciled]
-```
-
-```mermaid
-sequenceDiagram
-  autonumber
-  actor User
-  participant Web
-  participant API as API /api/banking
-  participant Recon as ReconciliationService
-  participant Inv as InvoiceQueryService
-  participant Bill as BillQueryService
-  participant DB as Postgres
-
-  User->>Web: Click "Auto-Reconcile"
-  Web->>API: POST /auto-reconcile {companyId, accountId}
-  API->>Recon: autoReconcile(companyId, accountId)
-  Recon->>DB: find unreconciled tx
-  loop for each tx
-    Recon->>Inv: findByNumber / findByAmountAndDateRange (CREDIT)
-    Recon->>Bill: findByNumber / findByAmountAndDateRange (DEBIT)
-    Recon->>DB: update tx isReconciled + link invoiceId/billId
-  end
-  Recon-->>API: {reconciledCount, attemptedCount, matches}
-  API-->>Web: 200 OK
-```
+Banking keeps the read-only shadow endpoints (`/reconciliation-shadow/metrics`,
+`/reconciliation-shadow/cutover`) and the reconciliation batches/rules endpoints.
 
 ### Money Handling
 
@@ -159,8 +81,6 @@ const newBalance = balance.add(new Money('500.00', 'PEN'));
 - `@drenyra/domain` - Money value object
 - `@drenyra/shared` - SecureLogger
 - `@drenyra/infrastructure` - Database, Drizzle schemas
-- `features/invoice` - Invoice queries for reconciliation
-- `features/bill` - Bill queries for reconciliation
 
 ### External
 - None (no external bank APIs yet)
@@ -168,39 +88,7 @@ const newBalance = balance.add(new Money('500.00', 'PEN'));
 ## API Endpoints
 
 | Method | Path | Description |
-|---
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-------
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
------|---
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-------
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
----|---
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-------
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-------
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-------
-
-- [Gentleman Philosophy](../../../../../docs/meta/gentleman-philosophy.md)
-
-----|
+|--------|------|-------------|
 | GET | `/api/banking/accounts` | List accounts |
 | GET | `/api/banking/accounts/:id` | Get account |
 | GET | `/api/banking/accounts/:id/balance` | Get balances |
@@ -208,50 +96,16 @@ const newBalance = balance.add(new Money('500.00', 'PEN'));
 | DELETE | `/api/banking/accounts/:id` | Soft delete |
 | GET | `/api/banking/accounts/:id/transactions` | List transactions |
 | POST | `/api/banking/transactions` | Create transaction |
-| POST | `/api/banking/transactions/:id/reconcile` | Manual reconcile |
-| POST | `/api/banking/auto-reconcile` | Auto-reconcile all |
-| POST | `/api/banking/import` | Import (normalized transactions) |
+| POST | `/api/banking/import` | Import statement (amounts in cents) |
 | GET | `/api/banking/summary` | Get summary |
+| GET | `/api/banking/reconciliation-shadow/metrics` | Shadow metrics |
+| GET | `/api/banking/reconciliation-shadow/cutover` | Shadow cutover evaluation |
+| * | `/api/banking/reconciliation/batches/*` | Reconciliation batches |
+| * | `/api/banking/reconciliation/rules/*` | Reconciliation rules |
 
 Full API docs: docs/04-api/banking.md _(no disponible)_
 
 ## Extending
-
-### Adding a New Matching Strategy
-
-1. Create strategy class:
-
-```typescript
-// domain/services/my-matching.strategy.ts
-import { MatchingStrategy, MatchCandidate, MatchContext } from './matching-strategy.interface';
-import { BankTransaction } from '../entities/bank-transaction.entity';
-
-export class MyMatchingStrategy implements MatchingStrategy {
-  readonly priority = 2.5; // Between existing strategies
-  readonly criteria = 'MY_CRITERIA' as const;
-
-  async match(tx: BankTransaction, ctx: MatchContext): Promise<MatchCandidate | null> {
-    // Your matching logic
-    return null;
-  }
-}
-```
-
-2. Register in `ReconciliationService`:
-
-```typescript
-// application/services/reconciliation.service.ts
-import { MyMatchingStrategy } from '../../domain/services/my-matching.strategy';
-
-private strategies: MatchingStrategy[] = [
-  new ReferenceMatchingStrategy(),
-  new MyMatchingStrategy(), // Add here
-  new AmountDateMatchingStrategy(),
-  // ...
-];
-```
-
-3. Add tests in `__tests__/unit/my-matching.strategy.test.ts`
 
 ### Adding Bank Format for Import
 
@@ -299,27 +153,16 @@ Environment variables:
 
 - ADR-008: Banking Reconciliation Strategy Pattern _(no disponible)_
 
+
 ## Edge Cases Covered
 
 - **Reference format variance** (`F001-123`, `f001 123`, `F001/123`)  
   **Handling:** normalization to uppercase + separator unification before matching  
   **Tests:** `apps/api/src/features/banking/__tests__/unit/matching-strategy.test.ts`
 
-- **Multiple candidates, same score**  
-  **Handling:** deterministic “first candidate” per strategy; highest score wins overall  
-  **Tests:** `apps/api/src/features/banking/__tests__/unit/reconciliation.service.test.ts`
-
-- **Timezone/date window boundaries (±3 days)**  
-  **Handling:** date window computed using `Date` and compared against stored transaction date  
-  **Tests:** `apps/api/src/features/banking/__tests__/integration/auto-reconcile.integration.test.ts`
-
-- **Partial payment rounding (cents)**  
-  **Handling:** sum with cent rounding; compare as integer cents  
-  **Tests:** `apps/api/src/features/banking/__tests__/unit/reconciliation.service.test.ts`
-
-- **Already reconciled tx**  
-  **Handling:** filtered at query time (`isReconciled=false`)  
-  **Tests:** `apps/api/src/features/banking/__tests__/integration/banking.repository.test.ts`
+- **Statement re-import / non-whole cents**  
+  **Handling:** planned in cents, duplicates skipped, written all-or-nothing  
+  **Tests:** `apps/api/src/features/banking/__tests__/unit/statement-import.test.ts`
 
 ## Migration from Legacy
 
@@ -333,12 +176,9 @@ See: Vertical Slice Migration Guide _(no disponible)_
 
 - [x] Account management
 - [x] Transaction CRUD
-- [x] Manual reconciliation
-- [x] Auto-reconciliation (4 strategies)
-- [x] Partial payment detection (basic sum matching)
+- [x] Statement import in cents
+- [x] Reconciliation moved to `features/reconciliations`
 - [ ] Bank API integration (BCP, BBVA)
-- [ ] Scheduled reconciliation jobs
-- [ ] Reconciliation dashboard UI
 
 ---
 

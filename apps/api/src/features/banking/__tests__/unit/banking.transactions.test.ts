@@ -51,17 +51,6 @@ describe("BankingApplicationService / Transaction Management", () => {
 		);
 	});
 
-	it("reconcileTransaction delegates to reconcileTransaction", async () => {
-		await service.reconcileTransaction("tx-1", "user-1", "inv-abc", "INVOICE");
-
-		expect(mocks.reconcileTransaction).toHaveBeenCalledWith({
-			transactionId: "tx-1",
-			userId: "user-1",
-			documentId: "inv-abc",
-			documentType: "INVOICE",
-		});
-	});
-
 	it("getBalance delegates to AccountService", async () => {
 		mocks.accountService.getBalance.mockResolvedValue({
 			current: "100.00",

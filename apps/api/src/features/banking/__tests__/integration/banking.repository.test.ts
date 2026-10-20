@@ -8,7 +8,6 @@
 // Apply integration test mocks FIRST
 import "./integration-mocks";
 
-import { randomUUID } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { BankingRepository } from "../../infrastructure/banking.repository";
 import {
@@ -299,61 +298,7 @@ describeBankingIntegration("BankingRepository (Integration)", () => {
 		});
 	});
 
-	describe("Transaction Reconciliation", () => {
-		it("reconciles transaction without document link", async () => {
-			const ctx = getCtx();
-			const account = await createTestAccount(ctx);
-			const transaction = await createTestTransaction(ctx, account.id, {
-				isReconciled: false,
-			});
-
-			const userId = randomUUID();
-			await repository.reconcileTransaction(transaction.id, userId);
-
-			const reconciled = await repository.findTransactionById(transaction.id);
-			expect(reconciled?.isReconciled).toBe(true);
-			expect(reconciled?.reconciledBy).toBe(userId);
-			expect(reconciled?.reconciledAt).toBeInstanceOf(Date);
-		});
-
-		it("reconciles transaction with invoice link", async () => {
-			const ctx = getCtx();
-			const account = await createTestAccount(ctx);
-			const transaction = await createTestTransaction(ctx, account.id);
-
-			const invoiceId = randomUUID();
-			await repository.reconcileTransaction(
-				transaction.id,
-				randomUUID(),
-				invoiceId,
-				"INVOICE",
-			);
-
-			const reconciled = await repository.findTransactionById(transaction.id);
-			expect(reconciled?.isReconciled).toBe(true);
-			expect(reconciled?.invoiceId).toBe(invoiceId);
-			expect(reconciled?.billId).toBeNull();
-		});
-
-		it("reconciles transaction with bill link", async () => {
-			const ctx = getCtx();
-			const account = await createTestAccount(ctx);
-			const transaction = await createTestTransaction(ctx, account.id);
-
-			const billId = randomUUID();
-			await repository.reconcileTransaction(
-				transaction.id,
-				randomUUID(),
-				billId,
-				"BILL",
-			);
-
-			const reconciled = await repository.findTransactionById(transaction.id);
-			expect(reconciled?.isReconciled).toBe(true);
-			expect(reconciled?.billId).toBe(billId);
-			expect(reconciled?.invoiceId).toBeNull();
-		});
-
+	describe("Unreconciled count", () => {
 		it("counts unreconciled transactions", async () => {
 			const ctx = getCtx();
 			const account = await createTestAccount(ctx);

@@ -4,12 +4,10 @@ import type {
 } from "../../../../types/banking.types";
 import type { ImportRow } from "../commands/import-transactions.command";
 import { importTransactions } from "../commands/import-transactions.command";
-import { reconcileTransaction } from "../commands/reconcile-transaction.command";
 import { recordTransaction } from "../commands/record-transaction.command";
 import { getBankingSummary } from "../queries/get-banking-summary.query";
 import { getTransactions } from "../queries/get-transactions.query";
 import { AccountService } from "./account.service";
-import { ReconciliationService } from "./reconciliation.service";
 
 export class BankingApplicationService {
 	constructor(
@@ -22,10 +20,6 @@ export class BankingApplicationService {
 			| "deleteAccount"
 			| "getBalance"
 		> = new AccountService(),
-		private readonly reconciliation: Pick<
-			ReconciliationService,
-			"autoReconcile"
-		> = new ReconciliationService(),
 	) {}
 
 	async listAccounts(companyId: string) {
@@ -71,20 +65,6 @@ export class BankingApplicationService {
 		return { id: result.transactionId, balance: result.newBalance };
 	}
 
-	async reconcileTransaction(
-		transactionId: string,
-		userId: string,
-		documentId?: string,
-		documentType?: "INVOICE" | "BILL",
-	) {
-		await reconcileTransaction({
-			transactionId,
-			userId,
-			documentId,
-			documentType,
-		});
-	}
-
 	async getSummary(companyId: string) {
 		return getBankingSummary({ companyId });
 	}
@@ -100,9 +80,5 @@ export class BankingApplicationService {
 			source: "CSV",
 			transactions,
 		});
-	}
-
-	async autoReconcile(companyId: string, accountId: string) {
-		return this.reconciliation.autoReconcile(companyId, accountId);
 	}
 }

@@ -26,7 +26,7 @@ export interface ImportTransactionInput {
  * Application service for managing bank transactions.
  *
  * @deprecated Use CQRS handlers instead:
- * - Write ops: {@link RecordTransactionHandler}, {@link ReconcileTransactionHandler}, {@link ImportTransactionsHandler}
+ * - Write ops: {@link RecordTransactionHandler}, {@link ImportTransactionsHandler}
  * - Read ops: {@link GetTransactionsQuery} (coming in next iteration)
  * This service will be removed in a future version.
  *
@@ -88,20 +88,6 @@ export class TransactionService {
 		});
 
 		return transaction;
-	}
-
-	async reconcileTransaction(
-		transactionId: string,
-		userId: string,
-		documentId?: string,
-		documentType?: "INVOICE" | "BILL",
-	) {
-		await this.repository.reconcileTransaction(
-			transactionId,
-			userId,
-			documentId,
-			documentType,
-		);
 	}
 
 	async importTransactions(

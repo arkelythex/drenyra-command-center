@@ -6,8 +6,6 @@ export type {
 	ImportTransactionsCommand,
 } from "./import-transactions.command";
 export { importTransactions } from "./import-transactions.command";
-export type { ReconcileTransactionCommand } from "./reconcile-transaction.command";
-export { reconcileTransaction } from "./reconcile-transaction.command";
 export type {
 	RecordTransactionCommand,
 	RecordTransactionResult,

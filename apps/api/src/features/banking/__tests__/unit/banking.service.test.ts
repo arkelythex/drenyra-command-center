@@ -50,7 +50,6 @@ describe("BankingApplicationService", () => {
 			type: "CREDIT",
 			amount: 50,
 		} as Parameters<typeof service.createTransaction>[1]);
-		await service.reconcileTransaction("tx-1", "user-1");
 		await service.importTransactions("comp-1", "acc-1", []);
 
 		expect(mocks.getTransactions).toHaveBeenCalledWith({
@@ -59,16 +58,10 @@ describe("BankingApplicationService", () => {
 			endDate: undefined,
 		});
 		expect(mocks.recordTransaction).toHaveBeenCalled();
-		expect(mocks.reconcileTransaction).toHaveBeenCalledWith({
-			transactionId: "tx-1",
-			userId: "user-1",
-			documentId: undefined,
-			documentType: undefined,
-		});
 		expect(mocks.importTransactions).toHaveBeenCalled();
 	});
 
-	it("delegates reconciliation to ReconciliationService and summary to getBankingSummary", async () => {
+	it("delegates summary to getBankingSummary", async () => {
 		mocks.getBankingSummary.mockResolvedValue({
 			totalAccounts: 0,
 			totalBalance: "0.00",
@@ -76,23 +69,12 @@ describe("BankingApplicationService", () => {
 			totalBalanceUSD: "0.00",
 			unreconciledTransactions: 0,
 		});
-		mocks.reconciliationService.autoReconcile.mockResolvedValue({
-			reconciledCount: 0,
-			attemptedCount: 0,
-			matches: [],
-		});
 
 		const summary = await service.getSummary("comp-1");
-		const result = await service.autoReconcile("comp-1", "acc-1");
 
 		expect(summary.totalAccounts).toBe(0);
-		expect(result.reconciledCount).toBe(0);
 		expect(mocks.getBankingSummary).toHaveBeenCalledWith({
 			companyId: "comp-1",
 		});
-		expect(mocks.reconciliationService.autoReconcile).toHaveBeenCalledWith(
-			"comp-1",
-			"acc-1",
-		);
 	});
 });

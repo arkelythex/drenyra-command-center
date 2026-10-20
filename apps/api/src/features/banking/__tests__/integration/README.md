@@ -12,17 +12,15 @@ These integration tests verify the full Banking feature stack against a **REAL P
 1. **`banking.repository.test.ts`** - Repository layer CRUD operations
    - Account creation, updates, queries, soft delete
    - Transaction creation, filters, pagination
-   - Reconciliation operations
+   - Unreconciled transaction queries and count
 
 2. **`banking.handlers.test.ts`** - E2E HTTP endpoint tests
    - Tests all banking routes via Elysia
    - Request validation, error handling, responses
    - Uses real DB + real HTTP calls
 
-3. **`auto-reconcile.integration.test.ts`** - Full reconciliation flow
-   - Creates test invoices and transactions
-   - Runs auto-reconcile algorithm
-   - Verifies matching strategies work correctly
+Linking a movement to an invoice or bill is tested in `features/reconciliations`
+(`/api/reconciliations`); banking no longer links documents.
 
 ## Setup Requirements
 
@@ -62,7 +60,7 @@ Suites use `describeBankingIntegration` and will **skip** (not fail) when `DATAB
 ### Specific test file:
 ```bash
 RUN_DB_TESTS=1 DATABASE_URL="postgres://..." \
-  bun test apps/api/src/features/banking/__tests__/integration/auto-reconcile.integration.test.ts --run
+  bun test apps/api/src/features/banking/__tests__/integration/banking.repository.test.ts --run
 ```
 
 ## Known Issues
@@ -98,8 +96,6 @@ Current coverage: **~80%** of banking repository and handlers.
 
 Missing coverage:
 - Error scenarios (DB connection failures)
-- Complex partial payment reconciliation
-- Bill reconciliation (only invoice tests implemented)
 
 ## Best Practices
 
@@ -122,8 +118,6 @@ If tests fail:
 - [ ] Add testcontainers for CI/CD
 - [ ] Split integration tests into separate config
 - [ ] Add performance benchmarks
-- [ ] Test concurrent reconciliation scenarios
-- [ ] Add bill reconciliation tests
 
 ---
 

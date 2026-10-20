@@ -148,21 +148,6 @@ export interface IBankingRepository {
 	): Promise<BankTransactionRecord>;
 
 	/**
-	 * Marks a transaction as reconciled, optionally linking it to an Invoice or Bill.
-	 *
-	 * @example
-	 * ```ts
-	 * await repo.reconcileTransaction('tx_1', 'user_1', 'inv_1', 'INVOICE');
-	 * ```
-	 */
-	reconcileTransaction(
-		id: string,
-		userId: string,
-		documentId?: string,
-		documentType?: "INVOICE" | "BILL",
-	): Promise<void>;
-
-	/**
 	 * Returns the count of unreconciled transactions for a company.
 	 *
 	 * @example

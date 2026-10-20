@@ -5,32 +5,12 @@ const { BankingApplicationService } = await import(
 	"../../application/services/banking.application-service"
 );
 
-describe("BankingApplicationService / Reconciliation & Summary", () => {
+describe("BankingApplicationService / Summary", () => {
 	const { mocks, constructorArgs } = createBankingServiceWithMocks();
 	const service = new BankingApplicationService(...constructorArgs);
 
 	beforeEach(() => {
 		vi.clearAllMocks();
-	});
-
-	it("autoReconcile delegates to ReconciliationService", async () => {
-		mocks.reconciliationService.autoReconcile.mockResolvedValue({
-			reconciledCount: 1,
-			attemptedCount: 2,
-			matches: [],
-		});
-
-		const result = await service.autoReconcile("comp-1", "acc-1");
-
-		expect(result).toEqual({
-			reconciledCount: 1,
-			attemptedCount: 2,
-			matches: [],
-		});
-		expect(mocks.reconciliationService.autoReconcile).toHaveBeenCalledWith(
-			"comp-1",
-			"acc-1",
-		);
 	});
 
 	it("getSummary delegates to getBankingSummary", async () => {

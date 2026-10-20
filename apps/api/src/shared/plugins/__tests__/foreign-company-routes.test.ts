@@ -94,7 +94,6 @@ describe("foreign companyId", () => {
 				transactions: [],
 			},
 		],
-		["/api/banking/auto-reconcile", { companyId: FOREIGN, accountId: ACCOUNT }],
 	])("is refused with 403 on POST %s", async (path, body) => {
 		const response = await app.handle(
 			new Request(`http://localhost${path}`, {

@@ -6,10 +6,7 @@
 import { db } from "@drenyra/persistence/client";
 import { and, desc, eq, gte, lte } from "@drenyra/persistence/query";
 import { bankAccounts, bankTransactions } from "@drenyra/persistence/schema";
-import {
-	withCompanyRlsTransaction,
-	withTenantRlsTransaction,
-} from "../../security/rls-db-context";
+import { withCompanyRlsTransaction } from "../../security/rls-db-context";
 import {
 	centsToDecimal,
 	decimalToCents,
@@ -283,40 +280,6 @@ export class BankingRepository implements IBankingRepository {
 				.returning();
 
 			return transaction as unknown as BankTransactionRecord;
-		});
-	}
-
-	async reconcileTransaction(
-		id: string,
-		userId: string,
-		documentId?: string,
-		documentType?: "INVOICE" | "BILL",
-	): Promise<void> {
-		const companyId = await this.resolveCompanyIdByTransactionId(id);
-
-		if (!companyId) {
-			return;
-		}
-
-		const updateData: Partial<typeof bankTransactions.$inferInsert> = {
-			isReconciled: true,
-			reconciledAt: new Date(),
-			reconciledBy: userId,
-		};
-
-		if (documentId && documentType) {
-			if (documentType === "INVOICE") {
-				updateData.invoiceId = documentId;
-			} else {
-				updateData.billId = documentId;
-			}
-		}
-
-		await withTenantRlsTransaction({ companyId, userId }, async (tx) => {
-			await tx
-				.update(bankTransactions)
-				.set(updateData)
-				.where(eq(bankTransactions.id, id));
 		});
 	}
 

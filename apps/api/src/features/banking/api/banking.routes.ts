@@ -6,7 +6,6 @@ import {
 import { bankingHandlers } from "./banking.handlers";
 import {
 	AirlineTicketReportQuerySchema,
-	AutoReconcileSchema,
 	CreateAccountSchema,
 	CreateTransactionSchema,
 	IdParamSchema,
@@ -89,11 +88,8 @@ export const bankingRoutes = new Elysia({ prefix: "/api/banking" })
 		query: AirlineTicketReportQuerySchema,
 		detail: { tags: ["Banking"], summary: "Airline ticket report" },
 	})
-	// ── Reconciliation ─────────────────────────────────────────────────────────
-	.post("/auto-reconcile", bankingHandlers.autoReconcile, {
-		body: AutoReconcileSchema,
-		detail: { tags: ["Banking"], summary: "Auto-reconcile" },
-	})
+	// ── Reconciliation shadow (read-only metrics) ─────────────────────────────
+	// Linking movements to documents goes only through /api/reconciliations.
 	.get(
 		"/reconciliation-shadow/metrics",
 		bankingHandlers.getReconciliationShadowMetrics,
