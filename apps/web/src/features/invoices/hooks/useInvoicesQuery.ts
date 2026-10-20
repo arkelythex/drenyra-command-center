@@ -126,7 +126,7 @@ export const useInvoicesQuery = (filters: Record<string, unknown> = {}) => {
 								customer.tradeName ??
 								customer.name ??
 								getCustomerLabel(customer.id),
-							email: customer.email,
+							...(customer.email ? { email: customer.email } : {}),
 						},
 					]),
 				);

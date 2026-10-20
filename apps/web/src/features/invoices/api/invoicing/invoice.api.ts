@@ -1,5 +1,5 @@
 import { api, getGovernanceAuditHeaders } from "@/lib/api";
-import { unwrap } from "@/lib/api-helpers";
+import { extractOkDataOrPassthrough, unwrap } from "@/lib/api-helpers";
 import { isRecord, toNumericString } from "./helpers";
 import type {
 	CreateInvoicePayload,
@@ -51,8 +51,13 @@ export async function invoicingList(filters: InvoiceListFilters) {
 		}),
 	);
 
-	if (isRecord(rawResult) && Array.isArray(rawResult.invoices)) {
-		return rawResult.invoices;
+	// The route answers `ok({ invoices, total, ... })`; the list sits under `data`.
+	const page = extractOkDataOrPassthrough<unknown>(
+		rawResult,
+		"No se pudieron cargar las facturas",
+	);
+	if (isRecord(page) && Array.isArray(page.invoices)) {
+		return page.invoices;
 	}
 
 	return [];
