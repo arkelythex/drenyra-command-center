@@ -7,6 +7,7 @@ export function toMissionState(
 	isMockMode = false,
 ): MissionState {
 	return {
+		missionId: snapshot.id,
 		status: snapshot.status,
 		progress: snapshot.progress,
 		steps: snapshot.steps ?? [],

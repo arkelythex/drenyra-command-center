@@ -6,7 +6,8 @@ export type ClosePhaseState = "completed" | "active" | "blocked" | "pending";
 interface ClosePhase {
 	name: string;
 	state: ClosePhaseState;
-	evidenceCount: number;
+	/** Evidence items for the phase, when the mission reports them. */
+	evidenceCount?: number;
 	blocker?: string;
 	nextAction?: string;
 }
@@ -70,9 +71,11 @@ function PhaseCard({ phase, index }: { phase: ClosePhase; index: number }) {
 						{index + 1}. {phase.name}
 					</span>
 				</div>
-				<span className="shrink-0 text-[10px] font-medium text-[var(--text-secondary)]">
-					{phase.evidenceCount} ev.
-				</span>
+				{phase.evidenceCount !== undefined ? (
+					<span className="shrink-0 text-[10px] font-medium text-[var(--text-secondary)]">
+						{phase.evidenceCount} ev.
+					</span>
+				) : null}
 			</div>
 
 			<span className="text-[10px] font-medium text-[var(--text-tertiary)]">

@@ -49,7 +49,7 @@ export function MissionWorkspace() {
 									</div>
 								}
 							>
-								<CierreMensualPage />
+								<CierreMensualPage mission={mission} />
 							</Suspense>
 						</div>
 						<div className="sticky bottom-0 flex w-full max-w-lg flex-col items-center gap-3 border-t border-[var(--border-subtle)] bg-[var(--surface-1)] p-4">

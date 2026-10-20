@@ -3,7 +3,7 @@ import type {
 	CierreMensualChecklistItem,
 } from "@drenyra/domain";
 import type { MissionSnapshot, MissionStep } from "@drenyra/mission-domain";
-import { useAccountingMission } from "@/features/workspace/hooks/useAccountingMission";
+import type { useAccountingMission } from "@/features/workspace/hooks/useAccountingMission";
 import type { MissionBlocker, MissionTimelineEvent } from "../mission.types";
 
 export interface CierreMensualParams {
@@ -22,6 +22,11 @@ export interface CierreMensualMission extends CierreMensual {
 type MissionProjectionSnapshot = Pick<
 	MissionSnapshot,
 	"progress" | "steps" | "blockers" | "proposal" | "receiptId" | "status"
+> & { missionId?: string | null | undefined };
+
+/** The workspace's mission, shared with the page instead of a second copy. */
+export type CierreMensualMissionSource = ReturnType<
+	typeof useAccountingMission
 >;
 
 function projectChecklist(steps: MissionStep[]): CierreMensualChecklistItem[] {
@@ -71,7 +76,9 @@ function projectTimeline(steps: MissionStep[]): MissionTimelineEvent[] {
 	}));
 }
 
-function projectRisk(snapshot: MissionProjectionSnapshot): CierreMensual["globalRiskLevel"] {
+function projectRisk(
+	snapshot: MissionProjectionSnapshot,
+): CierreMensual["globalRiskLevel"] {
 	if (snapshot.blockers.some((blocker) => blocker.severity === "CRITICAL")) {
 		return "CRITICAL";
 	}
@@ -81,7 +88,9 @@ function projectRisk(snapshot: MissionProjectionSnapshot): CierreMensual["global
 	return snapshot.proposal?.riskLevel ?? "LOW";
 }
 
-function projectStatus(snapshot: MissionProjectionSnapshot): CierreMensual["status"] {
+function projectStatus(
+	snapshot: MissionProjectionSnapshot,
+): CierreMensual["status"] {
 	if (snapshot.receiptId) return "CERRADO";
 	if (snapshot.proposal) return "PENDIENTE_APROBACION";
 	return snapshot.status === "DRAFT" ? "ABIERTO" : "EN_PROCESO";
@@ -94,7 +103,8 @@ export function projectCierreMensualMission(
 	const checklist = projectChecklist(snapshot.steps);
 
 	return {
-		id: `close-${params.companyId}-${params.fiscalPeriod}`,
+		id:
+			snapshot.missionId ?? `close-${params.companyId}-${params.fiscalPeriod}`,
 		companyId: params.companyId,
 		companyName: params.companyName,
 		companyRuc: params.companyRuc,
@@ -103,23 +113,25 @@ export function projectCierreMensualMission(
 		startedAt: snapshot.steps[0]?.startedAt ?? "",
 		checklist,
 		progress: snapshot.progress / 10_000,
-		expedienteId: `mission-${params.companyId}-${params.fiscalPeriod}`,
-		firmas: {
-			contador: { firmado: snapshot.receiptId !== null },
-			revisor: { firmado: snapshot.receiptId !== null },
-			representante: { firmado: snapshot.receiptId !== null },
-		},
-		sireStatus: snapshot.blockers.length > 0 ? "CON_DISCREPANCIAS" : "PENDIENTE",
-		bancosStatus: snapshot.blockers.length > 0 ? "CON_DISCREPANCIAS" : "PENDIENTE",
-		igvStatus: snapshot.receiptId ? "VALIDADO" : "PENDIENTE",
+		expedienteId: snapshot.missionId ?? "",
+		// The approval receipt is the accountant's sign-off; the reviewer and
+		// legal-representative signatures are not modelled by the mission yet.
+		firmas: { contador: { firmado: snapshot.receiptId !== null } },
+		// No mission evidence reports these yet, so they stay pending instead
+		// of being guessed from blockers or the receipt.
+		sireStatus: "PENDIENTE",
+		bancosStatus: "PENDIENTE",
+		igvStatus: "PENDIENTE",
 		globalRiskLevel: projectRisk(snapshot),
 		blockers: projectBlockers(snapshot.blockers),
 		timeline: projectTimeline(snapshot.steps),
 	};
 }
 
-export function useCierreMensual(params: CierreMensualParams) {
-	const mission = useAccountingMission();
+export function useCierreMensual(
+	mission: CierreMensualMissionSource,
+	params: CierreMensualParams,
+) {
 	const data = projectCierreMensualMission(mission, params);
 
 	return {
