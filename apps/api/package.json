@@ -45,7 +45,7 @@
     "archiver": "^8.0.0",
     "better-auth": "^1.6.16",
     "drizzle-orm": "^0.45.2",
-    "elysia": "1.4.29",
+    "elysia": "1.4.30",
     "elysia-helmet": "^3.0.0",
     "exceljs": "^4.4.0",
     "fast-xml-parser": "^5.3.3",
