@@ -10,8 +10,24 @@ import "./integration-mocks";
 
 import { randomUUID } from "node:crypto";
 import { Elysia } from "elysia";
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { bankingRoutes } from "../../api/banking.routes";
+
+// Signed in as a user of the fixture's company: the routes refuse any other.
+const session = vi.hoisted(() => ({ companyId: "" }));
+vi.mock("../../../security/session-context", () => ({
+	resolveSessionContext: vi.fn(async () => ({
+		ok: true,
+		context: {
+			userId: "user-1",
+			authUserId: "user-1",
+			legacyUserId: null,
+			role: "admin",
+			companyId: session.companyId,
+		},
+	})),
+}));
+
 import {
 	createTestAccount,
 	createTestTransaction,
@@ -28,6 +44,10 @@ async function expectSuccessData<T = unknown>(response: Response): Promise<T> {
 describeBankingIntegration("Banking Handlers (E2E)", () => {
 	const getCtx = setupTestDb();
 	let app: Elysia;
+
+	beforeEach(() => {
+		session.companyId = getCtx().companyId;
+	});
 
 	beforeAll(() => {
 		// Create Elysia test app with banking routes
@@ -316,96 +336,6 @@ describeBankingIntegration("Banking Handlers (E2E)", () => {
 			const transactions =
 				await expectSuccessData<Array<Record<string, unknown>>>(response);
 			expect(transactions.length).toBeGreaterThanOrEqual(1);
-		});
-	});
-
-	describe("POST /api/banking/transactions/:id/reconcile", () => {
-		it("reconciles transaction", async () => {
-			const ctx = getCtx();
-			const account = await createTestAccount(ctx);
-			const transaction = await createTestTransaction(ctx, account.id, {
-				isReconciled: false,
-			});
-
-			const response = await app.handle(
-				new Request(
-					`http://localhost/api/banking/transactions/${transaction.id}/reconcile`,
-					{
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-							"x-company-id": ctx.companyId,
-						},
-						body: JSON.stringify({
-							userId: randomUUID(),
-						}),
-					},
-				),
-			);
-
-			expect(response.status).toBe(200);
-			const result = await expectSuccessData<Record<string, unknown>>(response);
-			expect(result.reconciled).toBe(true);
-		});
-
-		it("rejects legacy header-only auth fallback when body.userId is omitted", async () => {
-			const ctx = getCtx();
-			const account = await createTestAccount(ctx);
-			const transaction = await createTestTransaction(ctx, account.id, {
-				isReconciled: false,
-			});
-
-			const response = await app.handle(
-				new Request(
-					`http://localhost/api/banking/transactions/${transaction.id}/reconcile`,
-					{
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-							"x-user-id": randomUUID(),
-							"x-user-role": "admin",
-							"x-company-id": ctx.companyId,
-						},
-						body: JSON.stringify({}),
-					},
-				),
-			);
-
-			expect(response.status).toBe(401);
-			const payload = await response.json();
-			expect(payload).toMatchObject({
-				success: false,
-				code: "BANKING_AUTH_REQUIRED",
-			});
-		});
-
-		it("returns 401 when neither body.userId nor auth headers provide a legacy user", async () => {
-			const ctx = getCtx();
-			const account = await createTestAccount(ctx);
-			const transaction = await createTestTransaction(ctx, account.id, {
-				isReconciled: false,
-			});
-
-			const response = await app.handle(
-				new Request(
-					`http://localhost/api/banking/transactions/${transaction.id}/reconcile`,
-					{
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-							"x-company-id": ctx.companyId,
-						},
-						body: JSON.stringify({}),
-					},
-				),
-			);
-
-			expect(response.status).toBe(401);
-			const payload = await response.json();
-			expect(payload).toMatchObject({
-				success: false,
-				code: "BANKING_AUTH_REQUIRED",
-			});
 		});
 	});
 

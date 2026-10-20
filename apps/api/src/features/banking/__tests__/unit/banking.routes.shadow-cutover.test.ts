@@ -1,5 +1,20 @@
 import { Elysia } from "elysia";
 import { afterEach, describe, expect, it, vi } from "vitest";
+
+// The session's company is cmp-1, the one the request asks for.
+vi.mock("../../../security/session-context", () => ({
+	resolveSessionContext: vi.fn().mockResolvedValue({
+		ok: true,
+		context: {
+			userId: "user-1",
+			authUserId: "user-1",
+			legacyUserId: null,
+			role: "admin",
+			companyId: "cmp-1",
+		},
+	}),
+}));
+
 import { bankingRoutes } from "../../api/banking.routes";
 import { ReconciliationService } from "../../application/services/reconciliation.service";
 

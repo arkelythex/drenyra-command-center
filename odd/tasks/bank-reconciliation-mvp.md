@@ -22,3 +22,17 @@ Que la pantalla de conciliación bancaria muestre los movimientos reales de la e
 - Test-first.
 - Matcher puro sin DB.
 - No escribir en libros: solo se marca la transacción bancaria y su vínculo.
+
+## Diagnóstico de punta a punta (2026-10-20, contra Postgres 16 local)
+- La conciliación (`/api/reconciliations`) funciona: sugiere bien y guarda el vínculo, y rechaza otra empresa (403/404).
+- Un usuario no puede cargar un extracto: no hay pantalla. Solo existe `POST /api/banking/import`, que usa montos `number` (floats), rechaza un primer cargo con saldo 0 ("Insufficient balance") y duplica si se reimporta.
+- **`/api/banking` filtraba entre empresas:** con `companyId` de otra empresa en query/body se podían leer cuentas y saldos, importar movimientos, crear cuentas y lanzar `/auto-reconcile`.
+- Una misma factura se puede conciliar con dos movimientos (`findOpenDocuments` no excluye los ya vinculados).
+
+## Plan (un PR por paso)
+1. **Crítico, aislamiento:** `rejectForeignCompanyId` en `/api/banking`; se retira `POST /transactions/:id/reconcile` (no verificaba el documento y aceptaba `userId` del body). Conciliar va solo por `/api/reconciliations`.
+2. **Crítico, dinero:** importar en céntimos, sin chequeo de saldo, sin duplicados y en una transacción.
+3. **Crítico, conciliación:** un comprobante ya vinculado no se vuelve a ofrecer ni a aceptar; `/matches` responde 422 y no 500 con montos inválidos.
+4. Web: "Importar extracto" en `/tesoreria/reconciliations`.
+5. Limpieza del código muerto de conciliación en `banking`.
+
