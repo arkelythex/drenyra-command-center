@@ -1,5 +1,8 @@
 import { Elysia } from "elysia";
-import { companyScopeGuard } from "../../../shared/plugins";
+import {
+	companyScopeGuard,
+	rejectForeignCompanyId,
+} from "../../../shared/plugins";
 import { bankingHandlers } from "./banking.handlers";
 import {
 	AirlineTicketReportQuerySchema,
@@ -10,12 +13,9 @@ import {
 	ImportTransactionsSchema,
 	ListAccountsQuerySchema,
 	ListTransactionsQuerySchema,
-	ReconcileTransactionSchema,
 	ReconciliationShadowCutoverQuerySchema,
 	ReconciliationShadowMetricsQuerySchema,
 } from "./banking.schemas";
-import { reconciliationBatchHandlers } from "./reconciliation-batch.handlers";
-import { reconciliationRuleHandlers } from "./reconciliation-rule.handlers";
 import {
 	CloseReconciliationBatchSchema,
 	CreateBatchMatchSchema,
@@ -24,6 +24,8 @@ import {
 	ListBatchesQuerySchema,
 	UpdateReconciliationRuleSchema,
 } from "./banking-reconciliation.schemas";
+import { reconciliationBatchHandlers } from "./reconciliation-batch.handlers";
+import { reconciliationRuleHandlers } from "./reconciliation-rule.handlers";
 
 /**
  * Banking API routes (Elysia plugin) mounted under `/api/banking`.
@@ -38,6 +40,8 @@ import {
  */
 export const bankingRoutes = new Elysia({ prefix: "/api/banking" })
 	.use(companyScopeGuard({ allowHeaderFallback: true }))
+	// companyId in the query or body must be the session's company.
+	.onBeforeHandle(rejectForeignCompanyId)
 	// ── Accounts ──────────────────────────────────────────────────────────────
 	.get("/accounts", bankingHandlers.listAccounts, {
 		query: ListAccountsQuerySchema,
@@ -69,11 +73,8 @@ export const bankingRoutes = new Elysia({ prefix: "/api/banking" })
 		body: CreateTransactionSchema,
 		detail: { tags: ["Banking"], summary: "Create transaction" },
 	})
-	.post("/transactions/:id/reconcile", bankingHandlers.reconcileTransaction, {
-		params: IdParamSchema,
-		body: ReconcileTransactionSchema,
-		detail: { tags: ["Banking"], summary: "Reconcile transaction" },
-	})
+	// Linking a movement to an invoice or bill is confirmed through
+	// /api/reconciliations, which checks the document belongs to the company.
 	.post("/import", bankingHandlers.importTransactions, {
 		body: ImportTransactionsSchema,
 		detail: { tags: ["Banking"], summary: "Import transactions" },

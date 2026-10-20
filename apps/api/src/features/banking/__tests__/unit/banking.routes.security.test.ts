@@ -159,7 +159,7 @@ describe("bankingRoutes object-level tenant scope", () => {
 		expect(listTransactionsSpy).not.toHaveBeenCalled();
 	});
 
-	it("rejects cross-tenant transaction reconcile before command execution", async () => {
+	it("no longer exposes the unconfirmed reconcile route (confirm via /api/reconciliations)", async () => {
 		vi.spyOn(
 			BankingRepository.prototype,
 			"findTransactionById",
@@ -183,7 +183,7 @@ describe("bankingRoutes object-level tenant scope", () => {
 			),
 		);
 
-		expect(response.status).toBe(401);
+		expect(response.status).toBe(404);
 		expect(reconcileSpy).not.toHaveBeenCalled();
 	});
 });
