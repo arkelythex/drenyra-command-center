@@ -30,10 +30,9 @@ Que la pantalla de conciliación bancaria muestre los movimientos reales de la e
 - Una misma factura se puede conciliar con dos movimientos (`findOpenDocuments` no excluye los ya vinculados).
 
 ## Plan (un PR por paso)
-1. **Crítico, aislamiento:** `rejectForeignCompanyId` en `/api/banking`; se retira `POST /transactions/:id/reconcile` (no verificaba el documento y aceptaba `userId` del body). Conciliar va solo por `/api/reconciliations`.
-1. Hecho en #335.
-2. **Crítico, dinero:** importar en céntimos, sin chequeo de saldo, sin duplicados y en una transacción. `POST /api/banking/import` recibe `amountCents` (entero > 0); la planificación es pura (`application/statement-import.ts`) y el repositorio escribe todo o nada con la cuenta bloqueada.
-3. **Crítico, conciliación:** un comprobante ya vinculado no se vuelve a ofrecer ni a aceptar; `/matches` responde 422 y no 500 con montos inválidos.
+1. **Crítico, aislamiento:** `rejectForeignCompanyId` en `/api/banking`; se retira `POST /transactions/:id/reconcile` (no verificaba el documento y aceptaba `userId` del body). Conciliar va solo por `/api/reconciliations`. Hecho en #335.
+2. **Crítico, dinero:** importar en céntimos, sin chequeo de saldo, sin duplicados y en una transacción. `POST /api/banking/import` recibe `amountCents` (entero > 0); la planificación es pura (`application/statement-import.ts`) y el repositorio escribe todo o nada con la cuenta bloqueada. Hecho en #337.
+3. **Crítico, conciliación:** un comprobante ya vinculado no se vuelve a ofrecer ni a aceptar; `/matches` responde 422 y no 500 con montos inválidos. El vínculo bloquea la fila del comprobante (`FOR UPDATE`), así que de dos conciliaciones simultáneas solo gana una (la otra recibe 409 `ALREADY_RECONCILED`); `/pending` sale ordenado por fecha.
 4. Web: "Importar extracto" en `/tesoreria/reconciliations`.
 5. Limpieza del código muerto de conciliación en `banking`.
 

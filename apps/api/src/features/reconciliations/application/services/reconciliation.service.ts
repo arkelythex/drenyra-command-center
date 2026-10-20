@@ -139,10 +139,17 @@ export class ReconciliationService {
 			return null;
 		}
 
-		const amountCents = bankAmountToCents(
-			transaction.amount,
-			transaction.type as BankDirection,
-		);
+		let amountCents: number;
+		try {
+			amountCents = bankAmountToCents(
+				transaction.amount,
+				transaction.type as BankDirection,
+			);
+		} catch {
+			throw new ReconcileRejectedError(
+				`El monto del movimiento no es un importe en céntimos válido: "${transaction.amount}".`,
+			);
+		}
 		const documents = await this.repository.findOpenDocuments(
 			companyId,
 			amountCents > 0 ? "INVOICE" : "BILL",

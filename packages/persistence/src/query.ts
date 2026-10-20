@@ -8,6 +8,7 @@
  * @module infrastructure/db/query
  */
 
+export type { SQL } from "drizzle-orm";
 export {
 	and,
 	asc,
@@ -21,6 +22,7 @@ export {
 	lt,
 	lte,
 	not,
+	notExists,
 	or,
 	sql,
 	sum,

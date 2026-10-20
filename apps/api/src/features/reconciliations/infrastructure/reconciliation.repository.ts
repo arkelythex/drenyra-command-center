@@ -1,5 +1,12 @@
 import { db } from "@drenyra/persistence/client";
-import { and, eq, inArray } from "@drenyra/persistence/query";
+import {
+	and,
+	asc,
+	eq,
+	inArray,
+	notExists,
+	type SQL,
+} from "@drenyra/persistence/query";
 import {
 	bankTransactions,
 	bills,
@@ -30,8 +37,62 @@ export interface ReconcileInput {
 
 const OPEN_STATUSES = ["SENT", "OVERDUE"] as const;
 
+/** The movement or the document was reconciled by someone else meanwhile. */
+export class ReconcileConflictError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = "ReconcileConflictError";
+	}
+}
+
+/** True (SQL) when no reconciled movement of the company already pays the document. */
+function notLinked(companyId: string, link: SQL): SQL {
+	return notExists(
+		db
+			.select({ id: bankTransactions.id })
+			.from(bankTransactions)
+			.where(
+				and(
+					eq(bankTransactions.companyId, companyId),
+					eq(bankTransactions.isReconciled, true),
+					link,
+				),
+			),
+	);
+}
+
 function isoDate(value: Date): string {
 	return value.toISOString().slice(0, 10);
+}
+
+type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
+
+/** Row lock on the document being paid; serializes racing reconciles of it. */
+async function lockDocument(
+	tx: Tx,
+	companyId: string,
+	input: ReconcileInput,
+): Promise<void> {
+	if (input.invoiceId) {
+		await tx
+			.select({ id: invoices.id })
+			.from(invoices)
+			.where(
+				and(
+					eq(invoices.id, input.invoiceId),
+					eq(invoices.companyId, companyId),
+				),
+			)
+			.for("update");
+		return;
+	}
+	await tx
+		.select({ id: bills.id })
+		.from(bills)
+		.where(
+			and(eq(bills.id, input.billId as string), eq(bills.companyId, companyId)),
+		)
+		.for("update");
 }
 
 /**
@@ -49,6 +110,11 @@ export class ReconciliationRepository {
 				eq(bankTransactions.companyId, companyId),
 				eq(bankTransactions.isReconciled, false),
 			),
+			orderBy: [
+				asc(bankTransactions.transactionDate),
+				asc(bankTransactions.createdAt),
+				asc(bankTransactions.id),
+			],
 			limit,
 		});
 	}
@@ -63,29 +129,68 @@ export class ReconciliationRepository {
 		});
 	}
 
+	/**
+	 * Marks the movement reconciled. When it links an invoice or bill, the
+	 * document row is locked so two movements cannot both pay it, and the
+	 * movement must still be pending; otherwise {@link ReconcileConflictError}.
+	 */
 	async markReconciled(
 		companyId: string,
 		transactionId: string,
 		input?: ReconcileInput,
 	) {
-		const [updated] = await db
-			.update(bankTransactions)
-			.set({
-				isReconciled: true,
-				reconciledAt: new Date(),
-				...(input?.invoiceId ? { invoiceId: input.invoiceId } : {}),
-				...(input?.billId ? { billId: input.billId } : {}),
-				...(input?.reconciledBy ? { reconciledBy: input.reconciledBy } : {}),
-			})
-			.where(
-				and(
-					eq(bankTransactions.id, transactionId),
-					eq(bankTransactions.companyId, companyId),
-				),
-			)
-			.returning();
+		const values = {
+			isReconciled: true,
+			reconciledAt: new Date(),
+			...(input?.invoiceId ? { invoiceId: input.invoiceId } : {}),
+			...(input?.billId ? { billId: input.billId } : {}),
+			...(input?.reconciledBy ? { reconciledBy: input.reconciledBy } : {}),
+		};
+		const ownTransaction = and(
+			eq(bankTransactions.id, transactionId),
+			eq(bankTransactions.companyId, companyId),
+		);
 
-		return updated;
+		if (!input?.invoiceId && !input?.billId) {
+			const [updated] = await db
+				.update(bankTransactions)
+				.set(values)
+				.where(ownTransaction)
+				.returning();
+			return updated;
+		}
+
+		return await db.transaction(async (tx) => {
+			await lockDocument(tx, companyId, input);
+			const link = input.invoiceId
+				? eq(bankTransactions.invoiceId, input.invoiceId)
+				: eq(bankTransactions.billId, input.billId as string);
+			const [taken] = await tx
+				.select({ id: bankTransactions.id })
+				.from(bankTransactions)
+				.where(
+					and(
+						eq(bankTransactions.companyId, companyId),
+						eq(bankTransactions.isReconciled, true),
+						link,
+					),
+				)
+				.limit(1);
+			if (taken) {
+				throw new ReconcileConflictError(
+					"El comprobante ya fue conciliado con otro movimiento.",
+				);
+			}
+			const [updated] = await tx
+				.update(bankTransactions)
+				.set(values)
+				.where(and(ownTransaction, eq(bankTransactions.isReconciled, false)))
+				.returning();
+			if (!updated) {
+				throw new ReconcileConflictError("El movimiento ya está conciliado.");
+			}
+			return updated;
+		});
 	}
 
 	async markUnreconciled(companyId: string, transactionId: string) {
@@ -139,6 +244,7 @@ export class ReconciliationRepository {
 					and(
 						eq(invoices.companyId, companyId),
 						inArray(invoices.status, [...OPEN_STATUSES]),
+						notLinked(companyId, eq(bankTransactions.invoiceId, invoices.id)),
 					),
 				);
 			return rows
@@ -169,6 +275,7 @@ export class ReconciliationRepository {
 				and(
 					eq(bills.companyId, companyId),
 					inArray(bills.status, [...OPEN_STATUSES]),
+					notLinked(companyId, eq(bankTransactions.billId, bills.id)),
 				),
 			);
 		return rows.map((row) => ({
