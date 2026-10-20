@@ -6,6 +6,9 @@ const RUN_DB_TESTS = process.env.RUN_DB_TESTS === "1";
 export default defineConfig({
 	test: {
 		globals: true,
+		// Vitest 5 clears mock history before each test by default; keep the
+		// previous behavior so existing suites keep asserting on prior calls.
+		clearMocks: false,
 		environment: "node",
 		setupFiles: ["./src/__tests__/setup.ts"],
 		// Integration tests that run Mastra SSE workflows + parallel module reloads
@@ -163,7 +166,10 @@ export default defineConfig({
 			},
 			{
 				find: "@drenyra/mission-domain",
-				replacement: path.resolve(__dirname, "../../packages/mission-domain/src"),
+				replacement: path.resolve(
+					__dirname,
+					"../../packages/mission-domain/src",
+				),
 			},
 		],
 	},

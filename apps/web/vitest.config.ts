@@ -20,6 +20,9 @@ export default defineConfig({
 	plugins: [react()],
 	test: {
 		globals: true,
+		// Vitest 5 clears mock call history before each test by default; these
+		// suites assert on calls made at module import time.
+		clearMocks: false,
 		environment: "happy-dom",
 		setupFiles: ["./src/__tests__/setup.ts"],
 		exclude: [
