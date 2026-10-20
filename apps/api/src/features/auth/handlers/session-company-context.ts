@@ -102,6 +102,9 @@ export async function enrichSessionUserWithCompanyContext<
 
 		return {
 			...user,
+			// Role-gated routes read the session role; it is the membership role
+			// in the active company, never one the user record claims.
+			role: activeCompany.membershipRole.trim().toLowerCase(),
 			countryCode: activeCompany.countryCode,
 			companyId: activeCompany.companyId,
 			companyName: activeCompany.companyName,
