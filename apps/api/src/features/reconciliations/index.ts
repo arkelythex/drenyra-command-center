@@ -13,6 +13,7 @@ import { getPending } from "./application/queries/get-pending";
 import { getReconciled } from "./application/queries/get-reconciled";
 import { getStats } from "./application/queries/get-stats";
 import { ReconcileRejectedError } from "./application/services/reconciliation.service";
+import { ReconcileConflictError } from "./infrastructure/reconciliation.repository";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -92,6 +93,10 @@ export const reconciliationsModule = new Elysia({
 					set.status = 422;
 					return fail(error.message, "MATCH_REJECTED");
 				}
+				if (error instanceof ReconcileConflictError) {
+					set.status = 409;
+					return fail(error.message, "ALREADY_RECONCILED");
+				}
 				set.status = 500;
 				return fail(getErrorMessage(error), "INTERNAL_ERROR");
 			}
@@ -162,6 +167,10 @@ export const reconciliationsModule = new Elysia({
 				}
 				return ok(matches);
 			} catch (error: unknown) {
+				if (error instanceof ReconcileRejectedError) {
+					set.status = 422;
+					return fail(error.message, "MATCH_REJECTED");
+				}
 				set.status = 500;
 				return fail(getErrorMessage(error), "INTERNAL_ERROR");
 			}

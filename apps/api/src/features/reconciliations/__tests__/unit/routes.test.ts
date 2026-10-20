@@ -1,8 +1,12 @@
 import { Elysia } from "elysia";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ReconciliationWorkerClient } from "../../../../shared/clients/reconciliation-worker.client";
-import { ReconciliationService } from "../../application/services/reconciliation.service";
+import {
+	ReconcileRejectedError,
+	ReconciliationService,
+} from "../../application/services/reconciliation.service";
 import { reconciliationsModule } from "../../index";
+import { ReconcileConflictError } from "../../infrastructure/reconciliation.repository";
 
 type PendingReconciliations = Awaited<
 	ReturnType<ReconciliationService["getPending"]>
@@ -64,6 +68,47 @@ describe("reconciliations routes", () => {
 		expect(payload).toMatchObject({
 			success: false,
 			code: "TRANSACTION_NOT_FOUND",
+		});
+	});
+
+	it("returns 409 when the document was reconciled meanwhile", async () => {
+		vi.spyOn(ReconciliationService.prototype, "reconcile").mockRejectedValue(
+			new ReconcileConflictError("ya conciliado"),
+		);
+
+		const response = await app.handle(
+			new Request("http://localhost/api/reconciliations/tx-1/reconcile", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					companyId: "cmp-1",
+					invoiceId: "7a3b83a2-b9df-40e7-b24f-c9355455089b",
+				}),
+			}),
+		);
+
+		expect(response.status).toBe(409);
+		expect(await response.json()).toMatchObject({
+			success: false,
+			code: "ALREADY_RECONCILED",
+		});
+	});
+
+	it("returns 422 when the movement amount cannot be matched", async () => {
+		vi.spyOn(ReconciliationService.prototype, "findMatches").mockRejectedValue(
+			new ReconcileRejectedError("monto inválido"),
+		);
+
+		const response = await app.handle(
+			new Request(
+				"http://localhost/api/reconciliations/tx-1/matches?companyId=cmp-1",
+			),
+		);
+
+		expect(response.status).toBe(422);
+		expect(await response.json()).toMatchObject({
+			success: false,
+			code: "MATCH_REJECTED",
 		});
 	});
 
