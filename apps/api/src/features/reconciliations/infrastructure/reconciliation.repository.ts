@@ -95,6 +95,96 @@ async function lockDocument(
 		.for("update");
 }
 
+type DocumentLink = { invoiceId?: string | null; billId?: string | null };
+
+/** Integer cents → `"123.45"` for numeric(12,2) columns. */
+function centsText(cents: number): string {
+	if (!Number.isSafeInteger(cents) || cents < 0) {
+		throw new ReconcileConflictError(
+			"El saldo del comprobante quedaría negativo.",
+		);
+	}
+	return `${Math.trunc(cents / 100)}.${String(cents % 100).padStart(2, "0")}`;
+}
+
+/** Status of a document that is open again: overdue once its due date has passed. */
+function reopenedStatus(dueDate: Date): "SENT" | "OVERDUE" {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	return dueDate < today ? "OVERDUE" : "SENT";
+}
+
+/**
+ * Applies (`sign` 1) or reverses (`sign` -1) a bank movement's payment on the
+ * linked document, inside the caller's transaction (document already locked).
+ * Invoices move paid amount and open balance in cents; bills only change status.
+ */
+async function settleDocument(
+	tx: Tx,
+	companyId: string,
+	link: DocumentLink,
+	amountCents: number,
+	paidOn: string,
+	sign: 1 | -1,
+): Promise<void> {
+	if (link.invoiceId) {
+		const where = and(
+			eq(invoices.id, link.invoiceId),
+			eq(invoices.companyId, companyId),
+		);
+		const [invoice] = await tx
+			.select({
+				status: invoices.status,
+				dueDate: invoices.dueDate,
+				paidAmount: invoices.paidAmount,
+				balanceDue: invoices.balanceDue,
+			})
+			.from(invoices)
+			.where(where);
+		if (!invoice) return;
+		const paid =
+			bankAmountToCents(invoice.paidAmount, "CREDIT") + sign * amountCents;
+		const balance =
+			bankAmountToCents(invoice.balanceDue, "CREDIT") - sign * amountCents;
+		const settled = balance === 0;
+		const status = settled
+			? "PAID"
+			: invoice.status === "PAID"
+				? reopenedStatus(invoice.dueDate)
+				: invoice.status;
+		await tx
+			.update(invoices)
+			.set({
+				paidAmount: centsText(paid),
+				balanceDue: centsText(balance),
+				status,
+				paidDate: settled ? new Date(`${paidOn}T00:00:00`) : null,
+				updatedAt: new Date(),
+			})
+			.where(where);
+		return;
+	}
+	if (!link.billId) return;
+	const where = and(eq(bills.id, link.billId), eq(bills.companyId, companyId));
+	const [bill] = await tx
+		.select({ status: bills.status, dueDate: bills.dueDate })
+		.from(bills)
+		.where(where);
+	if (!bill) return;
+	const status =
+		sign === 1
+			? "PAID"
+			: bill.status === "PAID"
+				? reopenedStatus(bill.dueDate)
+				: bill.status;
+	await tx.update(bills).set({ status, updatedAt: new Date() }).where(where);
+}
+
+/** Positive cents of a stored movement amount. */
+function movementCents(amount: string): number {
+	return Math.abs(bankAmountToCents(amount, "CREDIT"));
+}
+
 /**
  * Data-access adapter for reconciliation reads and state transitions.
  *
@@ -189,29 +279,65 @@ export class ReconciliationRepository {
 			if (!updated) {
 				throw new ReconcileConflictError("El movimiento ya está conciliado.");
 			}
+			await settleDocument(
+				tx,
+				companyId,
+				input,
+				movementCents(updated.amount),
+				updated.transactionDate,
+				1,
+			);
 			return updated;
 		});
 	}
 
+	/** Undoes the reconciliation and reverses the payment it applied to the linked document. */
 	async markUnreconciled(companyId: string, transactionId: string) {
-		const [updated] = await db
-			.update(bankTransactions)
-			.set({
-				isReconciled: false,
-				reconciledAt: null,
-				reconciledBy: null,
-				invoiceId: null,
-				billId: null,
-			})
-			.where(
-				and(
-					eq(bankTransactions.id, transactionId),
-					eq(bankTransactions.companyId, companyId),
-				),
-			)
-			.returning();
-
-		return updated;
+		const ownTransaction = and(
+			eq(bankTransactions.id, transactionId),
+			eq(bankTransactions.companyId, companyId),
+		);
+		return await db.transaction(async (tx) => {
+			const [current] = await tx
+				.select({
+					isReconciled: bankTransactions.isReconciled,
+					invoiceId: bankTransactions.invoiceId,
+					billId: bankTransactions.billId,
+					amount: bankTransactions.amount,
+					transactionDate: bankTransactions.transactionDate,
+				})
+				.from(bankTransactions)
+				.where(ownTransaction)
+				.for("update");
+			if (!current) return undefined;
+			const link = {
+				...(current.invoiceId ? { invoiceId: current.invoiceId } : {}),
+				...(current.billId ? { billId: current.billId } : {}),
+			};
+			if (current.isReconciled && (link.invoiceId || link.billId)) {
+				await lockDocument(tx, companyId, link);
+				await settleDocument(
+					tx,
+					companyId,
+					link,
+					movementCents(current.amount),
+					current.transactionDate,
+					-1,
+				);
+			}
+			const [updated] = await tx
+				.update(bankTransactions)
+				.set({
+					isReconciled: false,
+					reconciledAt: null,
+					reconciledBy: null,
+					invoiceId: null,
+					billId: null,
+				})
+				.where(ownTransaction)
+				.returning();
+			return updated;
+		});
 	}
 
 	async findAllByCompany(companyId: string) {
