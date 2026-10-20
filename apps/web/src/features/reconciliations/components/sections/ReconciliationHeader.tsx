@@ -1,7 +1,8 @@
-import { ArrowRightLeft, Menu, RefreshCw } from "lucide-react";
+import { ArrowRightLeft, Menu } from "lucide-react";
 import type React from "react";
 import { Button } from "@/components/ui/button";
 import { Z_INDEX } from "@/lib/design-tokens";
+import { StatementImportDialog } from "./StatementImportDialog";
 
 interface ReconciliationHeaderProps {
 	setIsMobileOpen: (open: boolean) => void;
@@ -51,12 +52,7 @@ export const ReconciliationHeader: React.FC<ReconciliationHeaderProps> = ({
 			</div>
 
 			<div className="flex items-center gap-3 w-full md:w-auto relative z-10 justify-end">
-				<Button
-					onClick={() => triggerHaptic("heavy")}
-					className="h-9 rounded-xl px-4 text-label font-semibold tracking-wide shadow-sm"
-				>
-					<RefreshCw size={14} className="mr-2" /> Reconciliar
-				</Button>
+				<StatementImportDialog />
 			</div>
 		</header>
 	);
