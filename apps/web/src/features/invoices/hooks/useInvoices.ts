@@ -10,6 +10,7 @@ import {
 	invoicingApi,
 } from "../api/invoicing.api";
 import { invoiceKeys } from "../api/query-keys";
+import { decimalToCents } from "../lib/invoice-totals";
 
 export type InvoiceStatus = "draft" | "sent" | "overdue" | "paid";
 
@@ -83,12 +84,15 @@ function mapApiInvoiceStatus(status: ApiInvoiceStatus): InvoiceStatus {
 	return "paid";
 }
 
+function customerNameOf(invoice: ApiInvoiceListItem): string {
+	if (invoice.customer?.legalName) return invoice.customer.legalName;
+	return invoice.customerId
+		? `Cliente ${String(invoice.customerId).slice(0, 8).toUpperCase()}`
+		: "Sin Cliente";
+}
+
 function mapApiInvoiceToUiInvoice(invoice: ApiInvoiceListItem): Invoice {
-	const customerName =
-		invoice.customer?.legalName ||
-		(invoice.customerId
-			? `Cliente ${String(invoice.customerId).slice(0, 8).toUpperCase()}`
-			: "Sin Cliente");
+	const customerName = customerNameOf(invoice);
 	const customerInitials = customerName.substring(0, 2).toUpperCase();
 
 	return {
@@ -158,14 +162,16 @@ export const useInvoices = (filters: UseInvoicesFilters = {}) => {
 
 	const columnTotals = useMemo(
 		() => ({
-			sent: invoicesByStatus.sent.reduce(
-				(acc: number, i: Invoice) => acc + i.amount,
-				0,
-			),
-			overdue: invoicesByStatus.overdue.reduce(
-				(acc: number, i: Invoice) => acc + i.amount,
-				0,
-			),
+			sent:
+				invoicesByStatus.sent.reduce(
+					(acc: number, i: Invoice) => acc + decimalToCents(i.amount),
+					0,
+				) / 100,
+			overdue:
+				invoicesByStatus.overdue.reduce(
+					(acc: number, i: Invoice) => acc + decimalToCents(i.amount),
+					0,
+				) / 100,
 		}),
 		[invoicesByStatus],
 	);

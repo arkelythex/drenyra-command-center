@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { decimalToCents } from "../lib/invoice-totals";
 import type { Invoice } from "./useInvoices";
 import { useInvoicesQuery } from "./useInvoicesQuery";
 
@@ -52,12 +53,13 @@ export const useInvoicesBoard = () => {
 
 	// Calculate Totals
 	const columnTotals = useMemo(() => {
+		// Add in cents so column totals never pick up float drift.
 		const calculateTotal = (list: Invoice[]) =>
 			list.reduce(
 				(sum, invoice) =>
-					sum + Number(invoice.totalAmount ?? invoice.amount ?? 0),
+					sum + decimalToCents(invoice.totalAmount ?? invoice.amount ?? 0),
 				0,
-			);
+			) / 100;
 		return {
 			draft: calculateTotal(invoicesByStatus.draft),
 			sent: calculateTotal(invoicesByStatus.sent),

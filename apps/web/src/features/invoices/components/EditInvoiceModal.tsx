@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import {
-	isTaxable,
-	TAX_TYPE,
-	type TaxType,
-} from "@/features/invoices/lib/tax-type";
+	invoiceTotalsCents,
+	lineTotalsCents,
+} from "@/features/invoices/lib/invoice-totals";
+import { TAX_TYPE, type TaxType } from "@/features/invoices/lib/tax-type";
 import { getActiveTaxRate } from "@/lib/latam-country-packs";
 import { useEditInvoice } from "../hooks/useEditInvoice";
 import type { Invoice } from "../hooks/useInvoices";
@@ -52,6 +52,19 @@ function getIgvRateFraction(): number {
 	return (getActiveTaxRate("pe", "IGV") ?? 18) / 100;
 }
 
+/** Line preview with the API's rule (price includes IGV), in currency units. */
+function itemTotals(quantity: string, unitPrice: string, taxType: TaxType) {
+	const cents = lineTotalsCents(
+		{ quantity, unitPrice, taxType },
+		getIgvRateFraction(),
+	);
+	return {
+		subtotal: cents.subtotalCents / 100,
+		igv: cents.igvCents / 100,
+		total: cents.totalCents / 100,
+	};
+}
+
 const _DEFAULT_COMPANY_ID = "00000000-0000-0000-0000-000000000001";
 
 function toInputDate(value: string): string {
@@ -78,11 +91,7 @@ function mapEditableItemToInvoiceItem(
 	const quantity = item.quantity || "0";
 	const unitPrice = item.unitPrice || "0";
 	const taxType = item.taxType || TAX_TYPE.GRAVADO;
-	const qty = parseFloat(quantity) || 0;
-	const price = parseFloat(unitPrice) || 0;
-	const subtotal = qty * price;
-	const igv = isTaxable(taxType) ? subtotal * getIgvRateFraction() : 0;
-	const total = subtotal + igv;
+	const { subtotal, igv, total } = itemTotals(quantity, unitPrice, taxType);
 
 	return {
 		id: item.id || fallbackId,
@@ -137,14 +146,7 @@ export const EditInvoiceModal = ({
 		quantity: string,
 		unitPrice: string,
 		taxType: TaxType,
-	) => {
-		const qty = parseFloat(quantity) || 0;
-		const price = parseFloat(unitPrice) || 0;
-		const subtotal = qty * price;
-		const igv = isTaxable(taxType) ? subtotal * getIgvRateFraction() : 0;
-		const total = subtotal + igv;
-		return { subtotal, igv, total };
-	};
+	) => itemTotals(quantity, unitPrice, taxType);
 
 	const updateItem: InvoiceItemUpdate = (index, field, value) => {
 		const newItems = [...items];
@@ -176,10 +178,12 @@ export const EditInvoiceModal = ({
 	};
 
 	const calculateTotals = () => {
-		const subtotal = items.reduce((sum, item) => sum + item.subtotal, 0);
-		const igv = items.reduce((sum, item) => sum + item.igv, 0);
-		const total = items.reduce((sum, item) => sum + item.total, 0);
-		return { subtotal, igv, total };
+		const cents = invoiceTotalsCents(items, getIgvRateFraction());
+		return {
+			subtotal: cents.subtotalCents / 100,
+			igv: cents.igvCents / 100,
+			total: cents.totalCents / 100,
+		};
 	};
 
 	const handleSubmit = async () => {

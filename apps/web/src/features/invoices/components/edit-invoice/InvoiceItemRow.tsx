@@ -62,7 +62,7 @@ export const InvoiceItemRow = ({
 					<Input
 						type="number"
 						step="0.01"
-						placeholder="Precio Unit."
+						placeholder="Precio unit. con IGV"
 						value={item.unitPrice}
 						onChange={(e) => onUpdate(index, "unitPrice", e.target.value)}
 						className="h-9 bg-surface-soft border-border font-mono text-xs"
@@ -91,6 +91,7 @@ export const InvoiceItemRow = ({
 				<div className="col-span-1 flex items-center justify-end">
 					{canRemove && (
 						<button
+							type="button"
 							onClick={() => onRemove(index)}
 							className="h-9 w-9 flex items-center justify-center rounded-lg bg-destructive/10 hover:bg-destructive/20 text-destructive transition-colors"
 						>

@@ -1,5 +1,6 @@
 import { api, getGovernanceAuditHeaders } from "@/lib/api";
 import { extractOkDataOrPassthrough, unwrap } from "@/lib/api-helpers";
+import { centsToDecimal, decimalToCents } from "../../lib/invoice-totals";
 import { isRecord, toNumericString } from "./helpers";
 import type {
 	CreateInvoicePayload,
@@ -123,7 +124,7 @@ export async function invoicingPay(
 	return unwrap(
 		api.api.invoices({ id }).pay.post(
 			{
-				amount: amount.toFixed(2),
+				amount: centsToDecimal(decimalToCents(amount)),
 				currency,
 			},
 			{

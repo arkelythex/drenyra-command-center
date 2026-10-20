@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { useInvoiceCalculations } from "../useInvoiceCalculations";
 
 describe("useInvoiceCalculations", () => {
-	it("calculates subtotal, igv and total for mixed tax types", () => {
+	it("splits IGV out of taxed prices like the API, for mixed tax types", () => {
 		const items = [
 			{
 				id: "1",
@@ -30,9 +30,10 @@ describe("useInvoiceCalculations", () => {
 
 		const { result } = renderHook(() => useInvoiceCalculations(items));
 
-		expect(result.current.subtotal).toBe(310);
-		expect(result.current.igvAmount).toBe(36);
-		expect(result.current.totalAmount).toBe(346);
+		// 2 × 100 taxed = 200 with IGV inside (169.49 + 30.51), plus 50 + 60 untaxed.
+		expect(result.current.subtotal).toBe(279.49);
+		expect(result.current.igvAmount).toBe(30.51);
+		expect(result.current.totalAmount).toBe(310);
 	});
 
 	it("returns zeros when there are no items", () => {
