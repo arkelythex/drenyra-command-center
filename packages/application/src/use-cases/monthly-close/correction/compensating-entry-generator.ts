@@ -5,71 +5,83 @@
  * inverts debits/credits, targets the CURRENT open period.
  * The closed period stays cerrado_final.
  */
+
+import type { DrizzleClient } from "@drenyra/persistence";
 import { journalEntries, journalEntryLines } from "@drenyra/persistence/schema";
 import { eq } from "drizzle-orm";
-import type { DrizzleClient } from "@drenyra/persistence";
-import type { CompensatingEntry, CompensatingLine } from "../types/correction-mission";
+import type {
+	CompensatingEntry,
+	CompensatingLine,
+} from "../types/correction-mission";
 
 export class CompensatingEntryGenerator {
-  constructor(private readonly db: DrizzleClient) {}
+	constructor(private readonly db: DrizzleClient) {}
 
-  /**
-   * Generate compensating entries for a set of original journal entry IDs.
-   *
-   * @param originalEntryIds - Journal entry IDs to reverse
-   * @param currentOpenPeriod - The current open period in "YYYY-MM" format
-   * @returns Array of compensating entries ready to post
-   */
-  async generate(
-    originalEntryIds: string[],
-    currentOpenPeriod: string,
-  ): Promise<CompensatingEntry[]> {
-    const entries: CompensatingEntry[] = [];
+	/**
+	 * Generate compensating entries for a set of original journal entry IDs.
+	 *
+	 * @param originalEntryIds - Journal entry IDs to reverse
+	 * @param currentOpenPeriod - The current open period in "YYYY-MM" format
+	 * @returns Array of compensating entries ready to post
+	 */
+	async generate(
+		originalEntryIds: string[],
+		currentOpenPeriod: string,
+	): Promise<CompensatingEntry[]> {
+		const entries: CompensatingEntry[] = [];
 
-    for (const entryId of originalEntryIds) {
-      // Read original journal entry
-      const [original] = await this.db
-        .select()
-        .from(journalEntries)
-        .where(eq(journalEntries.id, entryId as any))
-        .limit(1);
+		for (const entryId of originalEntryIds) {
+			// Read original journal entry
+			const [original] = await this.db
+				.select()
+				.from(journalEntries)
+				// biome-ignore lint/suspicious/noExplicitAny: pre-existing branded-id/insert typing; out of scope for index-access cleanup
+				.where(eq(journalEntries.id, entryId as any))
+				.limit(1);
 
-      if (!original) continue;
+			if (!original) continue;
 
-      // Read original lines
-      const originalLines = await this.db
-        .select()
-        .from(journalEntryLines)
-        .where(eq(journalEntryLines.journalEntryId, entryId as any));
+			// Read original lines
+			const originalLines = await this.db
+				.select()
+				.from(journalEntryLines)
+				// biome-ignore lint/suspicious/noExplicitAny: pre-existing branded-id/insert typing; out of scope for index-access cleanup
+				.where(eq(journalEntryLines.journalEntryId, entryId as any));
 
-      // Invert: debits become credits, credits become debits
-      const compensatingLines: CompensatingLine[] = originalLines.map((l) => ({
-        accountCode: l.accountCode,
-        description: `Corrección: ${l.description}`,
-        debitCents: l.creditCents,   // INVERTED
-        creditCents: l.debitCents,   // INVERTED
-      }));
+			// Invert: debits become credits, credits become debits
+			const compensatingLines: CompensatingLine[] = originalLines.map((l) => ({
+				accountCode: l.accountCode,
+				description: `Corrección: ${l.description}`,
+				debitCents: l.creditCents, // INVERTED
+				creditCents: l.debitCents, // INVERTED
+			}));
 
-      const totalDebits = compensatingLines.reduce((s, l) => s + l.debitCents, 0);
-      const totalCredits = compensatingLines.reduce((s, l) => s + l.creditCents, 0);
+			const totalDebits = compensatingLines.reduce(
+				(s, l) => s + l.debitCents,
+				0,
+			);
+			const totalCredits = compensatingLines.reduce(
+				(s, l) => s + l.creditCents,
+				0,
+			);
 
-      entries.push({
-        originalEntryId: entryId,
-        correctionOf: entryId,
-        date: this.lastDayOfMonth(currentOpenPeriod),
-        description: `Corrección del cierre ${original.periodKey}: ${original.gloss}`,
-        lines: compensatingLines,
-        totalDebits,
-        totalCredits,
-      });
-    }
+			entries.push({
+				originalEntryId: entryId,
+				correctionOf: entryId,
+				date: this.lastDayOfMonth(currentOpenPeriod),
+				description: `Corrección del cierre ${original.periodKey}: ${original.gloss}`,
+				lines: compensatingLines,
+				totalDebits,
+				totalCredits,
+			});
+		}
 
-    return entries;
-  }
+		return entries;
+	}
 
-  private lastDayOfMonth(period: string): string {
-    const [y, m] = period.split("-").map(Number);
-    const lastDay = new Date(y, m, 0); // day 0 of next month = last day of current
-    return lastDay.toISOString().split("T")[0];
-  }
+	private lastDayOfMonth(period: string): string {
+		const [y = Number.NaN, m = Number.NaN] = period.split("-").map(Number);
+		const lastDay = new Date(y, m, 0); // day 0 of next month = last day of current
+		return lastDay.toISOString().slice(0, 10);
+	}
 }
