@@ -1,23 +1,29 @@
 import type { HarnessError } from "@drenyra/mission-domain";
 import { MissionErrorCode } from "@drenyra/mission-domain";
 
+/**
+ * Reads `{ success: false, error: { code, message } }` (the missions API) and
+ * the older flat `{ code, message }` shape.
+ */
 export function mapAPIErrorToHarnessError(
 	status: number,
 	body: unknown,
 ): HarnessError {
-	const message =
-		typeof body === "object" && body !== null && "message" in body
-			? String((body as Record<string, unknown>).message)
-			: `Error del servidor (${status})`;
-
-	const code =
-		typeof body === "object" && body !== null && "code" in body
-			? String((body as Record<string, unknown>).code)
-			: "UNKNOWN";
+	const record =
+		typeof body === "object" && body !== null
+			? (body as Record<string, unknown>)
+			: {};
+	const nested =
+		typeof record.error === "object" && record.error !== null
+			? (record.error as Record<string, unknown>)
+			: record;
 
 	return {
-		code,
-		message,
+		code: typeof nested.code === "string" ? nested.code : "UNKNOWN",
+		message:
+			typeof nested.message === "string"
+				? nested.message
+				: `Error del servidor (${status})`,
 		statusCode: status,
 		isTimeout: false,
 	};

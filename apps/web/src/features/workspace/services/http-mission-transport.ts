@@ -1,57 +1,65 @@
-import type {
-  MissionSnapshot,
-  RunIntentCommand,
-  ApproveCommand,
-  RejectCommand,
-  ReconcileCommand,
-} from "@drenyra/mission-domain";
+import type { MissionSnapshot } from "@drenyra/mission-domain";
 import { missionFetch } from "./mission-client";
 
-export async function createMission(
-  command: RunIntentCommand,
-): Promise<MissionSnapshot> {
-  return missionFetch<MissionSnapshot>("/api/v1/missions", {
-    method: "POST",
-    body: JSON.stringify(command),
-  });
+/** The mission always belongs to the session's company; the API derives it. */
+export interface CreateMissionInput {
+	fiscalPeriod: string;
+	intent:
+		| "monthly-close"
+		| "reconciliation"
+		| "invoice-review"
+		| "compliance-check";
+	input: { instruction: string };
+	idempotencyKey?: string;
 }
 
-export async function getMission(missionId: string): Promise<MissionSnapshot> {
-  return missionFetch<MissionSnapshot>(`/api/v1/missions/${missionId}`);
+export interface DecisionInput {
+	proposalId: string;
+	proposalVersion: number;
+	expectedMissionVersion: number;
 }
 
-export async function approveMission(
-  missionId: string,
-  command: ApproveCommand,
-): Promise<{ receiptId: string; receiptHash: string }> {
-  return missionFetch<{ receiptId: string; receiptHash: string }>(
-    `/api/v1/missions/${missionId}/approve`,
-    {
-      method: "POST",
-      body: JSON.stringify(command),
-    },
-  );
+const BASE = "/api/v1/missions";
+
+const post = <T>(path: string, body: unknown) =>
+	missionFetch<T>(path, { method: "POST", body: JSON.stringify(body) });
+
+export function createMission(command: CreateMissionInput) {
+	return post<MissionSnapshot>(BASE, command);
 }
 
-export async function rejectMission(
-  missionId: string,
-  command: RejectCommand,
-): Promise<void> {
-  await missionFetch(`/api/v1/missions/${missionId}/reject`, {
-    method: "POST",
-    body: JSON.stringify(command),
-  });
+export function executeMission(
+	missionId: string,
+	command: { expectedMissionVersion: number },
+) {
+	return post<MissionSnapshot>(`${BASE}/${missionId}/execute`, command);
 }
 
-export async function reconcileMission(
-  missionId: string,
-  command: ReconcileCommand,
-): Promise<MissionSnapshot> {
-  return missionFetch<MissionSnapshot>(
-    `/api/v1/missions/${missionId}/reconcile`,
-    {
-      method: "POST",
-      body: JSON.stringify(command),
-    },
-  );
+export function getMission(missionId: string) {
+	return missionFetch<MissionSnapshot>(`${BASE}/${missionId}`);
+}
+
+export function approveMission(
+	missionId: string,
+	command: DecisionInput & { evidenceHash: string },
+) {
+	return post<MissionSnapshot>(`${BASE}/${missionId}/approve`, command);
+}
+
+export function rejectMission(
+	missionId: string,
+	command: DecisionInput & { reason: string },
+) {
+	return post<MissionSnapshot>(`${BASE}/${missionId}/reject`, command);
+}
+
+export function reconcileMission(
+	missionId: string,
+	command: {
+		resolution: "RUNNING" | "FAILED" | "COMPLETED";
+		reason: string;
+		expectedMissionVersion: number;
+	},
+) {
+	return post<MissionSnapshot>(`${BASE}/${missionId}/reconcile`, command);
 }

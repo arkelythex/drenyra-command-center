@@ -1,40 +1,42 @@
-import { useCallback } from "react";
 import type { Dispatch, MutableRefObject } from "react";
-import type { MissionAction } from "./missionReducer";
+import { useCallback } from "react";
 import { reconcileMission } from "../services/http-mission-transport";
-import { AccountingMissionStatus } from "@drenyra/mission-domain";
+import { toMissionState } from "./mission-snapshot-state";
+import type { MissionAction } from "./missionReducer";
+
+const RESOLUTIONS = ["RUNNING", "FAILED", "COMPLETED"] as const;
+type Resolution = (typeof RESOLUTIONS)[number];
 
 export function useMissionRecovery(
-  dispatch: Dispatch<MissionAction>,
-  missionIdRef: MutableRefObject<string | null>,
+	dispatch: Dispatch<MissionAction>,
+	missionIdRef: MutableRefObject<string | null>,
+	version: number,
 ) {
-  const reconcile = useCallback(
-    async (resolution: string, reason: string) => {
-      if (!missionIdRef.current) return;
+	const reconcile = useCallback(
+		async (resolution: string, reason: string) => {
+			if (!missionIdRef.current) return;
+			if (!RESOLUTIONS.includes(resolution as Resolution)) return;
 
-      const validResolutions = ["RUNNING", "FAILED", "COMPLETED"];
-      if (!validResolutions.includes(resolution)) return;
+			try {
+				const snapshot = await reconcileMission(missionIdRef.current, {
+					resolution: resolution as Resolution,
+					reason,
+					expectedMissionVersion: version,
+				});
+				dispatch({
+					type: "MISSION_EVENT_RECEIVED",
+					event: toMissionState(snapshot),
+				});
+			} catch (error: unknown) {
+				dispatch({
+					type: "ERROR_OCCURRED",
+					error: (error as Error).message ?? "Error al reconciliar",
+					isTimeout: false,
+				});
+			}
+		},
+		[dispatch, missionIdRef, version],
+	);
 
-      try {
-        const result = await reconcileMission(missionIdRef.current, {
-          resolution: resolution as "RUNNING" | "FAILED" | "COMPLETED",
-          reason,
-          expectedMissionVersion: 0,
-        });
-        dispatch({
-          type: "RECONCILE_RESOLVED",
-          status: result.status as AccountingMissionStatus,
-        });
-      } catch (error: unknown) {
-        dispatch({
-          type: "ERROR_OCCURRED",
-          error: (error as Error).message ?? "Error al reconciliar",
-          isTimeout: false,
-        });
-      }
-    },
-    [dispatch, missionIdRef],
-  );
-
-  return { reconcile };
+	return { reconcile };
 }

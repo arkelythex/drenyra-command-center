@@ -1,109 +1,126 @@
-import { useCallback } from "react";
 import type { Dispatch, MutableRefObject } from "react";
+import { useCallback } from "react";
+import {
+	type CreateMissionInput,
+	createMission,
+	executeMission,
+	getMission,
+} from "../services/http-mission-transport";
+import { toMissionState } from "./mission-snapshot-state";
 import type { MissionAction } from "./missionReducer";
-import { executeSSEStream, streamSSEEvents } from "../services/sse-mission-stream";
 
 const IS_MOCK = import.meta.env.VITE_DRENYRA_MISSION_TRANSPORT === "mock";
 
+/** Statuses in which the server is still working; the client keeps polling. */
+const IN_PROGRESS = new Set(["QUEUED", "RUNNING", "RECOVERING", "RETRYING"]);
+
+export const MISSION_POLL_INTERVAL_MS = 1_500;
+/** About five minutes of polling; after that the user can reconnect. */
+export const MISSION_MAX_POLLS = 200;
+
+const wait = (ms: number, signal: AbortSignal) =>
+	new Promise<void>((resolve) => {
+		const timer = setTimeout(resolve, ms);
+		signal.addEventListener("abort", () => {
+			clearTimeout(timer);
+			resolve();
+		});
+	});
+
+/**
+ * Starts a mission on the server: create it, execute it with the version the
+ * server returned, then follow its snapshot until it stops progressing
+ * (awaiting approval, blocked or finished).
+ */
 export function useMissionExecution(
-  dispatch: Dispatch<MissionAction>,
-  abortRef: MutableRefObject<AbortController | null>,
-  missionIdRef: MutableRefObject<string | null>,
+	dispatch: Dispatch<MissionAction>,
+	abortRef: MutableRefObject<AbortController | null>,
+	missionIdRef: MutableRefObject<string | null>,
 ) {
-  const run = useCallback(
-    async (command: {
-      missionId: string;
-      companyId: string;
-      fiscalPeriod: string;
-      intent: string;
-      input: { instruction: string };
-      idempotencyKey: string;
-      expectedMissionVersion: number;
-    }) => {
-      abortRef.current?.abort();
-      abortRef.current = new AbortController();
-      missionIdRef.current = command.missionId;
+	const runMock = useCallback(
+		async (command: CreateMissionInput, signal: AbortSignal) => {
+			const { mockExecuteRunIntent } = await import(
+				"../services/mock-mission-transport"
+			);
+			const mockId = crypto.randomUUID();
+			missionIdRef.current = mockId;
+			for await (const snapshot of mockExecuteRunIntent(
+				mockId,
+				command.input.instruction,
+			)) {
+				if (signal.aborted) break;
+				dispatch({
+					type: "MISSION_EVENT_RECEIVED",
+					event: toMissionState(snapshot, true),
+				});
+			}
+		},
+		[dispatch, missionIdRef],
+	);
 
-      try {
-        if (IS_MOCK) {
-          const { mockExecuteRunIntent } = await import(
-            "../services/mock-mission-transport"
-          );
-          for await (const snapshot of mockExecuteRunIntent(
-            command.missionId,
-            command.input.instruction,
-          )) {
-            if (abortRef.current?.signal.aborted) break;
-            dispatch({
-              type: "MISSION_EVENT_RECEIVED",
-              event: {
-                status: snapshot.status,
-                progress: snapshot.progress,
-                steps: snapshot.steps,
-                currentStep: snapshot.currentStep,
-                blockers: snapshot.blockers,
-                proposal: snapshot.proposal,
-                version: snapshot.version,
-                rejection: snapshot.rejection,
-                receiptId: snapshot.receiptId,
-                receiptHash: snapshot.receiptHash,
-                error: null,
-                isMockMode: true,
-                lastEventSequence: snapshot.lastEventSequence,
-              },
-            });
-          }
-        } else {
-          const response = await executeSSEStream(
-            command.missionId,
-            {
-              expectedMissionVersion: command.expectedMissionVersion,
-            },
-          );
+	const runServer = useCallback(
+		async (command: CreateMissionInput, signal: AbortSignal) => {
+			const created = await createMission(command);
+			missionIdRef.current = created.id;
+			dispatch({
+				type: "MISSION_EVENT_RECEIVED",
+				event: toMissionState(created),
+			});
 
-          for await (const event of streamSSEEvents(response)) {
-            if (abortRef.current?.signal.aborted) break;
-            dispatch({
-              type: "MISSION_EVENT_RECEIVED",
-              event: {
-                status: event.snapshot.status,
-                progress: event.snapshot.progress,
-                steps: event.snapshot.steps,
-                currentStep: event.snapshot.currentStep,
-                blockers: event.snapshot.blockers,
-                proposal: event.snapshot.proposal,
-                version: event.snapshot.version,
-                rejection: event.snapshot.rejection,
-                receiptId: event.snapshot.receiptId,
-                receiptHash: event.snapshot.receiptHash,
-                error: null,
-                isMockMode: false,
-                lastEventSequence: event.sequence,
-              },
-            });
-          }
-        }
-      } catch (error: unknown) {
-        if ((error as Error).name === "AbortError") return;
-        const isTimeout =
-          typeof error === "object" &&
-          error !== null &&
-          "isTimeout" in error &&
-          (error as Record<string, unknown>).isTimeout === true;
+			let snapshot = await executeMission(created.id, {
+				expectedMissionVersion: created.version,
+			});
+			dispatch({
+				type: "MISSION_EVENT_RECEIVED",
+				event: toMissionState(snapshot),
+			});
 
-        dispatch({
-          type: "ERROR_OCCURRED",
-          error: (error as Error).message ?? "Error desconocido",
-          isTimeout,
-        });
-      }
-    },
-    [dispatch, abortRef, missionIdRef],
-  );
+			for (
+				let poll = 0;
+				poll < MISSION_MAX_POLLS && IN_PROGRESS.has(snapshot.status);
+				poll++
+			) {
+				await wait(MISSION_POLL_INTERVAL_MS, signal);
+				if (signal.aborted) return;
+				snapshot = await getMission(created.id);
+				dispatch({
+					type: "MISSION_EVENT_RECEIVED",
+					event: toMissionState(snapshot),
+				});
+			}
+		},
+		[dispatch, missionIdRef],
+	);
 
-  const abort = useCallback(() => {
-    abortRef.current?.abort();
-  }, [abortRef]);
+	const run = useCallback(
+		async (command: CreateMissionInput) => {
+			abortRef.current?.abort();
+			const controller = new AbortController();
+			abortRef.current = controller;
 
-  return { run, abort };
+			try {
+				await (IS_MOCK ? runMock : runServer)(command, controller.signal);
+			} catch (error: unknown) {
+				if ((error as Error).name === "AbortError") return;
+				const isTimeout =
+					typeof error === "object" &&
+					error !== null &&
+					"isTimeout" in error &&
+					(error as Record<string, unknown>).isTimeout === true;
+
+				dispatch({
+					type: "ERROR_OCCURRED",
+					error: (error as Error).message ?? "Error desconocido",
+					isTimeout,
+				});
+			}
+		},
+		[dispatch, abortRef, runMock, runServer],
+	);
+
+	const abort = useCallback(() => {
+		abortRef.current?.abort();
+	}, [abortRef]);
+
+	return { run, abort };
 }
