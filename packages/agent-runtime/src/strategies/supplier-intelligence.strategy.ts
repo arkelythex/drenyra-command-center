@@ -356,18 +356,24 @@ function bucketPastDue(
 		maxDaysOverdue = Math.max(maxDaysOverdue, daysOverdue);
 
 		const key = daysOverdue >= 90 ? "90+" : daysOverdue >= 60 ? "60" : "30";
-		buckets[key].count++;
-		buckets[key].total += amount;
+		const bucket = buckets[key];
+		if (!bucket) continue;
+		bucket.count++;
+		bucket.total += amount;
 	}
 	return { buckets, totalPastDue, maxDaysOverdue };
 }
 
 function debtSeverityFor(buckets: AgingBuckets): AnomalySeverity {
-	if (buckets["90+"].count > 0) return "critical";
-	return buckets["60"].count > 0 ? "high" : "medium";
+	if ((buckets["90+"]?.count ?? 0) > 0) return "critical";
+	return (buckets["60"]?.count ?? 0) > 0 ? "high" : "medium";
 }
 
 // ─── Detection: Duplicate Supplier (RUC-based) ───────────────────
+
+function firstOr(values: string[], fallback: string): string {
+	return values[0] ?? fallback;
+}
 
 function detectDuplicateSupplier(
 	input: SupplierIntelligenceInput,
@@ -393,7 +399,7 @@ function detectDuplicateSupplier(
 				id: `dup-ruc-${ruc}`,
 				timestamp: now.toISOString(),
 				entityType: "supplier",
-				entityId: data.ids[0],
+				entityId: firstOr(data.ids, ruc),
 				metric: "duplicate_ruc",
 				expectedValue: 1,
 				actualValue: data.names.size,
@@ -431,7 +437,7 @@ function detectDuplicateSupplier(
 				id: `dup-acct-${account.replace(/\s+/g, "-")}`,
 				timestamp: now.toISOString(),
 				entityType: "supplier",
-				entityId: data.names[0],
+				entityId: firstOr(data.names, account),
 				metric: "shared_bank_account",
 				expectedValue: 1,
 				actualValue: data.rucs.size,

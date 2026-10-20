@@ -105,6 +105,7 @@ export class Mnevori {
 		if (phases.length === 0) return null;
 
 		const last = phases[phases.length - 1];
+		if (!last) return null;
 
 		return {
 			ruc,
