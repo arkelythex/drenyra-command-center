@@ -3,6 +3,7 @@ import type { CompanyContext } from "../../../shared/plugins/company-scope-guard
 import { fail, ok } from "../../shared/api-response";
 import { createAccount } from "../application/commands/create-account.command";
 import { deleteAccount as deleteAccountCommand } from "../application/commands/delete-account.command";
+import { BankAccountNotFoundError } from "../application/commands/import-transactions.command";
 import { getAccount } from "../application/queries/get-account.query";
 import { getBalance } from "../application/queries/get-balance.query";
 import { listAccounts } from "../application/queries/list-accounts.query";
@@ -56,7 +57,10 @@ type ReconcileTransactionCtx = {
 	set: { status?: number | string };
 };
 type SummaryCtx = { query: z.infer<typeof ListAccountsQuerySchema> };
-type ImportTransactionsCtx = { body: z.infer<typeof ImportTransactionsSchema> };
+type ImportTransactionsCtx = {
+	body: z.infer<typeof ImportTransactionsSchema>;
+	set: { status?: number | string };
+};
 type AutoReconcileCtx = { body: z.infer<typeof AutoReconcileSchema> };
 type ReconciliationShadowMetricsCtx = {
 	query: z.infer<typeof ReconciliationShadowMetricsQuerySchema>;
@@ -226,13 +230,21 @@ export const bankingHandlers = {
 		const summary = await service.getSummary(query.companyId);
 		return ok(summary);
 	},
-	importTransactions: async ({ body }: ImportTransactionsCtx) => {
-		const imported = await service.importTransactions(
-			body.companyId,
-			body.accountId,
-			body.transactions,
-		);
-		return ok(imported);
+	importTransactions: async ({ body, set }: ImportTransactionsCtx) => {
+		try {
+			const imported = await service.importTransactions(
+				body.companyId,
+				body.accountId,
+				body.transactions,
+			);
+			return ok(imported);
+		} catch (error) {
+			if (error instanceof BankAccountNotFoundError) {
+				set.status = 404;
+				return fail("Bank account not found", "BANK_ACCOUNT_NOT_FOUND");
+			}
+			throw error;
+		}
 	},
 	autoReconcile: async ({ body }: AutoReconcileCtx) => {
 		const result = await service.autoReconcile(body.companyId, body.accountId);

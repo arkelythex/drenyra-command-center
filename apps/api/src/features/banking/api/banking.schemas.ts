@@ -197,20 +197,23 @@ export const ReconcileTransactionSchema = z
  * ImportTransactionsSchema.parse({
  *   companyId: 'cmp_123',
  *   accountId: 'acc_123',
- *   transactions: [{ date: '2026-02-03', description: 'DEPÓSITO', amount: 500, type: 'CREDIT' }],
+ *   transactions: [{ date: '2026-02-03', description: 'DEPÓSITO', amountCents: 50000, type: 'CREDIT' }],
  * });
  * ```
  */
 export const ImportTransactionsSchema = z.object({
 	companyId: z.string(),
 	accountId: z.string(),
-	transactions: z.array(
-		z.object({
-			date: z.coerce.date(),
-			description: z.string().min(1),
-			amount: z.number(),
-			type: TransactionTypeSchema,
-			reference: z.string().optional(),
-		}),
-	),
+	transactions: z
+		.array(
+			z.object({
+				date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+				description: z.string().trim().min(1).max(500),
+				// Whole cents, never a float amount (CLAUDE.md: Money in cents).
+				amountCents: z.number().int().positive().max(Number.MAX_SAFE_INTEGER),
+				type: TransactionTypeSchema,
+				reference: z.string().max(100).optional(),
+			}),
+		)
+		.max(5000),
 });

@@ -1,14 +1,9 @@
 import { SecureLogger } from "@drenyra/shared/secure-logger";
-import type { TransactionType } from "../../domain/types";
-import { recordTransaction } from "./record-transaction.command";
+import { bankingRepository } from "../../infrastructure/banking.repository";
+import type { StatementRow } from "../statement-import";
 
-export interface ImportRow {
-	date: Date;
-	description: string;
-	amount: number;
-	type: TransactionType;
-	reference?: string;
-}
+/** One statement row: positive whole cents, direction in `type`. */
+export type ImportRow = StatementRow;
 
 export interface ImportTransactionsCommand {
 	companyId: string;
@@ -23,39 +18,30 @@ export interface ImportResult {
 	errors: Array<{ row: number; description: string; error: string }>;
 }
 
+export class BankAccountNotFoundError extends Error {
+	constructor(accountId: string) {
+		super(`Bank account not found: ${accountId}`);
+		this.name = "BankAccountNotFoundError";
+	}
+}
+
 const logger = SecureLogger.namespace("importTransactions");
 
+/**
+ * Import a bank statement in one database transaction: every new row or none.
+ * Rows already stored are skipped (see planStatementImport).
+ */
 export async function importTransactions(
 	cmd: ImportTransactionsCommand,
 ): Promise<ImportResult> {
-	const errors: ImportResult["errors"] = [];
-	let imported = 0;
+	const result = await bankingRepository.importStatement(
+		cmd.companyId,
+		cmd.accountId,
+		cmd.transactions,
+		cmd.source,
+	);
+	if (!result) throw new BankAccountNotFoundError(cmd.accountId);
 
-	for (let i = 0; i < cmd.transactions.length; i++) {
-		const row = cmd.transactions[i];
-
-		if (!row) continue;
-
-		try {
-			await recordTransaction({
-				companyId: cmd.companyId,
-				accountId: cmd.accountId,
-				transactionDate: row.date,
-				description: row.description,
-				reference: row.reference,
-				type: row.type,
-				amount: row.amount,
-				importedFrom: cmd.source,
-			});
-			imported += 1;
-		} catch (error) {
-			const message = error instanceof Error ? error.message : "Unknown error";
-			logger.error("Failed to import row", { row: i + 1, error: message });
-			errors.push({ row: i + 1, description: row.description, error: message });
-		}
-	}
-
-	logger.info("Import completed", { imported, errors: errors.length });
-
-	return { imported, skipped: 0, errors };
+	logger.info("Import completed", result);
+	return { ...result, errors: [] };
 }
