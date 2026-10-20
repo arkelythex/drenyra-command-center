@@ -3,14 +3,15 @@ import { useHaptics } from "@/hooks/useHaptics";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 import { n } from "@/lib/utils";
 import { useAuthStore } from "../../auth/hooks/useAuth";
+import { decimalToCents } from "../lib/invoice-totals";
 import type { Invoice } from "./useInvoices";
 import { useInvoicesBoard } from "./useInvoicesBoard";
 
 type InvoicesByStatus = ReturnType<typeof useInvoicesBoard>["invoicesByStatus"];
 type BoardView = "summary" | "aging";
 
-const toAmount = (invoice: Invoice) =>
-	Number(invoice.totalAmount ?? invoice.amount ?? 0);
+const toAmountCents = (invoice: Invoice) =>
+	decimalToCents(invoice.totalAmount ?? invoice.amount ?? 0);
 
 const startViewTransition = (update: () => void) => {
 	const maybeTransitionApi = document as Document & {
@@ -86,14 +87,16 @@ export function useInvoicesBoardController() {
 
 	const filteredColumnTotals = useMemo(
 		() => ({
-			sent: filteredInvoicesByStatus.sent.reduce(
-				(sum, invoice) => sum + toAmount(invoice),
-				0,
-			),
-			overdue: filteredInvoicesByStatus.overdue.reduce(
-				(sum, invoice) => sum + toAmount(invoice),
-				0,
-			),
+			sent:
+				filteredInvoicesByStatus.sent.reduce(
+					(sum, invoice) => sum + toAmountCents(invoice),
+					0,
+				) / 100,
+			overdue:
+				filteredInvoicesByStatus.overdue.reduce(
+					(sum, invoice) => sum + toAmountCents(invoice),
+					0,
+				) / 100,
 		}),
 		[filteredInvoicesByStatus],
 	);

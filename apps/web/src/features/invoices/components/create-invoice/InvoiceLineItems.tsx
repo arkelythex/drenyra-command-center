@@ -2,11 +2,8 @@ import { Package, Plus, Tag, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-	isTaxable,
-	TAX_TYPE,
-	TAX_TYPE_LABELS,
-} from "@/features/invoices/lib/tax-type";
+import { lineTotalsCents } from "@/features/invoices/lib/invoice-totals";
+import { TAX_TYPE, TAX_TYPE_LABELS } from "@/features/invoices/lib/tax-type";
 import { useHaptics } from "@/hooks/useHaptics";
 import { getActiveTaxRate } from "@/lib/latam-country-packs";
 import { LEGIBILITY } from "@/lib/legibility";
@@ -80,9 +77,10 @@ export const InvoiceLineItems = ({
 
 			<div className="space-y-8">
 				{items.map((item) => {
-					const subtotal = item.quantity * item.unitPrice;
-					const igv = isTaxable(item.taxType) ? subtotal * igvRateFraction : 0;
-					const total = subtotal + igv;
+					const cents = lineTotalsCents(item, igvRateFraction);
+					const subtotal = cents.subtotalCents / 100;
+					const igv = cents.igvCents / 100;
+					const total = cents.totalCents / 100;
 
 					return (
 						<div
@@ -132,7 +130,7 @@ export const InvoiceLineItems = ({
 
 								<div className="col-span-6 md:col-span-2 space-y-4">
 									<Label className="text-2xs font-black uppercase tracking-widest text-muted-foreground/50 pl-1">
-										P. Unitario ({currency})
+										P. Unitario con IGV ({currency})
 									</Label>
 									<Input
 										type="number"

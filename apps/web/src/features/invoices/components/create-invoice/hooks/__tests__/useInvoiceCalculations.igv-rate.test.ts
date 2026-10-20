@@ -41,8 +41,9 @@ describe("useInvoiceCalculations — IGV rate resolution", () => {
 
 		// Mocked rate is 19%, not the real 18% — proves the hook reads from
 		// getActiveTaxRate() at calculation time rather than a literal.
-		expect(result.current.igvAmount).toBe(19);
-		expect(result.current.totalAmount).toBe(119);
+		// 100 / 1.19 = 84.03 → IGV 15.97 (it would be 15.25 at 18%).
+		expect(result.current.igvAmount).toBe(15.97);
+		expect(result.current.totalAmount).toBe(100);
 		expect(getActiveTaxRate).toHaveBeenCalledWith("pe", "IGV");
 	});
 });
