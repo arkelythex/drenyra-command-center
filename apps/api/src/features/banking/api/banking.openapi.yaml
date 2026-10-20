@@ -2,7 +2,9 @@ openapi: 3.1.0
 info:
   title: DRENYRA Banking API
   version: 2026.1.0
-  description: Bank account management and transaction reconciliation
+  description: >-
+    Bank accounts, transactions and statement import. Linking a movement to an
+    invoice or bill is done through /api/reconciliations, not here.
   contact:
     name: DRENYRA Team
     email: dev@arkalythix.pe
@@ -18,8 +20,6 @@ tags:
     description: Bank account management
   - name: Transactions
     description: Transaction operations
-  - name: Reconciliation
-    description: Auto and manual reconciliation
 
 paths:
   /banking/accounts:
@@ -194,74 +194,6 @@ paths:
                 $ref: '#/components/schemas/BankTransaction'
         '400':
           $ref: '#/components/responses/BadRequest'
-
-  /banking/transactions/{id}/reconcile:
-    post:
-      tags: [Reconciliation]
-      summary: Manually reconcile transaction
-      operationId: reconcileTransaction
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                documentId:
-                  type: string
-                  format: uuid
-                documentType:
-                  type: string
-                  enum: [INVOICE, BILL]
-      responses:
-        '200':
-          description: Transaction reconciled
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BankTransaction'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          description: Already reconciled
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /banking/auto-reconcile:
-    post:
-      tags: [Reconciliation]
-      summary: Run auto-reconciliation
-      operationId: autoReconcile
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [accountId]
-              properties:
-                accountId:
-                  type: string
-                  format: uuid
-      responses:
-        '200':
-          description: Reconciliation result
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ReconciliationResult'
 
   /banking/import:
     post:
@@ -497,40 +429,6 @@ components:
     TransactionType:
       type: string
       enum: [CREDIT, DEBIT]
-
-    MatchCriteria:
-      type: string
-      enum: [REFERENCE, AMOUNT_DATE, AMOUNT_ENTITY, PARTIAL]
-
-    ReconciliationResult:
-      type: object
-      properties:
-        reconciledCount:
-          type: integer
-        totalProcessed:
-          type: integer
-        matches:
-          type: array
-          items:
-            type: object
-            properties:
-              transactionId:
-                type: string
-                format: uuid
-              documentId:
-                type: string
-                format: uuid
-              documentType:
-                type: string
-                enum: [INVOICE, BILL]
-              matchScore:
-                type: integer
-                minimum: 0
-                maximum: 100
-              matchCriteria:
-                $ref: '#/components/schemas/MatchCriteria'
-        unmatched:
-          type: integer
 
     ImportResult:
       type: object

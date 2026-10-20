@@ -5,7 +5,6 @@ const mockRepository = {
 	findAccountById: vi.fn(),
 	createTransaction: vi.fn(),
 	updateAccount: vi.fn(),
-	reconcileTransaction: vi.fn(),
 };
 
 vi.mock("../../infrastructure/banking.repository", () => ({
@@ -93,18 +92,6 @@ describe("TransactionService", () => {
 		expect(mockRepository.updateAccount).toHaveBeenCalledWith("acc-1", {
 			currentBalance: "125.00",
 		});
-	});
-
-	it("reconciles a transaction", async () => {
-		const service = new TransactionService();
-		await service.reconcileTransaction("tx-1", "user-1");
-
-		expect(mockRepository.reconcileTransaction).toHaveBeenCalledWith(
-			"tx-1",
-			"user-1",
-			undefined,
-			undefined,
-		);
 	});
 
 	it("imports transactions and continues on error", async () => {

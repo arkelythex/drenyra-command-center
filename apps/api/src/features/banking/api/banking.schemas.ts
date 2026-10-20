@@ -111,19 +111,6 @@ export const IdParamSchema = z.object({
 });
 
 /**
- * Request body schema for auto-reconciliation.
- *
- * @example
- * ```ts
- * AutoReconcileSchema.parse({ companyId: 'cmp_123', accountId: 'acc_123' });
- * ```
- */
-export const AutoReconcileSchema = z.object({
-	companyId: z.string(),
-	accountId: z.string(),
-});
-
-/**
  * Optional filter for reconciliation shadow metrics by company.
  *
  * @example
@@ -161,33 +148,6 @@ export const AirlineTicketReportQuerySchema = z.object({
 	period: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/),
 	minAmountPen: z.coerce.number().nonnegative().optional(),
 });
-
-/**
- * Request body schema for reconciling a single transaction.
- *
- * Note: `documentId` and `documentType` must be provided together (or both omitted).
- *
- * @example
- * ```ts
- * ReconcileTransactionSchema.parse({});
- * ReconcileTransactionSchema.parse({ documentId: 'inv_123', documentType: 'INVOICE' });
- * ```
- */
-export const ReconcileTransactionSchema = z
-	.object({
-		userId: z.string().uuid().optional(),
-		documentId: z.string().uuid().optional(),
-		documentType: z.enum(["INVOICE", "BILL"]).optional(),
-	})
-	.refine(
-		(value) =>
-			(value.documentId && value.documentType) ||
-			(!value.documentId && !value.documentType),
-		{
-			message: "documentId and documentType must be provided together",
-			path: ["documentId"],
-		},
-	);
 
 /**
  * Request body schema for importing multiple transactions in a single request.

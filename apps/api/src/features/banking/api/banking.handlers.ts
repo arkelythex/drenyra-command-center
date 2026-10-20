@@ -12,29 +12,18 @@ import { BankingApplicationService } from "../application/services/banking.appli
 import { ReconciliationService } from "../application/services/reconciliation.service";
 import type {
 	AirlineTicketReportQuerySchema,
-	AutoReconcileSchema,
 	CreateAccountSchema,
 	CreateTransactionSchema,
 	ImportTransactionsSchema,
 	ListAccountsQuerySchema,
 	ListTransactionsQuerySchema,
-	ReconcileTransactionSchema,
 	ReconciliationShadowCutoverQuerySchema,
 	ReconciliationShadowMetricsQuerySchema,
 } from "./banking.schemas";
-import {
-	loadScopedBankAccount,
-	loadScopedBankTransaction,
-} from "./handlers/load-scoped-banking-object";
+import { loadScopedBankAccount } from "./handlers/load-scoped-banking-object";
 
 const service = new BankingApplicationService();
 const airlineReportService = new AirlineTicketReportService();
-
-async function resolveBankingLegacyUserId(
-	companyContext: CompanyContext | undefined,
-): Promise<string | null> {
-	return companyContext?.legacyUserId ?? null;
-}
 
 type IdParamsWithCompany = {
 	params: { id: string };
@@ -50,18 +39,11 @@ type ListTransactionsCtx = {
 };
 type CreateAccountCtx = { body: z.infer<typeof CreateAccountSchema> };
 type CreateTransactionCtx = { body: z.infer<typeof CreateTransactionSchema> };
-type ReconcileTransactionCtx = {
-	params: { id: string };
-	body: z.infer<typeof ReconcileTransactionSchema>;
-	companyContext?: CompanyContext;
-	set: { status?: number | string };
-};
 type SummaryCtx = { query: z.infer<typeof ListAccountsQuerySchema> };
 type ImportTransactionsCtx = {
 	body: z.infer<typeof ImportTransactionsSchema>;
 	set: { status?: number | string };
 };
-type AutoReconcileCtx = { body: z.infer<typeof AutoReconcileSchema> };
 type ReconciliationShadowMetricsCtx = {
 	query: z.infer<typeof ReconciliationShadowMetricsQuerySchema>;
 };
@@ -189,43 +171,6 @@ export const bankingHandlers = {
 			isReconciled: false,
 		});
 	},
-	reconcileTransaction: async ({
-		params,
-		body,
-		companyContext,
-		set,
-	}: ReconcileTransactionCtx) => {
-		if (!companyContext) {
-			set.status = 401;
-			return fail("Company context is required", "COMPANY_CONTEXT_REQUIRED");
-		}
-		const scopedTransaction = await loadScopedBankTransaction(
-			params.id,
-			companyContext.companyId,
-		);
-		if (!scopedTransaction.ok) {
-			set.status = scopedTransaction.status;
-			return fail(scopedTransaction.error, scopedTransaction.code);
-		}
-
-		const resolvedUserId =
-			body.userId ?? (await resolveBankingLegacyUserId(companyContext));
-		if (!resolvedUserId) {
-			set.status = 401;
-			return fail(
-				"No se pudo resolver el usuario para conciliar la transaccion",
-				"BANKING_AUTH_REQUIRED",
-			);
-		}
-
-		await service.reconcileTransaction(
-			scopedTransaction.transaction.id,
-			resolvedUserId,
-			body.documentId,
-			body.documentType,
-		);
-		return ok({ reconciled: true });
-	},
 	getSummary: async ({ query }: SummaryCtx) => {
 		const summary = await service.getSummary(query.companyId);
 		return ok(summary);
@@ -245,10 +190,6 @@ export const bankingHandlers = {
 			}
 			throw error;
 		}
-	},
-	autoReconcile: async ({ body }: AutoReconcileCtx) => {
-		const result = await service.autoReconcile(body.companyId, body.accountId);
-		return ok(result);
 	},
 	getReconciliationShadowMetrics: async ({
 		query,

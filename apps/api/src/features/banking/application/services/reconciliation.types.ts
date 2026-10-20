@@ -1,19 +1,6 @@
 /**
- * Reconciliation types and interfaces.
+ * Reconciliation shadow-metrics types.
  */
-import type { MatchCandidate } from "../../domain/services/matching-strategy";
-
-export interface ReconciliationResult {
-	reconciledCount: number;
-	attemptedCount: number;
-	matches: Array<{
-		transactionId: string;
-		documentId: string;
-		documentType: "INVOICE" | "BILL";
-		matchScore: number;
-		matchCriteria: MatchCandidate["criteria"];
-	}>;
-}
 
 export interface ShadowTotals {
 	runs: number;
@@ -79,18 +66,4 @@ export interface ShadowRunPayload {
 	errorMessage: string | null;
 	startedAt: Date;
 	completedAt: Date;
-}
-
-export interface RawBankTransaction {
-	id: string;
-	companyId: string;
-	accountId: string;
-	transactionDate: string;
-	description: string | null;
-	reference: string | null;
-	type: "DEBIT" | "CREDIT";
-	amount: string;
-	isReconciled: boolean;
-	invoiceId: string | null;
-	billId: string | null;
 }

@@ -55,7 +55,6 @@ vi.mock("@drenyra/infrastructure", () => ({
 export const mockRecordTransaction = vi
 	.fn()
 	.mockResolvedValue({ transactionId: "tx-1", newBalance: "100.00" });
-export const mockReconcileTransaction = vi.fn().mockResolvedValue(undefined);
 export const mockImportTransactions = vi
 	.fn()
 	.mockResolvedValue({ imported: 2, skipped: 0, errors: [] });
@@ -70,10 +69,6 @@ export const mockGetBankingSummary = vi.fn().mockResolvedValue({
 
 vi.mock("../../application/commands/record-transaction.command", () => ({
 	recordTransaction: mockRecordTransaction,
-}));
-
-vi.mock("../../application/commands/reconcile-transaction.command", () => ({
-	reconcileTransaction: mockReconcileTransaction,
 }));
 
 vi.mock("../../application/commands/import-transactions.command", () => ({
@@ -97,24 +92,17 @@ export const createAccountService = () => ({
 	getBalance: vi.fn(),
 });
 
-export const createReconciliationService = () => ({
-	autoReconcile: vi.fn(),
-});
-
 export function createBankingServiceWithMocks() {
 	const accountService = createAccountService();
-	const reconciliationService = createReconciliationService();
 
 	return {
 		mocks: {
 			accountService,
-			reconciliationService,
 			recordTransaction: mockRecordTransaction,
-			reconcileTransaction: mockReconcileTransaction,
 			importTransactions: mockImportTransactions,
 			getTransactions: mockGetTransactions,
 			getBankingSummary: mockGetBankingSummary,
 		},
-		constructorArgs: [accountService, reconciliationService] as const,
+		constructorArgs: [accountService] as const,
 	};
 }
