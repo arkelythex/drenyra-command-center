@@ -88,7 +88,6 @@
     "apps/web/src/features/settings/components/settings-shell/desktop-nav.tsx|TS2307": 1,
     "apps/web/src/features/settings/hooks/useToolPermissions.ts|TS2322": 3,
     "apps/web/src/features/settings/hooks/useToolPermissions.ts|TS2558": 1,
-    "apps/web/src/features/workspace/services/http-mission-transport.ts|TS2305": 4,
     "apps/web/src/features/workspace/services/mission-contracts.ts|TS2305": 4,
     "apps/web/src/lib/api-factory-client.ts|TS2538": 2,
     "apps/web/src/lib/api-factory-interceptors.ts|TS2322": 1,

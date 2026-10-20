@@ -1,6 +1,6 @@
 # Fase D: cierre mensual de punta a punta
 
-**Estado:** Working (D1 hecho en #309; D2 en curso). Autorizado por Dreamcoder ("te autorizo todo y avanza de forma autónoma", 2026-10-20).
+**Estado:** Working (D1 #309 y D2 #311 mergeados; D3 en curso). Autorizado por Dreamcoder ("te autorizo todo y avanza de forma autónoma", 2026-10-20).
 
 ## Objetivo
 Que un contador vea en el workspace del periodo los bloqueos, la evidencia y la siguiente acción. Que apruebe o rechace las propuestas del agente, dejando rastro de auditoría. Que cierre el periodo sin envío a SUNAT (ver `web-mvp-gap.md`).
@@ -22,8 +22,9 @@ Que un contador vea en el workspace del periodo los bloqueos, la evidencia y la 
 1. **D1 (crítico, tenant):** `/api/v1/close` rechaza el `companyId` ajeno. Los ids de checklist, item y gate se verifican contra la empresa de la sesión, y el actor sale de la sesión. Nuevos `findItemById`/`findGateById` en el repo.
 2. **D2 (crítico, DB/AI-control):** misiones con base de datos real y estados HTTP de error correctos, con tests de forma de respuesta.
    - Hecho: `missionsModule` usa el `db` de `@drenyra/persistence/client`. Los errores responden 404/409/500 según `MissionError.statusCode` (antes 200). Los 500 ya no exponen el mensaje interno. El id debe ser UUID (422). `companyId` en el body es opcional y, si viene, debe ser el de la sesión (403).
-   - Pendiente para D3: la web debe crear la misión y usar su id real, con `expectedMissionVersion` del servidor.
 3. **D3 (tenant):** transporte web de misiones con cookie y cabeceras de empresa. Desenvuelve `{data}`, crea la misión antes de ejecutarla y usa la versión del servidor.
+   - Hecho: `mission-client` usa `runtimeConfig.apiUrl`, `credentials: "include"` y `resolveRequestHeaders()` (sin Bearer de sessionStorage). Lee `{success,data}` y `{success:false,error}`. `run` crea la misión, la ejecuta con la versión devuelta y consulta `GET /:id` cada 1,5 s mientras esté QUEUED/RUNNING. Aprobar, rechazar y reconciliar muestran el snapshot del servidor (sin `rejectedBy: "current-user"`).
+   - Nota: el `execute` del API responde JSON; su generador SSE nunca llega al cliente, así que la web consulta el snapshot en vez de usar SSE. Se borraron `sse-mission-stream.ts` y `useMissionEventStream.ts` (sin uso).
 4. **D4:** un único estado de misión compartido con `CierreMensualPage`, con empresa y RUC reales y sin valores inventados.
 5. **D5 (crítico, DB/migración):** log de auditoría append-only para aprobar y rechazar, con el actor real.
 6. **D6 (crítico, libros/money/domain):** acción de cierre de periodo (`applyEntries`, `PeriodCloseService`, `POST` con permiso). Test-first y `sire-ledger-repro-check`.

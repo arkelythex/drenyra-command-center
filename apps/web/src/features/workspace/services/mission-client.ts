@@ -1,55 +1,36 @@
+/**
+ * HTTP client for `/api/v1/missions`.
+ *
+ * Same transport as the rest of the app (`lib/api-client`): the session cookie
+ * (`credentials: "include"`) plus the active company's tenant headers. The API
+ * wraps every answer in `{ success, data }` / `{ success, error }`; this client
+ * returns `data` and turns errors into a `HarnessError`.
+ */
+
+import { resolveRequestHeaders } from "@/lib/api-client";
+import { runtimeConfig } from "@/lib/runtime-config";
 import { mapAPIErrorToHarnessError } from "./mission-errors";
 
-const API_BASE =
-  import.meta.env.VITE_DRENYRA_API_URL ?? "http://localhost:3000";
-
-function authHeaders(): Record<string, string> {
-  return {
-    Authorization: `Bearer ${sessionStorage.getItem("drenyra-auth-token") ?? ""}`,
-  };
-}
-
 export async function missionFetch<T>(
-  path: string,
-  options: RequestInit = {},
+	path: string,
+	options: RequestInit = {},
 ): Promise<T> {
-  const url = `${API_BASE}${path}`;
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...authHeaders(),
-      ...(options.headers as Record<string, string> | undefined),
-    },
-  });
+	const response = await fetch(`${runtimeConfig.apiUrl}${path}`, {
+		...options,
+		credentials: "include",
+		headers: {
+			"Content-Type": "application/json",
+			...resolveRequestHeaders(),
+			...(options.headers as Record<string, string> | undefined),
+		},
+	});
 
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw mapAPIErrorToHarnessError(response.status, body);
-  }
+	const body: unknown = await response.json().catch(() => ({}));
+	const envelope = body as { success?: unknown; data?: unknown };
 
-  return response.json() as Promise<T>;
-}
+	if (!response.ok || envelope.success === false) {
+		throw mapAPIErrorToHarnessError(response.status, body);
+	}
 
-export async function missionFetchStream(
-  path: string,
-  options: RequestInit = {},
-): Promise<Response> {
-  const url = `${API_BASE}${path}`;
-  const response = await fetch(url, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "text/event-stream",
-      ...authHeaders(),
-      ...(options.headers as Record<string, string> | undefined),
-    },
-  });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
-    throw mapAPIErrorToHarnessError(response.status, body);
-  }
-
-  return response;
+	return ("data" in envelope ? envelope.data : body) as T;
 }
