@@ -6,13 +6,6 @@
  * @see {@link import-constants.ts} for bank-format configuration
  */
 
-import type {
-	BankCsvFormat,
-	ImportTransactionRow,
-} from "@/features/banking/api/banking.api.types";
-
-export type { BankCsvFormat, ImportTransactionRow };
-
 /**
  * Supported import file formats.
  */
