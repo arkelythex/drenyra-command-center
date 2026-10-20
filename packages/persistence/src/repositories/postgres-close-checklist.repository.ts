@@ -244,6 +244,15 @@ export class PostgresCloseChecklistRepository
 		return rows.map(itemRowToRecord);
 	}
 
+	async findItemById(id: string): Promise<CloseChecklistItemRecord | null> {
+		const [row] = await db
+			.select()
+			.from(closeChecklistItems)
+			.where(eq(closeChecklistItems.id, id))
+			.limit(1);
+		return row ? itemRowToRecord(row) : null;
+	}
+
 	async saveGate(
 		data: Omit<CloseGateRecord, "id" | "createdAt" | "updatedAt">,
 	): Promise<CloseGateRecord> {
@@ -277,6 +286,15 @@ export class PostgresCloseChecklistRepository
 			.orderBy(asc(closeGates.gateType));
 
 		return rows.map(gateRowToRecord);
+	}
+
+	async findGateById(id: string): Promise<CloseGateRecord | null> {
+		const [row] = await db
+			.select()
+			.from(closeGates)
+			.where(eq(closeGates.id, id))
+			.limit(1);
+		return row ? gateRowToRecord(row) : null;
 	}
 
 	async overrideGate(

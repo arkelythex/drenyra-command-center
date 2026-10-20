@@ -127,6 +127,7 @@ export interface CloseChecklistRepository {
 	getItemsByChecklistId(
 		checklistId: string,
 	): Promise<CloseChecklistItemRecord[]>;
+	findItemById(id: string): Promise<CloseChecklistItemRecord | null>;
 
 	saveGate(
 		data: Omit<CloseGateRecord, "id" | "createdAt" | "updatedAt">,
@@ -135,6 +136,7 @@ export interface CloseChecklistRepository {
 		companyId: string,
 		period: string,
 	): Promise<CloseGateRecord[]>;
+	findGateById(id: string): Promise<CloseGateRecord | null>;
 	overrideGate(
 		id: string,
 		status: GateStatus,

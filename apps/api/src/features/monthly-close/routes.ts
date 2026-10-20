@@ -1,6 +1,9 @@
 import type { CloseChecklistRepository } from "@drenyra/domain/repositories/close-checklist.repository";
 import { Elysia, t } from "elysia";
-import { companyScopeGuard } from "../../shared/plugins";
+import {
+	companyScopeGuard,
+	rejectForeignCompanyId,
+} from "../../shared/plugins";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import { MonthlyCloseController } from "./controller";
 import {
@@ -16,12 +19,21 @@ import {
 	UpdateItemSchema,
 } from "./types";
 
+const UUID =
+	/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+/** The session user as an audit actor (the columns are uuid FKs). */
+function auditActor(legacyUserId: string | null | undefined): string | null {
+	return legacyUserId && UUID.test(legacyUserId) ? legacyUserId : null;
+}
+
 export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {
 	const ctrl = new MonthlyCloseController(repo);
 
 	return (
 		new Elysia({ prefix: "/api/v1/close" })
 			.use(companyScopeGuard({ allowHeaderFallback: true }))
+			.onBeforeHandle(rejectForeignCompanyId)
 			// --- Checklists ---
 			.post(
 				"/checklists",
@@ -67,10 +79,11 @@ export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {
 			)
 			.get(
 				"/checklists/:id",
-				async ({ params, set }) => {
+				async ({ params, set, companyContext }) => {
 					try {
 						const result = await ctrl.getChecklist(params.id);
-						if (!result) {
+						// Another company's checklist answers like a missing one.
+						if (!result || result.companyId !== companyContext.companyId) {
 							set.status = 404;
 							return fail("Checklist not found", "CHECKLIST_NOT_FOUND");
 						}
@@ -90,8 +103,14 @@ export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {
 			)
 			.patch(
 				"/checklists/:id",
-				async ({ params, body, set }) => {
+				async ({ params, body, set, companyContext }) => {
 					try {
+						if (
+							!(await ctrl.ownsChecklist(companyContext.companyId, params.id))
+						) {
+							set.status = 404;
+							return fail("Checklist not found", "CHECKLIST_NOT_FOUND");
+						}
 						const result = await ctrl.updateChecklist(params.id, body);
 						if (!result) {
 							set.status = 404;
@@ -115,8 +134,14 @@ export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {
 			// --- Items ---
 			.post(
 				"/checklists/:id/items",
-				async ({ params, body, set }) => {
+				async ({ params, body, set, companyContext }) => {
 					try {
+						if (
+							!(await ctrl.ownsChecklist(companyContext.companyId, params.id))
+						) {
+							set.status = 404;
+							return fail("Checklist not found", "CHECKLIST_NOT_FOUND");
+						}
 						const result = await ctrl.addItem(params.id, body);
 						set.status = 201;
 						return ok(result);
@@ -136,9 +161,17 @@ export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {
 			)
 			.patch(
 				"/items/:id",
-				async ({ params, body, set }) => {
+				async ({ params, body, set, companyContext }) => {
 					try {
-						const result = await ctrl.updateItem(params.id, body);
+						if (!(await ctrl.ownsItem(companyContext.companyId, params.id))) {
+							set.status = 404;
+							return fail("Item not found", "ITEM_NOT_FOUND");
+						}
+						const result = await ctrl.updateItem(
+							params.id,
+							body,
+							auditActor(companyContext.legacyUserId),
+						);
 						if (!result) {
 							set.status = 404;
 							return fail("Item not found", "ITEM_NOT_FOUND");
@@ -160,8 +193,12 @@ export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {
 			)
 			.post(
 				"/items/:id/evidence",
-				async ({ params, body, set }) => {
+				async ({ params, body, set, companyContext }) => {
 					try {
+						if (!(await ctrl.ownsItem(companyContext.companyId, params.id))) {
+							set.status = 404;
+							return fail("Item not found", "ITEM_NOT_FOUND");
+						}
 						const result = await ctrl.attachEvidence(
 							params.id,
 							body.evidenceId,
@@ -207,13 +244,26 @@ export const createMonthlyCloseRoutes = (repo: CloseChecklistRepository) => {
 			)
 			.patch(
 				"/gates/:id",
-				async ({ params, body, set }) => {
+				async ({ params, body, set, companyContext }) => {
 					try {
+						if (!(await ctrl.ownsGate(companyContext.companyId, params.id))) {
+							set.status = 404;
+							return fail("Gate not found", "GATE_NOT_FOUND");
+						}
+						// An override must name who made it; the session decides, not the body.
+						const actor = auditActor(companyContext.legacyUserId);
+						if (!actor) {
+							set.status = 403;
+							return fail(
+								"Override requires an identified user",
+								"OVERRIDE_ACTOR_REQUIRED",
+							);
+						}
 						const result = await ctrl.overrideGate(
 							params.id,
 							body.status,
 							body.resolution,
-							body.overrideById,
+							actor,
 						);
 						if (!result) {
 							set.status = 404;

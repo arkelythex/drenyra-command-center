@@ -103,3 +103,10 @@ Limitaciones:
 `companyScopeGuard` resuelve la empresa de la sesión, pero `reconciliations`, `analytics`, `compliance` (dashboard, issues, sire-reproducibility) y `evidence-v2` usaban el `companyId` del query o del body sin compararlo con ella. Cualquier usuario con sesión podía leer los movimientos bancarios, KPIs, issues o evidencias de otra empresa, y conciliar o desconciliar sus transacciones. Se verificó con test: `/api/analytics/dashboard?companyId=<otra>` respondía 200.
 Ahora existe `rejectForeignCompanyId` en `shared/plugins/company-scope-guard.ts`, aplicado como `onBeforeHandle` en esos módulos. Responde 403 `COMPANY_SCOPE_MISMATCH` si el `companyId` pedido no es el de la sesión.
 `governance-audit` y `sire-comparison` ya validaban por su cuenta. En `compliance` el hook va después de las sub-rutas, porque estas tienen su propio control de llamadores, incluidas las máquinas.
+
+## Fase C cerrada y pantallas navegables (2026-10-20)
+- Conciliación bancaria con la API real en céntimos: sugerencias en el API (#295) y pantalla `/tesoreria/reconciliations` (#297).
+- Portada `/workspace/...` ya no se cae por falta de `WorkspaceProvider` (#298).
+- Rutas nuevas: `/cumplimiento/expedientes` (conciliación SIRE, #300) e `/invoices` (comprobantes, #303). `invoicingList` leía `invoices` del sobre `ok()` y el tablero quedaba siempre vacío.
+- Hallazgo fiscal (#306): la vista previa de factura sumaba IGV encima del precio, pero el API guarda el precio con IGV incluido. La web ahora usa la misma regla del API, en céntimos (`features/invoices/lib/invoice-totals.ts`). Pendiente: la web usa la tasa estática `getActiveTaxRate("pe","IGV")` y el API la tasa por fecha de emisión.
+- Siguen sin ruta: `/inbox`, `/cierre-mensual`, `/firm/clients`, `/evidence`, `/review-queue`, `/banking`, `/contabilidad/ledger`, `/taxation`, `/compliance`, `/financials`, `/reports`, `/audit`, `/tools`, `/configuracion` (ver fase D).
