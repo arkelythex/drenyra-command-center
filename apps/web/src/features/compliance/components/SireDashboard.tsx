@@ -108,7 +108,7 @@ export const SireDashboard = () => {
 									</h2>
 									<p className="text-xs font-bold text-muted-foreground/60 leading-relaxed uppercase tracking-widest px-8">
 										Descarga el .zip del portal SOL y cárgalo aquí para iniciar
-										la conciliación entre ARKELYTHEX y SUNAT.
+										la conciliación entre tus registros en Drenyra y SUNAT.
 									</p>
 								</div>
 								<span className="mt-4 inline-flex h-11 items-center rounded-2xl border border-border px-8 text-2xs font-black uppercase tracking-widest group-hover:bg-muted/70">
@@ -225,11 +225,6 @@ const StatBox = ({ label, value, highlight, isCount }: StatBoxProps) => (
 			{label}
 		</p>
 		<div className="flex items-baseline gap-1">
-			{!isCount && (
-				<span className="text-xs font-black text-muted-foreground/40 uppercase">
-					S/
-				</span>
-			)}
 			<p
 				className={cn(
 					"text-3xl font-black font-mono tracking-tighter tabular-nums leading-none",

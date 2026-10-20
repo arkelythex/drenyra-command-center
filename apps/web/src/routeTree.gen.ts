@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from "./routes/__root";
 import { Route as AuthRouteImport } from "./routes/auth";
+import { Route as CumplimientoExpedientesRouteImport } from "./routes/cumplimiento.expedientes";
 import { Route as ForgotPasswordRouteImport } from "./routes/forgot-password";
 import { Route as IndexRouteImport } from "./routes/index";
 import { Route as LoginRouteImport } from "./routes/login";
@@ -72,6 +73,11 @@ const TesoreriaReconciliationsRoute =
 		path: "/tesoreria/reconciliations",
 		getParentRoute: () => rootRouteImport,
 	} as any);
+const CumplimientoExpedientesRoute = CumplimientoExpedientesRouteImport.update({
+	id: "/cumplimiento/expedientes",
+	path: "/cumplimiento/expedientes",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const WorkspaceCompanyIdYearMonthIntentRoute =
 	WorkspaceCompanyIdYearMonthIntentRouteImport.update({
 		id: "/workspace/$companyId/$year/$month/$intent",
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
 	"/settings": typeof SettingsRoute;
 	"/signup": typeof SignupRoute;
 	"/verify-email": typeof VerifyEmailRoute;
+	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
 	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
 	"/workspace/$companyId/$year/$month/$intent": typeof WorkspaceCompanyIdYearMonthIntentRoute;
 }
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
 	"/settings": typeof SettingsRoute;
 	"/signup": typeof SignupRoute;
 	"/verify-email": typeof VerifyEmailRoute;
+	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
 	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
 	"/workspace/$companyId/$year/$month/$intent": typeof WorkspaceCompanyIdYearMonthIntentRoute;
 }
@@ -116,6 +124,7 @@ export interface FileRoutesById {
 	"/settings": typeof SettingsRoute;
 	"/signup": typeof SignupRoute;
 	"/verify-email": typeof VerifyEmailRoute;
+	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
 	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
 	"/workspace/$companyId/$year/$month/$intent": typeof WorkspaceCompanyIdYearMonthIntentRoute;
 }
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
 		| "/settings"
 		| "/signup"
 		| "/verify-email"
+		| "/cumplimiento/expedientes"
 		| "/tesoreria/reconciliations"
 		| "/workspace/$companyId/$year/$month/$intent";
 	fileRoutesByTo: FileRoutesByTo;
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
 		| "/settings"
 		| "/signup"
 		| "/verify-email"
+		| "/cumplimiento/expedientes"
 		| "/tesoreria/reconciliations"
 		| "/workspace/$companyId/$year/$month/$intent";
 	id:
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
 		| "/settings"
 		| "/signup"
 		| "/verify-email"
+		| "/cumplimiento/expedientes"
 		| "/tesoreria/reconciliations"
 		| "/workspace/$companyId/$year/$month/$intent";
 	fileRoutesById: FileRoutesById;
@@ -171,6 +183,7 @@ export interface RootRouteChildren {
 	SettingsRoute: typeof SettingsRoute;
 	SignupRoute: typeof SignupRoute;
 	VerifyEmailRoute: typeof VerifyEmailRoute;
+	CumplimientoExpedientesRoute: typeof CumplimientoExpedientesRoute;
 	TesoreriaReconciliationsRoute: typeof TesoreriaReconciliationsRoute;
 	WorkspaceCompanyIdYearMonthIntentRoute: typeof WorkspaceCompanyIdYearMonthIntentRoute;
 }
@@ -247,6 +260,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof TesoreriaReconciliationsRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		"/cumplimiento/expedientes": {
+			id: "/cumplimiento/expedientes";
+			path: "/cumplimiento/expedientes";
+			fullPath: "/cumplimiento/expedientes";
+			preLoaderRoute: typeof CumplimientoExpedientesRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
 		"/workspace/$companyId/$year/$month/$intent": {
 			id: "/workspace/$companyId/$year/$month/$intent";
 			path: "/workspace/$companyId/$year/$month/$intent";
@@ -267,6 +287,7 @@ const rootRouteChildren: RootRouteChildren = {
 	SettingsRoute: SettingsRoute,
 	SignupRoute: SignupRoute,
 	VerifyEmailRoute: VerifyEmailRoute,
+	CumplimientoExpedientesRoute: CumplimientoExpedientesRoute,
 	TesoreriaReconciliationsRoute: TesoreriaReconciliationsRoute,
 	WorkspaceCompanyIdYearMonthIntentRoute:
 		WorkspaceCompanyIdYearMonthIntentRoute,
