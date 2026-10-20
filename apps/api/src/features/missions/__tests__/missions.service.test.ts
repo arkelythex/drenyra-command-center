@@ -11,6 +11,7 @@ const mockDb = vi.hoisted(() => ({
 }));
 
 vi.mock("@drenyra/persistence/schema", () => ({
+	missionReceipts: { missionId: "mission_id", companyId: "company_id" },
 	accountingMissions: {
 		id: "id",
 		companyId: "company_id",
@@ -93,6 +94,14 @@ function updFail() {
 				.mockReturnValue({ returning: vi.fn().mockResolvedValue([]) }),
 		}),
 	} as any);
+}
+
+/** approve/reject run in a transaction and append a decision row. */
+function decisionTx() {
+	const values = vi.fn().mockResolvedValue(undefined);
+	mockDb.db.transaction.mockImplementation(async (fn: any) => fn(mockDb.db));
+	mockDb.db.insert.mockReturnValue({ values } as any);
+	return values;
 }
 
 describe("MissionsService", () => {
@@ -186,6 +195,11 @@ describe("MissionsService", () => {
 
 	const eh = "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945";
 	describe("approveMission", () => {
+		let decisionValues: ReturnType<typeof vi.fn>;
+		beforeEach(() => {
+			decisionValues = decisionTx();
+		});
+
 		it("AWAITING_APPROVAL->APPROVED", async () => {
 			sel(
 				m({
@@ -219,7 +233,17 @@ describe("MissionsService", () => {
 				expectedMissionVersion: 2,
 			});
 			expect(r.status).toBe("APPROVED");
-			expect(r.receiptId).toBeDefined();
+			expect(r.receiptId).toMatch(
+				/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
+			);
+			expect(decisionValues).toHaveBeenCalledWith(
+				expect.objectContaining({
+					actorId,
+					decision: "APPROVE",
+					newStatus: "APPROVED",
+					receiptHash: r.receiptHash,
+				}),
+			);
 		});
 		it("rejects when not AWAITING_APPROVAL", async () => {
 			sel(m({ status: "DRAFT" }));
@@ -287,6 +311,11 @@ describe("MissionsService", () => {
 	});
 
 	describe("rejectMission", () => {
+		let decisionValues: ReturnType<typeof vi.fn>;
+		beforeEach(() => {
+			decisionValues = decisionTx();
+		});
+
 		it("AWAITING_APPROVAL->REJECTED", async () => {
 			sel(
 				m({
@@ -326,6 +355,13 @@ describe("MissionsService", () => {
 					})
 				).status,
 			).toBe("REJECTED");
+			expect(decisionValues).toHaveBeenCalledWith(
+				expect.objectContaining({
+					actorId,
+					decision: "REJECT",
+					newStatus: "REJECTED",
+				}),
+			);
 		});
 		it("rejects empty reason", async () => {
 			await expect(
