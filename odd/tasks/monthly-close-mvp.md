@@ -1,6 +1,6 @@
 # Fase D: cierre mensual de punta a punta
 
-**Estado:** Working (D1 #309 y D2 #311 mergeados; D3 en curso). Autorizado por Dreamcoder ("te autorizo todo y avanza de forma autónoma", 2026-10-20).
+**Estado:** Working (D1 #309, D2 #311 y D3 #313 mergeados; D4 en curso). Autorizado por Dreamcoder ("te autorizo todo y avanza de forma autónoma", 2026-10-20).
 
 ## Objetivo
 Que un contador vea en el workspace del periodo los bloqueos, la evidencia y la siguiente acción. Que apruebe o rechace las propuestas del agente, dejando rastro de auditoría. Que cierre el periodo sin envío a SUNAT (ver `web-mvp-gap.md`).
@@ -26,6 +26,7 @@ Que un contador vea en el workspace del periodo los bloqueos, la evidencia y la 
    - Hecho: `mission-client` usa `runtimeConfig.apiUrl`, `credentials: "include"` y `resolveRequestHeaders()` (sin Bearer de sessionStorage). Lee `{success,data}` y `{success:false,error}`. `run` crea la misión, la ejecuta con la versión devuelta y consulta `GET /:id` cada 1,5 s mientras esté QUEUED/RUNNING. Aprobar, rechazar y reconciliar muestran el snapshot del servidor (sin `rejectedBy: "current-user"`).
    - Nota: el `execute` del API responde JSON; su generador SSE nunca llega al cliente, así que la web consulta el snapshot en vez de usar SSE. Se borraron `sse-mission-stream.ts` y `useMissionEventStream.ts` (sin uso).
 4. **D4:** un único estado de misión compartido con `CierreMensualPage`, con empresa y RUC reales y sin valores inventados.
+   - Hecho: `MissionWorkspace` pasa su misión a `CierreMensualPage` (ya no hay un segundo `useAccountingMission`). Nombre y RUC salen de `useActiveCompanyContext`. Se quitaron los conteos de evidencia inventados (428, 378…) y los checks "Verificado" fijos. SIRE, bancos e IGV quedan "PENDIENTE" hasta que la misión traiga evidencia. Firmas: solo la del contador, firmada cuando hay recibo de aprobación. El id del cierre es el de la misión del servidor.
 5. **D5 (crítico, DB/migración):** log de auditoría append-only para aprobar y rechazar, con el actor real.
 6. **D6 (crítico, libros/money/domain):** acción de cierre de periodo (`applyEntries`, `PeriodCloseService`, `POST` con permiso). Test-first y `sire-ledger-repro-check`.
 7. **D7:** rutas `/cierre-mensual`, `/evidence` y `/review-queue` (o quitarlas del menú), más un e2e del camino feliz.
