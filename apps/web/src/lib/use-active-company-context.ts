@@ -19,7 +19,7 @@ import {
 	setActiveFiscalPeriod,
 } from "./fiscal-period";
 
-interface ActiveFiscalSnapshot {
+export interface ActiveFiscalSnapshot {
 	companyContext: CompanyContext;
 	availableCompanies: CompanyContext[];
 	fiscalPeriod: string | null;
@@ -57,8 +57,11 @@ function buildSnapshot(): ActiveFiscalSnapshot {
 	};
 }
 
-/** Referentially stable between changes, as `useSyncExternalStore` requires. */
-function getSnapshot(): ActiveFiscalSnapshot {
+/**
+ * Referentially stable between changes, as `useSyncExternalStore` requires.
+ * Also read outside React, e.g. by route loaders.
+ */
+export function getActiveFiscalSnapshot(): ActiveFiscalSnapshot {
 	const key = `${readActiveCompanyRaw()}|${getStoredFiscalPeriod()}`;
 	if (!cache || cache.key !== key) {
 		cache = { key, snapshot: buildSnapshot() };
@@ -81,7 +84,11 @@ function subscribe(callback: () => void): () => void {
 }
 
 export function useActiveCompanyContext() {
-	const snapshot = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+	const snapshot = useSyncExternalStore(
+		subscribe,
+		getActiveFiscalSnapshot,
+		getActiveFiscalSnapshot,
+	);
 
 	return {
 		companyContext: snapshot.companyContext,

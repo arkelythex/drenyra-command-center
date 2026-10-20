@@ -1,6 +1,6 @@
 # Fase D: cierre mensual de punta a punta
 
-**Estado:** Working (D1–D5 mergeados: #309, #311, #313, #316, #318; D6 en curso). Autorizado por Dreamcoder ("te autorizo todo y avanza de forma autónoma", 2026-10-20).
+**Estado:** Working (D1–D6a mergeados: #309, #311, #313, #316, #318, #328; D7 en curso; publicar asientos espera decisión). Autorizado por Dreamcoder ("te autorizo todo y avanza de forma autónoma", 2026-10-20).
 
 ## Objetivo
 Que un contador vea en el workspace del periodo los bloqueos, la evidencia y la siguiente acción. Que apruebe o rechace las propuestas del agente, dejando rastro de auditoría. Que cierre el periodo sin envío a SUNAT (ver `web-mvp-gap.md`).
@@ -43,6 +43,8 @@ Que un contador vea en el workspace del periodo los bloqueos, la evidencia y la 
    - **D6a hecho:** puerto `MonthlyCloseMissionStore` (adaptador Drizzle, siempre por empresa y solo desde RUNNING), `computeEvidenceBundleHash` en `@drenyra/domain` para productor y verificador, ids de evidencia estables, aprobar exige evidencia no vacía, eventos no fatales y append con advisory lock. Probado de punta a punta contra Postgres (`monthly-close-pipeline.postgres.test.ts`): crear → ejecutar → AWAITING_APPROVAL → aprobar.
    - Pendiente: los bloqueos y el motivo de fallo solo quedan en el log de eventos (no hay columna). `applyEntries` sigue apagado.
 7. **D7:** rutas `/cierre-mensual`, `/evidence` y `/review-queue` (o quitarlas del menú), más un e2e del camino feliz.
+   - **D7 hecho:** `/cierre-mensual` redirige al workspace de la empresa y periodo activos (`intent=monthly-close`); `/` también. El menú y la paleta solo muestran pantallas que existen (`lib/available-nav-paths.ts`, con test contra el route tree); evidencia y aprobaciones viven dentro del workspace. Corregido: "Iniciar misión" enviaba `2026-3` y la API exige `YYYY-MM`.
+   - El camino feliz completo está cubierto contra Postgres en la API (`monthly-close-pipeline.postgres.test.ts`) y en el cliente con tests de hooks. El e2e en navegador queda para la fase A2.
 
 ## Fuera de alcance
 Envío a SUNAT, bloqueo irreversible del periodo, multi-país.

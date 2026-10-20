@@ -17,6 +17,7 @@ import {
 	Users,
 	Wrench,
 } from "lucide-react";
+import { isAvailableNavPath } from "@/lib/available-nav-paths";
 import type { AgenticNavItem, NavSectionConfig } from "./AgenticSidebar.types";
 
 /**
@@ -173,30 +174,39 @@ export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
 		section: "system",
 		label: "Configuración",
 		description: "Configuración del espacio de trabajo",
-		to: "/configuracion",
+		to: "/settings",
 		icon: Settings,
 	},
 ];
 
-export const AGENTIC_SECTIONS: NavSectionConfig[] = [
+const AVAILABLE_NAV_ITEMS = AGENTIC_NAV_ITEMS.filter((item) =>
+	isAvailableNavPath(item.to),
+);
+
+const ALL_SECTIONS: NavSectionConfig[] = [
 	{
 		title: "CENTRO DE OPERACIONES",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "command-center"),
+		items: AVAILABLE_NAV_ITEMS.filter((i) => i.section === "command-center"),
 	},
 	{
 		title: "OPERACIONES",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "operaciones"),
+		items: AVAILABLE_NAV_ITEMS.filter((i) => i.section === "operaciones"),
 	},
 	{
 		title: "FISCAL Y CUMPLIMIENTO",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "fiscal-compliance"),
+		items: AVAILABLE_NAV_ITEMS.filter((i) => i.section === "fiscal-compliance"),
 	},
 	{
 		title: "REPORTES",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "reportes"),
+		items: AVAILABLE_NAV_ITEMS.filter((i) => i.section === "reportes"),
 	},
 	{
 		title: "SISTEMA",
-		items: AGENTIC_NAV_ITEMS.filter((i) => i.section === "system"),
+		items: AVAILABLE_NAV_ITEMS.filter((i) => i.section === "system"),
 	},
 ];
+
+/** Sections as shown: only entries with a screen, and no empty section. */
+export const AGENTIC_SECTIONS: NavSectionConfig[] = ALL_SECTIONS.filter(
+	(section) => section.items.length > 0,
+);

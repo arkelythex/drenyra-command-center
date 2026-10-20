@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mockNavigate = vi.fn();
 const mockSetMobileOpen = vi.fn();
-let mockPathname = "/inbox";
+let mockPathname = "/cierre-mensual";
 
 vi.mock("@tanstack/react-router", () => ({
 	useNavigate: () => mockNavigate,
@@ -37,52 +37,52 @@ import { AgenticSidebarNavItems } from "../components/AgenticSidebarNavItems.tsx
 describe("AgenticSidebarNavItems — L3 Spanish-first navigation", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
-		mockPathname = "/inbox";
+		mockPathname = "/cierre-mensual";
 	});
 
-	it("renders Spanish section headers", () => {
+	it("renders Spanish section headers, only for sections with screens", () => {
 		render(<AgenticSidebarNavItems isCollapsed={false} />);
 
 		expect(screen.getByText("CENTRO DE OPERACIONES")).toBeInTheDocument();
 		expect(screen.getByText("OPERACIONES")).toBeInTheDocument();
 		expect(screen.getByText("FISCAL Y CUMPLIMIENTO")).toBeInTheDocument();
-		expect(screen.getByText("REPORTES")).toBeInTheDocument();
 		expect(screen.getByText("SISTEMA")).toBeInTheDocument();
+		expect(screen.queryByText("REPORTES")).toBeNull();
 	});
 
-	it("shows Spanish nav labels instead of English", () => {
+	it("shows Spanish labels for the screens that exist, and hides the rest", () => {
 		render(<AgenticSidebarNavItems isCollapsed={false} />);
 
-		expect(screen.getByText("Bandeja")).toBeInTheDocument();
-		expect(screen.getByText("Empresas")).toBeInTheDocument();
-		expect(screen.getByText("Evidencia")).toBeInTheDocument();
-		expect(screen.getByText("Cola de revisión")).toBeInTheDocument();
-		expect(screen.getByText("Bancos")).toBeInTheDocument();
+		expect(screen.getByText("Misiones")).toBeInTheDocument();
 		expect(screen.getByText("Conciliaciones")).toBeInTheDocument();
 		expect(screen.getByText("Comprobantes")).toBeInTheDocument();
-		expect(screen.getByText("Libro Mayor")).toBeInTheDocument();
-		expect(screen.getByText("Impuestos")).toBeInTheDocument();
 		expect(screen.getByText("SIRE / SUNAT")).toBeInTheDocument();
-		expect(screen.getByText("Cumplimiento")).toBeInTheDocument();
-		expect(screen.getByText("Estados Financieros")).toBeInTheDocument();
-		expect(screen.getByText("Reportes")).toBeInTheDocument();
-		expect(screen.getByText("Auditoría")).toBeInTheDocument();
-		expect(screen.getByText("Herramientas")).toBeInTheDocument();
 		expect(screen.getByText("Configuración")).toBeInTheDocument();
+		for (const hidden of [
+			"Bandeja",
+			"Evidencia",
+			"Cola de revisión",
+			"Bancos",
+			"Libro Mayor",
+		]) {
+			expect(screen.queryByText(hidden)).toBeNull();
+		}
 	});
 
-	it("has actionable Spanish buttons", () => {
+	it("starts a monthly close from the primary button", () => {
 		render(<AgenticSidebarNavItems isCollapsed={false} />);
 
-		expect(screen.getByText("Nueva revisión fiscal")).toBeInTheDocument();
-		expect(screen.getByText("Buscar en Drenyra")).toBeInTheDocument();
+		screen.getByText("Nuevo cierre mensual").click();
+
+		expect(mockNavigate).toHaveBeenCalledWith({ to: "/cierre-mensual" });
+		expect(screen.queryByText("Buscar en Drenyra")).toBeNull();
 	});
 
 	it("reflects active navigation state with a non-color-only indicator", () => {
-		mockPathname = "/inbox";
+		mockPathname = "/cierre-mensual";
 		render(<AgenticSidebarNavItems isCollapsed={false} />);
 
-		const activeButton = screen.getByText("Bandeja").closest("button");
+		const activeButton = screen.getByText("Misiones").closest("button");
 		expect(activeButton?.className).toContain("border-[var(--color-primary)]");
 	});
 });

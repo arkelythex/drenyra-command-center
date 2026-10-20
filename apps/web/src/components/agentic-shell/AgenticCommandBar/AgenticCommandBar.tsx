@@ -1,6 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { ArrowUp, Loader2 } from "lucide-react";
 import { type FormEvent, useRef, useState } from "react";
+import { closeWorkspaceParams } from "@/lib/close-workspace";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 
 /**
@@ -22,12 +23,7 @@ export function AgenticCommandBar() {
 		try {
 			await navigate({
 				to: "/workspace/$companyId/$year/$month/$intent",
-				params: {
-					companyId: companyContext.companyId,
-					year: "2026",
-					month: "3",
-					intent: "close",
-				},
+				params: closeWorkspaceParams(companyContext.companyId, fiscalPeriod),
 			});
 		} finally {
 			setIsSubmitting(false);

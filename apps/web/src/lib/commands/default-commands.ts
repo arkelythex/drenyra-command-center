@@ -1,5 +1,6 @@
 import type { NavigateOptions } from "@tanstack/react-router";
-import { commandRegistry, type Command } from "./command-registry";
+import { isAvailableNavPath } from "../available-nav-paths";
+import { type Command, commandRegistry } from "./command-registry";
 
 /**
  * Register default navigation and action commands.
@@ -8,7 +9,7 @@ import { commandRegistry, type Command } from "./command-registry";
 export function registerDefaultCommands(
 	navigate: (opts: NavigateOptions) => void,
 ): void {
-	const navCommands: Command[] = [
+	const navCommands: Array<Command & { to: string }> = [
 		{
 			id: "nav-inbox",
 			label: "Bandeja de atención",
@@ -16,6 +17,7 @@ export function registerDefaultCommands(
 			category: "navigation",
 			icon: "Inbox",
 			shortcut: "⌘1",
+			to: "/inbox",
 			execute: () => navigate({ to: "/inbox" }),
 			keywords: ["tareas", "pendientes", "bandeja", "alertas"],
 		},
@@ -26,6 +28,7 @@ export function registerDefaultCommands(
 			category: "navigation",
 			icon: "CalendarCheck",
 			shortcut: "⌘2",
+			to: "/cierre-mensual",
 			execute: () => navigate({ to: "/cierre-mensual" }),
 			keywords: ["cierre", "mensual", "periodo", "contable"],
 		},
@@ -35,6 +38,7 @@ export function registerDefaultCommands(
 			description: "Cuentas bancarias, movimientos y saldos",
 			category: "navigation",
 			icon: "Landmark",
+			to: "/banking",
 			execute: () => navigate({ to: "/banking" }),
 			keywords: ["bancos", "tesoreria", "cuentas", "saldos"],
 		},
@@ -44,6 +48,7 @@ export function registerDefaultCommands(
 			description: "Facturas, notas de crédito y débito",
 			category: "navigation",
 			icon: "Receipt",
+			to: "/invoices",
 			execute: () => navigate({ to: "/invoices" }),
 			keywords: ["facturas", "comprobantes", "cobros"],
 		},
@@ -53,6 +58,7 @@ export function registerDefaultCommands(
 			description: "Asientos y saldos por cuenta contable",
 			category: "navigation",
 			icon: "Layers",
+			to: "/contabilidad/ledger",
 			execute: () => navigate({ to: "/contabilidad/ledger" }),
 			keywords: ["mayor", "asientos", "contabilidad", "cuentas"],
 		},
@@ -62,6 +68,7 @@ export function registerDefaultCommands(
 			description: "Registros electrónicos SUNAT y reconciliación SIRE",
 			category: "navigation",
 			icon: "FileCheck",
+			to: "/cumplimiento/expedientes",
 			execute: () => navigate({ to: "/cumplimiento/expedientes" }),
 			keywords: ["sire", "sunat", "rce", "rvie", "electronico"],
 		},
@@ -72,6 +79,7 @@ export function registerDefaultCommands(
 			category: "navigation",
 			icon: "Search",
 			shortcut: "⌘3",
+			to: "/review-queue",
 			execute: () => navigate({ to: "/review-queue" }),
 			keywords: ["revision", "aprobacion", "cola", "pendientes"],
 		},
@@ -81,6 +89,7 @@ export function registerDefaultCommands(
 			description: "Documentos, evidencias y recepciones",
 			category: "navigation",
 			icon: "FileSearch",
+			to: "/evidence",
 			execute: () => navigate({ to: "/evidence" }),
 			keywords: ["evidencia", "documentos", "boveda", "receipts"],
 		},
@@ -90,6 +99,7 @@ export function registerDefaultCommands(
 			description: "Balance general, resultados y reportes",
 			category: "navigation",
 			icon: "BarChart3",
+			to: "/financials",
 			execute: () => navigate({ to: "/financials" }),
 			keywords: ["estados", "financieros", "balance", "resultados"],
 		},
@@ -99,6 +109,7 @@ export function registerDefaultCommands(
 			description: "Validaciones fiscales y riesgos SUNAT",
 			category: "navigation",
 			icon: "ShieldCheck",
+			to: "/compliance",
 			execute: () => navigate({ to: "/compliance" }),
 			keywords: ["cumplimiento", "fiscal", "riesgos", "sunat"],
 		},
@@ -108,6 +119,7 @@ export function registerDefaultCommands(
 			description: "Gestión de empresas y alcance por RUC",
 			category: "navigation",
 			icon: "Building2",
+			to: "/firm/clients",
 			execute: () => navigate({ to: "/firm/clients" }),
 			keywords: ["empresas", "clientes", "ruc", "firma"],
 		},
@@ -118,7 +130,8 @@ export function registerDefaultCommands(
 			category: "navigation",
 			icon: "Settings",
 			shortcut: "⌘,",
-			execute: () => navigate({ to: "/configuracion" }),
+			to: "/settings",
+			execute: () => navigate({ to: "/settings" }),
 			keywords: ["configuracion", "ajustes", "preferencias"],
 		},
 	];
@@ -177,5 +190,8 @@ export function registerDefaultCommands(
 		},
 	];
 
-	commandRegistry.registerMany([...navCommands, ...actionCommands]);
+	commandRegistry.registerMany([
+		...navCommands.filter((command) => isAvailableNavPath(command.to)),
+		...actionCommands,
+	]);
 }

@@ -1,6 +1,10 @@
 import { useParams } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 import { WorkspaceTopBar } from "@/components/workbench/WorkspaceTopBar";
+import {
+	fiscalPeriodFromParams,
+	MONTHLY_CLOSE_INTENT,
+} from "@/lib/close-workspace";
 import { useAccountingMission } from "../hooks/useAccountingMission";
 import { MissionActions, MissionHeader, MissionStateView } from "./mission";
 
@@ -16,14 +20,18 @@ export function MissionWorkspace() {
 	});
 	const mission = useAccountingMission();
 
+	// The API only accepts YYYY-MM; a URL that names no real month starts nothing.
+	const fiscalPeriod = fiscalPeriodFromParams(params.year, params.month);
+
 	const handleStartMission = () => {
+		if (!fiscalPeriod) return;
 		// The API creates the mission for the session's company and returns its
 		// id and version; nothing here is invented client-side.
 		mission.run({
-			fiscalPeriod: `${params.year}-${params.month}`,
-			intent: "monthly-close",
-			input: { instruction: `Cierre mensual ${params.month}/${params.year}` },
-			idempotencyKey: `${params.companyId}-${params.year}-${params.month}`,
+			fiscalPeriod,
+			intent: MONTHLY_CLOSE_INTENT,
+			input: { instruction: `Cierre mensual ${fiscalPeriod}` },
+			idempotencyKey: `${params.companyId}-${fiscalPeriod}`,
 		});
 	};
 
