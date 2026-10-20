@@ -9,6 +9,9 @@
 import "./integration-mocks";
 
 import { randomUUID } from "node:crypto";
+import { db } from "@drenyra/persistence/client";
+import { asc, eq } from "@drenyra/persistence/query";
+import { bankAccounts, bankTransactions } from "@drenyra/persistence/schema";
 import { Elysia } from "elysia";
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { bankingRoutes } from "../../api/banking.routes";
@@ -365,38 +368,105 @@ describeBankingIntegration("Banking Handlers (E2E)", () => {
 	});
 
 	describe("POST /api/banking/import", () => {
-		it("imports multiple transactions", async () => {
-			const ctx = getCtx();
-			const account = await createTestAccount(ctx);
-
-			const response = await app.handle(
+		async function importStatement(
+			accountId: string,
+			transactions: Array<Record<string, unknown>>,
+		) {
+			return app.handle(
 				new Request("http://localhost/api/banking/import", {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
-						companyId: ctx.companyId,
-						accountId: account.id,
-						transactions: [
-							{
-								date: "2026-01-10",
-								description: "Import 1",
-								amount: 500,
-								type: "CREDIT",
-							},
-							{
-								date: "2026-01-11",
-								description: "Import 2",
-								amount: 300,
-								type: "DEBIT",
-							},
-						],
+						companyId: getCtx().companyId,
+						accountId,
+						transactions,
 					}),
 				}),
 			);
+		}
+
+		const statement = [
+			{
+				date: "2026-01-10",
+				description: "COMISION MANTENIMIENTO",
+				amountCents: 1500,
+				type: "DEBIT",
+			},
+			{
+				date: "2026-01-11",
+				description: "ABONO F001-123",
+				reference: "F001-123",
+				amountCents: 118010,
+				type: "CREDIT",
+			},
+		];
+
+		async function storedFor(accountId: string) {
+			const rows = await db
+				.select({
+					amount: bankTransactions.amount,
+					balance: bankTransactions.balance,
+				})
+				.from(bankTransactions)
+				.where(eq(bankTransactions.accountId, accountId))
+				.orderBy(asc(bankTransactions.transactionDate));
+			const [account] = await db
+				.select({ currentBalance: bankAccounts.currentBalance })
+				.from(bankAccounts)
+				.where(eq(bankAccounts.id, accountId));
+			return { rows, balance: account?.currentBalance };
+		}
+
+		it("imports a statement in cents, even when it starts with a fee", async () => {
+			const account = await createTestAccount(getCtx(), {
+				currentBalance: "0.0000",
+			});
+
+			const response = await importStatement(account.id, statement);
 
 			expect(response.status).toBe(200);
-			const result = await expectSuccessData<Record<string, unknown>>(response);
-			expect(result.imported).toBeGreaterThanOrEqual(2);
+			expect(await expectSuccessData(response)).toMatchObject({
+				imported: 2,
+				skipped: 0,
+			});
+			const stored = await storedFor(account.id);
+			expect(stored.rows).toEqual([
+				{ amount: "15.0000", balance: "-15.0000" },
+				{ amount: "1180.1000", balance: "1165.1000" },
+			]);
+			expect(stored.balance).toBe("1165.1000");
+		});
+
+		it("adds nothing when the same statement is imported again", async () => {
+			const account = await createTestAccount(getCtx(), {
+				currentBalance: "0.0000",
+			});
+			await importStatement(account.id, statement);
+
+			const again = await importStatement(account.id, statement);
+
+			expect(await expectSuccessData(again)).toMatchObject({
+				imported: 0,
+				skipped: 2,
+			});
+			expect((await storedFor(account.id)).rows).toHaveLength(2);
+		});
+
+		it("refuses amounts that are not whole cents", async () => {
+			const account = await createTestAccount(getCtx());
+
+			const response = await importStatement(account.id, [
+				{ ...statement[0], amountCents: 1000.5 },
+			]);
+
+			expect(response.status).toBe(422);
+			expect((await storedFor(account.id)).rows).toHaveLength(0);
+		});
+
+		it("answers 404 for an account of another company", async () => {
+			const response = await importStatement(randomUUID(), statement);
+
+			expect(response.status).toBe(404);
 		});
 	});
 });

@@ -10,6 +10,12 @@ import {
 	withCompanyRlsTransaction,
 	withTenantRlsTransaction,
 } from "../../security/rls-db-context";
+import {
+	centsToDecimal,
+	decimalToCents,
+	planStatementImport,
+	type StatementRow,
+} from "../application/statement-import";
 import type { IBankingRepository } from "../domain/ports/banking-repository.port";
 
 /**
@@ -354,6 +360,106 @@ export class BankingRepository implements IBankingRepository {
 		});
 
 		return transaction?.companyId ?? null;
+	}
+
+	/**
+	 * Import a bank statement into an account of this company, all or nothing.
+	 * The account row is locked so concurrent imports keep a consistent
+	 * running balance. Returns null when the account is not this company's.
+	 */
+	async importStatement(
+		companyId: string,
+		accountId: string,
+		statement: readonly StatementRow[],
+		source: "CSV" | "BANK_API" | "MT940",
+	): Promise<{ imported: number; skipped: number } | null> {
+		return await withCompanyRlsTransaction(companyId, async (tx) => {
+			const [account] = await tx
+				.select({ currentBalance: bankAccounts.currentBalance })
+				.from(bankAccounts)
+				.where(
+					and(
+						eq(bankAccounts.id, accountId),
+						eq(bankAccounts.companyId, companyId),
+					),
+				)
+				.for("update");
+			if (!account) return null;
+			if (statement.length === 0) return { imported: 0, skipped: 0 };
+
+			const dates = statement.map((row) => row.date).sort();
+			const storedRows = await tx
+				.select({
+					date: bankTransactions.transactionDate,
+					description: bankTransactions.description,
+					reference: bankTransactions.reference,
+					type: bankTransactions.type,
+					amount: bankTransactions.amount,
+				})
+				.from(bankTransactions)
+				.where(
+					and(
+						eq(bankTransactions.accountId, accountId),
+						eq(bankTransactions.companyId, companyId),
+						gte(bankTransactions.transactionDate, dates[0] ?? ""),
+						lte(bankTransactions.transactionDate, dates.at(-1) ?? ""),
+					),
+				);
+			const stored = storedRows.flatMap((row): StatementRow[] => {
+				try {
+					return [
+						{
+							date: String(row.date),
+							description: row.description,
+							reference: row.reference,
+							type: row.type === "DEBIT" ? "DEBIT" : "CREDIT",
+							amountCents: Math.abs(decimalToCents(String(row.amount))),
+						},
+					];
+				} catch {
+					// A legacy row with a sub-cent amount matches no statement row.
+					return [];
+				}
+			});
+
+			const plan = planStatementImport(
+				decimalToCents(String(account.currentBalance ?? "0")),
+				stored,
+				statement,
+			);
+
+			if (plan.rows.length > 0) {
+				await tx.insert(bankTransactions).values(
+					plan.rows.map((row) => ({
+						companyId,
+						accountId,
+						transactionDate: row.date,
+						description: row.description,
+						reference: row.reference ?? null,
+						type: row.type,
+						amount: centsToDecimal(row.amountCents),
+						balance: centsToDecimal(row.balanceCents),
+						isReconciled: false,
+						importedFrom: source,
+						source: "CSV_IMPORT",
+					})),
+				);
+				await tx
+					.update(bankAccounts)
+					.set({
+						currentBalance: centsToDecimal(plan.closingBalanceCents),
+						updatedAt: new Date(),
+					})
+					.where(
+						and(
+							eq(bankAccounts.id, accountId),
+							eq(bankAccounts.companyId, companyId),
+						),
+					);
+			}
+
+			return { imported: plan.rows.length, skipped: plan.skipped };
+		});
 	}
 }
 
