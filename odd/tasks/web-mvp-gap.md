@@ -41,7 +41,7 @@ Fiscal/libros/domain = crítico (CLAUDE.md): test-first, review alto, `scripts/s
 ## Estado
 - [x] Evaluación inicial (esta nota)
 - [x] A1. Medición automática (2026-10-19, `main` en 0fc4525): `bun install` ok; `vite build` de `apps/web` **pasa**; `vitest run` en `apps/web`: **18 de 75 archivos fallan (21 tests de 551)**.
-- [ ] A2. Levantar API + Postgres y correr e2e de Playwright (necesita base de datos; pendiente)
+- [x] A2. Recorrido real con Chromium sobre `vite build`+`preview`, API y Postgres (2026-10-20, ver «Resultado de A2»)
 
 ## Resultado de A1: causas de los fallos de `vitest` (web)
 | Causa | Archivos | Lectura |
@@ -110,3 +110,29 @@ Ahora existe `rejectForeignCompanyId` en `shared/plugins/company-scope-guard.ts`
 - Rutas nuevas: `/cumplimiento/expedientes` (conciliación SIRE, #300) e `/invoices` (comprobantes, #303). `invoicingList` leía `invoices` del sobre `ok()` y el tablero quedaba siempre vacío.
 - Hallazgo fiscal (#306): la vista previa de factura sumaba IGV encima del precio, pero el API guarda el precio con IGV incluido. La web ahora usa la misma regla del API, en céntimos (`features/invoices/lib/invoice-totals.ts`). Pendiente: la web usa la tasa estática `getActiveTaxRate("pe","IGV")` y el API la tasa por fecha de emisión.
 - Siguen sin ruta: `/inbox`, `/cierre-mensual`, `/firm/clients`, `/evidence`, `/review-queue`, `/banking`, `/contabilidad/ledger`, `/taxation`, `/compliance`, `/financials`, `/reports`, `/audit`, `/tools`, `/configuracion` (ver fase D).
+
+## Resultado de A2 (2026-10-20, `main` en 684d452)
+Un contador nuevo **no** completaba el flujo. Con los tres primeros bloqueos sorteados, lo demás funciona en pantalla (crear y emitir factura, importar extracto, ver sugerencia, conciliar, aprobar/rechazar el cierre).
+
+| Paso | Resultado |
+|------|-----------|
+| Registro | Fallaba: 422 siempre. `additionalFields` de Better Auth en snake_case (`mfa_method`, `totp_secret`, `recovery_codes`) no existen en el schema. **Corregido** en el PR de A3a. |
+| Login | Funciona |
+| Onboarding (org/empresa con RUC) | No existe: la UI es un mock (`useOnboarding.ts` usa acceso demo y navega a `/dashboard`, que da Not Found); la API no tiene alta de organización/empresa. |
+| Cierre mensual: iniciar | Fallaba: la sesión no traía rol (500). **Corregido** en A3a. Sin `MONTHLY_CLOSE_PIPELINE_ENABLED=true` la misión queda en `RUNNING` para siempre; la segunda misión del mismo periodo da 500 (índice único) y la UI no retoma una existente. |
+| Cierre: aprobar/rechazar | Funciona. La propuesta trae asientos fijos de prueba (decisión: publicación apagada en el MVP); rechazar no pide motivo. |
+| Conciliación | Fallaba: 500/403 por la sesión sin rol. **Corregido** en A3a. Con eso: importar, sugerir y confirmar funcionan. |
+| Facturas | Cargan y se crean; no hay UI para crear clientes; emitir solo arrastrando (el menú «…» no abre). |
+| e2e existentes | Obsoletos: rutas que ya no existen e imports a módulos ausentes (`apps/web/e2e`: 17 de 21 fallan; `e2e/`: 19 de 20). |
+| Base de datos | `drizzle-kit migrate` roto (journal cita migraciones inexistentes, llega a 0018 de 39); `push` choca con un FK mal tipado (`evidence.organization_id` uuid → `organizations.id` integer) y necesita pgvector. |
+
+### A3a (corregido)
+- La sesión toma el rol de la membresía en la empresa activa (`session-company-context.ts`), nunca uno que el usuario declare.
+- `companyScopeGuard` responde 401/403 con su sobre de error en vez de lanzar (que terminaba en 500).
+- Registro: se quitan los campos MFA de `additionalFields` (además, Better Auth los devolvía en la sesión, incluido el secreto TOTP).
+
+### Siguiente (en orden)
+1. Onboarding real: alta de empresa con RUC ligada al usuario de Better Auth.
+2. Misión de cierre: 409/retomar la existente y no quedar en `RUNNING` sin pipeline.
+3. Migraciones reproducibles (journal y FK de `evidence`).
+4. Reescribir los e2e del camino feliz sobre las rutas actuales.

@@ -95,7 +95,7 @@ export function companyScopeGuard(options: CompanyScopeGuardOptions = {}) {
 	const { allowHeaderFallback = false } = options;
 
 	return (app: Elysia) =>
-		app.derive(async ({ headers, set }) => {
+		app.derive(async ({ headers, status }) => {
 			/**
 			 * During Phase 3 migration (allowHeaderFallback: true), do not
 			 * require a full session — the guard will first attempt session
@@ -131,8 +131,12 @@ export function companyScopeGuard(options: CompanyScopeGuardOptions = {}) {
 						return { companyContext: undefined as unknown as CompanyContext };
 					}
 
-					set.status = result.status;
-					throw new Error(result.error);
+					// Answer with the guard's status here; a thrown error would
+					// reach the app's error handler and become a 500.
+					return status(
+						result.status as 401 | 403,
+						fail(result.error, result.code),
+					);
 				}
 
 				return {

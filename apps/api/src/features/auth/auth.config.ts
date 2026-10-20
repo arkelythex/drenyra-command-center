@@ -5,14 +5,14 @@ import {
 	authUsers,
 	authVerifications,
 } from "@drenyra/persistence/schema";
+import { mfaPlugin } from "@drenyra/security";
 import { type BetterAuthOptions, betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { customSession } from "better-auth/plugins/custom-session";
-import { mfaPlugin } from "@drenyra/security";
 import { enrichSessionUserWithCompanyContext } from "./handlers/session-company-context";
+import { resolveTrustedOriginsFromEnv } from "./lib/auth-trusted-origins";
 import { oauthAuditHooks } from "./lib/oauth-audit-hooks";
 import { resolveSocialProvidersFromEnv } from "./lib/resolve-social-providers";
-import { resolveTrustedOriginsFromEnv } from "./lib/auth-trusted-origins";
 
 /**
  * BetterAuth Configuration
@@ -45,7 +45,7 @@ import { resolveTrustedOriginsFromEnv } from "./lib/auth-trusted-origins";
  * @module auth/config
  * @constant
  */
-const authOptions = {
+export const authOptions = {
 	secret: process.env.BETTER_AUTH_SECRET,
 	database: drizzleAdapter(db, {
 		provider: "pg",
@@ -67,25 +67,12 @@ const authOptions = {
 	),
 	user: {
 		additionalFields: {
+			// MFA columns are read and written by mfa/mfa-db-adapter.ts, not
+			// declared here: Better Auth returns declared fields in the session.
 			ruc: {
 				type: "string",
 				required: false,
 				defaultValue: "",
-			},
-			mfa_method: {
-				type: "string",
-				required: false,
-				defaultValue: "",
-			},
-			totp_secret: {
-				type: "string",
-				required: false,
-				defaultValue: "",
-			},
-			recovery_codes: {
-				type: "string",
-				required: false,
-				defaultValue: "[]",
 			},
 		},
 	},
