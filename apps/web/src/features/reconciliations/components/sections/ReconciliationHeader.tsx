@@ -46,9 +46,6 @@ export const ReconciliationHeader: React.FC<ReconciliationHeaderProps> = ({
 							<span className="h-1.5 w-1.5 rounded-full bg-primary" />
 							Revisión asistida
 						</span>
-						<span className="hidden xs:inline text-label font-medium tracking-wide text-muted-foreground">
-							Corte 09:15
-						</span>
 					</div>
 				</div>
 			</div>

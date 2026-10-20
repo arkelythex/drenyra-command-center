@@ -66,8 +66,14 @@ function centsToSoles(cents: number): number {
 
 /** The API sends integer cents; `SireRecord` (like the SUNAT parser) holds soles. */
 function fromApiCents(record: SireRecord): SireRecord {
+	// Eden Treaty turns ISO date strings into `Date`; keep `SireRecord` on strings.
+	const fecha: unknown = record.fechaEmision;
 	return {
 		...record,
+		fechaEmision:
+			fecha instanceof Date
+				? fecha.toISOString().slice(0, 10)
+				: record.fechaEmision,
 		baseImponible: centsToSoles(record.baseImponible),
 		igv: centsToSoles(record.igv),
 		total: centsToSoles(record.total),

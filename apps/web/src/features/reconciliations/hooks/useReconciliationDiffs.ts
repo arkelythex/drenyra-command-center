@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { extractOkData } from "@/lib/api-helpers";
 import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import { bankAmountCents } from "../services/bank-reconciliation";
 
 export interface ReconciliationDiffEntry {
 	id: string;
@@ -37,7 +38,9 @@ export function useReconciliationDiffs() {
 			return pending.map((tx, index) => ({
 				id: tx.id,
 				bankMovement: `${tx.description ?? "Movimiento bancario"} · ${tx.transactionDate ?? "—"} · ${tx.reference ?? ""}`,
-				amount: tx.amount ? Number.parseFloat(tx.amount) : 0,
+				amount: tx.amount
+					? Math.abs(bankAmountCents(tx.amount, "CREDIT")) / 100
+					: 0,
 				proposedMatch: `Transacción ${tx.reference ?? tx.id} · Pendiente de conciliar`,
 				confidence: (index === 0 ? 3 : 2) as 1 | 2 | 3,
 				evidence: tx.reference

@@ -1,12 +1,10 @@
-import { ChevronDown, Landmark } from "lucide-react";
+import { Landmark } from "lucide-react";
+import { toast } from "sonner";
 import { useFinancialHaptics, useHaptics } from "@/hooks/useHaptics";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
 import { useReconciliationWorkspace } from "../hooks/use-reconciliation-workspace";
-import { RECONCILIATION_LEDGER_ENTRIES } from "../reconciliation.data";
-import {
-	formatReconciliationMoney,
-	getReconciliationSummary,
-} from "../reconciliation.utils";
+import type { ReconciliationLedgerEntry } from "../reconciliation.types";
+import { formatReconciliationMoney } from "../reconciliation.utils";
 import { ReconciliationEvidenceRail } from "./sections/ReconciliationEvidenceRail";
 import { ReconciliationExecutiveSummary } from "./sections/ReconciliationExecutiveSummary";
 // Sections
@@ -24,13 +22,40 @@ export const ReconciliationView = () => {
 		setSelectedCandidateId,
 		setSelectedTransactionId,
 		transactions,
+		summary,
+		isLoading,
+		error,
+		hasCompany,
+		confirmCandidate,
 	} = useReconciliationWorkspace();
 	const {
 		reconciledRate,
 		requiresHumanDecision,
 		unresolvedCount,
-		unresolvedExposure,
-	} = getReconciliationSummary();
+		unresolvedExposureCents,
+	} = summary;
+	const ledgerEntries: ReconciliationLedgerEntry[] = (
+		activeTransaction?.candidates ?? []
+	).map((candidate) => ({
+		id: candidate.id,
+		date: activeTransaction?.date ?? "",
+		vendor: candidate.vendor,
+		amount: candidate.amount,
+		reference: candidate.ledgerEntryId,
+	}));
+
+	const approve = async () => {
+		if (!activeCandidate) return;
+		try {
+			await confirmCandidate(activeCandidate);
+			financialHaptics.onSave();
+			toast.success(`Conciliado con ${activeCandidate.ledgerEntryId}.`);
+		} catch (cause) {
+			toast.error(
+				cause instanceof Error ? cause.message : "No se pudo conciliar.",
+			);
+		}
+	};
 
 	return (
 		<div className="flex flex-col h-full bg-background overflow-hidden font-sans text-foreground">
@@ -44,26 +69,21 @@ export const ReconciliationView = () => {
 					<span className="text-label font-black text-muted-foreground uppercase tracking-[0.2em]">
 						Cuenta activa
 					</span>
-					<button
-						type="button"
-						onClick={() => trigger("light")}
-						className="flex items-center gap-2 rounded-lg border border-border/60 bg-background px-3 py-1.5 text-sm font-black text-foreground shadow-sm transition-colors hover:border-info-subtle hover:text-info hover:shadow-md"
-					>
-						<Landmark size={14} className="text-info" /> BCP SOLES{" "}
-						<ChevronDown size={14} className="opacity-50" />
-					</button>
+					<span className="flex items-center gap-2 rounded-lg border border-border/60 bg-background px-3 py-1.5 text-sm font-black text-foreground shadow-sm">
+						<Landmark size={14} className="text-info" /> Todas las cuentas
+					</span>
 				</div>
 				<div className="flex items-center gap-6 border-l border-border/60 pl-6 h-8">
 					<div className="flex items-center gap-2">
 						<div className="ui-dot-success h-2 w-2 rounded-full" />
 						<span className="text-label font-black uppercase tracking-widest text-success">
-							98% conciliado
+							{reconciledRate}% conciliado
 						</span>
 					</div>
 					<div className="flex items-center gap-2 opacity-60">
 						<div className="ui-dot-warning h-2 w-2 rounded-full" />
 						<span className="text-label font-black uppercase tracking-widest text-foreground">
-							2 pendientes
+							{unresolvedCount} pendientes
 						</span>
 					</div>
 				</div>
@@ -71,7 +91,9 @@ export const ReconciliationView = () => {
 
 			<ReconciliationExecutiveSummary
 				unmatchedCount={unresolvedCount}
-				unmatchedExposure={formatReconciliationMoney(unresolvedExposure)}
+				unmatchedExposure={formatReconciliationMoney(
+					unresolvedExposureCents / 100,
+				)}
 				reconciledRate={reconciledRate}
 				decisionRequiresHuman={requiresHumanDecision}
 			/>
@@ -91,7 +113,7 @@ export const ReconciliationView = () => {
 						activeCandidate={activeCandidate}
 						activeTransaction={activeTransaction}
 						formatMoney={formatReconciliationMoney}
-						ledgerEntries={RECONCILIATION_LEDGER_ENTRIES}
+						ledgerEntries={ledgerEntries}
 						onSelectCandidate={(candidateId) => {
 							trigger("light");
 							setSelectedCandidateId(candidateId);
@@ -102,14 +124,39 @@ export const ReconciliationView = () => {
 						activeTransaction={activeTransaction}
 						onDecision={(decision) => {
 							if (decision === "approve") {
-								financialHaptics.onSave();
+								void approve();
 								return;
 							}
 							trigger("light");
 						}}
 					/>
 				</div>
-			) : null}
+			) : (
+				<ReconciliationEmptyState
+					message={
+						!hasCompany
+							? "Inicia sesión con una empresa para ver sus movimientos bancarios."
+							: isLoading
+								? "Cargando movimientos bancarios…"
+								: error
+									? `No se pudieron cargar los movimientos: ${error.message}`
+									: "No hay movimientos bancarios registrados para esta empresa."
+					}
+				/>
+			)}
 		</div>
 	);
 };
+
+function ReconciliationEmptyState({ message }: { message: string }) {
+	return (
+		<div className="flex flex-1 items-center justify-center p-10">
+			<p
+				role="status"
+				className="max-w-md text-center text-sm text-muted-foreground"
+			>
+				{message}
+			</p>
+		</div>
+	);
+}
