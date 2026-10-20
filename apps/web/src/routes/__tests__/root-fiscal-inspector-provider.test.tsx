@@ -10,13 +10,20 @@ vi.mock("@tanstack/react-router", () => ({
 	useLocation: () => ({ pathname: locationState.pathname }),
 }));
 
-vi.mock("@/components/agentic-shell/AgenticLayout/AgenticLayout", () => ({
-	AgenticLayout: ({ children }: { children?: ReactNode }) => (
-		<div data-testid="agentic-layout">
-			{children ?? <div data-testid="route-outlet" />}
-		</div>
-	),
-}));
+vi.mock("@/components/agentic-shell/AgenticLayout/AgenticLayout", async () => {
+	const { useWorkspace } = await import("@/contexts/workspace-context");
+	return {
+		AgenticLayout: ({ children }: { children?: ReactNode }) => {
+			// The workspace screens read this context; it must exist inside the shell.
+			useWorkspace();
+			return (
+				<div data-testid="agentic-layout">
+					{children ?? <div data-testid="route-outlet" />}
+				</div>
+			);
+		},
+	};
+});
 
 vi.mock("sonner", () => ({
 	Toaster: () => null,
