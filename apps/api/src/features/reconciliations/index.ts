@@ -1,5 +1,8 @@
 import { Elysia, t } from "elysia";
-import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
+import {
+	companyScopeGuard,
+	rejectForeignCompanyId,
+} from "../../shared/plugins/company-scope-guard";
 import { fail, getErrorMessage, ok } from "../shared/api-response";
 import { checkWorkerHealth } from "./application/commands/check-worker-health";
 import { externalReconcile } from "./application/commands/external-reconcile";
@@ -22,6 +25,7 @@ export const reconciliationsModule = new Elysia({
 	prefix: "/api/reconciliations",
 })
 	.use(companyScopeGuard())
+	.onBeforeHandle(rejectForeignCompanyId)
 	.get(
 		"/pending",
 		async ({ query, set }) => {

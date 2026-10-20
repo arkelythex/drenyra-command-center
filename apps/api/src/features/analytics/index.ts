@@ -1,5 +1,8 @@
 import { Elysia } from "elysia";
-import { companyScopeGuard } from "../../shared/plugins/company-scope-guard";
+import {
+	companyScopeGuard,
+	rejectForeignCompanyId,
+} from "../../shared/plugins/company-scope-guard";
 
 import {
 	AnalyticsQuerySchema,
@@ -84,6 +87,7 @@ export {
  */
 export const analyticsModule = new Elysia({ prefix: "/api/analytics" })
 	.use(companyScopeGuard())
+	.onBeforeHandle(rejectForeignCompanyId)
 	/**
 	 * GET /analytics/dashboard - Complete dashboard with all KPIs.
 	 *
