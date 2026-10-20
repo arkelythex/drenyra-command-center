@@ -94,7 +94,7 @@ export const InvoiceFiltersComponent: React.FC<InvoiceFiltersProps> = ({
 						<InvoiceAdvancedFilters
 							filters={localFilters}
 							setFilters={setLocalFilters}
-							customers={customers}
+							customers={customers ?? []}
 							onApply={handleApplyFilters}
 							onCancel={() => setShowFilters(false)}
 							onClear={handleClearAll}
@@ -108,7 +108,7 @@ export const InvoiceFiltersComponent: React.FC<InvoiceFiltersProps> = ({
 			{activeFiltersCount > 0 && (
 				<InvoiceActiveFilters
 					filters={localFilters}
-					customers={customers}
+					customers={customers ?? []}
 					onRemove={handleRemoveFilter}
 				/>
 			)}

@@ -13,6 +13,7 @@ import { Route as AuthRouteImport } from "./routes/auth";
 import { Route as CumplimientoExpedientesRouteImport } from "./routes/cumplimiento.expedientes";
 import { Route as ForgotPasswordRouteImport } from "./routes/forgot-password";
 import { Route as IndexRouteImport } from "./routes/index";
+import { Route as InvoicesRouteImport } from "./routes/invoices";
 import { Route as LoginRouteImport } from "./routes/login";
 import { Route as OnboardingRouteImport } from "./routes/onboarding";
 import { Route as ResetPasswordRouteImport } from "./routes/reset-password";
@@ -52,6 +53,11 @@ const LoginRoute = LoginRouteImport.update({
 	path: "/login",
 	getParentRoute: () => rootRouteImport,
 } as any);
+const InvoicesRoute = InvoicesRouteImport.update({
+	id: "/invoices",
+	path: "/invoices",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
 	id: "/forgot-password",
 	path: "/forgot-password",
@@ -89,6 +95,7 @@ export interface FileRoutesByFullPath {
 	"/": typeof IndexRoute;
 	"/auth": typeof AuthRoute;
 	"/forgot-password": typeof ForgotPasswordRoute;
+	"/invoices": typeof InvoicesRoute;
 	"/login": typeof LoginRoute;
 	"/onboarding": typeof OnboardingRoute;
 	"/reset-password": typeof ResetPasswordRoute;
@@ -103,6 +110,7 @@ export interface FileRoutesByTo {
 	"/": typeof IndexRoute;
 	"/auth": typeof AuthRoute;
 	"/forgot-password": typeof ForgotPasswordRoute;
+	"/invoices": typeof InvoicesRoute;
 	"/login": typeof LoginRoute;
 	"/onboarding": typeof OnboardingRoute;
 	"/reset-password": typeof ResetPasswordRoute;
@@ -118,6 +126,7 @@ export interface FileRoutesById {
 	"/": typeof IndexRoute;
 	"/auth": typeof AuthRoute;
 	"/forgot-password": typeof ForgotPasswordRoute;
+	"/invoices": typeof InvoicesRoute;
 	"/login": typeof LoginRoute;
 	"/onboarding": typeof OnboardingRoute;
 	"/reset-password": typeof ResetPasswordRoute;
@@ -134,6 +143,7 @@ export interface FileRouteTypes {
 		| "/"
 		| "/auth"
 		| "/forgot-password"
+		| "/invoices"
 		| "/login"
 		| "/onboarding"
 		| "/reset-password"
@@ -148,6 +158,7 @@ export interface FileRouteTypes {
 		| "/"
 		| "/auth"
 		| "/forgot-password"
+		| "/invoices"
 		| "/login"
 		| "/onboarding"
 		| "/reset-password"
@@ -162,6 +173,7 @@ export interface FileRouteTypes {
 		| "/"
 		| "/auth"
 		| "/forgot-password"
+		| "/invoices"
 		| "/login"
 		| "/onboarding"
 		| "/reset-password"
@@ -177,6 +189,7 @@ export interface RootRouteChildren {
 	IndexRoute: typeof IndexRoute;
 	AuthRoute: typeof AuthRoute;
 	ForgotPasswordRoute: typeof ForgotPasswordRoute;
+	InvoicesRoute: typeof InvoicesRoute;
 	LoginRoute: typeof LoginRoute;
 	OnboardingRoute: typeof OnboardingRoute;
 	ResetPasswordRoute: typeof ResetPasswordRoute;
@@ -232,6 +245,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof LoginRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		"/invoices": {
+			id: "/invoices";
+			path: "/invoices";
+			fullPath: "/invoices";
+			preLoaderRoute: typeof InvoicesRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
 		"/forgot-password": {
 			id: "/forgot-password";
 			path: "/forgot-password";
@@ -281,6 +301,7 @@ const rootRouteChildren: RootRouteChildren = {
 	IndexRoute: IndexRoute,
 	AuthRoute: AuthRoute,
 	ForgotPasswordRoute: ForgotPasswordRoute,
+	InvoicesRoute: InvoicesRoute,
 	LoginRoute: LoginRoute,
 	OnboardingRoute: OnboardingRoute,
 	ResetPasswordRoute: ResetPasswordRoute,
