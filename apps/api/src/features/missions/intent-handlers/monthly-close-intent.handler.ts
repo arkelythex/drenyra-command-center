@@ -5,30 +5,46 @@
  * onApproved: calls MonthlyCloseOrchestrator.applyEntries().
  */
 
-import type { MonthlyCloseOrchestrator } from "@drenyra/application/use-cases/monthly-close";
+import type {
+	MonthlyCloseMissionStore,
+	MonthlyCloseOrchestrator,
+} from "@drenyra/application/use-cases/monthly-close";
 import { and, eq } from "@drenyra/persistence/query";
 import { accountingMissions } from "@drenyra/persistence/schema";
+import { SecureLogger } from "@drenyra/shared/secure-logger";
 import type { FiscalMemoryRecorder } from "./fiscal-memory.recorder";
 import type { MissionIntentHandler } from "./mission-intent-handler.interface";
+import { DrizzleMonthlyCloseMissionStore } from "./monthly-close-mission.store";
+
+const logger = SecureLogger.namespace("MonthlyCloseIntentHandler");
 
 export class MonthlyCloseIntentHandler implements MissionIntentHandler {
 	constructor(
 		private readonly orchestrator: MonthlyCloseOrchestrator,
 		private readonly db: unknown,
 		private readonly fiscalMemoryRecorder?: FiscalMemoryRecorder,
+		private readonly store: MonthlyCloseMissionStore = new DrizzleMonthlyCloseMissionStore(
+			db,
+		),
 	) {}
 
 	async onRunning(missionId: string, companyId: string): Promise<void> {
 		// Fire-and-forget: orchestrator runs asynchronously, reports via SSE
+		// A crash must not leave the mission RUNNING: recovery would re-run it
+		// and crash again, forever.
 		this.orchestrator.execute(missionId, companyId).catch(async (err) => {
-			console.error("[MonthlyCloseIntentHandler] Orchestrator crash:", err);
+			const reason = err instanceof Error ? err.message : String(err);
+			logger.error("Monthly close pipeline crashed", err, { missionId });
 			try {
-				await (this.db as any)
-					.update("accounting_missions")
-					.set({ status: "FAILED" })
-					.where("id", missionId);
-			} catch {
-				// Best-effort failure recording
+				await this.store.markFailed(missionId, companyId, reason);
+			} catch (markError) {
+				logger.error(
+					"Could not mark crashed monthly close as FAILED",
+					markError,
+					{
+						missionId,
+					},
+				);
 			}
 		});
 	}

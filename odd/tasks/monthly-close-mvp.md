@@ -1,6 +1,6 @@
 # Fase D: cierre mensual de punta a punta
 
-**Estado:** Working (D1–D4 mergeados: #309, #311, #313, #316; D5 en curso). Autorizado por Dreamcoder ("te autorizo todo y avanza de forma autónoma", 2026-10-20).
+**Estado:** Working (D1–D5 mergeados: #309, #311, #313, #316, #318; D6 en curso). Autorizado por Dreamcoder ("te autorizo todo y avanza de forma autónoma", 2026-10-20).
 
 ## Objetivo
 Que un contador vea en el workspace del periodo los bloqueos, la evidencia y la siguiente acción. Que apruebe o rechace las propuestas del agente, dejando rastro de auditoría. Que cierre el periodo sin envío a SUNAT (ver `web-mvp-gap.md`).
@@ -32,6 +32,16 @@ Que un contador vea en el workspace del periodo los bloqueos, la evidencia y la 
    - Probado contra Postgres 16 local (`drizzle-kit push` + la migración), con `RUN_DB_TESTS=1`.
 6. **D6 (crítico, libros/money/domain):** acción de cierre de periodo (`applyEntries`, `PeriodCloseService`, `POST` con permiso). Test-first y `sire-ledger-repro-check`.
    - Hallazgo previo (D5): aprobar recalcula `computeEvidenceHash(proposal.evidence)` con `JSON.stringify` después de pasar por jsonb, que reordena las claves. Además, `build-evidence.step.ts` calcula `evidenceHash` con otra función (`hashObject`). Así, una propuesta real del pipeline nunca coincide y aprobar falla con EVIDENCE_MISMATCH. Hay que unificar un hash canónico (claves ordenadas) en productor y verificador.
+   - Diagnóstico D6 (2026-10-20, ejecutado contra Postgres 16 local):
+     - Una misión real muere en el paso 1. `loadMission`, `blockMission`, `transitionMission` y el handler usan sintaxis knex sobre Drizzle. `MissionEventStore.appendEvent` usa `FOR UPDATE` con `MAX()`, y Postgres lo rechaza. La misión queda en RUNNING para siempre.
+     - El orquestador nunca guarda la propuesta ni el estado AWAITING_APPROVAL en la misión.
+     - El hash de evidencia está roto en tres lugares: `hashObject` reduce los arrays a `[{}]`; aprobar hashea `proposal.evidence`, que el pipeline no escribe; y jsonb reordena las claves.
+     - `applyEntries` es un stub. `TransactionalApplyUseCase` sí publica asientos cuadrados y cierra el periodo (`cerrado_final`), sin forma de reabrirlo.
+     - **La propuesta es de mentira:** 3 asientos fijos, con fechas de otro mes. "IGV" se registra como gasto en la cuenta 641. No se lee nada de los libros reales. Además, todos los gates se marcan PASSED sin evaluarlos.
+     - Montos: `number` en una columna int4, no el VO Money.
+   - Plan: D6a (plomería: Drizzle, event store, guardar la propuesta, hash canónico) llega hasta "esperando aprobación". La publicación de asientos queda apagada hasta que la propuesta salga de datos reales; ver la decisión en el hilo.
+   - **D6a hecho:** puerto `MonthlyCloseMissionStore` (adaptador Drizzle, siempre por empresa y solo desde RUNNING), `computeEvidenceBundleHash` en `@drenyra/domain` para productor y verificador, ids de evidencia estables, aprobar exige evidencia no vacía, eventos no fatales y append con advisory lock. Probado de punta a punta contra Postgres (`monthly-close-pipeline.postgres.test.ts`): crear → ejecutar → AWAITING_APPROVAL → aprobar.
+   - Pendiente: los bloqueos y el motivo de fallo solo quedan en el log de eventos (no hay columna). `applyEntries` sigue apagado.
 7. **D7:** rutas `/cierre-mensual`, `/evidence` y `/review-queue` (o quitarlas del menú), más un e2e del camino feliz.
 
 ## Fuera de alcance

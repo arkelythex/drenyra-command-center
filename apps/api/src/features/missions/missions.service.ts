@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { computeEvidenceBundleHash } from "@drenyra/domain";
 import type {
 	ApproveMissionCommand,
 	CreateMissionCommand,
@@ -34,6 +35,20 @@ const VALID_INTENTS = new Set([
 	"invoice-review",
 	"compliance-check",
 ]);
+/**
+ * The evidence a proposal was sealed over. Pipeline proposals carry the
+ * hashed bundle in `sourceEvidence` (`evidence` is its display list); older
+ * proposals only have `evidence`.
+ */
+function proposalEvidence(proposal: unknown): unknown[] {
+	const p = (proposal ?? {}) as {
+		sourceEvidence?: unknown;
+		evidence?: unknown;
+	};
+	if (Array.isArray(p.sourceEvidence)) return p.sourceEvidence;
+	return Array.isArray(p.evidence) ? p.evidence : [];
+}
+
 const VALID_RECONCILE_TARGETS = new Set(["RUNNING", "FAILED", "COMPLETED"]);
 
 function toSnapshot(row: Record<string, unknown>): MissionSnapshot {
@@ -264,8 +279,15 @@ export class MissionsService {
 			);
 		}
 
-		const { computeEvidenceHash } = await import("@drenyra/mission-domain");
-		const currentEvidenceHash = computeEvidenceHash(proposal.evidence ?? []);
+		const evidence = proposalEvidence(proposal);
+		if (evidence.length === 0) {
+			throw new MissionError(
+				MissionErrorCode.EVIDENCE_MISMATCH,
+				409,
+				"Proposal has no evidence to approve against",
+			);
+		}
+		const currentEvidenceHash = await computeEvidenceBundleHash(evidence);
 		if (currentEvidenceHash !== cmd.evidenceHash) {
 			throw new MissionError(
 				MissionErrorCode.EVIDENCE_MISMATCH,
@@ -386,15 +408,16 @@ export class MissionsService {
 			proposalVersion: cmd.proposalVersion,
 		};
 
-		const { computeEvidenceHash } = await import("@drenyra/mission-domain");
-		const proposal = mission.proposal as { evidence?: unknown[] } | null;
+		const evidenceHash = await computeEvidenceBundleHash(
+			proposalEvidence(mission.proposal),
+		);
 		const receiptContent: ReceiptContent = {
 			missionId,
 			companyId,
 			actorId,
 			decision: "REJECT",
 			proposalVersion: cmd.proposalVersion,
-			evidenceHash: computeEvidenceHash((proposal?.evidence ?? []) as never[]),
+			evidenceHash,
 			previousStatus: mission.status,
 			newStatus: AccountingMissionStatus.REJECTED,
 			payloadHash: sha256Sorted({

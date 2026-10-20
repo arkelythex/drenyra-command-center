@@ -9,7 +9,8 @@
 import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { computeEvidenceHash, MissionErrorCode } from "@drenyra/mission-domain";
+import { computeEvidenceBundleHash } from "@drenyra/domain";
+import { MissionErrorCode } from "@drenyra/mission-domain";
 import {
 	accountingMissions,
 	companies,
@@ -28,13 +29,11 @@ const MIGRATION = resolve(
 );
 
 const ACTOR = "user-accountant-1";
-// Keys already in jsonb's storage order (shorter keys first), so the hash
-// survives the round trip. Approval re-hashes the stored evidence with
-// JSON.stringify, which is key-order sensitive; see monthly-close-mvp.md (D6).
+// Deliberately not in jsonb's key order: the canonical hash must survive it.
 const evidence = [
-	{ id: "ev-1", type: "BANK_STATEMENT", label: "Extracto BCP" },
+	{ type: "BANK_STATEMENT", label: "Extracto BCP", id: "ev-1" },
 ];
-const evidenceHash = computeEvidenceHash(evidence);
+let evidenceHash: string;
 
 let companyId: string;
 let service: MissionsService;
@@ -87,6 +86,7 @@ function receiptsOf(missionId: string) {
 
 describeDb("mission decision log (PostgreSQL)", () => {
 	beforeAll(async () => {
+		evidenceHash = await computeEvidenceBundleHash(evidence);
 		await db.execute(sql.raw(readFileSync(MIGRATION, "utf8")));
 		// Applying it twice must be harmless.
 		await db.execute(sql.raw(readFileSync(MIGRATION, "utf8")));
