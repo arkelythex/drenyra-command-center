@@ -101,6 +101,7 @@ These tutorials guide you through Drenyya step by step. They assume nothing — 
 | [engram-guide](./10-development/engram-guide.md) | Drenyra uses the `drenyra` Engram project name for persistent agent memory. Use this page to confirm the canonical… |
 | [engram-project-canonical](./10-development/engram-project-canonical.md) | Drenyra uses the `drenyra` Engram project name for persistent agent memory. Use this page to confirm the canonical… |
 | [getting-started](./10-development/getting-started.md) | title: Getting Started |
+| [git-github-workflow](./10-development/git-github-workflow.md) | No merge without evidence. |
 | [how-to-add-a-feature](./10-development/how-to-add-a-feature.md) | title: Cómo agregar una feature |
 | [how-to-debug](./10-development/how-to-debug.md) | title: Cómo debuggear |
 | [how-to-write-a-test](./10-development/how-to-write-a-test.md) | title: Cómo escribir tests |
