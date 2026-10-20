@@ -5,7 +5,6 @@ import {
 	ShieldCheck,
 } from "lucide-react";
 import { toast } from "sonner";
-import { ConfidenceBadge } from "@/components/agentic";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -18,6 +17,7 @@ import type {
 	ReconciliationCandidate,
 	ReconciliationTransaction,
 } from "../../reconciliation.types";
+import { ConfidenceBadge } from "./ConfidenceBadge";
 
 interface ReconciliationEvidenceRailProps {
 	activeCandidate?: ReconciliationCandidate;
@@ -32,9 +32,10 @@ export function ReconciliationEvidenceRail({
 }: ReconciliationEvidenceRailProps) {
 	const handleDecision = (decision: "approve" | "reject" | "manual") => {
 		onDecision?.(decision);
+		// Approval is confirmed by the API; its outcome is reported by the caller.
+		if (decision === "approve") return;
 
 		const messages = {
-			approve: "Conciliación aprobada con evidencia visible.",
 			reject: "La sugerencia fue rechazada y permanece en revisión.",
 			manual: "Se marcó para búsqueda o creación manual de asiento.",
 		} as const;

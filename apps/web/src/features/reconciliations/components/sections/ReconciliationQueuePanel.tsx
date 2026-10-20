@@ -1,7 +1,7 @@
 import { ArrowRightLeft, CheckCircle2, Search } from "lucide-react";
-import { ConfidenceBadge } from "@/components/agentic";
 import { cn } from "@/lib/utils";
 import type { ReconciliationTransaction } from "../../reconciliation.types";
+import { ConfidenceBadge } from "./ConfidenceBadge";
 
 interface ReconciliationQueuePanelProps {
 	formatMoney: (value: number) => string;

@@ -119,6 +119,22 @@ describe("loadLocalSireRecords", () => {
 		expect(localRecordsGet).not.toHaveBeenCalled();
 	});
 
+	it("keeps fechaEmision as a string when the client hands back a Date", async () => {
+		activate("cmp-7");
+		localRecordsGet.mockResolvedValue({
+			data: {
+				success: true,
+				data: [
+					{ ...sunat(), total: 118000, fechaEmision: new Date("2025-01-10") },
+				],
+			},
+			error: null,
+		});
+
+		const [record] = await loadLocalSireRecords([sunat()]);
+		expect(record?.fechaEmision).toBe("2025-01-10");
+	});
+
 	it("rejects amounts that are not integer cents", async () => {
 		activate("cmp-7");
 		localRecordsGet.mockResolvedValue({

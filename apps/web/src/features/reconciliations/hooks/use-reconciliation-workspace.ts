@@ -1,54 +1,77 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
-import { RECONCILIATION_TRANSACTIONS } from "../reconciliation.data";
+import { useActiveCompanyContext } from "@/lib/use-active-company-context";
+import type { ReconciliationCandidate } from "../reconciliation.types";
+import {
+	confirmMatch,
+	fetchBankTransactions,
+	fetchMatches,
+	summarize,
+	toTransaction,
+} from "../services/bank-reconciliation";
 
-function getInitialTransactionId() {
-	return (
-		RECONCILIATION_TRANSACTIONS.find(
-			(transaction) => transaction.status !== "matched",
-		)?.id ??
-		RECONCILIATION_TRANSACTIONS[0]?.id ??
-		""
-	);
-}
-
-function getInitialCandidateId() {
-	return RECONCILIATION_TRANSACTIONS.find(
-		(transaction) => transaction.status !== "matched",
-	)?.candidates[0]?.id;
-}
-
+/**
+ * Bank reconciliation workspace for the active company: movements from the
+ * API, proposals for the selected one, and confirmation of a proposal.
+ */
 export function useReconciliationWorkspace() {
-	const [selectedTransactionId, setSelectedTransactionId] = React.useState(
-		getInitialTransactionId,
+	const queryClient = useQueryClient();
+	const { companyContext } = useActiveCompanyContext();
+	const companyId = companyContext.companyId ?? "";
+
+	const listKey = ["bank-reconciliation", companyId] as const;
+	const list = useQuery({
+		queryKey: listKey,
+		queryFn: () => fetchBankTransactions(companyId),
+		enabled: Boolean(companyId),
+	});
+	const rows = list.data ?? [];
+
+	const [selectedId, setSelectedTransactionId] = React.useState<string>();
+	const [selectedCandidateId, setSelectedCandidateId] =
+		React.useState<string>();
+
+	const activeRow =
+		rows.find((row) => row.id === selectedId) ??
+		rows.find((row) => row.isReconciled !== true) ??
+		rows[0];
+
+	const matches = useQuery({
+		queryKey: ["bank-reconciliation-matches", companyId, activeRow?.id],
+		queryFn: () => fetchMatches(companyId, activeRow?.id ?? ""),
+		enabled: Boolean(companyId && activeRow && activeRow.isReconciled !== true),
+	});
+
+	const transactions = rows.map((row) =>
+		toTransaction(row, row.id === activeRow?.id ? matches.data : undefined),
 	);
-	const [selectedCandidateId, setSelectedCandidateId] = React.useState<
-		string | undefined
-	>(getInitialCandidateId);
-
-	const activeTransaction =
-		RECONCILIATION_TRANSACTIONS.find(
-			(transaction) => transaction.id === selectedTransactionId,
-		) ?? RECONCILIATION_TRANSACTIONS[0];
-
+	const activeTransaction = transactions.find((tx) => tx.id === activeRow?.id);
 	const activeCandidate =
-		activeTransaction?.candidates.find(
-			(candidate) => candidate.id === selectedCandidateId,
-		) ?? activeTransaction?.candidates[0];
+		activeTransaction?.candidates.find((c) => c.id === selectedCandidateId) ??
+		activeTransaction?.candidates[0];
 
 	React.useEffect(() => {
-		if (!activeTransaction) {
-			return;
-		}
+		setSelectedCandidateId(undefined);
+	}, [activeRow?.id]);
 
-		setSelectedCandidateId(activeTransaction.candidates[0]?.id);
-	}, [activeTransaction]);
+	const confirm = useMutation({
+		mutationFn: (candidate: ReconciliationCandidate) =>
+			confirmMatch(companyId, activeRow?.id ?? "", candidate),
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: listKey }),
+	});
 
 	return {
 		activeCandidate,
 		activeTransaction,
-		selectedTransactionId,
+		selectedTransactionId: activeRow?.id ?? "",
 		setSelectedCandidateId,
 		setSelectedTransactionId,
-		transactions: RECONCILIATION_TRANSACTIONS,
+		transactions,
+		summary: summarize(transactions),
+		isLoading: list.isLoading,
+		error: list.error ?? matches.error ?? null,
+		hasCompany: Boolean(companyId),
+		confirmCandidate: confirm.mutateAsync,
+		isConfirming: confirm.isPending,
 	};
 }

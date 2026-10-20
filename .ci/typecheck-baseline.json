@@ -81,8 +81,6 @@
     "apps/web/src/features/onboarding/components/steps/CertificateStep.tsx|TS2379": 1,
     "apps/web/src/features/onboarding/hooks/useOnboarding.ts|TS2379": 1,
     "apps/web/src/features/reconciliations/components/ReconciliationView.tsx|TS2375": 2,
-    "apps/web/src/features/reconciliations/components/sections/ReconciliationEvidenceRail.tsx|TS2307": 1,
-    "apps/web/src/features/reconciliations/components/sections/ReconciliationQueuePanel.tsx|TS2307": 1,
     "apps/web/src/features/settings/components/appearance/AppearanceConstants.ts|TS2307": 1,
     "apps/web/src/features/settings/components/appearance/AppearancePreview.tsx|TS2307": 1,
     "apps/web/src/features/settings/components/appearance/AtmosphereGrid.tsx|TS2307": 2,
