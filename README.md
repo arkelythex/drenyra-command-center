@@ -18,6 +18,8 @@
 > **Drenyra-Shell** is the Pi-native harness that turns Pi into a disciplined accounting operator — accounting persona, commands, agents, skills, and safety guards layered over the Drenyra-AI runtime, in the same relationship Gentle Pi has to Gentle AI.
 >
 > **Drenyra-Engram** is the institutional accounting memory that preserves what the organization knows and can prove about its accounting — remember is not authorize.
+>
+> **Ecosystem contract:** the approved boundary & authority separation (component responsibilities, chain of authority, dependency rule) is formalized in [ADR-010](docs/11-adr/ADR-010-ecosystem-boundary-authority.md) and mirrored in [Ecosystem Boundaries](docs/architecture/ecosystem-boundaries.md) across `drenyra-ai`, `drenyra-pi` and `drenyra-engram`.
 
 [![Status](https://img.shields.io/badge/Status-Active-22c55e)](#)
 [![Stack](https://img.shields.io/badge/TypeScript-Bun-3178c6)](#)
