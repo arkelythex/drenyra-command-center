@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import type {
 	ApproveMissionCommand,
 	CreateMissionCommand,
@@ -15,7 +16,10 @@ import {
 	reconcileTransition,
 	validateTransition,
 } from "@drenyra/mission-domain";
-import { accountingMissions } from "@drenyra/persistence/schema";
+import {
+	accountingMissions,
+	missionReceipts,
+} from "@drenyra/persistence/schema";
 import { and, eq } from "drizzle-orm";
 import { getIntentHandler } from "./intent-handlers/intent-handlers.registry";
 import type { MissionIntentHandler } from "./intent-handlers/mission-intent-handler.interface";
@@ -58,6 +62,44 @@ function toSnapshot(row: Record<string, unknown>): MissionSnapshot {
 				? (row.updatedAt as Date).toISOString()
 				: String(row.updatedAt ?? ""),
 	};
+}
+
+function sha256Sorted(data: Record<string, unknown>): string {
+	return createHash("sha256")
+		.update(JSON.stringify(data, Object.keys(data).sort()))
+		.digest("hex");
+}
+
+/** First 32 hex chars of a SHA-256 hash, formatted as a UUID. */
+export function receiptIdFromHash(receiptHash: string): string {
+	return receiptHash
+		.substring(0, 32)
+		.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, "$1-$2-$3-$4-$5");
+}
+
+/**
+ * Appends the approve/reject decision to `mission_receipts`, the append-only
+ * decision log (migration 0034 refuses UPDATE, DELETE and TRUNCATE).
+ */
+async function recordDecision(
+	tx: any,
+	content: ReceiptContent,
+	receiptHash: string,
+): Promise<void> {
+	await tx.insert(missionReceipts).values({
+		missionId: content.missionId,
+		companyId: content.companyId,
+		actorId: content.actorId,
+		decision: content.decision,
+		proposalVersion: content.proposalVersion,
+		evidenceHash: content.evidenceHash,
+		previousStatus: content.previousStatus,
+		newStatus: content.newStatus,
+		payloadHash: content.payloadHash,
+		receiptHash,
+		receiptType: "DECISION",
+		issuedAt: new Date(content.timestamp),
+	});
 }
 
 export class MissionsService {
@@ -238,12 +280,7 @@ export class MissionsService {
 			proposalVersion: cmd.proposalVersion,
 			evidenceHash: cmd.evidenceHash,
 		};
-		const { createHash } = await import("node:crypto");
-		const payloadHash = createHash("sha256")
-			.update(
-				JSON.stringify(payloadHashData, Object.keys(payloadHashData).sort()),
-			)
-			.digest("hex");
+		const payloadHash = sha256Sorted(payloadHashData);
 
 		const receiptContent: ReceiptContent = {
 			missionId,
@@ -271,23 +308,26 @@ export class MissionsService {
 			}
 		}
 
-		// Generate a deterministic receipt ID from the hash
-		const receiptId = receiptHash
-			.substring(0, 36)
-			.replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, "$1-$2-$3-$4-$5");
+		// Deterministic receipt ID: the first 32 hex chars of the hash as a UUID.
+		const receiptId = receiptIdFromHash(receiptHash);
 
-		const newVersion = await optimisticUpdate(
-			this.db,
-			missionId,
-			companyId,
-			cmd.expectedMissionVersion,
-			{
-				status: AccountingMissionStatus.APPROVED,
-				receiptId,
-				receiptHash,
-				signedReceipt: signedReceiptJson,
-			},
-		);
+		// The state change and its decision row commit together or not at all.
+		const newVersion = await this.db.transaction(async (tx: any) => {
+			const version = await optimisticUpdate(
+				tx,
+				missionId,
+				companyId,
+				cmd.expectedMissionVersion,
+				{
+					status: AccountingMissionStatus.APPROVED,
+					receiptId,
+					receiptHash,
+					signedReceipt: signedReceiptJson,
+				},
+			);
+			await recordDecision(tx, receiptContent, receiptHash);
+			return version;
+		});
 
 		// Dispatch onApproved to intent handler (e.g., apply entries)
 		const handler = getIntentHandler(mission.intent);
@@ -346,16 +386,40 @@ export class MissionsService {
 			proposalVersion: cmd.proposalVersion,
 		};
 
-		const newVersion = await optimisticUpdate(
-			this.db,
+		const { computeEvidenceHash } = await import("@drenyra/mission-domain");
+		const proposal = mission.proposal as { evidence?: unknown[] } | null;
+		const receiptContent: ReceiptContent = {
 			missionId,
 			companyId,
-			cmd.expectedMissionVersion,
-			{
-				status: AccountingMissionStatus.REJECTED,
-				rejection,
-			},
-		);
+			actorId,
+			decision: "REJECT",
+			proposalVersion: cmd.proposalVersion,
+			evidenceHash: computeEvidenceHash((proposal?.evidence ?? []) as never[]),
+			previousStatus: mission.status,
+			newStatus: AccountingMissionStatus.REJECTED,
+			payloadHash: sha256Sorted({
+				proposalId: cmd.proposalId,
+				proposalVersion: cmd.proposalVersion,
+				reason: cmd.reason,
+			}),
+			timestamp: rejection.rejectedAt,
+		};
+		const receiptHash = generateReceiptHash(receiptContent);
+
+		const newVersion = await this.db.transaction(async (tx: any) => {
+			const version = await optimisticUpdate(
+				tx,
+				missionId,
+				companyId,
+				cmd.expectedMissionVersion,
+				{
+					status: AccountingMissionStatus.REJECTED,
+					rejection,
+				},
+			);
+			await recordDecision(tx, receiptContent, receiptHash);
+			return version;
+		});
 
 		return {
 			...mission,

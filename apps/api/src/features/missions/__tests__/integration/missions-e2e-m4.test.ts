@@ -9,17 +9,18 @@
  *   - Receipt hash integrity
  *   - Ed25519 signature validity (cross-language verifiable)
  */
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { MissionsService } from "../../missions.service";
-import { MissionEventStore } from "../../sse/mission-event-store";
-import { MissionsController } from "../../missions.controller";
-import { ReceiptSigningService } from "../../receipt-signing.service";
+
 import {
 	generateReceiptHash,
+	type ReceiptContent,
 	verifyReceiptIntegrity,
 	verifySignedReceipt,
-	type ReceiptContent,
 } from "@drenyra/mission-domain";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { MissionsController } from "../../missions.controller";
+import { MissionsService } from "../../missions.service";
+import { ReceiptSigningService } from "../../receipt-signing.service";
+import { MissionEventStore } from "../../sse/mission-event-store";
 
 const mockDb = vi.hoisted(() => ({
 	db: {
@@ -31,6 +32,7 @@ const mockDb = vi.hoisted(() => ({
 }));
 
 vi.mock("@drenyra/persistence/schema", () => ({
+	missionReceipts: { missionId: "mission_id", companyId: "company_id" },
 	accountingMissions: {
 		id: "id",
 		companyId: "company_id",
@@ -116,28 +118,20 @@ function m(overrides: Record<string, unknown> = {}) {
 
 function sel(row: any) {
 	mockDb.db.select.mockReturnValue({
-		from: vi
-			.fn()
-			.mockReturnValue({
-				where: vi
-					.fn()
-					.mockReturnValue({
-						limit: vi.fn().mockResolvedValue(row ? [row] : []),
-					}),
+		from: vi.fn().mockReturnValue({
+			where: vi.fn().mockReturnValue({
+				limit: vi.fn().mockResolvedValue(row ? [row] : []),
 			}),
+		}),
 	} as any);
 }
 function upd(returned: any) {
 	mockDb.db.update.mockReturnValue({
-		set: vi
-			.fn()
-			.mockReturnValue({
-				where: vi
-					.fn()
-					.mockReturnValue({
-						returning: vi.fn().mockResolvedValue([returned]),
-					}),
+		set: vi.fn().mockReturnValue({
+			where: vi.fn().mockReturnValue({
+				returning: vi.fn().mockResolvedValue([returned]),
 			}),
+		}),
 	} as any);
 }
 
@@ -157,13 +151,11 @@ describe("M4 E2E — Monthly close with signed receipts", () => {
 		// Create
 		mockDb.db.transaction.mockImplementation(async (fn: any) => {
 			const tx = {
-				insert: vi
-					.fn()
-					.mockReturnValue({
-						values: vi
-							.fn()
-							.mockReturnValue({ returning: vi.fn().mockResolvedValue([m()]) }),
-					}),
+				insert: vi.fn().mockReturnValue({
+					values: vi
+						.fn()
+						.mockReturnValue({ returning: vi.fn().mockResolvedValue([m()]) }),
+				}),
 			};
 			return fn(tx);
 		});
@@ -235,6 +227,11 @@ describe("M4 E2E — Monthly close with signed receipts", () => {
 			}),
 		);
 
+		// approve runs in a transaction and appends its decision row.
+		mockDb.db.transaction.mockImplementation(async (fn: any) => fn(mockDb.db));
+		const decisionValues = vi.fn().mockResolvedValue(undefined);
+		mockDb.db.insert.mockReturnValue({ values: decisionValues } as any);
+
 		const approveRes = await ctrl.approve(
 			missionId,
 			{
@@ -251,6 +248,9 @@ describe("M4 E2E — Monthly close with signed receipts", () => {
 		expect(data.status).toBe("APPROVED");
 		expect(data.receiptId).toBeTruthy();
 		expect(data.receiptHash).toMatch(/^[a-f0-9]{64}$/);
+		expect(decisionValues).toHaveBeenCalledWith(
+			expect.objectContaining({ decision: "APPROVE", actorId }),
+		);
 	});
 
 	it("Step 8-9: Receipt integrity + Ed25519 signature both valid", async () => {

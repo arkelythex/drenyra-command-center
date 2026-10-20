@@ -4,9 +4,11 @@
  * These tests are opt-in because they require the local PostgreSQL compose service.
  */
 import { randomUUID } from "node:crypto";
-import { and, eq } from "drizzle-orm";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { db } from "../../../../lib/db";
+import {
+	MissionErrorCode,
+	type ReceiptContent,
+	verifySignedReceipt,
+} from "@drenyra/mission-domain";
 import {
 	accountingMissions,
 	companies,
@@ -14,11 +16,9 @@ import {
 	missionLeases,
 	missionReceipts,
 } from "@drenyra/persistence/schema";
-import {
-	MissionErrorCode,
-	verifySignedReceipt,
-	type ReceiptContent,
-} from "@drenyra/mission-domain";
+import { and, eq } from "drizzle-orm";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { db } from "../../../../lib/db";
 import { MissionLeaseService } from "../../mission-lease.service";
 import { runMissionRecovery } from "../../mission-recovery.hook";
 import { MissionsService } from "../../missions.service";
@@ -66,11 +66,20 @@ async function createMission() {
 async function cleanupFixture(): Promise<void> {
 	if (!fixture) return;
 
-	await db.delete(missionLeases).where(eq(missionLeases.companyId, fixture.companyId));
-	await db.delete(missionReceipts).where(eq(missionReceipts.companyId, fixture.companyId));
-	await db.delete(accountingMissions).where(
-		eq(accountingMissions.companyId, fixture.companyId),
-	);
+	await db
+		.delete(missionLeases)
+		.where(eq(missionLeases.companyId, fixture.companyId));
+	// mission_receipts is append-only (0034): a fixture that recorded a
+	// decision keeps it, and with it the mission and company it references.
+	const receipts = await db
+		.select({ id: missionReceipts.id })
+		.from(missionReceipts)
+		.where(eq(missionReceipts.companyId, fixture.companyId))
+		.limit(1);
+	if (receipts.length > 0) return;
+	await db
+		.delete(accountingMissions)
+		.where(eq(accountingMissions.companyId, fixture.companyId));
 	await db.delete(companies).where(eq(companies.id, fixture.companyId));
 }
 
@@ -86,9 +95,13 @@ describeDb("durable mission recovery (PostgreSQL)", () => {
 	it("recovers an abruptly stopped RUNNING mission without duplicate events and persists a verifiable receipt", async () => {
 		const service = new MissionsService(db);
 		const created = await createMission();
-		const running = await service.executeMission(created.id, fixture.companyId, {
-			expectedMissionVersion: created.version,
-		});
+		const running = await service.executeMission(
+			created.id,
+			fixture.companyId,
+			{
+				expectedMissionVersion: created.version,
+			},
+		);
 		expect(running.status).toBe("RUNNING");
 
 		await db.insert(missionEvents).values({
@@ -101,11 +114,14 @@ describeDb("durable mission recovery (PostgreSQL)", () => {
 		await runMissionRecovery(db);
 
 		const eventsAfterRecovery = await db
-			.select({ sequence: missionEvents.sequence, eventType: missionEvents.eventType })
+			.select({
+				sequence: missionEvents.sequence,
+				eventType: missionEvents.eventType,
+			})
 			.from(missionEvents)
 			.where(eq(missionEvents.missionId, created.id));
-		const eventKeys = eventsAfterRecovery.map((event) =>
-			`${event.sequence}:${event.eventType}`,
+		const eventKeys = eventsAfterRecovery.map(
+			(event) => `${event.sequence}:${event.eventType}`,
 		);
 		expect(new Set(eventKeys).size).toBe(eventKeys.length);
 		expect(eventKeys).toEqual(["1:RUNNING"]);

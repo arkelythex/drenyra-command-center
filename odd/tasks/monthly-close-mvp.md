@@ -1,6 +1,6 @@
 # Fase D: cierre mensual de punta a punta
 
-**Estado:** Working (D1 #309, D2 #311 y D3 #313 mergeados; D4 en curso). Autorizado por Dreamcoder ("te autorizo todo y avanza de forma autónoma", 2026-10-20).
+**Estado:** Working (D1–D4 mergeados: #309, #311, #313, #316; D5 en curso). Autorizado por Dreamcoder ("te autorizo todo y avanza de forma autónoma", 2026-10-20).
 
 ## Objetivo
 Que un contador vea en el workspace del periodo los bloqueos, la evidencia y la siguiente acción. Que apruebe o rechace las propuestas del agente, dejando rastro de auditoría. Que cierre el periodo sin envío a SUNAT (ver `web-mvp-gap.md`).
@@ -28,7 +28,10 @@ Que un contador vea en el workspace del periodo los bloqueos, la evidencia y la 
 4. **D4:** un único estado de misión compartido con `CierreMensualPage`, con empresa y RUC reales y sin valores inventados.
    - Hecho: `MissionWorkspace` pasa su misión a `CierreMensualPage` (ya no hay un segundo `useAccountingMission`). Nombre y RUC salen de `useActiveCompanyContext`. Se quitaron los conteos de evidencia inventados (428, 378…) y los checks "Verificado" fijos. SIRE, bancos e IGV quedan "PENDIENTE" hasta que la misión traiga evidencia. Firmas: solo la del contador, firmada cuando hay recibo de aprobación. El id del cierre es el de la misión del servidor.
 5. **D5 (crítico, DB/migración):** log de auditoría append-only para aprobar y rechazar, con el actor real.
+   - Hecho: aprobar y rechazar escriben una fila en `mission_receipts` (actor de la sesión, decisión, hashes) en la misma transacción que el cambio de estado. La migración `0034_mission_receipts_append_only.sql` rechaza UPDATE, DELETE y TRUNCATE. También se corrigió `receiptId`: tenía 40 caracteres y Postgres lo rechazaba, así que ninguna aprobación real se guardaba.
+   - Probado contra Postgres 16 local (`drizzle-kit push` + la migración), con `RUN_DB_TESTS=1`.
 6. **D6 (crítico, libros/money/domain):** acción de cierre de periodo (`applyEntries`, `PeriodCloseService`, `POST` con permiso). Test-first y `sire-ledger-repro-check`.
+   - Hallazgo previo (D5): aprobar recalcula `computeEvidenceHash(proposal.evidence)` con `JSON.stringify` después de pasar por jsonb, que reordena las claves. Además, `build-evidence.step.ts` calcula `evidenceHash` con otra función (`hashObject`). Así, una propuesta real del pipeline nunca coincide y aprobar falla con EVIDENCE_MISMATCH. Hay que unificar un hash canónico (claves ordenadas) en productor y verificador.
 7. **D7:** rutas `/cierre-mensual`, `/evidence` y `/review-queue` (o quitarlas del menú), más un e2e del camino feliz.
 
 ## Fuera de alcance
