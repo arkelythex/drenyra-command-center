@@ -66,7 +66,8 @@ export const OverrideGateSchema = t.Object({
 		t.Literal("WAIVED"),
 	]),
 	resolution: t.String({ minLength: 1 }),
-	overrideById: t.String({ format: "uuid" }),
+	/** Ignored: the overriding user is taken from the session. Kept for older clients. */
+	overrideById: t.Optional(t.String({ format: "uuid" })),
 });
 
 export const ChecklistQuerySchema = t.Object({

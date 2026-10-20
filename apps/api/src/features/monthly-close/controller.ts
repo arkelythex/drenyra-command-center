@@ -34,6 +34,24 @@ export class MonthlyCloseController {
 		return this.repo.findById(id);
 	}
 
+	/** True only when the checklist exists and belongs to `companyId`. */
+	async ownsChecklist(companyId: string, checklistId: string) {
+		const checklist = await this.repo.findById(checklistId);
+		return checklist?.companyId === companyId;
+	}
+
+	/** True only when the item's checklist belongs to `companyId`. */
+	async ownsItem(companyId: string, itemId: string) {
+		const item = await this.repo.findItemById(itemId);
+		return item ? this.ownsChecklist(companyId, item.checklistId) : false;
+	}
+
+	/** True only when the gate exists and belongs to `companyId`. */
+	async ownsGate(companyId: string, gateId: string) {
+		const gate = await this.repo.findGateById(gateId);
+		return gate?.companyId === companyId;
+	}
+
 	async updateChecklist(
 		id: string,
 		data: {
@@ -72,23 +90,27 @@ export class MonthlyCloseController {
 		});
 	}
 
+	/**
+	 * `actorId` is the session user, never a request field, so the audit
+	 * trail cannot be forged.
+	 */
 	async updateItem(
 		id: string,
-		data: { status?: string; notes?: string; completedById?: string },
+		data: { status?: string; notes?: string },
+		actorId: string | null,
 	) {
 		const update: Record<string, unknown> = {};
 		if (data.status) update.status = data.status;
 		if (data.notes) update.notes = data.notes;
-		if (data.completedById) update.completedById = data.completedById;
 		if (data.status === "COMPLETED") {
 			update.completedAt = new Date();
+			if (actorId) update.completedById = actorId;
 		}
 		return this.repo.updateItem(id, update as any);
 	}
 
 	async attachEvidence(itemId: string, evidenceId: string) {
-		const _items = await this.repo.getItemsByChecklistId(itemId);
-		const item = _items.find((i) => i.id === itemId);
+		const item = await this.repo.findItemById(itemId);
 		if (!item) return null;
 
 		const currentIds = item.evidenceIds ?? [];
