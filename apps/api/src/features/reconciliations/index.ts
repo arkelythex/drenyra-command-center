@@ -12,6 +12,16 @@ import { findMatches } from "./application/queries/find-matches";
 import { getPending } from "./application/queries/get-pending";
 import { getReconciled } from "./application/queries/get-reconciled";
 import { getStats } from "./application/queries/get-stats";
+import { ReconcileRejectedError } from "./application/services/reconciliation.service";
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/** `reconciled_by` is a uuid column: record the legacy user id only when it is one. */
+function auditUser(legacyUserId: string | null | undefined) {
+	return legacyUserId && UUID.test(legacyUserId)
+		? { reconciledBy: legacyUserId }
+		: {};
+}
 
 /**
  * Elysia module exposing reconciliation endpoints for pending, completed, and audit flows.
@@ -66,15 +76,22 @@ export const reconciliationsModule = new Elysia({
 	)
 	.post(
 		"/:id/reconcile",
-		async ({ params, body, set }) => {
+		async ({ params, body, set, companyContext }) => {
 			try {
-				const reconciled = await reconcile(body.companyId, params.id, body);
+				const reconciled = await reconcile(body.companyId, params.id, {
+					...body,
+					...auditUser(companyContext?.legacyUserId),
+				});
 				if (!reconciled) {
 					set.status = 404;
 					return fail("Transacción no encontrada", "TRANSACTION_NOT_FOUND");
 				}
 				return ok(reconciled);
 			} catch (error: unknown) {
+				if (error instanceof ReconcileRejectedError) {
+					set.status = 422;
+					return fail(error.message, "MATCH_REJECTED");
+				}
 				set.status = 500;
 				return fail(getErrorMessage(error), "INTERNAL_ERROR");
 			}
@@ -88,6 +105,8 @@ export const reconciliationsModule = new Elysia({
 				bankReference: t.Optional(t.String()),
 				reconciledAmount: t.Optional(t.String()),
 				notes: t.Optional(t.String()),
+				invoiceId: t.Optional(t.String({ format: "uuid" })),
+				billId: t.Optional(t.String({ format: "uuid" })),
 			}),
 		},
 	)

@@ -7,7 +7,10 @@ const { resolveSessionContext } = vi.hoisted(() => ({
 
 vi.mock("../../../security/session-context", () => ({ resolveSessionContext }));
 
-import { ReconciliationService } from "../../application/services/reconciliation.service";
+import {
+	ReconcileRejectedError,
+	ReconciliationService,
+} from "../../application/services/reconciliation.service";
 import { reconciliationsModule } from "../../index";
 
 const app = new Elysia().use(reconciliationsModule);
@@ -84,5 +87,54 @@ describe("reconciliations tenant scope", () => {
 		);
 
 		expect(response.status).toBe(200);
+	});
+});
+
+describe("reconcile with a linked document", () => {
+	beforeEach(() => {
+		resolveSessionContext.mockResolvedValue({
+			ok: true,
+			context: {
+				userId: "user-1",
+				authUserId: "user-1",
+				legacyUserId: "33333333-3333-4333-8333-333333333333",
+				role: "admin",
+				companyId: "cmp-1",
+			},
+		});
+	});
+
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
+	it("answers 422 when the document is not a proposed match", async () => {
+		vi.spyOn(ReconciliationService.prototype, "reconcile").mockRejectedValue(
+			new ReconcileRejectedError("no corresponde"),
+		);
+		const response = await post("/api/reconciliations/tx-1/reconcile", {
+			companyId: "cmp-1",
+			invoiceId: "44444444-4444-4444-8444-444444444444",
+		});
+
+		expect(response.status).toBe(422);
+		expect(await response.json()).toMatchObject({ code: "MATCH_REJECTED" });
+	});
+
+	it("records who confirmed the match", async () => {
+		const spy = vi
+			.spyOn(ReconciliationService.prototype, "reconcile")
+			.mockResolvedValue({ id: "tx-1" } as never);
+		const response = await post("/api/reconciliations/tx-1/reconcile", {
+			companyId: "cmp-1",
+			invoiceId: "44444444-4444-4444-8444-444444444444",
+		});
+
+		expect(response.status).toBe(200);
+		expect(spy).toHaveBeenCalledWith("cmp-1", "tx-1", {
+			companyId: "cmp-1",
+			invoiceId: "44444444-4444-4444-8444-444444444444",
+			reconciledBy: "33333333-3333-4333-8333-333333333333",
+		});
 	});
 });

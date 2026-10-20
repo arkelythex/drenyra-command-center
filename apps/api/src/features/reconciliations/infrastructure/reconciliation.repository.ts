@@ -1,6 +1,12 @@
 import { db } from "@drenyra/persistence/client";
-import { and, eq } from "@drenyra/persistence/query";
-import { bankTransactions } from "@drenyra/persistence/schema";
+import { and, eq, inArray } from "@drenyra/persistence/query";
+import {
+	bankTransactions,
+	bills,
+	businessPartners,
+	invoices,
+} from "@drenyra/persistence/schema";
+import { bankAmountToCents, type OpenDocument } from "../domain/bank-matching";
 
 /**
  * Optional metadata accepted when manually reconciling a bank transaction.
@@ -14,6 +20,18 @@ export interface ReconcileInput {
 	bankReference?: string;
 	reconciledAmount?: string;
 	notes?: string;
+	/** Sales invoice this inflow pays. */
+	invoiceId?: string;
+	/** Purchase bill this outflow pays. */
+	billId?: string;
+	/** Session user confirming the match. */
+	reconciledBy?: string;
+}
+
+const OPEN_STATUSES = ["SENT", "OVERDUE"] as const;
+
+function isoDate(value: Date): string {
+	return value.toISOString().slice(0, 10);
 }
 
 /**
@@ -48,13 +66,16 @@ export class ReconciliationRepository {
 	async markReconciled(
 		companyId: string,
 		transactionId: string,
-		_input?: ReconcileInput,
+		input?: ReconcileInput,
 	) {
 		const [updated] = await db
 			.update(bankTransactions)
 			.set({
 				isReconciled: true,
 				reconciledAt: new Date(),
+				...(input?.invoiceId ? { invoiceId: input.invoiceId } : {}),
+				...(input?.billId ? { billId: input.billId } : {}),
+				...(input?.reconciledBy ? { reconciledBy: input.reconciledBy } : {}),
 			})
 			.where(
 				and(
@@ -73,6 +94,9 @@ export class ReconciliationRepository {
 			.set({
 				isReconciled: false,
 				reconciledAt: null,
+				reconciledBy: null,
+				invoiceId: null,
+				billId: null,
 			})
 			.where(
 				and(
@@ -89,6 +113,73 @@ export class ReconciliationRepository {
 		return await db.query.bankTransactions.findMany({
 			where: eq(bankTransactions.companyId, companyId),
 		});
+	}
+
+	/** Issued, unpaid invoices (open balance) or bills of the company, amounts in cents. */
+	async findOpenDocuments(
+		companyId: string,
+		kind: OpenDocument["kind"],
+	): Promise<OpenDocument[]> {
+		if (kind === "INVOICE") {
+			const rows = await db
+				.select({
+					id: invoices.id,
+					number: invoices.invoiceNumber,
+					partnerName: businessPartners.legalName,
+					issueDate: invoices.issueDate,
+					dueDate: invoices.dueDate,
+					open: invoices.balanceDue,
+				})
+				.from(invoices)
+				.leftJoin(
+					businessPartners,
+					eq(invoices.customerId, businessPartners.id),
+				)
+				.where(
+					and(
+						eq(invoices.companyId, companyId),
+						inArray(invoices.status, [...OPEN_STATUSES]),
+					),
+				);
+			return rows
+				.map((row) => ({
+					kind,
+					id: row.id,
+					number: row.number,
+					partnerName: row.partnerName ?? "",
+					issueDate: isoDate(row.issueDate),
+					dueDate: isoDate(row.dueDate),
+					openCents: bankAmountToCents(row.open, "CREDIT"),
+				}))
+				.filter((doc) => doc.openCents > 0);
+		}
+
+		const rows = await db
+			.select({
+				id: bills.id,
+				number: bills.billNumber,
+				partnerName: businessPartners.legalName,
+				issueDate: bills.issueDate,
+				dueDate: bills.dueDate,
+				open: bills.totalAmount,
+			})
+			.from(bills)
+			.leftJoin(businessPartners, eq(bills.vendorId, businessPartners.id))
+			.where(
+				and(
+					eq(bills.companyId, companyId),
+					inArray(bills.status, [...OPEN_STATUSES]),
+				),
+			);
+		return rows.map((row) => ({
+			kind,
+			id: row.id,
+			number: row.number,
+			partnerName: row.partnerName ?? "",
+			issueDate: isoDate(row.issueDate),
+			dueDate: isoDate(row.dueDate),
+			openCents: bankAmountToCents(row.open, "CREDIT"),
+		}));
 	}
 
 	async findById(companyId: string, transactionId: string) {
