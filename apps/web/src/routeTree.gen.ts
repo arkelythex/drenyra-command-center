@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from "./routes/__root";
 import { Route as AuthRouteImport } from "./routes/auth";
+import { Route as CierreMensualRouteImport } from "./routes/cierre-mensual";
 import { Route as CumplimientoExpedientesRouteImport } from "./routes/cumplimiento.expedientes";
 import { Route as ForgotPasswordRouteImport } from "./routes/forgot-password";
 import { Route as IndexRouteImport } from "./routes/index";
@@ -63,6 +64,11 @@ const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
 	path: "/forgot-password",
 	getParentRoute: () => rootRouteImport,
 } as any);
+const CierreMensualRoute = CierreMensualRouteImport.update({
+	id: "/cierre-mensual",
+	path: "/cierre-mensual",
+	getParentRoute: () => rootRouteImport,
+} as any);
 const AuthRoute = AuthRouteImport.update({
 	id: "/auth",
 	path: "/auth",
@@ -94,6 +100,7 @@ const WorkspaceCompanyIdYearMonthIntentRoute =
 export interface FileRoutesByFullPath {
 	"/": typeof IndexRoute;
 	"/auth": typeof AuthRoute;
+	"/cierre-mensual": typeof CierreMensualRoute;
 	"/forgot-password": typeof ForgotPasswordRoute;
 	"/invoices": typeof InvoicesRoute;
 	"/login": typeof LoginRoute;
@@ -109,6 +116,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
 	"/": typeof IndexRoute;
 	"/auth": typeof AuthRoute;
+	"/cierre-mensual": typeof CierreMensualRoute;
 	"/forgot-password": typeof ForgotPasswordRoute;
 	"/invoices": typeof InvoicesRoute;
 	"/login": typeof LoginRoute;
@@ -125,6 +133,7 @@ export interface FileRoutesById {
 	__root__: typeof rootRouteImport;
 	"/": typeof IndexRoute;
 	"/auth": typeof AuthRoute;
+	"/cierre-mensual": typeof CierreMensualRoute;
 	"/forgot-password": typeof ForgotPasswordRoute;
 	"/invoices": typeof InvoicesRoute;
 	"/login": typeof LoginRoute;
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
 	fullPaths:
 		| "/"
 		| "/auth"
+		| "/cierre-mensual"
 		| "/forgot-password"
 		| "/invoices"
 		| "/login"
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
 	to:
 		| "/"
 		| "/auth"
+		| "/cierre-mensual"
 		| "/forgot-password"
 		| "/invoices"
 		| "/login"
@@ -172,6 +183,7 @@ export interface FileRouteTypes {
 		| "__root__"
 		| "/"
 		| "/auth"
+		| "/cierre-mensual"
 		| "/forgot-password"
 		| "/invoices"
 		| "/login"
@@ -188,6 +200,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
 	IndexRoute: typeof IndexRoute;
 	AuthRoute: typeof AuthRoute;
+	CierreMensualRoute: typeof CierreMensualRoute;
 	ForgotPasswordRoute: typeof ForgotPasswordRoute;
 	InvoicesRoute: typeof InvoicesRoute;
 	LoginRoute: typeof LoginRoute;
@@ -259,6 +272,13 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof ForgotPasswordRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		"/cierre-mensual": {
+			id: "/cierre-mensual";
+			path: "/cierre-mensual";
+			fullPath: "/cierre-mensual";
+			preLoaderRoute: typeof CierreMensualRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
 		"/auth": {
 			id: "/auth";
 			path: "/auth";
@@ -300,6 +320,7 @@ declare module "@tanstack/react-router" {
 const rootRouteChildren: RootRouteChildren = {
 	IndexRoute: IndexRoute,
 	AuthRoute: AuthRoute,
+	CierreMensualRoute: CierreMensualRoute,
 	ForgotPasswordRoute: ForgotPasswordRoute,
 	InvoicesRoute: InvoicesRoute,
 	LoginRoute: LoginRoute,

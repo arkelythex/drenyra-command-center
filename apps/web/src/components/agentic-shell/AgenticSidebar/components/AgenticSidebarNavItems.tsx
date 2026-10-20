@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { Plus, Search } from "lucide-react";
+import { Plus } from "lucide-react";
 import { createElement } from "react";
 import { cn } from "@/lib/utils";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
@@ -20,30 +20,17 @@ export function AgenticSidebarNavItems({
 
 	return (
 		<nav className="flex-1 space-y-5 overflow-y-auto px-3 pt-4 scrollbar-none">
-			<div className="space-y-2">
-				<button
-					type="button"
-					onClick={() => {
-						closeSidebar(false);
-						navigate({ to: "/drenyra" } as Parameters<typeof navigate>[0]);
-					}}
-					className="flex w-full items-center gap-2 rounded-lg bg-[var(--surface-2)] px-2 py-1.5 text-left text-xs font-semibold text-[var(--text-primary)] transition-colors hover:bg-[var(--surface-3)]"
-				>
-					<Plus size={14} className="text-[var(--color-primary)]" />
-					<span>Nueva revisión fiscal</span>
-				</button>
-				<button
-					type="button"
-					onClick={() => {
-						closeSidebar(false);
-						navigate({ to: "/drenyra" } as Parameters<typeof navigate>[0]);
-					}}
-					className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-xs font-medium text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]"
-				>
-					<Search size={14} className="text-[var(--text-muted)]" />
-					<span>Buscar en Drenyra</span>
-				</button>
-			</div>
+			<button
+				type="button"
+				onClick={() => {
+					closeSidebar(false);
+					navigate({ to: "/cierre-mensual" });
+				}}
+				className="flex w-full items-center gap-2 rounded-lg bg-[var(--surface-2)] px-2 py-1.5 text-left text-xs font-semibold text-[var(--text-primary)] transition-colors hover:bg-[var(--surface-3)]"
+			>
+				<Plus size={14} className="text-[var(--color-primary)]" />
+				<span>Nuevo cierre mensual</span>
+			</button>
 
 			{AGENTIC_SECTIONS.map((section) => (
 				<div key={section.title}>
