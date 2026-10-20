@@ -2,99 +2,113 @@
  * BuildEvidenceStep — Step 9 of the Monthly Close Pipeline.
  *
  * Assembles evidence bundle from snapshot, gate results, analysis outputs,
- * and proposal. Computes evidenceHash via SHA-256.
+ * and proposal. Computes evidenceHash with the canonical evidence hash shared
+ * with the approval check, so a bundle read back from jsonb still matches.
  *
  * isBlocker: false
  * retryPolicy: none
  */
 
-import { createHash } from "node:crypto";
+import { computeEvidenceBundleHash } from "@drenyra/domain";
 import type {
-  MonthlyCloseStep,
-  StepResult,
-  PipelineContext,
-  EvidenceRef,
+	ClosingProposal,
+	EvidenceRef,
+	MonthlyCloseStep,
+	PipelineContext,
+	StepResult,
 } from "../types/pipeline-types";
 
 export interface BuildEvidenceInput {
-  context: PipelineContext;
+	context: PipelineContext;
 }
 
 export interface EvidenceBundle {
-  evidence: EvidenceRef[];
-  hash: string;
+	evidence: EvidenceRef[];
+	hash: string;
+}
+
+/**
+ * Stable id for an evidence item: the same mission and evidence type always
+ * get the same id, so re-running the pipeline on unchanged inputs reproduces
+ * the same bundle hash.
+ */
+async function evidenceId(missionId: string, type: string): Promise<string> {
+	const hex = await computeEvidenceBundleHash(`${missionId}/${type}`);
+	return [
+		hex.slice(0, 8),
+		hex.slice(8, 12),
+		hex.slice(12, 16),
+		hex.slice(16, 20),
+		hex.slice(20, 32),
+	].join("-");
 }
 
 export class BuildEvidenceStep
-  implements MonthlyCloseStep<BuildEvidenceInput, EvidenceBundle>
+	implements MonthlyCloseStep<BuildEvidenceInput, EvidenceBundle>
 {
-  readonly name = "BuildEvidence";
-  readonly retryPolicy = { type: "none" as const };
-  readonly isBlocker = false;
+	readonly name = "BuildEvidence";
+	readonly retryPolicy = { type: "none" as const };
+	readonly isBlocker = false;
 
-  async execute(
-    input: BuildEvidenceInput,
-    context: PipelineContext,
-  ): Promise<StepResult<EvidenceBundle>> {
-    const startedAt = new Date().toISOString();
-    const evidence: EvidenceRef[] = [];
+	async execute(
+		input: BuildEvidenceInput,
+		context: PipelineContext,
+	): Promise<StepResult<EvidenceBundle>> {
+		const startedAt = new Date().toISOString();
+		const evidence: EvidenceRef[] = [];
 
-    // Add snapshot evidence
-    if (context.inputSnapshot) {
-      evidence.push({
-        id: crypto.randomUUID(),
-        type: "input-snapshot",
-        hash: this.hashObject(context.inputSnapshot),
-        uri: `mission://${context.missionId}/snapshot`,
-      });
-    }
+		// Add snapshot evidence
+		if (context.inputSnapshot) {
+			evidence.push({
+				id: await evidenceId(context.missionId, "input-snapshot"),
+				type: "input-snapshot",
+				hash: await computeEvidenceBundleHash(context.inputSnapshot),
+				uri: `mission://${context.missionId}/snapshot`,
+			});
+		}
 
-    // Add gate evidence
-    if (context.gates.length > 0) {
-      evidence.push({
-        id: crypto.randomUUID(),
-        type: "gate-results",
-        hash: this.hashObject(context.gates),
-        uri: `mission://${context.missionId}/gates`,
-      });
-    }
+		// Add gate evidence
+		if (context.gates.length > 0) {
+			evidence.push({
+				id: await evidenceId(context.missionId, "gate-results"),
+				type: "gate-results",
+				hash: await computeEvidenceBundleHash(context.gates),
+				uri: `mission://${context.missionId}/gates`,
+			});
+		}
 
-    // Add proposal evidence
-    if (context.proposal) {
-      evidence.push({
-        id: crypto.randomUUID(),
-        type: "closing-proposal",
-        hash: this.hashObject(context.proposal),
-        uri: `mission://${context.missionId}/proposal`,
-      });
-    }
+		// Add proposal evidence
+		if (context.proposal) {
+			evidence.push({
+				id: await evidenceId(context.missionId, "closing-proposal"),
+				type: "closing-proposal",
+				hash: await computeEvidenceBundleHash(context.proposal),
+				uri: `mission://${context.missionId}/proposal`,
+			});
+		}
 
-    // Compute overall evidence hash
-    const evidenceHash = this.hashObject(evidence);
+		// Compute overall evidence hash
+		const evidenceHash = await computeEvidenceBundleHash(evidence);
 
-    // Attach evidence to proposal if it exists
-    if (context.proposal && typeof context.proposal === "object") {
-      (context.proposal as any).sourceEvidence = evidence;
-      (context.proposal as any).evidenceHash = evidenceHash;
-    }
+		// Attach evidence to proposal if it exists
+		if (context.proposal && typeof context.proposal === "object") {
+			const proposal = context.proposal as ClosingProposal;
+			proposal.sourceEvidence = evidence;
+			proposal.evidenceHash = evidenceHash;
+		}
 
-    return {
-      success: true,
-      data: { evidence, hash: evidenceHash },
-      errors: [],
-      warnings: [],
-      exceptions: [],
-      metrics: {
-        startedAt,
-        completedAt: new Date().toISOString(),
-        itemsProcessed: evidence.length,
-        itemsFailed: 0,
-      },
-    };
-  }
-
-  private hashObject(obj: unknown): string {
-    const ordered = JSON.stringify(obj, Object.keys(obj as object).sort());
-    return createHash("sha256").update(ordered).digest("hex");
-  }
+		return {
+			success: true,
+			data: { evidence, hash: evidenceHash },
+			errors: [],
+			warnings: [],
+			exceptions: [],
+			metrics: {
+				startedAt,
+				completedAt: new Date().toISOString(),
+				itemsProcessed: evidence.length,
+				itemsFailed: 0,
+			},
+		};
+	}
 }

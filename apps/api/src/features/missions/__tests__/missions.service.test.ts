@@ -1,5 +1,6 @@
+import { computeEvidenceBundleHash } from "@drenyra/domain";
 import { isMissionError } from "@drenyra/mission-domain";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const mockDb = vi.hoisted(() => ({
 	db: {
@@ -193,7 +194,11 @@ describe("MissionsService", () => {
 		});
 	});
 
-	const eh = "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945";
+	const sealed = [{ id: "ev_1", label: "Balance", type: "ledger" }];
+	let eh: string;
+	beforeAll(async () => {
+		eh = await computeEvidenceBundleHash(sealed);
+	});
 	describe("approveMission", () => {
 		let decisionValues: ReturnType<typeof vi.fn>;
 		beforeEach(() => {
@@ -209,7 +214,7 @@ describe("MissionsService", () => {
 						id: "p1",
 						missionId,
 						version: 1,
-						evidence: [],
+						evidence: sealed,
 						evidenceHash: eh,
 						summary: "T",
 						riskLevel: "LOW",
@@ -282,6 +287,72 @@ describe("MissionsService", () => {
 				}),
 			).rejects.toSatisfy(isMissionError);
 		});
+		it("refuses to approve a proposal without evidence", async () => {
+			sel(
+				m({
+					status: "AWAITING_APPROVAL",
+					version: 2,
+					proposal: {
+						id: "p1",
+						missionId,
+						version: 1,
+						evidence: [],
+						evidenceHash: eh,
+					},
+				}),
+			);
+			await expect(
+				svc.approveMission(missionId, companyId, actorId, {
+					proposalId: "p1",
+					proposalVersion: 1,
+					evidenceHash: eh,
+					expectedMissionVersion: 2,
+				}),
+			).rejects.toMatchObject({ code: "EVIDENCE_MISMATCH", statusCode: 409 });
+		});
+
+		it("verifies pipeline proposals against sourceEvidence, as read back from jsonb", async () => {
+			const sourceEvidence = [
+				{
+					id: "e1",
+					type: "gate-results",
+					hash: "h1",
+					uri: "mission://m/gates",
+				},
+			];
+			const hash = await computeEvidenceBundleHash(sourceEvidence);
+			sel(
+				m({
+					status: "AWAITING_APPROVAL",
+					version: 2,
+					proposal: {
+						id: "p1",
+						missionId,
+						version: 1,
+						evidence: [{ id: "e1", type: "gate-results", label: "Controles" }],
+						// jsonb returns keys in its own order
+						sourceEvidence: [
+							{
+								uri: "mission://m/gates",
+								id: "e1",
+								hash: "h1",
+								type: "gate-results",
+							},
+						],
+						evidenceHash: hash,
+					},
+				}),
+			);
+			upd(m({ status: "APPROVED", version: 3 }));
+			const r = await svc.approveMission(missionId, companyId, actorId, {
+				proposalId: "p1",
+				proposalVersion: 1,
+				evidenceHash: hash,
+				expectedMissionVersion: 2,
+			});
+			expect(r.status).toBe("APPROVED");
+		});
+
 		it("rejects proposal version mismatch", async () => {
 			sel(
 				m({

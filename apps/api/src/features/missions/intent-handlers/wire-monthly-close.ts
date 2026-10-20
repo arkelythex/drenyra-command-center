@@ -30,6 +30,7 @@ import { createFiscalMemoryRecorder } from "./fiscal-memory.recorder";
 import { registerIntentHandler } from "./intent-handlers.registry";
 import { MissionEventStoreEmitter } from "./monthly-close-emitter";
 import { MonthlyCloseIntentHandler } from "./monthly-close-intent.handler";
+import { DrizzleMonthlyCloseMissionStore } from "./monthly-close-mission.store";
 
 /** Env flag that turns the real pipeline on (fail closed: default off). */
 export const MONTHLY_CLOSE_PIPELINE_FLAG = "MONTHLY_CLOSE_PIPELINE_ENABLED";
@@ -51,8 +52,9 @@ export function wireMonthlyCloseHandler(
 	const emitter = new MissionEventStoreEmitter(eventStore);
 	const journalEntryPosting = new JournalEntryPostingService();
 	const periodClose = new PeriodCloseService();
+	const store = new DrizzleMonthlyCloseMissionStore(db);
 	const orchestrator = new MonthlyCloseOrchestrator(
-		db,
+		store,
 		new FiscalNightlyRunUseCase(),
 		journalEntryPosting,
 		periodClose,
@@ -67,6 +69,7 @@ export function wireMonthlyCloseHandler(
 			orchestrator,
 			db,
 			createFiscalMemoryRecorder(),
+			store,
 		),
 	);
 	return true;
