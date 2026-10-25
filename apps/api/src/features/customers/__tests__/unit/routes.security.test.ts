@@ -169,6 +169,36 @@ describe("customer list and creation", () => {
 	});
 });
 
+describe("customer creation errors", () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+		signedIn();
+	});
+
+	it.each([
+		[
+			"El RUC no cumple con el algoritmo de dígito verificador (Módulo 11)",
+			422,
+			"CUSTOMER_RUC_INVALID",
+		],
+		["Ya existe un cliente con ese RUC en la empresa", 409, "CUSTOMER_EXISTS"],
+	])("answers %s with %i", async (message, status, code) => {
+		mocks.createCustomerExecute.mockRejectedValueOnce(new Error(message));
+
+		const response = await request(
+			"/api/customers",
+			json("POST", { companyId: OWN, ...NEW_CUSTOMER }),
+		);
+
+		expect(response.status).toBe(status);
+		expect(await response.json()).toMatchObject({
+			success: false,
+			error: message,
+			code,
+		});
+	});
+});
+
 describe("customer object routes", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();

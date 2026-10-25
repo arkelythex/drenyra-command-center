@@ -12,10 +12,31 @@ import {
 	companyScopeGuard,
 	rejectForeignCompanyId,
 } from "../../../shared/plugins";
-import { ok } from "../../shared/api-response";
+import { fail, ok } from "../../shared/api-response";
 import { CreateCustomerCommand } from "../application/commands/create-customer.command";
 import { ListCustomersQuery } from "../application/queries/list-customers.query";
 import { customerObjectRoutes } from "./object.routes";
+
+/**
+ * Validation refusals of `CreateCustomerCommand`, answered as 4xx so the
+ * person sees why instead of a 500.
+ */
+function createRefusal(
+	error: unknown,
+): { status: 409 | 422; code: string; message: string } | null {
+	if (!(error instanceof Error)) return null;
+	if (error.message.includes("Módulo 11")) {
+		return {
+			status: 422,
+			code: "CUSTOMER_RUC_INVALID",
+			message: error.message,
+		};
+	}
+	if (error.message.startsWith("Ya existe un cliente")) {
+		return { status: 409, code: "CUSTOMER_EXISTS", message: error.message };
+	}
+	return null;
+}
 
 /**
  * Customer routes
@@ -36,11 +57,17 @@ export const customerRoutes = new Elysia({ prefix: "/api/customers" })
 	 */
 	.post(
 		"/",
-		async ({ body }) => {
+		async ({ body, set }) => {
 			const command = new CreateCustomerCommand();
-			const customer = await command.execute(body);
-
-			return ok(customer.toJSON());
+			try {
+				const customer = await command.execute(body);
+				return ok(customer.toJSON());
+			} catch (error) {
+				const refusal = createRefusal(error);
+				if (!refusal) throw error;
+				set.status = refusal.status;
+				return fail(refusal.message, refusal.code);
+			}
 		},
 		{
 			body: z.object({

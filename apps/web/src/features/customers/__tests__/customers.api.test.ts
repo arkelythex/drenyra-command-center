@@ -1,9 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { customersGet } = vi.hoisted(() => ({ customersGet: vi.fn() }));
+const { customersGet, customersPost } = vi.hoisted(() => ({
+	customersGet: vi.fn(),
+	customersPost: vi.fn(),
+}));
 
 vi.mock("@/lib/api-client", () => ({
-	api: { api: { customers: { get: customersGet } } },
+	api: { api: { customers: { get: customersGet, post: customersPost } } },
 }));
 
 import { customersApi } from "../api/customers.api";
@@ -40,5 +43,59 @@ describe("customersApi.list", () => {
 		});
 
 		await expect(customersApi.list({ companyId: "cmp-1" })).rejects.toThrow();
+	});
+});
+
+describe("customersApi.create", () => {
+	beforeEach(() => {
+		customersPost.mockReset();
+	});
+
+	it("registers the customer in the given company", async () => {
+		const customer = {
+			id: "c-2",
+			companyId: "cmp-1",
+			taxId: "20100070970",
+			legalName: "NUEVO S.A.C.",
+		};
+		customersPost.mockResolvedValue({
+			data: { success: true, data: customer },
+			error: null,
+		});
+
+		await expect(
+			customersApi.create({
+				companyId: "cmp-1",
+				taxId: "20100070970",
+				legalName: "NUEVO S.A.C.",
+			}),
+		).resolves.toEqual(customer);
+		expect(customersPost).toHaveBeenCalledWith({
+			companyId: "cmp-1",
+			taxId: "20100070970",
+			legalName: "NUEVO S.A.C.",
+		});
+	});
+
+	it("passes on why the API refused it", async () => {
+		customersPost.mockResolvedValue({
+			data: null,
+			error: {
+				status: 409,
+				value: {
+					success: false,
+					error: "Ya existe un cliente con ese RUC en la empresa",
+					code: "CUSTOMER_EXISTS",
+				},
+			},
+		});
+
+		await expect(
+			customersApi.create({
+				companyId: "cmp-1",
+				taxId: "20100070970",
+				legalName: "NUEVO S.A.C.",
+			}),
+		).rejects.toThrow("Ya existe un cliente con ese RUC en la empresa");
 	});
 });
