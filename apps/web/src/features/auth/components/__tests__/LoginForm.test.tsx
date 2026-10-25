@@ -130,6 +130,52 @@ describe("LoginForm", () => {
 		});
 	});
 
+	it("sends a user without a company to onboarding", async () => {
+		const user = userEvent.setup();
+		mockLogin.mockResolvedValueOnce({ id: "u-1", availableCompanies: [] });
+		window.history.pushState(null, "", "/login?redirect=/invoices");
+
+		render(<LoginForm />);
+		await user.type(
+			screen.getByPlaceholderText(/usuario@drenyra/i),
+			"nueva@empresa.pe",
+		);
+		await user.type(screen.getByPlaceholderText(/••••/), "SecurePass123");
+		await user.click(screen.getByRole("button", { name: /autenticar/i }));
+
+		await waitFor(() => {
+			expect(mockNavigate).toHaveBeenCalledWith({
+				from: "/login",
+				to: "/onboarding",
+			});
+		});
+	});
+
+	it("keeps the intended page for a user with a company", async () => {
+		const user = userEvent.setup();
+		mockLogin.mockResolvedValueOnce({
+			id: "u-1",
+			activeCompanyId: "cmp-1",
+			availableCompanies: [{ companyId: "cmp-1" }],
+		});
+		window.history.pushState(null, "", "/login?redirect=/invoices");
+
+		render(<LoginForm />);
+		await user.type(
+			screen.getByPlaceholderText(/usuario@drenyra/i),
+			"contadora@empresa.pe",
+		);
+		await user.type(screen.getByPlaceholderText(/••••/), "SecurePass123");
+		await user.click(screen.getByRole("button", { name: /autenticar/i }));
+
+		await waitFor(() => {
+			expect(mockNavigate).toHaveBeenCalledWith({
+				from: "/login",
+				to: "/invoices",
+			});
+		});
+	});
+
 	it("should redirect to intended page after login", async () => {
 		const user = userEvent.setup();
 		mockLogin.mockResolvedValueOnce(undefined);

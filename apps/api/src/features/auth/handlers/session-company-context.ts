@@ -1,9 +1,7 @@
 import { createLogger } from "../../../lib/logger";
 import type { AccessibleCompany } from "./company-membership";
 import {
-	ensureUserCompanyMembershipFromRuc,
 	listUserCompanyMemberships,
-	normalizeSessionRuc,
 	normalizeSessionString,
 } from "./company-membership";
 
@@ -76,21 +74,12 @@ export async function enrichSessionUserWithCompanyContext<
 	if (!user) return null;
 
 	const userId = normalizeSessionString(user.id);
-	const ruc = normalizeSessionRuc(user.ruc);
 
 	try {
-		let availableCompanies =
+		// Only memberships grant companies. The RUC typed at signup is never
+		// used to join an existing company: anyone can type a RUC.
+		const availableCompanies =
 			userId.length > 0 ? await listUserCompanyMemberships(userId) : [];
-
-		if (availableCompanies.length === 0 && userId && ruc) {
-			const bootstrapped = await ensureUserCompanyMembershipFromRuc(
-				userId,
-				ruc,
-			);
-			if (bootstrapped) {
-				availableCompanies = [bootstrapped];
-			}
-		}
 
 		const activeCompany = resolveActiveCompany(user, availableCompanies);
 
@@ -112,10 +101,7 @@ export async function enrichSessionUserWithCompanyContext<
 			availableCompanies,
 		};
 	} catch (error) {
-		logger.warn(
-			{ error, userId, ruc },
-			"Failed to resolve session company context",
-		);
+		logger.warn({ error, userId }, "Failed to resolve session company context");
 		return user;
 	}
 }

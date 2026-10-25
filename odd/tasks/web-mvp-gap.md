@@ -132,7 +132,15 @@ Un contador nuevo **no** completaba el flujo. Con los tres primeros bloqueos sor
 - Registro: se quitan los campos MFA de `additionalFields` (además, Better Auth los devolvía en la sesión, incluido el secreto TOTP).
 
 ### Siguiente (en orden)
-1. Onboarding real: alta de empresa con RUC ligada al usuario de Better Auth.
+1. ~~Onboarding real~~: hecho, ver abajo.
 2. Misión de cierre: 409/retomar la existente y no quedar en `RUNNING` sin pipeline.
 3. Migraciones reproducibles (journal y FK de `evidence`).
 4. Reescribir los e2e del camino feliz sobre las rutas actuales.
+
+## Onboarding real (2026-10-25)
+**Crítico (aislamiento por empresa).** Test-first contra Postgres.
+
+- **Hueco cerrado:** al registrarse, y en cada lectura de sesión sin membresías, `ensureUserCompanyMembershipFromRuc` hacía OWNER al usuario de la empresa cuyo RUC había escrito. Cualquiera que conociera el RUC de otra empresa entraba como dueño. Ahora la sesión solo da las empresas de `auth_user_companies`; esa función queda solo para el bootstrap del admin demo.
+- **API:** `POST /api/onboarding/company` (sesión sin empresa activa). Valida el RUC con módulo 11 (`RUC.isValid`), crea la empresa y la membresía OWNER en una transacción y deja un rastro `COMPANY_CREATED` en `auth_audit_logs`. Un RUC que ya tiene empresa responde 409 `RUC_TAKEN` (se entra por invitación). La primera empresa del usuario queda por defecto.
+- **`companies.owner_id`** sigue apuntando a la tabla heredada `users`: cada usuario de Better Auth tiene ahí una fila de relleno con correo `<id>@owners.drenyra.invalid` y sin contraseña usable.
+- **Web:** el asistente quedó en un paso (RUC, razón social, dirección). Busca los datos en `/api/sunat/validate-ruc-online` sin inventarlos, registra la empresa, recarga la sesión y entra a `/cierre-mensual`. Se retiraron los pasos de certificado y marca, que pedían la clave SOL y el certificado y los descartaban. Quien inicia sesión sin empresa va a `/onboarding`.

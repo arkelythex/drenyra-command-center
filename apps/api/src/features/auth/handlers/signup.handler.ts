@@ -12,7 +12,6 @@ import {
 	fingerprintSensitiveValue,
 	resolveClientIpAddress,
 } from "../lib/auth-event-sanitizer";
-import { ensureUserCompanyMembershipFromRuc } from "./company-membership";
 
 const logger = createLogger({ feature: "auth", handler: "signup" });
 
@@ -273,16 +272,8 @@ export async function handleSignup(
 			"Signup completed",
 		);
 
-		if (typeof result.user?.id === "string" && result.user.id.trim()) {
-			try {
-				await ensureUserCompanyMembershipFromRuc(result.user.id, ruc);
-			} catch (membershipError) {
-				logger.warn(
-					{ error: membershipError, ...eventContext, userId: result.user.id },
-					"Failed to bootstrap company membership after signup",
-				);
-			}
-		}
+		// The company is registered later, in onboarding; signing up with a
+		// RUC never grants access to a company that already uses it.
 
 		return ok({
 			message:

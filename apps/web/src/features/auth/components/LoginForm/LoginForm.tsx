@@ -12,7 +12,10 @@ import { FormOptions } from "./components/FormOptions";
 import { PasswordField } from "./components/PasswordField";
 import { SubmitButton } from "./components/SubmitButton";
 import { type LoginFormData, loginSchema } from "./LoginForm.types";
-import { resolveSafeLoginRedirect } from "./LoginForm.utils";
+import {
+	needsCompanyOnboarding,
+	resolveSafeLoginRedirect,
+} from "./LoginForm.utils";
 
 export { resolveSafeLoginRedirect };
 
@@ -35,7 +38,10 @@ export const LoginForm = () => {
 	const onSubmit = (data: LoginFormData) => {
 		startTransition(async () => {
 			try {
-				await login({ email: data.email, password: data.password });
+				const user = await login({
+					email: data.email,
+					password: data.password,
+				});
 
 				toast.success("Acceso Autorizado", {
 					description: "Sincronizando entorno de trabajo...",
@@ -44,7 +50,9 @@ export const LoginForm = () => {
 
 				navigate({
 					from: "/login",
-					to: resolveSafeLoginRedirect(window.location.search),
+					to: needsCompanyOnboarding(user)
+						? "/onboarding"
+						: resolveSafeLoginRedirect(window.location.search),
 				});
 			} catch (error) {
 				const errorMessage =

@@ -4,117 +4,86 @@ import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/features/auth/hooks/useAuth";
+import { authSessionKeys } from "@/features/auth/lib/auth-session.query";
+import { readAuthSessionSnapshot } from "@/features/auth/lib/auth-session-snapshot";
+import { syncActiveCompanyContextFromUser } from "@/lib/company-context";
+import { getAppQueryClient } from "@/lib/query-client";
 import {
-	buildDemoSessionPayload,
-	enableDemoAccess,
-} from "@/features/auth/lib/demo-access";
-import { DEMO_COMPANY_NAME, DEMO_COMPANY_RUC } from "@/lib/company-context";
-import { simulateLatency } from "@/lib/simulated-latency";
+	CompanyOnboardingError,
+	lookupRuc,
+	registerCompany,
+} from "../services/company-onboarding";
 import type {
 	CompanySetupDraft,
-	OnboardingStep,
 	RucLookupResult,
 } from "../types/onboarding.types";
 
+/** Where a newly registered company lands. */
+export const ONBOARDING_HOME = "/cierre-mensual";
+
 interface UseOnboardingResult {
-	currentStep: OnboardingStep;
 	formData: CompanySetupDraft;
 	isSubmitting: boolean;
+	error: string | null;
 	updateData: (data: CompanySetupDraft) => void;
-	nextStep: () => void;
-	prevStep: () => void;
+	submit: () => Promise<void>;
 	fetchRuc: (ruc: string) => Promise<RucLookupResult | null>;
 }
 
 export function useOnboarding(): UseOnboardingResult {
-	const { updateUser, setSession } = useAuthStore();
+	const { user, setSession } = useAuthStore();
 	const navigate = useNavigate();
-	const [currentStep, setStep] = useState<OnboardingStep>("COMPANY");
-	const [formData, setFormData] = useState<CompanySetupDraft>({
-		taxRegime: "RMT",
+	// Start from the RUC typed at signup, when there is one.
+	const [formData, setFormData] = useState<CompanySetupDraft>(() => {
+		const ruc = user?.ruc ?? "";
+		return /^\d{11}$/.test(ruc) ? { ruc } : {};
 	});
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	const updateData = (data: CompanySetupDraft): void => {
+		setError(null);
 		setFormData((prev) => ({ ...prev, ...data }));
 	};
 
-	const nextStep = (): void => {
-		if (currentStep === "COMPANY") setStep("CERTIFICATE");
-		else if (currentStep === "CERTIFICATE") setStep("BRANDING");
-		else if (currentStep === "BRANDING") void finishOnboarding();
+	/** Reloads the session so it carries the new company as the active one. */
+	const refreshSession = async (): Promise<void> => {
+		const snapshot = await readAuthSessionSnapshot();
+		if (!snapshot) return;
+		setSession(snapshot);
+		syncActiveCompanyContextFromUser(snapshot.user);
+		getAppQueryClient()?.setQueryData(authSessionKeys.all, snapshot);
 	};
 
-	const prevStep = (): void => {
-		if (currentStep === "CERTIFICATE") setStep("COMPANY");
-		else if (currentStep === "BRANDING") setStep("CERTIFICATE");
-	};
-
-	const finishOnboarding = async (): Promise<void> => {
+	const submit = async (): Promise<void> => {
 		setIsSubmitting(true);
+		setError(null);
 		try {
-			await simulateLatency(2000);
-
-			const demoAccess = enableDemoAccess({
-				companyName: formData.legalName,
-				ruc: formData.ruc,
-				taxRegime: formData.taxRegime,
+			const company = await registerCompany({
+				ruc: formData.ruc ?? "",
+				businessName: formData.legalName ?? "",
+				address: formData.address || undefined,
 			});
-			const demoSession = buildDemoSessionPayload(demoAccess);
-
-			setSession(demoSession);
-			updateUser({
-				companyId: demoAccess.companyId,
-				companyName: demoAccess.companyName,
-				ruc: demoAccess.ruc,
-				taxRegime: demoAccess.taxRegime,
-				role: "ADMIN",
-				emailVerified: true,
+			await refreshSession();
+			toast.success("Empresa registrada", {
+				description: `${company.companyName} ya está lista para trabajar.`,
 			});
-			setStep("COMPLETE");
-			toast.success("Empresa configurada exitosamente", {
-				description: "Ingresando al dashboard demo operativo.",
-			});
-			await navigate({ to: "/dashboard" });
-		} catch (error: unknown) {
-			toast.error("Error al guardar configuración", {
-				description:
-					error instanceof Error
-						? error.message
-						: "No se pudo completar el onboarding.",
-			});
+			await navigate({ to: ONBOARDING_HOME });
+		} catch (caught: unknown) {
+			setError(
+				caught instanceof CompanyOnboardingError
+					? caught.message
+					: "No se pudo registrar la empresa. Inténtalo de nuevo.",
+			);
 		} finally {
 			setIsSubmitting(false);
 		}
 	};
 
-	// Mock RUC Lookup
 	const fetchRuc = async (ruc: string): Promise<RucLookupResult | null> => {
-		if (ruc.length !== 11) return null;
-		await simulateLatency(800);
-
-		if (ruc === DEMO_COMPANY_RUC) {
-			return {
-				legalName: DEMO_COMPANY_NAME,
-				address: "Av. Javier Prado Este 1021, San Isidro, Lima",
-				taxRegime: "RMT",
-			};
-		}
-
-		return {
-			legalName: `EMPRESA DEMO ${ruc.slice(-4)} S.A.C.`,
-			address: "Av. Principal 100, San Isidro, Lima",
-			taxRegime: "RMT",
-		};
+		if (!/^\d{11}$/.test(ruc)) return null;
+		return lookupRuc(ruc);
 	};
 
-	return {
-		currentStep,
-		formData,
-		isSubmitting,
-		updateData,
-		nextStep,
-		prevStep,
-		fetchRuc,
-	};
+	return { formData, isSubmitting, error, updateData, submit, fetchRuc };
 }
