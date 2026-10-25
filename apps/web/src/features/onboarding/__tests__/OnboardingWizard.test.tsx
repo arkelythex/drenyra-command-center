@@ -1,28 +1,122 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const mocks = vi.hoisted(() => ({
+	navigate: vi.fn(),
+	setSession: vi.fn(),
+	registerCompany: vi.fn(),
+	lookupRuc: vi.fn(),
+	readAuthSessionSnapshot: vi.fn(),
+	syncActiveCompanyContextFromUser: vi.fn(),
+}));
+
+vi.mock("@tanstack/react-router", () => ({
+	useNavigate: () => mocks.navigate,
+}));
+vi.mock("@/features/auth/hooks/useAuth", () => ({
+	useAuthStore: () => ({
+		user: { ruc: "20100000017" },
+		setSession: mocks.setSession,
+	}),
+}));
+vi.mock("@/features/auth/lib/auth-session-snapshot", () => ({
+	readAuthSessionSnapshot: mocks.readAuthSessionSnapshot,
+}));
+vi.mock("@/lib/company-context", () => ({
+	syncActiveCompanyContextFromUser: mocks.syncActiveCompanyContextFromUser,
+}));
+vi.mock("../services/company-onboarding", async (importOriginal) => ({
+	...(await importOriginal<object>()),
+	registerCompany: mocks.registerCompany,
+	lookupRuc: mocks.lookupRuc,
+}));
+
 import { OnboardingWizard } from "../components/OnboardingWizard";
+import { CompanyOnboardingError } from "../services/company-onboarding";
 
-const mocks = vi.hoisted(() => ({ useOnboarding: vi.fn(), nextStep: vi.fn(), prevStep: vi.fn() }));
-vi.mock("../hooks/useOnboarding", () => ({ useOnboarding: mocks.useOnboarding }));
-vi.mock("../components/steps/CompanyStep", () => ({ CompanyStep: ({ onNext }: { onNext: () => void }) => <button type="button" onClick={onNext}>Continuar empresa</button> }));
-vi.mock("../components/steps/CertificateStep", () => ({ CertificateStep: ({ onBack, onSkip }: { onBack: () => void; onSkip: () => void }) => <><button type="button" onClick={onBack}>Volver certificado</button><button type="button" onClick={onSkip}>Omitir certificado</button></> }));
-vi.mock("../components/steps/BrandingStep", () => ({ BrandingStep: ({ onSubmit }: { onSubmit: () => void }) => <button type="button" onClick={onSubmit}>Finalizar marca</button> }));
-
-function renderWizard(currentStep: "COMPANY" | "CERTIFICATE" | "BRANDING") {
-	mocks.useOnboarding.mockReturnValue({ currentStep, formData: { taxRegime: "RMT" }, isSubmitting: false, updateData: vi.fn(), nextStep: mocks.nextStep, prevStep: mocks.prevStep, fetchRuc: vi.fn() });
-	return render(<OnboardingWizard />);
-}
+const SESSION = {
+	session: { id: "s-1" },
+	user: { id: "u-1", activeCompanyId: "cmp-1" },
+};
 
 describe("OnboardingWizard", () => {
-	it("renders the onboarding heading and company step", () => {
-		renderWizard("COMPANY");
-		expect(screen.getByRole("heading", { name: "Activa Tu Entorno" })).toBeInTheDocument();
-		expect(screen.getByText("Continuar empresa")).toBeInTheDocument();
+	beforeEach(() => {
+		vi.clearAllMocks();
+		mocks.lookupRuc.mockResolvedValue({
+			legalName: "ANDINA S.A.C.",
+			address: "AV. LIMA 1",
+		});
+		mocks.readAuthSessionSnapshot.mockResolvedValue(SESSION);
 	});
-	it("advances from the company step", () => {
-		renderWizard("COMPANY"); fireEvent.click(screen.getByText("Continuar empresa")); expect(mocks.nextStep).toHaveBeenCalledOnce();
+
+	it("starts from the RUC given at signup and fills SUNAT's data", async () => {
+		render(<OnboardingWizard />);
+
+		const ruc = screen.getByLabelText("RUC");
+		expect(ruc).toHaveValue("20100000017");
+		fireEvent.blur(ruc);
+
+		await waitFor(() =>
+			expect(screen.getByLabelText("Razón social")).toHaveValue(
+				"ANDINA S.A.C.",
+			),
+		);
+		expect(screen.getByLabelText("Dirección fiscal (opcional)")).toHaveValue(
+			"AV. LIMA 1",
+		);
 	});
-	it("supports navigating back from the certificate step", () => {
-		renderWizard("CERTIFICATE"); fireEvent.click(screen.getByText("Volver certificado")); expect(mocks.prevStep).toHaveBeenCalledOnce();
+
+	it("registers the company, reloads the session and enters the app", async () => {
+		mocks.registerCompany.mockResolvedValue({
+			companyId: "cmp-1",
+			companyName: "ANDINA S.A.C.",
+		});
+		render(<OnboardingWizard />);
+		fireEvent.change(screen.getByLabelText("Razón social"), {
+			target: { value: "ANDINA S.A.C." },
+		});
+
+		fireEvent.click(screen.getByRole("button", { name: "Registrar empresa" }));
+
+		await waitFor(() =>
+			expect(mocks.navigate).toHaveBeenCalledWith({ to: "/cierre-mensual" }),
+		);
+		expect(mocks.registerCompany).toHaveBeenCalledWith({
+			ruc: "20100000017",
+			businessName: "ANDINA S.A.C.",
+			address: undefined,
+		});
+		expect(mocks.setSession).toHaveBeenCalledWith(SESSION);
+		expect(mocks.syncActiveCompanyContextFromUser).toHaveBeenCalledWith(
+			SESSION.user,
+		);
+	});
+
+	it("shows why a taken RUC was refused and stays", async () => {
+		mocks.registerCompany.mockRejectedValue(
+			new CompanyOnboardingError(
+				"Esta empresa ya está registrada. Pide a su administrador que te invite.",
+				"RUC_TAKEN",
+			),
+		);
+		render(<OnboardingWizard />);
+		fireEvent.change(screen.getByLabelText("Razón social"), {
+			target: { value: "OTRA" },
+		});
+
+		fireEvent.click(screen.getByRole("button", { name: "Registrar empresa" }));
+
+		expect(await screen.findByRole("alert")).toHaveTextContent(
+			"Pide a su administrador que te invite",
+		);
+		expect(mocks.navigate).not.toHaveBeenCalled();
+	});
+
+	it("does not submit without a business name", () => {
+		render(<OnboardingWizard />);
+
+		expect(
+			screen.getByRole("button", { name: "Registrar empresa" }),
+		).toBeDisabled();
 	});
 });

@@ -12,7 +12,6 @@ const { listUserCompanyMemberships } = vi.hoisted(() => ({
 vi.mock("../../handlers/company-membership", async (importOriginal) => ({
 	...(await importOriginal<object>()),
 	listUserCompanyMemberships,
-	ensureUserCompanyMembershipFromRuc: vi.fn(),
 }));
 
 import { enrichSessionUserWithCompanyContext } from "../../handlers/session-company-context";

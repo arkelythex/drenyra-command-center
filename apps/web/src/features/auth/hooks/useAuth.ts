@@ -17,7 +17,8 @@ import type {
  * que el estado sea un "God Object".
  */
 interface AuthActions {
-	login: (credentials: LoginCredentials) => Promise<void>;
+	/** Resolves with the signed-in user. */
+	login: (credentials: LoginCredentials) => Promise<User>;
 	logout: () => Promise<void>;
 	setSession: (session: { user: User; session: Session | null } | null) => void;
 	updateUser: (patch: Partial<User>) => void;
@@ -64,6 +65,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 						user,
 						session,
 					});
+					return user;
 				} catch (error) {
 					set({ isLoading: false });
 					// El error ya fue capturado y mapeado en AuthService

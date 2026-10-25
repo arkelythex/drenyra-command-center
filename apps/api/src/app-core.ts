@@ -24,6 +24,7 @@ import { bankingProvidersRoutes } from "./features/banking-providers/api/routes"
 import { billRoutes, invoiceRoutes } from "./features/billing";
 import { cashflowRoutes } from "./features/cashflow/api/routes";
 import { clientCommsModule } from "./features/client-comms";
+import { onboardingRoutes } from "./features/company/api/onboarding.route";
 import { companySettingsRoute } from "./features/company/api/settings.route";
 import { customerRoutes } from "./features/customers";
 import { dashboardModule } from "./features/dashboard";
@@ -378,6 +379,7 @@ const baseApp = new Elysia()
 	.use(pseComplianceRoutes)
 	.use(platformMcpModule)
 	.use(companySettingsRoute)
+	.use(onboardingRoutes)
 	.use(journalEntryRoutes)
 	.use(expedientesModule)
 	.use(detractionsModule)

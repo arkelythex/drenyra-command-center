@@ -1,3 +1,5 @@
+import type { User } from "../../types/auth.types";
+
 export function resolveSafeLoginRedirect(search: string): string {
 	const redirect = new URLSearchParams(search).get("redirect");
 
@@ -9,4 +11,11 @@ export function resolveSafeLoginRedirect(search: string): string {
 		!redirect.includes("://");
 
 	return isSameAppPath ? redirect : "/";
+}
+
+/** A signed-in user with no company yet registers one before anything else. */
+export function needsCompanyOnboarding(user: User | null | undefined): boolean {
+	if (!user) return false;
+	const companies = user.availableCompanies ?? [];
+	return !user.activeCompanyId && !user.companyId && companies.length === 0;
 }
