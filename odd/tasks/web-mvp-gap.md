@@ -160,3 +160,8 @@ Un contador nuevo **no** completaba el flujo. Con los tres primeros bloqueos sor
 
 - Si la búsqueda de cliente en «Nueva factura» no encuentra nada, aparece «Registrar cliente»: RUC (prellenado si se buscó un RUC) y razón social (consultada en SUNAT cuando hay conexión). Al guardar queda seleccionado.
 - `POST /api/customers` responde 422 `CUSTOMER_RUC_INVALID` y 409 `CUSTOMER_EXISTS` en vez de 500.
+
+## Rechazo con motivo y modo dev (2026-10-25)
+
+- «Rechazar» en la aprobación de la misión queda deshabilitado hasta escribir un motivo (la API ya exigía `reason` de al menos 1 carácter y respondía error).
+- `vite` en desarrollo ya no queda en blanco: el plugin `vite-plugins/server-only-stubs.ts` sustituye `node:crypto` por un stub que solo falla si el navegador llama de verdad a `createHash`. El build no cambia.

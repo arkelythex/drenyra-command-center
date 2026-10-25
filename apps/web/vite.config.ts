@@ -14,6 +14,7 @@ import {
 	resolveManualChunk,
 } from "./vite-plugins/bundle-rules";
 import { cspPlugin } from "./vite-plugins/csp";
+import { serverOnlyStubsPlugin } from "./vite-plugins/server-only-stubs";
 
 const enableReactCompiler =
 	process.env.NODE_ENV === "production" || process.env.REACT_COMPILER === "1";
@@ -41,6 +42,7 @@ export default defineConfig({
 		},
 	},
 	plugins: [
+		serverOnlyStubsPlugin(),
 		createApiDevServerPlugin(),
 		TanStackRouterVite({
 			generatedRouteTree: "./src/routeTree.gen.ts",
