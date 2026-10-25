@@ -23,6 +23,7 @@ import { MissionLeaseService } from "../../mission-lease.service";
 import { runMissionRecovery } from "../../mission-recovery.hook";
 import { MissionsService } from "../../missions.service";
 import { ReceiptSigningService } from "../../receipt-signing.service";
+import { idleIntentHandlers } from "../support/idle-intent-handlers";
 
 const describeDb = process.env.RUN_DB_TESTS === "1" ? describe : describe.skip;
 
@@ -55,7 +56,7 @@ async function createFixture(): Promise<Fixture> {
 }
 
 async function createMission() {
-	const service = new MissionsService(db);
+	const service = new MissionsService(db, idleIntentHandlers());
 	return service.createMission(fixture.companyId, {
 		fiscalPeriod: "2026-07",
 		intent: "monthly-close",
@@ -93,7 +94,7 @@ describeDb("durable mission recovery (PostgreSQL)", () => {
 	});
 
 	it("recovers an abruptly stopped RUNNING mission without duplicate events and persists a verifiable receipt", async () => {
-		const service = new MissionsService(db);
+		const service = new MissionsService(db, idleIntentHandlers());
 		const created = await createMission();
 		const running = await service.executeMission(
 			created.id,

@@ -18,6 +18,11 @@ export function mapAPIErrorToHarnessError(
 			? (record.error as Record<string, unknown>)
 			: record;
 
+	const details =
+		typeof nested.details === "object" && nested.details !== null
+			? (nested.details as Record<string, unknown>)
+			: undefined;
+
 	return {
 		code: typeof nested.code === "string" ? nested.code : "UNKNOWN",
 		message:
@@ -25,6 +30,7 @@ export function mapAPIErrorToHarnessError(
 				? nested.message
 				: `Error del servidor (${status})`,
 		statusCode: status,
+		...(details ? { details } : {}),
 		isTimeout: false,
 	};
 }

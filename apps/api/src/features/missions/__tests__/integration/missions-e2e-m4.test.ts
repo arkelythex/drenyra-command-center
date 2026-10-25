@@ -21,6 +21,7 @@ import { MissionsController } from "../../missions.controller";
 import { MissionsService } from "../../missions.service";
 import { ReceiptSigningService } from "../../receipt-signing.service";
 import { MissionEventStore } from "../../sse/mission-event-store";
+import { idleIntentHandlers } from "../support/idle-intent-handlers";
 
 const mockDb = vi.hoisted(() => ({
 	db: {
@@ -143,7 +144,7 @@ describe("M4 E2E — Monthly close with signed receipts", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		signer = new ReceiptSigningService();
-		svc = new MissionsService(mockDb.db as any, undefined, signer);
+		svc = new MissionsService(mockDb.db as any, idleIntentHandlers(), signer);
 		ctrl = new MissionsController(svc, new MissionEventStore(mockDb.db as any));
 	});
 
