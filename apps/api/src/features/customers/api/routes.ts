@@ -8,7 +8,10 @@
 
 import { Elysia } from "elysia";
 import { z } from "zod";
-import { companyScopeGuard } from "../../../shared/plugins";
+import {
+	companyScopeGuard,
+	rejectForeignCompanyId,
+} from "../../../shared/plugins";
 import { ok } from "../../shared/api-response";
 import { CreateCustomerCommand } from "../application/commands/create-customer.command";
 import { ListCustomersQuery } from "../application/queries/list-customers.query";
@@ -24,6 +27,8 @@ import { customerObjectRoutes } from "./object.routes";
 
 export const customerRoutes = new Elysia({ prefix: "/api/customers" })
 	.use(companyScopeGuard({ allowHeaderFallback: true }))
+	// The companyId in the query or body must be the session's company.
+	.onBeforeHandle(rejectForeignCompanyId)
 	/**
 	 * POST /api/customers
 	 *

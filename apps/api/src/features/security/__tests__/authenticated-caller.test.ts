@@ -6,6 +6,7 @@ import {
 	resolveAuthenticatedCaller,
 	resolveTrustedMachineCallerAllowlist,
 } from "../authenticated-caller";
+import { resolveAuthenticatedCaller as resolveAuthenticatedCallerModule } from "../authenticated-caller/index";
 
 describe("authenticated-caller", () => {
 	const originalEnv = { ...process.env };
@@ -235,6 +236,57 @@ describe("authenticated-caller", () => {
 			ok: false,
 			status: 403,
 			code: "SPOOFABLE_HEADER_CONTEXT",
+		});
+	});
+
+	it.each([
+		["authenticated-caller", resolveAuthenticatedCaller],
+		["authenticated-caller/middleware", resolveAuthenticatedCallerModule],
+	])(
+		"never trusts identity headers in production (%s)",
+		async (_name, resolve) => {
+			process.env.NODE_ENV = "production";
+			vi.spyOn(auth.api, "getSession").mockResolvedValue(null as never);
+
+			const result = await resolve({
+				headers: {
+					"x-auth-user-id": "usr-spoof",
+					"x-user-id": "11111111-1111-1111-1111-111111111111",
+					"x-user-role": "admin",
+					"x-company-id": "cmp-1",
+				},
+				requireSession: false,
+				allowHeaderFallback: true,
+				requireTenant: true,
+				requireRole: true,
+			});
+
+			expect(result).toMatchObject({
+				ok: false,
+				status: 403,
+				code: "SPOOFABLE_HEADER_CONTEXT",
+			});
+		},
+	);
+
+	it("still accepts identity headers outside production when a route allows it", async () => {
+		vi.spyOn(auth.api, "getSession").mockResolvedValue(null as never);
+
+		const result = await resolveAuthenticatedCaller({
+			headers: {
+				"x-user-id": "11111111-1111-1111-1111-111111111111",
+				"x-user-role": "admin",
+				"x-company-id": "cmp-1",
+			},
+			requireSession: false,
+			allowHeaderFallback: true,
+			requireTenant: true,
+			requireRole: true,
+		});
+
+		expect(result).toMatchObject({
+			ok: true,
+			caller: { kind: AUTHENTICATED_CALLER_KIND.HEADER_FALLBACK },
 		});
 	});
 

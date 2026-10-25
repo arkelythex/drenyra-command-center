@@ -1,10 +1,34 @@
+/**
+ * Customers belong to one company: only a signed-in member of that company
+ * may list, create, read, change or delete them. The company comes from the
+ * session, never from a header or parameter the caller can forge.
+ */
 import { Elysia } from "elysia";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({
+	resolveSessionContext: vi.fn(),
+	createCustomerExecute: vi.fn(),
+	listCustomersExecute: vi.fn(),
 	getCustomerExecute: vi.fn(),
 	updateCustomerExecute: vi.fn(),
 	deleteCustomerExecute: vi.fn(),
+}));
+
+vi.mock("../../../security/session-context", () => ({
+	resolveSessionContext: mocks.resolveSessionContext,
+}));
+
+vi.mock("../../application/commands/create-customer.command", () => ({
+	CreateCustomerCommand: class {
+		execute = mocks.createCustomerExecute;
+	},
+}));
+
+vi.mock("../../application/queries/list-customers.query", () => ({
+	ListCustomersQuery: class {
+		execute = mocks.listCustomersExecute;
+	},
 }));
 
 vi.mock("../../application/queries/get-customer.query", () => ({
@@ -27,186 +51,219 @@ vi.mock("../../application/commands/delete-customer.command", () => ({
 
 import { customerRoutes } from "../../api/routes";
 
+const OWN = "11111111-1111-4111-8111-111111111111";
+const FOREIGN = "22222222-2222-4222-8222-222222222222";
 const app = new Elysia().use(customerRoutes);
 
-describe("customerRoutes tenant object authorization", () => {
+function signedIn(companyId = OWN) {
+	mocks.resolveSessionContext.mockResolvedValue({
+		ok: true,
+		context: {
+			userId: "user-1",
+			authUserId: "user-1",
+			legacyUserId: null,
+			role: "admin",
+			companyId,
+		},
+	});
+}
+
+function signedOut() {
+	mocks.resolveSessionContext.mockResolvedValue({
+		ok: false,
+		status: 401,
+		error: "Unauthorized",
+		code: "UNAUTHORIZED",
+	});
+}
+
+function request(path: string, init: RequestInit = {}) {
+	return app.handle(new Request(`http://localhost${path}`, init));
+}
+
+function json(method: string, body: unknown, headers: HeadersInit = {}) {
+	return {
+		method,
+		headers: { "Content-Type": "application/json", ...headers },
+		body: JSON.stringify(body),
+	};
+}
+
+const NEW_CUSTOMER = { taxId: "20100070970", legalName: "CLIENTE SAC" };
+const customer = (companyId = OWN) => ({
+	toJSON: () => ({ id: "customer-1", companyId, ...NEW_CUSTOMER }),
+});
+
+describe("customer list and creation", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 	});
 
-	it("fails closed when object GET omits X-Company-Id", async () => {
-		const response = await app.handle(
-			new Request("http://localhost/api/customers/customer-1"),
-		);
-		const body = await response.json();
+	it("lists the session company's customers", async () => {
+		signedIn();
+		mocks.listCustomersExecute.mockResolvedValueOnce([customer()]);
 
-		expect(response.status).toBe(400);
-		expect(body).toMatchObject({
-			success: false,
-			code: "COMPANY_SCOPE_REQUIRED",
-		});
-		expect(mocks.getCustomerExecute).not.toHaveBeenCalled();
+		const response = await request(`/api/customers?companyId=${OWN}`);
+
+		expect(response.status).toBe(200);
+		expect(mocks.listCustomersExecute).toHaveBeenCalledWith(
+			expect.objectContaining({ companyId: OWN }),
+		);
 	});
 
-	it("passes object GET through the scoped company loader", async () => {
+	it("refuses to list another company's customers", async () => {
+		signedIn();
+
+		const response = await request(`/api/customers?companyId=${FOREIGN}`);
+
+		expect(response.status).toBe(403);
+		expect(mocks.listCustomersExecute).not.toHaveBeenCalled();
+	});
+
+	it("refuses to list without a session", async () => {
+		signedOut();
+
+		const response = await request(`/api/customers?companyId=${OWN}`);
+
+		expect(response.status).toBe(403);
+		expect(mocks.listCustomersExecute).not.toHaveBeenCalled();
+	});
+
+	it("creates a customer in the session company", async () => {
+		signedIn();
+		mocks.createCustomerExecute.mockResolvedValueOnce(customer());
+
+		const response = await request(
+			"/api/customers",
+			json("POST", { companyId: OWN, ...NEW_CUSTOMER }),
+		);
+
+		expect(response.status).toBe(200);
+		expect(mocks.createCustomerExecute).toHaveBeenCalledWith(
+			expect.objectContaining({ companyId: OWN, ...NEW_CUSTOMER }),
+		);
+	});
+
+	it("refuses to create a customer for another company", async () => {
+		signedIn();
+
+		const response = await request(
+			"/api/customers",
+			json("POST", { companyId: FOREIGN, ...NEW_CUSTOMER }),
+		);
+
+		expect(response.status).toBe(403);
+		expect(mocks.createCustomerExecute).not.toHaveBeenCalled();
+	});
+
+	it("refuses to create a customer without a session", async () => {
+		signedOut();
+
+		const response = await request(
+			"/api/customers",
+			json("POST", { companyId: OWN, ...NEW_CUSTOMER }),
+		);
+
+		expect(response.status).toBe(403);
+		expect(mocks.createCustomerExecute).not.toHaveBeenCalled();
+	});
+});
+
+describe("customer object routes", () => {
+	beforeEach(() => {
+		vi.clearAllMocks();
+	});
+
+	it.each([
+		["GET", undefined],
+		["PATCH", { legalName: "OTRO" }],
+		["DELETE", undefined],
+	])(
+		"%s without a session is refused, even with X-Company-Id",
+		async (method, body) => {
+			signedOut();
+
+			const response = await request(
+				"/api/customers/customer-1",
+				body
+					? json(method, body, { "X-Company-Id": OWN })
+					: { method, headers: { "X-Company-Id": OWN } },
+			);
+
+			expect(response.status).toBe(401);
+			expect(await response.json()).toMatchObject({
+				success: false,
+				code: "COMPANY_SCOPE_REQUIRED",
+			});
+			expect(mocks.getCustomerExecute).not.toHaveBeenCalled();
+			expect(mocks.updateCustomerExecute).not.toHaveBeenCalled();
+			expect(mocks.deleteCustomerExecute).not.toHaveBeenCalled();
+		},
+	);
+
+	it("reads within the session company, ignoring a forged X-Company-Id", async () => {
+		signedIn();
 		mocks.getCustomerExecute.mockResolvedValueOnce({
-			customer: {
-				toJSON: () => ({ id: "customer-1", companyId: "company-1" }),
-			},
+			customer: customer(),
 			invoices: undefined,
 		});
 
-		const response = await app.handle(
-			new Request("http://localhost/api/customers/customer-1", {
-				headers: { "X-Company-Id": "company-1" },
-			}),
-		);
+		const response = await request("/api/customers/customer-1", {
+			headers: { "X-Company-Id": FOREIGN },
+		});
 
 		expect(response.status).toBe(200);
 		expect(mocks.getCustomerExecute).toHaveBeenCalledWith({
 			id: "customer-1",
-			companyId: "company-1",
+			companyId: OWN,
 			includeInvoices: undefined,
 			invoiceLimit: undefined,
 		});
 	});
 
-	it("returns not found instead of leaking cross-tenant customers", async () => {
-		mocks.getCustomerExecute.mockRejectedValueOnce(
-			new Error("Cliente no encontrado"),
-		);
+	it("updates within the session company", async () => {
+		signedIn();
+		mocks.updateCustomerExecute.mockResolvedValueOnce(customer());
 
-		const response = await app.handle(
-			new Request("http://localhost/api/customers/customer-1", {
-				headers: { "X-Company-Id": "other-company" },
-			}),
-		);
-		const body = await response.json();
-
-		expect(response.status).toBe(404);
-		expect(body).toMatchObject({
-			success: false,
-			code: "CUSTOMER_NOT_FOUND",
-		});
-	});
-
-	it("fails closed when object PATCH omits X-Company-Id", async () => {
-		const response = await app.handle(
-			new Request("http://localhost/api/customers/customer-1", {
-				method: "PATCH",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ legalName: "Empresa Actualizada SAC" }),
-			}),
-		);
-		const body = await response.json();
-
-		expect(response.status).toBe(400);
-		expect(body).toMatchObject({
-			success: false,
-			code: "COMPANY_SCOPE_REQUIRED",
-		});
-		expect(mocks.updateCustomerExecute).not.toHaveBeenCalled();
-	});
-
-	it("passes object PATCH through the scoped company command", async () => {
-		mocks.updateCustomerExecute.mockResolvedValueOnce({
-			toJSON: () => ({ id: "customer-1", companyId: "company-1" }),
-		});
-
-		const response = await app.handle(
-			new Request("http://localhost/api/customers/customer-1", {
-				method: "PATCH",
-				headers: {
-					"Content-Type": "application/json",
-					"X-Company-Id": "company-1",
-				},
-				body: JSON.stringify({ legalName: "Empresa Actualizada SAC" }),
-			}),
+		const response = await request(
+			"/api/customers/customer-1",
+			json("PATCH", { legalName: "OTRO" }, { "X-Company-Id": FOREIGN }),
 		);
 
 		expect(response.status).toBe(200);
 		expect(mocks.updateCustomerExecute).toHaveBeenCalledWith({
 			id: "customer-1",
-			companyId: "company-1",
-			legalName: "Empresa Actualizada SAC",
+			companyId: OWN,
+			legalName: "OTRO",
 		});
 	});
 
-	it("returns not found instead of updating cross-tenant customers", async () => {
-		mocks.updateCustomerExecute.mockRejectedValueOnce(
-			new Error("Cliente no encontrado"),
-		);
+	it("deletes within the session company", async () => {
+		signedIn();
+		mocks.deleteCustomerExecute.mockResolvedValueOnce(customer());
 
-		const response = await app.handle(
-			new Request("http://localhost/api/customers/customer-1", {
-				method: "PATCH",
-				headers: {
-					"Content-Type": "application/json",
-					"X-Company-Id": "other-company",
-				},
-				body: JSON.stringify({ legalName: "Empresa Actualizada SAC" }),
-			}),
-		);
-		const body = await response.json();
-
-		expect(response.status).toBe(404);
-		expect(body).toMatchObject({
-			success: false,
-			code: "CUSTOMER_NOT_FOUND",
+		const response = await request("/api/customers/customer-1", {
+			method: "DELETE",
+			headers: { "X-Company-Id": FOREIGN },
 		});
-	});
-
-	it("fails closed when object DELETE omits X-Company-Id", async () => {
-		const response = await app.handle(
-			new Request("http://localhost/api/customers/customer-1", {
-				method: "DELETE",
-			}),
-		);
-		const body = await response.json();
-
-		expect(response.status).toBe(400);
-		expect(body).toMatchObject({
-			success: false,
-			code: "COMPANY_SCOPE_REQUIRED",
-		});
-		expect(mocks.deleteCustomerExecute).not.toHaveBeenCalled();
-	});
-
-	it("passes object DELETE through the scoped company command", async () => {
-		mocks.deleteCustomerExecute.mockResolvedValueOnce({
-			toJSON: () => ({ id: "customer-1", companyId: "company-1" }),
-		});
-
-		const response = await app.handle(
-			new Request("http://localhost/api/customers/customer-1", {
-				method: "DELETE",
-				headers: { "X-Company-Id": "company-1" },
-			}),
-		);
 
 		expect(response.status).toBe(200);
 		expect(mocks.deleteCustomerExecute).toHaveBeenCalledWith({
 			id: "customer-1",
-			companyId: "company-1",
+			companyId: OWN,
 		});
 	});
 
-	it("returns not found instead of deleting cross-tenant customers", async () => {
-		mocks.deleteCustomerExecute.mockRejectedValueOnce(
+	it("answers not found for a customer of another company", async () => {
+		signedIn();
+		mocks.getCustomerExecute.mockRejectedValueOnce(
 			new Error("Cliente no encontrado"),
 		);
 
-		const response = await app.handle(
-			new Request("http://localhost/api/customers/customer-1", {
-				method: "DELETE",
-				headers: { "X-Company-Id": "other-company" },
-			}),
-		);
-		const body = await response.json();
+		const response = await request("/api/customers/customer-1");
 
 		expect(response.status).toBe(404);
-		expect(body).toMatchObject({
-			success: false,
+		expect(await response.json()).toMatchObject({
 			code: "CUSTOMER_NOT_FOUND",
 		});
 	});
