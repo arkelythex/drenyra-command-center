@@ -155,3 +155,8 @@ Un contador nuevo **no** completaba el flujo. Con los tres primeros bloqueos sor
 - `/api/customers` aceptaba listar y crear clientes de cualquier empresa sin sesión (el guard con `allowHeaderFallback` deja pasar sin contexto). Ahora rechaza el `companyId` ajeno (`rejectForeignCompanyId`) y las rutas `/:id` usan la empresa de la sesión, no la cabecera `X-Company-Id`.
 - `allowHeaderFallback` aceptaba en cualquier entorno una identidad inventada con `x-user-id`/`x-user-role`/`x-company-id` (43 módulos lo usan). En producción ya no: solo cuenta la sesión de Better Auth o un caller de máquina firmado. En desarrollo y tests sigue igual.
 - El menú «…» de la tarjeta de factura sí abre con ratón y teclado; el fallo de A2 venía de que la prueba hacía clic sobre la tarjeta arrastrable (que también se llama «Más opciones» por su contenido).
+
+## Alta de clientes desde la factura (2026-10-25)
+
+- Si la búsqueda de cliente en «Nueva factura» no encuentra nada, aparece «Registrar cliente»: RUC (prellenado si se buscó un RUC) y razón social (consultada en SUNAT cuando hay conexión). Al guardar queda seleccionado.
+- `POST /api/customers` responde 422 `CUSTOMER_RUC_INVALID` y 409 `CUSTOMER_EXISTS` en vez de 500.

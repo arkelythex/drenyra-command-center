@@ -1,10 +1,11 @@
-import { Building2, Search, User } from "lucide-react";
+import { Building2, Plus, Search, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { customersApi } from "@/features/customers/api/customers.api";
 import { useDesignTokens } from "@/lib/design-tokens";
 import { captureError } from "@/lib/monitoring";
+import { NewCustomerForm } from "./NewCustomerForm";
 import type { InvoiceCustomerOption } from "./types";
 
 interface CustomerSelectorProps {
@@ -22,6 +23,7 @@ export const CustomerSelector = ({
 	const { zIndex } = useDesignTokens();
 	const [customers, setCustomers] = useState<InvoiceCustomerOption[]>([]);
 	const [isOpen, setIsOpen] = useState(false);
+	const [registering, setRegistering] = useState(false);
 
 	useEffect(() => {
 		if (!isOpen) return undefined;
@@ -84,6 +86,7 @@ export const CustomerSelector = ({
 					value={selectedCustomer ? selectedCustomer.legalName : query}
 					onChange={(e) => {
 						setQuery(e.target.value);
+						setRegistering(false);
 						if (selectedCustomer) onSelect(null);
 						setIsOpen(true);
 					}}
@@ -132,6 +135,19 @@ export const CustomerSelector = ({
 								</div>
 							</button>
 						))
+					) : registering ? (
+						<NewCustomerForm
+							companyId={companyId}
+							initialQuery={query}
+							onCreated={(created) => {
+								setCustomers((current) => [created, ...current]);
+								onSelect(created);
+								setQuery(created.legalName);
+								setRegistering(false);
+								setIsOpen(false);
+							}}
+							onCancel={() => setRegistering(false)}
+						/>
 					) : (
 						<div className="px-5 py-8 text-center flex flex-col items-center gap-2">
 							<div className="p-3 rounded-full bg-muted/30">
@@ -140,6 +156,14 @@ export const CustomerSelector = ({
 							<div className="text-label font-black uppercase tracking-widest text-muted-foreground/40">
 								No se encontraron registros
 							</div>
+							<button
+								type="button"
+								onClick={() => setRegistering(true)}
+								className="mt-2 inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-bold text-foreground hover:bg-muted"
+							>
+								<Plus size={14} aria-hidden="true" />
+								Registrar cliente
+							</button>
 						</div>
 					)}
 				</div>
