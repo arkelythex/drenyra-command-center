@@ -149,3 +149,9 @@ Un contador nuevo **no** completaba el flujo. Con los tres primeros bloqueos sor
 - Un segundo inicio del mismo periodo respondía 500 por el índice único `acct_missions_company_period_intent_unq`. Ahora responde 409 `MISSION_STATE_CONFLICT` con `details.missionId` y `status`, y la web carga esa misión: la sigue si ya corrió o la ejecuta si quedó en `DRAFT`.
 - Sin `MONTHLY_CLOSE_PIPELINE_ENABLED=true` no hay handler y la misión quedaba en `RUNNING` para siempre. Ahora `execute` responde 503 `EXTERNAL_SERVICE_UNAVAILABLE` antes de tocarla, y la misión sigue en `DRAFT` para correr cuando se encienda el flag.
 - Probado contra Postgres y con la app real, con el flag apagado (409 y 503, la misión queda en `DRAFT`) y encendido (409, y luego `RUNNING` → `AWAITING_APPROVAL`).
+
+## Clientes y cabeceras de identidad (2026-10-25)
+
+- `/api/customers` aceptaba listar y crear clientes de cualquier empresa sin sesión (el guard con `allowHeaderFallback` deja pasar sin contexto). Ahora rechaza el `companyId` ajeno (`rejectForeignCompanyId`) y las rutas `/:id` usan la empresa de la sesión, no la cabecera `X-Company-Id`.
+- `allowHeaderFallback` aceptaba en cualquier entorno una identidad inventada con `x-user-id`/`x-user-role`/`x-company-id` (43 módulos lo usan). En producción ya no: solo cuenta la sesión de Better Auth o un caller de máquina firmado. En desarrollo y tests sigue igual.
+- El menú «…» de la tarjeta de factura sí abre con ratón y teclado; el fallo de A2 venía de que la prueba hacía clic sobre la tarjeta arrastrable (que también se llama «Más opciones» por su contenido).

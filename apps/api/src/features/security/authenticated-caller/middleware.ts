@@ -16,6 +16,16 @@ import type {
 	ResolveAuthenticatedCallerInput,
 } from "./types";
 
+/**
+ * Identity headers (x-user-id, x-user-role, x-company-id) are whatever the
+ * caller sends, so production never accepts them as proof of who the caller
+ * is: only a Better Auth session or a signed machine caller counts there.
+ */
+function headerIdentityAllowed(allowHeaderFallback?: boolean): boolean {
+	if (!allowHeaderFallback) return false;
+	return (process.env.NODE_ENV ?? "").toLowerCase() !== "production";
+}
+
 export async function resolveAuthenticatedCaller(
 	input: ResolveAuthenticatedCallerInput,
 ): Promise<AuthenticatedCallerResult> {
@@ -151,7 +161,7 @@ export async function resolveAuthenticatedCaller(
 		};
 	}
 
-	if (!input.allowHeaderFallback) {
+	if (!headerIdentityAllowed(input.allowHeaderFallback)) {
 		if (hasSpoofableHeaderContext(input.headers)) {
 			return {
 				ok: false,

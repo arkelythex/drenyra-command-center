@@ -1,21 +1,25 @@
 import { Elysia } from "elysia";
 import { z } from "zod";
+import type { CompanyContext } from "../../../shared/plugins";
 import { fail, ok } from "../../shared/api-response";
 import { DeleteCustomerCommand } from "../application/commands/delete-customer.command";
 import { UpdateCustomerCommand } from "../application/commands/update-customer.command";
 import { GetCustomerQuery } from "../application/queries/get-customer.query";
 
-function readRequiredCompanyId(
-	headers: Record<string, unknown>,
-): string | null {
-	const direct = headers["x-company-id"] ?? headers["X-Company-Id"];
-	return typeof direct === "string" && direct.trim() ? direct.trim() : null;
+/**
+ * The session's company, resolved by the company scope guard that
+ * `customerRoutes` mounts before these routes. A caller-supplied
+ * X-Company-Id header is never trusted.
+ */
+function sessionCompanyId(context: object): string | null {
+	const scope = (context as { companyContext?: CompanyContext }).companyContext;
+	return scope?.companyId ?? null;
 }
 
 function failMissingCompanyScope(set: { status?: unknown }) {
-	set.status = 400;
+	set.status = 401;
 	return fail(
-		"X-Company-Id is required for customer object access",
+		"Inicia sesión en una empresa para ver sus clientes",
 		"COMPANY_SCOPE_REQUIRED",
 	);
 }
@@ -42,10 +46,9 @@ function isCustomerNotFound(error: unknown): boolean {
 export const customerObjectRoutes = new Elysia()
 	.get(
 		"/:id",
-		async ({ params, query, headers, set }) => {
-			const companyId = readRequiredCompanyId(
-				headers as Record<string, unknown>,
-			);
+		async (context) => {
+			const { params, query, set } = context;
+			const companyId = sessionCompanyId(context);
 			if (!companyId) return failMissingCompanyScope(set);
 
 			const queryHandler = new GetCustomerQuery();
@@ -89,10 +92,9 @@ Returns a single customer with optional invoice history.
 	)
 	.patch(
 		"/:id",
-		async ({ params, body, headers, set }) => {
-			const companyId = readRequiredCompanyId(
-				headers as Record<string, unknown>,
-			);
+		async (context) => {
+			const { params, body, set } = context;
+			const companyId = sessionCompanyId(context);
 			if (!companyId) return failMissingCompanyScope(set);
 
 			const command = new UpdateCustomerCommand();
@@ -141,10 +143,9 @@ Updates customer fields. All fields are optional.
 	)
 	.delete(
 		"/:id",
-		async ({ params, headers, set }) => {
-			const companyId = readRequiredCompanyId(
-				headers as Record<string, unknown>,
-			);
+		async (context) => {
+			const { params, set } = context;
+			const companyId = sessionCompanyId(context);
 			if (!companyId) return failMissingCompanyScope(set);
 
 			const command = new DeleteCustomerCommand();
