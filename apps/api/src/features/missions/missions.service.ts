@@ -79,6 +79,19 @@ function toSnapshot(row: Record<string, unknown>): MissionSnapshot {
 	};
 }
 
+const UNIQUE_VIOLATION = "23505";
+
+function isUniqueViolation(error: unknown): boolean {
+	const seen = new Set<unknown>();
+	let current: unknown = error;
+	while (current && typeof current === "object" && !seen.has(current)) {
+		seen.add(current);
+		if ((current as { code?: unknown }).code === UNIQUE_VIOLATION) return true;
+		current = (current as { cause?: unknown }).cause;
+	}
+	return false;
+}
+
 function sha256Sorted(data: Record<string, unknown>): string {
 	return createHash("sha256")
 		.update(JSON.stringify(data, Object.keys(data).sort()))
@@ -145,24 +158,61 @@ export class MissionsService {
 			);
 		}
 
-		const rows = await this.db.transaction(async (tx: any) => {
-			const inserted = await tx
-				.insert(accountingMissions)
-				.values({
-					companyId,
-					fiscalPeriod: cmd.fiscalPeriod,
-					intent: cmd.intent,
-					status: "DRAFT",
-					version: 1,
-					progress: 0,
-					input: cmd.input,
-					lastEventSequence: 0,
-				})
-				.returning();
-			return inserted;
-		});
+		let rows: Record<string, unknown>[];
+		try {
+			rows = await this.db.transaction(async (tx: any) => {
+				const inserted = await tx
+					.insert(accountingMissions)
+					.values({
+						companyId,
+						fiscalPeriod: cmd.fiscalPeriod,
+						intent: cmd.intent,
+						status: "DRAFT",
+						version: 1,
+						progress: 0,
+						input: cmd.input,
+						lastEventSequence: 0,
+					})
+					.returning();
+				return inserted;
+			});
+		} catch (error) {
+			if (!isUniqueViolation(error)) throw error;
+			throw await this.existingMissionConflict(companyId, cmd);
+		}
 
-		return toSnapshot(rows[0]);
+		return toSnapshot(rows[0] as Record<string, unknown>);
+	}
+
+	/**
+	 * One mission per company, period and intent: a second start points the
+	 * client at the mission that already exists so it can resume it.
+	 */
+	private async existingMissionConflict(
+		companyId: string,
+		cmd: CreateMissionCommand,
+	): Promise<MissionError> {
+		const [existing] = await this.db
+			.select({ id: accountingMissions.id, status: accountingMissions.status })
+			.from(accountingMissions)
+			.where(
+				and(
+					eq(accountingMissions.companyId, companyId),
+					eq(accountingMissions.fiscalPeriod, cmd.fiscalPeriod),
+					eq(accountingMissions.intent, cmd.intent),
+				),
+			)
+			.limit(1);
+		return new MissionError(
+			MissionErrorCode.MISSION_STATE_CONFLICT,
+			409,
+			"Ya existe una misión para este periodo",
+			existing ? { missionId: existing.id, status: existing.status } : {},
+		);
+	}
+
+	private handlerFor(intent: string): MissionIntentHandler | undefined {
+		return this.intentHandlers?.get(intent) ?? getIntentHandler(intent);
 	}
 
 	async getMission(
@@ -196,6 +246,17 @@ export class MissionsService {
 			mission.status as AccountingMissionStatus,
 			AccountingMissionStatus.QUEUED,
 		);
+		// Without a handler nothing would ever move the mission past RUNNING;
+		// refuse before touching it so it can run once the pipeline is on.
+		const handler = this.handlerFor(mission.intent);
+		if (!handler) {
+			throw new MissionError(
+				MissionErrorCode.EXTERNAL_SERVICE_UNAVAILABLE,
+				503,
+				"El proceso automático de esta misión no está habilitado en este entorno",
+				{ intent: mission.intent },
+			);
+		}
 
 		const newVersion = await optimisticUpdate(
 			this.db,
@@ -223,16 +284,13 @@ export class MissionsService {
 		);
 
 		// Dispatch to intent-specific handler (fire-and-forget)
-		const handler = getIntentHandler(mission.intent);
-		if (handler) {
-			handler.onRunning(missionId, companyId).catch((err) => {
-				console.error(
-					"[MissionsService] Intent handler crash for",
-					mission.intent,
-					err,
-				);
-			});
-		}
+		handler.onRunning(missionId, companyId).catch((err) => {
+			console.error(
+				"[MissionsService] Intent handler crash for",
+				mission.intent,
+				err,
+			);
+		});
 
 		return {
 			...mission,
@@ -352,7 +410,7 @@ export class MissionsService {
 		});
 
 		// Dispatch onApproved to intent handler (e.g., apply entries)
-		const handler = getIntentHandler(mission.intent);
+		const handler = this.handlerFor(mission.intent);
 		if (handler) {
 			handler.onApproved(missionId, companyId).catch((err) => {
 				console.error(

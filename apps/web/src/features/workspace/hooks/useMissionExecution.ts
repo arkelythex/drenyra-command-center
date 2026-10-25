@@ -1,3 +1,4 @@
+import type { MissionSnapshot } from "@drenyra/mission-domain";
 import type { Dispatch, MutableRefObject } from "react";
 import { useCallback } from "react";
 import {
@@ -6,6 +7,7 @@ import {
 	executeMission,
 	getMission,
 } from "../services/http-mission-transport";
+import { isHarnessError } from "../services/mission-errors";
 import { toMissionState } from "./mission-snapshot-state";
 import type { MissionAction } from "./missionReducer";
 
@@ -26,6 +28,25 @@ const wait = (ms: number, signal: AbortSignal) =>
 			resolve();
 		});
 	});
+
+/**
+ * Creates the mission, or loads the one that already exists for the period
+ * (the API allows one per company, period and intent and answers 409 with
+ * its id).
+ */
+async function createOrResume(
+	command: CreateMissionInput,
+): Promise<MissionSnapshot> {
+	try {
+		return await createMission(command);
+	} catch (error: unknown) {
+		const existingId = isHarnessError(error)
+			? error.statusCode === 409 && error.details?.missionId
+			: undefined;
+		if (typeof existingId !== "string") throw error;
+		return getMission(existingId);
+	}
+}
 
 /**
  * Starts a mission on the server: create it, execute it with the version the
@@ -60,16 +81,20 @@ export function useMissionExecution(
 
 	const runServer = useCallback(
 		async (command: CreateMissionInput, signal: AbortSignal) => {
-			const created = await createMission(command);
+			const created = await createOrResume(command);
 			missionIdRef.current = created.id;
 			dispatch({
 				type: "MISSION_EVENT_RECEIVED",
 				event: toMissionState(created),
 			});
 
-			let snapshot = await executeMission(created.id, {
-				expectedMissionVersion: created.version,
-			});
+			// A resumed mission that already ran is only followed, not re-run.
+			let snapshot =
+				created.status === "DRAFT"
+					? await executeMission(created.id, {
+							expectedMissionVersion: created.version,
+						})
+					: created;
 			dispatch({
 				type: "MISSION_EVENT_RECEIVED",
 				event: toMissionState(snapshot),

@@ -133,7 +133,7 @@ Un contador nuevo **no** completaba el flujo. Con los tres primeros bloqueos sor
 
 ### Siguiente (en orden)
 1. ~~Onboarding real~~: hecho, ver abajo.
-2. Misión de cierre: 409/retomar la existente y no quedar en `RUNNING` sin pipeline.
+2. ~~Misión de cierre~~: hecho, ver abajo.
 3. Migraciones reproducibles (journal y FK de `evidence`).
 4. Reescribir los e2e del camino feliz sobre las rutas actuales.
 
@@ -144,3 +144,8 @@ Un contador nuevo **no** completaba el flujo. Con los tres primeros bloqueos sor
 - **API:** `POST /api/onboarding/company` (sesión sin empresa activa). Valida el RUC con módulo 11 (`RUC.isValid`), crea la empresa y la membresía OWNER en una transacción y deja un rastro `COMPANY_CREATED` en `auth_audit_logs`. Un RUC que ya tiene empresa responde 409 `RUC_TAKEN` (se entra por invitación). La primera empresa del usuario queda por defecto.
 - **`companies.owner_id`** sigue apuntando a la tabla heredada `users`: cada usuario de Better Auth tiene ahí una fila de relleno con correo `<id>@owners.drenyra.invalid` y sin contraseña usable.
 - **Web:** el asistente quedó en un paso (RUC, razón social, dirección). Busca los datos en `/api/sunat/validate-ruc-online` sin inventarlos, registra la empresa, recarga la sesión y entra a `/cierre-mensual`. Se retiraron los pasos de certificado y marca, que pedían la clave SOL y el certificado y los descartaban. Quien inicia sesión sin empresa va a `/onboarding`.
+
+## Cierre: retomar la misión y no colgarse (2026-10-25)
+- Un segundo inicio del mismo periodo respondía 500 por el índice único `acct_missions_company_period_intent_unq`. Ahora responde 409 `MISSION_STATE_CONFLICT` con `details.missionId` y `status`, y la web carga esa misión: la sigue si ya corrió o la ejecuta si quedó en `DRAFT`.
+- Sin `MONTHLY_CLOSE_PIPELINE_ENABLED=true` no hay handler y la misión quedaba en `RUNNING` para siempre. Ahora `execute` responde 503 `EXTERNAL_SERVICE_UNAVAILABLE` antes de tocarla, y la misión sigue en `DRAFT` para correr cuando se encienda el flag.
+- Probado contra Postgres y con la app real, con el flag apagado (409 y 503, la misión queda en `DRAFT`) y encendido (409, y luego `RUNNING` → `AWAITING_APPROVAL`).

@@ -132,6 +132,53 @@ describe("useAccountingMission against the missions API", () => {
 		expect(result.current.rejection).toEqual(rejection);
 	});
 
+	it("resumes the period's existing mission instead of failing", async () => {
+		transport.createMission.mockRejectedValue({
+			code: "MISSION_STATE_CONFLICT",
+			message: "Ya existe una misión para este periodo",
+			statusCode: 409,
+			details: { missionId: ID, status: "AWAITING_APPROVAL" },
+			isTimeout: false,
+		});
+		transport.getMission.mockResolvedValue(
+			snap("AWAITING_APPROVAL", 4, { proposal }),
+		);
+		const { result } = renderHook(() => useAccountingMission());
+
+		await act(async () => {
+			await result.current.run(command);
+		});
+
+		expect(transport.getMission).toHaveBeenCalledWith(ID);
+		expect(transport.executeMission).not.toHaveBeenCalled();
+		expect(result.current.status).toBe("AWAITING_APPROVAL");
+		expect(result.current.isAwaiting).toBe(true);
+	});
+
+	it("runs an existing mission that never started", async () => {
+		transport.createMission.mockRejectedValue({
+			code: "MISSION_STATE_CONFLICT",
+			message: "Ya existe una misión para este periodo",
+			statusCode: 409,
+			details: { missionId: ID, status: "DRAFT" },
+			isTimeout: false,
+		});
+		transport.getMission.mockResolvedValueOnce(snap("DRAFT", 2));
+		transport.executeMission.mockResolvedValue(
+			snap("AWAITING_APPROVAL", 4, { proposal }),
+		);
+		const { result } = renderHook(() => useAccountingMission());
+
+		await act(async () => {
+			await result.current.run(command);
+		});
+
+		expect(transport.executeMission).toHaveBeenCalledWith(ID, {
+			expectedMissionVersion: 2,
+		});
+		expect(result.current.status).toBe("AWAITING_APPROVAL");
+	});
+
 	it("shows the API's error when the mission cannot be created", async () => {
 		transport.createMission.mockRejectedValue({
 			code: "UNAUTHORIZED",

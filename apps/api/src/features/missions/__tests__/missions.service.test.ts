@@ -44,6 +44,7 @@ vi.mock("@drenyra/persistence/schema", () => ({
 }));
 
 import { MissionsService } from "../missions.service";
+import { idleIntentHandlers } from "./support/idle-intent-handlers";
 
 const companyId = "550e8400-e29b-41d4-a716-446655440000";
 const missionId = "550e8400-e29b-41d4-a716-446655440001";
@@ -109,7 +110,7 @@ describe("MissionsService", () => {
 	let svc: MissionsService;
 	beforeEach(() => {
 		vi.clearAllMocks();
-		svc = new MissionsService(mockDb.db as any);
+		svc = new MissionsService(mockDb.db as any, idleIntentHandlers());
 	});
 
 	describe("createMission", () => {
