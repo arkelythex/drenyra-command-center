@@ -175,3 +175,15 @@ test.describe("mobile navigation", () => {
 		expect(topElement).toBe(true);
 	});
 });
+
+test.describe("unknown address", () => {
+	test("shows a Spanish not-found page with a way home", async ({ page }) => {
+		await page.goto("/esta-ruta-no-existe", { waitUntil: "networkidle" });
+		await expect(
+			page.getByRole("heading", { level: 1, name: "Página no encontrada" }),
+		).toBeVisible();
+		await expect(
+			page.getByRole("link", { name: "Ir al inicio" }),
+		).toBeVisible();
+	});
+});

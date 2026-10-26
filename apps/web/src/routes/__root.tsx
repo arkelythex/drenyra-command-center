@@ -42,7 +42,7 @@ function RootLayout() {
 			</Suspense>
 			<Toaster
 				position="bottom-right"
-				theme="dark"
+				theme="system"
 				toastOptions={{
 					style: {
 						background: "var(--surface-1)",
