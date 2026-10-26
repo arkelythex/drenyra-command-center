@@ -132,8 +132,9 @@ export class EngramFiscalMemoryQueryService
 			organizationId: scope.tenantId,
 		});
 
+		// The wire contract has no "fiscal_memory" type: toMemorySafe already
+		// returns null for observations that are not fiscal memories.
 		const memories = observations
-			.filter((observation) => observation.type === "fiscal_memory")
 			.map((observation) => toMemorySafe(observation))
 			.filter((memory): memory is FiscalMemory => memory !== null)
 			.filter((memory) => matches(memory, filters));
