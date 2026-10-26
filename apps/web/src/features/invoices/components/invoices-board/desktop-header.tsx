@@ -94,10 +94,11 @@ export function InvoicesBoardDesktopHeader({
 					</div>
 
 					<Button
+						variant="brand"
 						onClick={onCreateInvoice}
 						onPointerEnter={onCreateInvoiceIntent}
 						onFocus={onCreateInvoiceIntent}
-						className="h-11 flex-shrink-0 rounded-lg border-transparent bg-brand px-4 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand/90"
+						className="h-11 flex-shrink-0 rounded-lg px-4 text-sm font-medium transition-colors"
 					>
 						<Plus size={14} strokeWidth={2.5} className="mr-2" />
 						Nueva factura

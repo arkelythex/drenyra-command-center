@@ -139,8 +139,9 @@ export function StatementImportDialog() {
 		>
 			<DialogTrigger asChild>
 				<Button
+					variant="brand"
 					disabled={!companyId}
-					className="h-11 rounded-lg border-transparent bg-brand px-4 text-sm font-medium text-brand-foreground hover:bg-brand/90"
+					className="h-11 rounded-lg px-4 text-sm font-medium"
 				>
 					<Upload size={14} className="mr-2" /> Importar extracto
 				</Button>

@@ -14,10 +14,11 @@ export function AuthSubmitButton({
 }: AuthSubmitButtonProps) {
 	return (
 		<Button
+			variant="brand"
 			type="submit"
 			disabled={isLoading}
 			aria-busy={isLoading}
-			className="h-12 w-full rounded-lg border-transparent bg-brand text-base font-medium text-brand-foreground hover:bg-brand/90"
+			className="h-12 w-full rounded-lg text-base font-medium"
 		>
 			{isLoading ? (
 				<Loader2

@@ -291,10 +291,11 @@ export const EditInvoiceModal = ({
 						Cancelar
 					</Button>
 					<Button
+						variant="brand"
 						type="button"
 						onClick={handleSubmit}
 						disabled={isEditing}
-						className="h-11 bg-brand px-5 text-brand-foreground hover:bg-brand/90"
+						className="h-11 px-5"
 					>
 						{isEditing ? "Guardando…" : "Guardar cambios"}
 					</Button>
