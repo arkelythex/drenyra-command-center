@@ -97,6 +97,9 @@ jobs:
   coverage-check:
     name: Coverage Thresholds
     runs-on: ubuntu-latest
+    # Without a bound this job inherits GitHub's 360-minute default, so a slow
+    # suite looks like a hang instead of a failure. Fail visibly, not silently.
+    timeout-minutes: 25
 
     steps:
       - uses: actions/checkout@v6
@@ -110,8 +113,6 @@ jobs:
           verify-native-deps: false
 
       - name: Run tests with coverage enforcement
-        env:
-          VITEST_MAX_WORKERS: "1"
         run: |
           bun run --filter @drenyra/domain test -- --coverage
           bun run --filter @drenyra/api test:run -- --coverage
