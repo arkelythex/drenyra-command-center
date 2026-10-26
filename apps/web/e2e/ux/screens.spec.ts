@@ -22,6 +22,7 @@ const SCREENS = [
 		path: "/workspace/00000000-0000-0000-0000-000000000001/2026/01/monthly-close",
 	},
 	{ id: "invoices", path: "/invoices" },
+	{ id: "reconciliations", path: "/tesoreria/reconciliations" },
 	{ id: "cumplimiento", path: "/cumplimiento/expedientes" },
 	{ id: "settings", path: "/settings" },
 ] as const;

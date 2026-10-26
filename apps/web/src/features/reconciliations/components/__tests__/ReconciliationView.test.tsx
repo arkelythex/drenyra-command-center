@@ -64,6 +64,24 @@ describe("ReconciliationView", () => {
 		api.confirmMatch.mockResolvedValue(undefined);
 	});
 
+	it("guides an empty account to import its bank statement, without a fake summary", async () => {
+		api.fetchBankTransactions.mockResolvedValue([]);
+		renderView();
+
+		expect(
+			await screen.findByRole("heading", {
+				name: /aún no hay movimientos bancarios/i,
+			}),
+		).toBeInTheDocument();
+		expect(
+			screen.getAllByRole("button", { name: /importar extracto/i }).length,
+		).toBeGreaterThanOrEqual(2);
+		expect(screen.queryByText(/100%/)).not.toBeInTheDocument();
+		expect(
+			screen.queryByLabelText(/resumen de conciliación/i),
+		).not.toBeInTheDocument();
+	});
+
 	it("shows the company's movement with its proposal and confirms it", async () => {
 		renderView();
 
@@ -80,14 +98,5 @@ describe("ReconciliationView", () => {
 				expect.objectContaining({ id: "inv-1" }),
 			);
 		});
-	});
-
-	it("says so when the company has no movements", async () => {
-		api.fetchBankTransactions.mockResolvedValue([]);
-		renderView();
-
-		expect(
-			await screen.findByText(/no hay movimientos bancarios registrados/i),
-		).toBeInTheDocument();
 	});
 });

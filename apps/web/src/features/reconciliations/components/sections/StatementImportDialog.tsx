@@ -140,7 +140,7 @@ export function StatementImportDialog() {
 			<DialogTrigger asChild>
 				<Button
 					disabled={!companyId}
-					className="h-9 rounded-xl px-4 text-label font-semibold tracking-wide shadow-sm"
+					className="h-11 rounded-lg border-transparent bg-brand px-4 text-sm font-medium text-brand-foreground hover:bg-brand/90"
 				>
 					<Upload size={14} className="mr-2" /> Importar extracto
 				</Button>

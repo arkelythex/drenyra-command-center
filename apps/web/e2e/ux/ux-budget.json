@@ -15,6 +15,10 @@
     "axe": 0,
     "smallTargets": 3
   },
+  "desktop-chrome:reconciliations": {
+    "axe": 7,
+    "smallTargets": 10
+  },
   "desktop-chrome:settings": {
     "axe": 7,
     "smallTargets": 10
@@ -39,6 +43,10 @@
     "axe": 0,
     "smallTargets": 3
   },
+  "mobile-android:reconciliations": {
+    "axe": 3,
+    "smallTargets": 3
+  },
   "mobile-android:settings": {
     "axe": 3,
     "smallTargets": 9
@@ -61,6 +69,10 @@
   },
   "mobile-ios:login": {
     "axe": 0,
+    "smallTargets": 3
+  },
+  "mobile-ios:reconciliations": {
+    "axe": 3,
     "smallTargets": 3
   },
   "mobile-ios:settings": {

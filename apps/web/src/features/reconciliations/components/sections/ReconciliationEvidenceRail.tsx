@@ -20,7 +20,7 @@ import type {
 import { ConfidenceBadge } from "./ConfidenceBadge";
 
 interface ReconciliationEvidenceRailProps {
-	activeCandidate?: ReconciliationCandidate;
+	activeCandidate?: ReconciliationCandidate | undefined;
 	activeTransaction: ReconciliationTransaction;
 	onDecision?: (decision: "approve" | "reject" | "manual") => void;
 }

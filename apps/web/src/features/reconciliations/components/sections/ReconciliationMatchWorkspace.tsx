@@ -14,7 +14,7 @@ import type {
 } from "../../reconciliation.types";
 
 interface ReconciliationMatchWorkspaceProps {
-	activeCandidate?: ReconciliationCandidate;
+	activeCandidate?: ReconciliationCandidate | undefined;
 	activeTransaction: ReconciliationTransaction;
 	formatMoney: (value: number) => string;
 	ledgerEntries: readonly ReconciliationLedgerEntry[];
