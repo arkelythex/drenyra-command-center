@@ -28,11 +28,11 @@ function statusClasses(status: ReconciliationTransaction["status"]) {
 		case "matched":
 			return "border-success-muted bg-success-subtle";
 		case "suggested":
-			return "border-info-muted bg-info-subtle";
+			return "border-info/30 bg-info/10";
 		case "needs_review":
 			return "border-warning-muted bg-warning-subtle";
 		default:
-			return "border-danger-subtle bg-danger-subtle";
+			return "border-destructive/30 bg-destructive/10";
 	}
 }
 

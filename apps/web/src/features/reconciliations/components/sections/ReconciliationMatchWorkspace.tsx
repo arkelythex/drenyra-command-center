@@ -110,7 +110,7 @@ export function ReconciliationMatchWorkspace({
 											onClick={() => onSelectCandidate(candidate.id)}
 											className={`w-full rounded-2xl border p-4 text-left transition-colors duration-150 ${
 												isActive
-													? "border-info-muted bg-info-subtle"
+													? "border-info/30 bg-info/10"
 													: "border-border/60 bg-muted hover:border-border"
 											}`}
 										>

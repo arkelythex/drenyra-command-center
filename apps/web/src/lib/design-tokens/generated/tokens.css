@@ -37,4 +37,9 @@
   --color-border-subtle: var(--border-subtle);
   --color-border-ui: var(--color-stroke-3);
   --color-strong: var(--surface-3);
+  /* Status colors, so opacity steps work (bg-success/10, border-warning/30). */
+  --color-success: var(--dc-success);
+  --color-warning: var(--dc-warning);
+  --color-info: var(--dc-info);
+  --color-danger: var(--dc-error);
 }

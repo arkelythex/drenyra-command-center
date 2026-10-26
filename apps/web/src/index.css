@@ -837,39 +837,6 @@
     background-color: var(--color-steel);
   }
 
-  /* State */
-  .text-success {
-    color: var(--color-success);
-  }
-
-  .text-warning {
-    color: var(--color-warning);
-  }
-
-  .text-danger {
-    color: var(--color-danger);
-  }
-
-  .text-info {
-    color: var(--color-info);
-  }
-
-  .bg-success {
-    background-color: var(--color-success);
-  }
-
-  .bg-warning {
-    background-color: var(--color-warning);
-  }
-
-  .bg-danger {
-    background-color: var(--color-danger);
-  }
-
-  .bg-info {
-    background-color: var(--color-info);
-  }
-
   /* Semantic aliases */
   .bg-app-shell {
     background-color: var(--app-bg);
