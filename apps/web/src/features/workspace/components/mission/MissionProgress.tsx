@@ -1,67 +1,86 @@
-import { CheckCircle, Loader2, AlertTriangle } from "lucide-react";
 import type { MissionStep } from "@drenyra/mission-domain";
+import { CircleAlert, CircleCheck, Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface MissionProgressProps {
-  progress: number;
-  steps: MissionStep[];
-  currentStep: string;
+	/** Basis points: 0..10000. */
+	progress: number;
+	steps: MissionStep[];
+	currentStep: string;
 }
 
-const ICON_MAP: Record<string, typeof CheckCircle> = {
-  COMPLETED: CheckCircle,
-  IN_PROGRESS: Loader2,
-  FAILED: AlertTriangle,
-};
+const STEP_ICON = {
+	COMPLETED: { icon: CircleCheck, className: "text-success" },
+	IN_PROGRESS: {
+		icon: Loader2,
+		className: "animate-spin text-brand motion-reduce:animate-none",
+	},
+	FAILED: { icon: CircleAlert, className: "text-destructive" },
+} as const;
 
-export function MissionProgress({ progress, steps, currentStep }: MissionProgressProps) {
-  const displayPercent = Math.round(progress / 100);
+export function MissionProgress({
+	progress,
+	steps,
+	currentStep,
+}: MissionProgressProps) {
+	const percent = Math.round(progress / 100);
 
-  return (
-    <div className="space-y-4">
-      <div className="h-2 rounded-full bg-[var(--surface-2)] overflow-hidden">
-        <div
-          className="h-full rounded-full bg-[var(--accent)] transition-all duration-500"
-          style={{ width: `${displayPercent}%` }}
-        />
-      </div>
+	return (
+		<div className="w-full max-w-2xl space-y-4">
+			<div
+				role="progressbar"
+				aria-label="Avance de la misión"
+				aria-valuemin={0}
+				aria-valuemax={100}
+				aria-valuenow={percent}
+				className="h-1.5 overflow-hidden rounded-full bg-muted"
+			>
+				<div
+					className="h-full rounded-full bg-brand transition-[width] duration-500 motion-reduce:transition-none"
+					style={{ width: `${percent}%` }}
+				/>
+			</div>
 
-      {steps.length > 0 && (
-        <div className="space-y-2">
-          {steps.map((step) => {
-            const IconComponent = ICON_MAP[step.status];
-            const isActive = step.id === currentStep;
-
-            return (
-              <div
-                key={step.id}
-                className={`flex items-center gap-3 rounded-lg border p-3 ${
-                  isActive
-                    ? "border-[var(--accent)]/30 bg-[var(--accent)]/5"
-                    : "border-[var(--border-subtle)]"
-                }`}
-              >
-                {IconComponent ? (
-                  <IconComponent
-                    size={16}
-                    className={
-                      step.status === "COMPLETED"
-                        ? "text-green-500 shrink-0"
-                        : step.status === "IN_PROGRESS"
-                          ? "animate-spin text-[var(--accent)] shrink-0"
-                          : "text-red-500 shrink-0"
-                    }
-                  />
-                ) : (
-                  <div className="h-4 w-4 rounded-full border-2 border-[var(--border-subtle)] shrink-0" />
-                )}
-                <span className="text-xs text-[var(--text-primary)]">
-                  {step.name}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
+			{steps.length > 0 ? (
+				<ol
+					aria-label="Pasos de la misión"
+					className="divide-y divide-border rounded-xl border border-border bg-card"
+				>
+					{steps.map((step) => {
+						const status = STEP_ICON[step.status as keyof typeof STEP_ICON];
+						const Icon = status?.icon;
+						return (
+							<li
+								key={step.id}
+								aria-current={step.id === currentStep ? "step" : undefined}
+								className="flex items-center gap-3 px-4 py-3"
+							>
+								{Icon ? (
+									<Icon
+										aria-hidden="true"
+										className={cn("size-4 shrink-0", status.className)}
+									/>
+								) : (
+									<span
+										aria-hidden="true"
+										className="size-4 shrink-0 rounded-full border-2 border-border"
+									/>
+								)}
+								<span
+									className={cn(
+										"text-sm",
+										step.id === currentStep
+											? "font-medium"
+											: "text-muted-foreground",
+									)}
+								>
+									{step.name}
+								</span>
+							</li>
+						);
+					})}
+				</ol>
+			) : null}
+		</div>
+	);
 }

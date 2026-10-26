@@ -69,10 +69,29 @@ describe("MissionHeader", () => {
 });
 
 describe("MissionProgress", () => {
-	it("renders progress bar with correct width", () => {
+	it("exposes the server's basis points as an accessible percentage", () => {
 		render(<MissionProgress progress={5000} steps={[]} currentStep="" />);
-		const bar = document.querySelector(".bg-\\[var\\(--accent\\)\\]");
-		expect(bar).toBeDefined();
+		const bar = screen.getByRole("progressbar", {
+			name: /avance de la misión/i,
+		});
+		expect(bar).toHaveAttribute("aria-valuenow", "50");
+	});
+
+	it("marks the current step and lists steps in order", () => {
+		render(
+			<MissionProgress
+				progress={3000}
+				steps={[
+					{ id: "s1", name: "Importar", status: "COMPLETED" },
+					{ id: "s2", name: "Analizar", status: "IN_PROGRESS" },
+				]}
+				currentStep="s2"
+			/>,
+		);
+		const rows = screen.getAllByRole("listitem");
+		expect(rows).toHaveLength(2);
+		expect(rows[0]).not.toHaveAttribute("aria-current");
+		expect(rows[1]).toHaveAttribute("aria-current", "step");
 	});
 
 	it("renders active step with spinner", () => {
@@ -135,6 +154,23 @@ describe("MissionBlockedState", () => {
 		expect(screen.getByText("Error 2")).toBeDefined();
 	});
 
+	it("shows each severity in Spanish instead of the raw enum", () => {
+		render(
+			<MissionBlockedState
+				blockers={[
+					{ id: "b1", reason: "A", severity: "WARNING", occurredAt: "t" },
+					{ id: "b2", reason: "B", severity: "ERROR", occurredAt: "t" },
+					{ id: "b3", reason: "C", severity: "CRITICAL", occurredAt: "t" },
+				]}
+				onRetry={vi.fn()}
+			/>,
+		);
+		expect(screen.getByText("Advertencia")).toBeInTheDocument();
+		expect(screen.getByText("Error")).toBeInTheDocument();
+		expect(screen.getByText("Crítico")).toBeInTheDocument();
+		expect(screen.queryByText("WARNING")).not.toBeInTheDocument();
+	});
+
 	it("calls onRetry when retry button clicked", () => {
 		const onRetry = vi.fn();
 		render(
@@ -151,28 +187,43 @@ describe("MissionBlockedState", () => {
 });
 
 describe("MissionUnknownState", () => {
-	it("renders reconciliation buttons", () => {
+	it("offers the three resolutions in plain Spanish", () => {
 		render(<MissionUnknownState onReconcile={vi.fn()} isSubmitting={false} />);
-		expect(screen.getByText("Reanudar (RUNNING)")).toBeDefined();
-		expect(screen.getByText("Marcar completado (COMPLETED)")).toBeDefined();
-		expect(screen.getByText("Marcar fallido (FAILED)")).toBeDefined();
+		expect(
+			screen.getByRole("button", { name: "Reanudar" }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: "Marcar como completada" }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: "Marcar como fallida" }),
+		).toBeInTheDocument();
 	});
 
-	it("calls onReconcile with RUNNING when button clicked", () => {
+	it("does not reconcile until a reason is written, so the audit trail is never empty", () => {
 		const onReconcile = vi.fn();
 		render(
 			<MissionUnknownState onReconcile={onReconcile} isSubmitting={false} />,
 		);
-		fireEvent.click(screen.getByText("Reanudar (RUNNING)"));
-		expect(onReconcile).toHaveBeenCalledWith("RUNNING", "");
+
+		const resume = screen.getByRole("button", { name: "Reanudar" });
+		expect(resume).toBeDisabled();
+		fireEvent.click(resume);
+		expect(onReconcile).not.toHaveBeenCalled();
+
+		fireEvent.change(screen.getByLabelText("Motivo de la resolución"), {
+			target: { value: "  Confirmado en SOL  " },
+		});
+		expect(resume).toBeEnabled();
+		fireEvent.click(resume);
+		expect(onReconcile).toHaveBeenCalledWith("RUNNING", "Confirmado en SOL");
 	});
 
-	it("disables buttons when isSubmitting", () => {
+	it("disables every action while submitting", () => {
 		render(<MissionUnknownState onReconcile={vi.fn()} isSubmitting={true} />);
-		const buttons = screen.getAllByRole("button");
-		buttons.forEach((btn) => {
-			expect((btn as HTMLButtonElement).disabled).toBe(true);
-		});
+		for (const button of screen.getAllByRole("button")) {
+			expect(button).toBeDisabled();
+		}
 	});
 });
 
@@ -226,7 +277,7 @@ describe("MissionApprovalGate", () => {
 			/>,
 		);
 		const textarea = screen.getByPlaceholderText(
-			"Motivo de rechazo (requerido)",
+			"Obligatorio solo si rechazas",
 		);
 		fireEvent.change(textarea, { target: { value: "Needs more work" } });
 		fireEvent.click(screen.getByText("Rechazar"));

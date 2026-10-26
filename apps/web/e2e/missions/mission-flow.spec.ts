@@ -22,6 +22,11 @@ async function openMission(
 	const api = await installMissionApi(context, options);
 	await page.goto(MISSION_URL, { waitUntil: "networkidle" });
 	await expect(startButton(page)).toBeEnabled();
+	// Wait for the lazily loaded page, then the primary action must be on screen without scrolling.
+	await expect(
+		page.getByRole("heading", { level: 1, name: "Cierre mensual" }),
+	).toBeVisible();
+	await expect(startButton(page)).toBeInViewport();
 	return api;
 }
 
@@ -40,6 +45,21 @@ test.describe("Mission flow", () => {
 			reconcile: 0,
 		});
 		await expect(page.getByText("Ejecutando misión")).toHaveCount(0);
+	});
+
+	test("long content scrolls inside the page while the primary action stays on screen", async ({
+		page,
+		context,
+	}) => {
+		await openMission(page, context);
+
+		const lastSection = page.getByRole("heading", {
+			name: "Estado del cierre",
+		});
+		await lastSection.scrollIntoViewIfNeeded();
+
+		await expect(lastSection).toBeInViewport();
+		await expect(startButton(page)).toBeInViewport();
 	});
 
 	test("creates and executes the mission exactly once, even on a double click", async ({
@@ -89,7 +109,7 @@ test.describe("Mission flow", () => {
 		await expect(reject).toBeDisabled();
 
 		await page
-			.getByPlaceholder("Motivo de rechazo (requerido)")
+			.getByLabel("Motivo de rechazo")
 			.fill("Falta sustento de las detracciones");
 		await expect(reject).toBeEnabled();
 		await reject.click();
@@ -116,9 +136,9 @@ test.describe("Mission flow", () => {
 			page.getByRole("heading", { name: "Estado desconocido" }),
 		).toBeVisible();
 		await page
-			.getByPlaceholder("Motivo de la resolución (requerido)")
+			.getByLabel("Motivo de la resolución")
 			.fill("Confirmado en SUNAT SOL");
-		await page.getByRole("button", { name: /marcar completado/i }).click();
+		await page.getByRole("button", { name: /marcar como completada/i }).click();
 
 		await expect(
 			page.getByRole("heading", { name: "Misión completada" }),

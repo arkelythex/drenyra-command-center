@@ -5,7 +5,7 @@ import type {
 	MissionRejection,
 	MissionStep,
 } from "@drenyra/mission-domain";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CircleCheck, CircleX } from "lucide-react";
 import { MissionApprovalGate } from "./MissionApprovalGate";
 import { MissionBlockedState } from "./MissionBlockedState";
 import { MissionFailedState } from "./MissionFailedState";
@@ -152,22 +152,25 @@ function MissionRejectedState({
 }) {
 	return (
 		<div className="flex flex-1 items-center justify-center p-6">
-			<div className="max-w-md space-y-4 text-center">
-				<XCircle size={32} className="mx-auto text-red-500" />
-				<h3 className="text-sm font-semibold text-[var(--text-primary)]">
+			<section className="w-full max-w-md space-y-3 text-center">
+				<CircleX
+					aria-hidden="true"
+					className="mx-auto size-6 text-destructive"
+				/>
+				<h3 className="text-lg font-medium tracking-tight">
 					Propuesta rechazada
 				</h3>
-				{rejection && (
-					<div className="space-y-2 text-xs text-[var(--text-muted)]">
+				{rejection ? (
+					<div className="space-y-1 text-sm text-muted-foreground">
 						<p>{rejection.reason}</p>
-						<p className="text-[10px]">
+						<p className="text-xs">
 							{rejection.rejectedBy} · {rejection.rejectedAt}
 							{rejection.proposalVersion > 0 &&
 								` · v${rejection.proposalVersion}`}
 						</p>
 					</div>
-				)}
-			</div>
+				) : null}
+			</section>
 		</div>
 	);
 }
@@ -175,15 +178,18 @@ function MissionRejectedState({
 function MissionCompletedState() {
 	return (
 		<div className="flex flex-1 items-center justify-center p-6">
-			<div className="max-w-md space-y-4 text-center">
-				<CheckCircle size={32} className="mx-auto text-green-500" />
-				<h3 className="text-sm font-semibold text-[var(--text-primary)]">
+			<section className="w-full max-w-md space-y-3 text-center">
+				<CircleCheck
+					aria-hidden="true"
+					className="mx-auto size-6 text-success"
+				/>
+				<h3 className="text-lg font-medium tracking-tight">
 					Misión completada
 				</h3>
-				<p className="text-xs text-[var(--text-muted)]">
+				<p className="text-sm text-muted-foreground">
 					La operación se ha procesado exitosamente.
 				</p>
-			</div>
+			</section>
 		</div>
 	);
 }

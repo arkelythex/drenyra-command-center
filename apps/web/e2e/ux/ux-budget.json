@@ -1,7 +1,7 @@
 {
   "desktop-chrome:cierre-mensual": {
     "axe": 0,
-    "smallTargets": 19
+    "smallTargets": 16
   },
   "desktop-chrome:cumplimiento": {
     "axe": 0,
@@ -25,11 +25,11 @@
   },
   "desktop-chrome:workspace": {
     "axe": 0,
-    "smallTargets": 19
+    "smallTargets": 16
   },
   "mobile-android:cierre-mensual": {
     "axe": 0,
-    "smallTargets": 4
+    "smallTargets": 1
   },
   "mobile-android:cumplimiento": {
     "axe": 0,
@@ -53,11 +53,11 @@
   },
   "mobile-android:workspace": {
     "axe": 0,
-    "smallTargets": 4
+    "smallTargets": 1
   },
   "mobile-ios:cierre-mensual": {
     "axe": 0,
-    "smallTargets": 4
+    "smallTargets": 1
   },
   "mobile-ios:cumplimiento": {
     "axe": 0,
@@ -81,6 +81,6 @@
   },
   "mobile-ios:workspace": {
     "axe": 0,
-    "smallTargets": 4
+    "smallTargets": 1
   }
 }
