@@ -12,7 +12,7 @@ export function OnboardingWizard(): JSX.Element {
 		<div className="min-h-screen w-full flex bg-background relative overflow-hidden">
 			{/* Background Decor */}
 			<div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
-			<div className="absolute top-0 w-full h-1 bg-gradient-to-r from-brand via-[rgba(var(--premium-info-rgb),0.20)] to-brand" />
+			<div className="absolute top-0 w-full h-1 bg-brand" />
 
 			<div className="flex-1 flex flex-col items-center justify-center p-8 relative z-10">
 				<div className="w-full max-w-2xl space-y-8">

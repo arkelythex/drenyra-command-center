@@ -35,17 +35,17 @@ function getPasswordStrength(pwd: string): {
 
 	const labels = ["Muy débil", "Débil", "Regular", "Fuerte", "Muy fuerte"];
 	const colors = [
-		"bg-red-500",
-		"bg-orange-500",
-		"bg-yellow-500",
-		"bg-[var(--premium-action-blue)]",
+		"bg-destructive",
+		"bg-warning",
+		"bg-warning",
+		"bg-brand",
 		"bg-success",
 	];
 
 	return {
 		score,
 		label: labels[score] || "Muy débil",
-		color: colors[score] || "bg-red-500",
+		color: colors[score] || "bg-destructive",
 	};
 }
 
@@ -203,7 +203,7 @@ export const ResetPasswordForm = () => {
 						</div>
 					)}
 					{errors.password && (
-						<Text variant="label" className="text-red-400 ml-1 text-xs">
+						<Text variant="label" className="text-destructive ml-1 text-xs">
 							{errors.password.message}
 						</Text>
 					)}
@@ -233,7 +233,7 @@ export const ResetPasswordForm = () => {
 						</button>
 					</div>
 					{errors.confirmPassword && (
-						<Text variant="label" className="text-red-400 ml-1 text-xs">
+						<Text variant="label" className="text-destructive ml-1 text-xs">
 							{errors.confirmPassword.message}
 						</Text>
 					)}

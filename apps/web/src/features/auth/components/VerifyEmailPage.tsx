@@ -185,7 +185,7 @@ export const VerifyEmailPage = () => {
 							variants={entranceVariants}
 							className="flex justify-center"
 						>
-							<XCircle className="h-16 w-16 text-red-500" />
+							<XCircle className="h-16 w-16 text-destructive" />
 						</MotionDiv>
 						<MotionDiv variants={entranceVariants}>
 							<Text className="text-foreground/90">

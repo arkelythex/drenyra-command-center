@@ -140,7 +140,7 @@ export const ForgotPasswordForm = () => {
 						/>
 					</div>
 					{errors.email && (
-						<Text variant="label" className="text-red-400 ml-1 text-xs">
+						<Text variant="label" className="text-destructive ml-1 text-xs">
 							{errors.email.message}
 						</Text>
 					)}

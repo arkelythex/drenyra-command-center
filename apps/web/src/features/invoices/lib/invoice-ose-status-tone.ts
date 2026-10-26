@@ -23,9 +23,8 @@ export function getInvoiceOseStatusTone(
 		case "OBSERVED":
 			return {
 				label: "Observado",
-				containerClassName: "border-yellow-500/20 bg-yellow-500/10",
-				badgeClassName:
-					"border-yellow-500/20 bg-yellow-500/10 text-yellow-700 dark:text-yellow-300",
+				containerClassName: "border-warning/20 bg-warning/10",
+				badgeClassName: "border-warning/20 bg-warning/10 text-warning",
 			};
 		case "REJECTED":
 			return {
@@ -37,9 +36,9 @@ export function getInvoiceOseStatusTone(
 		case "ANNULLED":
 			return {
 				label: "Anulado",
-				containerClassName: "border-slate-500/20 bg-slate-500/10",
+				containerClassName: "border-border bg-muted",
 				badgeClassName:
-					"border-slate-500/20 bg-slate-500/10 text-slate-700 dark:text-slate-300",
+					"border-border bg-muted text-muted-foreground dark:text-muted-foreground",
 			};
 		default:
 			return {

@@ -84,8 +84,7 @@ export function ReconciliationQueuePanel({
 							className={cn(
 								"w-full rounded-2xl border p-4 text-left transition-[border-color,background-color,box-shadow,transform] duration-150 hover:border-border",
 								statusClasses(transaction.status),
-								isSelected &&
-									"ring-1 ring-[rgba(var(--premium-info-rgb),0.35)] shadow-[0_12px_24px_rgba(0,0,0,0.12)]",
+								isSelected && "ring-1 ring-brand/40",
 							)}
 						>
 							<div className="flex items-start justify-between gap-3">

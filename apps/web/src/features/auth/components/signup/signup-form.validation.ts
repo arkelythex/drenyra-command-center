@@ -25,9 +25,9 @@ export function calculatePasswordStrength(password: string): PasswordStrength {
 		"Muy fuerte",
 	] as const;
 	const colors = [
-		"bg-red-500",
-		"bg-orange-500",
-		"bg-yellow-500",
+		"bg-destructive",
+		"bg-warning",
+		"bg-warning",
 		"bg-[var(--premium-action-blue)]",
 		"bg-[var(--premium-success)]",
 	] as const;
@@ -35,7 +35,7 @@ export function calculatePasswordStrength(password: string): PasswordStrength {
 	return {
 		score,
 		label: labels[score] ?? "Muy débil",
-		color: colors[score] ?? "bg-red-500",
+		color: colors[score] ?? "bg-destructive",
 	};
 }
 
