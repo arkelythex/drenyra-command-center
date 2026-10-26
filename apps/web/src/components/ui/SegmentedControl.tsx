@@ -44,7 +44,7 @@ export function SegmentedControl<T extends string>({
 						aria-selected={selected}
 						onClick={() => onChange(option.id)}
 						className={cn(
-							"h-9 flex-1 rounded-md px-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
+							"h-11 flex-1 rounded-md px-3 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
 							selected
 								? "bg-background font-medium text-foreground shadow-sm"
 								: "text-muted-foreground hover:text-foreground",

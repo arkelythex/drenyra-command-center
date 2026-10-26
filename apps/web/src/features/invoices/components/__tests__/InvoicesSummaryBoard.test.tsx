@@ -101,6 +101,25 @@ const invoices: Invoice[] = [
 	},
 ];
 
+function renderEmptyBoard(onCreateInvoice = vi.fn()) {
+	render(
+		<InvoicesSummaryBoard
+			isLoading={false}
+			error={null}
+			normalizedQuery=""
+			hasSearchResults={false}
+			searchQuery=""
+			filteredInvoicesByStatus={{ draft: [], sent: [], overdue: [], paid: [] }}
+			filteredColumnTotals={{ sent: 0, overdue: 0 }}
+			allInvoices={[]}
+			onUpdateInvoiceStatus={updateInvoiceStatusMock}
+			onCreateInvoice={onCreateInvoice}
+			formatMoney={(amount) => `S/ ${amount.toFixed(2)}`}
+		/>,
+	);
+	return onCreateInvoice;
+}
+
 function renderSummaryBoard(
 	options: {
 		onCreateInvoice?: () => void;
@@ -196,7 +215,7 @@ describe("InvoicesSummaryBoard DnD wiring", () => {
 		});
 
 		expect(updateInvoiceStatusMock).toHaveBeenCalledWith("inv-1", "sent");
-		expect(toastSuccessMock).toHaveBeenCalledWith("Factura movida a SENT");
+		expect(toastSuccessMock).toHaveBeenCalledWith("Factura movida a Emitidas");
 	});
 
 	it("blocks disallowed fiscal workflow drops", () => {
@@ -211,7 +230,7 @@ describe("InvoicesSummaryBoard DnD wiring", () => {
 
 		expect(updateInvoiceStatusMock).not.toHaveBeenCalled();
 		expect(toastErrorMock).toHaveBeenCalledWith(
-			"No se puede mover de DRAFT a PAID",
+			"No se puede mover de Borradores a Cobradas",
 		);
 	});
 
@@ -228,5 +247,27 @@ describe("InvoicesSummaryBoard DnD wiring", () => {
 		expect(updateInvoiceStatusMock).not.toHaveBeenCalled();
 		expect(toastErrorMock).not.toHaveBeenCalled();
 		expect(toastSuccessMock).not.toHaveBeenCalled();
+	});
+
+	it("explains an empty account and offers to issue the first invoice", async () => {
+		const onCreateInvoice = renderEmptyBoard();
+
+		expect(
+			screen.getByRole("heading", { name: /aún no hay comprobantes/i }),
+		).toBeInTheDocument();
+		await userEvent
+			.setup()
+			.click(screen.getByRole("button", { name: /emitir factura/i }));
+		expect(onCreateInvoice).toHaveBeenCalledOnce();
+		expect(screen.queryByTestId("column-draft")).not.toBeInTheDocument();
+	});
+
+	it("keeps the columns when invoices exist", () => {
+		renderSummaryBoard();
+
+		expect(screen.getByTestId("column-draft")).toBeInTheDocument();
+		expect(
+			screen.queryByRole("heading", { name: /aún no hay comprobantes/i }),
+		).not.toBeInTheDocument();
 	});
 });
