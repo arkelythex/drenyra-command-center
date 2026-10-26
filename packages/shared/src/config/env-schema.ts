@@ -120,12 +120,6 @@ export function validateEnv(env: Record<string, unknown> = process.env): Env {
 		if (isProduction) process.exit(1);
 	}
 
-	if (!env.CORS_ALLOWED_ORIGINS) {
-		console.warn(
-			"[ENV] CORS_ALLOWED_ORIGINS: not set, cross-origin requests will be rejected",
-		);
-	}
-
 	if (result.success) return result.data;
 	const lenient = LenientEnvSchema.safeParse(env);
 	return lenient.success ? lenient.data : LenientEnvSchema.parse({});

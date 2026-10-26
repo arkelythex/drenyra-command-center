@@ -187,23 +187,6 @@ describe("validateApiEnv", () => {
 		exitSpy.mockRestore();
 	});
 
-	it("warns when CORS_ALLOWED_ORIGINS is not set", () => {
-		const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-		Object.assign(process.env, {
-			...validEnv(),
-			CORS_ALLOWED_ORIGINS: undefined,
-		});
-
-		validateApiEnv();
-
-		const corsWarning = warnSpy.mock.calls.find(
-			([msg]) =>
-				typeof msg === "string" && msg.includes("CORS_ALLOWED_ORIGINS"),
-		);
-		expect(corsWarning).toBeDefined();
-		warnSpy.mockRestore();
-	});
-
 	it("valid env passes without warnings for missing optionals", () => {
 		const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 		Object.assign(process.env, validEnv());
