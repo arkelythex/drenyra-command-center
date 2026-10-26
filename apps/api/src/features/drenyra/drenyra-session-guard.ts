@@ -36,38 +36,57 @@ function header(headers: Record<string, unknown>, name: string): string | null {
 	return typeof text === "string" && text.trim() !== "" ? text.trim() : null;
 }
 
+/** A string field of a query or JSON body, when it is one. */
+function text(source: unknown, key: string): string | null {
+	if (typeof source !== "object" || source === null) return null;
+	const value = (source as Record<string, unknown>)[key];
+	return typeof value === "string" && value.trim() !== "" ? value.trim() : null;
+}
+
 export function drenyraSessionGuard() {
 	return (app: Elysia) =>
-		app.onBeforeHandle({ as: "global" }, async ({ request, headers, set }) => {
-			if (!isGuarded(pathOf(request.url))) return undefined;
+		app.onBeforeHandle(
+			{ as: "global" },
+			async ({ request, headers, query, body, set }) => {
+				if (!isGuarded(pathOf(request.url))) return undefined;
 
-			const session = await resolveSessionContext({
-				headers: headers as Record<string, unknown>,
-				requireSession: true,
-				allowHeaderFallback: false,
-			});
+				const session = await resolveSessionContext({
+					headers: headers as Record<string, unknown>,
+					requireSession: true,
+					allowHeaderFallback: false,
+				});
 
-			if (!session.ok) {
-				set.status = session.status;
-				return fail(session.error, session.code);
-			}
+				if (!session.ok) {
+					set.status = session.status;
+					return fail(session.error, session.code);
+				}
 
-			const claimedCompany = header(headers, "x-company-id");
-			const claimedUser = header(headers, "x-user-id");
-			const sameCompany =
-				claimedCompany === null || claimedCompany === session.context.companyId;
-			const sameUser =
-				claimedUser === null ||
-				claimedUser === session.context.userId ||
-				claimedUser === session.context.authUserId;
-
-			if (!sameCompany || !sameUser) {
-				set.status = 403;
-				return fail(
-					"The scope headers do not match the authenticated session",
-					"TENANT_MISMATCH",
+				const claimedCompanies = [
+					header(headers, "x-company-id"),
+					text(query, "companyId"),
+					text(body, "companyId"),
+				];
+				const claimedUser = header(headers, "x-user-id");
+				const sessionUsers = [
+					session.context.userId,
+					session.context.authUserId,
+					session.context.legacyUserId,
+				];
+				const sameCompany = claimedCompanies.every(
+					(claimed) =>
+						claimed === null || claimed === session.context.companyId,
 				);
-			}
-			return undefined;
-		});
+				const sameUser =
+					claimedUser === null || sessionUsers.includes(claimedUser);
+
+				if (!sameCompany || !sameUser) {
+					set.status = 403;
+					return fail(
+						"The scope headers do not match the authenticated session",
+						"TENANT_MISMATCH",
+					);
+				}
+				return undefined;
+			},
+		);
 }

@@ -89,6 +89,49 @@ describe("drenyraSessionGuard", () => {
 		expect(response.status).toBe(403);
 	});
 
+	it("accepts the legacy user id the web client sends in x-user-id", async () => {
+		resolveSessionContext.mockResolvedValue({
+			ok: true,
+			context: { ...SESSION.context, legacyUserId: "legacy-77" },
+		});
+
+		const response = await call("/api/drenyra/cases", {
+			"x-company-id": "company-1",
+			"x-user-id": "legacy-77",
+		});
+
+		expect(response.status).toBe(200);
+	});
+
+	it("rejects a companyId in the query that is not the session's company", async () => {
+		resolveSessionContext.mockResolvedValue(SESSION);
+
+		const other = await call("/api/drenyra/cases?companyId=company-OTHER");
+		expect(other.status).toBe(403);
+		expect((await other.json()).code).toBe("TENANT_MISMATCH");
+
+		const own = await call("/api/drenyra/cases?companyId=company-1");
+		expect(own.status).toBe(200);
+	});
+
+	it("rejects a companyId in the JSON body that is not the session's company", async () => {
+		resolveSessionContext.mockResolvedValue(SESSION);
+		const app = new Elysia()
+			.use(drenyraSessionGuard())
+			.post("/api/drenyra/cases", () => ({ ok: "created" }));
+		const send = (companyId: string) =>
+			app.handle(
+				new Request("http://localhost/api/drenyra/cases", {
+					method: "POST",
+					headers: { "content-type": "application/json" },
+					body: JSON.stringify({ companyId }),
+				}),
+			);
+
+		expect((await send("company-OTHER")).status).toBe(403);
+		expect((await send("company-1")).status).toBe(200);
+	});
+
 	it("keeps the contract public and leaves other prefixes alone", async () => {
 		resolveSessionContext.mockResolvedValue({
 			ok: false,
