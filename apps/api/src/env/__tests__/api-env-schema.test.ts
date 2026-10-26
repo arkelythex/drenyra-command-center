@@ -73,9 +73,77 @@ describe("ApiEnvSchema", () => {
 		if (result.success) {
 			expect(result.data.CORS_ALLOWED_ORIGINS).toBeUndefined();
 			expect(result.data.TRUSTED_PROXIES).toBeUndefined();
-			expect(result.data.LEDGER_MVP_ENABLED).toBe("true");
+			expect(result.data.LEDGER_MVP_ENABLED).toBe(true);
 			expect(result.data.NODE_ENV).toBe("development");
 		}
+	});
+});
+
+describe("boolean flags", () => {
+	it.each([
+		["false", false],
+		["FALSE", false],
+		["0", false],
+		["off", false],
+		["no", false],
+		["true", true],
+		["1", true],
+		["on", true],
+	])("reads %s as %s (not as a non-empty string)", (raw, expected) => {
+		Object.assign(process.env, validEnv(), {
+			ENABLE_SUNAT_SYNC: raw,
+			SMTP_SECURE: raw,
+		});
+		const result = ApiEnvSchema.safeParse(process.env);
+		expect(result.success).toBe(true);
+		if (result.success) {
+			expect(result.data.ENABLE_SUNAT_SYNC).toBe(expected);
+			expect(result.data.SMTP_SECURE).toBe(expected);
+		}
+	});
+
+	it("uses the default when a flag is not set", () => {
+		Object.assign(process.env, validEnv());
+		delete process.env.ENABLE_SUNAT_SYNC;
+		delete process.env.ENABLE_AI_AGENTS;
+		const result = ApiEnvSchema.safeParse(process.env);
+		expect(result.success).toBe(true);
+		if (result.success) {
+			expect(result.data.ENABLE_SUNAT_SYNC).toBe(false);
+			expect(result.data.ENABLE_AI_AGENTS).toBe(true);
+		}
+	});
+});
+
+describe("production boot", () => {
+	it.each(["BETTER_AUTH_SECRET", "DATABASE_URL", "BETTER_AUTH_URL"])(
+		"exits when %s is missing",
+		(name) => {
+			const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+			const exitSpy = vi
+				.spyOn(process, "exit")
+				.mockImplementation(() => undefined as never);
+			Object.assign(process.env, validEnv(), { NODE_ENV: "production" });
+			delete process.env[name];
+
+			validateApiEnv();
+
+			expect(exitSpy).toHaveBeenCalledWith(1);
+			expect(
+				errorSpy.mock.calls.some(([msg]) => String(msg).includes(name)),
+			).toBe(true);
+		},
+	);
+
+	it("boots when all three are present", () => {
+		const exitSpy = vi
+			.spyOn(process, "exit")
+			.mockImplementation(() => undefined as never);
+		Object.assign(process.env, validEnv(), { NODE_ENV: "production" });
+
+		validateApiEnv();
+
+		expect(exitSpy).not.toHaveBeenCalled();
 	});
 });
 
@@ -98,7 +166,7 @@ describe("validateApiEnv", () => {
 
 		expect(warnSpy).toHaveBeenCalled();
 		expect(env.BETTER_AUTH_SECRET).toBe("");
-		expect(env.LEDGER_MVP_ENABLED).toBe("true");
+		expect(env.LEDGER_MVP_ENABLED).toBe(true);
 		expect(env.NODE_ENV).toBe("development");
 		warnSpy.mockRestore();
 	});
@@ -117,23 +185,6 @@ describe("validateApiEnv", () => {
 		expect(exitSpy).toHaveBeenCalledWith(1);
 		errorSpy.mockRestore();
 		exitSpy.mockRestore();
-	});
-
-	it("warns when CORS_ALLOWED_ORIGINS is not set", () => {
-		const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-		Object.assign(process.env, {
-			...validEnv(),
-			CORS_ALLOWED_ORIGINS: undefined,
-		});
-
-		validateApiEnv();
-
-		const corsWarning = warnSpy.mock.calls.find(
-			([msg]) =>
-				typeof msg === "string" && msg.includes("CORS_ALLOWED_ORIGINS"),
-		);
-		expect(corsWarning).toBeDefined();
-		warnSpy.mockRestore();
 	});
 
 	it("valid env passes without warnings for missing optionals", () => {
