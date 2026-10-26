@@ -1,4 +1,3 @@
-import { CheckCircle2, CircleAlert, Clock, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type ClosePhaseState = "completed" | "active" | "blocked" | "pending";
@@ -17,111 +16,96 @@ interface ClosePhaseStripProps {
 	activeIndex: number;
 }
 
-const STATE_ICON = {
-	completed: CheckCircle2,
-	active: Loader2,
-	blocked: CircleAlert,
-	pending: Clock,
+/** Segment color and label per state; the label makes the state readable without color. */
+const STATE = {
+	completed: {
+		label: "Completada",
+		segment: "bg-success",
+		text: "text-muted-foreground",
+	},
+	active: { label: "En curso", segment: "bg-brand", text: "text-foreground" },
+	blocked: {
+		label: "Bloqueada",
+		segment: "bg-destructive",
+		text: "text-destructive",
+	},
+	pending: {
+		label: "Pendiente",
+		segment: "bg-border",
+		text: "text-muted-foreground",
+	},
 } as const;
 
-const STATE_COLOR = {
-	completed: "text-[var(--color-success)] border-[var(--color-success)]/30",
-	active: "text-[var(--color-info)] border-[var(--color-info)]/30",
-	blocked: "text-[var(--color-danger)] border-[var(--color-danger)]/30",
-	pending: "text-[var(--text-tertiary)] border-[var(--border-subtle)]",
-} as const;
-
-const STATE_BG = {
-	completed: "bg-[var(--color-success)]/5",
-	active: "bg-[var(--color-info)]/5",
-	blocked: "bg-[var(--color-danger)]/5",
-	pending: "bg-[var(--surface-2)]",
-} as const;
-
-const STATE_LABEL = {
-	completed: "Completada",
-	active: "En curso",
-	blocked: "Bloqueada",
-	pending: "Pendiente",
-} as const;
-
-function PhaseCard({ phase, index }: { phase: ClosePhase; index: number }) {
-	const Icon = STATE_ICON[phase.state];
-	const color = STATE_COLOR[phase.state];
-	const bg = STATE_BG[phase.state];
-
-	return (
-		<div
-			className={cn(
-				"flex flex-col gap-1.5 rounded-xl border p-3 transition-all",
-				color,
-				bg,
-			)}
-		>
-			<div className="flex items-center justify-between gap-2">
-				<div className="flex items-center gap-2 min-w-0">
-					<Icon
-						size={14}
-						className={cn(
-							"shrink-0",
-							phase.state === "active" && "animate-spin",
-						)}
-					/>
-					<span className="text-xs font-semibold text-[var(--text-primary)] truncate">
-						{index + 1}. {phase.name}
-					</span>
-				</div>
-				{phase.evidenceCount !== undefined ? (
-					<span className="shrink-0 text-[10px] font-medium text-[var(--text-secondary)]">
-						{phase.evidenceCount} ev.
-					</span>
-				) : null}
-			</div>
-
-			<span className="text-[10px] font-medium text-[var(--text-tertiary)]">
-				{STATE_LABEL[phase.state]}
-			</span>
-
-			{phase.blocker && (
-				<p className="text-[10px] leading-relaxed text-[var(--color-danger)]">
-					{phase.blocker}
-				</p>
-			)}
-			{phase.nextAction && (
-				<p className="text-[10px] leading-relaxed text-[var(--color-primary)]">
-					Siguiente: {phase.nextAction}
-				</p>
-			)}
-		</div>
-	);
-}
-
+/** Close plan as a segmented stepper: one segment per phase, the current one marked. */
 export function ClosePhaseStrip({ phases, activeIndex }: ClosePhaseStripProps) {
 	if (phases.length === 0) {
 		return (
-			<div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-6 text-center">
-				<p className="text-sm text-[var(--text-tertiary)]">
-					No hay fases de cierre definidas para este período.
-				</p>
-			</div>
+			<p className="rounded-xl border border-border px-4 py-6 text-center text-sm text-muted-foreground">
+				No hay fases de cierre definidas para este período.
+			</p>
 		);
 	}
 
 	return (
-		<div className="rounded-2xl border border-[var(--border-default)] bg-[var(--surface-1)] p-5">
-			<div className="flex items-center justify-between mb-4">
-				<h2 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
+		<section className="space-y-3">
+			<div className="flex items-baseline justify-between gap-4">
+				<h2 className="text-base font-medium tracking-tight">
 					Fases del cierre
 				</h2>
-				<span className="text-[10px] font-medium text-[var(--text-secondary)]">
+				<p className="text-sm text-muted-foreground">
 					Fase activa: {phases[activeIndex]?.name ?? "—"}
-				</span>
+				</p>
 			</div>
-			<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-				{phases.map((phase, index) => (
-					<PhaseCard key={phase.name} phase={phase} index={index} />
-				))}
-			</div>
-		</div>
+
+			<ol
+				aria-label="Fases del cierre"
+				className="grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-4 lg:grid-cols-8"
+			>
+				{phases.map((phase, index) => {
+					const state = STATE[phase.state];
+					return (
+						<li
+							key={phase.name}
+							aria-current={index === activeIndex ? "step" : undefined}
+							className="space-y-2"
+						>
+							<div
+								aria-hidden="true"
+								className={cn("h-1 rounded-full", state.segment)}
+							/>
+							<div className="space-y-0.5">
+								<p
+									className={cn(
+										"text-sm",
+										index === activeIndex
+											? "font-medium text-foreground"
+											: "text-foreground",
+									)}
+								>
+									<span className="mr-1 font-mono tabular-nums text-muted-foreground">
+										{index + 1}
+									</span>
+									{phase.name}
+								</p>
+								<p className={cn("text-xs", state.text)}>{state.label}</p>
+								{phase.evidenceCount !== undefined ? (
+									<p className="text-xs text-muted-foreground">
+										{phase.evidenceCount} ev.
+									</p>
+								) : null}
+								{phase.blocker ? (
+									<p className="text-xs text-destructive">{phase.blocker}</p>
+								) : null}
+								{phase.nextAction ? (
+									<p className="text-xs text-muted-foreground">
+										Siguiente: {phase.nextAction}
+									</p>
+								) : null}
+							</div>
+						</li>
+					);
+				})}
+			</ol>
+		</section>
 	);
 }

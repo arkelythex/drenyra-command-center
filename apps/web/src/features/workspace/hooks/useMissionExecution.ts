@@ -1,6 +1,6 @@
 import type { MissionSnapshot } from "@drenyra/mission-domain";
 import type { Dispatch, MutableRefObject } from "react";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import {
 	type CreateMissionInput,
 	createMission,
@@ -117,8 +117,14 @@ export function useMissionExecution(
 		[dispatch, missionIdRef],
 	);
 
+	// A start is not repeatable while one is in flight (a double click, or two
+	// tabs of the same session, must not create or execute the mission twice).
+	const inFlightRef = useRef(false);
+
 	const run = useCallback(
 		async (command: CreateMissionInput) => {
+			if (inFlightRef.current) return;
+			inFlightRef.current = true;
 			abortRef.current?.abort();
 			const controller = new AbortController();
 			abortRef.current = controller;
@@ -138,6 +144,8 @@ export function useMissionExecution(
 					error: (error as Error).message ?? "Error desconocido",
 					isTimeout,
 				});
+			} finally {
+				inFlightRef.current = false;
 			}
 		},
 		[dispatch, abortRef, runMock, runServer],

@@ -1,5 +1,5 @@
 import type { CierreMensualChecklistItem } from "@drenyra/domain";
-import { AlertTriangle, CheckCircle2, type LucideIcon } from "lucide-react";
+import { CheckCircle2, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ChecklistRowProps {
@@ -9,66 +9,49 @@ interface ChecklistRowProps {
 }
 
 export function ChecklistRow({ item, icon: Icon, isNext }: ChecklistRowProps) {
-	return (
-		<div
-			className={cn(
-				"flex items-start gap-3 rounded-xl border p-3.5 transition-all",
-				item.completado
-					? "border-[var(--color-success)]/20 bg-[var(--color-success)]/4"
-					: isNext
-						? "border-[var(--color-info)]/20 bg-[var(--color-info)]/4 ring-1 ring-[var(--color-info)]/10"
-						: "border-[var(--border-subtle)] bg-[var(--surface-1)]",
-			)}
-		>
-			<div
-				className={cn(
-					"mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg",
-					item.completado
-						? "bg-[var(--color-success)]/10 text-[var(--color-success)]"
-						: isNext
-							? "bg-[var(--color-info)]/10 text-[var(--color-info)]"
-							: "bg-[var(--surface-2)] text-[var(--text-tertiary)]",
-				)}
-			>
-				{item.completado ? (
-					<CheckCircle2 size={16} />
-				) : isNext ? (
-					<AlertTriangle size={16} />
-				) : (
-					<Icon size={16} />
-				)}
-			</div>
+	const stateLabel = item.completado
+		? "Completado"
+		: isNext
+			? "Siguiente"
+			: "Pendiente";
+	const RowIcon = item.completado ? CheckCircle2 : Icon;
 
-			<div className="min-w-0 flex-1">
-				<div className="flex items-center gap-2">
-					<span className="text-2xs font-bold uppercase tracking-wider text-[var(--text-tertiary)]">
-						Paso {item.orden}
-					</span>
-					{isNext && !item.completado && (
-						<span className="rounded-full border border-[var(--color-info)]/20 bg-[var(--color-info)]/8 px-1.5 py-0.5 text-3xs font-bold text-[var(--color-info)]">
-							SIGUIENTE
-						</span>
-					)}
-				</div>
+	return (
+		<li
+			aria-current={isNext ? "step" : undefined}
+			className="flex items-start gap-3 px-4 py-3"
+		>
+			<RowIcon
+				aria-hidden="true"
+				className={cn(
+					"mt-0.5 size-4 shrink-0",
+					item.completado ? "text-success" : "text-muted-foreground",
+				)}
+			/>
+			<div className="min-w-0 flex-1 space-y-0.5">
 				<p
 					className={cn(
-						"mt-0.5 text-xs font-bold",
+						"text-sm",
 						item.completado
-							? "text-[var(--text-secondary)]"
-							: "text-[var(--text-primary)]",
+							? "text-muted-foreground"
+							: "font-medium text-foreground",
 					)}
 				>
 					{item.label}
 				</p>
-				<p className="text-2xs text-[var(--text-tertiary)] leading-relaxed mt-0.5">
-					{item.descripcion}
-				</p>
-				{item.requiereEvidencia && !item.completado && (
-					<p className="mt-1.5 text-3xs text-[var(--color-warning)]">
-						Requiere evidencia adjunta
-					</p>
-				)}
+				<p className="text-sm text-muted-foreground">{item.descripcion}</p>
+				{item.requiereEvidencia && !item.completado ? (
+					<p className="text-sm text-warning">Requiere evidencia adjunta</p>
+				) : null}
 			</div>
-		</div>
+			<span
+				className={cn(
+					"shrink-0 text-sm",
+					isNext ? "font-medium text-foreground" : "text-muted-foreground",
+				)}
+			>
+				{stateLabel}
+			</span>
+		</li>
 	);
 }

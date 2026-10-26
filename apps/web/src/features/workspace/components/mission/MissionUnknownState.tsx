@@ -1,66 +1,83 @@
-import { AlertOctagon, CheckCircle, Play, XCircle } from "lucide-react";
-import { useState } from "react";
+import { CircleCheck, CircleX, Play, TriangleAlert } from "lucide-react";
+import { useId, useState } from "react";
 
 interface MissionUnknownStateProps {
 	onReconcile: (resolution: string, reason: string) => void;
 	isSubmitting: boolean;
 }
 
+const actionClass =
+	"flex h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-50";
+
+/**
+ * The server could not confirm what happened. A person resolves it explicitly,
+ * and the written reason goes to the audit trail, so it is mandatory.
+ */
 export function MissionUnknownState({
 	onReconcile,
 	isSubmitting,
 }: MissionUnknownStateProps) {
 	const [reason, setReason] = useState("");
+	const reasonId = useId();
+	const trimmed = reason.trim();
+	const disabled = isSubmitting || trimmed === "";
+	const resolve = (resolution: string) => onReconcile(resolution, trimmed);
 
 	return (
-		<div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 space-y-4">
-			<div className="flex items-center gap-2">
-				<AlertOctagon size={20} className="text-amber-500" />
-				<h3 className="text-sm font-semibold text-[var(--text-primary)]">
+		<section className="w-full max-w-2xl space-y-4 rounded-xl border border-border bg-card p-5">
+			<div className="space-y-1">
+				<h3 className="flex items-center gap-2 text-base font-medium tracking-tight">
+					<TriangleAlert aria-hidden="true" className="size-4 text-warning" />
 					Estado desconocido
 				</h3>
+				<p className="text-sm text-muted-foreground">
+					No se pudo confirmar el estado de la misión. Elige cómo resolver:
+				</p>
 			</div>
-			<p className="text-xs text-[var(--text-secondary)]">
-				No se pudo confirmar el estado de la misión. Elige cómo resolver:
-			</p>
 
-			<textarea
-				value={reason}
-				onChange={(e) => setReason(e.target.value)}
-				placeholder="Motivo de la resolución (requerido)"
-				className="w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-2 text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none resize-none"
-				rows={2}
-			/>
+			<div className="space-y-2">
+				<label htmlFor={reasonId} className="text-sm font-medium">
+					Motivo de la resolución
+				</label>
+				<textarea
+					id={reasonId}
+					value={reason}
+					onChange={(event) => setReason(event.target.value)}
+					placeholder="Obligatorio para registrar la decisión"
+					rows={2}
+					className="w-full resize-none rounded-lg border border-input bg-background p-3 text-sm placeholder:text-muted-foreground focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30"
+				/>
+			</div>
 
 			<div className="flex flex-wrap gap-2">
 				<button
 					type="button"
-					disabled={isSubmitting}
-					onClick={() => onReconcile("RUNNING", reason)}
-					className="flex items-center gap-1.5 rounded-lg bg-[var(--accent)] px-3 py-1.5 text-xs font-medium text-brand-foreground hover:opacity-90 disabled:opacity-50"
+					disabled={disabled}
+					onClick={() => resolve("RUNNING")}
+					className={`${actionClass} bg-brand text-brand-foreground hover:bg-brand/90`}
 				>
-					<Play size={14} />
-					Reanudar (RUNNING)
+					<Play aria-hidden="true" className="size-4" />
+					Reanudar
 				</button>
 				<button
 					type="button"
-					disabled={isSubmitting}
-					onClick={() => onReconcile("COMPLETED", reason)}
-					className="flex items-center gap-1.5 rounded-lg border border-green-500/30 px-3 py-1.5 text-xs font-medium text-green-600 hover:bg-green-500/10 disabled:opacity-50"
+					disabled={disabled}
+					onClick={() => resolve("COMPLETED")}
+					className={`${actionClass} border border-border hover:bg-muted`}
 				>
-					<CheckCircle size={14} />
-					Marcar completado (COMPLETED)
+					<CircleCheck aria-hidden="true" className="size-4 text-success" />
+					Marcar como completada
 				</button>
 				<button
 					type="button"
-					disabled={isSubmitting}
-					onClick={() => onReconcile("FAILED", reason)}
-					className="flex items-center gap-1.5 rounded-lg border border-red-500/30 px-3 py-1.5 text-xs font-medium text-red-500 hover:bg-red-500/10 disabled:opacity-50"
+					disabled={disabled}
+					onClick={() => resolve("FAILED")}
+					className={`${actionClass} border border-destructive/40 text-destructive hover:bg-destructive/10`}
 				>
-					<XCircle size={14} />
-					Marcar fallido (FAILED)
+					<CircleX aria-hidden="true" className="size-4" />
+					Marcar como fallida
 				</button>
 			</div>
-		</div>
+		</section>
 	);
 }

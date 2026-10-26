@@ -94,28 +94,25 @@ const TAX_GATE_CHECKS = [
 
 /**
  * No check is shown as verified until the mission brings evidence for it:
- * open blockers mark them blocked, otherwise they need attention.
+ * open blockers mark them blocked, otherwise they need attention. The note
+ * that applies to all of them is stated once, not per control.
  */
-function buildTaxGateItems(
-	hasBlockers: boolean,
-	signed: number,
-	required: number,
-): Parameters<typeof TaxReviewGate>[0]["items"] {
-	return [
-		...TAX_GATE_CHECKS.map((check) => ({
-			...check,
-			status: hasBlockers ? ("blocked" as const) : ("warning" as const),
-			detail: hasBlockers
-				? "La misión reporta bloqueos pendientes."
-				: "Sin evidencia de la misión todavía.",
-		})),
-		{
-			id: "firmas",
-			label: "Firmas requeridas",
-			status: "warning" as const,
-			detail: `${signed} de ${required} firma(s).`,
-		},
-	];
+function buildTaxGate(hasBlockers: boolean, signed: number, required: number) {
+	const status = hasBlockers ? ("blocked" as const) : ("warning" as const);
+	return {
+		summary: hasBlockers
+			? "La misión reporta bloqueos pendientes."
+			: "Ningún control tiene evidencia de la misión todavía.",
+		items: [
+			...TAX_GATE_CHECKS.map((check) => ({ ...check, status })),
+			{
+				id: "firmas",
+				label: "Firmas requeridas",
+				status: "warning" as const,
+				detail: `${signed} de ${required} firma(s).`,
+			},
+		],
+	};
 }
 
 export function CierreMensualPage({
@@ -145,7 +142,10 @@ export function CierreMensualPage({
 
 	if (isLoading || !cierre) {
 		return (
-			<div className="flex-1 overflow-auto custom-scrollbar bg-[var(--surface-1)] p-10 text-xs text-[var(--text-tertiary)]">
+			<div
+				role={isError ? "alert" : "status"}
+				className="flex-1 overflow-y-auto p-8 text-sm text-muted-foreground"
+			>
 				{isError
 					? "No se pudo cargar el cierre mensual."
 					: "Cargando cierre mensual…"}
@@ -158,6 +158,11 @@ export function CierreMensualPage({
 	const completedCount = cierre.checklist.filter(
 		(item) => item.completado,
 	).length;
+	const taxGate = buildTaxGate(
+		hasBlockers,
+		Object.values(cierre.firmas).filter((f) => f?.firmado).length,
+		Object.keys(cierre.firmas).length,
+	);
 	const riskAlerts = buildRiskAlerts(cierre.blockers);
 	const overallRisk: FiscalRiskAlert["riskLevel"] = cierre.globalRiskLevel;
 
@@ -172,9 +177,9 @@ export function CierreMensualPage({
 
 	return (
 		<FiscalRiskLayer alerts={riskAlerts} overallRisk={overallRisk}>
-			<div className="flex-1 overflow-auto custom-scrollbar bg-[var(--surface-1)]">
-				<div className="mx-auto w-full max-w-[1200px] p-4 sm:p-6 lg:p-10">
-					<div className="min-w-0 space-y-6">
+			<div className="flex-1 overflow-y-auto">
+				<div className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-8 lg:py-10">
+					<div className="min-w-0 space-y-8">
 						<ProgressHeader
 							companyName={cierre.companyName}
 							companyRuc={cierre.companyRuc}
@@ -187,18 +192,14 @@ export function CierreMensualPage({
 							<Button onClick={approve}>Aprobar propuesta</Button>
 						) : null}
 						{receiptId && receiptHash ? (
-							<p className="text-xs text-[var(--text-tertiary)]">
-								Receipt: {receiptId} · {receiptHash}
+							<p className="break-all font-mono text-xs text-muted-foreground">
+								Recibo: {receiptId} · {receiptHash}
 							</p>
 						) : null}
 						<ClosePhaseStrip phases={phases} activeIndex={activeIndex} />
 						<TaxReviewGate
 							period={cierre.periodo}
-							items={buildTaxGateItems(
-								hasBlockers,
-								Object.values(cierre.firmas).filter((f) => f?.firmado).length,
-								Object.keys(cierre.firmas).length,
-							)}
+							{...taxGate}
 							verdict={hasBlockers ? "blocked" : "attention"}
 						/>
 						<div className="grid gap-6 lg:grid-cols-[1fr_360px]">
@@ -206,7 +207,7 @@ export function CierreMensualPage({
 								<MissionBlockers blockers={cierre.blockers} />
 								<ChecklistPanel checklist={cierre.checklist} />
 								<section>
-									<h2 className="mb-3 text-xs font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]">
+									<h2 className="mb-3 text-base font-medium tracking-tight">
 										Línea de tiempo del agente
 									</h2>
 									<AgentTimeline events={cierre.timeline} />

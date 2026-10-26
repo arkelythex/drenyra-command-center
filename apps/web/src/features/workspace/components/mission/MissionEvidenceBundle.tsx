@@ -1,44 +1,51 @@
-import { CheckCircle, Lock } from "lucide-react";
 import type { EvidenceItem } from "@drenyra/mission-domain";
+import { CircleCheck, Lock } from "lucide-react";
 
 interface MissionEvidenceBundleProps {
-  evidence: EvidenceItem[];
-  version: number;
-  evidenceHash: string;
+	evidence: EvidenceItem[];
+	version: number;
+	evidenceHash: string;
 }
 
+/** The evidence the agent attached to its proposal; fixed once the proposal version is issued. */
 export function MissionEvidenceBundle({
-  evidence,
-  version,
+	evidence,
+	version,
 }: MissionEvidenceBundleProps) {
-  if (evidence.length === 0) return null;
+	if (evidence.length === 0) return null;
 
-  return (
-    <div className="space-y-1">
-      <div className="flex items-center gap-2">
-        <p className="text-[10px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-          Evidencia
-        </p>
-        <span className="text-[10px] text-[var(--text-muted)]">v{version}</span>
-        <Lock size={10} className="text-[var(--text-muted)]" />
-        <span className="text-[9px] text-[var(--text-muted)]">inmutable</span>
-      </div>
-      <div className="space-y-1">
-        {evidence.map((ev) => (
-          <div
-            key={ev.id}
-            className="flex items-center gap-2 rounded border border-[var(--border-subtle)] bg-[var(--surface-2)] px-2 py-1"
-          >
-            <CheckCircle size={12} className="text-green-500 shrink-0" />
-            <span className="text-[11px] text-[var(--text-primary)]">
-              {ev.label}
-            </span>
-            <span className="ml-auto text-[9px] text-[var(--text-muted)]">
-              {ev.type}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+	return (
+		<div className="space-y-2">
+			<div className="flex items-center gap-2 text-sm">
+				<h4 className="font-medium">Evidencia</h4>
+				<span className="font-mono text-xs text-muted-foreground">
+					v{version}
+				</span>
+				<span className="flex items-center gap-1 text-xs text-muted-foreground">
+					<Lock aria-hidden="true" className="size-3" />
+					inmutable
+				</span>
+			</div>
+			<ul
+				aria-label="Evidencia adjunta"
+				className="divide-y divide-border rounded-lg border border-border"
+			>
+				{evidence.map((item) => (
+					<li
+						key={item.id}
+						className="flex items-center gap-2 px-3 py-2 text-sm"
+					>
+						<CircleCheck
+							aria-hidden="true"
+							className="size-4 shrink-0 text-success"
+						/>
+						<span className="min-w-0 flex-1 truncate">{item.label}</span>
+						<span className="shrink-0 text-xs text-muted-foreground">
+							{item.type}
+						</span>
+					</li>
+				))}
+			</ul>
+		</div>
+	);
 }

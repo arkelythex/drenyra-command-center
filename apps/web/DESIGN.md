@@ -76,7 +76,7 @@ components:
     padding: '16px'
 ---
 
-**Última actualización**: 2026-06-30
+**Última actualización**: 2026-10-26
 
 > Contract for `apps/web` — design system aligned with the **Financial Engineering Environment (FEE)** thesis.
 
@@ -85,10 +85,10 @@ components:
 | Question       | Answer                                                                        |
 | -------------- | ----------------------------------------------------------------------------- |
 | System name    | **Drenyra FEE Design** (evolved from Fiscal Editorial)                        |
-| Inspiration    | Cursor 3 (editorial clarity), Codex App (focused execution), Linear (density) |
+| Inspiration    | Claude/Codex desktop, Digits — see `docs/14-design/benchmark-2026-10.md` |
 | Product model  | **Operations-first** — sidebar / fiscal workspace / evidence rail             |
-| Tokens         | `src/lib/design-tokens/tokens.dtcg.json` → `bun tokens:generate`              |
-| Primary accent | Voltage `#f54e00` — CTAs, active nav, links only (≤5% pixels)                 |
+| Tokens         | dreamcoder-dots `tokens.json` → `bun run tokens:dreamcoder <path>` → `--dc-*` roles |
+| Primary accent | Theme accent (`bg-brand` / `text-brand-foreground`), dark `#A5B4FC`, light `#824f16` |
 | Fiscal accent  | `#c45c2a` — SUNAT/compliance badges only                                      |
 
 ## Rules
@@ -115,12 +115,12 @@ components:
 Before generating UI for Drenyra web:
 
 1. Read this file and `docs/design/design-influences-2026.md`.
-2. Use `--color-*` and `--surface-*` tokens only.
+2. Use semantic utilities (`bg-card`, `border-border`, `text-muted-foreground`, `bg-brand`); new code never adds hex or new `--*` dialects.
 3. Prefer `@drenyra/ui` Button, Card, Panel, SurfacePanel.
 4. Shell: `FiscalEditorialShell` with `operational` or `command-center` mode.
 
 ## References
 
 - [Design influences 2026](../../docs/14-design/design-influences.md)
-- [Design influences 2026](../../docs/14-design/design-influences.md)
+- [Benchmark October 2026](../../docs/14-design/benchmark-2026-10.md)
 - [Drenyra Product Philosophy](../../docs/products/drenyra-product-philosophy.md)

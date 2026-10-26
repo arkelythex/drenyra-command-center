@@ -1,5 +1,6 @@
-import { Plus, Search } from "lucide-react";
+import { FileText, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { Z_INDEX } from "@/lib/design-tokens";
 import { cn } from "@/lib/utils";
 import {
@@ -19,26 +20,6 @@ interface InvoicesBoardDesktopHeaderProps {
 	onCreateInvoiceIntent?: () => void;
 	onViewChange: (view: InvoicesBoardTabId) => void;
 }
-
-const InvoiceIcon = () => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		width="20"
-		height="20"
-		viewBox="0 0 24 24"
-		fill="none"
-		stroke="currentColor"
-		strokeWidth="1.5"
-		strokeLinecap="round"
-		strokeLinejoin="round"
-		className="h-5 w-5"
-	>
-		<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-		<polyline points="14 2 14 8 20 8" />
-		<path d="M12 18v-6" />
-		<path d="m9 15 3 3 3-3" />
-	</svg>
-);
 
 export function InvoicesBoardDesktopHeader({
 	activeView,
@@ -60,7 +41,7 @@ export function InvoicesBoardDesktopHeader({
 			<div className="flex min-w-0 items-start justify-between gap-6">
 				<div className="flex min-w-0 flex-1 items-start gap-4">
 					<div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-border bg-card text-foreground shadow-sm">
-						<InvoiceIcon />
+						<FileText aria-hidden="true" className="size-5" />
 					</div>
 
 					<div className="min-w-0 flex-1">
@@ -116,7 +97,7 @@ export function InvoicesBoardDesktopHeader({
 						onClick={onCreateInvoice}
 						onPointerEnter={onCreateInvoiceIntent}
 						onFocus={onCreateInvoiceIntent}
-						className="h-10 flex-shrink-0 rounded-xl border border-[var(--border-subtle)] bg-[var(--accent)] px-4 text-label font-semibold uppercase tracking-[0.16em] text-[var(--text-on-accent)] shadow-sm transition-[background-color,box-shadow] duration-150 hover:opacity-95"
+						className="h-10 flex-shrink-0 rounded-lg border-transparent bg-brand px-4 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand/90"
 					>
 						<Plus size={14} strokeWidth={2.5} className="mr-2" />
 						Nueva factura
@@ -125,24 +106,12 @@ export function InvoicesBoardDesktopHeader({
 			</div>
 
 			<div className="flex items-center justify-between gap-4">
-				<div className="flex rounded-xl border border-border bg-card p-1">
-					{BOARD_TABS.map((tab) => (
-						<Button
-							key={tab.id}
-							variant="ghost"
-							size="sm"
-							onClick={() => onViewChange(tab.id)}
-							className={cn(
-								"relative h-8 rounded-lg px-3 text-xs font-semibold transition-[background-color,color] duration-150",
-								activeView === tab.id
-									? "bg-[var(--accent)] text-[var(--text-on-accent)]"
-									: "text-muted-foreground hover:bg-muted hover:text-foreground",
-							)}
-						>
-							{tab.label}
-						</Button>
-					))}
-				</div>
+				<SegmentedControl
+					label="Vistas"
+					options={BOARD_TABS}
+					value={activeView}
+					onChange={onViewChange}
+				/>
 
 				<p className="text-xs text-muted-foreground">
 					Arrastra entre columnas para actualizar el estado de cobro.

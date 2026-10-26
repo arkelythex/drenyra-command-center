@@ -1,51 +1,66 @@
-import { AlertTriangle, RotateCcw } from "lucide-react";
 import type { MissionBlocker } from "@drenyra/mission-domain";
+import { CircleAlert, CircleX, RotateCcw } from "lucide-react";
 
 interface MissionBlockedStateProps {
-  blockers: MissionBlocker[];
-  onRetry: () => void;
+	blockers: MissionBlocker[];
+	onRetry: () => void;
 }
 
-const SEVERITY_COLORS: Record<string, string> = {
-  WARNING: "border-amber-500/20 bg-amber-500/5",
-  ERROR: "border-red-500/20 bg-red-500/5",
-  CRITICAL: "border-red-500/30 bg-red-500/10",
+interface SeverityStyle {
+	label: string;
+	tone: string;
+	critical: boolean;
+}
+
+const WARNING: SeverityStyle = {
+	label: "Advertencia",
+	tone: "text-warning",
+	critical: false,
 };
 
-export function MissionBlockedState({ blockers, onRetry }: MissionBlockedStateProps) {
-  if (blockers.length === 0) return null;
+const SEVERITY: Record<string, SeverityStyle> = {
+	WARNING,
+	ERROR: { label: "Error", tone: "text-destructive", critical: true },
+	CRITICAL: { label: "Crítico", tone: "text-destructive", critical: true },
+};
 
-  return (
-    <div className="space-y-3">
-      <h3 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
-        Bloqueos ({blockers.length})
-      </h3>
-      <div className="space-y-2">
-        {blockers.map((blocker) => (
-          <div
-            key={blocker.id}
-            className={`flex items-center gap-2 rounded-lg border p-2 ${SEVERITY_COLORS[blocker.severity] ?? "border-amber-500/20 bg-amber-500/5"}`}
-          >
-            <AlertTriangle size={14} className="text-amber-500 shrink-0" />
-            <div className="flex-1 min-w-0">
-              <span className="text-xs text-[var(--text-primary)]">
-                {blocker.reason}
-              </span>
-            </div>
-            <span className="text-[10px] text-[var(--text-muted)] shrink-0">
-              {blocker.severity}
-            </span>
-          </div>
-        ))}
-      </div>
-      <button
-        type="button"
-        onClick={onRetry}
-        className="flex items-center gap-1.5 rounded-lg border border-[var(--border-subtle)] px-3 py-1.5 text-xs font-medium text-[var(--text-primary)] hover:bg-[var(--surface-2)]"
-      >
-        <RotateCcw size={14} />
-        Reintentar
-      </button>
-    </div>
-  );
+export function MissionBlockedState({
+	blockers,
+	onRetry,
+}: MissionBlockedStateProps) {
+	if (blockers.length === 0) return null;
+
+	return (
+		<section className="w-full max-w-2xl space-y-3">
+			<h3 className="text-base font-medium tracking-tight">
+				Bloqueos ({blockers.length})
+			</h3>
+			<ul className="divide-y divide-border rounded-xl border border-border bg-card">
+				{blockers.map((blocker) => {
+					const severity = SEVERITY[blocker.severity] ?? WARNING;
+					const Icon = severity.critical ? CircleX : CircleAlert;
+					return (
+						<li key={blocker.id} className="flex items-start gap-3 px-4 py-3">
+							<Icon
+								aria-hidden="true"
+								className={`mt-0.5 size-4 shrink-0 ${severity.tone}`}
+							/>
+							<p className="min-w-0 flex-1 text-sm">{blocker.reason}</p>
+							<span className={`shrink-0 text-sm ${severity.tone}`}>
+								{severity.label}
+							</span>
+						</li>
+					);
+				})}
+			</ul>
+			<button
+				type="button"
+				onClick={onRetry}
+				className="flex h-11 items-center gap-2 rounded-lg border border-border px-4 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+			>
+				<RotateCcw aria-hidden="true" className="size-4" />
+				Reintentar
+			</button>
+		</section>
+	);
 }

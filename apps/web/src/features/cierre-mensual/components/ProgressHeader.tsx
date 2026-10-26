@@ -1,15 +1,14 @@
-import { Building2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-
 interface ProgressHeaderProps {
 	companyName: string;
 	companyRuc: string;
 	periodo: string;
 	completedCount: number;
 	totalCount: number;
+	/** 0..1 share of tasks done. */
 	progress: number;
 }
 
+/** Page header of the monthly close. The company switcher lives in the workspace top bar. */
 export function ProgressHeader({
 	companyName,
 	companyRuc,
@@ -18,48 +17,44 @@ export function ProgressHeader({
 	totalCount,
 	progress,
 }: ProgressHeaderProps) {
+	const percent = Math.round(progress * 100);
+
 	return (
 		<header className="space-y-4">
-			<div className="flex items-center justify-between">
-				<div className="flex items-center gap-2">
-					<Building2
-						size={22}
-						className="text-[var(--color-info)]"
-						strokeWidth={1.5}
-					/>
-					<h1 className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
-						Cierre Mensual
-					</h1>
-				</div>
-				<Button size="sm" variant="outline" className="h-8 text-2xs font-bold">
-					Cambiar empresa
-				</Button>
+			<div className="space-y-1">
+				<h1 className="text-2xl font-medium tracking-tight text-foreground">
+					Cierre mensual
+				</h1>
+				<p className="text-sm text-muted-foreground">
+					{companyName} · RUC {companyRuc} · Período {periodo}
+				</p>
 			</div>
 
-			<div className="flex flex-wrap items-center gap-4 text-xs">
-				<span className="text-[var(--text-secondary)]">
-					{companyName} · RUC {companyRuc}
-				</span>
-				<span className="text-[var(--text-tertiary)]">Período {periodo}</span>
-			</div>
-
-			{/* Progress Bar */}
-			<div className="space-y-2">
-				<div className="flex items-center justify-between text-2xs">
-					<span className="font-bold text-[var(--text-secondary)]">
-						{completedCount} de {totalCount} completados
-					</span>
-					<span className="font-bold text-[var(--color-info)]">
-						{Math.round(progress * 100)}%
-					</span>
-				</div>
-				<div className="h-2 w-full rounded-full bg-[var(--surface-2)] overflow-hidden">
+			{totalCount > 0 ? (
+				<div className="space-y-2">
+					<div className="flex items-baseline justify-between text-sm">
+						<span className="text-muted-foreground">
+							{completedCount} de {totalCount} tareas
+						</span>
+						<span className="font-mono tabular-nums text-foreground">
+							{percent}%
+						</span>
+					</div>
 					<div
-						className="h-full rounded-full transition-all duration-500 bg-[var(--color-info)]"
-						style={{ width: `${progress * 100}%` }}
-					/>
+						role="progressbar"
+						aria-label="Avance del cierre"
+						aria-valuemin={0}
+						aria-valuemax={100}
+						aria-valuenow={percent}
+						className="h-1.5 w-full overflow-hidden rounded-full bg-muted"
+					>
+						<div
+							className="h-full rounded-full bg-brand transition-[width] duration-500 motion-reduce:transition-none"
+							style={{ width: `${percent}%` }}
+						/>
+					</div>
 				</div>
-			</div>
+			) : null}
 		</header>
 	);
 }

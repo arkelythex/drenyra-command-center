@@ -1,10 +1,4 @@
 import type { MissionProposal } from "@drenyra/mission-domain";
-import {
-	AlertOctagon,
-	AlertTriangle,
-	ThumbsDown,
-	ThumbsUp,
-} from "lucide-react";
 import { useState } from "react";
 import { MissionEvidenceBundle } from "./MissionEvidenceBundle";
 
@@ -21,6 +15,10 @@ const RISK_LABELS: Record<string, string> = {
 	HIGH: "Alto",
 };
 
+/**
+ * The human decision on the agent's proposal. Approving is the primary action;
+ * rejecting needs a written reason, which the receipt records.
+ */
 export function MissionApprovalGate({
 	proposal,
 	onApprove,
@@ -28,26 +26,33 @@ export function MissionApprovalGate({
 	isSubmitting,
 }: MissionApprovalGateProps) {
 	const [rejectReason, setRejectReason] = useState("");
-
 	const reason = rejectReason.trim();
-
-	const handleReject = () => {
-		if (reason) onReject(reason);
-	};
+	const reasonId = `reject-reason-${proposal.id}`;
 
 	return (
-		<div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 space-y-3">
-			<div className="flex items-center gap-2">
-				<AlertTriangle size={16} className="text-amber-500" />
-				<h3 className="text-sm font-semibold text-[var(--text-primary)]">
-					Aprobación requerida
-				</h3>
-				<span className="text-[10px] text-[var(--text-muted)]">
-					v{proposal.version}
-				</span>
+		<section
+			aria-labelledby={`gate-title-${proposal.id}`}
+			className="w-full max-w-2xl space-y-5 rounded-xl border border-border bg-card p-5 text-card-foreground"
+		>
+			<div className="space-y-1">
+				<div className="flex items-baseline gap-2">
+					<h3
+						id={`gate-title-${proposal.id}`}
+						className="text-base font-medium tracking-tight"
+					>
+						Aprobación requerida
+					</h3>
+					<span className="font-mono text-xs text-muted-foreground">
+						v{proposal.version}
+					</span>
+				</div>
+				<p className="text-sm leading-relaxed text-muted-foreground">
+					{proposal.summary}
+				</p>
+				<p className="text-sm text-foreground">
+					Riesgo: {RISK_LABELS[proposal.riskLevel] ?? proposal.riskLevel}
+				</p>
 			</div>
-
-			<p className="text-xs text-[var(--text-secondary)]">{proposal.summary}</p>
 
 			<MissionEvidenceBundle
 				evidence={proposal.evidence}
@@ -55,47 +60,39 @@ export function MissionApprovalGate({
 				evidenceHash={proposal.evidenceHash}
 			/>
 
-			<div className="flex items-center gap-2 text-xs">
-				<AlertOctagon size={12} className="text-amber-500" />
-				<span className="text-[var(--text-muted)]">
-					Riesgo: {RISK_LABELS[proposal.riskLevel] ?? proposal.riskLevel}
-				</span>
-			</div>
-
-			<div className="flex flex-col gap-2">
-				<label htmlFor={`reject-reason-${proposal.id}`} className="sr-only">
+			<div className="space-y-2">
+				<label htmlFor={reasonId} className="text-sm font-medium">
 					Motivo de rechazo
 				</label>
 				<textarea
-					id={`reject-reason-${proposal.id}`}
+					id={reasonId}
 					value={rejectReason}
-					onChange={(e) => setRejectReason(e.target.value)}
-					placeholder="Motivo de rechazo (requerido)"
-					className="w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-2 text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none resize-none"
+					onChange={(event) => setRejectReason(event.target.value)}
+					placeholder="Obligatorio solo si rechazas"
 					rows={2}
+					className="w-full resize-none rounded-lg border border-input bg-background p-3 text-sm placeholder:text-muted-foreground focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30"
 				/>
-				<div className="flex gap-2 justify-end">
-					<button
-						type="button"
-						disabled={isSubmitting}
-						onClick={onApprove}
-						className="flex items-center gap-1.5 rounded-lg bg-green-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-700 disabled:opacity-50"
-					>
-						<ThumbsUp size={14} /> Aprobar
-					</button>
-					<button
-						type="button"
-						disabled={isSubmitting || reason === ""}
-						title={
-							reason === "" ? "Escribe el motivo para rechazar" : undefined
-						}
-						onClick={handleReject}
-						className="flex items-center gap-1.5 rounded-lg border border-red-500/30 px-3 py-1.5 text-xs font-medium text-red-500 hover:bg-red-500/10 disabled:opacity-50"
-					>
-						<ThumbsDown size={14} /> Rechazar
-					</button>
-				</div>
 			</div>
-		</div>
+
+			<div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+				<button
+					type="button"
+					disabled={isSubmitting || reason === ""}
+					title={reason === "" ? "Escribe el motivo para rechazar" : undefined}
+					onClick={() => onReject(reason)}
+					className="flex h-11 items-center justify-center rounded-lg border border-destructive/40 px-4 text-sm font-medium text-destructive transition-colors hover:bg-destructive/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-50"
+				>
+					Rechazar
+				</button>
+				<button
+					type="button"
+					disabled={isSubmitting}
+					onClick={onApprove}
+					className="flex h-11 items-center justify-center rounded-lg bg-brand px-4 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-50"
+				>
+					Aprobar
+				</button>
+			</div>
+		</section>
 	);
 }

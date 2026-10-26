@@ -21,14 +21,14 @@ export function MissionActions({
 	onRequestRevision,
 }: MissionActionsProps) {
 	return (
-		<div className="flex items-center gap-2">
+		<div className="flex flex-wrap items-center gap-2">
 			{isReady && !isAwaiting && (
 				<button
 					type="button"
 					onClick={onStart}
-					className="flex items-center gap-2 rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-medium text-brand-foreground hover:opacity-90"
+					className="flex h-11 items-center justify-center gap-2 rounded-lg bg-brand px-4 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
 				>
-					<Play size={16} />
+					<Play aria-hidden="true" size={16} />
 					Iniciar misión
 				</button>
 			)}
@@ -37,9 +37,9 @@ export function MissionActions({
 				<button
 					type="button"
 					onClick={onRequestRevision}
-					className="flex items-center gap-2 rounded-lg border border-[var(--border-subtle)] px-4 py-2 text-sm font-medium text-[var(--text-primary)] hover:bg-[var(--surface-2)]"
+					className="flex h-11 items-center justify-center gap-2 rounded-lg border border-border px-4 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
 				>
-					<FileEdit size={16} />
+					<FileEdit aria-hidden="true" size={16} />
 					Solicitar revisión
 				</button>
 			)}
@@ -48,9 +48,9 @@ export function MissionActions({
 				<button
 					type="button"
 					onClick={onReset}
-					className="flex items-center gap-2 rounded-lg border border-[var(--border-subtle)] px-4 py-2 text-sm font-medium text-[var(--text-primary)] hover:bg-[var(--surface-2)]"
+					className="flex h-11 items-center justify-center gap-2 rounded-lg border border-border px-4 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
 				>
-					<RotateCcw size={16} />
+					<RotateCcw aria-hidden="true" size={16} />
 					Nueva misión
 				</button>
 			)}
@@ -59,9 +59,9 @@ export function MissionActions({
 				<button
 					type="button"
 					onClick={onStart}
-					className="flex items-center gap-2 rounded-lg border border-[var(--border-subtle)] px-4 py-2 text-sm font-medium text-[var(--text-primary)] hover:bg-[var(--surface-2)]"
+					className="flex h-11 items-center justify-center gap-2 rounded-lg border border-border px-4 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
 				>
-					<RotateCcw size={16} />
+					<RotateCcw aria-hidden="true" size={16} />
 					Reintentar
 				</button>
 			)}
