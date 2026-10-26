@@ -219,12 +219,16 @@ export function observationToFiscalMemory(
 		summary: observation.content.why,
 		evidenceRefs,
 		tags: meta.tags,
-		createdBy: observation.provenance.actor,
+		createdBy: observation.source.actorId ?? "unknown",
 		relatedMemoryIds: meta.relatedMemoryIds,
-		createdAt: new Date(observation.provenance.timestamp),
+		createdAt: observation.recordedAt
+			? new Date(observation.recordedAt)
+			: new Date(),
 		updatedAt: meta.updatedAt
 			? new Date(meta.updatedAt)
-			: new Date(observation.provenance.timestamp),
+			: observation.recordedAt
+				? new Date(observation.recordedAt)
+				: new Date(),
 		...(meta.approvedBy !== undefined ? { approvedBy: meta.approvedBy } : {}),
 		...(meta.sourceAgentId !== undefined
 			? { sourceAgentId: meta.sourceAgentId }
@@ -254,8 +258,9 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 		await this.client.save({
 			topicKey: `${FISCAL_TOPIC_PREFIX}${props.id}`,
 			title: `[${props.category}] ${props.title}`,
-			type: "fiscal_memory",
+			kind: "decision",
 			scope: engramScope,
+			fiscalEffect: "none",
 			content: {
 				what: props.title,
 				why: props.summary,
@@ -268,10 +273,10 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 						: "no evidence refs recorded",
 				learned: learnedFromProps(props),
 			},
-			provenance: {
-				actor: props.createdBy,
-				timestamp: props.createdAt.toISOString(),
-				source: "api",
+			source: {
+				system: "drenyra-api",
+				actorId: props.createdBy,
+				actorKind: "human",
 				...(props.sourceAgentId !== undefined
 					? { session: props.sourceAgentId }
 					: {}),
@@ -317,7 +322,7 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 			organizationId: scope.tenantId,
 		});
 		return observations
-			.filter((observation) => observation.type === "fiscal_memory")
+			.filter((observation) => observation.kind === "decision")
 			.map(observationToFiscalMemory)
 			.filter((memory) => fiscalPeriodToEngram(memory.period) === target);
 	}
@@ -394,8 +399,9 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 		await this.client.save({
 			topicKey: `${FISCAL_TOPIC_PREFIX}${props.id}`,
 			title: `[${props.category}] ${props.title}`,
-			type: "fiscal_memory",
+			kind: "decision",
 			scope: engramScope,
+			fiscalEffect: "none",
 			content: {
 				what: props.title,
 				why: props.summary,
@@ -405,10 +411,10 @@ export class EngramFiscalMemoryRepository implements FiscalMemoryRepository {
 						: "no evidence refs recorded",
 				learned: JSON.stringify(meta),
 			},
-			provenance: {
-				actor: revision.changedBy,
-				timestamp: revision.createdAt.toISOString(),
-				source: "api",
+			source: {
+				system: "drenyra-api",
+				actorId: revision.changedBy,
+				actorKind: "human",
 				...(props.sourceAgentId !== undefined
 					? { session: props.sourceAgentId }
 					: {}),

@@ -1,6 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
-	ENGRAM_AUTHORITY_STATUS,
 	ENGRAM_SCOPE_KIND,
 	ENGRAM_WRITE_OUTCOME,
 	EngramClient,
@@ -12,7 +11,7 @@ const BASE_URL = "http://engram.test:8733";
 const OBSERVATION = {
 	identity: { id: "obs-1", topicKey: "run-1" },
 	title: "agent_run",
-	type: "agent_run",
+	kind: "fact",
 	scope: {
 		kind: ENGRAM_SCOPE_KIND.COMPANY,
 		organizationId: "org-1",
@@ -21,11 +20,14 @@ const OBSERVATION = {
 		period: "202601",
 	},
 	content: { what: "what", why: "why", where: "where", learned: "learned" },
-	authorityStatus: ENGRAM_AUTHORITY_STATUS.PROMOTED,
-	provenance: {
-		actor: "analysis",
-		timestamp: "2026-01-15T10:00:00.000Z",
-		source: "drenyra-memory",
+	status: "active",
+	fiscalEffect: "none",
+	effectiveAt: "2026-01-15T10:00:00.000Z",
+	recordedAt: "2026-01-15T10:00:00.000Z",
+	source: {
+		system: "drenyra-memory",
+		actorId: "analysis",
+		actorKind: "agent",
 		session: "sess-1",
 	},
 	revision: 1,
@@ -89,7 +91,7 @@ describe("EngramClient", () => {
 		stubFetch(() =>
 			Promise.resolve(
 				jsonResponse(
-					{ observation: OBSERVATION, outcome: ENGRAM_WRITE_OUTCOME.CREATED },
+					{ memory: OBSERVATION, outcome: ENGRAM_WRITE_OUTCOME.CREATED },
 					201,
 				),
 			),
@@ -98,7 +100,7 @@ describe("EngramClient", () => {
 		const result = await client().save({
 			topicKey: "run-1",
 			title: "agent_run",
-			type: "agent_run",
+			kind: "fact",
 			scope: {
 				kind: ENGRAM_SCOPE_KIND.COMPANY,
 				companyId: "20123456789",
@@ -106,10 +108,11 @@ describe("EngramClient", () => {
 				period: "202601",
 			},
 			content: { what: "what", why: "why", where: "where", learned: "learned" },
-			provenance: {
-				actor: "analysis",
-				timestamp: "2026-01-15T10:00:00.000Z",
-				source: "drenyra-memory",
+			fiscalEffect: "none",
+			source: {
+				system: "drenyra-memory",
+				actorId: "analysis",
+				actorKind: "agent",
 			},
 		});
 
@@ -128,7 +131,7 @@ describe("EngramClient", () => {
 	it("search() passes q, ruc, period and organizationId as query params", async () => {
 		stubFetch(() =>
 			Promise.resolve(
-				jsonResponse([{ observation: OBSERVATION, score: 2, stale: false }]),
+				jsonResponse([{ memory: OBSERVATION, score: 2, stale: false }]),
 			),
 		);
 

@@ -28,7 +28,7 @@ const SAVE_INPUT = {
 const OBSERVATION = {
 	identity: { id: "obs-1", topicKey: "sess-1" },
 	title: "fact",
-	type: "fact",
+	kind: "fact",
 	scope: {
 		kind: "company",
 		organizationId: "org-1",
@@ -38,10 +38,14 @@ const OBSERVATION = {
 	},
 	content: { what: "Analysis complete", why: "", where: "", learned: "" },
 	authorityStatus: "draft",
-	provenance: {
-		actor: "analysis",
-		timestamp: NOW,
-		source: "drenyra-memory",
+	status: "active",
+	fiscalEffect: "none",
+	effectiveAt: NOW,
+	recordedAt: NOW,
+	source: {
+		system: "drenyra-memory",
+		actorId: "analysis",
+		actorKind: "agent",
 		session: "sess-1",
 	},
 	revision: 1,
@@ -66,7 +70,7 @@ describe("EngramSessionStore.save", () => {
 		const payload = client.save.mock.calls[0]?.[0] as Record<string, unknown>;
 		expect(payload.topicKey).toBe("sess-1");
 		expect(payload.title).toBe("fact");
-		expect(payload.type).toBe("fact");
+		expect(payload.kind).toBe("fact");
 		expect(payload.scope).toEqual({
 			kind: "company",
 			organizationId: "org-1",
@@ -88,9 +92,10 @@ describe("EngramSessionStore.save", () => {
 		>;
 		expect(learned.agentId).toBe("analysis");
 		expect(learned.sessionId).toBe("sess-1");
-		expect(payload.provenance).toMatchObject({
-			actor: "analysis",
-			source: "drenyra-memory",
+		expect(payload.source).toMatchObject({
+			system: "drenyra-memory",
+			actorId: "analysis",
+			actorKind: "agent",
 			session: "sess-1",
 		});
 	});
@@ -241,8 +246,8 @@ describe("EngramSessionStore.getBySession", () => {
 		const other = {
 			...OBSERVATION,
 			identity: { id: "obs-2", topicKey: "other" },
-			provenance: {
-				...OBSERVATION.provenance,
+			source: {
+				...OBSERVATION.source,
 				session: "sess-2",
 			},
 		};
