@@ -92,7 +92,7 @@ export class EngramMissionMemoryRecorder implements MissionMemoryRecorder {
 		const saveInput: EngramSaveInput = {
 			topicKey: `mission/${input.missionId}`,
 			title: `Mission ${input.missionId} completed`,
-			type: "mission_result",
+			kind: "summary",
 			scope: {
 				kind: "company",
 				organizationId:
@@ -106,10 +106,10 @@ export class EngramMissionMemoryRecorder implements MissionMemoryRecorder {
 				where: "apps/api features/missions",
 				learned: `Completed via reconcile by ${input.actorId || "system"} — fiscal period ${period}`,
 			},
-			provenance: {
-				actor: input.actorId || "system",
-				timestamp: new Date().toISOString(),
-				source: "api",
+			source: {
+				system: "api",
+				actorId: input.actorId || "system",
+				actorKind: "system",
 				session: input.missionId,
 			},
 		};

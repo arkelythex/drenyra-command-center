@@ -247,13 +247,13 @@ export class AiObservabilityService {
 				const observations = await loadEngramContext(companyId);
 				return observations
 					.map((observation) => ({
-						runId: observation.provenance.session || observation.identity.id,
+						runId: observation.source.session || observation.identity.id,
 						memorySummary:
 							observation.content.learned || observation.content.what || "",
-						workflowState: observation.type,
+						workflowState: observation.kind,
 						status: "completed",
-						startedAt: observation.provenance.timestamp,
-						completedAt: observation.provenance.timestamp,
+						startedAt: observation.recordedAt ?? "",
+						completedAt: observation.recordedAt ?? "",
 					}))
 					.sort((left, right) => left.startedAt.localeCompare(right.startedAt));
 			} catch (error) {
