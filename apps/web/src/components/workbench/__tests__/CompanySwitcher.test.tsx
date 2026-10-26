@@ -1,11 +1,11 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { CompanySwitcher } from "../CompanySwitcher";
+import { type CompanyOption, CompanySwitcher } from "../CompanySwitcher";
 
-const companies = [
+const companies: CompanyOption[] = [
 	{ id: "c1", name: "Andina S.A.C.", ruc: "20123456789" },
 	{ id: "c2", name: "Pacífico E.I.R.L.", ruc: "20987654321" },
-] as never;
+];
 
 function openMenu() {
 	fireEvent.keyDown(screen.getByRole("button", { name: /andina/i }), {
@@ -18,7 +18,7 @@ describe("CompanySwitcher", () => {
 		render(
 			<CompanySwitcher
 				companies={companies}
-				activeCompany={(companies as never[])[0]}
+				activeCompany={companies[0] ?? null}
 				onSelect={vi.fn()}
 			/>,
 		);
@@ -31,7 +31,7 @@ describe("CompanySwitcher", () => {
 		render(
 			<CompanySwitcher
 				companies={companies}
-				activeCompany={(companies as never[])[0]}
+				activeCompany={companies[0] ?? null}
 				onSelect={vi.fn()}
 			/>,
 		);
@@ -51,7 +51,7 @@ describe("CompanySwitcher", () => {
 		render(
 			<CompanySwitcher
 				companies={companies}
-				activeCompany={(companies as never[])[0]}
+				activeCompany={companies[0] ?? null}
 				onSelect={onSelect}
 			/>,
 		);
@@ -59,7 +59,7 @@ describe("CompanySwitcher", () => {
 		fireEvent.click(
 			await screen.findByRole("menuitemradio", { name: /pacífico/i }),
 		);
-		expect(onSelect).toHaveBeenCalledWith((companies as never[])[1]);
+		expect(onSelect).toHaveBeenCalledWith(companies[1]);
 	});
 
 	it("asks to pick a company when none is active", () => {

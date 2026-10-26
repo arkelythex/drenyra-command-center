@@ -9,10 +9,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
+/** What the picker needs of a company; the session does not carry the organization. */
+export type CompanyOption = Pick<CompanyRef, "id" | "name" | "ruc">;
+
 interface CompanySwitcherProps {
-	companies: CompanyRef[];
-	activeCompany: CompanyRef | null;
-	onSelect: (company: CompanyRef) => void;
+	companies: CompanyOption[];
+	activeCompany: CompanyOption | null;
+	onSelect: (company: CompanyOption) => void;
 	compact?: boolean;
 }
 
