@@ -22,22 +22,22 @@ export const InvoiceItemsList = ({
 	onRemoveItem,
 }: InvoiceItemsListProps) => {
 	return (
-		<div className="space-y-4">
-			<div className="flex items-center justify-between">
-				<label className="text-label font-black uppercase tracking-widest text-muted-foreground">
-					Detalle de Items
-				</label>
+		<section aria-labelledby="edit-invoice-items" className="space-y-3">
+			<div className="flex items-center justify-between gap-3">
+				<h3 id="edit-invoice-items" className="text-base font-semibold">
+					Conceptos
+				</h3>
 				<Button
-					size="sm"
+					type="button"
 					variant="outline"
 					onClick={onAddItem}
-					className="h-8 text-label font-black"
+					className="h-11 gap-1.5 px-4"
 				>
-					<Plus size={14} /> AGREGAR ITEM
+					<Plus aria-hidden="true" className="size-4" />
+					Agregar concepto
 				</Button>
 			</div>
-
-			<div className="space-y-3">
+			<ul className="space-y-3">
 				{items.map((item, index) => (
 					<InvoiceItemRow
 						key={item.id}
@@ -49,7 +49,7 @@ export const InvoiceItemsList = ({
 						canRemove={items.length > 1}
 					/>
 				))}
-			</div>
-		</div>
+			</ul>
+		</section>
 	);
 };

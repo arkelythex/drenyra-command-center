@@ -9,7 +9,7 @@ import { invoiceKeys } from "../api/query-keys";
 
 interface SendInvoiceEmailPayload {
 	invoiceId: string;
-	customMessage?: string;
+	customMessage?: string | undefined;
 }
 
 interface EmailActionResult {
