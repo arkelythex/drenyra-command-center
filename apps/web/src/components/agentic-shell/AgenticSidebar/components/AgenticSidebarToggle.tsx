@@ -20,8 +20,8 @@ export function AgenticSidebarToggle() {
 			type="button"
 			onClick={() => (isDrawerOpen ? setDrawerOpen(false) : toggleCollapsed())}
 			className={cn(
-				"flex size-11 items-center justify-center rounded-lg transition-colors hover:bg-[var(--surface-2)] lg:size-9",
-				"text-[var(--text-muted)] hover:text-[var(--text-primary)]",
+				"flex size-11 items-center justify-center rounded-lg transition-colors hover:bg-muted lg:size-9",
+				"text-muted-foreground hover:text-foreground",
 			)}
 			aria-label={label}
 		>

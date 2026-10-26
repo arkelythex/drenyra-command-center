@@ -35,7 +35,7 @@ export function getInvoiceOseTimelineIcon(
 		case "OBSERVED":
 			return {
 				Icon: AlertTriangle,
-				className: "text-yellow-700 dark:text-yellow-300",
+				className: "text-warning",
 				label: "Estado observado",
 			};
 		case "REJECTED":

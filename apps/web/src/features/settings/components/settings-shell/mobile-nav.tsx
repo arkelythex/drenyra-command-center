@@ -21,8 +21,8 @@ export function SettingsMobileNav({ pathname }: SettingsMobileNavProps) {
 							className={cn(
 								"inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg px-4 text-sm font-medium transition-colors",
 								active
-									? "bg-[var(--surface-2)] text-[var(--text-primary)]"
-									: "text-[var(--text-secondary)] hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]",
+									? "bg-muted text-foreground"
+									: "text-foreground-soft hover:bg-muted hover:text-foreground",
 							)}
 						>
 							{createElement(item.icon, { size: 14, strokeWidth: 2 })}

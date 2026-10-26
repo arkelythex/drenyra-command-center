@@ -27,7 +27,7 @@ const EMAIL_API_URL = runtimeConfig.apiUrl;
 
 async function postEmailAction(
 	path: string,
-	body?: Record<string, string>,
+	body?: Record<string, string | undefined>,
 ): Promise<EmailActionResult> {
 	const response = await fetch(`${EMAIL_API_URL}${path}`, {
 		method: "POST",

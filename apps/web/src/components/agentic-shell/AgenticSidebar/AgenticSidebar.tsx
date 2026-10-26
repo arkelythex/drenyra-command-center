@@ -19,15 +19,13 @@ export function AgenticSidebar() {
 	return (
 		<div
 			className={cn(
-				"relative flex h-full w-full flex-col bg-[var(--surface-1)] transition-[width] duration-200 ease-in-out",
+				"relative flex h-full w-full flex-col bg-card transition-[width] duration-200 ease-in-out",
 				isCollapsed ? "lg:w-16" : "lg:w-[260px]",
 			)}
 		>
-			<div className="flex items-center justify-between border-b border-[var(--border-subtle)] px-3 py-2">
+			<div className="flex items-center justify-between border-b border-border-subtle px-3 py-2">
 				{!isCollapsed && (
-					<span className="text-sm font-semibold text-[var(--text-primary)]">
-						Drenyra
-					</span>
+					<span className="text-sm font-semibold text-foreground">Drenyra</span>
 				)}
 				<AgenticSidebarToggle />
 			</div>

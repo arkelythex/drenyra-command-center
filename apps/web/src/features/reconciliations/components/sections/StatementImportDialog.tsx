@@ -139,8 +139,9 @@ export function StatementImportDialog() {
 		>
 			<DialogTrigger asChild>
 				<Button
+					variant="brand"
 					disabled={!companyId}
-					className="h-11 rounded-lg border-transparent bg-brand px-4 text-sm font-medium text-brand-foreground hover:bg-brand/90"
+					className="h-11 rounded-lg px-4 text-sm font-medium"
 				>
 					<Upload size={14} className="mr-2" /> Importar extracto
 				</Button>
@@ -306,7 +307,7 @@ function StatementPreview({
 			{rows.length > 0 && (
 				<div className="max-h-56 overflow-auto rounded-lg border border-border/60">
 					<table className="w-full text-left text-xs">
-						<thead className="bg-[var(--surface-1)] text-muted-foreground">
+						<thead className="bg-card text-muted-foreground">
 							<tr>
 								<th className="px-3 py-2">Fecha</th>
 								<th className="px-3 py-2">Descripción</th>

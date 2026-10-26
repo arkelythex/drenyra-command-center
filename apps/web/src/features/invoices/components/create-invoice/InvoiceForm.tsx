@@ -136,10 +136,11 @@ export const InvoiceForm = ({ onSubmit, onCancel, companyId }: Props) => {
 					Cancelar
 				</Button>
 				<Button
+					variant="brand"
 					type="button"
 					onClick={actions.handleSubmit}
 					disabled={formState.isPending}
-					className="h-11 bg-brand px-5 text-brand-foreground hover:bg-brand/90"
+					className="h-11 px-5"
 				>
 					{formState.isPending ? "Emitiendo…" : "Emitir factura"}
 				</Button>

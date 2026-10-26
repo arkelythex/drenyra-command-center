@@ -50,7 +50,7 @@ export function ReconciliationMatchWorkspace({
 
 			<div className="min-h-0 flex-1 overflow-y-auto p-5 custom-scrollbar">
 				<div className="grid gap-5 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-					<Card className="border-border/60 bg-[var(--surface-1)]">
+					<Card className="border-border/60 bg-card">
 						<CardHeader className="border-b border-border/50">
 							<CardTitle>Movimiento bancario</CardTitle>
 							<CardDescription>
@@ -58,7 +58,7 @@ export function ReconciliationMatchWorkspace({
 							</CardDescription>
 						</CardHeader>
 						<CardContent className="space-y-4 p-5">
-							<div className="rounded-2xl border border-border/60 bg-[var(--surface-2)] p-4">
+							<div className="rounded-2xl border border-border/60 bg-muted p-4">
 								<p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
 									Descripción
 								</p>
@@ -80,18 +80,18 @@ export function ReconciliationMatchWorkspace({
 								/>
 							</div>
 
-							<div className="rounded-2xl border border-border/60 bg-[var(--surface-2)] p-4">
+							<div className="rounded-2xl border border-border/60 bg-muted p-4">
 								<p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
 									Notas de revisión
 								</p>
-								<p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+								<p className="mt-2 text-sm leading-6 text-foreground-soft">
 									{activeTransaction.notes}
 								</p>
 							</div>
 						</CardContent>
 					</Card>
 
-					<Card className="border-border/60 bg-[var(--surface-1)]">
+					<Card className="border-border/60 bg-card">
 						<CardHeader className="border-b border-border/50">
 							<CardTitle>Candidatos sugeridos</CardTitle>
 							<CardDescription>
@@ -110,8 +110,8 @@ export function ReconciliationMatchWorkspace({
 											onClick={() => onSelectCandidate(candidate.id)}
 											className={`w-full rounded-2xl border p-4 text-left transition-colors duration-150 ${
 												isActive
-													? "border-info-muted bg-info-subtle"
-													: "border-border/60 bg-[var(--surface-2)] hover:border-[var(--border-default)]"
+													? "border-info/30 bg-info/10"
+													: "border-border/60 bg-muted hover:border-border"
 											}`}
 										>
 											<div className="flex items-start justify-between gap-3">
@@ -137,7 +137,7 @@ export function ReconciliationMatchWorkspace({
 												</span>
 											</div>
 
-											<p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
+											<p className="mt-3 text-sm leading-6 text-foreground-soft">
 												{candidate.rationale}
 											</p>
 										</button>
@@ -147,7 +147,7 @@ export function ReconciliationMatchWorkspace({
 								<EmptyPanel />
 							)}
 
-							<div className="rounded-2xl border border-dashed border-border/60 bg-[var(--surface-2)] p-4">
+							<div className="rounded-2xl border border-dashed border-border/60 bg-muted p-4">
 								<div className="flex items-center gap-3">
 									<div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-border/60 bg-background text-info">
 										<Search className="h-4 w-4" />
@@ -156,14 +156,14 @@ export function ReconciliationMatchWorkspace({
 										<p className="text-sm font-semibold text-foreground">
 											Búsqueda manual
 										</p>
-										<p className="text-sm leading-6 text-[var(--text-secondary)]">
+										<p className="text-sm leading-6 text-foreground-soft">
 											Usa búsqueda o crea un asiento si no hay match confiable.
 										</p>
 									</div>
 								</div>
 							</div>
 
-							<div className="rounded-2xl border border-border/60 bg-[var(--surface-2)] p-4">
+							<div className="rounded-2xl border border-border/60 bg-muted p-4">
 								<p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
 									Ledger relacionado
 								</p>
@@ -181,7 +181,7 @@ export function ReconciliationMatchWorkspace({
 													{entry.reference} · {entry.date}
 												</p>
 											</div>
-											<p className="font-mono text-sm tabular-nums text-[var(--text-secondary)]">
+											<p className="font-mono text-sm tabular-nums text-foreground-soft">
 												{formatMoney(entry.amount)}
 											</p>
 										</div>
@@ -206,7 +206,7 @@ function Metric({
 	value: string;
 }) {
 	return (
-		<div className="rounded-2xl border border-border/60 bg-[var(--surface-2)] p-4">
+		<div className="rounded-2xl border border-border/60 bg-muted p-4">
 			<p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
 				{label}
 			</p>
@@ -221,12 +221,12 @@ function Metric({
 
 function EmptyPanel() {
 	return (
-		<div className="rounded-2xl border border-dashed border-border/60 bg-[var(--surface-2)] p-6 text-center">
+		<div className="rounded-2xl border border-dashed border-border/60 bg-muted p-6 text-center">
 			<FileSearch className="mx-auto h-6 w-6 text-muted-foreground" />
 			<p className="mt-3 text-sm font-semibold text-foreground">
 				Sin match sugerido
 			</p>
-			<p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+			<p className="mt-2 text-sm leading-6 text-foreground-soft">
 				Este movimiento requiere investigación manual o creación de un nuevo
 				asiento.
 			</p>

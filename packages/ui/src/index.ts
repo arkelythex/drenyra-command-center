@@ -28,6 +28,7 @@ export {
 	type ButtonProps,
 	type ButtonSize,
 	type ButtonVariant,
+	buttonVariants,
 } from "./components/Button";
 export {
 	Calendar,

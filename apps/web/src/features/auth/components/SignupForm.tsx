@@ -1,11 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowRight, Loader2 } from "lucide-react";
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Text } from "@/components/atoms/text";
-import { Button } from "@/components/ui/button";
 import {
 	containerVariants,
 	entranceVariants,
@@ -17,6 +15,7 @@ import {
 	registerCorporateUser,
 } from "../lib/register-corporate-user";
 import { AuthLayout } from "./AuthLayout";
+import { AuthSubmitButton } from "./AuthSubmitButton";
 import { SignupFormFields } from "./signup/SignupFormFields";
 import {
 	calculatePasswordStrength,
@@ -24,6 +23,32 @@ import {
 	signupSchema,
 } from "./signup/signup-form.validation";
 import { useRucValidation } from "./signup/signup-ruc-validation";
+
+/** Tells the person what went wrong with the registration, in their terms. */
+function reportSignupError(error: unknown, data: SignupFormData): void {
+	if (!(error instanceof RegisterCorporateUserError)) {
+		captureError(error instanceof Error ? error : new Error("Signup failed"), {
+			emailDomain: data.email.split("@")[1] ?? null,
+			rucLength: data.ruc.length,
+			source: "features/auth/SignupForm.onSubmit",
+		});
+		toast.error("Error inesperado al crear cuenta");
+		return;
+	}
+	if (error.code === "EMAIL_EXISTS" || error.field === "email") {
+		toast.error("Este email ya está registrado", {
+			description: "Por favor usa otro email o inicia sesión.",
+		});
+		return;
+	}
+	if (error.code?.includes("RUC") || error.field === "ruc") {
+		toast.error("Error con RUC", { description: error.message });
+		return;
+	}
+	toast.error("Error al crear cuenta", {
+		description: error.message || "Por favor intenta nuevamente.",
+	});
+}
 
 export const SignupForm = () => {
 	const navigate = useNavigate();
@@ -75,36 +100,7 @@ export const SignupForm = () => {
 
 			navigate({ to: "/login" });
 		} catch (error) {
-			if (error instanceof RegisterCorporateUserError) {
-				if (error.code === "EMAIL_EXISTS" || error.field === "email") {
-					toast.error("Este email ya está registrado", {
-						description: "Por favor usa otro email o inicia sesión.",
-					});
-					return;
-				}
-
-				if (error.code?.includes("RUC") || error.field === "ruc") {
-					toast.error("Error con RUC", {
-						description: error.message,
-					});
-					return;
-				}
-
-				toast.error("Error al crear cuenta", {
-					description: error.message || "Por favor intenta nuevamente.",
-				});
-				return;
-			}
-
-			captureError(
-				error instanceof Error ? error : new Error("Signup failed"),
-				{
-					emailDomain: data.email.split("@")[1] ?? null,
-					rucLength: data.ruc.length,
-					source: "features/auth/SignupForm.onSubmit",
-				},
-			);
-			toast.error("Error inesperado al crear cuenta");
+			reportSignupError(error, data);
 		} finally {
 			setIsLoading(false);
 		}
@@ -140,28 +136,13 @@ export const SignupForm = () => {
 				/>
 
 				<MotionDiv variants={entranceVariants}>
-					<Button
-						type="submit"
-						disabled={isLoading}
-						className="group relative h-14 w-full overflow-hidden rounded-xl border-none bg-primary text-sm font-bold uppercase tracking-widest text-primary-foreground shadow-lg transition-[background-color,box-shadow,opacity] duration-200 hover:opacity-90 motion-reduce:transition-none"
-					>
-						{isLoading ? (
-							<Loader2 className="animate-spin" />
-						) : (
-							<span className="relative z-10 flex items-center gap-3">
-								CREAR CUENTA
-								<ArrowRight
-									size={20}
-									strokeWidth={2.5}
-									className="transition-colors"
-								/>
-							</span>
-						)}
-					</Button>
+					<AuthSubmitButton isLoading={isLoading}>
+						Crear cuenta
+					</AuthSubmitButton>
 				</MotionDiv>
 
 				<MotionDiv variants={entranceVariants} className="pt-2 text-center">
-					<Text variant="label" className="text-sm text-muted-foreground/80">
+					<p className="text-sm text-muted-foreground/80">
 						¿Ya tienes cuenta?{" "}
 						<a
 							href="/login"
@@ -169,7 +150,7 @@ export const SignupForm = () => {
 						>
 							Iniciar Sesión
 						</a>
-					</Text>
+					</p>
 				</MotionDiv>
 			</MotionDiv>
 		</AuthLayout>

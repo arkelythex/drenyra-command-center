@@ -58,7 +58,7 @@ export function MissionStateView({
 	if (status === ("DRAFT" as AccountingMissionStatus)) {
 		return (
 			<div className="flex flex-1 items-center justify-center p-6">
-				<p className="text-xs text-[var(--text-muted)]">
+				<p className="text-xs text-muted-foreground">
 					Listo para iniciar. Revisa los datos y presiona &quot;Iniciar
 					misión&quot;.
 				</p>

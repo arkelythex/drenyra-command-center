@@ -132,13 +132,13 @@ export function ToolPermissionFormDialog({
 					<div className="space-y-2">
 						<label
 							htmlFor="tool-name"
-							className="text-sm font-medium text-[var(--text-primary)]"
+							className="text-sm font-medium text-foreground"
 						>
 							Herramienta
 						</label>
 						<select
 							id="tool-name"
-							className="w-full rounded-md border border-[var(--border-default)] bg-[var(--surface-1)] px-3 py-2 text-sm text-[var(--text-primary)]"
+							className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground"
 							value={toolName}
 							onChange={(event) => setToolName(event.target.value)}
 						>
@@ -163,17 +163,15 @@ export function ToolPermissionFormDialog({
 
 					{/* Effect */}
 					<div className="space-y-2">
-						<p className="text-sm font-medium text-[var(--text-primary)]">
-							Política
-						</p>
+						<p className="text-sm font-medium text-foreground">Política</p>
 						<div className="space-y-2">
 							{EFFECT_OPTIONS.map((opt) => (
 								<label
 									key={opt.value}
 									className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition-colors ${
 										effect === opt.value
-											? "border-[var(--color-primary)]/40 bg-[var(--color-primary)]/5"
-											: "border-[var(--border-subtle)] hover:border-[var(--border-default)]"
+											? "border-brand/40 bg-brand/5"
+											: "border-border-subtle hover:border-border"
 									}`}
 								>
 									<input
@@ -182,13 +180,13 @@ export function ToolPermissionFormDialog({
 										value={opt.value}
 										checked={effect === opt.value}
 										onChange={() => setEffect(opt.value)}
-										className="h-4 w-4 accent-[var(--color-primary)]"
+										className="h-4 w-4 accent-brand"
 									/>
 									<div className="flex flex-col">
-										<span className="text-sm font-semibold text-[var(--text-primary)]">
+										<span className="text-sm font-semibold text-foreground">
 											{opt.label}
 										</span>
-										<span className="text-xs text-[var(--text-secondary)]">
+										<span className="text-xs text-foreground-soft">
 											{opt.description}
 										</span>
 									</div>

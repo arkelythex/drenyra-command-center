@@ -16,7 +16,7 @@ function level(score: number) {
 		};
 	return {
 		label: "Sin match",
-		tone: "border-danger-subtle bg-danger-subtle text-danger",
+		tone: "border-destructive/30 bg-destructive/10 text-destructive",
 	};
 }
 

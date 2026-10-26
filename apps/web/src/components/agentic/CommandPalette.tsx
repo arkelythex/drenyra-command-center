@@ -1,7 +1,6 @@
+import { Search } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
-
-import { Search } from "lucide-react";
 
 const COMMANDS = [
 	{ label: "Ir a cierre mensual", action: "/workspace/1/2026/3/close" },
@@ -52,16 +51,16 @@ export function CommandPalette() {
 			/>
 
 			{/* Palette */}
-			<div className="relative w-full max-w-lg rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] shadow-2xl">
-				<div className="flex items-center gap-2 border-b border-[var(--border-subtle)] px-3 py-2.5">
-					<Search size={14} className="text-[var(--text-muted)]" />
+			<div className="relative w-full max-w-lg rounded-xl border border-border-subtle bg-card shadow-2xl">
+				<div className="flex items-center gap-2 border-b border-border-subtle px-3 py-2.5">
+					<Search size={14} className="text-muted-foreground" />
 					<input
 						ref={inputRef}
 						type="text"
 						placeholder="Comandos y navegación…"
-						className="flex-1 bg-transparent text-xs text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)]"
+						className="flex-1 bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground"
 					/>
-					<span className="rounded border border-[var(--border-subtle)] px-1.5 py-0.5 text-[9px] text-[var(--text-muted)]">
+					<span className="rounded border border-border-subtle px-1.5 py-0.5 text-[9px] text-muted-foreground">
 						ESC
 					</span>
 				</div>
@@ -72,7 +71,7 @@ export function CommandPalette() {
 							key={cmd.action}
 							type="button"
 							onClick={() => handleSelect(cmd.action)}
-							className="w-full rounded-lg px-3 py-2 text-left text-xs text-[var(--text-secondary)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]"
+							className="w-full rounded-lg px-3 py-2 text-left text-xs text-foreground-soft transition-colors hover:bg-muted hover:text-foreground"
 						>
 							{cmd.label}
 						</button>

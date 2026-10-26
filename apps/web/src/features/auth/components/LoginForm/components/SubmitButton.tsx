@@ -9,10 +9,11 @@ interface SubmitButtonProps {
 export function SubmitButton({ isLoading }: SubmitButtonProps) {
 	return (
 		<Button
+			variant="brand"
 			type="submit"
 			disabled={isLoading}
 			aria-busy={isLoading || undefined}
-			className="h-12 w-full rounded-lg border-transparent bg-brand text-base font-medium text-brand-foreground hover:bg-brand/90 disabled:opacity-70"
+			className="h-12 w-full rounded-lg text-base font-medium disabled:opacity-70"
 		>
 			{isLoading ? (
 				<>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useCallback, type ReactNode } from "react";
+import { createContext, type ReactNode, useCallback, useContext } from "react";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
 
 // ─── Inspector subject type ──────────────────────────────────────────────────
@@ -39,8 +39,7 @@ const InspectorContext = createContext<InspectorContextValue | null>(null);
  * Each is a discriminated union member of InspectorSubject.
  */
 export function InspectorProvider({ children }: { children: ReactNode }) {
-	const { openInspector, closeInspector, activeInspector } =
-		useAgenticShell();
+	const { openInspector, closeInspector, activeInspector } = useAgenticShell();
 
 	const open = useCallback(
 		(subject: InspectorSubject) => {

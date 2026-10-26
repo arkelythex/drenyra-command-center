@@ -15,9 +15,10 @@ export function RouteError({ error, reset }: RouteErrorProps) {
 				continúa, avisa a soporte con los detalles técnicos.
 			</p>
 			<Button
+				variant="brand"
 				type="button"
 				onClick={reset}
-				className="h-11 bg-brand px-5 text-brand-foreground hover:bg-brand/90"
+				className="h-11 px-5"
 			>
 				Reintentar
 			</Button>

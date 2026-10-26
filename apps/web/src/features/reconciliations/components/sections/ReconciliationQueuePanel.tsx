@@ -28,11 +28,11 @@ function statusClasses(status: ReconciliationTransaction["status"]) {
 		case "matched":
 			return "border-success-muted bg-success-subtle";
 		case "suggested":
-			return "border-info-muted bg-info-subtle";
+			return "border-info/30 bg-info/10";
 		case "needs_review":
 			return "border-warning-muted bg-warning-subtle";
 		default:
-			return "border-danger-subtle bg-danger-subtle";
+			return "border-destructive/30 bg-destructive/10";
 	}
 }
 
@@ -43,7 +43,7 @@ export function ReconciliationQueuePanel({
 	onSelect,
 }: ReconciliationQueuePanelProps) {
 	return (
-		<aside className="flex min-h-0 flex-col border-r border-border/50 bg-[var(--surface-1)]">
+		<aside className="flex min-h-0 flex-col border-r border-border/50 bg-card">
 			<div className="border-b border-border/50 px-4 py-4">
 				<div className="flex items-center justify-between gap-3">
 					<div>
@@ -54,7 +54,7 @@ export function ReconciliationQueuePanel({
 							Movimientos por resolver
 						</h2>
 					</div>
-					<div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-border/60 bg-[var(--surface-2)] text-info">
+					<div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-border/60 bg-muted text-info">
 						<ArrowRightLeft className="h-4 w-4" />
 					</div>
 				</div>
@@ -67,7 +67,7 @@ export function ReconciliationQueuePanel({
 						readOnly
 						placeholder="Buscar movimiento..."
 						aria-label="Buscar conciliación"
-						className="h-10 w-full rounded-xl border border-border/60 bg-[var(--surface-2)] pl-10 pr-3 text-sm text-muted-foreground outline-none"
+						className="h-10 w-full rounded-xl border border-border/60 bg-muted pl-10 pr-3 text-sm text-muted-foreground outline-none"
 					/>
 				</div>
 			</div>
@@ -82,10 +82,9 @@ export function ReconciliationQueuePanel({
 							type="button"
 							onClick={() => onSelect(transaction.id)}
 							className={cn(
-								"w-full rounded-2xl border p-4 text-left transition-[border-color,background-color,box-shadow,transform] duration-150 hover:border-[var(--border-default)]",
+								"w-full rounded-2xl border p-4 text-left transition-[border-color,background-color,box-shadow,transform] duration-150 hover:border-border",
 								statusClasses(transaction.status),
-								isSelected &&
-									"ring-1 ring-[rgba(var(--premium-info-rgb),0.35)] shadow-[0_12px_24px_rgba(0,0,0,0.12)]",
+								isSelected && "ring-1 ring-brand/40",
 							)}
 						>
 							<div className="flex items-start justify-between gap-3">

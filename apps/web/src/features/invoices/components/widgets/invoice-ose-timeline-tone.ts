@@ -34,11 +34,10 @@ export function getInvoiceOseTimelineTone(
 			};
 		case "OBSERVED":
 			return {
-				containerClassName: "border-yellow-500/20 bg-yellow-500/8",
-				statusBadgeClassName:
-					"border-yellow-500/20 bg-yellow-500/10 text-yellow-700 dark:text-yellow-300",
-				railClassName: "bg-yellow-500/20",
-				dotClassName: "border-yellow-500/30 bg-yellow-500/30",
+				containerClassName: "border-warning/20 bg-warning/8",
+				statusBadgeClassName: "border-warning/20 bg-warning/10 text-warning",
+				railClassName: "bg-warning/20",
+				dotClassName: "border-warning/30 bg-warning/30",
 			};
 		case "REJECTED":
 		case "FAILED":

@@ -1,66 +1,87 @@
-import { cn } from "@/lib/utils";
-import { useWorkspace } from "@/contexts/workspace-context";
+import { useNavigate, useParams } from "@tanstack/react-router";
+import { Label } from "@/components/ui/label";
+import { NativeSelect } from "@/components/ui/native-select";
+import {
+	closeWorkspaceParams,
+	fiscalPeriodFromParams,
+} from "@/lib/close-workspace";
+import { useActiveCompanyContext } from "@/lib/use-active-company-context";
 import { CompanySwitcher } from "./CompanySwitcher";
-import { PeriodSwitcher } from "./PeriodSwitcher";
-import { WorkspaceIntentSwitcher } from "./WorkspaceIntentSwitcher";
 
-const MOCK_COMPANIES = [
-	{
-		id: "1",
-		name: "Arkelythex SAC",
-		ruc: "20123456789",
-		organizationId: "org-1",
-	},
-	{
-		id: "2",
-		name: "Otra Empresa SRL",
-		ruc: "20987654321",
-		organizationId: "org-1",
-	},
-];
+const WORKSPACE_ROUTE = "/workspace/$companyId/$year/$month/$intent" as const;
 
 /**
- * WorkspaceTopBar — top bar with company/period/intent switchers.
- *
- * Shown in workspace routes. Responsive: collapses on mobile.
- * Uses the workspace context for state and actions.
+ * Company and period of the workspace being viewed. Both come from the
+ * session (never a hard-coded list) and changing either reopens the same
+ * workspace for the new company or month.
  */
 export function WorkspaceTopBar() {
-	const { workspace, switchCompany, switchPeriod, switchIntent } =
-		useWorkspace();
+	const navigate = useNavigate();
+	const { intent, year, month } = useParams({ from: WORKSPACE_ROUTE });
+	const {
+		companyContext,
+		availableCompanies,
+		fiscalPeriod,
+		availablePeriods,
+		formatFiscalPeriodLabel,
+		setActiveCompanyById,
+		setActiveFiscalPeriod,
+	} = useActiveCompanyContext();
+
+	// The page shows the period in the address, so the picker must agree with it.
+	const viewedPeriod = fiscalPeriodFromParams(year, month) ?? fiscalPeriod;
+	const periods =
+		viewedPeriod && !availablePeriods.includes(viewedPeriod)
+			? [viewedPeriod, ...availablePeriods]
+			: availablePeriods;
+
+	const open = (companyId: string, period: string | null) =>
+		navigate({
+			to: WORKSPACE_ROUTE,
+			params: { ...closeWorkspaceParams(companyId, period), intent },
+		});
+
+	const companies = availableCompanies.map((company) => ({
+		id: company.companyId,
+		name: company.companyName,
+		ruc: company.ruc,
+	}));
 
 	return (
-		<div
-			className={cn(
-				"flex items-center gap-1 border-b border-[var(--border-subtle)] bg-[var(--surface-1)] px-3 py-1.5",
-				"overflow-x-auto scrollbar-none",
-			)}
-		>
-			{/* Company switcher */}
+		<div className="flex items-center gap-3 overflow-x-auto border-b border-border bg-card px-3 py-1.5">
 			<CompanySwitcher
-				companies={MOCK_COMPANIES}
-				activeCompany={workspace?.company ?? null}
-				onSelect={switchCompany}
+				companies={companies}
+				activeCompany={{
+					id: companyContext.companyId,
+					name: companyContext.companyName,
+					ruc: companyContext.ruc,
+				}}
+				onSelect={(company) => {
+					if (setActiveCompanyById(company.id)) {
+						void open(company.id, fiscalPeriod);
+					}
+				}}
 			/>
 
-			{/* Separator */}
-			<div className="mx-2 h-5 w-px bg-[var(--border-subtle)] shrink-0" />
-
-			{/* Period switcher */}
-			<PeriodSwitcher
-				activePeriod={workspace?.period ?? null}
-				onSelect={switchPeriod}
-			/>
-
-			{/* Separator */}
-			<div className="mx-2 h-5 w-px bg-[var(--border-subtle)] shrink-0 max-sm:hidden" />
-
-			{/* Intent switcher */}
-			<div className="max-sm:hidden">
-				<WorkspaceIntentSwitcher
-					activeIntent={workspace?.intent ?? null}
-					onSelect={switchIntent}
-				/>
+			<div className="flex items-center gap-2">
+				<Label htmlFor="workspace-period" className="sr-only">
+					Período fiscal
+				</Label>
+				<NativeSelect
+					id="workspace-period"
+					className="h-11 w-48"
+					value={viewedPeriod ?? ""}
+					onChange={(event) => {
+						setActiveFiscalPeriod(event.target.value);
+						void open(companyContext.companyId, event.target.value);
+					}}
+				>
+					{periods.map((period) => (
+						<option key={period} value={period}>
+							{formatFiscalPeriodLabel(period)}
+						</option>
+					))}
+				</NativeSelect>
 			</div>
 		</div>
 	);

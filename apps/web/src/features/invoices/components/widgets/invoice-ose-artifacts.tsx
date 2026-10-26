@@ -15,15 +15,15 @@ interface InvoiceOseArtifactsProps {
 	persistedSunatStatus: string | null;
 	persistedSunatCode: string | null;
 	persistedSunatIncidentMessage: string | null;
-	lifecycle?: InvoiceOseLifecycle;
+	lifecycle?: InvoiceOseLifecycle | undefined;
 	isLifecyclePending: boolean;
-	transientOseResult?: SendInvoiceOseResult;
-	sendErrorMessage?: string;
-	lifecycleErrorMessage?: string;
+	transientOseResult?: SendInvoiceOseResult | undefined;
+	sendErrorMessage?: string | undefined;
+	lifecycleErrorMessage?: string | undefined;
 	onOpenCdr: () => void;
 	onCopyTicket: () => void;
 	onLoadLifecycle: () => void;
-	onOpenRunbook?: () => void;
+	onOpenRunbook?: () => void | undefined;
 }
 
 const META = "text-xs font-medium text-muted-foreground";

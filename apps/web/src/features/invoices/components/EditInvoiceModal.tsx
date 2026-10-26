@@ -69,7 +69,7 @@ function itemTotals(quantity: string, unitPrice: string, taxType: TaxType) {
 }
 
 function toInputDate(value: string): string {
-	return new Date(value).toISOString().split("T")[0];
+	return new Date(value).toISOString().slice(0, 10);
 }
 
 function createEmptyInvoiceItem(id: string): InvoiceItem {
@@ -151,22 +151,19 @@ export const EditInvoiceModal = ({
 	) => itemTotals(quantity, unitPrice, taxType);
 
 	const updateItem: InvoiceItemUpdate = (index, field, value) => {
-		const newItems = [...items];
-		newItems[index] = { ...newItems[index], [field]: value };
+		const current = items[index];
+		if (!current) return;
 
+		const next: InvoiceItem = { ...current, [field]: value };
 		// Recalculate totals if quantity, unitPrice, or taxType changed
 		if (field === "quantity" || field === "unitPrice" || field === "taxType") {
-			const { subtotal, igv, total } = calculateItemTotals(
-				newItems[index].quantity,
-				newItems[index].unitPrice,
-				newItems[index].taxType,
+			Object.assign(
+				next,
+				calculateItemTotals(next.quantity, next.unitPrice, next.taxType),
 			);
-			newItems[index].subtotal = subtotal;
-			newItems[index].igv = igv;
-			newItems[index].total = total;
 		}
 
-		setItems(newItems);
+		setItems(items.map((item, i) => (i === index ? next : item)));
 	};
 
 	const addItem = () => {
@@ -291,10 +288,11 @@ export const EditInvoiceModal = ({
 						Cancelar
 					</Button>
 					<Button
+						variant="brand"
 						type="button"
 						onClick={handleSubmit}
 						disabled={isEditing}
-						className="h-11 bg-brand px-5 text-brand-foreground hover:bg-brand/90"
+						className="h-11 px-5"
 					>
 						{isEditing ? "Guardando…" : "Guardar cambios"}
 					</Button>

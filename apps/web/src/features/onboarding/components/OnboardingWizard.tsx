@@ -12,12 +12,12 @@ export function OnboardingWizard(): JSX.Element {
 		<div className="min-h-screen w-full flex bg-background relative overflow-hidden">
 			{/* Background Decor */}
 			<div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:50px_50px]" />
-			<div className="absolute top-0 w-full h-1 bg-gradient-to-r from-primary via-[rgba(var(--premium-info-rgb),0.20)] to-primary" />
+			<div className="absolute top-0 w-full h-1 bg-brand" />
 
 			<div className="flex-1 flex flex-col items-center justify-center p-8 relative z-10">
 				<div className="w-full max-w-2xl space-y-8">
 					<div className="text-center space-y-2">
-						<div className="h-12 w-12 rounded-2xl bg-primary flex items-center justify-center text-primary-foreground shadow-lg shadow-primary/20 mx-auto mb-6">
+						<div className="h-12 w-12 rounded-2xl bg-brand flex items-center justify-center text-brand-foreground shadow-lg shadow-brand/20 mx-auto mb-6">
 							<ShieldCheck size={28} strokeWidth={2.5} />
 						</div>
 						<h1 className="text-3xl font-black tracking-tight text-foreground uppercase">

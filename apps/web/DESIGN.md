@@ -110,13 +110,22 @@ components:
 - Layout animation without `prefers-reduced-motion` fallback
 - `--ink` / `--surface` dialect in settings (use canonical `--color-text-primary`)
 
+## Conventions that keep the UI honest
+
+- **Only real data.** Never ship mock names, balances, sessions or plans as if they were real. An area without a backend says "Aún no está disponible"; an empty list says what to do next (`SettingsUnavailable`, empty states).
+- **Theme utilities exist only if they are in `@theme`.** Tailwind v4 generates a utility only for a name declared in `src/lib/design-tokens/generated/tokens.css`. Bridged: `background foreground card popover muted muted-foreground destructive success warning info danger border border-subtle border-ui input ring brand brand-foreground foreground-soft strong`. `bg-primary` is *not* a button color (primary is ink); the main action is `<Button variant="brand">`. A class with no matching name renders nothing, so check the name before using it.
+- **Buttons.** `@drenyra/ui` `Button` (CVA): `variant` default | primary | brand | secondary | ghost | danger | outline, `size` sm | md | touch (44px) | lg | icon. Use `asChild` for links; never nest an anchor in a button.
+- **Fields.** Sentence-case label bound with `htmlFor`, 44px controls (`FIELD_INPUT`, `NativeSelect`), state in words as well as color. Dialogs use `Dialog`/`AlertDialog`, never a hand-made overlay or `window.confirm`/`alert`.
+- **Copy.** Spanish for Peru in the "tú" form (Revisa, Selecciona), sentence case, no forced uppercase, no voseo, no raw API error text on screen.
+- **Reachability.** Unreferenced screens are deleted, not kept "for later". The import graph from `routes/*`, `client.tsx` and `remote-entry.tsx` is the source of truth.
+
 ## Agent prompt guide
 
 Before generating UI for Drenyra web:
 
 1. Read this file and `docs/design/design-influences-2026.md`.
 2. Use semantic utilities (`bg-card`, `border-border`, `text-muted-foreground`, `bg-brand`); new code never adds hex or new `--*` dialects.
-3. Prefer `@drenyra/ui` Button, Card, Panel, SurfacePanel.
+3. Prefer `@drenyra/ui` Button (`variant="brand"` for the main action), Card, Panel, SurfacePanel.
 4. Shell: `FiscalEditorialShell` with `operational` or `command-center` mode.
 
 ## References

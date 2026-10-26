@@ -130,7 +130,7 @@ export function InvoiceCardHeader(props: InvoiceCardHeaderProps) {
 									<DropdownMenuItem
 										key={id}
 										onClick={onSelect}
-										disabled={disabled}
+										disabled={disabled ?? false}
 										className={
 											destructive
 												? "min-h-11 cursor-pointer text-destructive focus:text-destructive"

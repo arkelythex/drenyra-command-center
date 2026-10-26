@@ -6,7 +6,7 @@ import { FIELD_INPUT, FIELD_LABEL } from "../create-invoice/invoice-field";
 
 export interface InvoiceItem {
 	id: string;
-	productId?: string;
+	productId?: string | undefined;
 	description: string;
 	quantity: string;
 	unitPrice: string;

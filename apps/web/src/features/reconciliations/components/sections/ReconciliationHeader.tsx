@@ -43,8 +43,8 @@ export const ReconciliationHeader: React.FC<ReconciliationHeaderProps> = ({
 						Conciliación bancaria
 					</h1>
 					<div className="flex items-center gap-2 mt-1">
-						<span className="flex items-center gap-1.5 rounded-full border border-primary/15 bg-primary/8 px-2.5 py-0.5 text-label font-medium tracking-wide text-primary">
-							<span className="h-1.5 w-1.5 rounded-full bg-primary" />
+						<span className="flex items-center gap-1.5 rounded-full border border-brand/20 bg-brand/10 px-2.5 py-0.5 text-label font-medium tracking-wide text-foreground">
+							<span className="h-1.5 w-1.5 rounded-full bg-brand" />
 							Revisión asistida
 						</span>
 					</div>

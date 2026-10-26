@@ -22,10 +22,6 @@ interface UIState {
 	setThemePreference: (preference: ThemePreference) => void;
 	setAccentPreference: (accent: AccentPreset | null) => void;
 	setDensityPreference: (density: DensityLevel | null) => void;
-
-	isRightRailOpen: boolean;
-	toggleRightRail: () => void;
-	setRightRailOpen: (open: boolean) => void;
 }
 
 /** Projects the three appearance preferences onto `<html>`. */
@@ -65,11 +61,6 @@ export const useUIStore = create<UIState>()(
 				set({ densityPreference });
 				applyAppearance(get());
 			},
-
-			isRightRailOpen: false,
-			toggleRightRail: () =>
-				set((s) => ({ isRightRailOpen: !s.isRightRailOpen })),
-			setRightRailOpen: (isRightRailOpen) => set({ isRightRailOpen }),
 		}),
 		{
 			name: UI_STORAGE_KEY,

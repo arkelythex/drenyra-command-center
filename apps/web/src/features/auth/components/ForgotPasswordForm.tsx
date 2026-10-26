@@ -1,9 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, CheckCircle, Loader2, Mail } from "lucide-react";
+import { CheckCircle, Mail } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Text } from "@/components/atoms/text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -18,6 +17,7 @@ import {
 	forgotPasswordSchema,
 } from "../schemas/forgot-password.schema";
 import { AuthLayout } from "./AuthLayout";
+import { AuthSubmitButton } from "./AuthSubmitButton";
 
 export const ForgotPasswordForm = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -83,20 +83,20 @@ export const ForgotPasswordForm = () => {
 						variants={entranceVariants}
 						className="flex justify-center"
 					>
-						<CheckCircle className="h-16 w-16 text-[var(--premium-success)]" />
+						<CheckCircle className="h-16 w-16 text-success" />
 					</MotionDiv>
 
 					<MotionDiv variants={entranceVariants}>
-						<Text className="text-foreground/90 text-base">
+						<p className="text-foreground/90 text-base">
 							Hemos enviado un enlace para restablecer tu contraseña a tu correo
 							electrónico.
-						</Text>
+						</p>
 					</MotionDiv>
 
 					<MotionDiv variants={entranceVariants}>
-						<Text variant="label" className="text-muted-foreground text-sm">
+						<p className="text-muted-foreground text-sm">
 							Si no recibes el email en 5 minutos, revisa tu carpeta de spam.
-						</Text>
+						</p>
 					</MotionDiv>
 
 					<MotionDiv variants={entranceVariants}>
@@ -123,12 +123,9 @@ export const ForgotPasswordForm = () => {
 				tagName="form"
 			>
 				<MotionDiv variants={entranceVariants} className="space-y-3">
-					<Text
-						variant="label"
-						className="text-foreground ml-1 text-sm font-medium"
-					>
+					<p className="text-foreground ml-1 text-sm font-medium">
 						Correo Electrónico
-					</Text>
+					</p>
 					<div className="relative group">
 						<Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/80 group-focus-within:text-primary transition-colors duration-300" />
 						<Input
@@ -139,35 +136,20 @@ export const ForgotPasswordForm = () => {
 						/>
 					</div>
 					{errors.email && (
-						<Text variant="label" className="text-red-400 ml-1 text-xs">
+						<p className="text-destructive ml-1 text-xs">
 							{errors.email.message}
-						</Text>
+						</p>
 					)}
 				</MotionDiv>
 
 				<MotionDiv variants={entranceVariants}>
-					<Button
-						type="submit"
-						disabled={isLoading}
-						className="group relative h-14 w-full overflow-hidden rounded-xl border-none bg-primary text-sm font-bold uppercase tracking-widest text-primary-foreground shadow-lg transition-[background-color,box-shadow,opacity] duration-200 hover:opacity-90 motion-reduce:transition-none"
-					>
-						{isLoading ? (
-							<Loader2 className="animate-spin" />
-						) : (
-							<span className="flex items-center gap-3 relative z-10">
-								ENVIAR ENLACE
-								<ArrowRight
-									size={20}
-									strokeWidth={2.5}
-									className="transition-colors"
-								/>
-							</span>
-						)}
-					</Button>
+					<AuthSubmitButton isLoading={isLoading}>
+						Enviar enlace
+					</AuthSubmitButton>
 				</MotionDiv>
 
 				<MotionDiv variants={entranceVariants} className="text-center pt-2">
-					<Text variant="label" className="text-muted-foreground/80 text-sm">
+					<p className="text-muted-foreground/80 text-sm">
 						¿Recordaste tu contraseña?{" "}
 						<a
 							href="/login"
@@ -175,7 +157,7 @@ export const ForgotPasswordForm = () => {
 						>
 							Iniciar Sesión
 						</a>
-					</Text>
+					</p>
 				</MotionDiv>
 			</MotionDiv>
 		</AuthLayout>

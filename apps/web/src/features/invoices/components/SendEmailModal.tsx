@@ -87,10 +87,11 @@ export function SendEmailModal({
 						Cancelar
 					</Button>
 					<Button
+						variant="brand"
 						type="button"
 						onClick={handleSend}
 						disabled={sendEmail.isPending}
-						className="h-11 bg-brand text-brand-foreground hover:bg-brand/90"
+						className="h-11"
 					>
 						{sendEmail.isPending ? "Enviando…" : "Enviar correo"}
 					</Button>

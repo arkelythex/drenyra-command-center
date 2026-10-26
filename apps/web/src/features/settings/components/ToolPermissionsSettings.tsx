@@ -213,10 +213,7 @@ export const ToolPermissionsSettings = () => {
 			description="Controla qué herramientas requieren aprobación, cuáles están bloqueadas y cuáles pueden ejecutarse libremente."
 			icon={ShieldCheck}
 			actions={
-				<Button
-					onClick={openCreate}
-					className="h-11 bg-brand px-4 text-brand-foreground hover:bg-brand/90"
-				>
+				<Button variant="brand" onClick={openCreate} className="h-11 px-4">
 					<Plus aria-hidden="true" size={16} className="mr-1.5" />
 					Nuevo permiso
 				</Button>

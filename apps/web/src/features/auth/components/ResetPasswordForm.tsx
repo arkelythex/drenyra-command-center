@@ -1,10 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowRight, Eye, EyeOff, Loader2, Lock } from "lucide-react";
+import { Eye, EyeOff, Lock } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Text } from "@/components/atoms/text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -19,6 +18,7 @@ import {
 	resetPasswordSchema,
 } from "../schemas/reset-password.schema";
 import { AuthLayout } from "./AuthLayout";
+import { AuthSubmitButton } from "./AuthSubmitButton";
 
 function getPasswordStrength(pwd: string): {
 	score: number;
@@ -34,17 +34,17 @@ function getPasswordStrength(pwd: string): {
 
 	const labels = ["Muy débil", "Débil", "Regular", "Fuerte", "Muy fuerte"];
 	const colors = [
-		"bg-red-500",
-		"bg-orange-500",
-		"bg-yellow-500",
-		"bg-[var(--premium-action-blue)]",
-		"bg-[var(--premium-success)]",
+		"bg-destructive",
+		"bg-warning",
+		"bg-warning",
+		"bg-brand",
+		"bg-success",
 	];
 
 	return {
 		score,
 		label: labels[score] || "Muy débil",
-		color: colors[score] || "bg-red-500",
+		color: colors[score] || "bg-destructive",
 	};
 }
 
@@ -129,9 +129,9 @@ export const ResetPasswordForm = () => {
 		return (
 			<AuthLayout title="Error" subtitle="Enlace inválido">
 				<MotionDiv className="text-center space-y-4">
-					<Text className="text-foreground/90">
+					<p className="text-foreground/90">
 						El enlace de restablecimiento es inválido o ha expirado.
-					</Text>
+					</p>
 					<Button variant="outline" asChild>
 						<a href="/forgot-password">Solicitar nuevo enlace</a>
 					</Button>
@@ -154,12 +154,9 @@ export const ResetPasswordForm = () => {
 				tagName="form"
 			>
 				<MotionDiv variants={entranceVariants} className="space-y-3">
-					<Text
-						variant="label"
-						className="text-foreground ml-1 text-sm font-medium"
-					>
+					<p className="text-foreground ml-1 text-sm font-medium">
 						Nueva Contraseña
-					</Text>
+					</p>
 					<div className="relative group">
 						<Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/80 group-focus-within:text-primary transition-colors duration-300" />
 						<Input
@@ -179,40 +176,36 @@ export const ResetPasswordForm = () => {
 					{passwordStrength && (
 						<div className="space-y-2">
 							<div className="flex gap-1">
-								{[...Array(5)].map((_, index) => (
-									<div
-										key={index}
-										className={
-											"h-1 flex-1 rounded-full transition-[background-color,transform,opacity] duration-300 " +
-											(index < passwordStrength.score
-												? passwordStrength.color
-												: "bg-border")
-										}
-									/>
-								))}
+								{(["s1", "s2", "s3", "s4", "s5"] as const).map(
+									(step, index) => (
+										<div
+											key={step}
+											className={
+												"h-1 flex-1 rounded-full transition-[background-color,transform,opacity] duration-300 " +
+												(index < passwordStrength.score
+													? passwordStrength.color
+													: "bg-border")
+											}
+										/>
+									),
+								)}
 							</div>
-							<Text
-								variant="label"
-								className="text-muted-foreground ml-1 text-xs"
-							>
+							<p className="text-muted-foreground ml-1 text-xs">
 								Fortaleza: {passwordStrength.label}
-							</Text>
+							</p>
 						</div>
 					)}
 					{errors.password && (
-						<Text variant="label" className="text-red-400 ml-1 text-xs">
+						<p className="text-destructive ml-1 text-xs">
 							{errors.password.message}
-						</Text>
+						</p>
 					)}
 				</MotionDiv>
 
 				<MotionDiv variants={entranceVariants} className="space-y-3">
-					<Text
-						variant="label"
-						className="text-foreground ml-1 text-sm font-medium"
-					>
+					<p className="text-foreground ml-1 text-sm font-medium">
 						Confirmar Contraseña
-					</Text>
+					</p>
 					<div className="relative group">
 						<Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/80 group-focus-within:text-primary transition-colors duration-300" />
 						<Input
@@ -230,31 +223,16 @@ export const ResetPasswordForm = () => {
 						</button>
 					</div>
 					{errors.confirmPassword && (
-						<Text variant="label" className="text-red-400 ml-1 text-xs">
+						<p className="text-destructive ml-1 text-xs">
 							{errors.confirmPassword.message}
-						</Text>
+						</p>
 					)}
 				</MotionDiv>
 
 				<MotionDiv variants={entranceVariants}>
-					<Button
-						type="submit"
-						disabled={isLoading}
-						className="group relative h-14 w-full overflow-hidden rounded-xl border-none bg-primary text-sm font-bold uppercase tracking-widest text-primary-foreground shadow-lg transition-[background-color,box-shadow,opacity] duration-200 hover:opacity-90 motion-reduce:transition-none"
-					>
-						{isLoading ? (
-							<Loader2 className="animate-spin" />
-						) : (
-							<span className="flex items-center gap-3 relative z-10">
-								RESTABLECER CONTRASEÑA
-								<ArrowRight
-									size={20}
-									strokeWidth={2.5}
-									className="transition-colors"
-								/>
-							</span>
-						)}
-					</Button>
+					<AuthSubmitButton isLoading={isLoading}>
+						Restablecer contraseña
+					</AuthSubmitButton>
 				</MotionDiv>
 			</MotionDiv>
 		</AuthLayout>
