@@ -1,5 +1,21 @@
 import { z } from "zod";
 
+const FALSE_WORDS = new Set(["false", "0", "no", "off", ""]);
+
+/**
+ * Boolean flag from an environment string. `z.coerce.boolean()` would read
+ * "false" as true (any non-empty string is truthy), so a deploy that sets
+ * ENABLE_SUNAT_SYNC=false would silently turn the feature on.
+ */
+const envBoolean = (fallback: boolean) =>
+	z.preprocess(
+		(value) =>
+			typeof value === "string"
+				? !FALSE_WORDS.has(value.trim().toLowerCase())
+				: value,
+		z.boolean().default(fallback),
+	);
+
 export const EnvSchema = z.object({
 	// ── Server ──────────────────────────────────────
 	NODE_ENV: z
@@ -8,17 +24,17 @@ export const EnvSchema = z.object({
 	PORT: z.coerce.number().default(3000),
 	LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
 	CORS_ALLOWED_ORIGINS: z.string().optional(),
+	TRUSTED_PROXIES: z.string().optional(),
 
 	// ── Database ────────────────────────────────────
-	DATABASE_URL: z.string().url("DATABASE_URL must be a valid URL").optional(),
+	DATABASE_URL: z.string().url("DATABASE_URL must be a valid URL"),
 	REDIS_URL: z.string().optional(),
 
 	// ── Auth ────────────────────────────────────────
 	BETTER_AUTH_SECRET: z
 		.string()
-		.min(32, "BETTER_AUTH_SECRET must be at least 32 characters")
-		.optional(),
-	BETTER_AUTH_URL: z.string().url().optional(),
+		.min(32, "BETTER_AUTH_SECRET must be at least 32 characters"),
+	BETTER_AUTH_URL: z.string().url("BETTER_AUTH_URL must be a valid URL"),
 	JWT_SECRET: z.string().min(32).optional(),
 	JWT_EXPIRES_IN: z.string().default("7d"),
 
@@ -53,7 +69,7 @@ export const EnvSchema = z.object({
 	// ── SMTP ────────────────────────────────────────
 	SMTP_HOST: z.string().optional(),
 	SMTP_PORT: z.coerce.number().default(587),
-	SMTP_SECURE: z.coerce.boolean().default(false),
+	SMTP_SECURE: envBoolean(false),
 	SMTP_USER: z.string().optional(),
 	SMTP_PASS: z.string().optional(),
 	SMTP_FROM_NAME: z.string().default("DRENYRA"),
@@ -67,19 +83,31 @@ export const EnvSchema = z.object({
 	R2_BUCKET_NAME: z.string().default("drenyra-documents"),
 
 	// ── Feature Flags ───────────────────────────────
-	ENABLE_AI_AGENTS: z.coerce.boolean().default(true),
-	ENABLE_SUNAT_SYNC: z.coerce.boolean().default(false),
-	LEDGER_MVP_ENABLED: z.coerce.boolean().default(true),
-	FRONTEND_TELEMETRY_DB_ENABLED: z.coerce.boolean().default(true),
+	ENABLE_AI_AGENTS: envBoolean(true),
+	ENABLE_SUNAT_SYNC: envBoolean(false),
+	LEDGER_MVP_ENABLED: envBoolean(true),
+	FRONTEND_TELEMETRY_DB_ENABLED: envBoolean(true),
 });
 
 export type Env = z.infer<typeof EnvSchema>;
 
+/** Same schema with the three boot-critical values relaxed, for non-production runs. */
+const LenientEnvSchema = EnvSchema.extend({
+	DATABASE_URL: z.string().default(""),
+	BETTER_AUTH_SECRET: z.string().default(""),
+	BETTER_AUTH_URL: z.string().default(""),
+});
+
+/**
+ * Production refuses to boot without DATABASE_URL, BETTER_AUTH_SECRET and
+ * BETTER_AUTH_URL. Other environments warn and carry on with empty values so
+ * local work and tests do not need a full secret set.
+ */
 export function validateEnv(env: Record<string, unknown> = process.env): Env {
+	const isProduction = env.NODE_ENV === "production";
 	const result = EnvSchema.safeParse(env);
 
 	if (!result.success) {
-		const isProduction = env.NODE_ENV === "production";
 		for (const issue of result.error.issues) {
 			const path = issue.path.join(".");
 			const msg = `[ENV] ${path}: ${issue.message}`;
@@ -92,5 +120,13 @@ export function validateEnv(env: Record<string, unknown> = process.env): Env {
 		if (isProduction) process.exit(1);
 	}
 
-	return result.data ?? (EnvSchema.parse({}) as Env);
+	if (!env.CORS_ALLOWED_ORIGINS) {
+		console.warn(
+			"[ENV] CORS_ALLOWED_ORIGINS: not set, cross-origin requests will be rejected",
+		);
+	}
+
+	if (result.success) return result.data;
+	const lenient = LenientEnvSchema.safeParse(env);
+	return lenient.success ? lenient.data : LenientEnvSchema.parse({});
 }
