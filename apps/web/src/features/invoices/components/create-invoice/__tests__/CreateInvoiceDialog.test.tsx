@@ -61,8 +61,9 @@ describe("CreateInvoiceDialog", () => {
 			/>,
 		);
 
-		expect(screen.getByText("NUEVA FACTURA")).toBeInTheDocument();
-		expect(screen.getByText("Módulo de Facturación")).toBeInTheDocument();
+		expect(
+			screen.getByRole("heading", { name: "Nueva factura" }),
+		).toBeInTheDocument();
 		expect(await screen.findByTestId("invoice-form-mock")).toBeInTheDocument();
 		expect(screen.getByText("company-xyz")).toBeInTheDocument();
 	});
