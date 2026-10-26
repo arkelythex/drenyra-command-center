@@ -1,7 +1,7 @@
 import {
 	hasPlatformPermission,
-	RBAC_FEATURE_FLAGS,
 	type PlatformPermission,
+	RBAC_FEATURE_FLAGS,
 	type UnifiedRole,
 } from "@drenyra/security/rbac";
 
