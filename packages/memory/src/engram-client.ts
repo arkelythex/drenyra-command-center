@@ -64,6 +64,22 @@ export interface EngramProvenance {
 	session?: string;
 }
 
+/** Engine source (wire contract — mirrors the engine's core.Source). */
+export interface EngramSource {
+	/** REQUIRED — which system produced the event (e.g. "drenyra-core", "sire"). */
+	system: string;
+	/** Optional external reference (e.g. "F001-948", "AJ-2026-07-019"). */
+	reference?: string;
+	/** Who (user/agent/system id); REQUIRED for human actors. */
+	actorId?: string;
+	/** REQUIRED — human | agent | system. */
+	actorKind: "human" | "agent" | "system";
+	/** Agent model, when the actor is an agent. */
+	model?: string;
+	/** Session identifier (agent continuity). */
+	session?: string;
+}
+
 /** Vigencia window: expired observations surface as stale, never current. */
 export interface EngramValidity {
 	effectiveAt?: string;
@@ -87,30 +103,54 @@ export interface EngramIdentity {
 	topicKey: string;
 }
 
-/** A stored observation (read shape; content/scope/provenance immutable). */
+/** A stored observation (read shape; content/scope/source immutable). */
 export interface EngramObservation {
 	identity: EngramIdentity;
 	title: string;
-	type: string;
+	kind: EngramKind;
 	scope: EngramScope;
 	content: EngramContent;
-	authorityStatus: EngramAuthorityStatus;
+	status: EngramStatus;
+	fiscalEffect?: string;
+	effectiveAt?: string;
+	recordedAt?: string;
+	source: EngramSource;
 	validity?: EngramValidity;
-	provenance: EngramProvenance;
 	/** 1-based revision within the (topicKey, scope) chain; a JSON integer. */
-	revision: number;
+	revision?: number;
 }
+
+/** Engine memory kinds (wire contract — mirrors the engine's 8 kinds). */
+export type EngramKind =
+	| "fact"
+	| "evidence"
+	| "decision"
+	| "rule"
+	| "exception"
+	| "control"
+	| "obligation"
+	| "summary";
+
+/** Engine memory statuses (wire contract). */
+export type EngramStatus =
+	| "active"
+	| "pending_review"
+	| "approved"
+	| "rejected"
+	| "superseded"
+	| "voided";
 
 /** Input for saving/upserting an observation under a topic key + exact scope. */
 export interface EngramSaveInput {
 	topicKey: string;
 	title: string;
-	type: string;
+	kind: EngramKind;
 	scope: EngramScope;
 	content: EngramContent;
-	authorityStatus?: EngramAuthorityStatus;
+	/** Required by the engine; "none" keeps the save out of the approval gate. */
+	fiscalEffect?: string;
 	validity?: EngramValidity;
-	provenance: EngramProvenance;
+	source: EngramSource;
 }
 
 /** Write outcome of a save (upsert). */
@@ -449,6 +489,11 @@ function optionalString(value: unknown): string | undefined {
 	return typeof value === "string" ? value : undefined;
 }
 
+function optionalNumber(value: unknown): number | undefined {
+	if (typeof value !== "number") return undefined;
+	return value;
+}
+
 function parseScope(value: unknown): EngramScope {
 	if (!isRecord(value) || typeof value.kind !== "string") {
 		throw invalidResponse(
@@ -479,20 +524,26 @@ function parseContent(value: unknown): EngramContent {
 	};
 }
 
-function parseProvenance(value: unknown): EngramProvenance {
+function parseSource(value: unknown): EngramSource {
 	if (!isRecord(value)) {
-		throw invalidResponse(
-			'engram response field "provenance" must be an object',
-		);
+		throw invalidResponse('engram response field "source" must be an object');
 	}
-	const provenance: EngramProvenance = {
-		actor: requireString(value.actor, "provenance.actor"),
-		timestamp: requireString(value.timestamp, "provenance.timestamp"),
-		source: requireString(value.source, "provenance.source"),
+	const source: EngramSource = {
+		system: requireString(value.system, "source.system"),
+		actorKind: requireString(
+			value.actorKind,
+			"source.actorKind",
+		) as EngramSource["actorKind"],
 	};
+	const reference = optionalString(value.reference);
+	const actorId = optionalString(value.actorId);
+	const model = optionalString(value.model);
 	const session = optionalString(value.session);
-	if (session !== undefined) provenance.session = session;
-	return provenance;
+	if (reference !== undefined) source.reference = reference;
+	if (actorId !== undefined) source.actorId = actorId;
+	if (model !== undefined) source.model = model;
+	if (session !== undefined) source.session = session;
+	return source;
 }
 
 function parseValidity(value: unknown): EngramValidity | undefined {
@@ -516,22 +567,23 @@ function parseObservation(value: unknown): EngramObservation {
 		id: requireString(value.identity.id, "identity.id"),
 		topicKey: requireString(value.identity.topicKey, "identity.topicKey"),
 	};
-	if (typeof value.revision !== "number") {
-		throw invalidResponse('engram response field "revision" must be a number');
-	}
 	const observation: EngramObservation = {
 		identity,
 		title: requireString(value.title, "title"),
-		type: requireString(value.type, "type"),
+		kind: requireString(value.kind, "kind") as EngramKind,
 		scope: parseScope(value.scope),
 		content: parseContent(value.content),
-		authorityStatus: requireString(
-			value.authorityStatus,
-			"authorityStatus",
-		) as EngramAuthorityStatus,
-		provenance: parseProvenance(value.provenance),
-		revision: value.revision,
+		status: requireString(value.status, "status") as EngramStatus,
+		source: parseSource(value.source),
 	};
+	const fiscalEffect = optionalString(value.fiscalEffect);
+	const effectiveAt = optionalString(value.effectiveAt);
+	const recordedAt = optionalString(value.recordedAt);
+	const revision = optionalNumber(value.revision);
+	if (fiscalEffect !== undefined) observation.fiscalEffect = fiscalEffect;
+	if (effectiveAt !== undefined) observation.effectiveAt = effectiveAt;
+	if (recordedAt !== undefined) observation.recordedAt = recordedAt;
+	if (revision !== undefined) observation.revision = revision;
 	const validity = parseValidity(value.validity);
 	if (validity !== undefined) observation.validity = validity;
 	return observation;
@@ -553,8 +605,11 @@ function parseSaveResponse(value: unknown): EngramSaveResponse {
 			'engram save response field "outcome" must be a string',
 		);
 	}
+	if (!isRecord(value.memory)) {
+		throw invalidResponse("engram save response must contain a memory object");
+	}
 	return {
-		observation: parseObservation(value.observation),
+		observation: parseObservation(value.memory),
 		outcome: value.outcome as EngramWriteOutcome,
 	};
 }
@@ -564,19 +619,19 @@ function parseSearchResults(value: unknown): EngramSearchResult[] {
 		throw invalidResponse("engram GET /v1/search must return an array");
 	}
 	return value.map((entry) => {
-		if (!isRecord(entry)) {
-			throw invalidResponse("engram search result must be an object");
-		}
-		if (typeof entry.score !== "number" || typeof entry.stale !== "boolean") {
+		if (!isRecord(entry) || !isRecord(entry.memory)) {
 			throw invalidResponse(
-				'engram search result fields "score"/"stale" have invalid types',
+				"engram search result must contain a memory object",
 			);
 		}
-		return {
-			observation: parseObservation(entry.observation),
-			score: entry.score,
-			stale: entry.stale,
+		const score = optionalNumber(entry.score);
+		const stale = typeof entry.stale === "boolean" ? entry.stale : false;
+		const result: Record<string, unknown> = {
+			observation: parseObservation(entry.memory),
 		};
+		if (score !== undefined) result.score = score;
+		result.stale = stale;
+		return result as unknown as EngramSearchResult;
 	});
 }
 

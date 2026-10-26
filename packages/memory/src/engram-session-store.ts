@@ -93,17 +93,17 @@ export class EngramSessionStore implements SessionStore {
 
 		const tenantId = readMetadataString(input.metadata, "tenantId");
 		const period = readMetadataString(input.metadata, "period") ?? "";
-		const now = new Date().toISOString();
 
 		const scope = buildSaveScope(ruc, period, tenantId);
-		const provenance = buildSaveProvenance(input, now, this.source);
+		const source = buildSaveSource(input, this.source);
 		const topicKey = input.sessionId ?? `memory:${input.agentId}:${input.type}`;
 
 		const result = await this.client.save({
 			topicKey,
 			title: input.type,
-			type: input.type,
+			kind: "fact",
 			scope,
+			fiscalEffect: "none",
 			// The engine requires ALL four content fields non-empty
 			// (AssertValidContent fails closed). why/where/learned carry the
 			// record's provenance-shaped context; learned embeds the full
@@ -119,7 +119,7 @@ export class EngramSessionStore implements SessionStore {
 					metadata: input.metadata,
 				}),
 			},
-			provenance,
+			source,
 		});
 
 		return recordFromSaveInput(input, result.observation);
@@ -162,8 +162,8 @@ export class EngramSessionStore implements SessionStore {
 		return observations
 			.filter(
 				(observation) =>
-					observation.provenance.session !== undefined &&
-					observation.provenance.session === sessionId,
+					observation.source.session !== undefined &&
+					observation.source.session === sessionId,
 			)
 			.map(recordFromObservation);
 	}
@@ -210,25 +210,25 @@ function buildSaveScope(
 }
 
 /** Provenance sent on save; session recorded when present. */
-interface EngramSaveProvenance {
-	actor: string;
-	timestamp: string;
-	source: string;
+interface EngramSaveSource {
+	system: string;
+	actorId: string;
+	actorKind: "agent";
+	model?: string;
 	session?: string;
 }
 
-function buildSaveProvenance(
+function buildSaveSource(
 	input: SaveMemoryInput,
-	timestamp: string,
-	source: string,
-): EngramSaveProvenance {
-	const provenance: EngramSaveProvenance = {
-		actor: input.agentId,
-		timestamp,
-		source,
+	system: string,
+): EngramSaveSource {
+	const source: EngramSaveSource = {
+		system,
+		actorId: input.agentId,
+		actorKind: "agent",
 	};
-	if (input.sessionId !== undefined) provenance.session = input.sessionId;
-	return provenance;
+	if (input.sessionId !== undefined) source.session = input.sessionId;
+	return source;
 }
 
 /**
@@ -262,7 +262,7 @@ function recordFromSaveInput(
 	input: SaveMemoryInput,
 	observation: EngramObservation,
 ): MemoryRecord {
-	const createdAt = toDate(observation.provenance.timestamp);
+	const createdAt = toDate(observation.recordedAt ?? new Date().toISOString());
 	const record: MemoryRecord = {
 		id: observation.identity.id,
 		agentId: input.agentId,
@@ -294,22 +294,22 @@ function recordFromObservation(observation: EngramObservation): MemoryRecord {
 
 	const record: MemoryRecord = {
 		id: observation.identity.id,
-		agentId: observation.provenance.actor,
+		agentId: observation.source.actorId ?? "",
 		scope: {
 			tenantId: observation.scope.organizationId ?? "",
 			metadata: scopeMetadata,
 		},
-		type: observation.type,
+		type: observation.kind,
 		content: condenseObservationContent(observation),
 		metadata: {},
-		createdAt: toDate(observation.provenance.timestamp),
-		updatedAt: toDate(observation.provenance.timestamp),
+		createdAt: toDate(observation.recordedAt ?? new Date().toISOString()),
+		updatedAt: toDate(observation.recordedAt ?? new Date().toISOString()),
 	};
 	if (
-		observation.provenance.session !== undefined &&
-		observation.provenance.session.length > 0
+		observation.source.session !== undefined &&
+		observation.source.session.length > 0
 	) {
-		record.sessionId = observation.provenance.session;
+		record.sessionId = observation.source.session;
 	}
 	return record;
 }
