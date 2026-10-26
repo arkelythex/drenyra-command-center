@@ -1,0 +1,24 @@
+# Fiscal boundary gate — legacy debt baseline (RATCHET)
+#
+# This file is NOT an allowlist for new code. It records violations that already
+# existed when the gate was moved to pull requests, so the gate can block new
+# debt without freezing the repository.
+#
+# RULES:
+#   1. Entries may ONLY be removed. Adding an entry requires a reviewer decision
+#      and a linked issue explaining why the violation cannot be fixed now.
+#   2. Never baseline a file you are creating or modifying in the same PR.
+#   3. When you fix a violation, delete its line here in the same commit.
+#
+# Format: <repo-relative-path> :: <trimmed matching line>
+# The gate matches on path + code content (not line numbers) so the baseline
+# survives unrelated line shifts.
+#
+# Burn-down tracking: docs/01-foundation/program-taxonomy.md
+
+# Rule 1 — raw `number` money fields in the domain layer.
+# Needs a Money value-object migration across public fiscal DTOs; tracked
+# separately because it changes contracts consumed by apps/api and apps/web.
+packages/domain/src/fiscal/fiscal-general-ledger.ts :: igvAmount: number;
+packages/domain/src/fiscal/sire.types.ts :: totalAmount: number;
+packages/domain/src/fiscal/compliance.types.ts :: totalAmount: number;
