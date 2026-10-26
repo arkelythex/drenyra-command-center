@@ -233,12 +233,13 @@ export const ROUTE_PROTECTION_MATRIX = [
 		appCoreExportName: "drenyraModule",
 		prefix: "/api/drenyra",
 		mounted: true,
-		authMode: "ai-surface",
-		tenantSource: "x-organization-id",
+		authMode: "session",
+		tenantSource: "session",
 		schemaSystem: "typebox",
 		envelope: "mixed",
 		rateLimit: "missing",
-		notes: "Drenyra workspace/agent surface; new module.",
+		notes:
+			"Drenyra workspace/agent surface; drenyraSessionGuard requires a real session and rejects scope headers that differ from it (contract is public).",
 	},
 
 	{

@@ -1,5 +1,5 @@
-import { resolveAuthenticatedCaller } from "./authenticated-caller";
 import type { UnifiedActor, UnifiedRole } from "@drenyra/security/rbac";
+import { resolveAuthenticatedCaller } from "./authenticated-caller";
 
 export const SESSION_SECURITY_PROFILE = {
 	DEFAULT: "default",

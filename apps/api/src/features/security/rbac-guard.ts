@@ -1,11 +1,11 @@
+import {
+	hasPlatformPermission,
+	logRbacDiscrepancy,
+	RBAC_FEATURE_FLAGS,
+} from "@drenyra/security/rbac";
 import { logSecurityAccess } from "./access-log.service";
 import { hasPermission, type SecurityOperation } from "./rbac-policy";
 import { resolveSessionContext } from "./session-context";
-import {
-	hasPlatformPermission,
-	RBAC_FEATURE_FLAGS,
-	logRbacDiscrepancy,
-} from "@drenyra/security/rbac";
 
 /**
  * Request context required to authorize an operation against Arkelythex security policy.

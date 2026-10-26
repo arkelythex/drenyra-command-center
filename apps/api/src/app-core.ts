@@ -32,6 +32,7 @@ import { detractionsModule } from "./features/detractions";
 import { diffsRoutes, reviewQueueRoutes } from "./features/diffs";
 import { doctorModeModule } from "./features/doctor-mode";
 import { drenyraModule } from "./features/drenyra/drenyra.routes";
+import { drenyraSessionGuard } from "./features/drenyra/drenyra-session-guard";
 import { evidenceV2Routes } from "./features/evidence-v2";
 import { expedientesModule } from "./features/expedientes";
 import { feosModule } from "./features/feos";
@@ -343,6 +344,8 @@ const baseApp = new Elysia()
 	// ── Auth & permission guard (global — applies to all API routes) ──
 	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	.use(routePermissionGuard())
+	// /api/drenyra/* trusts scope headers, so it needs a real session (see guard).
+	.use(drenyraSessionGuard())
 	.use(apiModules)
 	.use(backwardCompatRedirects)
 	.use(healthModule)
