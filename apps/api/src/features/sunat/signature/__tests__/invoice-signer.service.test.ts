@@ -26,7 +26,8 @@ import {
 // Mock fs modules
 vi.mock("fs");
 vi.mock("archiver", () => ({
-	ZipArchive: vi.fn(() => {
+	// biome-ignore lint/complexity/useArrowFunction: the service calls `new ZipArchive()` and Vitest 4+ only constructs function/class mocks.
+	ZipArchive: vi.fn(function () {
 		let output: EventEmitter | null = null;
 		const api = {
 			on: vi.fn().mockImplementation(() => api),
