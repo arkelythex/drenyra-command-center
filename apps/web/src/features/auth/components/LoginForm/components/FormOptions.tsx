@@ -1,6 +1,5 @@
 import { useFormContext } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { entranceVariants, MotionDiv } from "@/components/ui/motion-primitives";
 import type { LoginFormData } from "../LoginForm.types";
 
 export function FormOptions() {
@@ -8,43 +7,27 @@ export function FormOptions() {
 	const rememberMe = watch("rememberMe");
 
 	return (
-		<MotionDiv
-			variants={entranceVariants}
-			className="flex items-center justify-between px-1 pt-1"
-		>
-			<div
-				className="flex items-center space-x-2.5 group cursor-pointer"
-				onClick={() => setValue("rememberMe", !rememberMe)}
-				role="button"
-				tabIndex={0}
-				onKeyDown={(e) => {
-					if (e.key === "Enter" || e.key === " ") {
-						e.preventDefault();
-						setValue("rememberMe", !rememberMe);
-					}
-				}}
+		<div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+			{/* A single <label> owns the click: no nested interactive wrapper, so it toggles exactly once. */}
+			<label
+				htmlFor="rememberMe"
+				className="flex min-h-11 cursor-pointer items-center gap-3 text-sm text-foreground"
 			>
 				<Checkbox
 					id="rememberMe"
-					checked={rememberMe}
+					checked={rememberMe ?? false}
 					onCheckedChange={(checked) =>
-						setValue("rememberMe", checked as boolean)
+						setValue("rememberMe", checked === true)
 					}
-					className="h-4.5 w-4.5 rounded-full border-white/20 bg-black/20 data-[state=checked]:bg-[var(--color-success)] data-[state=checked]:border-[var(--color-success)] transition-colors"
 				/>
-				<label
-					htmlFor="rememberMe"
-					className="text-3xs font-black uppercase tracking-[0.24em] text-white/80 cursor-pointer group-hover:text-white transition-colors"
-				>
-					Persistir Sesión
-				</label>
-			</div>
+				Mantener sesión iniciada
+			</label>
 			<a
 				href="/forgot-password"
-				className="text-3xs font-black uppercase tracking-[0.24em] text-white/85 hover:text-white transition-all border-b border-transparent hover:border-white/30 pb-0.5"
+				className="flex min-h-11 items-center text-sm font-medium text-brand underline-offset-4 hover:underline focus-visible:underline"
 			>
-				Recuperar
+				¿Olvidaste tu contraseña?
 			</a>
-		</MotionDiv>
+		</div>
 	);
 }

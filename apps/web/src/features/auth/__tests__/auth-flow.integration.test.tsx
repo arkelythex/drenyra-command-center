@@ -147,7 +147,7 @@ describe("Authentication Flow Integration Tests", () => {
 			// Step 2: User enters credentials
 			const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
 			const passwordInput = screen.getByPlaceholderText(/••••/);
-			const submitButton = screen.getByRole("button", { name: /autenticar/i });
+			const submitButton = screen.getByRole("button", { name: /^entrar$/i });
 
 			await user.clear(emailInput);
 			await user.clear(passwordInput);
@@ -188,7 +188,7 @@ describe("Authentication Flow Integration Tests", () => {
 
 			const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
 			const passwordInput = screen.getByPlaceholderText(/••••/);
-			const submitButton = screen.getByRole("button", { name: /autenticar/i });
+			const submitButton = screen.getByRole("button", { name: /^entrar$/i });
 
 			await user.clear(emailInput);
 			await user.clear(passwordInput);
@@ -223,7 +223,7 @@ describe("Authentication Flow Integration Tests", () => {
 
 			const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
 			const passwordInput = screen.getByPlaceholderText(/••••/);
-			const submitButton = screen.getByRole("button", { name: /autenticar/i });
+			const submitButton = screen.getByRole("button", { name: /^entrar$/i });
 
 			await user.clear(emailInput);
 			await user.clear(passwordInput);
@@ -260,7 +260,7 @@ describe("Authentication Flow Integration Tests", () => {
 
 			const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
 			const passwordInput = screen.getByPlaceholderText(/••••/);
-			const submitButton = screen.getByRole("button", { name: /autenticar/i });
+			const submitButton = screen.getByRole("button", { name: /^entrar$/i });
 
 			await user.clear(emailInput);
 			await user.clear(passwordInput);

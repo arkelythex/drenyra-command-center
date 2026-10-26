@@ -53,7 +53,7 @@ describe("LoginForm", () => {
 
 		// Check for submit button
 		expect(
-			screen.getByRole("button", { name: /autenticar/i }),
+			screen.getByRole("button", { name: /^entrar$/i }),
 		).toBeInTheDocument();
 	});
 
@@ -65,12 +65,33 @@ describe("LoginForm", () => {
 		expect(checkbox).toBeChecked();
 	});
 
+	it("toggles remember me once when its label is clicked", async () => {
+		const user = userEvent.setup();
+		render(<LoginForm />);
+
+		const checkbox = screen.getByRole("checkbox", { name: /mantener sesión/i });
+		await user.click(screen.getByText(/mantener sesión/i));
+		expect(checkbox).not.toBeChecked();
+
+		await user.click(checkbox);
+		expect(checkbox).toBeChecked();
+	});
+
+	it("exposes the page title as the only h1", () => {
+		render(<LoginForm />);
+
+		expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+		expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+			/iniciar sesión/i,
+		);
+	});
+
 	it("should validate email format", async () => {
 		const user = userEvent.setup();
 		render(<LoginForm />);
 
 		const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
-		const submitButton = screen.getByRole("button", { name: /autenticar/i });
+		const submitButton = screen.getByRole("button", { name: /^entrar$/i });
 
 		await user.clear(emailInput);
 		await user.type(emailInput, "invalid-email");
@@ -91,7 +112,7 @@ describe("LoginForm", () => {
 
 		const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
 		const passwordInput = screen.getByPlaceholderText(/••••/);
-		const submitButton = screen.getByRole("button", { name: /autenticar/i });
+		const submitButton = screen.getByRole("button", { name: /^entrar$/i });
 
 		await user.clear(emailInput);
 		await user.clear(passwordInput);
@@ -116,7 +137,7 @@ describe("LoginForm", () => {
 
 		const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
 		const passwordInput = screen.getByPlaceholderText(/••••/);
-		const submitButton = screen.getByRole("button", { name: /autenticar/i });
+		const submitButton = screen.getByRole("button", { name: /^entrar$/i });
 
 		await user.clear(emailInput);
 		await user.clear(passwordInput);
@@ -141,7 +162,7 @@ describe("LoginForm", () => {
 			"nueva@empresa.pe",
 		);
 		await user.type(screen.getByPlaceholderText(/••••/), "SecurePass123");
-		await user.click(screen.getByRole("button", { name: /autenticar/i }));
+		await user.click(screen.getByRole("button", { name: /^entrar$/i }));
 
 		await waitFor(() => {
 			expect(mockNavigate).toHaveBeenCalledWith({
@@ -166,7 +187,7 @@ describe("LoginForm", () => {
 			"contadora@empresa.pe",
 		);
 		await user.type(screen.getByPlaceholderText(/••••/), "SecurePass123");
-		await user.click(screen.getByRole("button", { name: /autenticar/i }));
+		await user.click(screen.getByRole("button", { name: /^entrar$/i }));
 
 		await waitFor(() => {
 			expect(mockNavigate).toHaveBeenCalledWith({
@@ -186,7 +207,7 @@ describe("LoginForm", () => {
 
 		const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
 		const passwordInput = screen.getByPlaceholderText(/••••/);
-		const submitButton = screen.getByRole("button", { name: /autenticar/i });
+		const submitButton = screen.getByRole("button", { name: /^entrar$/i });
 
 		await user.clear(emailInput);
 		await user.clear(passwordInput);
@@ -212,7 +233,7 @@ describe("LoginForm", () => {
 
 		const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
 		const passwordInput = screen.getByPlaceholderText(/••••/);
-		const submitButton = screen.getByRole("button", { name: /autenticar/i });
+		const submitButton = screen.getByRole("button", { name: /^entrar$/i });
 
 		await user.clear(emailInput);
 		await user.clear(passwordInput);
@@ -235,7 +256,7 @@ describe("LoginForm", () => {
 
 		const emailInput = screen.getByPlaceholderText(/usuario@drenyra/i);
 		const passwordInput = screen.getByPlaceholderText(/••••/);
-		const submitButton = screen.getByRole("button", { name: /autenticar/i });
+		const submitButton = screen.getByRole("button", { name: /^entrar$/i });
 
 		await user.clear(emailInput);
 		await user.clear(passwordInput);
@@ -282,7 +303,7 @@ describe("LoginForm", () => {
 
 		if (
 			toggleButton &&
-			toggleButton !== screen.getByRole("button", { name: /autenticar/i })
+			toggleButton !== screen.getByRole("button", { name: /^entrar$/i })
 		) {
 			await user.click(toggleButton);
 			expect(passwordInput.type).toBe("text");
@@ -300,7 +321,7 @@ describe("LoginForm", () => {
 	it("should have link to forgot password page", () => {
 		render(<LoginForm />);
 
-		const forgotLink = screen.getByRole("link", { name: /recuperar/i });
+		const forgotLink = screen.getByRole("link", { name: /olvidaste/i });
 		expect(forgotLink).toBeInTheDocument();
 		expect(forgotLink).toHaveAttribute("href", "/forgot-password");
 	});

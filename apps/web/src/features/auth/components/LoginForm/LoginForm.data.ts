@@ -4,7 +4,7 @@ export const FIELD_IDS = {
 } as const;
 
 export const LABELS = {
-	email: "Correo Corporativo",
+	email: "Correo corporativo",
 	password: "Contraseña",
 } as const;
 
@@ -13,5 +13,5 @@ export const PLACEHOLDERS = {
 	password: "••••••••",
 } as const;
 
-export const SUBMIT_TEXT = "Autenticar en DRENYRA";
-export const SUBMIT_LOADING_TEXT = "Validando Protocolos...";
+export const SUBMIT_TEXT = "Entrar";
+export const SUBMIT_LOADING_TEXT = "Verificando…";

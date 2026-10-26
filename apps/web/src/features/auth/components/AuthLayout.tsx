@@ -1,7 +1,5 @@
-import { CheckCircle2, Lock, ShieldCheck } from "lucide-react";
+import { LockKeyhole, ShieldCheck } from "lucide-react";
 import type { ReactNode } from "react";
-import { tokensToClasses } from "@/lib/design-tokens";
-import { cn } from "@/lib/utils";
 
 interface AuthLayoutProps {
 	children: ReactNode;
@@ -9,68 +7,42 @@ interface AuthLayoutProps {
 	subtitle: string;
 }
 
+/**
+ * Auth screens template (DESIGN.md "Fiscal Editorial"): flat dark canvas,
+ * one surface panel, no gradients or blur. Full-bleed form on phones,
+ * framed panel from `sm` up.
+ */
 export const AuthLayout = ({ children, title, subtitle }: AuthLayoutProps) => {
 	return (
-		<div className="force-dark min-h-screen w-full overflow-hidden bg-[#050606] font-sans selection:bg-primary/30">
-			<div className="pointer-events-none fixed inset-0">
-				<div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_84%,rgba(15,42,57,0.5),transparent_34%),radial-gradient(circle_at_35%_12%,rgba(255,255,255,0.045),transparent_28%)]" />
-				<div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.035),transparent_22%,transparent_70%,rgba(255,255,255,0.025))]" />
-				<div className="absolute left-1/2 top-0 h-full w-px -rotate-[28deg] bg-white/[0.035] blur-sm" />
-				<div className="absolute right-[18%] top-[-10%] h-[42rem] w-24 rotate-[28deg] bg-white/[0.025] blur-2xl" />
-			</div>
+		<div className="force-dark min-h-dvh w-full bg-background font-sans text-foreground">
+			<main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(2rem,env(safe-area-inset-top))] sm:justify-center sm:px-6">
+				<p className="text-sm font-medium tracking-tight text-foreground">
+					Drenyra
+				</p>
 
-			<main className="relative z-10 flex min-h-screen items-center justify-center px-5 py-8 sm:px-8">
-				<section className="w-full max-w-[440px] space-y-8 sm:max-w-[460px]">
-					<div className="space-y-5 text-center">
-						<div className="mx-auto flex h-24 w-24 items-center justify-center rounded-[32px] border border-white/80 bg-black/20 text-white shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
-							<div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10">
-								<ShieldCheck size={21} strokeWidth={2.2} />
-							</div>
-						</div>
-						<div className="space-y-3">
-							<p className="text-3xs font-black uppercase tracking-[0.42em] text-white/85">
-								Acceso corporativo
-							</p>
-							<h3 className="text-4xl font-black uppercase leading-[0.9] tracking-[-0.08em] text-white sm:text-5xl">
-								{title}
-							</h3>
-							<p className="mx-auto max-w-md text-sm font-bold leading-6 text-white/80">
-								{subtitle}
-							</p>
-						</div>
-					</div>
+				<header className="mt-10 space-y-2 sm:mt-8">
+					<h1 className="text-3xl font-medium leading-tight tracking-tight">
+						{title}
+					</h1>
+					<p className="text-base leading-relaxed text-muted-foreground">
+						{subtitle}
+					</p>
+				</header>
 
-					<div className="relative">
-						<div className="absolute -inset-px rounded-[1.65rem] bg-gradient-to-br from-white/20 via-white/5 to-[color:rgb(from_var(--color-info)_r_g_b_/_0.1)] opacity-90" />
-						<div
-							className={cn(
-								tokensToClasses.borderRadius("card"),
-								"relative overflow-hidden border border-white/15 bg-[linear-gradient(145deg,rgba(255,255,255,0.045),rgba(9,16,22,0.82))] p-7 shadow-[0_30px_90px_rgba(0,0,0,0.55)]  sm:p-10",
-							)}
-						>
-							<div className="pointer-events-none absolute bottom-[-18%] right-[-20%] h-72 w-72 rounded-full bg-[color:rgb(from_var(--color-info)_r_g_b_/_0.1)] blur-3xl" />
-							<div className="pointer-events-none absolute right-7 top-6 text-white/90">
-								<Lock size={42} strokeWidth={1.9} />
-							</div>
-							{children}
-						</div>
-					</div>
-
-					<div className="grid grid-cols-2 gap-3">
-						<div className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-[color:rgb(from_var(--color-info)_r_g_b_/_0.12)] px-4 py-3">
-							<Lock size={13} className="text-[var(--color-success)]" />
-							<span className="text-3xs font-black uppercase tracking-[0.18em] text-white/80">
-								Sesión cifrada
-							</span>
-						</div>
-						<div className="flex items-center justify-center gap-2 rounded-full border border-white/10 bg-[color:rgb(from_var(--color-info)_r_g_b_/_0.12)] px-4 py-3">
-							<CheckCircle2 size={13} className="text-white/85" />
-							<span className="text-3xs font-black uppercase tracking-[0.18em] text-white/80">
-								Tenant seguro
-							</span>
-						</div>
-					</div>
+				<section className="mt-8 sm:rounded-xl sm:border sm:border-border sm:bg-card sm:p-8">
+					{children}
 				</section>
+
+				<ul className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 pt-8 text-sm text-muted-foreground sm:mt-6 sm:pt-0">
+					<li className="flex items-center gap-2">
+						<LockKeyhole aria-hidden="true" className="size-4" />
+						Sesión cifrada
+					</li>
+					<li className="flex items-center gap-2">
+						<ShieldCheck aria-hidden="true" className="size-4" />
+						Datos aislados por empresa
+					</li>
+				</ul>
 			</main>
 		</div>
 	);
