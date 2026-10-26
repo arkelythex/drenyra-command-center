@@ -4,7 +4,7 @@
     "smallTargets": 19
   },
   "desktop-chrome:cumplimiento": {
-    "axe": 2,
+    "axe": 0,
     "smallTargets": 8
   },
   "desktop-chrome:invoices": {
@@ -32,7 +32,7 @@
     "smallTargets": 4
   },
   "mobile-android:cumplimiento": {
-    "axe": 2,
+    "axe": 0,
     "smallTargets": 0
   },
   "mobile-android:invoices": {
@@ -60,7 +60,7 @@
     "smallTargets": 4
   },
   "mobile-ios:cumplimiento": {
-    "axe": 1,
+    "axe": 0,
     "smallTargets": 0
   },
   "mobile-ios:invoices": {
