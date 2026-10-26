@@ -197,10 +197,10 @@ export const ToolPermissionsSettings = () => {
 				>
 					{/* Header */}
 					<div className="flex items-center justify-between gap-4 px-5 py-2.5">
-						<span className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+						<span className="text-xs font-semibold text-[var(--text-muted)]">
 							Herramienta
 						</span>
-						<span className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)]">
+						<span className="text-xs font-semibold text-[var(--text-muted)]">
 							Política
 						</span>
 					</div>

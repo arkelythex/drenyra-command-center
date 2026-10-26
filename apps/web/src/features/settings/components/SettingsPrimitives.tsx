@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { SurfacePanel } from "@/components/ui/SurfacePanel";
 import { cn } from "@/lib/utils";
 
 interface SettingsSectionProps {
@@ -16,31 +15,22 @@ export const SettingsSection = ({
 	className,
 }: SettingsSectionProps): ReactNode => {
 	return (
-		<SurfacePanel
-			variant="muted"
-			padding="lg"
-			className={cn(
-				"group relative overflow-hidden border-[var(--border-subtle)] bg-[var(--surface-1)] transition-all duration-300",
-				className,
-			)}
-		>
-			<div
-				aria-hidden="true"
-				className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-[var(--accent)]/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-			/>
-
-			<div className="relative mb-4 border-b border-[var(--border-subtle)]/50 pb-3">
-				<h2 className="text-xs font-bold uppercase tracking-widest text-[var(--text-secondary)]">
+		<section className={cn("space-y-3", className)}>
+			<div className="space-y-1">
+				<h2 className="text-base font-medium tracking-tight text-foreground">
 					{title}
 				</h2>
 				{description ? (
-					<p className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">
+					<p className="text-sm leading-relaxed text-muted-foreground">
 						{description}
 					</p>
 				) : null}
 			</div>
-			<div className="relative space-y-4">{children}</div>
-		</SurfacePanel>
+			{/* Grouped list: rows are separated by hairlines, not nested cards. */}
+			<div className="divide-y divide-border rounded-xl border border-border bg-card">
+				{children}
+			</div>
+		</section>
 	);
 };
 
@@ -60,21 +50,19 @@ export const SettingsRow = ({
 	return (
 		<div
 			className={cn(
-				"flex flex-col gap-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)]/30 px-4 py-4 transition-colors duration-200 hover:bg-[var(--surface-1)]/50 sm:flex-row sm:items-center sm:justify-between",
+				"flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6",
 				className,
 			)}
 		>
 			<div className="min-w-0">
-				<p className="text-xs font-semibold uppercase tracking-widest text-[var(--text-primary)]">
-					{title}
-				</p>
+				<p className="text-sm font-medium text-foreground">{title}</p>
 				{description ? (
-					<p className="mt-1 text-xs font-medium leading-relaxed text-[var(--text-secondary)]">
+					<p className="mt-0.5 text-sm leading-relaxed text-muted-foreground">
 						{description}
 					</p>
 				) : null}
 			</div>
-			<div className="flex justify-end sm:min-w-[200px]">{action}</div>
+			<div className="flex shrink-0 sm:justify-end">{action}</div>
 		</div>
 	);
 };
@@ -99,23 +87,26 @@ export const SettingSwitch = ({
 			aria-checked={checked}
 			aria-label={label}
 			onClick={() => onCheckedChange(!checked)}
+			// 44px hit area around a 24px track.
 			className={cn(
-				"group relative inline-flex h-5 w-10 items-center rounded-full border transition-all duration-300 outline-none active:scale-95",
-				checked
-					? "border-[var(--accent)]/40 bg-[var(--accent)]/10 shadow-[0_0_12px_-2px_var(--accent)]"
-					: "border-[var(--border-default)] bg-[var(--surface-2)]/50 hover:border-[var(--border-default)]",
+				"group inline-flex size-11 items-center justify-center rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
 				className,
 			)}
 		>
 			<span
+				aria-hidden="true"
 				className={cn(
-					"inline-block h-3.5 w-3.5 rounded-full shadow-sm transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
-					checked
-						? "translate-x-5 bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]"
-						: "translate-x-1 bg-[var(--text-tertiary)]",
+					"relative inline-flex h-6 w-10 items-center rounded-full transition-colors duration-200",
+					checked ? "bg-brand" : "bg-muted ring-1 ring-inset ring-border",
 				)}
-			/>
-			<span className="sr-only">{checked ? "Activado" : "Desactivado"}</span>
+			>
+				<span
+					className={cn(
+						"inline-block size-5 rounded-full bg-background shadow-sm transition-transform duration-200",
+						checked ? "translate-x-[18px]" : "translate-x-0.5",
+					)}
+				/>
+			</span>
 		</button>
 	);
 };

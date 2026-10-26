@@ -1,5 +1,4 @@
 import { Settings } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useSettingsGeneral } from "../hooks/use-settings-general";
 import { SettingsShell } from "./SettingsShell";
 import { CompanySettingsSection } from "./settings-view/company-section";
@@ -23,22 +22,16 @@ export const SettingsView = () => {
 		setCompanyRuc,
 		setAutoClosePeriod,
 		setShowAmountsInWords,
+		isSaving,
+		error,
 	} = useSettingsGeneral();
 
 	return (
 		<SettingsShell
-			title="Configuración General"
-			description="Define idioma, región y comportamiento base del workspace para que toda la operación contable sea consistente."
+			title="Configuración general"
+			description="Define idioma, región y comportamiento base del espacio de trabajo para que toda la operación contable sea consistente."
 			icon={Settings}
-			badge="BASE DEL WORKSPACE"
-			actions={
-				<Button
-					variant="outline"
-					className="text-xs font-black uppercase tracking-widest"
-				>
-					Restaurar Base
-				</Button>
-			}
+			badge="Base del espacio de trabajo"
 		>
 			<RegionSettingsSection
 				language={language}
@@ -63,7 +56,7 @@ export const SettingsView = () => {
 				onShowAmountsInWordsChange={setShowAmountsInWords}
 			/>
 
-			<SettingsFooterActions />
+			<SettingsFooterActions isSaving={isSaving} error={error} />
 		</SettingsShell>
 	);
 };

@@ -1,4 +1,4 @@
-import { Landmark } from "lucide-react";
+import type { ReactNode } from "react";
 import { toast } from "sonner";
 import { useFinancialHaptics, useHaptics } from "@/hooks/useHaptics";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
@@ -11,6 +11,7 @@ import { ReconciliationExecutiveSummary } from "./sections/ReconciliationExecuti
 import { ReconciliationHeader } from "./sections/ReconciliationHeader";
 import { ReconciliationMatchWorkspace } from "./sections/ReconciliationMatchWorkspace";
 import { ReconciliationQueuePanel } from "./sections/ReconciliationQueuePanel";
+import { StatementImportDialog } from "./sections/StatementImportDialog";
 
 export const ReconciliationView = () => {
 	const setIsMobileOpen = useAgenticShell((s) => s.setSidebarMobileOpen);
@@ -64,31 +65,6 @@ export const ReconciliationView = () => {
 				triggerHaptic={trigger}
 			/>
 
-			<div className="flex shrink-0 items-center justify-between gap-8 border-b border-border/50 bg-[var(--surface-1)] px-6 py-3">
-				<div className="flex items-center gap-4">
-					<span className="text-label font-black text-muted-foreground uppercase tracking-[0.2em]">
-						Cuenta activa
-					</span>
-					<span className="flex items-center gap-2 rounded-lg border border-border/60 bg-background px-3 py-1.5 text-sm font-black text-foreground shadow-sm">
-						<Landmark size={14} className="text-info" /> Todas las cuentas
-					</span>
-				</div>
-				<div className="flex items-center gap-6 border-l border-border/60 pl-6 h-8">
-					<div className="flex items-center gap-2">
-						<div className="ui-dot-success h-2 w-2 rounded-full" />
-						<span className="text-label font-black uppercase tracking-widest text-success">
-							{reconciledRate}% conciliado
-						</span>
-					</div>
-					<div className="flex items-center gap-2 opacity-60">
-						<div className="ui-dot-warning h-2 w-2 rounded-full" />
-						<span className="text-label font-black uppercase tracking-widest text-foreground">
-							{unresolvedCount} pendientes
-						</span>
-					</div>
-				</div>
-			</div>
-
 			<ReconciliationExecutiveSummary
 				unmatchedCount={unresolvedCount}
 				unmatchedExposure={formatReconciliationMoney(
@@ -133,30 +109,53 @@ export const ReconciliationView = () => {
 				</div>
 			) : (
 				<ReconciliationEmptyState
-					message={
-						!hasCompany
-							? "Inicia sesión con una empresa para ver sus movimientos bancarios."
-							: isLoading
-								? "Cargando movimientos bancarios…"
-								: error
-									? `No se pudieron cargar los movimientos: ${error.message}`
-									: "No hay movimientos bancarios registrados para esta empresa."
-					}
+					{...(!hasCompany
+						? {
+								message:
+									"Inicia sesión con una empresa para ver sus movimientos bancarios.",
+							}
+						: isLoading
+							? { message: "Cargando movimientos bancarios…" }
+							: error
+								? {
+										message: `No se pudieron cargar los movimientos: ${error.message}`,
+									}
+								: {
+										title: "Aún no hay movimientos bancarios",
+										message:
+											"Importa el extracto de tu banco en CSV y Drenyra propondrá coincidencias con tus comprobantes y el libro contable.",
+										action: <StatementImportDialog />,
+									})}
 				/>
 			)}
 		</div>
 	);
 };
 
-function ReconciliationEmptyState({ message }: { message: string }) {
+function ReconciliationEmptyState({
+	title,
+	message,
+	action,
+}: {
+	title?: string;
+	message: string;
+	action?: ReactNode;
+}) {
 	return (
 		<div className="flex flex-1 items-center justify-center p-10">
-			<p
-				role="status"
-				className="max-w-md text-center text-sm text-muted-foreground"
-			>
-				{message}
-			</p>
+			<div role="status" className="max-w-md space-y-3 text-center">
+				{title ? (
+					<h2 className="text-lg font-medium tracking-tight text-foreground">
+						{title}
+					</h2>
+				) : null}
+				<p className="text-sm leading-relaxed text-muted-foreground">
+					{message}
+				</p>
+				{action ? (
+					<div className="flex justify-center pt-2">{action}</div>
+				) : null}
+			</div>
 		</div>
 	);
 }

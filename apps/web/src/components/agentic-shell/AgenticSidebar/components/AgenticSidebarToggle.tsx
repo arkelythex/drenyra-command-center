@@ -2,25 +2,35 @@ import { ChevronLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
 
+/** Collapses the desktop sidebar, or closes it when it is open as a mobile drawer. */
 export function AgenticSidebarToggle() {
 	const isCollapsed = useAgenticShell((s) => s.isSidebarCollapsed);
-	const toggleSidebar = useAgenticShell((s) => s.toggleSidebar);
+	const isDrawerOpen = useAgenticShell((s) => s.isSidebarMobileOpen);
+	const toggleCollapsed = useAgenticShell((s) => s.toggleSidebarCollapsed);
+	const setDrawerOpen = useAgenticShell((s) => s.setSidebarMobileOpen);
+
+	const label = isDrawerOpen
+		? "Cerrar menú"
+		: isCollapsed
+			? "Expandir menú"
+			: "Contraer menú";
 
 	return (
 		<button
 			type="button"
-			onClick={toggleSidebar}
+			onClick={() => (isDrawerOpen ? setDrawerOpen(false) : toggleCollapsed())}
 			className={cn(
-				"flex items-center justify-center p-2 transition-colors hover:bg-[var(--surface-2)]",
+				"flex size-11 items-center justify-center rounded-lg transition-colors hover:bg-[var(--surface-2)] lg:size-9",
 				"text-[var(--text-muted)] hover:text-[var(--text-primary)]",
 			)}
-			aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+			aria-label={label}
 		>
 			<ChevronLeft
 				size={16}
+				aria-hidden="true"
 				className={cn(
 					"transition-transform duration-200",
-					isCollapsed && "rotate-180",
+					isCollapsed && !isDrawerOpen && "rotate-180",
 				)}
 			/>
 		</button>

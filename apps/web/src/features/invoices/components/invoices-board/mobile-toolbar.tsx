@@ -15,21 +15,22 @@ export function InvoicesBoardMobileToolbar({
 	onCreateInvoiceIntent,
 }: InvoicesBoardMobileToolbarProps) {
 	return (
-		<div className="relative z-40 mt-14 flex flex-col gap-3 border-b border-border bg-background px-4 py-4 sm:hidden">
+		<div className="flex flex-col gap-3 border-b border-border bg-background px-4 py-4 sm:hidden">
 			<div className="flex items-center justify-between">
 				<div>
-					<p className="text-sm font-semibold text-foreground">
+					<h1 className="text-lg font-medium tracking-tight text-foreground">
 						Facturas y cobranza
-					</p>
+					</h1>
 					<p className="text-xs text-muted-foreground">
 						Emite y sigue tus cobros.
 					</p>
 				</div>
 				<button
+					type="button"
 					onClick={onCreateInvoice}
 					onPointerEnter={onCreateInvoiceIntent}
 					onFocus={onCreateInvoiceIntent}
-					className="flex h-10 items-center justify-center rounded-xl border border-[var(--border-subtle)] bg-[var(--accent)] px-3 text-label font-semibold uppercase tracking-[0.14em] text-[var(--text-on-accent)] shadow-sm transition-[background-color,box-shadow] duration-150 hover:opacity-95"
+					className="flex h-11 items-center justify-center rounded-lg bg-brand px-4 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand/90"
 				>
 					<Plus size={16} strokeWidth={2} className="mr-1.5" />
 					Nueva

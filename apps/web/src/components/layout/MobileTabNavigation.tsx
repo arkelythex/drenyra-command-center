@@ -12,7 +12,7 @@ export interface MobileTabNavigationProps {
 	className?: string;
 }
 
-/** Compact tab switcher shown only below the `md` breakpoint. */
+/** Segmented view switcher shown only below the `md` breakpoint; positioned by the parent, in normal flow. */
 export function MobileTabNavigation({
 	tabs,
 	activeTab,
@@ -24,7 +24,7 @@ export function MobileTabNavigation({
 			role="tablist"
 			aria-label="Vistas"
 			className={cn(
-				"fixed z-[var(--z-sticky)] flex gap-1 rounded-full border border-border bg-card/90 p-1 backdrop-blur md:hidden",
+				"flex gap-1 rounded-lg border border-border bg-muted p-1 md:hidden",
 				className,
 			)}
 		>
@@ -38,9 +38,9 @@ export function MobileTabNavigation({
 						aria-selected={selected}
 						onClick={() => onTabChange(tab.id)}
 						className={cn(
-							"rounded-full px-3 py-1 text-xs font-medium transition-colors",
+							"h-10 flex-1 rounded-md px-3 text-sm font-medium transition-colors",
 							selected
-								? "bg-[var(--accent)] text-[var(--color-bg-0)]"
+								? "bg-background text-foreground shadow-sm"
 								: "text-muted-foreground hover:text-foreground",
 						)}
 					>

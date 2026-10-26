@@ -70,7 +70,7 @@ const InvoicesBoardContent = () => {
 				tabs={BOARD_TABS}
 				activeTab={activeView}
 				onTabChange={handleMobileTabChange}
-				className="left-auto right-4 top-4"
+				className="mx-4 mt-3"
 			/>
 
 			<InvoicesBoardMobileToolbar

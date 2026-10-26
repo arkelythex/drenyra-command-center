@@ -80,7 +80,7 @@ export const NotificationsSettings = () => {
 									{createElement(channel.icon, { size: 18, strokeWidth: 2.5 })}
 								</div>
 								<div className="space-y-1">
-									<p className="text-xs font-black uppercase tracking-widest text-[var(--text-primary)]">
+									<p className="text-xs font-medium text-[var(--text-primary)]">
 										{channel.label}
 									</p>
 									<p className="text-xs font-medium text-[var(--text-secondary)] leading-snug">
@@ -112,7 +112,7 @@ export const NotificationsSettings = () => {
 								action={
 									<select
 										aria-label="Frecuencia del resumen operativo"
-										className="h-9 w-32 rounded-xl border border-[var(--border-default)] bg-[var(--surface-1)] px-3 text-xs font-black uppercase tracking-widest text-[var(--text-primary)]"
+										className="h-9 w-32 rounded-xl border border-[var(--border-default)] bg-[var(--surface-1)] px-3 text-xs font-medium text-[var(--text-primary)]"
 										value={digestFrequency}
 										onChange={(event) => setDigestFrequency(event.target.value)}
 									>
@@ -140,7 +140,7 @@ export const NotificationsSettings = () => {
 
 					<div className="space-y-6">
 						<div className="flex items-center justify-between px-2">
-							<span className="text-xs font-black uppercase tracking-[0.2em] text-[var(--text-tertiary)]">
+							<span className="text-xs font-medium text-[var(--text-tertiary)]">
 								Vista previa de señales
 							</span>
 							<Bell size={14} className="text-[var(--text-tertiary)]" />
@@ -166,9 +166,9 @@ export const NotificationsSettings = () => {
 									icon: ShieldAlert,
 									color: "text-[var(--color-danger)]",
 								},
-							].map((item, idx) => (
+							].map((item) => (
 								<SurfacePanel
-									key={idx}
+									key={`${item.type}-${item.msg}`}
 									variant="muted"
 									padding="lg"
 									className="group relative flex items-start gap-4 rounded-2xl border-[var(--border-default)] bg-[var(--surface-2)]/30 transition-all hover:bg-[var(--surface-2)]/60"

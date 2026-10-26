@@ -9,6 +9,7 @@ drizzle/meta/
 *.d.ts.map
 *.xsd
 *.png
+!apps/web/e2e/__screenshots__/**/*.png
 *.jpg
 *.jpeg
 *.gif

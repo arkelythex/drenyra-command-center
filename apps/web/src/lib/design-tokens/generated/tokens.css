@@ -3,9 +3,12 @@
  * Values are NOT defined here. src/index.css owns the per-theme palette
  * (--background, --card, --muted, …); `inline` makes utilities such as
  * `bg-card` or `text-muted-foreground` read those variables at use time, so
- * they follow the active theme and accent. --color-border/primary/success/warning
- * are already provided by styles/design-system.css and are intentionally not
- * redefined here.
+ * they follow the active theme and accent.
+ *
+ * Only names declared in @theme generate utilities: a variable defined in
+ * styles/design-system.css (e.g. --color-border) does NOT create `border-border`.
+ * Tailwind v4 then falls back to currentColor, so every border rendered in the
+ * text color until --color-border was bridged here.
  */
 @theme inline {
   --color-background: var(--background);
@@ -23,4 +26,10 @@
   --color-destructive-foreground: var(--destructive-foreground);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-border: var(--border);
+  /* Action color that follows the user's accent preference. `primary` is not
+     bridged: --color-primary means text ink in the dark palette (see
+     odd/tasks/web-ux-system.md T3). */
+  --color-brand: var(--primary);
+  --color-brand-foreground: var(--primary-foreground);
 }

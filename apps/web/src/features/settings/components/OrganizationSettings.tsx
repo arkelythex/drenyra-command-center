@@ -72,12 +72,12 @@ export const OrganizationSettings = () => {
 									{ event: "Organización verificada", date: "hace 2 horas" },
 									{ event: "Integrante agregado", date: "15 ene." },
 									{ event: "Logotipo actualizado", date: "22 dic." },
-								].map((item, idx) => (
+								].map((item) => (
 									<div
-										key={idx}
+										key={`${item.event}-${item.date}`}
 										className="flex items-center justify-between border-b border-[var(--border-default)] pb-4 last:border-0 last:pb-0"
 									>
-										<span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-widest">
+										<span className="text-xs font-bold text-[var(--text-secondary)]">
 											{item.event}
 										</span>
 										<StatusBadge status="info" label={item.date} />

@@ -33,7 +33,7 @@ export function AgenticCommandBar() {
 
 	return (
 		<div className="border-t border-[var(--border-subtle)] bg-[var(--surface-1)] px-3 py-2">
-			<div className="mb-1.5 flex items-center gap-2 text-[10px] text-[var(--text-muted)]">
+			<div className="mb-1.5 flex items-center gap-2 text-xs text-[var(--text-muted)]">
 				<span className="truncate font-medium text-[var(--text-secondary)]">
 					{companyContext.companyName}
 				</span>
@@ -53,19 +53,25 @@ export function AgenticCommandBar() {
 					type="text"
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
-					placeholder="Ask Drenyra…"
-					className="flex-1 bg-transparent text-xs text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none"
+					placeholder="Pregunta a Drenyra…"
+					aria-label="Pregunta a Drenyra"
+					className="h-11 flex-1 bg-transparent text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none"
 				/>
 
 				<button
 					type="submit"
 					disabled={!input.trim() || isSubmitting}
-					className="flex items-center justify-center rounded-md bg-[var(--color-primary)] p-1.5 text-white transition-opacity disabled:opacity-40"
+					aria-label="Enviar"
+					className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-[var(--color-primary)] text-brand-foreground transition-opacity disabled:opacity-40"
 				>
 					{isSubmitting ? (
-						<Loader2 size={14} className="animate-spin" />
+						<Loader2
+							size={16}
+							aria-hidden="true"
+							className="animate-spin motion-reduce:animate-none"
+						/>
 					) : (
-						<ArrowUp size={14} />
+						<ArrowUp size={16} aria-hidden="true" />
 					)}
 				</button>
 			</form>

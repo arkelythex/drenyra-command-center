@@ -22,7 +22,7 @@ export const OrganizationIdentity = ({
 						<h3 className="text-xl font-black tracking-tight text-[var(--text-primary)]">
 							{name}
 						</h3>
-						<div className="flex items-center gap-1 rounded-full bg-[var(--color-success-soft)] px-2 py-0.5 text-[8px] font-black uppercase tracking-widest text-[var(--color-success)] border border-[var(--color-success-soft)]">
+						<div className="flex items-center gap-1 rounded-full bg-[var(--color-success-soft)] px-2 py-0.5 text-[8px] font-medium text-[var(--color-success)] border border-[var(--color-success-soft)]">
 							<ShieldCheck size={10} />
 							Verified Entity
 						</div>
@@ -35,7 +35,7 @@ export const OrganizationIdentity = ({
 				<div className="flex-1 md:flex md:justify-end">
 					<div className="grid grid-cols-2 gap-4 rounded-2xl border border-[var(--border-default)] bg-[var(--surface-2)]/50 p-4">
 						<div className="text-center">
-							<p className="text-xs font-black uppercase tracking-widest text-[var(--text-tertiary)]">
+							<p className="text-xs font-medium text-[var(--text-tertiary)]">
 								Subsidiaries
 							</p>
 							<p className="text-sm font-black text-[var(--text-primary)]">
@@ -43,8 +43,8 @@ export const OrganizationIdentity = ({
 							</p>
 						</div>
 						<div className="text-center border-l border-[var(--border-default)]">
-							<p className="text-xs font-black uppercase tracking-widest text-[var(--text-tertiary)]">
-								Region
+							<p className="text-xs font-medium text-[var(--text-tertiary)]">
+								Región
 							</p>
 							<p className="text-sm font-black text-[var(--text-primary)]">
 								LATAM
@@ -84,7 +84,7 @@ export const MemberCard = ({ name, email, role }: MemberCardProps) => {
 						.join("")}
 				</div>
 				<div>
-					<p className="text-xs font-black uppercase tracking-widest text-[var(--text-primary)]">
+					<p className="text-xs font-medium text-[var(--text-primary)]">
 						{name}
 					</p>
 					<div className="flex items-center gap-2 mt-0.5">
@@ -99,7 +99,7 @@ export const MemberCard = ({ name, email, role }: MemberCardProps) => {
 			<div className="flex items-center gap-3">
 				<div
 					className={cn(
-						"rounded-full px-2.5 py-1 text-[8px] font-black uppercase tracking-[0.15em] border",
+						"rounded-md px-2 py-0.5 text-xs font-medium border",
 						isAdmin
 							? "border-[var(--accent)]/20 bg-[var(--accent)]/5 text-[var(--accent)]"
 							: "border-[var(--border-default)] bg-[var(--surface-1)] text-[var(--text-tertiary)]",

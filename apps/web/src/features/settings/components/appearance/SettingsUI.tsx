@@ -39,7 +39,7 @@ export function SettingsButton({
 		<button
 			ref={ref}
 			className={cn(
-				"inline-flex items-center justify-center rounded-xl border font-black uppercase tracking-[0.15em] transition-all duration-200 active:scale-[0.96] disabled:opacity-50 disabled:pointer-events-none",
+				"inline-flex items-center justify-center rounded-lg border font-medium transition-colors duration-150 disabled:opacity-50 disabled:pointer-events-none",
 				variants[variant],
 				sizes[size],
 				active &&
@@ -65,6 +65,7 @@ export const SettingsActionCard = ({
 	className?: string;
 }) => (
 	<button
+		type="button"
 		onClick={onClick}
 		className={cn(
 			"group relative flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-all duration-300",

@@ -43,8 +43,6 @@ export {
 export { Input, type InputProps } from "./input";
 // Re-export simple wrappers and components without app-specific behavior
 export { Label, type LabelProps } from "./label";
-export { NavItem, type NavItemProps } from "./NavItem";
-export { NavSection, type NavSectionProps } from "./NavSection";
 export { PageHeader, type PageHeaderProps } from "./PageHeader";
 export { PageShell, type PageShellProps } from "./PageShell";
 export { StatusBadge, type StatusBadgeProps } from "./StatusBadge";

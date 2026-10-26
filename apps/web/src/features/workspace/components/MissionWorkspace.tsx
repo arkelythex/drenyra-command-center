@@ -42,6 +42,9 @@ export function MissionWorkspace() {
 	const isDraft =
 		mission.status ===
 		("DRAFT" as ReturnType<typeof useAccountingMission>["status"]);
+	const isFailed =
+		mission.status ===
+		("FAILED" as ReturnType<typeof useAccountingMission>["status"]);
 
 	return (
 		<div className="flex h-full flex-col">
@@ -99,20 +102,28 @@ export function MissionWorkspace() {
 							onReject={handleReject}
 							onReconcile={mission.reconcile}
 							onRetry={handleStartMission}
-						/>
-
-						<MissionActions
-							status={mission.status}
-							isReady={mission.isReady}
-							isAwaiting={mission.isAwaiting}
-							isFinished={mission.isFinished}
-							onStart={handleStartMission}
+							error={mission.error}
 							onReset={mission.reset}
-							onRequestRevision={mission.requestRevision}
 						/>
 
-						{mission.error && (
-							<div className="rounded-lg border border-red-500/20 bg-red-500/5 p-3 text-xs text-red-500">
+						{/* The failed state renders its own actions and error details. */}
+						{!isFailed && (
+							<MissionActions
+								status={mission.status}
+								isReady={mission.isReady}
+								isAwaiting={mission.isAwaiting}
+								isFinished={mission.isFinished}
+								onStart={handleStartMission}
+								onReset={mission.reset}
+								onRequestRevision={mission.requestRevision}
+							/>
+						)}
+
+						{mission.error && !isFailed && (
+							<div
+								role="alert"
+								className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive"
+							>
 								{mission.error}
 							</div>
 						)}

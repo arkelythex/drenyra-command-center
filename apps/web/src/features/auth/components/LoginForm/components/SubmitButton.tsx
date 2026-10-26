@@ -1,7 +1,5 @@
-import { ArrowRight, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { entranceVariants, MotionDiv } from "@/components/ui/motion-primitives";
-import { cn } from "@/lib/utils";
 import { SUBMIT_LOADING_TEXT, SUBMIT_TEXT } from "../LoginForm.data";
 
 interface SubmitButtonProps {
@@ -10,31 +8,23 @@ interface SubmitButtonProps {
 
 export function SubmitButton({ isLoading }: SubmitButtonProps) {
 	return (
-		<MotionDiv variants={entranceVariants} className="pt-2">
-			<Button
-				type="submit"
-				disabled={isLoading}
-				className={cn(
-					"group relative h-16 w-full overflow-hidden rounded-full bg-transparent text-label font-black uppercase tracking-[0.35em] text-white transition-all duration-300",
-					"hover:bg-white/[0.035] disabled:opacity-70 motion-reduce:transition-none",
-				)}
-			>
-				{isLoading ? (
-					<span className="flex items-center gap-3">
-						<Loader2 className="h-4 w-4 animate-spin" />
-						{SUBMIT_LOADING_TEXT}
-					</span>
-				) : (
-					<span className="flex items-center gap-3 relative z-10 transition-[gap] duration-150 group-hover:gap-4 motion-reduce:transition-none">
-						{SUBMIT_TEXT}
-						<ArrowRight
-							size={16}
-							strokeWidth={3}
-							className="transition-colors"
-						/>
-					</span>
-				)}
-			</Button>
-		</MotionDiv>
+		<Button
+			type="submit"
+			disabled={isLoading}
+			aria-busy={isLoading || undefined}
+			className="h-12 w-full rounded-lg border-transparent bg-brand text-base font-medium text-brand-foreground hover:bg-brand/90 disabled:opacity-70"
+		>
+			{isLoading ? (
+				<>
+					<Loader2
+						aria-hidden="true"
+						className="size-4 animate-spin motion-reduce:animate-none"
+					/>
+					{SUBMIT_LOADING_TEXT}
+				</>
+			) : (
+				SUBMIT_TEXT
+			)}
+		</Button>
 	);
 }

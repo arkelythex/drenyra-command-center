@@ -150,9 +150,10 @@ export function summarize(transactions: readonly ReconciliationTransaction[]) {
 			(total, tx) => total + Math.abs(tx.amountCents),
 			0,
 		),
+		// No movements means nothing was reconciled: not applicable (null), never "100%".
 		reconciledRate:
 			transactions.length === 0
-				? 100
+				? null
 				: Math.round(
 						((transactions.length - unresolved.length) / transactions.length) *
 							100,

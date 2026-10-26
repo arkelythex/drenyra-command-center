@@ -1,0 +1,86 @@
+{
+  "desktop-chrome:cierre-mensual": {
+    "axe": 0,
+    "smallTargets": 19
+  },
+  "desktop-chrome:cumplimiento": {
+    "axe": 0,
+    "smallTargets": 8
+  },
+  "desktop-chrome:invoices": {
+    "axe": 2,
+    "smallTargets": 12
+  },
+  "desktop-chrome:login": {
+    "axe": 0,
+    "smallTargets": 3
+  },
+  "desktop-chrome:reconciliations": {
+    "axe": 0,
+    "smallTargets": 8
+  },
+  "desktop-chrome:settings": {
+    "axe": 0,
+    "smallTargets": 8
+  },
+  "desktop-chrome:workspace": {
+    "axe": 0,
+    "smallTargets": 19
+  },
+  "mobile-android:cierre-mensual": {
+    "axe": 0,
+    "smallTargets": 4
+  },
+  "mobile-android:cumplimiento": {
+    "axe": 0,
+    "smallTargets": 0
+  },
+  "mobile-android:invoices": {
+    "axe": 0,
+    "smallTargets": 3
+  },
+  "mobile-android:login": {
+    "axe": 0,
+    "smallTargets": 3
+  },
+  "mobile-android:reconciliations": {
+    "axe": 0,
+    "smallTargets": 1
+  },
+  "mobile-android:settings": {
+    "axe": 0,
+    "smallTargets": 0
+  },
+  "mobile-android:workspace": {
+    "axe": 0,
+    "smallTargets": 4
+  },
+  "mobile-ios:cierre-mensual": {
+    "axe": 0,
+    "smallTargets": 4
+  },
+  "mobile-ios:cumplimiento": {
+    "axe": 0,
+    "smallTargets": 0
+  },
+  "mobile-ios:invoices": {
+    "axe": 0,
+    "smallTargets": 3
+  },
+  "mobile-ios:login": {
+    "axe": 0,
+    "smallTargets": 3
+  },
+  "mobile-ios:reconciliations": {
+    "axe": 0,
+    "smallTargets": 1
+  },
+  "mobile-ios:settings": {
+    "axe": 0,
+    "smallTargets": 0
+  },
+  "mobile-ios:workspace": {
+    "axe": 0,
+    "smallTargets": 4
+  }
+}

@@ -100,7 +100,7 @@ export const SecuritySettings = () => {
 
 					<div className="space-y-6">
 						<div className="flex items-center justify-between px-2">
-							<span className="text-xs font-black uppercase tracking-[0.2em] text-[var(--text-tertiary)]">
+							<span className="text-xs font-medium text-[var(--text-tertiary)]">
 								Sesiones activas
 							</span>
 							<StatusBadge status="success" label="ACTIVAS" />

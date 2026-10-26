@@ -8,332 +8,487 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as AuthRouteImport } from "./routes/auth";
-import { Route as CierreMensualRouteImport } from "./routes/cierre-mensual";
-import { Route as CumplimientoExpedientesRouteImport } from "./routes/cumplimiento.expedientes";
-import { Route as ForgotPasswordRouteImport } from "./routes/forgot-password";
-import { Route as IndexRouteImport } from "./routes/index";
-import { Route as InvoicesRouteImport } from "./routes/invoices";
-import { Route as LoginRouteImport } from "./routes/login";
-import { Route as OnboardingRouteImport } from "./routes/onboarding";
-import { Route as ResetPasswordRouteImport } from "./routes/reset-password";
-import { Route as SettingsRouteImport } from "./routes/settings";
-import { Route as SignupRouteImport } from "./routes/signup";
-import { Route as TesoreriaReconciliationsRouteImport } from "./routes/tesoreria.reconciliations";
-import { Route as VerifyEmailRouteImport } from "./routes/verify-email";
-import { Route as WorkspaceCompanyIdYearMonthIntentRouteImport } from "./routes/workspace.$companyId.$year.$month.$intent";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as InvoicesRouteImport } from './routes/invoices'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as CierreMensualRouteImport } from './routes/cierre-mensual'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as SettingsIndexRouteImport } from './routes/settings/index'
+import { Route as TesoreriaReconciliationsRouteImport } from './routes/tesoreria.reconciliations'
+import { Route as SettingsToolPermissionsRouteImport } from './routes/settings/tool-permissions'
+import { Route as SettingsSecurityRouteImport } from './routes/settings/security'
+import { Route as SettingsOrganizationRouteImport } from './routes/settings/organization'
+import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
+import { Route as SettingsBillingRouteImport } from './routes/settings/billing'
+import { Route as SettingsAppearanceRouteImport } from './routes/settings/appearance'
+import { Route as CumplimientoExpedientesRouteImport } from './routes/cumplimiento.expedientes'
+import { Route as WorkspaceCompanyIdYearMonthIntentRouteImport } from './routes/workspace.$companyId.$year.$month.$intent'
 
 const VerifyEmailRoute = VerifyEmailRouteImport.update({
-	id: "/verify-email",
-	path: "/verify-email",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
-	id: "/signup",
-	path: "/signup",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
-	id: "/settings",
-	path: "/settings",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
-	id: "/reset-password",
-	path: "/reset-password",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
-	id: "/onboarding",
-	path: "/onboarding",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
-	id: "/login",
-	path: "/login",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InvoicesRoute = InvoicesRouteImport.update({
-	id: "/invoices",
-	path: "/invoices",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-	id: "/forgot-password",
-	path: "/forgot-password",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CierreMensualRoute = CierreMensualRouteImport.update({
-	id: "/cierre-mensual",
-	path: "/cierre-mensual",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/cierre-mensual',
+  path: '/cierre-mensual',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
-	id: "/auth",
-	path: "/auth",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
-	id: "/",
-	path: "/",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SettingsRoute,
+} as any)
 const TesoreriaReconciliationsRoute =
-	TesoreriaReconciliationsRouteImport.update({
-		id: "/tesoreria/reconciliations",
-		path: "/tesoreria/reconciliations",
-		getParentRoute: () => rootRouteImport,
-	} as any);
+  TesoreriaReconciliationsRouteImport.update({
+    id: '/tesoreria/reconciliations',
+    path: '/tesoreria/reconciliations',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const SettingsToolPermissionsRoute = SettingsToolPermissionsRouteImport.update({
+  id: '/tool-permissions',
+  path: '/tool-permissions',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsSecurityRoute = SettingsSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsOrganizationRoute = SettingsOrganizationRouteImport.update({
+  id: '/organization',
+  path: '/organization',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsBillingRoute = SettingsBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsAppearanceRoute = SettingsAppearanceRouteImport.update({
+  id: '/appearance',
+  path: '/appearance',
+  getParentRoute: () => SettingsRoute,
+} as any)
 const CumplimientoExpedientesRoute = CumplimientoExpedientesRouteImport.update({
-	id: "/cumplimiento/expedientes",
-	path: "/cumplimiento/expedientes",
-	getParentRoute: () => rootRouteImport,
-} as any);
+  id: '/cumplimiento/expedientes',
+  path: '/cumplimiento/expedientes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkspaceCompanyIdYearMonthIntentRoute =
-	WorkspaceCompanyIdYearMonthIntentRouteImport.update({
-		id: "/workspace/$companyId/$year/$month/$intent",
-		path: "/workspace/$companyId/$year/$month/$intent",
-		getParentRoute: () => rootRouteImport,
-	} as any);
+  WorkspaceCompanyIdYearMonthIntentRouteImport.update({
+    id: '/workspace/$companyId/$year/$month/$intent',
+    path: '/workspace/$companyId/$year/$month/$intent',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
-	"/": typeof IndexRoute;
-	"/auth": typeof AuthRoute;
-	"/cierre-mensual": typeof CierreMensualRoute;
-	"/forgot-password": typeof ForgotPasswordRoute;
-	"/invoices": typeof InvoicesRoute;
-	"/login": typeof LoginRoute;
-	"/onboarding": typeof OnboardingRoute;
-	"/reset-password": typeof ResetPasswordRoute;
-	"/settings": typeof SettingsRoute;
-	"/signup": typeof SignupRoute;
-	"/verify-email": typeof VerifyEmailRoute;
-	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
-	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
-	"/workspace/$companyId/$year/$month/$intent": typeof WorkspaceCompanyIdYearMonthIntentRoute;
+  '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/cierre-mensual': typeof CierreMensualRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/invoices': typeof InvoicesRoute
+  '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/settings': typeof SettingsRouteWithChildren
+  '/signup': typeof SignupRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/cumplimiento/expedientes': typeof CumplimientoExpedientesRoute
+  '/settings/appearance': typeof SettingsAppearanceRoute
+  '/settings/billing': typeof SettingsBillingRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/organization': typeof SettingsOrganizationRoute
+  '/settings/security': typeof SettingsSecurityRoute
+  '/settings/tool-permissions': typeof SettingsToolPermissionsRoute
+  '/tesoreria/reconciliations': typeof TesoreriaReconciliationsRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/workspace/$companyId/$year/$month/$intent': typeof WorkspaceCompanyIdYearMonthIntentRoute
 }
 export interface FileRoutesByTo {
-	"/": typeof IndexRoute;
-	"/auth": typeof AuthRoute;
-	"/cierre-mensual": typeof CierreMensualRoute;
-	"/forgot-password": typeof ForgotPasswordRoute;
-	"/invoices": typeof InvoicesRoute;
-	"/login": typeof LoginRoute;
-	"/onboarding": typeof OnboardingRoute;
-	"/reset-password": typeof ResetPasswordRoute;
-	"/settings": typeof SettingsRoute;
-	"/signup": typeof SignupRoute;
-	"/verify-email": typeof VerifyEmailRoute;
-	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
-	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
-	"/workspace/$companyId/$year/$month/$intent": typeof WorkspaceCompanyIdYearMonthIntentRoute;
+  '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/cierre-mensual': typeof CierreMensualRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/invoices': typeof InvoicesRoute
+  '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/signup': typeof SignupRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/cumplimiento/expedientes': typeof CumplimientoExpedientesRoute
+  '/settings/appearance': typeof SettingsAppearanceRoute
+  '/settings/billing': typeof SettingsBillingRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/organization': typeof SettingsOrganizationRoute
+  '/settings/security': typeof SettingsSecurityRoute
+  '/settings/tool-permissions': typeof SettingsToolPermissionsRoute
+  '/tesoreria/reconciliations': typeof TesoreriaReconciliationsRoute
+  '/settings': typeof SettingsIndexRoute
+  '/workspace/$companyId/$year/$month/$intent': typeof WorkspaceCompanyIdYearMonthIntentRoute
 }
 export interface FileRoutesById {
-	__root__: typeof rootRouteImport;
-	"/": typeof IndexRoute;
-	"/auth": typeof AuthRoute;
-	"/cierre-mensual": typeof CierreMensualRoute;
-	"/forgot-password": typeof ForgotPasswordRoute;
-	"/invoices": typeof InvoicesRoute;
-	"/login": typeof LoginRoute;
-	"/onboarding": typeof OnboardingRoute;
-	"/reset-password": typeof ResetPasswordRoute;
-	"/settings": typeof SettingsRoute;
-	"/signup": typeof SignupRoute;
-	"/verify-email": typeof VerifyEmailRoute;
-	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
-	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
-	"/workspace/$companyId/$year/$month/$intent": typeof WorkspaceCompanyIdYearMonthIntentRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/cierre-mensual': typeof CierreMensualRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/invoices': typeof InvoicesRoute
+  '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/settings': typeof SettingsRouteWithChildren
+  '/signup': typeof SignupRoute
+  '/verify-email': typeof VerifyEmailRoute
+  '/cumplimiento/expedientes': typeof CumplimientoExpedientesRoute
+  '/settings/appearance': typeof SettingsAppearanceRoute
+  '/settings/billing': typeof SettingsBillingRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/organization': typeof SettingsOrganizationRoute
+  '/settings/security': typeof SettingsSecurityRoute
+  '/settings/tool-permissions': typeof SettingsToolPermissionsRoute
+  '/tesoreria/reconciliations': typeof TesoreriaReconciliationsRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/workspace/$companyId/$year/$month/$intent': typeof WorkspaceCompanyIdYearMonthIntentRoute
 }
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths:
-		| "/"
-		| "/auth"
-		| "/cierre-mensual"
-		| "/forgot-password"
-		| "/invoices"
-		| "/login"
-		| "/onboarding"
-		| "/reset-password"
-		| "/settings"
-		| "/signup"
-		| "/verify-email"
-		| "/cumplimiento/expedientes"
-		| "/tesoreria/reconciliations"
-		| "/workspace/$companyId/$year/$month/$intent";
-	fileRoutesByTo: FileRoutesByTo;
-	to:
-		| "/"
-		| "/auth"
-		| "/cierre-mensual"
-		| "/forgot-password"
-		| "/invoices"
-		| "/login"
-		| "/onboarding"
-		| "/reset-password"
-		| "/settings"
-		| "/signup"
-		| "/verify-email"
-		| "/cumplimiento/expedientes"
-		| "/tesoreria/reconciliations"
-		| "/workspace/$companyId/$year/$month/$intent";
-	id:
-		| "__root__"
-		| "/"
-		| "/auth"
-		| "/cierre-mensual"
-		| "/forgot-password"
-		| "/invoices"
-		| "/login"
-		| "/onboarding"
-		| "/reset-password"
-		| "/settings"
-		| "/signup"
-		| "/verify-email"
-		| "/cumplimiento/expedientes"
-		| "/tesoreria/reconciliations"
-		| "/workspace/$companyId/$year/$month/$intent";
-	fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/cierre-mensual'
+    | '/forgot-password'
+    | '/invoices'
+    | '/login'
+    | '/onboarding'
+    | '/reset-password'
+    | '/settings'
+    | '/signup'
+    | '/verify-email'
+    | '/cumplimiento/expedientes'
+    | '/settings/appearance'
+    | '/settings/billing'
+    | '/settings/notifications'
+    | '/settings/organization'
+    | '/settings/security'
+    | '/settings/tool-permissions'
+    | '/tesoreria/reconciliations'
+    | '/settings/'
+    | '/workspace/$companyId/$year/$month/$intent'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/auth'
+    | '/cierre-mensual'
+    | '/forgot-password'
+    | '/invoices'
+    | '/login'
+    | '/onboarding'
+    | '/reset-password'
+    | '/signup'
+    | '/verify-email'
+    | '/cumplimiento/expedientes'
+    | '/settings/appearance'
+    | '/settings/billing'
+    | '/settings/notifications'
+    | '/settings/organization'
+    | '/settings/security'
+    | '/settings/tool-permissions'
+    | '/tesoreria/reconciliations'
+    | '/settings'
+    | '/workspace/$companyId/$year/$month/$intent'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/cierre-mensual'
+    | '/forgot-password'
+    | '/invoices'
+    | '/login'
+    | '/onboarding'
+    | '/reset-password'
+    | '/settings'
+    | '/signup'
+    | '/verify-email'
+    | '/cumplimiento/expedientes'
+    | '/settings/appearance'
+    | '/settings/billing'
+    | '/settings/notifications'
+    | '/settings/organization'
+    | '/settings/security'
+    | '/settings/tool-permissions'
+    | '/tesoreria/reconciliations'
+    | '/settings/'
+    | '/workspace/$companyId/$year/$month/$intent'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-	IndexRoute: typeof IndexRoute;
-	AuthRoute: typeof AuthRoute;
-	CierreMensualRoute: typeof CierreMensualRoute;
-	ForgotPasswordRoute: typeof ForgotPasswordRoute;
-	InvoicesRoute: typeof InvoicesRoute;
-	LoginRoute: typeof LoginRoute;
-	OnboardingRoute: typeof OnboardingRoute;
-	ResetPasswordRoute: typeof ResetPasswordRoute;
-	SettingsRoute: typeof SettingsRoute;
-	SignupRoute: typeof SignupRoute;
-	VerifyEmailRoute: typeof VerifyEmailRoute;
-	CumplimientoExpedientesRoute: typeof CumplimientoExpedientesRoute;
-	TesoreriaReconciliationsRoute: typeof TesoreriaReconciliationsRoute;
-	WorkspaceCompanyIdYearMonthIntentRoute: typeof WorkspaceCompanyIdYearMonthIntentRoute;
+  IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
+  CierreMensualRoute: typeof CierreMensualRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  InvoicesRoute: typeof InvoicesRoute
+  LoginRoute: typeof LoginRoute
+  OnboardingRoute: typeof OnboardingRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  SettingsRoute: typeof SettingsRouteWithChildren
+  SignupRoute: typeof SignupRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
+  CumplimientoExpedientesRoute: typeof CumplimientoExpedientesRoute
+  TesoreriaReconciliationsRoute: typeof TesoreriaReconciliationsRoute
+  WorkspaceCompanyIdYearMonthIntentRoute: typeof WorkspaceCompanyIdYearMonthIntentRoute
 }
 
-declare module "@tanstack/react-router" {
-	interface FileRoutesByPath {
-		"/verify-email": {
-			id: "/verify-email";
-			path: "/verify-email";
-			fullPath: "/verify-email";
-			preLoaderRoute: typeof VerifyEmailRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/signup": {
-			id: "/signup";
-			path: "/signup";
-			fullPath: "/signup";
-			preLoaderRoute: typeof SignupRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/settings": {
-			id: "/settings";
-			path: "/settings";
-			fullPath: "/settings";
-			preLoaderRoute: typeof SettingsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/reset-password": {
-			id: "/reset-password";
-			path: "/reset-password";
-			fullPath: "/reset-password";
-			preLoaderRoute: typeof ResetPasswordRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/onboarding": {
-			id: "/onboarding";
-			path: "/onboarding";
-			fullPath: "/onboarding";
-			preLoaderRoute: typeof OnboardingRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/login": {
-			id: "/login";
-			path: "/login";
-			fullPath: "/login";
-			preLoaderRoute: typeof LoginRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/invoices": {
-			id: "/invoices";
-			path: "/invoices";
-			fullPath: "/invoices";
-			preLoaderRoute: typeof InvoicesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/forgot-password": {
-			id: "/forgot-password";
-			path: "/forgot-password";
-			fullPath: "/forgot-password";
-			preLoaderRoute: typeof ForgotPasswordRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/cierre-mensual": {
-			id: "/cierre-mensual";
-			path: "/cierre-mensual";
-			fullPath: "/cierre-mensual";
-			preLoaderRoute: typeof CierreMensualRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/auth": {
-			id: "/auth";
-			path: "/auth";
-			fullPath: "/auth";
-			preLoaderRoute: typeof AuthRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/": {
-			id: "/";
-			path: "/";
-			fullPath: "/";
-			preLoaderRoute: typeof IndexRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/tesoreria/reconciliations": {
-			id: "/tesoreria/reconciliations";
-			path: "/tesoreria/reconciliations";
-			fullPath: "/tesoreria/reconciliations";
-			preLoaderRoute: typeof TesoreriaReconciliationsRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/cumplimiento/expedientes": {
-			id: "/cumplimiento/expedientes";
-			path: "/cumplimiento/expedientes";
-			fullPath: "/cumplimiento/expedientes";
-			preLoaderRoute: typeof CumplimientoExpedientesRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-		"/workspace/$companyId/$year/$month/$intent": {
-			id: "/workspace/$companyId/$year/$month/$intent";
-			path: "/workspace/$companyId/$year/$month/$intent";
-			fullPath: "/workspace/$companyId/$year/$month/$intent";
-			preLoaderRoute: typeof WorkspaceCompanyIdYearMonthIntentRouteImport;
-			parentRoute: typeof rootRouteImport;
-		};
-	}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/invoices': {
+      id: '/invoices'
+      path: '/invoices'
+      fullPath: '/invoices'
+      preLoaderRoute: typeof InvoicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cierre-mensual': {
+      id: '/cierre-mensual'
+      path: '/cierre-mensual'
+      fullPath: '/cierre-mensual'
+      preLoaderRoute: typeof CierreMensualRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/': {
+      id: '/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/tesoreria/reconciliations': {
+      id: '/tesoreria/reconciliations'
+      path: '/tesoreria/reconciliations'
+      fullPath: '/tesoreria/reconciliations'
+      preLoaderRoute: typeof TesoreriaReconciliationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/tool-permissions': {
+      id: '/settings/tool-permissions'
+      path: '/tool-permissions'
+      fullPath: '/settings/tool-permissions'
+      preLoaderRoute: typeof SettingsToolPermissionsRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/security': {
+      id: '/settings/security'
+      path: '/security'
+      fullPath: '/settings/security'
+      preLoaderRoute: typeof SettingsSecurityRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/organization': {
+      id: '/settings/organization'
+      path: '/organization'
+      fullPath: '/settings/organization'
+      preLoaderRoute: typeof SettingsOrganizationRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/notifications': {
+      id: '/settings/notifications'
+      path: '/notifications'
+      fullPath: '/settings/notifications'
+      preLoaderRoute: typeof SettingsNotificationsRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/billing': {
+      id: '/settings/billing'
+      path: '/billing'
+      fullPath: '/settings/billing'
+      preLoaderRoute: typeof SettingsBillingRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/appearance': {
+      id: '/settings/appearance'
+      path: '/appearance'
+      fullPath: '/settings/appearance'
+      preLoaderRoute: typeof SettingsAppearanceRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/cumplimiento/expedientes': {
+      id: '/cumplimiento/expedientes'
+      path: '/cumplimiento/expedientes'
+      fullPath: '/cumplimiento/expedientes'
+      preLoaderRoute: typeof CumplimientoExpedientesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/$companyId/$year/$month/$intent': {
+      id: '/workspace/$companyId/$year/$month/$intent'
+      path: '/workspace/$companyId/$year/$month/$intent'
+      fullPath: '/workspace/$companyId/$year/$month/$intent'
+      preLoaderRoute: typeof WorkspaceCompanyIdYearMonthIntentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
 }
+
+interface SettingsRouteChildren {
+  SettingsAppearanceRoute: typeof SettingsAppearanceRoute
+  SettingsBillingRoute: typeof SettingsBillingRoute
+  SettingsNotificationsRoute: typeof SettingsNotificationsRoute
+  SettingsOrganizationRoute: typeof SettingsOrganizationRoute
+  SettingsSecurityRoute: typeof SettingsSecurityRoute
+  SettingsToolPermissionsRoute: typeof SettingsToolPermissionsRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
+}
+
+const SettingsRouteChildren: SettingsRouteChildren = {
+  SettingsAppearanceRoute: SettingsAppearanceRoute,
+  SettingsBillingRoute: SettingsBillingRoute,
+  SettingsNotificationsRoute: SettingsNotificationsRoute,
+  SettingsOrganizationRoute: SettingsOrganizationRoute,
+  SettingsSecurityRoute: SettingsSecurityRoute,
+  SettingsToolPermissionsRoute: SettingsToolPermissionsRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
+}
+
+const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
+  SettingsRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
-	IndexRoute: IndexRoute,
-	AuthRoute: AuthRoute,
-	CierreMensualRoute: CierreMensualRoute,
-	ForgotPasswordRoute: ForgotPasswordRoute,
-	InvoicesRoute: InvoicesRoute,
-	LoginRoute: LoginRoute,
-	OnboardingRoute: OnboardingRoute,
-	ResetPasswordRoute: ResetPasswordRoute,
-	SettingsRoute: SettingsRoute,
-	SignupRoute: SignupRoute,
-	VerifyEmailRoute: VerifyEmailRoute,
-	CumplimientoExpedientesRoute: CumplimientoExpedientesRoute,
-	TesoreriaReconciliationsRoute: TesoreriaReconciliationsRoute,
-	WorkspaceCompanyIdYearMonthIntentRoute:
-		WorkspaceCompanyIdYearMonthIntentRoute,
-};
+  IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
+  CierreMensualRoute: CierreMensualRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  InvoicesRoute: InvoicesRoute,
+  LoginRoute: LoginRoute,
+  OnboardingRoute: OnboardingRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  SettingsRoute: SettingsRouteWithChildren,
+  SignupRoute: SignupRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
+  CumplimientoExpedientesRoute: CumplimientoExpedientesRoute,
+  TesoreriaReconciliationsRoute: TesoreriaReconciliationsRoute,
+  WorkspaceCompanyIdYearMonthIntentRoute:
+    WorkspaceCompanyIdYearMonthIntentRoute,
+}
 export const routeTree = rootRouteImport
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>();
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()

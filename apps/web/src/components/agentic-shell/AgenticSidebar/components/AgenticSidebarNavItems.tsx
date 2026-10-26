@@ -67,7 +67,7 @@ export function AgenticSidebarNavItems({
 									})}
 									<span className="flex-1 truncate">{item.label}</span>
 									{item.badge !== undefined && (
-										<span className="flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[var(--color-primary)] px-1 text-[9px] font-bold text-white">
+										<span className="flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[var(--color-primary)] px-1 text-[9px] font-bold text-brand-foreground">
 											{item.badge}
 										</span>
 									)}

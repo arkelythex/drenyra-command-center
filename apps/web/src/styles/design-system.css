@@ -46,59 +46,59 @@
 :root[data-theme="light"],
 :root[data-ledger-theme="light"] {
   /* Background */
-  --bg-canvas: #f8f5ef;
-  --bg-surface: #ffffff;
-  --bg-subtle: #f3eee6;
-  --bg-muted: #ece4d8;
-  --bg-inset: #faf8f4;
-  --surface-1: #ffffff;
-  --surface-2: #f3eee6;
-  --surface-3: #ece4d8;
+  --bg-canvas: var(--dc-canvas);
+  --bg-surface: var(--dc-raised);
+  --bg-subtle: var(--dc-soft);
+  --bg-muted: var(--dc-sunken);
+  --bg-inset: var(--dc-soft);
+  --surface-1: var(--dc-raised);
+  --surface-2: var(--dc-sunken);
+  --surface-3: var(--dc-strong);
 
   /* Text */
-  --text-primary: #1d1a16;
-  --text-secondary: #5c5347;
-  --text-tertiary: #7a7166;
-  --text-disabled: #a89e91;
-  --text-inverse: #ffffff;
-  --text-muted: #a89e91;
+  --text-primary: var(--dc-text);
+  --text-secondary: var(--dc-text-secondary);
+  --text-tertiary: var(--dc-text-muted);
+  --text-disabled: var(--dc-text-disabled);
+  --text-inverse: var(--dc-on-accent);
+  --text-muted: var(--dc-text-muted);
 
   /* Border */
-  --border-subtle: #e0d5c7;
-  --border-default: #cebfae;
-  --border-strong: #b5a38e;
-  --border-focus: #b87333;
+  --border-subtle: var(--dc-hairline-subtle);
+  --border-default: var(--dc-hairline);
+  --border-strong: var(--dc-border-ui);
+  --border-focus: var(--dc-focus);
 
   /* Brand */
-  --color-primary: #b87333;
-  --color-primary-hover: #a3632b;
-  --color-primary-active: #8f5324;
-  --brand-soft: #f1ded0;
-  --brand-muted: #d8a24a;
-  --color-accent: #b87333;
+  --color-primary: var(--dc-accent);
+  --color-primary-hover: var(--dc-accent-2);
+  --color-primary-active: var(--dc-accent-2);
+  --brand-soft: color-mix(in oklch, var(--dc-accent) 12%, transparent);
+  --brand-muted: color-mix(in oklch, var(--dc-accent) 20%, transparent);
+  --color-accent: var(--dc-accent);
 
   /* Semantic */
-  --color-success: #257f4e;
-  --color-success-soft: #e4f3ea;
-  --color-warning: #8a5a18;
-  --color-warning-soft: #f8ead4;
-  --color-danger: #a83e3c;
-  --color-danger-soft: #f5dedc;
-  --color-info: #3d5f7e;
-  --color-info-soft: #e1eaf2;
+  --color-success: var(--dc-success);
+  --color-success-soft: color-mix(in oklch, var(--dc-success) 14%, transparent);
+  --color-warning: var(--dc-warning);
+  --color-warning-soft: color-mix(in oklch, var(--dc-warning) 14%, transparent);
+  --color-danger: var(--dc-error);
+  --color-danger-soft: color-mix(in oklch, var(--dc-error) 14%, transparent);
+  --color-info: var(--dc-info);
+  --color-info-soft: color-mix(in oklch, var(--dc-info) 14%, transparent);
 
   /* Risk */
-  --risk-low: #2f8f5b;
-  --risk-medium: #c6862d;
-  --risk-high: #b94a48;
-  --risk-critical: #7a1f1f;
+  --risk-low: var(--dc-success);
+  --risk-medium: var(--dc-warning);
+  --risk-high: var(--dc-error);
+  --risk-critical: var(--dc-error);
 
   /* Agent */
-  --agent-idle: #91877a;
-  --agent-running: #b87333;
-  --agent-review: #c6862d;
-  --agent-complete: #2f8f5b;
-  --agent-failed: #b94a48;
+  --agent-idle: var(--dc-text-muted);
+  --agent-running: var(--dc-accent);
+  --agent-review: var(--dc-warning);
+  --agent-complete: var(--dc-success);
+  --agent-failed: var(--dc-error);
 
   /* Shadows */
   --shadow-xs: 0 1px 2px rgba(29, 26, 22, 0.06);
@@ -113,59 +113,59 @@
 :root[data-theme="black-oled"],
 :root[data-ledger-theme="black-oled"] {
   /* Background */
-  --bg-canvas: #000000;
-  --bg-surface: #090807;
-  --bg-subtle: #11100e;
-  --bg-muted: #191612;
-  --bg-inset: #050505;
-  --surface-1: #090807;
-  --surface-2: #11100e;
-  --surface-3: #191612;
+  --bg-canvas: var(--dc-canvas);
+  --bg-surface: var(--dc-raised);
+  --bg-subtle: var(--dc-soft);
+  --bg-muted: var(--dc-sunken);
+  --bg-inset: var(--dc-soft);
+  --surface-1: var(--dc-raised);
+  --surface-2: var(--dc-sunken);
+  --surface-3: var(--dc-strong);
 
   /* Text */
-  --text-primary: #f7f1e8;
-  --text-secondary: #bdb3a6;
-  --text-tertiary: #81786e;
-  --text-disabled: #5f574f;
-  --text-inverse: #11100e;
-  --text-muted: #5f574f;
+  --text-primary: var(--dc-text);
+  --text-secondary: var(--dc-text-secondary);
+  --text-tertiary: var(--dc-text-muted);
+  --text-disabled: var(--dc-text-disabled);
+  --text-inverse: var(--dc-on-accent);
+  --text-muted: var(--dc-text-muted);
 
   /* Border */
-  --border-subtle: #1e1a16;
-  --border-default: #2c261f;
-  --border-strong: #493d31;
-  --border-focus: #d39a5a;
+  --border-subtle: var(--dc-hairline-subtle);
+  --border-default: var(--dc-hairline);
+  --border-strong: var(--dc-border-ui);
+  --border-focus: var(--dc-focus);
 
   /* Brand */
-  --color-primary: #d39a5a;
-  --color-primary-hover: #e0ad73;
-  --color-primary-active: #b87333;
-  --brand-soft: #2a1b10;
-  --brand-muted: #a9793f;
-  --color-accent: #d39a5a;
+  --color-primary: var(--dc-accent);
+  --color-primary-hover: var(--dc-accent-2);
+  --color-primary-active: var(--dc-accent-2);
+  --brand-soft: color-mix(in oklch, var(--dc-accent) 12%, transparent);
+  --brand-muted: color-mix(in oklch, var(--dc-accent) 20%, transparent);
+  --color-accent: var(--dc-accent);
 
   /* Semantic */
-  --color-success: #62b47f;
-  --color-success-soft: #102418;
-  --color-warning: #d39a5a;
-  --color-warning-soft: #2b1d0f;
-  --color-danger: #d66a66;
-  --color-danger-soft: #2b1111;
-  --color-info: #7ea6c8;
-  --color-info-soft: #101b24;
+  --color-success: var(--dc-success);
+  --color-success-soft: color-mix(in oklch, var(--dc-success) 14%, transparent);
+  --color-warning: var(--dc-warning);
+  --color-warning-soft: color-mix(in oklch, var(--dc-warning) 14%, transparent);
+  --color-danger: var(--dc-error);
+  --color-danger-soft: color-mix(in oklch, var(--dc-error) 14%, transparent);
+  --color-info: var(--dc-info);
+  --color-info-soft: color-mix(in oklch, var(--dc-info) 14%, transparent);
 
   /* Risk */
-  --risk-low: #62b47f;
-  --risk-medium: #d39a5a;
-  --risk-high: #d66a66;
-  --risk-critical: #ff8a80;
+  --risk-low: var(--dc-success);
+  --risk-medium: var(--dc-warning);
+  --risk-high: var(--dc-error);
+  --risk-critical: var(--dc-error);
 
   /* Agent */
-  --agent-idle: #81786e;
-  --agent-running: #d39a5a;
-  --agent-review: #e0ad73;
-  --agent-complete: #62b47f;
-  --agent-failed: #d66a66;
+  --agent-idle: var(--dc-text-muted);
+  --agent-running: var(--dc-accent);
+  --agent-review: var(--dc-warning);
+  --agent-complete: var(--dc-success);
+  --agent-failed: var(--dc-error);
 
   /* Shadows (OLED uses glow + subtle depth) */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.5);

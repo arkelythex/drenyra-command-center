@@ -136,10 +136,11 @@ describe("summarize", () => {
 			reconciledRate: 33,
 			requiresHumanDecision: true,
 		});
+		// With no movements there is nothing reconciled: the rate is not applicable, not 100%.
 		expect(summarize([])).toEqual({
 			unresolvedCount: 0,
 			unresolvedExposureCents: 0,
-			reconciledRate: 100,
+			reconciledRate: null,
 			requiresHumanDecision: false,
 		});
 	});

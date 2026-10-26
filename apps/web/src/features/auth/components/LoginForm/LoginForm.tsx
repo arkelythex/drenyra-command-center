@@ -66,8 +66,8 @@ export const LoginForm = () => {
 
 	return (
 		<AuthLayout
-			title="Acceso seguro"
-			subtitle="Ingresa al centro operativo de finanzas, impuestos y auditoría."
+			title="Iniciar sesión"
+			subtitle="Accede a tu centro de operaciones fiscales y contables."
 		>
 			<FormProvider {...form}>
 				<form

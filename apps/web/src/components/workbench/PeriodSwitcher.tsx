@@ -1,13 +1,13 @@
-import { useState, useRef, useEffect } from "react";
+import type { PeriodRef } from "@drenyra/domain";
+import { createPeriodRef } from "@drenyra/domain";
 import {
 	CalendarDays,
 	ChevronDown,
 	ChevronLeft,
 	ChevronRight,
 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import type { PeriodRef } from "@drenyra/domain";
-import { createPeriodRef } from "@drenyra/domain";
 
 interface PeriodSwitcherProps {
 	activePeriod: PeriodRef | null;
@@ -132,7 +132,7 @@ export function PeriodSwitcher({
 									className={cn(
 										"rounded-md px-2 py-1.5 text-xs font-medium transition-colors",
 										isActive
-											? "bg-[var(--color-primary)] text-white"
+											? "bg-[var(--color-primary)] text-brand-foreground"
 											: "text-[var(--text-secondary)] hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]",
 										isCurrent &&
 											!isActive &&
