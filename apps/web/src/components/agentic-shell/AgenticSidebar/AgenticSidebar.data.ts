@@ -185,23 +185,23 @@ const AVAILABLE_NAV_ITEMS = AGENTIC_NAV_ITEMS.filter((item) =>
 
 const ALL_SECTIONS: NavSectionConfig[] = [
 	{
-		title: "CENTRO DE OPERACIONES",
+		title: "Centro de operaciones",
 		items: AVAILABLE_NAV_ITEMS.filter((i) => i.section === "command-center"),
 	},
 	{
-		title: "OPERACIONES",
+		title: "Operaciones",
 		items: AVAILABLE_NAV_ITEMS.filter((i) => i.section === "operaciones"),
 	},
 	{
-		title: "FISCAL Y CUMPLIMIENTO",
+		title: "Fiscal y cumplimiento",
 		items: AVAILABLE_NAV_ITEMS.filter((i) => i.section === "fiscal-compliance"),
 	},
 	{
-		title: "REPORTES",
+		title: "Reportes",
 		items: AVAILABLE_NAV_ITEMS.filter((i) => i.section === "reportes"),
 	},
 	{
-		title: "SISTEMA",
+		title: "Sistema",
 		items: AVAILABLE_NAV_ITEMS.filter((i) => i.section === "system"),
 	},
 ];

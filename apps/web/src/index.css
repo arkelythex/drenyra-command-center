@@ -306,7 +306,7 @@
     --popover-foreground: var(--dc-text);
     --secondary: var(--dc-sunken);
     --secondary-foreground: var(--dc-text);
-    --muted: var(--dc-soft);
+    --muted: var(--dc-sunken);
     --muted-foreground: var(--dc-text-muted);
     --destructive: var(--dc-error);
     --destructive-foreground: var(--dc-on-error);
@@ -445,7 +445,7 @@
     --popover-foreground: var(--dc-text);
     --secondary: var(--dc-sunken);
     --secondary-foreground: var(--dc-text);
-    --muted: var(--dc-soft);
+    --muted: var(--dc-sunken);
     --muted-foreground: var(--dc-text-muted);
     --destructive: var(--dc-error);
     --destructive-foreground: var(--dc-on-error);

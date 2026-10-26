@@ -12,13 +12,13 @@ vi.mock("@tanstack/react-router", () => ({
 	Link: ({
 		children,
 		to,
-		className,
+		...rest
 	}: {
 		children: ReactNode;
 		to: string;
-		className?: string;
+		[prop: string]: unknown;
 	}) => (
-		<a href={to} className={className}>
+		<a href={to} {...rest}>
 			{children}
 		</a>
 	),
@@ -43,10 +43,10 @@ describe("AgenticSidebarNavItems — L3 Spanish-first navigation", () => {
 	it("renders Spanish section headers, only for sections with screens", () => {
 		render(<AgenticSidebarNavItems isCollapsed={false} />);
 
-		expect(screen.getByText("CENTRO DE OPERACIONES")).toBeInTheDocument();
-		expect(screen.getByText("OPERACIONES")).toBeInTheDocument();
-		expect(screen.getByText("FISCAL Y CUMPLIMIENTO")).toBeInTheDocument();
-		expect(screen.getByText("SISTEMA")).toBeInTheDocument();
+		expect(screen.getByText("Centro de operaciones")).toBeInTheDocument();
+		expect(screen.getByText("Operaciones")).toBeInTheDocument();
+		expect(screen.getByText("Fiscal y cumplimiento")).toBeInTheDocument();
+		expect(screen.getByText("Sistema")).toBeInTheDocument();
 		expect(screen.queryByText("REPORTES")).toBeNull();
 	});
 
@@ -82,7 +82,12 @@ describe("AgenticSidebarNavItems — L3 Spanish-first navigation", () => {
 		mockPathname = "/cierre-mensual";
 		render(<AgenticSidebarNavItems isCollapsed={false} />);
 
-		const activeButton = screen.getByText("Misiones").closest("button");
-		expect(activeButton?.className).toContain("border-[var(--color-primary)]");
+		const activeLink = screen.getByRole("link", { name: "Misiones" });
+		expect(activeLink).toHaveAttribute("aria-current", "page");
+		// Non-color indicator: the active entry is also set in a heavier weight.
+		expect(activeLink.className).toContain("font-medium");
+		expect(
+			screen.getByRole("link", { name: "Comprobantes" }),
+		).not.toHaveAttribute("aria-current");
 	});
 });
