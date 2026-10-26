@@ -23,7 +23,7 @@ export function AgenticSidebar() {
 				isCollapsed ? "lg:w-16" : "lg:w-[260px]",
 			)}
 		>
-			<div className="flex items-center justify-between border-b border-[var(--border-subtle)] px-3 py-2">
+			<div className="flex items-center justify-between border-b border-border-subtle px-3 py-2">
 				{!isCollapsed && (
 					<span className="text-sm font-semibold text-foreground">Drenyra</span>
 				)}

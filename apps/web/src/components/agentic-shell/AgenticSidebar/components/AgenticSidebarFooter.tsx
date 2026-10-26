@@ -13,7 +13,7 @@ export function AgenticSidebarFooter({
 
 	if (isCollapsed) {
 		return (
-			<div className="flex flex-col items-center gap-1 border-t border-[var(--border-subtle)] p-2">
+			<div className="flex flex-col items-center gap-1 border-t border-border-subtle p-2">
 				<button
 					type="button"
 					onClick={() => navigate({ to: "/settings" })}
@@ -29,13 +29,13 @@ export function AgenticSidebarFooter({
 	return (
 		<div
 			className={cn(
-				"flex items-center gap-2 border-t border-[var(--border-subtle)] p-3",
+				"flex items-center gap-2 border-t border-border-subtle p-3",
 			)}
 		>
-			<div className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--surface-3)]">
+			<div className="flex h-7 w-7 items-center justify-center rounded-full bg-strong">
 				<User size={14} className="text-muted-foreground" />
 			</div>
-			<span className="flex-1 truncate text-xs font-medium text-[var(--text-secondary)]">
+			<span className="flex-1 truncate text-xs font-medium text-foreground-soft">
 				Usuario
 			</span>
 			<button

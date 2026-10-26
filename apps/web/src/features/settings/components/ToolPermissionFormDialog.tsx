@@ -138,7 +138,7 @@ export function ToolPermissionFormDialog({
 						</label>
 						<select
 							id="tool-name"
-							className="w-full rounded-md border border-[var(--border-default)] bg-card px-3 py-2 text-sm text-foreground"
+							className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground"
 							value={toolName}
 							onChange={(event) => setToolName(event.target.value)}
 						>
@@ -171,7 +171,7 @@ export function ToolPermissionFormDialog({
 									className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 transition-colors ${
 										effect === opt.value
 											? "border-brand/40 bg-brand/5"
-											: "border-[var(--border-subtle)] hover:border-[var(--border-default)]"
+											: "border-border-subtle hover:border-border"
 									}`}
 								>
 									<input
@@ -186,7 +186,7 @@ export function ToolPermissionFormDialog({
 										<span className="text-sm font-semibold text-foreground">
 											{opt.label}
 										</span>
-										<span className="text-xs text-[var(--text-secondary)]">
+										<span className="text-xs text-foreground-soft">
 											{opt.description}
 										</span>
 									</div>

@@ -38,7 +38,7 @@ function getPasswordStrength(pwd: string): {
 		"bg-orange-500",
 		"bg-yellow-500",
 		"bg-[var(--premium-action-blue)]",
-		"bg-[var(--premium-success)]",
+		"bg-success",
 	];
 
 	return {

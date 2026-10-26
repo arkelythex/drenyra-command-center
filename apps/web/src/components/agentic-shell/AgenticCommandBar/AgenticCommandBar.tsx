@@ -23,7 +23,7 @@ export function AgenticCommandBar() {
 	};
 
 	return (
-		<div className="border-t border-[var(--border-subtle)] bg-card px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
+		<div className="border-t border-border-subtle bg-card px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
 			{ask.status !== "idle" && (
 				<section
 					aria-label="Respuesta de Drenyra"
@@ -67,7 +67,7 @@ export function AgenticCommandBar() {
 			)}
 
 			<div className="mb-1.5 flex items-center gap-2 text-xs text-muted-foreground">
-				<span className="truncate font-medium text-[var(--text-secondary)]">
+				<span className="truncate font-medium text-foreground-soft">
 					{companyContext.companyName}
 				</span>
 				<span aria-hidden="true">·</span>

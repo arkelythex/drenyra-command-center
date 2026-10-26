@@ -51,8 +51,8 @@ export function CommandPalette() {
 			/>
 
 			{/* Palette */}
-			<div className="relative w-full max-w-lg rounded-xl border border-[var(--border-subtle)] bg-card shadow-2xl">
-				<div className="flex items-center gap-2 border-b border-[var(--border-subtle)] px-3 py-2.5">
+			<div className="relative w-full max-w-lg rounded-xl border border-border-subtle bg-card shadow-2xl">
+				<div className="flex items-center gap-2 border-b border-border-subtle px-3 py-2.5">
 					<Search size={14} className="text-muted-foreground" />
 					<input
 						ref={inputRef}
@@ -60,7 +60,7 @@ export function CommandPalette() {
 						placeholder="Comandos y navegación…"
 						className="flex-1 bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground"
 					/>
-					<span className="rounded border border-[var(--border-subtle)] px-1.5 py-0.5 text-[9px] text-muted-foreground">
+					<span className="rounded border border-border-subtle px-1.5 py-0.5 text-[9px] text-muted-foreground">
 						ESC
 					</span>
 				</div>
@@ -71,7 +71,7 @@ export function CommandPalette() {
 							key={cmd.action}
 							type="button"
 							onClick={() => handleSelect(cmd.action)}
-							className="w-full rounded-lg px-3 py-2 text-left text-xs text-[var(--text-secondary)] transition-colors hover:bg-muted hover:text-foreground"
+							className="w-full rounded-lg px-3 py-2 text-left text-xs text-foreground-soft transition-colors hover:bg-muted hover:text-foreground"
 						>
 							{cmd.label}
 						</button>

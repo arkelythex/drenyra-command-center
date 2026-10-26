@@ -32,4 +32,9 @@
      odd/tasks/web-ux-system.md T3). */
   --color-brand: var(--primary);
   --color-brand-foreground: var(--primary-foreground);
+  /* Secondary ink, a quieter hairline and the strong surface of the palette. */
+  --color-foreground-soft: var(--text-secondary);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-ui: var(--color-stroke-3);
+  --color-strong: var(--surface-3);
 }

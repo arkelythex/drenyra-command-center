@@ -22,7 +22,7 @@ export function SettingsMobileNav({ pathname }: SettingsMobileNavProps) {
 								"inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg px-4 text-sm font-medium transition-colors",
 								active
 									? "bg-muted text-foreground"
-									: "text-[var(--text-secondary)] hover:bg-muted hover:text-foreground",
+									: "text-foreground-soft hover:bg-muted hover:text-foreground",
 							)}
 						>
 							{createElement(item.icon, { size: 14, strokeWidth: 2 })}

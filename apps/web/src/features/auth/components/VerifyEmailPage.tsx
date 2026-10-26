@@ -35,7 +35,7 @@ export const VerifyEmailPage = () => {
 
 		try {
 			const { error } = await authClient.verifyEmail({
-				query: { token: token! },
+				query: { token },
 			});
 
 			if (error) {
@@ -168,7 +168,7 @@ export const VerifyEmailPage = () => {
 							variants={entranceVariants}
 							className="flex justify-center"
 						>
-							<CheckCircle className="h-16 w-16 text-[var(--premium-success)]" />
+							<CheckCircle className="h-16 w-16 text-success" />
 						</MotionDiv>
 						<MotionDiv variants={entranceVariants}>
 							<Text className="text-foreground/90">

@@ -82,7 +82,7 @@ export function ReconciliationQueuePanel({
 							type="button"
 							onClick={() => onSelect(transaction.id)}
 							className={cn(
-								"w-full rounded-2xl border p-4 text-left transition-[border-color,background-color,box-shadow,transform] duration-150 hover:border-[var(--border-default)]",
+								"w-full rounded-2xl border p-4 text-left transition-[border-color,background-color,box-shadow,transform] duration-150 hover:border-border",
 								statusClasses(transaction.status),
 								isSelected &&
 									"ring-1 ring-[rgba(var(--premium-info-rgb),0.35)] shadow-[0_12px_24px_rgba(0,0,0,0.12)]",

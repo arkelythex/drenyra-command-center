@@ -21,7 +21,7 @@ export function RightPanel() {
 	return (
 		<div className="flex h-full flex-col">
 			{/* Header */}
-			<div className="flex items-center justify-between border-b border-[var(--border-subtle)] px-3 py-2.5">
+			<div className="flex items-center justify-between border-b border-border-subtle px-3 py-2.5">
 				<span className="text-xs font-semibold text-foreground">
 					{activeInspector.title}
 				</span>
@@ -39,15 +39,11 @@ export function RightPanel() {
 			<div className="flex-1 overflow-y-auto p-3">
 				<div className="space-y-3">
 					<p className="text-xs text-muted-foreground">
-						<span className="font-medium text-[var(--text-secondary)]">
-							Tipo:
-						</span>{" "}
+						<span className="font-medium text-foreground-soft">Tipo:</span>{" "}
 						{activeInspector.type}
 					</p>
 					<p className="text-xs text-muted-foreground">
-						<span className="font-medium text-[var(--text-secondary)]">
-							ID:
-						</span>{" "}
+						<span className="font-medium text-foreground-soft">ID:</span>{" "}
 						{activeInspector.id}
 					</p>
 				</div>

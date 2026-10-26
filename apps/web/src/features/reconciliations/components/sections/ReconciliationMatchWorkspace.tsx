@@ -84,7 +84,7 @@ export function ReconciliationMatchWorkspace({
 								<p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
 									Notas de revisión
 								</p>
-								<p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+								<p className="mt-2 text-sm leading-6 text-foreground-soft">
 									{activeTransaction.notes}
 								</p>
 							</div>
@@ -111,7 +111,7 @@ export function ReconciliationMatchWorkspace({
 											className={`w-full rounded-2xl border p-4 text-left transition-colors duration-150 ${
 												isActive
 													? "border-info-muted bg-info-subtle"
-													: "border-border/60 bg-muted hover:border-[var(--border-default)]"
+													: "border-border/60 bg-muted hover:border-border"
 											}`}
 										>
 											<div className="flex items-start justify-between gap-3">
@@ -137,7 +137,7 @@ export function ReconciliationMatchWorkspace({
 												</span>
 											</div>
 
-											<p className="mt-3 text-sm leading-6 text-[var(--text-secondary)]">
+											<p className="mt-3 text-sm leading-6 text-foreground-soft">
 												{candidate.rationale}
 											</p>
 										</button>
@@ -156,7 +156,7 @@ export function ReconciliationMatchWorkspace({
 										<p className="text-sm font-semibold text-foreground">
 											Búsqueda manual
 										</p>
-										<p className="text-sm leading-6 text-[var(--text-secondary)]">
+										<p className="text-sm leading-6 text-foreground-soft">
 											Usa búsqueda o crea un asiento si no hay match confiable.
 										</p>
 									</div>
@@ -181,7 +181,7 @@ export function ReconciliationMatchWorkspace({
 													{entry.reference} · {entry.date}
 												</p>
 											</div>
-											<p className="font-mono text-sm tabular-nums text-[var(--text-secondary)]">
+											<p className="font-mono text-sm tabular-nums text-foreground-soft">
 												{formatMoney(entry.amount)}
 											</p>
 										</div>
@@ -226,7 +226,7 @@ function EmptyPanel() {
 			<p className="mt-3 text-sm font-semibold text-foreground">
 				Sin match sugerido
 			</p>
-			<p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+			<p className="mt-2 text-sm leading-6 text-foreground-soft">
 				Este movimiento requiere investigación manual o creación de un nuevo
 				asiento.
 			</p>

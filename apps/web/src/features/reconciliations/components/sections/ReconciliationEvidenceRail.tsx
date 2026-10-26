@@ -64,7 +64,7 @@ export function ReconciliationEvidenceRail({
 					</CardHeader>
 					<CardContent className="space-y-4 p-5">
 						<ConfidenceBadge score={activeTransaction.confidence} showLabel />
-						<p className="text-sm leading-6 text-[var(--text-secondary)]">
+						<p className="text-sm leading-6 text-foreground-soft">
 							{activeCandidate
 								? activeCandidate.rationale
 								: "No hay match confiable. Se recomienda búsqueda manual o crear asiento."}
@@ -73,7 +73,7 @@ export function ReconciliationEvidenceRail({
 							<p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
 								Impacto
 							</p>
-							<p className="mt-2 text-sm leading-6 text-[var(--text-secondary)]">
+							<p className="mt-2 text-sm leading-6 text-foreground-soft">
 								{activeCandidate?.impact ??
 									"No aplicar automatización hasta completar soporte contable."}
 							</p>
@@ -100,7 +100,7 @@ export function ReconciliationEvidenceRail({
 								className="flex items-start gap-3 rounded-2xl border border-border/60 bg-background px-4 py-3.5"
 							>
 								<FileText className="mt-0.5 h-4 w-4 shrink-0 text-info" />
-								<p className="text-sm leading-6 text-[var(--text-secondary)]">
+								<p className="text-sm leading-6 text-foreground-soft">
 									{record}
 								</p>
 							</div>
@@ -126,9 +126,7 @@ export function ReconciliationEvidenceRail({
 								key={diff}
 								className="rounded-2xl border border-border/60 bg-background px-4 py-3.5"
 							>
-								<p className="text-sm leading-6 text-[var(--text-secondary)]">
-									{diff}
-								</p>
+								<p className="text-sm leading-6 text-foreground-soft">{diff}</p>
 							</div>
 						))}
 					</CardContent>
@@ -145,7 +143,7 @@ export function ReconciliationEvidenceRail({
 						<div className="rounded-2xl border border-warning-subtle bg-warning-subtle p-4">
 							<div className="flex items-start gap-3">
 								<AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
-								<p className="text-sm leading-6 text-[var(--text-secondary)]">
+								<p className="text-sm leading-6 text-foreground-soft">
 									{activeTransaction.confidence < 80
 										? "Confianza insuficiente para aprobación rápida. Se recomienda revisión manual."
 										: "La evidencia es suficiente para decidir sin salir de la vista."}
@@ -175,7 +173,7 @@ export function ReconciliationEvidenceRail({
 						<div className="rounded-2xl border border-border/60 bg-background p-4">
 							<div className="flex items-start gap-3">
 								<ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-info" />
-								<p className="text-sm leading-6 text-[var(--text-secondary)]">
+								<p className="text-sm leading-6 text-foreground-soft">
 									El rail mantiene la fuente, el impacto, el diff propuesto y la
 									acción tomada en un solo lugar.
 								</p>
