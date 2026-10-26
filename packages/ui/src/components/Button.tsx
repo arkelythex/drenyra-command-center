@@ -62,7 +62,7 @@ export function Button({
 		].join(" "),
 		primary: [
 			"bg-[var(--color-primary)]",
-			"text-white",
+			"text-brand-foreground",
 			"border border-transparent",
 			"hover:bg-[var(--color-primary-hover)]",
 		].join(" "),
@@ -82,7 +82,7 @@ export function Button({
 		].join(" "),
 		danger: [
 			"bg-[var(--color-danger)]",
-			"text-white",
+			"text-destructive-foreground",
 			"border border-transparent",
 			"shadow-[var(--shadow-danger)]",
 			"hover:bg-[var(--color-danger-hover)]",

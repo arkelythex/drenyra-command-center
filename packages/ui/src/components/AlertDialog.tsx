@@ -114,7 +114,7 @@ const AlertDialogAction = forwardRef<
 	<AlertDialogPrimitive.Action
 		ref={ref}
 		className={cn(
-			"inline-flex h-[var(--n-row)] items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-primary)] px-[var(--n-pad-lg)] text-sm font-semibold text-white transition-colors hover:bg-[var(--color-primary)]/90 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/50",
+			"inline-flex h-[var(--n-row)] items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-primary)] px-[var(--n-pad-lg)] text-sm font-semibold text-brand-foreground transition-colors hover:bg-[var(--color-primary)]/90 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/50",
 			className,
 		)}
 		{...props}

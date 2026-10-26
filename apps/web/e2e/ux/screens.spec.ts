@@ -62,7 +62,12 @@ function countSmallTargets(page: Page) {
 			"button, a[href], [role='button'], input, select, textarea",
 		);
 		return [...interactive].filter((el) => {
-			const box = el.getBoundingClientRect();
+			// A visually hidden native radio/checkbox is operated through its label.
+			const isToggle =
+				el instanceof HTMLInputElement &&
+				(el.type === "radio" || el.type === "checkbox");
+			const target = isToggle && el.labels?.length ? el.labels[0] : el;
+			const box = target.getBoundingClientRect();
 			// checkVisibility() also excludes visibility:hidden (e.g. a closed drawer), which still has a box.
 			const visible =
 				box.width > 0 &&

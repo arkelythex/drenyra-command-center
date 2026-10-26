@@ -1,86 +1,86 @@
 {
   "desktop-chrome:cierre-mensual": {
-    "axe": 24,
-    "smallTargets": 21
+    "axe": 0,
+    "smallTargets": 19
   },
   "desktop-chrome:cumplimiento": {
-    "axe": 9,
-    "smallTargets": 10
+    "axe": 2,
+    "smallTargets": 8
   },
   "desktop-chrome:invoices": {
-    "axe": 7,
-    "smallTargets": 14
+    "axe": 2,
+    "smallTargets": 12
   },
   "desktop-chrome:login": {
     "axe": 0,
     "smallTargets": 3
   },
   "desktop-chrome:reconciliations": {
-    "axe": 7,
-    "smallTargets": 10
+    "axe": 0,
+    "smallTargets": 8
   },
   "desktop-chrome:settings": {
-    "axe": 7,
-    "smallTargets": 10
+    "axe": 0,
+    "smallTargets": 8
   },
   "desktop-chrome:workspace": {
-    "axe": 24,
-    "smallTargets": 21
+    "axe": 0,
+    "smallTargets": 19
   },
   "mobile-android:cierre-mensual": {
-    "axe": 10,
-    "smallTargets": 6
+    "axe": 0,
+    "smallTargets": 4
   },
   "mobile-android:cumplimiento": {
-    "axe": 5,
-    "smallTargets": 2
+    "axe": 2,
+    "smallTargets": 0
   },
   "mobile-android:invoices": {
-    "axe": 3,
-    "smallTargets": 5
+    "axe": 0,
+    "smallTargets": 3
   },
   "mobile-android:login": {
     "axe": 0,
     "smallTargets": 3
   },
   "mobile-android:reconciliations": {
-    "axe": 3,
-    "smallTargets": 3
+    "axe": 0,
+    "smallTargets": 1
   },
   "mobile-android:settings": {
-    "axe": 3,
-    "smallTargets": 9
+    "axe": 0,
+    "smallTargets": 0
   },
   "mobile-android:workspace": {
-    "axe": 10,
-    "smallTargets": 6
+    "axe": 0,
+    "smallTargets": 4
   },
   "mobile-ios:cierre-mensual": {
-    "axe": 8,
-    "smallTargets": 6
+    "axe": 0,
+    "smallTargets": 4
   },
   "mobile-ios:cumplimiento": {
-    "axe": 5,
-    "smallTargets": 2
+    "axe": 1,
+    "smallTargets": 0
   },
   "mobile-ios:invoices": {
-    "axe": 3,
-    "smallTargets": 5
+    "axe": 0,
+    "smallTargets": 3
   },
   "mobile-ios:login": {
     "axe": 0,
     "smallTargets": 3
   },
   "mobile-ios:reconciliations": {
-    "axe": 3,
-    "smallTargets": 3
+    "axe": 0,
+    "smallTargets": 1
   },
   "mobile-ios:settings": {
-    "axe": 3,
-    "smallTargets": 9
+    "axe": 0,
+    "smallTargets": 0
   },
   "mobile-ios:workspace": {
-    "axe": 8,
-    "smallTargets": 6
+    "axe": 0,
+    "smallTargets": 4
   }
 }

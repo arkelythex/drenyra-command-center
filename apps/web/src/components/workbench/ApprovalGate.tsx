@@ -135,7 +135,7 @@ function ApprovalActions({
 				<button
 					type="button"
 					onClick={() => onApprove?.(request.id)}
-					className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[var(--color-primary-hover)]"
+					className="flex items-center gap-1.5 rounded-lg bg-[var(--color-primary)] px-3 py-1.5 text-xs font-medium text-brand-foreground transition-colors hover:bg-[var(--color-primary-hover)]"
 				>
 					<CheckCircle size={14} /> Aprobar
 				</button>
