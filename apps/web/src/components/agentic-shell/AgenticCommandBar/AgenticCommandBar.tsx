@@ -23,7 +23,7 @@ export function AgenticCommandBar() {
 	};
 
 	return (
-		<div className="border-t border-[var(--border-subtle)] bg-[var(--surface-1)] px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
+		<div className="border-t border-[var(--border-subtle)] bg-card px-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2">
 			{ask.status !== "idle" && (
 				<section
 					aria-label="Respuesta de Drenyra"
@@ -66,7 +66,7 @@ export function AgenticCommandBar() {
 				</section>
 			)}
 
-			<div className="mb-1.5 flex items-center gap-2 text-xs text-[var(--text-muted)]">
+			<div className="mb-1.5 flex items-center gap-2 text-xs text-muted-foreground">
 				<span className="truncate font-medium text-[var(--text-secondary)]">
 					{companyContext.companyName}
 				</span>
@@ -87,13 +87,13 @@ export function AgenticCommandBar() {
 					onChange={(e) => setInput(e.target.value)}
 					placeholder="Pregunta a Drenyra…"
 					aria-label="Pregunta a Drenyra"
-					className="h-11 flex-1 bg-transparent text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none"
+					className="h-11 flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground outline-none"
 				/>
 				<button
 					type="submit"
 					disabled={!input.trim() || isStreaming}
 					aria-label="Enviar"
-					className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-[var(--color-primary)] text-brand-foreground transition-opacity disabled:opacity-40"
+					className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-brand text-brand-foreground transition-opacity disabled:opacity-40"
 				>
 					{isStreaming ? (
 						<Loader2

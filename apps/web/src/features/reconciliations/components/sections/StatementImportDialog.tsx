@@ -306,7 +306,7 @@ function StatementPreview({
 			{rows.length > 0 && (
 				<div className="max-h-56 overflow-auto rounded-lg border border-border/60">
 					<table className="w-full text-left text-xs">
-						<thead className="bg-[var(--surface-1)] text-muted-foreground">
+						<thead className="bg-card text-muted-foreground">
 							<tr>
 								<th className="px-3 py-2">Fecha</th>
 								<th className="px-3 py-2">Descripción</th>

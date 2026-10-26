@@ -71,42 +71,42 @@ export function PeriodSwitcher({
 			<button
 				type="button"
 				onClick={() => setIsOpen(!isOpen)}
-				className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-[var(--surface-2)]"
+				className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-muted"
 				aria-haspopup="dialog"
 				aria-expanded={isOpen}
 			>
-				<CalendarDays size={14} className="text-[var(--text-muted)] shrink-0" />
-				<span className="font-medium text-[var(--text-primary)]">
+				<CalendarDays size={14} className="text-muted-foreground shrink-0" />
+				<span className="font-medium text-foreground">
 					{activePeriod?.label ?? "Seleccionar período"}
 				</span>
 				<ChevronDown
 					size={12}
 					className={cn(
-						"text-[var(--text-muted)] transition-transform",
+						"text-muted-foreground transition-transform",
 						isOpen && "rotate-180",
 					)}
 				/>
 			</button>
 
 			{isOpen && (
-				<div className="absolute left-0 top-full z-50 mt-1 w-[280px] rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-1)] p-3 shadow-lg">
+				<div className="absolute left-0 top-full z-50 mt-1 w-[280px] rounded-lg border border-[var(--border-subtle)] bg-card p-3 shadow-lg">
 					{/* Year navigation */}
 					<div className="mb-3 flex items-center justify-between">
 						<button
 							type="button"
 							onClick={() => setViewYear((y) => y - 1)}
-							className="rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]"
+							className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
 							aria-label="Año anterior"
 						>
 							<ChevronLeft size={16} />
 						</button>
-						<span className="text-sm font-semibold text-[var(--text-primary)]">
+						<span className="text-sm font-semibold text-foreground">
 							{viewYear}
 						</span>
 						<button
 							type="button"
 							onClick={() => setViewYear((y) => y + 1)}
-							className="rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]"
+							className="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
 							aria-label="Año siguiente"
 						>
 							<ChevronRight size={16} />
@@ -132,8 +132,8 @@ export function PeriodSwitcher({
 									className={cn(
 										"rounded-md px-2 py-1.5 text-xs font-medium transition-colors",
 										isActive
-											? "bg-[var(--color-primary)] text-brand-foreground"
-											: "text-[var(--text-secondary)] hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]",
+											? "bg-brand text-brand-foreground"
+											: "text-[var(--text-secondary)] hover:bg-muted hover:text-foreground",
 										isCurrent &&
 											!isActive &&
 											"ring-1 ring-[var(--border-subtle)]",

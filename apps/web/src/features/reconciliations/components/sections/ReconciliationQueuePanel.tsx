@@ -43,7 +43,7 @@ export function ReconciliationQueuePanel({
 	onSelect,
 }: ReconciliationQueuePanelProps) {
 	return (
-		<aside className="flex min-h-0 flex-col border-r border-border/50 bg-[var(--surface-1)]">
+		<aside className="flex min-h-0 flex-col border-r border-border/50 bg-card">
 			<div className="border-b border-border/50 px-4 py-4">
 				<div className="flex items-center justify-between gap-3">
 					<div>
@@ -54,7 +54,7 @@ export function ReconciliationQueuePanel({
 							Movimientos por resolver
 						</h2>
 					</div>
-					<div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-border/60 bg-[var(--surface-2)] text-info">
+					<div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-border/60 bg-muted text-info">
 						<ArrowRightLeft className="h-4 w-4" />
 					</div>
 				</div>
@@ -67,7 +67,7 @@ export function ReconciliationQueuePanel({
 						readOnly
 						placeholder="Buscar movimiento..."
 						aria-label="Buscar conciliación"
-						className="h-10 w-full rounded-xl border border-border/60 bg-[var(--surface-2)] pl-10 pr-3 text-sm text-muted-foreground outline-none"
+						className="h-10 w-full rounded-xl border border-border/60 bg-muted pl-10 pr-3 text-sm text-muted-foreground outline-none"
 					/>
 				</div>
 			</div>

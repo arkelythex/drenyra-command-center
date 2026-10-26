@@ -1,12 +1,12 @@
+import type { WorkspaceIntent } from "@drenyra/domain";
 import {
+	BarChart3,
 	FileCheck,
 	Landmark,
+	Layers,
 	Search,
 	Settings,
-	BarChart3,
-	Layers,
 } from "lucide-react";
-import type { WorkspaceIntent } from "@drenyra/domain";
 import { cn } from "@/lib/utils";
 
 interface WorkspaceIntentSwitcherProps {
@@ -90,8 +90,8 @@ export function WorkspaceIntentSwitcher({
 						className={cn(
 							"flex items-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium transition-colors",
 							isActive
-								? "bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
-								: "text-[var(--text-secondary)] hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]",
+								? "bg-brand/10 text-brand"
+								: "text-[var(--text-secondary)] hover:bg-muted hover:text-foreground",
 						)}
 					>
 						<Icon size={13} />

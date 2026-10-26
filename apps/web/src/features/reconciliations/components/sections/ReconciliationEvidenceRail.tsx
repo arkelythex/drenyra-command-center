@@ -44,7 +44,7 @@ export function ReconciliationEvidenceRail({
 	};
 
 	return (
-		<aside className="flex min-h-0 flex-col border-l border-border/50 bg-[var(--surface-1)]">
+		<aside className="flex min-h-0 flex-col border-l border-border/50 bg-card">
 			<div className="border-b border-border/50 px-5 py-4">
 				<p className="text-label font-black uppercase tracking-[0.18em] text-muted-foreground">
 					Evidence rail
@@ -55,7 +55,7 @@ export function ReconciliationEvidenceRail({
 			</div>
 
 			<div className="min-h-0 flex-1 space-y-5 overflow-y-auto p-5 custom-scrollbar">
-				<Card className="border-border/60 bg-[var(--surface-2)]">
+				<Card className="border-border/60 bg-muted">
 					<CardHeader className="border-b border-border/50">
 						<CardTitle>Suggested action</CardTitle>
 						<CardDescription>
@@ -81,7 +81,7 @@ export function ReconciliationEvidenceRail({
 					</CardContent>
 				</Card>
 
-				<Card className="border-border/60 bg-[var(--surface-2)]">
+				<Card className="border-border/60 bg-muted">
 					<CardHeader className="border-b border-border/50">
 						<CardTitle>Source records</CardTitle>
 						<CardDescription>
@@ -108,7 +108,7 @@ export function ReconciliationEvidenceRail({
 					</CardContent>
 				</Card>
 
-				<Card className="border-border/60 bg-[var(--surface-2)]">
+				<Card className="border-border/60 bg-muted">
 					<CardHeader className="border-b border-border/50">
 						<CardTitle>Proposed diff</CardTitle>
 						<CardDescription>
@@ -134,7 +134,7 @@ export function ReconciliationEvidenceRail({
 					</CardContent>
 				</Card>
 
-				<Card className="border-border/60 bg-[var(--surface-2)]">
+				<Card className="border-border/60 bg-muted">
 					<CardHeader className="border-b border-border/50">
 						<CardTitle>Decision</CardTitle>
 						<CardDescription>

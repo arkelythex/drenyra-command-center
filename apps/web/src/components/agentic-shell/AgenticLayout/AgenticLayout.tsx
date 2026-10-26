@@ -112,7 +112,7 @@ export function AgenticLayout({ children }: AgenticLayoutProps) {
 						id="app-sidebar"
 						aria-label="Navegación principal"
 						className={cn(
-							"flex-shrink-0 overflow-y-auto border-r border-[var(--border-subtle)] bg-[var(--surface-1)]",
+							"flex-shrink-0 overflow-y-auto border-r border-[var(--border-subtle)] bg-card",
 							"max-lg:fixed max-lg:inset-y-0 max-lg:left-0 max-lg:z-30 max-lg:w-72 max-lg:max-w-[85vw] max-lg:pt-[env(safe-area-inset-top)] max-lg:shadow-2xl max-lg:transition-transform max-lg:duration-200",
 							isSidebarMobileOpen
 								? "max-lg:translate-x-0"
@@ -156,7 +156,7 @@ export function AgenticLayout({ children }: AgenticLayoutProps) {
 					{/* Right Inspector panel */}
 					<aside
 						className={cn(
-							"flex-shrink-0 overflow-y-auto border-l border-[var(--border-subtle)] bg-[var(--surface-1)] transition-[width] duration-200 ease-in-out",
+							"flex-shrink-0 overflow-y-auto border-l border-[var(--border-subtle)] bg-card transition-[width] duration-200 ease-in-out",
 							"max-xl:fixed max-xl:bottom-0 max-xl:right-0 max-xl:top-0 max-xl:z-30 max-xl:shadow-2xl",
 							isRightRailOpen
 								? "w-[420px] max-xl:w-80 max-xl:max-w-[85vw]"

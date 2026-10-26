@@ -46,7 +46,7 @@ export function SurfacePanel({
 		// biome-ignore lint/a11y/noStaticElementInteractions: role, tabIndex and key handling are applied only when `interactive` + `onClick`
 		<div
 			className={cn(
-				"rounded-[var(--radius-lg)] border border-[var(--border-subtle)] bg-[var(--surface-1)] text-[var(--text-primary)] shadow-[var(--shadow-1)]",
+				"rounded-[var(--radius-lg)] border border-[var(--border-subtle)] bg-card text-foreground shadow-[var(--shadow-1)]",
 				padding === "sm" && "p-3",
 				padding === "md" && "p-4",
 				padding === "lg" && "p-6",
@@ -54,10 +54,9 @@ export function SurfacePanel({
 				padding === "none" && "p-0",
 				variant === "financial" && "border-t-2 border-t-[var(--accent)]",
 				variant === "alert" && "border-l-2 border-l-[var(--danger)]",
-				(variant === "elevated" || variant === "muted") &&
-					"bg-[var(--surface-2)]",
+				(variant === "elevated" || variant === "muted") && "bg-muted",
 				variant === "interactive" &&
-					"cursor-pointer transition-colors hover:bg-[var(--surface-2)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--info)]/40 focus-visible:ring-offset-2",
+					"cursor-pointer transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--info)]/40 focus-visible:ring-offset-2",
 				className,
 			)}
 			onClick={onClick}

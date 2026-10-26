@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
 import { useWorkspace } from "@/contexts/workspace-context";
+import { cn } from "@/lib/utils";
 import { CompanySwitcher } from "./CompanySwitcher";
 import { PeriodSwitcher } from "./PeriodSwitcher";
 import { WorkspaceIntentSwitcher } from "./WorkspaceIntentSwitcher";
@@ -32,7 +32,7 @@ export function WorkspaceTopBar() {
 	return (
 		<div
 			className={cn(
-				"flex items-center gap-1 border-b border-[var(--border-subtle)] bg-[var(--surface-1)] px-3 py-1.5",
+				"flex items-center gap-1 border-b border-[var(--border-subtle)] bg-card px-3 py-1.5",
 				"overflow-x-auto scrollbar-none",
 			)}
 		>

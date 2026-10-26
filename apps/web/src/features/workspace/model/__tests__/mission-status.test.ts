@@ -1,10 +1,10 @@
-import { describe, expect, it } from "vitest";
 import {
-	transition,
-	isRunnable,
 	isAwaitingApproval,
+	isRunnable,
 	isTerminal,
+	transition,
 } from "@drenyra/mission-domain";
+import { describe, expect, it } from "vitest";
 
 describe("AccountingMissionStatus — state machine", () => {
 	it("DRAFT → QUEUED is valid", () => {
@@ -16,7 +16,9 @@ describe("AccountingMissionStatus — state machine", () => {
 	});
 
 	it("RUNNING → AWAITING_APPROVAL is valid", () => {
-		expect(transition("RUNNING", "AWAITING_APPROVAL")).toBe("AWAITING_APPROVAL");
+		expect(transition("RUNNING", "AWAITING_APPROVAL")).toBe(
+			"AWAITING_APPROVAL",
+		);
 	});
 
 	it("RUNNING → COMPLETED is valid (no approval needed)", () => {
@@ -38,7 +40,9 @@ describe("AccountingMissionStatus — state machine", () => {
 
 	it("AWAITING_APPROVAL → REJECTED → REVISION_REQUESTED → QUEUED", () => {
 		expect(transition("AWAITING_APPROVAL", "REJECTED")).toBe("REJECTED");
-		expect(transition("REJECTED", "REVISION_REQUESTED")).toBe("REVISION_REQUESTED");
+		expect(transition("REJECTED", "REVISION_REQUESTED")).toBe(
+			"REVISION_REQUESTED",
+		);
 		expect(transition("REVISION_REQUESTED", "QUEUED")).toBe("QUEUED");
 	});
 
