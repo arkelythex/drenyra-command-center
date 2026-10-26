@@ -132,7 +132,10 @@ const InvoicesBoardContent = () => {
 								</div>
 							}
 						>
-							<InvoicesAgingTab />
+							<InvoicesAgingTab
+								invoices={allInvoices}
+								formatMoney={formatMoney}
+							/>
 						</Suspense>
 					)}
 				</div>
