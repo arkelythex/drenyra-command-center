@@ -62,3 +62,34 @@ describe("authClient password reset", () => {
 		expect(result.error?.message).toBe("offline");
 	});
 });
+
+describe("authClient email verification", () => {
+	it("verifies the email with the token as a GET query", async () => {
+		const fetchMock = respond(true);
+		vi.stubGlobal("fetch", fetchMock);
+
+		const result = await authClient.verifyEmail({ query: { token: "a b" } });
+
+		expect(result.error).toBeNull();
+		expect(fetchMock.mock.calls[0]?.[0]).toBe(
+			"/api/auth/verify-email?token=a%20b",
+		);
+		expect(fetchMock.mock.calls[0]?.[1]?.method ?? "GET").toBe("GET");
+	});
+
+	it("asks for another verification email", async () => {
+		const fetchMock = respond(true);
+		vi.stubGlobal("fetch", fetchMock);
+
+		const result = await authClient.sendVerificationEmail({
+			email: "a@b.pe",
+			callbackURL: "https://app.test/verify-email",
+		});
+
+		expect(result.error).toBeNull();
+		expect(fetchMock).toHaveBeenCalledWith(
+			"/api/auth/send-verification-email",
+			expect.objectContaining({ method: "POST" }),
+		);
+	});
+});

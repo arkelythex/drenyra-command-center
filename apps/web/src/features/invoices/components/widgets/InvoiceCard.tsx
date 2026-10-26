@@ -76,7 +76,7 @@ export function InvoiceCard({
 	const { attributes, listeners, setNodeRef, transform, isDragging } =
 		useDraggable({
 			id: invoice.id,
-			disabled: isPaid,
+			disabled: Boolean(isPaid),
 		});
 
 	const style = transform

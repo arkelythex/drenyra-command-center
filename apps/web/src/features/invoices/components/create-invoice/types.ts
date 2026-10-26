@@ -14,10 +14,10 @@ export interface CreateInvoicePayload
 	currency: InvoiceCurrency;
 	notes?: string;
 	items: Array<{
-		productId?: string;
+		productId?: string | undefined;
 		description: string;
 		quantity: string;
 		unitPrice: string;
-		taxType?: InvoiceItem["taxType"];
+		taxType?: InvoiceItem["taxType"] | undefined;
 	}>;
 }

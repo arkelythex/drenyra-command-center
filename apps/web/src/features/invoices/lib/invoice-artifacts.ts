@@ -60,9 +60,9 @@ export function getPersistedSunatCode(value?: string | null): string | null {
 }
 
 export function getPersistedSunatIncidentMessage(input: {
-	status?: string | null;
-	code?: string | null;
-	message?: string | null;
+	status?: string | null | undefined;
+	code?: string | null | undefined;
+	message?: string | null | undefined;
 }): string | null {
 	const status = getPersistedSunatStatus(input.status);
 	const code = getPersistedSunatCode(input.code);

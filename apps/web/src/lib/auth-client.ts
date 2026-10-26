@@ -7,13 +7,9 @@ type AuthResult =
 
 type CallResult = { error: Error | null };
 
-async function postAuth(path: string, body: unknown): Promise<CallResult> {
+async function callAuth(path: string, init?: RequestInit): Promise<CallResult> {
 	try {
-		const res = await fetch(path, {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(body),
-		});
+		const res = await fetch(path, init);
 		if (res.ok) return { error: null };
 		const detail = (await res.json().catch(() => ({}))) as {
 			message?: string;
@@ -26,6 +22,14 @@ async function postAuth(path: string, body: unknown): Promise<CallResult> {
 	}
 }
 
+function postAuth(path: string, body: unknown): Promise<CallResult> {
+	return callAuth(path, {
+		method: "POST",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify(body),
+	});
+}
+
 export const authClient = {
 	/** Sends the reset link; `redirectTo` is the page that reads the token. */
 	requestPasswordReset(input: { email: string; redirectTo: string }) {
@@ -33,6 +37,13 @@ export const authClient = {
 	},
 	resetPassword(input: { newPassword: string; token: string }) {
 		return postAuth("/api/auth/reset-password", input);
+	},
+	verifyEmail(input: { query: { token: string } }) {
+		const token = encodeURIComponent(input.query.token);
+		return callAuth(`/api/auth/verify-email?token=${token}`);
+	},
+	sendVerificationEmail(input: { email: string; callbackURL: string }) {
+		return postAuth("/api/auth/send-verification-email", input);
 	},
 	async signIn(email: string, password: string): Promise<AuthResult> {
 		const res = await fetch("/api/auth/login", {

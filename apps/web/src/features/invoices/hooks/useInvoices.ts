@@ -19,7 +19,7 @@ export interface InvoiceCustomer {
 	name: string;
 	logo?: string;
 	initials: string;
-	email?: string;
+	email?: string | undefined;
 }
 
 export interface Invoice {
