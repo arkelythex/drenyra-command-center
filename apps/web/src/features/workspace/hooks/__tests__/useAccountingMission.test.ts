@@ -89,6 +89,50 @@ describe("useAccountingMission against the missions API", () => {
 		expect(result.current.isAwaiting).toBe(true);
 	});
 
+	it("ignores a second start while the first one is still in flight", async () => {
+		let release: (snapshot: unknown) => void = () => undefined;
+		transport.createMission.mockReturnValue(
+			new Promise((resolve) => {
+				release = resolve;
+			}),
+		);
+		transport.executeMission.mockResolvedValue(
+			snap("AWAITING_APPROVAL", 3, { proposal }),
+		);
+		const { result } = renderHook(() => useAccountingMission());
+
+		await act(async () => {
+			const first = result.current.run(command);
+			const second = result.current.run(command);
+			release(snap("DRAFT", 1));
+			await Promise.all([first, second]);
+		});
+
+		expect(transport.createMission).toHaveBeenCalledTimes(1);
+		expect(transport.executeMission).toHaveBeenCalledTimes(1);
+	});
+
+	it("allows starting again after a start that failed", async () => {
+		transport.createMission
+			.mockRejectedValueOnce(new Error("sin conexión"))
+			.mockResolvedValueOnce(snap("DRAFT", 1));
+		transport.executeMission.mockResolvedValue(
+			snap("AWAITING_APPROVAL", 3, { proposal }),
+		);
+		const { result } = renderHook(() => useAccountingMission());
+
+		await act(async () => {
+			await result.current.run(command);
+		});
+		expect(result.current.status).toBe("FAILED");
+
+		await act(async () => {
+			await result.current.run(command);
+		});
+		expect(transport.createMission).toHaveBeenCalledTimes(2);
+		expect(result.current.status).toBe("AWAITING_APPROVAL");
+	});
+
 	it("approves with the current server version and shows the server's receipt", async () => {
 		const { result } = await startAndReachApproval();
 		transport.approveMission.mockResolvedValue(

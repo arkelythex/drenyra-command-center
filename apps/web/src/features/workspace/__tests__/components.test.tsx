@@ -278,19 +278,21 @@ describe("MissionEvidenceBundle", () => {
 });
 
 describe("MissionReceipt", () => {
-	it("renders receipt ID and copy button", () => {
+	it("shows the receipt id and its SHA-256 hash", () => {
 		render(
 			<MissionReceipt
 				receiptId="rcpt-123-abc"
-				receiptHash="sha256-hash"
+				receiptHash={"a".repeat(64)}
 				onCopy={vi.fn()}
 			/>,
 		);
-		expect(screen.getByText("rcpt-123-abc")).toBeDefined();
-		expect(screen.getByText("Copiar")).toBeDefined();
+		expect(screen.getByTestId("receipt-id")).toHaveTextContent("rcpt-123-abc");
+		expect(screen.getByTestId("receipt-hash")).toHaveTextContent(
+			"a".repeat(64),
+		);
 	});
 
-	it("calls onCopy when copy button clicked", () => {
+	it("copies the id and the hash separately", () => {
 		const onCopy = vi.fn();
 		render(
 			<MissionReceipt
@@ -299,8 +301,21 @@ describe("MissionReceipt", () => {
 				onCopy={onCopy}
 			/>,
 		);
-		fireEvent.click(screen.getByText("Copiar"));
-		expect(onCopy).toHaveBeenCalledOnce();
+		fireEvent.click(
+			screen.getByRole("button", { name: "Copiar ID del recibo" }),
+		);
+		fireEvent.click(
+			screen.getByRole("button", { name: "Copiar hash del recibo" }),
+		);
+		expect(onCopy).toHaveBeenNthCalledWith(1, "rcpt-123");
+		expect(onCopy).toHaveBeenNthCalledWith(2, "sha256-hash");
+	});
+
+	it("omits the hash row when the server sent none", () => {
+		render(
+			<MissionReceipt receiptId="rcpt-123" receiptHash="" onCopy={vi.fn()} />,
+		);
+		expect(screen.queryByTestId("receipt-hash")).not.toBeInTheDocument();
 	});
 });
 

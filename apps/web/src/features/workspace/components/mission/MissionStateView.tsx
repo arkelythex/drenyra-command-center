@@ -105,9 +105,9 @@ export function MissionStateView({
 				<MissionReceipt
 					receiptId={receiptId}
 					receiptHash={receiptHash ?? ""}
-					onCopy={() => {
-						navigator.clipboard.writeText(receiptId).catch(() => {
-							// Clipboard can be denied by the browser; the receipt stays visible to copy by hand.
+					onCopy={(value) => {
+						navigator.clipboard.writeText(value).catch(() => {
+							// Clipboard can be denied by the browser; the value stays visible to copy by hand.
 						});
 					}}
 				/>
