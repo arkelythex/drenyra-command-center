@@ -10,6 +10,29 @@ runs:
         echo "🔍 Checking fiscal boundary compliance..."
         VIOLATIONS=0
 
+        # Legacy debt ratchet: violations recorded in the baseline are ignored so
+        # the gate can run on pull requests without freezing the repository.
+        # Entries may only be removed, never added. See the file header.
+        BASELINE_FILE=".github/fiscal-gate-baseline.txt"
+        filter_baseline() {
+          local hits="$1"
+          [[ -z "$hits" ]] && return 0
+          [[ -f "$BASELINE_FILE" ]] || { printf '%s' "$hits"; return 0; }
+          local kept="" line path rest content key
+          while IFS= read -r line; do
+            [[ -z "$line" ]] && continue
+            path="${line%%:*}"
+            rest="${line#*:}"
+            content="${rest#*:}"
+            key="${path} :: $(printf '%s' "$content" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+            if ! grep -Fxq "$key" "$BASELINE_FILE"; then
+              kept+="$line"$'\n'
+            fi
+          done <<< "$hits"
+          printf '%s' "$kept"
+        }
+
+
         # Rule 1: Money amounts must use Money type, not raw numbers
         # NOTE: Broad regex catches too many legitimate numeric fields in domain.
         # We only flag explicit monetary patterns (Cents, baseAmount, igvAmount, etc.)
@@ -23,6 +46,7 @@ runs:
           --exclude-dir=events \
           --exclude='*.test.ts' --exclude='*.spec.ts' \
           --exclude='invoice-igv.ts' 2>/dev/null || true)
+        FLOAT_MONEY=$(filter_baseline "$FLOAT_MONEY")
         if [[ -n "$FLOAT_MONEY" ]]; then
           echo "  ❌ Raw number types found in money domain:"
           echo "$FLOAT_MONEY"
@@ -35,6 +59,7 @@ runs:
         # This rule only catches IGV/SPOT fiscal CALCULATION logic, not references.
         echo "  Rule 2: Fiscal CALCULATION logic must not be duplicated in API..."
         FISCAL_CALC_API=$(grep -rnE 'igvRate\s*=\s*0\.18|1\.18\)|igvRate.*0\.18' apps/api/src/ --include='*.ts' 2>/dev/null | grep -v '__tests__/' | grep -v '@drenyra/domain' | grep -v '\.test\.\|\.spec\.' | grep -v 'apps/api/src/services/sunat/' | grep -v 'apps/api/src/features/ai-swarm/rules/' | grep -v 'apps/api/src/features/sunat/' || true)
+        FISCAL_CALC_API=$(filter_baseline "$FISCAL_CALC_API")
         if [[ -n "$FISCAL_CALC_API" ]]; then
           echo "  ❌ IGV rate/calc duplicates found in API layer (should be in domain):"
           echo "$FISCAL_CALC_API"
@@ -44,6 +69,7 @@ runs:
         # Rule 3: RUC/DNI validation must be in domain
         echo "  Rule 3: RUC/DNI validation must be in domain..."
         RUC_IN_WEB=$(grep -rnE 'validarRuc|validateRuc|rucChecksum' apps/web/src/ --include='*.ts' --include='*.tsx' 2>/dev/null | grep -v '@drenyra/shared' | grep -v 'signup-ruc-validation.ts' || true)
+        RUC_IN_WEB=$(filter_baseline "$RUC_IN_WEB")
         if [[ -n "$RUC_IN_WEB" ]]; then
           echo "  ❌ RUC validation found outside domain layer:"
           echo "$RUC_IN_WEB"
@@ -53,6 +79,7 @@ runs:
         # Rule 4: LLM fiscal tools must delegate to @drenyra/domain (no inline IGV math)
         echo "  Rule 4: packages/ai must not duplicate IGV/detracción calculations..."
         AI_INLINE_IGV=$(grep -rnE '0\.18|/ 1\.18|\* 0\.18' packages/ai/src/ai/tools/ --include='*.ts' 2>/dev/null | grep -v '@drenyra/domain' || true)
+        AI_INLINE_IGV=$(filter_baseline "$AI_INLINE_IGV")
         if [[ -n "$AI_INLINE_IGV" ]]; then
           echo "  ❌ Inline IGV math found in packages/ai (must use @drenyra/domain):"
           echo "$AI_INLINE_IGV"

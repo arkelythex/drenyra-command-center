@@ -3,21 +3,29 @@ name: Quality Gates
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
-  group: quality-gates-${{ github.ref }}
+  group: quality-gates-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 permissions:
   contents: read
 
-# Post-merge quality safety net.
-# The PR checks in ci.yml cover the same ground. This workflow catches
-# anything that slips through direct-to-main pushes or admin merges.
+# Quality gates for the accounting surface.
 #
-# NOTE: Most checks are consolidated in ci.yml (PR + push to main).
-# This workflow only runs unique post-merge safety checks.
+# These gates run on pull requests so violations are caught BEFORE they land on
+# main, and again on push to main as a post-merge safety net for direct pushes
+# and admin merges.
+#
+# Legacy debt is handled with a ratchet, never by disabling a gate:
+#   - Lint Check: on pull requests only changed files must be clean.
+#   - Fiscal Boundary Check: known violations live in
+#     .github/fiscal-gate-baseline.txt and may only be removed.
+#   - Security Audit: post-merge only. Pre-merge CVE signal comes from
+#     Dependabot alerts, so this stays a tripwire instead of a PR blocker.
 
 jobs:
   lint-check:
@@ -26,27 +34,49 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.0"
 
       - uses: ./.github/actions/setup-bun
         with:
           verify-native-deps: false
 
-      - name: Run ESLint with strict mode
-        run: bun run lint
+      - name: Lint (full tree, post-merge)
+        if: github.event_name != 'pull_request'
+        run: |
+          bun run lint
+          bunx biome check .
 
-      - name: Run Biome check on all supported files
-        run: bunx --package @biomejs/biome@2.3.11 biome check .
+      - name: Lint (changed files only)
+        if: github.event_name == 'pull_request'
+        run: |
+          # fetch-depth: 0 already provides full history, so the merge base is
+          # available without an extra (and potentially shallow-corrupting) fetch.
+          BASE="origin/${{ github.base_ref }}"
+          CHANGED=$(git diff --name-only --diff-filter=ACMR "$BASE"...HEAD \
+            -- '*.ts' '*.tsx' '*.js' '*.jsx' '*.json' | tr '\n' ' ')
+          if [ -z "${CHANGED// /}" ]; then
+            echo "No lintable files changed."
+            exit 0
+          fi
+          echo "Linting: $CHANGED"
+          bunx biome check $CHANGED
 
   security-check:
     name: Security Audit
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
 
     steps:
       - uses: actions/checkout@v6
 
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.0"
 
       - uses: ./.github/actions/setup-bun
         with:
@@ -72,6 +102,8 @@ jobs:
       - uses: actions/checkout@v6
 
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.0"
 
       - uses: ./.github/actions/setup-bun
         with:
@@ -93,6 +125,8 @@ jobs:
       - uses: actions/checkout@v6
 
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.0"
 
       - uses: ./.github/actions/setup-bun
         with:
