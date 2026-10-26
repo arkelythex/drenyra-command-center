@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
-import { ArrowRight, Eye, EyeOff, Loader2, Lock } from "lucide-react";
+import { Eye, EyeOff, Lock } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -19,6 +19,7 @@ import {
 	resetPasswordSchema,
 } from "../schemas/reset-password.schema";
 import { AuthLayout } from "./AuthLayout";
+import { AuthSubmitButton } from "./AuthSubmitButton";
 
 function getPasswordStrength(pwd: string): {
 	score: number;
@@ -179,17 +180,19 @@ export const ResetPasswordForm = () => {
 					{passwordStrength && (
 						<div className="space-y-2">
 							<div className="flex gap-1">
-								{[...Array(5)].map((_, index) => (
-									<div
-										key={index}
-										className={
-											"h-1 flex-1 rounded-full transition-[background-color,transform,opacity] duration-300 " +
-											(index < passwordStrength.score
-												? passwordStrength.color
-												: "bg-border")
-										}
-									/>
-								))}
+								{(["s1", "s2", "s3", "s4", "s5"] as const).map(
+									(step, index) => (
+										<div
+											key={step}
+											className={
+												"h-1 flex-1 rounded-full transition-[background-color,transform,opacity] duration-300 " +
+												(index < passwordStrength.score
+													? passwordStrength.color
+													: "bg-border")
+											}
+										/>
+									),
+								)}
 							</div>
 							<Text
 								variant="label"
@@ -237,24 +240,9 @@ export const ResetPasswordForm = () => {
 				</MotionDiv>
 
 				<MotionDiv variants={entranceVariants}>
-					<Button
-						type="submit"
-						disabled={isLoading}
-						className="group relative h-14 w-full overflow-hidden rounded-xl border-none bg-primary text-sm font-bold uppercase tracking-widest text-primary-foreground shadow-lg transition-[background-color,box-shadow,opacity] duration-200 hover:opacity-90 motion-reduce:transition-none"
-					>
-						{isLoading ? (
-							<Loader2 className="animate-spin" />
-						) : (
-							<span className="flex items-center gap-3 relative z-10">
-								RESTABLECER CONTRASEÑA
-								<ArrowRight
-									size={20}
-									strokeWidth={2.5}
-									className="transition-colors"
-								/>
-							</span>
-						)}
-					</Button>
+					<AuthSubmitButton isLoading={isLoading}>
+						Restablecer contraseña
+					</AuthSubmitButton>
 				</MotionDiv>
 			</MotionDiv>
 		</AuthLayout>

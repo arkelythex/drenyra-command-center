@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, CheckCircle, Loader2, Mail } from "lucide-react";
+import { CheckCircle, Mail } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -18,6 +18,7 @@ import {
 	forgotPasswordSchema,
 } from "../schemas/forgot-password.schema";
 import { AuthLayout } from "./AuthLayout";
+import { AuthSubmitButton } from "./AuthSubmitButton";
 
 export const ForgotPasswordForm = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -146,24 +147,9 @@ export const ForgotPasswordForm = () => {
 				</MotionDiv>
 
 				<MotionDiv variants={entranceVariants}>
-					<Button
-						type="submit"
-						disabled={isLoading}
-						className="group relative h-14 w-full overflow-hidden rounded-xl border-none bg-primary text-sm font-bold uppercase tracking-widest text-primary-foreground shadow-lg transition-[background-color,box-shadow,opacity] duration-200 hover:opacity-90 motion-reduce:transition-none"
-					>
-						{isLoading ? (
-							<Loader2 className="animate-spin" />
-						) : (
-							<span className="flex items-center gap-3 relative z-10">
-								ENVIAR ENLACE
-								<ArrowRight
-									size={20}
-									strokeWidth={2.5}
-									className="transition-colors"
-								/>
-							</span>
-						)}
-					</Button>
+					<AuthSubmitButton isLoading={isLoading}>
+						Enviar enlace
+					</AuthSubmitButton>
 				</MotionDiv>
 
 				<MotionDiv variants={entranceVariants} className="text-center pt-2">
