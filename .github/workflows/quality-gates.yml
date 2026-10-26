@@ -132,5 +132,12 @@ jobs:
         with:
           verify-native-deps: false
 
+      # The SIRE-bench regression below shells out to `uv run pytest`. Without
+      # this the job died with exit 127 ("uv: command not found") long before
+      # anyone could tell whether the fiscal rules passed.
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
       - name: Check fiscal boundaries
         uses: ./.github/actions/quality-gate-fiscal
