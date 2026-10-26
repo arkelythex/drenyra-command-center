@@ -1,5 +1,7 @@
-import { Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { NativeSelect } from "@/components/ui/native-select";
+import { FIELD_INPUT, FIELD_LABEL } from "../create-invoice/invoice-field";
 
 interface InvoiceHeaderFieldsProps {
 	series: string;
@@ -23,67 +25,56 @@ export const InvoiceHeaderFields = ({
 	setCurrency,
 }: InvoiceHeaderFieldsProps) => {
 	return (
-		<div className="space-y-4">
-			<div className="grid grid-cols-3 gap-4">
-				<div className="space-y-2">
-					<label className="text-label font-black uppercase tracking-widest text-muted-foreground">
-						Serie
-					</label>
-					<select
-						value={series}
-						onChange={(e) => setSeries(e.target.value)}
-						className="w-full h-11 bg-background border border-border rounded-lg px-3 font-mono text-xs text-foreground"
-					>
-						<option value="F001">F001 - Factura</option>
-						<option value="B001">B001 - Boleta</option>
-					</select>
-				</div>
-
-				<div className="space-y-2">
-					<label className="text-label font-black uppercase tracking-widest text-muted-foreground">
-						Fecha Emisión *
-					</label>
-					<div className="relative">
-						<Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-						<Input
-							type="date"
-							value={issueDate}
-							onChange={(e) => setIssueDate(e.target.value)}
-							className="pl-10 h-11 bg-background border-border font-mono text-xs"
-						/>
-					</div>
-				</div>
-
-				<div className="space-y-2">
-					<label className="text-label font-black uppercase tracking-widest text-muted-foreground">
-						Fecha Vencimiento *
-					</label>
-					<div className="relative">
-						<Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-						<Input
-							type="date"
-							value={dueDate}
-							onChange={(e) => setDueDate(e.target.value)}
-							className="pl-10 h-11 bg-background border-border font-mono text-xs"
-						/>
-					</div>
-				</div>
+		<div className="grid gap-4 sm:grid-cols-2">
+			<div>
+				<Label htmlFor="edit-invoice-series" className={FIELD_LABEL}>
+					Serie
+				</Label>
+				<NativeSelect
+					id="edit-invoice-series"
+					value={series}
+					onChange={(e) => setSeries(e.target.value)}
+				>
+					<option value="F001">F001 · Factura</option>
+					<option value="B001">B001 · Boleta</option>
+				</NativeSelect>
 			</div>
-
-			<div className="grid grid-cols-3 gap-4">
-				<div className="space-y-2">
-					<label className="text-label font-black uppercase tracking-widest text-muted-foreground">
-						Moneda
-					</label>
-					<select
-						value={currency}
-						onChange={(e) => setCurrency(e.target.value as "PEN" | "USD")}
-						className="w-full h-11 bg-background border border-border rounded-lg px-3 font-mono text-xs text-foreground"
-					>
-						<option value="PEN">PEN - Soles</option>
-						<option value="USD">USD - Dólares</option>
-					</select>
-				</div>
+			<div>
+				<Label htmlFor="edit-invoice-currency" className={FIELD_LABEL}>
+					Moneda
+				</Label>
+				<NativeSelect
+					id="edit-invoice-currency"
+					value={currency}
+					onChange={(e) => setCurrency(e.target.value as "PEN" | "USD")}
+				>
+					<option value="PEN">PEN · Soles</option>
+					<option value="USD">USD · Dólares</option>
+				</NativeSelect>
+			</div>
+			<div>
+				<Label htmlFor="edit-invoice-issue" className={FIELD_LABEL}>
+					Fecha de emisión
+				</Label>
+				<Input
+					id="edit-invoice-issue"
+					type="date"
+					value={issueDate}
+					onChange={(e) => setIssueDate(e.target.value)}
+					className={FIELD_INPUT}
+				/>
+			</div>
+			<div>
+				<Label htmlFor="edit-invoice-due" className={FIELD_LABEL}>
+					Fecha de vencimiento
+				</Label>
+				<Input
+					id="edit-invoice-due"
+					type="date"
+					value={dueDate}
+					onChange={(e) => setDueDate(e.target.value)}
+					className={FIELD_INPUT}
+				/>
 			</div>
 		</div>
 	);

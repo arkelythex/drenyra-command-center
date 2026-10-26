@@ -1,15 +1,5 @@
-import {
-	CheckCircle2,
-	Copy,
-	Download,
-	Edit,
-	Eye,
-	Mail,
-	MoreHorizontal,
-	Route,
-	Send,
-	Trash2,
-} from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
+import { Fragment } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
@@ -18,8 +8,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LEGIBILITY } from "@/lib/legibility";
-import { cn } from "@/lib/utils";
+import { buildInvoiceMenuGroups } from "./invoice-card-menu";
 
 interface InvoiceCardHeaderProps {
 	invoice: {
@@ -49,58 +38,69 @@ interface InvoiceCardHeaderProps {
 	onShowDelete: () => void;
 }
 
-export function InvoiceCardHeader({
-	invoice,
-	cdrUrl,
-	persistedTicket,
-	onSendToOse,
-	isSendingToOse,
-	onLoadLifecycle,
-	isLoadingLifecycle,
-	onOpenCdr,
-	onCopyTicket,
-	onShowEdit,
-	onShowPDFPreview,
-	onDownloadPDF,
-	isDownloadingPDF,
-	onShowEmail,
-	onShowDelete,
-}: InvoiceCardHeaderProps) {
-	const canSendToOse = invoice.status === "draft" || invoice.status === "sent";
-	const canInspectOse = invoice.status !== "draft";
-	const isDraft = invoice.status === "draft";
-	const hasEmail = Boolean(invoice.customer.email);
+function CustomerIdentity({
+	customer,
+	invoiceNumber,
+}: Pick<InvoiceCardHeaderProps["invoice"], "customer" | "invoiceNumber">) {
+	return (
+		<div className="flex min-w-0 items-center gap-3">
+			<div className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-muted">
+				{customer.logo ? (
+					<img
+						src={customer.logo}
+						alt={customer.name}
+						className="size-full object-cover"
+					/>
+				) : (
+					<span
+						aria-hidden="true"
+						className="text-xs font-medium uppercase text-muted-foreground"
+					>
+						{customer.initials}
+					</span>
+				)}
+			</div>
+			<div className="min-w-0">
+				<h4 className="truncate text-sm font-medium text-foreground">
+					{customer.name}
+				</h4>
+				<p className="truncate font-mono text-xs text-muted-foreground">
+					{invoiceNumber}
+				</p>
+			</div>
+		</div>
+	);
+}
+
+export function InvoiceCardHeader(props: InvoiceCardHeaderProps) {
+	const { invoice } = props;
+	const groups = buildInvoiceMenuGroups({
+		status: invoice.status,
+		hasCdr: Boolean(props.cdrUrl),
+		hasTicket: Boolean(props.persistedTicket),
+		hasEmail: Boolean(invoice.customer.email),
+		isSendingToOse: props.isSendingToOse,
+		isLoadingLifecycle: props.isLoadingLifecycle,
+		isDownloadingPDF: props.isDownloadingPDF,
+		on: {
+			sendToOse: props.onSendToOse,
+			loadLifecycle: props.onLoadLifecycle,
+			edit: props.onShowEdit,
+			openCdr: props.onOpenCdr,
+			copyTicket: props.onCopyTicket,
+			previewPDF: props.onShowPDFPreview,
+			downloadPDF: props.onDownloadPDF,
+			email: props.onShowEmail,
+			remove: props.onShowDelete,
+		},
+	});
 
 	return (
 		<div className="mb-4 flex items-start justify-between gap-3">
-			<div className="flex items-center gap-4">
-				<div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-muted/70 shadow-inner transition-[background-color,border-color,color,transform] duration-150 group-hover:bg-primary group-hover:text-primary-foreground">
-					{invoice.customer.logo ? (
-						<img
-							src={invoice.customer.logo}
-							alt={invoice.customer.name}
-							className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-						/>
-					) : (
-						<span className="font-black text-xs uppercase opacity-40">
-							{invoice.customer.initials}
-						</span>
-					)}
-				</div>
-				<div className="min-w-0">
-					<h4
-						className={cn(
-							"font-black text-xs uppercase tracking-tight truncate leading-none mb-1.5 text-foreground",
-							LEGIBILITY.textShadow.light,
-						)}
-					>
-						{invoice.customer.name}
-					</h4>
-					<p className="text-xs font-bold text-muted-foreground font-mono tracking-widest truncate">
-						{invoice.invoiceNumber}
-					</p>
-				</div>
-			</div>
+			<CustomerIdentity
+				customer={invoice.customer}
+				invoiceNumber={invoice.invoiceNumber}
+			/>
 
 			<DropdownMenu>
 				<DropdownMenuTrigger asChild>
@@ -108,125 +108,42 @@ export function InvoiceCardHeader({
 						variant="ghost"
 						size="icon"
 						aria-label="Más opciones"
-						className="h-8 w-8 opacity-70 transition-opacity hover:opacity-100"
-						onClick={(e) => e.stopPropagation()}
+						className="-m-1.5 size-11 text-muted-foreground hover:text-foreground"
+						onClick={(event) => event.stopPropagation()}
 					>
-						<MoreHorizontal size={16} />
+						<MoreHorizontal aria-hidden="true" size={16} />
 					</Button>
 				</DropdownMenuTrigger>
-				<DropdownMenuContent
-					align="end"
-					className="w-48 border-border bg-[var(--surface-1)] shadow-md"
-				>
-					{canSendToOse && (
-						<>
-							<DropdownMenuItem
-								className="cursor-pointer"
-								onClick={onSendToOse}
-								disabled={isSendingToOse}
-							>
-								<Send className="mr-2 h-4 w-4" />
-								<span className="font-bold text-xs uppercase">
-									{isSendingToOse
-										? "Enviando..."
-										: invoice.status === "draft"
-											? "Enviar a OSE"
-											: "Reintentar OSE"}
-								</span>
-							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-						</>
-					)}
-					{canInspectOse ? (
-						<>
-							<DropdownMenuItem
-								className="cursor-pointer"
-								onClick={onLoadLifecycle}
-								disabled={isLoadingLifecycle}
-							>
-								<Route className="mr-2 h-4 w-4" />
-								<span className="font-bold text-xs uppercase">
-									{isLoadingLifecycle ? "Cargando..." : "Ver Trazabilidad OSE"}
-								</span>
-							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-						</>
-					) : null}
-					{isDraft && (
-						<>
-							<DropdownMenuItem className="cursor-pointer" onClick={onShowEdit}>
-								<Edit className="mr-2 h-4 w-4" />
-								<span className="font-bold text-xs uppercase">Editar</span>
-							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-						</>
-					)}
-					{!isDraft && (
-						<>
-							{cdrUrl ? (
-								<DropdownMenuItem
-									className="cursor-pointer"
-									onClick={onOpenCdr}
-								>
-									<CheckCircle2 className="mr-2 h-4 w-4" />
-									<span className="font-bold text-xs uppercase">Abrir CDR</span>
-								</DropdownMenuItem>
-							) : null}
-							{persistedTicket ? (
-								<DropdownMenuItem
-									className="cursor-pointer"
-									onClick={onCopyTicket}
-								>
-									<Copy className="mr-2 h-4 w-4" />
-									<span className="font-bold text-xs uppercase">
-										Copiar Ticket
-									</span>
-								</DropdownMenuItem>
-							) : null}
-							<DropdownMenuItem
-								className="cursor-pointer"
-								onClick={onShowPDFPreview}
-							>
-								<Eye className="mr-2 h-4 w-4" />
-								<span className="font-bold text-xs uppercase">
-									Vista Previa PDF
-								</span>
-							</DropdownMenuItem>
-							{cdrUrl || persistedTicket ? <DropdownMenuSeparator /> : null}
-							<DropdownMenuItem
-								className="cursor-pointer"
-								onClick={onDownloadPDF}
-								disabled={isDownloadingPDF}
-							>
-								<Download className="mr-2 h-4 w-4" />
-								<span className="font-bold text-xs uppercase">
-									{isDownloadingPDF ? "Descargando..." : "Descargar PDF"}
-								</span>
-							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-						</>
-					)}
-					{!isDraft && hasEmail && (
-						<>
-							<DropdownMenuItem
-								className="cursor-pointer"
-								onClick={onShowEmail}
-							>
-								<Mail className="mr-2 h-4 w-4" />
-								<span className="font-bold text-xs uppercase">
-									Enviar Email
-								</span>
-							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-						</>
-					)}
-					<DropdownMenuItem
-						onClick={onShowDelete}
-						className="cursor-pointer text-destructive focus:text-destructive"
-					>
-						<Trash2 className="mr-2 h-4 w-4" />
-						<span className="font-bold text-xs uppercase">Eliminar</span>
-					</DropdownMenuItem>
+				<DropdownMenuContent align="end" className="w-52">
+					{groups.map((group, index) => (
+						<Fragment key={group[0]?.id}>
+							{index > 0 ? <DropdownMenuSeparator /> : null}
+							{group.map(
+								({
+									id,
+									label,
+									icon: Icon,
+									onSelect,
+									disabled,
+									destructive,
+								}) => (
+									<DropdownMenuItem
+										key={id}
+										onClick={onSelect}
+										disabled={disabled}
+										className={
+											destructive
+												? "min-h-11 cursor-pointer text-destructive focus:text-destructive"
+												: "min-h-11 cursor-pointer"
+										}
+									>
+										<Icon aria-hidden="true" className="mr-2 size-4" />
+										<span className="text-sm">{label}</span>
+									</DropdownMenuItem>
+								),
+							)}
+						</Fragment>
+					))}
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</div>

@@ -3,10 +3,12 @@ import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
+	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
 	invoiceTotalsCents,
@@ -16,6 +18,7 @@ import { TAX_TYPE, type TaxType } from "@/features/invoices/lib/tax-type";
 import { getActiveTaxRate } from "@/lib/latam-country-packs";
 import { useEditInvoice } from "../hooks/useEditInvoice";
 import type { Invoice } from "../hooks/useInvoices";
+import { FIELD_LABEL } from "./create-invoice/invoice-field";
 import { InvoiceHeaderFields } from "./edit-invoice/InvoiceHeaderFields";
 import type {
 	InvoiceItem,
@@ -64,8 +67,6 @@ function itemTotals(quantity: string, unitPrice: string, taxType: TaxType) {
 		total: cents.totalCents / 100,
 	};
 }
-
-const _DEFAULT_COMPANY_ID = "00000000-0000-0000-0000-000000000001";
 
 function toInputDate(value: string): string {
 	return new Date(value).toISOString().split("T")[0];
@@ -120,6 +121,7 @@ export const EditInvoiceModal = ({
 	const [currency, setCurrency] = useState<"PEN" | "USD">("PEN");
 	const [notes, setNotes] = useState("");
 	const [items, setItems] = useState<InvoiceItem[]>([]);
+	const [formError, setFormError] = useState<string | null>(null);
 
 	// Load invoice data when modal opens
 	useEffect(() => {
@@ -190,9 +192,10 @@ export const EditInvoiceModal = ({
 		if (!invoice) return;
 
 		if (items.some((item) => !item.description)) {
-			alert("Por favor completa la descripción de todos los items");
+			setFormError("Completa la descripción de todos los conceptos");
 			return;
 		}
+		setFormError(null);
 
 		editInvoice(
 			{
@@ -226,17 +229,17 @@ export const EditInvoiceModal = ({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-surface-soft border-border">
-				<DialogHeader>
-					<DialogTitle className="text-2xl font-black text-foreground tracking-tight">
-						EDITAR FACTURA {invoice.invoiceNumber}
+			<DialogContent className="max-h-[90dvh] max-w-3xl gap-0 overflow-y-auto border-border bg-background p-0">
+				<DialogHeader className="sticky top-0 z-10 border-b border-border bg-background px-4 py-4 text-left sm:px-6">
+					<DialogTitle className="text-lg font-semibold">
+						Editar factura {invoice.invoiceNumber}
 					</DialogTitle>
-					<p className="text-xs text-muted-foreground font-mono mt-1">
+					<DialogDescription className="text-sm text-muted-foreground">
 						Cliente: {invoice.customer.name}
-					</p>
+					</DialogDescription>
 				</DialogHeader>
 
-				<div className="space-y-6 mt-4">
+				<div className="space-y-6 px-4 py-5 sm:px-6">
 					<InvoiceHeaderFields
 						series={series}
 						setSeries={setSeries}
@@ -256,41 +259,44 @@ export const EditInvoiceModal = ({
 						onRemoveItem={removeItem}
 					/>
 
-					{/* Notes */}
-					<div className="space-y-2">
-						<label
-							htmlFor="edit-invoice-notes"
-							className="text-label font-black uppercase tracking-widest text-muted-foreground"
-						>
-							Notas / Observaciones
-						</label>
+					<div>
+						<Label htmlFor="edit-invoice-notes" className={FIELD_LABEL}>
+							Notas
+						</Label>
 						<Textarea
 							id="edit-invoice-notes"
-							placeholder="Agrega notas adicionales..."
+							placeholder="Información adicional para el comprobante"
 							value={notes}
 							onChange={(e) => setNotes(e.target.value)}
-							className="min-h-[80px] bg-background border-border font-mono text-xs resize-none"
+							className="min-h-24 resize-none rounded-lg border-border bg-card p-3 text-sm"
 						/>
 					</div>
 
 					<InvoiceTotals totals={totals} currency={currency} />
 				</div>
 
-				<DialogFooter className="mt-6">
+				<DialogFooter className="sticky bottom-0 flex-col-reverse gap-3 border-t border-border bg-background px-4 py-3 sm:flex-row sm:items-center sm:justify-end sm:px-6">
+					{formError && (
+						<p role="alert" className="text-sm text-destructive sm:mr-auto">
+							{formError}
+						</p>
+					)}
 					<Button
-						variant="outline"
+						type="button"
+						variant="ghost"
 						onClick={() => onOpenChange(false)}
 						disabled={isEditing}
-						className="font-black text-xs"
+						className="h-11 px-5"
 					>
-						CANCELAR
+						Cancelar
 					</Button>
 					<Button
+						type="button"
 						onClick={handleSubmit}
 						disabled={isEditing}
-						className="font-black text-xs bg-primary hover:bg-primary/90"
+						className="h-11 bg-brand px-5 text-brand-foreground hover:bg-brand/90"
 					>
-						{isEditing ? "GUARDANDO..." : "GUARDAR CAMBIOS"}
+						{isEditing ? "Guardando…" : "Guardar cambios"}
 					</Button>
 				</DialogFooter>
 			</DialogContent>

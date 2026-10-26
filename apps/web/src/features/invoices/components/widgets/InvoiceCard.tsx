@@ -3,7 +3,6 @@ import { lazy, Suspense, useState } from "react";
 import { toast } from "sonner";
 import { Card } from "@/components/ui/card";
 import { useFinancialHaptics, useHaptics } from "@/hooks/useHaptics";
-import { LEGIBILITY } from "@/lib/legibility";
 import { cn, n } from "@/lib/utils";
 import { useInvoiceOseLifecycle } from "../../hooks/useInvoiceOseLifecycle";
 import type { Invoice } from "../../hooks/useInvoices";
@@ -146,16 +145,15 @@ export function InvoiceCard({
 				{...attributes}
 				{...listeners}
 				className={cn(
-					"group transition-[opacity,transform] active:scale-[0.99]",
+					"group transition-opacity",
 					isDragging && "opacity-50 cursor-grabbing",
 					!isPaid && "cursor-grab active:cursor-grabbing",
 				)}
 			>
 				<Card
 					className={cn(
-						"rounded-2xl border border-border bg-[var(--surface-1)] p-4 shadow-sm transition-[background-color,border-color,box-shadow,transform] duration-150 hover:bg-muted/30",
-						isOverdue &&
-							"border-[var(--border-danger)] ring-1 ring-[var(--border-danger)]/30 shadow-sm",
+						"rounded-xl border border-border bg-card p-4 shadow-none transition-colors duration-150 hover:bg-muted/40",
+						isOverdue && "border-destructive/50",
 					)}
 				>
 					<InvoiceCardHeader
@@ -203,12 +201,7 @@ export function InvoiceCard({
 							/>
 						</div>
 						<div className="text-right">
-							<span
-								className={cn(
-									"text-lg font-semibold font-mono tracking-tight text-foreground tabular-nums",
-									LEGIBILITY.textShadow.medium,
-								)}
-							>
+							<span className="font-mono text-lg font-medium tabular-nums tracking-tight text-foreground">
 								{formatMoney(
 									invoice.totalAmount || invoice.amount || 0,
 									invoice.currency,

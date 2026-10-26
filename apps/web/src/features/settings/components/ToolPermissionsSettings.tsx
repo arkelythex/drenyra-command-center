@@ -7,8 +7,18 @@
 
 import { Plus, ShieldCheck, Trash2 } from "lucide-react";
 import { useState } from "react";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { SurfacePanel } from "@/components/ui/SurfacePanel";
+import { NativeSelect } from "@/components/ui/native-select";
 import type {
 	CreateToolPermissionDTO,
 	ToolPermission,
@@ -24,33 +34,27 @@ import {
 } from "../hooks/useToolPermissions";
 import { ToolPermissionFormDialog } from "./ToolPermissionFormDialog";
 
-// ─── Effect Badge ─────────────────────────────────────────────────────────────
+const EFFECT_LABEL: Record<ToolPermission["effect"], string> = {
+	ALLOW: "Permitir",
+	DENY: "Bloquear",
+	REQUIRE_APPROVAL: "Requiere aprobación",
+};
+
+const EFFECT_TONE: Record<ToolPermission["effect"], string> = {
+	ALLOW: "bg-success/10 text-success",
+	DENY: "bg-destructive/10 text-destructive",
+	REQUIRE_APPROVAL: "bg-warning/10 text-warning",
+};
 
 function EffectBadge({ effect }: { effect: ToolPermission["effect"] }) {
-	const styles: Record<string, string> = {
-		ALLOW:
-			"bg-[var(--color-success)]/10 text-[var(--color-success)] border-[var(--color-success)]/20",
-		DENY: "bg-[var(--color-danger)]/10 text-[var(--color-danger)] border-[var(--color-danger)]/20",
-		REQUIRE_APPROVAL:
-			"bg-[var(--color-warning)]/10 text-[var(--color-warning)] border-[var(--color-warning)]/20",
-	};
-
-	const labels: Record<string, string> = {
-		ALLOW: "Permitir",
-		DENY: "Bloquear",
-		REQUIRE_APPROVAL: "Requiere aprobación",
-	};
-
 	return (
 		<span
-			className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${styles[effect] ?? styles.REQUIRE_APPROVAL}`}
+			className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${EFFECT_TONE[effect]}`}
 		>
-			{labels[effect] ?? effect}
+			{EFFECT_LABEL[effect]}
 		</span>
 	);
 }
-
-// ─── Single Row ───────────────────────────────────────────────────────────────
 
 function PermissionRow({
 	permission,
@@ -59,7 +63,7 @@ function PermissionRow({
 }: {
 	permission: ToolPermission;
 	onUpdate: (id: string, effect: ToolPermission["effect"]) => Promise<void>;
-	onDelete: (id: string) => void;
+	onDelete: (permission: ToolPermission) => void;
 }) {
 	const [updating, setUpdating] = useState(false);
 
@@ -73,21 +77,14 @@ function PermissionRow({
 	};
 
 	return (
-		<div className="flex items-center justify-between gap-4 px-5 py-3.5 transition-colors hover:bg-[var(--surface-2)]/30">
-			{/* Tool name */}
-			<div className="flex-1 min-w-0">
-				<span className="font-mono text-sm font-medium text-[var(--text-primary)]">
-					{permission.toolName}
-				</span>
-			</div>
-
-			{/* Effect */}
-			<div className="flex items-center gap-2">
-				<EffectBadge effect={permission.effect} />
-
-				<select
+		<li className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+			<span className="min-w-0 flex-1 truncate font-mono text-sm">
+				{permission.toolName}
+			</span>
+			<EffectBadge effect={permission.effect} />
+			<div className="w-48">
+				<NativeSelect
 					aria-label={`Política para ${permission.toolName}`}
-					className="h-8 w-40 rounded-md border border-[var(--border-subtle)] bg-[var(--surface-1)] px-2 text-xs text-[var(--text-primary)]"
 					disabled={updating}
 					value={permission.effect}
 					onChange={(event) =>
@@ -99,24 +96,56 @@ function PermissionRow({
 					<option value="ALLOW">Permitir</option>
 					<option value="DENY">Bloquear</option>
 					<option value="REQUIRE_APPROVAL">Requiere aprobación</option>
-				</select>
+				</NativeSelect>
 			</div>
-
-			{/* Delete */}
 			<button
 				type="button"
-				onClick={() => onDelete(permission.id)}
-				className="flex h-8 w-8 items-center justify-center rounded-lg text-[var(--text-muted)] transition-colors hover:bg-[var(--color-danger)]/10 hover:text-[var(--color-danger)]"
+				onClick={() => onDelete(permission)}
+				className="flex size-11 items-center justify-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
 				aria-label={`Eliminar permiso para ${permission.toolName}`}
-				title="Eliminar permiso"
 			>
-				<Trash2 size={14} strokeWidth={2} />
+				<Trash2 aria-hidden="true" size={16} />
 			</button>
-		</div>
+		</li>
 	);
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+function DeletePermissionDialog({
+	permission,
+	onCancel,
+	onConfirm,
+}: {
+	permission: ToolPermission | null;
+	onCancel: () => void;
+	onConfirm: (id: string) => void;
+}) {
+	return (
+		<AlertDialog
+			open={permission !== null}
+			onOpenChange={(open) => !open && onCancel()}
+		>
+			<AlertDialogContent>
+				<AlertDialogHeader>
+					<AlertDialogTitle>¿Eliminar este permiso?</AlertDialogTitle>
+					<AlertDialogDescription>
+						{permission
+							? `La herramienta ${permission.toolName} volverá a la política por defecto. Esta acción no se puede deshacer.`
+							: ""}
+					</AlertDialogDescription>
+				</AlertDialogHeader>
+				<AlertDialogFooter>
+					<AlertDialogCancel className="h-11">Cancelar</AlertDialogCancel>
+					<AlertDialogAction
+						className="h-11 bg-destructive text-destructive-foreground hover:bg-destructive/90"
+						onClick={() => permission && onConfirm(permission.id)}
+					>
+						Eliminar
+					</AlertDialogAction>
+				</AlertDialogFooter>
+			</AlertDialogContent>
+		</AlertDialog>
+	);
+}
 
 export const ToolPermissionsSettings = () => {
 	const { data: permissions, isLoading } = useToolPermissions();
@@ -127,9 +156,15 @@ export const ToolPermissionsSettings = () => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [editingPermission, setEditingPermission] =
 		useState<ToolPermission | null>(null);
+	const [pendingDelete, setPendingDelete] = useState<ToolPermission | null>(
+		null,
+	);
 	const [operationError, setOperationError] = useState<string | null>(null);
 
-	// ── Handlers ───────────────────────────────────────────────────────────
+	const openCreate = () => {
+		setEditingPermission(null);
+		setDialogOpen(true);
+	};
 
 	const handleSave = (
 		data: CreateToolPermissionDTO | UpdateToolPermissionDTO,
@@ -163,107 +198,74 @@ export const ToolPermissionsSettings = () => {
 	};
 
 	const handleDelete = (id: string) => {
-		if (!window.confirm("¿Eliminar este permiso definitivamente?")) return;
+		setPendingDelete(null);
 		setOperationError(null);
 		void deleteMutation
 			.mutateAsync(id)
 			.catch(() => setOperationError("No se pudo eliminar el permiso."));
 	};
 
-	// ── Render ─────────────────────────────────────────────────────────────
+	const hasPermissions = !isLoading && permissions && permissions.length > 0;
 
 	return (
 		<SettingsShell
-			title="Permisos de Herramientas"
-			description="Controlá qué herramientas requieren aprobación, cuáles están bloqueadas y cuáles pueden ejecutarse libremente."
+			title="Permisos de herramientas"
+			description="Controla qué herramientas requieren aprobación, cuáles están bloqueadas y cuáles pueden ejecutarse libremente."
 			icon={ShieldCheck}
 			actions={
 				<Button
-					onClick={() => {
-						setEditingPermission(null);
-						setDialogOpen(true);
-					}}
+					onClick={openCreate}
+					className="h-11 bg-brand px-4 text-brand-foreground hover:bg-brand/90"
 				>
-					<Plus size={16} strokeWidth={2} className="mr-1.5" />
+					<Plus aria-hidden="true" size={16} className="mr-1.5" />
 					Nuevo permiso
 				</Button>
 			}
 		>
-			<SettingsSection title="Permisos configurados" className="max-w-3xl">
-				<SurfacePanel
-					variant="default"
-					padding="none"
-					className="divide-y divide-[var(--border-subtle)]"
-				>
-					{/* Header */}
-					<div className="flex items-center justify-between gap-4 px-5 py-2.5">
-						<span className="text-xs font-semibold text-[var(--text-muted)]">
-							Herramienta
-						</span>
-						<span className="text-xs font-semibold text-[var(--text-muted)]">
-							Política
-						</span>
+			<SettingsSection title="Permisos configurados">
+				{isLoading && (
+					<p className="px-4 py-8 text-center text-sm text-muted-foreground">
+						Cargando permisos…
+					</p>
+				)}
+
+				{operationError && (
+					<p role="alert" className="px-4 py-3 text-sm text-destructive">
+						{operationError}
+					</p>
+				)}
+
+				{!isLoading && !hasPermissions && (
+					<div className="flex flex-col items-center gap-2 px-4 py-10 text-center">
+						<p className="text-sm text-muted-foreground">
+							No hay permisos configurados.
+						</p>
+						<Button variant="ghost" onClick={openCreate} className="h-11">
+							Crear el primero
+						</Button>
 					</div>
+				)}
 
-					{/* Body */}
-					{isLoading && (
-						<div className="flex items-center justify-center py-12">
-							<span className="text-sm text-[var(--text-secondary)]">
-								Cargando permisos…
-							</span>
-						</div>
-					)}
-
-					{operationError && (
-						<div className="px-5 py-3 text-sm text-[var(--color-danger)]">
-							{operationError}
-						</div>
-					)}
-
-					{!isLoading && (!permissions || permissions.length === 0) && (
-						<div className="flex flex-col items-center justify-center gap-2 py-12">
-							<ShieldCheck
-								size={32}
-								strokeWidth={1.5}
-								className="text-[var(--text-muted)]"
-							/>
-							<span className="text-sm text-[var(--text-secondary)]">
-								No hay permisos configurados.
-							</span>
-							<Button
-								variant="ghost"
-								size="sm"
-								onClick={() => {
-									setEditingPermission(null);
-									setDialogOpen(true);
-								}}
-							>
-								<Plus size={14} className="mr-1" />
-								Crear el primero
-							</Button>
-						</div>
-					)}
-
-					{!isLoading &&
-						permissions &&
-						permissions.length > 0 &&
-						permissions.map((perm) => (
+				{hasPermissions && (
+					<ul className="divide-y divide-border">
+						{permissions.map((perm) => (
 							<PermissionRow
 								key={perm.id}
 								permission={perm}
 								onUpdate={handleUpdate}
-								onDelete={handleDelete}
+								onDelete={setPendingDelete}
 							/>
 						))}
-				</SurfacePanel>
-
-				<p className="mt-3 text-xs text-[var(--text-tertiary)]">
-					Los cambios surten efecto inmediatamente en el PermissionService al
-					recargar.
-				</p>
+					</ul>
+				)}
 			</SettingsSection>
 
-			{/* Create/Edit Dialog */}
+			<DeletePermissionDialog
+				permission={pendingDelete}
+				onCancel={() => setPendingDelete(null)}
+				onConfirm={handleDelete}
+			/>
+
 			<ToolPermissionFormDialog
 				open={dialogOpen}
 				onOpenChange={setDialogOpen}

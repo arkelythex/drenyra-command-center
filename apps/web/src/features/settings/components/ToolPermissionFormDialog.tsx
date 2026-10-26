@@ -123,7 +123,7 @@ export function ToolPermissionFormDialog({
 					<DialogDescription>
 						{isEditing
 							? "Cambiá el efecto del permiso o su nombre."
-							: "Seleccioná una herramienta y definí su política de aprobación."}
+							: "Selecciona una herramienta y define su política de aprobación."}
 					</DialogDescription>
 				</DialogHeader>
 

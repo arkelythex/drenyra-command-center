@@ -15,26 +15,25 @@ export const InvoiceTotals = ({ totals, currency }: InvoiceTotalsProps) => {
 	const igvRatePercent = getActiveTaxRate("pe", "IGV") ?? 18;
 
 	return (
-		<div className="bg-background border-2 border-border rounded-lg p-6 space-y-3">
-			<div className="flex justify-between items-center font-mono text-sm">
-				<span className="text-muted-foreground">SUBTOTAL:</span>
-				<span className="text-foreground font-bold">
+		<dl className="space-y-2 rounded-lg border border-border bg-card p-4 text-sm tabular-nums">
+			<div className="flex justify-between gap-4">
+				<dt className="text-muted-foreground">Subtotal</dt>
+				<dd>
 					{currency} {totals.subtotal.toFixed(2)}
-				</span>
+				</dd>
 			</div>
-			<div className="flex justify-between items-center font-mono text-sm">
-				<span className="text-muted-foreground">IGV ({igvRatePercent}%):</span>
-				<span className="text-foreground font-bold">
+			<div className="flex justify-between gap-4">
+				<dt className="text-muted-foreground">IGV ({igvRatePercent}%)</dt>
+				<dd>
 					{currency} {totals.igv.toFixed(2)}
-				</span>
+				</dd>
 			</div>
-			<div className="h-px bg-border" />
-			<div className="flex justify-between items-center font-mono text-lg">
-				<span className="text-foreground font-black">TOTAL:</span>
-				<span className="text-foreground font-black">
+			<div className="flex items-baseline justify-between gap-4 border-t border-border pt-3">
+				<dt className="font-medium">Total</dt>
+				<dd className="text-lg font-semibold">
 					{currency} {totals.total.toFixed(2)}
-				</span>
+				</dd>
 			</div>
-		</div>
+		</dl>
 	);
 };

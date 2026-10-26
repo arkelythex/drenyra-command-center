@@ -109,28 +109,41 @@ export const ReconciliationView = () => {
 				</div>
 			) : (
 				<ReconciliationEmptyState
-					{...(!hasCompany
-						? {
-								message:
-									"Inicia sesión con una empresa para ver sus movimientos bancarios.",
-							}
-						: isLoading
-							? { message: "Cargando movimientos bancarios…" }
-							: error
-								? {
-										message: `No se pudieron cargar los movimientos: ${error.message}`,
-									}
-								: {
-										title: "Aún no hay movimientos bancarios",
-										message:
-											"Importa el extracto de tu banco en CSV y Drenyra propondrá coincidencias con tus comprobantes y el libro contable.",
-										action: <StatementImportDialog />,
-									})}
+					{...emptyStateFor({ hasCompany, isLoading, failed: Boolean(error) })}
 				/>
 			)}
 		</div>
 	);
 };
+
+interface EmptyStateInput {
+	hasCompany: boolean;
+	isLoading: boolean;
+	failed: boolean;
+}
+
+/** What the workspace says when there is nothing to reconcile yet. */
+function emptyStateFor({ hasCompany, isLoading, failed }: EmptyStateInput) {
+	if (!hasCompany) {
+		return {
+			message:
+				"Inicia sesión con una empresa para ver sus movimientos bancarios.",
+		};
+	}
+	if (isLoading) return { message: "Cargando movimientos bancarios…" };
+	if (failed) {
+		return {
+			title: "No pudimos cargar los movimientos",
+			message: "Revisa tu conexión e inténtalo de nuevo en unos minutos.",
+		};
+	}
+	return {
+		title: "Aún no hay movimientos bancarios",
+		message:
+			"Importa el extracto de tu banco en CSV y Drenyra propondrá coincidencias con tus comprobantes y el libro contable.",
+		action: <StatementImportDialog />,
+	};
+}
 
 function ReconciliationEmptyState({
 	title,

@@ -25,6 +25,13 @@ interface DeleteInvoiceDialogProps {
 	};
 }
 
+const STATUS_LABEL: Record<InvoiceStatus, string> = {
+	draft: "borrador",
+	sent: "enviada",
+	overdue: "vencida",
+	paid: "pagada",
+};
+
 export const DeleteInvoiceDialog: React.FC<DeleteInvoiceDialogProps> = ({
 	open,
 	onOpenChange,
@@ -32,7 +39,7 @@ export const DeleteInvoiceDialog: React.FC<DeleteInvoiceDialogProps> = ({
 }) => {
 	const { deleteInvoice, isDeleting } = useDeleteInvoice();
 
-	// Validar si se puede eliminar (solo DRAFT)
+	// Only drafts can be deleted; an issued invoice is voided with a credit note.
 	const canDelete = invoice.status === "draft";
 
 	const handleDelete = () => {
@@ -48,85 +55,55 @@ export const DeleteInvoiceDialog: React.FC<DeleteInvoiceDialogProps> = ({
 
 	return (
 		<AlertDialog open={open} onOpenChange={onOpenChange}>
-			<AlertDialogContent className="max-w-md border-border/50 bg-background">
+			<AlertDialogContent className="max-w-md border-border bg-background">
 				<AlertDialogHeader>
-					<AlertDialogTitle className="text-xl font-black uppercase tracking-tight flex items-center gap-2">
-						{canDelete ? (
-							<>
-								<span className="text-destructive">🗑️</span>
-								<span>¿Eliminar Factura?</span>
-							</>
-						) : (
-							<>
-								<span className="text-warning">⚠️</span>
-								<span>Acción No Permitida</span>
-							</>
-						)}
+					<AlertDialogTitle className="text-lg font-semibold">
+						{canDelete ? "¿Eliminar factura?" : "No se puede eliminar"}
 					</AlertDialogTitle>
-					<AlertDialogDescription className="space-y-3 pt-2">
-						{canDelete ? (
-							<>
-								<p className="text-sm text-foreground/80">
-									Estás a punto de eliminar la factura{" "}
-									<strong className="text-foreground font-bold">
-										{invoice.invoiceNumber}
-									</strong>{" "}
-									del cliente{" "}
-									<strong className="text-foreground font-bold">
-										{invoice.customer.name}
-									</strong>
-									.
-								</p>
-								<div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3">
-									<p className="text-sm text-destructive font-semibold flex items-center gap-2">
-										<span>⚠️</span>
-										<span>Esta acción no se puede deshacer.</span>
+					<AlertDialogDescription asChild>
+						<div className="space-y-2 text-sm text-muted-foreground">
+							{canDelete ? (
+								<>
+									<p>
+										Vas a eliminar la factura{" "}
+										<strong className="font-medium text-foreground">
+											{invoice.invoiceNumber}
+										</strong>{" "}
+										de{" "}
+										<strong className="font-medium text-foreground">
+											{invoice.customer.name}
+										</strong>
+										.
 									</p>
-								</div>
-							</>
-						) : (
-							<div className="bg-warning/10 border border-warning/20 rounded-lg p-4">
-								<p className="text-sm text-warning font-semibold mb-2">
-									⚠️ No se puede eliminar esta factura
-								</p>
-								<p className="text-sm text-foreground/70">
-									Solo se pueden eliminar facturas en estado{" "}
-									<strong className="text-foreground">BORRADOR</strong>. Esta
-									factura está en estado{" "}
-									<strong className="text-foreground uppercase">
-										{invoice.status}
-									</strong>
-									.
-								</p>
-								<p className="text-xs text-muted-foreground mt-2">
-									Para anular una factura emitida, debe crear una Nota de
-									Crédito.
-								</p>
-							</div>
-						)}
+									<p className="font-medium text-destructive">
+										Esta acción no se puede deshacer.
+									</p>
+								</>
+							) : (
+								<>
+									<p>
+										Solo se pueden eliminar facturas en borrador. Esta factura
+										está en estado {STATUS_LABEL[invoice.status]}.
+									</p>
+									<p>
+										Para anular una factura emitida, crea una nota de crédito.
+									</p>
+								</>
+							)}
+						</div>
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel
-						disabled={isDeleting}
-						className="font-bold uppercase text-xs"
-					>
+					<AlertDialogCancel disabled={isDeleting} className="h-11">
 						{canDelete ? "Cancelar" : "Cerrar"}
 					</AlertDialogCancel>
 					{canDelete && (
 						<AlertDialogAction
 							onClick={handleDelete}
 							disabled={isDeleting}
-							className="bg-destructive hover:bg-destructive/90 text-destructive-foreground font-bold uppercase text-xs"
+							className="h-11 bg-destructive text-destructive-foreground hover:bg-destructive/90"
 						>
-							{isDeleting ? (
-								<>
-									<span className="animate-spin mr-2">⏳</span>
-									Eliminando...
-								</>
-							) : (
-								"Eliminar"
-							)}
+							{isDeleting ? "Eliminando…" : "Eliminar"}
 						</AlertDialogAction>
 					)}
 				</AlertDialogFooter>

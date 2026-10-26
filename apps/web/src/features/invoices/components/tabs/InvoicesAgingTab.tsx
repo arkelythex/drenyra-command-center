@@ -1,229 +1,159 @@
-import { Filter, Mail } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { cn, n } from "@/lib/utils";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import type { Invoice } from "../../hooks/useInvoices";
+import { type AgingBuckets, buildAging } from "../../lib/invoice-aging";
 
-const MOCK_AGING_DATA = [
-	{
-		customer: "TECH SOLUTIONS INC",
-		total: 1200.0,
-		current: 1200.0,
-		d30: 0,
-		d60: 0,
-		d90: 0,
-		status: "ok",
-	},
-	{
-		customer: "EMILY JOHNSON",
-		total: 5000.0,
-		current: 5000.0,
-		d30: 0,
-		d60: 0,
-		d90: 0,
-		status: "ok",
-	},
-	{
-		customer: "GLOBAL CORP",
-		total: 2500.0,
-		current: 2500.0,
-		d30: 0,
-		d60: 0,
-		d90: 0,
-		status: "ok",
-	},
-	{
-		customer: "DIGITS",
-		total: 15000.0,
-		current: 0,
-		d30: 0,
-		d60: 0,
-		d90: 15000.0,
-		status: "critical",
-	},
-	{
-		customer: "ACME CORP",
-		total: 12500.0,
-		current: 0,
-		d30: 12500.0,
-		d60: 0,
-		d90: 0,
-		status: "warning",
-	},
+interface InvoicesAgingTabProps {
+	invoices: Invoice[];
+	formatMoney: (amount: number) => string;
+	/** Injectable for tests; defaults to now. */
+	today?: Date;
+}
+
+const COLUMNS: Array<{ key: keyof AgingBuckets; label: string }> = [
+	{ key: "current", label: "Vigente" },
+	{ key: "d1to30", label: "1 a 30 días" },
+	{ key: "d31to60", label: "31 a 60 días" },
+	{ key: "d61plus", label: "Más de 60 días" },
+	{ key: "total", label: "Saldo" },
 ];
 
-export const InvoicesAgingTab = () => {
-	return (
-		<div className="max-w-[1600px] 2xl:max-w-[1920px] mx-auto space-y-10 pb-32 animate-entrance">
-			{/* KPIs Monochrome */}
-			<div className="grid grid-cols-1 md:grid-cols-4 gap-6 2xl:gap-8">
-				<AgingKPI
-					label="Cuentas x Cobrar"
-					value={n(36200)}
-					sub="Cartera Total"
-					highlight
-				/>
-				<AgingKPI label="Vigente" value={n(8700)} sub="0-30 días" />
-				<AgingKPI label="En Riesgo" value={n(27500)} sub="31+ días" alert />
-				<AgingKPI label="DSO" value="28" sub="Días Prom." />
-			</div>
+export const InvoicesAgingTab = ({
+	invoices,
+	formatMoney,
+	today,
+}: InvoicesAgingTabProps) => {
+	const { rows, totals, excludedForeignCurrency } = buildAging(invoices, today);
 
-			{/* Matrix Table */}
-			<Card className="shadow-lg">
-				<div className="p-8 border-b border-border/50 bg-muted/5 flex items-center justify-between">
-					<div>
-						<h3 className="text-sm font-black uppercase tracking-widest text-foreground">
-							Antigüedad de Cobranzas
-						</h3>
-						<p className="text-label font-bold text-muted-foreground uppercase tracking-[0.2em] mt-1.5">
-							Análisis de recuperación de capital
-						</p>
-					</div>
-					<button
-						type="button"
-						className="flex items-center gap-2 rounded-xl border border-border bg-muted px-4 py-2 text-label font-black uppercase tracking-widest transition-[background-color,color,transform] duration-200 hover:bg-foreground hover:text-background active:scale-95"
-					>
-						<Filter size={14} /> Segmentación
-					</button>
-				</div>
-
-				<CardContent className="p-0 overflow-x-auto custom-scrollbar">
-					<table className="w-full text-left border-separate border-spacing-0 min-w-[1000px]">
-						<thead className="bg-muted/30">
-							<tr>
-								<th className="px-8 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest border-b border-border/50">
-									Cliente
-								</th>
-								<th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest border-b border-border/50 text-right">
-									Saldo
-								</th>
-								<th className="px-6 py-4 text-xs font-black text-foreground uppercase tracking-widest border-b border-border/50 text-right bg-foreground/[0.02]">
-									Vigente
-								</th>
-								<th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest border-b border-border/50 text-right">
-									1-30 D
-								</th>
-								<th className="px-6 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest border-b border-border/50 text-right">
-									31-60 D
-								</th>
-								<th className="px-8 py-4 text-xs font-black text-muted-foreground uppercase tracking-widest border-b border-border/50 text-right">
-									61+ D
-								</th>
-							</tr>
-						</thead>
-						<tbody className="divide-y divide-border/20">
-							{MOCK_AGING_DATA.map((row) => (
-								<tr
-									key={row.customer}
-									className="group cursor-default transition-colors duration-200 hover:bg-muted/20"
-								>
-									<td className="px-8 py-6">
-										<div className="flex items-center gap-4">
-											<div
-												className={cn(
-													"h-1.5 w-1.5 rounded-full shrink-0",
-													row.status === "ok"
-														? "bg-muted-foreground/30"
-														: "bg-foreground shadow-[0_0_8px_rgba(0,0,0,0.25)]",
-												)}
-											/>
-											<span className="font-black text-xs text-foreground uppercase tracking-tight">
-												{row.customer}
-											</span>
-										</div>
-									</td>
-									<td className="px-6 py-6 text-right font-mono font-black text-xs text-foreground tabular-nums tracking-tighter">
-										{n(row.total)}
-									</td>
-									<td className="px-6 py-6 text-right font-mono text-xs text-foreground tabular-nums bg-foreground/[0.01]">
-										{row.current > 0 ? n(row.current) : "—"}
-									</td>
-									<td className="px-6 py-6 text-right font-mono text-xs text-muted-foreground tabular-nums">
-										{row.d30 > 0 ? n(row.d30) : "—"}
-									</td>
-									<td className="px-6 py-6 text-right font-mono text-xs text-muted-foreground tabular-nums">
-										{row.d60 > 0 ? n(row.d60) : "—"}
-									</td>
-									<td className="px-8 py-6 text-right font-mono font-black text-xs text-foreground tabular-nums">
-										{row.d90 > 0 ? n(row.d90) : "—"}
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				</CardContent>
+	if (rows.length === 0) {
+		return (
+			<Card className="p-8 text-center">
+				<h2 className="text-base font-semibold">Sin saldos por cobrar</h2>
+				<p className="mt-1 text-sm text-muted-foreground">
+					No tienes saldos por cobrar. Cuando envíes facturas aparecerán aquí
+					según su antigüedad.
+				</p>
+				<ForeignNote count={excludedForeignCurrency} />
 			</Card>
+		);
+	}
 
-			{/* Action Center Monochrome (Dark Mode Corrected & Monochrome Depth) */}
-			<div className="flex items-start gap-6 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-8 shadow-lg">
-				<Mail
-					size={28}
-					strokeWidth={2.5}
-					className="shrink-0 mt-1 text-foreground"
+	const overdue = totals.d1to30 + totals.d31to60 + totals.d61plus;
+
+	return (
+		<div className="mx-auto max-w-5xl space-y-6">
+			<dl className="grid gap-3 sm:grid-cols-3">
+				<Kpi label="Por cobrar" value={formatMoney(totals.total)} />
+				<Kpi label="Vigente" value={formatMoney(totals.current)} />
+				<Kpi
+					label="Vencido"
+					value={formatMoney(overdue)}
+					warn={overdue > 0}
+					note={
+						totals.d61plus > 0
+							? `${formatMoney(totals.d61plus)} con más de 60 días vencido`
+							: undefined
+					}
 				/>
-				<div className="space-y-2">
-					<h4 className="text-base font-black uppercase tracking-tight text-foreground">
-						Estrategia de Recuperación
-					</h4>
-					<p className="text-sm font-medium leading-relaxed max-w-3xl opacity-60 text-muted-foreground">
-						Se detectaron{" "}
-						<strong className="font-black text-foreground">S/ 15,000.00</strong>{" "}
-						en deudas críticas (+90 días). El sistema recomienda enviar
-						recordatorios formales o iniciar gestión de cobranza prejudicial.
-					</p>
-				</div>
-				<button
-					type="button"
-					className="ml-auto h-12 rounded-xl border border-foreground/20 bg-foreground/10 px-8 text-label font-black uppercase tracking-widest text-foreground shadow-sm transition-[background-color,transform,box-shadow] duration-200 hover:bg-foreground/20 hover:shadow-md active:scale-95"
+			</dl>
+
+			<Card className="overflow-x-auto">
+				<table
+					aria-label="Antigüedad de saldos"
+					className="w-full min-w-[640px] text-left text-sm"
 				>
-					Enviar Recordatorios
-				</button>
-			</div>
+					<thead>
+						<tr className="border-b border-border text-muted-foreground">
+							<th scope="col" className="px-4 py-3 font-medium">
+								Cliente
+							</th>
+							{COLUMNS.map((column) => (
+								<th
+									key={column.key}
+									scope="col"
+									className="px-4 py-3 text-right font-medium"
+								>
+									{column.label}
+								</th>
+							))}
+						</tr>
+					</thead>
+					<tbody className="divide-y divide-border tabular-nums">
+						{rows.map((row) => (
+							<tr key={row.customer}>
+								<th scope="row" className="px-4 py-3 font-medium">
+									{row.customer}
+								</th>
+								{COLUMNS.map((column) => (
+									<td
+										key={column.key}
+										className={cn(
+											"px-4 py-3 text-right",
+											column.key === "total" && "font-medium",
+											row[column.key] === 0 && "text-muted-foreground",
+										)}
+									>
+										{row[column.key] > 0 ? formatMoney(row[column.key]) : "—"}
+									</td>
+								))}
+							</tr>
+						))}
+					</tbody>
+					<tfoot>
+						<tr className="border-t border-border font-medium tabular-nums">
+							<th scope="row" className="px-4 py-3">
+								Total
+							</th>
+							{COLUMNS.map((column) => (
+								<td key={column.key} className="px-4 py-3 text-right">
+									{formatMoney(totals[column.key])}
+								</td>
+							))}
+						</tr>
+					</tfoot>
+				</table>
+			</Card>
+			<ForeignNote count={excludedForeignCurrency} />
 		</div>
 	);
 };
 
-interface AgingKpiProps {
-	label: string;
-	value: string;
-	sub: string;
-	highlight?: boolean;
-	alert?: boolean;
+function ForeignNote({ count }: { count: number }) {
+	if (count === 0) return null;
+	return (
+		<p className="text-sm text-muted-foreground">
+			{count}{" "}
+			{count === 1
+				? "factura en otra moneda no está"
+				: "facturas en otra moneda no están"}{" "}
+			incluida{count === 1 ? "" : "s"} en estos saldos en soles.
+		</p>
+	);
 }
 
-const AgingKPI = ({ label, value, sub, highlight, alert }: AgingKpiProps) => (
-	<Card
-		className={cn(
-			"border-border/10 shadow-lg",
-			highlight &&
-				"relative overflow-hidden border-border/20 bg-muted/20 shadow-xl ring-1 ring-border/10",
-			alert && "border-red-500/20 bg-red-500/5",
-		)}
-	>
-		{highlight && (
-			<div className="absolute top-0 right-0 p-3">
-				<div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-			</div>
-		)}
-		<CardContent className="p-8">
-			<p
+function Kpi({
+	label,
+	value,
+	note,
+	warn,
+}: {
+	label: string;
+	value: string;
+	note?: string | undefined;
+	warn?: boolean | undefined;
+}) {
+	return (
+		<Card className="p-4">
+			<dt className="text-sm text-muted-foreground">{label}</dt>
+			<dd
 				className={cn(
-					"text-3xs font-black uppercase tracking-[0.3em] mb-4 opacity-40 text-muted-foreground",
+					"mt-1 text-xl font-semibold tabular-nums",
+					warn && "text-destructive",
 				)}
 			>
-				{label}
-			</p>
-			<div className="flex items-baseline justify-between">
-				<p
-					className={cn(
-						"text-2xl font-black font-mono tracking-tighter tabular-nums text-foreground",
-						alert && "text-red-500",
-					)}
-				>
-					{value}
-				</p>
-				<span className="text-label font-bold uppercase tracking-widest opacity-20 text-muted-foreground">
-					{sub}
-				</span>
-			</div>
-		</CardContent>
-	</Card>
-);
+				{value}
+			</dd>
+			{note && <p className="mt-1 text-sm text-destructive">{note}</p>}
+		</Card>
+	);
+}

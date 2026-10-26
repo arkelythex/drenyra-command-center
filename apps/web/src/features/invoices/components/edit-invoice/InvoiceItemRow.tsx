@@ -1,5 +1,8 @@
-import { X } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { NativeSelect } from "@/components/ui/native-select";
+import { FIELD_INPUT, FIELD_LABEL } from "../create-invoice/invoice-field";
 
 export interface InvoiceItem {
 	id: string;
@@ -36,42 +39,57 @@ export const InvoiceItemRow = ({
 	onRemove,
 	canRemove,
 }: InvoiceItemRowProps) => {
+	const id = (field: string) => `edit-item-${item.id}-${field}`;
+	const money = (value: number) => `${currency} ${value.toFixed(2)}`;
+
 	return (
-		<div className="bg-background border border-border rounded-lg p-4 space-y-3">
-			<div className="grid grid-cols-12 gap-3">
-				<div className="col-span-5">
+		<li className="rounded-lg border border-border bg-card p-4">
+			<div className="grid gap-3 sm:grid-cols-12">
+				<div className="sm:col-span-12">
+					<Label htmlFor={id("description")} className={FIELD_LABEL}>
+						Descripción del concepto {index + 1}
+					</Label>
 					<Input
-						placeholder="Descripción del producto/servicio"
+						id={id("description")}
+						placeholder="Servicio o bien facturado"
 						value={item.description}
 						onChange={(e) => onUpdate(index, "description", e.target.value)}
-						className="h-9 bg-surface-soft border-border font-mono text-xs"
+						className={FIELD_INPUT}
 					/>
 				</div>
-
-				<div className="col-span-2">
+				<div className="sm:col-span-3">
+					<Label htmlFor={id("quantity")} className={FIELD_LABEL}>
+						Cantidad
+					</Label>
 					<Input
+						id={id("quantity")}
 						type="number"
-						placeholder="Cantidad"
+						inputMode="decimal"
 						value={item.quantity}
 						onChange={(e) => onUpdate(index, "quantity", e.target.value)}
-						className="h-9 bg-surface-soft border-border font-mono text-xs"
+						className={`${FIELD_INPUT} text-right tabular-nums`}
 					/>
 				</div>
-
-				<div className="col-span-2">
+				<div className="sm:col-span-5">
+					<Label htmlFor={id("price")} className={FIELD_LABEL}>
+						Precio unitario con IGV
+					</Label>
 					<Input
+						id={id("price")}
 						type="number"
 						step="0.01"
-						placeholder="Precio unit. con IGV"
+						inputMode="decimal"
 						value={item.unitPrice}
 						onChange={(e) => onUpdate(index, "unitPrice", e.target.value)}
-						className="h-9 bg-surface-soft border-border font-mono text-xs"
+						className={`${FIELD_INPUT} text-right tabular-nums`}
 					/>
 				</div>
-
-				<div className="col-span-2">
-					<select
-						aria-label="Tipo de impuesto"
+				<div className="sm:col-span-4">
+					<Label htmlFor={id("tax")} className={FIELD_LABEL}>
+						Impuesto
+					</Label>
+					<NativeSelect
+						id={id("tax")}
 						value={item.taxType}
 						onChange={(e) =>
 							onUpdate(
@@ -80,47 +98,33 @@ export const InvoiceItemRow = ({
 								e.target.value as InvoiceItem["taxType"],
 							)
 						}
-						className="w-full h-9 bg-surface-soft border border-border rounded-lg px-2 font-mono text-label text-foreground"
 					>
 						<option value="GRAVADO">Gravado</option>
 						<option value="EXONERADO">Exonerado</option>
 						<option value="INAFECTO">Inafecto</option>
-					</select>
-				</div>
-
-				<div className="col-span-1 flex items-center justify-end">
-					{canRemove && (
-						<button
-							type="button"
-							onClick={() => onRemove(index)}
-							className="h-9 w-9 flex items-center justify-center rounded-lg bg-destructive/10 hover:bg-destructive/20 text-destructive transition-colors"
-						>
-							<X size={14} />
-						</button>
-					)}
+					</NativeSelect>
 				</div>
 			</div>
-
-			<div className="flex justify-end gap-4 text-label font-mono">
-				<span className="text-muted-foreground">
-					Subtotal:{" "}
-					<span className="text-foreground font-bold">
-						{currency} {item.subtotal.toFixed(2)}
+			<div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3 text-sm">
+				{canRemove ? (
+					<button
+						type="button"
+						onClick={() => onRemove(index)}
+						className="inline-flex min-h-11 items-center gap-1.5 rounded-lg px-2 text-muted-foreground hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/40"
+					>
+						<Trash2 aria-hidden="true" className="size-4" />
+						Quitar concepto {index + 1}
+					</button>
+				) : (
+					<span />
+				)}
+				<p className="tabular-nums text-muted-foreground">
+					Subtotal {money(item.subtotal)} · IGV {money(item.igv)} ·{" "}
+					<span className="font-medium text-foreground">
+						Total {money(item.total)}
 					</span>
-				</span>
-				<span className="text-muted-foreground">
-					IGV:{" "}
-					<span className="text-foreground font-bold">
-						{currency} {item.igv.toFixed(2)}
-					</span>
-				</span>
-				<span className="text-muted-foreground">
-					Total:{" "}
-					<span className="text-foreground font-bold">
-						{currency} {item.total.toFixed(2)}
-					</span>
-				</span>
+				</p>
 			</div>
-		</div>
+		</li>
 	);
 };

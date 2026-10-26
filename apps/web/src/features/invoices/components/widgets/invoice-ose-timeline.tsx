@@ -49,7 +49,7 @@ export function InvoiceOseTimeline({ timeline }: InvoiceOseTimelineProps) {
 
 				return (
 					<div
-						key={`${event.stage}-${event.status}-${index}`}
+						key={`${event.stage}-${event.status}-${String(event.at)}`}
 						className={cn(
 							"relative pl-6 transition-opacity",
 							isCurrentEvent ? "opacity-100" : "opacity-80",
@@ -80,18 +80,19 @@ export function InvoiceOseTimeline({ timeline }: InvoiceOseTimelineProps) {
 							<div className="grid gap-1.5">
 								<div className="flex min-w-0 flex-wrap items-center gap-2">
 									<span
+										role="img"
 										aria-label={icon.label}
 										className={cn("inline-flex items-center", icon.className)}
 									>
 										<icon.Icon size={12} strokeWidth={2.5} />
 									</span>
-									<span className="min-w-0 truncate text-2xs font-black uppercase tracking-widest text-foreground">
+									<span className="min-w-0 truncate text-2xs font-medium text-foreground">
 										{event.stage}
 									</span>
 									<Badge
 										variant="outline"
 										className={cn(
-											"h-5 px-1.5 text-2xs font-black uppercase tracking-widest",
+											"h-5 px-1.5 text-2xs font-medium",
 											tone.statusBadgeClassName,
 										)}
 									>
@@ -100,13 +101,13 @@ export function InvoiceOseTimeline({ timeline }: InvoiceOseTimelineProps) {
 									{isCurrentEvent ? (
 										<Badge
 											variant="outline"
-											className="h-5 border-white/10 bg-background/80 px-1.5 text-2xs font-black uppercase tracking-widest text-foreground"
+											className="h-5 border-white/10 bg-background/80 px-1.5 text-2xs font-medium text-foreground"
 										>
 											Actual
 										</Badge>
 									) : null}
 								</div>
-								<div className="flex flex-wrap items-center gap-x-2 gap-y-1 pl-5 text-2xs font-black uppercase tracking-widest text-muted-foreground sm:pl-0">
+								<div className="flex flex-wrap items-center gap-x-2 gap-y-1 pl-5 text-2xs font-medium text-muted-foreground sm:pl-0">
 									<span>{event.source}</span>
 									{timeLabel ? (
 										<span className="text-muted-foreground/90">
@@ -129,7 +130,7 @@ export function InvoiceOseTimeline({ timeline }: InvoiceOseTimelineProps) {
 					<Button
 						variant="ghost"
 						size="sm"
-						className="h-7 px-2 text-2xs font-black uppercase tracking-widest"
+						className="h-7 px-2 text-2xs font-medium"
 						onClick={() => setIsExpanded((current) => !current)}
 					>
 						{isExpanded ? "Ver menos" : `Ver mas (${hiddenEventsCount})`}

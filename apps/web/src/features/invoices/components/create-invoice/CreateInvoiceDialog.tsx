@@ -1,4 +1,3 @@
-import { FileText } from "lucide-react";
 import { lazy, Suspense } from "react";
 import {
 	Dialog,
@@ -29,25 +28,17 @@ export const CreateInvoiceDialog = ({
 }: CreateInvoiceModalProps) => {
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto border-border/50 bg-background/95 p-0 shadow-xl shadow-[0_0_18px_rgba(var(--premium-info-rgb),0.04)] ">
-				<div className="sticky top-0 z-50 flex items-center gap-4 border-b border-border/50 bg-background/90 px-8 py-6 ">
-					<div className="h-10 w-10 rounded-xl bg-[rgba(var(--premium-info-rgb),0.10)] flex items-center justify-center border border-[rgba(var(--premium-info-rgb),0.20)]">
-						<FileText className="text-[var(--premium-action-cyan)]" size={20} />
-					</div>
-					<DialogHeader>
-						<DialogTitle className="text-2xl font-black text-foreground uppercase tracking-tighter flex flex-col">
-							<span className="text-label text-muted-foreground tracking-[0.3em] font-medium mb-0.5">
-								Módulo de Facturación
-							</span>
-							NUEVA FACTURA
-						</DialogTitle>
-						<DialogDescription className="sr-only">
-							Formulario para crear una nueva factura electrónica.
-						</DialogDescription>
-					</DialogHeader>
-				</div>
+			<DialogContent className="max-h-[90dvh] max-w-3xl gap-0 overflow-y-auto border-border bg-background p-0">
+				<DialogHeader className="sticky top-0 z-10 border-b border-border bg-background px-4 py-4 text-left sm:px-6">
+					<DialogTitle className="text-lg font-semibold">
+						Nueva factura
+					</DialogTitle>
+					<DialogDescription className="text-sm text-muted-foreground">
+						Factura o boleta electrónica. El IGV se calcula sobre el precio.
+					</DialogDescription>
+				</DialogHeader>
 
-				<div className="p-8">
+				<div className="px-4 pt-5 sm:px-6">
 					<Suspense fallback={<CreateInvoiceFormSkeleton />}>
 						<InvoiceForm
 							onSubmit={onSubmit}
@@ -65,19 +56,16 @@ function CreateInvoiceFormSkeleton() {
 	return (
 		<div
 			aria-label="Cargando formulario de factura"
-			className="mt-6 space-y-10"
+			className="space-y-4"
 			role="status"
 		>
-			<div className="grid grid-cols-12 gap-8">
-				<div className="col-span-12 h-24 rounded-2xl border border-border/60 bg-card/60 lg:col-span-8" />
-				<div className="col-span-12 h-24 rounded-2xl border border-border/60 bg-card/60 lg:col-span-4" />
+			<div className="h-11 rounded-lg bg-muted" />
+			<div className="grid gap-4 sm:grid-cols-3">
+				<div className="h-11 rounded-lg bg-muted" />
+				<div className="h-11 rounded-lg bg-muted" />
+				<div className="h-11 rounded-lg bg-muted" />
 			</div>
-			<div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-				<div className="h-20 rounded-2xl border border-border/60 bg-card/60" />
-				<div className="h-20 rounded-2xl border border-border/60 bg-card/60" />
-				<div className="h-20 rounded-2xl border border-border/60 bg-card/60" />
-			</div>
-			<div className="h-44 rounded-2xl border border-border/60 bg-card/60" />
+			<div className="h-40 rounded-lg bg-muted" />
 			<span className="sr-only">Cargando formulario de factura</span>
 		</div>
 	);

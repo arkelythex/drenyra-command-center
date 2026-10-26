@@ -89,7 +89,7 @@ export function InvoicesBoardDesktopHeader({
 							value={searchQuery}
 							onChange={(event) => onSearchQueryChange(event.target.value)}
 							placeholder="Buscar por cliente o número"
-							className="h-10 w-full rounded-xl border border-border bg-card pl-9 pr-4 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-[border-color,box-shadow,background-color,color] duration-150 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20"
+							className="h-11 w-full rounded-lg border border-border bg-card pl-9 pr-4 text-sm text-foreground placeholder:text-muted-foreground outline-none transition-[border-color,box-shadow,background-color,color] duration-150 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20"
 						/>
 					</div>
 
@@ -97,7 +97,7 @@ export function InvoicesBoardDesktopHeader({
 						onClick={onCreateInvoice}
 						onPointerEnter={onCreateInvoiceIntent}
 						onFocus={onCreateInvoiceIntent}
-						className="h-10 flex-shrink-0 rounded-lg border-transparent bg-brand px-4 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand/90"
+						className="h-11 flex-shrink-0 rounded-lg border-transparent bg-brand px-4 text-sm font-medium text-brand-foreground transition-colors hover:bg-brand/90"
 					>
 						<Plus size={14} strokeWidth={2.5} className="mr-2" />
 						Nueva factura

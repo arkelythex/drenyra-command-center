@@ -46,6 +46,7 @@ export default defineConfig({
 		createApiDevServerPlugin(),
 		TanStackRouterVite({
 			generatedRouteTree: "./src/routeTree.gen.ts",
+			routeFileIgnorePattern: "__tests__",
 		}),
 		react(
 			enableReactCompiler

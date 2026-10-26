@@ -9,7 +9,7 @@
   },
   "desktop-chrome:invoices": {
     "axe": 0,
-    "smallTargets": 12
+    "smallTargets": 8
   },
   "desktop-chrome:login": {
     "axe": 0,
@@ -37,7 +37,7 @@
   },
   "mobile-android:invoices": {
     "axe": 0,
-    "smallTargets": 3
+    "smallTargets": 0
   },
   "mobile-android:login": {
     "axe": 0,
@@ -65,7 +65,7 @@
   },
   "mobile-ios:invoices": {
     "axe": 0,
-    "smallTargets": 3
+    "smallTargets": 0
   },
   "mobile-ios:login": {
     "axe": 0,

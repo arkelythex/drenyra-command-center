@@ -43,7 +43,7 @@ export function InvoicesBoardMobileToolbar({
 						value={searchQuery}
 						onChange={(event) => onSearchQueryChange(event.target.value)}
 						placeholder="Buscar por cliente o número"
-						className="h-10 w-full rounded-xl border-border bg-card pl-10 text-sm placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/20"
+						className="h-11 w-full rounded-lg border-border bg-card pl-10 text-sm placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/20"
 					/>
 				</div>
 			</div>

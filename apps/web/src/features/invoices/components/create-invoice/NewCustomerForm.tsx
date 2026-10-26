@@ -78,12 +78,9 @@ export function NewCustomerForm({
 		RUC_PATTERN.test(taxId) && legalName.trim() !== "" && !lookingUp && !saving;
 
 	return (
-		<div className="space-y-3 px-5 py-4">
-			<div className="space-y-1">
-				<label
-					htmlFor="new-customer-ruc"
-					className="text-xs font-black uppercase tracking-widest text-muted-foreground"
-				>
+		<div className="space-y-3 p-4">
+			<div className="space-y-1.5">
+				<label htmlFor="new-customer-ruc" className="text-sm font-medium">
 					RUC del cliente
 				</label>
 				<div className="relative">
@@ -98,18 +95,15 @@ export function NewCustomerForm({
 						inputMode="numeric"
 						maxLength={11}
 						placeholder="20XXXXXXXXX"
-						className="font-mono"
+						className="h-11 tabular-nums"
 					/>
 					{lookingUp && (
 						<Loader2 className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-primary" />
 					)}
 				</div>
 			</div>
-			<div className="space-y-1">
-				<label
-					htmlFor="new-customer-name"
-					className="text-xs font-black uppercase tracking-widest text-muted-foreground"
-				>
+			<div className="space-y-1.5">
+				<label htmlFor="new-customer-name" className="text-sm font-medium">
 					Razón social del cliente
 				</label>
 				<Input
@@ -120,6 +114,7 @@ export function NewCustomerForm({
 						setLegalName(e.target.value);
 					}}
 					placeholder="Como figura en SUNAT"
+					className="h-11"
 				/>
 			</div>
 			{error && (
@@ -128,12 +123,17 @@ export function NewCustomerForm({
 				</p>
 			)}
 			<div className="flex justify-end gap-2">
-				<Button type="button" variant="ghost" size="sm" onClick={onCancel}>
+				<Button
+					type="button"
+					variant="ghost"
+					className="h-11"
+					onClick={onCancel}
+				>
 					Cancelar
 				</Button>
 				<Button
 					type="button"
-					size="sm"
+					className="h-11"
 					disabled={!canSave}
 					onClick={() => void save()}
 				>

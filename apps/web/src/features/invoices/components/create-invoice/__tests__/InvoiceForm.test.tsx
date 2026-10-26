@@ -197,17 +197,15 @@ describe("InvoiceForm", () => {
 			/>,
 		);
 
-		fireEvent.change(screen.getByPlaceholderText(/auditoría cognitiva/i), {
+		fireEvent.change(screen.getByPlaceholderText(/información adicional/i), {
 			target: { value: "nota editada" },
 		});
 		expect(setNotesMock).toHaveBeenCalledWith("nota editada");
 
-		fireEvent.click(screen.getByRole("button", { name: /abortar operación/i }));
+		fireEvent.click(screen.getByRole("button", { name: /^cancelar$/i }));
 		expect(onCancelMock).toHaveBeenCalledTimes(1);
 
-		fireEvent.click(
-			screen.getByRole("button", { name: /confirmar y emitir/i }),
-		);
+		fireEvent.click(screen.getByRole("button", { name: /^emitir factura$/i }));
 		expect(handleSubmitMock).toHaveBeenCalledTimes(1);
 	});
 });

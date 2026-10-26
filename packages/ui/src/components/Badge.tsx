@@ -1,109 +1,55 @@
 /**
  * Badge Component
  *
- * Status indicator with semantic color variants.
- * Used for labels, tags, and status indicators.
+ * Status label with semantic variants. Variants are declared once with CVA and
+ * use theme utilities only (never raw colors or `var(--*)`), so a new theme or
+ * accent needs no change here. The label keeps the case it was written in and
+ * never wraps: a state must stay readable at a glance.
  *
  * @example
  * ```tsx
- * <Badge variant="success">Active</Badge>
- * <Badge variant="warning">Pending</Badge>
- * <Badge variant="danger">Overdue</Badge>
+ * <Badge variant="success">Cobrada</Badge>
+ * <Badge variant="danger">Vencida el 15 oct</Badge>
  * ```
  */
 
+import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes } from "react";
 import { cn } from "../lib/utils";
 
-/** Badge visual variants */
-export type BadgeVariant =
-	| "default"
-	| "secondary"
-	| "success"
-	| "info"
-	| "warning"
-	| "danger"
-	| "accent"
-	| "outline"
-	| "soft";
+const badgeVariants = cva(
+	"inline-flex items-center gap-1.5 whitespace-nowrap rounded-md border px-2 py-0.5 text-xs font-medium transition-colors",
+	{
+		variants: {
+			variant: {
+				default: "border-border bg-muted text-foreground",
+				secondary: "border-border bg-muted text-muted-foreground",
+				outline: "border-border bg-transparent text-muted-foreground",
+				soft: "border-transparent bg-muted text-muted-foreground",
+				success: "border-success/30 bg-success/10 text-success",
+				info: "border-info/30 bg-info/10 text-info",
+				warning: "border-warning/30 bg-warning/10 text-warning",
+				danger: "border-danger/30 bg-danger/10 text-danger",
+				accent: "border-brand/30 bg-brand/10 text-brand",
+			},
+		},
+		defaultVariants: { variant: "default" },
+	},
+);
 
-export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-	/** Visual style variant */
-	variant?: BadgeVariant;
-	/** Badge content */
+export type BadgeVariant = NonNullable<
+	VariantProps<typeof badgeVariants>["variant"]
+>;
+
+export interface BadgeProps
+	extends HTMLAttributes<HTMLSpanElement>,
+		VariantProps<typeof badgeVariants> {
 	children?: React.ReactNode;
 }
 
-/**
- * Badge with semantic color variants.
- * Uses design tokens for consistent theming.
- */
-export function Badge({
-	variant = "default",
-	className,
-	children,
-	...props
-}: BadgeProps) {
-	const variantStyles: Record<BadgeVariant, string> = {
-		default: [
-			"border-[var(--color-border)]",
-			"bg-[var(--color-surface-3)]",
-			"text-[var(--color-text-secondary)]",
-		].join(" "),
-		secondary: [
-			"border-[var(--color-border)]",
-			"bg-[var(--color-surface-2)]",
-			"text-[var(--color-text-muted)]",
-		].join(" "),
-		outline: [
-			"border-[var(--color-border)]",
-			"bg-transparent",
-			"text-[var(--color-text-secondary)]",
-		].join(" "),
-		soft: [
-			"border-transparent",
-			"bg-[var(--color-surface-3)]",
-			"text-[var(--color-text-secondary)]",
-		].join(" "),
-		success: [
-			"border-[rgba(var(--color-success-rgb),0.3)]",
-			"bg-[rgba(var(--color-success-rgb),0.15)]",
-			"text-[var(--color-success)]",
-		].join(" "),
-		info: [
-			"border-[rgba(var(--color-info-rgb),0.3)]",
-			"bg-[rgba(var(--color-info-rgb),0.15)]",
-			"text-[var(--color-info)]",
-		].join(" "),
-		warning: [
-			"border-[rgba(var(--color-warning-rgb),0.3)]",
-			"bg-[rgba(var(--color-warning-rgb),0.15)]",
-			"text-[var(--color-warning)]",
-		].join(" "),
-		danger: [
-			"border-[rgba(var(--color-danger-rgb),0.3)]",
-			"bg-[rgba(var(--color-danger-rgb),0.15)]",
-			"text-[var(--color-danger)]",
-		].join(" "),
-		accent: [
-			"border-[rgba(var(--color-accent-rgb),0.3)]",
-			"bg-[rgba(var(--color-accent-rgb),0.15)]",
-			"text-[var(--color-accent)]",
-		].join(" "),
-	};
-
+export function Badge({ variant, className, children, ...props }: BadgeProps) {
 	return (
-		<span
-			className={cn(
-				"inline-flex items-center gap-1.5 rounded-[var(--radius-full)]",
-				"border px-2.5 py-0.5",
-				"text-[10px] font-semibold uppercase tracking-[0.08em]",
-				"transition-colors",
-				variantStyles[variant],
-				className,
-			)}
-			{...props}
-		>
+		<span className={cn(badgeVariants({ variant }), className)} {...props}>
 			{children}
 		</span>
 	);
