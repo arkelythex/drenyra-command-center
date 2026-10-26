@@ -16,7 +16,7 @@ export function FiscalEditorialShell({
 }: FiscalEditorialShellProps) {
 	return (
 		<div
-			className="flex h-screen w-full flex-col overflow-hidden"
+			className="flex h-dvh w-full flex-col overflow-hidden"
 			data-shell-mode={mode}
 		>
 			{children}

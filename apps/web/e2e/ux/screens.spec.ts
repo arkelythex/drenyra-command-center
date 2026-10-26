@@ -37,7 +37,22 @@ async function openScreen(page: Page, path: string) {
 	await expect(page.getByText(/^Loading\.\.\.$/)).toHaveCount(0, {
 		timeout: 15_000,
 	});
+	// Positive readiness signal: every key screen renders a visible h1 once mounted.
+	await expect(page.locator("h1:visible").first()).toBeVisible({
+		timeout: 15_000,
+	});
+	await page.waitForLoadState("networkidle");
 	await page.evaluate(() => document.fonts.ready);
+	// Let finite transitions (e.g. sidebar width) settle; infinite spinners are allowed to keep running.
+	await page.waitForFunction(() =>
+		document
+			.getAnimations()
+			.every(
+				(animation) =>
+					animation.playState !== "running" ||
+					animation.effect?.getTiming().iterations === Number.POSITIVE_INFINITY,
+			),
+	);
 }
 
 function countSmallTargets(page: Page) {
@@ -62,7 +77,8 @@ for (const screen of SCREENS) {
 
 		test("exposes exactly one h1", async ({ page }) => {
 			await openScreen(page, screen.path);
-			await expect(page.locator("h1")).toHaveCount(1);
+			// One visible h1 per breakpoint: a display:none heading is not exposed to assistive tech.
+			await expect(page.locator("h1:visible")).toHaveCount(1);
 		});
 
 		test("has no horizontal overflow", async ({ page }) => {
@@ -114,14 +130,29 @@ for (const screen of SCREENS) {
 	});
 }
 
-test.describe("known defects", () => {
-	test("navigation does not cover content on first paint (mobile)", async ({
+test.describe("mobile navigation", () => {
+	test.skip(({ isMobile }) => !isMobile, "mobile only");
+
+	test("opens the drawer from the app bar and closes it with Escape", async ({
 		page,
-	}, testInfo) => {
-		test.skip(!testInfo.project.name.startsWith("mobile"), "mobile only");
-		test.fail(true, "sidebar opens over the workspace below xl (T5)");
+	}) => {
 		await openScreen(page, "/invoices");
-		const heading = page.locator("h1").first();
+		const sidebar = page.locator("#app-sidebar");
+		await expect(sidebar).toBeHidden();
+
+		const menu = page.getByRole("button", { name: "Abrir menú" });
+		await menu.click();
+		await expect(sidebar).toBeVisible();
+		await expect(menu).toHaveAttribute("aria-expanded", "true");
+		await expect(sidebar.getByText("Comprobantes")).toBeVisible();
+
+		await page.keyboard.press("Escape");
+		await expect(sidebar).toBeHidden();
+	});
+
+	test("navigation does not cover content on first paint", async ({ page }) => {
+		await openScreen(page, "/invoices");
+		const heading = page.locator("h1:visible").first();
 		const box = await heading.boundingBox();
 		expect(box).not.toBeNull();
 		const topElement = await page.evaluate(

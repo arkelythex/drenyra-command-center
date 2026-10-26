@@ -11,13 +11,16 @@ import { AgenticSidebarToggle } from "./components/AgenticSidebarToggle";
  * Collapsible to icon-only mode. Badges for Review Queue and Agents.
  */
 export function AgenticSidebar() {
-	const isCollapsed = useAgenticShell((s) => s.isSidebarCollapsed);
+	// The mobile drawer always shows labels; collapsing is a desktop-only mode.
+	const isCollapsed = useAgenticShell(
+		(s) => s.isSidebarCollapsed && !s.isSidebarMobileOpen,
+	);
 
 	return (
-		<aside
+		<div
 			className={cn(
-				"relative flex h-full flex-col bg-[var(--surface-1)] border-r border-[var(--border-subtle)] transition-[width] duration-200 ease-in-out",
-				isCollapsed ? "w-[64px]" : "w-[260px]",
+				"relative flex h-full w-full flex-col bg-[var(--surface-1)] transition-[width] duration-200 ease-in-out",
+				isCollapsed ? "lg:w-16" : "lg:w-[260px]",
 			)}
 		>
 			<div className="flex items-center justify-between border-b border-[var(--border-subtle)] px-3 py-2">
@@ -31,6 +34,6 @@ export function AgenticSidebar() {
 
 			<AgenticSidebarNavItems isCollapsed={isCollapsed} />
 			<AgenticSidebarFooter isCollapsed={isCollapsed} />
-		</aside>
+		</div>
 	);
 }

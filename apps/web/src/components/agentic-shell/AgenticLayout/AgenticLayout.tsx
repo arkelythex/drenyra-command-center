@@ -1,11 +1,12 @@
 import { Outlet } from "@tanstack/react-router";
-import { lazy, Suspense, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { InspectorProvider } from "@/context/InspectorContext";
 import { cn } from "@/lib/utils";
-import { useUIStore } from "@/stores/ui.store";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
+import { useUIStore } from "@/stores/ui.store";
 import { FiscalEditorialShell } from "../../layout/FiscalEditorialShell";
 import { AgenticCommandBar } from "../AgenticCommandBar/AgenticCommandBar";
+import { MobileTopBar } from "../MobileTopBar/MobileTopBar";
 import { AgenticLayoutContext } from "./AgenticLayout.context";
 import { AgenticLayoutLoading } from "./AgenticLayout.loading";
 import type {
@@ -39,7 +40,7 @@ const CommandPalette = lazy(() =>
  * │  (260px)  │      (flex-1)            │  (420px, toggle) │
  * └───────────┴──────────────────────────┴──────────────────┘
  *
- * Responsive: sidebar becomes overlay on <1024px.
+ * Responsive: below `lg` (1024px) the sidebar is a drawer opened from MobileTopBar.
  * Focus mode: hides sidebar.
  *
  * When used as a route layout (no `children`), renders `<Outlet />` for child routes.
@@ -59,6 +60,15 @@ export function AgenticLayout({ children }: AgenticLayoutProps) {
 	} = useAgenticShell();
 
 	const isRightRailOpen = useUIStore((s) => s.isRightRailOpen);
+
+	useEffect(() => {
+		if (!isSidebarMobileOpen) return;
+		const closeOnEscape = (event: KeyboardEvent) => {
+			if (event.key === "Escape") setSidebarMobileOpen(false);
+		};
+		window.addEventListener("keydown", closeOnEscape);
+		return () => window.removeEventListener("keydown", closeOnEscape);
+	}, [isSidebarMobileOpen, setSidebarMobileOpen]);
 
 	const [workspace, setWorkspace] = useState<
 		import("./AgenticLayout.types").WorkspaceSelection | null
@@ -93,22 +103,30 @@ export function AgenticLayout({ children }: AgenticLayoutProps) {
 					<CommandPalette />
 				</Suspense>
 
+				<MobileTopBar />
+
 				{/* Three-panel row */}
 				<div className="flex min-h-0 flex-1">
-					{/* Sidebar */}
+					{/* Sidebar: drawer below `lg` (driven by isSidebarMobileOpen), inline from `lg` (driven by isSidebarCollapsed). */}
 					<aside
+						id="app-sidebar"
+						aria-label="Navegación principal"
 						className={cn(
-							"flex-shrink-0 overflow-y-auto border-r border-[var(--border-subtle)] bg-[var(--surface-1)] transition-[width] duration-200 ease-in-out",
-							"max-xl:fixed max-xl:bottom-0 max-xl:left-0 max-xl:top-0 max-xl:z-30",
-							!isFocusMode && !isSidebarCollapsed
-								? "w-[260px] max-xl:w-72 max-xl:max-w-[85vw]"
-								: "w-0 overflow-hidden max-xl:w-0",
-							isSidebarCollapsed && !isFocusMode && "w-[64px] max-xl:w-0",
+							"flex-shrink-0 overflow-y-auto border-r border-[var(--border-subtle)] bg-[var(--surface-1)]",
+							"max-lg:fixed max-lg:inset-y-0 max-lg:left-0 max-lg:z-30 max-lg:w-72 max-lg:max-w-[85vw] max-lg:pt-[env(safe-area-inset-top)] max-lg:shadow-2xl max-lg:transition-transform max-lg:duration-200",
+							isSidebarMobileOpen
+								? "max-lg:translate-x-0"
+								: "max-lg:invisible max-lg:-translate-x-full",
+							"lg:transition-[width] lg:duration-200 lg:ease-in-out",
+							isFocusMode
+								? "lg:w-0 lg:overflow-hidden"
+								: isSidebarCollapsed
+									? "lg:w-16"
+									: "lg:w-[260px]",
 						)}
-						aria-hidden={isFocusMode || (!isSidebarCollapsed && false)}
 					>
 						{!isFocusMode && (
-							<div className="flex h-full min-w-[200px] max-xl:min-w-0 flex-col">
+							<div className="flex h-full flex-col">
 								<Suspense fallback={<div className="p-4">Loading...</div>}>
 									<AgenticSidebar />
 								</Suspense>
@@ -116,11 +134,11 @@ export function AgenticLayout({ children }: AgenticLayoutProps) {
 						)}
 					</aside>
 
-					{/* Mobile overlay backdrop */}
+					{/* Mobile drawer backdrop */}
 					{isSidebarMobileOpen && (
-						// biome-ignore lint/a11y/noStaticElementInteractions: mobile sidebar dismiss overlay
+						// biome-ignore lint/a11y/noStaticElementInteractions: mobile sidebar dismiss overlay; Escape also closes it
 						<div
-							className="fixed inset-0 z-20 bg-black/50 xl:hidden"
+							className="fixed inset-0 z-20 bg-black/50 lg:hidden"
 							onClick={() => setSidebarMobileOpen(false)}
 							role="presentation"
 						/>

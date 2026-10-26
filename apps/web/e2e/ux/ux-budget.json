@@ -24,51 +24,51 @@
     "smallTargets": 21
   },
   "mobile-android:cierre-mensual": {
-    "axe": 15,
-    "smallTargets": 14
+    "axe": 10,
+    "smallTargets": 13
   },
   "mobile-android:cumplimiento": {
-    "axe": 9,
-    "smallTargets": 10
+    "axe": 5,
+    "smallTargets": 9
   },
   "mobile-android:invoices": {
-    "axe": 7,
-    "smallTargets": 14
+    "axe": 3,
+    "smallTargets": 12
   },
   "mobile-android:login": {
     "axe": 0,
     "smallTargets": 3
   },
   "mobile-android:settings": {
-    "axe": 7,
-    "smallTargets": 10
+    "axe": 3,
+    "smallTargets": 9
   },
   "mobile-android:workspace": {
-    "axe": 15,
-    "smallTargets": 14
+    "axe": 10,
+    "smallTargets": 13
   },
   "mobile-ios:cierre-mensual": {
-    "axe": 13,
-    "smallTargets": 14
+    "axe": 8,
+    "smallTargets": 13
   },
   "mobile-ios:cumplimiento": {
-    "axe": 9,
-    "smallTargets": 10
+    "axe": 5,
+    "smallTargets": 9
   },
   "mobile-ios:invoices": {
-    "axe": 7,
-    "smallTargets": 14
+    "axe": 3,
+    "smallTargets": 12
   },
   "mobile-ios:login": {
     "axe": 0,
     "smallTargets": 3
   },
   "mobile-ios:settings": {
-    "axe": 7,
-    "smallTargets": 10
+    "axe": 3,
+    "smallTargets": 9
   },
   "mobile-ios:workspace": {
-    "axe": 13,
-    "smallTargets": 14
+    "axe": 8,
+    "smallTargets": 13
   }
 }
