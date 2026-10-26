@@ -14,6 +14,7 @@ const TYPE_LABEL: Record<InspectorPanelType, string> = {
 	fiscal: "Fiscal",
 	agent: "Agente",
 	diff: "Cambios",
+	thread: "Conversación",
 };
 
 /**

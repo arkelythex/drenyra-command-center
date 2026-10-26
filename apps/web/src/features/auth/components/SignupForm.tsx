@@ -4,7 +4,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Text } from "@/components/atoms/text";
 import {
 	containerVariants,
 	entranceVariants,
@@ -143,7 +142,7 @@ export const SignupForm = () => {
 				</MotionDiv>
 
 				<MotionDiv variants={entranceVariants} className="pt-2 text-center">
-					<Text variant="label" className="text-sm text-muted-foreground/80">
+					<p className="text-sm text-muted-foreground/80">
 						¿Ya tienes cuenta?{" "}
 						<a
 							href="/login"
@@ -151,7 +150,7 @@ export const SignupForm = () => {
 						>
 							Iniciar Sesión
 						</a>
-					</Text>
+					</p>
 				</MotionDiv>
 			</MotionDiv>
 		</AuthLayout>

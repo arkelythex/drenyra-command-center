@@ -2,7 +2,6 @@ import { useNavigate } from "@tanstack/react-router";
 import { CheckCircle, Loader2, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Text } from "@/components/atoms/text";
 import { Button } from "@/components/ui/button";
 import {
 	containerVariants,
@@ -171,10 +170,10 @@ export const VerifyEmailPage = () => {
 							<CheckCircle className="h-16 w-16 text-success" />
 						</MotionDiv>
 						<MotionDiv variants={entranceVariants}>
-							<Text className="text-foreground/90">
+							<p className="text-foreground/90">
 								Tu email ha sido verificado exitosamente. Ahora tienes acceso
 								completo a todas las funcionalidades de Drenyra.
-							</Text>
+							</p>
 						</MotionDiv>
 					</>
 				)}
@@ -188,16 +187,16 @@ export const VerifyEmailPage = () => {
 							<XCircle className="h-16 w-16 text-destructive" />
 						</MotionDiv>
 						<MotionDiv variants={entranceVariants}>
-							<Text className="text-foreground/90">
+							<p className="text-foreground/90">
 								El enlace de verificación es inválido o ha expirado.
-							</Text>
+							</p>
 						</MotionDiv>
 
 						{!canResend && (
 							<MotionDiv variants={entranceVariants}>
-								<Text variant="label" className="text-muted-foreground text-sm">
+								<p className="text-muted-foreground text-sm">
 									Podrás reenviar el email en {countdown} segundos
-								</Text>
+								</p>
 							</MotionDiv>
 						)}
 

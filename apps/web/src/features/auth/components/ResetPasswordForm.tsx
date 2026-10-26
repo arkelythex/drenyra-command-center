@@ -4,7 +4,6 @@ import { Eye, EyeOff, Lock } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { Text } from "@/components/atoms/text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -130,9 +129,9 @@ export const ResetPasswordForm = () => {
 		return (
 			<AuthLayout title="Error" subtitle="Enlace inválido">
 				<MotionDiv className="text-center space-y-4">
-					<Text className="text-foreground/90">
+					<p className="text-foreground/90">
 						El enlace de restablecimiento es inválido o ha expirado.
-					</Text>
+					</p>
 					<Button variant="outline" asChild>
 						<a href="/forgot-password">Solicitar nuevo enlace</a>
 					</Button>
@@ -155,12 +154,9 @@ export const ResetPasswordForm = () => {
 				tagName="form"
 			>
 				<MotionDiv variants={entranceVariants} className="space-y-3">
-					<Text
-						variant="label"
-						className="text-foreground ml-1 text-sm font-medium"
-					>
+					<p className="text-foreground ml-1 text-sm font-medium">
 						Nueva Contraseña
-					</Text>
+					</p>
 					<div className="relative group">
 						<Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/80 group-focus-within:text-primary transition-colors duration-300" />
 						<Input
@@ -194,28 +190,22 @@ export const ResetPasswordForm = () => {
 									),
 								)}
 							</div>
-							<Text
-								variant="label"
-								className="text-muted-foreground ml-1 text-xs"
-							>
+							<p className="text-muted-foreground ml-1 text-xs">
 								Fortaleza: {passwordStrength.label}
-							</Text>
+							</p>
 						</div>
 					)}
 					{errors.password && (
-						<Text variant="label" className="text-destructive ml-1 text-xs">
+						<p className="text-destructive ml-1 text-xs">
 							{errors.password.message}
-						</Text>
+						</p>
 					)}
 				</MotionDiv>
 
 				<MotionDiv variants={entranceVariants} className="space-y-3">
-					<Text
-						variant="label"
-						className="text-foreground ml-1 text-sm font-medium"
-					>
+					<p className="text-foreground ml-1 text-sm font-medium">
 						Confirmar Contraseña
-					</Text>
+					</p>
 					<div className="relative group">
 						<Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground/80 group-focus-within:text-primary transition-colors duration-300" />
 						<Input
@@ -233,9 +223,9 @@ export const ResetPasswordForm = () => {
 						</button>
 					</div>
 					{errors.confirmPassword && (
-						<Text variant="label" className="text-destructive ml-1 text-xs">
+						<p className="text-destructive ml-1 text-xs">
 							{errors.confirmPassword.message}
-						</Text>
+						</p>
 					)}
 				</MotionDiv>
 
