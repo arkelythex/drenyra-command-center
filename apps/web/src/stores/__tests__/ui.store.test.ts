@@ -36,11 +36,9 @@ describe("useUIStore appearance", () => {
 		expect(html.classList.contains("light")).toBe(false);
 	});
 
-	it("persists only appearance under the key ux-mode reads", () => {
+	it("persists the appearance under the key ux-mode reads", () => {
 		useUIStore.getState().setAccentPreference("sage");
-		useUIStore.getState().setRightRailOpen(true);
 		const saved = JSON.parse(localStorage.getItem(UI_STORAGE_KEY) ?? "{}");
 		expect(saved.state.accentPreference).toBe("sage");
-		expect(saved.state.isRightRailOpen).toBeUndefined();
 	});
 });

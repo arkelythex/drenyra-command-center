@@ -3,7 +3,6 @@ import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { InspectorProvider } from "@/context/InspectorContext";
 import { cn } from "@/lib/utils";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
-import { useUIStore } from "@/stores/ui.store";
 import { FiscalEditorialShell } from "../../layout/FiscalEditorialShell";
 import { AgenticCommandBar } from "../AgenticCommandBar/AgenticCommandBar";
 import { MobileTopBar } from "../MobileTopBar/MobileTopBar";
@@ -20,9 +19,9 @@ const AgenticSidebar = lazy(() =>
 	})),
 );
 
-const RightPanel = lazy(() =>
-	import("../../agentic/RightPanel").then((m) => ({
-		default: m.RightPanel,
+const InspectorHost = lazy(() =>
+	import("../../agentic/InspectorHost").then((m) => ({
+		default: m.InspectorHost,
 	})),
 );
 
@@ -58,8 +57,6 @@ export function AgenticLayout({ children }: AgenticLayoutProps) {
 		closeCommandPalette,
 		isFocusMode,
 	} = useAgenticShell();
-
-	const isRightRailOpen = useUIStore((s) => s.isRightRailOpen);
 
 	useEffect(() => {
 		if (!isSidebarMobileOpen) return;
@@ -153,25 +150,9 @@ export function AgenticLayout({ children }: AgenticLayoutProps) {
 						</InspectorProvider>
 					</main>
 
-					{/* Right Inspector panel */}
-					<aside
-						className={cn(
-							"flex-shrink-0 overflow-y-auto border-l border-border-subtle bg-card transition-[width] duration-200 ease-in-out",
-							"max-xl:fixed max-xl:bottom-0 max-xl:right-0 max-xl:top-0 max-xl:z-30 max-xl:shadow-2xl",
-							isRightRailOpen
-								? "w-[420px] max-xl:w-80 max-xl:max-w-[85vw]"
-								: "w-0 overflow-hidden max-xl:w-0",
-						)}
-						aria-hidden={!isRightRailOpen}
-					>
-						{isRightRailOpen && (
-							<div className="flex h-full min-w-[380px] max-xl:min-w-0 flex-col">
-								<Suspense fallback={<div className="p-4">Loading...</div>}>
-									<RightPanel />
-								</Suspense>
-							</div>
-						)}
-					</aside>
+					<Suspense fallback={null}>
+						<InspectorHost />
+					</Suspense>
 				</div>
 
 				{/* Always-visible command bar at the bottom */}
