@@ -19,7 +19,7 @@ export function OperationalSettingsSection({
 }: OperationalSettingsSectionProps) {
 	return (
 		<SettingsSection
-			title="Preferencias Operativas"
+			title="Preferencias operativas"
 			description="Controles rápidos para estandarizar el flujo de trabajo del equipo contable."
 		>
 			<SettingsRow

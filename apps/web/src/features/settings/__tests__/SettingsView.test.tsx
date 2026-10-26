@@ -79,7 +79,7 @@ describe("SettingsView", () => {
 	it("renders the general settings heading", () => {
 		render(<SettingsView />);
 		expect(
-			screen.getByRole("heading", { name: "Configuración General" }),
+			screen.getByRole("heading", { name: "Configuración general" }),
 		).toBeInTheDocument();
 	});
 	it("forwards language changes to its settings hook", () => {

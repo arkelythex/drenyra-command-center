@@ -19,6 +19,13 @@ import { Route as LoginRouteImport } from "./routes/login";
 import { Route as OnboardingRouteImport } from "./routes/onboarding";
 import { Route as ResetPasswordRouteImport } from "./routes/reset-password";
 import { Route as SettingsRouteImport } from "./routes/settings";
+import { Route as SettingsAppearanceRouteImport } from "./routes/settings/appearance";
+import { Route as SettingsBillingRouteImport } from "./routes/settings/billing";
+import { Route as SettingsIndexRouteImport } from "./routes/settings/index";
+import { Route as SettingsNotificationsRouteImport } from "./routes/settings/notifications";
+import { Route as SettingsOrganizationRouteImport } from "./routes/settings/organization";
+import { Route as SettingsSecurityRouteImport } from "./routes/settings/security";
+import { Route as SettingsToolPermissionsRouteImport } from "./routes/settings/tool-permissions";
 import { Route as SignupRouteImport } from "./routes/signup";
 import { Route as TesoreriaReconciliationsRouteImport } from "./routes/tesoreria.reconciliations";
 import { Route as VerifyEmailRouteImport } from "./routes/verify-email";
@@ -79,12 +86,47 @@ const IndexRoute = IndexRouteImport.update({
 	path: "/",
 	getParentRoute: () => rootRouteImport,
 } as any);
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+	id: "/",
+	path: "/",
+	getParentRoute: () => SettingsRoute,
+} as any);
 const TesoreriaReconciliationsRoute =
 	TesoreriaReconciliationsRouteImport.update({
 		id: "/tesoreria/reconciliations",
 		path: "/tesoreria/reconciliations",
 		getParentRoute: () => rootRouteImport,
 	} as any);
+const SettingsToolPermissionsRoute = SettingsToolPermissionsRouteImport.update({
+	id: "/tool-permissions",
+	path: "/tool-permissions",
+	getParentRoute: () => SettingsRoute,
+} as any);
+const SettingsSecurityRoute = SettingsSecurityRouteImport.update({
+	id: "/security",
+	path: "/security",
+	getParentRoute: () => SettingsRoute,
+} as any);
+const SettingsOrganizationRoute = SettingsOrganizationRouteImport.update({
+	id: "/organization",
+	path: "/organization",
+	getParentRoute: () => SettingsRoute,
+} as any);
+const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
+	id: "/notifications",
+	path: "/notifications",
+	getParentRoute: () => SettingsRoute,
+} as any);
+const SettingsBillingRoute = SettingsBillingRouteImport.update({
+	id: "/billing",
+	path: "/billing",
+	getParentRoute: () => SettingsRoute,
+} as any);
+const SettingsAppearanceRoute = SettingsAppearanceRouteImport.update({
+	id: "/appearance",
+	path: "/appearance",
+	getParentRoute: () => SettingsRoute,
+} as any);
 const CumplimientoExpedientesRoute = CumplimientoExpedientesRouteImport.update({
 	id: "/cumplimiento/expedientes",
 	path: "/cumplimiento/expedientes",
@@ -106,11 +148,18 @@ export interface FileRoutesByFullPath {
 	"/login": typeof LoginRoute;
 	"/onboarding": typeof OnboardingRoute;
 	"/reset-password": typeof ResetPasswordRoute;
-	"/settings": typeof SettingsRoute;
+	"/settings": typeof SettingsRouteWithChildren;
 	"/signup": typeof SignupRoute;
 	"/verify-email": typeof VerifyEmailRoute;
 	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
+	"/settings/appearance": typeof SettingsAppearanceRoute;
+	"/settings/billing": typeof SettingsBillingRoute;
+	"/settings/notifications": typeof SettingsNotificationsRoute;
+	"/settings/organization": typeof SettingsOrganizationRoute;
+	"/settings/security": typeof SettingsSecurityRoute;
+	"/settings/tool-permissions": typeof SettingsToolPermissionsRoute;
 	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
+	"/settings/": typeof SettingsIndexRoute;
 	"/workspace/$companyId/$year/$month/$intent": typeof WorkspaceCompanyIdYearMonthIntentRoute;
 }
 export interface FileRoutesByTo {
@@ -122,11 +171,17 @@ export interface FileRoutesByTo {
 	"/login": typeof LoginRoute;
 	"/onboarding": typeof OnboardingRoute;
 	"/reset-password": typeof ResetPasswordRoute;
-	"/settings": typeof SettingsRoute;
 	"/signup": typeof SignupRoute;
 	"/verify-email": typeof VerifyEmailRoute;
 	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
+	"/settings/appearance": typeof SettingsAppearanceRoute;
+	"/settings/billing": typeof SettingsBillingRoute;
+	"/settings/notifications": typeof SettingsNotificationsRoute;
+	"/settings/organization": typeof SettingsOrganizationRoute;
+	"/settings/security": typeof SettingsSecurityRoute;
+	"/settings/tool-permissions": typeof SettingsToolPermissionsRoute;
 	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
+	"/settings": typeof SettingsIndexRoute;
 	"/workspace/$companyId/$year/$month/$intent": typeof WorkspaceCompanyIdYearMonthIntentRoute;
 }
 export interface FileRoutesById {
@@ -139,11 +194,18 @@ export interface FileRoutesById {
 	"/login": typeof LoginRoute;
 	"/onboarding": typeof OnboardingRoute;
 	"/reset-password": typeof ResetPasswordRoute;
-	"/settings": typeof SettingsRoute;
+	"/settings": typeof SettingsRouteWithChildren;
 	"/signup": typeof SignupRoute;
 	"/verify-email": typeof VerifyEmailRoute;
 	"/cumplimiento/expedientes": typeof CumplimientoExpedientesRoute;
+	"/settings/appearance": typeof SettingsAppearanceRoute;
+	"/settings/billing": typeof SettingsBillingRoute;
+	"/settings/notifications": typeof SettingsNotificationsRoute;
+	"/settings/organization": typeof SettingsOrganizationRoute;
+	"/settings/security": typeof SettingsSecurityRoute;
+	"/settings/tool-permissions": typeof SettingsToolPermissionsRoute;
 	"/tesoreria/reconciliations": typeof TesoreriaReconciliationsRoute;
+	"/settings/": typeof SettingsIndexRoute;
 	"/workspace/$companyId/$year/$month/$intent": typeof WorkspaceCompanyIdYearMonthIntentRoute;
 }
 export interface FileRouteTypes {
@@ -161,7 +223,14 @@ export interface FileRouteTypes {
 		| "/signup"
 		| "/verify-email"
 		| "/cumplimiento/expedientes"
+		| "/settings/appearance"
+		| "/settings/billing"
+		| "/settings/notifications"
+		| "/settings/organization"
+		| "/settings/security"
+		| "/settings/tool-permissions"
 		| "/tesoreria/reconciliations"
+		| "/settings/"
 		| "/workspace/$companyId/$year/$month/$intent";
 	fileRoutesByTo: FileRoutesByTo;
 	to:
@@ -173,11 +242,17 @@ export interface FileRouteTypes {
 		| "/login"
 		| "/onboarding"
 		| "/reset-password"
-		| "/settings"
 		| "/signup"
 		| "/verify-email"
 		| "/cumplimiento/expedientes"
+		| "/settings/appearance"
+		| "/settings/billing"
+		| "/settings/notifications"
+		| "/settings/organization"
+		| "/settings/security"
+		| "/settings/tool-permissions"
 		| "/tesoreria/reconciliations"
+		| "/settings"
 		| "/workspace/$companyId/$year/$month/$intent";
 	id:
 		| "__root__"
@@ -193,7 +268,14 @@ export interface FileRouteTypes {
 		| "/signup"
 		| "/verify-email"
 		| "/cumplimiento/expedientes"
+		| "/settings/appearance"
+		| "/settings/billing"
+		| "/settings/notifications"
+		| "/settings/organization"
+		| "/settings/security"
+		| "/settings/tool-permissions"
 		| "/tesoreria/reconciliations"
+		| "/settings/"
 		| "/workspace/$companyId/$year/$month/$intent";
 	fileRoutesById: FileRoutesById;
 }
@@ -206,7 +288,7 @@ export interface RootRouteChildren {
 	LoginRoute: typeof LoginRoute;
 	OnboardingRoute: typeof OnboardingRoute;
 	ResetPasswordRoute: typeof ResetPasswordRoute;
-	SettingsRoute: typeof SettingsRoute;
+	SettingsRoute: typeof SettingsRouteWithChildren;
 	SignupRoute: typeof SignupRoute;
 	VerifyEmailRoute: typeof VerifyEmailRoute;
 	CumplimientoExpedientesRoute: typeof CumplimientoExpedientesRoute;
@@ -293,12 +375,61 @@ declare module "@tanstack/react-router" {
 			preLoaderRoute: typeof IndexRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};
+		"/settings/": {
+			id: "/settings/";
+			path: "/";
+			fullPath: "/settings/";
+			preLoaderRoute: typeof SettingsIndexRouteImport;
+			parentRoute: typeof SettingsRoute;
+		};
 		"/tesoreria/reconciliations": {
 			id: "/tesoreria/reconciliations";
 			path: "/tesoreria/reconciliations";
 			fullPath: "/tesoreria/reconciliations";
 			preLoaderRoute: typeof TesoreriaReconciliationsRouteImport;
 			parentRoute: typeof rootRouteImport;
+		};
+		"/settings/tool-permissions": {
+			id: "/settings/tool-permissions";
+			path: "/tool-permissions";
+			fullPath: "/settings/tool-permissions";
+			preLoaderRoute: typeof SettingsToolPermissionsRouteImport;
+			parentRoute: typeof SettingsRoute;
+		};
+		"/settings/security": {
+			id: "/settings/security";
+			path: "/security";
+			fullPath: "/settings/security";
+			preLoaderRoute: typeof SettingsSecurityRouteImport;
+			parentRoute: typeof SettingsRoute;
+		};
+		"/settings/organization": {
+			id: "/settings/organization";
+			path: "/organization";
+			fullPath: "/settings/organization";
+			preLoaderRoute: typeof SettingsOrganizationRouteImport;
+			parentRoute: typeof SettingsRoute;
+		};
+		"/settings/notifications": {
+			id: "/settings/notifications";
+			path: "/notifications";
+			fullPath: "/settings/notifications";
+			preLoaderRoute: typeof SettingsNotificationsRouteImport;
+			parentRoute: typeof SettingsRoute;
+		};
+		"/settings/billing": {
+			id: "/settings/billing";
+			path: "/billing";
+			fullPath: "/settings/billing";
+			preLoaderRoute: typeof SettingsBillingRouteImport;
+			parentRoute: typeof SettingsRoute;
+		};
+		"/settings/appearance": {
+			id: "/settings/appearance";
+			path: "/appearance";
+			fullPath: "/settings/appearance";
+			preLoaderRoute: typeof SettingsAppearanceRouteImport;
+			parentRoute: typeof SettingsRoute;
 		};
 		"/cumplimiento/expedientes": {
 			id: "/cumplimiento/expedientes";
@@ -317,6 +448,30 @@ declare module "@tanstack/react-router" {
 	}
 }
 
+interface SettingsRouteChildren {
+	SettingsAppearanceRoute: typeof SettingsAppearanceRoute;
+	SettingsBillingRoute: typeof SettingsBillingRoute;
+	SettingsNotificationsRoute: typeof SettingsNotificationsRoute;
+	SettingsOrganizationRoute: typeof SettingsOrganizationRoute;
+	SettingsSecurityRoute: typeof SettingsSecurityRoute;
+	SettingsToolPermissionsRoute: typeof SettingsToolPermissionsRoute;
+	SettingsIndexRoute: typeof SettingsIndexRoute;
+}
+
+const SettingsRouteChildren: SettingsRouteChildren = {
+	SettingsAppearanceRoute: SettingsAppearanceRoute,
+	SettingsBillingRoute: SettingsBillingRoute,
+	SettingsNotificationsRoute: SettingsNotificationsRoute,
+	SettingsOrganizationRoute: SettingsOrganizationRoute,
+	SettingsSecurityRoute: SettingsSecurityRoute,
+	SettingsToolPermissionsRoute: SettingsToolPermissionsRoute,
+	SettingsIndexRoute: SettingsIndexRoute,
+};
+
+const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
+	SettingsRouteChildren,
+);
+
 const rootRouteChildren: RootRouteChildren = {
 	IndexRoute: IndexRoute,
 	AuthRoute: AuthRoute,
@@ -326,7 +481,7 @@ const rootRouteChildren: RootRouteChildren = {
 	LoginRoute: LoginRoute,
 	OnboardingRoute: OnboardingRoute,
 	ResetPasswordRoute: ResetPasswordRoute,
-	SettingsRoute: SettingsRoute,
+	SettingsRoute: SettingsRouteWithChildren,
 	SignupRoute: SignupRoute,
 	VerifyEmailRoute: VerifyEmailRoute,
 	CumplimientoExpedientesRoute: CumplimientoExpedientesRoute,

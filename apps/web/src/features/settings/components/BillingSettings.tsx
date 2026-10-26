@@ -49,14 +49,14 @@ export const BillingSettings = () => {
 					>
 						<div className="mb-4 flex items-center gap-2">
 							<Zap size={14} className="text-[var(--accent)]" />
-							<span className="text-xs font-black uppercase tracking-widest text-[var(--text-tertiary)]">
+							<span className="text-xs font-medium text-[var(--text-tertiary)]">
 								Current Plan
 							</span>
 						</div>
 						<p className="text-2xl font-black text-[var(--text-primary)]">
 							ENTERPRISE
 						</p>
-						<p className="mt-2 text-xs font-bold text-[var(--accent)] uppercase tracking-tighter">
+						<p className="mt-2 text-xs font-bold text-[var(--accent)]">
 							Unlimited Neural Memory
 						</p>
 					</SurfacePanel>
@@ -68,12 +68,12 @@ export const BillingSettings = () => {
 					>
 						<div className="mb-4 flex items-center gap-2">
 							<TrendingUp size={14} className="text-[var(--accent)]" />
-							<span className="text-xs font-black uppercase tracking-widest text-[var(--text-tertiary)]">
+							<span className="text-xs font-medium text-[var(--text-tertiary)]">
 								Resource Usage
 							</span>
 						</div>
 						<div className="space-y-2">
-							<div className="flex justify-between text-xs font-bold uppercase text-[var(--text-secondary)]">
+							<div className="flex justify-between text-xs font-bold text-[var(--text-secondary)]">
 								<span>Agents</span>
 								<span>08 / 12</span>
 							</div>
@@ -90,15 +90,13 @@ export const BillingSettings = () => {
 					>
 						<div className="mb-4 flex items-center gap-2 text-[var(--text-tertiary)]">
 							<CreditCard size={14} />
-							<span className="text-xs font-black uppercase tracking-widest">
-								Payment Loop
-							</span>
+							<span className="text-xs font-medium">Payment Loop</span>
 						</div>
 						<p className="text-2xl font-black text-[var(--text-primary)]">
 							S/ 299
 							<span className="text-xs text-[var(--text-tertiary)]">.00</span>
 						</p>
-						<p className="mt-2 text-xs font-bold text-[var(--text-tertiary)] uppercase tracking-tighter">
+						<p className="mt-2 text-xs font-bold text-[var(--text-tertiary)]">
 							Monthly Cycle
 						</p>
 					</SurfacePanel>
@@ -122,10 +120,10 @@ export const BillingSettings = () => {
 								</div>
 							</div>
 							<div>
-								<p className="text-xs font-black uppercase tracking-[0.2em] text-[var(--text-primary)]">
+								<p className="text-xs font-medium text-[var(--text-primary)]">
 									Corporate Platinum
 								</p>
-								<p className="mt-1 text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-widest">
+								<p className="mt-1 text-xs font-medium text-[var(--text-tertiary)]">
 									Next cycle: March 15, 2026
 								</p>
 							</div>
@@ -149,16 +147,16 @@ export const BillingSettings = () => {
 						<table className="w-full text-left">
 							<thead>
 								<tr className="border-b border-[var(--border-default)] bg-[var(--surface-2)]/40">
-									<th className="px-8 py-4 text-xs font-black uppercase tracking-widest text-[var(--text-tertiary)]">
+									<th className="px-8 py-4 text-xs font-medium text-[var(--text-tertiary)]">
 										Reference
 									</th>
-									<th className="px-8 py-4 text-xs font-black uppercase tracking-widest text-[var(--text-tertiary)]">
+									<th className="px-8 py-4 text-xs font-medium text-[var(--text-tertiary)]">
 										Period
 									</th>
-									<th className="px-8 py-4 text-xs font-black uppercase tracking-widest text-[var(--text-tertiary)]">
+									<th className="px-8 py-4 text-xs font-medium text-[var(--text-tertiary)]">
 										Amount
 									</th>
-									<th className="px-8 py-4 text-xs font-black uppercase tracking-widest text-[var(--text-tertiary)]">
+									<th className="px-8 py-4 text-xs font-medium text-[var(--text-tertiary)]">
 										Status
 									</th>
 									<th className="px-8 py-4 text-right" />

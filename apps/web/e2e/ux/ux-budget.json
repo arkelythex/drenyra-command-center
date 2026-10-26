@@ -25,15 +25,15 @@
   },
   "mobile-android:cierre-mensual": {
     "axe": 10,
-    "smallTargets": 13
+    "smallTargets": 6
   },
   "mobile-android:cumplimiento": {
     "axe": 5,
-    "smallTargets": 9
+    "smallTargets": 2
   },
   "mobile-android:invoices": {
     "axe": 3,
-    "smallTargets": 12
+    "smallTargets": 5
   },
   "mobile-android:login": {
     "axe": 0,
@@ -45,19 +45,19 @@
   },
   "mobile-android:workspace": {
     "axe": 10,
-    "smallTargets": 13
+    "smallTargets": 6
   },
   "mobile-ios:cierre-mensual": {
     "axe": 8,
-    "smallTargets": 13
+    "smallTargets": 6
   },
   "mobile-ios:cumplimiento": {
     "axe": 5,
-    "smallTargets": 9
+    "smallTargets": 2
   },
   "mobile-ios:invoices": {
     "axe": 3,
-    "smallTargets": 12
+    "smallTargets": 5
   },
   "mobile-ios:login": {
     "axe": 0,
@@ -69,6 +69,6 @@
   },
   "mobile-ios:workspace": {
     "axe": 8,
-    "smallTargets": 13
+    "smallTargets": 6
   }
 }

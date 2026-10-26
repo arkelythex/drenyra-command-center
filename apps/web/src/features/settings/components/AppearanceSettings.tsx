@@ -1,241 +1,129 @@
-import { ChevronDown, Monitor, Moon, Sun, Type } from "lucide-react";
-import { createElement } from "react";
-import { SurfacePanel } from "@/components/ui/SurfacePanel";
-import { useSettings } from "@/context/SettingsContext";
+import { Monitor, Moon, Palette, Sun } from "lucide-react";
+import {
+	ACCENT_PRESETS,
+	type AccentPreset,
+	DENSITY_LEVELS,
+	type DensityLevel,
+} from "@/lib/design-tokens/theme-package.schema";
 import { cn } from "@/lib/utils";
-import { CodeDiffPreview } from "./appearance/CodeDiffPreview";
-import { SettingsRow, SettingsSection } from "./SettingsPrimitives";
+import { THEME_PREFERENCE, type ThemePreference } from "@/lib/ux-mode";
+import { useUIStore } from "@/stores/ui.store";
+import { SettingsSection } from "./SettingsPrimitives";
 import { SettingsShell } from "./SettingsShell";
 
-export const AppearanceSettings = () => {
-	const { settings, updateSettings } = useSettings();
+const THEME_OPTIONS: {
+	value: ThemePreference;
+	label: string;
+	icon: typeof Sun;
+}[] = [
+	{ value: THEME_PREFERENCE.SYSTEM, label: "Sistema", icon: Monitor },
+	{ value: THEME_PREFERENCE.LIGHT, label: "Claro", icon: Sun },
+	{ value: THEME_PREFERENCE.DARK, label: "Oscuro", icon: Moon },
+];
+
+const DENSITY_LABELS: Record<DensityLevel, string> = {
+	compact: "Compacta",
+	normal: "Normal",
+	spacious: "Amplia",
+};
+
+const optionClass =
+	"flex min-h-11 cursor-pointer items-center gap-2 rounded-lg border border-border px-4 text-sm font-medium transition-colors hover:bg-muted has-[:checked]:border-ring has-[:checked]:bg-muted has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/40";
+
+/**
+ * Appearance preferences backed by the UI store (theme, accent, density).
+ * Uses native radio groups so keyboard and screen-reader behavior comes for free.
+ */
+export function AppearanceSettings() {
+	const themePreference = useUIStore((s) => s.themePreference);
+	const accentPreference = useUIStore((s) => s.accentPreference);
+	const densityPreference = useUIStore((s) => s.densityPreference);
+	const setThemePreference = useUIStore((s) => s.setThemePreference);
+	const setAccentPreference = useUIStore((s) => s.setAccentPreference);
+	const setDensityPreference = useUIStore((s) => s.setDensityPreference);
 
 	return (
 		<SettingsShell
 			title="Apariencia"
-			description="Personalizá tu entorno visual."
-			icon={Sun}
+			description="Elige el tema, el color de acento y la densidad de la interfaz. Los cambios se aplican al instante y se guardan en este navegador."
+			icon={Palette}
 		>
-			<div className="space-y-12 max-w-2xl">
-				{/* --- THEME SECTION --- */}
-				<SettingsSection
-					title="Tema"
-					description="Elegí Light Pearl, Black OLED o sincronizá el tema con tu sistema."
-				>
-					<div className="flex items-center justify-between">
-						<div className="flex items-center p-1 rounded-xl bg-[var(--surface-2)]/50 border border-[var(--border-subtle)]">
-							{[
-								{ id: "light" as const, icon: Sun, label: "Light Pearl" },
-								{ id: "dark" as const, icon: Moon, label: "Black OLED" },
-								{ id: "system" as const, icon: Monitor, label: "Sistema" },
-							].map((t) => (
-								<button
-									type="button"
-									key={t.id}
-									onClick={() => updateSettings({ theme: t.id })}
-									aria-pressed={settings.theme === t.id}
-									className={cn(
-										"flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-bold transition-all",
-										settings.theme === t.id
-											? "bg-[var(--surface-1)] text-[var(--text-primary)] shadow-sm"
-											: "text-[var(--text-secondary)] hover:text-[var(--text-primary)]",
-									)}
-								>
-									{createElement(t.icon, { size: 14, strokeWidth: 2 })}
-									{t.label}
-								</button>
-							))}
-						</div>
-					</div>
+			<SettingsSection title="Tema">
+				<fieldset className="flex flex-wrap gap-2 p-4">
+					<legend className="sr-only">Tema</legend>
+					{THEME_OPTIONS.map(({ value, label, icon: Icon }) => (
+						<label key={value} className={optionClass}>
+							<input
+								type="radio"
+								name="theme"
+								value={value}
+								checked={themePreference === value}
+								onChange={() => setThemePreference(value)}
+								className="sr-only"
+							/>
+							<Icon aria-hidden="true" className="size-4" />
+							{label}
+						</label>
+					))}
+				</fieldset>
+			</SettingsSection>
 
-					<CodeDiffPreview />
-				</SettingsSection>
-
-				{/* --- CUSTOMIZATION SECTION --- */}
-				<SettingsSection title="Personalización" className="pt-1">
-					<div className="flex items-center justify-between">
-						<h3 className="text-sm font-bold text-[var(--text-primary)]">
-							{settings.theme === "dark"
-								? "Black OLED"
-								: settings.theme === "system"
-									? "Tema del sistema"
-									: "Light Pearl"}
-						</h3>
-						<div className="flex items-center gap-4">
-							<div className="flex items-center gap-2 rounded-xl border border-[var(--border-default)] px-3 py-1.5">
-								<Type size={14} className="text-[var(--color-primary)]" />
-								<span className="text-xs font-semibold text-[var(--text-primary)]">
-									Ledger OS v1
-								</span>
-							</div>
-						</div>
-					</div>
-
-					<div className="space-y-4">
-						<SettingsRow
-							title="Acento"
-							action={
-								<div className="flex items-center gap-3">
-									<button
-										type="button"
-										aria-label="Acento Copper de Drenyra"
-										className="h-6 w-16 rounded-lg bg-[var(--color-primary)] border border-[var(--border-subtle)] shadow-inner"
-									/>
-									<span className="font-mono text-xs font-medium text-[var(--text-secondary)] uppercase">
-										var(--color-primary)
-									</span>
-								</div>
-							}
+			<SettingsSection
+				title="Color de acento"
+				description="Se usa en acciones principales y en la navegación activa."
+			>
+				<fieldset className="flex flex-wrap gap-2 p-4">
+					<legend className="sr-only">Color de acento</legend>
+					<label className={optionClass}>
+						<input
+							type="radio"
+							name="accent"
+							checked={accentPreference === null}
+							onChange={() => setAccentPreference(null)}
+							className="sr-only"
 						/>
+						Predeterminado
+					</label>
+					{ACCENT_PRESETS.map((accent: AccentPreset) => (
+						<label key={accent} className={cn(optionClass, "capitalize")}>
+							<input
+								type="radio"
+								name="accent"
+								value={accent}
+								checked={accentPreference === accent}
+								onChange={() => setAccentPreference(accent)}
+								className="sr-only"
+							/>
+							{/* data-accent-swatch re-scopes --primary to this accent (see index.css). */}
+							<span
+								aria-hidden="true"
+								data-accent-swatch={accent}
+								className="size-4 rounded-full border border-border bg-[var(--primary)]"
+							/>
+							{accent}
+						</label>
+					))}
+				</fieldset>
+			</SettingsSection>
 
-						<SettingsRow
-							title="Fondo"
-							action={
-								<div className="flex items-center gap-3">
-									<button
-										type="button"
-										aria-label="Background color: white"
-										className="h-6 w-6 rounded-full border border-[var(--border-default)] bg-[var(--surface-1)] shadow-sm"
-									/>
-									<span className="font-mono text-xs font-medium text-[var(--text-secondary)] uppercase">
-										#FFFFFF
-									</span>
-								</div>
-							}
-						/>
-
-						<SettingsRow
-							title="Texto principal"
-							action={
-								<div className="flex items-center gap-3">
-									<button
-										type="button"
-										aria-label="Foreground color: #0D0D0D"
-										className="h-6 w-16 rounded-full bg-[var(--text-primary)] border border-[var(--border-subtle)] shadow-inner"
-									/>
-									<span className="font-mono text-xs font-medium text-[var(--text-secondary)] uppercase">
-										#0D0D0D
-									</span>
-								</div>
-							}
-						/>
-
-						<SettingsRow
-							title="Tipografía de interfaz"
-							action={
-								<span className="text-xs font-medium text-[var(--text-primary)]">
-									Geist, Inter
-								</span>
-							}
-						/>
-
-						<SettingsRow
-							title="Tipografía numérica"
-							action={
-								<span className="text-xs font-medium text-[var(--text-primary)]">
-									"Geist Mono", ui-mono
-								</span>
-							}
-						/>
-
-						<SettingsRow
-							title="Barra lateral translúcida"
-							action={
-								<div className="h-5 w-9 rounded-full bg-[var(--surface-2)] relative p-0.5 transition-colors">
-									<div className="h-4 w-4 rounded-full bg-[var(--bg-surface)] shadow-sm" />
-								</div>
-							}
-						/>
-
-						<SettingsRow
-							title="Contraste"
-							action={
-								<div className="flex items-center gap-4 w-48">
-									<div className="h-1 flex-1 bg-[var(--surface-2)] rounded-full relative">
-										<div className="absolute top-0 left-0 h-full w-[40%] bg-[var(--color-info)] rounded-full" />
-										<div className="absolute top-1/2 left-[40%] -translate-y-1/2 h-4 w-4 rounded-full bg-[var(--text-primary)] shadow-lg border border-[var(--bg-surface)] cursor-pointer" />
-									</div>
-									<span className="min-w-[2ch] font-mono text-xs font-medium text-[var(--text-primary)]">
-										40
-									</span>
-								</div>
-							}
-						/>
-					</div>
-				</SettingsSection>
-
-				{/* --- INTERACTION SECTION --- */}
-				<SettingsSection title="Interacción" className="pt-1">
-					<div className="flex items-center justify-between">
-						<div className="space-y-1">
-							<h3 className="text-sm font-bold text-[var(--text-primary)]">
-								Usar cursor de puntero
-							</h3>
-							<p className="text-xs text-[var(--text-secondary)]">
-								Muestra un cursor de puntero sobre elementos interactivos.
-							</p>
-						</div>
-						<div className="h-5 w-9 rounded-full bg-[var(--surface-2)] relative p-0.5">
-							<div className="h-4 w-4 rounded-full bg-[var(--bg-surface)] shadow-sm" />
-						</div>
-					</div>
-
-					<div className="space-y-6">
-						<div className="flex items-center justify-between">
-							<div className="space-y-1">
-								<h3 className="text-sm font-bold text-[var(--text-primary)]">
-									Tamaño de interfaz
-								</h3>
-								<p className="text-xs text-[var(--text-secondary)]">
-									Ajustá el tamaño base de la interfaz de Drenyra.
-								</p>
-							</div>
-							<div className="flex items-center gap-2">
-								<div className="px-3 py-1.5 rounded-lg border border-[var(--border-default)] text-xs font-bold text-[var(--text-primary)] min-w-[40px] text-center">
-									16
-								</div>
-								<span className="text-xs text-[var(--text-secondary)]">px</span>
-							</div>
-						</div>
-
-						<div className="flex items-center justify-between">
-							<div className="space-y-1">
-								<h3 className="text-sm font-bold text-[var(--text-primary)]">
-									Tamaño numérico
-								</h3>
-								<p className="text-xs text-[var(--text-secondary)]">
-									Ajustá el tamaño para montos, códigos y diffs.
-								</p>
-							</div>
-							<div className="flex items-center gap-2">
-								<div className="px-3 py-1.5 rounded-lg border border-[var(--border-default)] text-xs font-bold text-[var(--text-primary)] min-w-[40px] text-center">
-									13
-								</div>
-								<span className="text-xs text-[var(--text-secondary)]">px</span>
-							</div>
-						</div>
-					</div>
-				</SettingsSection>
-
-				{/* --- PETS SECTION --- */}
-				<SettingsSection title="Asistente" className="pt-1">
-					<div className="flex flex-col gap-2">
-						<h3 className="text-sm font-bold text-[var(--text-primary)]">
-							Compañero
-						</h3>
-						<SurfacePanel
-							variant="interactive"
-							padding="md"
-							className="flex items-center justify-between px-4 py-3 rounded-xl border-[var(--border-default)] group"
-						>
-							<span className="text-sm font-medium text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors">
-								Seleccionar compañero
-							</span>
-							<ChevronDown size={16} className="text-[var(--text-secondary)]" />
-						</SurfacePanel>
-					</div>
-				</SettingsSection>
-			</div>
+			<SettingsSection title="Densidad">
+				<fieldset className="flex flex-wrap gap-2 p-4">
+					<legend className="sr-only">Densidad</legend>
+					{DENSITY_LEVELS.map((density) => (
+						<label key={density} className={optionClass}>
+							<input
+								type="radio"
+								name="density"
+								value={density}
+								checked={(densityPreference ?? "normal") === density}
+								onChange={() => setDensityPreference(density)}
+								className="sr-only"
+							/>
+							{DENSITY_LABELS[density]}
+						</label>
+					))}
+				</fieldset>
+			</SettingsSection>
 		</SettingsShell>
 	);
-};
+}

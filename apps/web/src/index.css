@@ -482,7 +482,8 @@
   /* ── Accent Presets ──
      Default: voltage (Fiscal Editorial v3) */
 
-  html[data-accent="voltage"] {
+  html[data-accent="voltage"],
+  [data-accent-swatch="voltage"] {
     --color-accent: #f54e00;
     --color-accent-2: #d94400;
     --color-accent-hover: #ff6a1a;
@@ -496,7 +497,8 @@
     --premium-action-rgb: 245 78 0;
   }
 
-  html[data-accent="ember"] {
+  html[data-accent="ember"],
+  [data-accent-swatch="ember"] {
     --color-accent: #d99555;
     --color-accent-2: #c96a45;
     --color-accent-hover: #e8ab6a;
@@ -510,7 +512,8 @@
     --premium-action-rgb: 217 149 85;
   }
 
-  html[data-accent="cocoa"] {
+  html[data-accent="cocoa"],
+  [data-accent-swatch="cocoa"] {
     --color-accent: #824f16;
     --color-accent-2: #a7471c;
     --color-accent-hover: #9a6018;
@@ -524,7 +527,8 @@
     --premium-action-rgb: 130 79 22;
   }
 
-  html[data-accent="terracotta"] {
+  html[data-accent="terracotta"],
+  [data-accent-swatch="terracotta"] {
     --color-accent: #c96a45;
     --color-accent-2: #a7471c;
     --color-accent-hover: #d97a55;
@@ -538,7 +542,8 @@
     --premium-action-rgb: 201 106 69;
   }
 
-  html[data-accent="teal"] {
+  html[data-accent="teal"],
+  [data-accent-swatch="teal"] {
     --color-accent: #0f6570;
     --color-accent-2: #0d4a68;
     --color-accent-hover: #14808c;
@@ -552,7 +557,8 @@
     --premium-action-rgb: 15 101 112;
   }
 
-  html[data-accent="steel"] {
+  html[data-accent="steel"],
+  [data-accent-swatch="steel"] {
     --color-accent: #5f95ca;
     --color-accent-2: #0d4a68;
     --color-accent-hover: #7aadd6;
@@ -566,7 +572,8 @@
     --premium-action-rgb: 95 149 202;
   }
 
-  html[data-accent="sage"] {
+  html[data-accent="sage"],
+  [data-accent-swatch="sage"] {
     --color-accent: #4db35f;
     --color-accent-2: #3d723d;
     --color-accent-hover: #5fc46e;
@@ -580,7 +587,8 @@
     --premium-action-rgb: 77 179 95;
   }
 
-  html[data-accent="lavender"] {
+  html[data-accent="lavender"],
+  [data-accent-swatch="lavender"] {
     --color-accent: #7d6db5;
     --color-accent-2: #57478b;
     --color-accent-hover: #9483c8;
@@ -594,7 +602,8 @@
     --premium-action-rgb: 125 109 181;
   }
 
-  html[data-accent="maple"] {
+  html[data-accent="maple"],
+  [data-accent-swatch="maple"] {
     --color-accent: #d4506b;
     --color-accent-2: #a73a4f;
     --color-accent-hover: #e06a83;

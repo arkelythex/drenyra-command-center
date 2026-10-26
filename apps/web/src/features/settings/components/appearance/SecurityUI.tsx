@@ -39,7 +39,7 @@ export const SecurityHealth = ({ score = 85 }: { score?: number }) => {
 							<span className="text-3xl font-black text-[var(--ink)]">
 								{score}%
 							</span>
-							<span className="text-[8px] font-black uppercase tracking-widest text-[var(--ink)]/30">
+							<span className="text-[8px] font-medium text-[var(--ink)]/30">
 								Seguro
 							</span>
 						</div>
@@ -50,7 +50,7 @@ export const SecurityHealth = ({ score = 85 }: { score?: number }) => {
 				<div className="space-y-4">
 					<div className="flex items-center gap-2">
 						<div className="h-1.5 w-1.5 rounded-full bg-[var(--accent)] shadow-[0_0_8px_var(--accent)]" />
-						<h3 className="text-xs font-black uppercase tracking-[0.2em] text-[var(--ink)]">
+						<h3 className="text-xs font-medium text-[var(--ink)]">
 							Análisis de seguridad
 						</h3>
 					</div>
@@ -76,9 +76,7 @@ export const SecurityHealth = ({ score = 85 }: { score?: number }) => {
 								)}
 							>
 								<tag.icon size={10} strokeWidth={3} />
-								<span className="text-xs font-black uppercase tracking-wider">
-									{tag.label}
-								</span>
+								<span className="text-xs font-medium">{tag.label}</span>
 							</div>
 						))}
 					</div>
@@ -121,7 +119,7 @@ export const SessionCard = ({
 				</div>
 				<div>
 					<div className="flex items-center gap-2">
-						<span className="text-xs font-black uppercase tracking-widest text-[var(--ink)]">
+						<span className="text-xs font-medium text-[var(--ink)]">
 							{device}
 						</span>
 						{isCurrent && (
@@ -130,7 +128,7 @@ export const SessionCard = ({
 							</span>
 						)}
 					</div>
-					<p className="mt-1 text-xs font-medium text-[var(--ink)]/30 uppercase tracking-[0.1em]">
+					<p className="mt-1 text-xs font-medium text-[var(--ink)]/30">
 						{location} • Última actividad: ahora
 					</p>
 				</div>
@@ -138,7 +136,7 @@ export const SessionCard = ({
 
 			<button
 				type="button"
-				className="rounded-xl border border-[var(--border)] bg-[var(--ink)]/5 px-4 py-2 text-xs font-black uppercase tracking-widest text-[var(--ink)]/40 opacity-0 transition-all group-hover:opacity-100 hover:border-[var(--diff-removed)]/30 hover:bg-[var(--diff-removed)]/10 hover:text-[var(--diff-removed)]"
+				className="rounded-xl border border-[var(--border)] bg-[var(--ink)]/5 px-4 py-2 text-xs font-medium text-[var(--ink)]/40 opacity-0 transition-all group-hover:opacity-100 hover:border-[var(--diff-removed)]/30 hover:bg-[var(--diff-removed)]/10 hover:text-[var(--diff-removed)]"
 			>
 				Terminate
 			</button>

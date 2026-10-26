@@ -62,7 +62,11 @@ function countSmallTargets(page: Page) {
 		);
 		return [...interactive].filter((el) => {
 			const box = el.getBoundingClientRect();
-			const visible = box.width > 0 && box.height > 0;
+			// checkVisibility() also excludes visibility:hidden (e.g. a closed drawer), which still has a box.
+			const visible =
+				box.width > 0 &&
+				box.height > 0 &&
+				el.checkVisibility({ visibilityProperty: true });
 			return visible && (box.width < min || box.height < min);
 		}).length;
 	}, MIN_TOUCH_TARGET_PX);

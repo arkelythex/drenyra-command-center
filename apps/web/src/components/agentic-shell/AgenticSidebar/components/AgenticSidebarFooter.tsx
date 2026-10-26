@@ -16,9 +16,7 @@ export function AgenticSidebarFooter({
 			<div className="flex flex-col items-center gap-1 border-t border-[var(--border-subtle)] p-2">
 				<button
 					type="button"
-					onClick={() =>
-						navigate({ to: "/configuracion" } as Parameters<typeof navigate>[0])
-					}
+					onClick={() => navigate({ to: "/settings" })}
 					className="flex items-center justify-center rounded-lg p-2 text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]"
 					aria-label="Settings"
 				>
@@ -42,9 +40,7 @@ export function AgenticSidebarFooter({
 			</span>
 			<button
 				type="button"
-				onClick={() =>
-					navigate({ to: "/configuracion" } as Parameters<typeof navigate>[0])
-				}
+				onClick={() => navigate({ to: "/settings" })}
 				className="rounded-lg p-1.5 text-[var(--text-muted)] transition-colors hover:bg-[var(--surface-2)] hover:text-[var(--text-primary)]"
 				aria-label="Settings"
 			>

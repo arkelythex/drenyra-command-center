@@ -67,9 +67,10 @@ function getSystemColorScheme(): ResolvedColorScheme {
 		: "light";
 }
 
+/** Unknown or missing preferences follow the operating system (the store's own default). */
 export function normalizeThemePreference(value: unknown): ThemePreference {
-	if (typeof value !== "string") return THEME_ID.LIGHT;
-	return LEGACY_THEME_ALIAS[value] ?? THEME_ID.LIGHT;
+	if (typeof value !== "string") return THEME_PREFERENCE.SYSTEM;
+	return LEGACY_THEME_ALIAS[value] ?? THEME_PREFERENCE.SYSTEM;
 }
 
 export function getResolvedThemeId(
@@ -201,7 +202,7 @@ export function readPersistedThemePreference(): ThemePreference {
 
 	const persistedState = window.localStorage.getItem(UI_STORAGE_KEY);
 	if (!persistedState) {
-		return THEME_ID.LIGHT;
+		return THEME_PREFERENCE.SYSTEM;
 	}
 
 	try {
@@ -218,7 +219,7 @@ export function readPersistedThemePreference(): ThemePreference {
 				source: "ux-mode.read-persisted",
 			},
 		);
-		return THEME_ID.LIGHT;
+		return THEME_PREFERENCE.SYSTEM;
 	}
 }
 

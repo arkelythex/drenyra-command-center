@@ -7,7 +7,6 @@ import {
 	Settings,
 	Shield,
 	ShieldCheck,
-	Zap,
 } from "lucide-react";
 
 export type SettingsNavItem = {
@@ -27,50 +26,44 @@ export const SETTINGS_NAV_GROUPS: SettingsNavGroup[] = [
 		label: "",
 		items: [
 			{
-				to: "/configuracion",
+				to: "/settings",
 				label: "General",
 				description:
 					"Idioma, región y configuración base del espacio de trabajo",
 				icon: Settings,
 			},
 			{
-				to: "/configuracion/integrations",
-				label: "Integraciones",
-				description: "OSE, SUNAT y servicios externos",
-				icon: Zap,
-			},
-			{
-				to: "/configuracion/appearance",
+				to: "/settings/appearance",
 				label: "Apariencia",
 				description: "Temas, tipografía y motor visual",
 				icon: Palette,
 			},
 			{
-				to: "/configuracion/billing",
+				to: "/settings/billing",
 				label: "Facturación",
 				description: "Suscripción, recursos y matriz de pagos",
 				icon: CreditCard,
 			},
 			{
-				to: "/configuracion/organization",
+				to: "/settings/organization",
 				label: "Organización",
 				description: "Identidad corporativa y equipo operativo",
 				icon: Building2,
 			},
 			{
-				to: "/configuracion/security",
+				to: "/settings/security",
 				label: "Seguridad",
 				description: "Autenticación, sesiones y encriptación",
 				icon: Shield,
 			},
 			{
-				to: "/configuracion/tool-permissions",
+				to: "/settings/tool-permissions",
 				label: "Permisos",
 				description: "Políticas de aprobación por herramienta de IA",
 				icon: ShieldCheck,
 			},
 			{
-				to: "/configuracion/notifications",
+				to: "/settings/notifications",
 				label: "Notificaciones",
 				description: "Canales, prioridad y digest de señales",
 				icon: Bell,
@@ -87,8 +80,8 @@ export function isSettingsNavItemActive(
 	pathname: string,
 	itemPath: string,
 ): boolean {
-	if (itemPath === "/configuracion") {
-		return pathname === "/configuracion" || pathname === "/configuracion/";
+	if (itemPath === "/settings") {
+		return pathname === "/settings" || pathname === "/settings/";
 	}
 	return pathname.startsWith(itemPath);
 }
