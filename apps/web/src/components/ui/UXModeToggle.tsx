@@ -94,7 +94,7 @@ export function UXModeToggle() {
 								className={cn(
 									"flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium transition-all duration-150",
 									isActive
-										? "bg-[var(--accent)] text-[var(--color-bg-0)] shadow-sm"
+										? "bg-[var(--accent)] text-brand-foreground shadow-sm"
 										: "text-[var(--text-muted)] hover:text-[var(--text-primary)]",
 								)}
 								title={opt.label}
@@ -175,7 +175,7 @@ export function UXModeToggle() {
 								className={cn(
 									"flex flex-1 items-center justify-center rounded-md px-2 py-1.5 text-xs font-medium transition-all duration-150",
 									isActive
-										? "bg-[var(--accent)] text-[var(--color-bg-0)] shadow-sm"
+										? "bg-[var(--accent)] text-brand-foreground shadow-sm"
 										: "text-[var(--text-muted)] hover:text-[var(--text-primary)]",
 								)}
 							>

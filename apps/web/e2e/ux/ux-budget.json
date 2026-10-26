@@ -8,7 +8,7 @@
     "smallTargets": 8
   },
   "desktop-chrome:invoices": {
-    "axe": 2,
+    "axe": 0,
     "smallTargets": 12
   },
   "desktop-chrome:login": {
