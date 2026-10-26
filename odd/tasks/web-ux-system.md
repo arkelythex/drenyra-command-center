@@ -1,0 +1,45 @@
+# apps/web design system + UI/UX (mobile-first) upgrade
+
+Objective: turn `apps/web` into a layered design system (tokens -> atomic components -> templates) and redesign the key screens, mobile first, with Playwright/Chrome evidence on every step.
+Branch: `feat/web-ux-system` (worktree `Drenyra/worktrees/web-ux-system`). Delivery: `ask-on-risk`, forecast well over 400 lines -> chained PRs, strategy pending. Runner: `bun run --cwd apps/web test:run` (Vitest) + `bunx playwright test` (apps/web).
+Status: authorized 2026-10-25 (L4), in progress.
+
+## Specs
+
+- S1 "mejorar el system desing": one token architecture (primitive -> semantic -> component), one variable dialect, no hardcoded colors/sizes in components; close phase 4b of `odd/tasks/web-design-system-unification.md`.
+- S2 "mejorar el diseño ui & Ux aplicando buenas practicas senior frotnend , patrones de diseño , atomic desing y muchas mas buenas practicas": atomic layers (atoms, molecules, organisms, templates) in `packages/ui`; CVA variants; container/presentational split in features; composition over boolean props; every primitive has a story and an accessibility check.
+- S3 "para el diseño version mobile inspirate en el diseño ui & Ux de vanguardia de esta semana , mes de los mejores del mundo , que han ganado premios en diseño , creatividad": benchmark recent award winners (Awwwards Sites of the Day / Mobile Excellence Oct 2026, Apple Design Awards 2026 Interaction + Delight winners) and turn findings into concrete mobile patterns.
+- S4 "tambien en chat gpt mobile , claude mobile y mas": benchmark the ChatGPT and Claude mobile apps (composer, thread, navigation, sheets, streaming states) for the agentic chat/workspace screens.
+- S5 "usa google chrome , playrigt y mas para testear": Playwright with mobile device projects + desktop, axe accessibility checks, screenshot baselines of key screens; Chrome for live inspection and benchmark captures.
+- S6 Constraint (assumption, see Q1): `apps/web/DESIGN.md` v3 "Fiscal Editorial" stays the brand canon (palette, Geist/Geist Mono, no gradients/glass on data, reduced-motion fallbacks); benchmark patterns are adapted to it, not copied.
+- S7 No regressions: existing 101 web unit test files stay green; typecheck error count does not grow (ratchet).
+
+## Tasks
+
+| ID | Work | Specs | Route | Status | Commit |
+|---|---|---|---|---|---|
+| T1 | Safety net first: fix Playwright port mismatch (5173 vs Vite 5174 `strictPort`); add mobile projects (iPhone 15, Pixel 8) + desktop; auth fixture or verified `VITE_FRONTEND_MOCK_MODE`; `@axe-core/playwright` scan + `toHaveScreenshot` baselines for top screens (`/cierre-mensual`, workspace, `/invoices`, `/cumplimiento/expedientes`, `/settings`, `/login`) | S5, S7 | inline | done | see L6 |
+| T2 | Benchmark: Awwwards Oct 2026 SOTD/Mobile Excellence, ADA 2026 (Moonlitt, grug), ChatGPT + Claude mobile; captures via Chrome/Playwright device emulation -> `docs/14-design/mobile-benchmark-2026-10.md` with adopt/adapt/reject per pattern against DESIGN.md | S3, S4, S6 | inline | pending | - |
+| T3 | Token architecture: primitive/semantic/component layers in one source, merge `styles/design-system.css` into `index.css` (phase 4b), pick one dialect (`--color-*`), codemod `[var(--x)]` (1824) and `text-[…]` (1031) to theme utilities, tighten `no-hardcoded-design-values` ratchet | S1, S7 | inline | pending | - |
+| T4 | Atomic restructure in `packages/ui`: atoms/molecules/organisms/templates, CVA variants (Button, Badge, Input…), remove app duplicates in `src/components/ui`, fix `components.json`, install Ladle + one story per primitive with a11y addon | S2, S5 | inline | pending | - |
+| T5 | Mobile app shell: global bottom tab bar (today only `InvoicesBoard`), sidebar as drawer below `lg` (today `xl`), inspector rail as bottom sheet, `viewport-fit=cover` + safe-area insets, 44px touch targets, Toaster follows theme | S2, S3, S5 | inline | pending | - |
+| T6 | Agentic chat/workspace mobile: composer docked above keyboard, thread + streaming states, quick actions sheet, inspired by T2 ChatGPT/Claude findings | S3, S4 | inline | pending | - |
+| T7 | Screen redesigns (one PR each): `/cierre-mensual`, `/invoices`, `/cumplimiento/expedientes`, `/settings`, auth screens; worst hardcoded files first (`ClientDetail.tsx`, `SunatDashboard.tsx`, `AppearanceSettings.tsx`) | S1-S3, S5 | inline | in progress: auth/login done (L7) | see L7 |
+| T8 | Motion + performance: micro-interactions with `prefers-reduced-motion`, Lighthouse mobile budget (LCP, INP, CLS) in Playwright/CI | S3, S5 | inline | pending | - |
+| T9 | Docs: archive `design-tokens-guide.md`, `migration-report.md`, `sidebar-responsive-fixes.md` (contradict canon); fix DESIGN.md token source claim (`tokens.dtcg.json` missing); document atomic layers | S1, S2 | inline | pending | - |
+
+Order: T1 -> T2 -> T3 -> T4 -> T5 -> T6 -> T7 -> T8, T9 alongside. Fiscal-critical paths: none expected (UI only); amounts stay `Money`/mono per DESIGN.md.
+
+## Open questions
+
+- Q1 Resolved by L4 as an assumption: keep DESIGN.md v3 as the base; any brand change is proposed with evidence in T2 before applying.
+
+## Log
+
+- L1 (2026-10-25) User: "crea ODD objetivo mejorar el system desing , mejorar el diseño ui & Ux aplicando buenas practicas senior frotnend , patrones de diseño , atomic desing y muchas mas buenas practicas , ademas para el diseño version mobile inspirate en el diseño ui & Ux de vanguardia de esta semana , mes de los mejores del mundo , que han ganado premios en diseño , creatividad , tambien en chat gpt mobile , claude mobile y mas usa google chrome , playrigt y mas para testear"
+- L2 (2026-10-25) Map (explorer, spot-checked playwright.config.ts:11,18 + vite.config.ts:99-100): DESIGN.md v3 is canon; 3 legacy docs contradict it; tokens split across `index.css` (2077 lines), `styles/design-system.css`, `@theme inline` bridge, 5+ variable dialects; 1824 `[var(--…)]`, 1031 `text-[…]`, 327 hex in CSS, 91 in TS; CVA installed but 0 uses; primitives in `packages/ui` re-exported by `src/components/ui`; `atoms/` has 1 file; sidebar overlay at `xl`; safe-area used twice; tab bar only in InvoicesBoard; Playwright desktop-only and on the wrong port; 0 stories, 0 axe, 0 screenshots.
+- L3 (2026-10-25) Benchmark sources found: Awwwards Sites of the Day Oct 2026 (Forge Automotive, Cartier - Le Chœur des Pierres, Heron AI, OFFFForum…), Apple Design Awards 2026 (Interaction: Moonlitt; Delight and Fun: grug), ChatGPT mobile release notes (simplified sidebar, horizontal feature bar, streamlined dictation). Claude mobile: no public source yet, to capture live in T2.
+- L4 (2026-10-25) User: "yes te autorizo todo y avanza de forma autonoma". Later, mid-turn: "usa google-chrome y ve el diseño desde el navgeador y tu corrije". Claude-in-Chrome extension not connected; real Google Chrome 153 (`/usr/bin/google-chrome-stable`) driven through Playwright `executablePath` instead.
+- L5 (2026-10-25) User screenshot: Vite overlay "Failed to resolve import \"web-vitals\"" in the main checkout. Cause: stale node_modules (113 packages missing); `bun install --frozen-lockfile` fixed it, no tracked change.
+- L6 (2026-10-25) T1 done. playwright.config: port follows `WEB_PORT` (default 5174, was 5173 vs Vite strictPort 5174), projects desktop-chrome / mobile-android (Pixel 7) / mobile-ios (iPhone 15 on Chromium), `reducedMotion: reduce`. New `e2e/base-test.ts` (missing before: the 4 mission specs imported it) mocks session + active company + `/api/*`. `e2e/ux/screens.spec.ts`: per screen visual baseline, one h1, no horizontal overflow, axe + touch-target ratchet in `ux-budget.json` (`UPDATE_UX_BUDGET=1 --workers=1`). Known defect as `test.fail`: mobile sidebar covers content (T5). App root now wraps `MotionConfig reducedMotion="user"` (DESIGN.md requires reduced-motion fallback). Pre-existing, out of scope: `e2e/chat-flow.spec.ts` and `e2e/missions/*` fail against the current UI.
+- L7 (2026-10-25) Login redesign (pulled from T7: first screen users see, and its blur layers made screenshots nondeterministic). AuthLayout rebuilt on semantic tokens (no gradients, blur, pills or hex); real h1; sentence-case copy; 48px fields; safe-area; trust row. Bugs fixed: remember-me toggled twice when its label was clicked (nested role=button + label, RED test first), decorative lock overlapped the email field, dead link to `/onboarding/demos`. Token finding for T3: `bg-primary`/`text-primary` utilities do not exist (`--color-primary` is not in @theme) and in the dark palette `--color-primary` is text ink `#e8dfd0`, so `Button variant="primary"` renders white on cream app-wide; added `brand`/`brand-foreground` to the @theme bridge (maps `--primary`, follows accent preference). Evidence: web vitest 103 files / 814 tests green; UX e2e green on 3 projects; login axe 2 -> 0, small targets 7 -> 3; tsc 505 -> 504, 0 errors in touched files.
