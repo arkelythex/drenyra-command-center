@@ -54,7 +54,10 @@ function projectBlockers(
 					? "high"
 					: "medium",
 		resolved: blocker.resolvedAt !== undefined,
-		resolvedAt: blocker.resolvedAt,
+		// exactOptionalPropertyTypes: omit the key instead of passing undefined.
+		...(blocker.resolvedAt !== undefined
+			? { resolvedAt: blocker.resolvedAt }
+			: {}),
 	}));
 }
 

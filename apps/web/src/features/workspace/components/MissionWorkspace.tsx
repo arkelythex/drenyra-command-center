@@ -51,22 +51,20 @@ export function MissionWorkspace() {
 			<WorkspaceTopBar />
 			<div className="flex flex-1 overflow-hidden">
 				{isDraft ? (
-					<div className="flex flex-1 flex-col items-center justify-center gap-4 p-6">
-						<div className="w-full flex-1 overflow-auto">
-							<Suspense
-								fallback={
-									<div className="flex items-center justify-center h-full">
-										<div className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--accent)] border-t-transparent" />
-									</div>
-								}
-							>
-								<CierreMensualPage mission={mission} />
-							</Suspense>
-						</div>
-						<div className="sticky bottom-0 flex w-full max-w-lg flex-col items-center gap-3 border-t border-[var(--border-subtle)] bg-[var(--surface-1)] p-4">
-							<p className="text-xs text-[var(--text-muted)] text-center">
-								Revisa el estado del cierre arriba. Cuando estés listo, inicia
-								la misión para ejecutar operaciones contables.
+					<div className="flex min-h-0 flex-1 flex-col">
+						<Suspense
+							fallback={
+								<div className="flex flex-1 items-center justify-center">
+									<div className="size-8 animate-spin rounded-full border-2 border-brand border-t-transparent motion-reduce:animate-none" />
+								</div>
+							}
+						>
+							<CierreMensualPage mission={mission} />
+						</Suspense>
+						<footer className="flex shrink-0 flex-col gap-3 border-t border-border bg-background px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+							<p className="text-sm text-muted-foreground">
+								Revisa el estado del cierre. Cuando estés listo, inicia la
+								misión para ejecutar las operaciones contables.
 							</p>
 							<MissionActions
 								status={mission.status}
@@ -77,7 +75,7 @@ export function MissionWorkspace() {
 								onReset={mission.reset}
 								onRequestRevision={mission.requestRevision}
 							/>
-						</div>
+						</footer>
 					</div>
 				) : (
 					<div className="flex flex-1 flex-col gap-4 p-6 overflow-auto">

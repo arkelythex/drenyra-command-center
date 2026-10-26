@@ -1,99 +1,108 @@
-import { FileCheck, ShieldAlert } from "lucide-react";
+import { CircleAlert, CircleCheck, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TaxGateItem {
 	id: string;
 	label: string;
 	status: "verified" | "warning" | "blocked";
-	detail: string;
+	/** Only for what is specific to this control; shared context goes in `summary`. */
+	detail?: string;
 }
 
 interface TaxReviewGateProps {
 	period: string;
 	items: TaxGateItem[];
 	verdict: "ready" | "attention" | "blocked";
+	/** One note that applies to every control (e.g. no evidence yet). */
+	summary?: string;
 }
 
-const VERDICT_CONFIG = {
+const VERDICT = {
 	ready: {
-		icon: FileCheck,
+		icon: CircleCheck,
 		label: "Listo para declarar",
-		color:
-			"text-[var(--color-success)] border-[var(--color-success)]/20 bg-[var(--color-success)]/5",
+		tone: "text-success",
 	},
 	attention: {
 		icon: ShieldAlert,
 		label: "Requiere atención antes de declarar",
-		color:
-			"text-[var(--color-warning)] border-[var(--color-warning)]/20 bg-[var(--color-warning)]/5",
+		tone: "text-warning",
 	},
 	blocked: {
 		icon: ShieldAlert,
 		label: "No se puede declarar hasta resolver bloqueos",
-		color:
-			"text-[var(--color-danger)] border-[var(--color-danger)]/20 bg-[var(--color-danger)]/5",
+		tone: "text-destructive",
 	},
 } as const;
 
-const ITEM_STATUS = {
-	verified: "text-[var(--color-success)]",
-	warning: "text-[var(--color-warning)]",
-	blocked: "text-[var(--color-danger)]",
+const ITEM = {
+	verified: { icon: CircleCheck, label: "Verificado", tone: "text-success" },
+	warning: { icon: CircleAlert, label: "Atención", tone: "text-warning" },
+	blocked: { icon: CircleAlert, label: "Bloqueado", tone: "text-destructive" },
 } as const;
 
-export function TaxReviewGate({ period, items, verdict }: TaxReviewGateProps) {
-	const config = VERDICT_CONFIG[verdict];
-	const Icon = config.icon;
+/** Pre-filing review: one verdict, the shared note once, then one row per control. */
+export function TaxReviewGate({
+	period,
+	items,
+	verdict,
+	summary,
+}: TaxReviewGateProps) {
+	const { icon: VerdictIcon, label, tone } = VERDICT[verdict];
 
 	return (
-		<section className="rounded-2xl border border-[var(--border-default)] bg-[var(--surface-1)] p-5">
-			<div className="flex items-center justify-between gap-3">
-				<div>
-					<h2 className="text-xs font-semibold uppercase tracking-wider text-[var(--text-tertiary)]">
-						Gate fiscal — {period}
-					</h2>
-					<p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">
-						Revisión previa a declaración
-					</p>
-				</div>
-				<div
-					className={cn(
-						"flex items-center gap-2 rounded-xl border px-3 py-2",
-						config.color,
-					)}
+		<section aria-labelledby="tax-gate-title" className="space-y-3">
+			<div className="space-y-1">
+				<h2
+					id="tax-gate-title"
+					className="text-base font-medium tracking-tight"
 				>
-					<Icon size={16} />
-					<span className="text-xs font-semibold">{config.label}</span>
-				</div>
+					Revisión previa a la declaración
+				</h2>
+				<p className="text-sm text-muted-foreground">Período {period}</p>
 			</div>
 
-			<div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-				{items.map((item) => (
-					<div
-						key={item.id}
-						className="rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] p-3"
-					>
-						<div className="flex items-center justify-between gap-2">
-							<span className="text-xs font-medium text-[var(--text-primary)]">
-								{item.label}
-							</span>
+			<p className={cn("flex items-center gap-2 text-sm font-medium", tone)}>
+				<VerdictIcon aria-hidden="true" className="size-4" />
+				{label}
+			</p>
+			{summary ? (
+				<p className="text-sm text-muted-foreground">{summary}</p>
+			) : null}
+
+			<ul
+				aria-label="Controles fiscales"
+				className="divide-y divide-border rounded-xl border border-border bg-card"
+			>
+				{items.map((item) => {
+					const status = ITEM[item.status];
+					const StatusIcon = status.icon;
+					return (
+						<li
+							key={item.id}
+							className="flex items-center justify-between gap-4 px-4 py-3"
+						>
+							<div className="min-w-0">
+								<p className="text-sm">{item.label}</p>
+								{item.detail ? (
+									<p className="mt-0.5 text-sm text-muted-foreground">
+										{item.detail}
+									</p>
+								) : null}
+							</div>
 							<span
 								className={cn(
-									"text-[10px] font-semibold",
-									ITEM_STATUS[item.status],
+									"flex shrink-0 items-center gap-1.5 text-sm",
+									status.tone,
 								)}
 							>
-								{item.status === "verified" && "Verificado"}
-								{item.status === "warning" && "Atención"}
-								{item.status === "blocked" && "Bloqueado"}
+								<StatusIcon aria-hidden="true" className="size-4" />
+								{status.label}
 							</span>
-						</div>
-						<p className="mt-1 text-[11px] text-[var(--text-tertiary)]">
-							{item.detail}
-						</p>
-					</div>
-				))}
-			</div>
+						</li>
+					);
+				})}
+			</ul>
 		</section>
 	);
 }

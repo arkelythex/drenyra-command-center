@@ -1,16 +1,13 @@
 import type { FiscalRiskLevel } from "@drenyra/domain/drenyra";
 import {
-	AlertTriangle,
 	ArrowRight,
-	CheckCircle2,
-	Info,
-	ShieldAlert,
-	XCircle,
+	CircleAlert,
+	CircleCheck,
+	CircleX,
+	type LucideIcon,
 } from "lucide-react";
-import { createElement, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-
-// ── Types ───────────────────────────────────────────────────────────────────────
 
 export interface FiscalRiskAlert {
 	id: string;
@@ -19,216 +16,157 @@ export interface FiscalRiskAlert {
 	riskLevel: FiscalRiskLevel;
 	category?: string;
 	actionLabel?: string;
+	/** Where the action goes; without it the action is not shown. */
 	actionTo?: string;
 }
 
 export interface FiscalRiskLayerProps {
-	/** Risk alerts to display */
 	alerts: FiscalRiskAlert[];
-	/** Summary/aggregate risk level for the page */
-	overallRisk?: FiscalRiskLevel | null;
-	/** Page content wrapped by the risk layer */
+	/** Aggregate risk of the page, shown next to the counts. */
+	overallRisk?: FiscalRiskLevel | null | undefined;
 	children: ReactNode;
-	/** Show compact mode (no descriptions) */
-	compact?: boolean;
 }
 
-// ── Color mapping ──────────────────────────────────────────────────────────────
+interface LevelStyle {
+	icon: LucideIcon;
+	tone: string;
+	/** Level as a word, singular and plural, so state never depends on color. */
+	singular: string;
+	plural: string;
+	label: string;
+}
 
-const RISK_COLORS: Record<
-	FiscalRiskLevel,
-	{
-		border: string;
-		bg: string;
-		text: string;
-		dot: string;
-		icon: typeof AlertTriangle;
-	}
-> = {
-	LOW: {
-		border: "border-[var(--color-success)]/20",
-		bg: "bg-[var(--color-success)]/5",
-		text: "text-[var(--color-success)]",
-		dot: "bg-[var(--color-success)]",
-		icon: CheckCircle2,
-	},
-	MEDIUM: {
-		border: "border-[var(--color-warning)]/20",
-		bg: "bg-[var(--color-warning)]/5",
-		text: "text-[var(--color-warning)]",
-		dot: "bg-[var(--color-warning)]",
-		icon: AlertTriangle,
+const LEVEL_ORDER: FiscalRiskLevel[] = ["CRITICAL", "HIGH", "MEDIUM", "LOW"];
+
+const LEVELS: Record<FiscalRiskLevel, LevelStyle> = {
+	CRITICAL: {
+		icon: CircleX,
+		tone: "text-destructive",
+		singular: "crítico",
+		plural: "críticos",
+		label: "Crítico",
 	},
 	HIGH: {
-		border: "border-[var(--color-danger)]/20",
-		bg: "bg-[var(--color-danger)]/5",
-		text: "text-[var(--color-danger)]",
-		dot: "bg-[var(--color-danger)]",
-		icon: ShieldAlert,
+		icon: CircleAlert,
+		tone: "text-destructive",
+		singular: "alto",
+		plural: "altos",
+		label: "Alto",
 	},
-	CRITICAL: {
-		border: "border-red-800/30",
-		bg: "bg-red-950/10",
-		text: "text-red-700 dark:text-red-400",
-		dot: "bg-red-700 dark:bg-red-400",
-		icon: XCircle,
+	MEDIUM: {
+		icon: CircleAlert,
+		tone: "text-warning",
+		singular: "medio",
+		plural: "medios",
+		label: "Medio",
+	},
+	LOW: {
+		icon: CircleCheck,
+		tone: "text-success",
+		singular: "bajo",
+		plural: "bajos",
+		label: "Bajo",
 	},
 };
 
-// ── Risk Badge (standalone) ────────────────────────────────────────────────────
+function countByLevel(alerts: FiscalRiskAlert[]) {
+	return LEVEL_ORDER.map((level) => ({
+		level,
+		count: alerts.filter((alert) => alert.riskLevel === level).length,
+	})).filter(({ count }) => count > 0);
+}
 
-export function FiscalRiskBadge({
-	riskLevel,
-	score,
-	compact = false,
+function RiskSummary({
+	alerts,
+	overallRisk,
 }: {
-	riskLevel: FiscalRiskLevel;
-	score?: number;
-	compact?: boolean;
+	alerts: FiscalRiskAlert[];
+	overallRisk?: FiscalRiskLevel | null | undefined;
 }) {
-	const colors = RISK_COLORS[riskLevel];
+	const total = alerts.length;
 	return (
-		<span
-			className={cn(
-				"inline-flex items-center gap-1 rounded-full border px-2 py-1 text-2xs font-bold",
-				colors.border,
-				colors.bg,
-				colors.text,
-			)}
+		<p
+			role="status"
+			className="flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-border px-4 py-2 text-sm sm:px-8"
 		>
-			{createElement(colors.icon, { size: 10 })}
-			{riskLevel}
-			{!compact && typeof score === "number" ? ` · ${score}` : ""}
-		</span>
+			{overallRisk ? (
+				<span className={cn("font-medium", LEVELS[overallRisk].tone)}>
+					Riesgo {LEVELS[overallRisk].singular}
+				</span>
+			) : null}
+			<span className="text-foreground">
+				{total} alerta{total === 1 ? "" : "s"}
+			</span>
+			{countByLevel(alerts).map(({ level, count }) => (
+				<span key={level} className={LEVELS[level].tone}>
+					{count} {count === 1 ? LEVELS[level].singular : LEVELS[level].plural}
+				</span>
+			))}
+		</p>
 	);
 }
 
-// ── Risk Layer (page wrapper) ──────────────────────────────────────────────────
+function RiskAlertList({ alerts }: { alerts: FiscalRiskAlert[] }) {
+	return (
+		<ul
+			aria-label="Alertas fiscales"
+			className="mx-4 mt-4 divide-y divide-border rounded-xl border border-border bg-card sm:mx-8"
+		>
+			{alerts.map((alert) => {
+				const level = LEVELS[alert.riskLevel];
+				const Icon = level.icon;
+				return (
+					<li key={alert.id} className="flex items-start gap-3 px-4 py-3">
+						<Icon
+							aria-hidden="true"
+							className={cn("mt-0.5 size-4 shrink-0", level.tone)}
+						/>
+						<div className="min-w-0 flex-1 space-y-0.5">
+							<p className="text-sm font-medium">{alert.title}</p>
+							{alert.description ? (
+								<p className="text-sm text-muted-foreground">
+									{alert.description}
+								</p>
+							) : null}
+							{alert.actionLabel && alert.actionTo ? (
+								<a
+									href={alert.actionTo}
+									className="inline-flex min-h-11 items-center gap-1 text-sm font-medium text-brand underline-offset-4 hover:underline focus-visible:underline"
+								>
+									{alert.actionLabel}
+									<ArrowRight aria-hidden="true" className="size-3.5" />
+								</a>
+							) : null}
+						</div>
+						<span className={cn("shrink-0 text-sm", level.tone)}>
+							{level.label}
+						</span>
+					</li>
+				);
+			})}
+		</ul>
+	);
+}
 
+/**
+ * Page wrapper that puts open fiscal alerts above the content. It is a flex
+ * column that may shrink (min-h-0) so the content below scrolls on its own
+ * instead of growing the page past the viewport.
+ */
 export function FiscalRiskLayer({
 	alerts,
 	overallRisk,
 	children,
-	compact = false,
 }: FiscalRiskLayerProps) {
 	const hasAlerts = alerts.length > 0;
-	const riskCounts = {
-		CRITICAL: alerts.filter((a) => a.riskLevel === "CRITICAL").length,
-		HIGH: alerts.filter((a) => a.riskLevel === "HIGH").length,
-		MEDIUM: alerts.filter((a) => a.riskLevel === "MEDIUM").length,
-		LOW: alerts.filter((a) => a.riskLevel === "LOW").length,
-	};
 
 	return (
-		<div className="flex flex-1 flex-col">
-			{/* ── Risk summary strip ── */}
-			{hasAlerts && (
-				<div
-					className={cn(
-						"flex items-center gap-4 border-b px-4 py-2 text-xs",
-						"border-[var(--border-subtle)] bg-[var(--surface-2)]",
-					)}
-				>
-					{overallRisk ? (
-						<FiscalRiskBadge riskLevel={overallRisk} compact />
-					) : null}
-					{riskCounts.CRITICAL > 0 && (
-						<span className="font-medium text-red-700 dark:text-red-400">
-							{riskCounts.CRITICAL} crítico
-							{riskCounts.CRITICAL !== 1 ? "s" : ""}
-						</span>
-					)}
-					{riskCounts.HIGH > 0 && (
-						<span className="font-medium text-[var(--color-danger)]">
-							{riskCounts.HIGH} alto
-							{riskCounts.HIGH !== 1 ? "s" : ""}
-						</span>
-					)}
-					{riskCounts.MEDIUM > 0 && (
-						<span className="text-[var(--color-warning)]">
-							{riskCounts.MEDIUM} medio
-							{riskCounts.MEDIUM !== 1 ? "s" : ""}
-						</span>
-					)}
-					{riskCounts.LOW > 0 && (
-						<span className="text-[var(--color-success)]">
-							{riskCounts.LOW} bajo
-							{riskCounts.LOW !== 1 ? "s" : ""}
-						</span>
-					)}
-					<span className="ml-auto text-[var(--text-muted)]">
-						{hasAlerts
-							? `${alerts.length} alerta${alerts.length !== 1 ? "s" : ""}`
-							: ""}
-					</span>
-				</div>
-			)}
-
-			{/* ── Alert cards ── */}
-			{hasAlerts && (
-				<div className={cn("space-y-1.5 p-4 pb-0", compact && "p-2 pb-0")}>
-					{alerts.slice(0, compact ? 3 : alerts.length).map((alert) => {
-						const colors = RISK_COLORS[alert.riskLevel];
-						return (
-							<div
-								key={alert.id}
-								className={cn(
-									"flex items-start gap-3 rounded-lg border p-3",
-									colors.border,
-									colors.bg,
-								)}
-							>
-								{createElement(colors.icon, {
-									size: 14,
-									className: cn("mt-0.5 shrink-0", colors.text),
-								})}
-								<div className="min-w-0 flex-1">
-									<div className="flex items-start justify-between gap-2">
-										<p className="text-xs font-semibold text-[var(--text-primary)]">
-											{alert.title}
-										</p>
-										{!compact && alert.category && (
-											<span className="shrink-0 rounded-full bg-[var(--surface-3)] px-1.5 py-0.5 text-[10px] text-[var(--text-tertiary)]">
-												{alert.category}
-											</span>
-										)}
-									</div>
-									{!compact && alert.description && (
-										<p className="mt-0.5 text-2xs text-[var(--text-tertiary)] leading-relaxed">
-											{alert.description}
-										</p>
-									)}
-									{alert.actionLabel && (
-										<button
-											type="button"
-											onClick={() => {
-												if (alert.actionTo) {
-													window.location.href = alert.actionTo;
-												}
-											}}
-											className="mt-1 inline-flex items-center gap-1 text-2xs font-medium text-[var(--color-primary)] hover:underline"
-										>
-											{alert.actionLabel}
-											<ArrowRight size={10} />
-										</button>
-									)}
-								</div>
-							</div>
-						);
-					})}
-					{compact && alerts.length > 3 && (
-						<button
-							type="button"
-							className="flex w-full items-center justify-center gap-1 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-2)] py-2 text-2xs text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]"
-						>
-							<Info size={10} />+{alerts.length - 3} alertas más
-						</button>
-					)}
-				</div>
-			)}
-
-			{/* ── Main content ── */}
-			<div className="flex-1">{children}</div>
+		<div className="flex min-h-0 flex-1 flex-col">
+			{hasAlerts ? (
+				<RiskSummary alerts={alerts} overallRisk={overallRisk} />
+			) : null}
+			{hasAlerts ? <RiskAlertList alerts={alerts} /> : null}
+			<div className="flex min-h-0 flex-1 flex-col">{children}</div>
 		</div>
 	);
 }

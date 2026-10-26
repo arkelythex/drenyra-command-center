@@ -1,103 +1,82 @@
-import { AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
+import { CircleAlert, CircleCheck, CircleX } from "lucide-react";
 import type { MissionBlocker } from "../mission.types";
 
-const SEVERITY_ICON: Record<string, typeof AlertTriangle> = {
-	low: AlertTriangle,
-	medium: AlertTriangle,
-	high: XCircle,
-	critical: XCircle,
-};
-
-const SEVERITY_COLOR: Record<string, string> = {
-	low: "text-[var(--color-warning)]",
-	medium: "text-[var(--color-warning)]",
-	high: "text-[var(--color-danger)]",
-	critical: "text-[var(--color-danger)]",
-};
-
-const SEVERITY_LABEL: Record<string, string> = {
-	low: "Bajo",
-	medium: "Medio",
-	high: "Alto",
-	critical: "Crítico",
-};
+const SEVERITY = {
+	low: { icon: CircleAlert, label: "Bajo", tone: "text-warning" },
+	medium: { icon: CircleAlert, label: "Medio", tone: "text-warning" },
+	high: { icon: CircleX, label: "Alto", tone: "text-destructive" },
+	critical: { icon: CircleX, label: "Crítico", tone: "text-destructive" },
+} as const;
 
 interface MissionBlockersProps {
 	blockers: MissionBlocker[];
 }
 
+/** Open blockers first, with their severity in words; resolved ones stay collapsed. */
 export function MissionBlockers({ blockers }: MissionBlockersProps) {
-	const active = blockers.filter((b) => !b.resolved);
-	const resolved = blockers.filter((b) => b.resolved);
+	if (blockers.length === 0) return null;
 
-	if (blockers.length === 0) {
-		return null;
-	}
+	const active = blockers.filter((blocker) => !blocker.resolved);
+	const resolved = blockers.filter((blocker) => blocker.resolved);
 
 	return (
-		<section>
-			<h2 className="mb-3 text-xs font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]">
+		<section className="space-y-3">
+			<h2 className="flex items-baseline gap-3 text-base font-medium tracking-tight">
 				Bloqueadores
-				{active.length > 0 && (
-					<span className="ml-2 rounded-full bg-[var(--color-danger)]/10 px-2 py-0.5 text-2xs font-normal text-[var(--color-danger)]">
+				{active.length > 0 ? (
+					<span className="text-sm font-normal text-destructive">
 						{active.length} activo{active.length !== 1 ? "s" : ""}
 					</span>
-				)}
+				) : null}
 			</h2>
 
-			<div className="space-y-2">
-				{active.map((blocker) => {
-					const Icon = SEVERITY_ICON[blocker.severity] ?? AlertTriangle;
-					const color =
-						SEVERITY_COLOR[blocker.severity] ?? "text-[var(--color-warning)]";
+			{active.length > 0 ? (
+				<ul
+					aria-label="Bloqueadores activos"
+					className="divide-y divide-border rounded-xl border border-border bg-card"
+				>
+					{active.map((blocker) => {
+						const severity = SEVERITY[blocker.severity] ?? SEVERITY.medium;
+						const Icon = severity.icon;
+						return (
+							<li key={blocker.id} className="flex items-start gap-3 px-4 py-3">
+								<Icon
+									aria-hidden="true"
+									className={`mt-0.5 size-4 shrink-0 ${severity.tone}`}
+								/>
+								<p className="min-w-0 flex-1 text-sm">{blocker.reason}</p>
+								<span className={`shrink-0 text-sm ${severity.tone}`}>
+									{severity.label}
+								</span>
+							</li>
+						);
+					})}
+				</ul>
+			) : null}
 
-					return (
-						<div
-							key={blocker.id}
-							className="flex items-start gap-3 rounded-lg border border-[var(--color-danger)]/20 bg-[var(--color-danger)]/5 px-3 py-2"
-						>
-							<div className={`mt-0.5 shrink-0 ${color}`}>
-								<Icon className="size-4" aria-hidden />
-							</div>
-							<div className="min-w-0 flex-1">
-								<p className="text-xs font-medium text-[var(--text-primary)]">
-									{blocker.reason}
-								</p>
-								<p className="text-2xs text-[var(--text-tertiary)]">
-									{SEVERITY_LABEL[blocker.severity]}
-								</p>
-							</div>
-						</div>
-					);
-				})}
-
-				{resolved.length > 0 && (
-					<details className="group">
-						<summary className="cursor-pointer text-2xs font-medium text-[var(--text-muted)] hover:text-[var(--text-secondary)]">
-							{resolved.length} bloqueador{resolved.length !== 1 ? "es" : ""}{" "}
-							resuelto
-							{resolved.length !== 1 ? "s" : ""}
-						</summary>
-						<div className="mt-2 space-y-2">
-							{resolved.map((blocker) => (
-								<div
-									key={blocker.id}
-									className="flex items-start gap-3 rounded-lg px-3 py-2"
-								>
-									<div className="mt-0.5 shrink-0 text-[var(--color-success)]">
-										<CheckCircle2 className="size-4" aria-hidden />
-									</div>
-									<div className="min-w-0 flex-1">
-										<p className="text-xs text-[var(--text-muted)] line-through">
-											{blocker.reason}
-										</p>
-									</div>
-								</div>
-							))}
-						</div>
-					</details>
-				)}
-			</div>
+			{resolved.length > 0 ? (
+				<details>
+					<summary className="flex min-h-11 cursor-pointer items-center text-sm text-muted-foreground hover:text-foreground">
+						{resolved.length} bloqueador{resolved.length !== 1 ? "es" : ""}{" "}
+						resuelto
+						{resolved.length !== 1 ? "s" : ""}
+					</summary>
+					<ul className="space-y-2 pt-1">
+						{resolved.map((blocker) => (
+							<li
+								key={blocker.id}
+								className="flex items-start gap-3 px-1 text-sm text-muted-foreground"
+							>
+								<CircleCheck
+									aria-hidden="true"
+									className="mt-0.5 size-4 shrink-0 text-success"
+								/>
+								<span className="line-through">{blocker.reason}</span>
+							</li>
+						))}
+					</ul>
+				</details>
+			) : null}
 		</section>
 	);
 }

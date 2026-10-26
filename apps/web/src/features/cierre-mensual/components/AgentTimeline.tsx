@@ -1,26 +1,20 @@
 import {
-	AlertCircle,
-	CheckCircle2,
+	CircleAlert,
+	CircleCheck,
 	Clock,
 	Info,
 	type LucideIcon,
 } from "lucide-react";
 import type { MissionTimelineEvent } from "../mission.types";
 
-const STATUS_ICON: Record<string, LucideIcon> = {
-	success: CheckCircle2,
-	warning: AlertCircle,
-	error: AlertCircle,
-	info: Info,
-	blocked: Clock,
-};
+const FALLBACK_STATUS = { icon: Info, tone: "text-muted-foreground" } as const;
 
-const STATUS_COLOR: Record<string, string> = {
-	success: "text-[var(--color-success)]",
-	warning: "text-[var(--color-warning)]",
-	error: "text-[var(--color-danger)]",
-	info: "text-[var(--color-info)]",
-	blocked: "text-[var(--color-warning)]",
+const STATUS: Record<string, { icon: LucideIcon; tone: string }> = {
+	success: { icon: CircleCheck, tone: "text-success" },
+	warning: { icon: CircleAlert, tone: "text-warning" },
+	error: { icon: CircleAlert, tone: "text-destructive" },
+	info: { icon: Info, tone: "text-muted-foreground" },
+	blocked: { icon: Clock, tone: "text-warning" },
 };
 
 interface AgentTimelineProps {
@@ -28,51 +22,48 @@ interface AgentTimelineProps {
 	maxVisible?: number;
 }
 
+/** What the agent did, oldest to newest; only the latest `maxVisible` events. */
 export function AgentTimeline({ events, maxVisible = 20 }: AgentTimelineProps) {
 	const visible = events.slice(-maxVisible);
 
 	if (visible.length === 0) {
 		return (
-			<p className="text-xs text-[var(--text-tertiary)]">
+			<p className="text-sm text-muted-foreground">
 				No hay eventos en la línea de tiempo.
 			</p>
 		);
 	}
 
 	return (
-		<div className="space-y-0">
+		<ol aria-label="Línea de tiempo del agente" className="space-y-4">
 			{visible.map((event) => {
-				const Icon = STATUS_ICON[event.status] ?? Info;
-				const color = STATUS_COLOR[event.status] ?? "text-[var(--text-muted)]";
-				const time = new Date(event.timestamp).toLocaleTimeString("es-PE", {
-					hour: "2-digit",
-					minute: "2-digit",
-				});
-
+				const { icon: Icon, tone } = STATUS[event.status] ?? FALLBACK_STATUS;
+				const date = new Date(event.timestamp);
 				return (
-					<div
-						key={event.id}
-						className="flex gap-3 border-l-2 border-[var(--border-subtle)] pb-2 pl-3 pt-0.5 last:pb-0"
-					>
-						<div className={`mt-0.5 shrink-0 ${color}`}>
-							<Icon className="size-3.5" aria-hidden />
-						</div>
-						<div className="min-w-0 flex-1">
-							<p className="text-xs font-medium text-[var(--text-primary)]">
-								{event.action}
-							</p>
-							<p className="text-2xs text-[var(--text-tertiary)]">
+					<li key={event.id} className="flex gap-3">
+						<Icon
+							aria-hidden="true"
+							className={`mt-0.5 size-4 shrink-0 ${tone}`}
+						/>
+						<div className="min-w-0 flex-1 space-y-0.5">
+							<p className="text-sm font-medium">{event.action}</p>
+							<p className="text-sm text-muted-foreground">
 								{event.description}
 							</p>
-							<div className="mt-0.5 flex items-center gap-2 text-2xs text-[var(--text-muted)]">
-								<span>{time}</span>
+							<p className="flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground">
+								<time dateTime={date.toISOString()}>
+									{date.toLocaleTimeString("es-PE", {
+										hour: "2-digit",
+										minute: "2-digit",
+									})}
+								</time>
 								<span className="capitalize">{event.actor}</span>
 								{event.scope ? <span>· {event.scope}</span> : null}
-							</div>
+							</p>
 						</div>
-					</div>
+					</li>
 				);
 			})}
-		</div>
+		</ol>
 	);
 }

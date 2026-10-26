@@ -1,14 +1,10 @@
 import type { CierreMensual } from "@drenyra/domain";
 import {
-	Calculator,
-	Clock,
-	Fingerprint,
-	Landmark,
-	type LucideIcon,
-	Receipt,
+	CircleAlert,
+	CircleCheck,
+	CircleDashed,
 	ShieldCheck,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface SidePanelProps {
@@ -16,151 +12,145 @@ interface SidePanelProps {
 	onOpenInspector: () => void;
 }
 
-export function SidePanel({ cierre, onOpenInspector }: SidePanelProps) {
+type Tone = "ok" | "attention" | "pending";
+
+/** Area status as the domain reports it -> the word shown and its tone. */
+const AREA_STATUS: Record<string, { label: string; tone: Tone }> = {
+	CONCILIADO: { label: "Conciliado", tone: "ok" },
+	VALIDADO: { label: "Validado", tone: "ok" },
+	NO_APLICA: { label: "No aplica", tone: "ok" },
+	CON_DISCREPANCIAS: { label: "Con discrepancias", tone: "attention" },
+};
+const PENDING = { label: "Pendiente", tone: "pending" as Tone };
+
+const TONE = {
+	ok: { icon: CircleCheck, className: "text-success" },
+	attention: { icon: CircleAlert, className: "text-warning" },
+	pending: { icon: CircleDashed, className: "text-muted-foreground" },
+} as const;
+
+function StatusRow({
+	label,
+	status,
+}: {
+	label: string;
+	status: { label: string; tone: Tone };
+}) {
+	const { icon: Icon, className } = TONE[status.tone];
 	return (
-		<aside className="space-y-5">
-			{/* Agent Analysis */}
-			{cierre.agentAnalysis && (
-				<div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-5 space-y-3">
-					<h3 className="text-xs font-bold uppercase tracking-widest text-[var(--color-info)]">
-						Análisis del Agente
-					</h3>
-					<p className="text-xs text-[var(--text-secondary)] leading-relaxed">
-						{cierre.agentAnalysis.summary}
-					</p>
-					<p className="text-3xs font-bold text-[var(--color-success)]">
-						{cierre.agentAnalysis.confidence * 100}% confianza ·{" "}
-						{cierre.agentAnalysis.discrepancies} discrepancias
-					</p>
-					{cierre.agentAnalysis.recommendations.length > 0 && (
-						<div className="space-y-1">
-							{cierre.agentAnalysis.recommendations.map((r, i) => (
-								<p
-									key={i}
-									className="text-2xs text-[var(--text-tertiary)] italic"
-								>
-									• {r}
-								</p>
-							))}
-						</div>
-					)}
-				</div>
-			)}
-
-			{/* Status Cards */}
-			<div className="grid grid-cols-2 gap-3">
-				<StatusCard label="SIRE" status={cierre.sireStatus} icon={Receipt} />
-				<StatusCard
-					label="Bancos"
-					status={cierre.bancosStatus}
-					icon={Landmark}
-				/>
-				<StatusCard label="IGV" status={cierre.igvStatus} icon={Calculator} />
-				<StatusCard
-					label="Riesgo"
-					status={
-						cierre.globalRiskLevel === "LOW" ? "VALIDADO" : "CON_DISCREPANCIAS"
-					}
-					icon={ShieldCheck}
-					isRisk
-				/>
-			</div>
-
-			{/* Firmas */}
-			<div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--surface-1)] p-5 space-y-3">
-				<h3 className="text-xs font-bold uppercase tracking-widest text-[var(--color-info)]">
-					Firmas Requeridas
-				</h3>
-				{Object.entries(cierre.firmas).map(([rol, firma]) => (
-					<div
-						key={rol}
-						className={cn(
-							"flex items-center gap-2 rounded-lg border px-3 py-2",
-							firma?.firmado
-								? "border-[var(--color-success)]/20 bg-[var(--color-success)]/4"
-								: "border-[var(--border-subtle)]",
-						)}
-					>
-						{firma?.firmado ? (
-							<Fingerprint size={14} className="text-[var(--color-success)]" />
-						) : (
-							<Clock size={14} className="text-[var(--text-tertiary)]" />
-						)}
-						<span className="text-2xs font-bold text-[var(--text-primary)] capitalize">
-							{rol}
-						</span>
-						<span
-							className={cn(
-								"ml-auto text-3xs font-bold",
-								firma?.firmado
-									? "text-[var(--color-success)]"
-									: "text-[var(--text-tertiary)]",
-							)}
-						>
-							{firma?.firmado ? `Firmado ${firma.fecha ?? ""}` : "Pendiente"}
-						</span>
-					</div>
-				))}
-			</div>
-
-			<Button
-				className="w-full h-10 text-xs font-bold"
-				onClick={onOpenInspector}
-			>
-				<ShieldCheck size={16} className="mr-2" />
-				Abrir Inspector Fiscal
-			</Button>
-		</aside>
+		<li className="flex items-center justify-between gap-4 px-4 py-3 text-sm">
+			<span>{label}</span>
+			<span className={cn("flex items-center gap-1.5", className)}>
+				<Icon aria-hidden="true" className="size-4" />
+				{status.label}
+			</span>
+		</li>
 	);
 }
 
-/* ── Status Card (co-located) ───────────────────────────────── */
-
-interface StatusCardProps {
-	label: string;
-	status: string;
-	icon: LucideIcon;
-	isRisk?: boolean;
+function riskStatus(level: CierreMensual["globalRiskLevel"]) {
+	return level === "LOW"
+		? { label: "Sin alertas", tone: "ok" as Tone }
+		: { label: "Con alertas", tone: "attention" as Tone };
 }
 
-function StatusCard({ label, status, icon: Icon, isRisk }: StatusCardProps) {
-	const ok =
-		status === "CONCILIADO" || status === "VALIDADO" || status === "NO_APLICA";
+export function SidePanel({ cierre, onOpenInspector }: SidePanelProps) {
+	const { agentAnalysis } = cierre;
+	const signatures = Object.entries(cierre.firmas);
+
 	return (
-		<div
-			className={cn(
-				"rounded-2xl border p-3 text-center",
-				ok
-					? "border-[var(--color-success)]/20 bg-[var(--color-success)]/4"
-					: "border-[var(--color-warning)]/20 bg-[var(--color-warning)]/4",
-			)}
-		>
-			<Icon
-				size={16}
-				className={cn(
-					"mx-auto",
-					ok ? "text-[var(--color-success)]" : "text-[var(--color-warning)]",
-				)}
-			/>
-			<p className="mt-1 text-3xs font-bold uppercase tracking-wider text-[var(--text-tertiary)]">
-				{label}
-			</p>
-			<p
-				className={cn(
-					"text-2xs font-bold",
-					ok ? "text-[var(--color-success)]" : "text-[var(--color-warning)]",
-				)}
+		<aside className="space-y-8">
+			{agentAnalysis ? (
+				<section className="space-y-2">
+					<h3 className="text-base font-medium tracking-tight">
+						Análisis del agente
+					</h3>
+					<p className="text-sm leading-relaxed text-muted-foreground">
+						{agentAnalysis.summary}
+					</p>
+					<p className="text-sm text-foreground">
+						{Math.round(agentAnalysis.confidence * 100)}% de confianza ·{" "}
+						{agentAnalysis.discrepancies}{" "}
+						{agentAnalysis.discrepancies === 1
+							? "discrepancia"
+							: "discrepancias"}
+					</p>
+					{agentAnalysis.recommendations.length > 0 ? (
+						<ul
+							aria-label="Recomendaciones"
+							className="list-disc space-y-1 pl-5 text-sm text-muted-foreground"
+						>
+							{agentAnalysis.recommendations.map((recommendation) => (
+								<li key={recommendation}>{recommendation}</li>
+							))}
+						</ul>
+					) : null}
+				</section>
+			) : null}
+
+			<section className="space-y-3">
+				<h3 className="text-base font-medium tracking-tight">
+					Estado del cierre
+				</h3>
+				<ul
+					aria-label="Estado del cierre"
+					className="divide-y divide-border rounded-xl border border-border bg-card"
+				>
+					<StatusRow
+						label="SIRE"
+						status={AREA_STATUS[cierre.sireStatus] ?? PENDING}
+					/>
+					<StatusRow
+						label="Bancos"
+						status={AREA_STATUS[cierre.bancosStatus] ?? PENDING}
+					/>
+					<StatusRow
+						label="IGV"
+						status={AREA_STATUS[cierre.igvStatus] ?? PENDING}
+					/>
+					<StatusRow
+						label="Riesgo"
+						status={riskStatus(cierre.globalRiskLevel)}
+					/>
+				</ul>
+			</section>
+
+			<section className="space-y-3">
+				<h3 className="text-base font-medium tracking-tight">
+					Firmas requeridas
+				</h3>
+				<ul
+					aria-label="Firmas requeridas"
+					className="divide-y divide-border rounded-xl border border-border bg-card"
+				>
+					{signatures.map(([role, signature]) => (
+						<li
+							key={role}
+							className="flex items-center justify-between gap-4 px-4 py-3 text-sm"
+						>
+							<span className="capitalize">{role}</span>
+							<span
+								className={
+									signature?.firmado ? "text-success" : "text-muted-foreground"
+								}
+							>
+								{signature?.firmado
+									? `Firmado ${signature.fecha ?? ""}`.trim()
+									: "Pendiente"}
+							</span>
+						</li>
+					))}
+				</ul>
+			</section>
+
+			<button
+				type="button"
+				onClick={onOpenInspector}
+				className="flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-border text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
 			>
-				{status === "CONCILIADO"
-					? "OK"
-					: status === "VALIDADO"
-						? "OK"
-						: status === "CON_DISCREPANCIAS"
-							? "Alertas"
-							: status === "NO_APLICA"
-								? "N/A"
-								: "Pendiente"}
-			</p>
-		</div>
+				<ShieldCheck aria-hidden="true" className="size-4" />
+				Abrir inspector fiscal
+			</button>
+		</aside>
 	);
 }
