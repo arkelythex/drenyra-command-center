@@ -433,6 +433,9 @@ describe("MissionStateView", () => {
 				onRetry={vi.fn()}
 			/>,
 		);
-		expect(screen.getByText(/Misión fallida/)).toBeDefined();
+		expect(
+			screen.getByRole("heading", { name: /la misión no pudo completarse/i }),
+		).toBeDefined();
+		expect(screen.getByRole("button", { name: "Reintentar" })).toBeDefined();
 	});
 });
