@@ -6,6 +6,19 @@ vi.mock("../../../security/session-context", () => ({
 	resolveSessionContext: vi.fn(),
 }));
 
+// tenantAuth derives the company from the user's memberships; give it one without a database.
+vi.mock("@drenyra/persistence/client", () => ({
+	db: {
+		select: () => ({
+			from: () => ({
+				where: async () => [
+					{ companyId: "cmp_123", role: "OWNER", isDefault: true },
+				],
+			}),
+		}),
+	},
+}));
+
 import { resolveSessionContext } from "../../../security/session-context";
 
 const mockResolve = resolveSessionContext as unknown as ReturnType<
