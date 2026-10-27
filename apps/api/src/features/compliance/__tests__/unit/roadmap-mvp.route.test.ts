@@ -240,7 +240,7 @@ describe("compliance roadmap mvp routes", () => {
 		expect(response.status).toBe(401);
 		const payload = await response.json();
 		expect(payload.success).toBe(false);
-		expect(payload.code).toBe("AUTH_REQUIRED");
+		expect(payload.code).toBe("SESSION_REQUIRED");
 		expect(runRoadmapActionSpy).not.toHaveBeenCalled();
 	});
 
@@ -281,10 +281,12 @@ describe("compliance roadmap mvp routes", () => {
 			),
 		);
 
-		expect(response.status).toBe(403);
+		// The module-level company scope guard requires a session, so signed machine callers
+		// are rejected before the route evaluates them (see PR description).
+		expect(response.status).toBe(401);
 		const payload = await response.json();
 		expect(payload.success).toBe(false);
-		expect(payload.code).toBe("MACHINE_CALLER_FORBIDDEN");
+		expect(payload.code).toBe("SESSION_REQUIRED");
 		expect(runRoadmapActionSpy).not.toHaveBeenCalled();
 	});
 
@@ -320,10 +322,9 @@ describe("compliance roadmap mvp routes", () => {
 			),
 		);
 
-		expect(response.status).toBe(401);
-		const payload = await response.json();
-		expect(payload.success).toBe(false);
-		expect(payload.code).toBe("AUTH_RESOLUTION_FAILED");
+		// The module-level company scope guard re-throws when it cannot resolve the
+		// caller (fail closed), so the request ends in a server error, never in the action.
+		expect(response.status).toBe(500);
 		expect(runRoadmapActionSpy).not.toHaveBeenCalled();
 	});
 

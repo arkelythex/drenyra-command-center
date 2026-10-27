@@ -164,6 +164,14 @@ export default defineConfig({
 				find: "@drenyra/test-utils",
 				replacement: path.resolve(__dirname, "../../packages/test-utils/src"),
 			},
+			// agent-runtime exports ./dist, which is git-ignored and absent on a clean checkout.
+			{
+				find: "@drenyra/agent-runtime",
+				replacement: path.resolve(
+					__dirname,
+					"../../packages/agent-runtime/src",
+				),
+			},
 			{
 				find: "@drenyra/mission-domain",
 				replacement: path.resolve(

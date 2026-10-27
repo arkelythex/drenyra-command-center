@@ -26,7 +26,7 @@ describe("ledger-mvp routes security integration", () => {
 			LEDGER_MVP_REQUIRE_AUTH: "false",
 			LEDGER_MVP_ALLOWED_COMPANY_IDS: "cmp-1",
 			LEDGER_MVP_ALLOWED_ROLES_SIRE_AUTOPILOT: "admin",
-			DRENYRA_MACHINE_CALLER_SECRET: "machine-secret",
+			ARKELYTHEX_MACHINE_CALLER_SECRET: "machine-secret",
 			LEDGER_MVP_MACHINE_CALLER_ALLOWLIST: "ledger-orchestrator",
 		};
 	});
@@ -211,7 +211,7 @@ describe("ledger-mvp routes security integration", () => {
 		const now = Date.now().toString();
 		const signature = createHmac(
 			"sha256",
-			process.env.DRENYRA_MACHINE_CALLER_SECRET as string,
+			process.env.ARKELYTHEX_MACHINE_CALLER_SECRET as string,
 		)
 			.update(["ledger-orchestrator", now, "cmp-1", "admin"].join("."))
 			.digest("hex");
@@ -333,7 +333,7 @@ describe("ledger-mvp routes security integration", () => {
 		const now = Date.now().toString();
 		const signature = createHmac(
 			"sha256",
-			process.env.DRENYRA_MACHINE_CALLER_SECRET as string,
+			process.env.ARKELYTHEX_MACHINE_CALLER_SECRET as string,
 		)
 			.update(["ledger-orchestrator", now, "cmp-1", "admin"].join("."))
 			.digest("hex");
