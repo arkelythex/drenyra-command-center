@@ -77,6 +77,7 @@ describe("SireRetryService", () => {
 			}),
 		);
 		expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+			expect.objectContaining({ companyId: expect.any(String) }),
 			"sub-1",
 			expect.objectContaining({
 				status: "ACCEPTED",
@@ -155,6 +156,7 @@ describe("SireRetryService", () => {
 			{ submissionId: "sub-fail", error: "Temporary SUNAT timeout" },
 		]);
 		expect(sireSubmissionRepository.update).toHaveBeenCalledWith(
+			expect.objectContaining({ companyId: expect.any(String) }),
 			"sub-fail",
 			expect.objectContaining({
 				status: "FAILED",

@@ -22,6 +22,69 @@ vi.mock("../../sire/services/sire-diff-ledger.service", () => ({
 	SireDiffLedgerService: { applyResolutions: mocks.applyResolutions },
 }));
 
+// In-memory stand-in for the two tables the service persists to. It understands
+// only the query shapes the service uses (insert...onConflictDoUpdate, select...where[.limit]).
+const store = vi.hoisted(() => ({
+	comparisons: [] as Record<string, unknown>[],
+	resolutions: [] as Record<string, unknown>[],
+}));
+
+vi.mock("@drenyra/persistence/query", async (importOriginal) => ({
+	...(await importOriginal<typeof import("@drenyra/persistence/query")>()),
+	and: (...conditions: unknown[]) => conditions.flat(),
+	eq: (column: { name: string }, value: unknown) => [
+		{ name: column.name, value },
+	],
+}));
+
+vi.mock("@drenyra/persistence/client", async (importOriginal) => {
+	const actual =
+		await importOriginal<typeof import("@drenyra/persistence/client")>();
+	const { getTableName } = await import("drizzle-orm");
+	const camel = (name: string) =>
+		name.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
+	const rowsOf = (table: Parameters<typeof getTableName>[0]) =>
+		getTableName(table) === "sire_comparisons"
+			? store.comparisons
+			: store.resolutions;
+	const keyColumns = (table: Parameters<typeof getTableName>[0]) =>
+		getTableName(table) === "sire_comparisons"
+			? ["companyId", "period"]
+			: ["companyId", "period", "discrepancyId"];
+
+	return {
+		...actual,
+		db: {
+			insert: (table: Parameters<typeof getTableName>[0]) => ({
+				values: (value: Record<string, unknown>) => ({
+					onConflictDoUpdate: async () => {
+						const rows = rowsOf(table);
+						const existing = rows.find((row) =>
+							keyColumns(table).every(
+								(column) => row[column] === value[column],
+							),
+						);
+						if (existing) Object.assign(existing, value);
+						else rows.push({ ...value });
+					},
+				}),
+			}),
+			select: () => ({
+				from: (table: Parameters<typeof getTableName>[0]) => ({
+					where: (conditions: { name: string; value: unknown }[]) => {
+						const matches = rowsOf(table).filter((row) =>
+							conditions.every(({ name, value }) => row[camel(name)] === value),
+						);
+						return Object.assign(Promise.resolve(matches), {
+							limit: async (count: number) => matches.slice(0, count),
+						});
+					},
+				}),
+			}),
+		},
+	};
+});
+
 import { SireComparisonService } from "./compare.service";
 
 const sunatRecord = {
@@ -91,6 +154,8 @@ const defaultArtifact = {
 
 beforeEach(() => {
 	vi.clearAllMocks();
+	store.comparisons.length = 0;
+	store.resolutions.length = 0;
 	mocks.buildThreeWayDiff.mockResolvedValue(defaultArtifact);
 	mocks.buildSummary.mockReturnValue(defaultArtifact.summary);
 });
@@ -227,6 +292,8 @@ describe("SireComparisonService", () => {
 
 			const result = await SireComparisonService.resolveDiscrepancy(
 				"row-sunat-only",
+				"company-2",
+				"2024-01",
 				"ACCEPT_SUNAT",
 				"Accepted SUNAT record",
 			);
@@ -240,6 +307,8 @@ describe("SireComparisonService", () => {
 			await expect(
 				SireComparisonService.resolveDiscrepancy(
 					"nonexistent-id",
+					"company-2",
+					"2024-01",
 					"FLAG_FOR_REVIEW",
 				),
 			).rejects.toThrow("not found");
@@ -250,6 +319,8 @@ describe("SireComparisonService", () => {
 
 			const result = await SireComparisonService.resolveDiscrepancy(
 				"row-sunat-only",
+				"company-2",
+				"2024-01",
 				"FLAG_FOR_REVIEW",
 			);
 
@@ -261,6 +332,8 @@ describe("SireComparisonService", () => {
 
 			const result = await SireComparisonService.resolveDiscrepancy(
 				"row-mismatch",
+				"company-2",
+				"2024-01",
 				"MANUAL_FIX",
 				"Fixing manually",
 			);
