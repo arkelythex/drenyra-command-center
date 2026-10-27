@@ -208,6 +208,36 @@ export function resolveSecurityActor(
 }
 
 /**
+ * Membership roles (MembershipRole in @drenyra/domain) that neither policy
+ * lists. They are given the permissions of an existing role, plus any extras,
+ * so the guard does not lock out members who could use the API before it
+ * started denying.
+ */
+const MEMBERSHIP_ROLE_POLICY: Record<
+	string,
+	{ role: string; extra: ReadonlySet<SecurityOperation> }
+> = {
+	accountant: { role: "analyst", extra: new Set() },
+	reviewer: { role: "viewer", extra: new Set() },
+	approver: {
+		role: "analyst",
+		extra: new Set<SecurityOperation>(["cognitive:approval:resolve"]),
+	},
+};
+
+/**
+ * Resolves a raw role to the role the policies know and the operations it
+ * is granted on top of that role.
+ */
+export function resolvePolicyRole(rawRole: string): {
+	role: string;
+	extra: ReadonlySet<SecurityOperation>;
+} {
+	const role = rawRole.toLowerCase();
+	return MEMBERSHIP_ROLE_POLICY[role] ?? { role, extra: new Set() };
+}
+
+/**
  * @deprecated Use `hasPlatformPermission()` from `@drenyra/security/rbac` instead.
  *
  * Checks whether a role can perform a given security operation.
@@ -217,15 +247,18 @@ export function hasPermission(
 	role: string,
 	operation: SecurityOperation,
 ): boolean {
+	const policy = resolvePolicyRole(role);
+	if (policy.extra.has(operation)) return true;
+
 	if (RBAC_FEATURE_FLAGS.UNIFIED_RBAC_ENABLED) {
 		return hasPlatformPermission(
-			role.toLowerCase() as UnifiedRole,
+			policy.role as UnifiedRole,
 			mapLegacyOperation(operation),
 		);
 	}
 
 	// Fallback: original logic
-	const rolePermissions = ROLE_PERMISSIONS[role.toLowerCase()];
+	const rolePermissions = ROLE_PERMISSIONS[policy.role];
 	if (!rolePermissions) return false;
 	return rolePermissions.has(operation);
 }

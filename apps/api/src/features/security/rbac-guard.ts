@@ -4,7 +4,11 @@ import {
 	RBAC_FEATURE_FLAGS,
 } from "@drenyra/security/rbac";
 import { logSecurityAccess } from "./access-log.service";
-import { hasPermission, type SecurityOperation } from "./rbac-policy";
+import {
+	hasPermission,
+	resolvePolicyRole,
+	type SecurityOperation,
+} from "./rbac-policy";
 import { resolveSessionContext } from "./session-context";
 
 /**
@@ -64,8 +68,10 @@ function evaluateUnifiedGuard(
 	role: string,
 	operation: string,
 ): "ALLOW" | "DENY" {
+	const policy = resolvePolicyRole(role);
+	if (policy.extra.has(operation as SecurityOperation)) return "ALLOW";
 	const platformPerm = `platform:${operation}`;
-	return hasPlatformPermission(role, platformPerm) ? "ALLOW" : "DENY";
+	return hasPlatformPermission(policy.role, platformPerm) ? "ALLOW" : "DENY";
 }
 
 /**
