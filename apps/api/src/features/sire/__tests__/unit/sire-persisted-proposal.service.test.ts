@@ -1,4 +1,20 @@
 import { describe, expect, it, vi } from "vitest";
+
+// Hoisted by vitest; declared at the top level so the order of execution is visible.
+vi.mock("@drenyra/persistence/client", () => ({
+	db: {
+		select: vi.fn().mockReturnValue({
+			from: vi.fn().mockReturnValue({
+				where: vi.fn().mockReturnValue({
+					orderBy: vi.fn().mockReturnValue({
+						limit: vi.fn().mockResolvedValue([]),
+					}),
+				}),
+			}),
+		}),
+	},
+}));
+
 import { parseProposalRecordsFromPayloadBase64 } from "../../services/sire-persisted-proposal.service";
 
 describe("parseProposalRecordsFromPayloadBase64", () => {
@@ -24,20 +40,6 @@ describe("parseProposalRecordsFromPayloadBase64", () => {
 
 describe("SirePersistedProposalService.loadPersistedRecords", () => {
 	it("returns null when no submissions contain proposalRecords", async () => {
-		vi.mock("@drenyra/persistence/client", () => ({
-			db: {
-				select: vi.fn().mockReturnValue({
-					from: vi.fn().mockReturnValue({
-						where: vi.fn().mockReturnValue({
-							orderBy: vi.fn().mockReturnValue({
-								limit: vi.fn().mockResolvedValue([]),
-							}),
-						}),
-					}),
-				}),
-			},
-		}));
-
 		const { SirePersistedProposalService: Service } = await import(
 			"../../services/sire-persisted-proposal.service"
 		);
