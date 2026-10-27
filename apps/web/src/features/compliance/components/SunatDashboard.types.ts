@@ -1,5 +1,5 @@
 /**
- * SunatDashboard — shared types for SUNAT Compliance Command Center
+ * SunatDashboard — shared types for SUNAT Compliance Desktop
  */
 
 export type RucStatus = "ACTIVO" | "SUSPENDIDO";

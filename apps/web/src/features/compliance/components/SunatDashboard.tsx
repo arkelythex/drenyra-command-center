@@ -1,5 +1,5 @@
 /**
- * SunatDashboard — SUNAT Compliance Command Center
+ * SunatDashboard — SUNAT Compliance Desktop
  *
  * Displays RUC status, SIRE period validation, upcoming tax deadlines,
  * and recent SUNAT notifications in a glass-and-steel layout.

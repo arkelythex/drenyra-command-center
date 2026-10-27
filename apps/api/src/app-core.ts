@@ -183,7 +183,7 @@ const baseApp = new Elysia()
 					{
 						name: "Drenyra",
 						description:
-							"Fiscal command center: cases, evidence, mock agent runs and approvals",
+							"Drenyra Desktop: cases, evidence, mock agent runs and approvals",
 					},
 
 					{

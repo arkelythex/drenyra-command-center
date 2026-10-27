@@ -1,7 +1,7 @@
 /**
- * Drenyra Command Center E2E Smoke Tests
+ * Drenyra Desktop E2E Smoke Tests
  *
- * Verifies that the Command Center page loads correctly with its
+ * Verifies that the Drenyra Desktop page loads correctly with its
  * sidebar, chat area, header actions, agent selector, density toggles,
  * and file upload UI.
  *
@@ -276,7 +276,7 @@ async function installSessionState(page: import("@playwright/test").Page) {
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
 
-test.describe("Drenyra Command Center", () => {
+test.describe("Drenyra Desktop", () => {
 	test.beforeEach(async ({ page }) => {
 		await installSessionState(page);
 		await mockAuthSession(page);
@@ -294,7 +294,7 @@ test.describe("Drenyra Command Center", () => {
 		await gotoCommandCenter(page);
 
 		await expect(
-			page.getByRole("heading", { name: "Fiscal Command Center" }),
+			page.getByRole("heading", { name: "Drenyra Desktop" }),
 		).toBeVisible({ timeout: 15_000 });
 
 		const companies = page.getByRole("region", { name: "Companies" });

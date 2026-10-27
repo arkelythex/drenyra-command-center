@@ -1,5 +1,5 @@
 /**
- * SunatDashboardSkeleton — loading placeholder for SUNAT Compliance Command Center
+ * SunatDashboardSkeleton — loading placeholder for SUNAT Compliance Desktop
  */
 
 import { Skeleton } from "@/components/ui/skeleton";

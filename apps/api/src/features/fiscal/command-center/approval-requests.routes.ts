@@ -36,7 +36,7 @@ export function createApprovalRequestsRoutes(
 				}
 				return ok(await service.list(resolved.context));
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.get(
 			"/:id",
@@ -53,7 +53,7 @@ export function createApprovalRequestsRoutes(
 				}
 				return ok(request);
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.post(
 			"/",
@@ -72,7 +72,7 @@ export function createApprovalRequestsRoutes(
 			},
 			{
 				body: CreateApprovalRequestSchema,
-				detail: { tags: ["Fiscal Command Center"] },
+				detail: { tags: ["Drenyra Desktop"] },
 			},
 		)
 		.get(
@@ -90,7 +90,7 @@ export function createApprovalRequestsRoutes(
 				}
 				return ok(diffs);
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.get(
 			"/:id/votes",
@@ -107,7 +107,7 @@ export function createApprovalRequestsRoutes(
 				}
 				return ok(votes);
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.post(
 			"/:id/votes",
@@ -128,7 +128,7 @@ export function createApprovalRequestsRoutes(
 				}
 				return ok(vote);
 			},
-			{ body: SubmitVoteSchema, detail: { tags: ["Fiscal Command Center"] } },
+			{ body: SubmitVoteSchema, detail: { tags: ["Drenyra Desktop"] } },
 		);
 }
 

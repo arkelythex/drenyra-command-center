@@ -24,14 +24,14 @@ import type { AgenticNavItem, NavSectionConfig } from "./AgenticSidebar.types";
  * Outcome-first sidebar navigation.
  *
  * Sections:
- *   COMMAND CENTER   — daily operations & agentic workflows
+ *   DRENYRA DESKTOP   — daily operations & agentic workflows
  *   OPERACIONES      — accounting operations (banking, reconciliations, ledgers)
  *   FISCAL & COMPLIANCE — tax, SUNAT, SIRE, detracciones
  *   REPORTES         — financial statements, reports, audit
  *   SYSTEM           — settings, legacy tools
  */
 export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
-	// ── COMMAND CENTER ──
+	// ── DRENYRA DESKTOP ──
 	{
 		id: "inbox",
 		section: "command-center",

@@ -12,7 +12,7 @@ export type ResolveDrenyraActorContext = (
 
 export function drenyraActorContextFailure(missingHeaders: string[]) {
 	return fail(
-		"Drenyra command center requests require company, RUC, fiscal period and user headers",
+		"Drenyra Desktop requests require company, RUC, fiscal period and user headers",
 		"TENANT_CONTEXT_REQUIRED",
 		{ details: { missingHeaders } },
 	);
@@ -30,10 +30,7 @@ export function commandCenterError(error: unknown) {
 		}
 		return fail(error.message, "DRENYRA_COMMAND_CENTER_ERROR");
 	}
-	return fail(
-		"Unknown Drenyra command center error",
-		"DRENYRA_COMMAND_CENTER_ERROR",
-	);
+	return fail("Unknown Drenyra Desktop error", "DRENYRA_COMMAND_CENTER_ERROR");
 }
 
 export function statusForCaseMutationError(error: unknown): 400 | 404 {

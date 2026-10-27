@@ -87,7 +87,7 @@ const PHASE_NAMES = [
 ] as const;
 
 /**
- * InboxDashboardService — aggregates KPIs and context for the Inbox / Home command center.
+ * InboxDashboardService — aggregates KPIs and context for the Inbox / Home desktop.
  */
 export const InboxDashboardService = {
 	async getDashboard(companyId: string): Promise<InboxDashboardResponse> {

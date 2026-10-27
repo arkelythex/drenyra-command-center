@@ -404,7 +404,7 @@ export const ROUTE_PROTECTION_MATRIX = [
 	},
 	{
 		id: "fiscal-command-center",
-		surface: "Fiscal Command Center",
+		surface: "Drenyra Desktop",
 		appCoreExportName: "fiscalCommandCenterModule",
 		prefix: "/api/fiscal/command-center",
 		mounted: true,
@@ -413,8 +413,7 @@ export const ROUTE_PROTECTION_MATRIX = [
 		schemaSystem: "typebox",
 		envelope: "canonical",
 		rateLimit: "missing",
-		notes:
-			"Fiscal command center for agentic fiscal operations; company-scoped.",
+		notes: "Drenyra Desktop for agentic fiscal operations; company-scoped.",
 	},
 	{
 		id: "fiscal-truth",
