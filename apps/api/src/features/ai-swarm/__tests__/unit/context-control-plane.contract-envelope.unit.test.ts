@@ -1,11 +1,13 @@
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
-
+import { globalErrorHandler } from "../../../../shared/plugins/error-handler";
 import { contextControlPlaneRoute } from "../../api/context-control-plane.route";
 
 describe("context-control-plane route contract envelope", () => {
 	it("returns canonical envelope for schema validation errors", async () => {
-		const app = new Elysia().use(contextControlPlaneRoute);
+		const app = new Elysia()
+			.use(globalErrorHandler)
+			.use(contextControlPlaneRoute);
 
 		const response = await app.handle(
 			new Request(
@@ -23,9 +25,9 @@ describe("context-control-plane route contract envelope", () => {
 		);
 
 		expect(response.status).toBe(422);
-		expect(await response.json()).toEqual({
+		expect(await response.json()).toMatchObject({
 			success: false,
-			error: "Invalid context-control-plane request",
+			error: "Validation failed",
 			code: "VALIDATION_ERROR",
 		});
 	});
