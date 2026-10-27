@@ -35,9 +35,9 @@ export function getMissingVariables(
 	provided: Record<string, string>,
 ): string[] {
 	const usedInBody = new Set<string>();
-	let match: RegExpExecArray | null;
-	const re = new RegExp(VARIABLE_RE.source);
-	while ((match = re.exec(template)) !== null) {
+	// matchAll walks every occurrence; a regex rebuilt without the g flag would
+	// match the first one forever.
+	for (const match of template.matchAll(VARIABLE_RE)) {
 		usedInBody.add(match[1]);
 	}
 
