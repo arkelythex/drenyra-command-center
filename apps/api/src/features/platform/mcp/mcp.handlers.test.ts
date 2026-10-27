@@ -3,7 +3,7 @@ import {
 	EVIDENCE_EDGE_KIND,
 	EVIDENCE_NODE_KIND,
 	type EvidenceNode,
-} from "@drenyra/agent-runtime";
+} from "@drenyra/domain";
 import { describe, expect, it, vi } from "vitest";
 import { createPlatformMcpHandlers } from "./mcp.handlers";
 
