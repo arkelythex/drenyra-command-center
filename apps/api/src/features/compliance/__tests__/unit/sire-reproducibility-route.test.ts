@@ -1,10 +1,15 @@
 import { Elysia } from "elysia";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ComplianceService } from "../../../../services/compliance.service";
 import { complianceModule } from "../../index";
+import { authedRequest, mockCompanySession } from "./session-test-helpers";
 
 describe("compliance sire reproducibility route", () => {
 	const app = new Elysia().use(complianceModule);
+
+	beforeEach(() => {
+		mockCompanySession();
+	});
 
 	afterEach(() => {
 		vi.restoreAllMocks();
@@ -23,7 +28,7 @@ describe("compliance sire reproducibility route", () => {
 		});
 
 		const response = await app.handle(
-			new Request(
+			authedRequest(
 				"http://localhost/api/compliance/sire-reproducibility?companyId=cmp-1&year=2026&month=2",
 			),
 		);
@@ -54,7 +59,7 @@ describe("compliance sire reproducibility route", () => {
 		});
 
 		const response = await app.handle(
-			new Request(
+			authedRequest(
 				"http://localhost/api/compliance/sire-reproducibility?companyId=cmp-1&year=2026&month=2",
 			),
 		);
@@ -77,7 +82,7 @@ describe("compliance sire reproducibility route", () => {
 		);
 
 		const response = await app.handle(
-			new Request(
+			authedRequest(
 				"http://localhost/api/compliance/sire-reproducibility?companyId=cmp-1&year=2026&month=2",
 			),
 		);

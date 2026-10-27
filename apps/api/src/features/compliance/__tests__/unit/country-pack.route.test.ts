@@ -1,13 +1,22 @@
 import { Elysia } from "elysia";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { complianceModule } from "../../index";
+import { authedRequest, mockCompanySession } from "./session-test-helpers";
 
 describe("compliance country pack route", () => {
 	const app = new Elysia().use(complianceModule);
 
+	beforeEach(() => {
+		mockCompanySession();
+	});
+
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
 	it("returns the supported LATAM country packs", async () => {
 		const response = await app.handle(
-			new Request("http://localhost/api/compliance/country-packs"),
+			authedRequest("http://localhost/api/compliance/country-packs"),
 		);
 
 		expect(response.status).toBe(200);
@@ -25,7 +34,7 @@ describe("compliance country pack route", () => {
 
 	it("returns one supported country pack", async () => {
 		const response = await app.handle(
-			new Request("http://localhost/api/compliance/country-packs/mx"),
+			authedRequest("http://localhost/api/compliance/country-packs/mx"),
 		);
 
 		expect(response.status).toBe(200);
@@ -41,7 +50,7 @@ describe("compliance country pack route", () => {
 
 	it("returns 404 for unsupported country packs", async () => {
 		const response = await app.handle(
-			new Request("http://localhost/api/compliance/country-packs/ar"),
+			authedRequest("http://localhost/api/compliance/country-packs/ar"),
 		);
 
 		expect(response.status).toBe(404);

@@ -1,13 +1,22 @@
 import { Elysia } from "elysia";
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { complianceModule } from "../../index";
+import { authedRequest, mockCompanySession } from "./session-test-helpers";
 
 describe("compliance accounting jobs route", () => {
 	const app = new Elysia().use(complianceModule);
 
+	beforeEach(() => {
+		mockCompanySession();
+	});
+
+	afterEach(() => {
+		vi.restoreAllMocks();
+	});
+
 	it("returns peru accounting jobs by default", async () => {
 		const response = await app.handle(
-			new Request("http://localhost/api/compliance/accounting-jobs"),
+			authedRequest("http://localhost/api/compliance/accounting-jobs"),
 		);
 
 		expect(response.status).toBe(200);
@@ -28,7 +37,7 @@ describe("compliance accounting jobs route", () => {
 
 	it("returns one country catalog via path param", async () => {
 		const response = await app.handle(
-			new Request("http://localhost/api/compliance/accounting-jobs/mx"),
+			authedRequest("http://localhost/api/compliance/accounting-jobs/mx"),
 		);
 
 		expect(response.status).toBe(200);
@@ -48,7 +57,7 @@ describe("compliance accounting jobs route", () => {
 
 	it("returns 404 for unsupported country path", async () => {
 		const response = await app.handle(
-			new Request("http://localhost/api/compliance/accounting-jobs/ar"),
+			authedRequest("http://localhost/api/compliance/accounting-jobs/ar"),
 		);
 
 		expect(response.status).toBe(404);

@@ -347,11 +347,12 @@ describe("compliance accounting job runs route", () => {
 			}),
 		);
 
-		expect(response.status).toBe(403);
+		// The module-level company scope guard rejects header-only callers before the route.
+		expect(response.status).toBe(401);
 		const payload = await response.json();
 		expect(payload).toMatchObject({
 			success: false,
-			code: "SPOOFABLE_HEADER_CONTEXT",
+			code: "SESSION_REQUIRED",
 		});
 		expect(createRunSpy).not.toHaveBeenCalled();
 	});
@@ -382,11 +383,12 @@ describe("compliance accounting job runs route", () => {
 			),
 		);
 
-		expect(response.status).toBe(403);
+		// The module-level company scope guard rejects header-only callers before the route.
+		expect(response.status).toBe(401);
 		const payload = await response.json();
 		expect(payload).toMatchObject({
 			success: false,
-			code: "SPOOFABLE_HEADER_CONTEXT",
+			code: "SESSION_REQUIRED",
 		});
 		expect(updateRunStatusSpy).not.toHaveBeenCalled();
 	});
@@ -417,11 +419,12 @@ describe("compliance accounting job runs route", () => {
 			),
 		);
 
-		expect(response.status).toBe(403);
+		// The module-level company scope guard rejects header-only callers before the route.
+		expect(response.status).toBe(401);
 		const payload = await response.json();
 		expect(payload).toMatchObject({
 			success: false,
-			code: "SPOOFABLE_HEADER_CONTEXT",
+			code: "SESSION_REQUIRED",
 		});
 		expect(executeRunSpy).not.toHaveBeenCalled();
 	});

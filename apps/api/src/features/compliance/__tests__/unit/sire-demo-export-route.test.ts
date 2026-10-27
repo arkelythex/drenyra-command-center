@@ -1,10 +1,15 @@
 import { Elysia } from "elysia";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { SireRegisterExportService as SIREService } from "../../../sire/services/sire-register-export.service";
 import { complianceModule } from "../../index";
+import { authedRequest, mockCompanySession } from "./session-test-helpers";
 
 describe("compliance sire demo export route", () => {
 	const app = new Elysia().use(complianceModule);
+
+	beforeEach(() => {
+		mockCompanySession();
+	});
 
 	afterEach(() => {
 		vi.restoreAllMocks();
@@ -16,7 +21,7 @@ describe("compliance sire demo export route", () => {
 		);
 
 		const response = await app.handle(
-			new Request(
+			authedRequest(
 				"http://localhost/api/compliance/sire-demo-export?companyId=cmp-1&ledgerType=ventas&format=TXT&period=2026-03",
 			),
 		);
@@ -35,7 +40,7 @@ describe("compliance sire demo export route", () => {
 		);
 
 		const response = await app.handle(
-			new Request(
+			authedRequest(
 				"http://localhost/api/compliance/sire-demo-export?companyId=cmp-1&ledgerType=compras&format=EXCEL&period=2026-03",
 			),
 		);
