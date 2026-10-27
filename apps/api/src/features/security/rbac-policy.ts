@@ -1,7 +1,7 @@
 import {
 	hasPlatformPermission,
-	RBAC_FEATURE_FLAGS,
 	type PlatformPermission,
+	RBAC_FEATURE_FLAGS,
 	type UnifiedRole,
 } from "@drenyra/security/rbac";
 
@@ -41,7 +41,11 @@ export interface SecurityActor {
 
 // ── Legacy role-permission map (fallback when unified disabled) ──
 
-const ROLE_PERMISSIONS: Record<string, ReadonlySet<SecurityOperation>> = {
+/** Legacy role matrix; exported so tests can hold the unified policy to it. */
+export const ROLE_PERMISSIONS: Record<
+	string,
+	ReadonlySet<SecurityOperation>
+> = {
 	superadmin: new Set([
 		"ai:tool-permissions:manage",
 		"ai:tool-permissions:read",

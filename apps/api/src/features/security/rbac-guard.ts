@@ -1,11 +1,11 @@
+import {
+	hasPlatformPermission,
+	logRbacDiscrepancy,
+	RBAC_FEATURE_FLAGS,
+} from "@drenyra/security/rbac";
 import { logSecurityAccess } from "./access-log.service";
 import { hasPermission, type SecurityOperation } from "./rbac-policy";
 import { resolveSessionContext } from "./session-context";
-import {
-	hasPlatformPermission,
-	RBAC_FEATURE_FLAGS,
-	logRbacDiscrepancy,
-} from "@drenyra/security/rbac";
 
 /**
  * Request context required to authorize an operation against Arkelythex security policy.
@@ -133,7 +133,9 @@ export async function authorizeOperation(
 
 	// ── Unified RBAC path (cutover) ──
 	if (RBAC_FEATURE_FLAGS.UNIFIED_RBAC_ENABLED) {
-		const allowed = evaluateUnifiedGuard(actor.role, input.operation);
+		// evaluateUnifiedGuard returns "ALLOW" | "DENY"; both strings are truthy.
+		const allowed =
+			evaluateUnifiedGuard(actor.role, input.operation) === "ALLOW";
 
 		if (!allowed) {
 			await logSecurityAccess({
