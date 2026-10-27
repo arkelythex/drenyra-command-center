@@ -17,7 +17,7 @@ afterEach(async () => {
 
 describe("getBackupReadinessStatus", () => {
 	it("returns missing when the backup directory does not exist", async () => {
-		process.env.DRENYRA_BACKUP_DIR = join(
+		process.env.ARKELYTHEX_BACKUP_DIR = join(
 			tmpdir(),
 			`drenyra-backups-missing-${Date.now()}`,
 		);
@@ -34,8 +34,8 @@ describe("getBackupReadinessStatus", () => {
 
 	it("returns ok when a recent backup manifest exists", async () => {
 		const backupDir = await createTempBackupDir();
-		process.env.DRENYRA_BACKUP_DIR = backupDir;
-		process.env.DRENYRA_BACKUP_MAX_AGE_HOURS = "24";
+		process.env.ARKELYTHEX_BACKUP_DIR = backupDir;
+		process.env.ARKELYTHEX_BACKUP_MAX_AGE_HOURS = "24";
 
 		const backupTimestamp = Date.parse("2026-03-03T20:00:00.000Z");
 		await writeFile(
@@ -63,8 +63,8 @@ describe("getBackupReadinessStatus", () => {
 
 	it("returns warning when only an old dump exists", async () => {
 		const backupDir = await createTempBackupDir();
-		process.env.DRENYRA_BACKUP_DIR = backupDir;
-		process.env.DRENYRA_BACKUP_MAX_AGE_HOURS = "24";
+		process.env.ARKELYTHEX_BACKUP_DIR = backupDir;
+		process.env.ARKELYTHEX_BACKUP_MAX_AGE_HOURS = "24";
 
 		const dumpPath = join(backupDir, "drenyra_20260301T000000Z.dump");
 		await writeFile(dumpPath, "backup", "utf8");
