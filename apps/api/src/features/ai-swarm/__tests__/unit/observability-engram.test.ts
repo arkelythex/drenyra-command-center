@@ -77,7 +77,7 @@ function makeObservation(
 	return {
 		identity: { id: "obs-1", topicKey: "run-1" },
 		title: "agent_run",
-		type: "agent_run",
+		kind: "summary",
 		scope: {
 			kind: "company",
 			organizationId: "42",
@@ -86,11 +86,12 @@ function makeObservation(
 			period: "",
 		},
 		content: { what: "what", why: "why", where: "where", learned: "learned" },
-		authorityStatus: "promoted",
-		provenance: {
-			actor: "analysis",
-			timestamp: TS,
-			source: "drenyra-memory",
+		status: "active",
+		recordedAt: TS,
+		source: {
+			system: "drenyra-memory",
+			actorId: "analysis",
+			actorKind: "agent",
 			session: "run-1",
 		},
 		revision: 1,
@@ -160,20 +161,22 @@ describe("AiObservabilityService — engram memory reads", () => {
 		mocks.context.mockResolvedValue([
 			makeObservation({
 				identity: { id: "obs-2", topicKey: "run-2" },
-				provenance: {
-					actor: "analysis",
-					timestamp: "2026-01-20T10:00:00.000Z",
-					source: "drenyra-memory",
+				recordedAt: "2026-01-20T10:00:00.000Z",
+				source: {
+					system: "drenyra-memory",
+					actorId: "analysis",
+					actorKind: "agent",
 					session: "run-2",
 				},
 				content: { what: "w2", why: "", where: "", learned: "mem-2" },
 			}),
 			makeObservation({
 				identity: { id: "obs-1", topicKey: "run-1" },
-				provenance: {
-					actor: "analysis",
-					timestamp: TS,
-					source: "drenyra-memory",
+				recordedAt: TS,
+				source: {
+					system: "drenyra-memory",
+					actorId: "analysis",
+					actorKind: "agent",
 					session: "run-1",
 				},
 				content: { what: "w1", why: "", where: "", learned: "mem-1" },
@@ -186,7 +189,7 @@ describe("AiObservabilityService — engram memory reads", () => {
 		expect(history[0]).toEqual({
 			runId: "run-1",
 			memorySummary: "mem-1",
-			workflowState: "agent_run",
+			workflowState: "summary",
 			status: "completed",
 			startedAt: TS,
 			completedAt: TS,
