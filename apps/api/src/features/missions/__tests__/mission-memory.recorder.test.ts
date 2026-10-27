@@ -86,7 +86,7 @@ describe("EngramMissionMemoryRecorder", () => {
 		expect(client.save).toHaveBeenCalledTimes(1);
 		const saved = client.save.mock.calls[0][0] as EngramSaveInput;
 		expect(saved.topicKey).toBe(`mission/${missionId}`);
-		expect(saved.type).toBe("mission_result");
+		expect(saved.kind).toBe("summary");
 		expect(saved.scope).toEqual({
 			kind: "company",
 			organizationId: "42",
@@ -96,9 +96,9 @@ describe("EngramMissionMemoryRecorder", () => {
 		expect(saved.content.what).toContain("monthly-close");
 		expect(saved.content.why).toBe("Reconciled by evidence");
 		expect(saved.content.learned).toContain("202607");
-		expect(saved.provenance.actor).toBe("alice");
-		expect(saved.provenance.session).toBe(missionId);
-		expect(saved.provenance.source).toBe("api");
+		expect(saved.source.actorId).toBe("alice");
+		expect(saved.source.session).toBe(missionId);
+		expect(saved.source.system).toBe("api");
 	});
 
 	it("falls back to the api organization id when no organization is mapped", async () => {
@@ -111,7 +111,7 @@ describe("EngramMissionMemoryRecorder", () => {
 	it("uses system as the actor when none is given", async () => {
 		await recorder.recordCompletion({ ...INPUT, actorId: "" });
 		const saved = client.save.mock.calls[0][0] as EngramSaveInput;
-		expect(saved.provenance.actor).toBe("system");
+		expect(saved.source.actorId).toBe("system");
 		expect(saved.content.learned).toContain("system");
 	});
 

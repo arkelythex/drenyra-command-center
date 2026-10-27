@@ -75,7 +75,11 @@ describe("inventory routes", () => {
 			authedRequest("http://localhost/api/inventory/summary"),
 		);
 
-		expect(response.status).toBe(500);
+		expect(response.status).toBe(200);
+		expect(await response.json()).toMatchObject({
+			success: true,
+			data: { totalProducts: 10, lowStockItems: 2, warehouseCount: 1 },
+		});
 	});
 
 	it("returns 500 when inventory response violates contract", async () => {
@@ -95,7 +99,7 @@ describe("inventory routes", () => {
 		const payload = await response.json();
 		expect(payload).toMatchObject({
 			success: false,
-			code: "INTERNAL_ERROR",
+			code: "INVENTORY_CONTRACT_ERROR",
 		});
 	});
 });
