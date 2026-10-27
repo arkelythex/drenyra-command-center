@@ -1,6 +1,6 @@
 # MOVED — canonical E2E in Drenyra repo
 
-Product E2E tests live in `github.com/arkelythex/drenyra-command-center`:
+Product E2E tests live in `github.com/arkelythex/drenyra-desktop`:
 
 `e2e/drenyra-command-center/drenyra-command-center.spec.ts`
 

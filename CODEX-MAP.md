@@ -17,7 +17,7 @@
 | Path | Area | Purpose | Tags | MAP.md |
 |---|---|---|---|
 | `apps/api` | api | Backend API: Bun + Elysia vertical slices, contracts, fiscal workflows. | backend, fiscal, api, elysia | `apps/api/MAP.md` |
-| `apps/web` | web | Agentic fiscal command center for supervised accounting operations. | frontend, drenyra, react | `apps/web/MAP.md` |
+| `apps/web` | web | Agentic Drenyra Desktop for supervised accounting operations. | frontend, drenyra, react | `apps/web/MAP.md` |
 | `apps/landing` | landing | Public marketing and product documentation surface. | frontend, marketing, nextjs | `apps/landing/MAP.md` |
 | `apps/data-engine` | data-engine | Python analytical microservice for high-throughput financial data processing. | python, analytics, data-engine | `apps/data-engine/MAP.md` |
 | `packages/domain` | domain | Framework-free entities, value objects, fiscal rules, Money/RUC primitives. | domain, fiscal, money, ruc | — |

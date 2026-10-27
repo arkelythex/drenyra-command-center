@@ -26,7 +26,7 @@ graph TB
     end
 
     subgraph "Capa 4 — Command"
-        CTRL[Command Center]
+        CTRL[Drenyra Desktop]
         ALERTS[Alertas]
         APPROVALS[Aprobaciones]
         INCIDENTS[Incidentes]
@@ -186,7 +186,7 @@ Capa de operación y control. Donde las decisiones se toman, ejecutan y verifica
 
 | Componente             | Función                                            |
 | ---------------------- | -------------------------------------------------- |
-| **Command Center**     | Visión unificada de operaciones, alertas y estado  |
+| **Drenyra Desktop**     | Visión unificada de operaciones, alertas y estado  |
 | **Alertas**            | Notificaciones proactivas sobre eventos críticos   |
 | **Aprobaciones**       | Flujos de autorización con supervisión humana      |
 | **Misiones**           | Objetivos operativos con seguimiento               |

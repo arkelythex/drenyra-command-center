@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-08-11
 **Estado:** Aprobado — regla arquitectónica de agentes, skills e integraciones
-**Alcance:** Drenyra, Drenyra-AI, Drenyra Pi, Drenyra Skills, Adaptadores, Guardian Angel
+**Alcance:** Drenyra, Drenyra-AI, Drenyra Shell, Drenyra Skills, Adaptadores, Guardian Angel
 **Referencia:** [Design 03 — Agents, Skills, Integrations](https://github.com/arkelythex/drenyra-ai/blob/main/docs/design/design-03-agents-skills-integrations.md)
 
 ---
@@ -60,7 +60,7 @@ el texto libre acompaña pero nunca reemplaza importes, referencias, hashes o es
   de reemplazo/retiro.
 - **Una actualización normativa nunca modifica retrospectivamente una misión** — el
   receipt registra exactamente qué versión de skill y política se usó.
-- **Integraciones v1.0 (orden):** Drenyra SDK/API → Drenyra Pi → Servidor MCP →
+- **Integraciones v1.0 (orden):** Drenyra SDK/API → Drenyra Shell → Servidor MCP →
   Codex/Claude Code/OpenCode → ERP/SUNAT/bancos. Drenyra-AI detecta y configura hosts
   existentes; **nunca instala** Codex, Claude u OpenCode por el usuario.
 - **Comandos:** `drenyra-ai install` (configura), `doctor` (read-only estricto),

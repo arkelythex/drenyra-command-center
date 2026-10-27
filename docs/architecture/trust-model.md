@@ -1,4 +1,4 @@
-# Trust Model — Drenyra (Accounting Command Center)
+# Trust Model — Drenyra (Drenyra Desktop)
 
 > **Last updated:** 2026-08-01.
 

@@ -33,9 +33,9 @@ Gentle Pi      → harness Pi-native para operar ese protocolo
 Engram         → memoria persistente compartida entre agentes
 ────────────────────────────────────────────────────────
 Drenyra-AI     → protocolo y ecosistema contable
-Drenyra-Pi     → harness Pi-native para operaciones contables
+Drenyra Shell     → harness Pi-native para operaciones contables
 Drenyra-Engram → memoria contable persistente, estructurada y verificable
-Drenyra        → command center visual
+Drenyra        → Drenyra Desktop visual
 ```
 
 Como Engram es la memoria compartida del ecosistema Gentle AI, **Drenyra-Engram es la memoria compartida del ecosistema Drenyra**, adaptada a las exigencias de la contabilidad: estructura, procedencia, vigencia, autoridad y aislamiento entre empresas.
@@ -293,7 +293,7 @@ Drenyra-AI no carga toda la memoria indiscriminadamente — pide contexto mínim
 
 ---
 
-## Integración con Drenyra-Pi
+## Integración con Drenyra Shell
 
 Comandos:
 
@@ -312,7 +312,7 @@ Ejemplo:
 Al iniciar misión:
 
 ```text
-Drenyra-Pi → selecciona empresa → selecciona periodo → inicia sesión de memoria →
+Drenyra Shell → selecciona empresa → selecciona periodo → inicia sesión de memoria →
 carga contexto relevante → ejecuta misión → genera resumen → propone memorias nuevas
 ```
 
@@ -353,7 +353,7 @@ Drenyra-Engram
 ├── Memory Store (PostgreSQL metadata, FTS/BM25, optional vector index, relation graph)
 ├── Provenance Layer (source references, content hashes, receipts, revisions)
 ├── Lifecycle (candidate, review, approve, supersede, retire)
-└── Clients (Drenyra-AI, Drenyra-Pi, Drenyra Web, CLI, MCP)
+└── Clients (Drenyra-AI, Drenyra Shell, Drenyra Web, CLI, MCP)
 ```
 
 ---
@@ -374,9 +374,9 @@ Drenyra-Engram
 ## Estructura de productos (5 repos)
 
 ```text
-arkelythex/drenyra-command-center (command center)
+arkelythex/drenyra-desktop (Drenyra Desktop)
 arkelythex/drenyra-ai (runtime y protocolo contable)
-arkelythex/drenyra-pi (harness Pi-native)
+arkelythex/drenyra-shell (harness Pi-native)
 arkelythex/drenyra-engram (memoria institucional contable)
 arkelythex/drenyra-skills (skills y políticas versionadas)
 ```
@@ -410,16 +410,16 @@ revisión humana → promover memorias aprobadas
 ```text
 ARKELYTHEX
 └── DRENYRA ECOSYSTEM
-    ├── Drenyra — Accounting Command Center
+    ├── Drenyra — Drenyra Desktop
     ├── Drenyra-AI — Verifiable accounting agent ecosystem
-    ├── Drenyra-Pi — Pi-native accounting operations harness
+    ├── Drenyra Shell — Pi-native accounting operations harness
     ├── Drenyra-Engram — Institutional accounting memory
     └── Drenyra-Skills — Versioned accounting capabilities
 ```
 
 Tesis conjunta:
 
-> **Drenyra-AI razona y coordina. Drenyra-Pi proporciona la experiencia operativa. Drenyra-Engram conserva el conocimiento institucional con procedencia, vigencia y aislamiento. El runtime y el ledger verifican. El profesional contable mantiene la autoridad.**
+> **Drenyra-AI razona y coordina. Drenyra Shell proporciona la experiencia operativa. Drenyra-Engram conserva el conocimiento institucional con procedencia, vigencia y aislamiento. El runtime y el ledger verifican. El profesional contable mantiene la autoridad.**
 
 Principio central de Drenyra-Engram:
 
@@ -430,7 +430,7 @@ Principio central de Drenyra-Engram:
 ## Navegación
 
 - [Drenyra-AI — Accounting Agent Operating System](./drenyra-ai-aos.md)
-- [Drenyra-Pi — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md)
+- [Drenyra Shell — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md)
 - [Drenyra Product Philosophy — Definitive Thesis](./product-philosophy.md)
 - [Drenyra Strategic Positioning](./strategic-positioning.md)
 - [Product Topology](../14-design/product-topology.md)

@@ -68,7 +68,7 @@ Esta sección contiene la documentación canónica que define qué es Drenyra, c
 | [drenyra-ai-aos](./01-foundation/drenyra-ai-aos.md) | Para posicionamiento internacional: |
 | [drenyra-engram](./01-foundation/drenyra-engram.md) | Para posicionamiento internacional: |
 | [drenyra-operating-model](./01-foundation/drenyra-operating-model.md) | Drenyra no compite copiando funciones aisladas de Codex, Cursor, Digits, Intuit o Xero. Compite con un **modelo… |
-| [drenyra-pi-harness](./01-foundation/drenyra-pi-harness.md) | Para posicionamiento internacional: |
+| [drenyra-shell-harness](./01-foundation/drenyra-pi-harness.md) | Para posicionamiento internacional: |
 | [feos-program](./01-foundation/feos-program.md) | CAP-FEOS-00 es el programa paraguas que define Drenyra como el **Financial Engineering Operating System de… |
 | [product-philosophy](./01-foundation/product-philosophy.md) | Drenyra no debe limitarse a ser "un software contable con IA". Esa categoría ya está siendo ocupada por Digits… |
 | [program-taxonomy](./01-foundation/program-taxonomy.md) | Drenyra no es un proyecto que se especifique completo antes de construir. Es un programa de plataforma que evoluciona… |
@@ -127,7 +127,7 @@ Un Architecture Decision Record documenta una decisión que:
 | [ADR-007-go-cli-fiscal-terminal](./11-adr/ADR-007-go-cli-fiscal-terminal.md) | El CLI de Drenyra necesita ser rápido, distribuible como binario único, y con buen soporte para TUI. Las opciones… |
 | [ADR-008-property-based-testing](./11-adr/ADR-008-property-based-testing.md) | Las reglas fiscales (IGV, detracciones, RUC checksum, operaciones Money) tienen invariantes que deben cumplirse para… |
 | [ADR-009-canonical-idempotency-contract](./11-adr/ADR-009-canonical-idempotency-contract.md) | Drenyra maneja múltiples mecanismos de idempotencia que evolucionaron orgánicamente y |
-| [ADR-010-ecosystem-boundary-authority](./11-adr/ADR-010-ecosystem-boundary-authority.md) | El ecosistema Drenyra creció con componentes superpuestos: el Command Center llegó a |
+| [ADR-010-ecosystem-boundary-authority](./11-adr/ADR-010-ecosystem-boundary-authority.md) | El ecosistema Drenyra creció con componentes superpuestos: el Drenyra Desktop llegó a |
 | [ADR-011-agent-model-ai-proposes-core-decides](./11-adr/ADR-011-agent-model-ai-proposes-core-decides.md) | La tentación de convertir cada función contable en un "agente" produce sistemas donde |
 | [ADR-012-persistence-security-recovery](./11-adr/ADR-012-persistence-security-recovery.md) | El estado autoritativo no puede vivir en la conversación ni en la memoria del modelo: |
 | [adr-034-drenyra-fiscal-app-server](./11-adr/adr-034-drenyra-fiscal-app-server.md) | Within the Platform vs Product split, Drenyra ships the Financial Engineering Environment — harness + clients from this… |
@@ -177,7 +177,7 @@ Los siguientes documentos están identificados pero aún no han sido creados:
 | [agent-capability-matrix](./14-design/agent-capability-matrix.md) | title: 'Drenyra Agent Capability Matrix 2026' |
 | [cap-workbench-00](./14-design/cap-workbench-00.md) | Transform Drenyra from a SaaS dashboard into an **operational workbench** — a persistent, agentic, financial… |
 | [command-envelope](./14-design/command-envelope.md) | title: 'Drenyra Command Envelope 2026' |
-| [design-influences](./14-design/design-influences.md) | Document external design references that inform Drenyra's **Financial Engineering Environment** command center without… |
+| [design-influences](./14-design/design-influences.md) | Document external design references that inform Drenyra's **Financial Engineering Environment** Drenyra Desktop without… |
 | [dual-surface-brain](./14-design/dual-surface-brain.md) | Drenyra is API/domain-first. React Web and the terminal surface (`drenyra-shell`, which replaced the Go CLI) are UX… |
 | [ecosystem-capability-matrix](./14-design/ecosystem-capability-matrix.md) | Fiscal convention: monetary values in the Drenyra ecosystem are BigInt cents; no float is ever used for money; version… |
 | [fiscal-app-server](./14-design/fiscal-app-server.md) | title: 'Drenyra Fiscal App Server (DFAS) 2026' |

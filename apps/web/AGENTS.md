@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-06-20
 
-**Last updated:** 2026-06-20 · **Package:** `@drenyra/web` — Drenyra fiscal intelligence command center SPA.
+**Last updated:** 2026-06-20 · **Package:** `@drenyra/web` — Drenyra fiscal intelligence desktop SPA.
 
 ## 1. Overview
 

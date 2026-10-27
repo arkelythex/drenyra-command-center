@@ -17,7 +17,7 @@ auto-generated: false
 
 ## ⏱ Si solo tenés tres minutos
 
-Drenyra Web es el agentic fiscal command center de Drenyra — the verifiable financial operating system. Esto es lo que necesitás saber:
+Drenyra Web es la superficie agentic de Drenyra — the verifiable financial operating system. Esto es lo que necesitás saber:
 
 | Si venís por...            | Respuesta corta                                                                                         |
 | -------------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -95,7 +95,7 @@ All routes live in `src/routes/` — type-safe, file-based lazy loading with bui
 | `/approvals`                | Approval hub                    |
 | `/automations`              | Automation workflows            |
 | `/connections`              | Third-party connections         |
-| `/drenyra`                  | Drenyra command center          |
+| `/drenyra`                  | Drenyra Desktop          |
 | `/chat`                     | AI chat assistant               |
 | `/neural-grid`              | Neural analytics grid           |
 | `/economic-groups/:groupId` | Economic group detail           |

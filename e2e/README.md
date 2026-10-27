@@ -96,8 +96,8 @@ e2e/
 ├── dashboard/                    # Dashboard & home page
 │   └── dashboard.spec.ts         #   KPIs, summaries, date filter (4 tests)
 │
-├── drenyra-command-center/       # Drenyra Fiscal Command Center
-│   └── drenyra-command-center.spec.ts  #   Full command center smoke (7 tests)
+├── drenyra-command-center/       # Drenyra Desktop
+│   └── drenyra-command-center.spec.ts  #   Full Drenyra Desktop smoke (7 tests)
 │
 ├── drenyra-workspace/            # Drenyra workspace navigation
 │   ├── agent-workspaces.spec.ts       #   Agent workspace pages (7 tests)

@@ -2,13 +2,13 @@
 
 **Fecha:** 2026-08-11
 **Estado:** Aprobado — separación de frontera y autoridad del ecosistema Drenyra
-**Alcance:** Drenyra, Drenyra-AI, Drenyra Pi, Drenyra Engram, Drenyra Skills, Adaptadores, Guardian Angel
+**Alcance:** Drenyra, Drenyra-AI, Drenyra Shell, Drenyra Engram, Drenyra Skills, Adaptadores, Guardian Angel
 
 ---
 
 ## Context
 
-El ecosistema Drenyra creció con componentes superpuestos: el Command Center llegó a
+El ecosistema Drenyra creció con componentes superpuestos: el Drenyra Desktop llegó a
 contener lógica de runtime, la UI podía interpretar narraciones de agentes, y las
 fronteras entre interfaz, autoridad, memoria y revisión no estaban formalizadas.
 Esta ambigüedad generaba riesgos concretos:
@@ -31,7 +31,7 @@ Aprobado el Diseño 1 — Frontera y autoridad del ecosistema, con tres piezas n
 | --- | --- | --- |
 | **Drenyra** | Interfaz, bandejas, visualización, revisión y aprobación | Reimplementar gates o modificar estados directamente |
 | **Drenyra-AI** | Misiones, candidatos, materialidad, autoridad, gates, receipts, ledger y recovery | Depender de la UI o confiar en narraciones del agente |
-| **Drenyra Pi** | Harness optimizado para ejecutar agentes especializados | Resolver versiones desde PATH o saltarse el Core |
+| **Drenyra Shell** | Harness optimizado para ejecutar agentes especializados | Resolver versiones desde PATH o saltarse el Core |
 | **Drenyra Engram** | Memoria institucional y recuperación de contexto | Autorizar acciones o tratar recuerdos como evidencia |
 | **Drenyra Skills** | Conocimiento contable, fiscal y jurisdiccional versionado | Cambiar políticas congeladas silenciosamente |
 | **Adaptadores** | Obtener evidencia de ERP, bancos, SUNAT y archivos | Declarar éxito sin respuesta verificable |
@@ -51,7 +51,7 @@ Aprobado el Diseño 1 — Frontera y autoridad del ecosistema, con tres piezas n
 
 ### 3. Regla de dependencia
 
-- Drenyra y Drenyra Pi consumen **versiones publicadas** de Drenyra-AI; Drenyra-AI nunca
+- Drenyra y Drenyra Shell consumen **versiones publicadas** de Drenyra-AI; Drenyra-AI nunca
   depende de ellos.
 - La UI puede caerse y reconstruirse desde el estado del Core; un transcript puede
   perderse y la misión recuperarse desde eventos y evidencia.
@@ -73,7 +73,7 @@ Aprobado el Diseño 1 — Frontera y autoridad del ecosistema, con tres piezas n
 - Extracción pendiente: partes de Drenyra todavía consumen artefactos internos mientras
   la extracción a los repos hermanos termina.
 - Requiere disciplina de versionado publicada en drenyra-ai (RELEASING) y verificación
-  de pin en Drenyra Pi.
+  de pin en Drenyra Shell.
 - El Guardian Angel necesita un contrato de independencia explícito (no revisar su
   propio trabajo) que aún debe implementarse en el harness.
 
@@ -88,6 +88,6 @@ Aprobado el Diseño 1 — Frontera y autoridad del ecosistema, con tres piezas n
 
 ---
 
-**Fuente canónica de esta decisión:** [Ecosystem Boundaries — Drenyra](../architecture/ecosystem-boundaries.md) y sus espejos en `drenyra-ai`, `drenyra-pi` y `drenyra-engram`.
+**Fuente canónica de esta decisión:** [Ecosystem Boundaries — Drenyra](../architecture/ecosystem-boundaries.md) y sus espejos en `drenyra-ai`, `drenyra-shell` y `drenyra-engram`.
 
 **Ver también:** [ADR-011 — Agent Model (Design 3)](./ADR-011-agent-model-ai-proposes-core-decides.md) y [ADR-012 — Persistence, Security & Recovery (Design 4)](./ADR-012-persistence-security-recovery.md).

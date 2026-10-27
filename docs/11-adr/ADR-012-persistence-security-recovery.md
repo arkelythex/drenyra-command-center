@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-08-11
 **Estado:** Aprobado — modelo de almacenamiento, datos autoritativos, idempotencia, estados desconocidos y controles de seguridad
-**Alcance:** Drenyra, Drenyra-AI, Drenyra Pi, Drenyra Engram, Adaptadores
+**Alcance:** Drenyra, Drenyra-AI, Drenyra Shell, Drenyra Engram, Adaptadores
 **Referencia:** [Design 04 — Persistence, Security & Recovery](https://github.com/arkelythex/drenyra-ai/blob/main/docs/design/design-04-persistence-security-recovery.md)
 
 ---

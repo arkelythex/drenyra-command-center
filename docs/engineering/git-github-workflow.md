@@ -242,7 +242,7 @@ No usar `skip ci`, desactivar tests, convertir fallos en `it.skip` ni bajar thre
 ### Protección de `main`
 
 Estado real configurado en GitHub (verificable con
-`gh api repos/arkelythex/drenyra-command-center/branches/main/protection`):
+`gh api repos/arkelythex/drenyra-desktop/branches/main/protection`):
 
 - [x] Pull request obligatorio (0 aprobaciones requeridas — ver nota)
 - [x] Required status checks con `strict` (rama actualizada)

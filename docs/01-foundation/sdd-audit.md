@@ -114,7 +114,7 @@
 | `drenyra-evidence-vault`   | 📦 archived            | L2      |
 | `drenyra-evidence-vault-2` | ✅ applied             | L3      |
 | `drenyra-vocabulary`       | ✅ verified (archived) | L4      |
-| `drenyra-pi-extraction`    | ✅ verified (archived) | L4      |
+| `drenyra-shell-extraction`    | ✅ verified (archived) | L4      |
 
 ## Performance, Quality & Modernization (12 SDDs)
 

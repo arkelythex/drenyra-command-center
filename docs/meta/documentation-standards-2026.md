@@ -15,7 +15,7 @@
 | **Docs con el código** | La documentación cambia en el mismo PR que el comportamiento que describe. |
 | **Sin secretos ni datos reales** | Ejemplos con RUC/período ficticios; dinero en centavos. |
 | **Fuente canónica única** | Una regla vive en un solo lugar y los demás documentos la enlazan ([`AGENTS.md`](../../AGENTS.md) para reglas operativas). |
-| **Nombres vigentes** | `drenyra-shell` (antes `drenyra-pi`), `drenyra-ai`, `drenyra-engram`. Lo histórico se marca como tal. |
+| **Nombres vigentes** | `drenyra-shell` (antes `drenyra-shell`), `drenyra-ai`, `drenyra-engram`. Lo histórico se marca como tal. |
 
 ## Verificación
 

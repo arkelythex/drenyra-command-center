@@ -8,7 +8,7 @@
 
 ## Overview
 
-Drenyra Runtime is the **Brain Service contract** for Drenyra CLI and the React Command Center. CLI and UI do not execute separate intelligence — they submit turns to the same thread.
+Drenyra Runtime is the **Brain Service contract** for Drenyra CLI and the React Drenyra Desktop. CLI and UI do not execute separate intelligence — they submit turns to the same thread.
 
 This feature owns schemas and future routes for:
 - Threads (conversation/runtime sessions)

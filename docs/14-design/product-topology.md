@@ -18,7 +18,7 @@ Drenyra-AI is an **independent accounting agent operating system**, not an inter
 | | Drenyra-AI | Drenyra |
 | --- | --- | --- |
 | Role | Ecosystem (framework, runtime, agents, skills, receipts, authority) | Visual and operational surface |
-| Works | Standalone — CLI, API, other ERPs, other SaaS, external agents, integrations | Consumes Drenyra-AI as its accounting command center |
+| Works | Standalone — CLI, API, other ERPs, other SaaS, external agents, integrations | Consumes Drenyra-AI as its Drenyra Desktop |
 | Analogy | Gentle AI | OpenCode / Claude Code |
 
 Its product protocol is **RDA — Receipt-Driven Accounting**, built on the RED receipt mechanism this repo already implements in its runtime (RDA defines *what* must be evidenced; RED implements *how* it is signed and verified). See [Drenyra-AI — Accounting Agent Operating System](../01-foundation/drenyra-ai-aos.md).
@@ -45,7 +45,7 @@ Its product protocol is **RDA — Receipt-Driven Accounting**, built on the RED 
 ```text
 Drenyra/
 ├── apps/
-│   ├── web/              → Fiscal command center SPA
+│   ├── web/              → Drenyra Desktop SPA
 │   ├── api/              → Fiscal API (Elysia vertical slices)
 │   ├── data-engine/      → SIRE / analytics (Python + Polars)
 │   └── cli/              → Go TUI — Fiscal Terminal

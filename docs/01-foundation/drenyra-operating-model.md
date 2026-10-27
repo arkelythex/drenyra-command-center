@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-08-05
 **Audiencia:** Producto, arquitectura, estrategia
-**Alineado con:** [Product Philosophy](./product-philosophy.md), [Strategic Positioning](./strategic-positioning.md), [Drenyra-AI AOS](./drenyra-ai-aos.md), [Drenyra-Pi Harness](./drenyra-pi-harness.md)
+**Alineado con:** [Product Philosophy](./product-philosophy.md), [Strategic Positioning](./strategic-positioning.md), [Drenyra-AI AOS](./drenyra-ai-aos.md), [Drenyra Shell Harness](./drenyra-pi-harness.md)
 
 ---
 
@@ -76,7 +76,7 @@ Las excepciones son la unidad de trabajo del contador: aprobar, devolver con ins
 | Plano | Rol | Estado |
 | ----- | --- | ------ |
 | **Web** — control plane | Cartera, empresas/RUC, periodos, misiones, aprobaciones, configuración, trazabilidad | ✅ Base: workspaces + attention + control tower service |
-| **Desktop** — local execution node | Archivos locales, certificados SOL, sesiones de navegador, automatización de portales, evidencia del entorno | 🟡 [SDD-WB-012](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/sdd-wb-012/proposal.md) (Tauri 2, planned) |
+| **Desktop** — local execution node | Archivos locales, certificados SOL, sesiones de navegador, automatización de portales, evidencia del entorno | 🟡 [SDD-WB-012](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/sdd-wb-012/proposal.md) (Tauri 2, planned) |
 | **Mobile/PWA** — capture & approval | Fotografiar comprobantes, compartir PDF/XML, aprobar/rechazar, supervisar misiones | 🟡 [SDD-FEOS-013](./feos-program.md#sdd-feos-013--mobile-supervision-and-approval) (React Native, planned) |
 | **Cloud runtime** — mission & evidence | Misiones duraderas, handoff, idempotencia, receipts, evidence bundles | ✅ Base: `packages/mission-domain`, `mission-protocol` |
 
@@ -108,7 +108,7 @@ Drenyra Desktop
 └── Desktop Agent
 ```
 
-[SDD-WB-012](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/sdd-wb-012/proposal.md) ya define el shell Tauri 2 (system tray con conteo de attention inbox, multi-window, certificados locales SUNAT SOL, Drenyra Bridge, secure storage, background sync) con la regla **"reuse web UI — no segunda implementación"**.
+[SDD-WB-012](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/sdd-wb-012/proposal.md) ya define el shell Tauri 2 (system tray con conteo de attention inbox, multi-window, certificados locales SUNAT SOL, Drenyra Bridge, secure storage, background sync) con la regla **"reuse web UI — no segunda implementación"**.
 
 ### 3.3 Drenyra Mobile/PWA — captura y supervisión
 
@@ -335,7 +335,7 @@ Anclado al estado real: las filas citan el SDD existente o marcan la brecha sin 
 - [Product Philosophy](./product-philosophy.md) — tesis definitiva y skills contables
 - [Strategic Positioning](./strategic-positioning.md) — elevator pitch, moat, competencia
 - [Drenyra-AI AOS](./drenyra-ai-aos.md) — ecosistema y protocolo contable
-- [Drenyra-Pi Harness](./drenyra-pi-harness.md) — terminal Pi-native, agentes y routing
+- [Drenyra Shell Harness](./drenyra-pi-harness.md) — terminal Pi-native, agentes y routing
 - [Capability Map](./capability-map.md) — 90+ capacidades del programa
 - [SDD Audit](./sdd-audit.md) — estado de los SDDs
 - [FEOS Program](./feos-program.md) — SDD-FEOS-011/012/013 (skills, routing, mobile)
