@@ -8,6 +8,7 @@ vi.mock("../../../security/session-context", () => ({
 	resolveSessionContext: vi.fn(),
 }));
 
+import { globalErrorHandler } from "../../../../shared/plugins/error-handler";
 import { resolveSessionContext } from "../../../security/session-context";
 
 const mockResolve = resolveSessionContext as unknown as ReturnType<
@@ -17,7 +18,7 @@ const mockResolve = resolveSessionContext as unknown as ReturnType<
 const COMPANY_ID = "47ab7ee0-6778-4cc3-a7de-9e93d57d95bc";
 
 function buildApp(): Elysia {
-	return new Elysia().use(analyticsModule);
+	return new Elysia().use(globalErrorHandler).use(analyticsModule);
 }
 
 describe("analytics route contracts", () => {
@@ -29,7 +30,7 @@ describe("analytics route contracts", () => {
 				authUserId: "test-user",
 				legacyUserId: null,
 				role: "admin",
-				companyId: "test-company",
+				companyId: COMPANY_ID,
 			},
 		});
 	});
@@ -46,7 +47,7 @@ describe("analytics route contracts", () => {
 		expect(response.status).toBe(422);
 		expect(await response.json()).toMatchObject({
 			success: false,
-			error: "Invalid analytics query parameters",
+			error: "Validation failed",
 			code: "VALIDATION_ERROR",
 		});
 	});
@@ -63,10 +64,13 @@ describe("analytics route contracts", () => {
 		);
 
 		expect(response.status).toBe(500);
-		expect(await response.json()).toEqual({
+		const body = await response.json();
+		expect(body).toEqual({
 			success: false,
-			error: "analytics backend unavailable",
+			error: "Internal server error",
 			code: "INTERNAL_ERROR",
 		});
+		// The global handler must not leak the internal failure message.
+		expect(JSON.stringify(body)).not.toContain("analytics backend unavailable");
 	});
 });

@@ -1,11 +1,12 @@
 import { Elysia } from "elysia";
 import { describe, expect, it } from "vitest";
 
+import { globalErrorHandler } from "../../../../shared/plugins/error-handler";
 import { aiSwarmRoutes } from "../../api/routes";
 
 describe("ai-swarm routes contract envelope", () => {
 	it("returns canonical envelope for schema validation errors", async () => {
-		const app = new Elysia().use(aiSwarmRoutes);
+		const app = new Elysia().use(globalErrorHandler).use(aiSwarmRoutes);
 
 		const response = await app.handle(
 			new Request("http://localhost/api/ai-swarm/api/ai-swarm/analyze-task", {
@@ -19,9 +20,9 @@ describe("ai-swarm routes contract envelope", () => {
 		);
 
 		expect(response.status).toBe(422);
-		expect(await response.json()).toEqual({
+		expect(await response.json()).toMatchObject({
 			success: false,
-			error: "Invalid ai-swarm request",
+			error: "Validation failed",
 			code: "VALIDATION_ERROR",
 		});
 	});
