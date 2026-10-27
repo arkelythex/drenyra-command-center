@@ -105,7 +105,7 @@ export function resolveDrenyraActorContext(
 
 export function drenyraActorContextFailure(missingHeaders: string[]) {
 	return fail(
-		"Drenyra command center requests require company, RUC, fiscal period and user headers",
+		"Drenyra Desktop requests require company, RUC, fiscal period and user headers",
 		"TENANT_CONTEXT_REQUIRED",
 		{ details: { missingHeaders } },
 	);

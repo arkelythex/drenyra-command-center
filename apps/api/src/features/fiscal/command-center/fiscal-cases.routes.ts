@@ -36,7 +36,7 @@ export function createFiscalCasesRoutes(
 				}
 				return ok(await service.list(resolved.context));
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.get(
 			"/summaries",
@@ -48,7 +48,7 @@ export function createFiscalCasesRoutes(
 				}
 				return ok(await service.listSummaries(resolved.context));
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.get(
 			"/:id",
@@ -65,7 +65,7 @@ export function createFiscalCasesRoutes(
 				}
 				return ok(item);
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.post(
 			"/",
@@ -81,7 +81,7 @@ export function createFiscalCasesRoutes(
 			},
 			{
 				body: CreateFiscalCaseSchema,
-				detail: { tags: ["Fiscal Command Center"] },
+				detail: { tags: ["Drenyra Desktop"] },
 			},
 		)
 		.patch(
@@ -105,7 +105,7 @@ export function createFiscalCasesRoutes(
 			},
 			{
 				body: UpdateFiscalCaseSchema,
-				detail: { tags: ["Fiscal Command Center"] },
+				detail: { tags: ["Drenyra Desktop"] },
 			},
 		)
 		.get(
@@ -123,7 +123,7 @@ export function createFiscalCasesRoutes(
 				}
 				return ok(rows);
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.get(
 			"/:id/evidence",
@@ -140,7 +140,7 @@ export function createFiscalCasesRoutes(
 				}
 				return ok(rows);
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		);
 }
 

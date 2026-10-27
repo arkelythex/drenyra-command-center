@@ -30,7 +30,7 @@ if [ -n "$sdd_workflows" ]; then
     "Use ODD: odd/tasks/<task>.md documents the work; CI gates stay in ci.yml and quality-gates.yml."
 fi
 
-# 2b. Scope policy: this repo is the Accounting Command Center (see AGENTS.md).
+# 2b. Scope policy: this repo is the Drenyra Desktop (see AGENTS.md).
 if [ -n "$(git ls-files products 2>/dev/null | head -1)" ]; then
   report "products/ is not allowed: non-accounting products must live in their own repo." \
     "Do this instead:" \

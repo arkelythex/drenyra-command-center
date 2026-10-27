@@ -2,7 +2,7 @@
  * Drenyra Workspace Navigation — Smoke Tests
  *
  * Verifies that navigating to the Drenyra workspace via the app shell
- * renders the fiscal command center with company context.
+ * renders the fiscal desktop with company context.
  *
  * API calls are mocked so tests run without a backend.
  */
@@ -80,7 +80,7 @@ test.describe("Drenyra Workspace Navigation — smoke", () => {
 		await installSessionState(page);
 	});
 
-	test("navigates to /drenyra and renders the command center shell", {
+	test("navigates to /drenyra and renders the desktop shell", {
 		tag: ["@smoke", "@e2e", "@drenyra"],
 	}, async ({ page }) => {
 		await page.goto("/drenyra");

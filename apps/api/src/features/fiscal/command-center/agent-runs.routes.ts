@@ -31,7 +31,7 @@ export function createAgentRunsRoutes(
 				}
 				return ok(await service.list(resolved.context));
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.get(
 			"/:id",
@@ -48,7 +48,7 @@ export function createAgentRunsRoutes(
 				}
 				return ok(run);
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.post(
 			"/",
@@ -62,7 +62,7 @@ export function createAgentRunsRoutes(
 					await service.create(body as RunAgentInput, resolved.context),
 				);
 			},
-			{ body: RunAgentSchema, detail: { tags: ["Fiscal Command Center"] } },
+			{ body: RunAgentSchema, detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.get(
 			"/:id/logs",
@@ -79,7 +79,7 @@ export function createAgentRunsRoutes(
 				}
 				return ok(logs);
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.get(
 			"/:id/outputs",
@@ -96,7 +96,7 @@ export function createAgentRunsRoutes(
 				}
 				return ok(outputs);
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		);
 }
 

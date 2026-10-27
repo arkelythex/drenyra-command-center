@@ -34,10 +34,7 @@ export function commandCenterError(error: unknown) {
 		}
 		return fail(error.message, "DRENYRA_COMMAND_CENTER_ERROR");
 	}
-	return fail(
-		"Unknown Drenyra command center error",
-		"DRENYRA_COMMAND_CENTER_ERROR",
-	);
+	return fail("Unknown Drenyra Desktop error", "DRENYRA_COMMAND_CENTER_ERROR");
 }
 
 export const fiscalCaseTypeSchema = t.Union([

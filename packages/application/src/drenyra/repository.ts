@@ -52,7 +52,7 @@ export interface DrenyraAuditEventFilter {
 }
 
 /**
- * Persistence port for the Drenyra Fiscal Command Center.
+ * Persistence port for the Drenyra Drenyra Desktop.
  *
  * Implementations must preserve company, RUC, organization and fiscal-period isolation. The application
  * service owns business orchestration; adapters only persist and retrieve scoped fiscal records.

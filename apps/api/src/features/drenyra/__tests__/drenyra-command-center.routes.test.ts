@@ -50,7 +50,7 @@ async function createCase(idempotencyKey?: string): Promise<string> {
 	return payload.data.id as string;
 }
 
-describe("Drenyra command center routes", () => {
+describe("Drenyra Desktop routes", () => {
 	it("exposes the Drenyra dual-surface contract", async () => {
 		const response = await requestJson("/api/drenyra/contract", "GET");
 		const payload = await response.json();
@@ -349,7 +349,7 @@ describe("Drenyra command center routes", () => {
 		expect(rejectedPayload.data.status).toBe("REJECTED");
 	});
 
-	it("requires company RUC and fiscal period for command center tenant scope", async () => {
+	it("requires company RUC and fiscal period for desktop tenant scope", async () => {
 		const app = new Elysia().use(drenyraModule);
 		const response = await app.handle(
 			new Request("http://localhost/api/drenyra/cases", {
@@ -369,7 +369,7 @@ describe("Drenyra command center routes", () => {
 		expect(payload.details.missingHeaders).toContain("x-fiscal-period");
 	});
 
-	it("denies command center reads without a scoped Drenyra capability grant", async () => {
+	it("denies desktop reads without a scoped Drenyra capability grant", async () => {
 		const app = new Elysia().use(drenyraModule);
 		const response = await app.handle(
 			new Request("http://localhost/api/drenyra/cases", {
@@ -391,7 +391,7 @@ describe("Drenyra command center routes", () => {
 		expect(payload.details.auditEventType).toBe("CAPABILITY_DENIED");
 	});
 
-	it("denies command center reads when redaction evidence is missing", async () => {
+	it("denies desktop reads when redaction evidence is missing", async () => {
 		const app = new Elysia().use(drenyraModule);
 		const response = await app.handle(
 			new Request("http://localhost/api/drenyra/cases", {

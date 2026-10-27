@@ -31,7 +31,7 @@ export function createAuditEventsRoutes(
 				}
 				return ok(await service.list(resolved.context));
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.post(
 			"/",
@@ -61,7 +61,7 @@ export function createAuditEventsRoutes(
 			},
 			{
 				body: RecordAuditEventSchema,
-				detail: { tags: ["Fiscal Command Center"] },
+				detail: { tags: ["Drenyra Desktop"] },
 			},
 		)
 		.get(
@@ -74,7 +74,7 @@ export function createAuditEventsRoutes(
 				}
 				return ok(await service.verifyChain(resolved.context));
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		)
 		.get(
 			"/:id",
@@ -91,7 +91,7 @@ export function createAuditEventsRoutes(
 				}
 				return ok(event);
 			},
-			{ detail: { tags: ["Fiscal Command Center"] } },
+			{ detail: { tags: ["Drenyra Desktop"] } },
 		);
 }
 
