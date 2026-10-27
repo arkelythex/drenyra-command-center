@@ -14,7 +14,7 @@ if [ "${1:-}" = "--dry-run" ]; then
 fi
 
 LABELS="auto-generated,merge-health,judgment-day"
-REPO="arkelythex/drenyra-command-center"
+REPO="arkelythex/drenyra-desktop"
 
 echo "=== Engram Sync ==="
 echo "Labels: $LABELS"
