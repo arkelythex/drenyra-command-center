@@ -18,6 +18,8 @@ vi.mock("ai", () => ({
 	generateText: vi.fn(),
 	streamText: vi.fn(),
 	generateObject: vi.fn(),
+	// ai's tool() returns its definition unchanged.
+	tool: vi.fn((definition: unknown) => definition),
 }));
 
 vi.mock("@aws-sdk/client-s3", () => ({
