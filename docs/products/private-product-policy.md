@@ -14,7 +14,7 @@ Esta política es una decisión de negocio del propietario (2026-08-03): *"Dreny
 
 | Repo                          | Visibilidad | Rol                                        |
 | ----------------------------- | ----------- | ------------------------------------------ |
-| `arkelythex/drenyra-command-center`          | **private** | Producto (Accounting Command Center)       |
+| `arkelythex/drenyra-desktop`          | **private** | Producto (Drenyra Desktop)       |
 | `arkelythex/drenyra-engram`   | **private** | Motor Go (ledger, fiscal, memoria)         |
 | `arkelythex/drenyra-ai`       | **private** | Extracción AI de la casa                   |
 | `arkelythex/drenyra-shell`     | **private** | Harness Pi de la casa                      |

@@ -1,4 +1,4 @@
-# Dependency Direction — Drenyra (Accounting Command Center)
+# Dependency Direction — Drenyra (Drenyra Desktop)
 
 > **Last updated:** 2026-08-01.
 
@@ -21,7 +21,7 @@
                     │
            ┌────────┴────────┐
            │ Drenyra         │
-           │ Command Center  │
+           │ Drenyra Desktop  │
            └─────────────────┘
 ```
 

@@ -61,6 +61,9 @@ units:
     kind: package
     name: "@drenyra/fiscal-query-engine"
     description: "Natural language fiscal query engine — classifier, pipeline router, evidence formatter"
+  - path: "packages/fiscal-sdd"
+    kind: package
+    name: "fiscal-sdd"
   - path: "packages/infrastructure"
     kind: package
     name: "@drenyra/infrastructure"
@@ -91,6 +94,9 @@ units:
     kind: package
     name: "@drenyra/phase-gatekeeper"
     description: "Phase gatekeepers for orchestrator pipeline — validates phase outputs before passing to next phase"
+  - path: "packages/pi"
+    kind: package
+    name: "pi"
   - path: "packages/security"
     kind: package
     name: "@drenyra/security"

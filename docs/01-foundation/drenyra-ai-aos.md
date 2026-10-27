@@ -291,13 +291,13 @@ Drenyra-AI aspira a ser el **estándar abierto de ejecución contable verificabl
 Drenyra-AI                         Drenyra
 ─────────────────                  ─────────────────
 framework + runtime                producto visual y operativo
-agentes + skills                   command center contable
+agentes + skills                   Drenyra Desktop contable
 receipts + autoridad               para empresas y contadores
        │
        └────────── consume ───────► Drenyra (surface)
 ```
 
-La analogía exacta es Gentle AI → OpenCode/Claude Code: **Drenyra-AI es el ecosistema; Drenyra es la superficie**. Drenyra consume Drenyra-AI, pero Drenyra-AI funciona solo con CLI, API, otros ERPs, otros SaaS, agentes externos e integraciones. Entre el ecosistema y la superficie existe **Drenyra-Pi**, la terminal agentic Pi-native que ejecuta el protocolo RDA en Pi (véase [Drenyra-Pi — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md)). La separación es estructural, no cosmética.
+La analogía exacta es Gentle AI → OpenCode/Claude Code: **Drenyra-AI es el ecosistema; Drenyra es la superficie**. Drenyra consume Drenyra-AI, pero Drenyra-AI funciona solo con CLI, API, otros ERPs, otros SaaS, agentes externos e integraciones. Entre el ecosistema y la superficie existe **Drenyra Shell**, la terminal agentic Pi-native que ejecuta el protocolo RDA en Pi (véase [Drenyra Shell — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md)). La separación es estructural, no cosmética.
 
 ---
 
@@ -321,15 +321,15 @@ Luego se construye el primer vertical completo: **Monthly Close Execution** — 
 
 ---
 
-## Drenyra-Pi — el harness Pi-native
+## Drenyra Shell — el harness Pi-native
 
-Drenyra-AI es el ecosistema y protocolo contable; **Drenyra-Pi es su implementación Pi-native** — el harness que convierte Pi en un operador contable disciplinado y verificable. La analogía es exacta: como Gentle Pi es la implementación Pi-native de Gentle AI, Drenyra-Pi es la implementación Pi-native de Drenyra-AI. No son dos nombres para lo mismo: Drenyra-AI aporta contratos, protocolos, agentes, skills, memoria, receipts, ledger, políticas, materialidad y autoridad; Drenyra-Pi empaqueta esa clase de integración como persona contable, comandos, panel operativo, agentes, skills, procedimientos RDA, routing de modelos, integraciones y guardas de seguridad sobre el runtime de Drenyra-AI.
+Drenyra-AI es el ecosistema y protocolo contable; **Drenyra Shell es su implementación Pi-native** — el harness que convierte Pi en un operador contable disciplinado y verificable. La analogía es exacta: como Gentle Pi es la implementación Pi-native de Gentle AI, Drenyra Shell es la implementación Pi-native de Drenyra-AI. No son dos nombres para lo mismo: Drenyra-AI aporta contratos, protocolos, agentes, skills, memoria, receipts, ledger, políticas, materialidad y autoridad; Drenyra Shell empaqueta esa clase de integración como persona contable, comandos, panel operativo, agentes, skills, procedimientos RDA, routing de modelos, integraciones y guardas de seguridad sobre el runtime de Drenyra-AI.
 
 La tesis conjunta:
 
-> **Drenyra-AI aporta el protocolo, la inteligencia operativa y la autoridad verificable. Drenyra-Pi convierte Pi en la terminal contable disciplinada que ejecuta ese protocolo. Drenyra ofrece la superficie visual donde profesionales y empresas supervisan, revisan y autorizan el trabajo.**
+> **Drenyra-AI aporta el protocolo, la inteligencia operativa y la autoridad verificable. Drenyra Shell convierte Pi en la terminal contable disciplinada que ejecuta ese protocolo. Drenyra ofrece la superficie visual donde profesionales y empresas supervisan, revisan y autorizan el trabajo.**
 
-Documento completo: [Drenyra-Pi — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md).
+Documento completo: [Drenyra Shell — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md).
 
 ---
 

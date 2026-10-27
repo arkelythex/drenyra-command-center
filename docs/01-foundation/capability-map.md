@@ -142,7 +142,7 @@ Capacidades base que no deben romperse.
 | --------- | ---------------------------------- | ---------------------------------------------------- | ---------- |
 | CAP-UX-01 | Design tokens & theme system       | `drenyra-design-tokens-v4`                           | ✅ applied |
 | CAP-UX-02 | Application shell & navigation     | `drenyra-three-panel-layout`, `drenyra-global-shell` | ✅ applied |
-| CAP-UX-03 | Fiscal workspace & command center  | `drenyra-frontend-command-center-reset`              | ✅ applied |
+| CAP-UX-03 | Fiscal workspace & Drenyra Desktop  | `drenyra-frontend-command-center-reset`              | ✅ applied |
 | CAP-UX-04 | Evidence rail & approval inspector | —                                                    | ◌          |
 | CAP-UX-05 | Accounting diff workspace          | —                                                    | ◌          |
 | CAP-UX-06 | Accessibility & keyboard           | —                                                    | ◌          |

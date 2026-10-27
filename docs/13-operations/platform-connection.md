@@ -23,7 +23,7 @@ bun run dev:check      # infra smoke (add CHECK_API=1 INCLUDE_WEB=1 when app ser
 
 | Service                      | URL                            | Purpose                                  |
 | ---------------------------- | ------------------------------ | ---------------------------------------- |
-| Web (Drenyra Command Center) | `http://localhost:5174`        | Fiscal command center SPA                |
+| Web (Drenyra Desktop) | `http://localhost:5174`        | Drenyra Desktop SPA                |
 | API (Fiscal API)             | `http://localhost:3000`        | Elysia vertical slices, fiscal workflows |
 | Engram (evidence sidecar)    | `http://localhost:8733/health` | Phase-gate evidence, fiscal audit trails |
 
@@ -37,7 +37,7 @@ cd Drenyra && bun run dev:web
 cd drenyra && VITE_DRENYRA_DEV_URL=http://127.0.0.1:5174 bun run --filter @drenyra/web dev
 ```
 
-Open shell at `http://localhost:5173/drenyra` → redirects to Drenyra Command Center.
+Open shell at `http://localhost:5173/drenyra` → redirects to Drenyra Desktop.
 
 ## Related
 

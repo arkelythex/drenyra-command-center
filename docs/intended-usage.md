@@ -4,11 +4,11 @@
 
 ## What this repository is
 
-The **Accounting Command Center**: the product surface (API, web, fiscal domain) of Drenyra, a verifiable financial operating system for Peru (SUNAT/SIRE first). Agents propose, deterministic validators check, professionals approve material decisions, and every action produces an evidence receipt.
+The **Drenyra Desktop**: the product surface (API, web, fiscal domain) of Drenyra, a verifiable financial operating system for Peru (SUNAT/SIRE first). Agents propose, deterministic validators check, professionals approve material decisions, and every action produces an evidence receipt.
 
 ## What it is for
 
-- Running the fiscal API and web command center per organization, company and RUC.
+- Running the fiscal API and web desktop per organization, company and RUC.
 - Hosting the framework-free fiscal domain (`packages/domain`) and its use cases (`packages/application`).
 - Consuming the published `drenyra-ai` contracts for missions, receipts and review, and operating through `drenyra-shell` and `drenyra-engram` (see [`drenyra-ai-integration.md`](10-development/drenyra-ai-integration.md)).
 

@@ -19,7 +19,7 @@
 >
 > **Drenyra-Engram** is the institutional accounting memory that preserves what the organization knows and can prove about its accounting — remember is not authorize.
 >
-> **Ecosystem contract:** the approved boundary & authority separation (component responsibilities, chain of authority, dependency rule) is formalized in [ADR-010](docs/11-adr/ADR-010-ecosystem-boundary-authority.md) and mirrored in [Ecosystem Boundaries](docs/architecture/ecosystem-boundaries.md) across `drenyra-ai`, `drenyra-pi` and `drenyra-engram`.
+> **Ecosystem contract:** the approved boundary & authority separation (component responsibilities, chain of authority, dependency rule) is formalized in [ADR-010](docs/11-adr/ADR-010-ecosystem-boundary-authority.md) and mirrored in [Ecosystem Boundaries](docs/architecture/ecosystem-boundaries.md) across `drenyra-ai`, `drenyra-shell` and `drenyra-engram`.
 
 [![Status](https://img.shields.io/badge/Status-Active-22c55e)](#)
 [![Stack](https://img.shields.io/badge/TypeScript-Bun-3178c6)](#)
@@ -78,8 +78,8 @@ Professional Review → Controlled Execution → Immutable Receipt
 
 Drenyra is organized into **8 architectural planes**. No upper plane bypasses a lower one — an agent cannot call SUNAT directly; it must traverse the full stack.
 
-![Drenyra Command Center — 8 FEOS Planes](docs/diagrams/drenyra-command-center.architecture.light.svg#gh-light-mode-only)
-![Drenyra Command Center — 8 FEOS Planes](docs/diagrams/drenyra-command-center.architecture.dark.svg#gh-dark-mode-only)
+![Drenyra Desktop — 8 FEOS Planes](docs/diagrams/drenyra-command-center.architecture.light.svg#gh-light-mode-only)
+![Drenyra Desktop — 8 FEOS Planes](docs/diagrams/drenyra-command-center.architecture.dark.svg#gh-dark-mode-only)
 
 **Material operation flow:**
 
@@ -130,7 +130,7 @@ Engineering efficiency means standing on the shoulders of mature infrastructure:
 ```
 drenyra/
 ├── apps/
-│   ├── web/              → Fiscal command center — React 19 + TanStack Router
+│   ├── web/              → Drenyra Desktop — React 19 + TanStack Router
 │   ├── api/              → Fiscal API — Bun + Elysia, vertical slices, CQRS
 │   └── data-engine/      → SIRE & analytics — Python + FastAPI + Polars
 ├── packages/
@@ -176,7 +176,7 @@ bun run dev:check
 
 | Service              | URL                             |
 | -------------------- | ------------------------------- |
-| Web (Command Center) | `http://localhost:5174`         |
+| Web (Drenyra Desktop) | `http://localhost:5174`         |
 | API                  | `http://localhost:3000`         |
 | Swagger              | `http://localhost:3000/swagger` |
 | Data Engine          | `http://localhost:8000/health`  |

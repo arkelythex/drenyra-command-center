@@ -22,7 +22,7 @@
 
 ## Product model
 
-The web app is Drenyra's Financial Engineering Environment command center. Design web work around supervised accounting outcomes, not disconnected ERP pages.
+The web app is Drenyra's Financial Engineering Environment desktop workspace. Design web work around supervised accounting outcomes, not disconnected ERP pages.
 
 Use this workspace model:
 
@@ -43,15 +43,15 @@ Web changes must keep evidence, confidence, fiscal scope, approval state, and re
 
 ### Philosophy links and frontend plan alignment
 
-| Plan                                                                                      | Role in the web command center                                    |
+| Plan                                                                                      | Role in the web desktop                                    |
 | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [North Star Philosophy](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-north-star-philosophy/proposal.md) | Product-level operating contract for Drenyra surfaces.            |
-| [F1 Agentic Shell](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-agentic-shell/proposal.md)              | Shell, outcome navigation, and context rail foundation.           |
-| [F2 Thread System](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-thread-system/proposal.md)              | Durable work context and reviewable agent collaboration history.  |
-| [F3 Agents Window](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-agents-window/proposal.md)              | Multi-agent visibility tied to real accounting workflows.         |
-| [F4 Accounting Diff](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-accounting-diff/proposal.md)          | Evidence and review surface for risky fiscal/accounting changes.  |
-| [F5 Skills + Automations](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-skills-automations/proposal.md)  | Approval-aware automation with audit output.                      |
-| [F6 Evidence Vault 2.0](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-evidence-vault-2/proposal.md)      | Proof layer for evidence, reversibility, and fiscal audit trails. |
+| [North Star Philosophy](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-north-star-philosophy/proposal.md) | Product-level operating contract for Drenyra surfaces.            |
+| [F1 Agentic Shell](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-agentic-shell/proposal.md)              | Shell, outcome navigation, and context rail foundation.           |
+| [F2 Thread System](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-thread-system/proposal.md)              | Durable work context and reviewable agent collaboration history.  |
+| [F3 Agents Window](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-agents-window/proposal.md)              | Multi-agent visibility tied to real accounting workflows.         |
+| [F4 Accounting Diff](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-accounting-diff/proposal.md)          | Evidence and review surface for risky fiscal/accounting changes.  |
+| [F5 Skills + Automations](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-skills-automations/proposal.md)  | Approval-aware automation with audit output.                      |
+| [F6 Evidence Vault 2.0](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-evidence-vault-2/proposal.md)      | Proof layer for evidence, reversibility, and fiscal audit trails. |
 
 **First flagship workflow candidate:** monthly close. Use it to prove the
 command-center model before expanding to SIRE, reconciliation, or invoice review.
@@ -182,7 +182,7 @@ src/client.tsx                       ← Entry point (React root, QueryClient, R
     |   +-- cashflow/                ← Cashflow board, projections
     |   +-- compliance/              ← SIRE, CPE validator, fiscal health map
     |   +-- cognitive-hub/           ← AI workspace, event system, anomaly detection
-    |   +-- drenyra-command-center/  ← Drenyra AI command center UI
+    |   +-- drenyra-command-center/  ← Drenyra AI desktop UI
     |   +-- drenyra-workspace/       ← Drenyra workspace pages
     |   +-- settings/                ← Org, billing, notifications, integrations
     |   +-- ledger/                  ← General ledger view
@@ -300,7 +300,7 @@ All routes are flat under `src/routes/` except `settings/` and `workspace/` whic
 | cashflow               | src/features/cashflow/               | Cashflow board, projections                                                |
 | compliance             | src/features/compliance/             | SIRE management, CPE validator, fiscal health map, hitl decisions          |
 | cognitive-hub          | src/features/cognitive-hub/          | AI workspace: events, anomalies, cost dashboard, message views             |
-| drenyra-command-center | src/features/drenyra-command-center/ | Drenyra AI command center UI                                               |
+| drenyra-command-center | src/features/drenyra-command-center/ | Drenyra AI desktop UI                                               |
 | drenyra-workspace      | src/features/drenyra-workspace/      | Drenyra workspace pages                                                    |
 | central-board          | src/features/central-board/          | Área Central: ledger editable, pending journal review, document upload     |
 | drenyra [hooks]        | src/features/drenyra/hooks/          | Journal entries TanStack Query hooks (useJournalEntriesApi)                |

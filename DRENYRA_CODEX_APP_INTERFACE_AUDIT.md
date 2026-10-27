@@ -4,7 +4,7 @@
 
 ## Executive summary
 
-Drenyra already has the right foundation for a Codex-like product: an agentic shell, a persistent sidebar, a bottom command bar, a command center, and an artifact feed.
+Drenyra already has the right foundation for a Codex-like product: an agentic shell, a persistent sidebar, a bottom command bar, a desktop workspace, and an artifact feed.
 
 The main gap is not visual polish. The main gap is product posture: Drenyra must behave less like a module dashboard with chat attached, and more like a fiscal workbench where conversation, evidence, agent runs, approvals, and audit trails are the primary workflow.
 
@@ -12,7 +12,7 @@ The main gap is not visual polish. The main gap is product posture: Drenyra must
 
 Drenyra should feel like:
 
-> A calm fiscal command center where humans direct agents, agents produce verifiable artifacts, and every fiscal decision remains scoped, reviewable, and auditable.
+> A calm Drenyra Desktop where humans direct agents, agents produce verifiable artifacts, and every fiscal decision remains scoped, reviewable, and auditable.
 
 Drenyra should not feel like:
 
@@ -91,7 +91,7 @@ Recommended modes:
 
 ### 5. Main content should reduce dashboard noise
 
-The main command center should prioritize:
+The main Drenyra Desktop should prioritize:
 
 1. current task;
 2. agent response;
@@ -155,7 +155,7 @@ Drenyra must always make the fiscal scope visible before action:
 
 ### Phase 5 — Interaction polish
 
-- Reduce visual noise in the main command center.
+- Reduce visual noise in the main Drenyra Desktop.
 - Normalize spacing, muted borders, and calm surfaces.
 - Prefer progressive disclosure over dense panels.
 - Verify keyboard navigation and focus states.

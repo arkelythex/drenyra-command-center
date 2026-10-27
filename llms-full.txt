@@ -28,7 +28,7 @@ DRENYRA builds Drenyra, the verifiable financial operating system for businesses
 
 **Private commercial product:** Drenyra and its ecosystem repos (`drenyra-ai`, `drenyra-shell`, `drenyra-engram`) are **private**. Do not make them public, do not publish artifacts (images, packages, docs) to public registries, and do not add public collaborators. Container images publish to private GHCR (`ghcr.io/arkelythex/...`) and require authenticated pulls (`read:packages` PAT or a workflow `GITHUB_TOKEN` with `packages: read`); never switch package visibility to public.
 
-**Scope policy (org-level):** this repository is the **Accounting Command Center**. No new non-accounting product or vertical may be added to this repo. Foreign or experimental folders must move to their own repo, be archived, or be relocated to a clearly-labelled experimental space — never grow inside `Drenyra`. Extract, don't accumulate (`products/andino`, `estado`, `kuse` and `senzar` were extracted on 2026-10-01; last tree with them: commit `91e116b`; `bun run odd:guard` now rejects a new `products/`): reusable runtime, harness, and memory concerns belong in `arkelythex/drenyra-ai`, `arkelythex/drenyra-shell`, and `arkelythex/drenyra-engram` respectively.
+**Scope policy (org-level):** this repository is **Drenyra Desktop**. No new non-accounting product or vertical may be added to this repo. Foreign or experimental folders must move to their own repo, be archived, or be relocated to a clearly-labelled experimental space — never grow inside `Drenyra`. Extract, don't accumulate (`products/andino`, `estado`, `kuse` and `senzar` were extracted on 2026-10-01; last tree with them: commit `91e116b`; `bun run odd:guard` now rejects a new `products/`): reusable runtime, harness, and memory concerns belong in `arkelythex/drenyra-ai`, `arkelythex/drenyra-shell`, and `arkelythex/drenyra-engram` respectively.
 
 - Fastest navigation source: start at root `CODEX-MAP.md`, then use `.codebase/index.yml` for machine-readable app/package metadata.
 - Regenerate navigation docs with `bun run codebase:index`; verify with `bun run codebase:index:check`.
@@ -447,7 +447,7 @@ Los scripts `compliance:sire-*` del `package.json` fueron eliminados (nunca exis
 | Path | Area | Purpose | Tags | MAP.md |
 |---|---|---|---|
 | `apps/api` | api | Backend API: Bun + Elysia vertical slices, contracts, fiscal workflows. | backend, fiscal, api, elysia | `apps/api/MAP.md` |
-| `apps/web` | web | Agentic fiscal command center for supervised accounting operations. | frontend, drenyra, react | `apps/web/MAP.md` |
+| `apps/web` | web | Agentic Drenyra Desktop for supervised accounting operations. | frontend, drenyra, react | `apps/web/MAP.md` |
 | `apps/landing` | landing | Public marketing and product documentation surface. | frontend, marketing, nextjs | `apps/landing/MAP.md` |
 | `apps/data-engine` | data-engine | Python analytical microservice for high-throughput financial data processing. | python, analytics, data-engine | `apps/data-engine/MAP.md` |
 | `packages/domain` | domain | Framework-free entities, value objects, fiscal rules, Money/RUC primitives. | domain, fiscal, money, ruc | — |
@@ -594,7 +594,7 @@ Esta sección contiene la documentación canónica que define qué es Drenyra, c
 | [drenyra-ai-aos](./01-foundation/drenyra-ai-aos.md) | Para posicionamiento internacional: |
 | [drenyra-engram](./01-foundation/drenyra-engram.md) | Para posicionamiento internacional: |
 | [drenyra-operating-model](./01-foundation/drenyra-operating-model.md) | Drenyra no compite copiando funciones aisladas de Codex, Cursor, Digits, Intuit o Xero. Compite con un **modelo… |
-| [drenyra-pi-harness](./01-foundation/drenyra-pi-harness.md) | Para posicionamiento internacional: |
+| [drenyra-shell-harness](./01-foundation/drenyra-pi-harness.md) | Para posicionamiento internacional: |
 | [feos-program](./01-foundation/feos-program.md) | CAP-FEOS-00 es el programa paraguas que define Drenyra como el **Financial Engineering Operating System de… |
 | [product-philosophy](./01-foundation/product-philosophy.md) | Drenyra no debe limitarse a ser "un software contable con IA". Esa categoría ya está siendo ocupada por Digits… |
 | [program-taxonomy](./01-foundation/program-taxonomy.md) | Drenyra no es un proyecto que se especifique completo antes de construir. Es un programa de plataforma que evoluciona… |
@@ -653,7 +653,7 @@ Un Architecture Decision Record documenta una decisión que:
 | [ADR-007-go-cli-fiscal-terminal](./11-adr/ADR-007-go-cli-fiscal-terminal.md) | El CLI de Drenyra necesita ser rápido, distribuible como binario único, y con buen soporte para TUI. Las opciones… |
 | [ADR-008-property-based-testing](./11-adr/ADR-008-property-based-testing.md) | Las reglas fiscales (IGV, detracciones, RUC checksum, operaciones Money) tienen invariantes que deben cumplirse para… |
 | [ADR-009-canonical-idempotency-contract](./11-adr/ADR-009-canonical-idempotency-contract.md) | Drenyra maneja múltiples mecanismos de idempotencia que evolucionaron orgánicamente y |
-| [ADR-010-ecosystem-boundary-authority](./11-adr/ADR-010-ecosystem-boundary-authority.md) | El ecosistema Drenyra creció con componentes superpuestos: el Command Center llegó a |
+| [ADR-010-ecosystem-boundary-authority](./11-adr/ADR-010-ecosystem-boundary-authority.md) | El ecosistema Drenyra creció con componentes superpuestos: el Drenyra Desktop llegó a |
 | [ADR-011-agent-model-ai-proposes-core-decides](./11-adr/ADR-011-agent-model-ai-proposes-core-decides.md) | La tentación de convertir cada función contable en un "agente" produce sistemas donde |
 | [ADR-012-persistence-security-recovery](./11-adr/ADR-012-persistence-security-recovery.md) | El estado autoritativo no puede vivir en la conversación ni en la memoria del modelo: |
 | [adr-034-drenyra-fiscal-app-server](./11-adr/adr-034-drenyra-fiscal-app-server.md) | Within the Platform vs Product split, Drenyra ships the Financial Engineering Environment — harness + clients from this… |
@@ -703,7 +703,7 @@ Los siguientes documentos están identificados pero aún no han sido creados:
 | [agent-capability-matrix](./14-design/agent-capability-matrix.md) | title: 'Drenyra Agent Capability Matrix 2026' |
 | [cap-workbench-00](./14-design/cap-workbench-00.md) | Transform Drenyra from a SaaS dashboard into an **operational workbench** — a persistent, agentic, financial… |
 | [command-envelope](./14-design/command-envelope.md) | title: 'Drenyra Command Envelope 2026' |
-| [design-influences](./14-design/design-influences.md) | Document external design references that inform Drenyra's **Financial Engineering Environment** command center without… |
+| [design-influences](./14-design/design-influences.md) | Document external design references that inform Drenyra's **Financial Engineering Environment** Drenyra Desktop without… |
 | [dual-surface-brain](./14-design/dual-surface-brain.md) | Drenyra is API/domain-first. React Web and the terminal surface (`drenyra-shell`, which replaced the Go CLI) are UX… |
 | [ecosystem-capability-matrix](./14-design/ecosystem-capability-matrix.md) | Fiscal convention: monetary values in the Drenyra ecosystem are BigInt cents; no float is ever used for money; version… |
 | [fiscal-app-server](./14-design/fiscal-app-server.md) | title: 'Drenyra Fiscal App Server (DFAS) 2026' |
@@ -933,7 +933,7 @@ Ver [`documentation-standards-2026.md`](documentation-standards-2026.md).
 | **Docs con el código** | La documentación cambia en el mismo PR que el comportamiento que describe. |
 | **Sin secretos ni datos reales** | Ejemplos con RUC/período ficticios; dinero en centavos. |
 | **Fuente canónica única** | Una regla vive en un solo lugar y los demás documentos la enlazan ([`AGENTS.md`](../../AGENTS.md) para reglas operativas). |
-| **Nombres vigentes** | `drenyra-shell` (antes `drenyra-pi`), `drenyra-ai`, `drenyra-engram`. Lo histórico se marca como tal. |
+| **Nombres vigentes** | `drenyra-shell` (antes `drenyra-shell`), `drenyra-ai`, `drenyra-engram`. Lo histórico se marca como tal. |
 
 ## Verificación
 
@@ -1584,7 +1584,7 @@ Drenyra-AI is an **independent accounting agent operating system**, not an inter
 | | Drenyra-AI | Drenyra |
 | --- | --- | --- |
 | Role | Ecosystem (framework, runtime, agents, skills, receipts, authority) | Visual and operational surface |
-| Works | Standalone — CLI, API, other ERPs, other SaaS, external agents, integrations | Consumes Drenyra-AI as its accounting command center |
+| Works | Standalone — CLI, API, other ERPs, other SaaS, external agents, integrations | Consumes Drenyra-AI as its Drenyra Desktop |
 | Analogy | Gentle AI | OpenCode / Claude Code |
 
 Its product protocol is **RDA — Receipt-Driven Accounting**, built on the RED receipt mechanism this repo already implements in its runtime (RDA defines *what* must be evidenced; RED implements *how* it is signed and verified). See [Drenyra-AI — Accounting Agent Operating System](../01-foundation/drenyra-ai-aos.md).
@@ -1611,7 +1611,7 @@ Its product protocol is **RDA — Receipt-Driven Accounting**, built on the RED 
 ```text
 Drenyra/
 ├── apps/
-│   ├── web/              → Fiscal command center SPA
+│   ├── web/              → Drenyra Desktop SPA
 │   ├── api/              → Fiscal API (Elysia vertical slices)
 │   ├── data-engine/      → SIRE / analytics (Python + Polars)
 │   └── cli/              → Go TUI — Fiscal Terminal
@@ -1940,7 +1940,7 @@ sequenceDiagram
 
 | Surface            | Primary                    | Fallback       |
 | ------------------ | -------------------------- | -------------- |
-| Web Command Center | WebSocket                  | SSE            |
+| Web Drenyra Desktop | WebSocket                  | SSE            |
 | drenyra-shell / CLI | NDJSON stdio relay or HTTP | REST compat v0 |
 | Automations        | WebSocket                  | REST           |
 | Partner API        | WebSocket + scoped API key | —              |
@@ -2569,9 +2569,9 @@ features/<name>/
 | 16  | **customers**            | `features/customers/`            | —                       | Customer catalog (hexagonal)                                                   |
 | 17  | **dashboard**            | `features/dashboard/`            | —                       | Dashboard widgets + fiscal indicators                                          |
 | 18  | **documents**            | `features/documents/`            | —                       | OCR intake, upload/review/query lifecycle                                      |
-| 19  | **drenyra**              | `features/drenyra/`              | —                       | Fiscal command center: cases, approval gates, Brain API                        |
+| 19  | **drenyra**              | `features/drenyra/`              | —                       | Drenyra Desktop: cases, approval gates, Brain API                        |
 | 20  | **electronic-invoicing** | `features/electronic-invoicing/` | `/electronic-invoicing` | SUNAT/OSE: send, compliance, lifecycle, CDR webhooks                           |
-| 21  | **fiscal**               | `features/fiscal/`               | —                       | Fiscal truth engine + command center                                           |
+| 21  | **fiscal**               | `features/fiscal/`               | —                       | Fiscal truth engine + Drenyra Desktop                                           |
 | 22  | **frontend-telemetry**   | `features/frontend-telemetry/`   | —                       | Frontend error capture                                                         |
 | 23  | **governance-audit**     | `features/governance-audit/`     | —                       | Autonomy audit trail, artifact events                                          |
 | 24  | **health**               | `features/health/`               | `/health`               | Probes: `/live`, `/ready`, `/doctor`, `/startup`                               |
@@ -2797,7 +2797,7 @@ bun run build:binary        # Single binary build
 
 ## Product model
 
-The web app is Drenyra's Financial Engineering Environment command center. Design web work around supervised accounting outcomes, not disconnected ERP pages.
+The web app is Drenyra's Financial Engineering Environment desktop workspace. Design web work around supervised accounting outcomes, not disconnected ERP pages.
 
 Use this workspace model:
 
@@ -2818,15 +2818,15 @@ Web changes must keep evidence, confidence, fiscal scope, approval state, and re
 
 ### Philosophy links and frontend plan alignment
 
-| Plan                                                                                      | Role in the web command center                                    |
+| Plan                                                                                      | Role in the web desktop                                    |
 | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [North Star Philosophy](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-north-star-philosophy/proposal.md) | Product-level operating contract for Drenyra surfaces.            |
-| [F1 Agentic Shell](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-agentic-shell/proposal.md)              | Shell, outcome navigation, and context rail foundation.           |
-| [F2 Thread System](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-thread-system/proposal.md)              | Durable work context and reviewable agent collaboration history.  |
-| [F3 Agents Window](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-agents-window/proposal.md)              | Multi-agent visibility tied to real accounting workflows.         |
-| [F4 Accounting Diff](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-accounting-diff/proposal.md)          | Evidence and review surface for risky fiscal/accounting changes.  |
-| [F5 Skills + Automations](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-skills-automations/proposal.md)  | Approval-aware automation with audit output.                      |
-| [F6 Evidence Vault 2.0](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-evidence-vault-2/proposal.md)      | Proof layer for evidence, reversibility, and fiscal audit trails. |
+| [North Star Philosophy](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-north-star-philosophy/proposal.md) | Product-level operating contract for Drenyra surfaces.            |
+| [F1 Agentic Shell](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-agentic-shell/proposal.md)              | Shell, outcome navigation, and context rail foundation.           |
+| [F2 Thread System](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-thread-system/proposal.md)              | Durable work context and reviewable agent collaboration history.  |
+| [F3 Agents Window](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-agents-window/proposal.md)              | Multi-agent visibility tied to real accounting workflows.         |
+| [F4 Accounting Diff](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-accounting-diff/proposal.md)          | Evidence and review surface for risky fiscal/accounting changes.  |
+| [F5 Skills + Automations](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-skills-automations/proposal.md)  | Approval-aware automation with audit output.                      |
+| [F6 Evidence Vault 2.0](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-evidence-vault-2/proposal.md)      | Proof layer for evidence, reversibility, and fiscal audit trails. |
 
 **First flagship workflow candidate:** monthly close. Use it to prove the
 command-center model before expanding to SIRE, reconciliation, or invoice review.
@@ -2957,7 +2957,7 @@ src/client.tsx                       ← Entry point (React root, QueryClient, R
     |   +-- cashflow/                ← Cashflow board, projections
     |   +-- compliance/              ← SIRE, CPE validator, fiscal health map
     |   +-- cognitive-hub/           ← AI workspace, event system, anomaly detection
-    |   +-- drenyra-command-center/  ← Drenyra AI command center UI
+    |   +-- drenyra-command-center/  ← Drenyra AI desktop UI
     |   +-- drenyra-workspace/       ← Drenyra workspace pages
     |   +-- settings/                ← Org, billing, notifications, integrations
     |   +-- ledger/                  ← General ledger view
@@ -3075,7 +3075,7 @@ All routes are flat under `src/routes/` except `settings/` and `workspace/` whic
 | cashflow               | src/features/cashflow/               | Cashflow board, projections                                                |
 | compliance             | src/features/compliance/             | SIRE management, CPE validator, fiscal health map, hitl decisions          |
 | cognitive-hub          | src/features/cognitive-hub/          | AI workspace: events, anomalies, cost dashboard, message views             |
-| drenyra-command-center | src/features/drenyra-command-center/ | Drenyra AI command center UI                                               |
+| drenyra-command-center | src/features/drenyra-command-center/ | Drenyra AI desktop UI                                               |
 | drenyra-workspace      | src/features/drenyra-workspace/      | Drenyra workspace pages                                                    |
 | central-board          | src/features/central-board/          | Área Central: ledger editable, pending journal review, document upload     |
 | drenyra [hooks]        | src/features/drenyra/hooks/          | Journal entries TanStack Query hooks (useJournalEntriesApi)                |
@@ -3378,7 +3378,7 @@ bun run check:classnames                 # Classname template literal check
 ---
 version: '3.0.0'
 name: 'Drenyra Fiscal Editorial'
-description: 'Operations-first fiscal command center — warm editorial surfaces inspired by Cursor 3, adapted for SUNAT compliance.'
+description: 'Operations-first Drenyra Desktop — warm editorial surfaces inspired by Cursor 3, adapted for SUNAT compliance.'
 colors:
   canvas-dark: '#161614'
   canvas-light: '#f7f7f4'

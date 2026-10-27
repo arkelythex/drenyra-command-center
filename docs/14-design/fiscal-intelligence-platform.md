@@ -24,7 +24,7 @@ status: 'active'
 
 This document translates the strategic doctrine into an executable architecture.
 
-DRENYRA is the platform. Drenyra is the command center. The Fiscal Agentic Ledger (FAL) is the governed operating model where agents prepare fiscal/accounting actions, deterministic systems validate them, humans approve material changes, and the Fiscal Truth Engine promotes only evidenced, scoped, replayable state.
+DRENYRA is the platform. Drenyra is the Drenyra Desktop. The Fiscal Agentic Ledger (FAL) is the governed operating model where agents prepare fiscal/accounting actions, deterministic systems validate them, humans approve material changes, and the Fiscal Truth Engine promotes only evidenced, scoped, replayable state.
 
 ## Architecture invariants
 
@@ -59,7 +59,7 @@ flowchart TB
 
   subgraph Surfaces[Drenyra surfaces]
     CLI[Drenyra CLI]
-    Web[Drenyra Web Command Center]
+    Web[Drenyra Web Drenyra Desktop]
     API[Scoped API]
   end
 
@@ -216,7 +216,7 @@ Risk levels:
 Drenyra is dual-surface by design.
 
 - **CLI** is the expert/power-user surface for fiscalistas, automations and rapid command execution.
-- **Web** is the visual command center for timelines, agents, diffs, evidence and approvals.
+- **Web** is the visual Drenyra Desktop for timelines, agents, diffs, evidence and approvals.
 
 Both call the same scoped API and must show the same fiscal context.
 
@@ -376,4 +376,4 @@ sequenceDiagram
 - ADR-021: AI Control Plane Governance Boundaries _(no disponible)_
 - ADR-025: Fiscal Intelligence Platform and FAL _(no disponible)_
 - Drenyra CLI _(no disponible)_
-- Drenyra Agentic Fiscal Command Center Vision _(no disponible)_
+- Drenyra Agentic Drenyra Desktop Vision _(no disponible)_

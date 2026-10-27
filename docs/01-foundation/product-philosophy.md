@@ -1112,7 +1112,7 @@ La cuña más fuerte sería:
 Producto inicial:
 
 ```text
-Portfolio Command Center
+Portfolio Drenyra Desktop
 ├── Companies
 ├── Fiscal periods
 ├── SIRE status
@@ -1235,7 +1235,7 @@ Estás creando una nueva disciplina:
 
 ## Drenyra-AI — Accounting Agent Operating System
 
-Drenyra-AI ya no es una capa interna de desarrollo: es un **producto independiente** dentro del ecosistema, el sistema operativo verificable para agentes contables. Coordina personas e IA, aplica políticas contables y fiscales, valida cada operación y conserva evidencia auditable antes del registro, cierre o presentación. Drenyra (el producto visual y operativo) lo consume como su command center contable, pero Drenyra-AI funciona también por CLI, API, otros ERPs, otros SaaS, agentes externos e integraciones.
+Drenyra-AI ya no es una capa interna de desarrollo: es un **producto independiente** dentro del ecosistema, el sistema operativo verificable para agentes contables. Coordina personas e IA, aplica políticas contables y fiscales, valida cada operación y conserva evidencia auditable antes del registro, cierre o presentación. Drenyra (el producto visual y operativo) lo consume como su Drenyra Desktop contable, pero Drenyra-AI funciona también por CLI, API, otros ERPs, otros SaaS, agentes externos e integraciones.
 
 La tesis que gobierna toda la arquitectura:
 
@@ -1243,7 +1243,7 @@ La tesis que gobierna toda la arquitectura:
 
 El protocolo de producto es **RDA — Receipt-Driven Accounting**, construido sobre el mecanismo de receipts **RED** que el runtime ya implementa (RDA define *qué* evidenciar; RED implementa *cómo* firmarlo y verificarlo). La especificación completa — equivalencia con Gentle AI, AccountingCandidate, niveles de review, tres rutas de trabajo y plan de ejecución — vive en [Drenyra-AI — Accounting Agent Operating System](./drenyra-ai-aos.md).
 
-Completan la familia **Drenyra-Pi**, el harness Pi-native que convierte Pi en un operador contable disciplinado y verificable — persona contable, comandos, panel de contexto empresa/periodo, agentes especializados, skills fiscales con contrato, procedimientos RDA y routing de modelos sobre el runtime de Drenyra-AI, como Gentle Pi ejecuta Gentle AI — y **Drenyra**, la superficie visual donde profesionales y empresas supervisan, revisan y autorizan. La tesis conjunta: Drenyra-AI aporta el protocolo y la autoridad verificable; Drenyra-Pi convierte Pi en la terminal contable disciplinada; Drenyra es el command center visual. Documento completo: [Drenyra-Pi — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md).
+Completan la familia **Drenyra Shell**, el harness Pi-native que convierte Pi en un operador contable disciplinado y verificable — persona contable, comandos, panel de contexto empresa/periodo, agentes especializados, skills fiscales con contrato, procedimientos RDA y routing de modelos sobre el runtime de Drenyra-AI, como Gentle Pi ejecuta Gentle AI — y **Drenyra**, la superficie visual donde profesionales y empresas supervisan, revisan y autorizan. La tesis conjunta: Drenyra-AI aporta el protocolo y la autoridad verificable; Drenyra Shell convierte Pi en la terminal contable disciplinada; Drenyra es el Drenyra Desktop visual. Documento completo: [Drenyra Shell — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md).
 
 **Drenyra-Engram** completa el ecosistema como la memoria institucional contable: la capa que conserva lo que la organización sabe y puede demostrar sobre su contabilidad — políticas, criterios, excepciones aprendidas y decisiones aprobadas — con procedencia, vigencia y aislamiento estricto entre empresas. Su principio rector: **recordar no significa autorizar**; una memoria orienta el trabajo, pero solo la evidencia, las políticas vigentes y la aprobación profesional permiten ejecutarlo. Documento completo: [Drenyra-Engram — Institutional Accounting Memory](./drenyra-engram.md).
 
@@ -1288,11 +1288,11 @@ Use this checklist for product, web, CLI, and agentic accounting changes:
 
 | Plan                                                                                                                        | Purpose                                |
 | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| [`drenyra-north-star-philosophy`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-north-star-philosophy/proposal.md)                         | Parent strategy and product guardrails |
-| [`drenyra-web-agentic-accounting-philosophy`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-web-agentic-accounting-philosophy/proposal.md) | Web command center model               |
-| [`drenyra-cli-gentleman-fiscal-terminal`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-cli-gentleman-fiscal-terminal/proposal.md)         | CLI fiscal terminal model              |
-| [`drenyra-philosophy-docs-alignment`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-philosophy-docs-alignment/proposal.md)                 | Documentation and guidance rollout     |
-| [`drenyra-accountant-operating-system`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-accountant-operating-system/proposal.md)             | Accounting OS design                   |
-| [`drenyra-cierre-flow`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-cierre-flow/proposal.md)                                             | Monthly close workflow                 |
-| [`drenyra-global-shell`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-global-shell/proposal.md)                                           | Application shell architecture         |
-| [`drenyra-h02-tenant-isolation`](https://github.com/arkelythex/drenyra-command-center/blob/d428534/openspec/changes/drenyra-h02-tenant-isolation/design.md)                             | Tenant isolation design                |
+| [`drenyra-north-star-philosophy`](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-north-star-philosophy/proposal.md)                         | Parent strategy and product guardrails |
+| [`drenyra-web-agentic-accounting-philosophy`](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-web-agentic-accounting-philosophy/proposal.md) | Web Drenyra Desktop model               |
+| [`drenyra-cli-gentleman-fiscal-terminal`](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-cli-gentleman-fiscal-terminal/proposal.md)         | CLI fiscal terminal model              |
+| [`drenyra-philosophy-docs-alignment`](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-philosophy-docs-alignment/proposal.md)                 | Documentation and guidance rollout     |
+| [`drenyra-accountant-operating-system`](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-accountant-operating-system/proposal.md)             | Accounting OS design                   |
+| [`drenyra-cierre-flow`](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-cierre-flow/proposal.md)                                             | Monthly close workflow                 |
+| [`drenyra-global-shell`](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-global-shell/proposal.md)                                           | Application shell architecture         |
+| [`drenyra-h02-tenant-isolation`](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-h02-tenant-isolation/design.md)                             | Tenant isolation design                |

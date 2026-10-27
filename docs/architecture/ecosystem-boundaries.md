@@ -1,4 +1,4 @@
-# Ecosystem Boundaries — Drenyra (Accounting Command Center)
+# Ecosystem Boundaries — Drenyra (Drenyra Desktop)
 
 > **Last updated:** 2026-08-11 (Design 1 — boundary & authority contract).
 
@@ -6,7 +6,7 @@
 
 ## Role in the ecosystem
 
-Drenyra is the **Accounting Command Center** and the mature product of the ecosystem. It is the end-user surface where professionals run fiscal workflows, review candidates, approve material decisions, and operate the accounting ledger.
+Drenyra is the **accounting desktop** and the mature product of the ecosystem. It is the end-user surface where professionals run fiscal workflows, review candidates, approve material decisions, and operate the accounting ledger.
 
 Drenyra **consumes** the ecosystem runtime and memory; it does not re-implement them:
 
@@ -46,9 +46,9 @@ These are extraction targets. They already live (or are being extracted into) ot
 
 ```mermaid
 flowchart TD
-    P["Profesional contable"] --> D["Drenyra Command Center"]
+    P["Profesional contable"] --> D["Drenyra Desktop"]
     D --> AI["Drenyra-AI Core"]
-    PI["Drenyra Pi"] --> AI
+    PI["Drenyra Shell"] --> AI
     ERP["ERP · bancos · SUNAT"] --> AD["Adaptadores de evidencia"]
     AD --> AI
     EN["Drenyra Engram"] --> AI
@@ -62,7 +62,7 @@ flowchart TD
 | --- | --- | --- |
 | **Drenyra** | Interface, inboxes, visualization, review and approval | Re-implement gates or mutate authoritative states directly |
 | **Drenyra-AI** | Missions, candidates, materiality, authority, gates, receipts, ledger and recovery | Depend on the UI or trust agent narratives |
-| **Drenyra Pi** | Harness optimized to run specialized agents | Resolve versions from PATH or bypass the Core |
+| **Drenyra Shell** | Harness optimized to run specialized agents | Resolve versions from PATH or bypass the Core |
 | **Drenyra Engram** | Institutional memory and context retrieval | Authorize actions or treat memories as evidence |
 | **Drenyra Skills** | Versioned accounting, fiscal and jurisdictional knowledge | Silently change frozen policies |
 | **Adaptadores** | Gather evidence from ERP, banks, SUNAT and files | Claim success without a verifiable response |
@@ -82,7 +82,7 @@ flowchart TD
 
 ### Dependency rule
 
-- Drenyra and Drenyra Pi consume **published versions** of Drenyra-AI. Drenyra-AI never depends on them.
+- Drenyra and Drenyra Shell consume **published versions** of Drenyra-AI. Drenyra-AI never depends on them.
 - The UI may go down and rebuild from Core state; a transcript may be lost and the mission recovered from events and evidence.
 - **No consumer may convert a Core rejection into an approval.**
 
