@@ -1,6 +1,6 @@
 # Drenyra Shell — Pi-Native Accounting Operations Harness
 
-> **Renombrado (2026-10):** «Drenyra Shell» es hoy **`drenyra-shell`** (mismo producto y repo). Este documento conserva el nombre histórico de la tesis; el nombre vigente está en [`docs/meta/documentation-standards-2026.md`](../meta/documentation-standards-2026.md).
+> **Renombrado (2026-10):** «Drenyra Pi» pasó a llamarse **Drenyra Shell** (`drenyra-shell`), mismo producto y mismo repo. Este documento también se renombró a `drenyra-shell-harness.md`; el nombre vigente está en [`docs/meta/documentation-standards-2026.md`](../meta/documentation-standards-2026.md).
 
 **Last updated**: 2026-08-01
 **Content type**: Conceptual — Product Thesis (Drenyra Shell)
@@ -95,7 +95,7 @@ Drenyra-AI Runtime
 
 - **Drenyra-AI**: "El ecosistema abierto y verificable para agentes contables." Proporciona contratos, protocolos, agentes, skills, memoria, receipts, ledger, políticas, materialidad y autoridad contable.
 - **Drenyra Shell**: "El harness Pi-native que convierte Pi en un operador contable controlado, capaz de ejecutar procedimientos con evidencia, separación de funciones y aprobación profesional."
-- **Drenyra**: "El Drenyra Desktop visual para operar empresas, contabilidad, cierres, evidencia y agentes."
+- **Drenyra Desktop**: "La superficie visual para operar empresas, contabilidad, cierres, evidencia y agentes."
 
 Por tanto:
 

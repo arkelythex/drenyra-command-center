@@ -2,7 +2,7 @@
 
 **Última actualización:** 2026-08-05
 **Audiencia:** Producto, arquitectura, estrategia
-**Alineado con:** [Product Philosophy](./product-philosophy.md), [Strategic Positioning](./strategic-positioning.md), [Drenyra-AI AOS](./drenyra-ai-aos.md), [Drenyra Shell Harness](./drenyra-pi-harness.md)
+**Alineado con:** [Product Philosophy](./product-philosophy.md), [Strategic Positioning](./strategic-positioning.md), [Drenyra-AI AOS](./drenyra-ai-aos.md), [Drenyra Shell Harness](./drenyra-shell-harness.md)
 
 ---
 
@@ -335,7 +335,7 @@ Anclado al estado real: las filas citan el SDD existente o marcan la brecha sin 
 - [Product Philosophy](./product-philosophy.md) — tesis definitiva y skills contables
 - [Strategic Positioning](./strategic-positioning.md) — elevator pitch, moat, competencia
 - [Drenyra-AI AOS](./drenyra-ai-aos.md) — ecosistema y protocolo contable
-- [Drenyra Shell Harness](./drenyra-pi-harness.md) — terminal Pi-native, agentes y routing
+- [Drenyra Shell Harness](./drenyra-shell-harness.md) — terminal Pi-native, agentes y routing
 - [Capability Map](./capability-map.md) — 90+ capacidades del programa
 - [SDD Audit](./sdd-audit.md) — estado de los SDDs
 - [FEOS Program](./feos-program.md) — SDD-FEOS-011/012/013 (skills, routing, mobile)

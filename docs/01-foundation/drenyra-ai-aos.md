@@ -297,7 +297,7 @@ receipts + autoridad               para empresas y contadores
        └────────── consume ───────► Drenyra (surface)
 ```
 
-La analogía exacta es Gentle AI → OpenCode/Claude Code: **Drenyra-AI es el ecosistema; Drenyra es la superficie**. Drenyra consume Drenyra-AI, pero Drenyra-AI funciona solo con CLI, API, otros ERPs, otros SaaS, agentes externos e integraciones. Entre el ecosistema y la superficie existe **Drenyra Shell**, la terminal agentic Pi-native que ejecuta el protocolo RDA en Pi (véase [Drenyra Shell — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md)). La separación es estructural, no cosmética.
+La analogía exacta es Gentle AI → OpenCode/Claude Code: **Drenyra-AI es el ecosistema; Drenyra es la superficie**. Drenyra consume Drenyra-AI, pero Drenyra-AI funciona solo con CLI, API, otros ERPs, otros SaaS, agentes externos e integraciones. Entre el ecosistema y la superficie existe **Drenyra Shell**, la terminal agentic Pi-native que ejecuta el protocolo RDA en Pi (véase [Drenyra Shell — Pi-Native Accounting Operations Harness](./drenyra-shell-harness.md)). La separación es estructural, no cosmética.
 
 ---
 
@@ -329,7 +329,7 @@ La tesis conjunta:
 
 > **Drenyra-AI aporta el protocolo, la inteligencia operativa y la autoridad verificable. Drenyra Shell convierte Pi en la terminal contable disciplinada que ejecuta ese protocolo. Drenyra ofrece la superficie visual donde profesionales y empresas supervisan, revisan y autorizan el trabajo.**
 
-Documento completo: [Drenyra Shell — Pi-Native Accounting Operations Harness](./drenyra-pi-harness.md).
+Documento completo: [Drenyra Shell — Pi-Native Accounting Operations Harness](./drenyra-shell-harness.md).
 
 ---
 
