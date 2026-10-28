@@ -2,7 +2,7 @@
  * ErrorState
  *
  * Error display with icon, message, and optional retry button.
- * Used by DrenyraCommandCenter and other feature components.
+ * Used by Drenyra Desktop and other feature components.
  */
 import { AlertCircle } from "lucide-react";
 import { Button } from "./button";

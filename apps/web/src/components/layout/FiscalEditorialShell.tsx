@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 interface FiscalEditorialShellProps {
 	children: ReactNode;
-	mode?: "command-center" | "review" | "evidence";
+	mode?: "desktop" | "review" | "evidence";
 }
 
 /**
@@ -12,7 +12,7 @@ interface FiscalEditorialShellProps {
  */
 export function FiscalEditorialShell({
 	children,
-	mode = "command-center",
+	mode = "desktop",
 }: FiscalEditorialShellProps) {
 	return (
 		<div

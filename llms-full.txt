@@ -2829,7 +2829,7 @@ Web changes must keep evidence, confidence, fiscal scope, approval state, and re
 | [F6 Evidence Vault 2.0](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-evidence-vault-2/proposal.md)      | Proof layer for evidence, reversibility, and fiscal audit trails. |
 
 **First flagship workflow candidate:** monthly close. Use it to prove the
-command-center model before expanding to SIRE, reconciliation, or invoice review.
+desktop model before expanding to SIRE, reconciliation, or invoice review.
 
 ### Flagship workflow — Monthly close
 
@@ -2957,7 +2957,6 @@ src/client.tsx                       ← Entry point (React root, QueryClient, R
     |   +-- cashflow/                ← Cashflow board, projections
     |   +-- compliance/              ← SIRE, CPE validator, fiscal health map
     |   +-- cognitive-hub/           ← AI workspace, event system, anomaly detection
-    |   +-- drenyra-command-center/  ← Drenyra AI desktop UI
     |   +-- drenyra-workspace/       ← Drenyra workspace pages
     |   +-- settings/                ← Org, billing, notifications, integrations
     |   +-- ledger/                  ← General ledger view
@@ -3075,7 +3074,6 @@ All routes are flat under `src/routes/` except `settings/` and `workspace/` whic
 | cashflow               | src/features/cashflow/               | Cashflow board, projections                                                |
 | compliance             | src/features/compliance/             | SIRE management, CPE validator, fiscal health map, hitl decisions          |
 | cognitive-hub          | src/features/cognitive-hub/          | AI workspace: events, anomalies, cost dashboard, message views             |
-| drenyra-command-center | src/features/drenyra-command-center/ | Drenyra AI desktop UI                                               |
 | drenyra-workspace      | src/features/drenyra-workspace/      | Drenyra workspace pages                                                    |
 | central-board          | src/features/central-board/          | Área Central: ledger editable, pending journal review, document upload     |
 | drenyra [hooks]        | src/features/drenyra/hooks/          | Journal entries TanStack Query hooks (useJournalEntriesApi)                |
@@ -3494,7 +3492,7 @@ Before generating UI for Drenyra web:
 1. Read this file and `docs/design/design-influences-2026.md`.
 2. Use `--color-*` and `--surface-*` tokens only.
 3. Prefer `@drenyra/ui` Button, Card, Panel, SurfacePanel.
-4. Shell: `FiscalEditorialShell` with `operational` or `command-center` mode.
+4. Shell: `FiscalEditorialShell` with `desktop`, `review`, or `evidence` mode.
 
 ## References
 
