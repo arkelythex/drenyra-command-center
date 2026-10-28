@@ -1,7 +1,7 @@
 <div align="center">
 
-<img width="1200" alt="Drenyra flow — operator → command-center planes → dual approval → receipt" src="assets/branding/drenyra-command-center-flow-banner.light.svg#gh-light-mode-only" />
-<img width="1200" alt="Drenyra flow — operator → command-center planes → dual approval → receipt" src="assets/branding/drenyra-command-center-flow-banner.dark.svg#gh-dark-mode-only" />
+<img width="1200" alt="Drenyra flow — operator → Drenyra Desktop planes → dual approval → receipt" src="assets/branding/drenyra-desktop-flow-banner.light.svg#gh-light-mode-only" />
+<img width="1200" alt="Drenyra flow — operator → Drenyra Desktop planes → dual approval → receipt" src="assets/branding/drenyra-desktop-flow-banner.dark.svg#gh-dark-mode-only" />
 
 <p><code>operator → command-center planes → dual approval → receipt</code></p>
 
@@ -78,8 +78,8 @@ Professional Review → Controlled Execution → Immutable Receipt
 
 Drenyra is organized into **8 architectural planes**. No upper plane bypasses a lower one — an agent cannot call SUNAT directly; it must traverse the full stack.
 
-![Drenyra Desktop — 8 FEOS Planes](docs/diagrams/drenyra-command-center.architecture.light.svg#gh-light-mode-only)
-![Drenyra Desktop — 8 FEOS Planes](docs/diagrams/drenyra-command-center.architecture.dark.svg#gh-dark-mode-only)
+![Drenyra Desktop — 8 FEOS Planes](docs/diagrams/drenyra-desktop.architecture.light.svg#gh-light-mode-only)
+![Drenyra Desktop — 8 FEOS Planes](docs/diagrams/drenyra-desktop.architecture.dark.svg#gh-dark-mode-only)
 
 **Material operation flow:**
 
