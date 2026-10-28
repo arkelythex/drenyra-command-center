@@ -130,7 +130,7 @@ No confiar en narración del agente cuando existen datos verificables.
 Al iniciar, Drenyra Shell muestra un panel que fija el contexto operativo. **Eso evita operar en la empresa o periodo incorrectos:**
 
 ```
-DRENYRA-PI
+DRENYRA-SHELL
 Empresa:         Arkelythex S.A.C.
 RUC:             20XXXXXXXXX
 Periodo activo:  2026-07
