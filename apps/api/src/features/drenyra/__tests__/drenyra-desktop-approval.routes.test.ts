@@ -1,12 +1,12 @@
 import type {
 	DecideApprovalInput,
 	DrenyraActorContext,
-	DrenyraFiscalCommandCenterService,
+	DrenyraFiscalDesktopService,
 } from "@drenyra/application/drenyra";
 import type { ApprovalRequest } from "@drenyra/domain/drenyra";
 import { Elysia } from "elysia";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { createDrenyraCommandCenterApprovalRoutes } from "../command-center-approval.routes";
+import { createDrenyraDesktopApprovalRoutes } from "../desktop-approval.routes";
 
 const fiscalContext: DrenyraActorContext = {
 	companyId: "company-approval",
@@ -60,12 +60,12 @@ function approval(overrides: Partial<ApprovalRequest> = {}): ApprovalRequest {
 }
 
 function createApp(contextOk = true) {
-	const commandCenter = {
+	const desktop = {
 		approveApprovalRequest,
 		rejectApprovalRequest,
-	} as unknown as DrenyraFiscalCommandCenterService;
+	} as unknown as DrenyraFiscalDesktopService;
 	return new Elysia().use(
-		createDrenyraCommandCenterApprovalRoutes(commandCenter, () =>
+		createDrenyraDesktopApprovalRoutes(desktop, () =>
 			contextOk
 				? { ok: true, context: fiscalContext }
 				: { ok: false, missingHeaders: ["x-company-ruc"] },
@@ -87,7 +87,7 @@ async function postDecision(
 	);
 }
 
-describe("Drenyra command-center approval routes", () => {
+describe("Drenyra desktop approval routes", () => {
 	beforeEach(() => {
 		approveApprovalRequest.mockReset();
 		rejectApprovalRequest.mockReset();

@@ -1,22 +1,22 @@
-import type { DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
+import type { DrenyraFiscalDesktopService } from "@drenyra/application/drenyra";
 import { Elysia, t } from "elysia";
 import { ok } from "../shared/api-response";
 import {
 	autonomyLevelSchema,
-	commandCenterError,
+	desktopError,
 	drenyraActorContextFailure,
 	drenyraAgentTypeSchema,
 	evidenceTypeSchema,
 	metadataSchema,
 	type ResolveDrenyraActorContext,
 	statusForCaseMutationError,
-} from "./command-center.shared";
+} from "./desktop.shared";
 
-export function createDrenyraCommandCenterWorkflowRoutes(
-	commandCenter: DrenyraFiscalCommandCenterService,
+export function createDrenyraDesktopWorkflowRoutes(
+	desktop: DrenyraFiscalDesktopService,
 	resolveDrenyraActorContext: ResolveDrenyraActorContext,
 ) {
-	return new Elysia({ name: "drenyra-command-center-workflow-routes" })
+	return new Elysia({ name: "drenyra-desktop-workflow-routes" })
 		.post(
 			"/cases/:id/evidence",
 			async ({ params, body, headers, set }) => {
@@ -26,7 +26,7 @@ export function createDrenyraCommandCenterWorkflowRoutes(
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					const evidence = await commandCenter.addEvidenceItem(
+					const evidence = await desktop.addEvidenceItem(
 						contextResolution.context,
 						params.id,
 						body,
@@ -35,7 +35,7 @@ export function createDrenyraCommandCenterWorkflowRoutes(
 					return ok(evidence);
 				} catch (error) {
 					set.status = statusForCaseMutationError(error);
-					return commandCenterError(error);
+					return desktopError(error);
 				}
 			},
 			{
@@ -64,7 +64,7 @@ export function createDrenyraCommandCenterWorkflowRoutes(
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					const run = await commandCenter.startAndCompleteMockAgentRun(
+					const run = await desktop.startAndCompleteMockAgentRun(
 						contextResolution.context,
 						params.id,
 						body.agentType,
@@ -73,7 +73,7 @@ export function createDrenyraCommandCenterWorkflowRoutes(
 					return ok(run);
 				} catch (error) {
 					set.status = statusForCaseMutationError(error);
-					return commandCenterError(error);
+					return desktopError(error);
 				}
 			},
 			{
@@ -94,14 +94,14 @@ export function createDrenyraCommandCenterWorkflowRoutes(
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					const runs = await commandCenter.listAgentRuns(
+					const runs = await desktop.listAgentRuns(
 						contextResolution.context,
 						params.id,
 					);
 					return ok(runs);
 				} catch (error) {
 					set.status = 404;
-					return commandCenterError(error);
+					return desktopError(error);
 				}
 			},
 			{
@@ -118,7 +118,7 @@ export function createDrenyraCommandCenterWorkflowRoutes(
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					const approval = await commandCenter.requestApproval(
+					const approval = await desktop.requestApproval(
 						contextResolution.context,
 						params.id,
 						body,
@@ -127,7 +127,7 @@ export function createDrenyraCommandCenterWorkflowRoutes(
 					return ok(approval);
 				} catch (error) {
 					set.status = statusForCaseMutationError(error);
-					return commandCenterError(error);
+					return desktopError(error);
 				}
 			},
 			{

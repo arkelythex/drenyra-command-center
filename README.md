@@ -3,7 +3,7 @@
 <img width="1200" alt="Drenyra flow — operator → Drenyra Desktop planes → dual approval → receipt" src="assets/branding/drenyra-desktop-flow-banner.light.svg#gh-light-mode-only" />
 <img width="1200" alt="Drenyra flow — operator → Drenyra Desktop planes → dual approval → receipt" src="assets/branding/drenyra-desktop-flow-banner.dark.svg#gh-dark-mode-only" />
 
-<p><code>operator → command-center planes → dual approval → receipt</code></p>
+<p><code>operator → desktop planes → dual approval → receipt</code></p>
 
 </div>
 

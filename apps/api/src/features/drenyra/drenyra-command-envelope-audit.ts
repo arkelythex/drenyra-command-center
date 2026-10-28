@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import type {
 	DrenyraActorContext,
 	DrenyraAuditEventFilter,
-	DrenyraFiscalCommandCenterService,
+	DrenyraFiscalDesktopService,
 	DrenyraRepository,
 } from "@drenyra/application/drenyra";
 import type { AuditEvent } from "../../../../../packages/domain/src/drenyra/types";
@@ -69,11 +69,11 @@ function auditEvent(
 }
 
 export async function recordCommandEnvelopeCapability(
-	commandCenter: DrenyraFiscalCommandCenterService,
+	desktop: DrenyraFiscalDesktopService,
 	context: DrenyraActorContext,
 	input: CapabilityAuditInput,
 ): Promise<void> {
-	const recorder = commandCenter as unknown as CapabilityDecisionRecorder;
+	const recorder = desktop as unknown as CapabilityDecisionRecorder;
 	if (typeof recorder.recordCapabilityDecision === "function") {
 		await recorder.recordCapabilityDecision(context, {
 			agentType: input.evaluation.policy.agentType,
@@ -86,22 +86,22 @@ export async function recordCommandEnvelopeCapability(
 		});
 		return;
 	}
-	const repository = (commandCenter as unknown as RepositoryOwner).repository;
+	const repository = (desktop as unknown as RepositoryOwner).repository;
 	if (!repository)
 		throw new Error("DRENYRA_COMMAND_AUDIT_REPOSITORY_UNAVAILABLE");
 	await repository.createAuditEvent(auditEvent(context, input));
 }
 
 export async function listCommandEnvelopeAuditEvents(
-	commandCenter: DrenyraFiscalCommandCenterService,
+	desktop: DrenyraFiscalDesktopService,
 	context: DrenyraActorContext,
 	filter: DrenyraAuditEventFilter = {},
 ): Promise<AuditEvent[]> {
-	const reader = commandCenter as unknown as CommandAuditReader;
+	const reader = desktop as unknown as CommandAuditReader;
 	if (typeof reader.listCommandAuditEvents === "function") {
 		return reader.listCommandAuditEvents(context, filter);
 	}
-	const repository = (commandCenter as unknown as RepositoryOwner).repository;
+	const repository = (desktop as unknown as RepositoryOwner).repository;
 	if (!repository)
 		throw new Error("DRENYRA_COMMAND_AUDIT_REPOSITORY_UNAVAILABLE");
 	const scope = {

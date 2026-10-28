@@ -51,7 +51,7 @@ packages/persistence/src/
 │   ├── ai-worker-queues.schema.ts
 │   ├── fiscal-memory.schema.ts
 │   ├── fiscal-truth.schema.ts
-│   ├── drenyra-command-center.schema.ts
+│   ├── drenyra-desktop.schema.ts
 │   ├── economic-groups.schema.ts
 │   ├── platform-mcp.schema.ts
 │   ├── telemetry.schema.ts
@@ -102,7 +102,7 @@ packages/persistence/src/
 | **Auth** | `auth`, `security` |
 | **IA** | `ai-settings`, `ai-control-plane`, `ai-worker-queues` |
 | **Inventario** | `inventory`, `products` |
-| **Plataforma** | `platform-mcp`, `telemetry`, `chat`, `drenyra-command-center` |
+| **Plataforma** | `platform-mcp`, `telemetry`, `chat`, `drenyra-desktop` |
 | **Otros** | `assets`, `payroll`, `economic-groups`, `auxiliary` |
 
 ### Unit of Work

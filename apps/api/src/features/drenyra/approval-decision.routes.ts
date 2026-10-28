@@ -7,17 +7,17 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import type { DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
+import type { DrenyraFiscalDesktopService } from "@drenyra/application/drenyra";
 import { Elysia, t } from "elysia";
 import { ok } from "../shared/api-response";
-import { commandCenterError } from "./drenyra-command-center-http";
 import {
 	drenyraActorContextFailure,
 	resolveDrenyraActorContext,
 } from "./drenyra-context";
+import { desktopError } from "./drenyra-desktop-http";
 
 export interface ApprovalDecisionRoutesDeps {
-	commandCenter: DrenyraFiscalCommandCenterService;
+	desktop: DrenyraFiscalDesktopService;
 }
 
 function statusForApprovalDecisionError(error: unknown): 404 | 409 {
@@ -27,7 +27,7 @@ function statusForApprovalDecisionError(error: unknown): 404 | 409 {
 }
 
 export function createApprovalDecisionRoutes({
-	commandCenter,
+	desktop,
 }: ApprovalDecisionRoutesDeps) {
 	return new Elysia({ name: "drenyra-approval-decisions" })
 		.post(
@@ -40,7 +40,7 @@ export function createApprovalDecisionRoutes({
 				}
 				try {
 					return ok(
-						await commandCenter.approveApprovalRequest(
+						await desktop.approveApprovalRequest(
 							contextResolution.context,
 							params.id,
 							body,
@@ -48,7 +48,7 @@ export function createApprovalDecisionRoutes({
 					);
 				} catch (error) {
 					set.status = statusForApprovalDecisionError(error);
-					return commandCenterError(error);
+					return desktopError(error);
 				}
 			},
 			{
@@ -70,7 +70,7 @@ export function createApprovalDecisionRoutes({
 				}
 				try {
 					return ok(
-						await commandCenter.rejectApprovalRequest(
+						await desktop.rejectApprovalRequest(
 							contextResolution.context,
 							params.id,
 							body,
@@ -78,7 +78,7 @@ export function createApprovalDecisionRoutes({
 					);
 				} catch (error) {
 					set.status = statusForApprovalDecisionError(error);
-					return commandCenterError(error);
+					return desktopError(error);
 				}
 			},
 			{

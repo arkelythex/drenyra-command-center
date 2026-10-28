@@ -4,11 +4,11 @@ import { createFiscalCasesRoutes } from "../fiscal-cases.routes";
 
 describe("fiscal-cases routes", () => {
 	it("returns 400 when tenant headers are missing", async () => {
-		const app = new Elysia({ prefix: "/api/fiscal-command-center" }).use(
+		const app = new Elysia({ prefix: "/api/fiscal-desktop" }).use(
 			createFiscalCasesRoutes(),
 		);
 		const response = await app.handle(
-			new Request("http://localhost/api/fiscal-command-center/cases"),
+			new Request("http://localhost/api/fiscal-desktop/cases"),
 		);
 
 		expect(response.status).toBe(400);
@@ -24,12 +24,12 @@ describe("fiscal-cases routes", () => {
 			getDocuments: vi.fn(),
 			getEvidence: vi.fn(),
 		};
-		const app = new Elysia({ prefix: "/api/fiscal-command-center" }).use(
+		const app = new Elysia({ prefix: "/api/fiscal-desktop" }).use(
 			createFiscalCasesRoutes(service as never),
 		);
 
 		const response = await app.handle(
-			new Request("http://localhost/api/fiscal-command-center/cases/case-1", {
+			new Request("http://localhost/api/fiscal-desktop/cases/case-1", {
 				headers: {
 					"x-organization-id": "org-1",
 					"x-company-id": "cmp-1",

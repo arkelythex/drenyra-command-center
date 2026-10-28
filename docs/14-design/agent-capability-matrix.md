@@ -82,10 +82,10 @@ organizationId + companyId + companyRuc + period + countryCode
 
 ## API bridge v0
 
-The Drenyra command-center API now calls the canonical evaluator before scoped reads,
+The Drenyra desktop API now calls the canonical evaluator before scoped reads,
 evidence explanation, deterministic agent review and approval-request creation.
 
-Required request headers for guarded command-center routes:
+Required request headers for guarded desktop routes:
 
 - `x-company-id`
 - `x-company-ruc`
@@ -123,7 +123,7 @@ even when scoped grant and redaction proof are present.
 - [x] Add unit tests for default-denied tools.
 - [x] Add tests for tenant/company/RUC/period mismatch through scoped grants.
 - [x] Emit audit event type from every capability evaluation.
-- [x] Wire the command-center API to deny missing grants/redaction before execution.
+- [x] Wire the desktop API to deny missing grants/redaction before execution.
 - [x] Wire legacy Drenyra chat fiscal tools to the same scoped capability bridge.
 
 ## Related docs

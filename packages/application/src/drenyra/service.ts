@@ -195,9 +195,9 @@ function hasCompleteInspectContext(context: DrenyraActorContext): boolean {
  * Application service for scoped Drenyra fiscal cases, evidence, mock agents and approvals.
  *
  * @example
- * const service = new DrenyraFiscalCommandCenterService(repository);
+ * const service = new DrenyraFiscalDesktopService(repository);
  */
-export class DrenyraFiscalCommandCenterService {
+export class DrenyraFiscalDesktopService {
 	constructor(private readonly repository: DrenyraRepository) {}
 
 	async createFiscalCase(

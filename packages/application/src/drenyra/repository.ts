@@ -18,7 +18,7 @@ import type {
 } from "@drenyra/domain/drenyra";
 
 /**
- * Scope required for every Drenyra command-center repository read.
+ * Scope required for every Drenyra desktop repository read.
  *
  * The guard intentionally includes fiscal period and organization because Drenyra cases are fiscal-workspace
  * records, not global company records. Do not weaken this type when adding new repositories.

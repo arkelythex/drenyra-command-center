@@ -1,9 +1,9 @@
 import { type ApiFailure, fail } from "../../shared/api-response";
-import type { FiscalCommandCenterContext } from "./types";
+import type { FiscalDesktopContext } from "./types";
 
 interface ContextSuccess {
 	ok: true;
-	context: FiscalCommandCenterContext;
+	context: FiscalDesktopContext;
 }
 
 interface ContextFailure {

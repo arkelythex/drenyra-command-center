@@ -1,6 +1,6 @@
 import type {
 	DrenyraActorContext,
-	DrenyraFiscalCommandCenterService,
+	DrenyraFiscalDesktopService,
 	InspectFiscalWorkItemInput,
 } from "@drenyra/application/drenyra";
 import {
@@ -28,11 +28,11 @@ const inspectFiscalWorkItem =
 	>();
 
 function createApp(contextOk = true) {
-	const commandCenter = {
+	const desktop = {
 		inspectFiscalWorkItem,
-	} as unknown as DrenyraFiscalCommandCenterService;
+	} as unknown as DrenyraFiscalDesktopService;
 	return new Elysia().use(
-		createDrenyraFiscalWorkRoutes(commandCenter, () =>
+		createDrenyraFiscalWorkRoutes(desktop, () =>
 			contextOk
 				? { ok: true, context: fiscalContext }
 				: { ok: false, missingHeaders: ["x-company-ruc", "x-fiscal-period"] },

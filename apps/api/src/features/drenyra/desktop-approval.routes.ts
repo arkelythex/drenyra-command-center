@@ -1,18 +1,18 @@
-import type { DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
+import type { DrenyraFiscalDesktopService } from "@drenyra/application/drenyra";
 import { Elysia, t } from "elysia";
 import { ok } from "../shared/api-response";
 import {
-	commandCenterError,
+	desktopError,
 	drenyraActorContextFailure,
 	type ResolveDrenyraActorContext,
 	statusForApprovalDecisionError,
-} from "./command-center.shared";
+} from "./desktop.shared";
 
-export function createDrenyraCommandCenterApprovalRoutes(
-	commandCenter: DrenyraFiscalCommandCenterService,
+export function createDrenyraDesktopApprovalRoutes(
+	desktop: DrenyraFiscalDesktopService,
 	resolveDrenyraActorContext: ResolveDrenyraActorContext,
 ) {
-	return new Elysia({ name: "drenyra-command-center-approval-routes" })
+	return new Elysia({ name: "drenyra-desktop-approval-routes" })
 		.post(
 			"/approvals/:id/approve",
 			async ({ params, body, headers, set }) => {
@@ -22,7 +22,7 @@ export function createDrenyraCommandCenterApprovalRoutes(
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					const approval = await commandCenter.approveApprovalRequest(
+					const approval = await desktop.approveApprovalRequest(
 						contextResolution.context,
 						params.id,
 						body,
@@ -30,7 +30,7 @@ export function createDrenyraCommandCenterApprovalRoutes(
 					return ok(approval);
 				} catch (error) {
 					set.status = statusForApprovalDecisionError(error);
-					return commandCenterError(error);
+					return desktopError(error);
 				}
 			},
 			{
@@ -51,7 +51,7 @@ export function createDrenyraCommandCenterApprovalRoutes(
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					const approval = await commandCenter.rejectApprovalRequest(
+					const approval = await desktop.rejectApprovalRequest(
 						contextResolution.context,
 						params.id,
 						body,
@@ -59,7 +59,7 @@ export function createDrenyraCommandCenterApprovalRoutes(
 					return ok(approval);
 				} catch (error) {
 					set.status = statusForApprovalDecisionError(error);
-					return commandCenterError(error);
+					return desktopError(error);
 				}
 			},
 			{

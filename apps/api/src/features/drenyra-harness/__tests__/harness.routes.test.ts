@@ -12,11 +12,11 @@ const fiscalHeaders = {
 
 describe("drenyra harness routes", () => {
 	it("lists registered agents", async () => {
-		const app = new Elysia({ prefix: "/api/fiscal-command-center" }).use(
+		const app = new Elysia({ prefix: "/api/fiscal-desktop" }).use(
 			drenyraHarnessRoutes,
 		);
 		const response = await app.handle(
-			new Request("http://localhost/api/fiscal-command-center/harness/agents"),
+			new Request("http://localhost/api/fiscal-desktop/harness/agents"),
 		);
 		expect(response.status).toBe(200);
 		const json = await response.json();
@@ -25,24 +25,21 @@ describe("drenyra harness routes", () => {
 	});
 
 	it("executes nested fiscal delegation", async () => {
-		const app = new Elysia({ prefix: "/api/fiscal-command-center" }).use(
+		const app = new Elysia({ prefix: "/api/fiscal-desktop" }).use(
 			drenyraHarnessRoutes,
 		);
 		const response = await app.handle(
-			new Request(
-				"http://localhost/api/fiscal-command-center/harness/execute",
-				{
-					method: "POST",
-					headers: {
-						...fiscalHeaders,
-						"content-type": "application/json",
-					},
-					body: JSON.stringify({
-						task: "Revisar SIRE del periodo",
-						autoSpawn: true,
-					}),
+			new Request("http://localhost/api/fiscal-desktop/harness/execute", {
+				method: "POST",
+				headers: {
+					...fiscalHeaders,
+					"content-type": "application/json",
 				},
-			),
+				body: JSON.stringify({
+					task: "Revisar SIRE del periodo",
+					autoSpawn: true,
+				}),
+			}),
 		);
 		expect(response.status).toBe(200);
 		const json = await response.json();

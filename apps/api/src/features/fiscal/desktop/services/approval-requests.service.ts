@@ -3,7 +3,7 @@ import type {
 	ApprovalDiffRecord,
 	ApprovalRequestRecord,
 	ApprovalVoteRecord,
-	FiscalCommandCenterContext,
+	FiscalDesktopContext,
 } from "../types";
 
 function sameRequestScope(
@@ -11,7 +11,7 @@ function sameRequestScope(
 		ApprovalRequestRecord,
 		"organizationId" | "companyId" | "companyRuc" | "period"
 	>,
-	ctx: FiscalCommandCenterContext,
+	ctx: FiscalDesktopContext,
 ): boolean {
 	return (
 		row.organizationId === ctx.organizationId &&
@@ -47,7 +47,7 @@ export function createApprovalRequestService(
 	const diffs = [...(seed.diffs ?? [])];
 	const votes = [...(seed.votes ?? [])];
 
-	async function getById(id: string, ctx: FiscalCommandCenterContext) {
+	async function getById(id: string, ctx: FiscalDesktopContext) {
 		return (
 			requests.find(
 				(request) => request.id === id && sameRequestScope(request, ctx),
@@ -56,7 +56,7 @@ export function createApprovalRequestService(
 	}
 
 	return {
-		async list(ctx: FiscalCommandCenterContext) {
+		async list(ctx: FiscalDesktopContext) {
 			return requests
 				.filter((request) => sameRequestScope(request, ctx))
 				.sort(byCreatedDesc);
@@ -64,10 +64,7 @@ export function createApprovalRequestService(
 
 		getById,
 
-		async create(
-			input: CreateApprovalRequestInput,
-			ctx: FiscalCommandCenterContext,
-		) {
+		async create(input: CreateApprovalRequestInput, ctx: FiscalDesktopContext) {
 			const now = new Date();
 			const created: ApprovalRequestRecord = {
 				id: crypto.randomUUID(),
@@ -90,7 +87,7 @@ export function createApprovalRequestService(
 			return created;
 		},
 
-		async getDiffs(requestId: string, ctx: FiscalCommandCenterContext) {
+		async getDiffs(requestId: string, ctx: FiscalDesktopContext) {
 			const request = await getById(requestId, ctx);
 			if (!request) return null;
 			return diffs
@@ -101,7 +98,7 @@ export function createApprovalRequestService(
 				.sort(byCreatedDesc);
 		},
 
-		async getVotes(requestId: string, ctx: FiscalCommandCenterContext) {
+		async getVotes(requestId: string, ctx: FiscalDesktopContext) {
 			const request = await getById(requestId, ctx);
 			if (!request) return null;
 			return votes
@@ -115,7 +112,7 @@ export function createApprovalRequestService(
 		async submitVote(
 			requestId: string,
 			input: SubmitVoteInput,
-			ctx: FiscalCommandCenterContext,
+			ctx: FiscalDesktopContext,
 		) {
 			const request = await getById(requestId, ctx);
 			if (!request) return null;

@@ -1,4 +1,4 @@
-export { DrenyraFiscalCommandCenterService } from "./orchestrator";
+export { DrenyraFiscalDesktopService } from "./orchestrator";
 export type {
 	AddEvidenceInput,
 	BootstrapDocumentMissionInput,

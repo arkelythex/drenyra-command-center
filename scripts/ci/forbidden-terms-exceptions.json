@@ -583,7 +583,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/logic/SimulationEngine/main.ts": [
+  "apps/web/src/features/drenyra-desktop/logic/SimulationEngine/main.ts": [
     {
       "term": "Hub",
       "line": 14,
@@ -605,7 +605,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/hooks/useDrenyraChatState.ts": [
+  "apps/web/src/features/drenyra-desktop/hooks/useDrenyraChatState.ts": [
     {
       "term": "Cognitive",
       "line": 3,
@@ -657,7 +657,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/hooks/useChatHistory.ts": [
+  "apps/web/src/features/drenyra-desktop/hooks/useChatHistory.ts": [
     {
       "term": "Cognitive",
       "line": 2,
@@ -739,7 +739,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/VirtualizedMessageList.tsx": [
+  "apps/web/src/features/drenyra-desktop/components/VirtualizedMessageList.tsx": [
     {
       "term": "Cognitive",
       "line": 16,
@@ -791,7 +791,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/DrenyraMissionDesk.utils.ts": [
+  "apps/web/src/features/drenyra-desktop/components/DrenyraMissionDesk.utils.ts": [
     {
       "term": "Swarm",
       "line": 1,
@@ -813,14 +813,14 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/DrenyraMissionDesk.types.ts": [
+  "apps/web/src/features/drenyra-desktop/components/DrenyraMissionDesk.types.ts": [
     {
       "term": "idle",
       "line": 5,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/DrenyraMissionDesk.tsx": [
+  "apps/web/src/features/drenyra-desktop/components/DrenyraMissionDesk.tsx": [
     {
       "term": "Swarm",
       "line": 8,
@@ -882,14 +882,14 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/DrenyraCommandCenter.tsx": [
+  "apps/web/src/features/drenyra-desktop/components/DrenyraDesktop.tsx": [
     {
       "term": "idle",
       "line": 137,
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/CommandCenterChat.tsx": [
+  "apps/web/src/features/drenyra-desktop/components/DesktopChat.tsx": [
     {
       "term": "Cognitive",
       "line": 23,
@@ -976,7 +976,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/ChatContextPanel/ChatContextPanel.types.ts": [
+  "apps/web/src/features/drenyra-desktop/components/ChatContextPanel/ChatContextPanel.types.ts": [
     {
       "term": "cognitive",
       "line": 1,
@@ -1008,7 +1008,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/ChatContextPanel/ChatContextPanel.data.ts": [
+  "apps/web/src/features/drenyra-desktop/components/ChatContextPanel/ChatContextPanel.data.ts": [
     {
       "term": "cognitive",
       "line": 1,
@@ -1030,7 +1030,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/ChatContextPanel/components/ArtifactPreview.tsx": [
+  "apps/web/src/features/drenyra-desktop/components/ChatContextPanel/components/ArtifactPreview.tsx": [
     {
       "term": "cognitive",
       "line": 2,
@@ -1052,7 +1052,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/ArtifactCollapsible/ArtifactCollapsible.types.ts": [
+  "apps/web/src/features/drenyra-desktop/components/ArtifactCollapsible/ArtifactCollapsible.types.ts": [
     {
       "term": "cognitive",
       "line": 1,
@@ -1084,7 +1084,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/ArtifactCollapsible/ArtifactCollapsible.tsx": [
+  "apps/web/src/features/drenyra-desktop/components/ArtifactCollapsible/ArtifactCollapsible.tsx": [
     {
       "term": "cognitive",
       "line": 6,
@@ -1096,7 +1096,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/ArtifactCollapsible/ArtifactCollapsible.data.ts": [
+  "apps/web/src/features/drenyra-desktop/components/ArtifactCollapsible/ArtifactCollapsible.data.ts": [
     {
       "term": "cognitive",
       "line": 1,
@@ -1128,7 +1128,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/ArtifactCollapsible/components/CollapsibleHeader.tsx": [
+  "apps/web/src/features/drenyra-desktop/components/ArtifactCollapsible/components/CollapsibleHeader.tsx": [
     {
       "term": "cognitive",
       "line": 9,
@@ -4533,7 +4533,7 @@
       "reason": "pre-existing"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/ArtifactFeed/ArtifactFeed.tsx": [
+  "apps/web/src/features/drenyra-desktop/components/ArtifactFeed/ArtifactFeed.tsx": [
     {
       "term": "Cognitive",
       "line": 1,
@@ -4555,7 +4555,7 @@
       "reason": "Type import — @drenyra/shared/messaging"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/ArtifactFeed/ArtifactFeedCard.tsx": [
+  "apps/web/src/features/drenyra-desktop/components/ArtifactFeed/ArtifactFeedCard.tsx": [
     {
       "term": "Hub",
       "line": 1,
@@ -4567,7 +4567,7 @@
       "reason": "Type reference in import"
     }
   ],
-  "apps/web/src/features/drenyra-command-center/components/ArtifactFeed/ArtifactFeed.data.ts": [
+  "apps/web/src/features/drenyra-desktop/components/ArtifactFeed/ArtifactFeed.data.ts": [
     {
       "term": "Hub",
       "line": 1,
