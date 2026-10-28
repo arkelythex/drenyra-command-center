@@ -59,7 +59,7 @@ apps/web/src/
 
   features/              40 vertical-slice modules
     auth/, dashboard/, invoices/, banking/, cashflow/, compliance/
-    cognitive-hub/, drenyra-command-center/, taxation/, ledger/
+    cognitive-hub/, taxation/, ledger/
     reconciliations/, products/, settings/, payroll/, assets/
     inventory/, bills/, audit/, reports/, agent-swarm/, approval-hub/
     inbox/, artifacts/, cierre-mensual/, + 17 more
@@ -98,13 +98,13 @@ apps/web/src/
 
 ## 6. Design System (FEE Design)
 
-Command-center theme aligned with the Financial Engineering Environment. Tokens at `src/lib/design-tokens/tokens.dtcg.json` v3.0.0.
+Desktop theme aligned with the Financial Engineering Environment. Tokens at `src/lib/design-tokens/tokens.dtcg.json` v3.0.0.
 
 - `--color-voltage-*` / `--accent` — primary CTA accent `#f54e00` (≤5% pixels)
 - `--color-fiscal-*` — SUNAT/compliance secondary `#c45c2a`
 - `--surface-*`, `--text-*` — flat editorial surfaces (no decorative glass)
 - `SurfacePanel` — canonical card surface
-- `FiscalEditorialShell` — unified shell (`operational` | `command-center`)
+- `FiscalEditorialShell` — unified shell (`desktop` | `review` | `evidence`)
 - Complexity modes: `basic` / `advanced` / `expert` via UXModeToggle
 
 See `apps/web/DESIGN.md` and `docs/design/design-influences-2026.md`.

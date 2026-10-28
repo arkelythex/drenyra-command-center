@@ -2,8 +2,8 @@ import { Outlet } from "@tanstack/react-router";
 import { lazy, Suspense, useMemo, useState } from "react";
 import { InspectorProvider } from "@/context/InspectorContext";
 import { cn } from "@/lib/utils";
-import { useUIStore } from "@/stores/ui.store";
 import { useAgenticShell } from "@/stores/agentic-shell.store";
+import { useUIStore } from "@/stores/ui.store";
 import { FiscalEditorialShell } from "../../layout/FiscalEditorialShell";
 import { AgenticCommandBar } from "../AgenticCommandBar/AgenticCommandBar";
 import { AgenticLayoutContext } from "./AgenticLayout.context";
@@ -87,7 +87,7 @@ export function AgenticLayout({ children }: AgenticLayoutProps) {
 
 	return (
 		<AgenticLayoutContext.Provider value={contextValue}>
-			<FiscalEditorialShell mode="command-center">
+			<FiscalEditorialShell mode="desktop">
 				{/* Global command palette overlay */}
 				<Suspense fallback={null}>
 					<CommandPalette />

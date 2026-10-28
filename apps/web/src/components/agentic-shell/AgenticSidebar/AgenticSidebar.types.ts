@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 
 export type NavSectionId =
-	| "command-center"
+	| "desktop"
 	| "operaciones"
 	| "fiscal-compliance"
 	| "reportes"

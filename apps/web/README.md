@@ -117,7 +117,7 @@ All routes live in `src/routes/` — type-safe, file-based lazy loading with bui
 
 **Tax & Compliance:** `taxation`, `compliance`, `audit`, `entities`, `economic-groups`, `expedientes`
 
-**Intelligence & AI:** `intelligence`, `cognitive-hub`, `drenyra-command-center`, `agents`, `agent-swarm`
+**Intelligence & AI:** `intelligence`, `cognitive-hub`, `agents`, `agent-swarm`
 
 **Operations:** `inventory`, `products`, `documents`, `assets`, `vendors`, `customers`, `bills`, `orders`, `onboarding`
 

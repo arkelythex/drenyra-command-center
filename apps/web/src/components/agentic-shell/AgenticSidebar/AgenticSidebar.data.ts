@@ -34,7 +34,7 @@ export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
 	// ── DRENYRA DESKTOP ──
 	{
 		id: "inbox",
-		section: "command-center",
+		section: "desktop",
 		label: "Bandeja",
 		description: "Tareas críticas y fechas límite",
 		to: "/inbox",
@@ -43,7 +43,7 @@ export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
 	},
 	{
 		id: "missions",
-		section: "command-center",
+		section: "desktop",
 		label: "Misiones",
 		description: "Espacio de trabajo del cierre contable",
 		to: "/cierre-mensual",
@@ -51,7 +51,7 @@ export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
 	},
 	{
 		id: "client-360",
-		section: "command-center",
+		section: "desktop",
 		label: "Empresas",
 		description: "Empresas y alcance por RUC",
 		to: "/firm/clients",
@@ -59,7 +59,7 @@ export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
 	},
 	{
 		id: "evidence",
-		section: "command-center",
+		section: "desktop",
 		label: "Evidencia",
 		description: "Bóveda de evidencia fiscal",
 		to: "/evidence",
@@ -67,7 +67,7 @@ export const AGENTIC_NAV_ITEMS: AgenticNavItem[] = [
 	},
 	{
 		id: "review-queue",
-		section: "command-center",
+		section: "desktop",
 		label: "Cola de revisión",
 		description: "Aprobaciones y decisiones",
 		to: "/review-queue",
@@ -186,7 +186,7 @@ const AVAILABLE_NAV_ITEMS = AGENTIC_NAV_ITEMS.filter((item) =>
 const ALL_SECTIONS: NavSectionConfig[] = [
 	{
 		title: "CENTRO DE OPERACIONES",
-		items: AVAILABLE_NAV_ITEMS.filter((i) => i.section === "command-center"),
+		items: AVAILABLE_NAV_ITEMS.filter((i) => i.section === "desktop"),
 	},
 	{
 		title: "OPERACIONES",

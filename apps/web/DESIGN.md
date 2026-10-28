@@ -117,7 +117,7 @@ Before generating UI for Drenyra web:
 1. Read this file and `docs/design/design-influences-2026.md`.
 2. Use `--color-*` and `--surface-*` tokens only.
 3. Prefer `@drenyra/ui` Button, Card, Panel, SurfacePanel.
-4. Shell: `FiscalEditorialShell` with `operational` or `command-center` mode.
+4. Shell: `FiscalEditorialShell` with `desktop`, `review`, or `evidence` mode.
 
 ## References
 

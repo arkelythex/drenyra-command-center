@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="460" viewBox="0 0 1400 460" role="img" aria-label="Drenyra flow — operator, command-center planes, dual approval, receipt" data-theme="light">
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="460" viewBox="0 0 1400 460" role="img" aria-label="Drenyra flow — operator, desktop planes, dual approval, receipt" data-theme="light">
   <!-- brand-system v0.2 flow banner: theme-aware (dark + light via prefers-color-scheme),
        canonical tokens only (contracts/brand-system/tokens.json), zero embedded text.
-       Flow motif: operator -> command-center planes -> dual approval -> receipt. -->
+       Flow motif: operator -> desktop planes -> dual approval -> receipt. -->
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop class="g-bg1" offset="0%"/>
@@ -110,7 +110,7 @@
   <path d="M 372 229 L 383 235 L 372 241 Z" fill="var(--c)"/>
   <circle cx="280" cy="235" r="3" fill="var(--spark)" opacity="0.9"/>
 
-  <!-- Node 2: command-center planes (three layered translucent consoles) -->
+  <!-- Node 2: desktop planes (three layered translucent consoles) -->
   <g>
     <rect x="410" y="140" width="170" height="190" rx="12" fill="var(--n3)" opacity="0.55" stroke="var(--border-subtle)" stroke-opacity="0.9"/>
     <rect x="430" y="160" width="170" height="190" rx="12" fill="var(--n2)" opacity="0.75" stroke="var(--border-subtle)" stroke-opacity="0.9"/>
