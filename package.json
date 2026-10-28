@@ -157,7 +157,7 @@
     "test:e2e:debug": "npx playwright test --debug",
     "test:e2e:dashboard": "npx playwright test e2e/dashboard",
     "test:e2e:auth": "npx playwright test e2e/auth",
-    "test:e2e:command-center": "bun x playwright test e2e/drenyra-command-center",
+    "test:e2e:desktop": "bun x playwright test e2e/drenyra-desktop",
     "prepare": "husky"
   },
   "dependencies": {
