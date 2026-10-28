@@ -10,7 +10,7 @@ Branch: `docs/legacy-naming-cleanup` · Delivery: single docs PR · Runner: `bun
 - **S3** — Repository URLs and package metadata must point at `arkelythex/drenyra-desktop`, never `arkelythex/drenyra-command-center`.
 - **S4** — Historical records are excluded from S1/S2: `odd/tasks/**` (past task logs), `CHANGELOG.md`, and git history keep their original wording.
 - **S5** — No link may break: every relative link and referenced filename must still resolve after the change.
-- **S6** — Out of scope, pending an explicit decision (structural rename): code identifiers and directory names (`apps/api/src/features/fiscal/command-center/`, `apps/api/src/features/drenyra/command-center*.routes.ts`, `e2e/drenyra-command-center/`, `test:e2e:command-center`), diagram filenames (`docs/diagrams/drenyra-command-center.architecture.*`) and `docs/01-foundation/drenyra-pi-harness.md`.
+- **S6** — Structural identifiers are in scope (authorized 2026-10-27, see L10): directory and file names, exported identifiers, the web shell-mode and nav-section literals, npm script names and asset filenames must use `desktop` / `drenyra-desktop` / `drenyra-shell`. **Excluded:** database migration files and their journal tags (`0006_drenyra_command_center`) — renaming an applied migration breaks migration history.
 
 ## Tasks
 
@@ -18,7 +18,11 @@ Branch: `docs/legacy-naming-cleanup` · Delivery: single docs PR · Runner: `bun
 | --- | --- | --- | --- | --- | --- |
 | T1 | Package metadata URLs point at `drenyra-desktop` | S3 | inline | done | 16 files; see L5 |
 | T2 | Documentation prose uses Desktop / Shell names | S1,S2,S4,S5 | inline | done | 41 files / 180 replacements + grammar pass; see L5 |
-| T3 | Structural renames of code directories, diagram files and the Pi harness doc | S6 | inline | pending | blocked on scope decision |
+| T3a | Rename `docs/01-foundation/drenyra-pi-harness.md` → `drenyra-shell-harness.md` | S2,S6 | inline | pending | |
+| T3b | Rename diagram and branding asset filenames to `drenyra-desktop.*` | S6 | inline | pending | |
+| T3c | Rename `e2e/drenyra-command-center/` and the `test:e2e:*` script | S6 | inline | pending | |
+| T3d | Rename API/persistence modules and exported identifiers | S6 | inline | pending | |
+| T3e | Rename the web shell-mode and nav-section literal `command-center` | S6 | inline | pending | |
 | T4 | Retired product name in API strings, route descriptions and test titles | S1 | inline | done | commit `722d0797`; see L8 |
 
 ## Log
@@ -32,3 +36,4 @@ Branch: `docs/legacy-naming-cleanup` · Delivery: single docs PR · Runner: `bun
 - **L7** — Verification evidence for T1/T2: `bun run docs:check-links` and `bun run docs:check-freshness` both fail on **pre-existing** issues unrelated to this change — every link failure is under `~/.bun/install/cache/**` (the scanner follows the broken `~/` directory in the worktree) and freshness reports 3 undated files under `docs/reports/`. Filtered report: 0 broken links in repository files, so S5 holds.
 - **L8** — T4 applied and committed (`722d0797`): 34 files. Renamed operator-visible strings only — API error messages (`Drenyra Desktop requests require company, RUC, fiscal period and user headers`, `Unknown Drenyra Desktop error`), the `/drenyra` route description, the OpenAPI tag `Drenyra Desktop`, the route-protection `surface` label, the seeded chat title `Drenyra Desktop Chat`, `apps/web/metadata.json`, the `llms.txt`/`llms-full.txt` headers produced by `scripts/docs/generate-agent-index.ts`, the architecture diagram titles and the remaining code comments/test titles. Tracked files containing "command center" (excluding `odd/tasks/**` and `CHANGELOG.md`): 0.
 - **L9** — Test evidence for T4: `packages/agent-runtime` had no `dist/`, so `@drenyra/agent-runtime` failed to resolve and 13 API test files could not collect; after `bun run build` in that package, `bunx vitest run src/features/drenyra src/features/fiscal/command-center src/features/security` reports 28/32 files and 131/136 tests passing. The 5 remaining failures are pre-existing: verified by stashing the T4 diff and re-running the identical suite (same 4 files, same 5 tests). They are `aes-256.service` (2), `rbac-guard` (2), `drenyra-propose-ledger-entry-envelope` (1) and `route-protection-matrix.test.ts`, which reads the removed `docs/04-api/hardening/route-protection-matrix.md`.
+- **L10** — User authorization (2026-10-27, verbatim): "yes te autorizo todo and cotinue" — authorizes the deferred structural rename (S6 rewritten, T3 reopened as T3a–T3e). Database migrations stay untouched on purpose.
