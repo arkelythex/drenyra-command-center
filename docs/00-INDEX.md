@@ -68,7 +68,7 @@ Esta sección contiene la documentación canónica que define qué es Drenyra, c
 | [drenyra-ai-aos](./01-foundation/drenyra-ai-aos.md) | Para posicionamiento internacional: |
 | [drenyra-engram](./01-foundation/drenyra-engram.md) | Para posicionamiento internacional: |
 | [drenyra-operating-model](./01-foundation/drenyra-operating-model.md) | Drenyra no compite copiando funciones aisladas de Codex, Cursor, Digits, Intuit o Xero. Compite con un **modelo… |
-| [drenyra-shell-harness](./01-foundation/drenyra-pi-harness.md) | Para posicionamiento internacional: |
+| [drenyra-shell-harness](./01-foundation/drenyra-shell-harness.md) | Para posicionamiento internacional: |
 | [feos-program](./01-foundation/feos-program.md) | CAP-FEOS-00 es el programa paraguas que define Drenyra como el **Financial Engineering Operating System de… |
 | [product-philosophy](./01-foundation/product-philosophy.md) | Drenyra no debe limitarse a ser "un software contable con IA". Esa categoría ya está siendo ocupada por Digits… |
 | [program-taxonomy](./01-foundation/program-taxonomy.md) | Drenyra no es un proyecto que se especifique completo antes de construir. Es un programa de plataforma que evoluciona… |
