@@ -18,11 +18,11 @@ Branch: `docs/legacy-naming-cleanup` · Delivery: single docs PR · Runner: `bun
 | --- | --- | --- | --- | --- | --- |
 | T1 | Package metadata URLs point at `drenyra-desktop` | S3 | inline | done | 16 files; see L5 |
 | T2 | Documentation prose uses Desktop / Shell names | S1,S2,S4,S5 | inline | done | 41 files / 180 replacements + grammar pass; see L5 |
-| T3a | Rename `docs/01-foundation/drenyra-pi-harness.md` → `drenyra-shell-harness.md` | S2,S6 | inline | pending | |
-| T3b | Rename diagram and branding asset filenames to `drenyra-desktop.*` | S6 | inline | pending | |
-| T3c | Rename `e2e/drenyra-command-center/` and the `test:e2e:*` script | S6 | inline | pending | |
-| T3d | Rename API/persistence modules and exported identifiers | S6 | inline | pending | |
-| T3e | Rename the web shell-mode and nav-section literal `command-center` | S6 | inline | pending | |
+| T3a | Rename `docs/01-foundation/drenyra-pi-harness.md` → `drenyra-shell-harness.md` | S2,S6 | inline | done | 98848ccd |
+| T3b | Rename diagram and branding asset filenames to `drenyra-desktop.*` | S6 | inline | done | cf65c69c |
+| T3c | Rename `e2e/drenyra-command-center/` and the `test:e2e:*` script | S6 | inline | done | 4b06a1e8 |
+| T3d | Rename API/persistence modules and exported identifiers | S6 | inline | done | 556c9ea7 |
+| T3e | Rename the web shell-mode and nav-section literal `command-center` | S6 | inline | done | 70ccb5de |
 | T4 | Retired product name in API strings, route descriptions and test titles | S1 | inline | done | commit `722d0797`; see L8 |
 
 ## Log
@@ -37,3 +37,7 @@ Branch: `docs/legacy-naming-cleanup` · Delivery: single docs PR · Runner: `bun
 - **L8** — T4 applied and committed (`722d0797`): 34 files. Renamed operator-visible strings only — API error messages (`Drenyra Desktop requests require company, RUC, fiscal period and user headers`, `Unknown Drenyra Desktop error`), the `/drenyra` route description, the OpenAPI tag `Drenyra Desktop`, the route-protection `surface` label, the seeded chat title `Drenyra Desktop Chat`, `apps/web/metadata.json`, the `llms.txt`/`llms-full.txt` headers produced by `scripts/docs/generate-agent-index.ts`, the architecture diagram titles and the remaining code comments/test titles. Tracked files containing "command center" (excluding `odd/tasks/**` and `CHANGELOG.md`): 0.
 - **L9** — Test evidence for T4: `packages/agent-runtime` had no `dist/`, so `@drenyra/agent-runtime` failed to resolve and 13 API test files could not collect; after `bun run build` in that package, `bunx vitest run src/features/drenyra src/features/fiscal/command-center src/features/security` reports 28/32 files and 131/136 tests passing. The 5 remaining failures are pre-existing: verified by stashing the T4 diff and re-running the identical suite (same 4 files, same 5 tests). They are `aes-256.service` (2), `rbac-guard` (2), `drenyra-propose-ledger-entry-envelope` (1) and `route-protection-matrix.test.ts`, which reads the removed `docs/04-api/hardening/route-protection-matrix.md`.
 - **L10** — User authorization (2026-10-27, verbatim): "yes te autorizo todo and cotinue" — authorizes the deferred structural rename (S6 rewritten, T3 reopened as T3a–T3e). Database migrations stay untouched on purpose.
+
+- **L11** — T3a–T3e executed. Renames: `drenyra-shell-harness.md`; `drenyra-desktop.architecture.*` + `drenyra-desktop-flow-banner.*`; `e2e/drenyra-desktop/` + `test:e2e:desktop`; `fiscal/desktop/`, `desktop*.routes.ts`, `desktop.shared.ts`, `drenyra-desktop-http.ts`, `drenyra-desktop.schema.ts`; identifiers `CommandCenter`→`Desktop`, `commandCenter`→`desktop`, `COMMAND_CENTER`→`DESKTOP`; web literal `"command-center"`→`"desktop"`. HTTP prefix moved `/api/fiscal-command-center` → `/api/fiscal-desktop` (no client in this repository consumed the old prefix; API tests updated). Migrations and journal tags untouched.
+- **L12** — Evidence. `git grep -i "command.center"` over tracked files, excluding `odd/tasks/**`, `CHANGELOG.md`, `packages/infrastructure/drizzle/**` and `scripts/gate/wave2-gate.sh` → 0 hits. API suite `src/features/drenyra src/features/fiscal/desktop src/features/drenyra-harness src/features/security`: 28/32 files, 131/136 tests — identical to the pre-change baseline. Web typecheck vs `.ci/typecheck-baseline.json`: 0 regressions. Web agentic-shell + nav-path tests: 7/7 pass. `docs:check-links`: 0 repo-file failures. `docs:check-freshness`: same 3 pre-existing undated files under `docs/reports/`. `ci:forbidden-terms`: 40 pre-existing violations, none in a touched file. `odd:guard` fails on the pre-existing untracked `openspec/` directory (unrelated, not deleted). `typecheck:ratchet` is unusable here because `tsc --pretty` output does not match its parser; buckets were compared manually with `--pretty false`.
+- **L13** — Removed 19 dead `forbidden-terms-exceptions.json` keys that pointed at the already-deleted `apps/web/src/features/drenyra-command-center/**` files.
