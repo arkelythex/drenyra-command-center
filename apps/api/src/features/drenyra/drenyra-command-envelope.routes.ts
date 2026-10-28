@@ -1,6 +1,6 @@
 import type {
 	DrenyraActorContext,
-	DrenyraFiscalCommandCenterService,
+	DrenyraFiscalDesktopService,
 } from "@drenyra/application/drenyra";
 import { Elysia, t } from "elysia";
 import { fail } from "../shared/api-response";
@@ -28,15 +28,12 @@ type ExplainRiskBody = {
 };
 
 async function verifyExplainRiskSource(
-	commandCenter: DrenyraFiscalCommandCenterService,
+	desktop: DrenyraFiscalDesktopService,
 	context: DrenyraActorContext,
 	body: ExplainRiskBody,
 ): Promise<boolean> {
 	if (!body.caseId) return !body.riskRef && !body.sourceRef;
-	const details = await commandCenter.getFiscalCaseDetails(
-		context,
-		body.caseId,
-	);
+	const details = await desktop.getFiscalCaseDetails(context, body.caseId);
 	if (!details) return false;
 	const riskMatches =
 		!body.riskRef || details.case.metadata.riskRef === body.riskRef;
@@ -47,10 +44,10 @@ async function verifyExplainRiskSource(
 }
 
 export function createDrenyraCommandEnvelopeRoutes(
-	commandCenter: DrenyraFiscalCommandCenterService,
+	desktop: DrenyraFiscalDesktopService,
 ) {
 	const audit = (context: DrenyraActorContext, input: CapabilityAuditInput) =>
-		recordCommandEnvelopeCapability(commandCenter, context, input);
+		recordCommandEnvelopeCapability(desktop, context, input);
 	return new Elysia({ prefix: "/commands" })
 		.get(
 			"/audit-events",
@@ -64,7 +61,7 @@ export function createDrenyraCommandEnvelopeRoutes(
 						auditCaseId: query.caseId,
 						commandId: "command-audit-events",
 						createEnvelope: (context) =>
-							listCommandEnvelopeAuditEvents(commandCenter, context, {
+							listCommandEnvelopeAuditEvents(desktop, context, {
 								caseId: query.caseId,
 								commandId: query.commandId,
 								eventType: query.eventType,
@@ -155,7 +152,7 @@ export function createDrenyraCommandEnvelopeRoutes(
 					commandId: "explain-risk",
 					createEnvelope: async (context, traceId) => {
 						const sourceScopeVerified = await verifyExplainRiskSource(
-							commandCenter,
+							desktop,
 							context,
 							body,
 						);

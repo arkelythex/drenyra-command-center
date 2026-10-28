@@ -20,7 +20,7 @@ import {
 	drenyraAuditEvents,
 	drenyraEvidenceItems,
 	drenyraFiscalCases,
-} from "../schema/drenyra-command-center.schema";
+} from "../schema/drenyra-desktop.schema";
 
 type ScopeGuard = DrenyraScopeGuard;
 

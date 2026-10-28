@@ -5,11 +5,11 @@ import { computeAuditHash } from "../services/audit-events.service";
 
 describe("audit-events routes", () => {
 	it("returns 400 when tenant headers are missing", async () => {
-		const app = new Elysia({ prefix: "/api/fiscal-command-center" }).use(
+		const app = new Elysia({ prefix: "/api/fiscal-desktop" }).use(
 			createAuditEventsRoutes(),
 		);
 		const response = await app.handle(
-			new Request("http://localhost/api/fiscal-command-center/audit"),
+			new Request("http://localhost/api/fiscal-desktop/audit"),
 		);
 
 		expect(response.status).toBe(400);
@@ -22,12 +22,12 @@ describe("audit-events routes", () => {
 			record: vi.fn(),
 			verifyChain: vi.fn(),
 		};
-		const app = new Elysia({ prefix: "/api/fiscal-command-center" }).use(
+		const app = new Elysia({ prefix: "/api/fiscal-desktop" }).use(
 			createAuditEventsRoutes(service as never),
 		);
 
 		const response = await app.handle(
-			new Request("http://localhost/api/fiscal-command-center/audit/event-1", {
+			new Request("http://localhost/api/fiscal-desktop/audit/event-1", {
 				headers: {
 					"x-organization-id": "org-1",
 					"x-company-id": "cmp-1",

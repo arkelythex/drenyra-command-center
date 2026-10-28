@@ -29,9 +29,9 @@ Verified existing pieces:
   - Supports text input, `@` references, `/` commands, and thread creation.
 - `apps/web/src/components/agentic-shell/AgenticSidebar/`
   - Provides a collapsible left navigation shell.
-- `apps/web/src/features/drenyra-command-center/components/ArtifactFeed/`
+- `apps/web/src/features/drenyra-desktop/components/ArtifactFeed/`
   - Collects artifacts from cognitive messages and renders them as a chronological feed.
-- `apps/web/src/features/drenyra-command-center/components/DrenyraCommandCenter.tsx`
+- `apps/web/src/features/drenyra-desktop/components/DrenyraDesktop.tsx`
   - Uses chat as the primary UI and places artifacts in the right panel.
 
 ## Gaps to fix
@@ -177,8 +177,8 @@ Start with these files:
 - `apps/web/src/components/agentic-shell/AgenticCommandBar/AgenticCommandBar.tsx`
 - `apps/web/src/components/agentic-shell/AgenticSidebar/AgenticSidebar.data.ts`
 - `apps/web/src/components/agentic-shell/AgenticSidebar/components/AgenticSidebarNavItems.tsx`
-- `apps/web/src/features/drenyra-command-center/components/ArtifactFeed/ArtifactFeedCard.tsx`
-- `apps/web/src/features/drenyra-command-center/components/DrenyraCommandCenter.tsx`
+- `apps/web/src/features/drenyra-desktop/components/ArtifactFeed/ArtifactFeedCard.tsx`
+- `apps/web/src/features/drenyra-desktop/components/DrenyraDesktop.tsx`
 
 ## Risks
 

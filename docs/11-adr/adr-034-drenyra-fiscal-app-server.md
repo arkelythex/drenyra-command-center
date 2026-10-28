@@ -18,7 +18,7 @@ Drenyra today exposes **four parallel runtime entry points**:
 - Brain threads (`/api/drenyra/brain/*`)
 - Runtime runs with SSE (`/api/drenyra/runs/*`)
 - Command envelopes (`/api/drenyra/commands/*`)
-- Harness execution (`/api/fiscal-command-center/harness/*`)
+- Harness execution (`/api/fiscal-desktop/harness/*`)
 
 Each surface (Web, CLI, API partners) integrates differently. OpenAI solved this with their App Server pattern — bidirectional JSON-RPC, thread management, item streaming, server-initiated approvals. Drenyra adapts this pattern for fiscal domain.
 

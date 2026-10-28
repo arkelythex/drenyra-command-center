@@ -8,7 +8,7 @@
 set -euo pipefail
 
 DRENYRA_ROOT="${DRENYRA_ROOT:-$HOME/Documents/PROYECTOS/drenyra}"
-DRENYRA_ROOT="${DRENYRA_STANDALONE_ROOT:-$HOME/Documents/PROYECTOS/drenyra-command-center}"
+DRENYRA_ROOT="${DRENYRA_STANDALONE_ROOT:-$HOME/Documents/PROYECTOS/drenyra-desktop}"
 
 MODE="dry-run"
 if [[ "${1:-}" == "--apply" ]]; then

@@ -7,12 +7,12 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import type { DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
+import type { DrenyraFiscalDesktopService } from "@drenyra/application/drenyra";
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../shared/api-response";
 import {
 	autonomyLevelSchema,
-	commandCenterError,
+	desktopError,
 	drenyraActorContextFailure,
 	fiscalCaseTypeSchema,
 	fiscalRiskLevelSchema,
@@ -20,13 +20,13 @@ import {
 	metadataSchema,
 	type ResolveDrenyraActorContext,
 	statusForStatusMutationError,
-} from "./command-center.shared";
+} from "./desktop.shared";
 
-export function createDrenyraCommandCenterCaseRoutes(
-	commandCenter: DrenyraFiscalCommandCenterService,
+export function createDrenyraDesktopCaseRoutes(
+	desktop: DrenyraFiscalDesktopService,
 	resolveDrenyraActorContext: ResolveDrenyraActorContext,
 ) {
-	return new Elysia({ name: "drenyra-command-center-case-routes" })
+	return new Elysia({ name: "drenyra-desktop-case-routes" })
 		.get(
 			"/cases",
 			async ({ headers, set }) => {
@@ -35,9 +35,7 @@ export function createDrenyraCommandCenterCaseRoutes(
 					set.status = 400;
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
-				const cases = await commandCenter.listFiscalCases(
-					contextResolution.context,
-				);
+				const cases = await desktop.listFiscalCases(contextResolution.context);
 				return ok(cases);
 			},
 			{ detail: { tags: ["Drenyra"], summary: "List Drenyra fiscal cases" } },
@@ -52,7 +50,7 @@ export function createDrenyraCommandCenterCaseRoutes(
 				}
 				try {
 					const idempotencyKey = headers["x-idempotency-key"]?.trim();
-					const fiscalCase = await commandCenter.createFiscalCase(
+					const fiscalCase = await desktop.createFiscalCase(
 						contextResolution.context,
 						idempotencyKey ? { ...body, idempotencyKey } : body,
 					);
@@ -60,7 +58,7 @@ export function createDrenyraCommandCenterCaseRoutes(
 					return ok(fiscalCase);
 				} catch (error) {
 					set.status = 400;
-					return commandCenterError(error);
+					return desktopError(error);
 				}
 			},
 			{
@@ -85,7 +83,7 @@ export function createDrenyraCommandCenterCaseRoutes(
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					const mission = await commandCenter.bootstrapDocumentMission(
+					const mission = await desktop.bootstrapDocumentMission(
 						contextResolution.context,
 						body,
 					);
@@ -93,7 +91,7 @@ export function createDrenyraCommandCenterCaseRoutes(
 					return ok(mission);
 				} catch (error) {
 					set.status = 400;
-					return commandCenterError(error);
+					return desktopError(error);
 				}
 			},
 			{
@@ -116,7 +114,7 @@ export function createDrenyraCommandCenterCaseRoutes(
 					set.status = 400;
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
-				const details = await commandCenter.getFiscalCaseDetails(
+				const details = await desktop.getFiscalCaseDetails(
 					contextResolution.context,
 					params.id,
 				);
@@ -143,7 +141,7 @@ export function createDrenyraCommandCenterCaseRoutes(
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					const fiscalCase = await commandCenter.updateFiscalCaseStatus(
+					const fiscalCase = await desktop.updateFiscalCaseStatus(
 						contextResolution.context,
 						params.id,
 						body,
@@ -151,7 +149,7 @@ export function createDrenyraCommandCenterCaseRoutes(
 					return ok(fiscalCase);
 				} catch (error) {
 					set.status = statusForStatusMutationError(error);
-					return commandCenterError(error);
+					return desktopError(error);
 				}
 			},
 			{

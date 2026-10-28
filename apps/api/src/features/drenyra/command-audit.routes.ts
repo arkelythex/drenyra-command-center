@@ -1,11 +1,11 @@
-import type { DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
+import type { DrenyraFiscalDesktopService } from "@drenyra/application/drenyra";
 import type { AuditEvent } from "@drenyra/domain/drenyra";
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../shared/api-response";
 import {
 	drenyraActorContextFailure,
 	type ResolveDrenyraActorContext,
-} from "./command-center.shared";
+} from "./desktop.shared";
 
 type CommandAuditEventType = "CAPABILITY_ALLOWED" | "CAPABILITY_DENIED";
 type CommandAuditDecision = "allowed" | "denied" | "all";
@@ -36,7 +36,7 @@ const decisionSchema = t.Optional(
 );
 
 export function createDrenyraCommandAuditRoutes(
-	commandCenter: DrenyraFiscalCommandCenterService,
+	desktop: DrenyraFiscalDesktopService,
 	resolveDrenyraActorContext: ResolveDrenyraActorContext,
 ) {
 	return new Elysia({ name: "drenyra-command-audit-routes" })
@@ -44,7 +44,7 @@ export function createDrenyraCommandAuditRoutes(
 			"/commands/audit-events",
 			async ({ query, headers, set }) => {
 				const result = await listCommandAudit(
-					commandCenter,
+					desktop,
 					resolveDrenyraActorContext,
 					headers,
 					query,
@@ -59,7 +59,7 @@ export function createDrenyraCommandAuditRoutes(
 			"/command-envelope/audit",
 			async ({ query, headers, set }) => {
 				const result = await listCommandAudit(
-					commandCenter,
+					desktop,
 					resolveDrenyraActorContext,
 					headers,
 					query,
@@ -96,7 +96,7 @@ function commandEnvelopeAuditQuerySchema() {
 }
 
 async function listCommandAudit(
-	commandCenter: DrenyraFiscalCommandCenterService,
+	desktop: DrenyraFiscalDesktopService,
 	resolveDrenyraActorContext: ResolveDrenyraActorContext,
 	headers: Record<string, string | undefined>,
 	query: CommandAuditQuery,
@@ -116,7 +116,7 @@ async function listCommandAudit(
 			"DRENYRA_CAPABILITY_DENIED",
 		);
 	}
-	const events = await commandCenter.listCommandAuditEvents(
+	const events = await desktop.listCommandAuditEvents(
 		contextResolution.context,
 		{
 			caseId: query.caseId,

@@ -36,10 +36,7 @@ import { evidenceV2Routes } from "./features/evidence-v2";
 import { expedientesModule } from "./features/expedientes";
 import { feosModule } from "./features/feos";
 import { firmRoutes } from "./features/firm";
-import {
-	fiscalCommandCenterModule,
-	fiscalTruthModule,
-} from "./features/fiscal";
+import { fiscalDesktopModule, fiscalTruthModule } from "./features/fiscal";
 import { fiscalAgentRoutes } from "./features/fiscal-agent/routes";
 import { fiscalMemoryRoutes } from "./features/fiscal-memory";
 import { frontendTelemetryModule } from "./features/frontend-telemetry";
@@ -361,7 +358,7 @@ const baseApp = new Elysia()
 	.use(vendorRoutes)
 	.use(judgmentDayRoutes)
 	.use(fiscalTruthModule)
-	.use(fiscalCommandCenterModule)
+	.use(fiscalDesktopModule)
 	.use(dashboardModule)
 	.use(llmGatewayModule)
 	.use(aiRagModule)

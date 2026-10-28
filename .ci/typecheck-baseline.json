@@ -341,7 +341,7 @@
     "apps/api/src/features/firm/routes.ts|TS2379": 3,
     "apps/api/src/features/fiscal-agent/routes/correction.route.ts|TS2345": 1,
     "apps/api/src/features/fiscal-agent/routes/report.route.ts|TS2379": 1,
-    "apps/api/src/features/fiscal/command-center/audit-events.routes.ts|TS2379": 1,
+    "apps/api/src/features/fiscal/desktop/audit-events.routes.ts|TS2379": 1,
     "apps/api/src/features/fiscal/truth/commands/append-fiscal-truth.command.ts|TS2379": 1,
     "apps/api/src/features/frontend-telemetry/application/commands/record-telemetry.ts|TS2375": 1,
     "apps/api/src/features/frontend-telemetry/index.ts|TS2379": 1,

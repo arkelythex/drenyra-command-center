@@ -82,7 +82,7 @@
 
 | SDD                                     | Estado                | L-Nivel |
 | --------------------------------------- | --------------------- | ------- |
-| `drenyra-frontend-command-center-reset` | ✅ all-applied        | L3      |
+| `drenyra-frontend-desktop-reset` | ✅ all-applied        | L3      |
 | `drenyra-global-shell`                  | ✅ applied            | L3      |
 | `drenyra-three-panel-layout`            | ✅ applied            | L3      |
 | `drenyra-design-tokens-v4`              | ✅ applied            | L3      |
@@ -228,4 +228,4 @@
 3. Mover los 20 SDDs en L1 a agenda de priorización contra el Capability Map
 4. Los 34 SDDs en L3 necesitan verificación post-implementación (L4)
 5. Los 6 SDDs en L4 son referencia canónica — mantener actualizados
-6. Worktrees legacy (`feat-ux-sdd-program`, `codex-command-center`) — limpiar
+6. Worktrees legacy (`feat-ux-sdd-program`, `codex-desktop`) — limpiar

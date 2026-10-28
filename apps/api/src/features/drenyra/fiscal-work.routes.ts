@@ -1,6 +1,6 @@
 import type {
 	DrenyraActorContext,
-	DrenyraFiscalCommandCenterService,
+	DrenyraFiscalDesktopService,
 } from "@drenyra/application/drenyra";
 import {
 	DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY,
@@ -18,7 +18,7 @@ type ResolveDrenyraActorContext = (
 ) => DrenyraActorContextResolution;
 
 export function createDrenyraFiscalWorkRoutes(
-	commandCenter: DrenyraFiscalCommandCenterService,
+	desktop: DrenyraFiscalDesktopService,
 	resolveActorContext: ResolveDrenyraActorContext,
 ) {
 	return new Elysia({ name: "drenyra-fiscal-work" }).get(
@@ -32,7 +32,7 @@ export function createDrenyraFiscalWorkRoutes(
 					contextResolution.missingHeaders,
 				);
 			} else {
-				envelope = await commandCenter.inspectFiscalWorkItem(
+				envelope = await desktop.inspectFiscalWorkItem(
 					contextResolution.context,
 					{
 						workItemId: params.id,

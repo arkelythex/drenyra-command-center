@@ -3,7 +3,7 @@ import type {
 	AgentLogRecord,
 	AgentOutputRecord,
 	AgentRunRecord,
-	FiscalCommandCenterContext,
+	FiscalDesktopContext,
 } from "../types";
 
 function sameRunScope(
@@ -11,7 +11,7 @@ function sameRunScope(
 		AgentRunRecord,
 		"organizationId" | "companyId" | "companyRuc" | "period"
 	>,
-	ctx: FiscalCommandCenterContext,
+	ctx: FiscalDesktopContext,
 ): boolean {
 	return (
 		row.organizationId === ctx.organizationId &&
@@ -47,18 +47,18 @@ export function createAgentRunService(
 	const logs = [...(seed.logs ?? [])];
 	const outputs = [...(seed.outputs ?? [])];
 
-	async function getById(id: string, ctx: FiscalCommandCenterContext) {
+	async function getById(id: string, ctx: FiscalDesktopContext) {
 		return runs.find((run) => run.id === id && sameRunScope(run, ctx)) ?? null;
 	}
 
 	return {
-		async list(ctx: FiscalCommandCenterContext) {
+		async list(ctx: FiscalDesktopContext) {
 			return runs.filter((run) => sameRunScope(run, ctx)).sort(byCreatedDesc);
 		},
 
 		getById,
 
-		async create(input: RunAgentInput, ctx: FiscalCommandCenterContext) {
+		async create(input: RunAgentInput, ctx: FiscalDesktopContext) {
 			const now = new Date();
 			const created: AgentRunRecord = {
 				id: crypto.randomUUID(),
@@ -77,7 +77,7 @@ export function createAgentRunService(
 			return created;
 		},
 
-		async getLogs(runId: string, ctx: FiscalCommandCenterContext) {
+		async getLogs(runId: string, ctx: FiscalDesktopContext) {
 			const run = await getById(runId, ctx);
 			if (!run) return null;
 			return logs
@@ -85,7 +85,7 @@ export function createAgentRunService(
 				.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
 		},
 
-		async getOutputs(runId: string, ctx: FiscalCommandCenterContext) {
+		async getOutputs(runId: string, ctx: FiscalDesktopContext) {
 			const run = await getById(runId, ctx);
 			if (!run) return null;
 			return outputs

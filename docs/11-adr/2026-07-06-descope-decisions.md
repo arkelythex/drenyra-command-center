@@ -39,14 +39,14 @@ Renombrar y duplicaría funcionalidad sin beneficio fiscal o de auditoría.
 
 - `CaseProgress` component (`apps/web/src/features/agents/CaseProgress.tsx`)
   con 4 estados + barra de progreso delegada a `AgentProgressBar`
-- Integración en `CommandCenterChat.tsx` líneas 581-588
+- Integración en `DesktopChat.tsx` líneas 581-588
 - Protegido por dev flag: `localStorage.getItem("DRENYRA_V2_CASE_PROGRESS")`
 
 **Razón del descope (no activar sin validación):**
 
 - Mock data: `CaseProgress` usa datos estáticos (4 completadas / 7 totales)
   en lugar de sesión real del caso. La sesión real necesita:
-  - Conectar al stream de SSE del CommandCenterChat para contar
+  - Conectar al stream de SSE del DesktopChat para contar
     artifacts completados en vivo
   - Sincronizar con `useChatHistory` para determinar total de pasos
     del plan del caso
@@ -56,7 +56,7 @@ Renombrar y duplicaría funcionalidad sin beneficio fiscal o de auditoría.
   totales estancados, o barras que no avanzan
 
 **WARNING en código:** `// ⚠️ NO ACTIVAR sin validación paralela — mock data`
-(Línea 582 de `CommandCenterChat.tsx`)
+(Línea 582 de `DesktopChat.tsx`)
 
 **Para activar:** Ejecutar con un caso fiscal real en paralelo:
 

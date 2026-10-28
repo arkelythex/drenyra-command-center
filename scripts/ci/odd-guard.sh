@@ -36,7 +36,7 @@ if [ -n "$(git ls-files products 2>/dev/null | head -1)" ]; then
     "Do this instead:" \
     "  - extract it with history: git subtree split -P products/<name> -b extract/<name>" \
     "    then push that branch to a new repository (see odd/tasks/gentle-ai-v4-migration.md)" \
-    "  - or archive it outside this repo; never grow inside drenyra-command-center"
+    "  - or archive it outside this repo; never grow inside drenyra-desktop"
 fi
 
 # 2c. No tracked symlink may dangle (a moved/deleted target silently drops skills or config).

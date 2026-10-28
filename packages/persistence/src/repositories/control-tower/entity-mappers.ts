@@ -11,7 +11,7 @@ import type {
 	drenyraAuditEvents,
 	drenyraEvidenceItems,
 	drenyraFiscalCases,
-} from "../../schema/drenyra-command-center.schema";
+} from "../../schema/drenyra-desktop.schema";
 
 export function fiscalCaseEntityToRow(
 	entity: FiscalCase,

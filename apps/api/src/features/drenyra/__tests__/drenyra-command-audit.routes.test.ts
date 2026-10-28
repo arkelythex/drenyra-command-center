@@ -1,6 +1,6 @@
 import {
 	type DrenyraActorContext,
-	DrenyraFiscalCommandCenterService,
+	DrenyraFiscalDesktopService,
 	InMemoryDrenyraRepository,
 } from "@drenyra/application/drenyra";
 import type {
@@ -31,7 +31,7 @@ const headers = {
 };
 
 let repository: InMemoryDrenyraRepository;
-let service: DrenyraFiscalCommandCenterService;
+let service: DrenyraFiscalDesktopService;
 
 function scope(overrides: Partial<FiscalScope> = {}): FiscalScope {
 	return {
@@ -75,7 +75,7 @@ async function getJson(
 describe("Drenyra command audit routes", () => {
 	beforeEach(() => {
 		repository = new InMemoryDrenyraRepository();
-		service = new DrenyraFiscalCommandCenterService(repository);
+		service = new DrenyraFiscalDesktopService(repository);
 	});
 
 	it("lists scoped command audit events including case-less events", async () => {

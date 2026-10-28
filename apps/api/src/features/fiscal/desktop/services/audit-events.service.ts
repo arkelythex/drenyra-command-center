@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import type { AuditEventRecord, FiscalCommandCenterContext } from "../types";
+import type { AuditEventRecord, FiscalDesktopContext } from "../types";
 
 type AuditRecordInput = {
 	eventType: string;
@@ -15,7 +15,7 @@ function sameAuditScope(
 		AuditEventRecord,
 		"organizationId" | "companyId" | "companyRuc" | "period"
 	>,
-	ctx: FiscalCommandCenterContext,
+	ctx: FiscalDesktopContext,
 ): boolean {
 	return (
 		row.organizationId === ctx.organizationId &&
@@ -86,7 +86,7 @@ export function createAuditEventService(
 ) {
 	const events = [...(seed.events ?? [])];
 
-	async function getById(id: string, ctx: FiscalCommandCenterContext) {
+	async function getById(id: string, ctx: FiscalDesktopContext) {
 		return (
 			events.find((event) => event.id === id && sameAuditScope(event, ctx)) ??
 			null
@@ -94,7 +94,7 @@ export function createAuditEventService(
 	}
 
 	return {
-		async list(ctx: FiscalCommandCenterContext) {
+		async list(ctx: FiscalDesktopContext) {
 			return events
 				.filter((event) => sameAuditScope(event, ctx))
 				.sort(byOccurredDesc);
@@ -102,7 +102,7 @@ export function createAuditEventService(
 
 		getById,
 
-		async record(input: AuditRecordInput, ctx: FiscalCommandCenterContext) {
+		async record(input: AuditRecordInput, ctx: FiscalDesktopContext) {
 			const scopedEvents = events
 				.filter((event) => sameAuditScope(event, ctx))
 				.sort(byOccurredDesc);
@@ -141,7 +141,7 @@ export function createAuditEventService(
 			return created;
 		},
 
-		async verifyChain(ctx: FiscalCommandCenterContext) {
+		async verifyChain(ctx: FiscalDesktopContext) {
 			const scopedEvents = events
 				.filter((event) => sameAuditScope(event, ctx))
 				.sort(byOccurredAsc);

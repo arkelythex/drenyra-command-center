@@ -360,7 +360,7 @@ export interface AuditEvent {
 }
 
 /**
- * Expanded fiscal case read model for the command-center workspace.
+ * Expanded fiscal case read model for the desktop workspace.
  *
  * @example
  * const evidenceCount = details.evidence.length;

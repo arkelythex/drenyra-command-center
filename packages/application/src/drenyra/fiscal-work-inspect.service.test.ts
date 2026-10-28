@@ -4,7 +4,7 @@ import { DrenyraFiscalWorkInspectService } from "./fiscal-work-inspect.service";
 import { InMemoryDrenyraRepository } from "./in-memory-repository";
 import {
 	type DrenyraActorContext,
-	DrenyraFiscalCommandCenterService,
+	DrenyraFiscalDesktopService,
 } from "./service";
 
 const context: DrenyraActorContext = {
@@ -18,7 +18,7 @@ const context: DrenyraActorContext = {
 function makeServices() {
 	const repository = new InMemoryDrenyraRepository();
 	return {
-		commandCenter: new DrenyraFiscalCommandCenterService(repository),
+		desktop: new DrenyraFiscalDesktopService(repository),
 		inspect: new DrenyraFiscalWorkInspectService(
 			repository,
 			() => "trace-test-001",
@@ -28,22 +28,18 @@ function makeServices() {
 
 describe("DrenyraFiscalWorkInspectService", () => {
 	it("returns one shared read envelope for scoped fiscal work", async () => {
-		const { commandCenter, inspect } = makeServices();
-		const fiscalCase = await commandCenter.createFiscalCase(context, {
+		const { desktop, inspect } = makeServices();
+		const fiscalCase = await desktop.createFiscalCase(context, {
 			type: "SIRE_REVIEW",
 			title: "SIRE mayo",
 			description: "Inspeccionar propuesta SIRE",
 		});
-		const evidence = await commandCenter.addEvidenceItem(
-			context,
-			fiscalCase.id,
-			{
-				type: "SUNAT_RECORD",
-				title: "Propuesta SIRE",
-				summary: "Registro descargado",
-				source: "SUNAT",
-			},
-		);
+		const evidence = await desktop.addEvidenceItem(context, fiscalCase.id, {
+			type: "SUNAT_RECORD",
+			title: "Propuesta SIRE",
+			summary: "Registro descargado",
+			source: "SUNAT",
+		});
 
 		const result = await inspect.inspect({
 			scope: {
@@ -79,8 +75,8 @@ describe("DrenyraFiscalWorkInspectService", () => {
 	});
 
 	it("does not leak details for out-of-scope work items", async () => {
-		const { commandCenter, inspect } = makeServices();
-		const fiscalCase = await commandCenter.createFiscalCase(context, {
+		const { desktop, inspect } = makeServices();
+		const fiscalCase = await desktop.createFiscalCase(context, {
 			type: "MONTHLY_CLOSE",
 			title: "Cierre mayo",
 			description: "Trabajo fiscal scoped",

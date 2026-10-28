@@ -104,12 +104,12 @@ async function mockAuthSession(page: import("@playwright/test").Page) {
 	);
 }
 
-async function mockCommandCenterApis(page: import("@playwright/test").Page) {
+async function mockDesktopApis(page: import("@playwright/test").Page) {
 	// Cases list
 	await page.route(
 		(url) =>
 			isAppApiRequest(url.toString()) &&
-			new URL(url).pathname === "/api/drenyra/command-center/cases",
+			new URL(url).pathname === "/api/drenyra/desktop/cases",
 		async (route) => {
 			await route.fulfill({
 				status: 200,
@@ -125,8 +125,8 @@ async function mockCommandCenterApis(page: import("@playwright/test").Page) {
 			if (!isAppApiRequest(url.toString())) return false;
 			const { pathname } = new URL(url);
 			return (
-				pathname.startsWith("/api/drenyra/command-center/cases/") &&
-				pathname !== "/api/drenyra/command-center/cases"
+				pathname.startsWith("/api/drenyra/desktop/cases/") &&
+				pathname !== "/api/drenyra/desktop/cases"
 			);
 		},
 		async (route) => {
@@ -280,18 +280,18 @@ test.describe("Drenyra Desktop", () => {
 	test.beforeEach(async ({ page }) => {
 		await installSessionState(page);
 		await mockAuthSession(page);
-		await mockCommandCenterApis(page);
+		await mockDesktopApis(page);
 	});
 
-	async function gotoCommandCenter(page: import("@playwright/test").Page) {
+	async function gotoDesktop(page: import("@playwright/test").Page) {
 		await page.goto("/drenyra");
 		await dismissOnboardingTour(page);
 	}
 
 	test("Page loads and shows sidebar with company info", {
-		tag: ["@e2e", "@drenyra", "@command-center", "@CC-E2E-001"],
+		tag: ["@e2e", "@drenyra", "@desktop", "@CC-E2E-001"],
 	}, async ({ page }) => {
-		await gotoCommandCenter(page);
+		await gotoDesktop(page);
 
 		await expect(
 			page.getByRole("heading", { name: "Drenyra Desktop" }),
@@ -303,9 +303,9 @@ test.describe("Drenyra Desktop", () => {
 	});
 
 	test("Chat area renders with empty state and quick action cards", {
-		tag: ["@e2e", "@drenyra", "@command-center", "@CC-E2E-002"],
+		tag: ["@e2e", "@drenyra", "@desktop", "@CC-E2E-002"],
 	}, async ({ page }) => {
-		await gotoCommandCenter(page);
+		await gotoDesktop(page);
 
 		await expect(
 			page.getByRole("heading", { name: "Fiscal Chat" }),
@@ -318,9 +318,9 @@ test.describe("Drenyra Desktop", () => {
 	});
 
 	test("Chat input bar renders with send button and file upload button", {
-		tag: ["@e2e", "@drenyra", "@command-center", "@CC-E2E-003"],
+		tag: ["@e2e", "@drenyra", "@desktop", "@CC-E2E-003"],
 	}, async ({ page }) => {
-		await gotoCommandCenter(page);
+		await gotoDesktop(page);
 
 		const input = page.getByRole("textbox", {
 			name: "Comando fiscal conversacional",
@@ -339,9 +339,9 @@ test.describe("Drenyra Desktop", () => {
 	});
 
 	test("Action buttons render in header — Run Agent, Upload, New Case, Approval", {
-		tag: ["@e2e", "@drenyra", "@command-center", "@CC-E2E-004"],
+		tag: ["@e2e", "@drenyra", "@desktop", "@CC-E2E-004"],
 	}, async ({ page }) => {
-		await gotoCommandCenter(page);
+		await gotoDesktop(page);
 
 		await expect(
 			page.getByRole("button", { name: "Ejecutar agente fiscal" }),
@@ -361,9 +361,9 @@ test.describe("Drenyra Desktop", () => {
 	});
 
 	test("Agent selector renders in header with all agent options", {
-		tag: ["@e2e", "@drenyra", "@command-center", "@CC-E2E-005"],
+		tag: ["@e2e", "@drenyra", "@desktop", "@CC-E2E-005"],
 	}, async ({ page }) => {
-		await gotoCommandCenter(page);
+		await gotoDesktop(page);
 
 		const agentSelect = page.getByRole("combobox", {
 			name: "Seleccionar agente",
@@ -381,9 +381,9 @@ test.describe("Drenyra Desktop", () => {
 	});
 
 	test("Density mode toggle buttons render and allow selection", {
-		tag: ["@e2e", "@drenyra", "@command-center", "@CC-E2E-006"],
+		tag: ["@e2e", "@drenyra", "@desktop", "@CC-E2E-006"],
 	}, async ({ page }) => {
-		await gotoCommandCenter(page);
+		await gotoDesktop(page);
 
 		const densityTabs = page.getByRole("tablist", { name: "Modo de densidad" });
 		const compactTab = densityTabs.getByRole("tab", { name: "Compact" });
@@ -399,9 +399,9 @@ test.describe("Drenyra Desktop", () => {
 	});
 
 	test("File upload UI works — paperclip opens file input and selection shows preview chip", {
-		tag: ["@e2e", "@drenyra", "@command-center", "@CC-E2E-007"],
+		tag: ["@e2e", "@drenyra", "@desktop", "@CC-E2E-007"],
 	}, async ({ page }) => {
-		await gotoCommandCenter(page);
+		await gotoDesktop(page);
 
 		const paperclipBtn = page.getByRole("button", {
 			name: "Adjuntar archivos",

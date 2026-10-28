@@ -4,11 +4,11 @@ import { createApprovalRequestsRoutes } from "../approval-requests.routes";
 
 describe("approval-requests routes", () => {
 	it("returns 400 when tenant headers are missing", async () => {
-		const app = new Elysia({ prefix: "/api/fiscal-command-center" }).use(
+		const app = new Elysia({ prefix: "/api/fiscal-desktop" }).use(
 			createApprovalRequestsRoutes(),
 		);
 		const response = await app.handle(
-			new Request("http://localhost/api/fiscal-command-center/approvals"),
+			new Request("http://localhost/api/fiscal-desktop/approvals"),
 		);
 
 		expect(response.status).toBe(400);
@@ -23,26 +23,23 @@ describe("approval-requests routes", () => {
 			getVotes: vi.fn(),
 			submitVote: vi.fn().mockResolvedValue(null),
 		};
-		const app = new Elysia({ prefix: "/api/fiscal-command-center" }).use(
+		const app = new Elysia({ prefix: "/api/fiscal-desktop" }).use(
 			createApprovalRequestsRoutes(service as never),
 		);
 
 		const response = await app.handle(
-			new Request(
-				"http://localhost/api/fiscal-command-center/approvals/req-1/votes",
-				{
-					method: "POST",
-					headers: {
-						"content-type": "application/json",
-						"x-organization-id": "org-1",
-						"x-company-id": "cmp-1",
-						"x-user-id": "usr-1",
-						"x-company-ruc": "20123456789",
-						"x-fiscal-period": "2026-01",
-					},
-					body: JSON.stringify({ vote: true }),
+			new Request("http://localhost/api/fiscal-desktop/approvals/req-1/votes", {
+				method: "POST",
+				headers: {
+					"content-type": "application/json",
+					"x-organization-id": "org-1",
+					"x-company-id": "cmp-1",
+					"x-user-id": "usr-1",
+					"x-company-ruc": "20123456789",
+					"x-fiscal-period": "2026-01",
 				},
-			),
+				body: JSON.stringify({ vote: true }),
+			}),
 		);
 
 		expect(response.status).toBe(404);

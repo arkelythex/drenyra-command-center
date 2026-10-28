@@ -12,7 +12,7 @@ import type {
 	drenyraAuditEvents,
 	drenyraEvidenceItems,
 	drenyraFiscalCases,
-} from "../../schema/drenyra-command-center.schema";
+} from "../../schema/drenyra-desktop.schema";
 import type {
 	AgentRunRow,
 	ApprovalRow,

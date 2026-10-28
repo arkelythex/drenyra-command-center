@@ -5,7 +5,7 @@ import type {
 	CaseEvidenceRecord,
 	FiscalCaseRecord,
 	FiscalCaseSummary,
-	FiscalCommandCenterContext,
+	FiscalDesktopContext,
 } from "../types";
 
 function sameScope(
@@ -13,7 +13,7 @@ function sameScope(
 		FiscalCaseRecord,
 		"organizationId" | "companyId" | "companyRuc" | "period"
 	>,
-	ctx: FiscalCommandCenterContext,
+	ctx: FiscalDesktopContext,
 ): boolean {
 	return (
 		row.organizationId === ctx.organizationId &&
@@ -52,20 +52,17 @@ export function createFiscalCaseService(
 	const agentRuns = [...(seed.agentRuns ?? [])];
 
 	return {
-		async list(ctx: FiscalCommandCenterContext) {
+		async list(ctx: FiscalDesktopContext) {
 			return cases.filter((item) => sameScope(item, ctx)).sort(byUpdatedDesc);
 		},
 
-		async getById(id: string, ctx: FiscalCommandCenterContext) {
+		async getById(id: string, ctx: FiscalDesktopContext) {
 			return (
 				cases.find((item) => item.id === id && sameScope(item, ctx)) ?? null
 			);
 		},
 
-		async create(
-			input: CreateFiscalCaseInput,
-			ctx: FiscalCommandCenterContext,
-		) {
+		async create(input: CreateFiscalCaseInput, ctx: FiscalDesktopContext) {
 			const now = new Date();
 			const created: FiscalCaseRecord = {
 				id: crypto.randomUUID(),
@@ -91,7 +88,7 @@ export function createFiscalCaseService(
 		async update(
 			id: string,
 			input: UpdateFiscalCaseInput,
-			ctx: FiscalCommandCenterContext,
+			ctx: FiscalDesktopContext,
 		) {
 			const item = cases.find(
 				(candidate) => candidate.id === id && sameScope(candidate, ctx),
@@ -111,7 +108,7 @@ export function createFiscalCaseService(
 		},
 
 		async listSummaries(
-			ctx: FiscalCommandCenterContext,
+			ctx: FiscalDesktopContext,
 		): Promise<FiscalCaseSummary[]> {
 			return cases
 				.filter((item) => sameScope(item, ctx))
@@ -141,7 +138,7 @@ export function createFiscalCaseService(
 				}));
 		},
 
-		async getDocuments(caseId: string, ctx: FiscalCommandCenterContext) {
+		async getDocuments(caseId: string, ctx: FiscalDesktopContext) {
 			const fiscalCase = await this.getById(caseId, ctx);
 			if (!fiscalCase) return null;
 			return documents.filter(
@@ -153,7 +150,7 @@ export function createFiscalCaseService(
 			);
 		},
 
-		async getEvidence(caseId: string, ctx: FiscalCommandCenterContext) {
+		async getEvidence(caseId: string, ctx: FiscalDesktopContext) {
 			const fiscalCase = await this.getById(caseId, ctx);
 			if (!fiscalCase) return null;
 			return evidence.filter(

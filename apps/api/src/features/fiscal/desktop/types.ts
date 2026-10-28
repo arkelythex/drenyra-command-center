@@ -1,13 +1,13 @@
 /**
- * FiscalCommandCenterContext interface.
+ * FiscalDesktopContext interface.
  *
  * @example
  * ```ts
- * const value: FiscalCommandCenterContext = {} as FiscalCommandCenterContext;
+ * const value: FiscalDesktopContext = {} as FiscalDesktopContext;
  * console.log(value);
  * ```
  */
-export interface FiscalCommandCenterContext {
+export interface FiscalDesktopContext {
 	organizationId: string;
 	companyId: string;
 	companyRuc: string;

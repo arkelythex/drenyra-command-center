@@ -7,15 +7,15 @@ import { auditEventsRoutes } from "./audit-events.routes";
 import { fiscalCasesRoutes } from "./fiscal-cases.routes";
 
 /**
- * fiscalCommandCenterModule const.
+ * fiscalDesktopModule const.
  *
  * @example
  * ```ts
- * console.log(fiscalCommandCenterModule);
+ * console.log(fiscalDesktopModule);
  * ```
  */
-export const fiscalCommandCenterModule = new Elysia({
-	prefix: "/api/fiscal-command-center",
+export const fiscalDesktopModule = new Elysia({
+	prefix: "/api/fiscal-desktop",
 })
 	.use(companyScopeGuard({ allowHeaderFallback: true }))
 	.use(fiscalCasesRoutes)

@@ -7,7 +7,7 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import type { DrenyraFiscalCommandCenterService } from "@drenyra/application/drenyra";
+import type { DrenyraFiscalDesktopService } from "@drenyra/application/drenyra";
 import type { AuditEventType } from "@drenyra/domain/drenyra";
 import { Elysia, t } from "elysia";
 import { ok } from "../shared/api-response";
@@ -17,7 +17,7 @@ import {
 } from "./drenyra-context";
 
 export interface CommandEnvelopeAuditRoutesDeps {
-	commandCenter: DrenyraFiscalCommandCenterService;
+	desktop: DrenyraFiscalDesktopService;
 }
 
 const commandEnvelopeEventTypes = {
@@ -34,7 +34,7 @@ function readLimit(value: string | undefined): number {
 }
 
 export function createCommandEnvelopeAuditRoutes({
-	commandCenter,
+	desktop,
 }: CommandEnvelopeAuditRoutesDeps) {
 	return new Elysia({ name: "drenyra-command-envelope-audit" }).get(
 		"/command-envelope/audit",
@@ -45,14 +45,11 @@ export function createCommandEnvelopeAuditRoutes({
 				return drenyraActorContextFailure(contextResolution.missingHeaders);
 			}
 			const decision = query.decision ?? "all";
-			const events = await commandCenter.listAuditEvents(
-				contextResolution.context,
-				{
-					caseId: query.caseId,
-					eventTypes: commandEnvelopeEventTypes[decision],
-					limit: readLimit(query.limit),
-				},
-			);
+			const events = await desktop.listAuditEvents(contextResolution.context, {
+				caseId: query.caseId,
+				eventTypes: commandEnvelopeEventTypes[decision],
+				limit: readLimit(query.limit),
+			});
 			return ok({
 				decision,
 				events,
