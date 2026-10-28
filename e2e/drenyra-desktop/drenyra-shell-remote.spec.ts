@@ -2,7 +2,7 @@
  * Arkelythex shell — Drenyra Module Federation / dev redirect smoke test.
  *
  * Full Drenyra Desktop E2E lives in the Drenyra product repo:
- * github.com/arkelythex/drenyra-desktop — e2e/drenyra-command-center/
+ * github.com/arkelythex/drenyra-desktop — e2e/drenyra-desktop/
  */
 import { expect, test } from "../base-test";
 
