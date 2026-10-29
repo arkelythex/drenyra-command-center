@@ -1,0 +1,9 @@
+{
+  "frameworkIsolation": [
+    "import:packages/application/src/use-cases/monthly-close/correction/compensating-entry-generator.ts:drizzle-orm",
+    "import:packages/application/src/use-cases/monthly-close/posting/journal-entry-posting.service.ts:drizzle-orm",
+    "import:packages/application/src/use-cases/monthly-close/posting/period-close.service.ts:drizzle-orm",
+    "import:packages/application/src/use-cases/monthly-close/posting/transactional-apply.use-case.ts:drizzle-orm",
+    "import:packages/shared/src/config/rate-limit.ts:elysia"
+  ]
+}
