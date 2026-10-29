@@ -140,3 +140,10 @@ Removing it makes `bun run odd:guard` pass, which previously failed on guard rul
 `score-module-extraction.ts`, `check-baseline-policy.ts`. So `bun run architecture:check-boundaries`, which
 `docs/CODEBASE-GUIDE.md:18` tells readers to run, exits 1 with "Module not found". Rebuilding those gates is a feature,
 not cleanup, and is left for its own task.
+
+**L12 — `docs:check-links` is green for the first time.** Every previous run reported ~916 broken links, all under
+`~/.bun/install/cache/**`. The cause was a stray 2.1 GB untracked directory literally named `~` at the repository root
+(a bun cache copied by a bad path expansion), which the link scanner followed. It held zero tracked files and was
+already git-ignored. Removing it gives `300 files checked, all internal links valid`. No repository file changed; this
+is local workspace cleanup that makes the documented check trustworthy again.
+
