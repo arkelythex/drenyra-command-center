@@ -15,11 +15,20 @@ meaning is the product; responsive identifiers keep their meaning:
 `desktop-nav.tsx`, `desktop-header.tsx`, `InvoicesBoard` responsive tests and `mobile/desktop` viewport prose MUST
 NOT be renamed. A `desktop` token that means "viewport wider than md" is never a product reference.
 
-**S3 — Legacy with no live consumer is deleted, not archived in-tree.** Deletion candidates, each verified to have no
-inbound reference before removal: `labs/mastra-poc/`, `ops/`, `.agent/skills/`, `services/engram/`,
-`engines/rust-core/`, `DRENYRA_CODEX_APP_INTERFACE_AUDIT.md` (references `apps/web/src/features/drenyra-desktop/`,
-which has zero tracked files), and the `openspec/changes/*` rows in `apps/web/MAP.md` (SDD is superseded by ODD).
-`openspec/` is untracked and must be removed from the working tree.
+**S3 — Legacy with no live consumer is deleted, not archived in-tree.** Deletion requires proof of zero live consumers,
+not an impression. Verified deletion set: `labs/mastra-poc/` (16 files, no inbound reference outside this document),
+`engines/rust-core/` (5 files, empty stub, docs-only references), `services/engram/` (8 files, duplicated by the
+`drenyra-engram` repository; ADR-010 already records it as duplication), `ops/gtm/` (old ARKALYTHIX brand artifact),
+`ops/monitoring/{DEPLOYMENT,FINAL}_SUMMARY.md` (generated noise),
+`DRENYRA_CODEX_APP_INTERFACE_AUDIT.md` (documents `apps/web/src/features/drenyra-desktop/`, which has zero tracked
+files), and the `openspec/changes/*` rows in `apps/web/MAP.md` (SDD is superseded by ODD). `openspec/` is untracked and
+is removed from the working tree.
+
+**S3.1 — Live infrastructure is never deleted by a cleanup sweep.** `ops/otel/` is mounted by
+`docker-compose.yml:51` and `ops/monitoring/`, `ops/opa/`, `ops/systemd/` back the observability stack; they stay.
+`.agent/skills/` is consumed by `.hooks/pre-commit`, `.hooks/pre-push`, `AGENTS.md` and
+`packages/drenyra-orchestrator/__tests__/skills-resolver.test.ts`; it stays. Deleting either would break the runtime
+or the hooks, which is the opposite of cleanup.
 
 **S4 — Migrations are immutable.** `packages/infrastructure/drizzle/**` including the `_journal.json` tag
 `0006_drenyra_command_center` and `scripts/gate/wave2-gate.sh:67` are never renamed or edited. Renaming an applied
