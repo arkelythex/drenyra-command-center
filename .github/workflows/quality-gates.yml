@@ -142,3 +142,25 @@ jobs:
 
       - name: Check fiscal boundaries
         uses: ./.github/actions/quality-gate-fiscal
+
+  architecture-gates:
+    name: Architecture Gates
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # The baseline-policy gate diffs .ci/typecheck-baseline.json against
+          # the merge base, so the full history and the base ref must be present.
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.0"
+
+      - uses: ./.github/actions/setup-bun
+        with:
+          verify-native-deps: false
+
+      - name: Run the six architecture gates
+        run: bun run architecture:check
