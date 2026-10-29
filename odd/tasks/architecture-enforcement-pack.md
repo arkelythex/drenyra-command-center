@@ -42,12 +42,12 @@ Delivery: single PR, one work unit per commit
 | --- | --- | --- | --- | --- | --- |
 | T1 | Shared rule module + `check-package-boundaries.ts` | S1, S2 | inline | done | 542a6d6b |
 | T2 | `check-framework-isolation.ts` | S3 | inline | done | 542a6d6b |
-| T3 | `check-baseline-policy.ts` | S4 | inline | done | this PR |
-| T4 | `check-migration-governance.ts` + lock | S5 | inline | done | this PR |
-| T5 | `audit-tsconfig-check-features.ts` | S6 | inline | done | this PR |
-| T6 | `score-module-extraction.ts` | S7 | inline | done | this PR |
-| T7 | `enforcement-pack.ts` aggregator + `package.json` wiring | S8 | inline | done | this PR |
-| T8 | Docs alignment | S10 | inline | done | this PR |
+| T3 | `check-baseline-policy.ts` | S4 | inline | done | 4ca7f5a1 |
+| T4 | `check-migration-governance.ts` + lock | S5 | inline | done | 4ca7f5a1 |
+| T5 | `audit-tsconfig-check-features.ts` | S6 | inline | done | 4ca7f5a1 |
+| T6 | `score-module-extraction.ts` | S7 | inline | done | 4ca7f5a1 |
+| T7 | `enforcement-pack.ts` aggregator + `package.json` wiring | S8 | inline | done | 4ca7f5a1 |
+| T8 | Docs alignment | S10 | inline | done | 4ca7f5a1 |
 
 ## Log
 
@@ -99,3 +99,11 @@ The 19 deep imports are baselined, not fixed: each one is a real coupling that n
 A script-target audit of root `package.json` found **66 scripts whose target file does not exist** in the repository or its git history. `quality:max-lines` is one of them, and `.github/workflows/release.yml:38` runs it inside the release quality gate, so that gate cannot pass either.
 
 This is a separate defect class from the architecture gates: the gates were never written, these scripts lost their implementations. It needs its own ODD task (`script-registry-audit`) and is recorded here rather than fixed inline.
+
+### L12 — `routeToolCall` had no test, so the extraction was pinned before it shipped
+
+`routeToolCall` is exported from `@drenyra/orchestrator` and has no consumer in the repository, and it had no test file. Extracting the model-capability check therefore changed code that nothing verified.
+
+`__tests__/tool-contract-router.test.ts` now pins the rule that was touched: R2 rejected when the model cannot produce constrained output, R2 rejected without JSON-schema support, R2 enforcing the schema when capable, R1 never inspecting model capabilities, R2 routing normally when no capabilities are declared, and unknown tools rejected. Six cases, all green.
+
+Two pre-existing lint failures in the touched files were also fixed rather than bypassed: `useOptionalChain` twice in `packages/domain/src/feos/approval.ts` plus its import order, and the complexity of `routeToolCall` (18, limit 15) by extracting `rejectUnsupportedModel`.
