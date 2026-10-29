@@ -14,10 +14,6 @@ units:
     kind: app
     name: "@drenyra/web"
     docs: ["apps/web/README.md", "apps/web/MAP.md", "apps/web/AGENTS.md"]
-  - path: "engines/rust-core"
-    kind: engine
-    name: "rust-core"
-    docs: ["engines/rust-core/README.md"]
   - path: "packages/agent-runtime"
     kind: package
     name: "@drenyra/agent-runtime"
@@ -137,10 +133,6 @@ units:
   - path: "packages/workspace-projections"
     kind: package
     name: "@drenyra/workspace-projections"
-  - path: "services/engram"
-    kind: service
-    name: "engram"
-    docs: ["services/engram/README.md"]
   - path: "services/go"
     kind: service
     name: "go"
