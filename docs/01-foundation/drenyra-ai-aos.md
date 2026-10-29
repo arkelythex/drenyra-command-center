@@ -291,7 +291,7 @@ Drenyra-AI aspira a ser el **estándar abierto de ejecución contable verificabl
 Drenyra-AI                         Drenyra
 ─────────────────                  ─────────────────
 framework + runtime                producto visual y operativo
-agentes + skills                   Drenyra Desktop contable
+agentes + skills                   Drenyra Console contable
 receipts + autoridad               para empresas y contadores
        │
        └────────── consume ───────► Drenyra (surface)

@@ -36,7 +36,7 @@ import { evidenceV2Routes } from "./features/evidence-v2";
 import { expedientesModule } from "./features/expedientes";
 import { feosModule } from "./features/feos";
 import { firmRoutes } from "./features/firm";
-import { fiscalDesktopModule, fiscalTruthModule } from "./features/fiscal";
+import { fiscalConsoleModule, fiscalTruthModule } from "./features/fiscal";
 import { fiscalAgentRoutes } from "./features/fiscal-agent/routes";
 import { fiscalMemoryRoutes } from "./features/fiscal-memory";
 import { frontendTelemetryModule } from "./features/frontend-telemetry";
@@ -180,7 +180,7 @@ const baseApp = new Elysia()
 					{
 						name: "Drenyra",
 						description:
-							"Drenyra Desktop: cases, evidence, mock agent runs and approvals",
+							"Drenyra Console: cases, evidence, mock agent runs and approvals",
 					},
 
 					{
@@ -358,7 +358,7 @@ const baseApp = new Elysia()
 	.use(vendorRoutes)
 	.use(judgmentDayRoutes)
 	.use(fiscalTruthModule)
-	.use(fiscalDesktopModule)
+	.use(fiscalConsoleModule)
 	.use(dashboardModule)
 	.use(llmGatewayModule)
 	.use(aiRagModule)

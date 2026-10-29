@@ -1,7 +1,7 @@
 ---
 version: '3.0.0'
 name: 'Drenyra Fiscal Editorial'
-description: 'Operations-first Drenyra Desktop — warm editorial surfaces inspired by Cursor 3, adapted for SUNAT compliance.'
+description: 'Operations-first Drenyra Console — warm editorial surfaces inspired by Cursor 3, adapted for SUNAT compliance.'
 colors:
   canvas-dark: '#161614'
   canvas-light: '#f7f7f4'

@@ -7,7 +7,7 @@ import { describe, expect, it } from "vitest";
 import { InMemoryDrenyraRepository } from "./in-memory-repository";
 import {
 	type DrenyraActorContext,
-	DrenyraFiscalDesktopService,
+	DrenyraFiscalConsoleService,
 } from "./service";
 
 const context: DrenyraActorContext = {
@@ -22,11 +22,11 @@ function makeService() {
 	const repository = new InMemoryDrenyraRepository();
 	return {
 		repository,
-		service: new DrenyraFiscalDesktopService(repository),
+		service: new DrenyraFiscalConsoleService(repository),
 	};
 }
 
-describe("DrenyraFiscalDesktopService", () => {
+describe("DrenyraFiscalConsoleService", () => {
 	it("exposes stable inspect envelope discriminants and reason codes", () => {
 		expect(DRENYRA_FISCAL_WORK_INSPECT_CAPABILITY).toBe(
 			"drenyra.fiscal-work.inspect",

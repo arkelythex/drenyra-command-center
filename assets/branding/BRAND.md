@@ -1,4 +1,4 @@
-# Drenyra Desktop — Brand & Banner
+# Drenyra Console — Brand & Banner
 
 > **Normative source:** the Drenyra ecosystem brand contract —
 > [`drenyra-ai/contracts/brand-system.md`](https://github.com/arkelythex/drenyra-ai/blob/main/contracts/brand-system.md)
@@ -7,14 +7,14 @@
 > The ecosystem design system is **the same system as Drenyra apps/web**: dark
 > + light themes and the cyan/violet accent system (DTCG token pipeline), with
 > the Dreamcoder-inspired compositional language (elevation, aurora glows,
-> curved geometry, spark accents). The Drenyra Desktop must **not** invent its
+> curved geometry, spark accents). The Drenyra Console must **not** invent its
 > own palette — in either theme.
 
 ## Regeneration prompt (ChatGPT Images 2.0)
 
 The canonical set lives in
 [`drenyra-ai/docs/assets/brand/gpt-image-prompts.md`](https://github.com/arkelythex/drenyra-ai/blob/main/docs/assets/brand/gpt-image-prompts.md).
-The Drenyra Desktop prompt is the **orbital console with dual-approval seal**:
+The Drenyra Console prompt is the **orbital console with dual-approval seal**:
 
 ```text
 Drenyra ecosystem brand banner in the Dreamcoder-inspired visual language:
@@ -29,7 +29,7 @@ ladder #12161B, #1A1F26, #20262E for layered panels and elevation shadows.
 All gradients blend exclusively between these colors. Composition language:
 layered elevation with soft inner shadows, curved geometry (orbital arcs,
 concentric rings, sweeping Bézier curves), and tiny luminous spark accents at
-arc intersections. Subject: an abstract Drenyra Desktop. Focal point
+arc intersections. Subject: an abstract Drenyra Console. Focal point
 on the right third: three stacked translucent console panels (surfaces
 #12161B, #1A1F26, #20262E) with rising ledger bars in cyan #3CE6D8, success
 green #4ADE94 and muted blue-gray #A8B0BC. Wrapped around the console: two

@@ -7,28 +7,28 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import type { DrenyraFiscalDesktopService } from "@drenyra/application/drenyra";
+import type { DrenyraFiscalConsoleService } from "@drenyra/application/drenyra";
 import { Elysia, t } from "elysia";
 import { fail, ok } from "../shared/api-response";
 import {
-	drenyraActorContextFailure,
-	resolveDrenyraActorContext,
-} from "./drenyra-context";
-import {
 	autonomyLevelSchema,
-	desktopError,
+	consoleError,
 	fiscalCaseTypeSchema,
 	fiscalRiskLevelSchema,
 	manualFiscalCaseStatusSchema,
 	metadataSchema,
 	readIdempotencyKey,
-} from "./drenyra-desktop-http";
+} from "./drenyra-console-http";
+import {
+	drenyraActorContextFailure,
+	resolveDrenyraActorContext,
+} from "./drenyra-context";
 
 export interface CasesRoutesDeps {
-	desktop: DrenyraFiscalDesktopService;
+	consoleService: DrenyraFiscalConsoleService;
 }
 
-export function createCasesRoutes({ desktop }: CasesRoutesDeps) {
+export function createCasesRoutes({ consoleService }: CasesRoutesDeps) {
 	return new Elysia({ name: "drenyra-cases" })
 		.get(
 			"/cases",
@@ -38,7 +38,9 @@ export function createCasesRoutes({ desktop }: CasesRoutesDeps) {
 					set.status = 400;
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
-				return ok(await desktop.listFiscalCases(contextResolution.context));
+				return ok(
+					await consoleService.listFiscalCases(contextResolution.context),
+				);
 			},
 			{ detail: { tags: ["Drenyra"], summary: "List Drenyra fiscal cases" } },
 		)
@@ -51,7 +53,7 @@ export function createCasesRoutes({ desktop }: CasesRoutesDeps) {
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					const fiscalCase = await desktop.createFiscalCase(
+					const fiscalCase = await consoleService.createFiscalCase(
 						contextResolution.context,
 						{ ...body, idempotencyKey: readIdempotencyKey(headers, body) },
 					);
@@ -59,7 +61,7 @@ export function createCasesRoutes({ desktop }: CasesRoutesDeps) {
 					return ok(fiscalCase);
 				} catch (error) {
 					set.status = 400;
-					return desktopError(error);
+					return consoleError(error);
 				}
 			},
 			{
@@ -86,7 +88,7 @@ export function createCasesRoutes({ desktop }: CasesRoutesDeps) {
 					set.status = 400;
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
-				const details = await desktop.getFiscalCaseDetails(
+				const details = await consoleService.getFiscalCaseDetails(
 					contextResolution.context,
 					params.id,
 				);
@@ -114,7 +116,7 @@ export function createCasesRoutes({ desktop }: CasesRoutesDeps) {
 				}
 				try {
 					return ok(
-						await desktop.updateFiscalCaseStatus(
+						await consoleService.updateFiscalCaseStatus(
 							contextResolution.context,
 							params.id,
 							body,
@@ -128,7 +130,7 @@ export function createCasesRoutes({ desktop }: CasesRoutesDeps) {
 									error.message === "FISCAL_CASE_STATUS_UNCHANGED"
 								? 409
 								: 400;
-					return desktopError(error);
+					return consoleError(error);
 				}
 			},
 			{

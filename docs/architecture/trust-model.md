@@ -1,4 +1,4 @@
-# Trust Model — Drenyra (Drenyra Desktop)
+# Trust Model — Drenyra (Drenyra Console)
 
 > **Last updated:** 2026-08-01.
 

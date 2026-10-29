@@ -7,17 +7,17 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import type { DrenyraFiscalDesktopService } from "@drenyra/application/drenyra";
+import type { DrenyraFiscalConsoleService } from "@drenyra/application/drenyra";
 import { Elysia, t } from "elysia";
 import { ok } from "../shared/api-response";
+import { consoleError } from "./drenyra-console-http";
 import {
 	drenyraActorContextFailure,
 	resolveDrenyraActorContext,
 } from "./drenyra-context";
-import { desktopError } from "./drenyra-desktop-http";
 
 export interface ApprovalDecisionRoutesDeps {
-	desktop: DrenyraFiscalDesktopService;
+	consoleService: DrenyraFiscalConsoleService;
 }
 
 function statusForApprovalDecisionError(error: unknown): 404 | 409 {
@@ -27,7 +27,7 @@ function statusForApprovalDecisionError(error: unknown): 404 | 409 {
 }
 
 export function createApprovalDecisionRoutes({
-	desktop,
+	consoleService,
 }: ApprovalDecisionRoutesDeps) {
 	return new Elysia({ name: "drenyra-approval-decisions" })
 		.post(
@@ -40,7 +40,7 @@ export function createApprovalDecisionRoutes({
 				}
 				try {
 					return ok(
-						await desktop.approveApprovalRequest(
+						await consoleService.approveApprovalRequest(
 							contextResolution.context,
 							params.id,
 							body,
@@ -48,7 +48,7 @@ export function createApprovalDecisionRoutes({
 					);
 				} catch (error) {
 					set.status = statusForApprovalDecisionError(error);
-					return desktopError(error);
+					return consoleError(error);
 				}
 			},
 			{
@@ -70,7 +70,7 @@ export function createApprovalDecisionRoutes({
 				}
 				try {
 					return ok(
-						await desktop.rejectApprovalRequest(
+						await consoleService.rejectApprovalRequest(
 							contextResolution.context,
 							params.id,
 							body,
@@ -78,7 +78,7 @@ export function createApprovalDecisionRoutes({
 					);
 				} catch (error) {
 					set.status = statusForApprovalDecisionError(error);
-					return desktopError(error);
+					return consoleError(error);
 				}
 			},
 			{

@@ -60,7 +60,7 @@ A chat is secondary. Results materialize as: findings, tasks, classifications, r
 | ----------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | SDD-WB-001 Application Shell        | `drenyra-agentic-shell` ✅, `drenyra-global-shell` ✅                 | **Evolves** existing shells into full Workbench shell — workspace hierarchy, sidebar evolution, company/period switcher |
 | SDD-WB-002 Persistent Panes         | `drenyra-three-panel-layout` ✅                                       | **Evolves** fixed three-panel into dynamic, resizable, persistable pane system                                          |
-| SDD-WB-003 Universal Command        | `drenyra-frontend-desktop-reset` ✅                            | **Evolves** existing Drenyra Desktop into ⌘K palette with navigation/query/execution commands                            |
+| SDD-WB-003 Universal Command        | `drenyra-frontend-desktop-reset` ✅                            | **Evolves** existing Drenyra Console into ⌘K palette with navigation/query/execution commands                            |
 | SDD-WB-004 Financial Change Set     | `drenyra-accountant-operating-system` ⛔ blocked                      | **Replaces.** Narrow blocked SDD → full Change Set model with isolation, diff, lifecycle                                |
 | SDD-WB-005 Financial Diff & Impact  | `drenyra-accounting-diff` ✅                                          | **Extends** existing accounting diff with financial impact, materiality, policy, professional review                    |
 | SDD-WB-006 Agent Activity & State   | `drenyra-accountant-interface` ○ draft, `drenyra-h4-agent-ux` ◌ empty | **Replaces.** Draft/empty SDDs → semantic agent state, activity feed per pane                                           |
@@ -146,7 +146,7 @@ The following features already exist and must be reconciled rather than rebuilt:
 | ------------------------- | ----------- | ---------------------------------------------- |
 | Agentic Shell             | Applied     | Already agentic-first sidebar, needs evolution |
 | Global Three-Panel Layout | Applied     | Fixed panels → dynamic panes                   |
-| Drenyra Desktop            | Applied     | Needs ⌘K palette evolution                     |
+| Drenyra Console            | Applied     | Needs ⌘K palette evolution                     |
 | Accounting Diff           | Applied     | Needs financial impact layer                   |
 | Evidence Vault 2.0        | Applied     | Needs provenance navigation                    |
 | Skills & Automations      | Applied     | Needs UI layer                                 |

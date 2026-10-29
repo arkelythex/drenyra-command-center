@@ -8,7 +8,7 @@ import {
 } from "@drenyra/agent-runtime";
 import {
 	type DrenyraActorContext,
-	DrenyraFiscalDesktopService,
+	DrenyraFiscalConsoleService,
 	type DrenyraRepository,
 	InMemoryDrenyraRepository,
 } from "@drenyra/application/drenyra";
@@ -54,7 +54,9 @@ function createDrenyraRepository(): DrenyraRepository {
 	return new InMemoryDrenyraRepository();
 }
 
-const desktop = new DrenyraFiscalDesktopService(createDrenyraRepository());
+const consoleService = new DrenyraFiscalConsoleService(
+	createDrenyraRepository(),
+);
 
 for (const agent of createAllAgents()) {
 	drenyra.registerAgent(
@@ -236,7 +238,7 @@ function resolveDrenyraActorContext(
 
 function drenyraActorContextFailure(missingHeaders: string[]) {
 	return fail(
-		"Drenyra Desktop requests require company, RUC, fiscal period and user headers",
+		"Drenyra Console requests require company, RUC, fiscal period and user headers",
 		"TENANT_CONTEXT_REQUIRED",
 		{
 			details: { missingHeaders },
@@ -409,7 +411,7 @@ function _authorizeDrenyraChatTool(input: DrenyraToolAuthorizationInput) {
 	};
 }
 
-function desktopError(error: unknown) {
+function consoleError(error: unknown) {
 	if (error instanceof Error) {
 		if (error.message.endsWith("_NOT_FOUND"))
 			return fail(error.message, "NOT_FOUND");
@@ -418,9 +420,9 @@ function desktopError(error: unknown) {
 			error.message === "FISCAL_CASE_STATUS_UNCHANGED"
 		)
 			return fail(error.message, "CONFLICT");
-		return fail(error.message, "DRENYRA_DESKTOP_ERROR");
+		return fail(error.message, "DRENYRA_CONSOLE_ERROR");
 	}
-	return fail("Unknown Drenyra Desktop error", "DRENYRA_DESKTOP_ERROR");
+	return fail("Unknown Drenyra Console error", "DRENYRA_CONSOLE_ERROR");
 }
 
 const fiscalCaseTypeSchema = t.Union([
@@ -561,7 +563,9 @@ export const drenyraModule = new Elysia({
 				toolId: "list_fiscal_cases",
 			});
 			if (!capability.ok) return capability.response;
-			const cases = await desktop.listFiscalCases(contextResolution.context);
+			const cases = await consoleService.listFiscalCases(
+				contextResolution.context,
+			);
 			return ok(cases);
 		},
 		{ detail: { tags: ["Drenyra"], summary: "List Drenyra fiscal cases" } },
@@ -583,7 +587,7 @@ export const drenyraModule = new Elysia({
 				return drenyraActorContextFailure(contextResolution.missingHeaders);
 			}
 			try {
-				const fiscalCase = await desktop.createFiscalCase(
+				const fiscalCase = await consoleService.createFiscalCase(
 					contextResolution.context,
 					body,
 				);
@@ -597,7 +601,7 @@ export const drenyraModule = new Elysia({
 				return ok(fiscalCase);
 			} catch (error) {
 				set.status = 400;
-				return desktopError(error);
+				return consoleError(error);
 			}
 		},
 		{
@@ -629,7 +633,7 @@ export const drenyraModule = new Elysia({
 			});
 			if (!capability.ok) return capability.response;
 			try {
-				const mission = await desktop.bootstrapDocumentMission(
+				const mission = await consoleService.bootstrapDocumentMission(
 					contextResolution.context,
 					body,
 				);
@@ -637,7 +641,7 @@ export const drenyraModule = new Elysia({
 				return ok(mission);
 			} catch (error) {
 				set.status = 400;
-				return desktopError(error);
+				return consoleError(error);
 			}
 		},
 		{
@@ -652,7 +656,7 @@ export const drenyraModule = new Elysia({
 			},
 		},
 	)
-	.use(createDrenyraCommandEnvelopeRoutes(desktop))
+	.use(createDrenyraCommandEnvelopeRoutes(consoleService))
 	.get(
 		"/fiscal-work/:id/inspect",
 		async ({ params, headers, set }) => {
@@ -697,7 +701,7 @@ export const drenyraModule = new Elysia({
 					summary: "Fiscal work inspect requires explicit capability grant",
 				};
 			}
-			const envelope = await desktop.inspectFiscalWorkItem(
+			const envelope = await consoleService.inspectFiscalWorkItem(
 				contextResolution.context,
 				{
 					workItemId: params.id,
@@ -749,7 +753,7 @@ export const drenyraModule = new Elysia({
 				toolId: "list_fiscal_cases",
 			});
 			if (!capability.ok) return capability.response;
-			const details = await desktop.getFiscalCaseDetails(
+			const details = await consoleService.getFiscalCaseDetails(
 				contextResolution.context,
 				params.id,
 			);
@@ -773,7 +777,7 @@ export const drenyraModule = new Elysia({
 				return drenyraActorContextFailure(contextResolution.missingHeaders);
 			}
 			try {
-				const fiscalCase = await desktop.updateFiscalCaseStatus(
+				const fiscalCase = await consoleService.updateFiscalCaseStatus(
 					contextResolution.context,
 					params.id,
 					body,
@@ -787,7 +791,7 @@ export const drenyraModule = new Elysia({
 								error.message === "FISCAL_CASE_STATUS_UNCHANGED"
 							? 409
 							: 400;
-				return desktopError(error);
+				return consoleError(error);
 			}
 		},
 		{
@@ -818,7 +822,7 @@ export const drenyraModule = new Elysia({
 			});
 			if (!capability.ok) return capability.response;
 			try {
-				const evidence = await desktop.addEvidenceItem(
+				const evidence = await consoleService.addEvidenceItem(
 					contextResolution.context,
 					params.id,
 					body,
@@ -830,7 +834,7 @@ export const drenyraModule = new Elysia({
 					error instanceof Error && error.message.endsWith("_NOT_FOUND")
 						? 404
 						: 400;
-				return desktopError(error);
+				return consoleError(error);
 			}
 		},
 		{
@@ -866,7 +870,7 @@ export const drenyraModule = new Elysia({
 			});
 			if (!capability.ok) return capability.response;
 			try {
-				const run = await desktop.startAndCompleteMockAgentRun(
+				const run = await consoleService.startAndCompleteMockAgentRun(
 					contextResolution.context,
 					params.id,
 					body.agentType,
@@ -878,7 +882,7 @@ export const drenyraModule = new Elysia({
 					error instanceof Error && error.message.endsWith("_NOT_FOUND")
 						? 404
 						: 400;
-				return desktopError(error);
+				return consoleError(error);
 			}
 		},
 		{
@@ -906,14 +910,14 @@ export const drenyraModule = new Elysia({
 			});
 			if (!capability.ok) return capability.response;
 			try {
-				const runs = await desktop.listAgentRuns(
+				const runs = await consoleService.listAgentRuns(
 					contextResolution.context,
 					params.id,
 				);
 				return ok(runs);
 			} catch (error) {
 				set.status = 404;
-				return desktopError(error);
+				return consoleError(error);
 			}
 		},
 		{
@@ -937,7 +941,7 @@ export const drenyraModule = new Elysia({
 			});
 			if (!capability.ok) return capability.response;
 			try {
-				const approval = await desktop.requestApproval(
+				const approval = await consoleService.requestApproval(
 					contextResolution.context,
 					params.id,
 					body,
@@ -949,7 +953,7 @@ export const drenyraModule = new Elysia({
 					error instanceof Error && error.message.endsWith("_NOT_FOUND")
 						? 404
 						: 400;
-				return desktopError(error);
+				return consoleError(error);
 			}
 		},
 		{
@@ -977,7 +981,7 @@ export const drenyraModule = new Elysia({
 				return drenyraActorContextFailure(contextResolution.missingHeaders);
 			}
 			try {
-				const approval = await desktop.approveApprovalRequest(
+				const approval = await consoleService.approveApprovalRequest(
 					contextResolution.context,
 					params.id,
 					body,
@@ -988,7 +992,7 @@ export const drenyraModule = new Elysia({
 					error instanceof Error && error.message === "APPROVAL_ALREADY_DECIDED"
 						? 409
 						: 404;
-				return desktopError(error);
+				return consoleError(error);
 			}
 		},
 		{
@@ -1009,7 +1013,7 @@ export const drenyraModule = new Elysia({
 				return drenyraActorContextFailure(contextResolution.missingHeaders);
 			}
 			try {
-				const approval = await desktop.rejectApprovalRequest(
+				const approval = await consoleService.rejectApprovalRequest(
 					contextResolution.context,
 					params.id,
 					body,
@@ -1020,7 +1024,7 @@ export const drenyraModule = new Elysia({
 					error instanceof Error && error.message === "APPROVAL_ALREADY_DECIDED"
 						? 409
 						: 404;
-				return desktopError(error);
+				return consoleError(error);
 			}
 		},
 		{

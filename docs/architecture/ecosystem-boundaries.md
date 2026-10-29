@@ -1,4 +1,4 @@
-# Ecosystem Boundaries — Drenyra (Drenyra Desktop)
+# Ecosystem Boundaries — Drenyra (Drenyra Console)
 
 > **Last updated:** 2026-08-11 (Design 1 — boundary & authority contract).
 
@@ -46,7 +46,7 @@ These are extraction targets. They already live (or are being extracted into) ot
 
 ```mermaid
 flowchart TD
-    P["Profesional contable"] --> D["Drenyra Desktop"]
+    P["Profesional contable"] --> D["Drenyra Console"]
     D --> AI["Drenyra-AI Core"]
     PI["Drenyra Shell"] --> AI
     ERP["ERP · bancos · SUNAT"] --> AD["Adaptadores de evidencia"]

@@ -95,7 +95,7 @@ Drenyra-AI Runtime
 
 - **Drenyra-AI**: "El ecosistema abierto y verificable para agentes contables." Proporciona contratos, protocolos, agentes, skills, memoria, receipts, ledger, políticas, materialidad y autoridad contable.
 - **Drenyra Shell**: "El harness Pi-native que convierte Pi en un operador contable controlado, capaz de ejecutar procedimientos con evidencia, separación de funciones y aprobación profesional."
-- **Drenyra Desktop**: "La superficie visual para operar empresas, contabilidad, cierres, evidencia y agentes."
+- **Drenyra Console**: "La superficie visual para operar empresas, contabilidad, cierres, evidencia y agentes."
 
 Por tanto:
 
@@ -361,7 +361,7 @@ Git sigue útil para versionar código y políticas, pero **no es la fuente úni
 
 ## Estructura de repositorios recomendada
 
-Opción recomendada: **repositorios separados** — `arkelythex/drenyra-desktop` (producto web), `arkelythex/drenyra-ai` (runtime, protocolos, contracts, agents, authority), `arkelythex/drenyra-shell` (paquete Pi-native), `arkelythex/drenyra-skills` (skills y policies versionadas).
+Opción recomendada: **repositorios separados** — `arkelythex/drenyra-console` (producto web), `arkelythex/drenyra-ai` (runtime, protocolos, contracts, agents, authority), `arkelythex/drenyra-shell` (paquete Pi-native), `arkelythex/drenyra-skills` (skills y policies versionadas).
 
 Inicialmente pueden vivir en el monorepo, pero con boundaries diseñados como productos independientes:
 
@@ -403,7 +403,7 @@ Phase 5 — Peru fiscal skills (SIRE, IGV, detracciones, retenciones, SUNAT gate
 ```
 ARKELYTHEX
 │
-├── Drenyra — Drenyra Desktop
+├── Drenyra — Drenyra Console
 ├── Drenyra-AI — Evidence-driven accounting agent ecosystem
 └── Drenyra Shell — Pi-native accounting operations harness
 ```

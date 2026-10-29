@@ -8,7 +8,7 @@
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
 /**
- * Domain contracts for the Drenyra Drenyra Desktop foundation.
+ * Domain contracts for the Drenyra Drenyra Console foundation.
  *
  * These exports describe fiscal cases, evidence, deterministic mock agent runs, human approvals
  * and audit events. They are intentionally framework-free so API, persistence and UI adapters can

@@ -95,7 +95,7 @@ All routes live in `src/routes/` — type-safe, file-based lazy loading with bui
 | `/approvals`                | Approval hub                    |
 | `/automations`              | Automation workflows            |
 | `/connections`              | Third-party connections         |
-| `/drenyra`                  | Drenyra Desktop          |
+| `/drenyra`                  | Drenyra Console          |
 | `/chat`                     | AI chat assistant               |
 | `/neural-grid`              | Neural analytics grid           |
 | `/economic-groups/:groupId` | Economic group detail           |

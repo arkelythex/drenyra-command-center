@@ -4,7 +4,7 @@ import { DrenyraFiscalWorkInspectService } from "./fiscal-work-inspect.service";
 import { InMemoryDrenyraRepository } from "./in-memory-repository";
 import {
 	type DrenyraActorContext,
-	DrenyraFiscalDesktopService,
+	DrenyraFiscalConsoleService,
 } from "./service";
 
 const context: DrenyraActorContext = {
@@ -18,7 +18,7 @@ const context: DrenyraActorContext = {
 function makeServices() {
 	const repository = new InMemoryDrenyraRepository();
 	return {
-		desktop: new DrenyraFiscalDesktopService(repository),
+		desktop: new DrenyraFiscalConsoleService(repository),
 		inspect: new DrenyraFiscalWorkInspectService(
 			repository,
 			() => "trace-test-001",

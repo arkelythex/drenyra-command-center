@@ -7,27 +7,29 @@
  * @example Deny capability-gated operations by default unless governance headers prove scope.
  * @example Add focused tests when changing this module's fiscal behavior or public contract.
  */
-import type { DrenyraFiscalDesktopService } from "@drenyra/application/drenyra";
+import type { DrenyraFiscalConsoleService } from "@drenyra/application/drenyra";
 import { Elysia, t } from "elysia";
 import { ok } from "../shared/api-response";
 import {
-	drenyraActorContextFailure,
-	resolveDrenyraActorContext,
-} from "./drenyra-context";
-import {
 	autonomyLevelSchema,
-	desktopError,
+	consoleError,
 	drenyraAgentTypeSchema,
 	evidenceTypeSchema,
 	metadataSchema,
 	readIdempotencyKey,
-} from "./drenyra-desktop-http";
+} from "./drenyra-console-http";
+import {
+	drenyraActorContextFailure,
+	resolveDrenyraActorContext,
+} from "./drenyra-context";
 
 export interface CaseWorkflowRoutesDeps {
-	desktop: DrenyraFiscalDesktopService;
+	consoleService: DrenyraFiscalConsoleService;
 }
 
-export function createCaseWorkflowRoutes({ desktop }: CaseWorkflowRoutesDeps) {
+export function createCaseWorkflowRoutes({
+	consoleService,
+}: CaseWorkflowRoutesDeps) {
 	return new Elysia({ name: "drenyra-case-workflow" })
 		.post(
 			"/cases/:id/evidence",
@@ -38,7 +40,7 @@ export function createCaseWorkflowRoutes({ desktop }: CaseWorkflowRoutesDeps) {
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					const evidence = await desktop.addEvidenceItem(
+					const evidence = await consoleService.addEvidenceItem(
 						contextResolution.context,
 						params.id,
 						{ ...body, idempotencyKey: readIdempotencyKey(headers, body) },
@@ -50,7 +52,7 @@ export function createCaseWorkflowRoutes({ desktop }: CaseWorkflowRoutesDeps) {
 						error instanceof Error && error.message.endsWith("_NOT_FOUND")
 							? 404
 							: 400;
-					return desktopError(error);
+					return consoleError(error);
 				}
 			},
 			{
@@ -78,7 +80,7 @@ export function createCaseWorkflowRoutes({ desktop }: CaseWorkflowRoutesDeps) {
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					const run = await desktop.startAndCompleteMockAgentRun(
+					const run = await consoleService.startAndCompleteMockAgentRun(
 						contextResolution.context,
 						params.id,
 						body.agentType,
@@ -91,7 +93,7 @@ export function createCaseWorkflowRoutes({ desktop }: CaseWorkflowRoutesDeps) {
 						error instanceof Error && error.message.endsWith("_NOT_FOUND")
 							? 404
 							: 400;
-					return desktopError(error);
+					return consoleError(error);
 				}
 			},
 			{
@@ -114,11 +116,14 @@ export function createCaseWorkflowRoutes({ desktop }: CaseWorkflowRoutesDeps) {
 				}
 				try {
 					return ok(
-						await desktop.listAgentRuns(contextResolution.context, params.id),
+						await consoleService.listAgentRuns(
+							contextResolution.context,
+							params.id,
+						),
 					);
 				} catch (error) {
 					set.status = 404;
-					return desktopError(error);
+					return consoleError(error);
 				}
 			},
 			{ params: t.Object({ id: t.String({ minLength: 1 }) }) },
@@ -132,7 +137,7 @@ export function createCaseWorkflowRoutes({ desktop }: CaseWorkflowRoutesDeps) {
 					return drenyraActorContextFailure(contextResolution.missingHeaders);
 				}
 				try {
-					const approval = await desktop.requestApproval(
+					const approval = await consoleService.requestApproval(
 						contextResolution.context,
 						params.id,
 						{ ...body, idempotencyKey: readIdempotencyKey(headers, body) },
@@ -144,7 +149,7 @@ export function createCaseWorkflowRoutes({ desktop }: CaseWorkflowRoutesDeps) {
 						error instanceof Error && error.message.endsWith("_NOT_FOUND")
 							? 404
 							: 400;
-					return desktopError(error);
+					return consoleError(error);
 				}
 			},
 			{

@@ -1,6 +1,6 @@
 use tauri::Manager;
 
-/// Drenyra Desktop — thin Tauri 2 shell.
+/// Drenyra Console — thin Tauri 2 shell.
 ///
 /// Architecture: the web SPA (TanStack Start) is the full application.
 /// Tauri adds: system tray, multi-window, native notifications,
