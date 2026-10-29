@@ -1,3 +1,3 @@
-module github.com/Albert-fer02/ARKELYTHEX/services/go/reconciliation-worker
+module github.com/arkelythex/drenyra-console/services/go/reconciliation-worker
 
 go 1.26

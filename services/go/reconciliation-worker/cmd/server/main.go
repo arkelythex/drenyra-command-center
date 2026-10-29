@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Albert-fer02/ARKELYTHEX/services/go/reconciliation-worker/internal/reconcile"
+	"github.com/arkelythex/drenyra-console/services/go/reconciliation-worker/internal/reconcile"
 )
 
 func main() {
