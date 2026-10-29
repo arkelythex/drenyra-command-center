@@ -77,7 +77,7 @@ Ejecuta `bun run docs:check-links`. En pull requests se activa únicamente cuand
 
 ## Nightly (`nightly.yml`)
 
-Incluye cobertura, benchmarks, contratos, E2E, seguridad y un job **`nightly-polyglot`** que ejecuta `scripts/architecture/check-polyglot-runtime.sh` (tests Rust en `packages/rust-core` y Go en `services/go/reconciliation-worker`) con toolchains configuradas en el runner.
+Incluye cobertura, benchmarks, contratos, E2E, seguridad y un job **`nightly-polyglot`** que ejecuta `scripts/architecture/check-polyglot-runtime.sh` (tests Go de `services/go/**`).
 
 ---
 
