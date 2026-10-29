@@ -351,7 +351,6 @@ curl -s 'http://localhost:9090/api/v1/query?query=rate(arkelythex_ocr_documents_
 
 - [Monitoring README](./README.md) - Documentación completa
 - Integration Guide _(no disponible)_ - Cómo agregar métricas
-- [Deployment Summary](./DEPLOYMENT_SUMMARY.md) - Resumen de implementación
 - Walkthrough _(no disponible)_ - Implementación completa
 
 ---

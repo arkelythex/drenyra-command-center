@@ -13,7 +13,7 @@ A five-minute map. The authoritative, generated inventory is [`.codebase/index.y
 | Persistence / Infrastructure | `packages/persistence`, `packages/infrastructure` | Drizzle, adapters. Every query is tenant-scoped (`TenantScope`). |
 | Adapters | `apps/api` (Elysia), `apps/web` (React 19) | Elysia is an input adapter, not the architecture. No domain logic in endpoints. |
 | Agents and missions | `packages/agent-runtime`, `packages/mission-*`, `packages/drenyra-orchestrator`, `packages/fiscal-fsd` | Consume `drenyra-ai` contracts. |
-| Engines and services | `engines/rust-core`, `services/` | Rust verifies, Go connects. |
+| Engines and services | `engines/`, `services/go` | Rust verifies, Go connects. |
 
 Check boundaries with `bun run architecture:check-boundaries`.
 
