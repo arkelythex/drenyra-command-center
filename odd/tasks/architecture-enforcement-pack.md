@@ -40,14 +40,14 @@ Delivery: single PR, one work unit per commit
 
 | ID | Task | Specs | Route | Status | Commit |
 | --- | --- | --- | --- | --- | --- |
-| T1 | Shared rule module + `check-package-boundaries.ts` | S1, S2 | inline | pending | |
-| T2 | `check-framework-isolation.ts` | S3 | inline | pending | |
-| T3 | `check-baseline-policy.ts` | S4 | inline | pending | |
-| T4 | `check-migration-governance.ts` + lock | S5 | inline | pending | |
-| T5 | `audit-tsconfig-check-features.ts` | S6 | inline | pending | |
-| T6 | `score-module-extraction.ts` | S7 | inline | pending | |
-| T7 | `enforcement-pack.ts` aggregator + `package.json` wiring | S8 | inline | pending | |
-| T8 | Docs alignment | S10 | inline | pending | |
+| T1 | Shared rule module + `check-package-boundaries.ts` | S1, S2 | inline | done | 542a6d6b |
+| T2 | `check-framework-isolation.ts` | S3 | inline | done | 542a6d6b |
+| T3 | `check-baseline-policy.ts` | S4 | inline | done | this PR |
+| T4 | `check-migration-governance.ts` + lock | S5 | inline | done | this PR |
+| T5 | `audit-tsconfig-check-features.ts` | S6 | inline | done | this PR |
+| T6 | `score-module-extraction.ts` | S7 | inline | done | this PR |
+| T7 | `enforcement-pack.ts` aggregator + `package.json` wiring | S8 | inline | done | this PR |
+| T8 | Docs alignment | S10 | inline | done | this PR |
 
 ## Log
 
@@ -65,3 +65,37 @@ Delivery: single PR, one work unit per commit
 
 ### L5 — Migration governance defect (measured)
 39 `.sql` files vs 18 journal entries; 23 unjournalled, 2 dangling tags, `idx` 17 skipped. Recorded in "Known debt" above.
+
+### L6 — TypeScript 7 removed the programmatic config API
+
+`audit-tsconfig-check-features.ts` was written first against `ts.readConfigFile`/`ts.parseJsonConfigFileContent`. The repo pins **TypeScript 7.0.2**, whose package root exports only `lib/version.cjs`: there is no `ts.sys`, no `readConfigFile`, and the compiler API moved behind `typescript/unstable/*`. Importing `typescript` therefore yields a module with no usable config helpers.
+
+Decision: the audit ships its own JSONC reader and a shallow `extends` resolver instead of depending on an unstable subpath. It only needs option values, not a full program. `strict` is expanded through `STRICT_FAMILY` so a child that sets `strict: true` is not reported as relaxing the family it enables.
+
+### L7 — the tsconfig audit found a real hole and it was fixed, not baselined
+
+`apps/web/tsconfig.check.json` disabled `noUnusedLocals` and `noUnusedParameters` while the root program enforces both. That silently hid six unused declarations. Removing the two overrides surfaced them, and all six were fixed: an unused `isRisk` destructure in `SidePanel.tsx`, a dead `_DEFAULT_COMPANY_ID` constant in `EditInvoiceModal.tsx`, two unused parameters in `packages/domain/src/feos/{approval,workspace}.ts` renamed to `_actor`/`_error`, and a duplicate `FeosError` import in `tool-contract-router.ts`.
+
+After the change `tsc -p apps/web/tsconfig.check.json --noEmit` reports zero TS6133 and the gate passes. Baselining the two relaxed options would have been the cheap move and would have kept the hole open.
+
+### L8 — migration governance: 26 findings, deliberately recorded
+
+`check-migration-governance.ts` reports 26 findings against the current tree: two journal entries point at files that no longer exist (`0001_cool_lady_ursula`, `0007_loose_squirrel_girl`), index 17 is missing from the journal, and 23 `.sql` files are not journaled at all.
+
+None of this is repaired here. Editing an applied migration changes what a deployed database believes it has run, which is high-risk item 1. The gate records the current shape in `.ci/migration-lock.json` and refuses any future rename, removal or reorder, so the drift cannot grow while the repair is decided. Repair needs an explicit decision because it depends on what the production database actually applied.
+
+### L9 — module extraction: 19 deep imports baselined with measured scores
+
+`score-module-extraction.ts` measures how much of each package's real consumption goes through its published `exports` map. Scores: `@drenyra/infrastructure` 0.939, `@drenyra/shared` 0.957, `@drenyra/persistence` 0.985, `@drenyra/domain` 0.996, and 1.000 for the other 17 consumed packages.
+
+The 19 deep imports are baselined, not fixed: each one is a real coupling that needs its surface designed, not a path rewrite. Four packages publish no `exports` map at all (`fiscal-fsd`, `fiscal-compliance-pipeline`, `phase-gatekeeper`, `web`) and are reported as warnings, because a package without a declared surface cannot be measured.
+
+### L10 — `agent-runtime` reranked to adapter
+
+`@drenyra/agent-runtime` declares `hono`, `@mastra/core`, `ai` and `@ai-sdk/openai` and exports `./serve`. It hosts an HTTP server, so it is a rank-3 adapter. Ranking it as a domain package would have reported its own legitimate dependencies as violations; the rerank removed a false positive instead of baselining it.
+
+### L11 — surfaced debt outside this feature's scope
+
+A script-target audit of root `package.json` found **66 scripts whose target file does not exist** in the repository or its git history. `quality:max-lines` is one of them, and `.github/workflows/release.yml:38` runs it inside the release quality gate, so that gate cannot pass either.
+
+This is a separate defect class from the architecture gates: the gates were never written, these scripts lost their implementations. It needs its own ODD task (`script-registry-audit`) and is recorded here rather than fixed inline.

@@ -65,8 +65,6 @@ function itemTotals(quantity: string, unitPrice: string, taxType: TaxType) {
 	};
 }
 
-const _DEFAULT_COMPANY_ID = "00000000-0000-0000-0000-000000000001";
-
 function toInputDate(value: string): string {
 	return new Date(value).toISOString().split("T")[0];
 }

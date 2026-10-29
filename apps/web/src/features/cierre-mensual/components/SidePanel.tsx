@@ -123,7 +123,7 @@ interface StatusCardProps {
 	isRisk?: boolean;
 }
 
-function StatusCard({ label, status, icon: Icon, isRisk }: StatusCardProps) {
+function StatusCard({ label, status, icon: Icon }: StatusCardProps) {
 	const ok =
 		status === "CONCILIADO" || status === "VALIDADO" || status === "NO_APLICA";
 	return (
