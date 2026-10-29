@@ -55,9 +55,9 @@ and the pre-existing failures it does not fix.
 | ID  | Specs      | Route | Status | Commit / evidence |
 | --- | ---------- | ----- | ------ | ----------------- |
 | T1  | S1         | inline | done   | GitHub repo renamed to `arkelythex/drenyra-console`; local dir + 5 worktrees repaired |
-| T2  | S1, S2, S6 | inline | pending | product strings, product identifiers, diagram + branding asset paths |
-| T3  | S3         | inline | pending | legacy deletion with inbound-reference proof |
-| T4  | S5         | inline | pending | regenerated agent index, links check, typecheck baseline keys |
+| T2  | S1, S2, S6 | inline | done   | PR #390 `28d0e012` — 34 path renames, product identifiers, diagram + branding assets |
+| T3  | S3, S3.1   | inline | done   | `425c5bbb`, `69848a5d`, `570b9830` — 33 files deleted, polyglot gate restored |
+| T4  | S5         | inline | done   | `6bebf215` — regenerated index; `odd:guard` green after removing the stale `openspec/` cache |
 | T5  | S7         | delegated | pending | TanStack Start migration + BFF (feature B document) |
 | T6  | S8         | inline | pending | PR bodies, rebase merges, branch cleanup |
 
@@ -98,3 +98,45 @@ pre-existing and unrelated: `Arkelythex` fails because the GGA installer leaves 
 (`/usr/local/bin/../share/gga/lib/providers.sh`), filed as `Arkelythex#373`; `Elvyra` fails with 283 pre-existing
 biome errors across 125 files, filed as `Elvyra#3`. Also merged earlier: `drenyra-engram#54`, `drenyra-ai#127`,
 `drenyra-guardian-angel#6`, `drenyra-skills#13`, `drenyra-shell#97` (all rebase, all checks green where they exist).
+
+**L7 — T3 execution (legacy deletion, inbound-reference proof).** Deleted 33 tracked files across four clusters, each
+verified to have no live consumer:
+
+- `services/engram/` (8 files, 1,056 lines) — a Go reimplementation of `drenyra-engram`. `docker-compose.yml:203`
+  consumes the published `ghcr.io/arkelythex/drenyra-engram:0.2.1` image, not this directory, and ADR-010:83 already
+  records it as duplication. `services/go/` and `services/README.md` stay.
+- `engines/rust-core/` (5 files) — stub crate: 7-line `lib.rs` plus an unused `ruc.rs`. `engines/README.md` stays as
+  the planning surface.
+- `labs/mastra-poc/` (16 files) — prototype with zero inbound references.
+- `ops/gtm/arkalythix-gtm.html`, `ops/monitoring/{DEPLOYMENT,FINAL}_SUMMARY.md`,
+  `DRENYRA_CODEX_APP_INTERFACE_AUDIT.md` — stale brand, generated noise, and an audit of a directory that no longer
+  exists. The rest of `ops/` is untouched: `docker-compose.yml:51` mounts `ops/otel/collector-config.yaml` and
+  `.github/CODEOWNERS:27` owns it.
+
+Kept deliberately: `.agent/skills/` (consumed by `.hooks/pre-commit:76`, `.hooks/pre-push:70`, `AGENTS.md:240`,
+`CLAUDE.md:59`, `packages/drenyra-orchestrator/__tests__/skills-resolver.test.ts:8`), `ops/`, and the historical
+`ADR-010` mention of `services/engram` (an ADR records the past, it does not describe the present).
+
+**L8 — dead CI repaired instead of deleted.** The `nightly-polyglot` job called
+`scripts/architecture/check-polyglot-runtime.sh`, which never existed in this repository (`git log` over that path is
+empty), and cached under `packages/rust-core`, also nonexistent. The job could not pass. Added the missing script
+(Go modules under `services/`, Rust crates under `engines/` when the toolchain exists), rewrote the job to use it with
+the Go toolchain only, and removed the three `rust:core:*` package scripts that pointed at `packages/rust-core`. The
+`go test` run for `services/go/reconciliation-worker` passes locally.
+
+**L9 — go module namespace.** `services/go/reconciliation-worker/go.mod` still declared
+`github.com/Albert-fer02/ARKELYTHEX/...`. Moved to `github.com/arkelythex/drenyra-console/...`; the only importer is
+`cmd/server/main.go`. No published Go module, no external consumer.
+
+**L10 — `openspec/` removal.** The directory was untracked and held a single vitest cache file
+(`openspec/changes/drenyra-ecosystem-audit-readiness/coordination/validator/node_modules/.vite/vitest/.../results.json`).
+Removing it makes `bun run odd:guard` pass, which previously failed on guard rule 1. The documentation references to
+`openspec/` are intentional and correct: they are permalinks to commit `d428534` recording that SDD was retired.
+
+**L11 — pre-existing broken architecture scripts (not touched).** Only 2 of the 10 `architecture:*` scripts in
+`package.json` have files under `scripts/architecture/`: `check-product-surfaces.ts` and the new
+`check-polyglot-runtime.sh`. Missing: `audit-tsconfig-check-features.ts`, `check-package-boundaries.ts`,
+`enforcement-pack.ts`, `check-framework-isolation.ts`, `check-migration-governance.ts`,
+`score-module-extraction.ts`, `check-baseline-policy.ts`. So `bun run architecture:check-boundaries`, which
+`docs/CODEBASE-GUIDE.md:18` tells readers to run, exits 1 with "Module not found". Rebuilding those gates is a feature,
+not cleanup, and is left for its own task.
