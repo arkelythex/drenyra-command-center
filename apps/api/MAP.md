@@ -110,9 +110,9 @@ features/<name>/
 | 16  | **customers**            | `features/customers/`            | —                       | Customer catalog (hexagonal)                                                   |
 | 17  | **dashboard**            | `features/dashboard/`            | —                       | Dashboard widgets + fiscal indicators                                          |
 | 18  | **documents**            | `features/documents/`            | —                       | OCR intake, upload/review/query lifecycle                                      |
-| 19  | **drenyra**              | `features/drenyra/`              | —                       | Drenyra Desktop: cases, approval gates, Brain API                        |
+| 19  | **drenyra**              | `features/drenyra/`              | —                       | Drenyra Console: cases, approval gates, Brain API                        |
 | 20  | **electronic-invoicing** | `features/electronic-invoicing/` | `/electronic-invoicing` | SUNAT/OSE: send, compliance, lifecycle, CDR webhooks                           |
-| 21  | **fiscal**               | `features/fiscal/`               | —                       | Fiscal truth engine + Drenyra Desktop                                           |
+| 21  | **fiscal**               | `features/fiscal/`               | —                       | Fiscal truth engine + Drenyra Console                                           |
 | 22  | **frontend-telemetry**   | `features/frontend-telemetry/`   | —                       | Frontend error capture                                                         |
 | 23  | **governance-audit**     | `features/governance-audit/`     | —                       | Autonomy audit trail, artifact events                                          |
 | 24  | **health**               | `features/health/`               | `/health`               | Probes: `/live`, `/ready`, `/doctor`, `/startup`                               |

@@ -1,4 +1,4 @@
-# Drenyra Desktop
+# Drenyra Console
 
 > Fiscal-intelligence desktop for Peru (SUNAT/SIRE): TypeScript monorepo (Bun) with a framework-free domain, Rust core and Go services. Development follows ODD.
 

@@ -34,12 +34,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arkelythex/drenyra-desktop.git"
+    "url": "git+https://github.com/arkelythex/drenyra-console.git"
   },
   "bugs": {
-    "url": "https://github.com/arkelythex/drenyra-desktop/issues"
+    "url": "https://github.com/arkelythex/drenyra-console/issues"
   },
-  "homepage": "https://github.com/arkelythex/drenyra-desktop#readme",
+  "homepage": "https://github.com/arkelythex/drenyra-console#readme",
   "engines": {
     "node": ">=18"
   },

@@ -1,9 +1,9 @@
 <div align="center">
 
-<img width="1200" alt="Drenyra flow — operator → Drenyra Desktop planes → dual approval → receipt" src="assets/branding/drenyra-desktop-flow-banner.light.svg#gh-light-mode-only" />
-<img width="1200" alt="Drenyra flow — operator → Drenyra Desktop planes → dual approval → receipt" src="assets/branding/drenyra-desktop-flow-banner.dark.svg#gh-dark-mode-only" />
+<img width="1200" alt="Drenyra flow — operator → Drenyra Console planes → dual approval → receipt" src="assets/branding/drenyra-console-flow-banner.light.svg#gh-light-mode-only" />
+<img width="1200" alt="Drenyra flow — operator → Drenyra Console planes → dual approval → receipt" src="assets/branding/drenyra-console-flow-banner.dark.svg#gh-dark-mode-only" />
 
-<p><code>operator → desktop planes → dual approval → receipt</code></p>
+<p><code>operator → console planes → dual approval → receipt</code></p>
 
 </div>
 
@@ -78,8 +78,8 @@ Professional Review → Controlled Execution → Immutable Receipt
 
 Drenyra is organized into **8 architectural planes**. No upper plane bypasses a lower one — an agent cannot call SUNAT directly; it must traverse the full stack.
 
-![Drenyra Desktop — 8 FEOS Planes](docs/diagrams/drenyra-desktop.architecture.light.svg#gh-light-mode-only)
-![Drenyra Desktop — 8 FEOS Planes](docs/diagrams/drenyra-desktop.architecture.dark.svg#gh-dark-mode-only)
+![Drenyra Console — 8 FEOS Planes](docs/diagrams/drenyra-console.architecture.light.svg#gh-light-mode-only)
+![Drenyra Console — 8 FEOS Planes](docs/diagrams/drenyra-console.architecture.dark.svg#gh-dark-mode-only)
 
 **Material operation flow:**
 
@@ -109,7 +109,6 @@ Engineering efficiency means standing on the shoulders of mature infrastructure:
 | **OpenTelemetry** | Observability — traces, metrics, logs across every plane                     |
 | **S3**            | Evidence objects — XML, PDF, CDR, receipts, artifacts                        |
 | **TanStack**      | Web application infrastructure (Router, Query, Forms)                        |
-| **Tauri**         | Desktop shell for native CLI and local operations                            |
 
 **What Drenyra builds on top:**
 
@@ -130,7 +129,7 @@ Engineering efficiency means standing on the shoulders of mature infrastructure:
 ```
 drenyra/
 ├── apps/
-│   ├── web/              → Drenyra Desktop — React 19 + TanStack Router
+│   ├── web/              → Drenyra Console — React 19 + TanStack Router
 │   ├── api/              → Fiscal API — Bun + Elysia, vertical slices, CQRS
 │   └── data-engine/      → SIRE & analytics — Python + FastAPI + Polars
 ├── packages/
@@ -176,7 +175,7 @@ bun run dev:check
 
 | Service              | URL                             |
 | -------------------- | ------------------------------- |
-| Web (Drenyra Desktop) | `http://localhost:5174`         |
+| Web (Drenyra Console) | `http://localhost:5174`         |
 | API                  | `http://localhost:3000`         |
 | Swagger              | `http://localhost:3000/swagger` |
 | Data Engine          | `http://localhost:8000/health`  |

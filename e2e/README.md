@@ -96,8 +96,8 @@ e2e/
 ├── dashboard/                    # Dashboard & home page
 │   └── dashboard.spec.ts         #   KPIs, summaries, date filter (4 tests)
 │
-├── drenyra-desktop/              # Drenyra Desktop
-│   └── drenyra-desktop.spec.ts  #   Full Drenyra Desktop smoke (7 tests)
+├── drenyra-console/              # Drenyra Console
+│   └── drenyra-console.spec.ts  #   Full Drenyra Console smoke (7 tests)
 │
 ├── drenyra-workspace/            # Drenyra workspace navigation
 │   ├── agent-workspaces.spec.ts       #   Agent workspace pages (7 tests)

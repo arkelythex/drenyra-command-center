@@ -35,7 +35,7 @@ Engram         → memoria persistente compartida entre agentes
 Drenyra-AI     → protocolo y ecosistema contable
 Drenyra Shell     → harness Pi-native para operaciones contables
 Drenyra-Engram → memoria contable persistente, estructurada y verificable
-Drenyra Desktop → superficie visual de operación
+Drenyra Console → superficie visual de operación
 ```
 
 Como Engram es la memoria compartida del ecosistema Gentle AI, **Drenyra-Engram es la memoria compartida del ecosistema Drenyra**, adaptada a las exigencias de la contabilidad: estructura, procedencia, vigencia, autoridad y aislamiento entre empresas.
@@ -374,7 +374,7 @@ Drenyra-Engram
 ## Estructura de productos (5 repos)
 
 ```text
-arkelythex/drenyra-desktop (Drenyra Desktop)
+arkelythex/drenyra-console (Drenyra Console)
 arkelythex/drenyra-ai (runtime y protocolo contable)
 arkelythex/drenyra-shell (harness Pi-native)
 arkelythex/drenyra-engram (memoria institucional contable)
@@ -410,7 +410,7 @@ revisión humana → promover memorias aprobadas
 ```text
 ARKELYTHEX
 └── DRENYRA ECOSYSTEM
-    ├── Drenyra — Drenyra Desktop
+    ├── Drenyra — Drenyra Console
     ├── Drenyra-AI — Verifiable accounting agent ecosystem
     ├── Drenyra Shell — Pi-native accounting operations harness
     ├── Drenyra-Engram — Institutional accounting memory

@@ -8,7 +8,7 @@
 
 ## Context
 
-El ecosistema Drenyra creció con componentes superpuestos: el Drenyra Desktop llegó a
+El ecosistema Drenyra creció con componentes superpuestos: el Drenyra Console llegó a
 contener lógica de runtime, la UI podía interpretar narraciones de agentes, y las
 fronteras entre interfaz, autoridad, memoria y revisión no estaban formalizadas.
 Esta ambigüedad generaba riesgos concretos:

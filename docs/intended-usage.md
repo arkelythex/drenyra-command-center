@@ -4,7 +4,7 @@
 
 ## What this repository is
 
-The **Drenyra Desktop**: the product surface (API, web, fiscal domain) of Drenyra, a verifiable financial operating system for Peru (SUNAT/SIRE first). Agents propose, deterministic validators check, professionals approve material decisions, and every action produces an evidence receipt.
+The **Drenyra Console**: the product surface (API, web, fiscal domain) of Drenyra, a verifiable financial operating system for Peru (SUNAT/SIRE first). Agents propose, deterministic validators check, professionals approve material decisions, and every action produces an evidence receipt.
 
 ## What it is for
 

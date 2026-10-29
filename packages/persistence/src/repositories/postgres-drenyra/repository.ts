@@ -18,7 +18,7 @@ import {
 	drenyraAuditEvents,
 	drenyraEvidenceItems,
 	drenyraFiscalCases,
-} from "../../schema/drenyra-desktop.schema";
+} from "../../schema/drenyra-console.schema";
 import {
 	agentRunValues,
 	approvalValues,

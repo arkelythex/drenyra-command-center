@@ -1,4 +1,4 @@
-# Dependency Direction — Drenyra (Drenyra Desktop)
+# Dependency Direction — Drenyra (Drenyra Console)
 
 > **Last updated:** 2026-08-01.
 
@@ -21,7 +21,7 @@
                     │
            ┌────────┴────────┐
            │ Drenyra         │
-           │ Drenyra Desktop  │
+           │ Drenyra Console  │
            └─────────────────┘
 ```
 

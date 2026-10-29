@@ -1,6 +1,6 @@
 import type {
 	DrenyraActorContext,
-	DrenyraFiscalDesktopService,
+	DrenyraFiscalConsoleService,
 } from "@drenyra/application/drenyra";
 import { Elysia, t } from "elysia";
 import { fail } from "../shared/api-response";
@@ -28,12 +28,15 @@ type ExplainRiskBody = {
 };
 
 async function verifyExplainRiskSource(
-	desktop: DrenyraFiscalDesktopService,
+	consoleService: DrenyraFiscalConsoleService,
 	context: DrenyraActorContext,
 	body: ExplainRiskBody,
 ): Promise<boolean> {
 	if (!body.caseId) return !body.riskRef && !body.sourceRef;
-	const details = await desktop.getFiscalCaseDetails(context, body.caseId);
+	const details = await consoleService.getFiscalCaseDetails(
+		context,
+		body.caseId,
+	);
 	if (!details) return false;
 	const riskMatches =
 		!body.riskRef || details.case.metadata.riskRef === body.riskRef;
@@ -44,10 +47,10 @@ async function verifyExplainRiskSource(
 }
 
 export function createDrenyraCommandEnvelopeRoutes(
-	desktop: DrenyraFiscalDesktopService,
+	consoleService: DrenyraFiscalConsoleService,
 ) {
 	const audit = (context: DrenyraActorContext, input: CapabilityAuditInput) =>
-		recordCommandEnvelopeCapability(desktop, context, input);
+		recordCommandEnvelopeCapability(consoleService, context, input);
 	return new Elysia({ prefix: "/commands" })
 		.get(
 			"/audit-events",
@@ -61,7 +64,7 @@ export function createDrenyraCommandEnvelopeRoutes(
 						auditCaseId: query.caseId,
 						commandId: "command-audit-events",
 						createEnvelope: (context) =>
-							listCommandEnvelopeAuditEvents(desktop, context, {
+							listCommandEnvelopeAuditEvents(consoleService, context, {
 								caseId: query.caseId,
 								commandId: query.commandId,
 								eventType: query.eventType,
@@ -152,7 +155,7 @@ export function createDrenyraCommandEnvelopeRoutes(
 					commandId: "explain-risk",
 					createEnvelope: async (context, traceId) => {
 						const sourceScopeVerified = await verifyExplainRiskSource(
-							desktop,
+							consoleService,
 							context,
 							body,
 						);

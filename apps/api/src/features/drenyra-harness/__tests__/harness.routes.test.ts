@@ -12,11 +12,11 @@ const fiscalHeaders = {
 
 describe("drenyra harness routes", () => {
 	it("lists registered agents", async () => {
-		const app = new Elysia({ prefix: "/api/fiscal-desktop" }).use(
+		const app = new Elysia({ prefix: "/api/fiscal-console" }).use(
 			drenyraHarnessRoutes,
 		);
 		const response = await app.handle(
-			new Request("http://localhost/api/fiscal-desktop/harness/agents"),
+			new Request("http://localhost/api/fiscal-console/harness/agents"),
 		);
 		expect(response.status).toBe(200);
 		const json = await response.json();
@@ -25,11 +25,11 @@ describe("drenyra harness routes", () => {
 	});
 
 	it("executes nested fiscal delegation", async () => {
-		const app = new Elysia({ prefix: "/api/fiscal-desktop" }).use(
+		const app = new Elysia({ prefix: "/api/fiscal-console" }).use(
 			drenyraHarnessRoutes,
 		);
 		const response = await app.handle(
-			new Request("http://localhost/api/fiscal-desktop/harness/execute", {
+			new Request("http://localhost/api/fiscal-console/harness/execute", {
 				method: "POST",
 				headers: {
 					...fiscalHeaders,

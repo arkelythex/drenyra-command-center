@@ -1,5 +1,5 @@
 import {
-	DrenyraFiscalDesktopService,
+	DrenyraFiscalConsoleService,
 	InMemoryDrenyraRepository,
 } from "@drenyra/application/drenyra";
 import type { AuditEvent, FiscalScope } from "@drenyra/domain/drenyra";
@@ -56,9 +56,9 @@ async function buildApp() {
 			scope: { ...scope, companyRuc: "20100070970" },
 		}),
 	);
-	const desktop = new DrenyraFiscalDesktopService(repository);
+	const consoleService = new DrenyraFiscalConsoleService(repository);
 	return new Elysia({ prefix: "/api/drenyra" }).use(
-		createCommandEnvelopeAuditRoutes({ desktop }),
+		createCommandEnvelopeAuditRoutes({ consoleService }),
 	);
 }
 

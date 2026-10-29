@@ -5,7 +5,7 @@
 
 ## Purpose
 
-Document external design references that inform Drenyra's **Financial Engineering Environment** Drenyra Desktop without copying them literally. Product remains **operations-first** for Peruvian fiscal compliance with FSD/RED rigor.
+Document external design references that inform Drenyra's **Financial Engineering Environment** Drenyra Console without copying them literally. Product remains **operations-first** for Peruvian fiscal compliance with FSD/RED rigor.
 
 > FEE principle: design for focus, evidence visibility, and review clarity — not for chat-like minimalism or decorative UI.
 

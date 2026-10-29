@@ -104,7 +104,7 @@ export const chatHistoryRoutes = new Elysia({
 					.values({
 						userId: ctx.userId,
 						companyId,
-						title: "Drenyra Desktop Chat",
+						title: "Drenyra Console Chat",
 						createdAt: new Date(),
 						updatedAt: new Date(),
 					})

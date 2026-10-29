@@ -299,7 +299,7 @@ sequenceDiagram
 
 | Surface            | Primary                    | Fallback       |
 | ------------------ | -------------------------- | -------------- |
-| Web Drenyra Desktop | WebSocket                  | SSE            |
+| Web Drenyra Console | WebSocket                  | SSE            |
 | drenyra-shell / CLI | NDJSON stdio relay or HTTP | REST compat v0 |
 | Automations        | WebSocket                  | REST           |
 | Partner API        | WebSocket + scoped API key | —              |

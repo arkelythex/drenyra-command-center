@@ -76,7 +76,7 @@ Las excepciones son la unidad de trabajo del contador: aprobar, devolver con ins
 | Plano | Rol | Estado |
 | ----- | --- | ------ |
 | **Web** — control plane | Cartera, empresas/RUC, periodos, misiones, aprobaciones, configuración, trazabilidad | ✅ Base: workspaces + attention + control tower service |
-| **Desktop** — local execution node | Archivos locales, certificados SOL, sesiones de navegador, automatización de portales, evidencia del entorno | 🟡 [SDD-WB-012](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/sdd-wb-012/proposal.md) (Tauri 2, planned) |
+| **Desktop** — local execution node | Archivos locales, certificados SOL, sesiones de navegador, automatización de portales, evidencia del entorno | 🟡 [SDD-WB-012](https://github.com/arkelythex/drenyra-console/blob/d428534/openspec/changes/sdd-wb-012/proposal.md) (Tauri 2, planned) |
 | **Mobile/PWA** — capture & approval | Fotografiar comprobantes, compartir PDF/XML, aprobar/rechazar, supervisar misiones | 🟡 [SDD-FEOS-013](./feos-program.md#sdd-feos-013--mobile-supervision-and-approval) (React Native, planned) |
 | **Cloud runtime** — mission & evidence | Misiones duraderas, handoff, idempotencia, receipts, evidence bundles | ✅ Base: `packages/mission-domain`, `mission-protocol` |
 
@@ -93,12 +93,12 @@ Attention → Workspaces → Review → Clients → Agents → Skills
 
 Responsabilidades: cartera completa, estado del cierre por cliente/periodo, misiones, aprobaciones, insights transversales, configuración de agentes/skills/políticas, trazabilidad y auditoría.
 
-### 3.2 Drenyra Desktop — nodo seguro de ejecución local
+### 3.2 Drenyra Console — nodo seguro de ejecución local
 
 No es una copia de la web. Es el nodo especializado para: archivos y carpetas locales, certificados y credenciales locales, sesiones de navegador, automatización de portales, importación masiva, visualización de alta densidad y trabajo offline limitado. La lógica de negocio y las misiones viven en el runtime compartido; Desktop añade el **Local Executor**.
 
 ```text
-Drenyra Desktop
+Drenyra Console
 ├── Local Sources
 ├── Fiscal Browser
 ├── Review Studio
@@ -108,7 +108,7 @@ Drenyra Desktop
 └── Desktop Agent
 ```
 
-[SDD-WB-012](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/sdd-wb-012/proposal.md) ya define el shell Tauri 2 (system tray con conteo de attention inbox, multi-window, certificados locales SUNAT SOL, Drenyra Bridge, secure storage, background sync) con la regla **"reuse web UI — no segunda implementación"**.
+[SDD-WB-012](https://github.com/arkelythex/drenyra-console/blob/d428534/openspec/changes/sdd-wb-012/proposal.md) ya define el shell Tauri 2 (system tray con conteo de attention inbox, multi-window, certificados locales SUNAT SOL, Drenyra Bridge, secure storage, background sync) con la regla **"reuse web UI — no segunda implementación"**.
 
 ### 3.3 Drenyra Mobile/PWA — captura y supervisión
 

@@ -1,5 +1,5 @@
 [package]
-name = "drenyra-desktop"
+name = "drenyra-console"
 version = "0.1.0"
 description = "Drenyra Operational Workbench — Desktop Shell"
 authors = ["Drenyra Team"]

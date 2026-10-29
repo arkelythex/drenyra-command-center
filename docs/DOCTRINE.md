@@ -321,7 +321,7 @@ La capa cognitiva:
 
 La capa de operación:
 
-- Drenyra Desktop
+- Drenyra Console
 - Alertas
 - Aprobaciones
 - Misiones

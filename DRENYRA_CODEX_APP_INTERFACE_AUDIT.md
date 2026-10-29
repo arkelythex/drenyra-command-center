@@ -12,7 +12,7 @@ The main gap is not visual polish. The main gap is product posture: Drenyra must
 
 Drenyra should feel like:
 
-> A calm Drenyra Desktop where humans direct agents, agents produce verifiable artifacts, and every fiscal decision remains scoped, reviewable, and auditable.
+> A calm Drenyra Console where humans direct agents, agents produce verifiable artifacts, and every fiscal decision remains scoped, reviewable, and auditable.
 
 Drenyra should not feel like:
 
@@ -29,9 +29,9 @@ Verified existing pieces:
   - Supports text input, `@` references, `/` commands, and thread creation.
 - `apps/web/src/components/agentic-shell/AgenticSidebar/`
   - Provides a collapsible left navigation shell.
-- `apps/web/src/features/drenyra-desktop/components/ArtifactFeed/`
+- `apps/web/src/features/drenyra-console/components/ArtifactFeed/`
   - Collects artifacts from cognitive messages and renders them as a chronological feed.
-- `apps/web/src/features/drenyra-desktop/components/DrenyraDesktop.tsx`
+- `apps/web/src/features/drenyra-console/components/DrenyraConsole.tsx`
   - Uses chat as the primary UI and places artifacts in the right panel.
 
 ## Gaps to fix
@@ -91,7 +91,7 @@ Recommended modes:
 
 ### 5. Main content should reduce dashboard noise
 
-The main Drenyra Desktop should prioritize:
+The main Drenyra Console should prioritize:
 
 1. current task;
 2. agent response;
@@ -155,7 +155,7 @@ Drenyra must always make the fiscal scope visible before action:
 
 ### Phase 5 — Interaction polish
 
-- Reduce visual noise in the main Drenyra Desktop.
+- Reduce visual noise in the main Drenyra Console.
 - Normalize spacing, muted borders, and calm surfaces.
 - Prefer progressive disclosure over dense panels.
 - Verify keyboard navigation and focus states.
@@ -177,8 +177,8 @@ Start with these files:
 - `apps/web/src/components/agentic-shell/AgenticCommandBar/AgenticCommandBar.tsx`
 - `apps/web/src/components/agentic-shell/AgenticSidebar/AgenticSidebar.data.ts`
 - `apps/web/src/components/agentic-shell/AgenticSidebar/components/AgenticSidebarNavItems.tsx`
-- `apps/web/src/features/drenyra-desktop/components/ArtifactFeed/ArtifactFeedCard.tsx`
-- `apps/web/src/features/drenyra-desktop/components/DrenyraDesktop.tsx`
+- `apps/web/src/features/drenyra-console/components/ArtifactFeed/ArtifactFeedCard.tsx`
+- `apps/web/src/features/drenyra-console/components/DrenyraConsole.tsx`
 
 ## Risks
 

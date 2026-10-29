@@ -45,13 +45,13 @@ Web changes must keep evidence, confidence, fiscal scope, approval state, and re
 
 | Plan                                                                                      | Role in the web desktop                                    |
 | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [North Star Philosophy](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-north-star-philosophy/proposal.md) | Product-level operating contract for Drenyra surfaces.            |
-| [F1 Agentic Shell](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-agentic-shell/proposal.md)              | Shell, outcome navigation, and context rail foundation.           |
-| [F2 Thread System](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-thread-system/proposal.md)              | Durable work context and reviewable agent collaboration history.  |
-| [F3 Agents Window](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-agents-window/proposal.md)              | Multi-agent visibility tied to real accounting workflows.         |
-| [F4 Accounting Diff](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-accounting-diff/proposal.md)          | Evidence and review surface for risky fiscal/accounting changes.  |
-| [F5 Skills + Automations](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-skills-automations/proposal.md)  | Approval-aware automation with audit output.                      |
-| [F6 Evidence Vault 2.0](https://github.com/arkelythex/drenyra-desktop/blob/d428534/openspec/changes/drenyra-evidence-vault-2/proposal.md)      | Proof layer for evidence, reversibility, and fiscal audit trails. |
+| [North Star Philosophy](https://github.com/arkelythex/drenyra-console/blob/d428534/openspec/changes/drenyra-north-star-philosophy/proposal.md) | Product-level operating contract for Drenyra surfaces.            |
+| [F1 Agentic Shell](https://github.com/arkelythex/drenyra-console/blob/d428534/openspec/changes/drenyra-agentic-shell/proposal.md)              | Shell, outcome navigation, and context rail foundation.           |
+| [F2 Thread System](https://github.com/arkelythex/drenyra-console/blob/d428534/openspec/changes/drenyra-thread-system/proposal.md)              | Durable work context and reviewable agent collaboration history.  |
+| [F3 Agents Window](https://github.com/arkelythex/drenyra-console/blob/d428534/openspec/changes/drenyra-agents-window/proposal.md)              | Multi-agent visibility tied to real accounting workflows.         |
+| [F4 Accounting Diff](https://github.com/arkelythex/drenyra-console/blob/d428534/openspec/changes/drenyra-accounting-diff/proposal.md)          | Evidence and review surface for risky fiscal/accounting changes.  |
+| [F5 Skills + Automations](https://github.com/arkelythex/drenyra-console/blob/d428534/openspec/changes/drenyra-skills-automations/proposal.md)  | Approval-aware automation with audit output.                      |
+| [F6 Evidence Vault 2.0](https://github.com/arkelythex/drenyra-console/blob/d428534/openspec/changes/drenyra-evidence-vault-2/proposal.md)      | Proof layer for evidence, reversibility, and fiscal audit trails. |
 
 **First flagship workflow candidate:** monthly close. Use it to prove the
 desktop model before expanding to SIRE, reconciliation, or invoice review.

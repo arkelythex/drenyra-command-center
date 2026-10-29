@@ -265,7 +265,7 @@ export {
 	drenyraAuditEvents,
 	drenyraEvidenceItems,
 	drenyraFiscalCases,
-} from "./drenyra-desktop.schema";
+} from "./drenyra-console.schema";
 export {
 	economicGroups,
 	economicGroupsRelations,
