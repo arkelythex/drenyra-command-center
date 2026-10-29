@@ -1,0 +1,22 @@
+{
+  "applied": [
+    "0000_canonical_baseline",
+    "0001_cool_lady_ursula",
+    "0002_lying_satana",
+    "0003_warm_forgotten_one",
+    "0004_amazing_juggernaut",
+    "0005_violet_overlord",
+    "0006_drenyra_command_center",
+    "0007_loose_squirrel_girl",
+    "0008_melodic_tusk",
+    "0009_early_secret_warriors",
+    "0010_tidy_thena",
+    "0011_fiscal_audit_ledger_hash_chain",
+    "0012_agent_run_persistence",
+    "0013_ai_tool_permissions",
+    "0014_agent_run_inputs",
+    "0015_batch_runs",
+    "0016_batch_cancelled",
+    "0018_error_recovery"
+  ]
+}

@@ -14,11 +14,8 @@ CI/CD pipelines for ARKELYTHEX. El **gate principal** para merge en PR está en 
 - ESLint design-tokens plugin (`bun run lint:design-tokens`) — **bloquea off-brand colors, inline money format, imports deprecados**
 - Biome (`bunx @biomejs/biome@2.3.11 biome check`)
 - TypeScript: `bun run typecheck` (`tsc -p tsconfig.check.json`) — **falla el job si hay errores**
-- `bun run architecture:check-tsconfig-features`
-- `bun run architecture:check-boundaries`
-- `bun run architecture:check-framework-isolation`
+- `bun run architecture:check` — los seis gates de arquitectura (boundaries, framework isolation, baseline policy, migration governance, tsconfig check features, module extraction)
 - `bun run architecture:check-product-surfaces`
-- En PR: `architecture:check-policy` (contra la rama base)
 - Verificación de `fetch()` legacy en web
 
 **Job `build`:**
@@ -86,9 +83,7 @@ Incluye cobertura, benchmarks, contratos, E2E, seguridad y un job **`nightly-pol
 ```bash
 bun install --frozen-lockfile
 bun run typecheck
-bun run architecture:check-tsconfig-features
-bun run architecture:check-boundaries
-bun run architecture:check-framework-isolation
+bun run architecture:check
 bun run architecture:check-product-surfaces
 bun run docs:check-links
 ```

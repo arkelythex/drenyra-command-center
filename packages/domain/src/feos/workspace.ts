@@ -335,7 +335,7 @@ export class Workspace {
 		return this.transition("completed");
 	}
 
-	markFailed(error?: string): Workspace {
+	markFailed(_error?: string): Workspace {
 		return this.transition("failed");
 	}
 
@@ -368,7 +368,7 @@ export class Workspace {
 		});
 	}
 
-	unblock(actor?: Actor): Workspace {
+	unblock(_actor?: Actor): Workspace {
 		// Unblocking goes back to queued for re-processing
 		return this.transition("queued", {
 			blocking: undefined,
